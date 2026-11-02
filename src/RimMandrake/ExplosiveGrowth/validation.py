@@ -493,18 +493,6 @@ def _place(t, defName, x, z, growth=1.0):
     return ids[0]
 
 
-def _donor(t, defName):
-    """The donor plant must be loaded (get_defs success + found), else this chain cannot run here."""
-    r = t.bridge_call("jawa/get_defs", defs="ThingDef/%s" % defName)
-    if not _live(t):
-        return
-    if not isinstance(r, dict) or r.get("success") is not True:
-        _unmeasured(t, "get_defs ThingDef/%s could not be asked: %s" % (defName, str(r)[:140]))
-    if r.get("notFound"):
-        _unmeasured(t, "donor plant %s is not loaded on this tier -- run on a list that carries it "
-                       "(Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault" % defName)
-
-
 def _rate(t, tid):
     """The plant's `Growth rate: N%` inspect line as a float percent."""
     r = t.bridge_call("jawa/inspect_string", thingIds=str(tid), limit=1)
@@ -1059,9 +1047,43 @@ def scribe_round_trip(t):
 
 # --------------------------------------------------------------------------- the other tops (donor plants)
 
-def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_off, why, pre=None):
-    """Fire the donor plant's top directly (no charge needed). `observe(t, x, z)` returns a dict;
-    `expect_on`/`expect_off` map a key to a predicate (True = must hold)."""
+# Each top chain fires a plant whose ROSTER ROW carries that top (RM_ExplosiveGrowthRoster.xml and the RUT roster),
+# tried in order, the first one loaded on the tier wins. Never a hard-coded single name: EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY
+# (2026-10-22) fired RM_FE_Plant_Quickgrass, whose row is top=Churn since the 2026-10-16 C3 ruling, so "Tinder" left
+# Hay=0; the other four names were Alpha Biomes / ReGrowth donors retired 2026-10-18. Only non-tree rows: a tree's
+# forced top is TreeBurst, never its row's top. selftest_explosivegrowth_top_donors.py pins every name to its row.
+TOP_DONORS = {
+    "Burst": ("RSW_JekkaGrass", "RM_TwistingThorngrass", "RM_BloomCrop"),
+    "Tinder": ("RM_FE_Plant_ScorchFruit",),
+    "Slime": ("RM_Plant_SlimeGrass", "RM_Plant_Thumbstalk"),
+    "Rupture": ("RM_Lashgrass", "RM_Bleedleaf"),
+    "Flush": (),     # the only Flush row, RSW_Plant_HydenockTree_Wild, is a tree (TreeBurst): this chain reads UNMEASURED
+}
+
+
+def _top_donor(t, top):
+    """The first TOP_DONORS[top] plant loaded on this tier; UNMEASURED (SITE, not a mod fault) when none is."""
+    cands = TOP_DONORS[top]
+    if not _live(t):
+        return cands[0] if cands else "NONE"
+    if not cands:
+        _unmeasured(t, "no non-tree roster row has top=%s: a tree's forced top is TreeBurst, so this chain has no subject"
+                       % top)
+    tried = []
+    for d in cands:
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/%s" % d)
+        if not isinstance(r, dict) or r.get("success") is not True:
+            _unmeasured(t, "get_defs ThingDef/%s could not be asked: %s" % (d, str(r)[:140]))
+        if not r.get("notFound"):
+            return d
+        tried.append(d)
+    _unmeasured(t, "no top=%s donor is loaded on this tier (tried %s) -- run on a list that carries one; this is NOT a "
+                   "mod fault" % (top, ", ".join(tried)))
+
+
+def _top_chain(t, comp_on, comp_off, top, setting, observe, expect_on, expect_off, why, pre=None):
+    """Fire a `top` donor plant's top directly (no charge needed). `observe(t, x, z)` returns a dict and reads the
+    donor's name from t._eg_donor; `expect_on`/`expect_off` map a key to a predicate (True = must hold)."""
     x, z = t.anchor
     # The OFF arm falls back to the default dry cycle, which bursts 1 in 3 (C3): defaultRuptureChance 0 pins it to the
     # non-violent fallback so "no hay / no cloud" is deterministic (the share itself is probe_rules' row).
@@ -1069,7 +1091,7 @@ def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_
                                    (comp_off, {setting: False, "defaultRuptureChance": 0.0}, expect_off, setting)):
         with _comp(t, name, toggle=tog):
             _prep(t, 40)
-            _donor(t, donor)
+            donor = t._eg_donor = _top_donor(t, top)
             _place(t, donor, x, z, 1.0)
             # ARM ISOLATION (LIVE 2026-10-16): the report's counters are cumulative for the session, so the ON arm's
             # leftovers read as the OFF arm's. `pre` takes the counters BEFORE this arm fires; observers report deltas.
@@ -1096,9 +1118,9 @@ def _obs_common(t, x, z, defs):
 def top_burst(t):
     def obs(t, x, z):
         o = _obs_common(t, x, z, ["Hay"])
-        o["plant_at_cell"] = _count(t, "RG_Plant_AridGrass", "%d,%d,1,1" % (x, z))
+        o["plant_at_cell"] = _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))
         return o
-    _top_chain(t, "burst_pops_leaves_chaff", "burst_off_falls_back_to_churn", "RG_Plant_AridGrass", "burstEnabled", obs,
+    _top_chain(t, "burst_pops_leaves_chaff", "burst_off_falls_back_to_churn", "Burst", "burstEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 0), "the burst plant must be gone"),
                 "Hay": ((lambda v: v >= 1), "a Burst leaves hay chaff")},
                {"Hay": ((lambda v: v == 0), "burstEnabled=false falls back to Churn: no hay")},
@@ -1109,9 +1131,9 @@ def top_burst(t):
 def top_tinder(t):
     def obs(t, x, z):
         o = _obs_common(t, x, z, ["Hay"])
-        o["plant_at_cell"] = _count(t, "RM_FE_Plant_Quickgrass", "%d,%d,1,1" % (x, z))
+        o["plant_at_cell"] = _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))
         return o
-    _top_chain(t, "tinder_leaves_fuel", "tinder_off_falls_back_to_churn", "RM_FE_Plant_Quickgrass", "tinderEnabled", obs,
+    _top_chain(t, "tinder_leaves_fuel", "tinder_off_falls_back_to_churn", "Tinder", "tinderEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 0), "the tinder plant must be gone"),
                 "Hay": ((lambda v: v >= 1), "a Tinder burst leaves hay (8-14)")},
                {"Hay": ((lambda v: v == 0), "tinderEnabled=false falls back to Churn: no hay")},
@@ -1125,10 +1147,10 @@ def top_slime(t):
         o = _obs_common(t, x, z, ["Filth_Slime"])
         tr = t.bridge_call("jawa/get_terrain_batch", rects=rect)
         o["slime_terrain_cells"] = (tr or {}).get("ops", "").count("RM_Slime_Rich") if _live(t) else 0
-        o["plant_at_cell"] = _count(t, "AB_SlimyFern", "%d,%d,1,1" % (x, z))
+        o["plant_at_cell"] = _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))
         o["slime_anywhere"] = o["Filth_Slime"] + o["slime_terrain_cells"]
         return o
-    _top_chain(t, "slime_turns_the_ground", "slime_off_falls_back_to_churn", "AB_SlimyFern", "slimeEnabled", obs,
+    _top_chain(t, "slime_turns_the_ground", "slime_off_falls_back_to_churn", "Slime", "slimeEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 0), "the slime plant must be gone"),
                 "slime_anywhere": ((lambda v: v >= 1), "a Slime top leaves RM_Slime_Rich ground (or Filth_Slime if the terrain is absent)")},
                {"slime_anywhere": ((lambda v: v == 0), "slimeEnabled=false falls back to Churn: no slime ground or filth")},
@@ -1139,13 +1161,13 @@ def top_slime(t):
 def top_rupture(t):
     def obs(t, x, z):
         o = _obs_common(t, x, z, ["Filth_Blood"])
-        o["plant_at_cell"] = _count(t, "AB_AlienGrass", "%d,%d,1,1" % (x, z))
+        o["plant_at_cell"] = _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))
         base = getattr(t, "_eg_base", None) or {}
         now = _report(t)["head"].get("ruptures")
         o["ruptures"] = (now - base.get("ruptures", 0)) if isinstance(now, int) and isinstance(base.get("ruptures", 0), int) else now
         _remove_pawns_in(t.bridge_call, "%d,%d,14,14" % (x - 7, z - 7))
         return o
-    _top_chain(t, "rupture_opens_a_cloud_zone", "rupture_off_falls_back_to_churn", "AB_AlienGrass", "ruptureEnabled", obs,
+    _top_chain(t, "rupture_opens_a_cloud_zone", "rupture_off_falls_back_to_churn", "Rupture", "ruptureEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 0), "the ruptured plant must be gone"),
                 "Filth_Blood": ((lambda v: v >= 1), "a Rupture splashes blood filth (40% of 21 cells)"),
                 "ruptures": ((lambda v: v == 1), "a Rupture registers one cloud zone")},
@@ -1158,8 +1180,8 @@ def top_rupture(t):
 @suite.chain("top_flush")
 def top_flush(t):
     def obs(t, x, z):
-        return {"plant_at_cell": _count(t, "AB_KeeningCordax", "%d,%d,1,1" % (x, z))}
-    _top_chain(t, "flush_plant_survives", "flush_off_falls_back_to_churn", "AB_KeeningCordax", "flushEnabled", obs,
+        return {"plant_at_cell": _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))}
+    _top_chain(t, "flush_plant_survives", "flush_off_falls_back_to_churn", "Flush", "flushEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 1), "a Flush top leaves the giant standing")},
                {"plant_at_cell": ((lambda v: v == 0), "flushEnabled=false falls back to Churn: the plant dies")},
                "RM_TopResolver.Flush")
@@ -1173,8 +1195,7 @@ def burst_hurts_pawns(t):
                                  ("burst_hurt_off_spares_pawn", {"burstHurtsPawns": False}, False, "burstHurtsPawns")):
         with _comp(t, name, toggle=tog):
             _prep(t, 40)
-            _donor(t, "RG_Plant_AridGrass")
-            _place(t, "RG_Plant_AridGrass", x, z, 1.0)
+            _place(t, _top_donor(t, "Burst"), x, z, 1.0)
             pid = t.spawn_pawn("Colonist", hostile=False)
             if _live(t) and not pid:
                 _unmeasured(t, "could not spawn the colonist")

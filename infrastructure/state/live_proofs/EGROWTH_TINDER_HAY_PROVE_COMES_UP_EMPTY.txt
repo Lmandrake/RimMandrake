@@ -1,0 +1,2 @@
+live-proof T1: python3 src/RimMandrake/ExplosiveGrowth/live_proof.py T1 < /dev/null
+live-proof T2: python3 src/RimMandrake/ExplosiveGrowth/live_proof.py T2 < /dev/null

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Live proof of EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE, one clause per call: exit 0 when it holds, 1 when it does not.
+"""Live proofs of ExplosiveGrowth items, one clause per call: exit 0 when it holds, 1 when it does not.
 
-    python3 src/RimMandrake/ExplosiveGrowth/live_proof.py A1
+    python3 src/RimMandrake/ExplosiveGrowth/live_proof.py A1|T1|T2
+
+A1 is EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE; T1/T2 are EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY (chain top_tinder).
 
 A1 runs ONLY validation.py's scribe_round_trip chain through the northstar driver on the loaded quicktest map and reads
 one bar, scribe_round_trip.scribe_dicts_survive_save_load. The Windows-side driver runs under python.exe; this wrapper
@@ -18,7 +20,10 @@ REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
 NORTHSTAR = os.path.join(REPO, "src", "RimMandrake", "Utils", "northstar_driver", "cli.py")
 PLAN = os.path.join(HERE, "northstar_plan.py")
 SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/scratch"
-BARS = {"A1": ("scribe_round_trip", "scribe_round_trip.scribe_dicts_survive_save_load")}
+BARS = {"A1": ("scribe_round_trip", "scribe_round_trip.scribe_dicts_survive_save_load"),
+        # EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY: the Tinder top on its real donor (RM_FE_Plant_ScorchFruit)
+        "T1": ("top_tinder", "top_tinder.tinder_leaves_fuel"),
+        "T2": ("top_tinder", "top_tinder.tinder_off_falls_back_to_churn")}
 TIMEOUT = 520
 
 
@@ -52,7 +57,7 @@ def main(argv):
     chain, bar = BARS[clause]
     os.makedirs(SCRATCH, exist_ok=True)
     # a name of this run alone: a stale or concurrent run's file can never pass for this one
-    out = os.path.join(SCRATCH, "egrowth_scribe_%s_%d_%d.json" % (clause, os.getpid(), time.time_ns()))
+    out = os.path.join(SCRATCH, "egrowth_%s_%d_%d.json" % (clause, os.getpid(), time.time_ns()))
     rc = run(["python.exe", win(NORTHSTAR), "run", "--mod", "ExplosiveGrowth", "--plan", win(PLAN), "--chains", chain,
               "--out", win(SCRATCH) + "\\" + os.path.basename(out)])
     if not os.path.exists(out):
