@@ -158,6 +158,7 @@ def main():
     probs += _core_rows_from_probs(vm)
     probs += _driver_bar_probs(vm)
     probs += _hose_rows_from_probs(vm)
+    probs += _natural_slime_rate_probs(EXT)
 
     print("selftest_extensions: %s -- %d core rows, %d extension chains / %d components, %d bars (%d core, %d "
           "extension-only), %d toggles" % ("PASS" if not probs else "FAIL", len(ids), len(ext_names), len(ext_ids),
@@ -166,6 +167,59 @@ def main():
     for p in probs:
         print("  - " + p)
     return 0 if not probs else 1
+
+
+def _natural_slime_rate_probs(EXT):
+    """NATURAL_SLIME_DIAGNOSE_NEVER_SLIPS. The c4 live run (2026-10-24) walked a colonist 81,164 -> 88,164 over painted
+    RM_SlimeGreenShallow and counted 0 slips while the canal wader slipped. MOD presumed; RULED OUT here, offline:
+    natural ground and the canal wader roll the SAME chance per second of walking, and a pawn that really walked the
+    strip would almost surely have slipped, so the 0 was the probe (an undrafted one-order _march, which the pather
+    sends round the slow strip on the dry bank; the census then rolled on an arrival). The probe now wades the strip
+    drafted, one cell per order (89a9a69600; chain PASS in job J20261026T062947Z-4039ea)."""
+    out = []
+    src = os.path.join(MOD, "Source")
+    try:
+        math_cs = open(os.path.join(src, "RM_SlimeMath.cs"), encoding="utf-8").read()
+        slip_cs = open(os.path.join(src, "RM_SlimeSlip.cs"), encoding="utf-8").read()
+        green = open(os.path.join(MOD, "Defs", "LiquidTypes", "TerrainDefs", "RM_SlimeGreen.xml"), encoding="utf-8").read()
+        ext = open(EXT if isinstance(EXT, str) else getattr(EXT, "__file__"), encoding="utf-8").read()
+    except OSError as e:
+        return ["natural slime rate: a source is unreadable (%s)" % e]
+    base = re.search(r"BaseSlipChance\s*=\s*([0-9.]+)f", math_cs)
+    cap = re.search(r"MaxSlipChance\s*=\s*([0-9.]+)f", math_cs)
+    interval = re.search(r"IntervalTicks\s*=\s*(\d+);", math_cs)
+    cost = re.search(r"<defName>RM_SlimeGreenShallow</defName>.*?<pathCost>(\d+)</pathCost>", green, re.S)
+    if not (base and cap and interval and cost):
+        return ["natural slime rate: BaseSlipChance/MaxSlipChance/IntervalTicks/RM_SlimeGreenShallow pathCost not found"]
+    base, cap, interval, cost = float(base.group(1)), float(cap.group(1)), int(interval.group(1)), int(cost.group(1))
+
+    def chance(slip, fill, depth):      # port of RM_SlimeMath.SlipChance, not climbing, multiplier 1
+        frac = 0.0 if fill <= 0 or depth <= 0 else (1.0 if fill >= depth else fill / depth)
+        return min(cap, base * slip * (0.5 + 0.5 * frac))
+    # the natural call shape in RM_SlimeSlip.Tick: fill 1, depth 1, not climbing
+    if not re.search(r"SlipChance\(ground\.slipperiness,\s*1,\s*1,\s*false,\s*false,", slip_cs):
+        out.append("RM_SlimeSlip no longer rolls natural ground as SlipChance(s, 1, 1, false, ...): re-derive this check")
+    # the canal wader fixture: dug D2, filled 2 (brim)
+    canal = re.search(r"def _slime_canal\(.*?_dig_run\(t, cells, (\d+)\).*?_fill_fluid\(t, x, z, (\d+),", ext, re.S)
+    if not canal:
+        return out + ["natural slime rate: _slime_canal's dig depth / fill not found in extensions.py"]
+    d, f = int(canal.group(1)), int(canal.group(2))
+    nat, wad = chance(1.0, 1, 1), chance(1.0, f, d)
+    if abs(nat - wad) > 1e-9:
+        out.append("natural slime rolls %.3f/s but the canal wader %.3f/s: not the same slip rate" % (nat, wad))
+    # 7 cardinal steps along the strip by a 13-tick pawn (cell cost 13 + pathCost), one roll per IntervalTicks walking
+    direct = 7 * (13 + cost)
+    p0 = (1 - nat) ** (direct / float(interval))
+    if p0 > 1e-3:
+        out.append("a real walk of the 8-cell strip could plausibly give 0 slips (P=%.4f): a 0 would not convict the probe" % p0)
+    # the detour an undrafted pather takes: diagonal off, 5 cells along the dry bank, diagonal back onto the end cell
+    detour = 18 + 5 * 13 + (18 + cost)
+    if detour >= direct:
+        out.append("the dry-bank detour (%d ticks) is not cheaper than the strip (%d): the c4 diagnosis no longer holds" % (detour, direct))
+    nat_row = re.search(r'component\("natural_slime_slips".*?(?=\n    with t\.component|\n    t\.bridge_call\("jawa/destroy_batch")', ext, re.S)
+    if not nat_row or "_wade(t, pn, strip" not in nat_row.group(0) or "_march(" in nat_row.group(0):
+        out.append("natural_slime_slips must wade the strip cell by cell (_wade), never a one-order _march round it")
+    return out
 
 
 def _section(text, head):
