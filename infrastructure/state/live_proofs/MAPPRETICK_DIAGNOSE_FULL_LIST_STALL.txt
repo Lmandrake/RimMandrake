@@ -1,1 +1,1 @@
-live-proof L1: python.exe "$(wslpath -w src/RimMandrake/Utils/perf/mappretick_window.py)" --secs 90 --speed Superfast --out 'D:\ClaudeWork\rimmandrake\mappretick_window' < /dev/null
+live-proof L1: python.exe src/RimMandrake/Utils/perf/mappretick_window.py --secs 90 --speed Superfast --out 'D:\ClaudeWork\rimmandrake\mappretick_window' < /dev/null
