@@ -1,0 +1,1 @@
+A2 L2: on a Stillsand quicktest at a pinned sun >= 55 deg, a constructed roof stepped past the 2000-tick ShadeGrid rebuild reads shade >= 0.99 and exposure <= the 0.35 sand glare floor while the open cell reads above it; modcheck row sun_roof_cover_above_55deg PASS

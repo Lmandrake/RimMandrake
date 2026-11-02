@@ -32,6 +32,7 @@ from suite import TestContext                     # noqa: E402
 
 SKELETON_DEFS = V.GIANT_SKELETONS
 STILLSAND = "RM_Stillsand"
+SAND_GLARE_FLOOR = V.sand_glare_floor()    # read from the biome def, as the harness reads it
 ROUNDTRIP_FIELDS = ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
                     "ledgerIncidentWeighting", "carryEnabled",
                     "seedingEnabled")
@@ -117,8 +118,17 @@ class Fake(object):
         return "Sand" if self.biome == STILLSAND else "Soil"
 
     def roofed(self, x, z):
-        for r, on in reversed(self.roofs):
+        for r, on, _ in reversed(self.roofs):
             if inrect(x, z, r):
+                return on
+        return False
+
+    def grid_roofed(self, x, z):
+        """The roof as RM_MapComponent_ShadeGrid sees it: roofShade is filled only by Recompute, which runs
+        when TicksGame % 2000 == 0, so a roof set at tick T enters the grid only once a multiple of 2000 lies
+        in (T, now] (STILLSAND_ROOF_COVER_EXPOSURE_1: the live run read 1.00 in the roofing tick)."""
+        for r, on, tick in reversed(self.roofs):
+            if inrect(x, z, r) and self.ticks // 2000 > tick // 2000:
                 return on
         return False
 
@@ -376,19 +386,23 @@ class Fake(object):
 
     # ---- sun
     def exposure(self, x, z):
-        if self.roofed(x, z) and "roof_no_cover" not in self.b:
-            return 0.0
+        # natural sand keeps the biome's glare floor even under a roof (ShadeGrid.Recompute applies
+        # WithGlareFloor after the roof cover), as the real grid does
+        floor = SAND_GLARE_FLOOR if self.terr(x, z) == "Sand" else 0.0
+        if self.grid_roofed(x, z) and "roof_no_cover" not in self.b:
+            return floor
         e = 0.3 if "low_exposure" in self.b else 1.0
         # the real shadegrid_read returns ExposureAt(cell), which has no weather factor (that is applied in
         # ExposureFor(pawn) only), so the gale never changes a cell read here either
-        return e
+        return max(e, floor)
 
     def t_shadegrid_read(self, cells=None, **k):
         rows = []
         for tok in (cells or "").split(";"):
             if tok:
                 x, z = [int(v) for v in tok.split(",")]
-                rows.append({"x": x, "z": z, "inBounds": True, "shade": 0.0, "exposure": self.exposure(x, z)})
+                shade = 1.0 if self.grid_roofed(x, z) and "roof_no_cover" not in self.b else 0.0
+                rows.append({"x": x, "z": z, "inBounds": True, "shade": shade, "exposure": self.exposure(x, z)})
         glow = 1.0
         if "night_falls" in self.b and (self.ticks // 30000) % 2 == 1:
             glow = 0.1
@@ -606,7 +620,7 @@ class Fake(object):
         return {"success": True}
 
     def t_set_roof_batch(self, ops="", roofDef=None, **k):
-        self.roofs.append((rect(ops), roofDef != "None"))
+        self.roofs.append((rect(ops), roofDef != "None", self.ticks))
         return {"success": True}
 
     def t_pawn_flight(self, pawn=None, **k):
@@ -753,7 +767,8 @@ BREAKS = {
     "soorrak_nre": ["soorrak.soorrak_no_exceptions"],
     "soorrak_stuck": ["soorrak.soorrak_not_stuck"],
     "roundtrip_ignored": ["settings.%s_roundtrip" % f for f in ROUNDTRIP_FIELDS],
-    "low_exposure": ["sun.sun_open_sand_full_exposure"],
+    # the open cell then sits on the glare floor, level with the roofed one: the roof shows no cover either
+    "low_exposure": ["sun.sun_open_sand_full_exposure", "sun.sun_roof_cover_above_55deg"],
     "table_no_sun_line": ["glass.sun_table_reads_sun_in_open"],
     "sunfurnace_ignores_toggle": ["glass.sunfurnace_toggle_off_disabled"],
     "lensbench_ignores_toggle": ["glass.lensbench_toggle_off_disabled"],

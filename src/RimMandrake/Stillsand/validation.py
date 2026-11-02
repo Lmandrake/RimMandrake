@@ -1011,11 +1011,22 @@ def _settle_shade(t):
     t.wait_ticks(2000 - now % 2000 + 5)
 
 
-def _exposure(r, x, z):
+def _exposure(r, x, z, field="exposure"):
     for c in (r.get("cells") or []):
         if c.get("x") == x and c.get("z") == z and c.get("inBounds"):
-            return c.get("exposure")
+            return c.get(field)
     return None
+
+
+def sand_glare_floor():
+    """The Stillsand's sandGlareExposureFloor, read from its BiomeDef. ShadeGrid.Recompute applies this floor
+    (WithGlareFloor) AFTER roof cover on every natural sand cell, so a roofed sand cell reads exactly the
+    floor, not 0 (STILLSAND_ROOF_COVER_EXPOSURE_1). At the shipped sandGlareStrength 1.0."""
+    root = ET.parse(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Stillsand_Biome.xml")).getroot()
+    vals = [float(e.text) for e in root.iter("sandGlareExposureFloor")]
+    if len(vals) != 1:
+        raise ValueError("expected one sandGlareExposureFloor in RM_Stillsand_Biome.xml, found %d" % len(vals))
+    return vals[0]
 
 
 @_chain("sun")
@@ -1056,6 +1067,9 @@ def sun_chain(t):
         if _live(t):
             rr = _rect(t, 6, dx=-9)
             t.bridge_call("jawa/set_roof_batch", ops=_rs(rr), roofDef="RoofConstructed")
+            # STILLSAND_ROOF_COVER_EXPOSURE_1: the grid's roofShade fills only on Recompute (every 2000
+            # ticks); a read in the roofing tick saw exposure 1.00 under a verified roof.
+            _settle_shade(t)
             cx, cz = rr[0] + 3, rr[1] + 3
             r = _sun(t, "%d,%d;%d,%d" % (cx, cz, x, z))
             elev = (r.get("pinnedSun") or {}).get("sunElevationDegrees")
@@ -1065,11 +1079,17 @@ def sun_chain(t):
                 _unmeasured(t, "sun elevation %.1f deg is below the 55 deg where a roof is cover (by "
                                "design a roof is NOT cover at a low sun); this site cannot test it" % elev)
             roofed, opened = _exposure(r, cx, cz), _exposure(r, x, z)
-            if roofed is None or opened is None:
+            shade = _exposure(r, cx, cz, "shade")
+            if roofed is None or opened is None or shade is None:
                 _unmeasured(t, "exposure unreadable")
-            if roofed > 0.05 or opened <= roofed:
-                _fail("roofed cell exposure %.2f, open %.2f at elevation %.0f deg (a roof must protect "
-                      "above 55 deg)" % (roofed, opened, elev))
+            # Roof cover is full (shade 1, cover 1); what is left is the sand glare floor, by design (owner
+            # card 2026-09-30, 0.35 < the 0.6 glare-blind needs), so the roofed cell reads at most the floor.
+            floor = sand_glare_floor()
+            _note(t, "roofed shade / exposure, open exposure, glare floor, elevation",
+                  [shade, roofed, opened, floor, elev])
+            if shade < 0.99 or roofed > floor + 0.01 or opened <= roofed:
+                _fail("roofed cell shade %.2f exposure %.2f (max %.2f, the sand glare floor), open %.2f at "
+                      "elevation %.0f deg (a roof must protect above 55 deg)" % (shade, roofed, floor, opened, elev))
 
 
 # ----------------------------------------------------------------------------- chain: fauna & flora

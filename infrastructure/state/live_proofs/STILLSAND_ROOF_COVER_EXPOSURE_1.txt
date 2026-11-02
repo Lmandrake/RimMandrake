@@ -1,0 +1,1 @@
+live-proof A2: python3 src/RimMandrake/Stillsand/prove_roof_cover.py < /dev/null
