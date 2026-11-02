@@ -7,7 +7,7 @@ tile's warm min, so PlantUtility.CanEverPlantAt refused the cold-only plants (ma
 the tile temperature read back -5. retile() now nulls the caches (jawa/world_tile_cache_reset, verifiedNull).
 
 Run under Windows python.exe with the game up (it starts a debug quicktest map if none is playing):
-    python.exe "$(wslpath -w src/RimMandrake/BlueDesert/prove_flora_retile.py)" < /dev/null
+    python.exe src/RimMandrake/BlueDesert/prove_flora_retile.py < /dev/null   (from the repo root; no $() — the live gate refuses it)
 It cleans up after itself: the plants are destroyed and the tile's biome and temperature restored.
 """
 import glob
