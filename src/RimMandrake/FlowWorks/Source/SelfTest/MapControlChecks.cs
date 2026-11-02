@@ -323,6 +323,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(hi.Contains("RM_MapControlMath.ThermostatCellNotches(dug, dug ? ex.WaterDlAt(c) : 0L, natural, naturalDl, floor,")
                     && hi.Contains("RM_LevelSolve.U, NaturalCellLevels)"), "HeatInterval does not count a square by its dL");
                 Assert(hi.Contains("ex.NaturalWaterDlAt(c, out _, out floor)"), "HeatInterval does not read the natural body's dL");
+                // The per-square skip and the room sum: a part-notch square must reach ThermostatEnergy unrounded.
+                // Whitespace-normalised so the pin reads the logic, not the layout; each line goes red on a named mutant.
+                string hn = System.Text.RegularExpressions.Regex.Replace(hi, @"\s+", " ");
+                Assert(hn.Contains("NaturalCellLevels); if (!(levels > 0f)) { continue; } lastLevels += levels;"),
+                    "HeatInterval's skip is not exactly 'levels > 0f' right after the count (e.g. '>= 1f' drops sub-notch squares)");
+                Assert(System.Text.RegularExpressions.Regex.Matches(hn, @"\blevels\s*(=|\+=|-=|\*=|/=)[^=]").Count == 1,
+                    "HeatInterval reassigns levels after counting it (a floor or round would drop part-notches)");
+                Assert(System.Text.RegularExpressions.Regex.Matches(hn, @"\bcontinue;").Count == 2
+                    && hn.Contains("lastOutdoorCells++; continue; }"), "HeatInterval gained another skip before the room sum");
+                Assert(hn.Contains("levelsByRoom.TryGetValue(room, out float had); levelsByRoom[room] = had + levels;"),
+                    "HeatInterval's room sum does not add the square's own levels");
+                Assert(hn.Contains("RM_MapControlMath.ThermostatEnergy(kv.Value, kv.Key.Temperature, kv.Key.CellCount, targetC, strength)"),
+                    "ThermostatEnergy does not take the room's summed levels");
+                foreach (string bad in new[] { "Floor", "Round", "Ceil", "(int)", "FloorToInt", "RoundToInt" })
+                    Assert(!hn.Contains(bad), "HeatInterval rounds levels (" + bad + ")");
+                Assert(hn.Contains("Dictionary<Room, float>") || th.Contains("Dictionary<Room, float> levelsByRoom"),
+                    "levelsByRoom no longer holds float levels");
             });
             Case("MapControl_six_wiring", () =>
             {
