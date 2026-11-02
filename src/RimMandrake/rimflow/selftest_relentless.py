@@ -464,6 +464,7 @@ def t_proof_weak():
     x = Rig(n=1, share=1.0)
     full_pass(x, "I0", "WEAK")
     checks = sum(1 for l in x.w.launches if "blind checker" in l[2] and "You did not do this work" in l[2])
+    ok(checks == 1, "the WEAK check is seen by the counter, or the Marker row below is 0 == 0")
     weak_round(x, "I0", "sha1")
     st = x.st("I0")
     ok(st["failures"].get("proof_unchanged") == 1, "a finish on the weak sha is refused")
@@ -1530,7 +1531,8 @@ def t_staffing_alarm():
     x.w.__class__ = Boom
     res = x.tick()
     ok(running(x) == 2, "a dead reading stops no worker")
-    ok(any("staffing" in str(a.get("why")) for a in res["acts"]) if isinstance(res, dict) else True, "and says so")
+    acts = res["acts"] if isinstance(res, dict) else res
+    ok(isinstance(acts, list) and any("staffing" in str(a.get("why")) for a in acts), "and says so")
     x.done()
 
 
@@ -2869,14 +2871,13 @@ def t_review_wrong_verdicts():
     x.done()
     # a close retry asks again whether the sha is still on origin
     x = Rig(n=1, share=1.0)
-    x.w.close_fail = "git hiccup"
+    tries = []
+    x.w.ledger_close = lambda item, sha, reason, live=None: tries.append(sha) or "git hiccup"     # fails every time
     full_pass(x, "I0")
-    ok(x.st("I0")["status"] in ("closing", "done"), "first close tried")
-    if x.st("I0")["status"] == "closing":
-        x.w.close_fail = "git hiccup"
-        x.w.is_pub = False
-        x.tick()
-        ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [], "a retry does not close a sha that left origin")
+    ok(x.st("I0")["status"] == "closing" and x.w.closes == [] and tries, "the close failed and the item waits in closing")
+    x.w.is_pub = False
+    x.tick()
+    ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [], "a retry does not close a sha that left origin")
     x.done()
     # the pause that arrives while the clone is prepared stops the launch
     x = Rig(n=1, share=1.0)
@@ -2889,8 +2890,104 @@ def t_review_wrong_verdicts():
     x.done()
 
 
+def t_review_wrong_verdicts_two():
+    """Round 2 of the GPT review of relentless.py."""
+    # a ref the worker names is pinned to its commit id
+    d = tempfile.mkdtemp(prefix="rl-git-")
+    def g(*a): return subprocess.run(["git", "-C", d] + list(a), capture_output=True, text=True, check=True).stdout.strip()
+    g("init", "-q"); g("config", "user.email", "t@t"); g("config", "user.name", "t")
+    open(os.path.join(d, "f"), "w").write("1"); g("add", "f"); g("commit", "-qm", "a")
+    a = g("rev-parse", "HEAD"); g("branch", "origin")
+    cwd = os.getcwd()
+    os.chdir(d)
+    try:
+        ok(R.canonical_commit("origin") == a, "a moving ref name resolves to the full commit id")
+        for bad in ("nosuchref", "origin;ls"):
+            try:
+                R.canonical_commit(bad); ok(False, "refuses %r" % bad)
+            except ValueError:
+                ok(True, "refuses %r" % bad)
+    finally:
+        os.chdir(cwd)
+        shutil.rmtree(d, ignore_errors=True)
+    # the proof gate matches whole path tokens, not substrings
+    class FxC:
+        def changed(self, b, s, i): return ["engine.py"]
+    st = {"item": "I", "proof_only": {"sha": "A"}, "contract": {"proof": "python selftest_engine.py"}}
+    k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
+    ok(k == "proof_rework", "engine.py is not named by 'selftest_engine.py'")
+    # yesterday's damaged record, or a day record of the wrong shape, blocks spending
+    x = Rig(n=1, share=1.0)
+    with open(x.s.p("spend-%s.json" % R.day_key(x.now - 86400)), "w") as f:
+        f.write("{bad")
+    ok(R.spent_today(x.s, x.now) >= R.UNREADABLE_SPEND, "a damaged yesterday blocks today")
+    os.unlink(x.s.p("spend-%s.json" % R.day_key(x.now - 86400)))
+    with open(x.s.p("spend-%s.json" % R.day_key(x.now)), "w") as f:
+        f.write("{}")
+    ok(R.spent_today(x.s, x.now) >= R.UNREADABLE_SPEND, "an empty object is not an empty day")
+    x.done()
+    # a verdict is single-assignment
+    x = Rig(n=1, share=1.0)
+    x.w.close_fail = None
+    full_pass(x, "I0", "FAIL")
+    st = x.st("I0")
+    ok(st["failures"].get("blind_fail") == 1, "FAIL recorded")
+    x.done()
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p", live="once: t")
+    R.finish(x.s, "I0", st["gen"], "sha1", "e")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick(); x.tick()
+    chk = x.st("I0")["check"]
+    R.verdict(x.s, "I0", chk["nonce"], "PASS", "ok")
+    try:
+        R.verdict(x.s, "I0", chk["nonce"], "FAIL", "changed my mind")
+        ok(False, "a second verdict is refused")
+    except R.Fenced:
+        ok(True, "a second verdict is refused")
+    x.done()
+    # a process list that cannot be read is not a death
+    class Rl:
+        ACTIVE = ("active",)
+        def unit_state(self, u): return "inactive"
+        def scan_marked(self, *a, **k): raise OSError("ps failed")
+    fx = types.SimpleNamespace(RL=Rl())
+    ok(R.Effects.alive(fx, {"unit": "u", "scope": None, "marker": "m", "at": 0}) is True, "a failed process scan keeps the run owned")
+    # a crash inside the first close attempt is already a retry
+    x = Rig(n=1, share=1.0)
+    def boom(item, sha, reason, live=None): raise RuntimeError("killed mid-close")
+    x.w.ledger_close = boom
+    try:
+        full_pass(x, "I0")
+    except RuntimeError:
+        pass
+    x.w.is_pub = False
+    x.w.ledger_close = lambda item, sha, reason, live=None: x.w.closes.append((item, sha))
+    x.tick()
+    ok(x.w.closes == [] and x.st("I0")["failures"].get("live_broken") == 1, "the attempt after a crash re-asks publication")
+    x.done()
+    # a pause that arrives while a checker's clone is made stops the launch
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p", live="once: t")
+    R.finish(x.s, "I0", st["gen"], "sha1", "e")
+    x.w.up[st["run"]["unit"]] = False
+    cc = x.w.clean_checkout
+    def pausing(st_, sha):
+        x.w.pause = True
+        return cc(st_, sha)
+    x.w.clean_checkout = pausing
+    n0 = len(x.w.launches)
+    x.tick(); x.tick()
+    ok(len(x.w.launches) == n0 and x.st("I0")["status"] == "candidate", "a pause set during the checker's clone launches no checker")
+    x.done()
+
+
 def main():
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

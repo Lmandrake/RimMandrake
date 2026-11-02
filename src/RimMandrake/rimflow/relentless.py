@@ -266,7 +266,10 @@ def day_key(now):
 def _day(store, now):
     try:
         with open(store.p("spend-%s.json" % day_key(now)), encoding="utf-8") as f:
-            return json.load(f)
+            d = json.load(f)
+        if not isinstance(d, dict) or not isinstance(d.get("runs"), dict) or not isinstance(d.get("spent"), int):
+            raise ValueError("spend record has the wrong shape")
+        return d
     except FileNotFoundError:
         return {"spent": 0, "runs": {}}         # a new day has no file; a file that is there and unreadable is not a new day
 
@@ -276,6 +279,7 @@ UNREADABLE_SPEND = 10 ** 15      # an accounting record we cannot read blocks sp
 
 def spent_today(store, now):
     try:
+        _day(store, now - 86400)        # yesterday's record is read by charge(): if it is damaged, nothing today can be charged
         return int(_day(store, now).get("spent", 0))
     except (OSError, ValueError, TypeError, AttributeError):
         return UNREADABLE_SPEND
@@ -371,6 +375,18 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
         wait = max(wait_hours or 0, again * r.get("snag_again_wait_h", 0))
         st["not_before"] = now + min(wait, MAX_WAIT_HOURS) * 3600
         fail(store, st, klass, detail, r, now, time_not_work=bool(wait_hours))
+
+
+def canonical_commit(name):
+    """The commit a worker names, as its full id now: a ref that moves later cannot change what was checked."""
+    try:
+        r = subprocess.run(["git", "rev-parse", "--verify", "--quiet", "%s^{commit}" % name], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError) as e:
+        raise ValueError("cannot resolve %r to a commit: %s" % (name, e))
+    out = r.stdout.strip()
+    if r.returncode or not re.fullmatch(r"[0-9a-f]{40,64}", out):
+        raise ValueError("%r is not a commit in this clone" % (name,))
+    return out
 
 
 REV_EXPR = re.compile(r"[\s/:~^@{}*?\[\\]|\.\.|^-")
@@ -574,6 +590,8 @@ def verdict(store, item, nonce, word, reasons, now=None):
         chk = (st or {}).get("check") or {}
         if not st or st["status"] != "checking" or chk.get("nonce") != nonce or chk.get("expired"):
             raise Fenced("%s: no check is waiting for that nonce" % item)
+        if chk.get("verdict") is not None:
+            raise Fenced("%s: this check has already given its verdict" % item)
         chk["verdict"] = word
         chk["reasons"] = (reasons or "")[:4000]
         chk["verdict_at"] = now
@@ -614,9 +632,10 @@ def proof_gate(fx, r, st, c):
     if c["sha"] == held["sha"]:
         return "proof_unchanged", "%s is the sha the proof was found weak at: no proof moved" % c["sha"]
     k = st["contract"] or {}
-    text = json.dumps({"proof": k.get("proof"), "live": k.get("live")})      # the commands, never the `why` prose
+    named = set(re.split(r"[\s'\"=:,;()]+", "%s %s" % (k.get("proof") or "", k.get("live") or "")))     # the commands, never the `why` prose
+    named = named | {x[2:] for x in named if x.startswith("./")}
     rework = [p for p in fx.changed(held["sha"], c["sha"], st["item"])
-              if p not in text and not any(re.search(x, p) for x in r["proof_paths"])]
+              if p not in named and not any(re.search(x, p) for x in r["proof_paths"])]
     if rework:
         return "proof_rework", "proof-only worker moved code: %s" % ", ".join(rework[:10])
     return None, None
@@ -1386,7 +1405,7 @@ class Effects:
         try:
             return bool(rl.scan_marked(run.get("marker"), since=run.get("at"))[0])
         except Exception:  # noqa: BLE001
-            return False
+            return True         # a failed look is not a death: keep the clone owned until a look succeeds
 
     def stop(self, run, force):
         self.RL.stop(run["unit"], run.get("scope"), marker=run.get("marker"), force=force, seat=self.r["seat"])
@@ -2193,7 +2212,7 @@ def step(store, fx, r, item, now, acts):
             return
         gb = fx.mem_gb()
         acts.append({"do": "mem_after_clone", "gb": gb})
-        if gb < r["min_mem_available_gb"]:      # the clone itself costs gigabytes; admission saw the host before it
+        if gb < r["min_mem_available_gb"] or fx.paused():      # the clone itself costs gigabytes; admission saw the host before it
             fx.remove_clone({"clone": clean})
             with store.lock():                  # others go first: the same clone every tick would starve them
                 st = store.load(item)           # make_room may have written this record since it was read
@@ -2299,6 +2318,8 @@ def step(store, fx, r, item, now, acts):
                 fail(store, st, "live_broken", broken, r, now)
                 acts.append({"do": "live_broken", "item": item})
                 return
+            if (st["check"] or {}).get("verdict") != "PASS":
+                return          # the verdict moved while the live line was read: the next tick reads it again
             st["status"] = "closing"
             st.pop("close_retry", None)
             store.save(st)
@@ -2312,7 +2333,13 @@ def step(store, fx, r, item, now, acts):
             if fx.seat_heard(item, iso(st["started_at"])) or now - st["tomb_since"] >= r["staffing"]["tomb_max_s"]:
                 finished(store, fx, item, c, now, acts)
             return
-        if st.get("close_retry"):       # a retry is a new decision: what authorized the first try is asked again
+        retry = st.get("close_retry")
+        if not retry:       # set before the attempt, so a crash inside it is already a retry
+            with store.lock():
+                cur = store.load(item)
+                cur["close_retry"] = True
+                store.save(cur)
+        if retry:       # a retry is a new decision: what authorized the first try is asked again
             live = (st["contract"] or {}).get("live")
             broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
             pub = None if broken else fx.published(c["sha"])
@@ -2335,11 +2362,6 @@ def step(store, fx, r, item, now, acts):
             acts.append({"do": "close_refused", "item": item, "why": why})
             return
         if why:
-            if not st.get("close_retry"):
-                with store.lock():
-                    cur = store.load(item)
-                    cur["close_retry"] = True
-                    store.save(cur)
             acts.append({"do": "close_retry", "item": item, "why": why})
             return
         if st.get("foreign"):
@@ -2419,7 +2441,7 @@ def help_start(store, fx, r, item, now, acts):
         return
     gb = fx.mem_gb()
     acts.append({"do": "mem_after_clone", "gb": gb})
-    if gb < r["min_mem_available_gb"]:
+    if gb < r["min_mem_available_gb"] or fx.paused():
         fx.remove_clone({"clone": clean, "item": item})
         with store.lock():
             st = store.load(item)
@@ -3163,7 +3185,7 @@ def main(argv=None):
         elif a.cmd == "snag":
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours)
         elif a.cmd == "finish":
-            finish(store, a.item, a.gen, a.sha, a.evidence)
+            finish(store, a.item, a.gen, canonical_commit(a.sha), a.evidence)
         elif a.cmd == "help":
             env_gen = os.environ.get("RELENTLESS_GEN")
             gen = a.gen if a.gen is not None else int(env_gen) if env_gen else None
