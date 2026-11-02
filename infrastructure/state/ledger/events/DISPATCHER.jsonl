@@ -595,3 +595,4 @@
 {"seat":"DISPATCHER","event":"note","id":"DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE","text":"dispatcher verified FOUNDRY: lease take at 2026-11-02T01:52:26Z","ts":"2026-11-02T01:54:33Z","tsn":1793584473989078306}
 {"seat":"DISPATCHER","event":"note","id":"MINESITES_DECIDE_PLASTEEL_IN_RUIN_GRIDS","text":"dispatcher verified FOUNDRY: lease take at 2026-11-02T02:03:05Z","ts":"2026-11-02T02:05:04Z","tsn":1793585105000373622}
 {"seat":"DISPATCHER","event":"note","id":"PLAYER_START_SITE_1","text":"dispatcher verified FOUNDRY: lease take at 2026-11-02T02:09:21Z","ts":"2026-11-02T02:11:24Z","tsn":1793585484676761893}
+{"seat":"DISPATCHER","event":"note","id":"PLAYER_START_SITE_1","text":"dispatcher woke_answered FOUNDRY: FOUNDRY answered the ring without taking new work (reconcile on DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE: ); re-ring in 300 s (streak 1)","ts":"2026-11-02T02:30:13Z","tsn":1793586613690976071}
