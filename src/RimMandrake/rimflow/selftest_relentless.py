@@ -581,7 +581,8 @@ def t_done_path():
     x = Rig(n=1, share=1.0)
     x.w.live_broken = "unit down"
     full_pass(x, "I0")
-    ok(x.st("I0")["failures"].get("live_broken") == 1, "a broken live line returns the item, it does not close")
+    ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [] and x.st("I0")["status"] not in ("closing", "done"),
+       "a broken live line returns the item, it does not close")
     x.done()
     # an unpublished sha never reaches a checker
     x = Rig(n=1, share=1.0)
@@ -2889,8 +2890,12 @@ def t_review_wrong_verdicts():
     x.w.ledger_close = lambda item, sha, reason, live=None: tries.append(sha) or "git hiccup"     # fails every time
     full_pass(x, "I0")
     ok(x.st("I0")["status"] == "closing" and x.w.closes == [] and tries, "the close failed and the item waits in closing")
-    x.w.is_pub = False
+    x.w.is_pub = None
     n_tries = len(tries)
+    x.tick()
+    ok(not x.st("I0")["failures"] and len(tries) == n_tries and x.st("I0")["status"] == "closing",
+       "unknown publication while closing waits: no failure, no close attempt")
+    x.w.is_pub = False
     x.tick()
     ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [] and len(tries) == n_tries,
        "a retry does not even try to close a sha that left origin")
@@ -2989,6 +2994,7 @@ def t_review_wrong_verdicts_two():
         ok(False, "a second verdict is refused")
     except R.Fenced:
         ok(True, "a second verdict is refused")
+    ok(x.st("I0")["check"]["verdict"] == "PASS", "and the refused write left the first word standing")
     x.done()
     # a process list that cannot be read is not a death
     class Rl:
