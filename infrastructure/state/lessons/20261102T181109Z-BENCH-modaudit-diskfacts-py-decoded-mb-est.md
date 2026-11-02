@@ -1,0 +1,1 @@
+modaudit diskfacts.py decoded_mb_est is NOT memory: it prices every image as RGBA32 across every version folder (41.7 GB on the 2026-10-10 551-list) while the 1.6 engine DXT5-compresses (1 B/px) any texture with both sides %4 under Prefs textureCompression and loads only the 1.6 load folders, one file per path (10.4 GB). Use modaudit/memory_attribution.py for memory.
