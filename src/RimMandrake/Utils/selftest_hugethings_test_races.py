@@ -115,6 +115,73 @@ def judges():
     check("verdict: a missing row -> 1", L.verdict(rows[:-1]) == 1)
 
 
+LIVE_PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs", "TITANIC_BODYSIZE_TEST_RACE_1.txt")
+KERNEL = os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "Source", "Kernel", "RM_TitanicKernel.cs")
+
+
+def footprint_row():
+    """Gen 3 (blind check WEAK, GAP footprint): the item's spec names the rows 'T2/T3 tiers, yield curve, roof, footprint', so A2's
+    live proof must drive a footprint row. Pins: the A2 line runs the six-row wrapper; the wrapper's rows are the runner's five
+    plus large_pawns_footprint_bridge; its judge passes 3/4/1 on the 4/8/20 ladder and fails an untouched Large Pawns; its edges
+    are the kernel's FootprintSize; its verdict needs all six."""
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
+    import titan_test_races_live as L
+    import test_titan_footprint_live as F
+    with open(LIVE_PROOFS, encoding="utf-8") as fh:
+        a2 = [ln.split(":", 1)[1].strip() for ln in fh if ln.startswith("live-proof A2:")]
+    check("live-proof A2 is one line running the six-row wrapper",
+          a2 == ["python3 src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py"], "%r" % a2)
+    check("wrapper rows = runner's five + large_pawns_footprint_bridge",
+          tuple(F.ROWS) == tuple(L.ROWS) + ("large_pawns_footprint_bridge",) and len(L.ROWS) == 5, "%r" % (F.ROWS,))
+    spec_words = {"tiers": "tier", "corpse site": "corpse", "yield curve": "yield", "roof": "roof", "footprint": "footprint"}
+    miss = [w for w, k in spec_words.items() if not any(k in r for r in F.ROWS)]
+    check("every row the item spec names is driven by A2", not miss, "undriven: %r" % miss)
+    with open(KERNEL, encoding="utf-8") as fh:
+        ksrc = fh.read()
+    m = re.search(r"FootprintSize\(int tier\)\s*\{.*?case T3: return (\d+);\s*case T2: return (\d+);", ksrc, re.S)
+    k = (int(m.group(1)), int(m.group(2))) if m else None
+    check("wrapper edges match RM_TitanicKernel.FootprintSize (T3, T2) and force-out 1",
+          k is not None and (F.EDGE[L.T3], F.EDGE[L.T2], F.EDGE[L.CTL]) == k + (1,), "kernel %r wrapper %r" % (k, F.EDGE))
+    check("wrapper ladder is the tier def's 4/8/20",
+          (F.LADDER["size2Min"], F.LADDER["size3Min"], F.LADDER["size4Min"]) == tier_floors(), "%r" % F.LADDER)
+    cell = "(%d, 0, %d)"
+    sq = lambda e, x0=100, z0=100: [cell % (x0 + i, z0 + j) for i in range(e) for j in range(e)]
+    r3 = "[" + ", ".join(sq(3)) + "]"
+    r4 = "[" + ", ".join(sq(4)[:12]) + "] (16 total)"
+    r1 = "[" + cell % (5, 7) + "]"
+    check("rect_edge: 9 listed cells -> 3", F.rect_edge(r3) == 3, "%r" % F.rect_edge(r3))
+    check("rect_edge: 12 listed + (16 total) -> 4", F.rect_edge(r4) == 4, "%r" % F.rect_edge(r4))
+    check("rect_edge: one cell -> 1", F.rect_edge(r1) == 1)
+    check("rect_edge: 6 cells is no square -> None", F.rect_edge("[" + ", ".join(sq(3)[:6]) + "]") is None)
+    check("rect_edge: nine cells in a row -> None", F.rect_edge("[" + ", ".join(cell % (100 + i, 100) for i in range(9)) + "]") is None)
+    check("rect_edge: a duplicated cell -> None", F.rect_edge("[" + ", ".join(sq(3)[:8] + sq(3)[:1]) + "]") is None)
+    check("rect_edge: '(16 total)' with no cells -> None", F.rect_edge("[] (16 total)") is None)
+    check("rect_edge: an error text -> None", F.rect_edge("No public static OccupiedRect with 1 params.") is None)
+    good_l = {"size2Min": 4.0, "size3Min": 8.0, "size4Min": 20.0}
+    good_e = {L.T2: 3, L.T3: 4, L.CTL: 1}
+    check("judge_footprint: 3/4/1 on 4/8/20 passes", F.judge_footprint(good_l, good_e)[0] == "PASS")
+    check("judge_footprint: control 3 (override row not pushed) fails",
+          F.judge_footprint(good_l, dict(good_e, **{L.CTL: 3}))[0] == "FAIL")
+    check("judge_footprint: T3 at 3 fails", F.judge_footprint(good_l, dict(good_e, **{L.T3: 3}))[0] == "FAIL")
+    check("judge_footprint: all 1x1 (Large Pawns inert) fails", F.judge_footprint(good_l, {L.T2: 1, L.T3: 1, L.CTL: 1})[0] == "FAIL")
+    check("judge_footprint: Large Pawns' own 2.5/4.5/10 ladder fails",
+          F.judge_footprint({"size2Min": 2.5, "size3Min": 4.5, "size4Min": 10.0}, good_e)[0] == "FAIL")
+    check("judge_footprint: a NaN ladder fails",
+          F.judge_footprint(dict(good_l, size3Min=float("nan")), good_e)[0] == "FAIL")
+    check("judge_footprint: an unread edge fails", F.judge_footprint(good_l, dict(good_e, **{L.T2: None}))[0] == "FAIL")
+    rows = [dict(id=r, status="PASS", cls="MOD") for r in F.ROWS]
+    check("wrapper verdict: six PASS -> 0", F.verdict(rows) == 0)
+    check("wrapper verdict: the runner's five alone -> 1", F.verdict(rows[:-1]) == 1)
+    check("wrapper verdict: footprint UNMEASURED SITE (no Large Pawns) -> 1",
+          F.verdict(rows[:-1] + [dict(id=F.FOOT, status="UNMEASURED", cls="SITE")]) == 1)
+    check("wrapper verdict: a runner row missing -> 1", F.verdict(rows[1:]) == 1)
+
+
+def tier_floors():
+    n = ET.parse(TIERS).getroot().find("*")
+    return tuple(float(n.findtext(k)) for k in ("t1MinBodySize", "t2MinBodySize", "t3MinBodySize"))
+
+
 def main():
     tr = ET.parse(TIERS).getroot().find("*")
     t1, t2, t3 = (float(tr.findtext(k)) for k in ("t1MinBodySize", "t2MinBodySize", "t3MinBodySize"))
@@ -179,6 +246,7 @@ def main():
           all(d in doc for d in EXPECT) and "mandrake.rm.hugethingstestraces" in doc)
 
     judges()
+    footprint_row()
     n_ok = sum(1 for r in results if r)
     print("%d/%d PASS" % (n_ok, len(results)))
     return 0 if n_ok == len(results) and results else 1
