@@ -65,6 +65,28 @@ def iso(t):
 
 # ---------------------------------------------------------------- pure checks
 
+sys.path.insert(0, HERE)
+import model                                   # noqa: E402  the ledger's own cap and criterion line, not a copy
+
+CUT_AT = model.CRITERION_TEXT_MAX
+CRIT_LINE = model.CRITERION_LINE_RE
+
+
+def whole_criterion(c, prose):
+    """The ledger cuts a criterion's text at CUT_AT; the item's prose may hold the whole line. -> a copy with the
+    whole text, or marked `cut` when the ledger copy is at the cap and no prose line extends it."""
+    c, text = dict(c), c.get("text") or ""
+    if len(text) < CUT_AT:
+        return c
+    for line in (prose or "").splitlines():
+        m = CRIT_LINE.match(line)
+        if m and m.group("cid") == c["id"] and m.group("level") == c["level"] and m.group("text").strip().startswith(text):
+            c["text"] = m.group("text").strip()
+            return c
+    c["cut"] = True
+    return c
+
+
 def owed(item, criterion):
     """-> (level, text) of a live criterion the item owes, or raise ValueError saying why it is not one."""
     if item is None:
@@ -79,6 +101,9 @@ def owed(item, criterion):
     if criterion not in (item.get("outstanding") or []):
         raise ValueError("%s %s is not owed" % (item["id"], criterion))
     level = crit[criterion]["level"]
+    if crit[criterion].get("cut"):
+        raise ValueError("%s %s is cut at %d chars on the ledger and no prose holds the rest: a proof cannot be judged "
+                         "against a criterion nobody can read whole" % (item["id"], criterion, CUT_AT))
     if level not in LIVE_LEVELS:
         raise ValueError("%s %s is %s, not a live level (%s)" % (item["id"], criterion, level, ", ".join(LIVE_LEVELS)))
     return level, crit[criterion].get("text") or ""
@@ -131,7 +156,9 @@ def plan_sections(text):
 
 def deploy_gap(files, plan_rc, plan_text):
     """-> why the built commit's game files are not what the game folder holds, or None."""
-    if plan_rc != 0:
+    # a plan exits 1 when ANY mod drifts; that plan is still read, the drift that matters is this commit's files
+    drift_only = plan_rc == 1 and plan_text.rstrip().endswith("Drift found. Re-run with --apply to deploy.")
+    if plan_rc != 0 and not drift_only:
         return "the deploy plan failed (exit %s): %s" % (plan_rc, plan_text[-300:])
     if "def guard" in plan_text and "REFUSED" in plan_text:
         return "the deploy plan refused: %s" % plan_text[-300:]
@@ -171,7 +198,16 @@ class Fx(object):
         if it is None:
             return None
         return {"id": it.id, "state": it.state, "built_sha": it.built_sha, "title": it.title or "",
-                "criteria": list(it.criteria or []), "outstanding": list(it.outstanding or [])}
+                "criteria": [whole_criterion(c, self.prose(it.id)) for c in it.criteria or []],
+                "outstanding": list(it.outstanding or [])}
+
+    def prose(self, item_id):
+        for d in ("infrastructure/state/items", "infrastructure/state/items/closed"):
+            p = os.path.join(self.books, d, item_id + ".md")
+            if os.path.isfile(p):
+                with open(p, encoding="utf-8", errors="replace") as f:
+                    return f.read()
+        return ""
 
     def touched(self, sha):
         r = subprocess.run(["git", "show", "--name-only", "--format=", sha], cwd=self.books, capture_output=True,
@@ -179,6 +215,19 @@ class Fx(object):
         if r.returncode:
             raise ValueError("git show %s: %s" % (sha, r.stderr[-200:]))
         return [p for p in r.stdout.splitlines() if p.strip() and os.path.exists(os.path.join(self.books, p))]
+
+    def changed_since(self, sha, paths):
+        """-> [(path, newest commit touching it after sha)] for each path whose bytes differ from sha's."""
+        r = subprocess.run(["git", "diff", "--name-only", sha, "HEAD", "--", *paths], cwd=self.books,
+                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        if r.returncode:
+            raise ValueError("git diff %s: %s" % (sha, r.stderr[-200:]))
+        out = []
+        for p in (x for x in r.stdout.splitlines() if x.strip()):
+            c = subprocess.run(["git", "log", "-1", "--format=%h", "%s..HEAD" % sha, "--", p], cwd=self.books,
+                               capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            out.append((p, c.stdout.strip() or "?"))
+        return out
 
     def shippable(self, rel):
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
@@ -252,9 +301,16 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
     if why:
         return done("REFUSED", why)
     try:
-        files = game_files(fx.touched(sha), fx.shippable)
+        touched = fx.touched(sha)
+        files = game_files(touched, fx.shippable)
+        paths = [p for p in touched if SRC_MOD.match(p) and SRC_MOD.match(p).group(2, 3) in files]
+        later = fx.changed_since(sha, paths) if paths else []
     except ValueError as e:
         return done("UNMEASURED", "cannot read the built commit: %s" % e)
+    if later:
+        # the game folder holds today's bytes; a verdict on them is not a verdict on the built sha
+        return done("UNMEASURED", "changed since the built commit, so the game cannot run %s: %s" % (
+            sha, ", ".join("%s (%s)" % pc for pc in later[:5])))
     if files:
         rc, plan = fx.deploy_plan(deploy or "", lr["plan_max_s"])
         why = deploy_gap(files, rc, plan)

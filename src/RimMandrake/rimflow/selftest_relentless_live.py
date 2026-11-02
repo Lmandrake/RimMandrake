@@ -58,7 +58,8 @@ def item(**kw):
 
 class FakeFx(object):
     def __init__(self, it=None, touched=TOUCHED, plan=(0, PLAN), mtime=1000.0, started=2000.0, take_rc=0, proof=0,
-                 verify_rc=0, proof_raises=False):
+                 verify_rc=0, proof_raises=False, later=()):
+        self.later = list(later)
         self.it, self.t, self.plan, self.mt, self.started = (item() if it is None else it), touched, plan, mtime, started
         self.take_rc, self.proof, self.verify_rc, self.proof_raises = take_rc, proof, verify_rc, proof_raises
         self.calls = []
@@ -69,6 +70,10 @@ class FakeFx(object):
     def touched(self, sha):
         self.calls.append(("touched", sha))
         return list(self.t)
+
+    def changed_since(self, sha, paths):
+        self.calls.append(("changed", tuple(paths)))
+        return [pc for pc in self.later if pc[0] in paths]
 
     def shippable(self, rel):
         return not (rel.endswith(".py") or rel.endswith(".cs") or "/Source/" in "/" + rel)
@@ -117,7 +122,7 @@ def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
     check("pass outcome", row["outcome"] == "PASS", row)
-    check("order", fx.verbs() == ["touched", "plan", "take", "proof", "release", "verify"], fx.verbs())
+    check("order", fx.verbs() == ["touched", "changed", "plan", "take", "proof", "release", "verify"], fx.verbs())
     v = [c for c in fx.calls if c[:2] == ("rimflow", "verify")][0]
     for flag, want in (("--sha", SHA), ("--level", "L1"), ("--criterion", "A2"), ("--result", "pass")):
         check("verify %s" % flag, v[v.index(flag) + 1] == want, v)
@@ -194,6 +199,37 @@ def t_refusals_never_touch_the_bridge():
     check("busy: no release of another's hold", "release" not in (go(fx), fx.verbs())[1], fx.verbs())
 
 
+def t_later_commit_is_unmeasured():
+    fx = FakeFx(later=[("src/RimMandrake/TheRot/Defs/Fauna/RM_Chittik.xml", "ef081426f0")])
+    row = go(fx)
+    check("later change: unmeasured", row["outcome"] == "UNMEASURED" and "ef081426f0" in row["why"], row)
+    check("later change: no bridge, no verify", not any(v in ("take", "verify", "plan") for v in fx.verbs()),
+          fx.verbs())
+    fx = FakeFx(later=[("src/RimMandrake/TheRot/validation.py", "ef081426f0")])
+    check("tooling change after is fine", go(fx)["outcome"] == "PASS", fx.verbs())
+
+
+def t_cut_criterion():
+    head = "x" * (L.CUT_AT - 11) + " sits still"          # exactly CUT_AT chars, like a ledger copy at the cap
+    assert len(head) == L.CUT_AT
+    c = {"id": "A2", "level": "L1", "text": head}
+    check("short text untouched", L.whole_criterion({"id": "A2", "level": "L1", "text": "short"}, "") ==
+          {"id": "A2", "level": "L1", "text": "short"})
+    check("cut, no prose -> cut", L.whole_criterion(c, "")["cut"] is True)
+    whole = L.whole_criterion(c, "## Criteria\n- A1 L0: other\n- A2 L1: %s and lands, a flyer\n" % head)
+    check("cut, prose holds it -> whole", whole["text"].endswith("a flyer") and "cut" not in whole, whole)
+    check("other id's line not taken", L.whole_criterion(c, "- A3 L1: %s more\n" % head).get("cut") is True)
+    it = item()
+    it["criteria"] = [dict(cr, cut=True) if cr["id"] == "A2" else cr for cr in it["criteria"]]
+    fx = FakeFx(it=it)
+    row = go(fx)
+    check("cut criterion refused, nothing touched", row["outcome"] == "REFUSED" and "cut" in row["why"]
+          and fx.verbs() == [], (row, fx.verbs()))
+    it = item()
+    it["criteria"] = [dict(cr, text=whole["text"]) if cr["id"] == "A2" else cr for cr in it["criteria"]]
+    check("flyer word past the cap is seen", go(FakeFx(it=it))["outcome"] == "REFUSED")
+
+
 def t_no_game_files_skips_the_deploy_check():
     fx = FakeFx(touched=["src/RimMandrake/TheRot/validation.py"])
     row = go(fx)
@@ -211,6 +247,14 @@ def t_plan_reading():
     check("clean plan, rot file", L.deploy_gap([("TheRot", "Defs/Fauna/RM_Chittik.xml")], 0, PLAN) is None)
     check("same name other mod is not drift",
           L.deploy_gap([("TheRot", "Defs/Other.xml")], 0, PLAN) is None)
+    drifted = PLAN                              # the fixture is a real drift plan: it ends in the drift line
+    cut = PLAN.replace("Drift found. Re-run with --apply to deploy.", "Traceback (most recent call last):")
+    check("exit 1 for other mods' drift is read", L.deploy_gap([("TheRot", "Defs/Fauna/RM_Chittik.xml")], 1, drifted)
+          is None)
+    check("exit 1 still catches this commit's drift",
+          L.deploy_gap([("SWBestiary", "Textures/swanimals/Worrt/WorrtA_north.png")], 1, drifted) is not None)
+    check("exit 1 without the drift line fails", L.deploy_gap([("TheRot", "Defs/Fauna/RM_Chittik.xml")], 1, cut)
+          is not None)
     check("game_files keeps shipping paths", L.game_files(TOUCHED, FakeFx().shippable)
           == [("TheRot", "Defs/Fauna/RM_Chittik.xml")])
 
@@ -224,6 +268,7 @@ def t_flyer_words():
 
 
 def t_def_check_judge():
+    check("defs joined by semicolon", C.defs_param(["ThingDef/A", "ThingDef/B"]) == "ThingDef/A;ThingDef/B")
     claims = C.parse_claims(["ThingDef/RM_Chittik=CompProperties_WoundLink", "ThingDef/RM_Durrok"])
     ok = {"defs": [{"requested": "ThingDef/RM_Chittik", "found": True,
                     "fields": {"comps": [{"compClass": "CompProperties_WoundLink"}]}},
@@ -244,7 +289,7 @@ def t_def_check_judge():
 
 
 def main():
-    for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_unmeasured_is_a_note_never_a_verify,
+    for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge):
         try:

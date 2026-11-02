@@ -75,12 +75,18 @@ def judge(claims, reply):
     return (FAIL if FAIL in seen else UNMEASURED if UNMEASURED in seen else PASS), lines   # a real FAIL stands
 
 
+def defs_param(keys):
+    """get_defs' `defs` argument: SEMICOLON-separated DefType/defName pairs (JawaBenchTerrainTools.cs GetDefs).
+    A comma-joined list reads as one unknown key and every claim comes back unmentioned."""
+    return ";".join(keys)
+
+
 def call_get_defs(keys, timeout):
     """-> (reply dict or None, why). Read-only; runs the client under Windows Python."""
     try:
         path = subprocess.run(["wslpath", "-w", CLIENT], capture_output=True, text=True, timeout=20).stdout.strip()
         r = subprocess.run(["python.exe", path, "--timeout", str(timeout), "--call", "jawa/get_defs",
-                            "--json", json.dumps({"defs": ",".join(keys)})],
+                            "--json", json.dumps({"defs": defs_param(keys)})],
                            capture_output=True, text=True, timeout=timeout + 30, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.TimeoutExpired) as e:
         return None, "the bridge call did not finish: %s" % str(e)[:200]
