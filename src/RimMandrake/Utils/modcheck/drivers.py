@@ -102,7 +102,8 @@ def _call(argv, cwd, timeout_s):
 
 
 def run_one(mod_dir, d, cwd=None, _call_fn=None, python=None, log=None):
-    """Run one driver; return its receipt {driver, argv, status PASSED_RC0|FAILED|TIMEOUT, rc, wall_s, tail}."""
+    """Run one driver; return its receipt {driver, argv, chains, status RC0|FAILED|TIMEOUT, rc, wall_s, tail}. RC0 is
+    the exact string callers compare against (FlowWorks validation reads `status != "RC0"`): exit 0, not a pass."""
     log = log or sys.stderr
     argv = _argv(mod_dir, d, python or sys.executable)
     timeout_s = int(d.get("timeout_s") or DEFAULT_TIMEOUT_S)

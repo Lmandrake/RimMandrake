@@ -4,6 +4,7 @@
     ./mirror sync                 fetch + check out origin/main into the mirror (waits for the lock)
     ./mirror sync --timer         same, but skip at once if another sync holds the lock (systemd)
     ./mirror status               what the mirror holds, and whether it is stale
+    ./mirror sync --create        make the target folder first (a missing target is refused: D: not mounted)
 
 Plan: design/RimMandrake/git_workflow_plan_2026-10-01.md §2.3. No index or lock lives on drvfs:
 the git dir is a bare, fetch-only repo on ext4 (/home/mandrake/rm/mirror.git) and the tree is
@@ -94,7 +95,11 @@ def stamp(target, name, text):
         f.write(text)
 
 
-def sync(target, timer=False, seed=None):
+def sync(target, timer=False, seed=None, create=False):
+    # A target that is not there is refused, not made: with D: not mounted, /mnt/d is an empty ext4 directory and
+    # makedirs would write the whole ~4 GB export into the WSL root filesystem and report the mirror synced.
+    if not os.path.isdir(target) and not create:
+        raise Fail("%s does not exist (drive not mounted?); pass --create to make a new mirror there" % target)
     if os.path.lexists(os.path.join(target, ".git")):
         raise Fail("%s still has a .git — it is a working repo, not the mirror. The drain renames it "
                    "first (git_workflow_plan_2026-10-01.md §5); refusing." % target)
@@ -170,11 +175,12 @@ def main(argv=None):
     ap.add_argument("--timer", action="store_true", help="non-blocking lock: skip if a sync is running")
     ap.add_argument("--target", default=TARGET, help="tree to write (default %(default)s)")
     ap.add_argument("--seed", help="first run only: take objects from this local clone")
+    ap.add_argument("--create", action="store_true", help="make the target folder if it does not exist")
     a = ap.parse_args(argv)
     try:
         if a.cmd == "status":
             return status(a.target)
-        return sync(a.target, a.timer, a.seed)
+        return sync(a.target, a.timer, a.seed, a.create)
     except Fail as e:
         print("mirror: REFUSED: %s" % e, file=sys.stderr)
         return 2
