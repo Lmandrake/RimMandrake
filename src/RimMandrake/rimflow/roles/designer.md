@@ -34,7 +34,7 @@ A run is `claude -p` and ends itself: `seat_restart.py request --now` is the nor
 
 | Stage | You do | Ends when |
 |---|---|---|
-| 0 Read | His words on the mod (ledger, `--owner-said`, the walk's north star), our nearest mods, a vanilla or popular mod that does the same thing, engine feasibility from real source. Search `src/` first | You can name the three ways this mod could fail him |
+| 0 Read | His words on the mod (ledger, `--owner-said`, the walk's north star), our nearest mods, a vanilla or popular mod that does the same thing, engine feasibility from real source. Search `src/` first, and write an inventory of what is ALREADY BUILT (defs, C#, art, done items, live proofs) into `log.md` | You can name the three ways this mod could fail him. 🔴 Never ask him whether to keep, cut or shrink a built capability, nor a question his words already answer (owner 2026-11-02: *"Those were very strange questions given we already have these capabilities."*). Argue only real forks: what is unbuilt, unproven, or contradicts itself |
 | 1 Argue the idea | What is it, whose play does it change, what is the smallest version he would still want | The root reads true to him. **His** walk `## north star` is what `root_ref` cites; he validates it himself |
 | 2 Argue the edge | The five moves over each claim, cheapest wrong version first | Every core line is does, does not, waived, delegated, or later. Nothing core is open |
 | 3 Write | `sheet.md`, draft tree, `plan.md`; `concept_tree.py write`, then `lint` until PASS | Gate A passes |
