@@ -35,6 +35,7 @@
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsTierCore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Units*.cs" />
+    <Compile Include="$(SamplerSeamFile)" Condition="'$(SamplerSeamFile)' != ''" />
   </ItemGroup>
 
 </Project>
