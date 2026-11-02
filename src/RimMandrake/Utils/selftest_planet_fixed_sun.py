@@ -131,6 +131,12 @@ def check(files):
         fails.append("5 world: the cache is not declared `private static Vector3? pinned;` (must start empty)")
     if len(re.findall(r"\bpinned\s*(?:[-+*/|&^]?=(?!=)|\+\+|--)", files["world"])) != 1:
         fails.append("5 world: `pinned` is assigned somewhere other than PinnedDirection's one store")
+    if not re.search(r"\[StaticConstructorOnStartup\]\s*public\s+static\s+class\s+RM_WorldSunPatch\b", files["world"]):
+        fails.append("5 world: RM_WorldSunPatch is not [StaticConstructorOnStartup], so its postfix is never installed")
+    if not re.search(r"AccessTools\.Method\(\s*typeof\(\s*GenCelestial\s*\)\s*,\s*nameof\(\s*GenCelestial\.CurSunPositionInWorldSpace\s*\)\s*\)"
+                     r"[\s\S]*?\.Patch\(\s*target\s*,\s*postfix\s*:\s*new\s+HarmonyMethod\(\s*typeof\(\s*RM_WorldSunPatch\s*\)\.GetMethod\(\s*nameof\(\s*Postfix_CurSunPositionInWorldSpace\s*\)\s*\)",
+                     files["world"]):
+        fails.append("5 world: the static constructor does not patch GenCelestial.CurSunPositionInWorldSpace with Postfix_CurSunPositionInWorldSpace")
     post = method_body(files["world"], "Postfix_CurSunPositionInWorldSpace")
     if post is None or not re.match(r"\{\s*if\s*\(\s*!\s*RM_WorldStarsMath\.PinsWorldSun\(\s*RM_CreatureBehaviorsSettings\.worldSunPinned\s*,\s*Current\.ProgramState\s*==\s*ProgramState\.Playing\s*\)\s*\)"
                                      r"\s*\{\s*return\s*;\s*\}\s*__result\s*=\s*PinnedDirection\(\)\s*;\s*\}$", post):
@@ -186,7 +192,7 @@ def reader_use_fails(rd):
     if shadow:
         fails.append(f"6 reader: Resolve declares a local {shadow[0]!r} that shadows the static field it must set")
     for name, n in (("substellarLat", 1), ("substellarLon", 1), ("fixedSun", 1), ("loaded", 2), ("resolved", 1)):
-        writes = len(re.findall(r"(?m)^\s*" + name + r"\s*(?:[|&^]?=(?!=))", rd))
+        writes = len(re.findall(r"(?<![\w.])" + name + r"\s*(?:[-+*/|&^]?=(?!=)|\+\+|--)", rd))
         if writes != n:
             fails.append(f"6 reader: static `{name}` is written {writes} times, expected {n} (a later write could undo the def's value)")
     if not re.search(r"catch\s*\(\s*Exception\s+e\s*\)\s*\{\s*loaded\s*=\s*false\s*;", rd):
@@ -326,6 +332,9 @@ PLANTS = [
     ("shade grid resets the bearing", "shade", "out float rawElev, out float bearingDeg))", "out float rawElev, out float bearingDeg)) { bearingDeg = 0f; } if (false)", "5 shade: ResolveSun overwrites"),
     ("pinned sky resets E", "pinned", "out float rawElev, out float bearingDeg))", "out float rawElev, out float bearingDeg)) { rawElev = 90f; } if (false)", "5 pinned: ResolveGeometry overwrites"),
     ("world postfix guard inverted", "world", "if (!RM_WorldStarsMath.PinsWorldSun(", "if (RM_WorldStarsMath.PinsWorldSun(", "5 world: the world-sun postfix"),
+    ("world patch never installed", "world", "[StaticConstructorOnStartup]\n    public static class RM_WorldSunPatch", "public static class RM_WorldSunPatch", "5 world: RM_WorldSunPatch is not"),
+    ("world patch targets the wrong method", "world", "nameof(GenCelestial.CurSunPositionInWorldSpace)", "nameof(GenCelestial.CurShadowStrength)", "5 world: the static constructor does not patch"),
+    ("loaded cleared in a condition", "reader", "if (loaded && fFixed == null)", "if (loaded &= fFixed == null)", "6 reader: static `loaded` is written"),
     ("world sun reflects again", "world", "if (RM_PlanetSunGeometry.Loaded)", "var t = GenTypes.GetTypeInAnyAssembly(\"x\"); if (RM_PlanetSunGeometry.Loaded)", "5 world"),
 ]
 
