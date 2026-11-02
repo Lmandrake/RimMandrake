@@ -3686,6 +3686,7 @@ namespace RimMandrake.FlowWorks
 			// the band cannot carry is cancelled. THE one rule for a BUILT building whose affordance the new band lacks: it
 			// stands (vanilla never removes a built thing on a terrain change, and neither did the temp-layer fill).
 			TerrainDef want = null;
+			TerrainDef keep = null;
 			if (WetDug(i))
 			{
 				if (fluid == null)
@@ -3693,6 +3694,13 @@ namespace RimMandrake.FlowWorks
 					return true;
 				}
 				want = fluid.WetTerrainForBand(RM_ExcavationDepth.FillTier(WaterDl(i)));
+				// EDGE_SINK_WATER_TAME_SEAM_FLICKER: within an eighth of a metre of a wet band edge, the picture of the band across
+				// that edge stays (RM_LevelSolve.LookStickyNeighbour); water swinging across the edge each pulse no longer redraws.
+				int sticky = RM_LevelSolve.LookStickyNeighbour(WaterDl(i));
+				if (sticky > 0)
+				{
+					keep = fluid.WetTerrainForBand(sticky);
+				}
 			}
 			if (want == null)
 			{
@@ -3705,6 +3713,11 @@ namespace RimMandrake.FlowWorks
 			TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
 			if (cur == want)
 			{
+				return true;
+			}
+			if (keep != null && cur == keep)
+			{
+				lookStickyKept++;
 				return true;
 			}
 			if (budgeted && !terrainWrites.TryTakeWrite(Find.TickManager.TicksGame))
@@ -3730,6 +3743,8 @@ namespace RimMandrake.FlowWorks
 
 		// r15 lead 4 counters (POCKETTIME's FILLTERRAIN part): every base write ApplyFillTerrain makes, split by water-body move
 		private int fillWrites, fillWritesBody, fillWritesSlow;
+		// EDGE_SINK_WATER_TAME_SEAM_FLICKER: redraws the sticky look band saved (FILLTERRAIN's sticky= part)
+		private int lookStickyKept;
 		private double fillWriteMs, fillWriteBodyMs, fillWriteMaxMs;
 		private string fillWriteMaxWhat = "-";
 
@@ -3758,13 +3773,14 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>"FILLTERRAIN writes=N ms=T bodyWrites=N bodyMs=T slow5ms=N maxMs=M max=x,z:cur>want:body=a>b:swim=0>1:gc0=g:tick=t".</summary>
+		/// <summary>"FILLTERRAIN writes=N ms=T bodyWrites=N bodyMs=T slow5ms=N maxMs=M max=x,z:cur>want:body=a>b:swim=0>1:gc0=g:tick=t ... waiting=N sticky=N" (sticky: redraws the sticky look band saved).</summary>
 		public string FillTerrainTimingLine()
 		{
 			return "FILLTERRAIN writes=" + fillWrites + " ms=" + fillWriteMs.ToString("0.0") + " bodyWrites=" + fillWritesBody
 				+ " bodyMs=" + fillWriteBodyMs.ToString("0.0") + " slow5ms=" + fillWritesSlow + " maxMs=" + fillWriteMaxMs.ToString("0.000")
 				+ " max=" + fillWriteMaxWhat + " drains=" + drainCalls + " drainMs=" + drainMs.ToString("0.0") + " drainMaxMs="
-				+ drainMaxMs.ToString("0.000") + " drainMax=" + drainMaxWhat + " waiting=" + terrainWrites.Count;
+				+ drainMaxMs.ToString("0.000") + " drainMax=" + drainMaxWhat + " waiting=" + terrainWrites.Count
+				+ " sticky=" + lookStickyKept;
 		}
 
 		/// <summary>Take the water picture off a square being filled back in to the surface (its depth already 0): a pre-P14

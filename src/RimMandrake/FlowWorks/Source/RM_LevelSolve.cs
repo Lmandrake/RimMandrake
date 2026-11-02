@@ -512,6 +512,49 @@ namespace RimMandrake.FlowWorks
 			return 5;
 		}
 
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES / EDGE_SINK_WATER_TAME_SEAM_FLICKER: how far past a wet band edge the
+		/// water must stand before a square already showing the band on the other side of that edge is redrawn (an eighth of a
+		/// metre). Water swinging across an edge each pulse (a body draining down an edge sink with moving seams) otherwise
+		/// flips its picture every pulse, one SetTerrain each.</summary>
+		public const long LookStickyMargin = U / 4;
+
+		/// <summary>The last sticky wet band edge (1|2, 2|3 and 3|4; see <see cref="LookStickyNeighbour"/>).</summary>
+		public const int LookStickyLastEdge = 3;
+
+		/// <summary>The wet band a square of <paramref name="waterDl"/> may KEEP showing instead of <see cref="LookBand"/>: the
+		/// neighbouring band across the one wet band edge lying within <see cref="LookStickyMargin"/> of the water, or 0 when no
+		/// edge is that close. Dry and wet stay exact (the 0|1 edge is never sticky), and so does the 4|5 edge: band 5 is
+		/// vanilla WaterDeep on the freshwater ladder, impassable unless swum, so that edge moves pathing, not only the look.
+		/// A kept picture is never more than one band and the margin away from the water's own look.</summary>
+		public static int LookStickyNeighbour(long waterDl)
+		{
+			if (waterDl <= 0)
+			{
+				return 0;
+			}
+			for (int b = 1; b <= LookStickyLastEdge; b++)
+			{
+				long edge = (2L * b - 1) * U / 2;   // the edge between band b and band b + 1
+				if (waterDl >= edge - LookStickyMargin && waterDl < edge)
+				{
+					return b + 1;
+				}
+				if (waterDl >= edge && waterDl < edge + LookStickyMargin)
+				{
+					return b;
+				}
+			}
+			return 0;
+		}
+
+		/// <summary>The band a square shows when it showed <paramref name="shown"/> before and now holds
+		/// <paramref name="waterDl"/>: <paramref name="shown"/> while it is the sticky neighbour, else the exact band.</summary>
+		public static int LookBandSticky(long waterDl, int shown)
+		{
+			int exact = LookBand(waterDl);
+			return shown != exact && shown > 0 && shown == LookStickyNeighbour(waterDl) ? shown : exact;
+		}
+
 		public static double Metres(long dl)
 		{
 			return dl * MetresPerUnit;

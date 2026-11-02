@@ -713,6 +713,98 @@ namespace RimMandrake.FlowWorks.SelfTest
                 once.Defer(5, 100); once.Defer(5, 100); once.Defer(7, 100);
                 Assert(once.Count == 2, $"a square deferred twice waits twice ({once.Count})");
             });
+            Case("LookSticky_band_rule_whole_range", () =>
+            {
+                // EDGE_SINK_WATER_TAME_SEAM_FLICKER: the sticky look is the exact look except within LookStickyMargin of the
+                // 1|2, 2|3 and 3|4 edges, where the band across the edge may stay; dry/wet and the 4|5 (WaterDeep) edge are exact.
+                long U = RM_LevelSolve.U, M = RM_LevelSolve.LookStickyMargin;
+                int kept = 0;
+                for (long dl = -2; dl <= 6 * U; dl++)
+                {
+                    int exact = RM_LevelSolve.LookBand(dl);
+                    for (int shown = 0; shown <= 5; shown++)
+                    {
+                        int got = RM_LevelSolve.LookBandSticky(dl, shown);
+                        Assert(RM_LevelSolve.LookBandSticky(dl, got) == got, $"dl {dl} shown {shown}: {got} is not stable");
+                        if (got == exact) continue;
+                        kept++;
+                        Assert(got == shown && Math.Abs(got - exact) == 1 && exact > 0 && got > 0, $"dl {dl} shown {shown}: kept {got}, exact {exact}");
+                        int lo = Math.Min(got, exact);
+                        long edge = (2L * lo - 1) * U / 2;
+                        Assert(lo <= 3, $"dl {dl}: the {lo}|{lo + 1} edge stuck (only 1|2, 2|3, 3|4 may)");
+                        Assert(dl >= edge - M && dl < edge + M, $"dl {dl} shown {shown}: kept {got} {Math.Abs(dl - edge)} dL from its edge (margin {M})");
+                    }
+                }
+                // The instrument can see: every sticky edge keeps on both sides, a full margin wide each.
+                Assert(kept == 3 * 2 * (int)M, $"kept {kept} (dl, shown) pairs, want {3 * 2 * M}");
+                Assert(RM_LevelSolve.LookBandSticky(7 * U / 2 - 1, 5) == 4 && RM_LevelSolve.LookBandSticky(7 * U / 2, 4) == 5, "the 4|5 edge stuck");
+                Assert(RM_LevelSolve.LookBandSticky(1, 0) == 1 && RM_LevelSolve.LookBandSticky(0, 1) == 0, "dry/wet stuck");
+            });
+            Case("LookSticky_edge_drain_writes_325", () =>
+            {
+                // The live perf scene (325x325, two 125x320 basins in the edge band, edge sinks on, moving seams): picture
+                // changes per pulse under the exact look and under the sticky look, read after every pulse as the game draws them.
+                const int w = 325, h = 325, edge = 10, pulses = 60;
+                var aw = new ArrayWorld(w, h);
+                var k = aw.k;
+                k.levelExactEnabled = true; k.maxComponentCells = 6000; k.seamRotationEnabled = true; k.levelBySurfaceEnabled = true;
+                k.levelSetEnabled = true; k.creepWaterEnabled = true; k.viscosityEnabled = true; k.creepEnabled = true; k.flowPerPulse = 1;
+                k.part = new ushort[w * h];
+                k.edgeSinksEnabled = true;
+                var seeds = new List<int>();
+                for (int z = 2; z <= 321; z++)
+                    for (int x = 10; x <= 314; x++)
+                    {
+                        bool a = x <= 134, b = x >= 190;
+                        if (!a && !b) continue;
+                        int i = z * w + x;
+                        k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                        aw.sink[i] = x < edge || z < edge || x >= w - edge || z >= h - edge;
+                    }
+                long Dl(int i) => k.fill[i] * (long)RM_LevelSolve.U + k.part[i];
+                var exactShown = new int[w * h];
+                var stickyShown = new int[w * h];
+                // the band each square showed before its last change: a write back to it is a reversal, the flicker itself
+                var exactPrev = new int[w * h];
+                var stickyPrev = new int[w * h];
+                foreach (int i in seeds) exactShown[i] = stickyShown[i] = exactPrev[i] = stickyPrev[i] = RM_LevelSolve.LookBand(Dl(i));
+                long exactWrites = 0, stickyWrites = 0, keptOff = 0;
+                var exactBack = new long[5];    // reversals by the edge crossed (1 = 1|2 ... 4 = 4|5; 0 = dry/wet)
+                var stickyBack = new long[5];
+                int exactMax = 0, stickyMax = 0;
+                var perPulse = new List<string>();
+                for (int p = 1; p <= pulses; p++)
+                {
+                    aw.Pulse(seeds);
+                    int ex = 0, st = 0;
+                    foreach (int i in seeds)
+                    {
+                        long dl = Dl(i);
+                        int e = RM_LevelSolve.LookBand(dl);
+                        if (exactShown[i] != e) { if (e == exactPrev[i]) exactBack[Math.Min(4, Math.Min(e, exactShown[i]))]++; exactPrev[i] = exactShown[i]; exactShown[i] = e; ex++; }
+                        int s = RM_LevelSolve.LookBandSticky(dl, stickyShown[i]);
+                        if (stickyShown[i] != s) { if (s == stickyPrev[i]) stickyBack[Math.Min(4, Math.Min(s, stickyShown[i]))]++; stickyPrev[i] = stickyShown[i]; stickyShown[i] = s; st++; }
+                        Assert(Math.Abs(s - e) <= 1 && (s == 0) == (e == 0), $"pulse {p} square {i}: shows {s}, its water {dl} dL says {e}");
+                        if (s != e) keptOff++;
+                    }
+                    exactWrites += ex; stickyWrites += st;
+                    exactMax = Math.Max(exactMax, ex); stickyMax = Math.Max(stickyMax, st);
+                    perPulse.Add(ex + "/" + st);
+                }
+                Console.WriteLine($"    325x325 draining down the edge, {pulses} pulses: picture writes exact {exactWrites} (max {exactMax}/pulse), "
+                    + $"sticky {stickyWrites} (max {stickyMax}/pulse), {100.0 * (exactWrites - stickyWrites) / Math.Max(1, exactWrites):F1}% fewer; "
+                    + $"square-pulses shown one band off {keptOff}; reversals (a write back to the band just left) by edge 0|1..4|5 exact {string.Join("/", exactBack)}, sticky {string.Join("/", stickyBack)}");
+                Console.WriteLine("    exact/sticky per pulse: " + string.Join(",", perPulse));
+                // The instrument can see: the scene is the churn (thousands of exact flips a pulse).
+                Assert(exactMax > 2000, $"exact look changed at most {exactMax} pictures in a pulse: the scene no longer flickers");
+                // The flicker is reversals; most of the rest is the water genuinely draining a band or more. The sticky edges (1|2, 2|3,
+                // 3|4) lose nine in ten of their reversals; 4|5 stays exact (WaterDeep there is swum, so it is pathing, not only the look).
+                long exactSticky = exactBack[1] + exactBack[2] + exactBack[3], stickySticky = stickyBack[1] + stickyBack[2] + stickyBack[3];
+                Assert(exactSticky > 50000, $"only {exactSticky} exact reversals at the 1|2..3|4 edges: the scene no longer flickers there");
+                Assert(stickySticky * 10 <= exactSticky, $"sticky look reversed {stickySticky} pictures at the sticky edges, exact {exactSticky} (want at most 10%)");
+                Assert(stickyBack[0] == exactBack[0] && stickyBack[4] <= exactBack[4] + exactBack[4] / 10, "the dry/wet or 4|5 edge changed under the sticky look");
+                Assert(stickyWrites * 10 <= exactWrites * 6, $"sticky look wrote {stickyWrites} of {exactWrites} exact writes (want at least 40% fewer)");
+            });
             Case("ExcavationTick_label_scratch_equals_reference", () =>
             {
                 // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the rewritten floods (per-thread queue and tallies, a reused label array,
