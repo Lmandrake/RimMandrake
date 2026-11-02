@@ -1087,7 +1087,8 @@ def sun_chain(t):
             floor = sand_glare_floor()
             _note(t, "roofed shade / exposure, open exposure, glare floor, elevation",
                   [shade, roofed, opened, floor, elev])
-            if shade < 0.99 or roofed > floor + 0.01 or opened <= roofed:
+            # A2 (STILLSAND_ROOF_COVER_EXPOSURE_1): the open cell beside it reads full exposure, 1.0
+            if shade < 0.99 or roofed > floor + 0.01 or opened <= roofed or opened < 0.99:
                 _fail("roofed cell shade %.2f exposure %.2f (max %.2f, the sand glare floor), open %.2f at "
                       "elevation %.0f deg (a roof must protect above 55 deg)" % (shade, roofed, floor, opened, elev))
 

@@ -391,7 +391,7 @@ class Fake(object):
         floor = SAND_GLARE_FLOOR if self.terr(x, z) == "Sand" else 0.0
         if self.grid_roofed(x, z) and "roof_no_cover" not in self.b:
             return floor
-        e = 0.3 if "low_exposure" in self.b else 1.0
+        e = 0.3 if "low_exposure" in self.b else 0.7 if "open_exposure_dimmed" in self.b else 1.0
         # the real shadegrid_read returns ExposureAt(cell), which has no weather factor (that is applied in
         # ExposureFor(pawn) only), so the gale never changes a cell read here either
         return max(e, floor)
@@ -719,6 +719,22 @@ class Fake(object):
 def run(broken=()):
     V._STATE.clear()
     game = Fake(broken)
+    settle = V._settle_shade
+    if "roof_read_before_rebuild" in broken:
+        # HARNESS break (STILLSAND_ROOF_COVER_EXPOSURE_1 A1): the roof row reads in the roofing tick, before
+        # the 2000-tick grid rebuild, as the 2026-10-07 live run did; every other settle still runs
+        def settle_skipping_roof_row(t):
+            cur = getattr(t, "_current", None)
+            if getattr(cur, "name", None) != "sun_roof_cover_above_55deg":
+                settle(t)
+        V._settle_shade = settle_skipping_roof_row
+    try:
+        return _run(game)
+    finally:
+        V._settle_shade = settle
+
+
+def _run(game):
     results = {}
     for name, fn in V.suite.chains:
         t = TestContext(game, anchor=(125, 125))
@@ -753,6 +769,9 @@ BREAKS = {
     "no_pinned": ["sun.sun_pinned_no_night"],
     "night_falls": ["sun.sun_pinned_no_night"],
     "roof_no_cover": ["sun.sun_roof_cover_above_55deg"],
+    "roof_read_before_rebuild": ["sun.sun_roof_cover_above_55deg"],
+    # 0.7 still clears the 0.6 glare-blind bar, so only A2's "an open cell reads 1.0" can catch it
+    "open_exposure_dimmed": ["sun.sun_roof_cover_above_55deg"],
     "oorrik_nre": ["fauna.fauna_spawns"],
     "no_fly": ["fauna.soorrak_can_fly"],
     "set_plants_drops": ["flora.flora_spawns"],

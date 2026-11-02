@@ -4,8 +4,8 @@ sun_roof_cover_above_55deg (its two prerequisite rows run first) and exit 0 only
 
 The row (validation.py) roofs a 6x6 pad, steps past the shade grid's next 2000-tick rebuild, then needs the
 roofed cell at shade >= 0.99 and exposure <= the sand glare floor (0.35 from the BiomeDef), and the open cell
-above it, at a pinned sun >= 55 deg. Reads the run's own results JSON (Transient/modcheck/Stillsand_*.json,
-written by modcheck runner.write_sheet), never the console.
+above it at exposure >= 0.99 (full sun, A2), at a pinned sun >= 55 deg. Reads the run's own results JSON
+(Transient/modcheck/Stillsand_*.json, written by modcheck runner.write_sheet), never the console.
 
 Exit: 0 PASS, 1 FAIL / UNMEASURED / row missing, 2 no results JSON written by this run.
 """
