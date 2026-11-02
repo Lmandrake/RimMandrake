@@ -20,6 +20,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 
@@ -74,6 +75,11 @@ def judge(res, clause):
     if clause == "A1":
         if fires[0] not in ("PASS", "FAIL"):
             return 2, "UNMEASURED: %s is %s: %s" % (FIRES, fires[0], fires[1])
+        said = "%s %s" % (fires[1] or "", json.dumps(fires[2], default=str))
+        ends = (r"arrived \+\d+",) if fires[0] == "PASS" else (r"arrived \+\d+", r"never arrived", r"turned back")
+        if not any(re.search(e, said) for e in ends):
+            return 1, "A1 cause NOT established: %s %s names no end of the visit (%s): %s" % (
+                FIRES, fires[0], " / ".join(ends), said[:600])
         return 0, "A1 cause measured: %s %s -- %s; watch %s" % (FIRES, fires[0], fires[1] or "",
                                                               json.dumps(fires[2], default=str)[:600])
     if fires[0] == "PASS" and control[0] == "PASS":
@@ -121,7 +127,7 @@ def selftest():
     S.V._STATE.clear()
     bad = []
     cases = [((), 0, 0), (("no_muurrok",), 0, 1), (("muurrok_never_arrives",), 0, 1),
-             (("muurrok_spawns_unforced",), 0, 1)]
+             (("muurrok_arrives_late",), 0, 1), (("muurrok_spawns_unforced",), 0, 1)]
     for broken, want1, want2 in cases:
         res = run_chains(S.V, S.Fake(broken), (125, 125))
         got = (judge(res, "A1"), judge(res, "A2"))
@@ -129,12 +135,23 @@ def selftest():
             bad.append("%s: want A1=%d A2=%d, got %s" % (broken or "healthy", want1, want2, got))
         if broken == ("no_muurrok",) and "turned back" not in (res[FIRES][1] or ""):
             bad.append("no_muurrok: the FAIL does not name the end (turned back): %s" % res[FIRES][1])
+        if broken == ("muurrok_arrives_late",) and "never arrived" not in (res[FIRES][1] or ""):
+            bad.append("arrives_late: the FAIL does not name the end (never arrived): %s" % res[FIRES][1])
         if broken == ("muurrok_never_arrives",) and "never arrived" not in (res[FIRES][1] or ""):
             bad.append("never_arrives: the FAIL does not name the end (never arrived): %s" % res[FIRES][1])
     # can-fail probes of the judge itself: an UNMEASURED or missing component never holds a clause
     probe = {FIRES: ["UNMEASURED", "x", []], CONTROL: ["PASS", "", []]}
     if judge(probe, "A1")[0] != 2 or judge(probe, "A2")[0] != 2 or judge({}, "A2")[0] != 2:
         bad.append("judge: an UNMEASURED/missing component did not read 2")
+    # A1 needs the cause line: a measured verdict that names no end of the visit is not a cause (exit 1)
+    for v, detail, notes in (("PASS", "", []), ("FAIL", "", []), ("PASS", "", [[["A line of glare"], 1, "", []]]),
+                             ("PASS", "never arrived", []), ("FAIL", "", [[[], 0, "something else", []]])):
+        if judge({FIRES: [v, detail, notes], CONTROL: ["PASS", "", []]}, "A1")[0] != 1:
+            bad.append("judge: A1 %s with no named end (%r, %r) did not read 1" % (v, detail, notes))
+    for v, detail in (("PASS", "arrived +1500, last seen +2200"), ("FAIL", "MOD: ... it never arrived"),
+                      ("FAIL", "MOD: ... (turned back: no standable entry cell?)")):
+        if judge({FIRES: [v, detail, []], CONTROL: ["PASS", "", []]}, "A1")[0] != 0:
+            bad.append("judge: A1 %s naming its end (%r) did not read 0" % (v, detail))
     for b in bad:
         print("  BAD:", b)
     print("prove_muurrok_emergence selftest: %d cases, %s" % (len(cases), "FAIL" if bad else "ok"))

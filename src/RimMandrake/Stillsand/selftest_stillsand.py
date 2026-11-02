@@ -460,7 +460,9 @@ class Fake(object):
                 if visit in self.lev_visits:
                     self.lev_visits.remove(visit)
             self.sched.append((self.ticks + 700, dive))
-        self.sched.append((self.ticks + 1500, arrive))
+        # muurrok_arrives_late: up at +3500, past criterion A2's 3000-tick bound; a watch longer than 3000 would
+        # count it and read PASS, so this break pins MUURROK_WINDOW_TICKS to the item's bound.
+        self.sched.append((self.ticks + (3500 if "muurrok_arrives_late" in self.b else 1500), arrive))
 
     def t_map_comp_read(self, comp=None, members=None, **k):
         if comp != "RM_MapComponent_SandLeviathans":
@@ -775,6 +777,7 @@ BREAKS = {
     "emergence_ignores_toggle": ["gale.gale_emergence_off_quiet"],
     "no_muurrok": ["muurrok.muurrok_emergence_fires"],
     "muurrok_never_arrives": ["muurrok.muurrok_emergence_fires"],
+    "muurrok_arrives_late": ["muurrok.muurrok_emergence_fires"],
     "muurrok_spawns_unforced": ["muurrok.muurrok_absent_unforced"],
     "beam_no_damage": ["muurrok.beam_burns_target"],
     "beam_ignores_toggle": ["muurrok.beam_toggle_off_blocked"],
