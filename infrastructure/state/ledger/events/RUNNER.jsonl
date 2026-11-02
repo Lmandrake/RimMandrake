@@ -2010,3 +2010,4 @@
 {"seat":"RUNNER","event":"live","id":"RESTART_NOW_BUILD_WINDOW_SAYS_READY","result":"broken","detail":"rm-restart-now.path: is-active says 'inactive', wanted 'active'","ts":"2026-11-02T13:03:37Z","tsn":1793624617179510517}
 {"seat":"RUNNER","event":"raise","id":"RESTART_NOW_BUILD_WINDOW_SAYS_READY","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-02T13:03:39Z","tsn":1793624619483694307}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_F988","text":"steward-watch: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261102T130513Z.log","ts":"2026-11-02T13:05:16Z","tsn":1793624716332107377}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_F988","text":"steward-watch: the steward is writing again (stale 12 min)","ts":"2026-11-02T13:06:18Z","tsn":1793624778904850989}
