@@ -289,6 +289,7 @@ def reading(key, samples, fam_rows, now, floors, targets):
         series, resets = to_rates(meas)
         out["resets_7d"] = resets
         out["unit"] = "per hour"
+        out["level"] = meas[-1][1]      # the raw reading, which signed limits are written against
         if not series:
             out.update(state="blind", why="learning: no rate yet")
             return out
@@ -331,8 +332,11 @@ def reading(key, samples, fam_rows, now, floors, targets):
     st = find_step(bk_all, floors)
     if st:
         out["step"] = st
-    if kind == "number":
-        ttl = hours_to_limit(cur, s6 if s6 is not None else s24, targets, key)
+    if kind in ("number", "counter"):
+        if kind == "counter":           # a counter's limit is on its level; its rate per hour is that level's slope
+            ttl = hours_to_limit(out["level"], cur, targets, key)
+        else:
+            ttl = hours_to_limit(cur, s6 if s6 is not None else s24, targets, key)
         if ttl:
             out["limit"] = ttl
     return out

@@ -20,7 +20,8 @@ import ops_memory as om  # noqa: E402
 H = 3600.0
 NOW = 1793577600.0 + 12 * H        # a fixed instant at 12:00 UTC
 RULES = {"band": {"sigma_floor_rel": 0.05, "sigma_floor_abs": 0.5},
-         "targets": [{"key": "t.free_gb", "op": "<", "value": 20.0, "tag": "LOW", "alarm": True}]}
+         "targets": [{"key": "t.free_gb", "op": "<", "value": 20.0, "tag": "LOW", "alarm": True},
+                     {"key": "t.week_used_pct", "op": ">", "value": 90.0, "tag": "WEEK", "alarm": True}]}
 FAILS = []
 
 
@@ -53,6 +54,10 @@ def run(rows):
     write(rows)
     return om.build(NOW, ["t"], RULES)["readings"]
 
+
+# 0. a counter's signed limit is on its level, not its rate: past 90 % used is limit h=0 though the rate is flat
+r = run(grid(lambda t: 95.0 if t >= NOW - 24 * H else 50.0 + (t - (NOW - 7 * 24 * H)) / H * 0.1, key="t.week_used_pct"))["t.week_used_pct"]
+ok(r["kind"] == "counter" and (r.get("limit") or {}).get("h") == 0.0, "counter: level past its limit reports h=0 (%s)" % r.get("limit"))
 
 # 1. zero MAD: a flat zero reading and a tiny wobble is not an outlier; a real jump is
 r = run(grid(lambda t: 0.001 if t >= NOW - 0.1 * H else 0.0))["t.x"]
