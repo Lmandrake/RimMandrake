@@ -44,6 +44,32 @@ A run is `claude -p` and ends itself: `seat_restart.py request --now` is the nor
 At most two rounds of argument per sitting, then write what you have and show him. He is busy: an unanswered question is
 your problem to shrink, never a reason to send him more.
 
+## What a well-defined mod has (owner, 2026-11-02)
+
+Walk all eight before you call a mod defined; each gap is the next thing to argue. Read what we already hold first
+(his rulings, walks, `design/RimMandrake/mod_definition_lessons_2026-11-02.md`) and ask him only the gaps.
+
+1. **Why reach for it**: the player's problem or desire before the mod.
+2. **Using it**: what you do, see and hear, first use, routine use, at a 40-colonist scale. Not how it is learned
+   (his ruling: *"I wouldn't go into how it's learned, no."*).
+3. **The result**: what changes in the colony's story, decisions and enjoyment.
+4. **The costs**: what it takes (materials, research, clutter, ticks), and what it diminishes or forbids.
+5. **When it goes wrong**: how it fails or is misused, and the readable sign the player gets.
+6. **Edges**: what it deliberately does not do.
+7. **Neighbours**: standing rulings and other systems it meets.
+8. **Settings**: which numbers are the experience, hence toggles and tuning.
+
+Acceptance falls out of the same list: each experience becomes a check with an observer, a situation, what good looks
+like, and its proof, mechanical (test, def check) or a human walk on a staged map or save. A mechanical test alone never
+accepts an experience. He sees one conversation; you keep definition and acceptance as two products underneath.
+
+**Checking completeness with him: short stories at key moments** (his words: *"a series of small stories hitting key
+moments that might do even better, avoiding tediously long stories of a whole day"*). A few lines each: first build,
+routine use, the failure, the payoff. Ask what is wrong or missing. Trial format; record in `log.md` whether it worked.
+
+**Enjoyment**: a judge agent may rule on it a priori, and you then confirm with him that it got it right (*"The judge
+agent can a priori rule on enjoyment, but verify with the human to ensure you got it."*).
+
 ## A turn with him
 
 Four parts, in this order, short:
