@@ -1,0 +1,1 @@
+A hand-rolled sha256 loop over a .srchash reads 23/23 MISMATCH while src/RimMandrake/Utils/dll_source_stamp.py check says MATCH: the stamp hashes committed git blobs, normalized, never raw worktree bytes. Verify a DLL stamp with dll_source_stamp.py check, never sha256sum.

@@ -38,6 +38,31 @@ def method_body(src, signature):
     return ""
 
 
+def code_only(src):
+    """C# with // and /* */ comments removed (string and char literals kept), whitespace collapsed, so a pin
+    matches statements the compiler sees, never a commented-out line."""
+    out, i, n = [], 0, len(src)
+    while i < n:
+        c = src[i]
+        if c in "\"'":
+            j = i + 1
+            while j < n and src[j] != c:
+                j += 2 if src[j] == "\\" else 1
+            out.append(src[i:j + 1])
+            i = j + 1
+        elif src.startswith("//", i):
+            j = src.find("\n", i)
+            i = n if j < 0 else j
+        elif src.startswith("/*", i):
+            j = src.find("*/", i + 2)
+            out.append(" ")
+            i = n if j < 0 else j + 2
+        else:
+            out.append(c)
+            i += 1
+    return re.sub(r"\s+", " ", "".join(out))
+
+
 def main():
     mc = read("RM_MapComponent_ExplosiveGrowth.cs")
     expose = method_body(mc, "public override void ExposeData()")
@@ -101,6 +126,23 @@ def main():
     cl = pas.find("ledger.charges.Clear();")
     check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: out-of-scope dropped charges are dirtied before the clear",
           cl > 0 and "foreach (IntVec3 c in ledger.charges.Keys) Dirty(c);" in pas[:cl])
+    # The pins above are text; these match comment-stripped code, so a remesh or Dirty commented out, emptied
+    # or moved out of its branch goes red (blind-check mutant 2026-11-02: '{ } // map.mapDrawer.WholeMapChanged(...)').
+    updc = code_only(upd)
+    check("sanity: code_only strips comments and keeps code",
+          code_only("a(); // b();\n/* c(); */ d(\"//x\");") == "a(); d(\"//x\");", code_only("a(); // b();\n/* c(); */ d(\"//x\");"))
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: (code) the look-change branch's body is the Things remesh",
+          re.search(r"if \(lookKnown && \(on != lookOn \|\| hue != lookHue \|\| scale != lookScale\)\) "
+                    r"(\{ )?map\.mapDrawer\.WholeMapChanged\(MapMeshFlagDefOf\.Things\);", updc) is not None, updc)
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: (code) the look reads the three live settings",
+          all(x in updc for x in ("bool on = ExplosiveGrowthSettings.On;", "bool hue = ExplosiveGrowthSettings.hueShiftEnabled;",
+                                  "float scale = ExplosiveGrowthSettings.maxOvergrowthScale;")), updc)
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: (code) the last look is recorded after the check, unconditionally",
+          re.search(r"WholeMapChanged\(MapMeshFlagDefOf\.Things\); (\} )?lookKnown = true; lookOn = on; lookHue = hue; "
+                    r"lookScale = scale; \}$", updc) is not None, updc)
+    pasc = code_only(pas)
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: (code) dropped charges are dirtied right before the clear",
+          "foreach (IntVec3 c in ledger.charges.Keys) Dirty(c); ledger.charges.Clear();" in pasc)
     if fails:
         print("FAIL: %d failed" % len(fails))
         return 1
