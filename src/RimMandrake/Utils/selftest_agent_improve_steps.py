@@ -59,6 +59,8 @@ with tempfile.TemporaryDirectory() as tmp:
     write(os.path.join(repo, "src", "RimMandrake", "rimflow", "roles", "operations.md"), "# Operations\n")
     write(os.path.join(repo, "src", "RimMandrake", "rimflow", "roles", "conductor.md"), "# Conductor\n")
     sh(repo, "git", "init", "-q")
+    sh(repo, "git", "config", "user.email", "t@t")   # local identity: later fixture commits need no global one
+    sh(repo, "git", "config", "user.name", "t")
     sh(repo, "git", "-c", "user.email=t@t", "-c", "user.name=t", "add", "-A")
     sh(repo, "git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "base")
     A.REPO, A.ROLES, A.SKILLS = repo, os.path.join(repo, "src/RimMandrake/rimflow/roles"), os.path.join(repo, "skills")
@@ -154,7 +156,9 @@ with tempfile.TemporaryDirectory() as tmp:
     rec = json.load(open(os.path.join(changes, "foo_v1.json")))
     check("change record", rec["version"] == 1 and rec["recheck"] and rec["source_kinds"] == ["REPAIR"], rec)
     vr = json.load(open(os.path.join(delegated, "2026-11-01", "agent_improve_foo.json")))
-    check("verdict has sha and tag", vr["applied_sha"] and vr["tag"] == "agent/foo/v1", vr)
+    tag_sha = sh(repo, "git", "rev-parse", "agent/foo/v1^{commit}").strip()
+    check("verdict has sha and tag", vr["applied_sha"] == tag_sha and vr["tag"] == "agent/foo/v1"
+          and "skills/foo/SKILL.md" in sh(repo, "git", "show", "--name-only", "--format=", tag_sha), (vr, tag_sha))
     check("books published", not sh(repo, "git", "status", "--porcelain", "--", "infrastructure").strip(),
           sh(repo, "git", "status", "--porcelain"))
     st = json.load(open(sp))
@@ -170,11 +174,16 @@ with tempfile.TemporaryDirectory() as tmp:
     check("failing check not applied", r2.get("applied") is False and "validate_skills" in r2["apply_detail"], r2)
     check("failing check reverted", open(os.path.join(repo, "skills/foo/SKILL.md")).read() == before)
     check("no v2 tag", "agent/foo/v2" not in sh(repo, "git", "tag", "-l"))
-    n_v = len(os.listdir(os.path.join(delegated, "2026-11-01")))
+    vday = os.path.join(delegated, "2026-11-01")
+    n_v = {n: open(os.path.join(vday, n), "rb").read() for n in os.listdir(vday)}
+    real_state = open(sp).read()
+    write(sp, json.dumps(dict(json.loads(real_state), last_pass_day="2026-10-31")))   # a write by the dry run would show
+    state_before = open(sp).read()
     s_dry = A.run_pass("2026-11-01", force=True, **dict(kw, curator=lambda p: json.dumps(bad)))
     check("dry run judged", any(r.get("verdict") == "KEEP" for r in s_dry["rows"]), s_dry)
-    check("dry run writes no repo verdict", len(os.listdir(os.path.join(delegated, "2026-11-01"))) == n_v)
-    check("dry run leaves the state alone", json.load(open(sp))["last_pass_day"] == "2026-11-01")
+    check("dry run writes no repo verdict", {n: open(os.path.join(vday, n), "rb").read() for n in os.listdir(vday)} == n_v)
+    check("dry run leaves the state alone", open(sp).read() == state_before)
+    write(sp, real_state)
     vr1 = json.load(open(os.path.join(delegated, "2026-11-01", "agent_improve_foo.json")))
     check("rerun keeps the applied verdict", vr1["applied_sha"] and vr1["tag"] == "agent/foo/v1", vr1)
     check("rerun verdict in its own file", os.path.exists(os.path.join(delegated, "2026-11-01",
@@ -209,7 +218,9 @@ with tempfile.TemporaryDirectory() as tmp:
     os.remove(stray)
     vd = os.path.join(tmp, "vreserve")
     p1, p2 = A.free_verdict_path(vd, "2026-11-01", "foo"), A.free_verdict_path(vd, "2026-11-01", "foo")
-    check("two passes reserve two verdict names", p1 != p2 and os.path.exists(p1) and p2.endswith(".run2.json"), (p1, p2))
+    p3 = A.free_verdict_path(vd, "2026-11-01", "foo")
+    check("three passes reserve three verdict names", len({p1, p2, p3}) == 3 and all(map(os.path.exists, (p1, p2, p3)))
+          and p2.endswith(".run2.json") and p3.endswith(".run3.json"), (p1, p2, p3))
     check("crash before publish reverted", not ok_c and "preparing" in why_c and open(os.path.join(repo, "skills/foo/SKILL.md")).read()
           == before, why_c)
 
