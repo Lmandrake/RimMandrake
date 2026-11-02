@@ -8,10 +8,12 @@ Exit 0 = the clause holds, 1 = it does not, 2 = unmeasured (no game, no map).
 
 --offline  the wiring: the mineshaft is a MapPortal whose generator carries the Creep/Aurora/Collapse components;
            RM_DeepHarness.cs is compiled into the shipped DLL; every validation.py chain that reads a Deep-only
-           answer opens a Deep first (_enter_deep) and leaves it in a finally (_leave_deep).
+           answer opens a Deep first (_enter_deep) and leaves it in a finally (_leave_deep); and, run against a
+           recording fake bridge (modcheck stubbed), each Deep-only chain's first call is RM_DeepHarness.EnterDeep,
+           its last LeaveDeep, and it makes no Proof* call when EnterDeep opens nothing.
 A1 (live)  on the current map (a quicktest map is started if none plays), RM_DeepHarness.EnterDeep generates a
            pocket map of biome RM_LanternDeeps carrying Creep, Aurora and Collapse and makes it current; LeaveDeep
-           returns to the source map and the Deep is gone.
+           returns to the source map and the Deep is gone; map_info's mapBiome reads RM_LanternDeeps meanwhile.
 A2 (live)  inside that Deep (furnished: battery + torch) every Deep-only proof answers past its prerequisite: no
            "only on a Deep" and no "no colony battery". The proofs' own pass/fail is the LanternDeeps suite's
            business; this clause proves the harness gives them a Deep.
@@ -39,6 +41,109 @@ PROOFS = [("RM_CreepCleaversProof", "ProofCreep", "10"), ("RM_CreepCleaversProof
 def _read(rel):
     with open(os.path.join(HERE, rel), encoding="utf-8") as fh:
         return fh.read()
+
+
+DEEP_CHAINS = ("creep_cleavers", "aurora_collapse", "hydrocarbon_wave2", "hydrocarbon_wave3")
+OPENED = "entered biome=RM_LanternDeeps pocket=True comps=Creep,Aurora,Collapse"
+
+
+class _FakeT(object):
+    """A modcheck test object whose bridge only records: EnterDeep answers `enter`, a def read answers found, and
+    every Proof* answers a plausible pass string, so a chain runs end to end without a game."""
+    def __init__(self, enter):
+        self.enter, self.calls = enter, []
+        self.upstream_failed, self.upstream_reason = False, None
+
+    def _guard(self):
+        return True
+
+    def component(self, *a, **k):
+        import contextlib
+        return contextlib.nullcontext()
+
+    def set_setting(self, *a, **k):
+        return True
+
+    def screenshot(self, *a, **k):
+        return None
+
+    def _record(self, *a, **k):
+        return None
+
+    def bridge_call(self, tool, **kw):
+        self.calls.append((tool, kw.get("type"), kw.get("method")))
+        if tool == "jawa/static_call" and kw.get("method") == "EnterDeep":
+            return {"result": self.enter}
+        if tool == "jawa/static_call" and kw.get("method") == "LeaveDeep":
+            return {"result": "left stillListed=False"}
+        if tool == "jawa/get_defs":
+            return {"success": True, "foundCount": 1}
+        return {"result": "before=9 after=1 engulf=0.5 placed tier=3 mining=False"}
+
+
+def _probe_chains():
+    """Run the four Deep-only chains of the REAL validation.py against _FakeT (modcheck stubbed): with a Deep that
+    opens, the first bridge call must be jawa/static_call RM_DeepHarness.EnterDeep and the last LeaveDeep; with one
+    that does not, the chain must make no Proof* call at all and mark itself upstream-failed."""
+    import types
+    bad, chains = [], {}
+
+    class _Suite(object):
+        def __init__(self, *a, **k):
+            pass
+
+        def chain(self, name, *a, **k):
+            def deco(fn):
+                chains[name] = fn
+                return fn
+            return deco
+
+        def __getattr__(self, name):
+            return lambda *a, **k: (lambda fn: fn)
+
+    class _Fail(Exception):
+        pass
+    saved = sys.modules.get("modcheck")
+    sys.modules["modcheck"] = types.SimpleNamespace(Suite=_Suite, ExpectationFailed=_Fail)
+    try:
+        ns = {"__name__": "lanterndeeps_validation_probe"}
+        exec(compile(_read("validation.py"), os.path.join(HERE, "validation.py"), "exec"), ns)
+    finally:
+        if saved is None:
+            sys.modules.pop("modcheck", None)
+        else:
+            sys.modules["modcheck"] = saved
+    if ns.get("DEEP_HARNESS") != HARNESS:
+        bad.append("validation.py DEEP_HARNESS is %r, not %s" % (ns.get("DEEP_HARNESS"), HARNESS))
+    enter = (("jawa/static_call", HARNESS, "EnterDeep"))
+    leave = (("jawa/static_call", HARNESS, "LeaveDeep"))
+    for name in DEEP_CHAINS:
+        fn = chains.get(name)
+        if fn is None:
+            bad.append("validation.py registers no chain %s" % name)
+            continue
+        t = _FakeT(OPENED)
+        try:
+            fn(t)
+        except _Fail:
+            pass
+        proofs = [c for c in t.calls if c[0] == "jawa/static_call" and (c[2] or "").startswith("Proof")]
+        if not t.calls or t.calls[0] != enter:
+            bad.append("chain %s: first bridge call is %r, not RM_DeepHarness.EnterDeep" % (name, t.calls[:1]))
+        if not t.calls or t.calls[-1] != leave:
+            bad.append("chain %s: last bridge call is %r, not RM_DeepHarness.LeaveDeep" % (name, t.calls[-1:]))
+        if not proofs:
+            bad.append("chain %s ran no Proof* call inside an opened Deep" % name)
+        t = _FakeT("no map")
+        try:
+            fn(t)
+        except _Fail:
+            pass
+        proofs = [c for c in t.calls if c[0] == "jawa/static_call" and (c[2] or "").startswith("Proof")]
+        if proofs or not t.upstream_failed:
+            bad.append("chain %s ran %d Proof* call(s) / upstream_failed=%s when EnterDeep opened no Deep"
+                       % (name, len(proofs), t.upstream_failed))
+    return bad
 
 
 def offline():
@@ -78,6 +183,7 @@ def offline():
     if deep_chains < 4:
         bad.append("only %d Deep-only chains found in validation.py (expected creep_cleavers, aurora_collapse, "
                    "hydrocarbon_wave2, hydrocarbon_wave3)" % deep_chains)
+    bad += _probe_chains()
     for b in bad:
         print("FAIL " + b)
     print("OFFLINE %s: %d Deep-only chains wired, portal->generator->%s" % ("PASS" if not bad else "FAIL",
@@ -131,7 +237,7 @@ def live(clause):
         if clause == "A1":
             info = s.call("jawa/map_info")
             print("map_info: " + json.dumps({k: info.get(k) for k in ("biome", "mapBiome", "sizeX", "mapIndex", "tile")}))
-            ok = (entered.startswith("entered ") and "biome=RM_LanternDeeps" in entered and "pocket=True" in entered
+            ok = (info.get("mapBiome") == "RM_LanternDeeps" and entered.startswith("entered ") and "biome=RM_LanternDeeps" in entered and "pocket=True" in entered
                   and all(c in entered for c in ("Creep", "Aurora", "Collapse")))
         else:
             if not entered.startswith("entered "):
