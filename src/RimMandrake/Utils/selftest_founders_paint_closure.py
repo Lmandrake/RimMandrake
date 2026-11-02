@@ -2,7 +2,8 @@
 """Selftest: no founder fragment names a def outside the PAINT def closure (owner ruling 19, 2026-10-19).
 
 Closure = every def in the newest def-dump capture whose packageId is in ModsConfig.PAINT.RULED_2026-10-20.xml,
-plus defNames authored in src/RimUtinni/PawnFlavor/Defs (the ported RUT_Jawa_Founder* backstories; the dump may predate them).
+plus defNames authored in src/RimUtinni/PawnFlavor/Defs (the ported RUT_Jawa_Founder* backstories) and in the Defs/ of
+every src mod whose packageId is on PAINT (absorbed donor defs) — the dump may predate them.
 A fragment value is OUTSIDE when (a) it sits in a def-bearing slot (<def>, *Def, <childhood>, <adulthood>,
 <passion> beyond None/Minor/Major, *ControllerComp_faceType) and is not in the closure, or (b) any element text equals
 a dump defName that only non-PAINT mods own. Probe: the dump must contain out-of-closure names (instrument can see).
@@ -31,13 +32,21 @@ def load():
     for f in os.listdir(ddir):
         try:
             j = json.load(open(os.path.join(ddir, f)))
-        except Exception:
-            continue
+        except ValueError:      # not JSON. A MemoryError must NOT be swallowed: a skipped ThingDef.json shrinks the
+            continue            # closure and reds the founders on vanilla defs (measured under 6 parallel workers)
         for d in j.get("defs", []):
             (inside if (d.get("packageId") or "").lower() in ids else outside).add(d["defName"])
-    for p in glob.glob(os.path.join(FLAVOR, "**/*.xml"), recursive=True):
-        for m in re.finditer(r"<defName>([^<]+)</defName>", open(p, encoding="utf-8").read()):
-            inside.add(m.group(1))
+    # src defs the dump may predate: PawnFlavor, and every src mod of ours whose packageId is on PAINT (a def absorbed
+    # from a retired donor, e.g. VRE_ShortPregnancy into StarWarsRaces, VRE_XENO_MODS_RETIRE_DEFOF_HOLDOUTS)
+    roots = [FLAVOR]
+    for about in glob.glob(os.path.join(REPO, "src/*/*/About/About.xml")):
+        pid = (ET.parse(about).getroot().findtext("packageId") or "").strip().lower()
+        if pid in ids:
+            roots.append(os.path.join(os.path.dirname(os.path.dirname(about)), "Defs"))
+    for root in roots:
+        for p in glob.glob(os.path.join(root, "**/*.xml"), recursive=True):
+            for m in re.finditer(r"<defName>([^<]+)</defName>", open(p, encoding="utf-8", errors="replace").read()):
+                inside.add(m.group(1).strip())
     return inside, outside - inside
 
 

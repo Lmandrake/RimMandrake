@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Absorbed_VREArchon_Genes.xml — the one gene of RSW_MandrakeJawa that lived in Vanilla Races Expanded - Archon
+  (vanillaracesexpanded.archon, Workshop 3067715093, 1.6/Defs/GeneDefs/GeneDefs_Reproduction.xml), absorbed when
+  that mod was retired (VRE_XENO_MODS_RETIRE_DEFOF_HOLDOUTS; its cut xenotype VRE_Archon is named in its own
+  assembly, so the mod itself had to go).
+  🔴 defName kept VERBATIM (VRE_ShortPregnancy), not renamed RSW_: the canonical start save
+  (ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws) holds 13 `<def>VRE_ShortPregnancy</def>` gene instances on the
+  founders, and a renamed def would drop them on load. Same rule as Absorbed_SovSith_Genes.xml.
+  Same numbers as the donor. pregnancySpeedFactor is read by VEF.Genes.GeneExtension (Vanilla Expanded Framework,
+  already a hard dependency of this mod). Icon is a donor stand-in until regenerated.
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>VRE_ShortPregnancy</defName>
+    <label>short pregnancy</label>
+    <exclusionTags>
+      <li>AG_Gestation</li>
+      <li>AG_Fertility</li>
+    </exclusionTags>
+    <description>Carriers of this gene develop a child during pregnancy much faster. Pregnancy lasts 3 bimesters - 12 days.</description>
+    <iconPath>StandIn/UI/Icons/Genes/Gene_PregnancyShort</iconPath>
+    <displayCategory>Reproduction</displayCategory>
+    <displayOrderInCategory>115.3</displayOrderInCategory>
+    <biostatMet>-1</biostatMet>
+    <biostatCpx>1</biostatCpx>
+    <modExtensions>
+      <li Class="VEF.Genes.GeneExtension">
+        <pregnancySpeedFactor>1.5</pregnancySpeedFactor>
+      </li>
+    </modExtensions>
+  </GeneDef>
+
+</Defs>

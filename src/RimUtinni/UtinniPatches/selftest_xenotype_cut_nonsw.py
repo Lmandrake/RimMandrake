@@ -32,7 +32,8 @@ SHIP = ROOT / "infrastructure" / "state" / "cherrypicker" / "CherryPicker.SHIP.x
 CUT_DEF = ("BX_Beliar DV_Avaloi DV_Bogleg DV_Brawnum DV_Buzzer DV_Keshig DV_Venator HBX_Highborn KAR_Orc XylTitan "
            "BS_FrostJotunInBlue").split()
 # the Alpha Genes 15 (AG_* and VRE_Ocularkin) left with sarg.alphagenes, retired 2026-10-18
-# names compiled into their own mod's assembly: def kept, unreachable, until the mod is retired
+# names compiled into their own mod's assembly: never cut by key; their mods (VRE Archon/Fungoid/Phytokin) are retired
+# from every tier list (VRE_XENO_MODS_RETIRE_DEFOF_HOLDOUTS), so these defs no longer load at all
 KEPT = "VRE_Archon VRE_Fungoid VRE_Gauranlenkin VRE_Animakin VRE_Poluxkin".split()
 ALL = CUT_DEF + KEPT
 SCENARIOS = ("BX_BeliarStart",)
