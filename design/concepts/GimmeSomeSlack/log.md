@@ -181,3 +181,8 @@ He answered with guidance rather than yes/no; his words are in sheet.md `his wor
   extension cords + power strips, futuristic cyberpunk). Style stays advisory per his earlier answer, but each style's
   art is judged against its purpose.
 Still unanswered: the "never draw a connection that isn't there" invariant (cords_tell_truth) and gravship look.
+Resolved the same sitting (his words in sheet.md):
+- `cords_tell_truth` is CORE, as connectivity truth: what is drawn explains the real power connections between
+  conduits and devices; the route may be as circuitous as an over-long extension cord. Tree may now be drafted.
+- Exact drawing is NOT preserved across reload or gravship flight; only the connectivity must stay true (`walk`
+  leaf reads "true" as connectivity, not identical drawing; gravship look question closed).

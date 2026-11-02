@@ -24,6 +24,7 @@ Built today (mod_completion 2026-11-01): 31 inventory entries, 14 work at L2+, 4
 - 2026-11-02: "The experience should be to make the space filled with realistically sprawling, over length extension cables just like happens in real life. Cables should pile against the wall, resist tight turns, and tend toward gently curving tangles and coils."
 - 2026-11-02: "The point is to make the game look more realistic and support the experience of scavengers, sloppy junkers, and trailer trash."
 - 2026-11-02: "The four kinds of art are intended to support different game styles. One for junkyard kludge vibe, one for deep industrial // Star Wars, one for modern day obnoxious multi colored extension cables and normal power strips, and futuristic cyberpunk style"
+- 2026-11-02: "No, the wires do not need to preserve precise drawing between reloads or grav ship flights. And no they don’t have to exactly follow the floor conduits but they should explain the connectivity if power between the actual conduits and devices and the visual appearance of the wires. But the wires are allowed to get there through a much more circuitous route as overly long extension cables do."
 
 ## does
 - [leaf:conduit_invisible] An observer sees no vanilla conduit pipe. Only cords show where power goes
