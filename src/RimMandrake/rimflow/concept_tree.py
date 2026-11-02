@@ -94,6 +94,7 @@ def flags(floor):
 
 # ---------------------------------------------------------------- sheet
 
+UNREAD = "\0unread headings"      # parse_sheet's own key, never a heading name
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
 OPTIONAL_SECTIONS = ("later",)      # "Not now": v2, not in the tree. A dry walk adds `root` (its stand-in north star)
 BULLET = r"^\s*(?:[-*+]|[0-9]+[.)])"      # an unordered or an ordered Markdown bullet
@@ -102,8 +103,9 @@ TAG = re.compile(BULLET + r"\s*\[(leaf|floor|waived|advisory|core)(?::([A-Za-z0-
 
 def parse_sheet(path):
     """-> {section: [raw non-empty lines]}. Headings are `## <name>`; a heading may carry a parenthesis after the name.
-    A `## ` line inside a ``` or ~~~ fence is content, never a heading: a fence cannot move a line to another section."""
-    out, cur, fence = {}, None, None
+    A `## ` line inside a ``` or ~~~ fence is content, never a heading: a fence cannot move a line to another section.
+    Lines before the first heading (the title, a dry walk's banner) are kept under "" so that no line escapes a check."""
+    out, cur, fence = {"": []}, "", None
     with open(path, encoding="utf-8") as f:
         for line in f:
             fm = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line.rstrip("\n"))
@@ -115,7 +117,10 @@ def parse_sheet(path):
             if m:
                 cur = m.group(1).strip().lower()
                 out.setdefault(cur, [])
-            elif cur is not None and line.strip():
+            elif line.strip():
+                if not fence and not fm and re.match(r"^\s{0,3}#{1,6}(\s|$)", line) and not (cur == "" and
+                                                                                         re.match(r"^# \S", line)):
+                    out.setdefault(UNREAD, []).append(line.rstrip("\n"))   # a heading we cannot read is refused
                 out[cur].append(line.rstrip("\n"))
     return out
 
@@ -125,8 +130,12 @@ def sheet_errors(sheet, tree, floor=None):
     for s in SECTIONS:
         if s not in sheet:
             errs.append("sheet: no `## %s` section" % s)
-    known = SECTIONS + OPTIONAL_SECTIONS + (("root",) if tree.get("dry_walk") is True else ())
+    known = ("",) + SECTIONS + OPTIONAL_SECTIONS + (("root",) if tree.get("dry_walk") is True else ())
+    for line in sheet.get(UNREAD, []):
+        errs.append("sheet: a heading that is not `## <section>` (or the `# ` title): %s" % line.strip()[:80])
     for s in sheet:     # an unknown section is unchecked text: a [core] question could sit there unseen
+        if s == UNREAD:
+            continue
         if s not in known:
             errs.append("sheet: `## %s` is no section of the sheet" % s)
         elif s != "open":
@@ -404,6 +413,8 @@ def lint(d, repo=REPO, floor_file=None):
         return ["no tree.json in %s" % d], flags(floor)
     except ValueError as e:
         return ["tree.json does not parse: %s" % e], flags(floor)
+    except OSError as e:
+        return ["tree.json cannot be read: %s" % e], flags(floor)
     if not isinstance(tree, dict):
         return ["tree.json is not an object"], flags(floor)
     sheet, errs = None, []
@@ -435,7 +446,7 @@ def owner_events(repo):
             for line in f:
                 try:
                     ev = json.loads(line)
-                except ValueError:
+                except (ValueError, RecursionError):
                     continue
                 if isinstance(ev, dict) and ev.get("tsn"):
                     out[str(ev["tsn"])] = ev
@@ -689,6 +700,8 @@ def main(argv=None):
         tree = None     # Stage 1, where asks are made, has no tree yet: no waivers to re-raise
     except ValueError as e:
         return report(["tree.json does not parse: %s" % e], [], a.cmd)
+    except OSError as e:
+        return report(["tree.json cannot be read: %s" % e], [], a.cmd)
     if tree is not None and not isinstance(tree, dict):
         return report(["tree.json is not an object"], [], a.cmd)
     if a.cmd == "hash":

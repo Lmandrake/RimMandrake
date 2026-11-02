@@ -395,6 +395,11 @@ def main():
                 ("core line in delegated", "- the name of the order", "- [core] the name of the order", "outside `## open`"),
                 ("a dry walk's root section in a real sheet", "## delegated\n", "## root\n- ms1: x\n## delegated\n",
                  "no section of the sheet"),
+                ("core line before the first section", "# Foo\n", "# Foo\n- [core] do goats obey a cancel?\n",
+                 "outside `## open`"),
+                ("a heading with a trailing hash", "## open\n", "## open #\n", "not `## <section>`"),
+                ("an indented heading", "## delegated\n", "  ## delegated\n", "not `## <section>`"),
+                ("a sub-heading", "## delegated\n", "## delegated\n### detail\n", "not `## <section>`"),
                 ("unbulleted promise in does", "- [advisory] Dirt flies", "- [advisory] Dirt flies\nGoats stop when cancelled.",
                  "not a bullet"),
                 ("numbered does line names no leaf", "- [floor:log] Clean log", "1) [leaf:ghost] Clean log", "no such leaf")):
@@ -423,6 +428,22 @@ def main():
             f.write(deep)
         check("deep nesting: cli write exit 1", CT.main(["write", d, "--draft", dj2]) == 1)
         check("deep nesting: and tree.json is untouched", open(tp, "rb").read() == keep_tree)
+        op = os.path.join(repo, CT.OWNER_SHARD)
+        shard = open(op, "rb").read()
+        with open(op, "wb") as f:
+            f.write(("[" * 200000 + "0" + "]" * 200000 + "\n").encode() + shard)
+        check("owner_events: a deep line is skipped, not raised", "111" in CT.owner_events(repo))
+        with open(op, "wb") as f:
+            f.write(shard)
+        os.remove(tp)
+        os.makedirs(tp)
+        got = CT.lint(d, repo)[0]
+        check("tree.json as a directory: lint refuses, not raises", any("cannot be read" in e for e in got), got)
+        check("tree.json as a directory: gate, sign, hash, askcheck refuse", CT.gate(d, repo)[0] != []
+              and CT.sign(d, "Arbiter", repo) != [] and CT.main(["hash", d]) == 1 and CT.main(["askcheck", d, "q"]) == 1)
+        os.rmdir(tp)
+        with open(tp, "wb") as f:
+            f.write(keep_tree)
         with open(sp, "wb") as f:
             f.write(SHEET.encode("utf-8") + b"\xff\n")
         got = CT.lint(d, repo)[0]
