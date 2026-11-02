@@ -2,9 +2,8 @@
 """install_fleet_shortcut.py — one double-click opens the whole fleet, tiled.
 
 Writes a Desktop shortcut that runs `launch_fleet.ps1`, which opens one Windows
-Terminal window per agent and places them at their fixed positions:
-
-    TOP-LEFT HESTIA   BOTTOM-LEFT CONDUCTOR   BOTTOM-RIGHT AGENT FOUNDRY
+Terminal window per seat and places each at its fixed position. Which seats, and
+where, is the .ps1's `-Seats` default and its rect table — read it there, not here.
 
 All launch behaviour lives in the .ps1 — the AGENT BENCH/AGENT FOUNDRY profiles
 it names are the ones `install_wt_seat_profiles.py` writes, which already carry
@@ -16,7 +15,7 @@ WHY A .lnk AND NOT A .bat
 =========================
 A batch file goes through cmd and flashes a console window on every click. The
 shortcut runs `powershell.exe` directly with `-WindowStyle Hidden`, so the only
-windows that appear are the three seats.
+windows that appear are the seats.
 
 The Explorer properties dialog caps the Target field at 260 characters, but the
 .lnk format does not and WScript.Shell writes the field directly — which is why
@@ -120,21 +119,22 @@ def main():
             print("nothing there already.")
         return
 
-    desc = ("Open the fleet at sign-in: HESTIA + the RimWorld agent windows, tiled"
-            if args.startup else
-            "Open the fleet: HESTIA + the two RimWorld agent windows, tiled")
+    desc = ("Open the agent fleet at sign-in, tiled" if args.startup else "Open the agent fleet, tiled")
+
+    def q(v):   # a PowerShell single-quoted literal: an apostrophe in a --desktop path would end the string
+        return v.replace("'", "''")
     ps = (
         "$s = (New-Object -ComObject WScript.Shell).CreateShortcut('%s');"
         "$s.TargetPath = '%s';"
         "$s.Arguments = '%s';"
         "$s.WorkingDirectory = '%s';"
         # The icon is Windows Terminal's, not PowerShell's: what the shortcut
-        # opens is three terminals, and the icon is how it is found on a busy
+        # opens is terminals, and the icon is how it is found on a busy
         # Desktop.
         "$s.IconLocation = '%s,0';"
         "$s.Description = '%s';"
         "$s.Save()"
-    ) % (lnk, PS, arguments.replace("'", "''"), REPO_WIN, WT, desc)
+    ) % tuple(q(v) for v in (lnk, PS, arguments, REPO_WIN, WT, desc))
 
     r = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
                        capture_output=True, text=True)
