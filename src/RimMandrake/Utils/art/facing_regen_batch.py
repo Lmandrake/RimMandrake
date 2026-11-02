@@ -39,12 +39,14 @@ sys.path.insert(0, str(HERE.parent / "artpipe"))
 import facing_regen as R  # noqa: E402
 import facing_scale_lint as L  # noqa: E402
 
-BATCH = REPO / "Transient/facing_regen_batch_2026-10-16"
+# A later round points these at its own state and lint rows (FACING_REGEN_BATCH_DIR, FACING_REGEN_ROWS); the state
+# may live outside the repo (agent storage), the candidates art.py install --file needs always live in the clone.
+BATCH = Path(os.environ.get("FACING_REGEN_BATCH_DIR") or REPO / "Transient/facing_regen_batch_2026-10-16")
 STATE = BATCH / "state.json"
 LOG = BATCH / "events.jsonl"
-CAND = BATCH / "candidates"                      # in-clone copies art.py install --file needs
+CAND = REPO / "Transient" / BATCH.name / "candidates"     # in-clone copies art.py install --file needs
 WORK = Path(rm_str("scratch", "facing_regen_batch"))   # raw renders: not in the repo
-ROWS = REPO / "Transient/facing_rescale_2026-10-16/lint_after_reseat.json"
+ROWS = Path(os.environ.get("FACING_REGEN_ROWS") or REPO / "Transient/facing_rescale_2026-10-16/lint_after_reseat.json")
 TAG = "standtall_b1"
 MAX_ATTEMPTS = 2                                 # whole-picture attempts (each = up to GEN_TRIES per facing)
 GEN_TRIES = 3
@@ -105,7 +107,7 @@ def plan() -> int:
             rec.update(status="skipped", why="pilot set (installed 17b63dfb21) or Dewback (owner reconcile)")
         elif set(regen) - {"north", "south"}:
             rec.update(status="needs_eyes", why=f"lint asks to regenerate {regen}: east is the anchor, never redrawn")
-        elif any("/rm/bench/src/" not in r["files"].get(f, "") for f in regen):
+        elif any(not r["files"].get(f, "").startswith(str(REPO / "src") + "/") for f in regen):
             rec.update(status="needs_eyes", why="live picture is not in this repo (vanilla/donor/workshop path)")
         else:
             rec["live_sha"] = {f: sha(r["files"][f]) for f in regen}
@@ -290,10 +292,11 @@ def install_ready(rows) -> list[str]:
 
 
 def publish(paths: list[str], n: int) -> str:
-    st = str(STATE.relative_to(REPO))
-    msg = (f"Facings stand tall batch: {n} creatures' redrawn S/N installed via art ledger (owner's words)\n\n"
+    st = str(STATE.relative_to(REPO)) if STATE.is_relative_to(REPO) else ""
+    msg = (f"ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: {n} creatures' redrawn S/N installed via art ledger\n\n"
            "Landed by src/RimMandrake/Utils/art/facing_regen_batch.py")
-    allp = sorted(set(paths)) + [st, str(LOG.relative_to(REPO)), "infrastructure/state/art/events/BENCH.jsonl"]
+    allp = sorted(set(paths)) + ([st, str(LOG.relative_to(REPO))] if STATE.is_relative_to(REPO) else []) + [
+        "infrastructure/state/art/events/BENCH.jsonl"]
     subprocess.run(["git", "-C", str(REPO), "pull", "--ff-only", "-q"], capture_output=True)
     p = subprocess.run(["./publish", "-m", msg] + allp, capture_output=True, text=True, cwd=REPO)
     tail = (p.stdout + p.stderr).strip()[-300:]

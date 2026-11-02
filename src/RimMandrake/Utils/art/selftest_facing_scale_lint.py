@@ -150,6 +150,35 @@ def main() -> int:
             check(not ja["flags"], "SANITY: the fixed Anooba male passes the elevation model", ja["ratios"])
             pre = {"east": ma["east"], **{f: dict(ma[f], h=ma[f]["h"] * 1.55) for f in ("south", "north")}}
             check(len(F.judge(pre, cal, "elevation", "quadruped")["flags"]) == 2, "SANITY: its pre-fix proportions (1.55x) fail")
+    q = {k: {"p02.5": 0.8, "p25": 0.95, "p75": 1.05, "p97.5": 1.2, "band": [0.8, 1.2]} for k in ("d_south", "d_north")}
+    q.update({k: {"band": [0.3, 1.1]} for k in ("w_south", "w_north")})
+    r = {"d_south": 1.1, "w_south": 0.6, "d_north": 1.3, "w_north": 0.6}
+    refused = {"north": {"action": "regenerate"}}
+    jf = F.common_factor(r, q, {}, [], refused)
+    check(jf and jf["south"]["scale"] == jf["north"]["scale"] < 1 and 0.8 <= r["d_north"] * jf["north"]["scale"] <= 1.2,
+          "common factor: one S+N shrink lands both heights in band", jf)
+    check(F.common_factor(dict(r, d_north=2.2), q, {}, [], refused) is None, "common factor: heights too far apart refuse")
+    check(F.common_factor(dict(r, d_south=3.0, d_north=3.0), q, {}, [], refused) is None,
+          "common factor: never below the MIN_SHRINK floor", F.MIN_SHRINK)
+    check(F.common_factor(r, q, {}, [], {"north": {"action": "rescale"}}) is None, "common factor: only where a rescale was refused")
+    ok, bad = {"def": "D", "slot": "s", "view": "elevation", "verdict": "ok", "texPath": "a", "severity": 0}, None
+    bad = dict(ok, verdict="FLAG", texPath="b")
+    donor = dict(bad, view="topdown", texPath="c")
+    check([x["texPath"] for x in F.gate([ok, bad, donor], {})[0]] == ["b"], "gate: our FLAG is open, donor art is not ours")
+    check(F.gate([ok, bad], {"b": "why"})[0] == [], "gate: a waived row is closed")
+    check(F.gate([ok], {"b": "why"})[1] == ["b"], "gate: a waiver that no longer flags is stale")
+    # joint seat (gen 3): a near-full-canvas north cannot rise to a high-standing east -> the shared row drops to
+    # the lowest one every facing reaches; when east already stands low enough, east's own row is kept
+    hi_east = {"bottom": 0.70, "H": 200, "y1": 139}
+    row = {"silhouette": {"east": hi_east, "north": {"h": 0.97}, "south": {"h": 0.5}},
+           "fixes": {"north": {"action": "reseat", "scale": 1.0}, "south": {"action": "rescale", "scale": 0.5}}}
+    check(abs(F.seat_row(row) - 0.97) < 1e-9, "seat_row: a too-tall north drags the shared row down", F.seat_row(row))
+    row["silhouette"]["north"]["h"] = 0.4
+    check(F.seat_row(row) == 0.70, "seat_row: east's own row when every facing can reach it", F.seat_row(row))
+    tall = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+    tall.paste(legged(60, 190), (0, -5))                 # spans rows 0..190: cannot rise to 0.70
+    rt = F.silhouette(F.reseat(tall, {"bottom": 0.97})[0])
+    check(abs(rt["bottom"] - 0.97) < 0.006, "reseat seats a tall picture on the dropped row", rt)
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

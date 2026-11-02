@@ -7,6 +7,7 @@ necessary. Please programmatically detect this problem and then determine the be
 
     python3 facing_scale_lint.py calibrate                 vanilla ratios -> facing_scale_calibration.json
     python3 facing_scale_lint.py lint [DEF ...] [--repo] [--json OUT] [--md OUT] [--all]
+    python3 facing_scale_lint.py gate [--repo] [--json OUT]    exit 0: no picture of ours flags (bar facing_scale_waivers.json)
     python3 facing_scale_lint.py fix --json ROWS --defs D1,D2 --out DIR [--owner-said "..."] [--dry-run]
 
 WHAT IS MEASURED. Each facing PNG's opaque silhouette (alpha >= 128, rows/columns with >= 2 such pixels), as a
@@ -30,8 +31,9 @@ vanilla's 2.5..97.5 percentile (swimming poses excluded: not a standing silhouet
 THE FIX RULE. When south AND north are both too small, east is the odd one out and east is shrunk instead. Otherwise
 a flagged facing is RESCALED about its ground-contact point (bottom-centre of its silhouette), canvas
 size kept, to bring its height ratio to the nearest edge of vanilla's inter-quartile range — when that is a pure
-scale problem: the factor is <= MAX_UPSCALE when enlarging and the rescaled width ratio lands inside vanilla's width
-band. Otherwise the proportions are wrong, not just the scale: REGENERATE.
+scale problem: the factor is <= MAX_UPSCALE when enlarging, >= MIN_SHRINK when shrinking, and the rescaled width ratio
+lands inside vanilla's width band. If only that N:S width check refuses, one common factor on S and N is tried
+(common_factor). Otherwise the proportions are wrong, not just the scale: REGENERATE.
 
 The graphics measured are every texPath the game resolves for each creature: PawnKindDef lifeStages[]
 bodyGraphicData / femaleGraphicData / dessicatedBodyGraphicData and alternateGraphics, read from BOTH the deployed
@@ -57,11 +59,13 @@ sys.path.insert(0, str(HERE.parent))
 import flier_guard as FG  # noqa: E402
 
 CAL = HERE / "facing_scale_calibration.json"
+WAIVERS = HERE / "facing_scale_waivers.json"   # texPath -> why it may stay flagged; gate fails on a stale row
 GAME_DATA = Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data")
 ALPHA = 128
 MIN_RUN = 2
 MARGIN = 0.0             # band = vanilla p2.5 / (1+M) .. p97.5 * (1+M)
 MAX_UPSCALE = 1.25
+MIN_SHRINK = 0.65        # shrinking harder collapses the creature on turning: such a S/N is a top-down drawing, redraw it
 WEST_BAND = (0.95, 1.05)
 MIN_PLAN_N = 8           # a body plan with fewer vanilla animals than this borrows the all-vanilla band
 MARGINS = (0.0, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20)   # widening of vanilla's per-plan ENVELOPE tried, smallest first
@@ -394,6 +398,8 @@ def judge(m: dict, cal: dict, view: str = "topdown", plan: str | None = None) ->
                 why.append(f"{f} height/model after shrinking east {d:.2f} still outside vanilla")
             if not (q[f"w_{f}"]["band"][0] <= w <= q[f"w_{f}"]["band"][1]):
                 why.append(f"{f} width/E after shrinking east {w:.2f} outside vanilla")
+        if 1 / k < MIN_SHRINK:
+            why.append(f"shrinking east x{1 / k:.2f} < {MIN_SHRINK}: the small views are the wrong drawing")
         fixes["east"] = {"action": "regenerate" if why else "rescale", "scale": round(1 / k, 4), "target": None,
                          "width_after": None, "why": "; ".join(why)}
         plan = {f: v for f, v in plan.items() if f == "west"}
@@ -406,6 +412,8 @@ def judge(m: dict, cal: dict, view: str = "topdown", plan: str | None = None) ->
         why = []
         if s > MAX_UPSCALE:
             why.append(f"enlarging x{s:.2f} > {MAX_UPSCALE} loses detail")
+        if s < MIN_SHRINK:
+            why.append(f"shrinking x{s:.2f} < {MIN_SHRINK} collapses the creature on turning (a top-down drawing, not scale)")
         if f != "west":
             w_after = r[f"w_{f}"] * s
             wb = q[f"w_{f}"]["band"]
@@ -422,8 +430,36 @@ def judge(m: dict, cal: dict, view: str = "topdown", plan: str | None = None) ->
             why.append("rescaled silhouette would leave the canvas")
         fixes[f] = {"action": "regenerate" if why else "rescale", "scale": round(s, 4), "target": round(tgt, 4),
                     "width_after": None if w_after is None else round(w_after, 3), "why": "; ".join(why)}
+    joint = common_factor(r, q, m, flags, fixes)
+    if joint:
+        fixes.update(joint)
     return {"ratios": {k: round(v, 4) for k, v in r.items()}, "flags": flags, "views": views,
             "severity": round(max([f["excess"] for f in flags], default=0.0), 3), "fixes": fixes}
+
+
+def common_factor(r: dict, q: dict, m: dict, flags: list, fixes: dict) -> dict | None:
+    """When a S/N rescale was refused, try shrinking BOTH S and N by ONE factor: their N:S width then cannot change, so
+    the only questions are whether both heights land inside the plan's band and both widths stay in vanilla's. Picks
+    the factor nearest the plan's p75 target that passes, else the mildest that passes. -> {facing: fix} or None."""
+    if not any(x["action"] == "regenerate" and f in ("south", "north") for f, x in fixes.items()):
+        return None
+    if "east" in fixes or not all(f"d_{f}" in r and f"w_{f}" in r for f in ("south", "north")):
+        return None
+    lo = max(q[f"d_{f}"]["p02.5"] / r[f"d_{f}"] for f in ("south", "north"))
+    hi = min(q[f"d_{f}"]["p97.5"] / r[f"d_{f}"] for f in ("south", "north"))
+    if lo > hi or lo >= 1 or hi < MIN_SHRINK:
+        return None
+    worst = max(("south", "north"), key=lambda f: r[f"d_{f}"])
+    wants = [q[f"d_{worst}"]["p75"] / r[f"d_{worst}"], hi * 0.995]
+    for s in [min(w, 1.0) for w in wants]:
+        s = max(s, lo * 1.005, MIN_SHRINK)
+        if s > hi or s >= 1:
+            continue
+        if all(q[f"w_{f}"]["band"][0] <= r[f"w_{f}"] * s <= q[f"w_{f}"]["band"][1] for f in ("south", "north")):
+            return {f: {"action": "rescale", "scale": round(s, 4), "target": round(r[f"d_{f}"] * s, 4),
+                        "width_after": round(r[f"w_{f}"] * s, 3), "why": "common S+N factor (keeps N:S width)"}
+                    for f in ("south", "north")}
+    return None
 
 
 # ─────────────────────────────────────────────────────── graphic discovery ──
@@ -578,7 +614,8 @@ def repo_copy(path: str) -> str | None:
             sorted((REPO / "src").glob(f"*/{seg}/*/Textures/{m.group(2)}"))
         if hits:
             return str(hits[0])
-    return None
+    hits = sorted((REPO / "src").glob(f"*/*/Textures/{m.group(2)}"))     # a mod deployed under another folder name
+    return str(hits[0]) if len(hits) == 1 else None
 
 
 def faces_of(texpath: str, use_repo: bool) -> tuple[dict, str]:
@@ -732,16 +769,37 @@ def rescale(img, s: float, east: dict | None = None):
     return out
 
 
-def fix(rows, defs, out_dir: Path, owner_said: str | None, dry_run: bool) -> list[dict]:
+def seat_row(r) -> float:
+    """The feet row (canvas fraction) every facing of this picture is seated on: east's own, unless a S/N picture is
+    too tall to rise that far (a near-full-canvas top-down drawing over a high-standing east) — then the lowest
+    row every facing can reach, and east/west are translated down to it too (shift-only, the side view's pixels
+    untouched). Without this a clamped reseat never clears and every rerun of fix repeats it."""
+    e = r["silhouette"]["east"]
+    need = [r["silhouette"][f]["h"] * (x["scale"] if x["action"] == "rescale" else 1.0)
+            for f, x in r["fixes"].items() if x["action"] in ("rescale", "reseat") and f in r["silhouette"]]
+    return min(1.0, max([e["bottom"]] + need))
+
+
+def fix(rows, defs, out_dir: Path, owner_said: str | None, dry_run: bool, by_card: str | None = None) -> list[dict]:
     import artledger as L
     from PIL import Image
     done, res = set(), []
     for r in rows:
         if r["def"] not in defs or r["verdict"] != "FLAG":
             continue
-        for f, x in r["fixes"].items():
+        t = seat_row(r)
+        fixes = dict(r["fixes"])
+        if any(x["action"] in ("rescale", "reseat") for x in fixes.values()) and \
+                round(t * r["silhouette"]["east"]["H"]) > r["silhouette"]["east"]["y1"] + 1:
+            for f in ("east", "west"):          # the side views drop to the shared row
+                if f in r["files"]:
+                    fixes[f] = {"action": "drop", "scale": 1.0}
+            for f in ("south", "north"):        # a facing that stood on east's old row must follow it down
+                if f in r["files"] and f not in fixes:
+                    fixes[f] = {"action": "reseat", "scale": 1.0}
+        for f, x in fixes.items():
             src = r["files"][f]
-            if x["action"] not in ("rescale", "reseat") or src in done:
+            if x["action"] not in ("rescale", "reseat", "drop") or src in done:
                 continue
             done.add(src)
             try:
@@ -752,13 +810,22 @@ def fix(rows, defs, out_dir: Path, owner_said: str | None, dry_run: bool) -> lis
             dst = out_dir / mod / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
             with Image.open(src) as im:
-                rescale(im, x["scale"], r["silhouette"].get("east")).save(dst)
+                if x["action"] == "drop":                   # side view: vertical shift only, keep its x
+                    sil = silhouette(im.convert("RGBA"))
+                    dy = max(0, min(sil["H"] - 1 - sil["y1"], round(t * sil["H"]) - (sil["y1"] + 1)))
+                    out = Image.new("RGBA", im.size, (0, 0, 0, 0))
+                    out.paste(im.convert("RGBA"), (0, dy))
+                    out.save(dst)
+                elif x["action"] == "reseat":               # a pure translation: never touch a pixel value
+                    reseat(im, {"bottom": t})[0].save(dst)
+                else:
+                    rescale(im, x["scale"], {"bottom": t}).save(dst)
             row = {"def": r["def"], "texPath": r["texPath"], "facing": f, "file": src, "fixed": str(dst),
                    "scale": x["scale"], "mod": mod, "rel": rel}
             if not dry_run:
                 cmd = [sys.executable, str(HERE / "art.py"), "install", mod, rel, "--file", str(dst)]
-                cmd += ["--owner-said", owner_said] if owner_said else ["--reason", "script:" + str(
-                    Path(__file__).resolve().relative_to(REPO))]
+                cmd += ["--owner-said", owner_said] if owner_said else ["--by-card", by_card] if by_card else [
+                    "--reason", "script:" + str(Path(__file__).resolve().relative_to(REPO))]
                 p = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO)
                 row["status"] = (p.stdout.strip().splitlines() or [p.stderr.strip()])[-1][:300]
             else:
@@ -812,6 +879,13 @@ def sheet(groups, out, px_per_cell=150, title=""):
     return out
 
 
+def gate(rows, waivers: dict) -> tuple[list, list]:
+    """Our own art only (view elevation = resolved in a mandrake.* mod). -> (open FLAG pictures, stale waiver keys)."""
+    pics = [r for r in pictures(rows) if r["view"] == "elevation"]
+    flagged = {r["texPath"] for r in pics if r["verdict"] == "FLAG"}
+    return ([r for r in pics if r["texPath"] in flagged - set(waivers)], sorted(set(waivers) - flagged))
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -825,11 +899,15 @@ def main(argv=None) -> int:
     rs = sub.add_parser("reseat", help="shift-only: seat installed S/N pictures on east's feet row (no resample)")
     rs.add_argument("files", nargs="+", help="repo S/N PNGs; east is the sibling *_east.png")
     rs.add_argument("--out", required=True, help="mirror dir (<mod>/<rel>) for art.py install")
+    gt = sub.add_parser("gate", help="exit 0 when no picture of ours FLAGs, bar the rows in facing_scale_waivers.json")
+    gt.add_argument("--repo", action="store_true")
+    gt.add_argument("--json")
     fx = sub.add_parser("fix")
     fx.add_argument("--json", required=True)
     fx.add_argument("--defs", required=True)
     fx.add_argument("--out", required=True)
     fx.add_argument("--owner-said")
+    fx.add_argument("--by-card", help="a card decision of his, for pictures he kept (a script reason is refused there)")
     fx.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
     if a.cmd == "calibrate":
@@ -847,6 +925,18 @@ def main(argv=None) -> int:
             Path(a.md).write_text(md)
         print("\n".join(md.splitlines()[:3 + 2 + 30]))
         return 1 if any(r["verdict"] != "ok" for r in rows) else 0
+    if a.cmd == "gate":
+        rows = lint(None, a.repo)
+        waivers = json.loads(WAIVERS.read_text()) if WAIVERS.exists() else {}
+        bad, stale = gate(rows, waivers)
+        if a.json:
+            Path(a.json).write_text(json.dumps(bad, indent=1))
+        for r in bad:
+            print(f"FLAG {r['severity']:.2f} {r['texPath']}: " + "; ".join(f"{f} {x['action']}" for f, x in r["fixes"].items()))
+        for k in stale:
+            print(f"STALE WAIVER {k}: it no longer flags, delete the row")
+        print(f"gate: {len(bad)} open, {len(waivers)} waived, {len(stale)} stale")
+        return 1 if bad or stale else 0
     if a.cmd == "reseat":
         FG.refuse_fliers('facing_scale_lint.py reseat', a.files)
         import artledger as AL
@@ -864,7 +954,7 @@ def main(argv=None) -> int:
         return 0
     rows = json.loads(Path(a.json).read_text())
     FG.refuse_fliers('facing_scale_lint.py fix', [str(v) for r in rows for v in (r.values() if isinstance(r, dict) else [r]) if isinstance(v, str)], a.defs.split(','))
-    res = fix(rows, set(a.defs.split(",")), Path(a.out), a.owner_said, a.dry_run)
+    res = fix(rows, set(a.defs.split(",")), Path(a.out), a.owner_said, a.dry_run, a.by_card)
     print(json.dumps(res, indent=1))
     return 0
 
