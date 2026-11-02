@@ -1,0 +1,2 @@
+Every Relentless live round from 18:44Z on 2026-11-02 was REFUSED 'cut at 160 chars on the ledger and no prose holds the rest' because Fx.prose read only the item .md, not infrastructure/state/live_proofs/<ID>.criteria; REFUSED rows carry no sha so they never counted. Fixed e11bac02af. First non-refused row: BIOME_TIER_CLEANUP_1 A1 19:07:19Z.
+home: src/RimMandrake/rimflow/relentless_live.py Fx.prose
