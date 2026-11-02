@@ -117,6 +117,41 @@ def test_kill_time_recheck():
     check(any("unpublished" in h for h in h_shard), "kill recheck: --now rechecks the shard (%s)" % h_shard)
 
 
+def test_join_clears_hard():
+    # NEGATIVE (GPT review 2026-11-01 #3): a FOUNDRY request joins a pending hard restart and the window compacts (no
+    # size). A kept hard flag made the kill want a size the pending side no longer asked for: claimed, refused, forever
+    rs = {"source": "backstop_hard", "hard": True, "ts": T0, "session_id": "sid-old", "state": "pending"}
+    acts = []
+    SR._join_request("FOUNDRY", dict(SR.DEFAULTS), rs, {"request": lambda s_: dict(F.req(T0 + 5), now=True)}, T0 + 6,
+                     lambda **kw: acts.append(kw))
+    check(rs.get("source") == "request" and "hard" not in rs and rs.get("now") is True,
+          "a joined request drops the hard flag and keeps --now (%s)" % rs)
+    sf = {"pid": 1, "sessionId": "sid-old", "cwd": F.CLONE}
+    old = SR.tx_summary, SR.helpers_of, SR.bridge_reading, SR.final_fence
+    try:
+        SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_end", "last_at": SR.time.time() - 60,
+                                               "last_user_at": 0, "ctx_tokens": None}
+        SR.helpers_of = lambda *a, **k: []
+        SR.bridge_reading = lambda seat: {"state": "MEASURED", "holders": []}
+        SR.final_fence = lambda *a, **k: []
+        h = SR.recheck_at_kill("FOUNDRY", F.sched(), rs, sf, paused=lambda: None, work=lambda s_, ts: [],
+                               pending=lambda *a: [], shard=lambda s_: None)
+    finally:
+        SR.tx_summary, SR.helpers_of, SR.bridge_reading, SR.final_fence = old
+    check(h == [], "the joined, compacted window is killable at the recheck (%s)" % h)
+
+
+def test_plain_request_fenced_on_shard():
+    # NEGATIVE (GPT review 2026-11-01 #5): a plain request whose window appended after its gate holds on the shard
+    sch, st = F.sched(), F.fresh()
+    a = F.run(sch, st, nobs(request=F.req(), shard="FOUNDRY.jsonl has uncommitted lines"), T0 + 1)
+    a = F.run(sch, st, nobs(request=None, shard="FOUNDRY.jsonl has uncommitted lines"), T0 + SR.DEFAULTS["grace_s"] + 5)
+    holds = [x.get("why") for x in a if x["do"] == "restart_hold"]
+    check(not kills(a) and any("unpublished" in (h or "") for h in holds), "a plain request is held on its shard (%s)" % holds)
+    a = F.run(sch, st, nobs(request=None, shard=None), T0 + SR.DEFAULTS["grace_s"] + 10)
+    check(len(kills(a)) == 1, "control: published, it is claimed (%s)" % F.dos(a))
+
+
 def _write(path, obj):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:

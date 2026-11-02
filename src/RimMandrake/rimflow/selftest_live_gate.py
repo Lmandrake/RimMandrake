@@ -40,7 +40,11 @@ def lines():
     check(r == {"kind": "unit", "unit": "rm-a.timer", "reading": "/x", "max_age_s": 21600}, "unit with a reading parses")
     check(L.parse("unit=rm-a.timer max_age=2d")["reading"] is None, "a timer is its own reading")
     check(L.parse("role=Operations max_age=2d")["max_age_s"] == 172800, "role parses")
-    for bad in ("unit=rm-a.service max_age=1h", "unit=rm-a.timer", "once:", "hook=a b", "nonsense", ""):
+    check(L.parse("unit=rm-a.path")["max_age_s"] is None, "a .path unit alone parses: armed is its promise")
+    check(L.check("unit=rm-a.path", now=NOW, runner=sysd(last="0")) is None, "an armed .path unit holds, never fired")
+    check("is-active" in L.check("unit=rm-a.path", now=NOW, runner=sysd(active="inactive")), "a stopped .path is broken")
+    check("is-enabled" in L.check("unit=rm-a.path", now=NOW, runner=sysd(enabled="disabled")), "a disabled .path is broken")
+    for bad in ("unit=rm-a.service max_age=1h", "unit=rm-a.timer", "unit=rm-a.service", "unit=rm-a.path extra=1", "once:", "hook=a b", "nonsense", ""):
         try:
             L.parse(bad)
             check(False, "must refuse %r" % bad)

@@ -80,6 +80,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             # RESTART_NOW_BUILD_WINDOW_SAYS_READY: `request --now` vouches for its boundary, so a short ended-turn
             # check stands in for grace + quiet_s; now_hold_s bounds how long rm-restart-now ticks before the timer
             "now_quiet_s": 3, "now_hold_s": 240}
+HELPER_STALE_FLOOR_S = 1200
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
@@ -135,6 +136,9 @@ def config(sch):
         cfg.setdefault("session_name", "AGENT " + seat)
         # a tile may never claim a relaunch decide() has already given up on (review3 #3)
         cfg["intile_window_s"] = min(cfg["intile_window_s"], cfg["intile_wait_s"] + cfg["verify_s"])
+        # silence retires a helper only past the 600 s subagent watchdog and a 600 s tool call: a typo of 300 would
+        # read a helper in one long command as dead and let the kill through (GPT review 2026-11-01 #1)
+        cfg["helper_stale_s"] = max(cfg["helper_stale_s"], HELPER_STALE_FLOOR_S)
         out[seat] = cfg
     return out
 
@@ -716,7 +720,13 @@ def helpers_of(path, now=None, stale_s=None):
     for f in sorted(os.path.join(sub, n) for n in names if n.startswith("agent-") and n.endswith(".jsonl")):
         try:
             mt = os.path.getmtime(f)
-            recs = [r for r in _tail_records(f, 256 << 10) if r.get("type") in ("user", "assistant")]
+            # a queued_command attachment is input too: a follow-up delivered after the helper's ended turn exists only
+            # as one, and the helper runs on it (GPT review 2026-11-01 #2)
+            recs = [r if r.get("type") != "attachment" else {"type": "user", "queued_command": True}
+                    for r in _tail_records(f, 256 << 10)
+                    if r.get("type") in ("user", "assistant")
+                    or (r.get("type") == "attachment" and isinstance(r.get("attachment"), dict)
+                        and r["attachment"].get("type") == "queued_command")]
         except Torn:                     # no newline at EOF: it is being written this instant, so it is alive; a helper
             recs = []                    # that died mid-write still retires by silence below. Never UNMEASURED: a busy
         except (OSError, Malformed):     # helper would blind every tick (a bad line whole in the file still does)
@@ -791,17 +801,25 @@ def work_since(clone, seat, req_ts):
         return []
     except OSError:
         return None
+    # a line that cannot be read, or a work event with no readable time, may be the claim that voids the request: the
+    # reading is UNMEASURED (None, the restart holds), never [] (GPT review 2026-11-01 #3)
     for raw in data.splitlines():
+        if not raw.strip():
+            continue
         try:
             ev = json.loads(raw.decode("utf-8"))
         except (UnicodeDecodeError, ValueError):
-            continue
-        if not isinstance(ev, dict) or ev.get("seat") != seat:
+            return None
+        if not isinstance(ev, dict):
+            return None
+        if ev.get("seat") != seat:
             continue
         if ev.get("event") not in WORK_EVENTS and not (ev.get("event") == "lease" and ev.get("action") in WORK_LEASE):
             continue
         at = _ts(ev.get("ts"))
-        if at is not None and at >= since:
+        if at is None:
+            return None
+        if at >= since:
             out.append(ev)
     return out
 
@@ -1313,6 +1331,9 @@ def _join_request(seat, cfg, rs, ro, now, act):
         return
     # his own request stands even if a compaction would cancel the forced one: source no longer says size
     rs.update(req_ts=req["ts"], ticket=req.get("ticket") or rs.get("ticket"), source="request", work_from=req["ts"])
+    # and no longer the hard limit's: a kept hard flag made the kill want a size the pending side no longer asks for, so
+    # a compacted window was claimed and refused every tick, drained for ever (GPT review 2026-11-01 #3)
+    rs.pop("hard", None)
     for k in ("tx_offset", "tx_path", "closeout", "gaps"):
         if req.get(k) is not None:
             rs[k] = req[k]
@@ -1731,6 +1752,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         rs["ctx_tokens"] = size
     if hard:
         _join_request(seat, cfg, rs, ro, now, act)   # the seat answered the tell
+        hard = rs.get("hard") is True                # joined: an ordinary request from here on
     sc = None
     if rs.get("tx_offset") is not None:
         try:
@@ -1776,7 +1798,10 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                     seat, cfg["helper_stale_s"], ", ".join(h["id"] for h in stale)))
     if work is None:
         holds.append("the seat's ledger shard is UNMEASURED (cannot tell whether it took new work)")
-    if (deferred or instant) and hs is not None and not live and callable(ro.get("shard")):   # the refusal the deferral skipped
+    # the refusal the deferral skipped, and the lines any window appends after its request: every source but a size
+    # restart (bring-back and a goodbye never passed a refusal at all) holds until the shard is on origin (GPT review
+    # 2026-11-01 #5); a size restart's lines stay in the clone for the next window there
+    if rs.get("source") not in FORCED and hs is not None and not live and callable(ro.get("shard")):
         unpub = ro["shard"](seat)
         if unpub:
             holds.append("ledger shard unpublished: %s" % unpub)
@@ -1940,16 +1965,25 @@ def write_killed(seat, rec, root=None):
 
 
 def consume_request(seat, root=None, ts=None):
-    """Move the request to done/ — only if it is still the one decided on (ts) when read here (MEDIUM 10). The check
-    and the move are not atomic: a request written between them is taken unread (accepted, golive §10 known limits;
-    nothing is killed for it)."""
+    """Move the request to done/ — only if it is still the one decided on (ts). The move comes first and the bytes moved
+    are judged (GPT review 2026-11-01 #2): a newer request that replaced the file after the decision goes back, never
+    archived unread (os.link never overwrites: one newer still is already there, and stands)."""
     p = request_path(seat, root)
-    if ts is not None and ((_read_json(p) or {}).get("ts") != ts):
+    d = os.path.join(restart_dir(root), "done")
+    os.makedirs(d, exist_ok=True)
+    dest = os.path.join(d, "%s-%d-%d.request.json" % (seat, int(time.time()), os.getpid()))
+    try:
+        os.rename(p, dest)
+    except FileNotFoundError:
         return
-    if os.path.exists(p):
-        d = os.path.join(restart_dir(root), "done")
-        os.makedirs(d, exist_ok=True)
-        os.replace(p, os.path.join(d, "%s-%d.request.json" % (seat, int(time.time()))))
+    if ts is not None and (_read_json(dest) or {}).get("ts") != ts:
+        try:
+            os.link(dest, p)
+        except FileExistsError:
+            pass
+        except OSError:
+            return              # it could not go back: the only copy stays in done/, never deleted
+        os.remove(dest)
 
 
 def run_fallback(argv):
@@ -2273,7 +2307,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         nw = new_work(evs, rs.get("ticket"), drain=rs.get("deferred") is True)
         if nw and rs.get("source") not in FORCED and not goodbye:
             holds.append(_work_why(nw))
-    if rs.get("deferred") is True or rs.get("now") is True:   # a helper's last append can land between the verdict and the kill
+    if rs.get("source") not in FORCED:   # an append (a helper's last, a goodbye's note) can land between verdict and kill
         unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat)
         if unpub:
             holds.append("ledger shard unpublished: %s" % unpub)

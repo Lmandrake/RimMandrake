@@ -446,6 +446,20 @@ def test_transcript_readers():
     check(ok and "agent-authdead" in why and "agent-stale" in why, "check_request passes and names retired helpers (%s)" % why)
     os.remove(os.path.join(sub, "agent-authdead.jsonl"))
     os.remove(os.path.join(sub, "agent-stale.jsonl"))
+    # NEGATIVE (GPT review 2026-11-01 #2): a follow-up delivered to an ended helper lands only as a queued_command
+    # attachment; the helper is running on it, so it is alive. Control: any other attachment after the end is not input
+    with open(os.path.join(sub, "agent-requeued.jsonl"), "w") as f:
+        f.write("\n".join(json.dumps(r) for r in main) + "\n" + json.dumps(
+            {"type": "attachment", "timestamp": "2026-10-28T01:00:20Z",
+             "attachment": {"type": "queued_command", "commandMode": "prompt", "prompt": "one more thing"}}) + "\n")
+    with open(os.path.join(sub, "agent-otherattach.jsonl"), "w") as f:
+        f.write("\n".join(json.dumps(r) for r in main) + "\n" + json.dumps(
+            {"type": "attachment", "timestamp": "2026-10-28T01:00:20Z", "attachment": {"type": "todo_reminder"}}) + "\n")
+    hq = {h["id"]: h["alive"] for h in SR.helpers_of(os.path.join(proj, "sid-x.jsonl"), now=None)}
+    check(hq.get("agent-requeued") is True and hq.get("agent-otherattach") is False,
+          "helpers_of: a queued_command after the ended turn keeps the helper alive; another attachment does not (%s)" % hq)
+    os.remove(os.path.join(sub, "agent-requeued.jsonl"))
+    os.remove(os.path.join(sub, "agent-otherattach.jsonl"))
 
 
 def test_intile_claim_once():
@@ -687,6 +701,15 @@ def test_m9_fallback_argv_tokenised():
     check(SR.fallback_argv("FOUNDRY", m) == m["relaunch"], "M9 an already-narrow launcher is used as is")
 
 
+def test_helper_stale_floor():
+    # NEGATIVE (GPT review 2026-11-01 #1): silence retires a helper; a configured bound under the watchdog would retire
+    # one inside a long tool call, so config() floors it
+    c = SR.config({"seat_restart": {"enabled": True, "seats": {"FOUNDRY": {"helper_stale_s": 300}}}})
+    check(c["FOUNDRY"]["helper_stale_s"] >= 1200, "a helper_stale_s of 300 is floored (%s)" % c["FOUNDRY"]["helper_stale_s"])
+    c = SR.config({"seat_restart": {"enabled": True, "seats": {"FOUNDRY": {"helper_stale_s": 3600}}}})
+    check(c["FOUNDRY"]["helper_stale_s"] == 3600, "control: a longer bound stands")
+
+
 def test_m10_consume_only_the_request_read():
     root = os.path.join(TMP, "m10")
     p = SR.request_path("FOUNDRY", root)
@@ -695,8 +718,30 @@ def test_m10_consume_only_the_request_read():
         json.dump({"ts": 222.0}, f)
     SR.consume_request("FOUNDRY", root, ts=111.0)
     check(os.path.exists(p), "M10 a newer request than the one decided on is left in place")
+    done = os.path.join(SR.restart_dir(root), "done")
+    check(not os.path.isdir(done) or not os.listdir(done), "M10 the mismatched request left no copy in done/")
     SR.consume_request("FOUNDRY", root, ts=222.0)
     check(not os.path.exists(p), "M10 the request decided on is consumed")
+    # NEGATIVE (GPT review 2026-11-01 #2): request B replaces A between the decision and the move; the move judges the
+    # bytes it moved, so B goes back unread. And when C replaced B meanwhile, C stands (B is not linked over it)
+    for later in (None, {"ts": 444.0}):
+        with open(p, "w") as f:
+            json.dump({"ts": 333.0}, f)       # B, the file at the move; the tick decided on A (ts 111)
+        real = SR._read_json
+
+        def racing(path, real=real, later=later):
+            if later is not None and path != p:
+                with open(p, "w") as f:
+                    json.dump(later, f)
+            return real(path)
+        SR._read_json = racing
+        try:
+            SR.consume_request("FOUNDRY", root, ts=111.0)
+        finally:
+            SR._read_json = real
+        want = 444.0 if later else 333.0
+        check((SR._read_json(p) or {}).get("ts") == want,
+              "M10 a replacement request is never archived unread: %s stands (%s)" % (want, SR._read_json(p)))
 
 
 # ---- GPT confirmation round 2026-10-28 (foundry_fresh/gpt/review2.md)
@@ -1121,10 +1166,20 @@ def test_w1_new_work_after_the_request_voids_it():
         for e in [_ev("lease", "OLD", SR._iso(T0 - 5), action="take"), dict(_ev("claim", "X", later), seat="BENCH"),
                   _ev("lease", "NEW_TICKET_1", later, action="take")]:
             f.write(json.dumps(e) + "\n")
-        f.write("{not json\n")
     got = SR.work_since(clone, "FOUNDRY", T0 + 0.5)
     check([e["id"] for e in got or []] == ["NEW_TICKET_1"],
           "W1 work_since reads the seat's own shard from the request's second on (%s)" % got)
+    # NEGATIVE (GPT review 2026-11-01 #3): a torn or junk line may be the claim itself, so the reading is UNMEASURED,
+    # never []; so is a work event whose time cannot be read
+    with open(os.path.join(shard, "FOUNDRY.jsonl"), "a") as f:
+        f.write('{"event": "claim", "seat": "FOUNDRY", "id": "TORN\n')
+    check(SR.work_since(clone, "FOUNDRY", T0 + 0.5) is None, "W1 a junk line in the shard -> UNMEASURED (None), not []")
+    with open(os.path.join(shard, "FOUNDRY.jsonl"), "w") as f:
+        f.write(json.dumps(dict(_ev("claim", "NO_TS", later), ts="yesterday")) + "\n")
+    check(SR.work_since(clone, "FOUNDRY", T0 + 0.5) is None, "W1 a work event with no readable time -> UNMEASURED")
+    with open(os.path.join(shard, "FOUNDRY.jsonl"), "w") as f:
+        f.write(json.dumps(dict(_ev("note", "NO_TS", later), ts="yesterday")) + "\n\n")
+    check(SR.work_since(clone, "FOUNDRY", T0 + 0.5) == [], "W1 control: a non-work event's bad time and a blank line read")
     check(SR.work_since(os.path.join(TMP, "w1none"), "FOUNDRY", T0) == [], "W1 no shard yet -> no work (empty)")
     # the kill-time re-check reads it again
     holds = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "ticket": "SOME_TICKET_DONE", "session_id": "sid-old"},
@@ -2368,9 +2423,15 @@ def test_d11_shard_rechecked_at_the_kill():
     check(any("unpublished" in h for h in holds), "D11 an append after the verdict holds the kill (%s)" % holds)
     holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [], shard=lambda s_: None)
     check(not any("unpublished" in h for h in holds), "D11 a published shard does not hold (%s)" % holds)
-    holds = SR.recheck_at_kill("FOUNDRY", sch, dict(rs, deferred=False), sf, paused=lambda: None, work=lambda s_, ts: [],
-                               shard=lambda s_: "x has uncommitted lines")
-    check(not any("unpublished" in h for h in holds), "D11 no deferral: the request gate already spoke (%s)" % holds)
+    # NEGATIVE (GPT review 2026-11-01 #5): a plain request, a goodbye, a bring-back append after their gate (or never
+    # passed one): the fence holds every source but a size restart
+    for src in ("request", "bringback"):
+        holds = SR.recheck_at_kill("FOUNDRY", sch, dict(rs, deferred=False, source=src), sf, paused=lambda: None,
+                                   work=lambda s_, ts: [], shard=lambda s_: "x has uncommitted lines")
+        check(any("unpublished" in h for h in holds), "D11 %s: an unpublished shard holds the kill (%s)" % (src, holds))
+    holds = SR.recheck_at_kill("FOUNDRY", sch, dict(rs, deferred=False, source="backstop_hard", hard=True), sf,
+                               paused=lambda: None, work=lambda s_, ts: [], shard=lambda s_: "x has uncommitted lines")
+    check(not any("unpublished" in h for h in holds), "D11 control: a size restart is not fenced (%s)" % holds)
 
 
 def test_d2_helper_events_never_void_a_drain():

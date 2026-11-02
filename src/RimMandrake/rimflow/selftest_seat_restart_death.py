@@ -192,7 +192,8 @@ class Scene:
         """A restarted Dispatcher: state.json as it is on disk, the real decide() on real readings."""
         st = self.state()
         ro = dict(SR.default_obs(self.sch, lambda *a: []), helpers=lambda *a: [], work=lambda *a: [], game=lambda s: None,
-                  bridge=lambda s: {"state": "MEASURED", "holders": []}, armed=lambda s: None)
+                  bridge=lambda s: {"state": "MEASURED", "holders": []}, armed=lambda s: None,
+                  shard=lambda s: None)     # published: these scenes test death, not the publication fence
         acts = []
 
         def act(**kw):

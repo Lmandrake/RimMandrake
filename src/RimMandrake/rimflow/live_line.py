@@ -3,6 +3,7 @@
 
     unit=rm-foo.timer reading=<path> max_age=6h
     unit=rm-foo.timer max_age=6h          the reading is the timer's own last firing
+    unit=rm-foo.path                      a .path unit enabled and armed (it fires only on demand, so no age)
     hook=block_foo.py
     role=Operations max_age=2d            a Dispatcher role's last launch
     once: one-off data repair
@@ -41,6 +42,10 @@ def parse(line):
         raise ValueError("empty value: %r" % line)
     if set(fields) == {"hook"}:
         return {"kind": "hook", "hook": fields["hook"]}
+    if set(fields) == {"unit"}:
+        if not fields["unit"].endswith(".path"):
+            raise ValueError("only a .path unit is proved by being armed alone; %s needs max_age=" % fields["unit"])
+        return {"kind": "unit", "unit": fields["unit"], "reading": None, "max_age_s": None}
     if set(fields) in ({"unit", "reading", "max_age"}, {"unit", "max_age"}, {"role", "max_age"}):
         m = AGE_RX.match(fields["max_age"])
         if not m:
@@ -153,6 +158,8 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         got = _systemctl(verb, p["unit"], runner)
         if got != want:
             return "%s: %s says %r, wanted %r" % (p["unit"], verb, got, want)
+    if p["max_age_s"] is None:   # a .path unit: enabled and armed is the promise; it fires only when asked
+        return None
     if p["reading"]:
         try:
             mt = os.path.getmtime(p["reading"])
