@@ -24,4 +24,16 @@ rivers."*
 **What decides it:** a live look at the Scald shore toward the Anvil, a Greentide river and a Contagion river. Stone
 roads should read brown-grey, not like a river. Rivers should read blue, red inside the Contagion only.
 
-`WORLD_PATHS_VERIFY_WATER_FINALLY_WET` — built, committed, not deployed; NEXT: deploy BiomesShell (Baroque Biomes compose) and FlowWorks with `deploy_custom_mods.py --apply` at the next game-down, then screenshot the Scald shore, the Anvil and a Contagion river on the planet map and show the owner.
+## Verdict (judge, 2026-11-02)
+
+Deployed 2026-10-20 22:20 (FOUNDRY note); post-deploy shots `D:\ClaudeWork\rimmandrake\scratch\live8\b_*_s.png` judged:
+- Scald shore toward the Anvil: the stone road reads dark grey under a dark casing, not water. Rivers are blue.
+  Red appears only where rivers enter the pink coastal tiles, and teal only by the Rust Cathedral. **PASS.**
+- Highway: broken old-asphalt dashes with a pale centre stripe, not gold. **PASS.** One residual: the neutral fill
+  renders navy (about RGB 48,56,80) under the planet light. Filed as `WORLD_HIGHWAY_TUNE_NAVY_IN_DISGUISE`.
+- Contagion shot, tile 9160: in the 2026-09-12 record this tile is `RUT_Contagion`. The tint keys on `RM_Contagion`,
+  which is not yet painted, and that is expected (owner 2026-09-20). So blue rivers there are not a defect.
+- Offline proof: `python3 src/RimMandrake/Utils/worldpaths/verify_water.py` exits 0. It checks the source colours and the
+  deployed Biomes and FlowWorks DLLs.
+
+`WORLD_PATHS_VERIFY_WATER_FINALLY_WET` — verified; NEXT: supervisor closes on the published sha.
