@@ -9,7 +9,10 @@ slip OFF) over 12 cells of each floor, twice. The 2026-10-10 scene timed with sc
 200 ms at speed 4 (~80 ticks a sample) against 120-200 tick walks; this one advances rimworld/step_game_ticks STEP ticks at
 a time, so a crossing is placed within STEP ticks (per-cell error <= STEP/12).
 
-A1 holds when, for the pawn's own T = 60 / MoveSpeed (roofed, so no weather factor):
+A1 holds when the timed pawn IS a standard colonist (the item: "re-measure on a 13 ticks/cell pawn"):
+  T = 60 / MoveSpeed within T_TOL of 13.04 (roofed, so no weather factor); any other pawn -> UNMEASURED, exit 1.
+  The pawn is a Baseliner colonist picked from up to PICK_TRIES spawns until one lands in that band.
+and, for that T:
   granite ticks/cell within TOL of T                       (the instrument sees the pawn's base cost)
   glass - granite ticks/cell within TOL of RM_Glasswalk pathCost 3   (the engine ADDS pathCost: test_glasswalk_speed_model.py)
   so a standard colonist (T = 13.04) gets 13.04 / 16.04 = 0.81, the spec's "~80%". The ratio at this pawn's T is printed.
@@ -28,10 +31,15 @@ STEP = 2            # ticks per exact step
 TOL = 0.75          # ticks/cell
 X0, X1 = 4, 16      # timed span: 12 cells, start/stop effects excluded
 STANDARD_T = 60.0 / 4.6
+T_TOL = 0.7         # ticks/cell: MoveSpeed 4.37..4.85 counts as "a 13 ticks/cell pawn"
+PICK_TRIES = 6
 
 
 def px(pid):
-    return ((S.call("jawa/pawn_get", pawn=pid).get("pawns") or [{}])[0].get("position") or {}).get("x")
+    r = S.call("jawa/pawn_get", pawn=pid)
+    if not isinstance(r, dict):
+        return None     # a text error is a blind reading, never a crash
+    return ((r.get("pawns") or [{}])[0].get("position") or {}).get("x")
 
 
 def move_speed(pid):
@@ -48,6 +56,46 @@ def move_speed(pid):
 
 def step(n):
     return S.need(S.call("rimworld/step_game_ticks", ticks=n, timeoutMs=60000), "step_game_ticks")
+
+
+def in_band(ms):
+    return bool(ms) and abs(60.0 / ms - STANDARD_T) <= T_TOL
+
+
+def pick_standard_pawn(sc):
+    """Spawn Baseliner colonists at (1,1) (outside the timed span) until one has T within T_TOL of 13.04."""
+    tried = []
+    for _ in range(PICK_TRIES):
+        pid = sc.colonist(1, 1)
+        S.call("jawa/set_pawn_xenotype", pawnId=pid, xenotype="Baseliner", clearEndogenes=True)
+        ms = move_speed(pid)
+        tried.append(ms)
+        if in_band(ms):
+            return pid, tried
+        sc.kill(pid)
+    return None, tried
+
+
+def judge(g, s, speeds):
+    """Pure verdict. g, s: ticks/cell samples on granite and glass; speeds: MoveSpeed readings of the timed pawn.
+    Returns (exit code, RESULT line). UNMEASURED unless the pawn is a ~13 ticks/cell pawn and both floors have 2 samples."""
+    ms = [v for v in speeds if v]
+    if len(g) < 2 or len(s) < 2 or not ms or len(ms) != len(speeds):
+        return 1, "RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED granite=%s glass=%s MoveSpeed=%s" % (g, s, speeds)
+    T = 60.0 / st.mean(ms)
+    if not all(in_band(v) for v in ms):
+        return 1, ("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED pawn T=%.2f ticks/cell (MoveSpeed=%s) is not a "
+                   "13 ticks/cell pawn (|T-%.2f|<=%.2f required)" % (T, speeds, STANDARD_T, T_TOL))
+    gm, sm = st.mean(g), st.mean(s)
+    delta = sm - gm
+    # Every sample, not only the means: an average can hide two wrong walks ([10, 16] means 13).
+    ok_base = abs(gm - T) <= TOL and all(abs(v - T) <= TOL for v in g)
+    ok_add = abs(delta - PATH_COST) <= TOL and all(abs(v - (T + PATH_COST)) <= TOL for v in s)
+    verdict = 0 if (ok_base and ok_add) else 1
+    return verdict, ("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 %s T=%.2f granite=%.2f (|g-T|<=%.2f: %s) glass=%.2f "
+                     "delta=%.2f (|delta-%d|<=%.2f: %s) ratio=%.3f law=%.3f"
+                     % ("PASS" if verdict == 0 else "FAIL", T, gm, TOL, ok_base, sm, delta, PATH_COST, TOL, ok_add,
+                        gm / sm, T / (T + PATH_COST)))
 
 
 def walk_exact(sc, pid):
@@ -67,7 +115,7 @@ def walk_exact(sc, pid):
         t += STEP
         x = px(pid)
         if x is None:
-            continue
+            return None     # a blind step could hide a crossing: the walk is unmeasured, never skipped
         if ta is None and x >= sc.x + X0:
             ta = t
         if ta is not None and x >= sc.x + X1:
@@ -86,7 +134,12 @@ def main():
         sc.room(roof=True)
         S.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (sc.x + dx, sc.z + 2) for dx in range(0, 20)),
                stuff="BlocksGranite")
-        pid = sc.colonist(1, 1)
+        pid, tried = pick_standard_pawn(sc)
+        print("picked", pid, "MoveSpeed tries", tried, flush=True)
+        if pid is None:
+            print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED no 13 ticks/cell colonist in %d spawns: MoveSpeed=%s"
+                  % (PICK_TRIES, tried))
+            return 1
         S.call("jawa/pawn_need", pawn=pid, action="need", need="Mood", level=1.0)
         res = {"TileGranite": [], "RM_Glasswalk": []}
         speeds = []
@@ -102,20 +155,8 @@ def main():
                     print(rep, terr, "ticks/12 cells =", w, "MoveSpeed =", ms, flush=True)
         g = [w / float(X1 - X0) for w in res["TileGranite"] if w]
         s = [w / float(X1 - X0) for w in res["RM_Glasswalk"] if w]
-        ms = [v for v in speeds if v]
-        if len(g) < 2 or len(s) < 2 or not ms:
-            print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED granite=%s glass=%s MoveSpeed=%s" % (g, s, speeds))
-            return 1
-        T = 60.0 / st.mean(ms)
-        gm, sm = st.mean(g), st.mean(s)
-        delta = sm - gm
-        ok_base = abs(gm - T) <= TOL
-        ok_add = abs(delta - PATH_COST) <= TOL
-        verdict = 0 if (ok_base and ok_add) else 1
-        print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 %s T=%.2f granite=%.2f (|g-T|<=%.2f: %s) glass=%.2f delta=%.2f "
-              "(|delta-%d|<=%.2f: %s) ratio_this_pawn=%.3f law_this_pawn=%.3f standard_pawn_ratio=%.3f"
-              % ("PASS" if verdict == 0 else "FAIL", T, gm, TOL, ok_base, sm, delta, PATH_COST, TOL, ok_add,
-                 gm / sm, T / (T + PATH_COST), STANDARD_T / (STANDARD_T + delta)), flush=True)
+        verdict, line = judge(g, s, speeds)
+        print(line, flush=True)
     finally:
         try:
             S.call("jawa/set_game_speed", speed=0)

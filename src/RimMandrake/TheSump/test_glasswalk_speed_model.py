@@ -82,6 +82,94 @@ def times_exactly(path):
     return step_ok and loop_ok and no_run
 
 
+def walk_exact_fake(m):
+    """Drive the proof's own walk_exact against a fake bridge: a pawn at T=13 ticks/cell. True when a clean walk times
+    12 cells at 13*12 (+-STEP) ticks, and a walk with one blind position reading (None, or a text error) returns None."""
+    class Sc:
+        x, z = 0, 0
+
+    def run(blind_at):
+        clock = {"t": 0, "start": None, "reads": 0}
+
+        class FakeS:
+            @staticmethod
+            def need(r, label):
+                return r
+
+            @staticmethod
+            def call(tool, **kw):
+                if tool == "rimworld/step_game_ticks":
+                    clock["t"] += kw["ticks"]
+                    return {"ok": True}
+                if tool == "jawa/ordered_job":
+                    clock["start"] = clock["t"] if kw.get("targetAX", 0) > 5 else None
+                    return {}
+                if tool == "jawa/pawn_get":
+                    clock["reads"] += 1
+                    if clock["start"] is None:
+                        return {"pawns": [{"position": {"x": 1, "z": 1}}]}
+                    if blind_at is not None and clock["reads"] == blind_at[0]:
+                        return blind_at[1]
+                    return {"pawns": [{"position": {"x": 1 + (clock["t"] - clock["start"]) // 13, "z": 1}}]}
+                return {}
+
+        saved = m.S
+        m.S = FakeS
+        try:
+            return m.walk_exact(Sc(), 1)
+        finally:
+            m.S = saved
+    clean = run(None)
+    blind_none = run((40, {"pawns": [{}]}))
+    blind_text = run((40, "error: no such pawn"))
+    return clean is not None and abs(clean - 13 * 12) <= m.STEP and blind_none is None and blind_text is None
+
+
+def gates_on_standard_pawn(path):
+    """Import the live proof and feed its pure judge() the probes a blind checker named; True when each goes the right way.
+    Returns (ok, [(label, got_exit, want_exit, line)])."""
+    import types
+    # Compile the SOURCE (never a cached .pyc: a same-size edit in the same second would be served stale).
+    m = types.ModuleType("prove_glasswalk_speed")
+    m.__file__ = path
+    exec(compile(open(path, encoding="utf-8").read(), path, "exec"), m.__dict__)
+    std = [4.6] * 4
+    cases = [
+        ("standard pawn T=13.04, granite 13.04, glass 16.04", std, [13.04, 13.1], [16.0, 16.1], 0),
+        ("checker probe: MoveSpeed 6.12 (T=9.8), granite 9.8, glass 12.8", [6.12] * 4, [9.8, 9.8], [12.8, 12.8], 1),
+        ("fast pawn T=12.0 (MoveSpeed 5.0), law-perfect readings", [5.0] * 4, [12.0, 12.0], [15.0, 15.0], 1),
+        ("slow pawn T=14.3 (MoveSpeed 4.2), law-perfect readings", [4.2] * 4, [14.3, 14.3], [17.3, 17.3], 1),
+        ("one MoveSpeed reading off-band (6.12) among 4.6s", [4.6, 4.6, 4.6, 6.12], [13.04] * 2, [16.04] * 2, 1),
+        ("a MoveSpeed reading missing", [4.6, None, 4.6, 4.6], [13.04] * 2, [16.04] * 2, 1),
+        ("base mutant: granite 11.5 for T=13.04", std, [11.5, 11.5], [14.5, 14.5], 1),
+        ("delta mutant: glass 18 (delta 5) for T=13.04", std, [13.04] * 2, [18.0, 18.0], 1),
+        ("the 2026-10-10 ratio 0.65 at T=13.04 (glass 20)", std, [13.04] * 2, [20.06] * 2, 1),
+        ("one granite sample only", std, [13.04], [16.04, 16.04], 1),
+        ("one glass sample only", std, [13.04, 13.04], [16.04], 1),
+        ("granite-only averaging: granite [10, 16.08], glass law", std, [10.0, 16.08], [16.04, 16.04], 1),
+        ("glass-only averaging: granite law, glass [13, 19.08]", std, [13.04, 13.04], [13.0, 19.08], 1),
+        ("MoveSpeed averaging mutant: [4.2, 5.0, 4.2, 5.0] (mean 4.6, every reading off-band)", [4.2, 5.0, 4.2, 5.0],
+         [13.04] * 2, [16.04] * 2, 1),
+        ("averaging mutant: granite [10, 16], glass [13, 19] (means law-perfect)", std, [10.0, 16.08], [13.0, 19.08], 1),
+    ]
+    rows = []
+    for label, sp, g, sg, want in cases:
+        got, line = m.judge(g, sg, sp)
+        word_ok = ("PASS" in line) if want == 0 else ("PASS" not in line)
+        rows.append((label, got, want, line, word_ok))
+    unmeasured_probe = "UNMEASURED" in rows[1][3]
+    ok = all(got == want and wok for _, got, want, _, wok in rows) and unmeasured_probe
+    tree = ast.parse(open(path, encoding="utf-8").read())
+    mainf = [f for f in tree.body if isinstance(f, ast.FunctionDef) and f.name == "main"]
+    names = {c.func.id for f in mainf for c in ast.walk(f) if isinstance(c, ast.Call) and isinstance(c.func, ast.Name)}
+    wired = {"judge", "pick_standard_pawn"} <= names
+    walk_ok = walk_exact_fake(m)
+    we = [f for f in tree.body if isinstance(f, ast.FunctionDef) and f.name == "walk_exact"]
+    # walk_exact must give up (return None) on a missing position, never `continue` past it (a blind gap hides ticks).
+    blind_ok = bool(we) and not any(isinstance(n, ast.Continue) for n in ast.walk(we[0]))
+    return ok and wired and blind_ok and walk_ok, rows, wired and blind_ok and walk_ok
+
+
 def main():
     fails = []
 
@@ -127,6 +215,15 @@ def main():
               "prove_glasswalk_speed.walk_exact's loop steps via step() -> rimworld/step_game_ticks; nothing calls S.run")
     else:
         check(False, "prove_glasswalk_speed.py exists")
+
+    # The live proof measures a 13 ticks/cell pawn or says UNMEASURED (the item: "re-measure on a 13 ticks/cell pawn").
+    if os.path.exists(PROVE):
+        ok, rows, wired = gates_on_standard_pawn(PROVE)
+        for label, got, want, line, wok in rows:
+            print("   judge[%s] exit %d (want %d): %s" % (label, got, want, line))
+        check(wired, "prove_glasswalk_speed.main picks the pawn with pick_standard_pawn and decides with judge; walk_exact times a fake 13 ticks/cell walk at 156 ticks and returns None on a blind reading")
+        check(ok, "prove_glasswalk_speed.judge passes only a T=13.04+-0.7 pawn on law readings; the T=9.8 probe is "
+                  "UNMEASURED and every base/delta/off-band/missing/averaging mutant exits 1")
 
     print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/offline %s (%d failed)" % ("PASS" if not fails else "FAIL", len(fails)))
     return 0 if not fails else 1
