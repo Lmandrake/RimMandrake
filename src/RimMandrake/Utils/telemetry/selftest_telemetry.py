@@ -346,7 +346,11 @@ def main(argv) -> int:
                    "disk.free_gb": {"v": 40.5, "m": "MEASURED"}, "disk.ok": {"v": True, "m": "MEASURED"},
                    "disk.gone": {"v": None, "m": "UNMEASURED"}, "disk.guess": {"v": 3, "m": "ESTIMATE"},
                    "disk.word": {"v": "fine", "m": "MEASURED"}, "disk.zero": {"v": 0, "m": "MEASURED"}}},
-               {"t": "not a time", "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}}],
+               {"t": "not a time", "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}},
+               {"t": float("inf"), "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}},
+               {"t": float("nan"), "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}},
+               {"t": 1e308, "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}},
+               {"t": 1e13, "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}}],
           partial='{"t": %f, "points": {"disk.free_gb": {"v": 1' % now)
         T.pass_source(S["ops_watch"])
         sink.flush()
@@ -363,8 +367,74 @@ def main(argv) -> int:
         check("[ops_watch] UNMEASURED / ESTIMATE / text are blindness markers, never a value",
               set(rd) == {"disk.free_gb", "disk.ok", "disk.zero"}
               and um == {"disk.gone": "UNMEASURED", "disk.guess": "ESTIMATE", "disk.word": "TEXT"}, (sorted(rd), um))
-        check("[ops_watch] one rm_ops_rows sample per good row; a bad time and a torn tail are skipped",
-              [x["values"] for x in rows_] == [[6]], rows_)
+        check("[ops_watch] one rm_ops_rows sample per good row; a bad, non-finite or huge time and a torn tail are "
+              "skipped", [x["values"] for x in rows_] == [[6]], rows_)
+        lr = (T.stats.get("ops_watch") or {}).get("last_row_ts")
+        check("[ops_watch] a rejected time does not pin the source's freshness", lr is not None and abs(lr - (now - 900)) < 1,
+              lr)
+        bad_sink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_bad"), post=lambda b: None)
+        bad_sink.add("rm_x", {}, 1.0, float("inf"))
+        bad_sink.add("rm_x", {}, 2.0, now)
+        check("[sink] a non-finite time is dropped at add, the rest of the batch still flushes",
+              bad_sink.flush() == 1 and bad_sink.sent == 1, bad_sink.sent)
+        # ---------------------------------------------------------------- the VM read path (_get, vm_export)
+        import subprocess
+        import urllib.error
+        import urllib.request
+        body = (json.dumps({"metric": {"__name__": "rm_x"}, "timestamps": [3000, 1000, 9000, 2000, 4000, 4500],
+                            "values": [3, 1, 9, None, "Infinity", "NaN"]}) + "\n").encode()
+        calls = []
+        saved = (urllib.request.urlopen, shutil.which, subprocess.run, store.IS_WIN)
+
+        class _Done:
+            def __init__(self, rc, out=b"", err=b""):
+                self.returncode, self.stdout, self.stderr = rc, out, err
+
+        def refuse(u, timeout=None):
+            raise urllib.error.URLError(ConnectionRefusedError("refused"))
+        try:
+            store.IS_WIN = False
+            urllib.request.urlopen = refuse
+            shutil.which = lambda n: "/x/curl.exe" if n == "curl.exe" else None
+            subprocess.run = lambda a, **k: calls.append(a) or _Done(0, body)
+            ex = store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
+            check("[vm read] WSL: a refused local VM is read through curl.exe; export sorts, clips to [start,end], "
+                  "drops nulls and +-Inf/NaN", calls and calls[0][0] == "curl.exe" and "-f" in calls[0]
+                  and ex == [({"__name__": "rm_x"}, [1.0, 3.0], [1.0, 3.0])], (calls, ex))
+            subprocess.run = lambda a, **k: _Done(22, b"", b"HTTP 400")
+            try:
+                store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
+                raised = None
+            except OSError as e:
+                raised = str(e)
+            check("[vm read] curl.exe failing raises, never an empty answer", raised and "exit 22" in raised, raised)
+            calls.clear()
+            subprocess.run = lambda a, **k: calls.append(a) or _Done(0, body)
+            try:
+                store.vm_export(["rm_x"], 1.0, 5.0, url="http://10.0.0.9:8428")
+                raised = None
+            except urllib.error.URLError as e:
+                raised = str(e)
+            check("[vm read] a non-local VM is not retried through curl.exe", raised and not calls, (raised, calls))
+
+            def http400(u, timeout=None):
+                raise urllib.error.HTTPError(u, 400, "bad selector", {}, None)
+            urllib.request.urlopen = http400
+            try:
+                store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
+                raised = None
+            except urllib.error.HTTPError as e:
+                raised = e.code
+            check("[vm read] an HTTP error from VM is raised as is, not retried", raised == 400 and not calls,
+                  (raised, calls))
+            urllib.request.urlopen = refuse
+            shutil.which = lambda n: None
+            check("[vm read] VM unreachable: windows_from_vm is empty, so compare_windows reads UNMEASURED",
+                  analysis.windows_from_vm("rm_x", 1.0, 5.0) == []
+                  and analysis.compare_windows(analysis.windows_from_vm("rm_x", 1.0, 5.0), [18.0] * 80)["verdict"]
+                  == "UNMEASURED")
+        finally:
+            urllib.request.urlopen, shutil.which, subprocess.run, store.IS_WIN = saved
         # ---------------------------------------------------------------- regression detector + sanity probe
         import random
         rnd = random.Random(7)

@@ -14,6 +14,7 @@ from __future__ import annotations
 import glob
 import gzip
 import json
+import math
 import os
 import re
 import time
@@ -51,6 +52,14 @@ def _errwarn(exc: dict):
     if "e" in exc or "w" in exc:
         return (exc.get("e") or 0) + (exc.get("w") or 0)
     return exc.get("n")
+
+
+TS_MAX = 1e11       # epoch seconds past this (year 5138) are not a time; parse_ts reads larger numbers as ms
+
+
+def plausible_ts(t) -> bool:
+    """A finite epoch in seconds, after 1970 and at most a day ahead of this clock."""
+    return isinstance(t, float) and math.isfinite(t) and 0 < t < TS_MAX and t <= time.time() + 86400
 
 
 def _num(v):
@@ -441,7 +450,9 @@ def parse_ops_watch(r: dict, E: Emit, ref: str) -> None:
     ts = r.get("t")
     if not isinstance(ts, (int, float)) or isinstance(ts, bool) or not isinstance(r.get("points"), dict):
         return
-    ts = float(ts)
+    ts = parse_ts(ts)       # the tailer's own reading (epoch ms -> s), so parser and freshness agree on one time
+    if not plausible_ts(ts):    # NaN/inf/1e308/a day ahead: not a time, and a lost VM batch if emitted
+        return
     fam = r.get("family") or os.path.splitext(ref.split(":")[1])[0]
     pts = r["points"]
     E.point("rm_ops_rows", {"fam": fam}, len(pts), ts)
@@ -575,7 +586,7 @@ class Tailer:
                     continue
                 n += 1
                 t = parse_ts(r.get("utc") or r.get("t") or r.get("ts"))
-                if t:
+                if plausible_ts(t):     # inf / 1e308 / far future would pin freshness and break alerts.json
                     stt["last_row_ts"] = max(stt["last_row_ts"] or 0, t)
             new = chunk[max(0, done - off):]
             if src.archive and new:

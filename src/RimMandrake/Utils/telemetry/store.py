@@ -9,6 +9,7 @@ batch is spooled to <state>/vm_spool/*.jsonl and replayed later, so a VM restart
 from __future__ import annotations
 
 import json
+import math
 import os
 import shutil
 import sqlite3
@@ -107,6 +108,13 @@ class VMSink:
         except (TypeError, ValueError):
             return
         if v != v:  # NaN: absent, never a point
+            return
+        try:        # a time that is not a finite epoch would raise in _lines and cost the whole queued batch
+            ts = float(ts)
+        except (TypeError, ValueError):
+            return
+        if not (math.isfinite(ts) and 0 < ts < 1e11):
+            self.dropped_ts = getattr(self, "dropped_ts", 0) + 1
             return
         self.points.append((name, labels or {}, v, ts))
 
@@ -219,5 +227,6 @@ def vm_export(selectors: list[str], start: float, end: float, url: str | None = 
         d = json.loads(line)
         pairs = sorted(zip(d.get("timestamps") or [], d.get("values") or []))
         pairs = [(ts / 1000.0, float(v)) for ts, v in pairs if start * 1000 <= ts <= end * 1000 and v is not None]
+        pairs = [p for p in pairs if math.isfinite(p[1])]   # VM exports +-Inf/NaN as strings: never a window
         out.append((d.get("metric") or {}, [p[0] for p in pairs], [p[1] for p in pairs]))
     return out
