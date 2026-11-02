@@ -1,0 +1,1 @@
+jawa/list_pawns rows carry no humanlike/drafted field: filter humanlikes by intelligence=='Humanlike' and read drafted-ness from jawa/site_state job; a vanilla flee and RimMandrake's lean-scent flee both answer JobDefOf.Flee, so naming the job needs a setting-off arm to attribute it (LEANINGSCRUB_STALL_SHARED_MOVE_1)
