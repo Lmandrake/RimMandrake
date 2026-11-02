@@ -81,6 +81,48 @@ CAI_MEMBERS = {"FinderType": "CombatAI.Finder", "ModType": "CombatAI.CombatAIMod
 CAI_DLL = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3673768803/1.6/Assemblies/CombatAI.dll"
 
 
+# Force()'s if-conditions, in order. Pinned exactly: a flipped guard (e.g. the toggle polarity) keeps every
+# SetValue text in place yet stops the forcing, so text presence alone cannot see it.
+FORCE_IFS = ["!bound",
+             "!RM_PatchesSettings.caiFogForcedOff",
+             "settings == null",
+             "sight != null && sight.FieldType == typeof(bool)",
+             'why != "CAI settings saved" && prevFog != null && prevFog.FieldType == typeof(bool) && Current.Game == null',
+             "mod != null",
+             "was"]
+
+
+def force_flow_problems(src):
+    """[problem] for the body of CaiFogOff.Force: exact guard list, early returns, and the write after the toggle guard."""
+    import re
+    m = re.search(r"public static bool Force\(string why\)\s*\{", src)
+    if not m:
+        return ["no `public static bool Force(string why)`"]
+    depth, i = 1, m.end()
+    while depth and i < len(src):
+        depth += {"{": 1, "}": -1}.get(src[i], 0)
+        i += 1
+    body = src[m.end():i - 1]
+    code = re.sub(r"//[^\n]*", "", body)
+    out = []
+    ifs = [c.strip() for c in re.findall(r"\bif \((.*)\)\s*(?:\{|[A-Za-z_])", code)]
+    if ifs != FORCE_IFS:
+        out.append("Force() if-conditions %r != FORCE_IFS" % ifs)
+    if not re.search(r"if \(!bound\) return false;", code):
+        out.append("Force(): `if (!bound) return false;` changed")
+    g = re.search(r"if \(!RM_PatchesSettings\.caiFogForcedOff\)\s*\{[^{}]*return false;\s*\}", code)
+    if not g:
+        out.append("Force(): the toggle guard is not `if (!RM_PatchesSettings.caiFogForcedOff) { ... return false; }`")
+    w = code.find("fog.SetValue(settings, false);")
+    if w < 0 or (g and w < g.end()):
+        out.append("Force(): fog.SetValue(settings, false) is missing or not after the toggle guard")
+    elif code[:w].rsplit("\n", 1)[-1].strip() or re.search(r"\{[^{}]*$", code[g.end() if g else 0:w]):
+        out.append("Force(): fog.SetValue(settings, false) sits inside a conditional")
+    if not re.search(r"fog\.SetValue\(settings, false\);[\s\S]*return true;\s*$", code):
+        out.append("Force() does not end `return true;` after the write")
+    return out
+
+
 def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
     """[problem] for the CAI fog forcer: constants, the forcing writes, the default-on setting, About, and the DLL stamp.
     Pure function of the texts so the break checks can plant each defect."""
@@ -93,6 +135,7 @@ def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
         out.append("CaiFogOff constants %r != CAI_MEMBERS" % consts)
     if "fog.SetValue(settings, false);" not in src:
         out.append("Force() no longer writes FogOfWar_Enabled=false")
+    out += force_flow_problems(src)
     if not re.search(r"Patch\(write,\s*prefix: new HarmonyMethod\(typeof\(CaiFogOff\), nameof\(Prefix_WriteSettings\)\)\)", src):
         out.append("no Harmony prefix on CombatAIMod.WriteSettings")
     if "public static void Prefix_WriteSettings() => Force(" not in src:
@@ -129,7 +172,19 @@ def cai_fog_check():
               ("the WriteSettings prefix is dropped", src.replace("prefix: new HarmonyMethod", "postfix: new HarmonyMethod"), mod_src, about, srchash),
               ("the setting defaults off", src, mod_src.replace("caiFogForcedOff = true;", "caiFogForcedOff = false;"), about, srchash),
               ("loadAfter Krkr.rule56 removed", src, mod_src, about.replace("<li>Krkr.rule56</li>", ""), srchash),
-              ("stale DLL stamp", src, mod_src, about, srchash.replace(srchash.splitlines()[-1][:8], "00000000"))]
+              ("stale DLL stamp", src, mod_src, about, srchash.replace(srchash.splitlines()[-1][:8], "00000000")),
+              ("the toggle guard is inverted", src.replace("if (!RM_PatchesSettings.caiFogForcedOff)",
+                                                           "if (RM_PatchesSettings.caiFogForcedOff)"), mod_src, about, srchash),
+              ("the bound guard is inverted", src.replace("if (!bound) return false;", "if (bound) return false;"),
+               mod_src, about, srchash),
+              ("the write is made conditional on fog already on", src.replace("fog.SetValue(settings, false);",
+                                                                              "if (!was) fog.SetValue(settings, false);"),
+               mod_src, about, srchash),
+              ("the toggle guard stops returning", src.replace(
+                  'its fog is left to CAI\'s own checkbox.";\n                return false;',
+                  'its fog is left to CAI\'s own checkbox.";'), mod_src, about, srchash)]
+    for name, a, *_ in breaks[-4:]:
+        check("break: planted %s actually changed the source" % name, a != src)
     for name, a, b, c, d in breaks:
         check("break: %s is reported" % name, len(cai_fog_problems(a, b, c, d, cs)) >= 1)
     if not os.path.exists(CAI_DLL):
