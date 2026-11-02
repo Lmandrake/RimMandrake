@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """selftest_donor_retire_standin.py -- `donor_retire_census.py standin` sees every StandIn/ text (any *Path tag, patch
 xpath defs), judges coverage per PICTURE against the artpipe queue, and names the states that block nothing yet
-(COLLIDES, DONOR_DEF); plus the two installer guards from the same item (STANDINS_RETIRE_AS_OUR_COATS_ARRIVE):
+(COLLIDES, DONOR_DEF), and exits 1 on any UNCOVERED or FAILED text, 0 otherwise; plus the two installer guards from the same item (STANDINS_RETIRE_AS_OUR_COATS_ARRIVE):
 bulk_accept_renders.own_text (a polluted / leafless sibling is no facing of the main text) and repoint_complete (a
 repoint never outruns its renders -- the RM_TarSealing.xml incident).
 
@@ -224,8 +224,63 @@ def gene_icon_rows():
         DRJ.REPO, DRJ._def_words, DRC.standin, DRC.standin_files = keep
 
 
+EXIT_DEFS = """<Defs>
+  <ThingDef><defName>RM_Q</defName><graphicData><texPath>StandIn/Things/Q</texPath></graphicData></ThingDef>
+  <ThingDef><defName>RM_R</defName><graphicData><texPath>StandIn/Things/R</texPath></graphicData></ThingDef>
+  <ThingDef><defName>RM_Fern</defName><graphicData><texPath>StandIn/Plants/AB_Fern</texPath></graphicData></ThingDef>
+</Defs>"""
+
+
+def exit_code():
+    """The census's own exit code (`standin` exits 0 only when no text is UNCOVERED or FAILED): main() run end to end
+    over a fixture tree and queue, so a broken BLOCKING or exit clause goes red here."""
+    import contextlib
+    import io
+    keep = DRC.REPO, DRC.SRC, BA.ART
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            t = Path(td)
+            mod = t / "src/RimMandrake/ModA"
+            write(mod / "Defs/Things.xml", EXIT_DEFS)
+            write(mod / "Patches/Eyes.xml", PATCH)
+            for f in ("Things/Q", "Things/R", "Plants/AB_Fern", "Eyes/Gold"):
+                png(mod / "Textures/StandIn" / (f + ".png"))
+            png(t / "src/RimUtinni/ModB/Textures/Plants/AB_Fern.png")
+            art = t / "artpipe"
+            for st in ("pending", "active", "done", "failed"):
+                (art / st).mkdir(parents=True)
+            DRC.REPO, DRC.SRC, BA.ART = t, t / "src", art
+
+            def rc():
+                out = io.StringIO()
+                with contextlib.redirect_stdout(out):
+                    code = DRC.main(["standin"])
+                return code, {r["text"]: r["state"] for r in DRC.standin(art=art)["rows"]}
+
+            job(art, "pending", "dregen_RM_Q_v1", target_def="RM_Q", install_to=str(mod.relative_to(t)) +
+                "/Textures/Things/Q.png")
+            code, st = rc()
+            check(code == 1 and st["StandIn/Things/R"] == "UNCOVERED",
+                  "standin exits 1 while a text is UNCOVERED", (code, st))
+            job(art, "done", "dregen_RM_R_v1", ok=False, target_def="RM_R", install_to=str(mod.relative_to(t)) +
+                "/Textures/Things/R.png")
+            code, st = rc()
+            check(code == 1 and st["StandIn/Things/R"] == "FAILED" and "UNCOVERED" not in st.values(),
+                  "standin exits 1 while a text is FAILED (nothing UNCOVERED)", (code, st))
+            job(art, "done", "dregen_RM_R_v2", target_def="RM_R", install_to=str(mod.relative_to(t)) +
+                "/Textures/Things/R.png")
+            code, st = rc()
+            check(code == 0 and st == {"StandIn/Things/Q": "QUEUED", "StandIn/Things/R": "RENDERED",
+                                       "StandIn/Plants/AB_Fern": "COLLIDES", "StandIn/Eyes/Gold": "DONOR_DEF"},
+                  "standin exits 0 when every text is QUEUED/RENDERED (COLLIDES, DONOR_DEF carry their items)",
+                  (code, st))
+    finally:
+        DRC.REPO, DRC.SRC, BA.ART = keep
+
+
 if __name__ == "__main__":
     census()
+    exit_code()
     installer_guards()
     gene_icon_rows()
     print("RESULT:", "FAIL %d" % len(FAILS) if FAILS else "PASS")
