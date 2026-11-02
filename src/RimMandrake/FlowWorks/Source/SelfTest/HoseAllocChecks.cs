@@ -154,7 +154,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(comp, @"cw\.Reset\(\);", "BuildWorld refills a retired snapshot");
                 RiverSwitchFlipChecks.Has(comp, @"spareTick != now \|\| spareFrame != Time\.frameCount", "a snapshot retired in this same tick and frame is never refilled");
                 RiverSwitchFlipChecks.Has(comp, @"w = layWorldsStale\.Pop\(\); w\.CopyFrom\(src\);", "the lay pool refills stale copies");
-                RiverSwitchFlipChecks.Has(comp, @"CordWorld w = LegacyFrame \? World\(\) : World\(LayWorldMaxAge\);\s*if \(r\.trail\.Count > 0 && \(r\.lay == null \|\| !r\.TrailWalkable\(w\)\)\)", "TickRecheck reads the version-valid snapshot");
+                RiverSwitchFlipChecks.Has(comp, @"CordWorld w = LegacyFrame \? World\(\) : World\(LayWorldMaxAge\);\s*RecPart\(2\);\s*bool trailCut = r\.trail\.Count > 0 && \(r\.lay == null \|\| !r\.TrailWalkable\(w\)\);", "TickRecheck reads the version-valid snapshot");
                 RiverSwitchFlipChecks.Has(comp, @"List<Vector3> v = RibbonV; List<Vector2> uv = RibbonUv; List<int> tr = RibbonTr;", "Ribbon builds in scratch lists");
                 Assert(!comp.Contains("all.AddRange(m.vertices)"), "the crossing shadow appends strips, no temporary mesh copied out");
             });

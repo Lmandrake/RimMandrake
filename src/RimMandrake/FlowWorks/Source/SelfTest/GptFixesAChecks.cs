@@ -190,8 +190,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string mc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
                 // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST: the 250-tick re-check is its own method (TickRecheck), called on the 250-tick gate
                 RiverSwitchFlipChecks.Has(mc, @"if \(\(now \+ r\.parent\.thingIDNumber\) % 250 == 0\) TickRecheck\(r, now\);", "the re-check runs every 250 ticks");
-                RiverSwitchFlipChecks.Has(mc, @"if \(RM_HoseSettings\.enabled && r\.layKey != null", "the obstacle check runs only with hoses on");
-                int at = mc.IndexOf("r.Retract(why); Retracts++;", StringComparison.Ordinal), gate = mc.IndexOf("if (RM_HoseSettings.enabled && r.layKey != null", StringComparison.Ordinal);
+                RiverSwitchFlipChecks.Has(mc, @"bool cut = RM_HoseSettings\.enabled && r\.layKey != null[^;]*;\s*RecPart\(1\);\s*if \(cut\)", "the obstacle check runs only with hoses on");
+                int at = mc.IndexOf("r.Retract(why); Retracts++;", StringComparison.Ordinal), gate = mc.IndexOf("bool cut = RM_HoseSettings.enabled && r.layKey != null", StringComparison.Ordinal);
                 Assert(gate > 0 && at > gate, "the automatic retract sits inside the gated block");
             });
 
