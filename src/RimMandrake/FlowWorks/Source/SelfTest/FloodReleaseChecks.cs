@@ -36,6 +36,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			public long PerTile = U;
 			public Ledger L;
 			public long Step;
+			public int Unpaid;            // steps spent with less than a full tile's debit (Flood_FlowWorks.unpaidSteps)
 			public List<int> Frontier = new List<int>(), Placed = new List<int>(), Refused = new List<int>();
 			public HashSet<int> Lookup = new HashSet<int>();
 			public List<int> Order = new List<int>(); // cells placed, in order (the trajectory)
@@ -82,7 +83,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 						if (Pick(Salt, step, 1 + i, seen) == 0) target = n;
 					}
 					if (target < 0) { Frontier.RemoveAt(pick); continue; }
+					long before = L.Placed;
 					Place(target);
+					if (L.Placed - before < PerTile) Unpaid++;
 					return true;
 				}
 				return Frontier.Count > 0;
@@ -125,6 +128,22 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(L.Spill(got) == got, "the sheet's acceptance is debited exactly");
 				L.Lose();
 				Assert(L.Remaining == 0 && L.Closes, "an ended release holds nothing and its books close: " + Line());
+			}
+
+			/// <summary>Tick by tick like Flood_FlowWorks.Tick: ends when spent, when the frontier empties, or at the expiry
+			/// (production RM_FloodReleaseMath.ExpiryTick; <paramref name="countUnpaid"/> false = the old paid-tiles-only rule).
+			/// True when the release EXPIRED (the stuck exit) rather than finishing.</summary>
+			public bool RunTimed(int ticksPerTile, int spawnTick, bool countUnpaid)
+			{
+				int est = PayableTiles(L.Remaining, PerTile);
+				for (int tick = spawnTick + 1; tick < spawnTick + 10000000; tick++)
+				{
+					if (L.Remaining <= 0 || Frontier.Count == 0) return false;
+					if (tick > ExpiryTick(spawnTick, ticksPerTile, est, countUnpaid ? Unpaid : 0)) return true;
+					if ((tick + Salt) % ticksPerTile != 0) continue;   // IsHashIntervalTick: some phase of the interval
+					SpreadOne();
+				}
+				throw new Exception("RunTimed did not end");
 			}
 
 			public string Line() => $"in {L.In} placed {L.Placed} spilled {L.Spilled} lost {L.Lost} held {L.Remaining}";
@@ -232,6 +251,44 @@ namespace RimMandrake.FlowWorks.SelfTest
 					if (part.Refused.Count > 0 && !whole.Order.SequenceEqual(lostRefusals.Order)) diverged++;
 				}
 				Assert(diverged > 0, "can-fail: dropping the refused squares on load must change some walk (else this proves nothing)");
+			});
+
+			Case("FloodRelease_expiry_extends_for_free_traversal", () =>
+			{
+				// FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL (GPT FA_core_sim_1.7): one notch released at the head of a long, already
+				// brimming dug channel with empty room beyond it. Each brimming square costs an interval and no volume.
+				foreach (int len in new[] { 1, 3, 10, 40, 150 })
+				foreach (int tpt in new[] { 1, 7, 60 })
+				foreach (int salt in new[] { 0, 5, 123457 })
+				{
+					Walk Channel()
+					{
+						int W = len + 4;
+						var w = new Walk { W = W, H = 1, Salt = salt, LevelExact = true, Kinds = new CellKind[W], Room = new long[W], Credited = new long[W] };
+						for (int c = 0; c < W; c++) { w.Kinds[c] = CellKind.Dug; w.Room[c] = c <= len ? 0 : U; }
+						w.L = Ledger.Start(U);
+						w.Frontier.Add(0);
+						return w;
+					}
+					Walk fixd = Channel(), old = Channel();
+					bool expired = fixd.RunTimed(tpt, 1000, true);
+					Assert(!expired && fixd.Credited[len + 1] == U && fixd.L.Placed == U && fixd.L.Remaining == 0,
+						$"len {len} tpt {tpt}: the release crosses the full channel and fills the first empty square ({fixd.Line()}, unpaid {fixd.Unpaid})");
+					// the seed square is not in the lookup (as in production), so the walk may also step back onto it: one more
+					Assert(fixd.Unpaid == len || fixd.Unpaid == len + 1, $"len {len}: every brimming square passed is one unpaid step (got {fixd.Unpaid})");
+					if (len >= 3)
+					{
+						Assert(old.RunTimed(tpt, 1000, false) && old.L.Placed == 0,
+							$"can-fail len {len} tpt {tpt}: the old paid-tiles-only expiry stops the release mid-channel");
+					}
+				}
+				// the budget is never shorter than the old one, and grows by exactly one interval per unpaid step
+				Assert(ExpiryTick(1000, 60, 1, 0) == 1000 + 120 && ExpiryTick(1000, 60, 1, 5) == 1000 + 120 + 300, "expiry arithmetic");
+				Assert(ExpiryTick(int.MaxValue - 5, 60, 1000, 1000) == int.MaxValue && ExpiryTick(0, 0, 0, -3) == 2, "clamps");
+				string f = RiverSwitchFlipChecks.Src("Flood_FlowWorks.cs");
+				Assert(f.Contains("RM_FloodReleaseMath.ExpiryTick(spawnedTick, TicksPerTile, estimatedFloodedTiles, unpaidSteps)")
+					&& f.Contains("Scribe_Values.Look(ref unpaidSteps, \"unpaidSteps\", 0);")
+					&& f.Contains("if (ledger.Placed - paidBefore < PerTileDl)"), "production counts and saves unpaid steps and adds them to its expiry");
 			});
 
 			Case("Depth_engine_switch_applies_on_reload_only", () =>

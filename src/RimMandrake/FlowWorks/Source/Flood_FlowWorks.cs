@@ -55,6 +55,10 @@ namespace RimMandrake.FlowWorks
 
 		private int floodedTileCount;
 
+		/// <summary>FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL: expand intervals spent without a full tile's debit (a brimming square
+		/// passed through, a refusal, a part-tile pour). Each one extends <see cref="ExpiryTick"/> by one interval. Scribed.</summary>
+		private int unpaidSteps;
+
 		/// <summary>Cells this release has laid fluid on. Scribed; also the
 		/// dedupe set, rehydrated into <see cref="placedLookup"/> on load.</summary>
 		private List<IntVec3> placedCells = new List<IntVec3>();
@@ -112,9 +116,10 @@ namespace RimMandrake.FlowWorks
 		/// keep ticking into every save. FloodingTicks is exactly the time needed
 		/// to place every tile the release can pay for; an equal grace on top
 		/// covers cells that only open up late (a pawn digging through, a wall
-		/// coming down), which is the sole legitimate reason a healthy flood runs
-		/// past its own budget.</summary>
-		private int ExpiryTick => spawnedTick + 2 * FloodingTicks;
+		/// coming down). FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL: every interval spent
+		/// without a full tile's debit (<see cref="unpaidSteps"/>) is added on top, so a
+		/// release crossing an already brimming channel is not expired mid-way.</summary>
+		private int ExpiryTick => RM_FloodReleaseMath.ExpiryTick(spawnedTick, TicksPerTile, estimatedFloodedTiles, unpaidSteps);
 
 		/// <summary>Exposed for the bridge debug-report surface.</summary>
 		public int FloodedTileCount => floodedTileCount;
@@ -167,6 +172,7 @@ namespace RimMandrake.FlowWorks
 			}
 			Scribe_Values.Look(ref estimatedFloodedTiles, "estimatedFloodedTiles", 0);
 			Scribe_Values.Look(ref floodedTileCount, "floodedTileCount", 0);
+			Scribe_Values.Look(ref unpaidSteps, "unpaidSteps", 0);
 			Scribe_Values.Look(ref walkStep, "walkStep", 0L);
 			Scribe_Values.Look(ref draining, "draining", false);
 			Scribe_Values.Look(ref frontCooled, "frontCooled", false);
@@ -379,7 +385,12 @@ namespace RimMandrake.FlowWorks
 					frontier.RemoveAt(pick);
 					continue;
 				}
+				long paidBefore = ledger.Placed;
 				PlaceFluid(map, target, excavation);
+				if (ledger.Placed - paidBefore < PerTileDl)
+				{
+					unpaidSteps++;   // FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL: an interval spent, less than a tile paid
+				}
 				return;
 			}
 		}

@@ -64,6 +64,18 @@ namespace RimMandrake.FlowWorks
 		public static long SurfaceDebitDl(long remainingDl, long perTileDl) =>
 			remainingDl <= 0 ? 0 : Math.Min(remainingDl, Math.Max(1L, perTileDl));
 
+		/// <summary>FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL: the tick a release gives up. Twice the time to place every tile it could
+		/// pay for at spawn, plus one interval for every step it has spent WITHOUT a full tile's debit (a brimming square passed
+		/// through, a refused square, a part-tile pour). Those steps cost an interval and no volume, so a budget counted in paid
+		/// tiles alone expired a release mid-way along an already full channel. Full-debit steps are at most
+		/// <paramref name="estimatedTiles"/>, so every step the release can take fits the budget.</summary>
+		public static int ExpiryTick(int spawnedTick, int ticksPerTile, int estimatedTiles, int unpaidSteps)
+		{
+			long t = Math.Max(1, ticksPerTile);
+			long e = (long)spawnedTick + 2L * t * Math.Max(1, estimatedTiles) + t * Math.Max(0, unpaidSteps);
+			return (int)Math.Min(int.MaxValue, e);
+		}
+
 		/// <summary>A deterministic draw in [0, n) from the release's salt, its step counter and a slot (SplitMix64).</summary>
 		public static int Pick(int salt, long step, int slot, int n)
 		{
