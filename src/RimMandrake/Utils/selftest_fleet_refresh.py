@@ -62,7 +62,7 @@ check("feed ids unique per run", len({x["doc_id"] for x in feed}) == 2)
 check("board version passed", bv2 == 10)
 check("hash ignores elapsed", F.row_hash([row("A", "Done", 1)]) == F.row_hash([row("A", "Done", 99)]))
 check("hash sees status", F.row_hash([row("A", "Done")]) != F.row_hash([row("A", "Building")]))
-check("empty fleet says so", any("no detached helper" in f for f in F.plan([], {}, 1, "/r")[1]))
+check("empty fleet says so", any("nothing is running" in f for f in F.plan([], {}, 1, "/r")[1]))
 
 # judge
 mine = [{"op": "set", "collection": "parts", "doc_id": "A", "file_path": "/r/A.json", "if_version": 3}]

@@ -149,14 +149,14 @@ function renderHead(){
   const f = factory;
   if (f){
     $("fac").innerHTML = f.ok ? '<span class="ok">factory ok</span>' : `<span class="bad">factory stopped${f.why ? ": " + esc(f.why) : ""}</span>`;
-    $("workers").textContent = `${f.running}/${f.target} workers`;
+    $("workers").textContent = f.running == null ? "" : `${f.running}/${f.target ?? "?"} workers`;
     $("tok").textContent = `${tok(f.tokens_today)} tokens today (UTC)`;
   }
   const at = summary.updated || 0;
   if (at){
     const m = Math.round((now() - at)/60);
     $("stamp").textContent = `updated ${m < 1 ? "just now" : m + "m ago"}`;
-    $("stamp").classList.toggle("stale", m > 20);
+    $("stamp").classList.toggle("stale", m > 30);  // heartbeat is 20m on a 5m timer: >30m is a dead refresher
   }
   $("headline").textContent = summary.headline || "";
   $("needstext").textContent = summary.needs_you || "Nothing.";

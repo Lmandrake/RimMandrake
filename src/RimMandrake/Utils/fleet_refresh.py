@@ -166,7 +166,7 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
     if len(changes) > 8:
         facts.append("and %d more changes" % (len(changes) - 8))
     if not rows:
-        facts.append("no detached helper has run in the last %d hours" % HOURS)
+        facts.append("nothing is running and nothing finished today")
     state = {"status": {r["item"]: r["status"] for r in rows}, "hash": row_hash(rows), "row_hashes": rh,
              "doc_hashes": dh, "mods_at": now if mods_due and not mods_left else prev.get("mods_at", 0),
              "last_write": prev.get("last_write", 0), "versions": dict(versions)}
@@ -414,12 +414,14 @@ def main():
             add_use(rec, use)
             if ok or "version_mismatch" not in why:
                 break
-        rec.update(outcome="written" if ok else "FAILED", detail=why, attempt=attempt)
+        # a sync re-plan or a heartbeat may have changed the batch: record what was actually sent
+        rec.update(outcome="written" if ok else "FAILED", detail=why, attempt=attempt, writes=len(writes),
+                   mods=sum(1 for w in writes if w["collection"] == "mods"))
         if ok:
-            why, got = why
+            why, confirmed = why
             rec["detail"] = why
             state["last_write"] = now
-            state["versions"].update(got)
+            state["versions"].update(confirmed)
             dump(os.path.join(root, "state.json"), state)
             dump(os.path.join(root, "last_write.json"), {"at": now, "rows": len(rows), "headline": why})
     with open(os.path.join(root, "runs.jsonl"), "a") as f:
