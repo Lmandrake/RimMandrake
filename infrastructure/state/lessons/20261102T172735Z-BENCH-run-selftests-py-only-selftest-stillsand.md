@@ -1,0 +1,1 @@
+run_selftests.py --only selftest_stillsand exited 120 with ZERO bytes of output twice in a row (2026-11-02, relentless clone), then passed GREEN on an unchanged tree with python3 -u; an empty-output non-zero exit is the runner, not the test - rerun before reading it as red
