@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily agent-improvement pass at 06:40 local
+
+[Timer]
+OnCalendar=*-*-* 06:40:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

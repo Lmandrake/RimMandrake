@@ -1,0 +1,17 @@
+# Daily agent-improvement pass (owner 2026-11-01: "Every day we should ask if each agent can be improved based on our
+# evidence."). Design: design/RimMandrake/daily_agent_improvement_2026-11-02.md; item AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS.
+# Runs on BENCH's clone, levelled first with ./sync (it changes nothing when the tree holds colliding edits, hence "|| true");
+# `run --apply` commits and publishes its own verdict files and any judged KEEP by explicit path. The ramp level sets the
+# interval, so a daily trigger is safe (a not-due day exits "skipped"). Last-run file: <out>/state.json (last_pass_day).
+# Each run is reported to RimPulse (pulse.py report agent_improve:daily); history, never red.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-agent-improve.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-agent-improve.timer
+[Unit]
+Description=RimMandrake daily agent-improvement pass (BENCH clone)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/bench
+Nice=15
+TimeoutStartSec=3h
+ExecStart=/bin/sh -c 'OUT=/mnt/d/ClaudeWork/rimmandrake/agent_improve; mkdir -p "$OUT"; LOG="$OUT/timer.log"; printf "\n=== %%s\n" "$(date -u +%%Y-%%m-%%dT%%H:%%M:%%SZ)" >>"$LOG"; ./sync >>"$LOG" 2>&1 || true; python3 src/RimMandrake/Utils/agent_improve.py run --apply >"$OUT/timer.last" 2>&1; rc=$?; tail -40 "$OUT/timer.last" >>"$LOG"; printf "exit %%s\n" "$rc" >>"$LOG"; st=failed; [ "$rc" = 0 ] && st=ok; python3 src/RimMandrake/Utils/pulse/pulse.py report agent_improve:daily "$st" --cause "agent_improve run exit $rc: $(head -1 "$OUT/timer.last" | cut -c1-200)" --link "$LOG" || true; exit $rc'

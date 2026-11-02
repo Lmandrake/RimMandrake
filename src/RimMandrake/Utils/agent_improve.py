@@ -465,6 +465,7 @@ CURATOR_RULES = """Rules (from design/RimMandrake/daily_agent_improvement_2026-1
 
 CURATOR_REPLY = """Reply with ONE JSON object and nothing else:
 {"decision": "none" | "change" | "proposal",
+ "reason": "ALWAYS, one line: for none, why no change is worth making (what you checked); for the others, the failure fixed",
  "cites": [piece numbers],
  "fix_layer": "code" | "tool" | "prompt",
  "why_text": "change only: why text and not a code check",
@@ -624,6 +625,9 @@ def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
         return row
     if row["decision"] != "change":
         row["decision"] = "none"
+        row["reason"] = first_line(str(reply.get("reason") or ""), 300)
+        if not row["reason"]:   # a reasonless none cannot be told from a skim
+            row.update(decision="error", error="curator: no reason given")
         return row
     if not res:
         row.update(decision="refused", problems=["target is proposal-only"])
@@ -945,6 +949,10 @@ def render_pass(s):
     L = ["", "## Pass results (level L%d)" % s["level"]]
     for r in s["rows"]:
         line = "- %s: %s" % (r["target"], r["decision"])
+        if r.get("reason"):
+            line += " (%s)" % r["reason"]
+        if r.get("error"):
+            line += " [%s]" % r["error"]
         if r.get("verdict"):
             line += ", Judge %s (%s)" % (r["verdict"], r["judge"]["reasons"][:200])
         if "applied" in r:

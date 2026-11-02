@@ -117,9 +117,13 @@ with tempfile.TemporaryDirectory() as tmp:
     check("row KEEP", row.get("verdict") == "KEEP", row)
     check("judge blind to why_text", "SECRET-REASONING" not in seen.get("judge", "x"))
     check("judge sees diff", "instrument_traps" in seen.get("judge", ""))
-    row_none = A.curate_and_judge(entry(), "2026-11-01", out, curator=lambda p: '{"decision": "none"}',
+    row_none = A.curate_and_judge(entry(), "2026-11-01", out, curator=lambda p: '{"decision": "none", "reason": "checked, no recurring failure"}',
                                   judge=lambda p: 1 / 0, repo=repo)
     check("none costs no judge", row_none["decision"] == "none" and "verdict" not in row_none, row_none)
+    check("none carries its reason", row_none.get("reason") == "checked, no recurring failure", row_none)
+    row_bare = A.curate_and_judge(entry(), "2026-11-01", out, curator=lambda p: '{"decision": "none"}',
+                                  judge=lambda p: 1 / 0, repo=repo)
+    check("reasonless none is an error", row_bare["decision"] == "error" and "no reason" in row_bare.get("error", ""), row_bare)
     row_prop = A.curate_and_judge(entry(target="conductor"), "2026-11-01", out,
                                   curator=lambda p: '{"decision": "proposal", "fix_layer": "code", "proposal": "gate"}',
                                   judge=lambda p: 1 / 0, repo=repo)
@@ -228,7 +232,7 @@ with tempfile.TemporaryDirectory() as tmp:
     v1p = os.path.join(changes, "foo_v1.json")
     v1_before = open(v1p).read()
     s_nb = A.run_pass("2026-11-01", apply=True, force=True, **dict(
-        kw, curator=lambda p: '{"decision": "none", "prior_recheck": "pass"}', publish=lambda m, ps, r: (False, "no")))
+        kw, curator=lambda p: '{"decision": "none", "reason": "r", "prior_recheck": "pass"}', publish=lambda m, ps, r: (False, "no")))
     check("books refused", any(r.get("decision") == "NOT published" for r in s_nb["rows"]), s_nb)
     check("books refused: recheck record restored", open(v1p).read() == v1_before)
     check("books refused: nothing left staged", not sh(repo, "git", "diff", "--cached", "--name-only").strip())
@@ -249,7 +253,7 @@ with tempfile.TemporaryDirectory() as tmp:
 
     # the Curator sees commits to its target since the evidence day (the fix already landed is not proposed again)
     cap = {}
-    A.curate_and_judge(entry(), "2026-11-01", out, curator=lambda p: cap.setdefault("p", p) and '{"decision": "none"}',
+    A.curate_and_judge(entry(), "2026-11-01", out, curator=lambda p: cap.setdefault("p", p) and '{"decision": "none", "reason": "r"}',
                        judge=judge_keep, repo=repo)
     check("curator sees commits since", "COMMITS TO skills/foo/SKILL.md" in cap.get("p", "")
           and "AGENT_IMPROVE" in cap.get("p", ""), cap.get("p", "")[:300])
