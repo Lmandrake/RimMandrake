@@ -48,12 +48,16 @@
   "help_agent": "rm-consult",
   "model": "opus",
   "seat": "BENCH",
-  "_live": "relentless_live.py, the live tier (owner by card 2026-11-02: Relentless learns live testing). One built item's live criterion, a read-only proof on the running deployed game under the bridge lock. flyer_re refuses any run naming flight (standing ruling). forbid_re refuses a proof that would load, restart, swap or mutate the game. Seconds: proof_max_s for the proof, plan_max_s for deploy_custom_mods.py's plan.",
+  "_live": "relentless_live.py, the live tier (owner by card 2026-11-02: Relentless learns live testing). One built item's live criterion, a read-only proof on the running deployed game under the bridge lock. flyer_re refuses any run naming flight (standing ruling). forbid_re refuses a proof that would load, restart, swap or mutate the game. Seconds: proof_max_s for the proof, plan_max_s for deploy_custom_mods.py's plan. RA_S09: auto lets the tick start relentless_live_round.py (at most one, every round_every_s); a round runs up to round_max criteria that carry a `live-proof <CID>: <cmd>` line in their item's prose, and retries an UNMEASURED one after unmeasured_retry_s.",
   "live": {
     "flyer_re": "\\b(fly|flies|flying|flyers?|flight|wings?|airborne|takes? off|take-off)\\b",
     "forbid_re": "modlist_swap|modcheck\\s+run|deploy_custom_mods\\.py\\b.*--apply|(^|[\\s/])game\\s+(UP|DOWN|DEPLOYING|LOADING)\\b|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
     "proof_max_s": 600,
-    "plan_max_s": 500
+    "plan_max_s": 500,
+    "auto": true,
+    "round_every_s": 1800,
+    "round_max": 6,
+    "unmeasured_retry_s": 21600
   },
   "_staffing": "The no-AI filler, design section 13. Rises 3, 5, budget, each step only after a clean reading: hold_s at full stage, min_verdicts blind verdicts in that stage's window, at most max_reject_share rejected, memory never under step_back_mem_gb, no OOM kill, burn at most burn_max_pct_h. foreign_* are what a worker may take from the other seat without pulling its tree.",
   "_circling": "RW2, circling.py. Thresholds unmeasured: replay real runs before trusting one. stop stays false until circling_replay.json, written by `circling.py replay --write` from hand-labelled runs on this code and these numbers, shows wrongful stops under false_stop_limit; the flag alone stops nothing.",

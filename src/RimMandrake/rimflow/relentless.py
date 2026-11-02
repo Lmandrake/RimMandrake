@@ -1436,6 +1436,23 @@ class Effects:
         import live_line
         return live_line.check(line, not_before=not_before)
 
+    def live_round_alive(self, pid):
+        """A live round (relentless_live_round.py) still runs as `pid`: the cmdline names it, so a reused pid is not it."""
+        try:
+            with open("/proc/%d/cmdline" % int(pid), "rb") as f:
+                return b"relentless_live_round.py" in f.read()
+        except (OSError, ValueError):
+            return False
+
+    def live_round_launch(self):
+        """Start one live round detached (its own session: the oneshot tick ends long before it). -> pid."""
+        os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
+        with open(os.path.join(self.base, "live", "round.out"), "a", encoding="utf-8") as out:
+            p = subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py"),
+                                  "round"], cwd=self.books, env=dict(os.environ, RELENTLESS_ROOT=self.base),
+                                 stdout=out, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
+        return p.pid
+
 
 def clone_item(c):
     """The item a pool clone's folder is named for: ITEM, ITEM.qN, check-ITEM-cN or help-ITEM-cN."""
@@ -2942,6 +2959,28 @@ def books_alarm(store, fx, stale, now, acts, r):
         json.dump(was, f)
 
 
+def live_tick(store, fx, r, now, acts):
+    """RA_S09_LIVE_WIRE_ONE_REAL_LEAF: start one live round when live.auto is on, none runs, and the last one began
+    live.round_every_s ago. Pacing only: the round checks the game, takes the bridge with --idle-ok per proof and
+    releases it at once, and refuses flyers, changed files and cut criteria (relentless_live_round.py)."""
+    lr = r.get("live") or {}
+    if not lr.get("auto"):
+        return
+    path = store.p("live_round.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            last = json.load(f)
+    except (OSError, ValueError):
+        last = {}
+    if last.get("pid") and fx.live_round_alive(last["pid"]):
+        return
+    if now - (last.get("at_s") or 0) < lr.get("round_every_s", 1800):
+        return
+    pid = fx.live_round_launch()
+    store._write(path, json.dumps({"pid": pid, "at_s": now, "at": iso(now)}))
+    acts.append({"do": "live_round", "pid": pid})
+
+
 def tick(store=None, fx=None, r=None, now=None):
     r = r or rules()
     store = store or Store()
@@ -3001,6 +3040,10 @@ def tick(store=None, fx=None, r=None, now=None):
                 staffing(store, fx, r, now, acts)
             except Exception as e:  # noqa: BLE001  the reading never stops the workers; a dead reading shows as stale
                 acts.append({"do": "error", "item": None, "why": "staffing %s: %s" % (type(e).__name__, e)})
+        try:
+            live_tick(store, fx, r, now, acts)
+        except Exception as e:  # noqa: BLE001  the live tier is an extra: it never costs the tick its flush
+            acts.append({"do": "error", "item": None, "why": "live_tick %s: %s" % (type(e).__name__, e)})
         why = fx.flush()
         if why:
             acts.append({"do": "flush_retry", "why": why})
