@@ -82,7 +82,8 @@ with tempfile.TemporaryDirectory() as tmp:
     for name, mut in [("uncited", {"cites": []}), ("bad cite", {"cites": [9]}), ("code layer", {"fix_layer": "code"}),
                       ("no recheck", {"recheck": ""}), ("not unique", {"edits": [{"old": "- ", "new": "* "}]}),
                       ("absent old", {"edits": [{"old": "nope", "new": "x"}]}),
-                      ("too long", {"edits": [{"old": "# Foo\n", "new": "# Foo\n" + "line\n" * 16}]})]:
+                      ("too long", {"edits": [{"old": "# Foo\n", "new": "# Foo\n" + "line\n" * 16}]}),
+                      ("too long, ++ lines", {"edits": [{"old": "# Foo\n", "new": "# Foo\n" + "++x\n" * 16}]})]:
         _nf, _d, p = A.build_change(entry(), res, SKILL, dict(good, **mut))
         check("refused: " + name, p, mut)
 
@@ -93,6 +94,15 @@ with tempfile.TemporaryDirectory() as tmp:
     check("region refuses outside edit", p)
     nf, _d, p = A.build_change(entry(), rres, py, dict(good, edits=[{"old": "'brief line'", "new": "'brief 2'"}]))
     check("region allows inside edit", not p and "'brief 2'" in nf, p)
+    apy = py.replace("def other():", "async def other():").replace("X = 1\n", "X = 1\nclass K:\n    v = 'k'\n")
+    _nf, _d, p = A.build_change(entry(), rres, apy, dict(good, edits=[{"old": "'outside'", "new": "'o2'"}]))
+    check("region ends at async def", p)
+    gpy = py.replace("\ndef other():", "\nGLOBAL = 'g'\n\ndef other():")
+    _nf, _d, p = A.build_change(entry(), rres, gpy, dict(good, edits=[{"old": "'g'", "new": "'g2'"}]))
+    check("region excludes top-level code after the function", p)
+    _nf, _d, p = A.build_change(entry(), rres, py, dict(good, edits=[{"old": "    return 'brief line'\n",
+                                                                      "new": "    return 'b'\nLEAK = 1\n"}]))
+    check("new text may not dedent out of the function", p)
 
     # curate_and_judge: the Judge never sees the Curator's reasoning
     seen = {}
@@ -160,6 +170,71 @@ with tempfile.TemporaryDirectory() as tmp:
     check("failing check not applied", r2.get("applied") is False and "validate_skills" in r2["apply_detail"], r2)
     check("failing check reverted", open(os.path.join(repo, "skills/foo/SKILL.md")).read() == before)
     check("no v2 tag", "agent/foo/v2" not in sh(repo, "git", "tag", "-l"))
+    n_v = len(os.listdir(os.path.join(delegated, "2026-11-01")))
+    s_dry = A.run_pass("2026-11-01", force=True, **dict(kw, curator=lambda p: json.dumps(bad)))
+    check("dry run judged", any(r.get("verdict") == "KEEP" for r in s_dry["rows"]), s_dry)
+    check("dry run writes no repo verdict", len(os.listdir(os.path.join(delegated, "2026-11-01"))) == n_v)
+    check("dry run leaves the state alone", json.load(open(sp))["last_pass_day"] == "2026-11-01")
+    vr1 = json.load(open(os.path.join(delegated, "2026-11-01", "agent_improve_foo.json")))
+    check("rerun keeps the applied verdict", vr1["applied_sha"] and vr1["tag"] == "agent/foo/v1", vr1)
+    check("rerun verdict in its own file", os.path.exists(os.path.join(delegated, "2026-11-01",
+                                                                       "agent_improve_foo.run2.json")))
+
+    # a crashing check reverses the diff too
+    real_rc = A.run_checks
+    A.run_checks = lambda res, repo: (_ for _ in ()).throw(subprocess.TimeoutExpired("x", 1))
+    try:
+        ok_c, why_c = A.apply_change(dict(r2, verdict="KEEP", diff=r2.get("diff") or row["diff"]), entry(), out,
+                                     repo=repo, publish=fake_publish, changes_dir=changes, delegated_dir=delegated)
+    finally:
+        A.run_checks = real_rc
+    check("crashing check not applied", not ok_c and "crashed" in why_c, why_c)
+    check("crashing check reverted", open(os.path.join(repo, "skills/foo/SKILL.md")).read() == before)
+    real_nv = A.next_version
+    A.next_version = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("git timeout"))
+    _nf, okdiff, _p = A.build_change(entry(), A.resolve_target("foo"), before,
+                                     dict(good, edits=[{"old": "- Land with ./publish.\n", "new": "- Land, ./publish.\n"}]))
+    check("crash fixture diff builds and would validate", okdiff and not _p, _p)
+    try:
+        ok_c, why_c = A.apply_change(dict(r2, verdict="KEEP", diff=okdiff), entry(), out,
+                                     repo=repo, publish=fake_publish, changes_dir=changes, delegated_dir=delegated)
+    finally:
+        A.next_version = real_nv
+    stray = os.path.join(changes, "foo_v2.json")
+    write(stray, '{"someone": "else"}')
+    ok_s, why_s = A.apply_change(dict(r2, verdict="KEEP", diff=okdiff), entry(), out, repo=repo, publish=fake_publish,
+                                 changes_dir=changes, delegated_dir=delegated)
+    check("an existing record is never overwritten", not ok_s and open(stray).read() == '{"someone": "else"}'
+          and open(os.path.join(repo, "skills/foo/SKILL.md")).read() == before, why_s)
+    os.remove(stray)
+    vd = os.path.join(tmp, "vreserve")
+    p1, p2 = A.free_verdict_path(vd, "2026-11-01", "foo"), A.free_verdict_path(vd, "2026-11-01", "foo")
+    check("two passes reserve two verdict names", p1 != p2 and os.path.exists(p1) and p2.endswith(".run2.json"), (p1, p2))
+    check("crash before publish reverted", not ok_c and "preparing" in why_c and open(os.path.join(repo, "skills/foo/SKILL.md")).read()
+          == before, why_c)
+
+    # a refused books publish puts the recheck back (an unpublished "pass" must not lift an L1 hold)
+    v1p = os.path.join(changes, "foo_v1.json")
+    v1_before = open(v1p).read()
+    s_nb = A.run_pass("2026-11-01", apply=True, force=True, **dict(
+        kw, curator=lambda p: '{"decision": "none", "prior_recheck": "pass"}', publish=lambda m, ps, r: (False, "no")))
+    check("books refused", any(r.get("decision") == "NOT published" for r in s_nb["rows"]), s_nb)
+    check("books refused: recheck record restored", open(v1p).read() == v1_before)
+    check("books refused: nothing left staged", not sh(repo, "git", "diff", "--cached", "--name-only").strip())
+
+    # the ramp reads committed verdicts from HEAD: deleting the working copy changes nothing
+    rd0 = A.ramp_reading(delegated)
+    vf = os.path.join(delegated, "2026-11-01", "agent_improve_foo.json")
+    vf_text = open(vf).read()
+    os.remove(vf)
+    rd1 = A.ramp_reading(delegated)
+    write(vf, vf_text)
+    check("ramp reads HEAD", rd0["applied"] == 1 and rd0 == rd1, (rd0, rd1))
+    import shutil
+    shutil.move(delegated, delegated + ".aside")
+    rd2 = A.ramp_reading(delegated)
+    shutil.move(delegated + ".aside", delegated)
+    check("ramp reads HEAD with the folder gone", rd2 == rd0, (rd0, rd2))
 
     # the Curator sees commits to its target since the evidence day (the fix already landed is not proposed again)
     cap = {}
@@ -179,11 +254,38 @@ with tempfile.TemporaryDirectory() as tmp:
         write(os.path.join(lessons_dir, "20261101T%s0000Z-BENCH-y%d.md" % (hh, i)),
               "# GADGET_AUDIT_FORM another %d\n\nhome: foo\n" % i)
     pk = A.gather("2026-11-01", src, lv1, changes)
-    check("L1 holds on unread recheck", "foo" in pk["held"] and not pk["targets"], pk["held"])
+    check("L1 holds on unread recheck", "foo" in pk["held"] and [t["recheck_only"] for t in pk["targets"]] == [True],
+          pk["held"])
+    ro = dict(pk["targets"][0])
+    r_ro = A.curate_and_judge(ro, "2026-11-01", out, curator=lambda p: json.dumps(dict(good, prior_recheck="fail")),
+                              judge=judge_keep, repo=repo)
+    check("held target: change refused unless recheck pass", r_ro["decision"] == "refused" and not r_ro.get("verdict"),
+          r_ro)
+    r_ok = A.curate_and_judge(ro, "2026-11-01", out, curator=lambda p: json.dumps(dict(bad, prior_recheck="pass")),
+                              judge=judge_keep, repo=repo)
+    check("held target: change judged when recheck reads pass", r_ok.get("verdict") == "KEEP", r_ok)
     rec["recheck_result"] = "pass"
     write(os.path.join(changes, "foo_v1.json"), json.dumps(rec))
     pk = A.gather("2026-11-01", src, lv1, changes)
     check("L1 signals after pass", [t["target"] for t in pk["targets"]] == ["foo"], pk["held"])
+    v2p = os.path.join(changes, "foo_v2.json")
+    write(v2p, json.dumps(dict(rec, version=2, tag="agent/foo/v2", recheck_result=None, rechecks=[])))
+    sh(repo, "git", "add", "--", os.path.join(changes, "foo_v1.json"), v2p)
+    sh(repo, "git", "commit", "-q", "-m", "fixture records")
+    A.record_rechecks([{"target": "foo", "day": "2026-11-03", "prior_recheck": "fail", "prior_version": 1}], changes)
+    check("recheck lands on the version shown, not a newer one",
+          json.load(open(os.path.join(changes, "foo_v1.json")))["recheck_result"] == "fail"
+          and json.load(open(v2p))["recheck_result"] is None)
+    write(os.path.join(changes, "foo_v1.json"), json.dumps(dict(rec, note="dirty")))
+    A.record_rechecks([{"target": "foo", "day": "2026-11-04", "prior_recheck": "pass", "prior_version": 1}], changes)
+    check("a dirty change record is never folded in", json.load(open(os.path.join(changes, "foo_v1.json")))
+          .get("note") == "dirty" and json.load(open(os.path.join(changes, "foo_v1.json")))["recheck_result"] == "pass"
+          and not any(x.get("day") == "2026-11-04" for x in json.load(open(os.path.join(changes, "foo_v1.json")))
+                      .get("rechecks", [])))
+    sh(repo, "git", "rm", "-q", "--", v2p)
+    write(os.path.join(changes, "foo_v1.json"), json.dumps(rec))
+    sh(repo, "git", "add", "--", os.path.join(changes, "foo_v1.json"))
+    sh(repo, "git", "commit", "-q", "-m", "fixture records back")
     pk = A.gather("2026-11-01", src, A.LEVELS[2], changes)
     check("L2 bar 5 and 3 kinds holds", not pk["targets"], pk)
     row_l2 = dict(row, day="2026-11-02")

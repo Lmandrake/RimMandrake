@@ -23,6 +23,7 @@ infrastructure/state/agent_improve/changes/<target>_v<N>.json. Verdicts: infrast
 level (design section 4.1) lives in <out>/state.json and sets gather's bar. The generalization check (4.3) is owed.
 """
 import argparse
+import ast
 import calendar
 import difflib
 import glob
@@ -230,7 +231,7 @@ def gather(day, src, lv=None, changes_dir=None):
     for p in today:
         if p["target"]:
             by_target.setdefault(p["target"], []).append(p)
-    held = {}
+    held, recheck_only = {}, set()
     for t in by_target:
         if counts.get(t, 0) < lv["recur"]:
             continue
@@ -239,8 +240,13 @@ def gather(day, src, lv=None, changes_dir=None):
             continue
         prior = last_change(t, changes_dir)
         if lv["need_recheck"] and prior and prior.get("recheck_result") != "pass":
-            held[t] = "the recheck of %s is %s, not pass" % (prior.get("tag"), prior.get("recheck_result") or "unread")
-    signalled = sorted((t for t in by_target if counts.get(t, 0) >= lv["recur"] and t not in held),
+            # Not dropped: the Curator still runs to read the recheck (else nothing could ever record a pass),
+            # and a change is refused unless that same reply reads it as pass.
+            recheck_only.add(t)
+            held[t] = "the recheck of %s is %s, not pass; Curator reads it, no change unless pass" % (
+                prior.get("tag"), prior.get("recheck_result") or "unread")
+    signalled = sorted((t for t in by_target if counts.get(t, 0) >= lv["recur"]
+                        and (t not in held or t in recheck_only)),
                        key=lambda t: (t not in AGENTS, -counts[t], -len(by_target[t]), t))
     kept = signalled[:MAX_TARGETS]
     targets = []
@@ -248,6 +254,7 @@ def gather(day, src, lv=None, changes_dir=None):
         e = target_entry(t, counts[t], by_target[t])
         e["task_kinds"] = sorted(tkinds.get(t, ()))
         e["prior"] = last_change(t, changes_dir)
+        e["recheck_only"] = t in recheck_only
         targets.append(e)
     return {
         "day": day, "level": lv["level"], "window_days": lv["window_days"], "recur": lv["recur"],
@@ -323,14 +330,19 @@ def resolve_target(t):
 
 
 def region_of(text, start):
-    """The editable slice: from `start` to the next top-level def (the whole text when start is None)."""
+    """The editable slice: the top-level function `start` names ("def worker_prompt(") from its def line to its last
+    line, by the AST, so nothing between it and the next definition is editable (the whole text when start is None)."""
     if start is None:
         return 0, len(text)
-    i = text.find(start)
-    if i < 0:
-        raise ValueError("region marker %r not found" % start)
-    j = text.find("\ndef ", i + len(start))
-    return i, (j + 1 if j >= 0 else len(text))
+    name = re.fullmatch(r"(?:async )?def (\w+)\(", start)
+    fn = [n for n in ast.parse(text).body if name and isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+          and n.name == name.group(1)]
+    if len(fn) != 1:
+        raise ValueError("region %r: %d top-level functions match" % (start, len(fn)))
+    starts = [0]
+    for ln in text.splitlines(True):
+        starts.append(starts[-1] + len(ln))
+    return starts[fn[0].lineno - 1], starts[min(fn[0].end_lineno, len(starts) - 1)]
 
 
 def last_change(t, changes_dir=None):
@@ -379,11 +391,29 @@ def ramp_reading(delegated_dir=None):
     """Acceptance rate over the last RAMP_PASSES passes that proposed anything, from the committed verdict files:
     each agent_improve_<target>.json is one proposed diff; applied when it carries applied_sha."""
     days = {}
-    for p in glob.glob(os.path.join(delegated_dir or DELEGATED, "*", "agent_improve_*.json")):
+    ddir = delegated_dir or DELEGATED
+    # Committed verdicts only: a refused books publish leaves files that must not move the ramp. Outside a git
+    # work tree (selftest fixtures) every file on disk counts.
+    base = ddir   # the nearest existing folder: HEAD holds the verdicts even if the working folder was deleted
+    while not os.path.isdir(base) and os.path.dirname(base) != base:
+        base = os.path.dirname(base)
+    sub = os.path.relpath(ddir, base)
+    r = subprocess.run(["git", "ls-tree", "-r", "-z", "--name-only", "--full-name", "HEAD", "--", sub], cwd=base,
+                       capture_output=True, text=True, timeout=120)
+    if r.returncode == 0:   # iterate HEAD itself: a deleted or edited working copy changes nothing
+        top = git("rev-parse", "--show-prefix", cwd=base).strip() + ("" if sub == "." else sub.rstrip("/") + "/")
+        rels = [x[len(top):] for x in r.stdout.split("\0") if x.startswith(top)
+                and re.fullmatch(r"[^/]+/agent_improve_[^/]+\.json", x[len(top):])]
+        load = lambda rel: json.loads(git("show", "HEAD:%s%s" % (top, rel), cwd=base))   # noqa: E731
+    else:
+        rels = [os.path.relpath(x, ddir) for x in glob.glob(os.path.join(ddir, "*", "agent_improve_*.json"))]
+        load = lambda rel: json.load(open(os.path.join(ddir, rel), encoding="utf-8"))   # noqa: E731
+    for rel in rels:
         try:
-            rec = json.load(open(p, encoding="utf-8"))
-        except (OSError, ValueError):
+            rec = load(rel)
+        except (OSError, ValueError, RuntimeError):
             continue
+        p = os.path.join(ddir, rel)
         d = days.setdefault(os.path.basename(os.path.dirname(p)), [0, 0])
         d[0] += 1
         d[1] += 1 if rec.get("applied_sha") else 0
@@ -549,11 +579,20 @@ def build_change(entry, res, full, reply):
             continue
         region = region.replace(old, new, 1)
     new_full = full[:a] + region + full[b:]
+    if res["region"]:   # "new" must not move code out of the function either (a dedented global, a new def)
+        try:
+            a2, b2 = region_of(new_full, res["region"])
+            inside = new_full[:a2] == full[:a] and new_full[b2:] == full[b:]
+        except (SyntaxError, ValueError) as e:
+            inside, probs = True, probs + ["the edited file does not parse: %s" % str(e)[:120]]
+        if not inside:
+            probs.append("the edit reaches outside %s" % res["region"])
     diff = "".join(difflib.unified_diff(full.splitlines(True), new_full.splitlines(True),
                                         "a/" + res["path"], "b/" + res["path"]))
-    plus = sum(1 for ln in diff.splitlines() if ln.startswith("+") and not ln.startswith("+++"))
-    minus = sum(1 for ln in diff.splitlines() if ln.startswith("-") and not ln.startswith("---"))
-    if max(plus, minus) > MAX_EDIT_LINES:
+    body = diff.splitlines()[2:]   # past the ---/+++ header pair; "++x" in the body is an added "+x"
+    plus = sum(1 for ln in body if ln.startswith("+"))
+    minus = sum(1 for ln in body if ln.startswith("-"))
+    if max(plus, minus) > MAX_EDIT_LINES:   # the cap is per side: a 15-line rewrite is 15 lines
         probs.append("%d added / %d removed lines, cap %d" % (plus, minus, MAX_EDIT_LINES))
     if not diff and not probs:
         probs.append("the edits change nothing")
@@ -578,6 +617,7 @@ def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
         json.dump({"reply": reply, "raw": raw[-4000:]}, f, indent=1)
     row["decision"] = reply.get("decision")
     row["prior_recheck"] = reply.get("prior_recheck") if entry.get("prior") else None
+    row["prior_version"] = (entry.get("prior") or {}).get("version")   # the change the recheck is about
     if row["decision"] == "proposal":
         row["proposal"] = str(reply.get("proposal") or "")[:1500]
         row["fix_layer"] = reply.get("fix_layer")
@@ -587,6 +627,10 @@ def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
         return row
     if not res:
         row.update(decision="refused", problems=["target is proposal-only"])
+        return row
+    if entry.get("recheck_only") and row["prior_recheck"] != "pass":
+        row.update(decision="refused", problems=["held: the prior change's recheck reads %r, not pass"
+                                                 % row["prior_recheck"]])
         return row
     new_full, diff, probs = build_change(entry, res, full, reply)
     if probs:
@@ -667,19 +711,42 @@ def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, 
         return False, "level L%d needs a generalization check before apply; it is not built" % pk_level
     if git("status", "--porcelain", "--", res["path"], cwd=repo).strip():
         return False, "%s has uncommitted edits; refusing to mix" % res["path"]
-    dpath = os.path.join(outdir, "%s.diff" % t)
+    # Apply the diff the Judge saw (row["diff"]), never the outdir copy another run could have rewritten.
+    fd, dpath = tempfile.mkstemp(suffix=".diff")
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(row["diff"])
+    try:
+        return _apply_checked(row, entry, res, t, dpath, repo, publish, changes_dir, delegated_dir)
+    finally:
+        os.remove(dpath)
+
+
+def _apply_checked(row, entry, res, t, dpath, repo, publish, changes_dir, delegated_dir):
     r = subprocess.run(["git", "apply", "--check", dpath], cwd=repo, capture_output=True, text=True, timeout=60)
     if r.returncode != 0:
         return False, "git apply --check: %s" % r.stderr[-300:]
     git("apply", dpath, cwd=repo)
-    probs = run_checks(res, repo)
+    try:
+        probs = run_checks(res, repo)
+    except Exception as e:   # a timeout or crash must not leave the edit applied
+        probs = ["checks crashed: %s" % str(e)[:300]]
     if probs:
         git("apply", "-R", dpath, cwd=repo)
         return False, "; ".join(probs)
+    try:
+        head = git("rev-parse", "HEAD", cwd=repo).strip()
+        n, tag, vrec, vpath, cpath, msg, paths = _prepare_record(row, entry, res, t, repo, changes_dir, delegated_dir)
+    except Exception as e:   # nothing may stay applied or half-written before publish
+        git("apply", "-R", dpath, cwd=repo, check=False)
+        return False, "preparing the change record failed: %s" % str(e)[:300]
+    return _publish_and_tag(row, res, dpath, repo, publish, vrec, vpath, cpath, msg, paths, tag, head)
+
+
+def _prepare_record(row, entry, res, t, repo, changes_dir, delegated_dir):
     n = next_version(t, changes_dir, cwd=repo)
     tag = "agent/%s/v%d" % (t, n)
     vrec = verdict_record(row, entry)
-    vpath = os.path.join(delegated_dir, row["day"], "agent_improve_%s.json" % t)
+    vpath = row.get("verdict_file") or free_verdict_path(delegated_dir, row["day"], t)
     cpath = os.path.join(changes_dir, "%s_v%d.json" % (t, n))
     change = {"target": t, "version": n, "tag": tag, "day": row["day"], "path": res["path"],
               "pieces": vrec["cites"], "source_kinds": sorted({task_kind(entry["pieces"][c]) for c in row["cites"]}
@@ -687,22 +754,60 @@ def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, 
               "diff": row["diff"], "verdict": os.path.relpath(vpath, repo), "recheck": row["recheck"],
               "recheck_result": None, "rechecks": [], "generalization": []}
     os.makedirs(os.path.dirname(cpath), exist_ok=True)
-    with open(cpath, "w", encoding="utf-8") as f:
-        json.dump(change, f, indent=1)
+    try:
+        f = open(cpath, "x", encoding="utf-8")   # never overwrite a record someone left (e.g. an unpublished v<N>)
+    except FileExistsError:
+        raise RuntimeError("%s already exists; refusing to overwrite it" % cpath) from None
+    try:
+        with f:
+            json.dump(change, f, indent=1)
+    except Exception:
+        os.remove(cpath)
+        raise
     msg = ("AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS: %s v%d from %s evidence\n\n"
            "Delegated: technical — agent improvement %s\nJudge KEEP: %s\nChange record: %s\n"
            % (t, n, row["day"], t, os.path.relpath(vpath, repo), os.path.relpath(cpath, repo)))
     paths = [res["path"], os.path.relpath(cpath, repo)]
-    ok, sha = (publish or publish_paths)(msg, paths, repo)
+    return n, tag, vrec, vpath, cpath, msg, paths
+
+
+def _publish_and_tag(row, res, dpath, repo, publish, vrec, vpath, cpath, msg, paths, tag, head):
+    try:
+        ok, sha = (publish or publish_paths)(msg, paths, repo)
+    except Exception as e:
+        ok, sha = False, "crashed: %s" % str(e)[:300]
     if not ok:
+        if git("rev-parse", "HEAD", cwd=repo).strip() != head:
+            # ./publish refuses after committing and leaves the commit on HEAD: never rewrite it, say so.
+            return False, "publish: %s (its commit is left on HEAD for a human)" % sha
+        git("reset", "-q", "--", *paths, cwd=repo, check=False)   # unstage only these paths
         git("apply", "-R", dpath, cwd=repo)
         os.remove(cpath)
         return False, "publish: %s" % sha
     vrec.update(applied_sha=sha, tag=tag, change=os.path.relpath(cpath, repo))
     write_verdict(vpath, vrec)
     git("tag", tag, sha, cwd=repo, check=False)
-    git("push", "origin", "refs/tags/%s" % tag, cwd=repo, check=False)
-    return True, "%s %s" % (tag, sha)
+    tagged = git("rev-parse", "-q", "--verify", "refs/tags/%s^{commit}" % tag, cwd=repo, check=False).strip()
+    if not sha or not tagged.startswith(sha):
+        return True, "%s published, but tag %s resolves to %r, not it" % (sha, tag, tagged)
+    pushed = subprocess.run(["git", "push", "origin", "refs/tags/%s" % tag], cwd=repo, capture_output=True,
+                            text=True, timeout=300).returncode == 0
+    return True, "%s %s%s" % (tag, sha, "" if pushed else " (tag push FAILED; local tag only)")
+
+
+def free_verdict_path(delegated_dir, day, t):
+    """A verdict record is never overwritten: a forced rerun of the same day takes the next free name, and the ramp
+    counts it as one more proposal."""
+    base = os.path.join(delegated_dir or DELEGATED, day, "agent_improve_%s" % t)
+    os.makedirs(os.path.dirname(base), exist_ok=True)
+    k, p = 1, base + ".json"
+    while True:
+        try:   # reserve the name: a concurrent pass can never pick the same file; this pass then owns it
+            os.close(os.open(p, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+            return p
+        except FileExistsError:
+            k += 1
+            p = "%s.run%d.json" % (base, k)
 
 
 def write_verdict(vpath, vrec):
@@ -725,21 +830,37 @@ def publish_paths(msg, paths, repo):
     return (True, m.group(1)) if r.returncode == 0 and m else (False, (r.stdout + r.stderr)[-400:])
 
 
-def record_rechecks(rows, changes_dir=None):
+def record_rechecks(rows, changes_dir=None, saved=None):
     """The Curator's read of each prior change's recheck, appended to that change record. -> the records touched."""
     touched = []
     for row in rows:
         if row.get("prior_recheck") not in ("pass", "fail", "unknown"):
             continue
-        prior = last_change(row["target"], changes_dir)
-        if not prior:
+        if not row.get("prior_version"):
             continue
-        p = os.path.join(changes_dir or CHANGES, "%s_v%d.json" % (row["target"], prior["version"]))
+        # The version the Curator was shown, never last_change(): a change applied in this same pass is newer.
+        p = os.path.join(changes_dir or CHANGES, "%s_v%d.json" % (row["target"], row["prior_version"]))
+        if os.path.exists(p) and git("status", "--porcelain", "--", os.path.basename(p), cwd=os.path.dirname(p),
+                                     check=False).strip():
+            continue   # someone's uncommitted edit: never fold it into the books commit
+        try:
+            old = open(p, encoding="utf-8").read()
+            prior = json.loads(old)
+        except (OSError, ValueError):
+            continue
+        if saved is not None:
+            saved.setdefault(p, old)   # so a books publish that fails can put the record back
         prior.setdefault("rechecks", []).append({"day": row["day"], "result": row["prior_recheck"], "by": "curator"})
         if row["prior_recheck"] != "unknown":
             prior["recheck_result"] = row["prior_recheck"]
-        with open(p, "w", encoding="utf-8") as f:
-            json.dump(prior, f, indent=1)
+        tmp = p + ".tmp"
+        try:
+            with open(tmp, "w", encoding="utf-8") as f:   # atomic: a failed write never truncates the record
+                json.dump(prior, f, indent=1)
+            os.replace(tmp, p)
+        finally:
+            if os.path.exists(tmp):
+                os.remove(tmp)
         touched.append(p)
     return touched
 
@@ -757,33 +878,55 @@ def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=No
     d = os.path.join(out, day)
     os.makedirs(d, exist_ok=True)
     rows = []
+    # A dry run (no --apply) writes nothing the repo or the ramp reads: verdicts go to the scratch day folder.
+    vdir = (delegated_dir or DELEGATED) if apply else os.path.join(d, "verdicts")
     for entry in pk["targets"]:
         if only and entry["target"] not in only:
             continue
         row = curate_and_judge(entry, day, d, curator, judge, repo)
         rows.append(row)
         if row.get("verdict"):
-            vpath = os.path.join(delegated_dir or DELEGATED, day, "agent_improve_%s.json" % row["target"])
+            vpath = free_verdict_path(vdir, day, row["target"])
             write_verdict(vpath, verdict_record(row, entry))
             row["verdict_file"] = vpath
         if apply and row.get("verdict") == "KEEP":
             row["applied"], row["apply_detail"] = apply_change(row, entry, d, repo, publish, changes_dir,
                                                                delegated_dir, st["level"])
-    touched = record_rechecks(rows, changes_dir)
+    saved = {}
+    head = git("rev-parse", "HEAD", cwd=repo or REPO).strip() if apply else None   # before anything is written
+    try:
+        touched = record_rechecks(rows, changes_dir, saved) if apply else []
+    except Exception:   # put back what was written before the failure, then fail loudly
+        for p, old in saved.items():
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(old)
+        raise
+    books_ok = apply
     if apply:
         books = [r["verdict_file"] for r in rows if r.get("verdict_file")] + touched
         if books:
-            ok, detail = (publish or publish_paths)(
-                "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS: %s verdicts and rechecks\n\n"
-                "Delegated: technical — agent improvement verdicts %s\n" % (day, day),
-                [os.path.relpath(b, repo or REPO) for b in books], repo or REPO)
+            rel = [os.path.relpath(b, repo or REPO) for b in books]
+            try:
+                ok, detail = (publish or publish_paths)(
+                    "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS: %s verdicts and rechecks\n\n"
+                    "Delegated: technical — agent improvement verdicts %s\n" % (day, day), rel, repo or REPO)
+            except Exception as e:
+                ok, detail = False, "crashed: %s" % str(e)[:300]
+            if not ok and git("rev-parse", "HEAD", cwd=repo or REPO).strip() == head:
+                # nothing committed: an unpublished recheck must not lift an L1 hold, so put the records back
+                git("reset", "-q", "--", *rel, cwd=repo or REPO, check=False)
+                for p, old in saved.items():
+                    with open(p, "w", encoding="utf-8") as f:
+                        f.write(old)
             rows.append({"target": "(books)", "decision": "published" if ok else "NOT published", "day": day,
                          "apply_detail": detail})
-    reading = ramp_reading(delegated_dir)
-    st, step = ramp_step(st, reading)
-    st["last_pass_day"] = day
-    with open(state_path, "w", encoding="utf-8") as f:
-        json.dump(st, f, indent=1)
+            books_ok = ok
+    reading, step = ramp_reading(delegated_dir), None
+    if books_ok:   # the ramp moves, and the pass counts as run, only once its verdicts are committed
+        st, step = ramp_step(st, reading)
+        st["last_pass_day"] = day
+        with open(state_path, "w", encoding="utf-8") as f:
+            json.dump(st, f, indent=1)
     summary = {"day": day, "level": pk["level"], "targets": [e["target"] for e in pk["targets"]],
                "rows": [{k: v for k, v in r.items() if k not in ("new_text",)} for r in rows],
                "ramp": reading, "ramp_step": step}
