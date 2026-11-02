@@ -1,0 +1,2 @@
+When a reader (decisions_v2.letters) and a writer (remap_decisions.apply_map) walk the same record's letter fields, they must cover the SAME fields: classify() counted schema-2 letters (slots, pool, reject, retire, assign, asks, legacyVariants; 1,700+ uses in Transient/biome_ffar) as remapped, apply_map rewrote only decision/picks/variants, so --apply reported a remap and left the owner's ruling naming other art. Fixed wave 80; selftest_remap_decisions asserts letters(after) == map(letters(before)).
+home: src/RimMandrake/Utils/art/remap_decisions.py

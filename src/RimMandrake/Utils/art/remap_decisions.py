@@ -54,14 +54,37 @@ def classify(dec: dict, ruled: dict | None, now: dict):
 
 
 def apply_map(dec: dict, newmap: dict) -> None:
+    """Rewrite every letter-bearing field decisions_v2.letters() reads — so every letter classify() counted as
+    remapped is actually rewritten. 🔴 Until wave 80 only decision/picks/variants were: a schema-2 letter (slots,
+    pool, reject, retire, assign, asks, legacyVariants — 1,700+ uses in Transient/biome_ffar) was reported
+    "remapped" and left naming the OTHER art."""
     for row, m in newmap.items():
         v = dec["decisions"][row]
+        sub = lambda x: m.get(x, x) if isinstance(x, str) else x  # noqa: E731
         if (v.get("decision") or "") in m:
             v["decision"] = m[v["decision"]]
         if v.get("picks"):
-            v["picks"] = {g: m.get(x, x) for g, x in v["picks"].items()}
+            v["picks"] = {g: sub(x) for g, x in v["picks"].items()}
         if v.get("variants"):
-            v["variants"] = sorted({m.get(x, x) for x in v["variants"]})
+            v["variants"] = sorted({sub(x) for x in v["variants"]})
+        if isinstance(v.get("legacyVariants"), list):
+            v["legacyVariants"] = [sub(x) for x in v["legacyVariants"]]
+        for s in (v.get("slots") or {}).values():
+            if isinstance(s, dict) and s.get("pick"):
+                s["pick"] = sub(s["pick"])
+        for p in (v.get("pool") or {}).values():
+            if isinstance(p, dict):
+                for k in ("add", "remove"):
+                    if p.get(k):
+                        p[k] = [sub(x) for x in p[k]]
+        for key in ("reject", "retire"):
+            if isinstance(v.get(key), dict):
+                v[key] = {g: [sub(x) for x in ls] if isinstance(ls, list) else ls for g, ls in v[key].items()}
+        if isinstance(v.get("assign"), dict) and v["assign"]:
+            v["assign"] = {sub(k): x for k, x in v["assign"].items()}
+        for mo in ((v.get("asks") or {}).get("more") or []):
+            if isinstance(mo, dict) and mo.get("base"):
+                mo["base"] = sub(mo["base"])
 
 
 def main():
