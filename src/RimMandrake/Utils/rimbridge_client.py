@@ -291,7 +291,9 @@ READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
 # Reads the prefixes cannot see. companion_handshake only reports the companion's profile; treated as mutating it was
 # refused whenever any earlier call had an UNKNOWN outcome (testq: 4 jobs INVALID/HARNESS 10-27..10-29), so the
 # harness could not even read the state it needed to reconcile.
-READ_ONLY_TOOLS = ("jawa/companion_handshake",)
+# running_mods only lists LoadedModManager's running mods (and hashes an assembly file when asked); without this entry
+# live_def_check's owner lookup was refused on every call (exit 3) and every unresolved def read UNMEASURED (2026-11-02).
+READ_ONLY_TOOLS = ("jawa/companion_handshake", "jawa/running_mods")
 
 # Tools the owner has RETIRED. The bridge still registers them; we refuse to be the
 # thing that calls one. A doc saying "don't" is read by whoever already looked it up;
