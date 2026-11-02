@@ -2920,6 +2920,9 @@ def cmd_intile(args):
 NOW_DONE = ("verified", "cancelled", "failed")
 
 
+LEFTOVER_S = 60     # a .tmp/.spent. file in now_dir older than this was left by a killed process
+
+
 def now_owed(stamp, st, now, hold_s, root=None, seats=None):
     """-> why a `--now` stamp still owes a tick, or None when it is spent (delete it). Spent: its request was decided
     (verified, cancelled, failed), it vanished untaken, its seat is not configured (nothing will ever take it), or it
@@ -2954,9 +2957,18 @@ def cmd_now_run(args):
         st = _read_json(os.path.join(doorbell.state_dir(), "state.json")) or {}
         owed = {}
         for n in names:
-            if n.endswith(".tmp") or ".spent." in n:
-                continue        # a writer's half-made stamp (_write_json) or one being retired below
             p = os.path.join(now_dir(), n)
+            if n.endswith(".tmp") or ".spent." in n:
+                # a writer's half-made stamp (_write_json) or one being retired below: left alone while fresh; one a
+                # killed process left behind would hold PathExistsGlob true for ever, so it goes after LEFTOVER_S
+                # (its request still lands on the 120 s timer: a stamp only buys latency) (review 2026-11-02 #3)
+                try:
+                    if now - os.path.getmtime(p) > LEFTOVER_S:
+                        os.remove(p)
+                        print("[now-run] %.1fs %s leftover removed" % (now - t0, n), flush=True)
+                except OSError:
+                    pass
+                continue
             stamp = _read_json(p) or {}
             why = now_owed(stamp, st, now, hold_s, seats=seats)
             if why:
@@ -2970,11 +2982,14 @@ def cmd_now_run(args):
             except OSError:
                 continue
             if (_read_json(aside) or {}).get("req_ts") != stamp.get("req_ts"):
+                owed[n] = "replaced"
                 try:
                     os.link(aside, p)   # never overwrites: EEXIST means a newer stamp is there already
-                except OSError:
+                except FileExistsError:
                     pass
-                owed[n] = "replaced"
+                except OSError as e:    # it could not go back: keep it aside, never delete the only copy
+                    print("[now-run] %s could not be restored (%s): kept as %s" % (n, e, aside), flush=True)
+                    continue
             else:
                 print("[now-run] %.1fs %s stamp spent: removed" % (now - t0, n), flush=True)
             try:

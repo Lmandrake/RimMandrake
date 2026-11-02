@@ -225,6 +225,33 @@ def test_watcher():
     check((SR._read_json(sp) or {}).get("req_ts") == T0 and left == ["FOUNDRY"],
           "now-run never removes a stamp replaced on disk after it judged the old one spent (%s)" % left)
     os.remove(sp)
+    # the same race where the stamp cannot go back (ENOSPC): the moved copy is kept, never deleted
+    _write(sp, {"seat": "FOUNDRY", "req_ts": 1.0})
+    real_link = SR.os.link
+
+    def nolink(src, dst):
+        raise OSError(28, "No space left on device")
+    SR.os.rename, SR.os.link = racing, nolink
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            SR.main(["now-run", "--dry"])
+    finally:
+        SR.os.rename, SR.os.link = real, real_link
+    kept = [n for n in os.listdir(SR.now_dir()) if ".spent." in n]
+    check(len(kept) == 1 and (SR._read_json(os.path.join(SR.now_dir(), kept[0])) or {}).get("req_ts") == T0,
+          "a newer stamp that cannot be restored is kept aside, not deleted (%s)" % kept)
+    for n in kept:
+        os.remove(os.path.join(SR.now_dir(), n))
+    # files a killed writer or now-run left behind would hold PathExistsGlob true for ever: fresh ones are left,
+    # old ones removed
+    old_tmp, new_tmp = sp + ".spent.99", sp + ".123.tmp"
+    for q in (old_tmp, new_tmp):
+        _write(q, {"seat": "FOUNDRY", "req_ts": T0})
+    os.utime(old_tmp, (SR.time.time() - 600, SR.time.time() - 600))
+    with contextlib.redirect_stdout(io.StringIO()):
+        SR.main(["now-run", "--dry"])
+    check(not os.path.exists(old_tmp) and os.path.exists(new_tmp), "a leftover aside/tmp file goes after LEFTOVER_S, a fresh one stays")
+    os.remove(new_tmp)
     _write(SR.now_stamp_path("GONE"), {"seat": "GONE", "req_ts": 1.0})
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
