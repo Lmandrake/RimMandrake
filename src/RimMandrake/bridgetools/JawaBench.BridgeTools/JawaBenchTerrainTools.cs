@@ -5383,12 +5383,16 @@ namespace JawaBench.BridgeTools
                 "the subject — and 'Auto-open on error' reopens it constantly under a " +
                 "modded load. Call this immediately before every take_screenshot; it is " +
                 "cheap, it touches no game state, and without it a screenshot is not " +
-                "evidence of anything.",
+                "evidence of anything. By default it also hides the HUD (the colonist bar " +
+                "across the top, main tabs, messages) with vanilla screenshot mode, under a " +
+                "short realtime lease that switches it back off by itself.",
             ResultDescription =
                 "closed: the window types actually removed. remaining: what is still open, " +
                 "so a picture that is still obscured names its own culprit. deselected: how " +
                 "many things were selected (the inspect pane is drawn from the selection, " +
-                "not from a window, and cannot be closed any other way).")]
+                "not from a window, and cannot be closed any other way). hudHidden: whether " +
+                "screenshot mode is on after the call; hudLeaseSeconds: how long it stays on; " +
+                "hudError: why the HUD could not be hidden.")]
         public static async Task<object> ClearUi(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -5406,13 +5410,32 @@ namespace JawaBench.BridgeTools
                 "dismiss dialogs the game is waiting on — a trade confirmation, a ritual " +
                 "prompt — and answering a dialog by destroying it is not the same as " +
                 "answering it. Off by default.", DefaultValue = false)]
-            bool all = false)
+            bool all = false,
+            [ToolParameter(Description =
+                "Hide the HUD with vanilla screenshot mode: the colonist bar across the top " +
+                "of the screen, the main tabs, messages and tooltips. Neither a window nor " +
+                "the selection, so nothing else here removes them; a tall rect shot carries " +
+                "the colonist bar across its top without this. Switched back off by itself " +
+                "after hideHudSeconds of realtime (each call extends it); never switched off " +
+                "if screenshot mode was already on before the lease.", DefaultValue = true)]
+            bool hideHud = true,
+            [ToolParameter(Description =
+                "Realtime seconds the HUD stays hidden after this call (clamped 1-600).",
+                DefaultValue = 20)]
+            int hideHudSeconds = 20)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 var stack = Find.WindowStack;
                 if (stack == null)
                     return Fail("No WindowStack — the game is not at a UI-bearing state.");
+
+                bool hudHidden = Find.UIRoot?.screenshotMode?.Active ?? false;
+                bool hudWasHidden = hudHidden;
+                string hudError = null;
+                int leaseSeconds = Math.Max(1, Math.Min(600, hideHudSeconds));
+                if (hideHud)
+                    hudHidden = JawaBenchHudLease.Take(leaseSeconds, out hudWasHidden, out hudError);
 
                 var closed = new List<string>();
                 var remaining = new List<string>();
@@ -5448,13 +5471,18 @@ namespace JawaBench.BridgeTools
                     closedCount = closed.Count,
                     remaining,
                     deselected,
-                    message = closed.Count == 0 && deselected == 0
+                    hudHidden,
+                    hudWasHidden,
+                    hudLeaseSeconds = hideHud && JawaBenchHudLease.Owned ? leaseSeconds : 0,
+                    hudError,
+                    message = (hideHud && !hudHidden ? "HUD NOT hidden (" + hudError + "); the colonist bar will be in the shot. " : "") +
+                              (closed.Count == 0 && deselected == 0
                         ? "Nothing to close and nothing was selected. The view was already " +
                           "clear — this is a no-op, not a failure."
                         : $"Closed {closed.Count} window(s), deselected {deselected} thing(s)." +
                           (remaining.Count > 0
                               ? " Still open: " + string.Join(", ", remaining) + "."
-                              : "")
+                              : ""))
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
