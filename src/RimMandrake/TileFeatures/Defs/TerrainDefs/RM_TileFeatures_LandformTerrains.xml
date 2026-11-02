@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY (design/RimMandrake/vee_port_plan_2026-10-22.md group L): the terrains the
+     landform tile features lay, ported from Vanilla Exploration Expanded's terrains of the same purpose (VEE_<Stem> ->
+     RM_<Stem>; VEE_PebbleDunes -> RM_LoosePebbles and VEE_VolcanicAsh "impact regolith" -> RM_ImpactRegolith so a terrain
+     never shares a name with a tile feature). Numbers (path cost, fertility, affordances) follow VEE's defs; Walkable comes from NaturalTerrainBase.
+     PLACEHOLDER ART: every texture is vanilla's, tinted with <color> (the colour multiplies the texture, as in
+     FlowWorks' RM_ColoredWater.xml and RM_SaltCrustShore). Whether a tint survives vanilla's water-depth overlay is
+     unverified offline (the same open question RM_ColoredWater.xml records). New art is delegated to the art judge.
+     The quicksand of RM_QuicksandDunes is FlowWorks' RM_DeepSand and the sinkhole pit is FlowWorks' RM_Channel_Superdeep
+     (a pit is a superdeep cell), so neither is redefined here. -->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Salt</defName>
+    <label>salt</label>
+    <description>A hard, glaring crust of salt left where an inland sea dried away. Nothing grows in it, and it is slow, crunching going.</description>
+    <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>
+    <color>(245,243,236)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>352</renderPrecedence>
+    <pathCost>28</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_SaltySand</defName>
+    <label>salty sand</label>
+    <description>Sand laced with salt. Plants will not take root in it.</description>
+    <texturePath>Terrain/Surfaces/Sand</texturePath>
+    <color>(232,226,214)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>14</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_DryRiverBed</defName>
+    <label>dry river bed</label>
+    <description>Cracked silt and pebbles where a river used to run.</description>
+    <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>
+    <color>(196,170,134)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>352</renderPrecedence>
+    <pathCost>4</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Heavy</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_DryRiverBank</defName>
+    <label>dry river bank</label>
+    <description>Baked mud along the edge of a dead river.</description>
+    <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>
+    <color>(176,150,118)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>351</renderPrecedence>
+    <pathCost>3</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Heavy</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_FertileRiverbank</defName>
+    <label>fertile riverbank</label>
+    <description>Dark silt left behind by floods. It is very fertile.</description>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <color>(150,128,104)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>339</renderPrecedence>
+    <pathCost>4</pathCost>
+    <fertility>1.5</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Heavy</li><li>GrowSoil</li><li>Diggable</li></affordances><tags><li>Soil</li></tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_IrradiatedSoil</defName>
+    <label>irradiated soil</label>
+    <description>Ground soaked in leaked nuclear waste. Nothing grows in it.</description>
+    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <color>(150,170,96)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>340</renderPrecedence>
+    <pathCost>3</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Heavy</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_GravelBeach</defName>
+    <label>gravel beach</label>
+    <description>A shore of loose gravel and rounded stones ground against each other by the waves.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(168,164,156)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>320</renderPrecedence>
+    <pathCost>2</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_LoosePebbles</defName>
+    <label>loose pebbles</label>
+    <description>Low dunes of rounded pebbles shaped by the wind. They roll underfoot.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(206,188,160)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>321</renderPrecedence>
+    <pathCost>10</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_RedSand</defName>
+    <label>red sand</label>
+    <description>Iron-rich sand stained red by the slow grinding of ancient stone.</description>
+    <texturePath>Terrain/Surfaces/Sand</texturePath>
+    <color>(214,140,104)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>4</pathCost>
+    <fertility>0.10</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Heavy</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_RedSoftSand</defName>
+    <label>red soft sand</label>
+    <description>Loose, deep red sand. Slow going.</description>
+    <texturePath>Terrain/Surfaces/SoftSand</texturePath>
+    <color>(208,128,94)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>352</renderPrecedence>
+    <pathCost>14</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Diggable</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_ImpactRegolith</defName>
+    <label>impact regolith</label>
+    <description>Crushed rock and glassy grit thrown out by an impact.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(120,112,104)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>322</renderPrecedence>
+    <pathCost>3</pathCost>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <affordances><li>Light</li><li>Medium</li><li>Heavy</li></affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RM_SulfuricWaterDeep</defName>
+    <label>sulfuric deep water</label>
+    <description>A stagnant, sulfur-laden water that stinks of rotten eggs. Mildly toxic.</description>
+    <renderPrecedence>395</renderPrecedence>
+    <color>(190,196,92)</color>
+    <toxicBuildupFactor>1</toxicBuildupFactor>
+    <statBases><Beauty>-4</Beauty></statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_SulfuricWaterShallow</defName>
+    <label>sulfuric shallow water</label>
+    <description>A stagnant, sulfur-laden water that stinks of rotten eggs. Mildly toxic.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(190,196,92)</color>
+    <toxicBuildupFactor>1</toxicBuildupFactor>
+    <statBases><Beauty>-4</Beauty></statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_SulfuricWaterMovingShallow</defName>
+    <label>sulfuric shallow moving water</label>
+    <description>A stagnant, sulfur-laden water that stinks of rotten eggs. Mildly toxic.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>398</renderPrecedence>
+    <color>(190,196,92)</color>
+    <toxicBuildupFactor>1</toxicBuildupFactor>
+    <statBases><Beauty>-4</Beauty></statBases>
+    <affordances><li>MovingFluid</li></affordances>
+    <tags><li>River</li></tags>
+    <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterChestDeepBase">
+    <defName>RM_SulfuricWaterMovingChestDeep</defName>
+    <label>sulfuric chest-deep moving water</label>
+    <description>A stagnant, sulfur-laden water that stinks of rotten eggs. Mildly toxic.</description>
+    <renderPrecedence>399</renderPrecedence>
+    <color>(190,196,92)</color>
+    <toxicBuildupFactor>1</toxicBuildupFactor>
+    <statBases><Beauty>-4</Beauty></statBases>
+    <affordances><li>MovingFluid</li></affordances>
+    <tags><li>River</li></tags>
+    <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RM_IrradiatedWaterDeep</defName>
+    <label>irradiated deep water</label>
+    <description>Water poisoned by leaked nuclear waste. Highly toxic.</description>
+    <renderPrecedence>395</renderPrecedence>
+    <color>(140,200,110)</color>
+    <toxicBuildupFactor>8</toxicBuildupFactor>
+    <statBases><Beauty>-10</Beauty></statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_IrradiatedWaterShallow</defName>
+    <label>irradiated shallow water</label>
+    <description>Water poisoned by leaked nuclear waste. Highly toxic.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(140,200,110)</color>
+    <toxicBuildupFactor>8</toxicBuildupFactor>
+    <statBases><Beauty>-10</Beauty></statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_IrradiatedWaterMovingShallow</defName>
+    <label>irradiated shallow moving water</label>
+    <description>Water poisoned by leaked nuclear waste. Highly toxic.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>398</renderPrecedence>
+    <color>(140,200,110)</color>
+    <toxicBuildupFactor>8</toxicBuildupFactor>
+    <statBases><Beauty>-10</Beauty></statBases>
+    <affordances><li>MovingFluid</li></affordances>
+    <tags><li>River</li></tags>
+    <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterChestDeepBase">
+    <defName>RM_IrradiatedWaterMovingChestDeep</defName>
+    <label>irradiated chest-deep moving water</label>
+    <description>Water poisoned by leaked nuclear waste. Highly toxic.</description>
+    <renderPrecedence>399</renderPrecedence>
+    <color>(140,200,110)</color>
+    <toxicBuildupFactor>8</toxicBuildupFactor>
+    <statBases><Beauty>-10</Beauty></statBases>
+    <affordances><li>MovingFluid</li></affordances>
+    <tags><li>River</li></tags>
+    <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+  </TerrainDef>
+
+  <TerrainDef ParentName="MarshBase">
+    <defName>RM_StagnantRiverWater</defName>
+    <label>stagnant river water</label>
+    <description>A river clogged with silt, barely moving. It smells.</description>
+    <color>(150,150,110)</color>
+    <statBases><Beauty>-5</Beauty><BeautyOutdoors>-5</BeautyOutdoors><Cleanliness>-3</Cleanliness></statBases>
+  </TerrainDef>
+
+</Defs>

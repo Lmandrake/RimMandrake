@@ -14,11 +14,14 @@ namespace RimMandrake.TileFeatures
         public static bool ventsEnabled = true;        // toxic, rotstink and smoke vents
         public static bool diseasesEnabled = true;     // RM_IncreasedDiseases
         public static bool infestationsEnabled = true; // RM_IncreasedInfestations
+        public static bool landformsEnabled = true;    // the 29 landform features (VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY)
 
         public static float diseaseMtbMultiplier = 0.75f;    // VEE's value; lower = diseases come sooner. Range 0.25-1
         public static float infestationFactor = 1.5f;        // PROVISIONAL; range 1-3
         public static float ventCountScale = 1f;             // PROVISIONAL; range 0-3, scales VEE's 6~12 vents per map
         public static float poisonSeverityPerHarvest = 0.05f; // PROVISIONAL; toxic buildup per wild plant harvested, range 0-0.2
+        public const int MaxTideReach = 30;
+        public static int tideReach = 12;                     // PROVISIONAL; cells the rising-waters tide climbs inland, range 0-30
 
         public override void ExposeData()
         {
@@ -29,6 +32,8 @@ namespace RimMandrake.TileFeatures
             Scribe_Values.Look(ref ventsEnabled, "ventsEnabled", true);
             Scribe_Values.Look(ref diseasesEnabled, "diseasesEnabled", true);
             Scribe_Values.Look(ref infestationsEnabled, "infestationsEnabled", true);
+            Scribe_Values.Look(ref landformsEnabled, "landformsEnabled", true);
+            Scribe_Values.Look(ref tideReach, "tideReach", 12);
             Scribe_Values.Look(ref diseaseMtbMultiplier, "diseaseMtbMultiplier", 0.75f);
             Scribe_Values.Look(ref infestationFactor, "infestationFactor", 1.5f);
             Scribe_Values.Look(ref ventCountScale, "ventCountScale", 1f);
@@ -75,9 +80,21 @@ namespace RimMandrake.TileFeatures
             if (infestationsEnabled)
                 infestationFactor = Slider(list, "Infestation chance: x", infestationFactor, 1f, 3f, "Provisional; tuned live later.");
             list.GapLine();
+            list.CheckboxLabeled("Landforms", ref landformsEnabled,
+                "Craters, ridges, jagged rocks, canyons, stone forests, cenotes, sinkholes, flesh pits, salt plains, dust bowls, "
+              + "sulfuric and contaminated lakes and rivers, dry and stagnant rivers, flood plains, deltas, dunes, red desert, deep "
+              + "snow, gravel beaches, lone islands, volcanoes and rising tides. Off: a river or coast tile keeps a plain river or "
+              + "coast and the rest are plain maps, on maps generated afterwards; the rising tide recedes at once.");
+            if (landformsEnabled)
+            {
+                list.Label("Rising-waters tide reach: " + tideReach + " cells", tooltip: "Provisional; tuned live later. 0 = no tide.");
+                tideReach = (int)list.Slider(tideReach, 0f, MaxTideReach);
+            }
+            list.GapLine();
             if (list.ButtonText("Reset to defaults"))
             {
-                floraEnabled = weatherEnabled = ventsEnabled = diseasesEnabled = infestationsEnabled = true;
+                floraEnabled = weatherEnabled = ventsEnabled = diseasesEnabled = infestationsEnabled = landformsEnabled = true;
+                tideReach = 12;
                 diseaseMtbMultiplier = 0.75f;
                 infestationFactor = 1.5f;
                 ventCountScale = 1f;

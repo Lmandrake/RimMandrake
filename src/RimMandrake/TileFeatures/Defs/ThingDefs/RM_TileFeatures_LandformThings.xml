@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY (design/RimMandrake/vee_port_plan_2026-10-22.md group L): the things two
+     landform features place, ported from Vanilla Exploration Expanded's VEE_RadioactiveBarrel and VEE_SulfurVent.
+     PLACEHOLDER ART: vanilla textures, tinted (the ancient waste barrel, Odyssey's geothermal vent). VEE's sulfur cloud
+     fleck is not ported: the fissure is scenery. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_RadioactiveBarrel</defName>
+    <label>radioactive barrel</label>
+    <description>A rusted barrel leaking discarded nuclear fuel.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/AncientBarrel</texPath><!-- PLACEHOLDER ART -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(150,190,110)</color>
+      <drawSize>(1,1)</drawSize>
+      <shadowData>
+        <volume>(0.5, 0.5, 0.5)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.1</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>true</deconstructible>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <costList>
+      <Steel>5</Steel>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_SulfurFissure</defName>
+    <label>sulfur fissure</label>
+    <description>A naturally occurring break in the ground from which sulfuric gases escape. It stinks of rotten eggs.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/GeothermalVent</texPath><!-- PLACEHOLDER ART -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(220,210,120)</color>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <size>(3,3)</size>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <blockPlants>true</blockPlants>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <building>
+      <isEdifice>true</isEdifice>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <deconstructible>false</deconstructible>
+      <repairable>false</repairable>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+  </ThingDef>
+
+</Defs>

@@ -5,6 +5,12 @@ F, W, V; the deadlife vents were dropped by owner card VEE_DEADLIFE_VENTS_ASK_ZO
 chanceOnNonLandmarkTile 0 and no biome lists (no worldgen). VEF stays and carries the cacti, mycelium, vent prefabs and disease
 factor through its own workers; Source/ has three workers, a vent comp, the rotten stench condition, two Harmony postfixes and
 the Mod Settings applier (RM_TileFeatureApplier) that makes a switched-off group inert.
+LANDFORMS (VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY, plan group L): 29 more tile features (VEE's quicksand pits are the existing
+RM_QuicksandPits in EnvironmentalHazards) with 20 terrains, a barrel, a sulfur fissure, three gen steps and the rising-waters
+tide condition. RM_LandformWorkers.cs holds eight data-driven workers (lake, river, delta, crater, lines, scatter, terrain swap,
+deep snow, quicksand dunes) read from RM_LandformExtension; RM_LandformGeometry.cs is their pure geometry, unit-tested by
+Utils/selftest_tilefeatures_landform_geometry.py; Utils/selftest_tilefeatures_landforms.py checks every L row's port offline.
+The quicksand and sinkhole pits are FlowWorks terrain (RM_DeepSand, RM_Channel_Superdeep), so FlowWorks is a dependency.
 
 STATIC (no game): `python3 validation.py` -> `STATIC: PASS (0 findings)`.
 LIVE CHAIN (owed, needs the bridge; recorded here so the next poking session fills it in rather than inventing one):
@@ -20,6 +26,15 @@ LIVE CHAIN (owed, needs the bridge; recorded here so the next poking session fil
   8. RM_IncreasedDiseases: VEF reads diseaseMTBMultiplier from the extension at each roll (so the slider applies to an
      existing map), or caches it at startup (then only a restart applies it).                                                  [UNMEASURED]
   9. every group switch off + settings closed: a new map on each feature's tile equals a plain map of the biome.               [UNMEASURED]
+ 10. LANDFORMS (plan section 5 L3): a throwaway quicktest map per landform port on a tile of the right kind (river ports on a river
+     tile, coast ports on a coast tile, crater/ridge ports on a flat tile), a zoomed capture of each, judged against VEE's
+     description by a judge agent; record per port: rim with breaches walkable (craters), ridge pass walkable, canyons cut
+     a solid mountain, river water remapped (dry bed / stagnant / sulfuric / irradiated), 100-200 barrels on irradiated soil,
+     salt/dust/sulfuric/irradiated lake terrains, cenote and sinkhole discs only on open land, red sand, full snow cover.  [UNMEASURED]
+ 11. RM_RisingWaters: over one in-game day the shore band floods with ShallowFloodwater up to tideReach cells and dries again;
+     landforms switch off: the floodwater is gone within 250 ticks.                                                          [UNMEASURED]
+ 12. landforms switch off: a river port's tile still gets vanilla's plain river, a coast port's tile vanilla's coast.        [UNMEASURED]
+ 13. whether a <color> tint survives the water-depth overlay on the sulfuric/irradiated waters (RM_ColoredWater's open question). [UNMEASURED]
 OWED OUTSIDE THIS SCRIPT: own art for the six cacti (placeholder Things/Plant/SaguaroCactus) and the three vents (placeholder
 Things/Building/AncientToxVent); the one world stamp at the end (VEE_WORLD_RENAME_ONE_STAMP_AT_END) that puts these on tiles.
 """
@@ -30,8 +45,8 @@ import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-SETTINGS = ["floraEnabled", "weatherEnabled", "ventsEnabled", "diseasesEnabled", "infestationsEnabled", "diseaseMtbMultiplier",
-            "infestationFactor", "ventCountScale", "poisonSeverityPerHarvest"]
+SETTINGS = ["floraEnabled", "weatherEnabled", "ventsEnabled", "diseasesEnabled", "infestationsEnabled", "landformsEnabled",
+            "diseaseMtbMultiplier", "infestationFactor", "ventCountScale", "poisonSeverityPerHarvest", "tideReach"]
 PORTS = {  # VEE donor -> our port (vee_port_plan_2026-10-22.md section 2, groups F, W, V)
     "VEE_Cactus_Barrel": "RM_Cactus_Barrel", "VEE_Cactus_Beavertail": "RM_Cactus_Beavertail",
     "VEE_Cactus_Hedgehog": "RM_Cactus_Hedgehog", "VEE_Cactus_OrganPipe": "RM_Cactus_OrganPipe",
@@ -43,6 +58,13 @@ PORTS = {  # VEE donor -> our port (vee_port_plan_2026-10-22.md section 2, group
     "VEE_IncreasedDiseases": "RM_IncreasedDiseases", "VEE_IncreasedInfestations": "RM_IncreasedInfestations",
     "VEE_ToxicVents": "RM_ToxicVents", "VEE_RotstinkVents": "RM_RotstinkVents", "VEE_SmokeVents": "RM_SmokeVents",
 }
+LANDFORMS = ["Cenotes", "SaltPlains", "DryRiver", "FloodPlains", "SulfuricLake", "StagnantRivulet", "RisingWaters", "Sinkholes",
+             "SerpentineCanyons", "DustBowl", "JaggedRocks", "GravelBeach", "MeteorCrater", "RockRidge", "PebbleDunes",
+             "QuicksandDunes", "DeepSnow", "FleshPits", "RelictDelta", "RedDesert", "ContaminatedRiver", "AlluvialFan",
+             "StoneForest", "ContaminatedReservoir", "LoneIsland", "SulfuricRiver", "Volcano", "ResurgentCaldera", "ToxicCrater"]
+PORTS.update({"VEE_" + s: "RM_" + s for s in LANDFORMS})  # group L (VEE_QuicksandPits -> EnvironmentalHazards' RM_QuicksandPits)
+# RM_ names defined by FlowWorks, a declared dependency (About.xml): the quicksand pools and the sinkhole pits
+FLOWWORKS_NAMES = {"RM_DeepSand", "RM_Channel_Superdeep"}
 NS = "RimMandrake.TileFeatures."
 GAS = {"ToxGas", "RotStink", "BlindSmoke"}
 # Category strings are shared with VEE on purpose (they keep features of one kind from stacking on a tile); they name no def.
@@ -116,7 +138,7 @@ def static_checks():
     for (tag, dn), e in defs.items():
         for x in e.iter():
             t = (x.text or "").strip()
-            if re.fullmatch(r"RM_\w+", t) and t not in ours:
+            if re.fullmatch(r"RM_\w+", t) and t not in ours and t not in FLOWWORKS_NAMES:
                 bad.append("%s %s names %s, which this mod does not define" % (tag, dn, t))
     muts = {dn: e for (tag, dn), e in defs.items() if tag == "TileMutatorDef"}
     for donor, port in PORTS.items():

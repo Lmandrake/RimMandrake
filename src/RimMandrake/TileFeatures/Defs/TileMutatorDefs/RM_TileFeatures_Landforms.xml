@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY (design/RimMandrake/vee_port_plan_2026-10-22.md group L): the 29 landform
+     tile features the frozen planet carries, ported from Vanilla Exploration Expanded (vanillaexpanded.vexploratione),
+     VEE_<Stem> -> RM_<Stem>, biggest tile count first. VEE's quicksand pits are our existing RM_QuicksandPits
+     (EnvironmentalHazards), so no new def for that row. No worldgen: chanceOnNonLandmarkTile 0 and VEE's worldgen gates
+     (biome lists, hilliness, coast sides, river/road/temperature limits) are not carried, so these act only on tiles that
+     already carry them. Labels, descriptions, categories, priority, genOrder and VEE's map-generation fields are VEE's,
+     so a tile's mutator conflicts stay like-for-like.
+     Workers (RM_LandformWorkers.cs) are rebuilt from VEE's fields and descriptions and vanilla 1.6 workers; no VEE C# was
+     read. Volcano is vanilla's lava crater, lone island vanilla's coastal island, gravel beach and rising waters vanilla's
+     coast, pebble dunes vanilla's patches. The landforms switch in Mod Settings makes every row inert; a river or coast
+     row then falls back to vanilla's plain river or coast (offWorkerClass) so no tile loses its water. -->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_Cenotes</defName>
+    <label>cenotes</label>
+    <description>A scattered network of deep, water-filled sinkholes formed by collapsed stone.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Scatter</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><discsPer10kCells>2~6</discsPer10kCells><discRadius>1~4</discRadius><discSpacing>5</discSpacing><discLip>1</discLip><deepTerrain>WaterDeep</deepTerrain><shallowTerrain>WaterShallow</shallowTerrain><lipTerrain>Gravel</lipTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_SaltPlains</defName>
+    <label>salt plains</label>
+    <description>The dried surface of an inland ocean. Sterile and hard to traverse.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Lake</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformLake</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lakeRadius>0.85</lakeRadius><deepWater>false</deepWater><shallowTerrain>RM_Salt</shallowTerrain><shoreTerrain>RM_SaltySand</shoreTerrain><outerTerrain>RM_SaltySand</outerTerrain><outerThreshold>0.38</outerThreshold></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_DryRiver</defName>
+    <label>dry river</label>
+    <description>A section of this river that has dried up, presumably due to absence of precipitation up-river.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformRiver</workerClass>
+    <overrideRiverbankTerrain>RM_DryRiverBank</overrideRiverbankTerrain>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><deepTerrain>RM_DryRiverBed</deepTerrain><shallowTerrain>RM_DryRiverBed</shallowTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_FloodPlains</defName>
+    <label>flood plains</label>
+    <description>A low-lying stretch of land shaped by seasonal flooding, where nutrient-rich waters periodically spill over the banks and retreat, leaving fertile soil in their wake.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformRiver</workerClass>
+    <overrideRiverbankTerrain>RM_FertileRiverbank</overrideRiverbankTerrain>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><bankWidth>8</bankWidth><bankTerrain>RM_FertileRiverbank</bankTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_SulfuricLake</defName>
+    <label>sulfuric lake</label>
+    <description>A stagnant volcanic lake with a strong, foul sulfuric odor. While the water is very mildly toxic, the surrounding soil is rich in nutrients, supporting hardy, sulfur-tolerant plant life.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Lake</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformLake</workerClass>
+    <extraGenSteps><li>RM_SulfurVents</li></extraGenSteps>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lakeRadius>0.5</lakeRadius><deepTerrain>RM_SulfuricWaterDeep</deepTerrain><shallowTerrain>RM_SulfuricWaterShallow</shallowTerrain><shoreTerrain>SoilRich</shoreTerrain><outerTerrain>SoilRich</outerTerrain><outerThreshold>0.4</outerThreshold></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_StagnantRivulet</defName>
+    <label>stagnant rivulet</label>
+    <description>A slow-moving river where water barely flows, its course clogged with silt and shallow pools.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformRiver</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><deepTerrain>WaterShallow</deepTerrain><shallowTerrain>RM_StagnantRiverWater</shallowTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RisingWaters</defName>
+    <label>rising waters</label>
+    <description>An extremely flat coastal plain where the tides push far inland. Large stretches of land are regularly submerged.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Coast</li></categories>
+    <overrideCategories><li>Mountain</li></overrideCategories>
+    <genOrder>100</genOrder>
+    <priority>5</priority>
+    <workerClass>TileMutatorWorker_Coast</workerClass>
+    <additionalGameConditions><li>RM_TidalFlooding</li></additionalGameConditions>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_Coast</offWorkerClass></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Sinkholes</defName>
+    <label>sinkholes</label>
+    <description>This region contains several collapses in the ground forming deep, unstable pits, often exposing bare rock beneath the surface.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Scatter</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><discsPer10kCells>1~4</discsPer10kCells><discRadius>2~4</discRadius><discSpacing>6</discSpacing><discLip>1</discLip><deepTerrain>RM_Channel_Superdeep</deepTerrain><lipTerrain>Gravel</lipTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_SerpentineCanyons</defName>
+    <label>serpentine canyons</label>
+    <description>Geological movement has caused several deep fissures in this mountain.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <overrideCategories><li>BaseCaves</li></overrideCategories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <preventNaturalElevation>true</preventNaturalElevation>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Lines</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lineCount>3~5</lineCount><lineHalfWidth>2~4</lineHalfWidth><meanderAmplitude>10~22</meanderAmplitude><meanderWaves>1.5~3</meanderWaves><baseElevation>1</baseElevation><lineElevation>0</lineElevation><floorTerrain>Gravel</floorTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_DustBowl</defName>
+    <label>dust bowl</label>
+    <description>A sun-scorched wasteland choked with dust and dry winds. Vegetation is nearly gone, and relentless sandstorms make survival harsh and unforgiving.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Lake</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformLake</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lakeRadius>0.9</lakeRadius><deepWater>false</deepWater><shallowTerrain>SoftSand</shallowTerrain><shoreTerrain>Sand</shoreTerrain><outerTerrain>Sand</outerTerrain><outerThreshold>0.3</outerThreshold></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_JaggedRocks</defName>
+    <label>jagged rocks</label>
+    <description>Thin rock ridges criss cross this region.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <overrideCategories><li>BaseCaves</li></overrideCategories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Lines</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lineCount>5~8</lineCount><lineHalfWidth>0.8~1.6</lineHalfWidth><meanderAmplitude>3~8</meanderAmplitude><meanderWaves>1~3</meanderWaves><lineElevation>1</lineElevation><gapLength>6</gapLength></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_GravelBeach</defName>
+    <label>gravel beach</label>
+    <description>A harsh shoreline of loose gravel and rounded stones, where waves grind rock against rock.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Coast</li></categories>
+    <overrideCategories><li>Mountain</li></overrideCategories>
+    <genOrder>100</genOrder>
+    <priority>5</priority>
+    <workerClass>TileMutatorWorker_Coast</workerClass>
+    <overrideCoastalBeachTerrain>RM_GravelBeach</overrideCoastalBeachTerrain>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_Coast</offWorkerClass></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_MeteorCrater</defName>
+    <label>meteor crater</label>
+    <description>A vast impact site with jagged rocky edges and a debris-littered basin.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Crater</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><radiusFraction>0.24~0.32</radiusFraction><rimWidth>0.18</rimWidth><rimBreaches>2</rimBreaches><floorTerrain>RM_ImpactRegolith</floorTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RockRidge</defName>
+    <label>rock ridge</label>
+    <description>A rock ridge separating this region in two.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <overrideCategories><li>BaseCaves</li></overrideCategories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Lines</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lineCount>1</lineCount><lineHalfWidth>5~8</lineHalfWidth><meanderAmplitude>8~18</meanderAmplitude><meanderWaves>0.5~1.5</meanderWaves><lineElevation>1</lineElevation><gapLength>8</gapLength></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_PebbleDunes</defName>
+    <label>pebble dunes</label>
+    <description>Low dunes of rounded pebbles shaped by constant wind and shifting ground.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>TileMutatorWorker_Patches</workerClass>
+    <terrainPatchMakers><li><perlinFrequency>0.03</perlinFrequency><minSize>20</minSize><thresholds><li><terrain>RM_LoosePebbles</terrain><min>0.1</min><max>999</max></li></thresholds></li></terrainPatchMakers>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_QuicksandDunes</defName>
+    <label>quicksand dunes</label>
+    <description>A barren expanse of sand and shallow quicksand that impedes movement. This area is extremely inhospitable.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <preventNaturalElevation>true</preventNaturalElevation>
+    <preventPatches>true</preventPatches>
+    <junkDensityFactor>0</junkDensityFactor>
+    <geyserCountFactor>0</geyserCountFactor>
+    <plantDensityFactor>0</plantDensityFactor>
+    <chunkDensityFactor>0.15</chunkDensityFactor>
+    <preventGenSteps><li>ScatterRuinsSimple</li><li>ScatterShrines</li><li>AncientUtilityBuilding</li><li>AncientLandingPad</li></preventGenSteps>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_QuicksandDunes</workerClass>
+    <terrainPatchMakers><li><perlinFrequency>0.045</perlinFrequency><minSize>10</minSize><thresholds><li><terrain>RM_DeepSand</terrain><min>0.55</min><max>999</max></li></thresholds></li></terrainPatchMakers>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_DeepSnow</defName>
+    <label>solid snow</label>
+    <description>This region is covered in heavy, compacted layers of snow that resist movement and muffle sound.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_DeepSnow</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><snowDepth>1</snowDepth></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_FleshPits</defName>
+    <label>flesh pits</label>
+    <description>A scattered network of anomalous cave entrances, leading to a subterranean realm of pulsating flesh and grotesque abominations.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <extraGenSteps><li>RM_FleshPits_Gates</li><li>RM_FleshPits_Burrows</li></extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RelictDelta</defName>
+    <label>relict delta</label>
+    <description>A fan of dried channels and silt deposits, shaped by a river that once split and flowed here long ago.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformDelta</workerClass>
+    <overrideRiverbankTerrain>RM_DryRiverBank</overrideRiverbankTerrain>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><deepTerrain>RM_DryRiverBed</deepTerrain><shallowTerrain>RM_DryRiverBed</shallowTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RedDesert</defName>
+    <label>red desert</label>
+    <description>A vast desert of iron-rich sand, stained red by the slow grinding of ancient stone.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_TerrainSwap</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><swaps><li><from>Sand</from><to>RM_RedSand</to></li><li><from>SoftSand</from><to>RM_RedSoftSand</to></li></swaps></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_ContaminatedRiver</defName>
+    <label>contaminated river</label>
+    <description>A flowing waterway tainted by lingering radiation, spreading contamination downstream and rendering its waters unsafe for use.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformRiver</workerClass>
+    <overrideRiverbankTerrain>RM_IrradiatedSoil</overrideRiverbankTerrain>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><deepTerrain>RM_IrradiatedWaterMovingChestDeep</deepTerrain><shallowTerrain>RM_IrradiatedWaterMovingShallow</shallowTerrain><thingToSpawn>RM_RadioactiveBarrel</thingToSpawn><thingToSpawnAmount>100~200</thingToSpawnAmount><thingTerrain>RM_IrradiatedSoil</thingTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_AlluvialFan</defName>
+    <label>aluvial fan</label>
+    <description>A broad, fan-shaped spread of rich sediment deposited where flowing water from a river slows and disperses across the land.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformDelta</workerClass>
+    <overrideRiverbankTerrain>RM_FertileRiverbank</overrideRiverbankTerrain>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><bankWidth>8</bankWidth><bankTerrain>RM_FertileRiverbank</bankTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_StoneForest</defName>
+    <label>stone forest</label>
+    <description>A strange expanse of towering stone spires and jagged rock formations, rising like gigantic, petrified trees from the ground.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <overrideCategories><li>BaseCaves</li></overrideCategories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Scatter</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><discsPer10kCells>25~40</discsPer10kCells><discRadius>1~3</discRadius><discSpacing>3</discSpacing><discElevation>1</discElevation></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_ContaminatedReservoir</defName>
+    <label>contaminated reservoir</label>
+    <description>A stagnant body of water saturated with lingering radiation, its depths unsafe for drinking or fishing and its shores hostile to life.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Lake</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformLake</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><lakeRadius>0.6</lakeRadius><deepTerrain>RM_IrradiatedWaterDeep</deepTerrain><shallowTerrain>RM_IrradiatedWaterShallow</shallowTerrain><shoreTerrain>RM_IrradiatedSoil</shoreTerrain><outerTerrain>RM_IrradiatedSoil</outerTerrain><outerThreshold>0.38</outerThreshold><thingToSpawn>RM_RadioactiveBarrel</thingToSpawn><thingToSpawnAmount>100~200</thingToSpawnAmount><thingTerrain>RM_IrradiatedSoil</thingTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_LoneIsland</defName>
+    <label>detached coastal island</label>
+    <description>A large island separated from the shore.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Coast</li></categories>
+    <priority>5</priority>
+    <overrideCategories><li>Mountain</li></overrideCategories>
+    <genOrder>100</genOrder>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <workerClass>TileMutatorWorker_CoastalIsland</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_Coast</offWorkerClass></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_SulfuricRiver</defName>
+    <label>sulfuric river</label>
+    <description>A foul-smelling river carrying acidic, sulfur-laden waters, its banks scorched and inhospitable to most forms of life.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>River</li></categories>
+    <priority>2</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LandformRiver</workerClass>
+    <overrideRiverbankTerrain>RM_SaltySand</overrideRiverbankTerrain><extraGenSteps><li>RM_SulfurVents</li></extraGenSteps>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><offWorkerClass>TileMutatorWorker_River</offWorkerClass><deepTerrain>RM_SulfuricWaterMovingChestDeep</deepTerrain><shallowTerrain>RM_SulfuricWaterMovingShallow</shallowTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Volcano</defName>
+    <label>volcano</label>
+    <description>Charred stone ridges form the rim of an ancient caldera, its heart glowing with molten fury.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <workerClass>TileMutatorWorker_LavaCrater</workerClass>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_ResurgentCaldera</defName>
+    <label>resurgent caldera</label>
+    <description>Ancient volcanic collapse zone with steep crater walls, a central rocky dome, and echoes of past eruptions.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Crater</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><radiusFraction>0.3~0.38</radiusFraction><rimWidth>0.16</rimWidth><domeFraction>0.25</domeFraction><rimBreaches>2</rimBreaches><floorTerrain>RM_ImpactRegolith</floorTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_ToxicCrater</defName>
+    <label>toxic crater</label>
+    <description>A blasted ring of stone surrounds a stagnant, foul-smelling pool. The water glows faintly...</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_Crater</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><radiusFraction>0.26~0.32</radiusFraction><rimWidth>0.2</rimWidth><poolFraction>0.55</poolFraction><rimBreaches>2</rimBreaches><deepTerrain>ToxicWaterDeep</deepTerrain><shallowTerrain>ToxicWaterShallow</shallowTerrain><floorTerrain>Gravel</floorTerrain></li></modExtensions>
+  </TileMutatorDef>
+
+</Defs>

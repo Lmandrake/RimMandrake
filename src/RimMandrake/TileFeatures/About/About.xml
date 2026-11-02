@@ -11,10 +11,11 @@
 Flora: wild cacti, red desert cacti, light-resistant mushrooms, overgrown and decimated plant life, no trees, poisonous flora, reduced soil fertility, marine sanctuaries and crashed mechanoid ship chunks.
 Weather and conditions: sandstorms, dust storms, a permanent rotten stench, more diseases and more infestations.
 Vents: toxic, rotstink and smoke geysers that vent gas on a cycle.
+Landforms (VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY, group L): craters, calderas, a volcano, rock ridges, jagged rocks, serpentine canyons, stone forests, cenotes, sinkholes, flesh pits, salt plains, dust bowls, sulfuric and contaminated lakes and rivers, dry and stagnant rivers, flood plains, deltas, pebble and quicksand dunes, red desert, deep snow, gravel beaches, a lone island and rising tides.
 
 These features are never placed on the world by this mod (no worldgen): they act only on tiles that already carry them.
 
-Every group has its own Mod Settings switch; all off gives plain maps. Uses the Vanilla Expanded Framework and every DLC.</description>
+Every group has its own Mod Settings switch; all off gives plain maps. Uses the Vanilla Expanded Framework and every DLC; the landform pits and quicksand are FlowWorks terrain.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>
@@ -27,9 +28,15 @@ Every group has its own Mod Settings switch; all off gives plain maps. Uses the 
       <displayName>Vanilla Expanded Framework</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/2023507013</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
 </ModMetaData>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY: gen steps of the landform features, ported from Vanilla Exploration Expanded's
+     VEE_SulfurVents and VEE_FleshPits_Large/_Small. All are vanilla GenStep_ScatterThings with VEE's counts. Flesh pits use
+     vanilla Anomaly's own pit gate and pit burrow (VEE's "inert pit gate" was a copy of vanilla's PitGate def). -->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_SulfurVents</defName>
+    <order>950</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_SulfurFissure</thingDef>
+      <createUsedRect>true</createUsedRect>
+      <skipRoofed>true</skipRoofed>
+      <countPer10kCellsRange>1~4</countPer10kCellsRange>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_FleshPits_Gates</defName>
+    <order>950</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>PitGate</thingDef>
+      <createUsedRect>true</createUsedRect>
+      <skipRoofed>true</skipRoofed>
+      <count>7</count>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_FleshPits_Burrows</defName>
+    <order>950</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>PitBurrow</thingDef>
+      <createUsedRect>true</createUsedRect>
+      <skipRoofed>true</skipRoofed>
+      <count>7</count>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -45,6 +45,9 @@
     <Compile Include="RM_CompGeyserGas.cs" />
     <Compile Include="RM_GameCondition_RottenStench.cs" />
     <Compile Include="RM_TileFeaturePatches.cs" />
+    <Compile Include="RM_LandformGeometry.cs" />
+    <Compile Include="RM_LandformWorkers.cs" />
+    <Compile Include="RM_GameCondition_TidalFlooding.cs" />
   </ItemGroup>
 
   <ItemGroup>

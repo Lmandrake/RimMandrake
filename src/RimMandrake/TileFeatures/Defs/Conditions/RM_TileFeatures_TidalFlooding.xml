@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY: RM_RisingWaters' permanent tide (VEE_TidalFlooding rebuilt; see
+     RM_GameCondition_TidalFlooding.cs). The reach inland is a Mod Setting. -->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_TidalFlooding</defName>
+    <label>tidal flooding</label>
+    <description>The tides here push far inland: once a day the flat land along the shore goes under shallow water, then dries out again.</description>
+    <conditionClass>RimMandrake.TileFeatures.RM_GameCondition_TidalFlooding</conditionClass>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+
+</Defs>

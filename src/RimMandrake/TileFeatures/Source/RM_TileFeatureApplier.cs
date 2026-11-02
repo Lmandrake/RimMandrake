@@ -24,6 +24,14 @@ namespace RimMandrake.TileFeatures
         public static readonly string[] Vents = { "RM_ToxicVents", "RM_RotstinkVents", "RM_SmokeVents" };
         public static readonly string[] Diseases = { "RM_IncreasedDiseases" };
         public static readonly string[] Infestations = { "RM_IncreasedInfestations" };
+        public static readonly string[] Landforms =
+        {
+            "RM_Cenotes", "RM_SaltPlains", "RM_DryRiver", "RM_FloodPlains", "RM_SulfuricLake", "RM_StagnantRivulet",
+            "RM_RisingWaters", "RM_Sinkholes", "RM_SerpentineCanyons", "RM_DustBowl", "RM_JaggedRocks", "RM_GravelBeach",
+            "RM_MeteorCrater", "RM_RockRidge", "RM_PebbleDunes", "RM_QuicksandDunes", "RM_DeepSnow", "RM_FleshPits",
+            "RM_RelictDelta", "RM_RedDesert", "RM_ContaminatedRiver", "RM_AlluvialFan", "RM_StoneForest",
+            "RM_ContaminatedReservoir", "RM_LoneIsland", "RM_SulfuricRiver", "RM_Volcano", "RM_ResurgentCaldera", "RM_ToxicCrater",
+        };
 
         private const string VefExtension = "VEF.Maps.TileMutatorExtension";
 
@@ -39,6 +47,9 @@ namespace RimMandrake.TileFeatures
             public float plantDensityFactor, animalDensityFactor;
             public List<DefModExtension> modExtensions;
             public IntRange? prefabsToSpawnAmount;
+            public TerrainDef overrideRiverbankTerrain, overrideCoastalBeachTerrain, overrideLakeBeachTerrain;
+            public List<TerrainPatchMaker> terrainPatchMakers;
+            public bool preventNaturalElevation, preventPatches, preventsPondGeneration;
         }
 
         private static readonly Dictionary<TileMutatorDef, Snapshot> snapshots = new Dictionary<TileMutatorDef, Snapshot>();
@@ -62,6 +73,7 @@ namespace RimMandrake.TileFeatures
             ApplyGroup(Vents, RM_TileFeaturesSettings.ventsEnabled && RM_TileFeaturesSettings.ventCountScale > 0f);
             ApplyGroup(Diseases, RM_TileFeaturesSettings.diseasesEnabled);
             ApplyGroup(Infestations, RM_TileFeaturesSettings.infestationsEnabled);
+            ApplyGroup(Landforms, RM_TileFeaturesSettings.landformsEnabled);
         }
 
         private static void ApplyGroup(string[] names, bool on)
@@ -94,6 +106,13 @@ namespace RimMandrake.TileFeatures
                     plantDensityFactor = def.plantDensityFactor,
                     animalDensityFactor = def.animalDensityFactor,
                     modExtensions = def.modExtensions == null ? null : new List<DefModExtension>(def.modExtensions),
+                    overrideRiverbankTerrain = def.overrideRiverbankTerrain,
+                    overrideCoastalBeachTerrain = def.overrideCoastalBeachTerrain,
+                    overrideLakeBeachTerrain = def.overrideLakeBeachTerrain,
+                    terrainPatchMakers = new List<TerrainPatchMaker>(def.terrainPatchMakers ?? new List<TerrainPatchMaker>()),
+                    preventNaturalElevation = def.preventNaturalElevation,
+                    preventPatches = def.preventPatches,
+                    preventsPondGeneration = def.preventsPondGeneration,
                 };
                 object ext = VefExt(def);
                 FieldInfo f = ext == null ? null : AccessTools.Field(ext.GetType(), "prefabsToSpawnAmount");
@@ -107,11 +126,23 @@ namespace RimMandrake.TileFeatures
             def.plantDensityFactor = s.plantDensityFactor;
             def.animalDensityFactor = s.animalDensityFactor;
             def.modExtensions = s.modExtensions == null ? null : new List<DefModExtension>(s.modExtensions);
+            def.overrideRiverbankTerrain = s.overrideRiverbankTerrain;
+            def.overrideCoastalBeachTerrain = s.overrideCoastalBeachTerrain;
+            def.overrideLakeBeachTerrain = s.overrideLakeBeachTerrain;
+            def.terrainPatchMakers = new List<TerrainPatchMaker>(s.terrainPatchMakers);
+            def.preventNaturalElevation = s.preventNaturalElevation;
+            def.preventPatches = s.preventPatches;
+            def.preventsPondGeneration = s.preventsPondGeneration;
         }
 
         private static void MakeInert(TileMutatorDef def)
         {
-            WorkerClassField.SetValue(def, null);
+            // a landform port that displaced the tile's river or coast falls back to vanilla's plain one (its extension says
+            // which), so switching landforms off never deletes a river or a sea from a map
+            WorkerClassField.SetValue(def, RM_LandformExtension.Of(def)?.offWorkerClass);
+            def.overrideRiverbankTerrain = def.overrideCoastalBeachTerrain = def.overrideLakeBeachTerrain = null;
+            def.terrainPatchMakers = new List<TerrainPatchMaker>();
+            def.preventNaturalElevation = def.preventPatches = def.preventsPondGeneration = false;
             def.extraGenSteps = new List<GenStepDef>();
             def.additionalGameConditions = new List<GameConditionDef>();
             def.weathersToAffect = new List<WeatherDef>();
