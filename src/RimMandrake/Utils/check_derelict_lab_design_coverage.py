@@ -21,6 +21,12 @@ stopped saying what it replaces, or stopped being a TileMutatorDef, stayed green
             table has >= 1 **new** RM_ room and >= 1 vanilla room, and every
             vanilla room is a vanilla row of '## Cited machinery'.
   NOROLL    a decisions row sets `chanceOnNonLandmarkTile` to `0` (no worldgen).
+  STUDY     the preamble cites the derelict study by its path
+            `design/RimMandrake/derelict_structures_lessons_2026-10-19.md` (which exists),
+            calls it "the derelict study", and cites its sections with § marks right after
+            the path: every cited §N is a '## N.' heading of the study and every §N.M is a
+            list item 'M.' inside it; §3 is the study's BioLab section and a cited §7.M is
+            the design-brief entry that names RM_DerelictGeneLab.
   RESOLVE   every key machinery name above, and every vanilla room, is found in
             the game's Data/ folder (check_design_citations' own search, with its
             sanity probe: TileMutatorDef found, canary absent).
@@ -41,6 +47,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
 import check_design_citations as CDC  # noqa: E402
 
+STUDY_REL = "design/RimMandrake/derelict_structures_lessons_2026-10-19.md"
 PORT_MAP = os.path.join(REPO, "design", "RimMandrake", "retired_mutators_port_map.json")
 OLD, NEW = "AB_DerelictBioLab", "RM_DerelictGeneLab"
 KEY_VANILLA = ("TileMutatorDef", "StructureLayoutDef", "LayoutWorker_AncientRuins",
@@ -89,9 +96,44 @@ def cited(secs):
             for m in [CDC.ROW.match(ln.strip())] if m}
 
 
-def check(text, vanilla_blobs, port_map):
+def study_fails(pre, study_text):
+    """STUDY clause: the preamble designs from the derelict study and its cited sections exist."""
+    fails = []
+    flat = re.sub(r"\s+", " ", pre)
+    m = re.search(r"derelict study \(`" + re.escape(STUDY_REL) + r"`((?:[ ,]*(?:and )?§\d+(?:\.\d+)?)*)", flat)
+    if not m:
+        return [f"STUDY: preamble never cites the derelict study as `{STUDY_REL}` §..."]
+    if study_text is None:
+        return [f"STUDY: {STUDY_REL} does not exist in the repo"]
+    cites = re.findall(r"§(\d+)(?:\.(\d+))?", m.group(1))
+    if not cites:
+        fails.append("STUDY: the study is cited with no § section")
+    _, ssecs = split_doc(study_text)
+    for n, sub in cites:
+        body = section(ssecs, re.escape(n) + r"\.\s")
+        head = next((h for h in ssecs if re.match(re.escape(n) + r"\.\s", h)), "")
+        if body is None:
+            fails.append(f"STUDY: §{n} is not a '## {n}.' section of {STUDY_REL}"); continue
+        if sub:
+            item = re.search(r"(?ms)^" + sub + r"\.\s.*?(?=^\d+\.\s|\Z)", body)
+            if not item:
+                fails.append(f"STUDY: §{n}.{sub} is not a list item of the study's §{n}")
+            elif n == "7" and NEW not in item.group(0).split("\n")[0]:
+                fails.append(f"STUDY: §7.{sub} of the study is not the design brief for {NEW}")
+        if n == "3" and "biolab" not in head.replace(" ", ""):
+            fails.append("STUDY: the study's §3 is not its BioLab section")
+    nums = {n for n, _ in cites}
+    if "3" not in nums:
+        fails.append("STUDY: the study's BioLab section §3 is not cited")
+    if not any(n == "7" and sub for n, sub in cites):
+        fails.append(f"STUDY: the study's §7 design-brief entry for {NEW} is not cited")
+    return fails
+
+
+def check(text, vanilla_blobs, port_map, study_text=None):
     fails = []
     pre, secs = split_doc(text)
+    fails += study_fails(pre, study_text)
     # REPLACES
     if not re.search(r"replaces\W{0,4}`" + OLD + "`", pre):
         fails.append(f"REPLACES: preamble never says it replaces `{OLD}`")
@@ -154,6 +196,16 @@ def mutants(text):
         ("ROOMS", "drop LayoutRoomDef decisions row", drop_line(text, "| Which rooms?")),
         ("ROOMS", "room table without new rooms", re.sub(r"\| \*\*new\*\* \|", "| vanilla (Odyssey) |", text)),
         ("ROOMS", "vanilla room not cited", drop_line(text, "| `AncientLab` | vanilla | room |")),
+        ("STUDY", "blind: strip study path and 'derelict study'/'the study'",
+         text.replace(f"`{STUDY_REL}` ", "").replace(STUDY_REL, "").replace("derelict study", "earlier notes")
+             .replace("the study", "the notes")),
+        ("STUDY", "study path points at a missing file",
+         text.replace(STUDY_REL, "design/RimMandrake/derelict_structures_lessons_1999-01-01.md")),
+        ("STUDY", "study cited with no sections", re.sub(r"(" + re.escape(STUDY_REL) + r"`)[^)]*\)", r"\1)", text, count=1)),
+        ("STUDY", "BioLab §3 not cited", text.replace(STUDY_REL + "` §3, ", STUDY_REL + "` ", 1)),
+        ("STUDY", "cites a § the study lacks", text.replace(STUDY_REL + "` §3,", STUDY_REL + "` §3, §12,", 1)),
+        ("STUDY", "cites §7.9, not the gene-lab brief", text.replace("§7.1", "§7.9", 1)),
+        ("STUDY", "cites §7.2, a different brief entry", text.replace("§7.1", "§7.2", 1)),
         ("RESOLVE", "vanilla room that does not exist", text.replace("`AncientLab`", "`AncientNoSuchLab_qzx`")),
     ]
 
@@ -174,7 +226,12 @@ def main(argv):
         print(f"UNREADABLE: {PORT_MAP}: {e}"); return 2
     with open(args[0], encoding="utf-8") as fh:
         text = fh.read()
-    base = check(text, blobs, port_map)
+    try:
+        with open(os.path.join(REPO, STUDY_REL), encoding="utf-8") as fh:
+            study = fh.read()
+    except OSError:
+        study = None
+    base = check(text, blobs, port_map, study)
     if not selftest:
         for f in base:
             print("FAIL", f)
@@ -187,12 +244,15 @@ def main(argv):
     for clause, label, mut in mutants(text):
         if mut == text:
             bad += 1; print(f"SELFTEST FAIL: mutant '{label}' did not change the doc"); continue
-        hit = [f for f in check(mut, blobs, port_map) if f.startswith(clause + ":")]
+        hit = [f for f in check(mut, blobs, port_map, study) if f.startswith(clause + ":")]
         print(f"{'red  ' if hit else 'GREEN'} [{clause}] {label}" + (f"  ({hit[0]})" if hit else ""))
         bad += 0 if hit else 1
     pm = {k: v for k, v in port_map.items() if k != "TileMutatorDef"}
-    hit = [f for f in check(text, blobs, pm) if "not a retired TileMutatorDef" in f]
+    hit = [f for f in check(text, blobs, pm, study) if "not a retired TileMutatorDef" in f]
     print(f"{'red  ' if hit else 'GREEN'} [REPLACES] port map without {OLD}")
+    bad += 0 if hit else 1
+    hit = [f for f in check(text, blobs, port_map, None) if f.startswith("STUDY:")]
+    print(f"{'red  ' if hit else 'GREEN'} [STUDY] study file missing from the repo")
     bad += 0 if hit else 1
     print(f"SELFTEST {'PASS' if not bad else 'FAIL'}: {bad} problem(s)")
     return 0 if not bad else 1
