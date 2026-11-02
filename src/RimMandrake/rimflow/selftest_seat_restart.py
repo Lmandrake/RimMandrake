@@ -1494,6 +1494,19 @@ def test_wake_never_overwrites_a_newer_restart_record():
     check(got.get("gen") == "gN1" and not got.get("woken_at"), "a wake leaves a newer restart's record alone (%s)" % got)
 
 
+def test_undelivered_peer_wrapper_is_not_his():
+    """NEGATIVE (GPT round 4): an enqueue has no origin, so a queued cross-session message from a peer seat must be
+    judged by its from-name, never replayed as the owner's prompt. Control: his own queued prompt still counts."""
+    p = os.path.join(TMP, "undelivered_peer.jsonl")
+    peer = '<cross-session-message from="uds:/x.sock" from-name="CONDUCTOR" from-mode="bypass">\nDo X\n</cross-session-message>'
+    with open(p, "w") as f:
+        for c in (peer, "please check the build"):
+            f.write(json.dumps({"type": "queue-operation", "operation": "enqueue", "timestamp": "1970-01-12T13:50:00Z",
+                                "sessionId": "s", "content": c}) + "\n")
+    got = [SR._text(r) for r in SR.undelivered(p, peers=["CONDUCTOR"])]
+    check(got == ["please check the build"], "undelivered: a peer's queued wrapper is not his, his prompt is (%s)" % got)
+
+
 def test_g8c_a_recovered_message_is_not_replayed_after_the_next_message():
     """Codex review at 96e854cc, goodbye #2: B recovers X and answers it, takes Y and dies. C gets Y, not X.
     If B died before ending a turn, C must still get X."""

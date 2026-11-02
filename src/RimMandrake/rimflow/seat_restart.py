@@ -579,8 +579,12 @@ def undelivered(path, peers=None):
                     del queued[ids.index(cid) if cid in ids else 0]
     except (Malformed, OSError):
         pass
-    recs = [{"type": "user", "timestamp": q.get("timestamp"), "uuid": q.get("commandUuid"),
-             "message": {"role": "user", "content": q.get("content") or ""}} for q in queued]
+    # an enqueue carries no origin (MEASURED 2026-11-01: keys content/operation/sessionId/timestamp/type, 117 of 1887
+    # cross-session wrappers): a wrapper is judged as a peer's, by its from-name (GPT round 4)
+    recs = [dict({"type": "user", "timestamp": q.get("timestamp"), "uuid": q.get("commandUuid"),
+                  "message": {"role": "user", "content": q.get("content") or ""}},
+                 **({"origin": {"kind": "peer"}} if str(q.get("content") or "").lstrip().startswith(
+                     "<cross-session-message") else {})) for q in queued]
     if peers is None:
         peers = peer_names()
     return [r for r in recs if _is_human_input(r, peers)]
