@@ -328,6 +328,15 @@ def install_no_shots():
     VA.A.shot = a_shot
 
 
+def _RI():
+    """Utils/modcheck/run_identity.py: the deploy fingerprint at start and end of the run."""
+    d = os.path.join(V.UTILS, "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import run_identity
+    return run_identity
+
+
 # ============================================================================ the session
 class Proof(object):
     def __init__(self, args):
@@ -893,8 +902,26 @@ class Proof(object):
                 pass
 
     # ------------------------------------------------------------------ run
+    def identity_start(self):
+        try:
+            self.res["run_identity"] = _RI().run_start(V.MOD, "proof_all")
+        except Exception as ex:  # noqa: BLE001 - recorded as absent: the report then reads unrecorded, never fresh
+            self.res["run_identity_error"] = repr(ex)
+
+    def identity_end(self):
+        """The end fingerprint and the situational record; a run that raised gets both too."""
+        try:
+            RI = _RI()
+            self.res["run_identity"] = RI.run_end(self.res.get("run_identity"), V.MOD)
+            self.res["situational"] = RI.run_situational(
+                self.B.call, bland=self.args.map_mode != "current" and (self.res.get("site_save") or {}).get("verified") is not False,
+                companion=bool((self.res.get("env") or {}).get("running")))
+        except Exception as ex:  # noqa: BLE001
+            self.res["run_identity_error"] = repr(ex)
+
     def run(self, gate):
         a = self.args
+        self.identity_start()
         self.res["offline"] = gate
         spec = a.spec or (gate or {}).get("spec_win") or (SCRATCH_WIN + "\\" + SPEC_NAME)
         boards = None
@@ -992,6 +1019,7 @@ def main(argv=None):
         raise
     finally:
         P.restore()
+        P.identity_end()
         P.checkpoint(final=True)
     summary(P.res)
     bad = [r for r in P.res["rows"] if r["status"] in ("FAIL", "UNMEASURED")]

@@ -560,7 +560,11 @@ def build_report(manifest, records_dir, amend_path, since=None, only=None, check
                   "files": len(cands), "skipped_not_live": sum(1 for _f, r in cands if r.get("mode") != "live"),
                   "path": None}
             if live:
-                f, r = live[0]
+                # the newest result that feeds a declared row: a narrow script sharing the *_result_* glob
+                # (sprinkler_live_result_*) must not stand in for the checkout and read every row not-reached
+                declared = {c.get("checkout_row") for c in mrow.get("checks") or []} - {None}
+                fed = [(f, r) for f, r in live if declared & {x.get("id") for x in r["rows"]}]
+                f, r = (fed or live)[0]
                 cur, dlls = checkout_ident(mod, mrow) if checkout_ident else (None, None)
                 judged, ident = judge_checkout(mod, r, amendments, _mod_dir(mrow), cur, dlls)
                 co.update(path=os.path.relpath(f, ROOT), judged=judged, ident=ident)

@@ -193,6 +193,15 @@ try:
 finally:
     R._git = _orig_git
 check("src_dirty: pathspec is repo-relative", _seen and _seen[0][-1] == "src/M", _seen)
+# proof_all checkpoints into <mod>/northstar mid-run: its own result must not read as a dirty mod, a real change must
+_ns = os.path.join(_repo, "src", "N", "northstar")
+os.makedirs(_ns)
+with open(os.path.join(_ns, "proof_all_1.json"), "w") as _f:
+    _f.write("{}")
+check("src_dirty: an untracked northstar result JSON is not dirt", R.src_dirty(os.path.join(_repo, "src", "N"), _repo) is False)
+with open(os.path.join(_ns, "script.py"), "w") as _f:
+    _f.write("x = 1\n")
+check("src_dirty: an untracked script in northstar still is", R.src_dirty(os.path.join(_repo, "src", "N"), _repo) is True)
 check("src_dirty: a dir outside the checkout is unknowable", R.src_dirty(tmp, _repo) is None)
 
 # git_state is real here

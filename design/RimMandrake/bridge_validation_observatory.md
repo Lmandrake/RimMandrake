@@ -204,7 +204,9 @@ instrument is visible, but never adds them to *proven*.
 
 **Checkout results** (NORTHSTAR_RESULTS_JOIN_1, 2026-10-06). A mod whose walk names a `checkout:` script
 (GimmeSomeSlack `proof_all.py`, FlowWorks `northstar/validation_v2.py`) is judged from that script's newest result
-JSON with `mode` `live` (a partial or mock run is never read); the result itself is the run identity. The same
+JSON with `mode` `live` (a partial or mock run is never read; a live result sharing the glob that feeds no declared
+row is passed over); the result itself is the run identity. Both scripts write `run_identity` (start and end) and
+`situational` themselves (`run_identity.run_start/run_end/run_situational`). The same
 rules apply, nothing loosened: `mod_hash` ≠ the current mod hash → `stale-result` (the result is listed as stale);
 running DLL (`env.assembly_sha256`) ≠ the repo DLL or its `.srchash` stamp → `stale-deploy` (compared only while
 the hash is current) and unrecorded → unknown; deploy freshness needs a recorded fingerprint (`run_identity`) or

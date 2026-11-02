@@ -4804,10 +4804,24 @@ def abort_class(msg):
     return "SITE" if ("pristine" in msg or "a pawn stands" in msg) else "HARNESS"
 
 
-def run_live(args, B=None):
+def run_identity_module():
+    """Utils/modcheck/run_identity.py, or None when it will not import: the result then reads unrecorded, never fresh."""
+    try:
+        sys.path.insert(0, os.path.join(UTILS, "modcheck"))
+        import run_identity
+        return run_identity
+    except Exception as ex:            # noqa: BLE001 - an identity failure must not cost the run
+        print("run_identity unavailable: %r" % (ex,), flush=True)
+        return None
+
+
+def run_live(args, B=None, identity=None):
+    """`identity`: the run_identity module. Default: the real one live, none under --mock (a mock tests no deployed code)."""
     B = B or (MockBridge(args.fault or []) if args.mock else RealBridge())
     L = Live(B, progress=None if args.mock else args.progress, mock=args.mock)
     t0 = time.time()
+    RI = identity if identity is not None else (None if args.mock else run_identity_module())
+    ident = RI.run_start("FlowWorks", "validation_v2") if RI else None
     load = None
     site_save = getattr(args, "site_save", None)
     if site_save and not args.mock and not args.fresh_map and not getattr(args, "current_map", False):
@@ -4910,7 +4924,13 @@ def run_live(args, B=None):
     except Abort as ex:                # the engine/map is gone (often why the run aborted): keep every collected row
         ticks1 = None
         L._log("- final engine_state unreadable: %s" % ex)
+    situational = None
+    if RI:
+        ident = RI.run_end(ident, "FlowWorks")
+        situational = RI.run_situational(B.call, bland=load is not None and load.get("verified") is not False,
+                                         companion=bool(rm.get("success")))
     res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, manifest=manifest, env=env, kept_pawns=kept_pawns,
+               run_identity=ident, situational=situational,
                mode="mock" if args.mock else "live", faults=list(args.fault or []),
                started=time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(t0)), wall_s=round(time.time() - t0, 1),
                ticks_spent=(ticks1 - ticks0) if (ticks0 is not None and ticks1 is not None) else None,

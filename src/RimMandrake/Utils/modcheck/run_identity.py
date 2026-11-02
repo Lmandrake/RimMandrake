@@ -110,7 +110,12 @@ def src_dirty(src_dir, root=ROOT):
     if rel == os.pardir or rel.startswith(os.pardir + os.sep):
         return None
     try:
-        r = _git(root, "status", "--porcelain", "--", rel.replace(os.sep, "/"), timeout=60)
+        # A proof's own result JSON lands in <mod>/northstar and never ships: counted, proof_all's first checkpoint made
+        # every END dirty and any uncommitted earlier result made START dirty, so no checkout run could read as proven.
+        # --untracked-files=all: a wholly untracked northstar/ would otherwise collapse to one line the exclude misses.
+        spec = rel.replace(os.sep, "/")
+        r = _git(root, "status", "--porcelain", "--untracked-files=all", "--", ":(exclude)%s/northstar/*.json" % spec, spec,
+                 timeout=60)
         return bool(r.stdout.strip()) if r.returncode == 0 else None
     except Exception:                                             # noqa: BLE001
         return None
@@ -119,6 +124,32 @@ def src_dirty(src_dir, root=ROOT):
 def new_identity(job_id, run_id):
     return {"run_id": run_id, "job": job_id, "host_os": os.name, "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
             "git": git_state()}
+
+
+def run_start(mod, job, dm=None):
+    """Run identity for a script that records its own result (a checkout: validation_v2, proof_all), which goes round the
+    live_queue job. Write it into the result at once; run_end adds deploy_end. judge_checkout reads the same shape."""
+    ident = new_identity(job, time.strftime("%Y%m%dT%H%M%S"))
+    ident["deploy_start"] = mod_fingerprint(mod, dm)
+    return ident
+
+
+def run_end(ident, mod, dm=None):
+    """Add the END fingerprint. Called on an aborted run too: its rows are still a record of that code."""
+    if isinstance(ident, dict):
+        ident["deploy_end"] = mod_fingerprint(mod, dm)
+    return ident
+
+
+def run_situational(call, bland, companion):
+    """The `situational` record of a result with no Watch: what this run itself saw. `bland` the map is the clean site
+    the run set up, `companion` the JawaBench companion answered; a dialog still open at the end is a modal surprise.
+    A sweep that failed returns None, so the report says detectors-unrecorded: unknown is never clean."""
+    sweep = modal_sweep(call)
+    if sweep["errors"]:
+        return None
+    surprises = [{"modal_open": d, "closed": n} for d, n in sweep["dialogs"].items() if n]
+    return {"bland": bland, "companion": companion, "surprises": surprises, "source": "run end, no Watch"}
 
 
 # ------------------------------------------------------------------ deploy fingerprint
