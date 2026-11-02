@@ -545,6 +545,9 @@ class Live:
                 continue
             for ln in text.splitlines():
                 if ln.strip() and not ln.startswith("#"):
+                    if "\0" in ln:                      # torn by an unclean shutdown: realpath raises and the run died
+                        self.blind.append(f"alternates of {o}: a line holds a NUL byte")
+                        continue
                     t = os.path.realpath(os.path.join(o, ln.strip()))
                     self.paths.append((t, "a live clone borrows it"))
                     todo.append(t)
@@ -821,6 +824,9 @@ class Borrows:
                 lines = [ln if os.path.isabs(ln) else os.path.join(base, ln) for ln in lines]
                 holder = holder.removesuffix("/.git")
             for ln in lines:
+                if "\0" in ln:                          # torn by an unclean shutdown: realpath raises and the run died
+                    self.hold.append(f"{f}: a line holds a NUL byte")
+                    continue
                 pairs.append((os.path.realpath(ln), holder))
         pairs.sort()
         self.pairs, self.keys = pairs, [k for k, _ in pairs]

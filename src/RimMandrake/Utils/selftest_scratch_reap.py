@@ -488,6 +488,21 @@ def run_cases(env):
         os.chmod(alt, 0o600)
     check(r2["clean_pushed_clone"]["verdict"] == "REFUSE" and "borrower" in " ".join(r2["clean_pushed_clone"]["why"]),
           "an alternates file we cannot read holds EVERYTHING")
+    alt.write_bytes(b"\0\0\0\0" + str(origin / ".git/objects").encode() + b"\n")   # torn by an unclean shutdown
+    try:
+        rc, r2 = run_reaper()
+    except ValueError as e:
+        r2 = {"clean_pushed_clone": {"verdict": "CRASH", "why": [str(e)]}}
+    check(r2["clean_pushed_clone"]["verdict"] == "REFUSE" and "borrower" in " ".join(r2["clean_pushed_clone"]["why"]),
+          "an alternates line holding a NUL holds EVERYTHING instead of killing the run (2026-11-02 03:30 PST)")
+    lv = R.Live.__new__(R.Live)                             # the live-cwd reader is the one that crashed the unit
+    lv.blind, lv.paths = [], []
+    try:
+        lv._lenders(str(bad_alt), quiet=True)
+        ok = any("NUL" in b for b in lv.blind)
+    except ValueError:
+        ok = False
+    check(ok, "a live clone's alternates line holding a NUL is blind, not a crash")
     alt.unlink()
     alt.symlink_to(td / "gone_since_find_met_it")          # what a clone removed mid-scan looks like to the reader
     rc, r2 = run_reaper()
