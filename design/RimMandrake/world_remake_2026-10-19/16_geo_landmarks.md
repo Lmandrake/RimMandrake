@@ -8,7 +8,7 @@ build is a separate item, `GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP`.
 **Data of record** (committed; this prose only explains it):
 - `design/RimMandrake/world_remake_2026-10-19/geo_landmarks.csv`: one row per landmark.
 - `design/RimMandrake/world_remake_2026-10-19/geo_landmarks_tiles.csv`: the **frozen** tile list, 120 rows.
-- Checker: `python3 src/RimMandrake/Utils/remake/geo_landmarks.py check --save <dev start save> --dump <capture>/defs`
+- Checker: `python3 src/RimMandrake/Utils/remake/geo_landmarks.py check --save <dev start save> --dump <capture>/defs`; PASS 2026-11-01 on `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` with capture `2026-10-28T23-26-38Z`
   (and `selftest`).
 
 ## Rules this plan keeps
@@ -46,10 +46,13 @@ Location = centre tile (lat, long) and arc from the substellar point. Arc 0 is t
 | `RM_Geo_ChalkStep` | The Chalk Step | exposed stratum: one chalk bed cut across the twilight | 20193 (−75.9, −39.8) · 79° · Chalk Marches | 19 | Cauldron 6, Wastes 5, LongShade 5, GelatinousSlime 3 | Limestone (a one-stone map on purpose) | same |
 | `RM_Geo_ColdstoneShield` | The Coldstone Shield | night-side granite upland with ice in its joints | 13720 (−62.6, −129.5) · 107° · Coldstone | 19 | Abyss 18, Wastes 1 | Granite, `SolidIce` | same |
 
-"Wastes" stands for the 1,853 tiles whose biome hash the current dump cannot decode (`?18404`). That hash matches
-the old `RM_Wasteland` (StableStringHash mod 65535 is 18403, plus the usual +1 collision step; INFERRED), and
-`RM_Wasteland` is renamed `RM_Wastes` in `src/`. The repaint moves those tiles to the new name. The landmark tiles
-do not move.
+"Wastes" stands for the 1,853 tiles that the dev save still stores under the pre-rename hash 18404. That is exactly
+the shortHash of the old `RM_Wasteland` (StableStringHash mod 65535 = 18404, MEASURED, no collision step); commit
+33596c33a9 renamed it `RM_Wastes` in `src/`, as it renamed `RM_NightsideIce` (hash 21915) to `RM_SleepingIce`. No dump
+taken after the rename can decode those two hashes, so the checker reads them through `RENAMED_BIOMES` in
+`geo_landmarks.py`: an alias is used only when the old name's recomputed hash matches exactly and the new name is in the
+dump, and any other hash the dump cannot decode fails the check. The repaint moves those tiles to the new names. The
+landmark tiles do not move.
 
 Why these six. They are the four named in card 4 (basalt province, salt dome field, meteorite field, exposed
 wreck layer), plus one exposed stratum and one night-side landmark, so that both ends of the sun axis get one.

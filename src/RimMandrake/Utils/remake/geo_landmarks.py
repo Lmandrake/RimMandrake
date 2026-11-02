@@ -13,7 +13,7 @@ Hand-authored only (CLAUDE.md, owner 2026-08-15/18): the centres are chosen by h
 once and frozen. Nothing here places landmarks by rule at runtime, and nothing can produce a second planet.
 
   author --save S [--dump D] [--spec P] [--rewrite]   write <spec>_tiles.csv from the spec (refuses to overwrite)
-  check  [--spec P] [--save S] [--dump D]             PASS/FAIL; with --save also checks against the planet
+  check  [P|--spec P] [--save S] [--dump D]             PASS/FAIL; with --save also checks against the planet
   selftest                                            the rules on a toy graph, plus resolver sanity probes
 
 Planet geometry is engine truth exported to world/world_tiles_sub7b.csv and world/world_neighbors_sub7b.csv
@@ -37,8 +37,52 @@ ID_RE = re.compile(r"^RM_Geo_[A-Z][A-Za-z]+$")
 # Biomes a landmark never covers: the seas (their floor is the ship layer's business and their tiles are water)
 # and the one biome that forces its own stone (a landmark there would REPLACE the cathedral's deck plate).
 EXCLUDED_BIOMES = {"RM_TheScald", "RM_TwilightSea", "RM_GreySea", "RM_RustCathedral"}
+# Biomes renamed in src/ after the dev save was written (commit 33596c33a9, BIOME_DEFNAME_MIGRATION_WAVE_1). The
+# save still stores the OLD name's shortHash, which no current dump holds. An alias is used only when the old name's
+# recomputed shortHash equals the save's hash EXACTLY and the new name is in the dump; any other undecoded hash FAILS.
+RENAMED_BIOMES = {"RM_Wasteland": "RM_Wastes", "RM_NightsideIce": "RM_SleepingIce"}
 SPEC_FIELDS = ["id", "name", "kind", "centre_tile", "rings", "label_tile", "stones_now", "stones_planned",
                "owed_item", "note"]
+
+
+def short_hash(name):
+    """RimWorld ShortHashGiver base hash: (ushort)(StableStringHash(name) % 65535), C# truncating %.
+    skills/rimworld-savegame/SKILL.md section 5. A collision-bumped def is NOT matched (by design: exact only)."""
+    h = 23
+    for ch in name:
+        h = (h * 31 + ord(ch)) & 0xFFFFFFFF
+    if h >= 0x80000000:
+        h -= 0x100000000
+    return int(math.fmod(h, 65535)) & 0xFFFF
+
+
+def alias_unresolved(unresolved, hash_by_biome, renamed=RENAMED_BIOMES):
+    """-> ({hash: (old, new)}, [hashes still undecoded]). An alias needs an exact recomputed hash and a live new name."""
+    by_old = {short_hash(o): (o, n) for o, n in renamed.items()}
+    aliases, left = {}, []
+    for h in unresolved:
+        hit = by_old.get(h)
+        if hit and hit[1] in hash_by_biome:
+            aliases[h] = hit
+        else:
+            left.append(h)
+    return aliases, left
+
+
+def save_mod_ids(save):
+    with open(save, encoding="utf-8", errors="replace") as fh:
+        head = fh.read(2000000)
+    a, b = head.find("<modIds>"), head.find("</modIds>")
+    return [] if a < 0 or b < 0 else re.findall(r"<li>([^<]+)</li>", head[a:b])
+
+
+def dump_mod_ids(dump):
+    p = os.path.join(os.path.dirname(dump.rstrip("/\\")), "manifest.json")
+    try:
+        with open(p, encoding="utf-8") as fh:
+            return [m.get("packageId", "") for m in json.load(fh).get("mods", [])]
+    except (OSError, ValueError):
+        return None
 
 
 def split(v):
@@ -176,7 +220,8 @@ def resolve_stones(names, src=None, dump=None):
 def check(spec_rows, tiles, nb, stones, n_tiles=PLANET_TILES, item_exists=None, planet=None):
     """Return a list of failure strings (empty = PASS). `stones` maps defName -> info or None.
     `planet` (optional): {'biome': [..], 'landmark_tiles': set()} read from the save."""
-    item_exists = item_exists or (lambda i: os.path.exists(os.path.join(ITEMS, i + ".md")))
+    item_dirs = [ITEMS, os.path.join(os.getcwd(), "infrastructure", "state", "items")]
+    item_exists = item_exists or (lambda i: any(os.path.exists(os.path.join(d, i + ".md")) for d in item_dirs))
     fails = []
     ids, names, owner_of = set(), set(), {}
     for r in spec_rows:
@@ -228,7 +273,7 @@ def check(spec_rows, tiles, nb, stones, n_tiles=PLANET_TILES, item_exists=None, 
                 if not owed:
                     fails.append("%s planned stone %s does not exist and no owed_item names who builds it" % (tag, s))
         if owed and not item_exists(owed):
-            fails.append("%s owed_item %s is not a live item" % (tag, owed))
+            fails.append("%s owed_item %s is not a live item (looked in %s)" % (tag, owed, " and ".join(item_dirs)))
         if planet is not None:
             biomes = {planet["biome"][t] for t in ts}
             hit = sorted(biomes & EXCLUDED_BIOMES)
@@ -249,7 +294,11 @@ def load_planet(save, dump):
     import worldmap
     g = worldmap.WorldGrid(save, dump)
     wo = worldmap.WorldObjects(save)
-    return {"tiles": g.tiles, "biome": g.biome_names(), "unresolved": g.unresolved(),
+    aliases, left = alias_unresolved(g.unresolved(), g.hash_by_biome)
+    biome = [aliases[h][1] if h in aliases else g.biome_by_hash.get(h, "?%d" % h) for h in g.arrays["tileBiome"]]
+    sm, dm = save_mod_ids(save), dump_mod_ids(dump)
+    return {"tiles": g.tiles, "biome": biome, "unresolved": left, "aliases": aliases,
+            "known_biomes": set(g.hash_by_biome), "save_mods": sm, "dump_mods": dm,
             "landmark_tiles": {l["tile"] for l in wo.landmarks() if l["layer"] == 0},
             "settlement_tiles": {x["tile"] for x in wo.settlements() if x["layer"] == 0}}
 
@@ -297,6 +346,9 @@ def cmd_check(a):
         if planet["tiles"] != PLANET_TILES:
             print("FAIL: save has %d tiles, not %d" % (planet["tiles"], PLANET_TILES))
             return 1
+        rc = fingerprint(planet)
+        if rc:
+            return rc
     fails = check(spec, tiles, nb, stones, planet=planet)
     geo = read_geo()
     for r in spec:
@@ -315,6 +367,30 @@ def cmd_check(a):
     print("PASS: %d landmarks, %d tiles, %d stones resolved%s" % (
         len(spec), sum(len(v) for v in tiles.values()), sum(1 for v in stones.values() if v),
         "" if planet else " (no --save: planet checks skipped)"))
+    return 0
+
+
+def fingerprint(planet):
+    """The dump must decode this save's planet: every biome hash resolves (renames only by exact alias), and the
+    instrument can see the biomes a landmark must avoid. Mod-set drift is printed; it matters only through biomes."""
+    for h, (o, n) in sorted(planet["aliases"].items()):
+        print("alias  biome hash %d = old %s (recomputed exactly), read as %s" % (h, o, n))
+    sm, dm = planet["save_mods"], planet["dump_mods"]
+    if dm is None:
+        print("FAIL fingerprint: no manifest.json beside the dump; cannot compare its mod set with the save")
+        return 1
+    s, d = {x.lower() for x in sm}, {x.lower() for x in dm}
+    print("mods   save %d, dump %d; only in save: %s; only in dump: %s" % (
+        len(s), len(d), ",".join(sorted(s - d)) or "-", ",".join(sorted(d - s)) or "-"))
+    blind = sorted(EXCLUDED_BIOMES - planet["known_biomes"])
+    if blind:
+        print("FAIL fingerprint: the dump has no hash for %s, so the excluded-biome check cannot see it" % blind)
+        return 1
+    if planet["unresolved"]:
+        n = sum(1 for b in planet["biome"] if b.startswith("?"))
+        print("FAIL fingerprint: %d tiles carry biome hashes the dump cannot decode: %s" % (n, planet["unresolved"]))
+        return 1
+    print("ok     every biome hash in the save decodes (%d aliased)" % len(planet["aliases"]))
     return 0
 
 
@@ -362,6 +438,22 @@ def cmd_selftest(_a):
            "settlement")
     planet = {"biome": ["RM_GreySea"] * 20, "landmark_tiles": set()}
     expect("sea tile fails", check(good, t_good, nb, stones, item_exists=live, planet=planet), "excluded biome")
+    ok = short_hash("RM_Wasteland") == 18404 and short_hash("RM_NightsideIce") == 21915 and short_hash("RM_GreySea") == 65412
+    print("%s short_hash reproduces three hashes measured in the dev save and dump" % ("ok  " if ok else "FAIL"))
+    n_fail += 0 if ok else 1
+    al, left = alias_unresolved([18404, 21915, 777], {"RM_Wastes": 1})
+    ok = al == {18404: ("RM_Wasteland", "RM_Wastes")} and left == [21915, 777]
+    print("%s alias needs exact hash AND a live new name; the rest stay undecoded" % ("ok  " if ok else "FAIL"))
+    n_fail += 0 if ok else 1
+    base = {"tiles": 2, "biome": ["RM_Wastes", "?777"], "aliases": {}, "save_mods": ["a"], "dump_mods": ["a"],
+            "known_biomes": set(EXCLUDED_BIOMES)}
+    for label, extra, want in (("undecoded hash fails the fingerprint", {"unresolved": [777]}, 1),
+                               ("decoded planet passes the fingerprint", {"unresolved": []}, 0),
+                               ("dump blind to a sea fails", {"unresolved": [], "known_biomes": {"RM_TheScald"}}, 1),
+                               ("dump with no manifest fails", {"unresolved": [], "dump_mods": None}, 1)):
+        ok = fingerprint(dict(base, **extra)) == want
+        print("%s %s" % ("ok  " if ok else "FAIL", label))
+        n_fail += 0 if ok else 1
     # sanity probes: the real resolvers can see what exists
     src = src_rocks()
     for n in ("RM_LanternstoneWall", "RM_CathedralDeckPlate"):
@@ -391,13 +483,18 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("author", "check"):
         p = sub.add_parser(name)
-        p.add_argument("--spec", default=SPEC)
+        p.add_argument("spec_pos", nargs="?", metavar="SPEC", help="spec csv (same as --spec)")
+        p.add_argument("--spec", default=None)
         p.add_argument("--save", required=(name == "author"))
         p.add_argument("--dump", help="capture defs/ folder for the biome hash table (default: newest capture)")
         if name == "author":
             p.add_argument("--rewrite", action="store_true")
     sub.add_parser("selftest")
     a = ap.parse_args(argv)
+    if a.cmd in ("author", "check"):
+        if a.spec_pos and a.spec and os.path.abspath(a.spec_pos) != os.path.abspath(a.spec):
+            ap.error("two different specs given")
+        a.spec = a.spec_pos or a.spec or SPEC
     return {"author": cmd_author, "check": cmd_check, "selftest": cmd_selftest}[a.cmd](a) or 0
 
 
