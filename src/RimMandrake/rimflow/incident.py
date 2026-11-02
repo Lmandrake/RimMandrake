@@ -124,6 +124,7 @@ def readings(table, status, now):
     for k in (status.get("points") or {}):        # an alarm key with no ranges class is sane when no alarm stands on it
         if k not in seen and k not in bad and alarms is not None:
             seen[k] = True
+    seen["ops_watch.blind"] = True                # a fresh status is its own reading; without this a blind incident never closes
     return bad, True, seen
 
 

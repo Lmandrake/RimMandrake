@@ -22,6 +22,7 @@
   },
   "routes": [
     {"match": "roles.*.acted_share", "route": "program", "_why": "RO1: report-only and coarse, nothing rings; the Conductor reads it in role_use"},
+    {"match": "integrity_damage", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_integrity found damage in a clone or item at its gate; the gate journals it every tick and notes it once per distinct damage"},
     {"match": "help_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless asked for help on an item and the ask itself failed"},
     {"match": "relentless.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "seats.*", "route": "role", "reader": "Operations", "cause": "work_belt"},

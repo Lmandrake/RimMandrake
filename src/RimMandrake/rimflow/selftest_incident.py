@@ -336,6 +336,9 @@ def test_blind_and_signal():
     x = r.inc()
     check("a status that stopped is itself an incident, emergency", len(x) == 1 and "ops_watch.blind" in x[0]["metrics"]
           and x[0]["class"] == "emergency", x)
+    r.tick(T0 + H + 5 * M)
+    r.tick(T0 + 3 * H)
+    check("a status fresh again closes the blind incident", r.inc()[0]["state"] == "closed", r.inc())
     r = Rig("signal")
     r.tick(T0)
     with open(IN.told_path(), "a") as f:     # relentless.told's shape
@@ -447,6 +450,7 @@ def test_alarms_reach_ledger():
     r.tick(T0 + 60)
     check("they open the work_belt incident", any(i["cause"] == "work_belt" for i in r.inc()), r.inc())
     w = object.__new__(RW.World)
+    w.cfg = {"schedule": os.path.join(HERE, "dispatcher_schedule.json")}   # told() honours its incident switch
     w.told("stalled:a1:abcd1234", "w", T0)
     check("a replay watch alarm joins the ledger", IN.read_rows()[-1].get("kind") == "stalled:a1:abcd1234", IN.read_rows()[-1])
 
