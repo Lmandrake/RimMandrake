@@ -160,6 +160,22 @@ def main():
               rcs == [0] and p6.read_text(encoding="utf-8") == "".join(valid_lines(2)) + late,
               repr((rcs, p6.read_text(encoding="utf-8")[-80:])))
 
+        # 12. rimflow append() does not check the tail ends in "\n": a write torn at the tail gets the NEXT good
+        #     event glued onto the same line. Only the fragment may go; the glued event must survive, in place.
+        p7 = tmp / "glued.jsonl"
+        a, b, c = valid_lines(3)
+        torn = a[:len(a) // 2]                                   # unterminated half of an event
+        p7.write_text(a + torn + b + c, encoding="utf-8")
+        rc = rtl.repair(p7, apply=True, owner_said="glued test", backup_dir=tmp / "backups12")
+        check("glued event after a torn fragment: kept, fragment dropped, order kept",
+              rc == 0 and p7.read_text(encoding="utf-8") == a + b + c, repr(p7.read_text(encoding="utf-8")[-160:]))
+        check("salvage: a conflict marker yields nothing", rtl.salvage(">>>>>>> Stashed changes") is None)
+        check("salvage: a bare torn fragment yields nothing", rtl.salvage(torn.rstrip("\n")) is None)
+        check("salvage: a nested-object fragment is not mistaken for an event",
+              rtl.salvage('{"seat":"X","meta":{"a":1') is None)
+        check("salvage: a fragment torn just after a nested object does not invent an event",
+              rtl.salvage('{"seat":"X","meta":{"a":1}') is None)
+
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

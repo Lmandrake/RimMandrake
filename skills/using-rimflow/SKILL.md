@@ -208,7 +208,8 @@ the sharding a torn line is far likelier in a shard than in the frozen head.
 `src/RimMandrake/Utils/repair_torn_ledger.py` is the fix: dry-run by default,
 `--apply --owner-said "…"` to write, and `--seat <SEAT>` to target that seat's
 shard (a seat name, never a path); it removes only lines that fail to
-parse, backs up to `Transient/` first, and sanity-caps at 25 bad lines.
+parse (keeping a whole event glued onto a torn fragment), backs up to
+`D:\ClaudeWork\rimmandrake\ledger_repair\` first, and sanity-caps at 25 bad lines.
 
 ## Reading projections
 

@@ -7,8 +7,9 @@ was ruled against (artledger.snapshot_by_id) and the current snapshot and classi
   unchanged  the letter names the same pictures now
   remapped   the letter now names other pictures but the ruled pictures sit under another letter -> rewritten
   orphaned   the ruled pictures are gone from the row -> reported, never silently dropped (left as is)
-Default is a dry run; --apply backs the file up (<name>.bak-<stamp>) then rewrites only remapped letters.
-Purges are shas already, so they need no remap.
+Default is a dry run; --apply backs the file up (<name>.bak-<stamp>), rewrites only remapped letters and moves
+snapshotId to the current snapshot. A file with any orphan is not applied (reported on stderr): its orphaned
+letters can only be read against the ruled snapshot. Purges are shas already, so they need no remap.
 """
 from __future__ import annotations
 
@@ -87,6 +88,21 @@ def apply_map(dec: dict, newmap: dict) -> None:
                 mo["base"] = sub(mo["base"])
 
 
+def stale(dec: dict, ruled: dict | None, now: dict) -> bool:
+    """The decisions were ruled against an older snapshot that is still findable."""
+    return ruled is not None and bool(now.get("snapshotId")) and dec.get("snapshotId") != now["snapshotId"]
+
+
+def rebase(dec: dict, newmap: dict, now: dict) -> None:
+    """Rewrite the remapped letters AND move snapshotId to the current snapshot, so the letters and the snapshot
+    they are read against agree. 🔴 Until wave 81 snapshotId was left on the ruled snapshot: ingest and
+    decisions_v2 (which say "run remap_decisions.py first") still refused, and a second --apply read the rewritten
+    letters against the OLD snapshot and swapped them straight back. Only called with zero orphans — an orphaned
+    letter resolves only through the ruled snapshot."""
+    apply_map(dec, newmap)
+    dec["snapshotId"] = now["snapshotId"]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
@@ -102,9 +118,13 @@ def main():
         ruled = L.snapshot_by_id(sp, dec.get("snapshotId")) if dec.get("snapshotId") else None
         st, orphans, newmap = classify(dec, ruled, now)
         rep[base] = {**st, "orphans": orphans, "remap": newmap}
-        if a.apply and newmap:
+        if a.apply and stale(dec, ruled, now):
+            if orphans:
+                print(f"{base}: NOT applied — {len(orphans)} orphaned letter(s) still need the ruled snapshot "
+                      f"{dec['snapshotId']}; resolve them first", file=sys.stderr)
+                continue
             shutil.copy2(dp, dp.with_name(dp.name + f".bak-{time.strftime('%Y%m%d-%H%M%S')}"))
-            apply_map(dec, newmap)
+            rebase(dec, newmap, now)
             dp.write_text(json.dumps(dec, indent=1, sort_keys=True))
     for b, r in rep.items():
         print(f"{b:45s} unchanged {r['unchanged']:3d} remapped {r['remapped']:3d} orphaned {r['orphaned']:3d}"

@@ -41,6 +41,19 @@ def main():
           "apply_map: assign keys and asks base rewritten")
     check(v["decision"] == "B" and v["picks"] == {"g1": "A"} and v["variants"] == ["B", "C"]
           and v["legacyVariants"] == ["A"], "apply_map: schema-1 fields rewritten")
+    # rebase(): the letters move to the current snapshot AND snapshotId follows them, so a second run (which reads
+    # the decisions against the snapshot snapshotId names) finds nothing to do instead of swapping A<->B back.
+    ruled2 = {"snapshotId": "old", "rows": {"r1": {"columns": {"A": ["sha_a"], "B": ["sha_b"]}}}}
+    now2 = {"snapshotId": "new", "rows": {"r1": {"columns": {"A": ["sha_b"], "B": ["sha_a"]}}}}
+    dec2 = {"snapshotId": "old", "decisions": {"r1": {"decision": "A", "picks": {"g1": "B"}}}}
+    check(R.stale(dec2, ruled2, now2) and not R.stale(dec2, None, now2), "stale: only with a findable ruled snapshot")
+    st2, orph2, map2 = R.classify(dec2, ruled2, now2)
+    R.rebase(dec2, map2, now2)
+    check(dec2["snapshotId"] == "new" and dec2["decisions"]["r1"] == {"decision": "B", "picks": {"g1": "A"}},
+          "rebase: letters rewritten and snapshotId moved to the current snapshot")
+    st3, _, map3 = R.classify(dec2, now2, now2)
+    check(not R.stale(dec2, now2, now2) and map3 == {} and st3["remapped"] == 0,
+          "rebase: a second run is a no-op (no swap back)")
     print("%s (%d failed)" % ("GREEN" if not FAIL else "RED", len(FAIL)))
     return 1 if FAIL else 0
 

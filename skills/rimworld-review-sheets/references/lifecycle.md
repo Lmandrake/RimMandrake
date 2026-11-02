@@ -77,7 +77,7 @@ the rebuilt sheets sit dirty in the clone. A failing rebuild keeps the previous 
 
 ```bash
 python3 src/RimMandrake/Utils/art/remap_decisions.py            # dry run: unchanged / remapped / orphaned per sheet
-python3 src/RimMandrake/Utils/art/remap_decisions.py --apply    # backs each file up, rewrites only remapped letters
+python3 src/RimMandrake/Utils/art/remap_decisions.py --apply    # backs each file up, rewrites remapped letters, moves snapshotId to now; skips a file with orphans
 python3 src/RimMandrake/Utils/art/art.py enact Transient/biome_ffar/X_sheet_D.decisions.json            # the plan
 python3 src/RimMandrake/Utils/art/art.py enact Transient/biome_ffar/X_sheet_D.decisions.json --apply \
     [--hold <subject>]... [--mark-done <row>]... [--no-deploy]
