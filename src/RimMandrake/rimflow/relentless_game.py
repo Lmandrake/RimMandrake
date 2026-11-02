@@ -547,6 +547,17 @@ def step(store, fx, r, item, now, acts, sup):
     if g["phase"] == "stage":
         if (g.get("retry_at") or 0) > now:
             return      # put down on a harness failure until its retry: it holds no place, the bridge is free
+        rd = fx.game_reading()
+        if rd.get("state") == "UP" and rd.get("started"):
+            # another item's load may already run this build (owner 2026-11-02, "To save game loads"): an item that has
+            # no row from the running game tries it before it stages a load of its own (BIOME_TIER_CLEANUP_1 read DOWN
+            # while CONTAGION's staging restarted the game, and would have staged a third load untried)
+            built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
+            seen = [v for v in outcomes(fx.game_rows(), item, built, g["clauses"]).values() if row_at(v) >= rd["started"]]
+            if not seen and other_active(store.states(), item) is None:
+                _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=rd["started"], waits_reload=None))
+                acts.append({"do": "game_try_running", "item": item, "started": rd["started"]})
+                return
         why = _lease_why(store, fx, r, item, sha, led)
         if why:
             return _waits(store, fx, item, why, now, acts)

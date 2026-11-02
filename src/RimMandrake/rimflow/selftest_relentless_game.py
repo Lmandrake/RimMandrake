@@ -636,13 +636,42 @@ def t_fail_with_no_game_is_offline():
     x.done()
 
 
+def t_stage_tries_a_newer_running_game_first():
+    """An item put to stage (its game read DOWN while another item's staging restarted it) tries the game that came up
+    before it stages a load of its own; a row from that game sends it on to stage."""
+    x = rig(1)
+    to_game(x, "I0")
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"].update(phase="stage", staged_at=x.now - 400, entered_at=x.now - 500, proved_at=x.now - 450)
+        x.s.save(st)
+    x.w.started = x.now - 60
+    x.w.rows = []
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    g = x.st("I0")["game"]
+    ok(g["phase"] == "prove" and g["staged_at"] == x.w.started and "take" not in x.w.events
+       and any(a["do"] == "game_try_running" for a in acts), "no row from the running game: try it first: %s" % acts)
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"]["phase"] = "stage"
+        x.s.save(st)
+    x.w.rows = [{"at": iso_(x.now - 10), "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+                 "why": "not in the running load: RM_X (mandrake.rm.x)"}]
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    ok(x.st("I0")["game"]["phase"] == "staging", "a row from the running game: it stages: %s" % acts)
+    x.done()
+
+
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
-              t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline):
+              t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
+              t_stage_tries_a_newer_running_game_first):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
