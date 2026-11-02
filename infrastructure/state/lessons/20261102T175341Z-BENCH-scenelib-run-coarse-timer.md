@@ -1,0 +1,2 @@
+scenes/scenelib.run(n) is coarse: each rimworld/play_for lasts >=200 ms, ~80 ticks at speed 4, so run(10) advances ~80 ticks. The 2026-10-10 glasswalk scene timed 120-200 tick walks with it and read glass/granite 0.65 where the engine law (cost = T + pathCost) gives 0.77. Time anything under a few hundred ticks with exact rimworld/step_game_ticks steps (SUMP_GLASSWALK_SPEED_RATIO_1).
+home: src/RimMandrake/Utils/scenes/scenelib.py

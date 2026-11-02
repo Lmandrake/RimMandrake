@@ -1,0 +1,1 @@
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/TheSump/prove_glasswalk_speed.py)" < /dev/null

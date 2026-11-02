@@ -42,7 +42,9 @@ def ticks():
 
 def run(n, speed=4):
     """Advance ~n game ticks. MEASURED 2026-10-09: step_game_ticks ran ~5-14 ticks/s on the 19-mod tier,
-    play_for at speed 4 (Ultrafast) ~400/s, so use this. Pauses again at the end."""
+    play_for at speed 4 (Ultrafast) ~400/s, so use this. Pauses again at the end.
+    Coarse: each play_for lasts at least 200 ms (~80 ticks at speed 4), so run(10) overshoots to ~80. Never time a
+    walk or anything under a few hundred ticks with it; step rimworld/step_game_ticks (SUMP_GLASSWALK_SPEED_RATIO_1)."""
     t0 = ticks(); call("jawa/set_game_speed", speed=speed)
     try:
         while ticks() - t0 < n:
