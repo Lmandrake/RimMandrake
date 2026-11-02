@@ -51,9 +51,26 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				Mathf.RoundToInt(coolHours * GenDate.TicksPerHour), scald);
 		}
 
-		public static bool IsFillOf(TerrainDef t, FluidDef fluid)
+		/// <summary>True when the liquid at <paramref name="c"/> is <paramref name="fluid"/>'s own: its fill tiers anywhere
+		/// (a spill over open water rides the temp layer), or, on a DUG square, any wet look its staging writes — the
+		/// freshwater ladder included (HOT_RELEASE_FIX_OWN_WET_TERRAIN). An undug freshwater rung is a lake, never ours.</summary>
+		public static bool IsFillOf(Map map, IntVec3 c, FluidDef fluid)
 		{
-			return t != null && fluid != null && fluid.OwnsFillTerrain(t);
+			if (map == null || fluid == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			TerrainDef t = map.terrainGrid.TerrainAt(c);
+			if (t == null)
+			{
+				return false;
+			}
+			if (fluid.OwnsFillTerrain(t))
+			{
+				return true;
+			}
+			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+			return eng != null && eng.IsDugRaw(c) && fluid.OwnsWetTerrain(t);
 		}
 	}
 
@@ -132,7 +149,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				{
 					Pawn pawn = pawns[k];
 					if (pawn.Dead || pawn.Flying || !pawn.Position.InHorDistOf(p.center, p.reach)
-						|| !RM_HotLiquid.IsFillOf(map.terrainGrid.TerrainAt(pawn.Position), p.fluid))
+						|| !RM_HotLiquid.IsFillOf(map, pawn.Position, p.fluid))
 					{
 						continue;
 					}
@@ -148,7 +165,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			for (int n = 0; n < puffs; n++)
 			{
 				IntVec3 c = p.center + GenRadial.RadialPattern[Rand.Range(0, GenRadial.NumCellsInRadius(p.reach))];
-				if (c.InBounds(map) && RM_HotLiquid.IsFillOf(map.terrainGrid.TerrainAt(c), p.fluid))
+				if (RM_HotLiquid.IsFillOf(map, c, p.fluid))
 				{
 					FleckMaker.ThrowAirPuffUp(c.ToVector3Shifted(), map);
 					statSteamPuffs++;
