@@ -10541,3 +10541,4 @@
 {"seat":"BENCH","event":"note","id":"QUICKTEST_POLICY_NRE_FULLLIST_1","text":"relentless: unit rm-relentless-stage-6b82eeb795-g3-s3 would not die, quarantined; carrying on","why":"relentless supervisor","ts":"2026-11-02T18:02:16Z","tsn":1793642536744844603}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-11-02T18:02:22Z","tsn":1793642542289453123}
 {"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TITANIC_BODYSIZE_TEST_RACE_1: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-02T18:02:40Z","tsn":1793642560785552786}
+{"seat":"BENCH","event":"needs","id":"SEABED_DESCENT_ASCENT_1","to":"owner","reason":"game phase: flyer: a flyer's flight is never live-tested without the owner present","why":"relentless supervisor","ts":"2026-11-02T18:05:05Z","tsn":1793642705394705478}
