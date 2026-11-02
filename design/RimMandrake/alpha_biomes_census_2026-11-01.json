@@ -1,0 +1,1474 @@
+{
+ "item": "ALPHA_BIOMES_CENSUS_THE_REST_OF_IT",
+ "authority": "Owner by card: \"Should Alpha Biomes retire as a donor too -> Yes, retire it\"; owner 2026-10-19 \"Reproduce the mutators into our own code, then proceed with deprecation of the donors.\"; scope delegated offline 2026-10-23.",
+ "decision_words": {
+  "PORTED": "a def of ours, same type, holds this role",
+  "VANILLA": "a base-game def holds it",
+  "DROPPED": "gone with the donor, nothing of ours wants it",
+  "UNPORTED": "on the frozen 09-12 record only; the one repaint clears it"
+ },
+ "token_classes": {
+  "fragment": "not a def: prefix, example or test string",
+  "other_mod": "a live def of another mod",
+  "donor_abstract": "lineage note only",
+  "donor_def": "non-category donor def named only in comments, tools or records",
+  "texture_or_record": "a file name of ours or a historic name, not a def"
+ },
+ "donor_counts": {
+  "TerrainDef": 115,
+  "WeatherDef": 12,
+  "ThoughtDef": 16,
+  "BiomeDef": 12,
+  "TileMutatorDef": 91,
+  "LandmarkDef": 23
+ },
+ "categories": {
+  "TerrainDef": {
+   "AB_AlienWoodFloors_CrystalWood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_AlienWoodFloors_MushroomStalks": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_AlienWoodFloors_RedWood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ArtificialTar": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_AsphaltBridge": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_AsphaltFloor": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_BlackPebbles": {
+    "decision": "PORTED",
+    "to": [
+     "RM_BlackPebbles"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_BrokenPoolTiles": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_Calcified": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CandySand": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CerebrospinalFluidFlood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CerebrospinalFluid_Deep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CerebrospinalFluid_MovingChestDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CerebrospinalFluid_MovingShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CerebrospinalFluid_Shallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CeruleanSoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CeruleanSoilRich": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ChocolateSoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ChocolateSoilRich": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CompactedSand": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CorruptedIntrusion": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CrackedMud": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_Cream": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_CrystalWoodFloors_RedWood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_Crystallized": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_DarkGravel": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_DarkMud": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_DenseGrass": {
+    "decision": "PORTED",
+    "to": [
+     "RM_DenseGrass"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_DenseMud": {
+    "decision": "PORTED",
+    "to": [
+     "RM_DenseMud"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_DryFlowerySoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FertileGrassyFlowerySoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FertileGrassyFlowerySoil_Oversaturated": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FertileMarsh": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FertileMud": {
+    "decision": "PORTED",
+    "to": [
+     "RM_FertileMud"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_FineForsakenSand": {
+    "decision": "PORTED",
+    "to": [
+     "RM_FineForsakenSand"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_FineSand": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FinestoneCragstone": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FinestoneMudstone": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FinestoneObsidian": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FinestoneRoseQuartz": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FlagstoneCragstone": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FlagstoneMudstone": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FlagstoneObsidian": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_FlagstoneRoseQuartz": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ForsakenRock": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ForsakenSand": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenSand"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_GauranlenSoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_GauranlenSoilRich": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_GrassyFlowerySoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_GrassySand": {
+    "decision": "PORTED",
+    "to": [
+     "RM_GrassySand"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_HardenedChocolate": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_HardenedGrass": {
+    "decision": "PORTED",
+    "to": [
+     "RM_HardenedGrass"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_HardenedGrassFertile": {
+    "decision": "PORTED",
+    "to": [
+     "RM_HardenedGrassFertile"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_LightRedFlood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LightRedWaterDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LightRedWaterMovingChestDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LightRedWaterMovingShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LightRedWaterOceanDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LightRedWaterOceanShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LightRedWaterShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LiquidCreamFlood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LiquidCream_Deep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LiquidCream_MovingChestDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LiquidCream_MovingShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LiquidCream_Shallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_LiquidLava": {
+    "decision": "VANILLA",
+    "to": [
+     "LavaDeep"
+    ],
+    "why": "lava is Odyssey vanilla; our Forge and Pyrelands use it"
+   },
+   "AB_LiquidSlime": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Slime_Liquid"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_LushGrass": {
+    "decision": "PORTED",
+    "to": [
+     "RM_LushGrass"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_MutagenicOcularWaterFlood": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_MycoticGrass": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheRotGrass"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_MycoticSoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_MycoticSoilRich": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheRotSoilRich"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_Obsidian": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_OdysseyFlesh": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_PackedIce": {
+    "decision": "PORTED",
+    "to": [
+     "RM_PackedIce"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_PackedSnow": {
+    "decision": "PORTED",
+    "to": [
+     "RM_PackedSnow"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ParchedEarth": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_PropaneLake": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheChillDeep"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_Quicksand": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_RichCrackedMud": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_RichSlime": {
+    "decision": "PORTED",
+    "to": [
+     "RM_RichSlime"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_Slime": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Slime"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_SlimeGrass": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Slime_Grass"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_SlimyMud": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Slime_Mud"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_SnowOverRocks": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_SoilOnCrackedMetal": {
+    "decision": "PORTED",
+    "to": [
+     "RM_RustCathedral_CrackedMetalSoil"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_SolidPropane": {
+    "decision": "PORTED",
+    "to": [
+     "RM_SolidPropane"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_SolidifiedLava": {
+    "decision": "VANILLA",
+    "to": [
+     "CooledLava"
+    ],
+    "why": "RM_RetiredMutatorPorts_Pyrelands.xml maps it to vanilla"
+   },
+   "AB_Strawberry": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_Tar": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TarShallow"
+    ],
+    "why": "our terrain took this role"
+   },
+   "AB_TarMud": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_TarmacFloor": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_TileCragstone": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_TileMudstone": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_TileObsidian": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_TileRoseQuartz": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ToxicFertileGrassyFlowerySoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_ToxicFlowerySoil": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_VolcanicGravel": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "AB_WebbedMarshyTerrain": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_AlienSand": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AlienSand"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "GU_AlienSandFine": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AlienSandFine"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "GU_AlienSoftSand": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_MetalFloor1": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_MetalFloor2": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_MetalFloor3": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_MossyRed": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_Piping": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RedWaterDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RedWaterMovingChestDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RedWaterMovingShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RedWaterOceanDeep": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RedWaterOceanShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RedWaterShallow": {
+    "decision": "DROPPED",
+    "why": "no def of ours places it and the canon start holds none"
+   },
+   "GU_RichAlienSand": {
+    "decision": "PORTED",
+    "to": [
+     "RM_RichAlienSand"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   }
+  },
+  "WeatherDef": {
+   "AB_AcidRainWeather": {
+    "decision": "DROPPED",
+    "why": "no biome of ours rolls it; the base weather was ported where a biome wanted it"
+   },
+   "AB_ForsakenNight": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenNight"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ForsakenNight_Alternate": {
+    "decision": "DROPPED",
+    "why": "no biome of ours rolls it; the base weather was ported where a biome wanted it"
+   },
+   "AB_ForsakenRainyNight": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenRainyNight"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ForsakenRainyNight_Alternate": {
+    "decision": "DROPPED",
+    "why": "no biome of ours rolls it; the base weather was ported where a biome wanted it"
+   },
+   "AB_ForsakenThunderstorm": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenThunderstorm"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ForsakenThunderstorm_Alternate": {
+    "decision": "DROPPED",
+    "why": "no biome of ours rolls it; the base weather was ported where a biome wanted it"
+   },
+   "AB_PetalStorms": {
+    "decision": "DROPPED",
+    "why": "no biome of ours rolls it; the base weather was ported where a biome wanted it"
+   },
+   "AB_RedFog": {
+    "decision": "PORTED",
+    "to": [
+     "RM_RedFog"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ReddishRain": {
+    "decision": "DROPPED",
+    "why": "no biome of ours rolls it; the base weather was ported where a biome wanted it"
+   },
+   "AB_VolcanicAsh": {
+    "decision": "PORTED",
+    "to": [
+     "RM_VolcanicAsh"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_VolcanicAshRain": {
+    "decision": "PORTED",
+    "to": [
+     "RM_VolcanicAshRain"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   }
+  },
+  "ThoughtDef": {
+   "AB_ForsakenNight": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenNight"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ForsakenRain": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenRain"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_ForsakenThunderstorm": {
+    "decision": "PORTED",
+    "to": [
+     "RM_ForsakenThunderstorm"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_GelatinousEchoes_Bad": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_GelatinousEchoes_Good": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_HealingSpringwaterThought": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_MoldyEnvironment": {
+    "decision": "PORTED",
+    "to": [
+     "RM_MoldyEnvironment"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   },
+   "AB_MutagenicOcularWater": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_PetalStorms": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_PsychotropicFungusHigh": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_PsychotropicFungusWithdrawal": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_Quicksand": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_RawRimeNodulesHigh": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_RedFogThought": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_RedFogThoughtPositive": {
+    "decision": "DROPPED",
+    "why": "its weather, chemical or mutator is not ours, so nothing can fire it"
+   },
+   "AB_VolcanicAshThought": {
+    "decision": "PORTED",
+    "to": [
+     "RM_VolcanicAshThought"
+    ],
+    "why": "plain XML port, DonorPorts files, 2026-10-18"
+   }
+  },
+  "BiomeDef": {
+   "AB_FeraliskInfestedJungle": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Webwork",
+     "RUT_Webwork"
+    ],
+    "why": "the Webwork; RUT_Webwork header: replaces this donor"
+   },
+   "AB_GallatrossGraveyard": {
+    "decision": "DROPPED",
+    "why": "no twin in any freeze sheet and off the paint list; only colour and paint-table rows in retired world tools"
+   },
+   "AB_GelatinousSuperorganism": {
+    "decision": "PORTED",
+    "to": [
+     "RM_GelatinousSlime",
+     "RUT_Slime"
+    ],
+    "why": "the Slime; RUT_Slime header: replaces this donor"
+   },
+   "AB_IdyllicMeadows": {
+    "decision": "DROPPED",
+    "why": "no twin in any freeze sheet and off the paint list; only colour and paint-table rows in retired world tools"
+   },
+   "AB_MechanoidIntrusion": {
+    "decision": "PORTED",
+    "to": [
+     "RM_RustCathedral",
+     "RUT_RustCathedral"
+    ],
+    "why": "the Rust Cathedral; twin header: replaces this donor"
+   },
+   "AB_MiasmicMangrove": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Miasma",
+     "RUT_Miasma"
+    ],
+    "why": "the Miasma; twin header: replaces this donor"
+   },
+   "AB_MycoticJungle": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheRot",
+     "RUT_TheRot"
+    ],
+    "why": "the Rot; twin header: replaces this donor"
+   },
+   "AB_OcularForest": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Contagion",
+     "RUT_Contagion"
+    ],
+    "why": "the Contagion; twin header: replaces this donor"
+   },
+   "AB_PropaneLakes": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheChill",
+     "RUT_PropaneLake"
+    ],
+    "why": "the Chill; RUT_PropaneLake took its tiles, RM_TheChill is the mod body"
+   },
+   "AB_PyroclasticConflagration": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheForge",
+     "RM_Pyrelands",
+     "RUT_TheForge"
+    ],
+    "why": "split: base of the Forge twin, mutators to Pyrelands"
+   },
+   "AB_RockyCrags": {
+    "decision": "PORTED",
+    "to": [
+     "RM_Abyss",
+     "RUT_Abyss"
+    ],
+    "why": "the Abyss, once the Forsaken Crags; twin header: replaces this donor"
+   },
+   "AB_TarPits": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TheSump",
+     "RUT_Sump"
+    ],
+    "why": "the Sump; twin header: replaces this donor"
+   }
+  },
+  "TileMutatorDef": {
+   "AB_AgariluxPrime_Mutator": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AgariluxPrimeSprout"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_AmbientRadiation": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AmbientRadiation"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_AncientBloodRainVent": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AncientBloodRainVent"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_AncientDeathPallVent": {
+    "decision": "DROPPED",
+    "why": "retired_mutators_port_map.json: status dropped"
+   },
+   "AB_AncientFreezingVent": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AncientFreezingVent"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_AncientGreyPallVent": {
+    "decision": "PORTED",
+    "to": [
+     "RM_AncientGrayPallVent"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_AnimaDesertFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_AnimaFaunaDesert": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_AnimaSoilsDesert": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_BlizzariskNest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_BumbledroneNests": {
+    "decision": "PORTED",
+    "to": [
+     "RM_SwarmHiveNests"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_ButterflySwarms": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CalcifiedRemnants": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CalcifiedSoil": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CerebrospinalFluid": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CloverForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CorruptedIntrusion": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CorruptedMechFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DerelictArchonexus": {
+    "decision": "UNPORTED",
+    "why": "on the frozen 09-12 record save only; left to the one repaint by the port map"
+   },
+   "AB_DerelictBioLab": {
+    "decision": "UNPORTED",
+    "why": "on the frozen 09-12 record save only; left to the one repaint by the port map"
+   },
+   "AB_DerelictClusters": {
+    "decision": "PORTED",
+    "to": [
+     "RM_DerelictClusters"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_DerelictKemeticTemple": {
+    "decision": "UNPORTED",
+    "why": "on the frozen 09-12 record save only; left to the one repaint by the port map"
+   },
+   "AB_DerelictLibrary": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DerelictResort": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DessertTrees": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DigestiveSurface": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DiminutiveRegion": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DryClimate": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DryMeadows": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DryMeadowsFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DunealiskNest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_EdibleAirborneMicrofungi": {
+    "decision": "PORTED",
+    "to": [
+     "RM_EdibleAirborneMicrofungi"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_ExplodingAnimals": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ExtremeTemperatureFluctuations": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_FeraliskNest": {
+    "decision": "PORTED",
+    "to": [
+     "RM_OllathrixNest"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_FleshTerrain": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_FleshTrees": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GauranlenFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GauranlenSoil": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GelatinousMemoryEcho": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GeothermalHotspots": {
+    "decision": "PORTED",
+    "to": [
+     "RM_GeothermalHotspots"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_GiantFossils": {
+    "decision": "PORTED",
+    "to": [
+     "RM_GiantFossils"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_GinkgoForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GnawingSands": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GoldenTrees": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_HealingSprings": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_JadeiteChunksDesert": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_LivingAlcyonite": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_LivingCrystalBed": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_LocustPlagues": {
+    "decision": "PORTED",
+    "to": [
+     "RM_LocustPlagues"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_LuminescentTrees": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_MagmaVents": {
+    "decision": "PORTED",
+    "to": [
+     "RM_MagmaVents"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_MagmaticQuagmire": {
+    "decision": "PORTED",
+    "to": [
+     "RM_MagmaticQuagmire"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_MauvebloomFields": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_MauvebloomFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_MobileCacti": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_MoldyEnvironment": {
+    "decision": "PORTED",
+    "to": [
+     "RM_MoldyEnvironment"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_MutagenicSprings": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_NarrowRegion": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ObsidianExpanse": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ObsidianSpires": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_OcularDesertFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_OcularDesertSoil": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_OcularTransformation": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_OversaturatedSoil": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_PetalStorms": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_PollinationFrenzy": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_PropaneLakes": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_QuicksandPits": {
+    "decision": "PORTED",
+    "to": [
+     "RM_QuicksandPits"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_QuiveringSurface": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_RedFog": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ReddishRains": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ReddishWaters": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ResidualOverclocking": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_SterileGround": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_SugarChunks": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_SweetFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_SweetForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_SweetRocks": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_SymbioticNutrients": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_TarHoles": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_TarLakes": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TarLakes"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_TechnoTrees": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ToxicMeadows": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ToxicMeadowsFlora": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_TumorousGrowths": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_UnshackledCompanionDryads": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_UnshackledDryads": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_WarpedStoneForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_WideRegion": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_WillowForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   }
+  },
+  "LandmarkDef": {
+   "AB_AnimaDesert": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CalcifiedRemnants": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CloverForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_CorruptedIntrusion": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_DryMeadows": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_FleshMorass": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GauranlenGrove": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GinkgoForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_GnawingSands": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_HealingSprings": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_LivingCrystalBed": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_MagmaticQuagmire": {
+    "decision": "PORTED",
+    "to": [
+     "RM_MagmaticQuagmire"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_MauvebloomFields": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_MutagenicSprings": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_ObsidianExpanse": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_OcularDesert": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_PropaneLakes": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_QuicksandPits": {
+    "decision": "PORTED",
+    "to": [
+     "RM_QuicksandPits"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_SweetForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_TarLakes": {
+    "decision": "PORTED",
+    "to": [
+     "RM_TarLakes"
+    ],
+    "why": "owner order 2026-10-19; retired_mutators_port_map.json"
+   },
+   "AB_ToxicMeadows": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_WarpedStoneForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   },
+   "AB_WillowForest": {
+    "decision": "DROPPED",
+    "why": "on no tile of the canonical save, so owner note 2026-10-19 needs no decision"
+   }
+  }
+ },
+ "tokens": {
+  "AB_Aaklac": "donor_def",
+  "AB_AgaricusDomeCap": "donor_def",
+  "AB_Agarilux": "donor_def",
+  "AB_AgariluxPrime": "donor_def",
+  "AB_AlcyoniteChunk": "donor_def",
+  "AB_AlienGrass": "donor_def",
+  "AB_AlienTree": "donor_def",
+  "AB_AlienTree_Polluted": "donor_def",
+  "AB_ArbuscularMycorrhiza": "donor_def",
+  "AB_Ash": "fragment",
+  "AB_BacterialGangrene": "donor_def",
+  "AB_BoneWall": "donor_def",
+  "AB_Bryolux": "donor_def",
+  "AB_BumbledroneHive": "donor_def",
+  "AB_C": "fragment",
+  "AB_CavePlantBase": "donor_abstract",
+  "AB_CrystalFlower": "donor_def",
+  "AB_CrystalHorn": "donor_def",
+  "AB_CrystalHornA": "texture_or_record",
+  "AB_DarkScatter": "donor_abstract",
+  "AB_DenseGrass_Polluted": "texture_or_record",
+  "AB_DenseMud_Polluted": "texture_or_record",
+  "AB_DessertTree": "donor_def",
+  "AB_Disease": "fragment",
+  "AB_Disease_": "fragment",
+  "AB_Disease_BacterialGangrene": "donor_def",
+  "AB_Disease_RavagingIntestinalParasites": "donor_def",
+  "AB_Disease_SporesAllergy": "donor_def",
+  "AB_Disease_ViralAbasia": "donor_def",
+  "AB_DribblingCap": "donor_def",
+  "AB_EyeGrass": "donor_def",
+  "AB_FertileMud_Polluted": "texture_or_record",
+  "AB_FineForsakenSands": "texture_or_record",
+  "AB_FineForsakenSands_Polluted": "texture_or_record",
+  "AB_FirevineTree": "donor_def",
+  "AB_FirevineTree_Leafless": "texture_or_record",
+  "AB_ForsakenSands": "texture_or_record",
+  "AB_ForsakenSands_Polluted": "texture_or_record",
+  "AB_FrostLeaf": "donor_def",
+  "AB_Fungal": "fragment",
+  "AB_Gangrene": "donor_def",
+  "AB_GargantuanLithops": "donor_def",
+  "AB_GiantAgarilux": "donor_def",
+  "AB_GiantBones": "texture_or_record",
+  "AB_GiantGamma": "donor_def",
+  "AB_GiantSeptimum": "donor_def",
+  "AB_GiantStikehr": "donor_def",
+  "AB_GiantToxicFlower": "donor_def",
+  "AB_GlobularPlant": "donor_def",
+  "AB_GlowingAgarilux": "donor_def",
+  "AB_GlowingGrass": "donor_def",
+  "AB_Glowstool": "donor_def",
+  "AB_Gomphoeria": "donor_def",
+  "AB_GrassySand_Polluted": "texture_or_record",
+  "AB_GreenRockFern": "donor_def",
+  "AB_HalfAlienTree": "donor_def",
+  "AB_HardenedGrass_Polluted": "texture_or_record",
+  "AB_HardyGrass": "donor_def",
+  "AB_Iashiphus": "donor_def",
+  "AB_JungleTree": "donor_def",
+  "AB_JungleTreeLeafless": "texture_or_record",
+  "AB_KeeningCordax": "donor_def",
+  "AB_LargeSlimyTree": "donor_def",
+  "AB_LilacBeacon": "donor_def",
+  "AB_Lithops": "texture_or_record",
+  "AB_LushGrass_Polluted": "texture_or_record",
+  "AB_MagmaThermalPlant": "donor_def",
+  "AB_MagmaVent": "donor_def",
+  "AB_MagmaVent_Prefab": "donor_def",
+  "AB_MangrovePalm": "donor_def",
+  "AB_MangrovePalmLeafless": "texture_or_record",
+  "AB_MangroveTree": "donor_def",
+  "AB_MangroveTreeLeafless": "texture_or_record",
+  "AB_MechCluster": "fragment",
+  "AB_Mech_Ruined": "fragment",
+  "AB_Mech_RuinedAssembler": "donor_def",
+  "AB_Mech_RuinedCell": "fragment",
+  "AB_Mech_RuinedCell1": "texture_or_record",
+  "AB_Mech_RuinedCell2": "texture_or_record",
+  "AB_MechanoidIntr": "fragment",
+  "AB_MiningYield_VeryHigh": "other_mod",
+  "AB_Mycotic": "fragment",
+  "AB_MycoticCollector": "donor_def",
+  "AB_MycoticSpores": "donor_def",
+  "AB_OcularTree": "texture_or_record",
+  "AB_ParasiticMangrove": "donor_def",
+  "AB_PollutedAlienTree": "texture_or_record",
+  "AB_Polymer": "texture_or_record",
+  "AB_Polymer_Polluted": "texture_or_record",
+  "AB_PropaneLakeTerrains": "texture_or_record",
+  "AB_Pyroclastic": "fragment",
+  "AB_RavagingIntestinalParasites": "donor_def",
+  "AB_RawBrownBarrelCactus": "donor_def",
+  "AB_RawRagadast": "donor_def",
+  "AB_RecurvedStropharia": "donor_def",
+  "AB_RedBugloss": "donor_def",
+  "AB_RedLeaves": "donor_def",
+  "AB_RedPlantsTall": "donor_def",
+  "AB_RichMycoticDirt": "texture_or_record",
+  "AB_RichSlime_Polluted": "texture_or_record",
+  "AB_RimeNodules": "donor_def",
+  "AB_SessileMechanoid": "donor_def",
+  "AB_ShadowlessBushBase": "donor_abstract",
+  "AB_ShadowlessTreeBase": "donor_abstract",
+  "AB_Slime_Polluted": "texture_or_record",
+  "AB_Slimecasia": "donor_def",
+  "AB_SlimyFern": "donor_def",
+  "AB_SlimyPholiota": "donor_def",
+  "AB_SlimyTree": "donor_def",
+  "AB_Snow": "texture_or_record",
+  "AB_Snow_Polluted": "texture_or_record",
+  "AB_SugarFamewort": "donor_def",
+  "AB_TallSlimyGrass": "donor_def",
+  "AB_TangleTea": "donor_def",
+  "AB_TarPuddle": "donor_def",
+  "AB_TentacularPlant": "donor_def",
+  "AB_TinkleGrass": "donor_def",
+  "AB_ToxiBulb": "donor_def",
+  "AB_ToxiGrass": "donor_def",
+  "AB_ToxicGamma": "donor_def",
+  "AB_Turret_Propane": "donor_def",
+  "AB_ViralAbasia": "donor_def",
+  "AB_VolcanicHeatWave": "donor_def",
+  "AB_WeepingToxberry": "donor_def",
+  "AB_WhiteIce": "texture_or_record",
+  "AB_WhiteIce_Polluted": "texture_or_record",
+  "AB_WildRadagast": "donor_def",
+  "AB_WitchesOyster": "donor_def",
+  "AB_X": "fragment",
+  "AB_Y": "fragment",
+  "AB_build": "fragment",
+  "AB_test": "fragment"
+ },
+ "live_allowed": [
+  {
+   "token": "AB_AlcyoniteChunk",
+   "file": "src/RimMandrake/DeepDrill/Defs/RM_DeepHomeTable.xml",
+   "why": "retired_donor_refs ALLOW: inert string row, Minerals CSV retire binding"
+  }
+ ]
+}

@@ -45,7 +45,7 @@
   with a quartered `countPer10kCellsRange`, documented there.
 
   ANCIENT=ALLOW rows (the two poles, Scarlands, the Forge, RUT_TheScald,
-  Wasteland, AB_TarPits, ZBiome_DesertOasis, ZBiome_Badlands, Desert) get NO
+  Wasteland, RM_TheSump, RUT_Sump, ZBiome_DesertOasis, ZBiome_Badlands, Desert) get NO
   patch here - default vanilla behaviour already allows the stock genstep,
   and this item's spec does not ask for anything tighter on those rows.
   RUT_TwilightSea/RUT_GreySea (ANCIENT=DENY) are confirmed `isWaterBiome:

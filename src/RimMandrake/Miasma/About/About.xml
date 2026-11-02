@@ -63,10 +63,7 @@ biome's flora weight) with 19 of this campaign's own invented RM_-tier plants:
 four mangals that are the biome's canopy and terrain, six always-benign rainbow
 blooms, a five-plant carnivorous clade that preys on the arthropod floor (never a
 colonist, never a tame animal), and four muck-and-silt plants naming the delta's
-own goods (delta salt, delta silt). sarg.alphabiomes is therefore no longer a hard
-modDependency — its only remaining role is the MayRequire-gated AB_FertileMud row
-in terrainsByFertility, an optional richer terrain when that mod happens to be
-present. The two invented native creatures (RM_Karrobel, RM_FeverSwarm) live in this mod
+own goods (delta salt, delta silt). The two invented native creatures (RM_Karrobel, RM_FeverSwarm) live in this mod
 (MIASMA_SWARM_COMPOSTER_PORT_1); the cross-mod Rot flora import (RUT_Nogtyl) still lives in
 mandrake.rut.rotsporekit and is wired here with a MayRequire guard.
 

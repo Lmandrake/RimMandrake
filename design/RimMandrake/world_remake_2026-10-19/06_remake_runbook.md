@@ -174,7 +174,7 @@ development world (Option D) a faction or ideo can be added later by tool (§0.1
 |---|---|---|---|
 | 1 | `ALPHA_BIOMES_MIGRATE_PLANTS_TO_RM_TWINS` | ready · offline | — |
 | 2 | `ALPHA_BIOMES_MIGRATE_DISEASES_AND_CODE` | ready · offline | — |
-| 3 | `ALPHA_BIOMES_CENSUS_THE_REST_OF_IT` | proposed · **owner** (~130 AB_ names) | — |
+| 3 | `ALPHA_BIOMES_CENSUS_THE_REST_OF_IT` | decided, `design/RimMandrake/alpha_biomes_census_2026-11-01.md` | — |
 | 4 | `ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR` | ready · offline (umbrella) | → 1, 2, 3 |
 | 5 | `DONOR_DEFS_PORT_TO_OURS_1` | ready, **BLOCKED**: owner-sat plan first | 👤 |
 | 6 | `DESERT_FAMILY_PORT_EXECUTION_1` | proposed, **BLOCKED**: review sheet never owner-reviewed | → 5, 👤 sheet |
