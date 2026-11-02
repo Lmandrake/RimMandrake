@@ -1,0 +1,1 @@
+A3 L2: on a quicktest map, a spawned hostile Megascarab survives jawa/destroy_batch categories=Pawn (refused) and categories=All, and is gone from jawa/list_pawns after jawa/pawn_force_incapacitate action=vanish by id

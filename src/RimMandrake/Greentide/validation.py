@@ -433,9 +433,11 @@ if Suite is not None:
         surprise ended the mire and frenzy chains UNMEASURED. Not Greentide's mechanism; cleared, not asserted.
         jawa/destroy_batch never removes pawns (LIVE 2026-10-07: "1 pawn(s) left alone" on every call, and it now
         refuses categories=Pawn, DESTROY_BATCH_NEVER_KILLS_PAWNS_1), so each hostile is vanished by id."""
-        r = t.bridge_call("jawa/list_pawns", limit=300) or {}
+        r = t.bridge_call("jawa/list_pawns", limit=2000) or {}
+        if isinstance(r, dict) and (r.get("truncated") or 0) > 0:
+            _unmeasured(t, "list_pawns truncated %s beyond the limit: some hostiles not seen" % r.get("truncated"))
         for p in (r.get("pawns") or []) if isinstance(r, dict) else []:
-            if p.get("hostile") and p.get("spawned") and p.get("x", -1) >= 0 and p.get("z", -1) >= 0:
+            if p.get("hostile") and p.get("spawned") and not p.get("dead") and p.get("x", -1) >= 0 and p.get("z", -1) >= 0:
                 t.bridge_call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
 
     def _site(t):
