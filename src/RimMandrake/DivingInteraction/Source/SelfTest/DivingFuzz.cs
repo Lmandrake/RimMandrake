@@ -443,6 +443,51 @@ namespace RimMandrake.DivingInteraction.SelfTest
             return fails;
         }
 
+        // SEABED_DESCENT_ASCENT_1: the depth fuel a gravship pays between the surface and the sea-floor layer. The rule,
+        // written out here from the item ("fuel cost per depth both ways"): a flight with one end on the floor and the
+        // other on the surface pays depth x clamp(perMetre) where depth = max(0, -elevation of the floor end); every
+        // other pairing pays 0; down and up cost the same; the result is finite and never negative.
+        public static List<string> Descent(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            float[] odd = { float.NaN, float.PositiveInfinity, float.NegativeInfinity, 0f, -0f, -500f, -1e-6f, 1e-6f, 3000f, -12000f };
+            float[] perOdd = { float.NaN, -1f, 0f, RM_SeabedDescentKernel.DefaultFuelPerMeter, 2f, 50f, float.PositiveInfinity, float.NegativeInfinity };
+            void One(int seed, float elev, float per, bool fF, bool fS, bool tF, bool tS)
+            {
+                Cases++; Steps++;
+                float got = RM_SeabedDescentKernel.ExtraFuel(fF, fS, tF, tS, elev, per);
+                float back = RM_SeabedDescentKernel.ExtraFuel(tF, tS, fF, fS, elev, per);
+                bool crossing = (fF && tS) || (fS && tF);
+                float p = float.IsNaN(per) ? RM_SeabedDescentKernel.DefaultFuelPerMeter : Math.Max(RM_SeabedDescentKernel.MinFuelPerMeter, Math.Min(RM_SeabedDescentKernel.MaxFuelPerMeter, per));
+                float depth = (float.IsNaN(elev) || float.IsInfinity(elev) || elev >= 0f) ? 0f : -elev;
+                float want = crossing ? depth * p : 0f;
+                string at = $"seed {seed}: elev {elev} per {per} from(F{fF},S{fS}) to(F{tF},S{tS})";
+                if (!(got == want)) fails.Add($"descent {at}: extra {got}, rule says {want}");
+                else if (got != back) fails.Add($"descent {at}: down {got} != up {back} (must be the same both ways)");
+                else if (float.IsNaN(got) || float.IsInfinity(got) || got < 0f) fails.Add($"descent {at}: extra {got} is not a finite non-negative fuel");
+            }
+            // Fixed table: every pairing of the four end flags against the odd values.
+            int k = 0;
+            foreach (float e in odd) foreach (float pp in perOdd) for (int m = 0; m < 16 && fails.Count < 5; m++)
+                One(-(++k), e, pp, (m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0);
+            // Anchors a reader can check by hand.
+            if (RM_SeabedDescentKernel.ExtraFuel(false, true, true, false, -500f, 0.2f) != 100f) fails.Add("descent anchor: 500 m at 0.2/m must cost 100 going down");
+            if (RM_SeabedDescentKernel.ExtraFuel(true, false, false, true, -500f, 0.2f) != 100f) fails.Add("descent anchor: 500 m at 0.2/m must cost 100 coming up");
+            if (RM_SeabedDescentKernel.ExtraFuel(false, true, false, true, -500f, 0.2f) != 0f) fails.Add("descent anchor: a surface hop pays no depth fuel");
+            if (RM_SeabedDescentKernel.ExtraFuel(true, false, true, false, -500f, 0.2f) != 0f) fails.Add("descent anchor: a floor hop pays no depth fuel");
+            if (RM_SeabedDescentKernel.ExtraFuel(false, false, true, false, -500f, 0.2f) != 0f) fails.Add("descent anchor: orbit to floor is not a surface crossing");
+            for (int c = 0; c < n && fails.Count < 5; c++)
+            {
+                int seed = baseSeed + c;
+                var r = new Random(seed);
+                float elev = (float)(r.NextDouble() * 2000.0 - 1500.0);
+                float per = (float)(r.NextDouble() * 3.0 - 0.5);
+                int m = r.Next(16);
+                One(seed, elev, per, (m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0);
+            }
+            return fails;
+        }
+
         // SCALD_WALKING_PASTURE_1 trample: drive RM_WalkerTrampleKernel.Decide exactly as the map component does
         // (it records lastTrample AND lastWarn on a trample, lastWarn on a warning) and check every outcome against
         // the ruling's own rule written out here.
@@ -794,6 +839,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 ("trample", () => Trample(N(3000), S(1))),
                 ("fireban", () => FireBan(N(3000), S(1))),
                 ("ignition", () => Ignition(N(2000), S(1))),
+                ("descent", () => Descent(N(3000), S(1))),
             };
             if (only == null && !ReplayReproduces()) ok = false;
             foreach (var f in fam)

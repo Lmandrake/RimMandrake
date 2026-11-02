@@ -1,0 +1,3 @@
+A1 L2: on a quicktest map (minimal list + DivingInteraction, JawaBench companion built with --gm and deployed by src/RimMandrake/bridgetools/build.py --gm --apply), the pilot console's gates (jawa/gravship_launch_check layer=RM_SeabedLayer) accept a floor tile under a nearby sea and price it at >= 50 + 0.2 chemfuel per metre of depth
+A2 L2: after that flight lands, Find.CurrentMap.Tile.Layer is RM_SeabedLayer and the map parent is RM_SeabedSite (jawa/gravship_status currentMapLayer/currentMapParent)
+A3 L2: launching from the floor back to the surface tile it came from lands there (Find.CurrentMap.Tile.Layer is the surface layer again) and the climb is priced with the same depth fuel

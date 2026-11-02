@@ -229,6 +229,12 @@ namespace RimMandrake.DivingInteraction
         // RM_SeaFloorFauna alone; vanilla's Animals step is skipped there, and refilling over time is vanilla's
         // ongoing wild-animal spawner (seabedFloorLifeEnabled). Off: both seeders run, as before.
         public static bool seabedSingleSeederEnabled = true;
+        // SEABED_DESCENT_ASCENT_1. A gravship flying between a sea tile and the sea-floor layer below it pays chemfuel
+        // for the water column, the same both ways: depth (metres, from the floor tile's elevation) x fuel per metre,
+        // on top of the vanilla price. PROVISIONAL first-guess number (owner ruling 2026-10-03: first-guess numbers
+        // ship, tuned live): 0.2 per metre, so a 500 m sea costs 100 chemfuel each way. Off: vanilla price only.
+        public static bool seabedDescentDepthFuelEnabled = true;
+        public static float seabedDescentFuelPerMeter = RM_SeabedDescentKernel.DefaultFuelPerMeter;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -252,6 +258,8 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyElderStunsLivingEnabled, "greyElderStunsLivingEnabled", true);
             Scribe_Values.Look(ref chillAuroraUnattendedEnabled, "chillAuroraUnattendedEnabled", true);
             Scribe_Values.Look(ref seabedSingleSeederEnabled, "seabedSingleSeederEnabled", true);
+            Scribe_Values.Look(ref seabedDescentDepthFuelEnabled, "seabedDescentDepthFuelEnabled", true);
+            Scribe_Values.Look(ref seabedDescentFuelPerMeter, "seabedDescentFuelPerMeter", RM_SeabedDescentKernel.DefaultFuelPerMeter);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
             Scribe_Values.Look(ref specimenCabinetEnabled, "specimenCabinetEnabled", true);
             Scribe_Values.Look(ref greyFloorWalkCheckEnabled, "greyFloorWalkCheckEnabled", true);
@@ -378,6 +386,21 @@ namespace RimMandrake.DivingInteraction
                     "Shipped default: ON. After the floor is decorated, a last pass removes the salt pillars, "
                   + "domes, chimneys, crystals or statuary that wall the Elder or a wreck off from where the "
                   + "ship lands. Affects only newly generated Grey Sea floors. Off: the floor generates as before.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Sea-floor descent (gravship)", RimMandrake.Shared.SettingScope.Now, new[] { "seabedDescentDepthFuelEnabled", "seabedDescentFuelPerMeter" }))
+            {
+                list.CheckboxLabeled("Flying down to the sea floor, or back up, costs fuel for the depth", ref seabedDescentDepthFuelEnabled,
+                    "Shipped default: ON. A gravship flying between a sea and the sea-floor layer beneath it burns extra "
+                  + "chemfuel for the water over that floor, the same going down and coming up. The pilot console's "
+                  + "cost readout includes it. Off: the trip costs only what any short gravship hop costs.");
+                if (seabedDescentDepthFuelEnabled)
+                {
+                    list.Label("Chemfuel per metre of depth: " + seabedDescentFuelPerMeter.ToString("0.00"));
+                    seabedDescentFuelPerMeter = RM_SeabedDescentKernel.FuelPerMeter(list.Slider(seabedDescentFuelPerMeter,
+                        RM_SeabedDescentKernel.MinFuelPerMeter, RM_SeabedDescentKernel.MaxFuelPerMeter));
+                }
                 list.GapLine();
             }
 

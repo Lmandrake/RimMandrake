@@ -1,0 +1,3 @@
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/bridgetools/prove_seabed_descent.py)" --out 'D:\ClaudeWork\rimmandrake\live_proofs\SEABED_DESCENT_ASCENT_1' < /dev/null; python.exe "$(wslpath -w src/RimMandrake/bridgetools/prove_seabed_descent.py)" --out 'D:\ClaudeWork\rimmandrake\live_proofs\SEABED_DESCENT_ASCENT_1' --read A1 < /dev/null
+live-proof A2: python.exe "$(wslpath -w src/RimMandrake/bridgetools/prove_seabed_descent.py)" --out 'D:\ClaudeWork\rimmandrake\live_proofs\SEABED_DESCENT_ASCENT_1' --read A2 < /dev/null
+live-proof A3: python.exe "$(wslpath -w src/RimMandrake/bridgetools/prove_seabed_descent.py)" --out 'D:\ClaudeWork\rimmandrake\live_proofs\SEABED_DESCENT_ASCENT_1' --read A3 < /dev/null

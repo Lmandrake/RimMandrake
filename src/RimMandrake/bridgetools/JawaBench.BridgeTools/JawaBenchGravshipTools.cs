@@ -40,6 +40,29 @@ namespace JawaBench.BridgeTools
     public sealed partial class JawaBenchTerrainTools
     {
         // ------------------------------------------------------------------
+        // shared: a destination tile on a named planet layer (SEABED_DESCENT_ASCENT_1). The tools used to build
+        // every target on the surface, so a flight to the sea-floor layer (or orbit) could not even be asked for.
+        private static PlanetTile ResolveTargetTile(int tile, string layer, out string err)
+        {
+            err = null;
+            var grid = Find.WorldGrid;
+            if (grid == null) { err = "No WorldGrid. This needs a world loaded."; return PlanetTile.Invalid; }
+            PlanetLayer pl = grid.Surface;
+            if (!string.IsNullOrWhiteSpace(layer))
+            {
+                var def = DefDatabase<PlanetLayerDef>.GetNamedSilentFail(layer.Trim());
+                if (def == null) { err = "No PlanetLayerDef '" + layer + "'."; return PlanetTile.Invalid; }
+                pl = grid.FirstLayerOfDef(def);
+                if (pl == null) { err = "PlanetLayerDef '" + layer + "' exists but no layer of it is registered on this world."; return PlanetTile.Invalid; }
+            }
+            if (tile < 0 || tile >= pl.TilesCount)
+            {
+                err = "targetTile " + tile + " out of range (0.." + (pl.TilesCount - 1) + ") on layer " + pl.Def.defName + ".";
+                return PlanetTile.Invalid;
+            }
+            return new PlanetTile(tile, pl);
+        }
+
         // shared: resolve the player grav engine, preferring the current map
         // ------------------------------------------------------------------
         private static Building_GravEngine ResolveGravEngine(string expectEngineId, out string engineErr)
@@ -153,6 +176,7 @@ namespace JawaBench.BridgeTools
                         name = e.RenamableLabel,
                         mapId = m.uniqueID,
                         tile = m.Tile.tileId,
+                        layer = m.Tile.LayerDef?.defName,
                         x = e.Position.x, z = e.Position.z,
                         fuel = e.TotalFuel, maxFuel = e.MaxFuel,
                         fuelPerTile = e.FuelPerTile,
@@ -171,7 +195,7 @@ namespace JawaBench.BridgeTools
                     {
                         var lm = m.listerThings.AllThings.OfType<GravshipLandingMarker>().FirstOrDefault();
                         if (lm == null) continue;
-                        marker = new { mapId = m.uniqueID, tile = m.Tile.tileId, x = lm.Position.x, z = lm.Position.z, rot = lm.GravshipRotation.AsInt };
+                        marker = new { mapId = m.uniqueID, tile = m.Tile.tileId, layer = m.Tile.LayerDef?.defName, x = lm.Position.x, z = lm.Position.z, rot = lm.GravshipRotation.AsInt };
                         break;
                     }
                 }
@@ -184,6 +208,10 @@ namespace JawaBench.BridgeTools
                     travelling = ctrl != null && ctrl.IsGravshipTravelling,
                     landingConfirmationPending = ctrl != null && ctrl.LandingAreaConfirmationInProgress,
                     landingMarker = marker,
+                    // SEABED_DESCENT_ASCENT_1's criterion reads Find.CurrentMap.Tile.Layer directly.
+                    currentMapTile = Find.CurrentMap != null ? Find.CurrentMap.Tile.tileId : -1,
+                    currentMapLayer = Find.CurrentMap != null ? Find.CurrentMap.Tile.LayerDef?.defName : null,
+                    currentMapParent = Find.CurrentMap?.Parent?.def?.defName,
                     ticksGame = TicksGameSafe(),
                 };
             });
@@ -200,12 +228,13 @@ namespace JawaBench.BridgeTools
                 "call before every jawa/gravship_launch.",
             ResultDescription =
                 "success, wouldLaunch, reasons[] (empty when wouldLaunch), fuelCost, fuelAboard, " +
-                "distance, maxDistance, engineId.")]
+                "distance, maxDistance, engineId, originLayer, targetLayer, targetBiome, targetElevation.")]
         public static async Task<object> GravshipLaunchCheck(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Destination world tile id (surface layer).")] int targetTile,
-            [ToolParameter(Description = "Engine ThingID to assert, e.g. 'GravEngine64276'. Optional when only one engine exists.")] string expectEngineId = null)
+            [ToolParameter(Description = "Destination world tile id on 'layer' (the surface when 'layer' is empty).")] int targetTile,
+            [ToolParameter(Description = "Engine ThingID to assert, e.g. 'GravEngine64276'. Optional when only one engine exists.")] string expectEngineId = null,
+            [ToolParameter(Description = "SEABED_DESCENT_ASCENT_1: PlanetLayerDef defName of the destination layer (e.g. RM_SeabedLayer, Orbit). Empty = the surface.")] string layer = null)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -213,8 +242,8 @@ namespace JawaBench.BridgeTools
                 if (WorldComponent_GravshipController.CutsceneInProgress) return Fail("A gravship cutscene is in progress.");
                 var engine = ResolveGravEngine(expectEngineId, out var err);
                 if (engine == null) return Fail(err);
-                if (targetTile < 0) return Fail("targetTile must be a surface tile id >= 0.");
-                var target = new PlanetTile(targetTile, Find.WorldGrid.Surface);
+                var target = ResolveTargetTile(targetTile, layer, out var tileErr);
+                if (!target.Valid) return Fail(tileErr);
                 var reasons = GravshipLaunchGates(engine, target, out var cost, out var dist, out var maxDist);
                 return (object)new
                 {
@@ -223,7 +252,11 @@ namespace JawaBench.BridgeTools
                     reasons,
                     engineId = engine.ThingID,
                     originTile = engine.Map.Tile.tileId,
+                    originLayer = engine.Map.Tile.LayerDef?.defName,
                     targetTile,
+                    targetLayer = target.LayerDef?.defName,
+                    targetBiome = target.Tile?.PrimaryBiome?.defName,
+                    targetElevation = target.Tile != null ? (float?)target.Tile.elevation : null,
                     fuelCost = cost,
                     fuelAboard = engine.TotalFuel,
                     distance = dist,
@@ -252,13 +285,14 @@ namespace JawaBench.BridgeTools
         public static async Task<object> GravshipLaunch(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Destination world tile id (surface layer).")] int targetTile,
+            [ToolParameter(Description = "Destination world tile id on 'layer' (the surface when 'layer' is empty).")] int targetTile,
             [ToolParameter(Description = "Report what would happen without launching. DEFAULTS TRUE - pass false to actually fly.")] bool dryRun = true,
             [ToolParameter(Description = "Launch quality 0..1: sets engine.cooldownCompleteTick exactly as the takeoff ritual would " +
                 "(GravshipUtility.LaunchCooldownFromQuality). Does NOT roll a landing-outcome chance: this tool reproduces the " +
                 "vanilla 'DEV: Launch instantly' gizmo, which always launches with doNegativeOutcome=false - a real negative " +
                 "outcome only ever happens if it was already set on the engine's launchInfo before this call.")] float quality = 1f,
-            [ToolParameter(Description = "Engine ThingID to assert, e.g. 'GravEngine64276'. Optional when only one engine exists.")] string expectEngineId = null)
+            [ToolParameter(Description = "Engine ThingID to assert, e.g. 'GravEngine64276'. Optional when only one engine exists.")] string expectEngineId = null,
+            [ToolParameter(Description = "SEABED_DESCENT_ASCENT_1: PlanetLayerDef defName of the destination layer (e.g. RM_SeabedLayer, Orbit). Empty = the surface.")] string layer = null)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -269,8 +303,8 @@ namespace JawaBench.BridgeTools
                 if (ctrl != null && ctrl.LandingAreaConfirmationInProgress) return Fail("A landing is awaiting confirmation - jawa/gravship_land first.");
                 var engine = ResolveGravEngine(expectEngineId, out var err);
                 if (engine == null) return Fail(err);
-                if (targetTile < 0) return Fail("targetTile must be a surface tile id >= 0.");
-                var target = new PlanetTile(targetTile, Find.WorldGrid.Surface);
+                var target = ResolveTargetTile(targetTile, layer, out var tileErr);
+                if (!target.Valid) return Fail(tileErr);
 
                 var reasons = GravshipLaunchGates(engine, target, out var cost, out var dist, out var maxDist);
                 bool anchor = engine.Map.listerThings.AnyThingWithDef(ThingDefOf.GravAnchor);
@@ -283,7 +317,8 @@ namespace JawaBench.BridgeTools
                     {
                         success = true, launched = false, dryRun = true,
                         engineId = engine.ThingID,
-                        originTile = engine.Map.Tile.tileId, targetTile,
+                        originTile = engine.Map.Tile.tileId, originLayer = engine.Map.Tile.LayerDef?.defName,
+                        targetTile, targetLayer = target.LayerDef?.defName,
                         fuelCost = cost, fuelAboard = engine.TotalFuel, distance = dist,
                         originMapWillBeDestroyed = !anchor,
                         nextState = "pass dryRun=false to launch",
@@ -306,7 +341,8 @@ namespace JawaBench.BridgeTools
                 {
                     success = true, launched = true, dryRun = false,
                     engineId = engine.ThingID,
-                    originTile = engine.Map.Tile.tileId, targetTile,
+                    originTile = engine.Map.Tile.tileId, originLayer = engine.Map.Tile.LayerDef?.defName,
+                        targetTile, targetLayer = target.LayerDef?.defName,
                     fuelCost = cost, fuelAboard = fuelAboardBefore, distance = dist,
                     originMapWillBeDestroyed = !anchor,
                     nextState = "cutscene -> travel -> landing marker; poll jawa/gravship_status, then jawa/gravship_land",

@@ -8,7 +8,7 @@ creation-path table; save/load round trips), with design invariants checked afte
 is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
     python3 src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py [--fuzz-scale F] [--fuzz-seed N]
-        [--fuzz-only garden|elder|units|oxygen|trample|fireban|ignition]
+        [--fuzz-only garden|elder|units|oxygen|trample|fireban|ignition|descent]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """
