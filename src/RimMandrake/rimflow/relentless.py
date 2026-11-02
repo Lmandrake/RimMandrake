@@ -48,6 +48,12 @@ LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring",
 OPEN = ("queued",) + LEASED + ("held",)
 MAX_WAIT_HOURS = 6     # a worker's word cannot park an item for longer
 HOLDS_A_PLACE = ("running", "checking", "candidate", "stopping", "retiring")    # a run that may be live counts
+# What a run is live in. A candidate waits on its judge, a resource like any other: it is put down and holds no worker
+# place (owner 2026-11-02, RELENTLESS_SLOTS_UNSTICK_BLOCKED_PUT_DOWN: "put down blocked items once they become blocked
+# and go do something else"). Its check takes a place when it starts; its mods stay held, its FAIL comes back to them.
+RUNS_A_PLACE = ("running", "checking", "stopping", "retiring")
+# Parked the moment they wait: their clone goes back at once, its WIP in the bundle (release_parked)
+PUT_DOWN = ("held", "blocked", relentless_game.GAME)
 ENDED = ("done", "retired")
 SHARD = "infrastructure/state/ledger/events/%s.jsonl"
 NOTE_MAX = 400
@@ -60,6 +66,14 @@ POOL_FULL = ("pool full", "pool at")  # make_room's holds: what the staffing rea
 # dirt no worker made on purpose: session dumps and ledger shards the seats' projection rewrites. Bundled, never restored
 POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
 POOL_ORPHAN_IDLE_S = 3600
+# What a usable clone must hold: every launch runs claude_bounded.sh from it. A clone released for room while its item
+# waited, or a checkout cut short, failed BLUEDESERT_FLORA_PLANT_REFUSAL_1's stage with "missing claude_bounded.sh".
+CLONE_PROBE = (".git", "src/RimMandrake/Utils/claude_bounded.sh")
+
+
+def clone_gap(c):
+    """-> the first path a usable clone holds that `c` lacks, or None when it is whole."""
+    return next((p for p in CLONE_PROBE if not os.path.exists(os.path.join(c, p))), None)
 POOL_IGNORED_MAX = 2 * 10**9
 LEDGER_DIR = "infrastructure/state/ledger/events/"
 ITEMS_DIR = "infrastructure/state/items/"
@@ -1119,6 +1133,11 @@ class Effects(relentless_game.GameFx):
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_close(self, item, sha, reason, live=None):
+        # Idempotent: a close that already landed (a retry after a timeout, a crash between the ledger and the store)
+        # writes nothing more. The doubled close lines of 2026-11-02 were not this: they are byte-identical lines that
+        # git's merge=union writes twice on a rebase, and the reader collapses them (model.canonical_order).
+        if self.closed(item):
+            return None
         # the blind PASS on that sha is the check `close` asks for; RUNNER may record it on any seat's item
         if (item, sha) not in self.marked:
             r = self.rimflow("verify", item, "--sha", sha, "--result", "pass", "--level", "L0",
@@ -1164,8 +1183,30 @@ class Effects(relentless_game.GameFx):
         return os.path.join(self.base, "clones", item + (".q%d" % q if q else ""))
 
     def prepare(self, st):
-        """The item's clone (made once, kept across workers) and its fence marker."""
+        """The item's clone (made once, kept across workers) and its fence marker. Verified first: a clone missing what
+        a launch needs is bundled (nothing of it lost), removed and made again."""
         c = st["clone"]
+        gap = clone_gap(c) if os.path.isdir(c) else None
+        if gap:
+            if not os.path.abspath(c).startswith(os.path.join(self.base, "clones") + os.sep):
+                return "clone %s lacks %s and is not the pool's to remake" % (c, gap)
+            bundle = None
+            if os.path.isdir(os.path.join(c, ".git")):
+                try:
+                    bundle = self.bundle_clone(st["item"], c)
+                except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
+                    return "clone lacks %s and its bundle failed: %s" % (gap, str(e)[-200:])
+            if bundle:
+                st["bundle"] = bundle
+                with self.store.lock():
+                    cur = self.store.load(st["item"])
+                    cur["bundle"] = bundle
+                    self.store.save(cur)
+            why = relentless_disk.remove_tree(c)
+            self.store.journal({"at": iso(time.time()), "do": "clone_remade", "clone": os.path.basename(c),
+                                "missing": gap, "bundle": bundle, "remove": why})
+            if why:
+                return "clone lacks %s and would not go: %s" % (gap, why)
         if not os.path.isdir(os.path.join(c, ".git")):
             env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(os.path.dirname(c)), RM_SEAT="clones")
             r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/scratch_clone.py"), "clone",
@@ -1174,6 +1215,9 @@ class Effects(relentless_game.GameFx):
                                stdin=subprocess.DEVNULL)
             if r.returncode:
                 return "clone failed: %s" % (r.stderr or r.stdout)[-300:]
+            gap = clone_gap(c)
+            if gap:
+                return "clone failed: made without %s" % gap
         if st.get("bundle"):      # outside the clone's making: a tick that died between the two still restores
             self.restore_bundle(st["item"], st["bundle"], c)
             with self.store.lock():
@@ -1913,6 +1957,8 @@ def pool_rows(store, fx, r):
             rank = 0
         elif kind == "check":
             rank = 0 if status in ("queued", "held", "blocked", "candidate") else 2
+        elif status == relentless_game.GAME:     # waiting on the game, the bridge or the owner: parked; a stage re-prepares
+            rank = 2 if (st.get("game") or {}).get("phase") in relentless_game.ACTIVE else 1
         else:
             rank = 1 if status in ("queued", "held", "blocked", "candidate") else 2
         rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank})
@@ -1954,7 +2000,9 @@ def release_parked(store, fx, r, now, acts):
     SEAT_MEMORY_STANDARD_FALLBACK_1 sat held on the owner with real WIP until disk.pool_breach fired, because only pool
     pressure ever moved them. WIP travels in the bundle; commits stay, no fresh clone can restore them, and the alarm is right."""
     for row in pool_rows(store, fx, r):
-        if row["rank"] != 1 or fx.clone_busy(row["clone"]) or fx.clone_idle_s(row["clone"]) < r["pool_parked_release_s"]:
+        # put down (held, blocked, waiting on the game): its clone goes back at once, it waits on something else
+        wait_s = 0 if row["kind"] == "work" and row["status"] in PUT_DOWN else r["pool_parked_release_s"]
+        if row["rank"] != 1 or fx.clone_busy(row["clone"]) or fx.clone_idle_s(row["clone"]) < wait_s:
             continue
         wip = fx.clone_wip(row["clone"])
         if not wip["kept"]:
@@ -2013,7 +2061,7 @@ def enrol(store, fx, r, now):
     queued = sum(1 for s in live if in_line(s))
     want = target - len(live)
     if r.get("staffing"):       # the filler: a free place is reason enough, whatever the share says of the backlog
-        want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in HOLDS_A_PLACE) - queued)
+        want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in RUNS_A_PLACE) - queued)
     room = min(want, r["enrol_per_tick"], r["max_queued"] - queued)
     took = []
     plan = getattr(fx, "plan", None) or {}      # a listed item never waits for room: the list holds under 30 (DI3)
@@ -2312,16 +2360,16 @@ def step(store, fx, r, item, now, acts):
         if not settle(store, fx, r, item, "run", c["at"], now, acts):
             return
         # checks get a place, and a waiting candidate runs nothing: counted, two would wait on each other for good
-        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate") + helps_running(store)
+        active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
         hold = admission(store, fx, r, now, active, extra=1)
-        if not hold and r.get("staffing") and clones_this_tick(acts) >= r["staffing"]["launch_per_tick"]:
+        if not hold and r.get("staffing") and clones_this_tick(acts, "check") >= r["staffing"]["launch_per_tick"]:
             hold = "clones per tick"
         hold = hold or ("memory after its last clone" if now < st.get("clone_again_at", 0) else None)
         hold = hold or make_room(store, fx, r, now, acts)
         if hold:
             acts.append({"do": "check_waits", "item": item, "why": hold})
             return
-        acts.append({"do": "clone_try"})
+        acts.append({"do": "clone_try", "by": "check"})
         clean, why = fx.clean_checkout(st, c["sha"])
         if why:
             if POOL_REFUSED not in why:     # a full pool is a wait: the launch path is fine, the engine must not back off
@@ -2550,16 +2598,16 @@ def help_start(store, fx, r, item, now, acts):
             store.save(cur)
         help_over(store, fx, item, "failed", now, acts)
         return
-    active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate") + helps_running(store)
+    active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
     hold = admission(store, fx, r, now, active, extra=1)
-    if not hold and r.get("staffing") and clones_this_tick(acts) >= r["staffing"]["launch_per_tick"]:
+    if not hold and r.get("staffing") and clones_this_tick(acts, "check") >= r["staffing"]["launch_per_tick"]:
         hold = "clones per tick"
     hold = hold or ("memory after its last clone" if now < st.get("clone_again_at", 0) else None)
     hold = hold or make_room(store, fx, r, now, acts)
     if hold:
         acts.append({"do": "help_waits", "item": item, "why": hold})
         return
-    acts.append({"do": "clone_try"})
+    acts.append({"do": "clone_try", "by": "check"})
     sha = fx.head()
     clean, why = fx.help_checkout(st, sha) if sha else (None, "origin/main not read")
     if why:
@@ -2747,9 +2795,11 @@ def spend_holds(store, fx, r, now, acts):
             acts.append({"do": "hold_spend", "item": st["item"]})
 
 
-def clones_this_tick(acts):
-    """A clone blocks the tick for minutes, builders' and checkers' alike, and the tick has a timeout."""
-    return sum(1 for a in acts if a.get("do") == "clone_try")
+def clones_this_tick(acts, by=None):
+    """A clone blocks the tick for minutes, and the tick has a timeout. Builders and checkers draw on separate budgets
+    (`work` and `check`): one shared count let two checks starting in a tick stop every builder in it, so with runs
+    shorter than a tick the belt ran one builder and one check against four places (2026-11-02, 16:36:58Z)."""
+    return sum(1 for a in acts if a.get("do") == "clone_try" and (by is None or a.get("by", "check") == by))
 
 
 def give_back(store, item, why, to="retired"):
@@ -2809,7 +2859,8 @@ def mods_held(store, fx, item):
 def lease(store, fx, r, now, acts):
     """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place."""
     cfg = r.get("staffing") or {}
-    launched = clones_this_tick(acts)
+    launched = clones_this_tick(acts, "work")
+    per_tick = cfg.get("work_launch_per_tick", cfg.get("launch_per_tick")) if cfg else None
     if float(r["share"]) <= 0:      # the off switch: nothing new starts, what runs finishes
         acts.append({"do": "wait", "why": "share 0"})
         return
@@ -2825,7 +2876,8 @@ def lease(store, fx, r, now, acts):
             continue
         if help_pending(st):        # the next brief is the point of the consult; help_step bounds this wait
             continue
-        if cfg and launched >= cfg["launch_per_tick"]:   # prepare() blocks and the tick has a timeout
+        if cfg and launched >= per_tick:   # prepare() blocks and the tick has a timeout; said, so a short belt reads why
+            acts.append({"do": "wait", "why": "work clones per tick"})
             return
         if r.get("one_builder_per_mod") and hasattr(fx, "item_mods"):
             held = mods_held(store, fx, st["item"])
@@ -2834,7 +2886,7 @@ def lease(store, fx, r, now, acts):
                 acts.append({"do": "mod_busy", "item": st["item"], "mod": taken[0], "by": held[taken[0]]})
                 continue
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
-        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE) + helps_running(store)
+        active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
         why = admission(store, fx, r, now, active)
         if not why and not fx.clone_present(st["clone"] or fx.clone_path(st["item"], len(st["quarantined"]))):
             why = make_room(store, fx, r, now, acts, r.get("pool_check_reserve", 0))
@@ -2897,7 +2949,7 @@ def lease(store, fx, r, now, acts):
             st["base"] = st.get("base") or fx.head()
             st["run"] = run_desc(store, r, unit_name("work", item, st["gen"]), now)
             store.save(st)
-        acts.append({"do": "clone_try"})
+        acts.append({"do": "clone_try", "by": "work"})
         why = fx.prepare(st)
         if not why:
             gb = fx.mem_gb()
@@ -2940,9 +2992,25 @@ def reading(store, r, now, acts):
     rec = {"at": iso(now), "share": r["share"], "counts": counts, "spent_today": spent_today(store, now),
            "breaker": br or None, "acts": acts[-20:], "circling": circling.summary(store, r, now),
            "items": [{"item": s["item"], "status": s["status"], "gen": s["gen"], "returns": s["returns"],
-                      "approach": s["approach"], "spent": s["spent"]} for s in states if s["status"] in OPEN]}
+                      "approach": s["approach"], "spent": s["spent"]} for s in states if s["status"] in OPEN],
+           # what runs, against what is put down and on what: none of the latter holds a place
+           "places_live": sum(1 for s in states if s["status"] in RUNS_A_PLACE),
+           "put_down": [{"item": s["item"], "status": s["status"], "on": put_down_on(s)}
+                        for s in states if s["status"] in PUT_DOWN + ("candidate",)]}
     store._write(store.p("reading.json"), json.dumps(rec, indent=1, sort_keys=True))
     return rec
+
+
+def put_down_on(st):
+    """What a put-down item waits for, in words."""
+    if st["status"] == "candidate":
+        return "its check"
+    if st["status"] == "held":
+        return "owner: %s" % ((st.get("hold") or {}).get("why") or "")[:160]
+    if st["status"] == "blocked":
+        b = st.get("block_pending") or {}
+        return "ledger block%s" % (": %s" % (b.get("detail") or "")[:160] if b else "")
+    return ((st.get("put_down") or {}).get("on") or (st.get("game") or {}).get("phase") or "")[:200]
 
 
 NO_ALARM = ("paused", "budget 0", "share 0")
@@ -2990,7 +3058,7 @@ def staffing(store, fx, r, now, acts):
         s = {"stage": 0, "stage_since": now, "full_s": 0, "mem_min": fx.mem_gb(), "oom": fx.oom_kills()}
     states = store.states()
     v, budget, head, room = stage_places(store, fx, r)
-    k = sum(1 for x in states if x["status"] in HOLDS_A_PLACE)
+    k = sum(1 for x in states if x["status"] in RUNS_A_PLACE)
     live = sum(1 for x in states if x["status"] in ("running", "checking"))
     target = worker_cap(fx, r, 0, store)
     order, _ = fx.pool_order(r)

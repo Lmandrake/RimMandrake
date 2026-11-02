@@ -99,6 +99,8 @@
     "max_reject_share": 0.34,
     "burn_max_pct_h": 3.0,
     "launch_per_tick": 2,
+    "_work_launch_per_tick": "builders' clones a tick, apart from launch_per_tick (checks and consults): one shared count let two checks stop every builder, so runs shorter than a tick left 1 of 4 places working (RELENTLESS_SLOTS_UNSTICK_BLOCKED_PUT_DOWN, 2026-11-02)",
+    "work_launch_per_tick": 2,
     "check_backlog_max": 2,
     "alarm_after_min": 30,
     "jam_alarm_s": 300,

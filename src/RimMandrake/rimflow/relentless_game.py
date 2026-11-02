@@ -284,8 +284,22 @@ def _hold(store, fx, item, why, now, acts):
     def f(st):
         st["status"] = "held"
         st["hold"] = {"why": why, "kind": "game", "delivered": False, "at": now}
+        st["put_down"] = {"on": why[:200], "at": now}
     _save(store, item, f)
     acts.append({"do": "game_held", "item": item, "why": why[:200]})
+
+
+FLYER = "flyer:"
+
+
+def _waits(store, fx, item, why, now, acts):
+    """Put down on what it waits for. It holds no place and its clone is parked (relentless.release_parked); a flyer
+    waits on the owner himself, so it is held and the ledger asks him: never picked again until he lifts the hold
+    (owner 2026-11-02: "put down blocked items once they become blocked and go do something else")."""
+    if why.startswith(FLYER):
+        return _hold(store, fx, item, "game phase: %s" % why, now, acts)
+    _save(store, item, lambda s: s.update(put_down={"on": why[:200], "at": now}))
+    acts.append({"do": "game_waits", "item": item, "why": why})
 
 
 def step(store, fx, r, item, now, acts, sup):
@@ -364,18 +378,21 @@ def step(store, fx, r, item, now, acts, sup):
                 return      # a round ran since the last staging and measured nothing: the bridge was busy, try later
             why = _lease_why(store, fx, r, item, sha, led)
             if why:
-                acts.append({"do": "game_waits", "item": item, "why": why})
-                return
+                return _waits(store, fx, item, why, now, acts)
             pid = fx.prove_launch(item)
-            _save(store, item, lambda s: s["game"].update(phase="proving", prove_pid=pid, proved_at=now))
+            _save(store, item, lambda s: (s.pop("put_down", None), s["game"].update(phase="proving", prove_pid=pid,
+                                                                                     proved_at=now)))
             acts.append({"do": "game_prove", "item": item, "pid": pid})
             return
 
     if g["phase"] == "stage":
         why = _lease_why(store, fx, r, item, sha, led)
         if why:
-            acts.append({"do": "game_waits", "item": item, "why": why})
-            return
+            return _waits(store, fx, item, why, now, acts)
+        why = _clone(store, fx, r, st, now, acts, sup)
+        if why:
+            return _waits(store, fx, item, "clone: " + why, now, acts)
+        st = store.load(item)
         took = fx.bridge_take("relentless staging %s: deploy and restart for its live proofs" % item)
         if took:
             acts.append({"do": "game_waits", "item": item, "why": "bridge: %s" % took})
@@ -384,6 +401,7 @@ def step(store, fx, r, item, now, acts, sup):
         desc = sup.run_desc(store, r, unit, now)
 
         def f(s):
+            s.pop("put_down", None)
             s["run"] = desc
             s["game"].update(phase="staging", staged_at=now, taken_at=now, stages=s["game"]["stages"] + 1,
                              ready=None, snag=None)
@@ -392,7 +410,7 @@ def step(store, fx, r, item, now, acts, sup):
             fx.bridge_release()
             return
         st["_proofs_text"] = fx.proofs_at(item, sha)
-        why = fx.launch(st, desc, stage_prompt(st, r, sha), r["pilot_agent"], st["clone"] or fx.books, c["stage_max_s"],
+        why = fx.launch(st, desc, stage_prompt(st, r, sha), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
@@ -418,6 +436,23 @@ def step(store, fx, r, item, now, acts, sup):
             sn = st["game"]["snag"]
             return _back(store, fx, sup, r, item, sn.get("class") or "game_stage", sn.get("detail") or "", now, acts)
         return
+
+
+def _clone(store, fx, r, st, now, acts, sup):
+    """The stage runs in the item's own clone, verified and made again when it was released while the item waited
+    (BLUEDESERT_FLORA_PLANT_REFUSAL_1 launched in a parked-away path: "missing claude_bounded.sh"). Never the books:
+    the books are the supervisor's. -> None, or why it cannot have one now."""
+    item = st["item"]
+    if not st.get("clone"):
+        path = fx.clone_path(item, len(st.get("quarantined") or []))
+        _save(store, item, lambda s: s.update(clone=path))
+        st = store.load(item)
+    if not fx.clone_present(st["clone"]):
+        hold = sup.make_room(store, fx, r, now, acts)
+        if hold:
+            return hold
+        acts.append({"do": "clone_try", "by": "check"})
+    return fx.prepare(st)
 
 
 def _lease_why(store, fx, r, item, sha, led):

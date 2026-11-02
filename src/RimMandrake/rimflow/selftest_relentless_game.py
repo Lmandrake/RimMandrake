@@ -249,6 +249,69 @@ def t_stage_snag_releases():
     x.done()
 
 
+def t_flyer_put_down():
+    """A flyer waits on the owner himself: held, asked on the ledger, its clone back at once (owner 2026-11-02)."""
+    x = rig(1)
+    x.w.title = "the flying lizard"
+    to_game(x, "I0")
+    st = x.st("I0")
+    x.w.pool[st["clone"]] = {"idle": 5, "real": ["a.cs"]}
+    x.tick()
+    x.w.running = False
+    x.tick(), x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "held" and "flyer" in st["hold"]["why"] and st["put_down"]["on"].startswith("game phase: flyer"),
+       "a flyer is put down on the owner, not left waiting: %s %s" % (st["status"], st.get("hold")))
+    ok("I0" in x.w.needs and "take" not in x.w.events, "the ledger asks him; the bridge was never taken")
+    ok(st["clone"] not in x.w.pool and st.get("bundle"), "its clone went back with its WIP bundled")
+    for _ in range(3):
+        x.tick()
+    ok(x.st("I0")["status"] == "held" and not any(l[0] == "I0" for l in x.w.launches[1:] if "STAGING" in l[2]),
+       "and nothing picks it until he lifts the hold")
+    x.done()
+
+
+def t_waits_put_down():
+    """Waiting on the bridge holds no clone: parked, and the record says on what."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.w.pool[x.st("I0")["clone"]] = {"idle": 5}
+    x.w.idle = "bridge: held by FOUNDRY"
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "game" and st["put_down"]["on"] == "bridge: held by FOUNDRY", "the wait is recorded: %s" % st.get("put_down"))
+    ok(st["clone"] not in x.w.pool, "its clone goes back while it waits; the stage makes it again")
+    x.done()
+
+
+def t_stage_remakes_clone():
+    """BLUEDESERT_FLORA_PLANT_REFUSAL_1: the stage launched in a clone released while it waited. It is made again."""
+    x = rig(1)
+    to_game(x, "I0")
+    made = []
+    x.w.prepare = lambda st: made.append(st["clone"]) or None
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    stage = [l for l in x.w.launches if "STAGING" in l[2]]
+    ok(st["game"]["phase"] == "staging" and made == [st["clone"]], "the stage prepares the item's clone first: %s" % made)
+    ok(stage and stage[-1][4] == st["clone"] and stage[-1][4] != x.w.books, "and launches in it, never in the books")
+    x.done()
+    x = rig(1)
+    to_game(x, "I0")
+    x.w.prepare = lambda st: "clone failed: scratch_clone: no room"
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "stage" and "take" not in x.w.events and "clone: clone failed" in st["put_down"]["on"],
+       "a clone that cannot be made is a wait, the bridge untouched: %s" % st.get("put_down"))
+    x.done()
+
+
 def t_one_live_user():
     x = rig(2, share=1.0, max_workers=2)
     to_game(x, "I0")
@@ -289,7 +352,8 @@ def t_round_only_item():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item):
+              t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_stage_remakes_clone):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

@@ -1697,15 +1697,17 @@ def t_staffing_edges():
     r = reading(x)
     ok(r["under"] and r["live"] >= 1 and r["why"] == "day_spend_limit", "one running, a check stuck: still under")
     x.done()
-    # at most launch_per_tick clones a tick, builders and checkers together
+    # builders and checkers each draw on their own clone budget a tick, never more
     x = staffed(n=4, check_backlog_max=9, stages=[4])
     for _ in range(3):
         x.tick()
     finish_all(x)
     for _ in range(2):
-        before = len(x.w.launches)
-        x.tick()
-        ok(len(x.w.launches) - before <= 2, "clones per tick are shared: at most launch_per_tick in ONE tick")
+        acts = x.tick()
+        work = R.clones_this_tick(acts, "work")
+        check = R.clones_this_tick(acts, "check")
+        ok(work <= x.r["staffing"]["work_launch_per_tick"] and check <= x.r["staffing"]["launch_per_tick"],
+           "clones per tick: at most work_launch_per_tick builders and launch_per_tick checks (%d, %d)" % (work, check))
     x.done()
     # a clone that leaves too little memory steps aside for the next candidate
     x = staffed(n=2, check_backlog_max=9, launch_per_tick=1)
@@ -1840,6 +1842,91 @@ def jammed(n=3):
     return x
 
 
+def t_put_down_frees_places():
+    """RELENTLESS_SLOTS_UNSTICK_BLOCKED_PUT_DOWN (owner 2026-11-02): nothing waiting holds a place."""
+    # 16:36:58Z: two checks started, the shared clone count stopped every builder; 1 of 4 places ran with 8 ready
+    x = staffed(n=8, check_backlog_max=9, stages=[4])
+    x.tick()
+    first = [st["item"] for st in x.s.states() if st["status"] == "running"]
+    ok(len(first) == 2, "planted: two builders on the first tick")
+    finish_all(x)
+    acts = x.tick()
+    live = sum(1 for st in x.s.states() if st["status"] in ("running", "checking"))
+    ok(R.clones_this_tick(acts, "check") == 2 and R.clones_this_tick(acts, "work") == 2,
+       "two checks starting do not stop the builders of the same tick: %s" % [a.get("do") for a in acts])
+    ok(live == 4, "running + checking reach the cap of 4 with ready items, got %d" % live)
+    x.done()
+    # a candidate waiting on its judge holds no place: four builders run beside two waiting checks
+    x = staffed(n=8, check_backlog_max=9, stages=[4])
+    x.tick(), x.tick()
+    finish_all(x)
+    x.w.pool_max = 0        # no clone for a check: both wait as candidates
+    x.r["staffing"]["launch_per_tick"] = 0
+    x.tick(), x.tick()
+    states = x.s.states()
+    cand = sum(1 for st in states if st["status"] == "candidate")
+    run = sum(1 for st in states if st["status"] == "running")
+    ok(cand >= 2 and run == 4, "waiting checks are put down: %d candidates, %d builders running" % (cand, run))
+    rd = json.load(open(x.s.p("reading.json")))
+    ok(rd["places_live"] == 4 and {p["on"] for p in rd["put_down"]} == {"its check"} and len(rd["put_down"]) == cand,
+       "the reading says what runs and what is put down on what: %s" % rd["put_down"])
+    x.done()
+    # a game item waiting parks its clone: released at once, its WIP bundled
+    x = staffed(n=1)
+    parked(x, "G0", "game", "/c/G0", game={"phase": "prove", "sha": "s"})
+    parked(x, "G1", "game", "/c/G1", game={"phase": "staging", "sha": "s"})
+    x.w.pool["/c/G0"] = {"idle": 5, "real": ["a.cs"]}
+    x.w.pool["/c/G1"] = {"idle": 5}
+    R.release_parked(x.s, x.w, x.r, x.now, [])
+    ok(sorted(x.w.pool) == ["/c/G1"], "a waiting game item's clone goes; a staging one's stays: %s" % sorted(x.w.pool))
+    ok(x.st("G0").get("bundle") == "/bundle//c/G0", "and its WIP goes with a bundle")
+    x.done()
+
+
+def t_prepare_remakes_clone():
+    """BLUEDESERT_FLORA_PLANT_REFUSAL_1: a clone missing what a launch needs is bundled, removed and made again."""
+    d = tempfile.mkdtemp(prefix="rl-prep-")
+    try:
+        books = os.path.join(d, "books")
+        os.makedirs(os.path.join(books, "src/RimMandrake/Utils"))
+        with open(os.path.join(books, "src/RimMandrake/Utils/scratch_clone.py"), "w") as f:    # makes a whole clone
+            f.write("import os, sys\nc = os.path.join(os.environ['RM_SCRATCH_ROOT'], 'clones', sys.argv[sys.argv.index('--name') + 1])\n"
+                    "os.makedirs(os.path.join(c, '.git'))\nos.makedirs(os.path.join(c, 'src/RimMandrake/Utils'))\n"
+                    "open(os.path.join(c, 'src/RimMandrake/Utils/claude_bounded.sh'), 'w').close()\n")
+        fx = object.__new__(R.Effects)
+        fx.base, fx.books, fx.store = d, books, R.Store(os.path.join(d, "store"))
+        bundled = []
+        fx.bundle_clone = lambda item, c: bundled.append(c) or "/b/" + item
+        fx.restore_bundle = lambda item, b, c: bundled.append(("restore", b))
+        c = os.path.join(d, "clones", "I0.0")
+        os.makedirs(os.path.join(c, ".git"))        # a .git and nothing else: the checkout was cut short
+        st = R.new_state("I0", 0, "t")
+        st["clone"] = c
+        fx.store.save(st)
+        why = fx.prepare(dict(st))
+        ok(why is None and R.clone_gap(c) is None, "an incomplete clone is made again whole: %s" % why)
+        ok(bundled[0] == c and bundled[1] == ("restore", "/b/I0"), "its WIP was bundled first and restored: %s" % bundled)
+        ok(R.clone_gap(os.path.join(d, "clones", "gone")) == ".git", "a missing clone has a gap")
+        st["clone"] = os.path.join(d, "elsewhere")
+        os.makedirs(os.path.join(st["clone"], ".git"))
+        ok("not the pool's" in fx.prepare(dict(st)) and os.path.isdir(st["clone"]), "a path outside the pool is never removed")
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def t_close_idempotent():
+    """A close that already landed writes nothing more (the 2026-11-02 doubled closes were union-merge copies)."""
+    fx = object.__new__(R.Effects)
+    calls = []
+    fx.marked = set()
+    fx.rimflow = lambda *a, **k: calls.append(a) or subprocess.CompletedProcess(a, 0, "", "")
+    fx.closed = lambda item: True
+    ok(fx.ledger_close("I0", "abc", "blind PASS") is None and not calls, "an item already done: no verify, no close")
+    fx.closed = lambda item: False
+    ok(fx.ledger_close("I0", "abc", "blind PASS") is None and [c[0] for c in calls] == ["verify", "close"],
+       "an open item: verify then close, once: %s" % [c[0] for c in calls])
+
+
 def t_pool_jam():
     x = jammed()
     for i, status in enumerate(["retired", "retired", "held", "held", "held", "held", "held"]):
@@ -1852,7 +1939,7 @@ def t_pool_jam():
     ok("/c/P0" not in x.w.pool and "/c/P1" not in x.w.pool, "a retired item's clone is released on the next tick")
     ok(not R.load_breaker(x.s), "a full pool charges the breaker nothing")
     ok(r["checks"]["running"] >= 1, "the planted jam clears: a check really starts")
-    ok(r["running"] == r["live"] and r["places"] == 3, "running means live, places what is held")
+    ok(r["running"] == r["live"] and r["places"] == r["live"], "running means live; a waiting check is put down, no place")
     x.done()
 
     # every clone live: nothing may be released, the check waits, and the cause reaches the Conductor
@@ -1864,7 +1951,7 @@ def t_pool_jam():
     ok(not R.load_breaker(x.s), "a pool hold is a wait, not a launch failure")
     ok(r["under"] and str(r["why"]).startswith("pool full: 10 clones") and "L3" in r["why"],
        "the reading names the pool and who holds it, got %s" % r["why"])
-    ok(r["running"] == 0 and r["places"] == 3, "three waiting checks: 0 running, 3 places")
+    ok(r["running"] == 0 and r["places"] == 0, "three waiting checks: 0 running, put down, 0 places")
     ok(not x.w.jams, "not alarmed on the first tick")
     x.w.jam_fail = "disk gone"
     x.tick(300)
@@ -1937,14 +2024,17 @@ def t_pool_jam():
     x = staffed(n=1)
     for name, status, wip in (("P0", "held", {"real": ["a.cs"]}), ("P1", "held", {"idle": 60, "real": ["a.cs"]}),
                               ("P2", "held", {"kept": True, "real": ["a.cs"]}), ("P3", "held", {"busy": True}),
-                              ("P4", "queued", {}), ("P5", "held", {})):
+                              ("P4", "queued", {}), ("P5", "held", {}), ("P6", "queued", {"idle": 60}),
+                              ("P7", "blocked", {"idle": 5, "real": ["b.cs"]})):
         parked(x, name, status, "/c/" + name)
         x.w.pool["/c/" + name] = wip
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
     import scratch_clone
     ok(x.r["pool_parked_release_s"] < scratch_clone.POOL_IDLE_S, "released before the alarm's idle hour, not after it")
     R.release_parked(x.s, x.w, x.r, x.now, [])
-    ok(sorted(x.w.pool) == ["/c/P1", "/c/P2", "/c/P3"], "idle parked clones go; fresh, commits and busy stay: %s" % sorted(x.w.pool))
+    ok(sorted(x.w.pool) == ["/c/P2", "/c/P3", "/c/P6"],
+       "put down (held, blocked): its clone goes at once; a fresh queued one, commits and busy stay: %s" % sorted(x.w.pool))
+    ok(x.st("P7").get("bundle") == "/bundle//c/P7", "a blocked item's WIP goes with a bundle")
     ok(x.st("P0").get("bundle") == "/bundle//c/P0", "WIP goes with a bundle the next clone restores")
     ok(x.st("P5").get("bundle") is None and x.st("P4").get("bundle") is None, "nothing to carry, nothing recorded")
     x.done()
@@ -3036,7 +3126,7 @@ def t_review_wrong_verdicts_two():
 
 
 def main():
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
