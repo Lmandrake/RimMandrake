@@ -27,6 +27,8 @@ def parse_claims(items):
     for raw in items:
         key, _, token = raw.partition("=")
         key, token = key.strip(), token.strip()
+        if "=" in raw and not token:
+            raise ValueError("an empty TOKEN would weaken the claim to existence-only; drop the '=': %r" % raw)
         if key.count("/") != 1 or not all(key.split("/")):
             raise ValueError("not DefType/defName[=TOKEN]: %r" % raw)
         out.append((key, token or None))
@@ -45,20 +47,41 @@ def values(node):
         yield str(node)
 
 
+def _no_duplicate_keys(pairs):
+    """json keeps the LAST of a repeated key, so found:false,found:true would read as true: that is no answer."""
+    keys = [k for k, _ in pairs]
+    if len(set(keys)) != len(keys):
+        raise ValueError("a JSON object repeats a key")
+    return dict(pairs)
+
+
+def _canon(d):
+    """A record as the claim reads it: JSON text, so True and 1 stay different (python's == merges them)."""
+    return json.dumps([d.get("found"), d.get("fields")], sort_keys=True, default=str)
+
+
 def judge(claims, reply):
     """-> (exit code, lines). `reply` is get_defs' JSON object."""
     if not isinstance(reply, dict) or not isinstance(reply.get("defs"), list):
         return UNMEASURED, ["UNMEASURED: the reply is not a get_defs answer"]
-    by_key = {}
+    by_key, bad = {}, set()
     for d in reply["defs"]:
-        if isinstance(d, dict) and d.get("requested"):
-            by_key[d["requested"]] = d
+        if not isinstance(d, dict) or not isinstance(d.get("requested"), str) or not d["requested"]:
+            return UNMEASURED, ["UNMEASURED: a def record without a string `requested`: %r" % (d,)]
+        if d["requested"] in by_key and _canon(by_key[d["requested"]]) != _canon(d):
+            bad.add(d["requested"])          # two records that disagree: neither is the answer
+        by_key[d["requested"]] = d
     seen, lines = set(), []
     for key, token in claims:
         d = by_key.get(key)
         if d is None:
             seen.add(UNMEASURED)
             lines.append("UNMEASURED %s: the reply does not mention it" % key)
+            continue
+        if key in bad or not isinstance(d.get("found"), bool) or (
+                token is not None and d.get("found") and not isinstance(d.get("fields"), (dict, list))):
+            seen.add(UNMEASURED)
+            lines.append("UNMEASURED %s: the record is malformed or contradicts another (found=%r)" % (key, d.get("found")))
             continue
         if not d.get("found"):
             seen.add(FAIL)
@@ -88,13 +111,13 @@ def call_get_defs(keys, timeout):
         r = subprocess.run(["python.exe", path, "--timeout", str(timeout), "--call", "jawa/get_defs",
                             "--json", json.dumps({"defs": defs_param(keys)})],
                            capture_output=True, text=True, timeout=timeout + 30, stdin=subprocess.DEVNULL)
-    except (OSError, subprocess.TimeoutExpired) as e:
+    except (OSError, ValueError, subprocess.TimeoutExpired) as e:      # ValueError: UnicodeDecodeError on the reply bytes
         return None, "the bridge call did not finish: %s" % str(e)[:200]
     if r.returncode:
         return None, "bridge call exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-300:])
     try:
-        return json.loads(r.stdout), None
-    except ValueError:
+        return json.loads(r.stdout, object_pairs_hook=_no_duplicate_keys), None
+    except (ValueError, RecursionError):
         return None, "the bridge answered something that is not JSON: %s" % r.stdout[:200]
 
 
@@ -112,11 +135,26 @@ def main(argv=None):
     if reply is None:
         print("UNMEASURED: %s" % why)
         return UNMEASURED
-    code, lines = judge(claims, reply)
+    try:
+        code, lines = judge(claims, reply)
+    except Exception as e:      # an uncaught crash would exit 1, which the runner records as a FAIL
+        print("UNMEASURED: the reply could not be judged: %s: %s" % (type(e).__name__, str(e)[:200]))
+        return UNMEASURED
     print("\n".join(lines))
     print({PASS: "VERDICT PASS", FAIL: "VERDICT FAIL", UNMEASURED: "VERDICT UNMEASURED"}[code])
     return code
 
 
+def safe_main(argv=None):
+    """main(), where nothing may escape: an uncaught exception exits 1 and the runner would record it as a FAIL."""
+    try:
+        return main(argv)
+    except SystemExit:
+        raise
+    except BaseException as e:
+        sys.stdout.write("UNMEASURED: " + ascii("%s: %s" % (type(e).__name__, str(e)[:200])) + "\n")
+        return UNMEASURED
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(safe_main())

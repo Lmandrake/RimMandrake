@@ -58,8 +58,8 @@ def item(**kw):
 
 class FakeFx(object):
     def __init__(self, it=None, touched=TOUCHED, plan=(0, PLAN), mtime=1000.0, started=2000.0, take_rc=0, proof=0,
-                 verify_rc=0, proof_raises=False, later=()):
-        self.later = list(later)
+                 verify_rc=0, proof_raises=False, later=(), deleted=(), release_rc=0, start_after_take=None):
+        self.later, self.gone, self.release_rc, self.start_after_take = list(later), list(deleted), release_rc, start_after_take
         self.it, self.t, self.plan, self.mt, self.started = (item() if it is None else it), touched, plan, mtime, started
         self.take_rc, self.proof, self.verify_rc, self.proof_raises = take_rc, proof, verify_rc, proof_raises
         self.calls = []
@@ -70,6 +70,9 @@ class FakeFx(object):
     def touched(self, sha):
         self.calls.append(("touched", sha))
         return list(self.t)
+
+    def deleted(self, sha):
+        return list(self.gone)
 
     def changed_since(self, sha, paths):
         self.calls.append(("changed", tuple(paths)))
@@ -86,6 +89,8 @@ class FakeFx(object):
         return self.mt
 
     def game_started(self):
+        if self.start_after_take is not None and any(c[:3] == ("rimflow", "bridge", "take") for c in self.calls):
+            return self.start_after_take
         return self.started
 
     def rimflow(self, *args, timeout=120):
@@ -93,6 +98,8 @@ class FakeFx(object):
         rc = 0
         if args[:2] == ("bridge", "take"):
             rc = self.take_rc
+        elif args[:2] == ("bridge", "release"):
+            rc = self.release_rc
         elif args[0] == "verify":
             rc = self.verify_rc
         return types.SimpleNamespace(returncode=rc, stdout="", stderr="busy: FOUNDRY holds it" if rc else "")
@@ -147,12 +154,169 @@ def t_unmeasured_is_a_note_never_a_verify():
 
 def t_release_survives_a_crashing_proof():
     fx = FakeFx(proof_raises=True)
+    row = go(fx)           # go() also asserts exactly one audit row was written
+    check("crash is an UNMEASURED row, not an escape", row["outcome"] == "UNMEASURED" and "could not run" in row["why"], row)
+    check("released after crash, no verify", "release" in fx.verbs() and "verify" not in fx.verbs(), fx.verbs())
+
+
+def t_review_round_one():
+    # GPT round 1 (2026-11-01): each row red under the mutant that removes its guard
+    fx = FakeFx(deleted=["src/RimMandrake/TheRot/Defs/Fauna/Old.xml"])
+    row = go(fx)
+    check("deleted shipping file is unmeasured", row["outcome"] == "UNMEASURED" and "deleted" in row["why"]
+          and not any(v in ("plan", "take", "verify") for v in fx.verbs()), (row, fx.verbs()))
+    check("deleted tooling file is fine", go(FakeFx(deleted=["src/RimMandrake/TheRot/validation.py"]))["outcome"] == "PASS")
+    fx = FakeFx(release_rc=1)
+    row = go(fx)
+    check("failed release writes no verdict", row["outcome"] == "UNMEASURED" and "verify" not in fx.verbs(), (row, fx.verbs()))
+    fx = FakeFx(start_after_take=3000.0)
+    row = go(fx)
+    check("game changed while taking the bridge", row["outcome"] == "UNMEASURED" and "verify" not in fx.verbs()
+          and "proof" not in fx.verbs(), (row, fx.verbs()))
+    for dep in ("--compose biomes --apply", "--apply", "--compose x --ap''ply", "--pull"):
+        fx = FakeFx()
+        L_row = L.run(fx, tempfile.mkdtemp(prefix="rl_live_"), "ROT_X", "A2", "python3 live_def_check.py", dep, {}, now=1_800_000_000)
+        check("deploy %r refused" % dep, L_row["outcome"] == "REFUSED" and "plan" not in fx.verbs(), (L_row, fx.verbs()))
+    lr = L.live_rules({})
+    for proof in ("python3 modlist_''swap.py --to x", "python3 deploy_custom_mods.py --compose b --ap\\ply",
+                  'python3 deploy_custom_mods.py --"apply"'):
+        check("quoted evasion refused %r" % proof, L.refused_proof(lr, "t", "c", proof) is not None, proof)
+    # a drift in an XML of the same mod the commit did not touch
+    plan = PLAN.replace("SWBestiary       mandrake.rsw.swbestiary    98 file(s) HELD\n",
+                        "SWBestiary       mandrake.rsw.swbestiary    98 file(s) HELD\n    ~  Defs/Other.xml\n")
+    check("untouched xml drift in a shipped mod stops", L.deploy_gap([("SWBestiary", "Defs/A.xml")], 0, plan) is not None)
+    check("untouched png drift does not", L.deploy_gap([("SWBestiary", "Defs/A.xml")], 0, PLAN) is None)
+    # a timed-out proof's children die with it
+    d = tempfile.mkdtemp(prefix="rl_live_")
+    pidf = os.path.join(d, "pid")
+    code = L.Fx().run_proof("sleep 60 & echo $! > %s; wait" % pidf, os.path.join(d, "log"), 1)
+    pid = int(open(pidf).read())
+    import time as _t
+    _t.sleep(0.3)
+    alive = os.path.exists("/proc/%d" % pid) and open("/proc/%d/stat" % pid).read().split()[2] != "Z"
+    check("timeout kills the whole group", code is None and not alive, (code, alive))
+    # two runs in the same second keep both logs
+    r1 = go(FakeFx(proof=1))
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    logs = set()
+    class Writes(FakeFx):
+        def run_proof(self, proof, log, timeout):
+            open(log, "w").write("x")
+            return 0
+    for _ in range(2):
+        logs.add(L.run(Writes(), root, "ROT_X", "A2", "python3 live_def_check.py", "", {}, now=1_800_000_000)["log"])
+    check("same-second logs are distinct", len(logs) == 2 and all(os.path.exists(x) for x in logs), logs)
+
+
+def t_review_round_two():
+    import subprocess
+
+    def git(d, *a):
+        return subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", *a], cwd=d, capture_output=True,
+                              text=True, check=True).stdout.strip()
+    d = tempfile.mkdtemp(prefix="rl_git_")
+    git(d, "init", "-q", "-b", "main")
+    mod = os.path.join(d, "src/RimMandrake/TheRot/Defs")
+    os.makedirs(mod)
+    open(os.path.join(d, "README"), "w").write("a")
+    git(d, "add", "."); git(d, "commit", "-qm", "root")
+    git(d, "checkout", "-qb", "side")
+    open(os.path.join(mod, "\u00c9.xml"), "w").write("<Defs/>")
+    git(d, "add", "."); git(d, "commit", "-qm", "adds a non-ascii def")
+    built = git(d, "rev-parse", "HEAD")
+    fx = L.Fx(books=d)
+    check("non-ascii path is the real path", fx.touched(built) == ["src/RimMandrake/TheRot/Defs/\u00c9.xml"], fx.touched(built))
+    os.remove(os.path.join(mod, "\u00c9.xml"))
+    git(d, "add", "-A"); git(d, "commit", "-qm", "later deletes it")
+    check("a path deleted LATER still lists and shows as changed",
+          fx.touched(built) == ["src/RimMandrake/TheRot/Defs/\u00c9.xml"]
+          and [p for p, _ in fx.changed_since(built, fx.touched(built))] == fx.touched(built), fx.changed_since(built, fx.touched(built)))
+    git(d, "checkout", "-q", "main")
+    open(os.path.join(d, "README"), "w").write("b")
+    git(d, "add", "."); git(d, "commit", "-qm", "readme")
+    git(d, "merge", "-q", "--no-ff", "-m", "merge", "side")
     try:
-        go(fx)
-        check("crash propagates", False)
-    except OSError:
-        pass
-    check("released after crash", fx.verbs()[-1] == "release", fx.verbs())
+        fx.touched(git(d, "rev-parse", "HEAD"))
+        check("merge commit refused", False)
+    except ValueError as e:
+        check("merge commit refused", "merge" in str(e), str(e))
+    lr = L.live_rules({})
+    for proof in ("python3 deploy_custom_mods.py --ap$()ply", "python3 modlist_$()swap.py", "x `echo y`", "eval 'a'",
+                  "python3 deploy_custom_mods.py \\\n --apply"):
+        check("run-time-built proof refused %r" % proof, L.refused_proof(lr, "t", "c", proof) is not None, proof)
+
+    class ReleaseBoom(FakeFx):
+        def rimflow(self, *args, timeout=120):
+            if args[:2] == ("bridge", "release"):
+                raise OSError("release would not run")
+            return FakeFx.rimflow(self, *args, timeout=timeout)
+    fx = ReleaseBoom()
+    row = go(fx)
+    check("release exception is an UNMEASURED row", row["outcome"] == "UNMEASURED" and "verify" not in fx.verbs(), row)
+    real = C.subprocess.run
+    C.subprocess.run = lambda *x, **k: types.SimpleNamespace(returncode=0, stderr="", stdout='{"defs":' + "[" * 300000 + "0" + "]" * 300000 + "}")
+    try:
+        got = C.call_get_defs(["ThingDef/X"], 5)
+    finally:
+        C.subprocess.run = real
+    check("a reply too deep to decode is no reply, not a crash", got[0] is None, got)
+    one = [("ThingDef/X", "1")]
+    a = {"requested": "ThingDef/X", "found": True, "fields": {"v": True}}
+    b = {"requested": "ThingDef/X", "found": True, "fields": {"v": 1}}
+    check("True vs 1 duplicates are UNMEASURED both orders", C.judge(one, {"defs": [a, b]})[0] == C.UNMEASURED
+          and C.judge(one, {"defs": [b, a]})[0] == C.UNMEASURED)
+
+
+def t_review_round_three():
+    lr = L.live_rules({})
+    for proof in ('arg=--ap; python3 deploy_custom_mods.py --compose b "$arg"ply', "python3 deploy_custom_mods.py --app{ly,}"):
+        check("expansion refused %r" % proof, L.refused_proof(lr, "t", "c", proof) is not None, proof)
+    class Swap(FakeFx):                     # the owner redeploys and restarts the game DURING the proof
+        def run_proof(self, proof, log, timeout):
+            self.mt, self.started = 2500.0, 3000.0
+            return 0
+    for cls in (Swap,):
+        fx = cls()
+        row = go(fx)
+        check("game replaced mid-proof is UNMEASURED", row["outcome"] == "UNMEASURED" and "verify" not in fx.verbs()
+              and "while the proof ran" in row["why"], (row, fx.verbs()))
+    fx = FakeFx(touched=["src/RimMandrake/TheRot/Defs/A\nB.xml"], started=None)
+    row = go(fx)
+    check("newline in a shipping path is still a game file", row["outcome"] == "UNMEASURED", row)
+    d = tempfile.mkdtemp(prefix="rl_glob_")
+    os.makedirs(os.path.join(d, "Bundle/Biomes/TheRot/Defs"))
+    open(os.path.join(d, "Bundle/Biomes/TheRot/Defs/A[1].xml"), "w").write("x")
+    check("bracket filename is found", len(L.deployed_paths(d, "TheRot", "Defs/A[1].xml")) == 1)
+    e = tempfile.mkdtemp(prefix="rl_pg_")
+    pidf = os.path.join(e, "pid")
+    code = L.Fx().run_proof("sleep 60 & echo $! > %s" % pidf, os.path.join(e, "log"), 20)
+    pid = int(open(pidf).read())
+    import time as _t
+    _t.sleep(0.3)
+    alive = os.path.exists("/proc/%d" % pid) and open("/proc/%d/stat" % pid).read().split()[2] != "Z"
+    check("a proof that exits leaves no child behind", code == 0 and not alive, (code, alive))
+    real = C.subprocess.run
+    C.subprocess.run = lambda *x, **k: types.SimpleNamespace(returncode=0, stderr="", stdout='{"defs":[{"requested":"ThingDef/X",'
+                                                             '"found":false,"found":true,"fields":{}}]}')
+    try:
+        got = C.call_get_defs(["ThingDef/X"], 5)
+    finally:
+        C.subprocess.run = real
+    check("repeated JSON key is no reply", got[0] is None, got)
+    def boom(*x, **k):
+        raise UnicodeDecodeError("utf-8", b"\xff", 0, 1, "invalid")
+    C.subprocess.run = boom
+    try:
+        got = C.call_get_defs(["ThingDef/X"], 5)
+    finally:
+        C.subprocess.run = real
+    check("undecodable reply bytes are no reply", got[0] is None, got)
+    real_main = C.main
+    C.main = lambda argv=None: (_ for _ in ()).throw(UnicodeEncodeError("utf-8", "\ud800", 0, 1, "surrogates"))
+    try:
+        check("a crash in main exits UNMEASURED, never 1", C.safe_main([]) == C.UNMEASURED)
+    finally:
+        C.main = real_main
 
 
 def t_refusals_never_touch_the_bridge():
@@ -280,6 +444,25 @@ def t_def_check_judge():
     check("FAIL outranks UNMEASURED", C.judge(claims, gone)[0] == C.FAIL, C.judge(claims, gone))
     check("silent def is UNMEASURED", C.judge(claims, {"defs": [ok["defs"][0]]})[0] == C.UNMEASURED)
     check("not an answer", C.judge(claims, {"error": "x"})[0] == C.UNMEASURED)
+    one = [("ThingDef/X", "T")]
+    for name, rep_ in (("no found", {"requested": "ThingDef/X", "fields": {"a": "T"}}),
+                       ("string found", {"requested": "ThingDef/X", "found": "false", "fields": {}}),
+                       ("found, no fields", {"requested": "ThingDef/X", "found": True}),
+                       ("list requested", {"requested": ["ThingDef/X"], "found": True, "fields": {}}),
+                       ("non-dict record", "ThingDef/X")):
+        try:
+            got = C.judge(one, {"defs": [rep_]})[0]
+        except Exception as e:
+            got = "crash %r" % e
+        check("malformed record %s is UNMEASURED" % name, got == C.UNMEASURED, got)
+    two = {"defs": [{"requested": "ThingDef/X", "found": True, "fields": {"a": "T"}},
+                    {"requested": "ThingDef/X", "found": False}]}
+    check("contradicting duplicates are UNMEASURED", C.judge(one, two)[0] == C.UNMEASURED, C.judge(one, two))
+    try:
+        C.parse_claims(["ThingDef/X=", "ThingDef/Y= "])
+        check("empty token refused", False)
+    except ValueError:
+        pass
     for bad in ("RM_Chittik", "ThingDef/", "/RM_Chittik=x", "A/B/C"):
         try:
             C.parse_claims([bad])
@@ -290,7 +473,7 @@ def t_def_check_judge():
 
 def main():
     for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_unmeasured_is_a_note_never_a_verify,
-              t_release_survives_a_crashing_proof, t_refusals_never_touch_the_bridge,
+              t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge):
         try:
             t()

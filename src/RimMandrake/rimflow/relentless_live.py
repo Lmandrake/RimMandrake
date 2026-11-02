@@ -24,11 +24,13 @@ Proofs here are the item's own read of the game. Nothing in this file changes th
 swap the mod list is refused (rules live.forbid_re): the running game is the owner's, and a load is another tier.
 """
 import argparse
+import calendar
 import glob
 import json
 import os
 import re
 import shlex
+import signal
 import subprocess
 import sys
 import time
@@ -47,7 +49,7 @@ DEFAULTS = {
     "proof_max_s": 600,
     "plan_max_s": 500,
 }
-SRC_MOD = re.compile(r"^src/(Rim[A-Za-z]+)/([^/]+)/(.+)$")     # src/<tier>/<Mod>/<path in the mod>
+SRC_MOD = re.compile(r"^src/(Rim[A-Za-z]+)/([^/]+)/(.+)$", re.S)     # src/<tier>/<Mod>/<path in the mod>
 DRIFT = re.compile(r"^\s{2,6}([~+\-H])\s+(\S.*?)(?:\s{2,}\(.*\))?\s*$")
 SECTION = re.compile(r"^(\S+)\s+(mandrake\.\S+)(.*)$")      # deploy_custom_mods prints one per mod, drift or not
 COMPOSED = re.compile(r"^\s*compose\s+(\S+)\s+(mandrake\.\S+)\s.*->\s*(\S+)\s*$")
@@ -115,10 +117,20 @@ def refused_proof(lr, title, text, proof):
         m = re.search(lr["flyer_re"], s or "", re.I)
         if m:
             return "flyer: the %s names %r; a flyer's flight is never live-tested (standing ruling)" % (what, m.group(0))
-    m = re.search(lr["forbid_re"], proof or "")
+    m = re.search(r"\$|`|\\\n|\beval\b|\{[^}]*,[^}]*\}", proof or "")     # expansion: bash builds the command at run time
+    if m:
+        return "the proof text builds its command at run time (%r): a gate cannot read what bash will run" % m.group(0)
+    m = re.search(lr["forbid_re"], re.sub(r"[\'\"\\]", "", proof or ""))     # bash drops quotes: ap''ply is --apply
     if m:
         return "the proof would change the running game (%r): a load or a mutation is not this tier" % m.group(0)
     return None
+
+
+def refused_deploy(deploy):
+    """-> why the --deploy arguments may not run before the bridge is held, or None. They are a PLAN: anything that writes
+    the game folder is another tier."""
+    m = re.search(r"(^|\s)(--apply|--pull|--yes\S*|--force\S*)(\s|=|$)", re.sub(r"[\'\"\\]", "", deploy or ""))
+    return "--deploy %r would write the game folder (%s): the plan only reads" % (deploy, m.group(2)) if m else None
 
 
 def game_files(paths, shippable):
@@ -173,13 +185,19 @@ def deploy_gap(files, plan_rc, plan_text):
             if (section == mod and entry == rel) or entry.endswith("/%s/%s" % (mod, rel)) or entry == "%s/%s" % (mod, rel):
                 return "%s/%s is %s in the game folder (%s): the build is not what the game holds" % (
                     mod, rel, "held" if flag == "H" else "out of date", section)
+    for mod in sorted({m for m, _ in files}):      # a file this commit did not touch, in a mod it ships, may be the one it needs
+        for section, flag, entry in drift:
+            if entry.lower().endswith((".xml", ".dll")) and (section == mod or entry.startswith(mod + "/")
+                                                              or ("/%s/" % mod) in entry):
+                return "%s has %s drift in the game folder (%s %s): the build is not what the game holds" % (
+                    mod, "held" if flag == "H" else "out-of-date", section, entry)
     return None
 
 
 def deployed_paths(mods_dir, mod, rel):
     """Where a mod file sits in the game folder: Mods/<Mod>/<rel>, or inside a composed mod, Mods/*/*/<Mod>/<rel>."""
     return [p for p in [os.path.join(mods_dir, mod, rel)] + glob.glob(os.path.join(glob.escape(mods_dir), "*", "*",
-                                                                                     glob.escape(mod), rel))
+                                                                                     glob.escape(mod), glob.escape(rel)))
             if os.path.isfile(p)]
 
 
@@ -210,20 +228,36 @@ class Fx(object):
         return ""
 
     def touched(self, sha):
-        r = subprocess.run(["git", "show", "--name-only", "--format=", sha], cwd=self.books, capture_output=True,
-                           text=True, timeout=60, stdin=subprocess.DEVNULL)
+        """Every path the built commit touched, including ones HEAD no longer has: changed_since sees those as changed."""
+        return self._paths([], sha)
+
+    def deleted(self, sha):
+        """-> the paths the built commit DELETED: a stale game copy of one is still deployed and nothing else notices."""
+        return self._paths(["--diff-filter=D"], sha)
+
+    def _paths(self, extra, sha):
+        """NUL-delimited, so a non-ASCII name is the real name and not git's quoted spelling. A merge is refused: its
+        combined diff leaves out what only one parent changed."""
+        r = subprocess.run(["git", "rev-list", "--parents", "-n", "1", sha], cwd=self.books, capture_output=True, text=True,
+                           timeout=60, stdin=subprocess.DEVNULL)
+        if r.returncode or not r.stdout.strip():
+            raise ValueError("git rev-list %s: %s" % (sha, r.stderr[-200:]))
+        if len(r.stdout.split()) > 2:
+            raise ValueError("%s is a merge commit: its game files cannot be listed" % sha)
+        r = subprocess.run(["git", "diff-tree", "-z", "--root", "--no-commit-id", "--name-only", "-r", *extra, sha],
+                           cwd=self.books, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         if r.returncode:
-            raise ValueError("git show %s: %s" % (sha, r.stderr[-200:]))
-        return [p for p in r.stdout.splitlines() if p.strip() and os.path.exists(os.path.join(self.books, p))]
+            raise ValueError("git diff-tree %s: %s" % (sha, r.stderr[-200:]))
+        return [p for p in r.stdout.split("\0") if p.strip()]
 
     def changed_since(self, sha, paths):
         """-> [(path, newest commit touching it after sha)] for each path whose bytes differ from sha's."""
-        r = subprocess.run(["git", "diff", "--name-only", sha, "HEAD", "--", *paths], cwd=self.books,
+        r = subprocess.run(["git", "diff", "-z", "--name-only", sha, "HEAD", "--", *paths], cwd=self.books,
                            capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         if r.returncode:
             raise ValueError("git diff %s: %s" % (sha, r.stderr[-200:]))
         out = []
-        for p in (x for x in r.stdout.splitlines() if x.strip()):
+        for p in (x for x in r.stdout.split("\0") if x.strip()):
             c = subprocess.run(["git", "log", "-1", "--format=%h", "%s..HEAD" % sha, "--", p], cwd=self.books,
                                capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
             out.append((p, c.stdout.strip() or "?"))
@@ -251,10 +285,13 @@ class Fx(object):
         """The running RimWorld's start, epoch seconds; None when none runs or it cannot be read."""
         try:
             r = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
-                                "(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1)"
-                                ".StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')"],
+                                "Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object "
+                                "{ $_.StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') }"],
                                capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
-            return time.mktime(time.strptime(r.stdout.strip(), "%Y-%m-%dT%H:%M:%SZ")) - time.timezone
+            lines = [x.strip() for x in r.stdout.splitlines() if x.strip()]
+            if len(lines) != 1:      # two games: the bridge may answer from either, so neither start time is the answer's
+                return None
+            return calendar.timegm(time.strptime(lines[0], "%Y-%m-%dT%H:%M:%SZ"))
         except (OSError, ValueError, subprocess.TimeoutExpired):
             return None
 
@@ -269,12 +306,20 @@ class Fx(object):
         with open(log, "w", encoding="utf-8") as f:
             f.write("$ %s\n" % proof)
             f.flush()
+            p = subprocess.Popen(proof, shell=True, cwd=self.books, stdout=f, stderr=subprocess.STDOUT,
+                                 stdin=subprocess.DEVNULL, executable="/bin/bash", start_new_session=True)
             try:
-                return subprocess.run(proof, shell=True, cwd=self.books, stdout=f, stderr=subprocess.STDOUT,
-                                      timeout=timeout, stdin=subprocess.DEVNULL, executable="/bin/bash").returncode
+                return p.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
                 f.write("\nTIMEOUT after %ds\n" % timeout)
+                p.kill()
+                p.wait()
                 return None
+            finally:
+                try:
+                    os.killpg(p.pid, signal.SIGKILL)       # the whole group, exit or timeout: no probe child outlives the release
+                except OSError:
+                    pass
 
 
 def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
@@ -300,7 +345,13 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
     why = refused_proof(lr, item["title"], text, proof)
     if why:
         return done("REFUSED", why)
+    why = refused_deploy(deploy)
+    if why:
+        return done("REFUSED", why)
     try:
+        gone = [p for p in fx.deleted(sha) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
+        if gone:
+            return done("UNMEASURED", "the build deleted %s: a stale game copy cannot be told from the build" % ", ".join(gone[:5]))
         touched = fx.touched(sha)
         files = game_files(touched, fx.shippable)
         paths = [p for p in touched if SRC_MOD.match(p) and SRC_MOD.match(p).group(2, 3) in files]
@@ -327,19 +378,39 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
             return done("UNMEASURED", "the game started %s, before the build's files were deployed %s: it runs the old "
                                       "build" % (iso(started), iso(max(stamps))))
         row.update(game_started=iso(started), deployed=iso(max(stamps)), files=len(files))
+    else:
+        stamps, started = [], None
     took = fx.rimflow("bridge", "take", "--idle-ok", "--for",
                       "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
     if took.returncode != 0:
         return done("UNMEASURED", "bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
-    log = os.path.join(root, "live", "%s-%s-%s.log" % (item_id, criterion, time.strftime("%Y%m%dT%H%M%SZ",
-                                                                                       time.gmtime(now))))
+    log, n = None, 0
+    while log is None or os.path.exists(log):      # a retry in the same second must not overwrite the evidence of the last
+        log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime("%Y%m%dT%H%M%SZ",
+                                                              time.gmtime(now)), "" if not n else "-%d" % n))
+        n += 1
+    crashed = None
     try:
-        code = fx.run_proof(proof, log, lr["proof_max_s"])
+        if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
+            crashed = "the game or its deployed files changed while the bridge was being taken"
+            code = None
+        else:
+            code = fx.run_proof(proof, log, lr["proof_max_s"])
+            if code in (PASS, FAIL) and files and (started != fx.game_started()
+                                                   or stamps != [fx.mtime(m, rel) for m, rel in files]):
+                crashed, code = "the game or its deployed files changed while the proof ran", None
+    except Exception as e:                          # the proof never ran to an exit code: no verdict, but the row stands
+        crashed, code = "the proof could not run: %s: %s" % (type(e).__name__, str(e)[:200]), None
     finally:
-        gave = fx.rimflow("bridge", "release", "--mine")
-        row["released"] = gave.returncode == 0
+        try:
+            gave = fx.rimflow("bridge", "release", "--mine")
+            row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()[-200:]
+        except Exception as e:                      # a timed-out release still leaves the row
+            row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
+    if not row["released"]:
+        return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     if code not in (PASS, FAIL):
-        why = "the proof %s" % ("timed out" if code is None else "exited %d: it did not measure" % code)
+        why = crashed or "the proof %s" % ("timed out" if code is None else "exited %d: it did not measure" % code)
         note = fx.rimflow("note", item_id, "--text", "relentless live %s %s UNMEASURED: %s (%s)" % (criterion, level, why,
                                                                                                   log)[:400],
                           "--why", "relentless live tier: no verdict, no run recorded")
