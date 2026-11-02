@@ -8,6 +8,11 @@ def's reported fields (a comp class, a field value). `--has DefType/defName` wit
 
 Exit 0 every claim holds, 1 a claim is false (the game answered and said no: a real FAIL), 2 UNMEASURED (no bridge, an
 answer that is not what get_defs returns, a def the reply never mentions). Callers hold the bridge lock; this never takes it.
+
+A def that does not resolve is a FAIL only when the mod that defines it is in the RUNNING load. Its owners are the repo's
+mods whose XML carries <defName>NAME</defName>; the running load is jawa/running_mods (ModsConfig.xml names the NEXT
+load, so a mod enabled after launch is absent here). Owner not running, or the running list unreadable: UNMEASURED. A def
+no repo mod defines (a typo, a vanilla or donor def) stays a FAIL: the game answered and nothing explains the no.
 RimBridge binds Windows loopback, so the call runs under Windows Python (python.exe), as rimbridge_client.py says.
 """
 import argparse
@@ -15,9 +20,11 @@ import json
 import os
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLIENT = os.path.join(HERE, "rimbridge_client.py")
+SRC = os.path.normpath(os.path.join(HERE, "..", ".."))      # the repo's src/: every mod we ship lives under it
 PASS, FAIL, UNMEASURED = 0, 1, 2
 
 
@@ -60,8 +67,10 @@ def _canon(d):
     return json.dumps([d.get("found"), d.get("fields")], sort_keys=True, default=str)
 
 
-def judge(claims, reply):
-    """-> (exit code, lines). `reply` is get_defs' JSON object."""
+def judge(claims, reply, owners=None, running=None):
+    """-> (exit code, lines). `reply` is get_defs' JSON object. `owners` {defkey: set of lower-case packageIds defining
+    it}; `running` the lower-case packageIds of the RUNNING load, or None when unread. With no `owners` an unresolved
+    def is a FAIL, as before."""
     if not isinstance(reply, dict) or not isinstance(reply.get("defs"), list):
         return UNMEASURED, ["UNMEASURED: the reply is not a get_defs answer"]
     by_key, bad = {}, set()
@@ -84,8 +93,23 @@ def judge(claims, reply):
             lines.append("UNMEASURED %s: the record is malformed or contradicts another (found=%r)" % (key, d.get("found")))
             continue
         if not d.get("found"):
-            seen.add(FAIL)
-            lines.append("FAIL %s: does not resolve in the live game" % key)
+            if owners and key in owners and owners[key] is None:
+                seen.add(UNMEASURED)
+                lines.append("UNMEASURED %s: does not resolve, and the search for the mod that defines it failed" % key)
+                continue
+            mods = sorted((owners or {}).get(key) or ())
+            if mods and running is None:
+                seen.add(UNMEASURED)
+                lines.append("UNMEASURED %s: does not resolve, and the running mod list is unread, so whether %s is "
+                             "loaded is unknown" % (key, "/".join(mods)))
+            elif mods and not set(mods) & set(running):
+                seen.add(UNMEASURED)
+                lines.append("UNMEASURED %s: does not resolve because %s is not in the RUNNING load (ModsConfig names "
+                             "the next load)" % (key, "/".join(mods)))
+            else:
+                seen.add(FAIL)
+                lines.append("FAIL %s: does not resolve in the live game%s" % (
+                    key, " though %s is loaded" % "/".join(sorted(set(mods) & set(running))) if mods else ""))
             continue
         where = "%s from %s" % (key, d.get("packageId") or "?")
         if token is None:
@@ -104,12 +128,58 @@ def defs_param(keys):
     return ";".join(keys)
 
 
-def call_get_defs(keys, timeout):
-    """-> (reply dict or None, why). Read-only; runs the client under Windows Python."""
+def mod_package_id(path, src=SRC):
+    """-> the lower-case packageId of the mod holding `path` (nearest ancestor with About/About.xml), or None."""
+    d = os.path.dirname(os.path.abspath(path))
+    while d.startswith(os.path.abspath(src)) and len(d) >= len(os.path.abspath(src)):
+        about = os.path.join(d, "About", "About.xml")
+        if os.path.isfile(about):
+            try:
+                pid = ET.parse(about).getroot().findtext("packageId")
+            except (ET.ParseError, OSError):
+                return None
+            return pid.strip().lower() if pid and pid.strip() else None
+        d = os.path.dirname(d)
+    return None
+
+
+def def_owners(keys, src=SRC):
+    """-> {defkey: set of packageIds} for the repo mods whose XML names <defName>NAME</defName>. Missing keys own nothing;
+    a key whose search failed maps to None (owner unknown, so an unresolved def cannot be called a FAIL)."""
+    out = {}
+    for key in keys:
+        name = key.split("/", 1)[1]
+        try:
+            r = subprocess.run(["grep", "-rlF", "--include=*.xml", "<defName>%s</defName>" % name, src],
+                               capture_output=True, text=True, timeout=60)
+        except (OSError, subprocess.TimeoutExpired):
+            out[key] = None
+            continue
+        if r.returncode not in (0, 1):          # 1 is grep's "no match"; 2 is an error, matches or not
+            out[key] = None
+            continue
+        pids = {p for p in (mod_package_id(f, src) for f in r.stdout.splitlines() if f) if p}
+        if pids:
+            out[key] = pids
+    return out
+
+
+def running_ids(reply):
+    """jawa/running_mods' reply -> lower-case packageIds, or None when it is not that answer."""
+    rm = reply.get("result", reply) if isinstance(reply, dict) else None
+    if not isinstance(rm, dict):
+        return None
+    ids = rm.get("packageIds")
+    if not isinstance(ids, list) or not ids or not all(isinstance(x, str) and x for x in ids):
+        return None
+    return {x.lower() for x in ids}
+
+
+def _bridge(tool, params, timeout):
+    """-> (reply or None, why). Read-only; runs the client under Windows Python."""
     try:
         path = subprocess.run(["wslpath", "-w", CLIENT], capture_output=True, text=True, timeout=20).stdout.strip()
-        r = subprocess.run(["python.exe", path, "--timeout", str(timeout), "--call", "jawa/get_defs",
-                            "--json", json.dumps({"defs": defs_param(keys)})],
+        r = subprocess.run(["python.exe", path, "--timeout", str(timeout), "--call", tool, "--json", json.dumps(params)],
                            capture_output=True, text=True, timeout=timeout + 30, stdin=subprocess.DEVNULL)
     except (OSError, ValueError, subprocess.TimeoutExpired) as e:      # ValueError: UnicodeDecodeError on the reply bytes
         return None, "the bridge call did not finish: %s" % str(e)[:200]
@@ -119,6 +189,17 @@ def call_get_defs(keys, timeout):
         return json.loads(r.stdout, object_pairs_hook=_no_duplicate_keys), None
     except (ValueError, RecursionError):
         return None, "the bridge answered something that is not JSON: %s" % r.stdout[:200]
+
+
+def call_running_mods(timeout):
+    """-> set of lower-case packageIds the RUNNING game loaded, or None."""
+    reply, _ = _bridge("jawa/running_mods", {"details": False, "assembly": ""}, timeout)
+    return running_ids(reply)
+
+
+def call_get_defs(keys, timeout):
+    """-> (reply dict or None, why). Read-only; runs the client under Windows Python."""
+    return _bridge("jawa/get_defs", {"defs": defs_param(keys)}, timeout)
 
 
 def main(argv=None):
@@ -136,7 +217,13 @@ def main(argv=None):
         print("UNMEASURED: %s" % why)
         return UNMEASURED
     try:
-        code, lines = judge(claims, reply)
+        owners, running = {}, None
+        if isinstance(reply, dict) and isinstance(reply.get("defs"), list) and any(
+                isinstance(d, dict) and d.get("found") is False for d in reply["defs"]):
+            owners = def_owners(sorted({k for k, _ in claims}))
+            if owners:
+                running = call_running_mods(a.timeout)
+        code, lines = judge(claims, reply, owners, running)
     except Exception as e:      # an uncaught crash would exit 1, which the runner records as a FAIL
         print("UNMEASURED: the reply could not be judged: %s: %s" % (type(e).__name__, str(e)[:200]))
         return UNMEASURED

@@ -471,10 +471,65 @@ def t_def_check_judge():
             pass
 
 
+def t_unloaded_mod():
+    """LIVEDEF_UNLOADED_MOD_FIX_READS_AS_FAIL: an unresolved def is a FAIL only when its mod is in the RUNNING load."""
+    import tempfile
+    one = [("QuestScriptDef/RUT_Reckoning_Rumor", None)]
+    gone = {"defs": [{"requested": "QuestScriptDef/RUT_Reckoning_Rumor", "found": False}]}
+    own = {"QuestScriptDef/RUT_Reckoning_Rumor": {"mandrake.utinni.eggreckoning"}}
+    check("mod not in the running load is UNMEASURED", C.judge(one, gone, own, {"ludeon.rimworld"})[0] == C.UNMEASURED,
+          C.judge(one, gone, own, {"ludeon.rimworld"}))
+    check("mod loaded and def missing is FAIL", C.judge(one, gone, own, {"mandrake.utinni.eggreckoning"})[0] == C.FAIL)
+    check("running list unread is UNMEASURED", C.judge(one, gone, own, None)[0] == C.UNMEASURED)
+    check("owner search failed is UNMEASURED", C.judge(one, gone, {one[0][0]: None}, {"ludeon.rimworld"})[0] == C.UNMEASURED)
+    check("a def no repo mod owns stays FAIL", C.judge(one, gone, {}, {"ludeon.rimworld"})[0] == C.FAIL)
+    check("FAIL from another claim still stands", C.judge(one + [("ThingDef/X", None)], {"defs": gone["defs"] + [
+        {"requested": "ThingDef/X", "found": False}]}, own, {"ludeon.rimworld"})[0] == C.FAIL)
+    check("running_ids reads packageIds", C.running_ids({"success": True, "packageIds": ["A.B", "c.d"]}) == {"a.b", "c.d"})
+    check("running_ids reads a result wrapper", C.running_ids({"result": {"packageIds": ["A.B"]}}) == {"a.b"})
+    for bad in (None, {}, {"packageIds": []}, {"packageIds": "a.b"}, {"packageIds": ["a", 1]}, {"error": "x"}):
+        check("running_ids %r is None" % (bad,), C.running_ids(bad) is None)
+    with tempfile.TemporaryDirectory() as d:
+        for mod, pid, defs in (("ModA", "Mandrake.Utinni.ModA", "RUT_X"), ("ModB", "mandrake.utinni.modb", "RUT_X"),
+                               ("Loose", None, "RUT_Y")):
+            os.makedirs(os.path.join(d, mod, "1.6", "Defs"))
+            if pid:
+                os.makedirs(os.path.join(d, mod, "About"))
+                with open(os.path.join(d, mod, "About", "About.xml"), "w") as f:
+                    f.write("<ModMetaData><packageId>%s</packageId></ModMetaData>" % pid)
+            with open(os.path.join(d, mod, "1.6", "Defs", "a.xml"), "w") as f:
+                f.write("<Defs><ThingDef><defName>%s</defName></ThingDef></Defs>" % defs)
+        got = C.def_owners(["ThingDef/RUT_X", "ThingDef/RUT_Y", "ThingDef/RUT_Z"], d)
+        bad = C.def_owners(["ThingDef/RUT_X"], os.path.join(d, "nowhere"))
+        check("a failed search owns None", bad == {"ThingDef/RUT_X": None}, bad)
+        check("owners from the repo's About.xml", got == {"ThingDef/RUT_X": {"mandrake.utinni.moda", "mandrake.utinni.modb"}},
+              got)
+    real = C.def_owners(["QuestScriptDef/RUT_Reckoning_Rumor"])
+    check("the measured case: RUT_Reckoning_Rumor is EggReckoning's",
+          len(real.get("QuestScriptDef/RUT_Reckoning_Rumor", ())) == 1, real)
+    calls = []
+    real_run = C.subprocess.run
+
+    def fake(cmd, *x, **k):
+        if cmd[0] in ("wslpath", "grep"):
+            return real_run(cmd, *x, **k) if cmd[0] == "grep" else types.SimpleNamespace(returncode=0, stdout="c", stderr="")
+        tool = cmd[cmd.index("--call") + 1]
+        calls.append(tool)
+        out = gone if tool == "jawa/get_defs" else {"success": True, "packageIds": ["ludeon.rimworld"]}
+        return types.SimpleNamespace(returncode=0, stderr="", stdout=json.dumps(out))
+    C.subprocess.run = fake
+    try:
+        code = C.main(["--has", "QuestScriptDef/RUT_Reckoning_Rumor"])
+    finally:
+        C.subprocess.run = real_run
+    check("main asks running_mods and reads UNMEASURED", code == C.UNMEASURED and calls == ["jawa/get_defs", "jawa/running_mods"],
+          (code, calls))
+
+
 def main():
     for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
-              t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge):
+              t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod):
         try:
             t()
         except Exception as e:     # a crash is a red, named
