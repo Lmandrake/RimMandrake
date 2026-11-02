@@ -488,15 +488,25 @@ def cmd_pick(a):
         keys, frame = pick_set(a.set, split, tasks, census_map(), str(REPO), time.time())
     source = make_clone(WORK / "census", "w0", "relentless seed census")
     kept, dropped, print_ = [], [], fingerprint()
+    log = PRIVATE / "keys" / (a.set + ".picking.jsonl")       # a picking cut short resumes: same cases, same ids, same proofs
+    done = {(r["cls"], r["task"], r.get("hunk")): r for r in census_rows(log)} if log.exists() else {}
     for k in keys:
-        k["item"] = "SD_" + secrets.token_hex(6).upper()
+        prior = done.get((k["cls"], k["task"], k.get("hunk")))
+        k["item"] = prior["item"] if prior else "SD_" + secrets.token_hex(6).upper()
         k["fingerprint"] = print_
         want = EXPECT[k["cls"]]
         if want:
-            dest = WORK / "verify" / k["item"]
-            deliver(source, k, dest)
-            r = sandbox_run(dest, k["proof"])
-            shutil.rmtree(dest, ignore_errors=True)
+            if prior:
+                r = prior
+            else:
+                dest = WORK / "verify" / k["item"]
+                shutil.rmtree(dest, ignore_errors=True)
+                deliver(source, k, dest)
+                r = sandbox_run(dest, k["proof"])
+                shutil.rmtree(dest, ignore_errors=True)
+                r = {"cls": k["cls"], "task": k["task"], "hunk": k.get("hunk"), "item": k["item"], "out": r["out"], "tail": r["tail"][-300:]}
+                append_row(log, r)
+                print("verified", k["cls"], k["task"], r["out"], flush=True)
             if r["out"] != want:
                 dropped.append({"item": k["item"], "cls": k["cls"], "task": k["task"], "out": r["out"], "tail": r["tail"][-300:]})
                 continue
