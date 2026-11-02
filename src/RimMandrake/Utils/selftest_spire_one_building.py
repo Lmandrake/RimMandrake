@@ -29,6 +29,15 @@ SELFTEST = os.path.join(SOURCE, "SelfTest", "StructureInjectionsRUT.SelfTest.csp
 ATTITUDE = os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "Source", "Hum", "RM_MapComponent_BiomeAttitude.cs")
 DOTNET_CANDIDATES = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]
 OLD_NAMES = ("RUT_DarkTower", "RUT_Ashfall_Spire", "RUT_GenStep_DarkTower", "RUT_Symbol_DarkTower")
+NS = "RimMandrake.Utinni.StructureInjectionsRUT."
+# The layout audit reads symbol names; this is what each of them must build.
+SYMBOL_THINGS = {
+    "RUT_Symbol_SpireHull": "RUT_SpireHullWall",
+    "RUT_Symbol_SpireSeal": "RUT_SpireSeal",
+    "RUT_Symbol_RakatanCommandCodes": "RUT_RakatanCommandCodes",
+    "RUT_Symbol_SpireCommandConsole": "RUT_SpireCommandConsole",
+    "RUT_Symbol_SpireControlConsole": "RUT_SpireControlConsole",
+}
 
 failures = []
 
@@ -64,6 +73,46 @@ def stage_reads_minus_one_off_cathedral(source):
     return bool(body and "GetDef() == null ? -1 : comp.stage" in body.group(1))
 
 
+def comp_classes(thing):
+    return [li.get("Class") for li in thing.findall("comps/li")]
+
+
+def def_pins(defs, landmarks):
+    """What the compiled half cannot see: it reads no Defs, and its stand-ins replace the XML. A def here is read
+    element by element, so a defect moved onto the wrong def, or into a comment, does not pass."""
+    symbols = {}
+    for f in xml_files(defs):
+        for e in ET.parse(f).getroot().iter("KCSG.SymbolDef"):
+            symbols.setdefault(e.findtext("defName"), []).append(e.findtext("thing"))
+    check(len(symbols) >= 10, "probe: symbols parse (%d seen)" % len(symbols))
+    for symbol, thing in SYMBOL_THINGS.items():
+        check(symbols.get(symbol) == [thing], "%s builds %s, and only it: %s" % (symbol, thing, symbols.get(symbol)))
+
+    things = {}
+    for f in xml_files(os.path.join(defs, "Spire")):
+        for e in ET.parse(f).getroot().iter("ThingDef"):
+            things[e.findtext("defName")] = e
+    check(set(SYMBOL_THINGS.values()) <= set(things), "every pinned thing is a real def under Defs/Spire")
+
+    seal, hull = things.get("RUT_SpireSeal"), things.get("RUT_SpireHullWall")
+    if seal is None or hull is None:
+        check(False, "the seal and the hull are defined")
+        return
+    # CompTick runs only under Normal: any other ticker leaves the seal shut at every trust.
+    check(seal.findtext("tickerType") == "Normal", "the seal ticks, so CompSpireSeal can open it: %s" % seal.findtext("tickerType"))
+    check(seal.findtext("passability") == "Impassable", "the shut seal stops a pawn")
+    check(seal.findtext("building/deconstructible") == "false", "the seal's own def refuses deconstruction")
+    check(comp_classes(seal) == [NS + "CompProperties_SpireSeal"], "the seal's def carries the gate comp: %s" % comp_classes(seal))
+    check(comp_classes(hull) == [NS + "CompProperties_SpireHull"], "the hull's def carries the absorbing comp: %s" % comp_classes(hull))
+    # Odyssey's AncientFortifiedWall is the parent that makes the hull unbuildable and undeconstructible.
+    check(hull.get("ParentName") == "AncientFortifiedWall", "the hull is a fortified wall: %s" % hull.get("ParentName"))
+
+    # commonality defaults above zero, so an absent element is a rollable Spire too.
+    weights = [e.findtext("commonality") for f in xml_files(landmarks) for e in ET.parse(f).getroot().iter("LandmarkDef")
+               if e.findtext("defName") == "RUT_AshfallSpire"]
+    check(weights == ["0"], "the generator can roll no Spire, commonality 0: %s" % weights)
+
+
 def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
     sites = named(defs, "SitePartDef")
     # Sanity probe: the parse must see the sibling dungeons' sites before it may report one Spire.
@@ -90,6 +139,7 @@ def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
     check('Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireHull"' in seal_xml, "the hull absorbs damage")
     check('Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireSeal"' in seal_xml, "the seal is the trust gate")
     check("<deconstructible>false</deconstructible>" in seal_xml, "the seal cannot be deconstructed")
+    def_pins(defs, landmarks)
 
     entry = text(os.path.join(source, "Spire", "SpireEntry.cs"))
     kernel = text(os.path.join(source, "Spire", "SpireEntryKernel.cs"))
@@ -146,6 +196,11 @@ def layout_checks():
             check(audit(path).returncode != 0, "audit catches: %s" % name)
 
 
+SEAL_DEF = "Defs/Spire/ThingDefs_Buildings/RUT_SpireSeal.xml"
+SYMBOL_DEFS = "Defs/Spire/SymbolDefs_Spire.xml"
+LANDMARK_DEF = "RUT_AshfallSpire.xml"
+
+
 def plant_static():
     """Each planted tree must turn static_checks red; the list is restored around each one."""
     plants = [
@@ -157,26 +212,46 @@ def plant_static():
         ("the hull takes damage", "Source/Spire/SpireEntry.cs", "absorbed = true;", "absorbed = false;"),
         ("the codes for sale", "Defs/Spire/ThingDefs_Items/RUT_RakatanCommandCodes.xml",
          "<tradeability>None</tradeability>", "<tradeability>All</tradeability>"),
+        ("the seal never ticks", SEAL_DEF, "<tickerType>Normal</tickerType>", ""),
+        ("the seal ticks only rarely", SEAL_DEF, "<tickerType>Normal</tickerType>", "<tickerType>Rare</tickerType>"),
+        ("the seal walks through", SEAL_DEF, "<passability>Impassable</passability>", "<passability>Standable</passability>"),
+        ("the gate comp dropped", SEAL_DEF, '<li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireSeal" />', ""),
+        ("the hull comp dropped", SEAL_DEF, '<li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireHull" />', ""),
+        ("the hull a plain wall by parent", SEAL_DEF, 'ParentName="AncientFortifiedWall"', 'ParentName="Wall"'),
+        ("no gate built", SYMBOL_DEFS, "<thing>RUT_SpireSeal</thing>", "<thing>RUT_SpireHullWall</thing>"),
+        ("the hull builds a breakable wall", SYMBOL_DEFS, "<thing>RUT_SpireHullWall</thing>", "<thing>Wall</thing>"),
+        ("no codes inside", SYMBOL_DEFS, "<thing>RUT_RakatanCommandCodes</thing>", "<thing>Steel</thing>"),
+        ("the command console builds nothing of ours", SYMBOL_DEFS, "<thing>RUT_SpireCommandConsole</thing>", "<thing>Steel</thing>"),
+        ("the generator may scatter Spires", LANDMARK_DEF, "<commonality>0</commonality>", "<commonality>1</commonality>"),
+        ("commonality left to its default", LANDMARK_DEF, "<commonality>0</commonality>", ""),
     ]
-    global failures
     with tempfile.TemporaryDirectory() as d:
         copy = os.path.join(d, "mod")
         shutil.copytree(MOD, copy, ignore=shutil.ignore_patterns("Textures", "Assemblies", "obj", "bin"))
+        marks = os.path.join(d, "landmarks")
+        shutil.copytree(LANDMARKS, marks)
+
+        def run_on_copy():
+            saved, failures[:] = failures[:], []
+            stdout, sys.stdout = sys.stdout, open(os.devnull, "w")
+            try:
+                static_checks(os.path.join(copy, "Defs"), os.path.join(copy, "Source"), marks)
+            finally:
+                sys.stdout.close()
+                sys.stdout = stdout
+            red, failures[:] = list(failures), saved
+            return red
+
+        # A copy that is red unplanted would make every catch below free.
+        red = run_on_copy()
+        check(not red, "control: the unplanted copy is green: %s" % red)
         for name, rel, old, new in plants:
-            path = os.path.join(copy, rel)
+            path = os.path.join(marks, rel) if rel == LANDMARK_DEF else os.path.join(copy, rel)
             good = text(path)
             check(old in good, "plant applies: %s" % name)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(good.replace(old, new))
-            saved, failures = failures, []
-            stdout, sys.stdout = sys.stdout, open(os.devnull, "w")
-            try:
-                static_checks(os.path.join(copy, "Defs"), os.path.join(copy, "Source"))
-            finally:
-                sys.stdout.close()
-                sys.stdout = stdout
-            caught, failures = bool(failures), saved
-            check(caught, "static checks catch: %s" % name)
+            check(run_on_copy(), "static checks catch: %s" % name)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(good)
 
