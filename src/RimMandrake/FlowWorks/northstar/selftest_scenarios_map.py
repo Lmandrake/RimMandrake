@@ -250,6 +250,16 @@ def main():
           and any(s.startswith("RM_SprinklerHead") for s in M.already_built_r(BR)), M.already_built_r(BR))
     check("a clean map is not refused (already_built_r == [])",
           M.already_built_r(MockBridge(terrain=M.synthetic_river())) == [])
+    # ...and an in-place build on that clean map really RUNS (can-fail: a guard that refuses every in-place build,
+    # e.g. 'if built:' -> 'if True:', goes red here): exit 0, no refusal text, and stations are built
+    CLEAN = MockBridge(terrain=M.synthetic_river())
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc_c = M.river_main(CLEAN, argparse.Namespace(**vars(a_)))
+    ct = [t for t, _ in CLEAN.calls]
+    check("in-place --river --build on a CLEAN map still builds: exit 0, no --fresh-map refusal, build_batch issued",
+          rc_c == 0 and "--fresh-map" not in buf.getvalue() and "jawa/build_batch" in ct,
+          (rc_c, buf.getvalue()[-300:], sorted(set(ct))))
     # SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO: with --only every sweep keeps the OTHER plots' keep rects; without, none
     from modcheck import reviewmap as RMv
     seen, real = [], RMv.sweep_pawns
