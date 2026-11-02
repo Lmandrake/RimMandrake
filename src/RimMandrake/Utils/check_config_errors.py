@@ -111,13 +111,27 @@ def main() -> int:
 
     baseline_path = a.baseline or newest_baseline()
     if not baseline_path or not os.path.exists(baseline_path):
-        print(f"UNMEASURED no config_error_baseline_*.json under {FACTS_DIR}")
+        print(f"UNMEASURED no baseline: {baseline_path or 'no config_error_baseline_*.json under ' + FACTS_DIR}")
         return 2
 
-    baseline = json.load(open(baseline_path, encoding="utf-8"))
-    entries = baseline["entries"]
-
-    hits = extract(a.log)
+    # exit 1 means a finding: an unreadable input must not crash into it (a traceback also exits 1)
+    try:
+        with open(baseline_path, encoding="utf-8") as fh:
+            entries = json.load(fh)["entries"]
+        if not all(isinstance(e, dict) and isinstance(e.get("pattern"), str) and e["pattern"]
+                   and isinstance(e.get("class"), str) for e in entries):
+            raise ValueError("an entry lacks a non-empty pattern or a class")
+        for e in entries:
+            if e["class"] == "ours-fixed":
+                datetime.date.fromisoformat(e.get("fixedOn") or "")
+    except (OSError, ValueError, KeyError, TypeError) as ex:
+        print(f"UNMEASURED baseline {baseline_path} unreadable: {type(ex).__name__}: {ex}")
+        return 2
+    try:
+        hits = extract(a.log)
+    except OSError as ex:
+        print(f"UNMEASURED log {a.log} unreadable: {type(ex).__name__}: {ex}")
+        return 2
     counts = Counter(hits)
 
     print(f"log       {a.log}")
@@ -154,7 +168,7 @@ def main() -> int:
         print(f"\n⚠️  REGRESSION — baseline says this was fixed/absent, "
               f"but it's back ({len(regressions)}):")
         for line, n, entry in regressions:
-            print(f"   x{n}  {line}\n        ({entry['note']})")
+            print(f"   x{n}  {line}\n        ({entry.get('note', 'no note')})")
 
     ok = not new_lines and not regressions
     print(f"\n{'CLEAN' if ok else 'NOT CLEAN'} against {os.path.basename(baseline_path)}")

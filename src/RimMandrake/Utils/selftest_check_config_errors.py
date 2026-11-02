@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""check_config_errors.py: an `ours-fixed` line is history in an old log and a regression in a later one."""
+"""check_config_errors.py: an `ours-fixed` line is history in an old log and a regression in a later one; an
+unreadable baseline is UNMEASURED (exit 2), never a finding (exit 1)."""
 import json
 import os
 import subprocess
@@ -32,7 +33,13 @@ def main():
         got = [run(log, baseline)]
         os.utime(log, (now + 5 * DAY, now + 5 * DAY))
         got.append(run(log, baseline))
-    assert got == [0, 1], "old log clean, later log regression; got %s" % got
+        with open(baseline, "w", encoding="utf-8") as fh:
+            fh.write("{not json")
+        got.append(run(log, baseline))
+        with open(baseline, "w", encoding="utf-8") as fh:
+            json.dump({"entries": [{"pattern": "Config error in RR_Thing", "class": "ours-fixed"}]}, fh)
+        got.append(run(log, baseline))
+    assert got == [0, 1, 2, 2], "old log clean, later log regression, torn / fixedOn-less baseline UNMEASURED; got %s" % got
     print("ok")
 
 
