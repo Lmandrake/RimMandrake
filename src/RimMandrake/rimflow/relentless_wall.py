@@ -69,12 +69,45 @@ def enforced(rules, mode="marker"):
     return bool((profile(rules, mode) or {}).get("enforce"))
 
 
+def skill_targets(prof):
+    """-> the real paths the Marker's skill symlinks point at, when the profile names a skills folder. These are read only."""
+    root = prof.get("allow_read_skills")
+    if not root or not os.path.isdir(root):
+        return []
+    return sorted({os.path.realpath(os.path.join(root, n)) for n in os.listdir(root)} - {os.path.realpath(root)})
+
+
+def _carve(p, targets):
+    """-> the paths to deny in place of p so that every target stays reachable: p itself when no target is in it or under it,
+    nothing when p is inside a target, else p's children, each carved in turn."""
+    rp = os.path.realpath(p)
+    if any(rp == t or rp.startswith(t + "/") for t in targets):
+        return []
+    if not any(t.startswith(rp + "/") for t in targets):
+        return [p]
+    out = []
+    for c in sorted(os.listdir(rp)):
+        out += _carve(os.path.join(rp, c), targets)
+    return out
+
+
 def denied(prof, extra=()):
-    """Every path the unit may not see. deny_children: each thing under a root, so a clone made tomorrow is walled too."""
+    """Every path the unit may not see. deny_children: each thing under a root, so a clone made tomorrow is walled too.
+    Skill symlink targets (allow_read_skills) are carved out of the deny list; readonly() makes them read only."""
     out = list(prof["deny"]) + list(extra)
     for root in prof.get("deny_children", ()):
         out += [str(p) for p in sorted(Path(root).iterdir()) if str(p) not in prof.get("tmpfs", ())]
+    targets = skill_targets(prof)
+    if targets:
+        out = [q for p in out for q in _carve(p, targets)]
     return sorted(set(out))
+
+
+def readonly(prof):
+    """The paths the unit may read and not write: the skill targets that sit inside a walled root (the ones the deny list
+    was carved around). A target elsewhere, such as under ~/.claude, is left as the host has it."""
+    roots = [os.path.realpath(r) for r in list(prof["deny"]) + list(prof.get("deny_children", ()))]
+    return [t for t in skill_targets(prof) if any(t == r or t.startswith(r + "/") for r in roots)]
 
 
 def unit_path(p):
@@ -92,11 +125,14 @@ def props(prof, box, extra=()):
         out += ["-p", "InaccessiblePaths=" + unit_path(p)]
     for p in prof.get("tmpfs", ()):
         out += ["-p", "TemporaryFileSystem=" + unit_path(p)]
+    for p in readonly(prof):
+        out += ["-p", "ReadOnlyPaths=" + unit_path(p)]
     return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME)]
 
 
 def excludes(prof):
-    return [":(exclude)" + p for p in prof["tree_exclude"]]
+    """The pathspec the Marker's tree and diff leave out: tree_exclude, and tree_from_parent (that comes in as a parent snapshot)."""
+    return [":(exclude)" + p for p in list(prof["tree_exclude"]) + list(prof.get("tree_from_parent", ()))]
 
 
 def make_box(prof, source, sha, nonce):
@@ -127,10 +163,33 @@ def make_box(prof, source, sha, nonce):
     d = subprocess.run(["git", "diff", "--no-renames", parent, sha, "--", ".", *ex], cwd=source, capture_output=True,
                        timeout=300, check=True)
     (box / "change.diff").write_bytes(d.stdout)
+    snap = prof.get("tree_from_parent") or []
+    if snap and parent == sha + "^":
+        # the ledger and review state as of the candidate's parent: what a proof may read, never what the builder wrote since
+        _snapshot(source, parent, snap, tree, box)
     (box / "nonce").write_text(nonce, encoding="ascii")
     (box / "verdict").write_text(VERDICT_SCRIPT, encoding="utf-8")
     os.chmod(box / "verdict", 0o755)
     return str(box)
+
+
+def _snapshot(source, parent, paths, tree, box):
+    env = dict(os.environ, GIT_INDEX_FILE=str(box / "snap.index"))
+    try:
+        subprocess.run(["git", "read-tree", parent], cwd=source, env=env, capture_output=True, timeout=300, check=True)
+        names = subprocess.run(["git", "ls-files", "-z", "--", *paths], cwd=source, env=env, capture_output=True,
+                               timeout=300, check=True).stdout
+        if names:
+            x = subprocess.run(["git", "checkout-index", "-z", "--stdin", "--prefix=%s/" % tree], cwd=source, env=env,
+                               input=names, capture_output=True, timeout=500)
+            if x.returncode:
+                raise RuntimeError("snapshot failed: %s" % x.stderr[-200:])
+    finally:
+        (box / "snap.index").unlink(missing_ok=True)
+    for p in paths:     # read only: a proof reads this state and cannot change it
+        for dp, dn, fn in os.walk(tree / p):
+            for n in fn:
+                os.chmod(os.path.join(dp, n), 0o444)
 
 
 def remove_box(box):

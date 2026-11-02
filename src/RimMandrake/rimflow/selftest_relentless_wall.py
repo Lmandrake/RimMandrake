@@ -75,7 +75,7 @@ def test_profile_and_props():
     check("a path with a space stays one entry", 'InaccessiblePaths="/srv/private data"' in sp and 'TemporaryFileSystem="/tmp/a b"' in sp, sp)
     check("a quote in a path is escaped", W.unit_path('/a"b') == '"/a\\"b"' and W.unit_path("/plain") == "/plain")
     live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
-    check("the live profile is report only", not W.enforced(live))
+    check("the live profile is enforced (RA_S03: the wall lets a correct Marker work, proved on seed cases)", W.enforced(live))
 
 
 def test_box():
@@ -118,6 +118,66 @@ def test_box():
           and not Path(box2, "export.index").exists())
     W.remove_box(box2)
     check("the box goes", not Path(box).exists())
+
+
+def test_skills_and_snapshot():
+    root = tempfile.mkdtemp(prefix="wallskill")
+    for rel in ("kids/one", "kids/wf/skills/s1", "kids/wf/other", "kids/other2", "kids/wf/tools/p", "skills", "transcripts"):
+        Path(root, rel).mkdir(parents=True)
+    Path(root, "kids/wf/skills/s1/SKILL.md").write_text("s\n", encoding="utf-8")
+    os.symlink(str(Path(root, "kids/wf/skills/s1")), str(Path(root, "skills/s1")))
+    os.symlink(str(Path(root, "kids/wf/tools/p")), str(Path(root, "skills/p")))
+    p = {"enforce": False, "box_root": str(Path(root, "boxes")), "deny": [str(Path(root, "kids"))], "deny_children": [],
+         "tmpfs": [], "tree_exclude": ["conversations"], "tree_from_parent": ["infrastructure/state/ledger"],
+         "allow_read_skills": str(Path(root, "skills"))}
+    d = W.denied(p)
+    kids = str(Path(root, "kids"))
+    check("a skill target is not denied", str(Path(kids, "wf/skills/s1")) not in d and str(Path(kids, "wf/tools/p")) not in d, d)
+    check("a file inside a skill target is reachable", not any(x == str(Path(kids, "wf/skills/s1/SKILL.md")) for x in d), d)
+    check("a sibling of the skill target stays denied", str(Path(kids, "wf/other")) in d and str(Path(kids, "other2")) in d
+          and str(Path(kids, "one")) in d and str(Path(kids, "wf/tools")) not in d, d)
+    check("the walled root itself is carved, not denied whole", kids not in d and str(Path(kids, "wf")) not in d, d)
+    check("skill targets are read only", sorted(W.readonly(p)) == sorted([os.path.realpath(Path(kids, "wf/skills/s1")),
+          os.path.realpath(Path(kids, "wf/tools/p"))]), W.readonly(p))
+    o = W.props(p, "/b")
+    check("read only property", "ReadOnlyPaths=" + os.path.realpath(Path(kids, "wf/skills/s1")) in o, o)
+    check("nothing is writable that was denied", not set(W.readonly(p)) & set(d))
+    p2 = dict(p, allow_read_skills=None)
+    check("no skills key walls the root whole", W.denied(p2) == [kids] and W.readonly(p2) == [])
+    live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))["walls"]["marker"]
+    check("the live wall lets the skills be read", live.get("allow_read_skills") == W.HOME + "/.claude/skills")
+    check("the live wall still denies the builder's transcripts and scratch", "conversations" in live["tree_exclude"]
+          and "/home/mandrake/.seat-tmp" in live["deny"] and "/home/mandrake/rm/scratch" in live["tmpfs"]
+          and "/home/mandrake/.claude/history.jsonl" in live["deny"])
+    check("the live ledger comes as a snapshot, not as tree_exclude", "infrastructure/state/ledger" not in live["tree_exclude"]
+          and "infrastructure/state/ledger" in live["tree_from_parent"] and "infrastructure/state/code_review" in live["tree_from_parent"])
+    check("a transcript path in a tool call is still reported", W.would_deny([{"command": "cat conversations/x.md"}], live) == ["conversations"])
+    # the box: ledger as of the parent, read only; the builder's own conversation still out
+    src = tempfile.mkdtemp(prefix="wallsnap")
+    git(src, "init", "-q")
+    git(src, "config", "user.email", "t@t")
+    git(src, "config", "user.name", "t")
+    for rel, body in (("a.py", "one\n"), ("conversations/c.md", "chat\n"), ("infrastructure/state/ledger/x.jsonl", "old\n")):
+        q = Path(src, rel)
+        q.parent.mkdir(parents=True, exist_ok=True)
+        q.write_text(body, encoding="utf-8")
+    git(src, "add", ".")
+    git(src, "commit", "-qm", "base")
+    Path(src, "a.py").write_text("two\n", encoding="utf-8")
+    Path(src, "infrastructure/state/ledger/x.jsonl").write_text("new, the builder's note\n", encoding="utf-8")
+    Path(src, "infrastructure/state/ledger/y.jsonl").write_text("born in the change\n", encoding="utf-8")
+    git(src, "add", ".")
+    git(src, "commit", "-qm", "change")
+    sha = git(src, "rev-parse", "HEAD")
+    box = W.make_box(p, src, sha, "n9")
+    led = Path(box, "tree/infrastructure/state/ledger")
+    check("the Marker's tree holds the ledger as of the parent", (led / "x.jsonl").read_text(encoding="utf-8") == "old\n"
+          and not (led / "y.jsonl").exists(), list(led.glob("*")))
+    check("the ledger copy is read only", not os.access(led / "x.jsonl", os.W_OK) or os.geteuid() == 0)
+    check("the diff holds no ledger line", "builder's note" not in Path(box, "change.diff").read_text(encoding="utf-8"))
+    check("the conversations are still out of the box", not Path(box, "tree/conversations").exists())
+    W.remove_box(box)
+    check("a box with read only files still goes", not Path(box).exists())
 
 
 def test_read_verdict_malformed():
@@ -181,6 +241,7 @@ def test_review_two():
 def main():
     test_profile_and_props()
     test_box()
+    test_skills_and_snapshot()
     test_read_verdict_malformed()
     test_would_deny()
     test_review_two()
