@@ -124,6 +124,27 @@ try:
 except BW.BlandWorldError:
     ok = True
 check("control: a retile that does not read back raises (UNMEASURED, never trusted)", ok)
+# BLUEDESERT_FLORA_PLANT_REFUSAL_1: a temperature retile must null the tile's lazy min/max caches, or cold-only plants
+# keep being judged against the old warm climate; the restore resets them again; a reset that does not verify raises.
+w5 = dirty()
+rec5 = BW.retile(S(w5), "RM_BlueDesert", temperature=-5)
+check("a temperature retile resets the tile's temperature caches (none left stale)",
+      w5.cache_resets == [4375] and not w5.stale_temp_cache, str(getattr(w5, "cache_resets", None)))
+check("restore_tile resets the caches again after putting the temperature back",
+      BW.restore_tile(S(w5), rec5) == [] and w5.cache_resets == [4375, 4375] and not w5.stale_temp_cache)
+w6 = dirty()
+BW.retile(S(w6), "RM_Miasma")
+check("control: a biome-only retile leaves the temperature caches alone", not getattr(w6, "cache_resets", None))
+BW.restore_tile(S(w6), None)
+w7 = dirty()
+w7._t_jawa_world_tile_cache_reset = lambda **k: {"success": False, "verifiedNull": False, "message": "no field"}
+try:
+    BW.retile(S(w7), "RM_BlueDesert", temperature=-5)
+    ok = False
+except BW.BlandWorldError:
+    ok = True
+check("control: a cache reset that does not verify null raises (UNMEASURED, never trusted)", ok)
+BW._PENDING = None
 
 # paint_pond / restore_pond (BELT_WATER_HARNESS_1): painted, read back, restored; controls for a lying paint and a stale pending pond
 class TerrainSession(object):

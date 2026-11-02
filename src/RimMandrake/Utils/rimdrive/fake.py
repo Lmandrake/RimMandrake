@@ -177,10 +177,18 @@ class FakeWorld(object):
             self.map_biome = biome
         if temperature is not None:
             ov["temperature"] = temperature
+            self.__dict__.setdefault("stale_temp_cache", set()).add(int(tiles))   # the game's lazy min/max cache
         return {"success": True}
 
     def _t_jawa_world_commit(self, **_):
         return {"success": True}
+
+    def _t_jawa_world_tile_cache_reset(self, tiles=None, **_):
+        ids = [int(t) for t in (tiles or "").split(",") if t.strip()]
+        stale = self.__dict__.setdefault("stale_temp_cache", set())
+        self.__dict__.setdefault("cache_resets", []).extend(ids)
+        stale.difference_update(ids)
+        return {"success": bool(ids), "tilesReset": len(ids), "verifiedNull": bool(ids), "refused": []}
 
     def _t_jawa_list_pawns(self, includeHealth=False, includeCorpses=False, limit=500, faction=None, rect=None):
         rows = [copy.deepcopy(p) for p in self.pawns.values() if includeCorpses or not p["dead"]]

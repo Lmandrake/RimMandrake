@@ -300,6 +300,17 @@ SUITE_TEMPS = {"BlueDesert": -5}      # cold-only flora refuse the temperate bla
 _PENDING = None      # the un-restored retile() record: reset() and the runner restore it even after a crashed suite
 
 
+def reset_tile_caches(session, tile):
+    """Null the tile's lazy temperature caches after a temperature write. Tile.MinTemperature/MaxTemperature are
+    cached on first read and RimWorld never invalidates them; mapgen has already read the bland tile's warm min, so
+    without this PlantUtility.CanEverPlantAt keeps judging cold-only plants against the OLD climate and refuses them
+    (BLUEDESERT_FLORA_PLANT_REFUSAL_1). Returns None, or the problem as text (the write did not verify null)."""
+    r = session.call("jawa/world_tile_cache_reset", tiles=str(tile)) or {}
+    if not r.get("verifiedNull"):
+        return "world_tile_cache_reset did not verify the tile's temperature caches null: %s" % (r.get("message") or r)
+    return None
+
+
 def retile(session, biome, temperature=None):
     """Re-tile the CURRENT bland map's own world tile to `biome` (Map.Biome is a live passthrough to the tile, the
     Contagion precedent) so biome-keyed comps/weather/wildlife act as in that biome. `temperature` (C) optionally
@@ -329,6 +340,9 @@ def retile(session, biome, temperature=None):
         g2 = (session.call("jawa/world_tile_get", tiles=str(tile)).get("tiles") or [{}])[0]
         if abs(float(g2.get("temperature") if g2.get("temperature") is not None else 1e9) - float(temperature)) > 0.5:
             raise BlandWorldError("tile temperature reads %r after setting %s" % (g2.get("temperature"), temperature))
+        problem = reset_tile_caches(session, tile)
+        if problem:
+            raise BlandWorldError(problem)
     orig["applied"] = biome
     global _PENDING
     _PENDING = orig
@@ -424,6 +438,10 @@ def restore_tile(session, rec):
     if not r.get("success"):
         problems.append("restore world_tile_set refused: %s" % (r.get("message") or r))
     session.call("jawa/world_commit", redraw=False, recalcPaths=False)
+    if rec.get("temperature") is not None:
+        problem = reset_tile_caches(session, rec["tile"])
+        if problem:
+            problems.append("restore: " + problem)
     now = session.call("jawa/map_info").get("mapBiome")
     if rec.get("biome") and now != rec["biome"]:
         problems.append("map biome reads %r after restore, expected %r" % (now, rec["biome"]))
