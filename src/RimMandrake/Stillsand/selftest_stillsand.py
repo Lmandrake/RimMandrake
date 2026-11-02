@@ -447,6 +447,9 @@ class Fake(object):
             self.letter("Dust on the horizon: north-west")
         if warn:
             self.warned_fires = getattr(self, "warned_fires", 0) + 1
+        blocked = "traders_blocked" in self.b    # no trader group can generate here (the pre-carriers-fix site)
+        if blocked and not warn:
+            return {"success": False, "fired": False, "canFireNow": True, "blockedByDialog": False}
         if warn and self.warned_fires == 2:
             # the second warned fire is the turned-back path: this site's vanilla refuses the group at the
             # delayed fire (validation.py's note), so no one arrives and the retry window ends in a letter
@@ -454,12 +457,20 @@ class Fake(object):
                 self.sched.append((self.ticks + int(hours * 2500) + 2500,
                                    lambda: self.letter("The dust settled: the caravan turned back")))
         elif warn and "horizon_instant" not in self.b:
-            self.sched.append((self.ticks + int(hours * 2500), lambda: self.add_pawn("Trader", 5, 5, "Guild")))
+            if not blocked:
+                self.sched.append((self.ticks + int(hours * 2500), lambda: self.add_pawn("Trader", 5, 5, "Guild")))
         else:
             self.add_pawn("Trader", 5, 5, "Guild")
         return {"success": True, "fired": True, "blockedByDialog": False}
 
+    def t_incident_queue_peek(self, **k):
+        return {"success": True, "queue": []}
+
     def t_static_call(self, type=None, method=None, args=None, **k):
+        if type.endswith("RM_StillsandTraderProbe") and method == "Report":   # HORIZON_CARAVAN_VANILLA_REFUSES_1
+            n = 0 if "traders_blocked" in self.b else 3
+            return {"success": True, "result": "TRADERS biome=RM_Stillsand entryCell=True source=%d desperate=0 "
+                    "generable=%d | OutlanderCivil:src=True,desp=False,carrierAllowed=%s,gen=%s" % (3, n, n > 0, n > 0)}
         if type.endswith("RM_GaleTakenProof") and method == "Registered":
             return {"success": True, "result": "GALETAKEN registered=%s" % ("gale_not_taker" not in self.b)}
         if type.endswith("RM_WaterLedgerProof"):     # WATER_LEDGER_DOUBLE_CHARGE_1's row
@@ -737,6 +748,7 @@ BREAKS = {
     "horizon_instant": ["horizon.horizon_warns_then_arrives"],
     "horizon_ignores_toggle": ["horizon.horizon_toggle_off_vanilla"],
     "no_settled_letter": ["horizon.horizon_dust_settled_letter"],
+    "traders_blocked": ["horizon.horizon_warns_then_arrives"],
     "gale_not_taker": ["gale.gale_carry_is_a_taker_of_the_shared_service"],
     "caves_ignore_toggle": ["caves.genstep_off_no_cave_line"],
     "skeleton_ignores_toggle": ["caves.skeleton_placement_off_none"],

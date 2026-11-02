@@ -2077,9 +2077,14 @@ def horizon_chain(t):
             #   re-calls Storyteller.TryFire(queued: true), which our prefix passes straight through; TryFire
             #   is CanFireNow && Worker.TryExecute. In run 20261007T094214Z the vanilla arm (toggle off, no
             #   queue, no prefix) ALSO refused TraderCaravanArrival 4000 ticks later: canFireNow true, fired
-            #   false -> vanilla TryExecute itself refuses on this site (faction/traderKind/zero pawns from
-            #   GeneratePawns, warnOnZeroResults false = silent). So before blaming the queue, read the
-            #   queue and run the same incident through vanilla as a control.
+            #   false -> vanilla TryExecute itself refused. CAUSE (HORIZON_CARAVAN_VANILLA_REFUSES_1, decompiled
+            #   1.6): canFireNow true means a non-hostile trader faction passed FactionCanBeGroupSource, so it was
+            #   neither the donor list nor a world without traders; SpawnPawns returned 0 (warnOnZeroResults false =
+            #   silent) because PawnGroupKindWorker_Trader.CanGenerateFrom wants a carrier race in the biome's
+            #   allowedPackAnimals and RM_Stillsand admitted none a vanilla trader carried. Fixed 2026-10-11 by
+            #   Patches/RM_TraderCarriers_Stillsand.xml (Baroque Biomes toggle ownedCaravanCarriers). So before
+            #   blaming the queue, read the queue, run the same incident through vanilla as a control, and on a
+            #   refusal ask RM_StillsandTraderProbe.Report, which runs those engine predicates live.
             if not late:
                 q = t.bridge_call("jawa/incident_queue_peek")
                 mine = [row for row in ((q or {}).get("queue") or []) if row.get("defName") == "TraderCaravanArrival"]
@@ -2090,17 +2095,27 @@ def horizon_chain(t):
                 _note(t, "vanilla control fire (toggle off)", {k: (ctl or {}).get(k) for k in
                                                               ("fired", "canFireNow", "note")})
                 if not (ctl or {}).get("fired"):
+                    pr = t.bridge_call("jawa/static_call", type=NS + "RM_StillsandTraderProbe", method="Report", args="-")
+                    probe = str((pr or {}).get("result", "")) if isinstance(pr, dict) else ""
+                    _note(t, "trader probe after the vanilla refusal", probe[:600])
+                    gen = re.search(r"\bgenerable=(\d+)", probe)
+                    if gen and int(gen.group(1)) == 0 and " biome=%s " % BIOME in probe:
+                        _fail("no faction can send a trade caravan to the Stillsand at all (%s): a carrier the "
+                              "biome's allowedPackAnimals admits is missing from every trader group "
+                              "(RM_TraderCarriers_Stillsand.xml not applied, or ownedCaravanCarriers off?)" % probe[:300])
                     _unmeasured(t, "vanilla TraderCaravanArrival also refuses on this site with the horizon off "
                                    "(canFireNow %r, TryExecute false): the delayed fire failed for the same "
-                                   "vanilla reason, not in the queue" % (ctl or {}).get("canFireNow"))
+                                   "vanilla reason, not in the queue; trader probe: %s"
+                                % ((ctl or {}).get("canFireNow"), probe[:300] or str(pr)[:200]))
                 _fail("the warned group never arrived after the warning delay, while vanilla fires the same "
                       "incident at once (queue rows %r)" % mine)
             _STATE["horizon_new"] = list(late)
 
     with _comp(t, "horizon_dust_settled_letter", toggle="dustSettledLetterEnabled"):
         # DUST_SETTLED_LETTER_1 (SS-3). A warned group that never arrives gets a "The dust settled" letter once the queue's
-        # 1 h retry window is past (RM_HorizonMath); one that arrives gets none. The failure path is real on this site:
-        # vanilla refuses TraderCaravanArrival here (see the note above), so the fire below tends to exercise it.
+        # 1 h retry window is past (RM_HorizonMath); one that arrives gets none. Since the carriers fix (see the note above)
+        # vanilla fires TraderCaravanArrival here, so the group usually arrives and this row reads UNMEASURED (the
+        # turned-back path not exercised), not PASS.
         if _live(t):
             before = _letters(t)
             ids1 = set(_foreign(t))

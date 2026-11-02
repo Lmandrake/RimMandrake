@@ -81,6 +81,8 @@
     <!-- STILLSAND_SOLAR_STILL_1: solar still + wringing still -->
     <Compile Include="RM_SolarStill.cs" />
     <Compile Include="RM_WaterLedgerProof.cs" />
+    <!-- HORIZON_CARAVAN_VANILLA_REFUSES_1: read-only trader-arrival probe (static_call) -->
+    <Compile Include="RM_StillsandTraderProbe.cs" />
     <!-- STILLSAND_GEOPHONE_1: biosilica geophone -->
     <Compile Include="RM_Geophone.cs" />
     <!-- STILLSAND_SAND_SWIM_REMAINDER_1: thumper, drift depth, sand fishing, the Listening, settings -->

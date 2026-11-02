@@ -1,0 +1,1 @@
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/Utils/rimbridge_client.py)" --yes-i-know-this-is-live --timeout 60 --call jawa/static_call --json '{"type":"RimMandrake.Stillsand.RM_StillsandTraderProbe","method":"Report","args":"-"}' < /dev/null | grep -Eq 'TRADERS biome=RM_Stillsand entryCell=True source=[0-9]+ desperate=[0-9]+ generable=[1-9]'
