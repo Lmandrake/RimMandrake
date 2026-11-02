@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """selftest_donor_retire_standin.py -- `donor_retire_census.py standin` sees every StandIn/ text (any *Path tag, patch
-xpath defs), judges coverage per PICTURE against the artpipe queue, and names the states that block nothing yet
-(COLLIDES, DONOR_DEF), and exits 1 on any UNCOVERED or FAILED text, 0 otherwise; plus the two installer guards from the same item (STANDINS_RETIRE_AS_OUR_COATS_ARRIVE):
+xpath defs), judges coverage per PICTURE against the artpipe queue, and exits 0 ONLY when every text has a queued
+dregen_ row or a finished render (FAILED, UNCOVERED and COLLIDES each exit 1); the regen gate files a texture a patch
+of ours draws onto a donor's def; the stand-in job builder files only owed pictures; plus the two installer guards
+from the same item (STANDINS_RETIRE_AS_OUR_COATS_ARRIVE):
 bulk_accept_renders.own_text (a polluted / leafless sibling is no facing of the main text) and repoint_complete (a
 repoint never outruns its renders -- the RM_TarSealing.xml incident).
 
@@ -99,10 +101,11 @@ def census():
                   "a node patched onto a def is attributed to the def its xpath names", texts.get("StandIn/Eyes/Gold"))
 
             R = run(t, art)
-            check(all(r["state"] in ("UNCOVERED", "COLLIDES", "DONOR_DEF") for r in R.values())
+            check(all(r["state"] in ("UNCOVERED", "COLLIDES") for r in R.values())
                   and R["StandIn/Terrain/AB_Grass"]["state"] == "UNCOVERED", "an empty queue covers nothing",
                   {k: r["state"] for k, r in R.items()})
-            check(R["StandIn/Eyes/Gold"]["state"] == "DONOR_DEF", "a stand-in on a donor def only is DONOR_DEF",
+            check(R["StandIn/Eyes/Gold"]["state"] == "UNCOVERED",
+                  "a stand-in a patch draws onto a donor def is owed a job like any other (no DONOR_DEF pass)",
                   R["StandIn/Eyes/Gold"]["state"])
             check(R["StandIn/Plants/AB_Fern"]["state"] == "COLLIDES",
                   "a path another mod of ours ships is COLLIDES", R["StandIn/Plants/AB_Fern"]["state"])
@@ -220,6 +223,21 @@ def gene_icon_rows():
                   and r.get("install_to") == mod + "/Textures/UI/Icons/Genes/Gene_Fast.png"
                   and r.get("id") == "dregen_X_Fast_GeneFast_v1",
                   "a GeneDef iconPath stand-in gets a gene-icon job (Gene_PregnancyShort)", r)
+            # a random folder with one picture owed: only that picture is filed, as a plant
+            ptext = "StandIn/Things/Plants/RM_Tree"
+            for n in ("RM_TreeA", "RM_TreeB"):
+                g = t / mod / "Textures" / ptext / (n + ".png")
+                g.parent.mkdir(parents=True, exist_ok=True)
+                Image.new("RGBA", (64, 64)).save(g)
+            DRC.standin = lambda art=None: {"rows": [{
+                "state": "UNCOVERED", "text": ptext, "tags": ["texPath"], "files": [mod + "/Defs/Plants.xml"],
+                "defs": ["RM_Tree"], "pictures": {"Things/Plants/RM_Tree/RM_TreeA": "UNCOVERED",
+                                                  "Things/Plants/RM_Tree/RM_TreeB": "RENDERED"}}]}
+            DRC.standin_files = lambda m, tx: [(tx + "/RM_TreeA", None), (tx + "/RM_TreeB", None)]
+            rows = DRJ.standin_rows()
+            check([(x["install_to"], x["kind"]) for x in rows]
+                  == [(mod + "/Textures/Things/Plants/RM_Tree/RM_TreeA.png", "plant")],
+                  "the stand-in builder files only the owed picture of a folder, as a plant job", rows)
     finally:
         DRJ.REPO, DRJ._def_words, DRC.standin, DRC.standin_files = keep
 
@@ -232,7 +250,7 @@ EXIT_DEFS = """<Defs>
 
 
 def exit_code():
-    """The census's own exit code (`standin` exits 0 only when no text is UNCOVERED or FAILED): main() run end to end
+    """The census's own exit code (`standin` exits 0 only when every text is QUEUED/RENDERED): main() run end to end
     over a fixture tree and queue, so a broken BLOCKING or exit clause goes red here."""
     import contextlib
     import io
@@ -260,8 +278,10 @@ def exit_code():
             job(art, "pending", "dregen_RM_Q_v1", target_def="RM_Q", install_to=str(mod.relative_to(t)) +
                 "/Textures/Things/Q.png")
             code, st = rc()
-            check(code == 1 and st["StandIn/Things/R"] == "UNCOVERED",
-                  "standin exits 1 while a text is UNCOVERED", (code, st))
+            check(code == 1 and st["StandIn/Things/R"] == "UNCOVERED" and st["StandIn/Eyes/Gold"] == "UNCOVERED",
+                  "standin exits 1 while a text is UNCOVERED (a patch-drawn donor-def text too)", (code, st))
+            job(art, "pending", "dregen_Eyes_Gold_v1", target_def="Eyes_Gold", install_to=str(mod.relative_to(t)) +
+                "/Textures/Eyes/Gold.png")
             job(art, "done", "dregen_RM_R_v1", ok=False, target_def="RM_R", install_to=str(mod.relative_to(t)) +
                 "/Textures/Things/R.png")
             code, st = rc()
@@ -270,16 +290,37 @@ def exit_code():
             job(art, "done", "dregen_RM_R_v2", target_def="RM_R", install_to=str(mod.relative_to(t)) +
                 "/Textures/Things/R.png")
             code, st = rc()
-            check(code == 0 and st == {"StandIn/Things/Q": "QUEUED", "StandIn/Things/R": "RENDERED",
-                                       "StandIn/Plants/AB_Fern": "COLLIDES", "StandIn/Eyes/Gold": "DONOR_DEF"},
-                  "standin exits 0 when every text is QUEUED/RENDERED (COLLIDES, DONOR_DEF carry their items)",
+            check(code == 1 and st == {"StandIn/Things/Q": "QUEUED", "StandIn/Things/R": "RENDERED",
+                                       "StandIn/Plants/AB_Fern": "COLLIDES", "StandIn/Eyes/Gold": "QUEUED"},
+                  "COLLIDES alone blocks: a text whose un-StandIn path another mod ships has no render (exit 1)",
                   (code, st))
+            (t / "src/RimUtinni/ModB/Textures/Plants/AB_Fern.png").unlink()     # the rename landed: path is free
+            job(art, "pending", "dregen_RM_Fern_v1", target_def="RM_Fern", install_to=str(mod.relative_to(t)) +
+                "/Textures/Plants/AB_Fern.png")
+            code, st = rc()
+            check(code == 0 and set(st.values()) <= {"QUEUED", "RENDERED"},
+                  "standin exits 0 only when every text is QUEUED/RENDERED", (code, st))
     finally:
         DRC.REPO, DRC.SRC, BA.ART = keep
 
 
+def gate_patch_defs():
+    """regen_eligibility: a def our XML never defines is no renamed-away def when a patch of ours draws a texture on it
+    (Hutt eyes on [LFS] genes, HUTT_EYES_DECIDE_GENE_IS_NOT_OURS); a def nothing of ours names still is."""
+    import regen_eligibility as RE
+
+    class G:
+        def_tex, patch_defs, bound_subject = {}, {"Eyes_Gold"}, {}
+    check(RE.Gate._def_alias(G(), "Eyes_Gold") is None, "a patch-drawn donor def is judged, not refused as renamed")
+    check("no longer exists" in (RE.Gate._def_alias(G(), "Eyes_Gone") or ""), "an unnamed def is still refused")
+    G.bound_subject = {"eyes_gold": [("x", "binding b1 job j1")]}
+    check("renders are bound" in (RE.Gate._def_alias(G(), "Eyes_Gold") or ""),
+          "a patch-drawn def with renders bound to it is still refused as regenerated")
+
+
 if __name__ == "__main__":
     census()
+    gate_patch_defs()
     exit_code()
     installer_guards()
     gene_icon_rows()

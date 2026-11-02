@@ -20,7 +20,7 @@
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_Iashiphus</texPath>
+      <texPath>StandIn/Things/Plants/RM_Iashiphus</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.3, 0.2, 0.15)</volume>

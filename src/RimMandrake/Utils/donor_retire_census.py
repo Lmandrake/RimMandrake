@@ -28,9 +28,11 @@ standin  every element text in src/ Defs+Patches XML that starts `StandIn/` (ANY
         LANDED    the un-StandIn counterpart already exists in the same mod's Textures (repoint owed, not a render);
         FAILED    only failed jobs target it (requeue owed);   UNCOVERED  nothing targets it (file a job).
       FlowWorks is FOUNDRY's and listed apart (EXCLUDED), never counted as uncovered.
-      COLLIDES  another mod of ours already ships the un-StandIn path (a rename is owed before any render);
-        DONOR_DEF  the text decorates only a donor's def (a patch onto a donor gene): the regen gate never files it.
-      Exit 1 while any text is FAILED or UNCOVERED. Coverage is per picture (facings, random-folder files).
+      COLLIDES  another mod of ours already ships the un-StandIn path (a rename is owed before any render).
+      A text a patch of ours draws onto a donor's def (Hutt eyes on [LFS] genes) is judged like any other: the
+      regen gate files it (HUTT_EYES_DECIDE_GENE_IS_NOT_OURS).
+      Exit 0 ONLY when every non-EXCLUDED text is QUEUED, RENDERED or LANDED: FAILED, UNCOVERED and COLLIDES
+      each exit 1. Coverage is per picture (facings, random-folder files).
       SANITY: the walker must see a built-in probe text and the queue must be readable, else it exits unreported.
 """
 from __future__ import annotations
@@ -212,24 +214,9 @@ def srctex() -> dict:
     return {"index_built": ix.get("built"), "load_order": ix.get("load_order"), "rows": out}
 
 
-STANDIN_STATES = ("QUEUED", "RENDERED", "LANDED", "COLLIDES", "DONOR_DEF", "FAILED", "UNCOVERED")
-BLOCKING = ("FAILED", "UNCOVERED")
-STATE_ITEMS = {"COLLIDES": "STANDIN_PLANTS_RENAME_PATH_ALREADY_TAKEN", "DONOR_DEF": "HUTT_EYES_DECIDE_GENE_IS_NOT_OURS"}
-
-
-def our_defnames() -> set:
-    """Every defName a Defs/ XML of ours defines (patch-added defs included)."""
-    out = set()
-    for p in SRC.rglob("*.xml"):
-        if "/Defs/" not in p.as_posix() and "/Patches/" not in p.as_posix():
-            continue
-        try:
-            for el in ET.parse(p).getroot().iter("defName"):
-                if (el.text or "").strip():
-                    out.add(el.text.strip())
-        except (ET.ParseError, OSError):
-            continue
-    return out
+STANDIN_STATES = ("QUEUED", "RENDERED", "LANDED", "COLLIDES", "FAILED", "UNCOVERED")
+BLOCKING = ("FAILED", "UNCOVERED", "COLLIDES")      # a text is covered only by a queued row or a finished render
+STATE_ITEMS = {"COLLIDES": "STANDIN_PLANTS_RENAME_PATH_ALREADY_TAKEN"}
 
 
 def _collides(mod: str, pic: str) -> list:
@@ -363,7 +350,6 @@ def standin(art: Path | None = None, texts: dict | None = None) -> dict:
     if texts is None:
         texts = standin_texts()
     jobs = artpipe_jobs(art)
-    ours = our_defnames()
     rows = []
     for t, r in texts.items():
         orig = t.removeprefix("StandIn/")
@@ -387,13 +373,11 @@ def standin(art: Path | None = None, texts: dict | None = None) -> dict:
         for pic, v in list(per.items()):        # a refused/unfiled picture whose path another mod of ours already
             if v in ("FAILED", "UNCOVERED") and any(_collides(m, pic) for m in mods):   # ships: a rename is owed
                 per[pic] = "COLLIDES"
-        if r["defs"] and not set(r["defs"]) & ours:  # decorates only a DONOR def (a patch onto a donor gene): the
-            per = {p: ("DONOR_DEF" if v == "UNCOVERED" else v) for p, v in per.items()}   # gate never files it
         got = set(per.values())
         if excluded:
             state = "EXCLUDED"
         else:                                   # the worst picture decides; LANDED only when every picture has
-            state = next(s for s in ("UNCOVERED", "FAILED", "COLLIDES", "DONOR_DEF", "QUEUED", "RENDERED", "LANDED")
+            state = next(s for s in ("UNCOVERED", "FAILED", "COLLIDES", "QUEUED", "RENDERED", "LANDED")
                          if s in got)           # its un-StandIn twin on disk (a repoint is owed)
         uncovered_pics = sorted(p for p, v in per.items() if v not in ("QUEUED", "RENDERED", "LANDED"))
         rows.append({"text": t, "state": state, "queued": q, "rendered": done, "failed": failed,

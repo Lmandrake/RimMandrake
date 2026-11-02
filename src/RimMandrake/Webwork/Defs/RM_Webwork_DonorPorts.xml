@@ -13,7 +13,7 @@
     <label>deep jungle tree</label>
     <description>A towering, ancient tree with dense foliage and thick, twisting roots—its canopy forms part of the near-impenetrable roof of the deep jungle.\n\nBased on concept art for plants for Guild Wars.</description>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_JungleTree</texPath>
+      <texPath>StandIn/Things/Plants/RM_JungleTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.18, 0.3, 0.15)</volume>

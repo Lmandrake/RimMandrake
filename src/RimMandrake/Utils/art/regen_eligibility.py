@@ -22,6 +22,8 @@ Everything else is REFUSED, with the reason:
                        put in placeholder art for now or donor copies ...") is an install order, not a keep of the art.
   REFUSED_UNCONFIRMED  anything not proven: unknown provenance, a deployed-only copy of ours, an orphan path no def
                        draws, an unreadable file.
+A def our XML never defines is judged like one of ours when a patch of ours draws a texture onto it (a donor's
+GeneDef wearing our render node: HUTT_EYES_DECIDE_GENE_IS_NOT_OURS); one with renders bound to it is still REFUSED_REGEN.
 Fail closed: if the gate cannot be built (ledger, game-texture index, XML scan), `Gate()` raises GateError and the
 caller files NOTHING.
 
@@ -227,6 +229,7 @@ class Gate:
         self.def_tex = defaultdict(set)               # defName -> {texture texts} (our own defs)
         self.def_draws = defaultdict(set)             # defName -> {key(texture)}: its own XML, its PawnKindDefs, and
         #                                               patches whose xpath names it (#4: per-target-def attribution)
+        self.patch_defs = set()                       # defNames a patch of ours draws a texture onto (a donor's gene too)
         self.surface_defs = {}                        # TerrainDef/WeatherDef defName -> (mod dir, {defName, overlay class names})
         for x in src.rglob("*.xml"):
             r = x.relative_to(self.repo).as_posix()
@@ -244,6 +247,7 @@ class Gate:
                     for el in op.iter():
                         if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
                             self.def_draws[name].add(key(el.text))
+                            self.patch_defs.add(name)
             for d in root.iter():
                 dn = (d.findtext("defName") or "").strip() if isinstance(d.tag, str) else ""
                 if dn and d.tag in ("TerrainDef", "WeatherDef"):
@@ -408,14 +412,16 @@ class Gate:
         """The def is gone from our XML: renamed? (subject aliases, renders bound to the old or new subject)."""
         if not dn or dn in self.def_tex:
             return None
+        hits = [s for s in self.bound_subject if s.lower() == dn.lower()]
+        if hits:
+            return f"def {dn} no longer exists and renders are bound to it ({self.bound_subject[hits[0]][0][1]})"
+        if dn in self.patch_defs:       # a donor's def (Hutt eyes on [LFS] genes) that a patch of ours draws a texture
+            return None                 # on: that texture is ours to redraw (HUTT_EYES_DECIDE_GENE_IS_NOT_OURS)
         try:
             import artledger as A
             canon = A.canonical_subject(A.subject_key(dn))
         except Exception:                                              # noqa: BLE001
             canon = dn.lower()
-        hits = [s for s in self.bound_subject if s.lower() == dn.lower()]
-        if hits:
-            return f"def {dn} no longer exists and renders are bound to it ({self.bound_subject[hits[0]][0][1]})"
         return f"def {dn} no longer exists in our XML (subject {canon}): renamed or removed"
 
     def _def_now_regen(self, dn: str) -> str | None:

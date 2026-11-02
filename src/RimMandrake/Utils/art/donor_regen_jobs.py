@@ -780,6 +780,9 @@ def standin_rows() -> list:
             files = [(k, None) for k, f in fs if not f] + ([(t, "facings")] if facings else [])
             for k, how in files:
                 orig = k.removeprefix("StandIn/")
+                pics = [f"{orig}_{f}" for f in facings] if how else [orig]
+                if all(r.get("pictures", {}).get(q) in ("QUEUED", "RENDERED", "LANDED") for q in pics):
+                    continue                    # this picture is covered; only the owed ones of the text get a job
                 one = REPO / mod / "Textures" / (k + (f"_{facings[0]}" if how else "") + ".png")
                 w, h = Image.open(one).size
                 polluted = "pollutedTexturePath" in tags
@@ -796,14 +799,21 @@ def standin_rows() -> list:
                               "bottom centre.")
                 elif "/Eyes/" in t:
                     kind, bg, style = "icon", "transparent", HOUSE
+                    # HuttEyes_RestoreRenderNodes.xml: the donor's wide flat oval makes two Hutt eyes read as one
+                    # mass at any drawSize; "THE REAL FIX IS ART": a NARROWER, TALLER eye opens the gap
                     prompt = (f"A single stylised eye overlay for a RimWorld pawn head, front view: {name} — a "
-                              f"{'vertical slit-pupil feline' if 'Feline' in t else 'reptilian slit-pupil'} iris, "
-                              "drawn small and readable, centred, nothing else on the canvas.")
+                              f"{'vertical slit-pupil feline' if 'Feline' in t else 'reptilian slit-pupil'} iris in a "
+                              "NARROW, TALL upright oval (about twice as tall as wide), thin dark outline, the slit "
+                              "pupil thin; drawn small and readable, centred, nothing else on the canvas.")
                 elif "/Icons/Genes/" in t:
                     kind, bg, style = "icon", "transparent", GENE_ICON_STYLE
                     prompt = (f"RimWorld gene icon in the vanilla Biotech gene-icon style: one flat, readable glyph "
                               f"for the gene '{name}'. {desc} Pale grey-white glyph, soft shading, centred, no text, "
                               "no frame.")
+                elif "/Plants/" in t:
+                    kind, bg, style = "plant", "transparent", HOUSE
+                    prompt = (f"RimWorld plant sprite, painterly: the {name}. {desc} Our own original design, drawn "
+                              "fresh; not a recognisable Earth plant. One plant, centred, base at bottom centre.")
                 elif "/Projectile" in t:
                     kind, bg, style = "item", "transparent", HOUSE
                     prompt = (f"RimWorld projectile sprite seen from above, painterly: a {name} — a small glowing "

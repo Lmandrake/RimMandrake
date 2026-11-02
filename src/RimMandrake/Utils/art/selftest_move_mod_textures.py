@@ -80,6 +80,29 @@ def main():
         print("raised:", type(e).__name__, e)
     check(ok and (old / "A" / "x.png").is_file(), "--leave-kept with a refused copy finishes and keeps the old PNG")
 
+    # --only: a one-path rename inside one mod moves and retires that path, nothing else (STANDIN_PLANTS_RENAME_...)
+    one = tmp / "src" / "One" / "Textures"
+    (one / "P").mkdir(parents=True)
+    for rel, data in (("P/AB_a.png", red), ("P/keep.png", green)):
+        (one / rel).write_bytes(data)
+        L.append({"type": "live", "mod": "src/One", "rel": rel, "sha": L.store_put_bytes(data), "prev": None,
+                  "reason": "fixture"})
+    with contextlib.redirect_stdout(io.StringIO()):
+        M.main([str(one), str(one), "--only", "P/AB_a.png", "--rel-from", "P/AB_a.png", "--rel-to", "P/RM_a.png"])
+    live = L.Index().live
+    check((one / "P" / "RM_a.png").read_bytes() == red and ("src/One", "P/RM_a.png") in live
+          and not (one / "P" / "AB_a.png").exists() and ("src/One", "P/AB_a.png") not in live,
+          "--only renames the one path: live at the new name, retired at the old")
+    check((one / "P" / "keep.png").is_file() and ("src/One", "P/keep.png") in live,
+          "--only leaves every other picture of the tree live")
+    try:
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            M.main([str(one), str(one)])
+        refused = False
+    except SystemExit:
+        refused = True
+    check(refused and (one / "P" / "keep.png").is_file(), "old == new without --only is refused (no self-sync)")
+
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAIL")
     return 1 if FAILS else 0
 

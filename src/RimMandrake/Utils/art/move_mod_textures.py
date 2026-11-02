@@ -17,6 +17,10 @@ alike, for a defName rename that is baked into texture names (BIOME_DEFNAME_MIGR
 --leave-kept moves NOTHING that is owner-kept or shares a folder with an owner-kept PNG (a
 Graphic_Random/Multi set stays whole) — no copy, no retire — so a rename can leave a stub at the
 old path instead of shipping each kept picture twice (CRACKEDLANDS_FULL_RENAME_1).
+--only REL (repeatable) moves only the files whose rel path is REL or lies under folder REL, and
+retires exactly those (old and new may then be the same Textures/ dir): a single texPath rename
+inside one mod (STANDIN_PLANTS_RENAME_PATH_ALREADY_TAKEN: StandIn/Things/Plants/AB_Iashiphus.png ->
+--rel-from …/AB_Iashiphus.png --rel-to …/RM_Iashiphus.png).
 Commit infrastructure/state/art/events/<SEAT>.jsonl with the moved files.
 """
 from __future__ import annotations
@@ -39,21 +43,27 @@ def main(argv=None) -> int:
     ap.add_argument("--sub", action="append", default=[], metavar="OLD=NEW")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--leave-kept", action="store_true")
+    ap.add_argument("--only", action="append", default=[], metavar="REL")
     a = ap.parse_args(argv)
     old, new = Path(a.old).resolve(), Path(a.new).resolve()
     if old.name != "Textures" or new.name != "Textures":
         ap.error("both arguments must be Textures/ directories")
     if not old.is_dir():
         ap.error(f"{old} does not exist")
+    if old == new and not a.only:
+        ap.error("old == new needs --only (a whole-tree sync onto itself would retire every picture)")
     tw = TextureWriter(__file__, dry_run=a.dry_run, quiet=False)
     stay_dirs = set()
+    import artledger as L
     if a.leave_kept:
-        import artledger as L
         idx = L.cached_index()
         stay_dirs = {f.parent for f in old.rglob("*.png") if idx.protected(L.sha256_file(f))}
     moved, srcs = 0, []
     for f in sorted(old.rglob("*")):
         if not f.is_file():
+            continue
+        if a.only and not any(f.relative_to(old).as_posix() == o or f.relative_to(old).as_posix().startswith(o.rstrip("/") + "/")
+                              for o in a.only):
             continue
         if f.parent in stay_dirs:
             print(f"left (owner-kept folder): {f.relative_to(old).as_posix()}")
@@ -79,7 +89,7 @@ def main(argv=None) -> int:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, dest)
         moved += 1
-    if a.leave_kept:
+    if a.leave_kept or a.only:            # retire exactly what was moved, never the rest of the tree
         retired = 0
         for f in srcs:
             if f.suffix.lower() == ".png":
