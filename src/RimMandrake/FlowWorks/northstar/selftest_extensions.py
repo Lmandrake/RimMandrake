@@ -183,6 +183,8 @@ def _natural_slime_rate_probs(EXT):
         slip_cs = open(os.path.join(src, "RM_SlimeSlip.cs"), encoding="utf-8").read()
         green = open(os.path.join(MOD, "Defs", "LiquidTypes", "TerrainDefs", "RM_SlimeGreen.xml"), encoding="utf-8").read()
         ext = open(EXT if isinstance(EXT, str) else getattr(EXT, "__file__"), encoding="utf-8").read()
+        ground_patch = open(os.path.join(MOD, "Patches", "Canals", "RM_SlipperySlimeGround.xml"), encoding="utf-8").read()
+        fluids = open(os.path.join(MOD, "Defs", "Canals", "FluidDefs", "FlowWorks_Fluids.xml"), encoding="utf-8").read()
     except OSError as e:
         return ["natural slime rate: a source is unreadable (%s)" % e]
     base = re.search(r"BaseSlipChance\s*=\s*([0-9.]+)f", math_cs)
@@ -200,11 +202,24 @@ def _natural_slime_rate_probs(EXT):
     if not re.search(r"SlipChance\(ground\.slipperiness,\s*1,\s*1,\s*false,\s*false,", slip_cs):
         out.append("RM_SlimeSlip no longer rolls natural ground as SlipChance(s, 1, 1, false, ...): re-derive this check")
     # the canal wader fixture: dug D2, filled 2 (brim)
-    canal = re.search(r"def _slime_canal\(.*?_dig_run\(t, cells, (\d+)\).*?_fill_fluid\(t, x, z, (\d+),", ext, re.S)
+    canal = re.search(r"def _slime_canal\(.*?_dig_run\(t, cells, (\d+)\).*?_fill_fluid\(t, x, z, (\d+),\s*\"(\w+)\"", ext, re.S)
     if not canal:
-        return out + ["natural slime rate: _slime_canal's dig depth / fill not found in extensions.py"]
-    d, f = int(canal.group(1)), int(canal.group(2))
-    nat, wad = chance(1.0, 1, 1), chance(1.0, f, d)
+        return out + ["natural slime rate: _slime_canal's dig depth / fill / fluid not found in extensions.py"]
+    d, f, wader_fluid = int(canal.group(1)), int(canal.group(2)), canal.group(3)
+    # the REAL slipperiness of each side, read from the defs (never assumed): the natural ground's RM_SlipperyTerrain
+    # patch extension, and the wader fluid's FluidDef field
+    g = re.search(r'TerrainDef\[defName="RM_SlimeGreenShallow"\]</xpath>\s*<value>\s*<li Class="RimMandrake\.FlowWorks\.'
+                  r'RM_SlipperyTerrain">(.*?)</li>', ground_patch, re.S)
+    fl = re.search(r"<defName>%s</defName>(.*?)</[\w.]*FluidDef>" % re.escape(wader_fluid), fluids, re.S)
+    if not g or not fl:
+        return out + ["natural slime rate: RM_SlimeGreenShallow's RM_SlipperyTerrain patch or %s's FluidDef not found"
+                      % wader_fluid]
+    gs = re.search(r"<slipperiness>([0-9.]+)</slipperiness>", g.group(1))
+    fs = re.search(r"<slipperiness>([0-9.]+)</slipperiness>", fl.group(1))
+    # an absent field takes the C# default (RM_SlipperyTerrain.slipperiness = 1f; FluidDef reads 0 = not slippery)
+    ground_slip = float(gs.group(1)) if gs else 1.0
+    fluid_slip = float(fs.group(1)) if fs else 0.0
+    nat, wad = chance(ground_slip, 1, 1), chance(fluid_slip, f, d)
     if abs(nat - wad) > 1e-9:
         out.append("natural slime rolls %.3f/s but the canal wader %.3f/s: not the same slip rate" % (nat, wad))
     # 7 cardinal steps along the strip by a 13-tick pawn (cell cost 13 + pathCost), one roll per IntervalTicks walking
