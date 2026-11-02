@@ -6,6 +6,8 @@ required_checks_report counted 0 proven. No game here: validation_v2 runs its ow
 with its blocks stubbed, and the fingerprint is stubbed at mod_fingerprint (its own logic: selftest_run_identity).
 Both scripts also run on their DEFAULT wiring, the one a real live run takes: run_live with mock=False and no `identity`
 argument, proof_all with its own _RI. The bug this item names lives in that default, so nothing above mod_fingerprint is faked.
+WHEN each fingerprint is taken is proven too: the fake fingerprint and the fake game share one event log and the hash is
+the count of game events so far, so a fingerprint can only pass by standing before the first and after the last of them.
 """
 import argparse
 import contextlib
@@ -30,6 +32,8 @@ import run_identity as RI  # noqa: E402
 FAILS = []
 DLL = "d" * 64
 CUR = "c" * 64
+FP = "<fingerprint>"
+SWEEP = "jawa/window_list_close"   # run_situational's dialog sweep: reads after the end fingerprint, moves nothing
 
 
 def check(name, cond, detail=""):
@@ -54,15 +58,45 @@ def fake_fp(calls, state="in-sync", moved=False):
     return fp
 
 
+def fp_on_log(log):
+    """A deploy that moves with the game: the hash is how many game events have happened. Run order, not call order."""
+    def fp(mod, dm=None, mods_dir=None):
+        h = "g%d" % sum(1 for e in log if e != FP)
+        log.append(FP)
+        return {"mod": mod, "state": "in-sync", "src_hash": h, "deployed_hash": h, "src_dirty": False}
+    return fp
+
+
+def timing(res, log, mod, tmp, tag, want_between):
+    """First fingerprint before anything touched the game, last one after everything but the closing dialog sweep.
+    `want_between(between)` says the run's own work really lies between them, and so the phase list was reached."""
+    idx = [i for i, e in enumerate(log) if e == FP]
+    check("%s: two fingerprints on the log" % tag, len(idx) == 2, idx)
+    if len(idx) != 2:
+        return
+    between, tail = log[idx[0] + 1:idx[1]], log[idx[1] + 1:]
+    ri = res.get("run_identity") or {}
+    start, end = ri.get("deploy_start") or {}, ri.get("deploy_end") or {}
+    check("%s: start fingerprint precedes the first game event" % tag, idx[0] == 0, log[:idx[0] + 1][:5])
+    check("%s: the run lies between the fingerprints" % tag, want_between(between), between[-5:])
+    check("%s: end fingerprint follows the last game event" % tag, set(tail) <= {SWEEP}, sorted(set(tail))[:5])
+    check("%s: the recorded start hash is the one before the run" % tag, start.get("src_hash") == "g0", start)
+    check("%s: the recorded end hash is the one after the run" % tag,
+          end.get("src_hash") == "g%d" % len(between), (end, len(between)))
+    check("%s: a deploy moved during the run is not proven" % tag, proven(res, mod, tmp, tag + "_moved")[0]["proven"] == 0)
+
+
 def clean_window(tool, **kw):
     return {"success": False, "message": "No open window's type name contains it"}
 
 
 class Game(object):
-    def __init__(self, dialog_open=False, broken=False):
-        self.dialog_open, self.broken = dialog_open, broken
+    def __init__(self, dialog_open=False, broken=False, log=None):
+        self.dialog_open, self.broken, self.log = dialog_open, broken, log
 
     def call(self, tool, **kw):
+        if self.log is not None:
+            self.log.append(tool)
         if self.broken:
             raise OSError("bridge gone")
         if self.dialog_open and tool == "jawa/window_list_close":
@@ -75,6 +109,17 @@ def mock_bridge(V2):
     b = V2.MockBridge([])
     inner = b.call
     b.call = lambda tool, **kw: clean_window(tool) if tool == "jawa/window_list_close" else inner(tool, **kw)
+    return b
+
+
+def logged_bridge(V2, log):
+    b = mock_bridge(V2)
+    inner = b.call
+
+    def call(tool, **kw):
+        log.append(tool)
+        return inner(tool, **kw)
+    b.call = call
     return b
 
 
@@ -142,6 +187,28 @@ def main():
         with contextlib.redirect_stdout(io.StringIO()):
             moved = V2.run_live(copy.copy(a), B=mock_bridge(V2), identity=RI)
         check("v2: redeployed mid-run is not proven", proven(moved, "FlowWorks", tmp, "v2moved")[0]["proven"] == 0)
+        # default wiring again, on one event log with the game: WHEN each fingerprint is taken
+        log = []
+        RI.mod_fingerprint = fp_on_log(log)
+        with contextlib.redirect_stdout(io.StringIO()):
+            timed = V2.run_live(argparse.Namespace(**dict(vars(a), mock=False)), B=logged_bridge(V2, log))
+        check("v2 timing: the whole phase list ran", timed["aborted"] is None and any(r["id"] == "Z_settings_restored" for r in timed["rows"]),
+              timed["aborted"])
+        timing(timed, log, "FlowWorks", tmp, "v2 timing", lambda between: len(between) >= 100 and between[-1:] != [SWEEP])
+        # a run that aborts mid-phases still ends on a fingerprint
+        log = []
+        RI.mod_fingerprint = fp_on_log(log)
+
+        def abort_here(L, args):
+            raise V2.Abort("selftest abort")
+        phase_A, V2.phase_A = V2.phase_A, abort_here
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                cut = V2.run_live(argparse.Namespace(**dict(vars(a), mock=False)), B=logged_bridge(V2, log))
+        finally:
+            V2.phase_A = phase_A
+        check("v2 aborted: the abort happened", cut["aborted"] == "selftest abort", cut["aborted"])
+        timing(cut, log, "FlowWorks", tmp, "v2 aborted", lambda between: len(between) > 0)
         calls3 = []
         RI.mod_fingerprint = fake_fp(calls3, state="drift")
         with contextlib.redirect_stdout(io.StringIO()):
@@ -150,7 +217,8 @@ def main():
 
         # ---- proof_all, through main()
         PA = load("_cpa", os.path.join(RM, "GimmeSomeSlack", "northstar", "proof_all.py"))
-        game = Game()
+        track = []                     # blocks, restore and game calls, in run order
+        game = Game(log=track)
 
         class P(PA.Proof):
             def __init__(self, args):
@@ -160,6 +228,7 @@ def main():
                 self.res = {"mod": PA.V.MOD, "script": "proof_all.py", "mode": "live", "rows": self.rows, "blocks": self.blocks}
 
             def block(self, name, fn):
+                track.append("block:" + name)
                 self.res["env"] = {"running": ["x"]}
                 self.res["site_save"] = {"verified": True}
                 self.rows.append({"id": "P1_x", "status": "PASS", "class": "MOD", "detail": "", "block": "preflight"})
@@ -168,7 +237,7 @@ def main():
                 return False
 
             def restore(self):
-                pass
+                track.append("restore")
 
         PA.Proof = P                   # PA._RI stays the real one: its import is the wiring under test
         out = os.path.join(tmp, "proof_all_r.json")
@@ -183,11 +252,18 @@ def main():
         check("proof_all: situational bland + companion", pa.get("situational", {}).get("bland") is True and
               pa["situational"].get("companion") is True, pa.get("situational"))
         check("proof_all: the report counts it proven", proven(pa, PA.V.MOD, tmp, "paok")[0]["proven"] > 0)
+        del track[:]
+        RI.mod_fingerprint = fp_on_log(track)
+        out_t = os.path.join(tmp, "proof_all_timed.json")
+        with contextlib.redirect_stdout(io.StringIO()):
+            PA.main(["--live", "--skip-offline", "--allow-red", "x", "--out", out_t])
+        timing(json.load(open(out_t, encoding="utf-8")), track, PA.V.MOD, tmp, "proof_all timing",
+               lambda between: between[:1] == ["block:preflight"] and "block:log_budget" in between and between[-1:] == ["restore"])
 
         # a run that raises still gets its end fingerprint
         calls5 = []
         RI.mod_fingerprint = fake_fp(calls5)
-        P.block = lambda self, name, fn: (_ for _ in ()).throw(RuntimeError("boom"))
+        P.block = lambda self, name, fn: (track.append("block:" + name), (_ for _ in ()).throw(RuntimeError("boom")))
         out2 = os.path.join(tmp, "proof_all_raised.json")
         try:
             with contextlib.redirect_stdout(io.StringIO()):
@@ -196,6 +272,16 @@ def main():
             pass
         raised = json.load(open(out2, encoding="utf-8"))
         identity_shape(raised, PA.V.MOD, 2, calls5, "proof_all raised")
+        del track[:]
+        RI.mod_fingerprint = fp_on_log(track)
+        out3 = os.path.join(tmp, "proof_all_raised_timed.json")
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                PA.main(["--live", "--skip-offline", "--out", out3])
+        except RuntimeError:
+            pass
+        timing(json.load(open(out3, encoding="utf-8")), track, PA.V.MOD, tmp, "proof_all raised timing",
+               lambda between: between == ["block:preflight", "restore"])
 
         # ---- run_situational's honesty
         check("situational: a dialog left open is a modal surprise",
