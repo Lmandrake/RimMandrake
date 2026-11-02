@@ -53,9 +53,18 @@ Each run is `claude -p` and ends itself; `seat_restart.py request --now` is for 
 Every cap and budget is in WEIGHTED tokens (input-equivalent, `role_launch.TOKEN_WEIGHTS`): input 1, cache write 1.25 (5m)
 or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the context was re-read. Values (schedule,
 2026-10-28, basis in its `_caps_why`): `run_token_cap` 450,000 (your first real run, an alarm run of 15 turns, weighed
-285,538; it counted 1,121,450 raw); `economy_token_cap` 550,000; `daily_token_cap` 1,650,000: the 07:30 economy run,
-the 19:30 run and one alarm run a day, with headroom; scheduled runs are reserved first. The run record keeps
-`raw_tokens` beside `tokens` for comparison.
+285,538; it counted 1,121,450 raw); `economy_token_cap` 550,000; `daily_token_cap` 4,600,000 (2026-11-02,
+OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS): the EXPECTED day, the 07:30 economy run, the 19:30 run, two alarm runs and
+six incident runs. Your caps are ADVISORY (`caps_advisory`, owner 2026-11-02: *"a token limit for operations must be
+advisory only. We can't have the system crash because we couldn't afford to watch. At the same time if it becomes
+expensive it requires immediate action for sure. But not starving it or failing to do maintenance."*): no band,
+budget, daily cap or daily alarm-run count refuses, delays, skips or shrinks your run. A run over its budget
+(`role:Operations:overbudget`) or a day past the expected total (`role:Operations:overspend_day`) raises an immediate
+alarm with a RAISE FIRST line in the Conductor log: the cost is fixed fast, and you keep your runs cheap. At
+1,650,000 as a hard cap it admitted four runs a day and refused every incident run after, each refusal sending its
+incidents to his rung. The run record keeps `raw_tokens` beside `tokens` for
+comparison; a run with no result (killed, frozen) is counted from its transcript (`token_source: transcript`,
+pinned by `--session-id`), and only a run with neither is charged its full budget.
 
 ## Throttle: runway bands, neutralised
 
@@ -68,8 +77,9 @@ runs all go whatever the band. Restoring a band is the owner's.
 A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm, not treated as a band;
 ops_watch's death is covered by the dead-man timer.
 
-How the caps really bind (code, `role_launch.py`): `claude -p` cannot be stopped at a token budget. A run is
-REFUSED at launch when today's spend plus its budget would pass `daily_token_cap`; its usage is counted after it
+How the caps really bind (code, `role_launch.py`): `claude -p` cannot be stopped at a token budget. For you they
+are advisory (above); for a role without `caps_advisory` a run is REFUSED at launch when today's spend plus its budget
+would pass `daily_token_cap`; its usage is counted after it
 finishes, and a run over its budget raises an alarm after the fact. The one real stop is wall time: a run still going
 after `run_max_s` is stopped by the Dispatcher with an alarm. So: keep your run short, and do not rely on being cut off
 at a token count. If you are stopped, say in your note what was left undone. The caps are read from the schedule, never
@@ -85,7 +95,11 @@ do nothing, exit.
    the open ones; an alarm key `alarm:incident:<id>#<n>` means you are that incident's reader. Take it:
    `rimflow ack <id> --plan "<next>"`. An ack gives ownership only and sets recover_by; a read or a note is not one, and
    past recover_by it moves up the chain, acked or not. It closes on its readings alone. Launched as a fresh run for an
-   incident about to reach him, write the line he sees: `rimflow incident-line <id> "<line>"`, which is not an ack. The
+   incident about to reach him, write the line he sees: `rimflow incident-line <id> "<line>"`, which is not an ack.
+   At his rung an incident is never left to sit: `owner_revisit_min` (240) after it reached him or was last revisited,
+   or at its recover_by if you acked it for longer, it is revisited: its ack and plan are cleared (the old plan kept as
+   `last_plan`) and you are asked a fresh run naming it. Re-read it then: fixed, say so; still yours, ack it again with
+   a real current plan; truly his, rewrite his line saying exactly what he must do. The
    routing table `rimflow/alarm_routes.json` is yours: every alarm kind has a route there or a selftest fails.
 1. Read `digest.md`. For each open alarm: is it real (the instrument can see: check the point's mark and `why`), who
    owns the cause, and what moves it. A RUNWAY_LOW on an ESTIMATE runway is checked against the meter first. A lent account alarms on `accounts.<account>.loan_runway` (its allowance against the lent window); its `runway` stays the week figure and raises nothing.

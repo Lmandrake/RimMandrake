@@ -1,0 +1,2 @@
+An escalation ladder needs a top-rung re-trigger: incident.next_due returned None at OWNER_RUNG, so seven incidents sat at his rung for a day with stale or empty plans and nothing ever asked Operations again; and a daily cap sized for the scheduled runs plus one alarm run turned every refused incident run into an instant jump to his rung (dispatcher.denied_runs). Fixed by owner_revisit_min and a cap sized to the measured incident load (OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS).
+home: src/RimMandrake/rimflow/incident.py

@@ -14,6 +14,10 @@ The Dispatcher tick runs step() in decide (pure) and execute() in its execute pa
     Conductor, a fresh Operations run, him. The last agent writes his line (`rimflow incident-line`); with none, the
     fixed template goes out marked unread, his accepted exception. A rung does not move while the readings are sane.
   * it closes only on reading: every metric seen sane for sustain_min (event_quiet_min for a signal).
+  * at his rung it is never left to sit: past recover_by (acked) or owner_revisit_min after it reached him or was last
+    revisited (unacked), it is REVISITED -- the ack and plan go, and a fresh Operations run is rung to re-read it and
+    resolve it, re-ack it with a current plan, or rewrite his line (OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS: seven
+    incidents sat at rung 3 for a day with recover_by long past, because nothing came after him).
 incidents.json is the snapshot stamped every tick: pulse reads its `owner` rows, the deadman reads its age.
 """
 import fnmatch
@@ -135,11 +139,14 @@ def chain_of(table, inc):
 def next_due(table, inc):
     """Epoch of the next move up the chain, or None at the top."""
     rung = inc["rung"]
-    if rung >= OWNER_RUNG:
-        return None
+    pol = table["policy"]
+    if rung >= OWNER_RUNG:                  # his rung: revisited, never climbed; an ack lengthens the wait, never shortens it
+        if not pol.get("owner_revisit_min"):
+            return None
+        floor = inc["rung_t"] + pol["owner_revisit_min"] * 60
+        return max(floor, inc["recover_by_t"]) if inc.get("acked_t") else floor
     if inc.get("acked_t"):
         return inc["recover_by_t"]
-    pol = table["policy"]
     at = inc["ack_min"] if rung == 0 else pol["ladder"][inc["class"]][rung - 1]
     return max(inc["told_t"] + at * 60, inc["rung_t"] + (pol["min_step_min"] * 60 if rung else 0))
 
@@ -153,6 +160,17 @@ def ring_of(table, inc, now, rung=None):
     if reader == "Operations:fresh":
         why += " This incident reaches him next: write his line, rimflow incident-line %s \"<line>\"." % inc["id"]
     return {"id": inc["id"], "how": how or "doorbell", "reader": reader, "seat": None if how else reader, "text": why}
+
+
+def revisit_ring(inc, was_plan):
+    """The ring of an incident at his rung whose plan ran out: one fresh Operations run, batched with the pass's other
+    fresh rings (dispatcher.incident_execute)."""
+    i = inc["id"]
+    return {"id": i, "how": "fresh_run", "reader": "Operations:fresh", "seat": None, "text": (
+        "INCIDENT %s (%s, at his rung, revisit %d): %s. Its plan ran out%s. Re-read it now: fixed, say so (it closes on "
+        "its readings); else rimflow ack %s --plan \"<the current next step>\" [--recover-min N]; and rewrite his line, "
+        "rimflow incident-line %s \"<line>\"." % (i, inc["class"], inc.get("revisits", 0), ", ".join(sorted(inc["metrics"])),
+                                                    " (was: %s)" % str(was_plan)[:160] if was_plan else "", i, i))}
 
 
 def template(inc):
@@ -262,7 +280,12 @@ def step(table, rows, status, now, cursor=0, events=None):
         elif False in states and inc.get("sane_since"):
             emit("relapsing", inc, sane_since=None)
         due = next_due(table, inc)
-        if due is not None and now >= due and not inc.get("sane_since"):
+        if due is not None and now >= due and not inc.get("sane_since") and inc["rung"] >= OWNER_RUNG:
+            was = inc.get("plan")
+            emit("revisited", inc, rung_t=now, acked_t=None, ack_by=None, plan=None, last_plan=was, recover_by=None,
+                 recover_by_t=None, revisits=inc.get("revisits", 0) + 1)
+            rings.append(revisit_ring(inc, was))
+        elif due is not None and now >= due and not inc.get("sane_since"):
             r = inc["rung"] + 1
             f = dict(rung=r, rung_t=now, acked_t=None, ack_by=None, plan=None, recover_by=None, recover_by_t=None)
             was = bool(inc.get("acked_t"))

@@ -1636,6 +1636,7 @@ def role_obs(sch):
         "account": RL.resolve_account,
         "unit_state": RL.unit_state,
         "result": RL.read_result,
+        "transcript": RL.transcript_usage,
         "off": RL.off_switch,
         "scope": RL.scope_of,
         "procs": RL.procs_of,

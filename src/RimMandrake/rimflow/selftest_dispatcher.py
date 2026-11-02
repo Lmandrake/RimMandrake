@@ -1115,7 +1115,9 @@ def test_role_real_schedule_caps_and_ops_bands():
                   % (r["name"], bn))
     # The LIVE bands were neutralized (owner 2026-10-28: "Stop the whole account rated RED on runeway crap. Just do
     # the checkout."), so the rows below test the band MECHANISM on a frozen copy of the old Operations bands.
-    o_old = dict(o, throttle_bands=OPS_BANDS_FROZEN)
+    # the band MECHANISM, on a role whose caps bind; Operations' own caps are advisory (owner 2026-11-02, below)
+    o_old = dict(o, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False)
+    check(o.get("caps_advisory") is True, "schedule: Operations caps are advisory (owner 2026-11-02, e7069d65ba)")
     for r in sch["roles"]:
         check(all(b.get("slots", "all") == "all" and float(b.get("quick_cap_x", 1.0)) >= 1.0
                   for b in r["throttle_bands"].values()),
@@ -1154,6 +1156,19 @@ def test_role_real_schedule_caps_and_ops_bands():
                               robs(ops_status(ev, runway=rw, week_left=wl, alarms=al)), ev))
         check(bool([x for x in a if x["do"] == "role_launch"]) == want,
               "Ops alarm run at runway %s week_left %s: %s" % (rw, wl, "runs" if want else "blocked"))
+        a = role_acts(rdecide([dict(o_old, caps_advisory=True, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
+                                    clone=os.path.join(TMP, "clone"))], dict(fresh(), roles={
+                                        "Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x", "%s 19:30" % RL.day_of(ev): "x"},
+                                                       "runs": [], "alarms_seen": []}}),
+                              robs(ops_status(ev, runway=rw, week_left=wl, alarms=al)), ev))
+        check(bool([x for x in a if x["do"] == "role_launch"]),
+              "Ops ADVISORY alarm run at runway %s week_left %s: runs (no band blocks it)" % (rw, wl))
+    st2 = fresh()
+    st2["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x"}, "runs": []}}
+    a = role_acts(rdecide([dict(o_old, caps_advisory=True, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
+                                clone=os.path.join(TMP, "clone"))], st2, robs(ops_status(ev, week_left=5)), ev))
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 450000,
+          "Ops ADVISORY FLOOR 19:30: runs at its full budget (owner 2026-11-02)")
 
 
 def test_role_execute_and_dry():
@@ -1391,7 +1406,7 @@ def test_review_q():
     # band mechanism on the frozen pre-2460d2cc0a bands (the live ones were neutralized by owner order, 2026-10-28)
     rc = dict(real["Conductor"], throttle_bands=CON_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"),
               off_file=os.path.join(TMP, "CQ_OFF"))
-    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
+    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
     c8 = at_local("08:00")
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(c8): "x"}, "runs": []}}
@@ -1414,7 +1429,8 @@ def test_review_q():
     check(any(x.get("kind") == "role:Conductor:after" for x in a), "Q7 Operations not enabled: alarm")
     st = fresh()
     a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8, runway=1.2)), c8))
-    check(not [x for x in a if x["do"] == "role_launch"], "Q7 Conductor AMBER 08:00: not its slot")
+    check(not [x for x in a if x["do"] == "role_launch" and x.get("role") == "Conductor"],
+          "Q7 Conductor AMBER 08:00: not its slot")
     c20 = at_local("20:00")
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 19:30" % RL.day_of(c20): "launch"}, "runs": [{"unit": "o2", "at": at_local("19:30"), "day": RL.day_of(c20),
@@ -1493,7 +1509,7 @@ def test_review_r():
     # B: an Operations alarm run (or yesterday's late run) does not let the Conductor skip today's 07:30 run
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
     rc = dict(real["Conductor"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CR_OFF"))
-    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     t801 = at_local("08:00", 60)
     for label, run in (("an alarm run at 02:00", {"at": at_local("02:00"), "mode": "alarm", "slot": "alarm OPS_A"}),
                        ("yesterday's 19:30 run launched late", {"at": at_local("20:10") - 86400, "mode": "run",
@@ -2835,7 +2851,7 @@ def test_review_w_alarm_rearm():
           "W1: a launch that did not happen gives back the alarm and the gap clock")
     # the real schedule's Operations, enabled with both live runway alarms open: one run covers both
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
-    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     two = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "for": "Operations"},
            "RUNWAY_LOW:codex.runway": {"state": "OPEN", "for": "Operations"}}
     t13 = at_local("13:00")
@@ -2927,9 +2943,12 @@ def test_review_x_alarm_flap():
     check(modes.count("alarm") == 1 and len(got) == 3 and rs["alarm_day"]["keys"][
           "alarm:" + keys[0]] == 1, "X1: room in the cap: one alarm run per alarm per day, not one per flap: %s" % modes)
     two = ["RUNWAY_LOW:accounts.lukas.runway", "RUNWAY_LOW:accounts.steven.runway", "RUNWAY_LOW:codex.runway"]
-    got, refused, rs = day(dict(roomy, alarm_runs_per_alarm_per_day=9), two)
+    got, refused, rs = day(dict(roomy, alarm_runs_per_alarm_per_day=9, caps_advisory=False), two)
     check([m for m, _ in got].count("alarm") == 2, "X1: alarm_runs_per_day caps the day's alarm runs at 2: %s"
           % [m for m, _ in got])
+    got, refused, rs = day(dict(base, alarm_runs_per_alarm_per_day=9), keys)
+    check([m for m, _ in got].count("alarm") > 2 and not refused, "X1 advisory (owner 2026-11-02): "
+          "alarm_runs_per_day (2) holds no alarm run and nothing is REFUSED on the cap: %s" % [m for m, _ in got])
     got, refused, rs = day(dict(roomy, alarm_runs_per_alarm_per_day=None, alarm_runs_per_day=None), keys)
     check([m for m, _ in got].count("alarm") > 2, "X1: instrument: without the limits the same flap runs more than twice")
     # unlaunch gives the day's count back

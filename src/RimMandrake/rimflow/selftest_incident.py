@@ -534,8 +534,58 @@ def _refuses():
     return False
 
 
+def test_owner_rung_revisited():
+    """OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS: at his rung an incident never sat forever. Unacked it is revisited
+    owner_revisit_min after it reached him; acked with a short recover_by it still waits that floor; acked longer, it
+    waits the ack; each revisit clears the ack and plan and asks ONE fresh Operations run naming it; it never climbs."""
+    rev = IN.load_table()["policy"]["owner_revisit_min"]
+    r = Rig("revisit")
+    r.tick(T0, relentless__under_min=40)
+    for m in (30, 60, 240):
+        r.tick(T0 + m * M, relentless__under_min=100)
+    x = r.inc()[0]
+    check("revisit: at his rung", x["rung"] == IN.OWNER_RUNG, x)
+    st_path = r.root + "/state/state.json"
+
+    def clear_ask():
+        st = json.load(open(st_path))
+        st.get("roles", {}).get("Operations", {}).pop("run_now", None)
+        st.get("incident", {}).pop("runs", None)
+        json.dump(st, open(st_path, "w"))
+    clear_ask()
+    r.tick(T0 + (240 + rev - 1) * M, relentless__under_min=100)
+    check("revisit: not before owner_revisit_min", not r.evs("revisited"), r.evs("revisited"))
+    r.tick(T0 + (240 + rev) * M, relentless__under_min=100)
+    e = r.evs("revisited")
+    ask = r.asked("Operations") or {}
+    check("revisit: unacked at his rung, revisited at owner_revisit_min, still his rung",
+          len(e) == 1 and r.inc()[0]["rung"] == IN.OWNER_RUNG and e[0]["revisits"] == 1, (e, r.inc()))
+    check("revisit: one fresh Operations run is asked, naming it", x["id"] in str(ask.get("why")) and
+          "revisit 1" in str(ask.get("why")) or any(x["id"] in str(a.get("why")) for a in r.runs), (ask, r.runs[-1:]))
+    clear_ask()
+    t1 = T0 + (240 + rev) * M
+    IN.ack(x["id"], "OPERATIONS", "pool restore lands at 18:00", now=t1 + 5 * M)          # default recover_min 60
+    r.tick(t1 + 70 * M, relentless__under_min=100)
+    check("revisit: an ack shorter than the floor waits the floor", len(r.evs("revisited")) == 1, r.evs("revisited"))
+    r.tick(t1 + rev * M, relentless__under_min=100)
+    e = r.evs("revisited")
+    check("revisit: past the floor it is revisited again, ack and plan cleared, last_plan kept",
+          len(e) == 2 and not r.inc()[0].get("acked_t") and r.inc()[0].get("plan") is None
+          and e[-1]["last_plan"] == "pool restore lands at 18:00", (e, r.inc()))
+    clear_ask()
+    t2 = t1 + rev * M
+    IN.ack(x["id"], "OPERATIONS", "Steve's desk is off until Monday", recover_min=3 * rev, now=t2 + 1 * M)
+    r.tick(t2 + (rev + 5) * M, relentless__under_min=100)
+    check("revisit: an ack longer than the floor is waited out", len(r.evs("revisited")) == 2, r.evs("revisited"))
+    r.tick(t2 + (3 * rev + 2) * M, relentless__under_min=100)
+    check("revisit: and revisited at its recover_by", len(r.evs("revisited")) == 3 and r.inc()[0]["rung"] == IN.OWNER_RUNG,
+          r.evs("revisited"))
+    check("revisit: never escalated past his rung", all(v["rung"] <= IN.OWNER_RUNG for v in r.evs("escalated")))
+
+
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
-          test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes):
+          test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
+          test_owner_rung_revisited):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)

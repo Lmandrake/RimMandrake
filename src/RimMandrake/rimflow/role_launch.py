@@ -66,7 +66,10 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      ("all" | "first" | "last" | "none") says which scheduled slots still run and `quick_cap_x` scales the run's budget.
      A role with no bands runs at x1.0. "quick" / "quick_one" (Operations): see slot_blocked.
   4. caps: the run's budget = its cap x the band factor; it is REFUSED (alarm) when today's spend plus that budget
-     passes `daily_token_cap`. Today's spend = tokens of finished runs + the full budget of runs still going.
+     passes `daily_token_cap`. Today's spend = tokens of finished runs (measured from the transcript when the result
+     is missing) + the full budget of runs still going. A role with `caps_advisory: true` (Operations, owner
+     2026-11-02) is never refused, held, skipped or shrunk by a band, budget, daily cap or daily alarm-run count: its
+     band is read as all slots at x1.0, and overspend raises an immediate alarm instead (overspend_day, overbudget).
   5. account (dispatcher.account_gate, account_pick.py): the schedule's `account_pick` rule, asked at the moment of
      release; a SWITCH pick holds the launch (journaled once per slot) until the machine is switched or the slot is
      missed. The launch records the account it runs on.
@@ -106,6 +109,7 @@ import signal
 import subprocess
 import sys
 import time
+import uuid
 from fractions import Fraction
 
 AUTH_BACKS_PER_DAY = 2
@@ -299,6 +303,8 @@ def validate_role(role):
     for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap"):
         if role.get(k) is not None and not (_num(role[k]) and role[k] >= 0):
             raise ValueError("%s %r is not a number >= 0" % (k, role[k]))
+    if "caps_advisory" in role and not isinstance(role["caps_advisory"], bool):
+        raise ValueError("caps_advisory %r is not true or false" % (role["caps_advisory"],))
     for k in ("slot_late_s", "run_max_s"):
         # the time bounds are never optional: None would override ROLE_DEFAULTS and crash supervision on every tick;
         # 0 would stop every run at once (review V, V3)
@@ -597,6 +603,78 @@ def run_tokens(result):
     return int(math.ceil(tot))
 
 
+PROJECTS = os.path.join(os.path.expanduser("~"), ".claude", "projects")
+
+
+def _transcript_files(run, projects):
+    """-> the transcript files of `run`: its pinned session (`--session-id`, launch) and that session's subagents, or
+    for a run launched before the pin, the one recent transcript whose first lines name its unit."""
+    import glob
+    sid = run.get("session")
+    if sid:
+        return sorted(glob.glob(os.path.join(projects, "*", sid + ".jsonl"))
+                      + glob.glob(os.path.join(projects, "*", sid, "subagents", "*.jsonl")))
+    tag = "role launch %s]" % run.get("unit")
+    for f in glob.glob(os.path.join(projects, "*", "*.jsonl")):
+        try:
+            if os.path.getmtime(f) < run.get("at", 0) - 60:
+                continue
+            with open(f, encoding="utf-8", errors="replace") as fh:
+                for i, line in enumerate(fh):
+                    if i >= 12:
+                        break
+                    if tag in line and '"type":"user"' in line.replace(" ", ""):
+                        return [f]
+        except OSError:
+            continue
+    return []
+
+
+def transcript_usage(run, projects=PROJECTS):
+    """A run with no result (killed at run_max_s, frozen by a stop, a torn out file) is measured from its transcript
+    instead of being counted at its budget (OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS: a frozen 11-02 run spent 261,105
+    weighted and was charged 450,000). -> a `usage` dict in the result's shape (the four USAGE_KEYS and the
+    cache_creation TTL split), or None (UNMEASURED: no transcript, or no assistant turn in it). Each API message is
+    logged once per content block with the same usage; the last line of each message id is taken (matches the result
+    json exactly on rm-role-operations-1793627400)."""
+    per = {}
+    for f in _transcript_files(run, projects):
+        try:
+            with open(f, encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    if '"assistant"' not in line:
+                        continue
+                    try:
+                        e = json.loads(line)
+                    except ValueError:
+                        continue
+                    m = e.get("message") if isinstance(e, dict) and e.get("type") == "assistant" else None
+                    if isinstance(m, dict) and isinstance(m.get("usage"), dict) and m.get("id"):
+                        per[(f, m["id"])] = m["usage"]
+        except OSError:
+            continue
+    if not per:
+        return None
+    tot = {k: 0 for k in USAGE_KEYS}
+    split = {"ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 0}
+    whole = True
+    for u in per.values():
+        for k in USAGE_KEYS:
+            v = u.get(k) or 0
+            if not (finite(v) and v >= 0):
+                return None
+            tot[k] += int(v)
+        c = u.get("cache_creation")
+        if isinstance(c, dict):
+            for k in split:
+                split[k] += int(c.get(k) or 0)
+        elif u.get("cache_creation_input_tokens"):
+            whole = False
+    if whole:
+        tot["cache_creation"] = split            # run_tokens uses it only when it adds up; else all at the 1h rate
+    return tot
+
+
 def spent_today(rs, now):
     day = day_of(now)
     tot = 0
@@ -605,6 +683,20 @@ def spent_today(rs, now):
             continue
         tot += r["tokens"] if r.get("tokens") is not None else r.get("budget", 0)
     return tot
+
+
+def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
+    """An advisory-capped role (`caps_advisory`, Operations, owner 2026-11-02) is never refused for money; a day
+    that passes its expected total (daily_token_cap) raises an IMMEDIATE alarm instead, once a day: a note on its
+    item and a RAISE FIRST line in the Conductor log, so the cost is fixed fast without starving the watch."""
+    if rs.get("overspend_day") == day_of(now):
+        return
+    rs["overspend_day"] = day_of(now)
+    act(do="alarm", kind="role:%s:overspend_day" % name, ticket=item, note=True, conductor_log=True,
+        why="%s is over its expected day: %d weighted used today%s > daily_token_cap %d; %s" % (
+            name, spent, " + %d for this run" % budget if budget else "", daily, did),
+        raise_first="%s is spending past its expected day (advisory cap %d): file an item and cut its cost now; "
+                    "never starve it." % (name, daily))
 
 
 def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit):
@@ -732,17 +824,24 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             continue
         res = obs["result"](run)
         tok = run_tokens(res)
+        raw = raw_tokens(res)
+        if tok is None and obs.get("transcript"):
+            tu = obs["transcript"](run)          # no usable result: measure what it spent, never charge the budget
+            if tu is not None:
+                tok, raw = run_tokens({"usage": tu}), raw_tokens({"usage": tu})
+                run["token_source"] = "transcript"
         run["tokens"] = tok                     # input-equivalent (TOKEN_WEIGHTS): what caps and spend read
-        run["raw_tokens"] = raw_tokens(res)     # the unweighted sum, for the record only
+        run["raw_tokens"] = raw                 # the unweighted sum, for the record only
         run["token_unit"] = TOKEN_UNIT          # a run without it predates the weighting (its tokens are raw)
-        run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or tok is None) else "done"
+        run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or run_tokens(res) is None) else "done"
         res = res if isinstance(res, dict) else {}
         models = sorted(res.get("modelUsage") or {})
         act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
             why="%s %s run %s %s%s: %s weighted tokens of a %d budget (raw %s), model %s, %s" % (
                 name, run.get("mode"), run["unit"], run["state"],
                 " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
-                tok if tok is not None else "UNMEASURED (counted at its budget)",
+                ("%d (from its transcript, no result)" % tok if run.get("token_source") == "transcript" else tok)
+                if tok is not None else "UNMEASURED (counted at its budget)",
                 run.get("budget") or 0, run["raw_tokens"] if run["raw_tokens"] is not None else "?",
                 ",".join(models) or "?",
                 # an auth failure reports subtype `success` with is_error: "failed ... success" hid it on 10-30
@@ -752,6 +851,10 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
         finish_slot_alarms(rs, run)
+        daily = cfg.get("daily_token_cap")
+        if cfg.get("caps_advisory") is True and daily is not None and spent_today(rs, now) > daily:
+            overspend_day(name, rs, run.get("item") or cfg.get("ledger_item"), daily, spent_today(rs, now), 0, now,
+                          act, "its run %s just finished" % run["unit"])
         if run["state"] == "done" and name in STRUCTURED:
             harvest(name, run, res, act)
         if run["state"] == "done" and name in FINISH_STAMP:
@@ -759,9 +862,12 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 at=run["at"], why="%s run %s finished done: its window ends at its launch %s" % (
                     name, run["unit"], iso(run["at"])))
         if tok is not None and tok > (run.get("budget") or 0):
+            # advisory caps (owner 2026-11-02): the overrun is the alarm, at once, in the Conductor log too
+            loud = {"conductor_log": True, "raise_first": "%s run %s went over its advisory budget: file an item "
+                    "and cut its cost now." % (name, run["unit"])} if cfg.get("caps_advisory") is True else {}
             act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
                 why="%s run %s used %d weighted tokens (raw %s), budget %d" % (
-                    name, run["unit"], tok, run["raw_tokens"], run.get("budget") or 0))
+                    name, run["unit"], tok, run["raw_tokens"], run.get("budget") or 0), **loud)
             # the day's spend already counts the real tokens, so the daily cap answers one overrun by itself; a
             # role that keeps overrunning has a wrong budget, and only a person can reset that
             over = [t for t in rs.get("over_at") or [] if now - t < OVER_WINDOW_S] + [now]
@@ -1129,6 +1235,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 ad = rs.get("alarm_day") if (rs.get("alarm_day") or {}).get("day") == day_of(now) else \
                     {"day": day_of(now), "n": 0, "keys": {}}
                 per_key, per_day = cfg.get("alarm_runs_per_alarm_per_day"), cfg.get("alarm_runs_per_day")
+                if cfg.get("caps_advisory") is True:
+                    # no daily COUNT holds a maintenance run (owner 2026-11-02): every new alarm gets its run. The
+                    # per-alarm limit stays: the same alarm flapping is not a new reading (the slot checks read it)
+                    per_day = None
                 if fresh and per_day is not None and ad["n"] >= int(per_day):
                     capped = fresh
                     fresh = []
@@ -1271,6 +1381,12 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             return
         bname, b = band(cfg, r)
         allowed = b.get("slots", "all")
+        advisory = cfg.get("caps_advisory") is True
+        if advisory:
+            # owner 2026-11-02 (e7069d65ba): "a token limit for operations must be advisory only. We can't have the
+            # system crash because we couldn't afford to watch." No band, budget or daily cap refuses, delays, skips
+            # or shrinks this role's run; overspend raises an immediate alarm instead (overspend_alarm)
+            allowed = "all"
         if slot_blocked(allowed, job, cfg, now):
             sk = skip_event(rs, job, "band " + bname)
             if sk is None:
@@ -1283,13 +1399,20 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                        r["week_left"]))
             return
         factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] in ("quick", "run", "weekly", "event") else 1.0
-        if not job["cap"]:
+        if advisory:
+            factor = 1.0
+        if not job["cap"] and not advisory:
             refuse_now(rs, "no cap", now, job)
             act(do="alarm", kind="role:" + name, note=True, conductor_log=True, why="role %s has no token cap for %s" % (name, job["mode"]))
             return
-        budget = int(job["cap"] * factor)
+        budget = int((job["cap"] or 0) * factor)
         spent = spent_today(rs, now)
         daily = role.get("daily_token_cap")           # 0 is a cap of zero; only absent (None) is no cap
+        if advisory:
+            if daily is not None and spent + budget > daily:
+                overspend_day(name, rs, job.get("item") or cfg.get("ledger_item"), daily, spent, budget, now, act,
+                              "%s %s LAUNCHED anyway (caps are advisory)" % (name, job["trigger"]))
+            daily = None
         if daily is not None and (job["mode"] in ("event", "alarm") or job.get("manual")):
             # (an alarm run reserves too: it may spend only what the day's scheduled runs leave, review X, X1)
             # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
@@ -1737,14 +1860,15 @@ def schema_args(role):
     return ["--json-schema", json.dumps(doc, separators=(",", ":"), sort_keys=True)]
 
 
-def launch_argv(role, unit, msg, out, err, claude):
+def launch_argv(role, unit, msg, out, err, claude, session=None):
     """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
     (the Arbiter's arbiter_tiers.py: a batch with no fresh tiers.json would judge blind -- review AA brief AA7)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
-        + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"]
+        + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"] \
+        + (["--session-id", session] if session else [])     # its transcript, found when no result is (transcript_usage)
     pre = role.get("pre_launch")
     if pre:
         # one argv, or a list of argvs run in order, each only if the one before exited 0 (the Arbiter:
@@ -1778,14 +1902,15 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
     The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
     out, err = run_paths(root, unit)
-    r = runner(launch_argv(role, unit, msg, out, err, claude), capture_output=True, text=True, timeout=60,
+    session = str(uuid.uuid4())
+    r = runner(launch_argv(role, unit, msg, out, err, claude, session), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)
     text = ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
     if r.returncode:
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
     scope = role_scope(role["seat"], unit)
     return True, "unit %s started (scope %s)" % (unit, scope), {
-        "out": out, "err": err, "scope": scope, "marker": unit, "model_id": model_id(role["model"])}
+        "out": out, "err": err, "scope": scope, "marker": unit, "model_id": model_id(role["model"]), "session": session}
 
 
 def scope_of(unit, seat, runner=subprocess.run):
