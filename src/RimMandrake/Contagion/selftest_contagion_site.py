@@ -192,5 +192,91 @@ rec = run(burn_on_reload=True)
 check("Burn on reload -> loadVerified False", rec.get("verified") is False
       and events[-1] == "registry:%s:False" % S.SITE, events)
 
+# A2 "no FinalizeLoading error": the REAL TS.load_site, fed a journal that logged one after the load, must not read
+# verified, and prove() must carry it into A2 (exit 1). Control: the same load with a clean journal reads verified.
+FINALIZE = "Error in Map.FinalizeLoading: System.NullReferenceException"
+
+
+class LoadFake(Fake):
+    def __init__(self, journal=(), **kw):
+        Fake.__init__(self, **kw)
+        self.journal, self.loaded = list(journal), False
+
+    def call(self, tool, **p):
+        if tool == "rimworld/get_ui_state":
+            return {"programState": "Playing" if self.loaded else "Entry"}
+        if tool == "rimworld/load_game":
+            self.log.append(tool)
+            self.loaded = True
+            return {"success": True}
+        if tool == "rimbridge/list_logs":
+            if "afterSequence" not in p:
+                return {"logs": [{"Sequence": 5, "Message": "baseline"}]}
+            return {"logs": [{"Sequence": 6 + i, "Message": m} for i, m in enumerate(self.journal)] if self.loaded
+                    else []}
+        return Fake.call(self, tool, **p)
+
+
+_qs = types.ModuleType("quiet_site")
+_qs.MAP_ONLY = ()
+_qs.site_profile_receipt = lambda S_, tag, controls=(): {"ok": True}
+_nd, _nds = types.ModuleType("northstar_driver"), types.ModuleType("northstar_driver.session")
+
+
+class _Sess(object):
+    fake = None
+
+    def __init__(self, strict=False):
+        self.call = _Sess.fake.call
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+_nds.FastSession = _Sess
+_nd.session = _nds
+_saved_mods = {k: sys.modules.get(k) for k in ("quiet_site", "northstar_driver", "northstar_driver.session")}
+_orig_ld = {k: getattr(TS, k) for k in ("read_registry", "call_session", "check_map")}
+_orig_calm = TS.TG.calm_sky
+sys.modules.update({"quiet_site": _qs, "northstar_driver": _nd, "northstar_driver.session": _nds})
+TS.read_registry = lambda path=None: {}
+TS.call_session = lambda call: call
+TS.check_map = lambda call, site: {"verified": True, "problems": []}
+TS.TG.calm_sky = lambda S_, size: {"ok": True}
+try:
+    for jr, want, why in (([], True, "clean journal"), ([FINALIZE], False, "FinalizeLoading error in the journal"),
+                          (["Some unrelated error"], True, "unrelated error")):
+        fk = LoadFake(journal=jr)
+        ld = TS.load_site(fk.call, S.SITE, sleep=lambda x: None)
+        check("load_site verified=%s on %s" % (want, why), ld.get("verified") is want
+              and "rimworld/load_game" in fk.log, ld)
+        if not want:
+            check("load_site names the FinalizeLoading error", any("FinalizeLoading" in x for x in ld["problems"]), ld)
+    _pd = tempfile.mkdtemp(prefix="cg_prove_")
+    with open(_st_os.path.join(_pd, S.SAVE + ".rws"), "w", encoding="utf-8") as fh:
+        fh.write("<savegame><meta><modIds>%s</modIds></meta></savegame>" % "".join("<li>%s</li>" % i for i in MODS))
+    for jr, code, why in (([], 0, "clean load"), ([FINALIZE], 1, "FinalizeLoading error")):
+        _Sess.fake = LoadFake(journal=jr)
+        rc, prec = PS.prove(saves_dir=_pd)
+        check("prove exit %d on %s" % (code, why), rc == code and not prec["A1"], (rc, prec))
+        if code:
+            check("prove A2 carries the FinalizeLoading error", any("FinalizeLoading" in x for x in prec["A2"]), prec)
+        else:
+            check("prove A2 clean on a clean load", prec["A2"] == [], prec)
+except Exception as ex:                                    # noqa: BLE001 - a crash here is a failure, never a pass
+    check("A2 FinalizeLoading cases ran", False, repr(ex))
+finally:
+    for k, v in _orig_ld.items():
+        setattr(TS, k, v)
+    TS.TG.calm_sky = _orig_calm
+    for k, v in _saved_mods.items():
+        if v is None:
+            sys.modules.pop(k, None)
+        else:
+            sys.modules[k] = v
+
 print("FAIL: " + " | ".join(FAILS) if FAILS else "OK selftest_contagion_site")
 sys.exit(1 if FAILS else 0)
