@@ -35,6 +35,7 @@ import relentless_wall  # noqa: E402
 import relentless_game  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_strikes  # noqa: E402
+import relentless_live  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
@@ -764,9 +765,18 @@ def unhold(store, item, said, now=None):
         elif st["hold"].get("kind") == "strikes":      # his yes is a fresh count; another full ladder holds again
             st["failures"] = {}
             st["total_at_change"] = st["total_failures"]
+        game_back = (st["hold"].get("kind") == "game" and (st.get("game") or {}).get("sha")
+                     and relentless_game.FLYER not in (st["hold"].get("why") or ""))
         st["hold"] = None
-        st["status"] = "queued"
         st["returned_at"] = now
+        if game_back:       # a game hold back to its game phase, not a new worker: the offline proof stands on its sha
+            st["status"] = relentless_game.GAME
+            st["game"].update(phase="prove", stages=0, retry_at=None, ready=None, snag=None)
+            st.pop("put_down", None)
+            store.attempt(item, {"at": iso(now), "end": "unhold", "said": said, "to": "game"})
+            store.save(st)
+            return
+        st["status"] = "queued"
         st["spent_grace"] = st["spent"]         # his yes buys another full limit from here
         st["needs_back"] = True
         store.attempt(item, {"at": iso(now), "end": "unhold", "said": said})
@@ -1239,6 +1249,9 @@ class Effects(relentless_game.GameFx):
     def pool_clones(self):
         return sorted(d for d in glob.glob(os.path.join(self.base, "clones", "*")) if self.clone_present(d))
 
+    def clone_gap(self, c):
+        return clone_gap(c)
+
     def clone_present(self, c):
         return os.path.isdir(c)   # a half-removed clone still takes its path and its bytes
 
@@ -1606,16 +1619,8 @@ class Effects(relentless_game.GameFx):
         return p.pid
 
 
-WINDOWS_DIRS = ("/mnt/c/WINDOWS/system32", "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0")
-
-
-def windows_path(path):
-    """`path` plus the Windows tools a live proof needs (powershell.exe finds the game, python.exe reaches the bridge):
-    the systemd unit's PATH has none of them, so from the tick every game read was None ("no running game")."""
-    have = path.split(os.pathsep) if path else []
-    extra = [d for d in WINDOWS_DIRS + tuple(sorted(glob.glob("/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps")))
-             if d not in have and os.path.isdir(d)]
-    return os.pathsep.join(have + extra)
+WINDOWS_DIRS = relentless_live.WINDOWS_DIRS
+windows_path = relentless_live.windows_path      # one rule: the tick, the round and game_started all take it
 
 
 def clone_item(c):
@@ -3227,6 +3232,9 @@ def tick(store=None, fx=None, r=None, now=None):
         except BlockingIOError:
             return [{"do": "skip", "why": "a tick is running"}]
         if fx is None:
+            # the unit's PATH has no Windows tools: every game read from the tick (tasklist, netstat, powershell) and
+            # every rimflow it runs measured "no game" while one ran (RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD)
+            os.environ["PATH"] = windows_path(os.environ.get("PATH", ""))
             fx = Effects(r, store)
             store.on_alarm = fx.alarm_signal
         acts = []

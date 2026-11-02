@@ -33,6 +33,7 @@ class GW(S.FakeWorld):
         self.led, self.impl, self.rows, self.events, self.proves = {}, [], [], [], []
         self.running, self.idle, self.take_why, self.palive = True, None, None, set()
         self.proofs = {}
+        self.started, self.mods = None, 13
         self.books = "/books"
         self.owed = {"A2": "L1"}
         self.title = "a mod thing"
@@ -49,7 +50,10 @@ class GW(S.FakeWorld):
         return self.proofs.get((item, ext), PROOF if ext == ".txt" else "")
 
     def game_rows(self): return self.rows
-    def game_running(self): return self.running
+    def clone_gap(self, c): return None
+    def game_reading(self):
+        state = {True: "UP", False: "DOWN"}.get(self.running, self.running)
+        return {"state": state, "started": self.started, "mods": self.mods, "evidence": "fake %s" % state}
     def bridge_idle(self, p): return self.idle
 
     def bridge_take(self, p):
@@ -350,10 +354,167 @@ def t_round_only_item():
     ok([t[0] for t in todo] == ["I1"], "the game phase's round runs its one item at once, after staging")
 
 
+def staged_then_ended(x, i="I0"):
+    """Drive one staging: no game, the stage launches, its worker ends without a ready."""
+    st = x.st(i)
+    ok(st["game"]["phase"] == "staging", "a staging runs: %s" % st["game"]["phase"])
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    return x.st(i)
+
+
+def t_tick_reads_windows_tools():
+    """The root cause: the systemd tick's PATH has no powershell.exe, so game_started read None while the game ran."""
+    import subprocess
+    import relentless_live as L
+    seen = {}
+    real = subprocess.run
+
+    def fake(argv, **kw):
+        seen["path"] = (kw.get("env") or {}).get("PATH", "")
+        raise OSError("no game here")
+    subprocess.run = fake
+    old = os.environ.get("PATH")
+    os.environ["PATH"] = "/usr/bin:/bin"
+    try:
+        L.Fx().game_started()
+    finally:
+        subprocess.run = real
+        os.environ["PATH"] = old
+    want = [d for d in L.WINDOWS_DIRS if os.path.isdir(d)]
+    ok(want and all(d in seen.get("path", "").split(os.pathsep) for d in want),
+       "game_started runs powershell with the Windows dirs on PATH, whatever the unit's PATH: %s" % seen)
+    ok(R.windows_path is L.windows_path, "one windows_path rule for the tick, the round and game_started")
+    import inspect
+    ok("windows_path(os.environ" in inspect.getsource(R.tick), "the real tick puts the Windows tools on its own PATH")
+
+
+def t_loading_is_waited_not_restaged():
+    """A cold load in progress is waited out, bounded by the list's size; no stage is spent while it loads."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = False
+    x.tick()
+    staged_then_ended(x)
+    x.w.running, x.w.started, x.w.mods = "LOADING", x.now, 13
+    takes = x.w.events.count("take")
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "game" and st["game"]["phase"] == "prove" and "loading" in st["put_down"]["on"]
+       and x.w.events.count("take") == takes, "loading: put down on the load, no new staging: %s" % st.get("put_down"))
+    ok(st["game"]["stages"] == 1 and st["game"]["loading"]["bound"] == G.load_bound(G.cfg(x.r), 13),
+       "the bound is the 13-mod list's: %s" % st["game"].get("loading"))
+    x.w.mods = 316
+    x.now = x.w.started + G.load_bound(G.cfg(x.r), 13) + 60      # past the minimal bound, inside the full list's
+    x.tick(0)
+    ok(x.st("I0")["game"]["phase"] == "prove" and x.w.events.count("take") == takes,
+       "the full list's longer load is still waited")
+    x.now = x.w.started + G.load_bound(G.cfg(x.r), 316) + 1
+    x.w.running = "LOADING"
+    x.tick(0)
+    st = x.st("I0")
+    ok(st["game"]["stages"] == 2 and x.w.events.count("take") == takes + 1,
+       "past its bound the load failed: staged again: %s" % st["game"])
+    ok(G.load_bound(G.cfg(x.r), None) == G.cfg(x.r)["load_unknown_s"], "an unread list takes the full list's bound")
+    x.done()
+
+
+def t_failed_staging_is_harness_not_owner():
+    """stage_tries stagings with no build running: put down as OUR failure and retried, never held on the owner."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = False
+    x.tick()
+    for _ in range(G.cfg(x.r)["stage_tries"]):
+        staged_then_ended(x)
+        x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "game" and not st.get("hold"), "not held: %s %s" % (st["status"], st.get("hold")))
+    ok(st["game"]["phase"] == "stage" and st["game"]["stages"] == 0 and st["game"]["harness"] == 1
+       and st["game"]["retry_at"] > x.now and st["put_down"]["on"].startswith("harness #1"),
+       "put down on a harness failure, count reset, retry later: %s" % st["game"])
+    ok(any("harness failure, not an owner question" in n for n in x.w.notes), "the ledger note says whose failure")
+    x.tick()
+    ok(x.w.needs == [] and x.st("I0")["status"] == "game", "nothing routed to the owner: %s" % x.w.needs)
+    takes = x.w.events.count("take")
+    x.tick()
+    ok(x.w.events.count("take") == takes, "no staging before the retry")
+    x.now = st["game"]["retry_at"] + 1
+    x.tick(0)
+    ok(x.st("I0")["game"]["phase"] == "staging" and x.w.events.count("take") == takes + 1, "after it, staged again")
+    x.done()
+
+
+def t_unreadable_game_waits():
+    """No reading at all (no Windows tools): a harness wait; never a restart, a stage count or the owner."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = None
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "game" and "take" not in x.w.events and st["game"]["stages"] == 0
+       and st["put_down"]["on"].startswith("harness: the game cannot be read"), "unread: %s" % st.get("put_down"))
+    x.done()
+
+
+def t_unhold_game_hold_returns_to_game():
+    """The wrongly held: unhold puts a game hold back in its game phase on the same sha, not to a new worker."""
+    x = rig(1)
+    to_game(x, "I0")
+    with x.s.lock():
+        st = x.st("I0")
+        st["status"] = "held"
+        st["game"]["stages"] = 2
+        st["hold"] = {"why": "game phase: 2 staging(s) and the build still is not running: no running game",
+                      "kind": "game", "delivered": True, "at": x.now}
+        x.s.save(st)
+    R.unhold(x.s, "I0", "per ruling")
+    st = x.st("I0")
+    ok(st["status"] == "game" and st["game"]["phase"] == "prove" and st["game"]["stages"] == 0 and not st["hold"],
+       "back to its game phase: %s %s" % (st["status"], st["game"]))
+    with x.s.lock():
+        st = x.st("I0")
+        st["status"] = "held"
+        st["hold"] = {"why": "game phase: flyer: a flyer's flight", "kind": "game", "delivered": True, "at": x.now}
+        x.s.save(st)
+    R.unhold(x.s, "I0", "his yes")
+    ok(x.st("I0")["status"] == "queued", "a flyer hold keeps the old road")
+    x.done()
+
+
+def t_stage_refuses_a_clone_without_launcher():
+    """QUICKTEST_POLICY_NRE_FULLLIST_1: systemd-run failed on a clone missing claude_bounded.sh. The stage checks the
+    clone it is about to launch in, after prepare, and takes no bridge when it lacks the launcher."""
+    import tempfile
+    c = tempfile.mkdtemp(prefix="rlg-clone-")
+    os.makedirs(os.path.join(c, ".git"))
+    ok(R.Effects({"seat": "BENCH"}, S.Rig(1).s).clone_gap(c) == "src/RimMandrake/Utils/claude_bounded.sh",
+       "the real check names the missing launcher")
+    x = rig(1)
+    to_game(x, "I0")
+    x.w.clone_gap = lambda c: "src/RimMandrake/Utils/claude_bounded.sh"
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "stage" and "take" not in x.w.events and not [l for l in x.w.launches if "STAGING" in l[2]]
+       and "lacks src/RimMandrake/Utils/claude_bounded.sh" in st["put_down"]["on"],
+       "no bridge, no launch, put down on the clone: %s" % st.get("put_down"))
+    x.w.clone_gap = lambda c: None
+    x.tick()
+    ok(x.st("I0")["game"]["phase"] == "staging", "a whole clone stages")
+    x.done()
+
+
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
-              t_stage_remakes_clone):
+              t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
+              t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
+              t_stage_refuses_a_clone_without_launcher):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

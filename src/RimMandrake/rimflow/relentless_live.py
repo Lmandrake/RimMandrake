@@ -55,6 +55,20 @@ SECTION = re.compile(r"^(\S+)\s+(mandrake\.\S+)(.*)$")      # deploy_custom_mods
 COMPOSED = re.compile(r"^\s*compose\s+(\S+)\s+(mandrake\.\S+)\s.*->\s*(\S+)\s*$")
 
 
+WINDOWS_DIRS = ("/mnt/c/WINDOWS/system32", "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0")
+
+
+def windows_path(path):
+    """`path` plus the Windows tools a live read needs (powershell.exe finds the game, tasklist/netstat measure it,
+    python.exe reaches the bridge). The systemd unit's PATH has none of them, so from the tick every game read was None
+    ("no running game") while the game ran: ten game-phase items held on the owner for it
+    (RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD)."""
+    have = path.split(os.pathsep) if path else []
+    extra = [d for d in WINDOWS_DIRS + tuple(sorted(glob.glob("/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps")))
+             if d not in have and os.path.isdir(d)]
+    return os.pathsep.join(have + extra)
+
+
 def live_rules(r):
     out = dict(DEFAULTS)
     out.update((r or {}).get("live") or {})
@@ -287,7 +301,8 @@ class Fx(object):
             r = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
                                 "Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object "
                                 "{ $_.StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') }"],
-                               capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                               capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL,
+                               env=dict(os.environ, PATH=windows_path(os.environ.get("PATH", ""))))
             lines = [x.strip() for x in r.stdout.splitlines() if x.strip()]
             if len(lines) != 1:      # two games: the bridge may answer from either, so neither start time is the answer's
                 return None

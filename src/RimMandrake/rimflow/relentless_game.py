@@ -35,7 +35,13 @@ sys.path.insert(0, HERE)
 
 GAME = "game"
 DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "stage_max_s": 3600, "stage_tries": 2,
-            "prove_every_s": 900, "renew_s": 1200}
+            "prove_every_s": 900, "renew_s": 1200,
+            # a cold load's bound, sized to the list that loads (rimworld-load-round: 13 mods ~22 s, the full ~316 ~15-25
+            # min): base + per mod, from the live ModsConfig.xml; unread, the full list's
+            "load_base_s": 180, "load_per_mod_s": 6, "load_unknown_s": 2400,
+            # stage_tries stagings that leave no running build are a HARNESS failure, never the owner's: put down, and
+            # staged again after harness_retry_s x the count, at most harness_retry_max_s
+            "harness_retry_s": 1800, "harness_retry_max_s": 14400}
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
@@ -179,6 +185,10 @@ def stage_prompt(st, r, sha):
         "2. The game must start after the deploy: restart it on the smallest mod list that holds those mods "
         "(`rimworld-load-round`: modlist_swap.py; all five DLC always). Stamp each change with "
         "`./game --idle-ok --why \"relentless staging %s\" down|loading|up`." % i,
+        "   Choose the smallest list that proves the item: a cold load is ~22 s on the 13-mod minimal list and 15-25 "
+        "minutes on the full one. Wait for it with `./game` polls (each command under 540 s) up to that bound; if you "
+        "must exit while it still loads, say so in game-ready: the supervisor waits out the load itself, bounded by "
+        "the list's size, and holds no slot while it waits.",
         "3. When the game is up on a map the proofs can read: `%s game-ready --item %s --gen %d \"what you deployed and "
         "which list\"`, then exit. Stopped: `%s snag --item %s --gen %d --class game_stage \"what stopped you\"`, exit."
         % (rc, i, g, rc, i, g),
@@ -189,6 +199,24 @@ def stage_prompt(st, r, sha):
 
 
 # ---------------------------------------------------------------- effects (mixed into relentless.Effects)
+
+def live_mod_count():
+    """The active mods of the live ModsConfig.xml (what the running game loaded when it started after the swap), or None."""
+    utils = os.path.join(os.path.dirname(HERE), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    try:
+        import modlist_swap
+        got = modlist_swap.mods(modlist_swap.LIVE)
+    except Exception:  # noqa: BLE001  an unread list is the full list's bound, never a crash in the tick
+        return None
+    return len(got) if got else None
+
+
+def load_bound(c, mods):
+    """Seconds a cold load of `mods` mods may take before it counts as failed."""
+    return int(c["load_base_s"] + c["load_per_mod_s"] * mods) if mods else int(c["load_unknown_s"])
+
 
 class GameFx(object):
     """What the game mode asks of the world. Needs self.rimflow, self.books, self.base (relentless.Effects has them)."""
@@ -226,9 +254,16 @@ class GameFx(object):
         import relentless_live_round
         return relentless_live_round.read_rows(os.path.join(self.base, "live", "runs.jsonl"))
 
-    def game_running(self):
+    def game_reading(self):
+        """-> {"state": "UP"|"LOADING"|"DOWN"|None, "started": epoch|None, "mods": n|None, "evidence": str}.
+        UP: the process runs and the bridge listens; LOADING: it runs, the bridge does not yet; None: no reading taken
+        (never read as "no game": that is what held ten items on the owner)."""
+        import probe
         import relentless_live
-        return relentless_live.Fx(seat=self.r["seat"]).game_started() is not None
+        m = probe.measure(use_cache=False)
+        started = relentless_live.Fx(seat=self.r["seat"]).game_started() if m.get("running") else None
+        return {"state": m.get("implies"), "started": started, "mods": live_mod_count(),
+                "evidence": m.get("evidence") or ""}
 
     def bridge_idle(self, purpose):
         r = self.rimflow("bridge", "idle", "--for", purpose)
@@ -290,6 +325,28 @@ def _hold(store, fx, item, why, now, acts):
 
 
 FLYER = "flyer:"
+
+
+def _harness(store, fx, r, item, why, now, acts):
+    """Stagings that leave no running build are OUR failure (owner: a live problem is not an owner problem): put down,
+    the count reset, staged again after a growing wait; an alarm and a ledger note say why. Never _hold."""
+    c = cfg(r)
+    out = {}
+
+    def f(s):
+        gg = s["game"]
+        n = gg.get("harness", 0) + 1
+        wait = int(min(c["harness_retry_s"] * n, c["harness_retry_max_s"]))
+        out.update(n=n, wait=wait)
+        gg.update(phase="stage", stages=0, harness=n, retry_at=now + wait, harness_why=why[:300])
+        s["put_down"] = {"on": ("harness #%d, staged again in %ds: %s" % (n, wait, why))[:200], "at": now}
+    if _save(store, item, f) is None:
+        return
+    store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": "game_harness",
+                   "item": item, "why": why[:300]})
+    acts.append({"do": "game_harness", "item": item, "why": why[:200], "retry_s": out["wait"]})
+    fx.ledger_note(item, "relentless game phase: a harness failure, not an owner question (#%d): %s; staged again in %ds"
+                   % (out["n"], why, out["wait"]))
 
 
 def _waits(store, fx, item, why, now, acts):
@@ -367,10 +424,27 @@ def step(store, fx, r, item, now, acts, sup):
         since = max(g.get("staged_at") or 0, g["entered_at"])
         stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
-        if stale or not fx.game_running():
+        rd = fx.game_reading()
+        state = rd.get("state")
+        if state is None:       # the supervisor could not look: a harness gap, never "no game", never a restart
+            return _waits(store, fx, item, "harness: the game cannot be read from the supervisor: %s"
+                          % (rd.get("evidence") or "no reading"), now, acts)
+        if state == "LOADING":  # a cold load: wait it out, holding nothing, up to the bound of the list that loads
+            bound = load_bound(c, rd.get("mods"))
+            age = int(now - (rd.get("started") or g.get("staged_at") or g["entered_at"]))   # never 0 for ever
+            if age < bound:
+                why = "the game is loading: %ds of a %ds bound (%s mods)" % (age, bound, rd.get("mods") or "unread")
+                _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
+                                              s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
+                acts.append({"do": "game_loading", "item": item, "why": why})
+                return
+            stale = [{"why": "the game still loads %ds after it started (bound %ds for %s mods)"
+                      % (age, bound, rd.get("mods") or "unread")}]
+        if stale or state == "DOWN":
             if g["stages"] >= c["stage_tries"]:
-                return _hold(store, fx, item, "game phase: %d staging(s) and the build still is not running: %s"
-                             % (g["stages"], (stale[0].get("why") if stale else "no running game")), now, acts)
+                return _harness(store, fx, r, item, "%d staging(s) and the build still is not running: %s"
+                                % (g["stages"], (stale[0].get("why") if stale else rd.get("evidence") or "no game")),
+                                now, acts)
             _save(store, item, lambda s: s["game"].update(phase="stage"))
             g = store.load(item)["game"]
         else:
@@ -386,6 +460,8 @@ def step(store, fx, r, item, now, acts, sup):
             return
 
     if g["phase"] == "stage":
+        if (g.get("retry_at") or 0) > now:
+            return      # put down on a harness failure until its retry: it holds no place, the bridge is free
         why = _lease_why(store, fx, r, item, sha, led)
         if why:
             return _waits(store, fx, item, why, now, acts)
@@ -393,6 +469,10 @@ def step(store, fx, r, item, now, acts, sup):
         if why:
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
+        gap = fx.clone_gap(st["clone"])     # checked again at the launch: QUICKTEST_POLICY_NRE_FULLLIST_1 launched without
+        if gap:                             # claude_bounded.sh; the bridge is never taken for a stage that cannot start
+            return _waits(store, fx, item, "clone: %s lacks %s; the next prepare makes it again" % (st["clone"], gap),
+                          now, acts)
         took = fx.bridge_take("relentless staging %s: deploy and restart for its live proofs" % item)
         if took:
             acts.append({"do": "game_waits", "item": item, "why": "bridge: %s" % took})
