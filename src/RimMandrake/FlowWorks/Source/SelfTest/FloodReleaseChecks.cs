@@ -289,6 +289,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(f.Contains("RM_FloodReleaseMath.ExpiryTick(spawnedTick, TicksPerTile, estimatedFloodedTiles, unpaidSteps)")
 					&& f.Contains("Scribe_Values.Look(ref unpaidSteps, \"unpaidSteps\", 0);")
 					&& f.Contains("if (ledger.Placed - paidBefore < PerTileDl)"), "production counts and saves unpaid steps and adds them to its expiry");
+				// The increment itself, in place: comments stripped and whitespace collapsed, SpreadOneTile must sample the
+				// ledger, pour, then bump unpaidSteps when less than a tile was paid. Deleting, moving or guarding the
+				// increment differently brings back the old paid-tiles-only expiry and goes red here.
+				string code = Regex.Replace(Regex.Replace(System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath("Flood_FlowWorks.cs")), @"//[^\n]*", " "), @"\s+", " ");
+				Assert(code.Contains("long paidBefore = ledger.Placed; PlaceFluid(map, target, excavation); if (ledger.Placed - paidBefore < PerTileDl) { unpaidSteps++; } return;"),
+					"production SpreadOneTile counts one unpaid step per pour that paid less than a tile");
+				Assert(Regex.Matches(code, @"\bunpaidSteps\s*(\+\+|--|[-+*/]?=(?!=))").Count == 1 && !code.Contains("--unpaidSteps") && !code.Contains("++unpaidSteps"),
+					"unpaidSteps is written only by that increment (and the scribe), never reset or decremented");
 			});
 
 			Case("Depth_engine_switch_applies_on_reload_only", () =>
