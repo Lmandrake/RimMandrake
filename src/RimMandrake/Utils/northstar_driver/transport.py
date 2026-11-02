@@ -165,7 +165,8 @@ class MockGame(object):
              "jawa/mod_settings_field", "jawa/dlc_status", "jawa/thing_stats", "jawa/clear_ui",
              "jawa/window_list_close", "jawa/get_defs", "jawa/pawn_force_mental_break", "jawa/pawn_get", "jawa/pawn_force_incapacitate",
              "jawa/ordered_job", "rimworld/step_game_ticks", "rimworld/screenshot_cell_rect",
-             "rimworld/get_camera_state", "rimworld/jump_camera_to_cell", "rimworld/take_screenshot"]
+             "rimworld/get_camera_state", "rimworld/jump_camera_to_cell", "rimworld/take_screenshot",
+             "jawa/running_mods"]
 
     def __init__(self, faults=(), mods=("ludeon.rimworld",), sizex=200, sizez=200):
         self.faults = set(faults)
@@ -310,6 +311,8 @@ class MockGame(object):
             if p.get("action") == "set":
                 self.settings[key] = p["value"]
             return {"success": True, "value": self.settings.get(key, "250" if key == "paintIntervalTicks" else "True")}
+        if tool == "jawa/running_mods":
+            return {"success": True, "count": len(self.mods), "packageIds": list(self.mods)}
         if tool == "jawa/dlc_status":
             return {"success": True, "dlcs": ["Royalty", "Ideology", "Biotech", "Anomaly", "Odyssey"]}
         if tool == "jawa/thing_stats":

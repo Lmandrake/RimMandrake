@@ -3,6 +3,8 @@
 
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py preflight --mod Graffiti
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Graffiti --plan <plan.py> [--pipeline]
+  python.exe src/RimMandrake/Utils/northstar_driver/cli.py run ... --config full [--list <ModsConfig>]   # full list
+  python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list [--list <ModsConfig>]  # read-only check
   python3    src/RimMandrake/Utils/northstar_driver/cli.py run --mock --plan <plan.py>   # offline
   python3    src/RimMandrake/Utils/northstar_driver/judge_cli.py <results.json>           # visual half, WSL
 
@@ -99,6 +101,13 @@ def mock_config(ids):
     return p
 
 
+def running_list_for(args):
+    """Full-list mode: the list file the RUNNING game must equal (--list, default FULL.LATEST); None otherwise."""
+    if getattr(args, "config", "current") != "full":
+        return None
+    return getattr(args, "list", None) or pf.FULL_LATEST
+
+
 def open_session(args, plan=None):
     if args.mock:
         game = MockGame(faults=[f for f in (args.fault or "").split(",") if f])
@@ -113,12 +122,22 @@ def cmd_preflight(args):
         cs = pf.run_preflight(s, mod_dirs=[] if args.mock and not args.mod else mod_dirs_for(args.mod),
                               expect_ids=args.expect_id or (), need_god=args.god, rect=args.rect,
                               fix=args.fix, extra_tools=(),
-                              config_path=mock_config(args.expect_id or ()) if args.mock else None)
+                              config_path=mock_config(args.expect_id or ()) if args.mock else None,
+                              running_list=running_list_for(args))
     ok, bad, unk = pf.verdict(cs, args.allow_unmeasured)
     for c in cs:
         print("%-11s %-24s %s" % (c.status, c.name, c.evidence))
     print("PREFLIGHT %s" % ("OK" if ok else "REFUSED: %d FAIL, %d UNMEASURED" % (len(bad), len(unk))))
     return 0 if ok else 2
+
+
+def cmd_running_list(args):
+    """READ-ONLY: the RUNNING list (jawa/running_mods) against --list (default FULL.LATEST). Exit 0 iff identical."""
+    s, _ = open_session(args)
+    with s:
+        c = pf.check_running_list(s, getattr(args, "list", None) or pf.FULL_LATEST)
+    print("%-11s %-24s %s" % (c.status, c.name, c.evidence))
+    return 0 if c.status == PASS else 1
 
 
 def cmd_run(args):
@@ -128,14 +147,22 @@ def cmd_run(args):
     exp, why = expected_bars(mod)
     mod_dir, start_hash = mod_hash_now(mod)
     doc = {"mod": mod, "mode": "mock" if args.mock else "live", "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-           "expected": exp, "expected_source": why, "bars": [], "preflight": []}
-    out = args.out or _rel("Transient", "northstar", "%s_%s.json" % (mod, time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())))
+           "expected": exp, "expected_source": why, "bars": [], "preflight": [], "compat": [],
+           "config": args.config, "config_list": running_list_for(args)}
+    out = args.out or _rel("Transient", "northstar", "%s%s_%s.json" % (
+        mod, "_full" if args.config == "full" else "", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())))
     with s:
         cs = pf.run_preflight(s, mod_dirs=[] if args.mock else mod_dirs_for(mod),
                               expect_ids=getattr(plan, "EXPECT_MODS", ()) or args.expect_id or (),
                               need_god=args.god or getattr(plan, "NEED_GOD", False),
                               rect=args.rect or getattr(plan, "RECT", None), fix=args.fix,
-                              config_path=mock_config(getattr(plan, "EXPECT_MODS", ()) or args.expect_id or ()) if args.mock else None)
+                              config_path=mock_config(getattr(plan, "EXPECT_MODS", ()) or args.expect_id or ()) if args.mock else None,
+                              running_list=running_list_for(args))
+        if args.config == "full" and getattr(plan, "full_list_differences", None):
+            try:
+                doc["full_list_differences"] = plan.full_list_differences(running_list_for(args))
+            except Exception as ex:   # noqa: BLE001 - the sheet section says it could not be built; never silent
+                doc["full_list_differences"] = {"error": "%s: %s" % (type(ex).__name__, ex)}
         # mod-supplied site check: plan.preflight(s) -> [failed precondition, ...] (plan 3.13)
         if getattr(plan, "preflight", None) and not args.mock_skip_site:
             try:
@@ -218,8 +245,12 @@ def record_result(doc, mod, out, start_hash, mod_dir, _record=None):
                             "not_ok": [i for k, v in by.items() if k != PASS for i in v]},
              "bars": {r["id"]: r["status"] for r in rows},
              "source": {"verb": "northstar_driver run", "result": rel, "mode": doc.get("mode"),
-                        "started": doc.get("started_utc"), "expected_source": doc.get("expected_source")}}
-    run_id = "%s/northstar_driver@%s" % (mod, os.path.basename(out))
+                        "started": doc.get("started_utc"), "expected_source": doc.get("expected_source"),
+                        "config": doc.get("config") or "current"},
+             "config": doc.get("config") or "current"}
+    if doc.get("compat"):
+        extra["compat"] = {r["id"]: r["status"] for r in doc["compat"]}
+    run_id = "%s/northstar_driver[%s]@%s" % (mod, doc.get("config") or "current", os.path.basename(out))
     entry = (_record or status.record_run)(mod, mod_dir, run_id, bool(doc.get("all_green")),
                                            walk=northstar.find_walk(ROOT, mod), extra=extra)
     return entry, "recorded %s: %s at %s (%s)" % (mod, entry["status"], entry["hash"][:12], run_id)
@@ -278,7 +309,33 @@ def skipped_chain_records(suite, skipped, why):
 
 
 def _rows_from(chains, expected, texts):
-    return mark_visual(B.rollup_components(chains, expected), texts) + functional_rows(chains)
+    """Compat components are partitioned out FIRST: a `compat_*` row never reaches the bar rollup, even if it
+    (wrongly) claims a `shows=` bar."""
+    own = [dict(ch, components=[c for c in ch["components"] if not is_compat(c)]) for ch in chains]
+    return mark_visual(B.rollup_components(own, expected), texts) + functional_rows(own)
+
+
+COMPAT_PREFIX = "compat_"
+
+
+def is_compat(c):
+    """A compatibility component (Graffiti plan: foreign mark defs of SacredGraffiti / GraffitiImperial on the
+    full list): named `compat_*` (the prefix alone decides; a `shows=` claim on one is ignored). Reported in
+    doc["compat"], never in the mod's bars, its summary or its verdict."""
+    return str(c.get("name", "")).startswith(COMPAT_PREFIX)
+
+
+def compat_rows(chains):
+    out = []
+    for ch in chains:
+        for c in ch["components"]:
+            if not is_compat(c):
+                continue
+            v = str(c.get("verdict", ""))
+            st = PASS if v.startswith("PASS") else (FAIL if v == "FAIL" else UNMEASURED)
+            out.append({"id": "%s.%s" % (ch.get("name"), c.get("name")), "status": st, "compat": True,
+                        "evidence": str(c.get("detail") or v)})
+    return out
 
 
 def _suite_rows(s, mod, expected, doc, only=None, skip=None, progress=None, pre_rows=(), suite=None):
@@ -307,6 +364,7 @@ def _suite_rows(s, mod, expected, doc, only=None, skip=None, progress=None, pre_
                         chains_pending=[n for n, _ in run[i + 1:]], components=component_records(done))
             part["bars"] = list(pre_rows) + _rows_from(done + skipped_out, expected, doc["bar_text"])
             part["summary"] = B.summarize(part["bars"])
+            part["compat"] = compat_rows(done)
             part["all_green"] = False
             progress(part)
     chains = done + skipped_out
@@ -316,6 +374,7 @@ def _suite_rows(s, mod, expected, doc, only=None, skip=None, progress=None, pre_
                 print("component %s/%s: %s" % (ch.get("name"), c.get("name"),
                                                json.dumps({k: v for k, v in c.items() if k != "name"}, default=str)[:600]))
     doc["components"] = component_records(chains)
+    doc["compat"] = compat_rows(chains)
     return _rows_from(chains, expected, doc["bar_text"])
 
 
@@ -326,7 +385,7 @@ def functional_rows(chains):
     out = []
     for ch in chains:
         for c in ch["components"]:
-            if c.get("shows"):
+            if c.get("shows") or is_compat(c):
                 continue
             v = str(c.get("verdict", ""))
             st = PASS if v.startswith("PASS") else (FAIL if v == "FAIL" else UNMEASURED)
@@ -418,6 +477,10 @@ def main(argv=None):
         p.add_argument("--allow-unmeasured", action="store_true")
         p.add_argument("--mock-skip-site", action="store_true", help="skip plan.preflight (offline selftests)")
         p.add_argument("--pipeline", action="store_true", help="pipelined call_many (correct but no faster: 1 reply/frame, pipecheck.py 2026-10-21)")
+        p.add_argument("--config", choices=("current", "full"), default="current",
+                       help="full = full-list mode (plan 6.8): no list swap; the RUNNING list (jawa/running_mods) must "
+                            "equal --list (default FULL.LATEST) or the run refuses; recorded with config 'full'")
+        p.add_argument("--list", help="full-list mode: the ModsConfig-shaped file the running list must equal")
         if name == "run":
             p.add_argument("--plan", help="python plan module registering @bar functions")
             p.add_argument("--out")
@@ -427,6 +490,9 @@ def main(argv=None):
                                             "UNMEASURED 'chain not run'")
             p.add_argument("--skip-chains", help="suite plans: skip these chains (comma list), e.g. a long-wait "
                                                  "chain split into its own run")
+    p = sub.add_parser("running-list", help="READ-ONLY: running list vs --list (default FULL.LATEST); exit 0 iff equal")
+    p.set_defaults(fn=cmd_running_list, mock=False, pipeline=False)
+    p.add_argument("--list")
     a = ap.parse_args(argv)
     return a.fn(a)
 

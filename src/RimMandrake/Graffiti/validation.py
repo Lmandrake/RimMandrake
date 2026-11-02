@@ -58,11 +58,15 @@ def _remove_pawns_in(call, rect):
     return n
 
 
-def _mark_defs():
-    """[(defName, form)] for every ThingDef in this mod's Defs/ carrying a ModExtension_Graffiti.
-    Parsed per `<ThingDef>` block, `form` read from inside it (never a fixed line number)."""
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_SRC = os.path.dirname(os.path.dirname(_HERE))
+
+
+def _mark_defs(ddir=None):
+    """[(defName, form)] for every ThingDef in a mod's Defs/ (default: this mod's) carrying a
+    ModExtension_Graffiti. Parsed per `<ThingDef>` block, `form` read from inside it (never a fixed line number)."""
     out = []
-    ddir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs")
+    ddir = ddir or os.path.join(_HERE, "Defs")
     if not os.path.isdir(ddir):
         return out
     for fn in sorted(os.listdir(ddir)):
@@ -85,6 +89,15 @@ FORM_OF = dict(_MARKS)
 MARK_CSV = ",".join(MARK_DEFS)
 SETTINGS = "RimMandrake.Graffiti.RM_GraffitiSettings"
 
+# Foreign pool members (the full list): their mark defs join the spree's pool when loaded, and are reported in
+# separate `compat_*` components (northstar_driver doc["compat"]), NEVER in Graffiti's bars or verdict
+# (GRAFFITI_NORTHSTAR_GREEN_FULL_1). Read from each member's own repo Defs/, keyed by its packageId.
+FOREIGN_MEMBERS = {
+    "mandrake.rm.sacredgraffiti": os.path.join(_SRC, "RimMandrake", "SacredGraffiti", "Defs"),
+    "mandrake.rsw.graffitiimperial": os.path.join(_SRC, "RimStarWars", "GraffitiImperial", "Defs"),
+}
+FOREIGN_DEFS = {pid: [d for d, _ in _mark_defs(dd)] for pid, dd in FOREIGN_MEMBERS.items()}
+
 LANE_LEN, LANE_DX, LANE_DZ = 14, 30, 16     # lanes > 12-cell search radius apart
 
 
@@ -98,6 +111,54 @@ def _marks_in(t, rect, defs=MARK_CSV):
              "x": (x.get("position") or {}).get("x", x.get("x")),
              "z": (x.get("position") or {}).get("z", x.get("z"))}
             for x in ((r or {}).get("things") or [])]
+
+
+def _running_ids(t):
+    """Lower-cased packageIds of the RUNNING game (jawa/running_mods); None when it cannot be read."""
+    r = t.bridge_call("jawa/running_mods", assembly="", details=False)
+    ids = (r or {}).get("packageIds") if isinstance(r, dict) else None
+    return {str(i).lower() for i in ids} if ids else None
+
+
+def _compat_foreign(t, lanes):
+    """One compat component per foreign pool member: which of its marks the spree painted, lane by lane, and
+    whether each sits on a cell cardinal to its lane's wall. An absent member reads UNMEASURED 'not loaded'."""
+    saved = (t.upstream_failed, t.upstream_reason)
+    try:
+        running = _running_ids(t) if t._guard() else set()
+    except Exception:   # noqa: BLE001 - the probe's failure is reported by the compat rows only
+        running = None
+    for pid, defs in sorted(FOREIGN_DEFS.items()):
+        short = pid.rsplit(".", 1)[-1]
+        try:
+            _compat_one(t, lanes, pid, short, defs, running)
+        finally:     # a compat row's FAIL/UNMEASURED never marks the chain upstream-failed for the next row
+            t.upstream_failed, t.upstream_reason = saved
+
+
+def _compat_one(t, lanes, pid, short, defs, running):
+    """One foreign member's compat row (see _compat_foreign)."""
+    with t.component("compat_%s_marks" % short):
+        if not t._guard():
+            return
+        if running is None:
+            raise ExpectationFailed("UNMEASURED: jawa/running_mods unreadable")
+        if pid not in running:
+            raise ExpectationFailed("UNMEASURED: %s not on the running list (member absent)" % pid)
+        if not defs:
+            raise ExpectationFailed("%s is loaded but its repo Defs/ list no ModExtension_Graffiti mark" % pid)
+        per = [_marks_in(t, ln["rect"], defs=",".join(defs)) for ln in lanes]
+        off = [(i, m) for i, ms in enumerate(per) for m in ms
+               if abs(m["z"] - lanes[i]["wall_z"]) != 1
+               or not (lanes[i]["x0"] <= m["x"] < lanes[i]["x0"] + LANE_LEN)]
+        hist = {}
+        for ms in per:
+            for m in ms:
+                hist[m["def"]] = hist.get(m["def"], 0) + 1
+        if off:
+            raise ExpectationFailed("%s marks off the wall: %s (histogram %s)" % (short, off[:5], hist))
+        t._current.detail = "%s: %d foreign mark(s), per lane %s, histogram %s" % (
+            short, sum(len(m) for m in per), [len(m) for m in per], hist)
 
 
 def _prep_site(t, size):
@@ -277,6 +338,8 @@ def spree_wall(t):
                 raise ExpectationFailed("lane 0 marks not on cells cardinal to the wall run: %s" % bad[:5])
             m0 = per_lane[0][0]
             t.screenshot(rect=(m0["x"] - 3, ln["wall_z"] - 2, 7, 5), padding=0)
+
+    _compat_foreign(t, lanes)        # LAST in the chain, and chain state restored: compat never gates a Graffiti row
 
 
 # ----------------------------------------------------------- galleries (bars 3-6, 8, 9, 10)

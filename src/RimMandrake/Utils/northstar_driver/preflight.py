@@ -180,6 +180,42 @@ def check_modlist(expect_sha=None, expect_ids=(), config_path=None):
     return Check("modlist", PASS, ev)
 
 
+FULL_LATEST = os.path.join(ROOT, "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")
+
+
+def check_running_list(s, list_path=None):
+    """FULL-LIST MODE (Graffiti plan 6.8): the RUNNING game's LoadedModManager.RunningModsListForReading
+    (jawa/running_mods, packageIds in load order) against the intended list file (default FULL.LATEST).
+    This is the only check that speaks for the loaded game; check_modlist reads the NEXT load.
+    Exact ids AND relative order, through modmanifest.compare (MISSING/EXTRA/REORDERED/DUPLICATE_ID).
+    A reply with no packageIds is UNMEASURED (could not ask), never a match."""
+    list_path = list_path or FULL_LATEST
+    if _UTILS not in sys.path:
+        sys.path.insert(0, _UTILS)
+    import modmanifest
+    try:
+        intended = modmanifest.read_modsconfig(list_path)
+    except Exception as ex:
+        return Check("running_list", UNMEASURED, "intended list unreadable (%s: %s)" % (type(ex).__name__, ex))
+    r, err = _safe(s.call, "jawa/running_mods", assembly="", details=False)
+    if err:
+        return Check("running_list", UNMEASURED, "jawa/running_mods raised (%s)" % err)
+    raw = r.get("packageIds") if isinstance(r, dict) else None
+    if not isinstance(r, dict) or not r.get("success", True) or not isinstance(raw, list) or not raw:
+        return Check("running_list", UNMEASURED, "jawa/running_mods gave no packageIds (%r)" % (str(r)[:200],))
+    if not all(isinstance(x, str) and x.strip() for x in raw):   # never drop a bad entry to reach equality
+        return Check("running_list", UNMEASURED, "jawa/running_mods reply holds non-id entries: %r"
+                     % [x for x in raw if not (isinstance(x, str) and x.strip())][:5])
+    ids = [x.strip() for x in raw]
+    c = modmanifest.compare(intended, ids)
+    name = os.path.basename(list_path)
+    ev = "running %d vs %s %d" % (len(ids), name, len(intended))
+    if not c["clean"]:
+        return Check("running_list", FAIL, "%s: %s" % (ev, "; ".join(c["problems"])))
+    sha = hashlib.sha256("\n".join(i.lower() for i in ids).encode()).hexdigest()
+    return Check("running_list", PASS, "%s, identical ids and order (running sha256 %s)" % (ev, sha[:16]))
+
+
 def _tree(root, skip_big=("Textures",)):
     out = {}
     for dp, dn, fn in os.walk(root):
@@ -289,8 +325,9 @@ def check_area_clear(s, rect, allow_defs=()):
 
 
 def run_preflight(s, mod_dirs=(), expect_ids=(), expect_sha=None, need_dev=True, need_god=False,
-                  rect=None, fix=False, config_path=None, deployed_root=None, extra_tools=()):
-    """mod_dirs: [(repo_dir, deployed_dir)] pairs. Returns (checks, ok_to_run_strict)."""
+                  rect=None, fix=False, config_path=None, deployed_root=None, extra_tools=(), running_list=None):
+    """mod_dirs: [(repo_dir, deployed_dir)] pairs. Returns (checks, ok_to_run_strict).
+    running_list: a ModsConfig-shaped file the RUNNING list must equal (full-list mode); None skips."""
     cs = [check_tools(s, extra_tools), check_loaded_not_zombie(s)]
     zombie = cs[-1].status != PASS
     cs.append(check_no_modal(s))
@@ -300,6 +337,8 @@ def run_preflight(s, mod_dirs=(), expect_ids=(), expect_sha=None, need_dev=True,
         if rect:
             cs.append(check_area_clear(s, rect))
     cs.append(check_modlist(expect_sha, expect_ids, config_path))
+    if running_list:
+        cs.append(check_running_list(s, running_list))
     for repo, dep in mod_dirs:
         c = check_deployed(repo, dep)
         c.name += ":" + os.path.basename(repo.rstrip("/\\"))

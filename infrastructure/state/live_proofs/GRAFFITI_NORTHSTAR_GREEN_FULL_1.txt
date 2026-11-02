@@ -1,0 +1,2 @@
+live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list --list infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml < /dev/null
+live-proof A2: python3 src/RimMandrake/Graffiti/northstar_full.py --list infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml < /dev/null
