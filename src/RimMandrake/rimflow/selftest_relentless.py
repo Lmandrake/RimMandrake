@@ -2361,6 +2361,67 @@ def t_help_own_call_spends_hits():
     g.done()
 
 
+def t_help_round_two_vendor():
+    """Design section 7: round one the same model, round two a second vendor through the gpt_consult port. A round
+    is a consult, never a launch try: a dead round-one try relaunches round one's agent."""
+    g = Rig(1, circling=HELP)
+    circle(g)
+    circle(g)
+    g.tick()
+    g.w.up[g.st("I0")["help"]["run"]["unit"]] = False       # round one's first try dies with no answer
+    g.tick()
+    g.tick()
+    ok([c[3] for c in consults(g)] == ["rm-consult", "rm-consult"], "a retried round one stays round one: %s"
+       % [c[3] for c in consults(g)])
+    answer(g)
+    g.tick()
+    ok(g.st("I0")["help_options"]["vendor"] == "rm-consult", "round one's options name their agent")
+    g.now += g.r["circling"]["help_cool_h"] * 3600
+    circle(g)
+    circle(g)
+    g.tick()
+    g.tick()
+    two = consults(g)[-1]
+    ok(len(consults(g)) == 3 and two[3] == R.VENDOR_AGENT, "round two goes to the second vendor: %s" % two[3])
+    ok("OPTION: <idea> | <the one observation>" in two[2] and "help-answer" not in two[2],
+       "its prompt asks for OPTION lines and names no command it cannot run")
+    ok("--- failed approaches ---" in two[2] and "Why you were called" in two[2], "the cold record goes along")
+    # the unit body, through a fake port: junk is refused and answers nothing
+    pf = os.path.join(g.d, "p.md")
+    with open(pf, "w") as f:
+        f.write(two[2])
+    nonce = g.st("I0")["help"]["nonce"]
+    rc = R.help_vendor_run(g.s, "I0", pf, g.r, nonce=nonce, consult=lambda p, o, t: "I think the seam is wrong.")
+    ok(rc == 3 and not g.st("I0")["help"].get("answered_at"), "an answer with no OPTION line answers nothing")
+    expect_fence(lambda: R.help_vendor_run(g.s, "I0", pf, g.r, nonce="wrong", consult=lambda p, o, t: "OPTION: a | b"),
+                 "a vendor answer under a wrong nonce")
+    said = "\n".join(["Here you go:", "OPTION: the cache key omits the tier | rerun with tier in key: red goes green",
+                       "- **OPTION 2:** the guard runs at base | guard log shows base sha",
+                       "OPTION:", "commentary | not an option", "OPTION: no observation here", "OPTION: x | y",
+                       "OPTION: z | w"])
+    rc = R.help_vendor_run(g.s, "I0", pf, g.r, nonce=nonce, consult=lambda p, o, t: said)
+    got = g.st("I0")["help_options"]
+    ok(rc == 0 and [o["idea"] for o in got["options"]] == ["the cache key omits the tier", "the guard runs at base", "x"],
+       "OPTION lines become options, an untestable one is dropped, at most help_options_max: %s" % got["options"])
+    ok(got["vendor"] == R.VENDOR_AGENT, "and they say which vendor gave them")
+    calls = []
+    R.help_vendor_run(g.s, "I0", pf, dict(g.r, circling=dict(g.r["circling"], help_max_s=400)), nonce="spent",
+                      consult=lambda p, o, t: calls.append(t) or "")
+    ok(len(calls) == R.VENDOR_FAST_TRIES and all(t <= 400 - R.VENDOR_RESERVE_S for t in calls),
+       "empty fast answers are retried, each inside the unit's one bound: %s" % calls)
+    g.w.up[g.st("I0")["help"]["run"]["unit"]] = False
+    g.tick()
+    ok(g.st("I0")["help"]["status"] == "answered", "round two closes like round one")
+    ok("(a second vendor)" in workers(g)[-1][2] and "the cache key omits the tier" in workers(g)[-1][2],
+       "the next brief carries round two's options and says whose")
+    rows = [a for a in g.s.attempts("I0") if a.get("help") == "answered" and "options" in a]
+    ok([a.get("agent") for a in rows] == ["rm-consult", R.VENDOR_AGENT] and [a.get("round") for a in rows] == [1, 2],
+       "the record scores help by round and vendor: %s" % rows)
+    g.done()
+    r = dict(g.r, circling=dict(g.r["circling"], help_vendor_from_round=None))
+    ok(R.help_vendor({"help": {"round": 5}}, r) == "rm-consult", "unset in the rules: every round is round one's agent")
+
+
 def t_help_reaches_brief():
     """S2: the options reach the next worker's brief, and the consult itself is cold."""
     g = Rig(1, circling=HELP)
@@ -2725,7 +2786,7 @@ def t_review_findings_rig():
 
 
 def main():
-    for t in (t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

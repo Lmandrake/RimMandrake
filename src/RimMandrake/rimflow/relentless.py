@@ -403,8 +403,11 @@ def help_cool_left(st, r, now):
 
 
 def _want_help(store, st, why, by, now):
-    """Any consult uses up the hits so far: a worker's own call and the forced one are not two."""
-    st["help"] = {"status": "wanted", "why": (why or "")[:600], "by": by, "at": now, "tries": 0, "gen": st["gen"]}
+    """Any consult uses up the hits so far: a worker's own call and the forced one are not two. `round` counts consults,
+    never launch tries: a retry of round one is still round one, and stays with the same vendor."""
+    st["help_round"] = st.get("help_round", 0) + 1
+    st["help"] = {"status": "wanted", "why": (why or "")[:600], "by": by, "at": now, "tries": 0, "gen": st["gen"],
+                  "round": st["help_round"]}
     st["help_last_at"] = now
     st["help_hits_used"] = st.get("circling_hits", 0)
     store.journal({"at": iso(now), "do": "help_wanted", "item": st["item"], "by": by})
@@ -459,6 +462,75 @@ def parse_options(options, r):
     return out
 
 
+def help_vendor(st, r):
+    """Design section 7: round one the same model, from round `help_vendor_from_round` on a second vendor (the gpt_consult
+    port). -> the agent name to launch. Unset in the rules: always round one's agent."""
+    n = (r.get("circling") or {}).get("help_vendor_from_round")
+    rnd = ((st or {}).get("help") or {}).get("round") or 1
+    return VENDOR_AGENT if n and rnd >= n else r["help_agent"]
+
+
+VENDOR_AGENT = "gpt_consult"
+VENDOR_FAST_TRIES, VENDOR_FAST_FAIL_S, VENDOR_RESERVE_S = 3, 90, 90    # reserve: the answer and unit exit
+OPTION_RE = re.compile(r"^[ \t]*(?:[-*][ \t]*)?\**OPTION\**[ \t]*\d*[ \t]*[:.)]\**[ \t]*(\S.*)$", re.I | re.M)
+
+
+def vendor_options(text, r):
+    """A second vendor's answer -> the options it gave, each line `OPTION: idea | observation`. Nothing else is read."""
+    got = [m.strip().strip("`*").strip() for m in OPTION_RE.findall(text or "")]
+    return [o for o in got if all(x.strip() for x in o.partition("|")[::2]) and "|" in o][:r["circling"]["help_options_max"]]
+
+
+def help_vendor_run(store, item, prompt_file, r, nonce=None, consult=None):
+    """The second vendor's unit body: ask through gpt_consult, then answer by the same door a Claude consult uses.
+    -> exit code. `consult(prompt_file, out_file, timeout)` -> text is the port, for tests."""
+    nonce = nonce or os.environ.get("RELENTLESS_HELP_NONCE")
+    if not nonce:
+        print("help-vendor: no nonce (RELENTLESS_HELP_NONCE)", file=sys.stderr)
+        return 2
+    out = prompt_file + ".answer.md"
+    consult = consult or gpt_consult
+    deadline = time.monotonic() + r["circling"]["help_max_s"] - VENDOR_RESERVE_S     # one bound over every try
+    text, got = "", []
+    for _ in range(VENDOR_FAST_TRIES):
+        left = int(deadline - time.monotonic())
+        if left < 60:
+            break
+        t0 = time.monotonic()
+        text = consult(prompt_file, out, left)
+        got = vendor_options(text, r)
+        if got or text or time.monotonic() - t0 > VENDOR_FAST_FAIL_S:
+            break       # only an empty answer inside seconds is retried here: WSL interop's accept4 flake, a known lesson
+    if not got:
+        print("help-vendor: no OPTION lines in the answer (%d chars): %s" % (len(text or ""), (text or "")[-300:]),
+              file=sys.stderr)
+        return 3
+    help_answer(store, item, nonce, got, r)
+    print("help-vendor: %d option(s) answered for %s" % (len(got), item))
+    return 0
+
+
+def gpt_consult(prompt_file, out, timeout):
+    """The Consult port's live adapter: src/RimMandrake/Utils/gpt_consult.py beside this file's tree. `timeout` bounds
+    the whole call: codex gets 30 s less, so gpt_consult ends it and writes its job before this kill would."""
+    tool = os.path.join(HERE, "..", "Utils", "gpt_consult.py")
+    try:
+        res = subprocess.run([sys.executable, tool, "--prompt-file", prompt_file, "--out", out,
+                              "--timeout", str(max(30, timeout - 30))],
+                             capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        print("help-vendor: gpt_consult over %d s" % timeout, file=sys.stderr)
+        return ""
+    print(res.stderr[-2000:], file=sys.stderr)
+    if res.returncode:
+        print("help-vendor: gpt_consult exit %d" % res.returncode, file=sys.stderr)
+    try:
+        with open(out, encoding="utf-8") as f:
+            return f.read()
+    except OSError:
+        return res.stdout
+
+
 def help_answer(store, item, nonce, options, r, now=None):
     """The consult's return. Into the state file at once, so nothing past this line depends on the unit."""
     now = time.time() if now is None else now
@@ -469,8 +541,9 @@ def help_answer(store, item, nonce, options, r, now=None):
         if not h or h.get("status") != "running" or h.get("nonce") != nonce or h.get("expired") or h.get("answered_at"):
             raise Fenced("%s: no consult is waiting for that nonce" % item)
         h["answered_at"] = now
-        st["help_options"] = {"options": got, "at": now, "by_unit": h["run"]["unit"]}
-        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "answered", "options": len(got)})
+        st["help_options"] = {"options": got, "at": now, "by_unit": h["run"]["unit"], "vendor": h.get("agent")}
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "answered", "options": len(got),
+                             "round": h.get("round"), "agent": h.get("agent")})
         store.save(st)
 
 
@@ -1232,6 +1305,15 @@ class Effects:
         os.makedirs(os.path.dirname(run["out"]), exist_ok=True)
         argv = rl.launch_argv(role, run["unit"], prompt, run["out"], run["err"], claude)
         at = argv.index("--")
+        if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
+            pf = os.path.splitext(run["out"])[0] + ".prompt.md"
+            with open(pf, "w", encoding="utf-8") as f:
+                f.write(prompt)
+            tool = os.path.join(clone, "src", "RimMandrake", "rimflow", "relentless.py")
+            argv = argv[:at] + list(wall) + sum((["--setenv", "%s=%s" % kv] for kv in extra_env.items()), []) + \
+                ["--", sys.executable, tool, "help-vendor", "--item", st["item"], "--prompt-file", pf]
+            r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
         env = []
         for k, v in extra_env.items():
             env += ["--setenv", "%s=%s" % (k, v)]
@@ -1384,7 +1466,8 @@ def worker_prompt(st, text, learned, r):
     if st["last_fail"]:
         head.append("Last ending: %s: %s" % (st["last_fail"]["class"], st["last_fail"]["detail"]))
     if st.get("help_options"):
-        head.append("FRESH EYES: an agent with no history read the failed approaches and offers these hypotheses. Pick "
+        head.append("FRESH EYES: an agent with no history%s read the failed approaches and offers these hypotheses. Pick "
+                    % (" (a second vendor)" if st["help_options"].get("vendor") == VENDOR_AGENT else "") +
                     "one, or refute each with evidence; record which with `learn` before you edit.")
         head += ["  %d. %s (confirm or kill by: %s)" % (n + 1, o["idea"], o["observe"])
                  for n, o in enumerate(st["help_options"]["options"])]
@@ -1404,6 +1487,20 @@ def help_prompt(st, text, tried, nonce, r):
         "single observation that would confirm or kill it." % most,
         "Then run this once and stop:",
         "  %s help-answer --item %s --nonce %s --option \"idea | the one observation\" [--option ...]" % (rc, st["item"], nonce),
+        "", "Why you were called: %s" % st["help"]["why"], "Contract: %s" % json.dumps(st["contract"]),
+        "", "--- failed approaches ---"] + rows + ["", "--- item ---", text])
+
+
+def help_prompt_vendor(st, text, tried, r):
+    """Round two's prompt, for a model that reads only this text: the same cold record, answered as OPTION lines."""
+    most = r["circling"]["help_options_max"]
+    rows = ["  gen %s ended %s: %s" % (a.get("gen"), a.get("end"), a.get("detail") or "") for a in tried[-12:]]
+    return "\n".join([
+        "You are a fresh pair of eyes from a second vendor. A first consult already gave options and the workers still "
+        "failed. You have no history with this item and no stake in it; the record below is all you get.",
+        "Give 1 to %d options the workers have not tried. Each is a hypothesis, never a verdict, and carries the single "
+        "observation that would confirm or kill it." % most,
+        "Answer with those lines only, each exactly:", "  OPTION: <idea> | <the one observation>",
         "", "Why you were called: %s" % st["help"]["why"], "Contract: %s" % json.dumps(st["contract"]),
         "", "--- failed approaches ---"] + rows + ["", "--- item ---", text])
 
@@ -2149,7 +2246,8 @@ def help_over(store, fx, item, word, now, acts):
         h = st["help"]
         h["status"] = word
         keep = any(q.get("clone") == h.get("clone") and not q.get("reaped") for q in st["quarantined"])
-        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": word})
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": word, "round": h.get("round"),
+                             "agent": h.get("agent")})
         store.save(st)
     if h.get("clone") and not keep:
         fx.remove_clone({"clone": h["clone"], "item": item})
@@ -2220,11 +2318,17 @@ def help_start(store, fx, r, item, now, acts):
         st = store.load(item)
         st["help_count"] = n
         h = st["help"]
-        h.update(status="running", nonce=nonce, clone=clean, run=desc, started_at=now, tries=h["tries"] + 1)
+        agent = help_vendor(st, r)
+        h.update(status="running", nonce=nonce, clone=clean, run=desc, started_at=now, tries=h["tries"] + 1, agent=agent)
         store.save(st)
     tried = failed_approaches(store, item)
-    why = fx.launch(st, desc, help_prompt(st, fx.item_text(item), tried, nonce, r), r["help_agent"], clean,
-                    r["circling"]["help_max_s"], {"RELENTLESS_ROOT": store.root})
+    env = {"RELENTLESS_ROOT": store.root}
+    if agent == VENDOR_AGENT:
+        env["RELENTLESS_HELP_NONCE"] = nonce
+        prompt = help_prompt_vendor(st, fx.item_text(item), tried, r)
+    else:
+        prompt = help_prompt(st, fx.item_text(item), tried, nonce, r)
+    why = fx.launch(st, desc, prompt, agent, clean, r["circling"]["help_max_s"], env)
     if why:
         fx.remove_clone({"clone": clean, "item": item})
         launch_failed(store, r, now, why)
@@ -2861,6 +2965,9 @@ def main(argv=None):
     p.add_argument("--item", required=True)
     p.add_argument("--gen", type=int, help="your lease; default RELENTLESS_GEN, set at launch")
     p.add_argument("text", nargs="?", default="")
+    p = sub.add_parser("help-vendor", help="round two's unit body: ask gpt_consult, answer with its OPTION lines")
+    p.add_argument("--item", required=True)
+    p.add_argument("--prompt-file", required=True)
     p = sub.add_parser("help-answer", help="the consult's return")
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
@@ -2916,6 +3023,8 @@ def main(argv=None):
             env_gen = os.environ.get("RELENTLESS_GEN")
             gen = a.gen if a.gen is not None else int(env_gen) if env_gen else None
             ask_help(store, a.item, gen, a.text, rules())
+        elif a.cmd == "help-vendor":
+            return help_vendor_run(store, a.item, a.prompt_file, rules())
         elif a.cmd == "help-answer":
             help_answer(store, a.item, a.nonce, a.option, rules())
         elif a.cmd == "enrol":
