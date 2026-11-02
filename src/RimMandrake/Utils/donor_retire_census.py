@@ -34,6 +34,9 @@ standin  every element text in src/ Defs+Patches XML that starts `StandIn/` (ANY
       Exit 0 ONLY when every non-EXCLUDED text is QUEUED, RENDERED or LANDED: FAILED, UNCOVERED and COLLIDES
       each exit 1. Coverage is per picture (facings, random-folder files).
       SANITY: the walker must see a built-in probe text and the queue must be readable, else it exits unreported.
+      --snapshot P  also freeze the dregen_ jobs it read into P (committed: art/standin_artpipe_snapshot.json).
+      --queue P     read the jobs from snapshot P instead of artpipe: no data root needed, so anyone holding the
+                    tree reruns the check; a text added after the snapshot reads UNCOVERED until it is retaken.
 """
 from __future__ import annotations
 
@@ -344,12 +347,43 @@ def artpipe_jobs(art: Path) -> list:
     return jobs
 
 
-def standin(art: Path | None = None, texts: dict | None = None) -> dict:
-    import bulk_accept_renders as BA
-    art = Path(art or BA.ART)
+def write_snapshot(path: Path, art: Path, jobs: list) -> None:
+    """Freeze the dregen_ jobs that bear on a StandIn text into the tree, so a reader without the data root (a blind
+    checker) reruns the coverage check: `standin --queue <path>` reads this instead of artpipe."""
+    from datetime import datetime, timezone
+    Path(path).write_text(json.dumps({
+        "captured_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "artpipe": str(art), "written_by": "donor_retire_census.py standin --snapshot",
+        "jobs": sorted(({**j, "keys": sorted(j["keys"])} for j in jobs), key=lambda j: j["id"])}, indent=1) + "\n")
+
+
+def snapshot_jobs(path: Path) -> tuple[list, str]:
+    """The jobs of a committed snapshot, shaped like artpipe_jobs(); refuses an unreadable or empty one."""
+    try:
+        d = json.loads(Path(path).read_text())
+        jobs = [{"id": str(j["id"]), "state": j["state"], "ok": bool(j["ok"]), "def": j.get("def"),
+                 "keys": set(j["keys"])} for j in d["jobs"]]
+        when = d["captured_utc"]
+        bad = [j["id"] for j in jobs if j["state"] not in ("pending", "active", "done", "failed")]
+        if bad:
+            raise ValueError(f"unknown job state on {bad[:3]}")
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        raise SystemExit(f"SANITY FAIL: artpipe snapshot {path} unreadable ({e}) — nothing reported")
+    if not jobs:
+        raise SystemExit(f"SANITY FAIL: artpipe snapshot {path} holds no jobs — nothing reported")
+    return jobs, when
+
+
+def standin(art: Path | None = None, texts: dict | None = None, queue: Path | None = None) -> dict:
     if texts is None:
         texts = standin_texts()
-    jobs = artpipe_jobs(art)
+    if queue is not None:                       # a committed snapshot: no data root needed
+        jobs, when = snapshot_jobs(queue)
+        art = Path(f"{queue} (snapshot {when})")
+    else:
+        import bulk_accept_renders as BA
+        art = Path(art or BA.ART)
+        jobs = artpipe_jobs(art)
     rows = []
     for t, r in texts.items():
         orig = t.removeprefix("StandIn/")
@@ -380,9 +414,10 @@ def standin(art: Path | None = None, texts: dict | None = None) -> dict:
             state = next(s for s in ("UNCOVERED", "FAILED", "COLLIDES", "QUEUED", "RENDERED", "LANDED")
                          if s in got)           # its un-StandIn twin on disk (a repoint is owed)
         uncovered_pics = sorted(p for p, v in per.items() if v not in ("QUEUED", "RENDERED", "LANDED"))
-        rows.append({"text": t, "state": state, "queued": q, "rendered": done, "failed": failed,
+        rows.append({"text": t, "state": state, "jobs": sorted({j["id"] for j in hit}), "queued": q,
+                     "rendered": done, "failed": failed,
                      "pictures": per, "pictures_owed": uncovered_pics, "def_jobs_hint": hint, **r})
-    return {"artpipe": str(art), "jobs_read": len(jobs), "rows": rows}
+    return {"artpipe": str(art), "jobs_read": len(jobs), "jobs": jobs, "rows": rows}
 
 
 def deps():
@@ -416,13 +451,20 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["refs", "tex", "srctex", "deps", "standin"])
     ap.add_argument("--json")
+    ap.add_argument("--queue", type=Path, help="standin: read dregen_ jobs from this committed snapshot, not artpipe")
+    ap.add_argument("--snapshot", type=Path, help="standin: also freeze the live dregen_ jobs read into this file")
     a = ap.parse_args(argv)
     if a.cmd == "deps":
         deps()
         return 0
     if a.cmd == "standin":
-        data = standin()
+        if a.queue and a.snapshot:
+            ap.error("--queue reads a snapshot, --snapshot writes one from artpipe: pick one")
+        data = standin(queue=a.queue)
         rows = data["rows"]
+        if a.snapshot:
+            used = {i for r in rows for k in ("jobs", "def_jobs_hint") for i in r[k]}
+            write_snapshot(a.snapshot, Path(data["artpipe"]), [j for j in data["jobs"] if j["id"] in used])
         c = Counter(r["state"] for r in rows)
         print(f"StandIn/ texts in src/ XML: {len(rows)}   (dregen_ jobs read: {data['jobs_read']} in {data['artpipe']})")
         for st in STANDIN_STATES + ("EXCLUDED",):

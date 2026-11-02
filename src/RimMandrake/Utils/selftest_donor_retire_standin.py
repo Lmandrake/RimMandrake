@@ -16,6 +16,10 @@ import tempfile
 from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# hermetic: every queue this test reads is a fixture; a throwaway data root keeps the art modules importable where the
+# real one is unreachable (a blind checker) and keeps them off it where it is not
+os.environ["RM_DATA_ROOT"] = tempfile.mkdtemp(prefix="selftest_drs_")
+os.environ.pop("ARTPIPE_STATE", None)
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "art"))
 import donor_retire_census as DRC  # noqa: E402
@@ -300,6 +304,38 @@ def exit_code():
             code, st = rc()
             check(code == 0 and set(st.values()) <= {"QUEUED", "RENDERED"},
                   "standin exits 0 only when every text is QUEUED/RENDERED", (code, st))
+
+            # the committed-snapshot route: --snapshot freezes the jobs read, --queue rereads them with no artpipe
+            snap = t / "snap.json"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code_live = DRC.main(["standin", "--snapshot", str(snap)])
+            live = {r["text"]: r["state"] for r in DRC.standin(art=art)["rows"]}
+            BA.ART = t / "no_artpipe_here"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code_q = DRC.main(["standin", "--queue", str(snap)])
+            q = {r["text"]: r["state"] for r in DRC.standin(queue=snap)["rows"]}
+            ids = {j["id"] for j in json.loads(snap.read_text())["jobs"]}
+            check(code_live == code_q == 0 and q == live,
+                  "--queue <snapshot> judges exactly as the live queue it froze, with no artpipe present",
+                  (code_live, code_q, q, live))
+            check("dregen_RM_R_v1" in ids and "dregen_RM_Q_v1" in ids,
+                  "the snapshot keeps every job that bears on a StandIn text (failed ones too)", ids)
+            write(mod / "Defs/Late.xml", '<Defs><ThingDef><defName>RM_S</defName><graphicData>'
+                  '<texPath>StandIn/Things/S</texPath></graphicData></ThingDef></Defs>')
+            png(mod / "Textures/StandIn/Things/S.png")
+            with contextlib.redirect_stdout(io.StringIO()):
+                code_q = DRC.main(["standin", "--queue", str(snap)])
+            check(code_q == 1 and DRC.standin(queue=snap)["rows"] and
+                  {r["text"]: r["state"] for r in DRC.standin(queue=snap)["rows"]}["StandIn/Things/S"] == "UNCOVERED",
+                  "a StandIn text added after the snapshot reads UNCOVERED and exits 1 until it is retaken", code_q)
+            for bad in ("", '{"captured_utc": "x", "jobs": []}', '{"jobs": [{"id": 1}]}'):
+                snap.write_text(bad)
+                try:
+                    DRC.standin(queue=snap)
+                    refused = False
+                except SystemExit as e:
+                    refused = "SANITY FAIL" in str(e)
+                check(refused, "an unreadable, empty or malformed snapshot is refused, never read as all-clear", bad)
     finally:
         DRC.REPO, DRC.SRC, BA.ART = keep
 

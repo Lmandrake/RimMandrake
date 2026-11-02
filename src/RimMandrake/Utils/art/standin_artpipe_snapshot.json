@@ -1,0 +1,718 @@
+{
+ "captured_utc": "2026-11-02T03:33:30Z",
+ "artpipe": "/mnt/d/ClaudeWork/rimmandrake/artpipe",
+ "written_by": "donor_retire_census.py standin --snapshot",
+ "jobs": [
+  {
+   "id": "dregen_Eyes_BurntOrange_Feline_BurntOrangeFeline_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_BurntOrange_Feline",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_BurntOrange_Reptile_BurntOrangeReptile_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_BurntOrange_Reptile",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_FireRed_Feline_FireRedFeline_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_FireRed_Feline",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_FireRed_Reptile_FireRedReptile_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_FireRed_Reptile",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_MarsRed_Feline_MarsRedFeline_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_MarsRed_Feline",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_MarsRed_Reptile_MarsRedReptile_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_MarsRed_Reptile",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_MidasGold_Feline_MidasGoldFeline_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_MidasGold_Feline",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_MidasGold_Reptile_MidasGoldReptile_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_MidasGold_Reptile",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_Tangerine_Feline_TangerineFeline_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_Tangerine_Feline",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_Tangerine_Reptile_TangerineReptile_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_Tangerine_Reptile",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_TaxiCab_Feline_TaxiCabFeline_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_TaxiCab_Feline",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline"
+   ]
+  },
+  {
+   "id": "dregen_Eyes_TaxiCab_Reptile_TaxiCabReptile_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "Eyes_TaxiCab_Reptile",
+   "keys": [
+    "Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile"
+   ]
+  },
+  {
+   "id": "dregen_RM_AlienSandFine_GUAlienSandFinePolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_AlienSandFine",
+   "keys": [
+    "Terrain/Surfaces/GU_AlienSandFine_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_AlienSandFine_GUAlienSandFine_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_AlienSandFine",
+   "keys": [
+    "Terrain/Surfaces/GU_AlienSandFine"
+   ]
+  },
+  {
+   "id": "dregen_RM_AlienSand_GUAlienSandPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_AlienSand",
+   "keys": [
+    "Terrain/Surfaces/GU_AlienSand_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_AlienSand_GUAlienSand_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_AlienSand",
+   "keys": [
+    "Terrain/Surfaces/GU_AlienSand"
+   ]
+  },
+  {
+   "id": "dregen_RM_DenseGrass_ABDenseGrassPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_DenseGrass",
+   "keys": [
+    "Terrain/Surfaces/AB_DenseGrass_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_DenseGrass_ABDenseGrass_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_DenseGrass",
+   "keys": [
+    "Terrain/Surfaces/AB_DenseGrass"
+   ]
+  },
+  {
+   "id": "dregen_RM_DenseMud_ABDenseMudPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_DenseMud",
+   "keys": [
+    "Terrain/Surfaces/AB_DenseMud_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_DenseMud_ABDenseMud_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_DenseMud",
+   "keys": [
+    "Terrain/Surfaces/AB_DenseMud"
+   ]
+  },
+  {
+   "id": "dregen_RM_FertileMud_ABFertileMudPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_FertileMud",
+   "keys": [
+    "Terrain/Surfaces/AB_FertileMud_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_FertileMud_ABFertileMud_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_FertileMud",
+   "keys": [
+    "Terrain/Surfaces/AB_FertileMud"
+   ]
+  },
+  {
+   "id": "dregen_RM_FineForsakenSand_ABFineForsakenSandsPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_FineForsakenSand",
+   "keys": [
+    "Terrain/Surfaces/AB_FineForsakenSands_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_FineForsakenSand_ABFineForsakenSands_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_FineForsakenSand",
+   "keys": [
+    "Terrain/Surfaces/AB_FineForsakenSands"
+   ]
+  },
+  {
+   "id": "dregen_RM_ForsakenSand_ABForsakenSandsPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_ForsakenSand",
+   "keys": [
+    "Terrain/Surfaces/AB_ForsakenSands_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_ForsakenSand_ABForsakenSands_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_ForsakenSand",
+   "keys": [
+    "Terrain/Surfaces/AB_ForsakenSands"
+   ]
+  },
+  {
+   "id": "dregen_RM_GrassySand_ABGrassySandPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_GrassySand",
+   "keys": [
+    "Terrain/Surfaces/AB_GrassySand_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_GrassySand_ABGrassySand_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_GrassySand",
+   "keys": [
+    "Terrain/Surfaces/AB_GrassySand"
+   ]
+  },
+  {
+   "id": "dregen_RM_HardenedGrass_ABHardenedGrassPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_HardenedGrass",
+   "keys": [
+    "Terrain/Surfaces/AB_HardenedGrass_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_HardenedGrass_ABHardenedGrass_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_HardenedGrass",
+   "keys": [
+    "Terrain/Surfaces/AB_HardenedGrass"
+   ]
+  },
+  {
+   "id": "dregen_RM_Iashiphus_ABIashiphus_v1",
+   "state": "failed",
+   "ok": false,
+   "def": "RM_Iashiphus",
+   "keys": [
+    "Things/Plants/AB_Iashiphus"
+   ]
+  },
+  {
+   "id": "dregen_RM_Iashiphus_RMIashiphus_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_Iashiphus",
+   "keys": [
+    "Things/Plants/RM_Iashiphus"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeA_v1",
+   "state": "failed",
+   "ok": false,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/AB_JungleTree/AB_JungleTreeA"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeB_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeB"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeC_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeC"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeD_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeD"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeE_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeE"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeF_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeF"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeG_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeG"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeLeaflessABJungleTreeA_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeA"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeLeaflessABJungleTreeB_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeB"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeLeaflessABJungleTreeC_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeC"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeLeaflessABJungleTreeD_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeD"
+   ]
+  },
+  {
+   "id": "dregen_RM_JungleTree_RMJungleTreeABJungleTreeA_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_JungleTree",
+   "keys": [
+    "Things/Plants/RM_JungleTree/AB_JungleTreeA"
+   ]
+  },
+  {
+   "id": "dregen_RM_LushGrass_ABLushGrassPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_LushGrass",
+   "keys": [
+    "Terrain/Surfaces/AB_LushGrass_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_LushGrass_ABLushGrass_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_LushGrass",
+   "keys": [
+    "Terrain/Surfaces/AB_LushGrass"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangrovePalm_ABMangrovePalmA_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_MangrovePalm",
+   "keys": [
+    "Things/Plants/AB_MangrovePalm/AB_MangrovePalmA"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangrovePalm_ABMangrovePalmB_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_MangrovePalm",
+   "keys": [
+    "Things/Plants/AB_MangrovePalm/AB_MangrovePalmB"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangrovePalm_ABMangrovePalmLeaflessABMangrovePalmA_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_MangrovePalm",
+   "keys": [
+    "Things/Plants/AB_MangrovePalmLeafless/AB_MangrovePalmA"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangrovePalm_ABMangrovePalmLeaflessABMangrovePalmB_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_MangrovePalm",
+   "keys": [
+    "Things/Plants/AB_MangrovePalmLeafless/AB_MangrovePalmB"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangroveTree_ABMangroveTreeA_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_MangroveTree",
+   "keys": [
+    "Things/Plants/AB_MangroveTree/AB_MangroveTreeA"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangroveTree_ABMangroveTreeB_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_MangroveTree",
+   "keys": [
+    "Things/Plants/AB_MangroveTree/AB_MangroveTreeB"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangroveTree_ABMangroveTreeC_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_MangroveTree",
+   "keys": [
+    "Things/Plants/AB_MangroveTree/AB_MangroveTreeC"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangroveTree_ABMangroveTreeLeaflessABMangroveTreeA_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_MangroveTree",
+   "keys": [
+    "Things/Plants/AB_MangroveTreeLeafless/AB_MangroveTreeA"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangroveTree_ABMangroveTreeLeaflessABMangroveTreeB_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_MangroveTree",
+   "keys": [
+    "Things/Plants/AB_MangroveTreeLeafless/AB_MangroveTreeB"
+   ]
+  },
+  {
+   "id": "dregen_RM_MangroveTree_ABMangroveTreeLeaflessABMangroveTreeC_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_MangroveTree",
+   "keys": [
+    "Things/Plants/AB_MangroveTreeLeafless/AB_MangroveTreeC"
+   ]
+  },
+  {
+   "id": "dregen_RM_Moss_GRimMossA_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_Moss",
+   "keys": [
+    "Things/Plant/GRimMoss/GRimMossA"
+   ]
+  },
+  {
+   "id": "dregen_RM_Moss_GRimMossB_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_Moss",
+   "keys": [
+    "Things/Plant/GRimMoss/GRimMossB"
+   ]
+  },
+  {
+   "id": "dregen_RM_Moss_GRimMossLeaflessGRimMossLeaflessA_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_Moss",
+   "keys": [
+    "Things/Plant/GRimMoss_Leafless/GRimMoss_LeaflessA"
+   ]
+  },
+  {
+   "id": "dregen_RM_Moss_GRimMossLeaflessGRimMossLeaflessB_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_Moss",
+   "keys": [
+    "Things/Plant/GRimMoss_Leafless/GRimMoss_LeaflessB"
+   ]
+  },
+  {
+   "id": "dregen_RM_PackedIce_ABWhiteIcePolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_PackedIce",
+   "keys": [
+    "Terrain/Surfaces/AB_WhiteIce_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_PackedIce_ABWhiteIce_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_PackedIce",
+   "keys": [
+    "Terrain/Surfaces/AB_WhiteIce"
+   ]
+  },
+  {
+   "id": "dregen_RM_PackedSnow_ABSnowPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_PackedSnow",
+   "keys": [
+    "Terrain/Surfaces/AB_Snow_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_PackedSnow_ABSnow_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_PackedSnow",
+   "keys": [
+    "Terrain/Surfaces/AB_Snow"
+   ]
+  },
+  {
+   "id": "dregen_RM_RichSlime_ABRichSlimePolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_RichSlime",
+   "keys": [
+    "Terrain/Surfaces/AB_RichSlime_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_RichSlime_ABRichSlime_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_RichSlime",
+   "keys": [
+    "Terrain/Surfaces/AB_RichSlime"
+   ]
+  },
+  {
+   "id": "dregen_RM_RustCathedral_PolymerFloor_ABPolymerPolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_RustCathedral_PolymerFloor",
+   "keys": [
+    "Terrain/Surfaces/AB_Polymer_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_RustCathedral_PolymerFloor_ABPolymer_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_RustCathedral_PolymerFloor",
+   "keys": [
+    "Terrain/Surfaces/AB_Polymer"
+   ]
+  },
+  {
+   "id": "dregen_RM_Slime_ABSlimePolluted_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_Slime",
+   "keys": [
+    "Terrain/Surfaces/AB_Slime_Polluted"
+   ]
+  },
+  {
+   "id": "dregen_RM_Slime_ABSlime_v1",
+   "state": "done",
+   "ok": true,
+   "def": "RM_Slime",
+   "keys": [
+    "Terrain/Surfaces/AB_Slime"
+   ]
+  },
+  {
+   "id": "dregen_RM_SugarFamewort_ABSugarFamewort_v1",
+   "state": "failed",
+   "ok": false,
+   "def": "RM_SugarFamewort",
+   "keys": [
+    "Things/Plants/AB_SugarFamewort"
+   ]
+  },
+  {
+   "id": "dregen_RM_SugarFamewort_RMSugarFamewort_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_SugarFamewort",
+   "keys": [
+    "Things/Plants/RM_SugarFamewort"
+   ]
+  },
+  {
+   "id": "dregen_RM_ToxiGrass_ABToxiGrass_v1",
+   "state": "failed",
+   "ok": false,
+   "def": "RM_ToxiGrass",
+   "keys": [
+    "Things/Plants/AB_ToxiGrass"
+   ]
+  },
+  {
+   "id": "dregen_RM_ToxiGrass_RMToxiGrass_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RM_ToxiGrass",
+   "keys": [
+    "Things/Plants/RM_ToxiGrass"
+   ]
+  },
+  {
+   "id": "dregen_RM_Uttaqar_RockTrollBaby_v1_east",
+   "state": "done",
+   "ok": true,
+   "def": "RM_Uttaqar",
+   "keys": [
+    "Animal/RockTroll/RockTrollBaby_east"
+   ]
+  },
+  {
+   "id": "dregen_RM_Uttaqar_RockTrollBaby_v1_north",
+   "state": "done",
+   "ok": true,
+   "def": "RM_Uttaqar",
+   "keys": [
+    "Animal/RockTroll/RockTrollBaby_north"
+   ]
+  },
+  {
+   "id": "dregen_RM_Uttaqar_RockTrollBaby_v1_south",
+   "state": "done",
+   "ok": true,
+   "def": "RM_Uttaqar",
+   "keys": [
+    "Animal/RockTroll/RockTrollBaby_south"
+   ]
+  },
+  {
+   "id": "dregen_RSW_Jawa_TD_VGE_MassDriver_GaussShotSmall_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "RSW_Jawa_TD_VGE_MassDriver",
+   "keys": [
+    "Things/Projectiles/GaussShot_Small"
+   ]
+  },
+  {
+   "id": "dregen_VRE_ShortPregnancy_GenePregnancyShort_v1",
+   "state": "pending",
+   "ok": false,
+   "def": "VRE_ShortPregnancy",
+   "keys": [
+    "UI/Icons/Genes/Gene_PregnancyShort"
+   ]
+  }
+ ]
+}
