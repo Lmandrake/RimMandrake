@@ -70,7 +70,9 @@ of just such a heterogeneous set."*). The three are in `design/RimMandrake/mod_d
 A, a player promise (short numbered lines of what the player gets); B, acceptance contract lines (exact limits, numbers,
 must/never rules); C, scene cards (a key moment: start, action, what the player sees, a reject example, allowed
 variation). Take each concept in the form that fits it, ask for the others where a concept is thin, and merge all of it
-into the one tree, each leaf citing which promise, contract line or scene it came from.
+into the one tree. The leaf's line on the sheet says which promise, contract line or scene it came from, in plain
+words after the tag (`- [leaf:<id>] ... (from P3, scene 2)`); the tree has no field for it, and `lint` refuses a leaf
+field it does not know.
 
 **Checking completeness with him: short stories at key moments** (his words: *"a series of small stories hitting key
 moments that might do even better, avoiding tediously long stories of a whole day"*). A few lines each: first build,
@@ -81,7 +83,7 @@ agent can a priori rule on enjoyment, but verify with the human to ensure you go
 
 ## A turn with him
 
-Four parts, in this order, short:
+Five parts, in this order, short:
 
 1. **Claim**: one sentence you believe about the mod.
 2. **Attack**: the strongest reason it is wrong.
