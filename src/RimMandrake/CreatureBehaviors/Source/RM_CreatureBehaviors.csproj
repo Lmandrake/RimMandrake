@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="RM_CreatureBehaviorsMod.cs" />
+    <Compile Include="..\..\_Shared\DrawnExtent\DrawnExtentKernel.cs" Link="Shared\DrawnExtentKernel.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_AmbushJobPolicy.cs" />

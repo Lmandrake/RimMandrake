@@ -61,7 +61,7 @@ def round_half_up(v):
 
 
 def quad(root, draw_x, visual, jx, jz):
-    """(minX, minZ, size) -- FootprintMath.Quad."""
+    """(minX, minZ, size) -- FootprintMath.Quad -> _Shared/DrawnExtent DrawnExtent.Quad."""
     cx = f32(root[0] + 0.5 + jx)
     cz = f32(root[1] + 0.5 + jz)
     if f32(cz - visual / 2.0) < root[1]:
@@ -327,9 +327,13 @@ def items_are_pushed_never_wiped():
 
 @test
 def csharp_still_matches_this_mirror():
+    ruler = open(os.path.join(HERE, "..", "_Shared", "DrawnExtent", "DrawnExtentKernel.cs"), encoding="utf-8").read()
+    for needle in ("if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;", "=> drawSizeX * visual;",
+                   "float side = Side(drawSizeX, visual);"):
+        assert needle in ruler, "DrawnExtentKernel.cs lost `%s` -- update the mirror" % needle
     src = open(os.path.join(HERE, "Source", "Kernel", "RM_HugeFootprintKernel.cs"), encoding="utf-8").read()
-    for needle in ("(int)Math.Floor(v + 0.5f)", "if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;",
-                   "float side = drawSizeX * visual;", "float u0 = flip ? 1f - m.U1 : m.U0;",
+    assert "DrawnExtent.Quad(rootX, rootZ, drawSizeX, visual, jitterX, jitterZ)" in src, "the HT quad left the shared ruler"
+    for needle in ("(int)Math.Floor(v + 0.5f)", "float u0 = flip ? 1f - m.U1 : m.U0;",
                    "float left = q.CentreX - bs / 2f, bottom = q.MinZ;", "if (flip) u = 1f - u;",
                    "int dx = (int)Math.Floor(0.5f + (u - 0.5f) * m.MeasuredSize);",
                    "int dz = (int)Math.Floor(v * m.MeasuredSize);", "if (x == rootX && z == rootZ) continue;",

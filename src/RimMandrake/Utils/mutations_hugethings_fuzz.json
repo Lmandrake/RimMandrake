@@ -13,13 +13,13 @@
  },
  {
   "name": "no bottom anchoring (quad centred on the root cell)",
-  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "file": "src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs",
   "old": "            if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;\n",
   "new": ""
  },
  {
   "name": "anchoring uses the drawn side, not the visual size",
-  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "file": "src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs",
   "old": "            if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;",
   "new": "            if (cz - drawSizeX * visual / 2f < rootZ) cz = rootZ + drawSizeX * visual / 2f;"
  },
@@ -61,7 +61,7 @@
  },
  {
   "name": "x jitter ignored by the blocking quad",
-  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "file": "src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs",
   "old": "            float cx = rootX + 0.5f + jitterX;",
   "new": "            float cx = rootX + 0.5f;"
  },

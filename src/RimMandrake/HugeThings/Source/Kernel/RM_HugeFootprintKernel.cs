@@ -1,13 +1,13 @@
 // Verse-free kernel of Huge Things' plant footprint: where the engine draws a huge plant, which cells its picture covers
 // (the selection rect) and which cells its art touches the ground in at the current growth (the blocked cells).
-// SelfTest/HugeThingsFuzz.cs compiles this file alone: no Verse/RimWorld/UnityEngine. FootprintMath.cs adapts it to Verse
+// SelfTest/HugeThingsFuzz.cs compiles this file (with the shared DrawnExtent kernel): no Verse/RimWorld/UnityEngine. FootprintMath.cs adapts it to Verse
 // types; selftest_hugethings_footprint.py mirrors it line for line against the real Rot masks.
 //
 // THE DRAW TRANSFORM, measured from decompiled 1.6 (RimSage, 2026-10-07), Plant.Print for maxMeshCount 1:
 //   Rand.Seed = Position.GetHashCode();  centre = GenThing.TrueCenter = Position + (0.5, 0.5) for a 1x1 thing
 //   centre += Gen.RandomHorizontalVector(0.05f)                                  (two Rand.Range draws)
-//   visual = plant.visualSizeRange.LerpThroughRange(growth);  side = graphicData.drawSize.x * visual
-//   if (centre.z - visual / 2 < Position.z) centre.z = Position.z + visual / 2   (bottom anchoring; uses visual, not side)
+//   the drawn square itself (visual, bottom anchoring, side = drawSize.x * visual) is the shared ruler,
+//   src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs, source-linked here and into Sun & Shade
 //   flipUv = Rand.Bool  (Printer_Plane.DefaultUvsFlipped: a mirror in x)
 //   Graphic_Random: sub-graphic = SubGraphicAtIndex(Rand.Range(0, SubGraphicsCount))
 //   Printer_Plane.PrintPlane(centre, (side, side)): a square, whatever the texture's aspect.
@@ -15,6 +15,7 @@
 // sequence; CompHugeFootprint.Roll replays it. Graphic_Collection.Init orders sub-textures by name.
 using System;
 using System.Collections.Generic;
+using RimMandrake.Shared;
 
 namespace RimMandrake.HugeThings
 {
@@ -63,13 +64,11 @@ namespace RimMandrake.HugeThings
         public static int RoundHalfUp(float v) => (int)Math.Floor(v + 0.5f);
 
         /// <summary>The quad Plant.Print draws for a plant at (rootX, rootZ) with this visual size.</summary>
+        /// The arithmetic is the shared ruler (_Shared/DrawnExtent), so Sun & Shade's crowns measure the same square.
         public static HugeQuad Quad(int rootX, int rootZ, float drawSizeX, float visual, float jitterX, float jitterZ)
         {
-            float cx = rootX + 0.5f + jitterX;
-            float cz = rootZ + 0.5f + jitterZ;
-            if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;
-            float side = drawSizeX * visual;
-            return new HugeQuad { MinX = cx - side / 2f, MinZ = cz - side / 2f, Size = side };
+            DrawnQuad d = DrawnExtent.Quad(rootX, rootZ, drawSizeX, visual, jitterX, jitterZ);
+            return new HugeQuad { MinX = d.MinX, MinZ = d.MinZ, Size = d.Size };
         }
 
         /// <summary>The visible picture in world coordinates (float), mirrored when the engine flips it.</summary>

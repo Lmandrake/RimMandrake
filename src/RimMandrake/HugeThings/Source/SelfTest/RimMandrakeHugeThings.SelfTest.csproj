@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Compile Include="..\Kernel\RM_HugeFootprintKernel.cs" />
+    <Compile Include="..\..\..\_Shared\DrawnExtent\DrawnExtentKernel.cs" Link="Shared\DrawnExtentKernel.cs" />
     <Compile Include="..\Kernel\RM_HugeClaimsKernel.cs" />
     <Compile Include="..\Kernel\RM_HugeTitanKernel.cs" />
     <Compile Include="..\Kernel\RM_TitanicKernel.cs" />
