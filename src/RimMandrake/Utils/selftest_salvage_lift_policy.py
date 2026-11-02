@@ -210,7 +210,29 @@ SECTIONS = {
         "The pass adds one comp to `TURRET` defs.",
         "`JobDriver_TheftHaulUninstall` sets the same mark before it minifies, because the droid never claims.",
     ]),
+    "Scrap, and the rust that pays nothing": (80, [
+        "Scrap uses Deconstruct, through the one yield function of `SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY`.",
+        "Nearly every `RUIN` and `HULK` def carries no cost at all (`hasCost` in the census), so a plain deconstruct gives nothing.",
+        "Each needs a loot source.",
+        "`RM_CompProperties_SalvageLoot` already does exactly that, and already has the salvager context;",
+        "patch it onto `RUIN` at a low tier and `HULK` at a high one,",
+        "It pays once, on the Deconstruct destroy, and neither category can be lifted and rebuilt, so there is no farming loop;",
+    ]),
+    "The linked graphic": (50, [
+        "Sandbags, barricades and fences are linked.",
+        "The pass item proves it on a quicktest, spawning each of the three minified;",
+    ]),
+    "Review": (40, [
+        "Naive judge: GPT, 2026-11-01, ten findings.",
+        "since nothing on a scrap route reinstalls.",
+    ]),
+    "What this does not decide": (40, [
+        "The pass item's first validation script must install an `AncientTankTrap` and an `AncientFuelNode`.",
+        "the same rules run on them, in the audit `SHIP_FIXTURES_WIDEN_MINIFY` owes.",
+    ]),
 }
+# the one section outside SECTIONS: its rows are required item by item in prose_faults
+ROW_CHECKED_SECTIONS = {"Build order"}
 ALL_BUILD_ITEMS = BUILD_ITEMS + ["LIFT_PASS_BUILD_ONE_LIST", "THEFT_HAULER_WIDEN_MINIFY_GONE", "RUIN_SCRAP_BUILD_RUST_PAYS"]
 # the only defs named like a wall, door, conduit or vent that the rules let off route none
 LIFTABLE_LOOKALIKES = {"FenceGate": "owner-ruled fortification (trap_renaissance 2b)", "WallLamp": "a lamp, natively minifiable"}
@@ -300,6 +322,9 @@ def prose_faults(text, p):
         for sentence in sentences:
             if sentence not in body:
                 out.append("section %r lost: %s" % (heading, sentence))
+    headings = {line[3:] for line in text.splitlines() if line.startswith("## ")}
+    if headings != set(SECTIONS) | ROW_CHECKED_SECTIONS:
+        out.append("design sections differ from the pinned set: %s" % sorted(headings ^ (set(SECTIONS) | ROW_CHECKED_SECTIONS)))
     by_id = {c["id"]: c for c in p["categories"]}
     droid = {c["id"] for c in p["categories"] if c["actor"] == "droid"}
     if set(re.findall(r"`([A-Z_]+)`", fold(section(text, "The hauler droid's role")).split(" are droid-only")[0])) != droid:
@@ -323,6 +348,29 @@ def prose_faults(text, p):
     return out
 
 
+def scrap_faults(census, p, comp_source):
+    """The scrap section's facts, read from where they live: no cost in the census, a loot comp that pays on Deconstruct."""
+    out = []
+    scrap = [r for r in census if r["category"] in ("RUIN", "HULK")]
+    # the census writes "1" for a cost and leaves the cell empty for none: prove the column reads before counting blanks
+    if {r["hasCost"] for r in census} != {"", "1"}:
+        out.append("hasCost holds something other than blank and 1, or only one of them: the count below is blind")
+    costless = [r for r in scrap if r["hasCost"] == ""]
+    if not scrap or len(costless) * 10 < len(scrap) * 9:
+        out.append("%d of %d RUIN and HULK rows carry no cost: 'nearly every' no longer holds" % (len(costless), len(scrap)))
+    for c in p["categories"]:
+        # RM_CompProperties_SalvageLoot.ConfigErrors refuses a parent that is not alwaysDeconstructible
+        if c["id"] in ("RUIN", "HULK") and "alwaysDeconstructible" not in c["grants"]:
+            out.append(c["id"] + " cannot carry the loot comp without alwaysDeconstructible")
+    for needle in ("class RM_CompProperties_SalvageLoot", "mode != DestroyMode.Deconstruct", "RM_SalvageContext.Salvager"):
+        if needle not in comp_source:
+            out.append("the loot comp lost " + needle)
+    return out
+
+
+with open(os.path.join(REPO, "src", "RimMandrake", "Wreckage", "Source", "RM_CompSalvageLoot.cs"), encoding="utf-8") as f:
+    loot_source = f.read()
+check(not scrap_faults(rows, policy, loot_source), "scrap facts: %s" % scrap_faults(rows, policy, loot_source))
 check(not policy_faults(policy), "policy against the pin: %s" % policy_faults(policy))
 check(not census_faults(rows, policy), "census against the pin: %s" % census_faults(rows, policy))
 for must_be_none in ("STRUCTURE", "LOOP_ANCHOR", "PLACE_NOT_THING", "NATURAL", "RUIN_FIXED", "UNLISTED"):
@@ -399,6 +447,18 @@ for heading, (_floor, sentences) in SECTIONS.items():
     must_redden("section body gone: " + heading, prose_faults(doc_text.replace(body, "`RM_Lift_`\n"), policy))
     for sentence in sentences:
         must_redden("sentence gone: " + sentence, prose_faults(doc_text.replace(body, "\n" + fold(body).replace(sentence, "") + "\n"), policy))
+    head = "## %s\n" % heading
+    must_redden("section deleted whole: " + heading, prose_faults(doc_text.replace(head + body, ""), policy))
+must_redden("a section nobody pinned", prose_faults(doc_text + "\n## Something new\n\nunpinned\n", policy))
+must_redden("the costs came back", scrap_faults([dict(r, hasCost="1") for r in rows], policy, loot_source))
+must_redden("hasCost blind, all blank", scrap_faults([dict(r, hasCost="") for r in rows], policy, loot_source))
+must_redden("hasCost recoded", scrap_faults([dict(r, hasCost="0" if not r["hasCost"] else "1") for r in rows], policy, loot_source))
+must_redden("no scrap rows", scrap_faults([r for r in rows if r["category"] not in ("RUIN", "HULK")], policy, loot_source))
+must_redden("ruin loses the grant", scrap_faults(rows, mutated(named(RUIN=dict(grants=[]))), loot_source))
+must_redden("hulk loses the grant", scrap_faults(rows, mutated(named(HULK=dict(grants=["deconstructible"]))), loot_source))
+must_redden("loot pays on any destroy", scrap_faults(rows, policy, loot_source.replace("mode != DestroyMode.Deconstruct", "previousMap == null")))
+must_redden("loot comp renamed", scrap_faults(rows, policy, loot_source.replace("class RM_CompProperties_SalvageLoot", "class RM_LootProps")))
+must_redden("loot comp lost the salvager", scrap_faults(rows, policy, loot_source.replace("RM_SalvageContext.Salvager", "null")))
 must_redden("capture reads another tag", prose_faults(doc_text.replace("| Capture comp (WreckedMachines) | `RM_Lift_TURRET` |", "| Capture comp (WreckedMachines) | `RM_Lift_KIT` |"), policy))
 must_redden("the droid's class", prose_faults(doc_text.replace("**Reach.** `HEAVY_MACHINE` and `WRECKED_TIER` are droid-only", "**Reach.** `HEAVY_MACHINE` are droid-only"), policy))
 must_redden("the droid class leaves the JSON", prose_faults(doc_text, mutated(named(WRECKED_TIER=dict(actor="colonist")))))
@@ -429,6 +489,9 @@ for path in glob.glob(os.path.join(REPO, "infrastructure", "state", "ledger", "e
                 continue
             if event.get("id") in ALL_BUILD_ITEMS and event.get("event") == "file":
                 filed[event["id"]] = line
+check(any('"id":"SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY"' in line.replace(" ", "") and '"event":"file"' in line.replace(" ", "")
+          for path in glob.glob(os.path.join(REPO, "infrastructure", "state", "ledger", "events", "*.jsonl"))
+          for line in open(path, encoding="utf-8")), "the scrap section's yield item is not on the ledger")
 for item in BUILD_ITEMS:
     check(item in filed, item + " not filed")
     check("salvage_lift_policy_2026-11-01.md" in filed.get(item, ""), item + " does not point at the design")
