@@ -169,16 +169,17 @@ def band(bvals, floors, hours=None, now_hour=None):
     return out
 
 
-def find_step(bk, floor):
+def find_step(bk, floors):
     """bk: hourly buckets [(t, v, n)] of the window. Among splits with at least 6 buckets a side whose medians differ by
     over 4 noises and whose sides each hold 90% of their points near their median, the one where the sum of deviations from each side's median is least (the change point).
+    The noise floor is relative to the SMALLER side's level, so it does not move as the band learns the new level.
     -> dict(from, to, at) or None."""
     vs = [b[1] for b in bk]
     best = None
     for i in range(6, len(vs) - 5):
         a, b = vs[:i], vs[i:]
         ma, mb = median(a), median(b)
-        noise = max(MAD_SCALE * mad(a, ma), MAD_SCALE * mad(b, mb), floor)
+        noise = max(MAD_SCALE * mad(a, ma), MAD_SCALE * mad(b, mb), floors[0] * min(abs(ma), abs(mb)), floors[1])
         gap = abs(mb - ma)
         if gap <= 4 * noise:
             continue
@@ -236,7 +237,9 @@ def flag_reading(pts, now):
             start = t1
     since = start
     changes_24h = sum(1 for _x, _s, e in runs if e >= now - 24 * HOUR)       # a run ends where a change happens
-    share = sum(1 for _, x in pts if x == v) / float(len(pts))
+    spans = [(a, t1 - t0) for (t0, a), (t1, _b) in zip(pts, pts[1:])]    # time held in each value, not samples taken
+    total = sum(w for _a, w in spans)
+    share = (sum(w for a, w in spans if a == v) / total) if total > 0 else 1.0
     longest = max([e - s for x, s, e in runs if x == v] or [0.0])
     dwell = now - since
     state = "normal"
@@ -325,7 +328,7 @@ def reading(key, samples, fam_rows, now, floors, targets):
             break
         since = b[0]
     out["side_h"] = (now - since) / HOUR       # hours on this side of the band (inside or out), not in the state
-    st = find_step(bk_all, max(floors[0] * abs(bd["center"]), floors[1]))
+    st = find_step(bk_all, floors)
     if st:
         out["step"] = st
     if kind == "number":
@@ -392,9 +395,10 @@ def line(key, rd, now):
     unit = " /h" if rd["kind"] == "counter" else ""
     s = "%s %s%s (normal %s to %s%s)" % (key, fmt(rd["v"]), unit, fmt(bd["lo"]), fmt(bd["hi"]),
                                          ", same hour" if bd["kind"] == "same hour" else "")
-    tr = rd.get("trend_24h") or rd.get("trend_6h")
+    use24 = rd.get("trend_24h") not in (None, "flat")
+    tr = rd.get("trend_24h") if use24 else rd.get("trend_6h")
     if tr and tr != "flat":
-        sl = rd["slope_24h"] if rd.get("trend_24h") not in (None, "flat") else rd["slope_6h"]
+        sl = rd["slope_24h"] if use24 else rd["slope_6h"]
         s += " %s %s/h" % (tr, fmt(sl))
     s += ", %s %s h" % ("outside" if rd["state"] == "outside" else "in band", "%.1f" % rd["side_h"])
     if rd["state"] == "drifting":

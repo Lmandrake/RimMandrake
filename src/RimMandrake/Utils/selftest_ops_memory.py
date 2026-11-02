@@ -83,6 +83,8 @@ st = r.get("step") or {}
 ok(r["band"]["center"] == 140.0 and r["state"] == "normal", "step: the band has learned 140 (%s)" % r["band"]["center"])
 ok(st.get("from") == 100.0 and st.get("to") == 140.0, "step: 100 -> 140 kept (%s)" % st)
 ok(abs(st.get("at", 0) - (NOW - 5 * 24 * H)) <= H, "step: dated at the change")
+bk = [(i * 3600.0, 100.0 if i < 84 else 124.0, 1) for i in range(168)]       # a small step stays kept as the band learns 124
+ok(om.find_step(bk, (0.05, 0.0)) is not None, "step: 100 -> 124 kept whatever the band centre is")
 for per in (6, 12, 24, 48):                      # a repeating cycle is not a step (each side's MAD can be 0)
     r = run(grid(lambda t, per=per: 100.0 if (t // H) % per < per / 2 else 140.0))["t.x"]
     ok("step" not in r, "no step in a %d h 100/140 cycle (%s)" % (per, r.get("step")))
