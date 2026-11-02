@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has RecipeDef/RM_Render_Toxipotato --has RecipeDef/RM_Render_TwistedMeat --has RecipeDef/RM_Render_Ambrosyx --has ThingDef/RM_Meal_SlimeAmbrosyx

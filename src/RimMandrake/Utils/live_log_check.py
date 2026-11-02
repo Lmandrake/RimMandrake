@@ -6,6 +6,10 @@
 For criteria worded "Player.log carries no error naming X" (RA_S09_LIVE_WIRE_ONE_REAL_LEAF). A line is an error line when
 it matches ERROR_RE (with --warnings, WARN_RE too); a token is matched as a literal substring of such a line.
 
+--never TOKEN fails on ANY line naming the token, error word or not. Player.log carries no level marker: a Log.Warning
+is bare text (stack traces are off), so a warning without the word "warn" in it is invisible to --warnings. Name such a
+message by its own text with --never ("[RM Minerals] quarry", "name only disabled mineables").
+
 Exit 0 no error line names any token, 1 one does (a real FAIL; the lines are printed), 2 UNMEASURED: no running game,
 a log older than the running game (it belongs to an earlier session), or a log without the anchor (default
 "Bridge token:", printed once the load finished and RimBridge came up: a log before that has not seen the load's
@@ -47,27 +51,32 @@ def records(text):
     return out
 
 
-def judge(text, tokens, warnings=False, anchor=ANCHOR):
+def judge(text, tokens, warnings=False, anchor=ANCHOR, never=()):
     """-> (exit code, lines). Pure: `text` is the whole Player.log. A record (a message and its stack trace) fails when
     any of its lines is an error line (with `warnings`, a warning line too) and any of its lines names a token, as a
     literal substring: RUT_PaleMoss also hits RUT_PaleMossLarge, a false FAIL at worst, never a false PASS."""
     if anchor and anchor not in text:
         return UNMEASURED, ["UNMEASURED: the log has no %r yet: the load has not finished" % anchor]
-    hits = []
-
+    hits, recs = [], records(text)
+    for n, lines in recs:
+        named = [t for t in never if any(t in x for x in lines)]
+        if named:
+            hits.append("FAIL line %d names %s, which may never appear: %s" % (n, ", ".join(named),
+                                                                              " | ".join(x.strip() for x in lines)[:240]))
     mask = re.compile("|".join(re.escape(t) for t in sorted(tokens, key=len, reverse=True)))
 
     def bad(line):
         line = NONE_RE.sub(" ", IDENT_RE.sub(" ", mask.sub(" ", line)))
         return ERROR_RE.search(line) or (warnings and WARN_RE.search(line))
 
-    for n, lines in records(text):
+    for n, lines in recs if tokens else ():
         named = [t for t in tokens if any(t in x for x in lines)]
         if named and any(bad(x) for x in lines):
             hits.append("FAIL line %d names %s: %s" % (n, ", ".join(named), " | ".join(x.strip() for x in lines)[:240]))
     if hits:
         return FAIL, hits[:40] + (["... %d more" % (len(hits) - 40)] if len(hits) > 40 else [])
-    return PASS, ["PASS no %s line names %s" % ("error or warning" if warnings else "error", ", ".join(tokens))]
+    return PASS, (["PASS no %s line names %s" % ("error or warning" if warnings else "error", ", ".join(tokens))] if tokens
+                  else []) + (["PASS no line names %s" % ", ".join(never)] if never else [])
 
 
 def game_started():
@@ -88,12 +97,15 @@ def game_started():
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--absent", action="append", required=True, metavar="TOKEN")
+    ap.add_argument("--absent", action="append", default=[], metavar="TOKEN")
+    ap.add_argument("--never", action="append", default=[], metavar="TOKEN",
+                    help="any line naming this fails, error word or not (a Log.Warning has no marker in Player.log)")
     ap.add_argument("--warnings", action="store_true", help="a warning line naming a token fails too")
     ap.add_argument("--log", default=None, help="another log (default: game_paths.PLAYER_LOG); skips the game check")
     a = ap.parse_args(argv)
     tokens = [t for t in (x.strip() for x in a.absent) if t]
-    if not tokens:
+    never = [t for t in (x.strip() for x in a.never) if t]
+    if not tokens and not never:
         print("UNMEASURED: no token to look for")
         return UNMEASURED
     path = a.log
@@ -120,11 +132,22 @@ def main(argv=None):
     if a.log is None and game_started() != started:
         print("UNMEASURED: the running game changed while the log was read")
         return UNMEASURED
-    code, lines = judge(text, tokens, a.warnings)
+    code, lines = judge(text, tokens, a.warnings, never=never)
     print("\n".join(lines))
     print({PASS: "VERDICT PASS", FAIL: "VERDICT FAIL", UNMEASURED: "VERDICT UNMEASURED"}[code])
     return code
 
 
+def safe_main(argv=None):
+    """main(), where nothing may escape: an uncaught exception exits 1, which the runner would record as a FAIL."""
+    try:
+        return main(argv)
+    except SystemExit:
+        raise
+    except BaseException as e:
+        sys.stdout.write("UNMEASURED: " + ascii("%s: %s" % (type(e).__name__, str(e)[:200])) + "\n")
+        return UNMEASURED
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(safe_main())

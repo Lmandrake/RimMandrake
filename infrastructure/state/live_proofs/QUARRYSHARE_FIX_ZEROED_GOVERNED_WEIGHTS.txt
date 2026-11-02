@@ -1,0 +1,1 @@
+live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs ogliss.thewhitecrayon.quarry --needs mandrake.rm.minerals --has RimMandrake.Minerals.RM_MineralRegistryDef/RM_Mineral_Plasteel && python3 src/RimMandrake/Utils/live_log_check.py --absent RM_MineralQuarry --absent QuarryRocks --never "[RM Minerals] quarry"

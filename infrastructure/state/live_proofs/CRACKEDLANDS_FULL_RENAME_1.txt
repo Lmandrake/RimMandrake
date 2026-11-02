@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has BiomeDef/RM_FloodedCanyon && python3 src/RimMandrake/Utils/live_log_check.py --absent FloodedCanyon --absent CrackedLands

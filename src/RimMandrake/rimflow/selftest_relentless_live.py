@@ -526,10 +526,43 @@ def t_unloaded_mod():
           (code, calls))
 
 
+def t_load_condition():
+    """LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST: --needs/--without guard a criterion's load; a folded member counts as
+    loaded when the composed mod runs, for owners and conditions alike."""
+    alias = {"mandrake.rm.therot": "mandrake.rm.biomes"}
+    run = {"ludeon.rimworld", "mandrake.rm.biomes", "ogliss.thewhitecrayon.quarry"}
+    check("no condition: nothing to say", C.condition([], [], None, alias) == (None, []))
+    check("needs met", C.condition(["ogliss.thewhitecrayon.quarry"], [], run, alias)[0] is None)
+    check("needs met through the composed mod", C.condition(["mandrake.rm.therot"], [], run, alias)[0] is None)
+    check("needs missing is UNMEASURED", C.condition(["mandrake.rm.warcasket"], [], run, alias)[0] == C.UNMEASURED)
+    check("without present is UNMEASURED", C.condition([], ["ogliss.thewhitecrayon.quarry"], run, alias)[0] == C.UNMEASURED)
+    check("without absent is met", C.condition([], ["sarg.alphabiomes"], run, alias)[0] is None)
+    check("running unread is UNMEASURED", C.condition(["x.y"], [], None, alias)[0] == C.UNMEASURED)
+    check("packageIds compare lower-case", C.condition(["Ogliss.TheWhiteCrayon.Quarry"], [], run, alias)[0] is None)
+    own = C.with_aliases({"ThingDef/RM_Chittik": {"mandrake.rm.therot"}, "ThingDef/X": None}, alias)
+    check("owners gain the composed id", own == {"ThingDef/RM_Chittik": {"mandrake.rm.therot", "mandrake.rm.biomes"},
+                                                 "ThingDef/X": None}, own)
+    one = [("ThingDef/RM_Chittik", None)]
+    gone = {"defs": [{"requested": "ThingDef/RM_Chittik", "found": False}]}
+    check("a composed def missing while the composed mod runs is a FAIL, not UNMEASURED",
+          C.judge(one, gone, own, {"mandrake.rm.biomes"})[0] == C.FAIL)
+    check("an empty --without is UNMEASURED", C.condition([], [" "], run, alias)[0] == C.UNMEASURED)
+    check("--without with a padded id still sees the mod", C.condition([], ["ogliss.thewhitecrayon.quarry "], run,
+                                                                      alias)[0] == C.UNMEASURED)
+    check("--without with the manifest unread is UNMEASURED (GPT r1)", C.condition([], ["mandrake.rm.therot"], run,
+                                                                                    None)[0] == C.UNMEASURED)
+    check("--needs with the manifest unread still reads direct ids", C.condition(["ogliss.thewhitecrayon.quarry"], [],
+                                                                               run, None)[0] is None)
+    check("owners with the manifest unread stay as they are", C.with_aliases({"K": {"a.b"}}, None) == {"K": {"a.b"}})
+    real = C.aliases()
+    check("the real compose manifest folds TheRot into the composed mod", real.get("mandrake.rm.therot"), real)
+
+
 def main():
     for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
-              t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod):
+              t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
+              t_load_condition):
         try:
             t()
         except Exception as e:     # a crash is a red, named

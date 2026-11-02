@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.webwork --has TraderKindDef/Orbital_Exotic=StockGenerator_ThrixweaveResale

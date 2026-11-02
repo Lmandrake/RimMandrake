@@ -1,0 +1,148 @@
+# LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST: every owed live criterion a round could run (built, not FOUNDRY's lane,
+# not cut, not a flyer, its game files unchanged since the build, or no game files), with its proof or why none
+# can be written for live_def_check.py / live_log_check.py. Scan of 2026-11-02: changed 445, clean 34, cut 207, deleted 22, flowworks 4, flyer 18, nofiles 96.
+# Out of scope (the round cannot run them): 'changed' (files edited after the build: UNMEASURED until rebuilt),
+# 'cut' (ledger text cut, refused), 'deleted', 'flyer'. Proof lines written for some of those still wait there.
+item	criterion	level	class	proof	why
+ABYSS_HIDDEN_SHIP_PROBES_1	A3	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+ASSAILANT_SALVAGE_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+ASTEROID_DESERT_ORES_1	A1	L1	changed	none	'ship-smelter processes load clean' names no def; the process defs exist only with VFE Factory and RM_GlowerCrust
+BACTA_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+BACTA_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+BELT_WATER_HARNESS_1	A1	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+BELT_WATER_HARNESS_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+BELT_WATER_HARNESS_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+BLUE_DESERT_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+BLUE_DESERT_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+BRAIN_WORMS_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+BRAIN_WORMS_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+BRIDGE_LOCK_CROSS_CLONE_RACE_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID	A1	L1	nofiles	none	a two-window bridge-lock behaviour, not the game's defs or log
+BRIDGE_TPS_CAPTURE_FIXES_1	C3	L1	nofiles	none	an overhead measurement on the full list, not a def or log state
+BRIDGE_TPS_REVIEW2_FIXES_1	C3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+BRONZIUM_DROP_1	B3	L1	clean	proof	live_proofs/BRONZIUM_DROP_1.txt
+CATHEDRAL_EXPOSURE_COMPLETION_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+CATHEDRAL_EXPOSURE_COMPLETION_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+CATHEDRAL_REGARD_BLACKBOARD_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE	A1	L1	clean	none	a live validation chain on a quicktest map
+CONCEALED_COVER_FIX_SHIELDS_FROM_LIQUID	A2	L1	nofiles	none	a pawn in a filled pit over time: behaviour
+CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING	A1	L1	clean	none	a live validation chain that spawns and burns pawns
+CRACKEDLANDS_FULL_RENAME_1	A1	L1	changed	proof	live_proofs/CRACKEDLANDS_FULL_RENAME_1.txt (waits: changed)
+CUT_FALLOUT_GENERATED_DATA_1	A1	GREEN-FULL	nofiles	none	a count compared with a load before the cut; one proof sees one load
+DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL	A1	L1	nofiles	none	deep_stone_live.py --fresh-map stages a map and digs
+DEEP_STONE_FIX_PROBE_NEVER_NAMES_PAWN	A1	L1	nofiles	none	deep_stone_live.py --fresh-map stages a map and digs
+DIVING_INTERACTION_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+DIVING_INTERACTION_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+DONOR_FOUR_RETIRE_JUST_GET_IT_DONE	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1	A1	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1	A2	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS	A1	L1	changed	proof	live_proofs/EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS.txt (waits: changed)
+EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS	A2	L1	changed	proof	live_proofs/EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS.txt (waits: changed)
+ENVIRONMENTAL_HAZARDS_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+EXPLOSIVE_GROWTH_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+EXPLOSIVE_GROWTH_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+FACE_OPTOUT_REPAIR_ONLY_AT_HOME	A2	L1	clean	none	two loads (FA on and off) and a message that must be PRESENT; live_log_check judges absence only
+FACE_OPTOUT_REPAIR_ONLY_AT_HOME	A3	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+FISH_BESTIARY_BUILD_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+FISH_BESTIARY_BUILD_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+FLAME_STATUES_MOD_BUILD_1	A2	L1	clean	proof	live_proofs/FLAME_STATUES_MOD_BUILD_1.txt
+FLAME_STATUES_MOD_BUILD_1	A3	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+FLAME_STATUES_MOD_BUILD_1	A4	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+FORGE_SPUNSTONE_SOURCES_1	A2	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+FORGE_SPUNSTONE_SOURCES_1	A4	GREEN-MIN	clean	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GELATINOUSSLIME_PIT_SOLVENT_1	A1	L1	changed	proof	live_proofs/GELATINOUSSLIME_PIT_SOLVENT_1.txt (waits: changed)
+GM_BLACKBOARD_SHADOW_M4_1	A1	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+GM_BLACKBOARD_SHADOW_M4_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+GRAFFITI_IMPERIAL_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GRAFFITI_IMPERIAL_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1	A2	GREEN-MIN	clean	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1	A1	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GRAFFITI_NORTHSTAR_TRIAL_1	A1	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GRAFFITI_NORTHSTAR_TRIAL_1	A2	GREEN-FULL	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+GRAFFITI_NORTHSTAR_TRIAL_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+GREENTIDE_HUMMING_GROVE_1	A1	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+HOSTILE_FLORA_FIRST_SCRIPT_1	A2	L2	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+HOSTILE_FLORA_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES	A1	L1	nofiles	none	writes a save through save_guard: changes state
+LASSO_CHERRYPICKER_REMOVAL_1	A2	L1	clean	none	a donor config file read with the game DOWN; neither tool reads mod config files
+LEATHERFACTORS_FIX_KEEP_OWN_STATS	A2	L1	changed	none	'no leather def shows two statFactors nodes' needs a duplicate count that a --has TOKEN cannot make
+LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS	A1	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+LONG_SHADE_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+LONG_SHADE_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+LORE_STAGES_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+LORE_STAGES_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+MIASMA_MECHANICS_1	A1	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+MIASMA_MECHANICS_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+MIASMA_MECHANICS_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+MOD_MANIFEST_BUILD_THREE_LISTS_ONE_TRUTH	A1	L1	nofiles	none	runs modmanifest.py against a swapped tier: tooling, not a def or log read
+MOVING_DUNES_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+MOVING_DUNES_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+OASIS_MAKER_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+OASIS_MAKER_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+PIT_LIP_FIX_BOAR_HANGS_OUT	A1	L1	nofiles	none	an offline selftest, not a live read
+PIT_LIP_FIX_BOAR_HANGS_OUT	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+PIT_RAMP_FIX_WALKER_TAKES_FALL	A2	L1	nofiles	none	a raider walking a ramp: behaviour
+PIT_RESCUE_FIX_COUNTS_DOCTOR_OFF	A2	L1	nofiles	none	a downed pawn and a rescue job: behaviour
+PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT	A2	L1	nofiles	none	half is 'memory delta recorded', a measurement no def or log read makes
+PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS	A2	L1	changed	proof	live_proofs/PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS.txt (waits: changed)
+PYRELANDS_GREEN_FULL_1	A1	GREEN-FULL	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+PYRELANDS_GREEN_FULL_1	A2	GREEN-FULL	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS	A2	L1	changed	proof	live_proofs/QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS.txt (waits: changed)
+RAID_PLANK_FIX_SURFACE_HEIGHT_SUNKEN	A2	L1	nofiles	none	a raid plank and pawns crossing: behaviour
+RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND	A1	L1	clean	proof	live_proofs/RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND.txt
+RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND	A2	L1	clean	none	a quest must run to its end: behaviour
+RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM	A2	L1	nofiles	none	a RimPulse server log growth over an hour, not the game
+ROT_FAUNA_KIN_WIRING_1	A2	L1	changed	proof	live_proofs/ROT_FAUNA_KIN_WIRING_1.txt (waits: changed)
+ROT_WOUNDLINK_FIX_DROPPED_AT_THE_DOOR	A2	L1	changed	none	stale: asks WoundLink on RM_Durrok/RM_Mullgoth, which the owner-ruled table removed (ROT_FAUNA_KIN_WIRING_1); a proof would FAIL correct code (noted on the item)
+RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1	A4	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1	A5	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1	A6	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS	A1	L1	nofiles	none	needs one particular save loaded and its ideoligions read; neither tool loads or reads a save
+SCALD_MECHANICS_1	A2	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SCALD_MECHANICS_1	A3	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SCALD_MECHANICS_1	A4	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SCALD_MECHANICS_1	A5	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SCRUB_SETTINGS_WIRE_MASTER_CANNOT_GREY	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SHIPFALL_LADDER_FIX_STALE_ARRIVAL_WHILE_OFF	A1	L1	clean	none	a gravship launch and reland: behaviour that changes state
+SLACK_LOOP_REDRAW_STANDS_UP_IN_PROFILE	A2	L1	nofiles	none	a capture a judge looks at
+STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT	A1	L1	clean	proof	live_proofs/STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT.txt
+STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT	A3	L1	clean	none	a found locker must take food and be repaired: behaviour
+STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+SUMP_NOOTHELM_B_PLANT_1	A1	L1	changed	none	names RSW_CookFruitOnAStick, which no def under src/ defines
+TECHPRINT_FACTION_GATING_1	A5	L1	nofiles	none	names its rows by example only (`VFEP_Warcaskets`, 'a common row'), and a --has TOKEN cannot bind techprintCount 0 to its field
+TECHPRINT_FACTION_GATING_1	A6	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+TESTENV_FLOODS_HARDEN_SEASON_CRASHES_PARTY	A1	L1	nofiles	none	runs extension_proof on a staged site (changes state)
+TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS	A1	L1	nofiles	none	rebuilds a site (changes state) before the read
+TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND2	A1	L1	nofiles	none	an independent tester's rerun of mutant sets, not the game
+THE_BAZAAR_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+THE_FORGE_FIRST_SCRIPT_1	A1	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+THE_FORGE_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+THE_ROT_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+THE_ROT_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD	A1	L1	nofiles	proof	live_proofs/THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD.txt
+UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT	A2	L1	nofiles	none	a staged shot under a deck: behaviour
+UNFINISHED_LINE_WORLD_FOUNDRY_1	A5	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+VCE_CANFISH_FIX_RESKIN_SKIPS_BILL	A2	L1	clean	proof	live_proofs/VCE_CANFISH_FIX_RESKIN_SKIPS_BILL.txt
+VEE_DEEP_ORES_MIGRATE_RICH_AND_POOR	B3	L2	clean	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT	A1	L1	clean	proof	live_proofs/VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT.txt
+VISITOR_DETECTORS_MEND_NAME_THE_STRANGER	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+VISITOR_DETECTORS_MEND_NAME_THE_STRANGER	A4	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS	A3	L1	nofiles	none	a staged wall and a pawn's float menu: behaviour
+WARCASKET_JUNKER_KINDS_BUILD_1	A1	L1	changed	proof	live_proofs/WARCASKET_JUNKER_KINDS_BUILD_1.txt (waits: changed)
+WASTELAND_FIRST_SCRIPT_1	A1	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+WASTELAND_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+WASTELAND_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+WEBWORK_FIRST_SCRIPT_1	A3	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+WEEPINGSTONES_CONDENSER_QUESTS_1	C3	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WEEPINGSTONES_CONDENSER_QUESTS_1	C4	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WEEPINGSTONES_CONDENSER_QUESTS_1	C5	L2	clean	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WEEPINGSTONES_CONDENSER_QUESTS_1	C6	L1	clean	none	two loads (free mod alone, then campaign); one proof sees one running load
+WEEPING_STONES_FIRST_SCRIPT_1	A1	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+WEEPING_STONES_FIRST_SCRIPT_1	A2	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS	A3	L2	clean	none	a human look
+WYYYSCHOKK_FANG_PENDANT_1	A2	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WYYYSCHOKK_FANG_PENDANT_1	A3	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WYYYSCHOKK_FANG_PENDANT_1	A4	L2	nofiles	none	behaviour on a map (spawn, job, ticks, quest or UI): only a driven scene shows it
+WYYYSCHOKK_FANG_PENDANT_1	A5	GREEN-MIN	nofiles	none	a whole live run (north-star / validation script) or its classification: drives the game, not a read-only check
+ZRRIK_VAMPIRIC_STAB_REBUILD_OWN_BLOODLUST	A2	L1	clean	none	a stab and its healing: behaviour

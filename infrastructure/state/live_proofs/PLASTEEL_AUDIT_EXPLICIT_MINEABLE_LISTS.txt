@@ -1,0 +1,1 @@
+live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.minerals --has RimMandrake.Minerals.RM_MineralRegistryDef/RM_Mineral_Plasteel && python3 src/RimMandrake/Utils/live_log_check.py --absent "[RM Minerals] explicit mineable lists" --never "name only disabled mineables" --never "[RM Minerals] explicit mineable lists: could not read"

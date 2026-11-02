@@ -1,0 +1,1 @@
+live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rut.patches --has ThingDef/RM_Chittik --has ThingDef/RM_Agaripawn --has ThingDef/RM_Mullgoth && python3 src/RimMandrake/Utils/live_log_check.py --absent RotFauna_KinWiring.xml --absent RotSpecies_WoundSharing.xml --absent RM_AgariPorts.xml --absent RM_Chittik.xml

@@ -9,6 +9,7 @@ the run itself (relentless_live.run) has its own selftest and is swapped here.
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -266,6 +267,31 @@ def t_log_judge():
                   ["RUT_Loot"])[0] == G.FAIL)
 
 
+def t_log_never():
+    """LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST: a Log.Warning reaches Player.log as bare text, so --never names it."""
+    a = "\n[RimBridge] Bridge token: x\n"
+    warn = "[RM Minerals] quarry: no OreDictionary; quarries keep the Quarry mod's own draw" + a
+    check("never: bare warning text is invisible to --warnings", G.judge(warn, ["[RM Minerals] quarry"], True)[0] == G.PASS)
+    check("never: --never sees it", G.judge(warn, [], never=["[RM Minerals] quarry"])[0] == G.FAIL)
+    check("never: absent text passes", G.judge("RUT_A loaded" + a, [], never=["[RM Minerals] quarry"])[0] == G.PASS)
+    check("never: no anchor is UNMEASURED", G.judge(warn.split("\n")[0], [], never=["x"])[0] == G.UNMEASURED)
+    check("never: a stack-trace line naming it fails", G.judge("Exception x\n  at RM_MineralQuarry.PlanFor()" + a, [],
+                                                            never=["RM_MineralQuarry.PlanFor"])[0] == G.FAIL)
+    import io, contextlib
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        code = G.safe_main(["--never", "x", "--log", "/nonexistent/dir/Player.log"])
+    check("never: an unreadable log is UNMEASURED", code == G.UNMEASURED, out.getvalue())
+    real_main = G.main
+    G.main = lambda argv=None: (_ for _ in ()).throw(UnicodeEncodeError("ascii", "é", 0, 1, "x"))
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            check("log: a crash inside main is UNMEASURED, never exit 1 (GPT r1)", G.safe_main([]) == G.UNMEASURED)
+    finally:
+        G.main = real_main
+    check("never and absent combine", G.judge("Config error in RUT_A" + a, ["RUT_A"], never=["zzz"])[0] == G.FAIL)
+
+
 def t_proofs_file():
     """LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST: proofs live in live_proofs/<ID>.txt, never the item's prose (the
     Marker's box drops infrastructure/state/items, so a proof there could never be checked blind)."""
@@ -283,13 +309,15 @@ def t_proofs_file():
     real = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), R.PROOFS_DIR)
     names = sorted(os.listdir(real)) if os.path.isdir(real) else []
     bad = []
+    crit_line = re.compile(r"^[A-Z]+\d+ [A-Z0-9-]+: \S")     # <ID>.criteria: `A2 L1: what is observed` (worker brief)
     for n in names:
         with open(os.path.join(real, n), encoding="utf-8") as f:
             for line in f:
-                if line.strip() and not line.startswith("#") and not R.PROOF_LINE.match(line.rstrip("\n")):
+                ok = crit_line.match(line) if n.endswith(".criteria") else R.PROOF_LINE.match(line.rstrip("\n"))
+                if line.strip() and not line.startswith("#") and not ok:
                     bad.append("%s: %s" % (n, line[:60]))
-    check("proofs: every real live_proofs file is .txt and every line parses", names and all(
-        n.endswith(".txt") for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
+    check("proofs: every real live_proofs file is .txt (or .criteria) and every line parses", names and all(
+        n.endswith((".txt", ".criteria")) for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
 
 
 def t_real_lane():
@@ -305,7 +333,7 @@ def t_real_lane():
 
 
 def main():
-    for t in (t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_real_lane,
+    for t in (t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_log_never, t_real_lane,
               t_history_review, t_tick_env):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
