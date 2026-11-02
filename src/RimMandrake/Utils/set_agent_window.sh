@@ -11,7 +11,7 @@
 #   * a seat CHANGING role mid-session — the role file it writes beats AGENT_SEAT
 #
 #   ./src/RimMandrake/Utils/set_agent_window.sh CHECK
-#   ./src/RimMandrake/Utils/set_agent_window.sh CHECK "log harvest"    # optional detail suffix
+#   ./src/RimMandrake/Utils/set_agent_window.sh CHECK "log harvest"    # optional detail suffix, window title only
 #   ./src/RimMandrake/Utils/set_agent_window.sh --preview            # show every seat's colour
 #   ./src/RimMandrake/Utils/set_agent_window.sh --reset-colour       # undo colours, keep names
 #
@@ -144,7 +144,9 @@ esac
 TITLE="AGENT ${ROLE}"                 # recorded: the key form seat_of() and the hook parse
 SHOWN="$TITLE"
 [ "$ROLE" = "BENCH" ] && SHOWN="CONDUCTOR"
-[ -n "$DETAIL" ] && TITLE="${TITLE} — ${DETAIL}" && SHOWN="${SHOWN} — ${DETAIL}"
+# The detail goes on the WINDOW only, never into the recorded role: the hook's seat_of() reads the LAST token of the
+# role file as the seat, so "AGENT FOUNDRY — log harvest" recorded the seat HARVEST and injected no identity.
+[ -n "$DETAIL" ] && SHOWN="${SHOWN} — ${DETAIL}"
 
 # --- 1. the terminal window ----------------------------------------------
 printf '\033]0;%s\007' "$SHOWN"        # OSC 0 = icon name + window title

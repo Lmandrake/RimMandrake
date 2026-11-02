@@ -1,0 +1,2 @@
+set_agent_window.sh SEAT "detail" recorded 'AGENT FOUNDRY — detail' in the role file, but set_session_title.py seat_of() takes the LAST token (uppercased) as the seat, so the detail's last word became the seat (HARVEST) and no identity was injected; its docstring's claim that a suffix 'simply stops matching' is false because .upper() makes any word match [A-Z]{2,16}. Fixed in set_agent_window.sh (wave 79): the detail goes on the window title only. A recorded key form must stay exactly 'AGENT <SEAT>'; the hook docstring is still wrong.
+home: .claude/hooks/set_session_title.py
