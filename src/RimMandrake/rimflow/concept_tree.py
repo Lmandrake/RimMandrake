@@ -106,6 +106,9 @@ def visible(line):
     return re.sub(r"[*_~`\\]", "", "".join(c for c in s if unicodedata.category(c) != "Cf"))
 
 
+# Markup that renders as other text: inline HTML, an entity, a link, a bracket opened inside a bracket. A sheet is plain, so
+# a line holding any of these is refused anywhere, headings included, rather than rendered and guessed at.
+NOT_PLAIN = re.compile(r"<[A-Za-z/!?]|&#?[A-Za-z0-9]+;|\]\(|\[[^\]]*\[")
 UNREAD = "\0unread headings"      # parse_sheet's own key, never a heading name
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
 OPTIONAL_SECTIONS = ("later",)      # "Not now": v2, not in the tree. A dry walk adds `root` (its stand-in north star)
@@ -117,7 +120,7 @@ def parse_sheet(path):
     """-> {section: [raw non-empty lines]}. Headings are `## <name>`; a heading may carry a parenthesis after the name.
     The sheet is plain bullets, so a line this parser could read differently from a Markdown viewer is refused, never
     guessed at (UNREAD): a code fence of any indent (Markdown would hide or show headings inside it), a setext underline
-    or rule line, a raw HTML line, a bracket tag holding a non-ASCII character, any heading-like line that is not `## <name>` (the `# ` title before the first section
+    or rule line, inline HTML, an entity, a link or a nested bracket (NOT_PLAIN), a bracket tag holding a non-ASCII character, any heading-like line that is not `## <name>` (the `# ` title before the first section
     excepted), or a heading holding a `[` tag.
     Lines before the first heading are
     kept under "" so that no line escapes a check."""
@@ -125,7 +128,7 @@ def parse_sheet(path):
     with open(path, encoding="utf-8") as f:
         for line in f:
             m = re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
-            if m and "[" in line:    # a heading's note is dropped, so a tag there would go unseen
+            if m and ("[" in visible(line) or NOT_PLAIN.search(line)):    # a heading's note is dropped: no tag may hide there
                 out.setdefault(UNREAD, []).append(line.rstrip("\n"))
             if m:
                 cur = m.group(1).strip().lower()
@@ -133,7 +136,7 @@ def parse_sheet(path):
             elif line.strip():
                 if (re.match(r"^\s*(`{3,}|~{3,})", line)                     # a code fence
                         or re.match(r"^\s{0,3}(=+|-{2,})\s*$", line)              # a setext underline (or a rule)
-                        or re.match(r"^\s*<[A-Za-z/!]", line)                      # raw HTML: <h2>, <!-- -->, <details>
+                        or NOT_PLAIN.search(line)                                  # HTML, entity, link, nested bracket
                         or any(ord(c) > 127 for b in re.findall(r"\[[^\]]*\]", visible(line)) for c in b)  # homoglyph tag
                         or (re.match(r"^\s{0,3}#{1,6}(\s|$)", line) and not (cur == "" and re.match(r"^# \S", line)))):
                     out.setdefault(UNREAD, []).append(line.rstrip("\n"))
@@ -148,7 +151,8 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: no `## %s` section" % s)
     known = ("",) + SECTIONS + OPTIONAL_SECTIONS + (("root",) if tree.get("dry_walk") is True else ())
     for line in sheet.get(UNREAD, []):
-        errs.append("sheet: not plain bullets (a fence, rule, HTML, a non-ASCII or heading tag, or a heading other than "
+        errs.append("sheet: not plain bullets (a fence, rule, HTML, entity, link, nested bracket, a non-ASCII or heading tag, "
+                    "or a heading other than "
                     "`## <section>` and the `# ` title): %s" % line.strip()[:80])
     for s in sheet:     # an unknown section is unchecked text: a [core] question could sit there unseen
         if s == UNREAD:
