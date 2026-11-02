@@ -10,7 +10,8 @@ body's silhouette. Juvenile `_j` and `*_Swimming` bodies are waived by the item.
 check can fail; the census must see at least 50 races and Ronto, and the group table must hold them all.
 
 Shared, fitted: every graphic the fit installed (art/pack_overlay_installed.json) must be pixel-equal to
-pack_overlay_fit.render() of its group's shared render packoverlay_<group>_v1_<facing> (artpipe state dir)
+pack_overlay_fit.render() of its group's shared render packoverlay_<group>_v1_<facing>
+(committed in art/pack_overlay_sources/, sha256-pinned)
 on the body as it is NOW. A hand-painted or flat-filled Pack fails, and so does a Pack fitted to a body that
 was redrawn after the fit (re-run `pack_overlay_fit.py --apply --refit`). Every other adult Pack is named
 donor art in DONOR_PACK, so nothing reaches the gear checks by being neither.
@@ -89,7 +90,7 @@ def main():
     ours = fit.fitted()
     by_race = {r: g for g, rs in cfg["groups"].items() for r in rs}
     try:
-        overs = fit.overlays(fit.art_state())
+        overs = fit.overlays()
     except Exception as exc:                       # the shared sources are the proof; never skip without them
         check("shared overlay sources packoverlay_<group>_v1_<facing> readable", False, repr(exc))
         overs = None

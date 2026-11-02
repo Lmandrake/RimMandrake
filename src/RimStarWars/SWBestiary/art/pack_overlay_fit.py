@@ -15,10 +15,14 @@ Waived (item text): juvenile `_j` and `*_Swimming` bodies keep their transparent
 Kept: existing drawn Pack art (real_pack_exists) is left alone. Ronto's Pack is a byte copy of the body,
 the very defect, so it is replaced.
 
-Sources are the artpipe renders packoverlay_<group>_v1_<facing>, read from the artpipe state dir.
+Sources are the 12 shared artpipe renders packoverlay_<group>_v1_<facing>, committed in
+pack_overlay_sources/ beside this file (sha256 pinned in its manifest.json), so the fit and its selftest
+need no artpipe state dir.
 """
 import argparse
 import glob
+import hashlib
+import io
 import json
 import os
 import sys
@@ -30,6 +34,7 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 GROUPS = os.path.join(HERE, "pack_overlay_groups.json")
+SOURCES = os.path.join(HERE, "pack_overlay_sources")
 FACINGS = ("east", "south", "north")
 PLACEHOLDER_MAX_BYTES = 200
 MIN_CANVAS = 512
@@ -42,12 +47,6 @@ LAYOUT = {
     "sixlegged": dict(side=0.84, front_cap=1.15, ride_side=0.16, ride_front=0.18, cut=0.45),
     "lowlong": dict(side=0.80, front_cap=1.10, ride_side=0.14, ride_front=0.12, cut=0.0),
 }
-
-
-def art_state():
-    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils", "artpipe"))
-    import state_dir
-    return str(state_dir.resolve())
 
 
 def _parse():
@@ -294,12 +293,19 @@ def targets(refit=False):
     return rows
 
 
-def overlays(state):
+def overlays(src=SOURCES):
+    """The 12 shared sources, each checked against the committed manifest's sha256."""
+    with open(os.path.join(src, "manifest.json")) as fh:
+        pins = json.load(fh)["sha256"]
     out = {}
     for group in LAYOUT:
         for f in FACINGS:
-            n = "packoverlay_%s_v1_%s" % (group, f)
-            out[group, f] = Image.open(os.path.join(state, "_artsrc", n, n + ".png")).convert("RGBA")
+            n = "packoverlay_%s_v1_%s.png" % (group, f)
+            with open(os.path.join(src, n), "rb") as fh:
+                data = fh.read()
+            if hashlib.sha256(data).hexdigest() != pins.get(n):
+                raise ValueError("%s does not match its pinned sha256 in manifest.json" % n)
+            out[group, f] = Image.open(io.BytesIO(data)).convert("RGBA")
     return out
 
 
@@ -352,7 +358,7 @@ def main(argv):
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--refit", action="store_true", help="redo graphics this tool already fitted")
     args = ap.parse_args(argv)
-    overs = overlays(art_state())
+    overs = overlays()
     if args.verb == "sheet" and not args.apply:
         sheet(args.out, overs, only=args.only)
         return 0

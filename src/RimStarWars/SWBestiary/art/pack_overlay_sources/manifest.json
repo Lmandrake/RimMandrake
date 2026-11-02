@@ -1,0 +1,17 @@
+{
+ "why": "the 12 shared artpipe renders the fit reads; copied from <data root>/artpipe/_artsrc/<name>/<name>.png so the proof runs without external state (PACK_OVERLAYS_BUILD_SHARED_SADDLEBAGS)",
+ "sha256": {
+  "packoverlay_biped_v1_east.png": "f9e444be4e8298ca5465f18b879ad49ee852f4a0cd6132fb78bd7fd2b5d15eea",
+  "packoverlay_biped_v1_north.png": "11b947d5261367d4c5b3cae737fd5683e1f44d040a2d26e50326e12564b96a60",
+  "packoverlay_biped_v1_south.png": "ac505711a6e3975461992d375fa2e0192557a3eb039883181dfc183a65fecb9c",
+  "packoverlay_lowlong_v1_east.png": "20e5e2470fc6d9a5d81d51e20c20ac67db0bfa15ba067fa3c839046be2d4aca3",
+  "packoverlay_lowlong_v1_north.png": "162ed52208888b285f455a47d21d455fa56cb8cd39286593a3df9b8fb6591221",
+  "packoverlay_lowlong_v1_south.png": "0982ca52d179451cf80ed94cac5d70d388a37e1efa5b124615d68e5377194405",
+  "packoverlay_quadruped_v1_east.png": "5bb0a6e7e7209ea775cb2f1324cb5b7c9bdf6e9bb97afab8999331a16a66942c",
+  "packoverlay_quadruped_v1_north.png": "8edd613e3d86ff638b357a9eb7358a246759f9804d92a34bb0873bd144280f19",
+  "packoverlay_quadruped_v1_south.png": "18c1f78995f98661c6f0c3888b2232fb90a6faf889cc5a90c0606d1a20b1e600",
+  "packoverlay_sixlegged_v1_east.png": "541fef09433c5d2e0ad3618118f634c62b173d1d0271a5af5b796e2d269d46ac",
+  "packoverlay_sixlegged_v1_north.png": "f94df9cfe3e3c4da6583fa11e6fe4a6d891b3d6ee962092a7af0fcedb0dac732",
+  "packoverlay_sixlegged_v1_south.png": "764600ee16f8245dc3dce860e688402d3df1a0a8add203ef21ff8a544dd5e41d"
+ }
+}
