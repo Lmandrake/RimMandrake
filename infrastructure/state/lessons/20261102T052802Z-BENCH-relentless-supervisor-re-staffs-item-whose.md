@@ -1,0 +1,1 @@
+relentless supervisor re-staffs an item whose own precondition depends on a still-proposed caused_by item (REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS staffed 4x while BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL is proposed); a blocked_on_dependency snag should gate re-staffing on the named item's state.
