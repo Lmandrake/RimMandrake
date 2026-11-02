@@ -1444,7 +1444,8 @@ class Effects:
                 argv = f.read().split(b"\0")
         except (OSError, ValueError):
             return False
-        return len(argv) >= 3 and argv[1].endswith(b"/relentless_live_round.py") and argv[2] == b"round"
+        script = os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py").encode()
+        return len(argv) >= 3 and argv[1] == script and argv[2] == b"round"
 
     def live_round_launch(self):
         """Start one live round detached (its own session: the oneshot tick ends long before it). -> pid."""

@@ -21,12 +21,15 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PASS, FAIL, UNMEASURED = 0, 1, 2
-# Word-ended so an identifier is not an error: RUT_ErrorPlant and "0 errors" are not error lines, NullReferenceException
-# and "Config error in" are. The tokens are also blanked out of a line before it is tested.
-ERROR_RE = re.compile(r"error\b|exception\b|\bfailed\b|\bcould not\b|\bcouldn't\b", re.I)
-WARN_RE = re.compile(r"warn(ing)?\b", re.I)
-# A line that continues the record above it (a stack trace, an inner exception), not a message of its own.
-CONT_RE = re.compile(r"^(\s|at |\(Filename|--- |Rethrow|\[0x|(Verse|RimWorld|UnityEngine|System|HarmonyLib|Mono)\.\S*[:(])")
+# Word-ended so an identifier is not an error: RUT_ErrorPlant and "0 errors" are not error lines, NullReferenceException,
+# "2 errors" and "Config error in" are. The tokens and every underscore identifier are blanked out first (MASK_RE).
+ERROR_RE = re.compile(r"errors?\b|exceptions?\b|\bfailed\b|\bcould not\b|\bcouldn't\b", re.I)
+WARN_RE = re.compile(r"warn(ing)?s?\b", re.I)
+NONE_RE = re.compile(r"\b(0|no|zero|without)\s+(errors?|exceptions?|warnings?)\b", re.I)
+IDENT_RE = re.compile(r"\w*_\w*")
+# A line that continues the record above it (a stack trace, an inner exception, a [Ref] stub), not a message of its
+# own. Blank lines never split a record: "Exception:\n\n  defName: X" is one record.
+CONT_RE = re.compile(r"^(\s|at |\(Filename|--- |Rethrow|\[0x|\[Ref |(Verse|RimWorld|UnityEngine|System|HarmonyLib|Mono)\.\S*[:(])")
 ANCHOR = "Bridge token:"
 
 
@@ -34,7 +37,9 @@ def records(text):
     """-> [(first line number, [lines])]: a message line plus the continuation lines under it."""
     out = []
     for n, line in enumerate(text.splitlines(), 1):
-        if out and line.strip() and CONT_RE.match(line):
+        if not line.strip():
+            continue
+        if out and CONT_RE.match(line):
             out[-1][1].append(line)
         else:
             out.append((n, [line]))
@@ -49,9 +54,10 @@ def judge(text, tokens, warnings=False, anchor=ANCHOR):
         return UNMEASURED, ["UNMEASURED: the log has no %r yet: the load has not finished" % anchor]
     hits = []
 
+    mask = re.compile("|".join(re.escape(t) for t in sorted(tokens, key=len, reverse=True)))
+
     def bad(line):
-        for t in tokens:
-            line = line.replace(t, " ")
+        line = NONE_RE.sub(" ", IDENT_RE.sub(" ", mask.sub(" ", line)))
         return ERROR_RE.search(line) or (warnings and WARN_RE.search(line))
 
     for n, lines in records(text):
@@ -109,6 +115,9 @@ def main(argv=None):
             text = f.read()
     except OSError as e:
         print("UNMEASURED: %s" % e)
+        return UNMEASURED
+    if a.log is None and game_started() != started:
+        print("UNMEASURED: the running game changed while the log was read")
         return UNMEASURED
     code, lines = judge(text, tokens, a.warnings)
     print("\n".join(lines))

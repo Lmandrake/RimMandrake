@@ -9,6 +9,7 @@ the run itself (relentless_live.run) has its own selftest and is swapped here.
 """
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -207,6 +208,22 @@ def t_live_tick():
 def t_tick_env():
     import relentless as RL
     fx = RL.Effects.__new__(RL.Effects)
+    with tempfile.TemporaryDirectory() as d:
+        procs = []
+        for root in ("ours", "other"):
+            sp = os.path.join(d, root, "src/RimMandrake/rimflow/relentless_live_round.py")
+            os.makedirs(os.path.dirname(sp))
+            with open(sp, "w") as f:
+                f.write("import time\ntime.sleep(30)\n")
+            procs.append(subprocess.Popen([sys.executable, sp, "round"]))
+        try:
+            fx.books = os.path.join(d, "ours")
+            check("tick: our checkout's round is alive", fx.live_round_alive(procs[0].pid))
+            check("tick: another checkout's round (pid reuse) is not ours", not fx.live_round_alive(procs[1].pid))
+        finally:
+            for pr in procs:
+                pr.kill()
+                pr.wait()
     check("tick: our own pid's argv is not a round", not fx.live_round_alive(os.getpid()))
     check("tick: a dead pid is not a round", not fx.live_round_alive(2 ** 22 + 7))
     got = RL.windows_path("/usr/bin:/bin")
@@ -230,6 +247,15 @@ def t_log_judge():
           G.judge("Exception loading def:\n  defName: RUT_PaleMoss\n  at Verse.X()\n" + a, ["RUT_PaleMoss"])[0] == G.FAIL)
     check("log: a token that contains 'Error' is not itself an error line",
           G.judge("Loaded RUT_ErrorPlant successfully" + a, ["RUT_ErrorPlant"])[0] == G.PASS)
+    check("log: '2 errors' and 'Exceptions' naming a token fail (GPT r2)",
+          G.judge("2 errors while loading RUT_A" + a, ["RUT_A"])[0] == G.FAIL
+          and G.judge("Exceptions encountered while loading RUT_A" + a, ["RUT_A"])[0] == G.FAIL)
+    check("log: a blank line or a [Ref] stub does not split an error from its token (GPT r2)",
+          G.judge("Exception loading def:\n\n  defName: RUT_A" + a, ["RUT_A"])[0] == G.FAIL
+          and G.judge("Exception loading def:\n[Ref C0FFEE]\n  defName: RUT_A" + a, ["RUT_A"])[0] == G.FAIL)
+    check("log: another identifier ending in Error is not an error word (GPT r2)",
+          G.judge("Loaded RUT_A; fallback=RUT_NoError" + a, ["RUT_A"])[0] == G.PASS
+          and G.judge("Loaded RUT_AError" + a, ["RUT_A", "RUT_AError"])[0] == G.PASS)
     check("log: '0 errors' is not an error line", G.judge("RUT_PaleMoss: 0 errors" + a, ["RUT_PaleMoss"])[0] == G.PASS)
     check("log: NullReferenceException naming the token is a FAIL",
           G.judge("NullReferenceException in RUT_PaleMoss tick" + a, ["RUT_PaleMoss"])[0] == G.FAIL)
