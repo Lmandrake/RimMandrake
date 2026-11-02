@@ -198,7 +198,8 @@ Do the steps in one turn:
    take no ticket, spawn no helper (`next` and the spawn hook refuse), no staffing floor applies, and running helpers
    finish; their lease and shard events do not void it. When the last one is done, commit your shard, `./publish`, end
    your turn. The kill holds until that shard is published. Past 3600 s the Dispatcher alarms with their names.
-   The fresh window's wake lists each drained helper and its transcript.
+   The fresh window's wake lists each drained helper and its transcript. A helper that will not finish soon:
+   checkpoint it (`seat_restart.py checkpoint --seat FOUNDRY`, procedure and order text in CONDUCTOR.md "Checkpoint").
 4. **Do what it prints** (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE; owner 2026-10-28: "we should let Foundry do
    more than one if it's context is ok"):
    - **`CONTEXT OK`** — your window's context is under the backstop (`seat_restart.seats.FOUNDRY.backstop_ctx_tokens`,

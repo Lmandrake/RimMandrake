@@ -711,6 +711,8 @@ def helpers_of(path, now=None, stale_s=None):
     out = []
     base = path[:-len(".jsonl")]
     sub = os.path.join(base, "subagents")
+    import helper_checkpoint as HC       # a helper still alive past its checkpoint deadline is LOST: the kill stops
+    lost = HC.lost_ids(path, now if now is not None else time.time())   # waiting on it (CONDUCTOR_RESTART_REDESIGN_*)
     try:                                 # one explicit listing, used as is: glob() swallows errors (review2/3 #3),
         names = os.listdir(sub)          # and no stat guard first: a failed stat would read as "no helpers" (review4)
     except FileNotFoundError:            # no session dir or no subagents dir: the window never had a helper
@@ -735,6 +737,8 @@ def helpers_of(path, now=None, stale_s=None):
         retired = None                   # proof of death (lesson 20261030T163434Z): an API/auth error is the last record
         if alive and recs and (recs[-1].get("isApiErrorMessage") or recs[-1].get("error")):
             retired = "API error tail (%s)" % (recs[-1].get("error") or "isApiErrorMessage")
+        elif alive and os.path.basename(f)[:-len(".jsonl")] in lost:
+            retired = HC.LOST_WORD
         elif alive and now is not None and now - mt > (stale_s if stale_s is not None else DEFAULTS["helper_stale_s"]):
             retired = "transcript silent %d s" % (now - mt)   # or silent past the bound (above the 600 s subagent watchdog)
         if retired:
@@ -2907,6 +2911,10 @@ def cmd_wake(args):
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
     _wake_helpers(rec)
+    import helper_checkpoint as HC
+    lost = HC.wake_lines(rec.get("session_id"))
+    if lost:
+        print("\n== helpers LOST at the old window's checkpoint (each item has a note): pick them up\n" + "\n".join(lost))
     if rec.get("clones") and not rec.get("aborted"):
         print("\n== scratch clone(s) the old window left with UNLANDED work (kept): land or hand off each first")
         for path, risks in sorted(rec["clones"].items()):
@@ -3104,6 +3112,12 @@ def main(argv=None):
     sub.add_parser("status")
     n = sub.add_parser("now-run", help="rm-restart-now.service: tick while a --now stamp is owed")
     n.add_argument("--dry", action="store_true", help="print what is owed, tick nothing")
+    sub.add_parser("checkpoint", add_help=False, help="a draining window orders its helpers to checkpoint "
+                   "(helper_checkpoint.py; --wait polls to the bounded deadline)")
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv[:1] == ["checkpoint"]:
+        import helper_checkpoint as HC
+        return HC.main(argv[1:])
     args = ap.parse_args(argv)
     return {"request": cmd_request, "wake": cmd_wake, "intile": cmd_intile, "status": cmd_status,
             "now-run": cmd_now_run}[args.cmd](args)

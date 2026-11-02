@@ -87,6 +87,14 @@ the window is killed mid-reply if need be; what he sent after the goodbye lands 
 whose last sentence is "goodbye" counts. Only a live helper, the bridge or PAUSE holds it; the window's own background commands end with it. A
 request that printed DEFERRED drains: live helpers never refuse a goodbye, the window takes no ticket and spawns nothing.
 When the last one is done, publish your shard and end the turn; the kill holds for both.
+**Checkpoint, so a drain never freezes him** (owner 2026-11-02: *"a context-draining agent be able to redirect
+long-running subagents to just write out their results to their tickets"*; CONDUCTOR_RESTART_REDESIGN_NEVER_FREEZE_HIM).
+A helper cannot outlive this window, so a drain with long helpers: (1) `seat_restart.py checkpoint --seat BENCH` lists
+each live helper's agentId and item and records a 10-min deadline; (2) SendMessage each (`to` = the agentId) the order
+*"Checkpoint now: write your state, evidence paths and one imperative NEXT as a note on your item, commit and publish
+what is done, then stop."*; (3) `seat_restart.py checkpoint --seat BENCH --wait` (re-run until DONE or LOST): at the
+deadline a helper still alive is LOST, its item gets a note, the kill stops waiting on it and the wake lists it;
+(4) publish the shard and request. Work expected to run over ~20 min never goes in-process: `detached_helper.py`.
 (`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time, a transcript byte cursor and the
 transcript's path, and the Dispatcher reads everything after the cursor in full, ignoring timestamps, and again right
 before the kill). The fresh window runs `seat_restart.py wake --seat BENCH --gen <restart id>` first. That lists, whole,
