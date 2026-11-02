@@ -894,6 +894,24 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 }
                 Assert(Math.Abs(RM_TidalSunGlowMath.GlowFromElevation(-6.0, 12f) - 0.3f) < 1e-4f, "mid-band (-6 of 12) is not half of 0.6");
             });
+            Case("tidal lock preset guard: restores only a locked save with no preset on Worldbuilder (TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING)", () =>
+            {
+                string[] presets = { null, "", "TidallyLocked", "Default", "SomeOtherPreset" };
+                string[] saved = { null, "", "TidallyLocked", "Default", "Unknown", "tidallylocked" };
+                int restored = 0;
+                foreach (bool on in new[] { false, true })
+                    foreach (bool wb in new[] { false, true })
+                        foreach (string p in presets)
+                            foreach (string s in saved)
+                            {
+                                string r = RM_TidalLockPresetKernel.PresetToRestore(on, wb, p, s);
+                                bool want = on && wb && string.IsNullOrEmpty(p) && s == "TidallyLocked";
+                                Assert(want ? r == "TidallyLocked" : r == null,
+                                    "on=" + on + " wb=" + wb + " preset=" + (p ?? "null") + " saved=" + (s ?? "null") + " -> " + (r ?? "null"));
+                                if (r != null) restored++;
+                            }
+                Assert(restored == 2, "expected exactly 2 restoring inputs (preset null and empty), got " + restored);
+            });
             Case("moving shade: clearing the old rectangle and casting the new leaves no trail", () =>
             {
                 int w = 40, h = 40;

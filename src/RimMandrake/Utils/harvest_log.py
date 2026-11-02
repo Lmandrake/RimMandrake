@@ -338,6 +338,14 @@ CHECKS = [
     # only way these surface is if something still references them by name in a context
     # that DOES log. Zero is the pass; any hit means a patch was reverted or a file
     # was restored from an old copy.
+    # TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: RM_TidalLockPresetGuard logs one readback line per save load
+    # ("[RM CreatureBehaviors] planet lock at load: saved=... current=... lockPatches=..."), a warning ending
+    # "MOVING SUN" when the save is tidally locked and the loaded planet is not. Any hit is a sun that moves on
+    # a locked world. At the main menu no save is loaded yet, so 0 there says nothing: read it after a load.
+    ("tidallock", "tidally locked save loaded UNLOCKED",
+     r"planet lock at load: .*MOVING SUN", 0,
+     "the save says TidallyLocked, Alien Worlds' Current or its 7f.alienworlds.tidallylocked "
+     "patches say not: tidal_lock_readback.py reads the live state"),
     ("deadnames", "defNames we retired (should be extinct)",
      r"OuterRim_Jawa\b|BTD_Jawa\b|HC_gamorreanaxe", 0,
      "OuterRim_Jawa and BTD_Jawa both stopped existing when the donor mods went off; "

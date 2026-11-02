@@ -346,6 +346,10 @@ namespace RimMandrake.CreatureBehaviors
     //      stay pointed at the substellar point instead of turning once a day.
     //      Off: vanilla (or the Alien Worlds tidal-lock sun when that is active).
     //      Rendering only.
+    //  55. tidalLockPresetGuard — RM_TidalLockPresetGuard (TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING).
+    //      On: a save whose planet type reads TidallyLocked but carries no Worldbuilder
+    //      preset name (made without Worldbuilder) loads tidally locked with Worldbuilder
+    //      loaded too. Off: that save loads as an ordinary planet with a moving sun.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -433,6 +437,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool tidalSunGlowByGeometry = true;
         public static float tidalTwilightBandDegrees = RM_TidalSunGlowMath.DefaultTwilightBandDegrees;
         public static bool tidalLockNoSeasons = true;
+        public static bool tidalLockPresetGuard = true;
         public static bool falseShadeAmbushEnabled = true;
         // CREATURE_JOB_INTERRUPTION_POLICY_1 (RM_AmbushJobPolicy): wild ambush predators also take wild animal prey.
         public static bool ambushWildPreyEnabled = true;
@@ -669,6 +674,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref tidalSunGlowByGeometry, "tidalSunGlowByGeometry", true);
             Scribe_Values.Look(ref tidalTwilightBandDegrees, "tidalTwilightBandDegrees", RM_TidalSunGlowMath.DefaultTwilightBandDegrees);
             Scribe_Values.Look(ref tidalLockNoSeasons, "tidalLockNoSeasons", true);
+            Scribe_Values.Look(ref tidalLockPresetGuard, "tidalLockPresetGuard", true);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
             Scribe_Values.Look(ref ambushWildPreyEnabled, "ambushWildPreyEnabled", true);
             Scribe_Values.Look(ref sunHeatEnabled, "sunHeatEnabled", true);
@@ -1045,7 +1051,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
                 list.GapLine();
             }
-            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldSunPinned", "worldStarsPinned", "worldStarsYearlyDrift", "sunFlareHiddenBehindPlanet", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "tidalLockNoSeasons", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "WorldSun", "TidalSunGlow", "TidalNoSeasons", "Seasons" }))
+            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldSunPinned", "worldStarsPinned", "worldStarsYearlyDrift", "sunFlareHiddenBehindPlanet", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "tidalLockNoSeasons", "tidalLockPresetGuard", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "WorldSun", "TidalSunGlow", "TidalNoSeasons", "Seasons", "TidalLockPreset" }))
             {
                 list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
                     "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
@@ -1085,6 +1091,10 @@ namespace RimMandrake.CreatureBehaviors
                     "On: on a tidally locked planet every place keeps the same temperature all year: no summer, no "
                   + "winter. Only acts while the planet is tidally locked. Off: the seasonal swing other mods set "
                   + "(with Worldbuilder loaded, its axial-tilt seasons: a few degrees at the equator, more toward the poles).");
+                list.CheckboxLabeled("Keep a tidally locked save locked on load", ref tidalLockPresetGuard,
+                    "On: a save of a tidally locked planet made without the Worldbuilder mod still loads tidally locked "
+                  + "when Worldbuilder is loaded (it restores the save's missing world preset name). Off: such a save "
+                  + "loads as an ordinary planet whose sun rises and sets, and saving it again loses the lock.");
                 list.CheckboxLabeled("False-shade ambush (the mirrak)", ref falseShadeAmbushEnabled,
                     "On: a flat ambusher lying in the open looks like shade to animals looking for "
                   + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "

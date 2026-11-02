@@ -107,7 +107,7 @@ night. Live confirmation of this table is in §5.
   flip sign by hemisphere: that is the seasonal term of §3 at this date.
 - **Saved:** `Saves\ASHKARR_DEV_START_2026-10-20_LOCKED.rws` (in-game save, new name), which reads
   `alienWorldsFrameworkPlanetType = TidallyLocked` and `worldPresetName = TidallyLocked`. The
-  original `ASHKARR_DEV_START_2026-10-20.rws` is untouched and still loads unlocked on the full list.
+  original `ASHKARR_DEV_START_2026-10-20.rws` and this `_LOCKED` copy are gone from Saves (2026-11-02); the dev start save of record is `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` (canon.yml), which carries both fields, and `RM_TidalLockPresetGuard` restores a missing preset name at load (TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING).
 
 ## 3. Temperatures
 
