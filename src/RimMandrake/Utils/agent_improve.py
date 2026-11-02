@@ -448,7 +448,17 @@ def pieces_block(entry):
     return "\n".join("%d. [%s] %s  (%s)" % (i, p["kind"], p["text"], p["path"]) for i, p in enumerate(entry["pieces"]))
 
 
-def curator_prompt(entry, res, text):
+def commits_since(path, day, repo=None, n=15):
+    """Subjects of commits to the target since the evidence day began: a fix that landed after the evidence must not
+    be proposed again (hand run 2026-11-01: the Curator proposed a contract gate that b909e8839d had already built)."""
+    if not path:
+        return []
+    out = git("log", "--since=%sT00:00:00Z" % day, "-n", str(n), "--format=%h %cI %s", "--", path, cwd=repo,
+              check=False)
+    return [ln for ln in out.splitlines() if ln.strip()]
+
+
+def curator_prompt(entry, res, text, since=()):
     t = entry["target"]
     head = ["You are the Curator of the RimMandrake daily agent-improvement pass. You have no tools: everything you may",
             "use is below. Target: %s (%s)." % (t, res["what"] if res else "not editable by this pass: "
@@ -460,6 +470,9 @@ def curator_prompt(entry, res, text):
         pr = entry["prior"]
         head += ["PRIOR CHANGE %s (applied %s). Its recheck: %s" % (pr.get("tag"), pr.get("day"), pr.get("recheck")),
                  "Judge from the pieces whether that recheck passed; if it failed, reverting it is a valid change.", ""]
+    if since:
+        head += ["COMMITS TO %s SINCE THE EVIDENCE DAY BEGAN (a failure one of these already fixed needs no change "
+                 "and no proposal; say so in proposal-free \"none\"):" % res["path"]] + ["  " + c for c in since] + [""]
     if res:
         head += ["TARGET TEXT (%s):" % res["path"], "<<<", text, ">>>", ""]
     return "\n".join(head + [CURATOR_RULES, "", CURATOR_REPLY]) + "\n"
@@ -497,7 +510,7 @@ def parse_json_reply(raw):
     raise ValueError("no JSON object in the reply")
 
 
-def claude_fresh(prompt, timeout=600, model_name="opus"):
+def claude_fresh(prompt, timeout=420, model_name="opus"):
     """One fresh, tool-less `claude -p` session in an empty temp dir: no repo context, no memory, no MCP."""
     with tempfile.TemporaryDirectory(prefix="agent_improve_") as d:
         r = subprocess.run(["claude", "-p", "--model", model_name, "--tools", "", "--no-session-persistence",
@@ -556,7 +569,7 @@ def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
     text = full[slice(*region_of(full, res["region"]))] if res else ""
     row = {"target": t, "day": day, "path": res["path"] if res else None, "decision": None}
     try:
-        raw = curator(curator_prompt(entry, res, text))
+        raw = curator(curator_prompt(entry, res, text, commits_since(res and res["path"], day, repo)))
         reply = parse_json_reply(raw)
     except (RuntimeError, ValueError, subprocess.SubprocessError) as e:
         row.update(decision="error", error="curator: %s" % str(e)[:300])
@@ -616,6 +629,8 @@ def selftests_for(res, repo=None):
     needle = res["path"] if res["path"].startswith("src/") else os.path.dirname(res["path"]) + "/"
     out = []
     for p in sorted(glob.glob(os.path.join(repo, "src", "RimMandrake", "**", "selftest_*.py"), recursive=True)):
+        if os.path.basename(p).startswith("selftest_agent_improve"):
+            continue   # this pass's own tests name targets as fixtures
         try:
             if needle in open(p, encoding="utf-8", errors="replace").read():
                 out.append(os.path.relpath(p, repo))
@@ -772,12 +787,14 @@ def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=No
     summary = {"day": day, "level": pk["level"], "targets": [e["target"] for e in pk["targets"]],
                "rows": [{k: v for k, v in r.items() if k not in ("new_text",)} for r in rows],
                "ramp": reading, "ramp_step": step}
-    with open(os.path.join(d, "pass.json"), "w", encoding="utf-8") as f:
+    # a pass split by --target (a hand run inside a command time limit) writes one result file per target
+    name = "pass_%s" % "_".join(sorted(only)) if only else "pass"
+    with open(os.path.join(d, name + ".json"), "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=1)
     with open(os.path.join(d, "packet.json"), "w", encoding="utf-8") as f:
         json.dump(pk, f, indent=1)
-    with open(os.path.join(d, "packet.md"), "w", encoding="utf-8") as f:
-        f.write(render(pk) + render_pass(summary))
+    with open(os.path.join(d, "packet.md" if not only else name + ".md"), "w", encoding="utf-8") as f:
+        f.write((render(pk) if not only else "") + render_pass(summary))
     return summary
 
 

@@ -161,6 +161,14 @@ with tempfile.TemporaryDirectory() as tmp:
     check("failing check reverted", open(os.path.join(repo, "skills/foo/SKILL.md")).read() == before)
     check("no v2 tag", "agent/foo/v2" not in sh(repo, "git", "tag", "-l"))
 
+    # the Curator sees commits to its target since the evidence day (the fix already landed is not proposed again)
+    cap = {}
+    A.curate_and_judge(entry(), "2026-11-01", out, curator=lambda p: cap.setdefault("p", p) and '{"decision": "none"}',
+                       judge=judge_keep, repo=repo)
+    check("curator sees commits since", "COMMITS TO skills/foo/SKILL.md" in cap.get("p", "")
+          and "AGENT_IMPROVE" in cap.get("p", ""), cap.get("p", "")[:300])
+    check("no commits, no block", not A.commits_since("skills/foo/SKILL.md", "2099-01-01", repo))
+
     # materialize v1 into a scratch dir
     p = A.materialize("foo", "v1", os.path.join(tmp, "mat"), repo=repo)
     check("materialize", "instrument_traps" in open(os.path.join(p, "SKILL.md")).read(), p)
