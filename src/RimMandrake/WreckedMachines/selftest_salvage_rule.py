@@ -5,22 +5,30 @@ Offline proof of the wiring, read from the shipped patch, the C# and the game's 
 (selftest_wreckedmachines_fuzz.py, family `salvage`), which this test also runs. Vanilla's own smelter needs no wiring: the rule IS
 Thing.SmeltProducts behind Thing.Smeltable.
 
-No execution reaches the engine paths offline, so check_wiring pins each clause's exact call site with comments stripped, and MUTANTS proves
-in memory, on every run, that each pin goes red when its clause is broken. The live run is SALVAGE_RULE_PROVE_ON_A_REAL_FURNACE.
+check_wiring pins each clause's exact call site with comments stripped, and MUTANTS proves in memory, on every run, that each pin goes red
+when its clause is broken. check_execution compiles RM_SalvageRule.cs and WreckedMachinesSalvage.cs as they stand against a fake engine
+(Source/tests/salvage_exec/) and runs them, with EXEC_MUTANTS built beside them in the same assembly; each must go red. The real engine is
+SALVAGE_RULE_PROVE_ON_A_REAL_FURNACE.
 
     python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py
 """
+# selftest-timeout: 420
 import glob
 import hashlib
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RM = os.path.dirname(HERE)
 SRC = os.path.dirname(RM)
+sys.path.insert(0, os.path.join(RM, "Utils"))
+import winbuild  # noqa: E402
+
 STEAM = "/mnt/c/Program Files (x86)/Steam/steamapps"
 PROCESS_XML = STEAM + "/workshop/content/294100/3686924415/1.6/Defs/ProcessDefs/ProcessDefs_AutomatedSmelter.xml"
 CREMATION_XML = STEAM + "/common/RimWorld/Data/Core/Defs/RecipeDefs/Recipes_Cremation.xml"
@@ -31,6 +39,9 @@ PATCH = os.path.join(HERE, "Patches", "WreckedMachines_SalvageRule.xml")
 SALVAGE_CS = os.path.join(HERE, "Source", "WreckedMachinesSalvage.cs")
 MOD_CS = os.path.join(HERE, "Source", "WreckedMachinesMod.cs")
 RULE_CS = os.path.join(RM, "_Shared", "SalvageRule", "RM_SalvageRule.cs")
+KERNEL_CS = os.path.join(RM, "_Shared", "SalvageRule", "RM_SalvageRuleKernel.cs")
+EXEC_DIR = os.path.join(HERE, "Source", "tests", "salvage_exec")
+EXEC_SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/selftest_tmp"     # dotnet.exe needs a Windows drive
 DLL = os.path.join(HERE, "Assemblies", "RimMandrakeWreckedMachines.dll")
 RULED = ("VFEFactory_SmeltApparel", "VFEFactory_SmeltWeapon")
 DONOR_WORKER = "VanillaFurnitureExpandedFactory.ResultWorker_Smelt"
@@ -195,6 +206,15 @@ def check_wiring(bad, salvage_text, mod_text, rule_text):
         bad.append("rule: YieldOf no longer gates on Smeltable and reads SmeltProducts per unit")
     if "return YieldOf(ThingMaker.MakeThing(def, madeOf));" not in rule:
         bad.append("rule: the def path no longer funnels into the Thing path")
+    if not in_order(yields, "totals[product.def] += product.stackCount;", "foreach (ThingDef def in order)",
+                    "foreach (int count in RM_SalvageRuleKernel.Stacks(totals[def], def.stackLimit))",
+                    "stack.stackCount = count; result.Add(stack);", "return result;"):
+        bad.append("rule: YieldOf no longer sums every product's count into the stacks it returns")
+    if "if (!GenPlace.TryPlaceThing(stack, cell, map, ThingPlaceMode.Near)) GenSpawn.Spawn(stack, cell, map);" not in body_of(
+            rule, "public static void Place(Thing stack, IntVec3 cell, Map map)"):
+        bad.append("rule: Place no longer puts the stack on the map, crowded or not")
+    if "ThingDef madeOf = def.MadeFromStuff ? stuff ?? GenStuff.DefaultStuffFor(def) : null;" not in rule:
+        bad.append("rule: the def path no longer reads the stuff it is given")
 
     # The Mod Settings: declared on by default, saved, and drawn in the Salvage group.
     settings = (("smeltersFollowSalvageRule", "Automated smelters follow the salvage rule"), ("cremateWithoutStripping", "Cremate without stripping"))
@@ -242,6 +262,57 @@ MUTANTS = (
     ("rule ungated", 2, "if (item?.def == null || !item.Smeltable) return result;", "if (item?.def == null) return result;"),
     ("rule one unit only", 2, "unit < item.stackCount", "unit < 1"),
     ("def path bypasses rule", 2, "return YieldOf(ThingMaker.MakeThing(def, madeOf));", "return new List<Thing>();"),
+    ("A nothing returned", 2, "result.Add(stack);", ""),
+    ("B place destroys", 2, "if (!GenPlace.TryPlaceThing(stack, cell, map, ThingPlaceMode.Near)) GenSpawn.Spawn(stack, cell, map);", "stack.Destroy();"),
+    ("C every material pays one", 2, "totals[product.def] += product.stackCount;", "totals[product.def] += 1;"),
+    ("D stuff ignored", 2, "stuff ?? GenStuff.DefaultStuffFor(def)", "GenStuff.DefaultStuffFor(def)"),
+)
+
+# Executed, not read. (name, 0 salvage / 1 rule, what to break, what to break it to.) All compile into one assembly with the real files, each
+# in its own namespace, so the build is paid once. The real files must go GREEN and every one of these RED.
+EXEC_MUTANTS = (
+    ("A nothing returned", 1, "result.Add(stack);", ""),
+    ("B place destroys", 1, "if (!GenPlace.TryPlaceThing(stack, cell, map, ThingPlaceMode.Near)) GenSpawn.Spawn(stack, cell, map);", "stack.Destroy();"),
+    ("C every material pays one", 1, "totals[product.def] += product.stackCount;", "totals[product.def] += 1;"),
+    ("D stuff ignored", 1, "stuff ?? GenStuff.DefaultStuffFor(def)", "GenStuff.DefaultStuffFor(def)"),
+    ("stuff never defaulted", 1, "stuff ?? GenStuff.DefaultStuffFor(def)", "stuff"),
+    ("stuff on a stuffless def", 1, "def.MadeFromStuff ? stuff ?? GenStuff.DefaultStuffFor(def) : null", "stuff ?? GenStuff.DefaultStuffFor(def)"),
+    ("stack count dropped", 1, "stack.stackCount = count;", ""),
+    ("stack limit ignored", 1, "Stacks(totals[def], def.stackLimit)", "Stacks(totals[def], int.MaxValue)"),
+    ("one unit only", 1, "unit < item.stackCount", "unit < 1"),
+    ("gate dropped", 1, "item?.def == null || !item.Smeltable", "item?.def == null"),
+    ("half efficiency", 1, "item.SmeltProducts(1f)", "item.SmeltProducts(0.5f)"),
+    ("materials unlisted", 1, "order.Add(product.def);", ""),
+    ("crowded spot loses it", 1, "if (!GenPlace.TryPlaceThing(stack, cell, map, ThingPlaceMode.Near)) GenSpawn.Spawn(stack, cell, map);",
+     "GenPlace.TryPlaceThing(stack, cell, map, ThingPlaceMode.Near);"),
+    ("toggle ignored", 0, "CremationPays(WreckedMachinesSettings.cremateWithoutStripping,", "CremationPays(true,"),
+    ("corpse check dropped", 0, "ingredient is Corpse))", "true))"),
+    ("worn unpaid", 0, "if (pawn?.apparel != null) foreach (Apparel worn in pawn.apparel.WornApparel) yield return worn;", ""),
+    ("held unpaid", 0, "if (pawn?.equipment != null) foreach (ThingWithComps held in pawn.equipment.AllEquipmentListForReading) yield return held;", ""),
+    ("carried unpaid", 0, "if (pawn?.inventory != null) foreach (Thing carried in pawn.inventory.innerContainer) yield return carried;", ""),
+    ("carried apparel skipped", 0, "if (pawn?.inventory != null) foreach (Thing carried in pawn.inventory.innerContainer) yield return carried;",
+     "if (pawn?.inventory != null) foreach (Thing carried in pawn.inventory.innerContainer) if (!(carried is Apparel)) yield return carried;"),
+    ("no apparel tracker pays nothing", 0, "if (pawn?.apparel != null) foreach (Apparel worn in pawn.apparel.WornApparel) yield return worn;",
+     "if (pawn?.apparel == null) yield break; foreach (Apparel worn in pawn.apparel.WornApparel) yield return worn;"),
+    ("gear off the map", 0, "RM_SalvageRule.Place(stack, cell, map);", "RM_SalvageRule.Place(stack, cell, new Map());"),
+    ("remainder off the map", 0, "machine.InteractionCell, machine.Map);", "machine.InteractionCell, new Map());"),
+    ("crowded spot wrong map", 1, "GenSpawn.Spawn(stack, cell, map);", "GenSpawn.Spawn(stack, cell, new Map());"),
+    ("gear away from the corpse", 0, "RM_SalvageRule.Place(stack, cell, map);", "RM_SalvageRule.Place(stack, default(IntVec3), map);"),
+    ("corpse kept", 0, "base.ConsumeIngredient(ingredient, recipe, map);", ""),
+    ("smelter setting ignored", 0, "if (!WreckedMachinesSettings.smeltersFollowSalvageRule || process == null) return null;", "if (process == null) return null;"),
+    ("smelter stuff dropped", 0, "RM_SalvageRule.YieldOf(item, stuff)", "RM_SalvageRule.YieldOf(item, null)"),
+    ("count not read", 0, "return plan.Count == 0 ? 0 : plan[0].stackCount;", "return 1;"),
+    ("plan rerolled per question", 0, "if (held.item == item && held.stuff == stuff) return held.stacks;", ""),
+    ("plan outlives its load", 0, "if (held.item == item && held.stuff == stuff) return held.stacks;", "return held.stacks;"),
+    ("plan outlives its stuff", 0, "held.item == item && held.stuff == stuff", "held.item == item"),
+    ("paid plan kept", 0, "if (RM_SalvageRuleKernel.CycleOver(planned, placedByProcess)) plans.Remove(process);", ""),
+    ("switch-off still pays", 0, "if (!WreckedMachinesSettings.smeltersFollowSalvageRule)\n", "if (false)\n"),
+    ("switch-off empties the plan", 0, "plans.Remove(process); // switched off during a retry", "held.stacks.Clear(); // switched off during a retry"),
+    ("first stack paid twice", 0, "for (int i = planned - owed; i < planned; i++)", "for (int i = 0; i < planned; i++)"),
+    ("remainder never placed", 0, "RM_SalvageRule.Place(held.stacks[i], machine.InteractionCell, machine.Map);", ";"),
+    ("remainder off the machine", 0, "RM_SalvageRule.Place(held.stacks[i], machine.InteractionCell, machine.Map);", "RM_SalvageRule.Place(held.stacks[i], default(IntVec3), machine.Map);"),
+    ("postfix pays nothing", 0, "RM_SalvagePlans.PayRemainder(__instance, ___parent, outThings?.Count ?? 0);", ""),
+    ("full hopper paid", 0, "outThings?.Count ?? 0", "1"),
 )
 
 
@@ -258,6 +329,98 @@ def check_mutants(bad, texts):
             bad.append("mutant %r stays green: the pin for that clause is blind" % name)
 
 
+def variant_sources(n, salvage_text, rule_text):
+    """One copy of the two files in its own namespaces, and the adapter the oracle calls it through."""
+    rule = rule_text.replace("namespace RimMandrake.Shared", "namespace RimMandrake.Shared.V%d" % n)
+    salvage = salvage_text.replace("using RimMandrake.Shared;", "using RimMandrake.Shared;\nusing RimMandrake.Shared.V%d;" % n)
+    salvage = salvage.replace("namespace RimMandrake.WreckedMachines", "namespace RimMandrake.WreckedMachines.V%d" % n)
+    shared, ours = "RimMandrake.Shared.V%d" % n, "RimMandrake.WreckedMachines.V%d" % n
+    adapter = """    public sealed class P%(n)d : Paths
+    {
+        public override List<Thing> YieldOfThing(Thing item) => %(shared)s.RM_SalvageRule.YieldOf(item);
+        public override List<Thing> YieldOfDef(ThingDef def, ThingDef stuff) => %(shared)s.RM_SalvageRule.YieldOf(def, stuff);
+        public override void Place(Thing stack, IntVec3 cell, Map map) => %(shared)s.RM_SalvageRule.Place(stack, cell, map);
+        public override VanillaFurnitureExpandedFactory.ResultWorker_Smelt Worker() => new %(ours)s.RM_ResultWorker_SalvageRule();
+        public override void Postfix(Process process, ThingWithComps machine, List<Thing> outThings) => %(ours)s.Patch_Process_PaySalvageRemainder.Postfix(process, machine, ref outThings);
+        public override void Cremate(Thing ingredient, Map map) => new %(ours)s.RM_RecipeWorker_CremateSalvage().ConsumeIngredient(ingredient, null, map);
+    }
+""" % {"n": n, "shared": shared, "ours": ours}
+    return salvage, rule, adapter
+
+
+def build_variants(where, salvage_text, rule_text, bad):
+    """Writes the project; -> the variant names in order, the real files first. A mutant whose text moved is red, and the real files still run."""
+    variants = [("REAL", salvage_text, rule_text)]
+    for name, which, old, new in EXEC_MUTANTS:
+        text = rule_text if which else salvage_text
+        if old not in text:
+            bad.append("exec mutant %r no longer applies: the source moved, update it" % name)
+            continue
+        mutated = text.replace(old, new)
+        variants.append((name, salvage_text, mutated) if which else (name, mutated, rule_text))
+    adapters, table = [], []
+    for n, (name, salvage, rule) in enumerate(variants):
+        salvage, rule, adapter = variant_sources(n, salvage, rule)
+        with open(os.path.join(where, "V%d_Salvage.cs" % n), "w", encoding="utf-8") as f:
+            f.write(salvage)
+        with open(os.path.join(where, "V%d_Rule.cs" % n), "w", encoding="utf-8") as f:
+            f.write(rule)
+        adapters.append(adapter)
+        table.append('            ("%s", new P%d()),' % (name, n))
+    with open(os.path.join(where, "Variants.cs"), "w", encoding="utf-8") as f:
+        f.write("using System.Collections.Generic;\nusing PipeSystem;\nusing Verse;\nnamespace SalvageExec\n{\n%s\n"
+                "    public static class Variants\n    {\n        public static readonly (string, Paths)[] All =\n        {\n%s\n        };\n    }\n}\n"
+                % ("".join(adapters), "\n".join(table)))
+    shutil.copy(KERNEL_CS, where)
+    shutil.copy(os.path.join(EXEC_DIR, "FakeEngine.cs"), where)
+    shutil.copy(os.path.join(EXEC_DIR, "Oracle.cs"), where)
+    shutil.copy(os.path.join(EXEC_DIR, "SalvageExec.csproj.template"), os.path.join(where, "SalvageExec.csproj"))
+    return [v[0] for v in variants]
+
+
+def read_verdicts(names, stdout):
+    """-> (verdict by name, problems). The real files GREEN, each mutant RED, none missing."""
+    verdicts = {}
+    for line in stdout.splitlines():
+        m = re.match(r"VARIANT (.+?) (GREEN|RED)(?: (.*))?$", line.strip())
+        if m:
+            verdicts[m.group(1)] = (m.group(2), m.group(3) or "")
+    problems = []
+    for name in names:
+        got = verdicts.get(name)
+        if got is None:
+            problems.append("execution: variant %r never reported" % name)
+        elif name == "REAL" and got[0] != "GREEN":
+            problems.append("execution: the real code breaks a clause: %s" % got[1])
+        elif name != "REAL" and got[0] != "RED":
+            problems.append("exec mutant %r stays green: the oracle is blind to that clause" % name)
+    return verdicts, problems
+
+
+def check_execution(bad, salvage_text, rule_text):
+    os.makedirs(EXEC_SCRATCH, exist_ok=True)
+    where = tempfile.mkdtemp(prefix="salvage_exec_", dir=EXEC_SCRATCH)
+    try:
+        names = build_variants(where, salvage_text, rule_text, bad)
+        dotnet = winbuild.dotnet_exe()
+        built = subprocess.run([dotnet, "build", winbuild.win(os.path.join(where, "SalvageExec.csproj")), "-c", "Release", "--nologo", "-v", "quiet"],
+                               cwd=where, capture_output=True, text=True, timeout=240)
+        if built.returncode != 0:
+            bad.append("execution: the fake-engine build failed: %s" % built.stdout[-1500:])
+            return ""
+        ran = subprocess.run([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "SalvageExec.dll"))],
+                             cwd=where, capture_output=True, text=True, timeout=120)
+        if ran.returncode != 0:
+            bad.append("execution: the oracle exited %d: %s" % (ran.returncode, (ran.stdout + ran.stderr)[-500:]))
+        verdicts, problems = read_verdicts(names, ran.stdout)
+        bad.extend(problems)
+        if len(names) < 30:
+            bad.append("sanity: only %d variants" % len(names))
+        return "%d variants executed, %d red" % (len(verdicts), sum(1 for v in verdicts.values() if v[0] == "RED"))
+    finally:
+        shutil.rmtree(where, ignore_errors=True)
+
+
 def check_shipped(bad):
     """The DLL the game loads is what these sources build. A wiring pin on source says nothing about a stale binary."""
     with open(DLL + ".srchash", encoding="utf-8") as f:
@@ -268,8 +431,10 @@ def check_shipped(bad):
     if stamped != [hashlib.sha256(binary).hexdigest()]:
         bad.append("the committed DLL is not the one its .srchash stamped")
     sources = [l for l in lines if l[0] != "#"]
-    if not any(os.path.basename(l[1]) == "WreckedMachinesSalvage.cs" for l in sources):
-        bad.append("sanity: the .srchash does not list WreckedMachinesSalvage.cs")
+    listed = {os.path.basename(l[1]) for l in sources}
+    for needed in ("WreckedMachinesSalvage.cs", "RM_SalvageRule.cs", "RM_SalvageRuleKernel.cs"):
+        if needed not in listed:
+            bad.append("sanity: the .srchash does not list %s" % needed)
     for digest, rel in sources:
         with open(os.path.join(HERE, "Source", rel), "rb") as f:
             if hashlib.sha256(f.read()).hexdigest() != digest:
@@ -322,6 +487,7 @@ def main():
     texts = [read(SALVAGE_CS), read(MOD_CS), read(RULE_CS)]
     check_wiring(bad, *texts)
     check_mutants(bad, texts)
+    executed = check_execution(bad, texts[0], texts[2])
     check_shipped(bad)
     check_engine(bad)
     fuzz = subprocess.run([sys.executable, os.path.join(RM, "Utils", "selftest_wreckedmachines_fuzz.py"), "--fuzz-only", "salvage"],
@@ -331,7 +497,7 @@ def main():
         bad.append("kernel fuzz, family salvage: rc=%s %s" % (fuzz.returncode, (fuzz.stdout + fuzz.stderr)[-300:]))
     for b in bad:
         print("FAIL " + b)
-    print("salvage rule: %s (%s)" % ("OK" if not bad else "FAILED", line[0] if line else "fuzz did not report"))
+    print("salvage rule: %s (%s; %s)" % ("OK" if not bad else "FAILED", line[0] if line else "fuzz did not report", executed or "execution did not report"))
     return 1 if bad else 0
 
 
