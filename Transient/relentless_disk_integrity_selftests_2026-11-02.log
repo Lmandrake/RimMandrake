@@ -1,0 +1,80 @@
+-- t_gone_is_removed
+ok   a clone already gone journals no remove_failed
+ok   one that cannot be removed still alarms
+-- t_park
+ok   released: parked warm, not deleted (['/home/mandrake/.seat-tmp/BENCH/rldisk-cq1dzkuf/clones/warm-1793624266789580157'])
+ok   the WIP and the commit were bundled before the reset
+ok   the warm clone is clean
+ok   on main at origin/main, as a fresh clone is
+ok   no other branch
+ok   no fence marker left for the next item
+ok   nothing the pool would call unpushed
+ok   journalled as parked
+ok   a full shelf removes the next clone
+-- t_damaged_never_parked
+ok   a clone zeroed in place is removed, never parked
+-- t_reuse_warm_now
+ok   the pool reuses a warm clone at once, no idle hour
+ok   brought level with the store, on main
+ok   and it left the shelf
+-- t_no_bundle_says_why
+ok   a release with no bundle records why
+-- t_warm_is_room
+ok   a full pool with a warm clone has room: it is reused
+ok   a full pool with none does not
+ok   warm clones are no item's row: never evicted as dead
+-- t_reap_boxes
+ok   an ended check's tree goes; its transcript stays for the audit
+ok   a box still checked, one younger than a check may run, and one a process is in all stay
+ok   past box_keep_s the whole box goes
+ok   reported: [('/home/mandrake/.seat-tmp/BENCH/rldisk-7oa8d9m9/walled/ancient', 'box'), ('/home/mandrake/.seat-tmp/BENCH/rldisk-7oa8d9m9/walled/done', 'tree')]
+ok   the tick reaps a finished box's tree
+selftest_relentless_disk: PASS
+-- t_blind_zeroes
+ok   a whole clone reads clean, a blob that ends in NUL and an empty blob included
+ok   the premise: git status does not see a.py zeroed in place (' M b.txt\n')
+ok   the content scan sees it: {'a.py': 'nul', 'b.txt': 'empty'}
+ok   and an emptied tracked file
+ok   a real empty blob and a real NUL tail are no damage
+-- t_when
+ok   first boot: the gate runs
+ok   after a clean tick, two minutes on: no gate
+ok   a gap over gap_s: the gate runs
+ok   an OOM kill since the last clean tick: the gate runs
+ok   a NUL record is no record: the gate runs
+-- t_quarantine
+ok   a damaged clone it can repair does not block
+ok   the damaged clone is gone (quarantined), rebuilt on the next lease
+ok   its WIP is bundled onto the item: /home/mandrake/.seat-tmp/BENCH/rlint-x9b7yn03/store/items/I0/bundles/20261102T125747Z-I0
+ok   the bundle carries the worker's edit and none of the NULs
+ok   the next worker is told
+ok   journalled and alarmed
+ok   the record says clean after the repair
+ok   the bundle applies to a fresh clone
+ok   WIP back, no damage
+-- t_busy_clone_blocks
+ok   a damaged clone still in use blocks and stays
+ok   the Conductor log is told
+ok   once, not every tick
+ok   a blocked gate runs again next tick
+-- t_missing_verdict
+ok   missing verdicts are repaired, not blocking
+ok   EMPTY: an empty or NUL checker output is no verdict, the check re-queued
+ok   NUL: an empty or NUL checker output is no verdict, the check re-queued
+ok   a verdict with whole output stands
+ok   a checker still running is left alone
+ok   each journalled
+ok   a NUL walled verdict.json is no verdict either
+-- t_damaged_state_blocks_tick
+ok   a NUL state.json stops the tick before anything runs
+ok   the NUL region in history is found, not blocking
+ok   the Conductor is told
+ok   repaired state unblocks
+-- t_objstore
+ok   a whole object store reads clean
+ok   a zeroed pack is damage
+selftest_relentless_integrity: PASS
+help-vendor: no OPTION lines in the answer (26 chars): I think the seam is wrong.
+help-vendor: no OPTION lines in the answer (0 chars): 
+selftest_relentless: PASS
+df0c1537c09aa40f0ea916411b141f6b2d492ef9
