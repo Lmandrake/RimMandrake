@@ -127,14 +127,17 @@ the newest version of each target:
 - For each item, two fresh agents get the item's spec: one with the old version, one with the new, both in scratch
   clones; each writes its plan and first step. A blind judge (sees neither version nor which is new) picks the better
   of each pair or calls a tie, against what actually closed the item.
-- New wins or ties on the held-out 6 (wins >= losses): kept. New wins only on its source kind (source wins > losses,
-  held-out losses > wins): flagged **overfit** and reverted. New loses on both: reverted as harmful.
+- Verdict (Conductor ruling 2026-11-02, refining the first draft's rule): **harm** is held-out losses > wins;
+  **gain** is wins > losses on either sample. Harm on held-out kinds: reverted as **overfit**. No gain anywhere:
+  reverted. Gain on held-out kinds without harm: kept as **general**. Gain on the source kind only, held-out no harm:
+  kept and flagged **narrow** in its change record, so a pile-up of narrow changes on one target is visible (the
+  digest line counts a target's narrow changes).
 - Cost bound: 16 short runs plus 8 judge calls per check, under 300k tokens; it runs only at L1 and L2.
 
 **4.4 The evidence travels with the change.** Each applied change commits
 `infrastructure/state/agent_improve/changes/<target>_v<N>.json`: the packet pieces that motivated it (paths and first
 lines), their source kinds, the diff, the Judge verdict path, the recheck, and later every generalization verdict
-(appended, never rewritten). The digest line links it.
+with its flag, general, narrow or overfit (appended, never rewritten). The digest line links it.
 
 ## 5. Built now, and owed
 

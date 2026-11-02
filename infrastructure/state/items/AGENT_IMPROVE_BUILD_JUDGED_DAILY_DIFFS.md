@@ -21,7 +21,8 @@ Design: design/RimMandrake/daily_agent_improvement_2026-11-02.md (transfer audit
    acceptance rate over the last 10 passes (< 0.3 steps up, > 0.6 steps down), never by a date; gather reads its bar.
 6. Versions (4.2): tag agent/<target>/v<N> per applied change; `agent_improve.py materialize` makes any version runnable.
 7. Generalization check (4.3): old vs new on 6 freshly sampled held-out task kinds + 2 source kinds, blind judge; wins
-   only on source kind = overfit, reverted.
+   harm on held-out kinds = overfit, reverted; no gain anywhere = reverted; source-only gain without harm = kept,
+   flagged narrow in the change record (Conductor ruling 2026-11-02).
 8. Evidence record (4.4): infrastructure/state/agent_improve/changes/<target>_v<N>.json committed with each change.
 9. One hand-run day whose packet a human reads; then the owner enables the timer.
 
