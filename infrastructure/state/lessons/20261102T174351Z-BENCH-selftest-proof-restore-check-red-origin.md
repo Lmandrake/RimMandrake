@@ -1,0 +1,1 @@
+selftest_proof_restore_check is RED on origin/main (2026-11-02): src/RimMandrake/LeaningScrub/repro_stall_move.py:123 unrestored-on-throw and :166 restores-fixed-value, landed by bd310c60c1 (LEANINGSCRUB_STALL_SHARED_MOVE_1). That item's worker owes the try/finally restore of the captured prior; seen by MODCHECK_ULTRAFAST_CLOCK_STALL_1 gen 3.
