@@ -279,6 +279,8 @@ def main():
             ("root holds a list", on_leaf(0, root=[[]]), "not in the north star"),
             ("floor.off line is a list", lambda t: t["floor"]["off"].append(dict(line=[], words="w", ref="r")), "no line"),
             ("waiver id is a list", lambda t: t["waived"][0].update(id=[]), "waiver id is text"),
+            ("needs_instrument is a list", on_leaf(0, needs_instrument=["dig_counter"]), "needs_instrument must be text"),
+            ("does-not leaf with a blank cannot_show", on_leaf(1, cannot_show=" "), "no cannot_show"),
             ("leaves is not a list", lambda t: t.update(leaves=1), "no leaves"),
             ("a repeater is no repeat", on_leaf(4, scenario="reload the save, inspect the repeater, use the reverse order"), "lacks the repeat"),
             ("no walk leaf", drop_walk, "exactly one walk"),
@@ -321,7 +323,7 @@ def main():
             except Exception as ex:
                 got = "raised %r" % ex
             check("sign: tree.json %s is refused, not raised" % junk, isinstance(got, list) and got != [], got)
-        for nm, k, v in (("coverage", "coverage", "x"), ("exam_waived", "exam_waived", "x")):
+        for nm, k, v in (("coverage", "coverage", "x"), ("exam_waived", "exam_waived", "x"), ("waived", "waived", 1)):
             t = copy.deepcopy(base)
             t[k] = v
             write_raw(d, t)
@@ -330,6 +332,9 @@ def main():
             except Exception as ex:
                 got = "raised %r" % ex
             check("gate: %s=x is refused, not raised" % nm, isinstance(got, list) and got != [], got)
+        check("TREE_CITE does not start mid-path", CT.TREE_CITE.findall("other/design/concepts/Foo/tree.json") == [])
+        check("his ref is not a newline-tailed or unicode-digit ref", CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:1\n", "x") is not None
+              and CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:\u0661", "x") is not None)
         check("TREE_CITE stops at the file name", CT.TREE_CITE.findall("see design/concepts/Foo/tree.json.bak") == [])
         write_raw(d, base)
 

@@ -126,7 +126,7 @@ def sheet_errors(sheet, tree, floor=None):
                     errs.append("sheet: `%s` line names no such leaf: %s" % (sec, ref))
                 else:
                     named.add(ref)
-                    if sec == "does not" and not leaves[ref].get("cannot_show"):
+                    if sec == "does not" and not str(leaves[ref].get("cannot_show") or "").strip():
                         errs.append("sheet: `does not` leaf %s has no cannot_show" % ref)
             elif tag == "floor" and ref not in floor_ids:
                 errs.append("sheet: no floor line %s" % ref)
@@ -163,7 +163,7 @@ def leaf_errors(x, kind, tiers, root_ids):
     for k in LEAF_REQ:
         if x.get(k) in (None, "", []) or (isinstance(x.get(k), str) and not x[k].strip()):
             e("%s missing" % k)
-    for k in ("experience", "scenario", "red", "tier_proposed", "owner_part", "oracle_proposed", "cannot_show"):
+    for k in ("experience", "scenario", "red", "tier_proposed", "owner_part", "oracle_proposed", "cannot_show", "needs_instrument"):
         if x.get(k) is not None and not isinstance(x[k], str):
             e("%s must be text" % k)
     for k in x:
@@ -266,7 +266,7 @@ def shape_errors(tree, root_ids, floor, floor_hash):
         if w.get("id") in seen_w:
             errs.append("waiver id twice: %s" % w.get("id"))
         seen_w.add(w.get("id"))
-        real = re.match(r"^OWNER:\d+$", str(w.get("ref") or ""))
+        real = re.fullmatch(r"OWNER:[0-9]+", str(w.get("ref") or ""))
         if not dry and not real:
             errs.append("waiver %s: ref must be OWNER:<tsn>, his event" % w.get("id"))
         if dry and not (w.get("stand_in") is True and str(w.get("ref") or "").startswith("dry_walk:")):
@@ -289,7 +289,7 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     for x in leaves:
         errs += leaf_errors(x, kind, floor["tiers"], root_ids)
         ni = x.get("needs_instrument")
-        if ni and ni not in instruments:
+        if ni and isinstance(ni, str) and ni not in instruments:
             errs.append("leaf %s: needs_instrument %s is no instrument leaf" % (x.get("id"), ni))
         if x.get("id") in seen_w:
             errs.append("leaf %s shares an id with a waiver: a waived line gets no leaf" % x.get("id"))
@@ -403,7 +403,7 @@ def in_words(scope, text):
 
 def his_words_problem(ev, ref, words):
     """Why `words` are not on the owner event `ref`, or None. A per-ruling event's words are its text."""
-    m = re.match(r"^OWNER:(\d+)$", str(ref or ""))
+    m = re.fullmatch(r"OWNER:([0-9]+)", str(ref or ""))
     e = ev.get(m.group(1)) if m else None
     if e is None:
         return "ref finds no event in OWNER.jsonl"
@@ -444,12 +444,12 @@ def gate(d, repo=REPO, floor_file=None):
     elif tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
         errs.append("the signature is on another sheet")
     ev = owner_events(repo)
-    for w in [w for w in tree.get("waived") or [] if isinstance(w, dict)]:
+    for w in [w for w in (tree.get("waived") if isinstance(tree.get("waived"), list) else []) if isinstance(w, dict)]:
         why = his_words_problem(ev, w.get("ref"), w.get("scope"))
         if why:
             errs.append("waiver %s: %s" % (w.get("id"), why))
     fl2 = tree.get("floor") if isinstance(tree.get("floor"), dict) else {}
-    for o in [o for o in fl2.get("off") or [] if isinstance(o, dict)]:
+    for o in [o for o in (fl2.get("off") if isinstance(fl2.get("off"), list) else []) if isinstance(o, dict)]:
         why = his_words_problem(ev, o.get("ref"), o.get("words"))
         if why:
             errs.append("floor.off %s: %s" % (o.get("line"), why))
@@ -470,7 +470,7 @@ def item_file_text(repo, item):
         return ""
 
 
-TREE_CITE = re.compile(r"design/concepts/[A-Za-z0-9_./-]+/tree\.json(?![A-Za-z0-9_./-])", re.I)
+TREE_CITE = re.compile(r"(?<![A-Za-z0-9_./-])design/concepts/[A-Za-z0-9_./-]+/tree\.json(?![A-Za-z0-9_./-])", re.I)
 
 
 def relentless_refusal(repo, item, kind, text):
