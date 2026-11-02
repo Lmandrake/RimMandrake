@@ -120,6 +120,20 @@ def main():
         check("raw U+2028 inside a valid event: both events survive",
               p4.read_bytes() == (ev + ev).encode("utf-8"), repr(p4.read_bytes()[:80]))
 
+        # 10. A write torn INSIDE a multibyte char (an em-dash) must be repaired, not crash the
+        #     strict UTF-8 decode; the backup keeps the original bytes exactly.
+        p5 = tmp / "torn_multibyte.jsonl"
+        good = (json.dumps({"seat": "FOUNDRY", "id": "M", "text": "em — dash"}, ensure_ascii=False) + "\n").encode("utf-8")
+        cut = good[:good.index("—".encode("utf-8")) + 1]          # first byte of the 3-byte dash only
+        orig = good + cut + b"\n" + good
+        p5.write_bytes(orig)
+        rc = rtl.repair(p5, apply=True, owner_said="torn multibyte test", backup_dir=tmp / "backups10")
+        baks = list((tmp / "backups10").glob("*.bak"))
+        check("torn multibyte line: removed, both good events survive",
+              rc == 0 and p5.read_bytes() == good + good, repr(p5.read_bytes()[:80]))
+        check("torn multibyte line: backup holds the original bytes",
+              len(baks) == 1 and baks[0].read_bytes() == orig)
+
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

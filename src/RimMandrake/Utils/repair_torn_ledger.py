@@ -104,6 +104,7 @@ def find_bad_lines(lines):
         if not line.strip():
             continue
         try:
+            line.encode("utf-8")         # a torn multibyte char is a lone surrogate here (see repair()): bad
             json.loads(line)
         except Exception as e:
             bad.append((i, line, str(e)))
@@ -120,7 +121,9 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
     # Only "\n" ends a ledger line (rimflow writes ensure_ascii=False, so a valid
     # event may hold a raw U+2028/U+0085/form-feed that str.splitlines() would cut
     # in two). Bytes in, bytes out: no newline translation either.
-    text = path.read_bytes().decode("utf-8")
+    # surrogateescape: a write torn inside a multibyte char (em-dashes are common) must be FOUND, not crash the
+    # decode. Its stray bytes become lone surrogates, which find_bad_lines() rejects; the backup restores them exactly.
+    text = path.read_bytes().decode("utf-8", errors="surrogateescape")
     lines = [l + "\n" for l in text.split("\n")]
     if lines[-1] == "\n":
         lines.pop()                      # text ended with "\n"
@@ -182,7 +185,7 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
     backup_dir.mkdir(exist_ok=True, parents=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     backup_path = backup_dir / f"{path.name}.pre-repair-{stamp}.bak"
-    backup_path.write_bytes("".join(lines).encode("utf-8"))
+    backup_path.write_bytes("".join(lines).encode("utf-8", errors="surrogateescape"))
     print(f"Backed up pre-repair file ({len(lines)} lines) to {backup_path}")
 
     path.write_bytes("".join(kept).encode("utf-8"))
