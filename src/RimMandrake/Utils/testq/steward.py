@@ -524,7 +524,11 @@ def maybe_wake(inc, ls, now, src="steward"):
         return None
     if os.environ.get("TESTQ_STEWARD_WAKE", "1") == "0" or os.path.exists(path("wake.stop")):
         return None
-    if claim_pauses(inc, now):
+    try:
+        if claim_pauses(inc, now):
+            return None
+    except LedgerUnreadable as e:           # VHRP: no wake on a blind ledger, and no raise before the heartbeat;
+        inc["error"] = (LEDGER_ERR + str(e))[:200]      # the error marks the ladder blind; the next pass retries
         return None
     last = T.read_json(path("wake.json")) or {}
     cool = int(os.environ.get("TESTQ_WAKE_COOLDOWN_S", "14400"))

@@ -839,6 +839,38 @@ def main():
         check(died is None and wj.get("epoch") == base + 32200 and wj.get("to_retire") == ["VHRP_PROBE_ITEM"],
               "VHRP: a watch pass with items to retire writes steward_watch.json on a torn ledger: %s %s"
               % (died, wj.get("to_retire")))
+        # level >= 2 with an item and no wake yet: maybe_wake reads claim_pauses (the ledger) before either heartbeat
+        winc = {"state": "PAUSED", "since": W.iso(base + 31000), "unowned_s": W.L3_S - 60, "level": 2,
+                "item": "VHRP_PROBE_ITEM", "owner_item": None, "wake": None, "error": None}
+        n_wake = len(journal("wake"))
+        try:
+            got, died = W.maybe_wake(dict(winc), {"reason": "r", "jobs": []}, base + 32210), None
+        except Exception as e:      # noqa: BLE001
+            got, died = None, e
+        check(died is None and got is None and len(journal("wake")) == n_wake,
+              "VHRP: maybe_wake on a torn ledger neither raises nor wakes: %s %s" % (died, got))
+        S.dump(dict(sj, epoch=base + 32220, fault=True, incident=dict(inc, **{k: winc[k] for k in
+                                                                            ("item", "level", "wake", "error")})),
+               T.q("steward.json"))
+        try:
+            step(base + 32230)
+            died = None
+        except Exception as e:      # noqa: BLE001
+            died = e
+        sj = T.read_json(T.q("steward.json")) or {}
+        check(died is None and sj.get("epoch") == base + 32230 and (sj.get("incident") or {}).get("level") == 2,
+              "VHRP: a level-2 fault pass holding an item writes steward.json on a torn ledger: %s" % died)
+        S.dump(dict(sj, epoch=base + 32230 - 2 * W.STALE_S - 400), T.q("steward.json"))
+        S.dump({"first_seen": base, "epoch": base + 32230, "incident": dict(
+            winc, state="STALE_HEARTBEAT", unowned_s=0, restarted="already")}, T.q("steward_watch.json"))
+        try:
+            W.watch_pass(now=base + 32240)
+            died = None
+        except Exception as e:      # noqa: BLE001
+            died = e
+        wj = T.read_json(T.q("steward_watch.json")) or {}
+        check(died is None and wj.get("epoch") == base + 32240 and (wj.get("incident") or {}).get("level") == 2,
+              "VHRP: a level-2 watch pass holding an item writes steward_watch.json on a torn ledger: %s" % died)
         os.remove(torn)
         S.dump({"first_seen": base, "epoch": base + 32000, "incident": None}, T.q("steward_watch.json"))
         rec = step(base + 32700)
