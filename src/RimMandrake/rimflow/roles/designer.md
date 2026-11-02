@@ -107,8 +107,9 @@ of his words. Fifteen leaves is a warning sign; a small mod should fit in eight.
 ## later         optional: what he put off to v2
 ```
 
-`lint` refuses any other `##` section, any other heading but the `# ` title, a code fence, any line in `does`/`does not`
-that is not a tagged bullet, and a `[core]` tag anywhere but `## open`. A dry walk adds `## root`.
+The sheet is plain bullets: `lint` refuses any other `##` section, any other heading but the `# ` title, a tag in a heading,
+a code fence, a `---`/`===` line, raw HTML, any line in `does`/`does not` that is not a tagged bullet, and a `[core]`
+tag anywhere but `## open`. A dry walk adds `## root`.
 
 ## The tree
 

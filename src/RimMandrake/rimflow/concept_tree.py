@@ -94,6 +94,7 @@ def flags(floor):
 
 # ---------------------------------------------------------------- sheet
 
+CORE = re.compile(r"\[\s*core\b[^\]]*\]", re.I)      # `[core]`, `[ Core ]`, `[core:x]`: any spelling a reader sees as core
 UNREAD = "\0unread headings"      # parse_sheet's own key, never a heading name
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
 OPTIONAL_SECTIONS = ("later",)      # "Not now": v2, not in the tree. A dry walk adds `root` (its stand-in north star)
@@ -104,19 +105,25 @@ TAG = re.compile(BULLET + r"\s*\[(leaf|floor|waived|advisory|core)(?::([A-Za-z0-
 def parse_sheet(path):
     """-> {section: [raw non-empty lines]}. Headings are `## <name>`; a heading may carry a parenthesis after the name.
     The sheet is plain bullets, so a line this parser could read differently from a Markdown viewer is refused, never
-    guessed at (UNREAD): a code fence of any indent (Markdown would hide or show headings inside it), and any heading-like
-    line that is not `## <name>` (the `# ` title before the first section excepted). Lines before the first heading are
+    guessed at (UNREAD): a code fence of any indent (Markdown would hide or show headings inside it), a setext underline
+    or rule line, a raw HTML line, any heading-like line that is not `## <name>` (the `# ` title before the first section
+    excepted), or a heading holding a `[` tag.
+    Lines before the first heading are
     kept under "" so that no line escapes a check."""
     out, cur = {"": []}, ""
     with open(path, encoding="utf-8") as f:
         for line in f:
             m = re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
+            if m and "[" in line:    # a heading's note is dropped, so a tag there would go unseen
+                out.setdefault(UNREAD, []).append(line.rstrip("\n"))
             if m:
                 cur = m.group(1).strip().lower()
                 out.setdefault(cur, [])
             elif line.strip():
-                if re.match(r"^\s*(`{3,}|~{3,})", line) or (re.match(r"^\s{0,3}#{1,6}(\s|$)", line)
-                                                            and not (cur == "" and re.match(r"^# \S", line))):
+                if (re.match(r"^\s*(`{3,}|~{3,})", line)                     # a code fence
+                        or re.match(r"^\s{0,3}(=+|-{2,})\s*$", line)              # a setext underline (or a rule)
+                        or re.match(r"^\s*<[A-Za-z/!]", line)                      # raw HTML: <h2>, <!-- -->, <details>
+                        or (re.match(r"^\s{0,3}#{1,6}(\s|$)", line) and not (cur == "" and re.match(r"^# \S", line)))):
                     out.setdefault(UNREAD, []).append(line.rstrip("\n"))
                 out[cur].append(line.rstrip("\n"))
     return out
@@ -129,8 +136,8 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: no `## %s` section" % s)
     known = ("",) + SECTIONS + OPTIONAL_SECTIONS + (("root",) if tree.get("dry_walk") is True else ())
     for line in sheet.get(UNREAD, []):
-        errs.append("sheet: a code fence, or a heading that is not `## <section>` (or the `# ` title): %s"
-                    % line.strip()[:80])
+        errs.append("sheet: not plain bullets (a fence, rule, HTML, a tag in a heading, or a heading other than "
+                    "`## <section>` and the `# ` title): %s" % line.strip()[:80])
     for s in sheet:     # an unknown section is unchecked text: a [core] question could sit there unseen
         if s == UNREAD:
             continue
@@ -138,7 +145,7 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: `## %s` is no section of the sheet" % s)
         elif s != "open":
             for line in sheet[s]:
-                if re.search(r"\[core\]", line, re.I):
+                if CORE.search(line):
                     errs.append("sheet: a [core] line outside `## open`: %s" % line.strip()[:80])
     if not sheet.get("his words"):
         errs.append("sheet: `his words` is empty")
@@ -170,7 +177,7 @@ def sheet_errors(sheet, tree, floor=None):
             elif tag == "waived" and ref not in waived:
                 errs.append("sheet: no waiver %s" % ref)
     for line in sheet.get("open", []):     # fails shut: `[core]` anywhere on an open line blocks, whatever the bullet
-        if re.search(r"\[core\]", line, re.I):
+        if CORE.search(line):
             errs.append("sheet: a core line is still open: %s" % line.strip()[:80])
     for lid, leaf in leaves.items():
         structural = leaf.get("leaf_kind") in ("walk", "instrument")
