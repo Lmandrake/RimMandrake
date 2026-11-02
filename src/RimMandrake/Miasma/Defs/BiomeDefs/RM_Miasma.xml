@@ -96,7 +96,7 @@
     <texture>World/Biomes/RM_Miasma</texture>
     <diseaseMtbDays>15</diseaseMtbDays>
     <biomeMapConditions>
-      <li>RUT_MiasmaWeatherLock</li>
+      <li>RM_MiasmaWeatherLock</li>
     </biomeMapConditions>
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
@@ -133,7 +133,7 @@
         <landRepaintDeadPlant>RM_IlbareenDead</landRepaintDeadPlant>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
-        <incidentDef>RUT_Surge</incidentDef>
+        <incidentDef>RM_Surge</incidentDef>
         <baseMtbDays>5</baseMtbDays>
         <stormMtbMultiplier>0.25</stormMtbMultiplier>
         <stormWindSpeedThreshold>1.2</stormWindSpeedThreshold>
@@ -167,7 +167,7 @@
         <poolSizeThreshold>4</poolSizeThreshold>
         <searchRadius>60</searchRadius>
         <dryTerrain>RM_MiasmaSaltCrust</dryTerrain>
-        <strandedDeformationHediff>RUT_StrandedDeformation</strandedDeformationHediff>
+        <strandedDeformationHediff>RM_StrandedDeformation</strandedDeformationHediff>
         <strandedDeformationChance>0.25</strandedDeformationChance>
       </li>
     </modExtensions>
@@ -224,10 +224,7 @@
     <baseWeatherCommonalities>
       <Clear>8</Clear>
       <Fog>5</Fog>
-      <Rain>10</Rain>
       <DryThunderstorm>0.9</DryThunderstorm>
-      <RainyThunderstorm>5</RainyThunderstorm>
-      <FoggyRain>4</FoggyRain>
       <SnowGentle>0</SnowGentle>
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>

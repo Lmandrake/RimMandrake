@@ -5,7 +5,7 @@
   pass) via .Translate() with no Keyed file backing them yet — a missing key
   falls back to showing the raw key text, not a load error, but this is the
   first content pass to actually wire the comp onto a real building
-  (RUT_MoatFusePost), so the fallback would otherwise ship to players.
+  (RM_MoatFusePost), so the fallback would otherwise ship to players.
   RM_TarBlazeBurnsFor is new this pass (RM_CompTimedTerrainBurn's inspect
   string).
 -->
@@ -50,5 +50,9 @@
   <RM_MechanicDisabledInSettings>Dormant: switched off in mod settings.</RM_MechanicDisabledInSettings>
 
   <RM_DieOffProgress>Dying back</RM_DieOffProgress>
+
+  <!-- BIOME_TIER_CLEANUP_1: the thornbug calm gate (RM_CompGatherableCalmGated) read two keys no file defined. -->
+  <RM_ThornbugCalm>Calm</RM_ThornbugCalm>
+  <RM_ThornbugDry>too frightened to yield</RM_ThornbugDry>
 
 </LanguageData>

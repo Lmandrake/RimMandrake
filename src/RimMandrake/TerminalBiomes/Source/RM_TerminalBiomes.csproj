@@ -15,7 +15,7 @@
     hazard-clock inspect lines, scatter cluster-centre guard), all applied
     through PatchApplier from RM_TerminalBiomesMod. The kit classes the Scald's content names
     (RM_GenStep_PlacedSetPieces, CompProperties_ResourceCondenser,
-    RM_GameCondition_WeatherPulse, RUT_IncidentWorker_WalkerSurfacing ...)
+    RM_GameCondition_WeatherPulse, RM_IncidentWorker_WalkerSurfacing ...)
     live in the shared EnvironmentalHazards assembly, shipped in the same mod (BAROQUE_BIOMES_WAVE2_FOLD_1). This
     assembly holds Mod + ModSettings, the settings-gate registration into
     that assembly's RM_MechanicGates, two thin vanilla subclasses

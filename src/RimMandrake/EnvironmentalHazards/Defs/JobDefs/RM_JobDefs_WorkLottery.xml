@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SUMP_MECHANICS_1 S2 build pass. The JobDef RM_JobDriver_WorkLottery
      needs, requested by RM_WorkGiver_WorkLottery for any Thing carrying
-     RM_CompWorkedLottery. Generic, not Sump-specific — RUT_DigShaft is its
+     RM_CompWorkedLottery. Generic, not Sump-specific — RM_DigShaft is its
      first content consumer. -->
 <Defs>
 

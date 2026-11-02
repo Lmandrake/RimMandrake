@@ -6,7 +6,7 @@
   Sky colours are the donor's, unchanged: they are what makes an enclosed cavern
   read as lit-from-within rather than as an overcast surface map.
 
-  DEEPCALM_AMBIENT_SOUND_1: ambientSounds now points at RUT_DeepHum and
+  DEEPCALM_AMBIENT_SOUND_1: ambientSounds now points at RM_DeepHum and
   RM_DeepChorus (Defs/SoundDefs/RM_DeepAmbience.xml) — our own SoundDefs, no
   new audio asset, both grains reused from Anomaly's shipped clips. Target:
   the_lantern_deeps.md §9, "the hum, rising to a Chorus".
@@ -22,7 +22,7 @@
     <perceivePriority>0</perceivePriority>
     <windSpeedFactor>0</windSpeedFactor>
     <ambientSounds>
-      <li>RUT_DeepHum</li>
+      <li>RM_DeepHum</li>
       <li>RM_DeepChorus</li>
     </ambientSounds>
     <skyColorsDay>

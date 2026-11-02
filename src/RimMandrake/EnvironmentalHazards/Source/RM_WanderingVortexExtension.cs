@@ -6,7 +6,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // GREENTIDE_MECHANICS_2 M3 remainder build (greentide_kit_spec.md M3,
     // "Scald damage + steam devils"). Only the vortex half is unbuilt — the
-    // RUT_Scald DamageDef (vanilla Heat armor category)
+    // RM_Scald DamageDef (vanilla Heat armor category)
     // already shipped under FORGE_MECHANICS_1 F1 and is NOT re-shipped here;
     // this extension only carries the vortex's own tuning, including a
     // pointer at that already-shipped DamageDef.
@@ -20,7 +20,7 @@ namespace RimMandrake.EnvironmentalHazards
     public class RM_WanderingVortexExtension : DefModExtension
     {
         /// <summary>The scald damage the vortex deals. XML sets this to the
-        /// already-shipped RUT_Scald — never invents a new DamageDef.</summary>
+        /// already-shipped RM_Scald — never invents a new DamageDef.</summary>
         public DamageDef damageDef;
 
         /// <summary>Cells moved per tick along the current heading. INVENTED
@@ -63,11 +63,11 @@ namespace RimMandrake.EnvironmentalHazards
         /// <summary>Damage dealt per cell hit by either sweep. INVENTED —
         /// higher than Scald's own bare defaultDamage (4) since this is a
         /// direct sweep hit, not the passive per-interval weather tick
-        /// RUT_Scald's own default is tuned for.</summary>
+        /// RM_Scald's own default is tuned for.</summary>
         public FloatRange damageAmountRange = new FloatRange(8f, 18f);
 
         /// <summary>Armor penetration on every hit. INVENTED, mirrors
-        /// RUT_Scald's own defaultArmorPenetration (0).</summary>
+        /// RM_Scald's own defaultArmorPenetration (0).</summary>
         public float armorPenetration = 0f;
 
         /// <summary>Fraction of MaxHitPoints below which a giant-class

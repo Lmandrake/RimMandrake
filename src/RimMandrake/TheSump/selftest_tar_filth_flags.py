@@ -10,7 +10,7 @@ Engine rules (RimSage, decompiled 1.6):
 
 Checks (each can go red):
   1. RM_TarShallow (patched mask + patched generatedFilth) does not accept Terrain.
-  2. RUT_Filth_MouseTrack's placementMask is accepted by RM_TarShallow's patched mask
+  2. RM_Filth_MouseTrack's placementMask is accepted by RM_TarShallow's patched mask
      (else the sump-mouse tracery never draws, silently).
   3. Every src TerrainDef that declares both generatedFilth and filthAcceptanceMask
      explicitly keeps Terrain out of the mask.
@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 MASK_PATCH = ROOT / "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml"
 GEN_PATCH = ROOT / "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml"
-TRACK_DEF = ROOT / "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml"
+TRACK_DEF = ROOT / "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RM_Filth_MouseTrack.xml"
 FLAGS = {"None": 0, "Terrain": 1, "Natural": 2, "Unnatural": 4, "Pawn": 8, "Any": 15}
 
 
@@ -55,7 +55,7 @@ def patched_generates(xml_text):
 
 def track_mask(xml_text):
     for td in ET.fromstring(xml_text).iter("ThingDef"):
-        if td.findtext("defName") == "RUT_Filth_MouseTrack":
+        if td.findtext("defName") == "RM_Filth_MouseTrack":
             return _flags(td.find("filth/placementMask")) or 0
     return None
 
@@ -66,11 +66,11 @@ def tar_findings(mask_xml, gen_xml, track_xml):
     if mask is None:
         return ["UNMEASURED: no RM_TarShallow filthAcceptanceMask patch found"]
     if pm is None:
-        return ["UNMEASURED: RUT_Filth_MouseTrack not found"]
+        return ["UNMEASURED: RM_Filth_MouseTrack not found"]
     if gen and mask & FLAGS["Terrain"]:
         out.append("RM_TarShallow generates filth and its mask accepts Terrain (TerrainDef.cs:538 ConfigError)")
     if mask == 0 or (mask & pm) != pm:
-        out.append(f"RM_TarShallow mask {mask} refuses RUT_Filth_MouseTrack placementMask {pm}: no mouse tracks")
+        out.append(f"RM_TarShallow mask {mask} refuses RM_Filth_MouseTrack placementMask {pm}: no mouse tracks")
     return out
 
 

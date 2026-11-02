@@ -133,7 +133,7 @@
     </comps>
   </ThingDef>
 
-  <!-- kellu — squid, uncommon. "lamp-black." Its ink is RUT_LampBlack in the
+  <!-- kellu — squid, uncommon. "lamp-black." Its ink is RM_LampBlack in the
        rare table below, not a butcher product. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Kellu</defName>
@@ -220,7 +220,7 @@
     </comps>
   </ThingDef>
 
-  <!-- RUT_LampBlack is defined once, in mandrake.rm.terminalbiomes
+  <!-- RM_LampBlack is defined once, in mandrake.rm.terminalbiomes
        (TerminalBiomes/Defs/ThingDefs_Items/RUT_TwilightFish_Niim.xml); a second copy here was a duplicate defName. -->
 
   <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — two NEW catches added per the

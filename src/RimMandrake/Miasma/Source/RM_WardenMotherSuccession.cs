@@ -16,7 +16,7 @@ namespace RimMandrake.Miasma
     // pattern as the mother's own tolerance (WARDEN_MOTHER_BEFRIENDING_1) —
     // never a taming grind, never commanded into it.
     //
-    // Scoped to carriers of RUT_StrandedDeformation only. The roster's own
+    // Scoped to carriers of RM_StrandedDeformation only. The roster's own
     // alternate population ("or on the plain nursery juvenile species once
     // rescued") is NOT built here: there is no engine signal that reliably
     // means "rescued" for a plain wild juvenile without inventing one the
@@ -104,7 +104,7 @@ namespace RimMandrake.Miasma
             pawn.SetFaction(Faction.OfPlayer);
             pawn.training?.Train(TrainableDefOf.Tameness, null, complete: true);
             Messages.Message(
-                "RUT_WardenYoungSelfTamed".Translate(pawn.LabelShort),
+                "RM_WardenYoungSelfTamed".Translate(pawn.LabelShort),
                 pawn,
                 MessageTypeDefOf.PositiveEvent);
         }
@@ -147,7 +147,7 @@ namespace RimMandrake.Miasma
 
         private Thing FindNearestCrecheMarker(Pawn pawn)
         {
-            ThingDef markerDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_CrecheMarker");
+            ThingDef markerDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_CrecheMarker");
             if (markerDef == null)
             {
                 return null;
@@ -191,7 +191,7 @@ namespace RimMandrake.Miasma
     //   </li>
     //
     // WARDEN_MOTHER_SUCCESSION_1 piece 3: succession on the warden mother's
-    // death. Lives on RUT_CrecheMarker (the permanent site identity)
+    // death. Lives on RM_CrecheMarker (the permanent site identity)
     // alongside the existing despoiled-memory comp (RM_CompCrecheMarker,
     // RimMandrake.EnvironmentalHazards) — a sibling, not a replacement; that
     // comp is untouched by this item.
@@ -332,7 +332,7 @@ namespace RimMandrake.Miasma
                 float distSq = (p.Position - parent.Position).LengthHorizontalSquared;
                 if (distSq <= radiusSq)
                 {
-                    return p; // one warden mother per creche site by construction (RUT_GenStep_CrecheScatterer)
+                    return p; // one warden mother per creche site by construction (RM_GenStep_CrecheScatterer)
                 }
             }
 
@@ -349,7 +349,7 @@ namespace RimMandrake.Miasma
             }
 
             Messages.Message(
-                "RUT_WardenSuccessionMessage".Translate(chosen.LabelShort),
+                "RM_WardenSuccessionMessage".Translate(chosen.LabelShort),
                 chosen,
                 MessageTypeDefOf.PositiveEvent);
         }
@@ -360,7 +360,7 @@ namespace RimMandrake.Miasma
             var lines = new List<string>();
             if (ledger.heir != null && !ledger.heir.Destroyed)
             {
-                lines.Add("RUT_CrecheMarkerHeir".Translate(ledger.heir.LabelShort));
+                lines.Add("RM_CrecheMarkerHeir".Translate(ledger.heir.LabelShort));
             }
             lines.Add("Young she is owed: " + YoungOwed + (ledger.returnedCount > 0 ? "; brought back to her: " + ledger.returnedCount : ""));
             if (ledger.betrayed)

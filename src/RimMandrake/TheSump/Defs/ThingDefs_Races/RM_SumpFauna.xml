@@ -173,7 +173,7 @@
     </race>
     <comps>
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail">
-        <filthDef>RUT_Filth_MouseTrack</filthDef>
+        <filthDef>RM_Filth_MouseTrack</filthDef>
         <validTerrains>
           <li>RM_TarShallow</li>
         </validTerrains>

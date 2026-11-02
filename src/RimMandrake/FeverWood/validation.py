@@ -285,7 +285,7 @@ BY_NAME = [("HediffDef", "RM_CaptivityMemory"), ("HediffDef", "RM_LureStaked"),
            ("ThingDef", "RM_LureStake"), ("ThingDef", "RM_SeveredTentacleFlesh"),
            # FEVERWOOD_BROOD_RANSOM_1 (RM_BroodRansom.cs looks these up by name)
            ("ThingDef", "RM_SekkulaathYoungCask"), ("ThingDef", "RM_SekkulaathTank"),
-           ("LetterDef", "RM_DeepGiftLetter"), ("TerrainDef", "RUT_FeverWoodMirrorPool")]
+           ("LetterDef", "RM_DeepGiftLetter"), ("TerrainDef", "RM_FeverWoodMirrorPool")]
 
 _G = {}                     # per-process memo
 
@@ -1034,18 +1034,18 @@ def settings(t):
 
 @suite.chain("bough_soil")
 def bough_soil(t):
-    """The crown can grow things (FEVERWOOD_BOUGH_SOIL_TERRAIN_1): RUT_Boughway ships fertility 0, so the
-    biome's crown flora (fertilityMin >= 1.0) root only on RUT_BoughSoil. The terrain must be fertile enough
+    """The crown can grow things (FEVERWOOD_BOUGH_SOIL_TERRAIN_1): RM_Boughway ships fertility 0, so the
+    biome's crown flora (fertilityMin >= 1.0) root only on RM_BoughSoil. The terrain must be fertile enough
     for every crown plant, allow GrowSoil, and never carry the Heavy affordance."""
     with _comp(t, "bough_soil_fertile_for_every_crown_plant", independent=True):
-        rows, missing = _get_defs(t, ["TerrainDef/RUT_BoughSoil"], fields="fertility,affordances", deep=True)
+        rows, missing = _get_defs(t, ["TerrainDef/RM_BoughSoil"], fields="fertility,affordances", deep=True)
         if _live(t):
             _need_parse(t)
             if len(CROWN_PLANTS) < 5:
                 _fail("source parse found %d crown plants (fertilityMin >= 1.0 on the roster), expected >= 5" % len(CROWN_PLANTS))
             if missing or not rows:
-                _fail("RUT_BoughSoil not resolvable: %r" % missing)
-            f = _fields_of(rows, "RUT_BoughSoil")
+                _fail("RM_BoughSoil not resolvable: %r" % missing)
+            f = _fields_of(rows, "RM_BoughSoil")
             try:
                 fert = float(f.get("fertility"))
             except (TypeError, ValueError):

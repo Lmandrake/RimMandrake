@@ -15,7 +15,7 @@ namespace RimMandrake.EnvironmentalHazards
     // WARDEN_MOTHER_BEFRIENDING_1 spec step 3: "the young CALLS. Audible,
     // locatable, and it does not stop" — the one piece of pure
     // fiction-to-mechanism work that item's own table names. Kept on the
-    // HEDIFF rather than on a bespoke pawn/comp: RUT_StrandedDeformation is
+    // HEDIFF rather than on a bespoke pawn/comp: RM_StrandedDeformation is
     // carried by an ordinary nursery juvenile regardless of HOW it was
     // stranded (a surge cutting off a pool, RM_StrandingPoolsExtension's own
     // spawner, or a warden mother's own spawn-linked young), so putting the

@@ -918,12 +918,12 @@ def defs_resolve(t):
                 _fail("not temporary (SetTempTerrain would refuse them): %s" % notemp)
 
     with _comp(t, "scald_damage_def_resolves", independent=True):
-        # RM_ForgePulse's scaldDamageDef is RUT_Scald (a TerminalBiomes def): a null scald def makes the burst weather
+        # RM_ForgePulse's scaldDamageDef is RM_Scald (a TerminalBiomes def): a null scald def makes the burst weather
         # harmless with no error, because DoScaldDamageTick returns on a null def.
-        rows, missing = _get_defs(t, ["DamageDef/RUT_Scald"])
+        rows, missing = _get_defs(t, ["DamageDef/RM_Scald"])
         if _live(t):
             if missing or not rows:
-                _fail("DamageDef RUT_Scald does not resolve on this tier: the boiling rain scalds nobody: %r" % missing)
+                _fail("DamageDef RM_Scald does not resolve on this tier: the boiling rain scalds nobody: %r" % missing)
 
 
 @suite.chain("def_wiring")
@@ -1657,7 +1657,7 @@ def voices(t):
     _declare_cycle_events(t)
     haz = contextlib.ExitStack()
     try:
-        # LIVE 2026-10-06: entering the Rain scalded all three colonists (RUT_Scald) and the watch aborted the cue
+        # LIVE 2026-10-06: entering the Rain scalded all three colonists (RM_Scald) and the watch aborted the cue
         # check as a surprise. The scald is cycle_walk's subject, not this chain's: hazard damage off, as there.
         haz.enter_context(_settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False))
         with _comp(t, "site_ready_voices"):
@@ -1977,7 +1977,7 @@ SWELL_HEDIFF = "RM_DhoggurSwell"
 # a wild non-humanlike decoy (a manhunter never targets one: MentalState_Manhunter.ForceHostileTo), so it stays put.
 DHOGGUR_DECOY = "Muffalo"
 # The boiling rain's scald: RM_ForgePulse's scaldDamageDef, applied by RM_GameCondition_WeatherPulse with NO instigator.
-RAIN_SCALD = "RUT_Scald"
+RAIN_SCALD = "RM_Scald"
 DHOGGUR_TOKENS = ("swollen", "lastSource", "hediff", "ticksLeft", "cooldownLeft", "bodySize", "healthScale", "meleeFactor", "fireSpit",
                   "manhunter", "drawScale", "swollenArt")
 

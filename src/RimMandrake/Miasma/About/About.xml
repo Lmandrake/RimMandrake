@@ -24,58 +24,17 @@
     <li>mandrake.rut.rotsporekit</li>
     <li>mandrake.rm.terminalbiomes</li>
   </loadAfter>
-  <description>MIASMA_RM_MOD_BUILD_1 (Phase A row 19 of
-design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
-A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a
-dying sea and the rivers that feed it, under a green-gold haze of its own breath.
-Fully generalized: it names no other franchise or campaign. A separate frozen
-campaign world's own Miasma instance (RUT_Miasma, src/RimUtinni/UtinniPatches) is
-unaffected and unrelated; this is a new sibling biome for everyone else's worlds,
-not a rename of that one.
+  <description>A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a dying sea and the rivers that feed it, under a green-gold haze of its own breath.
 
-RM tier: nothing here knows what campaign or planet uses it.
+The biome brings its own living mechanics, each with a switch on the Environmental Hazards Kit's settings screen:
+ - a fresh-to-brine salinity gradient that repaints the ground over time;
+ - a breath-tide surge that shoves the brine inland, then lets it recede;
+ - stranding pools that leave young creatures behind when the tide pulls back;
+ - a permanent haze with a low, steady exposure;
+ - a small chance that a colonist who survives a disease here comes out of it changed for good: toughened skin, hardened immunity, or something stranger;
+ - warden mothers guarding their crèches, and a lasting memory for whoever kills one.
 
-Ships the biome and its own placement worker (RM_BiomeWorker_Miasma, replacing the
-donor AlphaBiomes.BiomeWorker_MiasmicMangrove — a donor type in workerClass is a
-hard dependency the RimMandrake tier may not assume), plus six real environmental
-mechanics whose C# already lives in the shared RimMandrake: Environmental Hazards
-Kit (mandrake.rm.environmentalhazards): a fresh-to-brine salinity gradient axis
-that repaints terrain over time; a breath-tide surge incident that shoves the
-gradient inland and lets it recede; stranding pools that leave transitional
-juvenile fauna behind when the tide pulls back; a permanent weather lock with a
-low-grade ambient exposure hediff; a small chance of a permanent "fever-forged"
-boon (toughened skin, hardened disease immunity, or five rarer strange-tier
-traits) for a pawn who survives a disease here; and warden-mother crèche
-placement with a despoiled-memory penalty if the warden dies. Ships 11 wildlife
-rows inline: two of this campaign's own invented (franchise-free) delta-loam
-composter and fever-swarm vector, and nine Alpha Animals/VFE Insectoids channel
-predators, ambushers and vermin, each individually MayRequire-gated on its own
-donor mod. A Mod Settings screen gives a worldgen-rarity master toggle
-(MOD_OPTIONS_RETROFIT_1 doctrine — default = shipped behavior, 0 = never
-generates); the six mechanics' own per-mechanic toggles live on the shared
-Environmental Hazards Kit's own settings screen, since Greentide and Sump also
-read those same switches — a second, Miasma-only copy of them here would either
-do nothing or silently diverge from what that screen already promises.
+Its canopy is four kinds of mangal, with rainbow blooms, a carnivorous clade that preys on the arthropod floor (never a colonist, never a tame animal), and muck-and-silt plants that yield delta salt and silt. Native creatures include a delta-loam composter and a fever swarm; other animals join from compatible mods when they are installed.
 
-MIASMA_FLORA_ROSTER_1 replaced the donor Alpha Biomes mangal family
-(AB_MangroveTree/AB_ParasiticMangrove/AB_MangrovePalm, formerly 96.5% of this
-biome's flora weight) with 19 of this campaign's own invented RM_-tier plants:
-four mangals that are the biome's canopy and terrain, six always-benign rainbow
-blooms, a five-plant carnivorous clade that preys on the arthropod floor (never a
-colonist, never a tame animal), and four muck-and-silt plants naming the delta's
-own goods (delta salt, delta silt). The two invented native creatures (RM_Karrobel, RM_FeverSwarm) live in this mod
-(MIASMA_SWARM_COMPOSTER_PORT_1); the cross-mod Rot flora import (RUT_Nogtyl) still lives in
-mandrake.rut.rotsporekit and is wired here with a MayRequire guard.
-
-NOT in this mod: the 17 genuine Star Wars wildAnimals rows (mlie.starwarsanimalcollection's
-Runyip/Shiro/Anooba/Grank/Whisperbird/Vornskyr/Zakkeg, and this campaign's own
-RSW_ ports PodWorm/CrestedDragon/MeeJuv/AaroxisDendoria/FaaJuv/LaaJuv/YobshrimpJuv/
-RustNipperJuv/SiltLampreyJuv/OpeeSeaKillerJuv) the campaign roster also ratifies
-for this biome — those ride a Utinni patch (WildAnimals_Miasma.xml) onto this
-mod's own RM_Miasma def instead, per the Q11a naming-tier ruling. 5 further
-rows the roster itself evicted (RSW_Kreetle, Yobshrimp, RSW_Gembug, AA_BloodShrimp,
-AA_Plasmorph) are dropped outright, carried into neither mod.
-
-Live proof (step 5, a scratch-world quicktest with all five expansions) is
-Desktop-only and OWED — see the item's own verify record.</description>
+Mod Settings: how often the biome generates on new worlds (0 = never; worldgen-affecting).</description>
 </ModMetaData>

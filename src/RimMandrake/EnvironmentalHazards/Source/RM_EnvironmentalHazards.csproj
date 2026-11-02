@@ -83,16 +83,16 @@
     <Compile Include="RM_CompTerritorialAnchor.cs" />
     <Compile Include="RM_LurkingWaterExtension.cs" />
     <Compile Include="RM_TenantTruceExtension.cs" />
-    <Compile Include="RUT_MapComponent_TheTenant.cs" />
-    <Compile Include="RUT_IncidentWorker_MirrorBreak.cs" />
+    <Compile Include="RM_MapComponent_TheTenant.cs" />
+    <Compile Include="RM_IncidentWorker_MirrorBreak.cs" />
     <Compile Include="RM_CompUseEffect_RevealHazards.cs" />
-    <Compile Include="RUT_TenantEmergenceSpawner.cs" />
+    <Compile Include="RM_TenantEmergenceSpawner.cs" />
     <Compile Include="RM_CompGatherableCalmGated.cs" />
-    <Compile Include="RUT_HaulPawnAndExit.cs" />
+    <Compile Include="RM_HaulPawnAndExit.cs" />
     <Compile Include="RM_HaulVictimAIUtility.cs" />
     <Compile Include="RM_JobDriver_StunVictim.cs" />
     <Compile Include="RM_CompResourceCondenser.cs" />
-    <Compile Include="RUT_IncidentWorker_WalkerSurfacing.cs" />
+    <Compile Include="RM_IncidentWorker_WalkerSurfacing.cs" />
     <Compile Include="RM_LotteryTableDef.cs" />
     <Compile Include="RM_MechanicGates.cs" />
     <Compile Include="RM_FoundTechStudy.cs" />
@@ -110,9 +110,9 @@
     <Compile Include="RM_SporeAllergyIncidents.cs" />
     <Compile Include="RM_LivingProduceExtension.cs" />
     <Compile Include="RM_MapComponent_LivingProduce.cs" />
-    <Compile Include="RUT_Plant_FlashFlora.cs" />
-    <Compile Include="RUT_WeatherOverlay_ScaldSteam.cs" />
-    <Compile Include="RUT_WeatherEvent_VentFlash.cs" />
+    <Compile Include="RM_Plant_FlashFlora.cs" />
+    <Compile Include="RM_WeatherOverlay_ScaldSteam.cs" />
+    <Compile Include="RM_WeatherEvent_VentFlash.cs" />
     <Compile Include="RM_PlaceWorker_OnRequiredVentComp.cs" />
     <Compile Include="RM_GradientAxisExtension.cs" />
     <Compile Include="RM_GenStep_GradientAxis.cs" />
@@ -131,11 +131,11 @@
     <Compile Include="RM_CompTarBeast.cs" />
     <Compile Include="RM_TarSolventPour.cs" />
     <Compile Include="RM_GenStep_EdgeBandFilth.cs" />
-    <Compile Include="RUT_IncidentWorker_ContagionProbe.cs" />
+    <Compile Include="RM_IncidentWorker_ContagionProbe.cs" />
     <Compile Include="RM_HediffComp_SeverityFloor.cs" />
     <Compile Include="RM_LordJob_DefendPerimeter.cs" />
-    <Compile Include="RUT_LordJob_SentinelDefend.cs" />
-    <Compile Include="RUT_GenStep_ScatterSentinelGraveWards.cs" />
+    <Compile Include="RM_LordJob_SentinelDefend.cs" />
+    <Compile Include="RM_GenStep_ScatterSentinelGraveWards.cs" />
     <Compile Include="RM_MapComponent_VaporColumns.cs" />
     <Compile Include="RM_CompVaporDrifter.cs" />
     <Compile Include="RM_GenStep_TerrainChannels.cs" />
@@ -179,8 +179,8 @@
     <Compile Include="RM_WanderingVortex.cs" />
     <Compile Include="RM_IncidentWorker_SteamDevil.cs" />
     <Compile Include="RM_MapComponent_RoilVortexSpawner.cs" />
-    <Compile Include="RUT_IncidentWorker_SporeCloud.cs" />
-    <Compile Include="RUT_HediffComp_SheenExposure.cs" />
+    <Compile Include="RM_IncidentWorker_SporeCloud.cs" />
+    <Compile Include="RM_HediffComp_SheenExposure.cs" />
     <Compile Include="RM_WarmGroundExtension.cs" />
     <Compile Include="RM_MapComponent_WarmGround.cs" />
     <Compile Include="RM_TreasureConscienceDef.cs" />
@@ -201,7 +201,7 @@
     <Compile Include="RM_BodySizeBarrierPatches.cs" />
     <Compile Include="RM_TarCoatingUtility.cs" />
     <Compile Include="RM_Comp_TarCoatingSource.cs" />
-    <Compile Include="RUT_IncidentWorker_TarPitBelch.cs" />
+    <Compile Include="RM_IncidentWorker_TarPitBelch.cs" />
     <Compile Include="RM_HediffComp_CarriedFilthExposure.cs" />
     <Compile Include="RM_CarriedFilthHediffExtension.cs" />
     <Compile Include="RM_MapComponent_CarriedFilthHediffLink.cs" />
@@ -260,7 +260,7 @@
       <HintPath>$(RimWorldManaged)\Unity.Collections.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <!-- FEVER_WOOD_MECHANICS_1 F2: RUT_IncidentWorker_MirrorBreak reuses
+    <!-- FEVER_WOOD_MECHANICS_1 F2: RM_IncidentWorker_MirrorBreak reuses
          RM_MapComponent_SilenceCue.TriggerHush. Same recipe as
          RM_ShipVermin.csproj's own reference to this DLL — real at runtime
          as long as mandrake.rm.creaturebehaviors is active and loadAfter
@@ -270,7 +270,7 @@
       <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <!-- SUMP_TAR_FIRE_NETWORK_1 part 2: RUT_IncidentWorker_TarPitBelch now
+    <!-- SUMP_TAR_FIRE_NETWORK_1 part 2: RM_IncidentWorker_TarPitBelch now
          spawns a real RimMandrake.FlowWorks.Flood_FlowWorks release (RM_Fluid_Tar)
          instead of a filth splash. Same recipe as the CreatureBehaviors
          reference above: mandrake.rm.flowworks becomes a real dependency of

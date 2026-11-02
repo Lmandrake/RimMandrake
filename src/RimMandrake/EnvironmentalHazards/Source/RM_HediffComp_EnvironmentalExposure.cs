@@ -6,15 +6,15 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     // MIASMA_MECHANICS_1 M4 spike (miasma_kit_spec.md). "Unroofed pawns
-    // during miasma weather accumulate RUT_MiasmaExposure, severity rate x
+    // during miasma weather accumulate RM_MiasmaExposure, severity rate x
     // M1's salinity-band multiplier."
     //
     //   <HediffDef>
-    //     <defName>RUT_MiasmaExposure</defName>
+    //     <defName>RM_MiasmaExposure</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_EnvironmentalExposure">
-    //         <onlyDuringWeather>RUT_MiasmaWeather</onlyDuringWeather>
+    //         <onlyDuringWeather>RM_MiasmaWeather</onlyDuringWeather>
     //         <severityPerDayExposed>0.05</severityPerDayExposed>
     //         <severityPerDayUnexposed>-0.2</severityPerDayUnexposed>
     //       </li>
@@ -31,7 +31,7 @@ namespace RimMandrake.EnvironmentalHazards
         // instead. When non-empty this takes priority over the single
         // onlyDuringWeather above; either satisfies ConfigErrors. Kept as a
         // separate field rather than widening onlyDuringWeather itself so
-        // RUT_MiasmaExposure's existing single-weather XML needs no edit.
+        // RM_MiasmaExposure's existing single-weather XML needs no edit.
         public List<WeatherDef> onlyDuringWeathers;
 
         public float severityPerDayExposed = 0.05f;
@@ -107,7 +107,7 @@ namespace RimMandrake.EnvironmentalHazards
     // math is the "read correctly" half of this spike.
     //
     // SPIKE SCOPE: this comp only tunes ITS OWN parent hediff's severity
-    // once the pawn already carries RUT_MiasmaExposure. Giving that hediff
+    // once the pawn already carries RM_MiasmaExposure. Giving that hediff
     // to every pawn who enters a Miasma map is separate, owed wiring — the
     // same per-pawn-scan shape GameCondition_EnvironmentalWeather.
     // DoPawnEffects already has in this mod, not a new engine question.

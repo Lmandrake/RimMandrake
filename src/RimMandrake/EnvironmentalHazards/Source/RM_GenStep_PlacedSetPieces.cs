@@ -41,7 +41,7 @@ namespace RimMandrake.EnvironmentalHazards
     // nothing: it is the idiomatic vanilla way to let a GenStepDef's XML
     // supply per-instance behavior without the framework class knowing the
     // content type. Miasma's GenStepDef lists a warden-mother pawn element +
-    // a juvenile-cluster element + a RUT_CrecheMarker building element; Sump's
+    // a juvenile-cluster element + a RM_CrecheMarker building element; Sump's
     // lists a single dormant-beast element. Neither PawnKindDef nor ThingDef
     // is referenced here — only in each kit's own RM_SetPieceElement
     // subclass, built as part of M6/S3's own remaining scope, not this item.

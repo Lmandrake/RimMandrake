@@ -10,14 +10,14 @@
   earlier RUT_WardenMother name in RM_CompTerritorialAnchor.cs's own header
   comment was always wrong for this reason, per that file's own retraction).
 
-  Spawned exclusively via RUT_GenStep_CrecheScatterer
+  Spawned exclusively via RM_GenStep_CrecheScatterer
   (Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml, RM_GenStep_PlacedSetPieces),
   never via <wildAnimals> — zero biome wild-spawn commonality, matching the
   already-shipped GenStep's own "the GenStep is their only entry" posture.
   That GenStep's own validator (RM_ScattererValidator_BrineShallowWater)
   places her crèche site on brine-side shallow water, and
   RM_SetPieceElement_AnchoredPawn's SetAnchor() call anchors her to the
-  RUT_CrecheMarker placed at that same site — "her crèche is in the
+  RM_CrecheMarker placed at that same site — "her crèche is in the
   shallows" is therefore true by construction, not by a separate mechanism.
 
   bodySize 8: bigger than the evicted AA_OvergrownColossus (6, cast_assignment.csv)

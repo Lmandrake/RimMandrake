@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_TarBeast.xml                          RM_TheSump - SUMP_TAR_BEAST_BUILD_1
-  The tar beast (sump_bedazzle_review_2026-10-01.md s3): never a fightable wild spawn - it only exists woken from a RUT_BeastBulge.
+  The tar beast (sump_bedazzle_review_2026-10-01.md s3): never a fightable wild spawn - it only exists woken from a RM_BeastBulge.
   Behaviour is C# in the EnvironmentalHazards assembly: RM_CompStationEater (swallow, mound + letter), RM_CompTarBeast (tar trail,
   shoving, sinking back into a bulge), RM_JobGiver_TarBeastEat (densest cluster of the colony's buildings). All numbers are
   invented first values for live balance; the settings live on the Environmental Hazards screen.
@@ -88,7 +88,7 @@
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TarBeast">
         <trailFilthDef>RM_Filth_Tar</trailFilthDef>
         <trailLayers>2</trailLayers>
-        <bulgeDef>RUT_BeastBulge</bulgeDef>
+        <bulgeDef>RM_BeastBulge</bulgeDef>
         <paceHediff>RM_TarBeastPace</paceHediff>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DreadSource">

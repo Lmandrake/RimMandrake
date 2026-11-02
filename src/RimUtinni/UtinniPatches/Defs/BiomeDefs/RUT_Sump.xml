@@ -12,15 +12,15 @@
     replacing the donor AlphaBiomes.BiomeWorker_TarPits, plus AA_BumbledroneQueen
     added to wildAnimals per the roster, and RSW_Hssiss riding a Utinni patch
     instead of inline). The kit content this BiomeDef's own modExtensions/the
-    separate wiring patch reference (RUT_SumpWeather, RUT_SumpDuskLock +
-    its BiomeWiring patch, RUT_TarMoat/RUT_TarSpent, RUT_MoatFusePost,
-    RUT_BeastBulge + its GenStep/Register/DreadRegistration, RUT_DigShaft,
-    RUT_DigStratumTable, RUT_Filth_MouseTrack, RUT_Placeholder_SumpMouseRace/
-    RUT_Placeholder_SumpMouse, RUT_ThinkTree_SumpMouseWander) moved with their defNames UNCHANGED into mandrake.rm.thesump's
+    separate wiring patch reference (RM_SumpWeather, RM_SumpDuskLock +
+    its BiomeWiring patch, RM_TarMoat/RM_TarSpent, RM_MoatFusePost,
+    RM_BeastBulge + its GenStep/Register/DreadRegistration, RM_DigShaft,
+    RM_DigStratumTable, RM_Filth_MouseTrack, RUT_Placeholder_SumpMouseRace/
+    RUT_Placeholder_SumpMouse, RM_ThinkTree_SumpMouseWander) moved with their defNames UNCHANGED into mandrake.rm.thesump's
     own Defs/ and Patches/ trees — this def's own references below (RM_Tarred
     via the shared EnvironmentalHazards modExtension, and the dusk lock wired
-    externally) keep resolving exactly as before, since RUT_SumpDuskLock/
-    RUT_SumpWeather are read by BOTH biome instances under the same defNames.
+    externally) keep resolving exactly as before, since RM_SumpDuskLock/
+    RM_SumpWeather are read by BOTH biome instances under the same defNames.
     The tar kit (RM_Tarred and its surgery/solvents/thoughts, walkways,
     bitumen, tar gas, gaslight, tar vault, both research projects) moved into
     mandrake.rm.thesump too (SUMP_FREE_TIER_MOVE_BUILD_1, 2026-10-03); the
@@ -71,7 +71,7 @@
     unresolvable Class inside <modExtensions> drops the WHOLE containing def unless the
     <li> is individually gated) — this file must always load regardless of whether
     mandrake.rm.environmentalhazards is active. The permanent-dusk weather lock
-    (RUT_SumpDuskLock) is wired separately via
+    (RM_SumpDuskLock) is wired separately via
     Patches/RUT_SumpDuskLock_BiomeWiring.xml — a plain <li> defName reference in
     biomeMapConditions WOULD be a dangling cross-reference if that mod were absent,
     unlike a modExtensions Class, so it needs the patch route instead; see that file's

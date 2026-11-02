@@ -72,7 +72,7 @@ namespace RimMandrake.EnvironmentalHazards
             totalDelta = RM_AxisKernel.TotalDelta(frontCells, map.Size.x, map.Size.z);
 
             // Duration is the ramp-in itself — set by
-            // IncidentWorker_MakeGameCondition from RUT_Surge's own
+            // IncidentWorker_MakeGameCondition from RM_Surge's own
             // durationDays (the spec's "4-8 in-game hours"), not re-picked
             // here, so the ramp's timing lives in exactly one place (the
             // IncidentDef XML) rather than being duplicated onto this class.

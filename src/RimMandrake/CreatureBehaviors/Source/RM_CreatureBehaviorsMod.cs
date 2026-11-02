@@ -64,7 +64,7 @@ namespace RimMandrake.CreatureBehaviors
     //      never speeds up a tagged pawn's own natural healing. The dial
     //      scales only the extra heal amount (never the kin-count threshold
     //      or radius, which stay whatever the race's own extension says).
-    //  15. guardianAlarmEnabled — RM_CompPlantAlarm / RUT_Plant_FalseFruit
+    //  15. guardianAlarmEnabled — RM_CompPlantAlarm / RM_Plant_FalseFruit
     //      (ROT_GUARDIAN_GROVES_1, RimUtinni RotSporeKit). Off: a guardian
     //      plant's network alarm never wakes nearby tagged fauna and
     //      harvesting the false-fruit lure never grips the harvester's

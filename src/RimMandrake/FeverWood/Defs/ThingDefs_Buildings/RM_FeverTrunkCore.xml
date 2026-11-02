@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FEVER_WOOD_MECHANICS_1 F7 build. Cribbed directly from
+     GREENTIDE_MECHANICS_2 M12's RUT_GreatboleCore.xml — the marker
+     RM_GenStep_LivingBoles spawns at the center of each heartwood blob,
+     carrying RM_CompLivingBoleMarker (registers/deregisters with
+     RM_MapComponent_LivingRegrowth) and the oversized drawSize standing in
+     for the trunk's real multi-cell silhouette (same RESOLVED ❓ the M12
+     spike already settled: a plain GraphicData.drawSize override, not a
+     Skyfaller subclass).
+
+     regrowDaysRange retuned per the kit spec's own INVENTED call ("slower
+     regrowth than the Greentide — this biome is the still one"): 10~18
+     days here versus the Greatbole's 3~6 — roughly 3x. creakWarningTicks/
+     crushIntervalTicks/crushDamagePerHit left at CompProperties_
+     LivingBoleMarker's own class defaults (1 in-game hour / 600 ticks /
+     12 dmg) — the spec names no separate number for those, and "still" is
+     about the regrow clock, not the crush pulse once a colonist ignores
+     the warning.
+
+     sealantTerrain=RM_ToxinSealedFloor reuses the Greentide sealed-floor
+     terrain (src/RimMandrake/Greentide/Defs/TerrainDefs/
+     RM_Greentide_SpineTerrains.xml; its costList consumes the RM_ToxinSealant
+     item) rather than inventing a second sealant economy — "a shared
+     mechanism gets ONE def, reused cross-kit". Greentide and this mod both
+     fold into mandrake.rm.biomes, so the reference needs no guard.
+     Real finding against the sibling precedent this pass read before
+     writing: RUT_GreatboleCore.xml's OWN comp <li> (in GREENTIDE_
+     MECHANICS_2, not this item's file) is gated on only, despite the exact
+     same sealantTerrain reference — a latent dangling-cross-reference risk
+     in the already-shipped Greentide code if mandrake.rm.environmentalhazards
+     were ever active without mandrake.rm.greentide (currently moot: both
+     ship together in this campaign's full mod list, but inconsistent with
+     that file's own sibling M9 extension, which DOES two-package-gate its
+     own cross-mod basinTerrains reference). Not fixed here — out of this
+     item's scope (GREENTIDE_MECHANICS_2's own file) — flagged for the
+     record; this def does not repeat the gap.
+
+     DRAWS NOTHING (drawerType None, no graphicData) — same idiom as
+     RM_SuperdeepPit, vanilla's DelayedEffecterSpawner, and its own sibling
+     RUT_GreatboleCore (GREATBOLE_BARK_EDGE_ART_1): a bookkeeping Thing whose
+     cell's visual is already fully described by something else (here, the
+     heartwood blob), so a second sprite on top of it would be a
+     contradicting statement, not a placeholder. This def previously cribbed
+     RUT_GreatboleCore's own now-fixed defect verbatim — a retinted vanilla
+     DeepDrillPowered texture at drawSize (7,7), rendering a fake
+     mining-drill sprite across the middle of the fever trunk. The trunk's
+     own real bark-edge art (on RM_FeverTrunkHeartwood, mirroring the
+     greatbole's still-owed atlas commission) is separate and still owed;
+     this def was never that art's home. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FeverTrunkCore</defName>
+    <label>fever trunk core</label>
+    <description>The living heart of a giant trunk — the one cell of it that never goes still, and never mines out. Everything the tree does starts here, at a pace this whole biome shares.</description>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>true</holdsRoof>
+    <useHitPoints>true</useHitPoints>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <statBases>
+      <MaxHitPoints>1200</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
+        <regrowthThing>RM_FeverTrunkHeartwood</regrowthThing>
+        <sealantTerrain>RM_ToxinSealedFloor</sealantTerrain>
+        <regrowDaysRange>10~18</regrowDaysRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

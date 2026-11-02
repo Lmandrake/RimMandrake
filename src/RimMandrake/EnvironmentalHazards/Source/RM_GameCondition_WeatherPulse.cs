@@ -216,7 +216,7 @@ namespace RimMandrake.EnvironmentalHazards
             // The flash window deliberately keeps running past burst end
             // (it was set to burst-start + flashWindowHoursAfterBurstStart,
             // not to the burst weather's own, shorter end) —
-            // RUT_Plant_FlashFlora reads RM_MapComponent_FlashCycle
+            // RM_Plant_FlashFlora reads RM_MapComponent_FlashCycle
             // directly and needs nothing further from this condition once
             // the burst weather itself is over.
         }

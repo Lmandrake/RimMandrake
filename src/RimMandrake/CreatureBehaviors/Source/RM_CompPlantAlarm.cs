@@ -17,7 +17,7 @@ namespace RimMandrake.CreatureBehaviors
     // Two ways to ring the alarm: automatically, when the carrying Thing
     // takes damage (RUT_RegenerantVeil's own "harvesting/damaging it wakes
     // nearby hybrid fauna"); or on demand via the public TriggerAlarm(),
-    // which RUT_Plant_FalseFruit's PlantCollected override calls directly
+    // which RM_Plant_FalseFruit's PlantCollected override calls directly
     // (harvesting a plant is not damage — Plant.PlantCollected is the only
     // seam for that, RimSage-verified against RimWorld/Plant.cs this pass,
     // no TakeDamage involved).

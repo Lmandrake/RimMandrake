@@ -49,8 +49,8 @@
 
   Costs/stats: INVENTED. TableStonecutter itself is stuff-costed
   (costStuffCount + stuffCategories, paintable) — simplified here to a flat
-  costList, matching every other Vent* def in this pass and RUT_ScaldVent/
-  RUT_SteamCatch's own precedent of dropping stuff-coloring for a fixed
+  costList, matching every other Vent* def in this pass and RM_ScaldVent/
+  RM_SteamCatch's own precedent of dropping stuff-coloring for a fixed
   vent-locked building.
 
   🔴 Texture: intended to reuse vanilla TableStonecutter's own art

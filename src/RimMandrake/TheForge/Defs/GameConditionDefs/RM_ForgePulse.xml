@@ -12,11 +12,11 @@
   modDependency of THIS mod, declared in About.xml, so the cross-reference
   can never dangle).
 
-  scaldDamageDef still points at RUT_Scald
+  scaldDamageDef still points at RM_Scald
   (src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml) - a shared
   cross-biome damage type ALREADY reused this way by RM_Greentide (confirmed
   by THEFORGE_RM_MOD_BUILD_1's own analysis, §6), so this is not a new
-  cross-mod dependency pattern, just the existing one. Whether RUT_Scald
+  cross-mod dependency pattern, just the existing one. Whether RM_Scald
   itself should move to a shared RM_ tier is flagged UNCERTAIN in this
   item's own analysis and is not this build's call to resolve unilaterally.
 -->
@@ -41,7 +41,7 @@
         <burstMtbHours>10</burstMtbHours>
         <burstDurationMinutesRange>20~40</burstDurationMinutesRange>
         <flashWindowHoursAfterBurstStart>2</flashWindowHoursAfterBurstStart>
-        <scaldDamageDef>RUT_Scald</scaldDamageDef>
+        <scaldDamageDef>RM_Scald</scaldDamageDef>
         <scaldDamageAmount>4</scaldDamageAmount>
         <scaldDamageIntervalTicks>60</scaldDamageIntervalTicks>
         <onlyUnroofed>true</onlyUnroofed>

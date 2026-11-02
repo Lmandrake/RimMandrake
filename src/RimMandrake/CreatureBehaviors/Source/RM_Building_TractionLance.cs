@@ -527,7 +527,7 @@ namespace RimMandrake.CreatureBehaviors
 
         /// <summary>
         /// The two research doors (criterion "Research"). door: junction (Webwork's RM_GutterJunction) | drawjoint
-        /// (TheSump's RUT_PreservedDrawJoint). Sets RM_Research_TractionLance's progress to 0 (the fresh-game state),
+        /// (TheSump's RM_PreservedDrawJoint). Sets RM_Research_TractionLance's progress to 0 (the fresh-game state),
         /// spawns the specimen and runs the PRODUCTION completion, RM_CompAnalyzableGrantResearch.OnAnalyzed, once
         /// per specimen until the row finishes (the draw-joint needs two; at most 4 tries), then reads the row and
         /// RM_TractionLance's IsResearchFinished. The row's progress is put back as it was. Side effects left on the
@@ -537,7 +537,7 @@ namespace RimMandrake.CreatureBehaviors
         public static string ProofResearchDoor(string door)
         {
             Map map = Find.CurrentMap;
-            string itemName = door == "junction" ? "RM_GutterJunction" : door == "drawjoint" ? "RUT_PreservedDrawJoint" : null;
+            string itemName = door == "junction" ? "RM_GutterJunction" : door == "drawjoint" ? "RM_PreservedDrawJoint" : null;
             ResearchProjectDef proj = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("RM_Research_TractionLance");
             ThingDef lanceDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_TractionLance");
             ThingDef itemDef = itemName != null ? DefDatabase<ThingDef>.GetNamedSilentFail(itemName) : null;

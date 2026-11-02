@@ -40,7 +40,7 @@
               <color>(0.55, 1, 0.55)</color>
               <weight>2</weight>
               <thingDefs>
-                <li>RUT_FeverTrunkCore</li>
+                <li>RM_FeverTrunkCore</li>
               </thingDefs>
             </li>
             <li>

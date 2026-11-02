@@ -3,7 +3,7 @@
 Waves 1-5 of this item deferred a live bridge quicktest five times; the
 2026-09-18 live-verification pass finally ran one and found:
   - Scald: FAIL, root-caused to SCALD_MECHANICS_1's own owed cove-painting
-    (RUT_ScaldMargin never placed on the live planet). Not this item's own
+    (RM_ScaldMargin never placed on the live planet). Not this item's own
     defect.
   - Wasteland/Cracked Lands/Weeping Stones/Greentide: UNABLE TO VERIFY --
     every generated map anywhere came back with ZERO water terrain, root

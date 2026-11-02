@@ -41,7 +41,7 @@ namespace RimMandrake.TerminalBiomes
     //      ParentName="ShipChunkBase", `alwaysDeconstructible`) — "a job
     //      the colony can always do" is not asserted, it is the SAME job
     //      already used for every other salvage building in this mod
-    //      (RUT_ScaldWreckHull/Tank/Frame).
+    //      (RM_ScaldWreckHull/Tank/Frame).
     //
     // No selftest harness in this repo exercises gravship launch mechanics
     // offline (checked: no validation.py under this mod, and the CHARTER's

@@ -51,7 +51,7 @@
      colony can make for itself).
 
   Textures: a first draft reused vanilla Jade/Chemfuel texPaths as
-  placeholders (the same reuse RUT_TarMoat.xml/RUT_WickStem.xml use
+  placeholders (the same reuse RM_TarMoat.xml/RUT_WickStem.xml use
   elsewhere in this mod) — but validate_patch.py refused all three as a hard
   ERROR: UtinniPatches already ships its OWN art under
   Textures/Things/Item/Resource/ (RUT_Greenwood.png), so

@@ -76,7 +76,7 @@ def static_checks():
         bad.append("RM_MiasmaSaltCrust TerrainDef missing")
     young = ["RM_CrimsonOpeeJuv", "RM_ThornbackColoJuv", "RM_ShaleGorgerJuv", "RM_ReefbackJuv"]
     races = open(os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Races", "RM_SeaBeasts_Invented.xml")).read()
-    creche = open(os.path.join(HERE, "Defs", "MapGeneration", "RUT_Miasma_CrecheScatterer.xml")).read()
+    creche = open(os.path.join(HERE, "Defs", "MapGeneration", "RM_Miasma_CrecheScatterer.xml")).read()
     for y in young:  # MIASMA_FREE_NURSERY_YOUNG_1
         if races.count("<defName>%s</defName>" % y) != 2:
             bad.append("%s needs exactly a ThingDef and a PawnKindDef in RM_SeaBeasts_Invented.xml" % y)
@@ -113,14 +113,14 @@ def static_checks():
         bad.append("RM_MapComponent_YoungCall.cs missing")
     else:
         yt = open(yc).read()
-        for needle in ("youngCallEnabled", "RM_WardenMother", "RUT_StrandedDeformation", "IsWater", "JobDefOf.Goto"):
+        for needle in ("youngCallEnabled", "RM_WardenMother", "RM_StrandedDeformation", "IsWater", "JobDefOf.Goto"):
             if needle not in yt:
                 bad.append("young call lacks %s" % needle)
     if "RM_MapComponent_YoungCall.cs" not in open(os.path.join(HERE, "Source", "RM_Miasma.csproj")).read():
         bad.append("RM_MapComponent_YoungCall.cs not in csproj Compile list")
     if "ApplyYoungCall" not in src or "callSound" not in src:
         bad.append("settings applier does not gate the shared cry (callSound)")
-    kx = open(os.path.join(HERE, "Languages", "English", "Keyed", "RUT_Miasma_Mechanics.xml")).read()
+    kx = open(os.path.join(HERE, "Languages", "English", "Keyed", "RM_Miasma_Mechanics.xml")).read()
     for k in ("RM_YoungCallLetterLabel", "RM_YoungCallLetterText"):
         if "<%s>" % k not in kx:
             bad.append("keyed %s missing" % k)
@@ -233,9 +233,9 @@ def static_checks():
             bad.append("the reflection target %r is missing from RM_CompTerritorialAnchor" % m)
     if "if (p == null || betrayed)" not in anchor:
         bad.append("a betrayed mother must tolerate nobody (IsTolerated)")
-    sd = open(os.path.join(HERE, "Defs", "HediffDefs", "RUT_StrandedDeformation.xml"), encoding="utf-8").read()
+    sd = open(os.path.join(HERE, "Defs", "HediffDefs", "RM_StrandedDeformation.xml"), encoding="utf-8").read()
     if "RimMandrake.Miasma.RM_MothersPriceExtension" not in sd or "<priceOffset>" not in sd:
-        bad.append("RUT_StrandedDeformation lacks the mother's price extension or its priceOffset")
+        bad.append("RM_StrandedDeformation lacks the mother's price extension or its priceOffset")
     if "hd.priceOffset = RM_MiasmaSettings.mothersPriceEnabled" not in open(os.path.join(HERE, "Source", "RM_MiasmaMod.cs"), encoding="utf-8").read():
         bad.append("youngPriceOffset is not written to the hediff's priceOffset")
     led = open(os.path.join(HERE, "Source", "RM_WardenMotherSuccession.cs"), encoding="utf-8").read()
@@ -416,7 +416,7 @@ def _build_suite():
         cell if none is there, and stages its own held young). Return first, then sale: a held young in her water is
         taken back (goes wild, loses the deformation) and the colony is tolerated; a sold young revokes it for good and
         reprices at the fortune. NOT proven here: the buyer caravan (step 2 days on a home map holding a young), the
-        trade dialog itself, and succession void on a real crèche (no RUT_CrecheMarker on a quicktest) -- first poke
+        trade dialog itself, and succession void on a real crèche (no RM_CrecheMarker on a quicktest) -- first poke
         on a Miasma map: ProofSell, then read the crèche marker's inspect string."""
         def proof(t, method):
             r = t.bridge_call("jawa/static_call", type="RimMandrake.Miasma.RM_MothersPriceProof", method=method, args="current")

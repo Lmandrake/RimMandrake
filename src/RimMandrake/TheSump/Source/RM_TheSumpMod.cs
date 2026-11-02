@@ -56,7 +56,7 @@ namespace RimMandrake.TheSump
         // no half-sealed state is possible.
         public static bool tarVaultEnabled = true;
 
-        // SUMP_TAR_HYDROLOGY_1 ruling 7 — RUT_GenStep_DeepBlackMere reads
+        // SUMP_TAR_HYDROLOGY_1 ruling 7 — RM_GenStep_DeepBlackMere reads
         // this static field directly at map generation, same "static field,
         // no Mod instance needed" idiom this class already documents above.
         // All-off degrades gracefully: without the mere, a Sump map simply

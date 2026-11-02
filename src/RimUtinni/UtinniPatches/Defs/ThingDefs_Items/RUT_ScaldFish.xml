@@ -13,11 +13,11 @@
   MEASURED, not the doc's own "UNMEASURED" flag: the Scald's actual world-map
   fishing water is FRESHWATER. RUT_TheScald.xml wires waterDeepTerrain/
   waterShallowTerrain/waterMovingShallowTerrain/waterMovingChestDeepTerrain to
-  RUT_ScaldWaterDeep/Shallow/MovingShallow/MovingChestDeep
+  RM_ScaldWaterDeep/Shallow/MovingShallow/MovingChestDeep
   (RUT_ScaldWater.xml), none of which override `waterBodyType` off their
   parents (WaterDeepBase/WaterShallowBase/WaterChestDeepBase, Core's own
   Terrain_Water.xml) — and those parents default to Freshwater (verified via
-  RimSage direct read). The Ocean-tagged siblings (RUT_ScaldWaterOceanDeep/
+  RimSage direct read). The Ocean-tagged siblings (RM_ScaldWaterOceanDeep/
   OceanShallow, Saltwater) exist only for GravTide's terrainsByFertility dive
   layer and are never assigned to the biome's own fishing water fields. So
   this table is wired into `freshwater_Common`/`freshwater_Uncommon`, not the

@@ -20,7 +20,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 	//
 	// "Real (non-boil) water" reuses this mod's own existing convention for
 	// telling scalding water terrain apart from ordinary water —
-	// RUT_IncidentWorker_WalkerSurfacing.cs (EnvironmentalHazards, not
+	// RM_IncidentWorker_WalkerSurfacing.cs (EnvironmentalHazards, not
 	// touched by this file) already tests `terrain.IsWater &&
 	// terrain.burnDamage > 0` for the opposite case (a creature that wants
 	// hot water); this comp wants the complement.

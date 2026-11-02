@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BIOME_TIER_CLEANUP_1 (2026-11-02): the free biome mods' own RUT_-prefixed defs were renamed RM_ in place
+  (moving them to the campaign layer would strip the free biomes of their own content; Sump note and Fever Wood
+  card 2026-10-02 in the item). A save holding an old name loads it as the RM_ def through RM_DefAliasDef
+  (RM_DefAliases.cs). Renamed C# classes (a saved MapComponent, LordJob, plant) follow through the type alias
+  in the same file. Only def types a save can hold are listed (no GenStep, Sound, ThinkTree or lottery-table
+  rows). AssailantSalvage keeps RUT_: it is a mandrake.rut mod.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_BiomeTierCleanupAliases</defName>
+    <aliases>
+      <li><from>RUT_Scald</from><to>RM_Scald</to><defType>DamageDef</defType></li>
+      <li><from>RUT_GradientSurge</from><to>RM_GradientSurge</to><defType>GameConditionDef</defType></li>
+      <li><from>RUT_MiasmaWeatherLock</from><to>RM_MiasmaWeatherLock</to><defType>GameConditionDef</defType></li>
+      <li><from>RUT_ScaldSteamCarrier</from><to>RM_ScaldSteamCarrier</to><defType>GameConditionDef</defType></li>
+      <li><from>RUT_ScaldSteamLock</from><to>RM_ScaldSteamLock</to><defType>GameConditionDef</defType></li>
+      <li><from>RUT_SumpDuskLock</from><to>RM_SumpDuskLock</to><defType>GameConditionDef</defType></li>
+      <li><from>RUT_FeverForged_Painworn</from><to>RM_FeverForged_Painworn</to><defType>HediffDef</defType></li>
+      <li><from>RUT_FeverForged_Saltblood</from><to>RM_FeverForged_Saltblood</to><defType>HediffDef</defType></li>
+      <li><from>RUT_FeverForged_Toughskin</from><to>RM_FeverForged_Toughskin</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_Animal_Flu</from><to>RM_HardenedImmunity_Animal_Flu</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_Animal_Plague</from><to>RM_HardenedImmunity_Animal_Plague</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_Flu</from><to>RM_HardenedImmunity_Flu</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_Malaria</from><to>RM_HardenedImmunity_Malaria</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_Plague</from><to>RM_HardenedImmunity_Plague</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_SleepingSickness</from><to>RM_HardenedImmunity_SleepingSickness</to><defType>HediffDef</defType></li>
+      <li><from>RUT_HardenedImmunity_WoundInfection</from><to>RM_HardenedImmunity_WoundInfection</to><defType>HediffDef</defType></li>
+      <li><from>RUT_MiasmaExposure</from><to>RM_MiasmaExposure</to><defType>HediffDef</defType></li>
+      <li><from>RUT_Miasma_FeverTempered</from><to>RM_Miasma_FeverTempered</to><defType>HediffDef</defType></li>
+      <li><from>RUT_Miasma_LoamLunged</from><to>RM_Miasma_LoamLunged</to><defType>HediffDef</defType></li>
+      <li><from>RUT_Miasma_MotherDreamed</from><to>RM_Miasma_MotherDreamed</to><defType>HediffDef</defType></li>
+      <li><from>RUT_Miasma_SaltBlooded</from><to>RM_Miasma_SaltBlooded</to><defType>HediffDef</defType></li>
+      <li><from>RUT_Miasma_SwarmMarked</from><to>RM_Miasma_SwarmMarked</to><defType>HediffDef</defType></li>
+      <li><from>RUT_ScaldExposure</from><to>RM_ScaldExposure</to><defType>HediffDef</defType></li>
+      <li><from>RUT_StrandedDeformation</from><to>RM_StrandedDeformation</to><defType>HediffDef</defType></li>
+      <li><from>RUT_FeverWood_MirrorBreak</from><to>RM_FeverWood_MirrorBreak</to><defType>IncidentDef</defType></li>
+      <li><from>RUT_Surge</from><to>RM_Surge</to><defType>IncidentDef</defType></li>
+      <li><from>RUT_TarPitBelch</from><to>RM_TarPitBelch</to><defType>IncidentDef</defType></li>
+      <li><from>RUT_WalkerSurfacing</from><to>RM_WalkerSurfacing</to><defType>IncidentDef</defType></li>
+      <li><from>RUT_BoughSoil</from><to>RM_BoughSoil</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_Boughway</from><to>RM_Boughway</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_FeverWoodMirrorPool</from><to>RM_FeverWoodMirrorPool</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldMargin</from><to>RM_ScaldMargin</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldWaterDeep</from><to>RM_ScaldWaterDeep</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldWaterMovingChestDeep</from><to>RM_ScaldWaterMovingChestDeep</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldWaterMovingShallow</from><to>RM_ScaldWaterMovingShallow</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldWaterOceanDeep</from><to>RM_ScaldWaterOceanDeep</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldWaterOceanShallow</from><to>RM_ScaldWaterOceanShallow</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_ScaldWaterShallow</from><to>RM_ScaldWaterShallow</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_StiltPlatform</from><to>RM_StiltPlatform</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_TarMoat</from><to>RM_TarMoat</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_TarSpent</from><to>RM_TarSpent</to><defType>TerrainDef</defType></li>
+      <li><from>RUT_BeastBulge</from><to>RM_BeastBulge</to><defType>ThingDef</defType></li>
+      <li><from>RUT_CrecheMarker</from><to>RM_CrecheMarker</to><defType>ThingDef</defType></li>
+      <li><from>RUT_DigShaft</from><to>RM_DigShaft</to><defType>ThingDef</defType></li>
+      <li><from>RUT_FeverTrunkCore</from><to>RM_FeverTrunkCore</to><defType>ThingDef</defType></li>
+      <li><from>RUT_FeverTrunkHeartwood</from><to>RM_FeverTrunkHeartwood</to><defType>ThingDef</defType></li>
+      <li><from>RUT_FeverWood_MirrorList</from><to>RM_FeverWood_MirrorList</to><defType>ThingDef</defType></li>
+      <li><from>RUT_Filth_MouseTrack</from><to>RM_Filth_MouseTrack</to><defType>ThingDef</defType></li>
+      <li><from>RUT_FoundrySalvageCache</from><to>RM_FoundrySalvageCache</to><defType>ThingDef</defType></li>
+      <li><from>RUT_LampBlack</from><to>RM_LampBlack</to><defType>ThingDef</defType></li>
+      <li><from>RUT_MoatFusePost</from><to>RM_MoatFusePost</to><defType>ThingDef</defType></li>
+      <li><from>RUT_PreservedDrawJoint</from><to>RM_PreservedDrawJoint</to><defType>ThingDef</defType></li>
+      <li><from>RUT_ScaldVent</from><to>RM_ScaldVent</to><defType>ThingDef</defType></li>
+      <li><from>RUT_ScaldWreckFrame</from><to>RM_ScaldWreckFrame</to><defType>ThingDef</defType></li>
+      <li><from>RUT_ScaldWreckHull</from><to>RM_ScaldWreckHull</to><defType>ThingDef</defType></li>
+      <li><from>RUT_ScaldWreckTank</from><to>RM_ScaldWreckTank</to><defType>ThingDef</defType></li>
+      <li><from>RUT_SteamCatch</from><to>RM_SteamCatch</to><defType>ThingDef</defType></li>
+      <li><from>RUT_MiasmaWeather</from><to>RM_MiasmaWeather</to><defType>WeatherDef</defType></li>
+      <li><from>RUT_ScaldSteam</from><to>RM_ScaldSteam</to><defType>WeatherDef</defType></li>
+      <li><from>RUT_SumpWeather</from><to>RM_SumpWeather</to><defType>WeatherDef</defType></li>
+      <li><from>RUT_SurgeWeather</from><to>RM_SurgeWeather</to><defType>WeatherDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

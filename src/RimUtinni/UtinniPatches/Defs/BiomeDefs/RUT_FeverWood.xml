@@ -130,28 +130,28 @@
            GenStep's own default (RoofDefOf.RoofRockThick) applies, same as
            Greentide. -->
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
-        <heartwoodThing>RUT_FeverTrunkHeartwood</heartwoodThing>
-        <coreMarkerThing>RUT_FeverTrunkCore</coreMarkerThing>
+        <heartwoodThing>RM_FeverTrunkHeartwood</heartwoodThing>
+        <coreMarkerThing>RM_FeverTrunkCore</coreMarkerThing>
         <boleCountRange>1~2</boleCountRange>
         <boleRadius>4~6</boleRadius>
         <minSpacing>30</minSpacing>
         <edgeMargin>12</edgeMargin>
       </li>
       <!-- F6: the boughway network. Primary profile is the elevated
-           network (RUT_Boughway); additionalPasses carries the "ground
+           network (RM_Boughway); additionalPasses carries the "ground
            causeway... same GenStep's second pass" from the kit spec's own
            text (RUT_RootCauseway, reused verbatim from the sibling kit
            rather than a second terrain def — same "one def, reused
-           cross-kit" shape RUT_Scald already set), narrower/shorter/fewer
+           cross-kit" shape RM_Scald already set), narrower/shorter/fewer
            per anchor so it reads as the modest, cheap-to-walk alternative
            rather than a second full network. FEVERWOOD_BOUGH_SOIL_TERRAIN_1
-           build: a third pass (RUT_BoughSoil) was added below, same
+           build: a third pass (RM_BoughSoil) was added below, same
            machinery, painting fertile crown soil along that same anchor
            set — see its own comment on the <li> for why. basinTerrains on
            ALL THREE passes is Fever Wood's own two buildable ground
            terrains (terrainsByFertility above) — an ALLOWLIST that doubles
            as the water-avoidance answer to the spec's own ❓, see
-           RUT_Boughway.xml's own header for the full resolution (map-gen
+           RM_Boughway.xml's own header for the full resolution (map-gen
            SetTerrain has no Bridgeable-style gate to reuse in the first
            place; routing around the registered pools is the honest fix,
            not a drawn-fiction bridge). No basin hazard of its own to route
@@ -162,8 +162,8 @@
            minimum spacing between them, never a single large landmark-sized
            pool" — see RM_MirrorPoolBiomeExtension.cs's own field docs for how
            poolCountRange/poolRadiusRange encode that. poolTerrain is the F1
-           TerrainDef itself (RUT_FeverWoodMirrorPool.xml), which already
-           carries RM_LurkingWaterExtension — RUT_MapComponent_TheTenant scans
+           TerrainDef itself (RM_FeverWoodMirrorPool.xml), which already
+           carries RM_LurkingWaterExtension — RM_MapComponent_TheTenant scans
            the terrain grid for that extension directly, so painting this
            terrain is the whole wiring; no marker Thing or pool-identity list
            is needed. Ordered (RUT_FeverWood_ScatterPoolsGenStep.xml, order
@@ -171,10 +171,10 @@
            causeways' basinTerrains allowlist below correctly routes around
            real pool cells. -->
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
-        <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
+        <poolTerrain>RM_FeverWoodMirrorPool</poolTerrain>
       </li>
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
-        <causewayTerrain>RUT_Boughway</causewayTerrain>
+        <causewayTerrain>RM_Boughway</causewayTerrain>
         <basinTerrains>
           <li>Soil</li>
           <li>SoilRich</li>
@@ -209,9 +209,9 @@
                Soil/SoilRich allowlist the two passes above already use —
                reusing the exact same list (not a new one) is what keeps
                the pool-exclusion property intact per the item's own
-               warning: cells already converted to RUT_Boughway/
+               warning: cells already converted to RM_Boughway/
                RUT_RootCauseway by the two earlier passes, or painted
-               RUT_FeverWoodMirrorPool by F1, are no longer Soil/SoilRich
+               RM_FeverWoodMirrorPool by F1, are no longer Soil/SoilRich
                by the time this pass runs and so are automatically
                skipped — no lane or pool is ever overwritten.
                laneWidthRange/pathsPerAnchorRange wider than the boughway
@@ -222,9 +222,9 @@
                an ENGINEERING DEFAULT — the item file's own "open, and NOT
                to be guessed" section: cell-selection footprint is UNSET
                by the owner. Flag for live tuning together with
-               RUT_BoughSoil.xml's own fertility value. -->
+               RM_BoughSoil.xml's own fertility value. -->
           <li>
-            <causewayTerrain>RUT_BoughSoil</causewayTerrain>
+            <causewayTerrain>RM_BoughSoil</causewayTerrain>
             <basinTerrains>
               <li>Soil</li>
               <li>SoilRich</li>

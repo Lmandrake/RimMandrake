@@ -25,7 +25,7 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_Thessamor</defName>
     <label>thessamor</label>
-    <description>A mangal tree whose trunk never touches the water — it begins a full metre up, carried on a splayed cage of prop-roots you can see straight through. Below the tide-mark the bark is wet black and polished; above it, grey-green and furred with a white salt rime it has sweated out, which flakes when touched. The crown is broad, low and permanently dripping. This is the stilt-root maze itself: the biome's structural unit, its architecture, and the nursery cage of everything the Grey Sea still keeps.</description>
+    <description>A mangal tree whose trunk never touches the water — it begins a full metre up, carried on a splayed cage of prop-roots you can see straight through. Below the tide-mark the bark is wet black and polished; above it, grey-green and furred with a white salt rime it has sweated out, which flakes when touched. The crown is broad, low and permanently dripping. This is the stilt-root maze itself: the biome's structural unit, its architecture, and the nursery cage of everything the dying sea beyond it still keeps.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Thessamor/RM_Thessamor_a</texPath>
       <graphicClass>Graphic_Random</graphicClass>

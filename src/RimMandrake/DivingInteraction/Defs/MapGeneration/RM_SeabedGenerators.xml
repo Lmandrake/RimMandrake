@@ -28,8 +28,8 @@
         <baseTerrain>RM_SeaFloorGround</baseTerrain>
         <noiseFrequency>0.08</noiseFrequency>
         <bands>
-          <li><terrain>RUT_ScaldWaterOceanShallow</terrain><share>0.05</share></li>
-          <li><terrain>RUT_ScaldMargin</terrain><share>0.12</share></li>
+          <li><terrain>RM_ScaldWaterOceanShallow</terrain><share>0.05</share></li>
+          <li><terrain>RM_ScaldMargin</terrain><share>0.12</share></li>
         </bands>
       </li>
     </modExtensions>

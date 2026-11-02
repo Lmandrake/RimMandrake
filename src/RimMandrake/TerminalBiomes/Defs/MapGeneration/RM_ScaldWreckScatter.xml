@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWreckScatter.xml        S6 "burning-shallows wreck salvage", the scatter half
+  ============================================================================
+  RUT_ScaldWrecks.xml declares the three salvage buildings; this file places them.
+  SALVAGE_WRECKAGE_EVERYWHERE_1 slice 3 (2026-10-06) moved it onto the shared wreck engine
+  (src/RimMandrake/Wreckage, composed into mandrake.rm.biomes beside this mod): ONE weighted-list
+  RM_GenStep_WreckField replaces the three GenStepDefs that GenStep_ScatterThings' single
+  <thingDef> forced (RUT_Jawa_ScatterScaldWreck{Hull,Tank,Frame}, orders 965-967).
+
+  Gate: settingsKey "Scald" is the per-biome "Wreck field: Scald" checkbox in the Wreckage
+  settings, and TerminalBiomes registers the bare "Scald" gate for its biome switch, so the
+  field also stops when the Scald is off. The old S6 checkbox is folded into it; gateAliases
+  keeps the RM_MechanicGates key "Scald.S6" meaning this field (design §6).
+
+  Terrain: tag-based, as before. Every cell within terrainValidationRadius 2 (a 2x2 footprint
+  plus one ring) must carry RUT_ScaldShallow, which only the three shallow RUT_ScaldWater*
+  terrains carry, so wrecks land only in the Scald's shallow band. allowInWaterBiome true is
+  required: the Scald is a water body. The wrecks' family sets Walkable affordance.
+
+  TUNING, ALL PROVISIONAL. The Scald shallows are the Moderate class (design §3d-i), but
+  countPer10kCellsRange 1.2~1.8 overrides the class's 1.5~3 to keep the shipped ceiling (three
+  steps at 0.4~0.6 each). It is a CEILING on attempts: the terrain tag rejects every cell
+  outside the shallow band, so the realised count is expected well under it. minSpacing 6 now
+  spaces fields of ANY wreck kind (it used to space only same-kind wrecks), and the class's
+  cluster chance lets 2-3 wrecks fall together; real density is owed to a live Scald map.
+  Equal weights, as the three steps had equal ranges.
+
+  order 965: after JawaScrapfields' 960 and after terrain generation, so the RUT_ScaldWater*
+  grid and its tags exist when the validator reads them.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_Scald</defName>
+    <label>Scald</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>Scald</settingsKey>
+      <gateAliases>
+        <li>Scald.S6</li>
+      </gateAliases>
+      <densityClass>RM_WreckDensity_Moderate</densityClass>
+      <wrecks>
+        <RM_ScaldWreckHull>1</RM_ScaldWreckHull>
+        <RM_ScaldWreckTank>1</RM_ScaldWreckTank>
+        <RM_ScaldWreckFrame>1</RM_ScaldWreckFrame>
+      </wrecks>
+      <countPer10kCellsRange>1.2~1.8</countPer10kCellsRange>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+      <terrainValidationRadius>2</terrainValidationRadius>
+      <terrainValidationAllowed>
+        <li>RUT_ScaldShallow</li>
+      </terrainValidationAllowed>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

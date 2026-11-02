@@ -121,9 +121,9 @@ def static_checks():
                 bad.append("class %s not found in RM_CompTarBeast.cs" % cls)
     else:
         bad.append("EnvironmentalHazards/Source/RM_CompTarBeast.cs missing")
-    bx = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RUT_BeastBulge.xml"), encoding="utf-8").read()
+    bx = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_BeastBulge.xml"), encoding="utf-8").read()
     if "<li>RM_TarBeast</li>" not in bx or "Thrumbo</li>" in bx:
-        bad.append("RUT_BeastBulge does not emerge RM_TarBeast (placeholder Thrumbo still wired?)")
+        bad.append("RM_BeastBulge does not emerge RM_TarBeast (placeholder Thrumbo still wired?)")
     # SUMP_NOOTHELM_B_PLANT_1: lanneth is defined, wild in the roster, has its art, and feeds RSW fruit skewers
     for need in ("RM_Lanneth", "RM_RawLanneth"):
         if need not in names_pre():
@@ -153,7 +153,7 @@ def static_checks():
     else:
         bad.append("EnvironmentalHazards/Source/RM_TarSolventPour.cs missing")
     if "CompProperties_BulgeSolventPour" not in bx:
-        bad.append("RUT_BeastBulge carries no CompProperties_BulgeSolventPour")
+        bad.append("RM_BeastBulge carries no CompProperties_BulgeSolventPour")
     else:
         for sd in re.findall(r"<li>(RM_\w*TarSolvent)</li>", bx):
             found = False
@@ -210,18 +210,18 @@ def static_checks():
         bad.append("RM_CapstanTurret_PitRigged must cost RM_Bitumen (tar-glass bearings) and RM_Seepwax (cable packing)")
     # SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1: the row is locked behind studying two draw-joints found in the dig strata
     rp = open(os.path.join(HERE, "Defs", "ResearchProjectDefs", "RM_CapstanTurret.xml"), encoding="utf-8").read()
-    if "<li>RUT_PreservedDrawJoint</li>" not in rp.split("<requiredAnalyzed>")[-1].split("</requiredAnalyzed>")[0]:
-        bad.append("RM_CapstanTurret research does not require studying RUT_PreservedDrawJoint")
-    dj = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "RUT_PreservedDrawJoint.xml")).getroot()
+    if "<li>RM_PreservedDrawJoint</li>" not in rp.split("<requiredAnalyzed>")[-1].split("</requiredAnalyzed>")[0]:
+        bad.append("RM_CapstanTurret research does not require studying RM_PreservedDrawJoint")
+    dj = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_PreservedDrawJoint.xml")).getroot()
     # WEBWORK_TRACTION_LANCE_BUILD_1: the comp is now the vanilla analyzable's grant-research subclass.
     ana = dj.find(".//li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_AnalyzableGrantResearch']")
     if ana is not None and "RM_Research_TractionLance" not in [x.text for x in ana.iter("li")]:
-        bad.append("RUT_PreservedDrawJoint no longer grants RM_Research_TractionLance (the Sump door to the lance)")
+        bad.append("RM_PreservedDrawJoint no longer grants RM_Research_TractionLance (the Sump door to the lance)")
     if ana is None or ana.findtext("analysisRequiredRange") != "2~2" or ana.findtext("destroyedOnAnalyzed") != "true":
-        bad.append("RUT_PreservedDrawJoint must be analyzable twice and consumed (spec: two preserved draw-joints)")
-    lot = ET.parse(os.path.join(HERE, "Defs", "LotteryTableDefs", "RUT_DigStratumTable.xml")).getroot()
-    if not any(r.findtext("thingDef") == "RUT_PreservedDrawJoint" for r in lot.iter("li")):
-        bad.append("RUT_DigStratumTable never yields RUT_PreservedDrawJoint")
+        bad.append("RM_PreservedDrawJoint must be analyzable twice and consumed (spec: two preserved draw-joints)")
+    lot = ET.parse(os.path.join(HERE, "Defs", "LotteryTableDefs", "RM_DigStratumTable.xml")).getroot()
+    if not any(r.findtext("thingDef") == "RM_PreservedDrawJoint" for r in lot.iter("li")):
+        bad.append("RM_DigStratumTable never yields RM_PreservedDrawJoint")
     # SUMP_FREE_TIER_MOVE_BUILD_1: the tar kit ships in this free mod, never in the campaign tier
     moved = ("RM_Tarred", "RM_TarredThought", "RM_WeakTarSolvent", "RM_StrongTarSolvent", "RM_ThrummelSeepwax",
              "RM_TarRuinedGoods", "RM_TarVault", "RM_GaslightLamp", "RM_TarGas", "RM_Duckboards", "RM_Glasswalk",
@@ -438,16 +438,16 @@ def _build_suite():
     def map_mechanics(t):
         with t.component("deep_black_mere_generated", toggle="deepBlackMereEnabled"):
             if _live(t):
-                _unmeasured(t, 'a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve')
+                _unmeasured(t, 'a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RM_GenStep_DeepBlackMere) resolves in defs_resolve')
         with t.component("biome_rarity_worldgen", toggle="biomeRarityFactor"):
             if _live(t):
                 _unmeasured(t, 'rarity changes only planets generated afterwards; the world is frozen and the bridge cannot generate one')
         with t.component("poured_tar_moat_and_fuse_post", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'the moat ignition needs RUT_MoatFusePost, which needs a built post, a poured moat and a fire (not yet measured live)')
+                _unmeasured(t, 'the moat ignition needs RM_MoatFusePost, which needs a built post, a poured moat and a fire (not yet measured live)')
         with t.component("dig_shaft_stratum_lottery", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'RUT_DigShaft and RUT_DigStratumTable deploy and resolve, but the lottery draw needs a built shaft, a worker and ticks on a Sump map')
+                _unmeasured(t, 'RM_DigShaft and RM_DigStratumTable deploy and resolve, but the lottery draw needs a built shaft, a worker and ticks on a Sump map')
         with t.component("tar_beast_bulge_set_piece", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'bulge -> wake (damage, construction, dig shaft, running deep drill) -> RM_TarBeast crawls to the densest building cluster, swallows one (mound + letter), lays tar, sinks into a new bulge: needs a Sump map and a wake; FIRST LIVE POKE: hit the bulge, step ticks, read RM_CompTarBeast/RM_CompStationEater via jawa/comp_read')
@@ -456,10 +456,10 @@ def _build_suite():
                 _unmeasured(t, 'pour order on a dormant bulge: carry RM_WeakTarSolvent (min count in settings) to the edge, pour -> bulge gone, one RM_TarBeast spawned in ManhunterPermanent, solvent consumed, Shkaar+Zizzik delta tagged "the tar woken by solvent"; control: no order offered without solvent; manhunter setting off -> ordinary eating beast. FIRST LIVE POKE: spawn bulge + solvent on a Sump map, issue the pour job, step ticks, read mental state (jawa/comp_read RM_CompTarBeast) and Ninefold satiation'.replace(chr(39), chr(34)))
         with t.component("sump_mouse_filth_trail", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'RUT_Filth_MouseTrack needs a sump mouse walking on tar (not yet measured live)')
+                _unmeasured(t, 'RM_Filth_MouseTrack needs a sump mouse walking on tar (not yet measured live)')
         with t.component("permanent_dusk_lock", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'RUT_SumpDuskLock/RUT_SumpWeather resolve, but their wiring patch targets the BiomeDef; the lock holding the sky at dusk needs an RM_TheSump map')
+                _unmeasured(t, 'RM_SumpDuskLock/RM_SumpWeather resolve, but their wiring patch targets the BiomeDef; the lock holding the sky at dusk needs an RM_TheSump map')
 
     @suite.chain("capstan_turret")
     def capstan_turret(t):

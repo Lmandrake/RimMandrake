@@ -4,9 +4,9 @@
   RUT_ScaldSteamLock_BiomeWiring.xml     UtinniPatches · authored 2026-09-13
   ============================================================================
   SCALD_MECHANICS_1 build pass, S1. Wires the permanent steam lock
-  (Defs/GameConditionDefs/RUT_ScaldSteamLock.xml) onto RUT_TheScald as a
+  (Defs/GameConditionDefs/RM_ScaldSteamLock.xml) onto RUT_TheScald as a
   PATCH rather than a direct edit to RUT_TheScald.xml's own
-  biomeMapConditions field — RUT_ScaldSteamLock only exists when
+  biomeMapConditions field — RM_ScaldSteamLock only exists when
   mandrake.rm.environmentalhazards is active (MayRequire-gated def), so a
   bare <li> baked directly into the BiomeDef would be a dangling
   cross-reference the moment that mod is absent. Gate: PatchOperationFindMod
@@ -35,7 +35,7 @@
         <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
         <value>
           <biomeMapConditions>
-            <li>RUT_ScaldSteamLock</li>
+            <li>RM_ScaldSteamLock</li>
           </biomeMapConditions>
         </value>
       </nomatch>

@@ -24,7 +24,7 @@ import moddefs_lint as ml  # noqa: E402
 MOD = os.path.join(ml.SRC, "RimMandrake", "Miasma")
 LEDGER_LABELS = {"young": "registeredYoung", "recordClean": "recordClean", "heir": "heirPawn", "successionDone": "successionDone", "betrayed": "betrayed", "returnedCount": "returnedCount"}
 HELPER_CALL = re.compile(r'\b(?:Get|Call)\(\s*[^;"]*?,\s*"(\w+)"\s*\)')
-NAMED_DEFS = ["RUT_StrandedDeformation", "RUT_CrecheMarker", "RM_WardenMother", "RM_OldCurrentMeter", "RM_DeltaLoam", "RM_Bones", "RM_Attar", "RM_GlazeArtwork",
+NAMED_DEFS = ["RM_StrandedDeformation", "RM_CrecheMarker", "RM_WardenMother", "RM_OldCurrentMeter", "RM_DeltaLoam", "RM_Bones", "RM_Attar", "RM_GlazeArtwork",
               "RM_BalmScar", "RM_MakeAttar", "RM_AttarStill", "RM_Bozzuga", "RM_Thessamor", "RM_Brelloch", "RM_Thrannock", "RM_Quennath"]
 
 

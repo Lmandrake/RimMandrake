@@ -6,16 +6,16 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // SUMP_MECHANICS_1 S4 (sump_kit_spec.md S4, "mouse-line telegraphy").
     // Generic per-map avoid-cell set built from REGISTERED dread sources —
-    // deliberately NOT a hardcoded RUT_BeastBulge scan (the spec's own
+    // deliberately NOT a hardcoded RM_BeastBulge scan (the spec's own
     // text: "generic — any Patient-family map presence can register").
     // CompProperties_DreadSource/RM_CompDreadSource below is the whole
     // registration interface: any future dread source (a different
     // Patient-family set-piece, per the spec's own cross-reference to
     // sarlacc_spec.md / the Fever Wood) attaches the comp via its own def
-    // or a patch and needs no defName-specific code here. RUT_BeastBulge
+    // or a patch and needs no defName-specific code here. RM_BeastBulge
     // (S3, already shipped) is wired onto this MapComponent this pass via
-    // RUT_BeastBulge_DreadRegistration.xml — a PATCH, not an edit to
-    // RUT_BeastBulge.xml itself, per this pass's own "do not touch S3"
+    // RM_BeastBulge_DreadRegistration.xml — a PATCH, not an edit to
+    // RM_BeastBulge.xml itself, per this pass's own "do not touch S3"
     // scope.
     //
     // Field shape cribbed from RM_MapComponent_VaporColumns
@@ -122,7 +122,7 @@ namespace RimMandrake.EnvironmentalHazards
     }
 
     //   <ThingDef ParentName="BuildingNaturalBase">
-    //     <defName>RUT_BeastBulge</defName>
+    //     <defName>RM_BeastBulge</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_CompDreadSource">

@@ -166,7 +166,7 @@ namespace JawaBench.BridgeTools
                 "(ThingDef RM_FluidCanalFlood) at a cell, Configure()d with a named FluidDef " +
                 "and a volume, exactly the three calls (ThingMaker.MakeThing -> Configure -> " +
                 "GenSpawn.Spawn) SUMP_TAR_FIRE_NETWORK_1 part 2 added to " +
-                "RUT_IncidentWorker_TarPitBelch.TryExecuteWorker. Built to live-prove that " +
+                "RM_IncidentWorker_TarPitBelch.TryExecuteWorker. Built to live-prove that " +
                 "sequence (and FluidDef.coolsToGlassEdge/Flood_FlowWorks.CoolFrontToGlass, " +
                 "which neither the offline FlowWorks selftest nor any existing live caller " +
                 "ever exercised - grep the source, nothing spawns RM_FluidCanalFlood before " +

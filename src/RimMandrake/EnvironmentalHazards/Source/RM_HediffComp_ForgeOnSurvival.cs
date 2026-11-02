@@ -22,8 +22,8 @@ namespace RimMandrake.EnvironmentalHazards
     //         <minPeakSeverity>0.6</minPeakSeverity>
     //         <noBoonWeight>55</noBoonWeight>
     //         <boonOptions>
-    //           <li><hediff>RUT_HardenedImmunity_Plague</hediff><weight>30</weight></li>
-    //           <li><hediff>RUT_FeverForged_Toughskin</hediff><weight>14</weight></li>
+    //           <li><hediff>RM_HardenedImmunity_Plague</hediff><weight>30</weight></li>
+    //           <li><hediff>RM_FeverForged_Toughskin</hediff><weight>14</weight></li>
     //         </boonOptions>
     //       </li>
     //     </comps>

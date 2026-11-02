@@ -48,14 +48,14 @@ namespace RimMandrake.EnvironmentalHazards
     // base RimWorld/JobGiver_AIFightEnemy.cs:42,47 — a real, overridable
     // seam, not a guess. This comp reproduces the same PawnDuty wiring
     // generically (the anchor is whatever Thing SetAnchor() is given —
-    // RUT_CrecheMarker in the full build — rather than a Hive), and
+    // RM_CrecheMarker in the full build — rather than a Hive), and
     // RM_JobGiver_AnchorDefense / RM_JobGiver_AnchorWander below crib the
     // two vanilla JobGivers' overrides exactly.
     //
     // SPIKE SCOPE: this proves the comp + JobGiver seam compiles and
     // matches the confirmed vanilla pattern. NOT done here, owed to M6's
     // full build: the RM_GenStep_PlacedSetPieces scatterer, the
-    // RUT_CrecheMarker building, and wiring a ThinkTreeDef for
+    // RM_CrecheMarker building, and wiring a ThinkTreeDef for
     // RUT_WardenMother that actually calls these two JobGivers (a
     // PawnKindDef/ThinkTreeDef content decision, not an engine-fact
     // question this spike needs to resolve). Absent an explicit
@@ -211,7 +211,7 @@ namespace RimMandrake.EnvironmentalHazards
         // this (Verse/ThingComp.cs — distinct from PostDestroy, which also
         // fires on ordinary despawn/vanish; this one fires only when
         // Pawn.Kill() actually kills the parent). Deliberately generic:
-        // this class never references RUT_CrecheMarker or any Miasma type
+        // this class never references RM_CrecheMarker or any Miasma type
         // by name — it only notifies whatever comps the anchor Thing
         // itself carries that opt in via IRM_AnchorDeathListener, so
         // Sump's own future anchored set-piece (S3, same shared
@@ -238,7 +238,7 @@ namespace RimMandrake.EnvironmentalHazards
     // The generic death-notification contract RM_CompTerritorialAnchor
     // calls on whatever Thing it is anchored to (see Notify_Killed above).
     // Kept independent of any specific marker class so this file — the
-    // shared anchor mechanism — never needs to know RUT_CrecheMarker (or
+    // shared anchor mechanism — never needs to know RM_CrecheMarker (or
     // any future Sump equivalent) exists.
     public interface IRM_AnchorDeathListener
     {

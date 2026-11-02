@@ -7,15 +7,15 @@ it with Windows python, on a throwaway quicktest colony on a list holding mandra
     python.exe src/RimMandrake/TerminalBiomes/proof_scald_steam.py rejudge <out.json>       judge a finished run again
 
 setup: a real surface RM_TheScald map on a warm tile (jawa/world_tile_map_generate, so the biome itself wires
-RUT_ScaldSteamLock and RUT_ScaldSteamCarrier; a quicktest home map is a foreign biome with its own weather lock and
+RM_ScaldSteamLock and RM_ScaldSteamCarrier; a quicktest home map is a foreign biome with its own weather lock and
 wildlife, which stopped the clock and killed the test pawns). Two naked colonists, one in RM_Apparel_RindCoat and one in
-the boil-suit stand on land, each ringed by an unroofed wall; RM_Noohm, RM_Shulla and a control Muffalo stand in RUT_ScaldWaterShallow. Deaths are judged
+the boil-suit stand on land, each ringed by an unroofed wall; RM_Noohm, RM_Shulla and a control Muffalo stand in RM_ScaldWaterShallow. Deaths are judged
 from the damage log's kill events, never from sampled severity (samples sit 6000+ ticks apart).
 run: a naked pawn dies under 120000 ticks (two days, the owner's card). The open sky also gives it Direct Sun
 Heatstroke, and the stacked capacity losses kill it before exposure reaches 1.0, so the kill log credits whichever
-slow hediff tipped it (seen: RUT_ScaldExposure, Malnutrition): that row asks only for a death by no wound with the
+slow hediff tipped it (seen: RM_ScaldExposure, Malnutrition): that row asks only for a death by no wound with the
 clock already past 0.7. The row that isolates the steam is naked_nosun: its Heatstroke is removed at every sample and
-its kill must name RUT_ScaldExposure. The rind wearer lives the two days, the boil-suit wearer comes through a full day at
+its kill must name RM_ScaldExposure. The rind wearer lives the two days, the boil-suit wearer comes through a full day at
 stage 0 or 1, natives carry neither burns nor exposure while logged standing in boiling water, and the control carries
 a real Burn (it then usually drowns: burns down it and a downed pawn drowns in shallows, the swim rule's design).
 Other pawns are removed at setup and on every sample, so no stray predator decides a row. run resumes: call it again
@@ -90,7 +90,7 @@ def setup():
     call(c, "jawa/set_roof_batch", ops="None:0,0,100,100")
     call(c, "jawa/destroy_batch", rects="20,30,40,20;20,55,40,30", categories="Plant,Item,Building,Filth")
     call(c, "jawa/set_terrain", x=20, z=30, terrainDef="Soil", width=40, height=20)
-    call(c, "jawa/set_terrain", x=20, z=55, terrainDef="RUT_ScaldWaterShallow", width=40, height=30)
+    call(c, "jawa/set_terrain", x=20, z=55, terrainDef="RM_ScaldWaterShallow", width=40, height=30)
     roster = {
         "naked": spawn(c, "Colonist", 30, 40, "player"),
         "rind": spawn(c, "Colonist", 36, 40, "player"),
@@ -113,9 +113,9 @@ def setup():
         call(c, "jawa/set_draft", pawnId=roster[k], drafted=True)
     t0 = call(c, "rimworld/get_game_info")["ticksGame"]
     clear_strays(c, roster)
-    # The ruling is two days OF STEAM. A still day (RUT_ScaldSteamLock's Clear burst) stops the clock by design, and
+    # The ruling is two days OF STEAM. A still day (RM_ScaldSteamLock's Clear burst) stops the clock by design, and
     # one landing inside the window left the naked pawn alive at 0.87 and falling: hold the steam for the whole run.
-    print(str(call(c, "jawa/weather_set", weather="RUT_ScaldSteam", lockWeather=True))[:120])
+    print(str(call(c, "jawa/weather_set", weather="RM_ScaldSteam", lockWeather=True))[:120])
     call(c, "jawa/damage_log", action="clear")
     json.dump({"roster": roster, "t0": t0}, open(STATE, "w"))
     print(json.dumps(roster))
@@ -194,23 +194,23 @@ def judge(out, log, died, kills, roster, t0):
     has = lambda r, name: any(h[0] == name for h in r.get("hediffs", []))  # noqa: E731
     kill = {k: next((e for e in kills if str(e.get("victimId")).replace("Thing_", "") == str(pid).replace("Thing_", "")), None)
             for k, pid in roster.items()}
-    exposure = [h[1] for r in log for h in r["naked"]["hediffs"] if h[0] == "RUT_ScaldExposure"]
+    exposure = [h[1] for r in log for h in r["naked"]["hediffs"] if h[0] == "RM_ScaldExposure"]
     in_water = {k: [r[k].get("terrain") for r in log if not r[k].get("dead")] for k in NATIVES}
     wet = lambda k: sum(str(t).startswith("RUT_ScaldWater") for t in in_water[k])  # noqa: E731
-    steam = sum(b["tick"] - a["tick"] for a, b in zip(log, log[1:]) if a["weather"] == "RUT_ScaldSteam")
+    steam = sum(b["tick"] - a["tick"] for a, b in zip(log, log[1:]) if a["weather"] == "RM_ScaldSteam")
     v = {
         "steam_held": steam >= 0.9 * last["tick"],
         "naked_dies_under_2d": bool(kill["naked"]) and kill["naked"]["tick"] - t0 < 2 * DAY
         and not kill["naked"].get("damageDef") and max(exposure, default=0) > 0.7,
         "steam_alone_kills_under_2d": bool(kill["naked_nosun"]) and kill["naked_nosun"]["tick"] - t0 < 2 * DAY
-        and kill["naked_nosun"].get("culpritHediff") == "RUT_ScaldExposure",
+        and kill["naked_nosun"].get("culpritHediff") == "RM_ScaldExposure",
         "rind_survives": died.get("rind", 2 * DAY + 1) > 2 * DAY and last["tick"] >= 2 * DAY,
         # The spec's own bar (section 8 step 5): a full day out, still at stage 0 or 1. Heatstroke is the sun's, not the
         # steam's, and runs on past a day in the open, so a suit wearer needs a roof at night like anyone.
         "boilsuit_full_day": died.get("boilsuit", 2 * DAY) > DAY and all(
             h[1] < 0.35 for r in log if r["tick"] <= DAY and not r["boilsuit"].get("dead")
-            for h in r["boilsuit"]["hediffs"] if h[0] == "RUT_ScaldExposure"),
-        "natives_no_burn_no_exposure": not any(has(r[k], "Burn") or has(r[k], "RUT_ScaldExposure")
+            for h in r["boilsuit"]["hediffs"] if h[0] == "RM_ScaldExposure"),
+        "natives_no_burn_no_exposure": not any(has(r[k], "Burn") or has(r[k], "RM_ScaldExposure")
                                                for r in log for k in NATIVES),
         # Half the samples in boiling water, or the row above could pass on a native that walked ashore.
         "natives_stood_in_boil": all(wet(k) >= max(5, len(in_water[k]) / 2) for k in NATIVES),

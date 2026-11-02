@@ -4,10 +4,10 @@
 
   Places RUT_SentinelGraveWard on the map and closes the "OWED, NOT BUILT:
   faction assignment" gap that ThingDef's own header flagged — see
-  RUT_GenStep_ScatterSentinelGraveWards.cs (src/RimMandrake/EnvironmentalHazards/
+  RM_GenStep_ScatterSentinelGraveWards.cs (src/RimMandrake/EnvironmentalHazards/
   Source/) for the full mechanism note. Without this GenStepDef the grave-ward
   was never placed on any real map at all: the building def existed, and
-  RUT_LordJob_SentinelDefend/RUT_SentinelDefend existed, but nothing ever
+  RM_LordJob_SentinelDefend/RUT_SentinelDefend existed, but nothing ever
   spawned the building, so the whole §4 Sentinel mechanic was dead content.
 
   order 960: just after RUT_ScarlandsSprungDangers' own 955 (dressing scatter)
@@ -30,7 +30,7 @@
   <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ScarlandsGraveWardScatter</defName>
     <order>960</order>
-    <genStep Class="RimMandrake.EnvironmentalHazards.RUT_GenStep_ScatterSentinelGraveWards">
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_ScatterSentinelGraveWards">
       <thingDef>RUT_SentinelGraveWard</thingDef>
       <chancePerMap>0.15</chancePerMap>
       <countRange>1~1</countRange>

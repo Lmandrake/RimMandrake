@@ -14,13 +14,13 @@ namespace RimMandrake.EnvironmentalHazards
     //
     // What counts as a column source (generic, not Forge-hardcoded):
     //   - any spawned RimWorld.Building_SteamGeyser (native steam geysers,
-    //     and this repo's own SCALD_MECHANICS_1 clone RUT_ScaldVent, which
+    //     and this repo's own SCALD_MECHANICS_1 clone RM_ScaldVent, which
     //     shares that thingClass verbatim per its own header) — a real vent;
     //   - any spawned Thing carrying CompActiveGasEmitter — the ruled
     //     kit's harmless-gas emitter reuse the F3 spec's own text names
     //     ("The vent props themselves are the ruled RM_CompActiveGasEmitter
     //     reuse ... zero new emitter C#"); no Forge vent content uses this
-    //     comp yet (checked this pass — RUT_ScaldVent's own header explicitly
+    //     comp yet (checked this pass — RM_ScaldVent's own header explicitly
     //     says it does NOT, that was a stale brief-vs-spec correction on a
     //     different item), so this is forward-looking, not dead code;
     //   - any terrain cell flagged dangerous+avoidWander — the exact two

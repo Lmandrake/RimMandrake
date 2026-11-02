@@ -114,18 +114,18 @@
          for the full field-by-field rationale; not repeated here. -->
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
-        <heartwoodThing>RUT_FeverTrunkHeartwood</heartwoodThing>
-        <coreMarkerThing>RUT_FeverTrunkCore</coreMarkerThing>
+        <heartwoodThing>RM_FeverTrunkHeartwood</heartwoodThing>
+        <coreMarkerThing>RM_FeverTrunkCore</coreMarkerThing>
         <boleCountRange>1~2</boleCountRange>
         <boleRadius>4~6</boleRadius>
         <minSpacing>30</minSpacing>
         <edgeMargin>12</edgeMargin>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
-        <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
+        <poolTerrain>RM_FeverWoodMirrorPool</poolTerrain>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
-        <causewayTerrain>RUT_Boughway</causewayTerrain>
+        <causewayTerrain>RM_Boughway</causewayTerrain>
         <basinTerrains>
           <li>Soil</li>
           <li>SoilRich</li>
@@ -149,7 +149,7 @@
             <turnChancePerStep>0.3</turnChancePerStep>
           </li>
           <li>
-            <causewayTerrain>RUT_BoughSoil</causewayTerrain>
+            <causewayTerrain>RM_BoughSoil</causewayTerrain>
             <basinTerrains>
               <li>Soil</li>
               <li>SoilRich</li>

@@ -29,7 +29,7 @@ namespace RimMandrake.EnvironmentalHazards
     // this kit already follows elsewhere (RUT_ScaldMarginMat vs the generic
     // Water tag): RM_WaterAgitationLight (occasional ripples) and
     // RM_WaterAgitationHeavy (near-constant ripples). The Scald's margin
-    // ring (RUT_ScaldMargin) carries neither, staying calm per the owner's
+    // ring (RM_ScaldMargin) carries neither, staying calm per the owner's
     // own three-way split.
     //
     // ── 2026-09-26 REWRITE (SCALD_WATER_AGITATION_FLECKS_1) ───────────────

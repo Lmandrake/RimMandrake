@@ -28,8 +28,8 @@
   ⚠️ EVERY PROTECTION NUMBER HERE IS INVENTED and taken from the spec's
   §5 table. Protection is ONE stat, vanilla ArmorRating_Heat
   (SCALD_FOLD_INTO_HEAT_1, decision taken by question card 2026-10-08: one
-  kind of heat). It blocks RUT_Scald hits and the wading burn as armor,
-  and RUT_ScaldExposure's clock sums it over worn apparel, clamps the sum
+  kind of heat). It blocks RM_Scald hits and the wading burn as armor,
+  and RM_ScaldExposure's clock sums it over worn apparel, clamps the sum
   to 1 and floors the clock at 8% (`minDriveFactor`). So Ban 3 of the
   frozen sheet ("no boiling-immune traversal for free") holds
   structurally: boil-suit alone 0.85 -> clock at 15%; anything that sums

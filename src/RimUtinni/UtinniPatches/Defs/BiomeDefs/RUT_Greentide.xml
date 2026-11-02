@@ -40,7 +40,7 @@
     absurd — not a named ban, a thematic call). GrayPall/Overcast (both
     MayRequire-gated) zeroed to 0 — the Roil lock's permanent ForcedWeather()
     already makes every baseWeatherCommonalities entry on this def inert (same
-    posture RUT_MiasmaWeatherLock.xml's own header already documents for its
+    posture RM_MiasmaWeatherLock.xml's own header already documents for its
     sibling biome); kept at 0 rather than removed so the slots stay visible.
 
     GREENTIDE_BASE_PORT_BUILD_1: the Roil, Breaklight, the blower, the causeways

@@ -95,10 +95,10 @@ OVERRIDES = {
         files=["src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
                "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml",
                "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
-               "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml",
-               "src/RimMandrake/TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml",
-               "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml",
-               "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml",
+               "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_BeastBulge.xml",
+               "src/RimMandrake/TheSump/Defs/MapGeneration/RM_SumpTarBeastGenStep.xml",
+               "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RM_Filth_MouseTrack.xml",
+               "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_MoatFusePost.xml",
                "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml"],
         note="STALE PREMISE: src/DEPLOY_HOLD.txt has no active TheSump line (the 11 holds were lifted 2026-10-03, comment at its "
              "line 443), so no def is 'held' now. These eight files are the former hold group (9+3+18+1+1+1+1+1 = 35 defs, the "
@@ -106,8 +106,8 @@ OVERRIDES = {
 
     # ---- 15 prose-derived rows ------------------------------------------------------------------------
     ("SCALD_WATER_AGITATION_FLECKS_1", "A1"): dict(
-        defs=["RUT_ScaldMargin", "RUT_ScaldWaterDeep", "RUT_ScaldWaterShallow", "RUT_ScaldWaterOceanDeep",
-              "RUT_ScaldWaterOceanShallow", "RUT_ScaldWaterMovingChestDeep", "RUT_ScaldWaterMovingShallow"],
+        defs=["RM_ScaldMargin", "RM_ScaldWaterDeep", "RM_ScaldWaterShallow", "RM_ScaldWaterOceanDeep",
+              "RM_ScaldWaterOceanShallow", "RM_ScaldWaterMovingChestDeep", "RM_ScaldWaterMovingShallow"],
         note="Agitation 'tags' (RM_WaterAgitationLight / RM_WaterAgitationHeavy) are terrainTags on the terrains, and the 'setting defs' "
              "are Mod Settings fields; neither is a def. Check the tags with a terrain field read, not get_defs presence. "
              "The three wreck defs (RUT_ScaldWreck*) belong to the shadow fix, not this criterion's wording."),

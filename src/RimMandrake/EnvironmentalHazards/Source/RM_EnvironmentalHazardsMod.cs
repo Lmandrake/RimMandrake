@@ -52,7 +52,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      amount the mechanisms above deal (never on cadence, radius or
     //      chance — those stay whatever the def author tuned).
     //  10. weatherPulseEnabled — RM_GameCondition_WeatherPulse /
-    //      RUT_Plant_FlashFlora (FORGE_MECHANICS_1 F1). Off: the condition
+    //      RM_Plant_FlashFlora (FORGE_MECHANICS_1 F1). Off: the condition
     //      stops rolling for a new burst and stays on its calm base
     //      weather permanently (a burst already in progress finishes
     //      rather than snapping off under a pawn's feet); flash-growth
@@ -67,7 +67,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      rolling for a random vanilla Inspiration.
     //  13. wardenCrecheScattererEnabled — RM_ScattererValidator_
     //      BrineShallowWater (MIASMA_MECHANICS_1 M6). WORLDGEN-AFFECTING:
-    //      off means RUT_GenStep_CrecheScatterer finds no valid site on any
+    //      off means RM_GenStep_CrecheScatterer finds no valid site on any
     //      map generated while it is off, so no crèche marker or anchored
     //      pawn is ever placed on that map — already-generated maps and
     //      their existing markers/pawns are unaffected either way.
@@ -78,7 +78,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      never registered or applied.
     //  15. bubbleSailorScattererEnabled — RM_ScattererValidator_NearThingDef
     //      (SCALD_MECHANICS_1 S5). WORLDGEN-AFFECTING: off means
-    //      RUT_GenStep_ScaldSailScatterer finds no valid site on any map
+    //      RM_GenStep_ScaldSailScatterer finds no valid site on any map
     //      generated while it is off, so no sail-cluster pawn is ever
     //      placed near a vent on that map — already-generated maps and
     //      their existing placements are unaffected either way.
@@ -138,7 +138,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      stops moving, damaging and felling trees — rather than vanishing
     //      out from under a pawn; it simply never dissipates or resumes
     //      until this is back on.
-    //  25. sporeCloudEnabled — RUT_IncidentWorker_SporeCloud
+    //  25. sporeCloudEnabled — RM_IncidentWorker_SporeCloud
     //      (ROT_SPORECLOUD_PORT_1, RimUtinni RotSporeKit). Off: the incident
     //      never fires (CanFireNowSub refuses outright); a spore cloud
     //      already settled over a map runs to its own scheduled end rather
@@ -310,7 +310,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      agitated water carries at once. 1.00x is the shipped read; the
     //      slider exists because the owner gave a direction, not a figure.
     //      At 0 nothing spawns, same as the toggle above.
-    //  52. tarBelchEnabled — RUT_IncidentWorker_TarPitBelch
+    //  52. tarBelchEnabled — RM_IncidentWorker_TarPitBelch
     //      (SUMP_TAR_BELCH_EVENT_1). Off: the occasional "a tar pit belches"
     //      incident never fires (CanFireNowSub refuses outright); this is
     //      the scenario-scoped terrain-coating version of the belch, not the
@@ -325,7 +325,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      survival-reads letter, and nothing is marked "seen" while off, so
     //      turning it back on still introduces every biome the player has
     //      not yet landed in. A letter already delivered is never recalled.
-    //  54. sentinelGraveWardsEnabled — RUT_GenStep_ScatterSentinelGraveWards
+    //  54. sentinelGraveWardsEnabled — RM_GenStep_ScatterSentinelGraveWards
     //      (SCARLANDS_MECHANICS_2 §4). WORLDGEN-AFFECTING: off means no
     //      Sentinel grave-ward is placed on any Scarlands map generated
     //      while it is off. Maps already generated keep whatever grave-ward

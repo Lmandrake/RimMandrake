@@ -5,12 +5,12 @@ paints a shore-to-deep strip of Scald terrain on whatever map is loaded (a
 scratch save, never the campaign) and lays the kit out along it for a walk-
 through review:
 
-    margin  (RUT_ScaldMargin)     catch items in a labelled row + crowncarpet
-    shallows(RUT_ScaldWaterShallow) vents, a steam-catch on one vent, three wrecks,
+    margin  (RM_ScaldMargin)     catch items in a labelled row + crowncarpet
+    shallows(RM_ScaldWaterShallow) vents, a steam-catch on one vent, three wrecks,
                                   the floor cast (saal, shulla) spawned wild
-    deep    (RUT_ScaldWaterDeep / OceanDeep)  visual only
+    deep    (RM_ScaldWaterDeep / OceanDeep)  visual only
 
-Then unfog, midday, clear UI, frame, shoot clear + RUT_ScaldSteam, and save.
+Then unfog, midday, clear UI, frame, shoot clear + RM_ScaldSteam, and save.
 
     python.exe scald_showcase.py --at 40,40 --shot scald_showcase --save SCALD_REVIEW
     python.exe scald_showcase.py --find            # print the best open rect and stop
@@ -69,10 +69,10 @@ def find_rect(rb):
 
 def paint(rb, x0, z0):
     ops = ";".join([
-        "RUT_ScaldMargin:%d,%d,%d,%d" % (x0, z0, W, 8),
-        "RUT_ScaldWaterShallow:%d,%d,%d,%d" % (x0, z0 + 8, W, 11),
-        "RUT_ScaldWaterDeep:%d,%d,%d,%d" % (x0, z0 + 19, W, 5),
-        "RUT_ScaldWaterOceanDeep:%d,%d,%d,%d" % (x0, z0 + 24, W, 4),
+        "RM_ScaldMargin:%d,%d,%d,%d" % (x0, z0, W, 8),
+        "RM_ScaldWaterShallow:%d,%d,%d,%d" % (x0, z0 + 8, W, 11),
+        "RM_ScaldWaterDeep:%d,%d,%d,%d" % (x0, z0 + 19, W, 5),
+        "RM_ScaldWaterOceanDeep:%d,%d,%d,%d" % (x0, z0 + 24, W, 4),
     ])
     return rb.call("jawa/set_terrain_batch", {"ops": ops, "refresh": True})
 
@@ -89,10 +89,10 @@ def place(rb, x0, z0):
         spawn(d, x0 + 3 + i * 4, z0 + 3, 10 if d == "RM_Deepfire" else 5)
     for i in range(6):
         spawn("RM_Crowncarpet", x0 + 4 + i * 6, z0 + 6)
-    spawn("RUT_ScaldVent", x0 + 6, z0 + 12)
-    spawn("RUT_ScaldVent", x0 + 14, z0 + 12)
-    spawn("RUT_SteamCatch", x0 + 14, z0 + 12)
-    for i, w in enumerate(("RUT_ScaldWreckHull", "RUT_ScaldWreckTank", "RUT_ScaldWreckFrame")):
+    spawn("RM_ScaldVent", x0 + 6, z0 + 12)
+    spawn("RM_ScaldVent", x0 + 14, z0 + 12)
+    spawn("RM_SteamCatch", x0 + 14, z0 + 12)
+    for i, w in enumerate(("RM_ScaldWreckHull", "RM_ScaldWreckTank", "RM_ScaldWreckFrame")):
         spawn(w, x0 + 22 + i * 7, z0 + 12)
     for i, (k, n) in enumerate(CAST):
         for j in range(n):
@@ -145,8 +145,8 @@ def main():
             print("  place", row)
         print("face:", face(rb, "south"))
         got = census(rb, x0, z0)
-        want = set(CATCH) | {"RM_Crowncarpet", "RUT_ScaldVent", "RUT_SteamCatch", "RUT_ScaldWreckHull",
-                             "RUT_ScaldWreckTank", "RUT_ScaldWreckFrame", "RM_Noohm", "RM_Shulla"}
+        want = set(CATCH) | {"RM_Crowncarpet", "RM_ScaldVent", "RM_SteamCatch", "RM_ScaldWreckHull",
+                             "RM_ScaldWreckTank", "RM_ScaldWreckFrame", "RM_Noohm", "RM_Shulla"}
         print("census:", {d: got.get(d, 0) for d in sorted(want)})
         tk = rb.call("rimworld/get_game_info", {}).get("ticksGame")
         rb.call("jawa/time_set_ticks", {"ticks": (tk // 60000) * 60000 + 60000 + 12 * 2500,
@@ -154,7 +154,7 @@ def main():
         rb.call("jawa/weather_set", {"weather": "Clear", "lockWeather": True})
         frame = "%d,%d,%d,%d" % (x0, z0, W, H)
         print("shot clear:", shoot(rb, frame, a.shot + "_clear"))
-        rb.call("jawa/weather_set", {"weather": "RUT_ScaldSteam", "lockWeather": True})
+        rb.call("jawa/weather_set", {"weather": "RM_ScaldSteam", "lockWeather": True})
         time.sleep(2.0)
         print("shot steam:", shoot(rb, frame, a.shot + "_steam"))
         if a.save:

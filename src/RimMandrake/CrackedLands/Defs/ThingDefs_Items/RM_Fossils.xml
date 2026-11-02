@@ -15,7 +15,7 @@
   ThingDefs_Buildings/RM_FossilSeams.xml's own header for why that pushed
   the seam side to three RockBase-mineable defs too, mirroring the
   Greatbole-Heartwood pattern (RUT_GreatboleHeartwood /
-  RUT_FeverTrunkHeartwood: ParentName="RockBase", one mineableThing each).
+  RM_FeverTrunkHeartwood: ParentName="RockBase", one mineableThing each).
 
   DEEP-STRATUM UNIQUE: shipped this pass as a single high-value rare
   mineable-drop ThingDef (RM_FossilDeepStratum), stackLimit 1, no

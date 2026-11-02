@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The boil's breath: synthesise RUT_ScaldBreath's loop (SCALD_STEAM_WEATHER_DESIGN_1 step 9).
+"""The boil's breath: synthesise RM_ScaldBreath's loop (SCALD_STEAM_WEATHER_DESIGN_1 step 9).
 
 Deterministic (fixed seed). Everything is built circularly (shaped noise by FFT, modulators on whole
 cycles of the loop, bubbles wrapped round the end), so the clip's last sample meets its first and the

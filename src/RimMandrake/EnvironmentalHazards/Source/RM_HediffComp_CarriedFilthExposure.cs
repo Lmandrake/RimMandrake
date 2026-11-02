@@ -4,7 +4,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // SUMP_TAR_NASTINESS_1 (item spec §2, "tarred-pawn hediffs... severity
     // from exposure"). Sibling to HediffCompProperties_EnvironmentalExposure
-    // (RUT_MiasmaExposure's own comp) but keyed on CARRIED FILTH rather than
+    // (RM_MiasmaExposure's own comp) but keyed on CARRIED FILTH rather than
     // weather+roof — this is the extension point the task brief named
     // explicitly: "triggers off RM_Filth_Tar presence in a pawn's filth
     // list," reusing SUMP_WALKWAYS_1's already-shipped filth-tracking
@@ -75,7 +75,7 @@ namespace RimMandrake.EnvironmentalHazards
 
     // Base class HediffComp_SeverityModifierBase (Verse/
     // HediffComp_SeverityModifierBase.cs, confirmed against the live 1.6
-    // decompile — same class RUT_MiasmaExposure's own comp already cribs
+    // decompile — same class RM_MiasmaExposure's own comp already cribs
     // in this assembly) already provides the per-200-ticks hashed interval
     // and the /day-to-/tick conversion; this only supplies what changes.
     public class RM_HediffComp_CarriedFilthExposure : HediffComp_SeverityModifierBase

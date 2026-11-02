@@ -8,7 +8,7 @@
   Heartwood pattern — a wall cell the player can see is different and
   dig." Cribbed directly from that pattern, read this pass from
   src/RimMandrake/Greentide's RUT_GreatboleHeartwood and
-  src/RimMandrake/FeverWood's own RUT_FeverTrunkHeartwood copy of it:
+  src/RimMandrake/FeverWood's own RM_FeverTrunkHeartwood copy of it:
   ParentName="RockBase", mineable=true, building.mineableThing (one
   ThingDef per rock def) + mineableYield + mineableDropChance,
   mineableScatterCommonality=0 (placement is deliberate GenStep seeding,

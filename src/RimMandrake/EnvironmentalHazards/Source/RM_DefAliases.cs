@@ -183,6 +183,40 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
+        // BIOME_TIER_CLEANUP_1: the free biome mods' RUT_-named classes were renamed RM_ in place (a MapComponent,
+        // a LordJob, plants ...). A save holds a scribed object's Class attribute, and the canonical start save
+        // names RimMandrake.EnvironmentalHazards.RUT_MapComponent_TheTenant. When nothing resolves the saved name,
+        // try the same namespace with the class's RUT_ prefix swapped for RM_; a class of ours by that name wins.
+        // Only RimMandrake.* names are touched, and only when the engine found nothing, so a live type is never shadowed.
+        public static void GetBackCompatibleType_Postfix(string providedClassName, ref Type __result)
+        {
+            if (__result != null)
+            {
+                return;
+            }
+            string mapped = RenamedClassName(providedClassName);
+            if (mapped != null)
+            {
+                __result = GenTypes.GetTypeInAnyAssembly(mapped);
+            }
+        }
+
+        /// <summary>Pure: "RimMandrake.X.RUT_Foo" -> "RimMandrake.X.RM_Foo"; anything else -> null.</summary>
+        public static string RenamedClassName(string name)
+        {
+            if (name == null || !name.StartsWith("RimMandrake.", StringComparison.Ordinal))
+            {
+                return null;
+            }
+            int dot = name.LastIndexOf('.');
+            string leaf = name.Substring(dot + 1);
+            if (!leaf.StartsWith("RUT_", StringComparison.Ordinal) || leaf.Length <= 4)
+            {
+                return null;
+            }
+            return name.Substring(0, dot + 1) + "RM_" + leaf.Substring(4);
+        }
+
         public static void BackCompatibleTerrainWithShortHash_Postfix(ushort hash, ref TerrainDef __result)
         {
             if (__result != null || DefDatabase<RM_DefAliasDef>.DefCount == 0)
@@ -218,7 +252,7 @@ namespace RimMandrake.EnvironmentalHazards
                     Def target = null;
                     Type type = null;
                     string want = null;
-                    foreach (Type t in new[] { typeof(ThingDef), typeof(HediffDef), typeof(ThoughtDef), typeof(TerrainDef), typeof(ResearchProjectDef), typeof(RecipeDef), typeof(WeatherDef), typeof(GameConditionDef), typeof(IncidentDef), typeof(FactionDef), typeof(PawnKindDef) })
+                    foreach (Type t in new[] { typeof(ThingDef), typeof(HediffDef), typeof(ThoughtDef), typeof(TerrainDef), typeof(ResearchProjectDef), typeof(RecipeDef), typeof(WeatherDef), typeof(GameConditionDef), typeof(IncidentDef), typeof(FactionDef), typeof(PawnKindDef), typeof(DamageDef) })
                     {
                         if (!a.AppliesTo(t))
                         {

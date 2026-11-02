@@ -42,9 +42,9 @@
     </pocketMapProperties>
     <!-- SEA_DIVE_FLOOR_TERRAIN_1, 2026-09-30: habitat bands on the sediment
          floor (GenStep_SeaFloorTerrain / RM_SeaFloorBandsExtension). Nested
-         hot-spring patches: a boiling shallow core (RUT_ScaldWaterOceanShallow,
+         hot-spring patches: a boiling shallow core (RM_ScaldWaterOceanShallow,
          burns, avoidWander, tag RM_CrowncarpetBed) ringed by the cool mat margin
-         (RUT_ScaldMargin, burn 0, tag RUT_ScaldMarginMat). Both are walkable
+         (RM_ScaldMargin, burn 0, tag RUT_ScaldMarginMat). Both are walkable
          shallow water; both are RM_Crowncarpet habitat, which is why Plants is
          listed below. -->
     <modExtensions>
@@ -52,8 +52,8 @@
         <baseTerrain>RM_SeaFloorGround</baseTerrain>
         <noiseFrequency>0.08</noiseFrequency>
         <bands>
-          <li><terrain>RUT_ScaldWaterOceanShallow</terrain><share>0.05</share></li>
-          <li><terrain>RUT_ScaldMargin</terrain><share>0.12</share></li>
+          <li><terrain>RM_ScaldWaterOceanShallow</terrain><share>0.05</share></li>
+          <li><terrain>RM_ScaldMargin</terrain><share>0.12</share></li>
         </bands>
       </li>
     </modExtensions>

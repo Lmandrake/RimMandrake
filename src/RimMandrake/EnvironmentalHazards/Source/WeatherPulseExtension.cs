@@ -14,7 +14,7 @@ namespace RimMandrake.EnvironmentalHazards
     // an occasional violent burst of a second weather with scald-style
     // damage while the burst runs" attaches this to its own GameConditionDef
     // via BiomeDef.biomeMapConditions. The Forge's own tuning
-    // (RUT_ForgeStill / RUT_BoilingRain / RUT_Scald, MTB 10h, burst
+    // (RUT_ForgeStill / RUT_BoilingRain / RM_Scald, MTB 10h, burst
     // 20-40min, ~4 dmg/60 ticks) lives in RUT_ForgePulse's own XML, not here.
     //
     //   <GameConditionDef>
@@ -28,7 +28,7 @@ namespace RimMandrake.EnvironmentalHazards
     //         <burstMtbHours>10</burstMtbHours>
     //         <burstDurationMinutesRange>20~40</burstDurationMinutesRange>
     //         <flashWindowHoursAfterBurstStart>2</flashWindowHoursAfterBurstStart>
-    //         <scaldDamageDef>RUT_Scald</scaldDamageDef>
+    //         <scaldDamageDef>RM_Scald</scaldDamageDef>
     //         <scaldDamageAmount>4</scaldDamageAmount>
     //         <scaldDamageIntervalTicks>60</scaldDamageIntervalTicks>
     //       </li>

@@ -4,7 +4,7 @@
 
   Translate keys for the F2 tibanna-tap inspect line
   (CompProperties_GatherableGas.fullnessLabelKey, RUT_TibannaTap_BeldonWiring.xml)
-  and the F5 Contagion-probe arrival letter (RUT_IncidentWorker_ContagionProbe.cs).
+  and the F5 Contagion-probe arrival letter (RM_IncidentWorker_ContagionProbe.cs).
 -->
 <LanguageData>
 

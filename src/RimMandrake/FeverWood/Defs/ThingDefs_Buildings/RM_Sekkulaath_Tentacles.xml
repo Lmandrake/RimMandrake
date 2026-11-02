@@ -17,7 +17,7 @@
   This also sidesteps needing a BodyDef, a PawnKindDef, or any of the
   pawn-specific downed/rescue/corpse machinery that does not apply to a
   limb (only the pawn IT GRABS needs that, via the Snare role riding
-  RUT_MapComponent_TheTenant's own rescue window).
+  RM_MapComponent_TheTenant's own rescue window).
 
   Ladder mechanics: RM_CompProperties_TentacleLimb (five roles) /
   RM_CompProperties_TentacleEye (Bloom) — see those classes' own headers

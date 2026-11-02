@@ -44,7 +44,7 @@ namespace RimMandrake.EnvironmentalHazards
     // authoring a full replacement for vanilla's "Animal" main tree, a much
     // bigger and riskier surface than this mechanic needs). Instead this
     // class is inserted via insertTag="Animal_PreMain"
-    // (RUT_ThinkTree_SumpMouseWander.xml) — the SAME global, safe-by-
+    // (RM_ThinkTree_SumpMouseWander.xml) — the SAME global, safe-by-
     // construction extension point SHIP_VERMIN_MOD_1's own
     // RM_ThinkTree_VerminBehaviors.xml already established in this repo
     // (its own header: "every ThinkTreeDef sharing an insertTag is tried,

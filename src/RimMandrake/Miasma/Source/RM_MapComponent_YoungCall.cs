@@ -5,7 +5,7 @@ using Verse.AI;
 
 namespace RimMandrake.Miasma
 {
-    // MIASMA_YOUNG_CALL_1: the cry itself is the shared RM_HediffComp_LocatableCall on RUT_StrandedDeformation
+    // MIASMA_YOUNG_CALL_1: the cry itself is the shared RM_HediffComp_LocatableCall on RM_StrandedDeformation
     // (any spawned stranded young calls, penned or not). This adds the rest of fauna roster section 6 steps 3-4:
     //  - a one-time letter per map, pointing at the first crying young, so the cry is locatable;
     //  - the nearest living warden mother is sent to the water cell nearest the young. She never goes onto dry land:
@@ -13,7 +13,7 @@ namespace RimMandrake.Miasma
     // "Its mother" is the nearest warden mother on the map (the crèche ledger's mother field is private).
     public class RM_MapComponent_YoungCall : MapComponent
     {
-        private const string StrandedHediff = "RUT_StrandedDeformation";
+        private const string StrandedHediff = "RM_StrandedDeformation";
         private const int PollTicks = 250;
         private const float MaxMotherDist = 60f;
         private const int SearchRadius = 30;

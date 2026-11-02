@@ -23,7 +23,7 @@ namespace RimMandrake.TheForge
     // FORGE_SPUNSTONE_SOURCES_1 (owner ruling 2026-10-03): the project also
     // unlocks RM_FloatstoneDoor and RM_SpunstoneHull (RM_SpunstoneParts.xml).
     // The ruled second source, foundry salvage caches, is campaign-only: the
-    // comp that adds it to RUT_FoundrySalvageCache belongs in the Utinni
+    // comp that adds it to RM_FoundrySalvageCache belongs in the Utinni
     // layer (owed there); this RM mod never names it.
     //
     // Toggle off: the project is never hidden and gardens are not studied.

@@ -7,7 +7,7 @@
   breathing; decays under roof) via the existing
   EnvironmentalHazards.EnvironmentalWeatherExtension — zero new C#."
 
-  Shape copied from the Miasma's RUT_MiasmaWeatherLock + RUT_MiasmaExposure:
+  Shape copied from the Miasma's RM_MiasmaWeatherLock + RM_MiasmaExposure:
   a permanent biomeMapConditions entry (attached in RM_BlueDesert.xml) whose
   extension only bootstraps the carrier hediff onto every eligible pawn; the
   hediff's own RM_HediffComp_EnvironmentalExposure does the severity math,

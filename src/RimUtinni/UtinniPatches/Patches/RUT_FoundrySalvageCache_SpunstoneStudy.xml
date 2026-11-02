@@ -3,7 +3,7 @@
      spunstone study (owner card 2026-10-03). Same comp declaration as the floatstone garden in
      TheForge's RM_TheForge_Flora.xml, minus minGrowth (a Building, not a Plant).
      Guards are Conditionals on the defs themselves (a top-level MayRequire on an <Operation> is inert in 1.6):
-       - RM_SpunstoneBonding exists (TheForge active) AND RUT_FoundrySalvageCache exists, else nothing happens.
+       - RM_SpunstoneBonding exists (TheForge active) AND RM_FoundrySalvageCache exists, else nothing happens.
      The comp's Refresh runs from CompTick / CompTickRare / CompTickLong; the cache is tickerType Never, so
      it gets Rare, otherwise the study would be set once at spawn and never switch off after the reveal
      or on a toggle flip. -->
@@ -11,19 +11,19 @@
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ResearchProjectDef[defName="RM_SpunstoneBonding"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_FoundrySalvageCache"]</xpath>
       <match Class="PatchOperationSequence">
         <operations>
           <li Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]/tickerType</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_FoundrySalvageCache"]/tickerType</xpath>
             <value>
               <tickerType>Rare</tickerType>
             </value>
           </li>
           <li Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]/comps</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_FoundrySalvageCache"]/comps</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]/comps</xpath>
+              <xpath>/Defs/ThingDef[defName="RM_FoundrySalvageCache"]/comps</xpath>
               <value>
                 <li Class="RimMandrake.TheForge.CompProperties_SpunstoneStudy">
                   <project>RM_SpunstoneBonding</project>
@@ -34,7 +34,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]</xpath>
+              <xpath>/Defs/ThingDef[defName="RM_FoundrySalvageCache"]</xpath>
               <value>
                 <comps>
                   <li Class="RimMandrake.TheForge.CompProperties_SpunstoneStudy">

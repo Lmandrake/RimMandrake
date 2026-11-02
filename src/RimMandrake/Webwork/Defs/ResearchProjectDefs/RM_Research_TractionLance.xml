@@ -3,7 +3,7 @@
   WEBWORK_TRACTION_LANCE_BUILD_1 step 4: "two places to learn it". One row, finished outright by either discovery:
     - Webwork: study an intact gutter junction (RM_GutterJunction, cut out of an RM_Webwork_Gutter by deconstructing
       it; RM_CompProperties_AnalyzableGrantResearch on the item).
-    - Sump: study the capstan's preserved draw-joints (RUT_PreservedDrawJoint in mandrake.rm.thesump grants this row
+    - Sump: study the capstan's preserved draw-joints (RM_PreservedDrawJoint in mandrake.rm.thesump grants this row
       by defName; a silent no-op when this mod is absent).
   1.6 has no "hidden" research flag (ResearchProjectDef.IsHidden is the Anomaly codex only), so, like the capstan's
   row, this one is visible but locked: requiredAnalyzed keeps it off the bench until the junction is studied, and the

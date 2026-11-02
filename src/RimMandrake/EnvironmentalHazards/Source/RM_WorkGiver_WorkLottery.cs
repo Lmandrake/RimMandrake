@@ -11,7 +11,7 @@ namespace RimMandrake.EnvironmentalHazards
     // each left themselves this session. This WorkGiver closes it.
     //
     // Generic on any Thing carrying RM_CompWorkedLottery, not hardcoded to one
-    // ThingDef — RUT_DigShaft is its first content consumer; a future S6b
+    // ThingDef — RM_DigShaft is its first content consumer; a future S6b
     // pump/derrick building (spec: "same comp, different yield table, so
     // derricks and dig shafts share one class") reuses this same WorkGiver
     // for free. Shape cribbed from RimWorld/WorkGiver_DeepDrill.cs (read in

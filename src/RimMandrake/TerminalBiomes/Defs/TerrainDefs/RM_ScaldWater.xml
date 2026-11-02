@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWater.xml                     UtinniPatches · authored 2026-09-06
+  ============================================================================
+  LIQUID_BIOMES_MAP_1 — OFFLINE HALF. The "boiling-lift" mechanic for the
+  Scald, the crater lake at (35,185) that is the item's "boiling ocean"
+  (design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §Water; region
+  "Scald" in world/ASHKARR_WORLDMAP_tiles.csv, biome=Lake, MEASURED 312/312
+  tiles water=1). Sits in the Dune Sea band, tiles at arc 23-51 (centre ~35),
+  air +44..+61 C at sea level (the_scald.md §0, measured 2026-10-22).
+
+  Mechanic and values lifted from
+  design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md §R-B3/R-B4a (route (b):
+  "author six TerrainDefs ... in src/Jawa/Jawa_Patches", ruled 2026-08-15,
+  NEVER BUILT — measure.get confirms zero defs named Jawa_ScaldWater* exist
+  in the live def dump, defs.sqlite mods=596/cec112bad2152f47,
+  captured=2026-09-05T14:41:26Z). Renamed Jawa_ -> RUT_ under the
+  NAMING_SCHEME_PLAN.md tier grammar (this is new authorship, not a
+  migration, so it takes the new prefix directly rather than waiting on
+  NAMING_SCHEME_EXECUTION_1) and rehomed from the retired src/Jawa/Jawa_Patches
+  to src/RimUtinni/UtinniPatches, the live successor mod
+  (mandrake.rut.patches, JAWA_PATCHES_SPLIT_1).
+
+  R-B3's five reasons to author rather than reference the ReGrowth: Boiling
+  donor still hold (donor's own boiling water terrain does NOTHING — no
+  hediff, no damage, no heat, identical to vanilla water bar a cyan glow;
+  route (a) drags in 41 defs incl. a cut BiomeDef and 14 unwanted plants).
+
+  ParentName safety verified by direct read of Core/Defs/TerrainDefs/
+  Terrain_Water.xml: WaterDeepBase, WaterChestDeepBase and WaterShallowBase
+  all carry a real Name="..." attribute on their own <TerrainDef> tag (lines
+  41, 73, 103), so ParentName against them resolves — unlike Lake/Ocean/
+  IceSheet (see RUT_TheScald.xml / RUT_SleepingIce.xml in this same folder
+  for the trap this is NOT hitting).
+
+  Field-by-field provenance, copied from the vanilla leaf each RUT_ScaldWater*
+  def stands in for (same file, so the shape after gravship-landing and
+  after a bridge crossing matches vanilla, not a truncated def):
+    WaterDeep -> RM_ScaldWaterDeep               (line 51-58)
+    WaterOceanDeep -> RM_ScaldWaterOceanDeep      (line 60-69)
+    WaterMovingChestDeep -> RM_ScaldWaterMovingChestDeep (line 85-99)
+    WaterShallow -> RM_ScaldWaterShallow          (line 114-126)
+    WaterOceanShallow -> RM_ScaldWaterOceanShallow(line 128-141)
+    WaterMovingShallow -> RM_ScaldWaterMovingShallow (line 143-161)
+  gravshipReplacementTerrain is repointed within this family (deep -> our own
+  shallow, never vanilla's) so a gravship landing on the Scald does not
+  quietly convert boiling water back into ordinary water.
+
+  R-B4a's boiling-lift values, applied verbatim:
+    glowColor (2,154,229), glowRadius 2         — the donor's cyan, the one
+                                                   thing worth keeping.
+    burnDamage 3 / burnIntervalTicks 300        — shallow + moving variants.
+    burnDamage 4 / burnIntervalTicks 240        — deep + chest-deep variants.
+      REVISED 2026-09-26 from R-B4a's authored 1/2. Two reasons, both
+      measured or ruled, neither a rebalance:
+      (a) HediffGiver_Terrain applies Mathf.Max(burnDamage, 3) — MEASURED in
+          the decompile (Verse/HediffGiver_Terrain.cs) — so the authored 1
+          and 2 were BOTH silently 3 in play and the defs did not say what
+          they did. Only the interval ever differed.
+      (b) Owner ruling 2026-09-25 (scald_steam_and_hazards_spec.md §9 ruling
+          9), typed: deep water should burn harder. 4 deep / 3 shallow is
+          that ruling stated honestly rather than hidden under the floor.
+      Still bracketed by Odyssey's HotSpring (0/0) and LavaShallow (3/120,
+      Data/Odyssey/Defs/TerrainDefs/Terrain_Water.xml): the Scald now bites
+      as hard as lava per hit but a half to a third as often.
+    traversedThought HotSpring                  — Odyssey's own ThoughtDef,
+      already loaded (Ludeon.RimWorld.Odyssey is active), reused rather than
+      SoakingWet.
+    avoidWander true                            — pawns should not idle in it.
+    RUT_ScaldShallow tag ADDED (SCALD_MECHANICS_1 S6 build pass, 2026-09-13)
+      to the three shallow variants only (RM_ScaldWaterShallow/
+      OceanShallow/MovingShallow) — scald_kit_spec.md §S6's own resolved
+      finding: stock GenStep_ScatterThings.CanScatterAt is TAG-based, not
+      defName-based, so the burning-shallows wreck scatter needs exactly one
+      shared tag on these three terrains and zero new C#. Deep/chest-deep
+      variants do NOT carry it — wrecks sit in the shallows, per the sheet's
+      own §8 text, not the boil's open water.
+    dbh_water tag REMOVED (SCALD_MECHANICS_1 spike, 2026-09-13) — R-B4a's
+      own caveat ("verify against DBH's own reader before relying on it")
+      is now resolved: BadHygiene.dll (workshop/294100/836308268, 1.6
+      Assemblies) carries both the `dbh_water` literal and the thirst
+      drink-tracking strings (DrankCleanWater/DrankDirtyWater/DrinkCount) in
+      the same assembly, and this file's OWN prior header already stated the
+      intended behaviour outright: "without this tag DBH will not treat this
+      as a drinkable... water source" — i.e. the tag was placed here
+      specifically so pawns COULD drink the boil. That is a direct conflict
+      with the_scald.md's frozen Ban 1 ("never potable... only its distilled
+      breath"), which governs this kit. Ban 1 wins (it is the later, frozen
+      lore ruling; R-B4a's "water is currency" economy is satisfied instead
+      by S2's steam-catch condenser and S3's margin ring). The tag now lives
+      ONLY on `RM_ScaldMargin` (RM_ScaldMargin.xml, this kit's S3) — the
+      one cool ring where pawns can actually drink and bathe; these six boil
+      terrains carry no drink route at all, matching scald_kit_spec.md §6
+      row 1's own pre-ruled remedial action.
+    waterBodyType Saltwater + Ocean tag          — ocean-shallow/ocean-deep
+      variants only, matching vanilla's own WaterOceanDeep/WaterOceanShallow
+      pattern. The Lake-facing variants (Deep/Shallow/MovingShallow/
+      MovingChestDeep) keep the inherited Freshwater default: no design doc
+      calls the Scald basin itself saline (unlike the two terminator brine
+      seas, terminator_sea.md), so this is NOT changed here — flagged as an
+      open question for the owner in the design note this item also writes
+      (LIQUID_BIOMES_MAP_1_RECONCILIATION.md), not decided unilaterally.
+
+  What this file does NOT do: assign these terrains to the Scald's world
+  tiles. That is RUT_TheScald.xml's job (a BiomeDef, painted onto the 312
+  Scald tiles only via the LIVE, owner-gated half of this item) — these are
+  just the terrain defs themselves, which parse and validate standalone.
+
+  ============================================================================
+  TERMINALBIOMES_LIQUID_RETARGET_1 (Q7 ownership ruling execution,
+  2026-09-28) — investigated, NOT repointed. Reasoning:
+  ============================================================================
+  LIQUID_TERRAIN_AUTHORED_TWICE_1 (closed 2026-09-27) already found and
+  fixed the one real fork in this family: FlowWorks' generic
+  RM_WaterBoilingShallow/Deep still carried R-B4a's original burn 1/2 while
+  these six had been ruled to 3/4 on 2026-09-25/26. Fix applied there was to
+  sync generate_liquid_suite.py's boiling row to 3/300 shallow, 4/240 deep
+  and regenerate RM_WaterBoiling.xml — the NUMBERS now agree everywhere.
+  That item explicitly declined to repoint or delete this file, and
+  Q7's ownership ruling does not change that answer: FlowWorks' generated
+  suite only ever covers two variants (Shallow/Deep); it has no Ocean,
+  Moving-shallow or Moving-chest-deep rows at all (the generator's own
+  declared scope). The Scald genuinely needs all six — RM_TheScald.xml and
+  the frozen save-compat twin RUT_TheScald.xml both pin all six defNames by
+  name across waterDeepTerrain/waterShallowTerrain/waterMovingShallowTerrain/
+  waterMovingChestDeepTerrain/<coastal> — plus per-variant tuning FlowWorks'
+  generic suite does not carry at all: gravshipReplacementTerrain routing,
+  the RUT_ScaldShallow tag the wreck-scatter GenStep reads (tag-based, not
+  defName-based — RUT_ScaldWreckScatter.xml, unaffected either way), and the
+  SCALD_WATER_AGITATION_FLECKS_1 steam fleck tuning. This is a biome-specific
+  formation family that happens to share a substance name with FlowWorks'
+  generic pair, not a duplicate of it. Nothing here is orphaned; nothing was
+  retargeted. Do not re-open this a third time on a defName-similarity read
+  alone.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RM_ScaldWaterDeep</defName>
+    <label>deep boiling water</label>
+    <description>Deep water at the boil, kept liquid by heat rather than by depth. It is dead calm on the surface and scalding underneath — nothing swims here that cannot stand the temperature, and nothing wades in without paying for it.</description>
+    <renderPrecedence>395</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <forcePassableByFlyingPawns>true</forcePassableByFlyingPawns>
+    <gravshipReplacementTerrain>RM_ScaldWaterShallow</gravshipReplacementTerrain>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>4</burnDamage>
+    <burnIntervalTicks>240</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1 / scald_steam_and_hazards_spec.md
+         §3.1 step 2, 2026-09-26: steam standing off the boil, zero C#.
+         SteadyEnvironmentEffects visits ceil(area*0.0006) cells per tick
+         (MEASURED in the decompile) and rolls throwFleckChance on each, so
+         every cell is offered a puff about once per 1667 ticks; at 0.75 a
+         deep cell breathes roughly every 35 s and a screenful of open boil
+         carries a steady haze. Shape copied from Odyssey's own HotSpring
+         block (fleck AirPuff, solidTicksRange 1~3), but angled upward
+         (-30~30, not -90~90) and larger, because this water is boiling
+         rather than merely warm, and set far above HotSpring's 0.25 on the
+         owner's walk verdict that the Scald read nearly flat. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.2~0.6</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>2~4</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.75</throwFleckChance>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>RM_WaterAgitationHeavy</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RM_ScaldWaterOceanDeep</defName>
+    <label>deep boiling water</label>
+    <description>Deep water at the boil, kept liquid by heat rather than by depth. It is dead calm on the surface and scalding underneath — nothing swims here that cannot stand the temperature, and nothing wades in without paying for it.</description>
+    <renderPrecedence>397</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <waterBodyType>Saltwater</waterBodyType>
+    <gravshipReplacementTerrain>RM_ScaldWaterOceanShallow</gravshipReplacementTerrain>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>4</burnDamage>
+    <burnIntervalTicks>240</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1 / scald_steam_and_hazards_spec.md
+         §3.1 step 2, 2026-09-26: steam standing off the boil, zero C#.
+         SteadyEnvironmentEffects visits ceil(area*0.0006) cells per tick
+         (MEASURED in the decompile) and rolls throwFleckChance on each, so
+         every cell is offered a puff about once per 1667 ticks; at 0.75 a
+         deep cell breathes roughly every 35 s and a screenful of open boil
+         carries a steady haze. Shape copied from Odyssey's own HotSpring
+         block (fleck AirPuff, solidTicksRange 1~3), but angled upward
+         (-30~30, not -90~90) and larger, because this water is boiling
+         rather than merely warm, and set far above HotSpring's 0.25 on the
+         owner's walk verdict that the Scald read nearly flat. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.2~0.6</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>2~4</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.75</throwFleckChance>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>Ocean</li>
+      <li>RM_WaterAgitationHeavy</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterChestDeepBase">
+    <defName>RM_ScaldWaterMovingChestDeep</defName>
+    <label>chest-deep boiling water</label>
+    <description>Fast, chest-deep water, hot enough to scald skin through soaked cloth. Crossing it is a choice, not an accident.</description>
+    <renderPrecedence>399</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <affordances>
+      <li>MovingFluid</li>
+    </affordances>
+    <waterDepthShaderParameters>
+      <_UseWaterOffset>1</_UseWaterOffset>
+    </waterDepthShaderParameters>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>4</burnDamage>
+    <burnIntervalTicks>240</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1 / scald_steam_and_hazards_spec.md
+         §3.1 step 2, 2026-09-26: steam standing off the boil, zero C#.
+         SteadyEnvironmentEffects visits ceil(area*0.0006) cells per tick
+         (MEASURED in the decompile) and rolls throwFleckChance on each, so
+         every cell is offered a puff about once per 1667 ticks; at 0.75 a
+         deep cell breathes roughly every 35 s and a screenful of open boil
+         carries a steady haze. Shape copied from Odyssey's own HotSpring
+         block (fleck AirPuff, solidTicksRange 1~3), but angled upward
+         (-30~30, not -90~90) and larger, because this water is boiling
+         rather than merely warm, and set far above HotSpring's 0.25 on the
+         owner's walk verdict that the Scald read nearly flat. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.2~0.6</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>2~4</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.75</throwFleckChance>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>River</li>
+      <li>RM_WaterAgitationHeavy</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_ScaldWaterShallow</defName>
+    <label>shallow boiling water</label>
+    <description>Shallow water at the boil. Steam stands off it even under the high, unmoving sun, and the mud at its edge is baked hard.</description>
+    <renderPrecedence>394</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <driesTo>Gravel</driesTo>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26 — see
+         RM_ScaldWaterDeep for the rate derivation. Shallow breathes less
+         hard than deep: same puff, smaller and less often. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.15~0.45</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.45</throwFleckChance>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>RUT_ScaldShallow</li>
+      <li>RM_WaterAgitationLight</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_ScaldWaterOceanShallow</defName>
+    <label>shallow boiling water</label>
+    <description>Shallow water at the boil. Steam stands off it even under the high, unmoving sun, and the mud at its edge is baked hard.</description>
+    <renderPrecedence>396</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <driesTo>Gravel</driesTo>
+    <canFreeze>false</canFreeze>
+    <waterBodyType>Saltwater</waterBodyType>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26 — see
+         RM_ScaldWaterDeep for the rate derivation. Shallow breathes less
+         hard than deep: same puff, smaller and less often. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.15~0.45</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.45</throwFleckChance>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <!-- SCALD_CROWNCARPET_NO_HABITAT_1, 2026-09-30: RM_CrowncarpetBed added,
+         per the_scald_underwater_flora_pass_2026-09-27.md's own "one-line
+         fix" ("Remedy on our side of the fence: add RM_CrowncarpetBed to
+         RM_ScaldWaterOceanShallow's tags in TerminalBiomes... no
+         LuminousPigment edit"). This is this def's own OceanShallow floor
+         terrain (the dive-layer the gravship's sea-floor map generates
+         with via terrainsByFertility/RM_SeaShoreExtension) — a diver
+         otherwise saw the fauna roster swimming over bare glowing water
+         with nowhere for the biome's one wild plant to grow. Deliberately
+         NOT added to the sibling RM_ScaldWaterShallow/Deep/MovingShallow/
+         MovingChestDeep terrains (this file's other TerrainDefs): crowncarpet's
+         own header explains RUT_ScaldMarginMat (not the generic Water tag
+         shared by every boil terrain) was chosen so the mat would not
+         wild-spawn across the whole boil. RM_CrowncarpetBed on this one
+         shallow-shore terrain is narrower still and matches the plant's own
+         shipped description ("thick and unbroken where the water boils") —
+         a sessile mat, not the "macro-life"/"swims the roiling surface"
+         ban 4 is aimed at (walkers, sails); the design pass reads ban 4 the
+         same way. -->
+    <tags>
+      <li>Water</li>
+      <li>Ocean</li>
+      <li>RUT_ScaldShallow</li>
+      <li>RM_WaterAgitationLight</li>
+      <li>RM_CrowncarpetBed</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_ScaldWaterMovingShallow</defName>
+    <label>shallow boiling water</label>
+    <description>Shallow, moving water at the boil — a scald-fed reach, running down off the Scald Spine and still hot enough to blister at the ankle.</description>
+    <renderPrecedence>398</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <affordances>
+      <li>MovingFluid</li>
+    </affordances>
+    <waterDepthShaderParameters>
+      <_UseWaterOffset>1</_UseWaterOffset>
+    </waterDepthShaderParameters>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <!-- SCALD_WATER_AGITATION_FLECKS_1, 2026-09-26 — see
+         RM_ScaldWaterDeep for the rate derivation. Shallow breathes less
+         hard than deep: same puff, smaller and less often. -->
+    <fleckData>
+      <fleck>AirPuff</fleck>
+      <velocitySpeedRange>0.15~0.45</velocitySpeedRange>
+      <velocityAngleRange>-30~30</velocityAngleRange>
+      <rotationSpeedRange>-20~20</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+    <throwFleckChance>0.45</throwFleckChance>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>River</li>
+      <li>RUT_ScaldShallow</li>
+      <li>RM_WaterAgitationLight</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

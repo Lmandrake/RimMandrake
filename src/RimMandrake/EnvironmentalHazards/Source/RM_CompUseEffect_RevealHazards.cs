@@ -13,7 +13,7 @@ namespace RimMandrake.EnvironmentalHazards
     // virtual DoEffect(Pawn usedBy) — the assumed base-class route in the
     // spec was correct, no correction needed here. The overlay-draw seam
     // the spec also flagged is real too, WIRED this pass in
-    // RUT_MapComponent_TheTenant.MapComponentDraw — see that class's own
+    // RM_MapComponent_TheTenant.MapComponentDraw — see that class's own
     // header for the MapComponentDraw-vs-MapComponentOnGUI correction.
     //
     // This proves the use-effect fires and writes a flagged-until-tick
@@ -22,7 +22,7 @@ namespace RimMandrake.EnvironmentalHazards
     // parallel per-cell array — the mirror list IS a snapshot of
     // agitation, so it does not need its own storage). Still NOT done: the
     // trader-kind XML stocking RUT_MirrorList — deliberately deferred, see
-    // RUT_FeverWood_MirrorList.xml's own header (Sporefall does not yet
+    // RM_FeverWood_MirrorList.xml's own header (Sporefall does not yet
     // exist as an authored settlement/TraderKindDef; inventing one here
     // would guess the exact shape the standing rule forbids).
     public class RM_CompUseEffect_RevealHazards : CompUseEffect
@@ -37,7 +37,7 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return;
             }
-            RUT_MapComponent_TheTenant tenant = map.GetComponent<RUT_MapComponent_TheTenant>();
+            RM_MapComponent_TheTenant tenant = map.GetComponent<RM_MapComponent_TheTenant>();
             if (tenant == null)
             {
                 return; // not a Fever Wood map — the item is a harmless no-op elsewhere

@@ -6,9 +6,9 @@
 
   rot_kit_spec.md M1 ("The Sheen"), ticket 2: "reuse RC4 as a permanent
   condition (RUT_SheenExposureLock, attached via the BiomeDef's own
-  <biomeMapConditions>, exactly the shipped RUT_MiasmaWeatherLock.xml shape -
+  <biomeMapConditions>, exactly the shipped RM_MiasmaWeatherLock.xml shape -
   pure XML, no weather forcing, no damage fields)." Shape copied directly
-  from that file (GameConditionDefs/RUT_MiasmaWeatherLock.xml).
+  from that file (GameConditionDefs/RM_MiasmaWeatherLock.xml).
 
   No forcedWeather: unlike Miasma (which forces one permanent haze), the Rot
   keeps a natural weather ROTATION between Clear/DryThunderstorm and the
@@ -26,7 +26,7 @@
   RM_RotSporeKit_SheenHediffs.xml) does the actual weather-gated,
   gear-slowed, symbiont-immune severity math.
 
-  damageIntervalTicks 2500 (~1 in-game hour) matches RUT_MiasmaWeatherLock's
+  damageIntervalTicks 2500 (~1 in-game hour) matches RM_MiasmaWeatherLock's
   own bootstrap cadence exactly - carried over, not re-invented.
 
   MayRequire is load-bearing: conditionClass/modExtension Class live in

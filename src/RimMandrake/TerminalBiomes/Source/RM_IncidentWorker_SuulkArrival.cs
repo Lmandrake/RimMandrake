@@ -8,7 +8,7 @@ namespace RimMandrake.TerminalBiomes
     // TWILIGHT_DANGER_LIGHTWEB_1 §D2c. "Arrives... on a several-day incident
     // cadence (frequency scaling with the player's mobile-glower count —
     // one-line hook, per the light-economy spec)." Same CanFireNowSub/
-    // TryExecuteWorker seam RUT_IncidentWorker_WalkerSurfacing already proves
+    // TryExecuteWorker seam RM_IncidentWorker_WalkerSurfacing already proves
     // in this repo. The frequency-scaling hook lives in CanFireNowSub: more
     // player-owned glowers on the map raises the chance this particular roll
     // actually passes, on top of the storyteller's own base chance/refire

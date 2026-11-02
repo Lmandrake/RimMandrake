@@ -24,14 +24,14 @@ namespace RimMandrake.TerminalBiomes
     // RUT_ScaldShallow tag the wreck field itself validates on.
     //
     // Gated by RM_TerminalBiomesSettings.ScaldThurlspongeWrecksActive. Runs only
-    // where RUT_ScaldWreckScatter_Register.xml puts it: the Scald biomes'
+    // where RM_ScaldWreckScatter_Register.xml puts it: the Scald biomes'
     // extraGenSteps, beside the wreck field.
     // ════════════════════════════════════════════════════════════════════
     public class RM_GenStep_ScaldThurlspongeWrecks : GenStep
     {
         private const float CellChance = 0.55f;
         private const string ShallowTag = "RUT_ScaldShallow";
-        private static readonly string[] WreckDefs = { "RUT_ScaldWreckHull", "RUT_ScaldWreckTank", "RUT_ScaldWreckFrame" };
+        private static readonly string[] WreckDefs = { "RM_ScaldWreckHull", "RM_ScaldWreckTank", "RM_ScaldWreckFrame" };
 
         public override int SeedPart => 7302815;
 

@@ -5,7 +5,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // FEVER_WOOD_MECHANICS_1 F1 build (fever_wood_kit_spec.md F1, "registered
     // pool terrain"). Closes the gap the F1/F6 build passes both flagged and
-    // declined to guess through: RUT_FeverWoodMirrorPool was real and
+    // declined to guess through: RM_FeverWoodMirrorPool was real and
     // reachable via dev-mode placement but never painted by any GenStep.
     // Blocked on an owner ruling on count/size/distribution; ruled
     // 2026-09-18 (ledger event on this item): "3-6 small pools per generated
@@ -20,12 +20,12 @@ namespace RimMandrake.EnvironmentalHazards
     //
     // Deliberately no marker Thing and no discrete pool-identity list: the
     // only consumer that cares whether a cell is a "pool" is
-    // RUT_MapComponent_TheTenant, and it already finds pools by scanning the
+    // RM_MapComponent_TheTenant, and it already finds pools by scanning the
     // terrain grid for RM_LurkingWaterExtension (TerrainDef.GetModExtension)
     // rather than by reading any registry this GenStep would populate — see
-    // RUT_MapComponent_TheTenant.IsRegisteredWater/NearRegisteredWater. So
+    // RM_MapComponent_TheTenant.IsRegisteredWater/NearRegisteredWater. So
     // painting poolTerrain (itself already carrying RM_LurkingWaterExtension,
-    // e.g. RUT_FeverWoodMirrorPool.xml) is the WHOLE job; there is nothing
+    // e.g. RM_FeverWoodMirrorPool.xml) is the WHOLE job; there is nothing
     // else to wire.
     //
     //   <BiomeDef>
@@ -33,7 +33,7 @@ namespace RimMandrake.EnvironmentalHazards
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
-    //         <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
+    //         <poolTerrain>RM_FeverWoodMirrorPool</poolTerrain>
     //       </li>
     //     </modExtensions>
     //   </BiomeDef>

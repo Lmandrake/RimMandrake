@@ -106,9 +106,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterDeep"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterDeep"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterDeep"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterDeep"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_BoilingWater</liquid>
@@ -118,9 +118,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingChestDeep"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterMovingChestDeep"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingChestDeep"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterMovingChestDeep"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_BoilingWater</liquid>
@@ -130,9 +130,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingShallow"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterMovingShallow"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingShallow"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterMovingShallow"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_BoilingWater</liquid>
@@ -142,9 +142,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterOceanDeep"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterOceanDeep"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterOceanDeep"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterOceanDeep"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_BoilingWater</liquid>
@@ -154,9 +154,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterOceanShallow"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterOceanShallow"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterOceanShallow"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterOceanShallow"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_BoilingWater</liquid>
@@ -166,9 +166,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterShallow"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterShallow"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterShallow"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldWaterShallow"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_BoilingWater</liquid>
@@ -178,9 +178,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_ScaldMargin"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_ScaldMargin"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_ScaldMargin"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_ScaldMargin"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_NotDrinkable</liquid>
@@ -190,9 +190,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RUT_FeverWoodMirrorPool"]</xpath>
+    <xpath>/Defs/TerrainDef[defName="RM_FeverWoodMirrorPool"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RUT_FeverWoodMirrorPool"]</xpath>
+      <xpath>/Defs/TerrainDef[defName="RM_FeverWoodMirrorPool"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
           <liquid>RM_Liquid_NotDrinkable</liquid>

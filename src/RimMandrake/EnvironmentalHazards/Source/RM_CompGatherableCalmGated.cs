@@ -165,10 +165,10 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return null;
             }
-            string calmLine = "RUT_ThornbugCalm".Translate() + ": " + calm.ToStringPercent();
+            string calmLine = "RM_ThornbugCalm".Translate() + ": " + calm.ToStringPercent();
             if (calm < Props.calmFloor)
             {
-                calmLine += " (" + "RUT_ThornbugDry".Translate() + ")";
+                calmLine += " (" + "RM_ThornbugDry".Translate() + ")";
             }
             return calmLine;
         }

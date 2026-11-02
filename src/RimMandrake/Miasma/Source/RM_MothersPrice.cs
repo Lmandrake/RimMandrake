@@ -9,7 +9,7 @@ namespace RimMandrake.Miasma
 {
     // MIASMA_MOTHERS_PRICE_1 (design: miasma_bedazzle_review_2026-10-02.md §3 "The Mother's Price"; owner card 2026-10-02
     // item 2). A held stranded young is worth a fortune: carry it home to her, or sell it.
-    //  - Price: RUT_StrandedDeformation.priceOffset = youngPriceOffset while on (RM_MiasmaSettingsApplier), and any pawn
+    //  - Price: RM_StrandedDeformation.priceOffset = youngPriceOffset while on (RM_MiasmaSettingsApplier), and any pawn
     //    trader will take one (Tradeable.TraderWillTrade postfix), since the nursery species carry no trade tags.
     //  - The buyer: once per young the colony holds on a home map, a trader caravan comes for it 1-2 days later, with a
     //    letter naming the buyer (RM_MothersPriceExtension on the hediff: generic in the free mod, named by Utinni).
@@ -28,9 +28,9 @@ namespace RimMandrake.Miasma
 
     public static class RM_MothersPrice
     {
-        public const string StrandedHediff = "RUT_StrandedDeformation";
+        public const string StrandedHediff = "RM_StrandedDeformation";
         public const string MotherKind = "RM_WardenMother";
-        public const string MarkerDef = "RUT_CrecheMarker";
+        public const string MarkerDef = "RM_CrecheMarker";
 
         private static HediffDef strandedDef;
 

@@ -6,7 +6,7 @@ using Verse.AI;
 
 namespace RimMandrake.EnvironmentalHazards
 {
-    // FEVER_WOOD_MECHANICS_1 F9. The victim-finder RUT_HaulPawnAndExit.cs's
+    // FEVER_WOOD_MECHANICS_1 F9. The victim-finder RM_HaulPawnAndExit.cs's
     // own header names as owed: "RimWorld/KidnapAIUtility.cs's
     // TryFindGoodKidnapVictim filters pawn.RaceProps.Humanlike in its own
     // validator - not reusable for thornbugs as written... a new predicate
@@ -25,7 +25,7 @@ namespace RimMandrake.EnvironmentalHazards
     //
     // Callers require the victim to already be Downed (the ants' own
     // "unclamp stun" job runs first, per the spec - not built this pass)
-    // because RUT_HaulPawnAndExit reuses JobDriver_Kidnap's exact FailOn
+    // because RM_HaulPawnAndExit reuses JobDriver_Kidnap's exact FailOn
     // ("!Takee.Downed && Takee.Awake()"), so an awake, undowned victim
     // would immediately fail the haul job it is handed to.
     //

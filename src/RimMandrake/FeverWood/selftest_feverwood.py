@@ -205,7 +205,7 @@ class FWGame(MockGame):
                                  if not ("genstep_unregistered" in self.brk and n == "RM_GenStep_AntHiveDungeon")] + ["Terrain"]}
         elif name == "TableMachining":
             allf = {"recipes": ["Make_ComponentIndustrial"] + ([] if "no_recipe" in self.brk else ["RM_MakeRadioactiveSuppressant"])}
-        elif name == "RUT_BoughSoil":
+        elif name == "RM_BoughSoil":
             allf = {"fertility": 0.0 if "bough_infertile" in self.brk else 1.4,
                     "affordances": ["Light", "Medium", "GrowSoil"] + (["Heavy"] if "bough_heavy" in self.brk else [])}
         elif name in V.ROTTABLE_ITEMS:

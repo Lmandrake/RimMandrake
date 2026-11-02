@@ -10,7 +10,7 @@
   `Patches/BiomeFishTypes_TwilightDeep.xml` held under `DEPLOY_HOLD.txt` — see
   that file and `RUT_TwilightFish_Niim.xml`'s header for the hold's reason.
 
-  All three of the doc's options ship: (weight 4) RUT_LampBlack x1-2, the
+  All three of the doc's options ship: (weight 4) RM_LampBlack x1-2, the
   kellu-ink dye-and-chart resource (sibling item, RUT_TwilightFish_Niim.xml);
   (weight 2) RUT_Niim x8-12, "a net that hit the shoal"; (weight 1)
   Corpse_RSW_ColoClawFish (5-10 days rotted per the doc's own line — flavor
@@ -37,7 +37,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_LampBlack</li>
+                  <li>RM_LampBlack</li>
                 </thingDefs>
               </filter>
               <countRange>1~2</countRange>

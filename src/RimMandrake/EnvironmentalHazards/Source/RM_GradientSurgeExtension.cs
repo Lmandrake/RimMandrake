@@ -14,7 +14,7 @@ namespace RimMandrake.EnvironmentalHazards
     // shared config instead of duplicating tuning across two def types.
     //
     //   <li Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
-    //     <incidentDef>RUT_Surge</incidentDef>
+    //     <incidentDef>RM_Surge</incidentDef>
     //     <baseMtbDays>5</baseMtbDays>
     //     <stormMtbMultiplier>0.25</stormMtbMultiplier>
     //     <stormWindSpeedThreshold>1.2</stormWindSpeedThreshold>
@@ -26,7 +26,7 @@ namespace RimMandrake.EnvironmentalHazards
     {
         // Which IncidentDef this map's own MTB clock fires when due. Never
         // reached through the Storyteller's own category queue (see
-        // RUT_Surge.xml's own header for why its category is Misc) — this
+        // RM_Surge.xml's own header for why its category is Misc) — this
         // mechanism owns its entire schedule in code; ban #4 ("no clockwork
         // tide") is about a fixed PERIOD, not about having no timer at all.
         public IncidentDef incidentDef;
@@ -42,7 +42,7 @@ namespace RimMandrake.EnvironmentalHazards
         public float stormMtbMultiplier = 0.25f;
 
         // "Storm weather active", resolved concretely rather than invented:
-        // M4's RUT_MiasmaWeatherLock forces ONE permanent WeatherDef via
+        // M4's RM_MiasmaWeatherLock forces ONE permanent WeatherDef via
         // GameCondition.ForcedWeather(), so the vanilla WeatherManager's own
         // current-weather state can never distinguish "storming" from
         // "calm" here — there is no second, reachable weather left to check

@@ -18,7 +18,7 @@ namespace RimMandrake.FeverWood
     //     undisturbed limb sinks back (TickLinger), so feelers and
     //     sentinels no longer stand forever; the live-limb cap lives in
     //     RM_MapComponent_TentacleWatch. Numbers PROVISIONAL.
-    //   - role behaviour: Snare rides RUT_MapComponent_TheTenant's own
+    //   - role behaviour: Snare rides RM_MapComponent_TheTenant's own
     //     rescue-window mechanism (this item's own "reuse — do not
     //     rebuild" note) rather than a second grab/hold system; Lash fires
     //     a direct ranged hit on a timer; Porter one-shot deposits a loot
@@ -196,7 +196,7 @@ namespace RimMandrake.FeverWood
                 return;
             }
 
-            RUT_MapComponent_TheTenant tenant = parent.Map.GetComponent<RUT_MapComponent_TheTenant>();
+            RM_MapComponent_TheTenant tenant = parent.Map.GetComponent<RM_MapComponent_TheTenant>();
             if (tenant == null)
             {
                 return;

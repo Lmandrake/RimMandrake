@@ -26,7 +26,7 @@
       to be bait", not the real crown.
 
     - RM_FalseFruit: the lure ring. thingClass overridden to
-      RimMandrake.CreatureBehaviors.RUT_Plant_FalseFruit (NEW this pass),
+      RimMandrake.CreatureBehaviors.RM_Plant_FalseFruit (NEW this pass),
       whose PlantCollected override (RimSage-verified seam,
       RimWorld/Plant.cs + RimWorld/JobDriver_PlantWork.cs, fires on both
       Harvest and Cut-Plant jobs) applies RM_MatGrip and pings the same
@@ -202,7 +202,7 @@
     <defName>RM_FalseFruit</defName>
     <label>pekk fruit</label>
     <description>A small, pale fungal lure that grows along a lussa crown's root mat, mimicking its caps and sheen. Touching or picking one alerts the grove and draws its guardians. Its scant flesh is edible.</description>
-    <thingClass>RimMandrake.CreatureBehaviors.RUT_Plant_FalseFruit</thingClass>
+    <thingClass>RimMandrake.CreatureBehaviors.RM_Plant_FalseFruit</thingClass>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Beauty>5</Beauty>

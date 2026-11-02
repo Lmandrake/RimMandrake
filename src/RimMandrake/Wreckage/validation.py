@@ -21,14 +21,14 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCALD = os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Buildings", "RUT_ScaldWrecks.xml")
+SCALD = os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Buildings", "RM_ScaldWrecks.xml")
 suite = Suite("Wreckage")
 suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare", "wreckFields", "wreckDensity", "disabledFields", "wreckFalls", "wreckHazards"]
 
 TIERS = ("Scrap", "Hull", "Tank", "Carapace", "Sealed")
 RARE_TIERS = ("Hull", "Tank", "Carapace", "Sealed")
 TABLES = ["RM_SalvageLoot_%s" % t for t in TIERS] + ["RM_SalvageLoot_%s_Rare" % t for t in RARE_TIERS]
-SCALD_WRECKS = {"RUT_ScaldWreckHull": "Hull", "RUT_ScaldWreckTank": "Tank", "RUT_ScaldWreckFrame": "Scrap"}
+SCALD_WRECKS = {"RM_ScaldWreckHull": "Hull", "RM_ScaldWreckTank": "Tank", "RM_ScaldWreckFrame": "Scrap"}
 COMP_CLASS = "RimMandrake.Wreckage.RM_CompProperties_SalvageLoot"
 EXT_CLASS = "RimMandrake.Wreckage.RM_WreckWeathering"
 WDEF_TAG = "RimMandrake.Wreckage.RM_WreckWeatheringDef"
@@ -37,18 +37,18 @@ WEATHER_XML = os.path.join(HERE, "Defs", "RM_WreckWeatheringDefs", "RM_WreckWeat
 FAMILY_NAMES = ["RM_WreckFamily_%s" % f for f in ("Hull", "Tank", "Frame", "Speeder", "Carapace", "Tread")]
 # What the Scald shipped before slice 2 reparented it (96f8113e9): costList and deconstruct fraction.
 SCALD_SHIPPED = {
-    "RUT_ScaldWreckHull": ({"Steel": 30, "ComponentIndustrial": 1}, 0.75),
-    "RUT_ScaldWreckTank": ({"Steel": 20, "GravlitePanel": 5}, 0.75),
-    "RUT_ScaldWreckFrame": ({"Steel": 15}, 0.75),
+    "RM_ScaldWreckHull": ({"Steel": 30, "ComponentIndustrial": 1}, 0.75),
+    "RM_ScaldWreckTank": ({"Steel": 20, "GravlitePanel": 5}, 0.75),
+    "RM_ScaldWreckFrame": ({"Steel": 15}, 0.75),
 }
 DENSITY_XML = os.path.join(HERE, "Defs", "RM_WreckDensityClassDefs", "RM_WreckDensityClasses.xml")
 DCLASS_TAG = "RimMandrake.Wreckage.RM_WreckDensityClassDef"
 FIELD_CLASS = "RimMandrake.Wreckage.RM_GenStep_WreckField"
 FIELD_CS = os.path.join(HERE, "Source", "RM_GenStep_WreckField.cs")
 TB = os.path.join(HERE, "..", "TerminalBiomes")
-SCALD_FIELD_XML = os.path.join(TB, "Defs", "MapGeneration", "RUT_ScaldWreckScatter.xml")
-SCALD_REGISTER_XML = os.path.join(TB, "Patches", "RUT_ScaldWreckScatter_Register.xml")
-SCALD_TERRAIN_XML = os.path.join(TB, "Defs", "TerrainDefs", "RUT_ScaldWater.xml")
+SCALD_FIELD_XML = os.path.join(TB, "Defs", "MapGeneration", "RM_ScaldWreckScatter.xml")
+SCALD_REGISTER_XML = os.path.join(TB, "Patches", "RM_ScaldWreckScatter_Register.xml")
+SCALD_TERRAIN_XML = os.path.join(TB, "Defs", "TerrainDefs", "RM_ScaldWater.xml")
 TB_MOD_CS = os.path.join(TB, "Source", "RM_TerminalBiomesMod.cs")
 OLD_SCALD_STEPS = ["RUT_Jawa_ScatterScaldWreck%s" % k for k in ("Hull", "Tank", "Frame")]
 # Expected per the placement law (design §3d-i): ordered by persistence, Riddled densest.
@@ -317,7 +317,7 @@ def _field_checks(bad, weathers):
         for fn in fns:
             if fn.endswith((".xml", ".cs")):
                 txt = open(os.path.join(dp, fn), encoding="utf-8", errors="replace").read()
-                if any(o in txt for o in OLD_SCALD_STEPS) and fn != "RUT_ScaldWreckScatter.xml":
+                if any(o in txt for o in OLD_SCALD_STEPS) and fn != "RM_ScaldWreckScatter.xml":
                     stale.append(os.path.relpath(os.path.join(dp, fn), root))
                 if "scaldS6WreckSalvage" in txt or "ScaldS6WreckSalvage" in txt or "RM_GenStep_ScaldWreckScatter" in txt:
                     stale.append(os.path.relpath(os.path.join(dp, fn), root) + " (S6 bool/class)")
@@ -565,7 +565,7 @@ def _wave2_checks(bad, children, fields):
 
 
 LAYER_ROOTS = [os.path.normpath(os.path.join(SRC_ROOT, "..", d)) for d in ("RimUtinni", "RimStarWars")]
-LAYER_CHILDREN = {"RUT_FoundrySalvageCache": ("RM_WreckFamily_Carapace", "RUT_WreckWeathering_ForgeWarm"),
+LAYER_CHILDREN = {"RM_FoundrySalvageCache": ("RM_WreckFamily_Carapace", "RUT_WreckWeathering_ForgeWarm"),
                   "RUT_FallLineWreckHull": ("RM_WreckFamily_Hull", "RUT_WreckWeathering_FallLine"),
                   "RUT_FallLineWreckCarapace": ("RM_WreckFamily_Carapace", "RUT_WreckWeathering_FallLine"),
                   "RSW_FreshTIEPanelWreck": ("RM_WreckFamily_Hull", "RM_WreckWeathering_Fresh"),
@@ -625,9 +625,9 @@ def _layer_checks(bad):
             bad.append("weathering %s names extraLoot %s, not defined" % (dn, x))
         if dn.startswith("RUT_") and r.get("MayRequire") != "mandrake.rm.biomes":
             bad.append("RUT weathering %s lacks MayRequire mandrake.rm.biomes" % dn)
-    cache = things.get("RUT_FoundrySalvageCache")
+    cache = things.get("RM_FoundrySalvageCache")
     if cache is not None and (cache.findtext("tickerType") is None or cache.findtext("destroyable") == "false"):
-        bad.append("RUT_FoundrySalvageCache must restate tickerType (the spunstone patch replaces it) and be destroyable")
+        bad.append("RM_FoundrySalvageCache must restate tickerType (the spunstone patch replaces it) and be destroyable")
     fl = lists.get("RUT_WreckList_FallLine")
     if fl is None or fl.find("wrecks") is None:
         bad.append("RUT_WreckList_FallLine missing")

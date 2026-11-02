@@ -67,7 +67,7 @@ F = {
  # water: colour + one-direction ripple only (spec 6.4)
  "GreySea":       ("#4b5f6e", "#5a6e7c", "water",  3.6, 41, False, [(U, "RUT_GreySea")]),
  "TwilightSea":   ("#284669", "#344f74", "water",  3.6, 42, False, [(U, "RUT_TwilightSea")]),
- "Scald":         ("#3c727a", "#4a8088", "water",  3.8, 43, False, [(U, "RUT_Scald")]),
+ "Scald":         ("#3c727a", "#4a8088", "water",  3.8, 43, False, [(U, "RM_Scald")]),
  "Chill":         ("#2d415f", "#3a4e6a", "water",  3.4, 44, False, [("RimMandrake/TerminalBiomes", "RM_Chill"), (U, "RUT_Chill")]),
  "MineralWater":  ("#3e5e5a", "#4c6c64", "water",  3.6, 45, True,  [(U, "RUT_MineralWater")]),
 }

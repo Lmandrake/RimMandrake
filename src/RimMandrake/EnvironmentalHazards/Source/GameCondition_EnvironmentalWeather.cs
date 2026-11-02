@@ -62,7 +62,7 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             // MIASMA_MECHANICS_1 M4 build: carrierHediff must also keep this
-            // tick alive — RUT_MiasmaWeatherLock sets neither damageDef nor
+            // tick alive — RM_MiasmaWeatherLock sets neither damageDef nor
             // hediffToApply (the spec's own "no damage fields"), so without
             // this check DoPawnEffects (and EnsureCarrierHediff inside it)
             // would never run at all. Caught in self-review: this early

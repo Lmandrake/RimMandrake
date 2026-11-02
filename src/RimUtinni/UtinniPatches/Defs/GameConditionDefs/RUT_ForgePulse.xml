@@ -4,9 +4,9 @@
 
   forge_kit_spec.md F1 ("The closed boiling rain"). The Forge's own weather
   cycle: still hot haze (RUT_ForgeStill) broken by MTB-rolled bursts of
-  scalding rain (RUT_BoilingRain), scald damage (RUT_Scald) ticking while a
+  scalding rain (RUT_BoilingRain), scald damage (RM_Scald) ticking while a
   burst runs, and a flash-growth window (RM_MapComponent_FlashCycle,
-  RUT_Plant_FlashFlora) that outlasts the burst itself.
+  RM_Plant_FlashFlora) that outlasts the burst itself.
 
   conditionClass = RimMandrake.EnvironmentalHazards.
   RM_GameCondition_WeatherPulse (this same build pass - see that class and
@@ -27,7 +27,7 @@
   10 in-game hours; burst duration 20-40 in-game minutes; flash window 2
   in-game hours from burst start; scald damage ~4 per 60-tick interval,
   unroofed only (heat armor, ArmorRating_Heat, is the admission ticket -
-  RUT_Scald uses vanilla's Heat armor category - per owner card 2: "boiling rain
+  RM_Scald uses vanilla's Heat armor category - per owner card 2: "boiling rain
   is survivable once... never instant death from one burst" - the ~4/60
   cadence unroofed/unarmored is brutal but not lethal in one pass).
 -->
@@ -47,7 +47,7 @@
         <burstMtbHours>10</burstMtbHours>
         <burstDurationMinutesRange>20~40</burstDurationMinutesRange>
         <flashWindowHoursAfterBurstStart>2</flashWindowHoursAfterBurstStart>
-        <scaldDamageDef>RUT_Scald</scaldDamageDef>
+        <scaldDamageDef>RM_Scald</scaldDamageDef>
         <scaldDamageAmount>4</scaldDamageAmount>
         <scaldDamageIntervalTicks>60</scaldDamageIntervalTicks>
         <onlyUnroofed>true</onlyUnroofed>

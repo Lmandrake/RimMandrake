@@ -351,7 +351,7 @@ namespace RimMandrake.Miasma
 
         private static void ApplyYoungCall()
         {
-            HediffDef hd = DefDatabase<HediffDef>.GetNamedSilentFail("RUT_StrandedDeformation");
+            HediffDef hd = DefDatabase<HediffDef>.GetNamedSilentFail("RM_StrandedDeformation");
             if (hd == null || hd.comps == null) return;
             foreach (HediffCompProperties cp in hd.comps)
             {
@@ -372,7 +372,7 @@ namespace RimMandrake.Miasma
         // MIASMA_MOTHERS_PRICE_1: the young's fortune is the hediff's own priceOffset (PriceUtility.PawnQualityPriceOffset).
         private static void ApplyYoungPrice()
         {
-            HediffDef hd = DefDatabase<HediffDef>.GetNamedSilentFail("RUT_StrandedDeformation");
+            HediffDef hd = DefDatabase<HediffDef>.GetNamedSilentFail("RM_StrandedDeformation");
             if (hd == null) return;
             hd.priceOffset = RM_MiasmaSettings.mothersPriceEnabled ? RM_MiasmaSettings.youngPriceOffset : 0f;
         }

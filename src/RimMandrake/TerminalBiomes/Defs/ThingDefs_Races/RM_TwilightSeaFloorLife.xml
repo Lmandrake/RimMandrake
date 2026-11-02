@@ -357,7 +357,7 @@
       </lifeStageAges>
     </race>
     <butcherProducts>
-      <RUT_LampBlack>2</RUT_LampBlack>
+      <RM_LampBlack>2</RM_LampBlack>
     </butcherProducts>
     <tradeTags><li>AnimalCommon</li></tradeTags>
   </ThingDef>

@@ -32,7 +32,7 @@
   defend explicitly and no fifth number; changing this too would be
   invention past what was ruled.
 
-  Consumed by RUT_LordJob_SentinelDefend.cs (RimMandrake.EnvironmentalHazards)
+  Consumed by RM_LordJob_SentinelDefend.cs (RimMandrake.EnvironmentalHazards)
   via DefDatabase<DutyDef>.GetNamedSilentFail — no MayRequire needed on this
   def itself (DutyDef, JobGiver_* and ThinkNode_* classes are all vanilla),
   though the spawner building that assigns this duty lives behind

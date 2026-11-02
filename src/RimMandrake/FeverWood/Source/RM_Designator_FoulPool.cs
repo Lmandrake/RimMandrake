@@ -42,7 +42,7 @@ namespace RimMandrake.FeverWood
             {
                 return false;
             }
-            RUT_MapComponent_TheTenant tenant = Map.GetComponent<RUT_MapComponent_TheTenant>();
+            RM_MapComponent_TheTenant tenant = Map.GetComponent<RM_MapComponent_TheTenant>();
             if (tenant == null || !tenant.IsRegisteredWater(c))
             {
                 return "Only a registered Fever Wood pool cell can be fouled.";

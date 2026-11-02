@@ -14,7 +14,7 @@ namespace RimMandrake.EnvironmentalHazards
     // across a save/load or a griefed deconstruct-and-rebuild.
     //
     // requiredThingAtPosition defaults to ThingDefOf.SteamGeyser so this
-    // compiles and is usable standalone before S4's RUT_ScaldVent (an
+    // compiles and is usable standalone before S4's RM_ScaldVent (an
     // INVENTED non-buildable spawned variant) exists; S4's build repoints it
     // per-building via XML the day that def ships. Real placement gating is
     // the PlaceWorker's job (crib PlaceWorker_OnSteamGeyser, confirmed real
@@ -48,7 +48,7 @@ namespace RimMandrake.EnvironmentalHazards
         /// <summary>The vent/geyser ThingDef this condenser must sit on to
         /// produce at all — mirrors CompPowerPlantSteam's ThingDefOf.SteamGeyser
         /// lookup. Defaults to vanilla SteamGeyser; S4 repoints to
-        /// RUT_ScaldVent once that def ships.</summary>
+        /// RM_ScaldVent once that def ships.</summary>
         public ThingDef requiredThingAtPosition;
 
         // A DefOf must not be a field initialiser (uninitialised at XML load -> load error); the vanilla default is applied here.

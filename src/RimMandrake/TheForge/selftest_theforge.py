@@ -63,14 +63,14 @@ class FGame(MockGame):
         for group, deftype, names, _ in V.GROUPS:
             for n in names:
                 self.known[(deftype, n)] = "mandrake.rm.biomes"
-        for k in (("DamageDef", "RUT_Scald"), ("ThingDef", "GravEngine")):
+        for k in (("DamageDef", "RM_Scald"), ("ThingDef", "GravEngine")):
             self.known[k] = "Ludeon.RimWorld" if k[1] == "GravEngine" else "mandrake.rm.biomes"
         if "missing_def" in self.brk:
             del self.known[("ThingDef", V.GROUPS[3][2][-1])]
         if "donor_shadow" in self.brk:
             self.known[("ThingDef", V.GROUPS[2][2][0])] = "some.donor.mod"
         if "no_scald_def" in self.brk:
-            del self.known[("DamageDef", "RUT_Scald")]
+            del self.known[("DamageDef", "RM_Scald")]
         self.temp = {}
         self.settings = {SET_FORGE: dict((k, _s(v)) for k, v in V.SETTINGS_DEFAULTS.items()),
                          V.HAZ_SETTINGS: dict((k, _s(v)) for k, v in HAZ_DEFAULTS.items())}
@@ -987,7 +987,7 @@ def main():
     # the log chain: an error line naming our content fails it; an unrelated game-wide error does not
     for line, label in (("Config error in RM_Dhokkur: lifeStages count mismatch", "a config error naming RM_Dhokkur"),
                         ("RM_CinderCrust must have plant.MaxMeshCount that is a perfect square.", "the mesh-count error"),
-                        ("Could not resolve cross-reference to RimWorld.DamageDef named RUT_Scald (RM_ForgePulse)",
+                        ("Could not resolve cross-reference to RimWorld.DamageDef named RM_Scald (RM_ForgePulse)",
                          "a dangling cross-reference naming RM_ForgePulse")):
         bad = run(log_lines=[line])
         check("break log: %s reddens only the log component" % label,

@@ -6,20 +6,20 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // FEVER_WOOD_MECHANICS_1 F9. The spec's "unclamp stun": "the ant job
     // downs the thornbug non-lethally first (an unclamp stun, INVENTED)
-    // then rides a kidnap-shaped RUT_HaulPawnAndExit job" (the_fever_wood
-    // kit spec, F9) - RUT_HaulPawnAndExit.cs's own header names this as a
+    // then rides a kidnap-shaped RM_HaulPawnAndExit job" (the_fever_wood
+    // kit spec, F9) - RM_HaulPawnAndExit.cs's own header names this as a
     // "separate ant attack-job... not built here". This is that job,
     // written generic (RM_-tier: no thornbug/ant-specific data) so any
     // pawn can non-lethally down any other pawn found via
     // RM_HaulVictimAIUtility.TryFindGoodHaulVictim (WIRED the prior pass)
-    // before a haul job like RUT_HaulPawnAndExit can legally target it
+    // before a haul job like RM_HaulPawnAndExit can legally target it
     // (that driver's FailOn requires Takee.Downed).
     //
     // Toil shape cribbed from RM_JobDriver_GnawTreeBase (same assembly,
     // GREENTIDE_MECHANICS_2 M6): goto touch, wind-up timer with a progress
     // bar, then the payoff. HealthUtility.DamageUntilDowned (Verse/
     // HealthUtility.cs:246, non-lethal, confirmed real - the same call
-    // RUT_MapComponent_TheTenant.Strike already uses for card 2's rescue
+    // RM_MapComponent_TheTenant.Strike already uses for card 2's rescue
     // window) is the payoff instead of a tree fall.
     //
     // NOT done here: nothing calls this yet - the ants' LordJob/LordToil

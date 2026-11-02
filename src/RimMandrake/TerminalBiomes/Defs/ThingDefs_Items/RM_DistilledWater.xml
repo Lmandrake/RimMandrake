@@ -3,7 +3,7 @@
   ============================================================================
   RM_DistilledWater.xml                  SCALD_MECHANICS_1 S2 · 2026-10-11
   ============================================================================
-  The steam-catch's product (RUT_SteamCatch, RM_CompResourceCondenser
+  The steam-catch's product (RM_SteamCatch, RM_CompResourceCondenser
   outputDef). Owner card 2 (S2 output FORM, sitting 2026-09-12) ruled BOTH:
   item water is the default form. This is that item. The FlowWorks pipe-water
   variant is FlowWorks work and is not built here.

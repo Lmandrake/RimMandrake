@@ -4,7 +4,7 @@
 
   scarlands_kit_spec.md §2 attachment route, RESOLVED by the spike pass
   (2026-09-14, finding 4): no MapComponent of this kit's own is needed —
-  RUT_MiasmaWeatherLock.xml (same folder) already proves
+  RM_MiasmaWeatherLock.xml (same folder) already proves
   <canBePermanent>true</canBePermanent> in a biome's own
   <biomeMapConditions> is enough (BiomeConditionMapComponent.MapGenerated ->
   GameConditionMaker.MakeConditionPermanent, decompile-confirmed that pass).

@@ -8,7 +8,7 @@ namespace RimMandrake.EnvironmentalHazards
     // causeways — map-gen"). FEVER_WOOD_MECHANICS_1's own item file names
     // this exact class as one of the two it is blocked on (F6, "boughway
     // network"). Ordered after GenStep_Terrain (order 210, same verified
-    // anchor RUT_Miasma_GradientAxisGenStep.xml's own header cites) — see
+    // anchor RM_Miasma_GradientAxisGenStep.xml's own header cites) — see
     // this class's own GenStepDef order value in the MapGeneration
     // registration XML, set higher than RM_GenStep_LivingBoles' so a
     // paired map's boles are already registered when this runs.

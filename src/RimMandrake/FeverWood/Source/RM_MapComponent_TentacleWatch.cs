@@ -17,7 +17,7 @@ namespace RimMandrake.FeverWood
     //
     // Auto-attaches to EVERY map (Map.FillComponents() instantiates every
     // MapComponent subclass unconditionally — confirmed by
-    // RUT_MapComponent_TheTenant's own header). Content-blind at the class
+    // RM_MapComponent_TheTenant's own header). Content-blind at the class
     // level: it no-ops on any map with no registered pool terrain
     // (RM_LurkingWaterExtension), so it costs nothing on a non-Fever-Wood
     // map — same "generic kit, not hardcoded to one biome" posture as
@@ -440,7 +440,7 @@ namespace RimMandrake.FeverWood
             poolCellsCache = new List<IntVec3>();
             poolClustersCache = new List<List<IntVec3>>();
 
-            RUT_MapComponent_TheTenant tenant = map.GetComponent<RUT_MapComponent_TheTenant>();
+            RM_MapComponent_TheTenant tenant = map.GetComponent<RM_MapComponent_TheTenant>();
             if (tenant == null)
             {
                 return poolCellsCache;
@@ -676,7 +676,7 @@ namespace RimMandrake.FeverWood
             // respawningAfterLoad the same as a fresh spawn), so persisting
             // this counter as well would double-count every sentinel that
             // survives a save. Same "transient-safe to drop on load" posture
-            // RUT_MapComponent_TheTenant's own drowningDeadline already has.
+            // RM_MapComponent_TheTenant's own drowningDeadline already has.
         }
     }
 }

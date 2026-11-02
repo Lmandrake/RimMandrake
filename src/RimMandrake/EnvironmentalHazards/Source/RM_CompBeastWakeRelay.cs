@@ -18,7 +18,7 @@ namespace RimMandrake.EnvironmentalHazards
     // the TunnelHiveSpawner-family emergence shape the spec's own S3 text
     // asks to crib, and closer to it than TunnelHiveSpawner/GroundSpawner
     // itself — it is already wired to CompCanBeDormant rather than a fixed
-    // timer. RUT_BeastBulge.xml wires it directly; no C# subclass of
+    // timer. RM_BeastBulge.xml wires it directly; no C# subclass of
     // CompCanBeDormant was written for this pass.
     //
     // What vanilla does NOT provide is this kit's own S2 signal seam (deep
@@ -32,7 +32,7 @@ namespace RimMandrake.EnvironmentalHazards
     // any dormant Thing wanting to listen for a worked-lottery-driven
     // disturbance reuses this comp unchanged.
     // The XML <li Class=...> of a comps entry must name a CompProperties, not the ThingComp (LIVE 2026-10-03:
-    // `RM_CompBeastWakeRelay(parent=..) is not of type Verse.CompProperties` discarded RUT_BeastBulge's whole def).
+    // `RM_CompBeastWakeRelay(parent=..) is not of type Verse.CompProperties` discarded RM_BeastBulge's whole def).
     public class CompProperties_BeastWakeRelay : CompProperties
     {
         public CompProperties_BeastWakeRelay()
@@ -55,7 +55,7 @@ namespace RimMandrake.EnvironmentalHazards
             base.PostDeSpawn(map, mode);
         }
 
-        // No distance/targeting gate — see RUT_BeastBulge.xml's own header
+        // No distance/targeting gate — see RM_BeastBulge.xml's own header
         // for why (this item's own N=1 dormant beast per map has no stated
         // tie-break rule to gate on in the first place; every still-dormant
         // relay-carrying Thing on the signalling map wakes).
@@ -65,7 +65,7 @@ namespace RimMandrake.EnvironmentalHazards
         // (RM_CompFloodIgniter.cs's own header), which reaches whatever
         // this comp is attached to exactly like any other damage source —
         // through CompWakeUpDormant.PostPostApplyDamage's native
-        // wakeUpOnDamage branch, already wired in RUT_BeastBulge.xml.
+        // wakeUpOnDamage branch, already wired in RM_BeastBulge.xml.
         // Confirmed, not assumed: PostPostApplyDamage fires from
         // Thing.TakeDamage synchronously, independent of tickerType or any
         // poll — a second, parallel signal path from S1 would be a

@@ -112,7 +112,7 @@
       <Private>false</Private>
     </Reference>
     <!-- FEVERWOOD_TENTACLE_BESTIARY_1: the snare limb rides
-         RUT_MapComponent_TheTenant's own rescue-window mechanism
+         RM_MapComponent_TheTenant's own rescue-window mechanism
          (BeginRescueWindow/CleanSplashDespawn, made public for this reuse)
          and RM_LurkingWaterExtension's pool registration — this mod already
          loadAfters mandrake.rm.environmentalhazards for its 3 modExtensions,

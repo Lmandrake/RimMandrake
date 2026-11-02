@@ -5,7 +5,7 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     //   <HediffDef>
-    //     <defName>RUT_Miasma_LoamLunged</defName>
+    //     <defName>RM_Miasma_LoamLunged</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LocalGrowthAura">

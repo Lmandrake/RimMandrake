@@ -7,7 +7,7 @@ namespace RimMandrake.EnvironmentalHazards
     // (same posture as RM_MapComponent_GradientAxis): records one active
     // window [windowStartTick, windowEndTick) and answers InFlashWindow()
     // for any consumer. RM_GameCondition_WeatherPulse is the one writer
-    // (calls StartWindow at burst start); RUT_Plant_FlashFlora is the
+    // (calls StartWindow at burst start); RM_Plant_FlashFlora is the
     // Forge's own reader, but nothing in this file names the Forge.
     //
     // Every RimWorld map auto-instantiates every MapComponent subclass that

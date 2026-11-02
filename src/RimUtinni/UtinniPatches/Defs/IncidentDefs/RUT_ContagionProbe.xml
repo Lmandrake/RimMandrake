@@ -8,13 +8,13 @@
   cluster of RM_DyingCreep plant-things at a map edge... Letter on arrival,
   quiet death."
 
-  workerClass -> RUT_IncidentWorker_ContagionProbe (new this pass,
+  workerClass -> RM_IncidentWorker_ContagionProbe (new this pass,
   src/RimMandrake/EnvironmentalHazards/Source/) hardcodes the RUT_TheForge
   biome check in CanFireNowSub — see that class's own header for why this
   is a direct check rather than an XML-settable biome list.
 
   minRefireDays ~8 (INVENTED, "MTB-ish ~1 per 8 days" read directly as the
-  refire floor, same conversion RUT_FeverWood_MirrorBreak.xml's own
+  refire floor, same conversion RM_FeverWood_MirrorBreak.xml's own
   baseChance/minRefireDays pair uses — a kit spec's plain-English MTB
   becomes minRefireDays, not a literal Rand.MTBEventOccurs roll, because
   IncidentDef's own storyteller-driven baseChance/minRefireDays pair is the
@@ -34,7 +34,7 @@
       <li>Map_PlayerHome</li>
     </targetTags>
     <category>Misc</category>
-    <workerClass>RimMandrake.EnvironmentalHazards.RUT_IncidentWorker_ContagionProbe</workerClass>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_IncidentWorker_ContagionProbe</workerClass>
     <baseChance>1.5</baseChance>
     <minRefireDays>8</minRefireDays>
   </IncidentDef>

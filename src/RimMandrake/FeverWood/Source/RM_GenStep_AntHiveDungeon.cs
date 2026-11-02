@@ -69,7 +69,7 @@ namespace RimMandrake.FeverWood
                 return; // most maps carry no hive at all — this is meant to be a rare find
             }
 
-            RUT_MapComponent_TheTenant tenant = map.GetComponent<RUT_MapComponent_TheTenant>();
+            RM_MapComponent_TheTenant tenant = map.GetComponent<RM_MapComponent_TheTenant>();
 
             if (RM_FeverWoodSettings.antHiveRealGeometry)
             {
@@ -122,7 +122,7 @@ namespace RimMandrake.FeverWood
             PlaceGuards(map, ext, rooms);
         }
 
-        private void GenerateWalled(Map map, RM_AntHiveBiomeExtension ext, RUT_MapComponent_TheTenant tenant)
+        private void GenerateWalled(Map map, RM_AntHiveBiomeExtension ext, RM_MapComponent_TheTenant tenant)
         {
             ThingDef wallDef = DefDatabase<ThingDef>.GetNamedSilentFail(WallDefName);
             if (wallDef == null)
@@ -180,7 +180,7 @@ namespace RimMandrake.FeverWood
             return c.x + c.z * map.Size.x;
         }
 
-        private static HiveGrid Snapshot(Map map, RUT_MapComponent_TheTenant tenant)
+        private static HiveGrid Snapshot(Map map, RM_MapComponent_TheTenant tenant)
         {
             HiveGrid g = new HiveGrid(map.Size.x, map.Size.z);
             foreach (IntVec3 c in map.AllCells)
@@ -245,7 +245,7 @@ namespace RimMandrake.FeverWood
         }
 
         // Same rejection-sampling shape as RM_GenStep_ScatterPools.TryFindSite.
-        private bool TryFindAnchor(Map map, RM_AntHiveBiomeExtension ext, RUT_MapComponent_TheTenant tenant, out IntVec3 result)
+        private bool TryFindAnchor(Map map, RM_AntHiveBiomeExtension ext, RM_MapComponent_TheTenant tenant, out IntVec3 result)
         {
             for (int attempt = 0; attempt < ext.placementAttempts; attempt++)
             {
@@ -281,7 +281,7 @@ namespace RimMandrake.FeverWood
         // continuous lane. Degrades gracefully: a room whose hop lands
         // out-of-bounds or too close to registered water after several
         // attempts simply ends the chain there, rather than looping forever.
-        private List<IntVec3> BuildRoomChain(Map map, RM_AntHiveBiomeExtension ext, RUT_MapComponent_TheTenant tenant, IntVec3 start)
+        private List<IntVec3> BuildRoomChain(Map map, RM_AntHiveBiomeExtension ext, RM_MapComponent_TheTenant tenant, IntVec3 start)
         {
             List<IntVec3> rooms = new List<IntVec3> { start };
             int targetCount = ext.roomCountRange.RandomInRange;

@@ -4,13 +4,13 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     //   <HediffDef>
-    //     <defName>RUT_Miasma_MotherDreamed</defName>
+    //     <defName>RM_Miasma_MotherDreamed</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_PeriodicInspiration">
     //         <mtbDaysToDream>20</mtbDaysToDream>
-    //         <letterLabelKey>RUT_MotherDreamedLetterLabel</letterLabelKey>
-    //         <letterTextKey>RUT_MotherDreamedLetterText</letterTextKey>
+    //         <letterLabelKey>RM_MotherDreamedLetterLabel</letterLabelKey>
+    //         <letterTextKey>RM_MotherDreamedLetterText</letterTextKey>
     //       </li>
     //     </comps>
     //   </HediffDef>
@@ -49,9 +49,9 @@ namespace RimMandrake.EnvironmentalHazards
         /// the raw key rather than erroring (same pattern this mod's M4 pass
         /// already shipped for RM_MiasmaBoonLetterLabel/Text — no
         /// Languages/ entry yet, flagged there and here alike).</summary>
-        public string letterLabelKey = "RUT_MotherDreamedLetterLabel";
+        public string letterLabelKey = "RM_MotherDreamedLetterLabel";
 
-        public string letterTextKey = "RUT_MotherDreamedLetterText";
+        public string letterTextKey = "RM_MotherDreamedLetterText";
 
         public CompProperties_PeriodicInspiration()
         {

@@ -5,7 +5,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // FEVER_WOOD_MECHANICS_1 F1 build — the pool-placement gap flagged by
     // this item's own prior passes (kit spec F1's "registered pool terrain"
-    // was proven and wired onto RUT_FeverWoodMirrorPool.xml, but the sheet's
+    // was proven and wired onto RM_FeverWoodMirrorPool.xml, but the sheet's
     // own §0 MEASURED fact — zero rivers, zero water tiles on the donor —
     // means there is no existing water-generation GenStep to hook, unlike
     // every other biome-gated painter in this assembly). Blocked on an owner

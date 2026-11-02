@@ -146,7 +146,7 @@ def main(argv):
             E("ts-vault", f"the vault looks up {n} by name and no Defs folder defines it (every extraction would be ruined / nothing would ruin)")
 
     # mere
-    gs = read(os.path.join(src, "RUT_GenStep_DeepBlackMere.cs"))
+    gs = read(os.path.join(src, "RM_GenStep_DeepBlackMere.cs"))
     names = re.search(r"SumpBiomeDefNames = \{([^}]*)\}", gs)
     for n in re.findall(r'"([^"]+)"', names.group(1) if names else ""):
         if n not in known:
@@ -176,8 +176,8 @@ PLANTS = [
     ("thresholds out of order", "Source/RM_Kethrel.cs", "{ 3f, 10f, 22f }", "{ 3f, 22f, 10f }"),
     ("molt default under the top stage", "Source/RM_TheSumpMod.cs", "public static float kethrelMoltLoadKg = 30f;", "public static float kethrelMoltLoadKg = 20f;"),
     ("vault never ticks", "Defs/ThingDefs_Buildings/RM_TarVault.xml", "<tickerType>Normal</tickerType>", ""),
-    ("biome gate names a ghost", "Source/RUT_GenStep_DeepBlackMere.cs", '"RM_TheSump", "RUT_Sump"', '"RM_TheSump", "RUT_Sumpp"'),
-    ("stale mere constant", "Source/RUT_GenStep_DeepBlackMere.cs", "private const int MinMereCells = RM_MereKernel.MinMereCells;", "private const int MinMereCells = 180;"),
+    ("biome gate names a ghost", "Source/RM_GenStep_DeepBlackMere.cs", '"RM_TheSump", "RUT_Sump"', '"RM_TheSump", "RUT_Sumpp"'),
+    ("stale mere constant", "Source/RM_GenStep_DeepBlackMere.cs", "private const int MinMereCells = RM_MereKernel.MinMereCells;", "private const int MinMereCells = 180;"),
     ("kernel imports Verse", "Source/Kernel/RM_SumpKernel.cs", "using System;", "using System;\nusing Verse;"),
     ("kernel missing from csproj", "Source/RM_TheSump.csproj", '<Compile Include="Kernel\\RM_SumpKernel.cs" />', ""),
 ]

@@ -108,7 +108,7 @@ namespace RimMandrake.DivingInteraction
                     avoid.Add(t.OccupiedRect().ExpandedBy(ExitPad));
                 }
             }
-            ThingDef ventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_ScaldVent");
+            ThingDef ventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_ScaldVent");
             if (ventDef != null)
             {
                 foreach (Thing t in map.listerThings.ThingsOfDef(ventDef))

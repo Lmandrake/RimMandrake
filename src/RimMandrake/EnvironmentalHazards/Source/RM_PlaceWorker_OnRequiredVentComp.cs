@@ -11,7 +11,7 @@ namespace RimMandrake.EnvironmentalHazards
     // that class hardcodes `ThingDefOf.SteamGeyser` in a two-line check.
     // This kit's condensers must instead lock onto whatever
     // `CompProperties_ResourceCondenser.requiredThingAtPosition` the
-    // BUILDING ITSELF carries — hardcoding RUT_ScaldVent here would make a
+    // BUILDING ITSELF carries — hardcoding RM_ScaldVent here would make a
     // generic RM_ class know a Scald-tier defName, exactly the "one class,
     // many hardcoded subclasses" problem this kit family exists to remove
     // (ALPHA_MECHANICS_KIT_1's own stated design). `ThingDef.GetCompProperties<T>()`

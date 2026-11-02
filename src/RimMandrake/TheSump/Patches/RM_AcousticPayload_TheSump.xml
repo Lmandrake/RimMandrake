@@ -26,7 +26,7 @@
               <color>(1, 0.35, 0.3)</color>
               <weight>3</weight>
               <thingDefs>
-                <li>RUT_BeastBulge</li>
+                <li>RM_BeastBulge</li>
               </thingDefs>
             </li>
             <li>

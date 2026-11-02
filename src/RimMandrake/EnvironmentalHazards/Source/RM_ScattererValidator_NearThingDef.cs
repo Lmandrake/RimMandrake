@@ -4,7 +4,7 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     // SCALD_MECHANICS_1 S5 build (scald_kit_spec.md S5): "placed via
-    // RM_GenStep_PlacedSetPieces keyed to RUT_ScaldVent sites... a
+    // RM_GenStep_PlacedSetPieces keyed to RM_ScaldVent sites... a
     // vent-proximity validator." No stock ScattererValidator does
     // PROXIMITY-TO a ThingDef — only the mirror-image AVOID case exists
     // (Verse.ScattererValidator_AvoidThingsOfDef, read in full: walks

@@ -1,0 +1,1 @@
+A1 L1: after deploy_custom_mods.py --compose biomes --apply --prune (+ UtinniPatches), a load resolves the renamed RM_ defs (the ten Fever Wood terrains/things/genSteps, Sump weather and dusk lock, Miasma weather/lock/exposure, Lantern Deeps hum, Scald damage/water) and Player.log names no retired RUT_ name, no RM_BiomeTierCleanupAliases error, and the def-alias-types rule armed

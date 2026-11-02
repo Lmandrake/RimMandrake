@@ -296,7 +296,7 @@ namespace RimMandrake.FeverWood
 
         // The Fever Wood's own registered pool terrain. A young freed at any
         // other water settles in and gives nothing.
-        public static readonly string[] FeverWoodPoolTerrains = { "RUT_FeverWoodMirrorPool" };
+        public static readonly string[] FeverWoodPoolTerrains = { "RM_FeverWoodMirrorPool" };
 
         public static bool IsFeverWoodPool(IntVec3 c, Map map)
         {
@@ -304,7 +304,7 @@ namespace RimMandrake.FeverWood
             {
                 return false;
             }
-            RUT_MapComponent_TheTenant tenant = map.GetComponent<RUT_MapComponent_TheTenant>();
+            RM_MapComponent_TheTenant tenant = map.GetComponent<RM_MapComponent_TheTenant>();
             if (tenant == null || !tenant.IsRegisteredWater(c))
             {
                 return false;

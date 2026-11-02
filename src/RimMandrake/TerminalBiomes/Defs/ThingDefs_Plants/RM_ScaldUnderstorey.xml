@@ -20,7 +20,7 @@
     - Deep-floor flora (vekkfan, thurlsponge) key on RM_SeaFloorGround, because
       the floor a gravship lands on is RM_SeaFloorGround with only 5% shallow
       and 12% margin bands (RM_SeaDiveGenerators.xml / RM_SeabedGenerators.xml);
-      RUT_ScaldWaterOceanDeep is never generated there, so the design's "tag
+      RM_ScaldWaterOceanDeep is never generated there, so the design's "tag
       the deep variant" would spawn nothing. That tag is shared by every sea
       floor, but these defs are only in the Scald's wildPlants.
 

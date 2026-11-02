@@ -42,7 +42,7 @@
   texPath: this mod ships its own Textures/Things/ namespace, so
   validate_patch.py refuses a bare cross-mod reference to Core's own
   Things/Filth/Grainy as an unresolvable texPath (same rule that hit
-  RimUtinni's RUT_Filth_MouseTrack). Not a DEPLOY_HOLD placeholder this
+  RimUtinni's RM_Filth_MouseTrack). Not a DEPLOY_HOLD placeholder this
   time — the actual Core GrainyA texture (extracted via
   extract_bundle_textures.py, cached at
   observed/inventory/bundle_textures/ludeon.rimworld.core/GrainyA.png) is

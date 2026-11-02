@@ -16,7 +16,7 @@
   lookup a WeatherDef.ambientSounds entry performs does not care which content
   pack declared the SoundDef, or which pack's clip a SoundDef's grain names.
 
-  RUT_DeepHum   — the constant low cave drone ("the hum").
+  RM_DeepHum   — the constant low cave drone ("the hum").
   RM_DeepChorus — a quieter, slow-swelling eerie layer on top ("rising to a
                    Chorus"); soft enough to read as a periodic intensification
                    of the hum rather than a second distinct sound.
@@ -24,7 +24,7 @@
 <Defs>
 
   <SoundDef>
-    <defName>RUT_DeepHum</defName>
+    <defName>RM_DeepHum</defName>
     <sustain>True</sustain>
     <context>MapOnly</context>
     <priorityMode>PrioritizeNearest</priorityMode>

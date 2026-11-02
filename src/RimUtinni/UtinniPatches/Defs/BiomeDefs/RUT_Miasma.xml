@@ -12,9 +12,9 @@
     AlphaBiomes.BiomeWorker_MiasmicMangrove, the 17 genuine Star Wars wildAnimals
     rows routed through a Utinni patch instead of inline, and the 5 roster-evicted
     rows dropped). The 16 mechanic def/patch files this BiomeDef's own
-    biomeMapConditions/modExtensions reference (RUT_MiasmaWeatherLock, RUT_Surge,
-    RUT_GradientSurge, RUT_CrecheMarker, RUT_MiasmaWeather, RUT_SurgeWeather,
-    RUT_MiasmaExposure, the FeverForged/HardenedImmunity/StrangeTier hediffs, the
+    biomeMapConditions/modExtensions reference (RM_MiasmaWeatherLock, RM_Surge,
+    RM_GradientSurge, RM_CrecheMarker, RM_MiasmaWeather, RM_SurgeWeather,
+    RM_MiasmaExposure, the FeverForged/HardenedImmunity/StrangeTier hediffs, the
     two Base_Player GenStep registrations, and RUT_Miasma_ForgeOnSurvival) moved
     with their defNames unchanged into mandrake.rm.miasma's own Defs/ and
     Patches/ trees - this def's own references below keep resolving exactly as
@@ -31,7 +31,7 @@
     sea tiles; temp median 42.8 C. Rain: zero on 89 of 93 tiles. animalDensity/
     movementDifficulty/diseaseMtbDays kept at the donor's own values (6.5 refugee
     crowding, 4 root-maze/muck, 15 "the Working's failures leaking out").
-    MIASMA_MECHANICS_1's M4 build pass (2026-09-13) forces RUT_MiasmaWeather
+    MIASMA_MECHANICS_1's M4 build pass (2026-09-13) forces RM_MiasmaWeather
     permanently via GameCondition.ForcedWeather(), making the kept Rain/
     RainyThunderstorm/etc. baseWeatherCommonalities entries below INERT (kept
     only because removing them changes nothing observable and an empty list is
@@ -59,7 +59,7 @@
     <texture>World/Biomes/RUT_Miasma</texture>
     <diseaseMtbDays>15</diseaseMtbDays>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.biomes">RUT_MiasmaWeatherLock</li>
+      <li MayRequire="mandrake.rm.biomes">RM_MiasmaWeatherLock</li>
     </biomeMapConditions>
     <modExtensions>
       <!-- M4: "seen through breath", not the Lantern's dark (kit spec's own INVENTED 0.85). -->
@@ -96,14 +96,14 @@
         <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
       </li>
       <!-- M2: the breath-tide surge's own MTB/magnitude tuning, shared by
-           RM_MapComponent_GradientAxis.TickSurgeRoll (fires RUT_Surge) and
+           RM_MapComponent_GradientAxis.TickSurgeRoll (fires RM_Surge) and
            RM_GameCondition_GradientSurge (sizes the shove/recede). Every
            figure here is the kit spec's own INVENTED number except
            stormWindSpeedThreshold/residualFraction, which the spec left
            unspecified and this build pass picked and recorded (see
            RM_GradientSurgeExtension.cs's own header for why). -->
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
-        <incidentDef>RUT_Surge</incidentDef>
+        <incidentDef>RM_Surge</incidentDef>
         <baseMtbDays>5</baseMtbDays>
         <stormMtbMultiplier>0.25</stormMtbMultiplier>
         <stormWindSpeedThreshold>1.2</stormWindSpeedThreshold>
@@ -128,7 +128,7 @@
            a bespoke "stranded" cast. strandedDeformationHediff/Chance:
            the minority (25%) that gets the sheet's own "gills going
            leathery, fins splaying into feet" condition
-           (RUT_StrandedDeformation.xml, this same pass) and is thereby
+           (RM_StrandedDeformation.xml, this same pass) and is thereby
            excluded from RM_JobGiver_ReturnToWater's rescue pathing — see
            that hediff's own header for the full mechanism. -->
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
@@ -146,7 +146,7 @@
         <poolSizeThreshold>4</poolSizeThreshold>
         <searchRadius>60</searchRadius>
         <dryTerrain>RUT_Jawa_SaltCrust</dryTerrain>
-        <strandedDeformationHediff>RUT_StrandedDeformation</strandedDeformationHediff>
+        <strandedDeformationHediff>RM_StrandedDeformation</strandedDeformationHediff>
         <strandedDeformationChance>0.25</strandedDeformationChance>
       </li>
     </modExtensions>

@@ -23,8 +23,8 @@ CLOSED = {"Vhelloth": 12631, "Fevrakesh": 18373, "Octopus Silted Creek": 12630,
 REGION = "Fever Wood"
 EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "RM_ChillCrater", "RM_WorldComponent_DeepYoung",
             "Notify_DisplayTankFreed", "DisplayTankFreed", "RM_GenStep_DisplayTank", "BoldnessMultiplier",
-            "RestlessnessLine", "RUT_TenantEmergenceSpawner", "RM_MapComponent_TentacleWatch",
-            "RUT_MapComponent_TheTenant", "RUT_FeverWoodMirrorPool", "RM_FeverWoodSettings", "EmpireLadder",
+            "RestlessnessLine", "RM_TenantEmergenceSpawner", "RM_MapComponent_TentacleWatch",
+            "RM_MapComponent_TheTenant", "RM_FeverWoodMirrorPool", "RM_FeverWoodSettings", "EmpireLadder",
             "RuthlessPursuingMechanoids", "RM_FeverWood", "RUT_FeverWood", "warLabCraterEnabled"]
 NEW = {"RUT_SekkulaathRising", "IncidentWorker_SekkulaathRising", "SekkulaathRisingExtension", "RM_SunkenGround",
        "GameComponent_SekkulaathRising", "RUT_Trader_WildsteamRuined",

@@ -88,22 +88,22 @@
     <texture>World/Biomes/RUT_Scald</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
-    <waterShallowTerrain>RUT_ScaldWaterShallow</waterShallowTerrain>
-    <waterDeepTerrain>RUT_ScaldWaterDeep</waterDeepTerrain>
-    <waterMovingShallowTerrain>RUT_ScaldWaterMovingShallow</waterMovingShallowTerrain>
-    <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
+    <waterShallowTerrain>RM_ScaldWaterShallow</waterShallowTerrain>
+    <waterDeepTerrain>RM_ScaldWaterDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain>RM_ScaldWaterMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain>RM_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23. Makes the land tiles around the
          Scald read as coastal and cut a real shore, with the Scald's OWN water
          rather than vanilla ocean. The two terrains are named explicitly because
          the four fields above are the FRESH-water pair this def uses inland; the
-         terrain its own map lays is RUT_ScaldWaterOceanDeep. MayRequire on the
+         terrain its own map lays is RM_ScaldWaterOceanDeep. MayRequire on the
          <li> is load-bearing: an unresolvable extension class discards the whole
          BiomeDef silently. -->
     <modExtensions>
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.biomes">
-        <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
-        <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
+        <deepTerrain>RM_ScaldWaterOceanDeep</deepTerrain>
+        <shallowTerrain>RM_ScaldWaterOceanShallow</shallowTerrain>
       </li>
     </modExtensions>
     <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
@@ -203,7 +203,7 @@
     </baseWeatherCommonalities>
     <terrainsByFertility>
       <li>
-        <terrain>RUT_ScaldWaterOceanDeep</terrain>
+        <terrain>RM_ScaldWaterOceanDeep</terrain>
         <min>-999</min>
         <max>999</max>
       </li>

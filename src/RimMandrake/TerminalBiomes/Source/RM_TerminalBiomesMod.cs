@@ -34,16 +34,16 @@ namespace RimMandrake.TerminalBiomes
     //     and the Scald's own defs carry an RM_MechanicGateExtension naming
     //     the key. Only defs carrying the extension are gated; every other
     //     biome's use of the same classes is untouched.
-    //       Scald.S1 -> RUT_ScaldSteamLock (RM_GameCondition_WeatherPulse)
-    //       Scald.S2 -> RUT_SteamCatch (RM_CompResourceCondenser)
-    //       Scald.S4 -> RUT_ScaldVent, as the condenser sees it
-    //       Scald.S5 -> RUT_WalkerSurfacing, RUT_GenStep_ScaldSailScatterer
-    //       Scald.S7 -> RUT_ScaldSteamCarrier (GameCondition_EnvironmentalWeather)
+    //       Scald.S1 -> RM_ScaldSteamLock (RM_GameCondition_WeatherPulse)
+    //       Scald.S2 -> RM_SteamCatch (RM_CompResourceCondenser)
+    //       Scald.S4 -> RM_ScaldVent, as the condenser sees it
+    //       Scald.S5 -> RM_WalkerSurfacing, RM_GenStep_ScaldSailScatterer
+    //       Scald.S7 -> RM_ScaldSteamCarrier (GameCondition_EnvironmentalWeather)
     //       Scald    -> the biome switch alone (ScaldActive). Read by the Wreckage
     //                   engine's RM_WreckField_Scald, whose own checkbox lives in
     //                   the Wreckage settings; that engine registers "Scald.S6" as
     //                   an alias of the field.
-    //       Scald.S1.flash -> RUT_WeatherEvent_VentFlash (no def of its own; the
+    //       Scald.S1.flash -> RM_WeatherEvent_VentFlash (no def of its own; the
     //                         event checks the key directly, since a WeatherEvent
     //                         is constructed from a Type and carries no Def)
     //   - Mechanics whose engine class was vanilla (the vent's

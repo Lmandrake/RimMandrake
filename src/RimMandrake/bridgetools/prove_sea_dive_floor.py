@@ -22,7 +22,7 @@ import rimbridge_client as rb
 
 SEAS = {
     # biome: (expected band terrains, tag-gated plants that should appear on them)
-    "TheScald":    ("RM_TheScald",    ["RM_SeaFloorGround", "RUT_ScaldMargin", "RUT_ScaldWaterOceanShallow"], ["RM_Crowncarpet"]),
+    "TheScald":    ("RM_TheScald",    ["RM_SeaFloorGround", "RM_ScaldMargin", "RM_ScaldWaterOceanShallow"], ["RM_Crowncarpet"]),
     "GreySea":     ("RM_GreySea",     ["RM_SeaFloorGround"], []),
     "TwilightSea": ("RM_TwilightSea", ["RM_SeaFloorGround"], []),
     "TheChill":    ("RM_TheChill",    ["RM_ChillIceBedrock", "RM_SolidPropane", "RM_TheChillDeep"],

@@ -7,7 +7,7 @@ using Verse.AI.Group;
 namespace RimMandrake.EnvironmentalHazards
 {
     // SUMP_TAR_BEAST_BUILD_1 - the tar beast (design/Jawa/worldbuilding/biomes/sump_bedazzle_review_2026-10-01.md s3).
-    // Built on RM_CompStationEater (bites, satiation, mound + letter) and the RUT_BeastBulge wake chain
+    // Built on RM_CompStationEater (bites, satiation, mound + letter) and the RM_BeastBulge wake chain
     // (damage / construction / dig-shaft lottery via RM_CompBeastWakeRelay, plus RM_CompBulgePumpWake below).
     // Everything the beast does is a state change a player can read: tar coating behind it, a mound and a
     // letter per swallowed building, a message and a tar ring when it sinks. Nothing vanishes unsigned.
@@ -291,7 +291,7 @@ namespace RimMandrake.EnvironmentalHazards
         }
     }
 
-    // On RUT_BeastBulge: pumping or deep drilling within range wakes the dormant beast (the spec's
+    // On RM_BeastBulge: pumping or deep drilling within range wakes the dormant beast (the spec's
     // "deep dig ... and pumping" wake cause; the dig-shaft cause is RM_CompBeastWakeRelay).
     public class CompProperties_BulgePumpWake : CompProperties
     {

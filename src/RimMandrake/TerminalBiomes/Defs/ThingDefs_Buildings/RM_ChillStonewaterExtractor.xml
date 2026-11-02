@@ -44,7 +44,7 @@
       <workTableNotInRoomRoleFactor>0.8</workTableNotInRoomRoleFactor>
     </building>
     <canOverlapZones>false</canOverlapZones>
-    <!-- Placeholder art: reuses this mod's own RUT_SteamCatch production
+    <!-- Placeholder art: reuses this mod's own RM_SteamCatch production
          building sprite (a single flat texture, no directional variants —
          Graphic_Single, not the vanilla-style Graphic_Multi sheet a real
          extractor sprite would want). validate_patch.py flagged the

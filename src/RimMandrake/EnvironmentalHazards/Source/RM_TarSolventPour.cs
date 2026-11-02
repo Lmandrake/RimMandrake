@@ -17,7 +17,7 @@ namespace RimMandrake.EnvironmentalHazards
     // (carry the solvent to the tar's edge, wait, pour) -> RM_CompBulgeSolventPour.Pour (splash + hiss, both god deltas,
     // letter, a pending-wake record, the stock CompWakeUpDormant.Activate) -> RM_CompTarBeast's first tick consumes the record
     // and starts ManhunterPermanent. Which items count as solvent is DATA on the bulge's comp props, so the free-tier move of the
-    // solvents (SUMP_FREE_TIER_MOVE_BUILD_1) only changes a defName list in RUT_BeastBulge.xml.
+    // solvents (SUMP_FREE_TIER_MOVE_BUILD_1) only changes a defName list in RM_BeastBulge.xml.
 
     public class CompProperties_BulgeSolventPour : CompProperties
     {

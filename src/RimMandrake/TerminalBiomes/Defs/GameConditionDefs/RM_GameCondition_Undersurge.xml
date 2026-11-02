@@ -14,7 +14,7 @@
   schedule), gated by the "undersurge frequency" Mod Setting.
 
   No IncidentDef targets this GameConditionDef at all — deliberately, same
-  posture as RUT_Surge.xml's own gradient surge in EnvironmentalHazards:
+  posture as RM_Surge.xml's own gradient surge in EnvironmentalHazards:
   this mechanism owns its entire schedule in code
   (RM_MapComponent_ChannelCurrent.TickUndersurgeRoll) and never wants the
   vanilla storyteller rolling it independently.

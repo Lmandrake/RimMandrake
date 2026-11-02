@@ -245,7 +245,7 @@
               <color>(0.55, 1, 0.55)</color>
               <weight>2</weight>
               <thingDefs>
-                <li>RUT_FeverTrunkCore</li>
+                <li>RM_FeverTrunkCore</li>
               </thingDefs>
             </li>
             <li>
@@ -388,7 +388,7 @@
               <color>(1, 0.6, 0.45)</color>
               <weight>2</weight>
               <thingDefs>
-                <li>RUT_CrecheMarker</li>
+                <li>RM_CrecheMarker</li>
               </thingDefs>
             </li>
             <li>
@@ -641,7 +641,7 @@
               <color>(1, 0.35, 0.3)</color>
               <weight>3</weight>
               <thingDefs>
-                <li>RUT_BeastBulge</li>
+                <li>RM_BeastBulge</li>
               </thingDefs>
             </li>
             <li>
@@ -791,7 +791,7 @@
               <color>(1, 0.75, 0.35)</color>
               <weight>2</weight>
               <thingDefs>
-                <li>RUT_ScaldVent</li>
+                <li>RM_ScaldVent</li>
               </thingDefs>
             </li>
             <li>
@@ -808,9 +808,9 @@
               <reading>Metal cooked clean in the shallows, ringing thin.</reading>
               <color>(0.8, 0.8, 0.85)</color>
               <thingDefs>
-                <li>RUT_ScaldWreckHull</li>
-                <li>RUT_ScaldWreckTank</li>
-                <li>RUT_ScaldWreckFrame</li>
+                <li>RM_ScaldWreckHull</li>
+                <li>RM_ScaldWreckTank</li>
+                <li>RM_ScaldWreckFrame</li>
               </thingDefs>
             </li>
             <li>

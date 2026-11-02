@@ -262,7 +262,7 @@ namespace RimMandrake.EnvironmentalHazards
 
         // The MTB clock itself (miasma_kit_spec.md M2, ban #4: "never
         // scheduled... the def carries no period field"). Deliberately NOT
-        // driven by RUT_Surge.xml's own Storyteller category — see that
+        // driven by RM_Surge.xml's own Storyteller category — see that
         // file's header for why its category is Misc — this mechanism owns
         // its entire schedule here, in code, gated per-biome by
         // RM_GradientSurgeExtension being present at all (same "extension
@@ -284,7 +284,7 @@ namespace RimMandrake.EnvironmentalHazards
             // "Storm weather active", resolved concretely — see
             // RM_GradientSurgeExtension's own header for why this reads
             // live wind gust strength rather than the map's current
-            // WeatherDef (M4's RUT_MiasmaWeatherLock makes every OTHER
+            // WeatherDef (M4's RM_MiasmaWeatherLock makes every OTHER
             // weather provably unreachable here, so there is no on-map
             // "storm weather" state left to check).
             if (map.windManager != null && map.windManager.WindSpeed >= ext.stormWindSpeedThreshold)

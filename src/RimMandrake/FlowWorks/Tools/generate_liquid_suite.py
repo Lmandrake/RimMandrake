@@ -110,7 +110,7 @@ LIQUID_ROWS = {
     # R-B4a's boiling-lift values — REVISED per LIQUID_TERRAIN_AUTHORED_TWICE_1
     # (closed 2026-09-27). This row used to carry R-B4a's ORIGINAL 1/300 shallow,
     # 2/240 deep, cited from src/RimUtinni/UtinniPatches/Defs/TerrainDefs/
-    # RUT_ScaldWater.xml at the time this row was written — but that donor file
+    # RM_ScaldWater.xml at the time this row was written — but that donor file
     # was itself REVISED to 3/300 shallow, 4/240 deep on 2026-09-26 (owner ruling
     # 9, scald_steam_and_hazards_spec.md §9: "deep water should burn harder",
     # plus the measured fact that HediffGiver_Terrain floors burnDamage at
@@ -123,8 +123,8 @@ LIQUID_ROWS = {
     # values, not as an unreconciled hand-authored divergence.
     #
     # This row now carries the SAME 3/300 shallow, 4/240 deep as
-    # RUT_ScaldWaterShallow/Deep. It does NOT replace or repoint
-    # RUT_ScaldWater.xml — that file's six-variant suite (it also ships
+    # RM_ScaldWaterShallow/Deep. It does NOT replace or repoint
+    # RM_ScaldWater.xml — that file's six-variant suite (it also ships
     # Ocean/Moving variants this generator's shallow+deep-only shape does not
     # cover, per this module's own docstring on why ocean/moving depth is
     # explicitly out of scope) still serves RUT_TheScald AND RM_TheScald

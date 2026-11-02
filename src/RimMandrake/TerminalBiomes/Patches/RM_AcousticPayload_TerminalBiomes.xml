@@ -78,7 +78,7 @@
               <color>(1, 0.75, 0.35)</color>
               <weight>2</weight>
               <thingDefs>
-                <li>RUT_ScaldVent</li>
+                <li>RM_ScaldVent</li>
               </thingDefs>
             </li>
             <li>
@@ -95,9 +95,9 @@
               <reading>Metal cooked clean in the shallows, ringing thin.</reading>
               <color>(0.8, 0.8, 0.85)</color>
               <thingDefs>
-                <li>RUT_ScaldWreckHull</li>
-                <li>RUT_ScaldWreckTank</li>
-                <li>RUT_ScaldWreckFrame</li>
+                <li>RM_ScaldWreckHull</li>
+                <li>RM_ScaldWreckTank</li>
+                <li>RM_ScaldWreckFrame</li>
               </thingDefs>
             </li>
             <li>

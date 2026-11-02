@@ -60,14 +60,14 @@ content def in any mod opts in through XML alone.
 
 Live proof is OWED: this mod has not yet been loaded in a running game.
 
-FEVER_WOOD_MECHANICS_1 F2 (2026-09-18): RUT_IncidentWorker_MirrorBreak calls
+FEVER_WOOD_MECHANICS_1 F2 (2026-09-18): RM_IncidentWorker_MirrorBreak calls
 RimMandrake.CreatureBehaviors.RM_MapComponent_SilenceCue.TriggerHush for the
 mirror-break "everything goes silent to watch" beat (the_fever_wood.md §9),
 reusing the Greentide kit's own silence-cue class rather than a second
 implementation. This makes mandrake.rm.creaturebehaviors a real dependency
 of this mod, same shape mandrake.rm.shipvermin already ships.
 
-SUMP_TAR_FIRE_NETWORK_1 part 2 (2026-09-29): RUT_IncidentWorker_TarPitBelch
+SUMP_TAR_FIRE_NETWORK_1 part 2 (2026-09-29): RM_IncidentWorker_TarPitBelch
 now spawns a real RimMandrake.FlowWorks.Flood_FlowWorks release (RM_Fluid_Tar)
 at the epicenter instead of a filth splash, so its cooled edge becomes real
 RM_TarGlass terrain via FluidDef.coolsToGlassEdge. This incident already

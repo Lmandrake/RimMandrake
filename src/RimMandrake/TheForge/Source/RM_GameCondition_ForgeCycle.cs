@@ -30,7 +30,7 @@ namespace RimMandrake.TheForge
     //                TEMPORARY basalt shingle / pumice on the 1.6 temp-terrain
     //                layer (TerrainGrid.SetTempTerrain, saved in tempGrid).
     //   5 Growth     floatstone gardens bloom on the crust; the flash window
-    //                (RUT_Plant_FlashFlora's clock) spans the phase.
+    //                (RM_Plant_FlashFlora's clock) spans the phase.
     //   6 Cracks     unharvested gardens tear free and drift off (counted,
     //                messaged); the crust turns to glowing-crack terrain.
     //     Melt       the temp layer is removed in batches, so the lava that

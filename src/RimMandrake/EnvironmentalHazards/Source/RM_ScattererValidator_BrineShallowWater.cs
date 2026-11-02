@@ -18,9 +18,9 @@ namespace RimMandrake.EnvironmentalHazards
     // coupling anywhere in this file. On a map whose biome carries no such
     // extension (i.e. every non-Miasma map in the game, since only
     // RUT_Miasma.xml carries RM_GradientAxisExtension today), every cell
-    // fails outright — RUT_GenStep_CrecheScatterer is registered globally
+    // fails outright — RM_GenStep_CrecheScatterer is registered globally
     // onto Base_Player (same "safe for every biome, gate internally"
-    // pattern RUT_GenStep_GradientAxis's own header already established),
+    // pattern RM_GenStep_GradientAxis's own header already established),
     // so this early-out is what keeps it a harmless no-op everywhere else.
     public class RM_ScattererValidator_BrineShallowWater : ScattererValidator
     {
@@ -33,7 +33,7 @@ namespace RimMandrake.EnvironmentalHazards
         // Mod Settings: MOD_OPTIONS_RETROFIT_1's own worldgen-affecting
         // toggle for this mechanism (RM_EnvironmentalHazardsSettings.
         // wardenCrecheScattererEnabled). Off: no cell is ever valid, so
-        // RUT_GenStep_CrecheScatterer places nothing — same "disabled
+        // RM_GenStep_CrecheScatterer places nothing — same "disabled
         // mechanism spawns nothing, everything else untouched" shape every
         // other toggle in that file already follows.
         public override bool Allows(IntVec3 c, Map map)

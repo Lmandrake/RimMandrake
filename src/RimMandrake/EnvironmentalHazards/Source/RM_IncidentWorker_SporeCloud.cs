@@ -1,0 +1,43 @@
+using RimWorld;
+using Verse;
+
+namespace RimMandrake.EnvironmentalHazards
+{
+    // ROT_SPORECLOUD_PORT_1. RUT_SporeCloud.xml (IncidentDef, RimUtinni
+    // RotSporeKit) now fires GameCondition_EnvironmentalWeather through this
+    // rather than the bare vanilla RimWorld.IncidentWorker_MakeGameCondition
+    // — same one-line addition RM_IncidentWorker_Breaklight already made for
+    // exactly the same reason (MOD_OPTIONS_RETROFIT_1: a rare incident-fired
+    // event has no other on/off hook to hang a mod-option toggle off of).
+    //
+    // RUT_-prefixed content class in the shared EnvironmentalHazards
+    // assembly, same posture as RM_IncidentWorker_Breaklight/
+    // RM_IncidentWorker_SteamDevil/RM_IncidentWorker_ContagionProbe.
+    public class RM_IncidentWorker_SporeCloud : IncidentWorker_MakeGameCondition
+    {
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            if (!RM_EnvironmentalHazardsSettings.sporeCloudEnabled)
+            {
+                return false; // mod option: spore cloud event disabled
+            }
+
+            if (parms.target is Map map && !RM_KitFronts.Enabled("sporeCloud", map.Biome))
+            {
+                return false;
+            }
+
+            return base.CanFireNowSub(parms);
+        }
+
+        public override float ChanceFactorNow(IIncidentTarget target)
+        {
+            float f = base.ChanceFactorNow(target);
+            if (target is Map map)
+            {
+                f *= RM_KitFronts.Factor("sporeCloud", map.Biome);
+            }
+            return f;
+        }
+    }
+}

@@ -33,7 +33,7 @@ namespace RimMandrake.EnvironmentalHazards
     // deliberately (Amble/Walk) never triggers it — the biome is
     // punishing haste, not merely crossing the floor.
     //
-    // Scan cadence/snapshot pattern matches RUT_MapComponent_TheTenant's own
+    // Scan cadence/snapshot pattern matches RM_MapComponent_TheTenant's own
     // ScanExposure in this assembly: AllPawnsSpawned is copied to a List
     // before iterating, because a stun (or anything downstream of it) could
     // in principle mutate the live spawned-pawns list mid-loop.

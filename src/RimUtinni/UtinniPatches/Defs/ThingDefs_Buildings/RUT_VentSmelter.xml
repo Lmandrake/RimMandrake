@@ -30,11 +30,11 @@
   (decompile-read this pass) checks `map.thingGrid.ThingAt(loc,
   ThingDefOf.SteamGeyser).Position == loc`, i.e. this building's own anchor
   cell must BE the geyser's anchor cell; matching its footprint size exactly
-  is the simplest way to satisfy that, same shape RUT_ScaldVent.xml/
-  RUT_SteamCatch.xml already use for their own geyser-locked buildings.
+  is the simplest way to satisfy that, same shape RM_ScaldVent.xml/
+  RM_SteamCatch.xml already use for their own geyser-locked buildings.
   placeWorkers -> stock PlaceWorker_OnSteamGeyser (verified real class,
   RimWorld/PlaceWorker_OnSteamGeyser.cs) — the actual vanilla class, NOT the
-  RM_PlaceWorker_OnRequiredVentComp used for RUT_ScaldVent's own vent-alike:
+  RM_PlaceWorker_OnRequiredVentComp used for RM_ScaldVent's own vent-alike:
   this kit gates onto REAL vanilla steam geysers (the planet's geyser
   density is VAPOR_EMITTER_PLACEMENT_1's law), not a Forge-specific vent
   building.
@@ -47,7 +47,7 @@
 
   Costs/stats: INVENTED, scaled down from ElectricSmelter's own 170
   Steel/2 ComponentIndustrial — no power hookup to pay for, but still a real
-  construction (higher than RUT_SteamCatch's condenser since this is a
+  construction (higher than RM_SteamCatch's condenser since this is a
   working smelter, not a passive drip).
 
   🔴 Texture: intended to reuse vanilla ElectricSmelter's own art

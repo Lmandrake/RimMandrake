@@ -34,7 +34,7 @@
 
   FORGE_RULED_CONTENT_1 (owner, FORGE_BEDAZZLE_SITTING_1 turn 2: "Wire in all
   waiting."): all three owned flora above now use
-  RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora as thingClass (x8
+  RimMandrake.EnvironmentalHazards.RM_Plant_FlashFlora as thingClass (x8
   growth inside the post-burst flash window, x0.05 outside it, vanilla rate
   when the weather pulse is switched off). That class ships in the
   environmentalhazards assembly this mod already hard-depends on.
@@ -44,7 +44,7 @@
   <!-- ============== Fire lavender ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_FireLavender</defName>
-    <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
+    <thingClass>RimMandrake.EnvironmentalHazards.RM_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>fire lavender</label>
     <description>A lavender that has adapted to survive off the glow of magma, thriving in heat that would kill any ordinary flower. Well loved for its beauty despite — or because of — the furnace it grows in.</description>
     <graphicData>
@@ -89,7 +89,7 @@
   <!-- ============== Heatsink fungus ============== -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_HeatsinkFungus</defName>
-    <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
+    <thingClass>RimMandrake.EnvironmentalHazards.RM_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>heatsink fungus</label>
     <description>Using a complex mix of chemical reactions, this fungus draws in heat to fuel its own growth. Settlers build around it, or move it indoors, to take the edge off a scorching room.</description>
     <graphicData>
@@ -128,7 +128,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_CinderCrust</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
-    <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
+    <thingClass>RimMandrake.EnvironmentalHazards.RM_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>cinder crust</label>
     <description>A tough, ash-grey crust-fungus that clings to cooling rock at the skirts of the massif, baked hard by radiant heat rather than any light it drinks. Nothing much eats it and nothing much kills it; it is the first thing to grow back after a boiling-rain burst scalds a slope bare.</description>
     <graphicData>

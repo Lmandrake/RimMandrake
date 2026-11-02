@@ -3,7 +3,7 @@
   ============================================================================
   WildAnimals_Miasma.xml                    UtinniPatches - new file 2026-09-25
   ============================================================================
-  MIASMA_RM_MOD_BUILD_1 (Phase A). Wires the 17 genuine Star Wars wildAnimals
+  MIASMA_RM_MOD_BUILD_1 (Phase A). Wires the 17 Star Wars-layer wildAnimals
   rows the frozen RUT_Miasma.xml still carries inline onto the new standalone
   RM_Miasma def instead, per the Q11a naming-tier ruling (invented exotic
   names stay in the franchise-free RM_ tier; genuine canon IP routes through
@@ -29,9 +29,13 @@
     RSW_Vornskyr    0.15  strange
     RSW_Zakkeg      0.05  big-wanderer
 
-  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 7 further rows —
-  all juveniles of a genuine CANON parent (mee/faa/laa scalefish, pale
-  yobshrimp, opee sea killer):
+  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 7 further rows.
+  NOT all canon (BIOME_TIER_CLEANUP_1, 2026-11-02): RSW_PodWorm and
+  RSW_CrestedDragon (and RSW_AaroxisDendoria, removed below) are Biomes! team
+  ports (RSW_BiomesTeamPort_Races.xml) with no Wookieepedia page; whether they
+  move to RM_ is WILDPAWN_WILDPOD_RM_PORTS_1's question. The five juveniles
+  have a genuine CANON parent (mee/faa/laa scalefish, pale yobshrimp, opee sea
+  killer):
     RSW_PodWorm          0.5   large grazer (bodySize 4, not a predator)
     RSW_CrestedDragon    0.4   channel-predator
     RSW_MeeJuv           0.4   nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1)

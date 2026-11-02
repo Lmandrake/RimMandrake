@@ -5,7 +5,7 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     //   <ThingDef>
-    //     <defName>RUT_CrecheMarker</defName>
+    //     <defName>RM_CrecheMarker</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_CrecheMarker">
@@ -30,7 +30,7 @@ namespace RimMandrake.EnvironmentalHazards
     }
 
     // MIASMA_MECHANICS_1 M6 build, §8 "everything living remembers it" —
-    // the despoiled-memory mechanic. Lives on RUT_CrecheMarker (the site
+    // the despoiled-memory mechanic. Lives on RM_CrecheMarker (the site
     // identity RM_SetPieceElement_SpawnMarker places), not on the warden
     // pawn itself, because the marker is permanent map furniture while the
     // pawn that dies is exactly the event being remembered.
@@ -96,7 +96,7 @@ namespace RimMandrake.EnvironmentalHazards
 
         public override string CompInspectStringExtra()
         {
-            return despoiled ? "RUT_CrecheMarkerDespoiled".Translate() : "RUT_CrecheMarkerIntact".Translate();
+            return despoiled ? "RM_CrecheMarkerDespoiled".Translate() : "RM_CrecheMarkerIntact".Translate();
         }
     }
 }

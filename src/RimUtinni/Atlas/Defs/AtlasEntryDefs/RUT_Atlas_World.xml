@@ -27,7 +27,7 @@
     <rewardCount>30</rewardCount>
   </RimMandrake.Utinni.Atlas.AtlasEntryDef>
 
-  <!-- RUT_FeverWoodMirrorPool: TerrainDef, mandrake.rm.feverwood, "Still, black
+  <!-- RM_FeverWoodMirrorPool: TerrainDef, mandrake.rm.feverwood, "Still, black
        water, deep and unrippled. Big animals wander in to drink and are
        sometimes simply gone." -->
   <RimMandrake.Utinni.Atlas.AtlasEntryDef>
@@ -43,7 +43,7 @@
     <order>20</order>
     <triggers>
       <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_TerrainPresent">
-        <terrains><li>RUT_FeverWoodMirrorPool</li></terrains>
+        <terrains><li>RM_FeverWoodMirrorPool</li></terrains>
       </li>
     </triggers>
     <rewardThing>MedicineHerbal</rewardThing>

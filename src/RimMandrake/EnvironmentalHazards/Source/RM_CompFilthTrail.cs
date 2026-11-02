@@ -9,7 +9,7 @@ namespace RimMandrake.EnvironmentalHazards
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail">
-    //         <filthDef>RUT_Filth_MouseTrack</filthDef>
+    //         <filthDef>RM_Filth_MouseTrack</filthDef>
     //         <validTerrains>
     //           <li>RM_TarShallow</li>
     //         </validTerrains>
@@ -41,7 +41,7 @@ namespace RimMandrake.EnvironmentalHazards
     }
 
     // SUMP_MECHANICS_1 S4 (sump_kit_spec.md S4, "mouse-line telegraphy" —
-    // "mice deposit RUT_Filth_MouseTrack ... on tar cells they cross").
+    // "mice deposit RM_Filth_MouseTrack ... on tar cells they cross").
     // ~20-line comp per the spec's own estimate ("Filth deposit is a
     // ~20-line comp/JobDriver hook") — a comp, not a JobDriver hook: no new
     // Job/JobDriver is needed since the deposit rides the pawn's EXISTING
@@ -83,11 +83,11 @@ namespace RimMandrake.EnvironmentalHazards
     //     LIQUID_TYPES_MOD_1's own generated RM_Tar.xml) adding
     //     `filthAcceptanceMask: [Natural, Unnatural, Pawn]` onto RM_TarShallow
     //     (never Terrain: the tar has generatedFilth, TerrainDef.cs:538), with
-    //     RUT_Filth_MouseTrack placed under placementMask [Pawn] —
+    //     RM_Filth_MouseTrack placed under placementMask [Pawn] —
     //     RM_TarDeep was left untouched (WaterDeepBase-derived, Impassable,
     //     never a cell a wandering pawn's own path can cross, so patching
     //     it would have no observable effect).
-    //   - `ignoreFilthMultiplierStat true` on RUT_Filth_MouseTrack (not an
+    //   - `ignoreFilthMultiplierStat true` on RM_Filth_MouseTrack (not an
     //     engine block — StatDefOf.FilthMultiplier defaults to 1/100% and
     //     no terrain in this chain overrides it, confirmed against Stats_
     //     Basics_Special.xml — but set anyway so the spec's own single

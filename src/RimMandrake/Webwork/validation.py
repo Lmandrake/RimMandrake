@@ -168,7 +168,7 @@ def _traction_lance_findings():
     structures = _read(os.path.join("Defs", "ThingDefs_Buildings", "RM_WebworkStructures.xml"))
     if "<specimen>RM_GutterJunction</specimen>" not in structures or "<alwaysDeconstructible>true</alwaysDeconstructible>" not in structures:
         bad.append("RM_Webwork_Gutter cannot be cut out into an RM_GutterJunction")
-    dj_p = os.path.join(rm, "TheSump", "Defs", "ThingDefs_Items", "RUT_PreservedDrawJoint.xml")
+    dj_p = os.path.join(rm, "TheSump", "Defs", "ThingDefs_Items", "RM_PreservedDrawJoint.xml")
     if os.path.isfile(dj_p) and "RM_Research_TractionLance" not in open(dj_p, encoding="utf-8").read():
         bad.append("the Sump draw-joint does not grant RM_Research_TractionLance")
     return bad
@@ -979,7 +979,7 @@ def _build_suite():
         with t.component("gutter_junction_study_teaches_the_lance", beyond_toggle=True):
             door(t, "junction", "RM_GutterJunction")
         with t.component("sump_drawjoint_study_teaches_the_lance", beyond_toggle=True):
-            door(t, "drawjoint", "RUT_PreservedDrawJoint (needs mandrake.rm.thesump loaded)")
+            door(t, "drawjoint", "RM_PreservedDrawJoint (needs mandrake.rm.thesump loaded)")
 
     def _sp(t, method, args):
         # RM_WebworkSiegeProof (WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE): one-string proofs, so args travel ';'-joined like _wp's
@@ -1237,7 +1237,7 @@ class _MockLanceSession(_MockSession):
                         "maxMass=2.0 | Hyperweave: range=15.6 snap=0.030 maxMass=3.0"}
             if kw.get("method") == "ProofResearchDoor":
                 door = kw.get("args") or ""
-                item = "RM_GutterJunction" if door == "junction" else "RUT_PreservedDrawJoint"
+                item = "RM_GutterJunction" if door == "junction" else "RM_PreservedDrawJoint"
                 done = self.broken != "door:" + door
                 return {"success": True, "result": "DOOR door=%s item=%s grantComp=True studies=%d before=False buildableBefore=False "
                         "after=%s buildable=%s" % (door, item, 1 if door == "junction" else 2, done, done)}

@@ -80,7 +80,7 @@ RSW_ResourceBlueCrystal	0	1		0
 RUT_BrineDeposit_BrinePlate	0	0	RM_BrinePlate	1
 RUT_BrineDeposit_Drazz	0	0	RUT_Drazz	1
 RUT_BrineDeposit_Tekk	0	0	RUT_Tekk	1
-RUT_FeverTrunkHeartwood	0	0	WoodLog	1
+RM_FeverTrunkHeartwood	0	0	WoodLog	1
 RUT_MindstoneVein	0	0	RUT_Mindstone	1
 RUT_Webwork_SilkKnot	0	0	Hyperweave	1
 Ruby	0	0.5		0

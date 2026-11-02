@@ -16,7 +16,7 @@ namespace RimMandrake.FeverWood
     // to it with no new job/UI code) and this comp reads its fuel state
     // rather than re-implementing "does it have upkeep".
     //
-    //   teaches  -> Notify_Taught() on RUT_MapComponent_TheTenant, once,
+    //   teaches  -> Notify_Taught() on RM_MapComponent_TheTenant, once,
     //               the first time the tank produces successfully.
     //   produces -> Props.products, each on its own MTB-days roll, gated on
     //               CompRefuelable.HasFuel.
@@ -159,7 +159,7 @@ namespace RimMandrake.FeverWood
                 if (!taught && Props.teachesColonyWarning)
                 {
                     taught = true;
-                    parent.Map.GetComponent<RUT_MapComponent_TheTenant>()?.Notify_Taught();
+                    parent.Map.GetComponent<RM_MapComponent_TheTenant>()?.Notify_Taught();
                     Messages.Message("The tank's occupant has produced enough for the colony to finally learn its" +
                         " name — and the low hum that warns of the real thing beneath the pools.",
                         new TargetInfo(parent.Position, parent.Map), MessageTypeDefOf.PositiveEvent);

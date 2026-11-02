@@ -38,17 +38,17 @@
     <texture>World/Biomes/RM_Scald</texture>  <!-- WORLD_SEA_FACES_INSTALL_PICKED_LOOKS 2026-10-24: our own water face (owner pick: today's colour row; same png as the RUT twin), drawn with the WorldOcean shader by RM_WorldTerrainShader. Before: vanilla Ocean (WORLDMAP_IN_GAME_AUDIT 2026-10-20; the old RM_GreySea colour field read as land). -->
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
-    <waterShallowTerrain>RUT_ScaldWaterShallow</waterShallowTerrain>
-    <waterDeepTerrain>RUT_ScaldWaterDeep</waterDeepTerrain>
-    <waterMovingShallowTerrain>RUT_ScaldWaterMovingShallow</waterMovingShallowTerrain>
-    <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
+    <waterShallowTerrain>RM_ScaldWaterShallow</waterShallowTerrain>
+    <waterDeepTerrain>RM_ScaldWaterDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain>RM_ScaldWaterMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain>RM_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1: makes the land tiles around the Scald read
          as coastal and cut a real shore, with the Scald's own water. -->
     <modExtensions>
       <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension">
-        <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
-        <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
+        <deepTerrain>RM_ScaldWaterOceanDeep</deepTerrain>
+        <shallowTerrain>RM_ScaldWaterOceanShallow</shallowTerrain>
       </li>
       <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Scald: the_scald.md "A crater sea that boils. Volcanic heat rises under it".
            heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
@@ -95,7 +95,7 @@
          LuminousPigment mod — RM_WelcomeBlanket renamed RM_Crowncarpet,
          mandrake.rm.luminouspigment now required — spec §2.1), gated on its
          own wildTerrainTags: [RUT_ScaldMarginMat], a tag that exists on
-         exactly one terrain (RUT_ScaldMargin), already in this mod. -->
+         exactly one terrain (RM_ScaldMargin), already in this mod. -->
     <wildPlants>
       <RM_Crowncarpet>0.4</RM_Crowncarpet>
       <!-- SCALD_UNDERWATER_FLORA_1 (2026-10-08): the seven Route A understorey flora
@@ -152,9 +152,9 @@
       <Fog>8</Fog>
     </baseWeatherCommonalities>
     <!-- SCALD_CROWNCARPET_NO_HABITAT_1, 2026-09-30, round 2: the single band
-         below (RUT_ScaldWaterOceanDeep, -999..999) meant EVERY non-rock cell
+         below (RM_ScaldWaterOceanDeep, -999..999) meant EVERY non-rock cell
          on a regenerated Scald map came out deep water — MEASURED live:
-         49,940 deep / 0 shallow on a 250x250 map, so RUT_ScaldWaterOceanShallow
+         49,940 deep / 0 shallow on a 250x250 map, so RM_ScaldWaterOceanShallow
          (crowncarpet's own habitat tag, RM_CrowncarpetBed, RUT_ScaldWater.xml)
          never appeared and the plantDensity fix above still had nowhere to
          place the plant.
@@ -181,7 +181,7 @@
          confirming terrainsByFertility bands are the biome-level fallback,
          not GravTide's real depth mechanism, but they are the mechanism
          this def already committed to and the simplest fix that needs no
-         new C#. RUT_ScaldWaterOceanShallow already carries the
+         new C#. RM_ScaldWaterOceanShallow already carries the
          RM_CrowncarpetBed tag (RUT_ScaldWater.xml), so wiring it in here is
          the whole fix — no terrain-def edit needed.
          EXPECTED (not measured from this offline worktree — no bridge):
@@ -190,12 +190,12 @@
          tail; the live regen is the only real measurement. -->
     <terrainsByFertility>
       <li>
-        <terrain>RUT_ScaldWaterOceanDeep</terrain>
+        <terrain>RM_ScaldWaterOceanDeep</terrain>
         <min>-999</min>
         <max>0.6</max>
       </li>
       <li>
-        <terrain>RUT_ScaldWaterOceanShallow</terrain>
+        <terrain>RM_ScaldWaterOceanShallow</terrain>
         <min>0.6</min>
         <max>999</max>
       </li>

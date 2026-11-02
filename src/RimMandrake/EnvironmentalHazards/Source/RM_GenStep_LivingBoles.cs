@@ -6,7 +6,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // GREENTIDE_MECHANICS_2 M12 build (greentide_kit_spec.md M12). Ordered
     // after GenStep_Terrain/GenStep_TerrainPatches (same anchor citation as
-    // RM_GenStep_GradientAxis, RUT_Miasma_GradientAxisGenStep.xml's own
+    // RM_GenStep_GradientAxis, RM_Miasma_GradientAxisGenStep.xml's own
     // header) so it paints over what terrain gen already placed, and BEFORE
     // RM_GenStep_RootCauseways (M9) so a paired map's causeways have real
     // bole centers to connect — see each GenStepDef's own order value in

@@ -110,6 +110,11 @@ namespace RimMandrake.EnvironmentalHazards
                   AccessTools.Method(typeof(BackCompatibility), nameof(BackCompatibility.BackCompatibleTerrainWithShortHash)),
                   AccessTools.Method(typeof(RM_DefAliasPatches), nameof(RM_DefAliasPatches.BackCompatibleTerrainWithShortHash_Postfix)),
                   "def-alias-terrain");
+            // BIOME_TIER_CLEANUP_1: saved class names follow the RUT_ -> RM_ class renames (RM_DefAliases.cs).
+            Apply(harmony,
+                  AccessTools.Method(typeof(BackCompatibility), nameof(BackCompatibility.GetBackCompatibleType)),
+                  AccessTools.Method(typeof(RM_DefAliasPatches), nameof(RM_DefAliasPatches.GetBackCompatibleType_Postfix)),
+                  "def-alias-types");
         }
 
         private static void Apply(Harmony harmony, MethodBase target, MethodInfo patch, string rule, bool asPrefix = false)

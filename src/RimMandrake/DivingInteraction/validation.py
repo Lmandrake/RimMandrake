@@ -114,7 +114,7 @@ def scald_vent_fields(t):
     here = os.path.dirname(os.path.abspath(__file__))
     t.clear_area(size=8)
     with t.component("vent_flora_and_sailor_defs", beyond_toggle=True):
-        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Glasskelle;ThingDef/RM_Pulsebead;ThingDef/RUT_ScaldVent;PawnKindDef/RM_Noohm")
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Glasskelle;ThingDef/RM_Pulsebead;ThingDef/RM_ScaldVent;PawnKindDef/RM_Noohm")
         if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
             raise ExpectationFailed("vent field defs missing: %r" % r)
         t.screenshot()

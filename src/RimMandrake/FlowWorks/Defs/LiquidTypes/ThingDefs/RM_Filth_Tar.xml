@@ -20,7 +20,7 @@
   free.
 
   pathCost 34 — CALIBRATED, not guessed: matches RM_GreentideChurnmud's own
-  "brutally slow" mire value (RUT_TarMoat.xml's own header, same repo,
+  "brutally slow" mire value (RM_TarMoat.xml's own header, same repo,
   same reasoning), deliberately a real, meaningful movement penalty. Vanilla
   filth normally carries pathCost 0 (checked: Filth_Dirt/Filth_Sand/every
   BaseFilth-derived def in Data/Core/Defs/ThingDefs_Misc/Filth.xml sets none),
@@ -52,9 +52,9 @@
 
   🔴 Texture path corrected this pass, caught by validate_patch.py, not
   guessed around: a first draft reused vanilla's own Things/Filth/Grainy
-  verbatim (the same placeholder reasoning RUT_TarMoat.xml gives for a
+  verbatim (the same placeholder reasoning RM_TarMoat.xml gives for a
   TERRAIN texPath) — but validate_patch.py refuses that as a hard ERROR for
-  a ThingDef, exactly the trap RUT_Filth_MouseTrack.xml's own header already
+  a ThingDef, exactly the trap RM_Filth_MouseTrack.xml's own header already
   documents (SUMP_MECHANICS_1 S4, 2026-09-14): once a mod ships ANY content
   under Textures/Things/, the validator treats Things/ as THAT mod's own
   claimed namespace and requires a real file, not a vanilla fallback.

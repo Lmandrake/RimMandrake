@@ -6,7 +6,7 @@
   existing vanilla plumbing: repair alcoves / grave-wards as buildings
   carrying vanilla CompSpawnerPawn with lordJob = RM_LordJob_DefendPerimeter
   — VERIFIED that comp is fully def-driven" (spec's own words). This is
-  that building, wired to RUT_LordJob_SentinelDefend (the SpawnedPawnParams-
+  that building, wired to RM_LordJob_SentinelDefend (the SpawnedPawnParams-
   ctor subclass that hands in the real RUT_SentinelDefend duty — see that
   class's own header for why the plain RM_ base class alone can't).
 
@@ -42,7 +42,7 @@
   placement. CompSpawnerPawn.TrySpawnPawn spawns with parent.Faction
   (decompile-confirmed) — Faction is a runtime Thing property, never a
   ThingDef field, so it could not be set here in this def; a placement
-  GenStep was the only route. `RUT_GenStep_ScatterSentinelGraveWards`
+  GenStep was the only route. `RM_GenStep_ScatterSentinelGraveWards`
   (src/RimMandrake/EnvironmentalHazards/Source/, wired via
   Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml into
   RUT_Scarlands.xml's own extraGenSteps) is the plain GenStep this needed —
@@ -122,7 +122,7 @@
           <!-- PLACEHOLDER, see header. -->
           <li>Mech_Pikeman</li>
         </spawnablePawnKinds>
-        <lordJob>RimMandrake.EnvironmentalHazards.RUT_LordJob_SentinelDefend</lordJob>
+        <lordJob>RimMandrake.EnvironmentalHazards.RM_LordJob_SentinelDefend</lordJob>
         <defendRadius>80</defendRadius>
         <lordJoinRadius>80</lordJoinRadius>
         <initialPawnsCount>2</initialPawnsCount>

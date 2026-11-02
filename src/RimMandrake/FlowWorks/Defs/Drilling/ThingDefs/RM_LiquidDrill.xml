@@ -24,7 +24,7 @@
 
   No researchPrerequisites: gating this behind a ResearchProjectDef is
   content-authoring the owner has not ruled on, left always-buildable and
-  flagged rather than silently decided, same posture RUT_DigShaft took for
+  flagged rather than silently decided, same posture RM_DigShaft took for
   its own dig-stage building.
   ============================================================================
 -->

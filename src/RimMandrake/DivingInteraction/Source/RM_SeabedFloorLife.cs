@@ -127,7 +127,7 @@ namespace RimMandrake.DivingInteraction
             // stops when Tile.MaxFishPopulation (PrimaryBiome.maxFishPopulation) is 0, which every floor shipped with,
             // so no layer floor could fish. The sea's own table and population carry over unchanged; the
             // freshwater/saltwater split still applies per terrain (the Scald's boil is Saltwater with no salt list,
-            // so only its cool margin RUT_ScaldMargin fishes, as on the hatch's pocket maps).
+            // so only its cool margin RM_ScaldMargin fishes, as on the hatch's pocket maps).
             floor.fishTypes = sea.fishTypes;
             floor.maxFishPopulation = sea.maxFishPopulation;
 

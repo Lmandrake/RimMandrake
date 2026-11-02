@@ -262,7 +262,7 @@ def layout_checks():
         ("codes on the command deck", lambda s: s.replace("RUT_Symbol_RakatanCommandCodes", ".", 1)
          .replace("Turret_MiniTurret", "RUT_Symbol_RakatanCommandCodes", 1)),
         ("a second set of codes", lambda s: s.replace("RUT_Symbol_SpireControlConsole", "RUT_Symbol_RakatanCommandCodes", 1)),
-        ("the lake back in the terrain", lambda s: s.replace("<li>Gravel,", "<li>RUT_ScaldWaterDeep,", 1)),
+        ("the lake back in the terrain", lambda s: s.replace("<li>Gravel,", "<li>RM_ScaldWaterDeep,", 1)),
         ("a mech in the Helix's ward", lambda s: s.replace("RUT_Symbol_HelixGrunt", "RUT_Symbol_MechLancer", 1)),
     ]
     with tempfile.TemporaryDirectory() as d:

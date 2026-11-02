@@ -11,7 +11,7 @@ namespace RimMandrake.EnvironmentalHazards
     // ThingWithComps that sweeps close-radius damage on an interval, rolls a
     // rare far hit, and dissipates after a lifetime) reimplemented in our
     // own words per this repo's established license posture for vanilla
-    // crib targets (same posture as RUT_WeatherOverlay_ScaldSteam cribbing
+    // crib targets (same posture as RM_WeatherOverlay_ScaldSteam cribbing
     // WeatherOverlay_Fog, RM_TreeFallUtility building fresh where nothing
     // existed). Deliberately simpler than Tornado in three ways, each noted
     // where it happens: no Perlin-noise heading (a private static field on

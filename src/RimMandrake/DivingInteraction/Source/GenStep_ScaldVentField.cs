@@ -6,7 +6,7 @@ using Verse;
 namespace RimMandrake.DivingInteraction
 {
     // SCALD_FLOOR_VENT_FIELDS_1 (owner sitting 2026-10-02, Q3 = vent fields on the floor).
-    // Generates a vent field on the Scald's floor map: a few RUT_ScaldVent geysers, a ring of vent
+    // Generates a vent field on the Scald's floor map: a few RM_ScaldVent geysers, a ring of vent
     // flora (RM_Glasskelle, RM_Pulsebead) around each, and a few RM_Noohm bubble-sailors riding each
     // vent's bubble line. Everything is resolved by name and skipped when missing, so the step never
     // throws on a partial mod set.
@@ -40,7 +40,7 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
 
-            ThingDef ventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_ScaldVent");
+            ThingDef ventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_ScaldVent");
             if (ventDef == null)
             {
                 return;

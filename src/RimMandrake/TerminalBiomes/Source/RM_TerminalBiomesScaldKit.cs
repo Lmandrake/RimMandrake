@@ -11,11 +11,11 @@ namespace RimMandrake.TerminalBiomes
     // directly. It does not need the shared assembly, so the vents keep
     // loading with or without it.
 
-    // S4 — vent fields. RUT_ScaldVent's thingClass. Off: the vent stops
+    // S4 — vent fields. RM_ScaldVent's thingClass. Off: the vent stops
     // spraying (no steam puff, no sound) and any spray already sounding is
     // ended at once; the vent stays on the map, untouched. The steam-catch
     // condenser (S2) separately reads the vent as dormant through
-    // RM_MechanicGateExtension on RUT_ScaldVent's def, so it stops drawing
+    // RM_MechanicGateExtension on RM_ScaldVent's def, so it stops drawing
     // from it too. On again: spraying resumes on the vent's own rhythm.
     public class RM_Building_ScaldVent : Building_SteamGeyser
     {

@@ -3,9 +3,9 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     // MIASMA_MECHANICS_1 M6 build (miasma_kit_spec.md M6): "a named area
-    // marker (RUT_CrecheMarker invisible building holding the site
+    // marker (RM_CrecheMarker invisible building holding the site
     // identity; gives the 'mapped and named' ground)". Generic on the
-    // marker ThingDef itself (not hardcoded to RUT_CrecheMarker) for the
+    // marker ThingDef itself (not hardcoded to RM_CrecheMarker) for the
     // same reason RM_SetPieceElement_AnchoredPawn is generic on
     // PawnKindDef: sump_kit_spec.md's own S3 (tar-beast placement) names
     // the identical shared scatterer as its hard prerequisite and may want

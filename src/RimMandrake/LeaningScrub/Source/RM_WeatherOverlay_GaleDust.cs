@@ -7,7 +7,7 @@ namespace RimMandrake.LeaningScrub
     // SCRUB_WIND_BUILD_LEAN_ON_PURPOSE part 2 — the Gale on screen (owner card 2026-10-20, biome_bars_sitting §5.2:
     // "driven dust and fuzz on screen. This needs overlay art and a weather overlay").
     //
-    // Shape copied from RUT_WeatherOverlay_ScaldSteam (EnvironmentalHazards), whose header records the engine facts:
+    // Shape copied from RM_WeatherOverlay_ScaldSteam (EnvironmentalHazards), whose header records the engine facts:
     // MatLoader.LoadMat reads Unity Resources only (never hand it a mod path: a null material throws in the type
     // initializer and blacks the map), so the overlay copies vanilla's fog material and swaps in our textures.
     //

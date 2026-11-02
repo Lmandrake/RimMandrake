@@ -16,7 +16,7 @@
      🔴 Every commonality and growDays value below is an ENGINEERING
      DEFAULT, not an owner ruling — the roster doc's own §8 says outright
      "every number here is a slot, not a value." Same disclosure shape as
-     RUT_BoughSoil.xml's fertility figure. Flag for live tuning.
+     RM_BoughSoil.xml's fertility figure. Flag for live tuning.
 
      ⛔ No row here falls, is fellable, or carries RM_FellableTreeExtension/
      RM_CompCrackFall — the item's own "no row falls" ruling (owner,
@@ -28,13 +28,13 @@
      Cistrel/Maulith/Verrow/Nubrith/Halquin/Ammeth) set fertilityMin 1.0 —
      high enough that ordinary ground (measured Soil fertility 1.0 at the
      margin, this biome's Soil/SoilRich terrainsByFertility split at 0.9)
-     does not reliably clear it, while RUT_BoughSoil (fertility 1.4,
+     does not reliably clear it, while RM_BoughSoil (fertility 1.4,
      FEVERWOOD_BOUGH_SOIL_TERRAIN_1, built+deployed this session, offline-
      verified, live bough-soil-paints-and-plants-root check still owed) and
      any natural SoilRich comfortably do. This is the same "no new C#, gate
      on the existing fertility field" mechanism that item's own header
      names as the fitting shape — not a new dependency edge. It is looser
-     than "only on RUT_BoughSoil" (any natural SoilRich patch qualifies
+     than "only on RM_BoughSoil" (any natural SoilRich patch qualifies
      too), an accepted engineering looseness, not an owner ruling.
 
      ART: RM_Ossagrel ships REAL finished art, copied from
@@ -46,7 +46,7 @@
      FEVERWOOD_RM_MOD_BUILD_1, generated-but-validated-fail, awaiting a
      daemon retry) — not re-queued here. The other 13 rows get a genuine
      flat-color placeholder PNG (same idiom as RM_FeverWood.png/
-     RUT_FeverTrunkHeartwood.png: just enough to load, not a regen, not an
+     RM_FeverTrunkHeartwood.png: just enough to load, not a regen, not an
      artpipe job) and a fresh queue entry filed by this build (see
      infrastructure/artpipe/pending/feverwood_plant_<name>.json,
      rimflow_item_id=FEVERWOOD_FLORA_ROSTER_1). -->
@@ -54,7 +54,7 @@
 
   <!-- ===================== THE GIANTS — 3 towers, none falls =====================
        Rare, huge-canvas flavour trees distinct from the mineable body
-       (RUT_FeverTrunkHeartwood/RUT_FeverTrunkCore, spawned separately by
+       (RM_FeverTrunkHeartwood/RM_FeverTrunkCore, spawned separately by
        RM_LivingBoleBiomeExtension's own genstep). These are ordinary
        wildPlants entries at very low commonality — matching the 1~2
        boles per map the biome extension already spawns — not fellable,

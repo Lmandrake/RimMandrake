@@ -61,7 +61,7 @@
     scaria-onset arming (RUT_ScariaOnsetArming.xml, requiredHediff=Scaria)
     would have nothing to ever find. biomeMapConditions below wires the
     Scarlands mark lock (§2) and the scaria-onset arming sweep (§3) — both
-    permanent per-map conditions, RUT_MiasmaWeatherLock.xml's own proven
+    permanent per-map conditions, RM_MiasmaWeatherLock.xml's own proven
     shape (no MapComponent of this kit's own needed). extraGenSteps gains
     RUT_ScarlandsSprungDangers (§5 pre-sprung dressing, pure PrefabDef
     content, zero new C#). Full build-pass details:
@@ -81,7 +81,7 @@
     was never spawned on any real map at all, so the whole section 4
     Sentinel mechanic was dead content end to end. See that GenStepDef's
     own file (Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml) and
-    RUT_GenStep_ScatterSentinelGraveWards.cs for the mechanism.
+    RM_GenStep_ScatterSentinelGraveWards.cs for the mechanism.
 
     The FROZEN note above still applies to the general biome content this
     file authors (description, flora/fauna, densities, weather); this

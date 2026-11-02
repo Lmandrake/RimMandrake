@@ -145,7 +145,7 @@ MECHANICS = (
      ("ThinkTreeDef/RM_ThinkTree_StrandingBehaviors",)),
     ("tar_coating", "tarCoatingEnabled", "RM_Comp_TarCoatingSource.cs", ()),
     ("accelerated_rot", "acceleratedRotEnabled", "RM_MapComponent_AcceleratedRot.cs", ()),
-    ("sheen_scald", "sheenExposureEnabled", "RUT_HediffComp_SheenExposure.cs",
+    ("sheen_scald", "sheenExposureEnabled", "RM_HediffComp_SheenExposure.cs",
      ()),
     ("venomvine_scratch", "contactVenomEnabled", "MapComponent_ContactVenom.cs",
      ("DamageDef/RM_VenomvineScratch", "ThingDef/RM_Venomvine", "ThingDef/RM_VenomvineThicket", "HediffDef/RM_VenomvineVenom")),

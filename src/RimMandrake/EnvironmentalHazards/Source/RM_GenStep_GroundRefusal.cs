@@ -11,7 +11,7 @@ namespace RimMandrake.EnvironmentalHazards
     //
     // Ordered AFTER RM_GenStep_RootCauseways (228, which as of
     // FEVERWOOD_BOUGH_SOIL_TERRAIN_1 also runs the third bough-soil pass
-    // within that same GenStepDef/order) and after RUT_GenStep_ScatterPools
+    // within that same GenStepDef/order) and after RM_GenStep_ScatterPools
     // (226) — see this class's own GenStepDef order value in the
     // MapGeneration registration XML. Every lane/pool/crown-soil cell those
     // earlier steps painted is no longer Soil/SoilRich by the time this

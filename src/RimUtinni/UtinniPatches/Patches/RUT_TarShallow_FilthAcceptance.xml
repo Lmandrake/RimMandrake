@@ -12,7 +12,7 @@
   own TerrainAcceptsFilth (read in full) returns false outright whenever
   `terrainDef.filthAcceptanceMask == FilthSourceFlags.None`, before any
   other check runs — so EVERY call to FilthMaker.TryMakeFilth for
-  RUT_Filth_MouseTrack on natural tar would silently fail, logging nothing,
+  RM_Filth_MouseTrack on natural tar would silently fail, logging nothing,
   the mechanic's own defining surface producing zero tracks forever. This is
   the actual named ❓ the spec flagged ("verify filth-per-cell caps don't
   erase the pattern at low mouse counts") landing on a DIFFERENT and more
@@ -26,7 +26,7 @@
   No MayRequire/FindMod gate against mandrake.rm.flowworks (was
   mandrake.rm.liquidtypes until the 2026-09-16 merge): every other
   Sump-side reference to RM_TarShallow/RM_TarDeep in this item (S1's
-  RUT_MoatFusePost.xml conductingTerrains list) already assumes it is a
+  RM_MoatFusePost.xml conductingTerrains list) already assumes it is a
   live, always-loaded dependency with no gating — matching that precedent
   rather than inventing a new posture. A patch matching nothing logs
   nothing, so this is still a safe no-op on a mod list without liquidtypes.
@@ -41,7 +41,7 @@
   TerrainDef.ConfigErrors (Verse/TerrainDef.cs:538) REJECTS
   `generatedFilth != null && (filthAcceptanceMask & Terrain) != 0` ("makes
   terrain filth and also accepts it", load 13). So the mask is
-  [Natural, Unnatural, Pawn] and RUT_Filth_MouseTrack is placed under the
+  [Natural, Unnatural, Pawn] and RM_Filth_MouseTrack is placed under the
   Pawn flag (its placementMask is [Pawn]); FilthMaker.TerrainAcceptsFilth
   requires (mask & placementMask) == placementMask, so Pawn alone suffices.
   Guarded by src/RimMandrake/TheSump/selftest_tar_filth_flags.py.

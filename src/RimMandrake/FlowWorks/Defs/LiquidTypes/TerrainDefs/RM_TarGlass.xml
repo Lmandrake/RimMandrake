@@ -35,7 +35,7 @@
   structural floor not a tuned average" reasoning RM_SumpWalkways.xml's own
   header derives from GenPath.SpeedPercentString, filthAcceptanceMask None
   (nothing sticks to cooled glass), Flammability 0 (spent/cooled bitumen does
-  not reignite — ruling 3 again, and RUT_TarSpent's own "burnt tar is spent"
+  not reignite — ruling 3 again, and RM_TarSpent's own "burnt tar is spent"
   precedent). No costList/designationCategory: unlike RM_Glasswalk this is
   never player-designated, only ever written by code, so it needs no build
   recipe.

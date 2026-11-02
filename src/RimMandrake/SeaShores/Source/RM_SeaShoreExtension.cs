@@ -8,8 +8,8 @@ namespace RimMandrake.SeaShores
     //
     // Every field is optional. The three terrain fields exist because a sea's
     // own BiomeDef often cannot answer the question: RUT_TheScald declares
-    // waterDeepTerrain=RUT_ScaldWaterDeep (its FRESH-water pair) while the
-    // terrain its map actually lays is RUT_ScaldWaterOceanDeep. Resolution
+    // waterDeepTerrain=RM_ScaldWaterDeep (its FRESH-water pair) while the
+    // terrain its map actually lays is RM_ScaldWaterOceanDeep. Resolution
     // order is therefore: this field -> the sea's ocean* pair -> the sea's
     // water* pair -> the vanilla ocean pair. Beach is a property of the LAND
     // the shore is cut into, so it falls back to the land biome, never the sea.

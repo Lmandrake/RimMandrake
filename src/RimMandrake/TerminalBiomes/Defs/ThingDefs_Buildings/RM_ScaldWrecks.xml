@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWrecks.xml                    UtinniPatches · authored 2026-09-13
+  ============================================================================
+  SCALD_MECHANICS_1 build pass, S6 "burning-shallows wreck salvage"
+  (scald_kit_spec.md §S6: "RUT_ScaldWreck* building defs (2-3 silhouettes,
+  art pass) scattered at map-gen in shallow scald water ... Salvage is
+  vanilla deconstruct/smash yields").
+
+  ===========================================================================
+  FAMILY PARENTS — SALVAGE_WRECKAGE_EVERYWHERE_1 slice 2, 2026-10-06
+  ===========================================================================
+  The three defs below are children of the shared wreck families in
+  mandrake.rm.wreckage (src/RimMandrake/Wreckage/Defs/ThingDefs_Buildings/
+  RM_WreckFamilies.xml): Hull -> RM_WreckFamily_Hull, Tank ->
+  RM_WreckFamily_Tank, Frame -> RM_WreckFamily_Frame. The families sit on
+  Core's ShipChunkBase (static, non-claimable, always deconstructible, no
+  rot, corpse or spawner: S6's "cooked clean" structurally) and carry the
+  footprint, Walkable affordance, base costList, killedLeavings and the
+  RM_CompSalvageLoot tier. Each child here carries only what the Scald did
+  to it: label, description, texPath, its art's measured shadow box, and
+  the RM_WreckWeathering_Cooked row (yieldFactor 0.75 becomes the
+  deconstruct fraction at resolve time, the same 0.75 these defs shipped
+  with). Same defNames, same yields, same art: nothing placed changes.
+  The RUT_ -> RM_ rename (design §5 tier defect) is a later slice.
+
+  🔴 THREE SILHOUETTES, NOT THREE MECHANICS. Per the spec's own "(2-3
+  silhouettes, art pass)" — distinct shapes for scatter variety, all
+  carrying the identical salvage mechanism: vanilla costList on
+  deconstruct, killedLeavings slag when smashed, PLUS (SALVAGE_WRECKAGE_
+  EVERYWHERE_1, 2026-10-06) the shared RM_CompSalvageLoot from
+  mandrake.rm.wreckage, which adds a tiered loot roll on careful
+  deconstruction only — hull = Hull tier, tank = Tank tier, frame = Scrap
+  tier (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3c; the Scald's "Hull/Tank tiers, no sealed" row in §4). That comp is
+  the "RUT_ScaldSalvage" loot the scald kit spec left open.
+
+  Values (now on the family parents) are INVENTED, stated plainly: sized
+  down from ShipChunk_Mech's 40 Steel/15 GravlitePanel (a fresh mechanoid
+  chunk); the Cooked weathering's 0.75 is the corrosion. No uranium/component on any of the three: this is hull
+  and tankage, not the caskets JawaGroundHulk already owns.
+
+  ⚠️ Ban 6 (no vanilla-Earth flora/fauna) and Ban 2 (no burn-immunity def)
+  both hold structurally: nothing here grants terrain immunity or spawns
+  life. The burn-per-tick cost of standing in the shallows to deconstruct
+  these is paid by the terrain itself (RM_ScaldWaterShallow's own
+  burnDamage/burnIntervalTicks), never waived — S6's own "the price is
+  posted in burns per trip" line is the shipped terrain, unchanged.
+
+  🔴 TERRAIN AFFORDANCE: BuildingBase's default Light fails on every
+  RUT_ScaldWater*Shallow terrain (WaterShallowBase carries ShallowWater/
+  WaterproofConduitable/Bridgeable/Walkable, no Light); RM_WreckFamilyBase
+  sets Walkable for every family, so these inherit it.
+
+  Art: SCALD_ART_UPGRADE_WAVE_1, wired 2026-09-26 — THREE Graphic_Random
+  variants each (_A/_B/_C, 512px), from the already-finished artpipe renders
+  scald2_wreck{hull,tank,frame}_{a,b,c}; they replace the single 256px
+  scald_wreck*_v1 sprite each def used to carry. The frame's own three
+  variants carry the pawn-scale visible seat the owner asked for. Shadow
+  volumes below are RE-CALIBRATED on the new art (the old numbers were
+  measured on the retired 256px _A sprites): same ShipChunk-derived
+  ~0.70x/0.63x ratio, now applied to the MEAN alpha-bbox fraction across all
+  three variants, because shadowData is per-def and one box must serve
+  three silhouettes.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_ScaldWreckHull</defName>
+    <label>scalded hull section</label>
+    <description>A broken length of hull plate, cooked in the shallows until the paint is gone and the seams have given. What the pan swallowed and gave back. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckHull</texPath>
+      <!-- Owner review 2026-09-25 (SCALD_REVIEW walk): inherited ShipChunk's
+           generic (1.39,0.5,1.25) box read as a flat dark box, not the
+           sprite. Calibrated against ShipChunk's own art-to-shadow ratio
+           (its sprite fills ~97-100% of its canvas for a (1.39,0.5,1.25)
+           shadow on drawSize 2 -> ~0.70x width, ~0.63x height of the sprite
+           bbox). MEASURED 2026-09-26 across all three 512px variants
+           (_A/_B/_C), mean alpha bbox 93.5% x 87.0% — wide and flat, lying
+           wreckage: 0.70*0.935*2=1.31, 0.63*0.870*2=1.10. One box must
+           serve three silhouettes, so the mean is the honest input. -->
+      <shadowData>
+        <volume>(1.31,0.5,1.10)</volume>
+      </shadowData>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tank">
+    <defName>RM_ScaldWreckTank</defName>
+    <label>scalded tank wreck</label>
+    <description>A ruptured pressure tank, half sunk and scoured smooth by the boil. Whatever it once held is long gone; the shell is still worth the walk. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckTank</texPath>
+      <!-- Same fix as RM_ScaldWreckHull, own measurement (mean of _A/_B/_C,
+           2026-09-26): 96.4% x 84.3% bbox -> 0.70*0.964*2=1.35,
+           0.63*0.843*2=1.06. -->
+      <shadowData>
+        <volume>(1.35,0.5,1.06)</volume>
+      </shadowData>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_ScaldWreckFrame</defName>
+    <label>scalded frame wreck</label>
+    <description>A stripped strut and frame section, all its skin burned or boiled away, standing bare in the shallows like a rib cage. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckFrame</texPath>
+      <!-- Same fix, own measurement (mean of _A/_B/_C, 2026-09-26): 96.5%
+           x 90.6% bbox, nearly square — an upright rib-cage frame rather
+           than lying wreckage, so this one still gets the tallest shadow of
+           the three: 0.70*0.965*2=1.35, 0.63*0.906*2=1.14. -->
+      <shadowData>
+        <volume>(1.35,0.5,1.14)</volume>
+      </shadowData>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

@@ -181,7 +181,7 @@ def scald_native_tag_checks(defs_dir=None):
                                 (x.text or "").strip() == "Scald" for x in li.findall("hazardTags/li")):
                             tagged.add(name)
             text = open(path, encoding="utf-8").read()
-            for hz in ("RUT_ScaldExposure.xml", "RUT_ScaldSteamCarrier.xml", "RM_SteamDevil.xml"):
+            for hz in ("RM_ScaldExposure.xml", "RM_ScaldSteamCarrier.xml", "RM_SteamDevil.xml"):
                 if fn == hz:
                     hazards[hz] = text
     if len(roster) < 8:
@@ -189,7 +189,7 @@ def scald_native_tag_checks(defs_dir=None):
     for n in sorted(roster):
         if n not in tagged:
             bad.append("Scald roster species %s lacks RM_HazardNativeExtension hazardTags Scald" % n)
-    for hz in ("RUT_ScaldExposure.xml", "RUT_ScaldSteamCarrier.xml", "RM_SteamDevil.xml"):
+    for hz in ("RM_ScaldExposure.xml", "RM_ScaldSteamCarrier.xml", "RM_SteamDevil.xml"):
         text = hazards.get(hz)
         if text is None:
             bad.append("%s not found" % hz)
@@ -258,7 +258,7 @@ def saal_name_checks():
 
 
 def steam_catch_checks():
-    """SCALD_MECHANICS_1 S2 (owner card 2, item water default): RUT_SteamCatch names an outputDef, and that
+    """SCALD_MECHANICS_1 S2 (owner card 2, item water default): RM_SteamCatch names an outputDef, and that
     outputDef is a ThingDef this mod ships. Before 2026-10-11 it was unset and the condenser made nothing."""
     bad, things, out = [], set(), None
     for dp, _, fns in os.walk(os.path.join(HERE, "Defs")):
@@ -269,16 +269,16 @@ def steam_catch_checks():
                 if d.tag != "ThingDef":
                     continue
                 things.add(d.findtext("defName"))
-                if d.findtext("defName") == "RUT_SteamCatch":
+                if d.findtext("defName") == "RM_SteamCatch":
                     for li in d.findall("comps/li"):
                         if li.get("Class", "").endswith("CompProperties_ResourceCondenser"):
                             out = (li.findtext("outputDef") or "").strip()
-    if "RUT_SteamCatch" not in things:
-        bad.append("RUT_SteamCatch ThingDef not found")
+    if "RM_SteamCatch" not in things:
+        bad.append("RM_SteamCatch ThingDef not found")
     elif not out:
-        bad.append("RUT_SteamCatch condenser has no outputDef: it produces nothing")
+        bad.append("RM_SteamCatch condenser has no outputDef: it produces nothing")
     elif out not in things:
-        bad.append("RUT_SteamCatch outputDef %s is not a ThingDef in this mod" % out)
+        bad.append("RM_SteamCatch outputDef %s is not a ThingDef in this mod" % out)
     return bad
 
 
@@ -797,17 +797,17 @@ if Suite is not None:
         fn.__doc__ = "UNMEASURED: " + why
         suite.chain(chain)(fn)
 
-    _um("scald_steam_sky", "steam_lock_pulses_weather_and_flash", "RUT_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need the SURFACE "
+    _um("scald_steam_sky", "steam_lock_pulses_weather_and_flash", "RM_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need the SURFACE "
         "RM_TheScald map (owner by card 2026-10-23: the sea-floor map stays calm) and a way to read the running condition", "scaldS1SteamSkyEnabled")
-    _um("scald_steam_catch", "condenser_collects_steam", "RUT_SteamCatch condensing needs a Scald map with a vent and ticks of steam; no reader for the "
+    _um("scald_steam_catch", "condenser_collects_steam", "RM_SteamCatch condensing needs a Scald map with a vent and ticks of steam; no reader for the "
         "condenser's stored resource", "scaldS2SteamCatchEnabled")
-    _um("scald_vent_fields", "vents_scatter_and_erupt", "RUT_ScaldVent geysers are placed by a GenStep on a NEW Scald map; the gate acts at generation "
+    _um("scald_vent_fields", "vents_scatter_and_erupt", "RM_ScaldVent geysers are placed by a GenStep on a NEW Scald map; the gate acts at generation "
         "(worldgen-affecting), so a held bland map cannot show it", "scaldS4VentFieldsEnabled")
-    _um("scald_sail_walker", "walker_surfaces_and_sails_scatter", "RUT_WalkerSurfacing and the sail scatterer need a Scald map and a Scald-gated incident",
+    _um("scald_sail_walker", "walker_surfaces_and_sails_scatter", "RM_WalkerSurfacing and the sail scatterer need a Scald map and a Scald-gated incident",
         "scaldS5SailWalkerEnabled")
     # S6 wreck salvage moved to Wreckage (RM_WreckField_Scald, field key "Scald"): its chain is Wreckage's
     # mapgen.scald_field_on_shallows_only, toggled by that mod's wreckFields/disabledFields.
-    _um("scald_steam_exposure", "steam_carrier_inflicts_scald_exposure", "RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need the SURFACE "
+    _um("scald_steam_exposure", "steam_carrier_inflicts_scald_exposure", "RM_ScaldSteamCarrier and the RM_ScaldExposure hediff need the SURFACE "
         "RM_TheScald map under steam and an unprotected pawn; no way to start the condition on a bland map", "scaldS7SteamExposureEnabled")
     _um("twilight_suulk", "suulk_arrival_and_vaulisk_lure", "RM_SuulkArrival and the Vaulisk lure are Twilight-sea incidents and a GenStep; need the "
         "sea-floor map", "suulkEnabled")

@@ -81,7 +81,7 @@ namespace RimMandrake.FeverWood
         // --- teaches ("seeing it names the creature... before it kills them") ---
 
         /// <summary>On first successful production tick, calls
-        /// RUT_MapComponent_TheTenant.Notify_Taught() on this map — a real,
+        /// RM_MapComponent_TheTenant.Notify_Taught() on this map — a real,
         /// small mechanical payoff for "learning the warning": colonists
         /// become somewhat less likely to be struck at registered water
         /// (see that class's own ScanExposure). Off: the tank still

@@ -41,11 +41,11 @@
     terrainsByFertility: both Alpha Biomes rows were replaced 1:1 by our ports RM_GrassySand/RM_LushGrass
     (Defs/RM_TheSump_DonorPorts.xml) at the 2026-10-18 donor retirement.
 
-    biomeMapConditions: RUT_SumpDuskLock (permanent dusk, no precipitation at all: owner 2026-10-18, by card
+    biomeMapConditions: RM_SumpDuskLock (permanent dusk, no precipitation at all: owner 2026-10-18, by card
     "Sump rain -> No precipitation at all"), baked in directly (not via a second patch
     op) - it lives in this SAME mod (Patches/RUT_SumpDuskLock_BiomeWiring.xml
     wires it onto RUT_Sump alone; this def references it natively), matching the
-    precedent RM_Miasma.xml actually shipped for RUT_MiasmaWeatherLock.
+    precedent RM_Miasma.xml actually shipped for RM_MiasmaWeatherLock.
 
     modExtensions: unchanged in shape from the twin - BiomeGlowMultiplierExtension
     and RM_CarriedFilthHediffExtension both already live in the shared
@@ -132,7 +132,7 @@
       <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
     </baseWeatherCommonalities>
     <biomeMapConditions>
-      <li>RUT_SumpDuskLock</li>
+      <li>RM_SumpDuskLock</li>
     </biomeMapConditions>
     <wildAnimals>
       <RM_Gulveth>0.45</RM_Gulveth>  <!-- tar guzzler - tar-eater, adjust-keep -->

@@ -38,12 +38,12 @@ namespace RimMandrake.FeverWood
 
         private static readonly HashSet<string> RaisedTerrain = new HashSet<string>
         {
-            "RUT_Boughway", "RUT_BoughSoil", "RUT_StiltPlatform", "RM_Boughway", "RM_BoughSoil", "RM_StiltPlatform",
+            "RM_Boughway", "RM_BoughSoil", "RM_StiltPlatform",
         };
 
         private static readonly HashSet<string> TrunkDefs = new HashSet<string>
         {
-            "RUT_FeverTrunkCore", "RUT_FeverTrunkHeartwood", "RM_FeverTrunkCore", "RM_FeverTrunkHeartwood",
+            "RM_FeverTrunkCore", "RM_FeverTrunkHeartwood",
         };
 
         public static WeatherDef Weather => DefDatabase<WeatherDef>.GetNamedSilentFail(WeatherName);
@@ -207,7 +207,7 @@ namespace RimMandrake.FeverWood
             int woke = 0;
             if (RM_FeverWoodSettings.oilBoilWakesDeep)
             {
-                RUT_MapComponent_TheTenant tenant = map.GetComponent<RUT_MapComponent_TheTenant>();
+                RM_MapComponent_TheTenant tenant = map.GetComponent<RM_MapComponent_TheTenant>();
                 IntVec3 poolSide = IntVec3.Invalid;
                 if (tenant != null)
                 {

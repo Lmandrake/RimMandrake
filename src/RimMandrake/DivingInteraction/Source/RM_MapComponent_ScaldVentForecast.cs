@@ -62,7 +62,7 @@ namespace RimMandrake.DivingInteraction
 
         private List<Thing> Vents()
         {
-            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_ScaldVent");
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_ScaldVent");
             return def == null ? new List<Thing>() : map.listerThings.ThingsOfDef(def);
         }
 

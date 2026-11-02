@@ -26,7 +26,7 @@ namespace RimMandrake.Greentide
     // confirmed.
     //
     // So this ships the Greentide's own one-off, in the same shape
-    // RUT_WeatherOverlay_ScaldSteam.cs (EnvironmentalHazards) already
+    // RM_WeatherOverlay_ScaldSteam.cs (EnvironmentalHazards) already
     // established for its sibling kit, but in Greentide's OWN standalone
     // mod (src/RimMandrake/Greentide/Source/, mandrake.rm.greentide) rather
     // than the shared EnvironmentalHazards assembly — matching the real

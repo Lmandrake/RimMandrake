@@ -10,7 +10,7 @@ namespace RimMandrake.EnvironmentalHazards
     // GREENTIDE_BASE_PORT_BUILD_1.
     public class RM_IncidentWorker_SteamDevil : IncidentWorker
     {
-        private const int SampleCells = 60; // bounded sample, matching RUT_IncidentWorker_WalkerSurfacing's own posture — not a full-map scan
+        private const int SampleCells = 60; // bounded sample, matching RM_IncidentWorker_WalkerSurfacing's own posture — not a full-map scan
 
         protected override bool CanFireNowSub(IncidentParms parms)
         {
@@ -37,7 +37,7 @@ namespace RimMandrake.EnvironmentalHazards
             ThingDef steamDevilDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SteamDevil");
             if (steamDevilDef == null)
             {
-                return false; // content not deployed — never a hard error over it, same posture as RUT_IncidentWorker_ContagionProbe
+                return false; // content not deployed — never a hard error over it, same posture as RM_IncidentWorker_ContagionProbe
             }
 
             if (!TryFindRiverCell(map, out IntVec3 cell))

@@ -10,7 +10,7 @@
   deconstruct-shaped)."
 
   CRIBBED FROM `ShipChunkBase` (Core Buildings_Exotic.xml), the SAME vanilla
-  idiom RUT_ScaldWreckHull/Tank/Frame already crib in this same mod
+  idiom RM_ScaldWreckHull/Tank/Frame already crib in this same mod
   (RUT_ScaldWrecks.xml — read in full before writing this file): a static,
   non-buildable, non-claimable, always-deconstructible salvage building.
   "Haul/deconstruct-shaped" IS ShipChunk's own shape — Designator_Deconstruct

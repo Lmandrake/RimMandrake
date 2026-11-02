@@ -44,7 +44,7 @@ namespace RimMandrake.CreatureBehaviors
 		}
 
 		/// <summary>
-		/// Public so a harvest hook (RUT_Plant_FalseFruit's own
+		/// Public so a harvest hook (RM_Plant_FalseFruit's own
 		/// PlantCollected-style override, or a future gall equivalent) can ring
 		/// this without a damage event, same as RM_CompPlantAlarm.TriggerAlarm.
 		/// </summary>
