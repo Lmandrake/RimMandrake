@@ -39,5 +39,6 @@ done
 systemctl --user daemon-reload
 systemctl --user enable -q rm-pulse.service rm-pulse-health.timer rm-pulse-digest.timer rm-pulse-brief.timer rm-pulse-update.timer rm-pulse-streams.timer
 systemctl --user restart rm-pulse.service
-systemctl --user start rm-pulse-update.timer rm-pulse-brief.timer rm-pulse-streams.timer
+# every enabled timer, or a first install leaves health and digest idle until the next login
+systemctl --user start rm-pulse-health.timer rm-pulse-digest.timer rm-pulse-update.timer rm-pulse-brief.timer rm-pulse-streams.timer
 echo "install.sh: rm-pulse runs $DEPLOY @ $(git -C "$DEPLOY" log -1 --format=%h)"

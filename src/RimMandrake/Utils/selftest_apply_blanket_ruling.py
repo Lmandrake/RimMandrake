@@ -3,7 +3,7 @@
 The guard used to allow-list three sitting stamps; decisions_v2 --accept-looks stamps "decisions_v2 --accept-looks
 (owner's words)" over per-row owner picks and was let through (wave 76). Runs the CLI on temp files: every sitting
 stamp (and a bare writeCount) refuses and leaves the file untouched; an unstamped pre-fill and a previous blanket
-ruling are replaced; --over-sitting still overrides."""
+ruling are replaced; --over-sitting still overrides; a --decision outside the sheet's CONFIG options refuses."""
 import json
 import os
 import subprocess
@@ -21,10 +21,12 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
-def run(tmp, doc, *extra):
+def run(tmp, doc, *extra, config=""):
     sheet, dec = os.path.join(tmp, "s.html"), os.path.join(tmp, "d.json")
     with open(sheet, "w", encoding="utf-8") as fh:
         fh.write('<script id="ITEMS" type="application/json">[{"id": "r1"}, {"id": "r2"}]</script>')
+        if config:
+            fh.write('<script id="CONFIG" type="application/json">%s</script>' % config)
     raw = json.dumps(doc)
     with open(dec, "w", encoding="utf-8") as fh:
         fh.write(raw)
@@ -53,6 +55,11 @@ def main():
         check("replaces a previous blanket ruling", rc == 0 and changed, rc)
         rc, changed, d, _ = run(tmp, dict(sat, savedBy="decisions_v2 --accept-looks (owner's words)"), "--over-sitting")
         check("--over-sitting still overrides", rc == 0 and changed, rc)
+        rc, changed, _, _ = run(tmp, {}, config='{"options": [{"key": "keep"}, {"key": "replace"}]}')
+        check("a --decision the sheet offers is written", rc == 0 and changed, rc)
+        rc, changed, _, err = run(tmp, {}, config='{"options": [{"key": "keep"}, {"key": "reject"}]}')
+        check("a --decision the sheet does not offer refuses and writes nothing",
+              rc != 0 and not changed and "not an option" in err, (rc, changed, err))
     print("RESULT", "FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
 

@@ -50,6 +50,22 @@ def sheet_row_ids(path):
     return [r["id"] for r in json.loads(m.group(1))]
 
 
+def sheet_option_keys(path):
+    """The option keys the sheet's CONFIG block offers, or None when it declares none. A --decision typo would
+    otherwise be stamped onto every row under his name and frozen, as a key no consumer understands."""
+    html = open(path, encoding="utf-8").read()
+    m = re.search(r'<script id="CONFIG"[^>]*>(.*?)</script>', html, re.S)
+    try:
+        opts = json.loads(m.group(1)).get("options") if m else None
+    except (ValueError, AttributeError):
+        return None
+    if not isinstance(opts, list) or not opts:
+        return None
+    keys = {str(o.get("key")) if isinstance(o, dict) else str(o[0]) if isinstance(o, list) and o else str(o)
+            for o in opts}
+    return keys
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -70,6 +86,9 @@ def main():
         ap.error("needs --said with his words or a Conductor instruction (" + conductor_authority.ROUTE + ")")
 
     ids = sheet_row_ids(a.sheet)
+    keys = sheet_option_keys(a.sheet)
+    if keys is not None and a.decision not in keys:
+        sys.exit(f"REFUSED: --decision {a.decision!r} is not an option of {a.sheet} (offers: {', '.join(sorted(keys))})")
     doc = json.load(open(a.decisions, encoding="utf-8"))
 
     # Refuse to flatten a real sitting. A sidecar/page/phone write is the tell.
