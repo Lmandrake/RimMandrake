@@ -34,7 +34,20 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "WEAK: every clause is done, shown by your own runs, and you can show a gap: a mutant that stays green, or a "
     "clause the proof never reaches. A weak proof is not a pass: the item stays open and the next worker strengthens "
     "the proof without touching the code. FAIL: a clause is not done, or the proof is red or cannot run. A gap you "
-    "only suspect and did not show is no gap. Look for a clause that is missing before you look for a thin test.")
+    "only suspect and did not show is no gap. Look for a clause that is missing before you look for a thin test.",
+    "If you say WEAK, begin the reasons with GAP:DIFF when a gap you showed is a part of this commit's own change "
+    "that you put back as it was before the commit while the proof stayed green, and that part does what a clause "
+    "asks; begin with GAP:OTHER when every gap you showed is something else, such as a mutant you wrote yourself.")
+SHADOW = "narrow_weak_1"   # RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE: what the narrower WEAK would have said, recorded only
+
+
+def narrow_word(word, reasons):
+    """The verdict under the narrower WEAK: a gap counts only when it is a hunk of this commit's own diff. Shadow only:
+    nothing acts on it. A WEAK with no tag is UNTAGGED, never guessed."""
+    if word != "WEAK":
+        return word
+    head = (reasons or "").lstrip().upper()
+    return "WEAK" if head.startswith("GAP:DIFF") else "PASS" if head.startswith("GAP:OTHER") else "UNTAGGED"
 VERDICT_SCRIPT = '''#!/usr/bin/env python3
 import json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))

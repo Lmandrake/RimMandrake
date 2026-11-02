@@ -524,6 +524,20 @@ def t_proof_weak():
     ok(bad and "WEAK" in bad, "a fourth word is refused")
 
 
+def t_shadow_narrow_weak():
+    W = R.relentless_wall
+    ok(W.narrow_word("WEAK", " gap:other a mutant I wrote") == "PASS", "an invented mutant is no gap under the narrow rule")
+    ok(W.narrow_word("WEAK", "GAP:DIFF hunk 2 put back, proof green") == "WEAK", "a hunk of the diff stays WEAK")
+    ok(W.narrow_word("WEAK", "ran it") == "UNTAGGED", "an untagged WEAK is never guessed")
+    ok(W.narrow_word("FAIL", "GAP:OTHER") == "FAIL" and W.narrow_word("PASS", "") == "PASS", "only WEAK moves")
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    t = R.shadow_tally(x.s)
+    ok(t["verdicts"] == 1 and t["weak"] == 1 and t["untagged"] == 1 and t["differ"] == 0, "a live verdict is shadowed beside itself")
+    ok(R.shadow_tally(x.s, "no_such_rule")["verdicts"] == 0, "a shadow rule counts only its own rows")
+    x.done()
+
+
 def t_marker_prompts_one_rule():
     st = {"item": "I", "candidate": {"sha": "S", "evidence": "E"}, "contract": {}}
     a, b = R.checker_prompt(st, "T", "N"), R.relentless_wall.marker_prompt(st, "T", "/b")
@@ -2786,7 +2800,7 @@ def t_review_findings_rig():
 
 
 def main():
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

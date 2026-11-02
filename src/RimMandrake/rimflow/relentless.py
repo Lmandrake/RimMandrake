@@ -564,6 +564,31 @@ def verdict(store, item, nonce, word, reasons, now=None):
         chk["reasons"] = (reasons or "")[:4000]
         chk["verdict_at"] = now
         store.save(st)
+        store._append(store.p("shadow.jsonl"), json.dumps({      # shadow: recorded beside the verdict, read by nothing that acts
+            "rule": relentless_wall.SHADOW, "item": item, "nonce": nonce, "at": now, "word": word,
+            "shadow": relentless_wall.narrow_word(word, reasons)}, sort_keys=True))
+
+
+def shadow_tally(store, rule=None):
+    """-> counts of shadowed verdicts under one shadow rule: agree, differ, untagged, and the differing rows."""
+    rule = rule or relentless_wall.SHADOW
+    rows = []
+    try:
+        with open(store.p("shadow.jsonl"), encoding="utf-8") as f:
+            for ln in f:
+                try:
+                    r = json.loads(ln)
+                except ValueError:
+                    continue
+                if r.get("rule") == rule:
+                    rows.append(r)
+    except FileNotFoundError:
+        pass
+    untagged = sum(r["shadow"] == "UNTAGGED" for r in rows)
+    differ = [r for r in rows if r["shadow"] not in (r["word"], "UNTAGGED")]
+    return {"rule": rule, "verdicts": len(rows), "weak": sum(r["word"] == "WEAK" for r in rows), "untagged": untagged,
+            "differ": len(differ), "agree": len(rows) - len(differ) - untagged,
+            "differing": [(r["item"], r["word"], r["shadow"]) for r in differ]}
 
 
 def proof_gate(fx, r, st, c):
@@ -2984,6 +3009,7 @@ def main(argv=None):
     p = sub.add_parser("trust")
     p.add_argument("--set", default="E1")
     p.add_argument("--arm", help="read results_<arm>, a changed Marker's run of the same set")
+    sub.add_parser("shadow", help="report only: live verdicts beside what the narrower WEAK would have said")
     p = sub.add_parser("verdict")
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
@@ -3062,6 +3088,8 @@ def main(argv=None):
         elif a.cmd == "trust":
             import relentless_trust
             print(relentless_trust.report(store, set_name=a.set, arm=a.arm)[1], end="")
+        elif a.cmd == "shadow":
+            print(json.dumps(shadow_tally(store), indent=1))
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons)
         elif a.cmd == "unhold":
