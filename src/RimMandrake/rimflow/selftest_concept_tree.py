@@ -387,9 +387,12 @@ def main():
                  "core line is still open"),
                 ("core tag mid-line", "- a plain open line does not block", "Q: [core] do goats tire?", "core line is still open"),
                 ("fenced heading cannot re-section", "- a plain open line does not block",
-                 "```\n## delegated\n```\n- [core] do goats obey a cancel?", "core line is still open"),
+                 "```\n## delegated\n```\n- [core] do goats obey a cancel?", "code fence"),
                 ("a fence closer with text after it is no closer", "- a plain open line does not block",
-                 "```text\n```not-a-close\n## delegated\n```\n- [core] do goats obey a cancel?", "core line is still open"),
+                 "```text\n```not-a-close\n## delegated\n```\n- [core] do goats obey a cancel?", "code fence"),
+                ("an indented fence is refused too", "## delegated\n", "## later\n    ```\n## delegated\n    ```\n",
+                 "code fence"),
+                ("a tilde fence is refused too", "## delegated\n", "~~~\n## delegated\n", "code fence"),
                 ("unknown section", "## delegated\n", "## unanswered\n- [core] do goats tire?\n## delegated\n",
                  "no section of the sheet"),
                 ("core line in delegated", "- the name of the order", "- [core] the name of the order", "outside `## open`"),
@@ -543,6 +546,13 @@ def main():
         check("relentless: dry walk refused", CT.relentless_refusal(
             repo2, "X", "mod", "design/concepts/_dry_walk/Foo/tree.json") is not None)
         check("item_file_text: missing item reads empty, so a mod is refused", CT.item_file_text(repo, "NOPE") == "")
+
+        tiers = CT.load_floor()[0]["tiers"]
+        sweep = leaf("kept_shape", by="setter_sweep", root=["tool"], clause_kind="change")
+        check("setter_sweep: a change leaf is refused", any("only preserves" in e for e in CT.leaf_errors(sweep, "tool", tiers, set())))
+        sweep["clause_kind"] = "preserve"
+        check("setter_sweep: a preserve leaf is not (sanity)", CT.leaf_errors(sweep, "tool", tiers, set()) == [],
+              CT.leaf_errors(sweep, "tool", tiers, set()))
 
         # the wiring: lease asks, and a refused mod gets no worker
         import relentless as R

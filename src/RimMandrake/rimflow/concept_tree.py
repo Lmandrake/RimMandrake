@@ -103,24 +103,21 @@ TAG = re.compile(BULLET + r"\s*\[(leaf|floor|waived|advisory|core)(?::([A-Za-z0-
 
 def parse_sheet(path):
     """-> {section: [raw non-empty lines]}. Headings are `## <name>`; a heading may carry a parenthesis after the name.
-    A `## ` line inside a ``` or ~~~ fence is content, never a heading: a fence cannot move a line to another section.
-    Lines before the first heading (the title, a dry walk's banner) are kept under "" so that no line escapes a check."""
-    out, cur, fence = {"": []}, "", None
+    The sheet is plain bullets, so a line this parser could read differently from a Markdown viewer is refused, never
+    guessed at (UNREAD): a code fence of any indent (Markdown would hide or show headings inside it), and any heading-like
+    line that is not `## <name>` (the `# ` title before the first section excepted). Lines before the first heading are
+    kept under "" so that no line escapes a check."""
+    out, cur = {"": []}, ""
     with open(path, encoding="utf-8") as f:
         for line in f:
-            fm = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line.rstrip("\n"))
-            if fm and fence is None:
-                fence = fm.group(1)
-            elif fm and fm.group(1)[0] == fence[0] and len(fm.group(1)) >= len(fence) and not fm.group(2).strip():
-                fence = None    # CommonMark: a closer is the opener's character, at least as long, and nothing after it
-            m = None if fence or fm else re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
+            m = re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
             if m:
                 cur = m.group(1).strip().lower()
                 out.setdefault(cur, [])
             elif line.strip():
-                if not fence and not fm and re.match(r"^\s{0,3}#{1,6}(\s|$)", line) and not (cur == "" and
-                                                                                         re.match(r"^# \S", line)):
-                    out.setdefault(UNREAD, []).append(line.rstrip("\n"))   # a heading we cannot read is refused
+                if re.match(r"^\s*(`{3,}|~{3,})", line) or (re.match(r"^\s{0,3}#{1,6}(\s|$)", line)
+                                                            and not (cur == "" and re.match(r"^# \S", line))):
+                    out.setdefault(UNREAD, []).append(line.rstrip("\n"))
                 out[cur].append(line.rstrip("\n"))
     return out
 
@@ -132,7 +129,8 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: no `## %s` section" % s)
     known = ("",) + SECTIONS + OPTIONAL_SECTIONS + (("root",) if tree.get("dry_walk") is True else ())
     for line in sheet.get(UNREAD, []):
-        errs.append("sheet: a heading that is not `## <section>` (or the `# ` title): %s" % line.strip()[:80])
+        errs.append("sheet: a code fence, or a heading that is not `## <section>` (or the `# ` title): %s"
+                    % line.strip()[:80])
     for s in sheet:     # an unknown section is unchecked text: a [core] question could sit there unseen
         if s == UNREAD:
             continue
@@ -218,6 +216,8 @@ def leaf_errors(x, kind, tiers, root_ids):
         e("by %r" % x.get("by"))
     if x.get("by") == "setter_sweep" and kind != "tool":
         e("a setter_sweep leaf belongs to a tooling goal only")
+    if x.get("by") == "setter_sweep" and x.get("clause_kind") != "preserve":
+        e("a setter_sweep leaf only preserves (the Setter adds no change)")
     if x.get("leaf_kind") not in LEAF_KINDS:
         e("leaf_kind %r" % x.get("leaf_kind"))
     if x.get("clause_kind") not in ("change", "preserve"):
