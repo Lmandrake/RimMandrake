@@ -1,0 +1,3 @@
+A1 L1: a launch whose list holds rwnodetree.rwplanetatmosphere plus all five DLC, sampled at the main menu after the load finishes (ModsConfig unchanged since launch): load time, GPU dedicated/shared and private bytes recorded
+A2 L1: a launch on the SAME list minus rwnodetree.rwplanetatmosphere, sampled at the same point: the same numbers recorded (one of A1/A2 rides the next load that needs that list; never a restart of its own for the other)
+A3 L1: verdict pairs one A1 and one A2 sample whose lists differ only by this mod and prints the load-time and VRAM deltas
