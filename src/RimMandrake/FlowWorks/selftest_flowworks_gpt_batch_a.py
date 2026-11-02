@@ -62,6 +62,17 @@ CASES = [
          [r"long w = ex\.WaterDlAt \( c \) ; heldDl \+= w ; dug \+= ex\.DepthAt \( c \) ; if \( w > 0 \)"],
          ("long w = ex.WaterDlAt(c);", "long w = ex.FillAt(c);"),
          absent=[r"ex\.FillAt \("]),
+    # The meter REPORTS held levels as heldDl / U: U is an int, so the division must be floating or a part-notch sheet
+    # reads 0 held levels again (Reading, label, StateLine, FlowPulse samples). Scoped to the whole class: the property
+    # is expression-bodied, and every report must route through it.
+    Case("WET_CELL_CENSUS_FIX_SHEETS_READ_DRY", "the flow meter reports part-notch held levels as a fraction, never 0",
+         "MapControls/RM_FlowMeter.cs",
+         r"public class Building_RM_FlowMeter\b",
+         [r"private float HeldLevelsExact => \( float \) \( heldDl / \( double \) RM_LevelSolve\.U \) ;",
+          r"float amount = kind == \"channel\" \? HeldLevelsExact :",
+          r"private string HeldText\(string format\) \{ return HeldLevelsExact\.ToString \("],
+         ("(float)(heldDl / (double)RM_LevelSolve.U)", "(float)(heldDl / RM_LevelSolve.U)"),
+         absent=[r"heldDl\s*/(?!\s*\(\s*double\s*\))"]),
     # ── LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN (FA_core_sim_2.3) ──
     Case("LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN", "the holder measures held water in dL", "MapControls/RM_LevelHolder.cs",
          r"private void Measure\(RM_MapComponent_Excavation ex, out long heldDl, out int capacity\)",
