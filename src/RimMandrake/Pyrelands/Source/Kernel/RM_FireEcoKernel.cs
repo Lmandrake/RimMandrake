@@ -404,5 +404,31 @@ namespace RimMandrake.Pyrelands
             }
             return everywhere || listed;
         }
+
+        /// <summary>The wild-plant allowlist on one cell's candidate list, in place: anything off the allowlist goes. On a foreign open cell
+        /// (a mixed-biome patch on a Pyrelands map, not a cave cell) the native grasses that can grow there are supplied, because vanilla
+        /// fills that list from the secondary biome alone and an empty list leaves the cell bare (ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES).
+        /// A native cell is never supplied: vanilla already offered what its wild order allows.</summary>
+        public static void ApplyWildAllowlist<T>(List<T> candidates, IList<T> native, Func<T, bool> allowed, Func<T, bool> canGrow, bool foreignOpenCell)
+        {
+            for (int i = candidates.Count - 1; i >= 0; i--)
+            {
+                if (!allowed(candidates[i]))
+                {
+                    candidates.RemoveAt(i);
+                }
+            }
+            if (!foreignOpenCell)
+            {
+                return;
+            }
+            for (int i = 0; i < native.Count; i++)
+            {
+                if (!candidates.Contains(native[i]) && canGrow(native[i]))
+                {
+                    candidates.Add(native[i]);
+                }
+            }
+        }
     }
 }

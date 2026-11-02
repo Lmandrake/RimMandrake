@@ -445,7 +445,7 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Only RM_FE grasses grow wild on Pyrelands", ref wildPlantAllowlistEnabled,
                     "Strips any wild-plant candidate outside the two RM_FE_ grasses on a Pyrelands map, "
                   + "however it got there (a foreign mod's own biome list leaking in via a mixed-biome "
-                  + "or tile-mutator mechanism). Off: Pyrelands trusts its own biome definition alone, "
+                  + "or tile-mutator mechanism), and gives mixed-biome patches those grasses instead. Off: Pyrelands trusts its own biome definition alone, "
                   + "which other biome-blending mods can bypass.");
                 }
                 list.GapLine();

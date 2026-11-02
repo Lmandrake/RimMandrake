@@ -551,7 +551,7 @@ namespace RimMandrake.Pyrelands.Fuzz
         }
 
         // ════════════════════════ eco ════════════════════════
-        public static long ScoresInBand, ScoresOutside, ScoresOff, AshSkips, AshAttemptsTotal, OnceHits, OnceClears, ParseCases;
+        public static long ScoresInBand, ScoresOutside, ScoresOff, AshSkips, AshAttemptsTotal, OnceHits, OnceClears, ParseCases, MixedSupplied;
 
         private static List<string> Eco(int n, int seed)
         {
@@ -622,6 +622,30 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(reRolled == rlIds, $"after a reload only {reRolled} of {rlIds} re-issued fire ids took their roll");
                     Check(rlSharedRolled == 0, $"the regression model is blind: a shared set let {rlSharedRolled} re-issued ids roll");
                     Check(ReferenceEquals(RM_FireEcoKernel.RollSetFor(rlTables, rlNew), RM_FireEcoKernel.RollSetFor(rlTables, rlNew)), "one owner got two sets");
+                }
+                // the wild-plant allowlist on a mixed patch (ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES): a foreign open cell ends on allowlisted
+                // plants only and is empty only when no grass can grow; native and cave cells are never supplied; the regression model
+                // (strip only) leaves the same foreign cell empty, so the check can see the bug
+                {
+                    var wlNative = new List<string> { "ember", "quick" };
+                    var wlAllow = new HashSet<string>(wlNative);
+                    var wlGrow = new HashSet<string>();
+                    foreach (string g in wlNative) if (r.Next(4) != 0) wlGrow.Add(g);
+                    var wlCand = new List<string>();
+                    int wlForeign = r.Next(6);
+                    for (int k = 0; k < wlForeign; k++) wlCand.Add("foreign" + k);
+                    bool wlHasNative = r.Next(3) == 0;   // a native cell's vanilla list
+                    if (wlHasNative) wlCand.Add("ember");
+                    var wlStrip = new List<string>(wlCand);
+                    RM_FireEcoKernel.ApplyWildAllowlist(wlStrip, wlNative, d => wlAllow.Contains(d), d => wlGrow.Contains(d), false);
+                    Check(wlStrip.Count == (wlHasNative ? 1 : 0), $"a native or cave cell changed beyond the strip: {string.Join(",", wlStrip)}");
+                    var wlMixed = new List<string>(wlCand);
+                    RM_FireEcoKernel.ApplyWildAllowlist(wlMixed, wlNative, d => wlAllow.Contains(d), d => wlGrow.Contains(d), true);
+                    Check(wlMixed.TrueForAll(d => wlAllow.Contains(d)), $"a foreign plant survived on a mixed cell: {string.Join(",", wlMixed)}");
+                    Check(wlMixed.Count == new HashSet<string>(wlMixed).Count, $"a supplied grass is listed twice: {string.Join(",", wlMixed)}");
+                    Check(wlMixed.Count > 0 || wlGrow.Count == 0, "a mixed cell where a grass can grow ended with an empty list");
+                    foreach (string g in wlNative) Check(wlMixed.Contains(g) == (wlGrow.Contains(g) || (wlHasNative && g == "ember")), $"grass {g} wrongly supplied or missing");
+                    if (!wlHasNative && wlGrow.Count > 0) { MixedSupplied++; Check(wlStrip.Count == 0, "the regression model is blind: strip-only kept a plant"); }
                 }
                 // the ullai follow the two-day-old burn (PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER), decomposed: (1) the decision table once the
                 // chance roll passes, against its spec; (2) the compressed drive - burn A recorded, the history backdated by the lag, burn B
@@ -988,7 +1012,7 @@ namespace RimMandrake.Pyrelands.Fuzz
             Console.WriteLine($"burn: measures {Measures}, debt rises {DebtRises} / decays {DebtDecays}, reseed attempts {ReseedAttempts} (landed {ReseedSuccess}), fronts armed {FrontsArmed} / fired {FrontsFired}, history samples {HistorySamples} (longest ring {HistoryMaxLen}), raids fired {RaidsFired} / insults {RaidInsults} / refused {RaidRefused} / gated off {RaidGated}, arson-liveness probes {LivenessChecks}, harvests allowed {HarvestsAllowed} / refused {HarvestsRefused}");
             Console.WriteLine($"burn front line: the old truncated construction lit {LegacyWidths - LegacyCellsLost} of {LegacyWidths} requested cells ({100.0 * (LegacyWidths - LegacyCellsLost) / Math.Max(1, LegacyWidths):F1}%); the kernel line is exact");
             Console.WriteLine($"furnace: charge ups {ChargeUps} / downs {ChargeDowns} / holds {ChargeHolds}, rests rolled {RestsRolled} / too short {RestsShort}, small beasts with zero bed cells {BedZeroCells}; empty-to-full at 40 C = {ChargeDaysAt40:F1} days, at 60 C = {ChargeDaysAt60:F1} days");
-            Console.WriteLine($"eco: scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}, list parses {ParseCases}");
+            Console.WriteLine($"eco: mixed patches supplied {MixedSupplied}; scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}, list parses {ParseCases}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();

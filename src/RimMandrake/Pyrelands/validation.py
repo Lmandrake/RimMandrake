@@ -52,6 +52,7 @@ import functools
 import importlib.util
 import json
 import os
+import re
 import sys
 import time
 
@@ -2508,14 +2509,31 @@ def gpt_hunt_plausible(t):
                 _unmeasured(t, "ProofShovelUnderWall answer lacks hasJobBeforeWall True / hasJobUnderWall False: %s" % text[:200])
     _independent(t)
 
+    # ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES: ProofMixedPatch stages a mixed grid on this map and reads the real candidate method and spawner.
+    with _comp(t, "allowlist_mixed_patch_keeps_grass", toggle="wildPlantAllowlistEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.RM_WildPlantAllowlistProof", method="ProofMixedPatch")
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        _note(t, "ProofMixedPatch", text or r)
+        if _live(t):
+            if not text.startswith("MIXEDPATCH"):
+                _unmeasured(t, "ProofMixedPatch gave no answer (is the build with the probe deployed, on a Pyrelands map?): %r" % text[:200])
+            nums = dict(re.findall(r"(\w+) (\d+)", text))
+            if int(nums.get("cells", 0)) < 10 or not int(nums.get("rawForeign", 0)):
+                _unmeasured(t, "the probe cannot see: too few open cells or no foreign candidates: %s" % text)
+            if int(nums.get("rawGrass", 0)):
+                _unmeasured(t, "vanilla already offered our grass on a foreign cell, so nothing here tests the supply: %s" % text)
+            for key in ("afterEmpty", "afterForeign", "nativeSupplied", "caveGrass", "grownForeign"):
+                if int(nums.get(key, -1)) != 0:
+                    _fail("mixed patch: %s is not 0: %s" % (key, text))
+            if not int(nums.get("grown", 0)):
+                _fail("CONFIRMED: no native grass grew on the mixed cells: %s" % text)
+    _independent(t)
+
     for name, why in (
         ("big_burn_tick_cost",
          "FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: CALIBRATING evidence, never a gate. Burn a 250x250 standing grass burn with 20+ "
          "RM_Ashwallow burrowed, and read ticks per second with src/RimMandrake/Pyrelands/tick_rate_probe.py against the same "
          "map unburned; record both"),
-        ("allowlist_mixed_patch_keeps_grass",
-         "ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES: needs a Pyrelands tile carrying a mixed-biome mutator on the fixed world, "
-         "which exists only after the end-of-project paint; read WildPlantAllowlist outPlants before and after at such a cell"),
         ("rite_harvest_route_avoids_fire",
          "RITE_HARVEST_FIX_PICKS_PAST_FULL (3-3, PLAUSIBLE): the target-cell check refuses a burning pod but the route uses "
          "TraverseParms.For(pawn) at Deadly danger; send a fire rite (PyrelandsFireRiteHook) across a lit 3-cell line with "
