@@ -10938,3 +10938,5 @@
 {"seat":"BENCH","event":"reassign","id":"LINK_BUDGET_FIX_CATCHUP_OVERSTATES_FLOW","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-02T23:39:22Z","tsn":1793662762071857709}
 {"seat":"BENCH","event":"start","id":"LINK_BUDGET_FIX_CATCHUP_OVERSTATES_FLOW","why":"relentless supervisor takes the item","ts":"2026-11-02T23:39:24Z","tsn":1793662764286857043}
 {"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORIZON_CARAVAN_VANILLA_REFUSES_1 A1 (L2), read-only proof","ts":"2026-11-02T23:43:58Z","tsn":1793663038952858229}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-11-02T23:44:03Z","tsn":1793663043646008091}
+{"seat":"BENCH","event":"note","id":"HORIZON_CARAVAN_VANILLA_REFUSES_1","text":"relentless live A1 L2 UNMEASURED: the proof exited 2: it did not measure (/home/mandrake/rm/relentless/live/HORIZON_CARAVAN_VANILLA_REFUSES_1-A1-20261102T234356Z.log)","why":"relentless live tier: no verdict, no run recorded","ts":"2026-11-02T23:44:05Z","tsn":1793663045856593099}
