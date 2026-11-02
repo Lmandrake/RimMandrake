@@ -133,6 +133,10 @@ def decide(payload, now=None):
     if seat not in (rules.get("enforce_seats") or []) or seat not in SA.SEAT_PROJECT:
         return None
     drain = draining(seat, payload, now)
+    # Owner, 2026-11-02: "This is unacceptable. You've essentially frozen me out of new subagents for Conductor for an
+    # arbitrary amount of time." While he is typing to the Conductor window, a pending restart never blocks a spawn.
+    if drain and seat == "BENCH" and session_exempt(seat, payload, rules, now):
+        drain = None
     if drain:
         return (
             f"Blocked: this {SA.seat_label(seat)} window is draining for its restart ({drain}). Running helpers finish; "
