@@ -2094,6 +2094,15 @@ def t_books_frozen():
         ok(f.read() == "v2\n", "and the push deploys")
     ok(git(b, "rev-parse", "HEAD") == git(up, "rev-parse", "HEAD"), "level with origin")
     ok(glob.glob(store.p("books_dirt", "*", "infrastructure/state/items/closed/A.md")), "the dirt is kept aside")
+    # one seat shard is written by several clones, so landing order differs from write order: the same lines in another
+    # order (BOOKS_STALE_FIX_ART_SHARD_REORDER) is landed, not "unlanded", and must not freeze the books
+    put(b, L, "three\none\ntwo\n")
+    put(up, L, "one\ntwo\nthree\nfive\n")
+    git(up, "commit", "-qam", "up-reorder")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why is None, "a reordered shard with every line landed levels: %s" % why)
+    ok(git(b, "rev-parse", "HEAD") == git(up, "rev-parse", "HEAD"), "reordered shard: level with origin")
     # what is not landed stops it, and says what
     put(b, L, "one\ntwo\nthree\nunlanded\n")
     put(up, L, "one\ntwo\nthree\nfour\n")
