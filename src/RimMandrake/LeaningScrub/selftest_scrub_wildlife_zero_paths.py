@@ -110,6 +110,12 @@ check("Z2 composed", "LeaningScrub" in COMPOSED, "LeaningScrub is not composed i
 rows = [(c.tag, float(c.text or 0), c.get("MayRequire")) for c in (bdef.find("wildAnimals") if bdef.find("wildAnimals") is not None else [])]
 INFO["rows"] = len(rows)
 check("Z2 rows", rows and all(w > 0 for _, w, _ in rows), rows)
+_OK_REQ = ("", "mandrake.rm.biomes")
+_wa = bdef.find("wildAnimals")
+check("Z2 gates", (bdef.get("MayRequire") or "").lower() in _OK_REQ
+      and ((_wa.get("MayRequire") if _wa is not None else None) or "").lower() in _OK_REQ,
+      "the BiomeDef or its wildAnimals container is MayRequire-gated (%s / %s)" % (
+          bdef.get("MayRequire"), _wa.get("MayRequire") if _wa is not None else None))
 spec = load_spec()
 races = {}
 for kind, w, may in rows:
@@ -119,10 +125,12 @@ for kind, w, may in rows:
     check("Z2 kind %s" % kind, pk is not None, "no PawnKindDef %s in a composed folder" % kind)
     if pk is None:
         continue
+    check("Z2 gate %s" % kind, (pk[1].get("MayRequire") or "").lower() in _OK_REQ, pk[1].get("MayRequire"))
     race = pk[1].findtext("race")
     td = THINGDEFS.get(race)
     check("Z2 race %s" % kind, td is not None, "race %s of %s has no ThingDef in a composed folder" % (race, kind))
     if td is not None:
+        check("Z2 race gate %s" % kind, (td[1].get("MayRequire") or "").lower() in _OK_REQ, td[1].get("MayRequire"))
         races[kind] = td[1]
 for n in spec.NATIVES:
     check("Z2 native %s" % n, n in races, "site NATIVE %s is not a resolvable inline row" % n)
@@ -197,6 +205,10 @@ for path in glob.glob(os.path.join(SRC, "**", "Patches", "**", "*.xml"), recursi
         _vtext = ET.tostring(_val, encoding="unicode") if _val is not None else ""
         comfy = ("ComfyTemperature" in text or "ComfyTemperature" in _vtext) and (
             NATIVE_RX.search(text) or len(EQ_RX.findall(text)) != 1)
+        if re.search(r"genSteps|GenStepDef|MapGeneratorDef", text) and "Animals" in (text + _vtext) \
+                and cls not in ADDS + GUARDS:
+            patch_hits.append("%s: %s on the Animals genstep %s" % (os.path.relpath(path, ROOT), cls, text))
+            continue
         if not (re.search(r"BiomeDef|wildAnimals|animalDensity|%s" % BIOME, text) or whole or comfy
                 or NATIVE_RX.search(text)):
             continue
@@ -208,7 +220,7 @@ for path in glob.glob(os.path.join(SRC, "**", "Patches", "**", "*.xml"), recursi
         # Safe scope = exactly one defName equality and nothing that widens it (or, |, comparisons, functions).
         risky = re.search(r"!=|\bor\b|\||[<>]|\(|\.\.|::|\w//|\]//", text.replace("text()", "").replace("[", " [")) \
             or len(names) != 1
-        if NATIVE_RX.search(text) and cls not in ADDS and not comfy and (
+        if NATIVE_RX.search(text) and cls not in ADDS and not re.search(r"ComfyTemperature(?:Min|Max)$", text) and (
                 re.search(r"(?:statBases|race|\])$", text) or re.search(r"/statBases/?$|/race(?:/|$)", text)):
             patch_hits.append("%s: %s on a native's def/statBases/race %s" % (rel, cls, text))
             continue
@@ -243,6 +255,8 @@ check("Z4 patches", not patch_hits, patch_hits)
 # sha256 of the WHOLE file (a guard a few lines below the match decides behaviour), except the WINDOWED files: big
 # multi-purpose bridge/dump sources where only the lines matching CODE_RX +- WINDOW are pinned. Any change turns Z5 red
 # until someone re-reads the file and records the new value (`--fingerprints` prints them). Reviewed 2026-11-02, this item.
+# STATED LIMIT: a WINDOWED file's change outside its windows is not seen (GPT round 4); those four are bridge-tool and
+# dump sources that act only when a tool is called, and the live A1 census is the arbiter of a real map in any case.
 REVIEWED = {
     "RimMandrake/DivingInteraction/Source/RM_SeabedFloorLife.cs": ("9cce7eeb04e30fd4", "copies a SEA biome's life onto the floor "
         "biome its RM_SeabedAccessExtension names; only biomes carrying RM_SeabedFloorExtension"),
@@ -285,6 +299,8 @@ CODE_RX = re.compile(r'"(?:wildAnimals|coastalWildAnimals|pollutionWildAnimals|c
                      r'|AnimalDensityFactor|animalDensityFactor'
                      r'|\banimalDensity\s*[-+*/]?=(?!=)'
                      r'|\b(?:typeof|nameof)\s*\(\s*(?:[\w.]+\.)?(?:WildAnimalSpawner|GenStep_Animals)\b'
+                     r'|\bnameof\s*\([^)]*\banimalDensity\b'
+                     r'|"(?:[\w.]+\.)?(?:WildAnimalSpawner|GenStep_Animals)[:"]'
                      r'|"' + _LIFE + r'"|\bnameof\s*\([^)]*\b' + _LIFE + r'\b|\bCommonalityOfAnimalNow\b')
 WINDOW = 3
 NAMES_RX = re.compile(r"\b(?:%s)\b" % "|".join(re.escape(x) for x in (BIOME,) + tuple(spec.NATIVES)))
