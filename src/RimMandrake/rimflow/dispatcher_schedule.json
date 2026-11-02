@@ -186,6 +186,7 @@
                       "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 1.0, "slots": "all"}},
    "off_switch": "enabled false here (it is), or the file D:\\ClaudeWork\\rimmandrake\\designer\\DESIGNER_OFF",
    "seat": "BENCH", "clone": "/home/mandrake/rm/bench", "model": "opus", "ledger_item": "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING",
+   "_rename": "The owner is still choosing this role's final name (2026-11-01). The name lives in this row only: change name, instructions (git mv the role file) and off_file here; the selftest finds the row by ledger_item. Prose mentions in roles/*.md and docs are not load-bearing.",
    "off_file": "D:\\ClaudeWork\\rimmandrake\\designer\\DESIGNER_OFF", "slot_late_s": 3600, "run_max_s": 2700,
    "_why": "The Concept agent, renamed The Designer by card 2026-11-01; ledger ids keep CONCEPT_. The row exists only so run-now can find the role. No runs_local, enabled false, not in golive: no scheduled run, ever, until he says. Caps match Innovator's and are a first guess: a stage's real cost is unmeasured."},
   {"name": "Artist", "enabled": false, "trigger": "off, for the Conductor to flip; on demand: `role_launch.py run-now --role Artist --why <question>`, one fresh run, a study of his overrides or a style question", "from": "v3.6",

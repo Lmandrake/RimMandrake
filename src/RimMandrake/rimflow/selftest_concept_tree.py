@@ -401,11 +401,16 @@ def main():
         # the role cannot start on its own
         with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
             sched = json.load(f)
-        row = [r for r in sched["roles"] if r["name"] == "Designer"]
+        # found by its ledger item, never by name: the owner is still choosing the name, and a rename must be
+        # one edit to the row (name, instructions, off_file) plus a git mv of the role file
+        row = [r for r in sched["roles"] if r.get("ledger_item") == "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING"]
         check("Designer row exists, off, no slots", len(row) == 1 and row[0]["enabled"] is False
               and not row[0].get("runs_local"), row)
-        check("Designer not in golive", "Designer" not in sched["golive"]["roles"])
-        check("role file exists", os.path.isfile(os.path.join(HERE, "roles", "designer.md")))
+        name = row[0]["name"] if row else None
+        check("Designer not in golive", name is not None and name not in sched["golive"]["roles"])
+        inst = row[0].get("instructions", "") if row else ""
+        check("role file exists where the row says", bool(inst) and os.path.isfile(
+            os.path.join(HERE, "..", "..", "..", inst)), inst)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("selftest_concept_tree: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
