@@ -72,9 +72,14 @@ no new product for them.
 ## 4. The instrument
 
 `python3 src/RimMandrake/Utils/plant_economy_census.py --check` reads every XML under `src/RimMandrake`,
-`src/RimStarWars`, `src/RimUtinni`, resolves inheritance against the base game's `Data/*/Defs`, applies our
-`Replace`/`Add` patches on `plant/<field>`, and ends `N plant defs (...): 0 off-rule, 0 unmeasured`. Its selftest,
-`src/RimMandrake/Utils/selftest_plant_economy_census.py`, first proves on a fixture tree that each of E1-E4 fires,
-inheritance and an empty-element clear resolve, a patch applies and an unknown product reads unmeasured, then runs the
-live census. Limits: it reads XML, not the loaded game, so a donor mod's patch on our plant or a C# change to a def is
-outside it; on 2026-11-01 it saw 394 plant defs against 385 in the 2026-10-26 dump.
+`src/RimStarWars`, `src/RimUtinni`, applies our patches to the raw XML first and then resolves inheritance against the
+base game's `Data/*/Defs` (the game's own order), evaluates a `Conditional` on our defs and takes only its branch, and
+ends `N plant defs (...): 0 off-rule, 0 unmeasured`. Any patch op it cannot evaluate that touches a number it reads
+(a `FindMod` branch, an `@Name` selector, a whole-`<plant>` Replace, a Remove, a product's `MarketValue`) turns the
+plants it names, their children and the plants harvesting it UNMEASURED; with no readable name, or a roster patch, the
+whole census is. `--check` also refuses a tree of under 300 plants, unparsable XML or a missing tier folder. Its
+selftest, `src/RimMandrake/Utils/selftest_plant_economy_census.py`, proves on a fixture tree of 30 plant defs that each rule
+fires and each of those paths reads as it should (mutation-probed), then runs the live census. Two independent GPT
+reviews (2026-11-01) found 12 and then 8 defects, all fixed or listed as limits in the census's docstring. Limits: it
+reads XML, not the loaded game, so a donor mod's patch on our plant or a C# change to a def is outside it; on
+2026-11-01 it saw 394 plant defs against 385 in the 2026-10-26 dump.
