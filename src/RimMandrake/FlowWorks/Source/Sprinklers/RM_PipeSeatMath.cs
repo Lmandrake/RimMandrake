@@ -16,8 +16,9 @@ namespace RimMandrake.FlowWorks.Sprinklers
 	///   seat = (k - r/sqrt2) * (sx, sz),  sx = E ? +1 : -1,  sz = N ? +1 : -1.
 	/// Measured on the shipped atlases (art_source/pipe; 704 px atlas, 176 px tile, 132 px shown cell; Scrapper v3 ships at 2x,
 	/// 1408 px, the same fractions) by Tools/selftest_pipe_seat.py, which fails if a redrawn atlas moves the arc by more than 1 px:
-	///   Scrapper (compose_scrapper_v3): arc radius C/2 about the SHOWN cell's corner: k = r = 0.5   -> 0.2071 along the diagonal
-	///   Industrial/Modern/Futuristic (build_pipe_atlas): radius 88 tile px about the TILE corner: r = 2/3, k = 0.6494 since d411a48d0f (was k = 2/3) -> 0.2517
+	///   every look: arc radius C/2 about the SHOWN cell's corner: k = r = 0.5 -> 0.2071 along the diagonal (Scrapper since
+	///   compose_scrapper_v3; Industrial/Modern/Futuristic since Tools/fix_pipe_cell_geometry.py, PIPE_ATLAS_REBUILD_OTHER_LOOKS_KINK,
+	///   which retired their kinked radius-88-about-the-TILE-corner arc, k = 0.6494, r = 2/3 -> 0.2517)
 	/// The lone stub (mask 0, a pipe with no neighbour) is a round flange, centred in every look since Scrapper v3
 	/// (LoneStubScrapperPx keeps the hook should a look draw it off centre again).
 	/// A look this table does not know gets (0,0): the old behaviour, never a guess.
@@ -40,13 +41,10 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			switch (look)
 			{
 				case "Scrapper":
-					k = 0.5f; r = 0.5f; return true;
 				case "Industrial":
 				case "Modern":
 				case "Futuristic":
-					// k was 2/3 (0.2761 on the diagonal) until the owner-approved elbow realignment d411a48d0f moved the drawn arcs
-					// 3 px toward the cell centre; 0.6494 puts the seat on the realigned centreline (0.2517), measured by Tools/selftest_pipe_seat.py.
-					k = 0.6494f; r = 2f / 3f; return true;
+					k = 0.5f; r = 0.5f; return true;
 				default:
 					k = 0f; r = 0f; return false;
 			}

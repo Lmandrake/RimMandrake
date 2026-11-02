@@ -255,12 +255,16 @@ def modern_blue():
     def redrawn(rel, shape):
         # The Modern pipe atlas' end-cap cells (masks 1, 4) were redrawn on the pipe (55d9dbf74b, owner: "Fix the caps") and its
         # four elbow cells (3, 6, 9, 12) translated (d411a48d0f, owner card 2026-10-26 18:46). Geometry only, no colour change: those
-        # six cells are exempt from byte equality with the red original; the other ten, and every other piece, stay byte for byte.
+        # six cells are exempt from byte equality with the red original; then every cell's padding, linked boundary lines and
+        # elbows were put on the shown-cell geometry (fix_pipe_cell_geometry.written, PIPE_ATLAS_REBUILD_OTHER_LOOKS_KINK).
+        # The rest of the shown cells, and every other piece, stay byte for byte.
         m = np.zeros(shape[:2], bool)
         if rel.endswith("Pipe/Modern/UniversalPipe_Atlas.png"):
+            import fix_pipe_cell_geometry as fg
             t = shape[0] // 4
-            for k in (1, 3, 4, 6, 9, 12):
-                m[(3 - k // 4) * t:(4 - k // 4) * t, k % 4 * t:(k % 4 + 1) * t] = True
+            for k in range(16):
+                cell = m[(3 - k // 4) * t:(4 - k // 4) * t, k % 4 * t:(k % 4 + 1) * t]
+                cell |= True if k in (1, 3, 4, 6, 9, 12) else fg.written(t, t // 8, t - t // 4, k)
         return m
 
     for rel, red, path in pairs:
