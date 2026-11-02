@@ -31,6 +31,7 @@ import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
+import relentless_game  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
@@ -40,7 +41,7 @@ DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 # 2026-11-02); the brief points at it instead (TRANSFER_AUDIT, BENCH)
 MEMORY_INDEX = os.path.expanduser("~/.claude/projects/-home-mandrake-rm-bench/memory/MEMORY.md")
 FENCED = 3
-LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring")   # a worker or the supervisor owns the item
+LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring", relentless_game.GAME)   # a worker or the supervisor owns the item
 OPEN = ("queued",) + LEASED + ("held",)
 MAX_WAIT_HOURS = 6     # a worker's word cannot park an item for longer
 HOLDS_A_PLACE = ("running", "checking", "candidate", "stopping", "retiring")    # a run that may be live counts
@@ -313,9 +314,12 @@ class Fenced(Exception):
     pass
 
 
-def _fence(st, item, gen):
+def _fence(st, item, gen, stage_ok=False):
+    """stage_ok: the game phase's staging worker (relentless_game) may beat, learn and snag too."""
     if st is None:
         raise Fenced("%s is not enrolled" % item)
+    if stage_ok and relentless_game.staging(st, gen):
+        return
     if st["gen"] != gen or st["status"] != "running":
         raise Fenced("%s: your lease gen %d is gone (now gen %d, %s). Stop now." % (item, gen, st["gen"], st["status"]))
 
@@ -323,7 +327,7 @@ def _fence(st, item, gen):
 def beat(store, item, gen, now=None):
     with store.lock():
         st = store.load(item)
-        _fence(st, item, gen)
+        _fence(st, item, gen, stage_ok=True)
         st["last_beat"] = time.time() if now is None else now
         store.save(st)
 
@@ -331,13 +335,13 @@ def beat(store, item, gen, now=None):
 def learn(store, item, gen, text, now=None):
     with store.lock():
         st = store.load(item)
-        _fence(st, item, gen)
+        _fence(st, item, gen, stage_ok=True)
         st["last_beat"] = time.time() if now is None else now
         store.learn(item, "- %s gen %d: %s" % (iso(st["last_beat"]), gen, text))
         store.save(st)
 
 
-def contract(store, item, gen, proof, live=None, why=None, now=None):
+def contract(store, item, gen, proof, live=None, why=None, now=None, game=None):
     """Set by the first worker before it edits; only a redesign may change it, and says why. One exception: any worker
     may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
     workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it."""
@@ -349,12 +353,19 @@ def contract(store, item, gen, proof, live=None, why=None, now=None):
         st = store.load(item)
         _fence(st, item, gen)
         widens = st["contract"] and live and not st["contract"].get("live") and proof == st["contract"]["proof"]
+        # naming game clauses with the proof unchanged also only asks more (relentless_game): one more phase to pass
+        widens = widens or (st["contract"] and game and proof == st["contract"]["proof"] and not st["contract"].get("game")
+                            and live in (None, st["contract"].get("live")))
         if st["contract"] and not widens and st["approach"] != "redesign" and not st.get("proof_only"):
             raise ValueError("the contract is set; only a redesign attempt or a proof-only worker may change it (any worker may "
                              "add a missing --live with the same --proof)")
         if st["contract"] and not why:
             raise ValueError("changing the contract needs --why")
+        if widens and not live:
+            live = st["contract"].get("live")
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
+        if game:
+            st["contract"]["game"] = game
         st["last_beat"] = now
         store.attempt(item, {"at": iso(now), "gen": gen, "contract": st["contract"]})
         store.save(st)
@@ -369,7 +380,11 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
-        _fence(st, item, gen)
+        _fence(st, item, gen, stage_ok=True)
+        if relentless_game.staging(st, gen):    # the supervisor releases the bridge first, then returns the item
+            st["game"]["snag"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
+            store.save(st)
+            return
         if klass == "owner_call" and section:
             st["gen"] += 1
             st["status"] = "stopping"
@@ -731,7 +746,7 @@ def close_why(out):
     return out[-400:]
 
 
-class Effects:
+class Effects(relentless_game.GameFx):
     """The real one. Every method here blocks, so none is called under the store lock."""
 
     def __init__(self, r, store):
@@ -1534,7 +1549,7 @@ def foreign_ok(it, r):
 
 def eligible(it, r):
     return (it.owner in r["pool_seats"] and it.state in ("proposed", "ready") and not it.blocked
-            and it.needs != "owner" and it.needs in r["pool_needs"]
+            and it.needs != "owner" and (it.needs in r["pool_needs"] or it.needs in relentless_game.pool_needs(r))
             and getattr(it, "kind", None) not in r.get("pool_kinds_exclude", [])
             and it.id not in r.get("pool_ids_exclude", []) and not getattr(it, "lease", None)
             and (it.owner != foreign_seat(r) or foreign_ok(it, r)))
@@ -1553,7 +1568,7 @@ def worker_prompt(st, text, learned, r):
             "  %s beat --item %s --gen %d" % (rc, i, g),
             "  %s learn --item %s --gen %d \"what you found, what failed, what to try next\"" % (rc, i, g),
             "  %s contract --item %s --gen %d --proof \"the command or look that proves it\" "
-            "[--live \"<live line>\"] [--why ...]" % (rc, i, g),
+            "[--live \"<live line>\"] [--game A2,B3 --game-why \"...\" [--no-offline \"...\"]] [--why ...]" % (rc, i, g),
             "  %s snag --item %s --gen %d --class <slug> \"what stopped you\"" % (rc, i, g),
             "  %s finish --item %s --gen %d --sha <published sha> --evidence \"<paths and results>\"" % (rc, i, g),
             "  %s help --item %s --gen %d \"what you need a fresh eye on\"" % (rc, i, g),
@@ -1576,6 +1591,8 @@ def worker_prompt(st, text, learned, r):
             "Owner preferences no skill holds yet: %s (an index; read only the entries your item touches)." % MEMORY_INDEX,
             "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
             "bulk output to files. FOUNDRY's tree and src/RimMandrake/Utils/arena/ are not yours to touch."]
+    if relentless_game.cfg(r)["enabled"]:
+        head += relentless_game.BRIEF
     if st.get("proof_only"):
         head.append("PROOF ONLY: a blind checker read the code at %s as WEAK: the proof has holes, so the work is unproven, not "
                     "sound. The proof would stay green if it broke. The gaps are in the last ending below. Leave the code alone. Strengthen the proof until each "
@@ -1648,6 +1665,7 @@ def checker_prompt(st, text, nonce):
         "  %s verdict --item %s --nonce %s WEAK \"the runs you made and what each showed, then each gap and the mutant or "
         "probe that shows it, so the next worker can pin it\"" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\"" % (rc, i, nonce),
+        *relentless_game.checker_lines(st["contract"]),
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
         "See the change with: git show %s" % c["sha"], "", "--- item ---", text])
 
@@ -2092,6 +2110,8 @@ def step(store, fx, r, item, now, acts):
                 store.save(st)
     if s in ENDED or s == "queued":
         return
+    if s == relentless_game.GAME:
+        return relentless_game.step(store, fx, r, item, now, acts, sys.modules[__name__])
 
     if s == "retiring":
         since = st["stopping_since"]
@@ -2267,7 +2287,8 @@ def step(store, fx, r, item, now, acts):
                 st["check"]["box"] = box
             store.save(st)
         if box:
-            why = fx.launch(st, desc, relentless_wall.marker_prompt(st, fx.item_text(item), box), r["checker_agent"],
+            why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
+                                                + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
                             os.path.join(box, "tree"), r["check_max_s"], {},
                             relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
         else:
@@ -2351,9 +2372,18 @@ def step(store, fx, r, item, now, acts):
                 return
             if (st["check"] or {}).get("verdict") != "PASS":
                 return          # the verdict moved while the live line was read: the next tick reads it again
-            st["status"] = "closing"
-            st.pop("close_retry", None)
-            store.save(st)
+            if relentless_game.owes(st, c["sha"]):     # green offline on this sha: the game clauses are next, not close
+                relentless_game.enter(store, st, c["sha"], now)
+                game = True
+            else:
+                game = False
+                st["status"] = "closing"
+                st.pop("close_retry", None)
+                store.save(st)
+        if game:
+            remove_check_clone(fx, st)
+            acts.append({"do": "game_entered", "item": item, "sha": c["sha"]})
+            return
         s = "closing"
 
     if s == "closing":
@@ -2587,7 +2617,7 @@ def in_line(st):
 def retire(store, fx, states, now, acts, r=None):
     """The ledger closed an item from outside (his drop, a supersede): fence first, then step() drains the runs."""
     for st in states:
-        if st["status"] not in OPEN or st["status"] in ("closing", "retiring"):
+        if st["status"] not in OPEN or st["status"] in ("closing", "retiring", relentless_game.GAME):     # game: its own step
             continue
         led = fx.item_state(st["item"])
         if st.get("awaiting_ledger") and led is not None:       # published: it takes its place in the count again
@@ -3044,6 +3074,8 @@ def live_tick(store, fx, r, now, acts):
         return
     if now - (last.get("at_s") or 0) < lr.get("round_every_s", 1800):
         return
+    if relentless_game.other_active(getattr(store, "states", list)(), None):     # one live user at a time: a game phase has the game
+        return
     pid = fx.live_round_launch()
     store._write(path, json.dumps({"pid": pid, "at_s": now, "at": iso(now)}))
     acts.append({"do": "live_round", "pid": pid})
@@ -3158,6 +3190,9 @@ def main(argv=None):
         if name == "contract":
             p.add_argument("--proof", required=True)
             p.add_argument("--live")
+            p.add_argument("--game", help="criterion ids only the running game can show, e.g. A2,B3 (relentless_game)")
+            p.add_argument("--game-why", help="why only the running game can show them")
+            p.add_argument("--no-offline", help="why no offline proof is possible at all")
             p.add_argument("--why")
         if name == "snag":
             p.add_argument("--class", dest="klass", required=True)
@@ -3166,6 +3201,10 @@ def main(argv=None):
         if name == "finish":
             p.add_argument("--sha", required=True)
             p.add_argument("--evidence", required=True)
+    p = sub.add_parser("game-ready", help="the staging worker: the game runs the build; the supervisor reruns the proofs")
+    p.add_argument("--item", required=True)
+    p.add_argument("--gen", required=True, type=int)
+    p.add_argument("text", nargs="?", default="")
     p = sub.add_parser("help", help="send a fresh agent the failed approaches; its options reach the next brief")
     p.add_argument("--item", required=True)
     p.add_argument("--gen", type=int, help="your lease; default RELENTLESS_GEN, set at launch")
@@ -3220,7 +3259,10 @@ def main(argv=None):
         elif a.cmd == "learn":
             learn(store, a.item, a.gen, a.text)
         elif a.cmd == "contract":
-            contract(store, a.item, a.gen, a.proof, a.live, a.why)
+            contract(store, a.item, a.gen, a.proof, a.live, a.why,
+                     game=relentless_game.parse_game(a.game, a.game_why, a.no_offline))
+        elif a.cmd == "game-ready":
+            relentless_game.ready(store, a.item, a.gen, a.text)
         elif a.cmd == "snag":
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours)
         elif a.cmd == "finish":

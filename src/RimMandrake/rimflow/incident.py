@@ -377,7 +377,9 @@ def receiver_problem(seat, needs, sch=None, table=None, relentless=None):
     if needs == "owner":
         return None if seat == "OWNER" else "a needs=owner alarm goes to OWNER, not %s" % seat
     if (relentless.get("enabled") and seat in (relentless.get("pool_seats") or [])
-            and needs in (relentless.get("pool_needs") or [])):
+            and (needs in (relentless.get("pool_needs") or [])
+                 or ((relentless.get("game") or {}).get("enabled")     # relentless_game: the game mode drains these too
+                     and needs in ((relentless.get("game") or {}).get("pool_needs") or [])))):
         return None
     table = table or load_table()
     r = table["readers"].get(seat)

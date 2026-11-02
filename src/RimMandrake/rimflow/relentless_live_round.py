@@ -197,14 +197,16 @@ def read_rows(path):
     return rows
 
 
-def plan(fx, root, r, now):
-    """-> (todo, counts) for this moment. Read-only."""
+def plan(fx, root, r, now, only=None):
+    """-> (todo, counts) for this moment. Read-only. `only`: one item, the supervisor's game phase for it
+    (relentless_game.py): it has just staged the game, so an UNMEASURED row is no reason to wait."""
     lr = rules(r)
     hist = history(read_rows(os.path.join(root, "live", "runs.jsonl")))
-    return candidates(fx.items(), fx.proofs, fx.foundry_seat, hist, now, lr["unmeasured_retry_s"])
+    items = [it for it in fx.items() if only is None or it["id"] == only]
+    return candidates(items, fx.proofs, fx.foundry_seat, hist, now, 0 if only else lr["unmeasured_retry_s"])
 
 
-def run_round(fx, root, r, now=None, max_items=None, run=L.run):
+def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
     """One sitting. -> the round's summary row (also appended to <root>/live/rounds.jsonl)."""
     now = time.time() if now is None else now
     lr = rules(r)
@@ -219,8 +221,8 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run):
 
     if fx.game_started() is None:
         return done("no running game")
-    todo, counts = plan(fx, root, r, now)
-    summary.update(eligible=len(todo), skipped=counts)
+    todo, counts = plan(fx, root, r, now, only)
+    summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
     folded, ran, cap = None, 0, max_items or lr["round_max"]
     for item_id, cid, proof, sha in todo:     # the cap counts runs: a skip never starves the items behind it
         if ran >= cap:
@@ -250,6 +252,7 @@ def main(argv=None):
     sub.add_parser("eligible", help="what a round would try now, and the counts of what it would skip")
     p = sub.add_parser("round", help="one sitting: run every due criterion that has a proof, up to --max")
     p.add_argument("--max", type=int, default=None)
+    p.add_argument("--item", help="this item only, no unmeasured wait: the supervisor's game phase")
     a = ap.parse_args(argv)
     with open(os.environ.get("RELENTLESS_RULES") or L.RULES, encoding="utf-8") as f:
         r = json.load(f)
@@ -266,7 +269,7 @@ def main(argv=None):
         except BlockingIOError:
             print("a round is running")
             return 0
-        print(json.dumps(run_round(fx, root, r, max_items=a.max), indent=1, sort_keys=True))
+        print(json.dumps(run_round(fx, root, r, max_items=a.max, only=a.item), indent=1, sort_keys=True))
     return 0
 
 
