@@ -9,13 +9,13 @@ drawn on the cell vanilla Graphic_Linked shows (the inner 3/4 of each 4x4 tile, 
   G3 nothing in the padding but the pipe's continuation: every visible padding pixel lies in a linked side's bore
      strip (a coupling, cap or elbow drawn for a 176 px cell spills outside it)
 
-Each truth is first shown able to fail on the pre-fix atlases (git blobs of PRE_FIX, the compose.py geometry), then run
+Each truth is first shown able to fail on the pre-fix atlases (copies of the compose.py geometry as of commit 3f9bb31156,
+kept as fixtures in art_source/pipe/prefix_fixtures/ so the probe needs no git history), then run
 on every installed look. Exit 0 when all hold; 1 lists every violation.
     python3 src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py
 """
 import contextlib
 import io
-import subprocess
 import sys
 from pathlib import Path
 
@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[4]
 REL = "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Pipe/%s/UniversalPipe_Atlas.png"
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 FIXED = ("Industrial", "Modern", "Futuristic")
-PRE_FIX = "3f9bb31156"          # the last commit with the compose.py (176 px cell) geometry on those three
+PRE_FIX = ROOT / "src/RimMandrake/FlowWorks/art_source/pipe/prefix_fixtures/%s_UniversalPipe_Atlas_prefix.png"
 N, E, S, W = 1, 2, 4, 8
 OPAQUE = 128
 
@@ -107,11 +107,11 @@ def truths(png, look):
 def probes():
     fails = []
     for look in FIXED:
-        blob = subprocess.run(["git", "show", "%s:%s" % (PRE_FIX, REL % look)], cwd=ROOT, capture_output=True)
-        if blob.returncode:
-            fails.append("probe: cannot read the pre-fix %s atlas at %s (%s)" % (look, PRE_FIX, blob.stderr.decode().strip()))
+        png = Path(str(PRE_FIX) % look)
+        if not png.is_file():
+            fails.append("probe: missing the pre-fix %s atlas fixture %s" % (look, png))
             continue
-        bad = truths(io.BytesIO(blob.stdout), look)
+        bad = truths(str(png), look)
         for g in ("G1", "G2", "G3"):
             if not any(b.startswith(g) for b in bad):
                 fails.append("probe: %s does not fail on the pre-fix %s atlas" % (g, look))
