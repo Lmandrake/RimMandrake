@@ -81,11 +81,16 @@ namespace JawaBench.BridgeTools
         public const double SilenceSeconds = 10.0;
         public const double SilenceRepeatSeconds = 30.0;
 
-        /// <summary>In-memory ring for the [Tool]: 720 x 5 s = the last hour.</summary>
-        public const int RingCapacity = 720;
+        /// <summary>In-memory ring for the [Tool]: the last hour of windows, at whatever cadence they closed.</summary>
+        public const double RingSeconds = 3600.0;
+        /// <summary>The ring's hard row cap: one hour at the test tier's 1 s cadence (720 rows at the 5 s cadence).</summary>
+        public const int RingMaxWindows = 3600;
 
-        /// <summary>Sustained = this many CONTIGUOUS run windows (6 x 5 s = 30 s).</summary>
-        public const int SustainedSamples = 6;
+        /// <summary>Sustained = this much real time of CONTIGUOUS run windows, at any cadence (6 x 5 s, 30 x 1 s).</summary>
+        public const double SustainedSeconds = 30.0;
+        /// <summary>A streak this close to SustainedSeconds counts (the reader's window-continuity tolerance): less than
+        /// one 1 s window, so 29 x 1 s is still short.</summary>
+        public const double SustainedSlackSeconds = 0.5;
         public const double LowRatio = 0.6;
         public const double HighRatio = 1.15;
 
@@ -298,17 +303,45 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>
-        /// "low" / "high" when the LAST <see cref="SustainedSamples"/> ratios of an UNBROKEN streak of
-        /// run windows are all below / above the bounds; "ok" otherwise; "unknown" when the streak is
-        /// shorter. The caller breaks the streak on any non-run window, game change or coverage gap.
+        /// "low" / "high" when the shortest tail of an UNBROKEN streak of run windows that spans
+        /// <see cref="SustainedSeconds"/> is all below / above the bounds; "ok" otherwise; "unknown" when the
+        /// streak spans less. Time, not a window count: the test tier's 1 s windows owe 30 s like the 5 s ones.
+        /// The caller breaks the streak on any non-run window, game change or coverage gap.
         /// </summary>
-        public static string Sustained(IList<double> streak)
+        public static string Sustained(IList<StreakWindow> streak)
         {
-            if (streak == null || streak.Count < SustainedSamples) return "unknown";
-            var tail = streak.Skip(streak.Count - SustainedSamples).ToList();
-            if (tail.All(r => r < LowRatio)) return "low";
-            if (tail.All(r => r > HighRatio)) return "high";
-            return "ok";
+            if (streak == null) return "unknown";
+            double span = 0;
+            bool low = true, high = true;
+            for (int i = streak.Count - 1; i >= 0; i--)
+            {
+                span += streak[i].Seconds;
+                low &= streak[i].Ratio < LowRatio;
+                high &= streak[i].Ratio > HighRatio;
+                if (span >= SustainedSeconds - SustainedSlackSeconds) return low ? "low" : high ? "high" : "ok";
+            }
+            return "unknown";
+        }
+
+        /// <summary>One run window of the sampler's streak, both fields as the disk carries them (StreakValue).</summary>
+        public struct StreakWindow
+        {
+            public double Ratio, Seconds;
+            public StreakWindow(double ratio, double seconds) { Ratio = ratio; Seconds = seconds; }
+        }
+
+        /// <summary>The [Tool]'s ring: keeps <see cref="RingSeconds"/> by each window's close time, at any cadence,
+        /// capped at <see cref="RingMaxWindows"/> rows. Not thread-safe; the sampler holds its Gate.</summary>
+        public sealed class WindowRing
+        {
+            private readonly Queue<KeyValuePair<double, string>> _q = new Queue<KeyValuePair<double, string>>();
+            public int Count => _q.Count;
+            public void Add(double mono, string line)
+            {
+                _q.Enqueue(new KeyValuePair<double, string>(mono, line));
+                while (_q.Count > RingMaxWindows || mono - _q.Peek().Key > RingSeconds) _q.Dequeue();
+            }
+            public List<string> Lines() => _q.Select(e => e.Value).ToList();
         }
 
         /// <summary>The value a run window adds to the sampler's streak.
@@ -319,7 +352,7 @@ namespace JawaBench.BridgeTools
 
         /// <summary>Sustained, but "unknown" when the newest streak window is older than StaleSeconds (a stopped
         /// sampler must not keep reporting its last streak).</summary>
-        public static string SustainedFresh(IList<double> streak, double newestAgeSeconds)
+        public static string SustainedFresh(IList<StreakWindow> streak, double newestAgeSeconds)
         {
             if (newestAgeSeconds > StaleSeconds) return "unknown";
             return Sustained(streak);

@@ -269,7 +269,8 @@ invalid — the shipped defaults are used and the reason is in the `session` row
   sustained low/high is reported, never blended in).
 - The verdict states **coverage** first: `MISSING` (no record), `STALE` (newest window older than 60 s: game
   down, at the menu, or the sampler stopped; never a performance verdict), `ERROR` (writer errors).
-- **SUSTAINED LOW / HIGH** (WARN): the last 6 windows of an **unbroken** streak of fresh `run` windows all
+- **SUSTAINED LOW / HIGH** (WARN): the shortest tail spanning 30 s of real time (`dReal`, 6 windows at the 5 s cadence, 30 at the test tier's 1 s;
+  0.5 s slack) of an **unbroken** streak of fresh `run` windows all
   have `ratio < 0.6` / `> 1.15`, judged on the 3-decimal value the disk carries (the live tool rounds the
   same way). Unbroken means: same session, same `game`, each window starting where the previous ended
   (`monoStart` within 0.5 s of `monoEnd`), no game/menu/error/silence/resumed/shutdown row and no `seq` gap

@@ -8,9 +8,25 @@ namespace JawaBench.BridgeTools
     {
         private static void T_SustainedStale()
         {
-            var low = new System.Collections.Generic.List<double> { 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 };
+            var low = new System.Collections.Generic.List<JawaBenchTpsMath.StreakWindow>();
+            for (int i = 0; i < 6; i++) low.Add(new JawaBenchTpsMath.StreakWindow(0.3, 5.0));
             Check(JawaBenchTpsMath.SustainedFresh(low, 5) == "low", "a fresh low streak is low");
             Check(JawaBenchTpsMath.SustainedFresh(low, 120) == "unknown", "a streak last fed 120 s ago is unknown, not low");
+        }
+
+        private static void T_RingKeepsAnHour()
+        {
+            var at1 = new JawaBenchTpsMath.WindowRing();
+            for (int i = 0; i < 5000; i++) at1.Add(i, "r" + i);
+            Check(at1.Count == 3600, "1 s windows: the ring holds 3600 rows, not 720: " + at1.Count);
+            Check(at1.Lines()[0] == "r1400" && at1.Lines()[3599] == "r4999", "the newest hour is what stays, oldest first");
+            var at5 = new JawaBenchTpsMath.WindowRing();
+            for (int i = 0; i < 2000; i++) at5.Add(i * 5.0, "r" + i);
+            Check(at5.Count == 721, "5 s windows: one hour, both ends inclusive: " + at5.Count);
+            var mixed = new JawaBenchTpsMath.WindowRing();
+            for (int i = 0; i < 3600; i++) mixed.Add(i, "armed" + i);
+            for (int i = 1; i <= 800; i++) mixed.Add(3599 + i * 5.0, "campaign" + i);
+            Check(mixed.Count == 721, "after disarming the 1 s rows age out by time, not by count: " + mixed.Count);
         }
 
         private static void T_LifecycleScopes()

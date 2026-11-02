@@ -57,8 +57,10 @@ LOG_RETENTION_BYTES = 1024 * 1024 * 1024
 QUEUE_CAPACITY = 4096
 SILENCE_SECONDS = 10.0
 SILENCE_REPEAT_SECONDS = 30.0
-RING_CAPACITY = 720
-SUSTAINED_SAMPLES = 6
+RING_SECONDS = 3600.0
+RING_MAX_WINDOWS = 3600
+SUSTAINED_SECONDS = 30.0
+SUSTAINED_SLACK_SECONDS = 0.5
 LOW_RATIO = 0.6
 HIGH_RATIO = 1.15
 
@@ -315,16 +317,17 @@ def median(xs):
     return a[n // 2] if n % 2 else (a[n // 2 - 1] + a[n // 2]) / 2.0
 
 
-def sustained(run_ratios):
-    """Port of JawaBenchTpsMath.Sustained: low/high/ok/unknown over the last SUSTAINED_SAMPLES."""
-    if len(run_ratios) < SUSTAINED_SAMPLES:
-        return "unknown"
-    tail = run_ratios[-SUSTAINED_SAMPLES:]
-    if all(r < LOW_RATIO for r in tail):
-        return "low"
-    if all(r > HIGH_RATIO for r in tail):
-        return "high"
-    return "ok"
+def sustained(run_windows):
+    """Port of JawaBenchTpsMath.Sustained: run_windows are (ratio, seconds); low/high/ok/unknown over the shortest
+    tail spanning SUSTAINED_SECONDS of real time, at any cadence."""
+    span, low, high = 0.0, True, True
+    for ratio, seconds in reversed(run_windows):
+        span += seconds
+        low = low and ratio < LOW_RATIO
+        high = high and ratio > HIGH_RATIO
+        if span >= SUSTAINED_SECONDS - SUSTAINED_SLACK_SECONDS:
+            return "low" if low else "high" if high else "ok"
+    return "unknown"
 
 
 # ---------------------------------------------------------------- the record on disk
@@ -859,7 +862,7 @@ def contiguous(prev, cur):
 def sustained_from_rows(rows):
     """Sustained over the trailing UNBROKEN streak of run windows. Breaks: a non-run window, a new session
     or game, a coverage hole, a lifecycle/error/silence row in between, or a gap in the writer's seq
-    (rows dropped). Ratios are judged as stored (3 decimals), the same values the C# streak now uses."""
+    (rows dropped). Ratios and dReal are judged as stored (3 decimals), the same values the C# streak uses."""
     if rows and not any("_seqGap" in r for r in rows):
         mark_seq_gaps(rows)
     streak, prev = [], None
@@ -877,7 +880,8 @@ def sustained_from_rows(rows):
         if not contiguous(prev, r):
             streak = []
         if r.get("state") == STATE_RUN and _num(r.get("ratio")) is not None:
-            streak.append(float(r["ratio"]))
+            d = _num(r.get("dReal"))
+            streak.append((float(r["ratio"]), d if d is not None else CADENCE_SECONDS))    # first-build rows carry no dReal
         else:
             streak = []
         prev = r
@@ -1019,11 +1023,11 @@ def verdict(summary):
                 if o["sustained"] in ("low", "high"):
                     return "WARN", "SUSTAINED %s TPS in session %s: %s" % (o["sustained"].upper(), (o["session"] or "?")[:8], body)
     if s["sustained"] == "low":
-        return "WARN", "SUSTAINED LOW TPS (<%.0f%% of target for %d contiguous windows): %s" % (
-            LOW_RATIO * 100, SUSTAINED_SAMPLES, body)
+        return "WARN", "SUSTAINED LOW TPS (<%.0f%% of target for %.0f contiguous seconds): %s" % (
+            LOW_RATIO * 100, SUSTAINED_SECONDS, body)
     if s["sustained"] == "high":
-        return "WARN", "SUSTAINED HIGH TPS (>%.0f%% of target for %d contiguous windows): %s" % (
-            HIGH_RATIO * 100, SUSTAINED_SAMPLES, body)
+        return "WARN", "SUSTAINED HIGH TPS (>%.0f%% of target for %.0f contiguous seconds): %s" % (
+            HIGH_RATIO * 100, SUSTAINED_SECONDS, body)
     return "OK", body
 
 

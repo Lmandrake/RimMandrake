@@ -66,8 +66,8 @@ namespace JawaBench.BridgeTools
     internal static class JawaBenchTpsSampler
     {
         private static readonly object Gate = new object();
-        private static readonly Queue<string> Ring = new Queue<string>();
-        private static readonly List<double> Streak = new List<double>();   // unbroken run-window ratios
+        private static readonly M.WindowRing Ring = new M.WindowRing();
+        private static readonly List<M.StreakWindow> Streak = new List<M.StreakWindow>();   // unbroken run windows
 
         internal static bool Installed;
         internal static string InstallError, RuntimeError, StartedUtc, StartedBy, RecordDir, SettingsNote;
@@ -683,9 +683,12 @@ namespace JawaBench.BridgeTools
             string state = w.State;
             lock (Gate)
             {
-                Ring.Enqueue("{\"utc\":\"" + W.Utc() + "\"," + fields + "}");
-                while (Ring.Count > M.RingCapacity) Ring.Dequeue();
-                if (state == M.StateRun && !double.IsNaN(w.Ratio)) { Streak.Add(M.StreakValue(w.Ratio)); if (Streak.Count > M.RingCapacity) Streak.RemoveAt(0); }
+                Ring.Add(WD.Now, "{\"utc\":\"" + W.Utc() + "\"," + fields + "}");
+                if (state == M.StateRun && !double.IsNaN(w.Ratio))
+                {
+                    Streak.Add(new M.StreakWindow(M.StreakValue(w.Ratio), M.StreakValue(w.DReal)));
+                    if (Streak.Count > M.RingMaxWindows) Streak.RemoveAt(0);
+                }
                 else Streak.Clear();
                 _streakMono = WD.Now;
             }
@@ -767,8 +770,8 @@ namespace JawaBench.BridgeTools
         internal static object Report(int last)
         {
             List<string> lines;
-            List<double> streak;
-            lock (Gate) { lines = Ring.ToList(); streak = Streak.ToList(); }
+            List<M.StreakWindow> streak;
+            lock (Gate) { lines = Ring.Lines(); streak = Streak.ToList(); }
             if (last <= 0) last = 60;
             var tail = lines.Skip(Math.Max(0, lines.Count - last)).ToList();
             var rat = new List<double>();
@@ -793,7 +796,7 @@ namespace JawaBench.BridgeTools
                 note = "Starts at game load (RimBridgeServer companion registration), no bridge call needed. Judge ratio " +
                        "(ticks / expected ticks integrated frame by frame over unpaused time); only state=run windows are judged. " +
                        "Stalls are kept as incidents. Read history with src/RimMandrake/Utils/tps_record.py --at/--since.",
-                cadenceSeconds = M.CadenceSeconds,
+                cadenceSeconds = Acc.Cadence,
                 recordDir = RecordDir,
                 segment = W.CurrentPath,
                 writer = new { enqueued = W.Enqueued, written = W.Written, dropped = W.Dropped, writeErrors = W.WriteErrors, queue = W.QueueDepth, lastError = W.LastError },
@@ -926,14 +929,14 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, startedBy, samplerStartedUtc, session, recordDir, segment, writer health, watchdog phase, " +
                 "attribution status, samplesJsonl (last N windows), ratioMin/Median/Max over run windows, sustained " +
-                "(low|high|ok|unknown over an unbroken run streak), errors if any.")]
+                "(low|high|ok|unknown over 30 s of an unbroken run streak), errors if any.")]
         public Task<object> TpsReport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "How many of the most recent windows to return (default 60 = 5 minutes; max 720).")] int last = 60)
+            [ToolParameter(Description = "How many of the most recent windows to return (default 60; one window is 5 s, or 1 s while the test tier is armed; the ring holds the last hour, max 3600).")] int last = 60)
         {
             JawaBenchTpsSampler.Install("tool-call");
-            return Task.FromResult(JawaBenchTpsSampler.Report(Math.Min(last, M.RingCapacity)));
+            return Task.FromResult(JawaBenchTpsSampler.Report(Math.Min(last, M.RingMaxWindows)));
         }
     }
 }

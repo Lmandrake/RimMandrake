@@ -176,9 +176,21 @@ def trace_checks(tr):
 
 # ---- scalar vectors ---------------------------------------------------------------------------
 M_VECTORS = [[], [5], [3, 1, 2], [4, 1, 3, 2], [60, 59.5, 12, 61]]
-S_VECTORS = [[0.5] * 5, [0.5] * 6, [1.0] + [0.4] * 6, [0.4] * 5 + [0.9], [1.3] * 6, [1.0] * 8, [0.6] * 6]
+def W5(*ratios):
+    return [(r, 5.0) for r in ratios]
+def W1(*ratios):
+    return [(r, 1.0) for r in ratios]
+S_VECTORS = [W5(*[0.5] * 5), W5(*[0.5] * 6), W5(1.0, *[0.4] * 6), W5(*[0.4] * 5, 0.9), W5(*[1.3] * 6), W5(*[1.0] * 8), W5(*[0.6] * 6),
+             # the bug: six 1 s windows are 6 s, not 30
+             W1(*[0.5] * 6), W1(*[1.3] * 6), W1(*[0.5] * 29), W1(*[0.5] * 30), W1(*[1.3] * 30), W1(*[0.5] * 29, 0.9),
+             W5(1.0) + W1(*[0.5] * 30),     # the older ok window is outside the 30 s tail
+             W5(*[0.5] * 3) + W1(*[0.5] * 15),      # the tier armed mid-streak
+             [(0.5, 4.92)] * 6, [(0.5, 4.91)] * 6]  # the 0.5 s slack: 29.52 counts, 29.46 does not
+S_EXPECT = ["unknown", "low", "low", "ok", "high", "ok", "ok",
+            "unknown", "unknown", "unknown", "low", "high", "ok",
+            "low", "low", "low", "unknown"]
 # MUST 7: the sampler's streak is judged on the value the disk carries (3 decimals), so C# and the reader agree
-Q_VECTORS = [[0.5996] * 6, [1.1504] * 6, [0.5994] * 6]
+Q_VECTORS = [W5(*[0.5996] * 6), W5(*[1.1504] * 6), W5(*[0.5994] * 6), [(0.5, 4.9166)] * 6]
 R_VECTORS = [(0, 3_000_000), (2_097_000, 100), (2_097_100, 100), (2_097_152, 1), (10, 10)]
 N_VECTORS = [(1_791_640_000, "0123456789abcdef0123456789abcdef", 4242, 0), (0, "ab", 1, 17)]
 X_VECTORS = [  # (bytes, ageDays, session, pinned, active) ..., cap   (MUST 11)
@@ -198,7 +210,7 @@ def const_line():
         T.F(T.PAUSED_SHARE, 4), T.F(T.STALL_SHARE, 4), T.F(T.LONG_EVENT_SHARE, 4), T.F(T.MIXED_SHARE, 4),
         T.F(T.FRAME_BUDGET_SECONDS, 4), str(T.MAX_GAPS_PER_WINDOW), str(T.SEGMENT_BYTES), T.F(T.RETENTION_DAYS, 4),
         str(T.RETENTION_BYTES), str(T.LOG_RETENTION_BYTES), str(T.QUEUE_CAPACITY), T.F(T.SILENCE_SECONDS, 4),
-        T.F(T.SILENCE_REPEAT_SECONDS, 4), str(T.RING_CAPACITY), str(T.SUSTAINED_SAMPLES), T.F(T.LOW_RATIO, 4),
+        T.F(T.SILENCE_REPEAT_SECONDS, 4), T.F(T.RING_SECONDS, 4), str(T.RING_MAX_WINDOWS), T.F(T.SUSTAINED_SECONDS, 4), T.F(T.SUSTAINED_SLACK_SECONDS, 4), T.F(T.LOW_RATIO, 4),
         T.F(T.HIGH_RATIO, 4)])
 
 
@@ -209,7 +221,7 @@ def py_lines(tr, res):
         out += res[k]
     out += ["M " + T.F(T.median(xs), 3) for xs in M_VECTORS]
     out += ["S " + T.sustained(xs) for xs in S_VECTORS]
-    out += ["Q " + T.sustained([float(T.F(x, 3)) for x in xs]) for xs in Q_VECTORS]
+    out += ["Q " + T.sustained([(float(T.F(r, 3)), float(T.F(d, 3))) for r, d in xs]) for xs in Q_VECTORS]
     out += ["R %d" % (1 if T.should_rotate(c, n) else 0) for c, n in R_VECTORS]
     out += ["N " + T.segment_name(*v) for v in N_VECTORS]
     for items, cap in X_VECTORS:
@@ -225,8 +237,8 @@ def cs_input(tr):
         rows.append("A " + k)
         rows += ["F " + " ".join(num(x) for x in f) for f in frames]
     rows += ["M " + " ".join(str(x) for x in xs) for xs in M_VECTORS]
-    rows += ["S " + " ".join(str(x) for x in xs) for xs in S_VECTORS]
-    rows += ["Q " + " ".join(str(x) for x in xs) for xs in Q_VECTORS]
+    rows += ["S " + " ".join("%s %s" % x for x in xs) for xs in S_VECTORS]
+    rows += ["Q " + " ".join("%s %s" % x for x in xs) for xs in Q_VECTORS]
     rows += ["R %d %d" % v for v in R_VECTORS]
     rows += ["N %d %s %d %d" % v for v in N_VECTORS]
     rows += ["X " + " ".join("%d:%s:%s:%d:%d" % i for i in items) + " %d" % cap for items, cap in X_VECTORS]
@@ -236,7 +248,7 @@ def cs_input(tr):
 
 def scalar_checks():
     check(T.median([4, 1, 3, 2]) == 2.5 and T.median([]) is None, "median")
-    check([T.sustained(x) for x in S_VECTORS] == ["unknown", "low", "low", "ok", "high", "ok", "ok"], "sustained")
+    check([T.sustained(x) for x in S_VECTORS] == S_EXPECT, "sustained: %r" % [T.sustained(x) for x in S_VECTORS])
     check(T.should_rotate(2_097_100, 100) and not T.should_rotate(0, 3_000_000), "rotation (never an empty segment)")
     try:
         P = T.plan_retention
@@ -459,6 +471,19 @@ def reader_checks():
     check(T.sustained_from_rows(dropped) == "unknown", "MUST 7: a seq gap (dropped rows) breaks the streak")
     check(T.sustained_from_rows(mono_run(6)) == "low", "MUST 7: six abutting low windows ARE sustained low")
 
+    # the verdict is TIME: the test tier's 1 s windows owe 30 s, read from dReal
+    def sec_run(n, ratio=0.3):
+        return [dict(sample(t15 + i + 1, i + 1, ratio=ratio, dreal=1.0), mono=101.0 + i, monoStart=100.0 + i, monoEnd=101.0 + i)
+                for i in range(n)]
+    check(T.sustained_from_rows(sec_run(6)) == "unknown", "six 1 s low windows are 6 s, not sustained")
+    check(T.sustained_from_rows(sec_run(29)) == "unknown", "29 s of low 1 s windows are not sustained")
+    check(T.sustained_from_rows(sec_run(30)) == "low", "30 s of low 1 s windows ARE sustained low")
+    check(T.sustained_from_rows(sec_run(30, ratio=1.3)) == "high", "30 s of high 1 s windows ARE sustained high")
+    legacy = mono_run(6)
+    for r in legacy:
+        r.pop("dReal", None)
+    check(T.sustained_from_rows(legacy) == "low", "rows with no dReal count one 5 s cadence each")
+
     # MUST 13: strict row validation - every bad row counted, none crashes or slips through
     with tempfile.TemporaryDirectory() as d:
         p = os.path.join(d, T.segment_name(t15 - 600, "dddd", 13, 0))
@@ -628,7 +653,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "WriterDeferredStartDrainsOnCaller", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedScopeSpansFrames", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded",
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "RingKeepsAnHour", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "WriterDeferredStartDrainsOnCaller", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedScopeSpansFrames", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded",
             "TierHistBuckets", "TierRingWrap", "TierExclusiveAndCounters", "TierSpikeTrigger", "TierSignature", "TierExcWindow",
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",

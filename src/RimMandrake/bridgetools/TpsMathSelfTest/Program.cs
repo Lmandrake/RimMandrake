@@ -7,13 +7,14 @@
 //                                             -> one frame; prints "G <gap fields>" for a gap and
 //                                                "W <window fields>" when a window closes
 //   M x...                                    -> median
-//   S r...                                    -> sustained verdict
+//   S r s r s...                              -> sustained verdict (ratio, seconds pairs)
 //   R currentBytes lineBytes                  -> rotate(0|1)
 //   N epochSeconds session pid segment        -> segment file name
 //   X bytes:ageDays:session:pinned:active ... cap -> retention plan (indices to delete, in order)
 //   U                                         -> the C# unit group (Units*.cs): "U name ok|FAIL why",
 //                                                "J name <json>" production-composed lines, "U-count n"
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using M = JawaBench.BridgeTools.JawaBenchTpsMath;
@@ -23,6 +24,12 @@ namespace JawaBench.BridgeTools
     internal static class Program
     {
         static double P(string s) => double.Parse(s, CultureInfo.InvariantCulture);
+        static List<M.StreakWindow> Pairs(string[] a)
+        {
+            var o = new List<M.StreakWindow>();
+            for (int i = 1; i + 1 < a.Length; i += 2) o.Add(new M.StreakWindow(P(a[i]), P(a[i + 1])));
+            return o;
+        }
 
         static int Main()
         {
@@ -45,8 +52,8 @@ namespace JawaBench.BridgeTools
                             M.LogRetentionBytes.ToString(CultureInfo.InvariantCulture),
                             M.QueueCapacity.ToString(CultureInfo.InvariantCulture),
                             M.F(M.SilenceSeconds, 4), M.F(M.SilenceRepeatSeconds, 4),
-                            M.RingCapacity.ToString(CultureInfo.InvariantCulture),
-                            M.SustainedSamples.ToString(CultureInfo.InvariantCulture),
+                            M.F(M.RingSeconds, 4), M.RingMaxWindows.ToString(CultureInfo.InvariantCulture),
+                            M.F(M.SustainedSeconds, 4), M.F(M.SustainedSlackSeconds, 4),
                             M.F(M.LowRatio, 4), M.F(M.HighRatio, 4) }));
                         break;
                     case "A":
@@ -64,10 +71,10 @@ namespace JawaBench.BridgeTools
                         Console.WriteLine("M " + M.F(M.Median(a.Skip(1).Select(P).ToList()), 3));
                         break;
                     case "S":
-                        Console.WriteLine("S " + M.Sustained(a.Skip(1).Select(P).ToList()));
+                        Console.WriteLine("S " + M.Sustained(Pairs(a)));
                         break;
                     case "Q":   // the SAMPLER's streak: raw ratios through StreakValue, then Sustained
-                        Console.WriteLine("Q " + M.Sustained(a.Skip(1).Select(P).Select(M.StreakValue).ToList()));
+                        Console.WriteLine("Q " + M.Sustained(Pairs(a).Select(s => new M.StreakWindow(M.StreakValue(s.Ratio), M.StreakValue(s.Seconds))).ToList()));
                         break;
                     case "R":
                         Console.WriteLine("R " + (M.ShouldRotate(long.Parse(a[1]), long.Parse(a[2])) ? 1 : 0));
