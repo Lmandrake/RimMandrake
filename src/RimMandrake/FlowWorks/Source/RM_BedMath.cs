@@ -175,6 +175,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Σ bed levels over the WHOLE footprint (wet or not): the denominator of the level unit.</summary>
 		public long FootprintLevels { get; private set; }
 
+		/// <summary>Articulation-point scans run so far (diagnostic; the selftest bounds it at one per pick).</summary>
+		public int CutScans { get; private set; }
+
 		/// <summary>How many whole-body split checks one pick may run (as before).</summary>
 		public const int GlobalSplitChecks = 4;
 
@@ -307,7 +310,10 @@ namespace RimMandrake.FlowWorks
 				// the arcs elsewhere. Taking the deeper safe square instead dried bed 13 while bed 12 stayed wet. One
 				// articulation-point pass (O(wet squares)) decides them all exactly; it runs only when the bed key is at stake,
 				// so equal beds keep the old order and cost.
+				// RECESSION_SCAN_TAME_RERUN_PER_CANDIDATE: the scan runs once per pick. Keying it on `alt < 0` reran it for
+				// every rejected cut (a one-wide snake: O(n^2) per pick).
 				int alt = -1;
+				bool cutsMarked = false;
 				for (int k = 0; k < unsafeLocal.Count; k++)
 				{
 					int c = unsafeLocal[k];
@@ -315,9 +321,10 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					if (alt < 0)
+					if (!cutsMarked)
 					{
 						MarkCuts();
+						cutsMarked = true;
 					}
 					if (cutMark[c] == stamp)
 					{
@@ -366,6 +373,7 @@ namespace RimMandrake.FlowWorks
 		/// whose removal would split a piece of the body. Iterative Tarjan, so a 40,000-square lake cannot overflow the stack.</summary>
 		private void MarkCuts()
 		{
+			CutScans++;
 			if (++stamp == int.MaxValue)
 			{
 				Array.Clear(seenStamp, 0, seenStamp.Length);

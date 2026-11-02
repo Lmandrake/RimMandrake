@@ -181,6 +181,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(receded.Count == 0 && fp.All(i => wet[i]), "full again: every square wet, the stack empty");
             });
 
+            Case("DeepBed_recession_cut_scan_once_per_pick", () =>
+            {
+                // RECESSION_SCAN_TAME_RERUN_PER_CANDIDATE: a one-wide 200-square snake whose two ends feed a channel. Every
+                // interior square outranks the (outflow) ends and is a cut, so `alt` never leaves -1; the articulation scan
+                // used to rerun once per interior candidate (198 whole-body scans for one pick). It must run once.
+                int w = 210, h = 3, x0 = 5, len = 200;
+                var fp = new List<int>();
+                for (int x = x0; x < x0 + len; x++) fp.Add(1 * w + x);
+                int endA = fp[0], endB = fp[fp.Count - 1];
+                var rec = new RM_RecessionSet();
+                rec.Begin(w, h, fp, i => true, i => 1, i => i == endA || i == endB);
+                int before = rec.CutScans;
+                int pick = rec.Pick(true);
+                Assert(rec.CutScans - before == 1, "one articulation scan per pick (ran " + (rec.CutScans - before) + ")");
+                Assert(pick == endA || pick == endB, "the snake still recedes from an end, never a cut (picked " + pick + ")");
+                rec.Remove(pick);
+                before = rec.CutScans;
+                int next = rec.Pick(true);
+                Assert(rec.CutScans - before <= 1, "the next pick scans at most once (ran " + (rec.CutScans - before) + ")");
+                Assert(next == endA || next == endB || next == pick - 1 || next == pick + 1, "the next pick is the other end or the new end (" + next + ")");
+            });
+
             Case("DeepBed_rough_rect_lake_drains_shallow_first", () =>
             {
                 // DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE: the live deep_lake_proof shape (a painted 72x72 rectangle, rim 3, lake
