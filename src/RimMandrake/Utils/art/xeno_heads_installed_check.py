@@ -8,10 +8,15 @@ Item XENO_HEADS_SCENE_PROVE_ALIENS_WEAR_THEM. For Lasat, Mimbanese, Nelvaanian a
   - the deployed game copy matches the repo: the HeadTypeDef and GeneDef whole (as parsed XML),
     the xenotype's gene list (its other fields, e.g. nameMaker, do not decide the head), every PNG
     byte for byte. Unrelated undeployed edits elsewhere in the same def files do not count;
-  - the live line-up screenshots (fresh pawns of the four species, 4 facings) exist.
+  - the live line-up screenshots (fresh pawns of the four species, 4 facings) exist, each NEWER than every
+    deployed head PNG, and the manifest written by xeno_heads_live_shot.py beside the run records the same
+    sha256 for every deployed head PNG and every shot as today, and each species drawing RSW_<S>_Head.
+    (Gen-2 blind fail: the 2026-10-20 08:24 shots predated the 17:39-18:04 head refit, and a bare
+    existence check passed them.)
 Exit 0 = all hold, 1 = a check failed (each failure printed), 2 = an instrument could not see.
 """
 import hashlib
+import json
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -25,6 +30,8 @@ GAME_MOD = os.environ.get(
 SHOTS = os.environ.get(
     "RM_GAME_SCREENSHOTS",
     "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots")
+MANIFEST = os.environ.get("RM_XENO_MANIFEST",
+                          "/mnt/d/ClaudeWork/rimmandrake/scratch/xeno_heads/xeno_heads_v3_manifest.json")
 SHOT_NAMES = [f"xeno_heads_v3{part}_{f}.png" for part in ("A", "B") for f in ("south", "east", "north", "west")]
 DEF_FILES = ("Defs/HeadTypeDefs/SW_HeadTypes.xml", "Defs/GeneDefs/SW_Genes.xml",
              "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
@@ -44,6 +51,40 @@ def view(d, genes_only):
         g = d.find("genes")
         return sorted(li.text or "" for li in g.iter("li")) if g is not None else []
     return ET.tostring(d)
+
+
+def shot_failures(files):
+    """The shots must show the art deployed NOW: newer than it, and hash-bound to it by the manifest."""
+    fails = []
+    deployed = {rel: os.path.join(GAME_MOD, rel) for rel in files}
+    newest = max((os.path.getmtime(p) for p in deployed.values() if os.path.isfile(p)), default=0)
+    shots = {}
+    for name in SHOT_NAMES:
+        pth = os.path.join(SHOTS, name)
+        if not os.path.isfile(pth):
+            fails.append(f"live screenshot missing: {name}")
+        elif os.path.getmtime(pth) < newest:
+            fails.append(f"live screenshot {name} predates the deployed head art (retake: xeno_heads_live_shot.py)")
+        else:
+            shots[name] = sha(pth)
+    try:
+        with open(MANIFEST, encoding="utf-8") as fh:
+            man = json.load(fh)
+    except (OSError, ValueError) as exc:
+        return fails + [f"live-shot manifest unreadable: {MANIFEST} ({type(exc).__name__})"]
+    for rel, pth in deployed.items():
+        if os.path.isfile(pth) and man.get("head_pngs", {}).get(rel) != sha(pth):
+            fails.append(f"manifest does not record the deployed art for {rel}: the shots show other art")
+    for name, h in shots.items():
+        if man.get("shots", {}).get(name) != h:
+            fails.append(f"manifest does not record shot {name} as it is now")
+    for s in SPECIES:
+        got = (man.get("pawns", {}).get(s) or {}).get("headType")
+        if got != f"RSW_{s}_Head":
+            fails.append(f"{s}: the shot pawn drew headType {got}, not RSW_{s}_Head")
+    if man.get("failures"):
+        fails.append(f"the live run itself failed: {man['failures']}")
+    return fails
 
 
 def main():
@@ -99,9 +140,7 @@ def main():
             fails.append(f"not deployed: {rel}")
         elif sha(deployed) != sha(os.path.join(mod, rel)):
             fails.append(f"deployed copy differs from repo: {rel}")
-    for name in SHOT_NAMES:
-        if not os.path.isfile(os.path.join(SHOTS, name)):
-            fails.append(f"live screenshot missing: {name}")
+    fails += shot_failures(files)
     for line in fails:
         print("FAIL", line)
     print(f"{'PASS' if not fails else 'FAIL'}: {len(SPECIES)} species, {ndefs} defs and {len(files)} PNGs "

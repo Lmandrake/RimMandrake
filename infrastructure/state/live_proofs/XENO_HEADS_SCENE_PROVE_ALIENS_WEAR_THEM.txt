@@ -1,0 +1,1 @@
+live-proof L1: python.exe "$(wslpath -w src/RimMandrake/Utils/art/xeno_heads_live_shot.py)" < /dev/null && python3 src/RimMandrake/Utils/art/xeno_heads_installed_check.py
