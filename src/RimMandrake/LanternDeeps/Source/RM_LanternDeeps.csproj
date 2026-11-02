@@ -64,6 +64,7 @@
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_WorkingDead.cs" />
+    <Compile Include="RM_DeepHarness.cs" />
     <Compile Include="RM_OrunGhal.cs" />
     <Compile Include="RM_HydrocarbonFauna.cs" />
     <Compile Include="RM_CreepCleavers.cs" />

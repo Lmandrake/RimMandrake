@@ -1,0 +1,2 @@
+A1 L2: on a quicktest map, RM_DeepHarness.EnterDeep generates a pocket map from the RM_LanternDeepMineshaft portal (biome RM_LanternDeeps, pocket=True, comps Creep+Aurora+Collapse) and makes it current; LeaveDeep returns to the source map and the Deep is gone
+A2 L2: inside that furnished Deep (battery + torch) none of the ten Deep-only proofs (creep, cleave, aurora, collapse, slick, knocker, hush, sipper, tapper, pooler) answers "only on a Deep" or "no colony battery"
