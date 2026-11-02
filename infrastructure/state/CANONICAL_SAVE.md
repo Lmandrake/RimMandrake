@@ -60,7 +60,10 @@ the owner unfreezes it. This section records which file the evidence says is the
 and most reliable world save, so nobody has to rebuild the answer from 40 file names.
 
 **Current world save: `Saves\ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**
-(13,564,631 bytes, mtime 2026-10-20 22:14 PDT, sha256 `24be08a2d76c732c…`; it matches the
+(13,564,300 bytes, sha256 `2c6525bcc357f2eb…`, since 2026-11-02: the empty
+`<li Class="VREArchon.GameComponent_TranscendentPawns">` game component was hand-deleted when VRE Archon left
+the lists (`VRE_XENO_MODS_RETIRE_DEFOF_HOLDOUTS`); the file before it, 13,564,631 bytes, sha256 `24be08a2d76c732c…`,
+mtime 2026-10-20 22:14 PDT, is `…R3.rws.bak-pre-drop-VREArchon-component-2026-11-02` beside it and matches the
 copy in `D:\ClaudeWork\backups\Saves_20261023T0356\` byte for byte).
 
 Evidence, in order:
