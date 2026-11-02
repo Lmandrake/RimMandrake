@@ -1408,6 +1408,10 @@ class Effects(relentless_game.GameFx):
         if r.returncode:
             return None, "%s clone failed: %s" % ({"check": "checker"}.get(what, what), (r.stderr or r.stdout)[-300:])
         r = self.git(d, "checkout", "--quiet", "--detach", sha)
+        if r.returncode and self.git(d, "cat-file", "-e", sha + "^{commit}").returncode:
+            # the sha is not in the clone yet (a lagging object store): ask origin for it once before calling it failed
+            self.git(d, "fetch", "--quiet", "origin", sha, timeout=400)
+            r = self.git(d, "checkout", "--quiet", "--detach", sha)
         return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr[-200:]))
 
     def help_path(self, st):

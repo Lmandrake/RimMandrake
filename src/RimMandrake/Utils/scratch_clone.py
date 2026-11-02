@@ -240,7 +240,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
             raise RuntimeError(f"{dest} already exists")
         dest.parent.mkdir(parents=True, exist_ok=True)
         if dest.parent == pool_root():
-            reused = pool_reuse(dest)
+            reused = pool_reuse(dest, fetch=fetch)
             if reused:
                 rec.update({"ok": True, "reused": True})
                 print(dest)
@@ -564,8 +564,11 @@ def pool_admit(dest: Path, reading: dict | None = None) -> str | None:
     return None
 
 
-def pool_reuse(dest: Path) -> Path | None:
-    """Reuse before create: an idle, fully pushed, unowned pool clone is renamed to dest and brought level with origin."""
+def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
+    """Reuse before create: an idle, fully pushed, unowned pool clone is renamed to dest and brought level with origin.
+    `fetch` asks origin itself, as `clone --fetch` does: the store is seeded from the mirror, which lags origin, and a
+    reuse that skipped it left a just-published sha absent ("unable to read tree"), opened the belt's breaker and held
+    it under target (OPS_RELENTLESS_UNSTICK_XARX, 2026-11-02)."""
     root = pool_root()
     if dest.parent != root:
         return None
@@ -589,6 +592,8 @@ def pool_reuse(dest: Path) -> Path | None:
             except Exception:
                 pass     # a stale store still serves a level checkout, as `clone` does
             git("fetch", "-q", str(store_path()), f"+{STORE_REF}:refs/remotes/origin/main", cwd=dest, timeout=900)
+            if fetch:
+                git("fetch", "-q", "origin", cwd=dest, timeout=900)
             git("checkout", "-q", "-B", "main", "refs/remotes/origin/main", cwd=dest)    # on main, as a fresh clone is
             return dest
         except Exception:
