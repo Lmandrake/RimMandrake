@@ -30,7 +30,8 @@ sys.path.insert(0, UTILS)
 SPEC = os.path.join(REPO, "design", "RimMandrake", "world_remake_2026-10-19", "geo_landmarks.csv")
 TILES_GEO = os.path.join(REPO, "world", "world_tiles_sub7b.csv")
 NEIGHBOURS = os.path.join(REPO, "world", "world_neighbors_sub7b.csv")
-ITEMS = os.path.join(REPO, "infrastructure", "state", "items")
+LEDGER = os.path.join(REPO, "infrastructure", "state", "ledger")
+SELF_ITEM = "GEO_LANDMARKS_SKETCH_BEFORE_THE_PAINT_DRIES"
 PLANET_TILES = 21872
 MIN_TILES, MAX_TILES = 7, 120
 ID_RE = re.compile(r"^RM_Geo_[A-Z][A-Za-z]+$")
@@ -216,12 +217,52 @@ def resolve_stones(names, src=None, dump=None):
     return res, dump is not None
 
 
+# ---- owed items: liveness from the LEDGER, not items/*.md ---------------------------------------------------
+# The ledger is what ships with a commit into every checker's box; infrastructure/state/items/ is left out of a
+# blind checker's tree on purpose (relentless_rules.json tree_exclude), so reading it there sees nothing.
+TERMINAL = {"close", "drop", "supersede"}
+OPENING = {"file", "claim", "start", "reclaim", "implemented"}
+
+
+def ledger_states(root=LEDGER):
+    """id -> last state-changing event ('file', 'close', ...), over events.jsonl and events/*.jsonl, by ts."""
+    paths = [os.path.join(root, "events.jsonl")]
+    ev_dir = os.path.join(root, "events")
+    if os.path.isdir(ev_dir):
+        paths += [os.path.join(ev_dir, n) for n in sorted(os.listdir(ev_dir)) if n.endswith(".jsonl")]
+    last = {}
+    for p in paths:
+        if not os.path.exists(p):
+            continue
+        with open(p, encoding="utf-8") as f:
+            for line in f:
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                ev, i = e.get("event"), e.get("id")
+                if i and ev in TERMINAL | OPENING:
+                    k = (e.get("ts") or "", ev)
+                    if i not in last or k[0] >= last[i][0]:
+                        last[i] = k
+    return {i: ev for i, (_ts, ev) in last.items()}
+
+
+def ledger_item_exists(root=LEDGER):
+    """-> predicate 'is this a filed, not closed/dropped/superseded item'. Refuses (UNMEASURED) when the ledger
+    cannot see this item's own file event: a ledger that is absent or unreadable says nothing about any item."""
+    states = ledger_states(root)
+    if SELF_ITEM not in states:
+        raise SystemExit("UNMEASURED: the ledger at %s does not hold %s itself, so it cannot say an owed item is "
+                         "live or dead" % (root, SELF_ITEM))
+    return lambda i: states.get(i) in OPENING
+
+
 # ---- the checks -------------------------------------------------------------------------------------------
 def check(spec_rows, tiles, nb, stones, n_tiles=PLANET_TILES, item_exists=None, planet=None):
     """Return a list of failure strings (empty = PASS). `stones` maps defName -> info or None.
     `planet` (optional): {'biome': [..], 'landmark_tiles': set()} read from the save."""
-    item_dirs = [ITEMS, os.path.join(os.getcwd(), "infrastructure", "state", "items")]
-    item_exists = item_exists or (lambda i: any(os.path.exists(os.path.join(d, i + ".md")) for d in item_dirs))
+    item_exists = item_exists or ledger_item_exists()
     fails = []
     ids, names, owner_of = set(), set(), {}
     for r in spec_rows:
@@ -273,7 +314,7 @@ def check(spec_rows, tiles, nb, stones, n_tiles=PLANET_TILES, item_exists=None, 
                 if not owed:
                     fails.append("%s planned stone %s does not exist and no owed_item names who builds it" % (tag, s))
         if owed and not item_exists(owed):
-            fails.append("%s owed_item %s is not a live item (looked in %s)" % (tag, owed, " and ".join(item_dirs)))
+            fails.append("%s owed_item %s is not a live item (ledger: never filed, or closed/dropped/superseded)" % (tag, owed))
         if planet is not None:
             biomes = {planet["biome"][t] for t in ts}
             hit = sorted(biomes & EXCLUDED_BIOMES)
@@ -453,6 +494,29 @@ def cmd_selftest(_a):
                                ("dump with no manifest fails", {"unresolved": [], "dump_mods": None}, 1)):
         ok = fingerprint(dict(base, **extra)) == want
         print("%s %s" % ("ok  " if ok else "FAIL", label))
+        n_fail += 0 if ok else 1
+    # owed-item liveness from a toy ledger: legacy file + shards, ts order, reopen after close, absent ledger refuses
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        os.makedirs(os.path.join(d, "events"))
+        rows = [("events.jsonl", SELF_ITEM, "file", "1"), ("events.jsonl", "OPEN", "file", "1"),
+                ("events/A.jsonl", "SHUT", "file", "1"), ("events/B.jsonl", "SHUT", "close", "2"),
+                ("events/A.jsonl", "BACK", "close", "2"), ("events/B.jsonl", "BACK", "claim", "3"),
+                ("events/A.jsonl", "SHUT", "note", "4")]
+        for f, i, ev, ts in rows:
+            with open(os.path.join(d, f), "a", encoding="utf-8") as fh:
+                fh.write(json.dumps({"event": ev, "id": i, "ts": ts}) + "\n")
+        alive = ledger_item_exists(d)
+        ok = alive("OPEN") and not alive("SHUT") and alive("BACK") and not alive("NEVER")
+        print("%s ledger liveness: filed live, closed dead (a later note does not revive), reclaimed live, unfiled dead"
+              % ("ok  " if ok else "FAIL"))
+        n_fail += 0 if ok else 1
+        try:
+            ledger_item_exists(os.path.join(d, "nowhere"))
+            ok = False
+        except SystemExit as e:
+            ok = "UNMEASURED" in str(e)
+        print("%s an absent ledger refuses as UNMEASURED instead of calling every owed item dead" % ("ok  " if ok else "FAIL"))
         n_fail += 0 if ok else 1
     # sanity probes: the real resolvers can see what exists
     src = src_rocks()
