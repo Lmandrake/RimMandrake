@@ -133,7 +133,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && RM_PumpMath.ChannelTakeUnits(U, 0) == 0, "pump take in dL");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
                 RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsExcavated\(c\) && ex\.WaterDlAt\(c\) > 0\) //", "a thin sheet is drawable");
-                RiverSwitchFlipChecks.Has(pump, @"int take = RM_PumpMath\.ChannelTakeUnits\(units, ex\.WaterDlAt\(cell\)\);", "the channel take is in dL");
+                RiverSwitchFlipChecks.Has(pump, @"s\.channel \? RM_PumpMath\.ChannelTakeUnits\(units, ex\.WaterDlAt\(s\.cell\)\)", "the channel take is in dL");
                 RiverSwitchFlipChecks.Has(pump, @"k => ex\.TryTakeDl\(cell, k, out _\) == k", "taken by TryTakeDl");
                 // drowning and toxin by the cell's decilitres (a fraction of a notch counts)
                 // P7 (V2): a 4.5 cm sheet in a pit is wet (it counts as water) but covers nobody's head; drowning reads metres

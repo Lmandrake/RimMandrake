@@ -185,6 +185,21 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			return RM_PumpMath.SourceTakeUnits(units, ex.Stock.SupplyDl(Map, c, units, ex), RM_MapComponent_Excavation.LevelExact);
 		}
 
+		/// <summary>PUMP_SOURCE_FIX_REJECTS_PARTIAL_DRAW: the decilitres a draw from <paramref name="s"/> moves into the net's tanks
+		/// this cycle (RM_PumpMath.TankTakeUnits, selftested): what the source gives, cut to the store's room where part-levels
+		/// move. Both the source choice (PumpNext) and the fill plan use it, so a nearly-full tank is topped off and a source
+		/// holding less than a notch is pumped, instead of the choice asking for a whole cycle's room first.</summary>
+		private int TankTake(RM_MapComponent_Excavation ex, Source s, LiquidDef l)
+		{
+			if (l == null)
+			{
+				return 0;
+			}
+			int units = RM_PumpMath.TankUnitsPerLevel;
+			int give = s.channel ? RM_PumpMath.ChannelTakeUnits(units, ex.WaterDlAt(s.cell)) : SourceTake(ex, s.cell);
+			return RM_PumpMath.TankTakeUnits(give, Machinery.RM_LiquidNet.Room(this, l), s.channel || RM_MapComponent_Excavation.LevelExact);
+		}
+
 		/// <summary>Sources in order (rev 2 §3.3): the pump's own reach, then the source cell under or beside every Intake end on its
 		/// networks, in reel-id order.</summary>
 		private List<Source> Sources(RM_MapComponent_Excavation ex)
@@ -296,7 +311,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				if (!RM_LiquidNetKernel.PumpNext(sources.Count, i => !deadSources.Contains(Map.cellIndices.CellToIndex(sources[i].cell)), outflows.Count,
 					(o, i) => Outlet(ex, outflows[o], null, sources[i].fluid, out _) != RM_OutletKind.Blocked, usedOutflows,
-					i => LiquidFor(sources[i].fluid) is LiquidDef lq && Machinery.RM_LiquidNet.FillPlan(this, lq, units) != null, cycle,
+					i => TankTake(ex, sources[i], LiquidFor(sources[i].fluid)) > 0, cycle,
 					out int si, out int oi))
 				{
 					break;
@@ -345,8 +360,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					usedOutflows.Add(oi);
 					continue;
 				}
-				// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it)
-				List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
+				// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it). It is for what TankTake
+				// moves (PUMP_SOURCE_FIX_REJECTS_PARTIAL_DRAW): a notch, or less when the source or the store's room is short.
+				int take = TankTake(ex, s, l);
+				List<(Building_LiquidTank tank, int units)> plan = take > 0 ? Machinery.RM_LiquidNet.FillPlan(this, l, take) : null;
 				if (plan == null)
 				{
 					deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
@@ -356,17 +373,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					// L1 (§4): the tank leg is reserved first, the channel water (TryTakeDl, never undone) taken last.
 					// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: up to one notch in DECILITRES, so a thin sheet (4.5 cm = 900 dL) is
-					// pumped dry rather than left behind for want of a whole notch; the tank plan is for what is taken.
-					int take = RM_PumpMath.ChannelTakeUnits(units, ex.WaterDlAt(cell));
-					if (take != units)
-					{
-						plan = take > 0 ? Machinery.RM_LiquidNet.FillPlan(this, l, take) : null;
-						if (plan == null)
-						{
-							deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
-							continue;
-						}
-					}
+					// pumped dry rather than left behind for want of a whole notch; the tank plan is for what is taken (TankTake).
 					RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.WaterDlAt(cell) >= k, k => ex.TryTakeDl(cell, k, out _) == k);
 					if (RM_LiquidTransfer.Move(take, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == take)
 					{
@@ -381,17 +388,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				else
 				{
 					// POND_PUMP_FIX_LAST_DROP_COUNTS (owner by card 2026-10-22, GPT review Q6): up to one notch in DECILITRES, the same rule as a
-					// dug channel, so a pond's last <1,000 L is pumped too (the old whole-notch CanSupply/TryDebit stranded it).
-					int take = SourceTake(ex, cell);
-					if (take != units)
-					{
-						plan = take > 0 ? Machinery.RM_LiquidNet.FillPlan(this, l, take) : null;
-						if (plan == null)
-						{
-							deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
-							continue;
-						}
-					}
+					// dug channel, so a pond's last <1,000 L is pumped too (the old whole-notch CanSupply/TryDebit stranded it); the
+					// take is SourceTake's, cut to the store's room (TankTake).
 					// L1 (§4): the tank leg is reserved first; the body's exact debit (TryDebitDl, never undone) runs last
 					RM_TransferLeg world = RM_TransferLeg.World(k => ex.Stock.SupplyDl(Map, cell, k, ex) >= k, k => ex.Stock.TryDebitDl(Map, cell, k, ex));
 					if (RM_LiquidTransfer.Move(take, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == take)

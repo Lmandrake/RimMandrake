@@ -256,8 +256,34 @@ namespace RimMandrake.FlowWorks.SelfTest
             RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.SourceTakeUnits\(units, ex\.Stock\.SupplyDl\(Map, c, units, ex\), RM_MapComponent_Excavation\.LevelExact\);",
                 "the pump's take on a natural body is the selftested rule, on the body's decilitres");
             RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsSourceCell\(c\) && SourceTake\(ex, c\) > 0\)", "a natural body is drawable while that rule takes anything");
-            RiverSwitchFlipChecks.Has(pump, @"int take = SourceTake\(ex, cell\); if \(take != units\) \{ plan = take > 0 \? Machinery\.RM_LiquidNet\.FillPlan\(this, l, take\) : null;",
-                "the tank plan is for what the pond gives (a part notch at the end)");
+            RiverSwitchFlipChecks.Has(pump, @"int give = s\.channel \? RM_PumpMath\.ChannelTakeUnits\(units, ex\.WaterDlAt\(s\.cell\)\) : SourceTake\(ex, s\.cell\);",
+                "the tank take starts from what the pond gives (a part notch at the end)");
+            // PUMP_SOURCE_FIX_REJECTS_PARTIAL_DRAW: the take is cut to the store's room, and the SOURCE CHOICE asks for that take, not
+            // a whole cycle (the old predicate FillPlan(this, lq, units) refused a nearly-full tank before the partial code ran)
+            for (int give = -1; give <= U + 1; give += 1)
+            {
+                foreach (int room in new[] { -3, 0, 1, 899, 900, 901, U - 1, U, U + 1, 5 * U })
+                {
+                    foreach (bool part in new[] { true, false })
+                    {
+                        int t = RM_PumpMath.TankTakeUnits(give, room, part);
+                        int want = give <= 0 || room <= 0 ? 0 : (room >= give ? give : (part ? room : 0));
+                        Assert(t == want, "TankTakeUnits(" + give + ", " + room + ", " + part + ") = " + t + ", want " + want);
+                        Assert(t >= 0 && t <= System.Math.Max(0, give) && t <= System.Math.Max(0, room), "never more than the source gives or the store holds");
+                    }
+                }
+                if (give > U / 2) give += 97;   // sweep densely near 0 and the edges, sparsely in the middle
+            }
+            Assert(RM_PumpMath.TankTakeUnits(U, 900, true) == 900, "item scenario: a full source, a tank with 900 dL free: 900 dL go (exact-level on)");
+            Assert(RM_PumpMath.TankTakeUnits(900, 900, true) == 900, "item scenario: a 900 dL source into exactly 900 dL of room");
+            Assert(RM_PumpMath.TankTakeUnits(U, 900, false) == 0, "exact-level off, a natural body: whole notches only, as before");
+            RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.TankTakeUnits\(give, Machinery\.RM_LiquidNet\.Room\(this, l\), s\.channel \|\| RM_MapComponent_Excavation\.LevelExact\);",
+                "the pump's tank take is the selftested rule on the store's whole room (a channel moves part-levels always)");
+            RiverSwitchFlipChecks.Has(pump, @"i => TankTake\(ex, sources\[i\], LiquidFor\(sources\[i\]\.fluid\)\) > 0, cycle,",
+                "PumpNext's tank predicate asks for the affordable take, not a whole cycle");
+            Assert(!Regex.IsMatch(pump, @"FillPlan\(this, lq?, units\)"), "can-fail: no whole-cycle fill plan is asked for anywhere in the pump's draw");
+            RiverSwitchFlipChecks.Has(pump, @"int take = TankTake\(ex, s, l\); List<\(Building_LiquidTank tank, int units\)> plan = take > 0 \? Machinery\.RM_LiquidNet\.FillPlan\(this, l, take\) : null;",
+                "the fill plan is for that same take");
             Assert(!Regex.IsMatch(pump, @"TryDebit\(Map, cell, f\.volumePerTile, ex\)"), "the whole-notch pond debit is gone from the pump");
         }
 

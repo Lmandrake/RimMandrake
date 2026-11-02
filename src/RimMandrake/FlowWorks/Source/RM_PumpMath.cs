@@ -54,6 +54,24 @@ namespace RimMandrake.FlowWorks
 			return levelExact ? (int)supplyDl : 0;
 		}
 
+		/// <summary>PUMP_SOURCE_FIX_REJECTS_PARTIAL_DRAW: the decilitres a pump moves from a source into the net's tanks this cycle,
+		/// given <paramref name="sourceTake"/> (ChannelTakeUnits / SourceTakeUnits) and <paramref name="tankRoom"/> (all the room the
+		/// store has for the liquid). The whole take when it fits; else, where part-levels move (<paramref name="partialOk"/>: a dug
+		/// channel always, a natural body with exact-level on), the room left, so a nearly-full tank is topped off rather than the
+		/// source being refused for want of a whole cycle's room. 0 = nothing to move.</summary>
+		public static int TankTakeUnits(int sourceTake, int tankRoom, bool partialOk)
+		{
+			if (sourceTake <= 0 || tankRoom <= 0)
+			{
+				return 0;
+			}
+			if (tankRoom >= sourceTake)
+			{
+				return sourceTake;
+			}
+			return partialOk ? tankRoom : 0;
+		}
+
 		/// <summary>
 		/// P11 (GPT review G1.22): squared distance from cell (x,z) to the NEAREST cell of the footprint
 		/// [minX..maxX]×[minZ..maxZ]; 0 inside it. A station's reach is measured from its footprint, so a
