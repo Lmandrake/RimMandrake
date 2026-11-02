@@ -14,6 +14,7 @@ import os
 import shutil
 import sqlite3
 import subprocess
+import itertools
 import time
 import urllib.error
 import urllib.parse
@@ -60,7 +61,8 @@ def connect(path: str | None = None, readonly: bool = False) -> sqlite3.Connecti
     if readonly:
         con = sqlite3.connect(f"file:{path}?mode=ro", uri=True, timeout=10)
     else:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        if os.path.dirname(path):
+            os.makedirs(os.path.dirname(path), exist_ok=True)
         con = sqlite3.connect(path, timeout=30)
         con.executescript(SCHEMA)
         con.execute("PRAGMA synchronous=NORMAL")
@@ -99,6 +101,11 @@ class VMSink:
         self.sent = 0
         self.spooled = 0
         self.last_error: str | None = None
+        self.dropped_ts = 0      # points refused for a time that is not a finite epoch
+        self.dropped = 0         # points lost because neither VM nor the spool would take them
+        self._seq = itertools.count()
+
+    MAX_PENDING = 500_000        # points held in memory while VM and the spool both refuse
 
     def add(self, name: str, labels: dict | None, value, ts: float) -> None:
         if value is None:
@@ -107,14 +114,14 @@ class VMSink:
             v = float(value)
         except (TypeError, ValueError):
             return
-        if v != v:  # NaN: absent, never a point
+        if not math.isfinite(v):  # NaN: absent; +-inf serialises as bare Infinity, which VM drops from the batch
             return
         try:        # a time that is not a finite epoch would raise in _lines and cost the whole queued batch
             ts = float(ts)
         except (TypeError, ValueError):
             return
         if not (math.isfinite(ts) and 0 < ts < 1e11):
-            self.dropped_ts = getattr(self, "dropped_ts", 0) + 1
+            self.dropped_ts += 1
             return
         self.points.append((name, labels or {}, v, ts))
 
@@ -128,6 +135,7 @@ class VMSink:
         return ("\n".join(out) + "\n").encode()
 
     def _http_post(self, body: bytes) -> None:
+        # urllib only: the one writer, telemetryd, runs on Windows beside VM (no WSL NAT on this path)
         req = urllib.request.Request(self.url + "/api/v1/import", data=body, method="POST",
                                      headers={"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=10) as r:
@@ -146,19 +154,31 @@ class VMSink:
             self._replay_spool()
         except Exception as e:  # noqa: BLE001 — any transport failure spools
             self.last_error = f"{type(e).__name__}: {e}"
-            self._spool(body)
-            self.spooled += len(pts)
+            try:
+                spooled = self._spool(body)
+            except OSError as e2:   # disk full / unwritable: keep the batch queued for the next flush
+                spooled = False
+                self.last_error += f"; spool: {type(e2).__name__}: {e2}"
+            if spooled:
+                self.spooled += len(pts)
+            else:
+                keep = (pts + self.points)[-self.MAX_PENDING:]
+                self.dropped += len(pts) + len(self.points) - len(keep)
+                self.points = keep
         return len(pts)
 
-    def _spool(self, body: bytes) -> None:
+    def _spool(self, body: bytes) -> bool:
+        """True when the batch is on disk; False when the 2 GB cap refuses it (raises OSError if it cannot write)."""
         os.makedirs(self.spool_dir, exist_ok=True)
         # cap the spool at 2 GB: a VM down for weeks must not fill E:; raw JSONL can rebuild it
         total = sum(os.path.getsize(os.path.join(self.spool_dir, f)) for f in os.listdir(self.spool_dir))
         if total > 2 << 30:
-            return
-        p = os.path.join(self.spool_dir, f"spool_{time.time():.3f}_{os.getpid()}.jsonl")
-        with open(p, "wb") as f:
+            return False
+        # unique per process and call ("x" never overwrites), and sorts oldest first for replay
+        p = os.path.join(self.spool_dir, f"spool_{time.time_ns():020d}_{os.getpid()}_{next(self._seq):06d}.jsonl")
+        with open(p, "xb") as f:
             f.write(body)
+        return True
 
     def _replay_spool(self) -> None:
         if not os.path.isdir(self.spool_dir):
@@ -225,8 +245,9 @@ def vm_export(selectors: list[str], start: float, end: float, url: str | None = 
         if not line.strip():
             continue
         d = json.loads(line)
-        pairs = sorted(zip(d.get("timestamps") or [], d.get("values") or []))
-        pairs = [(ts / 1000.0, float(v)) for ts, v in pairs if start * 1000 <= ts <= end * 1000 and v is not None]
-        pairs = [p for p in pairs if math.isfinite(p[1])]   # VM exports +-Inf/NaN as strings: never a window
+        pairs = [(ts / 1000.0, float(v)) for ts, v in zip(d.get("timestamps") or [], d.get("values") or [])
+                 if start * 1000 <= ts <= end * 1000 and v is not None]
+        pairs = sorted((p for p in pairs if math.isfinite(p[1])), key=lambda p: p[0])   # VM exports +-Inf/NaN
+        #   as strings: never a window; sorted on time alone, so a mixed-type value never meets a comparison
         out.append((d.get("metric") or {}, [p[0] for p in pairs], [p[1] for p in pairs]))
     return out

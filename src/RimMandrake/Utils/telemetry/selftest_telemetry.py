@@ -97,6 +97,9 @@ def main(argv) -> int:
     import ingest
     import store
     from tcommon import loads, parse_ts
+    check("[loads] deeply nested JSON is one bad row (None), not a RecursionError that stalls the file",
+          loads(b"[" * 100000 + b"]" * 100000) is None)
+    check("[parse_ts] a boolean is not a time", parse_ts(True) is None and parse_ts(1.5e9) == 1.5e9)
     try:
         # ---------------------------------------------------------------- parsing
         r = loads('{"seq":1,"kind":"incident","type":"stall","kind":"stall","gapS":41}')
@@ -194,6 +197,8 @@ def main(argv) -> int:
         check("bridge 10 s bucket: count / sum / max", a and a[0]["values"] == [4.0]
               and vm.of("rm_bridge_ms_max")[0]["values"][0] >= 40, a)
         check("bridge errors counted", sum(x["values"][0] for x in vm.of("rm_bridge_errors")) == 1)
+        check("[bridge] when calls stop, an idle pass closes the last open bucket",
+              any(x["timestamps"] == [(tb + 60) * 1000] for x in a), [x["timestamps"] for x in a])
 
         # unknown success (non-dict result) is NULL, not a failure; status decides
         w(bc, [{"ev": "start", "cid": "u1", "tool": "jawa/u", "t": iso(tb + 70)},
@@ -261,7 +266,8 @@ def main(argv) -> int:
         lat["host"]["mem"]["phys_avail"] = 2 * GB
         check("extremely low memory -> red", "mem_low:red" in {x["id"] + ":" + x["level"] for x in analysis.evaluate(lat, con, {}, None, now)})
         check("TPS ratio low at normal speed for 2 min", "tps_low:amber" in al, al)
-        check("only stalls >= 10 s alert", sum(1 for x in al if x.startswith("stall")) == 1, al)
+        st_ids = [x["id"] for x in analysis.evaluate(lat, con, {}, None, now) if x["id"].startswith("stall")]
+        check("only stalls >= 10 s alert", len(st_ids) == 1, st_ids)
         check("exception storm", "exc_storm:amber" in al)
         l2 = dict(lat, tps={"ts": now, "exc": 24, "dReal": 0.05})
         check("[storm] 24 errors in a 0.05 s window is not a storm",
@@ -287,6 +293,29 @@ def main(argv) -> int:
         check("speed 3 (x6) CPU-bound ratio does not alert", "tps_low" not in al2)
         analysis.push_spark(lat, now)
         check("sparks carry four series", set(lat["sparks"]) == {"tps_ratio", "exc_per_s", "host_free_gb", "min_vol_free_gb"})
+        z = {"host": {"ts": now, "vols": {}, "mem": {"phys_avail": 0}}}
+        check("[mem] zero bytes available is the reddest reading, not a missing one",
+              "mem_low" in {x["id"] for x in analysis.evaluate(z, con, {}, None, now)})
+        analysis.push_spark(z, now)
+        check("[spark] zero available memory plots as 0", z["sparks"]["host_free_gb"][-1][1] == 0, z["sparks"])
+        st_h = {"host": {"ts": now - 3600, "vols": {"C": {"free": 9 * GB}}, "mem": {"phys_avail": 8 * GB}}}
+        analysis.push_spark(st_h, now)
+        check("[spark] a host reading an hour old is a gap, not a fresh point",
+              st_h["sparks"]["host_free_gb"][-1][1] is None and st_h["sparks"]["min_vol_free_gb"][-1][1] is None,
+              st_h["sparks"])
+        vl = {}
+        f1 = analysis.evaluate(vl, con, {}, "URLError: down", now)
+        f2 = analysis.evaluate(vl, con, {}, "URLError: down", now + 60)
+        n_f = analysis.log_firings(con, f1, now) + analysis.log_firings(con, f2, now + 60)
+        f3 = analysis.evaluate(vl, con, {}, None, now + 120)
+        f4 = analysis.evaluate(vl, con, {}, "URLError: down", now + 180)
+        check("[firing] one continuous VM outage logs one firing; a new outage after recovery is a new one",
+              n_f == 1 and not f3 and f4[0]["since"] == now + 180, (n_f, f4))
+        ws = {}
+        analysis.evaluate(ws, con, {"wsl": {"last_row_ts": None}}, None, now)
+        late = analysis.evaluate(ws, con, {"wsl": {"last_row_ts": None}}, None, now + analysis.RULES["wsl_blind_s"] + 5)
+        check("[blind] an exporter that never wrote a usable row reads blind:wsl", "blind:wsl" in {x["id"] for x in late},
+              late)
 
         # ---------------------------------------------------------------- test-state monitor (vitals rows)
         tv = os.path.join(c["jawabench"], "tps", "tps_x_sess_1_009.jsonl")
@@ -377,6 +406,41 @@ def main(argv) -> int:
         bad_sink.add("rm_x", {}, 2.0, now)
         check("[sink] a non-finite time is dropped at add, the rest of the batch still flushes",
               bad_sink.flush() == 1 and bad_sink.sent == 1, bad_sink.sent)
+        w(os.path.join(c["ops_watch_series"], "net.jsonl"), [{"t": now, "family": "net", "points": None}])
+        T.pass_source(S["ops_watch"])
+        st_ow = T.stats["ops_watch"]
+        check("[freshness] a row its parser rejected (points null) does not advance freshness",
+              abs(st_ow["last_row_ts"] - (now - 900)) < 1 and st_ow.get("skipped", 0) >= 1, st_ow)
+        inf_post = []
+        inf_sink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_inf"),
+                                post=lambda b: inf_post.append(b))
+        inf_sink.add("rm_x", {}, float("inf"), now)
+        inf_sink.add("rm_x", {}, float("-inf"), now)
+        inf_sink.add("rm_x", {}, 5.0, now)
+        check("[sink] +-inf values are dropped at add (VM would drop them from the batch, counted as sent)",
+              inf_sink.flush() == 1 and b"Infinity" not in b"".join(inf_post), inf_post)
+        sp = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_many"), post=lambda b: None)
+        for k in range(5):
+            sp._spool(b"batch%d\n" % k)
+        got_sp = sorted(os.listdir(sp.spool_dir))
+        check("[spool] back-to-back spools never overwrite one another, and replay order is write order",
+              len(got_sp) == 5 and [open(os.path.join(sp.spool_dir, x), "rb").read() for x in got_sp]
+              == [b"batch%d\n" % k for k in range(5)], got_sp)
+        flaky = FakeVM()
+        flaky.down = True
+        fs = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_full"), post=flaky)
+
+        def disk_full(body):
+            raise OSError(28, "No space left on device")
+        fs._spool = disk_full
+        fs.add("rm_y", {}, 1.0, now)
+        fs.flush()
+        held = len(fs.points)
+        flaky.down = False
+        fs.flush()
+        check("[spool] VM down and the spool unwritable: the batch stays queued and is sent on the next flush",
+              held == 1 and fs.sent == 1 and [x["values"] for x in flaky.lines] == [[1.0]] and "spool" in
+              (fs.last_error or "spool"), (held, fs.sent, flaky.lines))
         # ---------------------------------------------------------------- the VM read path (_get, vm_export)
         import subprocess
         import urllib.error
@@ -408,6 +472,15 @@ def main(argv) -> int:
             except OSError as e:
                 raised = str(e)
             check("[vm read] curl.exe failing raises, never an empty answer", raised and "exit 22" in raised, raised)
+            dup = (json.dumps({"metric": {"__name__": "rm_x"}, "timestamps": [2000, 2000, 1000],
+                               "values": [1, "NaN", 7]}) + "\n").encode()
+            subprocess.run = lambda a, **k: _Done(0, dup)
+            try:
+                ex2 = store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
+            except TypeError as e:
+                ex2 = e
+            check("[vm read] a duplicate time holding a number and a NaN string is dropped, not a TypeError",
+                  ex2 == [({"__name__": "rm_x"}, [1.0, 2.0], [7.0, 1.0])], ex2)
             calls.clear()
             subprocess.run = lambda a, **k: calls.append(a) or _Done(0, body)
             try:
@@ -458,6 +531,24 @@ def main(argv) -> int:
             with open(os.path.join(pdir, f"proof_2026101{i}T000000.json"), "w") as f:
                 json.dump({"script": "proof_hose.py", "rows": [{"id": "R1", "status": st}, {"id": "R2", "status": "PASS"}]}, f)
         check("proof results ingested", ingest.ingest_proofs(con) == 2)
+        p0 = os.path.join(pdir, "proof_20261010T000000.json")
+        mt0 = os.path.getmtime(p0)
+        with open(p0, "w") as f:
+            json.dump({"script": "proof_hose.py", "rows": [{"id": "R1", "status": "FAIL"}]}, f)
+        os.utime(p0, (mt0 + 0.5, mt0 + 0.5))
+        check("[proof] a rewrite under a second later is re-ingested", ingest.ingest_proofs(con) == 1
+              and con.execute("SELECT n_fail FROM proof_runs WHERE id LIKE '%20261010%'").fetchone()[0] == 1)
+        os.utime(p0, (mt0 + 2, mt0 + 2))
+
+        def no_open(*a, **k):
+            raise PermissionError(13, "locked")
+        ingest.open = no_open
+        try:
+            r_locked = ingest.ingest_proofs(con)
+        finally:
+            del ingest.open
+        check("[proof] an unreadable proof is not checkpointed: the next pass reads it",
+              r_locked == 0 and ingest.ingest_proofs(con) == 1, r_locked)
 
         # retention
         old = os.path.join(c["raw"], "tps", "2026-01-01.jsonl.gz")
@@ -469,6 +560,14 @@ def main(argv) -> int:
         check("raw older than 90 d moves to the archive", rep["moved"] == 1 and os.path.exists(
             os.path.join(c["archive"], "raw", "tps", "2026-01-01.jsonl.gz")), rep)
         check("per-call bridge rows older than 30 d pruned", rep["bridge_rows"] == 1)
+        again = os.path.join(c["raw"], "tps", "2026-01-01.jsonl.gz")
+        with gzip.open(again, "wb") as f:
+            f.write(b"y\n")
+        os.utime(again, (now - 100 * 86400, now - 100 * 86400))
+        analysis.retention(con, now)
+        ad = os.path.join(c["archive"], "raw", "tps")
+        check("[retention] a day archived twice keeps both parts (no overwrite)", sorted(os.listdir(ad))
+              == ["2026-01-01.jsonl.gz", "2026-01-01~1.jsonl.gz"], os.listdir(ad))
 
         # ---------------------------------------------------------------- RimPulse integration
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "pulse"))
@@ -521,15 +620,20 @@ def live():
     import subprocess
     st = "/mnt/e/telemetry/state"
     hb = json.load(open(os.path.join(st, "heartbeat.json")))
-    check("[heartbeat] live: telemetryd heartbeat < 3 min", time.time() - hb["at"] < 180, hb)
+    check("[heartbeat] live: telemetryd heartbeat < 3 min", 0 <= time.time() - hb["at"] < 180, hb)
     al = json.load(open(os.path.join(st, "alerts.json")))
-    check("live: alerts file < 3 min", time.time() - al["at"] < 180)
+    check("live: alerts file < 3 min", 0 <= time.time() - al["at"] < 180, al.get("at"))
     code = ("import urllib.request as u\n"
             "for x in ('http://127.0.0.1:8428/health','http://127.0.0.1:3000/api/health'):\n"
             "  print(u.urlopen(x,timeout=5).status)")
     r = subprocess.run(["python.exe", "-c", code], capture_output=True, text=True, timeout=60)
     check("live: VictoriaMetrics and Grafana answer HTTP 200", r.stdout.split() == ["200", "200"], r.stdout + r.stderr)
-    ps = ("(Get-Process | Where-Object { $_.ProcessName -match 'grafana|gpx_|victoria-metrics' "
+    # a console a plugin child opens is owned by its conhost.exe (child of the console client), not by gpx_*
+    ps = ("$re = 'grafana|gpx_|victoria-metrics'; "
+          "$ids = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -match $re } | ForEach-Object { $_.ProcessId }); "
+          "$con = @(Get-CimInstance Win32_Process -Filter \"Name='conhost.exe'\" | "
+          "Where-Object { $ids -contains $_.ParentProcessId } | ForEach-Object { [int]$_.ProcessId }); "
+          "@(Get-Process | Where-Object { ($_.ProcessName -match $re -or $con -contains $_.Id) "
           "-and $_.MainWindowHandle -ne 0 }).Count")
     r = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps], capture_output=True, text=True, timeout=60)
     check("[windows] live: no telemetry process owns a visible window", r.stdout.strip() == "0", r.stdout + r.stderr)

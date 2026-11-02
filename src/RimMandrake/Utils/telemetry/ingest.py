@@ -36,11 +36,14 @@ class Emit:
         self.con, self.vm, self.latest = con, vm, latest
         self.rows = 0
         self.events = 0
+        self.out = 0    # point/event calls: a row that produced none was rejected and must not read as fresh
 
     def point(self, name, labels, v, ts):
+        self.out += 1
         self.vm.add(name, labels, v, ts)
 
     def event(self, ts, kind, subject=None, detail=None, src=None, src_ref=None, **kw):
+        self.out += 1
         if store.add_event(self.con, ts, kind, subject, detail, src, src_ref, **kw):
             self.events += 1
 
@@ -542,24 +545,23 @@ class Tailer:
             return 0
         stt["files"] = len(files)
         for path in files:
-            try:
-                st = os.stat(path)
-            except OSError:
-                continue
-            key = self._file_key(st, path)
-            cur = self.con.execute("SELECT offset,size,done FROM cursors WHERE src=? AND key=?",
-                                   (src.name, key)).fetchone()
-            off = cur["offset"] if cur else 0
-            done = (cur["done"] or 0) if cur else 0   # bytes already in the raw copy (rebuild re-reads, never re-copies)
-            if st.st_size < off or st.st_size < done:
-                stt["resets"] += 1
-                off = done = 0
-            if st.st_size == off:
-                continue
-            try:
-                with open(path, "rb") as f:
+            try:    # identity from the open handle: a rotation between stat and open must not read the new file
+                with open(path, "rb") as f:     # under the old file's cursor
+                    st = os.fstat(f.fileno())
+                    key = self._file_key(st, path)
+                    cur = self.con.execute("SELECT offset,size,done FROM cursors WHERE src=? AND key=?",
+                                           (src.name, key)).fetchone()
+                    off = cur["offset"] if cur else 0
+                    done = (cur["done"] or 0) if cur else 0   # bytes already in the raw copy (rebuild never re-copies)
+                    if st.st_size < off or st.st_size < done:
+                        stt["resets"] += 1
+                        off = done = 0
+                    if st.st_size == off:
+                        continue
                     f.seek(off)
                     chunk = f.read(min(MAX_READ, st.st_size - off))
+            except FileNotFoundError:
+                continue
             except OSError as e:
                 stt["error"] = str(e)
                 continue
@@ -578,6 +580,7 @@ class Tailer:
                 if not isinstance(r, dict):
                     stt["bad"] += 1
                     continue
+                out0 = E.out
                 try:
                     src.parser(r, E, ref)
                 except Exception as e:  # noqa: BLE001 — one bad row never stops a source
@@ -585,7 +588,10 @@ class Tailer:
                     stt["error"] = f"{type(e).__name__}: {e}"
                     continue
                 n += 1
-                t = parse_ts(r.get("utc") or r.get("t") or r.get("ts"))
+                if E.out == out0:   # the parser skipped it (no time, wrong shape): ingested nothing, so not fresh
+                    stt["skipped"] = stt.get("skipped", 0) + 1
+                    continue
+                t = parse_ts(r.get("utc") or r.get("t") or r.get("ts") or r.get("at"))
                 if plausible_ts(t):     # inf / 1e308 / far future would pin freshness and break alerts.json
                     stt["last_row_ts"] = max(stt["last_row_ts"] or 0, t)
             new = chunk[max(0, done - off):]
@@ -595,8 +601,8 @@ class Tailer:
             self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done) VALUES(?,?,?,?,?,?,?)",
                              (src.name, key, path, off + len(chunk), st.st_size, st.st_mtime,
                               max(done, off + len(chunk))))
-        if src.name == "bridge":
-            flush_bridge_buckets(E)
+        if src.name == "bridge":    # a pass with nothing new means the calls stopped: close what is open
+            flush_bridge_buckets(E, force=(n == 0))
         stt["rows"] += n
         stt["last_pass"] = time.time()
         if n or E.events:
@@ -685,9 +691,12 @@ def ingest_proofs(con, root: str | None = None) -> int:
             continue
         rel = os.path.relpath(p, root).replace("\\", "/")
         cur = con.execute("SELECT mtime FROM cursors WHERE src='proof' AND key=?", (rel,)).fetchone()
-        if cur and abs(cur[0] - mt) < 1:
+        if cur and cur[0] == mt:    # exact: a sub-second rewrite is a new result
             continue
-        n += ingest_proof_file(con, p, rel, mt)
+        k = ingest_proof_file(con, p, rel, mt)
+        if k is None:               # unreadable now: no checkpoint, so the next pass retries it
+            continue
+        n += k
         con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime) VALUES('proof',?,?,0,0,?)",
                     (rel, p, mt))
     con.commit()
@@ -711,11 +720,14 @@ def proof_rows_of(d: dict) -> list[tuple[str, str, str, str]]:
     return rows
 
 
-def ingest_proof_file(con, p: str, rel: str, mt: float) -> int:
+def ingest_proof_file(con, p: str, rel: str, mt: float) -> int | None:
+    """Rows ingested; None when the file could not be read (a retry later may succeed), 0 when it holds no rows."""
     try:
         with open(p, encoding="utf-8") as f:
             d = json.load(f)
-    except (OSError, ValueError):
+    except OSError:
+        return None
+    except ValueError:
         return 0
     if not isinstance(d, dict):
         return 0

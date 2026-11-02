@@ -75,7 +75,7 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
             out.append(_alert(f"disk:{letter}", "amber", f"{letter}: {free_gb:.0f} GB free", host["ts"]))
     # no empty-space / image-slack alert (owner 2026-10-11: "That's not a danger."); free space only
     mem = host.get("mem") or {}
-    if mem.get("phys_avail") and mem["phys_avail"] / GB < R["mem_avail_gb"]:
+    if mem.get("phys_avail") is not None and mem["phys_avail"] / GB < R["mem_avail_gb"]:
         out.append(_alert("mem_low", "red", f"Windows has only {mem['phys_avail'] / GB:.1f} GB memory available",
                           host["ts"]))
     if mem.get("commit_limit"):
@@ -155,8 +155,17 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
         out.append(_alert("blind:tps", "amber", "telemetry blind: RimWorld runs but its TPS record is silent",
                           last_tps or now))
     wsl = (sources.get("wsl") or {}).get("last_row_ts")
+    watch0 = latest.setdefault("wsl_watch_since", now)    # an exporter that never wrote a usable row is silent too
     if wsl is not None and now - wsl > R["wsl_blind_s"]:
         out.append(_alert("blind:wsl", "amber", "telemetry blind: WSL exporter silent", wsl))
+    elif wsl is None and "wsl" in sources and now - watch0 > R["wsl_blind_s"]:
+        out.append(_alert("blind:wsl", "amber", "telemetry blind: WSL exporter has written no usable row", watch0))
+    # one incident keeps the `since` it opened with while it stays active, so log_firings records it once
+    # (blind:vm says `now`, disk/mem the latest sample time: without this every evaluation was a new firing)
+    prev = latest.get("alert_since") or {}
+    for a in out:
+        a["since"] = prev.get(a["id"], a["since"])
+    latest["alert_since"] = {a["id"]: a["since"] for a in out}
     return out
 
 
@@ -166,13 +175,15 @@ def push_spark(latest: dict, now: float) -> None:
     t = latest.get("tps") or {}
     fresh = t and now - t.get("ts", 0) < 90
     host = latest.get("host") or {}
+    if not (host.get("ts") and now - host["ts"] < 300):    # a stopped sampler is a gap, never a fresh reading
+        host = {}
     vols = [v["free"] / GB for v in (host.get("vols") or {}).values() if v]
     mem = host.get("mem") or {}
     vals = {
         "tps_ratio": t.get("ratio") if fresh else None,
         "exc_per_s": (t["exc"] / max(t.get("dReal") or 1, 0.1)) if fresh and t.get("exc") is not None
         and (t.get("dReal") or 0) >= RULES["exc_min_window_s"] else None,
-        "host_free_gb": (mem["phys_avail"] / GB) if mem.get("phys_avail") else None,
+        "host_free_gb": (mem["phys_avail"] / GB) if mem.get("phys_avail") is not None else None,
         "min_vol_free_gb": min(vols) if vols else None,
     }
     for k, v in vals.items():
@@ -248,7 +259,12 @@ def retention(con, now: float) -> dict:
         if have_arch:
             dst = os.path.join(arch, "raw", os.path.basename(os.path.dirname(p)))
             os.makedirs(dst, exist_ok=True)
-            shutil.move(p, os.path.join(dst, os.path.basename(p)))
+            q, base, k = os.path.join(dst, os.path.basename(p)), os.path.basename(p), 1
+            while os.path.exists(q):    # a day archived early (cap) and recreated: never overwrite the archived part
+                stem, dot, ext = base.partition(".")
+                q = os.path.join(dst, f"{stem}~{k}{dot}{ext}")
+                k += 1
+            shutil.move(p, q)
             rep["moved"] += 1
         elif over:
             os.remove(p)

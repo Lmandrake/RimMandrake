@@ -118,13 +118,15 @@ def _first_kind_hook(pairs):
 def loads(line: str | bytes):
     try:
         return json.loads(line, object_pairs_hook=_first_kind_hook)
-    except (ValueError, UnicodeDecodeError):
+    except (ValueError, UnicodeDecodeError, RecursionError):   # deep nesting: one bad row, never a stuck file
         return None
 
 
 def parse_ts(v) -> float | None:
     """ISO-8601 (Z, +00:00, -0700) or epoch seconds/ms -> epoch seconds."""
     if v is None:
+        return None
+    if isinstance(v, bool):     # a flag is not a time
         return None
     if isinstance(v, (int, float)):
         return float(v) / 1000.0 if v > 1e11 else float(v)
