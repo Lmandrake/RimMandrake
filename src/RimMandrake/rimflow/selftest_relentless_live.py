@@ -58,11 +58,11 @@ def item(**kw):
 
 class FakeFx(object):
     def __init__(self, it=None, touched=TOUCHED, plan=(0, PLAN), mtime=1000.0, started=2000.0, take_rc=0, proof=0,
-                 verify_rc=0, proof_raises=False, later=(), deleted=(), release_rc=0, start_after_take=None):
+                 verify_rc=0, proof_raises=False, later=(), deleted=(), release_rc=0, start_after_take=None, gap=None):
         self.later, self.gone, self.release_rc, self.start_after_take = list(later), list(deleted), release_rc, start_after_take
         self.it, self.t, self.plan, self.mt, self.started = (item() if it is None else it), touched, plan, mtime, started
         self.take_rc, self.proof, self.verify_rc, self.proof_raises = take_rc, proof, verify_rc, proof_raises
-        self.calls = []
+        self.calls, self.gap = [], gap
 
     def item(self, item_id):
         return self.it
@@ -104,6 +104,10 @@ class FakeFx(object):
             rc = self.verify_rc
         return types.SimpleNamespace(returncode=rc, stdout="", stderr="busy: FOUNDRY holds it" if rc else "")
 
+    def running_load_gap(self, mods):
+        self.calls.append(("gap", tuple(mods)))
+        return self.gap
+
     def run_proof(self, proof, log, timeout):
         self.calls.append(("proof", proof))
         if self.proof_raises:
@@ -129,7 +133,7 @@ def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
     check("pass outcome", row["outcome"] == "PASS", row)
-    check("order", fx.verbs() == ["touched", "changed", "plan", "take", "proof", "release", "verify"], fx.verbs())
+    check("order", fx.verbs() == ["touched", "changed", "plan", "take", "gap", "proof", "release", "verify"], fx.verbs())
     v = [c for c in fx.calls if c[:2] == ("rimflow", "verify")][0]
     for flag, want in (("--sha", SHA), ("--level", "L1"), ("--criterion", "A2"), ("--result", "pass")):
         check("verify %s" % flag, v[v.index(flag) + 1] == want, v)
@@ -577,11 +581,24 @@ def t_prose_holds_the_criteria_file():
     check("the item prose is still read", "A1 L0: offline" in fx.prose("I0"))
 
 
+def t_running_load_gap_is_unmeasured():
+    """owner 2026-11-02: an item fits the game by its RUNNING mods; a build the running list does not load is not run."""
+    fx = FakeFx(gap="not in the running load: RM_Biomes (mandrake.rm.biomes)")
+    row = go(fx)
+    check("gap row unmeasured, restageable", row["outcome"] == "UNMEASURED" and
+          row["why"].startswith("not in the running load"), row)
+    check("gap: no proof, bridge released, no verify", "proof" not in fx.verbs() and "release" in fx.verbs()
+          and "verify" not in fx.verbs(), fx.verbs())
+    check("gap asked with the bridge held", fx.verbs().index("gap") > fx.verbs().index("take"), fx.verbs())
+    import relentless_game
+    check("the game phase restages on it", any(row["why"].startswith(w) for w in relentless_game.RESTAGE), row["why"])
+
+
 def main():
     for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
-              t_load_condition):
+              t_load_condition, t_running_load_gap_is_unmeasured):
         try:
             t()
         except Exception as e:     # a crash is a red, named

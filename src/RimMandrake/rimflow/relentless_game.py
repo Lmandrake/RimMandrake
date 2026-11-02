@@ -41,11 +41,15 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             "load_base_s": 180, "load_per_mod_s": 6, "load_unknown_s": 2400,
             # stage_tries stagings that leave no running build are a HARNESS failure, never the owner's: put down, and
             # staged again after harness_retry_s x the count, at most harness_retry_max_s
-            "harness_retry_s": 1800, "harness_retry_max_s": 14400}
+            "harness_retry_s": 1800, "harness_retry_max_s": 14400,
+            # owner 2026-11-02, to save game loads: an item that needs a reload waits up to batch_wait_s while another
+            # game item has not yet been tried on the RUNNING game; the reload then deploys every waiting item at once
+            "batch_wait_s": 1800}
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
-RESTAGE = ("not deployed", "no running game to test", "the game started")
+RESTAGE = ("not deployed", "no running game to test", "the game started", "not in the running load")
+SESSIONS = "live_sessions.json"
 ACTIVE = ("staging", "proving")
 
 BRIEF = [
@@ -140,13 +144,66 @@ def other_active(states, item):
     for s in states:
         if s["item"] != item and s["status"] == GAME and (s.get("game") or {}).get("phase") in ACTIVE:
             return s["item"]
+        if s["item"] != item and s["status"] == "running" and s.get("live_iter"):
+            return s["item"]        # a worker iterating on the running game is its one live user
     return None
+
+
+def untried(states, item, started):
+    """Another game item waiting to prove that has not been tried on the game that started at `started`: the running
+    game may serve it without a load, so it goes before a reload (owner 2026-11-02: "To save game loads")."""
+    for s in states:
+        g = s.get("game") or {}
+        if (s["item"] != item and s["status"] == GAME and g.get("phase") == "prove" and not g.get("waits_reload")
+                and (g.get("proved_at") or 0) < started):
+            return s["item"]
+    return None
+
+
+def batch(states, item, now):
+    """The other game items waiting for a reload: the one staging deploys them all."""
+    return [s for s in states if s["item"] != item and s["status"] == GAME
+            and ((s.get("game") or {}).get("waits_reload") or ((s.get("game") or {}).get("phase") == "stage"
+                                                               and not (s["game"].get("retry_at") or 0) > now))]
+
+
+def session_note(store, started, item, served=False, reload_why=None, mods=None, now=None):
+    """store/live_sessions.json, one entry per game process (keyed by its start): the items it served, the reloads its
+    workers proved they need, and the loads it saved (each item served beyond the first would have cost its own)."""
+    if not started:
+        return None
+    now = time.time() if now is None else now
+    p = store.p(SESSIONS)
+    with store.lock():
+        try:
+            with open(p, encoding="utf-8") as f:
+                book = json.load(f)
+        except (OSError, ValueError):
+            book = {}
+        e = book.setdefault(str(int(started)), {"started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(started)),
+                                                "served": [], "reload_needed": {}, "loads_saved": 0})
+        if mods:
+            e["modsconfig_mods"] = mods
+        if served and item not in e["served"]:
+            e["served"].append(item)
+        if reload_why:
+            e["reload_needed"][item] = reload_why[:300]
+        e["loads_saved"] = max(0, len(e["served"]) - 1)
+        e["last"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
+        for k in sorted(book, key=lambda k: int(k))[:-50]:
+            book.pop(k)
+        tmp = p + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(book, f, indent=1, sort_keys=True)
+        os.replace(tmp, p)
+    return e
 
 
 def enter(store, st, sha, now):
     """Under the store lock: an offline PASS on `sha` for an item that owes game clauses. The PASS is the green offline
     proof the lease rule asks for, on this same sha."""
     k = st["contract"]["game"]
+    st.pop("live_iter", None)
     st["status"] = GAME
     st["game"] = {"sha": sha, "phase": "implement", "clauses": list(k["clauses"]), "stages": 0, "entered_at": now,
                   "offline_green": {"sha": sha, "at": now, "nonce": (st.get("check") or {}).get("nonce")}}
@@ -173,7 +230,7 @@ def outcomes(rows, item, sha, clauses):
     return {c: h[(item, c, sha)] for c in clauses if (item, c, sha) in h}
 
 
-def stage_prompt(st, r, sha):
+def stage_prompt(st, r, sha, others=()):
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     return "\n".join([
@@ -189,6 +246,11 @@ def stage_prompt(st, r, sha):
         "minutes on the full one. Wait for it with `./game` polls (each command under 540 s) up to that bound; if you "
         "must exit while it still loads, say so in game-ready: the supervisor waits out the load itself, bounded by "
         "the list's size, and holds no slot while it waits.",
+        ("   ONE LOAD FOR ALL: these game items wait for a reload too; deploy each one's build as well (rimworld-deploy) and "
+         "choose the smallest list that holds the most of their mods; level your clone to origin/main first (./sync) so "
+         "each build is in the tree: %s." % "; ".join(
+             "%s at %s" % (o["item"], (o.get("game") or {}).get("sha", "?")[:12]) for o in others)) if others else
+        "   No other game item waits for a reload.",
         "3. When the game is up on a map the proofs can read: `%s game-ready --item %s --gen %d \"what you deployed and "
         "which list\"`, then exit. Stopped: `%s snag --item %s --gen %d --class game_stage \"what stopped you\"`, exit."
         % (rc, i, g, rc, i, g),
@@ -304,13 +366,17 @@ def _save(store, item, fn):
         return st
 
 
-def _back(store, fx, sup, r, item, klass, why, now, acts):
-    """The game phase ends with work to do offline: release what we hold, and the item goes back to a worker."""
+def _back(store, fx, sup, r, item, klass, why, now, acts, live=None):
+    """The game phase ends with work to do: release what we hold, and the item goes back to a worker. `live`: the game
+    that showed the FAIL still runs its build, so the worker iterates on it until it proves a reload is needed."""
     with store.lock():
         st = store.load(item)
         if st["status"] != GAME:
             return
         sup.fail(store, st, klass, why, r, now)
+        if live:
+            st["live_iter"] = live
+        store.save(st)
     acts.append({"do": klass, "item": item, "why": why[:200]})
     fx.ledger_note(item, "relentless game phase: %s: %s" % (klass, why))
 
@@ -411,8 +477,12 @@ def step(store, fx, r, item, now, acts, sup):
         rows = outcomes(fx.game_rows(), item, built, g["clauses"])
         fails = [(k, v) for k, v in rows.items() if v.get("outcome") == "FAIL"]
         if fails:
+            rd = fx.game_reading()      # still up on the build that failed: the next worker works it live, no reload
+            live = ({"started": rd.get("started"), "at": now, "sha": sha, "clauses": [k for k, _ in fails]}
+                    if rd.get("state") == "UP" and rd.get("started") else None)
             return _back(store, fx, sup, r, item, "game_fail", "; ".join(
-                "%s FAIL on the running game (%s)" % (k, v.get("log") or v.get("why")) for k, v in fails), now, acts)
+                "%s FAIL on the running game (%s)" % (k, v.get("log") or v.get("why")) for k, v in fails), now, acts,
+                live=live)
         if len(rows) == len(g["clauses"]) and all(v.get("outcome") == "PASS" for v in rows.values()):
             return      # the last verify moves the ledger to done; the next tick finishes it
         lane = [v for v in rows.values() if v.get("outcome") == "SKIPPED"]
@@ -426,6 +496,8 @@ def step(store, fx, r, item, now, acts, sup):
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
         rd = fx.game_reading()
         state = rd.get("state")
+        if rd.get("started"):       # a row from an earlier game says nothing of this one: it is tried first
+            stale = [v for v in stale if row_at(v) >= rd["started"]]
         if state is None:       # the supervisor could not look: a harness gap, never "no game", never a restart
             return _waits(store, fx, item, "harness: the game cannot be read from the supervisor: %s"
                           % (rd.get("evidence") or "no reading"), now, acts)
@@ -440,6 +512,18 @@ def step(store, fx, r, item, now, acts, sup):
                 return
             stale = [{"why": "the game still loads %ds after it started (bound %ds for %s mods)"
                       % (age, bound, rd.get("mods") or "unread")}]
+        if stale and state == "UP" and rd.get("started"):
+            # the running game cannot serve this item; before a reload, every other game item gets its try on it, and
+            # this one waits (bounded) to ride the one reload with the rest
+            first = g.get("waits_reload") or now
+            other = untried(store.states(), item, rd["started"]) if now - first < c["batch_wait_s"] else None
+            if other:
+                why = ("waits for one reload: the running game may serve %s first (%s)"
+                       % (other, (stale[0].get("why") or "")[:120]))
+                _save(store, item, lambda s: (s.update(put_down={"on": why[:200], "at": now}),
+                                              s["game"].update(waits_reload=first)))
+                acts.append({"do": "game_batch_wait", "item": item, "why": why[:200]})
+                return
         if stale or state == "DOWN":
             if g["stages"] >= c["stage_tries"]:
                 return _harness(store, fx, r, item, "%d staging(s) and the build still is not running: %s"
@@ -455,7 +539,8 @@ def step(store, fx, r, item, now, acts, sup):
                 return _waits(store, fx, item, why, now, acts)
             pid = fx.prove_launch(item)
             _save(store, item, lambda s: (s.pop("put_down", None), s["game"].update(phase="proving", prove_pid=pid,
-                                                                                     proved_at=now)))
+                                                                                     proved_at=now, waits_reload=None)))
+            session_note(store, rd.get("started"), item, served=True, mods=rd.get("mods"), now=now)
             acts.append({"do": "game_prove", "item": item, "pid": pid})
             return
 
@@ -480,17 +565,19 @@ def step(store, fx, r, item, now, acts, sup):
         unit = sup.unit_name("stage", item, st["gen"]) + "-s%d" % (g["stages"] + 1)
         desc = sup.run_desc(store, r, unit, now)
 
+        others = batch(store.states(), item, now)
+
         def f(s):
             s.pop("put_down", None)
             s["run"] = desc
             s["game"].update(phase="staging", staged_at=now, taken_at=now, stages=s["game"]["stages"] + 1,
-                             ready=None, snag=None)
+                             ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others])
         st = _save(store, item, f)
         if st is None:
             fx.bridge_release()
             return
         st["_proofs_text"] = fx.proofs_at(item, sha)
-        why = fx.launch(st, desc, stage_prompt(st, r, sha), r["pilot_agent"], st["clone"], c["stage_max_s"],
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
@@ -511,7 +598,15 @@ def step(store, fx, r, item, now, acts, sup):
             return
         gave = fx.bridge_release()       # at once, however staging ended
         st = _save(store, item, lambda s: s["game"].update(phase="prove", released=gave is None))
-        acts.append({"do": "game_staged", "item": item, "released": gave is None})
+        rode = []
+
+        def ride(s):
+            if s["game"].get("phase") in ("prove", "stage"):
+                s["game"].update(phase="prove", staged_at=now, waits_reload=None)
+                rode.append(s["item"])
+        for o in g.get("batch") or []:      # the items that rode this reload try the new game, none stages its own
+            _save(store, o, ride)
+        acts.append({"do": "game_staged", "item": item, "released": gave is None, "batch": rode})
         if st and st["game"].get("snag"):
             sn = st["game"]["snag"]
             return _back(store, fx, sup, r, item, sn.get("class") or "game_stage", sn.get("detail") or "", now, acts)

@@ -14,6 +14,7 @@ red under its mutant:
 import json
 import os
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -509,12 +510,139 @@ def t_stage_refuses_a_clone_without_launcher():
     x.done()
 
 
+def iso_(t):
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+
+
+def two_in_prove(x):
+    """I0 and I1 both in the game phase, prove, the game UP since x.w.started; I0 tried, I1 not."""
+    for i in ("I0", "I1"):
+        to_game(x, i)
+    x.w.started = x.now - 50
+    for i in ("I0", "I1"):
+        with x.s.lock():
+            st = x.s.load(i)
+            st["status"] = "game"
+            st["game"].update(phase="prove", entered_at=x.now - 500, staged_at=None, stages=0, proved_at=None)
+            st.pop("put_down", None)
+            x.s.save(st)
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"]["proved_at"] = x.now - 20
+        x.s.save(st)
+    x.w.rows = [{"at": iso_(x.now - 10), "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+                 "why": "not in the running load: RM_X (mandrake.rm.x)"}]
+
+
+def t_running_game_serves_others_before_a_reload():
+    """owner 2026-11-02 ("To save game loads"): an item the running game cannot serve waits, bounded, while another game
+    item is untried on it; then the one staging carries every waiting item, and they all try the new game."""
+    x = rig(2, share=1.0, max_workers=2)
+    two_in_prove(x)
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "prove" and st["game"].get("waits_reload") == x.now and "take" not in x.w.events[-1:]
+       and any(a["do"] == "game_batch_wait" and "I1" in a["why"] for a in acts),
+       "I0 waits for one reload while I1 is untried: %s %s" % (acts, st["game"]))
+    proves = len(x.w.proves)
+    G.step(x.s, x.w, x.r, "I1", x.now, acts, R)
+    ok(len(x.w.proves) == proves + 1 and x.st("I1")["game"]["phase"] == "proving", "the running game serves I1")
+    book = json.load(open(x.s.p(G.SESSIONS)))
+    e = book[str(int(x.w.started))]
+    ok(e["served"] == ["I1"] and e["loads_saved"] == 0, "the session records whom it served: %s" % e)
+    G.session_note(x.s, x.w.started, "I9", served=True, now=x.now)
+    ok(json.load(open(x.s.p(G.SESSIONS)))[str(int(x.w.started))]["loads_saved"] == 1, "a second item served saves a load")
+    # I1 is tried now: I0 stops waiting and stages, carrying I1 if it waits too
+    with x.s.lock():
+        st = x.s.load("I1")
+        st["game"].update(phase="prove", waits_reload=x.now)
+        x.s.save(st)
+    x.w.rows.append({"at": iso_(x.now - 5), "item": "I1", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+                     "why": "not deployed: RM_Y"})
+    x.now += 30
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "staging" and st["game"]["batch"] == ["I1"]
+       and "ONE LOAD FOR ALL" in x.w.launches[-1][2] and "I1" in x.w.launches[-1][2],
+       "the staging carries I1 in one load: %s %s" % (acts, st["game"]))
+    x.w.up[st["run"]["unit"]] = False
+    G.step(x.s, x.w, x.r, "I0", x.now + 60, acts, R)
+    G.step(x.s, x.w, x.r, "I0", x.now + 120, acts, R)
+    g1 = x.st("I1")["game"]
+    ok(g1["phase"] == "prove" and g1["staged_at"] and not g1.get("waits_reload")
+       and any(a.get("batch") == ["I1"] for a in acts if a["do"] == "game_staged"),
+       "I1 rode the reload and tries the new game: %s" % g1)
+    x.done()
+
+
+def t_batch_wait_is_bounded():
+    x = rig(2, share=1.0, max_workers=2)
+    two_in_prove(x)
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"]["waits_reload"] = x.now - G.cfg(x.r)["batch_wait_s"] - 1
+        x.s.save(st)
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    ok(x.st("I0")["game"]["phase"] == "staging", "past batch_wait_s it stages even with I1 untried: %s" % acts)
+    x.done()
+
+
+def t_fail_on_a_running_game_is_worked_live():
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.started = x.now - 100
+    x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "FAIL",
+                 "log": "/l/A2.log"}]
+    x.tick()
+    st = x.st("I0")
+    li = st.get("live_iter") or {}
+    ok(li.get("started") == x.w.started and li.get("clauses") == ["A2"] and li.get("sha") == SHA,
+       "a FAIL with the game up: the worker iterates on it: %s" % li)
+    x.run_one("I0")
+    st = x.st("I0")
+    ok(st.get("live_iter") and "LIVE:" in x.w.launches[-1][2] and "reload-needed" in x.w.launches[-1][2],
+       "the worker brief says work it live, prove the reload")
+    ok(G.other_active([st, {"item": "I7", "status": "game", "game": {}}], "I7") == "I0",
+       "a live-iterating worker is the game's one live user")
+    try:
+        R.reload_needed(x.s, "I0", st["gen"], "")
+        ok(False, "reload-needed without its proof is refused")
+    except ValueError:
+        ok(True, "reload-needed without its proof is refused")
+    R.reload_needed(x.s, "I0", st["gen"], "the fix is in the C# assembly; a DLL loads only cold", now=x.now)
+    st = x.st("I0")
+    ok(not st.get("live_iter") and "DLL" in st["reload_needed"]["why"]
+       and G.other_active([st], "I7") is None, "its proof is recorded and the game is free")
+    e = json.load(open(x.s.p(G.SESSIONS)))[str(int(x.w.started))]
+    ok("I0" in e["reload_needed"], "the session records the reload it needs: %s" % e)
+    x.done()
+
+
+def t_fail_with_no_game_is_offline():
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.running = False
+    x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "FAIL",
+                 "log": "/l/A2.log"}]
+    x.tick()
+    ok(not x.st("I0").get("live_iter"), "no game up: no live iteration")
+    x.done()
+
+
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
-              t_stage_refuses_a_clone_without_launcher):
+              t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
+              t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

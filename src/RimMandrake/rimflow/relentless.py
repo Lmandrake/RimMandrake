@@ -236,6 +236,7 @@ def queue_order(states, plan=None):
 def fail(store, st, klass, detail, r, now, time_not_work=False):
     """Under the lock. Fence first: gen moves here, before anything is stopped. The item goes to the TOP."""
     klass = SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag"
+    st.pop("live_iter", None)       # a live iteration ends with its worker; the game phase sets a new one on its FAIL
     st["gen"] += 1
     st["status"] = "stopping"
     st["stopping_since"] = now
@@ -361,6 +362,26 @@ def learn(store, item, gen, text, now=None):
         st["last_beat"] = time.time() if now is None else now
         store.learn(item, "- %s gen %d: %s" % (iso(st["last_beat"]), gen, text))
         store.save(st)
+
+
+def reload_needed(store, item, gen, text, now=None):
+    """A worker iterating on the running game (live_iter) records its proof that only a rebuild and a reload go further
+    (owner 2026-11-02: work the item on the live game "until it provably needs a rebuild and reload"). It frees the game
+    for the next item at once; the worker goes on offline, and its build waits for the one batched reload."""
+    if not (text or "").strip():
+        raise ValueError("reload-needed takes its proof: what needs the reload and why the running game cannot take it")
+    now = time.time() if now is None else now
+    with store.lock():
+        st = store.load(item)
+        _fence(st, item, gen)
+        li = st.pop("live_iter", None)
+        if li is None:
+            raise ValueError("%s is not iterating on the running game (no live_iter): nothing to free" % item)
+        st["reload_needed"] = {"at": now, "gen": gen, "why": text[:1000], "session": li.get("started")}
+        st["last_beat"] = now
+        store.learn(item, "- %s gen %d: RELOAD NEEDED: %s" % (iso(now), gen, text))
+        store.save(st)
+    relentless_game.session_note(store, li.get("started"), item, reload_why=text, now=now)
 
 
 def contract(store, item, gen, proof, live=None, why=None, now=None, game=None):
@@ -1717,6 +1738,20 @@ def worker_prompt(st, text, learned, r):
     if st["approach"] == "pilot" and not st.get("proof_only"):
         head.append("PILOT: this needs eyes on the running thing. Run `python3 src/RimMandrake/rimflow/cli.py pilot %s`, "
                     "follow that brief yourself, and report what you saw with `learn`." % i)
+    if st.get("live_iter"):
+        li = st["live_iter"]
+        head.append("LIVE: the running game (started %s) holds your build %s, and %s FAILED on it. Work it THERE as far "
+                    "as it goes before any rebuild (owner 2026-11-02, to save game loads): take the bridge with `python3 "
+                    "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"relentless live iteration %s\"`, renew "
+                    "it while you work, release it (`bridge release --mine`) when you step away; read the failing proof's "
+                    "log, run bridge experiments, hot-reloadable XML/def changes and reads (`rimbridge`, "
+                    "`live-debugging-proof-harness`). You are the game's one live user until you finish, snag or record "
+                    "`%s reload-needed --item %s --gen %d \"what needs the reload and why the running game cannot take it "
+                    "(a DLL change, a def only a cold load reads)\"` — the proof is required, and it frees the game for "
+                    "the next item; then go on offline and land the fix. If the game did not start at that time (`./game`), it no "
+                    "longer runs your build: record reload-needed at once and work offline. Never restart, fullscreen or focus the game; "
+                    "never a flyer." % (iso(li["started"]), (li.get("sha") or "")[:12], ", ".join(li.get("clauses") or []),
+                                        i, rc, i, g))
     if st["contract"]:
         head.append("Contract so far: %s" % json.dumps(st["contract"]))
     if st["last_fail"]:
@@ -3355,6 +3390,10 @@ def main(argv=None):
     p.add_argument("--item", required=True)
     p.add_argument("--gen", required=True, type=int)
     p.add_argument("text", nargs="?", default="")
+    p = sub.add_parser("reload-needed", help="a live-iterating worker: the proof that only a rebuild+reload goes further")
+    p.add_argument("--item", required=True)
+    p.add_argument("--gen", required=True, type=int)
+    p.add_argument("text")
     p = sub.add_parser("help", help="send a fresh agent the failed approaches; its options reach the next brief")
     p.add_argument("--item", required=True)
     p.add_argument("--gen", type=int, help="your lease; default RELENTLESS_GEN, set at launch")
@@ -3413,6 +3452,8 @@ def main(argv=None):
                      game=relentless_game.parse_game(a.game, a.game_why, a.no_offline))
         elif a.cmd == "game-ready":
             relentless_game.ready(store, a.item, a.gen, a.text)
+        elif a.cmd == "reload-needed":
+            reload_needed(store, a.item, a.gen, a.text)
         elif a.cmd == "snag":
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours, on=a.on, blocker=a.blocker)
         elif a.cmd == "finish":

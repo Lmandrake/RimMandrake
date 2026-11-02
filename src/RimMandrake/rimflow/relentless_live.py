@@ -325,6 +325,30 @@ class Fx(object):
                               cwd=self.books, env=env, capture_output=True, text=True, timeout=timeout,
                               stdin=subprocess.DEVNULL)
 
+    def running_load_gap(self, mods):
+        """None when the RUNNING load holds every mod folder in `mods` (its packageId read from the deployed About.xml,
+        checked against jawa/running_mods: the running load's own list, never ModsConfig.xml, which names the NEXT load);
+        else why not. Asked with the bridge held, so the answer is the game the proof is about to read."""
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import live_def_check
+        want = {}
+        for mod in sorted(set(mods)):
+            try:
+                with open(os.path.join(self.mods_dir, mod, "About", "About.xml"), encoding="utf-8-sig") as f:
+                    m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", f.read(), re.I)
+            except OSError:
+                m = None
+            if not m:
+                return "not in the running load: %s has no readable packageId in its deployed About.xml" % mod
+            want[mod] = m.group(1).lower()
+        running = live_def_check.call_running_mods(60)
+        if running is None:
+            return "the running load's mod list could not be read (jawa/running_mods)"
+        lost = ["%s (%s)" % (m, p) for m, p in sorted(want.items()) if p not in running]
+        return ("not in the running load: %s" % ", ".join(lost[:5])) if lost else None
+
     def run_proof(self, proof, log, timeout):
         """-> the proof's exit code, or None when it outran `timeout`. Output goes to `log`."""
         with open(log, "w", encoding="utf-8") as f:
@@ -418,6 +442,10 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
         if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
             crashed = "the game or its deployed files changed while the bridge was being taken"
             code = None
+        # the build is deployed and older than the game, but the running list may not load its mod at all (owner
+        # 2026-11-02: a game fits an item by its RUNNING mods, not ModsConfig); asked with the bridge held
+        elif files and fx.running_load_gap([m for m, _ in files]):
+            crashed, code = fx.running_load_gap([m for m, _ in files]), None
         else:
             code = fx.run_proof(proof, log, lr["proof_max_s"])
             if code in (PASS, FAIL) and files and (started != fx.game_started()
