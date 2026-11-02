@@ -1,0 +1,20 @@
+{
+ "target": "rimworld-modding",
+ "version": 1,
+ "tag": "agent/rimworld-modding/v1",
+ "day": "2026-11-01",
+ "path": "skills/rimworld-modding/SKILL.md",
+ "pieces": [
+  {
+   "path": "/home/mandrake/rm/scratch/BENCH/agent-improve-20261101-192155/infrastructure/state/lessons/20261101T133144Z-FOUNDRY-decompiled-path-missing-use-ilspycmd.md",
+   "text": "skills/rimworld-modding/SKILL.md:77 points at D:\\Luke\\dev\\reference\\rimworld-decompiled, which does not exist. ilspycmd.exe IS installed (C:\\Users\\<user>\\.dotnet\\tools\\ilspycmd.exe, v8.2): '$T -t Vers"
+  }
+ ],
+ "source_kinds": [],
+ "diff": "--- a/skills/rimworld-modding/SKILL.md\n+++ b/skills/rimworld-modding/SKILL.md\n@@ -74,8 +74,9 @@\n capture with no `defs/` at all, wasting the whole dump. Write `all`.\n \n \ud83d\udcce Full study: `research\\RimMandrake\\reference\\rimsage_rimcp_source_index_mcp.md`.\n-The decompiled C# it indexes is at `D:\\Luke\\dev\\reference\\rimworld-decompiled`\n-(provenance: `research\\RimMandrake\\reference\\rimworld_decompiled_source.md`).\n+\u26a0\ufe0f There is no local decompiled tree (`D:\\Luke\\dev\\reference\\rimworld-decompiled` does not exist). For C# that\n+rimsage misses, decompile on demand with `ilspycmd` (`C:\\Users\\<user>\\.dotnet\\tools\\ilspycmd.exe`, v8.2), as per\n+the trap file (provenance: `research\\RimMandrake\\reference\\rimworld_decompiled_source.md`).\n \n ---\n \n",
+ "verdict": "infrastructure/state/delegated/2026-11-01/agent_improve_rimworld-modding.json",
+ "recheck": "No new lesson reports the missing rimworld-decompiled path, and later lessons that cite vanilla C# show it was read via rimsage or ilspycmd.",
+ "recheck_result": null,
+ "rechecks": [],
+ "generalization": []
+}

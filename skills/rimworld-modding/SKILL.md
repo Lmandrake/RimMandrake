@@ -74,8 +74,9 @@ arguments against the def dump, not against `get_def_details`.
 capture with no `defs/` at all, wasting the whole dump. Write `all`.
 
 📎 Full study: `research\RimMandrake\reference\rimsage_rimcp_source_index_mcp.md`.
-The decompiled C# it indexes is at `D:\Luke\dev\reference\rimworld-decompiled`
-(provenance: `research\RimMandrake\reference\rimworld_decompiled_source.md`).
+⚠️ There is no local decompiled tree (`D:\Luke\dev\reference\rimworld-decompiled` does not exist). For C# that
+rimsage misses, decompile on demand with `ilspycmd` (`C:\Users\<user>\.dotnet\tools\ilspycmd.exe`, v8.2), as per
+the trap file (provenance: `research\RimMandrake\reference\rimworld_decompiled_source.md`).
 
 ---
 
