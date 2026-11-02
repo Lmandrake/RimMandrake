@@ -421,6 +421,24 @@ class Fake(object):
                 return {"success": True, "result": "UNMEASURED the Gale is not the current weather"}
             return {"success": True, "result": "FAIL RM_Gale does not carry RM_WeatherOverlay_GaleDust" if "gale_no_overlay" in self.broken
                     else "PASS weather=RM_Gale art=PLACEHOLDER (vanilla fog sheet) drew=True"}
+        if method == "ProofHeading":
+            return {"success": True, "result": "FAIL: the wind does not point at the sun heading=10.000 want=237.500"
+                    if "wind_off_sun" in self.broken else "PASS sunBearing=212.500 heading=237.500 want=237.500"}
+        if method == "ProofScent":
+            if "@" not in args:     # the suite must name the pad it cleared (no person within 40 cells)
+                return {"success": True, "result": "UNMEASURED: args must be on@x,z or off@x,z, got " + args}
+            mode = args.split("@")[0]
+            flees = (mode != "off" and "scent_never" not in self.broken) or (mode == "off" and "scent_ignores_toggle" in self.broken)
+            if mode != "off":
+                return {"success": True, "result": "PASS upwind=Flee downwind=none beyond=none" if flees else
+                        "FAIL: no flee from a person 8 cells upwind upwind=none"}
+            return {"success": True, "result": "FAIL: leanScentEnabled off but the animal fled an upwind person"
+                    if flees else "PASS off upwind=none"}
+        if method == "ProofFire":
+            if "@" not in args:
+                return {"success": True, "result": "UNMEASURED: args must be on@x,z or off@x,z, got " + args}
+            return {"success": True, "result": "FAIL: fire does not favour downwind cells on 70/190 off 71/188 z=0.1"
+                    if "fire_unbiased" in self.broken else "PASS on 131/190 downwind off 70/188 z=6.4"}
         if method == "ProofRipple":
             hides = (args != "off" and "ripple_never" not in self.broken) or (args == "off" and "ripple_ignores_toggle" in self.broken)
             if args != "off":
@@ -835,6 +853,10 @@ BREAKS = {
     "stallhunt_never": "stallhunt.stallhawk_hunts_in_the_stall",
     "stallhunt_ignores_toggle": "stallhunt.stallhawk_toggle_off_idle",
     "ripple_never": "ripple.ripple_hides_small_creatures",
+    "wind_off_sun": "lean.lean_heading_from_sun",
+    "scent_never": "lean.lean_scent_upwind_flees",
+    "scent_ignores_toggle": "lean.lean_scent_toggle_off",
+    "fire_unbiased": "lean.lean_fire_downwind",
     "ripple_ignores_toggle": "ripple.ripple_toggle_off_nobody_hides",
     "pyre_ungated": "pyre.pyre_beliefs_gated_on_memes",
     "pyre_no_fire": "pyre.pyre_lights_fields_and_calls_herd",

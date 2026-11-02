@@ -234,7 +234,10 @@ namespace RimMandrake.LeaningScrub
             Job found = null;
             RM_LeanKernel.FirstScentThreat(n, dx, dz, gone, range, wind.x, wind.y, i =>
             {
-                Job flee = FleeUtility.FleeJob(pawn, people[i], FleeDistance);
+                // Flee PAST the person's current distance: FleeUtility moves fleeDistance - distanceToThreat, so a fixed 24
+                // went nowhere (or toward the person) once leanScentRange (slider to 30) let scent reach from 24+ cells.
+                int dist = (int)Math.Ceiling(Math.Sqrt((double)dx[i] * dx[i] + (double)dz[i] * dz[i]));
+                Job flee = FleeUtility.FleeJob(pawn, people[i], Math.Max(FleeDistance, dist + FleeDistance / 2));
                 if (flee == null)
                 {
                     return false;

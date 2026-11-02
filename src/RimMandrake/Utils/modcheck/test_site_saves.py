@@ -66,8 +66,8 @@ SITES = {
                  "minColonists": 3, "biome": "RM_Cauldron", "builder": "Cauldron/prep_site.py",
                  "suites": ["northstar_driver/cli.py run --mod Cauldron --plan src/RimMandrake/Cauldron/northstar_plan.py"]},
     # Same recipe, shared in biome_site.py. Single sources: <Biome>/site_spec.py site_entry() (each biome's
-    # selftest_<biome>_site.py compares). Contagion: no Burn at save/reload. LeaningScrub: the Lean heading is locked
-    # before the save and must come back unchanged off it (LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY).
+    # selftest_<biome>_site.py compares). Contagion: no Burn at save/reload. LeaningScrub: the Lean heading points at the
+    # sun before the save and must come back unchanged off it (LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY).
     # v2 (2026-11-02): v1 carried the same retired donors as leaningscrub_v1 (sarg.alphabiomes, vfe.insectoid2).
     "contagion": {"save": "RM_TestSite_contagion_v2", "profile": "danger", "size": 250, "temp": (0.0, 38.0),
                   "minColonists": 3, "biome": "RM_Contagion", "builder": "Contagion/prep_site.py",

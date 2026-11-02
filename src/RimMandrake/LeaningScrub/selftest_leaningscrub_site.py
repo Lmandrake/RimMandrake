@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """LeaningScrub saved-site recipe, offline: SITES row == site_spec, NATIVES == the BiomeDef's MayRequire-free
-non-predator rows, the Lean probe (heading locked at save, the SAME heading off the reload), and the build ORDER --
+non-predator rows, the Lean probe (heading == 90 - sun bearing at save, the SAME heading off the reload), and the build ORDER --
 nothing is saved when the clean read-back, the native census or the Lean fails; a good build saves once, registers,
-reloads, and a reload that lost the heading is registered loadVerified False. Every bridge call is a fake."""
+reloads, and a reload whose heading moved is registered loadVerified False. Every bridge call is a fake."""
 # selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
 # and every child process via TMPDIR, lands in one private dir removed at exit — this
 # test used to leave its temp dirs behind in the seat TMPDIR on every run.
@@ -10,6 +10,7 @@ import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st
 _st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_leaningscrub_site_")
 _st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import glob
+import math
 import os
 import sys
 import tempfile
@@ -23,6 +24,8 @@ import biome_site as B  # noqa: E402  (prep_site put Utils/modcheck on sys.path)
 import test_site_saves as TS  # noqa: E402
 
 S = PS.S
+with open(os.path.join(HERE, "Source", "RM_TheLean.cs")) as _fh:
+    _LEAN_CS = _fh.read()
 FAILS = []
 
 
@@ -52,11 +55,16 @@ check("NATIVES == roster non-predators", derived == S.NATIVES and derived, (deri
 MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
 
 class Fake(object):
-    """heading: what the lean comp holds (-1 = never locked). lock_on_downwind: Downwind's getter locks it to 237.5.
-    reload_heading: what a reload restores (None = the save carried it)."""
-    def __init__(self, natives=2, biome=S.BIOME, applies=True, lock_to=237.5):
-        self.log, self.natives, self.biome, self.applies, self.lock_to = [], natives, biome, applies, lock_to
-        self.heading = -1.0
+    """The lean comp answers like RM_MapComponent_Lean: SunBearingDegrees 212.5 -> HeadingDegrees 237.5 (90 - bearing,
+    mod 360) -> Downwind (cos, sin) of it. heading_skew moves HeadingDegrees off the sun (a broken wind); a reload
+    that moves it is set from run(reload_moves_heading=True)."""
+    def __init__(self, natives=2, biome=S.BIOME, applies=True, sun=212.5, heading_skew=0.0, downwind=None):
+        self.log, self.natives, self.biome, self.applies = [], natives, biome, applies
+        self.sun, self.skew, self.downwind = sun, heading_skew, downwind
+
+    @property
+    def heading(self):
+        return ((90.0 - self.sun) % 360.0 + self.skew) % 360.0
 
     def call(self, tool, **p):
         self.log.append(tool)
@@ -78,12 +86,13 @@ class Fake(object):
             for m in p["members"].split(","):
                 if m == "Applies":
                     vals[m] = str(self.applies)
-                elif m == "Downwind":
-                    if self.heading < 0:
-                        self.heading = self.lock_to
-                    vals[m] = "(0.6, -0.8)"
-                elif m == "headingDegrees":
+                elif m == "SunBearingDegrees":
+                    vals[m] = "%s" % self.sun
+                elif m == "HeadingDegrees":
                     vals[m] = "%s" % self.heading
+                elif m == "Downwind":
+                    r = math.radians(self.heading)
+                    vals[m] = self.downwind or "(%.2f, %.2f)" % (math.cos(r), math.sin(r))
             return {"success": True, "values": vals, "missing": []}
         if tool == "jawa/list_pawns":     # biome_site.clear_colonist_ground reads the colonists' cells
             return {"pawns": [{"id": "a", "isPlayer": True, "intelligence": "Humanlike", "x": 125, "z": 125}]}
@@ -92,16 +101,29 @@ class Fake(object):
         return {"success": True}
 
 
-# probe: the save locks; an unlocked reload is a problem; a carried heading is clean
+# probe: the save reads a sun-pointed heading; a reload with the same heading is clean, a moved one is not
 f = Fake()
 P, info = PS.probe(f.call, "save")
-check("save probe locks the heading", not P and info["heading"] == 237.5 and info["applies"], (P, info))
+check("save probe reads the sun-pointed heading", not P and info["heading"] == 237.5 and info["applies"]
+      and info["sunBearing"] == 212.5, (P, info))
 P, _i = PS.probe(f.call, "reload", info)
 check("reload with the same heading is clean", not P, P)
-f.heading = -1.0
+f.skew = 40.0
 P, _i = PS.probe(f.call, "reload", info)
-check("reload that lost the heading is a problem", any("heading" in x for x in P), P)
-check("reload never asks Downwind", "Downwind" not in S.LEAN_RELOAD_MEMBERS)
+check("reload whose heading moved is a problem", any("heading" in x for x in P), P)
+P, _i = PS.probe(Fake(heading_skew=90.0).call, "save")
+check("a heading off the sun is a problem at save", any("sun" in x for x in P), P)
+P, _i = PS.probe(Fake(downwind="(1.00, 0.00)").call, "save")
+check("Downwind off the heading is a problem at save", any("Downwind" in x for x in P), P)
+P, _i = PS.probe(Fake(downwind="garbage").call, "save")
+check("unreadable Downwind is a problem at save", any("unreadable" in x for x in P), P)
+P, _i = PS.probe(Fake(sun=0.0).call, "save")
+check("due-north sun -> heading 90, clean", not P and _i["heading"] == 90.0, (P, _i))
+check("save reads the PROPERTY, never the private field", "HeadingDegrees" in S.LEAN_LOCK_MEMBERS
+      and "headingDegrees" not in S.LEAN_LOCK_MEMBERS + S.LEAN_RELOAD_MEMBERS)
+check("the C# component still exposes the members the site reads",
+      all(("public %s %s" % (ty, m)) in _LEAN_CS for ty, m in (("bool", "Applies"), ("Vector2", "Downwind"),
+                                                              ("float", "HeadingDegrees"), ("float", "SunBearingDegrees"))))
 P, _i = PS.probe(Fake(applies=False).call, "save")
 check("Applies False is a problem", any("Applies" in x for x in P), P)
 P, _i = PS.site_problems(Fake(biome="TemperateForest").call)
@@ -129,7 +151,7 @@ orig = {k: getattr(TS, k) for k in ("clean_map", "check_map", "save_site", "load
                                     "write_registry", "saves_stat")}
 
 
-def run(check_ok=True, fake=None, reload_loses_heading=False):
+def run(check_ok=True, fake=None, reload_moves_heading=False):
     events[:] = []
     fk = fake or Fake()
     TS.clean_map = lambda call, prof: events.append("clean") or {"problems": []}
@@ -140,8 +162,8 @@ def run(check_ok=True, fake=None, reload_loses_heading=False):
 
     def _load(call, site, sleep=None):
         events.append("load")
-        if reload_loses_heading:
-            fk.heading = -1.0
+        if reload_moves_heading:
+            fk.skew = 40.0
         return {"verified": True, "problems": []}
     TS.load_site = _load
     TS.saves_stat = lambda d: {}
@@ -167,8 +189,8 @@ for kw, why in (({"check_ok": False}, "unclean check"), ({"fake": Fake(natives=0
         check("raises on " + why, False)
     except B.SiteError:
         check("never saved on " + why, not any(e.startswith("save:") for e in events), events)
-rec = run(reload_loses_heading=True)
-check("lost heading on reload -> loadVerified False", rec.get("verified") is False
+rec = run(reload_moves_heading=True)
+check("moved heading on reload -> loadVerified False", rec.get("verified") is False
       and events[-1] == "registry:%s:False" % S.SITE, events)
 
 print("FAIL: " + " | ".join(FAILS) if FAILS else "OK selftest_leaningscrub_site")

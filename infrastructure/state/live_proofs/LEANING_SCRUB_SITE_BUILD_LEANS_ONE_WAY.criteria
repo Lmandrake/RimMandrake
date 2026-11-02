@@ -1,0 +1,4 @@
+A1 L1: test_site_saves.py load leaningscrub reads CLEAN: the saved RM_LeaningScrub site loads from the main menu with no FinalizeLoading error, on its registered tile
+A2 L2: on the loaded site, RM_TheLeanProof.ProofHeading PASS: HeadingDegrees == 90 - sun bearing of the tile (the wind points at the sun), Downwind is its (cos,sin), and two reads agree (one heading per map)
+A3 L2: on the loaded site, RM_TheLeanProof.ProofScent on PASS: a wild non-predator native flees a person 8 cells upwind (within leanScentRange), never one 8 cells downwind or one upwind beyond the range, through the shipped JobGiver_AnimalFlee postfix
+A4 L2: on the loaded site, RM_TheLeanProof.ProofFire on PASS: over 300 spreads per arm through the shipped Fire.TrySpread, the downwind share with leanFireEnabled on beats the off share by at least half of leanFireBias's promise, z >= 3

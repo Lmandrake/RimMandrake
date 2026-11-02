@@ -23,10 +23,6 @@ fake game, healthy and with each mod behaviour broken in turn, and proves the ri
 (and only that one) goes red.
 
 NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
-  * The Lean (heading lock, scent flee, downwind fire): applies only on a map whose BIOME carries
-    RM_LeanExtension, and RM_MapComponent_Lean caches that answer on first use. The baroque_wave0
-    quicktest map is not a Scrub map; making one needs the Pyrelands-style site recipe (re-tile a
-    scratch-world tile, generate its map) -- LEANING_SCRUB_LEAN_SITE_1.
   * Raid weighting under the Gale: a statistical effect on the storyteller (debug_process.md
     section 4, "performance, intermittent, statistical"); only the patch being ARMED is checked.
   * Venomvine passability on this biome: needs a huge pawn pathing through a thicket (the
@@ -677,7 +673,7 @@ WINDY_TWINS = tuple(sorted(TWINNED_STOCK.values()))
 @suite.chain("windlean")
 def windlean_chain(t):
     """SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (biome_bars_sitting_2026-10-20 §5.1-5.3). The lean rows need a Leaning Scrub map
-    (LEANING_SCRUB_LEAN_SITE_1): on any other map the hook answers UNMEASURED, never PASS. The look is the owner's."""
+    (the saved site, LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY): on any other map the hook answers UNMEASURED, never PASS. The look is the owner's."""
     with _comp(t, "twins_carry_wind"):
         if _live(t):
             f, _ = _get_defs(t, ";".join("WeatherDef/" + n for n in WINDY_TWINS), "windSpeedOffset,windSpeedFactor")
@@ -712,6 +708,34 @@ def windlean_chain(t):
                     _note(t, "gale dust art", "PLACEHOLDER: vanilla fog sheet until the queued art is reviewed")
     finally:
         _unlock_weather(t)
+
+
+# --------------------------------------------------------------------------- chain: the Lean
+
+# LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY (walk lines 39-41). RM_TheLeanProof (RM_TheLeanProof.cs) reads the SHIPPED wind
+# on the current map: heading == 90 - sun bearing; a wild non-predator flees a person upwind within leanScentRange
+# (through JobGiver_AnimalFlee, the Harmony postfix included) and never one downwind or beyond; fire through the shipped
+# Fire.TrySpread lands downwind more than with leanFireEnabled off (300 trials per arm, z >= 3). Every hook answers
+# UNMEASURED off a Leaning Scrub map: run on the saved site (test_site_saves.py load leaningscrub).
+PADS["lean"] = (-55, 55)     # far from the site colonists at the centre: the scent hook wants no person within 40 cells
+LEAN_PAD = 48                # _prep clears 56 square: the probe people stand 8 and leanScentRange + 4 (20) cells out
+
+
+@suite.chain("lean")
+def lean_chain(t):
+    """The Lean on a Leaning Scrub map: one wind toward the sun, scent upwind only, fire leaning downwind."""
+    _proof(t, "lean_heading_from_sun", "RM_TheLeanProof", "ProofHeading", "", "lean heading")
+    _prep(t, "lean", size=LEAN_PAD)
+    try:
+        x, z = t.anchor
+        _proof(t, "lean_scent_upwind_flees", "RM_TheLeanProof", "ProofScent", "on@%d,%d" % (x, z),
+               "lean scent (on)", "leanScentEnabled")
+        _proof(t, "lean_scent_toggle_off", "RM_TheLeanProof", "ProofScent", "off@%d,%d" % (x, z),
+               "lean scent (off)", "leanScentEnabled")
+        _proof(t, "lean_fire_downwind", "RM_TheLeanProof", "ProofFire", "on@%d,%d" % (x, z),
+               "lean fire (on vs off)", "leanFireEnabled")
+    finally:
+        _unlock_weather(t)    # _prep locked Clear
 
 
 # --------------------------------------------------------------------------- chain: patches
@@ -1776,7 +1800,7 @@ def forms_chain(t):
     fixture on the current map (a stand, a colonist, a fire, a pile of steel), drives the SHIPPED pass
     (SweepRearing / SweepThorns / SweepHoard / SweepQuench / Walk / Shed) with the setting on and then off,
     reads the state, and cleans up. Walk and Shed are driven with a fixed downwind heading: the Lean only
-    applies on a Scrub map (see LEANING_SCRUB_LEAN_SITE_1), so the Gale-onset trigger itself is UNCOVERED."""
+    applies on a Scrub map (the saved site, LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY), so the Gale-onset trigger itself is UNCOVERED."""
     for form, _plant in FORMS:
         for mode, name in (("on", "%s_acts" % form), ("off", "%s_toggle_off" % form)):
             with _comp(t, name, toggle=FORM_TOGGLES[form]):

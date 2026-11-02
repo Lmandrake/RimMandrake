@@ -1,10 +1,11 @@
 """LeaningScrub saved test site: the data prep_site.py, test_site_saves.py and the preflight read.
 
-Item LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY (called LEANING_SCRUB_LEAN_SITE_1 in validation.py and the walk); kickoff
+Item LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY (the legacy name LEANING_SCRUB_LEAN_SITE_1 was refused at filing); kickoff
 packet design/RimMandrake/biome_sprint_kickoff_2026-10-15.md §1.3 "New, needing a Scrub site". The Lean applies only on
-a map whose BIOME carries RM_LeanExtension; RM_MapComponent_Lean locks ONE heading the first time anything asks for
-Downwind and Scribes it (rmLeanHeadingDegrees). So the site is built to LEAN ONE WAY: the heading is locked and read
-before the save, and after the reload the SAME heading must come back off the save before anything asks again.
+a map whose BIOME carries RM_LeanExtension; RM_MapComponent_Lean's wind points from the map's tile toward the substellar
+point (SCRUB_WIND_BUILD_LEAN_ON_PURPOSE, owner card 2026-10-20 "Point it at the sun, snap to a side"): a pure function of
+the tile, resolved on first use and never Scribed. So the site LEANS ONE WAY by construction: before the save the
+heading is read and must equal 90 - the sun bearing; after the reload the SAME heading must come back off the same tile.
 Pattern: Cauldron/site_spec.py; recipe shared in Utils/modcheck/biome_site.py. Dev tooling only, never shipped.
 
 A SCRATCH vanilla quicktest world with a 2-ring patch re-tiled to RM_LeaningScrub: never Ash'karr, never a seed
@@ -35,12 +36,13 @@ NATIVES = ("RM_Vurra", "RM_Chikka", "RM_Durrok", "RM_Mullgoth", "RM_Fuzzrunner",
            "RM_Rollbug", "RM_Tikkit")
 MIN_NATIVES = 1
 
-# The Lean, read by jawa/map_comp_read. ORDER MATTERS at the save: Downwind's getter locks the heading, then the
-# field is read. At the reload only Applies + the field are read, so a heading the save did not carry reads -1.
+# The Lean, read by jawa/map_comp_read (properties; each getter resolves the wind once). The private FIELD headingDegrees
+# reads 0 until something resolves it, so the site reads the PROPERTY HeadingDegrees, never the field.
 LEAN_COMP = "RM_MapComponent_Lean"
-LEAN_LOCK_MEMBERS = ("Applies", "Downwind", "headingDegrees")
-LEAN_RELOAD_MEMBERS = ("Applies", "headingDegrees")
+LEAN_LOCK_MEMBERS = ("Applies", "SunBearingDegrees", "HeadingDegrees", "Downwind")
+LEAN_RELOAD_MEMBERS = ("Applies", "HeadingDegrees")
 HEADING_TOL = 0.01
+DOWNWIND_TOL = 0.06                        # Vector2 text is rounded (F1/F2): cos/sin of the heading within this
 
 FOOD_PACKS = 60                           # 6 stacks along +x from centre+25 (x 150..155), clear of the dripping pad
 COLONY_NAME = "Northstar Scrub"
