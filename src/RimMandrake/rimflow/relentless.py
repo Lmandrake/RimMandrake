@@ -28,6 +28,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
 import relentless_packet  # noqa: E402
+import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -287,7 +288,7 @@ def spent_today(store, now):
         return UNREADABLE_SPEND
 
 
-def charge(store, st, tokens, now, r, unit):
+def charge(store, st, tokens, now, r, unit, basis=None):
     """Under the lock. A run with no measured usage is charged the reserve, never less. The day file is keyed by run,
     so a crash before the item's own marker is saved cannot count a run twice."""
     n = int(tokens) if tokens else r["run_reserve"]
@@ -296,6 +297,8 @@ def charge(store, st, tokens, now, r, unit):
         if unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]:
             d["runs"][unit] = n
             d["spent"] += n
+            if basis and basis != "result":     # how a charge not read from the result object was reached
+                d.setdefault("basis", {})[unit] = basis if tokens else "estimated"
             store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
         pass        # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
@@ -1037,15 +1040,16 @@ class Effects:
         return float(v) if isinstance(v, (int, float)) else None
 
     def oom_kills(self):
-        """The kernel's count of OOM kills since boot, cgroup ceilings included; None unreadable."""
+        """OOM kills inside a Relentless run's cgroup since boot (the kernel log); None unreadable. Not /proc/vmstat's
+        host-wide count: other cgroups' kills (rm-harness caps, tool caps) are not a reason to staff less."""
         try:
-            with open("/proc/vmstat") as f:
-                for ln in f:
-                    if ln.startswith("oom_kill "):
-                        return int(ln.split()[1])
-        except (OSError, ValueError):
-            pass
-        return None
+            r = subprocess.run(["journalctl", "-k", "-b", "0", "--no-pager", "-o", "cat", "-g", "oom-kill:constraint"],
+                               capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+        except (OSError, subprocess.SubprocessError):
+            return None
+        if r.returncode not in (0, 1):      # 1 is "no entries"
+            return None
+        return relentless_usage.own_oom_kills(r.stdout.splitlines())
 
     def staffing_alarm(self, item, text):
         """One fixed item: filed once, a note while open, reopened when it was closed. -> None, or why it did not land."""
@@ -1383,6 +1387,7 @@ class Effects:
                 "run_max_s": max_s}
         claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
         os.makedirs(os.path.dirname(run["out"]), exist_ok=True)
+        relentless_usage.note_clone(run, clone)        # where its transcripts will be, should the run never print a result
         argv = rl.launch_argv(role, run["unit"], prompt, run["out"], run["err"], claude)
         at = argv.index("--")
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
@@ -1419,14 +1424,17 @@ class Effects:
     def stop(self, run, force):
         self.RL.stop(run["unit"], run.get("scope"), marker=run.get("marker"), force=force, seat=self.r["seat"])
 
-    def tokens(self, run):
+    def measure(self, run):
+        """-> (weighted tokens, basis): the result object, else the run's transcripts, else (0, "estimated")."""
         if not run:
-            return 0
+            return 0, "estimated"
         try:
-            res = self.RL.read_result({"out": run.get("out"), "err": run.get("err")})
-            return int(self.RL.run_tokens(res) or 0)
+            return relentless_usage.measure(self.RL, run)
         except Exception:  # noqa: BLE001
-            return 0
+            return 0, "estimated"
+
+    def tokens(self, run):
+        return self.measure(run)[0]
 
     def circling_tree(self, st, outputs=()):
         return circling.tree_reading(st["clone"], st.get("base") or "HEAD", POOL_NOISE, outputs)
@@ -1987,6 +1995,14 @@ def run_of(st, key):
     return st.get("run") if key == "run" else (st.get(key) or {}).get("run")
 
 
+def measure(fx, run):
+    """-> (tokens, basis) of a finished run; a fixture without `measure` reads only the result object."""
+    if hasattr(fx, "measure"):
+        return fx.measure(run)
+    tok = fx.tokens(run)
+    return tok, ("result" if tok else "estimated")
+
+
 def settle(store, fx, r, item, key, since, now, acts):
     """Bring one run to its end: stop it, force it, at last quarantine it (the reaper goes on trying and charges it).
     True when the run is over as far as the item is concerned. Blocking calls are outside the lock."""
@@ -2014,13 +2030,14 @@ def settle(store, fx, r, item, key, since, now, acts):
         fx.ledger_note(item, "relentless: unit %s would not die, quarantined; carrying on" % run["unit"])
         acts.append({"do": "quarantine", "item": item, "unit": run["unit"]})
         return True
-    tok = fx.tokens(run)
+    tok, basis = measure(fx, run)
     with store.lock():
         cur = store.load(item)
         live = run_of(cur, key)
         if live and live.get("charged") is None:
-            live["charged"] = charge(store, cur, tok, now, r, live["unit"])
+            live["charged"] = charge(store, cur, tok, now, r, live["unit"], basis)
             live["measured"] = tok
+            live["basis"] = basis
             store.save(cur)
     return True
 
@@ -2033,12 +2050,12 @@ def reap_quarantined(store, fx, r, now, acts):
             if fx.alive(q["run"]):
                 fx.stop(q["run"], force=True)
                 continue
-            tok = fx.tokens(q["run"])
+            tok, basis = measure(fx, q["run"])
             with store.lock():
                 cur = store.load(st["item"])
                 if not cur["quarantined"][i].get("reaped"):
                     cur["quarantined"][i]["reaped"] = True
-                    charge(store, cur, tok, now, r, q["run"]["unit"])
+                    charge(store, cur, tok, now, r, q["run"]["unit"], basis)
                     store.save(cur)
             fx.remove_clone({"clone": q.get("clone")})
             acts.append({"do": "reaped", "item": st["item"], "unit": q["run"]["unit"]})

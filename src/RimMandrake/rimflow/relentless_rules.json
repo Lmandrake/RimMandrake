@@ -1,5 +1,5 @@
 {
-  "_max_workers": "The ceiling only, the total_max test ceiling of the plan. What runs is staffing's stage under the published budget. Steps back to 1 while available memory is under step_back_mem_gb (8); under min_mem_available_gb (6) nothing launches. relentless.worker_cap does the step-back.",
+  "_max_workers": "4 (owner 2026-11-02: work all fixes; 4 workers + at most check_backlog_max checks + a consult fit the pool cap of 10 clones / 40 GB and the 24 GB seat slice, whose anon use was ~350 MB a scope, RELENTLESS_USAGE_MEASURE_NO_FLAT_GUESSES). The ceiling only, the total_max test ceiling of the plan. What runs is staffing's stage under the published budget. Steps back to 1 while available memory is under step_back_mem_gb (8); under min_mem_available_gb (6) nothing launches. relentless.worker_cap does the step-back.",
   "_": "The owner's tunable parameter and every limit of relentless.py, in data. See design/RimMandrake/relentless_owner_design_2026-10-31.md section 8 for why each number is what it is.",
   "enabled": true,
   "share": 0.5,
@@ -12,7 +12,7 @@
   "proof_paths": ["(^|/)selftest_[^/]*$", "(^|/)test_[^/]*$", "(^|/)tests?/", "(^|/)testdata/", "^infrastructure/state/", "^conversations/"],
   "enrol_per_tick": 2,
   "max_queued": 8,
-  "max_workers": 10,
+  "max_workers": 4,
   "step_back_mem_gb": 8,
   "_one_builder_per_mod": "Two workers on one game mod collide; several on different mods is the point. Mods come from the item, relentless.py item_mods.",
   "one_builder_per_mod": true,
@@ -85,7 +85,7 @@
   },
   "staffing": {
     "seat": "FOUNDRY",
-    "stages": [5, "budget"],
+    "stages": [4],
     "hold_s": 3600,
     "min_verdicts": 3,
     "max_reject_share": 0.34,
