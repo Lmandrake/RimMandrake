@@ -195,8 +195,38 @@ def installer_guards():
           "repoint_complete: a repoint no plan row binds never goes")
 
 
+def gene_icon_rows():
+    """donor_regen_jobs.standin: an UNCOVERED GeneDef iconPath gets a gene-icon job, not a generic sprite."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent / "art"))
+    import donor_regen_jobs as DRJ
+    from PIL import Image
+    keep = DRJ.REPO, DRJ._def_words, DRC.standin, DRC.standin_files
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            t = Path(td)
+            mod, text = "src/RimStarWars/Races", "StandIn/UI/Icons/Genes/Gene_Fast"
+            f = t / mod / "Textures" / (text + ".png")
+            f.parent.mkdir(parents=True)
+            Image.new("RGBA", (64, 64)).save(f)
+            DRJ.REPO = t
+            DRJ._def_words = lambda defs: ("fast thing", "Goes fast.")
+            DRC.standin = lambda art=None: {"rows": [{"state": "UNCOVERED", "text": text, "tags": ["iconPath"],
+                                                      "files": [mod + "/Defs/Genes.xml"], "defs": ["X_Fast"]}]}
+            DRC.standin_files = lambda m, tx: [(tx, None)]
+            rows = DRJ.standin_rows()
+            r = rows[0] if len(rows) == 1 else {}
+            check(r.get("kind") == "icon" and "gene icon" in r.get("prompt", "")
+                  and r.get("style_notes") == DRJ.GENE_ICON_STYLE
+                  and r.get("install_to") == mod + "/Textures/UI/Icons/Genes/Gene_Fast.png"
+                  and r.get("id") == "dregen_X_Fast_GeneFast_v1",
+                  "a GeneDef iconPath stand-in gets a gene-icon job (Gene_PregnancyShort)", r)
+    finally:
+        DRJ.REPO, DRJ._def_words, DRC.standin, DRC.standin_files = keep
+
+
 if __name__ == "__main__":
     census()
     installer_guards()
+    gene_icon_rows()
     print("RESULT:", "FAIL %d" % len(FAILS) if FAILS else "PASS")
     sys.exit(1 if FAILS else 0)

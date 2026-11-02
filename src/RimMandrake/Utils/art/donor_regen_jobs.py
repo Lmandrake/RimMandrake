@@ -742,6 +742,8 @@ def _put_back(stage: Path, src: Path, parked, man: Path):
 
 TERRAIN_STYLE = ("Ground texture for a RimWorld floor: fully opaque, tiles seamlessly in both directions, no vignette "
                  "and no edge darkening; mid-value overall so the game's tint and rough edge blend.")
+GENE_ICON_STYLE = ("Vanilla RimWorld Biotech gene icon: pale monochrome glyph, soft painted shading, matte, centred "
+                   "on a transparent background, no outline box, no text.")
 STANDIN_ITEM = "STANDINS_RETIRE_AS_OUR_COATS_ARRIVE"
 
 
@@ -797,6 +799,11 @@ def standin_rows() -> list:
                     prompt = (f"A single stylised eye overlay for a RimWorld pawn head, front view: {name} — a "
                               f"{'vertical slit-pupil feline' if 'Feline' in t else 'reptilian slit-pupil'} iris, "
                               "drawn small and readable, centred, nothing else on the canvas.")
+                elif "/Icons/Genes/" in t:
+                    kind, bg, style = "icon", "transparent", GENE_ICON_STYLE
+                    prompt = (f"RimWorld gene icon in the vanilla Biotech gene-icon style: one flat, readable glyph "
+                              f"for the gene '{name}'. {desc} Pale grey-white glyph, soft shading, centred, no text, "
+                              "no frame.")
                 elif "/Projectile" in t:
                     kind, bg, style = "item", "transparent", HOUSE
                     prompt = (f"RimWorld projectile sprite seen from above, painterly: a {name} — a small glowing "
