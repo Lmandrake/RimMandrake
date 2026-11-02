@@ -75,6 +75,10 @@ SHIP-PENDING (24) is in no profile. Closure pulled nothing in any profile (0 mis
 
 ## 4. PAINT (81) — the smallest list that represents the world, the gravship and the player characters
 
+> The current list is `infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml`; the reason for each of
+> its members is `infrastructure/state/modlists/PAINT.reasons.json`, kept true by
+> `src/RimMandrake/Utils/selftest_paint_list.py`. The table below is the WAVE2 (81) build it started from.
+
 Built by `paint_profile.py`: explicit seeds (reason each), then closure to a fixpoint over (1) About.xml dependencies,
 (2) 10-10 `class_ref`/`hard_dep`, (3) **unguarded** def references in OUR members' Defs XML to defs only a non-member defines
 (Core/DLC names excluded; third-party Defs not scanned: they use LoadFolders). Need evidence for characters and ship is

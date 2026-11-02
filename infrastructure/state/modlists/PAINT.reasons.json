@@ -1,0 +1,429 @@
+{
+ "_doc": "Why each mod is on the PAINT list (infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml). Owner, by card 2026-10-20: 'Which mod set for the repaint -> Likely mid-size, but really only NEEDED mods incl. our own; Baroque Biomes needed' -- the mods needed to represent the world, the gravship and the player characters. need: CORE (base game + every DLC), WORLD, SHIP, CHARACTERS, TOOL (used to make the world, not represented in it; may be off FULL.LATEST), CLOSURE (brought in by a member: kind=dep its About.xml/class_ref, kind=defref an unguarded def name in its Defs). Built by design/RimMandrake/world_remake_2026-10-19/paint_profile.py (seeds + closure); checked by src/RimMandrake/Utils/selftest_paint_list.py. Change the list and this file in the same commit.",
+ "list": "infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml",
+ "members": {
+  "brrainz.harmony": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "owlchemist.cherrypicker",
+   "why": "hard dependency / class_ref of owlchemist.cherrypicker"
+  },
+  "ludeon.rimworld": {
+   "need": "CORE",
+   "why": "Core + DLC: every list carries all five expansions (owner 2026-09-19/25)"
+  },
+  "ludeon.rimworld.royalty": {
+   "need": "CORE",
+   "why": "Core + DLC: every list carries all five expansions (owner 2026-09-19/25)"
+  },
+  "ludeon.rimworld.ideology": {
+   "need": "CORE",
+   "why": "Core + DLC: every list carries all five expansions (owner 2026-09-19/25)"
+  },
+  "ludeon.rimworld.biotech": {
+   "need": "CORE",
+   "why": "Core + DLC: every list carries all five expansions (owner 2026-09-19/25)"
+  },
+  "ludeon.rimworld.anomaly": {
+   "need": "CORE",
+   "why": "Core + DLC: every list carries all five expansions (owner 2026-09-19/25)"
+  },
+  "ludeon.rimworld.odyssey": {
+   "need": "CORE",
+   "why": "Core + DLC: every list carries all five expansions (owner 2026-09-19/25)"
+  },
+  "owlchemist.cherrypicker": {
+   "need": "TOOL",
+   "why": "its cuts define the def set the world is made under"
+  },
+  "adaptive.storage.framework": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.armoury",
+   "why": "hard dependency / class_ref of mandrake.rsw.armoury"
+  },
+  "redmattis.betterprerequisites": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.starwarsraces",
+   "why": "hard dependency / class_ref of mandrake.rsw.starwarsraces"
+  },
+  "smashphil.vehicleframework": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.armoury",
+   "why": "hard dependency / class_ref of mandrake.rsw.armoury"
+  },
+  "imranfish.xmlextensions": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.armoury",
+   "why": "hard dependency / class_ref of mandrake.rsw.armoury"
+  },
+  "oskarpotocki.vanillafactionsexpanded.core": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rut.injections",
+   "why": "hard dependency / class_ref of mandrake.rut.injections"
+  },
+  "ebsg.framework": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.armoury",
+   "why": "hard dependency / class_ref of mandrake.rsw.armoury"
+  },
+  "mlie.advancedbiomes": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rut.patches",
+   "why": "hard dependency / class_ref of mandrake.rut.patches"
+  },
+  "7f.alienworlds": {
+   "need": "TOOL",
+   "why": "generator framework Ash'karr was made with (02 sec 2)"
+  },
+  "sarg.alphamemes": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.biomes",
+   "def": "GU_RedWood",
+   "why": "mandrake.rm.biomes's Defs name GU_RedWood unguarded"
+  },
+  "biomesteam.coreframework": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "zylle.morevanillabiomes",
+   "why": "hard dependency / class_ref of zylle.morevanillabiomes"
+  },
+  "det.keshig": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.inhabited",
+   "def": "DV_MeleeWeapon_SerratedScimitar",
+   "why": "mandrake.rm.inhabited's Defs name DV_MeleeWeapon_SerratedScimitar unguarded"
+  },
+  "jecrell.doorsexpanded": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.patches",
+   "why": "hard dependency / class_ref of mandrake.rsw.patches"
+  },
+  "dubwise.dubsbadhygiene.lite": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rm.biomes",
+   "why": "hard dependency / class_ref of mandrake.rm.biomes"
+  },
+  "mandrake.rm.injections": {
+   "need": "WORLD",
+   "why": "TileMutatorDefs / structure GenSteps named by tiles (09 sec 6)"
+  },
+  "mandrake.rsw.injections": {
+   "need": "WORLD",
+   "why": "SW TileMutatorDefs (09 sec 6)"
+  },
+  "mandrake.rut.injections": {
+   "need": "WORLD",
+   "why": "Ash'karr TileMutatorDefs (09 sec 6)"
+  },
+  "mandrake.rm.inhabited": {
+   "need": "WORLD",
+   "why": "settlements as world objects (09 sec 6)"
+  },
+  "mandrake.rut.inhabited": {
+   "need": "WORLD",
+   "why": "the Ash'karr settlement manifests (09 sec 6)"
+  },
+  "turnovus.biotech.integratedgenes": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.starwarsraces",
+   "why": "hard dependency / class_ref of mandrake.rsw.starwarsraces"
+  },
+  "jecrell.jecstools": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.armoury",
+   "why": "hard dependency / class_ref of mandrake.rsw.armoury"
+  },
+  "zylle.morevanillabiomes": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rut.patches",
+   "why": "hard dependency / class_ref of mandrake.rut.patches"
+  },
+  "oblitus.mylittleplanet": {
+   "need": "TOOL",
+   "why": "planet size until it is baked (09 sec 4)"
+  },
+  "brrainz.rimbridgeserver": {
+   "need": "TOOL",
+   "why": "the bridge that stamps the CSV bundle (w9_run.py) and prints the ship"
+  },
+  "rimfridge.kv.rw": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "lwm.deepstorage",
+   "why": "hard dependency / class_ref of lwm.deepstorage"
+  },
+  "vanillaexpanded.vanillabackstoriesexpanded": {
+   "need": "CHARACTERS",
+   "why": "3 founder backstories (Wave 2 HOLD)"
+  },
+  "oskarpotocki.vfe.tribals": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rut.researchretag",
+   "def": "VFET_Tribalwear",
+   "why": "mandrake.rut.researchretag's Defs name VFET_Tribalwear unguarded"
+  },
+  "vanillaexpanded.vfefactory": {
+   "need": "SHIP",
+   "why": "6 VFEFactory machines in Gravship_v2_ring"
+  },
+  "vanillaexpanded.vfesecurity": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rut.injections",
+   "def": "VFES_Turret_TeslaBlaster",
+   "why": "mandrake.rut.injections's Defs name VFES_Turret_TeslaBlaster unguarded"
+  },
+  "vanillaexpanded.gravship": {
+   "need": "SHIP",
+   "why": "VGE_AstrofuelPipe in Gravship_v2_ring"
+  },
+  "vanillaexpanded.vexploratione": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.biomes",
+   "def": "VEE_Plant_DatePalm",
+   "why": "mandrake.rm.biomes's Defs name VEE_Plant_DatePalm unguarded"
+  },
+  "vanillaquestsexpanded.generator": {
+   "need": "CHARACTERS",
+   "why": "founder Nekko's adulthood VQE_PowerArchitect02 (Wave 2 HOLD)"
+  },
+  "vanillaracesexpanded.genie": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rsw.starwarsraces",
+   "def": "VRE_Curiosity_Social",
+   "why": "mandrake.rsw.starwarsraces's Defs name VRE_Curiosity_Social unguarded"
+  },
+  "vanillaracesexpanded.saurid": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rut.patches",
+   "def": "Saurid",
+   "why": "mandrake.rut.patches's Defs name Saurid unguarded"
+  },
+  "vanillaexpanded.vanillatraitsexpanded": {
+   "need": "CHARACTERS",
+   "why": "6 founder traits (VTE_Dunce, VTE_Ecologist, VTE_Insomniac...)"
+  },
+  "lazyfridaystudio.genesexpandedeyes": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.starwarsraces",
+   "why": "hard dependency / class_ref of mandrake.rsw.starwarsraces"
+  },
+  "7f.alienworlds.tidallylocked": {
+   "need": "TOOL",
+   "why": "tidal-lock generator (02 sec 2); our JawaWorld_BiomeMix patches it"
+  },
+  "mandrake.rut.ashkarrlandmarkart": {
+   "need": "WORLD",
+   "why": "the landmark icons the map draws"
+  },
+  "lwm.deepstorage": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "neronix17.outerrim.core",
+   "why": "hard dependency / class_ref of neronix17.outerrim.core"
+  },
+  "mandrake.rm.planetpresetprime": {
+   "need": "TOOL",
+   "why": "world-creation page preset (09 sec 6: needed for the paint only)"
+  },
+  "mandrake.rm.weathersuite": {
+   "need": "WORLD",
+   "why": "hard dep of rut.patches; terminator/sun geometry engine"
+  },
+  "mandrake.rut.weathersuite": {
+   "need": "WORLD",
+   "why": "Ash'karr's PlanetGeometry (substellar point) on the frozen planet"
+  },
+  "erdelf.humanoidalienraces": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.droidworks",
+   "why": "hard dependency / class_ref of mandrake.rsw.droidworks"
+  },
+  "neronix17.toolbox": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.starwarsraces",
+   "why": "hard dependency / class_ref of mandrake.rsw.starwarsraces"
+  },
+  "redmattis.bigsmall.core": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.starwarsraces",
+   "why": "hard dependency / class_ref of mandrake.rsw.starwarsraces"
+  },
+  "lovelydovey.sex.witheuterpe": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "lovelydovey.sex.withrosaline",
+   "why": "hard dependency / class_ref of lovelydovey.sex.withrosaline"
+  },
+  "neronix17.outerrim.core": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.inhabited",
+   "def": "OuterRim_CompositeHelmet",
+   "why": "mandrake.rm.inhabited's Defs name OuterRim_CompositeHelmet unguarded"
+  },
+  "neronix17.outland.genetics": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rsw.starwarsraces",
+   "why": "hard dependency / class_ref of mandrake.rsw.starwarsraces"
+  },
+  "lovelydovey.sex.withrosaline": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rsw.starwarsraces",
+   "def": "SEX_AlwaysAphrodor",
+   "why": "mandrake.rsw.starwarsraces's Defs name SEX_AlwaysAphrodor unguarded"
+  },
+  "neronix17.outerrim.galacticempire": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.inhabited",
+   "def": "OuterRim_DLT19HeavyBlasterRifle",
+   "why": "mandrake.rm.inhabited's Defs name OuterRim_DLT19HeavyBlasterRifle unguarded"
+  },
+  "neronix17.outerrim.rebelalliance": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.inhabited",
+   "def": "OuterRim_A280Blaster",
+   "why": "mandrake.rm.inhabited's Defs name OuterRim_A280Blaster unguarded"
+  },
+  "lee.theforce.lightsaber": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rm.inhabited",
+   "def": "Force_Lightsaber_Inquisitor",
+   "why": "mandrake.rm.inhabited's Defs name Force_Lightsaber_Inquisitor unguarded"
+  },
+  "mandrake.rsw.starwarsraces": {
+   "need": "CHARACTERS",
+   "why": "RSW_Jawa xenotype, genes, heads, eyes of all six founders; scenario's RSW_MandrakeJawa"
+  },
+  "mandrake.rsw.armoury": {
+   "need": "CHARACTERS",
+   "why": "the founders' Jawa robes/hood/poncho and the ship's guy762 floors + RSW_Durasteel"
+  },
+  "mandrake.rm.proximityhatch": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rm.biomes",
+   "why": "hard dependency / class_ref of mandrake.rm.biomes"
+  },
+  "mandrake.rsw.shokk": {
+   "need": "WORLD",
+   "why": "a FactionDef present at the faction pass (09 sec 6)"
+  },
+  "mandrake.rm.luminouspigment": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rm.biomes",
+   "why": "hard dependency / class_ref of mandrake.rm.biomes"
+  },
+  "mandrake.rsw.ionweapons": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rut.patches",
+   "def": "RSW_JawaIon_Damage",
+   "why": "mandrake.rut.patches's Defs name RSW_JawaIon_Damage unguarded"
+  },
+  "mandrake.rut.antiquities": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rut.injections",
+   "def": "RUT_Antiq_Cartography",
+   "why": "mandrake.rut.injections's Defs name RUT_Antiq_Cartography unguarded"
+  },
+  "mandrake.rut.rites": {
+   "need": "WORLD",
+   "why": "Ishko's LandmarkDefs (the Nine Gods) on the world map: moved here from the retired mandrake.rut.ishkolandmarks (a2d2f4a126, owner 2026-10-22)"
+  },
+  "mandrake.rut.researchretag": {
+   "need": "CLOSURE",
+   "kind": "defref",
+   "of": "mandrake.rsw.droidworks",
+   "def": "RUT_Tree_Unbolting",
+   "why": "mandrake.rsw.droidworks's Defs name RUT_Tree_Unbolting unguarded"
+  },
+  "mandrake.rm.patches": {
+   "need": "WORLD",
+   "why": "load fixes rut.patches loads after (09 sec 6)"
+  },
+  "mandrake.rsw.patches": {
+   "need": "WORLD",
+   "why": "pawnkind/weather fixes rut.patches loads after (09 sec 6)"
+  },
+  "mandrake.rut.patches": {
+   "need": "WORLD",
+   "why": "28 RUT_ BiomeDefs, our factions, Scenario_Utinni, the founders' RUT_Jawa_Colonist kind"
+  },
+  "mandrake.rut.pawnflavor": {
+   "need": "CHARACTERS",
+   "why": "faction backstories/traits (founder Wim's RUT_Jawa_ReapsTheFlames)"
+  },
+  "mandrake.rsw.droidworks": {
+   "need": "WORLD",
+   "why": "droid pawnkinds used by our factions (09 sec 6)"
+  },
+  "mandrake.rm.flowworks": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rut.patches",
+   "why": "hard dependency / class_ref of mandrake.rut.patches"
+  },
+  "mandrake.rm.explosiveknockback": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rm.kineticarms",
+   "why": "hard dependency / class_ref of mandrake.rm.kineticarms"
+  },
+  "mandrake.rm.kineticarms": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rut.patches",
+   "why": "hard dependency / class_ref of mandrake.rut.patches"
+  },
+  "mandrake.rm.hugethings": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rm.biomes",
+   "why": "hard dependency / class_ref of mandrake.rm.biomes"
+  },
+  "mandrake.rm.biomes": {
+   "need": "WORLD",
+   "why": "Baroque Biomes, every RM_ biome (owner: 'obviously needed')"
+  },
+  "mandrake.rsw.swbestiary": {
+   "need": "CHARACTERS",
+   "why": "the founders' Dewback and the scenario's bonded RSW_Ikee"
+  },
+  "mandrake.rm.shipvermin": {
+   "need": "CLOSURE",
+   "kind": "dep",
+   "of": "mandrake.rut.patches",
+   "why": "hard dependency / class_ref of mandrake.rut.patches"
+  }
+ }
+}
