@@ -345,31 +345,47 @@ def main():
 
         def no_game_run(text, downs):
             """Stopping the mock game deletes Player.log, as a cold start does: a copy made after the stop finds nothing."""
-            with open(game_log, "w") as f:
+            with open(game_log, "wb") as f:
                 f.write(text)
             rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                       TESTQ_CMD_DOWN="echo down >> %s; rm -f %s" % (downs, game_log), RM_GAME_LOGDIR=logdir, **load)
             return wait_result(o.get("attempt", "x")), os.path.join(home, "attempts", o.get("attempt", "x"), "Player.log")
 
-        res, kept = no_game_run("XML error noise Exception loading def\nSystem.BadImageFormatException: AlienRace.dll\n"
-                                "System.TypeLoadException: WorldGenStep\nlast line\n", ndowns)
+        def kept_whole(path, text):
+            """The kept file IS the game's log, byte for byte: everything else in it is the evidence the copy exists for."""
+            if not os.path.exists(path):
+                return False
+            with open(path, "rb") as f:
+                return f.read() == text
+
+        fixture = (b"XML error noise Exception loading def\nSystem.BadImageFormatException: AlienRace.dll\n"
+                   b"System.TypeLoadException: WorldGenStep\nlast line\n")
+        res, kept = no_game_run(fixture, ndowns)
         note = res.get("note") or ""
         check(not os.path.exists(game_log), "the stop in this case really takes the game's log away: %s" % game_log)
         check(os.path.exists(kept) and "BadImageFormat" in open(kept).read() and "TypeLoadException" in open(kept).read(),
               "a no_game run keeps Player.log, whole, in the attempt BEFORE the stop takes it: %s" % note)
+        check(kept_whole(kept, fixture), "the kept log is the game's log byte for byte, not a digest of it: %s" % kept)
         check("first fatal: System.BadImageFormatException" in note and "TypeLoadException" not in note,
               "of two fatal lines the note names the FIRST, and only it: %s" % note)
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS", "no_game, game alive -> HARNESS: %s %s"
               % (res.get("cause"), res.get("note")))
         check(os.path.exists(ndowns) and len(open(ndowns).readlines()) == 1 and "cold-starts" in (res.get("note") or ""),
               "a no_game run stops the game once so the next job cold-starts: %s" % res.get("note"))
-        res, kept = no_game_run("Exception early\nException late\nend\n", ndowns + "_generic")
+        fixture = b"Exception early\nException late\nend\n"
+        res, kept = no_game_run(fixture, ndowns + "_generic")
         note = res.get("note") or ""
+        check(kept_whole(kept, fixture), "a log with no fatal line is kept byte for byte too: %s" % kept)
         check(os.path.exists(kept) and "last exception: Exception late" in note and "first fatal" not in note,
               "no fatal line: the last exception is reported and labelled as that, never as the first fatal: %s" % note)
-        res, kept = no_game_run("a clean log\n", ndowns + "_clean")
+        fixture = b"a clean log\n"
+        res, kept = no_game_run(fixture, ndowns + "_clean")
+        check(kept_whole(kept, fixture), "a log with no exception is kept byte for byte too: %s" % kept)
         check(os.path.exists(kept) and "no exception in it" in (res.get("note") or ""),
               "a log with no exception is kept and says so: %s" % res.get("note"))
+        fixture = b"native noise \xff\xfe\r\nSystem.BadImageFormatException: AlienRace.dll\r\nend, no newline"
+        res, kept = no_game_run(fixture, ndowns + "_raw")
+        check(kept_whole(kept, fixture), "CRLF, a bad UTF-8 byte and an unterminated last line survive the copy: %s" % kept)
         rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                   TESTQ_CMD_DOWN="echo 'REFUSED: never stops the owner game'; exit 3", **load)
         res = wait_result(o.get("attempt", "x"))
