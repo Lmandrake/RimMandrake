@@ -54,10 +54,12 @@ def check_record(rec, need_named=True):
                 bad.append("%s %s: span %d ticks, not %d" % (name, kind, ticks[-1] - ticks[0], SPAN))
             if not all("job" in r and "x" in r and "z" in r for r in rows):
                 bad.append("%s %s: a sample lacks job or x/z" % (name, kind))
-    if mi.get("mapBiome") != "RM_LeaningScrub":
-        # the lean-scent suspect (RM_MapComponent_Lean.Applies) only exists on a biome carrying RM_LeanExtension:
-        # off it the scent-OFF arm cannot attribute anything (LIVE 2026-11-02 205226Z ran on TemperateForest)
-        bad.append("map biome %r, not RM_LeaningScrub: the scent suspect cannot fire there" % mi.get("mapBiome"))
+    if not mi.get("mapBiome") or mi.get("mapBiome") == "RM_LeaningScrub":
+        # the 2026-10-07 move happened on the baroque_wave0 quicktest map, which validation.py at f9647fd94a (the commit
+        # that filed this item) states is NOT a Scrub map; the Lean (scent flee included) cannot apply off a biome
+        # carrying RM_LeanExtension. A Scrub map is the one condition the 10-07 move never had (gen15's two Scrub runs).
+        bad.append("map biome %r: the 10-07 move was on a NON-Scrub quicktest map, so the repro must be"
+                   % mi.get("mapBiome"))
     if need_named and "scent_on" in arms:
         # recompute the verdict from the record's own tracks: a stored verdict from an older, looser repro (LIVE
         # 2026-11-02 gen15/run1: one animal's den Goto stored as NAMED) must not pass
@@ -85,7 +87,7 @@ class Fake:
     def call(self, tool, kw):
         self.log.append((tool, dict(kw)))
         if tool == "jawa/map_info":
-            return {"sizeX": 250, "sizeZ": 250, "mapBiome": "RM_LeaningScrub", "tile": 1}
+            return {"sizeX": 250, "sizeZ": 250, "mapBiome": "TemperateForest", "tile": 1}
         if tool == "rimworld/get_game_info":
             return {"ticksGame": self.tick}
         if tool == "rimworld/step_game_ticks":
@@ -196,8 +198,10 @@ def offline():
             r["x"], r["z"] = rows[0]["x"], rows[0]["z"]
     if not any("recomputed verdict" in b for b in check_record(lone)):
         bad.append("check_record passed a record where only one animal moved")
-    if not check_record(dict(rec, map=dict(rec["map"], mapBiome="TemperateForest"))):
-        bad.append("check_record passed a record off a Leaning Scrub map")
+    if not any("10-07 move" in b for b in check_record(dict(rec, map=dict(rec["map"], mapBiome="RM_LeaningScrub")))):
+        bad.append("check_record passed a record from an RM_LeaningScrub map (the 10-07 move was off-Scrub)")
+    if not any("10-07 move" in b for b in check_record(dict(rec, map=dict(rec["map"], mapBiome=None)))):
+        bad.append("check_record passed a record that does not name its map biome")
     bad += check_live_line()
     return bad
 
