@@ -82,6 +82,25 @@ def main():
     check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: cap delegates to the fuzzed kernel",
           "RM_ExplosiveGrowthKernel.BurstHitAmount(" in method_body(tr, "public static float BurstHitAmount(Pawn p")
           and "public static float BurstHitAmount(float rolled" in k)
+    mcs = read("RM_MapComponent_ExplosiveGrowth.cs")
+    upd = method_body(mcs, "public override void MapComponentUpdate()")
+    pat = read("RM_ExplosiveGrowthPatches.cs")
+    check("sanity: Print reads maxOvergrowthScale via VisualScaleFor, Graphic reads hueShiftEnabled",
+          "comp.VisualScaleFor(__instance)" in pat and "ExplosiveGrowthSettings.hueShiftEnabled" in pat
+          and "ExplosiveGrowthSettings.maxOvergrowthScale" in method_body(mcs, "public float VisualScaleFor(Plant plant)"))
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: a per-frame look check exists", bool(upd))
+    for key in ("ExplosiveGrowthSettings.On", "ExplosiveGrowthSettings.hueShiftEnabled",
+                "ExplosiveGrowthSettings.maxOvergrowthScale"):
+        check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: the look check reads %s" % key, key in upd)
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: a changed look remeshes Things on the whole map",
+          "map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);" in upd
+          and re.search(r"if \(lookKnown && \(on != lookOn \|\| hue != lookHue \|\| scale != lookScale\)\)", upd) is not None)
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: the last look is recorded every frame",
+          all(x in upd for x in ("lookKnown = true;", "lookOn = on;", "lookHue = hue;", "lookScale = scale;")))
+    pas = method_body(mcs, "private void Pass(int now, int dt)")
+    cl = pas.find("ledger.charges.Clear();")
+    check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: out-of-scope dropped charges are dirtied before the clear",
+          cl > 0 and "foreach (IntVec3 c in ledger.charges.Keys) Dirty(c);" in pas[:cl])
     if fails:
         print("FAIL: %d failed" % len(fails))
         return 1

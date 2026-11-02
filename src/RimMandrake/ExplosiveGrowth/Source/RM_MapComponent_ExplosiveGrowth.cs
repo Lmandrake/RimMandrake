@@ -65,6 +65,14 @@ namespace RimMandrake.ExplosiveGrowth
         private int nextReprintTick = -1;
         private bool wobbleParity;
 
+        // EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: the settings a charging plant's PRINT reads (Plant.Print scale, Plant.Graphic
+        // hue). A section mesh bakes them, so a change must remesh Things or swollen, tinted plants stay drawn after the
+        // engine is off. Unsaved: a load prints fresh.
+        private bool lookKnown;
+        private bool lookOn;
+        private bool lookHue;
+        private float lookScale;
+
         public int irrigationCursor;   // kept for old saves; the channel is read on demand now
         public int surgeCursor;
         private int plantCursor;
@@ -390,6 +398,22 @@ namespace RimMandrake.ExplosiveGrowth
 
         // ── the pass ─────────────────────────────────────────────────────
 
+        /// <summary>EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: runs every frame, paused or not, so it sees every path that flips
+        /// the look: this mod's settings window, the Baroque Biomes roster toggle (ExplosiveGrowthSettings.On), a reset.
+        /// Three field compares per frame; the remesh only on a change.</summary>
+        public override void MapComponentUpdate()
+        {
+            bool on = ExplosiveGrowthSettings.On;
+            bool hue = ExplosiveGrowthSettings.hueShiftEnabled;
+            float scale = ExplosiveGrowthSettings.maxOvergrowthScale;
+            if (lookKnown && (on != lookOn || hue != lookHue || scale != lookScale))
+                map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);
+            lookKnown = true;
+            lookOn = on;
+            lookHue = hue;
+            lookScale = scale;
+        }
+
         public override void MapComponentTick()
         {
             int now = Find.TickManager.TicksGame;
@@ -415,7 +439,12 @@ namespace RimMandrake.ExplosiveGrowth
             if (!RM_ExplosiveGrowthRegistry.MapMayRun(map.Biome))
             {
                 // EGROWTH_SCOPE_FIX_FROZEN_CHARGES_GAMBLE: out of scope the ledger is not stepped, so drop charges instead of freezing them (a frozen charge still paid the jackpot).
-                if (ledger.charges.Count != 0) ledger.charges.Clear();
+                // EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: a dropped charge's swollen, tinted mesh is baked; dirty it first.
+                if (ledger.charges.Count != 0)
+                {
+                    foreach (IntVec3 c in ledger.charges.Keys) Dirty(c);
+                    ledger.charges.Clear();
+                }
                 if (ruptures.Count > 0) TickRuptures(now);
                 return;
             }
