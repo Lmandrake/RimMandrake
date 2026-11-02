@@ -27,6 +27,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
+import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
@@ -1134,6 +1135,10 @@ class Effects:
         self.store._write(os.path.join(c, ".git", "relentless.json"),     # atomic: the pre-push hook may be reading
                           json.dumps({"item": st["item"], "gen": st["gen"]}))
         return None
+
+    def objstore(self):
+        """The bare store every pool clone borrows objects from (scratch_clone's): the integrity gate reads its packs."""
+        return str(self.scratch_clone().store_path())
 
     def scratch_clone(self):
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
@@ -3061,6 +3066,13 @@ def tick(store=None, fx=None, r=None, now=None):
         if not r.get("enabled"):
             reading(store, r, now, [{"do": "disabled"}])
             return acts
+        if not relentless_integrity.gate(store, fx, r, now, acts, getattr(fx, "objstore", lambda: None)()):
+            try:                                # damaged state: nothing is staffed; the reading may not survive it
+                reading(store, r, now, acts)
+            except Exception as e:  # noqa: BLE001
+                acts.append({"do": "error", "item": None, "why": "reading %s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "tick", "acts": acts})
+            return acts
         books_alarm(store, fx, fx.sync(), now, acts, r)
         retire(store, fx, store.states(), now, acts, r)
         reclaim_dead(store, fx, r, now, acts)
@@ -3113,6 +3125,7 @@ def tick(store=None, fx=None, r=None, now=None):
         reading(store, r, now, acts)
         if acts:
             store.journal({"at": iso(now), "do": "tick", "acts": acts})
+        relentless_integrity.mark_clean(store, fx, now)
         return acts
 
 
