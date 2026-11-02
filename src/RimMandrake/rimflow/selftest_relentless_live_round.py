@@ -60,10 +60,37 @@ def t_candidates():
                                       ("REFUSED", now, "abc123", False), ("FAIL", now, "def456", True),
                                       ("UNMEASURED", now - 60, "abc123", False),
                                       ("UNMEASURED", now - 7200, "abc123", True)):
-        hist = {("EG_X", "A1"): {"item": "EG_X", "criterion": "A1", "sha": sha, "outcome": outcome, "at": at(when)}}
+        hist = R.history([{"item": "EG_X", "criterion": "A1", "sha": sha, "outcome": outcome, "at": at(when)}])
         todo, _ = R.candidates([item()], lambda i: PROSE, lambda i: None, hist, now, 3600)
         check("history: %s on %s %ds ago -> %s" % (outcome, sha, now - when, "runs" if runs else "waits"),
               bool(todo) == runs, todo)
+
+
+def t_history_review():
+    """GPT review 2026-11-01 counterexamples: per-sha terminal judgments, UTC parsing, bare backticks."""
+    now = 1_800_000_000
+    rows = [{"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "FAIL", "at": R.L.iso(now - 10 ** 6)},
+            {"item": "EG_X", "criterion": "A1", "sha": "def456", "outcome": "PASS", "at": R.L.iso(now - 10 ** 5)},
+            {"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "UNMEASURED", "at": R.L.iso(now - 10 ** 5)}]
+    todo, _ = R.candidates([item()], lambda i: PROSE, lambda i: None, R.history(rows), now, 3600)
+    check("history: a FAIL on this build stands after a later build's PASS and a later UNMEASURED", todo == [], todo)
+    old = os.environ.get("TZ")
+    try:
+        os.environ["TZ"] = "America/Los_Angeles"
+        time.tzset()
+        summer = 1_782_932_400      # 2026-07-01T19:00:00Z, daylight time
+        why = R.due({"sha": "s", "outcome": "UNMEASURED", "at": "2026-07-01T19:00:00Z"}, "s", summer + 60, 3600)
+    finally:
+        if old is None:
+            os.environ.pop("TZ", None)
+        else:
+            os.environ["TZ"] = old
+        time.tzset()
+    check("history: an UNMEASURED a minute old in daylight time still waits (UTC parse)", why == "unmeasured lately", why)
+    check("proof lines: a bare command keeps its own backticks",
+          R.proof_lines("live-proof A1: echo `date`") == {"A1": "echo `date`"}, R.proof_lines("live-proof A1: echo `date`"))
+    check("proof lines: a wrapped line loses only the wrapping pair",
+          R.proof_lines("- `live-proof A1: echo x`") == {"A1": "echo x"}, R.proof_lines("- `live-proof A1: echo x`"))
 
 
 def t_deploy_args():
@@ -124,8 +151,14 @@ def t_round():
         s = R.run_round(FakeFx(mods={"abc123": ["FlowWorks"]}), root, {}, now=1_800_000_000, run=run)
         check("round: a FlowWorks game file is FOUNDRY's, never run here",
               calls == [] and all(x["outcome"] == "SKIPPED" for x in s["runs"]), s)
+        run, calls = fake_run({})
+        fx = FakeFx(mods={"abc123": ["FlowWorks"]})
+        fx.its[3] = item("EG_D", sha="b2")
+        s = R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=run)
+        check("round: FOUNDRY skips do not count toward round_max, so the item behind them runs",
+              [c[0] for c in calls] == ["EG_D"], (calls, s))
         rows = R.read_rows(os.path.join(root, "live", "rounds.jsonl"))
-        check("round: every sitting is a rounds.jsonl row", len(rows) == 4, len(rows))
+        check("round: every sitting is a rounds.jsonl row", len(rows) == 5, len(rows))
 
 
 class TickFx(object):
@@ -171,6 +204,18 @@ def t_live_tick():
         check("tick: after the pace and the round's end, the next one starts", fx.launched == 2)
 
 
+def t_tick_env():
+    import relentless as RL
+    fx = RL.Effects.__new__(RL.Effects)
+    check("tick: our own pid's argv is not a round", not fx.live_round_alive(os.getpid()))
+    check("tick: a dead pid is not a round", not fx.live_round_alive(2 ** 22 + 7))
+    got = RL.windows_path("/usr/bin:/bin")
+    want = [d for d in RL.WINDOWS_DIRS if os.path.isdir(d)]
+    check("tick: the round's PATH gains the Windows dirs the systemd unit lacks (powershell.exe finds the game)",
+          got.startswith("/usr/bin:/bin") and all(d in got.split(os.pathsep) for d in want), got)
+    check("tick: a PATH that already has them is not doubled", RL.windows_path(got) == got)
+
+
 def t_log_judge():
     log = "Mono path\nConfig error in RUT_A: bad\nRUT_B loaded fine\nwarning: RUT_C odd\n[RimBridge] Bridge token: x\n"
     code, lines = G.judge(log, ["RUT_A"])
@@ -180,6 +225,16 @@ def t_log_judge():
           and G.judge(log, ["RUT_C"], warnings=True)[0] == G.FAIL)
     check("log: no anchor (load not finished) is UNMEASURED, never a pass",
           G.judge("Config error in nothing\n", ["RUT_Z"])[0] == G.UNMEASURED)
+    a = "\n[RimBridge] Bridge token: x\n"
+    check("log: an exception whose stack trace names the token on a later line is a FAIL",
+          G.judge("Exception loading def:\n  defName: RUT_PaleMoss\n  at Verse.X()\n" + a, ["RUT_PaleMoss"])[0] == G.FAIL)
+    check("log: a token that contains 'Error' is not itself an error line",
+          G.judge("Loaded RUT_ErrorPlant successfully" + a, ["RUT_ErrorPlant"])[0] == G.PASS)
+    check("log: '0 errors' is not an error line", G.judge("RUT_PaleMoss: 0 errors" + a, ["RUT_PaleMoss"])[0] == G.PASS)
+    check("log: NullReferenceException naming the token is a FAIL",
+          G.judge("NullReferenceException in RUT_PaleMoss tick" + a, ["RUT_PaleMoss"])[0] == G.FAIL)
+    check("log: the next message after an error is its own record",
+          G.judge("Config error in RUT_A: bad\nRUT_PaleMoss loaded" + a, ["RUT_PaleMoss"])[0] == G.PASS)
 
 
 def t_real_lane():
@@ -195,7 +250,8 @@ def t_real_lane():
 
 
 def main():
-    for t in (t_proof_lines, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_real_lane):
+    for t in (t_proof_lines, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_real_lane,
+              t_history_review, t_tick_env):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

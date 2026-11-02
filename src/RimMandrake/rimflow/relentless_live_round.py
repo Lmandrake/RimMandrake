@@ -26,6 +26,7 @@ A round, in order:
   5. the round stops early when the game went away or the bridge is held by someone else.
 """
 import argparse
+import calendar
 import fcntl
 import json
 import os
@@ -37,7 +38,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import relentless_live as L     # noqa: E402
 
-PROOF_LINE = re.compile(r"^\s*(?:[-*]\s+)?`?live-proof\s+(?P<cid>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd>\S.*?)`?\s*$")
+# Bare, or wrapped whole in one pair of Markdown backticks; a bare command keeps its own backticks (echo `date`).
+PROOF_LINE = re.compile(r"^\s*(?:[-*]\s+)?(?:`live-proof\s+(?P<cid1>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd1>[^`\s][^`]*?)`"
+                        r"|live-proof\s+(?P<cid2>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd2>\S.*?))\s*$")
 FOUNDRY_MODS = ("FlowWorks", "GimmeSomeSlack")
 DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
 STOP = ("no running game to test", "bridge not taken")
@@ -54,28 +57,35 @@ def proof_lines(prose):
     out = {}
     for line in (prose or "").splitlines():
         m = PROOF_LINE.match(line)
-        if m and m.group("cid") not in out:
-            out[m.group("cid")] = m.group("cmd").strip()
+        if m:
+            cid, cmd = (m.group("cid1"), m.group("cmd1")) if m.group("cid1") else (m.group("cid2"), m.group("cmd2"))
+            out.setdefault(cid, cmd.strip())
     return out
 
 
+TERMINAL = ("PASS", "FAIL", "REFUSED")
+
+
 def history(rows):
-    """runs.jsonl rows -> {(item, criterion): the newest row}."""
+    """runs.jsonl rows -> {(item, criterion, sha): the row that decides}: a terminal row (PASS, FAIL, REFUSED) stands for
+    its build whatever came after it; otherwise the newest row."""
     out = {}
     for row in rows:
         if row.get("item") and row.get("criterion"):
-            out[(row["item"], row["criterion"])] = row
+            k = (row["item"], row["criterion"], row.get("sha"))
+            if out.get(k, {}).get("outcome") not in TERMINAL:
+                out[k] = row
     return out
 
 
 def due(last, sha, now, retry_s):
-    """-> None when this criterion may run now, else why not. `last` is its newest runs.jsonl row or None."""
+    """-> None when this criterion may run now, else why not. `last` is its deciding runs.jsonl row on `sha`, or None."""
     if not last or last.get("sha") != sha:
         return None
-    if last.get("outcome") in ("PASS", "FAIL", "REFUSED"):
+    if last.get("outcome") in TERMINAL:
         return "judged on this build"
     try:
-        at = time.mktime(time.strptime(last.get("at", ""), "%Y-%m-%dT%H:%M:%SZ")) - time.timezone
+        at = calendar.timegm(time.strptime(last.get("at", ""), "%Y-%m-%dT%H:%M:%SZ"))
     except ValueError:
         return None
     if now - at < retry_s:
@@ -106,7 +116,7 @@ def candidates(items, prose_of, foundry_seat, hist, now, retry_s):
             if cid not in proofs:
                 skip("no proof")
                 continue
-            why = due(hist.get((it["id"], cid)), it["built_sha"], now, retry_s)
+            why = due(hist.get((it["id"], cid, it["built_sha"])), it["built_sha"], now, retry_s)
             if why:
                 skip(why)
                 continue
@@ -199,8 +209,10 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run):
         return done("no running game")
     todo, counts = plan(fx, root, r, now)
     summary.update(eligible=len(todo), skipped=counts)
-    folded = None
-    for item_id, cid, proof, sha in todo[:max_items or lr["round_max"]]:
+    folded, ran, cap = None, 0, max_items or lr["round_max"]
+    for item_id, cid, proof, sha in todo:     # the cap counts runs: a skip never starves the items behind it
+        if ran >= cap:
+            break
         try:
             mods = fx.mods_of(sha)
         except ValueError as e:
@@ -212,6 +224,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run):
             continue
         if folded is None:
             folded = fx.folded()
+        ran += 1
         row = run(fx, root, item_id, cid, proof, deploy_args(mods, folded), r, now=time.time())
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if row["outcome"] == "UNMEASURED" and any(row.get("why", "").startswith(s) for s in STOP):

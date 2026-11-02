@@ -13,43 +13,68 @@ errors yet). Pair it with live_def_check.py when the criterion also needs the mo
 load that never had the mod is not a pass, and this file cannot tell.
 """
 import argparse
+import datetime
 import os
 import re
 import subprocess
 import sys
-import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PASS, FAIL, UNMEASURED = 0, 1, 2
-ERROR_RE = re.compile(r"error|exception|failed|could not|couldn't", re.I)
-WARN_RE = re.compile(r"warn", re.I)
+# Word-ended so an identifier is not an error: RUT_ErrorPlant and "0 errors" are not error lines, NullReferenceException
+# and "Config error in" are. The tokens are also blanked out of a line before it is tested.
+ERROR_RE = re.compile(r"error\b|exception\b|\bfailed\b|\bcould not\b|\bcouldn't\b", re.I)
+WARN_RE = re.compile(r"warn(ing)?\b", re.I)
+# A line that continues the record above it (a stack trace, an inner exception), not a message of its own.
+CONT_RE = re.compile(r"^(\s|at |\(Filename|--- |Rethrow|\[0x|(Verse|RimWorld|UnityEngine|System|HarmonyLib|Mono)\.\S*[:(])")
 ANCHOR = "Bridge token:"
 
 
+def records(text):
+    """-> [(first line number, [lines])]: a message line plus the continuation lines under it."""
+    out = []
+    for n, line in enumerate(text.splitlines(), 1):
+        if out and line.strip() and CONT_RE.match(line):
+            out[-1][1].append(line)
+        else:
+            out.append((n, [line]))
+    return out
+
+
 def judge(text, tokens, warnings=False, anchor=ANCHOR):
-    """-> (exit code, lines). Pure: `text` is the whole Player.log."""
+    """-> (exit code, lines). Pure: `text` is the whole Player.log. A record (a message and its stack trace) fails when
+    any of its lines is an error line (with `warnings`, a warning line too) and any of its lines names a token, as a
+    literal substring: RUT_PaleMoss also hits RUT_PaleMossLarge, a false FAIL at worst, never a false PASS."""
     if anchor and anchor not in text:
         return UNMEASURED, ["UNMEASURED: the log has no %r yet: the load has not finished" % anchor]
     hits = []
-    for n, line in enumerate(text.splitlines(), 1):
-        if not (ERROR_RE.search(line) or (warnings and WARN_RE.search(line))):
-            continue
+
+    def bad(line):
         for t in tokens:
-            if t in line:
-                hits.append("FAIL line %d names %s: %s" % (n, t, line.strip()[:240]))
+            line = line.replace(t, " ")
+        return ERROR_RE.search(line) or (warnings and WARN_RE.search(line))
+
+    for n, lines in records(text):
+        named = [t for t in tokens if any(t in x for x in lines)]
+        if named and any(bad(x) for x in lines):
+            hits.append("FAIL line %d names %s: %s" % (n, ", ".join(named), " | ".join(x.strip() for x in lines)[:240]))
     if hits:
         return FAIL, hits[:40] + (["... %d more" % (len(hits) - 40)] if len(hits) > 40 else [])
     return PASS, ["PASS no %s line names %s" % ("error or warning" if warnings else "error", ", ".join(tokens))]
 
 
 def game_started():
-    """The running RimWorld's start, epoch seconds; None when none runs or it cannot be read."""
+    """The running RimWorld's start, epoch seconds to the millisecond; None when none or two run, or it cannot be read."""
     try:
         r = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
-                            "(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1)"
-                            ".StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')"],
+                            "Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object "
+                            "{ $_.StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffZ') }"],
                            capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
-        return time.mktime(time.strptime(r.stdout.strip(), "%Y-%m-%dT%H:%M:%SZ")) - time.timezone
+        lines = [x.strip() for x in r.stdout.splitlines() if x.strip()]
+        if len(lines) != 1:
+            return None
+        return datetime.datetime.strptime(lines[0], "%Y-%m-%dT%H:%M:%S.%fZ").replace(
+            tzinfo=datetime.timezone.utc).timestamp()
     except (OSError, ValueError, subprocess.TimeoutExpired):
         return None
 
@@ -73,7 +98,7 @@ def main(argv=None):
             print("UNMEASURED: no running game")
             return UNMEASURED
         try:
-            if os.path.getmtime(path) < started:
+            if os.path.getmtime(path) <= started:
                 print("UNMEASURED: %s was last written before the running game started" % path)
                 return UNMEASURED
         except OSError as e:

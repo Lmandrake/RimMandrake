@@ -1437,21 +1437,35 @@ class Effects:
         return live_line.check(line, not_before=not_before)
 
     def live_round_alive(self, pid):
-        """A live round (relentless_live_round.py) still runs as `pid`: the cmdline names it, so a reused pid is not it."""
+        """A live round still runs as `pid`: its argv is the script run with `round`, so a reused pid (a `tail -f` of the
+        script included) is not it. Overlap itself is the round's flock; this only keeps the tick from launching twice."""
         try:
             with open("/proc/%d/cmdline" % int(pid), "rb") as f:
-                return b"relentless_live_round.py" in f.read()
+                argv = f.read().split(b"\0")
         except (OSError, ValueError):
             return False
+        return len(argv) >= 3 and argv[1].endswith(b"/relentless_live_round.py") and argv[2] == b"round"
 
     def live_round_launch(self):
         """Start one live round detached (its own session: the oneshot tick ends long before it). -> pid."""
         os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
         with open(os.path.join(self.base, "live", "round.out"), "a", encoding="utf-8") as out:
             p = subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py"),
-                                  "round"], cwd=self.books, env=dict(os.environ, RELENTLESS_ROOT=self.base),
+                                  "round"], cwd=self.books, env=dict(os.environ, RELENTLESS_ROOT=self.base, PATH=windows_path(os.environ.get("PATH", ""))),
                                  stdout=out, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
         return p.pid
+
+
+WINDOWS_DIRS = ("/mnt/c/WINDOWS/system32", "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0")
+
+
+def windows_path(path):
+    """`path` plus the Windows tools a live proof needs (powershell.exe finds the game, python.exe reaches the bridge):
+    the systemd unit's PATH has none of them, so from the tick every game read was None ("no running game")."""
+    have = path.split(os.pathsep) if path else []
+    extra = [d for d in WINDOWS_DIRS + tuple(sorted(glob.glob("/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps")))
+             if d not in have and os.path.isdir(d)]
+    return os.pathsep.join(have + extra)
 
 
 def clone_item(c):
