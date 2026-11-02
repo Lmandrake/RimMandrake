@@ -164,8 +164,12 @@ Every fleet launch of this tile (cold boot via the Start Agent Fleet shortcut, `
 ticket. When a ticket ends, do close-out steps 1-2 below (ledger published, promises filed), then, while your
 context is under `backstop_ctx_tokens` (110k), take `rimflow next --seat FOUNDRY` and keep going. Request the
 restart (step 3) only when you pass that limit or the queue has nothing workable. A fix that is not yet proven in a
-game load is not an end: once the game is up and the bridge is free, prove it (cheapest acceptance level first),
-or file the proof as its own item and move on. Never end a turn just to report: a report is a ledger note.
+game load is not an end: once the game is up and the bridge is free, prove it (cheapest acceptance level first).
+🔴 **A problem found is worked to completion** (owner, 2026-11-02: *"KEEP working the same items once it finds
+problems until they complete"*): when a proof fails, stay on that item — fix, redeploy, re-prove — until it passes.
+Never file the failure and move on. After three non-pass runs, the Test Pilot sits with it (`rimflow pilot`) and you
+stay on it with the pilot. Only a real blocker (needs the owner, another seat's work) parks it, with the blocker noted.
+Never end a turn just to report: a report is a ledger note.
 
 ## A fresh window per ticket (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET)
 
