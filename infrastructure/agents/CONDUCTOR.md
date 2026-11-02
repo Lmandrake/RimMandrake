@@ -94,7 +94,7 @@ each live helper's agentId and item and records a 10-min deadline; (2) SendMessa
 *"Checkpoint now: write your state, evidence paths and one imperative NEXT as a note on your item, commit and publish
 what is done, then stop."*; (3) `seat_restart.py checkpoint --seat BENCH --wait` (re-run until DONE or LOST): at the
 deadline a helper still alive is LOST, its item gets a note, the kill stops waiting on it and the wake lists it;
-(4) publish the shard and request. Work expected to run over ~20 min never goes in-process: `detached_helper.py`.
+(4) publish the shard and request. Work expected to run over ~20 min never goes in-process: `python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item <ID> --brief-file <F> --model sonnet|opus --max-s <s>` runs it in its own unit (pool clone, bounded time and spend), survives your restart, and ends with a note on the item and a line in this log; `detached_helper.py status` lists runs. The Agent tool stays for short work.
 (`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time, a transcript byte cursor and the
 transcript's path, and the Dispatcher reads everything after the cursor in full, ignoring timestamps, and again right
 before the kill). The fresh window runs `seat_restart.py wake --seat BENCH --gen <restart id>` first. That lists, whole,
