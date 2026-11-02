@@ -356,7 +356,7 @@ def build(now=None, fams=None, rules=None):
     since = now - READ_DAYS * 24 * HOUR
     mem = {"written_at": now, "families": {}, "readings": {}, "built_from": {}}
     for fam in (fams or ow.ORDER):
-        recs = family_rows(fam, since)
+        recs = [r for r in family_rows(fam, since) if r.get("t", 0) <= now]    # build --now EPOCH sees no later row
         rows = [r["t"] for r in recs]
         mem["built_from"][fam] = {"rows": len(rows), "last_row_t": rows[-1] if rows else None}
         per = {}
