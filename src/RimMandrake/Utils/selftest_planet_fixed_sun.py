@@ -178,6 +178,10 @@ def reader_use_fails(rd):
             r"\s*substellarLat\s*=\s*\(float\)\s*fLat\.GetValue\(\s*d\s*\)\s*;\s*substellarLon\s*=\s*\(float\)\s*fLon\.GetValue\(\s*d\s*\)\s*;"
             r"\s*fixedSun\s*=\s*fFixed\s*!=\s*null\s*&&\s*\(bool\)\s*fFixed\.GetValue\(\s*d\s*\)\s*;\s*defName\s*=\s*d\.defName\s*;"
             r"\s*loaded\s*=\s*true\s*;\s*break\s*;\s*\}")
+    if not re.search(r'FieldInfo\s+fFixed\s*=\s*AccessTools\.Field\(\s*geo\s*,\s*"fixedSun"\s*\)\s*;\s*if\s*\(\s*fLat\s*==\s*null\s*\|\|\s*fLon\s*==\s*null\s*\)\s*\{[^{}]*return\s*;\s*\}\s*foreach\b', res):
+        fails.append("6 reader: Resolve does not go straight from the field lookups through the missing-field guard into the def loop")
+    if len(re.findall(r"\breturn\b", res)) != 3:
+        fails.append(f"6 reader: Resolve has {res.count('return')} returns, expected 3 (read-once, no type, no fields)")
     for i, pat in enumerate(flow):
         if not re.search(pat, res):
             fails.append(("6 reader: Resolve's type lookup guard is not `if (geo == null) return;`",
@@ -335,6 +339,7 @@ PLANTS = [
     ("world patch never installed", "world", "[StaticConstructorOnStartup]\n    public static class RM_WorldSunPatch", "public static class RM_WorldSunPatch", "5 world: RM_WorldSunPatch is not"),
     ("world patch targets the wrong method", "world", "nameof(GenCelestial.CurSunPositionInWorldSpace)", "nameof(GenCelestial.CurShadowStrength)", "5 world: the static constructor does not patch"),
     ("loaded cleared in a condition", "reader", "if (loaded && fFixed == null)", "if (loaded &= fFixed == null)", "6 reader: static `loaded` is written"),
+    ("Resolve bails when fixedSun exists", "reader", 'FieldInfo fFixed = AccessTools.Field(geo, "fixedSun");', 'FieldInfo fFixed = AccessTools.Field(geo, "fixedSun"); if (fFixed != null) { return; }', "6 reader: Resolve does not go straight"),
     ("world sun reflects again", "world", "if (RM_PlanetSunGeometry.Loaded)", "var t = GenTypes.GetTypeInAnyAssembly(\"x\"); if (RM_PlanetSunGeometry.Loaded)", "5 world"),
 ]
 
