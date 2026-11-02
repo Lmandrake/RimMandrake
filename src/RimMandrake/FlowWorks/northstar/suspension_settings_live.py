@@ -78,7 +78,7 @@ def main():
         return kv(t), t
 
     def shown_suspension():
-        t = proof("ProofButtons", "")[1]
+        t = proof("ProofButtons", "-")[1]   # args="" makes static_call seek a 0-param overload (SUSPENSION_PROOF_FIX_EMPTY_ARG_NO_METHOD); the arg is ignored
         if not t.startswith("BUTTONS"):
             return None, t
         k = kv(t)
@@ -121,7 +121,7 @@ def main():
         list_off = visible_suspension()
         sset("suspensionBridgesBuildable", True if b0 is None else b0)
         if on is None or off is None:
-            row("SB_settings_off_no_button", "UNMEASURED", "HARNESS", {"why": "ProofButtons did not answer (old DLL?)", "on": on_t, "off": off_t})
+            row("SB_settings_off_no_button", "UNMEASURED", "HARNESS", {"why": "ProofButtons did not answer BUTTONS (read on/off for the reply)", "on": on_t, "off": off_t})
         elif not on:
             row("SB_settings_off_no_button", "UNMEASURED", "HARNESS", {"why": "no suspension button shown even with the setting on", "on": on_t})
         else:
