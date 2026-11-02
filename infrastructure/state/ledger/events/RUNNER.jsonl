@@ -2039,3 +2039,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"broken","detail":"Ops alarm CLONE_POOL_BREACH: disk.pool_breach = 8 pool breaches: over count, over bytes, stranded unpushed clones (MEASURED), line > 0","ts":"2026-11-02T13:53:23Z","tsn":1793627603844895784}
 {"seat":"RUNNER","event":"raise","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-02T13:53:26Z","tsn":1793627606335225291}
 {"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_EXPIRY_RESTORE_YAQA","text":"ops_watch: cleared at 2026-11-02T13:52:00Z (disk.scratch_ok_age_h now 0.81)","ts":"2026-11-02T13:53:28Z","tsn":1793627608798608712}
+{"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-02T14:03:04Z","tsn":1793628184610621756}
