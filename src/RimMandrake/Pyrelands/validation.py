@@ -2546,7 +2546,8 @@ def gpt_hunt_plausible(t):
         ("big_burn_tick_cost",
          "FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: CALIBRATING evidence, never a gate. Burn a 250x250 standing grass burn with 20+ "
          "RM_Ashwallow burrowed, and read ticks per second with src/RimMandrake/Pyrelands/tick_rate_probe.py against the same "
-         "map unburned; record both"),
+         "map unburned; record both. The two code costs it names were fixed offline 2026-11-02 (fire-tick postfix closure-free; "
+         "burrow emergence scan once per BurrowEmergeCheckIntervalTicks, disc-bounded): src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py"),
         ("rite_harvest_route_avoids_fire",
          "RITE_HARVEST_FIX_PICKS_PAST_FULL (3-3, PLAUSIBLE): the target-cell check refuses a burning pod but the route uses "
          "TraverseParms.For(pawn) at Deadly danger; send a fire rite (PyrelandsFireRiteHook) across a lit 3-cell line with "

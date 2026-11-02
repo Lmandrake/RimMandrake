@@ -76,11 +76,16 @@ namespace RimMandrake.Pyrelands
             hide.tickAction = () =>
             {
                 Map map = pawn.Map;
+                int now = Find.TickManager.TicksGame;
                 bool timedOut = startTick >= 0
-                    && Find.TickManager.TicksGame - startTick >= maxTicks;
-                bool safeToEmerge = map == null
-                    || RM_FireEcoKernel.BurrowMayEmerge(Find.TickManager.TicksGame, heatHoldUntil,
-                        RM_JobGiver_BurrowOnFire.FireIsNear(pawn, map, radius));
+                    && now - startTick >= maxTicks;
+                // FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: the fire scan is the cost, so it runs only on this pawn's staggered check tick
+                // (or at the timeout, so a timeout is never mistaken for an unsafe surfacing); between checks the pawn stays down.
+                bool checkDue = map == null || timedOut
+                    || RM_FireEcoKernel.BurrowEmergeCheckDue(now, pawn.thingIDNumber, PyrelandsTuning.BurrowEmergeCheckIntervalTicks);
+                bool safeToEmerge = checkDue && (map == null
+                    || RM_FireEcoKernel.BurrowMayEmerge(now, heatHoldUntil,
+                        RM_JobGiver_BurrowOnFire.FireIsNear(pawn, map, radius)));
                 if (timedOut || safeToEmerge)
                 {
                     if (!safeToEmerge)

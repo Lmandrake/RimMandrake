@@ -188,6 +188,22 @@ namespace RimMandrake.Pyrelands
         // Bound past which rolledFires is cleared wholesale (RM_FireEcoKernel.MarkOnce).
         private const int RolledBound = 100000;
 
+        /// <summary>The 3x3 scan of RM_FireEcoKernel.FirstFruitSpot, written out so the hot fire tick allocates nothing.</summary>
+        private static int FirstLegalFruitSpot(IntVec3 pos, Map map)
+        {
+            for (int i = 0; i < RM_FireEcoKernel.FruitSpotDx.Length; i++)
+            {
+                IntVec3 c = new IntVec3(pos.x + RM_FireEcoKernel.FruitSpotDx[i], 0, pos.z + RM_FireEcoKernel.FruitSpotDz[i]);
+                bool inb = c.InBounds(map);
+                if (RM_FireEcoKernel.FruitLandingLegal(inb, inb && c.Standable(map), inb && c.GetPlant(map) != null,
+                        inb && FireEcologyHookMod.IsScorchableGround(c.GetTerrain(map))))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public static void Postfix(Fire __instance, int delta)
         {
             try
@@ -254,14 +270,10 @@ namespace RimMandrake.Pyrelands
                     ? (MapComponent_PyrelandsAshField.For(map)?.RolledFruitFires ?? RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map)) : null;
                 if (rolledFires != null && !rolledFires.Contains(__instance.thingIDNumber))
                 {
-                    int spotIndex = RM_FireEcoKernel.TakeFruitRoll(rolledFires, __instance.thingIDNumber, RolledBound,
-                        (dx, dz) =>
-                        {
-                            IntVec3 c = pos + new IntVec3(dx, 0, dz);
-                            bool inb = c.InBounds(map);
-                            return RM_FireEcoKernel.FruitLandingLegal(inb, inb && c.Standable(map), inb && c.GetPlant(map) != null,
-                                inb && FireEcologyHookMod.IsScorchableGround(c.GetTerrain(map)));
-                        });
+                    // FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: a static scan, never a lambda. A lambda capturing `pos`/`map` made C# hoist
+                    // both into a closure object allocated on EVERY call of this postfix -- every fire, every interval, rolled or not.
+                    int spotIndex = RM_FireEcoKernel.TakeFruitRollAt(rolledFires, __instance.thingIDNumber, RolledBound,
+                        FirstLegalFruitSpot(pos, map));
                     if (spotIndex >= 0 && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance))
                     {
                         ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");

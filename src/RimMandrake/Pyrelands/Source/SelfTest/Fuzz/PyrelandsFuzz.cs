@@ -892,6 +892,50 @@ namespace RimMandrake.Pyrelands.Fuzz
             {
                 Cases++;
                 Check(T.Count > 40, "PyrelandsTuning.cs parsed to only " + T.Count + " constants: the reader is blind");
+                // FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: the burrowed pawn's fire scan is due exactly once per interval for every pawn id
+                // (negative and int.MaxValue included, near the int tick ceiling too), and the ids of one interval share it out.
+                foreach (int iv in new[] { 2, 7, 30, 250 })
+                {
+                    foreach (int pid in new[] { 0, 1, 29, -1, -123456, int.MaxValue, int.MinValue, 987654321 })
+                    {
+                        foreach (int start in new[] { 0, 1, 59999, int.MaxValue - 3 * iv })
+                        {
+                            int due = 0;
+                            for (int tk = start; tk < start + iv; tk++) if (RM_FireEcoKernel.BurrowEmergeCheckDue(tk, pid, iv)) due++;
+                            Check(due == 1, "BurrowEmergeCheckDue: " + due + " checks in one interval " + iv + " pid " + pid + " start " + start);
+                        }
+                    }
+                    for (int tk = 100; tk < 100 + iv; tk++)
+                    {
+                        int ids = 0;
+                        for (int pid = 0; pid < iv; pid++) if (RM_FireEcoKernel.BurrowEmergeCheckDue(tk, pid, iv)) ids++;
+                        Check(ids == 1, "BurrowEmergeCheckDue: " + ids + " of " + iv + " consecutive ids scan on tick " + tk);
+                    }
+                }
+                Check(RM_FireEcoKernel.BurrowEmergeCheckDue(12345, 7, 1) && RM_FireEcoKernel.BurrowEmergeCheckDue(12345, 7, 0)
+                      && RM_FireEcoKernel.BurrowEmergeCheckDue(12345, 7, -4), "BurrowEmergeCheckDue: interval <= 1 is every tick");
+                Check(!RM_FireEcoKernel.FireScanByCells(0, 709) && !RM_FireEcoKernel.FireScanByCells(709, 709)
+                      && RM_FireEcoKernel.FireScanByCells(710, 709) && !RM_FireEcoKernel.FireScanByCells(5000, 0),
+                      "FireScanByCells: cells only when fires outnumber the disc's cells");
+                // TakeFruitRollAt (the hook's closure-free path) agrees with TakeFruitRoll over every legal-mask of the 3x3.
+                for (int mask = 0; mask < 512; mask++)
+                {
+                    var viaFunc = new HashSet<int>();
+                    var viaAt = new HashSet<int>();
+                    int mk = mask;
+                    int a = RM_FireEcoKernel.TakeFruitRoll(viaFunc, 42, 100000, (dx, dz) =>
+                    {
+                        for (int q = 0; q < 9; q++) if (RM_FireEcoKernel.FruitSpotDx[q] == dx && RM_FireEcoKernel.FruitSpotDz[q] == dz) return (mk & (1 << q)) != 0;
+                        return false;
+                    });
+                    int first = -1;
+                    for (int q = 0; q < 9; q++) if ((mask & (1 << q)) != 0) { first = q; break; }
+                    int b = RM_FireEcoKernel.TakeFruitRollAt(viaAt, 42, 100000, first);
+                    Check(a == b && viaFunc.Count == viaAt.Count && viaAt.Count == (first >= 0 ? 1 : 0), "TakeFruitRollAt != TakeFruitRoll, mask " + mask);
+                    Check(RM_FireEcoKernel.TakeFruitRollAt(viaAt, 42, 100000, 0) == -1 || first < 0, "TakeFruitRollAt: a fire rolled twice, mask " + mask);
+                }
+                Check(T.F("BurrowEmergeCheckIntervalTicks") >= 1 && T.F("BurrowEmergeCheckIntervalTicks") <= 60,
+                      "BurrowEmergeCheckIntervalTicks outside 1..60: a burrower would surface over a second late");
                 float cap = T.F("ArsonDebtCap");
                 Check(T.F("ArsonDebtRaidThreshold") <= cap, "the default raid threshold is above the debt cap");
                 Check(T.F("ArsonDebtPerPlayerFirePerCheck") > 0f && T.F("ArsonDebtDecayPerCheck") > 0f, "arson accrual or decay is not positive");

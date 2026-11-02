@@ -314,6 +314,10 @@ namespace RimMandrake.Pyrelands
         /// send it straight back down. [INVENTED]</summary>
         public const int BurrowMaxTicks = 60000;
 
+        /// <summary>FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: a burrowed pawn re-asks "is a fire still near" once per this many ticks
+        /// (staggered per pawn, RM_FireEcoKernel.BurrowEmergeCheckDue), not every tick; it surfaces at most this late.</summary>
+        public const int BurrowEmergeCheckIntervalTicks = 30;
+
         /// <summary>After a timed-out burrow, the animal stays up this long
         /// before it may burrow again, even with the fire still near.
         /// 7500 ticks = 3 in-game hours. [INVENTED]</summary>

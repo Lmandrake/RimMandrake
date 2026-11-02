@@ -196,6 +196,28 @@ namespace RimMandrake.Pyrelands
             return !fireNear && (heatHoldUntil < 0 || now >= heatHoldUntil);
         }
 
+        /// <summary>FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: a burrowed pawn's "is a fire still near" scan walks every Fire on the map, and
+        /// the burrow wait toil asked it EVERY tick, so 20 burrowers under a thousand-fire burn paid 20,000 distance tests a tick.
+        /// It is now asked once per `interval` ticks, staggered by the pawn's id so burrowers do not all scan on the same tick.
+        /// interval &lt;= 1 = every tick.</summary>
+        public static bool BurrowEmergeCheckDue(int now, int pawnId, int interval)
+        {
+            if (interval <= 1)
+            {
+                return true;
+            }
+            long phase = ((long)now + (pawnId & 0x7fffffff)) % interval;
+            return phase == 0;
+        }
+
+        /// <summary>FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: which "fire near" scan is cheaper — walking the map's fire list (one distance
+        /// test per fire) or the radial cells within the radius (one thing-list read per cell). Cells win only when the burn holds
+        /// more fires than the disc holds cells.</summary>
+        public static bool FireScanByCells(int fireCount, int radialCellCount)
+        {
+            return radialCellCount > 0 && fireCount > radialCellCount;
+        }
+
         /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burn-line's dive nudge. The burrow giver sits at Animal_PreWander and
         /// is only asked at a job boundary, so on a cold first burn a grazer mid-GotoWander dived 120-380 ticks late (once never).
         /// While anything burns, a burrower whose own giver WOULD dive now, idling in a wander/wait job, not already burrowed, and
@@ -356,8 +378,14 @@ namespace RimMandrake.Pyrelands
             {
                 return -1;
             }
-            int spot = FirstFruitSpot(legal);
-            if (spot < 0)
+            return TakeFruitRollAt(rolled, fireId, bound, FirstFruitSpot(legal));
+        }
+
+        /// <summary>TakeFruitRoll with the spot already found (FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: the fire-tick hook scans its 3x3 with
+        /// a static method, no closure, and only for a fire not yet in `rolled`). spot &lt; 0 = no legal spot: the fire waits.</summary>
+        public static int TakeFruitRollAt(HashSet<int> rolled, int fireId, int bound, int spot)
+        {
+            if (spot < 0 || rolled.Contains(fireId))
             {
                 return -1;
             }

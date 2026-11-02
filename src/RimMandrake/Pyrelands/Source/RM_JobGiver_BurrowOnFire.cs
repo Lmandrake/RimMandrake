@@ -101,6 +101,30 @@ namespace RimMandrake.Pyrelands
         {
             float radiusSq = radius * radius;
             List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+            // FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: under a burn holding more fires than the disc holds cells, read the disc's cells
+            // instead of walking every fire on the map. Same test either way: a spawned free ground Fire within the radius.
+            int discCells = radius > 0f && radius < GenRadial.MaxRadialPatternRadius ? GenRadial.NumCellsInRadius(radius) : 0;
+            if (RM_FireEcoKernel.FireScanByCells(fires.Count, discCells))
+            {
+                IntVec3 center = pawn.Position;
+                for (int c = 0; c < discCells; c++)
+                {
+                    IntVec3 cell = center + GenRadial.RadialPattern[c];
+                    if (!cell.InBounds(map))
+                    {
+                        continue;
+                    }
+                    List<Thing> here = map.thingGrid.ThingsListAtFast(cell);
+                    for (int k = 0; k < here.Count; k++)
+                    {
+                        if (here[k] is Fire { parent: null } cellFire && cellFire.Spawned)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
             for (int i = 0; i < fires.Count; i++)
             {
                 if (fires[i] is Fire { parent: null } fire && fire.Spawned
