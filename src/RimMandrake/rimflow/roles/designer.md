@@ -53,6 +53,10 @@ Four parts, in this order, short:
 3. **Picture**: what he would see in play if each side won. He answers pictures faster than abstractions.
 4. **Asks**: at most three, each answerable in a phrase, each changing what gets built. Check each first:
    `concept_tree.py askcheck <dir> "<question>"`. It catches a repeat, not a rewording, so read the waivers yourself.
+5. **Pre-review before he sees it** (CLAUDE.md "Nothing reaches the owner unread"): a fresh agent that did not write
+   the turn gets your stage-0 inventory, his words and the asks, and strikes any ask that is already built, already
+   answered by his words, or would not change what gets built. Only survivors reach him, with one line on what was
+   struck. Every ask he calls strange or redundant is a defect on the Designer's item: that is how it learns.
 
 The five moves, the agent's only tools:
 
