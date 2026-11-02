@@ -997,6 +997,24 @@ def load_map_r(path=MAP_R_PLACED):
     return doc, c1, plan
 
 
+def map_r_built_defs():
+    """The RM_ defs a map R build leaves standing: every C11 station's builds (review_map_rivers.station_ops) plus C1's."""
+    return sorted({"RM_BankWeir", "RM_BankStake", "RM_SiltTrap", "RM_FerryPost", "RM_SluiceBox", "RM_PanningSpot"}
+                  | {d for d in built_defs(SC.BY_ID["C1"]["setup"]) if d.startswith("RM_")})
+
+
+def already_built_r(B):
+    """RIVER_BUILD_FIX_IN_PLACE_SWEEPS_STATIONS (bridge run 1, 2026-10-23): an in-place --river --build on a map that
+    already holds map R re-planned C11 on terrain its own fords and weirs had changed (0 of 8 stations re-placed), dug
+    C1 a second time (depth_wrong) and swept the R1 Muffalo. -> ["RM_X x N", ...] already on the current map ([] = clean)."""
+    found = []
+    for d in map_r_built_defs():
+        n = len((B.call("jawa/list_things", defName=d, limit=50) or {}).get("things") or [])
+        if n:
+            found.append("%s x %d" % (d, n))
+    return found
+
+
 def recorded_map_c(map_r, path=None):
     """Map C's id from the existing map-R sidecar, kept across a non-fresh --river --build (review 4.2: the rebuild wrote
     map_c=None and use_map(B, "C") then left map R current). None when nothing is recorded or it names map R itself."""
@@ -1159,6 +1177,12 @@ def river_main(B, a):
                 return 2
             size, terrain = info["size"], info["terrain"]
         else:                                           # the current map IS map R (river_site.py made it, a one-map game)
+            built = already_built_r(B)
+            if built:                                   # refuse BEFORE any destroy, build or sweep: the map stays whole
+                print("--river --build REFUSED: the current map already holds a map R build (%s). An in-place build "
+                      "re-plans on terrain the old stations changed and sweeps them. Reload the save and run "
+                      "--river --build --fresh-map." % ", ".join(built))
+                return 2
             mi = B.call("jawa/map_info") or {}
             size = (int(mi.get("sizeX") or 0), int(mi.get("sizeZ") or 0))
             terrain = RV.read_terrain(B, size)

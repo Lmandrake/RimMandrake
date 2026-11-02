@@ -232,6 +232,24 @@ def main():
     check("map R build: the R1 Muffalo is turned side-on (west/east) and locked, once (%s)" % muff,
           len(muff) == 1 and muff[0][1] in ("west", "east") and muff[0][2] is True and str(muff[0][3]).isdigit()
           and not [n for n in river["notes"] if "not turned" in n], (rots, river["notes"]))
+    # RIVER_BUILD_FIX_IN_PLACE_SWEEPS_STATIONS: an in-place --river --build (no --fresh-map) on a map that already holds
+    # map R refuses with exit 2 before ANY write (destroy, build, spawn, terrain, sweep), naming --fresh-map
+    import argparse
+    a_ = argparse.Namespace(build=True, fresh_map=False, log=None, soak=False, save=False, labels=False, goto=None,
+                            allow_red_joints=False, name=None)
+    seen_before = len(BR.calls)
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc_r = M.river_main(BR, a_)
+    after = [t for t, _ in BR.calls[seen_before:]]
+    check("in-place --river --build on a built map R: exit 2, says --fresh-map, only list_things calls (%s)"
+          % sorted(set(after)), rc_r == 2 and "--fresh-map" in buf.getvalue() and set(after) == {"jawa/list_things"},
+          (rc_r, buf.getvalue()[:300], sorted(set(after))))
+    check("probe: already_built_r sees the stations AND C1 (can-fail: pre-fix had no such check and re-built)",
+          any(s.startswith("RM_BankStake") for s in M.already_built_r(BR))
+          and any(s.startswith("RM_SprinklerHead") for s in M.already_built_r(BR)), M.already_built_r(BR))
+    check("a clean map is not refused (already_built_r == [])",
+          M.already_built_r(MockBridge(terrain=M.synthetic_river())) == [])
     # SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO: with --only every sweep keeps the OTHER plots' keep rects; without, none
     from modcheck import reviewmap as RMv
     seen, real = [], RMv.sweep_pawns
