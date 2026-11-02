@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -33,6 +34,7 @@ import conductor_authority as CA  # noqa: E402
 
 STATE = P.ROOT / "infrastructure/state/art_eval"
 SOURCES = ("owner_override", "live_walk", "owner_key", "agent_review")
+PILOT_REF = re.compile(r"^[^:\s]+:[^:\s]+(:[^:\s]+)?$")   # DEF:LETTER[:LIVING], what cards.pilot_spec parses
 
 
 def _now():
@@ -82,6 +84,9 @@ def fix(cid, change, files, regression=None, expect=None, why=None, path=None, r
         raise SystemExit(f"{cid} is not in the ledger")
     if regression and expect not in ("ACCEPT", "NOT_ACCEPT"):   # refuse BEFORE appending: the log is append-only
         raise SystemExit("--expect ACCEPT|NOT_ACCEPT with --regression")
+    # a malformed pilot ref in the append-only regression file crashes `runner.py regress` on every later run
+    if regression and not PILOT_REF.match(regression):
+        raise SystemExit(f"--regression {regression!r} is not DEF:LETTER[:LIVING]")
     v = {n: P.prompt_version(P.REFS / "prompts" / f"{n}.md")["tag"] for n in
          ("preamble", "opus_first_pass", "gpt_targeted_second_look", "regen_prompt_edit", "departures_brief")}
     for t in P.TEMPLATES:
@@ -111,6 +116,13 @@ def main(argv=None):
     if o.cmd == "add":
         print(add(o.subject, o.template, o.source, o.missed, o.decision, CA.words(o.owner_said, o.per_ruling, o.why), o.run))
     elif o.cmd == "fix":
+        if o.regression:   # resolve it now: an unknown subject or letter would only fail later, inside regress
+            import cards
+            try:
+                cards.pilot_spec(o.regression)
+            except Exception as ex:  # noqa: BLE001 - any failure to resolve is a refusal
+                raise SystemExit(f"--regression {o.regression!r} does not resolve to a pilot card: "
+                                 f"{type(ex).__name__}: {ex}")
         fix(o.id, o.change, o.files, o.regression, o.expect, o.why)
         print(f"{o.id} fixed")
     else:

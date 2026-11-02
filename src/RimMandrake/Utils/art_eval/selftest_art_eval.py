@@ -551,6 +551,12 @@ def main():
         except SystemExit:
             pass
         check("a refused fix leaves the entry open", LG.entries(lp)[cid2]["status"] == "open", LG.entries(lp)[cid2])
+        try:
+            LG.fix(cid2, "moved code", ["a.md"], regression="RM_U", expect="ACCEPT", path=lp, reg_path=rp)
+            check("fix --regression without a candidate letter refused", False)
+        except SystemExit:
+            pass
+        check("a malformed --regression writes no regression row", len(rp.read_text().splitlines()) == 1)
 
     # --- runner dry run end to end on a synthetic card (mock reviewers, no model)
     try:
