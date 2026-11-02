@@ -371,24 +371,16 @@ if Suite is not None:
         if t.session is None or t.upstream_failed or n <= 3000 or getattr(t, "watch", None) is not None:
             return t.wait_ticks(n)
         s = t.session
-        start = s._ticks()
+        import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
+        # MODCHECK_ULTRAFAST_CLOCK_STALL_1: rimworld/set_time_speed left the game PAUSED (no Ultrafast wait in 47 modcheck
+        # results ever moved the clock); helpers.fast_advance drives rimworld/play_for, then pauses. A refused or stalled
+        # fast run is recorded and the rest is stepped exactly below.
+        start, now, why = H.fast_advance(s, n)
+        if start is None:
+            raise ExpectationFailed("clock unreadable before a %d-tick wait" % n)
         target = start + n
-        s.call("rimworld/set_time_speed", speed="Ultrafast")
-        last, stall = start, time.time()
-        try:
-            while True:
-                time.sleep(1.0)
-                now = s._ticks()
-                if now is None:
-                    raise ExpectationFailed("clock unreadable during a %d-tick wait" % n)
-                if now >= target - 400:
-                    break
-                if now > last:
-                    last, stall = now, time.time()
-                elif time.time() - stall > 60:
-                    raise ExpectationFailed("clock stalled at %d during a %d-tick wait (a modal dialog?)" % (now, n))
-        finally:
-            s.call("rimworld/set_time_speed", speed="Paused")
+        if why:
+            t._record("_wait(%d): fast run stopped (%s); stepping the rest" % (n, why), now)
         now = s._ticks()
         if now < target:
             t.wait_ticks(target - now)

@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/ultrafast_clock_probe.py --ticks 3000 --wall 120

@@ -210,6 +210,61 @@ def _try_call(session, tool, **p):
     return r, None
 
 
+
+def fast_advance(session, n, margin=400, chunk_ms=8000, rate=400.0, stall_chunks=2, speed=4):
+    """Run the clock fast toward start+n-margin and leave the game paused; the caller steps the rest exactly.
+    -> (start, now, why): why is None when the fast run got within `margin`, else why it gave up ('clock unreadable',
+    'play_for refused: ...', 'stalled at N'), and the caller steps whatever is left (or reports the clock).
+
+    MODCHECK_ULTRAFAST_CLOCK_STALL_1: the seven validation _wait helpers called rimworld/set_time_speed Ultrafast and
+    polled; no modcheck result (47 files, 2026-10-07) records one successful Ultrafast wait. That tool reports the speed
+    it set and leaves the game PAUSED (skills/rimbridge/references/silent-failures.md, MEASURED 2026-08-26).
+    rimworld/play_for runs the game for a wall-clock window at a speed and returns (MEASURED ~400 ticks/s at speed 4 =
+    Ultrafast, 2026-10-09, scenes/scenelib.run), so this drives play_for in bounded windows sized from the observed
+    rate, reading ticksGame after each, and stops after `stall_chunks` windows in a row that moved nothing."""
+    def ticks():
+        try:
+            return (session.call("rimworld/get_game_info") or {}).get("ticksGame")
+        except Exception:                                       # noqa: BLE001
+            return None
+
+    start = ticks()
+    if start is None:
+        return None, None, "clock unreadable"
+    goal = start + int(n) - int(margin)
+    now, last, stalls, why = start, start, 0, None
+    try:
+        while now < goal:
+            ms = int(min(chunk_ms, max(200, (goal - now) / max(rate, 1.0) * 1000.0)))
+            try:
+                r = session.call("rimworld/play_for", durationMs=ms, speed=speed)
+            except Exception as e:                              # noqa: BLE001
+                why = "play_for refused: %s: %s" % (type(e).__name__, str(e)[:200])
+                break
+            if isinstance(r, dict) and r.get("success") is False:
+                why = "play_for refused: %s" % str(r.get("error") or r.get("message") or r)[:200]
+                break
+            now = ticks()
+            if now is None:
+                why = "clock unreadable"
+                break
+            if now > last:
+                # The fastest rate seen sizes the next window, so a window
+                # undershoots (the loop runs again) rather than overshoots.
+                rate = max(rate, (now - last) * 1000.0 / ms)
+                stalls, last = 0, now
+            else:
+                stalls += 1
+                if stalls >= stall_chunks:
+                    why = "stalled at %d" % now
+                    break
+    finally:
+        try:
+            session.call("jawa/set_game_speed", speed="Paused")
+        except Exception:                                       # noqa: BLE001
+            pass
+    return start, now, why
+
 # Sources the quiet profile does NOT stop (GPT review s2, Opus review findings 5 and 13). Listed on every report so
 # "quiet" is never read as "closed": a pawn from one of these is still a visitor, and the Watch records + removes it.
 QUIET_NOT_SUPPRESSED = (

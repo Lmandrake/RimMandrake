@@ -1,0 +1,1 @@
+A1 L2: on a Playing quicktest map (minimal list, all five DLC), paused, helpers.fast_advance(3000) -- the call all seven validation _wait helpers now make (rimworld/play_for speed 4, then jawa/set_game_speed Paused) -- moves ticksGame >= 2600 within 120 s with no stall/refusal and leaves the game paused (the probe advances the clock ~3000 ticks; nothing else)

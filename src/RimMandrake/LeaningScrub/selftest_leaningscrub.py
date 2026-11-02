@@ -84,7 +84,6 @@ class Fake(object):
     def __init__(self, broken=()):
         self.broken = set(broken)
         self.ticks = 1000
-        self.fast = False
         self.n = 0
         self.settings = dict((k, str(v)) for k, v in V.DEFAULTS.items())
         if "setting_missing" in self.broken:
@@ -97,8 +96,6 @@ class Fake(object):
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
-        if self.fast:
-            self.advance(2000)
         return self.ticks
 
     def track(self, *a, **k):
@@ -271,9 +268,17 @@ class Fake(object):
         self.advance(int(ticks))
         return {"success": True}
 
-    def t_set_time_speed(self, speed=None, **k):
-        self.fast = speed == "Ultrafast"
+    def t_play_for(self, durationMs=0, speed=None, **k):
+        # MODCHECK_ULTRAFAST_CLOCK_STALL_1: helpers.fast_advance drives play_for (~400 ticks/s at Ultrafast, MEASURED
+        # 2026-10-09); rimworld/set_time_speed left the live game paused and is no longer called.
+        self.advance(int(int(durationMs) * 0.4))
         return {"success": True}
+
+    def t_set_game_speed(self, speed=None, **k):
+        return {"success": True, "speedAfter": speed}
+
+    def t_get_game_info(self, **k):
+        return {"success": True, "ticksGame": self.ticks}
 
     def t_time_set_ticks(self, ticks=0, **k):
         self.ticks = int(ticks)

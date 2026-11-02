@@ -553,36 +553,22 @@ def _unlock_weather(t):
 
 def _wait(t, n):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact; ~53 ticks/s MEASURED live on a
-    big list). Long waits run Ultrafast and poll the real clock, then pause; raises on a stall."""
+    big list). Long waits run fast (helpers.fast_advance), then step the rest exactly."""
     # LIVE 2026-10-03: under the situational watch the Ultrafast poll below moves the clock outside the budgeted gate
     # (BudgetExceeded 'spent 8721 of cap 948'), so a watched run uses the chunked, budgeted t.wait_ticks for every length.
     if t.session is None or t.upstream_failed or n <= 4000 or getattr(t, "watch", None) is not None:
         return t.wait_ticks(n)
     s = t.session
-    start = s._ticks()
+    import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
+    # MODCHECK_ULTRAFAST_CLOCK_STALL_1: rimworld/set_time_speed left the game PAUSED (no Ultrafast wait in 47 modcheck
+    # results ever moved the clock); helpers.fast_advance drives rimworld/play_for, then pauses. A refused or stalled
+    # fast run is recorded and the rest is stepped exactly below.
+    start, now, why = H.fast_advance(s, n)
+    if start is None:
+        raise ExpectationFailed("clock unreadable before a %d-tick wait" % n)
     target = start + n
-    s.call("rimworld/set_time_speed", speed="Ultrafast")
-    last, stall = start, time.time()
-    try:
-        while True:
-            time.sleep(1.0)
-            now = s._ticks()
-            if now is None:
-                raise ExpectationFailed("clock unreadable during a %d-tick wait" % n)
-            if now >= target - 400:
-                break
-            if now > last:
-                last, stall = now, time.time()
-            elif time.time() - stall > 30:
-                # LIVE 2026-10-07 (101652Z and 104321Z, both at smother_off_holds_claims): set_time_speed Ultrafast left
-                # the clock frozen for 60 s while every stepped rimworld/step_game_ticks wait in the same run advanced
-                # normally; no Transient/modcheck result (47 files) records a single successful Ultrafast _wait. Fall back
-                # to the stepped wait (exact, ~53 ticks/s) rather than failing the component on a harness clock.
-                # RULED OUT: the smother-off arm itself pausing the game -- it only flips a static bool before the wait.
-                _note(t, "_wait: Ultrafast did not advance the clock (stuck at %d); stepping instead" % now, n)
-                break
-    finally:
-        s.call("rimworld/set_time_speed", speed="Paused")
+    if why:
+        t._record("_wait(%d): fast run stopped (%s); stepping the rest" % (n, why), now)
     now = s._ticks()
     if now < target:
         t.wait_ticks(target - now)

@@ -93,7 +93,6 @@ class FakeGame(MockGame):
         self.conditions = []
         self.letters = []
         self.n = 100
-        self.fast = False
         self.window = None
         self.cfg_t = 1000.0
         self.blocks = 0
@@ -332,17 +331,20 @@ class FakeGame(MockGame):
             self.sim(n)
             return {"success": True}
         if tool == "rimworld/get_game_info":
-            if self.fast:
-                self.sim(3000)
             return MockGame.handle(self, tool, p)
         h = getattr(self, "t_" + re.sub(r"[^a-z_]", "_", tool.lower()), None)
         if h:
             return h(p)
         return MockGame.handle(self, tool, p)
 
-    def t_rimworld_set_time_speed(self, p):
-        self.fast = p.get("speed") == "Ultrafast"
+    def t_rimworld_play_for(self, p):
+        # MODCHECK_ULTRAFAST_CLOCK_STALL_1: helpers.fast_advance drives play_for (~400 ticks/s at Ultrafast, MEASURED
+        # 2026-10-09); rimworld/set_time_speed left the live game paused and is no longer called.
+        self.sim(int(int(p.get("durationMs") or 0) * 0.4))
         return {"success": True}
+
+    def t_jawa_set_game_speed(self, p):
+        return {"success": True, "speedAfter": p.get("speed")}
 
     def t_jawa_map_info(self, p):
         return {"success": True, "sizeX": 250, "sizeZ": 250, "mapBiome": "Tundra"}

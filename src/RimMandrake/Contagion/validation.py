@@ -563,34 +563,23 @@ class _patient(object):
 
 def _wait(t, n):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact); long waits run Ultrafast and
-    poll the real clock, then pause; raises on a stall."""
+    step the rest exactly (helpers.fast_advance)."""
     # LIVE 2026-10-03: under the situational watch the Ultrafast poll below moves the clock outside the budgeted gate (ClockStall /
     # BudgetExceeded), so a watched run uses the chunked, budgeted t.wait_ticks for every length.
     _support_upkeep(t)
     if t.session is None or t.upstream_failed or n <= 4000 or getattr(t, "watch", None) is not None:
         return t.wait_ticks(n)
     s = t.session
-    start = s._ticks()
+    import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
+    # MODCHECK_ULTRAFAST_CLOCK_STALL_1: rimworld/set_time_speed left the game PAUSED (no Ultrafast wait in 47 modcheck
+    # results ever moved the clock); helpers.fast_advance drives rimworld/play_for, then pauses. A refused or stalled
+    # fast run is recorded and the rest is stepped exactly below.
+    start, now, why = H.fast_advance(s, n)
+    if start is None:
+        _unmeasured(t, "clock unreadable before a %d-tick wait" % n)
     target = start + n
-    s.call("rimworld/set_time_speed", speed="Ultrafast")
-    last, stall = start, time.time()
-    try:
-        while True:
-            time.sleep(1.0)
-            now = s._ticks()
-            if now is None:
-                _unmeasured(t, "clock unreadable during a %d-tick wait" % n)
-            if now >= target - 400:
-                break
-            if now > last:
-                last, stall = now, time.time()
-            elif time.time() - stall > 60:
-                # The instrument (the clock) stopped, not the mod: UNMEASURED, never a FAIL (modcheck6 2026-10-16
-                # recorded a haze_turns_grass_in_place FAIL off this line).
-                _unmeasured(t, "clock stalled at %d during a %d-tick wait (a modal dialog pausing the game?)"
-                            % (now, n))
-    finally:
-        s.call("rimworld/set_time_speed", speed="Paused")
+    if why:
+        t._record("_wait(%d): fast run stopped (%s); stepping the rest" % (n, why), now)
     now = s._ticks()
     if now is None:
         _unmeasured(t, "clock unreadable after a %d-tick wait" % n)

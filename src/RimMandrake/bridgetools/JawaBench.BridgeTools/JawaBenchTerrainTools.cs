@@ -1260,7 +1260,10 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "Returns planted / cleared / rejected counts with the reason each cell was " +
                 "rejected. Rejections are real evidence, not noise: a cell whose terrain " +
-                "cannot support the species is reported, never silently skipped.")]
+                "cannot support the species is reported, never silently skipped. Each reason " +
+                "carries the engine's own words (fertility, pollution, terrain tag, blocker " +
+                "defName); `rejectedCells` lists the first 12 with terrain, fertility, " +
+                "fertilityMin, polluted and blocker read off the cell.")]
         public static async Task<object> SetPlants(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1316,6 +1319,7 @@ namespace JawaBench.BridgeTools
                 var size = map.Size;
                 int planted = 0, cleared = 0, rejected = 0, outOfBounds = 0, skippedDensity = 0;
                 var reasons = new Dictionary<string, int>();
+                var rejectedCells = new List<object>();   // first 12, with the cell's fertility read
                 var errors = new List<object>();
                 var resolved = new Dictionary<string, ThingDef>(StringComparer.OrdinalIgnoreCase);
 
@@ -1394,9 +1398,28 @@ namespace JawaBench.BridgeTools
                                 if (v > density) { skippedDensity++; continue; }
                             }
 
-                            if (!plantDef.CanEverPlantAt(cell, map))
+                            // MODCHECK_ULTRAFAST_CLOCK_STALL_1: the bool overload passes writeNoReason:true,
+                            // so a bloom fuzz strip on uniform Soil came back "REJECTED 75" with no cause
+                            // (fertility, map temperature, pollution, terrain tag or a blocking thing are the
+                            // engine's grounds). Ask for the AcceptanceReport and keep the prefix callers grep.
+                            var report = plantDef.CanEverPlantAt(cell, map, out Thing blocker,
+                                canWipePlantsExceptTree: false, checkMapTemperature: true, writeNoReason: false);
+                            if (!report.Accepted)
                             {
-                                Reject("terrain or conditions cannot support " + plantDef.defName);
+                                var why = string.IsNullOrEmpty(report.Reason) ? "no reason given" : report.Reason;
+                                if (blocker != null) why += " [" + blocker.def.defName + "]";
+                                Reject("terrain or conditions cannot support " + plantDef.defName + ": " + why);
+                                if (rejectedCells.Count < 12)
+                                    rejectedCells.Add(new
+                                    {
+                                        x = cx, z = cz,
+                                        terrain = cell.GetTerrain(map)?.defName,
+                                        fertility = map.fertilityGrid.FertilityAt(cell),
+                                        fertilityMin = plantDef.plant.fertilityMin,
+                                        polluted = cell.IsPolluted(map),
+                                        blocker = blocker?.def?.defName,
+                                        reason = why
+                                    });
                                 continue;
                             }
 
@@ -1433,6 +1456,7 @@ namespace JawaBench.BridgeTools
                     cleared,
                     rejected,
                     rejectionReasons = reasons,
+                    rejectedCells,
                     cellsSkippedByDensity = skippedDensity,
                     cellsOutOfBounds = outOfBounds,
                     growth,
