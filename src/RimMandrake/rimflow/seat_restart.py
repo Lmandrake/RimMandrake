@@ -2939,9 +2939,26 @@ def now_owed(stamp, st, now, hold_s, root=None, seats=None):
     return "untaken" if req.get("ts") == ts else None
 
 
+def now_run_reading():
+    """The file each real now-run rewrites as it ends: the `--live` reading for rm-restart-now.path (an on-demand unit
+    has no timer firing to read; every Conductor goodbye passes --now, so a live path unit refreshes it daily)."""
+    return os.path.join(doorbell.state_dir(), "restart", "now_run_last.json")
+
+
 def cmd_now_run(args):
     """rm-restart-now.service: tick the Dispatcher back to back while any `--now` stamp is owed, then exit. It removes
     every spent stamp, so PathExistsGlob re-fires only for a stamp written meanwhile, never in a loop."""
+    t0 = time.time()
+    rc = _now_run(args)
+    if not args.dry:
+        try:
+            _write_json(now_run_reading(), {"started": t0, "ended": time.time(), "rc": rc})
+        except OSError:
+            pass
+    return rc
+
+
+def _now_run(args):
     hold_s = DEFAULTS["now_hold_s"]
     t0 = time.time()
     try:

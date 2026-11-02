@@ -258,6 +258,11 @@ def test_watcher():
         rc = SR.main(["now-run", "--dry"])
     check(rc == 0 and not os.path.exists(SR.now_stamp_path("GONE")), "now-run removes a spent stamp and exits (%r)"
           % out.getvalue()[-120:])
+    check(not os.path.exists(SR.now_run_reading()), "a --dry now-run leaves no live reading")
+    with contextlib.redirect_stdout(io.StringIO()):
+        SR.main(["now-run"])
+    check((SR._read_json(SR.now_run_reading()) or {}).get("rc") == 0,
+          "a real now-run writes the reading the rm-restart-now.path --live line reads")
     unit = os.path.join(HERE, "systemd", "rm-restart-now.path")
     with open(unit) as f:
         txt = f.read()
