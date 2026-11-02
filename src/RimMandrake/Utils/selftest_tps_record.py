@@ -19,6 +19,7 @@
    the harness whole. sampler_seam() cuts Emit's ring/streak block, the Report read and the sustained expression out of
    its TEXT, verbatim, into a generated unit (SamplerWiring) built with the harness and driven by real frames through the
    production accumulator: reword the sampler and the extraction goes red; rewire it and the unit does. Never a copy.
+   --mutants proves that: each SAMPLER_MUTANTS entry rebuilds the unit from broken TEXT (no tree file moves) and must go red.
 """
 import json
 import os
@@ -959,12 +960,60 @@ def sampler_seam(text):
     return out
 
 
-def cs_parity(tr, res):
+def sampler_text():
+    with open(SAMPLER, encoding="utf-8-sig") as f:
+        return f.read().replace("\r\n", "\n")
+
+
+# (name, sampler text, broken text). Each must turn SamplerWiring or the seam's shape checks red. The first two are the
+# blind checker's gaps and run on every selftest; --mutants runs them all. Only the text handed to the seam changes.
+SAMPLER_MUTANTS = [
+    ("streak_seconds_constant", "new M.StreakWindow(M.StreakValue(w.Ratio), M.StreakValue(w.DReal))",
+     "new M.StreakWindow(M.StreakValue(w.Ratio), 5.0)"),
+    ("ring_clock_times_five", "Ring.Add(WD.Now,", "Ring.Add(WD.Now * 5.0,"),
+    ("report_truncates_720", "lines = Ring.Lines();", "lines = Ring.Lines().Take(720).ToList();"),
+    ("streak_never_cleared", "else Streak.Clear();", "else { }"),
+    ("streak_time_not_stamped", "_streakMono = WD.Now;\n", "_streakMono = 1e9;\n"),
+    ("sustained_ignores_age", "M.SustainedFresh(streak, _streakMono < 0 ? double.MaxValue : WD.Now - _streakMono)",
+     "M.Sustained(streak)"),
+    ("streak_trimmed_to_six", "if (Streak.Count > M.RingMaxWindows) Streak.RemoveAt(0);",
+     "if (Streak.Count > 6) Streak.RemoveAt(0);"),
+    ("setcadence_ignored", "{ Acc.Cadence = seconds; }", "{ }"),
+    ("second_ring_writer", "private static void BreakStreak() { lock (Gate) Streak.Clear(); }",
+     "private static void BreakStreak() { lock (Gate) Streak.Clear(); Ring.Add(0, \"\"); }"),
+    ("frame_hook_drops_emit", "if (closed != null) Emit(closed, __instance);", "if (closed != null) { }"),
+]
+
+
+def mutant_checks(tr, res, names=None):
+    """Red by the wiring only: a mutant that merely fails to compile, or one no longer matching the sampler, is a FAIL
+    here, so this list cannot go quietly stale. Runs only on a green base, where a red can only be the mutant's."""
+    if FAILS:
+        print("sampler mutants: SKIPPED, the base is already red")
+        return
+    base = sampler_text()
+    for name, old, new in SAMPLER_MUTANTS:
+        if names is not None and name not in names:
+            continue
+        if base.count(old) != 1:
+            FAILS.append("sampler mutant %s: its text is in the sampler %d times, want 1" % (name, base.count(old)))
+            continue
+        cs_parity(tr, res, base.replace(old, new))
+        got, FAILS[:] = list(FAILS), []
+        hit = [f for f in got if f.startswith(("C# unit SamplerWiring", "sampler seam"))]
+        print("sampler mutant %s: %s" % (name, "RED" if hit else "SURVIVED"))
+        if hit:
+            print("   " + hit[0][:200])
+        else:
+            FAILS.append("sampler mutant %s SURVIVED: %s" % (name, got[:2]))
+
+
+def cs_parity(tr, res, text=None):
+    """text: sampler source to cut the seam from; None reads the real file."""
     import winbuild
     proj = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "TpsMathSelfTest")
     extra, seam_path = (), None
-    with open(SAMPLER, encoding="utf-8-sig") as f:
-        seam = sampler_seam(f.read().replace("\r\n", "\n"))
+    seam = sampler_seam(sampler_text() if text is None else text)
     if seam:   # generated outside the clone: the build reads it, nothing lands in the tree
         fd, seam_path = tempfile.mkstemp(prefix="TpsSamplerSeam_", suffix=".cs", dir=winbuild.BUILD_ROOT)
         with os.fdopen(fd, "w", encoding="utf-8") as f:
@@ -1009,6 +1058,7 @@ def main(argv):
         FAILS.append("C# parity UNMEASURED: no dotnet.exe on this machine (pass --no-cs to accept Python-only)")
     else:
         cs_parity(tr, res)
+        mutant_checks(tr, res, None if "--mutants" in argv else ("streak_seconds_constant", "ring_clock_times_five"))
     for f in FAILS:
         print("FAIL " + f)
     print("selftest_tps_record: %s (%d failures)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
