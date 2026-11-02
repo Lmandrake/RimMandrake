@@ -45,14 +45,14 @@ def check(name, cond, detail=""):
 def setup():
     tmp = tempfile.mkdtemp(prefix="telemetry_selftest_")
     j = os.path.join
-    for d in ("jb/tps/flight", "jb/tps/exc", "jb/health", "scratch", "art", "inbox/changes", "inbox/wsl", "mirror"):
+    for d in ("jb/tps/flight", "jb/tps/exc", "jb/health", "scratch", "art", "inbox/changes", "inbox/wsl", "mirror", "ops/series"):
         os.makedirs(j(tmp, d), exist_ok=True)
     c = {"root": tmp, "db": j(tmp, "events.db"), "raw": j(tmp, "raw"), "state": j(tmp, "state"),
          "inbox": j(tmp, "inbox"), "logs": j(tmp, "logs"), "archive": j(tmp, "arch", "telemetry_archive"),
          "jawabench": j(tmp, "jb"), "bridge_calls": j(tmp, "scratch", "bridge_calls.jsonl"),
          "artpipe": j(tmp, "art"), "mirror": j(tmp, "mirror"), "vm_url": "http://fake",
          "game_mods": j(tmp, "rw", "Mods"), "modsconfig": j(tmp, "ModsConfig.xml"), "dirs": {}, "volumes": {},
-         "vhdx": j(tmp, "none.vhdx")}
+         "vhdx": j(tmp, "none.vhdx"), "ops_watch_series": j(tmp, "ops", "series")}
     os.makedirs(j(tmp, "arch"), exist_ok=True)
     with open(j(tmp, "cfg.json"), "w") as f:
         json.dump(c, f)
@@ -339,6 +339,32 @@ def main(argv) -> int:
         check("vitals: stale monitor rows raise no vitals alarm",
               not [x for x in analysis.evaluate(stale_v, con, {}, None, now) if x["id"].startswith("vitals")])
 
+        # ---------------------------------------------------------------- ops_watch readings -> VM
+        ow = os.path.join(c["ops_watch_series"], "disk.jsonl")
+        n0 = len(vm.lines)
+        w(ow, [{"t": now - 900, "family": "disk", "points": {
+                   "disk.free_gb": {"v": 40.5, "m": "MEASURED"}, "disk.ok": {"v": True, "m": "MEASURED"},
+                   "disk.gone": {"v": None, "m": "UNMEASURED"}, "disk.guess": {"v": 3, "m": "ESTIMATE"},
+                   "disk.word": {"v": "fine", "m": "MEASURED"}, "disk.zero": {"v": 0, "m": "MEASURED"}}},
+               {"t": "not a time", "points": {"disk.free_gb": {"v": 1, "m": "MEASURED"}}}],
+          partial='{"t": %f, "points": {"disk.free_gb": {"v": 1' % now)
+        T.pass_source(S["ops_watch"])
+        sink.flush()
+        got = vm.lines[n0:]
+        rd = {x["metric"]["key"]: x for x in got if x["metric"]["__name__"] == "rm_ops_reading"}
+        um = {x["metric"]["key"]: x["metric"]["m"] for x in got if x["metric"]["__name__"] == "rm_ops_unmeasured"}
+        rows_ = [x for x in got if x["metric"]["__name__"] == "rm_ops_rows"]
+        check("[ops_watch] MEASURED numbers become rm_ops_reading points, a measured 0 included",
+              rd.get("disk.free_gb", {}).get("values") == [40.5] and rd.get("disk.zero", {}).get("values") == [0]
+              and rd["disk.free_gb"]["metric"]["fam"] == "disk"
+              and rd["disk.free_gb"]["timestamps"] == [int((now - 900) * 1000)], rd)
+        check("[ops_watch] a boolean is 0/1 marked vt=bool", rd.get("disk.ok", {}).get("values") == [1.0]
+              and rd["disk.ok"]["metric"].get("vt") == "bool", rd.get("disk.ok"))
+        check("[ops_watch] UNMEASURED / ESTIMATE / text are blindness markers, never a value",
+              set(rd) == {"disk.free_gb", "disk.ok", "disk.zero"}
+              and um == {"disk.gone": "UNMEASURED", "disk.guess": "ESTIMATE", "disk.word": "TEXT"}, (sorted(rd), um))
+        check("[ops_watch] one rm_ops_rows sample per good row; a bad time and a torn tail are skipped",
+              [x["values"] for x in rows_] == [[6]], rows_)
         # ---------------------------------------------------------------- regression detector + sanity probe
         import random
         rnd = random.Random(7)

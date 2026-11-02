@@ -2,12 +2,15 @@
 """selftest_ops_memory: ops_memory.py against the counterexamples its review raised (operations_metronome_strategy
 §3, gpt_review findings on bands): zero MAD, missing means blind, sample density, a step that becomes normal,
 counters with resets, booleans, a daily rhythm, time to a signed limit, learning, and the one-generation check.
-Fixture series only, written to a temp dir; never the live ops_watch store."""
+Fixture rows go the real way: telemetry/ingest.parse_ops_watch -> store.VMSink -> a fake VictoriaMetrics that
+answers /api/v1/export from what was imported; never the live store."""
 import json
 import os
+import re
 import sys
 import tempfile
 import time
+import urllib.parse
 from pathlib import Path
 
 os.environ["TZ"] = "UTC"
@@ -16,6 +19,8 @@ TMP = tempfile.mkdtemp(prefix="ops_memory_selftest_")
 os.environ["RM_OPS_WATCH_DIR"] = TMP
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ops_memory as om  # noqa: E402
+import ingest  # noqa: E402  (telemetry, on the path ops_memory set)
+import store  # noqa: E402
 
 H = 3600.0
 NOW = 1793577600.0 + 12 * H        # a fixed instant at 12:00 UTC
@@ -31,13 +36,53 @@ def ok(cond, what):
     print(("PASS " if cond else "FAIL ") + what)
 
 
-def write(rows):
-    p = Path(TMP) / "series" / "t.jsonl"
-    p.parent.mkdir(parents=True, exist_ok=True)
-    rows = sorted(rows, key=lambda r: r[0])
-    with open(p, "w") as f:
-        for t, pts in rows:
-            f.write(json.dumps({"t": t, "points": pts}) + "\n")
+class FakeVM:
+    """Holds what VMSink imported; answers /api/v1/export for the selectors ops_memory sends."""
+    def __init__(self):
+        self.lines, self.down, self.asked = [], False, []
+
+    def post(self, body):
+        self.lines.extend(json.loads(x) for x in body.decode().splitlines() if x)
+
+    def get(self, path, url=None, timeout=5):
+        if self.down:
+            raise ConnectionRefusedError("fake VM down")
+        u = urllib.parse.urlsplit(path)
+        q = urllib.parse.parse_qs(u.query)
+        assert u.path == "/api/v1/export", u.path
+        lo, hi = float(q["start"][0]) * 1000, float(q["end"][0]) * 1000
+        self.asked.append((q["match[]"], lo / 1000, hi / 1000))
+        out = []
+        for sel in q["match[]"]:
+            m = re.fullmatch(r'\{__name__=~"([^"]+)"(?:,fam="([^"]+)")?\}|([a-z_]+)', sel)
+            assert m, sel
+            for x in self.lines:
+                lab = x["metric"]
+                if m.group(3) and lab["__name__"] != m.group(3):
+                    continue
+                if m.group(1) and not re.fullmatch(m.group(1), lab["__name__"]):
+                    continue
+                if m.group(2) and lab.get("fam") != m.group(2):
+                    continue
+                pairs = [(t, v) for t, v in zip(x["timestamps"], x["values"]) if lo <= t <= hi]
+                if pairs:
+                    out.append(json.dumps({"metric": lab, "timestamps": [t for t, _v in pairs],
+                                           "values": [v for _t, v in pairs]}))
+        return ("\n".join(out) + "\n").encode()
+
+
+VM = FakeVM()
+
+
+def write(rows, fam="t", keep=False):
+    """Rows -> VM through the real parser and sink (the store is emptied first unless keep: one fixture at a time)."""
+    if not keep:
+        VM.lines = []
+    sink = store.VMSink(url="http://fake", spool_dir=os.path.join(TMP, "spool"), post=VM.post)
+    E = ingest.Emit(None, sink, {})
+    for t, pts in sorted(rows, key=lambda r: r[0]):
+        ingest.parse_ops_watch({"t": t, "points": pts}, E, "ops_watch:%s.jsonl:0" % fam)
+    sink.flush()
 
 
 def grid(fn, days=7.0, step=900.0, key="t.x", mark="MEASURED"):
@@ -52,7 +97,7 @@ def grid(fn, days=7.0, step=900.0, key="t.x", mark="MEASURED"):
 
 def run(rows):
     write(rows)
-    return om.build(NOW, ["t"], RULES)["readings"]
+    return om.build(NOW, ["t"], RULES, VM.get)["readings"]
 
 
 # 0. a counter's signed limit is on its level, not its rate: past 90 % used is limit h=0 though the rate is flat
@@ -143,8 +188,8 @@ ok(r["state"] == "blind" and r["why"].startswith("learning"), "learning: 6 h of 
 # 10. one generation in both files; a torn pair and an old pair are refused
 write(grid(lambda t: 50.0))
 out = Path(TMP) / "out"
-g1, _ = om.publish(om.build(NOW, ["t"], RULES), out)
-g2, md = om.publish(om.build(NOW, ["t"], RULES), out)
+g1, _ = om.publish(om.build(NOW, ["t"], RULES, VM.get), out)
+g2, md = om.publish(om.build(NOW, ["t"], RULES, VM.get), out)
 ok(g2 == g1 + 1, "generation counts up (%d -> %d)" % (g1, g2))
 good, why = om.check(out, NOW + 60)
 ok(good, "check: fresh pair is OK (%s)" % why)
@@ -160,7 +205,7 @@ for t, pts in rows:
     pts["t.hot"] = {"v": 90.0 if t >= NOW - 0.5 * H else 50.0, "m": "MEASURED"}
     pts["t.gone"] = {"v": None, "m": "UNMEASURED"}
 write(rows)
-md = om.render(om.build(NOW, ["t"], RULES), 1)
+md = om.render(om.build(NOW, ["t"], RULES, VM.get), 1)
 ok("- t.hot 90.0" in md and "outside" in md, "page: outside reading listed")
 ok("- t.gone blind" in md, "page: blind reading listed")
 ok("- t.x " not in md, "page: normal flat reading left out")
@@ -178,6 +223,107 @@ md = om.render(mem, 1)
 ok("- t.zflag 1.00 for" in md, "page cut: an outside flag survives")
 ok("- t.zgone blind" in md, "page cut: a blind line survives")
 ok("calmer lines cut" in md and md.count("\n- ") <= om.PAGE_MAX_LINES + 2, "page cut: says how much was cut")
+
+# 13. the VM path: the fixture really reached the fake store, build --now asks nothing later than now, and a row
+#     after now (a wild value) is not read
+rows = grid(lambda t: 50.0) + [(NOW + 600.0, {"t.x": {"v": 9999.0, "m": "MEASURED"}})]
+write(rows)
+ok(len(VM.lines) > 0, "vm path: the parser and sink imported the fixture (%d series)" % len(VM.lines))
+VM.asked = []
+r = om.build(NOW, ["t"], RULES, VM.get)["readings"]["t.x"]
+ok(VM.asked and all(hi == NOW for _m, _lo, hi in VM.asked), "vm path: export ends at --now (%s)" % VM.asked[:1])
+ok(r["last"] == 50.0 and r["state"] == "normal", "vm path: a row after --now is not read (last %s)" % r.get("last"))
+
+# 14. a row ingested twice (a telemetry rebuild) is one row: coverage and cadence do not double
+rows = grid(lambda t: 50.0)
+write(rows)
+once = om.build(NOW, ["t"], RULES, VM.get)
+VM.lines = VM.lines + [dict(x) for x in VM.lines]
+twice = om.build(NOW, ["t"], RULES, VM.get)
+ok(twice["built_from"]["t"]["rows"] == once["built_from"]["t"]["rows"]
+   and twice["readings"]["t.x"]["coverage_24h"] == once["readings"]["t.x"]["coverage_24h"] == 1.0,
+   "vm path: a duplicated ingest counts each row once (%s rows)" % twice["built_from"]["t"]["rows"])
+
+# 15. ESTIMATE and text are not measurements: a key only ever estimated is blind, never normal
+rows = grid(lambda t: 50.0)
+for t, pts in rows:
+    pts["t.est"] = {"v": 7.0, "m": "ESTIMATE"}
+    pts["t.word"] = {"v": "fine", "m": "MEASURED"}
+write(rows)
+rd = om.build(NOW, ["t"], RULES, VM.get)["readings"]
+ok(rd["t.est"]["state"] == "blind" and rd["t.word"]["state"] == "blind",
+   "vm path: estimated and text keys are blind (%s, %s)" % (rd["t.est"].get("why"), rd["t.word"].get("why")))
+
+# 16. VM down: a blind generation that says so, never an empty one; check refuses it
+VM.down = True
+mem = om.build(NOW, ["t"], RULES, VM.get)
+VM.down = False
+md = om.render(mem, 1)
+ok(mem.get("store_error") and "BLIND: the trend store did not answer" in md, "vm down: the page says the store is blind")
+out2 = Path(TMP) / "out_down"
+om.publish(mem, out2)
+good, why = om.check(out2, NOW + 60)
+ok(not good and why.startswith("blind"), "vm down: check refuses a blind generation (%s)" % why)
+
+# 16b. the store answers but holds no rows for a family: that family is blind on the page, not quiet
+write(grid(lambda t: 50.0))
+mem = om.build(NOW, ["t", "empty"], RULES, VM.get)
+md = om.render(mem, 1)
+ok("- empty (whole family) blind: no rows" in md and "- empty: BLIND, no rows" in md and "- t: 1 normal" in md,
+   "no rows: an empty family is blind on the page")
+
+# 16c. the newest row is UNMEASURED after a healthy week: blind now, not a fresh-looking normal (review r1 of the
+# VM wiring: the old reading kept the previous measurement and coverage and the key vanished from the page)
+rows = grid(lambda t: 50.0)
+rows[-1] = (rows[-1][0], {"t.x": {"v": None, "m": "UNMEASURED"}})
+rd = run(rows)["t.x"]
+ok(rd["state"] == "blind" and rd["why"].startswith("now UNMEASURED"), "latest blind: an unmeasured newest row is blind (%s)" % rd.get("why"))
+rows[-1] = (rows[-1][0], {"t.x": {"v": 3.0, "m": "ESTIMATE"}})
+rd = run(rows)["t.x"]
+ok(rd["state"] == "blind" and rd["why"].startswith("now ESTIMATE"), "latest blind: an estimated newest row is blind (%s)" % rd.get("why"))
+
+rows = grid(lambda t: 50.0)
+rows[-1] = (rows[-1][0], {"t.other": {"v": 1.0, "m": "MEASURED"}})
+rd = run(rows)["t.x"]
+ok(rd["state"] == "blind" and rd["why"].startswith("now absent"), "latest blind: a key the newest row lacks is blind (%s)" % rd.get("why"))
+
+# 17. wait_ingest waits for THIS pass (its status.json time stamp) in every family, then settles; an earlier pass,
+# one family alone, or no pass at all is an error the generation carries (review r1: any row of the last 5 min,
+# from any family, used to satisfy it)
+clock = [NOW]
+def tick(dt):
+    clock[0] += dt
+PASS = NOW - 40.0
+write([(PASS, {"a.x": {"v": 1.0, "m": "MEASURED"}})], fam="a")
+write([(PASS, {"b.x": {"v": 1.0, "m": "MEASURED"}})], fam="b", keep=True)
+w = om.wait_ingest(60, ["a", "b", "production"], PASS, VM.get, clock=lambda: clock[0], sleep=tick)
+ok(w["error"] is None and w["waited_s"] >= om.SETTLE_S - 1e-6 and not w["missing"],
+   "wait_ingest: this pass in every family (production exempt) is waited past one settle (%s)" % w)
+clock[0] = NOW
+w = om.wait_ingest(0.001, ["a", "b"], PASS, VM.get, clock=lambda: clock[0], sleep=tick)
+ok(w["error"] is None and w["waited_s"] >= om.SETTLE_S - 1e-6,
+   "wait_ingest: a pass seen at the deadline still gets the whole settle (review r2) (%s)" % w)
+clock[0] = NOW
+write([(PASS - 30.0, {"a.x": {"v": 1.0, "m": "MEASURED"}})], fam="a")     # the previous pass, 30 s earlier
+write([(PASS, {"b.x": {"v": 1.0, "m": "MEASURED"}})], fam="b", keep=True)
+w = om.wait_ingest(30, ["a", "b"], PASS, VM.get, clock=lambda: clock[0], sleep=tick)
+ok(w["error"] and w["missing"] == ["a"] and clock[0] - NOW >= 30,
+   "wait_ingest: an earlier pass in one family is not this pass (%s)" % w.get("error"))
+clock[0] = NOW
+w = om.wait_ingest(30, ["a"], NOW - 3 * H, VM.get, clock=lambda: clock[0], sleep=tick)
+ok(w["error"] and "no ops_watch pass" in w["error"] and clock[0] == NOW, "wait_ingest: an old pass is refused at once")
+w = om.wait_ingest(30, ["a"], PASS, lambda *a, **k: (_ for _ in ()).throw(ConnectionRefusedError("down")),
+                   clock=lambda: clock[0], sleep=tick)
+ok(w["error"] and "did not answer" in w["error"], "wait_ingest: VM down while waiting is an error")
+# ... and that error makes the generation blind on the page and in check
+write(grid(lambda t: 50.0))
+mem = om.build(NOW, ["t"], RULES, VM.get)
+mem["ingest"] = {"error": "telemetryd had not carried the pass", "missing": ["t"]}
+out3 = Path(TMP) / "out_ingest"
+_g, md = om.publish(mem, out3)
+good, why = om.check(out3, NOW + 60)
+ok("BLIND: this generation does not hold the pass" in md and not good and "lacks the pass" in why,
+   "ingest error: the page says so and check refuses (%s)" % why)
 
 print("selftest_ops_memory: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)

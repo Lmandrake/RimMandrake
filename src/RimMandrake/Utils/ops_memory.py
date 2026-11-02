@@ -2,12 +2,22 @@
 """ops_memory: Operations' trending memory, step 1 of design/RimMandrake/operations_metronome_strategy_2026-11-02.md (§3).
 
 The owner, 2026-11-01: Operations is "about watching and trending everything to keep an overall understanding in
-context". ops_watch already stores every reading (series/<family>.jsonl). This program gathers nothing new: it reads
-those series and writes, beside today's digest, one generation of
+context"; 2026-11-02: "this feels like an extension of [the game metrics] system, or parallel to it at least". So there is
+ONE trend store: telemetryd tails ops_watch's series/<family>.jsonl into VictoriaMetrics (telemetry/ingest.py
+parse_ops_watch: rm_ops_reading, rm_ops_unmeasured, rm_ops_rows) and this program gathers nothing and reads no series
+file: it asks VM for the raw samples of the last 8 days in one export and writes, beside today's digest, one
+generation of
 
   memory.json   for programs: per reading its value and observation time, normal band, 6 h and 24 h trend, state
                 (normal | drifting | outside | blind) and how long, time to a signed limit, a kept step change
   memory.md     for the judge: only the readings that are not normal-and-flat, every blind one, a count per family
+
+What VM answers: storage, retrieval, which keys and rows exist, and when (cadence, staleness, coverage are counted
+from its samples). What stays here, because MetricsQL cannot say it: the band over HOURLY bucket medians with a floor
+relative to the level, and its same-hour form (MetricsQL has no hour-of-day grouping); Theil-Sen trends (deriv() is
+least squares, which one outlier steers); the step change point (none in MetricsQL; telemetry.analysis.compare_windows
+confirms it); flag dwell; counter rates that SKIP a reset interval (VM's increase() reads the value after a reset as a
+rise). An unreachable VM is a blind generation that says so, never an empty one.
 
 READ ONLY: nothing decides from it yet (build step 2 onward). The band is never an alarm limit; signed limits in
 ops_watch_rules.json "targets" still ring through ops_watch as before and are only used here for time to limit.
@@ -20,13 +30,16 @@ Typed readings (each rule is a review counterexample, and a case in selftest_ops
            A reading whose hours of day differ more than its noise is banded against the same hours of earlier days.
   counter  only rises save for resets: read as a rate per hour; a drop is a reset, counted, never a collapse.
   flag     0/1 or true/false: read by dwell (how long in its value, how often it changed), never by slope.
-  blind    never measured, stale (older than 3 of its family's intervals, at least 30 min), sparse (measured in under
+  blind    never measured, stale (older than 3 of its family's intervals, at least 30 min), now unmeasured (its newest
+           row is UNMEASURED / ESTIMATE / text or lacks it, whatever the week before was), sparse (measured in under
            a quarter of its family's rows in 24 h) or learning (under 12 hours of history): never `normal`.
   step     a move to a new level that stays is kept as "stepped from A to B at T" for as long as the 7-day window
            holds both sides, whatever the band has learned since.
 
 Usage:
-  python3 ops_memory.py build [--now EPOCH] [--out DIR]     # write memory.json + memory.md (one generation)
+  python3 ops_memory.py build [--now EPOCH] [--out DIR] [--wait-ingest S]
+        write memory.json + memory.md (one generation); --wait-ingest: after an ops_watch pass (the unit's
+        ExecStartPost), wait up to S s for telemetryd to carry the pass's rows into VM
   python3 ops_memory.py check [--max-age-min 30]            # 0 = one fresh generation; 1 = say why not
 """
 import argparse
@@ -39,7 +52,10 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(1, str(Path(__file__).resolve().parent / "telemetry"))
 import ops_watch as ow  # noqa: E402
+import analysis  # noqa: E402  (telemetry: compare_windows)
+import store  # noqa: E402  (telemetry: vm_export, the only way in)
 
 HOUR = 3600.0
 BASELINE_DAYS = 7
@@ -191,6 +207,8 @@ def find_step(bk, floors):
         if any(sum(1 for x in side if abs(x - m) <= gap / 4) < 0.9 * len(side) for side, m in ((a, ma), (b, mb))):
             continue
         cost = sum(abs(x - ma) for x in a) + sum(abs(x - mb) for x in b)    # medians alone tie on every split
+        if analysis.compare_windows(a, b, min_n=6)["verdict"] not in ("REGRESSION", "IMPROVED"):
+            continue        # the telemetry window test must also see the shift (one test of a shift, not two)
         if best is None or cost < best[0]:
             best = (cost, ma, mb, bk[i][0])
     if best is None:
@@ -277,6 +295,14 @@ def reading(key, samples, fam_rows, now, floors, targets):
         out.update(state="blind", why="stale: last measured %.0f min ago, limit %.0f" % ((now - t_last) / 60.0,
                                                                                          stale_s / 60.0))
         return out
+    if samples[-1][0] > t_last:     # the newest row says it could not measure: blind NOW, whatever the week was
+        out.update(state="blind", why="now %s: latest row %.0f min ago, last measured %.0f min ago" % (
+            samples[-1][1], (now - samples[-1][0]) / 60.0, (now - t_last) / 60.0))
+        return out
+    if fam_rows and fam_rows[-1] > samples[-1][0]:  # the family's newest row does not carry the key at all
+        out.update(state="blind", why="now absent: the family's newest row (%.0f min ago) lacks it, last measured "
+                   "%.0f min ago" % ((now - fam_rows[-1]) / 60.0, (now - t_last) / 60.0))
+        return out
     if len(rows24) >= 3 and len(m24) / float(len(rows24)) < SPARSE_SHARE:
         out.update(state="blind", why="sparse: measured in %d of %d rows in 24 h" % (len(m24), len(rows24)))
         return out
@@ -346,11 +372,88 @@ def reading(key, samples, fam_rows, now, floors, targets):
 
 
 # ============================================================================================================ build
-def family_rows(fam, since):
-    return ow.read_series(fam, since)
+OPS_SERIES = "rm_ops_(reading|unmeasured|rows)"
+POLL_S = 5.0
+SETTLE_S = 20.0             # telemetryd's slow poll is 15 s: one more pass lands a pass it read half-written
 
 
-def build(now=None, fams=None, rules=None):
+def fetch(since, now, fams=None, get=None):
+    """One VM export of every ops_watch sample in [since, now] (now included, nothing later: build --now EPOCH sees
+    no later row). Raises when VM cannot be asked."""
+    sels = ['{__name__=~"%s",fam="%s"}' % (OPS_SERIES, f) for f in fams] if fams else ['{__name__=~"%s"}' % OPS_SERIES]
+    return store.vm_export(sels, since, now, get=get)
+
+
+def gather(series):
+    """VM series -> (rows {fam: [t]}, per {fam: {key: [(t, mark, value|None, is_bool)]}}), oldest first. A row time
+    holds one sample per key (a re-ingested duplicate collapses); a measured value wins over a blindness marker."""
+    rows, per = {}, {}
+    for lab, ts, vs in series:
+        name, fam, key = lab.get("__name__"), lab.get("fam"), lab.get("key")
+        if not fam:
+            continue
+        if name == "rm_ops_rows":
+            rows.setdefault(fam, set()).update(ts)
+            continue
+        if not key:
+            continue
+        d = per.setdefault(fam, {}).setdefault(key, {})
+        if name == "rm_ops_reading":
+            for t, v in zip(ts, vs):
+                d[t] = (t, "MEASURED", v, lab.get("vt") == "bool")
+        elif name == "rm_ops_unmeasured":
+            for t in ts:
+                d.setdefault(t, (t, lab.get("m") or "UNMEASURED", None, False))
+    return ({f: sorted(r) for f, r in rows.items()},
+            {f: {k: [d[t] for t in sorted(d)] for k, d in ks.items()} for f, ks in per.items()})
+
+
+PASS_MAX_AGE_S = 600        # the pass this run follows ended moments ago; an older status.json is not "this pass"
+
+
+def last_pass_t():
+    """The time stamp ops_watch gave the pass that just ran (status.json "t"; every row of the pass carries it).
+    Not series reading: one number that names which rows to wait for. None when unreadable."""
+    try:
+        t = json.loads((ow.ops_dir() / "status.json").read_text(encoding="utf-8")).get("t")
+        return float(t) if isinstance(t, (int, float)) else None
+    except (OSError, ValueError):
+        return None
+
+
+def wait_ingest(max_s, fams=None, pass_t=None, get=None, clock=time.time, sleep=time.sleep):
+    """After an ops_watch pass: wait until VM holds THIS pass's row (time stamp pass_t) for every family the pass
+    always writes, then a full settle (SETTLE_S, even past max_s). -> {"waited_s", "pass_t", "missing": [fam], "error"}; "error" set
+    means the generation is built from an older pass than the one that just ran, and build/check say so.
+    production is not waited for: a pass skips its row when the upstream stream has not moved (ops_watch dup rule)."""
+    t0 = clock()
+    pass_t = last_pass_t() if pass_t is None else pass_t
+    want = [f for f in (fams or ow.ORDER) if f != "production"]
+    res = {"waited_s": None, "pass_t": pass_t, "missing": list(want), "error": None}
+    if pass_t is None or t0 - pass_t > PASS_MAX_AGE_S:
+        res["error"] = "no ops_watch pass in the last %d s to wait for (status.json t=%s)" % (PASS_MAX_AGE_S, pass_t)
+        return res
+    while True:
+        try:
+            got = {lab.get("fam") for lab, ts, _v in store.vm_export(["rm_ops_rows"], pass_t - 1, clock(), get=get)
+                   if any(t >= pass_t - 1 for t in ts)}
+        except Exception as e:  # noqa: BLE001 - VM down: build reports it too; waiting does not help
+            res["error"] = "VictoriaMetrics did not answer while waiting: %s: %s" % (type(e).__name__, str(e)[:200])
+            return res
+        res["missing"] = [f for f in want if f not in got]
+        if not res["missing"]:
+            sleep(SETTLE_S)     # the whole settle even past max_s: a pass seen at the deadline is still half-read
+            res["waited_s"] = clock() - t0
+            return res
+        if clock() - t0 >= max_s:
+            res["waited_s"] = clock() - t0
+            res["error"] = "telemetryd had not carried the pass of %s into VictoriaMetrics after %.0f s: %s" % (
+                time.strftime("%H:%M:%S", time.localtime(pass_t)), max_s, ", ".join(res["missing"]))
+            return res
+        sleep(POLL_S)
+
+
+def build(now=None, fams=None, rules=None, get=None):
     now = time.time() if now is None else now
     if rules is None:
         try:
@@ -361,20 +464,24 @@ def build(now=None, fams=None, rules=None):
     floors = (float(b.get("sigma_floor_rel", 0.05)), float(b.get("sigma_floor_abs", 0.5)))
     targets = ow.good_targets(rules) if isinstance(rules.get("targets"), list) else []
     since = now - READ_DAYS * 24 * HOUR
-    mem = {"written_at": now, "families": {}, "readings": {}, "built_from": {}}
-    for fam in (fams or ow.ORDER):
-        recs = [r for r in family_rows(fam, since) if r.get("t", 0) <= now]    # build --now EPOCH sees no later row
-        rows = [r["t"] for r in recs]
+    fams = list(fams or ow.ORDER)
+    mem = {"written_at": now, "families": {}, "readings": {}, "built_from": {}, "store": "VictoriaMetrics"}
+    try:
+        rows_by, per_by = gather(fetch(since, now, fams, get))
+    except Exception as e:      # noqa: BLE001 - every family is blind, and the page says why
+        mem["store_error"] = "%s: %s" % (type(e).__name__, str(e)[:300])
+        for fam in fams:
+            mem["built_from"][fam] = {"rows": 0, "last_row_t": None}
+            mem["families"][fam] = {}
+        return mem
+    for fam in fams:
+        rows = rows_by.get(fam, [])
         mem["built_from"][fam] = {"rows": len(rows), "last_row_t": rows[-1] if rows else None}
-        per = {}
-        for r in recs:
-            for k, p in (r.get("points") or {}).items():
-                if not isinstance(p, dict):
-                    continue
-                per.setdefault(k, []).append((r["t"], p.get("m"), raw_value(p), isinstance(p.get("v"), bool)))
+        if not rows:        # the store answered but holds nothing: unread, not quiet
+            mem.setdefault("blind_families", {})[fam] = "no rows in VictoriaMetrics in %d d" % READ_DAYS
         counts = {}
-        for k in sorted(per):
-            rd = reading(k, per[k], rows, now, floors, targets)
+        for k, samples in sorted((per_by.get(fam) or {}).items()):
+            rd = reading(k, samples, rows, now, floors, targets)
             rd["family"] = fam
             mem["readings"][k] = rd
             counts[rd["state"]] = counts.get(rd["state"], 0) + 1
@@ -432,12 +539,20 @@ def render(mem, generation, names=()):
     head = ["# Operations memory, generation %d" % generation,
             "written %s; read beside the digest, not instead of it. Exceptions only; every blind reading listed." %
             time.strftime("%Y-%m-%d %H:%M %Z", time.localtime(now)), ""]
+    if mem.get("store_error"):
+        head += ["## BLIND: the trend store did not answer", "- VictoriaMetrics: %s; every family below is unread, "
+                 "not empty" % mem["store_error"], ""]
+    if (mem.get("ingest") or {}).get("error"):
+        head += ["## BLIND: this generation does not hold the pass that just ran",
+                 "- %s; the readings below are from older rows" % mem["ingest"]["error"], ""]
     exc, blind = [], []
     for k, rd in sorted(mem["readings"].items()):
         if rd["state"] == "blind":
             blind.append(line(k, rd, now))
         elif is_exception(rd) or any(fnmatchcase(k, n) for n in names):
             exc.append((0 if rd["state"] == "outside" else 1 if rd["state"] == "drifting" else 2, line(k, rd, now)))
+    for fam, why in sorted((mem.get("blind_families") or {}).items()):
+        blind.append("%s (whole family) blind: %s" % (fam, why))
     exc.sort(key=lambda x: x[0])
     cut = max(0, len(exc) + len(blind) - PAGE_MAX_LINES)
     if cut:
@@ -453,7 +568,9 @@ def render(mem, generation, names=()):
     out += ["", "## Blind (%d)" % len(blind)] + ["- " + s for s in blind]
     out += ["", "## Per family"]
     for fam, c in mem["families"].items():
-        out.append("- %s: %s" % (fam, ", ".join("%d %s" % (n, s) for s, n in sorted(c.items())) or "no readings"))
+        out.append("- %s: %s" % (fam, ", ".join("%d %s" % (n, s) for s, n in sorted(c.items())) or
+                                  ("BLIND, no rows" if fam in (mem.get("blind_families") or {}) or
+                                   mem.get("store_error") else "no readings")))
     return "\n".join(out) + "\n"
 
 
@@ -492,6 +609,10 @@ def check(outdir=None, now=None, max_age_min=MAX_AGE_MIN):
     g_md = first.rsplit(" ", 1)[-1] if first.startswith("# Operations memory, generation ") else None
     if str(j.get("generation")) != g_md:
         return False, "two generations: memory.json %s, memory.md %s" % (j.get("generation"), g_md)
+    if j.get("store_error"):
+        return False, "blind: generation %s could not read VictoriaMetrics (%s)" % (g_md, j["store_error"])
+    if (j.get("ingest") or {}).get("error"):
+        return False, "blind: generation %s lacks the pass that ran (%s)" % (g_md, j["ingest"]["error"])
     age = (now - float(j.get("written_at", 0))) / 60.0
     if age > max_age_min:
         return False, "stale: generation %s written %.0f min ago (limit %.0f)" % (g_md, age, max_age_min)
@@ -505,19 +626,31 @@ def main(argv=None):
     b.add_argument("--now", type=float)
     b.add_argument("--out")
     b.add_argument("--name", action="append", default=[], help="a key glob always shown on the page")
+    b.add_argument("--wait-ingest", type=float, default=0.0, metavar="S",
+                   help="after an ops_watch pass: wait up to S s for telemetryd to carry its rows into VM")
     c = sub.add_parser("check")
     c.add_argument("--out")
     c.add_argument("--max-age-min", type=float, default=MAX_AGE_MIN)
     a = ap.parse_args(argv)
     if a.cmd == "build":
         t0 = time.time()
+        waited = wait_ingest(a.wait_ingest) if a.wait_ingest > 0 and a.now is None else None
         mem = build(a.now)
+        if waited is not None:
+            mem["ingest"] = waited
         gen, md = publish(mem, a.out, a.name)
         n = len(mem["readings"])
         blind = sum(1 for r in mem["readings"].values() if r["state"] == "blind")
-        print("ops_memory: generation %d, %d readings (%d blind), page %d lines, %.1f s" % (
-            gen, n, blind, md.count("\n"), time.time() - t0))
-        return 0
+        print("ops_memory: generation %d, %d readings (%d blind), page %d lines, %.1f s%s" % (
+            gen, n, blind, md.count("\n"), time.time() - t0,
+            "; STORE BLIND: " + mem["store_error"] if mem.get("store_error") else ""))
+        if (mem.get("ingest") or {}).get("error"):
+            print("ops_memory: INGEST BLIND: " + mem["ingest"]["error"])
+            return 1
+        if not mem.get("store_error") and len(mem.get("blind_families") or {}) == len(mem["families"]):
+            print("ops_memory: VictoriaMetrics holds no ops_watch rows at all: is telemetryd ingesting?")
+            return 1
+        return 1 if mem.get("store_error") else 0
     ok, why = check(a.out, None, a.max_age_min)
     print(("OK " if ok else "NOT OK ") + why)
     return 0 if ok else 1

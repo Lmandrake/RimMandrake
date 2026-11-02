@@ -54,6 +54,7 @@ def _defaults() -> dict:
         "modsconfig": modsconfig,
         "bridge_calls": rmpaths.rm_str("scratch", "bridge_calls.jsonl"),
         "artpipe": rmpaths.rm_str("artpipe"),
+        "ops_watch_series": rmpaths.rm_str("ops_watch", "series"),   # ops_watch.series_path, append only
         "mirror": mirror,
         "vm_url": "http://127.0.0.1:8428",
         "grafana_url": "http://127.0.0.1:3000",

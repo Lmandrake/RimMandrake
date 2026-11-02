@@ -2978,6 +2978,9 @@ Description=Ops watch (accounts, Codex, Steve lane, disk, timers, KPIs; Andon fl
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/python3 {deploy}/src/RimMandrake/Utils/ops_watch.py run --file-alarms
+# ops_memory reads this pass back from VictoriaMetrics once telemetryd has ingested it; "-": its failure never fails
+# the pass (a missing or blind generation is what ops_memory.py check reports)
+ExecStartPost=-/usr/bin/python3 {deploy}/src/RimMandrake/Utils/ops_memory.py build --wait-ingest 120
 TimeoutStartSec=420s
 Nice=10
 """

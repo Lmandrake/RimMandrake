@@ -431,6 +431,33 @@ def parse_wsl(r: dict, E: Emit, ref: str) -> None:
         E.event(ts, "selftest_run", None, r, "selftests", ref)
 
 
+def parse_ops_watch(r: dict, E: Emit, ref: str) -> None:
+    """One ops_watch series row (family, t, points{key: {v, m}}) -> three series, so VM is the one trend store:
+      rm_ops_reading{fam,key}      the value, MEASURED and numeric only (a boolean as 0/1 with vt="bool")
+      rm_ops_unmeasured{fam,key,m} 1 where the row carried the key but not as a measured number (m: UNMEASURED,
+                                   ESTIMATE, ..., TEXT for a measured non-number): blindness stays visible, and no
+                                   value series ever holds a 0 that was not read
+      rm_ops_rows{fam}             points in the row, one sample per row (the family's cadence and coverage)"""
+    ts = r.get("t")
+    if not isinstance(ts, (int, float)) or isinstance(ts, bool) or not isinstance(r.get("points"), dict):
+        return
+    ts = float(ts)
+    fam = r.get("family") or os.path.splitext(ref.split(":")[1])[0]
+    pts = r["points"]
+    E.point("rm_ops_rows", {"fam": fam}, len(pts), ts)
+    for key, p in pts.items():
+        if not isinstance(p, dict):
+            continue
+        m, v = p.get("m"), p.get("v")
+        lab = {"fam": fam, "key": key}
+        if m == "MEASURED" and isinstance(v, bool):
+            E.point("rm_ops_reading", {**lab, "vt": "bool"}, 1.0 if v else 0.0, ts)
+        elif m == "MEASURED" and _num(v) is not None and v == v and abs(v) != float("inf"):
+            E.point("rm_ops_reading", lab, v, ts)
+        else:
+            E.point("rm_ops_unmeasured", {**lab, "m": "TEXT" if m == "MEASURED" else str(m or "NONE")}, 1, ts)
+
+
 # ================================================================== sources
 
 class Source:
@@ -471,6 +498,10 @@ def make_sources() -> list[Source]:
         Source("wsl", lambda: [_j(c["inbox"], "wsl", "*.jsonl")], parse_wsl,
                desc="WSL-side exporter: memwatch, objstore, ledger, pulse metrics, selftests, WSL host",
                rate="1 min", producer="wsl_export.py (rm-telemetry-export.timer)"),
+        Source("ops_watch", lambda: [_j(c["ops_watch_series"], "*.jsonl")], parse_ops_watch,
+               desc="ops_watch readings per family (rm_ops_reading / rm_ops_unmeasured / rm_ops_rows); "
+                    "ops_memory.py reads its trends back from VM",
+               rate="15 min", producer="ops_watch.py (rm-ops-watch.timer)"),
     ]
 
 

@@ -70,6 +70,8 @@
  "measure": [
   {"name": "ops_watch", "enabled": true, "every_s": 900, "unit": "rm-ops-watch.timer",
    "run": "python3 src/RimMandrake/Utils/ops_watch.py run --file-alarms",
+   "then": "python3 src/RimMandrake/Utils/ops_memory.py build --wait-ingest 120",
+   "_why_then": "owner 2026-11-02 via the Conductor (OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH): the trending memory is an extension of the telemetry system, not a second store. telemetryd tails the series into VictoriaMetrics; ops_memory reads the pass back from VM and writes memory.md / memory.json beside the digest. The unit's ExecStartPost (ops_watch.py UNIT), failure-tolerant.",
    "rules": "src/RimMandrake/Utils/ops_watch_rules.json", "out": "D:\\ClaudeWork\\rimmandrake\\ops_watch",
    "_why": "the Dispatcher measures deterministically, Operations analyses (owner 2026-10-27, ledger OWNER 05:59:41Z: Operations \"should just have those things automatically gathered for it, so it's not constantly burning tokens gathering it all up for every question considered\"). A systemd user timer runs it, not dispatcher.py; listed here so the one schedule file names everything that runs."},
   {"name": "findings_fold", "enabled": true, "every_s": 60, "unit": "testq-tick.service",

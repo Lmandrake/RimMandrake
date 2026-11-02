@@ -10,11 +10,15 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sqlite3
+import subprocess
 import time
+import urllib.error
+import urllib.parse
 import urllib.request
 
-from tcommon import cfg
+from tcommon import IS_WIN, cfg
 
 SCHEMA = """
 PRAGMA journal_mode=WAL;
@@ -161,21 +165,59 @@ class VMSink:
                 return
 
 
+def _get(url: str, timeout: float) -> bytes:
+    """GET url. WSL cannot reach the Windows-side VM on 127.0.0.1 (NAT), so from WSL a refused or unreachable local
+    address is retried once through Windows' own curl.exe, which can; any other failure is raised as is."""
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            return r.read()
+    except urllib.error.HTTPError:
+        raise
+    except (urllib.error.URLError, OSError) as e:
+        host = urllib.parse.urlsplit(url).hostname
+        if IS_WIN or host not in ("127.0.0.1", "localhost") or not shutil.which("curl.exe"):
+            raise
+        try:
+            r = subprocess.run(["curl.exe", "-sS", "-f", "-m", str(int(timeout) + 1), url],
+                               capture_output=True, timeout=timeout + 15)
+        except (OSError, subprocess.SubprocessError) as e2:
+            raise OSError(f"{e}; via curl.exe: {e2}") from e2
+        if r.returncode:
+            raise OSError(f"{e}; via curl.exe: exit {r.returncode} {r.stderr.decode(errors='replace')[-300:]}")
+        return r.stdout
+
+
 def vm_query(expr: str, start: float | None = None, end: float | None = None, step: str | None = None,
              url: str | None = None) -> dict:
-    import urllib.parse
     base = (url or cfg()["vm_url"]).rstrip("/")
     q = {"query": expr}
     if start is not None:
         q.update({"start": f"{start:.3f}", "end": f"{(end or time.time()):.3f}", "step": step or "15s"})
         path = "/api/v1/query_range"
     else:
+        if end is not None:
+            q["time"] = f"{end:.3f}"
         path = "/api/v1/query"
-    with urllib.request.urlopen(base + path + "?" + urllib.parse.urlencode(q), timeout=15) as r:
-        return json.loads(r.read())
+    return json.loads(_get(base + path + "?" + urllib.parse.urlencode(q), 15))
 
 
 def vm_get(path: str, url: str | None = None, timeout: float = 5) -> bytes:
     base = (url or cfg()["vm_url"]).rstrip("/")
-    with urllib.request.urlopen(base + path, timeout=timeout) as r:
-        return r.read()
+    return _get(base + path, timeout)
+
+
+def vm_export(selectors: list[str], start: float, end: float, url: str | None = None, timeout: float = 60,
+              get=None) -> list[tuple[dict, list[float], list[float]]]:
+    """Raw samples of every series matching any selector in [start, end]: [(labels, timestamps_s, values)], each
+    series oldest first. Raises when VM cannot be asked (an unreachable store is UNMEASURED, never empty)."""
+    q = [("match[]", s) for s in selectors] + [("start", f"{start:.3f}"), ("end", f"{end:.3f}")]
+    body = (get or vm_get)("/api/v1/export?" + urllib.parse.urlencode(q), url, timeout)
+    out = []
+    for line in body.splitlines():
+        if not line.strip():
+            continue
+        d = json.loads(line)
+        pairs = sorted(zip(d.get("timestamps") or [], d.get("values") or []))
+        pairs = [(ts / 1000.0, float(v)) for ts, v in pairs if start * 1000 <= ts <= end * 1000 and v is not None]
+        out.append((d.get("metric") or {}, [p[0] for p in pairs], [p[1] for p in pairs]))
+    return out

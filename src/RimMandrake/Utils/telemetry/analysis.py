@@ -213,17 +213,9 @@ def compare_windows(before: list[float], after: list[float], min_n: int = 30, me
 def windows_from_vm(metric: str, start: float, end: float, mult=None) -> list[float]:
     sel = f'{metric}{{mult="{mult}"}}' if mult is not None else metric
     try:
-        d = store.vm_get("/api/v1/export?" + __import__("urllib.parse").parse.urlencode(
-            {"match[]": sel, "start": f"{start:.0f}", "end": f"{end:.0f}"}), timeout=30)
+        return [v for _lab, _ts, vs in store.vm_export([sel], start, end, timeout=30) for v in vs]
     except Exception:  # noqa: BLE001
         return []
-    vals = []
-    for line in d.splitlines():
-        try:
-            vals.extend(json.loads(line)["values"])
-        except (ValueError, KeyError):
-            continue
-    return vals
 
 
 # ------------------------------------------------------------------ retention
