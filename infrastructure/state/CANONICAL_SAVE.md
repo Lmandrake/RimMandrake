@@ -85,7 +85,7 @@ Evidence, in order:
   `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` and `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS` are still `proposed`
   (filed 2026-10-21, no later events). When the repaint lands, its save replaces R3 as current.
 - **Repo copy:** `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` is byte-identical to the Saves file (sha256
-  `2c6525bcc357f2eb…`); it replaced the stale `world/ASHKARR_DEV_START_2026-10-20.rws` (PAINT, unlocked, map 250) on
+  `2c6525bcc357f2eb…`); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
   2026-11-02. When the repaint save lands it replaces this copy too. The one dev-start pointer is `canon.yml`
   `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.
