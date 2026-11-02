@@ -66,7 +66,7 @@ hazards came only from the three fresh-map suites.
    at build, profile, outdoor temperature at save and byte size. The `.rws` files live in the game's Saves folder on this
    machine only. They are derived (rebuildable by the command above), so they are never committed.
 
-Stable names: `RM_TestSite_calm_v1`, `RM_TestSite_river_v1`, `NS_Pyrelands_site_1_<fp12>_calm`.
+Stable names: `RM_TestSite_calm_v2`, `RM_TestSite_river_v2` (built on `fw_gss_sitting`; v1 was made on the full list and died on the 14-mod list, RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS), `NS_Pyrelands_site_1_<fp12>_calm`. The live name is `SITES[...]['save']` in `src/RimMandrake/Utils/modcheck/test_site_saves.py`.
 
 ## 4. Loading: the default for every suite
 

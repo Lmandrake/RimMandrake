@@ -186,5 +186,78 @@ try:
 except ValueError:
     check("6 pyrelands has no save of its own here", True)
 
+# 7. RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS: river is v2 on fw_gss_sitting; prove refuses a header off the running list or
+#    beyond the tier, refuses to BUILD on a superset, and leaves a failed load at the main menu
+check("7 river site is v2", T.SITES["river"]["save"] == "RM_TestSite_river_v2", T.SITES["river"]["save"])
+check("7 river fixture tier is fw_gss_sitting", T.SITES["river"].get("tier") == "fw_gss_sitting")
+DLC = ["ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+       "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey"]
+TIER = ["brrainz.harmony"] + DLC + ["brrainz.rimbridgeserver", "mandrake.rm.flowworks", "mandrake.rm.biomes"]
+
+
+def fake_save(dirpath, name, ids):
+    path = os.path.join(dirpath, name + ".rws")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write("<?xml version=\"1.0\"?>\n<savegame><meta><gameVersion>1.6</gameVersion><modIds>%s</modIds></meta>"
+                 "<game/></savegame>" % "".join("<li>%s</li>" % i for i in ids))
+    return path
+
+
+d = tempfile.mkdtemp()
+v1 = fake_save(d, "v1like", TIER + ["oskarpotocki.vfe.insectoid2"])
+P, ids = T.header_problems(v1, TIER, TIER)
+check("7 header with a mod off the running list fails", any("running list lacks" in x and "insectoid2" in x for x in P), P)
+check("7 header beyond the fixture tier fails", any("beyond its fixture tier" in x for x in P), P)
+check("7 header reads every id", len(ids) == len(TIER) + 1, ids)
+ok = fake_save(d, "fits", TIER)
+check("7 header that fits the tier passes on a superset running list", T.header_problems(ok, TIER + ["x.y"], TIER)[0] == [])
+check("7 missing DLC fails", any("lacks DLC" in x for x in T.header_problems(fake_save(d, "nodlc", TIER[:3]), TIER, TIER)[0]))
+check("7 missing file fails", T.header_problems(os.path.join(d, "nope.rws"), TIER, TIER)[0] != [])
+check("7 empty running list is unreadable, never a pass", any("unreadable" in x for x in T.header_problems(ok, [], TIER)[0]))
+
+
+class ProveFake(Fake):
+    def __init__(self, running):
+        Fake.__init__(self)
+        self.running = running
+
+    def __call__(self, tool, **kw):
+        if tool == "jawa/running_mods":
+            self.log.append(tool)
+            return {"success": True, "packageIds": list(self.running)}
+        return Fake.__call__(self, tool, **kw)
+
+
+T.tier_ids = lambda tier: list(TIER)
+_built = []
+_real_build, _real_load = T.build, T.load_site
+T.build = lambda *a, **k: _built.append(a) or {"save": "x"}
+f = ProveFake(TIER + ["sarg.extra"])
+r = T.prove(f, "river", d, d, build_if_missing=True, sleep=lambda s: None)
+check("7 prove refuses to build on a list beyond the tier", not _built and any("beyond tier" in x for x in r["A1"]), r["A1"])
+check("7 prove does not load after A1 fails", "rimworld/load_game" not in f.log and not r["verified"])
+f = ProveFake(TIER)
+r = T.prove(f, "river", d, d, build_if_missing=True, sleep=lambda s: None)
+check("7 prove builds when absent on the tier list", len(_built) == 1, _built)
+fake_save(d, T.SITES["river"]["save"], TIER)
+T.load_site = lambda call, site, **k: {"problems": ["the load logged Map.FinalizeLoading"], "verified": False}
+f = ProveFake(TIER)
+f.state = "Playing"
+r = T.prove(f, "river", d, d, sleep=lambda s: None)
+check("7 a failed load is not verified", not r["verified"] and r["A2"], r)
+check("7 a failed load is left at the main menu", f.state == "Entry" and (r.get("menu") or {}).get("reached"), r.get("menu"))
+T.load_site = lambda call, site, **k: {"problems": [], "verified": True}
+f = ProveFake(TIER)
+f.state = "Playing"
+r = T.prove(f, "river", d, d, sleep=lambda s: None)
+check("7 a fitting save that loads clean is verified, game left playing", r["verified"] and f.state == "Playing", r)
+f = ProveFake(TIER)
+r = T.prove(f, "river", d, d, sleep=lambda s: None, load=False)
+check("7 prove --no-load judges A1 without loading", r["verified"] and "rimworld/load_game" not in f.log, r)
+T.build, T.load_site = _real_build, _real_load
+ep = open(os.path.join(HERE, "..", "..", "FlowWorks", "northstar", "extension_proof.py"), encoding="utf-8").read()
+i, j = ep.find("TSS.to_main_menu("), ep.find("did not load clean")
+check("7 extension_proof goes to the main menu before refusing a NOT CLEAN site", 0 < i < j, (i, j))
+
 print("selftest_test_site_saves: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

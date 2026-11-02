@@ -207,7 +207,11 @@ def main(argv=None):
             print("site save %s: %s load %ss ready %ss %s" % (site_save, "CLEAN" if loaded.get("verified") else "NOT CLEAN",
                                                              loaded.get("load_s"), loaded.get("ready_s"), loaded.get("problems") or ""))
             if not loaded.get("verified"):
-                raise SystemExit("the saved site %s did not load clean: %s" % (site_save, loaded.get("problems")))
+                # RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS: a refused site used to leave the broken load running, which sat in a
+                # Root-level Update() NRE storm until the game was closed. Leave it at the main menu.
+                menu = TSS.to_main_menu(s.call)
+                raise SystemExit("the saved site %s did not load clean: %s (main menu %s)" % (
+                    site_save, loaded.get("problems"), "reached" if menu.get("reached") else "NOT reached: %s" % menu))
         runner.ensure_playing_map()
         mi = s.call("jawa/map_info") or {}
         # The plot grid (extensions.PLOTS, 3x3 at PITCH 36) is CENTRED on the map: live 2026-10-05 19:47 the default

@@ -12,6 +12,7 @@ map. A save is cleaned ONCE, read back, and then the same clean map comes back o
     python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py build pyrelands --fingerprint 417df172fdb5 --from-tag r6
     python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py load calm             # load + read-back check
     python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py check calm            # read-back on the current map
+    python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py prove river --build-if-missing  # A1 header [+ A2 load unless --no-load], exit 0/1
 
 The suites call load_site() themselves by default (proof_all.py, validation_v2.py, extension_proof.py --site river);
 each keeps a --fresh-map flag for the old path. Pyrelands keeps its own fixture loader (northstar_site.py
@@ -54,8 +55,13 @@ SITES = {
     # a save made on the smaller list loads clean on every superset.
     "calm": {"save": "RM_TestSite_calm_v2", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
              "suites": ["GimmeSomeSlack/northstar/proof_all.py --live", "FlowWorks/northstar/validation_v2.py --live"]},
-    "river": {"save": "RM_TestSite_river_v1", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
-              "minRiverEdges": 2, "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
+    # v2 (RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS): v1 was saved 2026-10-15 on the owner's 22-mod list (vfe.insectoid2,
+    # sarg.alphaanimals, rsw.swbestiary ...); on the 14-mod fw_gss_sitting list its VFEInsectoids GameComponent could not
+    # load and Map.FinalizeLoading NRE'd into a Root-level Update() storm. v2 is built on fw_gss_sitting (`tier`), and
+    # `prove river` refuses any save whose header names a mod the running list lacks.
+    "river": {"save": "RM_TestSite_river_v2", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
+              "minRiverEdges": 2, "tier": "fw_gss_sitting",
+              "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
     "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm2",   # calm (v1) lost its wildlife to the nonColonists sweep; never overwritten
                   "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm2, then northstar_driver run"]},
     # BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: a scratch-world RM_Cauldron patch, danger-cleaned (wildlife and vents stay).
@@ -594,10 +600,120 @@ def make_river_site(call, home_tile):
     return rec
 
 
+# ------------------------------------------------------------------ prove: the save fits the running list, then loads clean
+def save_header_ids(path):
+    """The save's own mod header (<meta><modIds>, first 64 KiB) -> lowercased packageIds, or None if unreadable."""
+    with open(path, encoding="utf-8", errors="replace") as f:
+        head = f.read(65536)
+    m = re.search(r"<modIds>(.*?)</modIds>", head, re.S)
+    ids = [x.strip().lower() for x in re.findall(r"<li>(.*?)</li>", m.group(1))] if m else []
+    return ids or None
+
+
+def tier_ids(tier):
+    """The exact packageId list modset_builder writes for `tier` (lowercased), or raise: a site's fixture tier must
+    resolve, or 'fits the tier' cannot be judged."""
+    import modset_builder as MB
+    ids, missing, refusals = MB.resolve_tier(tier, MB.scan())
+    if missing or refusals:
+        raise RuntimeError("tier %s does not resolve: missing %s refusals %s" % (tier, missing, refusals))
+    return [i.lower() for i in ids]
+
+
+def header_problems(path, running, tier=None):
+    """A site save against the RUNNING packageIds -> (problems, header ids). A header mod the running list lacks is the
+    RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS class (v1 carried vfe.insectoid2 onto a list without it: GameComponent load
+    failed, FinalizeLoading NRE, Update() storm); a retired donor or a missing DLC is a dead fixture on any tier."""
+    from retired_mods import is_retired
+    from biome_site import missing_dlc
+    if not os.path.isfile(path):
+        return ["no save file %s" % path], []
+    ids = save_header_ids(path)
+    if not ids:
+        return ["save header unreadable: no <modIds> in the first 64 KiB of %s" % path], []
+    run = {str(i).strip().lower() for i in running or ()}
+    if not run:
+        return ["running mod list unreadable (empty): cannot compare the header"], ids
+    P = []
+    off = [i for i in ids if i not in run]
+    if off:
+        P.append("save header names mod(s) the running list lacks %s" % off)
+    bad = [i for i in ids if is_retired(i)]
+    if bad:
+        P.append("save header holds retired donor(s) %s" % bad)
+    lack = missing_dlc(ids)
+    if lack:
+        P.append("save header lacks DLC %s" % lack)
+    if tier is not None:
+        tl = set(tier)
+        beyond = [i for i in ids if i not in tl]
+        if beyond:
+            P.append("save header names mod(s) beyond its fixture tier %s" % beyond)
+    return P, ids
+
+
+def prove(call, site, saves_dir, work_dir, build_if_missing=False, sleep=time.sleep, load=True):
+    """LIVE. A1: the site save exists (built now on the running list if missing and asked) and its header fits the
+    running list. A2: a load from the main menu reads verified. A failed load is left at the main menu, never running
+    (a broken load sits in an Update() NRE storm). -> receipt with A1, A2 (problem lists) and verified."""
+    from biome_site import running_retired
+    spec = SITES[site]
+    name = spec.get("save")
+    if not name:
+        raise ValueError("site %s has no save of its own" % site)
+    rec = {"site": site, "save": name, "tier": spec.get("tier"), "utc": _now()}
+    running, retired = running_retired(call)
+    rec["running"] = running
+    path = os.path.join(saves_dir, name + ".rws")
+    tl = tier_ids(spec["tier"]) if spec.get("tier") else None
+    if build_if_missing and not os.path.isfile(path):
+        extra = [i for i in running if tl is not None and i not in tl]
+        if retired:
+            rec["A1"] = ["not built: the running list holds retired donor(s) %s" % retired]
+        elif extra:
+            # a save records the list it was made on; built on a superset it dies on the tier (v1's whole defect)
+            rec["A1"] = ["not built: the running list has mod(s) beyond tier %s %s" % (spec["tier"], extra)]
+        else:
+            try:
+                b = build(call, site, saves_dir, work_dir, sleep=sleep)
+                rec["build"] = {k: b.get(k) for k in ("save", "head", "saved")}
+            except RuntimeError as ex:
+                rec["build"] = {"error": str(ex)[:600]}
+    if "A1" not in rec:
+        rec["A1"], rec["mods"] = header_problems(path, running, tl)
+        if (rec.get("build") or {}).get("error"):
+            rec["A1"].insert(0, "build failed: %s" % rec["build"]["error"])
+    if rec["A1"]:
+        rec["A2"] = ["not loaded: A1 failed"]
+    elif not load:
+        rec["A2"] = []
+        rec["load"] = "skipped (--no-load: A1 only)"
+    else:
+        ld = load_site(call, site, sleep=sleep)
+        rec["load"] = {k: ld.get(k) for k in ("load_s", "ready_s", "verified", "check")}
+        rec["A2"] = list(ld.get("problems") or [])
+        if rec["A2"]:
+            rec["menu"] = to_main_menu(call, sleep=sleep)
+    rec["verified"] = not rec["A1"] and not rec["A2"]
+    rec["problems"] = rec["A1"] + rec["A2"]
+    return rec
+
+
+def to_main_menu(call, budget_s=180, sleep=time.sleep):
+    """Leave a broken load: go to the main menu and report whether Entry was reached (it may not be, in an NRE storm)."""
+    try:
+        call("rimworld/go_to_main_menu")
+    except Exception as ex:                      # noqa: BLE001 - polled below
+        return {"reached": False, "raised": type(ex).__name__}
+    return {"reached": _wait(lambda: _state(call) == "Entry", budget_s, sleep) is not None}
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("verb", choices=("list", "build", "load", "check"))
+    ap.add_argument("verb", choices=("list", "build", "load", "check", "prove"))
+    ap.add_argument("--build-if-missing", action="store_true", help="prove: build the site first if its save is absent")
+    ap.add_argument("--no-load", action="store_true", help="prove: A1 only (save present, header fits), no load")
     ap.add_argument("site", nargs="?", choices=sorted(SITES))
     ap.add_argument("--work", default=None, help="evidence dir (default Transient/test_site_saves)")
     ap.add_argument("--out", default=None, help="receipt JSON")
@@ -624,6 +740,9 @@ def main(argv=None):
             res = check_map(call, a.site)
         elif a.verb == "load":
             res = load_site(call, a.site)
+        elif a.verb == "prove":
+            from game_paths import SAVES
+            res = prove(call, a.site, SAVES, work, build_if_missing=a.build_if_missing, load=not a.no_load)
         elif a.site == "pyrelands":
             res = build_pyrelands(call, a.fingerprint, a.from_tag, a.tile, work)
         elif SITES[a.site].get("builder"):
@@ -637,6 +756,8 @@ def main(argv=None):
     ok = res.get("verified", not res.get("problems"))
     print("%s %s: %s -> %s %s" % (a.verb, a.site, "CLEAN" if ok else "NOT CLEAN", out,
                                  "" if ok else (res.get("problems") or (res.get("check") or {}).get("problems"))))
+    if a.verb == "prove":
+        return 0 if ok else 1
     return 0 if ok else 3
 
 
