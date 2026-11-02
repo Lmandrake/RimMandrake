@@ -16,8 +16,20 @@ CHAINS
   fecundity_state     a gizka given RSW_GizkaFecundity carries it, a control gizka does not.
   bait_poison         the poison hediff, given to a gizka, advances (state read); the bait item and recipe resolve.
   donor_patch         the port RSW_Gizka (the only patched gizka) reads MarketValue 15 (UNMEASURED when it is not loaded).
-  mechanics_unmeasured  the four discovery triggers, replication and its cap, chewing, cold stall, cull guilt, the
-                      global rate slider: each says what it needs.
+  behaviour_rules     offline reads of the shipped C#: trigger gates and chances, fecundity gates and interval formula,
+                      stage bands, chewing gates, cull-guilt witness rules, slider ranges.
+  discovery_triggers  each of the four triggers (gravship, salvage, trade, quest), fired through its real Harmony entry
+                      with the dice forced (RSW_GizkaProbe), delivers exactly one tame gizka; the 15-day cooldown
+                      blocks a second; an empty trade, a failed quest and a non-wreck deconstruction deliver none; every
+                      trigger toggle, the master switch and discoveryFrequency 0 silence it.
+  fecundity_live      the hediff comp's own tick: the fuse burns and replicates once while fed and warm, stalls hungry
+                      and in a cold room, stops at populationCap, and breedingRate divides the re-armed interval.
+  chewing_live        the infestation check chews a powered heater in a gizka room at the Infestation stage, and spares
+                      it with chewing off, unpowered, or below Infestation.
+  cull_guilt_live     killing a stowaway 3 cells from a colonist gives RSW_GizkaWatchedCull; off, out of the 12-cell
+                      radius, or a gizka without the lineage gives none.
+  global_breeding_slider  globalBreedingRate 2 + RSW_GizkaDonorTuning.Apply halves the live egg and mating intervals;
+                      restoring it restores them.
 
 STATIC (offline): `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 """
@@ -221,8 +233,11 @@ def trigger_findings(srcs):
         if order != sorted(order, reverse=True) or len(set(order)) != 4:
             out.append("trigger chances %s are not gravship > salvage > quest > trade" % order)
     roll = method_body(m, r"private bool Roll\(float baseChance\)") or ""
-    if "Mathf.Clamp01(baseChance * f)" not in roll or "RSW_GizkaSettings.discoveryFrequency" not in roll:
+    if "Mathf.Clamp01(baseChance * RSW_GizkaSettings.discoveryFrequency)" not in roll or "Rand.Chance(chance)" not in roll:
         out.append("Roll is no longer clamp01(baseChance * discoveryFrequency) defaulting to 1")
+    # the probe's forced dice must never beat a zero chance: frequency 0 is how a player silences discovery
+    if "if (chance <= 0f) return false;" not in roll or roll.find("chance <= 0f") > roll.find("ForceRolls"):
+        out.append("Roll lets RSW_GizkaProbe.ForceRolls deliver at chance 0 (discoveryFrequency 0 must silence discovery)")
     disc = method_body(m, r"private void Discover\(") or ""
     if "SpawnStowaway(map, cell, Faction.OfPlayer, newborn: false)" not in disc or "lastDiscoveryTick = Find.TickManager.TicksGame" not in disc:
         out.append("Discover must spawn ONE tame (player-faction, adult) stowaway and stamp the shared cooldown")
@@ -337,8 +352,9 @@ def infestation_findings(srcs):
         seq = [stage_for(srcs, n, cap) for n in range(0, cap + 1)]
         if seq != sorted(seq) or seq[-1] != 4:
             out.append("stage is not monotone in count (or never reaches Plague at the cap) for cap %d" % cap)
-    mc = method_body(f, r"public override void MapComponentTick\(\)") or ""
-    if "TicksGame % CheckIntervalTicks != 0" not in mc or "!RSW_GizkaSettings.stowawayEventsEnabled" not in mc:
+    tick = method_body(f, r"public override void MapComponentTick\(\)") or ""
+    mc = method_body(f, r"internal void CheckNow\(\)") or ""
+    if "TicksGame % CheckIntervalTicks != 0" not in tick or "CheckNow();" not in tick or "!RSW_GizkaSettings.stowawayEventsEnabled" not in mc:
         out.append("MapComponentTick lost its cadence gate or the master switch")
     if "if (RSW_GizkaSettings.chewingEnabled && stage >= GizkaStage.Infestation)" not in mc:
         out.append("chewing is not gated on chewingEnabled AND the Infestation stage")
@@ -515,6 +531,157 @@ def _gizka_kind(t, kinds=GIZKA_KINDS):
     return None
 
 
+# ---- live-mechanics helpers (GIZKA_STOWAWAY_UNMEASURED_ROWS_1): RSW_GizkaProbe through jawa/static_call
+PROBE = "RimMandrake.StarWars.GizkaStowaway.RSW_GizkaProbe"
+TUNING = "RimMandrake.StarWars.GizkaStowaway.RSW_GizkaDonorTuning"
+
+
+def parse_kv(text):
+    """RSW_GizkaProbe's "key=value;key=value" reply as a dict ({} for anything else)."""
+    out = {}
+    for part in str(text or "").split(";"):
+        if "=" in part:
+            k, v = part.split("=", 1)
+            out[k.strip()] = v.strip()
+    return out
+
+
+def _probe_raw(t, method, *args):
+    """The probe's rendered return value. A refused static_call (GM gate off, stale DLL without the probe) is
+    UNMEASURED: the instrument could not ask, which says nothing about the mod."""
+    r = t.bridge_call("jawa/static_call", type=PROBE, method=method, args="|".join(str(a) for a in args))
+    if not _live(t):
+        return "0"
+    if not isinstance(r, dict) or r.get("success") is not True:
+        _unmeasured(t, "jawa/static_call %s.%s refused: %s" % (PROBE.rsplit(".", 1)[1], method, str(r)[:200]))
+    return r.get("result")
+
+
+def _probe(t, method, *args):
+    res = _probe_raw(t, method, *args)
+    if not _live(t):
+        return {}
+    kv = parse_kv(res)
+    if "error" in kv:
+        _fail("RSW_GizkaProbe.%s(%s) -> %s" % (method, "|".join(str(a) for a in args), res))
+    return kv
+
+
+def _int(kv, k):
+    try:
+        return int(float(kv[k]))
+    except (KeyError, TypeError, ValueError):
+        _fail("probe reply has no numeric %s: %r" % (k, kv))
+
+
+def _float(kv, k):
+    try:
+        return float(kv[k])
+    except (KeyError, TypeError, ValueError):
+        _fail("probe reply has no numeric %s: %r" % (k, kv))
+
+
+def _delivers(t, what, kv, want):
+    if not _live(t):
+        return
+    got = _int(kv, "after") - _int(kv, "before")
+    if got != want:
+        _fail("%s delivered %d stowaway gizka, want %d (%r)" % (what, got, want, kv))
+
+
+def _reset(t):
+    if _live(t):
+        _probe(t, "ResetDiscoveryCooldown")
+
+
+def _sset(t, field, value):
+    if not _raw(t, "set", field, value).get("success"):
+        _fail("could not set %s=%s" % (field, value))
+
+
+@contextlib.contextmanager
+def _settings_kept(t, fields):
+    """Snapshot `fields` (live only) and write them back however the block ends."""
+    kept = {}
+    if _live(t):
+        for f in fields:
+            kept[f] = _raw(t, "get", f).get("value")
+    try:
+        yield
+    finally:
+        for f, v in kept.items():
+            if v is not None:
+                _raw(t, "set", f, v)
+
+
+def _tid(t, def_name, rect):
+    r = _ok(t.bridge_call("jawa/list_things", rect=rect, defName=def_name, limit=20), "list_things " + def_name)
+    rows = r.get("things") or []
+    return rows[0].get("id") if rows else None
+
+
+def _spawn_thing(t, def_name, x, z):
+    if not _live(t):
+        return None
+    _ok(t.bridge_call("rimworld/spawn_thing", defName=def_name, stackCount=1, x=x, z=z), "spawn_thing " + def_name)
+    tid = _tid(t, def_name, "%d,%d,5,5" % (x - 2, z - 2))
+    if not tid:
+        _fail("%s is not on the map after spawn_thing" % def_name)
+    return tid
+
+
+def _build(t, ops):
+    r = _ok(t.bridge_call("jawa/build_batch", ops=ops, faction="player", readBack=8), "build_batch " + ops)
+    if r.get("survived") is not None and r.get("survived") != r.get("placed"):
+        _fail("build_batch placed %r but only %r survived" % (r.get("placed"), r.get("survived")))
+    t.bridge_call("jawa/map_commit")
+
+
+def _power(t, thing, on):
+    r = _ok(t.bridge_call("jawa/power_net", thing=thing, forcePowerOn=on), "power_net")
+    if r.get("powerOnAfter") is not on:
+        _unmeasured(t, "power_net forcePowerOn=%s read back powerOnAfter=%r" % (on, r.get("powerOnAfter")))
+
+
+def _after_site(t, site):
+    """A row after its chain's site_ready: UNMEASURED when the site never completed (rows are independent in _comp,
+    so a failed site would otherwise let a row judge an unstaged map)."""
+    if _live(t) and not site.get("ok"):
+        _unmeasured(t, "site_ready did not complete, so this row has nothing staged to measure")
+
+
+def _need_gizka(t):
+    """Every live mechanics chain needs a gizka creature: the mod has no hard dependency on one (donor OR SWBestiary's
+    RSW_Gizka), and without it Ready() refuses and SpawnStowaway returns null -- UNMEASURED, never a FAIL. The
+    `gizkastowaway` modset tier (modcheck_closure) loads SWBestiary for `modcheck run GizkaStowaway`."""
+    if _live(t) and _gizka_kind(t) is None:
+        _unmeasured(t, "no gizka PawnKindDef (Gizka / RSW_Gizka) resolves: neither the donor nor SWBestiary is loaded")
+
+
+def _adult(t, x, z):
+    """One stowaway-lineage gizka aged to its last life stage (RSW_GizkaProbe.SpawnAdult); its ThingID."""
+    kv = _probe(t, "SpawnAdult", "current", "%d,%d" % (x, z))
+    if not _live(t):
+        return None
+    if _int(kv, "lifeStage") != _int(kv, "stages") - 1:
+        _unmeasured(t, "the spawned gizka is not adult (life stage %s of %s)" % (kv.get("lifeStage"), kv.get("stages")))
+    t.session.track("pawn", kv["id"], x=x, z=z)
+    return kv["id"]
+
+
+def _room_with_adult(t, x0, z0, n=1):
+    """A roofed 7x7 steel room at (x0, z0), `n` fed adult stowaways inside at 25 C; the first one's ThingID.
+    (The infestation stage is map-wide: with populationCap's floor of 4, Infestation needs at least 3 gizka.)"""
+    _ok(t.bridge_call("jawa/make_empty_room", rect="%d,%d,7,7" % (x0, z0), stuffDef="Steel"), "make_empty_room")
+    ids = [_adult(t, x0 + 2 + i, z0 + 3) for i in range(n)]
+    kv = parse_kv(_probe_raw(t, "SetRoomTemp", ids[0], "25"))
+    if "error" in kv:
+        _unmeasured(t, "the staged room did not form around the gizka (%r)" % kv)
+    for g in ids:
+        _probe(t, "SetFood", g, "1.0")
+    return ids[0]
+
+
 def _build_suite():
     suite = Suite("GizkaStowaway")
     suite.toggles = sorted(settings_fields())
@@ -682,30 +849,268 @@ def _build_suite():
             if bad:
                 _fail("; ".join(bad[:4]))
 
-    @suite.chain("mechanics_unmeasured")
-    def mechanics_unmeasured(t):
-        for name, toggle, why in (
-            ("gravship_landing_delivers_one_tame_gizka", "triggerGravship",
-             "needs a real gravship landing (Scenario.PostGravshipLanded) and a 35 percent roll; the postfix is attached (harmony_wiring)"),
-            ("salvage_trade_quest_hooks_deliver", "triggerSalvage",
-             "wreck deconstruction, a completed trade and a quest success each need a driven game event and a chance roll"),
-            ("fecundity_replicates_while_fed_and_warm", "breedingRate",
-             "a replication interval of ~4 days needs game days of ticks and a fed warm gizka"),
-            ("population_cap_stops_breeding", "populationCap",
-             "needs a colony grown to the cap (22 per map) over game days"),
-            ("infestation_stage_chews_powered_buildings", "chewingEnabled",
-             "needs the Infestation stage (~3x the cute count) with a powered building in a shared room"),
-            ("cold_below_breeding_gate_stalls_replication", "stowawayEventsEnabled",
-             "needs a gizka room vented below 12 C and days of ticks; no verb sets a room temperature"),
-            ("cull_weighs_on_watching_colonists", "cullGuiltEnabled",
-             "needs a slaughter with colonist witnesses; the Pawn.Kill prefix is attached (harmony_wiring)"),
-            ("global_breeding_slider_rescales_donor_fields", "globalBreedingRate",
-             "RSW_GizkaDonorTuning.Apply runs on WriteSettings or its button, not on a bridge field write; the live "
-             "egg-layer fields have no reader here"),
-        ):
-            with _comp(t, name, toggle=toggle):
+    # ------------------------------------------------------------------ GIZKA_STOWAWAY_UNMEASURED_ROWS_1: live mechanics
+    # Each row drives the mod's REAL entry point through RSW_GizkaProbe (jawa/static_call) with the dice forced, and
+    # each has an off arm that must deliver nothing. Settings touched are restored in a finally.
+
+    @suite.chain("discovery_triggers")
+    def discovery_triggers(t):
+        keep = ("stowawayEventsEnabled", "discoveryFrequency", "triggerGravship", "triggerSalvage", "triggerTrade",
+                "triggerQuest")
+        with _settings_kept(t, keep):
+            site = {"ok": False}
+            with _comp(t, "site_ready", beyond_toggle=True):
+                _need_gizka(t)
                 if _live(t):
-                    _unmeasured(t, why)
+                    for k in keep:
+                        _sset(t, k, "1.0" if k == "discoveryFrequency" else "True")
+                site["ok"] = True
+            with _comp(t, "gravship_landing_delivers_one_tame_gizka", toggle="triggerGravship"):
+                _after_site(t, site)
+                _reset(t)
+                _delivers(t, "gravship landing", _probe(t, "Fire", "gravship", "current"), 1)
+            with _comp(t, "cooldown_blocks_a_second_discovery", toggle="stowawayEventsEnabled"):
+                _after_site(t, site)
+                _delivers(t, "a second landing inside the 15-day cooldown", _probe(t, "Fire", "gravship", "current"), 0)
+            with _comp(t, "trade_delivers_one_and_an_empty_trade_none", toggle="triggerTrade"):
+                _after_site(t, site)
+                _reset(t)
+                _delivers(t, "a trade window closed with nothing moved", _probe(t, "Fire", "trade_unchanged", "current"), 0)
+                _delivers(t, "a completed trade", _probe(t, "Fire", "trade", "current"), 1)
+            with _comp(t, "quest_success_delivers_one_and_failure_none", toggle="triggerQuest"):
+                _after_site(t, site)
+                _reset(t)
+                _delivers(t, "a failed quest", _probe(t, "Fire", "quest_fail", "current"), 0)
+                _delivers(t, "a successful quest", _probe(t, "Fire", "quest", "current"), 1)
+            with _comp(t, "salvage_deconstruction_delivers_one_and_other_things_none", toggle="triggerSalvage"):
+                _after_site(t, site)
+                t.clear_area(size=12)
+                x, z = t.anchor
+                _reset(t)
+                slag = _spawn_thing(t, "ChunkSlagSteel", x + 2, z)
+                _delivers(t, "deconstructing a plain slag chunk", _probe(t, "Deconstruct", slag), 0)
+                chunk = _spawn_thing(t, "ShipChunk", x - 2, z)
+                _delivers(t, "deconstructing a ShipChunk", _probe(t, "Deconstruct", chunk), 1)
+            with _comp(t, "every_off_switch_silences_its_trigger", toggle="stowawayEventsEnabled"):
+                _after_site(t, site)
+                for setting, value, trigger in (("triggerGravship", "False", "gravship"), ("triggerTrade", "False", "trade"),
+                                                ("triggerQuest", "False", "quest"),
+                                                ("stowawayEventsEnabled", "False", "gravship"),
+                                                ("discoveryFrequency", "0", "gravship")):
+                    if not _live(t):
+                        break
+                    _sset(t, setting, value)
+                    _reset(t)
+                    _delivers(t, "%s with %s=%s" % (trigger, setting, value), _probe(t, "Fire", trigger, "current"), 0)
+                    _sset(t, setting, "1.0" if setting == "discoveryFrequency" else "True")
+                if _live(t):
+                    _sset(t, "triggerSalvage", "False")
+                    _reset(t)
+                    x, z = t.anchor
+                    chunk = _spawn_thing(t, "ShipChunk", x, z + 3)
+                    _delivers(t, "ShipChunk deconstructed with triggerSalvage=False", _probe(t, "Deconstruct", chunk), 0)
+
+    @suite.chain("fecundity_live")
+    def fecundity_live(t):
+        base, stretch, _min_t, _min_f = behaviour_props()
+        with _settings_kept(t, ("stowawayEventsEnabled", "breedingRate", "populationCap")):
+            t.clear_area(size=16)
+            x, z = t.anchor
+            g = None
+            site = {"ok": False}
+            with _comp(t, "site_ready", beyond_toggle=True):
+                _need_gizka(t)
+                if _live(t):
+                    _sset(t, "stowawayEventsEnabled", "True")
+                    _sset(t, "breedingRate", "1.0")
+                    _sset(t, "populationCap", "200")
+                    g = _room_with_adult(t, x - 4, z - 4)
+                site["ok"] = True
+            with _comp(t, "fecundity_replicates_while_fed_and_warm", toggle="stowawayEventsEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    r = _probe(t, "TickFecundity", g, 1000, 100)
+                    if _int(r, "fuseAfter") != 900 or _int(r, "after") != _int(r, "before"):
+                        _fail("a fed warm gizka's fuse did not just burn 100 ticks (%r)" % r)
+                    r = _probe(t, "TickFecundity", g, 100, 100)
+                    if _int(r, "after") != _int(r, "before") + 1:
+                        _fail("an expired fuse on a fed warm gizka did not replicate once (%r)" % r)
+                    if _int(r, "fuseAfter") < 2500:
+                        _fail("the fuse was not re-armed after replicating (%r)" % r)
+            with _comp(t, "hunger_stalls_the_fuse", toggle="stowawayEventsEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    _probe(t, "SetFood", g, "0.1")
+                    r = _probe(t, "TickFecundity", g, 100, 100)
+                    _probe(t, "SetFood", g, "1.0")
+                    if _int(r, "fuseAfter") != 100 or _int(r, "after") != _int(r, "before"):
+                        _fail("a hungry gizka's fuse burned or it replicated (%r)" % r)
+            with _comp(t, "cold_below_breeding_gate_stalls_replication", toggle="stowawayEventsEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    _probe(t, "SetRoomTemp", g, "0")
+                    r = _probe(t, "TickFecundity", g, 100, 100)
+                    _probe(t, "SetRoomTemp", g, "25")
+                    if _float(r, "temp") >= _float(r, "minTemp"):
+                        _unmeasured(t, "the room did not read cold (%r)" % r)
+                    if _int(r, "fuseAfter") != 100 or _int(r, "after") != _int(r, "before"):
+                        _fail("a gizka in a %s C room still burned its fuse or replicated (%r)" % (r.get("temp"), r))
+            with _comp(t, "population_cap_stops_breeding", toggle="populationCap"):
+                _after_site(t, site)
+                if _live(t):
+                    n = int(_probe_raw(t, "Count", "current"))
+                    _sset(t, "populationCap", str(n))
+                    r = _probe(t, "TickFecundity", g, 100, 100)
+                    if _int(r, "after") != _int(r, "before"):
+                        _fail("a gizka replicated with the map at its cap %d (%r)" % (n, r))
+            with _comp(t, "breeding_rate_divides_the_interval", toggle="breedingRate"):
+                _after_site(t, site)
+                if _live(t):
+                    n = int(_probe_raw(t, "Count", "current"))
+                    _sset(t, "populationCap", str(n))          # at the cap: no spawn, pure interval read
+                    for rate in (1.0, 4.0):
+                        _sset(t, "breedingRate", repr(rate))
+                        r = _probe(t, "TickFecundity", g, 100, 100)
+                        days = replicate_interval_days(base, stretch, n, n, rate)
+                        lo, hi = days * 60000 * 0.85 - 2, days * 60000 * 1.15 + 2
+                        if not lo <= _int(r, "fuseAfter") <= hi:
+                            _fail("breedingRate %s: re-armed fuse %s ticks, want %d..%d" % (rate, r.get("fuseAfter"), lo, hi))
+
+    @suite.chain("chewing_live")
+    def chewing_live(t):
+        srcs = load_srcs()
+        with _settings_kept(t, ("stowawayEventsEnabled", "chewingEnabled", "populationCap")):
+            t.clear_area(size=16)
+            x, z = t.anchor
+            heater = None
+            site = {"ok": False}
+            with _comp(t, "site_ready", beyond_toggle=True):
+                _need_gizka(t)
+                if _live(t):
+                    _sset(t, "stowawayEventsEnabled", "True")
+                    _sset(t, "chewingEnabled", "True")
+                    _room_with_adult(t, x + 2, z - 4, n=3)
+                    _build(t, "Heater:%d,%d" % (x + 4, z - 3))
+                    heater = _tid(t, "Heater", "%d,%d,9,9" % (x + 2, z - 4))
+                    if not heater:
+                        _fail("no Heater on the map after build_batch")
+                site["ok"] = True
+
+            def cap_for(stage):
+                n = int(_probe_raw(t, "Count", "current"))
+                caps = [c for c in range(4, 400) if stage_for(srcs, n, c) == stage]
+                if not caps:
+                    _unmeasured(t, "no populationCap puts %d gizka at stage %d" % (n, stage))
+                _sset(t, "populationCap", str(caps[0]))
+
+            def chew(want_broken, why):
+                r = _probe(t, "ChewCheck", heater)
+                if r.get("brokenBefore", "").lower() != "false":
+                    _unmeasured(t, "the heater was already broken before the check (%r)" % r)
+                if (r.get("brokenAfter", "").lower() == "true") != want_broken:
+                    _fail("%s: heater brokenAfter=%s (%r)" % (why, r.get("brokenAfter"), r))
+                return r
+
+            with _comp(t, "chewing_off_spares_a_powered_building", toggle="chewingEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    _power(t, heater, True)
+                    cap_for(3)
+                    _sset(t, "chewingEnabled", "False")
+                    chew(False, "chewingEnabled off")
+                    _sset(t, "chewingEnabled", "True")
+            with _comp(t, "unpowered_building_is_not_chewed", toggle="chewingEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    _power(t, heater, False)
+                    cap_for(3)
+                    chew(False, "unpowered heater at Infestation")
+                    _power(t, heater, True)
+            with _comp(t, "below_infestation_nothing_is_chewed", toggle="populationCap"):
+                _after_site(t, site)
+                if _live(t):
+                    cap_for(2)
+                    r = chew(False, "Underfoot stage")
+                    if r.get("stage") != "Underfoot":
+                        _unmeasured(t, "the live stage is %s, not Underfoot (%r)" % (r.get("stage"), r))
+            with _comp(t, "infestation_stage_chews_powered_buildings", toggle="chewingEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    cap_for(3)
+                    r = chew(True, "a powered heater sharing a room with gizka at Infestation")
+                    if r.get("stage") != "Infestation" or r.get("powerOn", "").lower() != "true":
+                        _fail("the chew happened outside its gates: stage %s powerOn %s" % (r.get("stage"), r.get("powerOn")))
+
+    @suite.chain("cull_guilt_live")
+    def cull_guilt_live(t):
+        with _settings_kept(t, ("stowawayEventsEnabled", "cullGuiltEnabled")):
+            t.clear_area(size=40)
+            x, z = t.anchor
+            col = kind = None
+            site = {"ok": False}
+            with _comp(t, "site_ready", beyond_toggle=True):
+                kind = _gizka_kind(t)
+                if _live(t) and kind is None:
+                    _unmeasured(t, "no gizka PawnKindDef resolves (donor / SWBestiary not loaded)")
+                if _live(t):
+                    _sset(t, "stowawayEventsEnabled", "True")
+                    _sset(t, "cullGuiltEnabled", "True")
+                    col = _spawn(t, "Colonist", x, z, faction="player")
+                site["ok"] = True
+
+            def memories():
+                return int(_probe_raw(t, "MemoryCount", col, "RSW_GizkaWatchedCull"))
+
+            def cull(gid, want, why):
+                m0 = memories()
+                r = _probe(t, "Kill", gid)
+                if r.get("dead", "").lower() != "true":
+                    _unmeasured(t, "the gizka did not die (%r)" % r)
+                if memories() - m0 != want:
+                    _fail("%s: %d new RSW_GizkaWatchedCull memories, want %d" % (why, memories() - m0, want))
+
+            with _comp(t, "cull_guilt_off_weighs_nothing", toggle="cullGuiltEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    _sset(t, "cullGuiltEnabled", "False")
+                    cull(_adult(t, x + 3, z), 0, "cullGuiltEnabled off")
+                    _sset(t, "cullGuiltEnabled", "True")
+            with _comp(t, "unwatched_or_wild_kills_weigh_nothing", toggle="cullGuiltEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    cull(_adult(t, x + 16, z), 0, "a stowaway killed 16 cells away (witness radius 12)")
+                    cull(_spawn(t, kind, x + 3, z + 2, faction="player"), 0, "a gizka without the fecundity lineage")
+            with _comp(t, "cull_weighs_on_watching_colonists", toggle="cullGuiltEnabled"):
+                _after_site(t, site)
+                if _live(t):
+                    cull(_adult(t, x + 3, z), 1, "a stowaway killed 3 cells from a colonist")
+
+    @suite.chain("global_breeding_slider")
+    def global_breeding_slider(t):
+        with _comp(t, "global_breeding_slider_rescales_donor_fields", toggle="globalBreedingRate"):
+            kind = _gizka_kind(t, kinds=("RSW_Gizka", "Gizka"))
+            if _live(t) and kind is None:
+                _unmeasured(t, "no gizka ThingDef resolves (donor / SWBestiary not loaded)")
+            if _live(t):
+                old = _raw(t, "get", "globalBreedingRate").get("value")
+                f0 = _probe(t, "DonorFields", kind)
+                g0 = float(old)
+                if _float(f0, "egg") <= 0 or _float(f0, "mate") <= 0:
+                    _unmeasured(t, "%s has no egg layer or mate interval to scale (%r)" % (kind, f0))
+                try:
+                    _sset(t, "globalBreedingRate", "2.0")
+                    _ok(t.bridge_call("jawa/static_call", type=TUNING, method="Apply", args=""), "RSW_GizkaDonorTuning.Apply")
+                    f2 = _probe(t, "DonorFields", kind)
+                    for k in ("egg", "mate"):
+                        want = _float(f0, k) * g0 / 2.0
+                        if abs(_float(f2, k) - want) > 1e-3 * max(1.0, want):
+                            _fail("globalBreedingRate 2: live %s %s, want %.4f (base %s at rate %s)" % (k, f2.get(k), want, f0.get(k), g0))
+                finally:
+                    _sset(t, "globalBreedingRate", old)
+                    t.bridge_call("jawa/static_call", type=TUNING, method="Apply", args="")
+                f3 = _probe(t, "DonorFields", kind)
+                if abs(_float(f3, "egg") - _float(f0, "egg")) > 1e-4:
+                    _fail("restoring globalBreedingRate %s did not restore the egg interval (%r -> %r)" % (old, f0, f3))
 
     return suite
 

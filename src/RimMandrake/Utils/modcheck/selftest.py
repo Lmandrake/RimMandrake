@@ -722,6 +722,12 @@ def t_dependency_closure_and_composed_folders():
     check("composed: Pyrelands tier closure names biomes, patches and bestiary",
          all(x in t for x in ("mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rsw.swbestiary")), t)
     check("composed: a mod with no tier has no closure", runner.tier_package_ids("NoSuchTierMod") == [])
+    # GIZKA_STOWAWAY_UNMEASURED_ROWS_1: an ordinary mod's tier is composed only when it opts in
+    g = runner.closure_ids("GizkaStowaway", None)
+    check("closure: GizkaStowaway's opted-in tier brings SWBestiary", "mandrake.rsw.swbestiary" in g, g)
+    check("closure: an ordinary mod whose tier does not opt in composes nothing extra",
+          runner.closure_ids("Bacta", None) == [] and runner.tier_package_ids("Bacta") != [], runner.closure_ids("Bacta", None))
+    check("closure: a folded mod still gets its tier", runner.closure_ids("Pyrelands", ("biomes", "x")) == t)
 
 
 def t_fixture_declared_without_watch():

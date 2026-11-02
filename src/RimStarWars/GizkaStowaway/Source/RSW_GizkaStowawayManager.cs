@@ -64,6 +64,12 @@ namespace RimMandrake.StarWars.GizkaStowaway
             Scribe_Values.Look(ref lastDiscoveryTick, "lastDiscoveryTick", -999999);
         }
 
+        /// <summary>RSW_GizkaProbe only: forget the last discovery so the next trigger may deliver.</summary>
+        internal void ResetCooldownForProbe()
+        {
+            lastDiscoveryTick = -999999;
+        }
+
         private bool Ready(bool triggerEnabled)
         {
             if (!RSW_GizkaSettings.stowawayEventsEnabled || !triggerEnabled) return false;
@@ -74,8 +80,9 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         private bool Roll(float baseChance)
         {
-            float f = RSW_GizkaSettings.discoveryFrequency;
-            return Rand.Chance(Mathf.Clamp01(baseChance * f));
+            float chance = Mathf.Clamp01(baseChance * RSW_GizkaSettings.discoveryFrequency);
+            if (chance <= 0f) return false;                       // frequency 0 silences discovery, probe or not
+            return RSW_GizkaProbe.ForceRolls || Rand.Chance(chance);
         }
 
         // ---- the four hooks -------------------------------------------------

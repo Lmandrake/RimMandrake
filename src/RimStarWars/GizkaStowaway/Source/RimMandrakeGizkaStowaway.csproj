@@ -47,6 +47,7 @@
     <Compile Include="MapComponent_GizkaInfestation.cs" />
     <Compile Include="HediffComp_GizkaFecundity.cs" />
     <Compile Include="RSW_GizkaHarmonyPatches.cs" />
+    <Compile Include="RSW_GizkaProbe.cs" />
   </ItemGroup>
 
   <ItemGroup>

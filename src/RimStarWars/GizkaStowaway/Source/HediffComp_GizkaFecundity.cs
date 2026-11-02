@@ -46,7 +46,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
     /// </summary>
     public class HediffComp_GizkaFecundity : HediffComp
     {
-        private int ticksUntilReplicate = -1;
+        internal int ticksUntilReplicate = -1;   // internal: RSW_GizkaProbe sets the fuse
 
         public HediffCompProperties_GizkaFecundity Props =>
             (HediffCompProperties_GizkaFecundity)props;

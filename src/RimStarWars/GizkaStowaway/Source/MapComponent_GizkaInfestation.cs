@@ -66,7 +66,12 @@ namespace RimMandrake.StarWars.GizkaStowaway
         {
             base.MapComponentTick();
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 0) return;
+            CheckNow();
+        }
 
+        /// <summary>One stage-and-chew check: the body of every CheckIntervalTicks tick (RSW_GizkaProbe calls it directly).</summary>
+        internal void CheckNow()
+        {
             if (!RSW_GizkaSettings.stowawayEventsEnabled) return;
             if (RSW_GizkaPopulation.Kind == null) return;
 
@@ -172,7 +177,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
                 Room room = b.GetRoom();
                 if (room == null || !perRoom.TryGetValue(room, out int here) || here <= 0) continue;
 
-                if (!Rand.MTBEventOccurs(ChewMtbTicksPerGizka / here, 1f, CheckIntervalTicks)) continue;
+                if (!RSW_GizkaProbe.ForceRolls && !Rand.MTBEventOccurs(ChewMtbTicksPerGizka / here, 1f, CheckIntervalTicks)) continue;
 
                 brk.DoBreakdown();
 

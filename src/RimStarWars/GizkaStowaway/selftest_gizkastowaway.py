@@ -37,7 +37,7 @@ def main():
                            ("fecundity", V.fecundity_findings, (srcs, props)), ("infestation", V.infestation_findings, (srcs,)),
                            ("cull", V.cull_findings, (srcs,))):
         check("shipped source: %s clean" % name, fn(*args) == [], fn(*args))
-    check("sanity probe: props are (4 d, 8x, 12 C, 0.35) and 5 source files read", props == (4.0, 8.0, 12.0, 0.35) and len(srcs) == 6, (props, len(srcs)))
+    check("sanity probe: props are (4 d, 8x, 12 C, 0.35) and 7 source files read (RSW_GizkaProbe.cs since GIZKA_STOWAWAY_UNMEASURED_ROWS_1)", props == (4.0, 8.0, 12.0, 0.35) and len(srcs) == 7, (props, len(srcs)))
     check("interval mirror: empty 4 d, half full 18 d, capped 32 d, 2x rate halves", [V.replicate_interval_days(4, 8, p, 22, r) for p, r in ((0, 1), (11, 1), (22, 1), (22, 2))] == [4.0, 18.0, 32.0, 16.0])
     check("interval mirror: cap 0 means full, rate 0 means 1x", V.replicate_interval_days(4, 8, 3, 0, 1) == 32.0 and V.replicate_interval_days(4, 8, 0, 22, 0.0) == 4.0)
     check("discovery chance: 0.35 x1 = .35, x3 clamps to 1, x0 = 0", [V.discovery_chance(0.35, f) for f in (1, 3, 0)] == [0.35, 1.0, 0.0] or V.discovery_chance(0.35, 3) == 1.0)
@@ -62,7 +62,8 @@ def main():
     brk("cooldown 1 day", M, "DiscoveryCooldownTicks = 900000", "DiscoveryCooldownTicks = 60000", V.trigger_findings, "cooldown")
     brk("trade as common as gravship", M, "ChanceTrade = 0.05f", "ChanceTrade = 0.5f", V.trigger_findings, "not gravship > salvage")
     brk("salvage rolls the trade chance", M, "Roll(ChanceSalvage)", "Roll(ChanceTrade)", V.trigger_findings, "does not roll")
-    brk("Roll ignores the frequency slider", M, "baseChance * f", "baseChance", V.trigger_findings, "Roll is no longer")
+    brk("Roll ignores the frequency slider", M, "baseChance * RSW_GizkaSettings.discoveryFrequency", "baseChance", V.trigger_findings, "Roll is no longer")
+    brk("probe dice beat a zero chance", M, "if (chance <= 0f) return false;", "", V.trigger_findings, "chance 0")
     brk("discovery spawns a wild gizka", M, "Faction.OfPlayer, newborn: false", "null, newborn: false", V.trigger_findings, "ONE tame")
     brk("a Discover delivered twice", M, "            Discover(map, salvage.Position,", "            Discover(map, salvage.Position, \"a\", \"b\");\n            Discover(map, salvage.Position,", V.trigger_findings, "exactly one gizka")
     brk("a hook stops reaching Notify_TradeCompleted", P, "Instance?.Notify_TradeCompleted(", "Instance?.Nothing(", V.trigger_findings, "no Harmony hook")

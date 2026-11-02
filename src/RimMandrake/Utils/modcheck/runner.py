@@ -343,6 +343,21 @@ def tier_package_ids(mod_folder):
     return [p.lower() for p in tier["want"]] if tier else []
 
 
+def closure_ids(mod_folder, folded):
+    """The tier ids `run()` composes after the mod: always for a composed (folded) mod; for an ordinary mod only when
+    its own tier opts in with `"modcheck_closure": True` (a soft dependency the suite needs loaded, e.g. GizkaStowaway's
+    gizka creature in SWBestiary -- GIZKA_STOWAWAY_UNMEASURED_ROWS_1). Other tiers named after a mod stay unused here."""
+    if folded:
+        return tier_package_ids(mod_folder)
+    sys.path.insert(0, _UTILS)
+    try:
+        import modset_builder
+        tier = modset_builder.TIERS.get(mod_folder.lower())
+    except Exception:     # noqa: BLE001
+        return []
+    return [p.lower() for p in tier["want"]] if tier and tier.get("modcheck_closure") is True else []
+
+
 def compose_test_list(package_ids, config_path=None):
     """Append `package_ids` (the mods under test) to the live ModsConfig's
     <activeMods>, after `modlist_swap.py --minimal --apply` has made MINIMAL
@@ -1046,8 +1061,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 own = folded[1] if folded else mod_package_id(mod_dir)
                 if own not in package_ids:
                     package_ids.append(own)
-                if folded:      # the composed mod's tier closure (patches, bestiary ...), not just its own id
-                    package_ids.extend(t for t in tier_package_ids(mod_folder) if t not in package_ids)
+                # the composed mod's tier closure (patches, bestiary ...), or an ordinary mod's opted-in tier
+                package_ids.extend(t for t in closure_ids(mod_folder, folded) if t not in package_ids)
             if not keep:
                 compose_test_list(package_ids)
         for mod_folder, item_id in mods:

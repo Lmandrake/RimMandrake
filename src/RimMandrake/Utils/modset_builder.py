@@ -816,6 +816,18 @@ TIERS["watchers_live"] = {
     "dlc": True,
 }
 
+TIERS["gizkastowaway"] = {
+    "why": "GIZKA_STOWAWAY_UNMEASURED_ROWS_1: the north-star list for Gizka Stowaway (mandrake.rsw.gizkastowaway). "
+           "The mod has no hard dependency on a gizka creature (donor OR SWBestiary's RSW_Gizka), so on MINIMAL "
+           "alone every creature row read UNMEASURED; SWBestiary carries RSW_Gizka and needs mandrake.rm.biomes. "
+           "gimmesomeslack: JawaBench's companion tools TypeLoad-fail without it (see the rites tier).",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary",
+             "mandrake.rsw.gizkastowaway"],
+    "dlc": True,
+    "modcheck_closure": True,    # modcheck/runner.py closure_ids: `modcheck run GizkaStowaway` composes this list
+}
+
+
 TIERS["acc_green_min"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, HugeThings (Titanic Creatures merged in), "
            "Warcasket, GizkaStowaway, OasisMaker, ScarlandsLadder, LeaningScrub, "

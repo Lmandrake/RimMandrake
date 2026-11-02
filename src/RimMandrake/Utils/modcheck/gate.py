@@ -409,8 +409,7 @@ def package_ids_for(mod_folder):
     own = folded[1] if folded else R.mod_package_id(mod_dir)
     if own not in out:
         out.append(own)
-    if folded:
-        out.extend(t for t in R.tier_package_ids(mod_folder) if t not in out)
+    out.extend(t for t in R.closure_ids(mod_folder, folded) if t not in out)
     return out
 
 
