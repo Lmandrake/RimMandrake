@@ -44,7 +44,7 @@ OBSERVER = re.compile(r"\b(player|colonist|colonists|viewer|observer|pawn|pawns|
                       re.I)
 CONSTRAINT = re.compile(r"^\s*(at most|at least|under|over|no more than|<=?|>=?)?\s*\d+(\.\d+)?\s*(ms|s|min|mb|gb|kb|tps|fps|%|"
                         r"per [a-z]+|[a-z]+/[a-z]+)(?![A-Za-z0-9]).*\bon\s+\S+", re.I)
-WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat", "second order": r"\b(second|another|different|other|opposite|reverse|reversed)\s+order\b|\border\s+reversed\b|\breverse\s+the\s+order\b"}
+WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat(s|ed|ing)?\b", "second order": r"\b(second|another|different|other|opposite|reverse|reversed)\s+order\b|\border\s+reversed\b|\breverse\s+the\s+order\b"}
 TOOL_ROOT = "tool"
 STOP = set("the a an of to in on and or it is at for by this that with how what does do not be are was you your his he "
            "me my i we as if".split())
@@ -108,8 +108,8 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: no `## %s` section" % s)
     if not sheet.get("his words"):
         errs.append("sheet: `his words` is empty")
-    leaves = {x.get("id"): x for x in tree.get("leaves") or [] if isinstance(x, dict)}
-    waived = {w.get("id") for w in tree.get("waived") or [] if isinstance(w, dict)}
+    leaves = {x.get("id"): x for x in (tree.get("leaves") if isinstance(tree.get("leaves"), list) else []) if isinstance(x, dict)}
+    waived = {w.get("id") for w in (tree.get("waived") if isinstance(tree.get("waived"), list) else []) if isinstance(w, dict)}
     floor_ids = {ln["id"] for ln in (floor or load_floor()[0])["lines"]}
     named = set()
     for sec, allowed in (("does", ("leaf", "floor", "waived", "advisory")), ("does not", ("leaf", "floor", "waived"))):
@@ -161,7 +161,7 @@ def leaf_errors(x, kind, tiers, root_ids):
     errs = []
     e = lambda why: errs.append("leaf %s: %s" % (lid, why))     # noqa: E731
     for k in LEAF_REQ:
-        if x.get(k) in (None, "", []):
+        if x.get(k) in (None, "", []) or (isinstance(x.get(k), str) and not x[k].strip()):
             e("%s missing" % k)
     for k in ("experience", "scenario", "red", "tier_proposed", "owner_part", "oracle_proposed", "cannot_show"):
         if x.get(k) is not None and not isinstance(x[k], str):
@@ -209,9 +209,9 @@ def leaf_errors(x, kind, tiers, root_ids):
             if r not in root_ids:
                 e("root id %s is not in the north star" % r)
     words = " ".join(str(x.get(k) or "") for k in ("experience", "scenario"))
-    if not x.get("cannot_show") and re.search(r"\b(worldgen|world generation|world gen)\b", words, re.I):
+    if not str(x.get("cannot_show") or "").strip() and re.search(r"\b(worldgen|world generation|world gen)\b", words, re.I):
         e("needs worldgen: refused by standing ruling")
-    if tier and tier != "offline" and re.search(r"\b(flight|flyer|flying|takes? off)\b", words, re.I):
+    if tier and tier != "offline" and not re.match(r"^yes:\s*\S", op) and re.search(r"\b(flight|flyer|flying|takes? off)\b", words, re.I):
         e("a flyer's flight is never live-tested without him: refused by standing ruling")
     return errs
 
@@ -233,7 +233,13 @@ def shape_errors(tree, root_ids, floor, floor_hash):
         errs.append("authored_by %r" % au)
     if tree.get("root_state") not in ("VALIDATED", "DRAFT", "none"):
         errs.append("root_state %r" % tree.get("root_state"))
-    fl = tree.get("floor") or {}
+    fl = tree.get("floor") if tree.get("floor") is not None else {}
+    if not isinstance(fl, dict):
+        return errs + ["floor is not an object"]
+    if not (isinstance(fl.get("off") or [], list) and all(isinstance(o, dict) for o in fl.get("off") or [])):
+        return errs + ["floor.off is a list of objects"]
+    if not (isinstance(tree.get("waived") or [], list) and all(isinstance(w, dict) for w in tree.get("waived") or [])):
+        return errs + ["waived is a list of objects"]
     if fl.get("ref") != FLOOR_FILE:
         errs.append("floor.ref %r" % fl.get("ref"))
     if fl.get("hash") != floor_hash:
@@ -434,11 +440,12 @@ def gate(d, repo=REPO, floor_file=None):
     elif tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
         errs.append("the signature is on another sheet")
     ev = owner_events(repo)
-    for w in tree.get("waived") or []:
+    for w in [w for w in tree.get("waived") or [] if isinstance(w, dict)]:
         why = his_words_problem(ev, w.get("ref"), w.get("scope"))
         if why:
             errs.append("waiver %s: %s" % (w.get("id"), why))
-    for o in (tree.get("floor") or {}).get("off") or []:
+    fl2 = tree.get("floor") if isinstance(tree.get("floor"), dict) else {}
+    for o in [o for o in fl2.get("off") or [] if isinstance(o, dict)]:
         why = his_words_problem(ev, o.get("ref"), o.get("words"))
         if why:
             errs.append("floor.off %s: %s" % (o.get("line"), why))
@@ -537,11 +544,11 @@ def sign(d, by, repo=REPO, at=None):
     if by != "Arbiter":
         return ["only the Arbiter signs coverage"]
     errs, _fl = lint(d, repo)
-    tree = load(d) if os.path.isfile(os.path.join(d, "tree.json")) else {}
-    if tree.get("dry_walk") is True:
-        errs = errs + ["a dry walk is never signed"]
     if errs:
         return errs
+    tree = load(d)
+    if tree.get("dry_walk") is True:
+        return ["a dry walk is never signed"]
     import time
     tree["coverage"] = {"signed_by": "Arbiter", "at": at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                         "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d)}

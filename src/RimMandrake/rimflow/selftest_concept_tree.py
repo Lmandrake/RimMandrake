@@ -218,7 +218,7 @@ def main():
         check("in_words: art is not in start", not CT.in_words("art", "Please start tomorrow"))
         check("in_words: empty is in nothing", not CT.in_words("!!!", "anything"))
         check("in_words: sanity", CT.in_words("the art", "I said: The Art, today"))
-        evs = {"1": {"perRuling": "X", "text": "goats dig", "ownerSaid": None}, "2": {"perRuling": True, "ownerSaid": "goats"},
+        evs = {"1": {"perRuling": "X", "text": "goats dig", "ownerSaid": None}, "2": {"perRuling": True, "text": "sound", "ownerSaid": "goats"},
                "3": {"text": "goats dig"}}
         check("per-ruling text is his word", CT.his_words_problem(evs, "OWNER:1", "goats dig") is None)
         check("per-ruling text must hold the scope", CT.his_words_problem(evs, "OWNER:1", "sound") is not None)
@@ -271,6 +271,12 @@ def main():
             ("needs worldgen", on_leaf(0, scenario="a new world generation tile"), "worldgen"),
             ("live flight", on_leaf(0, scenario="the flyer takes off", tier_proposed="quicktest", tier_reason="x"),
              "never live-tested"),
+            ("worldgen with a blank cannot_show", on_leaf(0, scenario="a new world generation tile", cannot_show=" "), "worldgen"),
+            ("floor is not an object", lambda t: t.update(floor="invalid"), "floor is not an object"),
+            ("waived holds a non-object", lambda t: t.update(waived=["x"]), "waived is a list"),
+            ("blank red", on_leaf(0, red=" "), "red missing"),
+            ("leaves is not a list", lambda t: t.update(leaves=1), "no leaves"),
+            ("a repeater is no repeat", on_leaf(4, scenario="reload the save, inspect the repeater, use the reverse order"), "lacks the repeat"),
             ("no walk leaf", drop_walk, "exactly one walk"),
             ("walk without a reload", on_leaf(4, scenario="Repeat the order, reverse the order"), "lacks the reload"),
             ("walk without a repeat", on_leaf(4, scenario="save and reload, reverse the order"), "lacks the repeat"),
@@ -298,6 +304,19 @@ def main():
             write_raw(d, t)
             errs, _ = CT.lint(d, repo)
             check("negative: " + name, any(want in e for e in errs), errs)
+        t = copy.deepcopy(base)
+        on_leaf(0, scenario="the flyer takes off", tier_proposed="quicktest", tier_reason="x", owner_part="yes: he watches it")(t)
+        write_raw(d, t)
+        errs, _ = CT.lint(d, repo)
+        check("flight with him present is not refused", not any("never live-tested" in e for e in errs), errs)
+        for junk in ("{", "[]"):
+            with open(os.path.join(d, "tree.json"), "w", encoding="utf-8") as f:
+                f.write(junk)
+            try:
+                got = CT.sign(d, "Arbiter", repo)
+            except Exception as ex:
+                got = "raised %r" % ex
+            check("sign: tree.json %s is refused, not raised" % junk, isinstance(got, list) and got != [], got)
         write_raw(d, base)
 
         # the sheet's half
@@ -345,7 +364,8 @@ def main():
         check("askcheck: another question is clear", CT.askcheck(t, "does the goat tire?") == [])
 
         # a dry walk can never pass the gate
-        repo2, d2 = stage(tmp, dry=True)
+        os.makedirs(os.path.join(tmp, "dry"), exist_ok=True)
+        repo2, d2 = stage(os.path.join(tmp, "dry"), dry=True)
         dr = draft()
         dr["waived"][0].update(ref="dry_walk:round2", stand_in=True)
         with open(os.path.join(d2, "sheet.md"), "a", encoding="utf-8") as f:
