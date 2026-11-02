@@ -884,8 +884,26 @@ def main():
         sys.stderr = real_err
 
 
+def trader_check_verdicts(bad):
+    """HORIZON_CARAVAN_VANILLA_REFUSES_1 A1: trader_probe_check.verdict reads the probe line strictly."""
+    ts = importlib.util.spec_from_file_location("trader_probe_check", os.path.join(HERE, "trader_probe_check.py"))
+    T = importlib.util.module_from_spec(ts)
+    ts.loader.exec_module(T)
+    ok = "TRADERS biome=RM_Stillsand entryCell=True source=3 desperate=0 generable=%d | x"
+    cases = [({"success": True, "result": ok % 2}, T.PASS), ({"success": True, "result": ok % 0}, T.FAIL),
+             ({"success": True, "result": (ok % 2).replace("entryCell=True", "entryCell=False")}, T.FAIL),
+             ({"success": True, "result": (ok % 2).replace("RM_Stillsand", "AridShrubland")}, T.UNMEASURED),
+             ({"success": True, "result": "REFUSED: no current map"}, T.UNMEASURED),
+             ({"success": False}, T.UNMEASURED), (None, T.UNMEASURED)]
+    for reply, want in cases:
+        got = T.verdict(reply)[0]
+        if got != want:
+            bad.append("trader_probe_check.verdict(%r) = %d, want %d" % (reply, got, want))
+
+
 def _main(bad):
     vekka_rock_check(bad)
+    trader_check_verdicts(bad)
     healthy = run()
     # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
     # glass.* below: STILLSAND_GLASS_CHAIN_REMAINDER_1 live-proof arms, UNMEASURED until a driven session
