@@ -10215,3 +10215,5 @@
 {"seat":"BENCH","event":"start","id":"FLIER_FRAMES_FILL_FIVE_GHOST_FLOCKS","why":"relentless supervisor takes the item","ts":"2026-11-02T05:10:57Z","tsn":1793596257820297329}
 {"seat":"BENCH","event":"reassign","id":"ASHPULSE_READERS_PRUNE_NOBODY_LEFT","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-02T05:11:32Z","tsn":1793596292596114544}
 {"seat":"BENCH","event":"start","id":"ASHPULSE_READERS_PRUNE_NOBODY_LEFT","why":"relentless supervisor takes the item","ts":"2026-11-02T05:11:34Z","tsn":1793596294929163136}
+{"seat":"BENCH","event":"reassign","id":"PAUSE_ARG_FIX_PAUSED_NEVER_PAUSED","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-02T05:14:54Z","tsn":1793596494660468493}
+{"seat":"BENCH","event":"start","id":"PAUSE_ARG_FIX_PAUSED_NEVER_PAUSED","why":"relentless supervisor takes the item","ts":"2026-11-02T05:14:57Z","tsn":1793596497127381018}
