@@ -1972,3 +1972,13 @@
 {"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_STALLED_OWNER_2D14","kind":"task","needs":"owner","title":"SteveDesktop lane STALE_HEARTBEAT 433 min, no seat on STEVE_LANE_UNSTICK_STALLED_UNOWNED_F988: steward.json not written for 26018 s (the tick or the steward sto","for":"OWNER","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-02T12:52:43Z","tsn":1793623963818234102}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_F988","text":"steward: SteveDesktop lane UNREACHABLE: ssh to SteveDesktop down since 2026-11-02T04:11:52Z: ssh: connect to host 100.115.10.14 port 22: Connection timed out again since 2026-11-02T00:15:56Z, 31 min unowned","ts":"2026-11-02T12:53:18Z","tsn":1793623998393793395}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_F988","reason":"steward: lane unowned 31 min (UNREACHABLE)","ts":"2026-11-02T12:53:22Z","tsn":1793624002050688785}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_ACCOUNT_USAGE","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:23Z","tsn":1793624363360786645}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:26Z","tsn":1793624366903743149}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_ARTPIPE_IDLE_FILL","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:29Z","tsn":1793624369988084802}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_CODEBASE_HEALTH","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:32Z","tsn":1793624372947173765}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_DEADMAN","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:36Z","tsn":1793624376061941815}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:39Z","tsn":1793624379087222722}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_MEMWATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:41Z","tsn":1793624381886779868}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_MIRROR","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:44Z","tsn":1793624384439729272}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_OBJSTORE","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:47Z","tsn":1793624387088439531}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_OPS_WATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-02T12:59:49Z","tsn":1793624389607993374}
