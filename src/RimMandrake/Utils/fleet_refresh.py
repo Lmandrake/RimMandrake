@@ -43,11 +43,16 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import fleet_mods  # noqa: E402
 import fleet_watch  # noqa: E402
 
 BOARD_URL = "https://claude.ai/artifact/PGnwP9teyQWPszjJzxJpr8"
 HOURS = 3
 HEARTBEAT = 20 * 60
+MODS_EVERY = 30 * 60
+LIVE = ("Building", "Checking")
+MAX_WRITES = 40  # ArtifactData batch refuses more than 50 writes (MEASURED 2026-11-02); every write is echoed as output
+FEED_MAX = 8
 VOLATILE = ("elapsed_min",)
 DISALLOWED = ("Task,Agent,ArtifactComments,Bash,CronCreate,CronDelete,CronList,DesignSync,Edit,EnterWorktree,"
               "ExitWorktree,ListAgents,Monitor,NotebookEdit,PushNotification,RemoteTrigger,ReportFindings,"
@@ -91,32 +96,79 @@ def row_hash(rows):
     return hashlib.sha1(json.dumps(slim, sort_keys=True).encode()).hexdigest()
 
 
-def plan(rows, prev, now, rows_dir):
+def doc_path(rows_dir, collection, doc_id):
+    return os.path.join(rows_dir, doc_id + ".json") if collection == "parts" else \
+        os.path.join(rows_dir, collection, doc_id + ".json")
+
+
+def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
     """Pure: -> (writes, facts, board_version, new_state). `prev` is state.json's content ({} on the first run).
+    Only rows whose content changed (ignoring elapsed minutes) or whose version is unknown are written. `docs` are
+    extra (collection, doc_id, data): `mods` docs ride only when `mods_due`; board/factory rides on any run that writes
+    anything else, or when its ok/running/target changed (its token count alone never wakes the model).
     The board refuses an overwrite without `if_version`, so every write to a doc we know carries its version."""
     old, versions = prev.get("status", {}), prev.get("versions", {})
+    old_rh, old_dh = prev.get("row_hashes", {}), prev.get("doc_hashes", {})
     writes, facts, changes = [], [], []
-    for r in rows:
-        w = {"op": "set", "collection": "parts", "doc_id": r["item"],
-             "file_path": os.path.join(rows_dir, r["item"] + ".json")}
-        if "parts/" + r["item"] in versions:
-            w["if_version"] = versions["parts/" + r["item"]]
+    rh, dh = {}, dict(old_dh)
+
+    def put(collection, doc_id):
+        w = {"op": "set", "collection": collection, "doc_id": doc_id, "file_path": doc_path(rows_dir, collection, doc_id)}
+        if "%s/%s" % (collection, doc_id) in versions:
+            w["if_version"] = versions["%s/%s" % (collection, doc_id)]
         writes.append(w)
+
+    for r in rows:
+        h = row_hash([r])
+        if h != old_rh.get(r["item"]) or "parts/" + r["item"] not in versions:
+            if len(writes) < MAX_WRITES - FEED_MAX - 1:  # over the cap: left unhashed, so the next run writes it
+                put("parts", r["item"])
+                rh[r["item"]] = h
+            elif r["item"] in old_rh:
+                rh[r["item"]] = old_rh[r["item"]]
+        else:
+            rh[r["item"]] = h
         was = old.get(r["item"])
         if old and was != r["status"]:
-            changes.append("%s: %s" % (fleet_watch.short(r["title"], 90), ("%s → %s" % (was, r["status"])) if was else "started (%s)" % r["status"]))
-    for i, text in enumerate(changes):
+            name = r.get("short") or fleet_watch.short(r["title"], 90)
+            if was:
+                what = "%s → %s" % (was, r["status"])
+            else:
+                what = "finished %s" % r.get("glyph", "") if r["status"] not in LIVE else "started (%s)" % r["status"]
+            changes.append("%s: %s" % (name, what.strip()))
+    for i, text in enumerate(changes[:FEED_MAX]):
         writes.append({"op": "set", "collection": "feed", "doc_id": "t%d-%d" % (now, i), "data": {"at": now, "text": text}})
+    side = []
+    for collection, doc_id, data in docs:
+        key = "%s/%s" % (collection, doc_id)
+        if collection == "mods" and not mods_due:
+            continue
+        h = row_hash([{k: v for k, v in data.items() if k not in ("tokens_today", "at")}])
+        if collection != "board" and h == old_dh.get(key) and key in versions:
+            continue
+        side.append((collection, doc_id, h, h != old_dh.get(key)))
+    side.sort(key=lambda x: x[0] != "board")  # the factory doc first, then mods
+    mods_left = False
+    if writes or any(c != "board" or changed for c, _, _, changed in side):
+        for collection, doc_id, h, _ in side:
+            if len(writes) >= MAX_WRITES:
+                mods_left = mods_left or collection == "mods"
+                continue
+            put(collection, doc_id)
+            dh["%s/%s" % (collection, doc_id)] = h
     by = {}
     for r in rows:
-        by.setdefault(r["status"], []).append(fleet_watch.short(r["title"], 90))
+        by.setdefault(r["status"], []).append(r.get("short") or fleet_watch.short(r["title"], 90))
     for status in ("Building", "Checking", "Stopped", "Ended", "Done"):
         if by.get(status):
             facts.append("%s (%d): %s" % (status, len(by[status]), "; ".join(by[status][:6])))
-    facts += ["changed since last refresh: " + c for c in changes]
+    facts += ["changed since last refresh: " + c for c in changes[:8]]
+    if len(changes) > 8:
+        facts.append("and %d more changes" % (len(changes) - 8))
     if not rows:
         facts.append("no detached helper has run in the last %d hours" % HOURS)
-    state = {"status": {r["item"]: r["status"] for r in rows}, "hash": row_hash(rows),
+    state = {"status": {r["item"]: r["status"] for r in rows}, "hash": row_hash(rows), "row_hashes": rh,
+             "doc_hashes": dh, "mods_at": now if mods_due and not mods_left else prev.get("mods_at", 0),
              "last_write": prev.get("last_write", 0), "versions": dict(versions)}
     return writes, facts, versions.get("board/summary"), state
 
@@ -240,7 +292,7 @@ def parse_versions(calls, results):
 def sync_versions(rows_dir):
     """One model call that lists `parts` and `board`; -> (versions or None, usage)."""
     lines = run_claude('url %s. Call ArtifactData action "list" on collection "parts", then action "list" on '
-                       'collection "board". Then reply OK.' % BOARD_URL, rows_dir, system=SYSTEM_LIST)
+                       'collection "mods", then action "list" on collection "board". Then reply OK.' % BOARD_URL, rows_dir, system=SYSTEM_LIST)
     calls, results, use = read_stream(lines)
     v = parse_versions(calls, results)
     return (v if "board/summary" in v else None), use
@@ -264,23 +316,33 @@ def ended(prev, current, rows_dir):
             continue
         r = load(os.path.join(rows_dir, item + ".json"), None)
         if isinstance(r, dict) and r.get("item") == item:
-            out.append(dict(r, status="Ended", unit="inactive"))
+            out.append(dict(r, status="Ended", unit="inactive", glyph="■", stuck="", finished_at=int(time.time())))
     return out
 
 
-def collect(root, rows_dir, prev):
+def collect(root, rows_dir, prev, now=None):
+    """-> (rows, gathered). Live rows (helpers building, Relentless workers) plus receipts for items finished since
+    local midnight; `gathered` is fleet_mods.gather()'s {factory, receipts, mods}."""
+    now = now or int(time.time())
     titles = load(os.path.join(root, "titles.json"), {})
-    rows = fleet_watch.rows(HOURS)
-    for r in rows:
+    hours = max(HOURS, int((now - fleet_mods.local_midnight(now)) / 3600) + 1)
+    det = fleet_watch.rows(hours)
+    for r in det:
         r["title"] = titles.get(r["item"]) or ledger_title(r["item"]) or r["item"]
     rel = fleet_watch.relentless_rows()
-    for r in rel:  # "Relentless worker: <ID>" -> "Relentless worker: <plain title>"
-        r["title"] = "%s: %s" % (r["title"].split(": ")[0], titles.get(r["item"]) or ledger_title(r["item"]) or r["item"])
-    rows = dedup(rel + rows)
+    for r in rel:
+        r["title"] = titles.get(r["item"]) or ledger_title(r["item"]) or r["item"]
+    live = dedup(rel + [r for r in det if r["status"] == "Building"])
+    got = fleet_mods.gather(now, detached_done=[r for r in det if r["status"] != "Building"])
+    have = {r["item"] for r in live}
+    rows = live + [dict(r, title=titles.get(r["item"]) or r.get("title") or r["item"])
+                   for r in got["receipts"] if r["item"] not in have]
+    rows = dedup(rows)
     rows += ended(prev, {r["item"] for r in rows}, rows_dir)
     for i, r in enumerate(rows):
+        r["short"] = fleet_watch.title_short(r["title"])
         r["order"] = i
-    return rows
+    return rows, got
 
 
 def add_use(rec, use):
@@ -293,6 +355,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="print the prompt; no model call, no state change")
     ap.add_argument("--force", action="store_true", help="write even if nothing changed")
     ap.add_argument("--heartbeat", type=int, default=HEARTBEAT)
+    ap.add_argument("--mods-every", type=int, default=MODS_EVERY, help="seconds between `mods` collection writes")
     a = ap.parse_args()
     root = storage_root()
     rows_dir = os.path.join(root, "rows")
@@ -302,7 +365,7 @@ def main():
     rows = None
     prev = load(os.path.join(root, "state.json"), {})
     try:
-        rows = collect(root, rows_dir, prev)
+        rows, got = collect(root, rows_dir, prev, now)
     except Exception as e:  # one malformed run file must leave a FAILED line, not a silent dead timer
         rows, crash = None, "row collection crashed: %s: %s" % (type(e).__name__, e)
     if rows is None:
@@ -311,16 +374,25 @@ def main():
             f.write(json.dumps(rec) + "\n")
         print(json.dumps(rec))
         return 1
-    writes, facts, board_version, state = plan(rows, prev, now, rows_dir)
+    docs = [("mods", m["id"], m) for m in got["mods"]] + [("board", "factory", got["factory"])]
+    due = a.force or now - prev.get("mods_at", 0) >= a.mods_every
+    writes, facts, board_version, state = plan(rows, prev, now, rows_dir, docs, due)
     if a.dry_run:
         print(prompt(writes, facts, now, board_version))
         return 0
-    rec = {"at": now, "rows": len(rows), "writes": len(writes)}
-    if not a.force and state["hash"] == prev.get("hash") and now - prev.get("last_write", 0) < a.heartbeat:
+    rec = {"at": now, "rows": len(rows), "writes": len(writes),
+           "mods": sum(1 for w in writes if w["collection"] == "mods")}
+    if not a.force and not writes and now - prev.get("last_write", 0) < a.heartbeat:
         rec["outcome"] = "skipped: unchanged"
     else:
+        if not writes:  # heartbeat: the board's `updated` moves so the page can tell stale from quiet
+            dh = {k: v for k, v in prev.get("doc_hashes", {}).items() if k != "board/factory"}
+            writes, facts, board_version, state = plan(rows, dict(prev, doc_hashes=dh), now, rows_dir, docs, due)
         for r in rows:
-            dump(os.path.join(rows_dir, r["item"] + ".json"), r)
+            dump(doc_path(rows_dir, "parts", r["item"]), r)
+        for collection, doc_id, data in docs:
+            os.makedirs(os.path.dirname(doc_path(rows_dir, collection, doc_id)), exist_ok=True)
+            dump(doc_path(rows_dir, collection, doc_id), data)
         ok, why = False, "versions unknown"
         for attempt in (1, 2):
             if attempt == 2 or "versions" not in prev:
@@ -334,7 +406,7 @@ def main():
                     why = "version sync failed"
                     break
                 prev = dict(prev, versions=v)
-                writes, facts, board_version, state = plan(rows, prev, now, rows_dir)
+                writes, facts, board_version, state = plan(rows, prev, now, rows_dir, docs, due)
             try:
                 ok, why, use = judge(run_claude(prompt(writes, facts, now, board_version), rows_dir), writes, board_version)
             except (subprocess.TimeoutExpired, OSError) as e:

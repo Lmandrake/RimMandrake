@@ -1,0 +1,2 @@
+WSL playwright chromium_headless_shell fails to launch (libasound.so.2 missing, no sudo). Headless page screenshots work through Windows chrome.exe --headless=new --screenshot --virtual-time-budget, but Chrome will not lay out narrower than ~526 px: frame the page in an iframe of the wanted width (390) to get a true phone layout. Scripts: D:/ClaudeWork/rimmandrake/fleetwatch/shrink/shot/build.py + shoot.sh.
+home: NONE
