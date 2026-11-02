@@ -355,7 +355,7 @@
        Owner 2026-10-19, picks_plants_and_gaps_sheet_2026-10-19, AB_FirevineTree row: "Rename star wars appropriate and
        place it in the Weeping Stones biome. Generate new description. All are valid random pools." All three redrawn
        pictures (A, B, C) are its Graphic_Random pool. Invented Star-Wars-style name (RM_ tier, Q11a). A new def: the
-       Forge's RM_FirevineTree keeps its home and stand-in art. Mechanics follow RM_Rockfinger (the biome's tree);
+       Forge's RM_FirevineTree keeps its home and its own render firevinetree_v1. Mechanics follow RM_Rockfinger (the biome's tree);
        numbers INVENTED for the sitting to calibrate. -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_Talvessar</defName>

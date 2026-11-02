@@ -87,7 +87,10 @@
     <takeFootprints>True</takeFootprints>
   </TerrainDef>
 
-  <!-- RM_FirevineTree: port of AB_FirevineTree (Alpha Biomes, ThingDefs_Plants/Plants_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <!-- RM_FirevineTree: port of AB_FirevineTree (Alpha Biomes, ThingDefs_Plants/Plants_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it.
+       Art (ALPHA_BIOMES_INSTALL_UNINSTALLED_RENDERS, 2026-11-01): our own kept render firevinetree_v1, not the donor copies;
+       no leafless frame of ours exists, so none is set (a leafless tree draws its normal graphic). Its picked redraws
+       are RM_Talvessar's pool (owner note 2026-10-19), so they are not reused here. -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_FirevineTree</defName>
     <label>firevine tree</label>
@@ -96,7 +99,7 @@
       <ThingDef>WoodLog</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_FirevineTree</texPath>
+      <texPath>Things/Plant/RM_FirevineTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.18, 0.3, 0.15)</volume>
@@ -121,7 +124,6 @@
       </sowTags>
       <fertilityMin>0.05</fertilityMin>
       <growDays>14</growDays>
-      <leaflessGraphicPath>StandIn/Things/Plants/AB_FirevineTree_Leafless</leaflessGraphicPath>
       <harvestWork>1200</harvestWork>
       <harvestYield>35</harvestYield>
       <wildClusterRadius>10</wildClusterRadius>
