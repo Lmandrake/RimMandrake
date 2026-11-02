@@ -1,0 +1,2 @@
+Mutation testing by rewriting a .py in place and copying the original back: a same-size mutant restored within the same second leaves the mutant's __pycache__ .pyc in charge (pyc checks mtime-seconds + size), so the NEXT run of the original imports the mutant. Seen 2026-11-02 in selftest_relentless_live: an operator swap in live_def_check.judge kept the original red after restore. Run mutants with PYTHONDONTWRITEBYTECODE=1 and delete the module's pyc first.
+home: skill:validity-floors or GIT_WORKFLOW traps
