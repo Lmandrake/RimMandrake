@@ -82,6 +82,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		private static double pTotalMs, pMaxMs, pOwnMaxMs, pGcMs, pAllocKBSum, pAllocKBMax;
 		private static long pWalkedSum;
 		private static string pMax = "-", pOwnMax = "-", pFirst = "";
+		// the process lifetime (never reset): cycles that walked, and the slowest of them; the cold-launch clause reads it
+		private static int lifeWorkCycles;
+		private static double lifeMaxMs;
+		private static string lifeMax = "-";
 
 		private static double Ms(long ticks) => ticks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
 
@@ -102,6 +106,15 @@ namespace RimMandrake.FlowWorks.Machinery
 				+ ":map=" + lastMap + ":tick=" + (Find.TickManager?.TicksGame ?? 0);
 			pCalls++;
 			pTotalMs += ms;
+			if (lastWalked > 0)
+			{
+				lifeWorkCycles++;
+				if (ms > lifeMaxMs)
+				{
+					lifeMaxMs = ms;
+					lifeMax = Entry();
+				}
+			}
 			pWalkedSum += lastWalked;
 			if (pFirstLeft > 0)
 			{
@@ -133,10 +146,21 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		/// <summary>"LEVELTIME fast=b calls=n meanMs= maxMs= max=[entry] ownMaxMs= ownMax=[entry] gcCalls=n gcMs= walkedMean=
 		/// allocKBMean= allocKBMax= first=[entry | ...]"; an entry is "ms(walk,links,plan,moves):gc0:walked:ports:links:allocKB(walk,links):tick".
-		/// arg: "reset" zeroes the profile (the first-calls list too), "fast=0"/"fast=1" switches the walk.</summary>
+		/// arg: "reset" zeroes the profile (the first-calls list too), "fast=0"/"fast=1" switches the walk.
+		/// arg "life": "LEVELLIFE prejit=<compiled>/<failed> prejitMs= workCycles=n maxMs= max=[entry] pass=b", over the whole
+		/// process (never reset): pass = the start-up pre-JIT ran with no failure, at least 2 cycles walked (the first one after launch among them), and none took 20 ms.</summary>
 		public static string ProofTiming(string arg)
 		{
 			arg = arg ?? "";
+			if (arg.Contains("life"))
+			{
+				System.Globalization.CultureInfo li = System.Globalization.CultureInfo.InvariantCulture;
+				RM_Prejit.Result pj = RM_LevellingPrejit.Last;
+				bool pass = RM_LevellingPrejit.Ran && pj.Failed == 0 && pj.Compiled > 0 && lifeWorkCycles >= 2 && lifeMaxMs < 20.0;
+				return "LEVELLIFE prejit=" + pj.Compiled + "/" + pj.Failed + " prejitMs=" + pj.Ms.ToString("0.0", li) + " types=" + pj.Types
+					+ " firstFailure=[" + pj.FirstFailure + "] workCycles=" + lifeWorkCycles + " maxMs=" + lifeMaxMs.ToString("0.00", li)
+					+ " max=[" + lifeMax + "] pass=" + pass;
+			}
 			if (arg.Contains("fast=0"))
 			{
 				FastWalk = false;
@@ -402,15 +426,21 @@ namespace RimMandrake.FlowWorks.Machinery
 					continue;
 				}
 				int id = ((CompHoseReel)q.Reel).parent.thingIDNumber, at = into.Count;
+				// only the lowest MaxPortsPerComponent are kept, so the insertion never shifts more than that many (a later
+				// equal id sorts after the kept one, as the stable OrderBy did, so it is dropped when the list is full)
+				if (at == MaxPortsPerComponent && ((CompHoseReel)into[at - 1].Reel).parent.thingIDNumber <= id)
+				{
+					continue;
+				}
 				while (at > 0 && ((CompHoseReel)into[at - 1].Reel).parent.thingIDNumber > id)
 				{
 					at--;
 				}
 				into.Insert(at, q);
-			}
-			if (into.Count > MaxPortsPerComponent)
-			{
-				into.RemoveRange(MaxPortsPerComponent, into.Count - MaxPortsPerComponent);
+				if (into.Count > MaxPortsPerComponent)
+				{
+					into.RemoveAt(MaxPortsPerComponent);
+				}
 			}
 			return into;
 		}
@@ -651,6 +681,37 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 			}
 			return null;
+		}
+	}
+	/// <summary>LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: compile the levelling cycle's call graph at start-up (RM_Prejit), so the first
+	/// cycle after a cold launch does not pay for it inside a tick. The roots are the types RM_Levelling.cs calls; their nested
+	/// closure classes come with them, and the run walk's one struct instantiation is named.</summary>
+	[StaticConstructorOnStartup]
+	public static class RM_LevellingPrejit
+	{
+		public static bool Ran;
+		public static RM_Prejit.Result Last;
+
+		static RM_LevellingPrejit()
+		{
+			try
+			{
+				var roots = new System.Type[]
+				{
+					typeof(RM_Levelling), typeof(RM_LevellingMath), typeof(RM_LevelSolve), typeof(RM_LevelBody), typeof(RM_LevelLink), typeof(RM_LevelRunWalk), typeof(RM_LevelRunScratch),
+					typeof(RM_LevelPour), typeof(RM_LiquidTransfer), typeof(RM_TransferLeg), typeof(RM_LiquidNet), typeof(RM_HoseLinks),
+					typeof(RM_NetComponents), typeof(RM_NetComponent), typeof(RM_LiquidStock), typeof(RM_LiquidBody), typeof(RM_PumpMath),
+					typeof(RM_SuperdeepTrap), typeof(RM_FlowDoorRules), typeof(RM_MapComponent_Excavation),
+				};
+				System.Reflection.MethodInfo walk = typeof(RM_LevelRunWalk).GetMethod(nameof(RM_LevelRunWalk.Walk));
+				var extra = new System.Reflection.MethodBase[] { walk?.MakeGenericMethod(typeof(RM_MapComponent_Excavation.LevelRunGrid)) };
+				Last = RM_Prejit.Run(roots, extra);
+				Ran = true;
+			}
+			catch (System.Exception e)
+			{
+				Last = new RM_Prejit.Result { Failed = 1, FirstFailure = "setup: " + e.GetType().Name };
+			}
 		}
 	}
 }

@@ -2156,6 +2156,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             LevellingChecks.Run(Case);         // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive gravity levelling (LevellingChecks.cs)
             LevelRunWalkChecks.Run(Case);      // LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: the allocation-free run walk (LevelRunWalkChecks.cs)
+            LevelPrejitChecks.Run(Case);       // LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: start-up pre-JIT of the levelling cycle (LevelPrejitChecks.cs)
             HoseCacheChecks.Run(Case);         // HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: phased hose caches, pump-side prefilter (HoseCacheChecks.cs)
             HoseBandsApplyChecks.Run(Case);    // HOSES_MAP1_DIAGNOSE_TICK_STALLS: allocation-free hose band pass + legacy oracle (HoseBandsApplyChecks.cs)
             HoseTickAllocChecks.Run(Case);     // HOSES_MAP1_DIAGNOSE_TICK_STALLS c2 + WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL (HoseTickAllocChecks.cs)

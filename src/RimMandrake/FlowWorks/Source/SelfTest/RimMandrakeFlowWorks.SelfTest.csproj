@@ -208,6 +208,8 @@
     <Compile Include="LevellingChecks.cs" />
     <Compile Include="..\RM_LevelRunWalk.cs" />
     <Compile Include="LevelRunWalkChecks.cs" />
+    <Compile Include="..\RM_Prejit.cs" />
+    <Compile Include="LevelPrejitChecks.cs" />
     <Compile Include="HoseCacheChecks.cs" />
     <Compile Include="HoseBandsApplyChecks.cs" />
     <Compile Include="HoseTickAllocChecks.cs" />

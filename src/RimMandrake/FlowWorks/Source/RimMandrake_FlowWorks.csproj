@@ -188,6 +188,7 @@
     <Compile Include="RM_LevellingMath.cs" />
     <Compile Include="RM_LevelPour.cs" />
     <Compile Include="RM_LevelRunWalk.cs" />
+    <Compile Include="RM_Prejit.cs" />
     <Compile Include="RM_LiquidBody.cs" />
     <Compile Include="RM_FluidIdentity.cs" />
     <Compile Include="RM_PromotionProofs.cs" />
