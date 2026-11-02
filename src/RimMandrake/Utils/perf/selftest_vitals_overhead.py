@@ -54,6 +54,20 @@ code, word, text, _ = V.verdict(run(m=mm), "minimal")
 check("subjects unmeasured", (code, word), (1, "UNMEASURED"))
 check("subjects named", "channel subjects never ran" in text, True)
 
+# every channel ALONE (heartbeat included, the item names it): never ran -> UNMEASURED; switched off alone -> UNMEASURED
+check("six channels", set(V.CHANNELS) >= {"subjects", "heartbeat"}, True)
+for ch in V.CHANNELS:
+    mm = meters()
+    mm[ch] = {"calls": 0, "totalMs": 0.0, "on": True}
+    code, word, text, _ = V.verdict(run(m=mm), "minimal")
+    check("%s alone unmeasured" % ch, (code, word), (1, "UNMEASURED"))
+    check("%s alone named" % ch, "channel %s never ran" % ch in text, True)
+    mm = meters()
+    mm[ch] = {"calls": 10, "totalMs": 1.0, "on": False}
+    code, word, text, _ = V.verdict(run(m=mm), "minimal")
+    check("%s alone off" % ch, (code, word), (1, "UNMEASURED"))
+    check("%s alone off named" % ch, "channel %s switched off" % ch in text, True)
+
 # a switched-off channel is UNMEASURED and says so
 code, word, text, _ = V.verdict(run(m=meters(on=False)), "minimal")
 check("switched off", (code, word, "switched off" in text), (1, "UNMEASURED", True))
