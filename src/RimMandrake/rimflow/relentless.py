@@ -267,7 +267,9 @@ def _day(store, now):
     try:
         with open(store.p("spend-%s.json" % day_key(now)), encoding="utf-8") as f:
             d = json.load(f)
-        if not isinstance(d, dict) or not isinstance(d.get("runs"), dict) or not isinstance(d.get("spent"), int):
+        num = lambda v: type(v) is int and v >= 0       # noqa: E731  (a bool is an int; a negative charge understates)
+        if not isinstance(d, dict) or not isinstance(d.get("runs"), dict) or not num(d.get("spent")) or \
+                not all(num(v) for v in d["runs"].values()):
             raise ValueError("spend record has the wrong shape")
         return d
     except FileNotFoundError:
@@ -358,6 +360,8 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
     """`wait_hours`: what stopped the worker is time, not work (a metric's sample filling); no worker starts before then,
     and the wait is no failed approach. The same class again waits even when the worker named no wait, longer each time:
     a worker costs a million tokens to read that nothing has changed, and CLOSE_GATE_ENFORCE_DONE_IS_EARNED paid three."""
+    if wait_hours is not None and (not math.isfinite(wait_hours) or wait_hours < 0):
+        raise ValueError("--wait-hours must be a finite, non-negative number: %r" % (wait_hours,))
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
@@ -521,6 +525,10 @@ def help_vendor_run(store, item, prompt_file, r, nonce=None, consult=None):
     if not nonce:
         print("help-vendor: no nonce (RELENTLESS_HELP_NONCE)", file=sys.stderr)
         return 2
+    with store.lock():      # a stale or wrong-nonce unit spends no provider call
+        h = ((store.load(item) or {}).get("help")) or {}
+        if h.get("status") != "running" or h.get("nonce") != nonce or h.get("expired") or h.get("answered_at"):
+            raise Fenced("%s: no consult is waiting for that nonce" % item)
     out = prompt_file + ".answer.md"
     consult = consult or gpt_consult
     deadline = time.monotonic() + r["circling"]["help_max_s"] - VENDOR_RESERVE_S     # one bound over every try
@@ -1347,7 +1355,8 @@ class Effects:
         """True / False, or None when origin could not be asked: a cached answer is no answer."""
         if self.git(self.books, "fetch", "--quiet", "origin", "main").returncode != 0:
             return None
-        return self.git(self.books, "merge-base", "--is-ancestor", sha, "origin/main").returncode == 0
+        rc = self.git(self.books, "merge-base", "--is-ancestor", sha, "origin/main").returncode
+        return True if rc == 0 else False if rc == 1 else None      # 128 is git failing, not the sha being absent
 
     def head(self):
         return self.git(self.books, "rev-parse", "origin/main").stdout.strip() or None

@@ -44,6 +44,7 @@ class FakeWorld:
         self.stops = []
         self.mem = 30.0
         self.is_pub = True
+        self.changed_calls, self.live_nb = [], []
         self.live_broken = None
         self.touched = ["src/x.py"]
         self.pause = False
@@ -155,9 +156,11 @@ class FakeWorld:
             self.pool[c] = {"busy": False}
         return c, None
     def published(self, sha): return self.is_pub
-    def changed(self, base, sha, item): return self.touched
+    def changed(self, base, sha, item):
+        self.changed_calls.append((base, sha, item))
+        return self.touched
     def head(self): return "base"
-    def commit_time(self, sha): return 0
+    def commit_time(self, sha): return 5000 if sha == "sha1" else 0
 
     def launch(self, st, run, prompt, agent, clone, max_s, env):
         if self.lfail:
@@ -177,7 +180,9 @@ class FakeWorld:
         v, self.mem_once = getattr(self, "mem_once", None), None
         return self.mem if v is None else v
     def paused(self): return self.pause
-    def live_check(self, line, nb): return self.live_broken
+    def live_check(self, line, nb):
+        self.live_nb.append(nb)
+        return self.live_broken
 
 
 class Rig:
@@ -469,7 +474,9 @@ def t_proof_weak():
     st = x.st("I0")
     ok(st["failures"].get("proof_unchanged") == 1, "a finish on the weak sha is refused")
     x.w.touched = ["src/foo.py", "src/selftest_foo.py"]
+    x.w.changed_calls.clear()
     weak_round(x, "I0", "sha2")
+    ok(("sha1", "sha2", "I0") in x.w.changed_calls, "the proof gate compares the weak sha with the new one: %s" % x.w.changed_calls)
     st = x.st("I0")
     ok(st["failures"].get("proof_rework") == 1 and "src/foo.py" in st["last_fail"]["detail"] and "selftest_foo" not in st["last_fail"]["detail"],
        "code moved after a WEAK is refused, proof files are not named")
@@ -555,6 +562,7 @@ def t_done_path():
     full_pass(x, "I0")
     x.tick()
     ok(x.st("I0")["status"] == "done" and x.w.closes == [("I0", "sha1")], "PASS closes, a failed close retries")
+    ok(x.w.live_nb and all(n == 5000 for n in x.w.live_nb), "the live line is judged against the candidate's own commit time: %s" % x.w.live_nb)
     x.done()
     x = Rig(n=1, share=1.0)
     x.w.close_fail = "close: I0 has not earned its close at sha1: owed still owes C1 L1"
@@ -1692,10 +1700,10 @@ def t_staffing_edges():
     for _ in range(3):
         x.tick()
     finish_all(x)
-    before = len(x.w.launches)
-    x.tick()
-    x.tick()
-    ok(len(x.w.launches) - before <= 4, "clones per tick are shared")
+    for _ in range(2):
+        before = len(x.w.launches)
+        x.tick()
+        ok(len(x.w.launches) - before <= 2, "clones per tick are shared: at most launch_per_tick in ONE tick")
     x.done()
     # a clone that leaves too little memory steps aside for the next candidate
     x = staffed(n=2, check_backlog_max=9, launch_per_tick=1)
@@ -2418,8 +2426,15 @@ def t_help_round_two_vendor():
     nonce = g.st("I0")["help"]["nonce"]
     rc = R.help_vendor_run(g.s, "I0", pf, g.r, nonce=nonce, consult=lambda p, o, t: "I think the seam is wrong.")
     ok(rc == 3 and not g.st("I0")["help"].get("answered_at"), "an answer with no OPTION line answers nothing")
-    expect_fence(lambda: R.help_vendor_run(g.s, "I0", pf, g.r, nonce="wrong", consult=lambda p, o, t: "OPTION: a | b"),
+    wrongcalls = []
+    expect_fence(lambda: R.help_vendor_run(g.s, "I0", pf, g.r, nonce="wrong", consult=lambda p, o, t: wrongcalls.append(t) or "OPTION: a | b"),
                  "a vendor answer under a wrong nonce")
+    ok(wrongcalls == [], "a wrong nonce is fenced before any provider call")
+    calls = []
+    R.help_vendor_run(g.s, "I0", pf, dict(g.r, circling=dict(g.r["circling"], help_max_s=400)), nonce=nonce,
+                      consult=lambda p, o, t: calls.append(t) or "")
+    ok(len(calls) == R.VENDOR_FAST_TRIES and all(t <= 400 - R.VENDOR_RESERVE_S for t in calls),
+       "empty fast answers are retried, each inside the unit's one bound: %s" % calls)
     said = "\n".join(["Here you go:", "OPTION: the cache key omits the tier | rerun with tier in key: red goes green",
                        "- **OPTION 2:** the guard runs at base | guard log shows base sha",
                        "OPTION:", "commentary | not an option", "OPTION: no observation here", "OPTION: x | y",
@@ -2429,11 +2444,10 @@ def t_help_round_two_vendor():
     ok(rc == 0 and [o["idea"] for o in got["options"]] == ["the cache key omits the tier", "the guard runs at base", "x"],
        "OPTION lines become options, an untestable one is dropped, at most help_options_max: %s" % got["options"])
     ok(got["vendor"] == R.VENDOR_AGENT, "and they say which vendor gave them")
-    calls = []
-    R.help_vendor_run(g.s, "I0", pf, dict(g.r, circling=dict(g.r["circling"], help_max_s=400)), nonce="spent",
-                      consult=lambda p, o, t: calls.append(t) or "")
-    ok(len(calls) == R.VENDOR_FAST_TRIES and all(t <= 400 - R.VENDOR_RESERVE_S for t in calls),
-       "empty fast answers are retried, each inside the unit's one bound: %s" % calls)
+    spent = []
+    expect_fence(lambda: R.help_vendor_run(g.s, "I0", pf, g.r, nonce=nonce, consult=lambda p, o, t: spent.append(t) or "OPTION: a | b"),
+                 "an already-answered consult takes no new answer")
+    ok(spent == [], "and a fenced vendor unit spends no provider call")
     g.w.up[g.st("I0")["help"]["run"]["unit"]] = False
     g.tick()
     ok(g.st("I0")["help"]["status"] == "answered", "round two closes like round one")
@@ -2876,8 +2890,10 @@ def t_review_wrong_verdicts():
     full_pass(x, "I0")
     ok(x.st("I0")["status"] == "closing" and x.w.closes == [] and tries, "the close failed and the item waits in closing")
     x.w.is_pub = False
+    n_tries = len(tries)
     x.tick()
-    ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [], "a retry does not close a sha that left origin")
+    ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [] and len(tries) == n_tries,
+       "a retry does not even try to close a sha that left origin")
     x.done()
     # the pause that arrives while the clone is prepared stops the launch
     x = Rig(n=1, share=1.0)
@@ -2926,6 +2942,32 @@ def t_review_wrong_verdicts_two():
         f.write("{}")
     ok(R.spent_today(x.s, x.now) >= R.UNREADABLE_SPEND, "an empty object is not an empty day")
     x.done()
+    # a record with a bool or negative charge understates the day: blocked
+    x = Rig(n=1, share=1.0)
+    for bad in ('{"spent": false, "runs": {"u": 1200000}}', '{"spent": -5, "runs": {}}', '{"spent": 3, "runs": {"u": "9"}}'):
+        with open(x.s.p("spend-%s.json" % R.day_key(x.now)), "w") as f:
+            f.write(bad)
+        ok(R.spent_today(x.s, x.now) >= R.UNREADABLE_SPEND, "damaged spend record blocks: %s" % bad)
+    x.done()
+    # a nonfinite wait is refused, not a wait that never comes due
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    for bad in (float("nan"), float("inf"), -1.0):
+        try:
+            R.snag(x.s, "I0", x.st("I0")["gen"], "k", "t", x.r, wait_hours=bad)
+            ok(False, "snag refuses wait %r" % bad)
+        except ValueError:
+            ok(True, "snag refuses wait %r" % bad)
+    x.done()
+    # a git failure is not "absent from origin"
+    class G(R.Effects):
+        def __init__(self, rcs): self.rcs, self.books = rcs, "b"
+        def git(self, d, *a):
+            return types.SimpleNamespace(returncode=self.rcs[a[0]], stdout="", stderr="")
+    ok(G({"fetch": 0, "merge-base": 1}).published("s") is False, "exit 1 is not an ancestor")
+    ok(G({"fetch": 0, "merge-base": 128}).published("s") is None, "exit 128 is unknown")
+    ok(G({"fetch": 1, "merge-base": 0}).published("s") is None, "a failed fetch is unknown")
+    ok(G({"fetch": 0, "merge-base": 0}).published("s") is True, "exit 0 is published")
     # a verdict is single-assignment
     x = Rig(n=1, share=1.0)
     x.w.close_fail = None
