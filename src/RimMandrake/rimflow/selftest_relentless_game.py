@@ -664,6 +664,99 @@ def t_stage_tries_a_newer_running_game_first():
     x.done()
 
 
+FINAL_GAME = {"clauses": ["A1", "F1"], "why": "A1 on the smallest list; F1 is the full-list final verification"}
+FINAL_PROOF = ("live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py needs-mods --mod Graffiti\n"
+               "live-proof F1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list\n")
+
+
+def two_final(x):
+    """I0 and I1 in prove; on the running (small) game each A1 PASSed and each F1 read FINAL_WAIT."""
+    x.w.owed = {"A1": "L1", "F1": G.FINAL_LEVEL}
+    for i in ("I0", "I1"):
+        x.w.proofs[(i, ".txt")] = FINAL_PROOF
+        to_game(x, i, game=FINAL_GAME)
+    x.w.started = x.now - 50
+    for i in ("I0", "I1"):
+        with x.s.lock():
+            st = x.s.load(i)
+            st["status"] = "game"
+            st["game"].update(phase="prove", entered_at=x.now - 500, staged_at=None, stages=0, proved_at=x.now - 40)
+            x.s.save(st)
+        x.w.led[i] = {"state": "built", "built_sha": SHA, "title": x.w.title, "owed": dict(x.w.owed)}
+    x.w.rows = [r for i in ("I0", "I1") for r in (
+        {"at": iso_(x.now - 30), "item": i, "criterion": "A1", "sha": SHA, "outcome": "PASS"},
+        {"at": iso_(x.now - 30), "item": i, "criterion": "F1", "sha": SHA, "outcome": "UNMEASURED",
+         "why": G.FINAL_WAIT + ": the running game holds 23 of 316"})]
+
+
+def t_final_verification_waits_and_batches():
+    """PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02: "small mod lists should always be the way to test
+    until a final verification pass on the whole huge mod list"): an item whose small clauses PASS and whose GREEN-FULL
+    clause waits for the full list holds nothing and stages nothing on its own; a newer game gets one try; the oldest
+    stages ONE full-list load that carries every waiting final."""
+    x = rig(2, share=1.0, max_workers=2)
+    two_final(x)
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    x.now += 1
+    G.step(x.s, x.w, x.r, "I1", x.now, acts, R)
+    ok([x.st(i)["game"]["phase"] for i in ("I0", "I1")] == ["final", "final"]
+       and sum(a["do"] == "game_final_wait" for a in acts) == 2 and "take" not in x.w.events,
+       "small clauses PASS, the final waits: phase final, no take, no stage: %s" % acts)
+    proves = len(x.w.proves)
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now + 60, acts, R)
+    ok(x.st("I0")["game"]["phase"] == "final" and not acts and "take" not in x.w.events and len(x.w.proves) == proves,
+       "below final_batch_min and inside final_wait_s: it keeps waiting, holding nothing, proving nothing")
+    # a game started since (another item's load, or his): one try on it, no load
+    x.w.started = x.now + 100
+    acts = []
+    G.step(x.s, x.w, x.r, "I1", x.now + 200, acts, R)
+    ok(x.st("I1")["game"]["phase"] == "prove" and any(a["do"] == "game_final_try_running" for a in acts),
+       "a newer game: the final tries it once: %s" % acts)
+    for i in ("I0", "I1"):      # both tried the newer game and still wait for the full list
+        with x.s.lock():
+            st = x.s.load(i)
+            st["game"].update(phase="final", final_game=x.w.started)
+            x.s.save(st)
+        x.w.rows.append({"at": iso_(x.w.started + 5), "item": i, "criterion": "F1", "sha": SHA, "outcome": "UNMEASURED",
+                         "why": G.FINAL_WAIT})
+    # the bound: the oldest final stages one full-list load carrying the batch
+    t = x.now + G.DEFAULTS["final_wait_s"] + 10
+    acts = []
+    G.step(x.s, x.w, x.r, "I1", t, acts, R)
+    ok(x.st("I1")["game"]["phase"] == "final" and not acts, "only the oldest final stages")
+    G.step(x.s, x.w, x.r, "I0", t, acts, R)
+    g0 = x.st("I0")["game"]
+    ok(g0["phase"] == "staging" and g0.get("full") and g0["batch"] == ["I1"]
+       and any(a["do"] == "game_final_stage" and a["batch"] == ["I0", "I1"] for a in acts),
+       "the oldest stages one full load with the batch: %s %s" % (acts, g0))
+    ok("FINAL VERIFICATION" in x.w.launches[-1][2] and "FULL.LATEST" in x.w.launches[-1][2],
+       "the staging prompt asks for the whole full list")
+    x.w.up[x.st("I0")["run"]["unit"]] = False
+    G.step(x.s, x.w, x.r, "I0", t + 60, acts, R)
+    G.step(x.s, x.w, x.r, "I0", t + 120, acts, R)
+    ok(x.st("I1")["game"]["phase"] == "prove" and not x.st("I0")["game"].get("full"),
+       "I1 rode the full load; the full flag ends with the staging: %s" % x.st("I1")["game"])
+    # a small staging never carries a waiting final
+    st = {"item": "I9", "status": G.GAME, "game": {"phase": "final"}}
+    ok(G.batch([st], "I0", t) == [] and G.batch([st], "I0", t, full=True) == [st], "batch: finals ride only a full load")
+    x.done()
+
+
+def t_owed_final_joins_the_clauses():
+    """A contract written before the tier rule names A1 only; the criteria file owes F1 GREEN-FULL with a proof line:
+    F1 joins the game clauses at implement, so the item cannot wait on it forever."""
+    x = rig(1)
+    x.w.owed = {"A1": "L1", "F1": G.FINAL_LEVEL, "Z9": G.FINAL_LEVEL}
+    x.w.proofs[("I0", ".txt")] = FINAL_PROOF
+    to_game(x, "I0", game={"clauses": ["A1"], "why": "small"})
+    x.tick()
+    g = x.st("I0")["game"]
+    ok(g["phase"] == "prove" and g["clauses"] == ["A1", "F1"], "F1 joins, Z9 (no proof line) does not: %s" % g)
+    x.done()
+
+
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
@@ -671,7 +764,8 @@ def main():
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
-              t_stage_tries_a_newer_running_game_first):
+              t_stage_tries_a_newer_running_game_first,
+              t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

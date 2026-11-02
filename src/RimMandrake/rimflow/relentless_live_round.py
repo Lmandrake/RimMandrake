@@ -11,6 +11,14 @@ WHERE A PROOF COMES FROM: a line in infrastructure/state/live_proofs/<ID>.txt, o
 
     live-proof A2: python3 src/RimMandrake/Utils/live_log_check.py --absent RUT_PaleMoss
 
+A proof that needs mods its build did not change (a harness item, a proof over another mod) names them on one line, so
+the round runs it on any game holding them and their About.xml dependencies, and UNMEASURED ("not in the running load",
+which the game phase restages) on any other (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS):
+
+    live-mods: Graffiti, SacredGraffiti
+
+A criterion at level GREEN-FULL is the FINAL verification on the whole full list: it runs only when that tier is up.
+
 Not the item's prose: the Marker's box leaves infrastructure/state/items out (walls.marker.tree_exclude), so a proof kept
 there could never be checked blind. The prose keeps the why; the .txt holds only the lines.
 
@@ -64,6 +72,19 @@ def proof_lines(prose):
         if m:
             cid, cmd = (m.group("cid1"), m.group("cmd1")) if m.group("cid1") else (m.group("cid2"), m.group("cmd2"))
             out.setdefault(cid, cmd.strip())
+    return out
+
+
+LIVE_MODS = re.compile(r"^\s*(?:[-*]\s+)?`?live-mods\s*:\s*(?P<mods>[^`]*)`?\s*$")
+
+
+def live_mods(text):
+    """A live_proofs file -> the mod folders its `live-mods:` lines name (every line, in order, no repeats)."""
+    out = []
+    for line in (text or "").splitlines():
+        m = LIVE_MODS.match(line)
+        if m:
+            out += [x for x in re.split(r"[\s,]+", m.group("mods")) if x and x not in out]
     return out
 
 
@@ -239,7 +260,8 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         if folded is None:
             folded = fx.folded()
         ran += 1
-        row = run(fx, root, item_id, cid, proof, deploy_args(mods, folded), r, now=time.time())
+        row = run(fx, root, item_id, cid, proof, deploy_args(mods, folded), r, now=time.time(),
+                  needs=live_mods(fx.proofs(item_id)))
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if row["outcome"] == "UNMEASURED" and any(row.get("why", "").startswith(s) for s in STOP):
             return done("stopped: %s" % row["why"][:200])

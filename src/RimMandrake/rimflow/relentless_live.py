@@ -40,6 +40,13 @@ BOOKS = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 RULES = os.path.join(HERE, "relentless_rules.json")
 GAME_MODS = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 LIVE_LEVELS = ("L1", "L2", "GREEN-MIN", "GREEN-FULL")       # model.LEVEL_NEEDS says bridge; L3 is a judge, L4 a human
+# PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02): "small mod lists should always be the way to test until a
+# final verification pass on the whole huge mod list." Every live level but FINAL runs on any game that holds the item's
+# mods and their dependencies; a FINAL clause is the full-list verification, run only when the full list is up.
+FINAL = "GREEN-FULL"
+FINAL_WAIT = "final verification waits for the full list"     # relentless_game reads this prefix: batch, never restage
+FULL_LIST = os.path.join(BOOKS, "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")
+FULL_TIER_SHARE = 0.5       # northstar_driver.preflight's: under half the full list running is another tier
 TESTABLE = ("built", "validated")
 PASS, FAIL = 0, 1
 DEFAULTS = {
@@ -337,17 +344,41 @@ class Fx(object):
         for mod in sorted(set(mods)):
             try:
                 with open(os.path.join(self.mods_dir, mod, "About", "About.xml"), encoding="utf-8-sig") as f:
-                    m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", f.read(), re.I)
+                    text = f.read()
             except OSError:
-                m = None
+                text = ""
+            m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", text, re.I)
             if not m:
                 return "not in the running load: %s has no readable packageId in its deployed About.xml" % mod
             want[mod] = m.group(1).lower()
+            deps = re.search(r"<modDependencies>(.*?)</modDependencies>", text, re.S | re.I)   # its dependencies too
+            for d in re.findall(r"<packageId>\s*([^<\s]+)\s*</packageId>", deps.group(1) if deps else "", re.I):
+                want.setdefault("%s needs %s" % (mod, d.lower()), d.lower())
         running = live_def_check.call_running_mods(60)
         if running is None:
             return "the running load's mod list could not be read (jawa/running_mods)"
         lost = ["%s (%s)" % (m, p) for m, p in sorted(want.items()) if p not in running]
         return ("not in the running load: %s" % ", ".join(lost[:5])) if lost else None
+
+    def full_list_gap(self):
+        """None when the RUNNING load is the full-list tier (at least FULL_TIER_SHARE of FULL.LATEST's ids running); else
+        why not, starting FINAL_WAIT. Whether it EQUALS the list is the final proof's own question, never this gate's."""
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import live_def_check
+        import modmanifest
+        try:
+            full = [i.lower() for i in modmanifest.read_modsconfig(FULL_LIST)]
+        except Exception as e:      # noqa: BLE001  an unread list is no reason to call the game the full list
+            return "%s: %s unreadable (%s)" % (FINAL_WAIT, os.path.basename(FULL_LIST), e)
+        running = live_def_check.call_running_mods(60)
+        if running is None:
+            return "the running load's mod list could not be read (jawa/running_mods)"
+        held = sum(1 for i in full if i in running)
+        if held < FULL_TIER_SHARE * len(full):
+            return "%s: the running game has %d mods, %d of FULL.LATEST's %d" % (FINAL_WAIT, len(running), held, len(full))
+        return None
 
     def run_proof(self, proof, log, timeout):
         """-> the proof's exit code, or None when it outran `timeout`. Output goes to `log`."""
@@ -370,8 +401,11 @@ class Fx(object):
                     pass
 
 
-def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
-    """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED."""
+def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=()):
+    """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
+    needs: mod folders the proof declares (live_proofs `live-mods:`) beyond the ones the built commit changed; with
+    those, each one's About.xml modDependencies must be in the RUNNING load, or the row is UNMEASURED (restage), never
+    run. A FINAL (GREEN-FULL) criterion also needs the full-list tier up: else UNMEASURED FINAL_WAIT, never run."""
     now = time.time() if now is None else now
     lr = live_rules(r)
     row = {"at": iso(now), "item": item_id, "criterion": criterion, "proof": proof, "deploy": deploy}
@@ -442,11 +476,14 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
         if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
             crashed = "the game or its deployed files changed while the bridge was being taken"
             code = None
-        # the build is deployed and older than the game, but the running list may not load its mod at all (owner
-        # 2026-11-02: a game fits an item by its RUNNING mods, not ModsConfig); asked with the bridge held
-        elif files and fx.running_load_gap([m for m, _ in files]):
-            crashed, code = fx.running_load_gap([m for m, _ in files]), None
         else:
+            # the build is deployed and older than the game, but the running list may not load its mod (or a mod it
+            # declares, or their dependencies) at all (owner 2026-11-02: a game fits an item by its RUNNING mods, not
+            # ModsConfig); a FINAL clause also needs the full-list tier. Asked with the bridge held, one read each.
+            need = sorted({m for m, _ in files} | set(needs))
+            crashed = (fx.running_load_gap(need) if need else None) or (fx.full_list_gap() if level == FINAL else None)
+            code = None
+        if crashed is None and code is None:
             code = fx.run_proof(proof, log, lr["proof_max_s"])
             if code in (PASS, FAIL) and files and (started != fx.game_started()
                                                    or stamps != [fx.mtime(m, rel) for m, rel in files]):
@@ -463,6 +500,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None):
         return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     if code not in (PASS, FAIL):
         why = crashed or "the proof %s" % ("timed out" if code is None else "exited %d: it did not measure" % code)
+        if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
+            return done("UNMEASURED", why, log=log)
         note = fx.rimflow("note", item_id, "--text", "relentless live %s %s UNMEASURED: %s (%s)" % (criterion, level, why,
                                                                                                   log)[:400],
                           "--why", "relentless live tier: no verdict, no run recorded")

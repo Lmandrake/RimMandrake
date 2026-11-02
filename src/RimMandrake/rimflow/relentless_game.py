@@ -19,6 +19,13 @@ infrastructure/state/live_proofs/<ID>.txt. The blind checker passes the offline 
              his OWNER hold and `./bridge` override) and launches ONE staging worker that deploys and restarts the game
              on the smallest list that holds the item's mods, then exits. The bridge is released the moment it ends.
 
+  final      PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02: "small mod lists should always be the way to
+             test until a final verification pass on the whole huge mod list"): every clause but a GREEN-FULL one is
+             proved on the smallest list that holds the item's mods; a GREEN-FULL clause is the FINAL verification on the
+             whole list. An item whose other clauses all PASS and whose final clauses read "final verification waits for
+             the full list" waits here, holding nothing; a newer game gets one try; when final_batch_min items wait (or
+             the oldest has waited final_wait_s) the oldest stages ONE full-list load that carries them all.
+
 The lease rule, enforced here and nowhere else: no bridge for an item whose offline proof is not green on the same sha
 (unless its contract says why none is possible), whose game clauses lack a proof line, that names flight, or while
 another item holds a game phase. One live user at a time.
@@ -44,12 +51,16 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             "harness_retry_s": 1800, "harness_retry_max_s": 14400,
             # owner 2026-11-02, to save game loads: an item that needs a reload waits up to batch_wait_s while another
             # game item has not yet been tried on the RUNNING game; the reload then deploys every waiting item at once
-            "batch_wait_s": 1800}
+            "batch_wait_s": 1800,
+            # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS: one full-list load (15-25 min) verifies a batch of final clauses
+            "final_batch_min": 4, "final_wait_s": 8 * 3600}
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
 RESTAGE = ("not deployed", "no running game to test", "the game started", "not in the running load")
 SESSIONS = "live_sessions.json"
+FINAL_LEVEL = "GREEN-FULL"      # relentless_live.FINAL
+FINAL_WAIT = "final verification waits for the full list"      # relentless_live.FINAL_WAIT: a row's why, never a restage
 ACTIVE = ("staging", "proving")
 
 BRIEF = [
@@ -160,11 +171,32 @@ def untried(states, item, started):
     return None
 
 
-def batch(states, item, now):
-    """The other game items waiting for a reload: the one staging deploys them all."""
+def batch(states, item, now, full=False):
+    """The other game items waiting for a reload: the one staging deploys them all. A full-list staging also carries
+    every item waiting in phase final (its one load verifies them all)."""
     return [s for s in states if s["item"] != item and s["status"] == GAME
             and ((s.get("game") or {}).get("waits_reload") or ((s.get("game") or {}).get("phase") == "stage"
-                                                               and not (s["game"].get("retry_at") or 0) > now))]
+                                                               and not (s["game"].get("retry_at") or 0) > now)
+                 or (full and (s.get("game") or {}).get("phase") == "final"))]
+
+
+def finals_waiting(states):
+    """The game items waiting in phase final, oldest first: [(final_since, item)]."""
+    return sorted(((s["game"].get("final_since") or 0), s["item"]) for s in states
+                  if s["status"] == GAME and (s.get("game") or {}).get("phase") == "final")
+
+
+def final_split(rows, owed, clauses, started):
+    """-> (final clauses, waiting) where waiting is True when every non-final clause PASSed and every final clause
+    either PASSed or read FINAL_WAIT on the game that started at `started` (so this game cannot verify it)."""
+    finals = [k for k in clauses if owed.get(k) == FINAL_LEVEL]
+    if not finals:
+        return finals, False
+    small_ok = all((rows.get(k) or {}).get("outcome") == "PASS" for k in clauses if k not in finals)
+    waits = [k for k in finals if (rows.get(k) or {}).get("outcome") == "UNMEASURED"
+             and (rows[k].get("why") or "").startswith(FINAL_WAIT) and (not started or row_at(rows[k]) >= started)]
+    rest_ok = all(k in waits or (rows.get(k) or {}).get("outcome") == "PASS" for k in finals)
+    return finals, bool(small_ok and waits and rest_ok)
 
 
 def session_note(store, started, item, served=False, reload_why=None, mods=None, now=None):
@@ -239,8 +271,14 @@ def stage_prompt(st, r, sha, others=()):
         "supervisor can rerun this item's live proofs blind. You do NOT run or judge the proofs." % (i, g, r["seat"], sha),
         "1. Deploy: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <Mod>` for each mod that %s changed (plan "
         "first, read it, then --apply). Load `rimworld-deploy` first." % sha,
-        "2. The game must start after the deploy: restart it on the smallest mod list that holds those mods "
-        "(`rimworld-load-round`: modlist_swap.py; all five DLC always). Stamp each change with "
+        ("2. FINAL VERIFICATION: the game must start after the deploy on the owner's WHOLE FULL list "
+         "(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml; `rimworld-load-round`: modlist_swap.py restores it), "
+         "never a smaller tier: this one load verifies every item's GREEN-FULL clauses at once. Stamp each change with "
+         "`./game --idle-ok --why \"relentless final staging %s\" down|loading|up`." % i) if (st.get("game") or {}).get("full") else
+        "2. The game must start after the deploy: restart it on the smallest mod list that holds those mods and every "
+        "mod a `live-mods:` line in the proofs below names, with their About.xml dependencies "
+        "(`rimworld-load-round`: modlist_swap.py; all five DLC always). Never the full list for a GREEN-FULL clause: that "
+        "is the batched final verification, staged on its own. Stamp each change with "
         "`./game --idle-ok --why \"relentless staging %s\" down|loading|up`." % i,
         "   Choose the smallest list that proves the item: a cold load is ~22 s on the 13-mod minimal list and 15-25 "
         "minutes on the full one. Wait for it with `./game` polls (each command under 540 s) up to that bound; if you "
@@ -462,7 +500,11 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_contract",
                          "game clauses not owed at a live level after implemented: missing %s, not live %s; add them to "
                          "%s/%s.criteria" % (missing, notlive, PROOFS_DIR, item), now, acts)
-        _save(store, item, lambda s: s["game"].update(phase="prove"))
+        # a GREEN-FULL clause the criteria file owes with a proof line joins the game clauses (a contract written before
+        # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS names only the small ones), or the item would wait on it forever
+        lines = proof_lines(fx.proofs_at(item, sha))
+        finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
+        _save(store, item, lambda s: s["game"].update(phase="prove", clauses=list(s["game"]["clauses"]) + finals))
         acts.append({"do": "game_implemented", "item": item, "sha": sha})
         return
 
@@ -485,6 +527,16 @@ def step(store, fx, r, item, now, acts, sup):
                 live=live)
         if len(rows) == len(g["clauses"]) and all(v.get("outcome") == "PASS" for v in rows.values()):
             return      # the last verify moves the ledger to done; the next tick finishes it
+        rd0 = fx.game_reading()
+        _finals, waiting = final_split(rows, led["owed"], g["clauses"], rd0.get("started"))
+        if waiting:     # otherwise done: only the full-list final verification is owed; it waits for a batched load
+            why = "final verification: every other clause PASSed; waits for one full-list load with the batch"
+            _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
+                                          s["game"].update(phase="final", final_since=s["game"].get("final_since") or now,
+                                                           final_game=rd0.get("started"), waits_reload=None,
+                                                           full=None)))
+            acts.append({"do": "game_final_wait", "item": item})
+            return
         lane = [v for v in rows.values() if v.get("outcome") == "SKIPPED"]
         if lane:
             return _hold(store, fx, item, "game phase: %s" % lane[0].get("why"), now, acts)
@@ -544,6 +596,24 @@ def step(store, fx, r, item, now, acts, sup):
             acts.append({"do": "game_prove", "item": item, "pid": pid})
             return
 
+    if g["phase"] == "final":
+        rd = fx.game_reading()
+        if other_active(store.states(), item) is not None:
+            return      # one live user at a time; waiting here holds nothing
+        if rd.get("state") == "UP" and rd.get("started") and rd["started"] != g.get("final_game"):
+            # a newer game may be the full list already (another item's load, or the owner's): one try, no load
+            _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=now, waits_reload=None))
+            acts.append({"do": "game_final_try_running", "item": item, "started": rd["started"]})
+            return
+        queue = finals_waiting(store.states())
+        if not queue or queue[0][1] != item:
+            return      # the oldest final stages the one load for the batch
+        if len(queue) < c["final_batch_min"] and now - queue[0][0] < c["final_wait_s"]:
+            return
+        _save(store, item, lambda s: s["game"].update(phase="stage", full=True, stages=0))
+        acts.append({"do": "game_final_stage", "item": item, "batch": [q[1] for q in queue]})
+        g = store.load(item)["game"]
+
     if g["phase"] == "stage":
         if (g.get("retry_at") or 0) > now:
             return      # put down on a harness failure until its retry: it holds no place, the bridge is free
@@ -576,7 +646,7 @@ def step(store, fx, r, item, now, acts, sup):
         unit = sup.unit_name("stage", item, st["gen"]) + "-s%d" % (g["stages"] + 1)
         desc = sup.run_desc(store, r, unit, now)
 
-        others = batch(store.states(), item, now)
+        others = batch(store.states(), item, now, full=bool(g.get("full")))
 
         def f(s):
             s.pop("put_down", None)
@@ -608,11 +678,11 @@ def step(store, fx, r, item, now, acts, sup):
         if not sup.settle(store, fx, r, item, "run", g["staged_at"], now, acts):
             return
         gave = fx.bridge_release()       # at once, however staging ended
-        st = _save(store, item, lambda s: s["game"].update(phase="prove", released=gave is None))
+        st = _save(store, item, lambda s: s["game"].update(phase="prove", released=gave is None, full=None))
         rode = []
 
         def ride(s):
-            if s["game"].get("phase") in ("prove", "stage"):
+            if s["game"].get("phase") in ("prove", "stage", "final"):
                 s["game"].update(phase="prove", staged_at=now, waits_reload=None)
                 rode.append(s["item"])
         for o in g.get("batch") or []:      # the items that rode this reload try the new game, none stages its own

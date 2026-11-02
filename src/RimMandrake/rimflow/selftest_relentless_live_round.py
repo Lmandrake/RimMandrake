@@ -129,8 +129,9 @@ class FakeFx(object):
 def fake_run(outcomes):
     calls = []
 
-    def run(fx, root, item_id, cid, proof, deploy, r, now=None):
+    def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=()):
         calls.append((item_id, cid, deploy))
+        NEEDS.append((item_id, tuple(needs)))
         o, why = outcomes.get(item_id, ("PASS", "proof exit 0"))
         return {"item": item_id, "criterion": cid, "outcome": o, "why": why, "sha": "abc123"}
     return run, calls
@@ -313,11 +314,31 @@ def t_proofs_file():
     for n in names:
         with open(os.path.join(real, n), encoding="utf-8") as f:
             for line in f:
-                ok = crit_line.match(line) if n.endswith(".criteria") else R.PROOF_LINE.match(line.rstrip("\n"))
+                ok = crit_line.match(line) if n.endswith(".criteria") else (R.PROOF_LINE.match(line.rstrip("\n"))
+                                                                             or R.LIVE_MODS.match(line.rstrip("\n")))
                 if line.strip() and not line.startswith("#") and not ok:
                     bad.append("%s: %s" % (n, line[:60]))
     check("proofs: every real live_proofs file is .txt (or .criteria) and every line parses", names and all(
         n.endswith((".txt", ".criteria")) for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
+
+
+NEEDS = []
+
+
+def t_live_mods():
+    """PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS: a proof file names the mods its proofs need (`live-mods:`), and the
+    round hands them to the gate, so a small list that holds them is enough and a list that lacks them is UNMEASURED."""
+    text = "live-mods: Graffiti, SacredGraffiti\n- `live-mods: Graffiti EGrowth`\nlive-proof A1: echo a\n"
+    check("live-mods: every line, in order, no repeats", R.live_mods(text) == ["Graffiti", "SacredGraffiti", "EGrowth"],
+          R.live_mods(text))
+    check("live-mods: none named -> none", R.live_mods("live-proof A1: echo a\n") == [])
+    check("live-mods: a live-mods line is not a proof line", R.proof_lines(text) == {"A1": "echo a"})
+    del NEEDS[:]
+    fx = FakeFx()
+    fx.proofs = lambda i: "live-mods: Graffiti\n" + PROSE
+    with tempfile.TemporaryDirectory() as root:
+        R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=fake_run({})[0])
+    check("live-mods: the round passes them to the gate", NEEDS[:1] == [("EG_A", ("Graffiti",))], NEEDS)
 
 
 def t_real_lane():
@@ -333,7 +354,7 @@ def t_real_lane():
 
 
 def main():
-    for t in (t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_log_never, t_real_lane,
+    for t in (t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never, t_real_lane,
               t_history_review, t_tick_env):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

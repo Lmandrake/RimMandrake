@@ -58,11 +58,12 @@ def item(**kw):
 
 class FakeFx(object):
     def __init__(self, it=None, touched=TOUCHED, plan=(0, PLAN), mtime=1000.0, started=2000.0, take_rc=0, proof=0,
-                 verify_rc=0, proof_raises=False, later=(), deleted=(), release_rc=0, start_after_take=None, gap=None):
+                 verify_rc=0, proof_raises=False, later=(), deleted=(), release_rc=0, start_after_take=None, gap=None,
+                 full_gap=None):
         self.later, self.gone, self.release_rc, self.start_after_take = list(later), list(deleted), release_rc, start_after_take
         self.it, self.t, self.plan, self.mt, self.started = (item() if it is None else it), touched, plan, mtime, started
         self.take_rc, self.proof, self.verify_rc, self.proof_raises = take_rc, proof, verify_rc, proof_raises
-        self.calls, self.gap = [], gap
+        self.calls, self.gap, self.full_gap = [], gap, full_gap
 
     def item(self, item_id):
         return self.it
@@ -107,6 +108,10 @@ class FakeFx(object):
     def running_load_gap(self, mods):
         self.calls.append(("gap", tuple(mods)))
         return self.gap
+
+    def full_list_gap(self):
+        self.calls.append(("full_gap",))
+        return self.full_gap
 
     def run_proof(self, proof, log, timeout):
         self.calls.append(("proof", proof))
@@ -594,11 +599,42 @@ def t_running_load_gap_is_unmeasured():
     check("the game phase restages on it", any(row["why"].startswith(w) for w in relentless_game.RESTAGE), row["why"])
 
 
+def t_tiers_small_first_final_last():
+    """PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02: "small mod lists should always be the way to test
+    until a final verification pass on the whole huge mod list"): a proof's declared live-mods are gated on the RUNNING
+    load even when its commit touched no game file (GRAFFITI A1 failed on a 23-mod game: it was never gated); a GREEN-FULL
+    clause is the final verification, and a small game is no FAIL for it: a row, no proof, no ledger note, no restage."""
+    import relentless_game
+    fx = FakeFx(touched=[], gap="not in the running load: Graffiti (mandrake.rm.graffiti)")
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    row = L.run(fx, root, "ROT_X", "A2", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
+    check("tiers: declared live-mods are gated with no game file touched",
+          ("gap", ("Graffiti",)) in fx.calls and row["outcome"] == "UNMEASURED" and "proof" not in fx.verbs(), fx.calls)
+    fx = FakeFx(touched=[])
+    row = L.run(fx, root, "ROT_X", "A2", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
+    check("tiers: a small game holding the mods runs the L1 proof, never asks for the full list",
+          row["outcome"] == "PASS" and ("full_gap",) not in fx.calls, fx.calls)
+    final = item(criteria=[{"id": "F1", "level": L.FINAL, "text": "the running list equals FULL.LATEST"}],
+                 outstanding=["F1"])
+    fx = FakeFx(it=final, touched=[], full_gap="%s: the running game has 23 mods, 21 of FULL.LATEST's 316" % L.FINAL_WAIT)
+    row = L.run(fx, root, "ROT_X", "F1", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
+    check("tiers: a final clause on a small game is UNMEASURED FINAL_WAIT, the proof never runs",
+          row["outcome"] == "UNMEASURED" and row["why"].startswith(L.FINAL_WAIT) and "proof" not in fx.verbs()
+          and "release" in fx.verbs(), (row, fx.verbs()))
+    check("tiers: and no ledger note, no verify", "note" not in fx.verbs() and "verify" not in fx.verbs(), fx.verbs())
+    check("tiers: FINAL_WAIT is no restage reason (the batched final load is)",
+          not any(row["why"].startswith(w) for w in relentless_game.RESTAGE)
+          and relentless_game.FINAL_WAIT == L.FINAL_WAIT and relentless_game.FINAL_LEVEL == L.FINAL, row["why"])
+    fx = FakeFx(it=final, touched=[])
+    row = L.run(fx, root, "ROT_X", "F1", "python3 x.py", "", {}, now=1_800_000_000)
+    check("tiers: on the full list the final proof runs", row["outcome"] == "PASS" and ("full_gap",) in fx.calls, fx.calls)
+
+
 def main():
     for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
-              t_load_condition, t_running_load_gap_is_unmeasured):
+              t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last):
         try:
             t()
         except Exception as e:     # a crash is a red, named

@@ -183,6 +183,72 @@ def check_modlist(expect_sha=None, expect_ids=(), config_path=None):
 FULL_LATEST = os.path.join(ROOT, "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")
 
 
+# PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02): "small mod lists should always be the way to test until
+# a final verification pass on the whole huge mod list." A proof names the mods it needs (its mod + dependencies) and
+# passes on ANY running game that holds them; comparing the running game to the full list is a separate, explicitly
+# named final verification (rimflow level GREEN-FULL), which Relentless batches so one full-list load verifies many.
+CORE_AND_DLC = ("ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+                "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")     # every DLC is assumed (standing ruling)
+# a running list holding less than this share of the intended full list is another TIER, not a wrong full list: the
+# final verification cannot measure it (UNMEASURED, exit 2), it never FAILs the item (lesson 20261102T194241Z)
+FULL_TIER_SHARE = 0.5
+
+
+def about_needs(about_xml):
+    """A mod's About.xml -> [its packageId, then every modDependencies packageId], lower case, in order. Raises on an
+    unreadable file or one with no packageId: a proof cannot say what it needs without it."""
+    with open(about_xml, encoding="utf-8-sig") as f:
+        text = f.read()
+    m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", text, re.I)
+    if not m:
+        raise ValueError("%s has no packageId" % about_xml)
+    out = [m.group(1).lower()]
+    deps = re.search(r"<modDependencies>(.*?)</modDependencies>", text, re.S | re.I)
+    for d in re.findall(r"<packageId>\s*([^<\s]+)\s*</packageId>", deps.group(1) if deps else "", re.I):
+        if d.lower() not in out:
+            out.append(d.lower())
+    return out
+
+
+def needed_ids(about_xmls=(), extra_ids=()):
+    """The minimal set a proof needs loaded: Core + every DLC, each mod's packageId and its modDependencies, extra ids."""
+    out = list(CORE_AND_DLC)
+    for p in about_xmls:
+        out += [i for i in about_needs(p) if i not in out]
+    out += [i.lower() for i in extra_ids if i and i.lower() not in out]
+    return out
+
+
+def _running_ids(s, name):
+    """-> (ids, None) from jawa/running_mods (the RUNNING load, never ModsConfig.xml), or (None, Check UNMEASURED)."""
+    r, err = _safe(s.call, "jawa/running_mods", assembly="", details=False)
+    if err:
+        return None, Check(name, UNMEASURED, "jawa/running_mods raised (%s)" % err)
+    raw = r.get("packageIds") if isinstance(r, dict) else None
+    if not isinstance(r, dict) or not r.get("success", True) or not isinstance(raw, list) or not raw:
+        return None, Check(name, UNMEASURED, "jawa/running_mods gave no packageIds (%r)" % (str(r)[:200],))
+    if not all(isinstance(x, str) and x.strip() for x in raw):   # never drop a bad entry to reach equality
+        return None, Check(name, UNMEASURED, "jawa/running_mods reply holds non-id entries: %r"
+                           % [x for x in raw if not (isinstance(x, str) and x.strip())][:5])
+    return [x.strip() for x in raw], None
+
+
+def check_needed_mods(s, need):
+    """TIER-AWARE (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS): PASS iff the RUNNING game holds every id in `need`,
+    whatever else it holds or lacks: 23 mods or 316. A missing id is UNMEASURED with "not in the running load" (the
+    words relentless_game.RESTAGE reads as: stage a list that holds it), never a FAIL of the mod."""
+    ids, bad = _running_ids(s, "needed_mods")
+    if bad:
+        return bad
+    have = {i.lower() for i in ids}
+    lost = [i for i in need if i.lower() not in have]
+    if lost:
+        return Check("needed_mods", UNMEASURED, "not in the running load: %s (running %d mods; this proof needs %d)"
+                     % (", ".join(lost[:8]), len(ids), len(need)))
+    return Check("needed_mods", PASS, "running %d mods hold all %d this proof needs: %s"
+                 % (len(ids), len(need), ", ".join(need)))
+
+
 def check_running_list(s, list_path=None):
     """FULL-LIST MODE (Graffiti plan 6.8): the RUNNING game's LoadedModManager.RunningModsListForReading
     (jawa/running_mods, packageIds in load order) against the intended list file (default FULL.LATEST).
@@ -197,19 +263,17 @@ def check_running_list(s, list_path=None):
         intended = modmanifest.read_modsconfig(list_path)
     except Exception as ex:
         return Check("running_list", UNMEASURED, "intended list unreadable (%s: %s)" % (type(ex).__name__, ex))
-    r, err = _safe(s.call, "jawa/running_mods", assembly="", details=False)
-    if err:
-        return Check("running_list", UNMEASURED, "jawa/running_mods raised (%s)" % err)
-    raw = r.get("packageIds") if isinstance(r, dict) else None
-    if not isinstance(r, dict) or not r.get("success", True) or not isinstance(raw, list) or not raw:
-        return Check("running_list", UNMEASURED, "jawa/running_mods gave no packageIds (%r)" % (str(r)[:200],))
-    if not all(isinstance(x, str) and x.strip() for x in raw):   # never drop a bad entry to reach equality
-        return Check("running_list", UNMEASURED, "jawa/running_mods reply holds non-id entries: %r"
-                     % [x for x in raw if not (isinstance(x, str) and x.strip())][:5])
-    ids = [x.strip() for x in raw]
+    ids, bad = _running_ids(s, "running_list")
+    if bad:
+        return bad
     c = modmanifest.compare(intended, ids)
     name = os.path.basename(list_path)
     ev = "running %d vs %s %d" % (len(ids), name, len(intended))
+    have = {i.lower() for i in ids}
+    held = sum(1 for i in intended if str(i).lower() in have)
+    if intended and held < FULL_TIER_SHARE * len(intended):
+        return Check("running_list", UNMEASURED, "not the full list: %s, %d of its ids running: another tier is up, so "
+                     "this final verification cannot measure it (it waits for a full-list load)" % (ev, held))
     if not c["clean"]:
         return Check("running_list", FAIL, "%s: %s" % (ev, "; ".join(c["problems"])))
     sha = hashlib.sha256("\n".join(i.lower() for i in ids).encode()).hexdigest()

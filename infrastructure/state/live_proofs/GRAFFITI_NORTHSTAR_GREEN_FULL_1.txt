@@ -1,3 +1,6 @@
-# STAGING: these proofs need a FRESH launch on the owner's FULL list (modlist_swap to infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml, deploy Graffiti + SacredGraffiti). This item IS the final full-list verification pass (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS); on the minimal list A1 fails by design (run-1, 2026-11-02: 23 running vs 316).
-live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list --list infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml < /dev/null
-live-proof A2: python3 src/RimMandrake/Graffiti/northstar_full.py --list infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml < /dev/null
+# TIERS (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS, owner 2026-11-02: "small mod lists should always be the way to test until a final verification pass on the whole huge mod list"): A1 and A2 run on ANY game that holds Graffiti (Core + every DLC); stage the smallest list with Graffiti deployed. F1 and F2 are the GREEN-FULL final verification: Relentless runs them only on a full-list load it batches with other items' finals; on a small game they read UNMEASURED "final verification waits for the full list", never FAIL.
+live-mods: Graffiti
+live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py needs-mods --mod Graffiti < /dev/null
+live-proof A2: python3 src/RimMandrake/Graffiti/northstar_full.py --tier small < /dev/null
+live-proof F1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list --list infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml < /dev/null
+live-proof F2: python3 src/RimMandrake/Graffiti/northstar_full.py --list infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml < /dev/null

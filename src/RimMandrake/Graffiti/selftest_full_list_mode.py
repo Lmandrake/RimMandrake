@@ -289,6 +289,64 @@ def t5_verdict():
     check("5 a step that cannot start is rc 2, no exception", rc == 2 and "could not start" in out, out)
 
 
+def t6_tiers():
+    """PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02: "small mod lists should always be the way to test
+    until a final verification pass on the whole huge mod list"). GRAFFITI A1 FAILed on a 23-mod game against the
+    316-mod list: a small game is another tier, UNMEASURED for the final check, and the small proof passes on any game
+    that holds Graffiti, Core and every DLC."""
+    small = list(pf.CORE_AND_DLC) + ["mandrake.rm.graffiti"] + ["x.m%d" % i for i in range(16)]
+    full = small + ["y.f%d" % i for i in range(293)]
+    game = MockGame(mods=tuple(small))
+    with FastSession(transport=MockTransport(game), strict=False) as s:
+        c = pf.check_running_list(s, write_list(full))
+        check("6 a 23-mod game against a 316-mod list is UNMEASURED (another tier), never FAIL",
+              c.status == UNMEASURED and "not the full list" in c.evidence, c.evidence)
+        need = cli.needs_for(["Graffiti"])
+        check("6 Graffiti's needs: Core, every DLC, its own packageId",
+              need[:len(pf.CORE_AND_DLC)] == list(pf.CORE_AND_DLC) and "mandrake.rm.graffiti" in need, need)
+        c = pf.check_needed_mods(s, need)
+        check("6 the small game holds Graffiti's needs: PASS", c.status == PASS, c.evidence)
+        c = pf.check_needed_mods(s, need + ["mandrake.rm.sacredgraffiti"])
+        check("6 a need not running is UNMEASURED 'not in the running load' (a restage reason), never FAIL",
+              c.status == UNMEASURED and c.evidence.startswith("not in the running load"), c.evidence)
+    game = MockGame(mods=tuple(full))
+    with FastSession(transport=MockTransport(game), strict=False) as s:
+        check("6 the full game holds the small needs too", pf.check_needed_mods(s, need).status == PASS)
+        c = pf.check_running_list(s, write_list(full[:-1]))
+        check("6 on the full tier a difference still FAILs", c.status == FAIL, c.evidence)
+    check("6 exit codes: PASS 0, FAIL 1, UNMEASURED 2",
+          (cli.exit_code(PASS), cli.exit_code(FAIL), cli.exit_code(UNMEASURED)) == (0, 1, 2))
+    d = tempfile.mkdtemp()
+    ab = os.path.join(d, "About.xml")
+    with open(ab, "w") as f:
+        f.write("<ModMetaData><packageId>A.B</packageId><modDependencies><li><packageId>brrainz.harmony</packageId>"
+                "</li></modDependencies></ModMetaData>")
+    check("6 about_needs: its packageId then its dependencies, lower case", pf.about_needs(ab) == ["a.b", "brrainz.harmony"],
+          pf.about_needs(ab))
+    with open(ab, "w") as f:
+        f.write("<ModMetaData><name>x</name></ModMetaData>")
+    check("6 an About.xml with no packageId cannot say what it needs: raises", _raises_any(pf.about_needs, ab))
+    small_doc = copy.deepcopy(green_doc())
+    small_doc.update(config="current", preflight=[])
+    small_doc.pop("full_list_differences")
+    ok, why = northstar_full.full_rung_verdict(small_doc, expected=["bar_a", "bar_b"], compat_required=(), tier="small")
+    check("6 small tier: no running_list, no differences, current config: GREEN", ok, why)
+    ok, _ = northstar_full.full_rung_verdict(small_doc, expected=["bar_a", "bar_b"], compat_required=COMPAT_REQ)
+    check("6 the same doc is NOT the full rung", not ok)
+    bad = copy.deepcopy(small_doc)
+    bad["bars"][1]["status"] = FAIL
+    ok, _ = northstar_full.full_rung_verdict(bad, expected=["bar_a", "bar_b"], compat_required=(), tier="small")
+    check("6 small tier: a FAIL bar is still NOT GREEN", not ok)
+
+
+def _raises_any(fn, *a):
+    try:
+        fn(*a)
+    except Exception:       # noqa: BLE001
+        return True
+    return False
+
+
 def main():
     t1_running_list()
     t2_mock_run()
@@ -296,6 +354,7 @@ def main():
     t3b_compat_partition()
     t4_differences()
     t5_verdict()
+    t6_tiers()
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
 

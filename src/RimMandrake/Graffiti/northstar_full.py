@@ -17,6 +17,13 @@ held by the caller. It never launches, stops or swaps anything, and never touche
 
 Exit 0 = every clause holds (GREEN on the full list); 1 = ran, not green; 2 = could not run a step.
 
+--tier small (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS, owner 2026-11-02: "small mod lists should always be the way to
+test until a final verification pass on the whole huge mod list"): the same suite on WHATEVER game is up, as long as it
+holds Graffiti and its dependencies (northstar_driver `needs-mods --mod Graffiti`, exit 2 when it does not). The run is
+`--config current`; the verdict drops only the full-list clauses (config `full`, pre-flight running_list, the
+full_list_differences section, a compat row per foreign member that a small list does not load). Every Graffiti bar,
+the judge, partial/refused and compat-apart stay. The default `--tier full` is the FINAL verification (GREEN-FULL).
+
 The verdict (full_rung_verdict) holds only when ALL of: the doc is Graffiti's and config is `full`; pre-flight
 `running_list` PASS; the run was not refused and is not partial; it was judged; every row in bars[] (each north-star
 bar and each functional row) is PASS and every bar of Graffiti's VALIDATED walk (read from the walk, never from the
@@ -55,9 +62,11 @@ def compat_ids_required():
     return {"spree_wall.compat_%s_marks" % pid.rsplit(".", 1)[-1] for pid in validation.FOREIGN_DEFS}
 
 
-def full_rung_verdict(doc, expected=None, compat_required=None):
-    """(ok, [reasons it is not]) for a judged full-list results doc. `expected` / `compat_required` default to the
-    authoritative sources (the walk; validation.FOREIGN_DEFS); tests pass their own."""
+def full_rung_verdict(doc, expected=None, compat_required=None, tier="full"):
+    """(ok, [reasons it is not]) for a judged results doc. `expected` / `compat_required` default to the
+    authoritative sources (the walk; validation.FOREIGN_DEFS); tests pass their own. tier "small" judges a
+    `--config current` run on any list holding Graffiti: the full-list-only clauses are not asked."""
+    full = tier == "full"
     sys.path.insert(0, os.path.dirname(DRIVER))
     from northstar_driver import bars as B
     from northstar_driver import PASS
@@ -67,14 +76,15 @@ def full_rung_verdict(doc, expected=None, compat_required=None):
         if not expected:
             why.append("no authoritative expected bars (%s)" % src)
     if compat_required is None:
-        compat_required = compat_ids_required()
+        compat_required = compat_ids_required() if full else ()
     if doc.get("mod") != MOD:
         why.append("results are for %r, not %s" % (doc.get("mod"), MOD))
-    if doc.get("config") != "full":
-        why.append("config is %r, not 'full'" % doc.get("config"))
+    want = "full" if full else "current"
+    if doc.get("config") != want:
+        why.append("config is %r, not %r" % (doc.get("config"), want))
     pre = {c.get("name"): c for c in doc.get("preflight") or []}
     rl = pre.get("running_list")
-    if not rl or rl.get("status") != PASS:
+    if full and (not rl or rl.get("status") != PASS):
         why.append("pre-flight running_list %s" % ("absent" if not rl else "%s: %s" % (rl.get("status"),
                                                                                       str(rl.get("evidence"))[:200])))
     if doc.get("refused"):
@@ -100,7 +110,9 @@ def full_rung_verdict(doc, expected=None, compat_required=None):
         if miss:
             why.append("compat rows missing: %s" % miss)
     d = doc.get("full_list_differences")
-    if not isinstance(d, dict) or d.get("error"):
+    if not full:
+        pass
+    elif not isinstance(d, dict) or d.get("error"):
         why.append("full_list_differences missing or broken: %s" % (str(d)[:200],))
     else:
         bad = [k for k in ("pool_members", "cleaning", "camera", "full_only", "not_installed")
@@ -154,6 +166,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", help="results JSON: print the verdict, record nothing")
     ap.add_argument("--list", help="the list the running game must equal (default FULL.LATEST)")
+    ap.add_argument("--tier", choices=("full", "small"), default="full",
+                    help="small: any running list holding Graffiti + its dependencies, --config current, the full-list "
+                         "clauses not asked; full (default): the FINAL verification on the whole list")
     ap.add_argument("--out")
     ap.add_argument("--no-quicktest", action="store_true", help="the map is already a FRESH quicktest")
     ap.add_argument("--no-judge", action="store_true", help="state half only (the verdict then fails: not judged)")
@@ -165,15 +180,20 @@ def main(argv=None):
         except (OSError, ValueError) as ex:
             print("FULL RUNG NOT GREEN: results unreadable (%s)" % ex)
             return 1
-        ok, why = full_rung_verdict(doc)
-        print("FULL RUNG %s%s" % ("GREEN" if ok else "NOT GREEN", "" if ok else ": " + " | ".join(why)))
+        ok, why = full_rung_verdict(doc, tier=a.tier)
+        print("%s RUNG %s%s" % (a.tier.upper(), "GREEN" if ok else "NOT GREEN", "" if ok else ": " + " | ".join(why)))
         return 0 if ok else 1
     ts = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    out = a.out or os.path.join("Transient", "northstar", "Graffiti_full_%s.json" % ts)
+    out = a.out or os.path.join("Transient", "northstar", "Graffiti_%s_%s.json" % (a.tier, ts))
     out_abs = out if os.path.isabs(out) else os.path.join(ROOT, out)
     if os.path.exists(out_abs):     # this invocation must write its own results, never reuse an old file
         print("refused: %s already exists" % out)
         return 2
+    if a.tier == "small":       # the game must hold what the suite needs; another tier is UNMEASURED, never a FAIL
+        rc, txt = _run(["python.exe", "src/RimMandrake/Utils/northstar_driver/cli.py", "needs-mods", "--mod", MOD], 120)
+        print("[0 needs] %s" % ((txt.strip().splitlines() or ["(no output)"])[-1][:200]), flush=True)
+        if rc != 0:
+            return 2
     if not a.no_quicktest:
         rc, txt = _run(["python.exe", "src/RimMandrake/bridgetools/prove_quicktest_world.py"], 420)
         print("[1 map] %s" % ((txt.strip().splitlines() or ["(no output)"])[-1][:160]), flush=True)
@@ -181,7 +201,8 @@ def main(argv=None):
             print("[1 map] fresh quicktest did not reach Playing:\n" + txt[-500:])
             return 2
     argv = ["python.exe", "src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", MOD, "--plan", PLAN,
-            "--config", "full", "--no-record", "--out", win_path(out)] + (["--list", win_path(a.list)] if a.list else [])
+            "--config", "full" if a.tier == "full" else "current", "--no-record", "--out", win_path(out)] + (
+                ["--list", win_path(a.list)] if a.list and a.tier == "full" else [])
     rc, txt = _run(argv, 5400)
     print("[2 run] exit %s: %s" % (rc, ([l for l in txt.splitlines() if l.startswith(MOD + ":")] or ["?"])[-1][:200]),
           flush=True)
@@ -195,8 +216,8 @@ def main(argv=None):
             print("[3 judge] judge did not finish:\n" + txt[-800:])
             return 2
     doc = json.load(open(out_abs, encoding="utf-8"))
-    ok, why = full_rung_verdict(doc)
-    print("[4 verdict] FULL RUNG %s%s" % ("GREEN" if ok else "NOT GREEN", "" if ok else ": " + " | ".join(why)))
+    ok, why = full_rung_verdict(doc, tier=a.tier)
+    print("[4 verdict] %s RUNG %s%s" % (a.tier.upper(), "GREEN" if ok else "NOT GREEN", "" if ok else ": " + " | ".join(why)))
     if not a.no_record and not doc.get("refused"):
         print("[4 record] " + _record(doc, out, ok))
     print("results: %s" % out)

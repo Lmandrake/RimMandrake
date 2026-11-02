@@ -4,7 +4,15 @@
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py preflight --mod Graffiti
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Graffiti --plan <plan.py> [--pipeline]
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py run ... --config full [--list <ModsConfig>]   # full list
-  python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list [--list <ModsConfig>]  # read-only check
+  python.exe src/RimMandrake/Utils/northstar_driver/cli.py needs-mods --mod Graffiti [--id <packageId>]  # tier-aware
+  python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list [--list <ModsConfig>]  # FINAL verification
+
+TIERS (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS, owner 2026-11-02: "small mod lists should always be the way to test
+until a final verification pass on the whole huge mod list"): `needs-mods` is how a proof says which game it can run
+on: exit 0 when the RUNNING game (jawa/running_mods) holds the mod, its About.xml modDependencies, Core and every DLC,
+whatever else is loaded; exit 2 (UNMEASURED, "not in the running load") when it does not. `running-list` and
+`run --config full` compare against the whole full list: they are the final verification (rimflow level GREEN-FULL),
+never a small-tier proof; a running list holding under half the full list is another tier, exit 2, never a FAIL.
   python3    src/RimMandrake/Utils/northstar_driver/cli.py run --mock --plan <plan.py>   # offline
   python3    src/RimMandrake/Utils/northstar_driver/judge_cli.py <results.json>           # visual half, WSL
 
@@ -131,13 +139,46 @@ def cmd_preflight(args):
     return 0 if ok else 2
 
 
+def exit_code(status):
+    """PASS 0, FAIL 1, UNMEASURED 2: a game of another tier is unmeasured, never a FAIL of the item."""
+    return {PASS: 0, FAIL: 1}.get(status, 2)
+
+
 def cmd_running_list(args):
-    """READ-ONLY: the RUNNING list (jawa/running_mods) against --list (default FULL.LATEST). Exit 0 iff identical."""
+    """READ-ONLY FINAL VERIFICATION: the RUNNING list (jawa/running_mods) against --list (default FULL.LATEST).
+    Exit 0 iff identical, 1 differs, 2 unmeasured (no reply, or another tier is up)."""
     s, _ = open_session(args)
     with s:
         c = pf.check_running_list(s, getattr(args, "list", None) or pf.FULL_LATEST)
     print("%-11s %-24s %s" % (c.status, c.name, c.evidence))
-    return 0 if c.status == PASS else 1
+    return exit_code(c.status)
+
+
+def about_xml_for(mod):
+    """The repo About.xml of mod folder `mod` (any tier, folded into the composed biomes or not)."""
+    for tier in ("RimMandrake", "RimStarWars", "RimUtinni"):
+        p = _rel("src", tier, mod, "About", "About.xml")
+        if os.path.isfile(p):
+            return p
+    raise ValueError("no src/<tier>/%s/About/About.xml" % mod)
+
+
+def needs_for(mods=(), ids=()):
+    return pf.needed_ids([about_xml_for(m) for m in mods or ()], ids or ())
+
+
+def cmd_needs_mods(args):
+    """READ-ONLY, TIER-AWARE: exit 0 iff the RUNNING game holds what the proof needs; 2 when it does not."""
+    try:
+        need = needs_for(args.mod, args.id)
+    except (OSError, ValueError) as ex:
+        print("UNMEASURED  needed_mods              %s" % ex)
+        return 2
+    s, _ = open_session(args)
+    with s:
+        c = pf.check_needed_mods(s, need)
+    print("%-11s %-24s %s" % (c.status, c.name, c.evidence))
+    return exit_code(c.status)
 
 
 def cmd_run(args):
@@ -490,9 +531,15 @@ def main(argv=None):
                                             "UNMEASURED 'chain not run'")
             p.add_argument("--skip-chains", help="suite plans: skip these chains (comma list), e.g. a long-wait "
                                                  "chain split into its own run")
-    p = sub.add_parser("running-list", help="READ-ONLY: running list vs --list (default FULL.LATEST); exit 0 iff equal")
+    p = sub.add_parser("running-list", help="READ-ONLY FINAL VERIFICATION: running list vs --list (default "
+                                            "FULL.LATEST); exit 0 equal, 1 differs, 2 unmeasured or another tier")
     p.set_defaults(fn=cmd_running_list, mock=False, pipeline=False)
     p.add_argument("--list")
+    p = sub.add_parser("needs-mods", help="READ-ONLY, tier-aware: exit 0 iff the running game holds each --mod (its "
+                                          "About.xml packageId + modDependencies), each --id, Core and every DLC; 2 if not")
+    p.set_defaults(fn=cmd_needs_mods, mock=False, pipeline=False)
+    p.add_argument("--mod", action="append", help="repo mod folder, e.g. Graffiti (repeat)")
+    p.add_argument("--id", action="append", help="extra packageId the proof needs (repeat)")
     a = ap.parse_args(argv)
     return a.fn(a)
 
