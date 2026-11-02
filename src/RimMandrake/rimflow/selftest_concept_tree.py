@@ -142,6 +142,7 @@ def main():
         check("unsigned tree: gate refuses", any("signature" in e for e in errs), errs)
         check("only the Arbiter signs", CT.sign(d, "Marker", repo) != [])
         check("sign", CT.sign(d, "Arbiter", repo, at="2026-11-01T00:00:00Z") == [])
+        check("sign replaces tree.json whole (no temp left)", not os.path.exists(os.path.join(d, ".tree.json.tmp")))
         errs, _ = CT.gate(d, repo)
         check("positive: gate passes", not errs, errs)
         text = "## verify\n\ndesign/concepts/Foo/tree.json\n"
@@ -302,6 +303,23 @@ def main():
             ("wrong floor hash", lambda t: t["floor"].update(hash="x"), "floor.hash"),
             ("exam waived without words", lambda t: t.update(exam_waived={"ref": "OWNER:1"}), "exam_waived"),
             ("dry-walk flag outside the dry folder", lambda t: t.update(dry_walk=True), "lives under"),
+            # the blank-field family: every field that must be text is refused blank AND as another type (txt())
+            ("filer with no name", lambda t: t.update(authored_by="filer: "), "authored_by"),
+            ("authored_by is a list", lambda t: t.update(authored_by=["concept"]), "authored_by"),
+            ("leaf id with a trailing newline", on_leaf(4, id="reload_walk\n"), "not a slug"),
+            ("floor.off words as a list", lambda t: t["floor"]["off"].append(dict(line="art", words=["x"], ref="r")),
+             "needs his words"),
+            ("waiver scope as a list", lambda t: t["waived"][0].update(scope=["dig sounds"]), "required"),
+            ("waiver ref as a number", lambda t: t["waived"][0].update(ref=111), "OWNER:<tsn>"),
+            ("tier_reason as a list", on_leaf(0, tier_proposed="quicktest", tier_reason=["x"]), "tier_reason must be text"),
+            ("tier_reason blank", on_leaf(0, tier_proposed="quicktest", tier_reason=" "), "needs tier_reason"),
+            ("advisory holds a blank", lambda t: t.update(advisory=[" "]), "advisory"),
+            ("advisory is text", lambda t: t.update(advisory="Dirt flies"), "advisory"),
+            ("exam waiver ref blank", lambda t: t.update(exam_waived={"words": "w", "ref": " "}), "exam_waived"),
+            ("scenario_informed_by is text", on_leaf(0, scenario_informed_by="x"), "scenario_informed_by"),
+            ("false_pass is text", on_leaf(0, false_pass="x"), "false_pass"),
+            ("subject is a list", lambda t: t.update(subject=["Foo"]), "subject missing"),
+            ("floor.off is text", lambda t: t["floor"].update(off="x"), "floor.off is a list"),
         ]
         base = CT.load(d)
         for name, edit, want in table:
@@ -336,6 +354,20 @@ def main():
         check("his ref is not a newline-tailed or unicode-digit ref", CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:1\n", "x") is not None
               and CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:\u0661", "x") is not None)
         check("TREE_CITE stops at the file name", CT.TREE_CITE.findall("see design/concepts/Foo/tree.json.bak") == [])
+        check("TREE_CITE: a backup name is no cite", all(CT.TREE_CITE.findall("design/concepts/Foo/tree.json" + tail) == []
+                                                          for tail in ("~", "#1", "+old", ".orig", "%20")))
+        check("TREE_CITE: a cite in backticks, parentheses or ending a sentence is a cite (sanity)", all(
+            CT.TREE_CITE.findall(t) == ["design/concepts/Foo/tree.json"] for t in (
+                "`design/concepts/Foo/tree.json`", "(design/concepts/Foo/tree.json)", "see design/concepts/Foo/tree.json.",
+                "design/concepts/Foo/tree.json")))
+        check("relentless: a backup-named cite admits nothing", "no tree" in (CT.relentless_refusal(
+            repo, "X", "mod", "## verify\n\ndesign/concepts/Foo/tree.json~\n") or ""))
+        t = copy.deepcopy(base)
+        t["leaves"][0]["experience"] = "The player sees \ud800"
+        write_raw(d, t)
+        check("a lone surrogate in tree.json is refused, not raised", any("does not parse" in e for e in CT.lint(d, repo)[0])
+              and CT.main(["hash", d]) == 1)
+        write_raw(d, base)
         write_raw(d, base)
 
         # the sheet's half
@@ -349,12 +381,35 @@ def main():
                 ("core line open", "- a plain open line does not block", "- [core] do goats tire?", "core line is still open"),
                 ("no pruning answer", '- goat_digs: "Goats dig."\n', "", "pruning: leaf goat_digs"),
                 ("no section", "## delegated\n", "## delegates\n", "no `## delegated`"),
-                ("his words empty", '"Goats dig." 2026-11-01\n', "", "his words")):
+                ("his words empty", '"Goats dig." 2026-11-01\n', "", "his words"),
+                ("tagged line with no text", "- [advisory] Dirt flies", "- [advisory]  ", "says nothing"),
+                ("numbered core line open", "- a plain open line does not block", "1. [core] do goats tire?",
+                 "core line is still open"),
+                ("core tag mid-line", "- a plain open line does not block", "Q: [core] do goats tire?", "core line is still open"),
+                ("fenced heading cannot re-section", "- a plain open line does not block",
+                 "```\n## delegated\n```\n- [core] do goats obey a cancel?", "core line is still open"),
+                ("unbulleted promise in does", "- [advisory] Dirt flies", "- [advisory] Dirt flies\nGoats stop when cancelled.",
+                 "not a bullet"),
+                ("numbered does line names no leaf", "- [floor:log] Clean log", "1) [leaf:ghost] Clean log", "no such leaf")):
             with open(sp, "w", encoding="utf-8") as f:
                 f.write(SHEET.replace(old, new))
             check("sheet: %s (fixture took)" % name, old in SHEET)
             errs, _ = CT.lint(d, repo)
             check("sheet: " + name, any(want in e for e in errs), errs)
+        with open(sp, "w", encoding="utf-8") as f:
+            f.write(SHEET.replace("- goat_digs:", "* goat_digs:"))
+        check("sheet: a star bullet answers pruning too", CT.lint(d, repo)[0] == [], CT.lint(d, repo)[0])
+        with open(sp, "wb") as f:
+            f.write(SHEET.encode("utf-8") + b"\xff\n")
+        got = CT.lint(d, repo)[0]
+        check("sheet: bad UTF-8 is refused, not raised", any("cannot be read" in e for e in got), got)
+        op = os.path.join(repo, CT.OWNER_SHARD)
+        shard = open(op, "rb").read()
+        with open(op, "wb") as f:
+            f.write(b"\xff\n" + shard)
+        check("owner_events: a bad byte spoils its line only", "111" in CT.owner_events(repo))
+        with open(op, "wb") as f:
+            f.write(shard)
         with open(sp, "w", encoding="utf-8") as f:
             f.write(SHEET)
         check("sheet restored", CT.lint(d, repo)[0] == [])
@@ -376,6 +431,31 @@ def main():
         bad["leaves"][0]["red"] = ""
         check("write refuses a bad shape", CT.write(d, bad, repo) != [])
         check("and writes nothing", open(os.path.join(d, "tree.json"), encoding="utf-8").read() == before)
+
+        bad = draft()
+        bad["leaves"].append("not a leaf")
+        check("write: a non-object leaf is an error, not a raise", any("not an object" in e for e in CT.write(d, bad, repo)))
+        try:
+            CT.write(d, ["not", "a", "draft"], repo)
+            check("write refuses a non-object draft", False)
+        except ValueError:
+            check("write refuses a non-object draft", True)
+        dj = os.path.join(tmp, "bad_draft.json")
+        with open(dj, "w", encoding="utf-8") as f:
+            f.write("{")
+        check("cli write: a draft that does not parse is reported, exit 1", CT.main(["write", d, "--draft", dj]) == 1)
+        empty = os.path.join(tmp, "empty_concept")
+        os.makedirs(empty)
+        check("cli askcheck: no tree.json yet (Stage 1) is clear, not a crash", CT.main(["askcheck", empty, "dig sounds?"]) == 0)
+        check("cli hash: no tree.json is exit 1, not a crash", CT.main(["hash", empty]) == 1)
+        with open(os.path.join(tmp, "outside.md"), "w", encoding="utf-8") as f:
+            f.write(WALK)
+        check("walk_root: a root_ref may not leave the repo", "leaves the repo" in str(CT.walk_root(repo, "../outside.md#north-star")[3]))
+        check("his words: a list of words is no words", CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:1", ["x"]) is not None)
+        check("askcheck: a number for a waiver id is no crash", CT.askcheck({"waived": [{"id": 1, "scope": "dig sounds"}]},
+                                                                             "dig sounds") == ["1"])
+        check("askcheck: a malformed waiver list is no crash", CT.askcheck({"waived": [1, {"scope": ["x"]}]}, "x") == []
+              and CT.askcheck({"waived": "dig sounds"}, "dig sounds") == [])
 
         # askcheck
         t = CT.load(d)
@@ -399,6 +479,9 @@ def main():
         t["waived"][0].pop("stand_in")
         write_raw(d2, t)
         check("dry: waiver must be marked stand_in", any("stand_in" in e for e in CT.lint(d2, repo2)[0]))
+        t["waived"][0].update(stand_in=True, ref="dry_walk:")
+        write_raw(d2, t)
+        check("dry: a stand-in ref names its round", any("stand_in" in e for e in CT.lint(d2, repo2)[0]))
         t = CT.load(d2)
         sheet = open(os.path.join(d2, "sheet.md"), encoding="utf-8").read()
         with open(os.path.join(d2, "sheet.md"), "w", encoding="utf-8") as f:

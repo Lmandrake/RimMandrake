@@ -52,7 +52,8 @@ Four parts, in this order, short:
 2. **Attack**: the strongest reason it is wrong.
 3. **Picture**: what he would see in play if each side won. He answers pictures faster than abstractions.
 4. **Asks**: at most three, each answerable in a phrase, each changing what gets built. Check each first:
-   `concept_tree.py askcheck <dir> "<question>"`. It catches a repeat, not a rewording, so read the waivers yourself.
+   `concept_tree.py askcheck <dir> "<question>"` (before any tree.json exists it answers `clear`). It catches a repeat,
+   not a rewording, so read the waivers yourself.
 5. **Pre-review before he sees it** (CLAUDE.md "Nothing reaches the owner unread"): a fresh agent that did not write
    the turn gets your stage-0 inventory, his words and the asks, and strikes any ask that is already built, already
    answered by his words, or would not change what gets built. Only survivors reach him, with one line on what was
@@ -132,7 +133,8 @@ only, no live flight test without him, our names.
 1. `lint` passes and the exam passed (or `exam_waived`).
 2. `plan.md`: disposable. Structure, reuse, order (instrument leaves first), risks, three designs if there is a real choice.
 3. The Arbiter signs: `concept_tree.py sign <dir> --by Arbiter`. Any later `write` voids the signature.
-4. He validates the root: `modcheck` northstar validate on the walk. Only he does this. The tree then needs one `write`
+4. He validates the root: `python3 src/RimMandrake/Utils/modcheck/cli.py validate <mod> --owner-said "<his words>"`, on his
+   word only. The tree then needs one `write`
    to stamp `root_hash`, and the Arbiter signs again, so ask him before the signature if you can.
 5. You file the item, **`--kind mod`**, with `## verify` citing `design/concepts/<Mod>/tree.json`. A new mod under another
    kind escapes the gate. The Producer admits it. Relentless runs `gate` at the pool, at the lease, and at `enrol`.

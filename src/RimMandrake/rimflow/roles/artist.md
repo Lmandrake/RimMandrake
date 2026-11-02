@@ -32,16 +32,17 @@ Nothing here changes because this role exists. These are yours to watch, not to 
 | What | How it runs today | Where |
 |---|---|---|
 | Opus judge, then GPT second look, regen rounds, escalation | `rm-arteval-autojudge` timer, 30 min, at most 4 subjects a pass; `claude -p`, Read only | `src/RimMandrake/Utils/art_eval/auto_judge.py`, `runner.py`, `policy.py` |
-| Refilling generation | `rm-artpipe-idle-fill` timer, 30 min: flake requeue, then fewer than 3 job files in flight submits a batch through the `regen_eligibility` gate | `idle_fill.py`, `donor_regen_jobs.py` |
+| Refilling generation | `rm-artpipe-idle-fill` timer, 30 min: flake requeue, then fewer than 3 job files in flight submits a batch through the `regen_eligibility` gate | `src/RimMandrake/Utils/artpipe/idle_fill.py`, `src/RimMandrake/Utils/art/donor_regen_jobs.py` |
 | Shadow sheets, his verdicts back | `shadow.py build` / `ingest` / `status` | `infrastructure/state/art_eval/shadow_log.jsonl` |
 | Learning from his overrides | `ledger.py add` / `fix`, `runner.py regress` | `infrastructure/state/art_eval/criteria_ledger.jsonl` |
-| Sheets, picks, enactment | `art_sheet.py`, `art.py` | skill `rimworld-review-sheets` |
+| Sheets, picks, enactment | `src/RimMandrake/Utils/art/art_sheet.py`, `art.py` | skill `rimworld-review-sheets` |
 
-The Opus judge inside that pipeline stays a fresh, memoryless reader of cards, prompts and `severity_policy.md`. It does not
+The Opus judge inside that pipeline stays a fresh, memoryless reader of cards, prompts and `skills/rimworld-art-evaluation/references/severity_policy.md`. It does not
 read your memory file. Your memory changes what it sees only through the routes below, each with its regression run.
 The skills (`rimworld-art-evaluation`, `generating-rimworld-sprites`, `rimworld-sprite-facings`) stay the how-to until this
 role proves out; `design/RimMandrake/art_judge_brief.md` stays the written constraints. Read them when a step needs them.
-The timers' status: `/mnt/d/ClaudeWork/rimmandrake/arteval_autojudge/status.json`.
+The timers' status: `/mnt/d/ClaudeWork/rimmandrake/arteval_autojudge/status.json`. Scripts named bare in this file:
+`shadow.py`, `ledger.py`, `runner.py` are in `src/RimMandrake/Utils/art_eval/`.
 
 ## A run
 
@@ -54,7 +55,7 @@ One fresh run; you keep nothing but the files. Start by reading `design/RimMandr
 2. For each override: what did he say, what did the pipeline say, and is this a new case of a pattern already in the
    memory? Record it in the memory with its CL id. **His words are copied, never paraphrased in the quote.**
 3. An override with no ledger row yet gets one the same day (`ledger.py add --owner-said "<his words>"`), as the skill says.
-4. When a pattern has a second case, propose the fix by the existing procedure (`references/criteria_ledger.md`): name the
+4. When a pattern has a second case, propose the fix by the existing procedure (`skills/rimworld-art-evaluation/references/criteria_ledger.md`): name the
    cause, then the brief line, checklist item, severity row or card field that changes.
 5. Report to the Conductor (below).
 

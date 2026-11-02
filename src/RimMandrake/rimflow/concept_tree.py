@@ -39,7 +39,7 @@ LEAF_REQ = ("id", "by", "root", "leaf_kind", "clause_kind", "experience", "scena
 LEAF_OPT = ("bundle", "scenario_informed_by", "needs_instrument", "oracle_proposed", "tier_reason", "cannot_show",
             "wall_expect_h")
 LEAF_KINDS = ("experience", "constraint", "instrument", "walk")
-SLUG = re.compile(r"^[a-z][a-z0-9_]*$")
+SLUG = re.compile(r"[a-z][a-z0-9_]*")     # always fullmatch: `$` would let a trailing newline through
 OBSERVER = re.compile(r"\b(player|colonist|colonists|viewer|observer|pawn|pawns|he|you|screen|log|reader|tester|the save)\b",
                       re.I)
 CONSTRAINT = re.compile(r"^\s*(at most|at least|under|over|no more than|<=?|>=?)?\s*\d+(\.\d+)?\s*(ms|s|min|mb|gb|kb|tps|fps|%|"
@@ -48,6 +48,17 @@ WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat(s|ed|ing)
 TOOL_ROOT = "tool"
 STOP = set("the a an of to in on and or it is at for by this that with how what does do not be are was you your his he "
            "me my i we as if".split())
+
+
+def txt(v):
+    """The one blank-field rule every check uses: text is a str with something in it after strip. Anything else - None,
+    a number, a list, a dict, whitespace - is blank, so a field that must be text can never pass by being another type."""
+    return v.strip() if isinstance(v, str) else ""
+
+
+def lst(v):
+    """A list field read as a list; anything else reads as empty (and is refused where the list is required)."""
+    return v if isinstance(v, list) else []
 
 
 def canon(obj):
@@ -84,15 +95,20 @@ def flags(floor):
 # ---------------------------------------------------------------- sheet
 
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
-TAG = re.compile(r"^\s*[-*+]\s*\[(leaf|floor|waived|advisory|core)(?::([A-Za-z0-9_]+))?\]\s*(.*)$")
+BULLET = r"^\s*(?:[-*+]|[0-9]+[.)])"      # an unordered or an ordered Markdown bullet
+TAG = re.compile(BULLET + r"\s*\[(leaf|floor|waived|advisory|core)(?::([A-Za-z0-9_]+))?\]\s*(.*)$")
 
 
 def parse_sheet(path):
-    """-> {section: [raw non-empty lines]}. Headings are `## <name>`; a heading may carry a parenthesis after the name."""
-    out, cur = {}, None
+    """-> {section: [raw non-empty lines]}. Headings are `## <name>`; a heading may carry a parenthesis after the name.
+    A `## ` line inside a ``` or ~~~ fence is content, never a heading: a fence cannot move a line to another section."""
+    out, cur, fence = {}, None, None
     with open(path, encoding="utf-8") as f:
         for line in f:
-            m = re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
+            fm = re.match(r"^\s*(`{3,}|~{3,})", line)
+            if fm and (fence is None or fm.group(1)[0] == fence[0] and len(fm.group(1)) >= len(fence)):
+                fence = None if fence else fm.group(1)
+            m = None if fence or fm else re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
             if m:
                 cur = m.group(1).strip().lower()
                 out.setdefault(cur, [])
@@ -108,43 +124,45 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: no `## %s` section" % s)
     if not sheet.get("his words"):
         errs.append("sheet: `his words` is empty")
-    leaves = {x.get("id"): x for x in (tree.get("leaves") if isinstance(tree.get("leaves"), list) else []) if isinstance(x, dict) and isinstance(x.get("id"), str)}
-    waived = {w.get("id") for w in (tree.get("waived") if isinstance(tree.get("waived"), list) else []) if isinstance(w, dict) and isinstance(w.get("id"), str)}
+    leaves = {x.get("id"): x for x in lst(tree.get("leaves")) if isinstance(x, dict) and isinstance(x.get("id"), str)}
+    waived = {w.get("id") for w in lst(tree.get("waived")) if isinstance(w, dict) and isinstance(w.get("id"), str)}
     floor_ids = {ln["id"] for ln in (floor or load_floor()[0])["lines"]}
     named = set()
     for sec, allowed in (("does", ("leaf", "floor", "waived", "advisory")), ("does not", ("leaf", "floor", "waived"))):
         for line in sheet.get(sec, []):
-            if not re.match(r"^\s*[-*+](\s|\[)", line):
+            if not re.match(BULLET + r"(\s|\[)", line):    # every promise maps: prose here would be an unmapped one
+                errs.append("sheet: `%s` holds a line that is not a bullet: %s" % (sec, line.strip()[:80]))
                 continue
             m = TAG.match(line)
             if not m or m.group(1) not in allowed:
                 errs.append("sheet: `%s` line maps to nothing (%s): %s" % (sec, "|".join(allowed), line.strip()[:80]))
                 continue
             tag, ref = m.group(1), m.group(2)
+            if not txt(m.group(3)):
+                errs.append("sheet: `%s` line says nothing after its tag: %s" % (sec, line.strip()[:80]))
             if tag == "leaf":
                 if ref not in leaves:
                     errs.append("sheet: `%s` line names no such leaf: %s" % (sec, ref))
                 else:
                     named.add(ref)
-                    if sec == "does not" and not str(leaves[ref].get("cannot_show") or "").strip():
+                    if sec == "does not" and not txt(leaves[ref].get("cannot_show")):
                         errs.append("sheet: `does not` leaf %s has no cannot_show" % ref)
             elif tag == "floor" and ref not in floor_ids:
                 errs.append("sheet: no floor line %s" % ref)
             elif tag == "waived" and ref not in waived:
                 errs.append("sheet: no waiver %s" % ref)
-    for line in sheet.get("open", []):
-        m = TAG.match(line)
-        if m and m.group(1) == "core":
-            errs.append("sheet: a core line is still open: %s" % m.group(3)[:80])
+    for line in sheet.get("open", []):     # fails shut: `[core]` anywhere on an open line blocks, whatever the bullet
+        if re.search(r"\[core\]", line, re.I):
+            errs.append("sheet: a core line is still open: %s" % line.strip()[:80])
     for lid, leaf in leaves.items():
         structural = leaf.get("leaf_kind") in ("walk", "instrument")
         if lid not in named and not structural and leaf.get("by") != "setter_sweep":
             errs.append("orphan leaf: %s is on no `does`/`does not` line" % lid)
     pruned = {}
     for line in sheet.get("pruning", []):
-        m = re.match(r"^\s*-\s*`?([a-z][a-z0-9_]*)`?\s*:\s*(.*)$", line)
+        m = re.match(BULLET + r"\s*`?([a-z][a-z0-9_]*)`?\s*:\s*(.*)$", line)
         if m:
-            pruned[m.group(1)] = m.group(2).strip()
+            pruned[m.group(1)] = txt(m.group(2))
     for lid, leaf in leaves.items():
         if leaf.get("leaf_kind") != "instrument" and not pruned.get(lid):
             errs.append("pruning: leaf %s has no answer to \"would you reject the mod on this alone?\"" % lid)
@@ -160,16 +178,21 @@ def leaf_errors(x, kind, tiers, root_ids):
     lid = x.get("id", "?")
     errs = []
     e = lambda why: errs.append("leaf %s: %s" % (lid, why))     # noqa: E731
+    texts = ("experience", "scenario", "red", "tier_proposed", "owner_part", "oracle_proposed", "cannot_show",
+             "needs_instrument", "tier_reason", "by", "leaf_kind", "clause_kind")
     for k in LEAF_REQ:
-        if x.get(k) in (None, "", []) or (isinstance(x.get(k), str) and not x[k].strip()):
+        v = x.get(k)
+        if v is None or (isinstance(v, (str, list, dict)) and not (txt(v) if isinstance(v, str) else v)):
             e("%s missing" % k)
-    for k in ("experience", "scenario", "red", "tier_proposed", "owner_part", "oracle_proposed", "cannot_show", "needs_instrument"):
+    for k in texts:
         if x.get(k) is not None and not isinstance(x[k], str):
             e("%s must be text" % k)
+    if not isinstance(x.get("scenario_informed_by", []), list):
+        e("scenario_informed_by is a list")
     for k in x:
         if k not in LEAF_REQ and k not in LEAF_OPT:
             e("field %s is not the tree's (Setter's go in binding.json, budget in budget.json)" % k)
-    if not SLUG.match(str(lid)):
+    if not (isinstance(lid, str) and SLUG.fullmatch(lid)):
         e("id is not a slug")
     if x.get("by") not in ("concept", "filer", "setter_sweep"):
         e("by %r" % x.get("by"))
@@ -179,23 +202,22 @@ def leaf_errors(x, kind, tiers, root_ids):
         e("leaf_kind %r" % x.get("leaf_kind"))
     if x.get("clause_kind") not in ("change", "preserve"):
         e("clause_kind %r" % x.get("clause_kind"))
-    text = str(x.get("experience") or "")
+    text = txt(x.get("experience"))
     if x.get("leaf_kind") == "constraint":
         if not CONSTRAINT.match(text):
             e("a constraint reads `<limit> <unit> on <test machine>`, got: %s" % text[:60])
     elif text and not OBSERVER.search(text):
         e("experience names no observer: %s" % text[:60])
-    if not isinstance(x.get("false_pass"), list) or not all(
-            isinstance(w, str) and w.strip() for w in x.get("false_pass") or [""]):
+    if not lst(x.get("false_pass")) or not all(txt(w) for w in x["false_pass"]):
         e("false_pass must list named wrong worlds")
     tier = x.get("tier_proposed")
     if tier and tier not in tiers:
         e("tier_proposed %r not in %s" % (tier, ", ".join(tiers)))
-    if tier and tier != "offline" and not str(x.get("tier_reason") or "").strip():
+    if tier and tier != "offline" and not txt(x.get("tier_reason")):
         e("tier %s needs tier_reason" % tier)
-    if not (str(x.get("oracle_proposed") or "").strip() or str(x.get("cannot_show") or "").strip()):
+    if not (txt(x.get("oracle_proposed")) or txt(x.get("cannot_show"))):
         e("no oracle_proposed and no cannot_show")
-    op = str(x.get("owner_part") or "")
+    op = txt(x.get("owner_part"))
     if op and op != "no" and not re.match(r"^yes:\s*\S", op):
         e("owner_part is `no` or `yes: <what he looks at>`")
     roots = x.get("root")
@@ -208,8 +230,8 @@ def leaf_errors(x, kind, tiers, root_ids):
         for r in roots:
             if not isinstance(r, str) or r not in root_ids:
                 e("root id %s is not in the north star" % r)
-    words = " ".join(str(x.get(k) or "") for k in ("experience", "scenario"))
-    if not str(x.get("cannot_show") or "").strip() and re.search(r"\b(worldgen|world generation|world gen)\b", words, re.I):
+    words = " ".join(txt(x.get(k)) for k in ("experience", "scenario"))
+    if not txt(x.get("cannot_show")) and re.search(r"\b(worldgen|world generation|world gen)\b", words, re.I):
         e("needs worldgen: refused by standing ruling")
     if tier and tier != "offline" and not re.match(r"^yes:\s*\S", op) and re.search(r"\b(flight|flyer|flying|takes? off)\b", words, re.I):
         e("a flyer's flight is never live-tested without him: refused by standing ruling")
@@ -226,50 +248,55 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     kind = tree.get("kind")
     if kind not in ("mod", "tool"):
         errs.append("kind %r" % kind)
-    if not str(tree.get("subject") or "").strip():
+    if not txt(tree.get("subject")):
         errs.append("subject missing")
-    au = str(tree.get("authored_by") or "")
-    if not (au == "concept" or au.startswith("filer:")):
+    au = tree.get("authored_by")
+    if not (au == "concept" or (isinstance(au, str) and re.fullmatch(r"filer:\s*\S.*", au, re.S))):
         errs.append("authored_by %r" % au)
     if tree.get("root_state") not in ("VALIDATED", "DRAFT", "none"):
         errs.append("root_state %r" % tree.get("root_state"))
     fl = tree.get("floor") if tree.get("floor") is not None else {}
     if not isinstance(fl, dict):
         return errs + ["floor is not an object"]
-    if not (isinstance(fl.get("off") or [], list) and all(isinstance(o, dict) for o in fl.get("off") or [])):
+    if fl.get("off") is not None and not (isinstance(fl["off"], list) and all(isinstance(o, dict) for o in fl["off"])):
         return errs + ["floor.off is a list of objects"]
-    if not (isinstance(tree.get("waived") or [], list) and all(isinstance(w, dict) for w in tree.get("waived") or [])):
+    if tree.get("waived") is not None and not (isinstance(tree["waived"], list)
+                                               and all(isinstance(w, dict) for w in tree["waived"])):
         return errs + ["waived is a list of objects"]
+    adv = tree.get("advisory")
+    if adv is not None and not (isinstance(adv, list) and all(txt(a) for a in adv)):
+        errs.append("advisory is a list of non-blank lines")
     if fl.get("ref") != FLOOR_FILE:
         errs.append("floor.ref %r" % fl.get("ref"))
     if fl.get("hash") != floor_hash:
         errs.append("floor.hash is not the current floor's")
     by_id = {ln["id"]: ln for ln in floor["lines"]}
     dry = tree.get("dry_walk") is True
-    for o in fl.get("off") or []:
+    for o in lst(fl.get("off")):
         ln = by_id.get(o.get("line")) if isinstance(o.get("line"), str) else None
         if ln is None:
             errs.append("floor.off: no line %r" % o.get("line"))
         elif not ln["waivable"]:
             errs.append("floor.off: %s cannot be turned off here" % o.get("line"))
-        if not (str(o.get("words") or "").strip() and str(o.get("ref") or "").strip()):
+        if not (txt(o.get("words")) and txt(o.get("ref"))):
             errs.append("floor.off %s: needs his words and a ref" % o.get("line"))
     ex = tree.get("exam_waived")
-    if ex is not None and not (isinstance(ex, dict) and str(ex.get("words") or "").strip() and ex.get("ref")):
+    if ex is not None and not (isinstance(ex, dict) and txt(ex.get("words")) and txt(ex.get("ref"))):
         errs.append("exam_waived needs his words and a ref")
-    if not all(isinstance(w.get("id"), str) for w in tree.get("waived") or []):
+    if not all(isinstance(w.get("id"), str) for w in lst(tree.get("waived"))):
         return errs + ["a waiver id is text"]
     seen_w = set()
-    for w in tree.get("waived") or []:
-        if not all(str(w.get(k) or "").strip() for k in ("id", "scope", "date", "ref")):
+    for w in lst(tree.get("waived")):
+        if not all(txt(w.get(k)) for k in ("id", "scope", "date", "ref")):
             errs.append("waiver %s: id, scope, date, ref all required" % w.get("id"))
         if w.get("id") in seen_w:
             errs.append("waiver id twice: %s" % w.get("id"))
         seen_w.add(w.get("id"))
-        real = re.fullmatch(r"OWNER:[0-9]+", str(w.get("ref") or ""))
+        real = isinstance(w.get("ref"), str) and re.fullmatch(r"OWNER:[0-9]+", w["ref"])
         if not dry and not real:
             errs.append("waiver %s: ref must be OWNER:<tsn>, his event" % w.get("id"))
-        if dry and not (w.get("stand_in") is True and str(w.get("ref") or "").startswith("dry_walk:")):
+        if dry and not (w.get("stand_in") is True and isinstance(w.get("ref"), str)
+                        and re.fullmatch(r"dry_walk:\S+", w["ref"])):
             errs.append("waiver %s: on a dry walk it is marked stand_in, ref dry_walk:<round>" % w.get("id"))
         if not dry and "stand_in" in w:
             errs.append("waiver %s: a stand_in line in a real tree" % w.get("id"))
@@ -302,7 +329,7 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     if kind == "tool" and walks:
         errs.append("a tooling goal has no walk leaf")
     for x in walks:
-        s = str(x.get("scenario") or "")
+        s = txt(x.get("scenario"))
         for name, rx in WALK_NEEDS.items():
             if not re.search(rx, s, re.I):
                 errs.append("walk leaf: scenario lacks the %s" % name)
@@ -316,10 +343,15 @@ def shape_errors(tree, root_ids, floor, floor_hash):
 
 def walk_root(repo, ref):
     """-> (state, current hash, ids, why) for a `<path>#north-star` reference, through modcheck's own parser."""
-    path = os.path.join(repo, str(ref or "").split("#")[0])
-    if not ref or not os.path.isfile(path):
+    rel = txt(ref).split("#")[0]
+    path = os.path.join(repo, rel)
+    if not rel or not os.path.isfile(path):
         return "none", None, set(), "root_ref names no file: %r" % (ref,)
-    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    if not os.path.realpath(path).startswith(os.path.realpath(repo) + os.sep):
+        return "none", None, set(), "root_ref leaves the repo: %r" % (ref,)
+    utils = os.path.normpath(os.path.join(HERE, "..", "Utils"))
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
     from modcheck import northstar as NS
     p = NS.parse(path)
     return p["state"], p["current_hash"] or None, set(p["must_show"]) | set(p["cannot_show"]), p.get("reason")
@@ -341,8 +373,12 @@ def root_ids_for(repo, tree, sheet):
 # ---------------------------------------------------------------- the two gates
 
 def load(d):
+    """tree.json, parsed. ValueError (bad UTF-8, bad JSON, or text no hash can encode, e.g. a lone surrogate) for the
+    caller to report as "does not parse"; FileNotFoundError when there is none."""
     with open(os.path.join(d, "tree.json"), encoding="utf-8") as f:
-        return json.load(f)
+        tree = json.load(f)
+    canon(tree).encode("utf-8")
+    return tree
 
 
 def lint(d, repo=REPO, floor_file=None):
@@ -362,12 +398,15 @@ def lint(d, repo=REPO, floor_file=None):
         if not os.path.isfile(sp):
             errs.append("no sheet.md")
         else:
-            sheet = parse_sheet(sp)
-            errs += sheet_errors(sheet, tree, floor)
-            if tree.get("dry_walk") is True:
+            try:
+                sheet = parse_sheet(sp)
                 with open(sp, encoding="utf-8") as f:
-                    if "DRY WALK" not in f.readline():
-                        errs.append("a dry walk's sheet starts with a DRY WALK line")
+                    first = f.readline()
+            except (OSError, ValueError) as e:
+                return errs + ["sheet.md cannot be read: %s" % e], flags(floor)
+            errs += sheet_errors(sheet, tree, floor)
+            if tree.get("dry_walk") is True and "DRY WALK" not in first:
+                errs.append("a dry walk's sheet starts with a DRY WALK line")
     errs += shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh)
     in_dry = DRY_DIR in os.path.normpath(os.path.abspath(d)).casefold().split(os.sep)
     if (tree.get("dry_walk") is True) != in_dry:
@@ -378,7 +417,7 @@ def lint(d, repo=REPO, floor_file=None):
 def owner_events(repo):
     out = {}
     try:
-        with open(os.path.join(repo, OWNER_SHARD), encoding="utf-8") as f:
+        with open(os.path.join(repo, OWNER_SHARD), encoding="utf-8", errors="replace") as f:   # a bad byte spoils its line only
             for line in f:
                 try:
                     ev = json.loads(line)
@@ -403,13 +442,15 @@ def in_words(scope, text):
 
 def his_words_problem(ev, ref, words):
     """Why `words` are not on the owner event `ref`, or None. A per-ruling event's words are its text."""
-    m = re.fullmatch(r"OWNER:([0-9]+)", str(ref or ""))
+    m = re.fullmatch(r"OWNER:([0-9]+)", ref) if isinstance(ref, str) else None
     e = ev.get(m.group(1)) if m else None
     if e is None:
         return "ref finds no event in OWNER.jsonl"
     said = str(e.get("ownerSaid") or "")
     if isinstance(e.get("perRuling"), str) and e["perRuling"].strip():
         said += " " + str(e.get("text") or "")
+    if not txt(words):
+        return "no words to find on that event"
     return None if in_words(words, said) else "not his words on that event"
 
 
@@ -444,12 +485,12 @@ def gate(d, repo=REPO, floor_file=None):
     elif tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
         errs.append("the signature is on another sheet")
     ev = owner_events(repo)
-    for w in [w for w in (tree.get("waived") if isinstance(tree.get("waived"), list) else []) if isinstance(w, dict)]:
+    for w in [w for w in lst(tree.get("waived")) if isinstance(w, dict)]:
         why = his_words_problem(ev, w.get("ref"), w.get("scope"))
         if why:
             errs.append("waiver %s: %s" % (w.get("id"), why))
     fl2 = tree.get("floor") if isinstance(tree.get("floor"), dict) else {}
-    for o in [o for o in (fl2.get("off") if isinstance(fl2.get("off"), list) else []) if isinstance(o, dict)]:
+    for o in [o for o in lst(fl2.get("off")) if isinstance(o, dict)]:
         why = his_words_problem(ev, o.get("ref"), o.get("words"))
         if why:
             errs.append("floor.off %s: %s" % (o.get("line"), why))
@@ -470,7 +511,10 @@ def item_file_text(repo, item):
         return ""
 
 
-TREE_CITE = re.compile(r"(?<![A-Za-z0-9_./-])design/concepts/[A-Za-z0-9_./-]+/tree\.json(?![A-Za-z0-9_./-])", re.I)
+# A cite is a whole token: it starts after whitespace or opening punctuation and ends at whitespace, closing punctuation or
+# a sentence's full stop, so `tree.json.bak`, `tree.json~` and `x/design/concepts/...` are not cites of a tree.
+TREE_CITE = re.compile(r"(?<![^\s`'\"(\[<])design/concepts/[A-Za-z0-9_./-]+/tree\.json(?=$|[\s`'\")\]>,;:]|\.(?:\s|$))",
+                       re.I | re.M)
 
 
 def relentless_refusal(repo, item, kind, text):
@@ -501,7 +545,11 @@ def relentless_refusal(repo, item, kind, text):
 
 # ---------------------------------------------------------------- writer
 
-def build(draft, repo=REPO, dry=False, sheet=None):
+def build(draft, repo=REPO, dry=False):
+    """A draft that is not a JSON object, or carries a key the draft does not have, raises ValueError."""
+    if not isinstance(draft, dict):
+        raise ValueError("draft: not a JSON object")
+    canon(draft).encode("utf-8")     # a lone surrogate raises here, before any file is touched
     bad = sorted(set(draft) - DRAFT_KEYS)
     if bad:
         raise ValueError("draft: unknown keys %s" % ", ".join(bad))
@@ -515,7 +563,13 @@ def build(draft, repo=REPO, dry=False, sheet=None):
             "advisory": draft.get("advisory") or [], "leaves": []}
     if dry:
         tree["dry_walk"] = True
-    for x in draft.get("leaves") or []:
+    raw = draft.get("leaves")
+    if not isinstance(raw, list):     # shape_errors says "no leaves"
+        return tree
+    for x in raw:
+        if not isinstance(x, dict):   # carried as is: shape_errors says "a leaf is not an object"
+            tree["leaves"].append(x)
+            continue
         leaf = {k: x.get(k) for k in LEAF_OPT}
         leaf.update(x)
         leaf.setdefault("by", "concept")
@@ -530,18 +584,23 @@ def write(d, draft, repo=REPO, dry=False):
     """-> errors. Nothing is written while the shape is wrong; a rewrite always voids the signature."""
     sp = os.path.join(d, "sheet.md")
     sheet = parse_sheet(sp) if os.path.isfile(sp) else None
-    tree = build(draft, repo, dry, sheet)
+    tree = build(draft, repo, dry)
     floor, fh = load_floor()
     errs = shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh)
     if errs:
         return errs
     os.makedirs(d, exist_ok=True)
+    put(d, tree)
+    return []
+
+
+def put(d, tree):
+    """tree.json is replaced whole or not at all."""
     tmp = os.path.join(d, ".tree.json.tmp")
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(tree, f, indent=1, ensure_ascii=False, sort_keys=False)
         f.write("\n")
     os.replace(tmp, os.path.join(d, "tree.json"))
-    return []
 
 
 def sign(d, by, repo=REPO, at=None):
@@ -556,9 +615,7 @@ def sign(d, by, repo=REPO, at=None):
     import time
     tree["coverage"] = {"signed_by": "Arbiter", "at": at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                         "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d)}
-    with open(os.path.join(d, "tree.json"), "w", encoding="utf-8") as f:
-        json.dump(tree, f, indent=1, ensure_ascii=False)
-        f.write("\n")
+    put(d, tree)
     return []
 
 
@@ -566,10 +623,10 @@ def askcheck(tree, question):
     """Waivers a question may re-raise. A word overlap: it catches a repeat, never a rewording."""
     q = set(squash(question).split()) - STOP
     hits = []
-    for w in tree.get("waived") or []:
-        s = set(squash(w.get("scope")).split()) - STOP
+    for w in [w for w in lst(tree.get("waived")) if isinstance(w, dict)]:
+        s = set(squash(txt(w.get("scope"))).split()) - STOP
         if s and len(q & s) >= min(len(s), max(2, (len(s) + 1) // 2)):
-            hits.append(w.get("id"))
+            hits.append(str(w.get("id")))
     return hits
 
 
@@ -597,9 +654,12 @@ def main(argv=None):
             p.add_argument("question")
     a = ap.parse_args(argv)
     if a.cmd == "write":
-        with open(a.draft, encoding="utf-8") as f:
-            draft = json.load(f)
-        errs = write(a.dir, draft, dry=a.dry_walk)
+        try:
+            with open(a.draft, encoding="utf-8") as f:
+                draft = json.load(f)
+            errs = write(a.dir, draft, dry=a.dry_walk)
+        except (OSError, ValueError) as e:
+            errs = ["draft %s: %s" % (a.draft, e)]
         return report(errs, flags(load_floor()[0]), "write")
     if a.cmd == "lint":
         return report(*lint(a.dir), "lint (Gate A)")
@@ -607,11 +667,20 @@ def main(argv=None):
         return report(*gate(a.dir), "gate")
     if a.cmd == "sign":
         return report(sign(a.dir, a.by), [], "sign")
-    tree = load(a.dir)
+    try:
+        tree = load(a.dir)
+    except FileNotFoundError:
+        tree = None     # Stage 1, where asks are made, has no tree yet: no waivers to re-raise
+    except ValueError as e:
+        return report(["tree.json does not parse: %s" % e], [], a.cmd)
+    if tree is not None and not isinstance(tree, dict):
+        return report(["tree.json is not an object"], [], a.cmd)
     if a.cmd == "hash":
+        if tree is None:
+            return report(["no tree.json in %s" % a.dir], [], "hash")
         print(tree_hash(tree))
         return 0
-    hits = askcheck(tree, a.question)
+    hits = askcheck(tree or {}, a.question)
     print("MAY RE-RAISE %s" % ", ".join(hits) if hits else "clear")
     return 1 if hits else 0
 
