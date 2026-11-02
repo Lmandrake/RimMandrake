@@ -23,6 +23,7 @@ import glob
 import os
 import re
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -131,6 +132,22 @@ def def_ref_findings(xml_text, theirs, ours):
         if not _guarded(chain):
             out.append("<%s> %s" % (el.tag, ",".join(hit)))
     return out
+
+
+def src_def_ref_findings(paths, theirs, ours):
+    """def_ref_findings over files; a file is read only if one of its word tokens is a def of theirs."""
+    refs = []
+    for x in paths:
+        if "/About/" in x or "/Textures/" in x:
+            continue
+        t = Path(x).read_text(encoding="utf-8", errors="replace")
+        if not set(re.findall(r"[\w.]+", t)) & theirs.keys():
+            continue
+        try:
+            refs += ["%s: %s" % (os.path.relpath(x, ROOT), u) for u in def_ref_findings(t, theirs, ours)]
+        except ET.ParseError:
+            pass                                        # not a def file (the game would refuse it too)
+    return refs
 
 
 TOLERATED_LISTS = ("allowedDefs", "disallowedDefs")    # a ThingFilter's def lists; plus any ignored* list
@@ -259,18 +276,20 @@ def main():
         return 2
     ours = our_defs()
     check("absorbed: VRE_ShortPregnancy defined in our src", "VRE_ShortPregnancy" in ours)
-    refs = []
-    for x in glob.glob(str(ROOT / "src" / "**" / "*.xml"), recursive=True):
-        if "/About/" in x or "/Textures/" in x:
-            continue
-        t = Path(x).read_text(encoding="utf-8", errors="replace")
-        if not any(k in t for k in ("VRE", "Archon", "Polux", "Dryad")):
-            continue
-        try:
-            refs += ["%s: %s" % (os.path.relpath(x, ROOT), u) for u in def_ref_findings(t, theirs, ours)]
-        except ET.ParseError:
-            pass                                        # not a def file (the game would refuse it too)
+    src_xml = glob.glob(str(ROOT / "src" / "**" / "*.xml"), recursive=True)
+    refs = src_def_ref_findings(src_xml, theirs, ours)
     check("src def refs absorbed or guarded", refs == [], refs)
+    # the prefilter is the theirs set itself: 3 of their defs carry no VRE/Archon/Polux/Dryad keyword
+    kwless = sorted(n for n in theirs if not any(k in n for k in ("VRE", "Archon", "Polux", "Dryad")))
+    check("sanity: keyword-less defs of theirs exist to probe", len(kwless) >= 1, kwless)
+    with tempfile.TemporaryDirectory() as td:
+        probe = Path(td) / "Defs" / "zzprobe" / "p.xml"
+        probe.parent.mkdir(parents=True)
+        probe.write_text("<Defs><AbilityGroupDef>%s</AbilityGroupDef></Defs>"
+                         % "".join("<li>%s</li>" % n for n in kwless), encoding="utf-8")
+        got = src_def_ref_findings([str(probe)], theirs, ours)
+        check("mutant: a src file naming only keyword-less defs of theirs reds",
+              bool(got) and all(any(f.endswith(" " + n) for f in got) for n in kwless if n not in ours), got)
     mut = ('<Defs><XenotypeDef><genes><li>VRE_LongPregnancy</li></genes></XenotypeDef>'
            '<Operation Class="PatchOperationFindMod"><match><li>VREA_PsychicStorm</li></match></Operation></Defs>')
     check("mutant: an unguarded gene ref reds, a FindMod one passes",
