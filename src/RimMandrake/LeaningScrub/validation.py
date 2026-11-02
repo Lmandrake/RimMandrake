@@ -989,6 +989,11 @@ def stall_chain(t):
                 # RULED OUT: weather not locked -- weather_get read current RM_Stall right after the lock.
                 # RULED OUT: the crown mob / fire stamp pulling them -- those move only RM_Dustflutter / stamper-extension
                 # races (RM_VenomvineRooms.cs:134, RM_FireStamp.cs:61).
+                # NOT REPRODUCED 2026-10-16 (two runs, jobs sampled, bystanders drafted by _settle_bystanders since
+                # ce15acb1cb): Thornhold path 0.0, only Wait_Wander/Wait_MaintainPosture; Shirrel only wander-family.
+                # The 10-07 job stays unnamed. Leading UNPROVEN theory: the lean-scent flee (RM_TheLeanPatches.
+                # AnimalFlee_Postfix, 24 cells off any humanlike upwind, Stall not exempt) fired on then-undrafted
+                # colonists. A recurrence prints the job: check_stall_move.py <run.json> (live_evidence/ holds 10-16).
                 res = _path(t, list(ids.values()), steps=12, step=125)
                 _note(t, "Stall: path lengths (cells) and sampled jobs over 1500 ticks", res)
                 small, big = res[ids["small"]], res[ids["big"]]

@@ -1,0 +1,181 @@
+{
+ "what": "Stall chain readings (validation.py stall_chain, _path every 125 ticks for 1500 ticks) extracted verbatim from two live LeaningScrub modcheck runs; source files were untracked Transient output in the FOUNDRY clone.",
+ "runs": [
+  {
+   "source": "Transient/modcheck/LeaningScrub_20261016T102540Z.json",
+   "notes": [
+    {
+     "note": "Stall: path lengths (cells) and sampled jobs over 1500 ticks",
+     "result": {
+      "RM_Thornhold67537": {
+       "alive": 13,
+       "samples": 13,
+       "path": 0.0,
+       "jobs": [
+        null,
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander"
+       ]
+      },
+      "RM_Shirrel67538": {
+       "alive": 13,
+       "samples": 13,
+       "path": 12.307135789365265,
+       "jobs": [
+        null,
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_MaintainPosture",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander",
+        "GotoWander",
+        "Wait_MaintainPosture",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander"
+       ]
+      }
+     }
+    },
+    {
+     "note": "Stall, stallFreezeEnabled OFF: path",
+     "result": {
+      "RM_Thornhold67537": {
+       "alive": 7,
+       "samples": 7,
+       "path": 8.70820393249937,
+       "jobs": [
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_MaintainPosture",
+        "GotoWander",
+        "GotoWander",
+        "Wait_Wander"
+       ]
+      }
+     }
+    },
+    {
+     "note": "Stall, modEnabled OFF: path",
+     "result": {
+      "RM_Thornhold67537": {
+       "alive": 7,
+       "samples": 7,
+       "path": 11.81913190966076,
+       "jobs": [
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_MaintainPosture",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander",
+        "Wait_Wander"
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "source": "Transient/modcheck/LeaningScrub_20261016T112035Z.json",
+   "notes": [
+    {
+     "note": "Stall: path lengths (cells) and sampled jobs over 1500 ticks",
+     "result": {
+      "RM_Thornhold70467": {
+       "alive": 13,
+       "samples": 13,
+       "path": 0.0,
+       "jobs": [
+        null,
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_MaintainPosture",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander"
+       ]
+      },
+      "RM_Shirrel70468": {
+       "alive": 13,
+       "samples": 13,
+       "path": 13.89292222699217,
+       "jobs": [
+        null,
+        "GotoWander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander",
+        "GotoWander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander",
+        "GotoWander",
+        "Wait_Wander",
+        "Wait_Wander"
+       ]
+      }
+     }
+    },
+    {
+     "note": "Stall, stallFreezeEnabled OFF: path",
+     "result": {
+      "RM_Thornhold70467": {
+       "alive": 7,
+       "samples": 7,
+       "path": 7.385164807134504,
+       "jobs": [
+        "Wait_Wander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander",
+        "Wait_Wander",
+        "Wait_Wander",
+        "GotoWander"
+       ]
+      }
+     }
+    },
+    {
+     "note": "Stall, modEnabled OFF: path",
+     "result": {
+      "RM_Thornhold70467": {
+       "alive": 7,
+       "samples": 7,
+       "path": 17.071067811865476,
+       "jobs": [
+        "GotoWander",
+        "Wait_Wander",
+        "Wait_MaintainPosture",
+        "Wait_Wander",
+        "GotoWander",
+        "Wait_Wander",
+        "GotoWander"
+       ]
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
