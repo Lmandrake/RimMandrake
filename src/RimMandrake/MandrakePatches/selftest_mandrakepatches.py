@@ -123,6 +123,56 @@ def force_flow_problems(src):
     return out
 
 
+# Install()'s if-conditions, in order. Pinned like FORCE_IFS: a flipped guard or a dropped `bound = true;` disables the
+# forcer while every Patch/SetValue text stays in place.
+INSTALL_IFS = ["installed",
+               "finderT == null",
+               "fog == null || fog.FieldType != typeof(bool) || write == null"]
+
+
+def method_body(src, sig):
+    """Comment-stripped body of the method whose header matches regex `sig` (ending at its `{`), or None."""
+    import re
+    m = re.search(sig, src)
+    if not m:
+        return None
+    depth, i = 1, m.end()
+    while depth and i < len(src):
+        depth += {"{": 1, "}": -1}.get(src[i], 0)
+        i += 1
+    return re.sub(r"//[^\n]*", "", src[m.end():i - 1])
+
+
+def install_flow_problems(src):
+    """[problem] for CaiFogOff.Install: exact guard list, each guard returns, and the tail Patch -> bound -> Force."""
+    import re
+    code = method_body(src, r"public static void Install\(\)\s*\{")
+    if code is None:
+        return ["no `public static void Install()`"]
+    out = []
+    ifs = [c.strip() for c in re.findall(r"\bif \((.*)\)\s*(?:\{|[A-Za-z_])", code)]
+    if ifs != INSTALL_IFS:
+        out.append("Install() if-conditions %r != INSTALL_IFS" % ifs)
+    if not re.match(r"\s*if \(installed\) return;\s*installed = true;", code):
+        out.append("Install(): does not open `if (installed) return; installed = true;`")
+    if not re.search(r"if \(finderT == null\) return;", code):
+        out.append("Install(): `if (finderT == null) return;` changed")
+    g = re.search(r"if \(fog == null \|\| fog\.FieldType != typeof\(bool\) \|\| write == null\)\s*\{[^{}]*return;\s*\}", code)
+    if not g:
+        out.append("Install(): the missing-member guard is not `if (fog == null || ... || write == null) { ... return; }`")
+    tail = re.search(r"\n\s*new Harmony\(\"mandrake\.rm\.patches\.caifogoff\"\)\.Patch\(write,\s*"
+                     r"prefix: new HarmonyMethod\(typeof\(CaiFogOff\), nameof\(Prefix_WriteSettings\)\)\);\s*"
+                     r"bound = true;\s*Force\(\"constructor\"\);\s*$", code)
+    if not tail or (g and tail.start() < g.end()):
+        out.append("Install() does not end, after the guards and outside any block, with Patch(write, prefix) then "
+                   "`bound = true;` then Force(\"constructor\")")
+    elif re.search(r"\{[^{}]*$", code[g.end() if g else 0:tail.start()]):
+        out.append("Install(): the Patch/bound/Force tail sits inside a conditional")
+    if code.count("bound = true;") != 1 or re.search(r"\bbound = false;", code):
+        out.append("Install(): `bound = true;` must be set exactly once and never cleared")
+    return out
+
+
 def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
     """[problem] for the CAI fog forcer: constants, the forcing writes, the default-on setting, About, and the DLL stamp.
     Pure function of the texts so the break checks can plant each defect."""
@@ -136,6 +186,7 @@ def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
     if "fog.SetValue(settings, false);" not in src:
         out.append("Force() no longer writes FogOfWar_Enabled=false")
     out += force_flow_problems(src)
+    out += install_flow_problems(src)
     if not re.search(r"Patch\(write,\s*prefix: new HarmonyMethod\(typeof\(CaiFogOff\), nameof\(Prefix_WriteSettings\)\)\)", src):
         out.append("no Harmony prefix on CombatAIMod.WriteSettings")
     if "public static void Prefix_WriteSettings() => Force(" not in src:
@@ -182,8 +233,22 @@ def cai_fog_check():
                mod_src, about, srchash),
               ("the toggle guard stops returning", src.replace(
                   'its fog is left to CAI\'s own checkbox.";\n                return false;',
-                  'its fog is left to CAI\'s own checkbox.";'), mod_src, about, srchash)]
-    for name, a, *_ in breaks[-4:]:
+                  'its fog is left to CAI\'s own checkbox.";'), mod_src, about, srchash),
+              ("Install drops `bound = true;`", src.replace("bound = true;", ""), mod_src, about, srchash),
+              ("Install's missing-member guard is inverted", src.replace(
+                  "if (fog == null || fog.FieldType != typeof(bool) || write == null)", "if (fog != null)"),
+               mod_src, about, srchash),
+              ("Install's CAI-absent guard is inverted", src.replace("if (finderT == null) return;",
+                                                                     "if (finderT != null) return;"), mod_src, about, srchash),
+              ("Install's missing-member guard stops returning", src.replace(
+                  "fog of war is NOT being forced off.\");\n                return;", "fog of war is NOT being forced off.\");"),
+               mod_src, about, srchash),
+              ("Install sets bound before patching", src.replace(
+                  "            new Harmony(\"mandrake.rm.patches.caifogoff\")", "            bound = true;\n            new Harmony(\"mandrake.rm.patches.caifogoff\")"
+              ).replace("prefix: new HarmonyMethod(typeof(CaiFogOff), nameof(Prefix_WriteSettings)));\n            bound = true;",
+                        "prefix: new HarmonyMethod(typeof(CaiFogOff), nameof(Prefix_WriteSettings)));"), mod_src, about, srchash),
+              ("the startup class no longer forces", src.replace('CaiFogOff.Force("startup");', ""), mod_src, about, srchash)]
+    for name, a, *_ in breaks[-10:]:
         check("break: planted %s actually changed the source" % name, a != src)
     for name, a, b, c, d in breaks:
         check("break: %s is reported" % name, len(cai_fog_problems(a, b, c, d, cs)) >= 1)
