@@ -72,5 +72,50 @@ check("pair finds with/without", pac.pair([w, o]) == (w, o))
 check("pair refuses lists differing by more", pac.pair([w, other]) is None)
 check("pair refuses one side", pac.pair([w]) is None)
 
+# record(): the --require condition gate, with the impure readers stubbed
+import contextlib  # noqa: E402
+import io  # noqa: E402
+import tempfile  # noqa: E402
+import types  # noqa: E402
+
+with tempfile.TemporaryDirectory() as tmp:
+    now = dt.datetime.now(dt.timezone.utc)
+    cfg = os.path.join(tmp, "ModsConfig.xml")
+    plog = os.path.join(tmp, "Player.log")
+    samples = os.path.join(tmp, "out", "samples.jsonl")
+    with open(cfg, "w") as fh:
+        fh.write("<ModsConfigData/>")
+    with open(plog, "w") as fh:
+        fh.write(log)
+    os.utime(cfg, (now.timestamp() - 120, now.timestamp() - 120))
+    os.utime(plog, (now.timestamp(), now.timestamp()))
+    live_proc = dict(proc, start=(now - dt.timedelta(seconds=60)).isoformat().replace("+00:00", "Z"))
+    saved = (pac.sample_process, pac.active_mods, pac.MODSCONFIG, pac.PLAYER_LOG, pac.samples_path)
+    pac.sample_process = lambda: dict(live_proc)
+    pac.MODSCONFIG, pac.PLAYER_LOG, pac.samples_path = cfg, plog, (lambda: samples)
+    try:
+        def run(mod_list, require):
+            pac.active_mods = lambda: list(mod_list)
+            before = os.path.getsize(samples) if os.path.exists(samples) else 0
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = pac.record(types.SimpleNamespace(require=require))
+            after = os.path.getsize(samples) if os.path.exists(samples) else 0
+            return rc, buf.getvalue(), after > before
+        without_mods = [m for m in mods if m != pac.PKG]
+        rc, out, wrote = run(mods, "with")
+        check("record: 'with' launch + --require with records (exit 0)", rc == 0 and wrote and "SAMPLE with" in out)
+        rc, out, wrote = run(without_mods, "without")
+        check("record: 'without' launch + --require without records (exit 0)",
+              rc == 0 and wrote and "SAMPLE without" in out)
+        rc, out, wrote = run(without_mods, "with")
+        check("record: 'without' launch refuses --require with", rc == 1 and not wrote
+              and "'without' condition, not 'with'" in out)
+        rc, out, wrote = run(mods, "without")
+        check("record: 'with' launch refuses --require without", rc == 1 and not wrote
+              and "'with' condition, not 'without'" in out)
+    finally:
+        pac.sample_process, pac.active_mods, pac.MODSCONFIG, pac.PLAYER_LOG, pac.samples_path = saved
+
 print("selftest_planet_atmosphere_cost: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)
