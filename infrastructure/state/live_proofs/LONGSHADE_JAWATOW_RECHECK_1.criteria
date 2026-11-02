@@ -1,0 +1,4 @@
+A1 L2: on a generated RM_LongShade map (tile 114480, size 200) with the dead crawler hull, a drafted colonist inside it, no hostiles and no loose items, RUT_JawaReturnTow canFireNow (forced, fresh worker) is True
+A2 L2: firing it spawns a non-hostile RUT_Jawa_* group (Peaceful; Combat when the faction has no Peaceful maker) under LordJob_VisitColony and the hull reads clanComing
+A3 L2: towTicks (15000) later the hull reads towed, no faction-less non-rock building remains in the 25x9 rect, and "[RM LongShade] Jawa return: hull towed" is logged
+A4 L2: with jawaReturnEnabled=false canFireNow is False at the same moment A1 reads True

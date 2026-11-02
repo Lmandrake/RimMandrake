@@ -412,6 +412,11 @@ namespace RimMandrake.LongShade
 
         public bool HasHull => hullCenter.IsValid && !towed;
         public bool ClanComing => towStartTick >= 0 && !towed;
+        public bool Entered => entered;                  // read by RM_HullTowProof (LONGSHADE_JAWATOW_RECHECK_1)
+        public bool Towed => towed;
+        public int TowStartTick => towStartTick;
+        public int TowTicks => towTicks;
+        public CellRect HullRect => new CellRect(hullCenter.x - width / 2, hullCenter.z - height / 2, width, height);
 
         public void SetHull(IntVec3 center, int w, int h)
         {
