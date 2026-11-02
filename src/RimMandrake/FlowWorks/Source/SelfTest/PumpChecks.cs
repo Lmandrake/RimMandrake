@@ -153,7 +153,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(pump, @"RM_LiquidSpill\.OutletLeg\(Map, ex, RM_OutletKind\.Body, cell, poured, fluid\), out _\) == units\)", "the pond pour is the one Body outlet leg, tank removed first");
                 RiverSwitchFlipChecks.Has(pump, @"k => ex\.Stock\.CreditDl\(Map, cell, k, ex\) == k\);", "a refused world-to-world move puts back exactly what it took (GPT #5)");
                 string sp = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidSpill.cs"));
-                RiverSwitchFlipChecks.Has(sp, @"if \(c\.InBounds\(map\) && ex\.CanReturnLevels\(c, fluid, 1\)\) \{ cell = c; return RM_OutletKind\.Body; \}", "an outflow end over a pond or its bed returns the level (G1)");
+                RiverSwitchFlipChecks.Has(sp, @"if \(c\.InBounds\(map\) && \(RM_MapComponent_Excavation\.LevelExact \? BodyRoomDl\(ex, c, fluid, 1\) > 0 : ex\.CanReturnLevels\(c, fluid, 1\)\)\) \{ cell = c; return RM_OutletKind\.Body; \}", "an outflow end over a pond or its bed returns the level (G1)");
                 RiverSwitchFlipChecks.Has(sp, @"case RM_OutletKind\.Body: return RM_TransferLeg\.World\(k => BodyRoomDl\(ex, cell, fluid, k\) >= k, k => BodyTake\(ex, cell, fluid, k\)\);", "the Body leg");
                 Assert(sp.IndexOf("return RM_OutletKind.Body;") < sp.IndexOf("end.GetTerrain(map).IsWater) { return RM_OutletKind.Blocked; }"),
                     "the pond check runs before water terrain is called Blocked");
