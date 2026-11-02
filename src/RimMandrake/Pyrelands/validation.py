@@ -2491,6 +2491,17 @@ def gpt_hunt_plausible(t):
         if _live(t) and not (fires and cells):
             _fail("the firefoam sprayer's verb cannot target %s (no targetParams; vanilla defaults are false)"
                   % " or ".join(x for x, ok in (("a fire", fires), ("open ground", cells)) if not ok))
+        if _live(t):
+            # Live: a throwaway colonist holding the sprayer asks the targeter's own questions of a fire and an open cell.
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.RM_FirefoamAimProof", method="ProofAim")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            _note(t, "ProofAim", text or r)
+            if not text.startswith("FIREFOAM"):
+                _unmeasured(t, "ProofAim gave no answer (is the build with the probe deployed?): %r" % text[:200])
+            if "control fire False cell False" not in text:
+                _unmeasured(t, "the vanilla-default control did not refuse, so the probe cannot see a no: %r" % text[:200])
+            if not text.startswith("FIREFOAM fire True | cell True | validFire True | validCell True | hitFire True | hitCell True"):
+                _fail("a colonist holding the sprayer cannot aim at a fire or open ground: %s" % text[:200])
     _independent(t)
 
     # SAND_SHOVEL_DIAGNOSE_DIGS_UNDER_WALLS: designate, build a wall on the cell, ask the work giver (ProofShovelUnderWall).

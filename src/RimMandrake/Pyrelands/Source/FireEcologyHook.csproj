@@ -57,6 +57,7 @@
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitMasters.cs" Link="Shared\SettingsKitMasters.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitMastersDrawer.cs" Link="Shared\SettingsKitMastersDrawer.cs" />
     <Compile Include="RM_PyrelandsDensityEnforcer.cs" />
+    <Compile Include="RM_FirefoamAimProof.cs" />
     <Compile Include="WildPlantAllowlist.cs" />
     <!-- PYRELANDS_RM_MOD_BUILD_1 §6 — absorbed from
          mandrake.rut.pyrelandsmechanics; the campaign-specific remainder

@@ -1,0 +1,1 @@
+L1 L2: on a quicktest map with Pyrelands loaded, a colonist holding RM_FE_FirefoamSprayer can target (targetParams.CanTarget, ValidateTarget, CanHitTarget) a free-standing fire and an empty open cell 4 tiles away, while vanilla default TargetingParameters refuse both (RM_FirefoamAimProof.ProofAim)

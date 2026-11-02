@@ -1,0 +1,1 @@
+live-proof L1: python.exe "$(wslpath -w src/RimMandrake/Utils/rimbridge_client.py)" --yes-i-know-this-is-live --timeout 60 --call jawa/static_call --json '{"type":"RimMandrake.Pyrelands.RM_FirefoamAimProof","method":"ProofAim"}' < /dev/null | grep -q 'FIREFOAM fire True | cell True | validFire True | validCell True | hitFire True | hitCell True | control fire False cell False'
