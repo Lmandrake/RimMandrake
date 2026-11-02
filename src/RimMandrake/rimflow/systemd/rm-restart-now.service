@@ -1,0 +1,10 @@
+# Started by rm-restart-now.path. Ticks the Dispatcher (rm-dispatcher.service, from the dispatch clone) back to back
+# while a `--now` stamp is owed: skips the 120 s timer and the grace, keeps every hold (seat_restart.py now-run).
+[Unit]
+Description=Seat restart --now: tick the Dispatcher until the ready window is replaced
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/seat_restart.py now-run
+TimeoutStartSec=420

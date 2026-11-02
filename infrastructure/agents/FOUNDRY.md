@@ -191,7 +191,8 @@ Do the steps in one turn:
    `git status --short -- infrastructure/state/ledger/events/FOUNDRY.jsonl` prints nothing before step 2.
 2. File every open promise as an item (`rimflow file` / `note`), so none lives only in this window.
 3. Write the note and run the close-out in one command:
-   `python3 src/RimMandrake/rimflow/seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --note "<3-5 lines: what landed, what is owed, where the evidence is>"`.
+   `python3 src/RimMandrake/rimflow/seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --now --note "<3-5 lines: what landed, what is owed, where the evidence is>"`.
+   That flag is the normal end: over the backstop the restart lands within seconds of your turn ending (`rm-restart-now.path`), and messages to you are held meanwhile.
    The note is appended to your seat log either way. With a helper alive it prints **DEFERRED**, never REFUSED, even
    though their appends keep your shard dirty. A deferred request or a forced restart puts this window in a **drain**:
    take no ticket, spawn no helper (`next` and the spawn hook refuse), no staffing floor applies, and running helpers

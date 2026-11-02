@@ -88,7 +88,7 @@ window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like yo
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
 a 3-5 line note to the Conductor log read at wake; the program is `conductor_closeout.py check`, and
 `seat_restart.py request` stores its verdict and gaps, which the next wake prints until recorded or dismissed). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
-his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
+his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh --now` (the normal end of any Conductor window: the file wakes `rm-restart-now.path` and the restart lands within seconds). The Dispatcher
 restarts the window as a fresh Remote Control `CONDUCTOR` at once (`goodbye_quiet_s` 0, owner 2026-11-01), and no text stops
 it (owner 2026-11-01), his or a machine's: the window is killed mid-reply if need be, and what he sent after the goodbye
 goes to the Conductor log and the wake. Only a live helper, the bridge or PAUSE holds it; the window's own background commands end with it. A

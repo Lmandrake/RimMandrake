@@ -185,6 +185,17 @@
             "statusMessage": "Checking this seat's helper slots against the allocator"
           }
         ]
+      },
+      {
+        "matcher": "SendMessage",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_send_to_restarting.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking the recipient is not being restarted"
+          }
+        ]
       }
     ],
     "SessionStart": [

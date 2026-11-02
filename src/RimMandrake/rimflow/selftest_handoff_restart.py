@@ -145,7 +145,8 @@ def ready(w):
 def test_schedule():
     bench = SR.config(REAL)["BENCH"]
     check(CFG["grace_s"] == 20 and CFG["quiet_s"] == 20, "FOUNDRY grace_s and quiet_s are 20")
-    check(bench["grace_s"] == 0 and bench["goodbye_quiet_s"] == 0, "the Conductor's goodbye stays instant")
+    # grace_s is FOUNDRY's 20 since the backstop went on (owner by card 2026-11-01, _why_backstop); a goodbye ignores it
+    check(bench["goodbye_quiet_s"] == 0, "the Conductor's goodbye stays instant")
     check(SR.says_handoff_ready("x\n\n**HANDOFF READY**") and SR.says_handoff_ready("HANDOFF READY.")
           and SR.says_handoff_ready("HANDOFF READY: all closed") and SR.says_handoff_ready("HANDOFF READY\n\nbye"),
           "the words, bold, stopped, opening a last line, or a line of their own")

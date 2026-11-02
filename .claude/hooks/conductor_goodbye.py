@@ -4,7 +4,7 @@
 WHY THIS EXISTS. The Conductor window (seat key BENCH, session CONDUCTOR) is meant to be fresh each time he comes
 back (design/RimMandrake/conductor_briefing_2026-10-28.md B2/B3). When his WHOLE message is a goodbye, this hook puts
 the light close-out into that window's context on that turn: his rulings onto the ledger, open promises filed for
-OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh`, and the Dispatcher
+OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh --now`, and the Dispatcher
 relaunches a fresh CONDUCTOR window at once, and no text can stop it (seat_restart.py, kind "conductor", goodbye_quiet_s).
 The kill is his accepted risk (owner 2026-10-29: "Leave the goodbye kill on. If I'm typing at the same time it's an
 acceptable risk."); the context backstop for this window is on with Foundry's limits (seat_restart.seats.BENCH._why_backstop).
@@ -94,7 +94,7 @@ want a goodbye that fires instantly. No waiting at all."; window: {why}). Do onl
 request (`conductor_closeout.py` gaps, read by the next wake); name open promises in the note."""
 
 RESTART = """3-5 lines for the next window go in via the request itself (they land in {log}): \
-`python3 src/RimMandrake/rimflow/seat_restart.py request --seat BENCH --ticket GOODBYE --reason goodbye --fresh \
+`python3 src/RimMandrake/rimflow/seat_restart.py request --seat BENCH --ticket GOODBYE --reason goodbye --fresh --now \
 --note "<3-5 lines: what is open, what needs him, what you promised>"`. If it prints REFUSED (helpers still alive, \
 unpublished shard, wrong window), fix what it names and run it again once; if it still refuses, tell him in your one \
 line that this window stays open and why."""

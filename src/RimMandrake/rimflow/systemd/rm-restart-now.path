@@ -1,0 +1,16 @@
+# RESTART_NOW_BUILD_WINDOW_SAYS_READY (owner 2026-11-02: "a window ... signal 'hey, I'm ready for reboot right now' and
+# have something happen right away"). `seat_restart.py request --now` writes ~/rm/restart-now/<SEAT>; this fires
+# rm-restart-now.service at once. The dir is Linux-native ON PURPOSE: MEASURED 2026-11-02 a path unit on drvfs (/mnt/d)
+# never fired, on ext4 it fired in 37 ms. A spent stamp is removed by the service, so this never loops.
+# Install: cp rm-restart-now.{path,service} ~/.config/systemd/user/ && systemctl --user daemon-reload
+#          && systemctl --user enable --now rm-restart-now.path
+[Unit]
+Description=Seat restart --now: a window said it is ready (stamp in ~/rm/restart-now)
+
+[Path]
+PathExistsGlob=%h/rm/restart-now/*
+MakeDirectory=yes
+Unit=rm-restart-now.service
+
+[Install]
+WantedBy=default.target

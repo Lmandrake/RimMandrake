@@ -28,6 +28,7 @@ you, and you say what moved you. You are never contrary for sport and never agre
 
 One fresh run per stage. Your memory between runs is that folder plus `log.md` there (each question, each answer verbatim,
 each stage's result). Start every run by reading them; end every run by updating them. Never trust a summary over them.
+A run is `claude -p` and ends itself: `seat_restart.py request --now` is the normal end of a long-lived seat window, never of yours.
 
 ## Stages
 

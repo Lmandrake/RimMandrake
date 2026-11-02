@@ -76,7 +76,10 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
             "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 0,
             # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (_busy_on)
-            "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600}
+            "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600,
+            # RESTART_NOW_BUILD_WINDOW_SAYS_READY: `request --now` vouches for its boundary, so a short ended-turn
+            # check stands in for grace + quiet_s; now_hold_s bounds how long rm-restart-now ticks before the timer
+            "now_quiet_s": 3, "now_hold_s": 240}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
@@ -142,6 +145,16 @@ def restart_dir(root=None):
 
 def request_path(seat, root=None):
     return os.path.join(restart_dir(root), "%s.request.json" % seat)
+
+
+def now_dir():
+    """The `--now` stamps rm-restart-now.path watches. Linux-native on purpose: MEASURED 2026-11-02, a systemd path unit
+    on drvfs (/mnt/d) never fired in 3 s while one on ext4 fired in 37 ms, so it cannot live beside the request."""
+    return os.environ.get("RM_RESTART_NOW_DIR") or os.path.expanduser("~/rm/restart-now")
+
+
+def now_stamp_path(seat):
+    return os.path.join(now_dir(), seat)
 
 
 def refused_path(seat, root=None):
@@ -941,6 +954,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         "last_human": lambda seat, s: last_human(transcript_for(s, cfgs[seat]) or ""),
         "owed": lambda rs: unanswered(rs.get("tx_path"), rs.get("tx_offset")),
         "registered": registered_start,
+        "clones": seat_clones,
         "refused": lambda seat: _read_json(refused_path(seat)),
         "pending": lambda seat, s: (background_holds(s.get("pid")) if cfgs[seat].get("kind") == "conductor" else
                                     pending_holds(seat, s.get("pid"), transcript_for(s, cfgs[seat]))),
@@ -1009,9 +1023,16 @@ def ring_hold(st, seat, sch, now):
     tell = ((st.get("seat_context") or {}).get(seat) or {}).get("tell_at")
     if tell is not None and 0 <= now - tell < TELL_RING_HOLD_S:
         return "a context tell is going into the inbox this tick"     # the inbox is one file: a ring would overwrite it
+    if rs.get("state") not in ACTIVE:    # a request not taken yet holds from the moment its file appears
+        req = _read_json(request_path(seat)) or {}
+        if (req.get("ts") is not None and req["ts"] != rs.get("req_ts")
+                and 0 <= now - float(req["ts"]) < cfg["request_max_age_s"]):
+            return "seat restart requested (%d s ago), not taken yet: no ring" % (now - float(req["ts"]))
     if rs.get("state") != "pending" or rs.get("ts") is None:
         return None
     age = now - rs["ts"]
+    if rs.get("now"):                    # the window said it is ready: a ring would only reopen its turn
+        return "restart --now pending (%d s old): no ring until it ends" % age
     if rs.get("deferred"):               # a drain has no ring window: the kill waits on helpers, not on a clock
         return "seat restart deferred (%d s old): draining, no ring until it ends" % age
     if rs.get("handoff"):                # the window has said goodbye: a ring would only restart its quiet clock
@@ -1341,6 +1362,8 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 new["drained"] = {h["id"]: h.get("desc") or "" for h in req.get("helpers") or []}
             if req.get("handoff") is True:
                 new["handoff"] = True
+            if req.get("now") is True:
+                new["now"] = True
             act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
                 req_ts=req["ts"], why="%s by %s: %s" % ("DEFERRED (only the kill waits)" if new.get("deferred")
                                                         else "requested", seat, req.get("reason")))
@@ -1624,7 +1647,7 @@ def _handoff_spin(seat, new, old, ro, now, act):
     A window made by a restart hands off inside the cooldown only if it took work; UNMEASURED refuses: no kill is safe."""
     born = old.get("killed_at") or old.get("spin_from")
     until = old.get("cooldown_until") or 0
-    if new.get("handoff") is not True or not born or until <= now:
+    if (new.get("handoff") is not True and new.get("now") is not True) or not born or until <= now:
         return None
     work = ro["work"](seat, born) if callable(ro.get("work")) else None
     if work is not None and new_work(work, None):
@@ -1635,6 +1658,39 @@ def _handoff_spin(seat, new, old, ro, now, act):
     act(do="alarm", kind="restart:%s:handoff_spin" % seat, seat=seat, note=True, conductor_log=True,
         raise_first="%s handed off again with no work done." % seat, why=why)
     return why
+
+
+def seat_clones(seat):
+    """-> [{path, risks}] for the seat's own scratch clones (scratch_clone.py puts them under <scratch>/<SEAT>/), or
+    None if they cannot be judged. Read only: nothing here deletes or releases a clone."""
+    try:
+        import scratch_clone as SC
+        base = SC.scratch_root() / seat
+        if not base.is_dir():
+            return []
+        out = []
+        for c in sorted(base.iterdir()):
+            if (c / ".git").exists():
+                risks, _ = SC.clone_unlanded(c)
+                out.append({"path": str(c), "risks": risks})
+        return out
+    except Exception as e:  # noqa: BLE001 - a blind reading alarms; it never holds or deletes
+        return [{"path": "(all)", "risks": ["UNMEASURED: %r" % e]}]
+
+
+def _clone_tidy(seat, rs, ro, act):
+    """Pre-kill tidy, step 3 (owner 2026-11-02): the seat's scratch clones. Unlanded work is never deleted and never
+    holds the kill (the clone outlives the window): it alarms by name and travels to the wake. A clean clone is left
+    for scratch_reap. Read once per restart, at the claim: it costs a git status per clone."""
+    if not callable(ro.get("clones")) or "clones" in rs:
+        return
+    cl = ro["clones"](seat) or []
+    bad = [c for c in cl if c.get("risks")]
+    rs["clones"] = {c["path"]: c["risks"] for c in bad}
+    if bad:
+        act(do="alarm", kind="restart:%s:clone_unlanded" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
+            why="%s restarts with unlanded work in its scratch clone(s), kept, not deleted: %s" % (
+                seat, "; ".join("%s (%s)" % (c["path"], ", ".join(c["risks"])) for c in bad)))
 
 
 def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
@@ -1690,6 +1746,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     hs = ro["helpers"](seat, cur)
     live = [h for h in hs or [] if h.get("alive")]
     deferred = rs.get("deferred") is True
+    instant = rs.get("now") is True      # `request --now`: the window vouched it is at its boundary
     if live:                             # the wake lists them whatever they became: a helper's result dies with it
         seen = rs.setdefault("drained", {})
         seen.update({h["id"]: h.get("desc") or "" for h in live})
@@ -1700,7 +1757,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     nw = None if deferred and (live or hs is None) else new_work(work, rs.get("ticket"), drain=deferred)
     if nw and not sized and not goodbye:  # forced: taking work is exactly what a busy window does, and the limit stands
         return _cancel(rs, seat, _work_why(nw), now, act)
-    if not goodbye and now - rs["ts"] < cfg["grace_s"]:
+    if not goodbye and not instant and now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
         return
     holds = [cursor_hold] if cursor_hold else []
@@ -1715,7 +1772,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                     seat, cfg["helper_stale_s"], ", ".join(h["id"] for h in stale)))
     if work is None:
         holds.append("the seat's ledger shard is UNMEASURED (cannot tell whether it took new work)")
-    if deferred and hs is not None and not live and callable(ro.get("shard")):   # the refusal the deferral skipped
+    if (deferred or instant) and hs is not None and not live and callable(ro.get("shard")):   # the refusal the deferral skipped
         unpub = ro["shard"](seat)
         if unpub:
             holds.append("ledger shard unpublished: %s" % unpub)
@@ -1760,9 +1817,9 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         return
     rs.pop("held_since", None)
     quiet = goodbye or (cur.get("status") == "idle" and tx and killable_turn(tx)
-                        and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
+                        and now - (tx.get("last_at") or now) >= cfg["now_quiet_s" if instant else "quiet_s"])
     # a helper's last notice wakes a drain, a ring taken just before a handoff runs its turn out: neither fails the request
-    if not quiet and (deferred or rs.get("handoff") is True) and not hard:
+    if not quiet and (deferred or instant or rs.get("handoff") is True) and not hard:
         rs.setdefault("busy_since", now)
         why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
         if now - rs["busy_since"] >= cfg["hold_alarm_s"]:
@@ -1786,6 +1843,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if rs.get("pid") is not None and cur.get("pid") != rs["pid"]:
         return _cancel(rs, seat, "the window's pid %s is not the requester's %s" % (cur.get("pid"), rs["pid"]), now,
                        act)
+    _clone_tidy(seat, rs, ro, act)
     ss.pop("ring", None)                 # a taken ring dies with the window it reached: nothing is left to verify
     rs.update(state="claimed", claimed_at=now, pid=cur.get("pid"), gen=rs.get("gen") or uuid.uuid4().hex[:12])
     act(do="restart_kill", seat=seat, pid=cur.get("pid"), session_id=rs["session_id"],
@@ -1909,6 +1967,7 @@ def _kill_record(seat, a, sch, rs, start, now):
             # the transcript the request named (review 2 P1-4) and this restart's generation, which only the relaunch
             # prompt carries (review 2 P1-5)
             "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"), "drained": rs.get("drained"),
+            "clones": rs.get("clones") or None,                                  # unlanded scratch work: the wake names it
             "closeout": closeout, "gaps": gaps,                                  # close-out gaps: the wake retries them
             "source": rs.get("source"), "ctx_tokens": rs.get("ctx_tokens"),      # a forced restart's wake digests the old window
             "reads": cfg.get("kind") == "conductor", "arm_s": cfg["arm_s"],      # a wake that must be answered (`answered`)
@@ -2105,7 +2164,19 @@ def background_holds(pid):
     bg = background_commands(pid) if pid else []
     if bg is None:
         return ["background commands UNMEASURED"]
-    return ["background command(s) running: pid %s" % ", ".join(str(p) for p in bg)] if bg else []
+    return ["background command(s) running: %s" % "; ".join("pid %d %s" % (p, _cmdline(p)) for p in bg)] if bg else []
+
+
+def _cmdline(pid, proc="/proc"):
+    """-> the command a background shell runs, short: what the window left running, so it can be stopped by name."""
+    try:
+        with open(os.path.join(proc, str(pid), "cmdline"), "rb") as f:
+            argv = [a.decode("utf-8", "replace") for a in f.read().split(b"\0") if a]
+    except OSError:
+        return "(gone)"
+    body = argv[-1] if argv else ""
+    body = body.split("&& eval ", 1)[-1] if "&& eval " in body else body
+    return "`%s`" % " ".join(body.split())[:120]
 
 
 def pending_holds(seat, pid, path, root=None):
@@ -2158,6 +2229,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     tx = tx_summary(path or "")
     holds = []
     goodbye = _goodbye(cfg, rs)
+    qk = "now_quiet_s" if rs.get("now") is True else "quiet_s"
     if goodbye:
         pass
     elif not tx:
@@ -2168,8 +2240,8 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         holds.append("turn not ended (%s)" % tx.get("last_kind"))
     elif tx.get("last_at") is None:
         holds.append("last record time unknown")
-    elif time.time() - tx["last_at"] < cfg["quiet_s"]:
-        holds.append("not quiet: last record %.0f s ago < quiet_s %d" % (time.time() - tx["last_at"], cfg["quiet_s"]))
+    elif time.time() - tx["last_at"] < cfg[qk]:
+        holds.append("not quiet: last record %.0f s ago < %s %d" % (time.time() - tx["last_at"], qk, cfg[qk]))
     if rs.get("hard") or rs.get("source") in FORCED:
         size = (tx or {}).get("ctx_tokens")
         if size is None:
@@ -2197,7 +2269,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         nw = new_work(evs, rs.get("ticket"), drain=rs.get("deferred") is True)
         if nw and rs.get("source") not in FORCED and not goodbye:
             holds.append(_work_why(nw))
-    if rs.get("deferred") is True:       # a helper's last append can land between the verdict and the kill
+    if rs.get("deferred") is True or rs.get("now") is True:   # a helper's last append can land between the verdict and the kill
         unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat)
         if unpub:
             holds.append("ledger shard unpublished: %s" % unpub)
@@ -2436,13 +2508,38 @@ def kick_fresh(seat, session_id, root=None):
     return True
 
 
+def publish_shard(seat, clone=None):
+    """`request --now` step 2 of the pre-kill tidy (owner 2026-11-02): commit and publish the seat's own ledger shard, by
+    explicit path, from the window's clone. -> None on success, else why (the request then refuses as before)."""
+    clone = clone or REPO
+    shard = "infrastructure/state/ledger/events/%s.jsonl" % seat
+    try:
+        r = subprocess.run([os.path.join(clone, "publish"), "-m", "ledger: %s shard" % seat, shard], cwd=clone,
+                           capture_output=True, text=True, timeout=240)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "./publish failed to run: %s" % e
+    if r.returncode:
+        return "./publish rc %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-300:])
+    return None
+
+
 def cmd_request(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
     if not seat:
         print("seat_restart: no seat (--seat or AGENT_SEAT)")
         return 2
-    unpub = unpublished_shard(seat, REPO)
+    args.now = getattr(args, "now", False)   # --now times the restart; it never overrides CONTEXT OK (add --fresh)
     cfgs = config(_schedule())
+    if args.now and seat not in cfgs:
+        print("seat_restart --now: %s is not a restartable window (dispatcher_schedule.json seat_restart). A role or "
+              "one-shot run (Designer, Operations, Relentless) ends itself: finish and end your turn; nothing to "
+              "restart." % seat)
+        return 0
+    unpub = unpublished_shard(seat, REPO)
+    if args.now and unpub and not unpub.startswith("UNMEASURED"):
+        why = publish_shard(seat)
+        unpub = unpublished_shard(seat, REPO)
+        print("seat_restart --now: shard %s" % ("published" if not unpub else "still unpublished (%s)" % why))
     pid = args.pid or doorbell.claude_ancestor()
     sf = session_file(pid) if pid else None
     path = transcript_path(sf["cwd"], sf["sessionId"]) if sf and sf.get("cwd") and sf.get("sessionId") else None
@@ -2520,11 +2617,19 @@ def cmd_request(args):
            "tx_path": path}             # the transcript actually read, carried to the kill and the wake (review 2 P1-4)
     if args.ticket == HANDOFF_TICKET:
         req["handoff"] = True
+    if args.now:
+        req["now"] = True
     if deferred:
         req.update(deferred=True, helpers=[{"id": h["id"], "desc": h.get("desc")} for h in live], shard_owed=unpub)
     if cfg.get("kind") == "conductor":
         req.update(closeout_check(path, cfg))
     _write_json(request_path(seat), req)
+    if args.now:
+        try:                             # after the request: the watcher's first tick must find it
+            os.makedirs(now_dir(), exist_ok=True)
+            _write_json(now_stamp_path(seat), {"seat": seat, "req_ts": req["ts"]})
+        except OSError as e:
+            print("seat_restart --now: stamp not written (%s): the 120 s timer acts instead" % e)
     if deferred:
         print("DEFERRED for %s: request recorded (%s; context %s tokens%s). Waiting on %s. Nothing is stopped: running "
               "helpers finish, and each one's notice reaches you. You are DRAINING now: take no ticket, spawn no helper "
@@ -2534,6 +2639,12 @@ def cmd_request(args):
               % (seat, sf["sessionId"], "UNMEASURED" if ctx is None else ctx,
                  "; shard: %s" % unpub if unpub else "",
                  helper_names(live) or "an unreadable helper inventory", cfg["hold_alarm_s"]))
+        return 0
+    if args.now and cfg.get("kind") != "conductor":   # a goodbye keeps its own words; the stamp is written either way
+        print("RESTART --now for %s (%s; context %s tokens). rm-restart-now.path acts within seconds: END YOUR TURN NOW, "
+              "with no further tool call. Rings and session messages to this window are held until it is replaced."
+              % (seat, sf["sessionId"], "UNMEASURED" if ctx is None else ctx))
+        _tick_soon(5, 30)                # the watcher is the fast path; these only cover it being down
         return 0
     if cfg.get("kind") == "conductor":
         _tick_soon(cfg["goodbye_quiet_s"] + 1, cfg["goodbye_quiet_s"] + 30)
@@ -2753,6 +2864,10 @@ def cmd_wake(args):
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
     _wake_helpers(rec)
+    if rec.get("clones") and not rec.get("aborted"):
+        print("\n== scratch clone(s) the old window left with UNLANDED work (kept): land or hand off each first")
+        for path, risks in sorted(rec["clones"].items()):
+            print("- %s: %s" % (path, ", ".join(risks)))
     _wake_receipts(seat, cfg, rec)
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
@@ -2798,6 +2913,62 @@ def cmd_intile(args):
     return 0
 
 
+NOW_DONE = ("verified", "cancelled", "failed")
+
+
+def now_owed(stamp, st, now, hold_s, root=None):
+    """-> why a `--now` stamp still owes a tick, or None when it is spent (delete it). Spent: its request was decided
+    (verified, cancelled, failed), it vanished untaken, or it is older than hold_s (the 120 s timer carries on)."""
+    seat, ts = stamp.get("seat"), stamp.get("req_ts")
+    if not seat or ts is None:
+        return None
+    if now - float(ts) >= hold_s:
+        return None
+    rs = (st.get("seat_restart") or {}).get(seat) or {}
+    if rs.get("req_ts") == ts:
+        return None if rs.get("state") in NOW_DONE or rs.get("state") not in ACTIVE else rs["state"]
+    req = _read_json(request_path(seat, root)) or {}
+    return "untaken" if req.get("ts") == ts else None
+
+
+def cmd_now_run(args):
+    """rm-restart-now.service: tick the Dispatcher back to back while any `--now` stamp is owed, then exit. It removes
+    every spent stamp, so PathExistsGlob re-fires only for a stamp written meanwhile, never in a loop."""
+    hold_s = DEFAULTS["now_hold_s"]
+    t0 = time.time()
+    while True:
+        now = time.time()
+        try:
+            names = sorted(os.listdir(now_dir()))
+        except OSError:
+            names = []
+        st = _read_json(os.path.join(doorbell.state_dir(), "state.json")) or {}
+        owed = {}
+        for n in names:
+            p = os.path.join(now_dir(), n)
+            why = now_owed(_read_json(p) or {}, st, now, hold_s)
+            if why:
+                owed[n] = why
+            else:
+                try:
+                    os.remove(p)
+                except OSError:
+                    pass
+                print("[now-run] %.1fs %s stamp spent: removed" % (now - t0, n), flush=True)
+        if not owed or now - t0 > hold_s + 30:
+            return 0
+        print("[now-run] %.1fs tick for %s" % (now - t0, ", ".join("%s=%s" % kv for kv in sorted(owed.items()))),
+              flush=True)
+        if args.dry:
+            return 0
+        try:
+            subprocess.run(["systemctl", "--user", "start", "rm-dispatcher.service"], timeout=150, capture_output=True)
+        except (OSError, subprocess.SubprocessError) as e:
+            print("[now-run] tick failed: %s" % e, flush=True)
+        # pending/claimed race the window's last records: tick at once; after the kill the relaunch takes its time
+        time.sleep(1 if any(w in ("untaken", "pending", "claimed") for w in owed.values()) else 5)
+
+
 def cmd_status(args):
     st = _read_json(os.path.join(doorbell.state_dir(), "state.json")) or {}
     print(json.dumps({"config": config(_schedule()), "state": st.get("seat_restart") or {}}, indent=1, default=str))
@@ -2814,6 +2985,9 @@ def main(argv=None):
     r.add_argument("--note", default="", help="3-5 lines for the seat log the fresh window reads")
     r.add_argument("--fresh", action="store_true",
                    help="ask for the fresh window even while context is under backstop_ctx_tokens")
+    r.add_argument("--now", action="store_true",
+                   help="the window is at its boundary and ends its turn right after: restart within seconds "
+                        "(publishes the seat's shard first; under the backstop still CONTEXT OK unless --fresh)")
     r.add_argument("--pid", type=int, help=argparse.SUPPRESS)
     w = sub.add_parser("wake", help="the fresh window's first read")
     w.add_argument("--seat")
@@ -2822,8 +2996,11 @@ def main(argv=None):
     i = sub.add_parser("intile", help="seat_loop.sh: relaunch here if a restart just killed this seat (exit 3: no)")
     i.add_argument("--seat")
     sub.add_parser("status")
+    n = sub.add_parser("now-run", help="rm-restart-now.service: tick while a --now stamp is owed")
+    n.add_argument("--dry", action="store_true", help="print what is owed, tick nothing")
     args = ap.parse_args(argv)
-    return {"request": cmd_request, "wake": cmd_wake, "intile": cmd_intile, "status": cmd_status}[args.cmd](args)
+    return {"request": cmd_request, "wake": cmd_wake, "intile": cmd_intile, "status": cmd_status,
+            "now-run": cmd_now_run}[args.cmd](args)
 
 
 if __name__ == "__main__":

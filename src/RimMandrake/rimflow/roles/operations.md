@@ -42,6 +42,8 @@ line that stops a third, or hand it to a lane ahead of new work. Rule: skill `us
 
 ## When you run
 
+Each run is `claude -p` and ends itself; `seat_restart.py request --now` is for long-lived seat windows, never for you.
+
 | trigger | what you do | budget |
 |---|---|---|
 | 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
