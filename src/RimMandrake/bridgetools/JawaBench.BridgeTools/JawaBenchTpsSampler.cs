@@ -22,7 +22,8 @@
 //             writer health
 //   incident  every frame gap > GapSeconds: stall (unexplained) or longevent (save / long event), with
 //             the context below. Recovered stalls are KEPT - nothing is discarded for being long.
-//   context   every 60 s of play: maps (id, size, biome, pawns, things), heap, process memory
+//   context   every 60 s of play: maps (id, size, biome, pawns, things), heap, process memory (private, working
+//             set, Unity native/gfx), process uptime and Verse.Log counts (JawaBenchSessionHealth.cs)
 //   silence / resumed   from the watchdog thread (JawaBenchTpsWatchdog) when the main thread stops
 //   shutdown  on Application.quitting, after which the writer is drained and Player.log archived
 //   error     the sampler disabled itself after an exception (it never retries every frame)
@@ -720,12 +721,9 @@ namespace JawaBench.BridgeTools
             // HashSet counts instead - O(1), no allocation. A failed accessor reports -1, never a copy.
             sb.Append(",\"worldPawns\":").Append(WorldPawnCount());
             sb.Append(",\"heapMB\":").Append(M.F(GC.GetTotalMemory(false) / 1048576.0, 1));
-            try
-            {
-                var p = System.Diagnostics.Process.GetCurrentProcess();
-                sb.Append(",\"workingSetMB\":").Append(M.F(p.WorkingSet64 / 1048576.0, 1));
-            }
-            catch { }
+            // workingSetMB, privateMB, Unity native/gfx memory, upS and log counts: the standing health check's
+            // fields (JawaBenchSessionHealth.cs; Mono's Process.WorkingSet64 read 0, so psapi replaces it)
+            sb.Append(JawaBenchSessionHealth.Fields());
             sb.Append(",\"save\":").Append(W.Json(Life.SaveName));
             W.Enqueue("context", sb.ToString());
         }

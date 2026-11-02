@@ -1264,15 +1264,54 @@ def c_process(now, rules, ctx):
     return out
 
 
+def game_health(now):
+    """The standing game health check (HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME, owner C24): record every finished
+    full-list session not yet in game_health_check.py's history, then read the newest row's breaches. A breach rings
+    OPS_GAME_HEALTH_DEBUG (rules targets): a debug item, as C24 asks ("When it goes worse ... debug why")."""
+    keys = ("tps.health_breaches", "tps.health_age_h", "tps.health_sessions")
+    try:
+        r = subprocess.run([sys.executable, str(HERE / "game_health_check.py"), "record", "--json"],
+                           capture_output=True, text=True, timeout=120)
+        if r.returncode != 0:
+            raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+        json.loads(r.stdout)
+        r = subprocess.run([sys.executable, str(HERE / "game_health_check.py"), "latest", "--json"],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            raise RuntimeError("latest exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+        row = json.loads(r.stdout)
+    except Exception as e:  # noqa: BLE001  a broken health check costs these readings, not the tps family's
+        return {k: U("game_health_check.py failed: %s" % str(e)[:200]) for k in keys}
+    if not isinstance(row, dict) or not isinstance(row.get("breaches"), list):
+        return {k: U("no full-list game session recorded yet") for k in keys}
+    end = epoch(row.get("end"))
+    br = [b.get("key") for b in row["breaches"] if isinstance(b, dict)]
+    out = {"tps.health_breaches": M(len(br), "limits crossed by the newest full-list session", session=row.get("session"),
+                                    keys=br, said="; ".join("%s=%s (limit %s %s)" % (b.get("key"), b.get("value"),
+                                                                                     b.get("op"), b.get("limit"))
+                                                            for b in row["breaches"])[:400] or None),
+           "tps.health_age_h": M(round((now - end) / 3600.0, 1), "h since the newest full-list session ended")
+           if end is not None else U("newest row has no readable end time")}
+    try:
+        with open(os.path.join(os.environ.get("RM_GAME_HEALTH_DIR", "/mnt/d/ClaudeWork/rimmandrake/game_health"),
+                               "history.jsonl")) as fh:
+            out["tps.health_sessions"] = M(sum(1 for ln in fh if ln.strip()), "full-list sessions recorded")
+    except OSError as e:
+        out["tps.health_sessions"] = U("history unreadable: %s" % e)
+    return out
+
+
 def c_tps(now, rules, ctx):
+    health = game_health(now)
     r = subprocess.run([sys.executable, str(HERE / "tps_record.py"), "--json"], capture_output=True, text=True, timeout=90)
     if r.returncode != 0:
         raise RuntimeError("tps_record.py exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
     s = (json.loads(r.stdout) or {}).get("summary") or {}
-    out = {}
+    out = dict(health)
     if s.get("coverage") != "FRESH":
         why = "no fresh TPS session (coverage %s): the game is not running or the recorder is off" % s.get("coverage")
-        return {k: U(why) for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")}
+        out.update({k: U(why) for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")})
+        return out
     rm = s.get("ratioMedian")
     if rm is None:
         out["tps.ratio_median"] = U("fresh session but no run window (paused or stalled the whole time)")
@@ -2681,7 +2720,7 @@ steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak s
 steve.seats_absent_min steve.state steve.unowned_stall_min steve.watch_age_min
 testing.archmagi_nothing_h_7d testing.nothing_h_7d testing.steve_nothing_h_7d
 timers.failed_units timers.overdue_timers
-tps.ratio_median tps.stall_max_s tps.stalls
+tps.health_age_h tps.health_breaches tps.health_sessions tps.ratio_median tps.stall_max_s tps.stalls
 v3.accepted_per_day v3.failure_signal_share v3.keep_going_per_day
 """.split())
 # the fields of an allowed point a blind role may see: value, mark, unit, the why of a non-MEASURED mark, the 24 h /

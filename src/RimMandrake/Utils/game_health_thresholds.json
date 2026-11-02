@@ -1,0 +1,26 @@
+{
+  "_doc": "game_health_check.py (HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME, owner C24 in design/RimMandrake/mod_audit/OWNER_RULINGS.md). A full-list session whose summary crosses any limit below is a BREACH; ops_watch's tps family reads the newest recorded session's breaches and rings OPS_GAME_HEALTH_DEBUG. Owner C24: 'Target our desktop ... numeric targets are set against his desktop and revised from measurement'. Each limit says what it was set from. Agents may tighten or add a limit (delegation_policy 2.1); loosening one is the owner's.",
+  "full_list_min_mods": 200,
+  "_full_list_min_mods_doc": "a session is 'full-list' when its session row reports at least this many mods (the owner's list measured 317-321 mods 2026-10-27..11-02; quicktest tiers 11-23)",
+  "ended_after_min": 30,
+  "_end_clean_doc": "end.clean is recorded but is not a limit: a kill by ./game down leaves no shutdown row either, so the record cannot tell it from a crash",
+  "_ended_after_min_doc": "a session with no shutdown row whose newest row is older than this is recorded as ended-without-shutdown (a crash or kill)",
+  "bucket_min": 10,
+  "growth_min_span_min": 30,
+  "_growth_min_span_min_doc": "a memory growth rate needs at least this much in-game time after the first game load, else it is UNMEASURED",
+  "ratio_window_min": 15,
+  "_ratio_window_min_doc": "TPS decay compares the median run-window ratio of the first and the last this-many minutes after the first game load, at the session's dominant speed multiplier",
+  "limits": [
+    {"key": "load.reached_menu", "op": "==", "value": false, "why": "the game did not reach the main menu: not loadable"},
+    {"key": "load.seconds", "op": ">", "value": 1800, "why": "a cold load measured ~15-25 min on the full list (CLAUDE.md, 2026-09-07); over 30 min is a regression"},
+    {"key": "mem.managed_peak_mb", "op": ">", "value": 6144, "why": "managed (Mono GC) heap; the full-list sessions 2026-10-26..28 peaked 3.9-5.1 GB (game_health_check.py record --dry-run, 2026-11-02), so 6 GB is about 1.2x the worst seen"},
+    {"key": "mem.managed_growth_mb_per_h", "op": ">", "value": 1024, "why": "a heap that grows over 1 GB per hour of play reaches the 6 GB line within a long sitting"},
+    {"key": "mem.private_peak_mb", "op": ">", "value": 24576, "why": "process private bytes; the desktop has 64 GB, and over 24 GB starves the seats and the build host"},
+    {"key": "mem.private_growth_mb_per_h", "op": ">", "value": 2048, "why": "private bytes growing over 2 GB per hour is a leak in managed, native or GPU-staging memory"},
+    {"key": "mem.native_peak_mb", "op": ">", "value": 12288, "why": "Unity native allocators (Profiler.GetTotalReservedMemoryLong); set wide until a full-list session measures it"},
+    {"key": "tps.ratio_decay_pct", "op": ">", "value": 30, "why": "TPS ratio in the last window below 70% of the first window at the same speed: the game slows as it runs"},
+    {"key": "tps.stall_max_s", "op": ">", "value": 30, "why": "a single unexplained stall over 30 s outside a long event (loading/map generation stalls are reported as tps.longevent_max_s, not judged)"},
+    {"key": "log.errors", "op": ">", "value": 500, "why": "error+exception messages in one session; 'how many errors are we currently producing in the log?' (C24)"},
+    {"key": "log.cap_reached", "op": "==", "value": true, "why": "Verse.Log hit its 10,000-message cap: emission suppressed, error activity unknown"}
+  ]
+}

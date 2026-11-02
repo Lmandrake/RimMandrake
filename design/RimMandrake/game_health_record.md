@@ -94,6 +94,34 @@ code. A lock file allows only one instance to run, so a scheduled task can safel
   - Measured 2026-10-10: the 16.7 MB canonical start save took 0.5 s, and a 49.5 MB save took 1.4 s with a peak RSS
     of 18 MB.
 
+### 3. Standing health check per full-list session: `src/RimMandrake/Utils/game_health_check.py` (`HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME`)
+
+The owner's C24 (`design/RimMandrake/mod_audit/OWNER_RULINGS.md`): memory and TPS as a function of time are a standing
+health check beside "is the game loadable right now?" and "how many errors are we producing in the log?", and "When it
+goes worse, we should take it seriously and have hard conversations or debug why."
+
+- **Record.** One row per finished full-list session (session row `mods` >= `full_list_min_mods`), appended to
+  `D:\ClaudeWork\rimmandrake\game_health\history.jsonl` (outside git). ops_watch's `tps` family runs
+  `game_health_check.py record` on every pass (`rm-ops-watch.timer`), so no session is missed while the timer runs.
+  An open session (no shutdown row, newest row under 30 min old) waits for the next pass.
+- **Row.** Load health (reached the menu, a game loaded, load seconds), end (clean shutdown or not), memory curves per
+  10 min since the first game load with peak and Theil-Sen growth per hour (managed `heapMB`; private `privateMB`;
+  Unity native `unityReservedMB`; GPU driver `gfxMB`), TPS (run-window ratio curve, median, first-vs-last decay at
+  the dominant speed, stalls; long-event stalls are reported as `tps.longevent_max_s` and not judged) and log counts
+  (`logErr`, `logWarn`, cap). A source a session does not carry is UNMEASURED with its reason.
+- **In-game fields** (`JawaBenchSessionHealth.cs`, on every `context` row, once a minute, no hook): psapi private
+  bytes and working set (Mono's `Process.WorkingSet64` read 0 on every full-list session 2026-10-26..28), the Unity
+  Profiler totals, `upS` (process uptime, giving load seconds at the menu row), Verse.Log's message count and cap
+  state, and error/warning entries counted from Verse.Log's own message queue (`logErrLowerBound` when the queue
+  may have evicted entries unseen). A release player reads `gfxMB` 0, so GPU memory is UNMEASURED until another
+  source exists. The archived Player.log is not used for error counts: it carries no stack traces, so a grep for
+  `Verse.Log:Error` reads 0 on a log full of errors.
+- **Threshold to debug.** `src/RimMandrake/Utils/game_health_thresholds.json` holds the limits, each with what it
+  was set from. The newest row's `breaches` become `tps.health_breaches`; above 0 rings `OPS_GAME_HEALTH_DEBUG`
+  through ops_watch's alarm filing. Agents may tighten or add a limit; loosening one is the owner's.
+- **Read it.** `python3 src/RimMandrake/Utils/game_health_check.py report --curve` (sessions over time, then the
+  newest session's curves). Live proof that the companion fields are populated: `game_health_check.py fields`.
+
 ## Contracts (GPT review section 6.4 gates)
 
 Every capability reports **PASS / FAIL / UNMEASURED / UNSUPPORTED** on its own. A partial build never becomes a
@@ -156,6 +184,7 @@ fills in **Owner verdict**.
 | `companion.hook-coverage` | built, not deployed | Did each TPS recorder hook see every call (foreign-thread, nested, orphan-finalizer, skipped-original, threw counts)? | UNMEASURED live; counters only, no allocation | none needed; read in `jawa/tps_report` `hooks` and the handshake | |
 | `aware.thing-explain` | built, not deployed | "What is that?": definition owners, state, origin statement, texture providers (OBSERVED vs CANDIDATE) | on demand only; per-call cost metered | delete the tool; nothing else reads it | |
 | `scene.report` (Python) | built | Who is on the map, decomposed hostility, our involvement vs expectation, declared coverage | ~10 bridge reads per report, on demand (a Watch writes one at baseline) | `Watch(scene=False)`; delete `modcheck/scene_report.py` | |
+| `health.session-check` | built; companion fields written, not deployed | Per full-list session: is memory (managed, private, native, GPU) or TPS getting worse over time, is the game loadable, how many errors did it log? | Offline reader: about 3 s over the whole TPS record. In game: one psapi call, five Profiler getters and one walk of up to 1,000 log entries a minute, UNMEASURED | Remove the `tps.health_*` readings from `ops_watch.c_tps` and its target; delete `game_health_check.py`; delete `JawaBenchSessionHealth.cs` and its one call in `JawaBenchTpsSampler.Context` | |
 | `tps.presentation-fps` | unsupported (for now) | Displayed FPS, as opposed to `Root.Update` cadence | UNMEASURED | (not built; needs a presentation-timing source nobody has identified) | |
 
 ## Owed, by ticket

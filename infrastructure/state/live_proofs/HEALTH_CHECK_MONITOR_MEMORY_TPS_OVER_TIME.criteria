@@ -1,0 +1,1 @@
+A1 L2: after `python3 src/RimMandrake/bridgetools/build.py --apply` (companion with JawaBenchSessionHealth.cs) and a restart on the minimal list (all five DLC), a quicktest map played at least 2 minutes: the newest TPS session's latest `context` row carries privateMB>0, unityReservedMB>0, unityAllocMB, upS>0, logErr and logWarn as numbers (gfxMB may read 0 in a release player)
