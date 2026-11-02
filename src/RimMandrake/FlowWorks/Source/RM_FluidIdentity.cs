@@ -76,7 +76,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
-			FluidDef held = ex != null && ex.FillAt(c) > 0 ? ex.FluidAt(c) : null;
+			FluidDef held = ex != null && ex.WaterDlAt(c) > 0 ? ex.FluidAt(c) : null;
 			return LiquidIndex.CellIsAcid(c.GetTerrain(map)?.defName, held?.defName);
 		}
 	}
@@ -115,7 +115,9 @@ namespace RimMandrake.FlowWorks
 			{
 				// EXCAVATED cells only, as the doc above says: FillAt reads natural water as full, so a river map counted
 				// 2,347 river cells as "wet, unrecorded" (MEASURED 2026-10-06). A natural body's fluid is the bodies list.
-				if (ex.ExcavatedDepthAt(c) == 0 || ex.FillAt(c) == 0) continue;
+				// WET_CELL_CENSUS_FIX_SHEETS_READ_DRY: wet means any water in dL; FillAt counts whole notches only, so a
+				// part-notch sheet read dry and its missing identity went uncounted.
+				if (ex.ExcavatedDepthAt(c) == 0 || ex.WaterDlAt(c) == 0) continue;
 				wet++;
 				FluidDef f = ex.FluidAt(c);
 				if (f != null) { rec++; fluids.Add(f.defName); }

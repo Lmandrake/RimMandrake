@@ -20,7 +20,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		// Derived each pulse, never saved: the last reading.
 		private string kind = "nothing";
 		private int cells;
-		private int held;
+		private long heldDl;
 		private int dug;
 		private string fluids = "";
 		private int bodyId = -1;
@@ -43,7 +43,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override void FlowPulse(RM_MapComponent_Excavation ex)
 		{
 			Read(ex);
-			float amount = kind == "channel" ? held : (kind == "body" ? bodyStock : 0f);
+			float amount = kind == "channel" ? HeldLevelsExact : (kind == "body" ? bodyStock : 0f);
 			int now = Find.TickManager.TicksGame;
 			sampleTicks.Add(now);
 			sampleAmounts.Add(amount);
@@ -59,7 +59,8 @@ namespace RimMandrake.FlowWorks.MapControls
 		public void Read(RM_MapComponent_Excavation ex)
 		{
 			haveReading = true;
-			cells = held = dug = 0;
+			cells = dug = 0;
+			heldDl = 0;
 			bodyId = -1;
 			fluidNames.Clear();
 			seen.Clear();
@@ -78,10 +79,11 @@ namespace RimMandrake.FlowWorks.MapControls
 				{
 					IntVec3 c = queue[head];
 					cells++;
-					int f = ex.FillAt(c);
-					held += f;
+					// WET_CELL_CENSUS_FIX_SHEETS_READ_DRY: held water in dL, so a part-notch sheet is held and named, not dry.
+					long w = ex.WaterDlAt(c);
+					heldDl += w;
 					dug += ex.DepthAt(c);
-					if (f > 0)
+					if (w > 0)
 					{
 						FluidDef fl = ex.FluidAt(c) ?? ex.ActiveFluid;
 						fluidNames.Add(fl?.defName ?? "?");
@@ -122,6 +124,14 @@ namespace RimMandrake.FlowWorks.MapControls
 			fluids = "";
 		}
 
+		/// <summary>The channel's held water in levels, exact (dL / U): a part-notch sheet reads as a fraction, never 0.</summary>
+		private float HeldLevelsExact => (float)(heldDl / (double)RM_LevelSolve.U);
+
+		private string HeldText(string format)
+		{
+			return HeldLevelsExact.ToString(format, CultureInfo.InvariantCulture);
+		}
+
 		private string Reading()
 		{
 			if (!haveReading)
@@ -131,7 +141,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			string net = (perDay >= 0f ? "+" : "") + perDay.ToString("0.#", CultureInfo.InvariantCulture);
 			if (kind == "channel")
 			{
-				return "Channel: " + cells + " dug square(s), " + held + " of " + dug + " level(s) full"
+				return "Channel: " + cells + " dug square(s), " + HeldText("0.##") + " of " + dug + " level(s) full"
 					+ (fluids.Length > 0 ? " (" + fluids + ")" : " (dry)") + ", net " + net + " level(s)/day"
 					+ (cells >= MaxWalk ? " (read the first " + MaxWalk + " squares)" : "");
 			}
@@ -175,7 +185,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				return;
 			}
-			string s = kind == "channel" ? held + "/" + dug + " " + (perDay >= 0f ? "+" : "") + perDay.ToString("0", CultureInfo.InvariantCulture) + "/d"
+			string s = kind == "channel" ? HeldText("0.#") + "/" + dug + " " + (perDay >= 0f ? "+" : "") + perDay.ToString("0", CultureInfo.InvariantCulture) + "/d"
 				: (kind == "body" ? (bodyLimitless ? "#" + bodyId + " inf" : "#" + bodyId + " " + bodyStock.ToString("0", CultureInfo.InvariantCulture)) : "-");
 			GenMapUI.DrawThingLabel(this, s, new Color(0.8f, 0.85f, 0.9f, 0.85f));
 		}
@@ -183,7 +193,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override string StateLine()
 		{
 			return "meter " + ThingID + " at " + Position.x + "," + Position.z + " active=" + active + " kind=" + kind
-				+ " cells=" + cells + " held=" + held + " dug=" + dug + " fluids=" + (fluids.Length > 0 ? fluids : "none")
+				+ " cells=" + cells + " held=" + HeldText("0.##") + " heldDl=" + heldDl + " dug=" + dug + " fluids=" + (fluids.Length > 0 ? fluids : "none")
 				+ " body=" + bodyId + " stock=" + bodyStock.ToString("0.##", CultureInfo.InvariantCulture)
 				+ " capacity=" + bodyCapacity.ToString("0.##", CultureInfo.InvariantCulture) + " limitless=" + bodyLimitless
 				+ " perDay=" + perDay.ToString("0.##", CultureInfo.InvariantCulture);
