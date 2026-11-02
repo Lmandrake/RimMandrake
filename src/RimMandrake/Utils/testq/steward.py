@@ -137,8 +137,13 @@ def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
 def lane_state(now, mods=None):
     ss = T.read_json(path("ssh_state.json")) or {}
     if ss.get("down_since"):
-        return _st("UNREACHABLE", "ssh to SteveDesktop down since %s: %s" % (ss["down_since"],
-                                                                            (ss.get("last_error") or "")[:120]), 0)
+        # an intentional pause with an expiry (an owner's hardware work) covers the box going dark until it ends
+        pz = T.paused() or {}
+        held = S.parse_ts(pz["until"]) if pz.get("until") and not pz.get("outcome") else None
+        return _st("UNREACHABLE", "ssh to SteveDesktop down since %s: %s%s" % (
+            ss["down_since"], (ss.get("last_error") or "")[:120],
+            "; inside the pause until %s" % pz["until"] if held and held > now else ""),
+            held if held and held > now else 0)
     if os.path.exists(path("quarantine.json")):
         qz = T.read_json(path("quarantine.json")) or {}
         return _st("QUARANTINE", "quarantined: %s" % (qz.get("reason") or "quarantine.json exists"), 0, at_once=True)

@@ -503,6 +503,11 @@ def main():
         check(W.lane_state(base, ["Mock"])["at_once"], "a brake with a HARNESS-class (DEPLOY) failure: at once")
         S.dump({"down_since": S.utcnow(), "last_probe": base, "last_error": "timeout"}, T.q("ssh_state.json"))
         check(W.lane_state(base, ["Mock"])["state"] == "UNREACHABLE", "ssh down: UNREACHABLE")
+        S.dump({"since": W.iso(base), "until": W.iso(base + 7200), "reason": "owner swapping a disk"},
+               T.q("paused.json"))
+        ls = W.lane_state(base, ["Mock"])
+        check(ls["state"] == "UNREACHABLE" and ls["fault_at"] == S.parse_ts(W.iso(base + 7200)),
+              "ssh down inside an intentional pause: a fault only when the pause ends")
         # ------------------------------------------------ quiet states
         reset()
         ls = W.lane_state(base, ["Mock"])
