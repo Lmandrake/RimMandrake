@@ -234,12 +234,21 @@ class Fx(object):
                 "outstanding": list(it.outstanding or [])}
 
     def prose(self, item_id):
+        """The item's prose, then its live_proofs/<ID>.criteria: the game mode adds its clauses to the ledger from that
+        file (`rimflow implemented`), which cuts them at CUT_AT; the file still holds each whole line. Without it every
+        long game clause read as cut and each round was REFUSED before the bridge (RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD)."""
+        out = []
         for d in ("infrastructure/state/items", "infrastructure/state/items/closed"):
             p = os.path.join(self.books, d, item_id + ".md")
             if os.path.isfile(p):
                 with open(p, encoding="utf-8", errors="replace") as f:
-                    return f.read()
-        return ""
+                    out.append(f.read())
+                break
+        p = os.path.join(self.books, "infrastructure/state/live_proofs", item_id + ".criteria")
+        if os.path.isfile(p):
+            with open(p, encoding="utf-8", errors="replace") as f:
+                out.append(f.read())
+        return "\n".join(out)
 
     def touched(self, sha):
         """Every path the built commit touched, including ones HEAD no longer has: changed_since sees those as changed."""

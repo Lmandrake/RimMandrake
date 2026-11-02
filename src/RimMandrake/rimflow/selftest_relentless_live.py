@@ -558,8 +558,27 @@ def t_load_condition():
     check("the real compose manifest folds TheRot into the composed mod", real.get("mandrake.rm.therot"), real)
 
 
+def t_prose_holds_the_criteria_file():
+    """RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD: every game clause comes from live_proofs/<ID>.criteria and is cut on
+    the ledger; the file holds the whole line, so it is prose, and the round is not REFUSED before the bridge."""
+    import tempfile
+    b = tempfile.mkdtemp(prefix="rl-prose-")
+    os.makedirs(os.path.join(b, "infrastructure/state/items"))
+    os.makedirs(os.path.join(b, "infrastructure/state/live_proofs"))
+    head = "x" * L.CUT_AT
+    with open(os.path.join(b, "infrastructure/state/items/I0.md"), "w") as f:
+        f.write("# I0\n- A1 L0: offline\n")
+    with open(os.path.join(b, "infrastructure/state/live_proofs/I0.criteria"), "w") as f:
+        f.write("A2 L2: %s and the rest\n" % head)
+    fx = L.Fx(seat="BENCH")
+    fx.books = b
+    whole = L.whole_criterion({"id": "A2", "level": "L2", "text": head}, fx.prose("I0"))
+    check("the criteria file extends a cut clause", whole["text"].endswith("and the rest") and "cut" not in whole, whole)
+    check("the item prose is still read", "A1 L0: offline" in fx.prose("I0"))
+
+
 def main():
-    for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_unmeasured_is_a_note_never_a_verify,
+    for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
               t_load_condition):
