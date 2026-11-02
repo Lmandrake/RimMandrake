@@ -207,8 +207,8 @@ def deploy_gap(files, plan_rc, plan_text):
                 return "%s/%s is %s in the game folder (%s): the build is not what the game holds" % (
                     mod, rel, "held" if flag == "H" else "out of date", section)
     for mod in sorted({m for m, _ in files}):      # a file this commit did not touch, in a mod it ships, may be the one it needs
-        for section, flag, entry in drift:
-            if entry.lower().endswith((".xml", ".dll")) and (section == mod or entry.startswith(mod + "/")
+        for section, flag, entry in drift:      # an untouched H file is held out of the game on purpose (DEPLOY_HOLD.txt)
+            if flag != "H" and entry.lower().endswith((".xml", ".dll")) and (section == mod or entry.startswith(mod + "/")
                                                               or ("/%s/" % mod) in entry):
                 return "%s has %s drift in the game folder (%s %s): the build is not what the game holds" % (
                     mod, "held" if flag == "H" else "out-of-date", section, entry)

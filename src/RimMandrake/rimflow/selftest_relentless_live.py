@@ -194,6 +194,10 @@ def t_review_round_one():
     plan = PLAN.replace("SWBestiary       mandrake.rsw.swbestiary    98 file(s) HELD\n",
                         "SWBestiary       mandrake.rsw.swbestiary    98 file(s) HELD\n    ~  Defs/Other.xml\n")
     check("untouched xml drift in a shipped mod stops", L.deploy_gap([("SWBestiary", "Defs/A.xml")], 0, plan) is not None)
+    held = plan.replace("    ~  Defs/Other.xml\n", "    H  Defs/Other.xml   (repo-only; not deployed)\n")
+    check("an untouched held xml does not stop (held out on purpose)",
+          L.deploy_gap([("SWBestiary", "Defs/A.xml")], 0, held) is None)
+    check("a touched held xml still stops", L.deploy_gap([("SWBestiary", "Defs/Other.xml")], 0, held) is not None)
     check("untouched png drift does not", L.deploy_gap([("SWBestiary", "Defs/A.xml")], 0, PLAN) is None)
     # a timed-out proof's children die with it
     d = tempfile.mkdtemp(prefix="rl_live_")
