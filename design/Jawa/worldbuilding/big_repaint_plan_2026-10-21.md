@@ -131,7 +131,9 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
    - the Warscar pilgrim camps (`WARSCAR_PILGRIM_CAMP_SITES_1`). These are world objects, not biome edits, so on
      a dev world they can follow later.
    - The hand-placed geological landmarks (`GEO_LANDMARKS_SKETCH_BEFORE_THE_PAINT_DRIES`) are the same kind of
-     thing: world objects, not biome edits.
+     thing: world objects, not biome edits. The plan is six landmarks with frozen tile lists
+     (`design/RimMandrake/world_remake_2026-10-19/16_geo_landmarks.md`). They are stamped in step 6 by
+     `GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP`.
 
    Write the biome placements as `world/repaint_2026-10-21/placements.csv` (`tile,biome`). Leave it empty if
    nothing is ruled; nothing waits on it.

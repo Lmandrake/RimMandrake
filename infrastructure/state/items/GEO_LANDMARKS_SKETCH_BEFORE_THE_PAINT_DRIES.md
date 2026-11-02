@@ -7,3 +7,8 @@ Ruling record: `13_owner_rulings_2026-10-19.md` row 16.
 A short list of hand-placed world features that override a tile's stones regardless of biome (12 idea 7: a basalt province, a salt dome field, a meteorite field, an exposed stratum…), each with a location on THE map and the stones it sets. Hand-authored only: no generator, no variants (CLAUDE.md worldgen rulings).
 ## gate
 **Before-paint gate**: must be planned (list + locations + stones) before the one-time world paint (`BIOME_PAINT_ONCE_AT_THE_END_1`).
+
+## plan (2026-11-01)
+Six landmarks, their locations (frozen tile lists) and stones: `design/RimMandrake/world_remake_2026-10-19/16_geo_landmarks.md`.
+Proof: `python3 src/RimMandrake/Utils/remake/geo_landmarks.py check --save <dev start save> --dump <capture>/defs`.
+Build and stamp: `GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP`.
