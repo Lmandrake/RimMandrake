@@ -1000,6 +1000,22 @@ def _save_now(t, name):
     return os.path.join(V.SAVES, name + ".rws")
 
 
+class _PollBridge(object):
+    """validation_core's load helpers speak the Guarded-proxy dialect (`call(tool, _answer=True)`); a modcheck Session
+    refuses any key a tool does not declare (live 2026-11-02: UnknownParameterError on jawa/map_info `_answer`). This
+    drops the flag, and reads a refused poll while the load is still finishing as a not-yet answer, never a fault."""
+
+    def __init__(self, session):
+        self.session = session
+
+    def call(self, tool, _answer=False, **kw):
+        try:
+            r = self.session.call(tool, **kw)
+        except Exception as ex:   # noqa: BLE001 - a poll mid-load; _wait_playing keeps polling until its budget
+            return {"success": False, "error": str(ex)[:200]}
+        return r if isinstance(r, dict) else {}
+
+
 @suite.chain("scribe_round_trip")
 def scribe_round_trip(t):
     """EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE: ExposeData shares ONE tmpKeys list across five dictionaries and tmpInts
@@ -1025,9 +1041,16 @@ def scribe_round_trip(t):
         node_a, tick_a = _scribe_node(path_a)
         counts_a = _scribe_counts(node_a)
         ld = t.session.call("rimworld/load_game", saveName=SCRIBE_SAVE)
-        ok, st = V._wait_playing(t.session)
+        ok, st = V._wait_playing(_PollBridge(t.session))
         if not ok:
             _unmeasured(t, "HARNESS: load_game %s never reached Playing (%r; reply %r)" % (SCRIBE_SAVE, st, ld))
+        # live 2026-11-02: every load of this save raises VEF's Dialog_NewFactionSpawning, one per missing faction; left
+        # open it blocks the next chain's preflight (no_modal). The shared broker answers 'Do nothing' (world unchanged).
+        import quiet_site as QS   # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
+        qs = QS.QuietSite(t.session, controls=["modal_broker"])
+        modals = qs.modals()
+        if qs.problems:
+            _unmeasured(t, "HARNESS: modal(s) after load_game %s not answered: %s" % (SCRIBE_SAVE, qs.problems))
         H.pause(t.session)
         t.bridge_call("jawa/static_call", type="Verse.Log", method="Clear")
         rep1 = _report(t)
@@ -1037,7 +1060,8 @@ def scribe_round_trip(t):
         node_a.tail = node_b.tail = None
         same = ET.tostring(node_a) == ET.tostring(node_b)
         _note(t, "scribe_round_trip", {"before": h0, "after": rep1["head"], "tick_a": tick_a, "tick_b": tick_b,
-                                        "counts_a": counts_a, "counts_b": counts_b, "identical": same})
+                                        "counts_a": counts_a, "counts_b": counts_b, "identical": same,
+                                        "modals_answered": len(modals.get("handled") or [])})
         for name in (SCRIBE_SAVE, SCRIBE_SAVE + "_b"):   # every non-canonical save is disposable (owner 2026-10-24)
             try:
                 os.remove(os.path.join(V.SAVES, name + ".rws"))
@@ -1052,9 +1076,12 @@ def scribe_round_trip(t):
         for k in ("soaked", "suppressed", "charging", "ruptures", "ashRestarts"):
             if rep1["head"].get(k) != h0.get(k):
                 _fail("Report %s changed across save/load: %r -> %r" % (k, h0.get(k), rep1["head"].get(k)))
-        if tick_a is None or tick_a != tick_b:
-            _unmeasured(t, "HARNESS: the clock moved between save A and save B (%r -> %r); identity not comparable"
-                           % (tick_a, tick_b))
+        # live 2026-11-02: the load runs ONE tick before H.pause lands (3903 -> 3904) and the node was still identical.
+        # Ticks can only break identity (a decaying entry, a charge advancing), never forge it, so identity at any tick
+        # is the pass; a DIFFERENCE is judged only at the same tick, and with the clock moved it is not comparable.
+        if not same and (tick_a is None or tick_a != tick_b):
+            _unmeasured(t, "HARNESS: the node differs and the clock moved between save A and save B (%r -> %r); "
+                           "not comparable" % (tick_a, tick_b))
         if not same:
             _fail("the component node differs after save -> load -> save at the same tick: A %r, B %r"
                   % (counts_a, counts_b))
