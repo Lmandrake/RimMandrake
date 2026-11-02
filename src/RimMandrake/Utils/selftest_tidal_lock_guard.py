@@ -5,8 +5,10 @@
 
 No game, no bridge. Checks:
   1. the guard is wired: both C# files in the mod csproj, the kernel in the C# SelfTest csproj (which compiles the
-     REAL RM_TidalLockPresetKernel.cs and sweeps its truth table: selftest_sun_heat.py runs it), the setting
+     REAL RM_TidalLockPresetKernel.cs and sweeps its truth table), the setting
      tidalLockPresetGuard defaults on, is saved, and has a checkbox; the guard writes the line the readers parse.
+  1b. the truth table is RUN: selftest_sun_heat.py builds and runs the C# SelfTest, and its tidal lock preset guard
+     case must print PASS (no dotnet, no build, or no such line is a FAIL here, never a pass).
   2. harvest_log.py's `tidallock` check fires on a MOVING SUN line and on nothing else.
   3. tidal_lock_readback.py parses and judges the guard's line (locked, restored, unlocked, absent).
   4. the remake runbook's S13/G12 name the dev start save of record (canon.yml planet.start_savegame), and the
@@ -14,6 +16,7 @@ No game, no bridge. Checks:
 """
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -54,6 +57,26 @@ def wiring():
         check(field in guard, "guard line carries %s" % field)
     check("priority = Priority.Last" in guard, "load postfix runs after Alien Worlds' PostSaveLoadHook")
     check("LoadSaveMode.LoadingVars" in guard, "saved planet type captured while loading vars")
+
+
+KERNEL_CASE = "tidal lock preset guard: restores only a locked save with no preset on Worldbuilder"
+
+
+def kernel():
+    """Build and run the C# SelfTest (it compiles the real RM_TidalLockPresetKernel.cs) and require its sweep to pass."""
+    try:
+        res = subprocess.run([sys.executable, os.path.join(HERE, "selftest_sun_heat.py")],
+                             capture_output=True, text=True, timeout=480)
+        out = res.stdout + "\n" + res.stderr
+    except subprocess.TimeoutExpired:
+        out = ""
+    passed = [l for l in out.splitlines() if l.startswith("PASS ") and KERNEL_CASE in l]
+    failed = [l for l in out.splitlines() if l.startswith("FAIL ") and KERNEL_CASE in l]
+    for l in failed:
+        print("      " + l[:400])
+    check(len(passed) == 1 and not failed, "C# SelfTest RAN the PresetToRestore truth table and it passed")
+    if not passed and not failed:
+        print("      (no tidal lock case in the C# SelfTest output; tail: %r)" % out.strip()[-400:])
 
 
 LOCKED_OK = ("[RM CreatureBehaviors] planet lock at load: saved=TidallyLocked preset=(none) backend=Worldbuilder "
@@ -143,6 +166,7 @@ def runbook():
 
 def main():
     wiring()
+    kernel()
     harvest()
     readback()
     runbook()
