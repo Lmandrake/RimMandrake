@@ -259,5 +259,87 @@ ep = open(os.path.join(HERE, "..", "..", "FlowWorks", "northstar", "extension_pr
 i, j = ep.find("TSS.to_main_menu("), ep.find("did not load clean")
 check("7 extension_proof goes to the main menu before refusing a NOT CLEAN site", 0 < i < j, (i, j))
 
+
+# 8. extension_proof's NOT CLEAN branch, driven: a fake bridge whose site load is NOT verified. The run must call
+# rimworld/go_to_main_menu, refuse with SystemExit, and never reach the chains (runner.ensure_playing_map).
+# A text find alone stayed green with the call commented out (blind check at adfadf5c99, gen 3).
+import types  # noqa: E402
+
+
+class EPFake(object):
+    def __init__(self):
+        self.log, self.state = [], "Playing"
+
+    def call(self, tool, **kw):
+        self.log.append(tool)
+        if tool == "rimworld/go_to_main_menu":
+            self.state = "Entry"
+            return {"success": True}
+        if tool == "rimworld/get_ui_state":
+            return {"programState": self.state}
+        return {"success": False}
+
+
+def _drive_extension_proof(verified):
+    ep_fake, reached = EPFake(), []
+
+    class _Session(object):
+        def __init__(self, **kw):
+            pass
+
+        def __enter__(self):
+            return ep_fake
+
+        def __exit__(self, *exc):
+            return False
+
+    def _ensure_playing_map():
+        reached.append("ensure_playing_map")
+        raise RuntimeError("chains reached")      # stop here: the suite itself is not under test
+
+    fakes = {"rimdrive": types.SimpleNamespace(Session=_Session),
+             "runner": types.SimpleNamespace(ensure_playing_map=_ensure_playing_map),
+             "status": types.SimpleNamespace(mod_hash=lambda mod: "fakehash")}
+    saved = {k: sys.modules.get(k) for k in fakes}
+    real_load = T.load_site
+    sys.modules.update(fakes)
+    T.load_site = lambda call, site: {"verified": verified, "problems": [] if verified else ["FinalizeLoading NRE"],
+                                      "load_s": 1, "ready_s": 1}
+    outcome = None
+    try:
+        nsdir = os.path.join(HERE, "..", "..", "FlowWorks", "northstar")
+        if nsdir not in sys.path:
+            sys.path.insert(0, nsdir)
+        import extension_proof as EP
+        if sys.modules.get("test_site_saves") is not T:
+            outcome = "test_site_saves resolved to a different module than the one patched"
+        else:
+            EP.main(["--live", "--site", "river", "--out", os.path.join(_st_tempfile.gettempdir(), "ep.json")])
+            outcome = "returned"
+    except SystemExit as ex:
+        outcome = "SystemExit: %s" % ex
+    except RuntimeError as ex:
+        outcome = "RuntimeError: %s" % ex
+    finally:
+        T.load_site = real_load
+        for k, v in saved.items():
+            if v is None:
+                sys.modules.pop(k, None)
+            else:
+                sys.modules[k] = v
+    return ep_fake, reached, outcome
+
+
+ef, reached, outcome = _drive_extension_proof(verified=False)
+check("8 NOT CLEAN site: extension_proof calls rimworld/go_to_main_menu", "rimworld/go_to_main_menu" in ef.log,
+      (ef.log, outcome))
+check("8 NOT CLEAN site: extension_proof refuses (SystemExit naming the load)",
+      str(outcome).startswith("SystemExit") and "did not load clean" in str(outcome) and "main menu reached" in str(outcome),
+      outcome)
+check("8 NOT CLEAN site: no chain runs", not reached, reached)
+ef, reached, outcome = _drive_extension_proof(verified=True)   # sanity probe: the instrument sees the other branch
+check("8 CLEAN site: no main menu, the chains are reached",
+      "rimworld/go_to_main_menu" not in ef.log and reached == ["ensure_playing_map"], (ef.log, reached, outcome))
+
 print("selftest_test_site_saves: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
