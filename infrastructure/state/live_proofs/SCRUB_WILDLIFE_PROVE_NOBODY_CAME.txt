@@ -1,0 +1,5 @@
+# SCRUB_WILDLIFE_PROVE_NOBODY_CAME: game up on biomes_sprint (all five DLC, composite mandrake.rm.biomes deployed at
+# this sha), bridge held. A1 starts a scratch quicktest world, re-tiles a 2-ring land patch to RM_LeaningScrub
+# (site_spec.TILE), generates the map and counts its wildlife; no clean, no save, no registry write. Evidence JSON:
+# D:\ClaudeWork\rimmandrake\scratch\scrub_wildlife\a1_*.json (on a zero it names pollution, mutators, temperature).
+live-proof A1: python3 src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py < /dev/null

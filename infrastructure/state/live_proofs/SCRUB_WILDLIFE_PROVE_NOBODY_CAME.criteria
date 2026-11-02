@@ -1,0 +1,1 @@
+A1 L2: on biomes_sprint, a freshly generated RM_LeaningScrub map (scratch quicktest world, patch re-tiled to site_spec.TILE, centre mutators stripped) holds >= 1 unowned living animal and >= site_spec.MIN_NATIVES living natives straight out of map generation; a zero prints the tile's pollution, mutators and outdoor temperature
