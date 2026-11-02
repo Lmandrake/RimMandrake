@@ -176,6 +176,37 @@ def offline():
         bad.append("check_record passed a 125-tick x 2 record")
     if not check_record(dict(rec, arms={})):
         bad.append("check_record passed a record with no arms")
+    bad += check_live_line()
+    return bad
+
+
+LIVE_FILE = os.path.join(HERE, "..", "..", "..", "infrastructure", "state", "live_proofs",
+                         "LEANINGSCRUB_STALL_SHARED_MOVE_1.txt")
+
+
+def check_live_line(path=LIVE_FILE):
+    """The live A1 line must pass the game gate (relentless_live.refused_proof: no run-time expansion, no mutation),
+    run the repro with --out, then --record on the SAME file (Windows D:/ spelling vs WSL /mnt/d/ spelling)."""
+    sys.path.insert(0, os.path.join(HERE, "..", "rimflow"))
+    import relentless_live as L  # noqa: E402
+    try:
+        lines = [l for l in open(path).read().splitlines() if l.startswith("live-proof A1:")]
+    except OSError as e:
+        return ["live proof file unreadable: %s" % e]
+    if len(lines) != 1:
+        return ["%d 'live-proof A1:' lines, not 1" % len(lines)]
+    proof = lines[0].split(":", 1)[1].strip()
+    bad = []
+    why = L.refused_proof(L.DEFAULTS, "LeaningScrub stall shared move", "", proof)
+    if why:
+        bad.append("game gate refuses the A1 line: %s" % why)
+    parts = proof.split(" && ")
+    if len(parts) != 2 or "repro_stall_move.py --out " not in parts[0] or "repro_stall_move_proof.py --record " not in parts[1]:
+        return bad + ["A1 line is not 'repro --out X && proof --record X': %r" % proof]
+    out = parts[0].split("--out ", 1)[1].split()[0]
+    rec = parts[1].split("--record ", 1)[1].split()[0]
+    if not out.startswith("D:/") or rec != "/mnt/d/" + out[3:]:
+        bad.append("--out %r and --record %r are not the same file" % (out, rec))
     return bad
 
 
