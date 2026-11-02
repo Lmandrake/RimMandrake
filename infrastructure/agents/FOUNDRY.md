@@ -158,6 +158,15 @@ step is the fix.
 
 Every fleet launch of this tile (cold boot via the Start Agent Fleet shortcut, `claude-account use` after an account switch) opens with a first prompt that starts with "wake" and runs these steps, so nobody has to type it (owner, 2026-10-28: "fix the wake ritual to start the agent"). Do them, then pull `next` and work it. The prompt is `WAKE_PROMPT` in `src/RimMandrake/Utils/install_wt_seat_profiles.py`; change it there and re-run the installer with `--only BENCH,FOUNDRY --apply`.
 
+## Keep working once you find something (owner, 2026-11-02)
+
+*"Can we run Foundry in a mode of "keep working once you find something?"* A ring starts a run of work, not one
+ticket. When a ticket ends, do close-out steps 1-2 below (ledger published, promises filed), then, while your
+context is under `backstop_ctx_tokens` (110k), take `rimflow next --seat FOUNDRY` and keep going. Request the
+restart (step 3) only when you pass that limit or the queue has nothing workable. A fix that is not yet proven in a
+game load is not an end: once the game is up and the bridge is free, prove it (cheapest acceptance level first),
+or file the proof as its own item and move on. Never end a turn just to report: a report is a ledger note.
+
 ## A fresh window per ticket (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET)
 
 Owner 2026-10-28: "Yes we must solve foundry context right now." A long-lived window carries
