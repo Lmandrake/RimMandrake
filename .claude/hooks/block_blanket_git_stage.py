@@ -24,6 +24,8 @@ WHAT IS BLOCKED
   git add -A / --all / . / -u / --update       (and short bundles like -An)
   git commit -a / -am / --all
   git commit WITHOUT A PATHSPEC                (see "the index race" below)
+  git commit --amend WITHOUT A PATHSPEC        (same race: 67633f878, 2026-10-23,
+                                               swept a peer's 8 staged deletions)
   the same via `git -C <dir> ...`, inside compound commands, inside
   `bash -c '...'` / `sh -c`, and inside a heredoc fed to a shell (`bash <<EOF`)
 
@@ -34,7 +36,7 @@ string or inside a heredoc fed to anything but a shell (`python3 - <<'EOF'`,
 WHAT IS NOT BLOCKED
 ===================
   git add <explicit paths>          git commit <paths> -m "..."
-  git commit --amend                git commit --pathspec-from-file=<f>
+  git commit --amend <paths>        git commit --pathspec-from-file=<f>
   git diff --cached --stat          git restore --staged <p>
   everything non-git
 
@@ -91,7 +93,10 @@ COMMIT_TAKES_ARG = {
 
 # Options that make a naked `git commit` legitimate: it is no longer "whatever
 # happens to be in the shared index".
-COMMIT_PATHSPEC_EXEMPT = {"--amend", "--pathspec-from-file"}
+# `--amend` is NOT here: a bare amend commits the whole index into HEAD just
+# like a bare commit (67633f878 took another helper's 8 staged FeverWood
+# deletions, 2026-10-23). `--amend <paths>` passes as any pathspec does.
+COMMIT_PATHSPEC_EXEMPT = {"--pathspec-from-file"}
 
 # Shell tokens that survive shlex.split but are redirections, not pathspecs.
 # `git commit -F - <<'EOF'` must not look like it names a file.
@@ -132,6 +137,9 @@ def offence(segment):
             if re.fullmatch(r"-[A-Za-z]*a[A-Za-z]*", a):
                 return "`git commit %s` stages every tracked modification" % a
         if not commit_has_pathspec(args):
+            if any(a == "--amend" for a in args):
+                return ("`git commit --amend` without a pathspec folds the WHOLE "
+                        "shared index into HEAD")
             return ("`git commit` without a pathspec commits the WHOLE shared "
                     "index")
     return None
@@ -272,7 +280,7 @@ def main():
                     "still carries the pathspec:\n"
                     "    git add  path/new.md\n"
                     "    git commit path/new.md -F - <<'EOF'\n\n"
-                    "Amending is unaffected: `git commit --amend` is allowed.\n"
+                    "Amending needs a pathspec too: `git commit --amend --no-edit path/one.md`.\n"
                     "See CLAUDE.md > 'Commit explicit paths only'."
                     "\n\n\u26a0\ufe0f  NOTHING IN THAT COMMAND RAN \u2014 including anything BEFORE the "
                     "part that was\nrefused. A PreToolUse hook fires before the shell, so a compound "

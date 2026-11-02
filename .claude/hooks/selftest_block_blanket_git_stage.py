@@ -58,8 +58,15 @@ CASES = [
     (ALLOW, "git commit -m 'x' path/one.md"),          # pathspec after the msg
     (ALLOW, "git commit -F - path/one.md <<'EOF'"),
     (ALLOW, "git commit -- path/one.md"),
-    (ALLOW, "git commit --amend"),                     # explicitly still allowed
-    (ALLOW, "git commit --amend --no-edit"),
+    # bare amend sweeps the shared index into HEAD (67633f878, 2026-10-23)
+    (DENY, "git commit --amend"),
+    (DENY, "git commit --amend --no-edit"),
+    (DENY, "git commit --amend -m 'x'"),
+    (DENY, "git commit --amend -F - <<'EOF'"),
+    (ALLOW, "git commit --amend path/one.md"),
+    (ALLOW, "git commit --amend --no-edit -- path/one.md"),
+    (ALLOW, "git commit --amend -m 'x' path/one.md"),
+    (ALLOW, "git commit --amend --pathspec-from-file=paths.txt"),
     (ALLOW, "git commit --pathspec-from-file=paths.txt"),
     (ALLOW, "git add path/new.md"),                    # step 1 of the new-file pair
     (ALLOW, "git add path/one.md path/two.xml"),
