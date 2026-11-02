@@ -100,6 +100,7 @@ def main(argv) -> int:
     check("[loads] deeply nested JSON is one bad row (None), not a RecursionError that stalls the file",
           loads(b"[" * 100000 + b"]" * 100000) is None)
     check("[parse_ts] a boolean is not a time", parse_ts(True) is None and parse_ts(1.5e9) == 1.5e9)
+    check("[parse_ts] an integer past float range is None, not an OverflowError", parse_ts(10 ** 400) is None)
     try:
         # ---------------------------------------------------------------- parsing
         r = loads('{"seq":1,"kind":"incident","type":"stall","kind":"stall","gapS":41}')
@@ -199,6 +200,21 @@ def main(argv) -> int:
         check("bridge errors counted", sum(x["values"][0] for x in vm.of("rm_bridge_errors")) == 1)
         check("[bridge] when calls stop, an idle pass closes the last open bucket",
               any(x["timestamps"] == [(tb + 60) * 1000] for x in a), [x["timestamps"] for x in a])
+        check("[freshness] bridge rows advance the bridge source's freshness",
+              abs((T.stats["bridge"]["last_row_ts"] or 0) - (tb + 60)) < 1, T.stats["bridge"])
+        hb_ = int(time.time() // 10) * 10    # a bucket the wall clock is still inside: idle passes must not split it
+        w(bc, [{"ev": "start", "cid": "h1", "tool": "jawa/h", "t": iso(hb_ + 1)},
+               {"ev": "end", "cid": "h1", "ms": 3, "success": True, "t": iso(hb_ + 1)}])
+        T.pass_source(S["bridge"])
+        T.pass_source(S["bridge"])
+        w(bc, [{"ev": "start", "cid": "h2", "tool": "jawa/h", "t": iso(hb_ + 4)},
+               {"ev": "end", "cid": "h2", "ms": 5, "success": True, "t": iso(hb_ + 4)}])
+        T.pass_source(S["bridge"])
+        ingest.flush_bridge_buckets(ingest.Emit(con, sink, latest), force=True)
+        sink.flush()
+        hp = [x["values"] for x in vm.of("rm_bridge_calls") if x["metric"]["tool"] == "jawa/h"]
+        check("[bridge] an idle pass leaves a bucket the clock is still inside open (one point, both calls)",
+              hp == [[2.0]], hp)
 
         # unknown success (non-dict result) is NULL, not a failure; status decides
         w(bc, [{"ev": "start", "cid": "u1", "tool": "jawa/u", "t": iso(tb + 70)},
@@ -232,13 +248,25 @@ def main(argv) -> int:
         check("memwatch cgroup label drops the pid", any(x["metric"].get("cg") == "claude-seats.slice/seat-BENCH"
                                                          for x in vm.of("rm_cg_mem_bytes")))
         check("ledger rows dedupe by line hash", con.execute("SELECT COUNT(*) FROM events WHERE kind='bridge_hold'").fetchone()[0] == 1)
+        mr0, ingest.MAX_READ = ingest.MAX_READ, 128
+        try:    # a row longer than one whole read must not stall the file; a measured 0 is a point, not None
+            w(os.path.join(c["inbox"], "wsl", "wsl_long.jsonl"), [
+                {"src": "wsl_host", "ts": time.time(), "pad": "x" * 300},
+                {"src": "objstore", "ts": time.time(), "store_bytes": 0, "store_hardlinked_bytes": 7}])
+            for _ in range(8):
+                T.pass_source(S["wsl"])
+        finally:
+            ingest.MAX_READ = mr0
+        sink.flush()
+        ob = [x["values"] for x in vm.of("rm_objstore_bytes")]
+        check("[tail] a row past MAX_READ is skipped, the next row still lands; store_bytes 0 stays 0", ob == [[0.0]], ob)
 
         # raw copies
         T.flush_raw(force=True)
         raws = {os.path.basename(os.path.dirname(p)) for p in __import__("glob").glob(os.path.join(c["raw"], "*", "*.gz"))}
         check("raw gzip copy per source", {"tps", "bridge", "changes", "wsl"} <= raws, raws)
         with gzip.open(__import__("glob").glob(os.path.join(c["raw"], "bridge", "*.gz"))[0], "rt") as f:
-            check("raw bridge copy holds every line", sum(1 for _ in f) == 18)
+            check("raw bridge copy holds every line", sum(1 for _ in f) == 22)   # 12 + late 2 + u 4 + h 4
 
         # VM spool
         vm.down = True
@@ -311,6 +339,11 @@ def main(argv) -> int:
         f4 = analysis.evaluate(vl, con, {}, "URLError: down", now + 180)
         check("[firing] one continuous VM outage logs one firing; a new outage after recovery is a new one",
               n_f == 1 and not f3 and f4[0]["since"] == now + 180, (n_f, f4))
+        old_h = {"host": {"ts": now - 3600, "vols": {"C": {"free": 1 * GB, "total": 100 * GB}},
+                          "mem": {"phys_avail": 0}}}
+        ids_h = {x["id"] for x in analysis.evaluate(old_h, con, {}, None, now)}
+        check("[host] an hour-old host sample raises blind:host, not disk/memory alerts from stale numbers",
+              "blind:host" in ids_h and "mem_low" not in ids_h and not any(i.startswith("disk") for i in ids_h), ids_h)
         ws = {}
         analysis.evaluate(ws, con, {"wsl": {"last_row_ts": None}}, None, now)
         late = analysis.evaluate(ws, con, {"wsl": {"last_row_ts": None}}, None, now + analysis.RULES["wsl_blind_s"] + 5)
@@ -419,6 +452,29 @@ def main(argv) -> int:
         inf_sink.add("rm_x", {}, 5.0, now)
         check("[sink] +-inf values are dropped at add (VM would drop them from the batch, counted as sent)",
               inf_sink.flush() == 1 and b"Infinity" not in b"".join(inf_post), inf_post)
+        inf_sink.add("rm_x", {}, 10 ** 400, now)
+        inf_sink.add("rm_x", {}, 1.0, now + 3 * 86400)
+        inf_sink.add("rm_x", {}, 1.0, 10 ** 400)
+        check("[sink] an overflowing value or time and a time days ahead are refused at add, never raised or 'sent'",
+              not inf_sink.points and inf_sink.dropped_ts == 2, (inf_sink.points, inf_sink.dropped_ts))
+        rpvm = FakeVM()
+        rp = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_rp"), post=rpvm)
+        rp._spool(b"{}\n")
+        rpvm.down = True
+        rp.flush()
+        err_down = rp.last_error
+        rpvm.down = False
+        rp.flush()
+        check("[spool] a failing replay is a VM error (blind:vm), cleared once the spool drains",
+              err_down and "replay" in err_down and rp.last_error is None and not os.listdir(rp.spool_dir),
+              (err_down, rp.last_error))
+        rpvm.down = True
+        rp.add("rm_x", {}, 1.0, now)
+        rp.flush()
+        rpvm.down = False
+        rp.flush()      # nothing new queued: only the replay proves VM is back
+        check("[spool] an empty flush whose replay drains clears the earlier transport error",
+              rp.last_error is None and not os.listdir(rp.spool_dir), rp.last_error)
         sp = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_many"), post=lambda b: None)
         for k in range(5):
             sp._spool(b"batch%d\n" % k)
@@ -549,6 +605,13 @@ def main(argv) -> int:
             del ingest.open
         check("[proof] an unreadable proof is not checkpointed: the next pass reads it",
               r_locked == 0 and ingest.ingest_proofs(con) == 1, r_locked)
+        with open(p0, "w") as f:
+            json.dump({"script": "proof_hose.py", "aborted": True, "rows": []}, f)
+        os.utime(p0, (mt0 + 3, mt0 + 3))
+        ingest.ingest_proofs(con)
+        check("[proof] an empty replacement removes the old verdict instead of leaving it standing",
+              not con.execute("SELECT 1 FROM proof_runs WHERE id LIKE '%20261010%'").fetchone()
+              and not con.execute("SELECT 1 FROM proof_rows WHERE run_id LIKE '%20261010%'").fetchone())
 
         # retention
         old = os.path.join(c["raw"], "tps", "2026-01-01.jsonl.gz")
@@ -568,6 +631,21 @@ def main(argv) -> int:
         ad = os.path.join(c["archive"], "raw", "tps")
         check("[retention] a day archived twice keeps both parts (no overwrite)", sorted(os.listdir(ad))
               == ["2026-01-01.jsonl.gz", "2026-01-01~1.jsonl.gz"], os.listdir(ad))
+        third = os.path.join(c["raw"], "tps", "2026-01-02.jsonl.gz")
+        with gzip.open(third, "wb") as f:
+            f.write(b"z\n")
+        os.utime(third, (now - 100 * 86400, now - 100 * 86400))
+        real_move = analysis.shutil.move
+
+        def full_disk(*a, **k):
+            raise OSError(28, "No space left on device")
+        analysis.shutil.move = full_disk
+        try:
+            rep_f = analysis.retention(con, now)
+        finally:
+            analysis.shutil.move = real_move
+        check("[retention] a full archive disk is reported, keeps the hot file, and the pass still prunes rows",
+              "error" in rep_f and rep_f["moved"] == 0 and os.path.exists(third) and "bridge_rows" in rep_f, rep_f)
 
         # ---------------------------------------------------------------- RimPulse integration
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "pulse"))

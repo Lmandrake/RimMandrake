@@ -129,7 +129,10 @@ def parse_ts(v) -> float | None:
     if isinstance(v, bool):     # a flag is not a time
         return None
     if isinstance(v, (int, float)):
-        return float(v) / 1000.0 if v > 1e11 else float(v)
+        try:
+            return float(v) / 1000.0 if v > 1e11 else float(v)
+        except OverflowError:   # a JSON int past float range (10**400) is no time, never a stuck tailer
+            return None
     s = str(v).strip()
     if not s:
         return None

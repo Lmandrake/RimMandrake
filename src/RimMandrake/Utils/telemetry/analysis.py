@@ -41,6 +41,9 @@ RULES = {  # thresholds (design §8); one place, quoted by the skill
 }
 
 
+HOST_FRESH_S = 300     # host samples every host_every_s (60 s); five missed is a stopped sampler
+
+
 def _alert(aid, level, text, since, link=None, detail=None):
     a = {"id": aid, "level": level, "text": text, "since": since, "link": link}
     if detail:
@@ -65,6 +68,10 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
     R = RULES
     out = []
     host = latest.get("host") or {}
+    if host and not (host.get("ts") and now - host["ts"] < HOST_FRESH_S):   # an old sample is not today's disk
+        out.append(_alert("blind:host", "amber", "telemetry blind: host sampler silent (disk / memory unread)",
+                          host.get("ts") or now))
+        host = {}
     for letter, v in (host.get("vols") or {}).items():
         if not v:
             continue
@@ -155,7 +162,9 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
         out.append(_alert("blind:tps", "amber", "telemetry blind: RimWorld runs but its TPS record is silent",
                           last_tps or now))
     wsl = (sources.get("wsl") or {}).get("last_row_ts")
-    watch0 = latest.setdefault("wsl_watch_since", now)    # an exporter that never wrote a usable row is silent too
+    # an exporter that never wrote a usable row is silent too. `sources` is the tailer's stats, which hold every
+    # configured source from its first pass on, so a missing "wsl" key means no pass yet (evaluate's own callers)
+    watch0 = latest.setdefault("wsl_watch_since", now)
     if wsl is not None and now - wsl > R["wsl_blind_s"]:
         out.append(_alert("blind:wsl", "amber", "telemetry blind: WSL exporter silent", wsl))
     elif wsl is None and "wsl" in sources and now - watch0 > R["wsl_blind_s"]:
@@ -175,7 +184,7 @@ def push_spark(latest: dict, now: float) -> None:
     t = latest.get("tps") or {}
     fresh = t and now - t.get("ts", 0) < 90
     host = latest.get("host") or {}
-    if not (host.get("ts") and now - host["ts"] < 300):    # a stopped sampler is a gap, never a fresh reading
+    if not (host.get("ts") and now - host["ts"] < HOST_FRESH_S):    # a stopped sampler is a gap, not a reading
         host = {}
     vols = [v["free"] / GB for v in (host.get("vols") or {}).values() if v]
     mem = host.get("mem") or {}
@@ -250,6 +259,18 @@ def retention(con, now: float) -> dict:
     files = sorted(glob.glob(os.path.join(raw, "*", "*")), key=lambda p: os.path.getmtime(p))
     cutoff = now - c["raw_days_hot"] * 86400
     total = sum(os.path.getsize(p) for p in files)
+
+    def prune_archive():    # before the moves too: a full archive disk must not wedge every pass on the first move
+        if have_arch and os.path.isdir(arch):
+            afiles = sorted(glob.glob(os.path.join(arch, "raw", "*", "*")), key=lambda p: os.path.getmtime(p))
+            atotal = sum(os.path.getsize(p) for p in afiles)
+            for p in afiles:
+                if atotal <= c["archive_cap_gb"] * GB:
+                    break
+                atotal -= os.path.getsize(p)
+                os.remove(p)
+                rep["deleted"] += 1
+    prune_archive()
     for p in files:
         old = os.path.getmtime(p) < cutoff
         over = total > c["raw_cap_gb"] * GB
@@ -258,13 +279,17 @@ def retention(con, now: float) -> dict:
         size = os.path.getsize(p)
         if have_arch:
             dst = os.path.join(arch, "raw", os.path.basename(os.path.dirname(p)))
-            os.makedirs(dst, exist_ok=True)
             q, base, k = os.path.join(dst, os.path.basename(p)), os.path.basename(p), 1
             while os.path.exists(q):    # a day archived early (cap) and recreated: never overwrite the archived part
                 stem, dot, ext = base.partition(".")
                 q = os.path.join(dst, f"{stem}~{k}{dot}{ext}")
                 k += 1
-            shutil.move(p, q)
+            try:
+                os.makedirs(dst, exist_ok=True)
+                shutil.move(p, q)
+            except OSError as e:    # archive full / gone: stop moving this pass, report it, prune below
+                rep["error"] = f"{type(e).__name__}: {e}"
+                break
             rep["moved"] += 1
         elif over:
             os.remove(p)
@@ -272,15 +297,7 @@ def retention(con, now: float) -> dict:
         else:
             continue
         total -= size
-    if have_arch and os.path.isdir(arch):
-        afiles = sorted(glob.glob(os.path.join(arch, "raw", "*", "*")), key=lambda p: os.path.getmtime(p))
-        atotal = sum(os.path.getsize(p) for p in afiles)
-        for p in afiles:
-            if atotal <= c["archive_cap_gb"] * GB:
-                break
-            atotal -= os.path.getsize(p)
-            os.remove(p)
-            rep["deleted"] += 1
+    prune_archive()
     cur = con.execute("DELETE FROM bridge_calls WHERE ts < ?", (now - c["bridge_rows_days"] * 86400,))
     rep["bridge_rows"] = cur.rowcount
     con.execute("DELETE FROM exc_seen WHERE ts < ?", (now - c["raw_days_hot"] * 86400,))
@@ -289,7 +306,7 @@ def retention(con, now: float) -> dict:
     for p in glob.glob(os.path.join(logs, "*.log")):
         if os.path.getsize(p) > 20 << 20:
             os.replace(p, p + ".1")
-    if rep["moved"] or rep["deleted"]:
+    if rep["moved"] or rep["deleted"] or rep.get("error"):
         store.add_event(con, now, "retention", None, rep, "telemetryd", f"retention:{int(now)}")
         con.commit()
     return rep

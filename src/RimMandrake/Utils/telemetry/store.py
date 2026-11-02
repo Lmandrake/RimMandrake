@@ -112,15 +112,17 @@ class VMSink:
             return
         try:
             v = float(value)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):
             return
         if not math.isfinite(v):  # NaN: absent; +-inf serialises as bare Infinity, which VM drops from the batch
             return
         try:        # a time that is not a finite epoch would raise in _lines and cost the whole queued batch
             ts = float(ts)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):
+            self.dropped_ts += 1
             return
-        if not (math.isfinite(ts) and 0 < ts < 1e11):
+        # and a day ahead is past what VM will keep (it refuses the future beyond its limit): never "sent"
+        if not (math.isfinite(ts) and 0 < ts < 1e11 and ts <= time.time() + 86400):
             self.dropped_ts += 1
             return
         self.points.append((name, labels or {}, v, ts))
@@ -172,7 +174,7 @@ class VMSink:
         os.makedirs(self.spool_dir, exist_ok=True)
         # cap the spool at 2 GB: a VM down for weeks must not fill E:; raw JSONL can rebuild it
         total = sum(os.path.getsize(os.path.join(self.spool_dir, f)) for f in os.listdir(self.spool_dir))
-        if total > 2 << 30:
+        if total + len(body) > 2 << 30:
             return False
         # unique per process and call ("x" never overwrites), and sorts oldest first for replay
         p = os.path.join(self.spool_dir, f"spool_{time.time_ns():020d}_{os.getpid()}_{next(self._seq):06d}.jsonl")
@@ -183,14 +185,19 @@ class VMSink:
     def _replay_spool(self) -> None:
         if not os.path.isdir(self.spool_dir):
             return
+        replayed = 0
         for fn in sorted(os.listdir(self.spool_dir))[:20]:
             p = os.path.join(self.spool_dir, fn)
             try:
                 with open(p, "rb") as f:
                     self._post(f.read())
                 os.remove(p)
-            except Exception:  # noqa: BLE001 — still down; try next cycle
+                replayed += 1
+            except Exception as e:  # noqa: BLE001 — still down; try next cycle
+                self.last_error = f"spool replay: {type(e).__name__}: {e}"
                 return
+        if replayed:    # VM took every replayed batch: any earlier transport error is over
+            self.last_error = None
 
 
 def _get(url: str, timeout: float) -> bytes:

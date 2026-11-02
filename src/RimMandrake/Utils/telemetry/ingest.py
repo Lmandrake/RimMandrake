@@ -36,14 +36,11 @@ class Emit:
         self.con, self.vm, self.latest = con, vm, latest
         self.rows = 0
         self.events = 0
-        self.out = 0    # point/event calls: a row that produced none was rejected and must not read as fresh
 
     def point(self, name, labels, v, ts):
-        self.out += 1
         self.vm.add(name, labels, v, ts)
 
     def event(self, ts, kind, subject=None, detail=None, src=None, src_ref=None, **kw):
-        self.out += 1
         if store.add_event(self.con, ts, kind, subject, detail, src, src_ref, **kw):
             self.events += 1
 
@@ -98,10 +95,10 @@ def hist_le(bucket: int, histv=1) -> str:
     return f"{0.25 * HIST_R ** bucket:.3g}"
 
 
-def parse_tps(r: dict, E: Emit, ref: str) -> None:
+def parse_tps(r: dict, E: Emit, ref: str) -> bool | None:
     ts = parse_ts(r.get("utc"))
     if ts is None:
-        return
+        return False
     k = r.get("kind")
     sess = (r.get("session") or "")[:8]
     if k == "session":
@@ -279,10 +276,10 @@ def parse_vitals(r: dict, E: Emit, ref: str, ts: float, sess: str, modlab: dict)
         v["armed"] = False
 
 
-def parse_health(r: dict, E: Emit, ref: str) -> None:
+def parse_health(r: dict, E: Emit, ref: str) -> bool | None:
     ts = parse_ts(r.get("utc"))
     if ts is None:
-        return
+        return False
     if r.get("kind") != "sample":
         E.event(ts, "health_" + str(r.get("kind")), (r.get("collector") or {}).get("id"),
                 {k: v for k, v in r.items() if k != "sources"}, "health", ref)
@@ -323,11 +320,11 @@ def _succ(v):
     return None if v is None else (1 if v else 0)
 
 
-def parse_bridge(r: dict, E: Emit, ref: str) -> None:
+def parse_bridge(r: dict, E: Emit, ref: str) -> bool | None:
     ts = parse_ts(r.get("t"))
     cid = r.get("cid")
     if ts is None or not cid:
-        return
+        return False
     ev = r.get("ev")
     if ev == "start":
         E.con.execute("INSERT OR IGNORE INTO bridge_calls(cid,ts,tool,mutating,script,seat,run,client) "
@@ -341,7 +338,9 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> None:
         tool = row[0] if row else "?"
         b = (int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool)
         a = _BRIDGE_OPEN.setdefault(b, [0, 0.0, 0.0, 0])
-        ms = _num(r.get("ms")) or 0.0
+        ms = _num(r.get("ms"))
+        if ms is None or not math.isfinite(ms):     # one NaN/inf duration must not poison the bucket's sum and max
+            ms = 0.0
         a[0] += 1
         a[1] += ms
         a[2] = max(a[2], ms)
@@ -351,9 +350,12 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> None:
         E.con.execute("UPDATE bridge_calls SET status=? WHERE cid=?", (f"reconciled:{r.get('as')}", cid))
 
 
-def flush_bridge_buckets(E: Emit, force: bool = False) -> None:
-    """Emit closed 10 s buckets once; an open bucket waits (one point per series per timestamp)."""
+def flush_bridge_buckets(E: Emit, force: bool = False, now: float | None = None) -> None:
+    """Emit closed 10 s buckets once; an open bucket waits (one point per series per timestamp). With `now` (the
+    calls stopped), a bucket the wall clock left 30 s behind is closed too, so the last calls are not held forever."""
     horizon = (E.latest.get("bridge_last") or 0) - 2 * BRIDGE_BUCKET
+    if now is not None:
+        horizon = max(horizon, now - 3 * BRIDGE_BUCKET)
     for (bts, tool) in sorted(list(_BRIDGE_OPEN)):
         if not force and bts > horizon:
             continue
@@ -366,10 +368,10 @@ def flush_bridge_buckets(E: Emit, force: bool = False) -> None:
             E.point("rm_bridge_errors", lab, err, bts)
 
 
-def parse_artpipe(r: dict, E: Emit, ref: str) -> None:
+def parse_artpipe(r: dict, E: Emit, ref: str) -> bool | None:
     ts = parse_ts(r.get("ts"))
     if ts is None:
-        return
+        return False
     if "elapsed_s" in r:
         lab = {"channel": r.get("channel"), "status": r.get("status")}
         E.point("rm_art_elapsed_s", lab, r.get("elapsed_s"), ts)
@@ -384,10 +386,10 @@ def parse_artpipe(r: dict, E: Emit, ref: str) -> None:
 CHANGE_KINDS = {"deploy", "build", "modlist", "proof_run", "proof_start", "proof_end", "marker", "canary"}
 
 
-def parse_change(r: dict, E: Emit, ref: str) -> None:
+def parse_change(r: dict, E: Emit, ref: str) -> bool | None:
     ts = parse_ts(r.get("ts"))
     if ts is None:
-        return
+        return False
     kind = str(r.get("kind") or "marker")
     E.event(ts, kind, r.get("subject"), r.get("detail") if "detail" in r else r, "changes", ref,
             ts_end=parse_ts(r.get("ts_end")), seat=r.get("seat"), sha=r.get("sha"))
@@ -398,11 +400,11 @@ def parse_change(r: dict, E: Emit, ref: str) -> None:
 _CG_SCOPE = re.compile(r"claude-seat-([A-Z]+)-\d+\.scope")
 
 
-def parse_wsl(r: dict, E: Emit, ref: str) -> None:
+def parse_wsl(r: dict, E: Emit, ref: str) -> bool | None:
     src = r.get("src")
     ts = parse_ts(r.get("ts")) or parse_ts(r.get("at"))
     if ts is None:
-        return
+        return False
     if src == "memwatch_sample":
         for name, cg in (r.get("cgroups") or {}).items():
             short = _CG_SCOPE.sub(lambda m: f"seat-{m.group(1)}", name)
@@ -416,7 +418,8 @@ def parse_wsl(r: dict, E: Emit, ref: str) -> None:
         E.event(ts, "oom" if "oom" in str(r.get("kind")) else "memwatch_" + str(r.get("kind")),
                 r.get("cgroup"), {k: r.get(k) for k in ("kind", "seat", "delta", "total")}, "memwatch", ref)
     elif src == "objstore":
-        E.point("rm_objstore_bytes", {}, r.get("store_bytes") or r.get("store_hardlinked_bytes"), ts)
+        sb = r.get("store_bytes")     # 0 is a measured empty store, not a missing reading
+        E.point("rm_objstore_bytes", {}, sb if sb is not None else r.get("store_hardlinked_bytes"), ts)
         E.point("rm_wsl_disk_free_bytes", {"via": "objstore"}, r.get("disk_free_bytes"), ts)
     elif src == "wsl_host":
         for f in ("mem_total", "mem_avail", "swap_used", "disk_used", "disk_free", "disk_total"):
@@ -443,7 +446,7 @@ def parse_wsl(r: dict, E: Emit, ref: str) -> None:
         E.event(ts, "selftest_run", None, r, "selftests", ref)
 
 
-def parse_ops_watch(r: dict, E: Emit, ref: str) -> None:
+def parse_ops_watch(r: dict, E: Emit, ref: str) -> bool | None:
     """One ops_watch series row (family, t, points{key: {v, m}}) -> three series, so VM is the one trend store:
       rm_ops_reading{fam,key}      the value, MEASURED and numeric only (a boolean as 0/1 with vt="bool")
       rm_ops_unmeasured{fam,key,m} 1 where the row carried the key but not as a measured number (m: UNMEASURED,
@@ -452,10 +455,10 @@ def parse_ops_watch(r: dict, E: Emit, ref: str) -> None:
       rm_ops_rows{fam}             points in the row, one sample per row (the family's cadence and coverage)"""
     ts = r.get("t")
     if not isinstance(ts, (int, float)) or isinstance(ts, bool) or not isinstance(r.get("points"), dict):
-        return
+        return False
     ts = parse_ts(ts)       # the tailer's own reading (epoch ms -> s), so parser and freshness agree on one time
     if not plausible_ts(ts):    # NaN/inf/1e308/a day ahead: not a time, and a lost VM batch if emitted
-        return
+        return False
     fam = r.get("family") or os.path.splitext(ref.split(":")[1])[0]
     pts = r["points"]
     E.point("rm_ops_rows", {"fam": fam}, len(pts), ts)
@@ -475,6 +478,9 @@ def parse_ops_watch(r: dict, E: Emit, ref: str) -> None:
 # ================================================================== sources
 
 class Source:
+    """A parser returns False when it refuses a row (wrong shape, no usable time): the row then never reads as fresh.
+    Any other return (None) means it took the row."""
+
     def __init__(self, name, pattern_fn, parser, fast=False, archive=True, desc="", rate="", producer=""):
         self.name, self.pattern_fn, self.parser = name, pattern_fn, parser
         self.fast, self.archive, self.desc, self.rate, self.producer = fast, archive, desc, rate, producer
@@ -544,6 +550,7 @@ class Tailer:
             stt["error"] = str(e)
             return 0
         stt["files"] = len(files)
+        backlog = False     # a file read only up to MAX_READ this pass: its bridge buckets are not complete yet
         for path in files:
             try:    # identity from the open handle: a rotation between stat and open must not read the new file
                 with open(path, "rb") as f:     # under the old file's cursor
@@ -560,6 +567,7 @@ class Tailer:
                         continue
                     f.seek(off)
                     chunk = f.read(min(MAX_READ, st.st_size - off))
+                    backlog = backlog or st.st_size - off > MAX_READ
             except FileNotFoundError:
                 continue
             except OSError as e:
@@ -567,7 +575,10 @@ class Tailer:
                 continue
             end = chunk.rfind(b"\n")
             if end < 0:
-                continue
+                if len(chunk) < MAX_READ:
+                    continue
+                end = len(chunk) - 1    # one row longer than a whole read: count it bad and move past, never stall
+                stt["bad"] += 1         # the file (its tail parses as one more bad fragment next pass)
             chunk = chunk[:end + 1]
             base = os.path.basename(path)
             pos = off
@@ -580,15 +591,14 @@ class Tailer:
                 if not isinstance(r, dict):
                     stt["bad"] += 1
                     continue
-                out0 = E.out
                 try:
-                    src.parser(r, E, ref)
+                    took = src.parser(r, E, ref)
                 except Exception as e:  # noqa: BLE001 — one bad row never stops a source
                     stt["bad"] += 1
                     stt["error"] = f"{type(e).__name__}: {e}"
                     continue
                 n += 1
-                if E.out == out0:   # the parser skipped it (no time, wrong shape): ingested nothing, so not fresh
+                if took is False:   # the parser refused the row (wrong shape): it ingested nothing, so not fresh
                     stt["skipped"] = stt.get("skipped", 0) + 1
                     continue
                 t = parse_ts(r.get("utc") or r.get("t") or r.get("ts") or r.get("at"))
@@ -601,8 +611,8 @@ class Tailer:
             self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done) VALUES(?,?,?,?,?,?,?)",
                              (src.name, key, path, off + len(chunk), st.st_size, st.st_mtime,
                               max(done, off + len(chunk))))
-        if src.name == "bridge":    # a pass with nothing new means the calls stopped: close what is open
-            flush_bridge_buckets(E, force=(n == 0))
+        if src.name == "bridge" and not backlog:    # a pass with nothing new: the calls stopped, close what the
+            flush_bridge_buckets(E, now=time.time() if n == 0 else None)    # clock left. A backlog flushes once drained
         stt["rows"] += n
         stt["last_pass"] = time.time()
         if n or E.events:
@@ -657,9 +667,14 @@ def ingest_exc_files(con, d: str) -> None:
         key = os.path.basename(p)
         cur = con.execute("SELECT offset FROM cursors WHERE src='exc' AND key=?", (key,)).fetchone()
         off = cur[0] if cur else 0
-        with open(p, "rb") as f:
-            f.seek(off)
-            data = f.read()
+        try:
+            with open(p, "rb") as f:
+                if os.fstat(f.fileno()).st_size < off:     # truncated / replaced by a shorter copy: read it all
+                    off = 0
+                f.seek(off)
+                data = f.read()
+        except OSError:
+            continue
         end = data.rfind(b"\n")
         if end < 0:
             continue
@@ -693,7 +708,10 @@ def ingest_proofs(con, root: str | None = None) -> int:
         cur = con.execute("SELECT mtime FROM cursors WHERE src='proof' AND key=?", (rel,)).fetchone()
         if cur and cur[0] == mt:    # exact: a sub-second rewrite is a new result
             continue
-        k = ingest_proof_file(con, p, rel, mt)
+        try:
+            k = ingest_proof_file(con, p, rel, mt)
+        except Exception:   # noqa: BLE001 — one odd proof (bad field types) never stops the sweep; retried next pass
+            continue
         if k is None:               # unreadable now: no checkpoint, so the next pass retries it
             continue
         n += k
@@ -727,12 +745,15 @@ def ingest_proof_file(con, p: str, rel: str, mt: float) -> int | None:
             d = json.load(f)
     except OSError:
         return None
-    except ValueError:
-        return 0
-    if not isinstance(d, dict):
-        return 0
-    rows = proof_rows_of(d)
-    if not rows:
+    except (ValueError, RecursionError):
+        d = None
+    try:
+        rows = proof_rows_of(d) if isinstance(d, dict) else []
+    except (TypeError, AttributeError):     # {"rows": 1} and friends: no rows, so the old verdict goes below
+        rows = []
+    if not rows:    # replaced by an empty / aborted / torn result: the old verdict must not stand for it
+        con.execute("DELETE FROM proof_runs WHERE id=?", (rel,))
+        con.execute("DELETE FROM proof_rows WHERE run_id=?", (rel,))
         return 0
     m = re.search(r"(\d{8}T\d{6})", rel)
     ts = parse_ts(d.get("started")) or (parse_ts(m.group(1)[:4] + "-" + m.group(1)[4:6] + "-" + m.group(1)[6:8] + "T"
@@ -751,5 +772,5 @@ def ingest_proof_file(con, p: str, rel: str, mt: float) -> int | None:
     con.executemany("INSERT OR REPLACE INTO proof_rows(run_id,row_id,status,class,detail) VALUES(?,?,?,?,?)",
                     [(rel, *r) for r in rows])
     store.add_event(con, ts, "proof_run", mod, {"path": rel, "pass": npass, "fail": nfail, "total": len(st)},
-                    "proof", "proof:" + rel + f":{int(mt)}")
+                    "proof", "proof:" + rel + f":{mt:.6f}")
     return 1
