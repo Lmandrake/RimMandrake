@@ -34,6 +34,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
 ALARM_PREFIXES = ("OPS_", "LIVE_RESTORE_")       # rimflow close refuses these without a live line (cli._live_gate)
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"
+# the seats' auto-memory index: a worker's clone is a new project path, so Claude Code never loads it (0 of 263 measured
+# 2026-11-02); the brief points at it instead (TRANSFER_AUDIT, BENCH)
+MEMORY_INDEX = os.path.expanduser("~/.claude/projects/-home-mandrake-rm-bench/memory/MEMORY.md")
 FENCED = 3
 LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring")   # a worker or the supervisor owns the item
 OPEN = ("queued",) + LEASED + ("held",)
@@ -1444,6 +1447,11 @@ def worker_prompt(st, text, learned, r):
             "true design/RimMandrake/delegation_policy.md section 2 call goes up: `snag --class owner_call --section "
             "<what, quoted> ...`. `help` sends a fresh agent the failed approaches on record (refused if there are "
             "none); its options land in the state file (`relentless.py show <item>`) and in the next worker's brief.",
+            "What the seats already learned is in skills: load the one your step needs, once. `clone-landing-commits` "
+            "before a commit; `rimworld-modding` for defs and patches; `rimworld-deploy` before testing anything in "
+            "game (writing a file is not deploying it); `live-debugging-proof-harness` and `rimbridge` for a live proof; "
+            "`measuring-large-artifacts` and infrastructure/state/facts/instrument_traps.md before you trust a count. "
+            "Owner preferences no skill holds yet: %s (an index; read only the entries your item touches)." % MEMORY_INDEX,
             "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
             "bulk output to files. FOUNDRY's tree and src/RimMandrake/Utils/arena/ are not yours to touch."]
     if st.get("proof_only"):

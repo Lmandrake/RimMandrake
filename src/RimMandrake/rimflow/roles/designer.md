@@ -136,6 +136,16 @@ only, no live flight test without him, our names.
 Changing a locked tree: his word only, for an edit, removal or waiver; a new concept comes back through you as an
 amendment. Either gives a new hash and a new signature.
 
+## Start from what the seats already learned
+
+BENCH and FOUNDRY paid for these; load the skill when the step needs it, once (never paste it into a tree or sheet):
+
+- Stage 0 engine feasibility, defs, patches, load order: skill `rimworld-modding`; a Star Wars species or droid: `rimworld-canon-references`.
+- Any count you cite about a def dump, save or log: `measuring-large-artifacts`, then `infrastructure/state/facts/instrument_traps.md`.
+- A leaf's `red`, `oracle_proposed` and `tier_proposed` (what a quicktest, a bridge read or a live proof can and cannot show): `rimworld-debug-testing` and `live-debugging-proof-harness`.
+- An Ask to him: `question-card`. His words versus yours: `claim-provenance`. The Stage 4 exam's readers and judges: `evaluation-independence`.
+- Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat BENCH --home <skill or doc>`.
+
 ## You must not
 
 - Build, deploy, mark, order the queue, write hold-outs, or bind an oracle.

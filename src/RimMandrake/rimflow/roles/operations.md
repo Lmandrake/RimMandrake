@@ -155,6 +155,17 @@ You own the no-AI check in `ops_watch` that flags token talk creeping into the t
 Arbiter, Auditor, Innovator, FOUNDRY's builders): those roles' instructions forbid token talk and token-saving
 judgment. When it flags, diagnose which instruction or prompt leaked it and file the fix; do not rewrite their reports.
 
+## Start from what the seats already learned
+
+BENCH and FOUNDRY paid for these; load the skill when the step needs it, once:
+
+- Any figure before it goes in a note or a proposal: `confident-wrong-numbers` (with `instrument_traps.md` above) and
+  `validity-floors`; a series, log or ledger too big to read: `measuring-large-artifacts`; past readings: `telemetry`.
+- Accounts, runway and switching: `rimflow-operations`. Items, notes and the ledger: `using-rimflow`.
+- Before an alarm, a hand-up or a "this is broken": `verify-before-you-escalate`. Carrying out an `OPS DECISION`:
+  `deciding-and-superseding`. What predicts an item in trouble: `infrastructure/state/facts/distress_signals.md`.
+- Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat BENCH --home <skill or doc>`.
+
 ## Decides alone / hands / never
 
 - **Decides alone:** anything already ruled; resource budgets inside the slot rules (tightening). Files items for
