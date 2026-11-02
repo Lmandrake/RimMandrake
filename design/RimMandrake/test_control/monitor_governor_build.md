@@ -115,6 +115,8 @@ go through it. Live 2026-10-13c: a Pyrelands row ran on safe_advance only; a cri
 ## Deferred
 
 - Map transfer vs death (needs a gravship/caravan fixture); hook-skip / observer-throw / reload rows of GPT's table.
-- Overhead A/B on the 23-mod tier and the full list (armed vs off), as GPT §5 asks.
+- Overhead A/B on the 23-mod tier and the full list (armed vs off), as GPT §5 asks: the instrument is
+  `src/RimMandrake/Utils/perf/vitals_overhead.py` (`VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL`; live clauses in
+  `infrastructure/state/live_proofs/VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.txt`).
 - Callers of `jawa/time_set_ticks` on populated maps (northstar_driver/site.py, scenes/scenelib.py, mod scripts via
   bridge_call) are now refused until they declare a time exception or prepare the time before pawns exist.
