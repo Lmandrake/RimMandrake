@@ -10,7 +10,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_GrassySand</defName>
     <label>grassy sand</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_GrassySand</texturePath>
+    <texturePath>Terrain/Surfaces/AB_GrassySand</texturePath>
      <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_GrassySand_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
@@ -46,7 +46,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_LushGrass</defName>
     <label>lush grass</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_LushGrass</texturePath>
+    <texturePath>Terrain/Surfaces/AB_LushGrass</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_LushGrass_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>

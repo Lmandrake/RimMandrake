@@ -10,7 +10,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_FineForsakenSand</defName>
     <label>fine forsaken sand</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_FineForsakenSands</texturePath>
+    <texturePath>Terrain/Surfaces/AB_FineForsakenSands</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_FineForsakenSands_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
@@ -46,7 +46,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_ForsakenSand</defName>
     <label>forsaken sand</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_ForsakenSands</texturePath>
+    <texturePath>Terrain/Surfaces/AB_ForsakenSands</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_ForsakenSands_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>

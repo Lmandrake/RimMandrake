@@ -1,0 +1,1 @@
+fill_queue back-fills target_texpath with the target_def's MAIN texture, so a job for a leafless/polluted twin carries the main path; anything judging coverage must key on install_to first and treat target_texpath as a fallback only.

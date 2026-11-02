@@ -1,0 +1,1 @@
+placeholder_lint.MASK regex m(_(south|east|north|west))?$ matches any stem ending in lowercase m (AB_MangrovePalm, Palm), silently dropping real pictures as masks. RimWorld masks are <path>_m and <path>_<facing>m; donor_retire_census.MASK_STEM uses that form (GPT review 2026-11-01).

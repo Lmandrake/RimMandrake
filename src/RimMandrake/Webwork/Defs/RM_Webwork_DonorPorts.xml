@@ -107,7 +107,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_DenseMud</defName>
     <label>dense mud</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_DenseMud</texturePath>
+    <texturePath>Terrain/Surfaces/AB_DenseMud</texturePath>
   <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_DenseMud_Polluted</pollutedTexturePath>
   <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
@@ -147,7 +147,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_DenseGrass</defName>
     <label>dense grass</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_DenseGrass</texturePath>
+    <texturePath>Terrain/Surfaces/AB_DenseGrass</texturePath>
   <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_DenseGrass_Polluted</pollutedTexturePath>
    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMarsh</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 0.15)</pollutionColor>

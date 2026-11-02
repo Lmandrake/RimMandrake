@@ -101,7 +101,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_PackedSnow</defName>
     <label>packed snow</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_Snow</texturePath>
+    <texturePath>Terrain/Surfaces/AB_Snow</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_Snow_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionIce</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 1)</pollutionColor>
@@ -132,7 +132,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_PackedIce</defName>
     <label>packed ice</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_WhiteIce</texturePath>
+    <texturePath>Terrain/Surfaces/AB_WhiteIce</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_WhiteIce_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionIce</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 1)</pollutionColor>

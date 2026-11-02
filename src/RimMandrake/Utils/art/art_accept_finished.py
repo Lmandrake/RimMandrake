@@ -151,8 +151,10 @@ def main():
             except A.Refused as e:
                 log["refused"].append({"dest": x, "why": "retire: " + str(e)[:300]})
         for rp in P["repoint"]:
-            if not any(d.startswith(rp["mod"] + "/") for d in done):
-                continue                       # only repoint where a render of ours actually went in
+            # only repoint when EVERY planned render behind it went in (or was already live): a "same mod" test let
+            # a --prefix/--only/--item run repoint RM_TarSealing.xml at RM_TarSealingVat files it had filtered out
+            if not BA.repoint_complete(rp, P["rows"], done):
+                continue
             for x in rp["xml"]:
                 p = REPO / x
                 t = p.read_text(encoding="utf-8")

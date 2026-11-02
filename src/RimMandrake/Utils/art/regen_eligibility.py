@@ -44,7 +44,9 @@ sys.path.insert(0, str(HERE.parent))
 
 REPO = HERE.parents[3]
 TEXTAGS = {"texPath", "texturePath", "uiIconPath", "wornGraphicPath", "flyingAnimationFramePathPrefix",
-           "flyingAnimationFramePathPrefixFemale", "iconPath", "graphicPath", "texPathFemale"}
+           "flyingAnimationFramePathPrefixFemale", "iconPath", "graphicPath", "texPathFemale",
+           # drawn by their own element, beside the main texture: a terrain's polluted twin, a plant's leafless coat
+           "pollutedTexturePath", "leaflessGraphicPath"}
 
 
 FLIP_PREFIX_TAGS = {"flyingAnimationFramePathPrefix", "flyingAnimationFramePathPrefixFemale"}

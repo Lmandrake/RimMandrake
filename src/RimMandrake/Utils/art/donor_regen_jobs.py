@@ -19,6 +19,9 @@ art blockers."  Stand-ins were installed so the donor mods could retire; every o
     #    art is queued; owner-kept, regenerated or renamed destinations are refused and logged; gate error = no filing).
     python3 src/RimMandrake/Utils/art/donor_regen_jobs.py submit --jobs design/RimMandrake/donor_regen_jobs_2026-10-18.json
     # 4. later, install what finished (accept-for-now):  src/RimMandrake/Utils/art/art_accept_finished.py
+    # stand-ins the audit cannot see (pollutedTexturePath / leaflessGraphicPath twins, patch-added defs): one row per
+    # file of every StandIn/ text `donor_retire_census.py standin` reports UNCOVERED, then `submit` as usual
+    python3 src/RimMandrake/Utils/art/donor_regen_jobs.py standin --out <jobs.json>
 
 Targets (a def is a target when the picture it draws today is not ours):
   roster rows of texture_regen_audit (DONOR, PLACEHOLDER, NO_LIVE_DONOR_ONLY, NO_LIVE_ART) whose defName is a def
@@ -737,6 +740,102 @@ def _put_back(stage: Path, src: Path, parked, man: Path):
             print(f"  left {a} (a newer {b.name} exists)")
 
 
+TERRAIN_STYLE = ("Ground texture for a RimWorld floor: fully opaque, tiles seamlessly in both directions, no vignette "
+                 "and no edge darkening; mid-value overall so the game's tint and rough edge blend.")
+STANDIN_ITEM = "STANDINS_RETIRE_AS_OUR_COATS_ARRIVE"
+
+
+def _def_words(defs: list) -> tuple[str, str]:
+    """(label, description) of the first def of ours that has one, read from the XML."""
+    D, _ = load_xml_defs()
+    for dn in defs:
+        if dn in D:
+            el = D[dn][0]
+            lab = clean(el.findtext("label") or "")
+            if lab:
+                return lab, clean(el.findtext("description") or "")
+    return "", ""
+
+
+def standin_rows() -> list:
+    """Job rows for every StandIn/ text no dregen_ job covers (donor_retire_census.standin): install_to is the
+    un-StandIn path in the same mod, so the installer draws ours and points the XML back."""
+    sys.path.insert(0, str(REPO / "src/RimMandrake/Utils"))
+    import donor_retire_census as DRC
+    from PIL import Image
+    rows = []
+    for r in DRC.standin()["rows"]:
+        if r["state"] != "UNCOVERED":
+            continue
+        t, tags = r["text"], set(r["tags"])
+        mods = sorted({f.split("/Defs/")[0].split("/Patches/")[0] for f in r["files"]})
+        label, desc = _def_words(r["defs"])
+        leaf = t.rsplit("/", 1)[-1]
+        name = label or re.sub(r"([a-z])([A-Z])", r"\1 \2", re.sub(r"^(AB|GU|RM)_", "", leaf)).replace("_", " ").lower()
+        for mod in mods:
+            fs = DRC.standin_files(mod, t)
+            facings = [f for _, f in fs if f]
+            files = [(k, None) for k, f in fs if not f] + ([(t, "facings")] if facings else [])
+            for k, how in files:
+                orig = k.removeprefix("StandIn/")
+                one = REPO / mod / "Textures" / (k + (f"_{facings[0]}" if how else "") + ".png")
+                w, h = Image.open(one).size
+                polluted = "pollutedTexturePath" in tags
+                if t.startswith("StandIn/Terrain/") or "texturePath" in tags or polluted:
+                    kind, bg, style = "terrain", "opaque", TERRAIN_STYLE
+                    prompt = (f"A seamless square terrain texture seen straight down from above: {name}"
+                              + (", fouled by industrial pollution: the same ground gone sickly, oily and drab, "
+                                 "grey-brown scum in the low places" if polluted else "")
+                              + f". {desc} Even, flat lighting, no single dominant feature.")
+                elif "leaflessGraphicPath" in tags:
+                    kind, bg, style = "plant", "transparent", HOUSE
+                    prompt = (f"RimWorld plant sprite, painterly: the {name} in its leafless state — bare stems and "
+                              f"branches, no foliage, the same plant out of season. {desc} One plant, centred, base at "
+                              "bottom centre.")
+                elif "/Eyes/" in t:
+                    kind, bg, style = "icon", "transparent", HOUSE
+                    prompt = (f"A single stylised eye overlay for a RimWorld pawn head, front view: {name} — a "
+                              f"{'vertical slit-pupil feline' if 'Feline' in t else 'reptilian slit-pupil'} iris, "
+                              "drawn small and readable, centred, nothing else on the canvas.")
+                elif "/Projectile" in t:
+                    kind, bg, style = "item", "transparent", HOUSE
+                    prompt = (f"RimWorld projectile sprite seen from above, painterly: a {name} — a small glowing "
+                              "mass-driver slug with a short bright streak, pointing up the canvas, centred.")
+                else:
+                    kind, bg, style = "item", "transparent", HOUSE
+                    prompt = f"RimWorld sprite, painterly: the {name}. {desc} One subject, centred."
+                # a Random-folder picture is named by its folder too: AB_JungleTreeLeafless/AB_JungleTreeB must not
+                # take the id of the main tree's AB_JungleTree/AB_JungleTreeB job (submit skips a filed id silently)
+                slug = re.sub(r"[^A-Za-z0-9]", "", "_".join(orig.split("/")[-2:]) if k != t else orig.rsplit("/", 1)[-1])
+                tgt = r["defs"][0] if r["defs"] else re.sub(r"[^A-Za-z0-9_]", "", mod.rsplit("/", 1)[-1])
+                row = {"rimflow_item_id": STANDIN_ITEM, "target_def": tgt, "channel": "codex",
+                       "style_notes": style, "biome_register": "the subject keeps its own colours in the biome's "
+                       "natural light; muted, matte, painterly", "ask": "new",
+                       "why": f"{mod.rsplit('/', 1)[-1]}: draws a StandIn/ copy ({','.join(sorted(tags))})",
+                       "kind": kind, "biomes": [], "priority": KIND_PRIO.get(kind, 75),
+                       "prompt": re.sub(r"\s+", " ", prompt).strip(), "canvas_w": pow2(w), "canvas_h": pow2(h),
+                       "background": bg, "facings": facings if how else [],
+                       "id": f"dregen_{tgt}_{slug}_v1",
+                       "install_to": f"{mod}/Textures/{orig}" + ("_{facing}" if how else "") + ".png"}
+                rows.append(row)
+    return rows
+
+
+def build_standin(out: Path) -> int:
+    rows = standin_rows()
+    ids = Counter(r["id"] for r in rows)
+    _, filed = queue_view()
+    dup = [i for i, n in ids.items() if n > 1] + sorted(i for i in ids if i in filed)
+    if dup:
+        print(f"REFUSED: duplicate job ids {dup}", file=sys.stderr)
+        return 2
+    out.write_text(json.dumps({"generated": BA.A.now(), "item": STANDIN_ITEM, "rows": rows}, indent=1))
+    print(f"{len(rows)} stand-in job rows -> {out}")
+    for k, n in Counter(r["kind"] for r in rows).most_common():
+        print(f"  {k:8} {n}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -756,7 +855,11 @@ def main():
     q.add_argument("--cap", type=int, default=40)
     q.add_argument("--batch", type=int, default=REQUEUE_BATCH)
     q.add_argument("--dry-run", action="store_true")
+    st = sp.add_parser("standin", help="job rows for every UNCOVERED StandIn/ text (donor_retire_census standin)")
+    st.add_argument("--out", type=Path, required=True)
     a = ap.parse_args()
+    if a.cmd == "standin":
+        sys.exit(build_standin(a.out))
     if a.cmd == "requeue":
         sys.exit(requeue(ART, a.cap, a.batch, a.dry_run))
     if a.cmd == "build":

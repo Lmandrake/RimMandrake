@@ -201,7 +201,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Slime</defName>
     <label>hardened slime ground</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_Slime</texturePath>
+    <texturePath>Terrain/Surfaces/AB_Slime</texturePath>
   <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_Slime_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
@@ -230,7 +230,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_RichSlime</defName>
     <label>rich hardened slime ground</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_RichSlime</texturePath>
+    <texturePath>Terrain/Surfaces/AB_RichSlime</texturePath>
   <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_RichSlime_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>

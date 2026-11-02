@@ -82,6 +82,8 @@ class Repo:
                 self.tex[str(p.relative_to(root))[:-4]].append(m)
         self.defs = defaultdict(list)      # defName -> [(mod, xmlfile, {tag: [texts]}, graphicClass)]
         self.drawn = defaultdict(set)      # texPath text -> {xml files (repo-rel)}
+        self.path_texts = set()            # every leaf text of ANY *Path tag (pollutedTexturePath, leaflessGraphicPath
+                                           # ...): a sibling drawn by its own element, never a facing of another text
         self.gclass = {}                   # (defName, texture text) -> graphicClass of its element ('' = inherited)
         seen = set()
         for x in SRC.rglob("*.xml"):
@@ -98,6 +100,9 @@ class Repo:
             for el in root.iter():
                 if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
                     self.drawn[el.text.strip()].add(r)
+                if isinstance(el.tag, str) and el.tag.lower().endswith("path") and (el.text or "").strip() \
+                        and not list(el):
+                    self.path_texts.add(el.text.strip().replace("\\", "/"))
             if "/Defs/" not in r:
                 continue
             for d in root:
@@ -129,6 +134,27 @@ class Repo:
 
 def strip_facing(stem: str) -> str:
     return re.sub(r"_(north|south|east|west)$", "", stem)
+
+
+def repoint_complete(rp: dict, rows: list, done: set) -> bool:
+    """Every plan row that repoint `rp` binds (same mod, from, to) was installed or is already live. A repoint must
+    never outrun its renders: a filtered or refused install left RM_TarSealing.xml drawing files that did not exist."""
+    mine = [r["dest"] for r in rows if r.get("fix") and r["dest"].startswith(rp["mod"] + "/Textures/")
+            and r["fix"].get("from") == rp["from"] and r["fix"].get("to") == rp["to"]]
+    return bool(mine) and all(d in done for d in mine)
+
+
+def own_text(repo: Repo, frm: str, k: str) -> bool:
+    """File `k` under stand-in text `frm` belongs to a SIBLING text another element draws on its own
+    (AB_DenseGrass_Polluted by pollutedTexturePath, the GRimMoss_Leafless folder by leaflessGraphicPath): it is no
+    facing of `frm`, and its absence must not withhold `frm`'s repoint."""
+    if k == frm or re.fullmatch(r"_(south|east|north|west)m?", k[len(frm):]):
+        return False                    # a facing (or its mask) of `frm` is always owed, whoever else names it
+    if k in repo.path_texts:
+        return True
+    parts = k.split("/")
+    return any("/".join(parts[:i]) in repo.path_texts and "/".join(parts[:i]) != frm
+               for i in range(frm.count("/") + 1, len(parts)))
 
 
 def is_drawn(repo: Repo, texrel: str) -> list[str]:
@@ -518,7 +544,7 @@ def plan(out: Path):
         fx = rs[0]["fix"]
         if fx["kind"] == "standin":
             sfiles = [k for k in repo.tex if k.startswith(frm) and mod in repo.tex[k]
-                      and (k == frm or k[len(frm):][:1] in ("_", "/"))]
+                      and (k == frm or k[len(frm):][:1] in ("_", "/")) and not own_text(repo, frm, k)]
             need = [f"{mod}/Textures/{to}{k[len(frm):]}.png" for k in sfiles]
             xmls = sorted(f for f in repo.drawn.get(frm, set()) if not any(f.startswith(n) for n in NO_XML_EDIT))
         else:
@@ -636,7 +662,7 @@ def apply(plan_path: Path, only: str | None, dry: bool):
             except A.Refused as e:
                 log["refused"].append({"dest": x, "job": None, "why": "retire: " + str(e)})
         for rp in P["repoint"]:
-            if only and only not in rp["mod"]:
+            if (only and only not in rp["mod"]) or not repoint_complete(rp, P["rows"], done):
                 continue
             for x in rp["xml"]:
                 p = REPO / x

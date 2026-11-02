@@ -7,6 +7,9 @@
                                                                              from a mandrake.* mod
     python3 src/RimMandrake/Utils/donor_retire_census.py deps                active non-mandrake mods that hard-depend on
                                                                              a retiring donor
+    python3 src/RimMandrake/Utils/donor_retire_census.py standin [--json OUT]  every XML text still drawing a StandIn/
+                                                                             copy, and the art job that will retire it;
+                                                                             exit 1 while any is UNCOVERED
 
 refs  reads XML as ELEMENTS (comments never count): MayRequire/MayRequireAnyOf attributes, <li> text equal to a
       packageId (FindMod <mods>, About.xml modDependencies/loadAfter/loadBefore), <packageId> in modDependencies;
@@ -16,6 +19,19 @@ tex   every texPath of a def defined by a mandrake.* mod (ThingDef body/extra + 
       gametex.resolve_res: OURS (winner mandrake.*), DONOR (winner another mod, or only an inactive mod's copy, or a
       donor AssetBundle), VANILLA (ludeon.* loose or base bundles), MISSING (nowhere). UI/ icons are included.
       SANITY: a known-ours texPath must classify OURS, else the run aborts.
+standin  every element text in src/ Defs+Patches XML that starts `StandIn/` (ANY tag: texPath, texturePath,
+      pollutedTexturePath, leaflessGraphicPath ... — srctex's walk sees only tags containing "texpath" and misses
+      terrain), joined to the artpipe queue (item STANDINS_RETIRE_AS_OUR_COATS_ARRIVE). A text is
+        QUEUED    a pending/active dregen_ job targets it (its path, slot, install_to, or a def that draws it);
+        RENDERED  a done job with status ok and a PNG in _artsrc/<id>/ targets it (the installer places it and
+                  points the XML back: art_accept_finished.py);
+        LANDED    the un-StandIn counterpart already exists in the same mod's Textures (repoint owed, not a render);
+        FAILED    only failed jobs target it (requeue owed);   UNCOVERED  nothing targets it (file a job).
+      FlowWorks is FOUNDRY's and listed apart (EXCLUDED), never counted as uncovered.
+      COLLIDES  another mod of ours already ships the un-StandIn path (a rename is owed before any render);
+        DONOR_DEF  the text decorates only a donor's def (a patch onto a donor gene): the regen gate never files it.
+      Exit 1 while any text is FAILED or UNCOVERED. Coverage is per picture (facings, random-folder files).
+      SANITY: the walker must see a built-in probe text and the queue must be readable, else it exits unreported.
 """
 from __future__ import annotations
 
@@ -196,6 +212,195 @@ def srctex() -> dict:
     return {"index_built": ix.get("built"), "load_order": ix.get("load_order"), "rows": out}
 
 
+STANDIN_STATES = ("QUEUED", "RENDERED", "LANDED", "COLLIDES", "DONOR_DEF", "FAILED", "UNCOVERED")
+BLOCKING = ("FAILED", "UNCOVERED")
+STATE_ITEMS = {"COLLIDES": "STANDIN_PLANTS_RENAME_PATH_ALREADY_TAKEN", "DONOR_DEF": "HUTT_EYES_DECIDE_GENE_IS_NOT_OURS"}
+
+
+def our_defnames() -> set:
+    """Every defName a Defs/ XML of ours defines (patch-added defs included)."""
+    out = set()
+    for p in SRC.rglob("*.xml"):
+        if "/Defs/" not in p.as_posix() and "/Patches/" not in p.as_posix():
+            continue
+        try:
+            for el in ET.parse(p).getroot().iter("defName"):
+                if (el.text or "").strip():
+                    out.add(el.text.strip())
+        except (ET.ParseError, OSError):
+            continue
+    return out
+
+
+def _collides(mod: str, pic: str) -> list:
+    """Other mods of ours that already ship the un-StandIn path `pic` (a file, facing or folder picture): a render
+    installed there would share the texPath with someone else's art, so the regen gate refuses it by rule."""
+    out = []
+    for troot in SRC.glob("*/*/Textures"):
+        m = troot.parent.relative_to(REPO).as_posix()
+        if m != mod and Path(f"{troot / pic}.png").is_file():
+            out.append(f"{m}/Textures/{pic}.png")
+    return out
+
+
+def _walk_standins(root, rel: str, out: dict):
+    """Add every leaf text under `root` that starts StandIn/ (any tag) to `out`, with its file, tag and def."""
+    parent = {c: q for q in root.iter() for c in q}
+    for el in root.iter():
+        t = (el.text or "").strip().replace("\\", "/")
+        if not isinstance(el.tag, str) or not t.startswith("StandIn/") or list(el):
+            continue
+        r = out.setdefault(t, {"files": set(), "defs": set(), "tags": set()})
+        r["files"].add(rel)
+        r["tags"].add(el.tag)
+        q = parent.get(el)          # nearest enclosing def (a patch-ADDED def is nested in <value>), else the
+        while q is not None:        # def a patch operation's <xpath> names (a node added to someone's GeneDef)
+            dn = (q.findtext("defName") or "").strip()
+            names = re.findall(r"defName\s*=\s*[\"']([^\"']+)[\"']", q.findtext("xpath") or "")
+            if dn or names:
+                r["defs"].update([dn] if dn else names)
+                break
+            q = parent.get(q)
+
+
+_PROBE = ("<Patch><Operation><xpath>/Defs/GeneDef[defName=\"P_Gene\"]</xpath><value><TerrainDef>"
+          "<pollutedTexturePath>StandIn/P/T</pollutedTexturePath></TerrainDef></value></Operation></Patch>")
+
+
+def standin_texts() -> dict:
+    """{StandIn text: {"files": [...], "defs": [...], "tags": [...]}} over every Defs/Patches XML in src/.
+    SANITY: the walker must first find the probe's pollutedTexturePath text and its xpath def, else nothing is
+    reported (a tag-name filter once hid 34 of 55 texts)."""
+    probe: dict = {}
+    _walk_standins(ET.fromstring(_PROBE), "probe", probe)
+    if probe.get("StandIn/P/T", {}).get("defs") != {"P_Gene"}:
+        raise SystemExit(f"SANITY FAIL: the StandIn walker cannot see a probe text ({probe}) — nothing reported")
+    out: dict = {}
+    for p in sorted(SRC.rglob("*.xml")):
+        rel = p.relative_to(REPO).as_posix()
+        if "/Defs/" not in rel and "/Patches/" not in rel:
+            continue
+        try:
+            root = ET.parse(p).getroot()
+        except (ET.ParseError, OSError):
+            continue
+        _walk_standins(root, rel, out)
+    return {k: {f: sorted(v) for f, v in r.items()} for k, r in sorted(out.items())}
+
+
+# RimWorld mask files: `<path>_m` (single) and `<path>_<facing>m` (multi); never a bare trailing "m" ("Palm")
+MASK_STEM = re.compile(r"(_m|_(south|east|north|west)m)$|[Mm]ask")
+FACINGS3 = ("east", "south", "north")       # a missing _west is drawn as east mirrored: no render owes one
+
+
+def standin_files(mod: str, text: str) -> list:
+    """[(rel-without-.png under Textures, facing or None)] of the stand-in `text` in `mod`: its facings, a single
+    file, or every picture of a Graphic_Random folder. Masks are no picture and are left out."""
+    troot = REPO / mod / "Textures"
+    base = troot / text
+    if base.is_dir():
+        return [(q.relative_to(troot).as_posix()[:-4], None) for q in sorted(base.glob("*.png"))
+                if not MASK_STEM.search(q.stem)]
+    fac = [f for f in FACINGS3 if Path(f"{base}_{f}.png").is_file()]
+    if fac:
+        return [(text, f) for f in fac]
+    return [(text, None)] if Path(f"{base}.png").is_file() else []
+
+
+def _mods_of(files: list) -> list:
+    return sorted({f.split("/Defs/")[0].split("/Patches/")[0] for f in files})
+
+
+def artpipe_jobs(art: Path) -> list:
+    """Every dregen_ job in pending/active/done/failed: {id, state, ok, keys} where keys are the paths it covers."""
+    jobs = []
+    for st in ("pending", "active", "done", "failed"):
+        d = art / st
+        if not d.is_dir():
+            raise SystemExit(f"SANITY FAIL: artpipe queue {d} unreadable — nothing reported")
+        for f in d.iterdir():
+            if not f.name.startswith("dregen_") or not f.name.endswith(".json") or f.name.endswith(".manifest.json"):
+                continue
+            try:
+                j = json.loads(f.read_text())
+            except FileNotFoundError:
+                continue
+            except (OSError, ValueError):
+                j = {}
+            # install_to is the exact file; only without it do slot / target_texpath say where it goes (fill_queue
+            # back-fills target_texpath with the def's MAIN texture, so a leafless job would "cover" the tree itself)
+            keys = set()
+            it = (j.get("install_to") or "").split("/Textures/", 1)
+            if len(it) == 2:
+                keys.add(re.sub(r"\.png$", "", it[1]).removeprefix("StandIn/"))
+            else:
+                for k in ("target_texpath", "slot"):
+                    v = (j.get(k) or "").strip()
+                    if v:
+                        keys.add(v.removeprefix("StandIn/"))
+            fac = j.get("facings") if isinstance(j.get("facings"), list) else []
+            for k in list(keys):                # a facing template renders exactly those facings, nothing else
+                if "{facing}" in k:
+                    keys.discard(k)
+                    keys |= {k.replace("{facing}", f) for f in (fac or FACINGS3)}
+                elif fac and len(it) != 2:
+                    keys |= {f"{k}_{f}" for f in fac}
+            ok = False
+            if st == "done":
+                man = d / (f.stem + ".manifest.json")
+                try:
+                    ok = json.loads(man.read_text()).get("status") == "ok"
+                except (OSError, ValueError):
+                    ok = False
+                ok = ok and any((art / "_artsrc" / f.stem).glob("*.png"))
+            jobs.append({"id": f.stem, "state": st, "ok": ok, "def": j.get("target_def"), "keys": keys})
+    return jobs
+
+
+def standin(art: Path | None = None, texts: dict | None = None) -> dict:
+    import bulk_accept_renders as BA
+    art = Path(art or BA.ART)
+    if texts is None:
+        texts = standin_texts()
+    jobs = artpipe_jobs(art)
+    ours = our_defnames()
+    rows = []
+    for t, r in texts.items():
+        orig = t.removeprefix("StandIn/")
+        excluded = all(f.startswith(SKIP_DIRS) for f in r["files"])
+        # coverage is per PICTURE: every facing / random-folder file of the stand-in needs its own job
+        pics = [(k.removeprefix("StandIn/") + (f"_{f}" if f else "")) for m in _mods_of(r["files"])
+                for k, f in standin_files(m, t)] or [orig]
+        hit, per = [], {}
+        for pic in pics:
+            js = [j for j in jobs if pic in j["keys"]]
+            hit += js
+            landed = any(Path(f"{REPO / m / 'Textures' / pic}.png").is_file() for m in _mods_of(r["files"]))
+            per[pic] = "LANDED" if landed else ("QUEUED" if any(j["state"] in ("pending", "active") for j in js) else
+                        "RENDERED" if any(j["state"] == "done" and j["ok"] for j in js) else
+                        "FAILED" if js else "UNCOVERED")
+        hint = sorted({j["id"] for j in jobs if j["def"] and j["def"] in r["defs"]} - {j["id"] for j in hit})
+        q = sorted({j["id"] for j in hit if j["state"] in ("pending", "active")})
+        done = sorted({j["id"] for j in hit if j["state"] == "done" and j["ok"]})
+        failed = sorted({j["id"] for j in hit if j["state"] == "failed"})
+        mods = _mods_of(r["files"])
+        for pic, v in list(per.items()):        # a refused/unfiled picture whose path another mod of ours already
+            if v in ("FAILED", "UNCOVERED") and any(_collides(m, pic) for m in mods):   # ships: a rename is owed
+                per[pic] = "COLLIDES"
+        if r["defs"] and not set(r["defs"]) & ours:  # decorates only a DONOR def (a patch onto a donor gene): the
+            per = {p: ("DONOR_DEF" if v == "UNCOVERED" else v) for p, v in per.items()}   # gate never files it
+        got = set(per.values())
+        if excluded:
+            state = "EXCLUDED"
+        else:                                   # the worst picture decides; LANDED only when every picture has
+            state = next(s for s in ("UNCOVERED", "FAILED", "COLLIDES", "DONOR_DEF", "QUEUED", "RENDERED", "LANDED")
+                         if s in got)           # its un-StandIn twin on disk (a repoint is owed)
+        uncovered_pics = sorted(p for p, v in per.items() if v not in ("QUEUED", "RENDERED", "LANDED"))
+        rows.append({"text": t, "state": state, "queued": q, "rendered": done, "failed": failed,
+                     "pictures": per, "pictures_owed": uncovered_pics, "def_jobs_hint": hint, **r})
+    return {"artpipe": str(art), "jobs_read": len(jobs), "rows": rows}
+
+
 def deps():
     """Every installed mod's About.xml (both game roots) — not the texture index, which skips mods with no Textures."""
     active = {l.text.strip().lower() for l in ET.parse(MODSCONFIG).getroot().find("activeMods")}
@@ -225,12 +430,27 @@ def deps():
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["refs", "tex", "srctex", "deps"])
+    ap.add_argument("cmd", choices=["refs", "tex", "srctex", "deps", "standin"])
     ap.add_argument("--json")
     a = ap.parse_args(argv)
     if a.cmd == "deps":
         deps()
         return 0
+    if a.cmd == "standin":
+        data = standin()
+        rows = data["rows"]
+        c = Counter(r["state"] for r in rows)
+        print(f"StandIn/ texts in src/ XML: {len(rows)}   (dregen_ jobs read: {data['jobs_read']} in {data['artpipe']})")
+        for st in STANDIN_STATES + ("EXCLUDED",):
+            print(f"  {st:10} {c.get(st, 0)}" + (f"   (item {STATE_ITEMS[st]})" if st in STATE_ITEMS else ""))
+        for r in rows:
+            if r["state"] not in ("QUEUED", "RENDERED", "EXCLUDED"):
+                why = ",".join(r["failed"][:2]) if r["failed"] else (
+                    "def has " + r["def_jobs_hint"][0] if r["def_jobs_hint"] else "")
+                print(f"    {r['state']:9} {r['text']:60} {','.join(r['defs'][:3])}  {why}")
+        if a.json:
+            Path(a.json).write_text(json.dumps(data, indent=1, default=sorted))
+        return 1 if any(c.get(b) for b in BLOCKING) else 0
     if a.cmd == "refs":
         rs = refs()
         c = Counter((r["donor"], r["form"].split(":")[0] + (":" + r["form"].split(":")[1] if ":" in r["form"] else ""))

@@ -281,7 +281,7 @@
       <Nutrition>0.1</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_GlobularPlant</texPath>
+      <texPath>Things/Plants/AB_GlobularPlant</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>
@@ -369,7 +369,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_AlienSand</defName>
     <label>red-tinged ground</label>
-    <texturePath>StandIn/Terrain/Surfaces/GU_AlienSand</texturePath>
+    <texturePath>Terrain/Surfaces/GU_AlienSand</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
@@ -396,7 +396,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_RichAlienSand</defName>
     <label>rich red-tinged ground</label>
-    <texturePath>StandIn/Terrain/Surfaces/GU_AlienSand</texturePath>
+    <texturePath>Terrain/Surfaces/GU_AlienSand</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <color>(160,140,140)</color>
@@ -424,7 +424,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_AlienSandFine</defName>
     <label>fine red sand</label>
-    <texturePath>StandIn/Terrain/Surfaces/GU_AlienSandFine</texturePath>
+    <texturePath>Terrain/Surfaces/GU_AlienSandFine</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSandFine_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>

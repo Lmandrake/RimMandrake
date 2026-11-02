@@ -36,7 +36,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_HardenedGrass</defName>
     <label>hardened grass</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass</texturePath>
+    <texturePath>Terrain/Surfaces/AB_HardenedGrass</texturePath>
     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
@@ -66,7 +66,7 @@
     <defName>RM_HardenedGrassFertile</defName>
     <label>fertile volcanic soil</label>
     <color>(160,140,140)</color>
-    <texturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass</texturePath>
+    <texturePath>Terrain/Surfaces/AB_HardenedGrass</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>352</renderPrecedence>
     <pathCost>20</pathCost>
