@@ -371,7 +371,7 @@ def judge(m: dict, cal: dict, view: str = "topdown", plan: str | None = None) ->
     if "ns" in r and not flags:
         ex = _excess(r["ns"], q["ns"]["band"])
         if ex > 0:
-            f = max(("south", "north"), key=lambda f: abs(math.log(r[f"d_{f}"] / q[f"d_{f}"]["p50"])))
+            f = "north" if r["ns"] > 1 else "south"   # the taller view is the odd drawing (both heights are in band)
             flags.append({"facing": f, "key": "ns", "value": round(r["ns"], 3), "band": q["ns"]["band"],
                           "excess": round(ex, 3)})
     if "h_west" in r:
@@ -425,6 +425,12 @@ def judge(m: dict, cal: dict, view: str = "topdown", plan: str | None = None) ->
                 if not (nb[0] <= nsw <= nb[1]) and abs(math.log(nsw)) > abs(math.log(r["nsw"])) + 0.02:
                     why.append(f"N:S width after rescale {nsw:.2f} outside vanilla {nb[0]:.2f}-{nb[1]:.2f} "
                                "and worse than before (the extra height is pose or anatomy, not scale)")
+        if fl["key"] == "ns":                  # both heights sit in band yet N:S does not: a rescale inside the
+            ns_after = r["ns"] * (s if f == "north" else 1 / s)   # band cannot reconcile two different drawings
+            nb = q["ns"]["band"]
+            if not (nb[0] <= ns_after <= nb[1]):
+                why.append(f"N:S height after rescale {ns_after:.2f} outside vanilla {nb[0]:.2f}-{nb[1]:.2f} "
+                           "(one view is a different drawing, e.g. top-down, not a scale error)")
         fit = m[f]
         if s > 1 and (fit["h"] * s > 1 or fit["w"] * s > 1):
             why.append("rescaled silhouette would leave the canvas")
@@ -442,6 +448,8 @@ def common_factor(r: dict, q: dict, m: dict, flags: list, fixes: dict) -> dict |
     the only questions are whether both heights land inside the plan's band and both widths stay in vanilla's. Picks
     the factor nearest the plan's p75 target that passes, else the mildest that passes. -> {facing: fix} or None."""
     if not any(x["action"] == "regenerate" and f in ("south", "north") for f, x in fixes.items()):
+        return None
+    if any(fl["key"] == "ns" for fl in flags):     # one shared factor leaves N:S exactly where it was
         return None
     if "east" in fixes or not all(f"d_{f}" in r and f"w_{f}" in r for f in ("south", "north")):
         return None

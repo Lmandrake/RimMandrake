@@ -167,6 +167,19 @@ def main() -> int:
     check([x["texPath"] for x in F.gate([ok, bad, donor], {})[0]] == ["b"], "gate: our FLAG is open, donor art is not ours")
     check(F.gate([ok, bad], {"b": "why"})[0] == [], "gate: a waived row is closed")
     check(F.gate([ok], {"b": "why"})[1] == ["b"], "gate: a waiver that no longer flags is stale")
+    # N:S out of band while both heights sit in band (a top-down north over a ground-camera south): the taller view
+    # is redrawn, never "rescaled x1.0", and the common S+N factor (which keeps N:S) does not paper over it
+    vh = {"d_south": 1.11, "d_north": 1.12, "ns": 2.42, "nsw": 1.0, "w_south": 0.5, "w_north": 0.5}   # RM_Vhakk, 2026-11-01
+    real_ratios = F.ratios
+    F.ratios = lambda m, coef: dict(vh)                    # noqa: E731  (the judge's own measuring is tested above)
+    try:
+        mm = {f: dict(F.silhouette(legged(120, 60)), feet=2) for f in ("east", "south", "north")}
+        jn = F.judge(mm, cal, "topdown", "quadruped")
+    finally:
+        F.ratios = real_ratios
+    nsf = [x for x in jn["flags"] if x["key"] == "ns"]
+    check(nsf and nsf[0]["facing"] == "north" and jn["fixes"].get("north", {}).get("action") == "regenerate"
+          and "south" not in jn["fixes"], "ns flag: the taller view is redrawn, no common factor", jn)
     # joint seat (gen 3): a near-full-canvas north cannot rise to a high-standing east -> the shared row drops to
     # the lowest one every facing reaches; when east already stands low enough, east's own row is kept
     hi_east = {"bottom": 0.70, "H": 200, "y1": 139}
