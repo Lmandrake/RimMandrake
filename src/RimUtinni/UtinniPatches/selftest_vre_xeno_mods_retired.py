@@ -70,7 +70,7 @@ def unguarded(xml_text):
     parent = {c: p for p in root.iter() for c in p}
     for el in root.iter():
         for k, v in el.attrib.items():
-            if k.startswith("MayRequire"):
+            if k.startswith("MayRequire") and not _ignored_mayrequire(el, root, parent):
                 continue
             if any(p in v.lower() for p in PIDS):
                 out.append("attr %s=%s" % (k, v))
@@ -104,10 +104,21 @@ def our_defs():
     return out
 
 
+def _ignored_mayrequire(el, root, parent):
+    """True if a MayRequire on el is one the engine IGNORES: on a <Patch> root or a direct child <Operation> of one
+    (CLAUDE.md engine trap: MayRequire on a top-level <Operation> is ignored; the op fires with the mod absent)."""
+    if root.tag != "Patch":
+        return False
+    return el is root or parent.get(el) is root
+
+
 def _guarded(chain):
-    """chain = the element and its ancestors. Guarded = a MayRequire attribute, or a FindMod/Conditional op above."""
-    for e in chain:
-        if any(k.startswith("MayRequire") for k in e.attrib):
+    """chain = the element and its ancestors (root last). Guarded = an honoured MayRequire attribute (not one on a
+    <Patch> root or its top-level <Operation>), or a FindMod/Conditional op above."""
+    root = chain[-1]
+    for i, e in enumerate(chain):
+        top_level = root.tag == "Patch" and i >= len(chain) - 2
+        if not top_level and any(k.startswith("MayRequire") for k in e.attrib):
             return True
         if any(w in (e.get("Class") or "") for w in ("FindMod", "Conditional")):
             return True
@@ -294,6 +305,24 @@ def main():
            '<Operation Class="PatchOperationFindMod"><match><li>VREA_PsychicStorm</li></match></Operation></Defs>')
     check("mutant: an unguarded gene ref reds, a FindMod one passes",
           def_ref_findings(mut, theirs, ours) == ["<li> VRE_LongPregnancy"], def_ref_findings(mut, theirs, ours))
+    # a MayRequire on a top-level <Operation> is IGNORED by the engine: it is no guard; one on an inner element is
+    top = ('<Patch><Operation Class="PatchOperationAdd" MayRequire="vanillaracesexpanded.archon">'
+           '<xpath>Defs/XenotypeDef[defName="VRE_Archon"]</xpath><value><description>x</description></value>'
+           '</Operation></Patch>')
+    check("mutant: a top-level <Operation> MayRequire is no guard (def ref reds)",
+          def_ref_findings(top, theirs, ours) == ["<xpath> VRE_Archon"], def_ref_findings(top, theirs, ours))
+    check("mutant: a top-level <Operation> MayRequire naming their mod reds as a mod ref",
+          len(unguarded(top)) == 1, unguarded(top))
+    inner = ('<Patch><Operation Class="PatchOperationSequence"><operations>'
+             '<li Class="PatchOperationAdd" MayRequire="vanillaracesexpanded.archon">'
+             '<xpath>Defs/XenotypeDef[defName="VRE_Archon"]</xpath><value><description>x</description></value>'
+             '</li></operations></Operation></Patch>')
+    check("control: an inner-element MayRequire still guards",
+          def_ref_findings(inner, theirs, ours) == [] and unguarded(inner) == [],
+          (def_ref_findings(inner, theirs, ours), unguarded(inner)))
+    defs_top = '<Defs><GeneDef MayRequire="vanillaracesexpanded.archon"><defName>VRE_Archon</defName></GeneDef></Defs>'
+    check("control: a MayRequire on a top-level def (honoured by the def loader) still guards",
+          def_ref_findings(defs_top, theirs, ours) == [], def_ref_findings(defs_top, theirs, ours))
 
     # 6. the canonical start save
     sp = start_save()
