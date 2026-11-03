@@ -8,32 +8,41 @@ superseded, ruled per slug and not as a bulk claim. The record is
 design/Jawa/worldbuilding/review/commission_ledger_85_accounting.json. This test re-measures
 that record against the tree, so a row that rots shows up as a failure:
 
-  1. The rows are exactly the 85 slugs listed under the item's "## the 85 owed slugs"
-     heading: none missing, none extra, none twice.
+  1. The rows are exactly the 85 slugs pinned in commission_ledger_85_slugs.json (copied
+     from the item's "## the 85 owed slugs" list): none missing, none extra, none twice.
+     Where the item prose is present it must still agree with the pin.
   2. Each row's key is a live `ledger:` key in flora_assignment_register.decisions.json.
   3. built: names at least one def or file; every def is a <defName> somewhere under src/,
      and every file exists.
   4. queued: names an item that is still open (not closed, dropped or superseded).
   5. superseded: names an item that exists and was not dropped.
-  6. dropped: names a commit that exists in this repo.
+  6. dropped: names the cutting commit (provenance) and proves the cut from the tree alone:
+     absent_files do not exist, absent_text is gone from a file that still exists.
   7. Sanity probe: the def scan must see a known def, so an empty scan cannot pass as a
      verdict on anything.
+
+It reads only the tree (no git; item prose optional), so it runs in a history-free export.
 """
 import glob
 import json
 import os
 import re
-import subprocess
 import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 ACCOUNTING = os.path.join(ROOT, "design/Jawa/worldbuilding/review/commission_ledger_85_accounting.json")
 REGISTER = os.path.join(ROOT, "design/Jawa/worldbuilding/review/flora_assignment_register.decisions.json")
+SLUGS = os.path.join(ROOT, "design/Jawa/worldbuilding/review/commission_ledger_85_slugs.json")
 ITEM = os.path.join(ROOT, "infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md")
 LEDGER = os.path.join(ROOT, "infrastructure/state/ledger/events")
 RESOLUTIONS = {"built", "queued", "superseded", "dropped"}
 LIFECYCLE = {"file": "open", "claim": "open", "start": "open", "implemented": "open",
              "close": "closed", "drop": "dropped", "supersede": "superseded"}
+
+
+def pinned_slugs():
+    sheets = json.load(open(SLUGS, encoding="utf-8"))["sheets"]
+    return [(sheet, s) for sheet, slugs in sheets.items() for s in slugs]
 
 
 def item_slugs():
@@ -80,22 +89,21 @@ def item_states():
     return {k: sorted(v)[-1][1] for k, v in state.items()}
 
 
-def commit_exists(sha):
-    return subprocess.run(["git", "-C", ROOT, "cat-file", "-e", sha + "^{commit}"],
-                          capture_output=True).returncode == 0
-
-
 def main():
     fails = []
     doc = json.load(open(ACCOUNTING, encoding="utf-8"))
     rows = doc["rows"]
     register = json.load(open(REGISTER, encoding="utf-8"))["decisions"]
-    wanted, counts = item_slugs()
-    for sheet, (n, got) in counts.items():
-        if n != got:
-            fails.append(f"item list: sheet {sheet} says ({n}) but lists {got}")
-    if len(wanted) != 85:
-        fails.append(f"item list parses to {len(wanted)} slugs, not 85")
+    wanted = pinned_slugs()
+    if len(wanted) != 85 or len(set(wanted)) != 85:
+        fails.append(f"pinned list holds {len(wanted)} slugs ({len(set(wanted))} distinct), not 85")
+    if os.path.exists(ITEM):  # live clone: the pin must still match the item's own list
+        listed, counts = item_slugs()
+        for sheet, (n, got) in counts.items():
+            if n != got:
+                fails.append(f"item list: sheet {sheet} says ({n}) but lists {got}")
+        if sorted(listed) != sorted(wanted):
+            fails.append("pinned list differs from the item's '## the 85 owed slugs' list")
     wanted_keys = [f"ledger:{s}:{g}" for s, g in wanted]
     keys = [r["key"] for r in rows]
     for k in sorted(set(wanted_keys) - set(keys)):
@@ -143,8 +151,20 @@ def main():
             for i in r.get("items", []):
                 if states.get(i) == "dropped":
                     fails.append(f"{k}: superseded into {i}, which was dropped; the slug is lost")
-        if res == "dropped" and not (r.get("commit") and commit_exists(r["commit"])):
-            fails.append(f"{k}: dropped without an existing commit naming the cut")
+        if res == "dropped":
+            if not re.fullmatch(r"[0-9a-f]{7,40}", r.get("commit") or ""):
+                fails.append(f"{k}: dropped without a commit naming the cut")
+            if not (r.get("absent_files") or r.get("absent_text")):
+                fails.append(f"{k}: dropped with no tree evidence of the cut")
+            for f in r.get("absent_files", []):
+                if os.path.exists(os.path.join(ROOT, f)):
+                    fails.append(f"{k}: cut file {f} is back")
+            for a in r.get("absent_text", []):
+                fp = os.path.join(ROOT, a["file"])
+                if not os.path.exists(fp):
+                    fails.append(f"{k}: {a['file']} missing, so the cut cannot be read from it")
+                elif a["text"] in open(fp, encoding="utf-8", errors="ignore").read():
+                    fails.append(f"{k}: {a['text']!r} is back in {a['file']}")
 
     for f in fails:
         print("FAIL", f)

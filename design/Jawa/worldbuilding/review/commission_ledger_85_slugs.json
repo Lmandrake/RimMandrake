@@ -1,0 +1,141 @@
+{
+ "item": "COMMISSION_LEDGER_CLEANUP_1",
+ "pinned": "2026-11-03",
+ "source": "infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md, '## the 85 owed slugs' (filed 2026-09-20)",
+ "why": "the item's 85 (sheet, slug) pairs pinned in the tree so the accounting selftest runs in a history-free export without the item prose",
+ "sheets": {
+  "arid_shrubland": [
+   "scrap-nest-bird-analogs-glittering-treasure-nests-steal-from",
+   "the-fuzz-knee-high-silver-green-canopy-plant",
+   "the-huge-grazer-large-young-parental-enrage-body-donors-famb",
+   "tree-guardian-uniques-owner-candidate-not-yet-ruled",
+   "tunnel-snake-analog-the-signature-corridor-predator",
+   "venomvine-fortress-flora-passability-by-body-size"
+  ],
+  "desert": [
+   "burst-predator-flagship-bursts-grabs-retreats-to-cool",
+   "defending-shade-plants-thorn-venom-patch-flora",
+   "filter-feeding-shade-whale-megafauna-body-donor-gr-paraceram",
+   "glitter-birds-megafauna-shadow-commensals",
+   "shade-grid-mapcomponent-shadeat-the-keystone",
+   "staggerseed-cycle-plant-prepared-seed-euphoric-dish",
+   "ultracactus-owner-s-own-name-stands"
+  ],
+  "dune_sea + deep_desert": [
+   "cavern-beast-with-prized-massive-eggs-mandalorian-reference",
+   "dormancy-trigger-dune-fauna-reskin-lane-107-live-vfei2-dorma",
+   "drum-lure-subsurface-predator-lures-that-drum-juicy",
+   "egg-trap-clutch-birth-trap-eggs",
+   "glass-nub-light-pipe-flora",
+   "mirror-plated-sun-axis-asymmetric-giant",
+   "shade-commensal-micro-fauna-living-under-a-walking-giant",
+   "silverbole-owner-to-name-silver-required-heat-flame-immune-w"
+  ],
+  "fall_line": [
+   "feral-droid-behaviour-flee-prone-memwipe-capture-no-droid-re",
+   "feral-races-crash-survivors-pawnkind-permanent-mental-scar-h",
+   "wreck-shade-flora-pockets-gate-hardy-smalls-on-wreck-mutator"
+  ],
+  "nightside_ice": [
+   "chemical-frosts-ambiguously-alive",
+   "hectare-scale-sessile-catalytic-sheets-landform-catalysts",
+   "icy-insects-of-the-inclusions",
+   "the-one-move-animal",
+   "the-tunnelers-within-ice-blind-thermal",
+   "thermal-sensing-seam-striker"
+  ],
+  "poison_forest": [
+   "dark-crust-phototroph-flora-black-purple-red-films-on-starwa",
+   "eyeless-vibration-sensing-ambusher-the-signature",
+   "toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb"
+  ],
+  "terminator_sea + the_grey_deep": [
+   "salt-rimed-blade-flora-grey-shore-variant-distinct-def-from-",
+   "shadow-lane-detritivore-condensate-drinker-grey-shore-distin",
+   "the-ossuary-shrimp-man-sized-skeletal-seeming-shy-and-evasiv",
+   "the-pillar-mason-grey-monoculture-crystal-binding-film-that-"
+  ],
+  "terminator_sea + the_twilight_deep": [
+   "condensate-drinker-fog-lick-fauna",
+   "salt-rimed-blade-flora-black-sail-on-white-pan-planar-vertic",
+   "shadow-lane-detritivore",
+   "shore-scavenger-on-stranded-carcasses-stonecrab-hermitcrab-b",
+   "the-mold-mat-roof-organism-twilight-monoculture-shore-to-sho",
+   "the-twilight-deep-set-deferred-to-diving-mods-kelp-forest-fl"
+  ],
+  "the_blue_desert": [
+   "burner-fast-oxidizer-blue-fire-halo-at-speed-explodes-when-g",
+   "picker-ablation-line-scavenger",
+   "swallower-sealed-armored-herbivore-whole-root-swallow-anaero",
+   "transparent-fractal-flora-set-ferns-dandelion-heads-fuzzball"
+  ],
+  "the_contagion": [
+   "the-unfinished-random-stat-short-lived-chimera-spawns-goo-co"
+  ],
+  "the_cracked_lands": [
+   "bloom-crop-flood-week-boom-bust-harvest-visible-growth",
+   "emperor-vulture-the-sky-s-undertaker-rides-the-flats-thermal",
+   "sealed-signature-sleeper-wax-lined-burrow-water-wake-sheds-c",
+   "twisted-trees-shade-line-grasses-mosses-our-own-vegetation-o"
+  ],
+  "the_fever_wood": [
+   "ant-raider-wiring-theft-hauling-two-front-war"
+  ],
+  "the_forge": [
+   "contagion-corpse-ring-ambient-die-off",
+   "fleet-fliers-small-darting-fireweed-eaters"
+  ],
+  "the_greentide": [
+   "canopy-swinger",
+   "digestive-accelerant-fruit-the-fruit-that-yearns"
+  ],
+  "the_miasma": [
+   "delta-loam-composter-castings-producer",
+   "karr-fever-swarm-vector-pollinator-one-swarm",
+   "the-stranded-transitional-orphan-forms-2-3-species"
+  ],
+  "the_propane_lakes": [
+   "burner-polar-ascendant-form-blue-fire-halo-as-locomotion-alm",
+   "v-wake-propane-sea-exotic-kin-propane-native-agitated-by-pum"
+  ],
+  "the_pyrelands": [
+   "burrower-grazer-dives-under-the-burn-emerges-into-ash"
+  ],
+  "the_rot": [
+   "health-share-species-tagging-both-variants",
+   "heat-generating-gene",
+   "symbiont-parasites-three-ratified-bargain-pairs",
+   "tea-source-guardian-mushrooms-per-species-defense-repertoire"
+  ],
+  "the_scald": [
+   "welcome-blanket-thermophile-mats-rainbow-banded-by-temperatu"
+  ],
+  "the_scarlands": [
+   "mortuary-guild-carrion-specialist-dedicated-body",
+   "the-glowers-black-radiotrophic-crust-flora-crater-bowl-varni"
+  ],
+  "the_slime": [
+   "filter-feeder-line-scooping-mouthed-slime-grazers"
+  ],
+  "the_webwork": [
+   "parasitic-root-mat-flora-the-stolen-river-s-plumbing"
+  ],
+  "wasteland": [
+   "brine-battery-pool-owner-ion-gradient-discharge",
+   "excretor-herd-creature-metal-salt-bezoar-product-def",
+   "radiothermal-solitary-living-furnace-spacing-law",
+   "radiotroph-flora-dosimeter-lawn-vault-root-sequestration-tre",
+   "the-three-storm-weather-defs-ash-radiation-halo-plasma-termi"
+  ],
+  "weeping_stones": [
+   "blade-flora-with-bladder-fruit-forage-target-re-points-donor",
+   "burrak-burradar-well-digger-claw-combs-elder-form",
+   "mirrik-dew-smoke-swarm-dewsilk-cocoon-source",
+   "sillik-weep-face-licker-whisker-combs-prey-base",
+   "ssurr-crest-fan-display-reptile-the-romance-ruling-made-anim",
+   "tirbak-walking-cistern-caravan-colossus-dorsal-rain-fins",
+   "vhakk-the-warden-margin-apex-never-hunts-at-water-by-design",
+   "weep-mat-drip-garden-corduroy-mats-ridged-wind-square"
+  ]
+ }
+}

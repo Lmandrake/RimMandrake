@@ -6,7 +6,7 @@
   "built": "defs (or files) exist in src/ on this sha",
   "queued": "an open rimflow item owns building it",
   "superseded": "folded into another item's scope (or a ruling merged it)",
-  "dropped": "cut by an owner ruling; commit names the cut"
+  "dropped": "cut by an owner ruling; commit names the cut (provenance), absent_files/absent_text prove the cut in the tree"
  },
  "checker": "src/RimMandrake/Utils/selftest_commission_ledger_accounting.py",
  "rows": [
@@ -636,7 +636,21 @@
    "items": [],
    "commit": "0cccae18d6",
    "files": [],
-   "note": "built under FEVERWOOD_ANT_THEFT_RAIDBACK_1 (62913db1a), then cut by owner card 2026-10-23 \"I cut, you veto\" (fluff review)"
+   "note": "built under FEVERWOOD_ANT_THEFT_RAIDBACK_1 (62913db1a), then cut by owner card 2026-10-23 \"I cut, you veto\" (fluff review)",
+   "absent_files": [
+    "src/RimMandrake/FeverWood/Source/RM_KurrethTheft.cs",
+    "src/RimMandrake/FeverWood/Source/RM_KurrethColumn.cs"
+   ],
+   "absent_text": [
+    {
+     "file": "src/RimMandrake/FeverWood/Source/RM_FeverWood.csproj",
+     "text": "RM_KurrethTheft.cs"
+    },
+    {
+     "file": "src/RimMandrake/FeverWood/Source/RM_FeverWood.csproj",
+     "text": "RM_KurrethColumn.cs"
+    }
+   ]
   },
   {
    "key": "ledger:the_forge:contagion-corpse-ring-ambient-die-off",
