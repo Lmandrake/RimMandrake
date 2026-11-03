@@ -12,6 +12,9 @@ every frame (+25, 0, -25, 0 deg).
            alignment tried brings the body back)
   LINES    the owner's eye-line / shoulder-line check: LEVEL on the static body; a +3 px bob of frame 3's body is
            seen as dy 3 on both lines (MOVING); the whole flier turned 4 deg is seen as a 4 deg (+/-1.5) angle change on both lines
+           (2026-11-02, GPT A3 P1) both eyes slid +3 px sideways, or spread 2 px apart along their row, keep the
+           midpoint height and the angle (the old gate's only inputs) and are MOVING by the per-endpoint 2D gate and
+           the length change; a head bob onto a still torso is seen as an eye-to-shoulder distance change
   GPT-REVIEW (2026-10-21) cases the old code got wrong, each naming the old result: estimator failure on an unchanged
            body (UNMEASURED, was RE-POSED); ECC region as templateMask at a 20 px shift; head-only protect with a
            moving torso (coverage fails; plate region sees DRIFT); exported-PNG body equality (a post-build edit is
@@ -259,6 +262,45 @@ def main() -> int:
         dd = lc["lines"][n]["rows"][2].get("ddeg")
         check(f"LINES 4 deg turn seen on the {n} line", dd is not None and abs(abs(dd) - 4.0) < 1.5, f"ddeg {dd}")
     check("LINES turn verdict MOVING", lc["verdict"] == "MOVING", lc["verdict"])
+    # GPT gpt_flier A3 P1 (FLIER_LINE_CHECK_FIX_SIDEWAYS_UNSEEN): the old gate saw only the midpoint's height and the
+    # angle, so a sideways slide of both eyes, or the eyes spreading apart along their row, read LEVEL.
+    fc["eyes"] = [[74, 38], [86, 38]]
+    lc = S.line_check(frames(lambda k: B), fc, "south", 0)
+    check("LINES identical frames LEVEL (endpoint gate)", lc["verdict"] == "LEVEL",
+          f"{lc['verdict']} {lc['worst']} {lc.get('eye_shoulder')}")
+    side = cv2.warpAffine(B, np.float32([[1, 0, 3], [0, 1, 0]]), (N, N), flags=cv2.INTER_NEAREST)
+    lc = S.line_check(frames(lambda k: side if k == 2 else B), fc, "south", 0)
+    e = lc["lines"]["eye"]["rows"][2]
+    check("LINES sideways +3 px: midpoint height and angle unchanged (old gate blind)",
+          abs(e.get("dy", 9)) <= S.LINE_TOL_PX and abs(e.get("ddeg", 9)) <= lc["worst"]["eye"]["tol_deg"], str(e))
+    check("LINES sideways +3 px seen as endpoint dx 3 on both eyes",
+          all(abs(d[0] - 3.0) < 0.5 for d in e.get("end_d", [])) and len(e.get("end_d", [])) == 2, str(e.get("end_d")))
+    check("LINES sideways verdict MOVING", lc["verdict"] == "MOVING", lc["verdict"])
+    # eyes spread apart along their own row: each half of the head pulled 2 px outward (the line stays level, centred)
+    spread = B.copy()
+    spread[:, :78] = np.roll(B[:, :78], -2, axis=1)
+    spread[:, 82:] = np.roll(B[:, 82:], 2, axis=1)
+    spread[:, 78:82] = B[:, 78:82]
+    lc = S.line_check(frames(lambda k: spread if k == 2 else B), fc, "south", 0)
+    e = lc["lines"]["eye"]["rows"][2]
+    check("LINES spread: midpoint height and angle unchanged (old gate blind)",
+          abs(e.get("dy", 9)) <= S.LINE_TOL_PX and abs(e.get("ddeg", 9)) <= lc["worst"]["eye"]["tol_deg"], str(e))
+    check("LINES spread seen as a length change ~4 px", abs(e.get("dlen", 0) - 4.0) < 1.0, f"dlen {e.get('dlen')}")
+    check("LINES spread verdict MOVING", lc["verdict"] == "MOVING", lc["verdict"])
+    # eye-to-shoulder distance: the head bobbed 3 px down onto a still torso and still wing roots
+    head = B.copy()
+    head[:60] = np.roll(B[:60], 3, axis=0)
+    lc = S.line_check(frames(lambda k: head if k == 2 else B), fc, "south", 0)
+    es = lc["lines"]["eye"]["rows"][2].get("d_eye_shoulder")
+    check("LINES head bob seen as eye-to-shoulder change ~3 px", es is not None and abs(abs(es) - 3.0) < 0.75, f"{es}")
+    # proxy points are labelled as such: north's head-reference line is not an eye measurement
+    lab = S.eye_points(fc, "north", B)[1]
+    check("LINES north eye line labelled PROXY head-reference", lab.startswith("PROXY") and "not eyes" in lab, lab)
+    many = {**fc, "wings": fc["wings"] + [{"poly": [[0, 110], [67, 110], [67, 150], [0, 150]], "hinge": [66, 120]}]}
+    lab = S.shoulder_points(many, "south", B)[1]
+    check("LINES three-wing shoulder line labelled PROXY first two", lab.startswith("PROXY first two of 3"), lab)
+    lab = S.shoulder_points(fc, "south", B)[1]
+    check("LINES two-wing shoulder line not a proxy", not lab.startswith("PROXY"), lab)
     print("FAIL" if FAILS else "PASS", "selftest_flier_body_stabilize", FAILS or "")
     return 1 if FAILS else 0
 

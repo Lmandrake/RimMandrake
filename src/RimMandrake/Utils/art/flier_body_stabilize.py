@@ -552,8 +552,16 @@ def overlay(frames: list[np.ndarray], mask: np.ndarray, res: dict, out: Path, ti
 #                  east (one wing visible): the wing root and the chest front on the same row.
 # The match mask is the body (`protect` polygons, plus everything outside the `wings` polygons, background included so
 # silhouette edges count); wing pixels never drive a match.
-# Reported per frame: the line midpoint's vertical offset from the reference frame (px, + = down) and the change of
-# the line's angle (deg). LEVEL when every frame is within LINE_TOL_PX and LINE_TOL_DEG.
+# Reported per frame: the line midpoint's vertical offset from the reference frame (px, + = down), the change of
+# the line's angle (deg), each endpoint's 2D displacement (dx, dy) from its reference position, the change of the
+# line's length, and the change of the eye-to-shoulder distance (eye-line midpoint to shoulder-line midpoint).
+# LEVEL when every frame has |dx| and |dy| of BOTH endpoints within LINE_TOL_PX (so a sideways slide of the whole line,
+# or the two points spreading apart along it, is MOVING even though the midpoint height and the angle hold), the
+# length change and the eye-to-shoulder change within LINE_TOL_PX, and the angle within LINE_TOL_DEG (see tol_deg).
+# Several points are constructed proxies, not anatomy, and their `label` says so (`proxy` is true): north's "eye"
+# line is a head-reference line through the head's side edges (the eyes are hidden from behind); east's is the eye
+# plus a snout point on the eye's row; east's shoulder line is chest front + chest underside; a set with more than two
+# wings uses its first two hinges.
 LINE_TOL_PX, LINE_TOL_DEG = 1.0, 0.5
 LINE_MATCH_MIN = 0.5
 
@@ -613,7 +621,8 @@ def eye_points(fc: dict, facing: str, ref: np.ndarray):
         rx = int(axis)
         while rx + 1 < alpha.shape[1] and alpha[y, rx + 1]:
             rx += 1
-        return [(float(lx), float(y)), (float(rx), float(y))], "head edges (eyes hidden from behind)"
+        return [(float(lx), float(y)), (float(rx), float(y))], \
+            "PROXY head-reference line: head side edges one fifth down the head (not eyes; hidden from behind)"
     eyes = fc.get("eyes")                                  # person-placed eye centres in the master, when given
     if eyes and facing == "south" and len(eyes) >= 2:
         a, b = sorted(eyes[:2])
@@ -624,7 +633,7 @@ def eye_points(fc: dict, facing: str, ref: np.ndarray):
         while tx + 1 < alpha.shape[1] and any(alpha[max(0, ey - 2):ey + 3, tx + 1]):
             tx += 1
         return [(float(eyes[0][0]), float(eyes[0][1])), (float(tx), float(eyes[0][1]))], \
-            "eye (placed on the master) + snout tip"
+            "PROXY eye (placed on the master) + snout point on the eye's row (profile)"
     spots = _dark_spots(ref, head)
     if facing == "east":
         # the eye sits high in the head and behind the snout; the open mouth is low, the nostril at the tip
@@ -636,7 +645,8 @@ def eye_points(fc: dict, facing: str, ref: np.ndarray):
         tx = ex
         while tx + 1 < alpha.shape[1] and any(alpha[max(0, ey - 2):ey + 3, tx + 1]):
             tx += 1
-        return [(float(ex), float(ey)), (float(tx), float(ey))], "eye + snout tip (profile)"
+        return [(float(ex), float(ey)), (float(tx), float(ey))], \
+            "PROXY eye (detected) + snout point on the eye's row (profile)"
     axis, hw = xs.mean(), xs.max() - xs.min() + 1
     best = None
     for i, (s1, x1, y1) in enumerate(spots[:30]):
@@ -666,8 +676,10 @@ def shoulder_points(fc: dict, facing: str, ref: np.ndarray):
         gap = math.hypot(b[0] - a[0], b[1] - a[1]) or 1.0
         k = min(0.7 * r, gap / 4) / gap
         ux, uy = (b[0] - a[0]) * k, (b[1] - a[1]) * k
-        return [(float(a[0] + ux), float(a[1] + uy)), (float(b[0] - ux), float(b[1] - uy))], \
-            "wing roots (just inside the body)"
+        lbl = "wing roots (just inside the body)"
+        if len(hinges) > 2:
+            lbl = f"PROXY first two of {len(hinges)} wing roots (just inside the body)"
+        return [(float(a[0] + ux), float(a[1] + uy)), (float(b[0] - ux), float(b[1] - uy))], lbl
     if not hinges:
         return None, "no wing root"
     hx, hy = map(int, hinges[0])
@@ -686,7 +698,8 @@ def shoulder_points(fc: dict, facing: str, ref: np.ndarray):
         by += 1
     if by - hy < 3:
         return None, "no chest below the wing root"
-    return [(float(x), float(hy)), (float(bx), float(by))], "chest front + chest underside at the wing root (profile)"
+    return [(float(x), float(hy)), (float(bx), float(by))], \
+        "PROXY chest front + chest underside at the wing root (profile; not the shoulders)"
 
 
 def track_point(g_ref: np.ndarray, g_frm: np.ndarray, mmask: np.ndarray, pt, r: int, search: int) -> dict:
@@ -790,10 +803,11 @@ def line_check(frames: list[np.ndarray], fc: dict, facing: str, ref_idx: int) ->
                 (ax, ay), (bx, by) = tr[0]["pt"], tr[1]["pt"]
                 ax, ay, bx, by = map(float, (ax, ay, bx, by))
                 row.update(pts=[[round(ax, 2), round(ay, 2)], [round(bx, 2), round(by, 2)]], mid_y=(ay + by) / 2,
-                           deg=math.degrees(math.atan2(by - ay, bx - ax)))
+                           mid=[(ax + bx) / 2, (ay + by) / 2], length=math.hypot(bx - ax, by - ay),
+                           deg=math.degrees(math.atan2(by - ay, bx - ax)), _raw=[[ax, ay], [bx, by]])
             rows.append(row)
         base = rows[ref_idx]
-        wdy = wdeg = 0.0
+        wdy = wdeg = wend = wlen = 0.0
         lost = False
         for row in rows:
             if "mid_y" not in row or "mid_y" not in base:
@@ -801,21 +815,48 @@ def line_check(frames: list[np.ndarray], fc: dict, facing: str, ref_idx: int) ->
                 continue
             row["dy"] = round(float(row["mid_y"] - base["mid_y"]), 2)
             row["ddeg"] = round(float((row["deg"] - base["deg"] + 180) % 360 - 180), 2)
+            # each endpoint in 2D against its own reference position: catches a sideways slide and a spread
+            row["end_d"] = [[round(p[0] - q[0], 2), round(p[1] - q[1], 2)] for p, q in zip(row["_raw"], base["_raw"])]
+            row["dlen"] = round(float(row["length"] - base["length"]), 2)
             if not row["ok"]:                                # a point not found: no number from this frame
                 lost = True
                 continue
             wdy, wdeg = max(wdy, abs(row["dy"])), max(wdeg, abs(row["ddeg"]))
-        out["lines"][name] = {"label": label, "ok": not lost, "ref_pts": [list(p) for p in pts],
-                              "tilt_deg": round(base.get("deg", 0.0), 2), "rows": rows}
+            wend = max([wend] + [abs(c) for e in row["end_d"] for c in e])
+            wlen = max(wlen, abs(row["dlen"]))
+        out["lines"][name] = {"label": label, "proxy": label.startswith("PROXY"), "ok": not lost,
+                              "ref_pts": [list(p) for p in pts], "tilt_deg": round(base.get("deg", 0.0), 2), "rows": rows}
         bl = math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1])
         # a short line (close-set eyes, a profile chest) turns a sub-pixel wobble into degrees: the angle tolerance is
         # the larger of LINE_TOL_DEG and the angle that lifts one end by LINE_TOL_PX
-        out["worst"][name] = {"dy_px": round(wdy, 2), "ddeg": round(wdeg, 2), "baseline_px": round(bl, 1),
+        out["worst"][name] = {"dy_px": round(wdy, 2), "ddeg": round(wdeg, 2), "end_px": round(wend, 2),
+                              "dlen_px": round(wlen, 2), "baseline_px": round(bl, 1),
                               "tol_deg": round(max(LINE_TOL_DEG, math.degrees(math.atan2(LINE_TOL_PX, bl or 1))), 2)}
+    # eye-to-shoulder distance (midpoint to midpoint), per frame, and its change from the reference frame
+    E, Sh = out["lines"].get("eye", {}).get("rows"), out["lines"].get("shoulder", {}).get("rows")
+    wes = None
+    if E and Sh and "mid" in E[ref_idx] and "mid" in Sh[ref_idx]:
+        d0 = math.dist(E[ref_idx]["mid"], Sh[ref_idx]["mid"])
+        wes = 0.0
+        for re_, rs_ in zip(E, Sh):
+            if "mid" in re_ and "mid" in rs_:
+                d = math.dist(re_["mid"], rs_["mid"])
+                re_["eye_shoulder_px"] = round(d, 2)
+                re_["d_eye_shoulder"] = round(d - d0, 2)
+                if re_["ok"] and rs_["ok"]:
+                    wes = max(wes, abs(d - d0))
+        out["eye_shoulder"] = {"ref_px": round(d0, 2), "worst_change_px": round(wes, 2)}
+    for L in out["lines"].values():
+        for row in L.get("rows", []):
+            row.pop("_raw", None)
+            if "mid" in row:
+                row["mid"] = [round(row["mid"][0], 2), round(row["mid"][1], 2)]
+                row["length"] = round(row["length"], 2)
     ws = out["worst"].values()
     if any(not v.get("ok") for v in out["lines"].values()):
         out["verdict"] = "UNMEASURED"
-    elif all(v["dy_px"] <= LINE_TOL_PX and v["ddeg"] <= v["tol_deg"] for v in ws):
+    elif all(v["dy_px"] <= LINE_TOL_PX and v["ddeg"] <= v["tol_deg"] and v["end_px"] <= LINE_TOL_PX
+             and v["dlen_px"] <= LINE_TOL_PX for v in ws) and (wes is None or wes <= LINE_TOL_PX):
         out["verdict"] = "LEVEL"
     else:
         out["verdict"] = "MOVING"
@@ -849,7 +890,9 @@ def lines_sheet(set_name: str, facings: list[tuple[str, list[np.ndarray], dict, 
     y = title_h
     for facing, frames, lc, ref_idx in facings:
         wv = lc["worst"]
-        summ = "  ".join(f"{n} worst {wv[n]['dy_px']}px {wv[n]['ddeg']}deg" for n in wv)
+        summ = "  ".join(f"{n} worst {wv[n]['dy_px']}px {wv[n]['ddeg']}deg end {wv[n]['end_px']}px len {wv[n]['dlen_px']}px"
+                         for n in wv) + (f"  eye-shoulder {lc['eye_shoulder']['worst_change_px']}px"
+                                         if "eye_shoulder" in lc else "")
         d.text((6, y + 3), f"{facing.upper()}  {lc['verdict']}  (master frame {ref_idx + 1})  {summ}", fill=(255, 235, 200),
                font=f_txt)
         y += head_h
@@ -883,7 +926,8 @@ def lines_sheet(set_name: str, facings: list[tuple[str, list[np.ndarray], dict, 
                 for px, py in row.get("pts", []):
                     d.ellipse([ox + px * s - 3, y + py * s - 3, ox + px * s + 3, y + py * s + 3],
                               outline=LINE_COLS[n] if row.get("ok") else (255, 40, 40), width=2)
-                lines.append(f"{n[:3]} dy {row.get('dy', float('nan')):+.2f}px  {row.get('ddeg', float('nan')):+.2f}deg"
+                ends = max((abs(c) for e in row.get("end_d", []) for c in e), default=float("nan"))
+                lines.append(f"{n[:3]} dy{row.get('dy', float('nan')):+.2f} {row.get('ddeg', float('nan')):+.2f}deg end{ends:.2f}"
                              + ("" if row.get("ok") else " LOST"))
             for j, t in enumerate([f"frame {i + 1}"] + lines):
                 d.text((ox + 4, y + tile + 2 + j * 16), t, fill=(255, 255, 255), font=f_txt)
@@ -983,12 +1027,15 @@ def main_lines(a) -> int:
             eq, wm = exported_body_equality(paths, fc, ref_idx), wing_motion(frames, fc, ref_idx)
             print(f"{lc['verdict']:10} {name} {facing} (master {ref_idx + 1}): "
                   + "; ".join(f"{n} [{lc['lines'][n]['label']}] worst {wv[n]['dy_px']} px / {wv[n]['ddeg']} deg"
+                              f" / endpoint {wv[n]['end_px']} px / length {wv[n]['dlen_px']} px"
                               if n in wv else f"{n} [{lc['lines'][n]['label']}]" for n in lc["lines"])
+                  + (f"; eye-to-shoulder change {lc['eye_shoulder']['worst_change_px']} px" if "eye_shoulder" in lc else "")
                   + f" | exported-PNG body {eq['verdict']}"
                   + (f" ({eq['excused_under_near_wing_px']} px under the near wing excused)"
                      if eq.get("excused_under_near_wing_px") else "")
                   + f" | wings {wm['verdict']} (max change {wm['max_pair_change']}, min step {wm['min_step_change']})")
             report.setdefault(name, {})[facing] = {"verdict": lc["verdict"], "worst": wv, "master": ref_idx + 1,
+                                                   "eye_shoulder": lc.get("eye_shoulder"),
                                                    "lines": lc["lines"], "exported_body": eq, "wings": wm}
             rc = max(rc, {"LEVEL": 0, "MOVING": 1}.get(lc["verdict"], 2),
                      0 if eq["verdict"] == "IDENTICAL" else (2 if eq["verdict"] == "UNMEASURED" else 1),
