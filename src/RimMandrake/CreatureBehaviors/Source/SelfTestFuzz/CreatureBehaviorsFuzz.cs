@@ -573,6 +573,64 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             return fails;
         }
 
+        // ───────────────────────── wake: the sand swimmer's trough cells ─────────────────────────
+        // RM_SandSwimKernel.WakeTroughOffsets (STILLSAND_SAND_SWIM_REMAINDER_1 §1). Every step in the
+        // 7x7 neighbourhood is swept exhaustively at fixed sizes, then seeded random sizes.
+        public static long WakeCells;
+        static string WakeCase(int dx, int dz, float size)
+        {
+            Cases++;
+            var xs = new int[4]; var zs = new int[4];
+            int n = RM_SandSwimKernel.WakeTroughOffsets(dx, dz, size, xs, zs);
+            Steps++;
+            int sx = Math.Sign(dx), sz = Math.Sign(dz);
+            int expect = (sx == 0 && sz == 0) || size < 0.5f ? 0 : size >= RM_SandSwimKernel.WideTroughBodySize ? 4 : 2;
+            if (n != expect) return $"step ({dx},{dz}) size {size}: {n} cells, want {expect}";
+            var seen = new HashSet<(int, int)>();
+            for (int i = 0; i < n; i++)
+            {
+                WakeCells++;
+                if (xs[i] == 0 && zs[i] == 0) return $"step ({dx},{dz}): path cell in the trough";
+                if (xs[i] * sx + zs[i] * sz != 0) return $"step ({dx},{dz}): offset ({xs[i]},{zs[i]}) not lateral";
+                if (Math.Max(Math.Abs(xs[i]), Math.Abs(zs[i])) > 2) return $"step ({dx},{dz}): offset ({xs[i]},{zs[i]}) beyond reach 2";
+                if (!seen.Add((xs[i], zs[i]))) return $"step ({dx},{dz}): duplicate offset ({xs[i]},{zs[i]})";
+            }
+            for (int i = 0; i < n; i++)
+                if (!seen.Contains((-xs[i], -zs[i]))) return $"step ({dx},{dz}): offset ({xs[i]},{zs[i]}) has no mirror on the other flank";
+            // a short buffer never overflows
+            var small = new int[1];
+            if (RM_SandSwimKernel.WakeTroughOffsets(dx, dz, size, small, small) != 0) return "1-slot buffer wrote a pair";
+            return null;
+        }
+
+        static List<string> Wake(int n, int seed)
+        {
+            var fails = new List<string>();
+            float[] sizes = { 0f, 0.2f, 0.49f, 0.5f, 1f, 2.49f, 2.5f, 4f, 12f };
+            for (int dx = -3; dx <= 3; dx++)
+                for (int dz = -3; dz <= 3; dz++)
+                    foreach (float sz in sizes)
+                    {
+                        string m = WakeCase(dx, dz, sz);
+                        if (m != null) fails.Add("wake sweep: " + m);
+                    }
+            var rng = new Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                string m = WakeCase(rng.Next(-1, 2), rng.Next(-1, 2), (float)(rng.NextDouble() * 6));
+                if (m != null) { fails.Add($"wake seed {seed + i}: {m}"); break; }
+            }
+            // width is monotone in body size along one step
+            int last = 0;
+            for (float sz = 0f; sz < 8f; sz += 0.05f)
+            {
+                int w = RM_SandSwimKernel.WakeTroughOffsets(1, 0, sz, new int[4], new int[4]);
+                if (w < last) { fails.Add($"wake: trough narrowed from {last} to {w} at size {sz}"); break; }
+                last = w;
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -584,6 +642,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 ("shade", () => Shade(N(4000), S(1))),
                 ("bounds", () => Bounds(N(60000), S(1)).Concat(BoundsExtra(N(4000), S(1))).ToList()),
                 ("swim", () => Swim(N(4000), S(1))),
+                ("wake", () => Wake(N(4000), S(1))),
                 ("patch", () => PatchGraphFuzz.Patch(N(3000), S(1))),
                 ("dash", () => PatchGraphFuzz.Dash(N(4000), S(1))),
                 ("winch", () => Winch(N(20000), S(1))),
@@ -606,6 +665,8 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             Console.WriteLine($"patch graph reached: patches {PatchGraphFuzz.Patches}, rim cells {PatchGraphFuzz.Rims}, edges {PatchGraphFuzz.Edges}, cells at the cap {PatchGraphFuzz.Capped}, ring cells {PatchGraphFuzz.Rings}, flecks {PatchGraphFuzz.Flecks}");
             if (!oneSeed.HasValue && scale >= 1 && only == null && (PatchGraphFuzz.Patches == 0 || PatchGraphFuzz.Edges == 0 || PatchGraphFuzz.Capped == 0 || PatchGraphFuzz.Flecks == 0 || PatchGraphFuzz.Rings == 0)) { Console.WriteLine("FAIL patch fuzz never reached a patch / edge / cap / fleck / ring (blind)"); ok = false; }
             Console.WriteLine($"swim coverage: {SwimEvals} ticks, {SwimSubmerges} sequences ending submerged");
+            Console.WriteLine($"wake trough cells checked: {WakeCells}");
+            if ((only == null || only == "wake") && WakeCells == 0) { Console.WriteLine("FAIL wake fuzz never produced a trough cell (blind)"); ok = false; }
             Console.WriteLine($"metal eater reached: bites {MetalEaterFuzz.Bites} over {MetalEaterFuzz.Eaten} items");
             if ((only == null || only == "eat") && (MetalEaterFuzz.Eaten == 0 || MetalEaterFuzz.Bites <= MetalEaterFuzz.Eaten)) { Console.WriteLine("FAIL eat fuzz never took a multi-bite item (blind)"); ok = false; }
             Console.WriteLine($"moving shade left standing after the setting turned off, until the next forced recompute (known gap, tolerated): {StaleOnToggle}");

@@ -178,11 +178,13 @@ class Fake(object):
             k = p["kind"]
             # sand swimmer submerges on sand (never on gravel), surfaces when hurt
             if k == "RM_Vekka" and "no_submerge" not in b and self.ticks - p["born"] >= 100:
-                if self.terr(p["x"], p["z"]) == "Sand":
+                if self.ticks < p.get("surf_until", -1):
+                    p["h"].pop("RM_SandSubmerged", None)
+                elif self.terr(p["x"], p["z"]) == "Sand" and not ("no_resubmerge" in b and "surf_until" in p):
                     p["h"]["RM_SandSubmerged"] = 1.0
                 else:
                     p["h"].pop("RM_SandSubmerged", None)
-                if "submerge_on_rock" in b:
+                if "submerge_on_rock" in b and self.ticks >= p.get("surf_until", -1):
                     p["h"]["RM_SandSubmerged"] = 1.0
             # loomma sun clock
             if k == "RM_Loomma":
@@ -544,6 +546,8 @@ class Fake(object):
             n = 0 if "traders_blocked" in self.b else 3
             return {"success": True, "result": "TRADERS biome=RM_Stillsand entryCell=True source=%d desperate=0 "
                     "generable=%d | OutlanderCivil:src=True,desp=False,carrierAllowed=%s,gen=%s" % (3, n, n > 0, n > 0)}
+        if type.endswith("RM_TrackGridDiag") and method == "WakeTroughReport":   # STILLSAND_SAND_SWIM_REMAINDER_1
+            return {"success": True, "result": "WAKETROUGH prints=%d total=0 all=0" % getattr(self, "trough", {}).get(args, 0)}
         if type.endswith("RM_GaleTakenProof") and method == "Registered":
             return {"success": True, "result": "GALETAKEN registered=%s" % ("gale_not_taker" not in self.b)}
         if type.endswith("RM_WaterLedgerProof"):     # WATER_LEDGER_DOUBLE_CHARGE_1's row
@@ -651,13 +655,50 @@ class Fake(object):
         return {"success": True, "pawns": [{"id": pawn, "canEverFly": "no_fly" not in self.b,
                                             "maxFlightTimeStat": 30.0}]}
 
+    def t_damage(self, damageDef=None, amount=10, thingId=None, **k):
+        p = self.pawns.get(thingId)
+        if p and p["kind"] == "RM_Vekka" and "no_surface" not in self.b:
+            p["surf_until"] = self.ticks + 300
+            p["h"].pop("RM_SandSubmerged", None)
+        return {"success": True}
+
+    def t_fishing(self, action="read", x=-1, z=-1, pawn=None, **k):
+        deep = self.terr(x, z) == "RM_DeepSand"
+        body = {"hasBody": deep, "type": "Freshwater"} if deep else {"hasBody": False}
+        if deep:
+            body["commonFish"] = ["Fish_Tilapia"] if "wrong_fish" in self.b else ["RM_DuneCrawler"]
+            body["uncommonFish"] = []
+        fish = getattr(self, "fish", {})
+        r = {"success": True, "body": body, "fishOnMap": [{"def": d, "count": n} for d, n in fish.items()]}
+        if pawn and deep:
+            r.update(fishCell={"x": x, "z": z}, standSpot={"x": x - 1, "z": z}, jobTicks=7500)
+        return r
+
     def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, **k):
         b = self.b
+        if jobDef == "Goto":
+            p = self.pawns.get(pawnId)
+            if p:
+                if p["h"].get("RM_SandSubmerged") and "no_trough" not in b:
+                    self.trough = getattr(self, "trough", {})
+                    self.trough[pawnId] = self.trough.get(pawnId, 0) + 20
+                p["x"], p["z"] = k.get("targetAX", p["x"]), k.get("targetAZ", p["z"])
+            return {"success": True, "accepted": True}
+        if jobDef == "Fish":
+            def land():
+                if "no_catch" not in b:
+                    self.fish = getattr(self, "fish", {})
+                    d = "Fish_Tilapia" if "wrong_fish" in b else "RM_DuneCrawler"
+                    self.fish[d] = self.fish.get(d, 0) + 3
+            self.sched.append((self.ticks + 7000, land))
+            return {"success": True, "accepted": True}
         if jobDef == "AttackMelee":
             def strike(pawn=pawnId, tgt=targetAId):
                 v, c = self.pawns.get(pawn), self.pawns.get(tgt)
                 if not v or not c or c["dead"]:
                     return
+                if c["kind"].startswith("Mech_") and v["h"].get("RM_SandSubmerged") and "mech_hurt" not in b:
+                    return                                    # §4: the swimmer drops an attack on a dry body
                 c["dead"] = True
                 if "no_funnel" not in b:
                     self.new("RM_Filth_DisturbedSand", c["x"], c["z"])
@@ -802,6 +843,12 @@ BREAKS = {
     "no_submerge": ["sandswim.vekka_submerges_on_sand"],
     "submerge_on_rock": ["sandswim.vekka_submerges_on_sand"],
     "no_funnel": ["sandswim.vekka_take_leaves_funnel"],
+    "no_surface": ["sandswim.vekka_surfaces_when_struck"],
+    "no_resubmerge": ["sandswim.vekka_surfaces_when_struck"],
+    "mech_hurt": ["sandswim.vekka_spares_a_mech"],
+    "no_trough": ["sandswim.vekka_wake_trough_record"],
+    "no_catch": ["sandswim.stillsand_catch"],
+    "wrong_fish": ["sandswim.stillsand_catch"],
     "wakes_below_threshold": ["zuurrik.zuurrik_below_threshold_dormant"],
     "no_wake": ["zuurrik.zuurrik_wakes_on_blood"],
     "no_strip": ["zuurrik.zuurrik_strips_blood"],

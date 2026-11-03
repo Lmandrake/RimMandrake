@@ -766,8 +766,8 @@ def defs_chain(t):
     with _comp(t, "sand_swim_remainder"):
         # STILLSAND_SAND_SWIM_REMAINDER_1 (offline half): the thumper, drift depth, sand fishing and the
         # Listening are all wired to the kit's own query/hooks, not private copies; art and sounds exist.
-        # The LIVE half (a charged thumper calling a submerged swimmer, a catch, the singing warning) is
-        # owed to a bridge session and is NOT claimed here. Wake track records wait on FOOTPRINT_TRACK_GRID_1.
+        # The catch and the wake trough record are live arms of the sandswim chain (stillsand_catch,
+        # vekka_wake_trough_record); a charged thumper calling a swimmer and the singing warning are not claimed here.
         for need in ("ThingDef/RM_Thumper", "SoundDef/RM_SandHiss", "SoundDef/RM_SandSaltation", "SoundDef/RM_DuneSong",
                      "SoundDef/RM_SandSwimRumble", "SoundDef/RM_SandSwimBreach", "BiomeDef/RM_Stillsand"):
             if need not in SHIPPED:
@@ -1201,6 +1201,110 @@ def sandswim_chain(t):
             if funnels < 1:
                 _fail("a swimmer took a victim on sand and left no RM_Filth_DisturbedSand funnel "
                       "(SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1)")
+
+    # STILLSAND_SAND_SWIM_REMAINDER_1 §7: the rest of the kit's live criteria, each by a state read.
+    with _comp(t, "vekka_surfaces_when_struck"):
+        if _live(t):
+            _prep(t, "sandswim")
+            vek = _spawn(t, "RM_Vekka", x - 6, z - 6)
+            t.wait_ticks(300)
+            row = _rows(t, health=True).get(vek)
+            if row is None or not _has(row, "RM_SandSubmerged"):
+                _unmeasured(t, "the vekka never submerged on sand, so a surfacing cannot be read: %s"
+                            % [h.get("def") for h in _hediffs(row)])
+            t.bridge_call("jawa/damage", damageDef="Blunt", amount=3, thingId=vek)
+            t.wait_ticks(60)
+            hit = _rows(t, health=True).get(vek)
+            if hit is None or hit.get("dead"):
+                _unmeasured(t, "the struck vekka died or left the map before it could be read")
+            later = None
+            if not _has(hit, "RM_SandSubmerged"):
+                t.wait_ticks(1200)                      # surfacedTicks 300 + the 30-tick poll, with slack
+                later = _rows(t, health=True).get(vek)
+            _note(t, "vekka submerged: before / 60 ticks after the blow / 1200 later",
+                  [True, _has(hit, "RM_SandSubmerged"), later is not None and _has(later, "RM_SandSubmerged")])
+            if _has(hit, "RM_SandSubmerged"):
+                _fail("a submerged vekka struck for 3 Blunt is still RM_SandSubmerged 60 ticks later")
+            if later is not None and not later.get("dead") and not _has(later, "RM_SandSubmerged"):
+                lx, lz = _xz(later)
+                _note(t, "vekka cell after the window", [lx, lz])
+                if abs(lx - (x - 6)) <= 12 and abs(lz - (z - 6)) <= 12:   # still on the sand pad
+                    _fail("the struck vekka never re-submerged on sand after its surfaced window")
+
+    with _comp(t, "vekka_spares_a_mech"):
+        if _live(t):
+            _prep(t, "sandswim")
+            vek = _spawn(t, "RM_Vekka", x - 4, z)
+            mech = _spawn(t, "Mech_Militor", x, z, faction="none")
+            t.wait_ticks(300)
+            if not _has(_rows(t, health=True).get(vek), "RM_SandSubmerged"):
+                _unmeasured(t, "the vekka never submerged on sand; the mech arm needs a submerged swimmer")
+            for _ in range(6):
+                t.bridge_call("jawa/ordered_job", pawnId=vek, jobDef="AttackMelee", targetAId=mech)
+                t.wait_ticks(200)
+            rows = _rows(t, health=True)
+            m = rows.get(mech)
+            hurt = [h.get("def") for h in _hediffs(m) if h.get("def") in INJURY_HEDIFFS]
+            _note(t, "militor after six ordered strikes: dead / injuries", [None if m is None else m.get("dead"), hurt])
+            if m is None:
+                _unmeasured(t, "the militor left the map before it could be read")
+            if m.get("dead") or hurt:
+                _fail("a submerged vekka ordered on a mechanoid hurt it (%s): droids are invisible to the food web" % hurt)
+
+    with _comp(t, "vekka_wake_trough_record"):
+        if _live(t):
+            _prep(t, "sandswim")
+            vek = _spawn(t, "RM_Vekka", x - 10, z)
+            t.wait_ticks(300)
+            if not _has(_rows(t, health=True).get(vek), "RM_SandSubmerged"):
+                _unmeasured(t, "the vekka never submerged on sand; no wake to record")
+            def trough():
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.CreatureBehaviors.RM_TrackGridDiag",
+                                  method="WakeTroughReport", args=vek)
+                res = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+                m = re.search(r"prints=(\d+)", res)
+                if not res.startswith("WAKETROUGH") or not m:
+                    _unmeasured(t, "static_call RM_TrackGridDiag.WakeTroughReport did not answer: %s" % str(r)[:200])
+                return int(m.group(1)), res
+            before, _r0 = trough()
+            t.bridge_call("jawa/ordered_job", pawnId=vek, jobDef="Goto", targetAX=x + 10, targetAZ=z)
+            t.wait_ticks(600)
+            after, res = trough()
+            row = _rows(t, health=True).get(vek)
+            _note(t, "wake trough prints before / after a submerged 20-cell swim", [before, after, res,
+                                                                                  _xz(row), _has(row, "RM_SandSubmerged")])
+            if after <= before:
+                _fail("a submerged vekka swam across sand and laid no wake trough record on the track grid (%s)" % res)
+
+    with _comp(t, "stillsand_catch"):
+        if _live(t):
+            _prep(t, "sandswim")
+            t.bridge_call("jawa/set_terrain_batch", ops="RM_DeepSand:%d,%d,16,12" % (x - 8, z - 6), layer="top")
+            fisher = _colonist(t, x - 10, z - 8)
+            r = t.bridge_call("jawa/fishing", action="read", x=x, z=z, pawn=fisher)
+            body = (r or {}).get("body") or {}
+            _note(t, "deep-sand water body", body)
+            if not (r or {}).get("success") or not body.get("hasBody"):
+                _unmeasured(t, "no water body under painted RM_DeepSand (the tracker may not see a repaint): %s"
+                            % str(r)[:240])
+            fish = set(body.get("commonFish") or []) | set(body.get("uncommonFish") or [])
+            if "RM_DuneCrawler" not in fish:
+                _fail("the deep-sand water body's catch list is %s, not the dune crawler" % sorted(fish))
+            fc, ss = r.get("fishCell") or {}, r.get("standSpot") or {}
+            if "x" not in fc or "x" not in ss:
+                _unmeasured(t, "no fishCell/standSpot for the fisher: %s" % str(r)[:240])
+            had = dict((f.get("def"), f.get("count", 0)) for f in (r.get("fishOnMap") or []))
+            t.bridge_call("jawa/ordered_job", pawnId=fisher, jobDef="Fish", targetAX=fc["x"], targetAZ=fc["z"],
+                          targetBX=ss["x"], targetBZ=ss["z"])
+            t.wait_ticks(int(r.get("jobTicks") or 7500) + 900)
+            r2 = t.bridge_call("jawa/fishing", action="read", x=x, z=z)
+            now = dict((f.get("def"), f.get("count", 0)) for f in ((r2 or {}).get("fishOnMap") or []))
+            gained = dict((d, n - had.get(d, 0)) for d, n in now.items() if n > had.get(d, 0))
+            _note(t, "fish gained by one Fish job on deep sand", gained)
+            if not gained:
+                _fail("a Fish job on RM_DeepSand landed no catch")
+            if not (set(gained) & (fish | {"RM_GlassPearl"})):
+                _fail("the deep-sand catch %s is not the Stillsand family %s" % (gained, sorted(fish)))
 
 
 # ----------------------------------------------------------------------------- chain: the zuurrik

@@ -24,6 +24,27 @@ namespace RimMandrake.CreatureBehaviors
         public static int invisiblePrintsWritten;
         /// <summary>Prints removed through the erase API (ClearCell / ClearRect; not sweeps or ClearAll).</summary>
         public static int cleared;
+        /// <summary>Wake trough cells a submerged sand swimmer laid beside its path (STILLSAND_SAND_SWIM_REMAINDER_1 §1).</summary>
+        public static int wakeTroughPrints;
+
+        private static readonly Dictionary<string, int> troughByPawn = new Dictionary<string, int>();
+
+        internal static void NotedTrough(Pawn pawn)
+        {
+            wakeTroughPrints++;
+            int n;
+            troughByPawn.TryGetValue(pawn.ThingID, out n);
+            troughByPawn[pawn.ThingID] = n + 1;
+        }
+
+        /// <summary>Live state read for the sand-swim proof (jawa/static_call; arg: a swimmer's ThingID, so a wild
+        /// swimmer elsewhere on the map cannot satisfy the check). prints = that swimmer's trough cells, total = all.</summary>
+        public static string WakeTroughReport(string pawnId)
+        {
+            int n;
+            troughByPawn.TryGetValue((pawnId ?? "").Trim(), out n);
+            return "WAKETROUGH prints=" + n + " total=" + wakeTroughPrints + " all=" + printsWritten;
+        }
 
         public static string lastPrintPawn = "";
         public static string lastPrintCell = "";

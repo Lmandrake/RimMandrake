@@ -1,0 +1,5 @@
+A1 L2: on a Stillsand quicktest map a vekka on Sand is RM_SandSubmerged and one on Gravel is not; struck for 3 Blunt it drops RM_SandSubmerged within 60 ticks and re-submerges on the sand after its surfaced window
+A2 L2: a submerged vekka's kill on sand leaves >=1 RM_Filth_DisturbedSand and a 'Taken under' letter
+A3 L2: a submerged vekka ordered AttackMelee six times on a Mech_Militor leaves it alive with no injury hediff
+A4 L2: painted RM_DeepSand reads as a water body whose catch list holds RM_DuneCrawler (jawa/fishing read), and one ordered Fish job there adds a Stillsand catch to fishOnMap
+A5 L2: a submerged vekka ordered on a 20-cell Goto across sand raises its own trough count (jawa/static_call RM_TrackGridDiag.WakeTroughReport with its ThingID)

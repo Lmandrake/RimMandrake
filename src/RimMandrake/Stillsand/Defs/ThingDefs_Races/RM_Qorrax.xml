@@ -343,6 +343,17 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
+    <!-- STILLSAND_SAND_SWIM_REMAINDER_1 §3: the qorrax is a sand swimmer with no submersion comp of its own,
+         so RM_CompSandSwim (added at startup from this extension) is its one visibility owner. The drazzik
+         (RM_CompDrumLure) and RSW_SarlaccSwimmer (CompSarlaccSwimmer) own their own submersion and carry no
+         extension; the duumma is never hidden (RM_SandBuriedGraphicExtension shows its still dome). -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandSwimExtension">
+        <submergedHediff>RM_SandSubmerged</submergedHediff>
+        <swimmerMarkerHediff>RM_SandSwimmer</swimmerMarkerHediff>
+        <dragFilth>RM_Filth_DragMark</dragFilth>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

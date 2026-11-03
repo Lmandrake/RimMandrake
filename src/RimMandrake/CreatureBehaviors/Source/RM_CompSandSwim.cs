@@ -186,8 +186,7 @@ namespace RimMandrake.CreatureBehaviors
         private void TickSubmerged(Pawn pawn)
         {
             // Wake puffs: a low dust line where it moves. Drawn for the player only (the pawn
-            // itself is invisible) — the readable half of the wake until FOOTPRINT_TRACK_GRID_1
-            // exists to hold the trough record.
+            // itself is invisible); the lasting half of the wake is the trough record below.
             if (pawn.IsHashIntervalTick(Math.Max(1, Ext.wakeIntervalTicks)) && pawn.pather != null && pawn.pather.Moving)
             {
                 FleckMaker.ThrowDustPuffThick(pawn.DrawPos, pawn.Map, 0.6f + 0.25f * pawn.BodySize, Ext.wakeColor);
@@ -206,9 +205,42 @@ namespace RimMandrake.CreatureBehaviors
             {
                 FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, Ext.dragFilth, 1);
             }
+            if (pawn.Position != lastCell)
+            {
+                RecordWakeTrough(pawn, lastCell);
+            }
             lastCell = pawn.Position;
 
             MaintainRumble(pawn);
+        }
+
+        private static readonly int[] troughXs = new int[4], troughZs = new int[4];
+
+        /// <summary>
+        /// STILLSAND_SAND_SWIM_REMAINDER_1 §1: lay the wake trough onto the shared track grid.
+        /// The cell it entered is recorded by the grid's own cell-entry postfix (flagged invisible,
+        /// as the swimmer is); this writes the flanking cells RM_SandSwimKernel.WakeTroughOffsets
+        /// names, each only where that cell is swim ground with a track surface. No filth Thing.
+        /// </summary>
+        private void RecordWakeTrough(Pawn pawn, IntVec3 from)
+        {
+            if (!RM_CreatureBehaviorsSettings.tracksEnabled || !from.IsValid) return;
+            IntVec3 step = pawn.Position - from;
+            if (Math.Abs(step.x) > 1 || Math.Abs(step.z) > 1) return;   // a teleport or a spawn, not a step
+            Map map = pawn.Map;
+            RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
+            if (grid == null) return;
+            int n = RM_SandSwimKernel.WakeTroughOffsets(step.x, step.z, pawn.BodySize, troughXs, troughZs);
+            for (int i = 0; i < n; i++)
+            {
+                IntVec3 c = new IntVec3(pawn.Position.x + troughXs[i], 0, pawn.Position.z + troughZs[i]);
+                if (!c.InBounds(map) || !RM_SandSwimUtility.IsSwimTerrain(c, map, Ext)) continue;
+                RM_TrackSurfaceExtension surface = RM_TrackGridPatches.SurfaceAt(c, map);
+                if (surface != null && grid.RecordPrint(c, pawn, surface))
+                {
+                    RM_TrackGridDiag.NotedTrough(pawn);
+                }
+            }
         }
 
         private static Thing CurrentAttackTarget(Pawn pawn, bool anyThing)
@@ -509,6 +541,22 @@ namespace RimMandrake.CreatureBehaviors
     [StaticConstructorOnStartup]
     public static class RM_SandSwimStartup
     {
+        /// <summary>
+        /// The comp class that already hides this race under the ground, or null. RM_CompDrumLure
+        /// with a submersionHediff (the drazzik) and the Sarlacc mod's CompSarlaccSwimmer (matched by
+        /// name: a separate assembly) each own their pawn's visibility.
+        /// </summary>
+        public static string OtherSubmersionOwner(ThingDef def)
+        {
+            if (def?.comps == null) return null;
+            foreach (CompProperties cp in def.comps)
+            {
+                if (cp is RM_CompProperties_DrumLure lure && lure.submersionHediff != null) return "RM_CompDrumLure";
+                if (cp.GetType().Name == "CompProperties_SarlaccSwimmer") return "CompSarlaccSwimmer";
+            }
+            return null;
+        }
+
         static RM_SandSwimStartup()
         {
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -520,6 +568,15 @@ namespace RimMandrake.CreatureBehaviors
                 if (def.comps == null)
                 {
                     def.comps = new List<CompProperties>();
+                }
+                string owner = OtherSubmersionOwner(def);
+                if (owner != null)
+                {
+                    // One visibility owner per swimmer (STILLSAND_SAND_SWIM_REMAINDER_1 §3): two comps
+                    // toggling invisibility hediffs on one pawn fight, so the race's own comp wins.
+                    Log.Warning("[RM CreatureBehaviors] " + def.defName + " carries RM_SandSwimExtension but " + owner
+                        + " already owns its submersion; the sand-swim comp is not added.");
+                    continue;
                 }
                 if (!def.comps.Exists(c => c is RM_CompProperties_SandSwim))
                 {

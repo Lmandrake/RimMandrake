@@ -1,3 +1,4 @@
+using System;
 namespace RimMandrake.CreatureBehaviors
 {
     /// <summary>
@@ -81,6 +82,33 @@ namespace RimMandrake.CreatureBehaviors
         public static int BreachUntil(int now, int surfacedTicks)
         {
             return now + surfacedTicks;
+        }
+
+        /// <summary>Body size at and above which the trough is two cells wide on each flank.</summary>
+        public const float WideTroughBodySize = 2.5f;
+
+        /// <summary>
+        /// The wake trough beside a submerged swimmer's path (STILLSAND_SAND_SWIM_REMAINDER_1 §1):
+        /// cell offsets from the cell it just entered, lateral to the step (dx, dz) it took. The
+        /// path cell itself is not included (the track grid's cell-entry postfix records it).
+        /// Under 0.5 body size there is no trough; 0.5 up to WideTroughBodySize gives one cell on
+        /// each flank; at and above it, two. A zero step gives none. Diagonal steps use the
+        /// perpendicular diagonal, so the trough stays a straight band either side of the path.
+        /// Returns the number of (x, z) pairs written into <paramref name="xs"/>/<paramref name="zs"/>.
+        /// </summary>
+        public static int WakeTroughOffsets(int dx, int dz, float bodySize, int[] xs, int[] zs)
+        {
+            int sx = Math.Sign(dx), sz = Math.Sign(dz);
+            if ((sx == 0 && sz == 0) || bodySize < 0.5f) return 0;
+            int reach = bodySize >= WideTroughBodySize ? 2 : 1;
+            int lx = -sz, lz = sx;   // perpendicular to the step
+            int n = 0;
+            for (int k = 1; k <= reach && n + 1 < xs.Length && n + 1 < zs.Length; k++)
+            {
+                xs[n] = lx * k; zs[n] = lz * k; n++;
+                xs[n] = -lx * k; zs[n] = -lz * k; n++;
+            }
+            return n;
         }
     }
 }
