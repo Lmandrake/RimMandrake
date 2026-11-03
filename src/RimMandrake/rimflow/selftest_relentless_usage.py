@@ -96,9 +96,10 @@ def main():
     check("only a kill inside a Relentless cgroup is Relentless's", U.own_oom_kills(lines) == 1, U.own_oom_kills(lines))
     rules_all = json.loads((HERE / "relentless_rules.json").read_text())
     stages = [x for x in rules_all["staffing"]["stages"] if x != "budget"]
-    check("staffing top stage is 3-4 workers, under max_workers, and with 2 checks and a consult fits the 10-clone pool",
-          stages and 3 <= max(stages) <= 4 and rules_all["max_workers"] <= 4
-          and rules_all["max_workers"] + rules_all["staffing"]["check_backlog_max"] + 1 <= 10, rules_all["staffing"]["stages"])
+    check("staffing top stage is 3-8 workers, under max_workers, and with its checks and a consult fits the 16-clone pool"
+          " (owner card 2026-11-02: 8 workers, 16 clones / 70 GB)",
+          stages and 3 <= max(stages) <= 8 and max(stages) <= rules_all["max_workers"] <= 8
+          and rules_all["max_workers"] + rules_all["staffing"]["check_backlog_max"] + 1 <= 16, rules_all["staffing"]["stages"])
     print("selftest_relentless_usage: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
