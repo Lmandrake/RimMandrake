@@ -240,8 +240,10 @@ def batch_gap(fx, builds):
 
 
 def _plan_into(fx, mods, out):
-    """The one plan over `mods` into a gap's off, dll and error."""
-    rc, plan = fx.deploy_plan(deploy_args(mods, fx.folded()), L.live_rules({}).get("plan_max_s", 300))
+    """The one plan over `mods` into a gap's off, dll and error. Headers and DLLs are all a gap reads, so --gate: 35 s
+    where the full plan's byte compare and def guard took 260 s of a supervisor tick. A run still gates on the full plan
+    (relentless_live.run), so other drifting files are caught there."""
+    rc, plan = fx.deploy_plan(deploy_args(mods, fx.folded()) + " --gate", L.live_rules({})["gate_plan_max_s"])
     if rc not in (0, 1):
         out["error"] = "the deploy plan failed (exit %s): %s" % (rc, (plan or "")[-200:])
         return

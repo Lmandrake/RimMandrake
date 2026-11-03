@@ -45,6 +45,7 @@ sys.path.insert(0, HERE)
 import relentless_expedite  # noqa: E402
 
 GAME = "game"
+READING_TTL_S = 30
 DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "stage_max_s": 3600, "stage_tries": 2,
             "prove_every_s": 900, "renew_s": 1200,
             # a cold load's bound, sized to the list that loads (rimworld-load-round: 13 mods ~22 s, the full ~316 ~15-25
@@ -479,13 +480,20 @@ class GameFx(object):
     def game_reading(self):
         """-> {"state": "UP"|"LOADING"|"DOWN"|None, "started": epoch|None, "mods": n|None, "evidence": str}.
         UP: the process runs and the bridge listens; LOADING: it runs, the bridge does not yet; None: no reading taken
-        (never read as "no game": that is what held ten items on the owner)."""
+        (never read as "no game": that is what held ten items on the owner). Each read is tasklist, netstat and
+        powershell over the Windows boundary, ~50 s of a tick across its game items, and no step restarts the game in
+        line (a staging is a detached worker): one reading serves READING_TTL_S."""
+        hit = getattr(self, "_game_read", None)
+        if hit and time.monotonic() - hit[0] < READING_TTL_S:
+            return dict(hit[1])
         import probe
         import relentless_live
         m = probe.measure(use_cache=False)
         started = relentless_live.Fx(seat=self.r["seat"]).game_started() if m.get("running") else None
-        return {"state": m.get("implies"), "started": started, "mods": live_mod_count(),
-                "evidence": m.get("evidence") or ""}
+        got = {"state": m.get("implies"), "started": started, "mods": live_mod_count(),
+               "evidence": m.get("evidence") or ""}
+        self._game_read = (time.monotonic(), got)
+        return dict(got)
 
     def bridge_reading(self):
         """-> {"holder", "purpose", "since"} of the bridge lock as the ledger reads now."""
@@ -538,7 +546,7 @@ class GameFx(object):
 
     def modlist_enable(self, mods):
         """modlist_swap.py --enable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
-        self._round = None
+        self._round = self._game_read = None
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--enable",
                             *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
                            stdin=subprocess.DEVNULL)

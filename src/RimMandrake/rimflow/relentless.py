@@ -3318,13 +3318,15 @@ def lease(store, fx, r, now, acts):
         acts.append({"do": "lease", "item": item, "gen": st["gen"], "unit": st["run"]["unit"]})
 
 
-def reading(store, r, now, acts):
+def reading(store, r, now, acts, clock=None):
+    """clock() -> the write time: `now` is the tick's start, and a stamp of that aged through the whole tick
+    (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS: files written 14:10:21Z carrying 13:55:04Z)."""
     states = store.states()
     counts = {}
     for s in states:
         counts[s["status"]] = counts.get(s["status"], 0) + 1
     br = load_breaker(store)
-    rec = {"at": iso(now), "share": r["share"], "counts": counts, "spent_today": spent_today(store, now),
+    rec = {"at": iso(clock() if clock else now), "share": r["share"], "counts": counts, "spent_today": spent_today(store, now),
            "breaker": br or None, "acts": acts[-20:], "circling": circling.summary(store, r, now),
            "items": [{"item": s["item"], "status": s["status"], "gen": s["gen"], "returns": s["returns"],
                       "approach": s["approach"], "spent": s["spent"]} for s in states if s["status"] in OPEN],
@@ -3385,8 +3387,9 @@ def clean_window(store, s, fx, r, now):
     return None
 
 
-def staffing(store, fx, r, now, acts):
-    """The no-AI filler's reading: budget, running, ready, minutes under; the staged rise; the one alarm."""
+def staffing(store, fx, r, now, acts, clock=None):
+    """The no-AI filler's reading: budget, running, ready, minutes under; the staged rise; the one alarm. Its stamp is
+    clock(), the write time (see reading); its own arithmetic stays on `now`."""
     cfg = r["staffing"]
     s = stage_load(store)
     if "stage_since" not in s:
@@ -3493,7 +3496,8 @@ def staffing(store, fx, r, now, acts):
         acts.append({"do": "stage", "stage": s["stage"], "why": moved})
     store._write(store.p("staffing_state.json"), json.dumps(s))
     cand = [x for x in states if x["status"] == "candidate"]
-    rec = {"at": iso(now), "t": now, "budget": budget, "budget_measured": budget is not None, "head_helpers": head,
+    written = clock() if clock else now
+    rec = {"at": iso(written), "t": written, "budget": budget, "budget_measured": budget is not None, "head_helpers": head,
            "stage": cfg["stages"][s["stage"]], "target": target, "running": live, "places": k, "live": live, "ready": ready,
            "under": under, "foreign_tree_read": words_read, "alarm_fail": alarm_fail,
            "minutes_under": minutes, "why": why, "alarmed": bool(s.get("alarmed")), "rise_lacks": lack,
@@ -3567,6 +3571,9 @@ def run_tmp_sweep(store, fx, now, acts, when):
                        "work": out.get("work", [])[:20], "errors": out.get("errors", [])[:5]})
 
 
+SLOW_STEP_S = 20        # one item's step past this is named in the tick's journal row
+
+
 def over_budget(r, spent):
     """The tick has spent its share on game steps -> True; rules keep this well inside the unit's kill."""
     budget = r.get("tick_game_budget_s")
@@ -3577,6 +3584,12 @@ def tick(store=None, fx=None, r=None, now=None):
     r = r or rules()
     store = store or Store()
     now = time.time() if now is None else now
+    real0 = time.time()
+
+    def clock():
+        """The write time, on the tick's own clock: a test's `now` plus what really passed, in whole seconds."""
+        return now + int(max(time.time() - real0, 0))
+
     os.makedirs(store.dir, exist_ok=True)
     with open(store.p("tick.lock"), "w") as lk:
         try:
@@ -3591,15 +3604,25 @@ def tick(store=None, fx=None, r=None, now=None):
             store.on_alarm = fx.alarm_signal
         acts = []
         if not r.get("enabled"):
-            reading(store, r, now, [{"do": "disabled"}])
+            reading(store, r, now, [{"do": "disabled"}], clock)
             return acts
         if not relentless_integrity.gate(store, fx, r, now, acts, getattr(fx, "objstore", lambda: None)()):
             try:                                # damaged state: nothing is staffed; the reading may not survive it
-                reading(store, r, now, acts)
+                reading(store, r, now, acts, clock)
             except Exception as e:  # noqa: BLE001
                 acts.append({"do": "error", "item": None, "why": "reading %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "tick", "acts": acts})
             return acts
+        wall = getattr(fx, "wall", time.monotonic)
+        whole = wall()
+        phases, slow = {}, []
+
+        def phase(name, since):
+            """Seconds this phase took, into the tick's journal row: the next slow tick names its own step."""
+            at = wall()
+            phases[name] = round(at - since, 1)
+            return at
+
         books_alarm(store, fx, fx.sync(), now, acts, r)
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
@@ -3611,8 +3634,7 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run
             acts.append({"do": "error", "item": None, "why": "lapse_holds %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)[:300]})
-        wall = getattr(fx, "wall", time.monotonic)
-        began, skipped = wall(), 0
+        began, skipped = phase("prelude", whole), 0
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":
@@ -3622,14 +3644,18 @@ def tick(store=None, fx=None, r=None, now=None):
                 if over_budget(r, wall() - began) and (store.load(item) or {}).get("status") == "game":
                     skipped += 1
                     continue
+                one = wall()
                 try:
                     step(store, fx, r, item, now, acts)
                 except Exception as e:  # noqa: BLE001  one bad item never stops the others; next tick resumes it
                     acts.append({"do": "error", "item": item, "why": "%s: %s" % (type(e).__name__, e)})
                     store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": item,
                                    "why": str(e)[:300]})
+                if wall() - one >= SLOW_STEP_S:
+                    slow.append({"item": item, "s": round(wall() - one, 1)})
         if skipped:
             acts.append({"do": "tick_budget", "skipped": skipped, "after_s": int(wall() - began)})
+        at = phase("steps", began)
         for item in store.items():
             try:
                 help_step(store, fx, r, item, now, acts)
@@ -3646,6 +3672,7 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
             acts.append({"do": "error", "item": None, "why": "reap_boxes %s: %s" % (type(e).__name__, e)})
         spend_holds(store, fx, r, now, acts)
+        at = phase("after_steps", at)
         try:        # before the order is read; a broken log costs the lane, never the tick
             relentless_expedite.sync(store, fx, now, acts)
         except Exception as e:  # noqa: BLE001
@@ -3673,9 +3700,10 @@ def tick(store=None, fx=None, r=None, now=None):
             breaker_emergency(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a torn cause record must not lose the tick's flush
             acts.append({"do": "error", "item": None, "why": "breaker_emergency %s: %s" % (type(e).__name__, e)})
+        at = phase("enrol_lease", at)
         if r.get("staffing"):
             try:
-                staffing(store, fx, r, now, acts)
+                staffing(store, fx, r, now, acts, clock)
             except Exception as e:  # noqa: BLE001  the reading never stops the workers; a dead reading shows as stale
                 acts.append({"do": "error", "item": None, "why": "staffing %s: %s" % (type(e).__name__, e)})
         try:
@@ -3683,12 +3711,15 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  the live tier is an extra: it never costs the tick its flush
             acts.append({"do": "error", "item": None, "why": "live_tick %s: %s" % (type(e).__name__, e)})
         run_tmp_sweep(store, fx, now, acts, "end")
+        at = phase("staffing_live", at)
         why = fx.flush()
         if why:
             acts.append({"do": "flush_retry", "why": why})
-        reading(store, r, now, acts)
+        phase("flush", at)
+        reading(store, r, now, acts, clock)
         if acts:
-            store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - began), "acts": acts})
+            store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - whole), "phases": phases,
+                           "slow_steps": sorted(slow, key=lambda x: -x["s"])[:5], "acts": acts})
         relentless_integrity.mark_clean(store, fx, now)
         return acts
 

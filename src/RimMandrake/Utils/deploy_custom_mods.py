@@ -477,8 +477,15 @@ def same_bytes(a, b, size_a, size_b):
                 return True
 
 
-def compare(src, dst):
+def is_dll(rel):
+    return rel.lower().endswith(".dll")
+
+
+def compare(src, dst, only=None):
+    """-> (new, changed, gone, same) rels; `only` narrows both trees to the rels it accepts (--gate: the DLLs)."""
     si, di = inventory(src), inventory(dst)
+    if only:
+        si, di = {r: n for r, n in si.items() if only(r)}, {r: n for r, n in di.items() if only(r)}
     s, d = set(si), set(di)
     new = sorted(s - d)
     gone = sorted(d - s)                       # deployed but no longer in repo
@@ -596,8 +603,14 @@ def main():
                     help="with --compose: also plan/deploy this ordinary mod in the SAME "
                          "run, so the def guard judges both together (e.g. --compose "
                          "biomes --with SWBestiary after a creature moved between them)")
+    ap.add_argument("--gate", action="store_true",
+                    help="plan only, for a gate that reads the mod headers and stale DLLs: skips the def guard and "
+                         "compares *.dll alone (the full plan took 260 s over the Windows mount in a supervisor tick, "
+                         "RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS). NOT evidence that a mod's other files are deployed")
     args = ap.parse_args()
     forget_all()                               # a second main() in one process re-walks
+    if args.gate and (args.apply or args.pull):
+        ap.error("--gate is a read-only partial plan; it never combines with --apply or --pull")
     if args.compose and (args.mod or args.pull):
         ap.error("--compose builds one target; it does not combine with --mod/--pull "
                  "(use --with MOD to deploy an ordinary mod alongside it)")
@@ -697,7 +710,8 @@ def _run(args, targets, holds, mods_dir, active):
     names = [n for n, _ in targets]
     print("repo : %s" % SRC_ROOT)
     print("game : %s" % mods_dir)
-    print("mode : %s" % ("APPLY" if args.apply else "plan only (use --apply to write)"))
+    print("mode : %s" % ("APPLY" if args.apply else "gate: mod headers and DLLs only, other files NOT compared"
+                         if args.gate else "plan only (use --apply to write)"))
     print("holds: %d pattern(s) from %s"
           % (len(holds), pretty(HOLD_FILE)))
     print("skip : dirs %s · exts %s\n"
@@ -705,7 +719,7 @@ def _run(args, targets, holds, mods_dir, active):
 
     # SWB_BIOMES_DEPLOY_GUARD_DUPLICATE_DEFS: judge the RESULTING game-copy mod
     # set before anything is written. --apply refuses; a plan says it would.
-    guard_block = _def_guard(args, targets, holds, mods_dir)
+    guard_block = [] if args.gate else _def_guard(args, targets, holds, mods_dir)
     if guard_block and args.apply:
         print("REFUSING --apply: the game copy would carry %d def conflict(s) "
               "listed above. NOTHING WAS WRITTEN." % len(guard_block))
@@ -731,7 +745,7 @@ def _run(args, targets, holds, mods_dir, active):
                 _STAGED.append(os.path.dirname(staged))
                 src = staged
         pid = package_id(src)
-        new, changed, gone, same = compare(src, dst)
+        new, changed, gone, same = compare(src, dst, is_dll if args.gate else None)
         new, held_new = split_held(holds, name, new)
         changed, held_changed = split_held(holds, name, changed)
         # `gone` is filtered too, and that is not symmetry for its own sake.
@@ -792,8 +806,8 @@ def _run(args, targets, holds, mods_dir, active):
                                            % h["lineno"]))
 
         if not (new or changed or gone):
-            print("    in sync (%d files%s)\n"
-                  % (len(same), ", %d held" % len(held) if held else ""))
+            print("    %s (%d files%s)\n"
+                  % ("DLLs in sync" if args.gate else "in sync", len(same), ", %d held" % len(held) if held else ""))
             continue
 
         drift = True
@@ -892,7 +906,7 @@ def _run(args, targets, holds, mods_dir, active):
     # stale instruction in a doc: still present, still read, no longer true —
     # and it silently stops protecting whatever it was written for. Only
     # meaningful on a full run; with --mod most patterns legitimately miss.
-    if not args.mod and not args.compose:
+    if not args.mod and not args.compose and not args.gate:     # a gate narrows what holds can match
         # Staleness is "does this pattern name a file that EXISTS", not "did it
         # fire this run". A hold on an in-sync file never appears in the drift
         # lists and would otherwise be reported stale on every clean run —
@@ -936,6 +950,8 @@ def _run(args, targets, holds, mods_dir, active):
               "refusal(s) above. Fix them and re-run.")
     elif args.apply:
         print("Nothing to do; already in sync. No restart needed.")
+    elif args.gate:
+        print("Gate: DLL drift found." if drift else "Gate: DLLs in sync; other files NOT compared.")
     elif drift:
         print("Drift found. Re-run with --apply to deploy.")
     else:

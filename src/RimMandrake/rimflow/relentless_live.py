@@ -82,6 +82,7 @@ DEFAULTS = {
                  r"|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
     "proof_max_s": 600,
     "plan_max_s": 500,
+    "gate_plan_max_s": 180,  # relentless_live_round._plan_into: deploy_custom_mods.py --gate, inside a supervisor tick
     "site_max_s": 480,
     "health_max_s": 120,
     "repeat_unmeasured": 3,
