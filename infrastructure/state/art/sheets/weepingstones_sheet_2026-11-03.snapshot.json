@@ -1,8 +1,8 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-11-03T04:05:33-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T06:09:07-0800",
+ "census": "/tmp/bffar_proof/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Bladderquill",
   "RM_Ivvol",
@@ -11,6 +11,56 @@
   "RM_Talvessar"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Bantha": {
+   "brief": "a towering shaggy pack grazer with forward-curled horns, milked, shorn and ridden",
+   "kind": "drafted",
+   "name": "grullox",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Boma": {
+   "brief": "a ravenous stocky tusked hunter of the rocky ground",
+   "kind": "drafted",
+   "name": "khubbo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Dactillion": {
+   "brief": "a great long-winged scaly flyer that nests in sheer stone faces",
+   "kind": "drafted",
+   "name": "skaarix",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Dewback": {
+   "brief": "a heavy sun-basking lizard that carries riders and packs across hot sand",
+   "kind": "drafted",
+   "name": "dewvakka",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Eopie": {
+   "brief": "a thin-legged long-snouted pack beast, slow but tireless over rock",
+   "kind": "drafted",
+   "name": "eppuvi",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Fanback": {
+   "brief": "a cold-blooded swamp predator with a tall dorsal sail and a scenting snout",
+   "kind": "drafted",
+   "name": "brissaq",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Jamel": {
+   "brief": "a high-humped spindly-legged pack beast that endures long dry marches",
+   "kind": "drafted",
+   "name": "kemmu",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Ollopom": {
+   "brief": "a squat gentle six-legged water grazer often mistaken for a weed clump",
+   "kind": "drafted",
+   "name": "tovuma",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "Plant_Reeds": {
    "columns": {
