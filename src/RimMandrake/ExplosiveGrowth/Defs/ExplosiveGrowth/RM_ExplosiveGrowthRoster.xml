@@ -29,7 +29,9 @@
            "Let Pyrelands grass burst too", keeping 6-9 sprouts), reversing the build's reading of C3. -->
       <li><plant>RM_FE_Plant_Quickgrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
       <li><plant>RM_FE_Plant_EmberGrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
-      <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
+      <!-- fireAdapted decides its kind: growDays 0.05 is under minGrowDaysToSoak, and an undecided row that short is Exempt,
+           whose top is None, so its Tinder never fired (EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY, live 2026-11-03). -->
+      <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant><fireAdapted>true</fireAdapted></li>
 
       <!-- SLIME — slime-fed genetics (roster §SLIME). Ring terrain: the
            Gelatinous Slime mod's own rich slime ground. -->

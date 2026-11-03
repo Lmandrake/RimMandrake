@@ -207,7 +207,7 @@ def cmd_run(args):
         # mod-supplied site check: plan.preflight(s) -> [failed precondition, ...] (plan 3.13)
         if getattr(plan, "preflight", None) and not args.mock_skip_site:
             try:
-                for msg in plan.preflight(s) or []:
+                for msg in call_plan_preflight(plan, s, _csv(args.chains)) or []:
                     cs.append(pf.Check("site:" + msg.split(":")[0][:40], FAIL, msg))
             except Exception as ex:
                 cs.append(pf.Check("site_preflight", UNMEASURED, "%s: %s" % (type(ex).__name__, ex)))
@@ -278,7 +278,7 @@ def record_result(doc, mod, out, start_hash, mod_dir, _record=None):
     now = status.mod_hash(mod_dir)
     if now != start_hash:
         return None, "not recorded: %s changed during the run (%s -> %s)" % (mod, start_hash[:12], now[:12])
-    rel = os.path.relpath(os.path.abspath(out), ROOT).replace(os.sep, "/")
+    rel = result_path(out)
     by = {}
     for r in rows:
         by.setdefault(r["status"], []).append(r["id"])
@@ -295,6 +295,15 @@ def record_result(doc, mod, out, start_hash, mod_dir, _record=None):
     entry = (_record or status.record_run)(mod, mod_dir, run_id, bool(doc.get("all_green")),
                                            walk=northstar.find_walk(ROOT, mod), extra=extra)
     return entry, "recorded %s: %s at %s (%s)" % (mod, entry["status"], entry["hash"][:12], run_id)
+
+
+def result_path(out, root=None):
+    """`out` relative to the repo, or absolute when it lies on another drive: Windows relpath raises ValueError for a
+    D:\\ --out under a \\\\wsl.localhost repo (live 2026-11-03, after the run had already been written)."""
+    try:
+        return os.path.relpath(os.path.abspath(out), root or ROOT).replace(os.sep, "/")
+    except ValueError:
+        return os.path.abspath(out).replace(os.sep, "/")
 
 
 def unclaimed_cannot_show(mod):
@@ -316,6 +325,18 @@ def unclaimed_cannot_show(mod):
 
 def _csv(v):
     return [x.strip() for x in (v or "").split(",") if x.strip()] or None
+
+
+def call_plan_preflight(plan, s, chains):
+    """plan.preflight(s), or plan.preflight(s, chains=[...]) when the plan accepts it: a site precondition only some
+    chains need (ExplosiveGrowth's plant temperature) may then be skipped for a --chains run that needs none of them.
+    chains None = every chain."""
+    import inspect
+    try:
+        takes = "chains" in inspect.signature(plan.preflight).parameters
+    except (TypeError, ValueError):
+        takes = False
+    return plan.preflight(s, chains=chains) if takes else plan.preflight(s)
 
 
 def select_chains(chains, only=None, skip=None):

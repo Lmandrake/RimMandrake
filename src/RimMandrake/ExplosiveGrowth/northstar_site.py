@@ -8,6 +8,12 @@ the anchor's temperature per chain; this reads the same fact once, up front, so 
 refused with the reason instead of recording a page of UNMEASURED."""
 from northstar_driver import site
 
+# Chains that never need a growing plant: each fires a donor's top directly through the debug action
+# (RM_TopResolver.Fire, no charge, no dormancy) and never calls validation._env_grows. A --chains run made only of these
+# skips the temperature precondition: EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY's live T1/T2 (2026-11-03) were refused on
+# a 5 C quicktest map although top_tinder cannot be affected by it. selftest_explosivegrowth_top_donors.py pins this set.
+GROWTH_FREE_CHAINS = frozenset(("top_burst", "top_tinder", "top_slime", "top_rupture", "top_flush"))
+
 SETTINGS = "RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings"
 # shipped defaults, as the strings C# prints (str(10.0) would be "10.0" and read as drift)
 DEFAULTS = {
@@ -68,7 +74,12 @@ DEFAULTS = {
 }
 
 
-def preflight(s):
+def needs_temperature(chains):
+    """chains None (every chain) or any chain outside GROWTH_FREE_CHAINS -> the map must be in plant temperature."""
+    return chains is None or not set(chains) <= GROWTH_FREE_CHAINS
+
+
+def preflight(s, chains=None):
     bad = []
     mm = s.call("jawa/map_info") or {}
     if min(mm.get("sizeX") or 0, mm.get("sizeZ") or 0) < 100:
@@ -87,6 +98,8 @@ def preflight(s):
         site.weather_lock(s, "Clear")
     except Exception as ex:
         bad.append("weather: %s" % ex)
+    if not needs_temperature(chains):
+        return bad
     try:
         x, z = (mm.get("sizeX") or 250) // 2, (mm.get("sizeZ") or 250) // 2
         r = s.call("jawa/cell_temperature", cell="%d,%d" % (x, z)) or {}

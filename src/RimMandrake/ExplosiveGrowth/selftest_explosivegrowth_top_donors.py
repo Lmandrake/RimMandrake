@@ -15,6 +15,11 @@ OwnTop/Tinder to Burst(tinder: true), the Burst outcome to Burst(tinder: false),
 as an unconditional statement of Burst's body. The live bar's reader, validation._stack_total, is run against a fake
 bridge (it must sum stackCount and raise on a list it cannot fully see), top_tinder must feed Hay_stack from it, and the
 committed DLL's .srchash must match the committed sources (the game runs the DLL, not the .cs). Every pin has a control.
+
+Live 2026-11-03 added three: every donor must stay enrolled by RM_ExplosiveGrowthRegistry's Exempt rule (ScorchFruit,
+growDays 0.05 with an undecided row, was Exempt, so its top was None and Fire did nothing); the site preflight must not
+refuse a --chains run of growth-free chains on a cold map (no such chain can reach _env_grows); and the driver must record
+a run whose --out lies on another drive than the repo.
 """
 import re
 import ast
@@ -75,10 +80,20 @@ def load_xml():
     return rows, defs
 
 
+TREE_MIN_VISUAL_SIZE = 2.999          # RM_ExplosiveGrowthKernel.TreeMinVisualSize: the registry's tree rule
+
+
 def is_tree(els):
     for el in els:
         if el.find("./plant/treeCategory") is not None or "Tree" in (el.get("ParentName") or ""):
             return True
+        vs = el.findtext("./plant/visualSizeRange")
+        if vs and "~" in vs:
+            try:
+                if float(vs.split("~")[1]) >= TREE_MIN_VISUAL_SIZE:
+                    return True      # conservative: notTrees/fungus carve-outs are not read, so a big donor is refused
+            except ValueError:
+                pass
     return False
 
 
@@ -314,6 +329,136 @@ class _MutCat:
         return self.fn(b) if key == self.key and b is not None else b
 
 
+MIN_GROW_DAYS_TO_SOAK = 1.0          # ExplosiveGrowthSettings.minGrowDaysToSoak, shipped default (northstar_site.DEFAULTS)
+BUILTIN_EXEMPT = ("Plant_TreeAnima", "Plant_TreeGauranlen", "Plant_Ambrosia")   # RM_ExplosiveGrowthRegistry.BuiltinExempt
+
+
+def load_registry_inputs():
+    """-> (row elements {plant: <li>}, exempt names, thingdefs-by-defName, abstracts-by-Name) over src/ Defs XML."""
+    rows, exempt, by_def, by_name = {}, set(BUILTIN_EXEMPT), {}, {}
+    for p in xml_files():
+        try:
+            with open(p, encoding="utf-8-sig") as f:
+                text = f.read()
+        except (OSError, UnicodeDecodeError):
+            continue
+        if ROSTER_TAG not in text and "<ThingDef" not in text:
+            continue
+        try:
+            root = ET.fromstring(text)
+        except ET.ParseError:
+            continue
+        if root.tag != "Defs":
+            continue
+        for el in root:
+            if el.tag == ROSTER_TAG:
+                for li in el.findall("./plants/li"):
+                    if (li.findtext("plant") or "").strip():
+                        rows[li.findtext("plant").strip()] = li
+                for tag in ("exemptPlants", "bandExemptPlants"):
+                    exempt.update((x.text or "").strip() for x in el.findall("./%s/li" % tag))
+            elif el.tag == "ThingDef":
+                if el.findtext("defName"):
+                    by_def[el.findtext("defName").strip()] = el
+                if el.get("Name"):
+                    by_name[el.get("Name")] = el
+    return rows, exempt, by_def, by_name
+
+
+def grow_days(el, by_name):
+    seen = set()
+    while el is not None and id(el) not in seen:
+        seen.add(id(el))
+        v = el.findtext("./plant/growDays")
+        if v is not None:
+            return float(v)
+        el = by_name.get(el.get("ParentName") or "")
+    return None
+
+
+def registry_exempt_reason(name, rows, exempt, by_def, by_name):
+    """RM_ExplosiveGrowthRegistry.Rebuild's Exempt rule, offline: an Exempt plant's top is None, so Fire does nothing.
+    None when the plant keeps its row's top."""
+    li = rows.get(name)
+    el = by_def.get(name)
+    ext = [x for x in (el.findall("./modExtensions/li") if el is not None else ())
+           if (x.get("Class") or "").endswith("RM_ExplosiveGrowthExtension")]
+    if ext:
+        li = ext[0]          # C#: the def's own extension outranks any roster row
+    arche = (li.findtext("archetype") or "").strip() if li is not None else ""
+    fire = (li.findtext("fireAdapted") or "").strip().lower() == "true" if li is not None else False
+    decided = (arche not in ("", "Auto")) or fire
+    if name in exempt:
+        return "listed exempt"
+    if arche == "Exempt":
+        return "row archetype Exempt"
+    gd = grow_days(by_def.get(name), by_name)
+    if gd is None:
+        return "growDays unreadable"
+    if not decided and gd < MIN_GROW_DAYS_TO_SOAK:
+        return "growDays %s < minGrowDaysToSoak %s and the row decides no archetype/fireAdapted" % (gd, MIN_GROW_DAYS_TO_SOAK)
+    return None
+
+
+GROWTH_GATES = ("_env_grows",)
+
+
+def _call_graph(vsrc):
+    """module-level function name -> every name it references (calls AND callbacks passed on, e.g. pre=fn; nested
+    defs folded into their owner)."""
+    g = {}
+    for node in ast.parse(vsrc).body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            g[node.name] = {c.id for c in ast.walk(node) if isinstance(c, ast.Name)}
+    return g
+
+
+def _suite_chains(vsrc):
+    """@suite.chain("name") -> its function name."""
+    out = {}
+    for node in ast.parse(vsrc).body:
+        if isinstance(node, ast.FunctionDef):
+            for d in node.decorator_list:
+                if (isinstance(d, ast.Call) and isinstance(d.func, ast.Attribute) and d.func.attr == "chain"
+                        and d.args and isinstance(d.args[0], ast.Constant)):
+                    out[d.args[0].value] = node.name
+    return out
+
+
+def growth_free_errors(vsrc, free):
+    """Every chain in northstar_site.GROWTH_FREE_CHAINS is a suite chain from which no growth gate is reachable."""
+    g, chains, errs = _call_graph(vsrc), _suite_chains(vsrc), []
+    for name in sorted(free):
+        fn = chains.get(name)
+        if fn is None:
+            errs.append("%s is not a @suite.chain" % name)
+            continue
+        seen, todo = set(), [fn]
+        while todo:
+            f = todo.pop()
+            if f in seen:
+                continue
+            seen.add(f)
+            todo.extend(x for x in g.get(f, ()) if x in g)
+        hit = seen & set(GROWTH_GATES)
+        if hit:
+            errs.append("%s reaches %s" % (name, sorted(hit)))
+    return errs
+
+
+class _SiteSession:
+    def __init__(self, temp):
+        self.temp, self.calls = temp, []
+
+    def call(self, tool, **kw):
+        self.calls.append(tool)
+        if tool == "jawa/map_info":
+            return {"sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/cell_temperature":
+            return {"temperature": self.temp}
+        raise RuntimeError("not faked: %s" % tool)
+
+
 def main():
     rows, defs = load_xml()
     check("sanity: the rosters parse (rows found)", len(rows) >= 20, len(rows))
@@ -427,6 +572,119 @@ def main():
                      ("o rebound after the read", hs + "\n        o = dict(o, Hay_stack=11)")):
         om = vsrc.replace(hs, b)
         check("control: top_tinder observer mutant '%s' is refused" % label, om != vsrc and bool(tinder_obs_errors(om)))
+
+    # live 2026-11-03: Fire on RM_FE_Plant_ScorchFruit did nothing (plant stayed, Hay 0) because the registry made it
+    # Exempt (growDays 0.05 < 1, row decided nothing) and an Exempt plant's top is None. Every donor must keep its top.
+    rrows, rexempt, rby_def, rby_name = load_registry_inputs()
+    for top, names in sorted(donors.items()):
+        for n in names:
+            why = registry_exempt_reason(n, rrows, rexempt, rby_def, rby_name)
+            check("registry keeps %s donor %s enrolled (not Exempt)" % (top, n), why is None, why)
+    sf = rrows.get("RM_FE_Plant_ScorchFruit")
+    if sf is not None:
+        bare = ET.fromstring(ET.tostring(sf))
+        for c in list(bare):
+            if c.tag in ("fireAdapted", "archetype"):
+                bare.remove(c)
+        mrows = dict(rrows, RM_FE_Plant_ScorchFruit=bare)
+        check("control: ScorchFruit's row without fireAdapted/archetype reads Exempt (growDays 0.05)",
+              registry_exempt_reason("RM_FE_Plant_ScorchFruit", mrows, rexempt, rby_def, rby_name) is not None)
+        xdef = ET.fromstring(ET.tostring(rby_def["RM_FE_Plant_ScorchFruit"]))
+        me = xdef.find("modExtensions")
+        if me is None:
+            me = ET.SubElement(xdef, "modExtensions")
+        ET.SubElement(ET.SubElement(me, "li", {"Class": "RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthExtension"}),
+                      "top").text = "Tinder"
+        check("control: a def extension without archetype outranks the fireAdapted row and reads Exempt",
+              registry_exempt_reason("RM_FE_Plant_ScorchFruit", rrows, rexempt,
+                                     dict(rby_def, RM_FE_Plant_ScorchFruit=xdef), rby_name) is not None)
+        check("control: a listed-exempt donor reads Exempt",
+              registry_exempt_reason("RM_FE_Plant_ScorchFruit", rrows, rexempt | {"RM_FE_Plant_ScorchFruit"},
+                                     rby_def, rby_name) is not None)
+
+    # the site preflight must not refuse a growth-free --chains run on a cold map (live T1/T2 2026-11-03 were refused
+    # at site:temperature, 5 C, before top_tinder ran), and must still refuse every other run there
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+    sys.path.insert(0, HERE)
+    import northstar_site as NS
+    vtext = open(VALIDATION, encoding="utf-8").read()
+    check("GROWTH_FREE_CHAINS holds top_tinder", "top_tinder" in NS.GROWTH_FREE_CHAINS, sorted(NS.GROWTH_FREE_CHAINS))
+    gerrs = growth_free_errors(vtext, NS.GROWTH_FREE_CHAINS)
+    check("no GROWTH_FREE_CHAINS chain can reach _env_grows", not gerrs, gerrs)
+    check("control: a growth chain listed as free is refused",
+          bool(growth_free_errors(vtext, set(NS.GROWTH_FREE_CHAINS) | {"soak_exempt_plants"})))
+    vm = vtext.replace("def _top_chain(t, comp_on, comp_off, top, setting, observe, expect_on, expect_off, why, pre=None):\n",
+                       "def _top_chain(t, comp_on, comp_off, top, setting, observe, expect_on, expect_off, why, pre=None):\n"
+                       "    _env_grows(t)\n", 1)
+    check("control: _top_chain calling _env_grows makes top_tinder refused", vm != vtext
+          and any(e.startswith("top_tinder") for e in growth_free_errors(vm, NS.GROWTH_FREE_CHAINS)))
+    vcb = vtext.replace("\n@suite.chain(\"top_tinder\")", "\ndef _cb_grows(t):\n    _env_grows(t)\n\n\n@suite.chain(\"top_tinder\")", 1)
+    vcb = vcb.replace("\"RM_TopResolver.Burst(tinder: true)\")", "\"RM_TopResolver.Burst(tinder: true)\", pre=_cb_grows)", 1)
+    check("control: a callback passed to _top_chain that calls _env_grows makes top_tinder refused",
+          vcb.count("_cb_grows") == 2 and any(e.startswith("top_tinder") for e in growth_free_errors(vcb, NS.GROWTH_FREE_CHAINS)))
+    check("needs_temperature: every chain (None) needs it", NS.needs_temperature(None) is True)
+    check("needs_temperature: --chains top_tinder does not", NS.needs_temperature(["top_tinder"]) is False)
+    check("needs_temperature: a mix with a growth chain does",
+          NS.needs_temperature(["top_tinder", "soak_exempt_plants"]) is True)
+    NS.site.dlc_status = lambda s: None
+    NS.site.read_settings = lambda s, cls, d: {}
+    NS.site.weather_lock = lambda s, w="Clear": None
+    cold = _SiteSession(5.015458)
+    bad = NS.preflight(cold, chains=["top_tinder"])
+    check("cold map, --chains top_tinder: preflight clean and no temperature read",
+          bad == [] and "jawa/cell_temperature" not in cold.calls, (bad, cold.calls))
+    cold2 = _SiteSession(5.015458)
+    bad2 = NS.preflight(cold2)
+    check("control: cold map, every chain: preflight refuses on temperature",
+          len(bad2) == 1 and bad2[0].startswith("temperature:"), bad2)
+    warm = _SiteSession(20.0)
+    check("control: warm map, every chain: preflight clean", NS.preflight(warm) == []
+          and "jawa/cell_temperature" in warm.calls)
+    # the driver hands the plan its --chains only when the plan's preflight takes `chains`
+    import importlib.util as _ilu
+    spec = _ilu.spec_from_file_location("ns_driver_cli", os.path.join(REPO, "src", "RimMandrake", "Utils",
+                                                                       "northstar_driver", "cli.py"))
+    CLI = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(CLI)
+    seen = []
+
+    class _NewPlan:
+        @staticmethod
+        def preflight(s, chains=None):
+            seen.append(("new", chains))
+            return []
+
+    class _OldPlan:
+        @staticmethod
+        def preflight(s):
+            seen.append(("old",))
+            return []
+    CLI.call_plan_preflight(_NewPlan, None, ["top_tinder"])
+    CLI.call_plan_preflight(_OldPlan, None, ["top_tinder"])
+    check("driver passes --chains to a plan preflight that takes chains, none to an old one",
+          seen == [("new", ["top_tinder"]), ("old",)], seen)
+    # the driver must record a run whose --out is on D: while the repo is \\wsl.localhost (live T1 2026-11-03 crashed there)
+    import ntpath
+    wout, wroot = r"D:\ClaudeWork\x\egrowth_T1.json", r"\\wsl.localhost\Ubuntu\home\m\repo"
+    try:
+        ntpath.relpath(wout, wroot)
+        raised = False
+    except ValueError:
+        raised = True
+    check("control: Windows relpath raises across drives (the crash)", raised)
+    saved = os.path
+    try:
+        os.path = ntpath
+        got = CLI.result_path(wout, wroot)
+        same = CLI.result_path(wroot + r"\Transient\n.json", wroot)
+    finally:
+        os.path = saved
+    check("driver result_path: cross-drive --out falls back to the absolute path", got == wout.replace(os.sep, "/"), got)
+    check("driver result_path: an --out inside the repo stays relative",
+          same == r"Transient\n.json".replace(os.sep, "/"), same)
+    dsrc = open(os.path.join(REPO, "src", "RimMandrake", "Utils", "northstar_driver", "cli.py"), encoding="utf-8").read()
+    check("driver's run calls the plan preflight through call_plan_preflight with --chains",
+          "call_plan_preflight(plan, s, _csv(args.chains))" in dsrc and "plan.preflight(s) or []" not in dsrc)
 
     # the game runs the committed DLL, not RM_TopResolver.cs: its .srchash must match the committed Source/
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
