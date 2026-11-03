@@ -1,0 +1,1 @@
+A source-text selftest that counts exact matches (DeepBedChecks: CapacityForBeds sizing sites ==2) breaks when a new caller copies the line; before finish, run the FULL selftest_flowworks_stock.py (~8 min, exceeds run_selftests' 530 s budget when run with others — run it directly), never only --only <your cases> (PLOT_D_BODY_PRUNE_STALE_SEA gen1 blind_fail).
