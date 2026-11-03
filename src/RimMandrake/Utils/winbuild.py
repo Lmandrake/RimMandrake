@@ -48,6 +48,7 @@ LOCK_DIR = os.environ.get("WINBUILD_LOCK_DIR", os.path.expanduser("~/.cache/rm-w
 DOTNET_USER_GLOB = "/mnt/c/Users/*/.dotnet/dotnet.exe"
 DOTNET_FIXED = ["/mnt/c/Program Files/dotnet/dotnet.exe"]
 RSYNC_EXCLUDES = ["bin/", "obj/", "Textures/", "Sounds/", "*.png", "*.psd", "*.ogg", "*.wav"]
+RSYNC_ENOMEM_WAIT_S = 15    # times the attempt number: 15, 30, 45 s for memory pressure to pass (rsync_retry_wait)
 PATH_TAGS = {"Compile", "None", "Content", "EmbeddedResource", "ProjectReference", "Reference",
              "HintPath", "OutputPath", "BaseOutputPath", "Import"}
 
@@ -210,8 +211,10 @@ def rsync_stage(rels, stage, cwd, excl=()):
     MSBuild sees it newer than obj even when the clone file carries an old mtime (e.g. cp -p restore).
     Returns the CompletedProcess (stdout holds the itemize lines)."""
     r = subprocess.run(["rsync", "-rR", "-c", "-i", "--delete", "--no-perms", "--no-owner", "--no-group",
-                        *excl, *rels, stage + "/"], cwd=cwd, stdout=subprocess.PIPE, universal_newlines=True,
-                       timeout=600)
+                        *excl, *rels, stage + "/"], cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                       universal_newlines=True, timeout=600)
+    if r.stderr:
+        sys.stderr.write(r.stderr)      # kept for rsync_retry_wait, still shown to the caller
     now = time.time()
     for line in r.stdout.splitlines():
         if line.startswith(">f") and len(line) > 12:
@@ -221,6 +224,18 @@ def rsync_stage(rels, stage, cwd, excl=()):
             except OSError:
                 pass
     return r
+
+
+def rsync_retry_wait(r, attempt):
+    """Seconds to wait before staging again, or None if this result is final. The copy is idempotent, so both transient
+    causes just go again: exit 24, a source file vanished mid-copy (another agent saved or renamed it; 2026-10-22), and
+    exit 23 from a drvfs stage whose 9p readdir got ENOMEM under memory pressure (the nightly of 2026-11-03,
+    NIGHTLY_COP_FIX_RED_CZZSPJ_OFFZ). Any other exit 23 (a denied path, say) is a real failure and is not retried."""
+    if r.returncode == 24:
+        return 2
+    if r.returncode == 23 and "Cannot allocate memory" in (getattr(r, "stderr", "") or ""):
+        return RSYNC_ENOMEM_WAIT_S * (attempt + 1)
+    return None
 
 
 @contextlib.contextmanager
@@ -303,17 +318,18 @@ def _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, co
     record["ev_scope"] = rels
     record["ev_start"] = _ce_snapshot(rels)
     # -R keeps repo-relative layout; --delete prunes files removed from the clone (excludes kept).
-    # rsync exit 24 = "some source files vanished": another agent saved/renamed a file in the clone mid-copy (the stage
-    # copies whole src/). Transient, not a build verdict - the copy is idempotent, so retry before failing (2026-10-22).
+    # A transient rsync exit is not a build verdict: rsync_retry_wait says which ones go again.
     # review night r3: staging reads the clone's dll/stamp pairs, so it holds the copy-back lock too (a peer build's
-    # copy-back half done would stage its new stamp beside the old dll). Lock order: stage, then copy-back.
-    with _flock("copy-back"):
-        for attempt in range(4):
+    # copy-back half done would stage its new stamp beside the old dll). Lock order: stage, then copy-back. The wait is
+    # outside that lock, which every build on this machine queues on.
+    for attempt in range(4):
+        with _flock("copy-back"):
             r = rsync_stage(rels, stage, ROOT, excl)
-            if r.returncode != 24:
-                break
-            print("rsync 24 (source files vanished mid-copy); retry %d/3" % (attempt + 1), file=sys.stderr)
-            time.sleep(2)
+        wait = rsync_retry_wait(r, attempt) if attempt < 3 else None
+        if wait is None:
+            break
+        print("rsync %d is transient; retry %d/3 in %d s" % (r.returncode, attempt + 1, wait), file=sys.stderr)
+        time.sleep(wait)
     if r.returncode:
         print("rsync failed (%d)" % r.returncode, file=sys.stderr)
         record["staged"] = False                   # nothing was built: UNMEASURED, not FAIL (review Z F7)
