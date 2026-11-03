@@ -28,3 +28,12 @@ drains (faster when moving), seep detection (`seepMarkerDef` RSW_DeepDesertSeep,
 **Wiring when ruled:** `<li Class="RimMandrake.StarWars.Sarlacc.CompProperties_SarlaccSwimmer" MayRequire="mandrake.rsw.sarlacc">`
 on RSW_GreatDevourer with `anchoredDef` RSW_SarlaccAnchored and `seepMarkerDef` RSW_DeepDesertSeep, plus (1)-(2) in C#
 with a selftest in the Sarlacc suite.
+
+## status (2026-11-03)
+1-2 built in 3b0e1e62 (kill top-up by body size, fed threshold, seep seeking). 3 ruled by the owner 2026-10-09
+(*"The lore is that it converts light desert into extreme desert by absorbing all the water. So either of those two
+biomes."*): `rootingBiomes` = Desert, ExtremeDesert, RUT_Desert, RUT_ExtremeDesert, and dry rooting is on inside them.
+4 (merge, owner card 2026-10-09) is its own item: `SARLACC_STAGEONE_MERGE_TWO_WORMS_ONE_THROAT`.
+
+## verify
+`python3 src/RimMandrake/Utils/run_selftests.py --only selftest_sarlacc_seeker_rooting.py`

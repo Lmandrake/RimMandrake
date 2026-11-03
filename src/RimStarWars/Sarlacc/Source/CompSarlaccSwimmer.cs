@@ -43,6 +43,12 @@ namespace RimMandrake.StarWars.Sarlacc
         /// <summary>False: running dry does NOT root it where it stands; only a seep roots it. Seekers set false, so pits appear only at seeps, never on ordinary desert.</summary>
         public bool rootWhenReserveRunsOut = true;
 
+        /// <summary>BiomeDef defNames where the comp's own tick may root it (dry or at a seep). Empty = any biome.
+        /// Names, not BiomeDef refs, so an absent tier (RimUtinni's twins) is no cross-reference error.
+        /// Owner 2026-10-09: "it converts light desert into extreme desert by absorbing all the water. So either of
+        /// those two biomes." Incident-driven rooting (RootAtSeep, RootAtDewRing) carries its own biome gate.</summary>
+        public List<string> rootingBiomes = new List<string>();
+
         public CompProperties_SarlaccSwimmer()
         {
             compClass = typeof(CompSarlaccSwimmer);
@@ -149,6 +155,11 @@ namespace RimMandrake.StarWars.Sarlacc
             }
             nextRareCheckTick = Find.TickManager.TicksGame + 2500;
 
+            if (!RootingAllowedHere())
+            {
+                return;
+            }
+
             if (reserve <= 0f && Props.rootWhenReserveRunsOut)
             {
                 RootHere(foundSeep: false);
@@ -182,6 +193,17 @@ namespace RimMandrake.StarWars.Sarlacc
         public bool SeepRootingAllowed()
         {
             return Props.seepRootMinReserveFraction <= 0f || ReserveFraction >= Props.seepRootMinReserveFraction;
+        }
+
+        /// <summary>SARLACC_SEEKER_ROOTING_1: true when this map's biome is one the comp may root in (empty list = any).</summary>
+        public bool RootingAllowedHere()
+        {
+            if (Props.rootingBiomes == null || Props.rootingBiomes.Count == 0)
+            {
+                return true;
+            }
+            BiomeDef biome = parent.Map?.Biome;
+            return biome != null && Props.rootingBiomes.Contains(biome.defName);
         }
 
         /// <summary>SARLACC_SEEKER_ROOTING_1: reserve gained for killing a victim, by body size. 0 when the prop is off.</summary>

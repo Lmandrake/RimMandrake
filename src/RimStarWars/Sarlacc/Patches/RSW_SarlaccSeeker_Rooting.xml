@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SARLACC_SEEKER_ROOTING_1: the sarlacc seeker (the franchise-free gulloth, RM_Gulloth, Stage I) quests for rich food, then water, then roots.
-     PROVISIONAL numbers. It roots ONLY at a deep-desert seep (rootWhenReserveRunsOut=false), so no pit ever appears
-     on ordinary desert: the seep marker is the biome gate (owner yes owed for any other placement). -->
+     PROVISIONAL numbers. Kills top the reserve up by victim body size; once fed past the threshold it walks to a known seep
+     and roots there; if it runs dry it roots where it stands. Either way it roots ONLY in light or extreme desert
+     (rootingBiomes), owner 2026-10-09: "The lore is that it converts light desert into extreme desert by absorbing all
+     the water. So either of those two biomes." Elsewhere (e.g. the Long Shade) it never roots. -->
 <Patch>
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Gulloth"]/comps</xpath>
@@ -15,7 +17,13 @@
               <reserveGainPerKilledBodySize>120</reserveGainPerKilledBodySize>
               <seepRootMinReserveFraction>0.6</seepRootMinReserveFraction>
               <seepSeekRadius>60</seepSeekRadius>
-              <rootWhenReserveRunsOut>false</rootWhenReserveRunsOut>
+              <rootWhenReserveRunsOut>true</rootWhenReserveRunsOut>
+              <rootingBiomes>
+                <li>Desert</li>
+                <li>ExtremeDesert</li>
+                <li>RUT_Desert</li>
+                <li>RUT_ExtremeDesert</li>
+              </rootingBiomes>
               <seepDetectRadius>4</seepDetectRadius>
               <seepDetectChancePerCheck>0.15</seepDetectChancePerCheck>
               <anchoredDef>RSW_SarlaccAnchored</anchoredDef>
