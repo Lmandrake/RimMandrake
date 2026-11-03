@@ -25,7 +25,8 @@ else (`show`, `why`, `render`, `reindex`) derives a view from the same ledger.
 
 ## Verbs
 
-Every verb takes the global flags `--seat`, `--target`, `--mode`,
+Every verb takes the per-verb (not global) flags, written AFTER the verb
+(`cli.py bridge take --seat BENCH`; `cli.py --seat BENCH bridge take` is refused): `--seat`, `--target`, `--mode`,
 `--owner-said`. Syntax below is exact, from `--help` — check `--help` again
 before relying on flags not listed here; the CLI has more verbs
 (`block`/`unblock`/`finding`/`spawn`/`needs`/`retarget`/`reassign`/`reclaim`/
