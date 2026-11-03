@@ -1205,6 +1205,11 @@ def sandswim_chain(t):
 
 # ----------------------------------------------------------------------------- chain: the zuurrik
 
+# Vanilla injury HediffDefs (Hediff_Injury / Hediff_MissingPart): what a bite, scratch or worse leaves on a pawn.
+INJURY_HEDIFFS = frozenset(("Bite", "Scratch", "Cut", "Stab", "Crush", "Crack", "Bruise", "Shredded",
+                            "MissingBodyPart"))
+
+
 def _blood(t, cells):
     t.bridge_call("jawa/spawn_batch", ops=";".join("Filth_Blood:%d,%d" % c for c in cells))
 
@@ -1256,6 +1261,37 @@ def zuurrik_chain(t):
             _note(t, "blood cells at wake / 3000 ticks later", [before, after])
             if after >= before:
                 _fail("the swarm did not strip any blood in 3000 ticks (%d -> %d)" % (before, after))
+    with _comp(t, "zuurrik_spares_unwounded"):
+        # STILLSAND_CONTENT_LIVE_PROOF_1 spec 2: "it never attacks an unwounded pawn". An unhurt wild muffalo
+        # and an unhurt colonist are set one cell from an awake (still-feeding) swarm and read 1800 ticks later.
+        # LIVE 2026-10-01: 3 unhurt hares beside the swarm vanished with no corpse; a vanished victim is a FAIL
+        # here, never a pass by absence.
+        if _live(t):
+            swarm = _zuurriks(t)
+            if not swarm:
+                _unmeasured(t, "no awake swarm to stand beside")
+            sx, sz = swarm[0]["x"], swarm[0]["z"]
+            victims = {"Muffalo": _spawn(t, "Muffalo", sx + 1, sz), "Colonist": _colonist(t, sx, sz + 1)}
+            _STATE["zvictims"] = list(victims.values())
+            t.wait_ticks(1800)
+            rows = _rows(t, health=True)
+            hurt, gone = {}, []
+            for kind, pid in victims.items():
+                row = rows.get(pid)
+                if row is None or row.get("x") is None:
+                    gone.append(kind)
+                    continue
+                inj = [h.get("def") for h in _hediffs(row) if h.get("def") in INJURY_HEDIFFS]
+                bleed = float(((row.get("health") or {}).get("bleedRate")) or 0.0)
+                if inj or bleed > 0 or row.get("dead"):
+                    hurt[kind] = {"injuries": inj, "bleedRate": bleed, "dead": bool(row.get("dead"))}
+            _note(t, "unwounded beside the swarm after 1800 ticks", {"hurt": hurt, "gone": gone,
+                                                                     "swarm": len(_zuurriks(t))})
+            if gone:
+                _fail("unhurt %s beside an awake swarm vanished in 1800 ticks (no pawn row): eaten or removed "
+                      "without a sign" % gone)
+            if hurt:
+                _fail("the swarm hurt an unwounded pawn: %s" % hurt)
     with _comp(t, "zuurrik_toggle_off_no_wake", toggle="zuurrikEnabled"):
         if _live(t):
             _blood(t, _cluster(x - 14, z + 6))                 # fresh stain, so the on arm has a cause
@@ -1276,6 +1312,30 @@ def zuurrik_chain(t):
             if not back:
                 _unmeasured(t, "the swarm did not wake with the toggle back on either: the off arm proves "
                                "nothing (see zuurrik_wakes_on_blood)")
+    with _comp(t, "zuurrik_reburies_when_quiet"):
+        # Spec 2: "re-bury ... after three quiet polls". Quiet = no blood filth and no corpse within 15 cells of
+        # any member (RM_MapComponent_Zuurrik.HasWorkNear). Clear every stain and corpse on a 60-cell square, then
+        # give it 3 polls plus one of margin (4 x 600 ticks): the swarm must be gone, and gone by burial (no
+        # RM_Zuurrik corpse), not by death. Runs LAST: a burial starts a 15000-tick wake cooldown.
+        if _live(t):
+            if not _zuurriks(t):
+                _unmeasured(t, "no awake swarm to watch re-bury")
+            for pid in _STATE.pop("zvictims", []):      # a victim dying here would be a corpse: never quiet
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+            wide = _rs(_rect(t, 60))
+            t.bridge_call("jawa/destroy_batch", rects=wide, categories="Item,Filth")
+            left = _count(t, "Filth_Blood", wide)
+            t.wait_ticks(2400)
+            alive = len(_zuurriks(t))
+            corpses = _count(t, "Corpse_RM_Zuurrik", wide)
+            _note(t, "blood left after clearing / swarm and zuurrik corpses after 2400 quiet ticks",
+                  [left, alive, corpses])
+            if left:
+                _unmeasured(t, "%d blood cells survived the clear: the swarm was never quiet" % left)
+            if alive:
+                _fail("%d zuurrik still up after 4 quiet polls (QuietPollsToBury 3)" % alive)
+            if corpses:
+                _fail("the swarm left %d corpses: it died instead of re-burying" % corpses)
 
 
 # ----------------------------------------------------------------------------- chain: loomma

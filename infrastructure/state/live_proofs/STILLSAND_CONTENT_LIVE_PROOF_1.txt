@@ -1,0 +1,2 @@
+live-proof A1: python3 src/RimMandrake/Stillsand/prove_stillsand_content.py --clause A1
+live-proof A2: python3 src/RimMandrake/Stillsand/prove_stillsand_content.py --clause A2

@@ -243,12 +243,32 @@ class Fake(object):
         blood = self.blood_cells()
         thr = 2 if "wakes_below_threshold" in b else int(self.settings["zuurrikBloodThreshold"])
         if alive:
+            if "bites_unwounded" in b:
+                for p in self.pawns.values():
+                    if p["kind"] != "RM_Zuurrik" and not p["dead"] and \
+                            min(abs(p["x"] - z["x"]) + abs(p["z"] - z["z"]) for z in alive) <= 3:
+                        p["h"]["Bite"] = 0.5
+            near = [t for t in self.things.values() if t["def"] == "Filth_Blood" or t["def"].startswith("Corpse_")]
+            near = [t for t in near if any((t["x"] - z["x"]) ** 2 + (t["z"] - z["z"]) ** 2 <= 14.9 ** 2
+                                           for z in alive)]                  # HasWorkNear's WatchRadius
             if "no_strip" not in b and blood:
                 del self.things[blood[0]["id"]]          # strips one stain per poll
+                self.zquiet = 0
+            elif near:
+                self.zquiet = 0
+            else:                                        # quiet: re-bury after 3 quiet polls (QuietPollsToBury)
+                self.zquiet = getattr(self, "zquiet", 0) + 1
+                if self.zquiet >= 3 and "no_bury" not in b:
+                    for p in alive:
+                        del self.pawns[p["id"]]
+                    self.zquiet = 0
             return
-        if len(blood) >= thr:
+        # the swarm wakes AT a cluster of >= thr stains within ClusterRadius 7.9 (TryWake), never at a stray stain
+        dense = [c for c in blood if sum((o["x"] - c["x"]) ** 2 + (o["z"] - c["z"]) ** 2 <= 7.9 ** 2
+                                         for o in blood) >= thr]
+        if dense:
             for i in range(3):
-                self.add_pawn("RM_Zuurrik", blood[0]["x"] + i, blood[0]["z"])
+                self.add_pawn("RM_Zuurrik", dense[0]["x"] + i, dense[0]["z"])
 
     # ------------------------------------------------------------ the regenerated map
     def regen(self):
@@ -786,6 +806,8 @@ BREAKS = {
     "no_wake": ["zuurrik.zuurrik_wakes_on_blood"],
     "no_strip": ["zuurrik.zuurrik_strips_blood"],
     "zuurrik_ignores_toggle": ["zuurrik.zuurrik_toggle_off_no_wake"],
+    "bites_unwounded": ["zuurrik.zuurrik_spares_unwounded"],
+    "no_bury": ["zuurrik.zuurrik_reburies_when_quiet"],
     "loomma_ignores_shade": ["loomma.loomma_sunstruck_open_vs_roofed"],
     "soorrak_nre": ["soorrak.soorrak_no_exceptions"],
     "soorrak_stuck": ["soorrak.soorrak_not_stuck"],
