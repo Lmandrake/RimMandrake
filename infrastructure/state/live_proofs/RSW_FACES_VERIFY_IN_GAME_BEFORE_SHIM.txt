@@ -1,0 +1,5 @@
+# STAGING: needs Facial Animation (nals.facialanimation, a workshop mod no small tier carries) with mandrake.rsw.starwarsraces,
+# mandrake.rsw.patches and mandrake.rut.patches: the full list (infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml
+# holds all four). On any load without them the script exits 2 (UNMEASURED: not running ...). Quicktest map is enough.
+live-mods: StarWarsRaces, StarWarsPatches, UtinniPatches
+live-proof A1: python.exe src/RimStarWars/StarWarsRaces/fa_faces_live.py --live < /dev/null
