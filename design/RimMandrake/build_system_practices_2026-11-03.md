@@ -150,7 +150,7 @@ What is missing:
 - `incident.py` (told-to-recovered records).
 - `alarm_census.py` (every alarm kind the source can raise).
 - `lessons.py`.
-- No design doc defines an SLO or an error budget.
+- Built 2026-11-03 (`PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`): the SLIs, their lines and the 24 h-of-48 h budget are the `health` block of `src/RimMandrake/Utils/ops_watch_rules.json`; `src/RimMandrake/Utils/ops_health.py` publishes the one verdict (`health.json` beside ops_watch's `status.json`) that `relentless.py` obeys. A spent budget files `OPS_ERROR_BUDGET_DIAGNOSE`. The tokens-on-INFRA SLI has no instrument yet and reads UNMEASURED; a twice-seen fix (`live_repeats`) leads the system list marked as owing a class guard test, but no close gate enforces the guard yet.
 
 **What to add.**
 

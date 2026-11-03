@@ -39,6 +39,22 @@
   "_doc": "c_plan (DI3, MI1 in operating_requirements_2026-11-01.md). status_rank: a mod's modcheck status as the number an entry's finish-line reading rises on; a status not here is a reading not seen. Every limit is in the ranges block: list_max_age_h is plan.list_age_h's distressed bound, advance_max_days is plan.days_since_advance's",
   "status_rank": {"DRAFT-CHECKLIST": 0, "RED": 1, "GREEN": 2}
  },
+ "health": {
+  "_doc": "ops_health.py (PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF): Operations' ONE verdict, health.json beside status.json, read by relentless.py to order its pool. Owner 2026-11-03: 'Yes relentless fixes itself first.'; 'I don't want relentless to own assessing system health. I want it to ask \"the system\" for its health assessment, and that belongs to the operations component.' An SLI is bad past its line; its budget is spent at allowed_bad_h bad hours in window_h (design idea 5: 'When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers'). Spent: degraded, content paused. system_words/system_prefixes classify an open item as the system's own (no game mod named).",
+  "max_age_min": 45, "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0,
+  "slis": [
+   {"name": "infra_share", "key": "relentless.live_measured_pct", "op": "<", "x": 40, "why": "idea 1 proxy: under 40% of recent live runs gave PASS or FAIL, the rest said nothing (INFRA or UNMEASURED)"},
+   {"name": "nightly_reds", "key": "testing.nightly_news", "op": ">", "x": 25, "why": "idea 4: open nightly reds nobody listed; more than 25 is a suite nobody can read"},
+   {"name": "tmp_headroom", "key": "disk.tmp_free_gb", "op": "<", "x": 2, "why": "idea 3: /tmp headroom at launch"},
+   {"name": "root_headroom", "key": "disk.root_free_gb", "op": "<", "x": 50, "why": "idea 3: VHDX headroom"},
+   {"name": "pool_headroom", "key": "disk.pool_gb", "op": ">", "x": 66.5, "why": "idea 3: pool within 5% of its 70 GB cap"}
+  ],
+  "unmeasured_slis": {"infra_tokens_day": "idea 1/5: tokens spent on INFRA or harness-caused work per day; no instrument tags spend by cause yet"},
+  "system_prefixes": ["OPS_", "LIVE_RESTORE_"],
+  "content_kinds": ["mod", "art"],
+  "content_words": ["redraw", "sprite", "sprites", "biome", "creature", "creatures", "roster", "xenotype", "populate", "species", "faction", "quest", "drawbridge"],
+  "system_words": ["relentless", "ops", "operations", "conductor", "designer", "dispatcher", "dispatch", "timer", "timers", "selftest", "selftests", "nightly", "tool", "tools", "tooling", "pipeline", "rimflow", "ledger", "hooks", "alarm", "alarms", "deadman", "harness", "checker", "checkers", "worker", "workers", "clone", "clones", "pool", "scratch", "rimpulse", "pulse", "digest", "testq", "artpipe", "steward", "supervisor", "budget", "lint", "modcheck", "winbuild", "handoff", "lessons", "seat", "seats", "runner", "census", "belt", "lease", "watcher", "systemd", "testpilot", "rimbridge", "jawabench", "brief", "briefs", "mirror", "publish", "landing", "incident", "incidents"]
+ },
  "ranges": {
   "plan.list_state": {
    "owner": "Producer",
@@ -581,6 +597,7 @@
    "why": "FOUNDRY_THROUGHPUT_MEASURE_V2_GAP: bridge held 14.6 h/day in the best v2 week, 2.5 in early v3; flag under 8 h/day while live checks are owed"},
   {"key": "tokentalk.*.share", "op": ">=", "value": 10, "alarm": false, "tag": "TOKEN_TALK_DRIFT",
    "why": "owner 2026-10-27: token-blind roles must not talk tokens; cold 7-day baseline BENCH/FOUNDRY ledger (BENCH left the measure 2026-10-31) and commits was 2-6%, so 10% is about double"},
+  {"key": "health.spent_slis", "op": ">", "value": 0, "alarm": true, "tag": "ERROR_BUDGET", "name": "OPS_ERROR_BUDGET_DIAGNOSE", "marks": ["MEASURED"], "why": "PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF: an SLI spent its error budget, so Relentless takes only system items until it recovers. The repair item: read health.json (python3 src/RimMandrake/Utils/ops_health.py show) and fix the spent SLI's cause, then ship a guard test for its class."},
   {"key": "testing.nightly_news", "op": ">", "value": 0, "alarm": true, "tag": "NIGHTLY_NEWS", "name": "OPS_NIGHTLY_RED_DIAGNOSE", "marks": ["MEASURED"], "title_field": "said", "note_field": "news",
    "why": "TE1: a nightly red not on the known-red list, or an entry past its age. A listed red is silence. Fix it, or at known_red_after_nights nights list it under an open item: python3 src/RimMandrake/Utils/known_reds.py add <test> --item <ID> --why ..."},
   {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": true, "tag": "UNTRIAGED", "name": "OPS_FINDINGS_DIAGNOSE",

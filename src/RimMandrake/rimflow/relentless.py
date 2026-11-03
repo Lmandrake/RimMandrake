@@ -227,14 +227,32 @@ def new_state(item, now, why):
             "not_before": 0, "ledger_started": False, "start_intent": False, "done_at": None, "quarantined": []}
 
 
-def queue_order(states, plan=None):
-    """The priority list first (`plan`: {item: place}, DI3), then returned items, oldest return first, then fresh in
-    enrol order. Pure."""
-    plan = plan or {}
+def queue_order(states, plan=None, first=None):
+    """System items first (`first`: {item: place}, Operations' verdict, PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF), then the
+    priority list (`plan`: {item: place}, DI3), then returned items, oldest return first, then fresh in enrol order. Pure."""
+    plan, first = plan or {}, first or {}
     q = [s for s in states if s["status"] == "queued"]
-    return sorted(q, key=lambda s: (0, plan[s["item"]], s["item"]) if s["item"] in plan
+    return sorted(q, key=lambda s: (-1, first[s["item"]], s["item"]) if s["item"] in first
+                  else (0, plan[s["item"]], s["item"]) if s["item"] in plan
                   else (1, s["returned_at"], s["item"]) if s["returned_at"] is not None
                   else (2, s["enrolled_at"], s["item"]))
+
+
+def health_order(verdict, why, fallback):
+    """Operations' health verdict (Utils/ops_health.py, health.json) as Relentless obeys it; it judges nothing itself.
+    The owner, 2026-11-03: "I want it to ask "the system" for its health assessment, and that belongs to the operations
+    component." -> {first: {item: place}, degraded, fresh, why}. With no fresh verdict every open system item is first
+    at once, by Operations' own classifier (`fallback`), and content is never paused (owner card 2026-11-03: "System
+    work immediately but existing non system work continues")."""
+    ids = verdict.get("system_items") if verdict else None
+    said = "%s: %s" % (why, verdict.get("why") or "") if verdict else why
+    if ids is None:     # no verdict, or one whose pass had no ledger: Operations' classifier names the items
+        try:
+            ids, said = list(fallback() or []), "%s; every open system item first, at once" % said
+        except Exception as e:  # noqa: BLE001  no classifier: ordinary order, said aloud
+            ids, said = [], "%s; system items unknown (%s: %s): ordinary order" % (said, type(e).__name__, str(e)[:120])
+    return {"first": {i: n for n, i in enumerate(ids)}, "degraded": bool(verdict) and verdict.get("state") == "degraded",
+            "fresh": bool(verdict), "why": said}
 
 
 def fail(store, st, klass, detail, r, now, time_not_work=False):
@@ -995,7 +1013,8 @@ class Effects(relentless_game.GameFx):
         return self._ledger
 
     def pool_order(self, r):
-        """Open items in the pool, best first: the priority list, then Test Pilot bouncers, raised, then rank().
+        """Open items in the pool, best first: Operations' system items (health()), the priority list, then Test Pilot
+        bouncers, raised, then rank().
         A list that cannot be obeyed gives no order, and ops_watch's plan family reads that as distressed."""
         priority, testpilot_route, model = pkg("priority"), pkg("testpilot_route"), pkg("model")
         plist = pkg("priority_list")
@@ -1011,8 +1030,27 @@ class Effects(relentless_game.GameFx):
         pool.sort(key=lambda i: (plist.position(i, orders), i.id not in bounce, model.raise_key(i), not i.this_deployment,
                                  priority._row_key(i), i.created_at or "", i.id))
         pool = [i for i in pool if i.kind != "mod" or not self.concept_refusal(i.id)]   # no tree, no worker
+        h = self.health()       # the system's own items before content: first pick, never preemption (stable sort)
+        self.first, self.degraded = h["first"], h["degraded"]
+        pool.sort(key=lambda i: (i.id not in self.first, self.first.get(i.id, 0)))
         self.plan = {i.id: plist.position(i, orders) for i in pool if plist.position(i, orders) <= plist.MAX_ENTRIES}
         return [i.id for i in pool], w
+
+    def health(self):
+        """Operations' verdict, read once per tick (health_order). Relentless asks; it never assesses."""
+        if self.__dict__.get("_health") is None:
+            utils = os.path.join(os.path.dirname(HERE), "Utils")
+            if utils not in sys.path:
+                sys.path.insert(0, utils)
+            import ops_health
+            v, why = ops_health.read_verdict()
+
+            def fallback():
+                with open(os.path.join(utils, "ops_watch_rules.json"), encoding="utf-8") as f:
+                    ops_rules = json.load(f)
+                return ops_health.system_ids(self.ledger_items()[1], ops_rules, self.books)
+            self._health = health_order(v, why, fallback)
+        return self._health
 
     def concept_refusal(self, item):
         """Why this item may not reach a worker, or None: a mod needs a well-defined tree (concept_tree.gate)."""
@@ -2240,11 +2278,20 @@ def enrol(store, fx, r, now):
             if x["status"] in HOLDS_A_PLACE or in_line(x):
                 taken |= set(fx.item_mods(x))
     plan = getattr(fx, "plan", None) or {}      # a listed item never waits for room: the list holds under 30 (DI3)
+    first = getattr(fx, "first", None) or {}    # Operations' system items: order puts them first (pool_order)
+    # a system item waits for neither the share nor content in the line, only for the per-tick and line caps
+    sys_room = min(r["enrol_per_tick"], r["max_queued"] - sum(1 for s in live if in_line(s) and s["item"] in first))
+    paused = content_paused(fx, states, order, ours)
     for i in order:
-        if room <= 0 and i not in plan:
+        if i in first and i not in plan and room <= 0:
+            if sys_room <= 0 or i in ours:
+                continue
+        elif room <= 0 and i not in plan:
             break
         if i in ours:
             continue
+        if paused and i not in first and i not in plan:
+            break
         if one_per_mod:     # a candidate whose mod is already taken would only park: walk on to work that can start
             mods = set(fx.item_mods({"item": i, "last_sha": None}))
             if mods & taken:
@@ -2258,7 +2305,19 @@ def enrol(store, fx, r, now):
                 store.journal({"at": iso(now), "do": "enrol", "item": i})
                 took.append(i)
                 room -= 1
+                sys_room -= i in first
     return took
+
+
+def content_paused(fx, states, order=None, ours=None):
+    """True while Operations' verdict reads degraded and a system item still waits for a place: in the line, or in the
+    pool not yet enrolled. When every system item is already being worked, content may start (owner card 2026-11-03)."""
+    first = getattr(fx, "first", None) or {}
+    if not getattr(fx, "degraded", False) or not first:
+        return False
+    if any(s["status"] == "queued" and s["item"] in first for s in states):
+        return True
+    return any(i in first and i not in (ours or ()) for i in (order or ()))
 
 
 def ledger_has(item):
@@ -3054,7 +3113,13 @@ def lease(store, fx, r, now, acts):
         if waiting > cfg["check_backlog_max"]:          # more builders would only lengthen the line at the checkers
             acts.append({"do": "wait", "why": "check_backlog"})
             return
-    for st in queue_order(store.states(), getattr(fx, "plan", None)):
+    first = getattr(fx, "first", None) or {}
+    paused = content_paused(fx, store.states())
+    for st in queue_order(store.states(), getattr(fx, "plan", None), first):
+        if paused and st["item"] not in first and st["item"] not in (getattr(fx, "plan", None) or {}):
+            # degraded: content waits, what runs finishes; the priority list is his word and still goes
+            acts.append({"do": "wait", "why": "health degraded: content paused while system items wait"})
+            return
         if not st["ledger_started"] and fx.item_state(st["item"]) is None:     # not published yet: see retire()
             continue
         if st.get("not_before", 0) > now:
@@ -3490,6 +3555,10 @@ def tick(store=None, fx=None, r=None, now=None):
         spend_holds(store, fx, r, now, acts)
         enrol_acts = enrol(store, fx, r, now)
         acts += [{"do": "enrol", "item": i} for i in enrol_acts]
+        h = getattr(fx, "_health", None)
+        if h:       # what Relentless obeyed this tick; a missing or stale verdict is said here (Operations raises it)
+            acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),
+                         "why": h["why"][:300]})
         try:
             lease(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a hung rimflow must not lose the tick's flush; a reservation resumes next tick

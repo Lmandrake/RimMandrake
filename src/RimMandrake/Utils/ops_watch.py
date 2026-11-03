@@ -41,6 +41,9 @@ rimflow/dispatcher_schedule.json "measure"):
    ALARM   a target with alarm true files ONE rimflow item when its condition is NEW (alarms.json dedupes; it re-arms
            only after the condition clears; a failed filing stays PENDING and is retried next pass). Filed as RUNNER
            from the dispatch clone (its testq/ingest.py) under QHOME/ingest.lock. Only with --file-alarms.
+   HEALTH  ops_health.py, on a full pass only: Operations' ONE verdict for Relentless, health.json (healthy/degraded, the
+           error budget per SLI, the ordered system items, as_of); its points health.state and health.spent_slis (the
+           OPS_ERROR_BUDGET_DIAGNOSE alarm). PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF.
    HAND    status.json (every current point: slot_allocator.py reads it), digest.json and digest.md: per KPI the
    OVER    current value, its mark, the change over 24 h and 7 d, and its open flags; one cheap read for Operations.
            digest_blind.md: an ALLOW-LIST (BLIND_KEYS: machine health, disk, stalls, flow, production output
@@ -3021,6 +3024,24 @@ def carry_last_measured(lastm, saved, points, now):
     return merged, keep
 
 
+def publish_health(points, prev, ctx, rules, now):
+    """Operations' one verdict (ops_health.py, health.json) from this pass's points and the series. -> its points:
+    health.state and health.spent_slis (the OPS_ERROR_BUDGET_DIAGNOSE target). A failure is UNMEASURED and flagged;
+    the old verdict then ages until Relentless reads it as stale."""
+    import ops_health
+    try:
+        world = None
+        if ctx.get("events") is not None:
+            import pulse_core as pc
+            world = pc._model().replay(ctx["events"])
+        v = ops_health.publish(points, prev, world, rules, str(data_clone()), now)
+    except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
+        why = "health verdict not written: %s: %s" % (type(e).__name__, str(e)[:160])
+        return {"health.state": U(why), "health.spent_slis": U(why)}
+    x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"][:300]}
+    return {"health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x)}
+
+
 @_locked
 def run(now=None, rules=None, filer=None, families=None):
     now = now or time.time()
@@ -3062,6 +3083,12 @@ def run(now=None, rules=None, filer=None, families=None):
         if (not families or fam in families) and not counts_as_measured(points.get(key)):
             points[key] = st_suppressed(points, fam)
             stamp_ranges(points, rules)
+    health_flag = None
+    if not families:      # a limited pass has not measured every SLI: it never overwrites the verdict
+        points.update(publish_health(points, prev, ctx, rules, now))
+        if points["health.state"].get("m") != "MEASURED":
+            health_flag = {"rule": "health", "key": "health.state", "value": None, "window": "now",
+                           "detail": "NO HEALTH VERDICT this pass: %s" % points["health.state"].get("why")}
     hist, lastm = {}, {}
     for fam, recs in prev.items():
         recs = [r for r in recs if r["t"] <= now + 300]     # a future row would read as just measured, and hide silence
@@ -3080,6 +3107,8 @@ def run(now=None, rules=None, filer=None, families=None):
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
         flags = sick + [{"rule": "bad_rule", "key": "rules", "value": None, "window": "now",
                          "detail": "andon failed: %s: %s" % (type(e).__name__, str(e)[:160])}]
+    if health_flag:
+        flags.append(health_flag)
     if rules.get("_load_error"):
         flags.append({"rule": "bad_rule", "key": "rules.file", "value": None, "window": "now",
                       "detail": "the rules file cannot be read, last good copy in use: %s" % rules["_load_error"]})
