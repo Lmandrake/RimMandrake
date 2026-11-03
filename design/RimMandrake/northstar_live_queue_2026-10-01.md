@@ -11,9 +11,9 @@ The verdict is one of:
 - `UNMEASURED`: the job could not ask the game (bridge down, tool missing, setup refused). This is
   never a verdict.
 
-What is known so far: the scripts were built and tested **offline only**, against `rimdrive.fake.FakeWorld`.
-All jobs pass their dry runs, and `selftest_live_queue.py` proves that every criterion can FAIL. **No job has
-run live.** The results file is where job state lives. This doc never records it.
+Every job is rehearsed offline against `rimdrive.fake.FakeWorld`, and `selftest_live_queue.py` proves that
+every criterion can FAIL. The results file is where job state lives. This doc never records it. What the live
+passes taught is in `skills/northstar-validation/`.
 
 ## How to start
 
@@ -195,8 +195,8 @@ reservoir draw-down, shoreline recession, tar lagging water, and a pawn lowering
    NORTHSTAR_COMPANION_GAPS_1.
 2. Quit the game, then `python3 src/RimMandrake/Utils/modcheck/live_queue/prep_wsl.py --restore`.
 3. `rimflow bridge release`.
-4. Commit `Transient/modcheck/live_queue_results.jsonl` and the job folders under
-   `Transient/modcheck/live_queue/` with explicit paths.
+4. `Transient/` is untracked (owner card 2026-10-18): pin `Transient/modcheck/live_queue_results.jsonl` with
+   `python3 src/RimMandrake/Utils/transient_pin.py add <path>` if anything later must read it.
 
 Flip `--situational` to the default (NORTHSTAR_SITUATIONAL_ROLLOUT_1) only once all of these hold:
 - abort_proof is MEASURED PASS (the abort path is proven live);

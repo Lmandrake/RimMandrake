@@ -239,6 +239,11 @@ Writing, running or reading a proof (`proof_all.py`, `proof_hose.py`, a `northst
 `validation.py`), log budgets, perf rows, timing windows, pre-port save fixtures, and classifying
 rows as MOD / SITE / HARNESS all live in `skills/live-debugging-proof-harness/`.
 
+Running a north-star suite live — the bland world (generated or saved), the situational envelope
+(`modcheck run --situational`), the live_queue jobs, the companion-reading detectors, the
+interference playbook (naming dialogs, focus theft, late replies, extra maps) and the time ledger of
+a live pass — lives in `skills/northstar-validation/`.
+
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 
 **Owner's instruction, 2026-08-13, and it is the most under-used capability we
