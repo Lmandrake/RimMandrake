@@ -1,0 +1,34 @@
+{
+ "KOTOR_AlloyDurasteel": {
+  "statBases": {
+   "BluntDamageMultiplier": "1.2",
+   "DeteriorationRate": "0",
+   "Flammability": "0",
+   "MarketValue": "5",
+   "Mass": "0.675",
+   "SharpDamageMultiplier": "1",
+   "StuffPower_Armor_Blunt": "0.6",
+   "StuffPower_Armor_Heat": "1",
+   "StuffPower_Armor_Sharp": "0.8",
+   "StuffPower_Insulation_Cold": "1.25",
+   "StuffPower_Insulation_Heat": "1.25"
+  },
+  "statFactors": {
+   "Beauty": "0.5",
+   "Flammability": "0",
+   "MaxHitPoints": "3",
+   "MeleeWeapon_CooldownMultiplier": "1",
+   "WorkToBuild": "1",
+   "WorkToMake": "1"
+  }
+ },
+ "KOTOR_Metal": {
+  "statBases": {
+   "Beauty": "-1",
+   "Mass": "0"
+  },
+  "statFactors": {}
+ },
+ "_source": "git 96be3c36c^:src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml (== workshop 3254370945/1.6/Defs/ThingDefs_Resources/KotORResource_Metals2.xml, checked 2026-11-03)",
+ "_why": "L1 stat equality must be checkable without git history; prove_canon_materials.py cross-checks this snapshot against git when git can read it"
+}

@@ -3,7 +3,7 @@
 
 The functional script for the canon-materials work (design/RimMandrake/debug_process.md). Pure file reads, no game.
 
-  python3 prove_canon_materials.py [--selftest]      exit 1 on any FAIL; OWED/PARTIAL do not fail the run.
+  python3 prove_canon_materials.py [--selftest]      exit 0 only when L1-L9 PASS (L10 may be OWED); any FAIL/PARTIAL/OWED on L1-L9 exits 1.
 
 Verdicts: PASS (criterion provable offline and proven), PARTIAL (some of it built, named gaps), OWED (not built, or only a
 live load can say), FAIL (built and wrong). Only PASS may be passed to `rimflow verify --criterion`.
@@ -141,6 +141,81 @@ def git_show(rev, path):
         return subprocess.run(["git", "-C", SRC, "show", "%s:%s" % (rev, path)], capture_output=True, check=True, timeout=60).stdout.decode("utf-8", "replace")
     except Exception:
         return None
+
+
+DONOR_SNAPSHOT = os.path.join(ARM, "canon_materials_l1_donor_stats.json")
+
+
+def _stats(root, name):
+    for td in root.iter("ThingDef"):
+        if td.findtext("defName") == name:
+            sb, sf = td.find("statBases"), td.find("stuffProps/statFactors")
+            return ({c.tag: c.text for c in sb} if sb is not None else {}), ({c.tag: c.text for c in sf} if sf is not None else {})
+    return None, None
+
+
+def donor_durasteel_stats(donor_xml=None, snapshot=DONOR_SNAPSHOT):
+    """(statBases, statFactors, source, problems) for KOTOR_AlloyDurasteel merged over its parent KOTOR_Metal.
+    Source order: git DONOR_REV^ (when readable), else the committed snapshot. When both are readable they must
+    agree, so a stale or edited snapshot is a FAIL, never a silent pass. None stats = no source at all (FAIL)."""
+    probs = []
+    if donor_xml is None:
+        donor_xml = git_show(DONOR_REV + "^", DONOR_FILE)
+    gs = gf = None
+    if donor_xml:
+        root = ET.fromstring(donor_xml)
+        os_, of = _stats(root, "KOTOR_AlloyDurasteel")
+        if os_ is not None:   # donor ParentName KOTOR_Metal (abstract) supplies Beauty -1 and stuff defaults
+            ps, pf = _stats(root, "KOTOR_Metal")
+            gs, gf = dict(ps or {}, **os_), dict(pf or {}, **of)
+    ss = sf = None
+    if snapshot and os.path.exists(snapshot):
+        j = json.load(open(snapshot, encoding="utf-8"))
+        try:
+            ss = dict(j["KOTOR_Metal"]["statBases"], **j["KOTOR_AlloyDurasteel"]["statBases"])
+            sf = dict(j["KOTOR_Metal"]["statFactors"], **j["KOTOR_AlloyDurasteel"]["statFactors"])
+        except (KeyError, TypeError):
+            probs.append("donor stat snapshot %s malformed" % os.path.basename(snapshot))
+    if gs is not None and ss is not None and (gs, gf) != (ss, sf):
+        probs.append("donor stat snapshot disagrees with git %s^: snapshot %r/%r vs git %r/%r" % (DONOR_REV, ss, sf, gs, gf))
+    if gs is not None:
+        return gs, gf, "git %s^" % DONOR_REV, probs
+    if ss is not None:
+        return ss, sf, "snapshot %s" % os.path.basename(snapshot), probs
+    return None, None, None, probs + ["donor KOTOR_AlloyDurasteel stats unreadable from git %s^ and from the snapshot (stat equality unproven)" % DONOR_REV]
+
+
+def l1_stats_check(dur, donor_xml=None, snapshot=DONOR_SNAPSHOT):
+    """L1's stat clause: sharp armor power 0.9 (checked whatever the donor source), every other statBase and stuff
+    statFactor equal to the donor's. Returns (problems, info)."""
+    bad, info = [], []
+    ds, df = _stats(dur, "RSW_Durasteel")
+    if ds is None:
+        return ["RSW_Durasteel ThingDef not found"], info
+    if ds.get("StuffPower_Armor_Sharp") != "0.9":
+        bad.append("sharp armor power %r, want 0.9" % ds.get("StuffPower_Armor_Sharp"))
+    os_, of, src, probs = donor_durasteel_stats(donor_xml, snapshot)
+    bad += probs
+    if os_ is not None:
+        diff = {k: (os_.get(k), ds.get(k)) for k in set(os_) | set(ds) if k != "StuffPower_Armor_Sharp" and os_.get(k) != ds.get(k)}
+        fd = {k: (of.get(k), df.get(k)) for k in set(of) | set(df) if of.get(k) != df.get(k)}
+        if diff:
+            bad.append("statBases differ from donor beyond sharp armor: %r" % diff)
+        if fd:
+            bad.append("stuff statFactors differ from donor: %r" % fd)
+        info.append("stat probe (%s): donor sharp was %s -> ours %s; %d donor statBases compared" % (src, os_.get("StuffPower_Armor_Sharp"), ds.get("StuffPower_Armor_Sharp"), len(os_)))
+    return bad, info
+
+
+def exit_code(results, bad=()):
+    """The contract: exit 0 only when L1-L9 are all PASS (L10 may be OWED to its live clause). Any FAIL, PARTIAL,
+    OWED or missing L1-L9 verdict, or any unresolved cross-reference, exits 1."""
+    for cid in ("L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9"):
+        if results.get(cid, ("MISSING",))[0] != "PASS":
+            return 1
+    if results.get("L10", ("MISSING",))[0] not in ("PASS", "OWED"):
+        return 1
+    return 1 if bad else 0
 
 
 def capture_producers():
@@ -878,36 +953,12 @@ def run():
     # ---- L1 stats + producers
     l1 = []
     dur = parse(os.path.join(ARM, "Defs", "ThingDefs", "RSW_Durasteel.xml"))
-    donor_xml = git_show(DONOR_REV + "^", DONOR_FILE)
-    donor = ET.fromstring(donor_xml) if donor_xml else None
-
-    def stats(root, name):
-        for td in root.iter("ThingDef"):
-            if td.findtext("defName") == name:
-                sb, sf = td.find("statBases"), td.find("stuffProps/statFactors")
-                return ({c.tag: c.text for c in sb} if sb is not None else {}), ({c.tag: c.text for c in sf} if sf is not None else {})
-        return None, None
     if dur is None:
         l1.append("RSW_Durasteel.xml missing")
     else:
-        ds, df = stats(dur, "RSW_Durasteel")
-        os_, of = stats(donor, "KOTOR_AlloyDurasteel") if donor is not None else (None, None)
-        if os_ is not None:   # donor ParentName KOTOR_Metal (abstract) supplies Beauty -1 and stuff defaults
-            ps, pf = stats(donor, "KOTOR_Metal")
-            os_ = dict(ps or {}, **os_)
-            of = dict(pf or {}, **of)
-        if os_ is None:
-            l1.append("UNMEASURED: donor def not readable from git %s^ (stat equality unproven)" % DONOR_REV)
-        else:
-            if ds.get("StuffPower_Armor_Sharp") != "0.9":
-                l1.append("sharp armor power %r, want 0.9" % ds.get("StuffPower_Armor_Sharp"))
-            diff = {k: (os_.get(k), ds.get(k)) for k in set(os_) | set(ds) if k != "StuffPower_Armor_Sharp" and os_.get(k) != ds.get(k)}
-            fd = {k: (of.get(k), df.get(k)) for k in set(of) | set(df) if of.get(k) != df.get(k)}
-            if diff:
-                l1.append("statBases differ from donor beyond sharp armor: %r" % diff)
-            if fd:
-                l1.append("stuff statFactors differ from donor: %r" % fd)
-            info_l1.append("stat probe: donor sharp was %s -> ours %s; %d donor statBases compared" % (os_.get("StuffPower_Armor_Sharp"), ds.get("StuffPower_Armor_Sharp"), len(os_)))
+        sl, si = l1_stats_check(dur)
+        l1 += sl
+        info_l1 += si
         # producers still alive in the pre-patch live capture, and the patch that must zero each
         prod = capture_producers()
         if prod is None:
@@ -1110,6 +1161,39 @@ def selftest():
         os.unlink(f.name)
     assert stygium_convert_check(extra_files={leak: "<Defs><ThingDef><costList><guy762_crystalitem_stygium>2</guy762_crystalitem_stygium></costList></ThingDef></Defs>"}) == \
         ["Recipe.xml names the donor stygium and is not covered by the conversion fixture"]
+    # L1 stat clause: the sharp mutant goes red with git, with the snapshot alone, and with no donor source at all
+    with open(os.path.join(ARM, "Defs", "ThingDefs", "RSW_Durasteel.xml"), encoding="utf-8") as fh:
+        dx = fh.read()
+    assert "<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>" in dx, "RSW_Durasteel sharp 0.9 not found verbatim"
+    mut = ET.fromstring(dx.replace("<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>", "<StuffPower_Armor_Sharp>0.8</StuffPower_Armor_Sharp>"))
+    shipped = ET.fromstring(dx)
+    assert l1_stats_check(shipped, donor_xml="", snapshot=DONOR_SNAPSHOT)[0] == [], l1_stats_check(shipped, donor_xml="", snapshot=DONOR_SNAPSHOT)
+    for kw in ({"donor_xml": None}, {"donor_xml": "", "snapshot": DONOR_SNAPSHOT}, {"donor_xml": "", "snapshot": None}):
+        got = l1_stats_check(mut, **kw)[0]
+        assert any("sharp armor power '0.8'" in x for x in got), (kw, got)
+    assert any("unreadable" in x for x in l1_stats_check(shipped, donor_xml="", snapshot=None)[0])   # no source = red, not PARTIAL
+    mut2 = ET.fromstring(dx.replace("<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>", "<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp><ZZ_PlantedStat>1</ZZ_PlantedStat>"))
+    assert any("differ from donor" in x for x in l1_stats_check(mut2, donor_xml="", snapshot=DONOR_SNAPSHOT)[0])
+    with open(DONOR_SNAPSHOT, encoding="utf-8") as fh:
+        sj = json.load(fh)
+    sj["KOTOR_AlloyDurasteel"]["statBases"]["Mass"] = "9"
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+        json.dump(sj, f)
+    try:
+        if git_show(DONOR_REV + "^", DONOR_FILE):   # a stale snapshot is caught whenever git can read the donor
+            assert any("disagrees with git" in x for x in donor_durasteel_stats(None, f.name)[3])
+        assert any("differ from donor" in x for x in l1_stats_check(shipped, donor_xml="", snapshot=f.name)[0])
+    finally:
+        os.unlink(f.name)
+    # exit code: PARTIAL/OWED/FAIL/missing on L1-L9 exits 1; only L10 may be OWED
+    good = {c: ("PASS", []) for c in ("L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9")}
+    good["L10"] = ("OWED", [])
+    assert exit_code(good) == 0
+    for c in good:
+        for v in ("PARTIAL", "FAIL") + (() if c == "L10" else ("OWED",)):
+            assert exit_code(dict(good, **{c: (v, [])})) == 1, (c, v)
+    assert exit_code({k: v for k, v in good.items() if k != "L5"}) == 1
+    assert exit_code(good, ["unresolved ref"]) == 1
     print("selftest ok (empty patch leaves %d producer findings; shipped patch leaves 0; L5/L7/gates/L8 planted defects red, shipped green)" % len(planted))
 
 
@@ -1129,10 +1213,9 @@ def main():
     print("--")
     for l in xr:
         print(l)
-    fails = [c for c, (v, _) in R.items() if v == "FAIL"]
     tally = {k: sum(1 for v, _ in R.values() if v == k) for k in ("PASS", "PARTIAL", "OWED", "FAIL")}
     print("TALLY", tally)
-    return 1 if fails or bad else 0
+    return exit_code(R, bad)
 
 
 if __name__ == "__main__":
