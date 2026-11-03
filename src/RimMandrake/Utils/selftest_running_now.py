@@ -227,6 +227,7 @@ jdirs = dict(dirs, **{R.TESTQ + "/done": [day + "A.json", day + "B.json"]})
 sv = R.collect_steve(Fake(files=jfiles, dirs=jdirs), {})
 check("one unreadable job result: done/failed are not known", sv["jobs_known"] is False)
 page = page_of(Fake(files=jfiles, dirs=jdirs))
+check("the plain-text twin says UNMEASURED there too", "done 24 h UNMEASURED, failed 24 h UNMEASURED" in page)
 check("the panel says UNMEASURED there and not 0", "DONE 24 H" in page and "UNMEASURED" in page.split("DONE 24 H")[1][:200])
 
 # 8c. a bad reading in the machine cache costs its tile, not the page
@@ -252,6 +253,15 @@ with tempfile.TemporaryDirectory() as d:
     R.RELENTLESS_STORE = real_store
 check("a torn item file makes the items UNMEASURED", got is None and "1 item state files unreadable" in why)
 
+# 8d2. a process table that cannot be attributed is UNMEASURED, not a believable zero
+class NoCgroup(Fake):
+    def cgroup(self, pid):
+        raise PermissionError("cgroup unreadable")
+
+
+page = page_of(NoCgroup(ps=PS, items=[{"item": ITEM, "status": "running"}]))
+check("an unreadable cgroup makes the tree UNMEASURED, and raises no ghost place", "PROCESS TREE: UNMEASURED" in page and "with no process" not in before_svg(page))
+
 # 8e. the Steve script omits the game when tasklist fails rather than reporting 0
 check("Steve's game reading is conditional on tasklist's exit", 'if t=$(timeout 5' in R.STEVE_SCRIPT and "</dev/null" in R.STEVE_SCRIPT)
 
@@ -259,6 +269,13 @@ check("Steve's game reading is conditional on tasklist's exit", 'if t=$(timeout 
 rows = [{"at": NOW - 60, "nonce": "a", "word": "PASS", "rule": 1}, {"at": NOW - 60, "nonce": "a", "word": "PASS", "rule": 2},
         {"at": NOW - 60, "nonce": "b", "word": "FAIL", "rule": 1}, {"at": NOW - 90000, "nonce": "c", "word": "PASS", "rule": 1}]
 acts = {"at": "2026-11-03T20:00:00Z", "acts": [{"do": "returned", "item": "X"}, {"do": "done", "item": "Y"}, {"do": "game_refused", "item": "Z"}]}
+good_journal = json.dumps(acts)
+_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: 'garbage\n{"at": 1}\n', JOURNAL: good_journal}), NOW)
+check("a broken verdict record makes the counts UNMEASURED, not short", why and "shadow.jsonl line 1" in why)
+_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: '{"at": 1}\n{"at": ', JOURNAL: good_journal}), NOW)
+check("a last verdict line still being written is not damage", not why)
+_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: "", JOURNAL: '{"acts": broken\n' + good_journal + "\n"}), NOW)
+check("a broken journal record makes the counts UNMEASURED, not short", why and "journal.jsonl" in why)
 t = R.collect_throughput(Fake(files={SHADOW: "\n".join(json.dumps(r) for r in rows), JOURNAL: json.dumps(acts)}), NOW)
 check("a verdict with several rule rows counts once", t["pass"] == 1)
 check("older than 24 h is out", t["pass"] + t["fail"] == 2)

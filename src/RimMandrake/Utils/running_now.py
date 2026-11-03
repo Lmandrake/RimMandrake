@@ -108,8 +108,8 @@ class Env:
         try:
             with open("/proc/%d/cgroup" % pid) as f:
                 return f.read()
-        except OSError:
-            return ""
+        except (FileNotFoundError, ProcessLookupError):
+            return ""       # it ended after ps listed it
 
     def cwd(self, pid):
         try:
@@ -171,12 +171,14 @@ class Env:
     def item_states(self):
         """Every Relentless item's state.json, read this tick (a 588-file read costs about 20 ms)."""
         out, unread = [], 0
-        for p in glob.glob(RELENTLESS_STORE + "/items/*/state.json"):
+        root = RELENTLESS_STORE + "/items"
+        for name in os.listdir(root):       # not glob: glob hides a directory it cannot read
             try:
-                with open(p) as f:
+                with open("%s/%s/state.json" % (root, name)) as f:
                     out.append(json.load(f))
             except FileNotFoundError:
-                continue    # the item went away after the listing: it is not an item any more
+                if os.path.isdir("%s/%s" % (root, name)):
+                    unread += 1     # the item is still there and its state is not
             except (OSError, ValueError):
                 unread += 1
         if unread:          # a count short by an unread file would read as true: say so instead
@@ -532,11 +534,18 @@ def collect_throughput(env, now):
     closed_by_hour = [0] * 24
     recent_done = []
     seen = set()
-    for line in env.read_text(RELENTLESS_STORE + "/shadow.jsonl").splitlines():
+    text = env.read_text(RELENTLESS_STORE + "/shadow.jsonl")
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
         try:
             d = json.loads(line)
+            if not isinstance(d, dict):
+                raise ValueError("not a record")
         except ValueError:
-            continue
+            # only a last line still being written may be broken; dropping any other makes a count look true
+            if i == len(lines) - 1 and not text.endswith("\n"):
+                continue
+            raise Unmeasured("shadow.jsonl line %d is broken" % (i + 1))
         # one row per shadow rule, so a verdict can have several: its nonce makes it one verdict
         if isinstance(d.get("at"), (int, float)) and d["at"] >= cut and d.get("nonce") not in seen:
             seen.add(d.get("nonce"))
@@ -551,7 +560,10 @@ def collect_throughput(env, now):
             d = json.loads(line)
             at = iso_epoch(d["at"])
         except (ValueError, KeyError, TypeError):
-            continue
+            # the tail read can start mid-line and the last line can be mid-write; any other is damage
+            if (i == 0 and cut_off) or (i == len(lines) - 1 and not text.endswith("\n")):
+                continue
+            raise Unmeasured("journal.jsonl tail line %d is broken" % (i + 1))
         first = at if first is None else min(first, at)
         if at < cut:
             continue
@@ -1108,7 +1120,7 @@ def steve_text(p):
         return "STEVEDESKTOP  UNMEASURED (%s)" % p["steve_why"]
     g = cache.get("good") or {}
     return "\n".join([
-        "STEVEDESKTOP  %s  jobs running %s, queued %s, done 24 h %s, failed 24 h %s" % (sv.get("state"), sv.get("running"), sv.get("pending"), sv.get("done", "UNMEASURED"), sv.get("failed", "UNMEASURED")),
+        "STEVEDESKTOP  %s  jobs running %s, queued %s, done 24 h %s, failed 24 h %s" % (sv.get("state"), sv.get("running"), sv.get("pending"), sv.get("done") if sv.get("jobs_known") else "UNMEASURED", sv.get("failed") if sv.get("jobs_known") else "UNMEASURED"),
         "routes %s" % " ".join("%s:%s" % (k, "up" if v else "DOWN") for k, v in (cache.get("routes") or {}).items()),
         "load %s  ram %s  disk %s  gpu %s  game %s" % tuple(g.get(k, "UNMEASURED") for k in ("load", "ram", "disk", "gpu", "game")),
     ])
@@ -1287,8 +1299,8 @@ def gather(env, state):
         rows = parse_ps(ps_text)
         mine = own_pids(rows, env.self_pid())
         rows = [r for r in rows if r["pid"] not in mine]
-        p["tree"] = build_tree(env, table, rows)
-    else:
+        p["tree"], p["ps_why"] = guarded(build_tree, env, table, rows)
+    if p["ps_why"]:
         p["unmeasured"].append("processes (%s)" % p["ps_why"])
 
     p["units"], why_u = guarded(env.units_json)
