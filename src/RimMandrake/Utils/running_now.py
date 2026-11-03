@@ -95,7 +95,7 @@ class Env:
         return out.strip()
 
     def tasklist(self):
-        rc, out = self.run(["tasklist.exe", "/FO", "CSV", "/NH"], timeout=30)
+        rc, out = self.run(["/mnt/c/Windows/System32/tasklist.exe", "/FO", "CSV", "/NH"], timeout=30)
         if rc != 0:
             raise Unmeasured("tasklist.exe exited %d" % rc)
         return out
