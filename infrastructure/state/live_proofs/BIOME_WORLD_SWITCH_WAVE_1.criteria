@@ -1,0 +1,3 @@
+A1 L0: offline, python3 src/RimMandrake/Utils/biome_world_switch_check.py exits 0: the canonical start save (canon.yml planet.start_savegame) has 0 of 21,872 tiles on the item's 23 donor/vanilla defs and every tile on an RM_/RUT_ def; its probe sees donors on the pre-switch world/ASHKARR_DRAFT_2026-08-24.rws
+A2 L1: on the full list, tile 17007's def (RM_Stillsand, declared only by our Stillsand mod) resolves in the running game, so the tile card credits our mod, not GRiNDTerra
+A3 L1: the full-list load's Player.log carries no error line naming any of the 25 owned biome defs painted on the canonical planet (RM_Wasteland/RM_NightsideIce, retired names still painted, belong to BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL)
