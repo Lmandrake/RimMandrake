@@ -8,7 +8,7 @@ Proves, offline, against the canonical save the plan names:
 - the start tile 17007 is on it;
 - the mutator def exists, and both feature names are in FallLineGate.FeatureNames, so the gate's
   name fallback already holds on this save before the mutator is painted;
-- the paint list item carries the plan.
+- the paint list carries the plan: a ledger note on BIOME_PAINT_ONCE_AT_THE_END_1 (and its prose, where items/ exists).
 It then feeds the checker broken plans and requires each to be caught, so a green run means it can see.
 """
 import copy
@@ -25,7 +25,9 @@ REPO = P.REPO
 GATE_CS = os.path.join(REPO, "src/RimUtinni/FallLineArrivals/Source/FallLineArrivalsMod.cs")
 DEF_XML = os.path.join(REPO, "src/RimUtinni/FallLineArrivals/Defs/TileMutatorDefs/RUT_FallLine.xml")
 CSV_RECORD = os.path.join(REPO, "world/ASHKARR_VIVIFIED_2026-08-24_tiles.csv")
-PAINT_ITEM = os.path.join(REPO, "infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md")
+PAINT_ID = "BIOME_PAINT_ONCE_AT_THE_END_1"
+PAINT_ITEM = os.path.join(REPO, "infrastructure/state/items/%s.md" % PAINT_ID)
+LEDGER_EVENTS = os.path.join(REPO, "infrastructure/state/ledger/events")
 EXPECT = {"Fall Line": 155, "The Breaks": 153}
 
 
@@ -38,6 +40,29 @@ def gate_names():
 def csv_tiles():
     with open(CSV_RECORD, encoding="utf-8") as fh:
         return {int(r["tile"]) for r in csv.DictReader(fh) if r["region"] in ("Fall Line", "Fall Line Barrens")}
+
+
+def paint_events():
+    """-> (every ledger event on the paint-list item, those of them that carry this plan's row).
+    The ledger, not the item prose: the blind checker's tree leaves items/ out but ships the ledger."""
+    import json
+    seen, rows = [], []
+    for name in sorted(os.listdir(LEDGER_EVENTS)):
+        if not name.endswith(".jsonl"):
+            continue
+        with open(os.path.join(LEDGER_EVENTS, name), encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                ev = json.loads(line)
+                if ev.get("id") != PAINT_ID:
+                    continue
+                seen.append(ev)
+                text = ev.get("text") or ""
+                if ev.get("event") == "note" and P.PLAN_REL in text and P.MUTATOR in text:
+                    rows.append(ev)
+    return seen, rows
 
 
 def problems(plan, rebuilt, record):
@@ -88,8 +113,14 @@ def main():
             fails.append("FallLineGate.FeatureNames lacks %r (have %s)" % (n, sorted(names)))
     if "<defName>%s</defName>" % P.MUTATOR not in open(DEF_XML, encoding="utf-8").read():
         fails.append("%s def not found in %s" % (P.MUTATOR, DEF_XML))
-    if P.PLAN_REL not in open(PAINT_ITEM, encoding="utf-8").read():
-        fails.append("paint list item does not name %s" % P.PLAN_REL)
+    seen, rows = paint_events()
+    if not seen:   # sanity: the ledger reader must see the item at all (it was filed), or a missing row means nothing
+        fails.append("ledger reader sees no event on %s: blind" % PAINT_ID)
+    elif not rows:
+        fails.append("no ledger note on %s names %s and %s" % (PAINT_ID, P.PLAN_REL, P.MUTATOR))
+    if os.path.exists(PAINT_ITEM):   # absent from the blind checker's tree (items/ is tree_exclude)
+        if P.PLAN_REL not in open(PAINT_ITEM, encoding="utf-8").read():
+            fails.append("paint list item prose does not name %s" % P.PLAN_REL)
     # the checker must see breakage
     other = next(t for t in range(ntiles) if t not in set(rebuilt["tiles"]))
     breakers = {
@@ -108,8 +139,8 @@ def main():
         for f in fails:
             print("FAIL:", f)
         return 1
-    print("PASS: %d tiles %s, start tile %d on it, gate names %s, %d broken plans caught" % (
-        plan["count"], plan["features"], P.START_TILE, sorted(names), len(breakers)))
+    print("PASS: %d tiles %s, start tile %d on it, gate names %s, %d broken plans caught, paint row in ledger (%d of %d events)" % (
+        plan["count"], plan["features"], P.START_TILE, sorted(names), len(breakers), len(rows), len(seen)))
     return 0
 
 
