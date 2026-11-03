@@ -157,7 +157,7 @@ All in `relentless_rules.json`.
 | Rule | Start | Why this number, and when to reconsider |
 |---|---|---|
 | `share` | 0.5 | Owner: "maybe half". Raise it when closed-per-day from `stats` beats the old route |
-| `max_workers` | 10 | The ceiling only: the plan's `total_max` test ceiling. What runs is `staffing.stages` under the budget (section 13) |
+| `max_workers` | 8 (owner card 2026-11-02: 8 workers, 16 clones / 70 GB; was 10 then 4) | The ceiling only: the plan's `total_max` test ceiling. What runs is `staffing.stages` under the budget (section 13) |
 | `pool_seats` | BENCH, FOUNDRY | §5, §13 |
 | `same_failure_limit` | 3 | Owner-approved safeguard. Pilot cliff: 3 misses, `testpilot_route.py` header |
 | `run_max_s` | 3600 | Long enough for a build pass. A full worker is replaced, not lost |
@@ -321,7 +321,7 @@ each clone, not continuously; the OOM count catches what it misses.
 
 The jam of 2026-11-01: ten clones parked, no run live, the engine dead for six hours. Every clone counted as unpushed
 (session dumps and ledger noise), so nothing could be reused; retired and held items kept theirs; each POOL REFUSED was
-charged as a launch failure, so the breaker backed off for hours. The cap of 10 clones / 40 GB is the owner's and stays.
+charged as a launch failure, so the breaker backed off for hours. The cap is 16 clones / 70 GB (owner card 2026-11-02, from 10 / 40) and stays.
 
 - **A dead run releases its clone.** Every tick, `reclaim_dead` releases clones of retired, closed or unknown items and of
   checks no longer running, bundling first (§4). A live clone is never touched.

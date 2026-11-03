@@ -20,7 +20,8 @@ RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=Tru
              enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9,
              staffing=None, circling=None, walls=None,   # the machinery test runs with no wall; the wall has its own selftest
              same_failure_limit=3, max_approach_changes=None)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
-STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"])
+STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"],
+             launch_per_tick=2, work_launch_per_tick=2, check_backlog_max=2)  # mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
 FAILS = []
 
 
