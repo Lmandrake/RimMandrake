@@ -1,1 +1,2 @@
+live-mods: GimmeSomeSlack
 live-proof A1: python.exe src/RimMandrake/GimmeSomeSlack/live_probes/gss_slice_window_proof.py D:/ClaudeWork/rimmandrake/scratch/gss_slice_window/proof.json < /dev/null

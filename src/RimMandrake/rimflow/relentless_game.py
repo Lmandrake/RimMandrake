@@ -292,7 +292,8 @@ def stage_prompt(st, r, sha, others=()):
         "seat %s and releases it the moment you exit. Your one job: the running game must run the build at %s, so the "
         "supervisor can rerun this item's live proofs blind. You do NOT run or judge the proofs." % (i, g, r["seat"], sha),
         "1. Deploy: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <Mod>` for each mod that %s changed (plan "
-        "first, read it, then --apply). Load `rimworld-deploy` first." % sha,
+        "first, read it, then --apply), and for each mod a `live-mods:` line in the proofs below names (a build that "
+        "changed only a proof still needs its mod's tree deployed). Load `rimworld-deploy` first." % sha,
         ("2. FINAL VERIFICATION: the game must start after the deploy on the owner's WHOLE FULL list "
          "(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml; `rimworld-load-round`: modlist_swap.py restores it), "
          "never a smaller tier: this one load verifies every item's GREEN-FULL clauses at once. Stamp each change with "

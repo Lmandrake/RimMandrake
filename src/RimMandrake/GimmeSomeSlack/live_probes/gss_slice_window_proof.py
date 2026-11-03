@@ -39,8 +39,9 @@ def cells(x0, z0, lamps):
     return sorted(out)
 _pf = call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial")
 if not (isinstance(_pf, dict) and _pf.get("success", True) is not False and "value" in _pf):
-    print("FAIL GimmeSomeSlack is not loaded in the running game (probe type unreadable): %s" % str((_pf or {}).get("message"))[:200])
-    sys.exit(1)
+    # a game without GSS measures nothing about GSS: UNMEASURED (exit 2), never a FAIL (2026-11-03: two false A1 FAILs)
+    print("UNMEASURED GimmeSomeSlack is not loaded in the running game (probe type unreadable): %s" % str((_pf or {}).get("message"))[:200])
+    sys.exit(2)
 res, fails = {"windows": []}, []
 call("rimworld/set_time_speed", speed=1)
 for i, (x0, z0) in enumerate(SITES):
