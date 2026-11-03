@@ -1,4 +1,4 @@
-// Pure decision kernels of the SWBestiary beast mechanics (scrap hoarding, innate abilities, toxin dependence, fuel spew):
+// Pure decision kernels of the SWBestiary beast mechanics (scrap hoarding, innate abilities, toxin dependence, fuel spew, sarlacc pit size):
 // no Verse, no RimWorld, no UnityEngine. The comps, job givers and drivers call these with the same expressions they used inline and keep
 // the engine half (defs, reservations, spawning, stat reads).
 using System;
@@ -207,5 +207,48 @@ namespace RimMandrake.StarWars.SWBestiary
         {
             return alreadyPale || brinedTicks >= CycleTicks(paleDays);
         }
+    }
+
+    /// <summary>SARLACC_PIT_WIDEN_THE_BIG_ONES: which size of sarlacc pit a sarlacc map lands. The owner accepted the 9x6 pit as
+    /// the MODERATE one ("Superb though that is just a moderate one. They can get much bigger."), so a map rolls one of several
+    /// sizes, listed smallest first. Index 0 is the moderate pit: what an all-off setting, an empty list or all-zero weights land.</summary>
+    public static class RSW_SarlaccPitKernel
+    {
+        /// <summary>The size a map rolls. roll is a uniform draw in [0,1); a weight that is not positive (or not a number) never
+        /// wins. bigEnabled false (the Mod Setting) always lands index 0.</summary>
+        public static int Pick(IList<float> weights, float roll, bool bigEnabled)
+        {
+            if (!bigEnabled || weights == null || weights.Count == 0) return 0;
+            double total = 0;
+            for (int i = 0; i < weights.Count; i++) if (weights[i] > 0f) total += weights[i];
+            if (!(total > 0)) return 0;
+            if (!(roll >= 0f)) roll = 0f;
+            double t = Math.Min((double)roll, 0.999999999) * total, acc = 0;
+            int last = 0;
+            for (int i = 0; i < weights.Count; i++)
+            {
+                if (!(weights[i] > 0f)) continue;
+                last = i;
+                acc += weights[i];
+                if (t < acc) return i;
+            }
+            return last;
+        }
+
+        /// <summary>The order sizes are tried in once a map has rolled one: the rolled size first, then each smaller one, so a
+        /// map with no room for a colossal pit still gets the biggest pit that fits instead of none.</summary>
+        public static int[] TryOrder(int picked, int count)
+        {
+            if (count <= 0) return new int[0];
+            if (picked < 0) picked = 0;
+            if (picked >= count) picked = count - 1;
+            var order = new int[picked + 1];
+            for (int i = 0; i <= picked; i++) order[i] = picked - i;
+            return order;
+        }
+
+        /// <summary>The z of the interaction cell for a pit that never rotates: the first row south of the footprint.
+        /// GenAdj.OccupiedRect puts the south edge (sizeZ - 1) / 2 rows below the centre.</summary>
+        public static int InteractionOffsetZ(int sizeZ) { return -((sizeZ - 1) / 2) - 1; }
     }
 }

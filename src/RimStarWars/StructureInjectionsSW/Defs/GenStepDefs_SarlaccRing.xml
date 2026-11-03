@@ -27,6 +27,9 @@
       <planFile>Templates/sarlacc_ring.txt</planFile>
       <centerOnMap>false</centerOnMap>
       <anchorThingDef>RSW_SarlaccPit</anchorThingDef>
+      <!-- SARLACC_PIT_WIDEN_THE_BIG_ONES: the ring rings the moderate 9x6 pit only (its 15x12 clear would cut into the
+           great 15x10 or colossal 25x17 pit). A map that rolled a bigger pit has no RSW_SarlaccPit: skip quietly. -->
+      <anchorOptional>true</anchorOptional>
     </genStep>
     <order>960</order>
   </GenStepDef>

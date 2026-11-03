@@ -834,6 +834,7 @@ MODS = {
         "Taozin brine tank": "Now",
         "Taozin nests": "NewMapsOnly",
         "Albino dragonsnake": "NextGameStart",
+        "Big sarlacc pits": "NewMapsOnly",
     }, ()),
 }
 

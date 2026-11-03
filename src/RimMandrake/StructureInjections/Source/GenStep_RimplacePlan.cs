@@ -62,6 +62,13 @@ namespace RimMandrake.StructureInjections
         // at map-center instead).
         public string anchorThingDef;
 
+        // SARLACC_PIT_WIDEN_THE_BIG_ONES: a missing anchor is EXPECTED for some
+        // anchors, not a fault. RSW_GenStep_SarlaccPit now rolls one of three pit
+        // sizes and the sarlacc ring belongs to the moderate one only, so a map
+        // that rolled a bigger pit has no RSW_SarlaccPit by design. true: skip the
+        // plan without the warning. The plan is skipped either way.
+        public bool anchorOptional;
+
         public override int SeedPart => 8462013; // arbitrary, stable, distinct from vanilla gensteps
 
         public override void Generate(Map map, GenStepParams parms)
@@ -122,6 +129,7 @@ namespace RimMandrake.StructureInjections
                 }
                 if (found == null)
                 {
+                    if (anchorOptional) return;
                     Log.Warning("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +
                                 label + ": no '" + anchorThingDef + "' found on the map " +
                                 "(anchor mutator generated with none, or this GenStepDef's order " +

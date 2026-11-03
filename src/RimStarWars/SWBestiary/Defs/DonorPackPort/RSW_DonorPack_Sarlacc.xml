@@ -4,16 +4,24 @@
      landmarks" -> "Port both landmarks").
 
      Both Sarlacc landmarks of Star Wars Animal Collection (mlie, SW_Buildings_Natural.xml + RulePacks_Namers_Landmarks.xml)
-     ported as our own RSW_ defs, so the donor can retire. Every class is vanilla: no C#.
-       live pit:  RSW_Sarlacc (LandmarkDef) -> RSW_SarlaccLair (TileMutatorDef) -> RSW_GenStep_SarlaccPit -> RSW_SarlaccPit
-                  (9x6 corpse-dump work table; RSW_FeedCorpseToSarlacc / RSW_DoBillsFeedSarlacc)
+     ported as our own RSW_ defs, so the donor can retire. Every class is vanilla except one genstep (below).
+       live pit:  RSW_Sarlacc (LandmarkDef) -> RSW_SarlaccLair (TileMutatorDef) -> RSW_GenStep_SarlaccPit -> one of
+                  RSW_SarlaccPit (9x6, the moderate pit) / RSW_SarlaccPitGreat (15x10) / RSW_SarlaccPitColossal (25x17)
+                  (corpse-dump work tables; RSW_FeedCorpseToSarlacc / RSW_DoBillsFeedSarlacc)
        dead cave: RSW_DeadSarlacc (LandmarkDef) -> RSW_DeadSarlaccCave (TileMutatorDef) -> RSW_GenStep_DeadSarlaccPit
                   -> RSW_DeadSarlaccHusk (12x9 MapPortal) -> RSW_SarlaccCavity (pocket MapGeneratorDef, exit CaveExit)
      Old -> new names (the canonical save holds the two LandmarkDefs): Transient/phase0_sarlacc_save_renames.md.
 
      Deliberate differences from the donor:
      - RSW_SarlaccPit keeps the donor's (9,6) footprint EXACTLY: StructureInjectionsSW's sarlacc_ring template is measured
-       against it (RSW_GenStep_SarlaccRing anchors on this def).
+       against it (RSW_GenStep_SarlaccRing anchors on this def, and only this def: its 15x12 clear would cut into a bigger pit,
+       so a map that rolled a bigger pit has no ring, skipped quietly by anchorOptional).
+     - SARLACC_PIT_WIDEN_THE_BIG_ONES (owner, 2026-10-16, of the accepted 9x6 art: "Superb though that is just a moderate one.
+       They can get much bigger."): two bigger sizes on the same art, RSW_SarlaccPitGreat and RSW_SarlaccPitColossal. The
+       genstep is RimMandrake.StarWars.SWBestiary.RSW_GenStep_SarlaccPitSized (BeastMechanics assembly): it rolls one size per
+       map by weight, falls back to each smaller size when the rolled one finds no room, and lands only the moderate pit when
+       the Mod Setting "Great and colossal sarlacc pits" is off. Every size's interactionCellOffset is the first row south of
+       its footprint: z = -((sizeZ - 1) / 2) - 1 (RSW_SarlaccPitKernel.InteractionOffsetZ; selftest_sarlacc_pit_sizes.py).
      - The building ThingDef is RSW_DeadSarlaccHusk, not a second "RSW_DeadSarlacc", so a save grep never confuses the
        building with the LandmarkDef.
      - RSW_SarlaccCavity drops the donor's UndercaveMapComponent: that component looks for a PitGate on the source map and,
@@ -31,11 +39,9 @@
 
   <!-- ========================= live sarlacc pit ========================= -->
 
-  <ThingDef ParentName="BuildingBase">
-    <defName>RSW_SarlaccPit</defName>
-    <label>sarlacc pit</label>
-    <description>The gaping maw of a juvenile sarlacc creature. The endlessly hungry sarlacc can be used to quickly get rid of various organic corpses and so such sites are popular with various criminal enterprises. It will occasionally regurgitate a small amount of indigestible scrap metal; no doubt leftover from some unlucky "prey".</description>
-    <size>(9,6)</size>
+  <!-- Every sarlacc pit size. A child sets defName, label, description, size, graphicData/drawSize, interactionCellOffset,
+       Beauty, and its costList / killedLeavings with Inherit="False" (a list would otherwise APPEND to this one). -->
+  <ThingDef Name="RSW_SarlaccPitBase" ParentName="BuildingBase" Abstract="True">
     <useHitPoints>false</useHitPoints>
     <thingClass>Building_WorkTable</thingClass>
     <rotatable>false</rotatable>
@@ -55,7 +61,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Building/Natural/RSW_SarlaccPit</texPath>
-      <drawSize>(10,10)</drawSize>
     </graphicData>
     <building>
       <deconstructible>false</deconstructible>
@@ -68,12 +73,9 @@
     </building>
     <statBases>
       <MaxHitPoints>1000</MaxHitPoints>
-      <Beauty>-50</Beauty>
-      <BeautyOutdoors>-50</BeautyOutdoors>
       <Flammability>0</Flammability>
     </statBases>
     <hasInteractionCell>True</hasInteractionCell>
-    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
     <soundImpactDefault>RSW_Pawn_Sarlacc_Death</soundImpactDefault>
     <placeWorkers>
@@ -106,12 +108,72 @@
       </li>
     </comps>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-    <costList>
+  </ThingDef>
+
+  <!-- The moderate pit: the donor's own size, and the one the accepted art was drawn for. -->
+  <ThingDef ParentName="RSW_SarlaccPitBase">
+    <defName>RSW_SarlaccPit</defName>
+    <label>sarlacc pit</label>
+    <description>The gaping maw of a juvenile sarlacc creature. The endlessly hungry sarlacc can be used to quickly get rid of various organic corpses and so such sites are popular with various criminal enterprises. It will occasionally regurgitate a small amount of indigestible scrap metal; no doubt leftover from some unlucky "prey".</description>
+    <size>(9,6)</size>
+    <graphicData>
+      <drawSize>(10,10)</drawSize>
+    </graphicData>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <statBases>
+      <Beauty>-50</Beauty>
+      <BeautyOutdoors>-50</BeautyOutdoors>
+    </statBases>
+    <costList Inherit="False">
       <RSW_SarlacciSpore>1</RSW_SarlacciSpore>
       <RSW_Silica_Meat>300</RSW_Silica_Meat>
     </costList>
-    <killedLeavings>
+    <killedLeavings Inherit="False">
       <RSW_SarlacciSpore>1</RSW_SarlacciSpore>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_SarlaccPitBase">
+    <defName>RSW_SarlaccPitGreat</defName>
+    <label>great sarlacc pit</label>
+    <description>The maw of a mature sarlacc, wide enough to swallow a bantha whole. Its body below the sand is older than any settlement nearby, and it is no less hungry for it: corpses tipped in vanish without a trace, and now and then it coughs up the scrap metal it could not digest.</description>
+    <size>(15,10)</size>
+    <graphicData>
+      <drawSize>(17,17)</drawSize>
+    </graphicData>
+    <interactionCellOffset>(0,0,-5)</interactionCellOffset>
+    <statBases>
+      <Beauty>-80</Beauty>
+      <BeautyOutdoors>-80</BeautyOutdoors>
+    </statBases>
+    <costList Inherit="False">
+      <RSW_SarlacciSpore>2</RSW_SarlacciSpore>
+      <RSW_Silica_Meat>800</RSW_Silica_Meat>
+    </costList>
+    <killedLeavings Inherit="False">
+      <RSW_SarlacciSpore>2</RSW_SarlacciSpore>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_SarlaccPitBase">
+    <defName>RSW_SarlaccPitColossal</defName>
+    <label>colossal sarlacc pit</label>
+    <description>The vast maw of an ancient sarlacc, grown over untold centuries into a pit the size of a fortress courtyard. Legends say its prey is digested over a thousand years. Whatever is thrown in is never seen again, save the odd lump of scrap metal it spits back out.</description>
+    <size>(25,17)</size>
+    <graphicData>
+      <drawSize>(28,28)</drawSize>
+    </graphicData>
+    <interactionCellOffset>(0,0,-9)</interactionCellOffset>
+    <statBases>
+      <Beauty>-120</Beauty>
+      <BeautyOutdoors>-120</BeautyOutdoors>
+    </statBases>
+    <costList Inherit="False">
+      <RSW_SarlacciSpore>3</RSW_SarlacciSpore>
+      <RSW_Silica_Meat>2000</RSW_Silica_Meat>
+    </costList>
+    <killedLeavings Inherit="False">
+      <RSW_SarlacciSpore>3</RSW_SarlacciSpore>
     </killedLeavings>
   </ThingDef>
 
@@ -192,8 +254,14 @@
   <GenStepDef>
     <defName>RSW_GenStep_SarlaccPit</defName>
     <order>950</order>
-    <genStep Class="GenStep_ScatterThings">
+    <genStep Class="RimMandrake.StarWars.SWBestiary.RSW_GenStep_SarlaccPitSized">
       <thingDef>RSW_SarlaccPit</thingDef>
+      <!-- smallest first: the first is what the setting's off state and every fallback ends on -->
+      <sizes>
+        <li><thingDef>RSW_SarlaccPit</thingDef><weight>0.5</weight><clearSpaceSize>10</clearSpaceSize></li>
+        <li><thingDef>RSW_SarlaccPitGreat</thingDef><weight>0.35</weight><clearSpaceSize>16</clearSpaceSize></li>
+        <li><thingDef>RSW_SarlaccPitColossal</thingDef><weight>0.15</weight><clearSpaceSize>26</clearSpaceSize></li>
+      </sizes>
       <createUsedRect>true</createUsedRect>
       <allowInWaterBiome>false</allowInWaterBiome>
       <skipRoofed>true</skipRoofed>

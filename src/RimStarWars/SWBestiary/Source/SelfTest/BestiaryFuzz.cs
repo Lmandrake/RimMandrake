@@ -6,6 +6,7 @@
 //                                                      spew   the fuel-spew cone geometry
 //                                                      ability the innate-ability grant steps
 //                                                      brine  the taozin brine tank: jar progress, brine spend, grub soak, white flag
+//                                                      sarlacc the sarlacc pit size roll, its smaller-size fallback order, the interaction row
 //   ../JawaIkee/Kernel/RSW_IkeeKernel.cs               ikee   the creep / comfort thought stage and radius
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -20,7 +21,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
 {
     internal static class BestiaryFuzz
     {
-        public static long Jars, Whitened;
+        public static long Jars, Whitened, PitsBig, PitsModerate;
         public static long Cases, Steps, Fires, Good, Bad, Cooled, Joins, Releases, Spiked, Nests, Builds, Refused, Withdrawals, Spews, ShapesChecked;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
@@ -631,6 +632,85 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
             return fails;
         }
 
+        // SARLACC_PIT_WIDEN_THE_BIG_ONES: RSW_SarlaccPitKernel against a brute-force reference. Weights are random and include
+        // zeros, negatives and NaN (a size whose thingDef failed to resolve arrives as weight 0).
+        private static int PickRef(float[] w, float roll, bool big)
+        {
+            if (!big || w.Length == 0) return 0;
+            var pos = new List<int>();
+            double total = 0;
+            for (int i = 0; i < w.Length; i++) if (w[i] > 0f) { pos.Add(i); total += w[i]; }
+            if (pos.Count == 0) return 0;
+            double r = (roll >= 0f ? Math.Min((double)roll, 0.999999999) : 0) * total, acc = 0;
+            foreach (int i in pos) { acc += w[i]; if (r < acc) return i; }
+            return pos[pos.Count - 1];
+        }
+
+        internal static List<string> SarlaccCases(int n, int seed0)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < n; k++)
+            {
+                int seed = seed0 + k; var r = new Random(seed); Cases++;
+                try
+                {
+                    int len = r.Next(6);
+                    var w = new float[len];
+                    for (int i = 0; i < len; i++)
+                    {
+                        int c = r.Next(10);
+                        w[i] = c == 0 ? 0f : c == 1 ? -(float)r.NextDouble() : c == 2 ? float.NaN : (float)(r.NextDouble() * 3);
+                    }
+                    for (int t = 0; t < 40; t++)
+                    {
+                        Steps++;
+                        float roll = t == 0 ? 0f : t == 1 ? 0.9999999f : (float)r.NextDouble();
+                        bool big = r.Next(4) != 0;
+                        int got = RSW_SarlaccPitKernel.Pick(w, roll, big);
+                        Check(got == PickRef(w, roll, big), $"Pick {got} vs reference {PickRef(w, roll, big)} (roll {roll}, big {big}, weights [{string.Join(",", w)}])");
+                        Check(got >= 0 && (len == 0 ? got == 0 : got < len), $"Pick {got} out of range for {len} sizes");
+                        if (!big) Check(got == 0, "the setting is off and a big pit was rolled");
+                        if (got > 0) Check(w[got] > 0f, $"size {got} with weight {w[got]} was rolled");
+                        if (got > 0) PitsBig++; else PitsModerate++;
+                        int[] order = RSW_SarlaccPitKernel.TryOrder(got, len);
+                        if (len == 0) Check(order.Length == 0, "TryOrder over no sizes is not empty");
+                        else
+                        {
+                            Check(order.Length == got + 1 && order[0] == got && order[order.Length - 1] == 0, $"TryOrder({got},{len}) = [{string.Join(",", order)}]");
+                            for (int i = 1; i < order.Length; i++) Check(order[i] == order[i - 1] - 1, "TryOrder does not step down one size at a time");
+                        }
+                    }
+                }
+                catch (Exception e) { fails.Add($"sarlacc seed {seed}: {e.Message}"); if (fails.Count >= 3) break; }
+            }
+            return fails;
+        }
+
+        internal static List<string> SarlaccTables()
+        {
+            var fails = new List<string>();
+            try
+            {
+                // the shipped weights (RSW_DonorPack_Sarlacc.xml): a uniform roll lands each size in proportion
+                var w = new[] { 0.5f, 0.35f, 0.15f };
+                var hits = new int[3]; const int grid = 100000;
+                for (int i = 0; i < grid; i++) hits[RSW_SarlaccPitKernel.Pick(w, (i + 0.5f) / grid, true)]++;
+                for (int i = 0; i < 3; i++) Check(Math.Abs(hits[i] / (double)grid - w[i]) < 1e-3, $"size {i} lands {hits[i] / (double)grid:F4} of maps, weight {w[i]}");
+                for (int i = 0; i < 1000; i++) Check(RSW_SarlaccPitKernel.Pick(w, i / 1000f, false) == 0, "setting off still rolled a big pit");
+                Check(RSW_SarlaccPitKernel.Pick(null, 0.7f, true) == 0, "Pick(null)");
+                Check(RSW_SarlaccPitKernel.TryOrder(7, 3).Length == 3 && RSW_SarlaccPitKernel.TryOrder(-2, 3).Length == 1, "TryOrder clamps");
+                // the interaction cell is the first row south of a never-rotated footprint (GenAdj.OccupiedRect: minZ = c - (z-1)/2)
+                for (int z = 1; z <= 40; z++)
+                {
+                    int minZ = -((z - 1) / 2), maxZ = minZ + z - 1, off = RSW_SarlaccPitKernel.InteractionOffsetZ(z);
+                    Check(off == minZ - 1 && !(off >= minZ && off <= maxZ), $"InteractionOffsetZ({z}) = {off}, footprint rows {minZ}..{maxZ}");
+                }
+                Check(RSW_SarlaccPitKernel.InteractionOffsetZ(6) == -3, "the moderate 9x6 pit keeps the donor's (0,0,-3)");
+            }
+            catch (Exception e) { fails.Add("sarlacc tables: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -646,6 +726,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                 ("toxin", () => { var f = Family("toxin", N(5000), S(1), new[] { 40, 10, 6, 6, 8, 30 }, 20, 160, RunToxin); if (tables) f.AddRange(ToxinTables()); return f; }),
                 ("spew", () => SpewCases(N(600), S(1))),
                 ("brine", () => { var f = BrineCases(N(400), S(1)); if (tables) f.AddRange(BrineTables()); return f; }),
+                ("sarlacc", () => { var f = SarlaccCases(N(2000), S(1)); if (tables) f.AddRange(SarlaccTables()); return f; }),
                 ("ikee", () => tables || oneSeed.HasValue ? AbilityIkee() : new List<string>()),
             };
             foreach (var f in fam)
@@ -668,6 +749,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                 if ((all || only == "hoard") && (Nests == 0 || Refused == 0)) { Console.WriteLine("FAIL hoard fuzz never built a nest or never hit the cap (blind)"); ok = false; }
                 if ((all || only == "toxin") && Withdrawals == 0) { Console.WriteLine("FAIL toxin fuzz never reached withdrawal (blind)"); ok = false; }
                 if ((all || only == "brine") && (Jars == 0 || Whitened == 0)) { Console.WriteLine("FAIL brine fuzz never filled a jar or never whitened a grub (blind)"); ok = false; }
+                if ((all || only == "sarlacc") && (PitsBig == 0 || PitsModerate == 0)) { Console.WriteLine("FAIL sarlacc fuzz never rolled a big pit or never a moderate one (blind)"); ok = false; }
                 if ((all || only == "spew") && ShapesChecked == 0) { Console.WriteLine("FAIL spew fuzz never produced a non-empty cone (blind)"); ok = false; }
             }
             Console.WriteLine($"swbestiary fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

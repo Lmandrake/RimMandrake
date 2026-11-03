@@ -71,6 +71,7 @@
     <Compile Include="RSW_BeastMechanicsProof.cs" />
     <Compile Include="RSW_TaozinBrineTank.cs" />
     <Compile Include="RSW_DragonsnakeAlbinoToggle.cs" />
+    <Compile Include="RSW_GenStep_SarlaccPitSized.cs" />
   </ItemGroup>
 
   <ItemGroup>

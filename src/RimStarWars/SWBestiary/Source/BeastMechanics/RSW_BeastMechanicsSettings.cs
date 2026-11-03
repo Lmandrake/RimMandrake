@@ -72,6 +72,10 @@ namespace RimMandrake.StarWars.SWBestiary
         // change applies the next time the game starts. Off: it never spawns wild; one already on a map stays.
         public static bool albinoDragonsnakeEnabled = true;
 
+        // SARLACC_PIT_WIDEN_THE_BIG_ONES (RSW_GenStep_SarlaccPitSized.cs). A sarlacc map rolls a moderate, great or colossal
+        // pit. Read only when a sarlacc map generates: [new maps only]. Off: every new sarlacc map gets the moderate 9x6 pit.
+        public static bool bigSarlaccPitsEnabled = true;
+
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
@@ -86,6 +90,7 @@ namespace RimMandrake.StarWars.SWBestiary
             Scribe_Values.Look(ref taozinPaleDays, "taozinPaleDays", 15f);
             Scribe_Values.Look(ref taozinNestEnabled, "taozinNestEnabled", true);
             Scribe_Values.Look(ref albinoDragonsnakeEnabled, "albinoDragonsnakeEnabled", true);
+            Scribe_Values.Look(ref bigSarlaccPitsEnabled, "bigSarlaccPitsEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -115,7 +120,7 @@ namespace RimMandrake.StarWars.SWBestiary
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]; the taozin brine tank's three settings are read by the tank's rare tick, so [now]; the taozin nest is read only when a new map generates: [new maps only] (added 2026-10-17, TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE); the albino dragonsnake is read once by a startup static constructor: [next game start] (added 2026-10-17, DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER).</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]; the taozin brine tank's three settings are read by the tank's rare tick, so [now]; the taozin nest is read only when a new map generates: [new maps only] (added 2026-10-17, TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE); the albino dragonsnake is read once by a startup static constructor: [next game start] (added 2026-10-17, DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER); big sarlacc pits are read only when a sarlacc map generates: [new maps only] (added 2026-11-03, SARLACC_PIT_WIDEN_THE_BIG_ONES).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -206,6 +211,13 @@ namespace RimMandrake.StarWars.SWBestiary
             {
                 list.CheckboxLabeled("Albino dragonsnake (rare pale variant)", ref albinoDragonsnakeEnabled,
                     "A rare, pale, limbless dragonsnake lives in the same swamps as the ordinary dragonsnake, far less often. Off: it never appears in the wild. One already on a map stays. Takes effect the next time the game starts.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Big sarlacc pits", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "bigSarlaccPitsEnabled" }))
+            {
+                list.CheckboxLabeled("Great and colossal sarlacc pits", ref bigSarlaccPitsEnabled,
+                    "A sarlacc map holds a moderate (9x6), great (15x10) or colossal (25x17) pit. Off: every new sarlacc map gets the moderate pit. Maps already made keep theirs.");
                 list.GapLine();
             }
 
