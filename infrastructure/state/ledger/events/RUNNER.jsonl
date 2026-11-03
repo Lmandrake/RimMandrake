@@ -2181,3 +2181,6 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"broken","detail":"Under-staffed 32 min: running 7 of 8 (budget 8), 758 ready, why: work clones per tick","ts":"2026-11-03T12:38:07Z","tsn":1793709487718435385}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"broken","detail":"Ops alarm RELENTLESS_DISTRESS: under 32 min: 7 of 8 places, 758 ready: work clones per tick -- relentless.distressed = 1 1 when the belt is distressed or worse ","ts":"2026-11-03T12:39:14Z","tsn":1793709554375573329}
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T12:39:17Z","tsn":1793709557340180258}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-03T12:48:04Z","tsn":1793710084487836364}
+{"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-03T12:48:07Z","tsn":1793710087277540274}
+{"seat":"RUNNER","event":"live","id":"TOKEN_LIMITS_TAME_BARK_NO_BITE","result":"kept","detail":"sweep: running again","ts":"2026-11-03T12:48:10Z","tsn":1793710090133753885}
