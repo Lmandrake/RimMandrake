@@ -36,23 +36,11 @@ never parsed from filenames.
 - `validated` — `{job_id, verdict: pass|fail}` (the daemon's own re-run of the
   validator, never the worker's self-report).
 - `sheeted` — `{sheet}` (which review sheet row it landed on).
-- `verdict` — `{result: accepted|rejected|repurposed, notes, as_target?}`.
-  **`repurposed`** is first-class: accepted AS `as_target` (closes that
-  target) AND auto-re-registers the original target as still owed, `source:
-  "repurpose of <job_id>"`. This is the "accepted as something different but
-  the original was sent back" case.
-- `committed` — `{repo_path, sha}`.
-- `deployed` — flag only; deploys stay FOUNDRY's.
-
-**RULED — done = committed to repo.** The burn-up's completed line and the
-projection count targets with a `committed` event. `deployed` is a visible
-flag, not a gate on done. `accepted` (at sheet) is a visible pre-state.
-
-**RULED — retry cap 3, then escalate.** A target rejected 3 full owner-verdict
-rounds (each job internally ≤3 validator retries, unchanged) parks on a
-"needs different approach" list surfaced on the dashboard and to BENCH —
-matching the already-ruled Gemini-contrast escalation
-(`GRAPHICS_GEMINI_BILLING_DECISION_1`). No unbounded churn on a doomed target.
+**Moved (2026-11-03, ART_VERSION_WRANGLING_1):** owner verdicts, commits and
+installs — and with them "done" and the retry cap — live in the art ledger
+(`design/RimMandrake/art_ledger_design_2026-10-04.md`; the 3-rounds-then-escalate
+loop is the `rimworld-art-evaluation` skill). This registry tracks the daemon
+side only: registered → queued → generated → validated, plus `withdrawn`.
 
 ## 2. Spend
 
@@ -68,13 +56,10 @@ on `job_id`:
 ## 3. The status view — burn-UP, expanding scope
 
 Derived by `artreg.py render` (script-owned, like the queue views):
-- Burn-up chart: scope line (total registered, stepping up; each step labeled
-  with its `source`) vs completed line (committed). Never burn-down — the
-  target is allowed to grow and the chart says when and why.
-- State counts: registered / queued / generated / awaiting-verdict / accepted
-  / rejected-in-retry / parked-at-cap / repurposed / committed / deployed.
-- Iterations histogram; %window burn rate; projection-to-finish of CURRENT
-  scope at measured velocity, restated at every scope step.
+- Scope chart: total registered, stepping up; each step labeled with its
+  `source`. The target is allowed to grow and the chart says when and why.
+- State counts: registered / queued / generated / awaiting-verdict / withdrawn.
+- Iterations histogram; %window burn rate.
 
 ## 4. RULED — the Dashboard Hub: one multi-tab artifact
 
@@ -104,8 +89,7 @@ fresh."
   queue dir layout, review-sheets mechanics, FOUNDRY owning deploys, the
   Gemini billing gate (owner's explicit word still required before enable).
 - Backfill: `artreg.py backfill` seeds the ledger from existing
-  `throughput.jsonl` + done/failed manifests so history isn't lost; targets
-  already accepted/committed are registered retroactively with
+  `throughput.jsonl` + done/failed manifests so history isn't lost, tagged
   `source: backfill`.
 
 ## Test (how someone checks this was applied)

@@ -27,28 +27,19 @@ lock, so "one CLI owns every write" holds regardless of call shape.
   many `queued` events already exist for this target — never parsed from a
   job-id suffix like `_v2`/`_r3`.
 
-**Retry cap — resolving one numeric discrepancy honestly** rather than
-guessing: the design's prose says "retry cap 3, then escalate ... rejected 3
-full owner-verdict rounds ... parks", while the item's own verify checklist
-tests "a 4th rejection on the same target parks it". Read together, "cap 3"
-most sensibly means 3 retries are ALLOWED after a rejection (attempts 2, 3,
-4 each get one more try) and parking fires only once a 4th rejection proves
-the 3rd retry didn't fix it either — which is exactly the item's literal,
-checkable test. `PARK_AFTER_REJECTIONS = 4` implements that reading; it is
-one named constant, trivially moved if the owner meant literally 3.
-
 **Registry events** (one JSON object per line, append-only): `registered`,
-`queued`, `generated`, `validated`, `sheeted`, `verdict`, `committed`,
-`deployed`, and `withdrawn` — `{event, target, notes, by, ts}`. `withdrawn`
+`queued`, `generated`, `validated`, `sheeted` and `withdrawn` — `{event, target, notes, by, ts}`. `withdrawn`
 retires a target whose `queued` record is stale (no job file exists anywhere,
 so nothing will ever resolve it). It is accepted ONLY while the target's
 current state is `queued`; the target's derived state becomes the terminal
 `withdrawn` (counted separately, never as queued), and a later `queued` event
 for the same target re-opens it normally. CLI: `withdraw --target T --notes N`.
 
-The `verdict`/`committed`/`deployed` WRITERS were removed 2026-10-09 (0 callers,
-0 events ever; the art ledger replaced them). Replay still understands those
-event kinds so an old registry reads correctly.
+Owner verdicts, commits and deploys are NOT tracked here: the art ledger
+(`src/RimMandrake/Utils/art/art.py`, `infrastructure/state/art/`) owns them.
+The old `verdict`/`committed`/`deployed` event kinds were retired 2026-11-03
+(ART_VERSION_WRANGLING_1): their writers went 2026-10-09 and the live registry
+never held one of them (0 of 39,860 events), so replay skips them as unknown.
 """
 from __future__ import annotations
 
@@ -81,12 +72,9 @@ ART_STATUS_HTML = common.QUEUE_ROOT / "art_status.html"
 HUB_ARTIFACT_URL = "https://claude.ai/code/artifact/ec893765-f01c-4cd8-a0b2-58e5b0bf2257"
 
 WEEKLY_WINDOW_MINUTES = 10080  # the "secondary" codex meter window == 7 days
-PARK_AFTER_REJECTIONS = 4      # see module docstring — resolves design-vs-item wording
 
 EVENT_TYPES = ("registered", "queued", "generated", "validated", "sheeted",
-               "verdict", "committed", "deployed", "withdrawn")
-
-TERMINAL_STATES = ("committed", "deployed")
+               "withdrawn")
 
 
 class RegError(ValueError):
@@ -267,7 +255,7 @@ def record_withdrawn(target: str, notes: str, by: str = "unknown",
 # --------------------------------------------------------------------------
 
 def compute_target_states(events: list[dict]) -> dict[str, dict]:
-    """target -> {state, iteration, rejected_count, job_ids, sources,
+    """target -> {state, iteration, renders, job_ids, sources,
     last_ts, notes_history}. Pure function of the event list — this IS the
     view; nothing here is stored, everything is replayed."""
     by_target: dict[str, list[dict]] = {}
@@ -283,7 +271,6 @@ def compute_target_states(events: list[dict]) -> dict[str, dict]:
         state = "unregistered"
         iteration = 0
         renders = 0
-        rejected_count = 0
         job_ids: list[str] = []
         sources: list[str] = []
         last_ts = None
@@ -307,31 +294,15 @@ def compute_target_states(events: list[dict]) -> dict[str, dict]:
                 # a daemon-internal fail just means "still needs another
                 # attempt" — the next `queued` event (a fresh job_id, the
                 # daemon's own unchanged internal retry) supersedes this;
-                # it is never itself the owner-facing rejected-in-retry state.
+                # it is never an owner rejection (those live in the art ledger).
                 state = "awaiting_verdict" if ev.get("verdict") == "pass" else "generated"
             elif kind == "sheeted":
                 state = "awaiting_verdict"
-            elif kind == "verdict":
-                result = ev.get("result")
-                last_notes = ev.get("notes") or last_notes
-                if result == "accepted":
-                    state = "accepted"
-                elif result == "rejected":
-                    rejected_count += 1
-                    state = ("parked_at_cap" if rejected_count >= PARK_AFTER_REJECTIONS
-                              else "rejected_in_retry")
-                elif result == "repurposed":
-                    state = "repurposed"
-            elif kind == "committed":
-                state = "committed"
-            elif kind == "deployed":
-                state = "deployed"
             elif kind == "withdrawn":
                 state = "withdrawn"
                 last_notes = ev.get("notes") or last_notes
         out[target] = {
             "state": state, "iteration": iteration, "renders": renders,
-            "rejected_count": rejected_count,
             "job_ids": job_ids, "sources": sources, "last_ts": last_ts,
             "last_notes": last_notes,
         }
@@ -430,8 +401,8 @@ def backfill(done_dir: Path = common.DEFAULT_DONE, failed_dir: Path = common.DEF
     already sitting in done/ or failed/, tagged `source: backfill`. Honest
     about what it can and cannot know: a manifest only proves the DAEMON's
     own verdict (did it produce a validator-clean image), never an owner
-    accept/reject — so backfill never fabricates `verdict`/`committed`
-    events. Counts returned are MEASURED (this function counted the files
+    accept/reject (the art ledger's business, not this registry's).
+    Counts returned are MEASURED (this function counted the files
     itself, on this call, against the real directories passed in)."""
     manifests = []
     for d in (done_dir, failed_dir):
@@ -489,7 +460,7 @@ def backfill(done_dir: Path = common.DEFAULT_DONE, failed_dir: Path = common.DEF
             continue
 
         # Real historical time, not "now" — the job file's own `created`
-        # stamp — so a burn-up chart or velocity projection built over
+        # stamp — so the scope chart built over
         # backfilled history isn't flattened onto the single moment this
         # command happened to run. Falls back to "now" only when a job file
         # predates the `created` field or is unparseable; generated/validated
@@ -558,9 +529,8 @@ def fingerprint_file(path: Path) -> dict:
 # status / render
 # --------------------------------------------------------------------------
 
-STATE_ORDER = ("registered", "queued", "generated", "awaiting_verdict", "accepted",
-               "rejected_in_retry", "parked_at_cap", "repurposed", "committed",
-               "deployed", "withdrawn", "unregistered")
+STATE_ORDER = ("registered", "queued", "generated", "awaiting_verdict", "withdrawn",
+               "unregistered")
 
 
 def build_status(target_filter: str | None = None) -> dict:
@@ -574,10 +544,6 @@ def build_status(target_filter: str | None = None) -> dict:
     for v in states.values():
         counts[v["state"]] = counts.get(v["state"], 0) + 1
 
-    parked = [{"target": t, "rejected_count": v["rejected_count"],
-               "last_notes": v["last_notes"]}
-              for t, v in states.items() if v["state"] == "parked_at_cap"]
-
     # histogram of COMPLETED renders per lane — a queued-only lane counts 0
     # and stays out (owner, 2026-09-11: "a queued item should show 0 iterations")
     hist: dict[int, int] = {}
@@ -587,7 +553,6 @@ def build_status(target_filter: str | None = None) -> dict:
 
     per_target = {}
     total_usd, total_pct, total_measured_any = 0.0, 0.0, False
-    accepted_or_committed = 0
     for t, v in states.items():
         spend = target_spend(v["job_ids"], throughput)
         per_target[t] = {**v, "spend": spend}
@@ -595,8 +560,6 @@ def build_status(target_filter: str | None = None) -> dict:
             total_usd += spend["usd"]
             total_pct += spend["codexPctWindow"]
             total_measured_any = True
-        if v["state"] in ("accepted", "committed", "deployed"):
-            accepted_or_committed += 1
 
     # the weekly window is the LAST 7 DAYS of codex meter deltas — never a
     # dollar estimate (owner rulings 2026-09-11: true window; no codex dollars)
@@ -616,14 +579,12 @@ def build_status(target_filter: str | None = None) -> dict:
         "targetCount": len(states),
         "stateCounts": counts,
         "iterationsHistogram": hist,
-        "parked": parked,
         "spend": {
             "codexPctAllTime": round(total_pct, 2),
             "pctWeeklyWindow": round(week_pct, 2),
             "geminiUsdTotal": round(total_usd, 4),
             "geminiUsdWeek": round(week_usd, 4),
             "status": "MEASURED" if total_measured_any else "UNMEASURED",
-            "acceptedOrCommittedCount": accepted_or_committed,
         },
         "perTarget": per_target,
     }
@@ -641,32 +602,25 @@ def print_status(st: dict, verbose: bool = False) -> None:
     print(f"codex window: {sp['pctWeeklyWindow']}% (7d){note}, "
           f"{sp['codexPctAllTime']}% all-time; "
           f"gemini history ${sp['geminiUsdTotal']:.2f}")
-    if st["parked"]:
-        print(f"PARKED / escalation list ({len(st['parked'])}):")
-        for p in st["parked"]:
-            print(f"  - {p['target']}  rejected={p['rejected_count']}x  "
-                  f"notes={p['last_notes']!r}")
     if verbose:
         print("per-target:")
         for t, v in sorted(st["perTarget"].items()):
             print(f"  {t:40s} state={v['state']:18s} iter={v['iteration']} "
-                  f"rejected={v['rejected_count']} spend=${v['spend']['usd']:.4f}"
+                  f"renders={v['renders']} spend=${v['spend']['usd']:.4f}"
                   f"[{v['spend']['status']}]")
 
 
 # --------------------------------------------------------------------------
-# render — burn-up + histogram + parked list + projection, HTML + JSON
+# render — scope + histogram + spend, HTML + JSON
 # --------------------------------------------------------------------------
 
 def _svg_burnup(events: list[dict], width=760, height=280) -> str:
     reg_events = sorted([e for e in events if e.get("event") == "registered"],
                          key=lambda e: e.get("ts", 0))
-    com_events = sorted([e for e in events if e.get("event") == "committed"],
-                         key=lambda e: e.get("ts", 0))
     if not reg_events:
         return "<p>no registered events yet — nothing to chart</p>"
 
-    all_ts = [e.get("ts", 0) for e in reg_events + com_events]
+    all_ts = [e.get("ts", 0) for e in reg_events]
     t0, t1 = min(all_ts), max(all_ts)
     span = max(t1 - t0, 1.0)
 
@@ -676,23 +630,14 @@ def _svg_burnup(events: list[dict], width=760, height=280) -> str:
     scope_pts, seen_targets = [], set()
     cum = 0
     for e in reg_events:
-        # a target re-registered (repurpose reopen) still only counts once
+        # a target re-registered still only counts once
         # toward SCOPE — it was already part of the scope, just reopened.
         if e["target"] not in seen_targets:
             seen_targets.add(e["target"])
             cum += 1
         scope_pts.append((e.get("ts", 0), cum, e.get("source", "")))
 
-    committed_targets = set()
-    committed_pts = []
-    cum_c = 0
-    for e in com_events:
-        if e["target"] not in committed_targets:
-            committed_targets.add(e["target"])
-            cum_c += 1
-        committed_pts.append((e.get("ts", 0), cum_c))
-
-    max_y = max([p[1] for p in scope_pts] + [p[1] for p in committed_pts] + [1])
+    max_y = max([p[1] for p in scope_pts] + [1])
 
     def y_of(v):
         return height - 40 - (v / max_y) * (height - 70)
@@ -723,14 +668,9 @@ def _svg_burnup(events: list[dict], width=760, height=280) -> str:
     svg.append(f'<text x="10" y="20" font-size="10" fill="#d8c3a5">{max_y}</text>')
     svg.append(f'<text x="10" y="{height-40}" font-size="10" fill="#d8c3a5">0</text>')
     svg.append(f'<path d="{path_of(scope_pts)}" fill="none" stroke="#e8a33d" stroke-width="2"/>')
-    if committed_pts:
-        svg.append(f'<path d="{path_of(committed_pts)}" fill="none" stroke="#5fb87a" '
-                   f'stroke-width="2"/>')
     svg.extend(labels)
     svg.append(f'<text x="{width-190}" y="20" font-size="11" fill="#e8a33d">'
                f'─ scope (registered)</text>')
-    svg.append(f'<text x="{width-190}" y="36" font-size="11" fill="#5fb87a">'
-               f'─ committed (done)</text>')
     svg.append("</svg>")
     return "\n".join(svg)
 
@@ -762,48 +702,12 @@ def _esc(s: str) -> str:
             .replace('"', "&quot;"))
 
 
-def compute_projection(events: list[dict], st: dict) -> dict:
-    reg_events = [e for e in events if e.get("event") == "registered"]
-    com_events = [e for e in events if e.get("event") == "committed"]
-    if not reg_events:
-        return {"status": "UNMEASURED", "note": "no registered events"}
-    t0 = min(e.get("ts", 0) for e in reg_events)
-    now = time.time()
-    days = max((now - t0) / 86400.0, 1e-6)
-    committed_targets = {e["target"] for e in com_events}
-    velocity = len(committed_targets) / days  # targets committed per day
-    total_targets = st["targetCount"]
-    remaining = max(total_targets - len(committed_targets), 0)
-    if velocity <= 0 or len(committed_targets) == 0:
-        return {"status": "UNMEASURED",
-                "note": "no committed targets yet — no velocity to project from",
-                "remaining": remaining, "totalTargets": total_targets}
-    days_to_finish = remaining / velocity
-    return {"status": "MEASURED", "velocityPerDay": round(velocity, 3),
-            "remaining": remaining, "totalTargets": total_targets,
-            "committed": len(committed_targets),
-            "daysToFinishCurrentScope": round(days_to_finish, 1),
-            "measuredOverDays": round(days, 2)}
-
-
 def render(out_html: Path = ART_STATUS_HTML, out_json: Path = ART_STATUS_JSON) -> dict:
     events = read_events()
     st = build_status()
-    projection = compute_projection(events, st)
-    payload = {**st, "projection": projection}
+    payload = st
 
     common.atomic_write_json(out_json, payload)
-
-    parked_rows = "".join(
-        f"<tr><td>{_esc(p['target'])}</td><td>{p['rejected_count']}</td>"
-        f"<td>{_esc(p['last_notes'] or '')}</td></tr>" for p in st["parked"]) or \
-        "<tr><td colspan=3>none</td></tr>"
-
-    proj_line = ("UNMEASURED — " + projection.get("note", "")) if projection["status"] == "UNMEASURED" \
-        else (f"MEASURED: {projection['velocityPerDay']} targets/day over "
-              f"{projection['measuredOverDays']}d → {projection['remaining']} remaining "
-              f"of {projection['totalTargets']} ≈ {projection['daysToFinishCurrentScope']} "
-              f"days to finish CURRENT scope")
 
     html = f"""<!doctype html>
 <html><head><meta charset="utf-8"><title>Art Regen Registry Status</title>
@@ -821,7 +725,7 @@ td,th{{border:1px solid #4a3a2a;padding:4px 8px;text-align:left;font-size:13px}}
  ({st['sourceFingerprint'].get('lines','?')} lines) — throughput
  {st['throughputFingerprint'].get('sha256_12','?')} ({st['throughputFingerprint'].get('lines','?')} lines)</p>
 
-<h2>Burn-up (scope vs committed)</h2>
+<h2>Scope (registered targets)</h2>
 {_svg_burnup(events)}
 
 <h2>State counts</h2>
@@ -836,11 +740,6 @@ td,th{{border:1px solid #4a3a2a;padding:4px 8px;text-align:left;font-size:13px}}
 </div>
 </div>
 
-<h2>Parked / escalation list (rejected ≥ {PARK_AFTER_REJECTIONS}x)</h2>
-<table><tr><th>target</th><th>rejected</th><th>last notes</th></tr>{parked_rows}</table>
-
-<h2>Projection</h2>
-<p>{_esc(proj_line)}</p>
 </body></html>"""
     out_html.write_text(html)
     if out_json == ART_STATUS_JSON:

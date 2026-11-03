@@ -191,18 +191,17 @@ async function grab(f){const r=await fetch(f);if(!r.ok)throw new Error(f+" → H
 
 grab("data/art.json").then(d=>{
   meta("art",{generatedAt:d.generatedAt,source:d.sourceFingerprint});
-  const sc=d.stateCounts||{},sp=d.spend||{},pr=d.projection||{},pt=d.perTarget||{};
+  const sc=d.stateCounts||{},sp=d.spend||{},pt=d.perTarget||{};
   const lanes=Object.entries(pt);
   const creatures=new Set(lanes.map(([k])=>k.split("/")[0])).size;
   const renders=lanes.reduce((a,[,v])=>a+(v.renders??v.iteration??0),0);
-  const rejected=lanes.reduce((a,[,v])=>a+(v.rejected_count||0),0);
   const states=Object.entries(sc).filter(([,v])=>v>0);
-  const ord=["queued","generated","awaiting_verdict","rejected_in_retry","parked_at_cap","registered","accepted","committed","deployed","repurposed","unregistered"];
+  const ord=["queued","generated","awaiting_verdict","registered","withdrawn","unregistered"];
   lanes.sort((a,b)=>(ord.indexOf(a[1].state)-ord.indexOf(b[1].state))||a[0].localeCompare(b[0]));
   $("#body-art").innerHTML=
     tiles([["lanes (target×facing)",d.targetCount??"?",1],
            ["creatures",creatures],
-           ["renders",renders],["rejections",rejected],
+           ["renders",renders],
            ["awaiting verdict",sc.awaiting_verdict??0],
            ["codex window, 7d",sp.pctWeeklyWindow!=null?sp.pctWeeklyWindow+"%":"?"],
            ["codex all-time",sp.codexPctAllTime!=null?sp.codexPctAllTime+"%":"?"],
@@ -211,13 +210,13 @@ grab("data/art.json").then(d=>{
     states.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`).join("")+
     `</table></div>`+
     `<h3>Per-target tracking (${new Set(lanes.map(([k])=>k.split("/")[0])).size} targets, ${lanes.length} lanes)</h3><div class="tableclip"><table id="arttab">`+
-    `<tr><th>target</th><th>state</th><th class="num">iterations</th><th class="num">rejected</th><th class="num">window / $</th></tr>`+
+    `<tr><th>target</th><th>state</th><th class="num">iterations</th><th class="num">window / $</th></tr>`+
     artRows(lanes,ord)+
     `</table></div>`+
     `<p class="note">Scope = what the registry has been fed (regen waves so far). The
     assignment-sheet scope registers as its waves are queued after the verdict sitting —
-    the lane count moves with a labeled step, never a silent renumber.</p>`+
-    `<h3>Projection</h3><p class="note">${esc(pr.note||"")} — status ${esc(pr.status||"?")}, ${pr.remaining??"?"} of ${pr.totalTargets??"?"} remaining.</p>`;
+    the lane count moves with a labeled step, never a silent renumber. Owner verdicts live in
+    the art ledger, not here.</p>`;
   $("#arttab").addEventListener("click",ev=>{
     const tr=ev.target.closest("tr.grp");if(!tr)return;
     const g=tr.dataset.g,open=tr.classList.toggle("open");
@@ -266,7 +265,6 @@ function artRows(lanes,ord){
   let out="";
   for(const [g,ls] of gs){
     const it=ls.reduce((a,[,v])=>a+(v.renders??v.iteration??0),0);
-    const rj=ls.reduce((a,[,v])=>a+(v.rejected_count||0),0);
     const gp=ls.reduce((a,[,v])=>a+lanePct(v),0),gu=ls.reduce((a,[,v])=>a+laneUsd(v),0);
     const st=new Set(ls.map(([,v])=>v.state));
     const state=st.size===1?[...st][0]:"mixed";
@@ -275,14 +273,13 @@ function artRows(lanes,ord){
       (single?"<span class=\"tw\" style=\"opacity:.25\">\u00B7</span> ":`<span class="tw">\u25B8</span> `)+
       `<code style="font-family:var(--mono);font-size:12px">${esc(g)}</code>`+
       (single?"":` <span style="color:var(--muted);font-size:12px">\u00D7${ls.length}</span>`)+
-      `</td><td>${esc(state)}</td><td class="num">${it}</td><td class="num">${rj}</td>`+
+      `</td><td>${esc(state)}</td><td class="num">${it}</td>`+
       `<td class="num">${fmtSpend(gp,gu)}</td></tr>`;
     if(!single)for(const [k,v] of ls){
       const f=k.slice(g.length+1)||k;
       out+=`<tr class="sub" data-g="${esc(g)}" hidden><td style="padding-left:30px">`+
         `<code style="font-family:var(--mono);font-size:12px;color:var(--muted)">${esc(f)}</code></td>`+
         `<td>${esc(v.state)}</td><td class="num">${v.renders??v.iteration??0}</td>`+
-        `<td class="num">${v.rejected_count??0}</td>`+
         `<td class="num">${fmtSpend(lanePct(v),laneUsd(v))}</td></tr>`;
     }
   }
