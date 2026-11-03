@@ -73,6 +73,11 @@
     "_flip:swanimals/Convor/Convor_f_Flying_": "H"
    }
   },
+  "RSW_Dalgo": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Dragonsnake": {
    "decision": "A",
    "note": "",

@@ -1,8 +1,8 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-11-03T03:35:21-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:56:26-0800",
+ "census": "/tmp/bffar_proof/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Brakkel",
   "RM_Brunnock",
@@ -35,10 +35,143 @@
   "RM_Vurmeloth",
   "RM_Wollick",
   "RM_Zeev",
-  "RM_Zhorrel",
-  "RSW_Dalgo"
+  "RM_Zhorrel"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Beldon": {
+   "brief": "a vast drifting gasbag grazer that trails feeding filaments through high air",
+   "kind": "drafted",
+   "name": "ombaruun",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Clodhopper": {
+   "brief": "a wingless swarming forager that leaps between fields on heavy hind legs",
+   "kind": "drafted",
+   "name": "gribbik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Convor": {
+   "brief": "a plump owl-shaped tree flyer that grips branches with a prehensile tail",
+   "kind": "drafted",
+   "name": "tweelo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Dalgo": {
+   "brief": "a long-legged running carnivore with a fan crest, trainable as a mount",
+   "kind": "drafted",
+   "name": "ploddu",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Dragonsnake": {
+   "brief": "a long finned mud-water serpent that drags prey under from the shallows",
+   "kind": "drafted",
+   "name": "sliskarr",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_DragonsnakeAlbino": {
+   "brief": "the rare eyeless bone-white colour form of the sliskarr, hunting by feel",
+   "kind": "drafted",
+   "name": "pale sliskarr",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Falumpaset": {
+   "brief": "a huge long-legged draught grazer that wades the marsh hauling loads",
+   "kind": "drafted",
+   "name": "borrumba",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Fambaa": {
+   "brief": "a giant scaly swamp amphibian strong enough to carry a platform on its back",
+   "kind": "drafted",
+   "name": "zhavoru",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gelagrub": {
+   "brief": "a huge ground beetle grub that burrows through rotting wood",
+   "kind": "drafted",
+   "name": "blorro",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gizka": {
+   "brief": "a tiny fast-breeding hopping reptile that swarms stores and chews wiring",
+   "kind": "drafted",
+   "name": "tippik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Hawkbat": {
+   "brief": "a hook-beaked leather-winged hunter that dives on small prey from rooftops and ledges",
+   "kind": "drafted",
+   "name": "krivask",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Hssiss": {
+   "brief": "a slow venomous dark-scaled lizard that ambushes at the water's edge",
+   "kind": "drafted",
+   "name": "sseevek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Kinrath": {
+   "brief": "a large venom-limbed forest arachnid that hunts the undergrowth",
+   "kind": "drafted",
+   "name": "aschikk",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Klorslug": {
+   "brief": "a giant poisonous toothed swamp worm that lunges from the mire",
+   "kind": "drafted",
+   "name": "ghelbek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Lylek": {
+   "brief": "a large forest insect predator on spear legs with raised spiked pincers",
+   "kind": "drafted",
+   "name": "izzara",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Mott": {
+   "brief": "a tubby semi-aquatic swamp grazer, the staple prey of the marsh",
+   "kind": "drafted",
+   "name": "buhlo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Nuna": {
+   "brief": "a plump flightless wattled swamp fowl kept for meat",
+   "kind": "drafted",
+   "name": "plokka",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_PekoPeko": {
+   "brief": "a large raucous colourful swamp flyer whose cries carry for miles",
+   "kind": "drafted",
+   "name": "tseetsa",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Shiro": {
+   "brief": "a slow benign spiny-shelled reptile that retracts entirely into its shell",
+   "kind": "drafted",
+   "name": "yulvik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_ShiroTrap": {
+   "brief": "a yulvik carrying a snapping trap plant rooted between its shell ridges",
+   "kind": "drafted",
+   "name": "trap-backed yulvik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Whisperbird": {
+   "brief": "a golden long-tailed rainforest bird that flies almost silently",
+   "kind": "drafted",
+   "name": "sollivar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Worrt": {
+   "brief": "a squat warty sand-sitting amphibian that snatches prey with long fingers",
+   "kind": "drafted",
+   "name": "guppok",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_CanopySwinger": {
    "columns": {
@@ -741,6 +874,44 @@
    ],
    "shownBase": [],
    "subject_key": "convor"
+  },
+  "RSW_Dalgo": {
+   "columns": {
+    "A": {
+     "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5",
+     "north": "5a28d4a36453b50155b278315a0cd3ca28fa2705f028b28735d590bf984ed63f",
+     "south": "bcab5562086210a7b75967ab5e14623fcb95075c1333414e17990bb8bce8a78f"
+    },
+    "B": {
+     "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5"
+    },
+    "C": {
+     "east": "3c899a7822f892fca6000caf78c46ba1069e4eb9dd137124d214bbb31ec277dc",
+     "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
+     "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Dalgo/Dalgo",
+    "B": "swanimals/Dalgo/Dalgo",
+    "C": "swanimals/Dalgo/Dalgo"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render canonregen_rsw_dalgo_v1 \u2014 grader flagged (advisory)",
+    "C": "history DalgoArtOverride 2026-09-20"
+   },
+   "pools": [
+    "swanimals/Dalgo/Dalgo"
+   ],
+   "res": "swanimals/Dalgo/Dalgo",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dalgo"
   },
   "RSW_Dragonsnake": {
    "columns": {
