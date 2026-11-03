@@ -2469,3 +2469,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_RELENTLESS_BOOKS_UNSTICK_WGYL","text":"ops_watch: cleared at 2026-11-03T22:22:00Z (relentless.books_behind_min now 2.8)","ts":"2026-11-03T22:23:33Z","tsn":1793744614003506312}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"broken","detail":"Ops alarm RELENTLESS_DISTRESS: under 36 min: 7 of 8 places, 784 ready: work clones per tick -- relentless.distressed = 1 1 when the belt is distressed or worse ","ts":"2026-11-03T22:23:36Z","tsn":1793744616666156521}
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T22:23:39Z","tsn":1793744619188624759}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-03T22:33:04Z","tsn":1793745184348272668}
