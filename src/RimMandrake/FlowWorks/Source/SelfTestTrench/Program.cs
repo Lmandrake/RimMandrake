@@ -69,9 +69,31 @@ namespace RimMandrake.FlowWorks.TrenchSelfTest
 			Check(Near(RM_TrenchCoverMath.TrenchBlock(basin, 0, 4, 0, 10, person, 1f), 0.44f), "basin's wall side facing the shooter: 0.44");
 
 			// Pit cover reads ground: a covered target square is not a hole.
-			Check(RM_TrenchCoverMath.GroundDepth(4, true) == 0 && RM_TrenchCoverMath.GroundDepth(4, false) == 4, "intact pit cover reads 0");
-			Func<int, int, int> covered = (x, z) => RM_TrenchCoverMath.GroundDepth(z == 0 ? 2 : 0, x == 0 && z == 0);
+			Check(RM_TrenchCoverMath.GroundDepth(4, true, 0, false, false) == 0 && RM_TrenchCoverMath.GroundDepth(4, false, 0, false, false) == 4, "intact pit cover reads 0");
+			Check(RM_TrenchCoverMath.GroundDepth(4, true, 0, false, true) == 0, "a pit cover is ground even from the floor band");
+			Func<int, int, int> covered = (x, z) => RM_TrenchCoverMath.GroundDepth(z == 0 ? 2 : 0, x == 0 && z == 0, 0, false, false);
 			Check(RM_TrenchCoverMath.TrenchBlock(covered, 0, 0, 0, 10, person, 1f) == 0f, "pawn on a covered square: 0");
+
+			// TRENCH_COVER_FIX_DECK_ERASES_UNDERPASS. A 4-notch (2 m) east-west trench (z == 0), its x == 0 square under a
+			// surface suspension deck the floor band passes under; banks at z == ±1 read 0.
+			Func<int, int, int> underpass(bool floorView) => (x, z) =>
+				RM_TrenchCoverMath.GroundDepth(z == 0 ? 4 : 0, x == 0 && z == 0, 0, true, floorView);
+			Check(Near(RM_TrenchCoverMath.TrenchBlock(underpass(true), 0, 0, 0, 10, person, 1f),
+				RM_TrenchCoverMath.TrenchBlock((x, z) => z == 0 ? 4 : 0, 0, 0, 0, 10, person, 1f), 1e-6f)
+				&& RM_TrenchCoverMath.TrenchBlock(underpass(true), 0, 0, 0, 10, person, 1f) > 0f,
+				"floor-band pawn under a deck keeps the trench's full cover");
+			Check(RM_TrenchCoverMath.TrenchBlock(underpass(false), 0, 0, 0, 10, person, 1f) == 0f, "pawn on top of a surface deck: 0");
+			Check(RM_TrenchCoverMath.GroundDepth(4, true, 0, true, true) == 4 && RM_TrenchCoverMath.GroundDepth(4, true, 0, true, false) == 0,
+				"passing deck: floor view reads the floor, deck view the deck");
+			// A sunken deck 2 notches (1 m) down in the 4-notch trench: its riders keep 1 m of wall.
+			Func<int, int, int> sunken = (x, z) => RM_TrenchCoverMath.GroundDepth(z == 0 ? 4 : 0, x == 0 && z == 0, 2, false, false);
+			Check(RM_TrenchCoverMath.GroundDepth(4, true, 2, false, false) == 2, "sunken deck reads its own height");
+			Check(Near(RM_TrenchCoverMath.TrenchBlock(sunken, 0, 0, 0, 10, person, 1f),
+				RM_TrenchCoverMath.TrenchBlock((x, z) => z == 0 ? 2 : 0, 0, 0, 0, 10, person, 1f), 1e-6f)
+				&& RM_TrenchCoverMath.TrenchBlock(sunken, 0, 0, 0, 10, person, 1f) > 0f, "sunken deck rider keeps the deck's depth of cover");
+			Check(RM_TrenchCoverMath.GroundDepth(2, true, 6, false, false) == 2, "a deck never reads deeper than the floor");
+			Check(RM_TrenchCoverMath.GroundDepth(0, true, 2, false, false) == 0 && RM_TrenchCoverMath.GroundDepth(-1, false, 0, false, false) == 0,
+				"no hollow: 0 whatever the deck");
 
 			// Natural water: not dug and no dry bed -> HollowDepth 0 -> no trench.
 			Func<int, int, int> lake = (x, z) => RM_Volume.HollowDepth(0, 0, true);

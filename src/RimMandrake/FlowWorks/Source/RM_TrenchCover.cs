@@ -32,8 +32,10 @@ namespace RimMandrake.FlowWorks
 		[System.ThreadStatic] internal static Pawn castCandidateOccupant;
 
 		/// <summary>The square depth trench cover reads (notches): the hollow depth (dug, or a dry pond bed with hollows
-		/// on; natural water 0), an intact pit cover read as ground; -1 out of bounds.</summary>
-		public static int GroundDepthAt(Map map, RM_MapComponent_Excavation eng, int x, int z)
+		/// on; natural water 0); an intact deck at its walking height (a pit cover 0, a sunken deck its notches), except a
+		/// suspension deck the occupant's floor band walks under, which reads the floor (TRENCH_COVER_FIX_DECK_ERASES_UNDERPASS);
+		/// -1 out of bounds.</summary>
+		public static int GroundDepthAt(Map map, RM_MapComponent_Excavation eng, int x, int z, bool floorView)
 		{
 			var c = new IntVec3(x, 0, z);
 			if (!c.InBounds(map))
@@ -41,7 +43,23 @@ namespace RimMandrake.FlowWorks
 				return -1;
 			}
 			int h = eng.HollowDepthAt(c);
-			return RM_TrenchCoverMath.GroundDepth(h, h > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c));
+			if (h <= 0)
+			{
+				return 0;
+			}
+			RM_SpanMath.DeckRead r = Pits.RM_SpanUtility.ReadAt(map, c);
+			return RM_TrenchCoverMath.GroundDepth(h, r.Decked, r.DeckNotches, r.FloorBandPassesUnder, floorView);
+		}
+
+		/// <summary>Does the occupant read the target square from the floor band? The pawn standing there: its own band; a
+		/// would-be occupant elsewhere (a cast-position candidate): the view its paths use. No pawn: the deck view.</summary>
+		private static bool FloorViewOf(Pawn p, IntVec3 cell)
+		{
+			if (p == null || !p.Spawned)
+			{
+				return false;
+			}
+			return p.Position == cell ? Pits.RM_SuspensionUnderpass.InFloorBand(p) : Pits.RM_SuspensionUnderpass.UsesFloorView(p);
 		}
 
 		/// <summary>Who stands (or would stand) on the target square: the target pawn, the cast-position candidate's
@@ -73,15 +91,16 @@ namespace RimMandrake.FlowWorks
 				return 0f;
 			}
 			IntVec3 cell = target.Cell;
-			if (GroundDepthAt(map, eng, cell.x, cell.z) <= 0)
-			{
-				return 0f;
-			}
-			if (target.HasThing && !(target.Thing is Pawn))
+			if (!cell.InBounds(map) || eng.HollowDepthAt(cell) <= 0 || (target.HasThing && !(target.Thing is Pawn)))
 			{
 				return 0f;
 			}
 			Pawn p = OccupantOf(target, map);
+			bool floorView = FloorViewOf(p, cell);
+			if (GroundDepthAt(map, eng, cell.x, cell.z, floorView) <= 0)
+			{
+				return 0f;
+			}
 			float size = 1f;
 			if (p != null)
 			{
@@ -96,7 +115,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0f;
 			}
-			return RM_TrenchCoverMath.TrenchBlock((x, z) => GroundDepthAt(map, eng, x, z), cell.x, cell.z, shooterLoc.x,
+			return RM_TrenchCoverMath.TrenchBlock((x, z) => GroundDepthAt(map, eng, x, z, floorView), cell.x, cell.z, shooterLoc.x,
 				shooterLoc.z, RM_TrenchCoverMath.HeightMetres(size), RimMandrakeFlowWorksSettings.trenchCoverStrength);
 		}
 

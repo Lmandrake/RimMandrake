@@ -135,7 +135,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>The combined trench block chance for a target standing at (tx, tz) shot from (sx, sz).
 		/// <paramref name="depthAt"/> answers a square's ground depth in notches (dug or dry-bed hollow, an intact pit cover
-		/// read as 0, natural water 0) and -1 out of bounds. 0 when the target's own square is not below a neighbour.</summary>
+		/// read as 0, a sunken deck its height, a deck the occupant walks under its floor, natural water 0) and -1 out of bounds. 0 when the target's own square is not below a neighbour.</summary>
 		public static float TrenchBlock(Func<int, int, int> depthAt, int tx, int tz, int sx, int sz, float heightMetres,
 			float strength)
 		{
@@ -159,10 +159,22 @@ namespace RimMandrake.FlowWorks
 			return num;
 		}
 
-		/// <summary>The square depth trench cover reads: the hollow depth, an intact pit cover read as ground (0).</summary>
-		public static int GroundDepth(int hollowNotches, bool intactCover)
+		/// <summary>The square depth trench cover reads (TRENCH_COVER_FIX_DECK_ERASES_UNDERPASS): no deck, the hollow depth; an
+		/// intact deck its walking height, never deeper than the floor (a pit cover or surface deck 0, a sunken deck its
+		/// notches) — except a deck the occupant's floor band passes under, which reads the floor (it walks beneath it).</summary>
+		/// <param name="floorView">The occupant reads squares from the floor band (it is beneath the suspension decks there).</param>
+		public static int GroundDepth(int hollowNotches, bool decked, int deckNotches, bool floorBandPassesUnder, bool floorView)
 		{
-			return intactCover || hollowNotches < 0 ? 0 : hollowNotches;
+			if (hollowNotches <= 0)
+			{
+				return 0;
+			}
+			if (!decked || (floorView && floorBandPassesUnder))
+			{
+				return hollowNotches;
+			}
+			int d = deckNotches < 0 ? 0 : deckNotches;
+			return d < hollowNotches ? d : hollowNotches;
 		}
 
 		/// <summary>Vanilla cover and trench cover stacked by vanilla's own rule, 1 − (1 − v)(1 − t), capped by the
