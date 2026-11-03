@@ -160,6 +160,44 @@ sw = V.remove_intruders(B, (5, 5, 20, 10))
 ok(sw["removed"] == [80] and 81 in B.pawns and 80 not in B.pawns and 1 in B.pawns,
    "sweep: near hare vanished, far hare and colonists kept (%s)" % sw)
 
+# ---- DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT (test pilot 2026-11-03): the first sweep's destroy of rock under a mountain
+# roof is followed by a roof collapse that drops CollapsedRocks AFTER it (213 live). The post-reveal re-sweep must clear
+# buildings, not only plants, or the site reads UNMEASURED SITE "rock/plants/ruins still standing".
+class _Collapse(object):
+    def __init__(self):
+        self.things, self.sweeps, self.n = ["Granite"], [], 0
+
+    def ticks(self, n):
+        pass
+
+    def probe(self, cmd):
+        return {"pawns": []}                   # no free colonist: reveal() returns early
+
+    def call(self, tool, **kw):
+        if tool == "jawa/destroy_batch":
+            self.sweeps.append(kw.get("categories"))
+            self.n += 1
+            if kw.get("categories") == "All":
+                self.things = ["CollapsedRocks"] if self.n == 1 else []   # the collapse lands after the first sweep only
+            elif kw.get("categories") == "Plant":
+                self.things = [t for t in self.things if not t.startswith("Plant_")]
+            return {"success": True}
+        if tool == "jawa/list_things":
+            return {"things": [{"defName": d} for d in self.things]}
+        if tool == "jawa/get_roof_batch":
+            return {"roofs": []}
+        return {"success": True}
+
+
+C = _Collapse()
+_rows = []
+try:
+    _okc = V._prepare_site(C, (5, 5, 20, 10), _rows, "collapse_site")
+except Exception as ex:      # a fake too thin for reveal() is a selftest defect, said by name
+    _okc, _rows = None, [{"error": repr(ex)[:200]}]
+ok(_okc is True and len(C.sweeps) >= 2 and C.sweeps[-1] == "All",
+   "prepare_site: CollapsedRocks dropped after the first sweep are cleared by the re-sweep (sweeps=%s rows=%s)" % (C.sweeps, _rows))
+
 # ---- Watchdog (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT): a dead probe channel or a spent budget aborts, a live reply resets
 class _Probe(object):
     def __init__(self, replies):

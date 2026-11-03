@@ -907,7 +907,10 @@ def _prepare_site(B, rect, rows, rid):
     # ticks -- vanilla's WildPlantSpawner seeds new plants on a large fertile rect while the colonist stands there. The first
     # destroy ran before reveal, so plants are swept again after it (HARNESS/SITE class fix; a plant re-seeded later inside a
     # row is the row's own site read, not this gate's).
-    B.call("jawa/destroy_batch", rects=r, categories="Plant")
+    # 2026-11-03 (DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT, test pilot): the first sweep destroys rock under a mountain roof
+    # and the roof collapse that follows drops CollapsedRocks (213 read back, no roof left) AFTER it -> SITE UNMEASURED. A
+    # second All sweep cleared every one live and none returned in 120 ticks; destroy_batch skips pawns, so All is safe.
+    B.call("jawa/destroy_batch", rects=r, categories="All")
     roof = B.call("jawa/get_roof_batch", rects=r) or {}
     roofs = [x for x in (roof.get("roofs") or []) if x not in (None, "None")]
     if roofs:
