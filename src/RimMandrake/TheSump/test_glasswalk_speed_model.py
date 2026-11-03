@@ -172,17 +172,26 @@ def gates_on_standard_pawn(path):
     return ok and wired and blind_ok and walk_ok, rows, wired and blind_ok and walk_ok
 
 
-def main_fake(m, move_speed, granite_tpc, glass_tpc):
+def main_fake(m, move_speed, granite_tpc, glass_tpc, glow=0.5):
     """Drive the live proof's own main() end to end against a fake bridge: spawned colonist n reads MoveSpeed
     move_speed[n-1] (the last value repeats; a number means every spawn; a per-pawn LIST is that pawn's successive
     readings, the last repeating, so a pawn can drift after the picker read it); granite_tpc / glass_tpc may be a list,
-    one ticks/cell per timed walk on that floor (the last repeating), so single walks can differ from their mean; on TileGranite it walks granite_tpc ticks/cell, on RM_Glasswalk glass_tpc. Returns (exit, stdout)."""
+    one ticks/cell per timed walk on that floor (the last repeating), so single walks can differ from their mean; on TileGranite it walks granite_tpc ticks/cell, on RM_Glasswalk glass_tpc.
+    glow: the lane's groundGlow per jawa/glow_at read, a number (all 18 cells, every read) or a list of per-read values
+    (the last repeating), each a number or a per-cell list. Returns (exit, stdout)."""
     import contextlib
     import io
     clock = {"t": 0, "start": None, "x0": 1, "floor": None, "dropped": False, "tpc": None}
     walks = {"TileGranite": -1, "RM_Glasswalk": -1}
     speeds = move_speed if isinstance(move_speed, list) else [move_speed]
     reads = {}
+    glow_reads = {"n": -1}
+    lamps = {"spawned": set(), "fuelled": set()}   # the fake lane is lit only by spawned AND refuelled lamps
+
+    def lane_glow():
+        k = glow_reads["n"] = glow_reads["n"] + 1
+        v = glow[min(k, len(glow) - 1)] if isinstance(glow, list) else glow
+        return v if isinstance(v, list) else [v] * 18
 
     def speed_of(pid):
         v = speeds[min(pid, len(speeds)) - 1]
@@ -199,6 +208,7 @@ def main_fake(m, move_speed, granite_tpc, glass_tpc):
 
     class FakeScene:
         x, z = 0, 0
+        rect = "0,0,20,4"
 
         def __init__(self, *a, **k):
             self.n = 0
@@ -260,6 +270,29 @@ def main_fake(m, move_speed, granite_tpc, glass_tpc):
                 return {"pawns": [{"position": {"x": pos_x(), "z": 1}}]}
             if tool == "jawa/pawn_stats":
                 return {"stats": [{"defName": "MoveSpeed", "value": speed_of(kw["pawn"])}]}
+            if tool == "jawa/spawn_batch":
+                for op in kw.get("ops", "").split(";"):
+                    d, _, xz = op.partition(":")
+                    if d == "TorchLamp":
+                        lamps["spawned"].add(xz)
+                return {}
+            if tool == "jawa/list_things":
+                if kw.get("defName") != "TorchLamp":
+                    return {}
+                return {"things": [{"id": "TorchLamp@" + xz} for xz in sorted(lamps["spawned"])]}
+            if tool == "jawa/thing_refuel":
+                if kw.get("amount", 0) > 0:
+                    lamps["fuelled"].add(kw["thingId"].split("@")[1])
+                return {}
+            if tool == "jawa/glow_at":
+                v = lane_glow()
+                # dark unless the lamps that light the lane (one in each 5-cell stretch of the wall row z=2) are
+                # spawned and fuelled, and the read is the lane itself (x 1..18, z 1)
+                lit = all(any(xz in lamps["fuelled"] for xz in ("%d,2" % x for x in range(lo, lo + 5)))
+                          for lo in (0, 5, 10, 15))
+                if not lit or kw.get("rect") != "1,1,18,1":
+                    v = [0.0] * len(v)
+                return {"cells": [{"groundGlow": g} for g in v]}
             return {}
 
     saved = m.S
@@ -295,10 +328,19 @@ def main_end_to_end(path):
               60 / 4.6 + 3, 1, "FAIL"),
              ("averaging through main(): granite law, glass walks [19.08, 13] (mean law)", 4.6, 60 / 4.6, [19.08, 13.0],
               1, "FAIL"),
-             ("0.65 world through main(): MoveSpeed 4.6, granite 13.04, glass 20.06", 4.6, 60 / 4.6, 20.06, 1, "FAIL")]
+             ("0.65 world through main(): MoveSpeed 4.6, granite 13.04, glass 20.06", 4.6, 60 / 4.6, 20.06, 1, "FAIL"),
+             ("dark lane (glow 0, the 2026-11-03 live room): law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1,
+              "UNMEASURED", 0.0),
+             ("one lane cell at 0.29: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED",
+              [[0.5] * 9 + [0.29] + [0.5] * 8]),
+             ("lane goes dark before the 3rd walk: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED",
+              [0.5, 0.5, 0.5, 0.0]),
+             ("short glow read (17 of 18 cells): law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED",
+              [[0.5] * 17]),
+             ("lit exactly at the 0.30 knee: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 0, "PASS", 0.30)]
     rows, ok = [], True
-    for label, ms, g, s, want, word in cases:
-        code, text, dropped = main_fake(m, ms, g, s)
+    for label, ms, g, s, want, word, *gl in cases:
+        code, text, dropped = main_fake(m, ms, g, s, *gl)
         res = [ln for ln in text.splitlines() if ln.startswith("RESULT ")]
         line = res[-1] if res else "(no RESULT line)"
         good = code == want and len(res) == 1 and (" %s " % word) in line + " " and dropped
@@ -393,7 +435,7 @@ def main():
         for label, got, want, line in rows2:
             print("   main[%s] exit %s (want %d): %s" % (label, got, want, line))
         check(ok2, "prove_glasswalk_speed.main() on a fake bridge: the checker's T=9.8 pawn exits 1 UNMEASURED, a T=13.04 "
-                   "pawn on law readings exits 0 PASS (also as the 2nd spawn after an off-band one), a pawn drifting off-band after the pick exits 1 UNMEASURED, delta 5 (ratio 0.72) and the 0.65 world exit 1 FAIL, so do walks wrong singly but law-perfect on average; the map is dropped every time")
+                   "pawn on law readings exits 0 PASS (also as the 2nd spawn after an off-band one), a pawn drifting off-band after the pick exits 1 UNMEASURED, delta 5 (ratio 0.72) and the 0.65 world exit 1 FAIL, so do walks wrong singly but law-perfect on average; a lane below glow 0.30 anywhere, on any read, exits 1 UNMEASURED; the map is dropped every time")
 
     # The live proof line must be one the supervisor's gate will run (gen 5 ended game_refused on a "$(wslpath ...)" line).
     ok3, why3 = live_line_runnable()

@@ -4,7 +4,8 @@ Run under python.exe from the repo root (bridge held by the caller):
     python.exe "$(wslpath -w src/RimMandrake/TheSump/prove_glasswalk_speed.py)" < /dev/null
 Exit 0 = A1 holds, 1 = it does not (or could not be measured).
 
-Builds a one-cell lane in a roofed room on a throwaway map, then walks one colonist (ordered Goto = Jog urgency, glasswalk
+Builds a one-cell lane in a roofed room on a throwaway map, lit by TorchLamps (every lane cell glow >= LIT before every
+walk, else UNMEASURED: in the dark Core's MoveSpeed StatPart_Glow slows every colonist x0.80), then walks one colonist (ordered Goto = Jog urgency, glasswalk
 slip OFF) over 12 cells of each floor, twice. The 2026-10-10 scene timed with scenelib.run(10), which plays at least
 200 ms at speed 4 (~80 ticks a sample) against 120-200 tick walks; this one advances rimworld/step_game_ticks STEP ticks at
 a time, so a crossing is placed within STEP ticks (per-cell error <= STEP/12).
@@ -33,6 +34,9 @@ X0, X1 = 4, 16      # timed span: 12 cells, start/stop effects excluded
 STANDARD_T = 60.0 / 4.6
 T_TOL = 0.7         # ticks/cell: MoveSpeed 4.37..4.85 counts as "a 13 ticks/cell pawn"
 PICK_TRIES = 6
+LAMPS = (2, 7, 12, 17)  # TorchLamps in the lane's north wall row: a roofed room is otherwise dark
+LIT = 0.30          # Core MoveSpeed StatPart_Glow: x0.80 at glow 0 rising to x1.00 at 0.30. Live 2026-11-03 the unlit
+                    # room read "Multiplier for light 0%: x80%" (jawa/stat_explain) and every colonist was 3.5-3.7 c/s.
 
 
 def px(pid):
@@ -60,6 +64,25 @@ def step(n):
 
 def in_band(ms):
     return bool(ms) and abs(60.0 / ms - STANDARD_T) <= T_TOL
+
+
+def light_lane(sc):
+    """Wall the lane's north side, with TorchLamps (refuelled) instead of walls at LAMPS."""
+    S.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (sc.x + dx, sc.z + 2) for dx in range(0, 20) if dx not in LAMPS),
+           stuff="BlocksGranite")
+    S.call("jawa/spawn_batch", ops=";".join("TorchLamp:%d,%d" % (sc.x + dx, sc.z + 2) for dx in LAMPS))
+    r = S.call("jawa/list_things", defName="TorchLamp", rect=sc.rect)
+    for t in ((r.get("things") if isinstance(r, dict) else None) or []):
+        S.call("jawa/thing_refuel", thingId=t["id"], amount=100)
+
+
+def lane_dark(sc):
+    """None when every lane cell (x+1..x+18, z+1) reads groundGlow >= LIT; else the readings (a blind read is dark)."""
+    r = S.call("jawa/glow_at", rect="%d,%d,%d,%d" % (sc.x + 1, sc.z + 1, 18, 1))
+    cells = (r.get("cells") if isinstance(r, dict) else None) or []
+    glows = [c.get("groundGlow") for c in cells]
+    ok = len(glows) == 18 and all(isinstance(v, (int, float)) and v >= LIT for v in glows)
+    return None if ok else glows
 
 
 def pick_standard_pawn(sc):
@@ -132,8 +155,13 @@ def main():
         sc = S.Scene("glass", 40, 60, 20, 4)
         sc.__enter__()
         sc.room(roof=True)
-        S.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (sc.x + dx, sc.z + 2) for dx in range(0, 20)),
-               stuff="BlocksGranite")
+        light_lane(sc)
+        S.call("jawa/map_commit", full=True)
+        dark = lane_dark(sc)
+        if dark is not None:
+            print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED lane not lit (glow < %.2f slows every colonist "
+                  "x0.80): %s" % (LIT, dark))
+            return 1
         pid, tried = pick_standard_pawn(sc)
         print("picked", pid, "MoveSpeed tries", tried, flush=True)
         if pid is None:
@@ -148,6 +176,11 @@ def main():
                 for terr in ("TileGranite", "RM_Glasswalk"):
                     sc.floor(terr, (1, 1, 18, 1))
                     S.call("jawa/map_commit", full=True)
+                    dark = lane_dark(sc)
+                    if dark is not None:
+                        print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED lane went dark before walk %d %s: %s"
+                              % (rep, terr, dark))
+                        return 1
                     ms = move_speed(pid)
                     speeds.append(ms)
                     w = walk_exact(sc, pid)
