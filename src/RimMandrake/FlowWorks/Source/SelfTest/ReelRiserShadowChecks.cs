@@ -261,7 +261,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a cell between two tanks keeps its tile in the Print skip too, as the layer bends from its centre");
                 Assert(j.Contains("relevantChangeTypes = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;"),
                     "the riser layer regenerates when a neighbouring pipe changes the link mask");
-                Assert(j.Contains("if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }"),
+                // PUMP_ON_TANK_FIX_NO_COUPLER moved the strip into the shared PrintStrip (riser and machine drop alike)
+                Assert(j.Contains("return PrintStrip(this, sm, plan.Path, yTile + 0.001f);")
+                       && j.Contains("if (LiquidJoinRule.TravelsWest(path)) { float sw = vr; vr = vl; vl = sw; }"),
                     "a west-going strip keeps the tile's north rim on the north");
                 Assert(j.Contains("class Patch_Pipe_RiserReplacesTile") && j.Contains("return !RM_LiquidJoins.RiserReplacesTile(thing);"),
                     "the cell's own cap/corner tile gives way to the bend");

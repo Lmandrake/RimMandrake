@@ -389,8 +389,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "6 -> 4 -> 0 -> 2 -> 6, got " + c1 + " " + c2 + " " + c3 + " " + c4);
                 string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
                 Assert(!Regex.IsMatch(st, @"CapacityWithoutBed|CapacityWithBed"), "the ratio pair is gone from the stock model");
-                Assert(Regex.Matches(st, @"body\.capacity = RM_BedMath\.CapacityForBeds\(unit, BedSum\(body, owner\)\);").Count == 2,
-                    "detach and reattach both size the pond by unit x beds");
+                Assert(Regex.Matches(st, @"body\.capacity = RM_BedMath\.CapacityForBeds\(unit, BedSum\(body, owner\)\);").Count == 3,
+                    "detach, reattach and the dev plot reset (ReleaseRect, PLOT_D_BODY_PRUNE_STALE_SEA) all size the pond by unit x beds");
                 RiverSwitchFlipChecks.Has(st, @"body\.levelUnit = RM_BedMath\.LevelUnit\(body\.capacity, BedSum\(body, owner\)\);", "the unit is fixed at formation");
                 // C2-F7: sticky-limitless off, a truncated LIMITED body's far squares bring their own capacity and water
                 RiverSwitchFlipChecks.Has(st, @"if \(!owned\.limitless\) \{ float add = LevelUnitOf\(owned, owner\) \* owner\.BedLevelsAt\(far\); owned\.capacity \+= add; owned\.AddStock\(add\); \}",
