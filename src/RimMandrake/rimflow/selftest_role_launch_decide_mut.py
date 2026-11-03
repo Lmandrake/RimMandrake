@@ -44,6 +44,7 @@ def acted(acts):
 
 def norm(x):
     j = json.dumps(x, sort_keys=True, default=str)
+    j = re.sub(r"selftest_run_[a-z0-9_]+/", "", j)    # the runner may put the test in its own per-run tmp dir
     j = re.sub(r"selftest_dispatcher_[a-z0-9_]{8}", "selftest_dispatcher_TMP", j)
     return json.loads(j)
 
