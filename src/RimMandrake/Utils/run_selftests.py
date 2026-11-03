@@ -632,13 +632,25 @@ def _drop_tmp(tdir: str) -> None:
         shutil.rmtree(tdir, ignore_errors=True)
 
 
+# WSL interop can drop the launch of a Windows exe under load ("UtilAcceptVsock: accept4 failed 110"), and the test reads
+# that as its own failure: nothing was measured. Such a red alone runs again, whole; only a real PASS turns it green, and
+# the summary counts them so a rising rate stays visible (NIGHTLY_COP_FIX_RED_HMGHDI_RQAA).
+INTEROP_DROP, INTEROP_RERUNS, INTEROP_WAIT_S = "UtilAcceptVsock", 2, 15
+_INTEROP_RERUN: dict = {}
+
+
 def _run_one(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path, str, float, str]:
     """(path, state, seconds, detail). detail's first line is the reason for any non-PASS."""
-    env, tdir = _own_tmp(env)
-    try:
-        return _run_one_in(path, cap, est, env)
-    finally:
-        _drop_tmp(tdir)
+    for attempt in range(INTEROP_RERUNS + 1):
+        use, tdir = _own_tmp(env)
+        try:
+            r = _run_one_in(path, cap, est, use)
+        finally:
+            _drop_tmp(tdir)
+        if r[1] == "PASS" or INTEROP_DROP not in r[3] or attempt == INTEROP_RERUNS:
+            return r
+        _INTEROP_RERUN[_rel(path)] = attempt + 1
+        time.sleep(INTEROP_WAIT_S)
 
 
 def _run_one_in(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path, str, float, str]:
@@ -1338,6 +1350,9 @@ def report(results, skipped, discovered, wall_elapsed, contain_note, isolated=fr
     if len(allr) != n:
         print(f"DROPPED: discovered {n} selftests but only {len(allr)} results came back "
               "— the sweep is NOT a clean signal")
+    if _INTEROP_RERUN:
+        print(f"interop: {len(_INTEROP_RERUN)} test(s) ran again after WSL dropped a launch: "
+              + ", ".join(f"{t} x{n}" for t, n in sorted(_INTEROP_RERUN.items())))
     print("RESULT: " + ("GREEN" if green else "RED") + " (green = FAIL 0 and CRASH 0)"
           + ("" if quick is None else " QUICK: %d skipped (pre-check only, not a full-suite green)" % quick))
     return 0 if green else 1

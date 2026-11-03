@@ -23,7 +23,7 @@ def main():
         print("UNMEASURED: dotnet.exe not found; the C# kernel selftest needs the Windows-side .NET SDK")
         return 2
     from selftest_winstage import windows_project_path
-    win = windows_project_path(CSPROJ)
+    win = windows_project_path(CSPROJ, whole_src=False)
     r = subprocess.run([dotnet, "run", "--project", win, "-c", "Release"], capture_output=True, text=True)
     sys.stdout.write(r.stdout.replace("\r\n", "\n"))
     if r.stderr.strip():

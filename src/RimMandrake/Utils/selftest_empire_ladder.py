@@ -62,7 +62,7 @@ def main():
             "user-local Windows-side .NET SDK (see CLAUDE.md's C# build "
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
 
-    win_csproj = windows_project_path(CSPROJ)
+    win_csproj = windows_project_path(CSPROJ, whole_src=False)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")

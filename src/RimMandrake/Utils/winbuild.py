@@ -261,15 +261,24 @@ def rsync_retry_wait(r, attempt):
 
 
 @contextlib.contextmanager
-def _flock(name):
-    """Exclusive flock on LOCK_DIR/<name>.lock for the duration (released by the kernel if the process dies)."""
+def _flock(name, shared=False):
+    """flock on LOCK_DIR/<name>.lock for the duration, exclusive unless `shared` (released by the kernel if the process
+    dies)."""
     os.makedirs(LOCK_DIR, exist_ok=True)
     with open(os.path.join(LOCK_DIR, re.sub(r"[^A-Za-z0-9_.-]", "_", name) + ".lock"), "w") as f:
-        fcntl.flock(f, fcntl.LOCK_EX)
+        fcntl.flock(f, fcntl.LOCK_SH if shared else fcntl.LOCK_EX)
         try:
             yield
         finally:
             fcntl.flock(f, fcntl.LOCK_UN)
+
+
+def _clone_pairs_lock():
+    """The lock over THIS clone's dll/.srchash pairs. Only a clone's own copy-back writes them and only its own staging
+    reads them, so the key is the clone: machine-wide, every build queued behind any tree's rsync of a large mod
+    (>100 s of --checksum over drvfs), and ten tests timed out at 240 s holding 3 s of work
+    (NIGHTLY_COP_FIX_RED_HMGHDI_RQAA)."""
+    return "copy-back-%s" % hashlib.sha1(os.path.realpath(ROOT).encode()).hexdigest()[:10]
 
 
 def _sha256(path):
@@ -342,10 +351,10 @@ def _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, co
     # -R keeps repo-relative layout; --delete prunes files removed from the clone (excludes kept).
     # A transient rsync exit is not a build verdict: rsync_retry_wait says which ones go again.
     # review night r3: staging reads the clone's dll/stamp pairs, so it holds the copy-back lock too (a peer build's
-    # copy-back half done would stage its new stamp beside the old dll). Lock order: stage, then copy-back. The wait is
-    # outside that lock, which every build on this machine queues on.
+    # copy-back half done would stage its new stamp beside the old dll), shared: readers exclude a copy-back, not each
+    # other. Lock order: stage, then copy-back. The wait is outside that lock.
     for attempt in range(4):
-        with _flock("copy-back"):
+        with _flock(_clone_pairs_lock(), shared=True):
             r = rsync_stage(rels, stage, ROOT, excl)
         wait = rsync_retry_wait(r, attempt) if attempt < 3 else None
         if wait is None:
@@ -398,9 +407,9 @@ def _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, co
                 print("STAMP MISMATCH in stage: %s records dll %s, file is %s" % (p, want, got),
                       file=sys.stderr)
                 return 3, record
-    # review night: one copy-back at a time across ALL stages, so two mods' builds of a shared dependency can never
-    # leave one build's dll beside the other's .srchash (each file is atomic, the pair was not)
-    with _flock("copy-back"):
+    # review night: one copy-back at a time across ALL of this clone's stages, so two mods' builds of a shared dependency
+    # can never leave one build's dll beside the other's .srchash (each file is atomic, the pair was not)
+    with _flock(_clone_pairs_lock()):
         _copy_back(outs, stage, record, staged_in)
     record["built_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     with open(os.path.join(stage, "BUILD_SOURCE.json"), "w") as f:

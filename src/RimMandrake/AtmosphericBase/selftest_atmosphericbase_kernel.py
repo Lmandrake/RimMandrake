@@ -31,10 +31,10 @@ def main():
     if dotnet is None:
         print("UNMEASURED: dotnet.exe not found; the C# kernel selftest needs the Windows-side .NET SDK")
         return 2
-    # selftest_winstage stages the project AND the whole src tree (the Phase 2 checks read the shipped
+    # selftest_winstage stages the project and this mod (the Phase 2 checks read the shipped
     # Defs/RM_AtmosphericSchemes.xml by walking up from the exe), from an ext4 clone or the /mnt tree alike.
     from selftest_winstage import windows_project_path
-    win = windows_project_path(CSPROJ)
+    win = windows_project_path(CSPROJ, whole_src=False, extra_dirs=[HERE])
     r = subprocess.run([dotnet, "run", "--project", win, "-c", "Release"], capture_output=True, text=True)
     sys.stdout.write(r.stdout.replace("\r\n", "\n"))
     if r.stderr.strip():

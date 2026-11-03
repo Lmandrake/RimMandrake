@@ -233,6 +233,36 @@ with tempfile.TemporaryDirectory() as _td:
         os.environ.pop("LEAK_RC", None)
         tempfile.tempdir, rs._HARNESS = _saved_tmp, _saved_harness
 
+# A dropped WSL launch (NIGHTLY_COP_FIX_RED_HMGHDI_RQAA): that red alone runs again, and only a real PASS turns it green.
+_saved_in, _saved_wait = rs._run_one_in, rs.INTEROP_WAIT_S
+rs.INTEROP_WAIT_S = 0
+def _scripted(*answers):
+    seen = []
+    def fake(path, cap=0, est=0, env=None):
+        seen.append(path)
+        return answers[min(len(seen) - 1, len(answers) - 1)]
+    rs._run_one_in = fake
+    return seen
+_p = Path(HERE) / "selftest_run_selftests.py"
+_drop, _real, _ok = (_p, "FAIL", 1.0, "rc 1\n<3>WSL (9) ERROR: UtilAcceptVsock:273: accept4 failed 110"), (_p, "FAIL", 1.0, "rc 1\nassert"), (_p, "PASS", 1.0, "")
+try:
+    _s = _scripted(_drop, _ok)
+    eq(rs._run_one(_p)[1], "PASS", "a dropped launch that passes on rerun is PASS")
+    eq(len(_s), 2, "a dropped launch ran twice")
+    eq(rs._INTEROP_RERUN.get(rs._rel(_p)), 1, "the rerun is counted for the summary")
+    _s = _scripted(_real, _ok)
+    eq(rs._run_one(_p)[1], "FAIL", "a real FAIL is never rerun into a PASS")
+    eq(len(_s), 1, "a real FAIL ran once")
+    _s = _scripted(_drop)
+    eq(rs._run_one(_p)[1], "FAIL", "a launch dropped every time stays red")
+    eq(len(_s), rs.INTEROP_RERUNS + 1, "the reruns are bounded")
+    _s = _scripted(_drop, _real, _ok)
+    eq(rs._run_one(_p)[1], "FAIL", "a real FAIL after a dropped launch stops there")
+    eq(len(_s), 2, "...without another rerun")
+finally:
+    rs._run_one_in, rs.INTEROP_WAIT_S = _saved_in, _saved_wait
+    rs._INTEROP_RERUN.clear()
+
 if FAILS:
     print("FAIL selftest_run_selftests.py")
     for f in FAILS:

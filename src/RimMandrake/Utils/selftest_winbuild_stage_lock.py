@@ -92,6 +92,61 @@ def main():
     return FAILS
 
 
+def main_clones_independent():
+    """The pair lock belongs to one clone (NIGHTLY_COP_FIX_RED_HMGHDI_RQAA): another tree's copy-back or long rsync never
+    queues this clone's build, and within a clone staging readers share while a copy-back excludes them."""
+    import fcntl
+    with tempfile.TemporaryDirectory() as td:
+        saved = WB.LOCK_DIR, WB.ROOT
+        WB.LOCK_DIR = os.path.join(td, "locks")
+        try:
+            WB.ROOT = os.path.join(td, "cloneA")
+            a = WB._clone_pairs_lock()
+            WB.ROOT = os.path.join(td, "cloneB")
+            b = WB._clone_pairs_lock()
+            check(a != b, "two clones hold different pair locks", (a, b))
+            os.makedirs(WB.LOCK_DIR)
+            path = os.path.join(WB.LOCK_DIR, a + ".lock")
+
+            def free(mode):
+                with open(path, "w") as f:
+                    try:
+                        fcntl.flock(f, mode | fcntl.LOCK_NB)
+                    except BlockingIOError:
+                        return False
+                    fcntl.flock(f, fcntl.LOCK_UN)
+                    return True
+            WB.ROOT = os.path.join(td, "cloneA")
+            with WB._flock(a, shared=True):
+                check(free(fcntl.LOCK_SH), "a staging reader lets another staging reader in")
+                check(not free(fcntl.LOCK_EX), "a staging reader excludes a copy-back")
+            with WB._flock(a):
+                check(not free(fcntl.LOCK_SH), "a copy-back excludes a staging reader")
+        finally:
+            WB.LOCK_DIR, WB.ROOT = saved
+
+
+def main_winstage_narrow():
+    """A narrow stage (whole_src=False) stages the project plus extra_dirs, never the 3 GB src tree: that tree cost the
+    atmospheric kernel test its 240 s (NIGHTLY_COP_FIX_RED_HMGHDI_RQAA)."""
+    import selftest_winstage as WS
+    got = {}
+    saved = WB.stage_build, WB.staged_win
+
+    def fake(p, stage_name=None, extra_dirs=()):
+        got["extra"] = list(extra_dirs)
+        return 0, {"stage": "x"}
+    WB.stage_build, WB.staged_win = fake, lambda rec, p: "x"
+    try:
+        csproj = os.path.join(WB.ROOT, "src", "RimMandrake", "ModA", "Source", "ModA.csproj")
+        WS.windows_project_path(csproj, whole_src=False, extra_dirs=["/one/mod"])
+        check(got["extra"] == ["/one/mod"], "whole_src=False stages only the extra_dirs", got)
+        WS.windows_project_path(csproj)
+        check(got["extra"] == [os.path.join(WB.ROOT, "src")], "the default still stages the whole tree", got)
+    finally:
+        WB.stage_build, WB.staged_win = saved
+
+
 def main_same_stage():
     """Two builds of one stage: rsync..build spans must not overlap."""
     with tempfile.TemporaryDirectory() as td:
@@ -209,5 +264,7 @@ if __name__ == "__main__":
     main_inplace()
     main_same_stage()
     main_no_revert()
+    main_clones_independent()
+    main_winstage_narrow()
     main()
     sys.exit(1 if FAILS else 0)
