@@ -1038,6 +1038,11 @@ def _log_held(job_id: str, master: str, done_dir: Path, failed_dir: Path,
     print(f"artpiped: HELD derived job {job_id}: {why}", file=sys.stderr, flush=True)
 
 
+HOUSEKEEPING_INTERVAL_S = float(os.environ.get("ARTPIPE_HOUSEKEEPING_S", "30"))  # heartbeat + reclaim tick
+LEASE_S = 10 * HOUSEKEEPING_INTERVAL_S   # an active/ job whose heartbeat is older than this has no live owner
+PREFLIGHT_RECHECK_S = 300.0
+
+
 def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None,
                 done_dir: Path | None = None, failed_dir: Path | None = None,
                 artsrc_dir: Path | None = None) -> Path | None:
@@ -1161,8 +1166,9 @@ def _codex_jobs_pending(pending_dir: Path) -> bool:
 
 def reconcile(active_dir: Path, pending_dir: Path, done_dir: Path,
               failed_dir: Path, throughput_log: Path,
-              min_age_s: float = 600.0) -> list[tuple[str, str]]:
-    """Crash recovery: an active/ job with no manifest anywhere MIGHT be an
+              min_age_s: float = 600.0,
+              skip_ids=()) -> list[tuple[str, str]]:
+    """Crash recovery (`skip_ids`: ids this daemon has in flight - never touched): an active/ job with no manifest anywhere MIGHT be an
     orphan from a killed daemon — or it might just be another live daemon's
     in-flight claim, which looks IDENTICAL (no manifest yet either) until it
     finishes. The only honest signal that distinguishes them is age: no
@@ -1193,6 +1199,8 @@ def reconcile(active_dir: Path, pending_dir: Path, done_dir: Path,
     now = time.time()
     for p in actives:
         job_id = p.stem
+        if job_id in skip_ids:
+            continue
         if (done_dir / f"{job_id}.manifest.json").is_file() or \
            (failed_dir / f"{job_id}.manifest.json").is_file():
             # Already terminally decided, just not moved — repair()'s job,
@@ -3442,6 +3450,8 @@ def main(argv=None) -> int:
         return (not codex_sandbox_ok) or detector.admission_blocked()
 
     last_meter_refresh = 0.0
+    last_housekeeping = time.monotonic()
+    last_preflight = 0.0
 
     try:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -3507,6 +3517,39 @@ def main(argv=None) -> int:
                                            else args.timeout_generate))
                         console_obj.job_started(job_path.stem, mode, ch, timeout_s)
                         futures[pool.submit(process_job, job_path, ctx)] = (job_path, ch, reserved_usd)
+
+                # ARTPIPE_ORPHAN_WEDGE_1: startup-only reconcile/preflight let a
+                # stale active/ orphan and a latched sandbox preflight idle the
+                # daemon for 17 h. Re-run both periodically while running.
+                if not stop_event.is_set() and \
+                        time.monotonic() - last_housekeeping >= HOUSEKEEPING_INTERVAL_S:
+                    last_housekeeping = time.monotonic()
+                    try:
+                        live = {jp.stem for jp, _c, _r in futures.values()}
+                        # LEASE: heartbeat our own in-flight claims, so mtime means
+                        # "owner alive" and a dead owner's job ages out in LEASE_S,
+                        # not the worst-case job ceiling.
+                        for jid in live:
+                            try:
+                                os.utime(args.active_dir / f"{jid}.json", None)
+                            except OSError:
+                                pass
+                        again = reconcile(args.active_dir, args.pending_dir, args.done_dir,
+                                          args.failed_dir, args.throughput_log,
+                                          min(args.reconcile_min_age, LEASE_S), skip_ids=live)
+                        if again:
+                            _report_batch(console_obj, f"reconciled {len(again)} job(s)",
+                                          again, lambda item: f"reconciled {item[0]} - {item[1]}")
+                        if (not codex_sandbox_ok and _codex_jobs_pending(args.pending_dir)
+                                and time.monotonic() - last_preflight >= PREFLIGHT_RECHECK_S):
+                            last_preflight = time.monotonic()
+                            ok_now, msg_now = common.codex_sandbox_preflight(args.codex_sandbox_base)
+                            if ok_now:
+                                codex_sandbox_ok = True
+                                console_obj.mark_codex_channel_enabled()
+                                console_obj.info(f"codex channel re-enabled - {msg_now}")
+                    except Exception as exc:  # housekeeping must never kill the daemon
+                        console_obj.warn(f"housekeeping failed: {type(exc).__name__}: {exc}")
 
                 # Finding 4: an independent meter refresh. note_meters()'s
                 # only OTHER caller is finalize_job of a COMPLETING codex

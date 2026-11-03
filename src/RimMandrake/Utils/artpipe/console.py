@@ -541,6 +541,13 @@ class Console:
         except Exception:
             pass
 
+    def mark_codex_channel_enabled(self) -> None:
+        try:
+            with self._lock:
+                self._codex_channel_disabled = False
+        except Exception:
+            pass
+
     def mark_codex_channel_disabled(self) -> None:
         try:
             with self._lock:

@@ -1,5 +1,25 @@
 {
  "_doc": "Rules for ops_watch.py (the Dispatcher's deterministic measurement arm, V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE). Keys are glob patterns over point keys (family.name). Only MEASURED points feed the band, run and silent rules; a target names the marks it accepts. A target with alarm true files one rimflow item when the condition is NEW, and re-arms only after it clears.",
+ "queues": [
+  {
+   "name": "artpipe",
+   "pending": "/mnt/d/ClaudeWork/rimmandrake/artpipe/pending",
+   "active": "/mnt/d/ClaudeWork/rimmandrake/artpipe/active",
+   "progress": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/done",
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/failed"
+   ]
+  },
+  {
+   "name": "testq",
+   "pending": "/mnt/d/ClaudeWork/rimmandrake/testq/pending",
+   "active": "/mnt/d/ClaudeWork/rimmandrake/testq/running",
+   "progress": [
+    "/mnt/d/ClaudeWork/rimmandrake/testq/done"
+   ],
+   "paused_file": "/mnt/d/ClaudeWork/rimmandrake/testq/paused.json"
+  }
+ ],
  "series_days": 8,
  "steve_seats": {"_doc": "c_steve_seats: a seat is up when its tmux screen shows `ready`", "ssh": "mandrake@stevedesktop-wsl", "seats": ["seat-server", "seat-runner"], "ready": "Capacity:|Connected|remote-control is active"},
  "relentless": {
@@ -264,6 +284,48 @@
     "distressed": {"at_least": 1}
    }
   },
+  "queues.artpipe.stalled_min": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "QUEUE_ORPHAN_WEDGE_1: pending jobs with no claim, finish or heartbeat for 20 min. The daemon sat IDLE with 37 pending for 17 h behind an orphaned active/ job and a latched sandbox check.",
+   "classes": {
+    "sane": {
+     "at_least": 0
+    },
+    "distressed": {
+     "at_least": 20
+    }
+   }
+  },
+  "queues.testq.stalled_min": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "QUEUE_ORPHAN_WEDGE_1: testq pending with nothing running or finishing for 20 min (a paused.json reads 0).",
+   "classes": {
+    "sane": {
+     "at_least": 0
+    },
+    "distressed": {
+     "at_least": 20
+    }
+   }
+  },
+  "queues.blind": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "A queue whose directories cannot be listed: nothing can say it is moving.",
+   "classes": {
+    "sane": {
+     "at_least": 0
+    },
+    "distressed": {
+     "at_least": 1
+    }
+   }
+  },
   "seats.paused": {
    "owner": "Operations",
    "max_age_min": 10,
@@ -387,6 +449,42 @@
   "skip": ["*._collector", "roles.*"]
  },
  "targets": [
+  {
+   "key": "queues.artpipe.stalled_min",
+   "op": ">",
+   "value": 20,
+   "alarm": true,
+   "tag": "QUEUE_STALLED",
+   "name": "OPS_ARTPIPE_UNSTICK",
+   "marks": [
+    "MEASURED"
+   ],
+   "why": "QUEUE_ORPHAN_WEDGE_1: artpipe has pending work and nothing claimed, finished or heartbeating for over 20 min while its console reads calm idle"
+  },
+  {
+   "key": "queues.testq.stalled_min",
+   "op": ">",
+   "value": 20,
+   "alarm": true,
+   "tag": "QUEUE_STALLED",
+   "name": "OPS_TESTQ_UNSTICK",
+   "marks": [
+    "MEASURED"
+   ],
+   "why": "QUEUE_ORPHAN_WEDGE_1: testq has pending work and nothing claimed, finished or heartbeating for over 20 min while its console reads calm idle"
+  },
+  {
+   "key": "queues.blind",
+   "op": ">",
+   "value": 0,
+   "alarm": true,
+   "tag": "QUEUE_BLIND",
+   "name": "OPS_QUEUES_READING_RESTORE",
+   "marks": [
+    "MEASURED"
+   ],
+   "why": "a watched queue's directories cannot be read"
+  },
   {"key": "accounts.*.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
    "why": "owner brief 2026-10-26: an account whose runway is below 1 runs out before its weekly reset"},
   {"key": "accounts.*.loan_runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],

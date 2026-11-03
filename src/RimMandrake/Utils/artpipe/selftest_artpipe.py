@@ -246,6 +246,28 @@ def test_crash_reconciliation():
            fresh_active.is_file() and not (q.pending / "fresh.json").is_file())
 
 
+def test_orphan_wedge_housekeeping():
+    """ARTPIPE_ORPHAN_WEDGE_1: a stale active/ orphan must be recoverable by a
+    RUNNING daemon (reconcile skip_ids spares its own in-flight ids), and the
+    main loop must carry the periodic reconcile + sandbox re-preflight."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "mine", q.reference, priority=1)
+        make_job(q.pending, "orph", q.reference, priority=2)
+        a = artpiped.claim_next(q.pending, q.active)
+        b = artpiped.claim_next(q.pending, q.active)
+        old = time.time() - 900
+        os.utime(a, (old, old)); os.utime(b, (old, old))
+        args = (q.active, q.pending, q.done, q.failed, q.root / "throughput.jsonl", 600.0)
+        moved = artpiped.reconcile(*args, skip_ids={"mine"})
+        ok("housekeeping: stale orphan returned to pending, own in-flight id spared",
+           [m[0] for m in moved] == ["orph"] and a.is_file() and (q.pending / "orph.json").is_file(), moved)
+    src = Path(artpiped.__file__).read_text()
+    ok("housekeeping: main loop re-reconciles and re-preflights the sandbox while running",
+       "HOUSEKEEPING_INTERVAL_S" in src and "skip_ids=live" in src
+       and "mark_codex_channel_enabled" in src)
+
+
 def test_claim_next_stamps_fresh_mtime_not_filing_time():
     """Finding: reconcile()'s age gate reads st_mtime, but os.rename PRESERVES
     mtime — so before this fix, a job that sat in pending/ for 20 minutes
@@ -4442,6 +4464,7 @@ def main() -> int:
     os.environ.setdefault("ARTPIPE_LEGIBILITY_THRESHOLDS", "")
     for fn in (
         test_crash_reconciliation,
+        test_orphan_wedge_housekeeping,
         test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly,
         test_flora_never_gated_or_stroked_by_creature_model,
         test_claim_next_stamps_fresh_mtime_not_filing_time,

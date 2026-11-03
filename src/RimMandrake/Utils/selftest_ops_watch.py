@@ -1891,5 +1891,28 @@ check("live measured: an unreadable file says so (c_relentless counts it blind)"
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.live_measured_pct"]
 check("the live-measured target alarms below a floor", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == "<"
       and 10 <= _tg[0]["value"] <= 50, _tg)
+# queues stalled (QUEUE_ORPHAN_WEDGE_1): pending > 0 with only a stale orphan in active/ is a stall, calm idle or not
+_qd = Path(_tf.mkdtemp(prefix="qs_")); _qn = time.time()
+for _x in ("pending", "active", "done", "failed"):
+    (_qd / _x).mkdir()
+_qr = {"queues": [{"name": "q", "pending": str(_qd / "pending"), "active": str(_qd / "active"),
+                   "progress": [str(_qd / "done"), str(_qd / "failed")], "paused_file": str(_qd / "paused.json")}]}
+def _qs(): return OW.c_queues(_qn, _qr, {})["queues.q.stalled_min"]
+check("queues: nothing pending reads 0", _qs()["v"] == 0.0 and _qs()["m"] == "MEASURED")
+(_qd / "pending" / "a.json").write_text("{}"); (_qd / "active" / "orph.json").write_text("{}")
+for _f in (_qd / "pending" / "a.json", _qd / "active" / "orph.json"):
+    os.utime(_f, (_qn - 3600, _qn - 3600))
+check("queues: pending plus a 1 h stale orphan reads ~60 min stalled", 59 <= _qs()["v"] <= 61, _qs())
+os.utime(_qd / "active" / "orph.json", (_qn - 60, _qn - 60))
+check("queues: a heartbeating active job is movement", _qs()["v"] <= 1.1, _qs())
+os.utime(_qd / "active" / "orph.json", (_qn - 3600, _qn - 3600))
+(_qd / "paused.json").write_text("{}")
+check("queues: a paused queue reads 0", _qs()["v"] == 0.0, _qs())
+_qr["queues"][0]["pending"] = str(_qd / "nope")
+check("queues: an unlistable queue is blind, not 0", OW.c_queues(_qn, _qr, {})["queues.blind"]["v"] == 1
+      and OW.c_queues(_qn, _qr, {})["queues.q.stalled_min"]["m"] == "UNMEASURED")
+_rl = OW.load_rules()
+check("queues: artpipe is wired with one fixed alarm id", any(t["key"] == "queues.artpipe.stalled_min" and t["alarm"]
+      and t["name"] == "OPS_ARTPIPE_UNSTICK" for t in _rl["targets"]))
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

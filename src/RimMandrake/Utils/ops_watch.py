@@ -77,7 +77,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "arena", "relentless", "seats", "plan", "roles")
+            "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues")
 
 
 def ops_dir() -> Path:
@@ -2060,12 +2060,66 @@ def c_seats(now, rules, ctx):
     return pts
 
 
+QUEUE_STALL_MIN = 20.0
+
+
+def newest_mtime(d, pattern="*.json"):
+    ts = [f.stat().st_mtime for f in Path(d).glob(pattern) if not f.name.endswith(".worker_last_message.json")]
+    return max(ts) if ts else None
+
+
+def oldest_mtime(d, pattern="*.json"):
+    ts = [f.stat().st_mtime for f in Path(d).glob(pattern)]
+    return min(ts) if ts else None
+
+
+def c_queues(now, rules, ctx):
+    """queues.<name>.stalled_min (QUEUE_ORPHAN_WEDGE_1): the class 'a claimed or leased job is orphaned and the queue
+    sits calmly idle'. For each work queue in rules["queues"] (pending dir, active dir, progress dirs): pending > 0 and no
+    movement (a newer active/done/failed file) since the oldest pending job began waiting. stalled_min = minutes since
+    max(newest active/progress mtime, oldest pending mtime); 0 when nothing is pending. An active job counts as in
+    flight only through its mtime, so an orphan nobody heartbeats stops counting after its lease. A queue paused on
+    purpose (paused_file present) reads 0. A queue whose dirs cannot be listed reads UNMEASURED, never 0."""
+    out = {}
+    qs = rules.get("queues")
+    if not isinstance(qs, list) or not qs:
+        return {"queues.blind": U("ops_watch_rules.json has no queues list")}
+    blind = []
+    for q in qs:
+        n = q.get("name", "?")
+        k = "queues.%s." % n
+        try:
+            pend, act = Path(q["pending"]), Path(q["active"])
+            if not pend.is_dir() or not act.is_dir():
+                raise OSError('queue dir missing: %s' % (pend if not pend.is_dir() else act))
+            plist = [f for f in pend.glob("*.json")]
+            alist = [f for f in act.glob("*.json") if not f.name.endswith(".worker_last_message.json")]
+            marks = [newest_mtime(d) for d in [act] + [Path(x) for x in q.get("progress", [])]]
+            marks = [m for m in marks if m is not None]
+            if q.get("paused_file") and Path(q["paused_file"]).exists():
+                stalled = 0.0
+            elif not plist:
+                stalled = 0.0
+            else:
+                ref = max(marks + [min(f.stat().st_mtime for f in plist)])
+                stalled = max(0.0, (now - ref) / 60.0)
+            out[k + "pending"] = M(len(plist), "jobs waiting")
+            out[k + "active"] = M(len(alist), "files in active")
+            out[k + "stalled_min"] = M(round(stalled, 1), "min pending > 0 with no claim, finish or heartbeat")
+        except (OSError, KeyError, ValueError) as e:
+            blind.append(n)
+            out[k + "stalled_min"] = U("%s: %s" % (type(e).__name__, str(e)[:150]), "min")
+    out["queues.blind"] = M(len(blind), "queues not seen", names=",".join(blind))
+    return out
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
-              "arena": c_arena, "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles}
+              "arena": c_arena, "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles,
+              "queues": c_queues}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "arena", "relentless", "seats", "plan", "roles")
+         "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues")
 
 
 # ==================================================================================================== storage
