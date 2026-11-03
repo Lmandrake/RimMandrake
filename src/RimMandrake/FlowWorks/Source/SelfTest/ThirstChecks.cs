@@ -77,6 +77,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string util = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
                 RiverSwitchFlipChecks.Has(util, @"!RM_LiquidBottleUtility\.CanDebitTerrain\(map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink search gates on the drink it debits");
                 Assert(!util.Contains("ex.Stock.CanSupply("), "can-fail: the drink search no longer asks for a whole level");
+                // The gate must sit in TryFindDrinkCell's own body and SKIP the cell: the call alone stayed green with its
+                // `continue` dropped (an empty if admits the small pond's refusal as a no-op) or moved to another method.
+                string utilRaw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Thirst", "RM_ThirstUtility.cs")));
+                const string findSig = "public static bool TryFindDrinkCell(Pawn pawn, float level, out IntVec3 cell, out LiquidDef liquid, out RM_DrinkUse use,";
+                const string gate = "if (ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))";
+                Func<string, bool> gateSkips = raw =>
+                {
+                    List<string> st = MethodStatements(raw, findSig);
+                    int i = st.IndexOf(gate);
+                    return i >= 0 && i + 1 < st.Count && st[i + 1].StartsWith("continue;", StringComparison.Ordinal)
+                           && st.Contains("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();")
+                           && st.IndexOf("RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();") < i;
+                };
+                Assert(gateSkips(utilRaw), "TryFindDrinkCell skips a cell whose body cannot pay the drink");
+                string noSkip = utilRaw.Replace("continue;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED", "// TERRAIN_DRINK_FIX_SMALL_POND_REFUSED");
+                Assert(noSkip != utilRaw && !gateSkips(noSkip), "can-fail: a gate that no longer skips the cell is caught");
                 string jobs = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
                 RiverSwitchFlipChecks.Has(jobs, @"RM_LiquidBottleUtility\.TryDebitTerrain\(Map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink job debits the same units");
                 string bot = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
