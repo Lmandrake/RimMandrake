@@ -1,0 +1,2 @@
+live-proof A1: python.exe src/RimMandrake/Utils/perf/game_comp_stall_hunt.py --ticks 600 --spike-ms 100 < /dev/null
+live-proof A2: python.exe src/RimMandrake/Utils/perf/game_comp_stall_hunt.py --load BENCH_leaf_scenes_20261026 --ticks 2500 --spike-ms 250 --max-seconds 1800 < /dev/null

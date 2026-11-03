@@ -97,7 +97,7 @@ namespace JawaBench.BridgeTools
             ["jawa/playtest_start"] = FTestOnly, ["jawa/playtest_collect"] = FTestOnly, ["jawa/playtest_status"] = FTestOnly,
             ["jawa/gss_playtest_start"] = FTestOnly, ["jawa/gss_playtest_collect"] = FTestOnly, ["jawa/gss_playtest_status"] = FTestOnly,
             ["jawa/gss_stage"] = FTestOnly, ["jawa/oracle_selftest"] = FTestOnly, ["jawa/oracle_test_ohm_letter"] = FTestOnly,
-            ["jawa/load_stall_probe"] = FTestOnly, ["jawa/flowworks_job_probe"] = FTestOnly, ["jawa/map_comp_timing"] = FTestOnly,
+            ["jawa/load_stall_probe"] = FTestOnly, ["jawa/flowworks_job_probe"] = FTestOnly, ["jawa/map_comp_timing"] = FTestOnly, ["jawa/game_comp_timing"] = FTestOnly,
             ["jawa/telemetry_tier"] = FTestOnly,      // owner 2026-10-11: campaign never runs the T0/T1 test tier
             ["jawa/safe_advance"] = FTestOnly,        // a harness stepper (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO); jawa/vitals reads stay available
             ["jawa/type_visibility"] = FHeavyDiagnostic, ["jawa/startup_types"] = FHeavyDiagnostic, ["jawa/forecast_incidents"] = FHeavyDiagnostic,

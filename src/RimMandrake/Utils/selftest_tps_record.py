@@ -663,7 +663,9 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
             "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
-            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing"]
+            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing",
+            "CompTimingOneOffSpikeIsNamedNotDrowned", "CompTimingStallAfterLoadCarriesSinceLoad", "CompTimingArmedAtMenuFirstGameIsALoad",
+            "CompTimingSpikeCapKeepsLargest", "CompTimingRollsUpByOwner", "CompTimingStageMaxNamesItsOwnComponent"]
 
 
 def unit_checks(lines):

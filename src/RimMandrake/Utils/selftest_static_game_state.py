@@ -141,6 +141,7 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/WorkGiver_FillInCanal.cs::cacheTick": "per-pawn-per-tick HasMaterial memo, invalidated when cacheGame != Current.Game",
     "src/RimMandrake/FlowWorks/Source/WorkGiver_FillInCanal.cs::cacheGame": "the Game guard for the HasMaterial memo",
     # JawaBench companion
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGameCompTiming.cs::ArmedAtTick": "diagnostic stamp of the game tick at arm, reset by every Install and only reported; spans a reload on purpose (loadsSeen says so)",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapCompTiming.cs::Target": "Map compared by reference only while a timing run is armed; set at arm, nulled at end, and a reload makes a new Map",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs::Critical": "caller-armed ids; a fixture reload re-issues the same ids, which is what the caller means",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs::Specimens": "re-resolved by id in EnsureEpoch when the Game changes",
