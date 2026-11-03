@@ -484,6 +484,10 @@ class Fake(object):
         if "muurrok_spawns_unforced" in self.b and not self.unforced_armed:
             self.unforced_armed = True              # a leviathan visit nobody forced (the control must see it)
             self.fire_muurrok()
+        if "muurrok_pawn_unforced_no_visit" in self.b and not self.unforced_armed:
+            # an unforced RM_Muurrok on list_pawns with NO component visit: only the control's pawn check sees it
+            self.unforced_armed = True
+            self.add_pawn("RM_Muurrok", 12, 12)
         body = ", ".join(["RimMandrake.Stillsand.RM_LeviathanVisit"] * min(12, len(self.lev_visits)))
         tail = " (%d total)" % len(self.lev_visits) if len(self.lev_visits) > 12 else ""
         return {"success": True, "compType": comp, "values": {"visits": "[" + body + "]" + tail}, "missing": [],
@@ -813,6 +817,7 @@ BREAKS = {
     "muurrok_never_arrives": ["muurrok.muurrok_emergence_fires"],
     "muurrok_arrives_late": ["muurrok.muurrok_emergence_fires"],
     "muurrok_spawns_unforced": ["muurrok.muurrok_absent_unforced"],
+    "muurrok_pawn_unforced_no_visit": ["muurrok.muurrok_absent_unforced"],
     "beam_no_damage": ["muurrok.beam_burns_target"],
     "beam_ignores_toggle": ["muurrok.beam_toggle_off_blocked"],
     "no_mound": ["eruption.eruption_tunnel_then_mound"],

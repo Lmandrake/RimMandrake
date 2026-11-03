@@ -127,7 +127,8 @@ def selftest():
     S.V._STATE.clear()
     bad = []
     cases = [((), 0, 0), (("no_muurrok",), 0, 1), (("muurrok_never_arrives",), 0, 1),
-             (("muurrok_arrives_late",), 0, 1), (("muurrok_spawns_unforced",), 0, 1)]
+             (("muurrok_arrives_late",), 0, 1), (("muurrok_spawns_unforced",), 0, 1),
+             (("muurrok_pawn_unforced_no_visit",), 0, 1)]
     for broken, want1, want2 in cases:
         res = run_chains(S.V, S.Fake(broken), (125, 125))
         got = (judge(res, "A1"), judge(res, "A2"))
