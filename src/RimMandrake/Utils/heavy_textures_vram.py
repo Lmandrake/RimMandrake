@@ -138,7 +138,9 @@ def judge_process(proc, health):
 
 def offline_rows(active=None, compression=True):
     import memory_attribution as ma
-    active = set(active or []) | set(MODS) | {"brrainz.harmony", "zacharyfoster.mineralsframework"}
+    import planet_atmosphere_cost as pac
+    active = (set(active or []) | set(MODS) | set(pac.DLC) | {"ludeon.rimworld", "brrainz.harmony",
+                                                              "zacharyfoster.mineralsframework"})
     rows = []
     for pid, (label, wid) in MODS.items():
         folder = os.path.join(WORKSHOP, wid)
