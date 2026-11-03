@@ -764,17 +764,173 @@ def test_quiet_on_the_real_path():
           and "relentless.under_min" in " ".join(r.evs("revisited")[-1]["news"]), r.evs("revisited")[-1:])
 
 
+def chain(name, metric="m.q-1", items=()):
+    """A told file at his rung, driven only by step() and ack(): every row after the first is what the code wrote."""
+    table, rev, rows = at_his_rung("q-1")
+    rows = [dict(rows[0], metrics={metric: {"class": "distressed", "event": False}}, items=list(items),
+                 revisit_read={metric: [True, "distressed", 5, True, 0]})]
+    path = os.path.join(TMP, name + ".jsonl")
+    IN.append(rows, path)
+
+    def inc():
+        return IN.fold(IN.read_rows(path))[0]["q-1"]
+
+    def look(now, v=5, events=None):
+        res = IN.step(table, IN.read_rows(path), {"t": now, "points": {metric: {"m": "MEASURED", "v": v, "class": "distressed"}}, "alarms": {}},
+                      now, events=events)
+        IN.append(res["rows"], path)
+        return res, [x["ev"] for x in res["rows"]]
+
+    def due():
+        return IN.next_due(table, inc())
+    return path, inc, look, due
+
+
+def test_chains_through_step():
+    """Blind check 8c5731ec: the rows these clauses read must be the rows step() writes, never planted by hand."""
+    # a plan rewritten after a quiet look: quiet must record the plan it saw
+    path, inc, look, due = chain("planchain")
+    t = due()
+    res, evs = look(t, v=6)
+    check("chain: a moved reading launches", "revisited" in evs and res["rings"], res["rows"])
+    IN.ack("q-1", "OPERATIONS", "plan one", path=path, now=t + M)
+    t = due()
+    res, evs = look(t, v=6)
+    check("chain: answered and unchanged is quiet", evs == ["revisit_quiet"] and not res["rings"], res["rows"])
+    x = inc()
+    check("chain: the quiet row stores what it saw: plan, reading, when", x["revisit_plan"] == "plan one" and x["revisit_seen_t"] == t
+          and x["revisit_read"]["m.q-1"][2] == 6, x)
+    IN.ack("q-1", "OPERATIONS", "plan one", path=path, now=t + M)
+    t = due()
+    res, evs = look(t, v=6)
+    check("chain: the same plan said again is still quiet", evs == ["revisit_quiet"], res["rows"])
+    IN.ack("q-1", "OPERATIONS", "plan two", path=path, now=t + M)
+    t = due()
+    res, evs = look(t, v=6)
+    check("chain: a plan rewritten after a quiet look launches", evs == ["revisited"] and res["rings"]
+          and res["rows"][0]["news"] == ["the plan changed"], res["rows"])
+    check("chain: the ask names the news", "the plan changed" in res["rings"][0]["text"], res["rings"])
+
+    # an item action with no run answering: step's own auto-ack must count as no answer
+    path, inc, look, due = chain("autochain", items=["OPS_X"])
+    ledger = [{"id": "OPS_X", "event": "close", "seat": "BENCH", "ts": IN.iso(T0 - H)}]   # after it was told, before the last look
+    ev = lambda: ledger
+    t = due()
+    res, evs = look(t, v=6, events=ev)
+    check("chain: launched, its plan cleared", "revisited" in evs and inc()["plan"] is None and inc().get("auto_ack") is False, res["rows"])
+    res, evs = look(t + M, v=6, events=ev)
+    check("chain: the item action auto-acks, marked as one", evs == ["acked"] and inc().get("auto_ack") is True, res["rows"])
+    t = due()
+    res, evs = look(t, v=6, events=ev)
+    check("chain: an item action with no run answering launches", evs == ["revisited"] and res["rings"]
+          and res["rows"][0]["news"] == ["no run has answered: no plan of its own"], res["rows"])
+    res, evs = look(t + M, v=6, events=ev)
+    check("chain: auto-acked again", evs == ["acked"] and inc().get("auto_ack") is True, res["rows"])
+    row = IN.ack("q-1", "OPERATIONS", "a plan of its own", path=path, now=t + 2 * M)
+    check("chain: a run's ack clears the auto mark", row.get("auto_ack") is False and inc().get("auto_ack") is False, inc())
+    res, evs = look(due(), v=6, events=ev)
+    check("chain: and then a floor of nothing is quiet", evs == ["revisit_quiet"] and not res["rings"], res["rows"])
+
+    # the baseline moves with each quiet look: a clock going back from the LAST look is news
+    path, inc, look, due = chain("clockchain", metric="r.under_min")
+    res, evs = look(due(), v=340)
+    check("chain: a clock rising is quiet", evs == ["revisit_quiet"], res["rows"])
+    res, evs = look(due(), v=200)
+    check("chain: a clock back from the last quiet look launches, though above the old baseline", evs == ["revisited"]
+          and "r.under_min" in " ".join(res["rows"][0]["news"]), res["rows"])
+
+
+def test_news_each_state_event():
+    table, rev, rows = at_his_rung("q-1")
+    now = T0 + rev * M
+    st = status_of(now, q_1=5)
+
+    def evs(extra):
+        return [x["ev"] for x in IN.step(table, rows + extra, st, now)["rows"]]
+    for e in ("joined", "sane", "relapsing", "reopened", "escalated"):
+        got = IN.step(table, rows + [{"ev": e, "id": "q-1", "t": now - H}], st, now)["rows"]
+        check("news: %s since the last look launches" % e, [x["ev"] for x in got] == ["revisited"]
+              and "state moved" in " ".join(got[0]["news"]), got)
+    check("news: a state event before the last look is old news",
+          evs([{"ev": "joined", "id": "q-1", "t": T0 - H}]) == ["revisit_quiet"], rows)
+
+
+def test_batch_text_and_quiet_pulls_nothing():
+    table, rev, rows = at_his_rung("a-1", "b-1")
+    now = T0 + rev * M + M
+    res = IN.step(table, rows, status_of(now, a_1=6, b_1=6), now)
+    r = Rig("revtext")
+
+    def why(rings):
+        dst = {"roles": {}}
+        D.incident_execute(dict(res, rings=rings, rows=[]), r.sch, dst, "/nonexistent", now, lambda *x: None, lambda *x: None)
+        return dst["roles"]["Operations"]["run_now"]["why"]
+    check("batch text: all revisits say so and name the ack", "revisits due together" in why(res["rings"]) and "rimflow ack" in why(res["rings"]), res["rings"])
+    check("batch text: a revisit among other rings keeps the plain text",
+          "all reach him next" in why([res["rings"][0], dict(res["rings"][1], revisit=False)]), res["rings"])
+    check("batch text: one alone is its own text", why(res["rings"][:1]).startswith("INCIDENT a-1"), res["rings"])
+    quiet = IN.step(table, rows, status_of(now, a_1=5, b_1=6), now)
+    check("batch: a quiet look starts no run, so it pulls nothing in early", [x["ev"] for x in quiet["rows"]] == ["revisit_quiet"]
+          and not quiet["rings"], quiet["rows"])
+
+
+def test_incidents_verb_says_the_news():
+    r = Rig("verb")
+    table, rev, rows = at_his_rung("a-1")
+    now = T0 + rev * M
+    IN.append(rows + IN.step(table, rows, status_of(now, a_1=6), now)["rows"], IN.told_path())
+    env = dict(os.environ, RM_OPS_WATCH_DIR=os.environ["RM_OPS_WATCH_DIR"])
+    out = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "incidents"], env=env, capture_output=True, text=True, timeout=120)
+    check("verb: rimflow incidents names a revisit's news", "news readings moved: m.a-1" in out.stdout, (out.stdout[-400:], out.stderr[-400:], r.root))
+
+
+# The revisits told.jsonl held on 2026-11-03, before this change: the epochs of those 27 rows, so the replay stands
+# where the machine's file does not.
+RECORDED_REVISITS = [1793638866] * 6 + [1793653694] * 5 + [
+    1793668178, 1793675613, 1793682583, 1793696859, 1793696997, 1793697266, 1793711469, 1793711719, 1793717552, 1793725932,
+    1793726181, 1793726830, 1793732175, 1793740406, 1793740406, 1793748134]
+
+
+def runs_through_step(ts):
+    """Each revisit one incident falling due at its recorded time, its reading moved: step() decides who goes together.
+    -> the passes that launched. One pass's fresh rings are one run (incident_execute)."""
+    table, rev, _ = at_his_rung("x-1")
+    iids = ["r%d-1" % k for k in range(len(ts))]
+    _, _, rows = at_his_rung(*iids)
+    waiting = {i: dict(row, rung_t=t - rev * M, revisit_t=t - rev * M, revisit_seen_t=t - rev * M, told_t=t - 9 * H, told_at=IN.iso(t - 9 * H),
+                       acked_t=None, recover_by_t=None, plan="the old plan")
+               for i, row, t in zip(iids, rows, ts)}
+    runs = 0
+    vals = {i.replace("-", "_"): 6 for i in iids}
+    for t in sorted(set(ts)):
+        if not waiting:
+            break
+        res = IN.step(table, list(waiting.values()), status_of(t, **vals), t)
+        runs += 1 if res["rings"] else 0
+        for x in res["rows"]:
+            if x["ev"] == "revisited":
+                waiting.pop(x["id"], None)
+    return runs
+
+
+def test_replay_recorded():
+    n = runs_through_step(RECORDED_REVISITS)
+    check("replay: the 27 recorded revisits are 12 runs through step()", n == 12, n)
+
+
 def replay_batch():
-    """Read-only: the real told.jsonl's revisits, as launched and as revisit_batch_min would have grouped them."""
-    rows = IN.read_rows(os.path.join(IN.REAL_OPS, "told.jsonl")) or []
+    """Read-only: the real told.jsonl's revisits, as launched and as step() now groups them. A file that does not read is
+    UNMEASURED, never zero; the recorded 27 are replayed either way."""
+    print("replay: recorded 2026-11-03: %d revisits are %d runs through step()" % (len(RECORDED_REVISITS), runs_through_step(RECORDED_REVISITS)))
+    path = os.path.join(IN.REAL_OPS, "told.jsonl")
+    rows = IN.read_rows(path) if os.path.exists(path) else None
+    if rows is None:
+        print("replay: live told.jsonl UNMEASURED: %s does not read here" % path)
+        return 0
     ts = sorted(r["t"] for r in rows if r.get("ev") == "revisited" and not r.get("news"))
-    win = TABLE["policy"]["revisit_batch_min"] * 60
-    groups, head = 0, None
-    for t in ts:
-        if head is None or t - head > win:
-            groups, head = groups + 1, t
-    print("replay: %d revisits landed before this change; batched inside %d min they are %d runs (%d distinct launch ticks on record)"
-          % (len(ts), win // 60, groups, len({int(t // 120) for t in ts})))
+    win = TABLE["policy"]["revisit_batch_min"]
+    print("replay: live told.jsonl: %d revisits landed before this change; batched inside %d min they are %d runs (%d distinct launch ticks on record)"
+          % (len(ts), win, runs_through_step(ts), len({int(t // 120) for t in ts})))
     return 0
 
 
@@ -782,7 +938,9 @@ if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
-          test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path):
+          test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
+          test_chains_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
+          test_incidents_verb_says_the_news, test_replay_recorded):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)
