@@ -59,5 +59,29 @@ check(set(g.EXPECTED) == set(g.MODS), "every audited mod has an expectation")
 check(set(p for p, v in g.EXPECTED.items() if v == "INERT") == set(g.INERT_LOG_NEEDLES),
       "every INERT mod has Player.log needles")
 
+# the live clause: a game that is not the clause's game is UNMEASURED (the round restages it), never a FAIL
+# (2026-11-03: A2 ran on a list holding My Little Planet and was recorded FAIL)
+W = "Ash'karr"
+J = g.judge
+check(J("game_loaded", W, W, g.EXPECT_TILES, [], 900)[0] == g.PASS, "canonical planet, clean, right tiles: PASS")
+check(J("game_loaded", W, W, 10242, [], 900)[0] == g.FAIL, "canonical planet at the wrong tile count: FAIL")
+check(J("game_loaded", W, W, g.EXPECT_TILES, ["ErrorWhileLoadingGame"], 900)[0] == g.FAIL, "load errors: FAIL")
+check(J("main_menu", None, W, None, [], 900)[0] == g.UNMEASURED, "no map: UNMEASURED")
+check(J("game_loaded", "Other", W, g.EXPECT_TILES, [], 900)[0] == g.UNMEASURED, "another save: UNMEASURED")
+check(J("game_loaded", W, None, g.EXPECT_TILES, [], 900)[0] == g.UNMEASURED, "unread save name: UNMEASURED")
+check(J("game_loaded", W, W, g.EXPECT_TILES, [], 10)[0] == g.UNMEASURED, "a stub log: UNMEASURED")
+check(g.reply({"content": [{"text": '{"status": "game_loaded"}'}]}) == {"status": "game_loaded"}, "an envelope opens")
+check(g.reply({"status": "x"}) == {"status": "x"} and g.reply(None) == {} and g.reply({"content": [{"text": "no"}]}) == {},
+      "a plain reply passes, a None or bad envelope is empty")
+import live_def_check as ldc  # noqa: E402
+inert = [p for p, v in g.EXPECTED.items() if v == "INERT"]
+both = set(g.ALIEN_WORLDS)
+check(ldc.condition(list(g.ALIEN_WORLDS), inert, both | {"oblitus.mylittleplanet"}, {})[0] == g.UNMEASURED,
+      "a running load holding My Little Planet: UNMEASURED")
+check(ldc.condition(list(g.ALIEN_WORLDS), inert, {"7f.alienworlds"}, {})[0] == g.UNMEASURED,
+      "a running load lacking Tidally Locked: UNMEASURED")
+check(ldc.condition(list(g.ALIEN_WORLDS), inert, None, {})[0] == g.UNMEASURED, "an unread running load: UNMEASURED")
+check(ldc.condition(list(g.ALIEN_WORLDS), inert, both | {"ludeon.rimworld"}, {})[0] is None, "the right load: met")
+
 print("selftest_generator_inert_audit: %s" % ("FAIL (%d)" % len(FAILS) if FAILS else "PASS"))
 sys.exit(1 if FAILS else 0)

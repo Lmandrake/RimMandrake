@@ -19,10 +19,12 @@ a mod cannot lose it. Positive control: Alien Worlds' packageId must be found in
 Exit 0 only when every verdict equals EXPECTED (an expectation that turns false is a finding, not a fix).
 
 LIVE (Windows python.exe, a game already loaded by the supervisor with the canonical start save on a list that
-LACKS the INERT mods): ModsConfig.xml has neither INERT mod and does have both Alien Worlds ids; the bridge says
+LACKS the INERT mods): the RUNNING load (jawa/running_mods) has neither INERT mod and both Alien Worlds ids, else
+exit 2 UNMEASURED (another load: restage, never a FAIL); the bridge says
 game_loaded; jawa/world_info_get reports the save's own planet name and 21,872 tiles; Player.log has no
 ErrorWhileLoadingGame / ExceptionInFinalizeLoading line and no line naming an INERT mod's assembly or namespace.
-Reads only (rimworld/get_game_info, jawa/world_info_get). Exit 0 = the clause holds, 1 = it does not.
+Reads only (jawa/running_mods, rimworld/get_game_info, jawa/world_info_get). Exit 0 = the clause holds, 1 = it does
+not (the canonical planet loaded with errors or the wrong tile count), 2 = UNMEASURED (judge()).
 """
 from __future__ import annotations
 
@@ -371,31 +373,70 @@ def offline(args):
     return 0 if ok else 1
 
 
+PASS, FAIL, UNMEASURED = 0, 1, 2
+ALIEN_WORLDS = ("7f.alienworlds", "7f.alienworlds.tidallylocked")
+
+
+def judge(status, name, want, tiles, bad, log_lines):
+    """The clause from what the game showed -> (exit code, why). A game that is not the clause's game (no map, another
+    save, an unread save name) is UNMEASURED: a wrong staging disproves nothing. FAIL only on the canonical planet."""
+    if not want:
+        return UNMEASURED, "the canonical save's planet name could not be read"
+    if status != "game_loaded":
+        return UNMEASURED, "no game loaded (status %r): the canonical save was not staged" % status
+    if name != want:
+        return UNMEASURED, "the loaded planet is %r, not the canonical save's %r: another save is up" % (name, want)
+    if log_lines <= 50:
+        return UNMEASURED, "Player.log holds %d lines: the log is not this load's" % log_lines
+    if tiles != EXPECT_TILES:
+        return FAIL, "the canonical planet loaded with %s tiles, not %d" % (tiles, EXPECT_TILES)
+    if bad:
+        return FAIL, "%d load-failure or inert-mod lines in Player.log" % len(bad)
+    return PASS, "the canonical planet %r loaded clean at %d tiles without the INERT mods" % (want, EXPECT_TILES)
+
+
+def reply(r):
+    """A tool reply -> its dict: an MCP-style {"content": [{"text": json}]} envelope is opened, anything else is {}."""
+    if isinstance(r, dict) and isinstance(r.get("content"), list) and r["content"]:
+        try:
+            r = json.loads(r["content"][0].get("text") or "")
+        except (ValueError, AttributeError, TypeError):
+            return {}
+    return r if isinstance(r, dict) else {}
+
+
 def live(_args):
+    """Read-only. Every load condition is read from the RUNNING load (jawa/running_mods), never ModsConfig.xml, which
+    names the NEXT load; a condition unmet is UNMEASURED (exit 2), which the live round restages."""
+    import live_def_check
     inert = [p for p, v in EXPECTED.items() if v == "INERT"]
-    ok = True
-    active = [li.text.strip().lower() for li in ET.parse(game_paths.MODS_CONFIG).getroot().find("activeMods")]
-    for p in inert:
-        if p in active:
-            print("FAIL: %s is in the live ModsConfig; the clause needs the list WITHOUT it" % p)
-            ok = False
-    for p in ("7f.alienworlds", "7f.alienworlds.tidallylocked"):
-        if p not in active:
-            print("FAIL: %s missing from the live ModsConfig (the save names it)" % p)
-            ok = False
-    from rimbridge_client import RimBridge, resolve_endpoint
-    host, port, token = resolve_endpoint()
-    rb = RimBridge(host, port, token, timeout=60)
-    gi = rb.call("rimworld/get_game_info", {}) or {}
-    wi = rb.call("jawa/world_info_get", {}) or {}
+    try:
+        from rimbridge_client import RimBridge, resolve_endpoint
+        host, port, token = resolve_endpoint()
+        # connected (the 2026-11-03 run built a RimBridge and never connected it: 'NoneType' has no sendall); in-process,
+        # never live_def_check.call_running_mods, which shells out through wslpath, absent under python.exe
+        with RimBridge(host, port, token, timeout=60) as rb:
+            running = live_def_check.running_ids(reply(rb.call("jawa/running_mods", {"details": False, "assembly": ""})))
+            gi = reply(rb.call("rimworld/get_game_info", {}))
+            wi = reply(rb.call("jawa/world_info_get", {}))
+    except Exception as e:  # noqa: BLE001  a bridge that does not answer measured nothing
+        print("UNMEASURED: the bridge did not answer: %s: %s" % (type(e).__name__, str(e)[:200]))
+        print("LIVE UNMEASURED")
+        return UNMEASURED
+    code, pre = live_def_check.condition(list(ALIEN_WORLDS), inert, running, live_def_check.aliases())
+    for ln in pre:
+        print(ln)
+    if code is not None:
+        print("needs: the list SHIP.RULED_2026-10-20 (infrastructure/state/modlists/) with all five DLC, and the "
+              "canonical start save (canon.yml planet.start_savegame) loaded")
+        print("LIVE UNMEASURED")
+        return code
     name = (wi.get("info") or {}).get("name")
     spath = os.path.join(game_paths.SAVES, canonical_save_name())
     with open(spath, "rb") as fh:
         m = re.search(r"<world>.*?<info>.*?<name>(.*?)</name>", fh.read(4 << 20).decode("utf-8", "replace"), re.S)
     want = m.group(1) if m else None
     print("game %s, planet %r (save says %r), tiles %s" % (gi.get("status"), name, want, wi.get("tilesCount")))
-    if gi.get("status") != "game_loaded" or wi.get("tilesCount") != EXPECT_TILES or not want or name != want:
-        ok = False
     with open(game_paths.PLAYER_LOG, encoding="utf-8", errors="replace") as fh:
         log = fh.read().splitlines()
     bad = [ln for ln in log if "ErrorWhileLoadingGame" in ln or "ExceptionInFinalizeLoading" in ln]
@@ -409,9 +450,10 @@ def live(_args):
           % (len(log), len(bad), ppp[-1].split("MLP type")[-1].strip() if ppp else "absent"))
     for ln in bad[:10]:
         print("    " + ln[:200])
-    ok &= not bad and len(log) > 50
-    print("LIVE %s" % ("PASS" if ok else "FAIL"))
-    return 0 if ok else 1
+    code, why = judge(gi.get("status"), name, want, wi.get("tilesCount"), bad, len(log))
+    print(why)
+    print("LIVE %s" % {PASS: "PASS", FAIL: "FAIL"}.get(code, "UNMEASURED"))
+    return code
 
 
 def main(argv=None):
