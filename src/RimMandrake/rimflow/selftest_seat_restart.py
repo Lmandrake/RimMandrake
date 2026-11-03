@@ -980,8 +980,8 @@ def test_e6_the_deadline_is_the_one_written_at_the_kill():
 def test_v1_foundry_grace_is_30_s():
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         live = json.load(f)
-    check(SR.config(live).get("FOUNDRY", {}).get("grace_s") == 20,
-          "V1 the live schedule gives FOUNDRY a 20 s restart grace (%s)" % SR.config(live).get("FOUNDRY", {}).get("grace_s"))
+    check(SR.config(live).get("BENCH", {}).get("grace_s") == 20,
+          "V1 the live schedule gives BENCH a 20 s restart grace (%s)" % SR.config(live).get("BENCH", {}).get("grace_s"))
 
 
 def _tx_file(name, recs):
@@ -2060,10 +2060,11 @@ def test_conductor_backstop_foundry_limits():
     # owner by card 2026-11-01: "Should the Conductor restart itself like Foundry? -> Same limits as Foundry"
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         seats = json.load(f)["seat_restart"]["seats"]
-    b, f_ = seats["BENCH"], seats["FOUNDRY"]
+    b = seats["BENCH"]
+    f_ = {"backstop": True, "backstop_ctx_tokens": 110000, "backstop_busy": True, "backstop_hard_tokens": 200000, "backstop_hard_alarm_s": 3600, "backstop_idle_s": 1800, "grace_s": 20, "quiet_s": 20, "helper_stale_s": 1800}      # FOUNDRY's limits as the owner matched them; the seat itself retired 2026-11-02
     same = ("backstop", "backstop_ctx_tokens", "backstop_busy", "backstop_hard_tokens", "backstop_hard_alarm_s",
             "backstop_idle_s", "grace_s", "quiet_s", "helper_stale_s")
-    check({k: b.get(k) for k in same} == {k: f_.get(k) for k in same}, "CB live: BENCH has every one of FOUNDRY's limits (%s)"
+    check({k: b.get(k) for k in same} == {k: f_.get(k) for k in same}, "CB live: BENCH has every one of the limits he matched (%s)"
           % {k: (b.get(k), f_.get(k)) for k in same if b.get(k) != f_.get(k)})
     check(b.get("backstop_human_idle_s") == 14_400 and b.get("goodbye_quiet_s") == 0,
           "CB live: his human-idle gate and his instant goodbye stand")
@@ -2158,8 +2159,8 @@ def test_k1_goodbye_kill_on_backstop_off():
     check(raw.get("enabled") is True and raw.get("backstop") is True and "_why_off" not in raw
           and "acceptable risk" in (raw.get("_why_enabled") or "") and "2026-10-29" in raw.get("_why_enabled", ""),
           "K1 live: BENCH enabled true with his words and date in _why_enabled, backstop true, no _why_off")
-    check("BENCH" in SR.config(live) and "FOUNDRY" in SR.config(live),
-          "K1 live: BENCH and FOUNDRY are both in seat_restart.config (%s)" % sorted(SR.config(live)))
+    check("BENCH" in SR.config(live) and "FOUNDRY" not in SR.config(live),
+          "K1 live: BENCH is in seat_restart.config and the retired FOUNDRY is not (%s)" % sorted(SR.config(live)))
     over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 40_000, "last_user_at": T0 - 40_000}
 
     def ticks(sch, st, request):

@@ -167,7 +167,7 @@ T0 = time.time() - 500
 d = TMP / "claude" / "projects" / SR.re.sub(r"[^A-Za-z0-9]", "-", sch["seats"]["BENCH"]["clone"])
 d.mkdir(parents=True)
 rec = {"type": "user", "timestamp": OW.iso(T0), "uuid": "u", "message": {"role": "user", "content": "Goodbye!"}}
-peer = {"type": "user", "timestamp": OW.iso(T0), "uuid": "p", "origin": {"kind": "peer", "name": "AGENT FOUNDRY"},
+peer = {"type": "user", "timestamp": OW.iso(T0), "uuid": "p", "origin": {"kind": "peer", "name": "AGENT BENCH"},
         "message": {"role": "user", "content": "goodbye"}}
 (d / "s.jsonl").write_text(json.dumps(rec) + "\n", encoding="utf-8")
 (d / "peer.jsonl").write_text(json.dumps(peer) + "\n", encoding="utf-8")

@@ -3042,6 +3042,7 @@ def test_golive_trial_set_from_schedule():
     check(wave1_problems(x) == ["role Producer must stay disabled (go-live set: Conductor/Operations/Arbiter)"],
           "TN listing Arbiter does not let Producer through: %s" % (wave1_problems(x),))
     y = copy.deepcopy(base)
+    y["seats"]["FOUNDRY"] = {"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"}      # a worker seat: the live schedule has none since 2026-11-02
     y["seats"]["FOUNDRY"]["recover_dead"] = True
     check(wave1_problems(y) == ["seat FOUNDRY recover_dead must stay false (go-live recover_dead: none)"],
           "TN recover_dead on FOUNDRY not in golive.recover_dead is refused: %s" % (wave1_problems(y),))

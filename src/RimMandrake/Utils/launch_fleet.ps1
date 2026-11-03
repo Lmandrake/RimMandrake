@@ -7,7 +7,6 @@ launch_fleet.ps1 — open the fleet's windows, each Windows Terminal window plac
                                 launched FIRST so it is up before any seat, and independent of all)
     TOP-RIGHT    EMERGENCY     (small floating window, D:\Luke\dev)
     BOTTOM-LEFT  CONDUCTOR     (green — with the owner)
-    BOTTOM-RIGHT AGENT FOUNDRY (amber — the autonomous queue)
 
 Redesign #4, 2026-08-27: the four-seat fleet (DECIDE/CHECK/BUILD/REP quadrants) is
 retired, the status board stays removed, and the queue publisher loop is gone too —
@@ -58,7 +57,7 @@ Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
     [int]$Gap = 0,
-    [string[]]$Seats = @('SERVER', 'HESTIA', 'ARTIST', 'EMERGENCY', 'FOUNDRY', 'BENCH'),
+    [string[]]$Seats = @('SERVER', 'HESTIA', 'ARTIST', 'EMERGENCY', 'BENCH'),
     [int]$TimeoutSec = 30,
     [int]$DelaySec = 0,
     [switch]$Test,

@@ -79,7 +79,7 @@ class Replay:
         self.recs, self.path, self.upto = recs, os.path.join(tmp, "a4a9f1ca.jsonl"), 0
         open(self.path, "w").close()
         self.sch = D.load_schedule(os.path.join(HERE, "dispatcher_schedule.json"))
-        self.sch["seats"] = {"FOUNDRY": dict(self.sch["seats"]["FOUNDRY"], clone="/nonexistent")}
+        self.sch["seats"] = {"FOUNDRY": dict({"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"}, clone="/nonexistent")}
         self.sch.pop("seat_restart", None)
         self.sch.pop("busy_waiting", None)
         if block:

@@ -218,12 +218,26 @@ def test_ack_then_killed():
 
 def test_ring_or_read_is_no_ack():
     r = Rig("noack")
+    bell = os.path.join(r.root, "routes.json")      # a doorbell reader of its own: no live seat is one any more
+    t = IN.load_table()
+    t["readers"]["WORKER"] = {"by": "doorbell", "seat": "WORKER"}
+    t["routes"] = [dict(x, reader="WORKER") if x["match"] == "arena.*" else x for x in t["routes"]]
+    json.dump(t, open(bell, "w"))
+    os.environ["RIMFLOW_ROUTES"] = bell
+    r.sch["seats"] = {"WORKER": {"enabled": True, "wake": True}}
+    try:
+        _ring_or_read(r)
+    finally:
+        os.environ.pop("RIMFLOW_ROUTES", None)
+
+
+def _ring_or_read(r):
     r.tick(T0, arena__two_live=1)
     x = r.inc()
-    check("a doorbell reader's incident opens", x and x[0]["reader"] == "FOUNDRY", x)
-    inbox = doorbell.inbox_path("FOUNDRY")
+    check("a doorbell reader's incident opens", x and x[0]["reader"] == "WORKER", x)
+    inbox = doorbell.inbox_path("WORKER")
     check("it rings the seat by doorbell", os.path.exists(inbox) and x[0]["id"] in open(inbox).read(), inbox)
-    got = doorbell.take_ring("FOUNDRY")
+    got = doorbell.take_ring("WORKER")
     check("the doorbell delivers it", got and x[0]["id"] in json.dumps(got), got)
     r.tick(T0 + 5 * M, arena__two_live=1)
     check("a ring, a consume and a read write no ack", not r.evs("acked") and not r.inc()[0].get("acked_t"), r.rows())
@@ -477,10 +491,14 @@ def test_routes():
         check("%s dropped from the table is seen missing" % kind, kind in [k for k in sorted(kinds) if IN.route_of(t2, k) is None])
     bad = [x for x in TABLE["routes"] if x["route"] == "role" and x["reader"] not in TABLE["readers"]]
     check("every role route names a reader the table wakes", not bad, bad)
+    live_sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
+    bells = [k for k, v in TABLE["readers"].items() if v.get("seat")]
     check("every doorbell reader is really woken by the schedule",
-          IN.reader_problem("FOUNDRY", json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))) is None)
+          all(IN.reader_problem(k, live_sch) is None for k in bells), bells)
+    check("FOUNDRY is retired: no reader, nothing rings it (owner by card 2026-11-02)", "FOUNDRY" not in TABLE["readers"])
+    bell = {"readers": dict(TABLE["readers"], WORKER={"by": "doorbell", "seat": "WORKER"})}   # a doorbell seat, fixture only
     check("a seat with waking off is unwoken", "waking is off" in IN.reader_problem(
-        "FOUNDRY", {"seats": {"FOUNDRY": {"wake": False}}}))
+        "WORKER", {"seats": {"WORKER": {"wake": False}}}, table=bell))
     # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): who picks up an alarm item, asked by every program that files one
     rel = json.load(open(IN.RELENTLESS_RULES))
     on = {"enabled": True, "pool_seats": ["BENCH", "FOUNDRY"], "pool_needs": ["offline"]}
@@ -489,8 +507,8 @@ def test_routes():
     check("T2: an offline alarm for a pool seat is picked up", IN.receiver_problem("BENCH", "offline", relentless=on) is None)
     check("T2: with relentless off, BENCH (no doorbell) is no receiver",
           "relentless is off" in str(IN.receiver_problem("BENCH", "offline", relentless=dict(on, enabled=False))))
-    check("T2: with relentless off, FOUNDRY's doorbell still wakes it",
-          IN.receiver_problem("FOUNDRY", "offline", relentless={}) is None)
+    check("T2: with relentless off, a doorbell seat is still woken",
+          IN.receiver_problem("WORKER", "offline", table=bell, relentless={}) is None)
     check("T2: a non-offline alarm for BENCH has no receiver",
           "needs=live" in str(IN.receiver_problem("BENCH", "live", relentless=on)))
     check("T2: a needs=owner alarm goes to OWNER, and only OWNER",
@@ -498,7 +516,7 @@ def test_routes():
           and "goes to OWNER" in str(IN.receiver_problem("BENCH", "owner", relentless=on)))
     check("T2: a seat nobody names is no receiver", IN.receiver_problem("NOBODY", "offline", relentless=on) is not None)
     check("T2: a doorbell seat whose waking is off is no receiver", "waking is off" in str(IN.receiver_problem(
-        "FOUNDRY", "live", {"seats": {"FOUNDRY": {"wake": False}}}, relentless=on)))
+        "WORKER", "live", {"seats": {"WORKER": {"wake": False}}}, table=bell, relentless=on)))
     led = os.path.join(TMP, "cli_ledger.jsonl")
     open(led, "w").close()
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
@@ -509,7 +527,7 @@ def test_routes():
         return subprocess.run([sys.executable, os.path.join(HERE, "cli.py")] + list(a), env=env, capture_output=True, text=True, timeout=120)
     p = cli("file", "GHOST_READER_PROBE_FIXTURE", "--for", "GHOST", "--title", "t")
     check("`rimflow file --for` an unwoken reader is refused", p.returncode != 0 and "wakes GHOST" in p.stderr + p.stdout, p.stderr + p.stdout)
-    p = cli("file", "REAL_READER_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    p = cli("file", "REAL_READER_PROBE_FIXTURE", "--for", "BENCH", "--title", "t")
     check("a woken reader files", p.returncode == 0, p.stderr + p.stdout)
     p = cli("spawn", "--from", "REAL_READER_PROBE_FIXTURE", "--for", "GHOST", "--name", "GHOST_SPAWN_PROBE_FIXTURE", "--title", "t")
     check("spawn refuses it too", p.returncode != 0 and "wakes GHOST" in p.stderr + p.stdout, p.stderr + p.stdout)

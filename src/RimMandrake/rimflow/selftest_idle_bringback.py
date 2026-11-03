@@ -45,6 +45,9 @@ import seat_restart as SR  # noqa: E402
 SEAT = "FOUNDRY"
 FAILS = []
 REAL = D.load_schedule()
+# a worker seat of the old FOUNDRY shape: the live schedule has none since it retired (owner by card 2026-11-02)
+REAL["seats"].setdefault(SEAT, {"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"})
+REAL["seat_restart"]["seats"].setdefault(SEAT, {"backstop": True, "backstop_ctx_tokens": 110000, "backstop_busy": True, "backstop_hard_tokens": 200000, "backstop_hard_alarm_s": 3600, "backstop_idle_s": 1800, "grace_s": 20, "quiet_s": 20, "helper_stale_s": 1800})
 TICK = REAL["tick_s"]
 LIMIT = REAL["idle_bringback_after_min"] * 60
 FRESH = REAL["fresh_take_s"]

@@ -626,13 +626,11 @@ def test_closeout_review_findings():
 def test_live_schedule():
     with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
         s = json.load(f)["seat_restart"]["seats"]
-    fo, be = s["FOUNDRY"], s["BENCH"]
-    check(fo.get("backstop_busy") is True and fo.get("backstop_ctx_tokens") == SOFT and fo.get("backstop_hard_tokens") == HARD,
-          "live: FOUNDRY runs the busy limits, %s/%s" % (fo.get("backstop_ctx_tokens"), fo.get("backstop_hard_tokens")))
+    be = s["BENCH"]
     check(be.get("backstop") is True and be.get("backstop_busy") is True and be.get("backstop_ctx_tokens") == SOFT
           and be.get("backstop_hard_tokens") == HARD, "live: BENCH runs the same limits (owner by card 2026-11-01)")
     dead = D.load_schedule(os.path.join(HERE, "dispatcher_schedule.json"))
-    check(fo.get("backstop_hard_alarm_s", 0) > 0 and SR.config(dead)["FOUNDRY"]["backstop_hard_tokens"] == HARD,
+    check(be.get("backstop_hard_alarm_s", 0) > 0 and SR.config(dead)["BENCH"]["backstop_hard_tokens"] == HARD,
           "config() passes the new keys")
 
 
