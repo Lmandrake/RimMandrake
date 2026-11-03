@@ -734,6 +734,27 @@ def t_idle_live_hold_lapses():
     x.done()
 
 
+def t_live_hold_clock_restarts_at_lease():
+    """OPS_RELENTLESS_GAME_HOLD_UNSTICK_DRDP: _back keeps live_iter through stopping -> queued; the next worker leased
+    30 min later inherited the FAIL's clock, so ops_watch read 31.6 min idle and lapse_holds would free the game before
+    the new worker could touch it. Red on the old code: bridge_seen stayed at the FAIL."""
+    x = rig(1)
+    live_iterating(x)
+    idle = G.cfg(x.r)["live_idle_s"]
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["status"], st["run"], st["returned_at"] = "queued", None, x.now
+        st["live_iter"].pop("bridge_seen", None)
+        st["live_iter"]["at"] = x.now - idle - 600       # the FAIL, long before this lease
+        x.s.save(st)
+    x.run_one("I0")
+    li = x.st("I0").get("live_iter") or {}
+    ok(li.get("bridge_seen") and x.now - li["bridge_seen"] <= 120, "the lease restarts the idle clock: %s" % li)
+    x.tick()
+    ok(held(x) and x.st("I0").get("live_iter"), "a freshly leased live worker is not lapsed on its first tick")
+    x.done()
+
+
 def t_live_hold_lapses_when_its_game_is_gone():
     x = rig(1)
     live_iterating(x)
@@ -1133,7 +1154,8 @@ def main():
               t_stage_tries_a_newer_running_game_first,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_stale_build_caught_before_a_slot,
-              t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_lapses_when_its_game_is_gone,
+              t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
+              t_live_hold_lapses_when_its_game_is_gone,
               t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,
               t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_mod_gap_pure):
         print("--", t.__name__)

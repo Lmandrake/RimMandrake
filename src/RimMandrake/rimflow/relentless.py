@@ -3117,6 +3117,8 @@ def lease(store, fx, r, now, acts):
                 st["clone"] = fx.clone_path(item, q)
             st["status"] = "running"
             st["started_at"] = now
+            if st.get("live_iter"):     # the idle clock starts with this worker: the queue wait was no hold (other_active
+                st["live_iter"]["bridge_seen"] = now    # skips it); OPS_RELENTLESS_GAME_HOLD_UNSTICK_DRDP read 31.6 min
             st["last_beat"] = None
             st["base"] = st.get("base") or fx.head()
             st["run"] = run_desc(store, r, unit_name("work", item, st["gen"]), now)
