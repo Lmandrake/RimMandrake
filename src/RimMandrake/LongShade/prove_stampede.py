@@ -1,7 +1,7 @@
 """Proof of LONGSHADE_STAMPEDE_LIVECHECK_1: the "stampede for your roof" incident (RM_ShadeStampede) on one RM_LongShade map.
 
     python3 src/RimMandrake/LongShade/prove_stampede.py --offline
-    python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A1 < /dev/null    (A1..A7)
+    python.exe src/RimMandrake/LongShade/prove_stampede.py --clause A1 < /dev/null    (A1..A7)
 
 Exit 0 = the clause holds, 1 = it does not, 2 = UNMEASURED (no game or bridge, probe not in the loaded DLL, no herd kind in
 the biome roster, fewer than 8 spawned, or the heat lever did not make the herd hot / cool when the clause needs it).
