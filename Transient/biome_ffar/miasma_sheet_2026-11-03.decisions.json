@@ -65,6 +65,15 @@
    "note": "",
    "prefill": "A"
   },
+  "RSW_Blarth": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "picks": {
+    "swanimals/Blarth/Blarth_Swimming": "D",
+    "swanimals/Blarth/BlarthV_C": "E"
+   }
+  },
   "RSW_Blixus": {
    "decision": "G",
    "note": "",
@@ -89,6 +98,11 @@
    "note": "",
    "prefill": "A"
   },
+  "RSW_FaaJuv": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Grank": {
    "decision": "B",
    "note": "",
@@ -106,6 +120,11 @@
    "picks": {
     "swanimals/MarshHaunt/MarshHaunt_Swimming": "D"
    }
+  },
+  "RSW_MeeJuv": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
   },
   "RSW_OpeeSeaKillerJuv": {
    "decision": "A",

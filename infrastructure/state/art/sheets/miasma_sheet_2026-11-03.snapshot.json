@@ -1,8 +1,8 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-11-03T03:48:13-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T06:06:24-0800",
+ "census": "/tmp/bffar_proof/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Bileworm",
   "RM_Braskeen",
@@ -19,13 +19,108 @@
   "RM_SiltLampreyJuv",
   "RM_Thermadon",
   "RM_Thessamor",
-  "RSW_Blarth",
-  "RSW_FaaJuv",
-  "RSW_MeeJuv",
   "RSW_RustNipperJuv",
   "RSW_SiltLampreyJuv"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Anooba": {
+   "brief": "a lean striped pack scavenger that circles herds and drags down the weak",
+   "kind": "drafted",
+   "name": "skevva",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Blarth": {
+   "brief": "a small round-bellied household predator that croaks when content",
+   "kind": "drafted",
+   "name": "urbo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Blixus": {
+   "brief": "a half-armoured lagoon crustacean that ambushes from shallow water",
+   "kind": "drafted",
+   "name": "vlissek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Bogwing": {
+   "brief": "a quick leathery-winged marsh flyer that snaps small prey off the water",
+   "kind": "drafted",
+   "name": "drevvit",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_FaaJuv": {
+   "brief": "a qelloq still too small for the open channels, picking at fry in the shallows",
+   "kind": "drafted",
+   "name": "young qelloq",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Grank": {
+   "brief": "a low-slung shell-cracking scavenger that feels prey through its body hairs",
+   "kind": "drafted",
+   "name": "oskarr",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_LaaJuv": {
+   "brief": "a quoola scalefish not yet grown into its streamer fins, schooling in the shallows",
+   "kind": "drafted",
+   "name": "young quoola",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_MarshHaunt": {
+   "brief": "a pale red-eyed marsh stalker seen mostly at dusk",
+   "kind": "drafted",
+   "name": "oolumev",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_MeeJuv": {
+   "brief": "an yissil too young for the open sea, still schooling in the shallows",
+   "kind": "drafted",
+   "name": "young yissil",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_OpeeSeaKillerJuv": {
+   "brief": "the young of a lure-tongued armoured ambush predator of the deep",
+   "kind": "drafted",
+   "name": "young gneshuun",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Runyip": {
+   "brief": "a squat antlered forest grazer with a flexible snout and striped coat",
+   "kind": "drafted",
+   "name": "nibbov",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Shiro": {
+   "brief": "a slow benign spiny-shelled reptile that retracts entirely into its shell",
+   "kind": "drafted",
+   "name": "yulvik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Vornskyr": {
+   "brief": "a nocturnal pack hunter with a whip-like stinging tail",
+   "kind": "drafted",
+   "name": "zhirrek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Whisperbird": {
+   "brief": "a golden long-tailed rainforest bird that flies almost silently",
+   "kind": "drafted",
+   "name": "sollivar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_YobshrimpJuv": {
+   "brief": "a pale young carcass-swarming shrimp, still picking the shallows alone",
+   "kind": "drafted",
+   "name": "young chessip",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Zakkeg": {
+   "brief": "a rare huge armoured solitary apex predator of the jungle",
+   "kind": "drafted",
+   "name": "vorgaal",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Aphreen": {
    "columns": {
@@ -1045,6 +1140,63 @@
    "shownBase": [],
    "subject_key": "anooba"
   },
+  "RSW_Blarth": {
+   "columns": {
+    "A": {
+     "east": "37904cf020e51f60fb038e2d0c532d6d7ea0e3c847d786d7b6a43a302f38dee8",
+     "north": "3d64b7f2ff1715ff6b967b4488e25bdb32b108d1c3405ffecf8f9dcda9c81bd7",
+     "south": "b69a5693ea47246eac9aed746570841b20c1a9666c4c36f76e17a18f7dcef80a"
+    },
+    "B": {
+     "east": "567196f3446321c0069a25adf4a855cdda7ed20722bc288cc26df07ed1097ad4",
+     "north": "2d50da4b1890d1a025d31a7461a0c5ada6c8c39c8f977df7e8be3ac4a4eb6bcf",
+     "south": "15823783c95ce0df62cd71e4420aaaf7d90ce479ee85c8f3cb39c7391dd3fdd7"
+    },
+    "C": {
+     "east": "4b940928fc4024233d93cc2a88f2075f1536f506350f069fa213880ecd90d4da",
+     "north": "8239b64981662ce86558614744b70f462d03f27be32ea149ac21211b5c39fcfa",
+     "south": "79f49fe998b096cf829b79af4e3a0758453d259eda75ced83c9d23d8139b4674"
+    },
+    "D": {
+     "east": "37904cf020e51f60fb038e2d0c532d6d7ea0e3c847d786d7b6a43a302f38dee8",
+     "north": "3f788c7396c4b86b4f5e969b999c7d0ce001fb39153a3da171d62536d1844ede",
+     "south": "5d3030bae48b34bf2c9d498208935ca8c4caaa368ee15778728f588832627020"
+    },
+    "E": {
+     "east": "567196f3446321c0069a25adf4a855cdda7ed20722bc288cc26df07ed1097ad4",
+     "north": "30891f7b57568887b6633c0020d8fc7de965cd78db25356a5119748a4fcc4aac",
+     "south": "0eb4500d28aec84035010eb2e663b9ba10d109108c0638b3fb674f5024a61887"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Blarth/Blarth",
+    "B": "swanimals/Blarth/Blarth",
+    "C": "swanimals/Blarth/Blarth_Swimming",
+    "D": "swanimals/Blarth/Blarth_Swimming",
+    "E": "swanimals/Blarth/BlarthV_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render miasma_canon_blarth_v1",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render miasma_canon_blarth_v1_swim",
+    "E": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "swanimals/Blarth/Blarth",
+    "swanimals/Blarth/BlarthV_C"
+   ],
+   "res": "swanimals/Blarth/Blarth",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "blarth"
+  },
   "RSW_Blixus": {
    "columns": {
     "A": {
@@ -1283,6 +1435,40 @@
    "shownBase": [],
    "subject_key": "cresteddragon"
   },
+  "RSW_FaaJuv": {
+   "columns": {
+    "A": {
+     "east": "de4e31756f6002e7bd7d28d8a7b1ab3a55c19aa74a4b654b5c64734cc1917588",
+     "north": "ecf26a553aa6a158ea24e95c6e20931a6f1b42d6c59bfe0ae1ecced6f71bfaae",
+     "south": "4de5519281cd683929356465fb59700d4fde052903ecca3c6807b7273d3ac5d3",
+     "west": "7e140da59624b22295e72cb36da42c47e27d936e7146803b05eac8a5c22850de"
+    },
+    "B": {
+     "east": "2aa6758ed0bfc966810ab56b9a3503324e6d1960c89712c3ce1a8b21a1e727c4",
+     "north": "16bf54ac8baa12239db06f4d50d1df80c471a8e8cd8d4771dc0473ea399bb7f5",
+     "south": "f4d721d5a0ab356c6eba8cd8c85d6cf8ad8a2c11107ade307aa371caae791beb",
+     "west": "7e140da59624b22295e72cb36da42c47e27d936e7146803b05eac8a5c22850de"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
+    "B": "Things/Pawn/Animal/SeaBeasts/Faa/Faa"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SeaBeasts 2026-09-02"
+   },
+   "pools": [
+    "Things/Pawn/Animal/SeaBeasts/Faa/Faa"
+   ],
+   "res": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "faajuv"
+  },
   "RSW_Grank": {
    "columns": {
     "A": {
@@ -1417,6 +1603,40 @@
    ],
    "shownBase": [],
    "subject_key": "marshhaunt"
+  },
+  "RSW_MeeJuv": {
+   "columns": {
+    "A": {
+     "east": "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+     "north": "14ac42b4fc712a24f84e10b2a798369253d30ba044627e9b343a904fbc1a054d",
+     "south": "4ee25cb530d62e5f451198060bea813b570012701f01f5592a50cb0b4c5b101b",
+     "west": "cea8f41561c5f80390860ce42a68d7e628ab81f95b4da4d498a248303775b3c3"
+    },
+    "B": {
+     "east": "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+     "north": "82aff98e9423139c9cc104f44882e3cf813fd8f90a5b04a53fdb549196b488ee",
+     "south": "b0e8510ca41fc131890dad2893eae68556781c78fe5236a4423f9da61ad864a7",
+     "west": "cea8f41561c5f80390860ce42a68d7e628ab81f95b4da4d498a248303775b3c3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+    "B": "Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SeaBeasts 2026-09-02"
+   },
+   "pools": [
+    "Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+   ],
+   "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "meejuv"
   },
   "RSW_OpeeSeaKillerJuv": {
    "columns": {
