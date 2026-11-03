@@ -15,7 +15,7 @@ reads what the cover drew in the last frame through jawa/static_call RM_PitLipOc
       the near-lip pieces leave [x-w/2, x+w/2] bare); with the clamp ON (shipped) it stays shut, as PIT_LIP_FIX_BOAR_HANGS_OUT
       ruled (2026-10-16: the window opens only when the lip would hide MORE than half).
 
-    python3 proof_pit_lip_cover.py --clause A1|A2|A3|all [--origin 120,180] [--no-shots]
+    python.exe proof_pit_lip_cover.py --clause A1|A2|A3|all [--origin 120,180] [--no-shots]
 
 Exit 0 when every asked clause holds, 1 when one fails, 2 when it could not measure. Settings it touches are restored.
 """
@@ -35,7 +35,8 @@ for p in (HERE, UTILS):
 OCC = "RimMandrake.FlowWorks.RM_PitLipOcclusion"
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
-OUT = "/mnt/d/ClaudeWork/rimmandrake/scratch/pitlip_occluder/live"
+# the bridge is Windows loopback only, so this runs under python.exe (live_proofs line); /mnt/d is WSL spelling
+OUT = (("D:/" if os.name == "nt" else "/mnt/d/") + "ClaudeWork/rimmandrake/scratch/pitlip_occluder/live")
 EPS = 1e-3
 # s8, relative to the origin: pit (1..4, 1..4) dug 4 notches; the in-pit muffalo on its SW corner, the colonist on its SE
 # corner, the outside muffalo one cell south and two east of the SE corner (br1f: 132,114 / 135,114 / 137,113 on 131,113)
