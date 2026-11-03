@@ -83,6 +83,16 @@
         <feltCap>120</feltCap>
       </li>
     </comps>
+    <!-- CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD: the one Titanic tree (owner's tier sheet 2026-10-18; "Titanic trees should
+         be seen only as the solid trunk"). Close up it draws its trunk pool; zoomed out its canopy pool fades in over it
+         (RimMandrake.Biomes RM_Canopy.cs, Baroque Biomes settings). Both pools are derived from this def's own pool by
+         src/RimMandrake/BiomesShell/canopy_art.py, letter for letter. -->
+    <modExtensions>
+      <li Class="RimMandrake.Biomes.RM_CanopyExtension">
+        <trunkTexPath>Things/Plant/RM_SweetlineTrunk</trunkTexPath>
+        <canopyTexPath>Things/Plant/RM_SweetlineCanopy</canopyTexPath>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>

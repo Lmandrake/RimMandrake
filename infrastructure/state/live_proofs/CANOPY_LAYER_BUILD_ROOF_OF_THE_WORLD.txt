@@ -1,0 +1,3 @@
+# mod list: any tier carrying mandrake.rm.biomes (Baroque Biomes, which composes LeaningScrub's RM_SweetlineTree), all five DLC; a debug quicktest map is enough (the probe spawns one mature sweetline tree near the centre if the map has none). Never fullscreen or focus the game.
+live-proof L1: python.exe src/RimMandrake/BiomesShell/canopy_debug.py L1 < /dev/null
+live-proof L2: python.exe src/RimMandrake/BiomesShell/canopy_debug.py L2 < /dev/null

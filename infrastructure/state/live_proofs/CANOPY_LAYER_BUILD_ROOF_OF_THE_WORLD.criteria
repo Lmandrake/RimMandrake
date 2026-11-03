@@ -1,0 +1,2 @@
+L1 L2: on a quicktest map, camera at a zoom below canopyThresholdPx - canopyFadePx px per cell, RM_CanopyProof.Read reads PASS far: alpha 1, the sweetline tree's section printed >= 1 canopy quad, its GetBoundaryRect wider than the 17x17 section, RM_SectionLayer_Canopy drew within the last 30 frames, the plant's Graphic is the trunk pool
+L2 L2: same map, camera above canopyThresholdPx px per cell, RM_CanopyProof.Read reads PASS near: alpha 0, the canopy is printed but not drawn for > 5 frames, the plant's Graphic is still the trunk pool

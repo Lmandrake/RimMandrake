@@ -53,6 +53,13 @@ namespace RimMandrake.Biomes
         // more southern one draws in front (RM_PlantDrawOrder.cs). Draw order only; applies at once on running maps.
         public static bool plantDrawOrderSouthInFront = true;
 
+        // CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD (owner 2026-10-18): trees whose def carries RM_CanopyExtension (the Titanic
+        // tier) draw their trunk always and their canopy only when zoomed out below canopyThresholdPx screen pixels per
+        // cell, fading in over canopyFadePx (RM_Canopy.cs). Off = the vanilla whole-tree picture. Applies at once.
+        public static bool canopyEnabled = true;
+        public static float canopyThresholdPx = CanopyMath.DefaultThresholdPx;
+        public static float canopyFadePx = CanopyMath.DefaultFadePx;
+
         // WORLDMAP_BORDER_BLEND (2026-10-20): soft gradients between neighbouring land biomes on the planet, and seas that
         // deepen away from the coast (RM_WorldLook.cs). Looks only; the world is untouched. Applies at once.
         public static bool worldBorderBlend = true;
@@ -129,6 +136,9 @@ namespace RimMandrake.Biomes
             Scribe_Collections.Look(ref enabled, "enabled", LookMode.Value, LookMode.Value);
             Scribe_Values.Look(ref ownedCaravanCarriers, "ownedCaravanCarriers", true);
             Scribe_Values.Look(ref plantDrawOrderSouthInFront, "plantDrawOrderSouthInFront", true);
+            Scribe_Values.Look(ref canopyEnabled, "canopyEnabled", true);
+            Scribe_Values.Look(ref canopyThresholdPx, "canopyThresholdPx", CanopyMath.DefaultThresholdPx);
+            Scribe_Values.Look(ref canopyFadePx, "canopyFadePx", CanopyMath.DefaultFadePx);
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
             Scribe_Values.Look(ref worldBiomeSwirls, "worldBiomeSwirls", true);
@@ -163,6 +173,7 @@ namespace RimMandrake.Biomes
             worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
             peaksShown = RM_BiomesSettings.worldSunPeaks;
             plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
+            canopyShown = RM_BiomesSettings.canopyEnabled;
             // seeded from the SAVED settings: an all-on seed missed the redraw when a saved-off toggle was turned on
             worldLookShown = WorldLookKey();
             peaksShown = RM_BiomesSettings.worldSunPeaks;
@@ -209,6 +220,11 @@ namespace RimMandrake.Biomes
                 plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
                 RM_PlantDrawOrder.Reprint();
             }
+            if (canopyShown != RM_BiomesSettings.canopyEnabled)
+            {
+                canopyShown = RM_BiomesSettings.canopyEnabled;
+                RM_Canopy.Reprint();
+            }
             if (worldLookShown != WorldLookKey())
             {
                 worldLookShown = WorldLookKey();
@@ -241,6 +257,7 @@ namespace RimMandrake.Biomes
         // mechanics reader (every engine/mechanic entry today) gates nothing yet: DEAD.
         private float viewHeight = 1200f;
         private static bool plantDrawOrderShown = true;
+        private static bool canopyShown = true;
         private string searchQuery = "";
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
@@ -304,6 +321,36 @@ namespace RimMandrake.Biomes
                     + "Draw order only. Ground cover stays under every plant; pawns and items stay on top. "
                     + "Other mods' biomes are not touched.\n\nDefault: on. Takes effect at once on running maps.");
                 RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => RM_BiomesSettings.plantDrawOrderSouthInFront = true);
+                list.GapLine();
+            }
+
+            if (string.IsNullOrWhiteSpace(searchQuery)
+                || RimMandrake.Shared.SettingsKitCore.Matches("canopy trees titanic trunk zoom forest crown", searchQuery))
+            {
+                list.CheckboxLabeled("Titanic trees: trunk close up, canopy zoomed out [now]", ref RM_BiomesSettings.canopyEnabled,
+                    "The largest trees (the sweetline tree) draw only their trunk when you are zoomed in, so the colony under "
+                    + "them stays visible. Zoom out and their canopy fades in over the trunk, so a forested map reads as a forest. "
+                    + "Pawns always draw on top of the canopy.\n\nOff: these trees draw their whole picture at every zoom, as "
+                    + "vanilla does.\n\nDefault: on. Takes effect at once on running maps.");
+                if (RM_BiomesSettings.canopyEnabled)
+                {
+                    RM_BiomesSettings.canopyThresholdPx = list.SliderLabeled("    Canopy appears below: "
+                        + RM_BiomesSettings.canopyThresholdPx.ToString("0") + " px per cell (default "
+                        + CanopyMath.DefaultThresholdPx.ToString("0") + ")",
+                        RM_BiomesSettings.canopyThresholdPx, CanopyMath.MinThresholdPx, CanopyMath.MaxThresholdPx, 0.5f,
+                        "How far out you must zoom before the canopy shows, as screen pixels per map cell. Higher shows it sooner. "
+                        + "Vanilla's furthest zoom is about 9 px per cell on a 1080p screen.");
+                    RM_BiomesSettings.canopyFadePx = list.SliderLabeled("    Canopy fade width: "
+                        + RM_BiomesSettings.canopyFadePx.ToString("0.0") + " px (default " + CanopyMath.DefaultFadePx.ToString("0") + ")",
+                        RM_BiomesSettings.canopyFadePx, 0f, CanopyMath.MaxFadePx, 0.5f,
+                        "Over how many px per cell the canopy fades from invisible to solid. 0 is a hard switch.");
+                }
+                RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () =>
+                {
+                    RM_BiomesSettings.canopyEnabled = true;
+                    RM_BiomesSettings.canopyThresholdPx = CanopyMath.DefaultThresholdPx;
+                    RM_BiomesSettings.canopyFadePx = CanopyMath.DefaultFadePx;
+                });
                 list.GapLine();
             }
 
