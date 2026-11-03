@@ -376,9 +376,18 @@ namespace RimMandrake.TheForge
             int removed = 0;
             foreach (Pawn p in testFlock)
             {
-                if (p != null && p.Spawned)
+                if (p == null)
+                {
+                    continue;
+                }
+                if (p.Spawned)
                 {
                     p.Destroy(DestroyMode.Vanish);
+                    removed++;
+                }
+                else if (p.Dead && p.Corpse != null && p.Corpse.Spawned)
+                {
+                    p.Corpse.Destroy(DestroyMode.Vanish);   // a bird that died out on the ash leaves no debris either
                     removed++;
                 }
             }
@@ -420,7 +429,7 @@ namespace RimMandrake.TheForge
                 spots.Add(c);
             }
             int spawned = 0;
-            testFlock.Clear();
+            RemoveTestFlock();   // a second spawn never strands the first flock outside the tracking
             StatFlockWanders = 0;
             for (int i = 0; i < TestFlockKinds.Length && spots.Count > 0; i++)
             {

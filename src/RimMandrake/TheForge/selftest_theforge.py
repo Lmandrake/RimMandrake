@@ -465,6 +465,8 @@ class FGame(MockGame):
             return self.log("[RMTheForgeDebug] skyFlockRemoved=%d" % gone)
         if path.endswith("sky_flock"):
             self.sky_flock = (6, self.ticks)
+            if "flock_report_lost" in self.brk:   # the spawn landed but its tagged line did not (the log cap)
+                return {"success": True, "effects": {"logs": []}}
             return self.log("[RMTheForgeDebug] skyFlockSpawned=6 skyFlockSpots=40 " + self.sky_line())
         if path.endswith("sky_report"):
             return self.log("[RMTheForgeDebug] skyColumnCells=120 " + self.sky_line())
@@ -964,7 +966,7 @@ def main():
         # FORGE_SKY_PASTURES_1 stage 5: a pasture wander that never runs leaves the flock out on the ash
         ("pasture_unwired", {"sky_pastures.sky_live_flock_reaches_columns"}),
     ]
-    for brk in ((), ("pasture_unwired",)):   # a green and a red flock bar both leave the map as found
+    for brk in ((), ("pasture_unwired",), ("flock_report_lost",)):   # green, red and UNMEASURED all leave the map as found
         run(brk)
         check("the sky flock is removed after its bar (%s)" % (brk or "green"),
               getattr(LAST_GAME, "sky_flock_removed", 0) == 1 and getattr(LAST_GAME, "sky_flock", None) is None)

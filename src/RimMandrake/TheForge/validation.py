@@ -2007,9 +2007,10 @@ def sky_pastures(t):
                           "%d ticks (need %.0f%%)" % (home, SKY_FLOCK_SIZE, gov, SKY_FLOCK_TICKS, 100 * SKY_FLOCK_HOME_SHARE))
             finally:
                 # leave the map as found, pass or fail (the flock is set down off the pad, so pad teardown misses it)
-                gone = next((pth for lab, pth in _find_actions(t).items() if "remove the pasture test flock" in lab.lower()), None)
-                if gone:
-                    t.bridge_call("rimworld/execute_debug_action", path=gone)
+                # the raw session: t.bridge_call is a no-op once the component went UNMEASURED or failed upstream
+                gone = next((pth for lab, pth in _ACTIONS.items() if "remove the pasture test flock" in lab.lower()), None)
+                if gone and t.session is not None:
+                    t.session.call("rimworld/execute_debug_action", path=gone)
 
 
 # --------------------------------------------------------------------------------- the dhoggur's chemical swell
