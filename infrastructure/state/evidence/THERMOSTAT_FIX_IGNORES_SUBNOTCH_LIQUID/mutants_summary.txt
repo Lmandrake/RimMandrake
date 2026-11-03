@@ -1,0 +1,32 @@
+# THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID mutants (2026-11-03T06:53:25Z, code at d4b91bc62e)
+
+## static (python3 src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py --cases src/RimMandrake/FlowWorks/Source/SelfTest/MapControlChecks.cs)
+KILLED M1   RM_LiquidThermostat.cs       red=T1,T2,T5 (expected T1)
+KILLED M2   RM_LiquidThermostat.cs       red=T4 (expected T4)
+KILLED M3   RM_LiquidThermostat.cs       red=T4,T5 (expected T5)
+KILLED M4   RM_LiquidThermostat.cs       red=T5,T6 (expected T5)
+KILLED M5   RM_MapControlMath.cs         red=T8 (expected T8)
+KILLED M6   RM_MapControlMath.cs         red=T8 (expected T8)
+KILLED M7   RM_MapControlMath.cs         red=T7 (expected T7)
+KILLED M8   RM_MapControlMath.cs         red=T9 (expected T9)
+KILLED M9   RM_MapControls.cs            red=T10 (expected T10)
+KILLED M10  RM_LiquidThermostat.cs       red=T4 (expected T4)
+KILLED M11  RM_LiquidThermostat.cs       red=T5,T7 (expected T5)
+KILLED M12  RM_LiquidThermostat.cs       red=T1,T2,T4 (expected T2)
+KILLED M13  RM_MapControlMath.cs         red=T8 (expected T8)
+KILLED M14  RM_MapControlMath.cs         red=T9 (expected T9)
+KILLED M15  RM_LiquidThermostat.cs       red=T3 (expected T3)
+KILLED M16  MapControlChecks.cs          red=T12 (expected T12)
+13/13 pins hold; 16/16 mutants killed
+
+## dotnet: each mutant applied in tree, selftest_flowworks_stock.py --only MapControl_thermostat_energy,MapControl_thermostat_subnotch_liquid, file restored byte-for-byte
+base (no mutant): exit 0, 2/2 passed
+KILLED M5 dotnet rc=1 built FAIL  MapControl_thermostat_subnotch_liquid | FAILING CHECKS (rc 1):
+KILLED M6 dotnet rc=1 built FAIL  MapControl_thermostat_subnotch_liquid | FAILING CHECKS (rc 1):
+KILLED M8 dotnet rc=1 built FAIL  MapControl_thermostat_subnotch_liquid | FAILING CHECKS (rc 1):
+KILLED M14 dotnet rc=1 built FAIL  MapControl_thermostat_subnotch_liquid | FAILING CHECKS (rc 1):
+KILLED M2 dotnet rc=1 built FAIL  MapControl_thermostat_subnotch_liquid | FAILING CHECKS (rc 1):
+KILLED M1 dotnet rc=1 built FAIL  MapControl_thermostat_subnotch_liquid | FAILING CHECKS (rc 1):
+
+replay one: python3 src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py --dotnet-mutant M5   (exit 0 = the C# cases went red; ~150 s)
+M7 (int levels) is static-only: under dotnet it is a compile error, not a test verdict.
