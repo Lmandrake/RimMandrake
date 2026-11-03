@@ -515,4 +515,11 @@ component."* Operations (ops_watch) publishes ONE health verdict: healthy or not
 list of system items to take before content, with its own as-of time. Relentless reads that verdict and obeys it; it
 never computes health, budgets or SLOs itself. What Relentless observes (failures, refusals, spend) it reports to
 Operations as signals (the told ledger, alarms), never as a verdict. A missing or stale verdict is Operations' alarm
-to raise; Relentless then keeps its ordinary order and says so in its reading.
+to raise.
+
+🔑 **"First" means first pick, never preemption or idling** — owner, by card 2026-11-03, on what Relentless does when the
+verdict is missing or stale: *"System work immediately but existing non system work continues. If all system tickets
+are already being worked non system work can be selected. Keeps system work at max priority without forcing others to
+wait pointlessly."* So a system item always takes the next free place; work already running is never stopped for it;
+when every open, buildable system item is already being worked, a free place takes content. With no verdict, Relentless
+applies this at once, treating every open system item as first (no grace period), and says so in its reading.
