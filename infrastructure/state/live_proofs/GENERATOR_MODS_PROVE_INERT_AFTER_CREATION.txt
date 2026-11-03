@@ -1,0 +1,2 @@
+live-mods: SHIP.RULED_2026-10-20 (infrastructure/state/modlists/ModsConfig.SHIP.RULED_2026-10-20.xml: lacks oblitus.mylittleplanet and boots.sensiblefactions, carries 7f.alienworlds + 7f.alienworlds.tidallylocked), all five DLC; load the canonical start save (canon.yml planet.start_savegame)
+live-proof A2: python.exe src/RimMandrake/Utils/generator_inert_audit.py live < /dev/null
