@@ -396,6 +396,35 @@ def test_resized_foreign_copy() -> None:
         ci.HARVEST_GRACE_S = real_grace
 
 
+def test_flat_coarse_match_stays_foreign() -> None:
+    """FOREIGN_GUARD_PROVE_FLAT_KEPT: a flat picture has no fine detail, so _detail_corr is None and
+    match() must keep the coarse verdict. A resized copy of a flat cache fill stays foreign; treating
+    None as "not confirmed" would let it through."""
+    from PIL import Image
+    real_base = ci.base_codex_home
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            home = td / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
+            flat = td / "otherhome" / ci.GENERATED_SUBDIR / "old" / "tile.png"
+            flat.parent.mkdir(parents=True)
+            Image.new("RGBA", (200, 200), (140, 96, 60, 255)).save(flat)
+            placed = resized_copy(flat, td / "probe" / "tile.png", (64, 64))
+            check("[flat] placed bytes differ from the cache file", placed.read_bytes() != flat.read_bytes())
+            mine, theirs = ci._detail(placed), ci._detail(flat)
+            check("[flat] the detail correlation is undefined (the None branch is exercised)",
+                  mine is None or theirs is None or ci._detail_corr(mine, theirs) is None)
+            before = ci.snapshot_generated(home)
+            check("[flat] the byte check alone misses it", ci._preexisting_twin(placed, home, before) is None)
+            hit = ci.foreign_source(placed, home, before)
+            check("[flat] a resized flat-fill copy stays foreign on the coarse verdict",
+                  hit is not None and hit[0] == flat, str(hit))
+    finally:
+        ci.base_codex_home = real_base
+
+
 def noise_texture_png(path: Path, seed: int, base=(110, 80, 50), jitter: int = 30, w: int = 128,
                       h: int = 128) -> Path:
     """An opaque full-canvas noise tile around one base colour: what two independent renders of similar
@@ -885,6 +914,7 @@ def test_seed_sandbox_from_template_refuses_on_mismatch() -> None:
         (template / ".sandbox" / "setup_marker.json").write_text("{}")
         (template / ".sandbox-bin").mkdir()
         (template / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"y")
+        real_env = os.environ.get("CODEX_SANDBOX_SEED")
         os.environ["CODEX_SANDBOX_SEED"] = str(template)
         try:
             home = root / "doomed_worker"
@@ -900,7 +930,10 @@ def test_seed_sandbox_from_template_refuses_on_mismatch() -> None:
             check("no sandbox artifacts were copied into the doomed home",
                   not (home / ".sandbox-bin").exists())
         finally:
-            os.environ.pop("CODEX_SANDBOX_SEED", None)
+            if real_env is None:
+                os.environ.pop("CODEX_SANDBOX_SEED", None)
+            else:
+                os.environ["CODEX_SANDBOX_SEED"] = real_env
 
         # And the false-confidence print this item also fixes: seed_codex_home
         # must propagate the raise rather than printing "no UAC prompt
@@ -922,7 +955,10 @@ def test_seed_sandbox_from_template_refuses_on_mismatch() -> None:
                 check("seed_codex_home's own EnvError is the sandbox mismatch",
                       "sandbox" in str(exc).lower(), str(exc))
         finally:
-            os.environ.pop("CODEX_SANDBOX_SEED", None)
+            if real_env is None:
+                os.environ.pop("CODEX_SANDBOX_SEED", None)
+            else:
+                os.environ["CODEX_SANDBOX_SEED"] = real_env
 
 
 # --------------------------------------------------------------------------
@@ -953,15 +989,22 @@ def test_kill_orphaned_sandbox_helpers_parses_pids() -> None:
 def test_kill_orphaned_sandbox_helpers_survives_powershell_failure() -> None:
     """A powershell/OS failure is swallowed - this is best-effort cleanup,
     never something that should turn a successful harvest into a crash."""
-    real_run = subprocess.run
-    subprocess.run = lambda *a, **k: (_ for _ in ()).throw(OSError("no powershell.exe"))
+    real_run, real_w2w = subprocess.run, ci.wsl_to_win
+    reached = []
+
+    def no_powershell(cmd, *a, **k):
+        reached.append(cmd[0])
+        raise OSError("no powershell.exe")
+    subprocess.run = no_powershell
+    ci.wsl_to_win = lambda p: r"C:\fake\home"   # path conversion must not short-circuit before PowerShell
     try:
         with tempfile.TemporaryDirectory() as td:
             n = ci.kill_orphaned_sandbox_helpers(Path(td))
+            check("the PowerShell call is actually reached", reached == ["powershell.exe"], str(reached))
             check("OSError from the subprocess call is swallowed, not raised",
                   n == 0, f"n={n}")
     finally:
-        subprocess.run = real_run
+        subprocess.run, ci.wsl_to_win = real_run, real_w2w
 
 
 def test_orphan_cleanup_only_fires_on_timeout_with_home_override() -> None:
@@ -1130,7 +1173,8 @@ def test_ensure_home_sandbox_guard() -> None:
 
 def main() -> int:
     for fn in (test_prompt, test_staging_round_trip, test_run_codex_timeout, test_reasoning_effort_flag,
-               test_timeout_still_harvests, test_resized_foreign_copy, test_lookalike_texture_not_foreign,
+               test_timeout_still_harvests, test_resized_foreign_copy, test_flat_coarse_match_stays_foreign,
+               test_lookalike_texture_not_foreign,
                test_force_regen_failure_does_not_report_stale_success,
                test_output_schema_passthrough,
                test_harvest_grace,
