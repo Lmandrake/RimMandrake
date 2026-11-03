@@ -1,0 +1,18 @@
+baseline: anchor guard works
+draw_sync exit=1 1 FAIL: F4 
+draw_false exit=1 1 FAIL: F4 
+draw_layagain exit=1 1 FAIL: F4 
+no_defer exit=1 1 FAIL: F5 
+defer_after exit=1 1 FAIL: F5 
+later_sync exit=1 1 FAIL: F6 
+tick_sync exit=1 2 FAIL: F4 F7 
+comment_only exit=1 1 FAIL: F4 
+prof_gone exit=1 1 FAIL: F1 
+tick_fail exit=1 1 FAIL: F2 
+alloc_fail exit=1 1 FAIL: F2 
+links_99 exit=1 2 FAIL: F2 F2 
+readme_map exit=1 1 FAIL: F3 
+queue_gone exit=1 1 FAIL: F8 
+csproj_drop exit=1 1 FAIL: F8 
+selftest_drop exit=1 1 FAIL: F8 
+walk_drop exit=1 1 FAIL: F9 
