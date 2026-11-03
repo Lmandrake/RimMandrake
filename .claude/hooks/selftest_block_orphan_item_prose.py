@@ -157,6 +157,84 @@ def incident():
     expect(bad == INCIDENT_ITEMS, "the incident commit is refused, naming exactly its two files: %s" % sorted(bad))
 
 
+def rowless(text):
+    """-> ledger text with every event of the incident's items taken out."""
+    keep = []
+    for line in text.splitlines(True):
+        try:
+            if json.loads(line).get("id") in INCIDENT_ITEMS:
+                continue
+        except ValueError:
+            pass
+        keep.append(line)
+    return "".join(keep)
+
+
+def incident_fixture(tmp):
+    """The alarm's commit rebuilt from its own two stems: two prose files, no ledger line. Holds in an export with no history."""
+    sys.path.insert(0, HERE)
+    import block_orphan_item_prose as guard
+    os.makedirs(tmp)
+    fx = Fixture(tmp)
+    expect(fx.push().returncode == 0, "incident fixture: the base push passes")
+    for stem in sorted(INCIDENT_ITEMS):
+        fx.prose(stem)
+    fx.commit(ITEMS)
+    bad = {stem for stem, _ in guard.orphans(fx.work, "origin/main", "HEAD")}
+    expect(bad == INCIDENT_ITEMS, "incident fixture: the guard names exactly the two files: %s" % sorted(bad))
+    r = fx.push()
+    expect(r.returncode == 1 and "REFUSED" in r.stderr and all(s in r.stderr for s in INCIDENT_ITEMS),
+           "incident fixture: a real push of the two files with no row is REFUSED by name: rc=%d" % r.returncode)
+    expect(git(fx.work, "ls-remote", "origin", "main").stdout.split()[0] != git(fx.work, "rev-parse", "HEAD").stdout.strip(),
+           "incident fixture: the refused commit did not reach the remote")
+    for stem in sorted(INCIDENT_ITEMS):
+        fx.row(stem, "file")
+    fx.commit(SHARD)
+    r = fx.push()
+    expect(r.returncode == 0, "incident fixture: filing both and committing the shard lets the same push through: %s" % r.stderr[-300:])
+
+
+def real_ledger_fixture(tmp):
+    """The same two files against the REAL ledger through a real push: refused with their rows taken out, passing with them."""
+    sys.path.insert(0, HERE)
+    import block_orphan_item_prose as guard
+    os.makedirs(tmp)
+    fx = Fixture(tmp)
+    expect(fx.push().returncode == 0, "real ledger: the fixture's base push passes")
+    paths = [os.path.relpath(p, REPO) for p in ledger_files()]
+    expect(bool(paths), "real ledger: this tree holds ledger files to copy")
+    for rel in paths:
+        fx.write(rel, rowless(open(os.path.join(REPO, rel), encoding="utf-8").read()))
+    for stem in sorted(INCIDENT_ITEMS):
+        fx.prose(stem)
+    fx.commit(ITEMS, "infrastructure/state/ledger")
+    r = fx.push()
+    expect(r.returncode == 1 and all(s in r.stderr for s in INCIDENT_ITEMS),
+           "real ledger: without the two rows a real push is REFUSED naming both: rc=%d %s" % (r.returncode, r.stderr[-200:]))
+    for rel in paths:
+        fx.write(rel, open(os.path.join(REPO, rel), encoding="utf-8").read())
+    fx.commit("infrastructure/state/ledger")
+    # from the ledger just committed: guard's cached `model` module is rooted in whichever fixture imported it first
+    model, glob_live = guard.rimflow_modules(fx.work)
+    state = model.replay(model.canonical_order(guard.ledger_at(fx.work, "HEAD")))
+    closed_since = [s for s in INCIDENT_ITEMS if s in state.items and state.items[s].state in glob_live.TERMINAL]
+    r = fx.push()
+    if closed_since:
+        expect(r.returncode == 1 and all(s in r.stderr for s in closed_since), "real ledger: an item closed since is still refused here")
+    else:
+        expect(r.returncode == 0, "real ledger: with the rows the guard filed for them, the push passes: %s" % r.stderr[-300:])
+
+
+def ledger_files():
+    """-> the ledger files of this tree: the frozen history and every shard."""
+    root = os.path.join(REPO, "infrastructure", "state", "ledger")
+    found = [os.path.join(root, "events.jsonl")] if os.path.isfile(os.path.join(root, "events.jsonl")) else []
+    shards = os.path.join(root, "events")
+    if os.path.isdir(shards):
+        found += [os.path.join(shards, n) for n in sorted(os.listdir(shards)) if n.endswith(".jsonl")]
+    return found
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="orphan_prose_selftest_")
     try:
@@ -165,6 +243,8 @@ def main():
         pre_tool_use_scenarios(fx)
         wired()
         incident()
+        incident_fixture(os.path.join(tmp, "incident"))
+        real_ledger_fixture(os.path.join(tmp, "real_ledger"))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print()

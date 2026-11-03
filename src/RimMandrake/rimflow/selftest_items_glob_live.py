@@ -27,6 +27,10 @@ This test never writes anything, so reading the real ledger is safe.
 its own and never will — the parent item's row covers it. Recognised generically
 (prefix before the first `.` must itself be a live item), not by a hardcoded
 filename, so a second such companion file does not need this test edited.
+
+⚠️ A glob of 0 files proves nothing. In a clone that is a FAIL. A blind checker's export has no .git and no items/
+(walls.marker.tree_exclude): there the real-glob row reads UNMEASURED, never ok, and what still speaks for the night of
+NIGHTLY_COP_FIX_RED_ATJKEB_FBYD is the ledger: both stems of 6489a12285 must keep a `file` row.
 """
 import glob
 import os
@@ -37,6 +41,8 @@ sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import model                                          # noqa: E402
 
 TERMINAL = {"done", "dropped", "superseded"}
+# 6489a12285 pushed these two with no row; the nightly of 2026-11-03T11:00Z went red on them
+INCIDENT_STEMS = ("STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF", "TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS")
 
 
 def verdict(stem, state):
@@ -55,11 +61,11 @@ def verdict(stem, state):
     return "ledger state is %r (terminal) but prose is still in items/, not items/closed/" % it.state
 
 
-def check(items_dir=None):
+def check(items_dir=None, events=None):
     """-> (ok_ids, bad) where bad is [(filename, reason)]. `items_dir` overrides
-    `model.ITEMS` for the self-check below — never for the real run."""
+    `model.ITEMS` and `events` the ledger for the self-checks below — never for the real run."""
     items_dir = items_dir or model.ITEMS
-    state = model.replay(model.read())
+    state = model.replay(model.read() if events is None else events)
     files = sorted(glob.glob(os.path.join(items_dir, "*.md")))
     ok, bad = [], []
     for f in files:
@@ -72,8 +78,22 @@ def check(items_dir=None):
     return ok, bad
 
 
+def empty_glob_reading(items_dir, root):
+    """-> what a glob of 0 files is worth: UNMEASURED only where items/ cannot be there at all, else FAIL."""
+    if not os.path.isdir(items_dir) and not os.path.exists(os.path.join(root, ".git")):
+        return "UNMEASURED"
+    return "FAIL"
+
+
+def rowless_stems(events):
+    """-> the incident's stems with no `file` row among these events. A row outlives its item's close, so this holds for good."""
+    filed = {e.get("id") for e in events if e.get("event") == "file"}
+    return [s for s in INCIDENT_STEMS if s not in filed]
+
+
 def main():
     failed = []
+    rows = 3
 
     # --- the real repo, right now -------------------------------------------
     ok, bad = check()
@@ -82,8 +102,24 @@ def main():
         for stem, why in bad:
             print("        %s.md — %s" % (stem, why))
         failed.append("real_glob_is_clean")
-    else:
+    elif ok:
         print("ok    live items/ glob is clean (%d live files, 0 drifted)" % len(ok))
+    elif empty_glob_reading(model.ITEMS, model.ROOT) == "UNMEASURED":
+        print("UNMEASURED  real items/ glob: this export has no .git and no items/, so its 0 files say nothing")
+        rows -= 1
+    else:
+        print("FAIL  live items/ glob has 0 files at %s: nothing was measured" % model.ITEMS)
+        failed.append("real_glob_has_files")
+
+    # --- the alarm's own red, read from the ledger: needs no items/ -----------
+    events = model.read()
+    missing = rowless_stems(events)
+    rows += 1
+    if missing:
+        print("FAIL  the alarm's prose has no `file` row in the ledger: %s" % ", ".join(missing))
+        failed.append("incident_stems_have_rows")
+    else:
+        print("ok    both stems of the alarm have a `file` row in the ledger")
 
     # --- the guard actually guards something: prove it on a deliberately ----
     # reintroduced drift, using the REAL ledger (read-only) but a THROWAWAY
@@ -127,11 +163,49 @@ def main():
             else:
                 print("ok    a live item's prose is not falsely flagged")
 
+    # --- the alarm's state replayed: its two files, with and without their rows ---
+    rows += 3
+    with tempfile.TemporaryDirectory(prefix="rimflow_selftest_items_incident_") as tmp:
+        for stem in INCIDENT_STEMS:
+            with open(os.path.join(tmp, "%s.md" % stem), "w", encoding="utf-8") as fh:
+                fh.write("## spec\nx\n")
+        rowless = [e for e in events if e.get("id") not in INCIDENT_STEMS]
+        _, bad4 = check(items_dir=tmp, events=rowless)
+        if sorted(bad4) == [(s, "no ledger row at all") for s in sorted(INCIDENT_STEMS)]:
+            print("ok    with their rows gone, the alarm's two files are flagged, those two only")
+        else:
+            print("FAIL  the alarm's two files without rows were read as %s" % (bad4,))
+            failed.append("incident_red_is_seen")
+        state = model.replay(events)
+        closed_since = sorted(s for s in INCIDENT_STEMS if s in state.items and state.items[s].state in TERMINAL)
+        _, bad5 = check(items_dir=tmp, events=events)
+        if sorted(stem for stem, _ in bad5) == closed_since:
+            print("ok    with the real ledger, neither is flagged unless its item has since closed (%d closed)" % len(closed_since))
+        else:
+            print("FAIL  with the real ledger the alarm's two files read as %s" % (bad5,))
+            failed.append("incident_green_on_real_ledger")
+
+    # --- a glob of 0 files is never a clean glob ---------------------------------
+    with tempfile.TemporaryDirectory(prefix="rimflow_selftest_items_empty_") as tmp:
+        items = os.path.join(tmp, "items")
+        export = empty_glob_reading(items, tmp)                  # no .git, no items/: the blind checker's box
+        os.makedirs(items)
+        export_with_dir = empty_glob_reading(items, tmp)
+        os.makedirs(os.path.join(tmp, ".git"))
+        clone = empty_glob_reading(items, tmp)
+        os.rmdir(items)
+        clone_no_dir = empty_glob_reading(items, tmp)
+    if (export, export_with_dir, clone, clone_no_dir) == ("UNMEASURED", "FAIL", "FAIL", "FAIL"):
+        print("ok    0 files is FAIL in a clone or beside an empty items/, UNMEASURED only in an export without it")
+    else:
+        print("FAIL  0 files read as %s" % ((export, export_with_dir, clone, clone_no_dir),))
+        failed.append("empty_glob_is_never_ok")
+
     print()
     if failed:
         print("%d FAILED: %s" % (len(failed), ", ".join(failed)))
         sys.exit(1)
-    print("3/3 passed" if len(failed) == 0 else "FAILED")
+    print("%d/%d passed" % (rows, rows))
 
 
 if __name__ == "__main__":
