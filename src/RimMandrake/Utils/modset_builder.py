@@ -1130,6 +1130,9 @@ def tier_guard(tier, pids):
 
 
 def write_config(pids, version_from):
+    import zoom_guard
+    if not any(p == ZOOM or p.lower() == "brrainz.cameraplus" for p in pids):
+        pids = zoom_guard.with_zoom(pids)          # raises when the zoom mod is not installed: never write without
     tree = ET.parse(version_from)
     root = tree.getroot()
     active = root.find("activeMods")

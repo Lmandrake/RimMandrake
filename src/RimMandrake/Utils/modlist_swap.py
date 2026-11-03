@@ -25,6 +25,7 @@ import xml.etree.ElementTree as ET
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import MODS_CONFIG, GAME_DIR  # noqa: E402
 from atomic_copy import atomic_copy  # noqa: E402  temp+os.replace; never a bare copy2
+import zoom_guard  # noqa: E402  every list we write carries a zoom mod (ZOOM_MOD_ENFORCE_NOT_JUST_ONE_DOOR)
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 LIVE = MODS_CONFIG
@@ -162,6 +163,8 @@ def swap(src, apply_it):
     else:
         arch = snapshot()
     atomic_copy(src, LIVE)
+    if zoom_guard.enforce_file(LIVE):
+        print("  zoom     : %s added (neither zoom mod was in %s)" % (zoom_guard.ZOOM, os.path.basename(src)))
     print("\n  archived live -> %s" % arch)
     print("  WROTE %s -> live  (%d active)" % (os.path.basename(src), n_src))
     print("  verify: md5 %s" % md5(LIVE))
@@ -236,7 +239,7 @@ def enable(names, apply_it):
     if lost:
         print("REFUSING: cannot enable %s" % "; ".join(lost))
         return 2
-    new = merged(live_ids, add, full_ids)
+    new = zoom_guard.with_zoom(merged(live_ids, add, full_ids))
     gained = [m for m in new if m.lower() not in {x.lower() for x in live_ids}]
     print("  live now : %d active" % len(live_ids))
     print("  enable   : %s" % (", ".join(gained) or "nothing: every one is already active"))

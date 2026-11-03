@@ -99,7 +99,7 @@ def t_closure_on_installed():
 def t_compose_case_blind():
     xml = ("<ModsConfigData><activeMods>\n"
            "    <li>ludeon.rimworld</li>\n"
-           "    <li>Neronix17.OuterRim.Core</li>\n"
+           "    <li>Neronix17.OuterRim.Core</li>\n    <li>ray1203.simplecamerasetting</li>\n"
            "  </activeMods></ModsConfigData>")
     with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False, encoding="utf-8") as f:
         f.write(xml)

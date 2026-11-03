@@ -152,4 +152,17 @@ python3 "$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | gre
     echo "    restore before he plays:  python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply"
 } 2>/dev/null
 
-exec python3 "$bc" "$sentence"
+# ── ZOOM GUARD (ZOOM_MOD_ENFORCE_NOT_JUST_ONE_DOOR) ──────────────────────────
+# Owner 2026-10-04 / 2026-11-03: a zoom mod (ray1203.simplecamerasetting, or Camera+) is in every list a human
+# sits with. "Deploying" is before the launch, so the mod is ADDED to the live list then; at "loading"/"up" the game
+# has already read its list, so a missing zoom is announced LOUDLY and this command exits 3 after stamping.
+zoom_rc=0
+case "${sentence%% —*}" in
+    "Deploying") python3 "$here/src/RimMandrake/Utils/zoom_guard.py" --repair >&2 || zoom_rc=3 ;;
+    "Game is loading"|"Game is up")
+        zmsg="$(python3 "$here/src/RimMandrake/Utils/zoom_guard.py" 2>&1)" || {
+            printf '\033[1;31m  ⚠ NO ZOOM MOD in this load: %s\n    fix before the next restart: python3 src/RimMandrake/Utils/zoom_guard.py --repair (game down)\033[0m\n' "$zmsg" >&2
+            zoom_rc=3; } ;;
+esac
+python3 "$bc" "$sentence" || exit $?
+exit $zoom_rc

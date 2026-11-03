@@ -320,7 +320,7 @@ working).
 
 ## Every debug set carries the camera-zoom mod — owner, 2026-10-04
 
-*"We need the extra camera zoom mod to be in ALL DEBUG SETS for testing … make that policy change right now for Rimworld Debugging and Northstar."* `modset_builder.resolve_tier` appends `ray1203.simplecamerasetting` (SimpleCameraSetting) to every tier, so no tier can omit it; a tier needing Camera+ instead sets `no_zoom`.
+*"We need the extra camera zoom mod to be in ALL DEBUG SETS for testing … make that policy change right now for Rimworld Debugging and Northstar."* `src/RimMandrake/Utils/zoom_guard.py` is the guard, called by every door that writes the live list (`modlist_swap` swap/--enable, `modset_builder.write_config`, `modcheck` `compose_test_list`; `resolve_tier` adds it per tier; `ModsConfig.MINIMAL.xml` carries it); either `ray1203.simplecamerasetting` or Camera+ satisfies it (they conflict, never both), a list with neither is not written, and `./game deploying` adds it while `./game loading|up` shouts and exits 3 if the load lacks it. Item ZOOM_MOD_ENFORCE_NOT_JUST_ONE_DOOR.
 
 ## Test disturbances: verdict, restart, and a ticket every time — owner, 2026-10-13 (by card)
 

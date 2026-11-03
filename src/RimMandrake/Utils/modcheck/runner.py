@@ -383,6 +383,10 @@ def compose_test_list(package_ids, config_path=None):
         if p.lower() not in live:
             live.add(p.lower())
             add.append(p)
+    import zoom_guard
+    sys.path.insert(0, _UTILS)
+    if not zoom_guard.has_zoom(list(live) + add):
+        add.insert(0, zoom_guard.ZOOM)          # the guard for a list that arrives without any zoom mod
     if add:
         lis = "".join("    <li>%s</li>\n" % p for p in add)
         xml = xml.replace("</activeMods>", lis + "  </activeMods>")
