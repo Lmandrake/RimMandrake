@@ -705,6 +705,44 @@ def live_proof_checks():
             fails.append("live proof %s: bad line %s not a FAIL" % (c, bad[c][1]))
         if lp.verdict(c, "REFUSED: %s no clear patch" % c)[0] != 2:
             fails.append("live proof %s: REFUSED not UNMEASURED" % c)
+    # every condition each clause reads, broken one at a time, must FAIL (a verdict that drops a clause's own
+    # condition goes red here); every key a clause reads, deleted from the line, must not PASS
+    mutants = {
+        "A1": [("heldRot=2100", "heldRot=6000"), ("heldAmbient=-25", "heldAmbient=5"), ("mode=Chill", "mode=Stasis"),
+               ("active=True", "active=False"), ("holding=True", "holding=False")],
+        "A2": [("heldRot=0", "heldRot=1"), ("mode=Stasis", "mode=Chill"), ("holding=True", "holding=False")],
+        "A3": [("heldRot=0", "heldRot=1"), ("sealed=True", "sealed=False")],
+        "A4": [("earlyHeld=True", "earlyHeld=False"), ("oldGone=True", "oldGone=False"),
+               ("ingredientsKept=True", "ingredientsKept=False"), ("aged=RM_AmberAgedMeat", "aged=RM_PitchAgedMeat"),
+               ("want=RM_AmberAgedMeat", "want=RM_PitchAgedMeat"), ("stack=10", "stack=9")],
+        "A5": [("roomIntact=True", "roomIntact=False"), ("roomSide=True", "roomSide=False"),
+               ("holding=True", "holding=False"), ("insideProper=True", "insideProper=False"),
+               ("outsideProper=False", "outsideProper=True"), ("insideReach=True", "insideReach=False")],
+        "A6": [("carried=True", "carried=False"), ("despawnedInFlight=True", "despawnedInFlight=False"),
+               ("landed=True", "landed=False"), ("foodOnUnit=True", "foodOnUnit=False"),
+               ("registered=True", "registered=False"), ("setpointKept=True", "setpointKept=False"),
+               ("stack=10", "stack=9"), ("unitTemp=-28", "unitTemp=-20"), ("foodAmbient=-28", "foodAmbient=-10")],
+    }
+    mutated = set()
+    for c, pairs in mutants.items():
+        for old, new in pairs:
+            key = old.split("=")[0]
+            mutated.add(key)
+            if old not in good[c]:
+                fails.append("live proof %s: mutant %s matches nothing in the good line" % (c, old))
+                continue
+            got = lp.verdict(c, json.dumps({"result": good[c].replace(old, new)}))[0]
+            if got != 1:
+                fails.append("live proof %s: %s -> %s judged %d, want FAIL" % (c, old, new, got))
+            got = lp.verdict(c, json.dumps({"result": good[c].replace(old, "").replace("  ", " ")}))[0]
+            if got == 0:
+                fails.append("live proof %s: line without %s judged PASS" % (c, key))
+    for c in ("A1", "A2", "A3"):                     # the room guard: low or missing floor rot is UNMEASURED
+        for new in ("floorRot=49999 ", ""):
+            got = lp.verdict(c, json.dumps({"result": good[c].replace("floorRot=60000 ", new)}))[0]
+            if got != 2:
+                fails.append("live proof %s: floor line %r judged %d, want UNMEASURED" % (c, new or "missing", got))
+    mutated.add("floorRot")
     if lp.verdict("A6", good["A6"].replace("unitTemp=-28", "unitTemp=-31"))[0] != 1:
         fails.append("live proof A6: a unit that lost its seeded -28 C must FAIL even on a frozen map")
     if lp.verdict("A1", good["A1"].replace("floorRot=60000", "floorRot=0"))[0] != 2:
@@ -723,6 +761,8 @@ def live_proof_checks():
     for k in sorted(keys):
         if not re.search(r'[" ]%s=' % k, src):
             fails.append("live proof: verdict reads %s but the probe never writes it" % k)
+        if k not in mutated:
+            fails.append("live proof: verdict reads %s but no mutant breaks it" % k)
     return fails
 
 
