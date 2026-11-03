@@ -369,13 +369,34 @@ def parse_versions(calls, results):
     return out
 
 
+CURSOR = re.compile(r'next_cursor:\s*"([^"]+)"')
+
+
+def unfollowed(calls, results):
+    """Collections whose `list` ended on a next_cursor no later call passed back: a page past the first 100 docs went
+    unread, so its versions are missing and the batch would fail version_mismatch (2026-11-03, `parts` grew past 100)."""
+    sent = {((c.get("input") or {}).get("query") or {}).get("cursor") for c in calls if c.get("name") == "ArtifactData"}
+    out = []
+    for c in calls:
+        res = results.get(c.get("id"))
+        if c.get("name") != "ArtifactData" or (c.get("input") or {}).get("action") != "list" or res is None:
+            continue
+        m = CURSOR.search(result_text(res).rpartition("=== END")[2])  # past the data: a doc may quote a cursor
+        if m and m.group(1) not in sent:
+            out.append((c.get("input") or {}).get("collection"))
+    return out
+
+
 def sync_versions(rows_dir):
-    """One model call that lists `parts` and `board`; -> (versions or None, usage)."""
+    """One model call that lists `parts`, `mods` and `board`, every page; -> (versions or None, usage).
+    None when `board/summary` is missing or any collection's pages were not all read."""
     lines = run_claude('url %s. Call ArtifactData action "list" on collection "parts", then action "list" on '
-                       'collection "mods", then action "list" on collection "board". Then reply OK.' % BOARD_URL, rows_dir, system=SYSTEM_LIST)
+                       'collection "mods", then action "list" on collection "board". Whenever a list result ends with '
+                       'next_cursor, call "list" again on that same collection with query {"cursor": <that value>}, '
+                       'until no next_cursor is left. Then reply OK.' % BOARD_URL, rows_dir, system=SYSTEM_LIST)
     calls, results, use = read_stream(lines)
     v = parse_versions(calls, results)
-    return (v if "board/summary" in v else None), use
+    return (v if "board/summary" in v and not unfollowed(calls, results) else None), use
 
 
 def dedup(rows):

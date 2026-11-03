@@ -109,5 +109,15 @@ res = {"p": {"content": '2 documents from collection "parts":\n=== BEGIN ARTIFAC
        "b": {"content": [{"type": "text", "text": '1 document:\n{"id":"summary","data":{"headline":"x"},"version":10}'}]}}
 check("list results parse", F.parse_versions(lst, res) == {"parts/A": 5, "parts/B": 2, "board/summary": 10})
 
+# a paged list: an unread next_cursor makes the sync refuse, a followed one does not
+pg = [{"type": "tool_use", "id": "p1", "name": "ArtifactData", "input": {"action": "list", "collection": "parts"}},
+      {"type": "tool_use", "id": "p2", "name": "ArtifactData", "input": {"action": "list", "collection": "parts", "query": {"cursor": "abc"}}}]
+pres = {"p1": {"content": '{"id":"A","data":{},"version":5}\n=== END ===\nnext_cursor: "abc" \u2014 more documents exist'},
+        "p2": {"content": '{"id":"Z","data":{},"version":7}\n=== END ==='}}
+check("cursor followed: both pages parse", F.parse_versions(pg, pres) == {"parts/A": 5, "parts/Z": 7})
+check("cursor followed: nothing unread", F.unfollowed(pg, pres) == [])
+check("cursor dropped: parts unread", F.unfollowed(pg[:1], {"p1": pres["p1"]}) == ["parts"])
+check("no cursor: nothing unread", F.unfollowed(lst, res) == [])
+
 print("%d failed" % len(FAILS))
 sys.exit(1 if FAILS else 0)
