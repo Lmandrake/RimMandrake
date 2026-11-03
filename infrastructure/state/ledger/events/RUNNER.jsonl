@@ -2441,3 +2441,4 @@
 {"seat":"RUNNER","event":"raise","id":"NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T22:09:01Z","tsn":1793743741527290184}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"broken","detail":"Ops alarm STEVE_INCIDENT_UNCLAIMED: steve.incident_unclaimed_min = 37.4 min the oldest unclaimed steward incident has waited (MEASURED), line > 30","ts":"2026-11-03T22:09:04Z","tsn":1793743744441631988}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T22:09:07Z","tsn":1793743747065759359}
+{"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"broken","detail":"Under-staffed 31 min: running 3 of 8 (budget 8), 785 ready, why: check_backlog","ts":"2026-11-03T22:16:13Z","tsn":1793744173220867288}
