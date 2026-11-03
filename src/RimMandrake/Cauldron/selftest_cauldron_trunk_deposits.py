@@ -4,7 +4,9 @@
 item CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS).
 
 1. Every source fact the design states about today's tree is still true (def, single texture, the flecks
-   extension and its class, the print postfix, the settings it names).
+   extension and its class, the print postfix, the settings it names). 1b: EVERY backticked citation in the
+   doc resolves (def, class, member, path, skill, item, engine API, the cut def absent) or is declared a
+   proposal; an unclassified citation fails. Mutant sweep: mutants_cauldron_trunk_deposits.sh.
 2. The registration instrument of the design's section 5: share of an overlay's opaque pixels inside the
    tree's dilated silhouette. Sanity probe: the tree measured against itself is 100 % inside, and a
    blank-canvas overlay with every pixel opaque is far from it, so the instrument can see a miss.
@@ -94,6 +96,144 @@ for s in ("assayFlecksEnabled", "RemeshAllMaps"):
     check("settings carry " + s, s in mod)
 kern = read(os.path.join(HERE, "Source/Kernel/RM_YieldKernel.cs"))
 check("kernel holds FleckBand (DepositTier goes beside it)", "FleckBand(" in kern)
+
+# ---- 1b. EVERY backticked citation in the doc resolves -------------------------------------------
+# Each `token` in the doc is classified below; an unclassified token is a FAIL, so a new citation cannot
+# slip in unproven. EXISTING tokens are resolved against the tree; PROPOSED tokens are what the build item
+# adds (they may or may not exist yet); ENGINE tokens must be used by some C# in src (the API exists).
+import glob
+import json
+import re
+
+BIOMES = os.path.join(REPO, "design/Jawa/worldbuilding/biomes")
+SRC = os.path.join(REPO, "src")
+CS = {p: read(p) for p in glob.glob(os.path.join(HERE, "Source", "**", "*.cs"), recursive=True)}
+ALL_CS = None
+
+
+def thingdef_names():
+    names = set()
+    for p in glob.glob(os.path.join(HERE, "Defs", "**", "*.xml"), recursive=True):
+        for el in ET.parse(p).getroot().iter("ThingDef"):
+            if el.findtext("defName"):
+                names.add(el.findtext("defName"))
+    return names
+
+
+TDEFS = thingdef_names()
+
+
+def has_def(name):
+    return name in TDEFS
+
+
+def has_class(name):
+    return any(re.search(r"\bclass\s+%s\b" % re.escape(name), t) for t in CS.values())
+
+
+def has_member(cls, member):
+    # the member is declared (not merely called) in the file that declares the class
+    pat = re.compile(r"\b(?:static\s+|private\s+|public\s+|internal\s+|const\s+|readonly\s+)+[\w<>\[\].]+\s+%s\b"
+                     % re.escape(member))
+    for t in CS.values():
+        if re.search(r"\bclass\s+%s\b" % re.escape(cls), t) and pat.search(t):
+            return True
+    return False
+
+
+def any_cs_uses(needle):
+    global ALL_CS
+    if ALL_CS is None:
+        ALL_CS = [read(p) for p in glob.glob(os.path.join(SRC, "**", "*.cs"), recursive=True)]
+    pat = re.compile(re.escape(needle) + (r"\b" if needle[-1].isalnum() else ""))
+    return any(pat.search(t) for t in ALL_CS)
+
+
+def path_under(*bases):
+    return lambda tok: any(os.path.exists(os.path.join(b, tok)) for b in bases)
+
+
+def item_filed(tok):
+    st = os.path.join(REPO, "infrastructure/state/items")
+    return os.path.exists(os.path.join(st, tok + ".md")) or os.path.exists(os.path.join(st, "closed", tok + ".md"))
+
+
+def roster_keeps_thornwood(_tok):
+    with open(os.path.join(BIOMES, "rosters/cauldron.json"), encoding="utf-8") as f:
+        text = json.load(f)
+    hits = []
+
+    def walk(o):
+        if isinstance(o, dict):
+            if str(o.get("def", "")).endswith("TwistingThornwood"):
+                hits.append(str(o.get("law", "")))
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    walk(text)
+    return any("owner favourite, keep" in h for h in hits)
+
+
+FLECKS = os.path.join(TEX, "RM_AssayFlecks")
+EXISTING = {
+    # defs
+    "RM_TwistingThornwood": lambda t: has_def(t),
+    "RM_Fexxil": lambda t: has_def(t),
+    "RM_CrystalFlower": lambda t: has_def(t),
+    "RM_TreeMartyr": lambda t: not has_def(t),  # the doc says it is CUT
+    "Graphic_Random": lambda t: tree_def() is not None and tree_def().findtext("graphicData/graphicClass") == t,
+    # classes and members
+    "RM_AssayFlecks": has_class,
+    "RM_AssayFlecksExtension": has_class,
+    "RM_CompMetalYield.GradeFraction": lambda t: has_member("RM_CompMetalYield", "GradeFraction"),
+    "RM_YieldKernel.FleckBand": lambda t: has_member("RM_YieldKernel", "FleckBand"),
+    "OverlayYOffset": lambda t: has_member("RM_AssayFlecks", "OverlayYOffset"),
+    "Plant.Print": lambda t: "nameof(Plant.Print)" in read(os.path.join(HERE, "Source/RM_CauldronDewfallVisuals.cs")),
+    "assayFlecksEnabled": lambda t: t in mod,
+    "RemeshAllMaps": lambda t: t in mod,
+    # paths
+    "src/RimMandrake/Cauldron": path_under(REPO),
+    "src/RimMandrake/Cauldron/selftest_cauldron_trunk_deposits.py": path_under(REPO),
+    "selftest_cauldron_trunk_deposits.py": path_under(HERE),
+    "Source/RM_CauldronDewfallVisuals.cs": path_under(HERE),
+    "Textures/Things/Plant/RM_TwistingThornwood/TwistingThornwood_a.png": path_under(HERE),
+    "TwistingThornwood_a.png": path_under(os.path.join(TEX, "RM_TwistingThornwood")),
+    "RM_AssayFlecks/Flecks_Light.png": path_under(TEX),
+    "Flecks_Light.png": path_under(FLECKS),
+    "Flecks_Heavy.png": path_under(FLECKS),
+    "design/Jawa/worldbuilding/biomes/cauldron.md": path_under(REPO),
+    "cauldron_enrichment_audio_visuals_spec_2026-10-02.md": path_under(BIOMES),
+    "rosters/cauldron.json": lambda t: os.path.exists(os.path.join(BIOMES, t)) and roster_keeps_thornwood(t),
+    # skills
+    "rimworld-art-evaluation": lambda t: os.path.exists(os.path.join(REPO, "skills", t, "SKILL.md")),
+    "editing-images": lambda t: os.path.exists(os.path.join(REPO, "skills", t, "SKILL.md")),
+    # items
+    "CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS": item_filed,
+    "CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS": item_filed,
+    "CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR": item_filed,
+}
+ENGINE = {"Plant": "Plant", "DefModExtension": ": DefModExtension", "ConfigErrors": "ConfigErrors()",
+          "CompTickLong": "CompTickLong()", "TickLong()": "TickLong()", "Rand.Seed": "Rand.Seed",
+          "Age": ".Age", "Growth": ".Growth"}
+PROPOSED = {"RM_TrunkDepositsExtension", "DepositTier", "trunkDepositsEnabled", "scabTexPath", "slagTexPath",
+            "scabFromGrowth", "slagFromAgeFraction", "Deposits_Slag.png",
+            "Textures/Things/Plant/RM_TrunkDeposits/Deposits_Scab.png"}
+# rule text: a token whose head word is one of the above (e.g. `scabFromGrowth = 0.5`, `Growth >= 0.5`,
+# `DepositTier(growth, ...)`, `Age < 0.5 × LifespanTicks`) is classified by that head word.
+head = re.compile(r"^[A-Za-z_][\w.]*")
+for tok in sorted(set(re.findall(r"`([^`\n]+)`", doc))):
+    h = head.match(tok)
+    key = tok if (tok in EXISTING or tok in ENGINE or tok in PROPOSED) else (h.group(0) if h else tok)
+    if key in EXISTING:
+        check("doc cite resolves: " + tok, bool(EXISTING[key](key)))
+    elif key in ENGINE:
+        check("doc cite is a real engine API (used in src C#): " + tok, any_cs_uses(ENGINE[key]))
+    elif key in PROPOSED:
+        print("prop  " + tok + "  (proposed by the design; CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS)")
+    else:
+        check("doc cite is classified in this selftest: " + tok, False, "add it to EXISTING/ENGINE/PROPOSED")
 
 # ---- 2. the instrument, and its sanity probe ------------------------------------------------------
 tree_d = alpha_mask(TREE_PNG, DILATE_PX)
