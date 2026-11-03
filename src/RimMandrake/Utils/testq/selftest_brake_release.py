@@ -20,7 +20,15 @@ def check(ok, msg):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="rf_brake_")
-    os.environ.update(TESTQ_QUEUE=tmp, TESTQ_INGEST_PUSH="0")
+    # every door the steward can reach: this test must stay one bug away from nothing real, not one bug from the ledger
+    led, items, pulse = os.path.join(tmp, "ledger", "events.jsonl"), os.path.join(tmp, "items"), os.path.join(tmp, "pulse")
+    for d in (os.path.dirname(led), items, pulse):
+        os.makedirs(d)
+    open(led, "w").close()
+    os.environ.update(TESTQ_QUEUE=tmp, TESTQ_INGEST_PUSH="0", RIMFLOW_LEDGER=led, RIMFLOW_ITEMS=items,
+                      RM_PULSE_STATE=pulse, TESTQ_STEWARD_WAKE="0")
+    for k in ("RIMFLOW_SEAT", "CLAUDE_PROJECT_DIR"):
+        os.environ.pop(k, None)
     os.environ.pop("TESTQ_FILL_MODS", None)
     sys.path.insert(0, HERE)
     import schema as S
