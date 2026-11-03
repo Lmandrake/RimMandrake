@@ -1949,6 +1949,41 @@ def _glass_live_rows(t, ids):
 
 # ----------------------------------------------------------------------------- chain: water
 
+SAC = "RM_DuummaWaterSac"
+SAC_LITRES = 6.0
+
+
+def sac_static_defect(sac_xml=None, fillout_xml=None):
+    """STILLSAND_RETURN_REMAINDER_1 spec 4 (offline): the duumma water sac is a debt source. Its ThingDef must carry
+    RM_CompProperties_WaterVolume with litres=6 (that comp is what books the drink: RM_CompWaterVolume.PostIngested),
+    and a duumma must butcher into 3 of them. Returns a defect string, or None. Texts may be passed (the selftest's
+    mutants); by default the shipped XML is read."""
+    rd = lambda *p: open(os.path.join(HERE, "Defs", *p), encoding="utf-8").read()
+    try:
+        root = ET.fromstring(sac_xml if sac_xml is not None else rd("ThingDefs_Items", "RM_DuummaWaterSac.xml"))
+        fill = ET.fromstring(fillout_xml if fillout_xml is not None else rd("ThingDefs_Races", "RM_Stillsand_Fillout.xml"))
+    except (OSError, ET.ParseError) as ex:
+        return "the duumma water sac's XML is unreadable: %s" % ex
+    defs = [d for d in root.iter("ThingDef") if (d.findtext("defName") or "").strip() == SAC]
+    if len(defs) != 1:
+        return "RM_DuummaWaterSac.xml holds %d ThingDef %s (want 1)" % (len(defs), SAC)
+    vols = [li for li in defs[0].findall("comps/li")
+            if (li.get("Class") or "").strip() == "RimMandrake.Stillsand.RM_CompProperties_WaterVolume"]
+    if len(vols) != 1:
+        return "%s carries %d RM_CompProperties_WaterVolume comps (want 1): drinking it books no debt" % (SAC, len(vols))
+    try:
+        litres = float((vols[0].findtext("litres") or "").strip())
+    except ValueError:
+        return "%s's water-volume comp has no numeric <litres>" % SAC
+    if abs(litres - SAC_LITRES) > 1e-6:
+        return "%s's water-volume comp holds %g L (want %g)" % (SAC, litres, SAC_LITRES)
+    yields = [(d.findtext("defName") or "").strip() for d in fill.iter("ThingDef")
+              if (d.findtext("butcherProducts/%s" % SAC) or "").strip() == "3"]
+    if not any("Duumma" in n for n in yields):
+        return "no duumma ThingDef in RM_Stillsand_Fillout.xml butchers into 3 %s (found %s)" % (SAC, yields)
+    return None
+
+
 @_chain("water")
 def water_chain(t):
     _prep(t, "water")
@@ -2131,7 +2166,11 @@ def water_chain(t):
     with _comp(t, "return_sun_debt_gale_opens_good_outcome_pays"):
         # A1: a colony whose ideo holds the Return precept accrues debt from drinking water (the canteen egg's drink
         # hook), the Return opens when a dune gale ends (serial up, the ritual holds an obligation), and a good
-        # outcome at a debt stone lowers the debt and blooms the ring there.
+        # outcome at a debt stone lowers the debt and blooms the ring there. Spec 4's duumma water sac is a second
+        # source: its def is read offline (sac_static_defect) and its drink hook must book its own 6 L live.
+        sac_bad = sac_static_defect()
+        if sac_bad:
+            _fail(sac_bad)
         if _live(t):
             res, kv = scall("ProofLedger")
             if kv.get("live") != "True" or kv.get("countsHere") != "True":
@@ -2154,6 +2193,18 @@ def water_chain(t):
             _note(t, "drink: debt before / hook / after", [d0, dr, d1])
             if abs((d1 - d0) - 6.0) > 1e-3:
                 _fail("drinking a canteen egg moved the debt by %.3f (want 6 L)" % (d1 - d0))
+            # the duumma water sac: a second debt source, the same hook, its own 6 L
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SAC, bx + 3, bz))
+            sac = _things(t, SAC, "%d,%d,1,1" % (bx + 3, bz))
+            if not sac:
+                _unmeasured(t, "the duumma water sac did not stand after spawn_batch")
+            sr, sk = scall("ProofDrinkHook", "%d,%d" % (sac[0]["x"], sac[0]["z"]))
+            d2 = float(scall("ProofLedger")[1]["debt"])
+            _note(t, "sac drink: hook / after", [sr, d2])
+            if sk.get("item") != SAC:
+                _fail("the drink hook did not run on the duumma water sac (no water-volume comp on it?): %s" % sr)
+            if abs((d2 - d1) - SAC_LITRES) > 1e-3:
+                _fail("drinking a duumma water sac moved the debt by %.3f (want 6 L)" % (d2 - d1))
             # the gale, after the opening gap has passed
             rs, ks = scall("ProofReturnState")
             since, gap = int(ks.get("sinceOpen", 0)), int(ks.get("gap", 0))

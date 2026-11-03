@@ -3,7 +3,8 @@
 clause a state read through validation.py's water chain plus the log chain's log_clean (never a screenshot hunt).
 
   A1  UTINNI TIER (the Utinni layer + Ideology): a colony whose primary ideo holds RUT_Ritual_TheReturn accrues 6 L of
-      Sun-Debt from one canteen egg's drink hook, the Return opens when a dune gale (RM_DuneGale) ends (opening serial
+      Sun-Debt from one canteen egg's drink hook and 6 L more from a duumma water sac's (its def is also read offline:
+      the WaterVolume comp at 6 L and a duumma butchering into 3), the Return opens when a dune gale (RM_DuneGale) ends (opening serial
       up, the ritual holds an obligation), and a good outcome at a RUT_DebtStone lowers the debt and blooms hourbloom
       in the ring (water.return_sun_debt_gale_opens_good_outcome_pays), and a REAL drink books it too: A4's row is
       part of A1 (so A1 wants DBH Lite + Thirst on the tier); the outcome's own Player.log line is
@@ -141,7 +142,7 @@ def selftest():
         if got[0] != code:
             bad.append("%s tier %s: want %d, got %s" % (tier, c, code, got))
     breaks = {"A1": ([], ("gale_no_opening", "egg_drink_free", "return_no_pay", "return_no_ring", "dbh_drink_free",
-                          "dbh_wrong_job", "log_error")),
+                          "dbh_wrong_job", "sac_drink_free", "sac_no_comp", "log_error")),
               "A2": (["rm_tier"], ("rm_ledger_live", "no_bloom", "log_error")),
               "A4": ([], ("dbh_drink_free", "dbh_wrong_job", "log_error")),
               "A3": ([], ("line_not_drawn", "line_ignores_toggle", "gale_keeps_wet", "log_error"))}

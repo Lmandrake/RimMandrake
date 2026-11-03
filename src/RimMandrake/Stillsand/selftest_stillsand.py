@@ -644,6 +644,11 @@ class Fake(object):
                 if at and at[0]["def"] == "RM_GuzzkaEggUnfertilized":
                     self.debt += 0.0 if "egg_drink_free" in self.b else 6.0
                     return {"success": True, "result": "DRINK item=RM_GuzzkaEggUnfertilized bookedAtSource=False by=P1"}
+                if at and at[0]["def"] == "RM_DuummaWaterSac":
+                    if "sac_no_comp" in self.b:      # what the game answers when the sac's def lost its comp
+                        return {"success": True, "result": "NONE: no water item at %d,%d" % (x, z)}
+                    self.debt += 0.0 if "sac_drink_free" in self.b else 6.0
+                    return {"success": True, "result": "DRINK item=RM_DuummaWaterSac bookedAtSource=False by=P1"}
                 twice = "drink_double_charge" in self.b
                 if twice:
                     self.debt += 1.0
@@ -975,6 +980,8 @@ BREAKS = {
     "gale_keeps_wet": ["water.wet_line_drawn_then_gale_wipes"],
     "gale_no_opening": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "egg_drink_free": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
+    "sac_drink_free": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
+    "sac_no_comp": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "return_no_pay": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "return_no_ring": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "dbh_drink_free": ["water.dbh_thirst_drink_books_debt"],
@@ -1151,8 +1158,27 @@ def trader_probe_points(bad):
         bad.append("RM_StillsandTraderProbe: carrier check must read the tile's PrimaryBiome, as Trader.CanGenerateFrom does")
 
 
+def sac_static_mutants(bad):
+    """STILLSAND_RETURN_REMAINDER_1 spec 4: the offline sac row must pass the shipped XML and go red on each mutant
+    (the water-volume comp deleted, the litres changed, the duumma's butcher yield deleted)."""
+    import re as _re
+    sac = open(os.path.join(V.HERE, "Defs", "ThingDefs_Items", "RM_DuummaWaterSac.xml"), encoding="utf-8").read()
+    fill = open(os.path.join(V.HERE, "Defs", "ThingDefs_Races", "RM_Stillsand_Fillout.xml"), encoding="utf-8").read()
+    if V.sac_static_defect() is not None:
+        bad.append("sac_static_defect on the shipped XML: %s" % V.sac_static_defect())
+    no_comp = _re.sub(r'<li Class="RimMandrake\.Stillsand\.RM_CompProperties_WaterVolume">.*?</li>', "", sac, flags=_re.S)
+    five = sac.replace("<litres>6</litres>", "<litres>5</litres>")
+    no_yield = fill.replace("<RM_DuummaWaterSac>3</RM_DuummaWaterSac>", "")
+    for name, a, b in (("comp deleted", no_comp, fill), ("litres 5", five, fill), ("butcher yield deleted", sac, no_yield)):
+        if (a, b) == (sac, fill):
+            bad.append("sac mutant %r did not change the XML (the mutant's pattern is stale)" % name)
+        elif V.sac_static_defect(a, b) is None:
+            bad.append("sac mutant %r: sac_static_defect stayed clean" % name)
+
+
 def _main(bad):
     vekka_rock_check(bad)
+    sac_static_mutants(bad)
     trader_check_verdicts(bad)
     trader_probe_points(bad)
     healthy = run()
