@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- GRAFFITI_V1_LIVE_PROOF_1 (criterion A5): the hostile-maker reaction the design names
+       (design/RM_GRAFFITI_SCOPE_WIDENING.md, onViewHostileMaker: "your colonist sees a mark a hostile
+       faction left (unease - the 'we were here')"). Every raidExitEligible mark points its
+       onViewHostileMaker at this def, so a raid's departing tag unsettles the colonists who pass it.
+       ThoughtWorker_ViewedGraffitiMark resolves the viewer's relation to the mark's maker and grants
+       only this def when the maker's faction is hostile to the viewer's (and no closer relation wins). -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_ViewedHostileMark</defName>
+    <workerClass>RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark</workerClass>
+    <stages>
+      <li>
+        <label>enemy graffiti nearby</label>
+        <description>Someone hostile painted their mark here on the way out. They were here, they know the way, and they wanted us to know it.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

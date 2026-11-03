@@ -29,9 +29,9 @@ painters is not driven here, so meme-gated glyphs appear only if the quicktest i
 meme.
 
 Two settings are proved here by write+read-back only. `viewerReactionEnabled` gates
-`ThoughtWorker_ViewedGraffitiMark`, which no Graffiti def uses: only SacredGraffiti's
-`ThoughtDefs_SacredMarks.xml` names it, so in Graffiti alone it gates nothing and its settings
-label says it needs Sacred Marks (MEASURED 2026-11-03, GRAFFITI_NORTHSTAR_SHIP_1).
+`ThoughtWorker_ViewedGraffitiMark`: Graffiti's own `RM_Graffiti_ViewedHostileMark` (every
+raidExitEligible mark's `onViewHostileMaker`, GRAFFITI_V1_LIVE_PROOF_1) and SacredGraffiti's
+`ThoughtDefs_SacredMarks.xml`; its behaviour is proved by `graffiti_v1_live_proof.py A5`.
 `breachBiasEnabled` gates `BreachBiasHook` on `RM_Graffiti_WarningGlyph` (`breachLure`=true);
 its behavioural A/B needs a breaching raid, not built here.
 """

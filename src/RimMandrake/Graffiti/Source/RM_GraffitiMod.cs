@@ -30,8 +30,8 @@ namespace RimMandrake.Graffiti
     //
     // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 adds two more:
     //   5. Raid-exit tagging — a departing hostile pawn leaves its gang's
-    //      own mark nearby (RaidExitTaggerMod's Harmony prefix on
-    //      CaravanExitMapUtility.ExitMapAndCreateCaravan).
+    //      own mark nearby (RaidExitTaggerMod's Harmony prefix/postfix on
+    //      Lord.GotoToil, when a hostile lord turns onto a leaving toil).
     //   6. Scrub protection — own-faction/Devotional marks skip the
     //      ambient home-area auto-clean scan (AutoCleanProtectionMod's
     //      Harmony prefix on WorkGiver_CleanFilth.HasJobOnThing); a
@@ -79,10 +79,10 @@ namespace RimMandrake.Graffiti
 
             if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "viewerReactionEnabled" }))
             {
-                list.CheckboxLabeled("Viewer reactions to marks (needs RimMandrake Sacred Marks)", ref viewerReactionEnabled,
-                    "Pawns get a mood effect from noticing a graffiti mark nearby that reacts to them. "
-                  + "Graffiti alone defines no such thought: this switch only does something when the "
-                  + "RimMandrake Sacred Marks mod is also active, whose sacred-mark thoughts it gates. "
+                list.CheckboxLabeled("Viewer reactions to marks", ref viewerReactionEnabled,
+                    "Pawns get a mood effect from noticing a graffiti mark nearby that reacts to them: "
+                  + "colonists are unsettled by a tag a hostile faction left behind, and the RimMandrake "
+                  + "Sacred Marks mod adds its own sacred-mark thoughts to the same switch. "
                   + "Off: marks are purely decorative filth.");
                 list.GapLine();
             }

@@ -198,6 +198,7 @@
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
       </li>
     </modExtensions>
   </ThingDef>
@@ -220,6 +221,7 @@
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
       </li>
     </modExtensions>
   </ThingDef>
@@ -242,6 +244,7 @@
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
       </li>
     </modExtensions>
   </ThingDef>
@@ -264,6 +267,7 @@
         <form>ThrowUp</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §3's own table
              row for this def: "Joy (skill >= 6), RaidExit". Wired this wave
              via GraffitiPool.SkillGateAllows. -->
@@ -290,6 +294,7 @@
         <form>ThrowUp</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <minArtistic>6</minArtistic>
       </li>
     </modExtensions>
@@ -314,6 +319,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
       </li>
     </modExtensions>
   </ThingDef>
@@ -353,6 +359,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresHostileToFactionDef>Empire</requiresHostileToFactionDef>
       </li>
     </modExtensions>
@@ -380,6 +387,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
       </li>
     </modExtensions>
   </ThingDef>
@@ -455,6 +463,7 @@
         <form>Paste</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
       </li>
     </modExtensions>
   </ThingDef>
@@ -490,6 +499,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo/halo_0</sigilFrameTexPath>
         <protectedFromAutoClean>true</protectedFromAutoClean>
@@ -520,6 +530,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox/stencilbox_0</sigilFrameTexPath>
         <protectedFromAutoClean>true</protectedFromAutoClean>
@@ -549,6 +560,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame/dripframe_0</sigilFrameTexPath>
         <protectedFromAutoClean>true</protectedFromAutoClean>

@@ -42,6 +42,10 @@ namespace RimMandrake.Graffiti
         private Material cachedIconMat;
         private bool sigilMatsBuilt;
 
+        /// <summary>Test reads (RM_GraffitiProof, GRAFFITI_V1_LIVE_PROOF_1 A3): the tier-A composite's two materials, null when absent.</summary>
+        internal Material ProbeFrameMat => cachedFrameMat;
+        internal Material ProbeIconMat => cachedIconMat;
+
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             // Before base.SpawnSetup, which registers the mark for the map mesh that Print then builds.
@@ -98,7 +102,11 @@ namespace RimMandrake.Graffiti
                     }
                 }
             }
-            if (!FilthMaker.TryMakeFilth(cell, map, markDef, out Filth outFilth))
+            // GRAFFITI_V1_LIVE_PROOF_1 (GPT review): no propagation. Vanilla filth spills onto a neighbour when the cell will not
+            // take it; a mark is painted on THIS wall cell or not at all, and a spill elsewhere would let the going-over below erase
+            // the rival with nothing painted over it.
+            if (!FilthMaker.TryMakeFilth(cell, map, markDef, out Filth outFilth, 1, FilthSourceFlags.None, false) || outFilth == null
+                || outFilth.Position != cell)
             {
                 return null;
             }

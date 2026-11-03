@@ -1,0 +1,8 @@
+A1 L2: a colonist forced into RM_GraffitiPaintingSpreeState paints within 3000 ticks; every mark he made is a Filth_Mark whose makerFaction and makerIdeo are his (SpreeRead marks>=1, factionOk=ideoOk=marks)
+A2 L2: 3 enemy pawns under LordJob_AssaultColony beside an exterior wall leave no mark on the way in (120 ticks); when their lord turns onto its own leaving toil each standing raider tags a nearby wall cell with a raidExitEligible mark of its faction (RaidExit mid 0, after>=1, eligible=onWall=after)
+A3 L2: RM_Graffiti_IdeoSigil painted by a colonist builds the tier-A composite: frame halo_0, icon material = the maker ideo's Icon, tinted the ideo's Color
+A4 L2: an enemy's RM_Graffiti_ThrowUp_A on the cell of a colonist's RM_Graffiti_Tag_A destroys the first; one mark remains, the enemy faction's
+A5 L2: a colonist 3 cells from an enemy-made RM_Graffiti_Tag_A gets RM_Graffiti_ViewedHostileMark (worker Active and in his situational mood thoughts)
+A6 L2: after 700 ticks the vanilla CleanFilth work giver skips (unforced) the colonist's own Vandal and an enemy Devotional sigil but takes the enemy Vandal control; forced it takes both, and an ordered Clean job removes both within 4000 ticks
+A7 L2: three wall cells designated through Designator_PaintGraffitiMark with three named marks are each painted, by the colonist through RM_PaintGraffitiDesignated, with exactly the named mark within 6000 ticks
+A8 L1: the Player.log of an all-DLC load holding Graffiti names no Graffiti config / cross-reference / XML / type error, and the load carries RM_Graffiti_ViewedHostileMark and the Lord.GotoToil raid-exit postfix (reworded from 'a load without Ideology': every DLC is assumed, owner 2026-09-19/25/26)

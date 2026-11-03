@@ -169,6 +169,12 @@ namespace RimMandrake.Graffiti.SelfTest
                 for (int m = 0; m < 4; m++)
                 {
                     Steps++;
+                    bool was = (m & 1) != 0, now = (m & 2) != 0;
+                    Check(RM_GraffitiKernel.TurnsToLeave(was, now) == (now && !was), $"TurnsToLeave({was},{now})");
+                }
+                for (int m = 0; m < 4; m++)
+                {
+                    Steps++;
                     bool clan = (m & 1) != 0, own = (m & 2) != 0;
                     Check(RM_GraffitiKernel.ClanOnlyBlocks(clan, own) == (clan && !own), $"ClanOnlyBlocks({clan},{own})");
                 }

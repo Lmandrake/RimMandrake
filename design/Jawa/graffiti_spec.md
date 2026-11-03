@@ -163,9 +163,10 @@ banner-superseded, per this repo's own standing rule._
 - **Placement**: the punk/spree pool (`GraffitiPool`, weighted by
   `poolWeight`, gated by meme/skill/faction-hostility) drives ordinary
   joy/mental-break painting; a player `Designator` + `WorkGiver` places any
-  `designatorEligible` mark by hand; a Harmony prefix on
-  `CaravanExitMapUtility.ExitMapAndCreateCaravan` has a departing hostile
-  pawn tag a wall on the way out. **Not built**: `RitualOutcomeEffect`
+  `designatorEligible` mark by hand; a Harmony patch on `Lord.GotoToil` has
+  each member of a hostile lord tag a nearby wall the moment the raid turns
+  onto a leaving toil (a raider walking off the map never reaches the caravan
+  exit path the first hook used, GRAFFITI_V1_LIVE_PROOF_1). **Not built**: `RitualOutcomeEffect`
   rite-left marks (still v2/dream, §6), and the settlement GenStep placer
   (also v2 by the widening item's own recommendation).
 - **Viewer comp**: `ThoughtWorker_ViewedGraffitiMark`, relation-keyed

@@ -145,6 +145,10 @@ namespace RimMandrake.Graffiti
             return factionKnown && !factionIsPlayer && hostileToPlayer;
         }
 
+        /// <summary>A raid turns to leave when its lord moves from a toil that was not leaving onto one that is (GRAFFITI_V1_LIVE_PROOF_1):
+        /// once per departure, never for a lord already leaving that switches between leaving toils.</summary>
+        public static bool TurnsToLeave(bool wasLeaving, bool nowLeaving) { return nowLeaving && !wasLeaving; }
+
         /// <summary>Going over: a different mark already on the cell is destroyed first; the same def is thickened, not replaced.</summary>
         public static bool IsRival(bool isMark, bool sameDef) { return isMark && !sameDef; }
 

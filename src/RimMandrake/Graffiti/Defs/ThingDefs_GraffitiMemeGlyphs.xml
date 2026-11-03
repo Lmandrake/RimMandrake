@@ -62,6 +62,7 @@
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Cannibal</li>
         </requiresAnyMeme>
@@ -162,6 +163,7 @@
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Inhuman</li>
         </requiresAnyMeme>
@@ -277,6 +279,7 @@
         <form>Glyph</form>
         <poolWeight>3</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Raider</li>
         </requiresAnyMeme>
@@ -483,6 +486,7 @@
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>HumanPrimacy</li>
         </requiresAnyMeme>
@@ -508,6 +512,7 @@
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Supremacist</li>
         </requiresAnyMeme>
@@ -537,6 +542,7 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Collectivist</li>
         </requiresAnyMeme>
@@ -566,6 +572,7 @@
         <poolWeight>2</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Individualist</li>
         </requiresAnyMeme>
@@ -642,6 +649,7 @@
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>FleshPurity</li>
         </requiresAnyMeme>
@@ -692,6 +700,7 @@
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
           <li>Bloodfeeding</li>
         </requiresAnyMeme>
