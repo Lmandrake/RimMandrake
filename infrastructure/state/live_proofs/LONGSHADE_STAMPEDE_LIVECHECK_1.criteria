@@ -1,0 +1,7 @@
+A1 L1: IncidentDef RM_ShadeStampede is loaded with worker IncidentWorker_RM_ShadeStampede and allowedBiomes holding RM_LongShade (RM_StampedeProof.Def)
+A2 L2: on a generated RM_LongShade map (LongShade + its stack, all five DLC), 8 same-def wild herd animals of a roster kind, >= 50 % overheated (Royalty ClimateAdjustment heat), and a roofed home cell: the worker's CanFireNowSub is true
+A3 L2: no herd: 5 overheated animals -> false; the 8 cooled below their safe max -> false
+A4 L2: the hot herd with no roofed home cell -> false
+A5 L2: stampedeEnabled=false with the hot herd and roof -> false; back to true -> true
+A6 L2: firing returns true, sends the letter "An overheated herd is bolting for your roof", and every runner is on a Sprint Goto to a roofed home-area cell
+A7 L2: re-issued every 120 ticks until each has cooled or 6000 ticks pass: runners forced onto Wait are back on the Sprint Goto (or at the target) within one window; once cooled below their safe max every runner is released well before 6000 ticks; a herd that stays overheated keeps running before 6000 ticks and is released after it

@@ -1,0 +1,7 @@
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A1 < /dev/null
+live-proof A2: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A2 < /dev/null
+live-proof A3: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A3 < /dev/null
+live-proof A4: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A4 < /dev/null
+live-proof A5: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A5 < /dev/null
+live-proof A6: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A6 < /dev/null
+live-proof A7: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_stampede.py)" --clause A7 < /dev/null

@@ -54,6 +54,7 @@
     <!-- LONGSHADE_JAWATOW_RECHECK_1: static_call probe of the hull tow (read by LongShade/prove_jawatow.py). -->
     <Compile Include="RM_HullTowProof.cs" />
     <Compile Include="RM_ShadeExtrasProof.cs" />
+    <Compile Include="RM_StampedeProof.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_LongShadeMod.cs" />
