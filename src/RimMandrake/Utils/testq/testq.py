@@ -1256,8 +1256,8 @@ def nonfault_cause(rec, windows):
     if (rec or {}).get("cancelled"):
         return "cancel"
     res = (rec or {}).get("result") or {}
-    if (res.get("outcome"), res.get("cause")) == ("INVALID", "DEPLOY") \
-            and re.search(r"companion (STALE|UNSTAMPED|MISSING) ", str(res.get("note") or "")):
+    import retest
+    if retest.companion_stale(res):
         return "companion_stale"
     if not machine_killed(res):
         return None

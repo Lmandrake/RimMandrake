@@ -239,6 +239,11 @@ def main():
     j["id"] = "Jfresh"
     S.dump({"job": j, "finished": fin, "result": {"outcome": "DONE", "deployed": {"companion": {"state": "FRESH"}}}},
            T.q("done", "Jfresh.json"))
+    S.dump({"state": "RUNNING", "reason": "x", "jobs": []}, T.q("steward.json"))
+    check(not C.proof()[0], "proof: a canary alone is not the filler reaching the lane: FAIL")
+    j = dict(j, requested_by=T.FILLER)
+    S.dump({"job": j, "finished": fin, "result": {"outcome": "DONE", "deployed": {"companion": {"state": "FRESH"}}}},
+           T.q("done", "Jfresh.json"))
     S.dump({"state": "BRAKED", "reason": "tail", "jobs": ["J0", "J1"]}, T.q("steward.json"))
     ok, lines = C.proof()
     check(not ok, "proof: the brake that began this still holds: FAIL: %s" % lines[-1][:40])

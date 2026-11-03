@@ -186,8 +186,9 @@ def unready_at(sha):
 
 
 def proof(now=None):
-    """-> (ok, [lines]). The item's own bar: a filler or canary job passed deploy FRESH, the lane left BRAKED, and the
-    stager is alive. A later, unrelated brake (its tail newer than the proving job) does not un-prove this fix."""
+    """-> (ok, [lines]). The item's own bar: a filler job passed deploy FRESH (a canary proves the lane, not that the
+    filler reaches it), the lane left BRAKED, and the stager is alive. A later, unrelated brake (its tail newer than the
+    proving job) does not un-prove this fix."""
     now = time.time() if now is None else now
     lines, ok = [], True
     st = state() or {}
@@ -200,7 +201,7 @@ def proof(now=None):
     for rec in T.records("done"):
         job, res = T.job_of(rec), rec.get("result") or {}
         comp = (res.get("deployed") or {}).get("companion") or {}
-        if job.get("requested_by") not in (T.FILLER, "Operations.canary") or comp.get("state") != "FRESH":
+        if job.get("requested_by") != T.FILLER or comp.get("state") != "FRESH":
             continue
         try:
             fin = S.parse_ts(rec.get("finished") or res["finished"])
@@ -210,7 +211,7 @@ def proof(now=None):
             best = (fin, job["id"], job["requested_by"], res.get("outcome"))
     ok &= bool(best)
     lines.append(("ok   job %s (%s) passed deploy with companion FRESH, outcome %s" % best[1:]) if best else
-                 "FAIL no filler or canary job has passed deploy with companion FRESH since %s" % FIXED_AT)
+                 "FAIL no filler job has passed deploy with companion FRESH since %s" % FIXED_AT)
     sj = T.read_json(T.q("steward.json")) or {}
     held = sj.get("state") == "BRAKED"
     if held and best:

@@ -128,6 +128,10 @@ def main():
     check(R.job_cause({"outcome": "INVALID", "cause": "BLOCKED_SELECTION", "note": "n"}) is None, "a refused selection is no fault")
     check(R.job_cause({"outcome": "INVALID", "cause": "CANARY", "note": "n"}) is None, "a paused lane has its own finding")
     check(R.job_cause({"outcome": "DONE"}) is None, "DONE has no job cause")
+    stale = {"outcome": "INVALID", "cause": "DEPLOY", "note": "companion STALE JawaBench.BridgeTools.dll not built from this job's sources"}
+    check(R.companion_stale(stale) and R.job_cause(stale) is None, "a stale companion files no repair and holds no chain")
+    other = {"outcome": "INVALID", "cause": "DEPLOY", "note": "sync refused"}
+    check(not R.companion_stale(other) and R.job_cause(other), "any other deploy failure still is a cause")
     base = R.repair_base(a)
     check(R.repair_base(b) == base and R.repair_base(c) != base and len(base) <= 44, "one name per cause: %s" % base)
     check(R.repair_slot({}, base) == (base, "file"), "first sight files")

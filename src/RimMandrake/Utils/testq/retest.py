@@ -25,6 +25,7 @@ UPSTREAM = re.compile(r"upstream failed|an UNMEASURED component ended this chain
 ORPHAN = "<no chain>"           # split_rows key: rows the sheet never reached carry no chain
 NOT_A_FAULT = ("BLOCKED_SELECTION",)        # the selection was refused: no run happened
 LANE_CAUSES = ("CANARY",)                   # testq.PAUSE_ON with an INVALID outcome: lane_finding has these
+COMPANION_STALE = re.compile(r"companion (STALE|UNSTAMPED|MISSING) ")
 
 
 def normal(text):
@@ -80,9 +81,18 @@ def split_rows(rows):
     return kept, held, causes
 
 
+def companion_stale(res):
+    """The worker refused this job at deploy for a companion not built from its sources: the lane's plumbing, which
+    the stager (companion_stage.py) fixes by itself. The job ran nothing of its chains."""
+    return (res or {}).get("outcome") == "INVALID" and res.get("cause") == "DEPLOY" \
+        and bool(COMPANION_STALE.search(str(res.get("note") or "")))
+
+
 def job_cause(res):
-    """-> the cause signature of a job that ended with no sheet to read, or None (DONE, a refusal, a paused lane)."""
-    if (res or {}).get("outcome") != "INVALID" or res.get("cause") in NOT_A_FAULT + LANE_CAUSES:
+    """-> the cause signature of a job that ended with no sheet to read, or None (DONE, a refusal, a paused lane, a
+    stale companion: as a cause it filed a repair item that held every chain the job named, 59 of them, until someone
+    closed it, while the stager had already fixed the fault)."""
+    if (res or {}).get("outcome") != "INVALID" or res.get("cause") in NOT_A_FAULT + LANE_CAUSES or companion_stale(res):
         return None
     note = str(res.get("note") or "")
     m = re.match(r"modcheck exit (\S+) and no sheet JSON", note)
