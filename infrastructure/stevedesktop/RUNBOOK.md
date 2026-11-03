@@ -103,7 +103,7 @@ shows (the one in the green box) → **Save**.
 Checked 2026-10-25: no agent route exists. The router is a Nest Wifi Pro: its local API is a single
 read-only endpoint, there are no Wi-Fi settings on home.google.com, there is no HA write integration and no
 emulator. Details are in Custos `docs/INTEGRATIONS.md`, "Router: DHCP reservations cannot be automated".
-SteveDesktop is on **Wi-Fi 2**, MAC `04:33:c2:68:51:5a`, and currently leases **192.168.86.87**, so reserve that.
+SteveDesktop is wired: Ethernet 3, MAC `D4:5D:64:B5:8D:D1`, reserved at **192.168.86.62** (owner, 2026-11-03).
 
 ### Step 3: Tailscale on Windows (2 min)
 When phase B reaches Tailscale, a browser tab opens at `login.tailscale.com`. If none opens,
@@ -387,7 +387,7 @@ Archmagi copies them back with
 ## Before you leave Monday: checklist
 
 - [ ] Step 1: green SSH READY box seen; the agent confirmed `lan_ssh PASS`
-- [ ] Step 2: DHCP reservation saved for SteveDesktop's MAC `04:33:c2:68:51:5a` → 192.168.86.87 (phone app only; agent route ruled out 2026-10-25)
+- [x] Step 2: DHCP reservation saved for SteveDesktop's wired MAC `D4:5D:64:B5:8D:D1` → 192.168.86.62 (owner, phone app, 2026-11-03; agents cannot read it back)
 - [ ] Step 3/6: Tailscale connected, both `stevedesktop` and `stevedesktop-wsl`
 - [ ] Step 4: key expiry disabled on **both** nodes; SSH rule is `accept`
 - [ ] Step 5: BIOS AC-restore = Power On, WoL on, ErP off
