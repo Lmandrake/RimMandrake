@@ -1,0 +1,1 @@
+When tightening a live clause, REPLACE its line in infrastructure/state/live_proofs/<ID>.criteria, never append a second 'A1 L1:' line: rimflow implemented refuses 'criterion A1 is listed twice' and the game phase dies after a green offline proof (MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG gen3->gen7).
