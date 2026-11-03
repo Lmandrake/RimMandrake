@@ -394,6 +394,20 @@ def visual_max(name, by_def, by_name):
     return None
 
 
+def registry_rule_errors(cs):
+    """RM_ExplosiveGrowthRegistry.cs must keep the rule registry_exempt_reason mirrors."""
+    flat = re.sub(r"\s+", " ", cs)
+    errs = []
+    for need in ("bool decided = choice != RM_ArchetypeChoice.Auto || fireFlag;",
+                 "|| (!decided && def.plant.growDays < ExplosiveGrowthSettings.minGrowDaysToSoak)",
+                 "if (isExempt || choice == RM_ArchetypeChoice.Exempt) a = RM_Archetype.Exempt;",
+                 "if (a == RM_Archetype.Exempt || a == RM_Archetype.Vanilla) p.top = RM_GrowthTop.None;",
+                 "if (ext != null) { enrolled = true; p.top = ext.top;"):
+        if need not in flat:
+            errs.append("missing: " + need)
+    return errs
+
+
 def grow_days(el, by_name):
     seen = set()
     while el is not None and id(el) not in seen:
@@ -616,6 +630,13 @@ def main():
             vm = visual_max(n, rby_def, rby_name)
             check("%s donor %s is below the registry's tree size (inherited visualSizeRange)" % (top, n),
                   vm is not None and vm < TREE_MIN_VISUAL_SIZE, vm)
+    # the mirror is only worth what the C# says: pin the registry's own decided/Exempt lines
+    regsrc = open(os.path.join(HERE, "Source", "RM_ExplosiveGrowthRegistry.cs"), encoding="utf-8").read()
+    check("registry C#: decided = archetype chosen or fireAdapted", registry_rule_errors(regsrc) == [],
+          registry_rule_errors(regsrc))
+    reg_mut = regsrc.replace("(!decided && def.plant.growDays", "(def.plant.growDays", 1)
+    check("control: a registry that exempts by growDays alone is refused", reg_mut != regsrc
+          and bool(registry_rule_errors(reg_mut)))
     sf = rrows.get("RM_FE_Plant_ScorchFruit")
     if sf is not None:
         bare = ET.fromstring(ET.tostring(sf))
@@ -729,6 +750,9 @@ def main():
     check("driver result_path: an --out inside the repo stays relative",
           same == r"Transient\n.json".replace(os.sep, "/"), same)
     dsrc = open(os.path.join(REPO, "src", "RimMandrake", "Utils", "northstar_driver", "cli.py"), encoding="utf-8").read()
+    check("driver's record_result takes the result path from result_path (no bare cross-drive relpath)",
+          "rel = result_path(out)" in dsrc and dsrc.count("os.path.relpath(os.path.abspath(out)") == 1
+          and dsrc.index("os.path.relpath(os.path.abspath(out)") > dsrc.index("def result_path("))
     check("driver's run calls the plan preflight through call_plan_preflight with --chains",
           "call_plan_preflight(plan, s, _csv(args.chains))" in dsrc and "plan.preflight(s) or []" not in dsrc)
 
