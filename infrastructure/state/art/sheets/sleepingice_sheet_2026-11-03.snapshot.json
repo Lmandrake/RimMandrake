@@ -1,0 +1,131 @@
+{
+ "biome": "RM_SleepingIce",
+ "built": "2026-11-03T02:46:59-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar/census/census.json",
+ "census_git_head": "0716297d8d",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_Zhissa": {
+   "columns": {
+    "A": {
+     "east": "7fe45737f5025e4487e5a936691f9b8068828505a86dc86b89b4efb16b800200",
+     "north": "8f0a90d7a75aca1578987928b88b33b92d56656bf87f15b133802b309b4ebf40",
+     "south": "dff87fe690976185e5bb7bf954cede90767864cd0ab9a9792dd8010a38aafe79"
+    },
+    "B": {
+     "east": "ac78eb5acf8a2243f7093eb818d3899d5f2606742fe6bd88efac4de548e6d998",
+     "north": "83f8a351f83ce5f41ae077906c769a83699bf0814f64a3e3e8cedd792e66a91f",
+     "south": "a4bb19f4354f250335851604645bcf4fa987a60b2dc68c1c972b39573d43c807"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa",
+    "B": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SleepingIce",
+    "B": "render nightside_zhissa"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa"
+   ],
+   "res": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "zhissa"
+  },
+  "RSW_CaveLemming": {
+   "columns": {
+    "A": {
+     "east": "1d9d2c449af5e83b6d614cc70780baa8ce0dbcb5c513933653b9653c6a58a955",
+     "north": "0cefb0a5841f3b7282c253c10ce483aa018c7b954f79d7054664bac32d25f071",
+     "south": "fda357d0e43770aef98d636f6dbe9dabb0ada2d64ed88415aea6e4c5487e305e"
+    },
+    "B": {
+     "east": "1d9d2c449af5e83b6d614cc70780baa8ce0dbcb5c513933653b9653c6a58a955",
+     "north": "3f6e1e8cb8f8aaf1da96c1078ac06b8a13a729ccc9c5f4656656debb38c71963",
+     "south": "fda357d0e43770aef98d636f6dbe9dabb0ada2d64ed88415aea6e4c5487e305e"
+    },
+    "C": {
+     "east": "22e9996b2a717b3e5eab916f893b770ec541a2605dec1b1d5a79dde316a7f86b",
+     "north": "8e3d67c15d10edcd1cd1e041e98391c72a4088233d72a1dbf35e246dd8253126",
+     "south": "ca95c92e524c096bbfad950d22fa8cb85864f93dfe5ea6419c9ac60b8b6c8012"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render nightsideice_cavelemming_v1",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "cavelemming"
+  },
+  "RSW_Tauntaun": {
+   "columns": {
+    "A": {
+     "east": "27e976bc5fea092659db109edbe221d33ee507b3c72f6408e663e0eb6bd806f4",
+     "north": "d5141e04d0f4ac9a382dd7eb66690e8e4193c7cf5c24e3ef908f307766166c5b",
+     "south": "54256ce93ad9bb12ed2c9cdb4ba295404b8dc93b2875ff201e469b837cd5d4ec"
+    },
+    "B": {
+     "single": "b5bfe53a7b4c6d2f27734b81a5d5bc3a4b214fbe80995a72545fc7a6f5e8788b"
+    },
+    "C": {
+     "single": "7ed640fd312ce35e2b724c1339908d2102976f0c5c951430ac327b039e11e002"
+    },
+    "D": {
+     "single": "7f77472c26c0a1598222c0c8874a80b8b29864079f7d9213ec26ff15ce7ed5c2"
+    },
+    "E": {
+     "single": "d5f7e58037a4a5149a33234f865aea2dd36056bbbf13fa24dfcffc1568b50676"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+    "B": "swanimals/Tauntaun/Tauntaun_Dessicated",
+    "C": "swanimals/Tauntaun/Tauntaun_Dessicated",
+    "D": "swanimals/Tauntaun/Tauntaun_j_Dessicated",
+    "E": "swanimals/Tauntaun/Tauntaun_j_Dessicated"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "donor original \u2014 ?",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "donor original \u2014 ?"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
+   ],
+   "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "tauntaun"
+  }
+ },
+ "sheetId": "sleepingice_sheet_2026-11-03",
+ "snapshotId": "48cae8e42e790cf7"
+}

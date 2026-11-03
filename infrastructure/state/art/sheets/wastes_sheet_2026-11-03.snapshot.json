@@ -1,0 +1,1041 @@
+{
+ "biome": "RM_Wastes",
+ "built": "2026-11-03T02:49:11-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar/census/census.json",
+ "census_git_head": "0716297d8d",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_Boilbulb": {
+   "columns": {
+    "A": {
+     "single": "36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a"
+    },
+    "B": {
+     "single": "fdc2d7879c89d6844970fc2ebe02b2d1cfa5706b5d074945570db761962711f4"
+    },
+    "C": {
+     "single": "8283aed503282f242ff37aba443e28bbdc77c690ee012912fd3164bc0ed255eb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Boilbulb",
+    "B": "Things/Plant/RM_Boilbulb",
+    "C": "Things/Plant/RM_Boilbulb"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render enact_wlrmboilbulb_v1",
+    "C": "render enact_wlrmboilbulb_v2"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Boilbulb",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "boilbulb"
+  },
+  "RM_Boilhide": {
+   "columns": {
+    "A": {
+     "east": "eebe31da4ccbac17344c0969a4f3dc1bf1d8bbdd3e23c980bbf2418097d4b28a",
+     "north": "b2ecfffdbcd0345547c36be78ce1ce06eabe28c0da4fa6175360a56125e48491",
+     "south": "1ed04aa58035367f6c3aa40a87967087d7a0f1d08e192dda1197577dc0c64ce6"
+    },
+    "B": {
+     "east": "b81561d76a2e5441b3c8017195f5c8109a09715d58cdc63d2b396f8d7e45e708",
+     "north": "b02f5a8c0f4b09937794072856d727dbc2e8fcb60df0e7f8105f1c284dbfe579",
+     "south": "57644eafb76668cf4bd6fcc83e86ca8d893ad34c054e9b9c939ce7b7831a2571"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Boilhide/RM_Boilhide",
+    "B": "Things/Pawn/Animal/RM_Boilhide/RM_Boilhide"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Boilhide"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Boilhide/RM_Boilhide"
+   ],
+   "res": "Things/Pawn/Animal/RM_Boilhide/RM_Boilhide",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "boilhide"
+  },
+  "RM_Cinderfelt": {
+   "columns": {
+    "A": {
+     "single": "523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4"
+    },
+    "B": {
+     "single": "6332ba72adfda1869cb433437fbc1cdff5a127961a6f78a81ab7e94920567329"
+    },
+    "C": {
+     "single": "8e4c605403ca056986431b89229c7923975e0b1667537fc5b215448a337078c9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Cinderfelt",
+    "B": "Things/Plant/RM_Cinderfelt",
+    "C": "Things/Plant/RM_Cinderfelt"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render enact_wlrmcinderfelt_v1",
+    "C": "render enact_wlrmcinderfelt_v2"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Cinderfelt",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "cinderfelt"
+  },
+  "RM_DosimeterLawn": {
+   "columns": {
+    "A": {
+     "single": "65d3fe6a30830eb670502cbe0c31d9b372a83c7204a62cea3c2f54de3492eb1a"
+    },
+    "B": {
+     "single": "0174c4dad614a4ee78509a522ad43a268841c2f55dcb093cc8328459cd16c841"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/DosimeterLawn",
+    "B": "Things/Plant/DosimeterLawn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render enact_70af1db9_dosimeterlawn_v1"
+   },
+   "pools": [],
+   "res": "Things/Plant/DosimeterLawn",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dosimeterlawn"
+  },
+  "RM_Excretor": {
+   "columns": {
+    "A": {
+     "east": "5981c23205cd8ea36283527c273976e023f4d3a8ae212dd924f5fad1d8caedd9",
+     "north": "4954855ba40fcfb284a9c694592fd1b179e3849fc0b7fe97558c6aba902acd24",
+     "south": "a255f80a9b30b25961284e63807932267156a69824d768d2bb7bc0570d370757"
+    },
+    "B": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "7fe6f50df8a7e84c9f6874bb071cc38c22e5712d0d9687a9de75e6b765bc007b",
+     "south": "a0060ea348821f8c5ce276c5978c3cfcea454a428b7f25a0a1867bf4eaf82087"
+    },
+    "C": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79",
+     "south": "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e"
+    },
+    "D": {
+     "east": "e8660932434bc7a8ea4d9cd6703047fd8df579c77ee61010762d2082f8f5557e",
+     "north": "659de0e0c7fd9c913b86563c7ed9ac5b05d28aaca95dc6819d026b0a60f0d219",
+     "south": "4fcf648585a7e303ec12321f740f70a6ec7e1762d6659ed6b6916f55fce0cf91"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Excretor/RM_Excretor",
+    "B": "swanimals/FeralNerf/FeralNerf",
+    "C": "swanimals/FeralNerf/FeralNerf",
+    "D": "swanimals/FeralNerf/FeralNerf"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render leaningscrub_feralnerf_v1",
+    "D": "render enact_eb982163_excretor_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Excretor/RM_Excretor"
+   ],
+   "res": "Things/Pawn/Animal/RM_Excretor/RM_Excretor",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "excretor"
+  },
+  "RM_Frethik": {
+   "columns": {
+    "A": {
+     "east": "36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b",
+     "north": "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07",
+     "south": "85fbdaed3dafddd43dbf121783d7788efc3a9efea8a0b1d1ba139f116f3c7446"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Frethik/RM_Frethik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Frethik/RM_Frethik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Frethik/RM_Frethik",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "frethik"
+  },
+  "RM_Gravelgut": {
+   "columns": {
+    "A": {
+     "east": "6f32ab2de8f3be1a080c2d6b242c0b927a6e9b4cdb3c95584458163ef991775c",
+     "north": "04d237a5cc4ed241d9b7aa5ae4b7c9a59cea1a1c639a40b27bde70b1b183a0cb",
+     "south": "f3558b1cdeac8c77ec87f925cce82a33b0d8674b58bafc4ae3b38703511525fb"
+    },
+    "B": {
+     "east": "6f32ab2de8f3be1a080c2d6b242c0b927a6e9b4cdb3c95584458163ef991775c",
+     "north": "b79af8e8463e59e9aa1c0971e0f0bba7cc82a1c54a232810adfbd75d820a38a4",
+     "south": "b326d4fe49c6a984b691e2df4789f7eed8ef9ebb81d801665a7d8a53095b4656"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut",
+    "B": "Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Gravelgut"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "gravelgut"
+  },
+  "RM_Grimewing": {
+   "columns": {
+    "A": {
+     "east": "5e22117d2139dbeee076c9387d349af373d2d4c1b9eae611db8cf2a7e3d796ac",
+     "north": "0e920be353ffe11027bc7d20eaab072500b3e7c96bec7fbb489b47fc5a8ec8da",
+     "south": "e6cd68bb61888ee34447c63311f34cc863649129b59a56012a808e2155dae8f9"
+    },
+    "B": {
+     "east": "5e22117d2139dbeee076c9387d349af373d2d4c1b9eae611db8cf2a7e3d796ac",
+     "north": "0e920be353ffe11027bc7d20eaab072500b3e7c96bec7fbb489b47fc5a8ec8da",
+     "south": "d51bfedc2dda64911a319834a0b132cf53593ed683f5b8f64fc48313a3981a94"
+    },
+    "C": {
+     "east": "089e3db0a207ea5fb185980678567b8007cbc142b58e37cfef8d41608c9ae3f4",
+     "north": "40cac81c524dd4ebd41d3aaa77321abab6ab6be2c75371621641c947e740b771",
+     "south": "3fe4f28d82fd2f54bd1bbb896051a305e8c29872d8bd34fc09ea531915f461a9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Grimewing/RM_Grimewing",
+    "B": "Things/Pawn/Animal/RM_Grimewing/RM_Grimewing",
+    "C": "Things/Pawn/Animal/RM_Grimewing/RM_Grimewing"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Grimewing_v2",
+    "C": "render RM_Grimewing"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Grimewing/RM_Grimewing"
+   ],
+   "res": "Things/Pawn/Animal/RM_Grimewing/RM_Grimewing",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "grimewing"
+  },
+  "RM_Gripper": {
+   "columns": {
+    "A": {
+     "east": "6e8d9b74a22398b267672ba6bf6d9909d8121ba4dded385c40ad9390b398911d",
+     "north": "cc4c48969cf211ccd8a4c4f34b09525d6e89c47cf82170c5c48d701495f01302",
+     "south": "d9fb751b15daea96838108500989b37a664fc60b540693be04278f19b6c5ce96"
+    },
+    "B": {
+     "east": "6e8d9b74a22398b267672ba6bf6d9909d8121ba4dded385c40ad9390b398911d",
+     "north": "fa3981d5591ba6b8454d0d864b14b7941b4c8bb2ac4d0756706e5b123b946374",
+     "south": "b11fcf8ecaf5cad07b3c8e52c7c516de915018ff6f6dfa9c8b876a6bfb167280"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gripper/RM_Gripper",
+    "B": "Things/Pawn/Animal/RM_Gripper/RM_Gripper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "history Wasteland 2026-09-29"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gripper/RM_Gripper"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gripper/RM_Gripper",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "gripper"
+  },
+  "RM_Gristleswarm": {
+   "columns": {
+    "A": {
+     "east": "2b9be6100e45adb6c14d2cf6baad8be7b9e65ad741abf1a73ead648413c0368f",
+     "north": "5ec9743c6ea0efc99f725e840a29feb572b1ca5db62a641db124b80a2d69ffe4",
+     "south": "06f3762cf5e647249c30f53d6d80bc0d6bd13834ee1a7111e18ca6510a4e9dc3"
+    },
+    "B": {
+     "east": "e3def6e2528fbdab0adc2d6752556ec3f7688accad3a7ede38b7d26f730bb497",
+     "north": "19d48d74ad133bddeaf1113ee2782679a43c70d762217dea1d5d2902f27d731e",
+     "south": "61df1d5afd3e889c534f82637d18c88dfa0dcf2167b8fe0ec1201f53c3a7003a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm",
+    "B": "Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Gristleswarm"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "gristleswarm"
+  },
+  "RM_Kroffa": {
+   "columns": {
+    "A": {
+     "east": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+     "north": "6482740f9a17d1555738c449e2eeca073314009df1453aeca9264238f91c3dca",
+     "south": "f5fd97a32800110ee7b609cffa955f750b1441886d41a883c10fec9368b47c3a"
+    },
+    "B": {
+     "east": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+     "north": "6482740f9a17d1555738c449e2eeca073314009df1453aeca9264238f91c3dca",
+     "south": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573"
+    },
+    "C": {
+     "east": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+     "north": "410d3f53ba9a0a9eaf14d0724ec45e36ec74db3db5aff7fe153020a35711e69f",
+     "south": "f5fd97a32800110ee7b609cffa955f750b1441886d41a883c10fec9368b47c3a"
+    },
+    "D": {
+     "east": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+     "north": "410d3f53ba9a0a9eaf14d0724ec45e36ec74db3db5aff7fe153020a35711e69f",
+     "south": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Kroffa/RM_Kroffa",
+    "B": "Things/Pawn/Animal/RM_Kroffa/RM_Kroffa",
+    "C": "Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale",
+    "D": "Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render standtall_b1_rm_kroffa",
+    "C": "IN GAME \u2014 Wastes",
+    "D": "render standtall_b1_rm_kroffafemale"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Kroffa/RM_Kroffa"
+   ],
+   "res": "Things/Pawn/Animal/RM_Kroffa/RM_Kroffa",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "kroffa"
+  },
+  "RM_Pusberry": {
+   "columns": {
+    "A": {
+     "single": "f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9"
+    },
+    "B": {
+     "single": "b11338aa88bfdd7bf6cb03a0f22f1c0ec135a67fd978bc540d6da6096bdff1f6"
+    },
+    "C": {
+     "single": "c94a85b3aa3d1d1225fd98c7f2da87a1960607452213178bb550538c4ebb43eb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Pusberry",
+    "B": "Things/Plant/RM_Pusberry",
+    "C": "Things/Plant/RM_Pusberry"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render enact_wlrmpusberry_v1",
+    "C": "render enact_wlrmpusberry_v2"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Pusberry",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "pusberry"
+  },
+  "RM_Scabspinner": {
+   "columns": {
+    "A": {
+     "east": "ce5eb56add51caf983d5d62811bb03a9b63e15e4779138f36dfce58e859acb92",
+     "north": "472f2bb941428993092c66e934aac8e0a31a974276c3e92565958481cb1b1460",
+     "south": "559efd0f9e840d38a31ea1d8623931d9a4ef1efa291c4de72d39d0c86329d443"
+    },
+    "B": {
+     "east": "ce5eb56add51caf983d5d62811bb03a9b63e15e4779138f36dfce58e859acb92",
+     "north": "facd22c95ae64b0c9749ed9af0036bb8ae593e6aa3cfcc448d01acea3d7f79a8",
+     "south": "f9447052f2a6c2c71169943c625761a09e6e9ab8592439686d330b05027babb7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner",
+    "B": "Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Scabspinner"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner"
+   ],
+   "res": "Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "scabspinner"
+  },
+  "RM_Scumgrass": {
+   "columns": {
+    "A": {
+     "single": "29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489"
+    },
+    "B": {
+     "single": "0c6a2dcb9bc15519016000ddd7d2f470217c3424a75c3fb99413ca9b26c4042b"
+    },
+    "C": {
+     "single": "d273410613db5f571e2d08a13f32195c6a9a95a7d9076ef1ccaf2a843d542996"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Scumgrass",
+    "B": "Things/Plant/RM_Scumgrass",
+    "C": "Things/Plant/RM_Scumgrass"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render enact_wlrmscumgrass_v1",
+    "C": "render enact_wlrmscumgrass_v2"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Scumgrass",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "scumgrass"
+  },
+  "RM_Scumslider": {
+   "columns": {
+    "A": {
+     "east": "ef966fb79e51dc9b79959a61a256bf79250bf5741eae89853b1e813ef1d12f46",
+     "north": "53e768fe675d8f09baab4c6dbd9a9d735e6d21a3653d328035027e0e470056f8",
+     "south": "9c5002c38ae2407d301bc825e755792904b11cfde9b4721d3f58c9cdf512fcbf"
+    },
+    "B": {
+     "east": "ef966fb79e51dc9b79959a61a256bf79250bf5741eae89853b1e813ef1d12f46",
+     "north": "53e768fe675d8f09baab4c6dbd9a9d735e6d21a3653d328035027e0e470056f8",
+     "south": "761ff7c587ee391ce8fc13c139e9cc9efa7876aa6afb7b912210b14dc10f7d02"
+    },
+    "C": {
+     "east": "ef966fb79e51dc9b79959a61a256bf79250bf5741eae89853b1e813ef1d12f46",
+     "north": "017a385dd8178129baecc97985c3cc5e767fd58d64d96adb606e92807f4b3bf3",
+     "south": "761ff7c587ee391ce8fc13c139e9cc9efa7876aa6afb7b912210b14dc10f7d02"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Scumslider/RM_Scumslider",
+    "B": "Things/Pawn/Animal/RM_Scumslider/RM_Scumslider",
+    "C": "Things/Pawn/Animal/RM_Scumslider/RM_Scumslider"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render standtall_b1_rm_scumslider",
+    "C": "render RM_Scumslider"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Scumslider/RM_Scumslider"
+   ],
+   "res": "Things/Pawn/Animal/RM_Scumslider/RM_Scumslider",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "scumslider"
+  },
+  "RM_Slagmole": {
+   "columns": {
+    "A": {
+     "east": "598272ecb35b158d3a190bb7b1bc2237e78ba5158e64470c3f6a40a536eaf126",
+     "north": "592adc365492331669861fc17e5ad8d51907da683c10a6b4de24c153ce51fe99",
+     "south": "c0f999b454d52876071b8cef4fab58261ac008330d480a8143ca893d313273aa"
+    },
+    "B": {
+     "east": "598272ecb35b158d3a190bb7b1bc2237e78ba5158e64470c3f6a40a536eaf126",
+     "north": "47a718ddf067049903ffbc8e09037cb108fa867ec0413629963cba9e4a3984ee",
+     "south": "9b3c5d06762b8f8abb92e2a6b7c35fc52f095624c002e16b972738daf94ed547"
+    },
+    "C": {
+     "east": "9342f74b7087624a5c61293403788bfbfaf1333abc453f01d106c45f428745fb",
+     "north": "1a514833ee68fb15262f7f3104c84901d695fc2ff190af19d0c521af4f8a59f5",
+     "south": "01a05b711eae9c099a8c0bf67ac2c874945e48443cf3ff5c2db9ef6818d2014a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Slagmole/RM_Slagmole",
+    "B": "Things/Pawn/Animal/RM_Slagmole/RM_Slagmole",
+    "C": "Things/Pawn/Animal/RM_Slagmole/RM_Slagmole"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Slagmole_v2",
+    "C": "render RM_Slagmole"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Slagmole/RM_Slagmole"
+   ],
+   "res": "Things/Pawn/Animal/RM_Slagmole/RM_Slagmole",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "slagmole"
+  },
+  "RM_Sloghog": {
+   "columns": {
+    "A": {
+     "east": "95daf62d30ac97289953999a894b58bcfe751268e1e17f2ae3f9dee79d939747",
+     "north": "5fe059ba5748a1b22a8248b604ea97274983201ccd9bcf536ca6e25bb3b9b756",
+     "south": "e414f648f51f6e118bda24819d49c8580956fad56313b632d6ed736cb2c13bf2"
+    },
+    "B": {
+     "east": "95daf62d30ac97289953999a894b58bcfe751268e1e17f2ae3f9dee79d939747",
+     "north": "5fe059ba5748a1b22a8248b604ea97274983201ccd9bcf536ca6e25bb3b9b756",
+     "south": "5edec1c73bb712bb46fe3b697d97eb982f8dfa429fd8dc87f33304fc4e2ec1a4"
+    },
+    "C": {
+     "east": "95daf62d30ac97289953999a894b58bcfe751268e1e17f2ae3f9dee79d939747",
+     "north": "6264db9e62adb0f50fb49855b16937a7cbbf92da1a6f2547de671e1f7e5ce6cf",
+     "south": "5edec1c73bb712bb46fe3b697d97eb982f8dfa429fd8dc87f33304fc4e2ec1a4"
+    },
+    "D": {
+     "east": "5d1160e66a8b6a85f35763ff07ccbf290519de34b95a88f7ee7dc4740870fd39",
+     "north": "4889cb580ed985448e7ef5f1c9ea7f94097586f27bcb47b55da1483f5c035378",
+     "south": "dd790a79ca40d86951372ea86dae51f2bd7692b6772f9b426943cb139b6525a6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog",
+    "B": "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog",
+    "C": "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog",
+    "D": "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render standtall_b1_rm_sloghog",
+    "C": "render RM_Sloghog_v2",
+    "D": "render RM_Sloghog"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog"
+   ],
+   "res": "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "sloghog"
+  },
+  "RM_Smolderback": {
+   "columns": {
+    "A": {
+     "east": "cb49d862fb8542176e38323320daad1e221d5607051b0a70a76ff3cd6ff24319",
+     "north": "535d5938d5e60a6e32448e3aa84f23b78f39c33064bf35e76429bfaae413a0de",
+     "south": "4754cbb35ab6bc7e26cf714132d36449999930fd00f888bfe3f4f618bf7ef13f"
+    },
+    "B": {
+     "east": "cb49d862fb8542176e38323320daad1e221d5607051b0a70a76ff3cd6ff24319",
+     "north": "91055e48c48a36b0961a6f75f959b8f52fb8ce6f9bbb90965b4113b03a9af16e",
+     "south": "650df4245a5d8eb0de0d04b49338445a33daa47609b371c6536d8bd18eb588c4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Smolderback/RM_Smolderback",
+    "B": "Things/Pawn/Animal/RM_Smolderback/RM_Smolderback"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Smolderback"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Smolderback/RM_Smolderback"
+   ],
+   "res": "Things/Pawn/Animal/RM_Smolderback/RM_Smolderback",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "smolderback"
+  },
+  "RM_SootGristleswarm": {
+   "columns": {
+    "A": {
+     "east": "e2cf1c818f2d3bc32083f390d45a20959c0a47262cbb8a006fa3c26186f758bb",
+     "north": "550d5f73937d3feb8fec25a6c265bd65cee68eb2817a016aaf44b43e0066a770",
+     "south": "170da4a40d55345e2851ce2dc998fdc9416fc7478a9eb7b2cfd382ad9ce444c2"
+    },
+    "B": {
+     "east": "e2cf1c818f2d3bc32083f390d45a20959c0a47262cbb8a006fa3c26186f758bb",
+     "north": "436ddc37ef4d5ea99eef2a988144495f13636e20f7b398846731ec927bc32944",
+     "south": "fe389fa57e3c2164df5034e26523e4a93cec873df1a5888038023224486a973a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm",
+    "B": "Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_SootGristleswarm"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm"
+   ],
+   "res": "Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sootgristleswarm"
+  },
+  "RM_Sootgrazer": {
+   "columns": {
+    "A": {
+     "east": "5965334b78625879dd093f9afc4e402c41d61b2dea403911466f8cc084502fd3",
+     "north": "8a458b7648dc090624dcd9cc5e4dacd65350d4bf34df1a56c91a823a7c685a28",
+     "south": "1d667a95330cb90cba703b5bdd09826587045f4bc4c5e199634c781df9c896fc"
+    },
+    "B": {
+     "east": "5965334b78625879dd093f9afc4e402c41d61b2dea403911466f8cc084502fd3",
+     "north": "c30e6e21994f0516949bc19005211d77ba62a10f86cc8c23e6a00b45e2268ccf",
+     "south": "d676b169cfded013622f9eb142ae64e989084d7c7caedc7957cc593354c25a16"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer",
+    "B": "Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render RM_Sootgrazer"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer"
+   ],
+   "res": "Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sootgrazer"
+  },
+  "RM_Wartshrub": {
+   "columns": {
+    "A": {
+     "single": "b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6"
+    },
+    "B": {
+     "single": "312f81b9f0f8be6846adfa08c2d14cff924cc88d255f6e3c806bf8c4227c603b"
+    },
+    "C": {
+     "single": "7923857e6c5a8eb5028e17708e687445016bc1e21f66e035a2708a5d26c925ae"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Wartshrub",
+    "B": "Things/Plant/RM_Wartshrub",
+    "C": "Things/Plant/RM_Wartshrub"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wastes",
+    "B": "render enact_wlrmwartshrub_v1",
+    "C": "render enact_wlrmwartshrub_v2"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Wartshrub",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "wartshrub"
+  },
+  "RM_WastesScorchedStars": {
+   "columns": {
+    "A": {
+     "single": "a7e49981d9e886d434795718a91e591215dd7dd8e02b653bbaba625c15d0e712"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_WastesScorchedStars"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_WastesScorchedStars_a (1 of 1) \u2014 Wastes"
+   },
+   "pools": [
+    "Things/Plant/RM_WastesScorchedStars"
+   ],
+   "res": "Things/Plant/RM_WastesScorchedStars",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "wastesscorchedstars"
+  },
+  "RSW_BloodletterPetrel": {
+   "columns": {
+    "A": {
+     "east": "4faee1441bf430f3856d67b4541990300603fee8eeb51aed1788c84c2e154d1f",
+     "north": "1604db905f056c9a754fadab45d4810224efae9728a56296f3d990f717be0785",
+     "south": "ac4dda9f8d668953d877ea9a6921883657481d25dad51dc1f515efad543f603a"
+    },
+    "B": {
+     "east": "4faee1441bf430f3856d67b4541990300603fee8eeb51aed1788c84c2e154d1f",
+     "north": "b2196578ed2d77341956542b1bc51d00794240edc61afffef9a5ac97edded4cf",
+     "south": "c25482ae15f745d5ef06d3ade8a5cf29ed01bc156f63df795053ffb0d54a2ed1"
+    },
+    "C": {
+     "north": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c"
+    },
+    "D": {
+     "1_east": "ca22126c0caf71f83645458db6f26bdc6709bc9b50a6ed6e6c8ae35e395916f9",
+     "1_north": "36fcdbf197abe7b90a59acd6e9b113c84a4eb8e423dc2d5ba01e1d145ed4c3bc",
+     "1_south": "ca714dc15d545db8b35689680b1160b6f470811259ef827da7d9143d3bdb61c1"
+    },
+    "E": {
+     "single": "64fdb8cc041ffe3eb19a95ebbbadabdc161185169155553219d4e1f466f71dd5"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+    "D": "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_Flying_",
+    "E": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_cb3cf916_bloodletterpetrel_v1",
+    "C": "history SWBestiary 2026-09-18",
+    "D": "IN GAME \u2014 BloodletterPetrel_Flying_",
+    "E": "render enact_be9b913e_bloodletterpetrel_v1"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "bloodletterpetrel"
+  },
+  "RSW_Borcatu": {
+   "columns": {
+    "A": {
+     "east": "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
+     "north": "aa3e2203f65614428135d2221d58bd1398a440d0f459a9f6ee4196779bbdd01a",
+     "south": "f4db9021aa3f93eb88f9d1478068bc1e030680da0438e3666f38de530bdd97f9"
+    },
+    "B": {
+     "east": "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
+     "north": "941a3f997093ef9dfff97bbc224a8e0588218c54101733b0b52cc90c475ec038",
+     "south": "799fafa69e2ce8147b2816f7a61ff7579ebe3dd019dda5daca3cd62362d9cf0c"
+    },
+    "C": {
+     "east": "fc74e123c6ce3d922aacd3094edb655f6cfee62dbff64851cef56360a2a01b90",
+     "north": "0daef52061f87844f76494af23057913b55356b0936a1bd49559a8a2e0fd1620",
+     "south": "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868"
+    },
+    "D": {
+     "east": "afae421cc28ed8efdcf47960766562cac0dc2b2401a1f734db55e5d9b9fb36f4",
+     "south": "e6f9789cc0bab81142caea1b792b9160c80c5ca93d3a088b4fbe3503d3e7a5f4"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Borcatu/Borcatu",
+    "B": "swanimals/Borcatu/Borcatu",
+    "C": "swanimals/Borcatu/Borcatu",
+    "D": "swanimals/Borcatu/Borcatu"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render canon_borcatu_v1",
+    "C": "history SWBestiary 2026-09-13",
+    "D": "render enact_wlborcatu_quills_v1 \u2014 grader flagged (advisory)"
+   },
+   "pools": [
+    "swanimals/Borcatu/Borcatu"
+   ],
+   "res": "swanimals/Borcatu/Borcatu",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "borcatu"
+  },
+  "RSW_Sacapillar": {
+   "columns": {
+    "A": {
+     "east": "02e358ac7c776b4f21f676fd90d39077c9ea4e5893bfd612fc8245bac693bdf4",
+     "north": "97e9a07ac6fd4975823deddb99ac6cdd9bb08ecd590be77f0ab2223f0b5a8b23",
+     "south": "aae3bb2473d6091167bbfab82aa5cd518d2ea5236e203fdd17942bad5f2227eb"
+    },
+    "B": {
+     "east": "aa4a2166f6de21498f4a4cc10ca5069c245388825590b9034ac852382c2336c5",
+     "north": "d6e4d0aaad7f1b6eb59badbbb961a7194df9bb5561641814b3aa4d9d93e0a090",
+     "south": "6ec1734c749ac2536ce8d69a8d2d940386567b7e218a833e15ece1995b7a7de1"
+    },
+    "C": {
+     "east": "02e358ac7c776b4f21f676fd90d39077c9ea4e5893bfd612fc8245bac693bdf4",
+     "north": "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3",
+     "south": "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_98858bc5_sacapillar_v1",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sacapillar"
+  },
+  "RSW_Screecher": {
+   "columns": {
+    "A": {
+     "east": "47c429684e185a6457c9896b64a7d62cb84fb95a575efbfe4b591cff21a2701a",
+     "north": "8758ba9fbb3d5574caf8ad3e5ed193b21108cded00c5bc98cdb1db3ac179e928",
+     "south": "c285bf38d436c1ab2493c979616cde6e6bff9fa0038f76ada8b9578cda79741f"
+    },
+    "B": {
+     "east": "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
+     "north": "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
+     "south": "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02"
+    },
+    "C": {
+     "east": "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
+     "north": "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
+     "south": "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1"
+    },
+    "D": {
+     "1_east": "37e661b2c97cef6401128e3d875f8e2c3a77679ec272ac975a5d19a4ee5d022e",
+     "1_north": "7a4295d1173e17636d561a7b20829387971b813984b7e72f39939415e6df38cc",
+     "1_south": "bc5d3fb176422bd6aaa618d0f679d29544c2ae0d789da4c54cf2f5dab6179246"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+    "D": "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
+    "C": "history SWBestiary 2026-09-18",
+    "D": "IN GAME \u2014 Screecher_Flying_"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "screecher"
+  },
+  "RUT_BrineBattery": {
+   "columns": {
+    "A": {
+     "east": "1791b798b28558cb16dd55ea569d15d0307fab600a2620cd9157a7633576f63d",
+     "north": "cf41cd482c553f495d3e41876d99564c8870e20faf96fd35a01ab2b9dc645e80",
+     "south": "3f0287bea642821b38c6e774f9bbd3e0b17348509e67b78aaf81107109fe7413"
+    },
+    "B": {
+     "east": "bc86008b345c5789b144061b7aaadf9a490637c3b9200f9ff78a51832cfcd00a",
+     "north": "5927f6bb4010a1d68cbd4670e74009100e5a615c8e1b4df27cd43ad76451c608",
+     "south": "25f7089f0700ee5741b4ee33216c5f5ad8853dcb1402b986af7cf609ef43af8b"
+    },
+    "C": {
+     "east": "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c",
+     "north": "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284",
+     "south": "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+    "B": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+    "C": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render enact_f26c7759_brinebattery_v1",
+    "C": "history UtinniPatches 2026-10-03"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   ],
+   "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "brinebattery"
+  },
+  "VAEWaste_Megatardi": {
+   "columns": {
+    "A": {
+     "east": "69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3",
+     "north": "ad4d54079c2956a450ec3c8e2ff6970c4b6fce8cd580309164dc163f8c47ec22",
+     "south": "d1362370cf1c095a11e6c055cc6bbb2b941e2e9e1adf0ab2b29602e59e71b696"
+    },
+    "B": {
+     "south": "a6852f208b6536f55d7e51f05a58513c4a3266e923d70da35614eaf15f1c2d63"
+    },
+    "C": {
+     "east": "e729ec86d22bdbfda9dc2c8348a1ad6708635095352eed748e198ef8a4384166"
+    },
+    "D": {
+     "east": "69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3",
+     "north": "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7",
+     "south": "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee"
+    },
+    "E": {
+     "north": "f97db5c60558e3116d122b142fc271ba8223d9f9dbd396e151eab93f6153a1af",
+     "south": "96ff1a4ffb775dafb9383973ab35aaea1f0c924ef7e6c65efb3bd8903b96f733"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "B": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "C": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "D": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "E": "Things/Pawn/Animal/Megatardi/Megatardi"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render facingrepair_megatardi_v1",
+    "C": "history UtinniPatches 2026-09-11",
+    "D": "history UtinniPatches 2026-09-20",
+    "E": "render enact_wlmegatardi_ns_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Megatardi/Megatardi"
+   ],
+   "res": "Things/Pawn/Animal/Megatardi/Megatardi",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "vaewaste_megatardi"
+  }
+ },
+ "sheetId": "wastes_sheet_2026-11-03",
+ "snapshotId": "b607472a82a2531c"
+}
