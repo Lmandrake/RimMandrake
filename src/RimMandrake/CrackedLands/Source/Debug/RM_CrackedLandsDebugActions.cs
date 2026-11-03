@@ -1,4 +1,5 @@
 using LudeonTK;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.CrackedLands
@@ -236,6 +237,87 @@ namespace RimMandrake.CrackedLands
                 }
             }
             Log.Message("[RMCrackedLandsDebug] taught=" + n);
+        }
+        // CRACKEDLANDS_THREE_HEIGHT_FLORA_1 verify: STATE reads of the three flora laws, never a screenshot hunt.
+        // The report counts every qirra / clasp / veqma on the map and how many stand where their law fails
+        // (qirraOffWet, claspOffWall, veqmaOverGlow); the "try" actions place through the production route
+        // (CanEverPlantAt, which carries the laws) at random cells, so a nonzero "off" count after them is a law leak.
+        [DebugAction(CAT, "Report three-height flora (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ReportFlora()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            RM_MapComponent_ThreeHeightFlora comp = map.GetComponent<RM_MapComponent_ThreeHeightFlora>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_ThreeHeightFlora on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] flora: " + comp.DebugReport());
+        }
+
+        [DebugAction(CAT, "Try qirra and talus clasps on 600 random cells (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void TryFlora()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            int q = 0, c = 0, wallTried = 0, qOff = 0, cOff = 0;
+            for (int i = 0; i < 600; i++)
+            {
+                IntVec3 cell = CellFinder.RandomCell(map);
+                if (cell.GetPlant(map) != null || cell.GetEdifice(map) != null) continue;
+                if (RM_FloraLaws.NaturalWallCardinals(cell, map) > 0) wallTried++;
+                if (RM_ThreeHeightFloraDefOf.RM_QirraMat.CanEverPlantAt(cell, map))
+                {
+                    GenSpawn.Spawn(RM_ThreeHeightFloraDefOf.RM_QirraMat, cell, map);
+                    q++;
+                    if (!RM_FloraLaws.QirraGround(cell, map)) qOff++;
+                }
+                else if (RM_ThreeHeightFloraDefOf.RM_TalusClasp.CanEverPlantAt(cell, map))
+                {
+                    GenSpawn.Spawn(RM_ThreeHeightFloraDefOf.RM_TalusClasp, cell, map);
+                    c++;
+                    if (RM_FloraLaws.NaturalWallCardinals(cell, map) == 0) cOff++;
+                }
+            }
+            // A wall-foot sweep too, so a map whose random cells missed every wall still tests the clasp's yes-side.
+            foreach (IntVec3 cell in map.AllCells)
+            {
+                if (c >= 40) break;
+                if (cell.GetPlant(map) == null && cell.GetEdifice(map) == null && RM_FloraLaws.NaturalWallCardinals(cell, map) > 0
+                    && RM_ThreeHeightFloraDefOf.RM_TalusClasp.CanEverPlantAt(cell, map) && Rand.Chance(0.2f))
+                {
+                    GenSpawn.Spawn(RM_ThreeHeightFloraDefOf.RM_TalusClasp, cell, map);
+                    c++;
+                    if (RM_FloraLaws.NaturalWallCardinals(cell, map) == 0) cOff++;
+                }
+            }
+            // The placed-off counts judge THIS action's placements only; the report's qirraOffWet / claspOffWall also
+            // count older plants that are legitimately dying back after their law lapsed.
+            Log.Message("[RMCrackedLandsDebug] flora try: qirraPlaced=" + q + " qirraPlacedOffWet=" + qOff + " claspPlaced=" + c
+                + " claspPlacedOffWall=" + cOff + " wallFootTried=" + wallTried
+                + " flora: " + map.GetComponent<RM_MapComponent_ThreeHeightFlora>()?.DebugReport());
+        }
+
+        [DebugAction(CAT, "Pry a crack with the first grown talus clasp (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void PryNow()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            RM_MapComponent_ThreeHeightFlora comp = map.GetComponent<RM_MapComponent_ThreeHeightFlora>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_ThreeHeightFlora on this map."); return; }
+            foreach (Thing t in map.listerThings.ThingsOfDef(RM_ThreeHeightFloraDefOf.RM_TalusClasp))
+            {
+                Plant p = (Plant)t;
+                p.Growth = 1f;
+                IntVec3 cut = comp.TryPry(p, true);
+                if (cut.IsValid)
+                {
+                    Log.Message("[RMCrackedLandsDebug] pried: cell=" + cut + " now=" + cut.GetEdifice(map)?.def.defName
+                        + " flora: " + comp.DebugReport());
+                    return;
+                }
+            }
+            Log.Message("[RMCrackedLandsDebug] pried: none (no clasp touches non-resource natural rock) flora: " + comp.DebugReport());
         }
     }
 }

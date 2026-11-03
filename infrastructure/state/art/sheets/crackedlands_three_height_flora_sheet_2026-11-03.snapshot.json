@@ -1,0 +1,51 @@
+{
+ "biome": "SUBJECTS_crackedlands_three_height_flora",
+ "built": "2026-11-03T01:15:14-0800",
+ "census": "Transient/biome_ffar/crackedlands_three_height_flora.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 30 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_QirraMat": {
+   "columns": {
+    "A": {
+     "single": "31eef54f7527948e6a97bfe37435e3f7482fccfc29d1060d1c81045da17d1d20"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_QirraMat"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_QirraMat",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "qirramat"
+  },
+  "RM_TalusClasp": {
+   "columns": {
+    "A": {
+     "single": "4d0388bf8551e22647274ca1e03100720b69d9ee4584367b6117fab8884e7167"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_TalusClasp"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_TalusClasp",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "talusclasp"
+  }
+ },
+ "sheetId": "crackedlands_three_height_flora_sheet_2026-11-03",
+ "snapshotId": "7f4a2105969acf5d"
+}

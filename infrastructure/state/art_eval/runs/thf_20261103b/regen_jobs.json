@@ -1,0 +1,17 @@
+[
+ {
+  "id": "arteval_RM_QirraMat_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_QirraMat",
+  "prompt": "A single flat ground-cover mat for a RimWorld plant sprite, drawn in painterly vanilla RimWorld style with visible brush texture, realistic, on a transparent background. The qirra mat is a thin crust spread in a wide low ellipse, viewed from above at a slight angle, lying flush against cracked canyon clay. Its body is made of thick, tightly packed rust-maroon scale-plates with angular margins like cracked clay, interlocking in an irregular tessellated pattern and radiating outward from a glistening wet seam at the centre. The plates are shallow and fleshy, lying pressed against the ground with every edge resting on the clay; the profile is flat and the whole growth reads as a crust. Colour runs from dry, dusty rust-brown at the rim to dark wet maroon at the recessed centre; the palette is entirely red-brown and rust-maroon. Plate surfaces are matte with textured painterly shading and visible brush marks; small restrained wet highlights sit only around the central seam. A thin, clean dark outline traces the outer edge of the mat and stays readable at normal zoom. The mat fills the tile and is centred, with no ground, no background and no other objects. It is an alien ground-cover with its own invented form. Reference: none; build the body from this description.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, LUMP, STYLE_OFF, STYLE_EARTHLY, DESC_MISS, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "thf_20261103b",
+  "drawsize": 1,
+  "module": "ground_cover"
+ }
+]

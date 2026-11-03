@@ -656,6 +656,66 @@ namespace RimMandrake.CrackedLands.SelfTest
             return null;
         }
 
+        // ════════════════════════ flora ════════════════════════
+        // CRACKEDLANDS_THREE_HEIGHT_FLORA_1: the three placement laws against an independent oracle built from a random
+        // 3x3 neighbourhood (light blockers, natural walls, roof, artificial light) and a random wet ledger.
+        public static long FloraAllowed, FloraRefused, QirraOk, ClaspOk;
+        public const float VeqmaMaxGlow = 0.625f;   // must equal RM_Veqma.xml's RM_GlowLimitExtension.maxGlow
+
+        private static string FloraCase(int seed)
+        {
+            var r = new Random(seed ^ 0x7F10);
+            for (int i = 0; i < 40; i++)
+            {
+                bool[] block = new bool[8];
+                int nb = 0;
+                for (int k = 0; k < 8; k++) { block[k] = r.Next(3) == 0; if (block[k]) nb++; }
+                bool roofed = r.Next(5) == 0;
+                float art = r.Next(3) == 0 ? (float)(r.NextDouble() * 0.5) : 0f;
+                float g = RM_FloraLawKernel.DaylightGlow(roofed, art, nb);
+                float oracle = roofed ? art : Math.Max(art, (8 - nb) / 8f);
+                Check(Near(g, oracle, 1e-5), $"glow {g} != oracle {oracle} (roofed={roofed} art={art} blockers={nb})");
+                Check(g >= 0f && g <= 1f, "glow out of [0,1]");
+                bool ok = RM_FloraLawKernel.GlowAllowed(g, VeqmaMaxGlow);
+                // the shade line: an open, unlit cell is shaded enough exactly when three or more of its eight neighbours block light
+                if (!roofed && art == 0f) Check(ok == (nb >= 3), $"veqma at {nb} blockers allowed={ok}");
+                if (roofed) Check(ok, "a roofed cell (artificial light caps at 0.5) must be shade");
+                if (!roofed && nb == 0) Check(!ok, "open sky with no blocker passed the shade law");
+                if (ok) FloraAllowed++; else FloraRefused++;
+                // a light can only brighten a cell, never shade it
+                Check(RM_FloraLawKernel.DaylightGlow(roofed, Math.Min(1f, art + 0.3f), nb) >= g - 1e-6, "more light made a cell darker");
+
+                int cardinals = r.Next(5);
+                bool clasp = RM_FloraLawKernel.ClaspCellOk(cardinals);
+                Check(clasp == (cardinals > 0), $"clasp law at {cardinals} wall cardinals = {clasp}");
+                if (clasp) ClaspOk++;
+
+                int now = r.Next(1, 2000000), until = r.Next(3) == 0 ? 0 : r.Next(1, 2000000);
+                bool wet = RM_FloraLawKernel.RecentlyWet(until, now);
+                Check(wet == (until > 0 && now < until), $"recently wet until={until} now={now} -> {wet}");
+                bool water = r.Next(6) == 0;
+                bool q = RM_FloraLawKernel.QirraCellOk(wet, roofed, water);
+                Check(q == (wet && !roofed && !water), "qirra truth table");
+                if (q) QirraOk++;
+            }
+            int good = r.Next(0, 600), cap = r.Next(0, 200);
+            float share = (float)r.NextDouble() * 1.2f;
+            int want = RM_FloraLawKernel.QirraWant(good, share, cap);
+            Check(want >= 0 && want <= good && want <= Math.Max(0, cap), $"qirra want {want} of {good} cap {cap}");
+            Check((want > 0) == (good > 0 && share > 0f && cap > 0), "qirra want zero exactly when nothing can wake");
+            int baseY = r.Next(0, 60); float bonus = (float)r.NextDouble();
+            int extra = RM_FloraLawKernel.MiningBonus(baseY, bonus);
+            Check(extra >= 0 && extra <= Math.Max(1, baseY), $"mining bonus {extra} on base {baseY}");
+            Check((extra > 0) == (baseY > 0 && bonus > 0f), "mining bonus sign");
+            int gap = r.Next(1, 600000), last = r.Next(-1, 1000000), t = last + r.Next(0, 1200000);
+            Check(RM_FloraLawKernel.PryAllowedNow(last, t, gap) == (last < 0 || t - last >= gap), "pry gap");
+            float mtb = (float)(r.NextDouble() * 120 + 0.5);
+            float p = RM_FloraLawKernel.ChancePerLongTick(mtb);
+            Check(Near(p, Math.Min(1.0, 2000.0 / (mtb * 60000.0)), 1e-6), "chance per long tick");
+            Check(RM_FloraLawKernel.ChancePerLongTick(0f) == 0f && RM_FloraLawKernel.ChancePerLongTick(-3f) == 0f, "mtb <= 0 must never fire");
+            return null;
+        }
+
         // ════════════════════════ runner ════════════════════════
         public static bool Run(double scale, int? oneSeed, string only)
         {
@@ -672,6 +732,7 @@ namespace RimMandrake.CrackedLands.SelfTest
                 ("rules", () => Family("rules", N(3000), S(1), RulesCase)),
                 ("arm", () => Family("arm", N(600), S(1), ArmCase)),
                 ("claim", () => Family("claim", N(2000), S(1), ClaimCase)),
+                ("flora", () => Family("flora", N(2000), S(1), FloraCase)),
             };
             foreach (var f in fam)
             {
@@ -684,12 +745,12 @@ namespace RimMandrake.CrackedLands.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: flood floods {Floods}, recedes {Recedes}, herald runs {HeraldRuns}, peakstorm pulls {Pulls}, forced recedes {ForcedRecedes}, chimes {Chimes}; cells {CellsMade}, raised {RaisedCells}, chime points {ChimePts}; refuge seekers {Seekers}, holds {Holds}, sends {Goes}, no-reach {NoReaches}; pan seals {Seals}, dig-ins {DigIns}, wakes {Wakes}, re-sleeps {Resleeps}; rules salvage {Salvage}, faces {Faces}, seams {Seams}, scores {Scores}; arm walls {ArmedWalls}, kept warnings {ArmKeptWarnings}, refusals {ArmRefusals}");
+            Console.WriteLine($"reached: flood floods {Floods}, recedes {Recedes}, herald runs {HeraldRuns}, peakstorm pulls {Pulls}, forced recedes {ForcedRecedes}, chimes {Chimes}; cells {CellsMade}, raised {RaisedCells}, chime points {ChimePts}; refuge seekers {Seekers}, holds {Holds}, sends {Goes}, no-reach {NoReaches}; pan seals {Seals}, dig-ins {DigIns}, wakes {Wakes}, re-sleeps {Resleeps}; rules salvage {Salvage}, faces {Faces}, seams {Seams}, scores {Scores}; arm walls {ArmedWalls}, kept warnings {ArmKeptWarnings}, refusals {ArmRefusals}; flora allowed {FloraAllowed}, refused {FloraRefused}, qirra ok {QirraOk}, clasp ok {ClaspOk}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 if (Floods == 0 || Recedes == 0 || HeraldRuns == 0 || Pulls == 0 || ForcedRecedes == 0 || Chimes == 0 || CellsMade == 0 || RaisedCells == 0 || Seekers == 0 || Holds == 0 || Goes == 0 || NoReaches == 0
                     || Seals == 0 || DigIns == 0 || Wakes == 0 || Resleeps == 0 || Salvage == 0 || Faces == 0 || Seams == 0 || Scores == 0
-                    || ArmedWalls == 0 || ArmKeptWarnings == 0 || ArmRefusals == 0)
+                    || ArmedWalls == 0 || ArmKeptWarnings == 0 || ArmRefusals == 0 || FloraAllowed == 0 || FloraRefused == 0 || QirraOk == 0 || ClaspOk == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"crackedlands fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

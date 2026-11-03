@@ -133,6 +133,19 @@ namespace RimMandrake.CrackedLands
         // placed flood trigger / soak zone stays on the map as an inert marker; switching back on resumes them.
         public static bool floodTriggersEnabled = true;
         public static bool soakZonesEnabled = true;
+        // CRACKEDLANDS_THREE_HEIGHT_FLORA_1 (RM_ThreeHeightFlora.cs). Qirra mats: a recede wakes them on the open ground it
+        // wetted (share of the good cells, capped). Talus clasps: seeded beside fossil seams at map generation; they pry
+        // natural wall cells into fresh fossil seams (a letter each time, at most one per map per gap) and add a mining
+        // bonus beside them. The Veqma shade law is its glow limit (RM_Veqma.xml); off = the limit is not enforced.
+        public static bool qirraWakeEnabled = true;
+        public static float qirraWakeShare = 0.3f;
+        public static int qirraWakeMax = 120;
+        public static bool talusClaspsEnabled = true;
+        public static bool claspPryEnabled = true;
+        public static float claspPryMtbDays = 40f;
+        public static float claspPryGapDays = 5f;
+        public static float claspMiningBonus = 0.5f;
+        public static bool veqmaShadeLawEnabled = true;
 
         public override void ExposeData()
         {
@@ -174,6 +187,15 @@ namespace RimMandrake.CrackedLands
             Scribe_Values.Look(ref carvingMemoryEnabled, "carvingMemoryEnabled", true, true);
             Scribe_Values.Look(ref floodTriggersEnabled, "floodTriggersEnabled", true, true);
             Scribe_Values.Look(ref soakZonesEnabled, "soakZonesEnabled", true, true);
+            Scribe_Values.Look(ref qirraWakeEnabled, "qirraWakeEnabled", true, true);
+            Scribe_Values.Look(ref qirraWakeShare, "qirraWakeShare", 0.3f, true);
+            Scribe_Values.Look(ref qirraWakeMax, "qirraWakeMax", 120, true);
+            Scribe_Values.Look(ref talusClaspsEnabled, "talusClaspsEnabled", true, true);
+            Scribe_Values.Look(ref claspPryEnabled, "claspPryEnabled", true, true);
+            Scribe_Values.Look(ref claspPryMtbDays, "claspPryMtbDays", 40f, true);
+            Scribe_Values.Look(ref claspPryGapDays, "claspPryGapDays", 5f, true);
+            Scribe_Values.Look(ref claspMiningBonus, "claspMiningBonus", 0.5f, true);
+            Scribe_Values.Look(ref veqmaShadeLawEnabled, "veqmaShadeLawEnabled", true, true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -315,6 +337,50 @@ namespace RimMandrake.CrackedLands
                 list.CheckboxLabeled("Six extra native plants (restart to apply)", ref floraExpansionEnabled,
                     "Nabbuq, ruqqal, sevvuq, zennaq, luqqim and harrovaq in the wild roster. "
                     + "Off removes them from the roster on the next launch; the original plants stay.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Qirra mats", RimMandrake.Shared.SettingScope.NextPulse, new[] { "qirraWakeEnabled", "qirraWakeShare", "qirraWakeMax" }))
+            {
+                list.CheckboxLabeled("The recede wakes qirra mats", ref qirraWakeEnabled,
+                    "When a flood drains, red-brown qirra mats open on the open ground it wetted. They live only "
+                    + "while that ground is still wet (the soak decay window) and yield dye when cut. "
+                    + "Applies at the next recede.");
+                list.Label("Share of the wetted ground that wakes: " + qirraWakeShare.ToStringPercent());
+                qirraWakeShare = list.Slider(qirraWakeShare, 0f, 1f);
+                list.Label("Most mats one recede wakes: " + qirraWakeMax);
+                qirraWakeMax = (int)list.Slider(qirraWakeMax, 0f, 400f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The veqma's shade", RimMandrake.Shared.SettingScope.Now, new[] { "veqmaShadeLawEnabled" }))
+            {
+                list.CheckboxLabeled("The veqma grows only in shade", ref veqmaShadeLawEnabled,
+                    "The veqma's glow limit: it can be planted and lives only where daylight is shaded — the lee of "
+                    + "a wall (three or more of its eight neighbours block light), under a roof, or in a cave. "
+                    + "Off: it grows anywhere a plant can. Applies now; a veqma left in the open dies back.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Talus clasp seeding (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "talusClaspsEnabled" }))
+            {
+                list.CheckboxLabeled("Talus clasps beside the fossil seams (new maps)", ref talusClaspsEnabled,
+                    "Seeds pale talus clasps at the foot of natural walls beside fossil seams on newly generated maps "
+                    + "that carry seams. They only ever root touching natural wall rock.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Talus clasps at work", RimMandrake.Shared.SettingScope.Now, new[] { "claspPryEnabled", "claspPryMtbDays", "claspPryGapDays", "claspMiningBonus" }))
+            {
+                list.CheckboxLabeled("Clasps pry cracks wider", ref claspPryEnabled,
+                    "A grown clasp now and then pries the natural wall it grips into a fresh fossil seam, and you "
+                    + "get a letter. Off: clasps never change the rock.");
+                list.Label("Days between pries, per clasp (mean): " + claspPryMtbDays.ToString("0"));
+                claspPryMtbDays = list.Slider(claspPryMtbDays, 5f, 200f);
+                list.Label("Fewest days between two cracks on one map: " + claspPryGapDays.ToString("0.0"));
+                claspPryGapDays = list.Slider(claspPryGapDays, 0f, 30f);
+                list.Label("Extra yield mining rock beside a clasp: " + claspMiningBonus.ToStringPercent());
+                claspMiningBonus = list.Slider(claspMiningBonus, 0f, 2f);
                 list.GapLine();
             }
 

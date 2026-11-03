@@ -93,6 +93,8 @@ namespace RimMandrake.CrackedLands
             int now = Find.TickManager.TicksGame;
             int dryTicks = RM_CanyonRulesKernel.DryTicks(RM_CrackedLandsSettings.soakDecayDays);
             TakeBackFloodWrecks();
+            // CRACKEDLANDS_THREE_HEIGHT_FLORA_1: the wetted cells stay "recently wet" for the soak window; qirra mats open.
+            map.GetComponent<RM_MapComponent_ThreeHeightFlora>()?.OnRecede(wetted, now + dryTicks);
 
             if (RM_CrackedLandsSettings.recedeFeastEnabled)
             {

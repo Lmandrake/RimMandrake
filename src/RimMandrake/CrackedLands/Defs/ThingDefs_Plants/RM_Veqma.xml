@@ -8,11 +8,13 @@
   shade-line placement) is a LATER pass over the shared roster/patch files, per
   this item's own file-collision split — not done here.
 
-  PLACEMENT LAW (bible, for whoever wires `wildPlants`): grows ONLY on the shade
-  line — "ban 2, no green outside the shade line, respected by placement, not
-  exception." Nothing in this ThingDef enforces that (a plant def has no biome
-  placement field of its own); it is a note for the wiring pass, which must not
-  give this a blanket wildAnimals-style commonality across the whole biome.
+  PLACEMENT LAW: grows ONLY on the shade line — "ban 2, no green outside the
+  shade line". Ruled 2026-10-09 by question card (CRACKEDLANDS_THREE_HEIGHT_FLORA_1):
+  a glow limit on this def, so it holds anywhere, player-sown included. Enforced
+  by RM_GlowLimitExtension + thingClass RM_Plant_FloraLaw (Source/RM_ThreeHeightFlora.cs):
+  the cell's daylight glow (open sky minus 1/8 per light-blocking neighbour; a
+  roofed cell sees only artificial light) must be <= maxGlow. 0.625 = three of
+  eight neighbours blocking — the foot of a wall, the shade line.
 
   NOT FARMABLE (bible: "its value is where it grows, not what it yields") —
   expressed the same way this codebase's own comparable wild-only medicinal
@@ -41,6 +43,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Veqma</defName>
+    <thingClass>RimMandrake.CrackedLands.RM_Plant_FloraLaw</thingClass>
     <label>veqma</label>
     <description>A wiry, near-leafless plant of the shade line — mostly taproot, the visible growth a sparse fan of tough grey-green whip-stems rising from one deep crown. Its root finds the hidden water, and its stem tips blush green in proportion to how near the water table sits: dull grey where it lies deep, brightening cell by cell toward the seep, vivid over a find. A stand of veqma is a contour map. Reading one is the first thing a Farmer teaches a child.</description>
     <graphicData>
@@ -78,6 +81,12 @@
       <wildClusterWeight>6</wildClusterWeight>
       <wildOrder>2</wildOrder>
     </plant>
+    <modExtensions>
+      <!-- Must equal CrackedLandsFuzz.VeqmaMaxGlow (the offline sweep of this law). -->
+      <li Class="RimMandrake.CrackedLands.RM_GlowLimitExtension">
+        <maxGlow>0.625</maxGlow>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>

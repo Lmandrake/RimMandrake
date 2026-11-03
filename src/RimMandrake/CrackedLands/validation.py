@@ -62,6 +62,9 @@ P_CREW_HASTEN = "Actions\\Hasten scheduled rival crew (current map)"
 P_CREW_DISMISS = "Actions\\Dismiss rival crew (current map)"
 P_CREW_TRADE = "Actions\\Trade salvage with rival crew (current map)"
 P_CLAIM_SLAG = "Actions\\Order one slag claim hauled (current map)"
+P_FLORA = "Actions\\Report three-height flora (current map)"
+P_FLORA_TRY = "Actions\\Try qirra and talus clasps on 600 random cells (current map)"
+P_FLORA_PRY = "Actions\\Pry a crack with the first grown talus clasp (current map)"
 CREW_POLLS = 40         # polls of 500 ticks: time to walk in from any edge and dig a piece out
 STEAL_POLLS = 46        # polls of 500 ticks: past RM_ClaimKernel.StealCapTicks (20000), when a hostile crew must run
 STAKE_PASS_TICKS = 300  # past the map component's 250-tick pass, where a dead stake would come down
@@ -791,6 +794,53 @@ if Suite is not None:
                     _unmeasured(t, "no new seam after a recede (%d -> %d): the footprint touched no natural, non-resource "
                                    "rock face on this site, or a real fault; the control above proves the off arm only" % (s1, s2))
 
+    # ----------------------------------------------------------------------- 3a. three-height flora
+
+    def _flora(t, path=None):
+        """CRACKEDLANDS_THREE_HEIGHT_FLORA_1: parse the flora report (`flora: qirra=N qirraOffWet=N clasp=N ...`)."""
+        lines = [l for l in _act(t, path or P_FLORA) if "flora:" in l]
+        if not _live(t):
+            return {}
+        if not lines:
+            _unmeasured(t, "flora report has no 'flora:' line")
+        d = {k: int(v) for k, v in re.findall(r"(\w+)=(-?\d+)", lines[-1])}
+        need = ("qirra", "qirraOffWet", "clasp", "claspOffWall", "veqma", "veqmaOverGlow", "wetCells")
+        if any(k not in d for k in need):
+            _unmeasured(t, "flora report shape not understood: %r" % lines[-1][:300])
+        t._record("flora_state", d)
+        return d
+
+    @suite.chain("three_height_flora")
+    def three_height_flora(t):
+        """Qirra mats open only on cells a recent recede wetted; talus clasps only ever touch natural wall rock."""
+        with _comp(t, "qirra_only_on_recently_wetted", toggle="qirraWakeEnabled"):
+            with _arm(t, featureInOtherBiomes=True, floodCycleEnabled=True, qirraWakeEnabled=True, qirraWakeShare=1.0):
+                _settle(t)
+                f0 = _flora(t)
+                _flood_once(t)
+                _act(t, P_RECEDE)
+                t.wait_ticks(30)
+                f1 = _flora(t)
+                if _live(t):
+                    # Judged on THIS recede's own wake (wokenLast / wakeCandidatesLast), never the map's total population:
+                    # the flood may drown older mats, and lapsed mats legitimately stand while dying back.
+                    if f1.get("wetCells", 0) <= 0 or f1.get("wakeCandidatesLast", 0) <= 0:
+                        _unmeasured(t, "SITE: the recede left no open wetted cell a qirra may take (%r)" % f1)
+                    if f1.get("wokenLast", 0) <= 0:
+                        _fail("the recede woke no qirra mat on %d eligible wetted cells (%r)" % (f1.get("wakeCandidatesLast", 0), f1))
+                    if f1.get("wokenOffWetLast", 0):
+                        _fail("the wake put qirra mats on ground no recent recede wetted: %r" % f1)
+                f2 = _flora(t, P_FLORA_TRY)
+                if _live(t) and f2.get("qirraPlacedOffWet", 0):
+                    _fail("the production placement route put qirra mats on ground no recent recede wetted: %r" % f2)
+        with _comp(t, "talus_clasps_only_touch_natural_walls"):
+            f3 = _flora(t, P_FLORA_TRY)
+            if _live(t):
+                if f3.get("claspPlaced", 0) <= 0:
+                    _unmeasured(t, "SITE: no clasp could be placed; the map has no open cell touching natural rock")
+                if f3.get("claspPlacedOffWall", 0):
+                    _fail("the production placement route put talus clasps off the wall: %r" % f3)
+
     # ----------------------------------------------------------------------- 3b. Ledges of Mercy
 
     def _refuge(t):
@@ -1050,7 +1100,7 @@ def static_checks():
             bad.append("DefOf field %s names no shipped def" % n)
     dbg = open(os.path.join(HERE, "Source", "Debug", "RM_CrackedLandsDebugActions.cs"), encoding="utf-8").read()
     for p in (P_ARM, P_START, P_REPORT, P_RECEDE, P_AFTER, P_SEAMS, P_REFUGE, P_MARK_REFUGE, P_CLEAR_REFUGE, P_TEACH, P_CREW_FORCE, P_CREW_REPORT,
-              P_CREW_COLLAPSE):
+              P_CREW_COLLAPSE, P_FLORA, P_FLORA_TRY, P_FLORA_PRY):
         if p.split("\\")[1] not in dbg:
             bad.append("debug action label for path %r not in RM_CrackedLandsDebugActions.cs" % p)
     bad.extend(_flora_shape_findings())

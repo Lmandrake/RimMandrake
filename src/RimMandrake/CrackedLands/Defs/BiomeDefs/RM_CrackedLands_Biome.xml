@@ -161,6 +161,7 @@
       <RM_TwistingThornweed>0.4</RM_TwistingThornweed>  <!-- twisting thornweed -->
       <RM_CrackedThornwood>0.2</RM_CrackedThornwood>  <!-- twisting thornwood - tree -->
       <RM_Veqma>0.15</RM_Veqma>  <!-- the dowsing flora - shade line only -->
+      <RM_TalusClasp>0.08</RM_TalusClasp>  <!-- CRACKEDLANDS_THREE_HEIGHT_FLORA_1: roots only touching natural wall (its own law); the qirra mat is never wild, only flood-woken -->
       <!-- CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 (gated by floraExpansionEnabled) -->
       <RM_Nabbuq>0.25</RM_Nabbuq>
       <RM_Ruqqal>0.3</RM_Ruqqal>

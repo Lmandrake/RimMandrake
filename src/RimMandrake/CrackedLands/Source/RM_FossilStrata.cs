@@ -200,6 +200,12 @@ namespace RimMandrake.CrackedLands
             return cut;
         }
 
+        /// <summary>CRACKEDLANDS_THREE_HEIGHT_FLORA_1: a talus clasp's pry uses the same one placement rule.</summary>
+        public static bool ReplaceRock(Map map, IntVec3 c, ThingDef seam)
+        {
+            return Replace(map, c, seam);
+        }
+
         private static bool Replace(Map map, IntVec3 c, ThingDef seam)
         {
             if (seam == null)
@@ -236,6 +242,11 @@ namespace RimMandrake.CrackedLands
                 return;
             }
             RM_FossilStrata.SeedMap(map, RM_CrackedLandsSettings.fossilSeamDensity, MapGenerator.Elevation);
+            // CRACKEDLANDS_THREE_HEIGHT_FLORA_1: talus clasps root beside the fossil-bearing rock just seeded.
+            if (RM_CrackedLandsSettings.talusClaspsEnabled)
+            {
+                RM_MapComponent_ThreeHeightFlora.SeedClasps(map);
+            }
         }
     }
 }

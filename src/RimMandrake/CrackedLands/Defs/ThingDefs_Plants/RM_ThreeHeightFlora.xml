@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ThreeHeightFlora.xml — CRACKEDLANDS_THREE_HEIGHT_FLORA_1. Two of the canyon's three heights of flora (the third,
+  the shade-line Veqma, is RM_Veqma.xml and carries its glow limit there). Mechanics: Source/RM_ThreeHeightFlora.cs.
+  Neither is in the player's Plants menu (no sowTags); the laws hold for any spawn route anyway (CanEverPlantAt).
+  Rulings 2026-10-09 (decision taken by question card): qirra mats yield dye; a talus clasp's pry opens fossil seams
+  in natural walls with a letter, mining beside a clasp yields more, and cutting one sometimes turns up a fossil.
+  Art: artpipe jobs RM_QirraMat / RM_TalusClasp (infrastructure/artpipe/art_lists/crackedlands_three_height_flora_2026-11-03.csv).
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_QirraMat</defName>
+    <thingClass>RimMandrake.CrackedLands.RM_Plant_FloraLaw</thingClass>
+    <label>qirra mat</label>
+    <description>A flat red-brown mat that lies in canyon clay as a dry crust for years and opens only when a flood has wetted the ground — a spreading rosette of fleshy rust-maroon lobes, gone again as soon as the clay dries. Cut while open, its lobes give a strong red-brown dye.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_QirraMat</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Nutrition>0.05</Nutrition>
+      <Beauty>2</Beauty>
+    </statBases>
+    <selectable>true</selectable>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>1.5</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <neverBlightable>true</neverBlightable>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0</topWindExposure>
+      <visualSizeRange>0.6~0.95</visualSizeRange>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Dye</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>120</harvestWork>
+      <wildOrder>1</wildOrder>
+    </plant>
+    <modExtensions>
+      <li Class="RimMandrake.CrackedLands.RM_FloodWokenExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TalusClasp</defName>
+    <thingClass>RimMandrake.CrackedLands.RM_Plant_TalusClasp</thingClass>
+    <label>talus clasp</label>
+    <description>A pale knot of chalk-white woody roots that grows only against bare canyon rock, its fingers wedged into the crevices. Over seasons the roots pry the crack wider until a face of the wall splits open, often on fossil-bearing strata. Rock mined beside a grown clasp comes away easier and richer, and cutting one now and then shakes loose a fossil from the crack it was working.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_TalusClasp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <selectable>true</selectable>
+    <plant>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>30</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <neverBlightable>true</neverBlightable>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0.05</topWindExposure>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>400</harvestWork>
+      <wildOrder>2</wildOrder>
+    </plant>
+    <modExtensions>
+      <li Class="RimMandrake.CrackedLands.RM_WallRootedExtension">
+        <fossilFindChance>0.15</fossilFindChance>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
