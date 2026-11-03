@@ -6,7 +6,9 @@ each have an RM_ BiomeDef in TerminalBiomes and a RUT_ BiomeDef in UtinniPatches
 tier's png, the two twins must be pixel-identical, the faces must keep the look he picked (pinned below), the Chill face
 must break the plain water rule and pass only through its recorded owner exception (biome_worldfaces.OVERRIDE), and
 biome_worldfaces.py install must skip the picked faces so a rerun cannot revert them.
-usage: python3 selftest_sea_faces_picked.py [--deployed]   --deployed also requires the game copies to match the repo
+usage: python3 selftest_sea_faces_picked.py [--deployed]   --deployed also requires the game copies to match the repo:
+every deployed BiomeDef with that defName names the same <texture> as the repo, and the deployed png is pixel-equal.
+RM_GAME_MODS overrides the game Mods folder (for mutant probes on a copy).
 """
 import glob, hashlib, os, sys, xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -18,7 +20,7 @@ import biome_worldfaces as W
 REPO = os.path.abspath(os.path.join(HERE, "../../../.."))
 RM = os.path.join(REPO, "src/RimMandrake/TerminalBiomes")
 RUT = os.path.join(REPO, "src/RimUtinni/UtinniPatches")
-GAME = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
+GAME = os.environ.get("RM_GAME_MODS") or "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 DEPLOYED = {RM: "RimMandrake.Biomes/Biomes/TerminalBiomes", RUT: "UtinniPatches"}   # where deploy_custom_mods.py puts each
 # sea: (RM def, RM png, RUT def, RUT png, face key in biome_worldfaces, pixel sha256 of the picked face)
 # Grey/Twilight/Scald = the r3 faces he picked (D:\ClaudeWork\rimmandrake\scratch\worldwater_variants_r3\faces\GreySea_clear,
@@ -42,12 +44,19 @@ def bad(msg):
     print("FAIL", msg); fails += 1
 
 
-def texture(mod, defname):
-    for p in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
+def textures(mod, defname):
+    """Every <texture> of a BiomeDef named defname under mod/Defs (a duplicate def must not hide a stale one)."""
+    out = []
+    for p in sorted(glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True)):
         for d in ET.parse(p).getroot().iter("BiomeDef"):
             if d.findtext("defName") == defname:
-                return (d.findtext("texture") or "").strip()
-    return None
+                out.append((d.findtext("texture") or "").strip())
+    return out
+
+
+def texture(mod, defname):
+    t = textures(mod, defname)
+    return t[0] if t else None
 
 
 def pixels(path):
@@ -68,7 +77,11 @@ for sea, (rmd, rmp, rutd, rutp, key, want) in SEAS.items():
         if not os.path.isfile(f): bad(f"{sea}: {f} missing"); continue
         faces[d] = pixels(f)
         if deployed:
-            g = os.path.join(GAME, DEPLOYED[mod], os.path.relpath(f, mod))
+            gmod = os.path.join(GAME, DEPLOYED[mod])
+            gt = textures(gmod, d)
+            if not gt: bad(f"{sea}: no deployed BiomeDef {d} under {gmod}/Defs")
+            elif any(x != t for x in gt): bad(f"{sea}: deployed {d} texture {gt!r} != repo {t!r}")
+            g = os.path.join(gmod, os.path.relpath(f, mod))
             if not os.path.isfile(g): bad(f"{sea}: no game copy {g}")
             elif not np.array_equal(pixels(g), faces[d]): bad(f"{sea}: game copy {g} differs")
     if len(faces) != 2: continue
