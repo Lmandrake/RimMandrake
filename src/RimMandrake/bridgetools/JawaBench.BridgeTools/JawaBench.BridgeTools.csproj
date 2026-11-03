@@ -193,6 +193,11 @@
       <HintPath>$(RimWorldManagedDir)\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- texture memory census (JawaBenchTextureMemoryTools.cs): AssetBundle.GetAllAssetNames -->
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDir)\0Harmony.dll</HintPath>
       <Private>false</Private>
