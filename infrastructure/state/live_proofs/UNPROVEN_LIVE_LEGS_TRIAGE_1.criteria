@@ -1,0 +1,2 @@
+A3 L2: on a Cauldron map, CAULDRON_ENRICHMENT_LIVE_PROOF_1 A4's assay and poisoned-water-letter OFF arms hold (bars flora.assay_toggle_off, water.water_letter_toggle_off, water.water_poison_toggle_off PASS)
+A4 L2: on a Forge map, FORGE_ENRICHMENT_QUICKTEST_1 A3/A4's measurable halves hold (bars voices.voices_off_no_cue, voices.visual_cue_message_names_phase, dormancy.dhuvvox_clock_shows_countdown_and_slows, dormancy.clock_off_removes_slowing PASS)

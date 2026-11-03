@@ -1,0 +1,7 @@
+# UNPROVEN_LIVE_LEGS_TRIAGE_1: the legs the triage found bridge-measurable NOW, bound to existing validation.py bars.
+# Game up with mandrake.rm.biomes (Cauldron and TheForge composed) at this sha, all five DLC, bridge held.
+# Offline twin (bars exist): the same lines with --mock; selftest_unproven_legs_triage.py runs them.
+live-site A3: python.exe src/RimMandrake/Utils/live_site.py --biome RM_Cauldron
+live-proof A3: python3 src/RimMandrake/Utils/northstar_bar_proof.py --mod Cauldron --chains flora,water --bar flora.assay_toggle_off --bar water.water_letter_toggle_off --bar water.water_poison_toggle_off < /dev/null
+live-site A4: python.exe src/RimMandrake/Utils/live_site.py --biome RM_TheForge
+live-proof A4: python3 src/RimMandrake/Utils/northstar_bar_proof.py --mod TheForge --chains voices,dormancy --bar voices.voices_off_no_cue --bar voices.visual_cue_message_names_phase --bar dormancy.dhuvvox_clock_shows_countdown_and_slows --bar dormancy.clock_off_removes_slowing < /dev/null
