@@ -945,7 +945,7 @@ def _preexisting_twin(out: Path, home: Path, before: set[Path], entries=None) ->
 # the mean absolute byte difference. MEASURED 2026-10-24 over the 311 newest artpipe outputs and 1,362
 # cache renders: the resized flange sits 1.12 from its cache source, a second resized copy 1.61 from its
 # twin; the nearest LEGITIMATE pair (two facings of one creature) is 7.05. Center-cropping a non-square
-# source to a square is not undone - that case is still only caught if the crop leaves the thumbnail near.
+# source to a square is undone too (FOREIGN_GUARD_WIDEN_MIRROR_CROP, below).
 FOREIGN_THUMB_N = 16
 FOREIGN_NEAR = 4.0
 # 🔴 ART_GUARD_RESIZE_VET_UNREVIEWED: the 16x16 distance alone is NOT proof. Two independent renders of
@@ -960,6 +960,17 @@ FOREIGN_NEAR = 4.0
 # confirmed either way and keep the coarse verdict. Evidence: /mnt/d/ClaudeWork/rimmandrake/guard_vet/.
 FOREIGN_DETAIL_N = 32
 FOREIGN_DETAIL_CORR = 0.5
+# 🔴 FOREIGN_GUARD_WIDEN_MIRROR_CROP: a MIRRORED copy (a west placed as a flipped peer east) and a
+# CENTRE-SQUARE crop of a non-square render (a 1536x1024 fitted to a square canvas) were not undone:
+# MEASURED 2026-10-24, Dustflutter r2 east mirrored sat 17.82 from its source. So the placed file is also
+# compared MIRRORED (its own thumbnail and detail flipped: nothing new indexed), and every non-square
+# image also carries the thumbnail of its centre square (the second field of an index entry). Same bars,
+# same detail confirmation on the same transform; an input reference still excludes a candidate near it
+# plain, mirrored or centre-cropped, so a west drawn from its own east reference is kept. MEASURED
+# 2026-11-02 over 2,204 artpipe outputs and 11,321 cache renders: the transforms add 30 coarse pairs, none
+# between two independent codex generations; 26 are art-tool mirrors/copies that never pass through this
+# guard, 2 are real centre-cropped foreign copies the old guard passed (ARTEVAL_CROPPED_COPIES_AUDIT_TWO_STOWAWAYS).
+# Evidence: /mnt/d/ClaudeWork/rimmandrake/guard_vet/mirrorcrop/calib.out.
 # Decoding one cache render on /mnt/c costs ~50 ms and the worker caches hold ~11k of them, so thumbnails
 # are kept in a per-root index (keyed on size + mtime) and only new files are decoded. A cold index is
 # filled newest-first - an agent that goes looking takes "the newest PNG" - within this budget.
@@ -981,17 +992,33 @@ def _pil_image():
     return Image
 
 
-def _thumb(p: Path) -> bytes | None:
-    """The 16x16 comparison thumbnail of an image file, or None if it cannot be decoded or is fully
-    transparent (nothing to compare)."""
+def _open_rgba(p: Path):
+    """The decoded RGBA image, or None if Pillow is missing or the file cannot be decoded."""
     Image = _pil_image()
     if Image is None:
         return None
     try:
         with Image.open(p) as im:
-            im = im.convert("RGBA")
+            return im.convert("RGBA")
     except Exception:  # noqa: BLE001 - any undecodable cache file (truncated, bomb, unknown format) is skipped
         return None
+
+
+def _centre_square(im):
+    """The centre square of a non-square image (what fitting it to a square canvas by cropping keeps),
+    or None for a square one (its centre square is itself)."""
+    w, h = im.size
+    if w == h:
+        return None
+    s = min(w, h)
+    x, y = (w - s) // 2, (h - s) // 2
+    return im.crop((x, y, x + s, y + s))
+
+
+def _thumb_of(im) -> bytes | None:
+    if im is None:
+        return None
+    Image = _pil_image()
     bbox = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox()
     if bbox is None:
         return None
@@ -1000,23 +1027,58 @@ def _thumb(p: Path) -> bytes | None:
     return flat.tobytes() + im.getchannel("A").tobytes()
 
 
+def _thumb(p: Path) -> bytes | None:
+    """The 16x16 comparison thumbnail of an image file, or None if it cannot be decoded or is fully
+    transparent (nothing to compare)."""
+    return _thumb_of(_open_rgba(p))
+
+
+def _thumbs(p: Path) -> tuple[bytes | None, bytes | None]:
+    """(thumbnail, centre-square thumbnail or None) of an image file, from one decode."""
+    im = _open_rgba(p)
+    if im is None:
+        return None, None
+    c = _centre_square(im)
+    return _thumb_of(im), (_thumb_of(c) if c is not None else None)
+
+
+def _mirror_grid(seq, n: int, planes: int):
+    """`seq` (bytes or list) holding `planes` row-major n x n planes, each flipped left-right."""
+    out = []
+    for k in range(planes):
+        plane = seq[k * n * n:(k + 1) * n * n]
+        for r in range(n):
+            out.extend(reversed(plane[r * n:(r + 1) * n]))
+    return bytes(out) if isinstance(seq, (bytes, bytearray)) else out
+
+
+def _mirror_thumb(t: bytes) -> bytes:
+    """The thumbnail of the left-right mirror of the picture `t` was made from (RGB plane is interleaved,
+    so it is flipped per pixel triple; the alpha plane per byte)."""
+    n = FOREIGN_THUMB_N
+    rgb, a = t[:3 * n * n], t[3 * n * n:]
+    px = [rgb[i:i + 3] for i in range(0, len(rgb), 3)]
+    flipped = b"".join(b"".join(reversed(px[r * n:(r + 1) * n])) for r in range(n))
+    return flipped + _mirror_grid(a, n, 1)
+
+
 def _thumb_dist(a: bytes, b: bytes) -> float:
     return sum(abs(x - y) for x, y in zip(a, b)) / len(a)
 
 
-def _detail(p: Path) -> list[int] | None:
+def _detail(p: Path, centre: bool = False) -> list[int] | None:
     """The fine-structure signature of an image file for confirming a coarse match (see
     FOREIGN_DETAIL_CORR): alpha-bbox crop, FOREIGN_DETAIL_N square grey over mid-grey, minus its own box
-    blur. None if it cannot be decoded or is fully transparent."""
+    blur. `centre`: of its centre square instead. None if it cannot be decoded or is fully transparent."""
+    im = _open_rgba(p)
+    if im is None:
+        return None
+    from PIL import ImageFilter
     Image = _pil_image()
-    if Image is None:
-        return None
-    try:
-        from PIL import ImageFilter
-        with Image.open(p) as im:
-            im = im.convert("RGBA")
-    except Exception:  # noqa: BLE001 - same tolerance as _thumb
-        return None
+    if centre:
+        im = _centre_square(im)
+        if im is None:
+            return None
     bbox = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox()
     if bbox is None:
         return None
@@ -1039,7 +1101,9 @@ def _detail_corr(a: list[int], b: list[int]) -> float | None:
 
 
 class _ThumbIndex:
-    """Persistent thumbnails for one cache root: {relative path: [size, mtime_ns, base64 thumb | None]}.
+    """Persistent thumbnails for one cache root: {relative path: [size, mtime_ns, base64 thumb | None,
+    base64 centre-square thumb | None]}. A 3-field entry (written before the centre-square field existed)
+    still answers for the plain thumbnail and is re-decoded within the budget.
     Written atomically; concurrent workers may overwrite each other's additions, which only costs a
     re-decode. On save, entries for files not in `live` (deleted since) are dropped."""
 
@@ -1054,18 +1118,20 @@ class _ThumbIndex:
         self.changed = False
 
     def get(self, p: Path, st: os.stat_result):
-        """(found, thumb): found False means the file has no current entry."""
+        """(state, thumb, centre thumb): state "full" for a current entry, "old" for a current 3-field
+        entry (no centre-square field yet), "none" when the file has no current entry."""
         e = self.data.get(str(p.relative_to(self.root)))
-        if isinstance(e, list) and len(e) == 3 and e[0] == st.st_size and e[1] == st.st_mtime_ns:
+        if isinstance(e, list) and len(e) in (3, 4) and e[0] == st.st_size and e[1] == st.st_mtime_ns:
             try:
-                return True, (base64.b64decode(e[2]) if e[2] else None)
+                dec = [base64.b64decode(x) if x else None for x in e[2:]]
             except (TypeError, ValueError):
-                pass
-        return False, None
+                return "none", None, None
+            return ("full", dec[0], dec[1]) if len(e) == 4 else ("old", dec[0], None)
+        return "none", None, None
 
-    def put(self, p: Path, st: os.stat_result, thumb: bytes | None) -> None:
+    def put(self, p: Path, st: os.stat_result, thumb: bytes | None, centre: bytes | None = None) -> None:
         self.data[str(p.relative_to(self.root))] = [
-            st.st_size, st.st_mtime_ns, base64.b64encode(thumb).decode() if thumb else None]
+            st.st_size, st.st_mtime_ns, *(base64.b64encode(t).decode() if t else None for t in (thumb, centre))]
         self.changed = True
 
     def save(self, live: set[str]) -> None:
@@ -1104,9 +1170,10 @@ def _peer_outputs(layout_out: Path) -> list[Path]:
     return [p for _m, p in found[:FOREIGN_PEER_MAX]]
 
 
-def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, float] | None:
+def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, float, str] | None:
     """A cache render (from `entries`) or another job's output that `out` is a resized/recompressed copy
-    of, with its distance; else None. A candidate that is itself near one of this call's input images is
+    of - whole or its centre square, plain or mirrored - with its distance and which transform ("" for
+    none); else None. A candidate that is itself near one of this call's input images is
     never a match: an edit of a reference legitimately looks like that reference."""
     if _pil_image() is None:
         print("note: Pillow is not importable; the foreign-copy guard is byte-identity only",
@@ -1115,24 +1182,36 @@ def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, floa
     mine = _thumb(out)
     if mine is None:
         return None
-    refs = [t for t in (_thumb(Path(i)) for i in inputs) if t is not None]
+    mines = ((mine, False), (_mirror_thumb(mine), True))      # FOREIGN_GUARD_WIDEN_MIRROR_CROP
+    refs = []
+    for t in (_thumbs(Path(i)) for i in inputs):
+        refs.extend(r for r in t if r is not None)
+    refs += [_mirror_thumb(r) for r in refs]
     mine_detail: list = []
 
-    def match(p: Path, t: bytes | None) -> float | None:
-        if t is None:
-            return None
-        d = _thumb_dist(mine, t)
-        if d > FOREIGN_NEAR or any(_thumb_dist(t, r) <= FOREIGN_NEAR for r in refs):
-            return None
-        # Coarse look-alike: confirm on shared fine detail (FOREIGN_DETAIL_CORR) before calling it a copy.
-        if not mine_detail:
-            mine_detail.append(_detail(out))
-        theirs = _detail(p)
-        if mine_detail[0] is not None and theirs is not None:
-            c = _detail_corr(mine_detail[0], theirs)
-            if c is not None and c < FOREIGN_DETAIL_CORR:
-                return None
-        return d
+    def match(p: Path, t: bytes | None, centre_t: bytes | None = None) -> tuple[float, str] | None:
+        """(distance, how) when `out` is a copy of `p` (whole, or its centre square), plain or mirrored."""
+        variants = [(v, c) for v, c in ((t, False), (centre_t, True)) if v is not None]
+        near = sorted((_thumb_dist(m, v), mirrored, centre) for v, centre in variants for m, mirrored in mines)
+        near = [n for n in near if n[0] <= FOREIGN_NEAR]
+        if not near or any(_thumb_dist(v, r) <= FOREIGN_NEAR for v, _c in variants for r in refs):
+            return None     # nothing near; or an edit of this call's own reference legitimately resembles it
+        for d, mirrored, centre in near:
+            # Coarse look-alike: confirm on shared fine detail (FOREIGN_DETAIL_CORR) on the same
+            # transform before calling it a copy.
+            if not mine_detail:
+                mine_detail.append(_detail(out))
+            ours = mine_detail[0]
+            if ours is not None and mirrored:
+                ours = _mirror_grid(ours, FOREIGN_DETAIL_N, 1)
+            theirs = _detail(p, centre=centre)
+            if ours is not None and theirs is not None:
+                c = _detail_corr(ours, theirs)
+                if c is not None and c < FOREIGN_DETAIL_CORR:
+                    continue
+            how = " + ".join(x for x, on in (("mirrored", mirrored), ("centre-square crop", centre)) if on)
+            return d, how
+        return None
 
     indexes: dict[Path, _ThumbIndex] = {}
     deadline, unread = time.monotonic() + FOREIGN_THUMB_BUDGET_S, 0
@@ -1141,16 +1220,18 @@ def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, floa
             if p.suffix.lower() not in IMAGE_SUFFIXES:
                 continue
             idx = indexes.get(root) or indexes.setdefault(root, _ThumbIndex(root))
-            found, t = idx.get(p, st)
-            if not found:
+            state, t, ct = idx.get(p, st)
+            if state != "full":
                 if time.monotonic() > deadline:
-                    unread += 1
-                    continue
-                t = _thumb(p)
-                idx.put(p, st, t)
-            d = match(p, t)
-            if d is not None:
-                return p, d
+                    if state == "none":
+                        unread += 1
+                        continue
+                else:
+                    t, ct = _thumbs(p)
+                    idx.put(p, st, t, ct)
+            hit = match(p, t, ct)
+            if hit is not None:
+                return (p, *hit)
     finally:
         live: dict[Path, set[str]] = {}
         for root, p, _st in entries:
@@ -1162,9 +1243,9 @@ def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, floa
             print(f"note: foreign-copy guard ran out of its {FOREIGN_THUMB_BUDGET_S:.0f}s budget; "
                   f"{unread} older cache image(s) were not compared by picture", file=sys.stderr)
     for p in _peer_outputs(layout_out):
-        d = match(p, _thumb(p))
-        if d is not None:
-            return p, d
+        hit = match(p, *_thumbs(p))
+        if hit is not None:
+            return (p, *hit)
     return None
 
 
@@ -1179,7 +1260,8 @@ def foreign_source(out: Path, home: Path, before: set[Path], inputs=(),
         return twin, "byte-identical copy"
     near = _near_copy(out, entries, inputs, layout_out or out)
     if near is not None:
-        return near[0], f"resized/recompressed copy (picture distance {near[1]:.2f} <= {FOREIGN_NEAR})"
+        how = f"{near[2]}, " if near[2] else ""
+        return near[0], f"resized/recompressed copy ({how}picture distance {near[1]:.2f} <= {FOREIGN_NEAR})"
     return None
 
 

@@ -350,14 +350,15 @@ def test_resized_foreign_copy() -> None:
             # A second look at the same cache decodes nothing but the placed file (the index answers).
             probe = resized_copy(stranger, td / "probe" / "again.png", (64, 64))
             ci.foreign_source(probe, home, ci.snapshot_generated(home))  # indexes this run's renders too
-            calls, real_thumb = [], ci._thumb
+            calls, real_thumb, real_thumbs = [], ci._thumb, ci._thumbs
             ci._thumb = lambda p: (calls.append(Path(p)), real_thumb(p))[1]
+            ci._thumbs = lambda p: (calls.append(Path(p)), real_thumbs(p))[1]
             try:
                 hit = ci.foreign_source(probe, home, ci.snapshot_generated(home))
                 check("indexed cache: still caught", hit is not None and hit[0] == stranger, str(hit))
                 check("indexed cache: only the placed file is decoded", calls == [probe], str(calls))
             finally:
-                ci._thumb = real_thumb
+                ci._thumb, ci._thumbs = real_thumb, real_thumbs
 
             # Another job's output in the same run (artpipe layout <root>/<id>/<id>.png), no cache copy.
             peer = pattern_png(td / "_artsrc" / "jobA" / "jobA.png", 3, 256, 256)
@@ -487,6 +488,150 @@ def test_lookalike_texture_not_foreign() -> None:
             check("a resized copy of the look-alike texture itself is still caught",
                   rc == 0 and ci.png_info(out2)["width"] == 128 and (td / "soil2.foreign.png").is_file(),
                   f"rc={rc}")
+    finally:
+        ci.run_codex, ci.base_codex_home = real_run_codex, real_base
+        ci.HARVEST_GRACE_S = real_grace
+
+
+def mirrored_copy(src: Path, dst: Path, size: tuple[int, int] | None = None, centre: bool = False) -> Path:
+    """A foreign image flipped left-right (a peer's east placed as this job's west) and/or cut to its
+    centre square (a 1536x1024 fitted to a square canvas), optionally resized, then placed."""
+    from PIL import Image, ImageOps
+    with Image.open(src) as im:
+        im = im.convert("RGBA")
+    if centre:
+        im = ci._centre_square(im)
+    else:
+        im = ImageOps.mirror(im)
+    if size:
+        im = im.resize(size, Image.LANCZOS)
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    im.save(dst)
+    return dst
+
+
+def creature_png(path: Path, seed: int, facing_east: bool = True) -> Path:
+    """An opaque-on-transparent creature: an off-centre body blob with a head on the facing side, its
+    coat per-pixel noise from `seed`. Two seeds facing opposite ways are what an independently drawn
+    west/east sibling pair looks like - the same silhouette mirrored, no shared fine structure."""
+    import random
+    from PIL import Image, ImageDraw
+    rnd = random.Random(seed)
+    w = h = 128
+    mask = Image.new("L", (w, h), 0)
+    d = ImageDraw.Draw(mask)
+    d.ellipse([20, 40, 96, 100], fill=255)          # body
+    d.ellipse([88, 30, 118, 62], fill=255)          # head, east
+    d.rectangle([30, 96, 40, 120], fill=255)        # legs
+    d.rectangle([76, 96, 86, 120], fill=255)
+    if not facing_east:
+        mask = mask.transpose(Image.FLIP_LEFT_RIGHT)
+    coat = Image.new("RGBA", (w, h))
+    coat.putdata([tuple(max(0, min(255, c + rnd.randint(-40, 40))) for c in (150, 110, 70)) + (255,)
+                  for _ in range(w * h)])
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    im.paste(coat, (0, 0), mask)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    im.save(path)
+    return path
+
+
+def test_mirrored_and_cropped_foreign_copy() -> None:
+    """FOREIGN_GUARD_WIDEN_MIRROR_CROP: a MIRRORED copy (measured 2026-10-24: Dustflutter r2 east mirrored
+    sat 17.82 from its source, bar 4.0) and a CENTRE-SQUARE crop of a non-square render are caught, from
+    the cache and from another job's output; a west drawn from its own east reference, and an
+    independently drawn sibling west beside a peer's east, are kept."""
+    real_run_codex, real_base = ci.run_codex, ci.base_codex_home
+    real_grace = ci.HARVEST_GRACE_S
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            home = td / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
+            ci.HARVEST_GRACE_S = 0.0
+            cache = td / "otherhome" / ci.GENERATED_SUBDIR / "old"
+            square = pattern_png(cache / "east.png", 21, 128, 128)
+            wide = pattern_png(cache / "wide.png", 22, 192, 128)      # a 1536x1024-shaped render
+            n = [0]
+
+            def place(make):
+                def fake(prompt, images, workdir, timeout, verbose, model=None, hm=None,
+                         reasoning_effort=None, **_kw):
+                    n[0] += 1
+                    pattern_png(home / ci.GENERATED_SUBDIR / f"m{n[0]}" / f"exec-{n[0]}.png", 300 + n[0], 80, 80)
+                    make(Path(workdir))
+                    return 0, "", False
+                ci.run_codex = fake
+
+            # Preconditions: without the new transforms each copy is far from its source.
+            probe = mirrored_copy(square, td / "probe" / "m.png", (64, 64))
+            check("precondition: a mirrored copy is far from its source unmirrored",
+                  ci._thumb_dist(ci._thumb(probe), ci._thumb(square)) > ci.FOREIGN_NEAR,
+                  f"{ci._thumb_dist(ci._thumb(probe), ci._thumb(square)):.2f}")
+            probe = mirrored_copy(wide, td / "probe" / "c.png", (64, 64), centre=True)
+            check("precondition: a centre-square crop is far from its whole source",
+                  ci._thumb_dist(ci._thumb(probe), ci._thumb(wide)) > ci.FOREIGN_NEAR,
+                  f"{ci._thumb_dist(ci._thumb(probe), ci._thumb(wide)):.2f}")
+            check("a square picture has no separate centre square", ci._thumbs(square)[1] is None)
+            check("a mirrored thumbnail is the thumbnail of the mirror",
+                  ci._thumb_dist(ci._mirror_thumb(ci._thumb(square)),
+                                 ci._thumb(mirrored_copy(square, td / "probe" / "m2.png"))) < 0.5)
+
+            for label, src, kw in (("mirrored copy of a cache render", square, {"size": (64, 64)}),
+                                   ("centre-square crop of a non-square cache render", wide,
+                                    {"size": (64, 64), "centre": True})):
+                out = td / f"mc_{n[0]}.png"
+                place(lambda wd, out=out, src=src, kw=kw: mirrored_copy(src, wd / out.name, **kw))
+                rc = ci.do_image(args_for(out))
+                check(f"[{label}] replaced by this run's own render",
+                      rc == 0 and ci.png_info(out)["width"] == 80, f"rc={rc}")
+                check(f"[{label}] set aside", out.with_name(out.stem + ".foreign.png").is_file())
+
+            # A peer job's east, flipped and placed as this job's west (artpipe layout).
+            peer = pattern_png(td / "_artsrc" / "jobE" / "jobE.png", 23, 256, 256)
+            outW = td / "_artsrc" / "jobW" / "jobW.png"
+            place(lambda wd: mirrored_copy(peer, wd / "jobW.png", (200, 200)))
+            rc = ci.do_image(args_for(outW))
+            check("a mirrored copy of another job's output is replaced by this run's render",
+                  rc == 0 and ci.png_info(outW)["width"] == 80, f"rc={rc}")
+
+            # A west drawn by mirroring this call's own east reference (a cache file) is legitimate.
+            outR = td / "west_from_ref.png"
+            place(lambda wd: mirrored_copy(square, wd / "west_from_ref.png", (64, 64)))
+            a = args_for(outR)
+            a.image = [str(square)]
+            rc = ci.do_image(a)
+            check("a west mirrored from its own east reference is kept",
+                  rc == 0 and ci.png_info(outR)["width"] == 64 and not outR.with_name(
+                      outR.stem + ".foreign.png").exists(), f"rc={rc}")
+
+            # Independently drawn sibling pair: a peer's east and this job's own west, same silhouette
+            # mirrored, no shared detail. The mirrored coarse distance is inside the bar; detail refuses.
+            sib_e = creature_png(td / "_artsrc" / "sibE" / "sibE.png", 31, facing_east=True)
+            sib_w = creature_png(td / "probe" / "sibW_src.png", 32, facing_east=False)
+            dm = ci._thumb_dist(ci._mirror_thumb(ci._thumb(sib_w)), ci._thumb(sib_e))
+            check("precondition: the independent sibling west is inside the bar when mirrored",
+                  dm <= ci.FOREIGN_NEAR, f"{dm:.2f}")
+
+            def own_west(prompt, images, workdir, timeout, verbose, model=None, hm=None,
+                         reasoning_effort=None, **_kw):
+                own = home / ci.GENERATED_SUBDIR / "sib" / "exec-sib.png"
+                own.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(sib_w, own)
+                shutil.copy2(own, Path(workdir) / "sibW.png")     # placed as rendered
+                return 0, "", False
+            ci.run_codex = own_west
+            outS = td / "_artsrc" / "sibW" / "sibW.png"
+            rc = ci.do_image(args_for(outS))
+            check("an independently drawn sibling west beside a peer's east is kept",
+                  rc == 0 and ci.png_info(outS)["width"] == 128 and not outS.with_name(
+                      outS.stem + ".foreign.png").exists(), f"rc={rc}")
+
+            # The how-string names the transform.
+            hit = ci.foreign_source(mirrored_copy(square, td / "probe" / "m3.png", (64, 64)), home,
+                                    ci.snapshot_generated(home))
+            check("the verdict names the mirror", hit is not None and "mirrored" in hit[1], str(hit))
     finally:
         ci.run_codex, ci.base_codex_home = real_run_codex, real_base
         ci.HARVEST_GRACE_S = real_grace
@@ -1175,6 +1320,7 @@ def main() -> int:
     for fn in (test_prompt, test_staging_round_trip, test_run_codex_timeout, test_reasoning_effort_flag,
                test_timeout_still_harvests, test_resized_foreign_copy, test_flat_coarse_match_stays_foreign,
                test_lookalike_texture_not_foreign,
+               test_mirrored_and_cropped_foreign_copy,
                test_force_regen_failure_does_not_report_stale_success,
                test_output_schema_passthrough,
                test_harvest_grace,
