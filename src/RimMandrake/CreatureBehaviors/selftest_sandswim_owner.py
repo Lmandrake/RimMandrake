@@ -115,6 +115,63 @@ def conflicts(defs, patches):
     return bad
 
 
+def strip_comments(cs):
+    """C# source with // and /* */ comments removed (string and char literals kept), so a commented-out
+    call does not satisfy a substring check."""
+    out, i, n = [], 0, len(cs)
+    while i < n:
+        c = cs[i]
+        if cs.startswith("//", i):
+            j = cs.find("\n", i)
+            i = n if j < 0 else j
+        elif cs.startswith("/*", i):
+            j = cs.find("*/", i + 2)
+            i = n if j < 0 else j + 2
+            out.append(" ")
+        elif c == '"' or c == "'":
+            verbatim = c == '"' and i > 0 and cs[i - 1] == "@"
+            j = i + 1
+            while j < n:
+                if cs[j] == "\\" and not verbatim:
+                    j += 2
+                    continue
+                if cs[j] == c:
+                    if verbatim and j + 1 < n and cs[j + 1] == '"':
+                        j += 2
+                        continue
+                    break
+                j += 1
+            out.append(cs[i:j + 1])
+            i = j + 1
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def source_checks(cs_raw):
+    """(label, ok) for the C# halves of §1 and §3, read from comment-stripped source."""
+    cs = strip_comments(cs_raw)
+    res = []
+    start = cs[cs.find("class RM_SandSwimStartup"):]
+    res.append(("startup skips a race whose own comp owns submersion",
+                "OtherSubmersionOwner(def)" in start
+                and re.search(r"if \(owner != null\)\s*\{[^}]*continue;", start, re.S) is not None))
+    res.append(("startup knows both other owners",
+                "RM_CompProperties_DrumLure" in start and "\"CompProperties_SarlaccSwimmer\"" in start))
+    sub = cs[cs.find("private void TickSubmerged"):cs.find("private static Thing CurrentAttackTarget")]
+    res.append(("TickSubmerged lays the wake trough",
+                re.search(r"if \(pawn\.Position != lastCell\)\s*\{\s*RecordWakeTrough\(pawn, lastCell\);", sub)
+                is not None))
+    trough = cs[cs.find("private void RecordWakeTrough"):]
+    trough = trough[:trough.find("private static Thing CurrentAttackTarget")]
+    res.append(("the trough goes through the kernel and the shared track grid",
+                "RM_SandSwimKernel.WakeTroughOffsets(" in trough and "grid.RecordPrint(c, pawn, surface)" in trough
+                and "IsSwimTerrain(c, map, Ext)" in trough and "RM_TrackGridDiag.NotedTrough(pawn)" in trough))
+    res.append(("the trough lays no filth Thing", "FilthMaker" not in trough))
+    return res
+
+
 def main():
     defs = scan_defs([SRC])
     patches = scan_patches([SRC])
@@ -148,19 +205,26 @@ def main():
            len(conflicts(probe, [("x.xml", 'Defs/ThingDef[defName="T"]/modExtensions')])) == 1)
 
     cs = open(COMP_CS, encoding="utf-8").read()
-    start = cs[cs.find("class RM_SandSwimStartup"):]
-    expect("startup skips a race whose own comp owns submersion",
-           "OtherSubmersionOwner(def)" in start and re.search(r"if \(owner != null\)\s*\{[^}]*continue;", start, re.S) is not None)
-    expect("startup knows both other owners",
-           "RM_CompProperties_DrumLure" in start and "\"CompProperties_SarlaccSwimmer\"" in start)
-    sub = cs[cs.find("private void TickSubmerged"):cs.find("private static Thing CurrentAttackTarget")]
-    expect("TickSubmerged lays the wake trough", "RecordWakeTrough(pawn, lastCell)" in sub)
-    trough = cs[cs.find("private void RecordWakeTrough"):]
-    trough = trough[:trough.find("private static Thing CurrentAttackTarget")]
-    expect("the trough goes through the kernel and the shared track grid",
-           "RM_SandSwimKernel.WakeTroughOffsets(" in trough and "grid.RecordPrint(c, pawn, surface)" in trough
-           and "IsSwimTerrain(c, map, Ext)" in trough and "RM_TrackGridDiag.NotedTrough(pawn)" in trough)
-    expect("the trough lays no filth Thing", "FilthMaker" not in trough)
+    for label, ok in source_checks(cs):
+        expect(label, ok)
+
+    # mutant probes: each named reversion of §1/§3 must turn a source check red, commented-out included
+    m1_line = "RecordWakeTrough(pawn, lastCell);"
+    m2_line = "continue;"
+    owner_warn = cs.find("already owns its submersion")
+    m2_at = cs.find(m2_line, owner_warn)
+    expect("mutant setup: the trough call and the owner-skip continue are present once each where expected",
+           cs.count(m1_line) == 1 and owner_warn >= 0 and m2_at > owner_warn)
+    mutants = {
+        "M1 trough call deleted": cs.replace(m1_line, "", 1),
+        "M1 trough call commented out": cs.replace(m1_line, "// " + m1_line, 1),
+        "M1 trough call block-commented": cs.replace(m1_line, "/* " + m1_line + " */", 1),
+        "M2 owner-skip continue deleted": cs[:m2_at] + cs[m2_at + len(m2_line):],
+        "M2 owner-skip continue commented out": cs[:m2_at] + "// " + cs[m2_at:],
+    }
+    for name, text in mutants.items():
+        red = [label for label, ok in source_checks(text) if not ok]
+        expect("probe: mutant %s turns a source check red" % name, bool(red), "all source checks stayed green")
 
     print("selftest_sandswim_owner: %s" % ("FAILED " + ", ".join(FAILED) if FAILED else "OK"))
     return 1 if FAILED else 0
