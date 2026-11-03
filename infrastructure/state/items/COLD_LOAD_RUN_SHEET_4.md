@@ -179,8 +179,15 @@ are now cheap — they need the running game, not another load.
 ## ✅ Nothing left for this sheet — Relentless, 2026-11-02
 Every entry is closed on its own item or carried by a live one; no load is owed here.
 Proof: `python3 infrastructure/state/evidence/COLD_LOAD_RUN_SHEET_4_proof.py` (exit 0).
-- 09-06 entries 1, 2a, 3, 5 and the 09-21 entries 1, 2, 4, 5, 6 (and the load's findings) are closed on their items.
-- 2b is answered: the JawaBench init line is LAZY, so it prints on the first tool call (`skills/rimbridge/references/traps.md`).
+- 09-06 entries 1, 2a, 5 and the 09-21 entries 1, 2, 4, 5, 6 (and the load's findings) are closed on their items.
+- 3 (Behemoth fPack), read rather than trusted to its item (closed 'UNPROVEN in game' before this sheet was filed):
+  the engine builds the pack overlay as `Graphic_Multi` at the lifestage texPath + `Pack` (the path the 09-05 error line
+  named), and Graphic_Multi errors only when no facing texture exists there. The runtime dump gives `RSW_Behemoth`
+  pack paths `JawaBehemoth_fPack` and `JawaBehemoth_mPack`, and both have `_north/_east/_south` PNGs in the active
+  deployed `StarWarsPatches` and `SWBestiary` Textures folders.
+- 2b, does the log auto-open suppressor install in plain play: **NO**. Its only installer is `JawaBenchInit.Announce`, a
+  module initializer that fires on the first `jawa/` tool call, and nothing in the companion runs at startup. That gap
+  against his 2026-09-02 wish is carried by `LOG_AUTOOPEN_FIX_WAITS_FOR_FIRST_HELLO`.
 - 4, the resolved readback the LIES line asked for: the live-captured def dump (RimDefDump writes the runtime
   DefDatabase after patches, capture `2026-11-02T17-59-18Z`, 317 mods) reads `guy762_vsword_echani` edge power **36**
   and `RSW_Low_Red_Blaster_Bolt` damageAmountBase **24**. A bridge reader for ranged damage is tracked by
