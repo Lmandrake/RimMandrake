@@ -170,6 +170,143 @@ def gates_on_standard_pawn(path):
     return ok and wired and blind_ok and walk_ok, rows, wired and blind_ok and walk_ok
 
 
+def main_fake(m, move_speed, granite_tpc, glass_tpc):
+    """Drive the live proof's own main() end to end against a fake bridge: spawned colonist n reads MoveSpeed
+    move_speed[n-1] (the last value repeats; a number means every spawn; a per-pawn LIST is that pawn's successive
+    readings, the last repeating, so a pawn can drift after the picker read it); granite_tpc / glass_tpc may be a list,
+    one ticks/cell per timed walk on that floor (the last repeating), so single walks can differ from their mean; on TileGranite it walks granite_tpc ticks/cell, on RM_Glasswalk glass_tpc. Returns (exit, stdout)."""
+    import contextlib
+    import io
+    clock = {"t": 0, "start": None, "x0": 1, "floor": None, "dropped": False, "tpc": None}
+    walks = {"TileGranite": -1, "RM_Glasswalk": -1}
+    speeds = move_speed if isinstance(move_speed, list) else [move_speed]
+    reads = {}
+
+    def speed_of(pid):
+        v = speeds[min(pid, len(speeds)) - 1]
+        if not isinstance(v, list):
+            return v
+        k = reads[pid] = reads.get(pid, -1) + 1
+        return v[min(k, len(v) - 1)]
+
+    def pos_x():
+        if clock["start"] is None:
+            return clock["x0"]
+        tpc = clock["tpc"]
+        return clock["x0"] + int((clock["t"] - clock["start"]) // tpc)
+
+    class FakeScene:
+        x, z = 0, 0
+
+        def __init__(self, *a, **k):
+            self.n = 0
+
+        def __enter__(self):
+            return self
+
+        def room(self, **k):
+            pass
+
+        def floor(self, terr, rect):
+            clock["floor"] = terr
+
+        def colonist(self, x, z):
+            self.n += 1
+            return self.n
+
+        def kill(self, pid):
+            pass
+
+        def teardown(self):
+            pass
+
+    class FakeS:
+        Scene = FakeScene
+
+        @staticmethod
+        def need(r, label):
+            return r
+
+        @staticmethod
+        def biome_map(*a, **k):
+            return 7
+
+        @staticmethod
+        def drop_map(*a, **k):
+            clock["dropped"] = True
+
+        @staticmethod
+        @contextlib.contextmanager
+        def setting(*a, **k):
+            yield
+
+        @staticmethod
+        def call(tool, **kw):
+            if tool == "rimworld/step_game_ticks":
+                clock["t"] += kw["ticks"]
+                return {"ok": True}
+            if tool == "jawa/ordered_job":
+                if kw.get("targetAX", 0) > 5:
+                    clock["x0"], clock["start"] = pos_x(), clock["t"]
+                    k = walks[clock["floor"]] = walks[clock["floor"]] + 1
+                    v = granite_tpc if clock["floor"] == "TileGranite" else glass_tpc
+                    clock["tpc"] = v[min(k, len(v) - 1)] if isinstance(v, list) else v
+                else:
+                    clock["x0"], clock["start"] = 1, None
+                return {}
+            if tool == "jawa/pawn_get":
+                return {"pawns": [{"position": {"x": pos_x(), "z": 1}}]}
+            if tool == "jawa/pawn_stats":
+                return {"stats": [{"defName": "MoveSpeed", "value": speed_of(kw["pawn"])}]}
+            return {}
+
+    saved = m.S
+    m.S = FakeS
+    out = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(out):
+            code = m.main()
+    finally:
+        m.S = saved
+    return code, out.getvalue(), clock["dropped"]
+
+
+def main_end_to_end(path):
+    """The blind checker's probe, through main() itself: a MoveSpeed 6.12 pawn (T=9.8) showing granite 9.8 / glass 12.8
+    must exit 1 UNMEASURED; a 4.6 pawn on law readings (13.04 / 16.04) exits 0 PASS; the same pawn at the 2026-10-10
+    ratio (glass 20.06) exits 1; when the first spawn is off-band the picker takes the next in-band one and PASSes;
+    a pawn that drifts out of band after the pick is UNMEASURED; a delta-5 world whose ratio (0.72) looks plausible FAILs;
+    walks that are wrong one by one but law-perfect on average FAIL (main() must not average them away). Returns (ok, [(label, code, want, last RESULT line)])."""
+    import types
+    m = types.ModuleType("prove_glasswalk_speed")
+    m.__file__ = path
+    exec(compile(open(path, encoding="utf-8").read(), path, "exec"), m.__dict__)
+    cases = [("checker probe through main(): MoveSpeed 6.12, granite 9.8, glass 12.8", 6.12, 9.8, 12.8, 1, "UNMEASURED"),
+             ("standard pawn through main(): MoveSpeed 4.6, granite 13.04, glass 16.04", 4.6, 60 / 4.6, 60 / 4.6 + 3, 0, "PASS"),
+             ("picker skips an off-band first spawn: MoveSpeed [6.12, 4.6], law readings", [6.12, 4.6], 60 / 4.6,
+              60 / 4.6 + 3, 0, "PASS"),
+             ("drift after the pick: MoveSpeed read 4.6 then 4.36 (T=13.76), law readings at 13.76",
+              [[4.6, 4.6, 4.36]], 13.76, 16.76, 1, "UNMEASURED"),
+             ("delta 5 inside the ratio band: MoveSpeed 4.6, granite 13.04, glass 18 (ratio 0.72)", 4.6, 60 / 4.6, 18.0,
+              1, "FAIL"),
+             ("averaging through main(): granite walks [10, 16.08] (mean law), glass law", 4.6, [10.0, 16.08],
+              60 / 4.6 + 3, 1, "FAIL"),
+             ("averaging through main(): granite law, glass walks [19.08, 13] (mean law)", 4.6, 60 / 4.6, [19.08, 13.0],
+              1, "FAIL"),
+             ("0.65 world through main(): MoveSpeed 4.6, granite 13.04, glass 20.06", 4.6, 60 / 4.6, 20.06, 1, "FAIL")]
+    rows, ok = [], True
+    for label, ms, g, s, want, word in cases:
+        code, text, dropped = main_fake(m, ms, g, s)
+        res = [ln for ln in text.splitlines() if ln.startswith("RESULT ")]
+        line = res[-1] if res else "(no RESULT line)"
+        good = code == want and len(res) == 1 and (" %s " % word) in line + " " and dropped
+        if want != 0:
+            good = good and "/A1 PASS" not in text
+        ok = ok and good
+        rows.append((label, code, want, line))
+    return ok, rows
+
+
 def main():
     fails = []
 
@@ -224,6 +361,11 @@ def main():
         check(wired, "prove_glasswalk_speed.main picks the pawn with pick_standard_pawn and decides with judge; walk_exact times a fake 13 ticks/cell walk at 156 ticks and returns None on a blind reading")
         check(ok, "prove_glasswalk_speed.judge passes only a T=13.04+-0.7 pawn on law readings; the T=9.8 probe is "
                   "UNMEASURED and every base/delta/off-band/missing/averaging mutant exits 1")
+        ok2, rows2 = main_end_to_end(PROVE)
+        for label, got, want, line in rows2:
+            print("   main[%s] exit %s (want %d): %s" % (label, got, want, line))
+        check(ok2, "prove_glasswalk_speed.main() on a fake bridge: the checker's T=9.8 pawn exits 1 UNMEASURED, a T=13.04 "
+                   "pawn on law readings exits 0 PASS (also as the 2nd spawn after an off-band one), a pawn drifting off-band after the pick exits 1 UNMEASURED, delta 5 (ratio 0.72) and the 0.65 world exit 1 FAIL, so do walks wrong singly but law-perfect on average; the map is dropped every time")
 
     print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/offline %s (%d failed)" % ("PASS" if not fails else "FAIL", len(fails)))
     return 0 if not fails else 1
