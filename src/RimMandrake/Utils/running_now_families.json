@@ -1,0 +1,37 @@
+{
+  "_about": "Family table for running_now.py (RUNNING_PAGE_BUILD_WHO_IS_AWAKE). Rules are tried in order against the unit name (from a process's cgroup path, or a systemd unit) and, for processes, then against the command line. First hit wins. Anything running python or claude that no rule matches is shown under 'Not recognised', never hidden. Add a rule here when a new background thing appears.",
+  "order": ["seats", "dispatcher", "relentless", "helpers", "roles", "art", "monitors", "tests", "game", "other", "upkeep"],
+  "families": {
+    "seats":      {"title": "Seats (the AI windows)", "plain": "Long-lived Claude windows, one per clone. The Conductor window is the one you talk to; the Dispatcher restarts a window that dies or fills its memory. Windows of other projects (Hestia and friends) share this machine but are not ours."},
+    "dispatcher": {"title": "Dispatcher", "plain": "A plain program (no AI) that wakes every 2 minutes, launches the scheduled role runs, restarts seats and runs the measuring job. It is the only thing that starts roles. This page does not depend on it, so it still tells you if the Dispatcher is dead."},
+    "relentless": {"title": "Relentless", "plain": "The builder belt. Its own timer (also every 2 minutes) picks queue items, gives each a worker in a private clone, then a blind checker. It aims to keep 8 workers going; the game phase is shared, one live user at a time."},
+    "helpers":    {"title": "Conductor helpers", "plain": "One-task Claude runs the Conductor starts in their own units (the same list the Fleet Watch board shows). Each works one ledger item and ends with a note."},
+    "roles":      {"title": "Role runs", "plain": "Scheduled or alarm-driven Claude runs the Dispatcher launches (Operations, Arbiter, Auditor and so on). They read their role file, do one job and stop."},
+    "art":        {"title": "Art pipeline", "plain": "artpiped is the daemon that turns art requests into renders; each render is a codex.exe on Windows. Idle-fill feeds it, the auto-judge scores what comes back."},
+    "monitors":   {"title": "Monitors", "plain": "Programs with no AI that only measure and raise alarms (ops-watch every 15 min, deadman, memory, disk, telemetry, pulse). Alarms reach the Dispatcher, which wakes an Operations run."},
+    "tests":      {"title": "Test lanes", "plain": "Selftests run on this machine in short scopes; the Steve lane is the test PC (SteveDesktop) reached over ssh, driven by the testq timers and braked when its fillers keep failing."},
+    "game":       {"title": "The game", "plain": "RimWorld on Windows. Only one window may drive it at a time (the bridge holder). This page never calls the bridge, so it cannot read the game tick."},
+    "other":      {"title": "Other projects on this machine", "plain": "Not part of RimMandrake. Listed so the numbers add up."},
+    "upkeep":     {"title": "Machine upkeep", "plain": "Small jobs of ours that keep accounts, mirrors, disks and the operating system tidy. Nothing here builds anything."}
+  },
+  "units": [
+    ["rm-relentless-(?P<kind>[a-z]+)-(?P<id>[0-9a-f]{10}-g\\d+)", "relentless", "worker"],
+    ["rm-relentless\\.(service|timer)", "relentless", "tick"],
+    ["rm-role-(?P<id>[a-z]+-\\d+)", "roles", "role"],
+    ["rm-detached-(?P<id>.+-\\d{9,})", "helpers", "helper"],
+    ["claude-seat-(?P<who>[A-Za-z]+)-(?P<id>\\d+)\\.scope", "seats", "window"],
+    ["rm-dispatcher\\.", "dispatcher", "tick"],
+    ["rm-restart-(now|reconcile)", "dispatcher", "seat restart helper"],
+    ["rm-harness-", "tests", "selftest"],
+    ["^(testq|steve)-", "tests", "Steve lane"],
+    ["rm-artpip|rm-arteval", "art", "art"],
+    ["rm-(ops-watch|deadman|memwatch|pulse|telemetry|scratch|codebase-health|replay-watch|account-usage|objstore)", "monitors", "monitor"],
+    ["^hestia", "other", "Hestia"],
+    ["^(claude-account|account-plan|lodestar|rm-)", "upkeep", "upkeep"]
+  ],
+  "procs": [
+    ["networkd-dispatcher|unattended-upgrade", "upkeep", "operating system"],
+    ["claude_account_page\\.py|claude-accounts", "upkeep", "account page"],
+    ["hestia_service\\.py|/Hestia/|/hestia/", "other", "Hestia"]
+  ]
+}
