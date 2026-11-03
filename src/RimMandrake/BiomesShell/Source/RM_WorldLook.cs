@@ -143,6 +143,7 @@ namespace RimMandrake.Biomes
                 if (RM_BiomesSettings.worldSeaDepth) sb.Append(BuildSea(layer, mine));
                 if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
                 if (RM_BiomesSettings.worldBiomeSwirls) sb.Append(" ").Append(BuildSwirls(layer, mine));
+                if (RM_BiomesSettings.worldBiomeDecals) sb.Append(" ").Append(RM_WorldDecals.Build(layer, mine));
                 var subs = SubMeshes(layer);
                 foreach (LayerSubMesh sm in mine)
                 {
@@ -552,7 +553,7 @@ namespace RimMandrake.Biomes
             foreach (FieldInfo f in typeof(RM_WorldLook).GetFields(BindingFlags.Static | BindingFlags.Public))
                 if (f.Name != "lastInfo") sb.Append(" | ").Append(f.Name).Append('=').Append(f.GetValue(null));
             sb.Append(" | blend=").Append(RM_BiomesSettings.worldBorderBlend).Append(" seaDepth=").Append(RM_BiomesSettings.worldSeaDepth)
-              .Append(" swirls=").Append(RM_BiomesSettings.worldBiomeSwirls);
+              .Append(" swirls=").Append(RM_BiomesSettings.worldBiomeSwirls).Append(" decals=").Append(RM_BiomesSettings.worldBiomeDecals);
             return sb.ToString();
         }
 

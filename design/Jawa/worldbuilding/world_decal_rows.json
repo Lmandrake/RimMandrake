@@ -1,0 +1,11 @@
+{
+  "_doc": "One row per biome for src/RimMandrake/Utils/art/world_decal_atlas.py. Contract: design/Jawa/worldbuilding/world_decal_atlas_contract.md. palette.body = [dark, mid, light] and palette.shadow come from the biome's own sheet (cited in 'sheet'); glyphs are names from the generator's GLYPHS bank, cycled over the cells. Real rows are WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB's; RM_BlueDesert is the 4a TEST atlas.",
+  "RM_BlueDesert": {
+    "mod": "RimMandrake/BlueDesert",
+    "sheet": "design/Jawa/worldbuilding/biomes/the_blue_desert.md §9 (scattering-blue at distance, glass-clear and grey underfoot; fractal ferns, dandelion-heads, fuzzballs; drifts)",
+    "grid": 2,
+    "palette": {"body": ["#4a5866", "#9fb4c6", "#e6eef5"], "shadow": "#1c2633"},
+    "glyphs": ["frond", "puff", "shrub", "dune"],
+    "why": "4a test atlas for the biome decal pipeline (WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE); throwaway, real art is WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB"
+  }
+}

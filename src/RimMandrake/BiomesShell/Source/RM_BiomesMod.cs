@@ -62,6 +62,10 @@ namespace RimMandrake.Biomes
         // whole of the Abyss and The Rot on the planet (RM_WorldLook.BuildSwirls). Looks only. Applies at once.
         public static bool worldBiomeSwirls = true;
 
+        // BIOME DECALS (WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE): 2-3 small glyphs per flat land tile from the biome's own atlas
+        // (World/Decals/<defName>), fading out as the camera rises past mid zoom (RM_WorldDecals.cs). Looks only. Applies at once.
+        public static bool worldBiomeDecals = true;
+
         // SOFT HILLS (2026-10-20): our own hill decal art on the planet's shared hill materials (RM_WorldLook.ApplyHills).
         // Looks only; hilliness is untouched. Applies at once.
         public static bool worldSoftHills = true;
@@ -95,6 +99,7 @@ namespace RimMandrake.Biomes
             worldBorderBlend = true;
             worldSeaDepth = true;
             worldBiomeSwirls = true;
+            worldBiomeDecals = true;
             worldSoftHills = true;
             worldSunPeaks = true;
             worldReadablePaths = true;
@@ -127,6 +132,7 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
             Scribe_Values.Look(ref worldBiomeSwirls, "worldBiomeSwirls", true);
+            Scribe_Values.Look(ref worldBiomeDecals, "worldBiomeDecals", true);
             Scribe_Values.Look(ref worldSoftHills, "worldSoftHills", true);
             Scribe_Values.Look(ref worldSunPeaks, "worldSunPeaks", true);
             Scribe_Values.Look(ref worldReadablePaths, "worldReadablePaths", true);
@@ -157,6 +163,9 @@ namespace RimMandrake.Biomes
             worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
             peaksShown = RM_BiomesSettings.worldSunPeaks;
             plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
+            // seeded from the SAVED settings: an all-on seed missed the redraw when a saved-off toggle was turned on
+            worldLookShown = WorldLookKey();
+            peaksShown = RM_BiomesSettings.worldSunPeaks;
             RM_BiomesSettings.Instance = settings;
             roster = ReadRoster(Path.Combine(content.RootDir, "Biomes.roster.xml"));
         }
@@ -200,9 +209,9 @@ namespace RimMandrake.Biomes
                 plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
                 RM_PlantDrawOrder.Reprint();
             }
-            if (worldLookShown != RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls)
+            if (worldLookShown != WorldLookKey())
             {
-                worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
+                worldLookShown = WorldLookKey();
                 if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
             }
             if (RM_WorldLook.hillsApplied != RM_BiomesSettings.worldSoftHills) RM_WorldLook.ApplyHills("settings changed");
@@ -220,7 +229,9 @@ namespace RimMandrake.Biomes
             }
         }
 
-        string worldLookShown = "True/True/True";
+        string worldLookShown;
+        static string WorldLookKey() => RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/"
+            + RM_BiomesSettings.worldBiomeSwirls + "/" + RM_BiomesSettings.worldBiomeDecals;
         bool peaksShown = true;
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
@@ -297,7 +308,7 @@ namespace RimMandrake.Biomes
             }
 
             if (string.IsNullOrWhiteSpace(searchQuery)
-                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway hills mountains swirls abyss rot", searchQuery))
+                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway hills mountains swirls abyss rot decals glyphs marks", searchQuery))
             {
                 list.CheckboxLabeled("Planet: soft borders between biomes [now]", ref RM_BiomesSettings.worldBorderBlend,
                     "On the world map, the edge between two land biomes fades over half a tile on each side instead of "
@@ -309,6 +320,11 @@ namespace RimMandrake.Biomes
                     "On the world map, a continuous layer of swirls is drawn across the whole of each of these biomes: pale, "
                     + "eerie currents over the near-black Abyss and wild-coloured swirls over The Rot. It fades out across the "
                     + "biome's border.\n\nLooks only. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: biome decals [now]", ref RM_BiomesSettings.worldBiomeDecals,
+                    "On the world map, flat land carries two or three small drawn marks per tile (dunes, shrubs, stones... "
+                    + "taken from each biome's own look), so a region reads at a glance when you zoom in. They fade out as "
+                    + "you zoom out past mid height, so the far view stays clean. A biome without its own marks shows none.\n\n"
+                    + "Looks only. Default: on. Takes effect at once (the planet redraws).");
                 list.CheckboxLabeled("Planet: soft hill shading [now]", ref RM_BiomesSettings.worldSoftHills,
                     "On the world map, hills and mountains draw as soft dark relief that takes the colour of the land "
                     + "under them, instead of the vanilla brown outlined blots.\n\nLooks only; which tiles are hilly is "

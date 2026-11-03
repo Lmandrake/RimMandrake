@@ -302,6 +302,8 @@ READ_ONLY_STATIC_CALLS = frozenset((
     ("AlienWorlds.PlanetTypeManager", "get_Current"),             # a property getter
     ("HarmonyLib.Harmony", "HasAnyPatches"),                      # Harmony's own query: a dictionary read
     ("Worldbuilder.World_ExposeData_Patch", "get_WorldPresetName"),   # a static property getter
+    ("RimMandrake.Biomes.RM_WorldDecals", "Info"),                # builds a string from statics
+    ("RimMandrake.Biomes.RM_WorldDecals", "Probe"),               # ContentFinder lookup, no cache, no build
 ))
 
 

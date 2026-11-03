@@ -49,6 +49,7 @@
     <Compile Include="RM_RiverGraph.cs" />
     <Compile Include="RM_WorldLandmarks.cs" />
     <Compile Include="RM_WorldPeaks.cs" />
+    <Compile Include="RM_WorldDecals.cs" />
   </ItemGroup>
 
   <ItemGroup>
