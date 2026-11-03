@@ -14,6 +14,9 @@ ONE RUN, in this order. Every refusal before step 5 leaves the item untouched an
   2. not a flyer: a title, criterion or proof naming flight is refused (standing ruling: never live-test a flyer's flight);
   3. the build is deployed: deploy_custom_mods.py's plan (with --deploy's args) covers every mod the built commit changed,
      lists none of its game files as drift or held, and the running game started after the newest of them was written;
+  3b. the running load holds the build's mods, its `live-mods:` and their dependencies, and a FINAL clause finds the
+     full-list tier up; read BEFORE the bridge is taken, so a run this game cannot serve is a row with slot False and
+     takes no slot (LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT);
   4. the bridge: `rimflow bridge take --idle-ok`; refused means busy, and nothing runs;
   4b. the site (RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED): a `live-site <CID>: <cmd>` line in the item's
      live_proofs file is run first, bridge held. It may only be Utils/live_site.py (SITE_CMD), which makes the map the
@@ -507,7 +510,8 @@ class Fx(object):
     def running_load_gap(self, mods):
         """None when the RUNNING load holds every mod folder in `mods` (its packageId read from the deployed About.xml,
         checked against jawa/running_mods: the running load's own list, never ModsConfig.xml, which names the NEXT load);
-        else why not. Asked with the bridge held, so the answer is the game the proof is about to read."""
+        else why not. Asked before the bridge is taken (run): a change of game after it is caught by run's
+        game-start check once the bridge is held."""
         utils = os.path.join(os.path.dirname(HERE), "Utils")
         if utils not in sys.path:
             sys.path.insert(0, utils)

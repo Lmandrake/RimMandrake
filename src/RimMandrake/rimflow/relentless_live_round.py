@@ -32,7 +32,8 @@ A round, in order:
      sweeps became this lane);
   3. history (live/runs.jsonl): a criterion already PASS, FAIL or REFUSED on the same built sha is not run again (a FAIL
      stands until a new build; a refusal of a criterion cut on the ledger stands until its prose holds it whole);
-     UNMEASURED retries after live.unmeasured_retry_s;
+     UNMEASURED retries after live.unmeasured_retry_s, and never on the game and build it ran on when the proof ran and
+     measured nothing or a final clause found the small tier (due: DUD_HERE, WAITS_TIER);
   4. each run is relentless_live.run(): flyer and forbidden-proof refusal, files changed since the build, the deploy plan
      (args derived from the item's own mods, one plan per args per round), the game started after the deploy, the bridge
      taken with --idle-ok and released at once after each proof, the verdict a `rimflow verify` on the built sha;
@@ -337,7 +338,8 @@ def main(argv=None):
     root = os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless"
     fx = RoundFx(seat=r.get("seat") or "BENCH")
     if a.cmd == "eligible":
-        todo, counts = plan(fx, root, r, time.time())
+        started = fx.game_started()     # the round's own view: what this game already said stays skipped
+        todo, counts = plan(fx, root, r, time.time(), game=L.iso(started) if started else None)
         print(json.dumps({"eligible": [list(t[:3]) for t in todo], "skipped": counts}, indent=1, sort_keys=True))
         return 0
     os.makedirs(os.path.join(root, "live"), exist_ok=True)
