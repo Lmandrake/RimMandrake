@@ -6,12 +6,17 @@ validation.py, driven through modcheck's real TestContext on a fake bridge (no g
   * donor_patch: with both the donor `Gizka` and the port `RSW_Gizka` loaded, only RSW_Gizka is patched to 15
     (RSW_GizkaDonorPatches.xml; the donor block was deleted), so the row must read RSW_Gizka and PASS, not FAIL on the
     donor's untouched 100; with only the donor loaded it is UNMEASURED, never a FAIL.
+GIZKA_STOWAWAY_UNMEASURED_ROWS_1: the five live mechanics chains run against Sim, a toy of the mod behind RSW_GizkaProbe:
+every row PASSes on a right mod, each PLANTED defect FAILs its row, and a mutation pass proves every _fail in those
+chains is load-bearing (replacing any one with `pass` lets some planted defect through, which turns this RED).
 Offline.
 
     python3 src/RimStarWars/GizkaStowaway/selftest_gizka_validation_chains.py
 """
 import os
+import re
 import sys
+import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -52,28 +57,36 @@ class Fake(object):
 
 class Sim(object):
     """A toy of the mod behind RSW_GizkaProbe (GIZKA_STOWAWAY_UNMEASURED_ROWS_1), right by default; `bug` plants one
-    defect so a row can be shown to FAIL."""
+    defect (or a "+"-joined set of them) so a row can be shown to FAIL. Every _fail in the live chains is reached by
+    one planted defect in PLANTED: replacing any of them with `pass` turns this selftest RED."""
     def __init__(self, bug=None):
-        self.bug, self.n, self.cool, self.mem, self.uid = bug, 0, False, 0, 0
+        self.bugs = frozenset((bug or "").split("+")) - {""}
+        self.n, self.cool, self.mem, self.uid = 0, False, 0, 0
         self.s = {"stowawayEventsEnabled": "True", "discoveryFrequency": "1.0", "triggerGravship": "True",
                   "triggerSalvage": "True", "triggerTrade": "True", "triggerQuest": "True", "breedingRate": "1.0",
                   "populationCap": "22", "chewingEnabled": "True", "cullGuiltEnabled": "True", "globalBreedingRate": "1.0"}
         self.food, self.temp, self.pos = {}, {}, {}
-        self.applied, self.power, self.broken, self.col = 1.0, False, False, (0, 0)
+        self.applied, self.power, self.broken, self.col, self.applies = 1.0, False, False, (0, 0), 0
+
+    def has(self, bug):
+        return bug in self.bugs
 
     def track(self, *a, **k):
         pass
 
     def on(self, k):
-        return self.s[k].lower() == "true"
+        return self.s[k].lower() == "true" or self.has("ignore_" + k)
 
     def kv(self, **d):
         return {"success": True, "result": ";".join("%s=%s" % (k, v) for k, v in d.items())}
 
     def deliver(self, toggle):
-        if not (self.on("stowawayEventsEnabled") and self.on(toggle) and float(self.s["discoveryFrequency"]) > 0) or self.cool:
+        freq = float(self.s["discoveryFrequency"]) > 0 or self.has("ignore_discoveryFrequency")
+        if not (self.on("stowawayEventsEnabled") and self.on(toggle) and freq):
             return
-        self.n += 2 if self.bug == "double_gravship" and toggle == "triggerGravship" else 1
+        if self.cool and not self.has("no_cooldown"):
+            return
+        self.n += 2 if self.has("double_gravship") and toggle == "triggerGravship" else 1
         self.cool = True
 
     def probe(self, m, a):
@@ -85,11 +98,15 @@ class Sim(object):
             return {"success": True, "result": str(self.n)}
         if m == "Fire":
             tog = {"gravship": "triggerGravship", "trade": "triggerTrade", "quest": "triggerQuest"}.get(a[0])
+            if a[0] == "trade_unchanged" and self.has("empty_trade_delivers"):
+                tog = "triggerTrade"
+            if a[0] == "quest_fail" and self.has("quest_fail_delivers"):
+                tog = "triggerQuest"
             if tog:
                 self.deliver(tog)
             return self.kv(before=b, after=self.n)
         if m == "Deconstruct":
-            if a[0].startswith("ShipChunk"):
+            if a[0].startswith("ShipChunk") or self.has("any_salvage_delivers"):
                 self.deliver("triggerSalvage")
             return self.kv(def_=a[0], before=b, after=self.n)
         if m == "SpawnAdult":
@@ -107,29 +124,35 @@ class Sim(object):
             return self.kv(temp=a[1])
         if m == "TickFecundity":
             g, fuse, delta = a[0], int(a[1]), int(a[2])
-            warm = self.temp[g] >= 12 or self.bug == "cold_ignored"
+            warm = self.temp[g] >= 12 or self.has("cold_ignored")
+            fed = self.food[g] >= 0.35 or self.has("hunger_ignored")
             cap = int(self.s["populationCap"])
-            if not (warm and self.food[g] >= 0.35) or not self.on("stowawayEventsEnabled"):
+            rate = 1.0 if self.has("rate_ignored") else float(self.s["breedingRate"])
+            if not (warm and fed) or not self.on("stowawayEventsEnabled"):
                 after = fuse
             elif fuse - delta > 0:
-                after = fuse - delta
+                after = fuse if self.has("fuse_frozen") else fuse - delta
             else:
-                after = int(V.replicate_interval_days(4, 8, self.n, cap, float(self.s["breedingRate"])) * 60000)
-                if self.n < cap:
+                after = 0 if self.has("no_rearm") else int(V.replicate_interval_days(4, 8, self.n, cap, rate) * 60000)
+                if (self.n < cap or self.has("breeds_at_cap")) and not self.has("no_replicate"):
                     self.n += 1
             return self.kv(temp=self.temp[g], food=self.food[g], minTemp=12, minFood=0.35, cap=cap, fuseBefore=fuse,
                            fuseAfter=after, before=b, after=self.n)
         if m == "ChewCheck":
             st = V.stage_for(V.load_srcs(), self.n, int(self.s["populationCap"]))
-            powered = self.power or self.bug == "chew_unpowered"
-            if self.on("chewingEnabled") and powered and st >= 3:
+            powered = self.power or self.has("chew_unpowered")
+            gate = 2 if self.has("chew_below_infestation") else 3
+            if self.on("chewingEnabled") and powered and st >= gate and not self.has("chew_never"):
                 self.broken = True
-            return self.kv(count=self.n, stage=["None", "Cute", "Underfoot", "Infestation", "Plague"][st],
-                           powerOn=self.power, brokenBefore=False, brokenAfter=self.broken)
+            broken, self.broken = self.broken, False           # each check reads a fresh heater
+            shown = min(st + 1, 4) if self.has("stage_misreported") else st   # the probe's stage is not the gating one
+            return self.kv(count=self.n, stage=["None", "Cute", "Underfoot", "Infestation", "Plague"][shown],
+                           powerOn=self.power, brokenBefore=False, brokenAfter=broken)
         if m == "Kill":
             g = a[0]
             near = g in self.pos and abs(self.pos[g][0] - self.col[0]) + abs(self.pos[g][1] - self.col[1]) <= 12
-            if g.startswith("Gizka") and self.on("cullGuiltEnabled") and (near or self.bug == "cull_any_range"):
+            lineage = g.startswith("Gizka") or self.has("cull_any_lineage")
+            if lineage and self.on("cullGuiltEnabled") and (near or self.has("cull_any_range")) and not self.has("cull_never"):
                 self.mem += 1
             return self.kv(stowaway=g.startswith("Gizka"), dead=True)
         if m == "MemoryCount":
@@ -137,7 +160,8 @@ class Sim(object):
         if m == "DonorFields":
             return self.kv(egg=8.0 / self.applied, mate=12.0 / self.applied, global_=self.s["globalBreedingRate"])
         if m == "Apply":
-            if self.bug != "apply_noop":
+            self.applies += 1
+            if not self.has("apply_noop") and not (self.has("apply_sticky") and self.applies > 1):
                 self.applied = float(self.s["globalBreedingRate"])
             return {"success": True, "result": "null"}
         return {"success": False, "message": "unknown " + m}
@@ -151,6 +175,8 @@ class Sim(object):
         if tool == "jawa/static_call":
             return self.probe(p["method"], p["args"].split("|") if p["args"] else [])
         if tool == "jawa/list_things":
+            if self.has("no_heater"):
+                return {"success": True, "things": []}
             return {"success": True, "things": [{"id": "%s%d" % (p["defName"], self.uid)}]}
         if tool == "jawa/power_net":
             self.power = bool(p["forcePowerOn"])
@@ -163,17 +189,68 @@ class Sim(object):
             self.pos["Wild%d" % self.uid] = (p["x"], p["z"])
             return {"success": True, "pawns": [{"id": "Wild%d" % self.uid}]}
         if tool == "jawa/get_defs":
-            return {"success": True, "foundCount": 0 if self.bug == "no_gizka" else 1}
+            return {"success": True, "foundCount": 0 if self.has("no_gizka") else 1}
         return {"success": True}
+
+
+# (planted defect, chain, the row that must FAIL); one per _fail in the live chains (GIZKA_STOWAWAY_UNMEASURED_ROWS_1)
+PLANTED = (
+    ("double_gravship", "discovery_triggers", "gravship_landing_delivers_one_tame_gizka"),
+    ("no_cooldown", "discovery_triggers", "cooldown_blocks_a_second_discovery"),
+    ("empty_trade_delivers", "discovery_triggers", "trade_delivers_one_and_an_empty_trade_none"),
+    ("quest_fail_delivers", "discovery_triggers", "quest_success_delivers_one_and_failure_none"),
+    ("any_salvage_delivers", "discovery_triggers", "salvage_deconstruction_delivers_one_and_other_things_none"),
+    ("ignore_triggerGravship", "discovery_triggers", "every_off_switch_silences_its_trigger"),
+    ("ignore_triggerTrade", "discovery_triggers", "every_off_switch_silences_its_trigger"),
+    ("ignore_triggerQuest", "discovery_triggers", "every_off_switch_silences_its_trigger"),
+    ("ignore_discoveryFrequency", "discovery_triggers", "every_off_switch_silences_its_trigger"),
+    ("ignore_triggerSalvage", "discovery_triggers", "every_off_switch_silences_its_trigger"),
+    ("fuse_frozen", "fecundity_live", "fecundity_replicates_while_fed_and_warm"),
+    ("no_replicate", "fecundity_live", "fecundity_replicates_while_fed_and_warm"),
+    ("no_rearm", "fecundity_live", "fecundity_replicates_while_fed_and_warm"),
+    ("hunger_ignored", "fecundity_live", "hunger_stalls_the_fuse"),
+    ("cold_ignored", "fecundity_live", "cold_below_breeding_gate_stalls_replication"),
+    ("breeds_at_cap", "fecundity_live", "population_cap_stops_breeding"),
+    ("rate_ignored", "fecundity_live", "breeding_rate_divides_the_interval"),
+    ("no_heater", "chewing_live", "site_ready"),
+    ("ignore_chewingEnabled", "chewing_live", "chewing_off_spares_a_powered_building"),
+    ("chew_unpowered", "chewing_live", "unpowered_building_is_not_chewed"),
+    ("chew_below_infestation", "chewing_live", "below_infestation_nothing_is_chewed"),
+    ("chew_never", "chewing_live", "infestation_stage_chews_powered_buildings"),
+    ("stage_misreported", "chewing_live", "infestation_stage_chews_powered_buildings"),
+    ("ignore_cullGuiltEnabled", "cull_guilt_live", "cull_guilt_off_weighs_nothing"),
+    ("cull_any_range", "cull_guilt_live", "unwatched_or_wild_kills_weigh_nothing"),
+    ("cull_any_lineage", "cull_guilt_live", "unwatched_or_wild_kills_weigh_nothing"),
+    ("cull_never", "cull_guilt_live", "cull_weighs_on_watching_colonists"),
+    ("apply_noop", "global_breeding_slider", "global_breeding_slider_rescales_donor_fields"),
+    ("apply_sticky", "global_breeding_slider", "global_breeding_slider_rescales_donor_fields"),
+)
 
 
 LIVE_CHAINS = ("discovery_triggers", "fecundity_live", "chewing_live", "cull_guilt_live", "global_breeding_slider")
 
 
-def run(chain, bridge):
+def run(chain, bridge, mod=None):
     t = TestContext(bridge)
-    dict(V.suite.chains)[chain](t)
+    dict((mod or V).suite.chains)[chain](t)
     return t.components
+
+
+def fail_mutants():
+    """validation.py with ONE _fail(...) line of the live chains replaced by `pass`, built in memory (the file on disk is
+    never touched). Yields (line number, line, module)."""
+    path = os.path.join(HERE, "validation.py")
+    lines = open(path, encoding="utf-8").read().split("\n")
+    start = next(i for i, l in enumerate(lines) if '@suite.chain("%s")' % LIVE_CHAINS[0] in l)
+    for i in range(start, len(lines)):
+        m = re.match(r"^(\s*)_fail\(.*\)\s*$", lines[i])
+        if not m:
+            continue
+        mod = types.ModuleType("validation_mutant_%d" % (i + 1))
+        mod.__file__ = path
+        src = "\n".join(lines[:i] + [m.group(1) + "pass"] + lines[i + 1:])
+        exec(compile(src, path, "exec"), mod.__dict__)
+        yield i + 1, lines[i].strip(), mod
 
 
 def main():
@@ -201,13 +278,18 @@ def main():
         rows = run(chain, Sim())
         check("right mod: %s all PASS" % chain, rows and all(c.verdict == "PASS" for c in rows),
               repr([(c.name, c.verdict, str(c.detail)[:140]) for c in rows if c.verdict != "PASS"]))
-    for bug, chain, row in (("double_gravship", "discovery_triggers", "gravship_landing_delivers_one_tame_gizka"),
-                            ("cold_ignored", "fecundity_live", "cold_below_breeding_gate_stalls_replication"),
-                            ("chew_unpowered", "chewing_live", "unpowered_building_is_not_chewed"),
-                            ("cull_any_range", "cull_guilt_live", "unwatched_or_wild_kills_weigh_nothing"),
-                            ("apply_noop", "global_breeding_slider", "global_breeding_slider_rescales_donor_fields")):
+    for bug, chain, row in PLANTED:
         rows = {c.name: c.verdict for c in run(chain, Sim(bug))}
         check("planted %s: %s FAILs" % (bug, row), rows.get(row) == "FAIL", repr(rows))
+    # mutation pass: every _fail of the live chains must be load-bearing -- with it replaced by `pass`, some planted
+    # defect must stop reading FAIL on its row (else that check could be deleted and every proof would stay green)
+    n_mut = 0
+    for lineno, line, mod in fail_mutants():
+        n_mut += 1
+        caught = [bug for bug, chain, row in PLANTED
+                  if {c.name: c.verdict for c in run(chain, Sim(bug), mod)}.get(row) != "FAIL"]
+        check("mutant validation.py:%d (_fail -> pass) is caught by a planted defect" % lineno, caught, line[:120])
+    check("sanity: the mutation pass found the live chains' _fail lines", n_mut >= 13, "found %d" % n_mut)
     for chain in LIVE_CHAINS:
         rows = run(chain, Sim("no_gizka"))
         check("no gizka creature loaded: %s reads UNMEASURED, never FAIL" % chain,
