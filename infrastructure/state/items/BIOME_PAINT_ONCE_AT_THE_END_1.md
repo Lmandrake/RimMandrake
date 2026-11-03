@@ -92,3 +92,31 @@ is the plan's `apply` field. Its proof is `src/RimMandrake/Utils/selftest_desert
 The player start tile, `canon.yml` `planet.start_tile` (17007, Zeddo's Yard), carries the tile mutator
 `planet.start_tile_mutator` (`RUT_ZeddosYard`): stamp it on that tile at the final painting, before the start
 landing is flown and the start savegame is cut, so the arrival map generates the junkyard around the landing clearing.
+
+## Paint list addition 2026-11-02 — the §8 structure archetypes (`INHABITED_AUGMENTATION_BUILD_1` criterion 3)
+
+Putting a structure on an Ash'karr tile means adding its `TileMutatorDef` to that tile: the same kind of planet write
+as the Wasteland mutator density above. So it happens here, once, at the final painting, and never as its own
+pass on the canonical save before that. Every responder below exists in `src/` and replays a rimplace plan through
+its `GenStepDef` (`design/Jawa/worldbuilding/structure_procedural_spec.md` §8). The painter picks the tiles using the
+siting rule in each row, which comes from the archetype's own spec paragraph. The pass is done when each row has at
+least one tile and the tile list is exported as `world/ASHKARR_STRUCTURE_ARCHETYPES_plan.json`
+(`tile,mutator`). The proof that this list covers every responder is
+`src/RimMandrake/Utils/selftest_inhabited_augmentation_paint_list.py`.
+
+| § | archetype | TileMutatorDef(s) | siting |
+|---|---|---|---|
+| 8.1 | abode / homestead / compound | `RUT_HomesteadAbode`, `RUT_Homestead`, `RUT_HomesteadCompound` | settled desert tiles on or near a road; the compound only where several households make sense |
+| 8.2 | moisture farm | `RSW_MoistureFarm`, `RUT_MoistureFarmRuined`, `RUT_MoistureHomestead`, `RUT_MoistureVaporatorField`, `RUT_MoistureWalledCompound` | open Badlands/desert flats (catalogue B1) |
+| 8.3 | mining site | `RSW_MiningSite` | against a rock mass; it answers the `AncientQuarry` landmark (catalogue E1) |
+| 8.4 | trading outpost | `RSW_TradingPost` | a road tile (catalogue D2, civilian half) |
+| 8.5 | road warehouse | `RSW_RoadWarehouse` | a road tile; it answers the `AncientWarehouse` landmark (catalogue E2) |
+| 8.6 | tiny garrison | `RSW_GarrisonTiny` | a road chokepoint or border tile (catalogue D2/D3/E3) |
+| 8.7 | tar refinery | `RSW_TarRefinery` | a tar-seep tile (catalogue A7/F3) |
+| 8.8 | gas-geyser station | `RSW_GasStation` | a gas-geyser tile (catalogue A4/A5) |
+| 8.9 | crashed ship | `RSW_CrashedShip` | open ground away from settlements (catalogue C2) |
+| 8.10 | dead caravan | `RSW_DeadCaravan` | a road tile in empty country (catalogue C1) |
+| 8.11 | beast lair | `RSW_BeastLair` | wild, settlement-free tiles, rock-edged where possible (catalogue F1/F2) |
+| 8.12 | battle site | none; it is the `state=ruined` read of another archetype | painted as a ruined host row above, at the painter's choice |
+| 8.13 | beast pens | `RSW_BeastPens` | Hutt or homestead country near a road |
+| 8.14 | storage cache | none yet; it is whisper-shaped and waits on the whisper engine | not painted until a responder exists |

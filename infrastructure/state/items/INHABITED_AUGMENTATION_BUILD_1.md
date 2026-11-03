@@ -160,7 +160,9 @@ spec's own "smallest template in the roster." Three forms (`buried`,
    it needs exists. **Blocked on the whisper subsystem for whisper-shaped
    archetypes (this pass's cache included); the promise-shaped ones (most
    of the remaining 9) are not blocked on that, only on being built.**
-3. Hand-placed on Ash'karr tiles via the bridge. **NOT MET for anything
+3. Hand-placed on Ash'karr tiles via the bridge. **Governed since 2026-11-02 by
+   `BIOME_PAINT_ONCE_AT_THE_END_1`**: placement is a TileMutatorDef write on the planet, done once
+   at the final painting from that item's §8 paint-list table (gen 3 section below). **NOT MET for anything
    this item has ever shipped** — needs the bridge (down tonight) and a
    placement decision (not this pass's to invent).
 
@@ -399,6 +401,25 @@ live roots (Steam `Mods/`, RimWorld `Data/`, Workshop `content/294100/`) —
   `GAS_WALL_LIGHT`.
 - **The F4 strip** (Rimefeller/VHGE buildability) had no item: filed
   `OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED`.
-- **Criterion 3 (placement on Ash'karr) is split** to `STRUCTURE_TILES_POPULATE_HOUSES_NO_ADDRESS`:
-  it is a placement decision plus a write on the canonical world save, which no read-only
-  live proof can perform.
+- **Criterion 3 (placement on Ash'karr) is a step of the one final world painting** (see the
+  2026-11-02 gen 3 section below).
+
+## 2026-11-02 (Relentless build, gen 3) — criterion 3 goes on the paint list
+
+Putting an archetype on an Ash'karr tile means adding its responder `TileMutatorDef` to that tile.
+That is a planet write, and the owner's ruling `BIOME_PAINT_ONCE_AT_THE_END_1` (2026-09-20: *"Once
+we have all the biomes in mods we will do the painting once and for all."*) makes every planet write
+part of one terminal pass, with no repaint before it. Two other items were handled the same way:
+mutator density (`BIOME_ENRICHMENT_DESERT_WASTELAND_1`) and site parts
+(`WARSCAR_PILGRIM_CAMP_SITES_1`). Placing structures now, before that pass, would break the ruling.
+So criterion 3 is met the way that ruling allows: by an executable row on the paint list.
+
+- Added to `infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md`: a table with a row for
+  each of §8.1–8.14, giving its responder TileMutatorDef(s) (18 in all) and the siting rule from its
+  spec paragraph. The list also names the export it owes (`world/ASHKARR_STRUCTURE_ARCHETYPES_plan.json`).
+- Proof: `src/RimMandrake/Utils/selftest_inhabited_augmentation_paint_list.py`. It checks that every
+  §8 row is present, every listed def is a TileMutatorDef in `src/` whose first GenStep is a GenStepDef
+  in `src/`, and every responder replaying a §8 template is listed. It also runs 3 negative controls,
+  and each one must be caught.
+- The gen 1 line naming `STRUCTURE_TILES_POPULATE_HOUSES_NO_ADDRESS` was wrong, because no such item
+  exists. It has been replaced.
