@@ -1182,7 +1182,12 @@ def top_tinder(t):
                {"plant_at_cell": ((lambda v: v == 0), "the tinder plant must be gone"),
                 "Hay": ((lambda v: v >= 1), "a Tinder burst leaves hay (8-14)"),
                 "Hay_stack": ((lambda v: 8 <= v <= 14), "a Tinder burst leaves 8-14 hay in total, not Burst's 3-6")},
-               {"Hay": ((lambda v: v == 0), "tinderEnabled=false falls back to Churn: no hay")},
+               # T2: no hay alone is also what a Fire that does NOTHING leaves (this item's own fault: an Exempt donor,
+               # top None). The fallback (DryFruit / Wither) kills the parent and never sows on its own cell
+               # (RadialCellsAround useCenter=false), so the donor's cell must be empty too.
+               {"plant_at_cell": ((lambda v: v == 0), "tinderEnabled=false falls back to the default cycle: the parent "
+                                                      "fruits and is gone (a no-op Fire leaves it standing)"),
+                "Hay": ((lambda v: v == 0), "tinderEnabled=false falls back to Churn: no hay")},
                "RM_TopResolver.Burst(tinder: true)")
 
 

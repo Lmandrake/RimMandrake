@@ -130,18 +130,48 @@ def parse_validation():
     return donors, chain_tops, literal_places
 
 
-def tinder_predicates():
-    """-> {key: predicate} of the expect_on dict of the top_tinder _top_chain call, compiled from validation.py."""
-    tree = ast.parse(open(VALIDATION, encoding="utf-8").read())
+def tinder_predicates(arm=6, src=None):
+    """-> {key: predicate} of the top_tinder _top_chain call's expect dict, compiled from validation.py (or `src`):
+    arm 6 is expect_on (T1), arm 7 expect_off (T2)."""
+    tree = ast.parse(src if src is not None else open(VALIDATION, encoding="utf-8").read())
     for node in ast.walk(tree):
         if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "_top_chain"
-                and len(node.args) >= 7 and isinstance(node.args[3], ast.Constant) and node.args[3].value == "Tinder"):
+                and len(node.args) > arm and isinstance(node.args[3], ast.Constant) and node.args[3].value == "Tinder"):
             out = {}
-            for k, v in zip(node.args[6].keys, node.args[6].values):
+            for k, v in zip(node.args[arm].keys, node.args[arm].values):
                 lam = v.elts[0]
                 out[k.value] = eval(compile(ast.Expression(lam), VALIDATION, "eval"))
             return out
     return {}
+
+
+# T2 (blind check at b69ff18b): the OFF arm read only Hay == 0, which is also what a Fire that does NOTHING leaves -- this
+# item's own fault class (an Exempt donor, top None). The default cycle (DryFruit / Wither) kills the parent and never
+# sows on its own cell, so the arm must also read the donor's cell empty. Observations as the live observer writes them.
+T2_FALLBACK_RAN = {"plant_at_cell": 0, "Hay": 0, "Hay_stack": 0}           # DryFruit / Wither: parent gone, no hay
+T2_NOOP_FIRE = {"plant_at_cell": 1, "Hay": 0, "Hay_stack": 0}              # Fire did nothing: plant stands, no hay
+T2_BURST = {"plant_at_cell": 0, "Hay": 1, "Hay_stack": 4}                  # fell to a plain Burst instead of the cycle
+T2_TINDER_RAN = {"plant_at_cell": 0, "Hay": 1, "Hay_stack": 11}            # the toggle was ignored
+
+
+def off_arm_errors(preds):
+    """Every reason top_tinder's OFF-arm expect does not hold exactly on 'the fallback ran, no hay'; [] when it does."""
+    errs = []
+    if "plant_at_cell" not in preds or "Hay" not in preds:
+        return ["OFF arm lacks %s" % sorted({"plant_at_cell", "Hay"} - set(preds))]
+    for v in range(6):
+        if bool(preds["plant_at_cell"](v)) != (v == 0):
+            errs.append("plant_at_cell predicate reads %r at %d (want true only at 0)" % (preds["plant_at_cell"](v), v))
+        if bool(preds["Hay"](v)) != (v == 0):
+            errs.append("Hay predicate reads %r at %d (want true only at 0)" % (preds["Hay"](v), v))
+    def holds(obs):
+        return all(bool(p(obs[k])) for k, p in preds.items())
+    if not holds(T2_FALLBACK_RAN):
+        errs.append("the fallback-ran observation %r reads red" % T2_FALLBACK_RAN)
+    for name, obs in (("no-op Fire", T2_NOOP_FIRE), ("plain Burst", T2_BURST), ("Tinder ran", T2_TINDER_RAN)):
+        if holds(obs):
+            errs.append("a %s observation %r reads green" % (name, obs))
+    return errs
 
 
 def hay_range_errors(pred):
@@ -288,6 +318,19 @@ def stack_total_errors(fn, failed_exc):
             pass
         except Exception as e:      # noqa: BLE001
             errs.append("%s raised %r, not ExpectationFailed" % (label, e))
+    return errs
+
+
+def tinder_plant_obs_errors(src):
+    """Every reason top_tinder's observer no longer reads plant_at_cell as the donor's count on its 1x1 cell, once."""
+    i = src.find('@suite.chain("top_tinder")')
+    j = src.find("_top_chain(", i)
+    body = src[i:j] if i >= 0 and j > i else ""
+    errs = []
+    if not re.search(r'o\["plant_at_cell"\]\s*=\s*_count\(t,\s*t\._eg_donor,\s*"%d,%d,1,1"\s*%\s*\(x,\s*z\)\)', body):
+        errs.append('observer does not set o["plant_at_cell"] = _count(t, t._eg_donor, "<x>,<z>,1,1")')
+    if len(re.findall(r'o\[\s*["\']plant_at_cell["\']\s*\]\s*=', body)) != 1:
+        errs.append("plant_at_cell is assigned other than once in the observer")
     return errs
 
 
@@ -532,6 +575,24 @@ def main():
         bad = hay_range_errors(preds["Hay_stack"])
         check("Hay_stack holds exactly on 8..14 (a plain Burst's 3..6 is red)", not bad, bad)
     check("control: the pre-fix predicate (Hay >= 1) is refused", bool(hay_range_errors(lambda v: v >= 1)))
+    offp = tinder_predicates(7)
+    oerrs = off_arm_errors(offp)
+    check("T2: top_tinder's OFF arm reads the fallback ran (donor cell empty) and no hay; a no-op Fire is red",
+          not oerrs, "; ".join(oerrs))
+    check("control: the pre-gen13 OFF arm (Hay == 0 only) is refused",
+          bool(off_arm_errors({"Hay": lambda v: v == 0})))
+    check("control: an OFF arm whose plant predicate is v <= 1 is refused",
+          bool(off_arm_errors({"plant_at_cell": lambda v: v <= 1, "Hay": lambda v: v == 0})))
+    vsrc_off = open(VALIDATION, encoding="utf-8").read()
+    vnoplant = vsrc_off.replace('{"plant_at_cell": ((lambda v: v == 0), "tinderEnabled=false falls back', '{"plant_at_cellX": '
+                                '((lambda v: v == 0), "tinderEnabled=false falls back', 1)
+    check("control: validation.py with the OFF arm's plant key renamed is refused",
+          vnoplant != vsrc_off and bool(off_arm_errors(tinder_predicates(7, vnoplant))))
+    perr = tinder_plant_obs_errors(vsrc_off)
+    check("top_tinder reads plant_at_cell as the donor's count on its own 1x1 cell", not perr, "; ".join(perr))
+    pm = vsrc_off.replace('o["plant_at_cell"] = _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))\n        o["Hay_stack"]',
+                          'o["plant_at_cell"] = 0\n        o["Hay_stack"]', 1)
+    check("control: a top_tinder plant_at_cell forced to 0 is refused", pm != vsrc_off and bool(tinder_plant_obs_errors(pm)))
     cs = open(RESOLVER, encoding="utf-8").read()
     rerr = resolver_errors(cs)
     check("RM_TopResolver sends Tinder to Burst(tinder: true), 8-14 hay", not rerr, "; ".join(rerr))
