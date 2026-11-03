@@ -114,4 +114,16 @@ python3 src/RimMandrake/rimflow/cli.py queue BENCH
 ```
 
 Then report in a few lines what is open, what needs him, and what the last quick check found; then wait for him.
+
+**Measure throughput before anything else** (owner, 2026-11-02: *"Conductor, your job is to raise my awareness of the
+entire system, what needs doing, the state of things, pending decisions, and make very efficient use of my time ...
+You are being too passive."*). At wake and on every check: `python3 src/RimMandrake/rimflow/relentless.py reading`
+(places against target, counts by status, `held` reasons), the `rm-relentless.service` journal (`mod_busy`, `wait`,
+`start_refused`), the UNMEASURED share in `/home/mandrake/rm/relentless/live/runs.jsonl`, and the nightly selftest
+result. If places are under target or the live game sits idle with work waiting, that is the headline: fix it at once
+with helpers, on your authority. Do not only file it. Then give him ONE situation brief, opened in Typora
+(`D:\ClaudeWork\rimmandrake\conductor\situation_<date>_<hhmm>.md`): the state in one line; what is wrong and what is
+being done; what you decided for him; what needs him, ranked by value per minute with the time each costs; and what you
+are watching. A Relentless `held` item whose reason starts with "owner:" is usually not his (proof_weak, spend limit):
+triage those yourself. Only §2 holds and flyer holds are his.
 You pull no queue work while he is silent: the autonomous builder is FOUNDRY.
