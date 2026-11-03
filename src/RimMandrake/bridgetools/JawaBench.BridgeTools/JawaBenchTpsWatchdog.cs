@@ -151,17 +151,9 @@ namespace JawaBench.BridgeTools
                 var unused = ContextFields() + PhaseName + M.F(quiet, 1) + PhaseStackJson();
             }
             catch { }
-            try
-            {
-                // the stall dump runs on this thread only after a minute of silence: compile its whole path now, and
-                // run the two parts that touch no file (threads, stack attempt) once so their callees are JIT-ed too
-                foreach (var mi in typeof(JawaBenchStallDump).GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public))
-                    if (!mi.IsAbstract && !mi.ContainsGenericParameters && mi.DeclaringType == typeof(JawaBenchStallDump) && mi.GetMethodBody() != null)
-                        System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(mi.MethodHandle);
-                var warm = JawaBenchStallDump.ThreadsFields() + JawaBenchStallDump.MainStackJson();
-                JawaBenchStallDump.Reset();
-            }
-            catch { }
+            // the stall dump runs on this thread only after a minute of silence: run its whole path once HERE, on the main
+            // thread (RuntimeHelpers.PrepareMethod, used below for Loop, is a no-op on Unity's Mono: only running code compiles)
+            JawaBenchStallDump.Warm(Path.GetDirectoryName(HeartbeatPath));
             try
             {
                 var loop = typeof(JawaBenchTpsWatchdog).GetMethod(nameof(Loop), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);

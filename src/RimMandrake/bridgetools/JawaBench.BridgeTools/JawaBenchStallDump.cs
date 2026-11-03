@@ -52,7 +52,9 @@ namespace JawaBench.BridgeTools
         internal static int Written;
         internal static string LastPath, LastError;
 
-        private static double _episodeBeat = double.NaN, _lastDumpAt;
+        private static double _episodeBeat = double.NaN, _lastDumpAt, _lastFailAt = double.NegativeInfinity;
+        /// <summary>A failed write is retried this soon, without spending the episode's dump or its repeat delay.</summary>
+        internal const double RetrySeconds = 10.0;
         private static int _episodeDumps;
         private static double _prevMainCpu = double.NaN;
 
@@ -80,25 +82,68 @@ namespace JawaBench.BridgeTools
             try
             {
                 if (beat != _episodeBeat) { _episodeBeat = beat; _episodeDumps = 0; _prevMainCpu = double.NaN; }
-                if (!ShouldDump(quiet, _episodeDumps, now - _lastDumpAt, Written)) return;
-                _episodeDumps++;
-                _lastDumpAt = now;
-                Write(quiet, _episodeDumps);
+                if (!ShouldDump(quiet, _episodeDumps, now - _lastDumpAt, Written) || now - _lastFailAt < RetrySeconds) return;
+                if (Write(quiet, _episodeDumps + 1, Dir(), false) != null) { _episodeDumps++; _lastDumpAt = now; }
+                else _lastFailAt = now;          // counters move only on a file that exists
             }
             catch (Exception e) { LastError = e.GetType().Name + ": " + e.Message; }
         }
 
-        internal static void Reset() { _episodeBeat = double.NaN; _episodeDumps = 0; _lastDumpAt = 0; Written = 0; _prevMainCpu = double.NaN; LastPath = LastError = null; }
+        /// <summary>Main thread, at watchdog Start: run the whole dump path once so Mono JIT-compiles it HERE (PrepareMethod
+        /// is a no-op on Unity's Mono). Writes one file into a scratch sub-dir and deletes it. Never throws.</summary>
+        internal static void Warm(string recordDir)
+        {
+            try
+            {
+                Tick(0, 0, 0);                                     // returns at ShouldDump: compiles Tick + ShouldDump
+                string d = Path.Combine(recordDir, ".stallwarm");
+                Directory.CreateDirectory(d);
+                string p = Write(0, 0, d, true);
+                if (p != null) File.Delete(p);
+                try { Directory.Delete(d); } catch { }
+            }
+            catch (Exception e) { LastError = "warm: " + e.GetType().Name + ": " + e.Message; }
+            finally { var err = LastError; Reset(); LastError = err; }
+        }
+
+        internal static void Reset() { _episodeBeat = double.NaN; _episodeDumps = 0; _lastDumpAt = 0; _lastFailAt = double.NegativeInfinity; Written = 0; _prevMainCpu = double.NaN; LastPath = LastError = null; }
 
         private static string Dir() => Path.GetDirectoryName(WD.HeartbeatPath ?? "") is string d && d.Length > 0 ? d : W.Dir;
 
-        internal static string Write(double quiet, int episodeDump)
+        internal static string Write(double quiet, int episodeDump) => Write(quiet, episodeDump, Dir(), false);
+
+        /// <summary>warm = the main thread's start-up rehearsal: same code path, no record row, counters untouched.</summary>
+        internal static string Write(double quiet, int episodeDump, string dir, bool warm)
         {
-            string dir = Dir();
             if (string.IsNullOrEmpty(dir)) { LastError = "no record dir"; return null; }
             int n = Written + 1;
             string name = "stall_" + (W.Session ?? "nosession") + "_" + n.ToString("00", System.Globalization.CultureInfo.InvariantCulture) + ".json";
             string path = Path.Combine(dir, name), tmp = path + ".tmp";
+            string body = Compose(quiet, n, episodeDump);
+            try
+            {
+                File.WriteAllText(tmp, body);
+                if (File.Exists(path)) File.Delete(path);
+                File.Move(tmp, path);
+                if (warm) return path;
+                Written = n;
+                LastPath = path;
+                W.Enqueue("stall_dump", "\"file\":" + M.Json(name) + ",\"silentS\":" + M.F(quiet, 1) + ",\"phase\":" + M.Json(WD.PhaseName));
+                return path;
+            }
+            catch (Exception e)
+            {
+                LastError = e.GetType().Name + ": " + e.Message;
+                try { if (File.Exists(tmp)) File.Delete(tmp); } catch { }
+                return null;
+            }
+        }
+
+        /// <summary>The dump's whole text. Called once at watchdog Start ON THE MAIN THREAD so every method it reaches is
+        /// JIT-compiled there: RuntimeHelpers.PrepareMethod is a no-op on Unity's Mono, and a watchdog JIT-compiling while
+        /// the stuck main thread holds a runtime lock could wait forever.</summary>
+        internal static string Compose(double quiet, int n, int episodeDump)
+        {
             var sb = new StringBuilder(4096);
             sb.Append("{\"kind\":\"stall\",\"item\":\"BRIDGE_STALL_DIAGNOSTIC_1\"")
               .Append(",\"utc\":").Append(M.Json(DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'", System.Globalization.CultureInfo.InvariantCulture)))
@@ -113,22 +158,7 @@ namespace JawaBench.BridgeTools
               .Append(",\"mainStack\":").Append(MainStackJson())
               .Append(',').Append(ThreadsFields())
               .Append('}');
-            try
-            {
-                File.WriteAllText(tmp, sb.ToString());
-                if (File.Exists(path)) File.Delete(path);
-                File.Move(tmp, path);
-                Written = n;
-                LastPath = path;
-                W.Enqueue("stall_dump", "\"file\":" + M.Json(name) + ",\"silentS\":" + M.F(quiet, 1) + ",\"phase\":" + M.Json(WD.PhaseName));
-                return path;
-            }
-            catch (Exception e)
-            {
-                LastError = e.GetType().Name + ": " + e.Message;
-                try { if (File.Exists(tmp)) File.Delete(tmp); } catch { }
-                return null;
-            }
+            return sb.ToString();
         }
 
         private static string ProbeJson()

@@ -663,7 +663,7 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
             "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
-            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s"]
+            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing"]
 
 
 def unit_checks(lines):

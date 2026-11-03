@@ -215,11 +215,11 @@ namespace JawaBench.BridgeTools
             int c;
             try { c = TlCat(__instance); }      // pure field read; the category is captured ONCE, here, for the finalizer
             catch (Exception e) { Fail("tl-prefix", e); __state.Rejected = true; return; }
-            JawaBenchStallProbe.CurTickList = __instance;   // BRIDGE_STALL_DIAGNOSTIC_1: one reference store, read only by a stall dump
+            JawaBenchStallProbe.Enter(__instance, Find.TickManager.TicksGame);   // BRIDGE_STALL_DIAGNOSTIC_1: read only by a stall dump
             Begin(WD.PTlNormal + c - CNormal, c, out __state);
         }
 
-        private static void TlFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+        private static void TlFin(JawaBenchHookGuard.Scope __state) { JawaBenchStallProbe.Leave(); End(__state); }
 
         private static void WorldPre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PWorld, CWorld, out __state); }
         private static void WorldFin(JawaBenchHookGuard.Scope __state) { End(__state); }

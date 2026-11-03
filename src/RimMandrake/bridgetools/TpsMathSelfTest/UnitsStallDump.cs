@@ -21,6 +21,39 @@ namespace JawaBench.BridgeTools
             Check(SD.DumpSeconds == 60.0, "DumpSeconds is the item's ~60 s: " + SD.DumpSeconds);
         }
 
+        private static void T_StallDumpRetriesFailedWrite()
+        {
+            string d = Path.Combine(TempDir(), "notyet");
+            SD.Reset();
+            WD.HeartbeatPath = Path.Combine(d, "hb_abcdef.json");     // its dir does not exist: the write fails
+            SD.CaptureMainThread();
+            try
+            {
+                SD.Tick(100.0, 61.0, 39.0);
+                Check(SD.Written == 0 && SD.LastError != null, "a failed write is recorded, not counted: " + SD.Written + " " + SD.LastError);
+                Directory.CreateDirectory(d);
+                SD.Tick(105.0, 66.0, 39.0);
+                Check(Directory.GetFiles(d, "stall_*.json").Length == 0, "no retry inside RetrySeconds");
+                SD.Tick(111.0, 72.0, 39.0);
+                var files = Directory.GetFiles(d, "stall_*.json");
+                Check(files.Length == 1, "the retry after RetrySeconds writes the dump, got " + files.Length);
+                if (files.Length == 1)
+                    using (var doc = JsonDocument.Parse(File.ReadAllText(files[0])))
+                        Check(doc.RootElement.GetProperty("episodeDump").GetInt32() == 1, "the failed attempt did not spend the episode's first dump");
+            }
+            finally { SD.Reset(); }
+        }
+
+        private static void T_StallDumpWarmLeavesNothing()
+        {
+            string d = TempDir();
+            SD.Reset();
+            SD.Warm(d);
+            Check(SD.Written == 0, "warm counted a dump");
+            Check(Directory.GetFiles(d, "*", SearchOption.AllDirectories).Length == 0, "warm left a file behind");
+            Check(SD.LastError == null, "warm failed: " + SD.LastError);
+        }
+
         private static void T_StallDumpAt60s()
         {
             string d = TempDir();
