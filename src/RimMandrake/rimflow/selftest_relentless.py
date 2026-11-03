@@ -874,6 +874,136 @@ def t_third_review():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def t_breaker_forgets_when_proved():
+    """A worker started after the last failure has reported: the count starts over. It stood at 4 for days, so one
+    failure reopened at once for the longest cool under a cause fixed the day before (TICK_SPEED_FIX_GAME_IDLES_WAITING)."""
+    x = Rig(n=1, share=1.0, launch_breaker=2, breaker_cool_s=900, breaker_cool_max_s=1800)
+    for i in range(2):
+        R.launch_failed(x.s, x.r, x.now, "launcher died")
+    ok(R.load_breaker(x.s)["fails"] == 2 and R.load_breaker(x.s)["at"] == x.now, "a failure stamps when: %s" % R.load_breaker(x.s))
+    parked(x, "OLD", "running", "/c/O", run={"at": x.now - 50, "unit": "u"}, last_beat=x.now + 2500)
+    x.now = R.load_breaker(x.s)["until"] + 1
+    at = R.load_breaker(x.s)["at"]
+    ok(not R.launch_proved(x.s, at + 1) and R.load_breaker(x.s)["fails"] == 2, "an open breaker runs its cool")
+    ok(not R.launch_proved(x.s, x.now) and R.load_breaker(x.s)["fails"] == 2, "a worker older than the failure proves nothing")
+    parked(x, "NEW", "running", "/c/N", run={"at": x.now + 10, "unit": "u"}, last_beat=None)
+    ok(not R.launch_proved(x.s, x.now) and R.load_breaker(x.s)["fails"] == 2, "started but silent proves nothing")
+    parked(x, "NEW", "running", "/c/N", run={"at": x.now + 10, "unit": "u"}, last_beat=x.now + 40)
+    ok(R.launch_proved(x.s, x.now) and not R.load_breaker(x.s).get("fails"), "started after and reported: the count is gone")
+    x.done()
+
+
+def t_one_sha_checkout_charges_no_launcher():
+    """The clone cannot read one sha: the launcher is fine, and the other items must still launch."""
+    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    x = Rig(n=1)
+    x.r = dict(x.r, **{k: live[k] for k in ("breaker_refusal_words",)})
+    for why in ("checkout 567b22f: fatal: unable to read tree (567b22f)", "fatal: reference is not a tree: 567b22f"):
+        R.launch_failed(x.s, x.r, x.now, why)
+        ok(not R.load_breaker(x.s).get("fails"), "no charge: %s" % why)
+    R.launch_failed(x.s, x.r, x.now, "No medium found")
+    ok(R.load_breaker(x.s).get("fails") == 1, "a real launcher failure still charges")
+    x.done()
+
+
+def t_tick_budget_reaches_lease():
+    """Deploy plans over the Windows mount outlived the unit's 20-minute kill, so no tick reached lease or flush. Past the
+    budget game items wait for the next tick and the rest of the tick still runs."""
+    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    ok(0 < live["tick_game_budget_s"] <= 600, "with one plan's 500 s still to finish, the budget stays inside the 1200 s kill: %s" % live["tick_game_budget_s"])
+    for budget, skipped in ((420, 2), (None, 0)):
+        x = Rig(n=2, share=1.0, tick_game_budget_s=budget)
+        clock = [0]
+
+        def wall():
+            clock[0] += 500
+            return clock[0]
+        x.w.wall = wall
+        parked(x, "G0", "game", "/c/G0", game={"phase": "prove", "sha": "s"})
+        parked(x, "G1", "game", "/c/G1", game={"phase": "prove", "sha": "s"})
+        leased = []
+        real = R.lease
+        R.lease = lambda *a, **k: (leased.append(1), real(*a, **k))[1]
+        try:
+            x.tick()
+        finally:
+            R.lease = real
+        with open(x.s.p("journal.jsonl"), encoding="utf-8") as f:
+            rows = [json.loads(l) for l in f if l.strip()]
+        rows = [r for r in rows if r.get("do") == "tick"]
+        acts = [a for r in rows for a in r["acts"] if a.get("do") == "tick_budget"]
+        ok(leased == [1], "lease ran (budget %s)" % budget)
+        if skipped:
+            ok(acts and acts[0]["skipped"] == skipped, "both game items wait: %s" % acts)
+            ok(rows[-1]["wall_s"] > 0, "the journal says how long a tick took: %s" % rows[-1].get("wall_s"))
+        else:
+            ok(not acts, "no budget, no skip: %s" % acts)
+        x.done()
+
+
+def t_level_books_leaves_run_output():
+    """A proof run in books dirties Transient/ and the registry; refusing on them froze the engine on old code for 52
+    ticks of 2026-11-03. They stay as they are, origin moving one refuses, and any other dirt refuses as before."""
+    reg = R.BOOKS_LEFT_IN_PLACE[1]
+    d = tempfile.mkdtemp(prefix="rlbk-")
+
+    def g(cwd, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=cwd, capture_output=True, text=True, check=True).stdout
+
+    def put(root, p, text):
+        os.makedirs(os.path.dirname(os.path.join(root, p)) or root, exist_ok=True)
+        with open(os.path.join(root, p), "w") as f:
+            f.write(text)
+
+    def read(root, p):
+        with open(os.path.join(root, p)) as f:
+            return f.read()
+    origin, up, books = (os.path.join(d, n) for n in ("o.git", "up", "books"))
+    g(d, "init", "-q", "--bare", "-b", "main", origin)
+    g(d, "clone", "-q", origin, up)
+    g(up, "checkout", "-q", "-B", "main")
+    for p in (reg, "Transient/n.json", "code.py"):
+        put(up, p, "one\n")
+    g(up, "add", "--", reg, "Transient/n.json", "code.py")
+    g(up, "commit", "-qm", "one")
+    g(up, "push", "-q", "origin", "main")
+    g(d, "clone", "-q", origin, books)
+    fx = R.Effects.__new__(R.Effects)
+    fx.books, fx.store = books, R.Store(os.path.join(d, "store"))
+
+    def advance(p, text):
+        put(up, p, text)
+        g(up, "add", "--", p)
+        g(up, "commit", "-qm", "move " + p)
+        g(up, "push", "-q", "origin", "main")
+        g(books, "fetch", "-q", "origin")
+
+    put(books, reg, "from a proof run\n")
+    put(books, "Transient/n.json", "from a proof run\n")
+    put(books, "Transient/new.json", "untracked\n")
+    advance("code.py", "two\n")
+    ok(fx.level_books() is None, "run output does not stop a level")
+    ok(read(books, "code.py") == "two\n" and not g(books, "rev-list", "--count", "HEAD..origin/main").strip() != "0", "the clone is level")
+    ok(read(books, reg) == "from a proof run\n" and read(books, "Transient/n.json") == "from a proof run\n"
+       and read(books, "Transient/new.json") == "untracked\n", "and the run's output is still there, byte for byte")
+
+    advance(reg, "origin moved it\n")
+    try:
+        why = fx.level_books()
+    except RuntimeError as e:
+        why = str(e)
+    ok(why and read(books, reg) == "from a proof run\n", "origin moving a left file refuses, nothing overwritten: %s" % why)
+    g(books, "show", "HEAD:" + reg)     # the refusal is git's own; a run's output is cleared by whoever owns it, not here
+    put(books, reg, "one\n")
+    ok(fx.level_books() is None, "level again once the run's output has gone")
+
+    put(books, "code.py", "a hand edit\n")
+    advance("other.py", "x\n")
+    why = fx.level_books()
+    ok(why and "code.py" in why and read(books, "code.py") == "a hand edit\n", "other dirt refuses as before: %s" % why)
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_real_effects():
     """The fakes cannot see an import that fails: walk the real read paths once against this tree's ledger."""
     d = tempfile.mkdtemp(prefix="rlfx-")
@@ -3223,7 +3353,7 @@ def main():
     for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
-              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
+              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
               t_help_forced_once, t_help_own_call_spends_hits, t_help_reaches_brief, t_help_refused, t_help_lifecycle):
         print("--", t.__name__)
         t()

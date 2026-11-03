@@ -213,17 +213,40 @@ def mod_gap(fx, sha, text, running=True):
     out["mods"] = mods
     if not mods:
         return out
+    _plan_into(fx, mods, out)
+    if running and not out["error"]:
+        out["running"] = fx.running_load_gap(mods)
+    return out
+
+
+def batch_gap(fx, builds):
+    """mod_gap for every build riding one load, for ONE deploy plan over their union: [(sha, proofs text)] -> one gap.
+    A staging needs only the union (enable_set, dll_mods); planned per item, 17 riders took 17 sequential plans of
+    about 140 s over the Windows mount before the tick's 20-minute kill (TICK_SPEED_FIX_GAME_IDLES_WAITING). A build whose
+    mods cannot be read rides without them and says so in `error`; the others still plan."""
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None}
+    mods = set()
+    for sha, text in builds:
+        try:
+            mods |= set(fx.mods_of(sha)) | set(live_mods(text))
+        except ValueError as e:
+            out["error"] = str(e)[:200]
+    out["mods"] = sorted(mods)
+    if mods:
+        _plan_into(fx, out["mods"], out)
+    return out
+
+
+def _plan_into(fx, mods, out):
+    """The one plan over `mods` into a gap's off, dll and error."""
     rc, plan = fx.deploy_plan(deploy_args(mods, fx.folded()), L.live_rules({}).get("plan_max_s", 300))
     if rc not in (0, 1):
         out["error"] = "the deploy plan failed (exit %s): %s" % (rc, (plan or "")[-200:])
-        return out
+        return
     _covered, drift, off = L.plan_sections(plan)
     out["off"] = off
     out["dll"] = sorted({"%s/%s" % (sec, e) if not e.startswith(sec + "/") else e
                          for sec, flag, e in drift if flag != "H" and e.lower().endswith(".dll")})
-    if running:
-        out["running"] = fx.running_load_gap(mods)
-    return out
 
 
 class RoundFx(L.Fx):

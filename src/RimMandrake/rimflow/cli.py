@@ -3451,6 +3451,8 @@ def cmd_bridge(args, seat):
         ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
                                       args.purpose, args.flyer, owner=owner)
         refusal = refusal or _shared_delegated_refusal(seat, evs) or _driver_owner_gate(seat, evs)[0]
+        dl = None if refusal else _archmagi_lock_path()     # what the take behind this report would refuse on
+        refusal = refusal or (driver_lock.refusal(dl, driver_lock.my_identity()) if dl else None)
         if refusal:
             print("NOT TAKEABLE  " + refusal)
             return 1

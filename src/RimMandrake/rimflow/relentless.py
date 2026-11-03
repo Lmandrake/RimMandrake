@@ -83,6 +83,10 @@ ITEMS_DIR = "infrastructure/state/items/"
 BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
 # a live site build run from the books clone rewrites its registry there; the save is on disk, the file is a run artefact
 BOOKS_RUN_ARTEFACTS = ("src/RimMandrake/Utils/modcheck/test_site_saves.json",)
+# a proof run from the books clone also writes these. Not ours to restore (the registry is status.py's output) and not in
+# the way: they stay, and the fast-forward itself refuses if origin moved one. 32 of 70 ticks on 2026-11-03 would not level
+# on them, so the engine ran old code (TICK_SPEED_FIX_GAME_IDLES_WAITING)
+BOOKS_LEFT_IN_PLACE = ("Transient/", "infrastructure/state/modcheck_status.json")
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged")     # one road: strengthen the proof, never redesign the code
 PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
@@ -938,6 +942,7 @@ class Effects(relentless_game.GameFx):
             return None
         out = self.git_ok(self.books, "status", "--porcelain", "--no-renames", "-z", "--untracked-files=all")
         rows = [(x[:2], x[3:]) for x in out.split("\0") if x]
+        rows = [(s, p) for s, p in rows if not p.startswith(BOOKS_LEFT_IN_PLACE)]
         staged = self.git_ok(self.books, "diff", "--cached", "--name-only").split()
         if staged:      # the index is nobody's projection, and the checks below read the working tree
             return "books %s behind: staged: %s" % (behind, ", ".join(staged[:5]))
@@ -1591,8 +1596,8 @@ class Effects(relentless_game.GameFx):
         if r.returncode:
             return None, "%s clone failed: %s" % ({"check": "checker"}.get(what, what), (r.stderr or r.stdout)[-300:])
         r = self.git(d, "checkout", "--quiet", "--detach", sha)
-        if r.returncode and self.git(d, "cat-file", "-e", sha + "^{commit}").returncode:
-            # the sha is not in the clone yet (a lagging object store): ask origin for it once before calling it failed
+        if r.returncode and self.git(d, "cat-file", "-e", sha + "^{tree}").returncode:
+            # the sha or its tree is not in the clone yet (a lagging object store): ask origin once before calling it failed
             self.git(d, "fetch", "--quiet", "origin", sha, timeout=400)
             r = self.git(d, "checkout", "--quiet", "--detach", sha)
         return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr[-200:]))
@@ -2077,6 +2082,7 @@ def launch_failed(store, r, now, why):
             c = br.setdefault("opens", {}).setdefault(cause_key(why), {"n": 0})
             c.update(n=c["n"] + 1, last=now, why=why[:300])
     br["why"] = why[:300]
+    br["at"] = now
     store._write(store.p("breaker.json"), json.dumps(br))
 
 
@@ -2084,6 +2090,21 @@ def launch_ok(store):
     br = load_breaker(store)
     if br.get("fails") or br.get("until"):
         store._write(store.p("breaker.json"), json.dumps({"opens": br["opens"]} if br.get("opens") else {}))
+
+
+def launch_proved(store, now):
+    """A worker started after the last failure has reported: the launcher works, the count starts over. launch_ok alone
+    ran only when a worker died later on, so `fails` stood for days and one failure reopened the breaker at once for its
+    longest cool, showing a cause fixed the day before (the 567b22f checkout, TICK_SPEED_FIX_GAME_IDLES_WAITING)."""
+    br = load_breaker(store)
+    if not br.get("fails") or br.get("until", 0) > now:     # an open breaker runs its cool
+        return False
+    for st in store.states():
+        run = st.get("run") or {}
+        if run.get("at", 0) > br.get("at", 0) and (st.get("last_beat") or 0) > run["at"]:
+            launch_ok(store)
+            return True
+    return False
 
 
 def breaker_emergency(store, fx, r, now, acts):
@@ -3489,6 +3510,12 @@ def run_tmp_sweep(store, fx, now, acts, when):
                        "work": out.get("work", [])[:20], "errors": out.get("errors", [])[:5]})
 
 
+def over_budget(r, spent):
+    """The tick has spent its share on game steps -> True; rules keep this well inside the unit's kill."""
+    budget = r.get("tick_game_budget_s")
+    return bool(budget) and spent >= budget
+
+
 def tick(store=None, fx=None, r=None, now=None):
     r = r or rules()
     store = store or Store()
@@ -3527,9 +3554,16 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run
             acts.append({"do": "error", "item": None, "why": "lapse_holds %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)[:300]})
+        wall = getattr(fx, "wall", time.monotonic)
+        began, skipped = wall(), 0
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":
+                    continue
+                # a game step can plan deploys over the Windows mount for minutes; a tick the unit kills never reaches
+                # lease or flush, so it staffs nothing and says nothing. Game items wait for the next tick instead
+                if over_budget(r, wall() - began) and (store.load(item) or {}).get("status") == "game":
+                    skipped += 1
                     continue
                 try:
                     step(store, fx, r, item, now, acts)
@@ -3537,6 +3571,8 @@ def tick(store=None, fx=None, r=None, now=None):
                     acts.append({"do": "error", "item": item, "why": "%s: %s" % (type(e).__name__, e)})
                     store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": item,
                                    "why": str(e)[:300]})
+        if skipped:
+            acts.append({"do": "tick_budget", "skipped": skipped, "after_s": int(wall() - began)})
         for item in store.items():
             try:
                 help_step(store, fx, r, item, now, acts)
@@ -3560,6 +3596,7 @@ def tick(store=None, fx=None, r=None, now=None):
             acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),
                          "why": h["why"][:300]})
         try:
+            launch_proved(store, now)
             lease(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a hung rimflow must not lose the tick's flush; a reservation resumes next tick
             acts.append({"do": "error", "item": None, "why": "lease %s: %s" % (type(e).__name__, e)})
@@ -3583,7 +3620,7 @@ def tick(store=None, fx=None, r=None, now=None):
             acts.append({"do": "flush_retry", "why": why})
         reading(store, r, now, acts)
         if acts:
-            store.journal({"at": iso(now), "do": "tick", "acts": acts})
+            store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - began), "acts": acts})
         relentless_integrity.mark_clean(store, fx, now)
         return acts
 

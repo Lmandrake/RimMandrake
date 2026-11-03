@@ -35,6 +35,7 @@ class GW(S.FakeWorld):
         self.running, self.idle, self.take_why, self.palive = True, None, None, set()
         self.proofs = {}
         self.bridge_held = None
+        self.batch_plans = []
         self.started, self.mods = None, 13
         self.books = "/books"
         self.owed = {"A2": "L1"}
@@ -67,6 +68,12 @@ class GW(S.FakeWorld):
         if not running:
             g.pop("running", None)
         return g
+
+    def game_batch_gap(self, builds):
+        self.batch_plans.append(list(builds))
+        gs = [self.game_mod_gap(i, s, running=False) for i, s in builds]
+        return {"mods": sorted({m for g in gs for m in g.get("mods") or []}),
+                "dll": sorted({d for g in gs for d in g.get("dll") or []})}
 
     def modlist_enable(self, mods):
         self.enabled.append(list(mods))
@@ -1186,6 +1193,60 @@ def t_modlist_batch_enables_union():
     G.step(x.s, x.w, x.r, "I0", x.now + 1, acts, R)
     ok(x.w.enabled and x.w.enabled[-1] == ["Graffiti", "UtinniPatches"], "one enable for the whole batch: %s %s"
        % (x.w.enabled, acts))
+    x.done()
+
+
+def t_stage_plans_once_for_the_batch():
+    """A staging of three plans once, over the union: 17 sequential plans outlived the tick's 20-minute kill."""
+    import relentless_live_round as LR
+
+    class F(object):
+        plans = []
+        def mods_of(self, sha):
+            if sha == "bad":
+                raise ValueError("no such sha")
+            return {"a": ["FlowWorks"], "b": ["Graffiti"], "c": ["FlowWorks"]}[sha]
+        def folded(self): return {}
+        def deploy_plan(self, args, t):
+            self.plans.append(args)
+            return 0, ""
+    g = LR.batch_gap(F(), [("a", ""), ("b", "live-mods: UtinniPatches\n"), ("c", "")])
+    ok(F.plans == ["--mod FlowWorks --mod Graffiti --mod UtinniPatches"] and g["mods"] == ["FlowWorks", "Graffiti", "UtinniPatches"],
+       "one plan over the union: %s %s" % (F.plans, g))
+    F.plans = []
+    g = LR.batch_gap(F(), [("bad", ""), ("b", "")])
+    ok(len(F.plans) == 1 and g["mods"] == ["Graffiti"] and "no such sha" in g["error"], "one unread build costs the others nothing: %s" % g)
+
+    x = rig(2, share=1.0, max_workers=2)
+    two_in_prove(x)
+    x.w.gap = {"I0": GAPS["running"], "I1": GAPS["modsconfig"]}
+    with x.s.lock():
+        st = x.s.load("I1")
+        st["game"].update(phase="stage")
+        x.s.save(st)
+    x.w.running = False
+    G.step(x.s, x.w, x.r, "I0", x.now, [], R)
+    G.step(x.s, x.w, x.r, "I0", x.now + 1, [], R)
+    ok(len(x.w.batch_plans) == 1 and len(x.w.batch_plans[0]) == 2, "the stage asks once for both: %s" % x.w.batch_plans)
+    x.done()
+
+
+def t_bridge_refused_costs_no_plan():
+    """The bridge check comes first: while it refuses no deploy is planned and ModsConfig is not touched."""
+    x = rig(1)
+    to_game(x, "I0")
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"].update(phase="stage")
+        x.s.save(st)
+    x.w.running = False
+    x.w.idle = "NOT TAKEABLE  driver lock held by BENCH"
+    n, en = len(x.w.batch_plans), len(x.w.enabled)
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    ok(len(x.w.batch_plans) == n and len(x.w.enabled) == en and "take" not in x.w.events[-1:],
+       "no plan, no enable: %s %s" % (x.w.batch_plans, x.w.enabled))
+    ok(any(a["do"] == "game_waits" and "driver lock" in a["why"] for a in acts), "and it says why it waits: %s" % acts)
     x.done()
 
 

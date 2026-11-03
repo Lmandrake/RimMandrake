@@ -291,6 +291,23 @@ def acquire(path, seat, purpose, identity, force=None, spare_owner=False, owner_
     return {"ok": False, "why": "driver lock contended: gave up after 20 attempts"}
 
 
+def refusal(path, identity):
+    """What acquire would say, without touching the lock -> why, or None (free, ours, or its holder is gone). A read-only
+    gate must agree with the take behind it (TICK_SPEED_FIX_GAME_IDLES_WAITING: `bridge idle` said TAKEABLE, ours, while
+    a window of the same seat held this lock, so Relentless planned 17 deploys per tick before the take refused it)."""
+    cur, problem = _read(path)
+    if problem == "WRITING":
+        return None
+    if problem:
+        return "driver lock %s is %s" % (path, problem)
+    if cur is None or same_process(cur["identity"], identity):
+        return None
+    alive, how = _alive(cur)
+    if not alive:
+        return None
+    return "driver lock held by %s (%s), %s; for: %s" % (cur.get("seat"), _who(cur["identity"]), how, cur.get("purpose"))
+
+
 def _who(i):
     return "%s pid %s" % (i.get("platform"), i.get("pid"))
 

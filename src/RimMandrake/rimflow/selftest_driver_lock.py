@@ -138,6 +138,12 @@ def cli_cases():
         r = rf("BENCH", b.pid, "bridge", "take", "--for", "window B")
         good.append(case("cli: BENCH window B (same seat, other process) is refused", r.returncode != 0 and
                          "driver lock" in (r.stdout + r.stderr), (r.stdout + r.stderr)[-200:]))
+        r = rf("BENCH", b.pid, "bridge", "idle", "--for", "a relentless stage")
+        good.append(case("cli: `bridge idle` agrees with the take: B of the same seat reads NOT TAKEABLE",
+                         r.returncode == 1 and "driver lock held by" in r.stdout, (r.stdout + r.stderr)[-200:]))
+        r = rf("BENCH", a.pid, "bridge", "idle", "--for", "window A itself")
+        good.append(case("cli: `bridge idle` from the holder's own process reads TAKEABLE",
+                         r.returncode == 0 and r.stdout.startswith("TAKEABLE"), (r.stdout + r.stderr)[-200:]))
         r = rf("BENCH", b.pid, "bridge", "release")
         good.append(case("cli: window B's release leaves A's driver lock in place",
                          os.path.exists(base["RIMFLOW_DRIVER_LOCK"]), (r.stdout + r.stderr)[-200:]))

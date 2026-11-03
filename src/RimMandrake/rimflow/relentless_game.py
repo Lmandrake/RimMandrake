@@ -500,11 +500,24 @@ class GameFx(object):
     def game_mod_gap(self, item, sha, running=True):
         """relentless_live_round.mod_gap for the build at `sha`, read as a live run would read it."""
         import relentless_live_round
-        fx = relentless_live_round.RoundFx(books=self.books, seat=self.r["seat"])
-        return relentless_live_round.mod_gap(fx, sha, self.proofs_at(item, sha), running)
+        return relentless_live_round.mod_gap(self._round_fx(), sha, self.proofs_at(item, sha), running)
+
+    def game_batch_gap(self, builds):
+        """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
+        import relentless_live_round
+        return relentless_live_round.batch_gap(self._round_fx(), [(s, self.proofs_at(i, s)) for i, s in builds])
+
+    def _round_fx(self):
+        """One per Effects, so per tick: the same plan is read once a tick. modlist_enable forgets it, the plan reads
+        ModsConfig."""
+        if getattr(self, "_round", None) is None:
+            import relentless_live_round
+            self._round = relentless_live_round.RoundFx(books=self.books, seat=self.r["seat"])
+        return self._round
 
     def modlist_enable(self, mods):
         """modlist_swap.py --enable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
+        self._round = None
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--enable",
                             *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
                            stdin=subprocess.DEVNULL)
@@ -965,9 +978,8 @@ def step(store, fx, r, item, now, acts, sup):
         st = store.load(item)
         others = batch(store.states(), item, now, full=bool(g.get("full")))
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
-        gaps = [fx.game_mod_gap(item, built, running=False)] + [
-            fx.game_mod_gap(o["item"], (o.get("game") or {}).get("sha"), running=False) for o in others
-            if (o.get("game") or {}).get("sha")]
+        gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
+                                                     if (o.get("game") or {}).get("sha")])]
         want = enable_set(gaps)
         if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
             why = fx.modlist_enable(want)
