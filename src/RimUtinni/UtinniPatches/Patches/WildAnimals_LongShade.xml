@@ -65,7 +65,8 @@
 
   1. roster row AA_SandLion (0.5, "sand burrower swimmer") has no wired def row
      — CONFIRMED DEAD 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q9): the ported
-     RSW_SandLion (vekka) lives in the Stillsand, its one home. Nothing to fix
+     vekka (RM_Vekka; its RSW_SandLion copy retired by SWB_TWINS_DEDUPE_STILLSAND)
+     lives in the Stillsand, its one home. Nothing to fix
      here; desert.json's homeless-reserve entry already records this
      correctly, checked this pass (LONGSHADE_RULED_CONTENT_1).
   2. The stoneback is NOT wired here: NONCANON_BEAST_RENAME_1 renamed it

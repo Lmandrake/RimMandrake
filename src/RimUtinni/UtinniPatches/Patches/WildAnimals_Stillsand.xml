@@ -45,7 +45,8 @@
   all four are invented content (Q11a), tier-moved to native RM_-tier copies
   authored directly in RM_Stillsand_Biome.xml's own wildAnimals/wildPlants
   (RM_Ikee, RM_Vozzik, RM_Vekka, RM_Drazzik, RM_LightPipeNub, RM_Ollim/
-  RM_OllimWood — see that file's own header). The RSW_ source defs below are
+  RM_OllimWood — see that file's own header). (SWB_TWINS_DEDUPE_STILLSAND, 2026-11-03:
+  RSW_SandLion is retired and RUT_ExtremeDesert names RM_Vekka.) The other RSW_ source defs below are
   UNCHANGED and still live: RUT_ExtremeDesert.xml (the frozen twin, R22,
   untouched by this item) keeps its own original wiring of all six by name,
   so nothing on the currently-running world changes. Only this patch file's

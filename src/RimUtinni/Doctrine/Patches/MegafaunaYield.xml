@@ -151,21 +151,21 @@
             <value><MeatAmount>196</MeatAmount></value>
           </nomatch>
         </match></li>
-        <!-- AA_SandLion MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RSW_SandLion"]</xpath><match Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases/MeatAmount</xpath>
+        <!-- AA_SandLion (RM_Vekka) MeatAmount: bodySize 2.00, base 280, yields 560 -->
+        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_Vekka"]</xpath><match Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/MeatAmount</xpath>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases</xpath>
             <value><MeatAmount>280</MeatAmount></value>
           </nomatch>
         </match></li>
-        <!-- AA_SandLion BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RSW_SandLion"]</xpath><match Class="PatchOperationFindMod">
+        <!-- AA_SandLion (RM_Vekka) BoneAmount: bodySize 2.00, base 100, yields 200 -->
+        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_Vekka"]</xpath><match Class="PatchOperationFindMod">
           <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
           <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases/BoneAmount</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/BoneAmount</xpath>
             <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases</xpath>
+              <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases</xpath>
               <value><BoneAmount>100</BoneAmount></value>
             </nomatch>
           </match>

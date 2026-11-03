@@ -1651,39 +1651,39 @@
     </match>
   </Operation>
 
-  <!-- sand lion (RSW_SandLion) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -1.1..100 -->
+  <!-- vekka (RM_Vekka, was RSW_SandLion until SWB_TWINS_DEDUPE_STILLSAND) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -1.1..100 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_SandLion"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Vekka"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases/ComfyTemperatureMin</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMin</xpath>
             <value><ComfyTemperatureMin>-1.1</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases</xpath>
             <value><ComfyTemperatureMin>-1.1</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases/ComfyTemperatureMax</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMax</xpath>
             <value><ComfyTemperatureMax>100</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_SandLion"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases</xpath>
             <value><ComfyTemperatureMax>100</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_SandLion"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Vekka"]</xpath>
       <value>
         <statBases>
           <ComfyTemperatureMin>-1.1</ComfyTemperatureMin>
