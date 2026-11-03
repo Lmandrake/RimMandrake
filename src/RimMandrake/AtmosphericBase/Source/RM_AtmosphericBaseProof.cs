@@ -537,10 +537,16 @@ namespace RimMandrake.AtmosphericBase
                         CompFlickable fl = x.TryGetComp<CompFlickable>();
                         if (fl == null || !fl.SwitchIsOn) continue;
                         CompGlower g = RM_EmitterDiscovery.GlowerOf(x);
+                        // FlickedOff drops CompPowerTrader.PowerOn, and FlickedOn does not raise it: only a PowerNet tick
+                        // does, and a paused game never ticks, so the undo restores the power it found (live 2026-10-24:
+                        // the lit count fell 19 -> 18 -> 17 over three runs).
+                        CompPowerTrader pt = x.TryGetComp<CompPowerTrader>();
+                        bool powerWasOn = pt != null && pt.PowerOn;
+                        System.Action restore = () => UndoFlick(fl, pt, powerWasOn, g);
                         unlit = x;
-                        s.undo.Add(() => { fl.SwitchIsOn = true; g.ReceiveCompSignal("FlickedOn"); });
+                        s.undo.Add(restore);
                         fl.SwitchIsOn = false; g.ReceiveCompSignal("FlickedOff");
-                        if (g.Glows) { unlit = null; fl.SwitchIsOn = true; g.ReceiveCompSignal("FlickedOn"); continue; }
+                        if (g.Glows) { unlit = null; s.undo.Remove(restore); restore(); continue; }
                         break;
                     }
                     if (unlit == null) return "{\"unsupported\":\"no held fixture could be flicked off (no CompFlickable that unlights it)\"}";
@@ -578,6 +584,14 @@ namespace RimMandrake.AtmosphericBase
                 return o.Append(",\"samples\":[").Append(samples).Append("]}").ToString();
             }
             finally { s.Close(); }
+        }
+
+        // Undo of the 'unlit' scenario's flick: switch back on, then the power the fixture had before, then the glower.
+        private static void UndoFlick(CompFlickable fl, CompPowerTrader pt, bool powerWasOn, CompGlower g)
+        {
+            fl.SwitchIsOn = true;
+            if (pt != null && powerWasOn && !pt.PowerOn) pt.PowerOn = true;
+            g.ReceiveCompSignal("FlickedOn");
         }
 
         private static string Sanity()
@@ -684,8 +698,8 @@ namespace RimMandrake.AtmosphericBase
             {
                 CompGlower g = RM_EmitterDiscovery.GlowerOf(b);
                 if (g == null) continue;
-                ColorInt c = g.GlowColor;
-                rows.Add("[" + b.thingIDNumber + "," + c.r + "," + c.g + "," + c.b + "]");
+                ColorInt c = g.GlowColor;   // [id, r, g, b, lit]: R2 compares lit state as well as colour
+                rows.Add("[" + b.thingIDNumber + "," + c.r + "," + c.g + "," + c.b + "," + (g.Glows ? 1 : 0) + "]");
             }
             return "{\"fx\":[" + string.Join(",", rows.ToArray()) + "]}";
         }

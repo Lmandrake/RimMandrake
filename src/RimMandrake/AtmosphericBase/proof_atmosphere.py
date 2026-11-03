@@ -1068,6 +1068,7 @@ def offline_rows(rows, kernel_log=None):
     ut = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches")
     rt = lambda *a: open(os.path.join(ut, *a), encoding="utf-8").read() if os.path.exists(os.path.join(ut, *a)) else ""
     add(rows, "D12c.nine_disk", *judge_nine_disk(rt("Defs", "AtmosphericBase", "RUT_NineSignatures.xml"), rt("About", "About.xml")))
+    add(rows, "D13.unlit_undo_restores_power", *judge_unlit_undo(proof_cs))
     return d
 
 
@@ -1144,15 +1145,49 @@ def proof(I, rows, with_reload=False, disk_defaults=None):
         v_rows(I, rows, pick, kv_all, disk_defaults)
     finally:
         snap1, _ = I.hook("snapshot")
-        same = snap0 is not None and snap1 is not None and snap0.get("fx") == snap1.get("fx")
-        if snap0 is None or snap1 is None:
-            add(rows, "R2.left_as_found", UNM, HARNESS, "snapshot probe unanswered before or after the run")
-        else:
-            add(rows, "R2.left_as_found", PASS if same else FAIL, MOD,
-                "every fixture as before the run" if same else "fixtures differ from the before-snapshot")
+        add(rows, "R2.left_as_found", *judge_left_as_found(snap0, snap1))
     l10(I, rows, pick, (I.settings or {}).get("default_scheme"))
     reload_row(I, rows, pick, with_reload)
     log_row(I, rows)
+
+
+def judge_left_as_found(snap0, snap1):
+    """R2: every eligible fixture holds the colour AND the lit state it had before the run. Rows are [id, r, g, b, lit];
+    colour alone passed while the 'unlit' undo left a lamp dark (live 2026-10-24: lit 19 -> 18 -> 17 over three runs)."""
+    if snap0 is None or snap1 is None:
+        return _r(UNM, HARNESS, "snapshot probe unanswered before or after the run")
+    a, b = snap0.get("fx") or [], snap1.get("fx") or []
+    if any(len(x) < 5 for x in a + b):
+        return _r(UNM, HARNESS, "snapshot rows carry no lit state ([id,r,g,b] only): the deployed hook predates the lit column")
+    if not a:
+        return _r(UNM, SITE, "no eligible fixture on the map to compare")
+    da, db = dict((x[0], tuple(x[1:5])) for x in a), dict((x[0], tuple(x[1:5])) for x in b)
+    lit0, lit1 = sum(1 for v in da.values() if v[3]), sum(1 for v in db.values() if v[3])
+    dark = sorted(i for i in da if da[i][3] and i in db and not db[i][3])
+    recol = sorted(i for i in da if i in db and da[i][:3] != db[i][:3])
+    gone = sorted(set(da) ^ set(db))
+    if dark or recol or gone or lit0 != lit1:
+        return _r(FAIL, MOD, "lit %d -> %d; went dark %s; recoloured %s; appeared/vanished %s" % (lit0, lit1, dark[:8], recol[:8], gone[:8]))
+    return _r(PASS, MOD, "every fixture as before the run: %d fixtures, %d lit, colour and lit state unchanged" % (len(da), lit0))
+
+
+def judge_unlit_undo(proof_cs):
+    """D13: the 'unlit' scenario's undo puts back the power its flick took (a paused PowerNet never re-powers a lamp)."""
+    u = _member(proof_cs, "UndoFlick")
+    if not u:
+        return _r(FAIL, HARNESS, "UndoFlick missing: the 'unlit' scenario has no undo that restores power")
+    bad = []
+    if "fl.SwitchIsOn = true" not in u:
+        bad.append("the switch is not turned back on")
+    if "pt.PowerOn = true" not in u or "powerWasOn" not in u:
+        bad.append("power is not restored to what the flick found")
+    if "s.undo.Add(restore)" not in proof_cs:
+        bad.append("the undo is not queued on the session")
+    if not re.search(r'rows\.Add\([^;]*g\.Glows \? 1 : 0', _member(proof_cs, "Snapshot")):
+        bad.append("Snapshot carries no lit state, so R2 compares colour only")
+    if bad:
+        return _r(FAIL, HARNESS, "; ".join(bad))
+    return _r(PASS, HARNESS, "the 'unlit' undo restores switch and power, and Snapshot reports lit state for R2 (disk)")
 
 
 def _series(I, scenario, t0, dt, n, **kw):
@@ -1305,9 +1340,9 @@ def v_rows(I, rows, pick, kv_all, disk_defaults):
 
 
 def _repick(I, pick):
-    """Re-pick: the V rows' 'unlit' scenario flicks fixtures[0] off and back on while paused, and a paused PowerNet never
-    re-powers it, so the run-start pick's first fixture is dark by now (live run 1, 2026-10-23: L10 read null x8). L10 and
-    R1 both hold a fixture after the V rows, so both ask again."""
+    """Re-pick: the V rows' 'unlit' scenario flicks fixtures[0] off and back on while paused (live run 1, 2026-10-23: L10
+    read null x8 when that left it dark). Its undo now restores power (UndoFlick, D13), but L10 and R1 both hold a fixture
+    after the V rows, so both still ask again rather than trust the run-start pick."""
     if not I.fixture and pick is not None:
         pick = I.hook("pick")[0] or pick
     return pick
@@ -1540,7 +1575,7 @@ def _f01(a, b):
 
 class Stub(object):
     """Variants: good, phase5, off_palette, static_boundary, mixed, tremor30, white, no_restore, pause_fails, no_hook,
-    no_fixtures, blind, leaky."""
+    no_fixtures, blind, leaky, dark_lamp."""
 
     def __init__(self, variant="good", fixture=None):
         self.v = variant
@@ -1656,7 +1691,7 @@ class Stub(object):
             out.update(t_g=tg, D=D, twin=twin)
         if scenario == "unlit":
             out.update(unlit_id=self.ids[0], unlit_writes=0, skipped_unlit_delta=int(n))
-        if self.v == "leaky":
+        if self.v == "leaky" or (self.v == "dark_lamp" and scenario == "unlit"):
             self.dirty = True
         return out
 
@@ -1676,7 +1711,10 @@ class Stub(object):
         if cmd == "pick":
             return {"fixtures": list(self.ids), "lit": len(self.ids), "spread": len(self.ids), "untaken": 999}, None
         if cmd == "snapshot":
-            return {"fx": [[i] + list(SUBSTRATE if not self.dirty or i != self.ids[0] else LAMP[0]) for i in self.ids]}, None
+            dirty_c = self.dirty and self.v == "leaky"    # leaky: a colour left behind
+            dark = self.dirty and self.v == "dark_lamp"    # dark_lamp: colour as found, but the lamp left unlit
+            return {"fx": [[i] + list(LAMP[0] if dirty_c and i == self.ids[0] else SUBSTRATE)
+                           + [0 if dark and i == self.ids[0] else 1] for i in self.ids]}, None
         if cmd == "sanity":
             b = LAMP[0] if self.v == "blind" else LAMP[1]
             return {"lamp": self.ids[0], "forced": [LAMP[0], LAMP[1]], "a": LAMP[0], "b": b, "static_id": 999}, None
@@ -1766,6 +1804,7 @@ EXPECT = {   # variant -> {row: (status, class)} that variant MUST produce
     "no_fixtures": dict((r, (UNM, SITE)) for r in V_ROWS),
     "blind": dict([("S1.sampler_sees", (FAIL, HARNESS))] + [(r, (UNM, HARNESS)) for r in V_ROWS]),
     "leaky": {"R2.left_as_found": (FAIL, MOD)},
+    "dark_lamp": {"R2.left_as_found": (FAIL, MOD), "L9.unlit_untouched": (PASS, MOD)},
     "claim_lost": {"R1.save_reload_release": (FAIL, MOD)},
     "never_back": {"R1.save_reload_release": (UNM, HARNESS)},
 }
@@ -1844,6 +1883,21 @@ def metric_controls():
         mc_ok, co_ok + "\nScribe_Values.Look(ref clockOrigin, \"o\");", st_ok)[0], FAIL))
     out.append(("judge_held_lamp_rules switch-off releases", judge_held_lamp_rules(
         mc_ok, co_ok.replace("{ skippedUnlit++; continue; }", "{ comp.Release(t); continue; }"), st_ok)[0], FAIL))
+    real = open(os.path.join(HERE, "Source", "RM_AtmosphericBaseProof.cs"), encoding="utf-8").read()
+    out.append(("judge_unlit_undo shipped source", judge_unlit_undo(real)[0], PASS))
+    out.append(("judge_unlit_undo power not restored", judge_unlit_undo(
+        real.replace("if (pt != null && powerWasOn && !pt.PowerOn) pt.PowerOn = true;", ""))[0], FAIL))
+    out.append(("judge_unlit_undo old undo (switch only)", judge_unlit_undo(
+        real.replace("private static void UndoFlick(", "private static void UndoFlickGone("))[0], FAIL))
+    out.append(("judge_unlit_undo snapshot colour only", judge_unlit_undo(
+        real.replace(' + "," + (g.Glows ? 1 : 0) + "]"', ' + "]"'))[0], FAIL))
+    s5 = lambda lit: {"fx": [[1, 9, 9, 9, 1], [2, 9, 9, 9, lit]]}
+    out.append(("judge_left_as_found same", judge_left_as_found(s5(1), s5(1))[0], PASS))
+    out.append(("judge_left_as_found lamp left dark, same colour", judge_left_as_found(s5(1), s5(0))[0], FAIL))
+    out.append(("judge_left_as_found recoloured", judge_left_as_found(s5(1), {"fx": [[1, 9, 9, 9, 1], [2, 8, 9, 9, 1]]})[0], FAIL))
+    out.append(("judge_left_as_found vanished", judge_left_as_found(s5(1), {"fx": [[1, 9, 9, 9, 1]]})[0], FAIL))
+    out.append(("judge_left_as_found old 4-col hook", judge_left_as_found({"fx": [[1, 9, 9, 9]]}, {"fx": [[1, 9, 9, 9]]})[0], UNM))
+    out.append(("judge_left_as_found unanswered", judge_left_as_found(None, s5(1))[0], UNM))
     lay = ("<Defs><RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef><defName>L</defName><palette><li>(182,118,62,0)</li>"
            "<li>(220,158,96,0)</li></palette><layers>%s</layers></RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef></Defs>")
     br = "<li><primitive>Breath</primitive><period>60</period><entries>0~1</entries></li>"
