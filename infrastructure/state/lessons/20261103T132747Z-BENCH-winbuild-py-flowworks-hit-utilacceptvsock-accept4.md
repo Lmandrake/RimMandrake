@@ -1,0 +1,1 @@
+winbuild.py FlowWorks hit 'UtilAcceptVsock: accept4 failed 110' 3 runs in a row under a full fleet (2026-11-03); a direct dotnet.exe build of the staged csproj passed in 7 s right after, and the 4th winbuild passed. Retry it, up to 4 times; it is not a compile verdict.

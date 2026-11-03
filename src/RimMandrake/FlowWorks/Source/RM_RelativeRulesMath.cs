@@ -206,9 +206,9 @@ namespace RimMandrake.FlowWorks
 		/// BETWEEN the two ends stands at least <paramref name="cliffNotches"/> (2 m shipped: more than a person's height)
 		/// above the LOWER end. So, across a cliff edge, the one below shoots only those standing at the edge above (no higher
 		/// square between them) and the one above shoots down only from the edge; two pawns on one basin floor, or two on the
-		/// surface across a pit, fight normally. Adjacent squares always may (nothing between). The line is a Bresenham walk,
-		/// run only when the lower end is at least a cliff deep (the early-out every flat map takes). depthAt: notches, an
-		/// intact cover reading as ground (0).</summary>
+		/// surface across a pit, fight normally. Adjacent squares always may (nothing between). The line is a Bresenham walk
+		/// taken both ways, blocked only if both are (who shoots never matters), run only when the lower end is at least a
+		/// cliff deep (the early-out every flat map takes). depthAt: notches, an intact cover reading as ground (0).</summary>
 		public static bool ShotBlocked(Func<int, int, int> depthAt, int sx, int sz, int tx, int tz, int cliffNotches)
 		{
 			int cliff = Math.Max(1, cliffNotches);
@@ -224,6 +224,18 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// CLIFF_SHOT_FIX_DEPENDS_ON_SHOOTER_END: a Bresenham line is not symmetric (where it passes exactly between two squares
+			// it picks the one on the starting side), so it is walked both ways and the shot is blocked only when both walks are:
+			// the same pair gets one verdict whoever shoots, and a tie gives the benefit of the doubt (the 4/7/7/4 core still
+			// shoots its whole ledge).
+			return LineBlocked(depthAt, sx, sz, tx, tz, lower, cliff) && LineBlocked(depthAt, tx, tz, sx, sz, lower, cliff);
+		}
+
+		/// <summary>One Bresenham walk of <see cref="ShotBlocked"/> from (sx, sz): does a square strictly between the ends stand
+		/// at least <paramref name="cliff"/> above <paramref name="lower"/>?</summary>
+		private static bool LineBlocked(Func<int, int, int> depthAt, int sx, int sz, int tx, int tz, int lower, int cliff)
+		{
+			int adx = Math.Abs(tx - sx), adz = Math.Abs(tz - sz);
 			int stepX = tx > sx ? 1 : -1, stepZ = tz > sz ? 1 : -1;
 			int err = adx - adz;
 			int x = sx, z = sz;

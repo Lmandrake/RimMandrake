@@ -329,6 +329,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!c.Blocked(5, 2, 15, 2) && !c.Blocked(5, 2, 10, 0), "a 1.5 m cut never blocks a shot");
             });
 
+            Case("Relative_shooting_symmetric_whichever_end_shoots", () =>
+            {
+                // CLIFF_SHOT_FIX_DEPENDS_ON_SHOOTER_END (GPT FA_core_sim_3.6): (10,10) at 4, (12,11) at 0, between them (11,10)=0
+                // and (11,11)=4, cliff 4. The old walk from the shooter saw (11,10) one way (blocked) and (11,11) the other (open).
+                var g = new Grid(20, 20);
+                g.Fill(10, 10, 10, 10, 4);
+                g.Fill(11, 11, 11, 11, 4);
+                Assert(!g.Blocked(10, 10, 12, 11) && !g.Blocked(12, 11, 10, 10), "can-fail: the GPT pair is open both ways (the line runs exactly between (11,10) and (11,11): a tie, benefit of the doubt)");
+                // exhaustive: every pair on many random 7x7 grids of depths 0..8, cliffs 2..6, must agree both ways
+                var rng = new Random(36);
+                int pairs = 0;
+                for (int trial = 0; trial < 300; trial++)
+                {
+                    var r = new Grid(7, 7);
+                    for (int z = 0; z < 7; z++)
+                        for (int x = 0; x < 7; x++)
+                            r.Fill(x, z, x, z, rng.Next(9));
+                    int cliff = 2 + rng.Next(5);
+                    for (int a = 0; a < 49; a++)
+                        for (int b = a + 1; b < 49; b++)
+                        {
+                            bool ab = r.Blocked(a % 7, a / 7, b % 7, b / 7, cliff), ba = r.Blocked(b % 7, b / 7, a % 7, a / 7, cliff);
+                            Assert(ab == ba, "shot (" + (a % 7) + "," + (a / 7) + ")<->(" + (b % 7) + "," + (b / 7) + ") cliff " + cliff
+                                + " trial " + trial + ": blocked one way only");
+                            pairs++;
+                        }
+                }
+                Assert(pairs == 300 * 49 * 48 / 2, "sanity: every pair was asked");
+            });
+
             Case("Relative_shooting_line_walk_cost_measured", () =>
             {
                 // A busy 250×250 map: 60 pits of 7×7 at 2-7 m and every pair of 400 pawns asked once (79,800 asks), as
