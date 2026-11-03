@@ -712,35 +712,43 @@ namespace RimMandrake.FlowWorks.Swimming
 			p.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: false);
 		}
 
-		/// <summary>Nearest square (4-way flood over walkable squares, up to 3000) where this creature stands with its head clear.</summary>
+		/// <summary>Nearest square (4-way flood, up to 3000) where this creature stands with its head clear, reached only by
+		/// steps it can take. TIRED_SWIMMER_FIX_UNREACHABLE_SHORE: while the cliff masks steer the pathfinder (RM_CliffMask.On),
+		/// each step must pass the same climb rule (RM_PitTrapMath.StepAllowed: within the pawn's climb limit, or a ramp or a
+		/// ladder it may use joins the cells), so a ledge too high to climb is never ordered as the Goto target. With the masks
+		/// off the pathfinder walks any depth step, and so does this search.</summary>
 		public static IntVec3 NearestFooting(Pawn p, Map map, RM_MapComponent_Excavation ex)
 		{
 			float h = RM_Drowning.HeightOf(p);
 			float frac = RimMandrakeFlowWorksSettings.pitDrowningHeadFraction;
-			var seen = new HashSet<IntVec3> { p.Position };
-			var q = new Queue<IntVec3>();
-			q.Enqueue(p.Position);
-			int budget = 3000;
-			while (q.Count > 0 && budget-- > 0)
+			bool climbRule = ex != null && RM_CliffMask.On;
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			return RM_SwimMath.NearestReachableFooting(p.Position, CardinalNeighbours,
+				(c, n) => n.InBounds(map) && n.Walkable(map) && (!climbRule || CanStep(map, ex, p, c, n, k)),
+				n => !RM_RelativeRulesMath.HeadUnder(RM_SwimWater.WaterMetresAt(map, ex, n), h, false, frac) && n.Standable(map),
+				3000, IntVec3.Invalid);
+		}
+
+		private static IEnumerable<IntVec3> CardinalNeighbours(IntVec3 c)
+		{
+			for (int i = 0; i < 4; i++)
 			{
-				IntVec3 c = q.Dequeue();
-				for (int i = 0; i < 4; i++)
-				{
-					IntVec3 n = c + GenAdj.CardinalDirections[i];
-					if (!n.InBounds(map) || seen.Contains(n) || !n.Walkable(map))
-					{
-						continue;
-					}
-					seen.Add(n);
-					float w = RM_SwimWater.WaterMetresAt(map, ex, n);
-					if (!RM_RelativeRulesMath.HeadUnder(w, h, false, frac) && n.Standable(map))
-					{
-						return n;
-					}
-					q.Enqueue(n);
-				}
+				yield return c + GenAdj.CardinalDirections[i];
 			}
-			return IntVec3.Invalid;
+		}
+
+		/// <summary>One walked cardinal step c → n for this pawn under the relative climb rule (the drowning rule's ExitInReach
+		/// reads the same depths and joins).</summary>
+		private static bool CanStep(Map map, RM_MapComponent_Excavation ex, Pawn p, IntVec3 c, IntVec3 n, int k)
+		{
+			int fromD = RM_SuperdeepTrap.StepDepthAt(map, ex, c);
+			int toD = RM_SuperdeepTrap.StepDepthAt(map, ex, n);
+			if (fromD == toD)
+			{
+				return true;
+			}
+			bool joined = RM_ClimbJoins.ForPawn(map, ex, c, n, fromD, toD, p, out _, out _);
+			return RM_PitTrapMath.StepAllowed(fromD, toD, k, joined);
 		}
 
 		/// <summary>Swimming for fun in deep water: the setting, a creature that swims (not sinking), at least an hour of

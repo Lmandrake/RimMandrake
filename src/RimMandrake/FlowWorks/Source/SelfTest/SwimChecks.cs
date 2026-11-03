@@ -817,6 +817,116 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: off = natural, vanilla-passable water only (never a dug cell, never deep water)");
                 Assert(Regex.IsMatch(sw, @"if \(!on \|\| p\.Flying \|\| wadeableOff \|\|"), "off: that square is footing (recover, no drowning check)");
             });
+
+            // TIRED_SWIMMER_FIX_UNREACHABLE_SHORE (GPT FA_core_sim_4.1): the tired swimmer's shore search may only cross steps the
+            // pawn can climb. Grid cells are ints (x + z*W); depth in levels, footing = dry (depth 0 or a ledge, no water over head).
+            Case("Swim_shore_search_skips_unclimbable_ledge", () =>
+            {
+                // A flooded pit 8 levels deep, 7 wide in x, 1 row: x=0..5 is the pit, x=6 a dry ledge at depth 0 right beside the
+                // swimmer at x=5. The pit's far end (x=0) has a stepped ramp of cells in a second row z=1: depths 6,4,2,0.
+                const int W = 7, H = 2;
+                int[] depth = new int[W * H];
+                bool[] dry = new bool[W * H];
+                bool[] walk = new bool[W * H];
+                for (int x = 0; x < 6; x++) { depth[x] = 8; walk[x] = true; }
+                depth[6] = 0; dry[6] = true; walk[6] = true;                       // the ledge, 8 levels up
+                int[] ramp = { 6, 4, 2, 0 };
+                for (int i = 0; i < 4; i++) { int c = i + W; depth[c] = ramp[i]; walk[c] = true; dry[c] = ramp[i] == 0; }
+                // the ramp row joins the pit only at x=0 (8 -> 6 climbs), elsewhere the row is cut off by walls
+                walk[4 + W] = walk[5 + W] = walk[6 + W] = false;
+                const int K = 2;   // a person
+                Func<int, IEnumerable<int>> nb = c => Nb(c, W, H);
+                Func<int, int, bool> climb = (a, b) => walk[b] && RM_PitTrapMath.StepAllowed(depth[a], depth[b], K);
+                Func<int, int, bool> walkOnly = (a, b) => walk[b];
+                Func<int, bool> footing = c => dry[c];
+                int start = 5;
+                int got = RM_SwimMath.NearestReachableFooting(start, nb, climb, footing, 3000, -1);
+                Assert(got == 3 + W, "the reachable ramp top (3,1), not the ledge; got " + got);
+                // can-fail: the old walk-only flood takes the ledge beside the swimmer
+                Assert(RM_SwimMath.NearestReachableFooting(start, nb, walkOnly, footing, 3000, -1) == 6,
+                    "can-fail: a walk-only search picks the unclimbable ledge");
+                // a ramp joining the ledge (any pawn) makes the ledge the answer again
+                Func<int, int, bool> rampToLedge = (a, b) => walk[b] && RM_PitTrapMath.StepAllowed(depth[a], depth[b], K,
+                    rampJoins: (a == 5 && b == 6) || (a == 6 && b == 5));
+                Assert(RM_SwimMath.NearestReachableFooting(start, nb, rampToLedge, footing, 3000, -1) == 6, "a ramp to the ledge is taken");
+                // no climbable way out: none, never the ledge
+                walk[0 + W] = false;
+                Assert(RM_SwimMath.NearestReachableFooting(start, nb, climb, footing, 3000, -1) == -1, "boxed in: no footing ordered");
+                Assert(RM_SwimMath.NearestReachableFooting(start, nb, climb, footing, 0, -1) == -1, "a zero budget searches nothing");
+            });
+
+            Case("Swim_shore_search_sweep_answer_is_climbable_and_nearest", () =>
+            {
+                // 4000 random 8x8 depth grids, climb limits 1..4: the answer is footing, reachable by allowed steps, at the least
+                // step count of any reachable footing (an independent BFS), and -1 exactly when none is reachable.
+                var rng = new Random(4107);
+                const int W = 8, H = 8;
+                for (int t = 0; t < 4000; t++)
+                {
+                    int k = 1 + t % 4;
+                    int[] depth = new int[W * H];
+                    bool[] walk = new bool[W * H];
+                    bool[] dry = new bool[W * H];
+                    for (int c = 0; c < W * H; c++)
+                    {
+                        depth[c] = rng.Next(0, 9);
+                        walk[c] = rng.NextDouble() > 0.15;
+                        dry[c] = depth[c] == 0 && rng.NextDouble() > 0.3;
+                    }
+                    int start = rng.Next(W * H);
+                    walk[start] = true; dry[start] = false;
+                    Func<int, int, bool> climb = (a, b) => walk[b] && RM_PitTrapMath.StepAllowed(depth[a], depth[b], k);
+                    int got = RM_SwimMath.NearestReachableFooting(start, c => Nb(c, W, H), climb, c => dry[c], 3000, -1);
+                    // independent reference: full BFS distances by allowed steps
+                    int[] dist = new int[W * H];
+                    for (int c = 0; c < dist.Length; c++) dist[c] = -1;
+                    dist[start] = 0;
+                    var q = new Queue<int>();
+                    q.Enqueue(start);
+                    int best = int.MaxValue;
+                    while (q.Count > 0)
+                    {
+                        int c = q.Dequeue();
+                        foreach (int n in Nb(c, W, H))
+                        {
+                            if (dist[n] >= 0 || !climb(c, n)) continue;
+                            dist[n] = dist[c] + 1;
+                            if (dry[n]) best = Math.Min(best, dist[n]);
+                            q.Enqueue(n);
+                        }
+                    }
+                    if (best == int.MaxValue)
+                    {
+                        Assert(got == -1, "trial " + t + ": no reachable footing, yet got " + got);
+                        continue;
+                    }
+                    Assert(got >= 0 && dry[got] && dist[got] >= 0, "trial " + t + ": answer " + got + " is not reachable footing");
+                    Assert(dist[got] == best, "trial " + t + ": answer at " + dist[got] + " steps, nearest at " + best);
+                }
+            });
+
+            Case("Swim_shore_search_production_uses_climb_rule", () =>
+            {
+                string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                string body = sw.Substring(sw.IndexOf("public static IntVec3 NearestFooting(", StringComparison.Ordinal));
+                body = body.Substring(0, body.IndexOf("public static bool JoySwimAllowed(", StringComparison.Ordinal));
+                Assert(body.Contains("RM_SwimMath.NearestReachableFooting(p.Position, CardinalNeighbours,"), "the shared search is the one used");
+                Assert(body.Contains("n.InBounds(map) && n.Walkable(map) && (!climbRule || CanStep(map, ex, p, c, n, k))"),
+                    "can-fail: each step is gated on the climb rule while the cliff masks are on");
+                Assert(body.Contains("bool climbRule = ex != null && RM_CliffMask.On;"), "the gate follows the pathfinder's masks");
+                Assert(body.Contains("RM_ClimbJoins.ForPawn(map, ex, c, n, fromD, toD, p, out _, out _)")
+                    && body.Contains("return RM_PitTrapMath.StepAllowed(fromD, toD, k, joined);"), "ramps and ladders this pawn may use join");
+                Assert(!body.Contains("seen.Contains(n) || !n.Walkable(map)"), "can-fail: the old walk-only flood is gone");
+            });
+        }
+
+        private static IEnumerable<int> Nb(int c, int w, int h)
+        {
+            int x = c % w, z = c / w;
+            if (x + 1 < w) yield return c + 1;
+            if (x > 0) yield return c - 1;
+            if (z + 1 < h) yield return c + w;
+            if (z > 0) yield return c - w;
         }
     }
 }

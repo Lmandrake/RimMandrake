@@ -539,6 +539,37 @@ namespace RimMandrake.FlowWorks
 				return n;
 			}
 		}
+
+		/// <summary>TIRED_SWIMMER_FIX_UNREACHABLE_SHORE (GPT FA_core_sim_4.1): the tired swimmer's shore search. A 4-way flood
+		/// from <paramref name="start"/> over at most <paramref name="budget"/> expansions; a neighbour joins the flood only
+		/// through a step the pawn can take (<paramref name="canStep"/>(from, to): walkable, and within its climb limit or
+		/// joined by a ramp or a ladder it may use), so a dry ledge too high to climb beside the swimmer is never chosen over a
+		/// reachable ramp farther off. Returns the first cell reached that is footing, or <paramref name="none"/>.</summary>
+		public static T NearestReachableFooting<T>(T start, Func<T, IEnumerable<T>> neighbours, Func<T, T, bool> canStep,
+			Func<T, bool> isFooting, int budget, T none)
+		{
+			var seen = new HashSet<T> { start };
+			var q = new Queue<T>();
+			q.Enqueue(start);
+			while (q.Count > 0 && budget-- > 0)
+			{
+				T c = q.Dequeue();
+				foreach (T n in neighbours(c))
+				{
+					if (seen.Contains(n) || !canStep(c, n))
+					{
+						continue;
+					}
+					seen.Add(n);
+					if (isFooting(n))
+					{
+						return n;
+					}
+					q.Enqueue(n);
+				}
+			}
+			return none;
+		}
 	}
 
 	/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 2: when RM_SwimPathing's deep-water grids must be rebuilt, and
