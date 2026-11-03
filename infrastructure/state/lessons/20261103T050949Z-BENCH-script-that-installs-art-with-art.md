@@ -1,0 +1,1 @@
+A script that installs art with art.py install must pass --reason script:<its repo path>, not --why: the pre-push art guard (ART_VERSION_WRANGLING_1) refuses a live event whose reason is agent-why, and art.py install of the same sha then answers already-live, so the event must be fixed before the commit lands (WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE, 2026-11-02).
