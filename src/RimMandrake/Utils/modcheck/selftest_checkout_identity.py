@@ -214,6 +214,25 @@ def main():
         with contextlib.redirect_stdout(io.StringIO()):
             drift = V2.run_live(copy.copy(a), B=mock_bridge(V2), identity=RI)
         check("v2: a drifted deploy is not proven", proven(drift, "FlowWorks", tmp, "v2drift")[0]["proven"] == 0)
+        # the item's clause is that validation_v2 WRITES run_identity: drive main() as a live run, only the game swapped
+        # for the mock one, and read the result FILE back (the dict run_live returns is not what the report reads)
+        calls4 = []
+        RI.mod_fingerprint = fake_fp(calls4)
+        out_v2 = os.path.join(tmp, "v2main_result.json")
+        real_bridge, V2.RealBridge = V2.RealBridge, (lambda: mock_bridge(V2))
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                V2.main(["--live", "--fresh-map", "--out", out_v2])
+        finally:
+            V2.RealBridge = real_bridge
+        check("v2 main --live: the result file is written", os.path.isfile(out_v2), out_v2)
+        if os.path.isfile(out_v2):
+            written = json.load(open(out_v2, encoding="utf-8"))
+            check("v2 main --live: the file is a live run", written.get("mode") == "live", written.get("mode"))
+            identity_shape(written, "FlowWorks", 2, calls4, "v2 main file")
+            check("v2 main file: situational recorded", isinstance(written.get("situational"), dict), written.get("situational"))
+            check("v2 main file: the report counts it proven (not 0)",
+                  proven(written, "FlowWorks", tmp, "v2main")[0]["proven"] > 0)
 
         # ---- proof_all, through main()
         PA = load("_cpa", os.path.join(RM, "GimmeSomeSlack", "northstar", "proof_all.py"))
