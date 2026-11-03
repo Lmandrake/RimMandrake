@@ -8,7 +8,12 @@ Checks that the per-line judge veto of the 15 guessed biome-sprint kit designs i
   * the verdict file holds the same 15 pieces, in the same order, with the same decision;
   * every VETO line, and every REDO picture, quotes the violated source and says what was seen;
   * every job id of the job file is judged, facing by facing (21 pictures);
-  * every KEEP picture is a sha present in the art store (so the render cannot be stranded again).
+  * every KEEP picture is archived: the committed art ledger holds an artpipe variant event for that sha and job (the
+    event is written by store_put, so it is the store's committed receipt), and, where the art store is reachable from
+    this machine, the bytes are there too (a checker with no D:\\ClaudeWork sees the receipt only, and says so);
+  * the survivors are on the S1 kit sheet: the committed snapshot infrastructure/state/art/sheets/kit_s1_sheet_*.snapshot.json
+    names every KEEP sha, and no sha the verdict file records for a VETO/DROP/REDO picture (today those
+    record only their raw path, so that half guards future edits).
 
 Exit 0 all hold, 1 a check failed (each failure printed), 2 an input is missing or unreadable.
 """
@@ -25,15 +30,41 @@ sys.path.insert(0, str(HERE.parents[1]))  # src/RimMandrake/Utils, for rmpaths
 DOC = REPO / "design/RimMandrake/kit_art_designs_2026-10-16.md"
 JOBS = REPO / "design/RimMandrake/kit_art_jobs_2026-10-16.json"
 VERDICTS = REPO / "infrastructure/state/delegated/2026-11-03/kit_art_veto.json"
+SHEETS = REPO / "infrastructure/state/art/sheets"
 DECISIONS = ("KEEP", "VETO", "DROP")
+SHA_RE = re.compile(r"[0-9a-f]{64}")
 
 
-def store_root() -> Path:
+def store_root():
+    """The art store, or None when this machine cannot resolve or reach one (a blind checker off Archmagi)."""
     env = os.environ.get("ARTSTORE")
     if env:
         return Path(env)
-    from rmpaths import rm_str
-    return Path(rm_str("artstore"))
+    try:
+        from rmpaths import rm_str
+        p = Path(rm_str("artstore"))
+    except Exception:  # rmpaths raises its own RmDataRootUnset when no data root is configured
+        return None
+    return p if p.is_dir() else None
+
+
+def ledger_variants() -> dict:
+    """sha -> set of artpipe job ids, from the committed art-ledger events (archives included)."""
+    sys.path.insert(0, str(HERE.parent))
+    import artledger as L
+    out = {}
+    for ev in L.read_events():
+        if ev.get("type") == "variant" and ev.get("kind") == "artpipe" and ev.get("sha"):
+            out.setdefault(ev["sha"], set()).add(ev.get("job"))
+    return out
+
+
+def sheet_shas():
+    """(snapshot path, every sha it names) for the newest committed kit_s1 sheet snapshot, or (None, set())."""
+    snaps = sorted(SHEETS.glob("kit_s1_sheet_*.snapshot.json"))
+    if not snaps:
+        return None, set()
+    return snaps[-1], set(SHA_RE.findall(snaps[-1].read_text()))
 
 
 def doc_rows(text: str) -> list:
@@ -112,6 +143,11 @@ def main() -> int:
         for pic in line.get("pictures") or []:
             judged[(pic.get("job"), pic.get("facing"))] = (line, pic)
     store = store_root()
+    variants = ledger_variants()
+    snap, on_sheet = sheet_shas()
+    if snap is None:
+        bad.append(f"no S1 kit sheet snapshot under {SHEETS} (kit_s1_sheet_*.snapshot.json)")
+    not_kept = set()
     for job in jobs:
         jid = job.get("id")
         facings = facings_of(job)
@@ -123,6 +159,8 @@ def main() -> int:
                 continue
             line, pic = hit[0]
             v = pic.get("verdict")
+            if v != "KEEP" and SHA_RE.fullmatch(pic.get("picture") or ""):
+                not_kept.add(pic["picture"])
             if v == "REDO" and not (pic.get("violated") and pic.get("quote") and pic.get("seen")):
                 bad.append(f"job {name}: REDO without violated/quote/seen")
             if v == "KEEP":
@@ -131,8 +169,15 @@ def main() -> int:
                 sha = pic.get("picture") or ""
                 if not re.fullmatch(r"[0-9a-f]{64}", sha):
                     bad.append(f"job {name}: KEEP picture {sha!r} is not an art-store sha")
-                elif not (store / sha[:2] / f"{sha}.png").is_file():
-                    bad.append(f"job {name}: KEEP picture {sha[:12]} not in the art store {store}")
+                else:
+                    if name not in variants.get(sha, ()):
+                        bad.append(f"job {name}: KEEP picture {sha[:12]} has no artpipe variant event in the art ledger")
+                    if store is not None and not (store / sha[:2] / f"{sha}.png").is_file():
+                        bad.append(f"job {name}: KEEP picture {sha[:12]} not in the art store {store}")
+                    if snap is not None and sha not in on_sheet:
+                        bad.append(f"job {name}: KEEP picture {sha[:12]} is not on the S1 kit sheet {snap.name}")
+    for sha in sorted(not_kept & on_sheet):
+        bad.append(f"picture {sha[:12]} of a VETO/DROP line or REDO facing is on the S1 kit sheet")
     n_jobs = sum(max(1, len(facings_of(j))) for j in jobs)
     if n_jobs != len(judged):
         bad.append(f"{len(judged)} pictures judged, job file has {n_jobs}")
@@ -141,7 +186,8 @@ def main() -> int:
         print("FAIL", b)
     keep = sum(1 for ln in lines if ln.get("decision") == "KEEP")
     print(f"{'PASS' if not bad else 'FAIL'}: {len(rows)} doc rows, {len(lines)} verdict lines "
-          f"({keep} KEEP), {len(judged)} pictures, store {store}")
+          f"({keep} KEEP), {len(judged)} pictures, sheet {snap.name if snap else None}, "
+          f"store {store if store is not None else 'UNREACHABLE (ledger receipt checked instead)'}")
     return 1 if bad else 0
 
 

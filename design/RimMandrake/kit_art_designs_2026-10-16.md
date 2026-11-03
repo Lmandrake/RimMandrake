@@ -14,6 +14,10 @@ Job file: `D:\Luke\dev\RimMandrake\design\RimMandrake\kit_art_jobs_2026-10-16.js
 and picture shas in `infrastructure/state/delegated/2026-11-03/kit_art_veto.json`, checked by
 `python3 src/RimMandrake/Utils/art/kit_art_veto_check.py`. The renders' `_artsrc` tree is gone; the raw renders were
 recovered from the codex workers and the kept ones are in the art store. A struck line never installs.
+The 15 kept pictures are back under `artpipe/_artsrc/<job>/`, ledgered, and on the S1 kit sheet
+(`infrastructure/state/art/sheets/kit_s1_sheet_2026-11-03.snapshot.json`, built by `art_sheet.py --subjects … --jobs …
+--name kit_s1`, gate PASS); its picks are `Transient/biome_ffar/kit_s1_sheet_2026-11-03.decisions.json`. Install is
+`KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS`.
 
 | piece | def (tier) | job id (facings, canvas) | the guessed design | judge verdict (2026-11-03) |
 |---|---|---|---|---|

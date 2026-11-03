@@ -1,0 +1,279 @@
+{
+ "biome": "SUBJECTS_kit_s1",
+ "built": "2026-11-03T09:27:05-0800",
+ "census": "Transient/biome_ffar/kit_s1.subjects.json",
+ "census_git_head": null,
+ "droppedAllRuled": [],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 49 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {},
+ "rows": {
+  "RM_Bellows": {
+   "columns": {
+    "A": {
+     "east": "30f3fa6a48c7dcc987c237f026212ae54bb0c820c825c0f760191a51a326917b",
+     "north": "a5eb7906f40d91f89048e86bafa6593de43611be2545983d3a524247f7c4bb2d",
+     "south": "5e529abf08a44b61b1e01fb7960dd1c1594ca0f4fea20a2fd3f0a28e5da18151"
+    },
+    "B": {
+     "single": "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render kit_bellows_v1",
+    "B": "render gapall_RM_Plant_Bellows_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "bellows"
+  },
+  "RM_CaudalSpring": {
+   "columns": {
+    "A": {
+     "east": "73ac4bcf8e2d1e41f82a804ea213db63d4c568fd220125effba5ebadcd61bbfd",
+     "north": "f365e4e8294e587a468196d9e5aea269f35304d14fdf0cb18f73e1f6b4a1d8f7",
+     "south": "61616ecf2b04c2ee10ee6dc191db02daa5013d044b1c68fe703d93c5a044361f"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render kit_caudalspring_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "caudalspring"
+  },
+  "RM_ContagionMulch": {
+   "columns": {
+    "A": {
+     "single": "ee51d9488de4d02cc04a960a1d8120177350a0545cd773d92b505a2340acaa52"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/Kibble"
+   },
+   "labels": {
+    "A": "render kit_contagionmulch_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/Kibble",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "contagionmulch"
+  },
+  "RM_CorrodedFilterRig": {
+   "columns": {
+    "A": {
+     "single": "c3362bbfe69aefbc27b6bd500a5efbecf86bdf40af878f6b9c3cf8b474f91bc2"
+    },
+    "B": {
+     "single": "6dbbd2a4f047b9d8b7c2cfa03eb0d5251f89ba3ec7a6f7f31f26ed7551aa04ee"
+    },
+    "C": {
+     "single": "8ed2337f1c445aabbfe0d38874d28b89a39ecb73d2b7bfcfd2944a9a53d1a9cc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked",
+    "C": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DetoxWorks_Wrecked_v1",
+    "C": "render kit_corrodedfilterrig_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "corrodedfilterrig"
+  },
+  "RM_Eyeburst": {
+   "columns": {
+    "A": {
+     "single": "b108734ef13a36dddd817180e7e9df78578249113fb0b3210ddf7cb4b1bdcfde"
+    },
+    "B": {
+     "east": "aca4651a02ed2ce16ba8b07c26c250fcfad8d6c388230e79246446aeb40b7cc0",
+     "north": "60cc8ab30fff78b07982412db72a063e92a0104ec0c9b09ce56bfb0d87f09dad",
+     "south": "36036bd24694c78d0f8d6d6aa6a9ec114632c820a25c654caed63e1c23dc08c5"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_Eyeburst_BionicEye_v1",
+    "B": "render kit_eyeburst_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "eyeburst"
+  },
+  "RM_FogWater": {
+   "columns": {
+    "A": {
+     "single": "41427b3f811d7aac977ba31716b6b5e2dd182a0f913b0c5861eaf8b355f39898"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Drug/Beer"
+   },
+   "labels": {
+    "A": "render kit_fogwater_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Drug/Beer",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fogwater"
+  },
+  "RM_Ritual_CallingPyre": {
+   "columns": {
+    "A": {
+     "single": "5bd76d8486bac813622e94cfc898cf1080e68ac876d55d0568fa33c477f3295a"
+    },
+    "B": {
+     "single": "0e4c08b16f63e5205e8f0e59abb3e59086eb7e9d74705b56fe7c0bce31919b3a"
+    },
+    "C": {
+     "single": "4bdca9cac3dfbe79bd70bc69528c4a09edfc444728e93cece0f32be4136fe147"
+    },
+    "D": {
+     "single": "8531610d4695b324df6096c86cd0f07c874dec81c218bc7303a87927564303e8"
+    }
+   },
+   "graphic_of": {
+    "A": "UI/Icons/Rituals/BurnCircle",
+    "B": "UI/Icons/Rituals/BurnCircle",
+    "C": "_byname",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_CallingPyre_BurnCircle_v1",
+    "B": "render dregen_RM_Ritual_CallingPyre_BurnCircle_v1",
+    "C": "render kit_callingpyre_icon_v1",
+    "D": "render kit_callingpyre_ring_v1"
+   },
+   "pools": [],
+   "res": "UI/Icons/Rituals/BurnCircle",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "ritual_callingpyre"
+  },
+  "RM_SmotherBlanket": {
+   "columns": {
+    "A": {
+     "single": "e6a9df09defe8990c5de696880b52caadf8a96b391d3c4ad9f6f890bd253c283"
+    },
+    "B": {
+     "single": "eadc856e5131078c64446bedadabd560f2d1734fb43ab614d8896ef7d5cc1a2c"
+    },
+    "C": {
+     "single": "8ac2ce7aaf4c6b7be354ec3f78eadc31432869259f79ba6587383af471b38c14"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/Cloth",
+    "B": "Things/Item/Resource/Cloth",
+    "C": "Things/Item/Resource/Cloth"
+   },
+   "labels": {
+    "A": "render dregen_RM_FuzzFiber_Cloth_v1",
+    "B": "render dregen_RM_SmotherBlanket_Cloth_v1",
+    "C": "render kit_smotherblanket_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/Cloth",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "smotherblanket"
+  },
+  "RM_WindVaporator": {
+   "columns": {
+    "A": {
+     "single": "463df5d4875cba27e35c38b93dec22178b57f0efa9fd62e8b5ed9d29394e8c2e"
+    },
+    "B": {
+     "single": "c676d0b4c7005d695841ea9fad0b0d546cdca522ec44bb3c057ae7602135641c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/Misc/MoisturePump",
+    "B": "Things/Building/Misc/MoisturePump"
+   },
+   "labels": {
+    "A": "render dregen_RM_WindVaporatorWreck_MoisturePump_v1",
+    "B": "render kit_windvaporator_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/Misc/MoisturePump",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "windvaporator"
+  },
+  "RUT_OomoGrudgingShrine": {
+   "columns": {
+    "A": {
+     "single": "b66449b66a43d640245145fcd07c3964e11de4dba16597e7d8ea1931443f51d2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/Misc/AnimusStone"
+   },
+   "labels": {
+    "A": "render kit_oomoshrine_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/Misc/AnimusStone",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "oomogrudgingshrine"
+  }
+ },
+ "sheetId": "kit_s1_sheet_2026-11-03",
+ "snapshotId": "67cf2e507b17cc75"
+}
