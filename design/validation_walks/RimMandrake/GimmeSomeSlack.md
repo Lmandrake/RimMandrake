@@ -31,6 +31,14 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 - E2. Mod-mod compatibility: other conduit/power-render mods (hidden-conduit, power-grid overlay and wire mods) alongside GimmeSomeSlack -> UNBUILT (no tier or check yet)
 - E3. Declared incompatibilities: `About.xml` names every mod known to clash (incompatibleWith / loadAfter), and each one names a reason -> UNBUILT (no check yet)
 
+## anti-guessing notes
+
+- RULED OUT (2026-11-03, test pilot GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS): "the snapshot-pool fix still breaks the 20 ms
+  slice bar live". Both A1 FAILs (07:42, 08:27) ran on a 28-mod game with no GimmeSomeSlack loaded and the pre-fix DLL
+  deployed: a build sha that touched only a proof script made the live round deploy nothing and skip its running-load
+  check. HARNESS. Guard: the item's live_proofs file names `live-mods: GimmeSomeSlack`, and
+  gss_slice_window_proof.py exits 2 (UNMEASURED) when the GSS probe type is not loaded, so a GSS-less game is never a FAIL.
+
 ## north star
 state: VALIDATED
 validated-hash: c1c7124cf298bf8ea24a161f5d0422e0a7cb644c51999d3aa7e46b8d1ce47bc1
