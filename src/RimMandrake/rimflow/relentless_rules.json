@@ -127,6 +127,7 @@
       "deny_children": ["/home/mandrake/rm", "/home/mandrake/dev"],
       "deny": ["/home/mandrake/.seat-tmp", "/mnt/d/Luke/dev", "/home/mandrake/ClaudeWork", "/home/mandrake/.ssh", "/home/mandrake/.config/gh", "/home/mandrake/.remember", "/home/mandrake/.bash_history", "/home/mandrake/.zsh_history", "/home/mandrake/.claude-accounts", "/home/mandrake/.claude/history.jsonl", "/home/mandrake/.claude/backups", "/home/mandrake/.claude/jobs", "/home/mandrake/.claude/uploads", "/home/mandrake/.claude/downloads", "/home/mandrake/.claude/feedback", "/home/mandrake/.claude/bridge-spawn", "/home/mandrake/.claude/daemon", "/home/mandrake/.claude/daemon.log", "/home/mandrake/.claude/state", "/home/mandrake/.claude/auto_allowed_bash.log", "/home/mandrake/.claude/route-guard-health.jsonl"],
       "tmpfs": ["/home/mandrake/rm/scratch", "/mnt/d/ClaudeWork/rimmandrake", "/home/mandrake/.claude/file-history", "/home/mandrake/.claude/session-env", "/home/mandrake/.claude/sessions", "/home/mandrake/.claude/shell-snapshots", "/home/mandrake/.claude/telemetry", "/home/mandrake/.claude/paste-cache"],
+      "env": {"RM_DATA_ROOT": "/mnt/d/ClaudeWork/rimmandrake"},
       "allow_read_skills": "/home/mandrake/.claude/skills",
       "tree_exclude": ["conversations", "infrastructure/state/items"],
       "tree_from_parent": ["infrastructure/state/ledger", "infrastructure/state/code_review"]

@@ -281,6 +281,16 @@ def test_tmpdir_inside_the_wall():
           why is None and prepared == ["rm-test-wall-tmp"] and "TMPDIR=" + os.path.join(root, "runtmp") in sets, (why, prepared, sets))
 
 
+def test_unit_env():
+    """The Marker's Lodestar helper is behind the wall: the data root must be named, and be the wall's own empty tmpfs."""
+    import relentless as R
+    real = W.profile(R.rules(os.path.join(R.HERE, "relentless_rules.json")))
+    env = W.unit_env(real, "/b/ox")
+    check("the walled unit keeps its box's TMPDIR", env["TMPDIR"] == "/b/ox/tmp", env)
+    check("the walled unit's data root is a tmpfs inside the wall", env.get("RM_DATA_ROOT") in real["tmpfs"], env)
+    check("a profile with no env names only the temp", set(W.unit_env({}, "/b")) == {"TMPDIR", "TMP", "TEMP"})
+
+
 def main():
     test_profile_and_props()
     test_tmpdir_inside_the_wall()
@@ -289,6 +299,7 @@ def main():
     test_read_verdict_malformed()
     test_would_deny()
     test_review_two()
+    test_unit_env()
     if FAILS:
         print(json.dumps(FAILS, default=str)[:1500])
     print("selftest_relentless_wall:", "FAIL" if FAILS else "OK")

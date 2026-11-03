@@ -2714,7 +2714,8 @@ def step(store, fx, r, item, now, acts):
         if box:
             why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
                                                 + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
-                            os.path.join(box, "tree"), r["check_max_s"], relentless_wall.tmp_env(box),
+                            os.path.join(box, "tree"), r["check_max_s"],
+                            relentless_wall.unit_env(relentless_wall.profile(r), box),
                             relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
         else:
             why = fx.launch(st, desc, checker_prompt(st, fx.item_text(item), nonce), r["checker_agent"], clean,

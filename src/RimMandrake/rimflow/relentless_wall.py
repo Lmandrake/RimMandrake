@@ -137,6 +137,12 @@ def tmp_env(box):
     return {"TMPDIR": d, "TMP": d, "TEMP": d}
 
 
+def unit_env(prof, box):
+    """A walled unit's environment: its TMPDIR, and the profile's `env`. Lodestar's helper is behind the wall, so without
+    RM_DATA_ROOT named here anything importing rmpaths crashes before its first check (207 Markers met that and worked round it)."""
+    return dict(tmp_env(box), **prof.get("env", {}))
+
+
 def excludes(prof):
     """The pathspec the Marker's tree and diff leave out: tree_exclude, and tree_from_parent (that comes in as a parent snapshot)."""
     return [":(exclude)" + p for p in list(prof["tree_exclude"]) + list(prof.get("tree_from_parent", ()))]
