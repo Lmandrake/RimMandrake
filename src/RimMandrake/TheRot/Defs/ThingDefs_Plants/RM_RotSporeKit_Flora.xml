@@ -662,6 +662,10 @@
       <texPath>RotSporeKit/Things/Plant/Pusmelon</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
+    <!-- PlantBase inherits selectable False from Core PlantBaseNonEdible (grass rule); a gourd the size of a
+         sheep must be clickable, as vanilla Glowstool is (GUBBRA_GOURD_FIX_WONT_SELECT). -->
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
