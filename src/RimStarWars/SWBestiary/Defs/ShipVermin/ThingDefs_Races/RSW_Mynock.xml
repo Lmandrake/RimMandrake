@@ -30,11 +30,14 @@
      structural change.
 
      Art: GENERATED - RSW_Mynock's own texPath
-     (RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock.png, Graphic_Single)
-     carries real owner-approved art since 75115178c (2026-09-11): the
-     "hideous wet practical-effects" redesign from IKEE_MYNOCK_ART_REGEN_1,
-     reused from the retired MynockArtOverride's south-facing texture. One
-     static graphic, not a directional north/east/south set - the previous
+     (RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock_{south,east,north}.png,
+     Graphic_Multi; west mirrors east). South is the "hideous wet
+     practical-effects" redesign from IKEE_MYNOCK_ART_REGEN_1 (75115178c,
+     2026-09-11), reused from the retired MynockArtOverride's south texture;
+     the owner on the warscar sheet 2026-10-06: "I like the mynok there, but
+     needs north and east". East/north were rendered and installed 2026-10-18
+     and the def switched to Graphic_Multi by
+     MYNOCK_REGEN_INSTALL_NEEDS_GRAPHIC_MULTI. The old
      "NOT YET GENERATED" note above was stale and was corrected during
      MYNOCK_FLIGHT_ART_FIRST_1 (2026-09-20), which confirmed the art before
      touching flight. The donor-mynock retexture (folded from the retired
@@ -129,7 +132,7 @@
     <graphicData>
       <!-- real art, not a placeholder - see file header. -->
       <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>0.6</drawSize>
     </graphicData>
     <useHitPoints>false</useHitPoints>
