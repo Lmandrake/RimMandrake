@@ -166,8 +166,8 @@
   },
   "relentless.tick_age_s": {
    "owner": "Operations",
-   "max_age_min": 10,
-   "why": "The stamp inside staffing.json and reading.json. Older than max_age_min the source is frozen and relentless.blind says so, so no class above sane is needed. The tick runs every 3 min and the longest gap in the record is under 7.",
+   "max_age_min": 25,
+   "why": "The stamp inside staffing.json and reading.json is the tick's START time but is written at the tick's END (2026-11-03: files written 14:10:21Z carrying 13:55:04Z), so the stamp ages through one whole tick, the 2 min timer pause and the next whole tick. Ticks ran 1-2 min on 2026-11-02 but 3-7 min by 2026-11-03 with single ticks of 9, 11 and 15 min (journal), so 10 alarmed on a live belt (OPS_RELENTLESS_READING_RESTORE_IUUR). 25 covers a 15 min tick plus a normal one; RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS owns the slow ticks and the stamp, and this goes back toward 10 when ticks shrink.",
    "classes": {
     "sane": {
      "at_least": 0
