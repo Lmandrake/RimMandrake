@@ -341,5 +341,63 @@ ef, reached, outcome = _drive_extension_proof(verified=True)   # sanity probe: t
 check("8 CLEAN site: no main menu, the chains are reached",
       "rimworld/go_to_main_menu" not in ef.log and reached == ["ensure_playing_map"], (ef.log, reached, outcome))
 
+# 9. A retired donor in the header fails even when the running list carries it (the contract's 'refuses a retired
+#    donor' clause on its own, not hidden behind 'off the running list' or 'beyond the tier').
+from retired_mods import is_retired  # noqa: E402
+RET = "oskarpotocki.vfe.insectoid2"
+check("9 sanity: the probe id is retired", is_retired(RET))
+check("9 sanity: no TIER id is retired", not [i for i in TIER if is_retired(i)], [i for i in TIER if is_retired(i)])
+P9, _ = T.header_problems(fake_save(d, "retired_on_run", TIER + [RET]), TIER + [RET], None)
+check("9 retired donor on the running list, no tier: header fails", any("retired donor" in x and RET in x for x in P9), P9)
+check("9 ...and fails ONLY as retired (not as off-list)", not any("running list lacks" in x for x in P9), P9)
+P9t, _ = T.header_problems(fake_save(d, "retired_in_tier", TIER + [RET]), TIER + [RET], TIER + [RET])
+check("9 retired donor inside running list AND tier: header still fails", P9t and all("retired donor" in x for x in P9t), P9t)
+
+
+# 10. A2 river edges: the live probe test_site_river_edges reads >= SITES['river']['minRiverEdges'] moving edges on the
+#     current map; a map whose river reaches < 2 edges (ends in the sea, or no river at all) fails.
+import test_site_river_edges as RE  # noqa: E402
+
+
+class RingFake(object):
+    def __init__(self, moving, size=250, ok=True, short=False):
+        self.moving, self.size, self.ok, self.short = moving, size, ok, short
+
+    def __call__(self, tool, **kw):
+        if tool == "jawa/map_info":
+            return {"sizeX": self.size, "sizeZ": self.size}
+        if tool == "jawa/get_terrain_batch":
+            if not self.ok:
+                return {"success": False, "message": "refused"}
+            n = self.size
+            ops = ["Sand:%s" % r for r in kw["rects"].split(";")]
+            if self.short:
+                ops = ops[:1]
+            line = {"south": "40,0,3,1", "north": "40,%d,3,1" % (n - 1), "west": "0,40,1,3", "east": "%d,40,1,3" % (n - 1)}
+            ops += ["WaterMovingShallow:%s" % line[e] for e in self.moving]
+            return {"success": True, "ops": ";".join(ops)}
+        raise AssertionError(tool)
+
+
+check("10 river spec asks for >= 2 edges", T.SITES["river"].get("minRiverEdges") == 2, T.SITES["river"].get("minRiverEdges"))
+P10, rd = RE.river_edge_problems(RingFake(["south", "north"]), "river")
+check("10 two moving edges hold", P10 == [] and rd.get("edges") == {"south": 3, "north": 3}, (P10, rd))
+P10, rd = RE.river_edge_problems(RingFake(["west"]), "river")
+check("10 river ending in the sea (one edge) fails", any("1 edge" in x for x in P10), (P10, rd))
+P10, rd = RE.river_edge_problems(RingFake([]), "river")
+check("10 no river at all fails", any("0 edge" in x for x in P10), (P10, rd))
+check("10 unreadable ring fails, never zero", RE.river_edge_problems(RingFake(["south", "north"], ok=False), "river")[0] != [])
+check("10 a partial ring read fails", any("ring cells" in x for x in
+                                          RE.river_edge_problems(RingFake(["south", "north"], short=True), "river")[0]))
+check("10 wrong-size map (not the site) fails", RE.river_edge_problems(RingFake(["south", "north"], size=200), "river")[0] != [])
+check("10 a site with no river requirement is refused, not passed", RE.river_edge_problems(RingFake(["south", "north"]), "calm")[0] != [])
+
+# 11. The live proof file wires both: A2 runs the edge probe after a verified prove.
+_LP = os.path.join(HERE, "..", "..", "..", "..", "infrastructure", "state", "live_proofs", "RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS.txt")
+_a2 = [ln for ln in open(_LP, encoding="utf-8").read().splitlines() if ln.startswith("live-proof A2:")]
+check("11 live A2 proves the load, then reads river edges",
+      len(_a2) == 1 and "test_site_saves.py prove river" in _a2[0] and "&& " in _a2[0]
+      and "test_site_river_edges.py river" in _a2[0].split("&&", 1)[1], _a2)
+
 print("selftest_test_site_saves: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
