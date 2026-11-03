@@ -1651,14 +1651,29 @@ assailant_reveal_arc:
     seal window: Burn the cells, Hold them, Loose the experiments, Take a
     specimen, Leave them. The hyperdrive powers the stasis. The breakout starts
     on the pick, on lifting the drive, or when a 15-day post-thaw clock ends.
+    Seals work from either side; shutting one is an 8-hour hold at a panel
+    under attack; the specimens move on a game-level schedule of W/3 per band.
     Recover: every specimen dead or sealed in time. Fail latches: a specimen
-    at the outer gate, or leaving one loose. A recovery
+    passes the outer gate, or the crew leaves one loose. Under Hold or Take
+    one Imperial attempt is owed at recovery, and killing the originals
+    later burns the records but does not call it off. A recovery
     leaves a Shattered, Held, Feeding or Emptied Lab and no spread. A failure
     opens reinfection nodes, world sites from a fixed authored list that
     rewrite no tile, over seasons, and can be pushed back; a threat floor
-    stays for good. Not judge-kept: three opus rounds REDO, flagged stuck to him
-    (WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE). The strike branch is not
-    decided, his to rule: WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE.
+    stays for good. Three opus rounds REDO; he kept the shape by card
+    (WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE, 2026-11-02: "What should happen
+    to the dive design? → Keep shape, fix, 4th judge"). Round 4 (GPT
+    judge): REDO on one new point, the late-strike carve-out, since fixed
+    (no strike after the wake, by "strike OR dive, never both"); unjudged,
+    not judge-kept.
+  strike_breakout_ruled: true
+  strike_breakout_src: >
+    Owner, 2026-11-02, by question card
+    (WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE): "Does the Cradle strike skip
+    the breakout? → Strike ends it, no breakout". The strike ends the lab
+    outright: no choice, no breakout, no recovery, no reinfection, the drive
+    lost. "Breakout always starts" applies to the dive. dungeons_arc_spec.md
+    §2.10.
   superseded:
     - value: "a separate flesh complex adjacent to tile 20853 in deep Umbra"
       why: >

@@ -176,7 +176,10 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
 6. 🔴 **No transportable natives** (R-H10).
 7. 🔴 **No rain** (R-H1).
 8. 🔴 **The war-legacy split holds** — lab guardians are mechanoid/ancient; the Assailant
-   material here is the study subject, never resident weapon-fauna.
+   material here is the study subject, never resident weapon-fauna. **The ban binds the biome
+   map only** (owner, by card, 2026-11-02: "Does ban #8 bind the lab site too? → Biome map
+   only"). On the war lab's site map, Assailant creatures appear only as specimens, and only
+   after the wake; the mechanoids stay the lab's only guards (`dungeons_arc_spec.md` §2.3).
 9. 🔴 **The recognizability rule applies**; the icon carve-out protects in-universe
    references.
 10. 🔴 **Roads are allowed in the Umbra** (owner, 2026-10-20, by card: "Roads hidden on 34 Umbra tiles and 9 Gelatinous Slime tiles because the biome specs ban roads" -> "Allow roads on both"; also "For now just replicate where we had roads before") — the hand-made world record has road links there. `RUT_Umbra` sets `allowRoads=true`.

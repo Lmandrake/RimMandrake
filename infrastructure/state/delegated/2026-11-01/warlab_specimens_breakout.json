@@ -4,10 +4,10 @@
  "judge": "fresh opus via claude -p in a neutral directory, a new judge each round, no maker context",
  "subject": "design/Jawa/worldbuilding/dungeons_arc_spec.md §2.10",
  "scope": "whole §2.10, strike paragraph included",
- "verdict": "STUCK",
- "stuck": "REDO after three opus rounds; flagged to him per delegation_policy §4.5, §6, no fourth round",
+ "verdict": "REDO_ROUND4",
+ "stuck": "REDO after three opus rounds; owner kept the shape by card 2026-11-02 and authorized a 4th judge; round 4 (GPT) REDO on one new point, fixed unjudged; item left open",
  "flagged": "WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE",
- "strike_flagged": "WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE",
+ "strike_flagged": "WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE: RULED 2026-11-02 by card, \"Strike ends it, no breakout\"",
  "after_round_3": "the four round-3 defects were fixed in the spec; that text has had no judge. Round 3 found no contradiction of a ruling and held the strike paragraph isolated.",
  "rounds": {
   "1": {
@@ -27,6 +27,17 @@
     "claude-opus-5-5"
    ],
    "verdict": "VERDICT: REDO\n\n**1. Relays make the lab unreachable, which breaks the section's own guarantees.**\n- Violated (§2.10 Recover): *\"seals may be reopened afterwards… so the drive stays reachable in every end state.\"*\n- Violated (§2.10 push-back): *\"Both stay possible all game.\"*\n- The relay *\"stands on the breakout's side of its seal\"*, a seal is *\"reopened the same way\"*, and *\"a shut seal stops everything behind it.\"* So only a pawn inside can reopen it.\n- If the shutter dies or is downed, the crew outside has no way in. The drive can't be reached, and after a failure the specimens left inside can't be killed. Nothing in the section covers this. It also doesn't say how a shutter leaves, or whether the purge hits pawns sealed in.\n\n**2. The window doesn't work as a pawn pace, and the check is defined twice.**\n- Violated (§2.10): the window *\"is the lead specimen's pace.\"* A live pawn crosses a RimWorld map in hours, not 2–5 days, and nothing throttles it.\n- With that pace, *\"reaches the outer gate\"* and *\"the window closes\"* become one event, listed as two fail conditions. If pace is real, the window never matters.\n- *\"Holding it takes longer than a specimen takes to cross a band\"* then makes hold time the value that decides whether recovery is possible, and it has no number. It needs a stated throttle and a hold time.\n\n**3. Held Lab has a state with no outcome.**\n- Violated (§2.10 Hold row): *\"The originals stay alive under seal for good\"* and *\"The price of keeping the records.\"*\n- Recovery lets seals reopen, and stasis cells can be opened to kill what's inside. Killing them after the latch has no stated result: does it become the Shattered Lab, and does the Imperial attempt still come? If it does become Shattered, the records are kept and the price is dodged. The pre-latch line already does this, which beats Burn.\n\n**4. Second escapee is undefined.**\n- Only the first specimen at the gate *\"is that node.\"* Later specimens reaching the gate have no stated result.\n- If they leave, *\"every specimen left in the lab is dead\"* can be met by letting them walk out.\n\n**Not defects:**\n- **Rulings:** I found no contradiction or reinterpretation of any ruling.\n- **Strike isolation holds:** no other line decides the strike or depends on the placeholder. *\"The strike is the branch that loses it\"* is the ruling's *\"lab lost\"*, and the closing scope line covers every \"always\", \"for good\" and \"no path\"."
+  },
+  "4": {
+   "date": "2026-11-02",
+   "authorized": "owner, by card 2026-11-02: \"What should happen to the dive design? -> Keep shape, fix, 4th judge\" (WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE)",
+   "judge": "GPT via src/RimMandrake/Utils/gpt_consult.py --lockdown, no maker context; a fresh opus subagent was not available to the maker (BENCH helper)",
+   "models": [
+    "gpt (gpt_consult default)"
+   ],
+   "inputs": "dungeons_arc_spec.md §2.10 after the round-3 fixes, §2.6 as context, his rulings of 2026-10-10, 2026-10-12, 2026-11-02 quoted; prompt D:\\ClaudeWork\\rimmandrake\\warlab_rulings_2026-11-02\\judge_prompt.md",
+   "verdict": "VERDICT: REDO\n\n1. **New ruling contradiction:** “Whether the strike can still be called after going in stays §2.9 question 2, unanswered here,” followed by limiting guarantees to “the dive with no strike called.” §2.6 already rules **“strike OR dive, never both.”** Treating a strike after entry as unresolved reopens an excluded combination and makes the dive’s guarantees conditional on it. Apply the existing mutual exclusion throughout.\n\n2. **(a) Fixed:** “Every seal works from either side,” “a pawn shut in can always open its way out,” and the purge kills “every pawn, crew included.” These define access after the shutter’s death, the shutter’s escape, and the consequence of remaining inside. Opening a seal cancels the pending purge. No remaining violation found.\n\n3. **(b) Fixed:** “A released specimen stays in the band it is in for W/3,” and shutting requires “8 in-game hours of work.” These supply the throttle and hold time. “The window is that moment, not a second condition” removes the duplicated deadline; combat explicitly modifies the schedule. No remaining violation found.\n\n4. **(c) Fixed:** “When the last held specimen dies, at any time and by any hand, the feed burns out and takes the archive and the seated core with it.” The text also covers killing every original before recovery and preserves the owed Imperial attempt. Killing the originals no longer preserves the archive while cancelling the stated price. Previously learned knowledge surviving is an explicit allowance.\n\n5. **(d) Fixed:** “Any specimen that reaches the gate after that opens the next listed site at once, ahead of the season.” This defines the second escape’s consequence; the later exhaustion and saturation rules cover a full site list. No remaining violation found.",
+   "after": "round-3 gaps (a)-(d) judged fixed. The one new finding (late-strike carve-out vs \"strike OR dive, never both\") was fixed after the round: the dive begins at the wake and no strike follows it (§2.3, §2.9 q2, §2.10). That fix has had no judge; no fifth round run, per the brief."
   }
  },
  "gpt_prereview": {

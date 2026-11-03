@@ -300,6 +300,11 @@ fast while the players ignore events, starts opening the Vaults themselves —
 after many threats that this is possible — leading eventually to the War Lab.
 Leaks land as **discrete, named events**, and counterplay runs upstream only:
 a leak can be prevented, never undone (both by card, same sitting).
+**A lake blast is not a fuse** (owner, by card, 2026-11-02: "Does blowing the
+lake light Route 6? → No: heat and garrison only"). Blowing the lake early
+raises Empire heat and posts a garrison outside the lab
+(`../warlab_garrison_early_blast_2026-11-01.md` §6); it lights neither path and
+starts no clock toward Route 6.
 
 **What happens.** The occupier does what occupiers do: they bomb their way in —
 procedural, unhurried, with ordnance that asks nobody's permission and brings

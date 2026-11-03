@@ -24,9 +24,9 @@ Status and judge record: see `## Judgment` at the end of this note.
    until the lab's fate ends it (§4).
 5. **The codes work only on the lab's own site map, only once the ground has opened, only when no
    garrison stands there, and only while the door is still shut.**
-6. **A blast does not light Route 6.** Route 6 keeps the two fuses he named. Whether a blast is a
-   third is his question, `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`. Until he answers, the garrison
-   holds for as long as it takes, and nothing here depends on the answer.
+6. **A blast does not light Route 6. RULED 2026-11-02** (owner, by card: "Does blowing the lake
+   light Route 6? → No: heat and garrison only"). Route 6 keeps the two fuses he named, Paths A and
+   B. The blast brings the heat and the garrison, and the garrison holds for as long as it takes.
 7. **The lab has one fate.** Once the Cradle strikes it, it is lost: no later event reopens it. That
    is *"Strike OR dive, never both"* carried into the state. See §4 and §6.
 
@@ -228,10 +228,10 @@ The whole gate order is written once, in `dungeons_arc_spec.md` §2.3 (`ASSAILAN
   nobody buys, nobody places and nobody arms"*, with two named paths, and it sits off the price
   ladder. Route 1 keeps its door, and card 8 gives the Empire's answer to a blast as heat and a
   garrison, not ordnance. A fuse the player lights would also let a player blow the lake, skip the
-  Spire and wait for a free door. Against that, the trigger reads *"The Empire learns the place
-  exists"*, and a garrison outside the lab looks like the Empire knowing. The written text does not
-  settle it, so it is his: `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`. Until then the garrison guards a
-  crater and a sealed door it cannot open and does not report what is behind it.
+  Spire and wait for a free door. **Ruled 2026-11-02** (owner, by card: "Does blowing the lake light
+  Route 6? → No: heat and garrison only"). The garrison outside the lab is not the Empire learning
+  the place exists: it guards a crater and a sealed door it cannot open, and does not report what is
+  behind it.
 
   Paths A and B stay exactly as ruled and can fire at any time. Their entry asks one pure question:
 
