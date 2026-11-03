@@ -1,1 +1,2 @@
 live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has GeneDef/RSW_HiveMinded --has GeneDef/RSW_WrenduiFur --has GeneDef/RSW_TunnelBorn && python3 src/RimMandrake/Utils/live_log_check.py --absent RSW_HiveMinded --absent RSW_WrenduiFur --absent RSW_TunnelBorn --absent RSW_SpeciesConditions --absent ConditionalStatAffecter_NearKin --absent ConditionalStatAffecter_NoKinOnMap --absent ConditionalStatAffecter_MoodBand --absent ConditionalStatAffecter_UnderThickRoof
+live-mods: StarWarsRaces
