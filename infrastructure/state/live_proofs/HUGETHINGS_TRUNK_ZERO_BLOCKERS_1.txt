@@ -1,0 +1,5 @@
+# LOAD: minimal list + all five DLC + Harmony + HugeThings + RimMandrake.Biomes (TheRot's RM_Nogtyl and its
+# RotGiants_HugeFootprint patch), both deployed with deploy_custom_mods.py --apply. Any Playing throwaway quicktest map:
+# the runner clears a 30x30 site (map centre +30,-30) and stages a giant there. Exit 2 = bridge unreachable, no verdict.
+live-mods: HugeThings, RimMandrake.Biomes
+live-proof A2: python.exe src/RimMandrake/HugeThings/northstar/trunk_live.py < /dev/null

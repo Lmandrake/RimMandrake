@@ -169,6 +169,23 @@ namespace RimMandrake.HugeThings
             return !takenOnce || !s.Equals(lastTaken);
         }
 
+        /// <summary>HUGETHINGS_TRUNK_ZERO_BLOCKERS_1: what the footprint is computed from right now, for a bridge probe. Read-only
+        /// (Roll replays the same deterministic draws).</summary>
+        public string DebugDescribe()
+        {
+            Plant p = Plant;
+            RM_HugePlantExtension ext = Ext;
+            if (p == null || ext == null) return "plant=" + (p != null) + " ext=" + (ext != null);
+            if (!p.Spawned) return "unspawned";
+            FootprintSignature s = Signature(out HugeMask m);
+            Graphic g = p.Graphic;
+            if (g is Graphic_Random gr && gr.SubGraphicsCount > 0) g = gr.SubGraphicAtIndex(variantIndex);
+            return "growth=" + p.Growth.ToString("0.###") + " graphic=" + (g?.path ?? "null") + " variant=" + variantIndex
+                + " measured=" + s.Measured + " maskId=" + s.MaskId + " blocking=" + s.Blocking + " oldEnough=" + s.OldEnough
+                + " minGrowth=" + ext.minGrowthToBlock + " blockingSupported=" + ext.blockingSupported + " visual=" + s.Visual.ToString("0.###")
+                + " scale=" + s.BlockScale + " flip=" + s.Flip + " desired=" + DesiredKeys(s, m).Count + " takenOnce=" + takenOnce;
+        }
+
         public void MarkTaken()
         {
             lastTaken = Signature(out _);

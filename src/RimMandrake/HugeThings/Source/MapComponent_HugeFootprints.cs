@@ -543,5 +543,55 @@ namespace RimMandrake.HugeThings
             return "giants=" + c.comps.Count + " dirty=" + c.dirty.Count + " realized=" + c.realized.Count
                 + " pending=" + c.pending.Count + " initialized=" + c.initialized;
         }
+
+        /// <summary>HUGETHINGS_TRUNK_ZERO_BLOCKERS_1: read-only state of the huge plant rooted at `cell`, for a bridge probe
+        /// (jawa/static_call RimMandrake.HugeThings.MapComponent_HugeFootprints DebugPlantState current|x,z): is it registered,
+        /// what the comp computes, how many of its claimed cells are realized or pending, and for the pending ones what the
+        /// planner sees (flag counts) and how many a dry Planner.Plan would accept now. Changes nothing.</summary>
+        public static string DebugPlantState(Map map, IntVec3 cell)
+        {
+            MapComponent_HugeFootprints mc = map?.GetComponent<MapComponent_HugeFootprints>();
+            if (mc == null) return "FAIL no component";
+            if (!cell.InBounds(map)) return "FAIL cell out of bounds";
+            CompHugeFootprint comp = null;
+            foreach (Thing t in cell.GetThingList(map))
+            {
+                if (t is Plant && t.Position == cell && (comp = t.TryGetComp<CompHugeFootprint>()) != null) break;
+            }
+            string head = "initialized=" + mc.initialized + " trunkActive=" + RM_HugeThingsSettings.PlantTrunkActive
+                + " giants=" + mc.comps.Count + " realizedAll=" + mc.realized.Count + " pendingAll=" + mc.pending.Count;
+            if (comp == null) return "FAIL no huge plant with CompHugeFootprint at " + cell + " | " + head;
+            int id = comp.OwnerId;
+            List<long> mine = new List<long>(mc.ledger.CellsOf(id));
+            int real = 0, pend = 0;
+            List<long> pendList = new List<long>();
+            foreach (long k in mine)
+            {
+                if (mc.realized.ContainsKey(k)) real++;
+                if (mc.pending.Contains(k)) { pend++; pendList.Add(k); }
+            }
+            string s = "plant=" + comp.parent.ThingID + " registered=" + mc.comps.ContainsKey(id) + " dirtyQueued=" + mc.dirty.Contains(id)
+                + " claimed=" + mine.Count + " realized=" + real + " pending=" + pend + " | " + comp.DebugDescribe() + " | " + head;
+            if (pendList.Count == 0) return s;
+            pendList.Sort();
+            CellBox window = Planner.Window(comp.MaxKeys(), Key(comp.parent.Position));
+            Dictionary<long, CellFlags> flags = mc.Flags(window);
+            int notPass = 0, pawn = 0, item = 0, prot = 0, outside = 0;
+            foreach (long k in pendList)
+            {
+                if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) outside++;
+                CellFlags f = flags.TryGetValue(k, out CellFlags v) ? v : CellFlags.Passable;
+                if ((f & CellFlags.Passable) == 0) notPass++;
+                if ((f & CellFlags.Pawn) != 0) pawn++;
+                if ((f & CellFlags.Item) != 0) item++;
+                if ((f & CellFlags.Protected) != 0) prot++;
+            }
+            List<long> roots = new List<long>();
+            foreach (CompHugeFootprint c in mc.comps.Values) roots.Add(Key(c.parent.Position));
+            int accept = Planner.Plan(pendList, roots, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.Passable, window).Count;
+            return s + " | pendingFlags notPassable=" + notPass + " pawn=" + pawn + " item=" + item + " protected=" + prot
+                + " outsideWindow=" + outside + " window=" + window.MinX + "," + window.MinZ + ".." + window.MaxX + "," + window.MaxZ
+                + " dryPlanAccepts=" + accept;
+        }
     }
 }

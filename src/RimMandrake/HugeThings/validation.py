@@ -430,8 +430,11 @@ def _build_suite():
                 out, south = _count(t, BLOCKER, around_r), _count(t, BLOCKER, south_r)
                 baseline["n"] = out
                 if out not in allowed:
-                    raise ExpectationFailed("%s at growth 1 has %d blockers nearby; its measured variants allow %r"
-                                            % (GIANT, out, allowed))
+                    # HUGETHINGS_TRUNK_ZERO_BLOCKERS_1: say why (registered? claimed? pending cells' planner flags?)
+                    pr = t.bridge_call("jawa/static_call", type="RimMandrake.HugeThings.MapComponent_HugeFootprints",
+                                       method="DebugPlantState", args="current|%d,%d" % (x, z))
+                    raise ExpectationFailed("%s at growth 1 has %d blockers nearby; its measured variants allow %r | probe: %s"
+                                            % (GIANT, out, allowed, str((pr or {}).get("result") or pr)[:700]))
                 if south:
                     raise ExpectationFailed("%d blockers south of the plant: its own cell would be unreachable" % south)
         with t.component("toggle_off_clears_the_trunk", toggle="plantTrunkEnabled"):

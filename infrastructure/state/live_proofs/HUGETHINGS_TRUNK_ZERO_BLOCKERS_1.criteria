@@ -1,0 +1,1 @@
+A2 L2: on a quicktest map, RM_Nogtyl staged at growth 1 has, 120 ticks later, a RM_HugeTrunkBlocker count in the 17x17 box around it equal to one of its measured variants' contact counts (read from TheRot/Patches/RotGiants_HugeFootprint.xml) and 0 blockers in the two rows south; trunk_live.py prints MapComponent_HugeFootprints.DebugPlantState beside the counts either way
