@@ -28,9 +28,12 @@ and rely on random variants instead), `GameGlowAt`, assembly MVID. Ideo assignme
 painters is not driven here, so meme-gated glyphs appear only if the quicktest ideo holds the
 meme.
 
-Two settings still gate nothing reachable in Graffiti alone: `viewerReactionEnabled`
-(`ThoughtWorker_ViewedGraffitiMark`, re-measure: SacredGraffiti ships its ThoughtDef) and
-`breachBiasEnabled` (needs a def with `breachLure`). They carry write+read-back components.
+Two settings are proved here by write+read-back only. `viewerReactionEnabled` gates
+`ThoughtWorker_ViewedGraffitiMark`, which no Graffiti def uses: only SacredGraffiti's
+`ThoughtDefs_SacredMarks.xml` names it, so in Graffiti alone it gates nothing and its settings
+label says it needs Sacred Marks (MEASURED 2026-11-03, GRAFFITI_NORTHSTAR_SHIP_1).
+`breachBiasEnabled` gates `BreachBiasHook` on `RM_Graffiti_WarningGlyph` (`breachLure`=true);
+its behavioural A/B needs a breaching raid, not built here.
 """
 import os
 import re
@@ -462,7 +465,7 @@ def viewer_reaction_toggle_flips(t):
 
 @suite.chain("breach_bias_toggle_flips")
 def breach_bias_toggle_flips(t):
-    """Write + read-back only: needs a def with `breachLure`, which no shipped def carries."""
+    """Write + read-back only: the behavioural A/B (a breaching raid biased toward a WarningGlyph) is not built."""
     _flip(t, "breach_bias_setting_flips", "breachBiasEnabled")
 
 

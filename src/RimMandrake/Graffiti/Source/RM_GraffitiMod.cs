@@ -70,15 +70,19 @@ namespace RimMandrake.Graffiti
                 list.CheckboxLabeled("Graffiti painting", ref paintingEnabled,
                     "Pawns can paint graffiti marks on walls as a joy activity, and during "
                   + "the painting-spree mental break. Off: no pawn ever paints a mark.");
-                list.Label("Paint interval: every " + paintIntervalTicks + " ticks while painting");
+                list.Label((TaggedString)("Paint interval: every " + paintIntervalTicks + " ticks while painting"), -1f,
+                    "How often a painting pawn leaves a fresh mark while it works (60 = about 1 s, 1000 = about 17 s "
+                  + "at normal speed). Lower: more marks per painting session. Shipped: 250.");
                 paintIntervalTicks = (int)list.Slider(paintIntervalTicks, 60f, 1000f);
                 list.GapLine();
             }
 
             if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "viewerReactionEnabled" }))
             {
-                list.CheckboxLabeled("Viewer reactions to marks", ref viewerReactionEnabled,
+                list.CheckboxLabeled("Viewer reactions to marks (needs RimMandrake Sacred Marks)", ref viewerReactionEnabled,
                     "Pawns get a mood effect from noticing a graffiti mark nearby that reacts to them. "
+                  + "Graffiti alone defines no such thought: this switch only does something when the "
+                  + "RimMandrake Sacred Marks mod is also active, whose sacred-mark thoughts it gates. "
                   + "Off: marks are purely decorative filth.");
                 list.GapLine();
             }
