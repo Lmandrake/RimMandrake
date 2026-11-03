@@ -741,6 +741,73 @@ namespace RimMandrake.LuminousPigment.SelfTest
             return fails;
         }
 
+        // ---- family keys (RM_DeepfireFamilyKeys: DEEPFIRE_FAMILY_SETTINGS_KEYED_1 / _SAVE_LOAD_1) ----
+        public static long KeyRoundTrips, KeyReorders, LegacyMigrations, LegacyIgnored;
+
+        private static List<string> FamilyKeys(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < n && fails.Count < 5; k++)
+            {
+                Cases++;
+                var r = new Random(baseSeed * 7919 + k);
+                int count = r.Next(0, 16);
+                var keys = new List<string>();
+                for (int i = 0; i < count; i++) keys.Add("fam" + r.Next(100000) + "_" + i);
+                var e = new bool[count];
+                for (int i = 0; i < count; i++) e[i] = r.Next(3) != 0;
+                var cur = new bool[count];
+                for (int i = 0; i < count; i++) cur[i] = r.Next(2) == 0;
+                try
+                {
+                    Steps++;
+                    var saved = RM_DeepfireFamilyKeys.DisabledKeys(e, keys);
+                    Check(saved.Count == e.Count(x => !x), "saved keys != off count");
+                    // 1. keyed round trip; a stray legacy list in the same file never wins over keys
+                    List<bool> stray = r.Next(2) == 0 ? null : Enumerable.Range(0, count).Select(_ => r.Next(2) == 0).ToList();
+                    var back = RM_DeepfireFamilyKeys.Load(saved, stray, keys, cur);
+                    Check(back != cur && back.SequenceEqual(e), "keyed round trip lost a toggle");
+                    KeyRoundTrips++;
+                    // 2. families reordered, some removed, new ones added: every surviving key keeps its own toggle
+                    Steps++;
+                    var keys2 = keys.Where(_ => r.Next(5) != 0).OrderBy(_ => r.Next()).ToList();
+                    int added = r.Next(0, 4);
+                    for (int i = 0; i < added; i++) keys2.Insert(r.Next(keys2.Count + 1), "new" + i + "_" + r.Next(100000));
+                    var moved = RM_DeepfireFamilyKeys.Load(saved, null, keys2, new bool[keys2.Count]);
+                    Check(moved.Length == keys2.Count, "reordered load has the wrong length");
+                    for (int i = 0; i < keys2.Count; i++)
+                    {
+                        int old = keys.IndexOf(keys2[i]);
+                        bool want = old < 0 || e[old];
+                        Check(moved[i] == want, $"family {keys2[i]} moved to {i}: got {moved[i]}, want {want}");
+                    }
+                    KeyReorders++;
+                    // 3. legacy positional list of the right length migrates, and re-saves as exactly its off keys
+                    Steps++;
+                    var legacy = e.ToList();
+                    var mig = RM_DeepfireFamilyKeys.Load(null, legacy, keys, cur);
+                    Check(mig != cur && mig.SequenceEqual(e), "legacy list did not migrate as-is");
+                    if (count > 0) { legacy[0] = !legacy[0]; Check(mig[0] == e[0], "migrated array aliases the legacy list"); }
+                    Check(RM_DeepfireFamilyKeys.DisabledKeys(mig, keys).SequenceEqual(saved), "migrated toggles re-save to different keys");
+                    LegacyMigrations++;
+                    // 4. a legacy list of another length cannot be mapped: the current toggles stand; nothing at all: same
+                    Steps++;
+                    var wrong = Enumerable.Range(0, count + 1 + r.Next(3)).Select(_ => false).ToList();
+                    Check(ReferenceEquals(RM_DeepfireFamilyKeys.Load(null, wrong, keys, cur), cur), "wrong-length legacy list was applied");
+                    if (count > 0)
+                        Check(ReferenceEquals(RM_DeepfireFamilyKeys.Load(null, wrong.Take(count - 1).ToList(), keys, cur), cur), "short legacy list was applied");
+                    Check(ReferenceEquals(RM_DeepfireFamilyKeys.Load(null, null, keys, cur), cur), "no data replaced the current toggles");
+                    LegacyIgnored++;
+                    // 5. an empty keyed list (everything on) is not 'absent': it turns every family on
+                    Steps++;
+                    var allOn = RM_DeepfireFamilyKeys.Load(new List<string>(), legacy, keys, cur);
+                    Check(allOn.Length == count && allOn.All(x => x), "empty keyed list did not mean all on");
+                }
+                catch (Exception ex) { fails.Add($"familykeys seed {baseSeed * 7919 + k}: {ex.Message} | n={count}"); }
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -753,6 +820,7 @@ namespace RimMandrake.LuminousPigment.SelfTest
                 ("rules", () => Rules(N(3000), S(1))),
                 ("cuisine", () => Cuisine(N(1500), S(1))),
                 ("water", () => Water(N(2000), S(1))),
+                ("familykeys", () => FamilyKeys(N(3000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -771,9 +839,13 @@ namespace RimMandrake.LuminousPigment.SelfTest
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 if (MultiGroups == 0 || OwnLights == 0 || ClusteredThings == 0 || FloorAdds == 0 || BlockChangesWithThings == 0 || Reloads == 0 || MatChill == 0 || MatAge == 0 || FirstCoatEvents == 0
-                    || ImpressBlocked == 0 || DiminishedEvents == 0 || DodgeReach == 0 || DodgeClamp == 0 || Steered == 0 || Missed == 0 || VermilionLands == 0 || Bumps == 0 || Adds == 0 || CapBlocks == 0)
+                    || ImpressBlocked == 0 || DiminishedEvents == 0 || DodgeReach == 0 || DodgeClamp == 0 || Steered == 0 || Missed == 0 || VermilionLands == 0 || Bumps == 0 || Adds == 0 || CapBlocks == 0
+                    || KeyRoundTrips == 0 || KeyReorders == 0 || LegacyMigrations == 0 || LegacyIgnored == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
+            Console.WriteLine($"reached: familykeys round trips {KeyRoundTrips}, reorders {KeyReorders}, legacy migrations {LegacyMigrations}, legacy ignored {LegacyIgnored}");
+            if (only == "familykeys" && !oneSeed.HasValue && (KeyRoundTrips == 0 || KeyReorders == 0 || LegacyMigrations == 0 || LegacyIgnored == 0))
+            { Console.WriteLine("FAIL familykeys never reached one of its key transitions (blind)"); ok = false; }
             Console.WriteLine($"luminouspigment fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;
         }

@@ -514,7 +514,7 @@ def main():
     lint = subprocess.run([sys.executable, os.path.join(UTILS, "lint_luminouspigment_defs.py"), "--quiet"], capture_output=True, text=True)
     check("def lint (lint_luminouspigment_defs.py): 0 ERROR", lint.returncode == 0 and " 0 ERROR" in lint.stdout, (lint.stdout + lint.stderr)[-600:])
 
-    # --- 6 source contracts for GLOW_TANK_SEED_CULTURE_1 and DEEPFIRE_FAMILY_SETTINGS_KEYED_1 (static: the logic lives in
+    # --- 6 source contracts for GLOW_TANK_SEED_CULTURE_1 and DEEPFIRE_FAMILY_SETTINGS_KEYED_1 (static: the tank logic lives in
     # game-dependent classes outside the Kernel fuzz harness, so the Scribe/sow behaviour itself is the live re-runs'
     # job: GLOW_TANK_SEED_LIVE_SOW_1, DEEPFIRE_FAMILY_SETTINGS_SAVE_LOAD_1). These pin the shape so a refactor cannot silently drop it.
     tank = open(os.path.join(HERE, "Source", "Building_GlowTank.cs"), encoding="utf-8").read()
@@ -524,11 +524,17 @@ def main():
     check("tank: sow consumes the seed only while not yet established", "if (established || seedComp == null || !seedComp.HasFuel) return;" in tank)
     check("tank: sanity probe, the contract scan CAN fail",
           'Scribe_Values.Look(ref established, "rmGlowTankEstablished"' not in tank.replace("rmGlowTankEstablished", "zzNoSuchFlag"))
-    check("settings: family toggles saved by key", '"familyDisabledKeys"' in src and "DeepfireFamilies.All[i].key" in src)
+    # the keyed/legacy logic itself is RM_DeepfireFamilyKeys, fuzzed by selftest_luminouspigment_fuzz.py --fuzz-only familykeys
+    check("settings: family toggles saved by key through the fuzzed kernel", '"familyDisabledKeys"' in src
+          and "RM_DeepfireFamilyKeys.DisabledKeys(familyEnabled, familyKeys)" in src)
     check("settings: legacy positional list is read only on load and never written",
           src.count('Look(ref legacyList, "familyEnabled"') == 1 and "Scribe_Collections.Look(ref familyEnabledList" not in src
           and src.index("LoadSaveMode.LoadingVars") < src.index('Look(ref legacyList, "familyEnabled"'))
-    check("settings: keys resolve through DeepfireFamilies.IndexOf and an unknown key is ignored", "idx >= 0" in src and "DeepfireFamilies.IndexOf(key)" in src)
+    check("settings: load goes through the fuzzed kernel (keys first, legacy list only to migrate)",
+          "RM_DeepfireFamilyKeys.Load(familyDisabledKeys, legacyList, familyKeys, familyEnabled)" in src)
+    probe = open(os.path.join(HERE, "Source", "RM_LuminousFamilySettingsProbe.cs"), encoding="utf-8").read()
+    check("settings: live round-trip probe uses the real settings file (Write + ReadModSettings)",
+          "LuminousPigmentMod.settings.Write()" in probe and "LoadedModManager.ReadModSettings<LuminousPigmentSettings>" in probe)
 
     print("\n%s" % ("ALL OK" if not FAILS else "FAILED: %s" % FAILS))
     return 1 if FAILS else 0

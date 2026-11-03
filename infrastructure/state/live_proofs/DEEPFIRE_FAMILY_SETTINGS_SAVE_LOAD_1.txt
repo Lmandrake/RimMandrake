@@ -1,0 +1,2 @@
+live-proof A1: python.exe src/RimMandrake/LuminousPigment/live_probes/lp_family_settings_roundtrip.py A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/LuminousPigment/live_probes/lp_family_settings_roundtrip.py A2 < /dev/null

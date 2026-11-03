@@ -217,33 +217,16 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref hediffGlowInCombat, "hediffGlowInCombat", true);
             // Saved by stable family key (the disabled ones), so adding or reordering families never resets or moves a toggle.
             // The positional "familyEnabled" list of older settings files is read only to migrate, and is never written again.
+            // The logic is RM_DeepfireFamilyKeys (Kernel/, fuzzed offline); live round-trip: RM_LuminousFamilySettingsProbe.
+            List<string> familyKeys = DeepfireFamilies.All.ConvertAll(f => f.key);
             List<string> familyDisabledKeys = new List<string>();
-            if (Scribe.mode == LoadSaveMode.Saving)
-            {
-                for (int i = 0; i < familyEnabled.Length && i < DeepfireFamilies.All.Count; i++)
-                {
-                    if (!familyEnabled[i]) familyDisabledKeys.Add(DeepfireFamilies.All[i].key);
-                }
-            }
+            if (Scribe.mode == LoadSaveMode.Saving) familyDisabledKeys = RM_DeepfireFamilyKeys.DisabledKeys(familyEnabled, familyKeys);
             Scribe_Collections.Look(ref familyDisabledKeys, "familyDisabledKeys", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
                 List<bool> legacyList = null;
                 Scribe_Collections.Look(ref legacyList, "familyEnabled", LookMode.Value);
-                bool[] loaded = NewFamilyEnabledArray();
-                if (familyDisabledKeys != null)
-                {
-                    foreach (string key in familyDisabledKeys)
-                    {
-                        int idx = DeepfireFamilies.IndexOf(key);
-                        if (idx >= 0) loaded[idx] = false;
-                    }
-                    familyEnabled = loaded;
-                }
-                else if (legacyList != null && legacyList.Count == loaded.Length)
-                {
-                    familyEnabled = legacyList.ToArray();
-                }
+                familyEnabled = RM_DeepfireFamilyKeys.Load(familyDisabledKeys, legacyList, familyKeys, familyEnabled);
             }
 
             Scribe_Values.Look(ref godsReact, "godsReact", true);
