@@ -1,0 +1,2 @@
+After the live-slot fixes (96242d6511..b1f10e63a7) the game idles most of the time because the relentless supervisor tick itself takes 4-12 min (median ~396 s on 2026-11-03 19:29-20:25Z, vs ~230-280 s before): each tick runs serial, uncached deploy_custom_mods.py plans for every stage-phase batch gap and per-item mod_gap (e.g. --mod StarWarsPatches, Graffiti, Weather, --compose biomes). One prove round per 8-10 min. Fix class: cache plan results per (mod, sha) or run gaps once per batch, not per item per tick.
+home: NONE
