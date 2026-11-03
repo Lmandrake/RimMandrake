@@ -28,6 +28,24 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static XElement Def(XDocument d, string type, string defName) =>
             d.Descendants(type).FirstOrDefault(e => (string)e.Element("defName") == defName);
 
+        /// <summary>The trimmed, non-blank, non-comment, non-brace lines of the method whose signature starts with
+        /// <paramref name="sig"/>, from its signature to its closing brace (brace-matched). Pass the RAW file text, not Src's whitespace-collapsed copy.</summary>
+        private static List<string> MethodStatements(string src, string sig)
+        {
+            int at = src.IndexOf(sig, StringComparison.Ordinal);
+            Assert(at >= 0, "method not found: " + sig);
+            int open = src.IndexOf('{', at);
+            int depth = 0, end = open;
+            for (; end < src.Length; end++)
+            {
+                if (src[end] == '{') depth++;
+                else if (src[end] == '}' && --depth == 0) break;
+            }
+            Assert(depth == 0, "unbalanced braces in " + sig);
+            return src.Substring(at, end - at + 1).Split('\n').Select(l => l.Trim())
+                      .Where(l => l.Length > 0 && l != "{" && l != "}" && !l.StartsWith("//", StringComparison.Ordinal)).ToList();
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED (GPT FA_core_sim_3.2): the drink search gated on CanSupply (stock >= one whole
@@ -63,6 +81,33 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(jobs, @"RM_LiquidBottleUtility\.TryDebitTerrain\(Map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink job debits the same units");
                 string bot = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
                 RiverSwitchFlipChecks.Has(bot, @"return RM_ContainerMaterialMath\.BodyAffords\(body\.limitless, body\.stock, units, fluid != null \? fluid\.volumePerTile : 1f, RM_PumpMath\.TankUnitsPerLevel\);", "CanDebitTerrain prices like TryDebitTerrain");
+                // CanDebitTerrain needs a Map, so it cannot run here: pin its whole statement sequence instead. Every statement
+                // (comments, braces and blank lines dropped) must be exactly these, so no early `return true` can admit a
+                // limited body before BodyAffords prices it (blind check c45d86ce: `body == null || !body.limitless` stayed green).
+                string[] want =
+                {
+                    "public static bool CanDebitTerrain(Map map, IntVec3 c, int units)",
+                    "RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();",
+                    "if (ex?.Stock == null || units <= 0)",
+                    "return true;",
+                    "if (ex.IsExcavated(c))",
+                    "return RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U) >= 0;",
+                    "if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)",
+                    "return true;",
+                    "RM_LiquidBody body = ex.Stock.BodyAt(map, c, ex);",
+                    "if (body == null)",
+                    "return true;",
+                    "FluidDef fluid = body.fluid ?? ex.ActiveFluid;",
+                    "return RM_ContainerMaterialMath.BodyAffords(body.limitless, body.stock, units, fluid != null ? fluid.volumePerTile : 1f, RM_PumpMath.TankUnitsPerLevel);",
+                };
+                string botRaw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs")));
+                List<string> got = MethodStatements(botRaw, "public static bool CanDebitTerrain(");
+                Assert(got.SequenceEqual(want), "CanDebitTerrain statements drifted (a limited body must reach BodyAffords):\n  got:  "
+                       + string.Join("\n        ", got) + "\n  want: " + string.Join("\n        ", want));
+                // can-fail: the blind checker's mutant is refused by the same comparison
+                string mutant = botRaw.Replace("if (body == null)", "if (body == null || !body.limitless)");
+                Assert(mutant != botRaw && !MethodStatements(mutant, "public static bool CanDebitTerrain(").SequenceEqual(want),
+                       "can-fail: admitting every limited body at the search is caught");
             });
 
             Case("Thirst_dubs_cut_incompatible", () =>
