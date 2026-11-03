@@ -44,3 +44,6 @@ commissioned new slot counts as drawn by its def, and must still be confirmed NO
   the young life stages' `bodyGraphicData`) once all facings exist is the follow-on item.
 - `rows_sha` covers the table's columns, not the prompt text: a creature description edited after filing changes
   what a refile would prompt, and nothing flags it. The art is still the commissioned look; refile by hand if it matters.
+- A separate young race is recognised only by the young race's own name (Larva/Spawn/Hatchling/Grub/Juv suffix), not from
+  the adult: an adult whose young are another race would still be owed young art. None of the 69 YOUNG rows has one
+  (census of every Defs defName with a young suffix, 2026-11-03).
