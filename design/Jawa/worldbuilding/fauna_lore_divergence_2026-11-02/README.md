@@ -35,8 +35,10 @@ Files: `judge_prompt.md` (the brief), `judge_input.csv` (36 proposals with descr
 biome roster (BiomeDef `wildAnimals` and patch-added rows) plus every `RM_`/`RSW_`/`RUT_` race def, measured by
 `src/RimMandrake/Utils/animal_inventory.py` over the 316-mod ModsConfig load set of 2026-11-02 (mod XML,
 inheritance-resolved, PRE-patch: `current_best` is the best tool power before any normalization). Three roster
-names had no def in that load set and are absent: RM_Drommath, RM_Ollareth (FeverWood birds) and RSW_SandLion
-(retired twin of RM_Vekka, aliased in `RM_SWBRehome_Aliases.xml`).
+names are absent: RSW_SandLion (retired twin of RM_Vekka, aliased in `RM_SWBRehome_Aliases.xml`) has no def;
+RM_Drommath and RM_Ollareth (FeverWood birds) DO have defs but inherit their whole `<race>` block from
+`RM_SapSuckerBase`, which `animal_inventory.py`'s own-`<race>` selection drops (found by
+FAUNA_TOLERANCE_NORMALIZATION_1, whose `data/fauna_norm_input.csv` carries both).
 
 ## Graph
 

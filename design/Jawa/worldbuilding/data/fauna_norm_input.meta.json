@@ -1,0 +1,22 @@
+{
+ "active_mods": 316,
+ "biome_constant_temperature": {
+  "RM_LanternDeeps": 17.0,
+  "RM_SeabedFloor_GreySea": 12.0,
+  "RM_SeabedFloor_TheChill": -110.0,
+  "RM_SeabedFloor_TheScald": 55.0,
+  "RM_SeabedFloor_TwilightSea": 8.0
+ },
+ "biome_roster_rows": 584,
+ "config": "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
+ "item": "FAUNA_TOLERANCE_NORMALIZATION_1",
+ "load_set_fingerprint": "2189e1bbca261eb4",
+ "note": "mod XML, inheritance-resolved, PRE-patch; defs from the deployed game Mods folder, roster patch adds from repo src",
+ "patch_roster_adds": 189,
+ "rostered_names": 490,
+ "rostered_with_def": 489,
+ "rostered_without_def": [
+  "RSW_SandLion"
+ ],
+ "rows": 498
+}

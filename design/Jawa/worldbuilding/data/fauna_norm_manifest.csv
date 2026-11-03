@@ -1,0 +1,1612 @@
+defName,law,field,old,new,rule,note
+AM_Dryad_Ocular,6,MeatAmount,2,140,meat base 140,
+AM_Dryad_Ocular,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+GR_Chickenrabbit,3,tools/li[1]/power,2,0.9,above band -> K=15,bodySize 0.15 band 1.8..2.25
+GR_Chickenrabbit,3,tools/li[2]/power,5,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+GR_Chickenrabbit,3,tools/li[3]/power,1,0.4,above band -> K=15,bodySize 0.15 band 1.8..2.25
+GR_Chickenrabbit,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+GR_Manbear,3,tools/li[1]/power,2,2.6,below band -> K=15,bodySize 0.35 band 4.2..5.25
+GR_Manbear,3,tools/li[2]/power,2,2.6,below band -> K=15,bodySize 0.35 band 4.2..5.25
+GR_Manbear,3,tools/li[3]/power,4,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+GR_Manbear,3,tools/li[4]/power,2,2.6,below band -> K=15,bodySize 0.35 band 4.2..5.25
+GR_Manbear,6,MeatAmount,20,140,meat base 140,
+GR_Manbear,6,LeatherAmount,20,40,leather base 40,
+GR_ParagonRat,3,tools/li[1]/power,4,3.6,above band -> K=15,bodySize 0.3 band 3.6..4.5
+GR_ParagonRat,3,tools/li[2]/power,4,3.6,above band -> K=15,bodySize 0.3 band 3.6..4.5
+GR_ParagonRat,3,tools/li[3]/power,5,4.5,above band -> K=15,bodySize 0.3 band 3.6..4.5
+GR_ParagonRat,3,tools/li[4]/power,1,0.9,above band -> K=15,bodySize 0.3 band 3.6..4.5
+GR_Spidercat,3,tools/li[1]/power,12,11,above band -> K=15,bodySize 0.85 band 10.2..12.75
+GR_Spidercat,3,tools/li[2]/power,14,12.8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+GR_Spidercat,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+JOE_Landopus,3,tools/li[1]/power,32,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+JOE_Landopus,3,tools/li[1]/cooldownTime,0.5,0.57,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Agaripawn,3,tools/li[1]/power,11,21,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Agaripawn,3,tools/li[2]/power,11,21,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Agaripawn,3,tools/li[3]/power,6,11.5,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Agaripawn,3,tools/li[4]/power,3,5.7,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Agaripawn,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Agaripod,3,tools/li[1]/power,23,60,below band -> K=15,bodySize 4 band 48..60
+RM_Agaripod,3,tools/li[1]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Agaripod,3,tools/li[2]/power,23,60,below band -> K=15,bodySize 4 band 48..60
+RM_Agaripod,3,tools/li[2]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Agaripod,3,tools/li[3]/power,15,39.1,below band -> K=15,bodySize 4 band 48..60
+RM_Agaripod,3,tools/li[3]/cooldownTime,1.65,1.96,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Agaripod,3,tools/li[4]/power,6,15.7,below band -> K=15,bodySize 4 band 48..60
+RM_Agaripod,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Aluun,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Aluun,3,tools/li[1]/power,1,1.5,below band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Aluun,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ashwallow,3,tools/li[1]/power,7,19.5,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Ashwallow,3,tools/li[2]/power,7,19.5,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Ashwallow,3,tools/li[3]/power,5,13.9,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Ashwallow,6,MeatAmount,140,182,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Aurrok,3,tools/li[1]/power,14,60,below band -> K=15,bodySize 4 band 48..60
+RM_Aurrok,3,tools/li[1]/cooldownTime,2.6,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Aurrok,3,tools/li[2]/power,13,55.7,below band -> K=15,bodySize 4 band 48..60
+RM_Aurrok,3,tools/li[2]/cooldownTime,2,2.79,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Aurrok,3,tools/li[3]/power,13,55.7,below band -> K=15,bodySize 4 band 48..60
+RM_Aurrok,3,tools/li[3]/cooldownTime,2,2.79,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Aurrok,3,tools/li[4]/power,12,51.4,below band -> K=15,bodySize 4 band 48..60
+RM_Aurrok,3,tools/li[4]/cooldownTime,2,2.57,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Aurrok,6,MeatAmount,140,560,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Aveluthia,3,tools/li[1]/power,15,42,below band -> K=15,bodySize 2.8 band 33.6..42
+RM_Aveluthia,3,tools/li[1]/cooldownTime,2,2.51,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Aveluthia,3,tools/li[2]/power,9,25.2,below band -> K=15,bodySize 2.8 band 33.6..42
+RM_Aveluthia,3,tools/li[3]/power,10,28,below band -> K=15,bodySize 2.8 band 33.6..42
+RM_Aveluthia,3,tools/li[4]/power,10,28,below band -> K=15,bodySize 2.8 band 33.6..42
+RM_Aveluthia,3,tools/li[5]/power,10,28,below band -> K=15,bodySize 2.8 band 33.6..42
+RM_Barbslinger,3,tools/li[1]/power,20,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Barbslinger,3,tools/li[1]/cooldownTime,1.5,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Barbslinger,3,tools/li[2]/power,20,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Barbslinger,3,tools/li[2]/cooldownTime,1.5,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Barbslinger,3,tools/li[3]/power,15,28.1,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Barbslinger,3,tools/li[4]/power,4,7.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Barbslinger,6,MeatAmount,875,350,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_BedBug,6,LeatherAmount,25,40,leather base 40,
+RM_Bileworm,5,ComfyTemperatureMax,77.8,81,widen to envelope +/-15C,"env -7.1..65.9 (RM_Cauldron<-RUT_PoisonForest,RM_Miasma<-RUT_Miasma,RM_Warscar<-RUT_Scarlands,RUT_Scarlands) +/-15"
+RM_Bileworm,5,ComfyTemperatureMin,-21.1,-22.3,widen to envelope +/-15C,"env -7.1..65.9 (RM_Cauldron<-RUT_PoisonForest,RM_Miasma<-RUT_Miasma,RM_Warscar<-RUT_Scarlands,RUT_Scarlands) +/-15"
+RM_Bileworm,3,tools/li[1]/power,18,60,below band -> K=15,bodySize 4 band 48..60
+RM_Bileworm,3,tools/li[1]/cooldownTime,1.65,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Bileworm,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Bladderboil,3,tools/li[1]/power,1,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Bladderboil,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Blinker,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Blinker,3,tools/li[1]/power,3,6.8,below band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Blinker,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Blinker,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Blisterfloat,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Blisterfloat,3,tools/li[1]/power,3,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Blisterfloat,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Blisterfloat,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Bloodlurk,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Bloodlurk,3,tools/li[1]/power,9,12,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Bloodlurk,3,tools/li[2]/power,5,6.7,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Bloodlurk,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Bloodlurk,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_BloodropMoth,3,tools/li[1]/power,14,11.6,above band -> K=15,bodySize 0.77 band 9.24..11.55
+RM_BloodropMoth,3,tools/li[2]/power,8,6.6,above band -> K=15,bodySize 0.77 band 9.24..11.55
+RM_BloodyMess,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_BloodyMess,3,tools/li[1]/power,7,15,below band -> K=15,bodySize 1 band 12..15
+RM_BloodyMess,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_BloodyMess,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Boilhide,5,ComfyTemperatureMin,-20,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Boilhide,3,tools/li[1]/power,8,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Boilhide,3,tools/li[2]/power,7,9.2,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Boilhide,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Boilhide,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Bokka,3,tools/li[1]/power,8,4.8,above band -> K=15,bodySize 0.4 band 4.8..6
+RM_Bokka,3,tools/li[2]/power,8,4.8,above band -> K=15,bodySize 0.4 band 4.8..6
+RM_Bokka,3,tools/li[3]/power,10,6,above band -> K=15,bodySize 0.4 band 4.8..6
+RM_Bokka,3,tools/li[4]/power,5,3,above band -> K=15,bodySize 0.4 band 4.8..6
+RM_Bozzuga,5,ComfyTemperatureMax,58,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Brathek,5,ComfyTemperatureMax,50,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Brathek,3,tools/li[1]/power,9,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Brathek,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Brogg,3,tools/li[1]/power,8,18,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RM_Brogg,3,tools/li[2]/power,8,18,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RM_Brogg,3,tools/li[3]/power,10,22.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RM_Brogg,3,tools/li[4]/power,14,31.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RM_Brogg,6,MeatAmount,140,294,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Brullith,3,tools/li[1]/power,23,49.3,below band -> K=15,bodySize 4 band 48..60
+RM_Brullith,3,tools/li[2]/power,28,60,below band -> K=15,bodySize 4 band 48..60
+RM_Brullith,3,tools/li[2]/cooldownTime,2.6,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Brullith,3,tools/li[3]/power,19,40.7,below band -> K=15,bodySize 4 band 48..60
+RM_Brullith,3,tools/li[4]/power,19,40.7,below band -> K=15,bodySize 4 band 48..60
+RM_Brullith,3,tools/li[5]/power,17,36.4,below band -> K=15,bodySize 4 band 48..60
+RM_Brullith,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Bulloo,3,tools/li[1]/power,7,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_Bulloo,3,tools/li[2]/power,4,1.7,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_Burrak,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Burrak,3,tools/li[1]/power,18,33,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Burrak,3,tools/li[1]/cooldownTime,2,2.23,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Burrak,3,tools/li[2]/power,12,22,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Burrak,6,MeatAmount,140,308,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Candler,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Candler,3,tools/li[1]/power,6,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Candler,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Candler,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_CanopySwinger,5,ComfyTemperatureMax,55,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_CathedralRoach,3,tools/li[1]/power,6,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_CathedralRoach,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Chatrak,5,ComfyTemperatureMax,60,81,widen to envelope +/-15C,env 58.1..65.9 (RM_Warscar<-RUT_Scarlands) +/-15
+RM_Chatrak,3,tools/li[1]/power,14,45,below band -> K=15,bodySize 3 band 36..45
+RM_Chatrak,3,tools/li[1]/cooldownTime,2.2,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Chatrak,3,tools/li[2]/power,11,35.4,below band -> K=15,bodySize 3 band 36..45
+RM_Chatrak,3,tools/li[3]/power,11,35.4,below band -> K=15,bodySize 3 band 36..45
+RM_Chatrak,6,MeatAmount,140,420,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Chatrak,6,LeatherAmount,45,40,leather base 40,
+RM_Chellow,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Chellow,3,tools/li[1]/power,2,3.6,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Chellow,3,tools/li[2]/power,2.5,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Chellow,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Chittik,3,tools/li[1]/power,4,3.6,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Chittik,3,tools/li[2]/power,4,3.6,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Chittik,3,tools/li[3]/power,5,4.5,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Chittik,3,tools/li[4]/power,2,1.8,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Chittik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Chorn,3,tools/li[1]/power,14,60,below band -> K=15,bodySize 4 band 48..60
+RM_Chorn,3,tools/li[1]/cooldownTime,2.4,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Chorn,3,tools/li[2]/power,11,47.1,below band -> K=15,bodySize 4 band 48..60
+RM_Chorn,3,tools/li[2]/cooldownTime,2,2.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Chorn,6,MeatAmount,140,560,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Cindermare,3,tools/li[1]/power,9,12.5,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Cindermare,3,tools/li[2]/power,9,12.5,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Cindermare,3,tools/li[3]/power,14,19.5,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Cindermare,6,MeatAmount,140,182,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Cindermare,6,LeatherAmount,65,40,leather base 40,
+RM_Cleaver,3,tools/li[1]/power,11,10.5,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Cleaver,3,tools/li[2]/power,9,8.6,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Cleaver,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Cleaver,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ColossalAerofleet,3,tools/li[1]/power,20,30,below band -> K=15,bodySize 2 band 24..30
+RM_ColossalAerofleet,3,tools/li[2]/power,16,24,below band -> K=15,bodySize 2 band 24..30
+RM_ColossalAerofleet,3,tools/li[2]/cooldownTime,1.65,1.7,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_ContagionIkee,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_ContagionIkee,3,tools/li[1]/power,2,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_ContagionIkee,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_ContagionIkee,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Corrik,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Corrik,3,tools/li[1]/power,1.5,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Corrik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Cravvet,5,ComfyTemperatureMax,40,74.4,widen to envelope +/-15C,env 37.9..59.3 (RM_Webwork<-RUT_Webwork) +/-15
+RM_CrimsonOpeeJuv,5,ComfyTemperatureMax,60,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_CrimsonOpeeJuv,3,tools/li[1]/power,26,25.5,above band -> K=15,bodySize 1.7 band 20.4..25.5
+RM_CrimsonOpeeJuv,3,tools/li[2]/power,8,7.8,above band -> K=15,bodySize 1.7 band 20.4..25.5
+RM_CrimsonOpeeJuv,3,tools/li[3]/power,9,8.8,above band -> K=15,bodySize 1.7 band 20.4..25.5
+RM_CrimsonOpeeJuv,3,tools/li[4]/power,9,8.8,above band -> K=15,bodySize 1.7 band 20.4..25.5
+RM_CrimsonOpeeJuv,3,tools/li[5]/power,6,5.9,above band -> K=15,bodySize 1.7 band 20.4..25.5
+RM_CrimsonOpeeJuv,6,MeatAmount,140,238,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Crispling,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Crispling,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Crustweevil,5,ComfyTemperatureMax,55,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Crustweevil,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Crustweevil,6,MeatAmount,1,140,meat base 140,
+RM_Crustweevil,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_CrystalMit,3,tools/li[1]/power,8,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_CrystalMit,3,tools/li[2]/power,4,3.8,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_CrystalMit,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_CrystalMit,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dakkra,3,tools/li[1]/power,13,22.3,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Dakkra,3,tools/li[1]/cooldownTime,1.4,1.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Dakkra,3,tools/li[2]/power,13,22.3,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Dakkra,3,tools/li[2]/cooldownTime,1.4,1.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Dakkra,3,tools/li[3]/power,14,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Dakkra,3,tools/li[3]/cooldownTime,1.7,1.9,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Dakkra,6,MeatAmount,140,224,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_DancingSkresh,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_DancingSkresh,3,tools/li[1]/power,4,2.7,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RM_DancingSkresh,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Danglemaw,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Danglemaw,3,tools/li[1]/power,22,15,above band -> K=15,bodySize 1 band 12..15
+RM_Danglemaw,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Danglemaw,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dhoggur,3,tools/li[1]/power,7,6.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Dhoggur,3,tools/li[2]/power,6,5.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Dhoggur,3,tools/li[3]/power,6,5.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Dhoggur,6,MeatAmount,20,140,meat base 140,
+RM_Dhoggur,6,LeatherAmount,14,40,leather base 40,
+RM_Dhokkur,3,tools/li[1]/power,28,90,below band -> K=15,bodySize 6 band 72..90
+RM_Dhokkur,3,tools/li[1]/cooldownTime,3,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Dhokkur,3,tools/li[2]/power,28,90,below band -> K=15,bodySize 6 band 72..90
+RM_Dhokkur,3,tools/li[2]/cooldownTime,3,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Dhokkur,3,tools/li[3]/power,22,70.7,below band -> K=15,bodySize 6 band 72..90
+RM_Dhokkur,6,MeatAmount,1000,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Dhokkur,6,LeatherAmount,200,40,leather base 40,
+RM_Dhollock,5,ComfyTemperatureMax,60,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Dhollock,3,tools/li[1]/power,12,20.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Dhollock,3,tools/li[2]/power,12,20.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Dhollock,3,tools/li[3]/power,22,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Dhollock,3,tools/li[4]/power,8,13.6,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Dhollock,6,MeatAmount,140,350,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Dhuvvox,3,tools/li[1]/power,2,1.5,above band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Dhuvvox,6,MeatAmount,4,140,meat base 140,
+RM_Dhuvvox,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dorrak,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Dorrak,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Doss,3,tools/li[1]/power,2,1,above band -> K=15,bodySize 0.05 band 1..1
+RM_Doss,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Doublemaw,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Doublemaw,3,tools/li[1]/power,6,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Doublemaw,3,tools/li[2]/power,5,7.5,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Doublemaw,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Doublemaw,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dovvik,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Dovvik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Drazzik,3,tools/li[1]/power,16,27.8,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Drazzik,3,tools/li[1]/cooldownTime,1.5,1.88,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Drazzik,3,tools/li[2]/power,16,27.8,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Drazzik,3,tools/li[2]/cooldownTime,1.5,1.88,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Drazzik,3,tools/li[3]/power,19,33,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Drazzik,3,tools/li[3]/cooldownTime,1.85,2.23,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Drazzik,3,tools/li[4]/power,9,15.6,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Drazzik,6,MeatAmount,140,308,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Dredgel,3,tools/li[1]/power,3,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Drifter,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Drifter,3,tools/li[1]/power,2,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Drifter,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Drifter,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Drokattak,3,tools/li[1]/power,17,34.8,below band -> K=15,bodySize 3 band 36..45
+RM_Drokattak,3,tools/li[1]/cooldownTime,1.6,2.01,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Drokattak,3,tools/li[2]/power,17,34.8,below band -> K=15,bodySize 3 band 36..45
+RM_Drokattak,3,tools/li[2]/cooldownTime,1.6,2.01,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Drokattak,3,tools/li[3]/power,22,45,below band -> K=15,bodySize 3 band 36..45
+RM_Drokattak,3,tools/li[3]/cooldownTime,2,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Drokattak,3,tools/li[4]/power,8,16.4,below band -> K=15,bodySize 3 band 36..45
+RM_Drokattak,6,MeatAmount,140,420,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Drommath,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Drommath,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dunejelly,3,tools/li[1]/power,4,9.8,below band -> K=15,bodySize 0.65 band 7.8..9.75
+RM_Dunejelly,3,tools/li[2]/power,3,7.4,below band -> K=15,bodySize 0.65 band 7.8..9.75
+RM_Dunejelly,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Durrgak,3,tools/li[1]/power,3,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Durrgak,3,tools/li[2]/power,3,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Durrgak,6,MeatAmount,140,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Durrok,5,ComfyTemperatureMax,60.8,61.9,widen to envelope +/-15C,"env -38.1..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_TheRot<-RUT_TheRot) +/-15"
+RM_Durrok,3,tools/li[1]/power,11,21,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Durrok,3,tools/li[2]/power,11,21,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Durrok,3,tools/li[3]/power,6,11.5,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Durrok,3,tools/li[4]/power,3,5.7,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Durrok,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dustflutter,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Dustflutter,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Dustflutter,6,MeatAmount,1,140,meat base 140,
+RM_Dustflutter,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dustveil,3,tools/li[1]/power,15,11.2,above band -> K=15,bodySize 0.75 band 9..11.25
+RM_Dustveil,3,tools/li[1]/cooldownTime,1.2,1.3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Duumma,3,tools/li[1]/power,6,27,below band -> K=15,bodySize 1.8 band 21.6..27
+RM_Duumma,6,MeatAmount,140,252,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Duumma,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Dwommo,5,ComfyTemperatureMin,-10,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_Dwommo,3,tools/li[1]/power,2,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Eesh,3,tools/li[1]/power,2,1,above band -> K=15,bodySize 0.05 band 1..1
+RM_Eesh,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ekkel,3,tools/li[1]/power,3,1.5,above band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Ekkel,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ElectricGryllotalpa,3,tools/li[1]/power,15,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_ElectricGryllotalpa,3,tools/li[1]/cooldownTime,1.5,1.84,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_ElectricGryllotalpa,3,tools/li[2]/power,15,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_ElectricGryllotalpa,3,tools/li[2]/cooldownTime,1.5,1.84,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_ElectricGryllotalpa,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ElectricTick,3,tools/li[1]/power,5,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_ElectricTick,3,tools/li[2]/power,5,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_ElectricTick,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Emberscythe,6,MeatAmount,140,182,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Emberscythe,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Eskith,5,ComfyTemperatureMin,0,-22.3,widen to envelope +/-15C,env -7.1..22.5 (RM_Cauldron<-RUT_PoisonForest) +/-15
+RM_Eskith,3,tools/li[1]/power,2,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Eskith,6,MeatAmount,14,140,meat base 140,
+RM_Eskith,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Essarn,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Essarn,3,tools/li[1]/power,2,1.5,above band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Essarn,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Excretor,5,ComfyTemperatureMin,-10,-28.2,widen to envelope +/-15C,"env -13.1..28.1 (RM_Wastes<-RUT_Wasteland,RUT_Wastes<-RUT_Wasteland) +/-15"
+RM_Excretor,3,tools/li[1]/power,10,16.5,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_Excretor,3,tools/li[2]/power,10,16.5,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_Excretor,3,tools/li[3]/power,10,16.5,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_Excretor,3,tools/li[4]/power,10,16.5,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_Excretor,6,MeatAmount,140,154,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Eyestinger,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Eyestinger,3,tools/li[1]/power,13,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Eyestinger,3,tools/li[1]/cooldownTime,2,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Eyestinger,3,tools/li[2]/power,8,23.1,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Eyestinger,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Eyestinger,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Fessk,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Fessk,3,tools/li[1]/power,3,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Fessk,6,LeatherAmount,25,40,leather base 40,
+RM_Fessu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_FeverSwarm,5,ComfyTemperatureMax,60,73.3,widen to envelope +/-15C,"env 28..58.2 (RM_Miasma<-RUT_Miasma,RUT_Miasma) +/-15"
+RM_FeverSwarm,5,ComfyTemperatureMin,20,12.9,widen to envelope +/-15C,"env 28..58.2 (RM_Miasma<-RUT_Miasma,RUT_Miasma) +/-15"
+RM_FeverSwarm,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_FireWasp,3,tools/li[1]/power,3,11.9,below band -> K=15,bodySize 0.79 band 9.48..11.85
+RM_FireWasp,3,tools/li[2]/power,2,7.9,below band -> K=15,bodySize 0.79 band 9.48..11.85
+RM_Flamefang,5,ComfyTemperatureMax,75,78.9,widen to envelope +/-15C,env 37.3..63.8 (RM_Pyrelands<-ZBiome_Grasslands) +/-15
+RM_Flamefang,3,tools/li[1]/power,10,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Flamefang,3,tools/li[1]/cooldownTime,1.65,1.84,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Flamefang,3,tools/li[2]/power,1,2.2,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Flamefang,6,MeatAmount,140,210,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_FleetFlier,5,ComfyTemperatureMax,38,70.9,widen to envelope +/-15C,env 41.9..55.8 (RM_TheForge<-RUT_TheForge) +/-15
+RM_FleetFlier,3,tools/li[1]/power,1.5,1.4,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_FleetFlier,3,tools/li[2]/power,2,1.8,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_FleetFlier,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Fleshsop,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Fleshsop,3,tools/li[1]/power,6,12,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Fleshsop,3,tools/li[2]/power,5,10,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Fleshsop,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Fleshsop,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Frethik,5,ComfyTemperatureMax,20,43.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Frethik,5,ComfyTemperatureMin,-25,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Frethik,3,tools/li[1]/power,6,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RM_Frethik,3,tools/li[2]/power,3,2.4,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RM_Fubbum,5,ComfyTemperatureMin,-5,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_Fubbum,3,tools/li[1]/power,4,7.7,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Fubbum,3,tools/li[2]/power,7,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Fubbum,3,tools/li[3]/power,4,7.7,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Fubbum,3,tools/li[4]/power,4,7.7,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_FurnaceBeast,3,tools/li[1]/power,24,90,below band -> K=15,bodySize 6 band 72..90
+RM_FurnaceBeast,3,tools/li[1]/cooldownTime,2.4,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_FurnaceBeast,3,tools/li[2]/power,15,56.2,below band -> K=15,bodySize 6 band 72..90
+RM_FurnaceBeast,3,tools/li[2]/cooldownTime,2,2.3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_FurnaceBeast,3,tools/li[3]/power,15,56.2,below band -> K=15,bodySize 6 band 72..90
+RM_FurnaceBeast,3,tools/li[3]/cooldownTime,2,2.3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_FurnaceBeast,6,MeatAmount,140,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Fuzzrunner,5,ComfyTemperatureMax,45,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Fuzzrunner,3,tools/li[1]/power,2,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Fuzzrunner,3,tools/li[2]/power,1.5,2.2,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Fuzzrunner,6,MeatAmount,12,140,meat base 140,
+RM_Fuzzrunner,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Fuzzviper,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Fuzzviper,5,ComfyTemperatureMin,-15,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Fuzzviper,3,tools/li[1]/power,7,4.5,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Fuzzviper,6,MeatAmount,10,140,meat base 140,
+RM_Fuzzviper,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gaanok,3,tools/li[1]/power,12,56.2,below band -> K=15,bodySize 5 band 60..75
+RM_Gaanok,3,tools/li[1]/cooldownTime,2.4,2.52,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gaanok,3,tools/li[2]/power,14,65.6,below band -> K=15,bodySize 5 band 60..75
+RM_Gaanok,3,tools/li[2]/cooldownTime,2.2,2.94,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gaanok,3,tools/li[3]/power,14,65.6,below band -> K=15,bodySize 5 band 60..75
+RM_Gaanok,3,tools/li[3]/cooldownTime,2.2,2.94,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gaanok,3,tools/li[4]/power,16,75,below band -> K=15,bodySize 5 band 60..75
+RM_Gaanok,3,tools/li[4]/cooldownTime,2,3.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gaanok,6,MeatAmount,140,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_GalledRhossak,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gappo,5,ComfyTemperatureMin,-5,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_Gappo,3,tools/li[1]/power,4,9,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Gappo,3,tools/li[2]/power,6,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Gappo,3,tools/li[3]/power,6,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_GappoGreater,5,ComfyTemperatureMin,-5,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_GappoGreater,3,tools/li[1]/power,9,36.8,below band -> K=15,bodySize 3 band 36..45
+RM_GappoGreater,3,tools/li[1]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_GappoGreater,3,tools/li[2]/power,11,45,below band -> K=15,bodySize 3 band 36..45
+RM_GappoGreater,3,tools/li[2]/cooldownTime,2,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_GappoGreater,3,tools/li[3]/power,11,45,below band -> K=15,bodySize 3 band 36..45
+RM_GappoGreater,3,tools/li[3]/cooldownTime,2,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_GappoGreater,6,MeatAmount,140,420,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_GappoLesser,5,ComfyTemperatureMin,-5,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_GappoLesser,3,tools/li[1]/power,2,1.9,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_GappoLesser,3,tools/li[2]/power,4,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_GappoLesser,3,tools/li[3]/power,4,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_Garsulix,3,tools/li[1]/power,7,2.6,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Garsulix,3,tools/li[2]/power,12,4.5,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Garsulix,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gawpsack,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Gawpsack,3,tools/li[1]/power,2,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Gawpsack,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Gawpsack,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gelatid,5,ComfyTemperatureMin,-5,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_Gennok,3,tools/li[1]/power,11,54,below band -> K=15,bodySize 3.6 band 43.2..54
+RM_Gennok,3,tools/li[1]/cooldownTime,2.2,2.85,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gennok,3,tools/li[2]/power,8,39.3,below band -> K=15,bodySize 3.6 band 43.2..54
+RM_Gennok,3,tools/li[2]/cooldownTime,2,2.08,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gennok,6,MeatAmount,140,504,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Gharrek,3,tools/li[1]/power,1,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Gharrek,6,LeatherAmount,25,40,leather base 40,
+RM_Gloomcast,3,tools/li[1]/power,16,128,divergence harmless K=6 (fauna_lore_divergence_manifest.csv),bodySize 24 band 288..360
+RM_Gloomcast,3,tools/li[1]/cooldownTime,2,2.62,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gloomcast,3,tools/li[2]/power,16,128,divergence harmless K=6 (fauna_lore_divergence_manifest.csv),bodySize 24 band 288..360
+RM_Gloomcast,3,tools/li[2]/cooldownTime,2,2.62,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gloomcast,3,tools/li[3]/power,18,144,divergence harmless K=6 (fauna_lore_divergence_manifest.csv),bodySize 24 band 288..360
+RM_Gloomcast,3,tools/li[3]/cooldownTime,2.6,2.94,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gloomcast,6,MeatAmount,140,3360,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Gnashling,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Gnashling,3,tools/li[1]/power,3,15,below band -> K=15,bodySize 1 band 12..15
+RM_Gnashling,3,tools/li[1]/cooldownTime,1.4,1.5,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gnashling,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Gnashling,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gorekite,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Gorekite,3,tools/li[1]/power,18,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Gorekite,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Gorekite,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gorrask,5,ComfyTemperatureMax,52,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Gorrask,3,tools/li[1]/power,45,225,below band -> K=15,bodySize 15 band 180..225
+RM_Gorrask,3,tools/li[1]/cooldownTime,2.1,5.81,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gorrask,3,tools/li[2]/power,40,200,below band -> K=15,bodySize 15 band 180..225
+RM_Gorrask,3,tools/li[2]/cooldownTime,1.9,5.17,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Gorrask,6,MeatAmount,140,2100,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Gravelgut,3,tools/li[1]/power,12,30,below band -> K=15,bodySize 2 band 24..30
+RM_Gravelgut,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Gravelgut,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_GreaterOomb,3,tools/li[1]/power,12,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_GreaterOomb,3,tools/li[1]/cooldownTime,1.2,1.84,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_GreaterOomb,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_GreaterOomb,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Grellik,6,LeatherAmount,25,40,leather base 40,
+RM_Grimewing,5,ComfyTemperatureMin,-25,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Grimewing,3,tools/li[1]/power,4,7.5,below band -> K=15,bodySize 0.5 band 6..7.5
+RM_Grimewing,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Grimewing,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gripper,5,ComfyTemperatureMin,-15,-28.2,widen to envelope +/-15C,"env -13.1..28.1 (RM_Wastes<-RUT_Wasteland,RUT_Wastes<-RUT_Wasteland) +/-15"
+RM_Gripper,3,tools/li[1]/power,2,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Gripper,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Gripper,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_GrippingTerror,5,ComfyTemperatureMin,-20,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_GrippingTerror,3,tools/li[1]/power,300,400,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 20 band 240..300
+RM_GrippingTerror,3,tools/li[1]/cooldownTime,6.7,8.95,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_GrippingTerror,3,tools/li[2]/power,80,106.7,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 20 band 240..300
+RM_GrippingTerror,3,tools/li[3]/power,80,106.7,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 20 band 240..300
+RM_GrippingTerror,3,tools/li[4]/power,40,53.3,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 20 band 240..300
+RM_GrippingTerror,6,MeatAmount,140,2800,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Gristle,3,tools/li[1]/power,4,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Gristle,3,tools/li[2]/power,3.5,19.7,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Gristle,6,MeatAmount,140,210,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Gristleswarm,5,ComfyTemperatureMin,-20,-28.2,widen to envelope +/-15C,"env -13.1..28.1 (RM_Wastes<-RUT_Wasteland,RUT_Wastes<-RUT_Wasteland) +/-15"
+RM_Gristleswarm,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Gristleswarm,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Grolth,5,ComfyTemperatureMax,50,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Grolth,3,tools/li[1]/power,8,12,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Grolth,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Grusk,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Grusk,3,tools/li[1]/power,2,1.8,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_Grusk,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Gulloth,5,ComfyTemperatureMax,40,50.2,widen to envelope +/-15C,"env 9.5..35.1 (RM_LongShade<-RUT_Desert,RUT_Desert) +/-15"
+RM_Gulloth,5,ComfyTemperatureMin,-5,-5.6,widen to envelope +/-15C,"env 9.5..35.1 (RM_LongShade<-RUT_Desert,RUT_Desert) +/-15"
+RM_Gulloth,3,tools/li[1]/power,20,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Gulloth,3,tools/li[2]/power,12,22.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Gulloth,6,MeatAmount,140,350,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Gulveth,5,ComfyTemperatureMax,30,30.5,widen to envelope +/-15C,env -5..15.4 (RM_TheSump<-RUT_Sump) +/-15
+RM_Gulveth,3,tools/li[1]/power,9,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Gulveth,3,tools/li[2]/power,7,17.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Gulveth,6,MeatAmount,140,210,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Harrok,5,ComfyTemperatureMin,-5,-5.6,widen to envelope +/-15C,env 9.5..35.1 (RM_LongShade<-RUT_Desert) +/-15
+RM_Harrok,3,tools/li[1]/power,14,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Harrok,6,MeatAmount,140,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Heemin,3,tools/li[1]/power,2,1,above band -> K=15,bodySize 0.05 band 1..1
+RM_Heemin,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Hesuun,3,tools/li[1]/power,9,52.5,below band -> K=15,bodySize 3.5 band 42..52.5
+RM_Hesuun,6,MeatAmount,140,490,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Hollu,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Hollu,3,tools/li[1]/power,4,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Hollu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Huldu,5,ComfyTemperatureMax,45,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Huldu,5,ComfyTemperatureMin,10,4.4,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Hwelgrue,5,ComfyTemperatureMin,-30,-53.2,widen to envelope +/-15C,env -38.1..16.4 (RM_TheRot<-RUT_TheRot) +/-15
+RM_Hwelgrue,3,tools/li[1]/power,30,120,below band -> K=15,bodySize 8 band 96..120
+RM_Hwelgrue,3,tools/li[1]/cooldownTime,3.5,4.25,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Hwelgrue,3,tools/li[2]/power,18,72,below band -> K=15,bodySize 8 band 96..120
+RM_Hwelgrue,6,MeatAmount,140,1120,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Ikee,3,tools/li[1]/power,8,2,above band -> K=15,bodySize 0.133 band 1.596..1.995
+RM_Ikee,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Iliss,3,tools/li[1]/power,7,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_Iliss,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Illisk,5,ComfyTemperatureMax,60,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Illisk,3,tools/li[1]/power,6,1.8,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_InfectedAerofleet,3,tools/li[1]/power,7,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_InfectedAerofleet,3,tools/li[2]/power,4,1.7,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_InfectedAerofleet,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Ivvol,5,ComfyTemperatureMax,45,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Ivvol,5,ComfyTemperatureMin,5,4.4,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Jossur,3,tools/li[1]/power,13,20.8,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Jossur,3,tools/li[2]/power,15,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Jossur,6,MeatAmount,60,224,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Jossur,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_JuggernautBeetle,3,tools/li[1]/power,20,45,below band -> K=15,bodySize 3 band 36..45
+RM_JuggernautBeetle,3,tools/li[1]/cooldownTime,1.5,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_JuggernautBeetle,3,tools/li[2]/power,20,45,below band -> K=15,bodySize 3 band 36..45
+RM_JuggernautBeetle,3,tools/li[2]/cooldownTime,1.5,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_JuggernautBeetle,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Julmox,3,tools/li[1]/power,8,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Julmox,3,tools/li[2]/power,7,15.8,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Julmox,3,tools/li[3]/power,7,15.8,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Julmox,6,MeatAmount,110,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Julmox,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Karrash,3,tools/li[1]/power,8,4.5,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Karrash,3,tools/li[2]/power,5,2.8,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Karrash,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Karravel,5,ComfyTemperatureMax,58,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Karravel,5,ComfyTemperatureMin,18,12.9,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Karravel,3,tools/li[1]/power,2,2.7,below band -> K=15,bodySize 0.18 band 2.16..2.7
+RM_Karravel,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Karrek,5,ComfyTemperatureMax,45,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Karrek,5,ComfyTemperatureMin,5,4.4,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Karrek,3,tools/li[1]/power,4,1.2,above band -> K=15,bodySize 0.08 band 1..1.2
+RM_Karrek,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Karrimeth,5,ComfyTemperatureMax,62,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Karrimeth,5,ComfyTemperatureMin,22,12.9,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Karrimeth,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Karrobel,5,ComfyTemperatureMax,55,73.3,widen to envelope +/-15C,"env 28..58.2 (RM_Miasma<-RUT_Miasma,RUT_Miasma) +/-15"
+RM_Karrobel,5,ComfyTemperatureMin,15,12.9,widen to envelope +/-15C,"env 28..58.2 (RM_Miasma<-RUT_Miasma,RUT_Miasma) +/-15"
+RM_Karrobel,3,tools/li[1]/power,5,7.5,below band -> K=15,bodySize 0.5 band 6..7.5
+RM_Karrobel,3,tools/li[2]/power,4,6,below band -> K=15,bodySize 0.5 band 6..7.5
+RM_Karrobel,6,LeatherAmount,25,40,leather base 40,
+RM_Karrolun,5,ComfyTemperatureMax,56,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Karrolun,5,ComfyTemperatureMin,16,12.9,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Karrolun,3,tools/li[1]/power,4,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Karrolun,3,tools/li[2]/power,3,3.9,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Karrolun,6,LeatherAmount,25,40,leather base 40,
+RM_Kasselith,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Kellu,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Kellu,3,tools/li[1]/power,6,5.2,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Kellu,3,tools/li[2]/power,4,3.5,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Kellu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Kethrel,3,tools/li[1]/power,10,19.5,below band -> K=15,bodySize 1.3 band 15.6..19.5
+RM_Kethrel,6,MeatAmount,140,182,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Khorrak,3,tools/li[1]/power,14,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Khorrak,3,tools/li[2]/power,4,6.4,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Khorrak,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Khorrak,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Kirruk,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Kirruk,3,tools/li[1]/power,10,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Knocker,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Knocker,3,tools/li[1]/power,6,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Knocker,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Knocker,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Korrum,3,tools/li[1]/power,32,60,below band -> K=15,bodySize 4 band 48..60
+RM_Korrum,3,tools/li[1]/cooldownTime,2.1,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Korrum,3,tools/li[2]/power,12,22.5,below band -> K=15,bodySize 4 band 48..60
+RM_Korrum,6,MeatAmount,10,560,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Korrum,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Krannock,5,ComfyTemperatureMax,40,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Krannock,3,tools/li[1]/power,11,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Krannock,6,MeatAmount,140,224,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Krannock,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Krellik,3,tools/li[1]/power,4,3.3,above band -> K=15,bodySize 0.22 band 2.64..3.3
+RM_Krellik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Krissek,3,tools/li[1]/power,14,13.5,above band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Krissek,3,tools/li[2]/power,8,7.7,above band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Krissek,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Krissek,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Krizzak,5,ComfyTemperatureMin,-30,-34.9,widen to envelope +/-15C,env -19.7..3.1 (RM_Abyss<-RUT_ForsakenCrags) +/-15
+RM_Krizzak,3,tools/li[1]/power,1,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Krizzak,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Kroffa,5,ComfyTemperatureMax,40,43.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Kroffa,5,ComfyTemperatureMin,-20,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Kroffa,3,tools/li[1]/power,7.3,15,below band -> K=15,bodySize 1 band 12..15
+RM_Kroffa,3,tools/li[2]/power,6,12.3,below band -> K=15,bodySize 1 band 12..15
+RM_Lanternwhale,5,ComfyTemperatureMax,45,46.1,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Lanternwhale,3,tools/li[1]/power,600,120,divergence harmless K=3 (fauna_lore_divergence_manifest.csv),bodySize 40 band 480..600
+RM_Lanternwhale,3,tools/li[2]/power,150,30,divergence harmless K=3 (fauna_lore_divergence_manifest.csv),bodySize 40 band 480..600
+RM_Lanternwhale,6,MeatAmount,140,5600,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_LesserOomb,5,ComfyTemperatureMin,-10,-15.4,widen to envelope +/-15C,env -0.3..19.9 (RM_GelatinousSlime<-RUT_Slime) +/-15
+RM_LesserOomb,3,tools/li[1]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_LesserOomb,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_LesserOomb,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Liiru,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Liiru,3,tools/li[1]/power,1,1.5,below band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Liiru,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_LikkaLikka,3,tools/li[1]/power,1,1.8,below band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_LikkaLikka,6,MeatAmount,1,140,meat base 140,
+RM_LikkaLikka,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Liliana,5,ComfyTemperatureMax,60,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_Liliana,3,tools/li[1]/power,6,15,below band -> K=15,bodySize 1 band 12..15
+RM_Liliana,3,tools/li[2]/power,5.2,13,below band -> K=15,bodySize 1 band 12..15
+RM_Liliana,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_LivingBolt,3,tools/li[1]/power,1,2.2,below band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_LivingBolt,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Loohn,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Loohn,3,tools/li[1]/power,18,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Loohn,3,tools/li[1]/cooldownTime,1.8,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Loohn,3,tools/li[2]/power,4,8.3,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Loohn,6,MeatAmount,140,350,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Loomma,5,ComfyTemperatureMax,70,76.7,widen to envelope +/-15C,env 31.9..61.6 (RM_Stillsand<-RUT_ExtremeDesert) +/-15
+RM_Loomma,3,tools/li[1]/power,2,3.8,below band -> K=15,bodySize 0.25 band 3..3.75
+RM_Loomma,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Loomu,5,ComfyTemperatureMax,45,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Loomu,5,ComfyTemperatureMin,8,4.4,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Lunoowa,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Lunoowa,3,tools/li[1]/power,2,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Lunoowa,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Mantrap,3,tools/li[1]/power,5,16.7,below band -> K=15,bodySize 2 band 24..30
+RM_Mantrap,3,tools/li[2]/power,9,30,below band -> K=15,bodySize 2 band 24..30
+RM_Mantrap,3,tools/li[2]/cooldownTime,1.35,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Mantrap,3,tools/li[3]/power,4,13.3,below band -> K=15,bodySize 2 band 24..30
+RM_Meltgut,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Meltgut,3,tools/li[1]/power,14,60,below band -> K=15,bodySize 4 band 48..60
+RM_Meltgut,3,tools/li[1]/cooldownTime,2.8,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Meltgut,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Meltgut,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Metallovore,3,tools/li[1]/power,15,30,below band -> K=15,bodySize 2 band 24..30
+RM_Metallovore,3,tools/li[1]/cooldownTime,1.65,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Metallovore,3,tools/li[2]/power,7,14,below band -> K=15,bodySize 2 band 24..30
+RM_Mirrak,5,ComfyTemperatureMin,-5,-5.6,widen to envelope +/-15C,env 9.5..35.1 (RM_LongShade<-RUT_Desert) +/-15
+RM_Moravatha,3,tools/li[1]/power,18,45,below band -> K=15,bodySize 3 band 36..45
+RM_Moravatha,3,tools/li[1]/cooldownTime,2,2.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Moravatha,3,tools/li[2]/power,6,15,below band -> K=15,bodySize 3 band 36..45
+RM_Muddal,3,tools/li[1]/power,3,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Muddal,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Mullgoth,5,ComfyTemperatureMax,44.7,61.9,widen to envelope +/-15C,"env -38.1..46.8 (RM_Cauldron<-RUT_PoisonForest,RM_LeaningScrub<-RUT_AridShrubland,RM_TheRot<-RUT_TheRot) +/-15"
+RM_Mullgoth,5,ComfyTemperatureMin,-52.8,-53.2,widen to envelope +/-15C,"env -38.1..46.8 (RM_Cauldron<-RUT_PoisonForest,RM_LeaningScrub<-RUT_AridShrubland,RM_TheRot<-RUT_TheRot) +/-15"
+RM_Mullgoth,3,tools/li[1]/power,23,60,below band -> K=15,bodySize 4 band 48..60
+RM_Mullgoth,3,tools/li[1]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Mullgoth,3,tools/li[2]/power,23,60,below band -> K=15,bodySize 4 band 48..60
+RM_Mullgoth,3,tools/li[2]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Mullgoth,3,tools/li[3]/power,15,39.1,below band -> K=15,bodySize 4 band 48..60
+RM_Mullgoth,3,tools/li[3]/cooldownTime,1.65,1.96,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Mullgoth,3,tools/li[4]/power,6,15.7,below band -> K=15,bodySize 4 band 48..60
+RM_Mullgoth,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Murrek,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Murrek,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Murrelith,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Murrelith,3,tools/li[1]/power,2,3.4,below band -> K=15,bodySize 0.28 band 3.36..4.2
+RM_Murrelith,3,tools/li[2]/power,2.5,4.2,below band -> K=15,bodySize 0.28 band 3.36..4.2
+RM_Murrelith,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Murrin,5,ComfyTemperatureMax,45,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Murrin,5,ComfyTemperatureMin,5,4.4,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Murrin,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Murrol,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Murrol,3,tools/li[1]/power,3,6,below band -> K=15,bodySize 0.4 band 4.8..6
+RM_Murrol,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Muttavaq,3,tools/li[1]/power,18,61.4,below band -> K=15,bodySize 5 band 60..75
+RM_Muttavaq,3,tools/li[2]/power,22,75,below band -> K=15,bodySize 5 band 60..75
+RM_Muttavaq,3,tools/li[2]/cooldownTime,3,3.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Muttavaq,3,tools/li[3]/power,22,75,below band -> K=15,bodySize 5 band 60..75
+RM_Muttavaq,3,tools/li[3]/cooldownTime,3,3.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Muttavaq,6,MeatAmount,140,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_MycoidColossus,3,tools/li[1]/power,20,90,below band -> K=15,bodySize 6 band 72..90
+RM_MycoidColossus,3,tools/li[1]/cooldownTime,1.85,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_MycoidColossus,3,tools/li[2]/power,15,67.5,below band -> K=15,bodySize 6 band 72..90
+RM_MycoidColossus,3,tools/li[2]/cooldownTime,1.65,2.76,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_MycoidColossus,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Niim,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Niim,3,tools/li[1]/power,2,1,above band -> K=15,bodySize 0.06 band 1..1
+RM_Niim,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Nissik,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Nissik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Noohm,3,tools/li[1]/power,2,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Noohm,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Noolim,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Noolim,3,tools/li[1]/power,2,1.2,above band -> K=15,bodySize 0.08 band 1..1.2
+RM_Noolim,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Nuudal,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Nuudal,3,tools/li[1]/power,3,7.5,below band -> K=15,bodySize 0.5 band 6..7.5
+RM_Nuudal,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Oddu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ogleknot,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Ogleknot,3,tools/li[1]/power,2,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Ogleknot,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Ogleknot,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ollareth,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Ollareth,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ollathrix,3,tools/li[1]/power,16,39,below band -> K=15,bodySize 2.6 band 31.2..39
+RM_Ollathrix,3,tools/li[1]/cooldownTime,2,2.42,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ollathrix,3,tools/li[2]/power,13,31.7,below band -> K=15,bodySize 2.6 band 31.2..39
+RM_Ollathrix,3,tools/li[2]/cooldownTime,1.6,1.97,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ollathrix,6,MeatAmount,420,364,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Olumetha,3,tools/li[1]/power,15,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Olumetha,3,tools/li[1]/cooldownTime,2,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Olumetha,3,tools/li[2]/power,15,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Olumetha,3,tools/li[2]/cooldownTime,2,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Olumetha,3,tools/li[3]/power,15,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Olumetha,3,tools/li[3]/cooldownTime,2,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Olumetha,3,tools/li[4]/power,10,25,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Olumetha,3,tools/li[5]/power,13,32.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Ommok,3,tools/li[1]/power,10,15,below band -> K=15,bodySize 1 band 12..15
+RM_Ommok,3,tools/li[2]/power,8,12,below band -> K=15,bodySize 1 band 12..15
+RM_Ommok,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ondrukka,5,ComfyTemperatureMax,60,73.3,widen to envelope +/-15C,"env 28..58.2 (RM_Miasma<-RUT_Miasma,RUT_Miasma) +/-15"
+RM_Ondrukka,3,tools/li[1]/power,1,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Ondrukka,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Ondrukka,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Oobo,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Oobo,3,tools/li[1]/power,6,5.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Oobo,3,tools/li[2]/power,7,6.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Oobo,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Oomb,3,tools/li[1]/power,8,12,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Oomb,3,tools/li[1]/cooldownTime,1.2,1.35,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Oomb,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Oomb,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Oommok,3,tools/li[1]/power,30,540,below band -> K=15,bodySize 36 band 432..540
+RM_Oommok,3,tools/li[1]/cooldownTime,2.6,9,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Oommok,3,tools/li[2]/power,30,540,below band -> K=15,bodySize 36 band 432..540
+RM_Oommok,3,tools/li[2]/cooldownTime,2.6,9,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Oommok,6,MeatAmount,140,5040,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Oovanam,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Oovu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Oreclaw,3,tools/li[1]/power,9,30,below band -> K=15,bodySize 2 band 24..30
+RM_Oreclaw,3,tools/li[1]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Oreclaw,3,tools/li[2]/power,9,30,below band -> K=15,bodySize 2 band 24..30
+RM_Oreclaw,3,tools/li[2]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Oreclaw,3,tools/li[3]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
+RM_Oreclaw,3,tools/li[4]/power,4,13.3,below band -> K=15,bodySize 2 band 24..30
+RM_Oreclaw,6,MeatAmount,140,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Orruhmu,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Orruhmu,3,tools/li[1]/power,4,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Orruhmu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ossivel,3,tools/li[1]/power,4,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Ossivel,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Ossivel,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ossumatha,3,tools/li[1]/power,9.7,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Ossumatha,3,tools/li[2]/power,8.5,15.8,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Ossumatha,3,tools/li[3]/power,5,9.3,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Otheska,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Otheska,3,tools/li[1]/power,2,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Otheska,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Pallbearer,5,ComfyTemperatureMax,65,81,widen to envelope +/-15C,"env 58.1..65.9 (RM_Warscar<-RUT_Scarlands,RUT_Scarlands) +/-15"
+RM_Pallbearer,3,tools/li[1]/power,9,33,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Pallbearer,3,tools/li[1]/cooldownTime,2.2,2.23,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Pallbearer,3,tools/li[2]/power,7,25.7,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Pallbearer,3,tools/li[3]/power,7,25.7,below band -> K=15,bodySize 2.2 band 26.4..33
+RM_Pallbearer,6,MeatAmount,140,308,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Pallu,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Pallu,3,tools/li[1]/power,1,1.8,below band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_Pallu,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Peeper,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Peeper,3,tools/li[1]/power,3,15,below band -> K=15,bodySize 1 band 12..15
+RM_Peeper,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Peeper,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Pirrik,5,ComfyTemperatureMin,-5,-5.6,widen to envelope +/-15C,env 9.5..35.1 (RM_LongShade<-RUT_Desert) +/-15
+RM_Pirrik,3,tools/li[1]/power,5,1.2,above band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Pirrik,3,tools/li[2]/power,6,1.5,above band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Pirrik,3,tools/li[3]/power,4,1,above band -> K=15,bodySize 0.1 band 1.2..1.5
+RM_Pooler,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Pooler,3,tools/li[1]/power,2,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Pooler,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Pooler,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Qorrax,5,ComfyTemperatureMax,75.3,76.7,widen to envelope +/-15C,"env 9.5..61.6 (RM_LongShade<-RUT_Desert,RM_Stillsand<-RUT_ExtremeDesert,RUT_Desert,RUT_ExtremeDesert) +/-15"
+RM_Qorrax,5,ComfyTemperatureMin,-1.1,-5.6,widen to envelope +/-15C,"env 9.5..61.6 (RM_LongShade<-RUT_Desert,RM_Stillsand<-RUT_ExtremeDesert,RUT_Desert,RUT_ExtremeDesert) +/-15"
+RM_Qorrax,3,tools/li[1]/power,64,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 1.2 band 14.4..18
+RM_Qorrax,3,tools/li[1]/cooldownTime,1,1.98,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Qorrax,3,tools/li[2]/power,10,3.4,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 1.2 band 14.4..18
+RM_Qorrax,3,tools/li[3]/power,10,3.4,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 1.2 band 14.4..18
+RM_Quarrok,5,ComfyTemperatureMax,40,74.4,widen to envelope +/-15C,env 37.9..59.3 (RM_Webwork<-RUT_Webwork) +/-15
+RM_Quarrok,3,tools/li[1]/power,9,21,below band -> K=15,bodySize 1.4 band 16.8..21
+RM_Quarrok,6,MeatAmount,140,196,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Radyak,3,tools/li[1]/power,13,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Radyak,3,tools/li[2]/power,10,28.8,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Radyak,3,tools/li[3]/power,10,28.8,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Radyak,3,tools/li[4]/power,10,28.8,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Rakeshank,5,ComfyTemperatureMax,60,81,widen to envelope +/-15C,env 58.1..65.9 (RM_Warscar<-RUT_Scarlands) +/-15
+RM_Rakeshank,6,MeatAmount,20,140,meat base 140,
+RM_Rakeshank,6,LeatherAmount,12,40,leather base 40,
+RM_Reefback,6,MeatAmount,140,4480,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_ReefbackJuv,5,ComfyTemperatureMax,50,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_ReefbackJuv,6,MeatAmount,140,4480,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Rhossak,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ribbonwhip,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Ribbonwhip,5,ComfyTemperatureMin,-15,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Ribbonwhip,3,tools/li[1]/power,4,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_Ribbonwhip,6,MeatAmount,5,140,meat base 140,
+RM_Ribbonwhip,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Rimclaw,3,tools/li[1]/power,15,7,above band -> K=15,bodySize 1 band 12..15
+RM_Rimclaw,3,tools/li[2]/power,32,15,above band -> K=15,bodySize 1 band 12..15
+RM_Rimclaw,3,tools/li[3]/power,32,15,above band -> K=15,bodySize 1 band 12..15
+RM_Rimclaw,3,tools/li[4]/power,25,11.7,above band -> K=15,bodySize 1 band 12..15
+RM_Rimclaw,3,tools/li[5]/power,15,7,above band -> K=15,bodySize 1 band 12..15
+RM_Rollbug,5,ComfyTemperatureMax,55,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Rollbug,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Rollbug,6,MeatAmount,1,140,meat base 140,
+RM_Rollbug,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_RustNipperJuv,5,ComfyTemperatureMax,60,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_RustNipperJuv,3,tools/li[1]/power,7,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_RustNipperJuv,3,tools/li[2]/power,7,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_RustNipperJuv,3,tools/li[3]/power,3,1.6,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_RustNipperJuv,6,LeatherAmount,25,40,leather base 40,
+RM_Ruukka,3,tools/li[1]/power,22,100.8,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RM_Ruukka,3,tools/li[1]/cooldownTime,1.8,4.51,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ruukka,3,tools/li[2]/power,22,100.8,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RM_Ruukka,3,tools/li[2]/cooldownTime,1.8,4.51,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ruukka,3,tools/li[3]/power,24,110,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RM_Ruukka,3,tools/li[3]/cooldownTime,2,4.92,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ruukka,3,tools/li[4]/power,14,64.2,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RM_Ruukka,3,tools/li[4]/cooldownTime,2.2,2.88,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Saluksis,5,ComfyTemperatureMax,60,74.9,widen to envelope +/-15C,"env 28..59.8 (RM_Greentide<-RUT_Greentide,RM_Miasma<-RUT_Miasma,RUT_Greentide,RUT_Miasma) +/-15"
+RM_Saluksis,3,tools/li[1]/power,1,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Saluksis,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Saluksis,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Scabspinner,5,ComfyTemperatureMin,-15,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Scabspinner,3,tools/li[1]/power,6,11.2,below band -> K=15,bodySize 0.75 band 9..11.25
+RM_Scabspinner,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Scabspinner,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ScaldWalker,3,tools/li[1]/power,14,20,divergence harmless K=4 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RM_ScaldWalker,6,MeatAmount,140,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Scaldhide,3,tools/li[1]/power,10,27,below band -> K=15,bodySize 1.8 band 21.6..27
+RM_Scaldhide,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Scaldhide,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ScarRoach,3,tools/li[1]/power,4,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_ScarRoach,3,tools/li[2]/power,2.5,2.4,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_ScarRoach,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Scorchpod,3,tools/li[1]/power,4,8.2,below band -> K=15,bodySize 0.55 band 6.6..8.25
+RM_Scorchpod,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Scorchpod,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Scumslider,5,ComfyTemperatureMin,-20,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Scumslider,3,tools/li[1]/power,4,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Scumslider,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Scumslider,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ShadeMite,3,tools/li[1]/power,3,2.7,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RM_ShaleGorgerJuv,5,ComfyTemperatureMax,50,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_ShaleGorgerJuv,6,MeatAmount,140,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Shambles,5,ComfyTemperatureMin,0,-53.2,widen to envelope +/-15C,env -38.1..16.4 (RM_TheRot<-RUT_TheRot) +/-15
+RM_Shambles,3,tools/li[1]/power,6,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Shambles,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Shambles,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sharpshrimp,3,tools/li[1]/power,6,5,above band -> K=15,bodySize 1.4 band 16.8..21
+RM_Sharpshrimp,3,tools/li[2]/power,25,21,above band -> K=15,bodySize 1.4 band 16.8..21
+RM_Sharpshrimp,3,tools/li[3]/power,17,14.3,above band -> K=15,bodySize 1.4 band 16.8..21
+RM_Sharpshrimp,3,tools/li[4]/power,17,14.3,above band -> K=15,bodySize 1.4 band 16.8..21
+RM_Shirrel,5,ComfyTemperatureMax,48,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Shirrel,3,tools/li[1]/power,5,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Shirrel,3,tools/li[2]/power,5,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Shirrel,3,tools/li[3]/power,5,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Shirrel,6,MeatAmount,25,140,meat base 140,
+RM_Shirrel,6,LeatherAmount,12,40,leather base 40,
+RM_Shoal,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Shoal,3,tools/li[1]/power,1.5,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Shoal,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Shoal,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Shokka,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Shokka,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Shokka,3,tools/li[1]/power,9,13.5,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Shokka,3,tools/li[2]/power,9,13.5,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Shokka,3,tools/li[3]/power,12,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Shokka,6,MeatAmount,70,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Shokka,6,LeatherAmount,45,40,leather base 40,
+RM_Shulla,3,tools/li[1]/power,2,1,above band -> K=15,bodySize 0.06 band 1..1
+RM_Shulla,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Siezer,3,tools/li[1]/power,13,37.5,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Siezer,3,tools/li[1]/cooldownTime,1.85,2.38,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Siezer,3,tools/li[2]/power,10,28.8,below band -> K=15,bodySize 2.5 band 30..37.5
+RM_Siezer,3,tools/li[2]/cooldownTime,1.65,1.83,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Siidda,3,tools/li[1]/power,3,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_SikkaSikka,3,tools/li[1]/power,12,16.5,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_SikkaSikka,3,tools/li[1]/cooldownTime,1.55,1.58,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_SikkaSikka,3,tools/li[2]/power,8,11,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_SikkaSikka,3,tools/li[3]/power,3,4.1,below band -> K=15,bodySize 1.1 band 13.2..16.5
+RM_Sillik,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Silloch,5,ComfyTemperatureMax,50,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Silloch,3,tools/li[1]/power,10,9,above band -> K=15,bodySize 0.6 band 7.2..9
+RM_Silloch,3,tools/li[2]/power,4,3.6,above band -> K=15,bodySize 0.6 band 7.2..9
+RM_Silloch,6,LeatherAmount,25,40,leather base 40,
+RM_SiltLampreyJuv,5,ComfyTemperatureMax,50,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_SiltLampreyJuv,3,tools/li[1]/power,6,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_SiltLampreyJuv,3,tools/li[2]/power,1.5,0.8,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_SiltLampreyJuv,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sipper,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Sipper,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Sipper,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sippra,5,ComfyTemperatureMin,-5,-5.6,widen to envelope +/-15C,env 9.5..35.1 (RM_LongShade<-RUT_Desert) +/-15
+RM_Sippra,3,tools/li[1]/power,3,2.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_Sippra,3,tools/li[2]/power,4,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_Sivvern,5,ComfyTemperatureMax,40,74.4,widen to envelope +/-15C,env 37.9..59.3 (RM_Webwork<-RUT_Webwork) +/-15
+RM_Sivvern,3,tools/li[1]/power,5,4.5,above band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Sivvern,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Skarnix,3,tools/li[1]/power,10.9,9.5,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Skarnix,3,tools/li[2]/power,10.9,9.5,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Skarnix,3,tools/li[3]/power,12,10.5,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Skarnix,3,tools/li[4]/power,6,5.2,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Skarnix,6,LeatherAmount,22,40,leather base 40,
+RM_Skarrid,3,tools/li[1]/power,16,11.2,above band -> K=15,bodySize 0.75 band 9..11.25
+RM_Skarrid,3,tools/li[2]/power,9,6.3,above band -> K=15,bodySize 0.75 band 9..11.25
+RM_Skarrin,5,ComfyTemperatureMax,45,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Skarrin,5,ComfyTemperatureMin,5,4.4,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Skarrin,3,tools/li[1]/power,6,3.3,above band -> K=15,bodySize 0.22 band 2.64..3.3
+RM_Skarrin,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Skellick,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Skellick,3,tools/li[1]/power,2,2.6,below band -> K=15,bodySize 0.22 band 2.64..3.3
+RM_Skellick,3,tools/li[2]/power,2.5,3.3,below band -> K=15,bodySize 0.22 band 2.64..3.3
+RM_Skellick,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Skennet,5,ComfyTemperatureMax,40,74.4,widen to envelope +/-15C,env 37.9..59.3 (RM_Webwork<-RUT_Webwork) +/-15
+RM_Skennet,3,tools/li[1]/power,4,5.2,below band -> K=15,bodySize 0.35 band 4.2..5.25
+RM_Skerrith,3,tools/li[1]/power,9,30,below band -> K=15,bodySize 2 band 24..30
+RM_Skerrith,3,tools/li[1]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Skerrith,3,tools/li[2]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
+RM_Skerrith,3,tools/li[3]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
+RM_Skerrith,3,tools/li[4]/power,5,16.7,below band -> K=15,bodySize 2 band 24..30
+RM_Skerrith,6,MeatAmount,140,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Skinflap,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Skinflap,3,tools/li[1]/power,1,2.2,below band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Skinflap,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Skinflap,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Slagmole,5,ComfyTemperatureMin,-25,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Slagmole,3,tools/li[1]/power,9,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Slagmole,3,tools/li[2]/power,9,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Slagmole,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Slagmole,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Slick,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Slick,3,tools/li[1]/power,3,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Slick,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Slick,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sloghog,5,ComfyTemperatureMin,-20,-28.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Sloghog,3,tools/li[1]/power,6,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RM_Sloghog,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Sloghog,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sloshbelly,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Sloshbelly,3,tools/li[1]/power,3,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RM_Sloshbelly,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Sloshbelly,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Smolderback,3,tools/li[1]/power,8,27,below band -> K=15,bodySize 1.8 band 21.6..27
+RM_Smolderback,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Smolderback,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Soorrak,5,ComfyTemperatureMax,70,76.7,widen to envelope +/-15C,env 31.9..61.6 (RM_Stillsand<-RUT_ExtremeDesert) +/-15
+RM_Soorrak,3,tools/li[1]/power,12,57.9,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Soorrak,3,tools/li[1]/cooldownTime,2,2.73,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Soorrak,3,tools/li[2]/power,14,67.5,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Soorrak,3,tools/li[2]/cooldownTime,2.2,3.19,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Soorrak,3,tools/li[3]/power,8,38.6,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Soorrak,6,MeatAmount,140,630,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_SootGristleswarm,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_SootGristleswarm,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sootgrazer,5,ComfyTemperatureMax,40,43.2,widen to envelope +/-15C,env -13.1..28.1 (RM_Wastes<-RUT_Wasteland) +/-15
+RM_Sootgrazer,3,tools/li[1]/power,5,15,below band -> K=15,bodySize 1 band 12..15
+RM_Sootgrazer,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Sootgrazer,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sparkleech,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_Sparkleech,3,tools/li[1]/power,3,6.8,below band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Sparkleech,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Sparkleech,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_SparkleechGrub,5,ComfyTemperatureMax,60,66.6,widen to envelope +/-15C,env 24.9..51.5 (RM_Contagion<-RUT_Contagion) +/-15
+RM_SparkleechGrub,3,tools/li[1]/power,2,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_SparkleechGrub,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_SparkleechGrub,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Ssurr,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Ssurr,3,tools/li[1]/power,8,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RM_Sulleth,5,ComfyTemperatureMax,55,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Sulleth,3,tools/li[1]/power,9,27,below band -> K=15,bodySize 2 band 24..30
+RM_Sulleth,3,tools/li[2]/power,10,30,below band -> K=15,bodySize 2 band 24..30
+RM_Sulleth,3,tools/li[2]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Sulleth,3,tools/li[3]/power,10,30,below band -> K=15,bodySize 2 band 24..30
+RM_Sulleth,3,tools/li[3]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Sulleth,6,MeatAmount,160,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Sulleth,6,LeatherAmount,45,40,leather base 40,
+RM_Summ,3,tools/li[1]/power,38,120,below band -> K=15,bodySize 8 band 96..120
+RM_Summ,3,tools/li[1]/cooldownTime,2.6,4.25,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Summ,3,tools/li[2]/power,30,94.7,below band -> K=15,bodySize 8 band 96..120
+RM_Summ,3,tools/li[2]/cooldownTime,2.2,3.35,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Summ,3,tools/li[3]/power,30,94.7,below band -> K=15,bodySize 8 band 96..120
+RM_Summ,3,tools/li[3]/cooldownTime,2.2,3.35,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Summ,3,tools/li[4]/power,34,107.4,below band -> K=15,bodySize 8 band 96..120
+RM_Summ,3,tools/li[4]/cooldownTime,2.4,3.8,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Summ,6,MeatAmount,140,1120,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_SumpMouse,3,tools/li[1]/power,3,1.7,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_SumpMouse,3,tools/li[2]/power,3,1.7,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_SumpMouse,3,tools/li[3]/power,4,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Surrik,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Surrik,5,ComfyTemperatureMin,-15,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Surrik,3,tools/li[1]/power,8,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Surrik,3,tools/li[2]/power,8,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Surrik,6,MeatAmount,18,140,meat base 140,
+RM_Surrik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Suush,5,ComfyTemperatureMin,0,-22.3,widen to envelope +/-15C,env -7.1..22.5 (RM_Cauldron<-RUT_PoisonForest) +/-15
+RM_Suush,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Suush,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Sytheclaw,5,ComfyTemperatureMax,74.3,78.9,widen to envelope +/-15C,"env 24.9..63.8 (RM_Pyrelands<-ZBiome_Grasslands,RUT_Contagion,RUT_Greentide) +/-15"
+RM_Tapper,5,ComfyTemperatureMax,30,32.1,widen to envelope +/-15C,env 17..17 (RM_LanternDeeps<-constantOutdoorTemperature) +/-15
+RM_Tapper,3,tools/li[1]/power,2,7.5,below band -> K=15,bodySize 0.5 band 6..7.5
+RM_Tapper,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Tapper,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Tarnn,3,tools/li[1]/power,1,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Tarnn,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Tarruq,5,ComfyTemperatureMax,70,70.2,widen to envelope +/-15C,env 6.4..55.1 (RM_FloodedCanyon<-RUT_CrackedLands) +/-15
+RM_Tarruq,5,ComfyTemperatureMin,5,-8.7,widen to envelope +/-15C,env 6.4..55.1 (RM_FloodedCanyon<-RUT_CrackedLands) +/-15
+RM_Tarruq,3,tools/li[1]/power,7,6.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Tarruq,3,tools/li[2]/power,7,6.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Tarruq,3,tools/li[3]/power,6,5.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RM_Tebbra,5,ComfyTemperatureMin,-5,-5.6,widen to envelope +/-15C,env 9.5..35.1 (RM_LongShade<-RUT_Desert) +/-15
+RM_Tetchik,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Tetchik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Thermadon,3,tools/li[1]/power,14,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Thermadon,3,tools/li[2]/power,10,16.1,below band -> K=15,bodySize 1.5 band 18..22.5
+RM_Thollim,5,ComfyTemperatureMin,-10,-20.1,widen to envelope +/-15C,env -5..28 (RM_GreySea<-RUT_GreySea) +/-15
+RM_Thollim,3,tools/li[1]/power,2,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RM_Thollim,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_ThornbackColoJuv,5,ComfyTemperatureMax,55,73.3,widen to envelope +/-15C,env 28..58.2 (RM_Miasma<-RUT_Miasma) +/-15
+RM_ThornbackColoJuv,6,MeatAmount,140,364,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Thornbug,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Thornbug,6,LeatherAmount,25,40,leather base 40,
+RM_Thornhold,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Thornhold,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Thornhold,3,tools/li[1]/power,6,7.2,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 0.4 band 4.8..6
+RM_Thornhold,3,tools/li[2]/power,4,4.8,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 0.4 band 4.8..6
+RM_Thornhold,6,MeatAmount,25,140,meat base 140,
+RM_Thornhold,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Thozzik,3,tools/li[1]/power,3.4,6.4,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 0.32 band 3.84..4.8
+RM_Thozzik,3,tools/li[2]/power,1.5,2.8,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 0.32 band 3.84..4.8
+RM_Thozzik,3,tools/li[3]/power,2,3.8,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 0.32 band 3.84..4.8
+RM_Thozzik,6,MeatAmount,5,140,meat base 140,
+RM_Thozzik,6,LeatherAmount,5,40,leather base 40,
+RM_ThozzikColony,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RM_ThozzikColony,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RM_ThozzikColony,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RM_ThozzikColonyQueen,3,tools/li[1]/power,4.4,15,below band -> K=15,bodySize 1 band 12..15
+RM_ThozzikColonyQueen,3,tools/li[2]/power,3.5,11.9,below band -> K=15,bodySize 1 band 12..15
+RM_ThozzikColonyQueen,3,tools/li[3]/power,2,6.8,below band -> K=15,bodySize 1 band 12..15
+RM_ThozzikQueen,3,tools/li[1]/power,4.4,15,below band -> K=15,bodySize 1 band 12..15
+RM_ThozzikQueen,3,tools/li[2]/power,3.5,11.9,below band -> K=15,bodySize 1 band 12..15
+RM_ThozzikQueen,3,tools/li[3]/power,2,6.8,below band -> K=15,bodySize 1 band 12..15
+RM_ThrummelBroodmother,3,tools/li[1]/power,8,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_ThrummelWarden,3,tools/li[1]/power,10,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Thunderbeast,5,ComfyTemperatureMin,-10,-71.7,widen to envelope +/-15C,env -56.6..-26.7 (RM_BlueDesert<-RUT_BlueDesert) +/-15
+RM_Thunderbeast,3,tools/li[1]/power,20,11.2,above band -> K=15,bodySize 0.75 band 9..11.25
+RM_Thunderbeast,3,tools/li[2]/power,18,10.1,above band -> K=15,bodySize 0.75 band 9..11.25
+RM_Thunderbeast,3,tools/li[3]/power,3,1.7,above band -> K=15,bodySize 0.75 band 9..11.25
+RM_Thunderbeast,6,MeatAmount,210,140,meat base 140,
+RM_Thurrock,5,ComfyTemperatureMax,55,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Thurrock,3,tools/li[1]/power,28,120,below band -> K=15,bodySize 8 band 96..120
+RM_Thurrock,3,tools/li[1]/cooldownTime,2.6,4.25,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Thurrock,3,tools/li[2]/power,22,94.3,below band -> K=15,bodySize 8 band 96..120
+RM_Thurrock,3,tools/li[2]/cooldownTime,2.2,3.34,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Thurrock,3,tools/li[3]/power,22,94.3,below band -> K=15,bodySize 8 band 96..120
+RM_Thurrock,3,tools/li[3]/cooldownTime,2.2,3.34,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Thurrock,6,MeatAmount,140,1120,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Thuum,3,tools/li[1]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RM_Thuum,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Tikkarr,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Tikkarr,3,tools/li[1]/power,5,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_Tikkarr,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Tikkit,5,ComfyTemperatureMax,55,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Tikkit,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Tikkit,6,MeatAmount,1,140,meat base 140,
+RM_Tikkit,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Tirbak,5,ComfyTemperatureMax,52,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Tirbak,3,tools/li[1]/power,20,14,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 3.5 band 42..52.5
+RM_Tirbak,3,tools/li[2]/power,25,17.5,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 3.5 band 42..52.5
+RM_Tirbak,6,MeatAmount,140,490,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Titanoslime,3,tools/li[1]/power,12,77.1,below band -> K=15,bodySize 6 band 72..90
+RM_Titanoslime,3,tools/li[1]/cooldownTime,3,3.15,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Titanoslime,3,tools/li[2]/power,14,90,below band -> K=15,bodySize 6 band 72..90
+RM_Titanoslime,3,tools/li[2]/cooldownTime,2.2,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Titanoslime,3,tools/li[3]/power,14,90,below band -> K=15,bodySize 6 band 72..90
+RM_Titanoslime,3,tools/li[3]/cooldownTime,2.2,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Titanoslime,6,MeatAmount,300,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Titanoslime,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_TruffleMole,3,tools/li[1]/power,4,9,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_TruffleMole,3,tools/li[2]/power,4,9,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_TruffleMole,3,tools/li[3]/power,6,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_TruffleMole,3,tools/li[4]/power,2,4.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_TunnelSnake,5,ComfyTemperatureMax,60,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_TunnelSnake,5,ComfyTemperatureMin,0,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_TunnelSnake,6,MeatAmount,140,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Ulgga,3,tools/li[1]/power,10,75,below band -> K=15,bodySize 6 band 72..90
+RM_Ulgga,3,tools/li[1]/cooldownTime,2.4,3.07,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ulgga,3,tools/li[2]/power,12,90,below band -> K=15,bodySize 6 band 72..90
+RM_Ulgga,3,tools/li[2]/cooldownTime,2.2,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ulgga,6,MeatAmount,140,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Ullai,5,ComfyTemperatureMax,65,78.9,widen to envelope +/-15C,env 37.3..63.8 (RM_Pyrelands<-ZBiome_Grasslands) +/-15
+RM_Ullai,3,tools/li[1]/power,8,27,below band -> K=15,bodySize 1.8 band 21.6..27
+RM_Ullai,3,tools/li[1]/cooldownTime,1.8,2.02,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ullai,3,tools/li[2]/power,8,27,below band -> K=15,bodySize 1.8 band 21.6..27
+RM_Ullai,3,tools/li[2]/cooldownTime,1.8,2.02,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Ullai,3,tools/li[3]/power,6,20.2,below band -> K=15,bodySize 1.8 band 21.6..27
+RM_Ullai,6,MeatAmount,140,252,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Ummisk,3,tools/li[1]/power,5,12,below band -> K=15,bodySize 0.8 band 9.6..12
+RM_Ummisk,6,MeatAmount,20,140,meat base 140,
+RM_Ummisk,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Utikka,3,tools/li[1]/power,4,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RM_Utikka,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Utikka,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Uttaqar,3,tools/li[1]/power,20,58.7,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Uttaqar,3,tools/li[1]/cooldownTime,2,2.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Uttaqar,3,tools/li[2]/power,17,49.9,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Uttaqar,3,tools/li[2]/cooldownTime,2.3,2.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Uttaqar,3,tools/li[3]/power,17,49.9,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Uttaqar,3,tools/li[3]/cooldownTime,2.3,2.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Uttaqar,3,tools/li[4]/power,23,67.5,below band -> K=15,bodySize 4.5 band 54..67.5
+RM_Uttaqar,3,tools/li[4]/cooldownTime,2.3,3.19,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Uttaqar,6,MeatAmount,140,630,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Vaulm,5,ComfyTemperatureMax,45,65.7,widen to envelope +/-15C,env 39.9..50.6 (RM_FeverWood<-RUT_FeverWood) +/-15
+RM_Veessa,3,tools/li[1]/power,1,2.2,below band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Veessa,3,tools/li[2]/power,1,2.2,below band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Veessa,6,MeatAmount,1,140,meat base 140,
+RM_Veessa,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vekka,3,tools/li[1]/power,15,25,below band -> K=15,bodySize 2 band 24..30
+RM_Vekka,3,tools/li[1]/cooldownTime,1.5,1.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vekka,3,tools/li[2]/power,15,25,below band -> K=15,bodySize 2 band 24..30
+RM_Vekka,3,tools/li[2]/cooldownTime,1.5,1.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vekka,3,tools/li[3]/power,18,30,below band -> K=15,bodySize 2 band 24..30
+RM_Vekka,3,tools/li[3]/cooldownTime,1.85,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vekka,3,tools/li[4]/power,9,15,below band -> K=15,bodySize 2 band 24..30
+RM_Vekkit,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Vekkit,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vellak,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Vellak,3,tools/li[1]/power,15,24,below band -> K=15,bodySize 1.6 band 19.2..24
+RM_Vellak,6,MeatAmount,140,224,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Vennick,5,ComfyTemperatureMax,40,74.4,widen to envelope +/-15C,env 37.9..59.3 (RM_Webwork<-RUT_Webwork) +/-15
+RM_Vennick,3,tools/li[1]/power,2,1.8,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RM_Vennick,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vexxiss,5,ComfyTemperatureMin,0,-22.3,widen to envelope +/-15C,env -7.1..22.5 (RM_Cauldron<-RUT_PoisonForest) +/-15
+RM_Vexxiss,3,tools/li[1]/power,26,90,below band -> K=15,bodySize 6 band 72..90
+RM_Vexxiss,3,tools/li[1]/cooldownTime,2.8,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vexxiss,3,tools/li[2]/power,26,90,below band -> K=15,bodySize 6 band 72..90
+RM_Vexxiss,3,tools/li[2]/cooldownTime,2.8,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vexxiss,3,tools/li[3]/power,22,76.2,below band -> K=15,bodySize 6 band 72..90
+RM_Vexxiss,3,tools/li[3]/cooldownTime,3,3.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vexxiss,6,MeatAmount,900,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Vexxiss,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vhakk,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Vhakk,6,MeatAmount,140,252,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Vhaulk,3,tools/li[1]/power,30,90,below band -> K=15,bodySize 6 band 72..90
+RM_Vhaulk,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Vhaulk,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Visceral,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vissler,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Vissler,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Vissler,6,MeatAmount,3,140,meat base 140,
+RM_Vissler,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vizhik,5,ComfyTemperatureMax,48,73.7,widen to envelope +/-15C,env 19.5..58.6 (RM_WeepingStones<-RUT_WeepingStones) +/-15
+RM_Vizhik,3,tools/li[1]/power,3,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Vizhik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vosska,3,tools/li[1]/power,12,24,below band -> K=15,bodySize 2 band 24..30
+RM_Vosska,3,tools/li[1]/cooldownTime,1.5,1.7,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vosska,3,tools/li[2]/power,12,24,below band -> K=15,bodySize 2 band 24..30
+RM_Vosska,3,tools/li[2]/cooldownTime,1.5,1.7,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vosska,3,tools/li[3]/power,15,30,below band -> K=15,bodySize 2 band 24..30
+RM_Vosska,3,tools/li[3]/cooldownTime,1.85,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vosska,3,tools/li[4]/power,15,30,below band -> K=15,bodySize 2 band 24..30
+RM_Vosska,3,tools/li[4]/cooldownTime,1.75,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_Vosska,6,MeatAmount,140,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Vozzik,6,MeatAmount,140,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Vozzik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vrekka,3,tools/li[1]/power,6,5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Vrekka,3,tools/li[2]/power,9,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Vrekka,3,tools/li[3]/power,4,3.3,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Vrisk,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Vrisk,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vurra,3,tools/li[1]/power,10,9,above band -> K=15,bodySize 0.6 band 7.2..9
+RM_Vurra,3,tools/li[2]/power,4,3.6,above band -> K=15,bodySize 0.6 band 7.2..9
+RM_Vurra,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Vurrak,5,ComfyTemperatureMax,55,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Vurrak,3,tools/li[1]/power,20,27.8,below band -> K=15,bodySize 1.85 band 22.2..27.75
+RM_Vurrak,3,tools/li[2]/power,11,15.3,below band -> K=15,bodySize 1.85 band 22.2..27.75
+RM_Vurrak,3,tools/li[3]/power,11,15.3,below band -> K=15,bodySize 1.85 band 22.2..27.75
+RM_Vurrak,6,MeatAmount,140,259,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_Weloon,5,ComfyTemperatureMin,-10,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RM_Weloon,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Wuum,3,tools/li[1]/power,8,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RM_Wuum,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Wuum,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Yammeth,5,ComfyTemperatureMax,60,74.9,widen to envelope +/-15C,env 38..59.8 (RM_Greentide<-RUT_Greentide) +/-15
+RM_Yammeth,3,tools/li[1]/power,3,4.5,below band -> K=15,bodySize 0.3 band 3.6..4.5
+RM_Yammeth,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Zellik,5,ComfyTemperatureMax,48,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland) +/-15
+RM_Zellik,3,tools/li[1]/power,7,11.8,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Zellik,3,tools/li[2]/power,8,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
+RM_Zellik,6,MeatAmount,20,140,meat base 140,
+RM_Zellik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Zhaaz,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RM_Zhaaz,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Zhiil,3,tools/li[1]/power,5,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RM_Zhiil,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RM_Zhissa,5,ComfyTemperatureMin,-5,-62.5,widen to envelope +/-15C,env -47.4..-20.6 (RM_SleepingIce<-RUT_NightsideIce) +/-15
+RM_Zhissa,3,tools/li[1]/power,7,9.8,below band -> K=15,bodySize 0.65 band 7.8..9.75
+RM_Zhissa,3,tools/li[2]/power,7,9.8,below band -> K=15,bodySize 0.65 band 7.8..9.75
+RM_Zhissa,3,tools/li[3]/power,3,4.2,below band -> K=15,bodySize 0.65 band 7.8..9.75
+RM_Zhissa,3,tools/li[4]/power,3,4.2,below band -> K=15,bodySize 0.65 band 7.8..9.75
+RM_Zisska,5,ComfyTemperatureMin,0,-22.3,widen to envelope +/-15C,env -7.1..22.5 (RM_Cauldron<-RUT_PoisonForest) +/-15
+RM_Zisska,3,tools/li[1]/power,6,15,below band -> K=15,bodySize 1 band 12..15
+RM_Zisska,6,MeatAmount,70,140,meat base 140,
+RM_Zisska,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_AaroxisDendoria,3,tools/li[1]/power,6,15,below band -> K=15,bodySize 1 band 12..15
+RSW_AaroxisDendoria,3,tools/li[2]/power,5.2,13,below band -> K=15,bodySize 1 band 12..15
+RSW_AaroxisDendoria,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_AcidSlug,3,tools/li[1]/power,28,60,below band -> K=15,bodySize 4 band 48..60
+RSW_AcidSlug,3,tools/li[1]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_AcidSlug,6,MeatAmount,140,560,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_AcidSlug,6,LeatherAmount,16,40,leather base 40,
+RSW_Anooba,5,ComfyTemperatureMax,74.4,78.9,widen to envelope +/-15C,"env -7.4..63.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Miasma) +/-15"
+RSW_Anooba,5,ComfyTemperatureMin,-18.9,-22.5,widen to envelope +/-15C,"env -7.4..63.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Miasma) +/-15"
+RSW_Anooba,3,tools/li[1]/power,10.9,9.7,above band -> K=15,bodySize 0.95 band 11.4..14.25
+RSW_Anooba,3,tools/li[2]/power,10.9,9.7,above band -> K=15,bodySize 0.95 band 11.4..14.25
+RSW_Anooba,3,tools/li[3]/power,16,14.2,above band -> K=15,bodySize 0.95 band 11.4..14.25
+RSW_Anooba,3,tools/li[4]/power,6,5.3,above band -> K=15,bodySize 0.95 band 11.4..14.25
+RSW_Bantha,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,"env -7.4..58.6 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RM_WeepingStones<-RUT_WeepingStones,RUT_AridShrubland,RUT_Desert,RUT_WeepingStones) +/-15"
+RSW_Beldon,3,tools/li[1]/power,11,6,divergence harmless K=1 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Beldon,3,tools/li[2]/power,11,6,divergence harmless K=1 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Beldon,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Blarth,3,tools/li[1]/power,3.6,3,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Blarth,3,tools/li[2]/power,3.6,3,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Blarth,3,tools/li[3]/power,5.8,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Blarth,3,tools/li[4]/power,4,3.3,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_BloodletterPetrel,3,tools/li[1]/power,4,2.7,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_BloodletterPetrel,3,tools/li[2]/power,7,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_BloodletterPetrel,3,tools/li[3]/power,2,1.4,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Bogwing,3,tools/li[1]/power,8,7,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Bogwing,3,tools/li[2]/power,8,7,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Bogwing,3,tools/li[3]/power,12,10.5,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Bogwing,3,tools/li[4]/power,6,5.2,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Cannok,3,tools/li[1]/power,7.2,9.5,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Cannok,3,tools/li[2]/power,7.2,9.5,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Cannok,3,tools/li[3]/power,9.7,12.8,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Cannok,3,tools/li[4]/power,5,6.6,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_CaveLemming,5,ComfyTemperatureMin,-30,-62.5,widen to envelope +/-15C,"env -47.4..-20.6 (RM_SleepingIce<-RUT_NightsideIce,RUT_SleepingIce<-RUT_NightsideIce) +/-15"
+RSW_CaveLemming,3,tools/li[1]/power,3.4,15,below band -> K=15,bodySize 1 band 12..15
+RSW_CaveLemming,3,tools/li[2]/power,1.5,6.6,below band -> K=15,bodySize 1 band 12..15
+RSW_ChrysalideRancor,3,tools/li[1]/power,30,44,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
+RSW_ChrysalideRancor,3,tools/li[2]/power,30,44,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
+RSW_ChrysalideRancor,3,tools/li[3]/power,120,176,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
+RSW_ChrysalideRancor,3,tools/li[3]/cooldownTime,4.24,6.23,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ChrysalideRancor,3,tools/li[4]/power,18,26.4,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
+RSW_ChrysalideRancor,3,tools/li[5]/power,18,26.4,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
+RSW_ChrysalideRancor,3,tools/li[6]/power,20,29.3,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
+RSW_ColonyPustuleHornet,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_ColonyPustuleHornet,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_ColonyPustuleHornet,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_ColonyPustuleHornetQueen,3,tools/li[1]/power,4.4,15,below band -> K=15,bodySize 1 band 12..15
+RSW_ColonyPustuleHornetQueen,3,tools/li[2]/power,3.5,11.9,below band -> K=15,bodySize 1 band 12..15
+RSW_ColonyPustuleHornetQueen,3,tools/li[3]/power,2,6.8,below band -> K=15,bodySize 1 band 12..15
+RSW_Convor,5,ComfyTemperatureMax,71.8,74.9,widen to envelope +/-15C,"env -7.4..59.8 (RM_FeverWood<-RUT_FeverWood,RM_FloodedCanyon<-RUT_CrackedLands,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland,RUT_CrackedLands,RUT_FeverWood,RUT_Greentide) +/-15"
+RSW_Convor,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,"env -7.4..59.8 (RM_FeverWood<-RUT_FeverWood,RM_FloodedCanyon<-RUT_CrackedLands,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland,RUT_CrackedLands,RUT_FeverWood,RUT_Greentide) +/-15"
+RSW_Creature_Mantrap,3,tools/li[1]/power,5,11.6,below band -> K=15,bodySize 0.77 band 9.24..11.55
+RSW_Creature_Mantrap,3,tools/li[2]/power,5,11.6,below band -> K=15,bodySize 0.77 band 9.24..11.55
+RSW_Creature_Mantrap,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RSW_Creature_Mantrap,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_CrestedDragon,3,tools/li[1]/power,9,7.9,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_CrestedDragon,3,tools/li[2]/power,9,7.9,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_CrestedDragon,3,tools/li[3]/power,12,10.5,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_CrestedDragon,3,tools/li[4]/power,8,7,above band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Devourers,3,tools/li[1]/power,18,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Devourers,3,tools/li[2]/power,18,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Devourers,3,tools/li[3]/power,37.5,45,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Devourers,3,tools/li[3]/cooldownTime,2.37,2.85,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Devourers,3,tools/li[4]/power,8,9.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Diggerpede,3,tools/li[1]/power,4,22.5,below band -> K=15,bodySize 1.5 band 18..22.5
+RSW_Diggerpede,3,tools/li[2]/power,3.5,19.7,below band -> K=15,bodySize 1.5 band 18..22.5
+RSW_Diggerpede,6,MeatAmount,140,210,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_DragonsnakeAlbino,3,tools/li[1]/power,32,90,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_DragonsnakeAlbino,3,tools/li[1]/cooldownTime,2.6,4.03,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_DragonsnakeAlbino,3,tools/li[2]/power,18,50.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_DragonsnakeAlbino,3,tools/li[2]/cooldownTime,2,2.27,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_DragonsnakeAlbino,3,tools/li[3]/power,24,67.5,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_DragonsnakeAlbino,3,tools/li[3]/cooldownTime,2.2,3.02,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_DragonsnakeAlbino,6,MeatAmount,140,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Drexl,3,tools/li[1]/power,20,24,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Drexl,3,tools/li[2]/power,20,24,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Drexl,3,tools/li[3]/power,75,90,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Drexl,3,tools/li[3]/cooldownTime,3.35,4.03,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Drexl,3,tools/li[4]/power,18,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Drexl,3,tools/li[5]/power,14,16.8,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Faa,5,ComfyTemperatureMax,60,67.1,widen to envelope +/-15C,"env -9.5..52 (RM_TwilightSea<-RUT_TwilightSea,RUT_TheScald) +/-15"
+RSW_Faa,5,ComfyTemperatureMin,10,-24.6,widen to envelope +/-15C,"env -9.5..52 (RM_TwilightSea<-RUT_TwilightSea,RUT_TheScald) +/-15"
+RSW_Faa,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_FaaJuv,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_FleeceSpider,3,tools/li[1]/power,6,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_FleeceSpider,3,tools/li[2]/power,3,2.4,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_FoundryBeetle,3,tools/li[1]/power,26,36,below band -> K=15,bodySize 2.4 band 28.8..36
+RSW_FoundryBeetle,3,tools/li[1]/cooldownTime,1.6,2.33,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_FoundryBeetle,3,tools/li[2]/power,12,16.6,below band -> K=15,bodySize 2.4 band 28.8..36
+RSW_FoundryBeetle,6,MeatAmount,140,336,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_FrilledGorg,5,ComfyTemperatureMin,-8.8,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_FungalMantis,3,tools/li[1]/power,9,30,below band -> K=15,bodySize 2 band 24..30
+RSW_FungalMantis,3,tools/li[1]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_FungalMantis,3,tools/li[2]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
+RSW_FungalMantis,3,tools/li[3]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
+RSW_FungalMantis,3,tools/li[4]/power,5,16.7,below band -> K=15,bodySize 2 band 24..30
+RSW_FungalMantis,6,MeatAmount,140,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_FungalWeevil,6,LeatherAmount,25,40,leather base 40,
+RSW_Gizka,5,ComfyTemperatureMin,-3.6,-22.5,widen to envelope +/-15C,"env -7.4..63.8 (RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RM_Pyrelands<-ZBiome_Grasslands,RM_Stillsand<-RUT_ExtremeDesert,RUT_AridShrubland,RUT_Desert,RUT_ExtremeDesert,RUT_Greentide) +/-15"
+RSW_Gizka,3,tools/li[1]/power,2,1.4,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Gizka,3,tools/li[2]/power,2,1.4,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Gizka,3,tools/li[3]/power,4,2.7,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Gizka,3,tools/li[4]/power,3,2,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Gorg,5,ComfyTemperatureMin,-8.8,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_Gorg,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Gornt,3,tools/li[1]/power,9,12.8,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Gornt,3,tools/li[2]/power,8,11.4,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Gornt,3,tools/li[3]/power,5,7.1,below band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_GraniteSlug,3,tools/li[1]/power,1,3,below band -> K=15,bodySize 0.2 band 2.4..3
+RSW_GraniteSlug,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Grank,5,ComfyTemperatureMin,-21.4,-22.5,widen to envelope +/-15C,"env -7.4..58.2 (RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RUT_AridShrubland,RUT_Miasma) +/-15"
+RSW_Grank,3,tools/li[1]/power,10,8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Grank,3,tools/li[2]/power,10,8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Grank,3,tools/li[3]/power,16,12.8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Grank,3,tools/li[4]/power,6,4.8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Grazer,3,tools/li[1]/power,41.25,13.8,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 2.75 band 33..41.25
+RSW_GreaterKraytDragon,3,tools/li[1]/power,35,256.7,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 15 band 180..225
+RSW_GreaterKraytDragon,3,tools/li[1]/cooldownTime,2,6.63,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_GreaterKraytDragon,3,tools/li[2]/power,35,256.7,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 15 band 180..225
+RSW_GreaterKraytDragon,3,tools/li[2]/cooldownTime,2,6.63,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_GreaterKraytDragon,3,tools/li[3]/power,45,330,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 15 band 180..225
+RSW_GreaterKraytDragon,3,tools/li[3]/cooldownTime,2,8.53,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_GreaterKraytDragon,3,tools/li[4]/power,45,330,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 15 band 180..225
+RSW_GreaterKraytDragon,3,tools/li[4]/cooldownTime,3,8.53,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_GreaterKraytDragon,3,tools/li[5]/power,35,256.7,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 15 band 180..225
+RSW_GreaterKraytDragon,3,tools/li[5]/cooldownTime,2,6.63,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Hssiss,5,ComfyTemperatureMax,60,74.9,widen to envelope +/-15C,"env -5..59.8 (RM_Greentide<-RUT_Greentide,RM_TheSump<-RUT_Sump,RUT_Greentide) +/-15"
+RSW_Igitz,3,tools/li[1]/power,3,2.4,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Igitz,3,tools/li[2]/power,3,2.4,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Igitz,3,tools/li[3]/power,4.8,3.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Igitz,3,tools/li[4]/power,6,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Iriaz,5,ComfyTemperatureMax,65.7,78.9,widen to envelope +/-15C,"env -7.4..63.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_Iriaz,5,ComfyTemperatureMin,-10,-22.5,widen to envelope +/-15C,"env -7.4..63.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_Iriaz,3,tools/li[1]/power,6,7.9,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Iriaz,3,tools/li[2]/power,6,7.9,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Iriaz,3,tools/li[3]/power,6,7.9,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_Iriaz,3,tools/li[4]/power,8,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RSW_JewelBeetle,3,tools/li[1]/power,6,36.8,below band -> K=15,bodySize 2.45 band 29.4..36.75
+RSW_JewelBeetle,3,tools/li[1]/cooldownTime,2,2.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_JewelBeetle,3,tools/li[2]/power,5.2,31.9,below band -> K=15,bodySize 2.45 band 29.4..36.75
+RSW_JewelBeetle,3,tools/li[2]/cooldownTime,2,2.04,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_JewelBeetle,6,MeatAmount,140,343,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Kreetle,5,ComfyTemperatureMin,-15,-22.5,widen to envelope +/-15C,"env -7.4..61.6 (RM_LeaningScrub<-RUT_AridShrubland,RM_Stillsand<-RUT_ExtremeDesert,RUT_AridShrubland,RUT_Desert,RUT_ExtremeDesert,RUT_Miasma,RUT_Webwork) +/-15"
+RSW_Kreetle,3,tools/li[1]/power,5,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Kreetle,3,tools/li[2]/power,3,1.8,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_LaaJuv,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Lanternwhale,5,ComfyTemperatureMax,45,46.1,widen to envelope +/-15C,env -9.5..31 (RUT_TwilightSea) +/-15
+RSW_Lanternwhale,3,tools/li[1]/power,600,120,divergence harmless K=3 (fauna_lore_divergence_manifest.csv),bodySize 40 band 480..600
+RSW_Lanternwhale,3,tools/li[2]/power,150,30,divergence harmless K=3 (fauna_lore_divergence_manifest.csv),bodySize 40 band 480..600
+RSW_LongtailGorg,5,ComfyTemperatureMin,-8.6,-22.5,widen to envelope +/-15C,"env -7.4..50.6 (RM_FeverWood<-RUT_FeverWood,RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert,RUT_FeverWood) +/-15"
+RSW_LongtailGorg,3,tools/li[1]/power,4,5,below band -> K=15,bodySize 0.42 band 5.04..6.3
+RSW_LongtailGorg,3,tools/li[2]/power,4,5,below band -> K=15,bodySize 0.42 band 5.04..6.3
+RSW_LongtailGorg,3,tools/li[3]/power,5,6.3,below band -> K=15,bodySize 0.42 band 5.04..6.3
+RSW_LongtailGorg,3,tools/li[4]/power,2,2.5,below band -> K=15,bodySize 0.42 band 5.04..6.3
+RSW_LongtailGorg,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Lothcat,3,tools/li[1]/power,7,5.2,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Lothcat,3,tools/li[2]/power,7,5.2,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Lothcat,3,tools/li[3]/power,6,4.5,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Lothcat,3,tools/li[4]/power,4,3,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Maguana,3,tools/li[1]/power,8,25.2,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Maguana,3,tools/li[2]/power,8,25.2,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Maguana,3,tools/li[3]/power,10,31.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Maguana,3,tools/li[4]/power,5,15.8,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Maligoat,3,tools/li[1]/power,7.3,15,below band -> K=15,bodySize 1 band 12..15
+RSW_Maligoat,3,tools/li[2]/power,6,12.3,below band -> K=15,bodySize 1 band 12..15
+RSW_Massiff,3,tools/li[1]/power,9.9,7.9,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Massiff,3,tools/li[2]/power,9.9,7.9,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Massiff,3,tools/li[3]/power,16,12.8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Massiff,3,tools/li[4]/power,6,4.8,above band -> K=15,bodySize 0.85 band 10.2..12.75
+RSW_Mee,5,ComfyTemperatureMax,50,67.1,widen to envelope +/-15C,"env -9.5..52 (RM_TwilightSea<-RUT_TwilightSea,RUT_TheScald) +/-15"
+RSW_Mee,5,ComfyTemperatureMin,0,-24.6,widen to envelope +/-15C,"env -9.5..52 (RM_TwilightSea<-RUT_TwilightSea,RUT_TheScald) +/-15"
+RSW_Mee,3,tools/li[1]/power,2.5,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RSW_Mee,3,tools/li[2]/power,1,0.9,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RSW_Mee,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_MeeJuv,3,tools/li[1]/power,2.5,2.2,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RSW_MeeJuv,3,tools/li[2]/power,1,0.9,above band -> K=15,bodySize 0.15 band 1.8..2.25
+RSW_MeeJuv,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_MegaphoridLarva,3,tools/li[1]/power,4,3.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_MegaphoridLarva,3,tools/li[2]/power,5,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_MegaphoridLarva,6,LeatherAmount,2,40,leather base 40,
+RSW_MutagenicNorphea,3,tools/li[1]/power,5,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_MutagenicNorphea,3,tools/li[2]/power,4,3.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Mynock,3,tools/li[1]/power,3,1.8,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RSW_Narglatch,3,tools/li[1]/power,18,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 4 band 48..60
+RSW_Narglatch,3,tools/li[2]/power,18,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 4 band 48..60
+RSW_Narglatch,3,tools/li[3]/power,60,72,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 4 band 48..60
+RSW_Narglatch,3,tools/li[3]/cooldownTime,3,3.6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Narglatch,3,tools/li[4]/power,12,14.4,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 4 band 48..60
+RSW_Nexu,3,tools/li[1]/power,11,14.7,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Nexu,3,tools/li[2]/power,11,14.7,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Nexu,3,tools/li[3]/power,37.5,50,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Nexu,3,tools/li[3]/cooldownTime,2.37,3.17,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Nexu,3,tools/li[4]/power,5,6.7,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 2.5 band 30..37.5
+RSW_Nuna,5,ComfyTemperatureMin,-8,-22.5,widen to envelope +/-15C,"env -7.4..63.8 (RM_FeverWood<-RUT_FeverWood,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Desert,RUT_FeverWood,RUT_Greentide) +/-15"
+RSW_Nuna,3,tools/li[1]/power,5,7.5,below band -> K=15,bodySize 0.6 band 7.2..9
+RSW_Nuna,3,tools/li[2]/power,6,9,below band -> K=15,bodySize 0.6 band 7.2..9
+RSW_Nuna,3,tools/li[3]/power,4,6,below band -> K=15,bodySize 0.6 band 7.2..9
+RSW_OpeeSeaKillerJuv,6,MeatAmount,140,196,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_PodWorm,3,tools/li[1]/power,10,60,below band -> K=15,bodySize 4 band 48..60
+RSW_PodWorm,3,tools/li[1]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_PodWorm,3,tools/li[2]/power,8,48,below band -> K=15,bodySize 4 band 48..60
+RSW_PodWorm,3,tools/li[2]/cooldownTime,2,2.4,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_PodWorm,6,MeatAmount,140,560,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Porg,3,tools/li[1]/power,2,1.8,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Porg,3,tools/li[2]/power,3,2.7,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Porg,3,tools/li[3]/power,1,0.9,above band -> K=15,bodySize 0.18 band 2.16..2.7
+RSW_Pufferpig,3,tools/li[1]/power,6,4.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RSW_Pufferpig,3,tools/li[2]/power,10,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RSW_PustuleHornet,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_PustuleHornet,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_PustuleHornet,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_PustuleHornet,6,MeatAmount,5,140,meat base 140,
+RSW_PustuleHornet,6,LeatherAmount,5,40,leather base 40,
+RSW_PustuleHornetQueen,3,tools/li[1]/power,4.4,15,below band -> K=15,bodySize 1 band 12..15
+RSW_PustuleHornetQueen,3,tools/li[2]/power,3.5,11.9,below band -> K=15,bodySize 1 band 12..15
+RSW_PustuleHornetQueen,3,tools/li[3]/power,2,6.8,below band -> K=15,bodySize 1 band 12..15
+RSW_PustuleHornetSpawned,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_PustuleHornetSpawned,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_PustuleHornetSpawned,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
+RSW_Rancor,3,tools/li[1]/power,20,29.3,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Rancor,3,tools/li[2]/power,20,29.3,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Rancor,3,tools/li[3]/power,90,132,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Rancor,3,tools/li[3]/cooldownTime,3.67,5.39,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Rancor,3,tools/li[4]/power,12,17.6,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Rancor,3,tools/li[5]/power,12,17.6,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Rancor,3,tools/li[6]/power,15,22,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
+RSW_Raxshir,3,tools/li[1]/power,14,16.8,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3.5 band 42..52.5
+RSW_Raxshir,3,tools/li[2]/power,14,16.8,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3.5 band 42..52.5
+RSW_Raxshir,3,tools/li[3]/power,52.5,63,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3.5 band 42..52.5
+RSW_Raxshir,3,tools/li[3]/cooldownTime,2.81,3.37,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Raxshir,3,tools/li[4]/power,8,9.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3.5 band 42..52.5
+RSW_Ronto,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_RustNipperJuv,3,tools/li[1]/power,7,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RSW_RustNipperJuv,3,tools/li[2]/power,7,3.8,above band -> K=15,bodySize 0.25 band 3..3.75
+RSW_RustNipperJuv,3,tools/li[3]/power,3,1.6,above band -> K=15,bodySize 0.25 band 3..3.75
+RSW_RustNipperJuv,6,LeatherAmount,25,40,leather base 40,
+RSW_Sacapillar,3,tools/li[1]/power,4,4.8,divergence harmless K=2 (fauna_lore_divergence_manifest.csv),bodySize 2.4 band 28.8..36
+RSW_Sacapillar,3,tools/li[2]/power,3.5,4.2,divergence harmless K=2 (fauna_lore_divergence_manifest.csv),bodySize 2.4 band 28.8..36
+RSW_Sacapillar,6,MeatAmount,140,336,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Sacapillar,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_SandLeaper,3,tools/li[1]/power,3.4,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_SandLeaper,3,tools/li[2]/power,1.5,1.3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_SandLeaper,3,tools/li[3]/power,2.5,2.2,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_SandoAquaMonster,5,ComfyTemperatureMin,-20,-24.6,widen to envelope +/-15C,env -9.5..31 (RM_TwilightSea<-RUT_TwilightSea) +/-15
+RSW_SandoAquaMonster,3,tools/li[1]/power,210,252,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 14 band 168..210
+RSW_SandoAquaMonster,3,tools/li[1]/cooldownTime,5.6,6.74,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_SandoAquaMonster,3,tools/li[2]/power,60,72,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 14 band 168..210
+RSW_SandoAquaMonster,3,tools/li[3]/power,60,72,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 14 band 168..210
+RSW_SandoAquaMonster,3,tools/li[4]/power,30,36,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 14 band 168..210
+RSW_ScrapNestBird,5,ComfyTemperatureMax,60,61.9,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland) +/-15"
+RSW_ScrapNestBird,5,ComfyTemperatureMin,-5,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland) +/-15"
+RSW_ScrapNestBird,3,tools/li[1]/power,7,5.3,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RSW_ScrapNestBird,3,tools/li[2]/power,9,6.8,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RSW_ScrapNestBird,3,tools/li[3]/power,4,3,above band -> K=15,bodySize 0.45 band 5.4..6.75
+RSW_Screecher,3,tools/li[1]/power,4,5.5,below band -> K=15,bodySize 1 band 12..15
+RSW_Screecher,3,tools/li[2]/power,11,15,below band -> K=15,bodySize 1 band 12..15
+RSW_Screecher,3,tools/li[3]/power,2,2.7,below band -> K=15,bodySize 1 band 12..15
+RSW_Scurrier,5,ComfyTemperatureMin,-10,-22.5,widen to envelope +/-15C,"env -7.4..61.6 (RM_LeaningScrub<-RUT_AridShrubland,RM_Stillsand<-RUT_ExtremeDesert,RUT_AridShrubland,RUT_ExtremeDesert) +/-15"
+RSW_Scurrier,3,tools/li[1]/power,3,2.2,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Scurrier,3,tools/li[2]/power,3,2.2,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Scurrier,3,tools/li[3]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Scurrier,3,tools/li[4]/power,2,1.5,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Shaak,3,tools/li[1]/power,12,15,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Shaak,3,tools/li[2]/power,6,7.5,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Shaak,3,tools/li[3]/power,6,7.5,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Shaak,3,tools/li[4]/power,4,5,divergence harmless K=5 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Shaak,6,MeatAmount,280,420,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_ShadeWhale,3,tools/li[1]/power,16,213.3,below band -> K=15,bodySize 16 band 192..240
+RSW_ShadeWhale,3,tools/li[1]/cooldownTime,2,5.34,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShadeWhale,3,tools/li[2]/power,16,213.3,below band -> K=15,bodySize 16 band 192..240
+RSW_ShadeWhale,3,tools/li[2]/cooldownTime,2,5.34,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShadeWhale,3,tools/li[3]/power,18,240,below band -> K=15,bodySize 16 band 192..240
+RSW_ShadeWhale,3,tools/li[3]/cooldownTime,2.6,6,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShadeWhale,6,MeatAmount,140,2240,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Shiro,5,ComfyTemperatureMax,74.4,74.9,widen to envelope +/-15C,"env 28..59.8 (RM_Greentide<-RUT_Greentide,RM_Miasma<-RUT_Miasma,RUT_Greentide,RUT_Miasma) +/-15"
+RSW_Shiro,3,tools/li[1]/power,9,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RSW_Shiro,3,tools/li[2]/power,3,2.5,above band -> K=15,bodySize 0.5 band 6..7.5
+RSW_ShiroTrap,5,ComfyTemperatureMax,74.7,74.9,widen to envelope +/-15C,"env -38.1..59.8 (RM_Greentide<-RUT_Greentide,RM_TheRot<-RUT_TheRot,RUT_Greentide,RUT_TheRot) +/-15"
+RSW_ShiroTrap,3,tools/li[1]/power,12,11.2,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_ShiroTrap,3,tools/li[2]/power,8,7.5,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_ShiroTrap,3,tools/li[3]/power,6,5.6,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_ShrublandGiant,5,ComfyTemperatureMax,50,61.9,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland) +/-15"
+RSW_ShrublandGiant,5,ComfyTemperatureMin,-5,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland) +/-15"
+RSW_ShrublandGiant,3,tools/li[1]/power,26,90,below band -> K=15,bodySize 6 band 72..90
+RSW_ShrublandGiant,3,tools/li[1]/cooldownTime,2.6,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShrublandGiant,3,tools/li[2]/power,22,76.2,below band -> K=15,bodySize 6 band 72..90
+RSW_ShrublandGiant,3,tools/li[2]/cooldownTime,2,3.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShrublandGiant,3,tools/li[3]/power,22,76.2,below band -> K=15,bodySize 6 band 72..90
+RSW_ShrublandGiant,3,tools/li[3]/cooldownTime,2,3.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShrublandGiant,3,tools/li[4]/power,20,69.2,below band -> K=15,bodySize 6 band 72..90
+RSW_ShrublandGiant,3,tools/li[4]/cooldownTime,2,2.83,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_ShrublandGiant,6,MeatAmount,140,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Silooth,3,tools/li[1]/power,45,54,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Silooth,3,tools/li[1]/cooldownTime,2.6,3.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Silooth,3,tools/li[2]/power,18,21.6,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Silooth,3,tools/li[3]/power,14,16.8,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Silooth,3,tools/li[4]/power,10,12,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_Silooth,3,tools/li[5]/power,10,12,divergence terror K=18 (fauna_lore_divergence_manifest.csv),bodySize 3 band 36..45
+RSW_SiltLampreyJuv,3,tools/li[1]/power,6,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_SiltLampreyJuv,3,tools/li[2]/power,1.5,0.8,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_SiltLampreyJuv,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Skalder,5,ComfyTemperatureMin,-15,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_Cauldron<-RUT_PoisonForest,RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_Sketto,5,ComfyTemperatureMin,-8,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_Sketto,3,tools/li[1]/power,8,4,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Sketto,3,tools/li[2]/power,8,4,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Sketto,3,tools/li[3]/power,12,6,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Sketto,3,tools/li[4]/power,6,3,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Snoruuk,3,tools/li[1]/power,2,7.5,below band -> K=15,bodySize 0.5 band 6..7.5
+RSW_Snoruuk,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Taozin,5,ComfyTemperatureMin,-5,-34.9,widen to envelope +/-15C,env -19.7..3.1 (RM_Abyss<-RUT_ForsakenCrags) +/-15
+RSW_Taozin,3,tools/li[1]/power,90,120,below band -> K=15,bodySize 8 band 96..120
+RSW_Taozin,3,tools/li[1]/cooldownTime,3.67,4.25,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Taozin,3,tools/li[2]/power,20,26.7,below band -> K=15,bodySize 8 band 96..120
+RSW_Taozin,3,tools/li[3]/power,20,26.7,below band -> K=15,bodySize 8 band 96..120
+RSW_Taozin,3,tools/li[4]/power,12,16,below band -> K=15,bodySize 8 band 96..120
+RSW_Taozin,3,tools/li[5]/power,16,21.3,below band -> K=15,bodySize 8 band 96..120
+RSW_Taozin,6,MeatAmount,840,1120,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Tauntaun,5,ComfyTemperatureMin,-50,-62.5,widen to envelope +/-15C,env -47.4..-20.6 (RM_SleepingIce<-RUT_NightsideIce) +/-15
+RSW_Thrumbungus,3,tools/li[1]/power,23,49.3,below band -> K=15,bodySize 4 band 48..60
+RSW_Thrumbungus,3,tools/li[2]/power,28,60,below band -> K=15,bodySize 4 band 48..60
+RSW_Thrumbungus,3,tools/li[2]/cooldownTime,2.6,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Thrumbungus,3,tools/li[3]/power,19,40.7,below band -> K=15,bodySize 4 band 48..60
+RSW_Thrumbungus,3,tools/li[4]/power,19,40.7,below band -> K=15,bodySize 4 band 48..60
+RSW_Thrumbungus,3,tools/li[5]/power,17,36.4,below band -> K=15,bodySize 4 band 48..60
+RSW_Thrumbungus,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RSW_TunnelSnake,5,ComfyTemperatureMax,60,61.9,widen to envelope +/-15C,env -7.4..46.8 (RUT_AridShrubland) +/-15
+RSW_TunnelSnake,5,ComfyTemperatureMin,0,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RUT_AridShrubland) +/-15
+RSW_TunnelSnake,6,MeatAmount,140,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Urusai,5,ComfyTemperatureMin,-22.4,-22.5,widen to envelope +/-15C,"env -7.4..50.6 (RM_FeverWood<-RUT_FeverWood,RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland,RUT_FeverWood) +/-15"
+RSW_Vapaad,5,ComfyTemperatureMin,0,-71.7,widen to envelope +/-15C,env -56.6..-26.7 (RM_BlueDesert<-RUT_BlueDesert) +/-15
+RSW_VentStalker,5,ComfyTemperatureMin,-15,-22.3,widen to envelope +/-15C,"env -7.1..22.5 (RM_Cauldron<-RUT_PoisonForest,RUT_Cauldron<-RUT_PoisonForest) +/-15"
+RSW_VentStalker,3,tools/li[1]/power,12,18,below band -> K=15,bodySize 1.2 band 14.4..18
+RSW_VentStalker,3,tools/li[2]/power,6,9,below band -> K=15,bodySize 1.2 band 14.4..18
+RSW_VentStalker,6,MeatAmount,140,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Voorpak,5,ComfyTemperatureMax,55,61.9,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
+RSW_Voorpak,3,tools/li[1]/power,4,3.5,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Voorpak,3,tools/li[2]/power,4,3.5,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Voorpak,3,tools/li[3]/power,6,5.2,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Voorpak,3,tools/li[4]/power,2,1.7,above band -> K=15,bodySize 0.35 band 4.2..5.25
+RSW_Vozzik,6,MeatAmount,140,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Vozzik,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RSW_Vulptex,3,tools/li[1]/power,3.6,6.1,below band -> K=15,bodySize 0.55 band 6.6..8.25
+RSW_Vulptex,3,tools/li[2]/power,3.6,6.1,below band -> K=15,bodySize 0.55 band 6.6..8.25
+RSW_Vulptex,3,tools/li[3]/power,4.8,8.2,below band -> K=15,bodySize 0.55 band 6.6..8.25
+RSW_Vulptex,3,tools/li[4]/power,2,3.4,below band -> K=15,bodySize 0.55 band 6.6..8.25
+RSW_WarWyrm,3,tools/li[1]/power,45,337.5,below band -> K=15,bodySize 22.5 band 270..337.5
+RSW_WarWyrm,3,tools/li[1]/cooldownTime,3,7.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WarWyrm,3,tools/li[2]/power,45,337.5,below band -> K=15,bodySize 22.5 band 270..337.5
+RSW_WarWyrm,3,tools/li[2]/cooldownTime,2.2,7.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WarWyrm,3,tools/li[3]/power,45,337.5,below band -> K=15,bodySize 22.5 band 270..337.5
+RSW_WarWyrm,3,tools/li[3]/cooldownTime,2.4,7.12,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WarWyrm,6,MeatAmount,2100,3150,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Whisperbird,5,ComfyTemperatureMax,74.4,74.9,widen to envelope +/-15C,"env -7.4..59.8 (RM_FeverWood<-RUT_FeverWood,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RUT_AridShrubland,RUT_FeverWood,RUT_Greentide,RUT_Miasma) +/-15"
+RSW_Whisperbird,5,ComfyTemperatureMin,-15.9,-22.5,widen to envelope +/-15C,"env -7.4..59.8 (RM_FeverWood<-RUT_FeverWood,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RUT_AridShrubland,RUT_FeverWood,RUT_Greentide,RUT_Miasma) +/-15"
+RSW_Whisperbird,3,tools/li[1]/power,6,4.5,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Whisperbird,3,tools/li[2]/power,8,6,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Whisperbird,3,tools/li[3]/power,4,3,above band -> K=15,bodySize 0.4 band 4.8..6
+RSW_Woolamander,3,tools/li[1]/power,9,8.4,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_Woolamander,3,tools/li[2]/power,9,8.4,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_Woolamander,3,tools/li[3]/power,12,11.2,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_Woolamander,3,tools/li[4]/power,6,5.6,above band -> K=15,bodySize 0.75 band 9..11.25
+RSW_Worrt,5,ComfyTemperatureMin,-10,-22.5,widen to envelope +/-15C,"env -7.4..59.8 (RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert,RUT_Greentide) +/-15"
+RSW_WraidAlpha,3,tools/li[1]/power,18,51,below band -> K=15,bodySize 3.4 band 40.8..51
+RSW_WraidAlpha,3,tools/li[1]/cooldownTime,1.4,2.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WraidAlpha,3,tools/li[2]/power,18,51,below band -> K=15,bodySize 3.4 band 40.8..51
+RSW_WraidAlpha,3,tools/li[2]/cooldownTime,1.4,2.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WraidAlpha,3,tools/li[3]/power,18,51,below band -> K=15,bodySize 3.4 band 40.8..51
+RSW_WraidAlpha,3,tools/li[3]/cooldownTime,2,2.77,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WraidAlpha,3,tools/li[4]/power,16,45.3,below band -> K=15,bodySize 3.4 band 40.8..51
+RSW_WraidAlpha,3,tools/li[4]/cooldownTime,2,2.46,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_WraidAlpha,6,MeatAmount,140,476,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Yobshrimp,3,tools/li[1]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Yobshrimp,3,tools/li[2]/power,2,1.5,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_YobshrimpJuv,3,tools/li[1]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_YobshrimpJuv,3,tools/li[2]/power,2,1.5,above band -> K=15,bodySize 0.2 band 2.4..3
+RSW_Yooka,3,tools/li[1]/power,8,18,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Yooka,3,tools/li[2]/power,8,18,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Yooka,3,tools/li[3]/power,10,22.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Yooka,3,tools/li[4]/power,14,31.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
+RSW_Yooka,6,MeatAmount,140,294,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Zakkeg,3,tools/li[1]/power,18,69.2,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Zakkeg,3,tools/li[1]/cooldownTime,1.5,3.1,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zakkeg,3,tools/li[2]/power,18,69.2,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Zakkeg,3,tools/li[2]/cooldownTime,1.5,3.1,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zakkeg,3,tools/li[3]/power,26,100,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Zakkeg,3,tools/li[3]/cooldownTime,2,4.48,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zakkeg,3,tools/li[4]/power,20,76.9,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Zakkeg,3,tools/li[4]/cooldownTime,2,3.44,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zakkeg,3,tools/li[5]/power,14,53.8,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
+RSW_Zakkeg,3,tools/li[5]/cooldownTime,2.2,2.41,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zakkeg,6,MeatAmount,1148,700,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RSW_Zeer,3,tools/li[1]/power,16,67.5,below band -> K=15,bodySize 4.5 band 54..67.5
+RSW_Zeer,3,tools/li[1]/cooldownTime,2,3.19,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zeer,3,tools/li[2]/power,12,50.6,below band -> K=15,bodySize 4.5 band 54..67.5
+RSW_Zeer,3,tools/li[2]/cooldownTime,2,2.39,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zeer,3,tools/li[3]/power,12,50.6,below band -> K=15,bodySize 4.5 band 54..67.5
+RSW_Zeer,3,tools/li[3]/cooldownTime,2,2.39,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RSW_Zeer,3,tools/li[4]/power,9,38,below band -> K=15,bodySize 4.5 band 54..67.5
+RSW_Zeer,6,MeatAmount,420,630,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RUT_BrineBattery,5,ComfyTemperatureMin,-10,-28.2,widen to envelope +/-15C,"env -13.1..28.1 (RM_Wastes<-RUT_Wasteland,RUT_Wastes<-RUT_Wasteland) +/-15"
+RUT_BrineBattery,3,tools/li[1]/power,8,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RUT_BurnerAscendant,3,tools/li[1]/power,20,19.5,above band -> K=15,bodySize 1.3 band 15.6..19.5
+RUT_BurnerAscendant,3,tools/li[1]/cooldownTime,1.6,1.72,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RUT_BurnerAscendant,3,tools/li[2]/power,12,11.7,above band -> K=15,bodySize 1.3 band 15.6..19.5
+RUT_BurnerAscendant,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
+RUT_BurnerAscendant,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RUT_EmperorVulture,5,ComfyTemperatureMax,60,70.2,widen to envelope +/-15C,"env 6.4..55.1 (RM_FloodedCanyon<-RUT_CrackedLands,RUT_CrackedLands) +/-15"
+RUT_EmperorVulture,5,ComfyTemperatureMin,5,-8.7,widen to envelope +/-15C,"env 6.4..55.1 (RM_FloodedCanyon<-RUT_CrackedLands,RUT_CrackedLands) +/-15"
+RUT_EmperorVulture,3,tools/li[1]/power,6,21,below band -> K=15,bodySize 1.4 band 16.8..21
+RUT_EmperorVulture,3,tools/li[2]/power,5,17.5,below band -> K=15,bodySize 1.4 band 16.8..21
+RUT_EmperorVulture,6,MeatAmount,140,196,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RUT_FleetFlier,5,ComfyTemperatureMax,38,70.9,widen to envelope +/-15C,env 41.9..55.8 (RUT_TheForge) +/-15
+RUT_FleetFlier,3,tools/li[1]/power,1.5,1.4,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RUT_FleetFlier,3,tools/li[2]/power,2,1.8,above band -> K=15,bodySize 0.12 band 1.44..1.8
+RUT_FleetFlier,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
+RUT_SealedSleeper,5,ComfyTemperatureMax,68,70.2,widen to envelope +/-15C,"env 6.4..55.1 (RM_FloodedCanyon<-RUT_CrackedLands,RUT_CrackedLands) +/-15"
+RUT_SealedSleeper,5,ComfyTemperatureMin,0,-8.7,widen to envelope +/-15C,"env 6.4..55.1 (RM_FloodedCanyon<-RUT_CrackedLands,RUT_CrackedLands) +/-15"
+RUT_SealedSleeper,3,tools/li[1]/power,5,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RUT_SealedSleeper,3,tools/li[2]/power,5,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
+RUT_VWake,6,MeatAmount,140,154,"meat base 140 x bodySize (megafauna rule, bs>1)",
+Toxalope,3,tools/li[1]/power,7,14.7,below band -> K=15,bodySize 1.4 band 16.8..21
+Toxalope,3,tools/li[2]/power,9,18.9,below band -> K=15,bodySize 1.4 band 16.8..21
+Toxalope,3,tools/li[3]/power,9,18.9,below band -> K=15,bodySize 1.4 band 16.8..21
+Toxalope,3,tools/li[4]/power,10,21,below band -> K=15,bodySize 1.4 band 16.8..21
+Toxalope,6,MeatAmount,140,196,"meat base 140 x bodySize (megafauna rule, bs>1)",
+VAEWaste_Megatardi,3,tools/li[1]/power,7,30,below band -> K=15,bodySize 2 band 24..30
+VAEWaste_Megatardi,3,tools/li[1]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+VAEWaste_Megatardi,3,tools/li[2]/power,6,25.7,below band -> K=15,bodySize 2 band 24..30
