@@ -3,7 +3,8 @@
 One fixture per spoil class of GPT bridge review s7 row 14 (unknown blocking window, visitor-sensitive gap, empty
 rows, DRAFT status, capped list, log blindness) must grade non-GREEN overall; need/mood/job rows go INDETERMINATE on an
 unobserved visitor gap while other rows stay PASS-with-note (owner card 2026-10-24); a clean, fully observed run and a
-low-TPS-only run reach GREEN (controls). Also checks runner.py wires the grade in. Offline, pure.
+low-TPS-only run reach GREEN (controls). Also drives runner.run_suite on the offline FakeWorld: a spoiled
+situational chain vetoes all_green; a clean one stays green. Offline.
 """
 import copy
 import os
@@ -213,6 +214,62 @@ ok(base == snap, "grade() does not mutate its input")
 # ---------------------------------------------------------------- runner wiring
 src = open(os.path.join(HERE, "runner.py"), encoding="utf-8").read()
 ok("spoil_gate" in src and '"acceptance": acceptance' in src, "runner.py records the spoil grade as summary['acceptance']")
+
+
+# ---------------------------------------------------------------- runner veto, end to end (blind check 4d4b1155: GAP)
+# run_suite on the offline FakeWorld: every component PASSes, so all_green is True before the veto; a spoiled
+# situational chain (the modal sweep errored = unknown blocking window) must still read all_green False with a
+# non-GREEN summary['acceptance']; the same suite on a clean sweep stays all_green True and GREEN (control).
+import shutil  # noqa: E402
+import tempfile  # noqa: E402
+import runner  # noqa: E402
+import run_identity  # noqa: E402
+from rimdrive.fake import FakeWorld, pawn_row  # noqa: E402
+from suite import Suite  # noqa: E402
+
+_tmp = tempfile.mkdtemp(prefix="spoil_gate_runner_")
+_orig = (runner.SHEET_DIR, runner.FIXTURE_LEDGER, run_identity.modal_sweep)
+runner.SHEET_DIR = _tmp
+runner.FIXTURE_LEDGER = os.path.join(_tmp, "fixtures.json")   # never rewrite the tracked fixture ledger
+
+
+def _world():
+    w = FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103), pawn_row("Col3", x=106)])
+    w.shot_dir = _tmp
+    return w
+
+
+def _suite():
+    st = Suite("SpoilVeto")
+
+    @st.chain("c1")
+    def _c1(t):
+        with t.component("quiet wait"):
+            t.wait_ticks(1200)
+    return st
+
+
+try:
+    clean = runner.run_suite(_suite(), _world(), anchor=(100, 100), situational=True)
+    ok(clean["all_green"] is True, "runner control: clean situational run_suite stays all_green",
+       (clean["all_green"], clean.get("acceptance", {}).get("overall")))
+    ok(clean.get("acceptance", {}).get("overall") == SG.GREEN, "runner control: clean run's summary acceptance is GREEN",
+       clean.get("acceptance"))
+
+    def _blind_sweep(call, *a, **k):
+        return {"found_open": False, "dialogs": {"Dialog_MessageBox": None}, "errors": ["Dialog_MessageBox: bridge timeout"]}
+    run_identity.modal_sweep = _blind_sweep
+    bad = runner.run_suite(_suite(), _world(), anchor=(100, 100), situational=True)
+    verdicts = [c["verdict"] for ch in bad["chains"] for c in ch["components"]]
+    ok(verdicts and all(v == "PASS" for v in verdicts), "runner spoiled: every component PASSed (veto is the only red)",
+       verdicts)
+    ok(bad.get("acceptance", {}).get("overall") not in (None, SG.GREEN),
+       "runner spoiled: summary acceptance is non-GREEN", bad.get("acceptance", {}).get("overall"))
+    ok(bad["all_green"] is False, "runner spoiled: all_green vetoed to False by the spoil gate", bad["all_green"])
+    ok(bad.get("fresh_green") is not True, "runner spoiled: fresh_green is not True", bad.get("fresh_green"))
+finally:
+    runner.SHEET_DIR, runner.FIXTURE_LEDGER, run_identity.modal_sweep = _orig
+    shutil.rmtree(_tmp, ignore_errors=True)
 
 print("RESULT %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)
