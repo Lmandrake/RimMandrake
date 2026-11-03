@@ -1,0 +1,1 @@
+A1 L2: on a Playing quicktest map (minimal list, all five DLC, LeaningScrub loaded) one RM_SweetlineTree planted at growth 1, the clock jumped +5.5 d and 2100 ticks stepped: the tree stands, >=5 RM_SweetlineWool lie within 6 cells of it, its inspect timer line reset to "falls in", and no new Exception ticking line is logged
