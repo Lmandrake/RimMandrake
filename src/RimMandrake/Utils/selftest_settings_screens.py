@@ -276,6 +276,7 @@ MODS = {
         "Research and material costs": "Now",
         "The grade ladder": "Now",
         "The alloy forge": "Now",
+        "Salvage": "Now",
         "Architect menu (restart)": "NextGameStart",
     }, ()),
     "Webwork": ("RM_WebworkMod.cs", "RM_Webwork.csproj", {
@@ -436,6 +437,7 @@ MODS = {
         "Shrine guardians (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Geothermal density (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Ores in new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Assailant horrors on the nightside": "Now",
         "World-map icon and flame statue (restart)": "NextGameStart",
     }, ()),
     "UnfinishedLine": ("UnfinishedLineMod.cs", "RimMandrake.Utinni.UnfinishedLine.csproj", {
@@ -471,6 +473,7 @@ MODS = {
         "The Scald: floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "The Chill: floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Grey Sea: floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Sea-floor descent (gravship)": "Now",
         "Sea-floor life (restart)": "NextGameStart",
         "Patch-gated features (restart)": "NextGameStart",
         "The Scald: hot floor": "Now",
@@ -557,6 +560,7 @@ MODS = {
     }, ()),
     "StarWarsRaces": ("RSW_StarWarsRacesMod.cs", "RSW_StarWarsRaces.csproj", {
         "Facial Animation": "Now",
+        "Species character": "Now",
     }, ()),
     "LoreStages": ("RM_LoreStagesMod.cs", "RM_LoreStages.csproj", {
         "Staged lore text": "Now",
@@ -597,6 +601,7 @@ MODS = {
     }, ()),
     "WasteRun": ("WasteRunSettings.cs", "RimMandrake.Utinni.WasteRun.csproj", {
         "Waste run and destinations": "Now",
+        "Consequences": "NextPulse",
         "Quest offers": "NextPulse",
         "Throat cask": "Now",
     }, ()),
@@ -840,7 +845,7 @@ DELIBERATE_KEY_PREFIXES = ("hose_",)
 INTERNAL_FLAGS = {"hoseSettingsImported"}
 
 
-GROUP_RE = re.compile(r'if \(Group\(list, ("([^"]+)"|"(\w+)"\.Translate\(\)), [\w.]*SettingScope\.(\w+), new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)')
+GROUP_RE = re.compile(r'if \(Group\(list, ("([^"]+)"|"(\w+)"\.Translate\(\)), [\w.]*SettingScope\.(\w+),\s+new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)')
 
 
 def english_keyed(mod_dir):
@@ -1009,7 +1014,7 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     scope_swap = next(((t, s) for t, s in expected.items() if s not in ("Now", "NextGameStart")), None)
     plants = [
         ("a name dropped from its group array", lambda c, p: (c.replace(f', "{last0}" }}', ' }', 1) if f', "{last0}" }}' in c else c.replace(f'"{last0}" }}', ' }', 1), p), "no group"),
-        ("a setting in two groups", lambda c, p: (c.replace(f'{g1[4]}, RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ ', f'{g1[4]}, RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),
+        ("a setting in two groups", lambda c, p: (re.sub(re.escape(f'{g1[4]}, RimMandrake.Shared.SettingScope.{g1lit},') + r'(\s+)new\[\] \{ ', lambda m: f'{g1[4]}, RimMandrake.Shared.SettingScope.{g1lit},{m.group(1)}new[] {{ "{g0[2][0]}", ', c, count=1), p), "two groups"),
         ("group names a non-setting", lambda c, p: (c.replace(f'"{last0}" }}', '"notASettingAtAll" }', 1), p), "not a Scribed setting"),
         ("a Group's closing brace lost", lambda c, p: (c.replace('                list.GapLine();\n            }\n', '                list.GapLine();\n', 1), p), "swallows|unbalanced braces"),
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs")), "SettingsKitDrawer.cs"),
