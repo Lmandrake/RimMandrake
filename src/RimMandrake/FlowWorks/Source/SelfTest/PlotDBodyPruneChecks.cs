@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using RR = RimMandrake.FlowWorks.SelfTest.ReleaseRectHarness;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -23,7 +24,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         /// <summary>A 5x5 pond at (5..9, 2..6) on a W x H map; the sea's stale claims sit on dry ground at (4,4), just west of
         /// it, and on a real far square (13,9) outside the plot. Returns the walk's owned id and footprint size.</summary>
-        private static (int owned, int found) WalkPond(Dictionary<int, int> claims)
+        private static (int owned, int found) WalkPond(IDictionary<int, int> claims)
         {
             Func<int, bool> pond = i => { int x = i % W, z = i / W; return x >= 5 && x <= 9 && z >= 2 && z <= 6; };
             var found = new List<int>();
@@ -96,6 +97,69 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     Assert(body.Contains(need), "ReleaseRect holds: " + need);
                 }
+            });
+
+            Case("PLOT_D_BODY_PRUNE: the production ReleaseRect, run, empties the rect of footprint, receded and claims", () =>
+            {
+                // Map 14x10, plot rect (2..8, 1..7). Body 5: a pond wholly inside (dropped). Body 6: a pond straddling the
+                // rect's east edge (kept, shrunk, re-sized). Body 9: the limitless sea with one footprint square inside and
+                // a truncated far claim inside that is in the index only. A claim of 9 outside the rect stays.
+                var h = new RR.StockHarness();
+                var rect = new RR.CellRect(2, 1, 7, 7);
+                var inside = new List<RR.IntVec3>();
+                for (int x = 3; x <= 5; x++) for (int z = 2; z <= 4; z++) inside.Add(new RR.IntVec3(x, z));
+                h.Add(5, false, 2f, inside, W);
+                var straddle = new List<RR.IntVec3>();
+                for (int x = 7; x <= 10; x++) straddle.Add(new RR.IntVec3(x, 6));
+                RR.RM_LiquidBody b6 = h.Add(6, false, 2f, straddle, W);
+                b6.capacity = 8f; b6.stock = 8f;
+                b6.receded.Add(new RR.IntVec3(7, 6)); b6.receded.Add(new RR.IntVec3(10, 6));
+                RR.RM_LiquidBody sea = h.Add(StaleSea, true, 0f, new[] { new RR.IntVec3(2, 7), new RR.IntVec3(13, 9) }, W);
+                sea.receded.Add(new RR.IntVec3(2, 7));
+                h.cellToBody[4 * W + 6] = StaleSea;                        // truncated: indexed, not in the footprint list
+                var owner = new RR.RM_MapComponent_Excavation();
+                int released = h.ReleaseRect(new RR.Map(W, H), rect, owner, out int dropped);
+
+                Assert(released == 9 + 2 + 1, "released = 9 + 2 + 1 footprint squares (got " + released + ")");
+                Assert(dropped == 1 && !h.byId.ContainsKey(5) && h.bodies.Count == 2, "the emptied pond is dropped (dropped "
+                    + dropped + ", bodies " + h.bodies.Count + ")");
+                foreach (RR.RM_LiquidBody b in h.bodies)
+                {
+                    foreach (RR.IntVec3 c in b.cells) Assert(!rect.Contains(c), "body " + b.id + " still holds " + c.x + "," + c.z);
+                    foreach (RR.IntVec3 c in b.receded) Assert(!rect.Contains(c), "body " + b.id + " still recedes " + c.x + "," + c.z);
+                }
+                foreach (int k in h.cellToBody.Keys)
+                {
+                    Assert(!rect.Contains(new RR.IntVec3(k % W, k / W)), "a claim survives in the rect at " + (k % W) + "," + (k / W));
+                }
+                Assert(h.cellToBody.TryGetValue(9 * W + 13, out int far) && far == StaleSea, "the sea's claim outside is kept");
+                Assert(h.cellToBody.TryGetValue(6 * W + 9, out int e6) && e6 == 6 && h.cellToBody.ContainsKey(6 * W + 10),
+                    "the straddling pond keeps its squares outside the rect");
+                Assert(b6.cells.Count == 2 && b6.receded.Count == 1, "pond 6: 2 squares, 1 receded left");
+                float cap = RM_BedMath.CapacityForBeds(2f, 2);
+                Assert(Math.Abs(b6.capacity - cap) < 1e-4f && b6.capacity < 8f && b6.stock <= b6.capacity + 1e-4f,
+                    "pond 6 re-sized to its 2 beds and its stock clamped (capacity " + b6.capacity + " want " + cap + ", stock " + b6.stock + ")");
+                Assert(sea.cells.Count == 1 && sea.limitless, "the sea keeps its far square, still limitless");
+            });
+
+            Case("PLOT_D_BODY_PRUNE: after the production ReleaseRect the pond walk forms a fresh body, not the sea", () =>
+            {
+                var h = new RR.StockHarness();
+                h.Add(StaleSea, true, 0f, new[] { new RR.IntVec3(4, 4), new RR.IntVec3(13, 9) }, W);
+                h.ReleaseRect(new RR.Map(W, H), new RR.CellRect(1, 0, 11, 9), new RR.RM_MapComponent_Excavation(), out int _);
+                var (owned, found) = WalkPond(h.cellToBody);
+                Assert(owned == -1 && found == 25, "a fresh body of 25 squares (owned " + owned + ", found " + found + ")");
+            });
+
+            Case("PLOT_D_BODY_PRUNE: the production ReleaseRect rebuilds a dirty index before it releases", () =>
+            {
+                var h = new RR.StockHarness();
+                h.Add(5, false, 1f, new[] { new RR.IntVec3(3, 3) }, W);
+                h.cellToBody.Clear();
+                h.indexDirty = true;
+                h.ReleaseRect(new RR.Map(W, H), new RR.CellRect(0, 0, W, H), new RR.RM_MapComponent_Excavation(), out int dropped);
+                Assert(h.rebuilds == 1 && dropped == 1 && h.cellToBody.Count == 0, "rebuilt once, body dropped, index empty (rebuilds "
+                    + h.rebuilds + ", dropped " + dropped + ", left " + h.cellToBody.Count + ")");
             });
 
             Case("PLOT_D_BODY_PRUNE: only the dev reset calls ReleaseRect (play keeps ruling 16's sticky classification)", () =>
