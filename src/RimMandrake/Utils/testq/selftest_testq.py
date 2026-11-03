@@ -325,6 +325,48 @@ def t_fill_brake_released_by_proof():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_fill_brake_stale_companion_out_of_the_window():
+    """COMPANION_STAGE_FIX_JOBS_ARRIVE_STALE: 3b04b3 (refused at deploy, stale companion) and aa0482 (one harness crash
+    past deploy) braked the lane on one real fault. A stale job leaves the window beside a real fault; two stale in a row
+    still brake, or a stager that cannot keep up would let the filler spin."""
+    import testq as T
+    tmp = tempfile.mkdtemp(prefix="rf_testq_brake_stale_")
+    saved = T.QHOME
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+        stale = "companion STALE JawaBench.BridgeTools.dll not built from this job's sources"
+
+        def put(jid, fin, outcome, cause="HARNESS", note="", by=T.FILLER):
+            with open(os.path.join(tmp, "done", jid + ".json"), "w") as fh:
+                json.dump({"finished": fin, "job": {"id": jid, "mod": "FlowWorks", "submitted": fin, "requested_by": by,
+                                                    "purpose": "guard", "canary": True, "lane": "stevedesktop"},
+                           "result": {"outcome": outcome, "cause": cause, "note": note, "started": fin, "finished": fin,
+                                      "rows": []}}, fh)
+
+        def tail():
+            t = T.brake_tail(T.filler_jobs())
+            return [T.job_of(r)["id"] for r in t] if t else None
+        put("Ja", "2026-11-03T01:00:00Z", "INVALID", "DEPLOY", stale)
+        put("Jb", "2026-11-03T02:00:00Z", "INVALID", "HARNESS", "modcheck exit 5")
+        check(tail() is None, "one stale job and one real fault: no brake: %s" % tail())
+        put("Jc", "2026-11-03T03:00:00Z", "INVALID", "HARNESS", "modcheck exit 5")
+        check(tail() == ["Jb", "Jc"], "two real faults brake: %s" % tail())
+        put("Jd", "2026-11-03T04:00:00Z", "INVALID", "DEPLOY", stale)
+        check(tail() == ["Jb", "Jc"], "a stale job after them neither hides nor joins them: %s" % tail())
+        put("Je", "2026-11-03T05:00:00Z", "INVALID", "DEPLOY", stale)
+        check(tail() == ["Jd", "Je"], "two stale in a row brake by themselves: %s" % tail())
+        put("Jf", "2026-11-03T06:00:00Z", "DONE", by="Operations.canary")
+        check(tail() is None, "a proof after all of them ends it")
+        put("Jg", "2026-11-03T07:00:00Z", "INVALID", "HARNESS", "modcheck exit 5")
+        check(tail() is None, "one fault since the proof, with older faults before it, is not two in a row: %s" % tail())
+        put("Jh", "2026-11-03T08:00:00Z", "INVALID", "DEPLOY", "sync refused")
+        check(tail() == ["Jg", "Jh"], "any other deploy failure counts: %s" % tail())
+    finally:
+        T.QHOME = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def t_result_hardening():
     """A tagged-but-malformed result and a non-object worker line are recorded INVALID / skipped, never a crash."""
     import testq as T
@@ -382,6 +424,7 @@ def main():
         t_fill_policy()
         t_fill_drops_unknown_chains()
         t_fill_brake_released_by_proof()
+        t_fill_brake_stale_companion_out_of_the_window()
         t_result_hardening()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
         check(False, "t_fill_policy raised %s: %s" % (type(ex).__name__, ex))

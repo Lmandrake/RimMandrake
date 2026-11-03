@@ -1281,14 +1281,30 @@ def filler_jobs():
 def brake_tail(mine):
     """-> the two finished filler jobs holding the brake, or None. A deliberate cancel never counts, in either
     direction: a cancelled job (cancelled/, or a running job told to stop, `cancelled` on its done record) is out of the
-    window, so it neither brakes the lane nor hides two real failures around it."""
+    window, so it neither brakes the lane nor hides two real failures around it. Nor does a stale companion count beside
+    a real fault: that job ran nothing, and the stager fixes it (one crash after it braked the lane, 2026-11-03). Two
+    stale in a row do brake: the stager is not keeping up, and the filler would spin. The two jobs must be in a row: a
+    job that proved the lane since the earlier one (lane_proven_after) breaks the run."""
+    import retest
     gone = {job_of(r)["id"] for r in records("cancelled")} | {job_of(r)["id"] for r in records("done") if r.get("cancelled")}
     counted = [j for j in mine if j["id"] not in gone]
-    tail = [read_json(q("done", j["id"] + ".json")) for j in counted[-2:]]
-    if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail) \
-            and not lane_proven_after(tail):
-        return tail
-    return None
+    newest = [read_json(q("done", j["id"] + ".json")) for j in counted[-2:]]
+    if len(newest) < 2 or not all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in newest):
+        return None
+    tail = newest
+    if not all(retest.companion_stale(t.get("result")) for t in newest):
+        tail = []
+        for j in reversed(counted):
+            t = read_json(q("done", j["id"] + ".json"))
+            if not t or (t.get("result") or {}).get("outcome") == "DONE":
+                return None
+            if not retest.companion_stale(t.get("result")):
+                tail.insert(0, t)
+                if len(tail) == 2:
+                    break
+        if len(tail) < 2:
+            return None
+    return None if lane_proven_after(tail[:1]) else tail
 
 
 def fill_plan(mod, n, cap, day_s, now=None):

@@ -222,7 +222,7 @@ def proof(now=None):
                 fins.append(S.parse_ts(r.get("finished") or r["result"]["finished"]))
             except (KeyError, TypeError, ValueError):
                 fins.append(0)
-        held = not fins or min(fins) <= best[0]     # a tail newer than the proof is a new brake, not this one
+        held = not fins or min(fins) < best[0]      # a tail from the proving job on is a new brake, not this one
     ok &= not held
     lines.append("%s steve.state %s: %s" % ("FAIL" if held else "ok  ", sj.get("state"), str(sj.get("reason"))[:160]))
     return ok, lines
