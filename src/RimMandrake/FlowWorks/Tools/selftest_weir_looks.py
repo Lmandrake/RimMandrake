@@ -29,7 +29,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import fw_scenes_weir as W  # noqa: E402
 
-TIMBER_SHA = "024e3d8002"      # last commit with the timber weir set installed
+TIMBER_SHA = "a0c413c667"      # last published commit with the timber weir set installed (the original 024e3d8002 was rewritten away)
 FW = HERE.parent
 OUT_PHOTO = FW / "art_source/Weir/out_photo"
 GEN = FW / "art_source/Weir/weir_by_photo.py"

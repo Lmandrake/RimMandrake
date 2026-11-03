@@ -55,7 +55,7 @@ SIDES = {"north": (0, 1), "east": (1, 0), "south": (0, -1), "west": (-1, 0)}
 REACH_TOL = 0.05       # cell the coupler must run on beneath opaque fixture art
 UNDER_GEOM = os.path.join(HERE, "Source", "Machinery", "UnderCouplerGeometry.cs")
 JOINS = os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Joins")
-PRE_FIX_REV = "fb34c9bc2d"   # Modern tank art before the 2026-10-22 west/east lane fittings
+PRE_FIX_REV = "17bd60fbf9"   # Modern tank art before the 2026-10-22 west/east lane fittings
 
 # (def, look, side) -> the filed item that owns the red. A fixed entry goes red until pruned here.
 # Drained 2026-10-23 by the under-couplers (TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY, TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT,

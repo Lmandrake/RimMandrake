@@ -25,7 +25,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-BASE_COMMIT = "fb34c9bc2d"
+BASE_COMMIT = "17bd60fbf9"   # owner card picks installed (the original fb34c9bc2d was rewritten away)
 REL = "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/Modern/%s.png"
 LANE_DZ = (-0.5, 0.5)
 # def -> (drawSize z, drawOffset z); the footprint is 2x2 and drawSize x is 2 for all three
