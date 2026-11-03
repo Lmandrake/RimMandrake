@@ -51,7 +51,7 @@ namespace RimMandrake.FlowWorks
 	/// <item>Each body's surface is RM_LevelSolve.PondSurfaceHeight over its floor histogram (one convention for ponds and dug
 	/// runs: dL-per-square, 0 = brim). A limitless body stands at 0.</item>
 	/// <item>Links are visited in a fixed order, at most <c>maxLinks</c> per cycle from a rotating cursor (the hard budget);
-	/// a link visited every k cycles moves up to k (capped at <see cref="MaxCatchUp"/>) cycles' worth (elapsed integration).</item>
+	/// a link visited on a visit/n share of cycles moves n/visit (capped at <see cref="MaxCatchUp"/>) cycles' worth (elapsed integration).</item>
 	/// <item>Gauss-Seidel: each link plans against the volumes the earlier links in this cycle left, so parallel links sum and
 	/// a body on many links is never overdrawn.</item>
 	/// <item>A link moves from the higher surface to the lower, up to the rate, and never past the half-way point to its own
@@ -142,8 +142,10 @@ namespace RimMandrake.FlowWorks
 				return moves;
 			}
 			int visit = Math.Min(n, maxLinks);
-			int every = (n + visit - 1) / visit;
-			long rate = ratePerLink * Math.Min(every, MaxCatchUp);
+			// Each link is visited visit/n of the cycles, so a visit moves n/visit cycles' worth (floored, capped at MaxCatchUp):
+			// the aggregate never exceeds n*ratePerLink. A ceil here gave 65 links on a budget of 64 twice their allowance
+			// (LINK_BUDGET_FIX_CATCHUP_OVERSTATES_FLOW).
+			long rate = n <= visit ? ratePerLink : Math.Min(ratePerLink * n / visit, ratePerLink * MaxCatchUp);
 			if (cursor < 0 || cursor >= n)
 			{
 				cursor = 0;

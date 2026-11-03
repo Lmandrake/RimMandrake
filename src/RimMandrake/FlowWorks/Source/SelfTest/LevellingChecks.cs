@@ -124,6 +124,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int cycles = Drive(b, Enumerable.Range(0, 10).Select(_ => Link(0, 1)).ToList(), 5 * U, 64, 10000, "ten", twoBody: true);
                 Assert(cycles > 0 && Math.Abs(S(b[0]) - S(b[1])) < RM_LevellingMath.LevelTolerance, "ten links did not level");
             });
+            Case("LEVELLING_link_budget_catch_up_scales_by_visited_fraction", () =>
+            {
+                // LINK_BUDGET_FIX_CATCHUP_OVERSTATES_FLOW: n saturated parallel links on a budget of 64. Each link is visited on
+                // 64/n of the cycles, so one cycle may move at most n links' worth in aggregate. The old ceil gave n=65 2x per
+                // visit (~128 links' worth per cycle); n=65 must now move about what n=64 moves, never more than 65 links' worth.
+                const long R = 1000;
+                long Agg(int n, int budget)
+                {
+                    var b = new List<RM_LevelBody> { Body(1, Flat(1000, 10), 10000L * U, Water), Body(2, Flat(1000, 10), 0, null) };
+                    int cursor = 0; long net = 0;
+                    return RM_LevellingMath.Plan(b, Enumerable.Range(0, n).Select(_ => Link(0, 1)).ToList(), R, budget, ref cursor, null, ref net).Sum(m => m.Dl);
+                }
+                long a64 = Agg(64, 64), a65 = Agg(65, 64), a128 = Agg(128, 64), a1000 = Agg(1000, 64);
+                Assert(a64 == 64 * R, $"64 links on a budget of 64 moved {a64}, want {64 * R} (links not saturated: the case proves nothing)");
+                Assert(a65 >= a64 && a65 <= 65 * R, $"65 links on a budget of 64 moved {a65}; want between {a64} (n=64) and {65 * R}; the ceil bug gave {128 * R}");
+                Assert(a128 == 128 * R, $"128 links on a budget of 64 moved {a128}, want {128 * R} (each visit 2 cycles' worth)");
+                Assert(a1000 == 64 * R * RM_LevellingMath.MaxCatchUp, $"1000 links moved {a1000}, want the MaxCatchUp cap {64 * R * RM_LevellingMath.MaxCatchUp}");
+                Console.WriteLine($"      aggregate per cycle: n=64 {a64}, n=65 {a65}, n=128 {a128}, n=1000 {a1000}");
+            });
             Case("LEVELLING_same_body_loop_moves_nothing", () =>
             {
                 var bodies = new List<RM_LevelBody> { Body(7, Flat(3, 4), 5L * U, Water), Body(7, Flat(3, 4), 5L * U, Water) };
