@@ -1,0 +1,10 @@
+# WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS: the five OPEN rows of Transient/acc_biomes_fixes_20261008.md (git show fdfe794316:Transient/acc_biomes_fixes_20261008.md).
+# Game up on biomes_sprint (composite mandrake.rm.biomes deployed at this sha), bridge held, a Playing map; each chain builds its own site
+# (Wastes: ensure_wasteland_map re-tiles a scratch quicktest tile; Contagion: on-Contagion chains retile themselves). Needs a JawaBench
+# with fire_incident's forced parameter. Each line runs ONE chain and reads ONE component: exit 0 = PASS.
+live-mods: Wastes, Contagion
+live-proof A1: python3 src/RimMandrake/Utils/northstar_driver/component_proof.py --mod Wastes --chain middenshell_procession --component incident_is_blocked_when_the_body_is_switched_off < /dev/null
+live-proof A2: python3 src/RimMandrake/Utils/northstar_driver/component_proof.py --mod Wastes --chain rite_of_tipping --component tipping_off_refuses_the_offer < /dev/null
+live-proof A3: python3 src/RimMandrake/Utils/northstar_driver/component_proof.py --mod Contagion --chain burn_forced --component native_dives_for_roof < /dev/null
+live-proof A4: python3 src/RimMandrake/Utils/northstar_driver/component_proof.py --mod Contagion --chain genome --component inject_starts_gestation < /dev/null
+live-proof A5: python3 src/RimMandrake/Utils/northstar_driver/component_proof.py --mod Contagion --chain coalescence --component coalescence_emits_manhunters_and_grows_on_its_own < /dev/null

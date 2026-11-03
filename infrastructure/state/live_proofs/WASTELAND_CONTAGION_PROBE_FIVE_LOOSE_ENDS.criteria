@@ -1,0 +1,5 @@
+A1 L2: on a Wasteland map, RM_MiddenshellArrives dry-run with middenshellEnabled=false (a tick after the ON ask, past CanFireNow's per-tick memo) reads cannot-fire: middenshell_procession.incident_is_blocked_when_the_body_is_switched_off PASS.
+A2 L2: with tippingEnabled=false, RM_RiteOfTipping forced dry-run (CanFireNowSub -> QuestScriptDef.CanRun -> TestRunInt) reads canFireNow=false after an ON control read true: rite_of_tipping.tipping_off_refuses_the_offer PASS.
+A3 L2: on a Contagion map during a forced Burn, a native dives for roof/water: burn_forced.native_dives_for_roof PASS.
+A4 L2: the inject job on an amoeba host finishes inside the outcome-driven wait and leaves RM_AmoebaGestation with the sample consumed: genome.inject_starts_gestation PASS.
+A5 L2: a Coalescence emits Unfinished within 7000 ticks and at least one reads manhunter: coalescence.coalescence_emits_manhunters_and_grows_on_its_own PASS.
