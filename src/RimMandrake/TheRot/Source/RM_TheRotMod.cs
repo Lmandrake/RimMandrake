@@ -30,7 +30,7 @@ namespace RimMandrake.TheRot
     //                  ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD); not routed through RM_KitFronts
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
     //   healthSharing: the wound-link / kin-mending comps and the kin tag on every race tagged with a Rot clique
-    //                  (chittik, gromma, rennok, grellik natively; durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml;
+    //                  (chittik, gromma, rennok, plobbum natively; durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml;
     //                  the frozen twin RUT_TheRot's RSW_FungalWeevil by UtinniPatches) are removed again at startup
     //                  when off (restart to apply) - ROT_WOUND_SHARING_WIRING_1, ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED,
     //                  ROTKIN_FIX_RULED_ON_RETIRED_TWIN
@@ -302,7 +302,7 @@ namespace RimMandrake.TheRot
             {
                 list.CheckboxLabeled("Health sharing (restart to apply)", ref healthSharing,
                     "Chittik, gromma and rennok split wounds with kin in their grove; gromma, rennok, mullgoth, durrok "
-                  + "and grellik heal faster among kin. Off: none of them share wounds or mend, including animals "
+                  + "and plobbum heal faster among kin. Off: none of them share wounds or mend, including animals "
                   + "already on the map. Applies on the next launch.");
                 list.CheckboxLabeled("Guardian groves (new maps, restart to apply)", ref guardianGroves,
                     "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring. WORLDGEN-AFFECTING: "

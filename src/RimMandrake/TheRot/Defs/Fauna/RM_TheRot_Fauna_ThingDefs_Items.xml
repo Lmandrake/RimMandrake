@@ -221,8 +221,8 @@
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RM_EggFungalWeevilFertilized</defName>
-    <label>grellik egg (fert.)</label>
-    <description>A fertilized grellik egg. If all goes well, it should hatch into a baby weevil. It can be eaten raw, but it's much better cooked.</description>
+    <label>plobbum egg (fert.)</label>
+    <description>A fertilized plobbum egg. If all goes well, it should hatch into a baby weevil. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>RM_TheRot/Fauna/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
       <color>(102,84,49)</color>
@@ -304,8 +304,8 @@
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RM_EggFungalWeevilUnfertilized</defName>
-    <label>grellik egg (unfert.)</label>
-    <description>An unfertilized grellik egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <label>plobbum egg (unfert.)</label>
+    <description>An unfertilized plobbum egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
       <texPath>RM_TheRot/Fauna/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
       <color>(92,74,39)</color>

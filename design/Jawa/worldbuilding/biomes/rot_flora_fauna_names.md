@@ -585,7 +585,7 @@ look up specific canon"*), applied unchanged, plus three Rot-specific lines:
 
 **Description (def text).** A finger-long vermin, half insect and half spore-case, that is never seen alone. One is nothing; a swarm is a single body with a hundred mouths that shares every wound it takes. They lay their larvae in whatever they bite, and the larvae hatch when it dies.
 
-**Visual brief.** Top-down pawn sprite, three facings, adult drawn half a cell wide (tiny — a colonist is three of these long): a small many-legged crawler with a pale segmented body, a bulbous spore-sac abdomen in milk-white with a faint lilac glow, dark wet-black head and legs, mandibles. The sac is the identity: it should look like a puffball that grew legs. Read cleanly at 0.5 cells — strong silhouette, few details. Distinct from the grellik (which is a fat weevil with a cap on its back).
+**Visual brief.** Top-down pawn sprite, three facings, adult drawn half a cell wide (tiny — a colonist is three of these long): a small many-legged crawler with a pale segmented body, a bulbous spore-sac abdomen in milk-white with a faint lilac glow, dark wet-black head and legs, mandibles. The sac is the identity: it should look like a puffball that grew legs. Read cleanly at 0.5 cells — strong silhouette, few details. Distinct from the plobbum (which is a fat weevil with a cap on its back).
 
 ### AA_Wildpawn
 
@@ -624,7 +624,7 @@ look up specific canon"*), applied unchanged, plus three Rot-specific lines:
 
 ### RSW_FungalWeevil
 
-- **fungal weevil** → **grellik** (alternate: mukkrit)
+- **fungal weevil** → **plobbum** (alternate: mukkrit; was grellik until 2026-11-02 — canon Grellik is a named nexu on Voss, FUNGALWEEVIL_LABEL_JUDGE_PROPOSES_NEW)
 - group: fauna · source: `mandrake.rsw.swbestiary`
 - width: **4 cells** (currently 1.8)
 - owner's note, verbatim: `disgusting fungus bug hybrid, rename, 4 cells wide`
@@ -685,7 +685,7 @@ look up specific canon"*), applied unchanged, plus three Rot-specific lines:
 | 45 | `AA_Wildpawn` | fauna | wildpawn | **durrok** | bommet | 6 | 2 |
 | 46 | `AA_Wildpod` | fauna | wildpod | **mullgoth** | sloggoth | 5 | 3.8 |
 | 47 | `RSW_FungalMantis` | fauna (keep + rename) | fungal mimic mantis | **skerrith** | threxil | — | 3 |
-| 48 | `RSW_FungalWeevil` | fauna | fungal weevil | **grellik** | mukkrit | 4 | 1.8 |
+| 48 | `RSW_FungalWeevil` | fauna | fungal weevil | **plobbum** | mukkrit | 4 | 1.8 |
 
 
 ## Collisions checked

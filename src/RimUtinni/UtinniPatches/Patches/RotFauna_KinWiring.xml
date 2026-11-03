@@ -10,7 +10,7 @@
   RM_ rows, natively in mandrake.rm.biomes: RM_Grellik and RM_Skerrith in TheRot
   Defs/Fauna/RM_TheRot_Fauna_ThingDefs_Races.xml. This patch gives the same rows to
   the two Star Wars Bestiary bodies those were ported from, which only the frozen
-  campaign twin RUT_TheRot still casts (ROT_RM_CAST_MIGRATION_1 step 7), so a grellik
+  campaign twin RUT_TheRot still casts (ROT_RM_CAST_MIGRATION_1 step 7), so a plobbum
   on a RUT_TheRot tile behaves like one on an RM_TheRot tile. An RM_-tier mod may not
   name an RSW_ def (Q12), so these two live here.
 

@@ -1,0 +1,112 @@
+{
+ "item": "FUNGALWEEVIL_LABEL_JUDGE_PROPOSES_NEW",
+ "class": "design",
+ "subject": "label of RSW_FungalWeevil and its RM twin RM_Grellik (defNames unchanged)",
+ "old_label": "grellik",
+ "why_rename": "canon Grellik is a named nexu on Voss (SWTOR); Wookieepedia title 'Grellik' (pageid 527059), checked 2026-11-02. 'grellik' was agent-coined at ROT_FLORA_FAUNA_VERDICTS_1; the owner's note on that row (design/Jawa/worldbuilding/biomes/rot_regen_briefs.json) was only 'disgusting fungus bug hybrid, rename, 4 cells wide', so a new label is a delegated design call (delegation_policy.md §1: labels a player reads).",
+ "proposer": "gpt_consult (fresh GPT session, not the maker), prompt D:\\ClaudeWork\\rimmandrake\\fungalweevil_label\\propose_prompt.md with the 2563 dumped creature labels inlined",
+ "candidates": [
+  {
+   "label": "blummok",
+   "why": "Two heavy syllables suggest a fat, sluggish beetle bulging with damp fungal growth.",
+   "stem": "blum"
+  },
+  {
+   "label": "plommak",
+   "why": "Its rounded vowels and muffled middle suit a squat, unhurried crawler beneath fleshy fungal caps.",
+   "stem": "plom"
+  },
+  {
+   "label": "plobbum",
+   "why": "Its soft, wet rhythm evokes a harmless but revolting little body waddling through fungus.",
+   "stem": "plob"
+  },
+  {
+   "label": "nuvvom",
+   "why": "Its low, humming sound suits a slow fungal carrier huddled among its broodmates.",
+   "stem": "nuvv"
+  },
+  {
+   "label": "drebbum",
+   "why": "Its sodden, lumpish sound fits an unpleasant beetle whose broods keep returning.",
+   "stem": "dreb"
+  }
+ ],
+ "screen": {
+  "method": "exact label vs 26146 labels in defs.sqlite (capture 2026-11-02T17-59-18Z), 4-letter stem vs 2563 creature labels, Wookieepedia title search + 4-letter prefix search, GBIF species search, Wiktionary entry; sanity probes grellik/nexu (Wookieepedia hit), weevil (Wiktionary hit), curculio (GBIF hit)",
+  "rows": [
+   {
+    "label": "blummok",
+    "exact_label_hit": false,
+    "word_in_any_label": false,
+    "stem_hits": [],
+    "wookieepedia_top": [],
+    "wookieepedia_exact": false,
+    "gbif_exact": [],
+    "wiktionary_entry": false
+   },
+   {
+    "label": "plommak",
+    "exact_label_hit": false,
+    "word_in_any_label": false,
+    "stem_hits": [],
+    "wookieepedia_top": [],
+    "wookieepedia_exact": false,
+    "gbif_exact": [],
+    "wiktionary_entry": false
+   },
+   {
+    "label": "plobbum",
+    "exact_label_hit": false,
+    "word_in_any_label": false,
+    "stem_hits": [],
+    "wookieepedia_top": [],
+    "wookieepedia_exact": false,
+    "gbif_exact": [],
+    "wiktionary_entry": false
+   },
+   {
+    "label": "nuvvom",
+    "exact_label_hit": false,
+    "word_in_any_label": false,
+    "stem_hits": [],
+    "wookieepedia_top": [],
+    "wookieepedia_exact": false,
+    "gbif_exact": [],
+    "wiktionary_entry": false
+   },
+   {
+    "label": "drebbum",
+    "exact_label_hit": false,
+    "word_in_any_label": false,
+    "stem_hits": [],
+    "wookieepedia_top": [],
+    "wookieepedia_exact": false,
+    "gbif_exact": [],
+    "wiktionary_entry": false
+   }
+  ],
+  "wookieepedia_stem_prefix": {
+   "blum": [
+    "Blum-maggot"
+   ],
+   "plom": [
+    "Plom bloom"
+   ],
+   "plob": [],
+   "nuvv": [],
+   "dreb": []
+  }
+ },
+ "judge": "gpt_consult (second fresh GPT session; saw only the candidates, constraints and screen), prompt D:\\ClaudeWork\\rimmandrake\\fungalweevil_label\\pick_prompt.md",
+ "verdicts": {
+  "blummok": "REDO: Its opening four letters match canon creature Blum-maggot, violating the precedent.",
+  "plommak": "REDO: Its opening four letters match canon Plom bloom; the precedent applies even though that name belongs to a plant.",
+  "plobbum": "KEEP: Soft, wet, and lumpish; suggests a fat, harmless, revolting crawler and stands apart from its biome-mates.",
+  "nuvvom": "KEEP: Readable and distinct, with a slow, muffled sound, though it conveys less bulk and disgust.",
+  "drebbum": "KEEP: Sodden and heavy-sounding, but its sharper opening feels less soft and sluggish than plobbum."
+ },
+ "pick": "plobbum",
+ "why_pick": "Plobbum best evokes a swollen, damp little crawler without sounding dangerous. It passes the supplied screens, reads easily, and has a distinct sound among the Rot’s existing names.",
+ "card": "none: delegation_policy.md §1 'Do not card him about a §1 class'; listed in the daily digest via the commit's Delegated: line"
+}

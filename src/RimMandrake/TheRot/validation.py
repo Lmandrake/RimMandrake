@@ -130,7 +130,7 @@ RULED_KIN_ROWS = {
 NATIVE_KIN_ROWS = ("RM_Agaripod", "RM_Agaripawn", "RM_Chittik", "RM_MycoidColossus", "RM_Grellik", "RM_Skerrith")
 NATIVE_KIN_FILES = ("RM_Chittik.xml", "RM_AgariPorts.xml", "RM_TheRot_Fauna_ThingDefs_Races.xml")   # in Defs/Fauna
 # ROTKIN_FIX_RULED_ON_RETIRED_TWIN: the frozen campaign biome RUT_TheRot still casts the Star Wars Bestiary bodies the
-# grellik and skerrith were ported from; UtinniPatches (RotFauna_KinWiring.xml) gives each its RM_ row's wiring, since an
+# plobbum (RM_Grellik) and skerrith were ported from; UtinniPatches (RotFauna_KinWiring.xml) gives each its RM_ row's wiring, since an
 # RM_-tier mod may not name an RSW_ def. Twin -> the RM_ row it copies.
 TWIN_KIN_ROWS = {"RSW_FungalWeevil": "RM_Grellik", "RSW_FungalMantis": "RM_Skerrith"}
 
@@ -203,7 +203,7 @@ def health_toggle_checks(src, weevil_patch=None):
             bad.append("RotFauna_KinWiring.xml does not make %s answer %s (its row %s)" % (twin, ALARM_TAG, TWIN_KIN_ROWS[twin]))
     tip = re.search(r'"Health sharing \(restart to apply\)", ref healthSharing,(.*?)\);', src, re.S)
     tip = re.sub(r'"\s*\+\s*"', "", tip.group(1)) if tip else ""
-    for word in ("gromma", "rennok", "mullgoth", "durrok", "grellik"):
+    for word in ("gromma", "rennok", "mullgoth", "durrok", "plobbum"):
         if word not in tip.split("heal faster", 1)[0].split(";")[-1]:
             bad.append("Health sharing tooltip does not say %s mends" % word)
     if "Alpha Animals" in tip:
@@ -688,7 +688,7 @@ def planted_health_toggle():
     out.append(("hs weevil retag", bool(health_toggle_checks(src, wp.replace("<tag>RotBroodmates</tag>", "<tag>Broodmates</tag>", 1)))))
     out.append(("hs mantis unalarmed", bool(health_toggle_checks(src, wp.replace(
         '<tag>RotGrove</tag>', '<tag>Grove</tag>', 1)))))
-    out.append(("hs tip stale", bool(health_toggle_checks(src.replace("and grellik heal", "heal", 1), wp))))
+    out.append(("hs tip stale", bool(health_toggle_checks(src.replace("and plobbum heal", "heal", 1), wp))))
     return out
 
 

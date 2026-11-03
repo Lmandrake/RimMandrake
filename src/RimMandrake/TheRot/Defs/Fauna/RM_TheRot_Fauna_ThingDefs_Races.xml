@@ -764,7 +764,7 @@
   </PawnKindDef>
   <ThingDef ParentName="BaseInsect">
     <defName>RM_Grellik</defName>
-    <label>grellik</label>
+    <label>plobbum</label>
     <description>A fat, slow weevil whose infestation became a partnership: the fungus lives in its shell and out of it, the beetle carries the spores wherever it crawls, and the growth hides it among the caps. It is harmless, revolting, and everywhere; its broods come back if you leave survivors.</description>
     <statBases>
       <MoveSpeed>3.75</MoveSpeed>
@@ -789,7 +789,7 @@
       </li>
       <!-- ROT_FAUNA_KIN_WIRING_1 (owner's ruled Rot fauna table 2026-09-18, items/ROT_HEALTH_SHARING_1.md): the
            RotBroodmates clique, kin-mending YES, wound-link NO, alarm NO ("broods recover if survivors remain"; its
-           ruled brood-mate BMT_Pillbug was cut 2026-09-11, so the clique is grelliks only). The Health sharing
+           ruled brood-mate BMT_Pillbug was cut 2026-09-11, so the clique is plobbums only). The Health sharing
            setting strips this comp and the tag when off. -->
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
         <hediff>RM_KinMendingNetwork</hediff>
@@ -875,7 +875,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Grellik</defName>
-    <label>grellik</label>
+    <label>plobbum</label>
     <race>RM_Grellik</race>
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.65</ecoSystemWeight>

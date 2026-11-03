@@ -58,7 +58,7 @@ SET_DIR = {'rot_thozzik_b': 'Thozzik', 'rot_thozzikqueen': 'ThozzikQueen', 'rot_
 WORDS = [('pustule hornets', 'thozziks'), ('pustule hornet', 'thozzik'), ('pustule queen', 'thozzik queen'),
          ('smog caterpillar', 'illoth larva'), ('smog moth', 'illoth'), ('Pustule Hornets', 'Thozziks'),
          ('thrumbungus', 'brullith'), ('Thrumbungus', 'Brullith'), ('yooka', 'brogg'), ('Yooka', 'Brogg'),
-         ('fungal weevil', 'grellik'), ('fungal mantis', 'skerrith')]
+         ('fungal weevil', 'plobbum'), ('fungal mantis', 'skerrith')]
 
 THOZZIK = ("A hive creature built on the kurreth's armoured, segmented ant body, its forward mandibles held "
            "ready. Its toxin sacs are fruiting bodies of a fungus it farms inside itself, and the gas it vents "

@@ -11157,7 +11157,7 @@
     </match>
   </Operation>
 
-  <!-- grellik (RSW_FungalWeevil) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..60 -->
+  <!-- plobbum (RSW_FungalWeevil) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..60 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
     <match Class="PatchOperationConditional">
