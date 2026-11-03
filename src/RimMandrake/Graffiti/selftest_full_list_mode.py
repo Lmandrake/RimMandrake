@@ -12,6 +12,12 @@ Offline: no bridge, no game, ModsConfig.xml and modcheck_status.json never touch
   4 full_list_diff.differences on a fake mod root: pool member, cleaning and camera name-matches, not-installed,
     the mod under test excluded.
   5 northstar_full.full_rung_verdict: a clean judged doc is GREEN; each single defect is not.
+  6 the tiers: a small game is UNMEASURED for the full-list check, the small rung asks no full-list clause.
+  7 the item's own live proofs (infrastructure/state/live_proofs/<ID>.txt + .criteria), parsed with the supervisor's
+    parser: every clause has a line; F1/F2 are GREEN-FULL; F1 is `running-list --list FULL.LATEST`; F2's arguments,
+    run through northstar_full.main with its steps stubbed, drive `run --config full --list FULL.LATEST` and a
+    full-tier verdict; A2's drive `needs-mods` and `--config current`. A proofs file pointing a full-list clause at a
+    small-list command goes red here (mutants inside the test).
 """
 import atexit
 import copy
@@ -23,11 +29,13 @@ import tempfile
 
 tempfile.tempdir = os.environ["TMPDIR"] = tempfile.mkdtemp(prefix="st_full_list_mode_")
 atexit.register(shutil.rmtree, tempfile.tempdir, True)
+# a checker's shell may carry no data root (rmpaths.RmDataRootUnset): this test writes nothing there, so its own temp dir
+os.environ.setdefault("RM_DATA_ROOT", tempfile.tempdir)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 UTILS = os.path.join(ROOT, "src", "RimMandrake", "Utils")
-for p in (UTILS, os.path.join(UTILS, "modcheck"), HERE):
+for p in (UTILS, os.path.join(UTILS, "modcheck"), HERE, os.path.join(ROOT, "src", "RimMandrake", "rimflow")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
@@ -339,6 +347,117 @@ def t6_tiers():
     check("6 small tier: a FAIL bar is still NOT GREEN", not ok)
 
 
+ITEM = "GRAFFITI_NORTHSTAR_GREEN_FULL_1"
+PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs")
+FULL_LATEST = "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml"
+
+
+def _criteria(text):
+    """`ID LEVEL: text` lines -> {id: level}."""
+    import re
+    out = {}
+    for ln in text.splitlines():
+        m = re.match(r"^([A-Z]\d+)\s+([A-Z0-9-]+):", ln.strip())
+        if m:
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def _args_after(line, script):
+    """The argv after `script` in a proof line, shell redirects dropped."""
+    import shlex
+    toks = shlex.split(line)
+    i = [k for k, t in enumerate(toks) if t.endswith(script)]
+    if not i:
+        return None
+    rest = toks[i[0] + 1:]
+    return rest[:rest.index("<")] if "<" in rest else rest
+
+
+def _drive(args):
+    """northstar_full.main(args) with every subprocess step stubbed: -> (rc, [argv of each step], verdict tiers)."""
+    seen, tiers = [], []
+    real_run, real_verdict = northstar_full._run, northstar_full.full_rung_verdict
+
+    def fake_run(argv, timeout):
+        seen.append(list(argv))
+        if "run" in argv and "--plan" in argv:
+            return 2, "stub: stop after the run argv is seen"
+        return 0, "ok"
+
+    def spy_verdict(doc, expected=None, compat_required=None, tier="full"):
+        tiers.append(tier)
+        return real_verdict(doc, expected, compat_required, tier)
+    northstar_full._run, northstar_full.full_rung_verdict = fake_run, spy_verdict
+    try:
+        rc = northstar_full.main(list(args) + ["--out", os.path.join(tempfile.mkdtemp(), "r.json"), "--no-record"])
+    finally:
+        northstar_full._run, northstar_full.full_rung_verdict = real_run, real_verdict
+    return rc, seen, tiers
+
+
+def _f1_ok(line):
+    a = _args_after(line or "", "northstar_driver/cli.py")
+    return bool(a) and a[0] == "running-list" and "--list" in a and a[a.index("--list") + 1] == FULL_LATEST
+
+
+def _f2_ok(line):
+    """F2 drives the full rung: run --config full --list FULL.LATEST, no small-tier needs-mods step."""
+    a = _args_after(line or "", "Graffiti/northstar_full.py")
+    if a is None or "--check" in a or "--no-judge" in a or "--no-quicktest" in a:
+        return False, "not a full live run: %r" % (a,)
+    rc, seen, _ = _drive(a)
+    runs = [s for s in seen if "run" in s and "--plan" in s]
+    if not runs:
+        return False, "no driver run step (rc %s, steps %r)" % (rc, seen)
+    r = runs[0]
+    cfg = r[r.index("--config") + 1] if "--config" in r else None
+    lst = r[r.index("--list") + 1] if "--list" in r else None
+    needs = any("needs-mods" in s for s in seen)
+    quick = any(s[-1].endswith("prove_quicktest_world.py") for s in seen)
+    ok = cfg == "full" and lst is not None and lst.replace("\\", "/").endswith(FULL_LATEST) and not needs and quick
+    return ok, "config %r list %r needs-mods %s fresh quicktest %s" % (cfg, lst, needs, quick)
+
+
+def t7_live_proofs():
+    """The blind checker of d3c0dfedb4 read the game clauses' lines as reading nothing the full-list clauses name.
+    The item's GREEN-FULL clauses (F1, F2) are its spec: a fresh full-list load, RunningModsListForReading vs
+    FULL.LATEST, the full suite with config full. This pins each line to its clause."""
+    import relentless_live_round
+    txt = open(os.path.join(PROOFS, ITEM + ".txt"), encoding="utf-8").read()
+    crit = _criteria(open(os.path.join(PROOFS, ITEM + ".criteria"), encoding="utf-8").read())
+    lines = relentless_live_round.proof_lines(txt)
+    check("7 every criteria clause has a live-proof line", crit and all(k in lines for k in crit),
+          (sorted(crit), sorted(lines)))
+    check("7 F1 and F2 are the GREEN-FULL final verification",
+          crit.get("F1") == "GREEN-FULL" and crit.get("F2") == "GREEN-FULL", crit)
+    check("7 F1 reads the running list against FULL.LATEST (running-list --list FULL.LATEST)",
+          _f1_ok(lines.get("F1")), lines.get("F1"))
+    ok, why = _f2_ok(lines.get("F2"))
+    check("7 F2 drives a fresh quicktest and `run --config full --list FULL.LATEST`, no small-tier step", ok, why)
+    a2 = _args_after(lines.get("A2") or "", "Graffiti/northstar_full.py") or []
+    rc, seen, _ = _drive(a2)
+    runs = [s for s in seen if "run" in s and "--plan" in s]
+    check("7 A2 is the small tier: needs-mods, then `run --config current`",
+          any("needs-mods" in s for s in seen) and runs and runs[0][runs[0].index("--config") + 1] == "current", seen)
+    a1 = _args_after(lines.get("A1") or "", "northstar_driver/cli.py") or []
+    check("7 A1 is needs-mods --mod Graffiti", a1[:3] == ["needs-mods", "--mod", "Graffiti"], a1)
+    # mutants: the gap the checker named -- a full-list clause pointed at a small-list command -- must go red
+    check("7 mutant: F1 -> needs-mods is caught", not _f1_ok(lines.get("A1")))
+    check("7 mutant: F1 -> running-list on another list is caught",
+          not _f1_ok((lines.get("F1") or "").replace("FULL.LATEST", "MIN.LATEST")))
+    check("7 mutant: F2 -> --tier small is caught", not _f2_ok(lines.get("A2"))[0])
+    check("7 mutant: F2 -> full tier with no --list FULL.LATEST is caught",
+          not _f2_ok("python3 src/RimMandrake/Graffiti/northstar_full.py --list x/MIN.xml < /dev/null")[0])
+    check("7 mutant: F2 -> --check (reads an old file, runs nothing) is caught",
+          not _f2_ok("python3 src/RimMandrake/Graffiti/northstar_full.py --check x.json")[0])
+    # the full rung's verdict asks config 'full' of the doc: a 'current' doc is never GREEN-FULL
+    d = copy.deepcopy(green_doc())
+    d["config"] = "current"
+    check("7 a results doc with config 'current' is NOT the full rung",
+          not northstar_full.full_rung_verdict(d, expected=["bar_a", "bar_b"], compat_required=COMPAT_REQ)[0])
+
+
 def _raises_any(fn, *a):
     try:
         fn(*a)
@@ -355,6 +474,7 @@ def main():
     t4_differences()
     t5_verdict()
     t6_tiers()
+    t7_live_proofs()
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
 
