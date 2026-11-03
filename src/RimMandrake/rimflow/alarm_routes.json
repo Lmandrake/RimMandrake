@@ -81,6 +81,7 @@
     {"match": "books_stale", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "step_raised", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "lease_raised", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "expedite_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_expedite sync or make_room raised; the tick journals it, the lane is lost for that tick"},
     {"match": "quarantine", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "game_harness", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_game staged an item twice and the build still is not running (deploy refused, drift); the program retries with backoff, but a repeat means the belt is stuck on a harness cause"},
     {"match": "bundle_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
