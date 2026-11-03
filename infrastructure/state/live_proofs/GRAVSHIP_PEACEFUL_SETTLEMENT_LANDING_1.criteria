@@ -1,0 +1,1 @@
+A1 L1: on a load carrying mandrake.rm.keelhoist and the Utinni patches (RUT_HuttSlavePit), the running game's SitePartDef RUT_HuttSlavePit reads considerEnteringAsAttack=false, disallowsAutomaticDetectionTimerStart=true, gravShipsCanLandOn=true -- the fields vanilla GravshipUtility.ArriveNewMap / caravan / pods / Site.PostMapGenerate read to decide attack vs visit

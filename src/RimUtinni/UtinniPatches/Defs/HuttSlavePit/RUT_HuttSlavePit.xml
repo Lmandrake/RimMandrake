@@ -60,6 +60,12 @@
     <expandingIconTexture>World/WorldObjects/Expanding/Sites/Prisoner</expandingIconTexture>
     <requiresFaction>true</requiresFaction>
     <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <!-- A trading post, not a raid target (GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1): vanilla 1.6 treats landing on a
+         faction site as an attack (relations hit, "entered enemy base" letter) unless EVERY part says otherwise, and a
+         caravan's visit starts a detection-raid countdown unless a part disallows it. Taking the site stays possible:
+         attacking the keepers on the map is ordinary vanilla hostility. Proof: KeelHoist/selftest_peaceful_landing.py -->
+    <considerEnteringAsAttack>false</considerEnteringAsAttack>
+    <disallowsAutomaticDetectionTimerStart>true</disallowsAutomaticDetectionTimerStart>
     <modExtensions>
       <li Class="RimMandrake.KeelHoist.RM_BuyerPitSiteExtension">
         <holderDef>RUT_HuttSlavePitShaft</holderDef>
