@@ -204,6 +204,65 @@ rows = rows_of(OS_.OUT_MOCK)
 check("a style pick that turns the tank -> DIFFERS (rotation re-read after the pick)", rc == 1 and any(
     r["id"] == "styles_RM_LiquidTank.Futuristic" and r["status"] == "DIFFERS" for r in rows), [r for r in rows if r["id"].startswith("styles_RM_LiquidTank.")][:2])
 
+# blind check 2026-11-03 (gen 3): the river group's own verdicts. Ford stones that do not land, or cannot be read back,
+# and a weir whose style pick does not take (or cannot be read), must each go red, never MATCHES.
+_fc = C.FakeGame.call
+
+
+def _ford_ignored(self, tool, **kw):       # set_terrain_batch "succeeds" but lays nothing
+    if tool == "jawa/set_terrain_batch" and OS_.FORD in str(kw.get("ops")):
+        return {"success": True}
+    return _fc(self, tool, **kw)
+
+
+def _ford_unreadable(self, tool, **kw):    # after the stones are laid, the terrain read is refused
+    if tool == "jawa/set_terrain_batch" and OS_.FORD in str(kw.get("ops")):
+        self._ford_laid = True
+    if tool == "jawa/get_terrain_batch" and getattr(self, "_ford_laid", False):
+        return {"success": False, "error": "refused"}
+    return _fc(self, tool, **kw)
+
+
+for _fn, _want, _nm in ((_ford_ignored, "DIFFERS", "ford stones not laid -> DIFFERS"), (_ford_unreadable, "UNMEASURED", "ford stones unreadable -> UNMEASURED")):
+    C.FakeGame.call = _fn
+    rc, out = quiet(OS_.main, ["--mock", "--only", "river", "--prove"])
+    C.FakeGame.call = _fc
+    rows = rows_of(OS_.OUT_MOCK)
+    _f = [r for r in rows if r["id"] == "river_fords"]
+    check(_nm + ", NOT PROVEN", rc == 1 and "NOT PROVEN" in out and _f and _f[0]["status"] == _want, (rc, _f))
+rc, out = quiet(OS_.main, ["--mock", "--only", "river", "--prove"])
+check("river family clean -> PROVEN (the probes above are not red by accident)", rc == 0, (rc, out[-300:]))
+
+
+def _weir_sticks(self, tool, kw):          # the weir's style pick is accepted but the look does not change
+    t = getattr(self, "menu", None)
+    if tool == "rimworld/execute_context_menu_option" and t and t["defName"] == OS_.WEIR:
+        self.menu = None
+        return {"success": True}
+    return _fe(self, tool, kw)
+
+
+C.FakeGame._style = _weir_sticks
+rc, out = quiet(OS_.main, ["--mock", "--only", "river", "--prove"])
+C.FakeGame._style = _fe
+rows = rows_of(OS_.OUT_MOCK)
+_w = {r["id"]: r["status"] for r in rows if r["id"].startswith("river_weirs.")}
+check("weir style pick that does not take -> styled weirs DIFFERS, NOT PROVEN",
+      rc == 1 and len(_w) == len(OS_.STYLE_LABEL) and all(v == "DIFFERS" for k, v in _w.items() if not k.endswith("." + OS_.STYLE_LABEL[0])), (rc, _w))
+_cl = OS_.current_look
+OS_.current_look = lambda w, cell: OS_.STYLE_LABEL[-1]   # every weir reads Scrapper: the default one is wrong too
+rc, out = quiet(OS_.main, ["--mock", "--only", "river", "--prove"])
+OS_.current_look = _cl
+rows = rows_of(OS_.OUT_MOCK)
+_w = {r["id"]: r["status"] for r in rows if r["id"].startswith("river_weirs.")}
+check("default weir wearing a named look -> DIFFERS, NOT PROVEN", rc == 1 and _w.get("river_weirs." + OS_.STYLE_LABEL[0]) == "DIFFERS", (rc, _w))
+OS_.look_of = lambda label: None
+rc, out = quiet(OS_.main, ["--mock", "--only", "river", "--prove"])
+OS_.look_of = _ol
+rows = rows_of(OS_.OUT_MOCK)
+_w = {r["id"]: r["status"] for r in rows if r["id"].startswith("river_weirs.")}
+check("weir look unreadable -> every weir UNMEASURED, NOT PROVEN", rc == 1 and len(_w) == len(OS_.STYLE_LABEL) and all(v == "UNMEASURED" for v in _w.values()), (rc, _w))
+
 # ---- river_scenes_walk, clean
 rc, out = quiet(RS.main, ["all", "--mock"])
 check("river_scenes_walk all --mock exits 0", rc == 0, (rc, out[-300:]))
