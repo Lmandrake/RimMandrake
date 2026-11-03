@@ -1,0 +1,1 @@
+A built item still owing a live clause goes game_stale_build whenever ANOTHER item rebuilds the same mod DLL (HORIZON_CARAVAN_VANILLA_REFUSES_1 vs 3f5859c16e). Fix: a fresh item commit touching the DLL, and finish on THAT commit (the preflight reads only the built commit's own touched files), not on a later review-mark commit.
