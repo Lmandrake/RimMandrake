@@ -200,7 +200,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string mo = RiverSwitchFlipChecks.Src("RM_MouseoverDepth.cs");
                 RiverSwitchFlipChecks.Has(mo, @"string line = ex\.DepthReadoutAt\(c\);", "the mouseover shows the readout");
                 string np = RiverSwitchFlipChecks.Src("RM_NorthstarProofs.cs");
-                RiverSwitchFlipChecks.Has(np, @"return ""OK "" \+ \(eng\.DepthReadoutAt\(c\) \?\? ""-""\);", "the readout is bridge-readable");
+                RiverSwitchFlipChecks.Has(np, @"return ""OK "" \+ \(RM_Patch_MouseoverDepth\.DepthSuffix\(map, c\) \?\? ""-""\);", "the readout is bridge-readable, through the mouseover's own DepthSuffix (READOUT_PROOF_FIX_BYPASSES_MOUSEOVER)");
             });
         }
     }
