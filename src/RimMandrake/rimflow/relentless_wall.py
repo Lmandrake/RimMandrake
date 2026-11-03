@@ -130,6 +130,13 @@ def props(prof, box, extra=()):
     return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME)]
 
 
+def tmp_env(box):
+    """A walled run's TMPDIR: inside its box. run_tmp's root (~/.seat-tmp/runs) sits behind the wall, and Claude dies at
+    start on a TMPDIR it cannot mkdir in, so no checker ever gave a verdict. remove_box takes this with the box."""
+    d = os.path.join(box, "tmp")
+    return {"TMPDIR": d, "TMP": d, "TEMP": d}
+
+
 def excludes(prof):
     """The pathspec the Marker's tree and diff leave out: tree_exclude, and tree_from_parent (that comes in as a parent snapshot)."""
     return [":(exclude)" + p for p in list(prof["tree_exclude"]) + list(prof.get("tree_from_parent", ()))]
@@ -143,6 +150,7 @@ def make_box(prof, source, sha, nonce):
     tree = box / "tree"
     tree.mkdir(parents=True)
     (box / "projects").mkdir()
+    (box / "tmp").mkdir(mode=0o700)
     ex = excludes(prof)
     # not `git archive`: it honours export-ignore, which would drop tracked proof files from the Marker's tree
     env = dict(os.environ, GIT_INDEX_FILE=str(box / "export.index"))

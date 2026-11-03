@@ -238,8 +238,52 @@ def test_review_two():
     W.remove_box(box)
 
 
+def test_tmpdir_inside_the_wall():
+    """Every Marker died at start (EACCES, checker_lost): launch gave it a TMPDIR under a root its own wall denies."""
+    import types
+    import relentless as R
+    import role_launch
+    import run_tmp
+    live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
+    deny = W.profile(live)["deny"]
+    check("the live wall denies run_tmp's default root: why a walled run brings its own",
+          any(os.path.expanduser("~/.seat-tmp/runs").startswith(d + "/") for d in deny), deny)
+    root = tempfile.mkdtemp(prefix="wallbox")
+    src, sha = repo()
+    wall = prof(root)
+    box = W.make_box(wall, src, sha, "n7")
+    env = W.tmp_env(box)
+    check("the box's TMPDIR exists, is the run's alone and is inside the box",
+          os.path.isdir(env["TMPDIR"]) and env["TMPDIR"].startswith(box + "/")
+          and os.stat(env["TMPDIR"]).st_mode & 0o777 == 0o700 and set(env) == {"TMPDIR", "TMP", "TEMP"}, env)
+    check("nothing in the wall covers it", not any(env["TMPDIR"].startswith(d + "/") for d in W.denied(wall)))
+
+    def launched(extra):
+        seen, prepared = [], []
+        fx = types.SimpleNamespace(RL=role_launch, r={"seat": "BENCH", "model": "m"})
+        run = {"unit": "rm-test-wall-tmp", "out": os.path.join(root, "o", "x.json"), "err": os.path.join(root, "o", "x.err")}
+        keep = R.subprocess.run, run_tmp.prepare
+        R.subprocess.run = lambda argv, **kw: seen.append(argv) or types.SimpleNamespace(returncode=0, stdout="", stderr="")
+        run_tmp.prepare = lambda name: prepared.append(name) or os.path.join(root, "runtmp")
+        try:
+            why = R.Effects.launch(fx, {"item": "I"}, run, "p", "agent", box, 60, extra, ["-p", "InaccessiblePaths=/x"])
+        finally:
+            R.subprocess.run, run_tmp.prepare = keep
+        argv = seen[0]
+        return why, prepared, [argv[i + 1] for i, a in enumerate(argv[:argv.index("--")]) if a == "--setenv"]
+
+    why, prepared, sets = launched(env)
+    check("a walled launch uses the box's TMPDIR and makes no run_tmp dir",
+          why is None and not prepared and "TMPDIR=" + env["TMPDIR"] in sets
+          and sum(x.startswith("TMPDIR=") for x in sets) == 1, (why, prepared, sets))
+    why, prepared, sets = launched({})
+    check("an unwalled launch still gets its own run_tmp dir",
+          why is None and prepared == ["rm-test-wall-tmp"] and "TMPDIR=" + os.path.join(root, "runtmp") in sets, (why, prepared, sets))
+
+
 def main():
     test_profile_and_props()
+    test_tmpdir_inside_the_wall()
     test_box()
     test_skills_and_snapshot()
     test_read_verdict_malformed()

@@ -1652,13 +1652,14 @@ class Effects(relentless_game.GameFx):
         claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
         os.makedirs(os.path.dirname(run["out"]), exist_ok=True)
         relentless_usage.note_clone(run, clone)        # where its transcripts will be, should the run never print a result
-        try:            # the run's own TMPDIR; sweep_run_tmp deletes it once the unit and every process of it are gone
-            tmpdir = run_tmp.prepare(run["unit"])
-        except OSError as e:
-            return "run tmp dir: %s" % e
         argv = rl.launch_argv(role, run["unit"], prompt, run["out"], run["err"], claude)
-        at = argv.index("--")
-        argv[at:at] = sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), [])
+        if "TMPDIR" not in extra_env:   # a walled run brings its own, in its box: run_tmp's root is behind its wall
+            try:        # the run's own TMPDIR; sweep_run_tmp deletes it once the unit and every process of it are gone
+                tmpdir = run_tmp.prepare(run["unit"])
+            except OSError as e:
+                return "run tmp dir: %s" % e
+            at = argv.index("--")
+            argv[at:at] = sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), [])
         at = argv.index("--")
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"
@@ -2713,7 +2714,7 @@ def step(store, fx, r, item, now, acts):
         if box:
             why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
                                                 + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
-                            os.path.join(box, "tree"), r["check_max_s"], {},
+                            os.path.join(box, "tree"), r["check_max_s"], relentless_wall.tmp_env(box),
                             relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
         else:
             why = fx.launch(st, desc, checker_prompt(st, fx.item_text(item), nonce), r["checker_agent"], clean,
