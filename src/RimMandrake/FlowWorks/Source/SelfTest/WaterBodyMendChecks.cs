@@ -521,6 +521,24 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(m.Sizes().SequenceEqual(new[] { 30 }), "refilled: one body again");
 			});
 
+			Case("Body_split_three_way_equal_pieces_equal_fish", () =>
+			{
+				// BODY_SPLIT_FIX_FISH_SHARE_SHRINKS: a T of three equal 3-square arms meeting at (3,0); drying the junction
+				// leaves three pieces. Each piece's share is taken from the population still in the body, so the total handed
+				// to SplitOff must shrink with it; a fixed original total gave 1/3, then 2/9, then the keeper 4/9.
+				var m = new Model(7, 4, Model.All);
+				for (int x = 0; x < 7; x++) m.wet[x] = true;
+				for (int z = 1; z < 4; z++) m.wet[z * 7 + 3] = true;
+				m.Construct();
+				Assert(m.bodies.Count == 1 && m.bodies[0].cellCount == 10, "one T of 10 squares, got " + string.Join(",", m.Sizes()));
+				m.bodies[0].population = 90f;
+				m.Set(3, false);
+				Assert(m.Sizes().SequenceEqual(new[] { 3, 3, 3 }), "three bodies of 3, got " + string.Join(",", m.Sizes()));
+				string pops = string.Join(",", m.bodies.Select(b => b.population.ToString("0.###")));
+				Assert(m.bodies.All(b => Math.Abs(b.population - 30f) < 1e-3f), "equal pieces, equal fish (30 each): " + pops);
+				Assert(Math.Abs(m.bodies.Sum(b => b.population) - 90f) < 1e-3f, "population shared, not made: " + pops);
+			});
+
 			Case("Body_split_stale_body_vanilla_throws_mended_clean", () =>
 			{
 				// Found by the oracle's sanity probe (mends off): an unsplit body whose one piece is later swallowed by another

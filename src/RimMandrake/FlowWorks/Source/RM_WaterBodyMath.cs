@@ -425,6 +425,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			// SplitOff gives a piece population * piece / total from the population STILL in the body, so total must be the
+			// body's size before THIS piece leaves: a fixed original total shrank each later share (90 fish over three equal
+			// pieces went 30, 20, 40; BODY_SPLIT_FIX_FISH_SHARE_SHRINKS).
 			int total = view.SizeOf(body);
 			int keep = RM_WaterBodyMath.KeeperPiece(pieces, view.RootOf(body));
 			for (int i = 0; i < pieces.Count; i++)
@@ -432,6 +435,7 @@ namespace RimMandrake.FlowWorks
 				if (i != keep)
 				{
 					view.SplitOff(body, pieces[i], total);
+					total -= pieces[i].Count;
 				}
 			}
 		}
