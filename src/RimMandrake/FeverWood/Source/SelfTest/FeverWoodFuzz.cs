@@ -7,6 +7,7 @@
 //   weights  the ambient limb table and the deep's gift roll (weighted picks, retry-on-no-footprint)
 //   hive     RM_HiveLayoutKernel on open, rocky, pooled and cluttered grids: every plan judged here by its own brute-force
 //            checks of the footprint, the walls, the mouth and the chain, not by the planner's Validate
+//   lure     the lure stake's prey-quality gate (worth floor, draw, effective MTB) against a literal spec
 //   units    exhaustive truth tables for the small decisions (trader gates, display-tank gates, charges, ticks)
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -938,6 +939,58 @@ namespace RimMandrake.FeverWood.SelfTest
             return fails;
         }
 
+        // ------------------------------------------------------------------ lure
+        // FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 1: the prey-quality gate against a literal spec, plus the vanilla anchors
+        // (Core ThingDefs_Races MarketValue, LifeStages marketValueFactor, read 2026-11-03) the shipped numbers were chosen
+        // against: nothing cheaper than a capybara draws, a muffalo draws at 0.6, a prisoner at full.
+        private static long LureNoDraw, LurePartial, LureFull;
+        private static List<string> Lure(int n, int seed)
+        {
+            var fails = new List<string>();
+            try
+            {
+                const float F = 150f, Full = 500f, Base = 6f;
+                Func<float, float> d = v => RM_LureKernel.Draw(true, v, F, Full);
+                Check(d(35f) == 0f && d(50f) == 0f && d(60f) == 0f && d(90f) == 0f && d(100f) == 0f, "rat/chicken/duck/goose/cat must draw nothing");
+                Check(d(RM_LureKernel.BaitValue(300f, 0.4f)) == 0f, "a newborn muffalo (x0.4) must draw nothing");
+                Check(Math.Abs(d(150f) - 0.3f) < 1e-6f, "capybara (150) draws 0.3: " + d(150f));
+                Check(Math.Abs(d(300f) - 0.6f) < 1e-6f, "muffalo (300) draws 0.6: " + d(300f));
+                Check(d(1750f) == 1f && d(500f) == 1f && d(4000f) == 1f, "prisoner / full / thrumbo draw 1");
+                Check(RM_LureKernel.Draw(false, 0f, F, Full) == 1f && RM_LureKernel.Draw(false, float.NaN, F, Full) == 1f, "gate off draws full whatever the bait");
+                Check(d(float.NaN) == 0f && RM_LureKernel.BaitValue(float.NaN, 1f) == 0f && RM_LureKernel.BaitValue(-5f, 1f) == 0f, "NaN / negative worth draws nothing");
+                Check(Math.Abs(RM_LureKernel.EffectiveMtbDays(Base, 1f) - 0.25f) < 1e-6f, "full draw = base MTB");
+                Check(Math.Abs(RM_LureKernel.EffectiveMtbDays(Base, 0.6f) - 0.25f / 0.6f) < 1e-6f, "muffalo MTB = base / 0.6");
+                Check(float.IsPositiveInfinity(RM_LureKernel.EffectiveMtbDays(Base, 0f)), "no draw = never");
+                Check(Math.Abs(RM_LureKernel.EffectiveMtbDays(0f, 1f) - 0.05f) < 1e-6f, "MTB keeps its 0.05-day floor");
+                Check(RM_LureKernel.BestDraw(new[] { 0f, 0.3f, 0.6f, 0f }) == 0.6f && RM_LureKernel.BestDraw(new float[0]) == 0f && RM_LureKernel.BestDraw(null) == 0f, "BestDraw: two chickens are not a muffalo");
+                Check(RM_LureKernel.Draw(true, 100f, 200f, 50f) == 0f && RM_LureKernel.Draw(true, 200f, 200f, 50f) == 1f, "full below floor is lifted to the floor");
+                Check(RM_LureKernel.Draw(true, 0f, 0f, 0f) == 1f, "zero floor and zero full: everything draws fully");
+
+                var r = new Random(seed);
+                for (int i = 0; i < n; i++)
+                {
+                    Cases++;
+                    float floor = (float)(r.NextDouble() * 1000), full = (float)(r.NextDouble() * 2000), v = (float)(r.NextDouble() * 3000);
+                    float v2 = v + (float)(r.NextDouble() * 500);
+                    bool gate = r.Next(5) != 0;
+                    float a = RM_LureKernel.Draw(gate, v, floor, full), b = RM_LureKernel.Draw(gate, v2, floor, full);
+                    Steps += 2;
+                    // literal spec
+                    float fl = Math.Max(0f, floor), fu = Math.Max(full, fl);
+                    float want = !gate ? 1f : v < fl ? 0f : fu <= 0f ? 1f : Math.Max(RM_LureKernel.MinDraw, Math.Min(1f, v / fu));
+                    Check(a == want, $"seed {seed} case {i}: Draw({gate},{v},{floor},{full}) = {a}, spec {want}");
+                    Check(a >= 0f && a <= 1f, "draw out of [0,1]");
+                    Check(b >= a, $"draw not monotone in worth: {v}->{a}, {v2}->{b}");
+                    Check(a == 0f || a >= RM_LureKernel.MinDraw, "a nonzero draw under MinDraw");
+                    float m1 = RM_LureKernel.EffectiveMtbDays(Base, a), m2 = RM_LureKernel.EffectiveMtbDays(Base, b);
+                    Check(m2 <= m1, "better bait must never draw more slowly");
+                    if (a == 0f) LureNoDraw++; else if (a < 1f) LurePartial++; else LureFull++;
+                }
+            }
+            catch (Exception e) { fails.Add("lure: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -952,6 +1005,7 @@ namespace RimMandrake.FeverWood.SelfTest
                 ("weights", () => Weights(N(300), S(1))),
                 ("hive", () => Hive(oneSeed.HasValue ? oneSeed.Value + 1 : N(1500), oneSeed)),
                 ("units", () => Units()),
+                ("lure", () => Lure(N(20000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -968,9 +1022,11 @@ namespace RimMandrake.FeverWood.SelfTest
             Console.WriteLine($"tally: letters fired {LettersFired}, display tanks freed {TankFrees}, boldness at cap {BoldnessCapped}");
             Console.WriteLine($"tank: neglect rolls due {NeglectRolls}, neglect escapes {NeglectEscapes}, damage escapes {DamageEscapes}, display breaches {DisplayBreaches}, tanks destroyed {TankDestroyed} (occupant breached out {DestroyEscapes}, let out {DestroyReleases})");
             Console.WriteLine($"pool: ordinary {Ordinary}, great {Great}, forced {Forced}, suppressions {Suppressions}, gifts delivered {GiftsDelivered}, hushes {Hushes}, restores {Restores}; weighted picks {Picks}, gift retries {Retries}");
+            Console.WriteLine($"lure: no draw {LureNoDraw}, partial draw {LurePartial}, full draw {LureFull}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();
+                if (LureNoDraw == 0 || LurePartial == 0 || LureFull == 0) blind.Add("lure never saw no/partial/full draw");
                 if (HiveOpenPlans == 0 || HiveDugPlans == 0 || HiveWalledPlans == 0 || HivePooledPlans == 0 || HiveNoPlan == 0 || HiveFullChains == 0) blind.Add("hive never saw every kind of ground");
                 if (LettersFired == 0) blind.Add("tally never fired a letter");
                 if (TankFrees == 0) blind.Add("tally never freed a display tank");

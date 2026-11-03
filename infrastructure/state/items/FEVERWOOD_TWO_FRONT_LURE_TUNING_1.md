@@ -99,3 +99,19 @@ land the decided work plus the giant's story): spec 4 (the free-tier second raid
 `FEVERWOOD_RM_CAST_COMPLETION_1`. The kurreth front now steals (`FEVERWOOD_ANT_THEFT_RAIDBACK_1` changes the
 lure's `LordJob_AssaultColony(… canSteal: false)` call); retune this item's numbers against the theft raid,
 not the plain assault. Points 1 and 5 still need owner rulings and are untouched.
+
+## Progress 2026-11-03 (Relentless) — spec 1 and 5 decided and built
+Neither is on `delegation_policy.md` §2, so both were decided here (delegated: design), not waited on:
+- **Spec 1, prey-quality gate.** "Quality" = the bait's worth as prey: its race's base market value x its
+  life stage's `marketValueFactor`, never its wounds (every bait is wounded and chained by design). Bait under
+  `twoFrontLureMinBaitValue` (150 silver) draws no raid; above it the first-wave MTB is divided by
+  worth / `twoFrontLureFullDrawBaitValue` (500, capped at 1); the map rolls on its best bait. Against vanilla
+  Core values: rat 35, chicken 50, duck 60, goose 90, cat 100 never draw (the bred-ammunition route is shut);
+  capybara 150 draws 0.3, muffalo 300 at 0.6, a horse or any prisoner (1750) at full. Toggle
+  `twoFrontLurePreyQualityGate` (on); the stake's inspect string says when bait is too poor or lean.
+  Kernel `Source/Kernel/RM_LureKernel.cs`, fuzz family `lure` (`selftest_feverwood_fuzz.py --fuzz-only lure`).
+- **Spec 5, lock the wager.** `twoFrontLureLockOnceTriggered` now defaults ON (§5: the lure is a gamble you
+  live inside). Off restores release-anytime.
+- **Spec 2/3, retune against real play:** still owed and live-only — filed as
+  `FEVERWOOD_LURE_TUNE_AFTER_A_REAL_RAID`; the theft raid it was to be tuned against was cut
+  2026-10-23 (`fluff_cuts_2026-10-23.md`), so the retune is against the plain assault.

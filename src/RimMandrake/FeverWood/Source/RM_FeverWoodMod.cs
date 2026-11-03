@@ -202,16 +202,21 @@ namespace RimMandrake.FeverWood
         public static float twoFrontLureThreatPointsMultiplier = 0.6f;
         public static float twoFrontLureMinThreatPoints = 80f;
 
-        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 point 5: v1 let a
-        /// staked pawn be released at any time, including after a raid is
-        /// already inbound — a real, if minor, deviation from the design
-        /// sheet's "you are hoping the second column shows up" framing,
-        /// which reads as a commitment. Whether that should be blocked is
-        /// "worth an owner check", not a guess this pass makes for him — so
-        /// it ships here as an opt-in toggle, default OFF (matches shipped
-        /// v1 behavior: release always allowed). Turning it on blocks
-        /// "Release lure" once this specific stake has drawn a raid.</summary>
-        public static bool twoFrontLureLockOnceTriggered = false;
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 5: once THIS stake has drawn a raid, "Release lure" is
+        /// disabled - the design sheet's "you are hoping the second column shows up" (§5) is a wager you live
+        /// inside, not one you can cash out the moment the first column appears. Delegated design call 2026-11-03,
+        /// default ON (v1 shipped it off). Off: release at any time.</summary>
+        public static bool twoFrontLureLockOnceTriggered = true;
+
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 1 (§6l, "the lure must care about the quality of the
+        /// prey"): bait worth (race base market value x life-stage factor, never its wounds) under
+        /// twoFrontLureMinBaitValue draws no raid, and above it the first-wave MTB is divided by
+        /// worth / twoFrontLureFullDrawBaitValue (capped at 1). Kernel: RM_LureKernel. Delegated design call
+        /// 2026-11-03; INVENTED numbers 150 / 500 silver (no vanilla animal cheaper than a capybara draws; a muffalo
+        /// draws at 0.6, a prisoner at full). Off: any living bait draws at the full rate (v1).</summary>
+        public static bool twoFrontLurePreyQualityGate = true;
+        public static float twoFrontLureMinBaitValue = 150f;
+        public static float twoFrontLureFullDrawBaitValue = 500f;
 
         /// <summary>ANT_HIVE_REAL_GEOMETRY_1 (worldgen): hive rooms keep real water clearance, never overlap, are dug out of
         /// natural rock and walled on open ground. Off: the old centre-cell water test, overlapping hops, roof paint.</summary>
@@ -301,7 +306,10 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureSecondWaveMaxHours, "twoFrontLureSecondWaveMaxHours", 8f);
             Scribe_Values.Look(ref twoFrontLureThreatPointsMultiplier, "twoFrontLureThreatPointsMultiplier", 0.6f);
             Scribe_Values.Look(ref twoFrontLureMinThreatPoints, "twoFrontLureMinThreatPoints", 80f);
-            Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
+            Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", true);
+            Scribe_Values.Look(ref twoFrontLurePreyQualityGate, "twoFrontLurePreyQualityGate", true);
+            Scribe_Values.Look(ref twoFrontLureMinBaitValue, "twoFrontLureMinBaitValue", 150f);
+            Scribe_Values.Look(ref twoFrontLureFullDrawBaitValue, "twoFrontLureFullDrawBaitValue", 500f);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
             Scribe_Values.Look(ref sillochAmbushEnabled, "sillochAmbushEnabled", true);
             Scribe_Values.Look(ref brathekBoresWood, "brathekBoresWood", true);
@@ -445,7 +453,7 @@ namespace RimMandrake.FeverWood
                 list.GapLine();
             }
 
-            if (Group(list, "Two-front lure: stake and rolls", RimMandrake.Shared.SettingScope.Now, new[] { "twoFrontLureEnabled", "twoFrontLureRaidMtbHours", "twoFrontLureLockOnceTriggered" }))
+            if (Group(list, "Two-front lure: stake and rolls", RimMandrake.Shared.SettingScope.Now, new[] { "twoFrontLureEnabled", "twoFrontLureRaidMtbHours", "twoFrontLureLockOnceTriggered", "twoFrontLurePreyQualityGate", "twoFrontLureMinBaitValue", "twoFrontLureFullDrawBaitValue" }))
             {
                 list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
                     "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
@@ -456,10 +464,17 @@ namespace RimMandrake.FeverWood
                 list.Label("Mean hours until a first wave answers a staked lure: " + twoFrontLureRaidMtbHours.ToString("0.0"));
                 twoFrontLureRaidMtbHours = list.Slider(twoFrontLureRaidMtbHours, 1f, 24f);
                 list.CheckboxLabeled("Lock the wager in once a raid is drawn", ref twoFrontLureLockOnceTriggered,
-                    "Off (shipped default): a staked pawn can be released at any time, even after a raid is "
-                  + "already inbound. On: once THIS stake has drawn a raid, 'Release lure' is disabled until "
-                  + "the bait dies, is rescued by the raid's own fallout, or the stake is rebuilt — matching "
-                  + "the design sheet's 'you are hoping the second column shows up' framing more literally.");
+                    "On (default): once THIS stake has drawn a raid, 'Release lure' is disabled until the bait "
+                  + "dies, leaves the stake or the stake is destroyed - you are living inside the wager. Off: a "
+                  + "staked pawn can be released at any time, even with a raid inbound.");
+                list.CheckboxLabeled("Raiders care about the quality of the bait", ref twoFrontLurePreyQualityGate,
+                    "On (default): bait worth less than the floor below (its kind's market value, scaled down "
+                  + "for the young; never its wounds) draws no raid at all, and cheaper bait draws more slowly. "
+                  + "Off: any living bait draws at the full rate.");
+                list.Label("Bait worth that draws nothing below it (silver): " + twoFrontLureMinBaitValue.ToString("0"));
+                twoFrontLureMinBaitValue = list.Slider(twoFrontLureMinBaitValue, 0f, 1000f);
+                list.Label("Bait worth that draws at the full rate (silver): " + twoFrontLureFullDrawBaitValue.ToString("0"));
+                twoFrontLureFullDrawBaitValue = list.Slider(twoFrontLureFullDrawBaitValue, 50f, 2000f);
                 list.GapLine();
             }
 

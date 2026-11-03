@@ -100,13 +100,29 @@ namespace RimMandrake.FeverWood
                 return;
             }
 
-            float mtbDays = Mathf.Max(0.05f, RM_FeverWoodSettings.twoFrontLureRaidMtbHours / 24f);
-            if (!Rand.MTBEventOccurs(mtbDays, TicksPerDay, CheckIntervalTicks))
+            // FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 1: the map rolls on its BEST bait (two chickens are not a
+            // muffalo); bait under the worth floor draws nothing, leaner bait draws more slowly.
+            RM_CompLureStake origin = null;
+            float bestDraw = 0f;
+            foreach (RM_CompLureStake lure in activeLures)
+            {
+                float d = lure.BaitDraw;
+                if (d > bestDraw)
+                {
+                    bestDraw = d;
+                    origin = lure;
+                }
+            }
+            if (origin == null)
+            {
+                return;
+            }
+            float mtbDays = RM_LureKernel.EffectiveMtbDays(RM_FeverWoodSettings.twoFrontLureRaidMtbHours, bestDraw);
+            if (float.IsInfinity(mtbDays) || !Rand.MTBEventOccurs(mtbDays, TicksPerDay, CheckIntervalTicks))
             {
                 return;
             }
 
-            RM_CompLureStake origin = activeLures.RandomElement();
             LaunchFirstWave(origin);
         }
 

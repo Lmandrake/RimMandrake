@@ -1,5 +1,5 @@
 // FeverWood offline fuzz entry. Knobs (forwarded by selftest_feverwood_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (tally|tank|pool|weights|units).
+// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (tally|tank|pool|weights|hive|units|lure).
 using System;
 
 namespace RimMandrake.FeverWood.SelfTest

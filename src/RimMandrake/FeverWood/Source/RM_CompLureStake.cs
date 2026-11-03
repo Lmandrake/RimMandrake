@@ -40,6 +40,15 @@ namespace RimMandrake.FeverWood
 
         public Pawn StakedPawn => stakedPawn;
 
+        /// <summary>FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 1: the bait's worth as prey (race base market value x
+        /// life-stage factor; its wounds and the chain never count), see RM_LureKernel.</summary>
+        public float BaitValue => stakedPawn == null ? 0f : RM_LureKernel.BaitValue(
+            stakedPawn.def.BaseMarketValue, stakedPawn.ageTracker?.CurLifeStage?.marketValueFactor ?? 1f);
+
+        /// <summary>0 = this bait draws no raid; 1 = full draw (gate off: always 1).</summary>
+        public float BaitDraw => RM_LureKernel.Draw(RM_FeverWoodSettings.twoFrontLurePreyQualityGate, BaitValue,
+            RM_FeverWoodSettings.twoFrontLureMinBaitValue, RM_FeverWoodSettings.twoFrontLureFullDrawBaitValue);
+
         /// <summary>Called by RM_JobDriver_HaulToStake once the bait has been
         /// carried and placed at the stake. Applies the "chained down"
         /// hediff and registers with the map's raid orchestrator.</summary>
@@ -154,9 +163,19 @@ namespace RimMandrake.FeverWood
 
         public override string CompInspectStringExtra()
         {
-            return HasLiveBait
+            if (!HasLiveBait)
+            {
+                return "No bait staked.";
+            }
+            float draw = BaitDraw;
+            if (draw <= 0f)
+            {
+                return $"Baited with {stakedPawn.LabelShort} — too poor a prey to draw raiders (worth {BaitValue:0}, "
+                    + $"they want {RM_FeverWoodSettings.twoFrontLureMinBaitValue:0}).";
+            }
+            return draw >= 1f
                 ? $"Baited with {stakedPawn.LabelShort} — raiders may be drawn to it."
-                : "No bait staked.";
+                : $"Baited with {stakedPawn.LabelShort} — raiders may be drawn to it, slowly (a lean prey: {draw:P0} draw).";
         }
 
         public override System.Collections.Generic.IEnumerable<Gizmo> CompGetGizmosExtra()
