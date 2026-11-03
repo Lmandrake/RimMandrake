@@ -16,3 +16,9 @@ The strike is a separate question: `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`.
 ## verify
 - [ ] He rules; the ruling lands in `dungeons_arc_spec.md` §2.10 and canon.yml
   `assailant_reveal_arc`, and `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE` can finish.
+
+## status 2026-11-02
+He ruled by card: "Keep shape, fix, 4th judge". Round-3 gaps fixed and a fourth round run
+(GPT judge via `gpt_consult.py`, recorded as round 4 in the verdict file): REDO on one new point,
+the late-strike carve-out, fixed at `2f3b549b13` and unjudged. NEXT: one blind read of that fix,
+or his word on it, then close. No fifth full round.
