@@ -1,0 +1,2 @@
+A1 L1: with the composed mandrake.rm.biomes deployed (FireEcologyHook.dll and RimMandrake.Biomes.dll bytes = their # dll: headers) and loaded, PyrelandsMechanicsGate.ShellPresent is True and On is True at shipped defaults
+A2 L1: PyrelandsMechanicsGate.ShellOn equals RM_BiomesSettings.Enabled("Pyrelands") in the running game

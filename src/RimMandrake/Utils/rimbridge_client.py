@@ -305,6 +305,10 @@ READ_ONLY_STATIC_CALLS = frozenset((
     ("Worldbuilder.World_ExposeData_Patch", "get_WorldPresetName"),   # a static property getter
     ("RimMandrake.Biomes.RM_WorldDecals", "Info"),                # builds a string from statics
     ("RimMandrake.Biomes.RM_WorldDecals", "Probe"),               # ContentFinder lookup, no cache, no build
+    ("RimMandrake.Biomes.RM_BiomesSettings", "Enabled"),          # a dictionary TryGetValue
+    ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_ShellPresent"),   # a null test on a cached delegate
+    ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_ShellOn"),        # the delegate above, i.e. Enabled
+    ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_On"),             # pure RM_FireEcoKernel.MechanicsOn
 ))
 
 

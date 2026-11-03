@@ -1,0 +1,2 @@
+live-proof A1: python.exe src/RimMandrake/Pyrelands/gate_live_proof.py A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/Pyrelands/gate_live_proof.py A2 < /dev/null
