@@ -214,6 +214,31 @@ def binding_problems(src):
     return out
 
 
+# The two places that reach Install(), each body pinned exactly (comment-stripped, whitespace-normalised): an `if (false)`
+# wrapped around a call, or a call moved behind a return, keeps every substring in place yet never installs the forcer.
+CALL_SITES = [("RM_PatchesMod's constructor", r"public class RM_PatchesMod : Mod\s*\{\s*"
+               r"public RM_PatchesMod\(ModContentPack content\) : base\(content\)\s*\{",
+               "GetSettings<RM_PatchesSettings>(); CaiFogOff.Install();"),
+              ("CaiFogOffStartup's static constructor", r"\[StaticConstructorOnStartup\]\s*public static class CaiFogOffStartup"
+               r"\s*\{\s*(?://[^\n]*\s*)*static CaiFogOffStartup\(\)\s*\{",
+               'CaiFogOff.Install(); CaiFogOff.Force("startup");')]
+
+
+def call_site_problems(src, mod_src):
+    """[problem] when the Mod constructor or the startup class body is not exactly the pinned unconditional calls."""
+    out = []
+    for (name, sig, want), text in zip(CALL_SITES, (mod_src, src)):
+        body = method_body(text, sig)
+        if body is None:
+            out.append("%s: header not found (class, attribute or signature changed)" % name)
+        elif " ".join(body.split()) != want:
+            out.append("%s body %r != %r" % (name, " ".join(body.split()), want))
+    for fname, text in (("CaiFogOff.cs", src), ("RM_PatchesMod.cs", mod_src)):
+        if "#if" in text:
+            out.append("%s: a preprocessor conditional could compile the call sites out" % fname)
+    return out
+
+
 def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
     """[problem] for the CAI fog forcer: constants, the forcing writes, the default-on setting, About, and the DLL stamp.
     Pure function of the texts so the break checks can plant each defect."""
@@ -229,6 +254,7 @@ def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
     out += force_flow_problems(src)
     out += install_flow_problems(src)
     out += binding_problems(src)
+    out += call_site_problems(src, mod_src)
     if not re.search(r"Patch\(write,\s*prefix: new HarmonyMethod\(typeof\(CaiFogOff\), nameof\(Prefix_WriteSettings\)\)\)", src):
         out.append("no Harmony prefix on CombatAIMod.WriteSettings")
     if "public static void Prefix_WriteSettings() => Force(" not in src:
@@ -303,9 +329,24 @@ def cai_fog_check():
                                                                      "object settings = finderMod.GetValue(null);"),
                mod_src, about, srchash),
               ("Force writes fog on a different object", src.replace("fog.SetValue(settings, false);",
-                                                                     "fog.SetValue(null, false);"), mod_src, about, srchash)]
-    for name, a, *_ in breaks[-15:]:
+                                                                     "fog.SetValue(null, false);"), mod_src, about, srchash),
+              ("the Mod constructor's Install is behind `if (false)`", src,
+               mod_src.replace("            CaiFogOff.Install();", "            if (false) CaiFogOff.Install();"), about, srchash),
+              ("the startup pair is wrapped in `if (false) { }`", src.replace(
+                  'CaiFogOff.Install();\n            CaiFogOff.Force("startup");',
+                  'if (false) { CaiFogOff.Install();\n            CaiFogOff.Force("startup"); }'), mod_src, about, srchash),
+              ("the startup class loses [StaticConstructorOnStartup]", src.replace(
+                  "[StaticConstructorOnStartup]\n    public static class CaiFogOffStartup", "public static class CaiFogOffStartup"),
+               mod_src, about, srchash),
+              ("the Mod constructor returns before Install", src,
+               mod_src.replace("            CaiFogOff.Install();", "            return;\n            CaiFogOff.Install();"), about, srchash),
+              ("the Mod constructor's Install is compiled out", src,
+               mod_src.replace("            CaiFogOff.Install();", "#if NEVER\n            CaiFogOff.Install();\n#endif"),
+               about, srchash)]
+    for name, a, *_ in breaks[-20:-5]:
         check("break: planted %s actually changed the source" % name, a != src)
+    for name, a, b, *_ in breaks[-5:]:
+        check("break: planted %s actually changed the source" % name, (a, b) != (src, mod_src))
     for name, a, b, c, d in breaks:
         check("break: %s is reported" % name, len(cai_fog_problems(a, b, c, d, cs)) >= 1)
     if not os.path.exists(CAI_DLL):
