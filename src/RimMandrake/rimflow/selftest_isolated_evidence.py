@@ -21,6 +21,9 @@ from rimflow import arbiter_tiers as at            # noqa: E402
 # The 12 GB floor guards a real checkout; this fixture repo is tiny, so the nightly's /tmp must not decide this test
 # (NIGHTLY_COP_FIX_RED_CYGHVG_QCWJ: 1.8 GB free -> --run exit 2 -> no journal). Guard cases patch their own reading.
 ie.shutil.disk_usage = lambda root: types.SimpleNamespace(free=1024 ** 4)
+# Same for the inner run_selftests --run spawns: its own 2 GB floor reads the real disk in a child, where the line above
+# cannot reach, and child_env drops RM_SELFTEST_NESTED; a refusal there records no evidence and the test goes red.
+os.environ["RM_SELFTEST_SKIP_DISK_GUARD"] = "1"
 ce = ie.ce
 ce._key(create=True)
 ROOT = os.path.join(T, "iso")
