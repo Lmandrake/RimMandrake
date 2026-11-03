@@ -1,0 +1,2 @@
+Image edit tool: with a measured blockout as image 1 it held registration to 0-1 px on most panels but silently dropped thin rope lines across decks, even when told to keep them, and one re-render drifted 16 px. Draw thin must-be-continuous lines by code after the render, and measure shift per panel by phase correlation before overlaying. PIL trap: ImageDraw(im,'RGBA') on an RGBA image writes alpha instead of blending; use alpha_composite. gpt_consult with image attachments timed out with tools; use --lockdown and 'Use no tools'.
+home: generating-images
