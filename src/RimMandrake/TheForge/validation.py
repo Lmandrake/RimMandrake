@@ -1985,27 +1985,31 @@ def sky_pastures(t):
         need("dhokkurColumnsEnabled" in src and "IsSealed" in src, "the dhokkur's column walk is ungated or ignores its seal")
     with _comp(t, "sky_live_flock_reaches_columns", independent=True, toggle="skyColumnWanderEnabled"):
         if _live(t):
-            f = _act(t, "Forge sky: spawn a pasture test flock")
-            n = int(f.get("skyFlockSpawned", "0") or 0)
-            if n == 0:
-                _unmeasured(t, "no flock set down (no column, or no standable cell 18-30 from one): %s" % f.get("_line"))
-            if n != SKY_FLOCK_SIZE:
-                _fail("only %d of %d flock pawns spawned: a PawnKindDef of RM_MapComponent_SkyPastures.TestFlockKinds "
-                      "(4 RM_FleetFlier, 2 RM_Bulloo) did not resolve: %s" % (n, SKY_FLOCK_SIZE, f.get("_line")))
-            t.bridge_call("rimworld/step_game_ticks", ticks=SKY_FLOCK_TICKS)
-            r = _act(t, "Forge sky: report")
-            # the flock's own counters, never the map's: resident creatures at home must not carry the bar
-            gov, home = int(r.get("skyFlockGoverned", "0") or 0), int(r.get("skyFlockHome", "0") or 0)
-            w1 = int(r.get("skyFlockWanders", "0") or 0)
-            _note(t, "sky flock", {"spawned": f.get("_line"), "after": r.get("_line")})
-            if w1 < 1:
-                _fail("no pasture wander job was given to the flock in %d ticks" % SKY_FLOCK_TICKS)
-            if gov < 1 or home < SKY_FLOCK_HOME_SHARE * gov:
-                _fail("only %d of %d surviving flock creatures stand in a column or their leash after %d ticks (need %.0f%%)"
-                      % (home, gov, SKY_FLOCK_TICKS, 100 * SKY_FLOCK_HOME_SHARE))
-    if _live(t):
-        _note(t, "sky UNMEASURED", "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge "
-              "tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters")
+            try:
+                f = _act(t, "Forge sky: spawn a pasture test flock")
+                n = int(f.get("skyFlockSpawned", "0") or 0)
+                if n == 0:
+                    _unmeasured(t, "no flock set down (no column, or no standable cell 18-30 from one): %s" % f.get("_line"))
+                if n != SKY_FLOCK_SIZE:
+                    _fail("only %d of %d flock pawns spawned: a PawnKindDef of RM_MapComponent_SkyPastures.TestFlockKinds "
+                          "(4 RM_FleetFlier, 2 RM_Bulloo) did not resolve: %s" % (n, SKY_FLOCK_SIZE, f.get("_line")))
+                t.bridge_call("rimworld/step_game_ticks", ticks=SKY_FLOCK_TICKS)
+                r = _act(t, "Forge sky: report")
+                # the flock's own counters, never the map's: resident creatures at home must not carry the bar
+                gov, home = int(r.get("skyFlockGoverned", "0") or 0), int(r.get("skyFlockHome", "0") or 0)
+                w1 = int(r.get("skyFlockWanders", "0") or 0)
+                _note(t, "sky flock", {"spawned": f.get("_line"), "after": r.get("_line")})
+                if w1 < 1:
+                    _fail("no pasture wander job was given to the flock in %d ticks" % SKY_FLOCK_TICKS)
+                # counted against the six set down: a dead or vanished bird is a bird not at home
+                if home < SKY_FLOCK_HOME_SHARE * SKY_FLOCK_SIZE:
+                    _fail("only %d of the %d flock creatures (%d still governed) stand in a column or their leash after "
+                          "%d ticks (need %.0f%%)" % (home, SKY_FLOCK_SIZE, gov, SKY_FLOCK_TICKS, 100 * SKY_FLOCK_HOME_SHARE))
+            finally:
+                # leave the map as found, pass or fail (the flock is set down off the pad, so pad teardown misses it)
+                gone = next((pth for lab, pth in _find_actions(t).items() if "remove the pasture test flock" in lab.lower()), None)
+                if gone:
+                    t.bridge_call("rimworld/execute_debug_action", path=gone)
 
 
 # --------------------------------------------------------------------------------- the dhoggur's chemical swell

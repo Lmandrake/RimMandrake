@@ -428,6 +428,7 @@ class FGame(MockGame):
             {"label": "Forge plumes: spawn a front on a crust cell (mouse cell if none)", "path": "Actions\\RMTheForge\\plume_spawn"},
             {"label": "Forge sky: report (current map)", "path": "Actions\\RMTheForge\\sky_report"},
             {"label": "Forge sky: spawn a pasture test flock (current map)", "path": "Actions\\RMTheForge\\sky_flock"},
+            {"label": "Forge sky: remove the pasture test flock (current map)", "path": "Actions\\RMTheForge\\sky_flock_remove"},
             {"label": "Spunstone: report knowledge", "path": "Actions\\RMTheForge\\spun_report"},
             {"label": "Spunstone: reveal now", "path": "Actions\\RMTheForge\\spun_reveal"},
             {"label": "Dhoggur swell: report (newest dhoggur, current map)", "path": "Actions\\RMTheForge\\dhoggur_report"}]}
@@ -458,6 +459,10 @@ class FGame(MockGame):
 
     def t_rimworld_execute_debug_action(self, p):
         path = p.get("path", "")
+        if path.endswith("sky_flock_remove"):
+            self.sky_flock_removed = getattr(self, "sky_flock_removed", 0) + 1
+            gone, self.sky_flock = (self.sky_flock[0] if getattr(self, "sky_flock", None) else 0), None
+            return self.log("[RMTheForgeDebug] skyFlockRemoved=%d" % gone)
         if path.endswith("sky_flock"):
             self.sky_flock = (6, self.ticks)
             return self.log("[RMTheForgeDebug] skyFlockSpawned=6 skyFlockSpots=40 " + self.sky_line())
@@ -802,6 +807,9 @@ def _s(v):
     return str(v)
 
 
+LAST_GAME = None
+
+
 def run(brk=(), log_lines=()):
     fd, path = tempfile.mkstemp(suffix=".log")
     os.close(fd)
@@ -814,7 +822,8 @@ def run(brk=(), log_lines=()):
         V.PLANT_MESH["RM_CinderCrust"] = "6"
     V._ACTIONS.clear()
     try:
-        game = FGame(brk)
+        global LAST_GAME
+        game = LAST_GAME = FGame(brk)
         s = FastSession(transport=MockTransport(game), strict=False)
         with s:
             res = runner.run_suite(V.suite, s, anchor=(75, 75), mod=None)
@@ -859,6 +868,7 @@ def main():
                                                               encoding="utf-8").read())
     for lab in ("Forge cycle: report state", "Forge cycle: advance one phase", "Spunstone: report knowledge",
                 "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front", "Forge sky: report", "Forge sky: spawn a pasture test flock",
+                "Forge sky: remove the pasture test flock",
                 "Dhoggur swell: report"):
         check("debug action label exists in the C#: %s" % lab,
               lab in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"), encoding="utf-8").read())
@@ -954,6 +964,10 @@ def main():
         # FORGE_SKY_PASTURES_1 stage 5: a pasture wander that never runs leaves the flock out on the ash
         ("pasture_unwired", {"sky_pastures.sky_live_flock_reaches_columns"}),
     ]
+    for brk in ((), ("pasture_unwired",)):   # a green and a red flock bar both leave the map as found
+        run(brk)
+        check("the sky flock is removed after its bar (%s)" % (brk or "green"),
+              getattr(LAST_GAME, "sky_flock_removed", 0) == 1 and getattr(LAST_GAME, "sky_flock", None) is None)
     for brk, want in cases:
         got = reds(run((brk,)))
         check("break %-26s reddens exactly %s" % (brk, sorted(want)), set(got) == want, "got %s" % got)

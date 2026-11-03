@@ -369,6 +369,23 @@ namespace RimMandrake.TheForge
         // The pawns the last test flock set down (debug/proof only, not saved): the live bar measures THESE, never the map.
         private readonly HashSet<Pawn> testFlock = new HashSet<Pawn>();
 
+        /// <summary>Debug/proof only: destroys whatever of the last test flock is still spawned, so a proof leaves the map as
+        /// it found it.</summary>
+        public string RemoveTestFlock()
+        {
+            int removed = 0;
+            foreach (Pawn p in testFlock)
+            {
+                if (p != null && p.Spawned)
+                {
+                    p.Destroy(DestroyMode.Vanish);
+                    removed++;
+                }
+            }
+            testFlock.Clear();
+            return "skyFlockRemoved=" + removed;
+        }
+
         public void NotePastureWander(Pawn p)
         {
             StatPastureWanders++;

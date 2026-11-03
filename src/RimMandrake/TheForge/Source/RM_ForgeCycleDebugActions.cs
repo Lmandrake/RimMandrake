@@ -122,6 +122,14 @@ namespace RimMandrake.TheForge
             Log.Message("[RMTheForgeDebug] " + (c == null ? "no sky component" : c.SpawnTestFlock()));
         }
 
+        [DebugAction(CAT, "Forge sky: remove the pasture test flock (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SkyFlockRemove()
+        {
+            RM_MapComponent_SkyPastures c = RM_MapComponent_SkyPastures.Of(Find.CurrentMap);
+            Log.Message("[RMTheForgeDebug] " + (c == null ? "no sky component" : c.RemoveTestFlock()));
+        }
+
         // FORGE_GPT_ENRICHMENT_1 quicktest surface.
         [DebugAction(CAT, "Spunstone: report knowledge",
             allowedGameStates = AllowedGameStates.Playing)]
