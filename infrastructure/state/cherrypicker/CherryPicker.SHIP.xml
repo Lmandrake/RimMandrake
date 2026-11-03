@@ -1725,6 +1725,28 @@
 			<li>ResearchProjectDef/guy762_ResearchKotOR_workbench</li>
 			<li>ResearchProjectDef/guy762_ResearchKotOR_advupgrade</li>
 			<li>ResearchProjectDef/guy762_ResearchKotOR_exupgrade</li>
+			<li>ThingDef/AlphaThrumbo</li>
+			<li>ThingDef/Bear_Grizzly</li>
+			<li>ThingDef/Caribou</li>
+			<li>ThingDef/Chicken</li>
+			<li>ThingDef/Cow</li>
+			<li>ThingDef/Deer</li>
+			<li>ThingDef/Duck</li>
+			<li>ThingDef/Elk</li>
+			<li>ThingDef/Fox_Red</li>
+			<li>ThingDef/Goat</li>
+			<li>ThingDef/Goose</li>
+			<li>ThingDef/Ibex</li>
+			<li>ThingDef/Monkey</li>
+			<li>ThingDef/Sheep</li>
+			<li>ThingDef/Squirrel</li>
+			<li>ThingDef/Thrumbo</li>
+			<li>IncidentDef/ThrumboPasses</li>
+			<li>ThingDef/Turkey</li>
+			<li>ThingDef/Wolf_Great</li>
+			<li>ThingDef/Wolf_Timber</li>
+			<li>ThingDef/Wolverine</li>
+			<li>ThingDef/Yak</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

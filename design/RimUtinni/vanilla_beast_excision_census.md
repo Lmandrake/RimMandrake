@@ -164,3 +164,27 @@ owned pack beasts our biomes allow and cuts Muffalo/Alpaca from RM_LanternDeeps;
 (faction, biome) pairs opened, 0 lost. **The official carrier route is now closed in every biome of ours except
 `RM_Pyrelands`**, which has no owned pack beast in its list. 56 of our 62 BiomeDefs allow no pack animal at all, so
 no land caravan reaches them (`PACK_ANIMALS_RESTORE_EMPTY_SADDLES`).
+
+## Wave 4 (2026-11-02) — trader stock and farm wander-in, closed by Cherry Picker ThingDef cuts
+
+Mechanism: `CherryPicker.dll` (1.6) names, for a race it processes, `tradeTags`, `tradeability`, `wildAnimals`,
+`pollutionWildAnimals`, `stockGenerators` and `spawnablePawnKinds` (its string table). Trader stock and farm wander-in
+both select through those fields, so a ThingDef cut closes both. The def is neutered, not deleted, so DefOf and
+`GetNamed` still bind (our `useMeatFrom` Cow/Chicken/Yak/Goat and `RM_KnockbackProof`'s `GetNamed("Thrumbo")` are
+safe).
+
+Instrument `src/RimMandrake/Utils/vanilla_beast_cut.py` (dump 2026-11-02T17:59:18Z, read against
+`CherryPicker.SHIP.xml` because the dump cannot see cuts). Of 117 official animals, 43 were already cut; of the 74 still
+open:
+- **roster, 33**: on an uncut BiomeDef's wild/pollution/coastal list with commonality > 0, mostly AridShrubland's
+  vanilla roster (frozen-map biome, `OWNER_EXCLUDE`). They wait for that biome's sitting.
+- **carrier, 4**: Alpaca, Dromedary, Elephant and Muffalo, named by faction `carriers` (wave 3).
+- **family, 16**: the dryads (Gauranlen), the insects (`STILLSAND_RM_MOD_BUILD_1`) and the Anomaly entities.
+- **cut, 21**, now in SHIP with `IncidentDef/ThrumboPasses` (it spawns `PawnKindDefOf.Thrumbo` from C#): AlphaThrumbo,
+  Bear_Grizzly, Caribou, Chicken, Cow, Deer, Duck, Elk, Fox_Red, Goat, Goose, Ibex, Monkey, Sheep, Squirrel, Thrumbo,
+  Turkey, Wolf_Great, Wolf_Timber, Wolverine, Yak.
+
+Roles kept: 28 owned farm wander-in animals and 433 owned trader-stock animals remain. Proof:
+`src/RimMandrake/Utils/selftest_vanilla_beast_cut.py` (offline) and `vanilla_beast_cut.py --check-log` (live, Player.log
+removal block; SHIP written to the live config 2026-11-02, inert until the next full-list load). Leaks a ThingDef cut
+leaves open (route defs that spawn a race by name) are `VANILLA_BEAST_LEAKS_EXCISE_ESCAPEES_AT_LARGE`.
