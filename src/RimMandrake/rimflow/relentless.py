@@ -968,7 +968,10 @@ class Effects(relentless_game.GameFx):
             return None
         dirty = [x for x in shards if x in got] + moved
         a = ["./publish"] + (["-m", "ledger: relentless supervisor", *dirty] if dirty else [])
-        r = subprocess.run(a, cwd=self.books, capture_output=True, text=True, timeout=90, stdin=subprocess.DEVNULL)
+        try:
+            r = subprocess.run(a, cwd=self.books, capture_output=True, text=True, timeout=90, stdin=subprocess.DEVNULL)
+        except subprocess.TimeoutExpired:       # a slow push is a retry next tick, not a failed unit (OPS_TIMER_REPAIR_PRXC)
+            return "publish timed out after 90 s"
         return None if r.returncode == 0 else "publish exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-300:])
 
     def prose_moves(self):
