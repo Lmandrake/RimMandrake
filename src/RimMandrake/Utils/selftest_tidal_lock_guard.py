@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (step 1b builds and runs the C# SelfTest through selftest_sun_heat.py, inner cap 480 s; the 240 s default CRASHed [timeout] in rm-harness.slice 2026-11-02)
 """selftest_tidal_lock_guard.py -- offline proof for TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING.
 
     python3 src/RimMandrake/Utils/selftest_tidal_lock_guard.py
@@ -13,6 +14,8 @@ No game, no bridge. Checks:
   3. tidal_lock_readback.py parses and judges the guard's line (locked, restored, unlocked, absent).
   4. the remake runbook's S13/G12 name the dev start save of record (canon.yml planet.start_savegame), and the
      PAINT-made originals that loaded unlocked are named only as gone.
+  1c. every type/member the guard reaches by AccessTools.TypeByName resolves in the real workshop Alien Worlds and
+     Worldbuilder 1.6 DLLs (dnfile metadata), with five misnaming mutants caught.
   5. the live proof file can measure A1: a live-site line loads a fixture save (that save, when the Saves folder is
      readable, reads TidallyLocked with NO worldPresetName), live-mods names CreatureBehaviors, the stager is told the
      three workshop packageIds A1 reads, and the proof line runs the readback with --expect-restored. Without these the
@@ -244,8 +247,72 @@ def live_proofs():
         check(bool(g), "live proof mutant caught: %s" % name)
 
 
+WORKSHOP = os.environ.get("RM_WORKSHOP_ROOT", "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100")
+# the 1.6 assemblies the game loads: Alien Worlds (7f.alienworlds) and Worldbuilder (ferny.Worldbuilder)
+THIRD_PARTY_DLLS = ("3626210061/1.6/Assemblies/AlienWorlds.dll", "3522102833/1.6/Assemblies/Worldbuilder.dll")
+REFLECT_RE = re.compile(r'AccessTools\.(Field|Property|Method)\(AccessTools\.TypeByName\("([^"]+)"\),\s*"([^"]+)"')
+
+
+def third_party_members():
+    """{"Ns.Type": set of field and method names} read from the real workshop DLLs' metadata, or None if unreadable."""
+    try:
+        import dnfile
+    except ImportError:
+        return None
+    types = {}
+    for rel in THIRD_PARTY_DLLS:
+        path = os.path.join(WORKSHOP, rel)
+        if not os.path.isfile(path):
+            return None
+        pe = dnfile.dnPE(path)
+        for t in pe.net.mdtables.TypeDef:
+            names = types.setdefault("%s.%s" % (t.TypeNamespace, t.TypeName), set())
+            names.update(str(f.row.Name) for f in t.FieldList if f.row)
+            names.update(str(m.row.Name) for m in t.MethodList if m.row)
+    return types
+
+
+def unresolved(guard, types):
+    """The guard's AccessTools.TypeByName reflections that name no such type/member in the real DLLs ([] = all resolve)."""
+    refs = REFLECT_RE.findall(guard)
+    if not refs:
+        return ["no AccessTools.TypeByName reflection found in the guard"]
+    bad = []
+    for kind, typ, member in refs:
+        want = {"Field": member, "Method": member, "Property": "get_" + member}[kind]
+        if typ not in types:
+            bad.append("type %s" % typ)
+        elif want not in types[typ]:
+            bad.append("%s.%s" % (typ, want))
+    return bad
+
+
+def reflected_names():
+    """Every type/member the guard reaches by name resolves in the shipped Alien Worlds / Worldbuilder 1.6 DLLs.
+    A wrong name makes AccessTools return null and the guard a SILENT no-op on the full list (Conductor triage
+    2026-11-03 suspected exactly this for AlienWorlds.PlanetTypeManager)."""
+    types = third_party_members()
+    check(types is not None, "workshop DLLs readable by dnfile under %s (unreadable is a FAIL, never a pass)" % WORKSHOP)
+    if types is None:
+        return
+    guard = read(SRC, "RM_TidalLockPresetGuard.cs")
+    bad = unresolved(guard, types)
+    check(not bad, "every guard reflection resolves in the real DLLs%s" % ("" if not bad else ": " + ", ".join(bad)))
+    check(len(REFLECT_RE.findall(guard)) >= 5, "guard reflects the 5 third-party members (current, Current, UpdateActive, backend, WorldPresetName)")
+    mutants = {
+        "wrong namespace": guard.replace('"AlienWorlds.PlanetTypeManager"', '"AlienWorldsFramework.PlanetTypeManager"', 1),
+        "wrong field": guard.replace('"current")', '"curent")', 1),
+        "wrong property": guard.replace('"WorldPresetName")', '"PresetName")', 1),
+        "wrong method": guard.replace('"UpdateActive"', '"UpdateActives"', 1),
+        "wrong backend type": guard.replace('"AlienWorlds.AlienWorldsFramework"', '"AlienWorlds.Framework"', 1),
+    }
+    for name, text in mutants.items():
+        check(text != guard and bool(unresolved(text, types)), "reflection mutant caught: %s" % name)
+
+
 def main():
     wiring()
+    reflected_names()
     kernel()
     harvest()
     readback()
