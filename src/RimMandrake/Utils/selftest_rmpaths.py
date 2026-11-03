@@ -49,6 +49,11 @@ if os.path.isfile(rmpaths.AGENT_STORAGE) or os.environ.get(rmpaths.ENV_VAR):
     r = str(rmpaths.rm_data_root())
     check("live root resolves outside dev", "luke/dev" not in r.replace("\\", "/").lower(), r)
 
+DEV = "/mnt/d/Luke/dev"
+if os.path.isdir(DEV):
+    left = sorted(n for n in os.listdir(DEV) if n.startswith("_"))
+    check("no D:\\Luke\\dev\\_* dir is left", not left, ", ".join(left))
+
 pat = r"Luke[/\\]+dev[/\\]+_(artpipe|artstore|obs|rmbuild|rmdashboard|rmscratch)"
 out = subprocess.run(["git", "-C", ROOT, "grep", "-nIE", pat, "--", "src", "skills", "CLAUDE.md",
                       ":!*.md", ":!*.json", ":!*.jsonl", ":!*.log", ":!**/selftest_rmpaths.py"],
