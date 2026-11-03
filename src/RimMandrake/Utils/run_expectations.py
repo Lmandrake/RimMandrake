@@ -26,7 +26,18 @@ TWO MODES
                         per call is the union of every scalar path plus every
                         deep check's top-level field name for that defType.
 
+--l2 --plan-only        Offline. Parses every manifest's "l2" section
+                        (expectations_l2.py) and prints the one batch's spawn
+                        plan on a 250x250 map. Exit 1 on an unparsable manifest,
+                        a grid that does not fit, or no manifest carrying l2.
+--l2 --live             The L2 behaviour gauntlet: EVERY matched manifest's l2
+                        spawns on ONE map in one sitting - spawn, readback,
+                        screenshot (magenta count), step ticks, readback, one
+                        log read - zero restarts (map id + clock checked).
+
 USAGE
+    python3 run_expectations.py --l2 --glob "infrastructure/state/expectations/*.expectations.json" --plan-only
+    python.exe run_expectations.py --l2 --glob "..." --live
     python3 run_expectations.py --manifest infrastructure/state/expectations/FOO_1.expectations.json --fixture testdata/foo_fixture.json
     python3 run_expectations.py --glob "infrastructure/state/expectations/*.expectations.json" --live
     python.exe run_expectations.py --glob "..." --live   # --live needs Windows python (WSL has no bridge route)
@@ -47,6 +58,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import expectations_manifest as em  # noqa: E402
+import expectations_l2 as l2  # noqa: E402
 
 
 def _load_fixture(path: str) -> dict:
@@ -133,6 +145,43 @@ def run_one(manifest_path: str, live_defs_source, *, allow_deep: bool) -> tuple[
     return (len(results), fails)
 
 
+def run_l2(paths: list[str], *, live: bool) -> int:
+    """One L2 batch over every manifest that carries an l2 section."""
+    if not paths:
+        print("no manifests matched")
+        return 1
+    manifests, bad = [], 0
+    for p in paths:
+        try:
+            manifests.append(em.load_manifest(p))
+        except em.ManifestError as exc:
+            print("MANIFEST-ERROR %s: %s" % (p, exc))
+            bad += 1
+    batch = [m for m in manifests if m.l2]
+    print("L2 batch: %d of %d manifests carry an l2 section; ticks %d"
+          % (len(batch), len(manifests), l2.batch_ticks(batch)))
+    if not batch:
+        print("nothing to run: no manifest has an l2 section")
+        return 1
+    if not live:
+        try:
+            plan = l2.plan_batch(batch, (250, 250))
+        except ValueError as exc:
+            print("PLAN-ERROR %s" % exc)
+            return 1
+        for p in plan:
+            print("  plan %-28s %-5s %-28s x%d @%d,%d" % (p.item, p.kind, p.defName, p.count, p.x, p.z))
+        print("  rect %s" % (l2.batch_rect(plan),))
+        print("\nPLAN: %d spawns, %d manifest(s) unparsable" % (len(plan), bad))
+        return 1 if bad else 0
+    rows = l2.run_l2_live(batch)
+    for r in rows:
+        print("  %-17s %-28s %s%s" % (r.status, r.scope, r.subject, ("  -- " + r.detail) if r.detail else ""))
+    failing = [r for r in rows if not r.ok]
+    print("\nL2 TOTAL: %d rows, %d not PASS, %d manifest(s) unparsable" % (len(rows), len(failing), bad))
+    return 1 if (failing or bad) else 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__,
                                   formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -140,10 +189,19 @@ def main(argv=None):
     ap.add_argument("--glob", help="glob of manifest files, e.g. infrastructure/state/expectations/*.expectations.json")
     ap.add_argument("--fixture", help="offline JSON stand-in for live_defs (see module docstring)")
     ap.add_argument("--live", action="store_true", help="call the real bridge (needs python.exe on WSL)")
+    ap.add_argument("--l2", action="store_true", help="the L2 behaviour batch instead of the L1 def checks")
+    ap.add_argument("--plan-only", action="store_true", help="with --l2: parse and plan offline, touch no game")
     args = ap.parse_args(argv)
 
     if not args.manifest and not args.glob:
         ap.error("pass --manifest or --glob")
+    if args.l2:
+        if args.plan_only == args.live or args.fixture:
+            ap.error("--l2 takes exactly one of --plan-only or --live (no --fixture)")
+        paths = [args.manifest] if args.manifest else sorted(globmod.glob(args.glob))
+        return run_l2(paths, live=args.live)
+    if args.plan_only:
+        ap.error("--plan-only goes with --l2")
     if bool(args.fixture) == bool(args.live):
         ap.error("pass exactly one of --fixture or --live")
 

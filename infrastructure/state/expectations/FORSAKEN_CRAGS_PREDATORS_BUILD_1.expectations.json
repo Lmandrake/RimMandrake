@@ -1,22 +1,97 @@
 {
   "item": "FORSAKEN_CRAGS_PREDATORS_BUILD_1",
-  "note": "First real retrofit for MASS_VALIDATION_LADDER_1's manifest format/runner. Pins the item's own ## criteria: both creatures untameable (wildness=1.0, trainability=None), Cindermare's cold-drain-grip is a REAL mechanism (extraMeleeDamages -> RSW_ColdDrainDamage on the cold-drain grip tool, not flavor text), Skarnix's firelight valve is a REAL mechanism (CompProperties_LightAversion present with its tuning), plus labels/hediffClass/combatPower as cheap tautology-resistant sanity. Ground truth read directly from src/RimStarWars/SWBestiary/Defs/Livestock/{ThingDefs_Animals/ThingDefs_Abyss.xml, PawnKindDefs/PawnKindDefs_Abyss.xml, HediffDefs/HediffDefs_ColdDrain.xml} on 2026-09-13, not guessed.",
+  "note": "First real retrofit for MASS_VALIDATION_LADDER_1's manifest format/runner. Pins the item's own ## criteria: both creatures untameable (wildness=1.0, trainability=None), Cindermare's cold-drain-grip is a REAL mechanism (extraMeleeDamages -> RSW_ColdDrainDamage on the cold-drain grip tool, not flavor text), Skarnix's firelight valve is a REAL mechanism (CompProperties_LightAversion present with its tuning), plus labels/hediffClass/combatPower as cheap tautology-resistant sanity. Ground truth read directly from src/RimStarWars/SWBestiary/Defs/Livestock/{ThingDefs_Animals/ThingDefs_Abyss.xml, PawnKindDefs/PawnKindDefs_Abyss.xml, HediffDefs/HediffDefs_ColdDrain.xml} on 2026-09-13, not guessed. 2026-11-02 (MASS_VALIDATION_LADDER_1): defs moved RSW_ -> RM_ since this was written (Abyss, Stillsand, SleepingIce mods); defNames, labels and referenced defs updated against the current XML.",
   "checks": [
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "label", "expected": "cindermare"},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "race.trainability", "expected": "None"},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "statBases[stat=Wildness].value", "expected": 1.0},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[label=cold-drain grip].extraMeleeDamages[0].def", "expected": "RSW_ColdDrainDamage"},
-    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "tools[label=cold-drain grip].extraMeleeDamages[0].amount", "expected": 6.0},
-
-    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "label", "expected": "skarnix"},
-    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "race.trainability", "expected": "None"},
-    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "statBases[stat=Wildness].value", "expected": 1.0},
-    {"defType": "ThingDef", "defName": "RSW_Skarnix", "path": "comps[fleeExpiryTicks=600].fleeSearchRadius", "expected": 10},
-
-    {"defType": "PawnKindDef", "defName": "RSW_Cindermare", "path": "combatPower", "expected": 140},
-    {"defType": "PawnKindDef", "defName": "RSW_Skarnix", "path": "combatPower", "expected": 65},
-
-    {"defType": "HediffDef", "defName": "RSW_ColdDrain", "path": "hediffClass", "expected": "Hediff_Injury"},
-    {"defType": "HediffDef", "defName": "RSW_ColdDrain", "path": "injuryProps.painPerSeverity", "expected": 0.018}
-  ]
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Cindermare",
+      "path": "label",
+      "expected": "saevitha"
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Cindermare",
+      "path": "race.trainability",
+      "expected": "None"
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Cindermare",
+      "path": "statBases[stat=Wildness].value",
+      "expected": 1.0
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Cindermare",
+      "path": "tools[label=cold-drain grip].extraMeleeDamages[0].def",
+      "expected": "RM_ColdDrainDamage"
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Cindermare",
+      "path": "tools[label=cold-drain grip].extraMeleeDamages[0].amount",
+      "expected": 6.0
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Skarnix",
+      "path": "label",
+      "expected": "ishvarith"
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Skarnix",
+      "path": "race.trainability",
+      "expected": "None"
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Skarnix",
+      "path": "statBases[stat=Wildness].value",
+      "expected": 1.0
+    },
+    {
+      "defType": "ThingDef",
+      "defName": "RM_Skarnix",
+      "path": "comps[fleeExpiryTicks=600].fleeSearchRadius",
+      "expected": 10
+    },
+    {
+      "defType": "PawnKindDef",
+      "defName": "RM_Cindermare",
+      "path": "combatPower",
+      "expected": 140
+    },
+    {
+      "defType": "PawnKindDef",
+      "defName": "RM_Skarnix",
+      "path": "combatPower",
+      "expected": 65
+    },
+    {
+      "defType": "HediffDef",
+      "defName": "RM_ColdDrain",
+      "path": "hediffClass",
+      "expected": "Hediff_Injury"
+    },
+    {
+      "defType": "HediffDef",
+      "defName": "RM_ColdDrain",
+      "path": "injuryProps.painPerSeverity",
+      "expected": 0.018
+    }
+  ],
+  "l2": {
+    "spawn": [
+      {
+        "pawnKind": "RM_Cindermare",
+        "count": 1
+      },
+      {
+        "pawnKind": "RM_Skarnix",
+        "count": 1
+      }
+    ],
+    "ticks": 600
+  }
 }

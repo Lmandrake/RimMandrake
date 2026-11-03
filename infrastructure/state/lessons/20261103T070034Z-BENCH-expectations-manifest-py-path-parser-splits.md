@@ -1,0 +1,1 @@
+expectations_manifest.py path parser splits on every '.', so a [key=1.5] filter with a decimal value is rejected as malformed, and a bad bracket index can escape walk_path as an uncaught exception (GPT review 2026-11-02, MASS_VALIDATION_LADDER_1); use integer or string filter values until fixed.

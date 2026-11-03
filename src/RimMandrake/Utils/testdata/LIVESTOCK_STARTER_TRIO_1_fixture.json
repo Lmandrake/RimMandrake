@@ -1,5 +1,5 @@
 {
-  "ThingDef::RSW_Karrask": {
+  "ThingDef::RM_Karrask": {
     "label": "karrask",
     "race": {"trainability": "None"},
     "statBases": [
@@ -8,7 +8,7 @@
     ],
     "comps": [
       {"compClass": "CompAttachBase"},
-      {"woolDef": "RSW_KarraskShedRaw", "shearIntervalDays": 15, "woolAmount": 40}
+      {"woolDef": "RM_KarraskShedRaw", "shearIntervalDays": 15, "woolAmount": 40}
     ]
   },
   "ThingDef::RSW_Onnik": {
@@ -39,7 +39,7 @@
       {"stat": "MoveSpeed", "value": 2.4}
     ]
   },
-  "PawnKindDef::RSW_Karrask": {"combatPower": 45},
+  "PawnKindDef::RM_Karrask": {"combatPower": 45},
   "PawnKindDef::RSW_Onnik": {"combatPower": 40},
   "PawnKindDef::RSW_Moornak": {"combatPower": 30},
   "HediffDef::RSW_MoornakUnsettled": {"hediffClass": "HediffWithComps"}

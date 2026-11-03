@@ -1,6 +1,6 @@
 {
-  "ThingDef::RSW_Cindermare": {
-    "label": "cindermare",
+  "ThingDef::RM_Cindermare": {
+    "label": "saevitha",
     "race": {
       "trainability": "None",
       "predator": true,
@@ -17,13 +17,13 @@
       {
         "label": "cold-drain grip",
         "extraMeleeDamages": [
-          {"def": "RSW_ColdDrainDamage", "amount": 6}
+          {"def": "RM_ColdDrainDamage", "amount": 6}
         ]
       }
     ]
   },
-  "ThingDef::RSW_Skarnix": {
-    "label": "skarnix",
+  "ThingDef::RM_Skarnix": {
+    "label": "ishvarith",
     "race": {
       "trainability": "None",
       "predator": true,
@@ -39,15 +39,15 @@
       {"fleeSearchRadius": 10, "fleeExpiryTicks": 600}
     ]
   },
-  "PawnKindDef::RSW_Cindermare": {
+  "PawnKindDef::RM_Cindermare": {
     "combatPower": 140,
     "ecoSystemWeight": 0.35
   },
-  "PawnKindDef::RSW_Skarnix": {
+  "PawnKindDef::RM_Skarnix": {
     "combatPower": 65,
     "ecoSystemWeight": 0.5
   },
-  "HediffDef::RSW_ColdDrain": {
+  "HediffDef::RM_ColdDrain": {
     "label": "cold-drain wound",
     "hediffClass": "Hediff_Injury",
     "injuryProps": {

@@ -95,6 +95,7 @@ class Manifest:
     note: str
     checks: list[Check]
     source_path: str | None = None
+    l2: Any = None  # expectations_l2.L2Spec when the manifest carries an "l2" section, else None
 
 
 def classify_path(path: str) -> str:
@@ -158,8 +159,22 @@ def parse_manifest(raw: dict, source_path: str | None = None) -> Manifest:
             defType=c["defType"], defName=c["defName"], path=path,
             expected=c["expected"], kind=classify_path(path),
         ))
+    l2 = None
+    if "l2" in raw:
+        # The L2 behaviour section (VALIDATION_LADDER.md L2): what to spawn on the batch's
+        # one quicktest map. Validated here so a bad section fails the manifest LOUD, the
+        # same as a bad check; imported lazily so this module keeps zero hard deps.
+        import sys
+        here = str(Path(__file__).resolve().parent)
+        if here not in sys.path:
+            sys.path.insert(0, here)
+        import expectations_l2  # noqa: E402  (same directory)
+        try:
+            l2 = expectations_l2.parse_l2(raw["l2"])
+        except ValueError as exc:
+            raise ManifestError("manifest '%s' l2: %s" % (item, exc)) from exc
     return Manifest(item=item, note=raw.get("note", ""), checks=checks,
-                     source_path=source_path)
+                     source_path=source_path, l2=l2)
 
 
 def _coerce_bracket_value(v: str) -> Any:
