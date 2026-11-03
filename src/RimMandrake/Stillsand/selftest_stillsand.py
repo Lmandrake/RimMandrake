@@ -73,6 +73,10 @@ class Fake(object):
         self.cond, self.sched = None, []
         self.lev_visits, self.unforced_armed = [], False   # RM_MapComponent_SandLeviathans.visits
         self._rb = _RB(self)
+        # STILLSAND_GLASS_CHAIN_REMAINDER_1: other mods' settings the glass rows read, bills, drift
+        self.ext = {(V.DUNES_SETTINGS, "clearYieldEnabled"): "True",
+                    (V.FLOWWORKS_SETTINGS, "shovelRequired"): "True"}
+        self.bills, self.pending, self.sand = {}, [], {}
         self.n_errors = 0
         self.regens = 0
         self.log_info("Initialising")
@@ -351,6 +355,10 @@ class Fake(object):
                 "AnomalyActive": True, "OdysseyActive": True}
 
     def t_mod_settings_field(self, typeName=None, action=None, field=None, value=None, **k):
+        if (typeName, field) in self.ext:
+            if action == "set":
+                self.ext[(typeName, field)] = str(value)
+            return {"success": True, "value": self.ext[(typeName, field)]}
         if field not in self.settings or V.FIELD_TYPE.get(field) != typeName:
             return {"success": False, "message": "no such field"}
         if action == "set" and not ("roundtrip_ignored" in self.b and field in ROUNDTRIP_FIELDS):
@@ -389,6 +397,9 @@ class Fake(object):
             elif (typ, name) == ("ThingDef", "RM_GuzzkaEggUnfertilized"):
                 f = {"comps": ["CompProperties_Hatcher"] +
                      ([] if "egg_unpatched" in self.b else ["RM_CompProperties_WaterVolume"])}
+            elif (typ, name) == ("ThingDef", "RM_SolarOven"):
+                f = {"comps": ["RimMandrake.Stillsand.RM_CompProperties_SunPowered"] +
+                     (["CompProperties_Refuelable"] if "oven_fuel" in self.b else [])}
             elif (typ, name) == ("IncidentDef", "RM_SandBusterEruption"):
                 f = {"allowedBiomes": [] if "eruption_ungated" in self.b else [STILLSAND]}
             rows.append({"requested": d, "found": True, "defName": name, "fields": f})
@@ -606,6 +617,7 @@ class Fake(object):
                                            if not p["dead"]]}
 
     def t_list_things(self, defName=None, rect=None, limit=1, **k):
+        self.finish_bills()
         rr = globals()["rect"](rect) if rect else None
         rows = [t for t in self.of(defName) if not rr or inrect(t["x"], t["z"], rr)]
         return {"success": True, "scanned": 100, "countMatched": len(rows), "isCompleteList": True,
@@ -748,6 +760,71 @@ class Fake(object):
         return {"RM_SunFurnace": "sunFurnaceEnabled", "RM_LensBench": "lensBenchEnabled",
                 "RM_SolarOven": "solarOvenEnabled"}[d]
 
+    # ---- glass live rows (STILLSAND_GLASS_CHAIN_REMAINDER_1): bills worked through a WorkGiver, drift clears
+    GIVERS = {"RM_DoBillsSunTables": ("RM_SunFurnace", "RM_LensBench"), "DoBillsCook": ("RM_SolarOven",)}
+    PRODUCTS = {"RM_MeltSunGlass": ("RM_SunGlass", 10, 900), "RM_GrindPrecisionLens": ("RM_PrecisionLens", 1, 3000),
+                "CookMealSimple": ("MealSimple", 1, 1600)}
+
+    def t_set_pawn_skill(self, **k):
+        return {"success": True}
+
+    def t_set_work_priority(self, **k):
+        return {"success": True}
+
+    def t_bill_add(self, giverId=None, recipe=None, **k):
+        self.bills.setdefault(giverId, []).append(recipe)
+        return {"success": True}
+
+    def t_bill_remove(self, thingId=None, billIndex=0, confirmRemove=False, **k):
+        if confirmRemove and self.bills.get(thingId):
+            self.bills[thingId].pop(int(billIndex))
+        return {"success": True}
+
+    def sun_ok(self, t):
+        if t["def"] == "RM_SolarOven" and "oven_in_shade" in self.b:
+            return True
+        if self.cur_weather() in ("RM_DuneGale", "Sandstorm") and "gale_ignored" not in self.b:
+            return False
+        return not self.roofed(t["x"], t["z"])
+
+    def t_do_bill_now(self, pawnId=None, billGiverId=None, workGiverDef=None, **k):
+        t = self.things[billGiverId]
+        usable = t["def"] in self.GIVERS.get(workGiverDef, ()) and "no_workgiver" not in self.b
+        any_bill = bool(self.bills.get(billGiverId))
+        fuel_ok = self.on(self.table_toggle(t["def"])) and self.sun_ok(t)
+        d = {"isBillGiver": True, "usableBillGiver": usable, "anyBillShouldDoNow": any_bill,
+             "usableAfterFueling": fuel_ok}
+        if not (usable and any_bill and fuel_ok):
+            return {"success": False, "message": "JobOnThing returned null", "details": d}
+        prod, n, work = self.PRODUCTS[self.bills[billGiverId][0]]
+        if prod == "RM_PrecisionLens" and "lens_double" in self.b:
+            n = 2
+        self.pending.append((self.ticks + work, prod, n, t["x"], t["z"] - 1))
+        return {"success": True, "accepted": True}
+
+    def finish_bills(self):
+        for job in [j for j in self.pending if j[0] <= self.ticks]:
+            self.pending.remove(job)
+            self.new(job[1], job[3], job[4], stackCount=job[2])
+
+    def t_set_weather_buildup(self, kind=None, mode=None, rect=None, depth=0.0, **k):
+        r = globals()["rect"](rect)
+        self.sand[(r[0], r[1])] = float(depth)
+        return {"success": True}
+
+    def t_paint_area(self, **k):
+        return {"success": True}
+
+    def t_prioritized_work(self, pawnId=None, jobDef=None, workGiverDef=None, targetAX=-1, targetAZ=-1, **k):
+        c = (targetAX, targetAZ)
+        if jobDef != "ClearSnow" or workGiverDef != "CleanClearSnow" or not self.sand.get(c):
+            return {"success": False}
+        blocked = self.ext[(V.FLOWWORKS_SETTINGS, "shovelRequired")] == "True"   # FlowWorks' FailOn: no shovel
+        dug = self.sand.pop(c)
+        if not blocked and self.ext[(V.DUNES_SETTINGS, "clearYieldEnabled")] == "True" and "drift_no_yield" not in self.b:
+            self.new("RM_GlassSand", c[0], c[1], stackCount=int(round(dug * 6)))
+        return {"success": True}
+
     def t_inspect_string(self, thingIds=None, **k):
         t = self.things.get(thingIds)
         if t is None:
@@ -815,6 +892,13 @@ def _run(game):
 
 # break -> the components that must go FAIL (and nothing else may)
 BREAKS = {
+    # STILLSAND_GLASS_CHAIN_REMAINDER_1 live rows A1-A3
+    "no_workgiver": ["glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof", "glass.oven_cooks_in_sun_not_shade"],
+    "gale_ignored": ["glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof"],
+    "lens_double": ["glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof"],
+    "oven_in_shade": ["glass.oven_cooks_in_sun_not_shade"],
+    "oven_fuel": ["glass.oven_cooks_in_sun_not_shade"],
+    "drift_no_yield": ["glass.drift_clear_drops_glass_sand"],
     "still_books_wrong": ["water.still_water_charged_once"],
     "drink_double_charge": ["water.still_water_charged_once"],
     "regen_keeps_biome": ["site.site_stillsand_map"],
@@ -993,10 +1077,8 @@ def _main(bad):
     trader_probe_points(bad)
     healthy = run()
     # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
-    # glass.* below: STILLSAND_GLASS_CHAIN_REMAINDER_1 live-proof arms, UNMEASURED until a driven session
-    owed = ("glass.drift_clear_drops_glass_sand", "glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof",
-            "glass.oven_cooks_in_sun_not_shade",
-            "glass.recipe_toggles_hide_recipes",
+    # glass.recipe_toggles_hide_recipes: no bridge tool reads RecipeDef.AvailableNow (not a live criterion)
+    owed = ("glass.recipe_toggles_hide_recipes",
             # STILLSAND_EVENT_CREATURES_REMAINDER_1: RSW/RUT content, not on the driven tier
             "remainder.remainder_horn_routs_and_logs_roll",
             "remainder.remainder_seep_incident_refuses_other_maps_roots_at_seep",

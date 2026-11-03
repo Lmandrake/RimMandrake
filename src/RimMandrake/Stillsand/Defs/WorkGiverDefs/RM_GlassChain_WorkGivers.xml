@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GlassChain_WorkGivers.xml        RimMandrake - STILLSAND_GLASS_CHAIN_REMAINDER_1
+
+  WorkGiver_DoBill offers a table's bills only when some WorkGiverDef names the table in
+  fixedBillGiverDefs; without this no colonist, ordered or not, ever worked a sun furnace or lens
+  bench bill. The solar ovens join vanilla DoBillsCook in Patches/RM_GlassChain.xml (cooking stays
+  the cooks' job). The sun gate itself is Patch_WorkTable_SunGate (RM_SunPowered.cs).
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_DoBillsSunTables</defName>
+    <label>work at sun tables</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Crafting</workType>
+    <priorityInType>80</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RM_SunFurnace</li>
+      <li>RM_LensBench</li>
+    </fixedBillGiverDefs>
+    <verb>work at</verb>
+    <gerund>working at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+</Defs>

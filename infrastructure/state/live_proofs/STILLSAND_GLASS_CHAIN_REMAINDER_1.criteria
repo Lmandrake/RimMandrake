@@ -1,0 +1,3 @@
+A1 L2: on a Stillsand quicktest a colonist clearing three 0.5-deep drift cells drops RM_GlassSand (1..12); modcheck row glass.drift_clear_drops_glass_sand PASS
+A2 L2: on a Stillsand quicktest the sun furnace makes 10 sun glass and the lens bench 1 precision lens from one bill each in full sun, and do_bill_now is refused by the sun gate (usableAfterFueling false) for both in RM_DuneGale weather and for a roofed furnace; row glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof PASS
+A3 L2: on a Stillsand quicktest RM_SolarOven (no Refuelable/power comp) cooks one MealSimple in sun, and a roofed (shaded) solar oven is refused by the sun gate; row glass.oven_cooks_in_sun_not_shade PASS

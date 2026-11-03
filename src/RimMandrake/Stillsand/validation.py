@@ -1704,6 +1704,14 @@ def glass_chain(t):
                   "Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGogglesWorn_north.png"):
             if not os.path.isfile(os.path.join(tex, *f.split("/"))):
                 _fail("wired art is missing: %s" % f)
+        wg = rd("Defs", "WorkGiverDefs", "RM_GlassChain_WorkGivers.xml")
+        for d in ("RM_SunFurnace", "RM_LensBench"):
+            if "<li>%s</li>" % d not in wg or "<giverClass>WorkGiver_DoBill</giverClass>" not in wg:
+                _fail("no WorkGiver_DoBill WorkGiverDef names %s: no pawn could ever take its bills" % d)
+        gp = rd("Patches", "RM_GlassChain.xml")
+        if 'WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs' not in gp or "<li>RM_SolarOven</li>" not in gp \
+                or "<li>RM_SolarOvenCrest</li>" not in gp:
+            _fail("the solar ovens are not added to DoBillsCook: no cook could ever take their bills")
         mod = rd("Source", "RM_GlassChainMod.cs")
         for need in ("kraytLensEnabled", "glassGogglesEnabled", "get_AvailableNow", "PropertyGetter",
                      "RSW_GrindKraytLens", "RM_SunGogglesGlass"):
@@ -1729,16 +1737,214 @@ def glass_chain(t):
                 if not _same(_get_setting(t, f), True):
                     _fail("%s is not at its shipped default True" % f)
 
-    # LIVE PROOF owed by the parent's criteria. Not driven this pass (the game was in use by another
-    # window); each records UNMEASURED with its reason so none can read as a pass.
-    for name, why in (
-            ("drift_clear_drops_glass_sand", "needs a driven drift clear on a Stillsand quicktest"),
-            ("furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof", "needs a full bill cycle in sun, in a gale and under a roof"),
-            ("oven_cooks_in_sun_not_shade", "needs a cooked meal in sun and in shade"),
-            ("recipe_toggles_hide_recipes", "no bridge tool reads RecipeDef.AvailableNow for a bench")):
-        with _comp(t, name):
-            if _live(t):
-                _unmeasured(t, why + " (not driven: the live game was in use)")
+    # LIVE PROOF of the parent's criteria (STILLSAND_GLASS_CHAIN_REMAINDER_1 spec 4; live_proofs/<ID>.txt A1-A3).
+    # Each table is worked by one ordered colonist through jawa/do_bill_now (the real WorkGiver_DoBill.JobOnThing),
+    # so a pass needs a WorkGiverDef that names the table: RM_DoBillsSunTables and the DoBillsCook patch. Before
+    # those existed no pawn could ever take a sun-table bill (ThingIsUsableBillGiver false).
+    _glass_live_rows(t, ids)
+    with _comp(t, "recipe_toggles_hide_recipes"):
+        if _live(t):
+            _unmeasured(t, "no bridge tool reads RecipeDef.AvailableNow for a bench (not on this item's live criteria)")
+
+
+FLOWWORKS_SETTINGS = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
+GLASS_CRAFTER = {"Crafting": 12, "Cooking": 12}
+DUNES_SETTINGS = "RimMandrake.MovingDunes.MovingDunesSettings"
+
+
+def _stacks(t, defName, rect):
+    """Total stackCount of one def over `rect` (list_things rows carry stackCount)."""
+    return sum(int(r.get("stackCount") or 1) for r in _things(t, defName, _rs(rect), limit=200))
+
+
+def _crafter(t, x, z):
+    """One colonist for the glass rows: skills above every recipe's requirement, the two work types at 1."""
+    pid = _colonist(t, x, z)
+    if not _live(t):
+        return pid
+    for sk, lv in GLASS_CRAFTER.items():
+        t.bridge_call("jawa/set_pawn_skill", pawn=pid, skill=sk, level=lv)
+    for wt in ("Crafting", "Cooking", "Cleaning"):
+        t.bridge_call("jawa/set_work_priority", pawnId=pid, workType=wt, priority=1)
+    return pid
+
+
+def _soft_get(t, type_name, field):
+    """A settings read on another mod that may be absent: its error is an answer (None), never a crash."""
+    try:
+        return t.bridge_call("jawa/mod_settings_field", typeName=type_name, action="get", field=field) or {}
+    except Exception as ex:
+        return {"success": False, "error": str(ex)[:200]}
+
+
+def _drop_bill(t, giver):
+    """Remove the first bill on `giver` (each glass row adds exactly one and removes it before the next)."""
+    t.bridge_call("jawa/bill_remove", thingId=giver, billIndex=0, confirmRemove=True)
+
+
+def _bill_now(t, pid, giver, recipe, workgiver):
+    """Add one bill and order it at once. Returns the do_bill_now result (a dict, success or not)."""
+    b = t.bridge_call("jawa/bill_add", giverId=giver, recipe=recipe, repeatMode="RepeatCount", repeatCount=1)
+    if _live(t) and not (b or {}).get("success"):
+        _unmeasured(t, "bill_add(%s on %s) refused: %s" % (recipe, giver, json.dumps(b, default=str)[:300]))
+    r = t.bridge_call("jawa/do_bill_now", pawnId=pid, billGiverId=giver, workGiverDef=workgiver,
+                      waitTicks=0, timeoutSeconds=30)
+    return r or {}
+
+
+def _refused_by_sun(r):
+    """do_bill_now refused the bill because the table's UsableForBillsAfterFueling is false (the sun gate), and for
+    no earlier reason (giver usable, a bill runnable)."""
+    d = r.get("details") or {}
+    return (r.get("success") is False and d.get("usableBillGiver") is True and d.get("anyBillShouldDoNow") is True
+            and d.get("usableAfterFueling") is False)
+
+
+def _cycle(t, pid, giver, recipe, workgiver, product, rect, budget):
+    """Order one bill in sun and wait up to `budget` ticks for its product. Returns (made, ticks, start result)."""
+    before = _stacks(t, product, rect)
+    r = _bill_now(t, pid, giver, recipe, workgiver)
+    if _live(t) and r.get("success") is False:
+        _fail("%s in full sun: the colonist could not start %s: %s" % (giver, recipe, json.dumps(r, default=str)[:400]))
+    spent = 0
+    while _live(t) and spent < budget:
+        t.wait_ticks(250)
+        spent += 250
+        made = _stacks(t, product, rect) - before
+        if made > 0:
+            return made, spent, r
+    return 0, spent, r
+
+
+def _clear_drift(t, pid, cells, area, before):
+    """Order the colonist to clear each drift cell (vanilla ClearSnow job, CleanClearSnow priority work) until all
+    three have been worked; returns the RM_GlassSand dropped over `area` since `before`."""
+    got = 0
+    for cx, cz in cells:
+        t.bridge_call("jawa/prioritized_work", pawnId=pid, jobDef="ClearSnow", workGiverDef="CleanClearSnow",
+                      targetAX=cx, targetAZ=cz, waitTicks=0, timeoutSeconds=30)
+        t.wait_ticks(600)
+        got = _stacks(t, "RM_GlassSand", area) - before
+    return got
+
+
+def _glass_live_rows(t, ids):
+    x, z = t.anchor
+    pad = _rect(t)
+    roof = (x + 5, z + 4, 8, 8)
+    st = {}
+    with _comp(t, "glass_live_staged", poison=True):
+        if _live(t):
+            for d in ("RM_SunFurnace", "RM_LensBench", "RM_SolarOven", "roofed"):
+                if d not in ids:
+                    _unmeasured(t, "glass_site_ready did not stand %s" % d)
+            t.bridge_call("jawa/spawn_batch", ops="RM_SolarOven:%d,%d" % (x + 6, z + 9))
+            ov = [o for o in _things(t, "RM_SolarOven", _rs(pad))
+                  if roof[0] <= o.get("x", -1) < roof[0] + roof[2] and roof[1] <= o.get("z", -1) < roof[1] + roof[3]]
+            if not ov:
+                _unmeasured(t, "the roofed solar oven did not stand")
+            st["oven_roofed"] = ov[0]["id"]
+            st["pid"] = _crafter(t, x - 4, z - 2)
+            _settle_shade(t)    # the new roofed oven's cell must read as shade before anything is asked of it
+
+    # A2 -- furnace and bench each complete one cycle in full sun, and stop in the gale and under a roof.
+    with _comp(t, "furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof"):
+        if _live(t):
+            pid = st["pid"]
+            # under a roof: refused by the sun gate, before any sun cycle ran
+            rr = _bill_now(t, pid, ids["roofed"], "RM_MeltSunGlass", "RM_DoBillsSunTables")
+            if not _refused_by_sun(rr):
+                _fail("a roofed sun furnace was not refused by its sun gate: %s" % json.dumps(rr, default=str)[:400])
+            _drop_bill(t, ids["roofed"])
+            # full sun: one cycle each
+            t.bridge_call("jawa/spawn_batch", ops="RM_GlassSand:%d,%d,20;RM_LensGlass:%d,%d,2"
+                          % (x - 4, z, x - 4, z - 5))
+            fur, fur_ticks, _ = _cycle(t, pid, ids["RM_SunFurnace"], "RM_MeltSunGlass", "RM_DoBillsSunTables",
+                                       "RM_SunGlass", pad, 6000)
+            ben, ben_ticks, _ = _cycle(t, pid, ids["RM_LensBench"], "RM_GrindPrecisionLens", "RM_DoBillsSunTables",
+                                       "RM_PrecisionLens", pad, 12000)
+            _note(t, "sun cycles: furnace sun glass / ticks, bench lenses / ticks", [fur, fur_ticks, ben, ben_ticks])
+            if fur != 10:
+                _fail("one RM_MeltSunGlass cycle in full sun made %d sun glass in %d ticks (want 10)" % (fur, fur_ticks))
+            if ben != 1:
+                _fail("one RM_GrindPrecisionLens cycle in full sun made %d precision lenses in %d ticks (want 1)"
+                      % (ben, ben_ticks))
+            # the gale: both tables refused while it blows (the weather is listed by name in noSunWeathers)
+            t.bridge_call("jawa/spawn_batch", ops="RM_GlassSand:%d,%d,20;RM_LensGlass:%d,%d,2"
+                          % (x - 4, z, x - 4, z - 5))
+            t.bridge_call("jawa/weather_set", weather="RM_DuneGale", lockWeather=True)
+            t.wait_ticks(60)
+            if _weather_now(t) != "RM_DuneGale":
+                _unmeasured(t, "the gale weather did not take (weather reads %r)" % _weather_now(t))
+            try:
+                for giver, recipe in ((ids["RM_SunFurnace"], "RM_MeltSunGlass"),
+                                      (ids["RM_LensBench"], "RM_GrindPrecisionLens")):
+                    rg = _bill_now(t, pid, giver, recipe, "RM_DoBillsSunTables")
+                    if not _refused_by_sun(rg):
+                        _fail("%s was not refused by its sun gate in the gale: %s"
+                              % (giver, json.dumps(rg, default=str)[:400]))
+                before = _stacks(t, "RM_SunGlass", pad)
+                t.wait_ticks(3000)     # longer than the sun cycle took: nothing may come out in the gale
+                if _stacks(t, "RM_SunGlass", pad) != before:
+                    _fail("the sun furnace made sun glass during the gale")
+            finally:
+                t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+            for giver in (ids["RM_SunFurnace"], ids["RM_LensBench"]):
+                _drop_bill(t, giver)
+
+    # A3 -- the oven cooks a meal with no fuel in sun, and not in shade (the roofed oven's cell).
+    with _comp(t, "oven_cooks_in_sun_not_shade"):
+        if _live(t):
+            pid = st["pid"]
+            dd, _ = _get_defs(t, "ThingDef/RM_SolarOven", "comps")
+            comps = json.dumps((dd.get("RM_SolarOven") or {}).get("comps"), default=str)
+            if "Refuelable" in comps or "CompPower" in comps:
+                _fail("RM_SolarOven carries a fuel or power comp: %s" % comps[:300])
+            t.bridge_call("jawa/spawn_batch", ops="RawPotatoes:%d,%d,20" % (x - 4, z + 5))
+            rs = _bill_now(t, pid, st["oven_roofed"], "CookMealSimple", "DoBillsCook")
+            if not _refused_by_sun(rs):
+                _fail("a solar oven in shade (roofed) was not refused by its sun gate: %s"
+                      % json.dumps(rs, default=str)[:400])
+            _drop_bill(t, st["oven_roofed"])
+            meals, ticks, _ = _cycle(t, pid, ids["RM_SolarOven"], "CookMealSimple", "DoBillsCook", "MealSimple",
+                                     pad, 6000)
+            _note(t, "solar oven in sun: meals / ticks", [meals, ticks])
+            if meals != 1:
+                _fail("one CookMealSimple bill at a sunlit solar oven made %d meals in %d ticks (want 1)" % (meals, ticks))
+            _drop_bill(t, ids["RM_SolarOven"])
+
+    # A1 -- clearing a drift drops glass sand (MovingDunes' Patch_ClearSand_Yield, the Stillsand clearYield).
+    with _comp(t, "drift_clear_drops_glass_sand"):
+        if _live(t):
+            pid = st["pid"]
+            g = _soft_get(t, DUNES_SETTINGS, "clearYieldEnabled")
+            if not (g or {}).get("success", True) or not _as_bool((g or {}).get("value")):
+                _unmeasured(t, "MovingDunes is not loaded or its clearYieldEnabled is off: %r" % g)
+            cells = [(x + 2, z - 8), (x + 3, z - 8), (x + 4, z - 8)]
+            area = _rect(t)
+            before = _stacks(t, "RM_GlassSand", area)
+            for cx, cz in cells:
+                t.bridge_call("jawa/set_weather_buildup", kind="sand", mode="set", rect="%d,%d,1,1" % (cx, cz), depth=0.5)
+            t.bridge_call("jawa/paint_area", area="snow", ops=";".join("%d,%d,1,1" % c for c in cells))
+            # FlowWorks (when loaded) makes sand shovelling need a shovel; that rule is FlowWorks' to prove. Off for
+            # this row so the clear job runs bare-handed, restored after.
+            fw = _soft_get(t, FLOWWORKS_SETTINGS, "shovelRequired")
+            fw_on = bool((fw or {}).get("success")) and _as_bool((fw or {}).get("value"))
+            if fw_on:
+                t.bridge_call("jawa/mod_settings_field", typeName=FLOWWORKS_SETTINGS, action="set",
+                              field="shovelRequired", value="False")
+            got = 0
+            try:
+                got = _clear_drift(t, pid, cells, area, before)
+            finally:
+                if fw_on:
+                    t.session.call("jawa/mod_settings_field", typeName=FLOWWORKS_SETTINGS, action="set",
+                                   field="shovelRequired", value="True")
+            _note(t, "glass sand dropped by clearing 3 cells of 0.5 drift", got)
+            if got <= 0:
+                _fail("clearing 0.5-deep drift on 3 Stillsand cells dropped no RM_GlassSand")
+            if got > 3 * 3 + 3:     # 0.5 depth x 6 per depth x the shipped multiplier 1, rounded up per tick
+                _fail("clearing 3 cells of 0.5 drift dropped %d glass sand (at most ~9 expected)" % got)
 
 
 # ----------------------------------------------------------------------------- chain: water

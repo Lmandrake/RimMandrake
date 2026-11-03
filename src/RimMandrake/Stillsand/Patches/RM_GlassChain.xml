@@ -14,4 +14,14 @@
     </value>
   </Operation>
 
+  <!-- STILLSAND_GLASS_CHAIN_REMAINDER_1: without a WorkGiverDef naming them, no cook ever took a
+       solar oven bill. Both ovens are Stillsand's own defs and DoBillsCook is Core, so no guard. -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs</xpath>
+    <value>
+      <li>RM_SolarOven</li>
+      <li>RM_SolarOvenCrest</li>
+    </value>
+  </Operation>
+
 </Patch>
