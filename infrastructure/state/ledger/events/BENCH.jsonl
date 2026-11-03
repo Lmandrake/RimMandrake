@@ -11075,3 +11075,4 @@
 {"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR A2 (L2), read-only proof","ts":"2026-11-03T02:02:51Z","tsn":1793671371904939703}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-11-03T02:02:58Z","tsn":1793671378021975942}
 {"seat":"BENCH","event":"note","id":"WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR","text":"relentless live A2 L2 UNMEASURED: the proof exited 2: it did not measure (/home/mandrake/rm/relentless/live/WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR-A2-20261103T020248Z.log)","why":"relentless live tier: no verdict, no run recorded","ts":"2026-11-03T02:03:01Z","tsn":1793671381167368652}
+{"seat":"BENCH","event":"lease","id":"RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED","action":"renew","token":"BENCH.pid41698.4b1f208f","ts":"2026-11-03T02:06:19Z","expires":"2026-11-03T02:51:19Z","tsn":1793671580376589755}
