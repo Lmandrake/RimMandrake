@@ -154,7 +154,7 @@ def run(mod_name, argv, known_missing_art=(), require_xml=True, require_settings
         for i, part in enumerate(parts):
             if part in ("obj", "bin") or re.search(r"SelfTest|Fuzz", part):
                 return True
-            if glob.glob(os.path.join(mod, "Source", *parts[:i + 1], "*.csproj")):
+            if glob.glob(os.path.join(mod, "Source", *parts[:i + 1], "*.csproj*")):
                 return True
         return False
     src_files = [f for f in glob.glob(os.path.join(mod, "Source", "**", "*.cs"), recursive=True) if not _test_project(f)]
