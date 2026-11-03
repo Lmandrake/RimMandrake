@@ -43,6 +43,8 @@ DEFAULTS = {
     "system_words": [],
     "content_kinds": ["mod", "art"],
     "content_words": [],
+    "system_rank": [],      # Operations' hand order, best first; always system, wherever the words put it
+    "not_system": [],       # the classifier's known false friends (a mod's "pool", "ledger", "budget")
 }
 OPS = {"<": lambda a, b: a < b, "<=": lambda a, b: a <= b, ">": lambda a, b: a > b, ">=": lambda a, b: a >= b}
 WORD = re.compile(r"[^A-Za-z0-9]+")
@@ -149,11 +151,21 @@ def words_of(item_id, title):
     return set(w) | {a + b for a, b in zip(w, w[1:])}
 
 
+def rank_of(iid, c):
+    """The item's place on Operations' hand order, or None. An entry ending in * is a family (new reds rank as they appear)."""
+    for n, e in enumerate(c["system_rank"]):
+        if iid == e or (e.endswith("*") and iid.startswith(e[:-1])):
+            return n
+    return None
+
+
 def is_system(item, c, mods):
     """Operations' classifier: an open item about the system itself, never one that names a game mod."""
-    if (getattr(item, "kind", None) or "") in c["content_kinds"]:
-        return False
     iid = getattr(item, "id", "") or ""
+    if rank_of(iid, c) is not None:     # named by hand beats every word below, either way
+        return True
+    if iid in c["not_system"] or (getattr(item, "kind", None) or "") in c["content_kinds"]:
+        return False
     words = words_of(iid, "")       # the id, never the title: titles of content items name tools in passing
     if words & mods or words & {w.lower() for w in c["content_words"]}:
         return False
@@ -163,12 +175,13 @@ def is_system(item, c, mods):
 
 
 def system_items(world, rules, root):
-    """Open system items, best first: a fix that already died once (live_repeats: the class came back, it owes a guard
-    test), then alarm items (system_prefixes), raised, then oldest."""
+    """Open system items, best first: Operations' hand order (system_rank), then a fix that already died once (live_repeats:
+    the class came back, it owes a guard test), then alarm items (system_prefixes), raised, then oldest."""
     c = conf(rules)
     mods = mod_names(root)
     items = [it for it in world.items.values() if getattr(it, "open", False) and is_system(it, c, mods)]
-    items.sort(key=lambda it: (not (getattr(it, "live_repeats", 0) or 0), not any(it.id.startswith(p) for p in c["system_prefixes"]),
+    last = len(c["system_rank"])
+    items.sort(key=lambda it: (last if rank_of(it.id, c) is None else rank_of(it.id, c), not (getattr(it, "live_repeats", 0) or 0), not any(it.id.startswith(p) for p in c["system_prefixes"]),
                                not getattr(it, "raised", None), getattr(it, "created_at", None) or "", it.id))
     return items
 

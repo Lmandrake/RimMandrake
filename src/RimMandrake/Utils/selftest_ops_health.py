@@ -145,5 +145,16 @@ ok("ops_watch: a full pass publishes health.json and its points",
    (d / "ow" / "health.json").exists() and st["points"]["health.spent_slis"]["m"] == "MEASURED"
    and st["points"]["health.state"]["v"] in ("healthy", "degraded"), st["points"].get("health.state"))
 
+# the hand order: named beats words both ways, a family takes its new members, a closed name holds no place
+hand = {"health": dict(RULES["health"], system_rank=["GARDEN_FIX_NOW", "NIGHT_RED_*", "OPS_B"], not_system=["SELFTEST_OF_A_MOD"])}
+hw = types.SimpleNamespace(items={x.id: x for x in [item("OPS_A", repeats=3), item("OPS_B"), item("NIGHT_RED_Z"), item("NIGHT_RED_A"),
+                                                    item("GARDEN_FIX_NOW", kind="mod"), item("SELFTEST_OF_A_MOD"), item("TULIP_RESKIN"),
+                                                    item("NIGHT_RED_SHUT", open_=False)]})
+got = H.system_ids(hw, hand, root)
+ok("rank: the hand order leads, even over a repeat and a content kind", got[:2] == ["GARDEN_FIX_NOW", "NIGHT_RED_A"] and got[3] == "OPS_B", got)
+ok("rank: a family holds its new members, a closed one is gone", "NIGHT_RED_Z" in got[:3] and "NIGHT_RED_SHUT" not in got, got)
+ok("rank: the unranked follow by the classifier", got[4:] == ["OPS_A"], got)
+ok("rank: not_system beats the word that matched", "SELFTEST_OF_A_MOD" not in got and "TULIP_RESKIN" not in got, got)
+
 print("selftest_ops_health: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)
