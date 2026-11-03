@@ -919,6 +919,14 @@ _OUTER = [None]   # False inside a nested runner (or a fixture): it must not ove
 def main(argv=None) -> int:
     args = _parser().parse_args(argv)
     nested = bool(os.environ.get("RM_SELFTEST_NESTED"))
+    if not nested and not os.environ.get("RM_SELFTEST_SKIP_DISK_GUARD"):
+        tmp = os.environ.get("TMPDIR", "/tmp")
+        free = shutil.disk_usage(tmp).free
+        if free < 2 * 1024 ** 3:      # 2026-11-02: a full 18G /tmp tmpfs turned ~43 tests into OSError ENOSPC crashes/fails
+            print(f"REFUSED: {tmp} has only {free / 1024 ** 2:.0f} MB free (<2 GB); every test that writes a fixture would "
+                  f"die ENOSPC and read as a false RED. Clear agent scratch (du -sm {tmp}/* | sort -rn | head) and rerun; "
+                  "RM_SELFTEST_SKIP_DISK_GUARD=1 overrides.", file=sys.stderr)
+            return 2
     _OUTER[0] = not nested
     import contextlib
     lock = contextlib.nullcontext() if (args.only or nested) else suite_lock()
