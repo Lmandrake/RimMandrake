@@ -2087,6 +2087,17 @@ def make_room(store, fx, r, now, acts, reserve=0):
         n, cmax, " (%d kept for checks)" % reserve if reserve else "", held)
 
 
+def parked(store, fx, r, st, now):
+    """A queued item that cannot start now (its mod is held by another item, or its start was refused and is cooling)
+    keeps its order but holds no max_queued place: the line is topped up with items that can run."""
+    if now < st.get("start_again_at", 0):
+        return True
+    if r.get("one_builder_per_mod") and hasattr(fx, "item_mods"):
+        held = mods_held(store, fx, st["item"])
+        return any(m in held for m in fx.item_mods(st))
+    return False
+
+
 def enrol(store, fx, r, now):
     """Top up to ceil(share x pool). Store-only: an enrolled item stays open to the seats until a lease is taken."""
     states = store.states()
@@ -2098,7 +2109,7 @@ def enrol(store, fx, r, now):
     ours = {s["item"] for s in states}
     pool = len(order) + sum(1 for s in live if s["item"] not in order)
     target = math.ceil(share * pool)
-    queued = sum(1 for s in live if in_line(s))
+    queued = sum(1 for s in live if in_line(s) and not parked(store, fx, r, s, now))
     want = target - len(live)
     if r.get("staffing"):       # the filler: a free place is reason enough, whatever the share says of the backlog
         want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in RUNS_A_PLACE) - queued)
@@ -2969,8 +2980,13 @@ def lease(store, fx, r, now, acts):
                 with store.lock():  # a ledger refusal is this item's, not the launcher's: it waits, the belt does not
                     cur = store.load(item)
                     cur["start_again_at"] = now + r["breaker_cool_s"]
+                    cur["start_refusals"] = cur.get("start_refusals", 0) + 1
+                    cur["start_refused_why"] = str(why)[:300]
                     store.save(cur)
                 acts.append({"do": "start_refused", "item": item, "why": why})
+                if cur["start_refusals"] >= r.get("start_refused_put_down", 3) and not reserved:
+                    give_back(store, item, "start refused %d times, put down: %s" % (cur["start_refusals"], str(why)[:200]))
+                    acts.append({"do": "give_back", "item": item})
                 continue
         with store.lock():
             st = store.load(item)
