@@ -24,8 +24,8 @@ he should see beside what the game measures, and saves a screenshot under Transi
 READINGS ARE DECILITRES (2026-10-17, P3 exact-level engine): a canal square holds a sheet that no whole notch counts, so
 every dug square is also read through RM_NorthstarProofs.ProofReadout ("Hole 0.5 m . Water 0.24 m (474 L)", litres to the
 whole litre) and a pond's stock in decilitres (stock * 10,000); tolerance TOL_DL per square read. Level rows (".lvl") ask
-ProofLevelSurface for each body's surface gap (bar: 1 cm). The sealed scenes file's whole-notch wording stays printed as
-"doc"; the level-water expectation (level_solution) is printed beside it as "level".
+ProofLevelSurface for each body's surface gap (bar: 1 cm). The sealed scenes file's wording is printed as "doc" (S1-S4 and S6 still count
+notches; S5's third draft states level numbers); the level-water expectation (level_solution) is printed beside it as "level".
 A crash in a scene is printed in full, kept at Transient/fw_scenes/live/<scene>_traceback_<stamp>.txt, recorded as a
 CRASHED row, and the walk goes on. Colonists are fed every 5,000 ticks and a GovernorStop is printed and resumed once:
 the 2026-10-17 S4/S5 tracebacks were the vitals latch stopping the clock on starving quicktest colonists.
@@ -532,7 +532,7 @@ def scene_doc(sid):
 
 
 def expect_line(w, sid, eid, measured, ok, extra="", level="", readout=None, claim=None):
-    """One expected row. `level` = what exact-level water predicts (printed beside the sealed doc's whole-notch wording and
+    """One expected row. `level` = what exact-level water predicts (printed beside the sealed doc's wording and
     kept on the row); `readout` = ProofReadout strings verbatim for the audit trail; `claim` overrides the doc text."""
     s = scene_doc(sid)
     e = next((x for x in s["expected"] if x["id"] == eid), None)
@@ -1123,8 +1123,8 @@ def run_S4(w):
 # by the leveling law, so by gravity a 0.5 m canal takes only a pond's top 0.5 m (A, B); a 2 m canal levels with the
 # pond (F); a pump moves the whole 4,000 L (G). Amounts below are DECILITRES (1 notch = 0.5 m in one square = 10,000 dL =
 # 1,000 L), read per square through ProofReadout and per pond through its stock (notches * 10,000). Under exact-level water
-# (P3) a body stands at ONE surface, so the sealed doc's whole-notch pictures (S5.a "at most 9 wet", S5.c "only cell 1",
-# S5.i "never a 5th") are replaced by level_solution numbers, printed as "level:" beside the doc's wording.
+# (P3) a body stands at ONE surface. The scenes file's S5 THIRD DRAFT (re-sealed 2026-11-03, WATER_SCENES_S5_JUDGE_THIRD_DRAFT)
+# states these level numbers itself; level_solution recomputes them, printed as "level:" beside each measurement.
 def s5_geom():
     ox, oz = INTERIOR["S5"]
     pondA = [(ox + 1 + i, oz + 1 + j) for i in range(3) for j in range(3)]
@@ -1242,11 +1242,11 @@ def run_S5(w):
                 "square above 10,000 dL at: %s; not one run at: %s" % (
                     max(wetA), TOT_A, tolA, badA[:8] or "none", over[:8] or "none", brokenA[:8] or "none"),
                 None if not totA else (not badA and not over and not brokenA),
-                level="the doc's 'at most 9 wet' is a whole-notch picture; level water wets all 10 at one depth (%s dL = 0.237 m each)" %
+                level="level water wets all 10 at one depth (%s dL = 0.237 m each)" %
                 _r(exA_can))
     stA = [x["a"] for _, _, x in h if x["a"] is not None]
     pondA20 = h[20][2]["a"] if len(h) > 20 else None
-    expect_line(w, "S5", "S5.b", "pond A %s -> %s dL, lowest %s; at pulse 20 %s dL (doc: lower than at start, never below 270,000)" % (
+    expect_line(w, "S5", "S5.b", "pond A %s -> %s dL, lowest %s; at pulse 20 %s dL (doc: 312,632 dL at pulse 20, surface -0.263 m)" % (
         sA0, stA[-1] if stA else None, min(stA) if stA else None, pondA20),
         None if not stA or sA0 is None or exA_pond is None else (
             stA[-1] < sA0 and min(stA) >= 27 * LEVEL_UNITS - TOL_DL and near(pondA20, exA_pond * 9, 10)
@@ -1268,7 +1268,7 @@ def run_S5(w):
                 None if not stB or totB10 is None or exB_can is None else (
                     min(stB) >= 3 * LEVEL_UNITS - TOL_DL and near(totB10, TOT_B, 11)
                     and all(near(dl_of(h[k14][1], c), exB_can, 1) for c in g["canalB"]) and near(h[k14][2]["b"], exB_pond, 1)),
-                level="the doc's 'only cell 1 wet' is a whole-notch picture; level water lays %s dL (4.5 cm) on all 10 squares, pond %s dL" % (
+                level="level water lays %s dL (4.5 cm) on all 10 squares, pond %s dL" % (
                     _r(exB_can), _r(exB_pond)),
                 readout=w.readout_lines([g["canalB"][0], g["canalB"][-1], g["pondB"][0]]))
     ref = h[14][1] if len(h) > 14 else None
@@ -1379,7 +1379,7 @@ def run_S5(w):
     expect_line(w, "S5", "S5.i", "end: canal squares %s dL (level: %s), pond %s dL, hoses %.0f dL; pulses where pond+hoses+canal != %s "
                 "(+-%d): %s; undug ground wet: %s" % (cG, levelG, xG["stock"], xG["held"], sG0, tolG, badG[:6] or "none", gw or "never"),
                 None if sG0 is None or None in cG or not readG else (not badG and levelG and (xG["stock"] or 0) <= TOL_DL * 2 and not gw),
-                level="the doc's 'cells 1-4 at 0.5 m, never a 5th' is a whole-notch picture; level water spreads the pumped water over "
+                level="level water spreads the pumped water over "
                 "all 6 squares (4,000 L = %s dL each, 0.333 m), pond dry bar the hoses" % _r(exG[0] if exG else None),
                 readout=w.readout_lines([q["canal"][0], q["canal"][-1], q["pond"]]))
     level_row(w, "S5.lvl.G", q["rect"], "S5 G canal after the pump")

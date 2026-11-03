@@ -15,7 +15,7 @@ the engine or the Python copy of it.
 
 **The machine copy** is
 `D:\Luke\dev\RimMandrake\design\RimMandrake\vv_methods\water_scenes_2026-10-16.scenes.json`, sealed
-`sha256 1e0a16af8f1229f1c71d752853507ebb5e3fd2120ce9d3cdfd41c2b3323f05e1` (re-sealed 2026-10-17 for the S5 redraw).
+`sha256 62e2bd802fe11587d4a305b160c098b80acc0e9267beb71da3034b39b18065e6` (re-sealed 2026-11-03 for the S5 third draft).
 Changing a scene breaks the seal, and you approve it again.
 
 ## How to read the pictures
@@ -157,10 +157,11 @@ only case is overflow from filling in.
 `S4 verdict: [ ] approve  [ ] change  [ ] strike | note:`
 `S4.Q1 answer: [ ] a  [ ] b  [ ] c | note:`
 
-## S5. Nothing appears or vanishes: a pond pays for its canal, by gravity and by pump
+## S5. Nothing appears or vanishes: a pond pays for its canal, at one level, by gravity and by pump
 
-**Redrawn 2026-10-17** after your unified depth ruling (Scheme A). Please approve S5 again; your S3, S4 and S6
-answers stand.
+**Third draft, 2026-11-03.** Redrawn for your exactly-level ruling (2026-10-17: each body of water holds exact
+litres and has one surface). The second draft's limits ("never all 10 cells wet", "cells 1-4, never a 5th")
+came from whole half-metre steps; they are gone. Please approve S5 again; your S3, S4 and S6 answers stand.
 
 ```
 ...............
@@ -180,36 +181,38 @@ answers stand.
 destroyed."* (2026-09-16, filling in). *"1 tank square, 1 deep water square/pond, 1 deep canal square
 should all be the same volume."* (2026-10-12). *"It should slosh around until it levels"* (2026-10-16).
 *"levelset down to a smooth 0 or 1 across a too-wide field like this, not 0, deep, 0"* (2026-10-16).
-Your 2026-10-17 card: litres are the truth, metres the ruler, the step 0.5 m; "five" is gone.
+Your 2026-10-17 cards: litres are the truth, metres the ruler; water is exactly level; redraw S5. And
+*"Yes, north star should check for level surfaces"* (2026-10-17): one surface means every square within 1 cm.
 
-**Why it changed.** Water only flows downhill and settles to one surface. A 0.5 m canal at the brim can
-only take the pond's top 0.5 m. So by gravity a 2 m pond square cannot fill four 0.5 m canal cells; a pump
-can.
+**How the numbers come out.** Water flows only downhill and settles to one surface. A canal takes only the
+water standing above its floor, and every connected square shares that water at one height. Amounts are
+litres to the decilitre.
 
 **You should see.**
-- **A.** Pond and canal always hold 36,000 L between them. The canal never gets all 10 cells wet (at most
-  9), no canal cell goes past 0.5 m, and the wet part is one run from the pond. The pond's surface drops,
-  but it never gives more than its top 0.5 m (it keeps at least 27,000 L).
-- **B.** Off a 1-square pond: at most canal cell 1 gets wet, at most 0.5 m. The pond keeps at least
-  3,000 L. The wet front then stays put for 40 more pulses.
-- **C.** Then fill in canal cell 1: nothing is destroyed. Canal and pond still hold 4,000 L, and no
-  overflow message appears.
+- **A.** Pond and canal always hold 36,000 L between them, and no canal cell goes past 0.5 m. By pulse 20 the
+  water stands at one surface 0.263 m below ground: **all 10 canal cells are wet, 0.237 m (473.7 L) each**.
+  The pond stands 1.737 m deep (31,263.2 L); the canal holds 4,736.8 L.
+- **B.** Off a 1-square pond, by pulse 10: **all 10 cells are wet, 4.5 cm (90.9 L) each**. The pond stands
+  1.545 m deep (3,090.9 L). Total 4,000 L. Then nothing moves (by more than 1 L a square) for 40 more pulses.
+- **C.** Then fill in canal cell 1: nothing is destroyed, no overflow message, still 4,000 L. Cells 2-10 are
+  now cut off from the pond, a body of their own, and each body stands at one level.
 - **D.** A 3-cell, 0.5 m run, full, touching nothing. Fill in the middle cell: exactly 1,000 L is
-  destroyed, and the player gets a message giving the amount.
-- **E.** A wide 6x6 basin, 1 m deep, holding 8,000 L heaped in its centre: it settles by pulse 20 into one
-  connected shallow patch. No cell stays 1 m deep while any cell is dry. Still 8,000 L.
+  destroyed, and the player gets a message giving the amount. The two end cells keep 1,000 L each.
+- **E.** A wide 6x6 basin, 1 m deep, holding 8,000 L heaped in its centre: by pulse 20 **all 36 cells are wet,
+  0.111 m (222.2 L) each**. None stays 1 m deep, none is dry. Still 8,000 L.
 - **F.** A 1-square pond beside one 2 m canal square: by pulse 10 they level, each holding 1 m of water
   (2,000 L each, 4,000 L in all).
-- **G.** A pump draws the 1-square pond into a 0.5 m canal: the pond empties (bar what the hoses hold),
-  and canal cells 1-4 end at 0.5 m (cells 1-3 if the hoses still hold water). Never a 5th cell. Pond, hoses
-  and canal always add up to 4,000 L.
+- **G.** A pump draws the 1-square pond into a 0.5 m canal: the pond empties (at most 2 L left), and **all six
+  canal cells end wet at one level**, sharing whatever the hoses do not hold: 666.7 L (0.333 m) each with
+  the hoses empty. Pond, hoses and canal always add up to 4,000 L.
 
-**It fails if** any total changes except D's announced 1,000 L; A wets all 10 cells or B more than one;
-E stays "0, deep, 0"; F stays unlevel; G wets a 5th cell.
+**It fails if** any total changes except D's announced 1,000 L; a settled canal in A, B or G keeps a dry
+cell, or any body has two squares more than 1 cm apart (a staircase of full and dry cells); water stands
+above its own surface; E stays "0, deep, 0"; F stays unlevel.
 
-**Not claimed:** whether A's top 0.5 m ends mostly in the pond or the canal. Which pond squares dry first.
-Which 8 basin cells end wet. Whether C's displaced water lands in the canal or the pond. How much the hoses
-hold. The wording of the message.
+**Not claimed:** which square carries a leftover decilitre or two when the litres do not divide evenly. The
+path and pace of the water before it settles. Whether C's displaced 91 L lands in the pond or in cells
+2-10. How much the hoses hold. The wording of the message.
 
 `S5 verdict: [ ] approve  [ ] change  [ ] strike | note:`
 

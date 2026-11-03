@@ -356,21 +356,21 @@
   },
   {
    "id": "S5",
-   "title": "Nothing created or destroyed: a closed pond pays for its canal, by gravity and by pump",
+   "title": "Nothing created or destroyed: a closed pond pays for its canal at one level, by gravity and by pump",
    "grid": [
     "...............",
-    ".PPP...........          A: 3x3 pond, 2 m (36,000 L); 10-cell 0.5 m canal",
+    ".PPP...........          A: 3x3 pond, 2 m (36,000 L); 10-cell 0.5 m canal; settles 0.263 m below ground",
     ".PPP1111111111.",
     ".PPP...........",
     "...............",
-    ".P1111111111...          B: 1-square pond, 2 m (4,000 L); 10-cell 0.5 m canal",
+    ".P1111111111...          B: 1-square pond, 2 m (4,000 L); 10-cell 0.5 m canal; settles 0.455 m below ground",
     "...............",
-    ".P4............          F: 1-square pond, 2 m; one 2 m canal square",
+    ".P4............          F: 1-square pond, 2 m; one 2 m canal square; settles 1 m below ground",
     "...............",
     ".<====U====>111111.      G: '<' lies on a 1-square pond, 2 m; pump; 6-cell 0.5 m canal",
     "..............."
    ],
-   "setup": "Nothing touches a map edge. Water moves by the ruled leveling law: it flows only downhill and settles to one surface; a canal takes only water standing above its own floor. Part A: a 3x3 enclosed deep pond (9 squares, 2 m, 36,000 L) and a 10-cell 0.5 m canal dug dry off it, by gravity. Part B: the same canal off a 1-square pond (2 m, 4,000 L), by gravity. Part C: in Part B's end state, fill in canal cell 1. Part D: an isolated 3-cell 0.5 m run, every cell authored full (0.5 m), touching nothing; fill in the middle cell. Part E: an enclosed 6x6 basin 1 m deep with 8,000 L authored as 4 centre cells at 1 m, the rest dry. Part F: a 1-square pond (2 m, 4,000 L) beside one dry 2 m dug canal square, by gravity. Part G: a 1-square pond (2 m, 4,000 L); a powered pump on dry ground; one hose from the pump to the pond, end set to Intake; one hose from the pump to cell 1 of a 6-cell 0.5 m canal, end set to Outflow; no tank. The canal is at least 2 undug cells from the pond.",
+   "setup": "Nothing touches a map edge. Water is EXACTLY LEVEL (ruling R1, 2026-10-17): every connected body of still water holds a whole number of decilitres and stands at ONE surface height; a square holds max(0, surface - its floor) of it. Water flows only downhill: a canal takes only water standing above its own floor. In this scene a fill is read in litres to the decilitre (1 m of water in one square = 2,000 L = 20,000 dL), not in whole notches; this replaces the global 'holds 0..D notches' reading for S5 only. 'One surface' means every square of the body within 1 cm (20 L in one square) of the same height (the R9 bar). Part A: a 3x3 enclosed deep pond (9 squares, 2 m, 36,000 L) and a 10-cell 0.5 m canal dug dry off it, by gravity. Part B: the same canal off a 1-square pond (2 m, 4,000 L), by gravity. Part C: in Part B's end state, fill in canal cell 1 (the square touching the pond). Part D: an isolated 3-cell 0.5 m run, every cell authored full (0.5 m, 1,000 L), touching nothing; fill in the middle cell. Part E: an enclosed 6x6 basin 1 m deep with 8,000 L authored as 4 centre cells at 1 m, the rest dry. Part F: a 1-square pond (2 m, 4,000 L) beside one dry 2 m dug canal square, by gravity. Part G: a 1-square pond (2 m, 4,000 L); a powered pump on dry ground; one hose from the pump to the pond, end set to Intake; one hose from the pump to cell 1 of a 6-cell 0.5 m canal, end set to Outflow; no tank. The canal is at least 2 undug cells from the pond.",
    "rulings": [
     {
      "quote": "Scarcity is stock, not rate ... conservation of mass is true everywhere.",
@@ -407,6 +407,18 @@
      "date": "2026-10-17",
      "file": "design/RimMandrake/flowworks_unified_depth_2026-10-17.md section 10 (D1 by card; D6 S5 redraw defaulted, veto-able)",
      "verbatim": false
+    },
+    {
+     "quote": "Water is exactly level: each connected body holds exact decilitres and has one surface height.",
+     "date": "2026-10-17",
+     "file": "design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md section 0 (R1 by card; R3 'Redraw scene S5 with level-water numbers' by card)",
+     "verbatim": false
+    },
+    {
+     "quote": "Yes, north star should check for level surfaces",
+     "date": "2026-10-17",
+     "file": "infrastructure/state/ledger/events/OWNER.jsonl tsn 1792258162801304562 (R9: one surface height to within 1 cm, read from game state)",
+     "verbatim": true
     }
    ],
    "expected": [
@@ -414,74 +426,73 @@
      "id": "S5.a",
      "kind": "invariant",
      "during": "A",
-     "claim": "Pond + canal always hold 36,000 L. At no pulse are all 10 canal cells wet (at most 9); no canal cell ever holds more than 0.5 m; the wet canal cells are one unbroken run from the pond."
+     "claim": "Pond + canal always hold 36,000.0 L (360,000 dL). No canal cell ever holds more than 0.5 m (1,000 L); the wet canal cells are always one unbroken run from the pond."
     },
     {
      "id": "S5.b",
      "kind": "eventual",
      "during": "A",
      "by_pulse": 20,
-     "claim": "The pond holds less water than at the start (its surface is lower), and never less than 27,000 L: it gives at most its top 0.5 m."
+     "claim": "Settled at one surface 0.263 m (5/19 m) below ground: ALL TEN canal cells are wet, each 0.237 m (473.7 L); the pond stands 1.737 m deep and holds 31,263.2 L; the canal holds 4,736.8 L; total 36,000.0 L."
     },
     {
      "id": "S5.c",
      "kind": "eventual",
      "during": "B",
      "by_pulse": 10,
-     "claim": "At most one canal cell, cell 1, is ever wet, holding at most 0.5 m; the pond keeps at least 3,000 L; pond + canal = 4,000 L."
+     "claim": "Settled at one surface 0.455 m (5/11 m) below ground: ALL TEN canal cells are wet, each 4.5 cm (90.9 L); the pond stands 1.545 m deep and holds 3,090.9 L; the canal holds 909.1 L; total 4,000.0 L."
     },
     {
      "id": "S5.d",
      "kind": "invariant",
      "during": "B after settling",
-     "claim": "The wet front does not move for 40 more pulses."
+     "claim": "The level does not move for 40 more pulses: no square's water changes by more than 1 L."
     },
     {
      "id": "S5.e",
      "kind": "eventual",
      "during": "C",
-     "claim": "Filling in cell 1 destroys nothing: canal + pond still hold 4,000 L, and no overflow message appears."
+     "claim": "Filling in cell 1 destroys nothing: pond + canal cells 2-10 still hold 4,000.0 L, and no overflow message appears. Cells 2-10 are now a body of their own, cut off from the pond; the pond and that run each stand at one surface."
     },
     {
      "id": "S5.f",
      "kind": "eventual",
      "during": "D",
-     "claim": "Filling in the middle cell destroys exactly 1,000 L (0.5 m in one square), and the player sees a message that names the amount."
+     "claim": "Filling in the middle cell destroys exactly 1,000.0 L (0.5 m in one square), and the player sees a message that names the amount; the two end cells keep 1,000.0 L each."
     },
     {
      "id": "S5.g",
      "kind": "eventual",
      "during": "E",
      "by_pulse": 20,
-     "claim": "Settled: no cell holds 1 m while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8,000 L."
+     "claim": "Settled at one surface: all 36 basin cells are wet, each 0.111 m (222.2 L); none is dry and none stays 1 m deep; the total is still 8,000.0 L."
     },
     {
      "id": "S5.h",
      "kind": "eventual",
      "during": "F",
      "by_pulse": 10,
-     "claim": "The pond square and the 2 m canal square settle to one surface: each holds 1 m of water (2,000 L); the total is 4,000 L; nothing changes for 10 more pulses."
+     "claim": "The pond square and the 2 m canal square settle to one surface 1 m below ground: each holds 1 m of water (2,000.0 L); the total is 4,000.0 L; nothing changes for 10 more pulses."
     },
     {
      "id": "S5.i",
      "kind": "eventual",
      "during": "G",
      "by_pulse": 30,
-     "claim": "Pond + hoses + canal = 4,000 L at every pulse. The pump empties the pond (bar what the hoses hold); the canal ends with cells 1-4 wet at 0.5 m each (cells 1-3 if the hoses still hold water), never a 5th; no undug cell is ever wet."
+     "claim": "Pond + hoses + canal = 4,000.0 L at every pulse. The pump empties the pond (at most 2 L left in it). All six canal cells end wet at one surface, each holding a sixth of what the hoses do not hold: 666.7 L (0.333 m) each when the hoses are empty, never more; no canal cell ever holds more than 0.5 m; no undug cell is ever wet."
     }
    ],
    "fails_if": [
     "any total changes except Part D's disclosed 1,000 L",
-    "Part A ever wets all 10 canal cells, or Part B more than one: water climbing above its own surface",
+    "a settled canal in Part A, B or G keeps a dry cell, or any settled body has two squares more than 1 cm apart in surface (a whole-notch staircase: some cells brim-full, the rest dry)",
+    "water stands above its own surface anywhere (a canal cell deeper than the pond's surface allows)",
     "Part E stays 0, deep, 0",
-    "Part F stays unlevel (pond full and canal dry, or the reverse)",
-    "Part G wets a 5th canal cell"
+    "Part F stays unlevel (pond full and canal dry, or the reverse)"
    ],
    "exclusions": [
-    "whether Part A's top 0.5 m ends mostly in the pond or in the canal",
-    "whether Part C's displaced water lands in the canal or the pond",
-    "which pond squares recede first",
-    "which 8 basin cells end wet in Part E",
+    "which square of a body carries a leftover decilitre or two when its litres do not divide evenly",
+    "the path and pace the water takes before it settles, inside each horizon",
+    "whether Part C's displaced water lands in the pond or in cells 2-10 (so that run ends between 90.9 L and 101.0 L a cell)",
     "how much the hoses hold at any pulse in Part G",
     "the wording of the overflow message"
    ],
@@ -551,7 +562,7 @@
  "seal": {
   "algo": "sha256",
   "over": "canonical JSON (sort_keys, compact) of legend+global+scenes",
-  "value": "1e0a16af8f1229f1c71d752853507ebb5e3fd2120ce9d3cdfd41c2b3323f05e1"
+  "value": "62e2bd802fe11587d4a305b160c098b80acc0e9267beb71da3034b39b18065e6"
  },
  "owner_verdicts": {
   "recorded": "2026-10-17, owner at the keyboard, by question card; recorded by a FOUNDRY helper. Outside the seal. The file was re-sealed the same day for the S5 redraw (see revisions); these answers are unaffected.",
@@ -588,6 +599,14 @@
    "old_seal": "5244a13e6fdf097ef64089654c8f19552f06edf7c37a2de2fbcda08adc4c7184",
    "new_seal": "1e0a16af8f1229f1c71d752853507ebb5e3fd2120ce9d3cdfd41c2b3323f05e1",
    "owner_must": "re-approve S5 only; his S3.Q1, S4.Q1 and S6.Q1 answers stand"
+  },
+  {
+   "date": "2026-11-03",
+   "what": "S5 THIRD DRAFT (plan P10, ruling R3): redrawn for exactly-level water (R1) and the 1 cm level bar (R9). The whole-notch bounds are gone: A and B now wet all ten canal cells at one depth (0.237 m; 4.5 cm), E lays one 0.111 m sheet over all 36 cells, G spreads the pumped water over all six cells (0.333 m). C notes the cut-off run is a body of its own. Figures match northstar/level_water.py and flowworks_level_surface_2026-10-17.md section 1. Legend, global and S1-S4, S6 unchanged.",
+   "old_seal": "1e0a16af8f1229f1c71d752853507ebb5e3fd2120ce9d3cdfd41c2b3323f05e1",
+   "new_seal": "62e2bd802fe11587d4a305b160c098b80acc0e9267beb71da3034b39b18065e6",
+   "owner_must": "approve S5 only (third draft); his S3.Q1, S4.Q1 and S6.Q1 answers stand",
+   "item": "WATER_SCENES_S5_JUDGE_THIRD_DRAFT"
   }
  ]
 }
