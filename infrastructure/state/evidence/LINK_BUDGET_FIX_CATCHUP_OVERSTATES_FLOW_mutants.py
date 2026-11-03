@@ -89,6 +89,15 @@ def stage_case(dotnet, win_csproj, exe):
 
 def main():
     t0 = time.time()
+    # Preflight: the 2026-11-03 checkers were lost because /tmp (an 18G tmpfs) was 100% full and no shell
+    # could start. Name that state instead of dying opaquely mid-build.
+    for d in ("/tmp", os.environ.get("TMPDIR") or "/tmp"):
+        if os.path.isdir(d):
+            st = os.statvfs(d)
+            free_mb = st.f_bavail * st.f_frsize // (1024 * 1024)
+            if free_mb < 200:
+                print("UNMEASURED: %s has %d MB free (need 200); free scratch there first" % (d, free_mb))
+                return 1
     with open(SRC, "rb") as f:
         repo_src = f.read()
     if repo_src.decode("utf-8").count(LINE) != 1:
