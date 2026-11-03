@@ -229,8 +229,8 @@ class Fake(object):
     def end_gale(self):
         b = self.b
         self.cond = None
-        delta = "+0.0" if "dunes_still" in b else "+4.4"
-        moved = 0 if "dunes_still" in b else 11
+        delta = "+0.0" if ("dunes_still" in b or "no_mass_delta" in b) else "+4.4"
+        moved = 0 if ("dunes_still" in b or "no_cells_moved" in b) else 11
         self.log_info("[Stillsand] dune gale ended on Map-1-PlayerHome: dune field mass 3.2 -> 7.6 "
                       "(delta %s); cells moved past 0.20: %d; carried 0" % (delta, moved))
         if "no_emergence" in b:
@@ -1081,6 +1081,9 @@ BREAKS = {
     "gale_ignores_toggle": ["gale.gale_toggle_off_refuses"],
     "no_herald": ["gale.gale_phases_and_aftermath"],
     "dunes_still": ["gale.gale_phases_and_aftermath"],
+    # A1 needs BOTH numbers non-zero: each alone turns the row red
+    "no_cells_moved": ["gale.gale_phases_and_aftermath"],
+    "no_mass_delta": ["gale.gale_phases_and_aftermath"],
     # STILLSAND_DUNE_GALE_LIVE_1: the pawn-exposure read, the emergence's things, the carry rows
     "emergence_things_gone": ["gale.gale_phases_and_aftermath"],
     "gale_not_dim": ["gale.gale_dims_sun_exposure"],

@@ -2541,6 +2541,12 @@ def gale_chain(t):
             if abs(float(m.group(1))) == 0.0 and int(m.group(2)) == 0:
                 _fail("a full gale moved no sand at all (delta +0.0, 0 cells): the dunes did not march "
                       "(%s)" % line)
+            # the item's bar is BOTH a non-zero mass delta AND a non-zero cells-moved count
+            if abs(float(m.group(1))) == 0.0:
+                _fail("the gale-end mass delta is zero (the item needs a non-zero delta): %s" % line)
+            if int(m.group(2)) == 0:
+                _fail("the gale moved 0 cells past wipeDepthDelta (the item needs a non-zero cells moved "
+                      "count): %s" % line)
             emerged = [l for l in new if l[0] in EMERGENCE_LABELS]
             if len(emerged) != 1:
                 _fail("expected exactly one emergence letter at gale end, got %s" % [l[0] for l in new])
