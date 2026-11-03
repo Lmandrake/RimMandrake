@@ -15,7 +15,9 @@ Bars (each prints PASS/FAIL; exit 1 on any FAIL):
   B6 the defs: RUT_GenStep_ZeddosYard runs this plan at order < 600 (before ReserveGravshipArea), and
      TileMutatorDef RUT_ZeddosYard carries it
   B7 canon.yml pins it: planet.start_tile == 17007 (read by a YAML loader that REFUSES a duplicate key;
-     plain safe_load keeps the last silently) and planet.start_tile_mutator == RUT_ZeddosYard; the final-paint list names it
+     plain safe_load keeps the last silently) and planet.start_tile_mutator == RUT_ZeddosYard, whose start_tile_mutator_src names the final-paint list
+     (BIOME_PAINT_ONCE_AT_THE_END_1). canon.yml is the committed record the paint list defers to; the item
+     prose under infrastructure/state/items/ is not in a clean export, so it is cross-checked only where present
   B8 planted defects are caught: a thing in the clearing fails B3; a non-DLC def and a ThingDef used as
      terrain fail B5; a duplicate canon key fails B7's loader
 """
@@ -189,11 +191,17 @@ def main():
     bar("B6 GenStepDef + TileMutatorDef", ok6)
 
     planet, yerr = load_planet(CANON)
-    paint = open(PAINT, encoding="utf-8").read()
+    planet = planet or {}
+    src = str(planet.get("start_tile_mutator_src") or "")
     bar("B7 canon pins the start", yerr is None and planet.get("start_tile") == 17007
-        and planet.get("start_tile_mutator") == "RUT_ZeddosYard" and "RUT_ZeddosYard" in paint,
-        "yaml error=%r start_tile=%r start_tile_mutator=%r" % (yerr, (planet or {}).get("start_tile"),
-                                                               (planet or {}).get("start_tile_mutator")))
+        and planet.get("start_tile_mutator") == "RUT_ZeddosYard" and "BIOME_PAINT_ONCE_AT_THE_END_1" in src,
+        "yaml error=%r start_tile=%r start_tile_mutator=%r src_names_paint_list=%s"
+        % (yerr, planet.get("start_tile"), planet.get("start_tile_mutator"), "BIOME_PAINT_ONCE_AT_THE_END_1" in src))
+    if os.path.exists(PAINT):  # a seat clone carries the item prose; a clean export does not
+        paint = open(PAINT, encoding="utf-8").read()
+        bar("B7b paint-list item names the mutator", "RUT_ZeddosYard" in paint and "start_tile_mutator" in paint)
+    else:
+        print("INFO B7b paint-list item not in this tree (items/ absent); canon.yml is the record")
 
     # B8 planted defects: the instruments must be able to see a failure.
     planted = dict(p, things=p["things"] + [("ShipChunk", gen.W // 2, gen.H // 2, 0)])
