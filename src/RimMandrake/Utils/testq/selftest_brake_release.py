@@ -26,7 +26,8 @@ def main():
         os.makedirs(d)
     open(led, "w").close()
     os.environ.update(TESTQ_QUEUE=tmp, TESTQ_INGEST_PUSH="0", RIMFLOW_LEDGER=led, RIMFLOW_ITEMS=items,
-                      RM_PULSE_STATE=pulse, TESTQ_STEWARD_WAKE="0")
+                      RM_PULSE_STATE=pulse, TESTQ_STEWARD_WAKE="0", RM_OPS_WATCH_DIR=os.path.join(tmp, "ops"),
+                      RM_DATA_ROOT=os.path.join(tmp, "data"))
     for k in ("RIMFLOW_SEAT", "CLAUDE_PROJECT_DIR"):
         os.environ.pop(k, None)
     os.environ.pop("TESTQ_FILL_MODS", None)
@@ -36,7 +37,8 @@ def main():
     import brake_release as BR
     import steward as W
     W.tick_timer_state = lambda: "active"
-    T.preview = lambda mod, sel: {"refusal": None, "rows": None, "drivers": [], "chains": None}
+    real_fill_rank = T.fill_rank        # the wiring section below asks it for a chain that exists today
+    T.preview =lambda mod, sel: {"refusal": None, "rows": None, "drivers": [], "chains": None}
     T.fill_rank = lambda mod, n, now, today=None, exclude=(): {"verdict": "exhausted", "pick": [], "text": "x"}
     now = time.time()
     check(T.QHOME == tmp, "the queue is the temp one")
@@ -54,15 +56,15 @@ def main():
             if os.path.exists(T.q(f)):
                 os.remove(T.q(f))
 
-    def job(at, by=T.FILLER, canary=True):
-        j = S.make_job("Mock", {"chains": ["c1"]}, "guard", by, "abc1234", canary=canary)
+    def job(at, by=T.FILLER, canary=True, mod="Mock", chain="c1"):
+        j = S.make_job(mod, {"chains": [chain]}, "guard", by, "abc1234", canary=canary)
         j["id"] = j["id"][:-6] + "%06x" % (abs(hash((at, by))) % 0xffffff)
         j["submitted"] = iso(at)
         return j
 
-    def done(at, outcome, cause, cancelled=False, by=T.FILLER, canary=True, sent=None):
-        j = job(at, by, canary)
-        res = {"schema": S.RESULT_SCHEMA, "job": j["id"], "attempt": j["id"] + ".a1", "outcome": outcome, "cause": cause,
+    def done(at, outcome, cause, cancelled=False, by=T.FILLER, canary=True, sent=None, mod="Mock", chain="c1"):
+        j = job(at, by, canary, mod, chain)
+        res ={"schema": S.RESULT_SCHEMA, "job": j["id"], "attempt": j["id"] + ".a1", "outcome": outcome, "cause": cause,
                "rows": [], "counts": {}, "runner_sha": "d", "artifacts": [], "note": "x", "started": iso(at),
                "finished": iso(at + 60)}
         rec = {"job": j, "result": res, "attempts": [res["attempt"]], "cancelled": cancelled, "finished": iso(at + 60)}
@@ -270,6 +272,99 @@ def main():
     done(d0 + 900 + 150000, "REFUSED", "SYNC", cancelled=True)
     T.record_lane_window("maintenance", "2026-11-02T00:13:21Z", "2026-11-03T19:11:33Z", "NVMe swap")
     check(plan()["verdict"] != "brake", "2026-11-03: the cancelled SYNC job is out, so the filler was never braked")
+
+    # ------------------------------------------------ the wiring: nothing between Operations and the release is stubbed
+    # A blind check (2026-11-03) broke ops_watch.steve_release's path and c_flow's fault argument and every test stayed
+    # green: the above call release_pass and steve_incident_unclaimed directly. Here it is the real OW functions.
+    sys.path.insert(1, os.path.dirname(HERE))
+    import ops_watch as OW
+    from pathlib import Path
+
+    # clause 2: OW.steve_release runs the real brake_release.py as its own process: no stub of preview, fill_rank, submit
+    wipe()
+    pick = real_fill_rank("FlowWorks", 1, now).get("pick") or []
+    chain = pick[0] if pick else "all_off_still_digs"
+    done(day, "INTERRUPTED", "CRASH", mod="FlowWorks", chain=chain)
+    done(day + 200, "INVALID", "GAME_DIED", mod="FlowWorks", chain=chain)
+    window(day - 10, day + 400)
+    flags = OW.steve_release()
+    rd = T.read_json(T.q(BR.STATE)) or {}
+    c = pending_canaries()
+    check(flags == [] and rd.get("state") == "released" and len(T.records("pending")) == 1 and len(c) == 1,
+          "OW.steve_release, real process: released, exactly one pending job: flags=%s reading=%s" % (flags, rd))
+    check(sorted((rd.get("causes") or {}).values()) == ["maintenance", "maintenance"], "its reading names the recorded causes")
+    check(c and c[0]["canary"] is True and c[0]["lane"] == T.STEVE and c[0]["mod"] == "FlowWorks"
+          and len(c[0]["selector"]["chains"]) == 1 and (rd.get("canary") or {}).get("job") == c[0]["id"],
+          "the job on the queue is that canary: on, on the Steve lane, one chain, named by the reading")
+    flags = OW.steve_release()
+    rd = T.read_json(T.q(BR.STATE)) or {}
+    check(flags == [] and rd.get("state") == "none" and len(T.records("pending")) == 1,
+          "a second real pass adds nothing: flags=%s reading=%s" % (flags, rd))
+    real_here, OW.HERE = OW.HERE, Path(tmp) / "no_such_dir"
+    before = T.read_json(T.q(BR.STATE))
+    flags = OW.steve_release()
+    OW.HERE = real_here
+    check(len(flags) == 1 and flags[0]["rule"] == "brake_release" and "exit" in flags[0]["detail"]
+          and T.read_json(T.q(BR.STATE)) == before, "a release script that will not run is a flag, not silence: %s" % flags)
+
+    # clause 3, first half, through the same door: an unknown cause gets no canary
+    wipe()
+    done(day, "INTERRUPTED", "CRASH", mod="FlowWorks", chain=chain)
+    done(day + 200, "INTERRUPTED", "CRASH", mod="FlowWorks", chain=chain)
+    flags = OW.steve_release()
+    rd = T.read_json(T.q(BR.STATE)) or {}
+    check(flags == [] and rd.get("state") == "escalate" and T.records("pending") == [],
+          "OW.steve_release on a tail with no recorded cause: escalate, nothing submitted: %s" % rd)
+
+    # clause 3: the real c_flow on real replayed events, with the fault the real steward wrote, through the real alarm rule
+    wipe()
+    import pulse_core as pc
+    rules = OW.load_rules()
+    tg = [t for t in rules["targets"] if t["key"] == "steve.incident_unclaimed_min"]
+    check(len(tg) == 1 and tg[0]["value"] == 30 and tg[0]["alarm"] is True and tg[0]["name"] == "OPS_STEVE_UNSTICK_UNCLAIMED",
+          "the alarm rule is 30 min, alarming, OPS_STEVE_UNSTICK_UNCLAIMED: %s" % tg)
+    iid = "STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_6D94"
+    filed = {"seat": "BENCH", "event": "file", "id": iid, "title": "x", "kind": "task", "target": "v1", "needs": "offline",
+             "for": "BENCH", "ts": iso(now - 3000 * 60), "tsn": 1}
+    blocked = [filed, {"seat": "BENCH", "event": "block", "id": iid, "reason": "old outage needs a hand",
+                       "ts": iso(now - 2900 * 60), "tsn": 2}]
+    lapsed = [filed, {"seat": "BENCH", "event": "lease", "id": iid, "action": "take", "token": "tok12345",
+                      "expires": iso(now - 40 * 60), "ts": iso(now - 100 * 60), "tsn": 2},
+              {"seat": "BENCH", "event": "start", "id": iid, "ts": iso(now - 100 * 60), "tsn": 3}]
+    real_ledger = pc.read_ledger
+
+    def read(events):
+        pc.read_ledger = lambda *a, **k: events
+        try:
+            p = OW.c_flow(now, rules, {})["steve.incident_unclaimed_min"]
+        finally:
+            pc.read_ledger = real_ledger
+        st = OW.target_state({"steve.incident_unclaimed_min": p}, rules)
+        return p.get("m"), p.get("v"), st.get("STEVE_INCIDENT_UNCLAIMED:steve.incident_unclaimed_min")
+
+    def fault(mins, state="BRAKED"):
+        S.dump({"epoch": now - 60, "state": state, "fault": True, "since": iso(now - mins * 60)}, T.q("steward.json"))
+
+    fr = now - 7200
+    done(fr - 300, "INVALID", "HARNESS"), done(fr, "INVALID", "HARNESS")
+    w1 = W.steward_pass(now=now - 75 * 60, mods=["Mock"])
+    w2 = W.steward_pass(now=now - 60, mods=["Mock"])
+    check(w1["fault"] is True and w2["fault"] is True and w2["state"] == "BRAKED", "the real steward writes a 75 min BRAKED fault")
+    m, v, alarm = read(blocked)
+    check(m == "MEASURED" and v == 75.0 and alarm is True,
+          "a blocked escalation under the steward's own fault, through c_flow: 75 min and the alarm: %s %s %s" % (m, v, alarm))
+    fault(10)
+    m, v, alarm = read(blocked)
+    check(v == 10.0 and alarm is False, "the same item under a 10 min fault: under the line: %s %s" % (v, alarm))
+    fault(75, "UNREACHABLE")
+    m, v, alarm = read(blocked)
+    check(v == 0.0 and alarm is False, "machine down: blocked on the in-person step is waiting on the right thing: %s %s" % (v, alarm))
+    os.remove(T.q("steward.json"))
+    m, v, alarm = read(blocked)
+    check(v == 0.0 and alarm is False, "no fault at all: 0: %s %s" % (v, alarm))
+    m, v, alarm = read(lapsed)
+    check(m == "MEASURED" and v == 3000.0 and alarm is True,
+          "a doing item whose lease lapsed, through c_flow with no fault needed: its age and the alarm: %s %s %s" % (m, v, alarm))
 
     src = open(os.path.join(HERE, "brake_release.py"), encoding="utf-8").read()
     check("claude" not in src.lower().replace("no llm", "") and "gpt" not in src.lower(), "no LLM in the release pass")
