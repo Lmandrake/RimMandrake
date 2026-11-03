@@ -4,7 +4,7 @@
 Checks, on the save canon.yml names (planet.start_savegame) in the live Saves folder AND its
 repo copy under world/: the two are byte-identical; no landmark name is held by two landmarks;
 tile 2403's RUT_GapingDoom is named "The Gaping Doom"; every row of
-infrastructure/state/items/LANDMARK_NAMING_PASS_1.renames.json reads back with its new name.
+world/ASHKARR_R3_landmark_renames_2026-11-03.json reads back with its new name.
 A save that cannot be found fails (exit 1), never passes. LANDMARK_NAMING_PASS_1.
 """
 import argparse
@@ -22,7 +22,7 @@ from canon_save import start_savegame_name  # noqa: E402
 from landmark_rename_save import read_landmarks  # noqa: E402
 
 SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
-RENAMES = os.path.join(REPO, "infrastructure", "state", "items", "LANDMARK_NAMING_PASS_1.renames.json")
+RENAMES = os.path.join(REPO, "world", "ASHKARR_R3_landmark_renames_2026-11-03.json")
 
 
 def check_text(text, renames):

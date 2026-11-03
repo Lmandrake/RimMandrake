@@ -16,7 +16,7 @@ named "Asonistia City" (its def's `NamerLandmark_Ruins` rolled a city name at th
   (every row guarded by tile + def + old name; plans and verifies all saves before writing any;
   backup `<save>.bak-pre-<tag>`). The live tool `jawa/world_landmark_rename` still exists for a
   running game.
-- **Table:** `infrastructure/state/items/LANDMARK_NAMING_PASS_1.renames.json`, 33 rows: The
+- **Table:** `world/ASHKARR_R3_landmark_renames_2026-11-03.json`, 33 rows: The
   Gaping Doom, six Dead sarlacc in regional voice (15623 keeps the name), and one row per extra
   holder of the other 23 names, named from the tile's region in `world/ASHKARR_WORLDMAP_tiles.csv`.
   The first holder of each name keeps it. Delegated: naming (not on delegation_policy.md §2).

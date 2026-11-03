@@ -62,7 +62,7 @@ and most reliable world save, so nobody has to rebuild the answer from 40 file n
 **Current world save: `Saves\ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**
 (13,564,365 bytes, sha256 `cfeb45446ff2f188…`, since 2026-11-03: 33 landmark names edited offline so no two
 landmarks share a name and tile 2403 reads The Gaping Doom (`LANDMARK_NAMING_PASS_1`; table
-`infrastructure/state/items/LANDMARK_NAMING_PASS_1.renames.json`, tool `src/RimMandrake/Utils/landmark_rename_save.py`,
+`world/ASHKARR_R3_landmark_renames_2026-11-03.json`, tool `src/RimMandrake/Utils/landmark_rename_save.py`,
 check `landmark_names_check.py`); only those 33 `<name>` lines changed. The file before it, 13,564,300 bytes, sha256
 `2c6525bcc357f2eb…`, is `…R3.rws.bak-pre-landmark-names-2026-11-03` beside it and in
 `D:\ClaudeWork\backups\saves_pre_landmark_names_2026-11-03\`. That one dates from 2026-11-02: the empty
