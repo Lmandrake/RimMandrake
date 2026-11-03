@@ -10949,3 +10949,4 @@
 {"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR A2 (L2), read-only proof","ts":"2026-11-02T23:49:01Z","tsn":1793663341128787349}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-11-02T23:49:05Z","tsn":1793663345531696500}
 {"seat":"BENCH","event":"note","id":"WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR","text":"relentless live A2 L2 UNMEASURED: the proof exited 2: it did not measure (/home/mandrake/rm/relentless/live/WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR-A2-20261102T234858Z.log)","why":"relentless live tier: no verdict, no run recorded","ts":"2026-11-02T23:49:07Z","tsn":1793663347757346704}
+{"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORIZON_CARAVAN_VANILLA_REFUSES_1 A1 (L2), read-only proof","ts":"2026-11-03T00:00:10Z","tsn":1793664010978156584}
