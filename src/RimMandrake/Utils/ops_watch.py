@@ -979,7 +979,8 @@ def disk_mounts():
             name, sep, mnt = kv.strip().partition("=")
             out[name if re.fullmatch(r"\w+", name) else "bad%d" % i] = mnt if sep and mnt else None
         return out
-    return {"root": "/", "c": "/mnt/c", "d": "/mnt/d"}
+    # tmp: the /tmp tmpfs (18 GB, RAM-backed); full, every selftest's mkdtemp fails ENOSPC (TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
+    return {"root": "/", "c": "/mnt/c", "d": "/mnt/d", "tmp": "/tmp"}
 
 
 SO_RANGES = ("disk.scratch_outside_cap", "disk.scratch_outside_blind")
@@ -1033,9 +1034,13 @@ def c_disk(now, rules, ctx):
             out["disk.%s_free_gb" % name] = M(round(du.free / 1e9, 1), "GB free on %s" % mnt,
                                              total_gb=round(du.total / 1e9, 1))
             out["disk.%s_used_gb" % name] = M(round(du.used / 1e9, 1), "GB used on %s" % mnt)
+            if name == "tmp":       # a small volume: the share is the honest line, GB free the absolute floor
+                out["disk.tmp_used_pct"] = M(round(100 * du.used / du.total, 1), "% used on " + mnt)
         except OSError as e:
             out["disk.%s_free_gb" % name] = U("%s: %s" % (mnt or name, e))
             out["disk.%s_used_gb" % name] = U("%s: %s" % (mnt or name, e))
+            if name == "tmp":
+                out["disk.tmp_used_pct"] = U("%s: %s" % (mnt or name, e))
     p = scratch_runs_path()
     try:
         r = json.loads(last_line(p) or "null")

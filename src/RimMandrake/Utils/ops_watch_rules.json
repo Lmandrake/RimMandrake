@@ -434,7 +434,7 @@
   "sigma_floor_rel": 0.05,
   "sigma_floor_abs": 0.5,
   "keys": ["*"],
-  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "relentless.*", "seats.*", "roles.*"]
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.tmp_*", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "relentless.*", "seats.*", "roles.*"]
  },
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
@@ -552,6 +552,10 @@
    "why": "arena who failed (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY, design 2.3): the value is the failed-check bitmask, a=1 active targets are not the expected one, b=2 a live process sits in a stopped arm's clone, c=4 a bridge lock names another arm, d=8 a stopped arm wrote an event or pushed a ref since the switch, 16 arm.toml unreadable, e=32 a governed clone's effective hooks dir (core.hooksPath) does not run the arena pre-push, f=64 a STOP file or a stale idle status silently pauses the live arm. UNMEASURED (no arm.toml, no systemd) never alarms"},
   {"key": "arena.push_refused_24h", "op": ">", "value": 0, "alarm": true, "tag": "ARENA_PUSH_REFUSED", "name": "OPS_ARENA_DIAGNOSE_PUSH_REFUSED", "marks": ["MEASURED"],
    "why": "the arena pre-push hook refused (PUSH_REFUSED) or crashed (PUSH_HOOK_CRASH) a push in the last 24 h: a stopped arm, a wrong ref or a production clone outside scope tried to push (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). The value counts lines in <arena>/alarms/arena.jsonl; a client hook is bypassable (--no-verify), so 0 is not proof nobody pushed. UNMEASURED (no arm.toml) never alarms"},
+  {"key": "disk.tmp_free_gb", "op": "<", "value": 4, "alarm": true, "tag": "TMP_FULL", "name": "OPS_TMP_DRAIN_RESTORE", "marks": ["MEASURED"],
+   "why": "TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP: /tmp is an 18 GB tmpfs; on 2026-11-03 agents' mutation scratch filled it and the nightly selftests went red with ENOSPC. Under 4 GB free one mutation run fills it. rm-scratch-pressure starts the reaper at this line; if it still alarms, the /tmp backstop is holding or failing: read tmp in ~/.local/state/rm-scratch-reap/last_run.json and tmp_runs.jsonl, then du -xsh /tmp/* | sort -h | tail"},
+  {"key": "disk.tmp_used_pct", "op": ">", "value": 80, "alarm": true, "tag": "TMP_FULL", "name": "OPS_TMP_DRAIN_RESTORE", "marks": ["MEASURED"],
+   "why": "the same /tmp tmpfs, read as a share: over 80% used the next big agent scratch fills it. Same item and same reading as the GB line"},
   {"key": "disk.c_free_gb", "op": "<", "value": 200, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
    "why": "C: holds the WSL disk image and the game; the image grows with ext4 (see root), so C: gets the same one-worst-day margin"},
   {"key": "disk.d_free_gb", "op": "<", "value": 200, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],

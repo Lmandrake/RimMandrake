@@ -32,6 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+import run_tmp  # noqa: E402  (its own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
 
 DEFAULT_MAX_S = 3600
 CAP_MAX_S = 4 * 3600
@@ -133,6 +134,7 @@ def launch_argv(rec, msg, claude):
             "-p", "ExecStopPost=" + finish,
             "--working-directory", clone,
             "--setenv", "AGENT_SEAT=" + seat, "--setenv", "RIMFLOW_SEAT=" + seat,
+            *(sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(rec["tmp"]).items()), []) if rec.get("tmp") else []),
             "--setenv", "CLAUDE_SCOPE_UNIT=claude-seat-%s-%s" % (seat, unit),
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
@@ -174,6 +176,8 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
            "budget_usd": float(budget), "at": now, "state": root, "out": os.path.join(d, unit + ".out.json"),
            "err": os.path.join(d, unit + ".err"), "status": "launching", "clone_how": how}
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat, max_s=max_s, budget="%g" % budget)
+    if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
+        rec["tmp"] = run_tmp.prepare(unit)
     write_record(rec, root)
     r = runner(launch_argv(rec, msg, claude_bin()), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)

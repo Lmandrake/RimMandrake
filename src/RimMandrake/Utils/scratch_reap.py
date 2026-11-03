@@ -88,6 +88,7 @@ import ctypes
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -100,7 +101,9 @@ import leftovers  # noqa: E402  (archive root, canonical marks: one definition, 
 HOME = Path.home()
 RM = Path("/home/mandrake/rm")
 # The replay root is deliberately NOT a root: it sits under arena, which the brief protects.
-DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp"]
+# /tmp is a root so a clone or a save there gets the full clone judgment (24 h, bundle unique first); its loose files and
+# dirs are sweep_tmp's (TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP).
+DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp", Path("/tmp")]
 DEFAULT_CORPUS = [RM / "bench", RM / "foundry"]
 DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy")]
 PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
@@ -128,6 +131,15 @@ BUNDLE_CAP = 5 * 1024 ** 3
 MENTION_DAYS = 7
 BLIND_RETRIES = 5
 PRESSURE_GB = 420.0         # ops_watch_rules' DISK_TWO_DAYS line
+TMP_IDLE_H = 6.0            # owner-authority brief 2026-11-03: a /tmp entry nothing inside was touched in 6 h may go
+TMP_PRESSURE_GB = 4.0       # /tmp tmpfs free below this (or TMP_PRESSURE_PCT used) starts a run now
+TMP_PRESSURE_PCT = 80.0
+# Never ours to judge, by name: sockets and session dirs of the desktop, ssh, tmux, editors, snaps, the WSL plumbing,
+# credential caches, and the CLIs' own per-user trees (claude-<uid> holds live task output). Other users' entries are
+# skipped by uid before any name is read.
+TMP_PROTECTED = re.compile(r"^(systemd-private-.*|\.X11-unix|\.ICE-unix|\.XIM-unix|\.font-unix|\.Test-unix|tmux-.*|ssh-.*"
+                           r"|\.?vscode.*|snap.*|pulse-.*|dbus-.*|\.?wsl.*|claude-.*|codex.*|pyright.*|krb5cc.*|gpg-.*"
+                           r"|keyring-.*|runtime-.*|\.lock|.*\.sock|.*\.pid)$")
 COOLDOWN_MIN = 30
 BORROW_REFRESH_S = 120
 CHANGED_CAP = 2000          # commits kept as patches; more is refused
@@ -156,6 +168,14 @@ def scan_roots() -> list[Path]:
 
 def protected() -> list[Path]:
     return PROTECTED + env_paths("SCRATCH_REAP_PROTECTED", [])
+
+
+def tmp_root() -> Path | None:
+    """The /tmp backstop's root: SCRATCH_REAP_TMP, else /tmp on a real run; a test that sets its own roots gets none."""
+    v = os.environ.get("SCRATCH_REAP_TMP")
+    if v is not None:
+        return Path(v) if v else None
+    return None if os.environ.get("SCRATCH_REAP_ROOTS") is not None else Path("/tmp")
 
 
 def corpus_roots() -> list[Path]:
@@ -1250,8 +1270,10 @@ class Ctx:
         try:
             rp = os.path.realpath(p)
             ours = [os.path.realpath(r) for r in roots()]       # a bind above the candidate makes its name an alias
+            tr = tmp_root()
+            fs = os.path.realpath(tr) if tr else None        # /tmp is its own tmpfs: that mount is the filesystem, no alias
             return [f"a mount inside or above: {m}" for m in mount_points() if m == rp or m.startswith(rp + "/")
-                    or (rp.startswith(m + "/") and any(m == r or m.startswith(r + "/") for r in ours))]
+                    or (rp.startswith(m + "/") and m != fs and any(m == r or m.startswith(r + "/") for r in ours))]
         except OSError as e:
             return [f"cannot read the mount table: {e.strerror}"]
 
@@ -1817,14 +1839,20 @@ def fixture_dirs() -> list[Path]:
     # under ~/.seat-tmp/BENCH on 2026-11-01, past the runner's per-test TMPDIR); same day-old, nothing-uses-it rule.
     found += [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "tmp*"))
               if re.fullmatch(r"tmp[a-z0-9_]{8}", os.path.basename(s))]
+    tr = tmp_root()
+    if tr is not None:                  # a selftest run without the runner's TMPDIR makes them straight in /tmp
+        found += [Path(s) for s in glob.glob(str(tr / "selftest_*"))]
+        found += [Path(s) for s in glob.glob(str(tr / "tmp*")) if re.fullmatch(r"tmp[a-z0-9_]{8}", os.path.basename(s))]
     return [p for p in found if p.is_dir() and not p.is_symlink()]
 
 
 def keeps_work(p: Path) -> bool:
-    """A directory with a git repo or a savegame anywhere inside is work, not a fixture. A walk error says yes."""
+    """A directory with a git repo (a .git, or a bare repo's HEAD+objects+refs) or a savegame anywhere inside is work,
+    not a fixture. A walk error says yes."""
     bad = []
     for _dp, dns, fns in os.walk(p, onerror=bad.append):
-        if ".git" in dns or ".git" in fns or any(f.endswith(".rws") for f in fns):
+        if ".git" in dns or ".git" in fns or any(f.endswith(".rws") for f in fns) \
+                or ("HEAD" in fns and "objects" in dns and "refs" in dns):
             return True
     return bool(bad)
 
@@ -1839,7 +1867,10 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
             out["deferred"] += 1
             continue
         tree = None if guard(p) else Tree(p)
-        if tree is not None and not p.name.startswith("selftest_") and keeps_work(p):
+        tr = tmp_root()
+        # a selftest_ name under ~/.seat-tmp is the runner's own prefix; in /tmp anyone can pick it, so it proves nothing
+        if tree is not None and (not p.name.startswith("selftest_") or (tr is not None and p.parent == tr)) \
+                and keeps_work(p):
             out["held"] += 1                        # a mkdtemp name proves nothing: clones and saves get the full judgment
             continue
         if tree is None or tree.capped or tree.errors:
@@ -1864,6 +1895,171 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
             except OSError:
                 out["held"] += 1
     return out
+
+
+def tmp_idle_s() -> float:
+    return float(os.environ.get("SCRATCH_REAP_TMP_IDLE_HOURS", TMP_IDLE_H)) * 3600
+
+
+def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]:
+    """The /tmp backstop (TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP): what agents and tools write to literal /tmp paths,
+    which no per-run TMPDIR reaches. A top-level entry of OUR uid goes when nothing inside it was touched for
+    TMP_IDLE_H (the newest mtime/ctime of anything inside, not the entry's own stamps: a dir's mtime moves only when a
+    top-level name is added or removed, and relatime atime is a day coarse) and nothing holds it: no process uses,
+    names or listens under it, no mount, no borrower, and the walk read it whole. Sockets, fifos, devices, protected
+    names, selftest fixtures (sweep_fixtures, 24 h) and anything holding a git repo or a save (the clone judgment,
+    bundle unique first) are not this sweep's. Nothing is archived: /tmp is a tmpfs, lost whole at every reboot, so
+    what sits there was never kept; the work that matters (repos, saves) goes the clone way instead.
+    -> (summary, [one row per removal])."""
+    out = {"root": None, "removed": 0, "bytes": 0, "young": 0, "held": 0, "work": 0, "skipped": 0, "deferred": 0,
+           "errors": []}
+    tr = tmp_root()
+    if tr is None or not tr.is_dir():
+        return out, []
+    out["root"] = str(tr)
+    if ctx.global_holds():
+        out["errors"].append("global holds: every /tmp entry kept: " + "; ".join(ctx.global_holds()[:2]))
+        return out, []
+    idle, uid, done, pinned, batch = tmp_idle_s(), os.getuid(), [], [], 0.0
+    fixtures = set(fixture_dirs())
+    try:
+        names = sorted(os.listdir(tr))
+    except OSError as e:
+        out["errors"].append(f"{tr}: {e.strerror}")
+        return out, []
+    for name in names:
+        p = tr / name
+        try:
+            st = os.lstat(p)
+        except FileNotFoundError:
+            continue
+        except OSError as e:
+            out["errors"].append(f"{p}: {e.strerror}")
+            continue
+        if st.st_uid != uid or TMP_PROTECTED.match(PIN.sub("", name)) or p in fixtures \
+                or not (stat.S_ISDIR(st.st_mode) or stat.S_ISREG(st.st_mode) or stat.S_ISLNK(st.st_mode)) \
+                or (not stat.S_ISLNK(st.st_mode) and guard(p)):
+            out["skipped"] += 1         # not ours, a name we never judge, a fixture, a socket/fifo/device, SCRATCH_REAP_PROTECTED
+            continue
+        if apply and deadline and time.time() > deadline:
+            out["deferred"] += 1
+            continue
+        isdir = stat.S_ISDIR(st.st_mode)
+        tree = Tree(p) if isdir else None               # capped: walked before keeps_work, which is not
+        if tree is not None and (tree.capped or tree.errors):
+            out["held"] += 1
+            continue
+        if (isdir and keeps_work(p)) or (stat.S_ISREG(st.st_mode) and name.endswith(".rws")):
+            out["work"] += 1                            # a clone or a save: the clone judgment's, bundle first
+            continue
+        newest = tree.newest if tree else max(touched(st))
+        size = tree.size if tree else st.st_size
+        if ctx.now - newest < idle:
+            out["young"] += 1
+            continue
+        orig = tr / PIN.sub("", name)                   # a crash's pin answers to its original name too
+        if ctx.mounted(p) or _tmp_used(ctx, p, orig):
+            out["held"] += 1
+            continue
+        row = {"kind": "tmp", "path": str(p), "bytes": size, "age_h": round((ctx.now - newest) / 3600, 1),
+               "verdict": "DELETE", "why": [f"nothing inside touched for {idle / 3600:g} h; no process, mount or borrower"]}
+        if not apply:
+            done.append(row)
+            out["removed"] += 1
+            out["bytes"] += size
+            continue
+        try:
+            if time.time() - ctx.live.taken > FIXTURE_RECHECK_S:         # a long sweep outlives its /proc reading
+                ctx.refresh()
+            again = Tree(p) if isdir else None
+            st2 = os.lstat(p)
+            newest2 = again.newest if again else max(touched(st2))
+            if ctx.global_holds() or _tmp_used(ctx, p, orig) or (again and (again.errors or again.capped)) \
+                    or ctx.now - newest2 < idle or (st2.st_ino, st2.st_dev) != (st.st_ino, st.st_dev):
+                out["held"] += 1
+                continue
+            pin = p if PIN.match(name) else tr / f".reaping-{os.getpid()}-{name}"
+            if pin != p:
+                os.rename(p, pin)                       # a crash between here and the removal leaves a pin: judged again
+            if isdir and again.signature() != Tree(pin).signature():      # changed under the rename: back it goes
+                if not _restore(pin, p):
+                    out["errors"].append(f"{p}: name taken again while pinned; {pin.name} stays to be judged again")
+                out["held"] += 1
+                continue
+            pinned.append((p, pin, orig, isdir, row, size))
+            batch = batch or time.time()
+            if time.time() - batch > TMP_BATCH_S:
+                _tmp_flush(ctx, pinned, out, done)
+                batch = 0.0
+        except OSError as e:
+            out["errors"].append(f"{p}: {e.strerror}")
+            out["held"] += 1
+    _tmp_flush(ctx, pinned, out, done)
+    return out, done
+
+
+def _restore(pin: Path, p: Path) -> bool:
+    """run_tmp.restore: an atomic no-replace rename back; False keeps the pin (judged again next sweep)."""
+    try:
+        here = str(Path(__file__).resolve().parents[1] / "rimflow")
+        if here not in sys.path:
+            sys.path.insert(0, here)
+        import run_tmp
+        return run_tmp.restore(str(pin), str(p))
+    except Exception:  # noqa: BLE001 - no way to promise no-replace: the pin stays
+        return False
+
+
+def _tmp_used(ctx: Ctx, *paths: Path) -> bool:
+    """A process uses, names or listens under any of these names, or a borrower names one."""
+    return any(ctx.live.users(x) or ctx.borrows.of(x) for x in dict.fromkeys(paths))
+
+
+TMP_BATCH_S = 60       # an entry sits renamed aside at most about this long before the look that frees or restores it
+
+
+def _tmp_flush(ctx: Ctx, pinned: list, out: dict, done: list):
+    """Free or restore every entry sweep_tmp pinned since the last flush."""
+    if not pinned:
+        return
+    # one /proc look AFTER every rename (a Live costs seconds, so one per batch, not per entry): a process that
+    # entered or opened an entry between the last look and its rename now shows under the pin, and it goes back
+    looked = False
+    try:
+        ctx.refresh()
+        looked = True
+    except Exception as e:  # noqa: BLE001
+        out["errors"].append(f"post-rename look failed, every pinned entry restored: {e}")
+    for p, pin, orig, isdir, row, size in pinned:
+        try:
+            if not looked or ctx.global_holds() or ctx.mounted(pin) or _tmp_used(ctx, pin, p, orig):
+                if pin != p and not _restore(pin, p):       # never over a new entry made under the name meanwhile
+                    out["errors"].append(f"{p}: name taken again while pinned (or no no-replace rename); {pin.name} stays to be judged again")
+                out["held"] += 1
+                continue
+            shutil.rmtree(pin) if isdir else os.unlink(pin)
+            row["verdict"] = "DELETED"
+            done.append(row)
+            out["removed"] += 1
+            out["bytes"] += size
+        except OSError as e:
+            out["errors"].append(f"{p}: {e.strerror}")
+            out["held"] += 1
+    pinned.clear()
+
+
+def sweep_run_tmp() -> dict:
+    """The per-run TMPDIR root's backstop (rimflow/run_tmp.py): hourly, as well as every Relentless tick."""
+    try:
+        here = str(Path(__file__).resolve().parents[1] / "rimflow")
+        if here not in sys.path:
+            sys.path.insert(0, here)
+        import run_tmp
+        r = run_tmp.sweep()
+        return {"root": r["root"], "removed": len(r["removed"]), "live": r["live"], "work": len(r["work"]),
+                "errors": r["errors"][:3]}
+    except Exception as e:  # noqa: BLE001 - a backstop never kills the run it rides on
+        return {"errors": [f"{type(e).__name__}: {str(e)[:200]}"]}
 
 
 # ---------------------------------------------------------------- sanity: speak up at both ends of a run
@@ -2071,6 +2267,18 @@ def new_alarms(rows: list[dict], sd: Path, stamp: str, apply: bool):
     write_json(seen_f, sorted(cur))
 
 
+def tmp_reading() -> dict | None:
+    """The /tmp tmpfs as the alarm reads it: GB free and percent used. None without a tmp root."""
+    tr = tmp_root()
+    if tr is None:
+        return None
+    try:
+        u = shutil.disk_usage(tr)
+    except OSError:
+        return None
+    return {"free_gb": round(u.free / 1e9, 2), "used_pct": round(100 * u.used / u.total, 1) if u.total else None}
+
+
 def pressure_check() -> int:
     """Runs on its own short timer. The TTL does not move; the point is not to wait for the next hour."""
     sd = state_dir()
@@ -2078,14 +2286,19 @@ def pressure_check() -> int:
     line = float(os.environ.get("SCRATCH_REAP_PRESSURE_GB", PRESSURE_GB))
     cool = float(os.environ.get("SCRATCH_REAP_COOLDOWN_MIN", COOLDOWN_MIN)) * 60
     free = free_gb()
-    if free >= line:
-        print(f"pressure: {free} GB free, line {line}: nothing to do")
+    t = tmp_reading()
+    tline = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_GB", TMP_PRESSURE_GB))
+    tpct = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_PCT", TMP_PRESSURE_PCT))
+    tmp_low = bool(t) and (t["free_gb"] < tline or (t["used_pct"] or 0) > tpct)
+    if free >= line and not tmp_low:
+        print(f"pressure: {free} GB free, line {line}; /tmp {t}: nothing to do")
         return 0
     try:
         last = json.loads((sd / "last_run.json").read_text()).get("end_epoch", 0)
     except (OSError, ValueError, AttributeError):
         last = 0
-    rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "free_gb": free, "line_gb": line}
+    rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "free_gb": free, "line_gb": line, "tmp": t,
+           "tmp_low": tmp_low}
     if time.time() - last < cool:
         print(f"pressure: {free} GB free, but a run ended within {cool / 60:.0f} min")
         return 0
@@ -2122,6 +2335,15 @@ def run(a, sd: Path) -> int:
         sanity_start(sd, start)
     ctx = Ctx(start)
     fixtures = sweep_fixtures(ctx, a.apply, start + a.max_seconds / 2 if a.max_seconds else 0)
+    tmp_before = tmp_reading()
+    tmp, tmp_rows = sweep_tmp(ctx, a.apply, start + a.max_seconds / 2 if a.max_seconds else 0)
+    # the real run-dir root only on a real run (a test that sets its roots names RM_RUN_TMP_ROOT to get one)
+    runs_tmp = sweep_run_tmp() if a.apply and (os.environ.get("SCRATCH_REAP_ROOTS") is None
+                                               or os.environ.get("RM_RUN_TMP_ROOT")) else {}
+    if tmp_rows or tmp["errors"]:
+        rotate(sd / "tmp_runs.jsonl")
+        with open(sd / "tmp_runs.jsonl", "a") as f:
+            f.write(json.dumps({"ts": stamp, "apply": a.apply, "summary": tmp, "rows": tmp_rows}) + "\n")
     rows = judge_all(ctx)
     failures: list[str] = []
     freed, deferred = 0, 0
@@ -2131,7 +2353,7 @@ def run(a, sd: Path) -> int:
     with open(sd / "runs.jsonl", "a") as f:
         f.write(json.dumps({"ts": stamp, "apply": a.apply, "rows": rows}) + "\n")
     new_alarms(rows, sd, stamp, a.apply)
-    done = [r for r in rows if r["verdict"] == "DELETED"]
+    done = [r for r in rows if r["verdict"] == "DELETED"] + [r for r in tmp_rows if r["verdict"] == "DELETED"]
     if done:
         root = archive_root()
         dest = root / time.strftime("%Y-%m-%d") / "scratch_expiry"
@@ -2140,7 +2362,7 @@ def run(a, sd: Path) -> int:
         m.write_text(json.dumps([{k: r.get(k) for k in ("kind", "path", "bytes", "age_h", "archive", "why")}
                                  for r in done], indent=1))
         acts_append(root, {"ts": local_ts(), "kind": "scratch-expiry-run", "path": f"{len(done)} scratch path(s)",
-                           "size": freed, "archive": str(dest), "manifest": str(m),
+                           "size": freed + (tmp["bytes"] if a.apply else 0), "archive": str(dest), "manifest": str(m),
                            "verify": "every path re-judged immediately before rmtree",
                            "evidence": str(sd / "runs.jsonl")})
     counts = {}
@@ -2152,7 +2374,8 @@ def run(a, sd: Path) -> int:
            "archived": sum(1 for r in done if r.get("archive")), "root_free_gb_before": before,
            "root_free_gb_after": free_gb(), "global_holds": ctx.global_holds(),
            "blind_dirs": len(ctx.borrows.blind), "other_uid_procs": ctx.live.other_uid,
-           "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE")}
+           "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE"),
+           "tmp": dict(tmp, errors=tmp["errors"][:5], before=tmp_before, after=tmp_reading()), "run_tmp": runs_tmp}
     if a.apply:
         sanity_end(sd, end, rows, rec)
         record(sd, rec)
@@ -2163,6 +2386,7 @@ def run(a, sd: Path) -> int:
     else:
         report(rows, a, sd, freed)
         print(f"selftest fixtures: {fixtures}")
+        print(f"/tmp backstop: {dict(tmp, errors=tmp['errors'][:3])}")
         for f in failures:      # the journal keeps these; last_run.json is overwritten by the next run
             print(f"FAILED {f}")
     return 1 if failures else 0

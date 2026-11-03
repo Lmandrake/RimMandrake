@@ -36,6 +36,7 @@ import relentless_game  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_strikes  # noqa: E402
 import relentless_live  # noqa: E402
+import run_tmp  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
@@ -1601,7 +1602,13 @@ class Effects(relentless_game.GameFx):
         claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
         os.makedirs(os.path.dirname(run["out"]), exist_ok=True)
         relentless_usage.note_clone(run, clone)        # where its transcripts will be, should the run never print a result
+        try:            # the run's own TMPDIR; sweep_run_tmp deletes it once the unit and every process of it are gone
+            tmpdir = run_tmp.prepare(run["unit"])
+        except OSError as e:
+            return "run tmp dir: %s" % e
         argv = rl.launch_argv(role, run["unit"], prompt, run["out"], run["err"], claude)
+        at = argv.index("--")
+        argv[at:at] = sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), [])
         at = argv.index("--")
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"
@@ -1620,6 +1627,13 @@ class Effects(relentless_game.GameFx):
         argv[o:o] = ["--agent", agent]
         r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
+
+    def sweep_run_tmp(self):
+        """Every run dir whose run is over goes (run_tmp.sweep): each end path, a crash and a dead engine alike."""
+        return run_tmp.sweep()
+
+    def drop_run_tmp(self, run):
+        return run_tmp.drop((run or {}).get("unit"))
 
     def alive(self, run):
         """Unit, scope, or a marked process: any one of them means the run is not over."""
@@ -2886,6 +2900,10 @@ def finished(store, fx, item, c, now, acts, attempt=False):
         store.save(st)
     remove_check_clone(fx, st)
     fx.remove_clone(st)
+    try:            # its run's TMPDIR now, if the run is over; the tick's sweep takes it otherwise
+        getattr(fx, "drop_run_tmp", lambda run: None)(st.get("run"))
+    except Exception:  # noqa: BLE001
+        pass
     store.journal({"at": iso(now), "do": "done", "item": item, "sha": c["sha"], "returns": st["returns"]})
     acts.append({"do": "done", "item": item})
 
@@ -3390,6 +3408,22 @@ def live_tick(store, fx, r, now, acts):
     acts.append({"do": "live_round", "pid": pid})
 
 
+def run_tmp_sweep(store, fx, now, acts, when):
+    """Every run dir whose run is over goes (run_tmp.py): the one guarantee behind every end path, a killed engine and
+    a restart included, because each tick is an engine start. A failure is journalled, never the tick's end."""
+    f = getattr(fx, "sweep_run_tmp", None)
+    if f is None:
+        return
+    try:
+        out = f() or {}
+    except Exception as e:  # noqa: BLE001  housekeeping never stops the belt
+        acts.append({"do": "error", "item": None, "why": "run_tmp %s: %s" % (type(e).__name__, e)})
+        return
+    if out.get("removed") or out.get("errors"):
+        store.journal({"at": iso(now), "do": "run_tmp", "when": when, "removed": out.get("removed", [])[:50],
+                       "work": out.get("work", [])[:20], "errors": out.get("errors", [])[:5]})
+
+
 def tick(store=None, fx=None, r=None, now=None):
     r = r or rules()
     store = store or Store()
@@ -3422,6 +3456,7 @@ def tick(store=None, fx=None, r=None, now=None):
         relentless_block.sweep(store, fx, now, acts, iso)
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
+        run_tmp_sweep(store, fx, now, acts, "start")
         try:        # a holder that no longer uses the game frees it before anyone asks for it this tick
             relentless_game.lapse_holds(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run
@@ -3473,6 +3508,7 @@ def tick(store=None, fx=None, r=None, now=None):
             live_tick(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  the live tier is an extra: it never costs the tick its flush
             acts.append({"do": "error", "item": None, "why": "live_tick %s: %s" % (type(e).__name__, e)})
+        run_tmp_sweep(store, fx, now, acts, "end")
         why = fx.flush()
         if why:
             acts.append({"do": "flush_retry", "why": why})
@@ -3569,7 +3605,20 @@ def main(argv=None):
     store = Store()
     try:
         if a.cmd == "tick":
-            print(json.dumps(tick(store)))
+            own = None
+            try:        # the tick's own children (git, rimflow, gh) write their temp files here, not in /tmp
+                own = run_tmp.pid_name("tick")
+                os.environ.update(run_tmp.env(run_tmp.prepare(own)))
+            except OSError:
+                own = None
+            try:
+                print(json.dumps(tick(store)))
+            finally:
+                if own:
+                    try:
+                        run_tmp.drop(own, mine=True)
+                    except Exception:  # noqa: BLE001  the next tick's sweep takes it
+                        pass
         elif a.cmd == "reading":
             print(open(store.p("reading.json"), encoding="utf-8").read())
         elif a.cmd == "stats":

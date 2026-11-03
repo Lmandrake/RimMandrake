@@ -113,6 +113,9 @@ import time
 import uuid
 from fractions import Fraction
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import run_tmp  # noqa: E402  (the run's own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
+
 AUTH_BACKS_PER_DAY = 2
 OVER_REPEAT, OVER_WINDOW_S = 3, 7 * 86400
 AUTH_TEXT_MAX = 400     # an auth death's result IS the short API error; a long result merely quotes one
@@ -1867,7 +1870,7 @@ def schema_args(role):
     return ["--json-schema", json.dumps(doc, separators=(",", ":"), sort_keys=True)]
 
 
-def launch_argv(role, unit, msg, out, err, claude, session=None):
+def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
     (the Arbiter's arbiter_tiers.py: a batch with no fresh tiers.json would judge blind -- review AA brief AA7)."""
@@ -1901,7 +1904,12 @@ def launch_argv(role, unit, msg, out, err, claude, session=None):
             # run is ended even if no tick ever supervises it again (timer off, dry-run root, unreadable state)
             "--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound,
             "-p", "RuntimeMaxSec=%d" % bound, "-p", "TimeoutStopSec=%d" % SCOPE_STOP_S,
-            "--setenv", "PATH=" + path, "--"] + cmd
+            "--setenv", "PATH=" + path] + tmp_setenv(tmpdir) + ["--"] + cmd
+
+
+def tmp_setenv(tmpdir):
+    """The run's own TMPDIR/TMP/TEMP (run_tmp.py): its launcher owns that dir and deletes it when the run is over."""
+    return sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), []) if tmpdir else []
 
 
 def launch(role, unit, msg, root, claude, runner=subprocess.run):
@@ -1910,7 +1918,9 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
     out, err = run_paths(root, unit)
     session = str(uuid.uuid4())
-    r = runner(launch_argv(role, unit, msg, out, err, claude, session), capture_output=True, text=True, timeout=60,
+    # a real launch owns a TMPDIR (run_tmp.py; TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP); a test's fake runner makes no dir
+    tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
+    r = runner(launch_argv(role, unit, msg, out, err, claude, session, tmpdir), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)
     text = ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
     if r.returncode:
