@@ -9,8 +9,8 @@ casts any of these defNames as a roster ROW (an XML element under wildAnimals / 
 *WildPlants list). Comments, label patches, tolerances and non-roster lists are not rows and are not checked.
 
 The item's other half, the 21 flight flip-book frame sets, is not this test's to prove: it waits for a joint
-session with the owner and is carried by FLYER_STABLE_BODY_GATE_1 and its FLYER_TIER_* splits. The test asserts
-those items are still live, so the half can never be dropped silently.
+session with the owner and is carried by FLYER_STABLE_BODY_GATE_1 and its FLYER_TIER_* splits. Where the ledger's items/ is
+present (a working clone, not a bare export) the test asserts those items are still live, so the half can never be dropped silently.
 
 Sanity probe: the parser must see at least 20 of our BiomeDefs and 500 roster rows, and must find a known row
 (RM_Abyss casts RSW_Taozin through WildAnimals_Abyss.xml), or it is reading nothing.
@@ -74,20 +74,23 @@ def main():
                     if is_stray(r):
                         bad.append("%s: patch onto %s casts %s" % (rel, xp.text.strip(), r))
     items = os.path.join(ROOT, "infrastructure", "state", "items")
-    live = [i for i in FLYER_ITEMS if os.path.exists(os.path.join(items, i + ".md"))]
-    tiers = glob.glob(os.path.join(items, FLYER_GLOB))
     if biomes < 20 or rows < 500 or not probe:
         print("FAIL sanity: biomes=%d rows=%d taozin_probe=%s (the parser is blind)" % (biomes, rows, probe))
         return 1
-    if not live and not tiers:
-        bad.append("flyer flip-book half has no live carrier: neither %s nor %s in %s"
-                   % (FLYER_ITEMS, FLYER_GLOB, os.path.relpath(items, ROOT)))
+    if os.path.isdir(items):
+        live = [i for i in FLYER_ITEMS if os.path.exists(os.path.join(items, i + ".md"))]
+        live += glob.glob(os.path.join(items, FLYER_GLOB))
+        if not live:
+            bad.append("flyer flip-book half has no live carrier: neither %s nor %s in %s"
+                       % (FLYER_ITEMS, FLYER_GLOB, os.path.relpath(items, ROOT)))
+        flyer = "carried by %d live item(s)" % len(live)
+    else:
+        flyer = "carrier UNMEASURED (no ledger items in this tree)"
     for b in bad:
         print("FAIL", b)
     if bad:
         return 1
-    print("PASS regen strays cut: biomes=%d roster_rows=%d strays=0; flyer half carried by %d live item(s)"
-          % (biomes, rows, len(live) + len(tiers)))
+    print("PASS regen strays cut: biomes=%d roster_rows=%d strays=0; flyer half %s" % (biomes, rows, flyer))
     return 0
 
 
