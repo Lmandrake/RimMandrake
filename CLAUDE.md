@@ -1,8 +1,8 @@
 # RimWorld 1.6 — Jawa scavenger clan on a desert world
 
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
-own window file: `infrastructure/agents/BENCH.md` (with the owner) or
-`infrastructure/agents/FOUNDRY.md` (autonomous queue). Game cycle:
+own window file: `infrastructure/agents/BENCH.md` (the Conductor, with the owner); the
+autonomous builder is Relentless (`src/RimMandrake/rimflow/relentless.py`). Game cycle:
 `infrastructure/GAME_STATE_WORKFLOW.md`. **Models: the ladder lives in
 `infrastructure/agents/Agent_Policy.md` and nowhere else; never restate it.**
 
@@ -59,9 +59,9 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 
 Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
-## 🔴 FOUNDRY owns ALL FlowWorks and GSS since the v3 cutover — owner, 2026-10-28
+## 🔴 Relentless builds and accepts everything, FlowWorks and GSS included; FOUNDRY is retired — owner, by card 2026-11-02
 
-*"Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry."* Code, art, live testing, acceptance at every level, code review and deploys of FlowWorks (hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, suspension bridges, FlowWorks liquids) and Gimme Some Slack are FOUNDRY's. BENCH (the Conductor's window with him) takes only a FlowWorks item that needs him live (needs=owner, an L4 look), in a session with him. A FlowWorks finding is filed `--for FOUNDRY`; `rimflow file` forces it from the lane list (data, also read by `--acceptance`): `infrastructure/state/flowworks_lane.json`, field `seat`. What moved: `infrastructure/state/v3_cutover/record.json`; `python3 src/RimMandrake/rimflow/v3_cutover.py revert` undoes it. Seat rules: `infrastructure/agents/FOUNDRY.md`, `BENCH.md`.
+*"What should happen to FOUNDRY?"* → **Retire it.** One builder: Relentless builds, proves (its game_prove lane, `relentless_live_round.py`, is the acceptance sweep for every mod) and closes; the Conductor (seat BENCH) talks with him and keeps only items that need him live (needs=owner, an L4 look, flyer live tests). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to BENCH (`RETIRED_SEATS` in `cli.py`), and the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`) names BENCH. Supersedes the 2026-10-28 FOUNDRY-owns-FlowWorks ruling.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
@@ -254,7 +254,7 @@ at. He gets the survivors plus one line of what was caught. Sheet tools refuse w
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (Relentless, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
@@ -286,7 +286,7 @@ Check a file is still reachable before spending a review on it. Procedure:
 ## What is where
 
 ```
-src/                    mods, defs, C#, art            FOUNDRY owns, FlowWorks and GSS included
+src/                    mods, defs, C#, art            Relentless builds and accepts, FlowWorks and GSS included
 design/                 campaign specs (Utinni)        the owner's, via BENCH
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
