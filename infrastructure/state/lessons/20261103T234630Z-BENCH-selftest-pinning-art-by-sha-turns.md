@@ -1,0 +1,1 @@
+A selftest pinning art by sha turns red when a later owner-ordered roster pass (facing rescale) installs through the ledger: read the art ledger's prev chain and ruling words before assuming the art or the ruling is wrong. Pins stay; accept a descendant only by chain, card words and a pixel comparison (selftest_flyer_variants.py, NIGHTLY_COP_FIX_RED_EQDNFF_XKUH).
