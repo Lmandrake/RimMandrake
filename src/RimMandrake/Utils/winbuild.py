@@ -49,6 +49,9 @@ DOTNET_USER_GLOB = "/mnt/c/Users/*/.dotnet/dotnet.exe"
 DOTNET_FIXED = ["/mnt/c/Program Files/dotnet/dotnet.exe"]
 RSYNC_EXCLUDES = ["bin/", "obj/", "Textures/", "Sounds/", "*.png", "*.psd", "*.ogg", "*.wav"]
 RSYNC_ENOMEM_WAIT_S = 15    # times the attempt number: 15, 30, 45 s for memory pressure to pass (rsync_retry_wait)
+INTEROP_LAUNCH_FAILED = "UtilAcceptVsock"    # WSL could not start the Windows process: see run_interop
+INTEROP_TRIES = 4           # a full fleet was measured failing 3 launches in a row, the 4th passing (lesson, 2026-11-03)
+INTEROP_WAIT_S = 5          # times the attempt number: 5, 10, 15 s between launches
 PATH_TAGS = {"Compile", "None", "Content", "EmbeddedResource", "ProjectReference", "Reference",
              "HintPath", "OutputPath", "BaseOutputPath", "Import"}
 
@@ -182,7 +185,26 @@ def source_sha(paths):
 def run_dotnet(csproj_win, cwd, config, extra):
     cmd = [dotnet_exe(), "build", csproj_win, "-c", config, "--nologo", "-v", "minimal", *extra]
     print("+ dotnet.exe build %s -c %s" % (csproj_win, config), flush=True)
-    return subprocess.run(cmd, cwd=cwd, timeout=900).returncode
+    return run_interop(cmd, cwd=cwd, timeout=900)
+
+
+def run_interop(cmd, cwd=None, timeout=900):
+    """Run a Windows exe from WSL -> its exit code. Under a loaded machine WSL's own launch can time out: rc 1 and only
+    "UtilAcceptVsock: accept4 failed 110" on stderr, and the exe never ran (nightly of 2026-11-03,
+    NIGHTLY_COP_FIX_RED_BXSKPY_FGXD), so that says nothing about a build or a test: it goes again. stdout stays
+    inherited, so output still streams; stderr is held to be read, and reaches the caller's stderr after each try. A
+    real failure carrying the same line just fails again, with its own exit code."""
+    for attempt in range(INTEROP_TRIES):
+        r = subprocess.run(cmd, cwd=cwd, timeout=timeout, stderr=subprocess.PIPE, text=True, errors="replace")
+        sys.stderr.write(r.stderr or "")
+        sys.stderr.flush()
+        if not r.returncode or INTEROP_LAUNCH_FAILED not in (r.stderr or "") or attempt == INTEROP_TRIES - 1:
+            break
+        wait = INTEROP_WAIT_S * (attempt + 1)
+        print("WSL interop could not launch the exe; retry %d/%d in %d s" % (attempt + 1, INTEROP_TRIES - 1, wait),
+              file=sys.stderr, flush=True)
+        time.sleep(wait)
+    return r.returncode
 
 
 def built_outputs(tree, since):

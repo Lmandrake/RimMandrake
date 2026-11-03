@@ -73,8 +73,69 @@ def real_stderr_capture(td):
     check("Cannot allocate memory" in p.stderr, "rsync's complaint still reaches the caller's stderr", p.stderr)
 
 
+def fake_exe(td, name, body):
+    """A stand-in for a Windows exe: a real process, so run_interop's real stderr capture runs."""
+    path = os.path.join(td, name)
+    with open(path, "w") as f:
+        f.write("#!/bin/sh\n" + body)
+    os.chmod(path, os.stat(path).st_mode | stat.S_IXUSR)
+    return path
+
+
+def interop(td):
+    """run_interop (NIGHTLY_COP_FIX_RED_BXSKPY_FGXD): WSL's launch timeout goes again; anything else is the exe's answer."""
+    tries = os.path.join(td, "tries")
+    count = 'echo x >> "%s"; n=$(wc -l < "%s"); ' % (tries, tries)
+
+    def run(body):
+        if os.path.exists(tries):
+            os.remove(tries)
+        rc = WB.run_interop([fake_exe(td, "exe", count + body)], timeout=30)
+        with open(tries) as f:
+            return rc, len(f.readlines())
+    waits = []
+    real_sleep, WB.time.sleep = WB.time.sleep, waits.append
+    try:
+        lost = "echo '<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110' >&2; "
+        got = run('if [ "$n" -lt 2 ]; then %sexit 1; fi; exit 0\n' % lost)
+        check(got == (0, 2) and waits == [WB.INTEROP_WAIT_S], "one lost launch goes again and the exe's 0 is the answer", (got, waits))
+        got = run('if [ "$n" -lt 4 ]; then %sexit 1; fi; exit 0\n' % lost)
+        check(got == (0, 4), "a launch succeeding on the last try still passes (3 lost in a row was measured)", got)
+        got = run(lost + "exit 1\n")
+        check(got == (1, WB.INTEROP_TRIES), "a launch never succeeding fails after the bound, not forever", got)
+        got = run('if [ "$n" -lt 2 ]; then %sexit 1; fi; exit 7\n' % lost)
+        check(got == (7, 2), "the exe's own failure after a lost launch keeps its own exit code", got)
+        got = run("echo 'error CS1002: ; expected' >&2; exit 1\n")
+        check(got == (1, 1), "a compile failure is not retried", got)
+        got = run("echo 'error CS1002: ; expected'; exit 1\n")
+        check(got == (1, 1), "a compile failure on stdout is not retried", got)
+        got = run(lost + "exit 0\n")
+        check(got == (0, 1), "a zero exit is never run again, whatever stderr said", got)
+    finally:
+        WB.time.sleep = real_sleep
+    code = ("import sys; sys.path.insert(0, %r); import winbuild as WB\nsys.exit(WB.run_interop([%r], timeout=30))"
+            % (os.path.dirname(os.path.abspath(__file__)), fake_exe(td, "talker", "echo to-stdout; echo to-stderr >&2; exit 3\n")))
+    p = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, timeout=60)
+    check(p.returncode == 3 and p.stdout.strip() == "to-stdout" and p.stderr.strip() == "to-stderr",
+          "the exe's stdout and stderr both still reach the caller", (p.returncode, p.stdout, p.stderr))
+    built = []
+
+    def interop_stub(cmd, cwd=None, timeout=900):
+        built.append((cmd, cwd, timeout))
+        return 5
+    saved, WB.run_interop = WB.run_interop, interop_stub
+    saved_exe, WB.dotnet_exe = WB.dotnet_exe, lambda: "dotnet.exe"
+    try:
+        rc = WB.run_dotnet("x.csproj", td, "Release", [])
+    finally:
+        WB.run_interop, WB.dotnet_exe = saved, saved_exe
+    check(rc == 5 and len(built) == 1 and built[0][0][:3] == ["dotnet.exe", "build", "x.csproj"],
+          "run_dotnet builds through run_interop", (rc, built))
+
+
 def main():
     with tempfile.TemporaryDirectory() as td:
+        interop(td)
         rc, rec, calls, built = stage_with([(23, ENOMEM), (0, "")], td)
         check(rc == 0 and calls == [23, 0] and len(built) == 1 and rec.get("staged") is True,
               "one ENOMEM: staged again and the build ran", (rc, calls, built))

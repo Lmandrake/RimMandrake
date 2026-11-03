@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (150-180 s under the nightly sweep, plus the launches run_interop may repeat)
 """Approach B fuzz of the Wastes kernels (Wastes/Source/Kernel/*.cs), no game.
 
 Seeded fuzz over the production kernels with explicit invariants: the waste cask and sealed cask bay (cask), the
@@ -11,7 +12,6 @@ Windows-native), then run.
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """
 import os
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +34,7 @@ def main(argv):
     for i, a in enumerate(argv):
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev")
 
 
 if __name__ == "__main__":
