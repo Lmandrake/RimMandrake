@@ -4,6 +4,7 @@ live criterion it owes gets relentless_live.run(), several per sitting (RA_S09_L
 
     python3 src/RimMandrake/rimflow/relentless_live_round.py eligible        # what a round would try, and why not the rest
     python3 src/RimMandrake/rimflow/relentless_live_round.py round [--max 6]
+    python3 src/RimMandrake/rimflow/relentless_live_round.py census [--last 300]   # runs.jsonl sorted by cause
 
 The supervisor (relentless.py tick, live_tick) starts `round` detached, at most one at a time, every live.round_every_s.
 
@@ -33,7 +34,8 @@ A round, in order:
   3. history (live/runs.jsonl): a criterion already PASS, FAIL or REFUSED on the same built sha is not run again (a FAIL
      stands until a new build; a refusal of a criterion cut on the ledger stands until its prose holds it whole);
      UNMEASURED retries after live.unmeasured_retry_s, and never on the game and build it ran on when the proof ran and
-     measured nothing or a final clause found the small tier (due: DUD_HERE, WAITS_TIER);
+     measured nothing or a final clause found the small tier (due: DUD_HERE, WAITS_TIER), and never on its build at all
+     once the row is a `defect` (relentless_live's cap);
   4. each run is relentless_live.run(): flyer and forbidden-proof refusal, files changed since the build, the deploy plan
      (args derived from the item's own mods, one plan per args per round), the game started after the deploy, the bridge
      taken with --idle-ok and released at once after each proof, the verdict a `rimflow verify` on the built sha;
@@ -348,6 +350,34 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
     return done("done")
 
 
+def census(rows):
+    """runs.jsonl rows -> what they spent and why (PROOF_RERUNS_TAME_UNMEASURED_REPEATS). `took_bridge` is the rows that
+    held the game (a log exists); `repeats` the UNMEASURED rows that said what their (item, criterion, build) had already
+    said, the waste the cap exists to end, so it should fall to near 0 on rows written since the cap."""
+    out = {"rows": len(rows), "from": rows[0].get("at") if rows else None, "to": rows[-1].get("at") if rows else None,
+           "outcomes": {}, "took_bridge": 0, "took_bridge_verdict": 0, "unmeasured": 0, "repeats": 0}
+    causes, items, seen = {}, {}, set()
+    for row in rows:
+        o = row.get("outcome") or "?"
+        out["outcomes"][o] = out["outcomes"].get(o, 0) + 1
+        if row.get("log"):
+            out["took_bridge"] += 1
+            out["took_bridge_verdict"] += o in ("PASS", "FAIL")
+        if o != "UNMEASURED":
+            continue
+        out["unmeasured"] += 1
+        key = row.get("cause") or L.cause(row.get("why"))
+        causes[key] = causes.get(key, 0) + 1
+        one = (row.get("item"), row.get("criterion"), row.get("sha"), key)
+        if one in seen:
+            out["repeats"] += 1
+            items[row.get("item")] = items.get(row.get("item"), 0) + 1
+        seen.add(one)
+    out["causes"] = sorted(([n, k] for k, n in causes.items()), key=lambda x: (-x[0], x[1]))
+    out["repeating_items"] = sorted(([n, k or "?"] for k, n in items.items()), key=lambda x: (-x[0], x[1]))
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -355,10 +385,19 @@ def main(argv=None):
     p = sub.add_parser("round", help="one sitting: run every due criterion that has a proof, up to --max")
     p.add_argument("--max", type=int, default=None)
     p.add_argument("--item", help="this item only, no unmeasured wait: the supervisor's game phase")
+    p = sub.add_parser("census", help="runs.jsonl sorted by cause: what the rows spent, what repeated")
+    p.add_argument("--last", type=int, default=300, help="the newest N rows")
     a = ap.parse_args(argv)
     with open(os.environ.get("RELENTLESS_RULES") or L.RULES, encoding="utf-8") as f:
         r = json.load(f)
     root = os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless"
+    if a.cmd == "census":
+        path = os.path.join(root, "live", "runs.jsonl")
+        if not os.path.exists(path):        # never "no rows": this instrument cannot see
+            print("UNMEASURED: no %s" % path, file=sys.stderr)
+            return 2
+        print(json.dumps(census(read_rows(path)[-a.last:]), indent=1, sort_keys=True))
+        return 0
     fx = RoundFx(seat=r.get("seat") or "BENCH")
     if a.cmd == "eligible":
         started = fx.game_started()     # the round's own view: what this game already said stays skipped

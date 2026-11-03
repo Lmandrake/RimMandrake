@@ -274,6 +274,37 @@ def t_unmeasured_twice_returns_offline():
     x.done()
 
 
+def t_cap_returns_with_the_exit_reason_and_log():
+    """PROOF_RERUNS_TAME_UNMEASURED_REPEATS: a defect row on its first run goes back to a worker carrying the reason and
+    the log; back again with the same cause it is held; a fixed proof hitting a NEW cause on the same proof line is not
+    "unchanged" (before, the defect's head filled the fingerprint's cause, so it was)."""
+    import relentless_live
+    def defect(reason):
+        why = "the proof exited 2: it did not measure: " + reason
+        return {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+                "proof": "python.exe probe.py", "log": "/l/I0-A2.log", "defect": True, "cause": relentless_live.cause(why),
+                "why": "%s: the proof's own call is broken, so a rerun or a reload cannot help: %s" % (relentless_live.DEFECT, why)}
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.rows = [defect("No public static CleanRead with 0 params")]
+    x.tick()
+    st = x.st("I0")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "game_proof_unmeasured"
+       and "CleanRead" in st["last_fail"]["detail"] and "/l/I0-A2.log" in st["last_fail"]["detail"],
+       "one defect row goes back at once, with the reason and the log: %s" % st.get("last_fail"))
+    first = sorted(st.get("refused_fps") or {})
+    ok(len(first) == 1, "the return is remembered: %s" % first)
+    x.done()
+    rows = [defect("No public static CleanRead with 0 params"), defect("Type not found: Foo")]
+    fps = {relentless_live.fingerprint(v["criterion"], v["why"], v["proof"], "") for v in rows}
+    ok(len(fps) == 2, "a new cause on the same proof line is a new return, not a hold")
+    dud = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+           "log": "/l/d.log", "why": "the proof exited 2: it did not measure: x"}
+    ok("/l/d.log" in G.not_measuring([dud, dud], "I0", SHA, ["A2"], 2)["A2"][1], "a plain dud's return names its log too")
+
+
 def t_dud_on_this_game_returns_at_once():
     """LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: the round no longer reruns a dud on the game and build it ran on, so a
     single dud on THIS game, with nothing else left to measure here, goes back to a worker at once instead of waiting."""
@@ -1280,7 +1311,7 @@ def t_mod_gap_pure():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,

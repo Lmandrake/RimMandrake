@@ -222,6 +222,69 @@ def t_same_cause_becomes_one_reload_request():
           == L.cause("the proof exited 2: x at 7 (/a/c.log)"), L.cause("the proof exited 2: x at 601"))
 
 
+def t_cap_on_a_proof_that_cannot_measure():
+    """PROOF_RERUNS_TAME_UNMEASURED_REPEATS: 53% of runs were UNMEASURED and repeating. The texts below are real rows."""
+    def one(root, text, code=2, proof="python.exe probe.py", started=2000.0, now=1_800_000_000):
+        fx = ScriptFx({"python": (code, text)}, started=started, mtime=1000.0)
+        return L.run(fx, root, "ROT_X", "A2", proof, "--compose biomes", {}, now=now), fx
+    for text in ('A6 UNMEASURED: no CLEAN line: {"success": false, "message": "No public static CleanRead with 0 params."}',
+                 'A2 UNMEASURED: no droid line: {"success": false, "message": "Type not found: RimMandrake.Property.RM_Droid"}',
+                 "UNMEASURED  bridge: bridge call exit 3: REFUSING 'jawa/static_call'\nPass --yes-i-know-this-is-live if you "
+                 "really mean it.",
+                 "python3: can't open file 'probe.py': [Errno 2]",
+                 "probe.py: error: unrecognized arguments: --live",
+                 "ModuleNotFoundError: No module named 'numpy'"):
+        row, fx = one(tempfile.mkdtemp(prefix="rl_live_"), text)
+        check("cap: a broken call is a defect on its FIRST run: %s" % text[:40],
+              row.get("defect") is True and row["why"].startswith(L.DEFECT) and "note" in fx.verbs(), row)
+    import relentless_live_round as RR
+    check("cap: that first row decides its build, so the round never reruns it", RR.decides(row)
+          and RR.due(row, row["sha"], 1_800_000_001, 0, row["game"], per_game=False) is not None, row)
+    check("cap: the reason it returns with names the call", "numpy" in row["why"], row["why"])
+    row, _ = one(tempfile.mkdtemp(prefix="rl_live_"), "UNMEASURED: current map biome ['RM_TheRot'] is not RM_Slime")
+    check("cap: a game-state reason is no broken call: it keeps its reload", not row.get("defect"), row)
+    row, _ = one(tempfile.mkdtemp(prefix="rl_live_"), "Type not found: X\nreload needed: this list lacks mod Y")
+    check("cap: a proof asking for a load is that, whatever else it printed", row["why"].startswith(L.RELOAD)
+          and not row.get("defect"), row)
+    row, fx = one(tempfile.mkdtemp(prefix="rl_live_"), "No public static X with 0 params", code=0)
+    check("cap: exit 0 is a verdict, whatever the log says", row["outcome"] == "PASS" and not row.get("defect"), row)
+
+    # the same proof line on a new build earns one run; the same cause again stops there, on the same game too
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    os.makedirs(os.path.join(root, "live"))
+    old = {"item": "ROT_X", "criterion": "A2", "sha": "0ldbuild0000", "proof": "python.exe probe.py", "outcome": "UNMEASURED",
+           "why": "the proof exited 2: it did not measure: A2: UNMEASURED (rides a later load)", "game": "G0"}
+    with open(os.path.join(root, "live", "runs.jsonl"), "w") as f:
+        f.write(json.dumps(old) + "\n")
+    row, _ = one(root, "A2: UNMEASURED (rides a later load)")
+    check("cap: same proof, same cause, another build: a defect", row.get("defect") is True and "0ldbuild0000" in row["why"], row)
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    os.makedirs(os.path.join(root, "live"))
+    with open(os.path.join(root, "live", "runs.jsonl"), "w") as f:
+        f.write(json.dumps(dict(old, proof="python.exe other.py")) + "\n" + json.dumps(dict(old, criterion="A9")) + "\n"
+                + json.dumps(dict(old, why="the proof exited 2: it did not measure: another cause")) + "\n")
+    row, _ = one(root, "A2: UNMEASURED (rides a later load)")
+    check("cap: another proof line, clause or cause is not the same again", not row.get("defect"), row)
+
+    # the exit reason
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    row, _ = one(root, "UNMEASURED GeneDef/RSW_TunnelBorn: does not resolve\n\nVERDICT UNMEASURED")
+    check("reason: a generic last line gives way to the line that says why", "RSW_TunnelBorn" in row["why"], row["why"])
+    row, _ = one(tempfile.mkdtemp(prefix="rl_live_"), "")
+    check("reason: nothing printed but the command line is still a row", row["why"].startswith("the proof exited 2"), row["why"])
+
+    # the cause survives the defect's head, or a fixed proof hitting a NEW cause reads as unchanged and is held
+    a = "%s: the proof's own call is broken, so a rerun or a reload cannot help: the proof exited 2: it did not measure: %s"
+    x, y = a % (L.DEFECT, "No public static CleanRead"), a % (L.DEFECT, "Type not found: Foo")
+    check("fingerprint: two defects on one proof line differ", L.fingerprint("A2", x, "p") != L.fingerprint("A2", y, "p"),
+          L.cause(x))
+    check("fingerprint: one defect is one key however it is headed", L.cause(x) == L.cause(
+        "the proof exited 2: it did not measure: No public static CleanRead"), L.cause(x))
+    check("cause: a number glued to its unit is still a number", L.cause("REFUSED calls=18 mean=50.176ms")
+          == L.cause("REFUSED calls=18 mean=78.934ms"), L.cause("mean=50.176ms"))
+    check("cause: a clause id stays", L.cause("A1 x") != L.cause("A2 x"), L.cause("A1 x"))
+
+
 def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
@@ -841,7 +904,7 @@ def t_composed_mod_reads_its_parent_about():
 
 def main():
     for t in (t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
-              t_same_cause_becomes_one_reload_request, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
+              t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
               t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last,

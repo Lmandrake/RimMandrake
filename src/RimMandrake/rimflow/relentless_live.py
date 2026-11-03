@@ -36,6 +36,10 @@ ONE RUN, in this order. Every refusal before step 5 leaves the item untouched an
      The repeats between are rows only (eight identical ledger notes in an hour was the old behaviour).
      A proof or site that KNOWS the running game is the wrong load says so itself: its last line `reload needed: ...`
      is the row's why at once (asked_reload), so the restage needs no repeats.
+     THE CAP (PROOF_RERUNS_TAME_UNMEASURED_REPEATS): a proof that ran and measured nothing gets a `defect` row, terminal
+     for its build, which relentless_game returns to a worker with the exit reason and the log. It takes one run when the
+     proof's own call is broken (broken_call: no game changes a wrong call), one run per build when the same proof line
+     gave the same cause on an earlier build (seen_on_other_build), two games otherwise (seen_on_other_game).
 
 VERDICT. Every row also carries `verdict` (VERDICTS), set by construction: INFRA when the proof never started (a
 refusal, a health check, a site, a harness error before the proof), and then no verify is written and relentless_game
@@ -100,7 +104,21 @@ def verdict(row):
     return row.get("outcome") if row.get("outcome") in ("PASS", "FAIL") else "INFRA"
 RELOAD = "reload needed"        # relentless_game RESTAGE reads this prefix; the round skips it on the same game
 STALE = "changed since the built commit"        # terminal for its build: no game can run it (relentless_live_round.due)
-DEFECT = "proof or site defect"     # the same UNMEASURED cause on two games: terminal for its build, back to a worker
+DEFECT = "proof or site defect"     # an UNMEASURED no rerun can change: terminal for its build, back to a worker
+# Every DEFECT why ends "... cannot help: <the cause>", so cause() can read the cause back out of it.
+DEFECT_HEAD = re.compile(r"^%s: .*? cannot help: " % DEFECT)
+# A proof whose own call is wrong: no reload, site or rerun can change these, so one run is enough. The log's tail decides,
+# and only for a proof that exited neither 0 nor 1. Every pattern is from a real row (2026-11-03, runs.jsonl): GRAFFITI_V1
+# six clauses "No public static CleanRead with 0 params"; SETTLEMENT_VERBS six "Type not found" (a wrong name, or a mod its
+# `live-mods:` line does not name: both the worker's); HEAVY_TEXTURES and TIDAL_LOCK a tool demanding the flag the live
+# tier forbids (forbid_re), so it could never run. The rest are the shell and Python saying the same of a command line.
+BROKEN_CALL = re.compile(
+    r"No public static \S+ with \d+ params|Type not found:|--yes-i-know-this-is-live|can't open file|command not found"
+    r"|: error: (?:unrecognized arguments|the following arguments are required|argument )"
+    r"|\b(?:ModuleNotFoundError|ImportError|SyntaxError|NameError):")
+# A last line that names no reason: the reason is on a line above it
+NO_REASON = re.compile(r"^(?:\$ .*|(?:(?:VERDICT|LIVE|RESULT)\s*:?\s*)?UNMEASURED\.?)$")
+LOG_TAIL = 8000     # the bytes of a proof's log the two readers above look at
 UNDEPLOYED = ("not deployed", "not in the running load")    # retried on another game only (relentless_live_round.due)
 SITE_CMD = re.compile(r"^python\.exe src/RimMandrake/Utils/live_site\.py(?: --[a-z][a-z-]*(?: [A-Za-z0-9_.\-]+)?)+$")
 # rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game
@@ -212,7 +230,9 @@ def refused_site(site):
 
 def cause(why):
     """An UNMEASURED why -> the key two runs share when the same thing stopped them: no paths, numbers or times."""
-    w = re.sub(r"\([^()]*\.log\)|/\S+|\b\d[\d:.TZ-]*\b", "", why or "")
+    w = DEFECT_HEAD.sub("", why or "")      # the head would eat the whole cap, and every defect would read alike
+    # a number with its unit attached is still a number ("mean=50.176ms" made every run its own cause)
+    w = re.sub(r"\([^()]*\.log\)|/\S+|\b\d[\d:.TZ-]*[A-Za-z]*\b", "", w)
     return re.sub(r"\s+", " ", w).strip()[:120]
 
 
@@ -238,6 +258,19 @@ def seen_on_other_game(rows, item_id, criterion, sha, key, game):
                 and row.get("outcome") == "UNMEASURED" and row.get("game") and game and row["game"] != game
                 and (row.get("cause") or cause(row.get("why"))) == key):
             return row["game"]
+    return None
+
+
+def seen_on_other_build(rows, item_id, criterion, sha, key, proof):
+    """-> the earlier build on which this same proof line of (item, criterion) ended UNMEASURED on `key`, or None. A new
+    build earns one run, and the same line saying the same again means the build did not reach what stopped it
+    (PLANET_ATMOSPHERE_CLOUD_COST_1 said "rides a later load" on three builds running)."""
+    for row in reversed(rows):
+        other = row.get("sha") or ""
+        if ((row.get("item"), row.get("criterion"), row.get("proof")) == (item_id, criterion, proof)
+                and other and not other.startswith(sha) and not sha.startswith(other)
+                and row.get("outcome") == "UNMEASURED" and (row.get("cause") or cause(row.get("why"))) == key):
+            return other
     return None
 
 
@@ -324,6 +357,29 @@ def last_line(path):
     """The last non-blank line of a log, cut to 200, or "" when it cannot be read."""
     lines = [x.strip() for x in read_text(path).splitlines() if x.strip()]
     return lines[-1][:200] if lines else ""
+
+
+def tail_lines(path):
+    """The non-blank lines of the end of a log."""
+    return [x.strip() for x in read_text(path)[-LOG_TAIL:].splitlines() if x.strip()]
+
+
+def exit_reason(path):
+    """-> the line of a proof's log that says why it stopped: the last one naming a reason, cut to 200. "VERDICT
+    UNMEASURED" as the last line told the worker nothing and made every cause on that proof the same key."""
+    lines = tail_lines(path)
+    for line in reversed(lines):
+        if not NO_REASON.match(line):
+            return line[:200]
+    return lines[-1][:200] if lines else ""
+
+
+def broken_call(path):
+    """-> the log line showing the proof's own call is wrong (BROKEN_CALL), or None."""
+    for line in reversed(tail_lines(path)):
+        if BROKEN_CALL.search(line):
+            return line[:200]
+    return None
 
 
 def asked_reload(path):
@@ -813,7 +869,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     if code not in (PASS, FAIL):
         why = crashed or (asked_reload(log) if code is not None else None) or "the proof %s" % (
-            "timed out" if code is None else "exited %d: it did not measure: %s" % (code, last_line(log)))
+            "timed out" if code is None else "exited %d: it did not measure: %s" % (code, exit_reason(log)))
         if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
             # its game: relentless_live_round.due runs it again only on another game (one row per game, not per round)
             return done("UNMEASURED", why, log=log, game=iso(started) if started else game_iso(fx))
@@ -823,6 +879,10 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         n = 1 + repeats(rows, item_id, criterion, sha, key, game)
         row.update(game=game, repeat=n, cause=key)
         before = seen_on_other_game(rows, item_id, criterion, sha, key, game) if code is not None else None
+        # a reload request is left out of the two below: a new build always needs its own load
+        ran = code is not None and not why.startswith(RELOAD)
+        broken = broken_call(log) if ran else None
+        earlier = seen_on_other_build(rows, item_id, criterion, sha, key, proof) if ran else None
         games = infra_games(rows, item_id, criterion, sha, game) if "proof_exit" not in row and "health" in row else 0
         if games >= lr["infra_games"]:      # retried on healthy games and still INFRA: the harness's (relentless_game._harness), no strike
             row["harness"] = True
@@ -831,12 +891,19 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 return done("UNMEASURED", why, log=log)
             why = "%s: INFRA on %d games for this build, so no game can judge it until the harness is fixed: %s" % (
                 HARNESS, games, why)
-        elif before:      # it outlived a reload: no further load or rerun of this build can say anything else
+        elif broken or before or earlier:   # no further load or rerun of this build can say anything else
             row["defect"] = True
             if n > 1:
                 return done("UNMEASURED", why, log=log)
-            why = "%s: the same cause on the game of %s and on this one (%s), so a reload cannot help: %s" % (
-                DEFECT, before, game, why)
+            if broken:
+                if broken not in why:   # the line that shows it, when the exit reason is another line
+                    why = "%s (%s)" % (why, broken)
+                head = "the proof's own call is broken, so a rerun or a reload cannot help"
+            elif before:
+                head = "the same cause on the game of %s and on this one (%s), so a reload cannot help" % (before, game)
+            else:
+                head = "the same proof line said the same on build %s, so another rerun cannot help" % earlier
+            why = "%s: %s: %s" % (DEFECT, head, why)
         elif n == lr["repeat_unmeasured"]:
             why = "%s: the same cause %d times on this game (%s): %s" % (RELOAD, n, game, why)
         elif n > 1:     # said once already, or the reload request stands: a row, no ledger note

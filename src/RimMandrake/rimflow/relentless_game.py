@@ -295,6 +295,11 @@ def outcomes(rows, item, sha, clauses):
 RAN_DUD = re.compile(r"the proof (exited \d+: it did not measure|timed out)")
 
 
+def with_log(v):
+    """A row -> its why, the log first, so the worker it goes back to reads the evidence however short the line is cut."""
+    return "%s%s" % ("(%s) " % v["log"] if v.get("log") else "", v.get("why") or "")
+
+
 def not_measuring(rows, item, sha, clauses, limit):
     """-> {clause: (rows, newest why)} for each clause whose proof RAN on `sha` and exited neither PASS nor FAIL at least
     `limit` times (OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: one build re-proved 4x, then reloaded, all UNMEASURED)."""
@@ -303,7 +308,7 @@ def not_measuring(rows, item, sha, clauses, limit):
         if (v.get("item") == item and v.get("criterion") in clauses and (v.get("sha") == sha or same_sha(v.get("sha"), sha))
                 and v.get("outcome") == "UNMEASURED" and RAN_DUD.search(v.get("why") or "")):
             n, _ = out.get(v["criterion"], (0, ""))
-            out[v["criterion"]] = (n + 1, v.get("why") or "")
+            out[v["criterion"]] = (n + 1, with_log(v))
     return {k: v for k, v in out.items() if limit and v[0] >= limit}
 
 
@@ -340,7 +345,7 @@ def blocked_here(rows, clauses, sha, started, now):
         if why not in (R.DUD_HERE, R.WAITS_TIER):
             return {}
         if why == R.DUD_HERE:
-            out[k] = v.get("why") or ""
+            out[k] = with_log(v)
     return out
 
 
@@ -879,19 +884,21 @@ def step(store, fx, r, item, now, acts, sup):
         if dead:        # a build no game can run, or a cause that outlived a reload: no stage or proof round can help
             v = dead[0]
             return _refuse(store, fx, sup, r, item, "game_proof_unmeasured" if v.get("defect") else "game_stale_build",
-                           "%s %s UNMEASURED (%s): %s" % (v.get("criterion"), v.get("proof") or "", v.get("log") or "",
-                                                          v.get("why") or ""),
+                           "%s %s UNMEASURED (%s): %s%s" % (v.get("criterion"), v.get("proof") or "", v.get("log") or "",
+                                                            v.get("why") or "", (" [likewise %s: see their logs]" % ", ".join(
+                                                                sorted(x.get("criterion") or "?" for x in dead[1:])))
+                                                            if dead[1:] else ""),
                            fx.refusal_print(item, v.get("criterion"), v.get("why"), v.get("proof")), now, acts)
         dud = not_measuring(fx.game_rows(), item, built, g["clauses"], c["unmeasured_back"])
         if dud:     # the proof ran and said it measured nothing, again: a proof defect, no reload fixes it
             return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
-                "%s: the proof ran %d times on this build and measured nothing (%s)" % (k, n, why[:160])
+                "%s: the proof ran %d times on this build and measured nothing %s" % (k, n, why[:400])
                 for k, (n, why) in sorted(dud.items())), now, acts)
         here = blocked_here(rows, g["clauses"], built, rd0.get("started"), now)
         if here:    # nothing left this game can measure, and a proof ran and measured nothing: the worker's, at once
             return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
                 "%s: the proof ran on this game and build and measured nothing; the same game and build can only say "
-                "it again (%s)" % (k, why[:160]) for k, why in sorted(here.items())), now, acts)
+                "it again: %s" % (k, why[:400]) for k, why in sorted(here.items())), now, acts)
         since = max(g.get("staged_at") or 0, g["entered_at"])
         stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]

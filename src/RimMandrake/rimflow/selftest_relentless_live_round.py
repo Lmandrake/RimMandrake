@@ -435,10 +435,26 @@ def t_same_game_same_build_waits():
           and counts.get(R.WAITS_TIER) == 1, (todo, counts))
 
 
+def t_census():
+    """PROOF_RERUNS_TAME_UNMEASURED_REPEATS: the numbers the item was filed on come from this, not a one-off script."""
+    row = {"item": "I", "criterion": "A1", "sha": "s", "outcome": "UNMEASURED", "at": "2026-11-03T00:00:00Z", "log": "/l.log",
+           "why": "the proof exited 2: it did not measure: x at 601"}
+    rows = [row, dict(row, why="the proof exited 2: it did not measure: x at 77"), dict(row, sha="s2"),
+            dict(row, why="not in the running load: M", log=None), dict(row, outcome="PASS", why="proof exit 0"),
+            dict(row, item="J", outcome="REFUSED", why="cut", log=None)]
+    c = R.census(rows)
+    check("census: the outcomes count every row", c["outcomes"] == {"UNMEASURED": 4, "PASS": 1, "REFUSED": 1}, c)
+    check("census: a repeat is the same clause, build and cause; another build is not", c["repeats"] == 1
+          and c["repeating_items"] == [[1, "I"]], c)
+    check("census: causes sort by count, numbers gone", c["causes"][0][0] == 3 and "601" not in c["causes"][0][1], c)
+    check("census: what held the game, and what that bought", (c["took_bridge"], c["took_bridge_verdict"]) == (4, 1), c)
+    check("census: no rows is no crash", R.census([])["rows"] == 0)
+
+
 def main():
     for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never,
               t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed,
-              t_same_game_same_build_waits):
+              t_same_game_same_build_waits, t_census):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
