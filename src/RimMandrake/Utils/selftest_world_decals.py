@@ -112,6 +112,42 @@ class Decals:
         return 1.0 - t * t * (3 - 2 * t)      # Mathf.SmoothStep(0,1,t)
 
 
+# The only early exits the fade postfix may take: each disjunct of an `if (...) return;` guard must be one of these
+# (V = the fade variable). Anything else (a guard that is always true, an unconditional return) can starve the fade.
+POSTFIX_GUARDS = ("!(__instance is WorldDrawLayer_Terrain)", "Mats.Count == 0", "Mats.Count < 1", "Mats.Count <= 0",
+                  "Mathf.Abs(V - lastAlpha) < 0.002f")
+
+
+def check_postfix(post):
+    """The per-frame fade, read as structure, not substrings: the alpha computed from the camera altitude by FadeAlpha is
+    the alpha written into EVERY decal material's colour (white tint), it is remembered in lastAlpha, and the postfix
+    leaves early only through the guards above."""
+    errs = []
+    body = re.sub(r"\s+", " ", post)
+    m = re.search(r"float (\w+) = (?:cam == null \? 1f : )?FadeAlpha\(cam\.altitude, decalFullAlt, decalGoneAlt\);", body)
+    if not m or "WorldCameraDriver cam = Find.WorldCameraDriver;" not in body:
+        return ["fade postfix does not compute its alpha as FadeAlpha(camera altitude, decalFullAlt, decalGoneAlt)"]
+    v = m.group(1)
+    after = body[m.end():]
+    if not re.search(r"\blastAlpha = " + v + ";", after):
+        errs.append("fade postfix does not remember the alpha it applied (lastAlpha = %s)" % v)
+    loop = re.search(r"foreach \(Material (\w+) in Mats\.Values\) (?:\{ )?(?:if \((\w+) != null\) )?(\w+)\.color = new Color\(1f, 1f, 1f, (\w+)\);", after)
+    if not loop or loop.group(3) != loop.group(1) or (loop.group(2) and loop.group(2) != loop.group(1)):
+        errs.append("fade postfix does not write a white colour into every material of Mats.Values")
+    elif loop.group(4) != v:
+        errs.append("material colour alpha is %r, not the computed fade %r" % (loop.group(4), v))
+    allowed = {g.replace("V", v) for g in POSTFIX_GUARDS}
+    guarded = 0
+    for g in re.finditer(r"if \((.*?)\) return;", body):
+        guarded += 1
+        for part in (p.strip() for p in g.group(1).split("||")):
+            if part not in allowed:
+                errs.append("fade postfix may leave early on %r (not a reviewed guard)" % part)
+    if len(re.findall(r"\breturn\b", body)) != guarded:
+        errs.append("fade postfix has an unguarded return (the fade can never run)")
+    return errs
+
+
 def check_source(mod, look, dec, proj):
     errs = []
     s = "worldBiomeDecals"
@@ -138,6 +174,7 @@ def check_source(mod, look, dec, proj):
     post = dec.split("static void AlphaPostfix", 1)[-1].split("// ----", 1)[0]
     if "is WorldDrawLayer_Terrain" not in post or ".color = " not in post or "altitude" not in post:
         errs.append("fade postfix does not set material colour from the camera altitude on the terrain layer")
+    errs += check_postfix(post)
     if re.search(r"FinalizeMesh|SetAllLayersDirty|SetDirty|Regenerate|__result\s*=", post):
         errs.append("fade postfix rebuilds meshes or changes the layer alpha (must only write material colours)")
     q = const(dec, "decalQueue", "int"); sq = const(look, "swirlQueue", "int"); bq = const(look, "blendQueue", "int")
@@ -328,6 +365,13 @@ def main():
         ("not built", lambda: check_source(mod, look.replace("RM_WorldDecals.Build(layer, mine)", "\"\""), dec, proj)),
         ("no fade patch", lambda: check_source(mod, look, dec.replace('PropertyGetter(typeof(WorldDrawLayerBase), "Alpha")', 'Method(typeof(X), "Y")'), proj)),
         ("fade rebuilds", lambda: check_source(mod, look, dec.replace("lastAlpha = a;", "lastAlpha = a; Find.World.renderer.SetAllLayersDirty();"), proj)),
+        ("fade guard always true", lambda: check_source(mod, look, dec.replace("Mats.Count == 0) return;", "Mats.Count >= 0) return;"), proj)),
+        ("colour ignores fade", lambda: check_source(mod, look, dec.replace("m.color = new Color(1f, 1f, 1f, a);", "m.color = new Color(1f, 1f, 1f, 1f);"), proj)),
+        ("unguarded return", lambda: check_source(mod, look, dec.replace("WorldCameraDriver cam = Find.WorldCameraDriver;", "return; WorldCameraDriver cam = Find.WorldCameraDriver;"), proj)),
+        ("fade not from altitude", lambda: check_source(mod, look, dec.replace("FadeAlpha(cam.altitude, decalFullAlt", "FadeAlpha(decalFullAlt, decalFullAlt"), proj)),
+        ("threshold inverted", lambda: check_source(mod, look, dec.replace("lastAlpha) < 0.002f) return;", "lastAlpha) > 0.002f) return;"), proj)),
+        ("fade forgotten", lambda: check_source(mod, look, dec.replace("lastAlpha = a;", "lastAlpha = 1f;"), proj)),
+        ("one material only", lambda: check_source(mod, look, dec.replace("foreach (Material m in Mats.Values)\n                    if (m != null) m.color", "Material m = Mats.Values.FirstOrDefault();\n                    if (m != null) m.color"), proj)),
         ("over the hills", lambda: check_source(mod, look, dec.replace("decalQueue = 3507", "decalQueue = 3510"), proj)),
         ("lift over hills", lambda: check_source(mod, look, dec.replace("decalLift = 0.0045f", "decalLift = 0.006f"), proj)),
         ("missing atlas errors", lambda: check_source(mod, look, dec.replace('b.defName, false)', 'b.defName, true)'), proj)),

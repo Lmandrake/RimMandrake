@@ -1,2 +1,2 @@
-# Game: RimMandrake.Biomes deployed at the proof sha (BiomesShell DLL + BlueDesert member with Textures/World/Decals/RM_BlueDesert.png), the minimal list with all five DLC, any world loaded (Playing), jawa/static_call enabled. Read-only.
+# Game: RimMandrake.Biomes deployed at the proof sha (BiomesShell DLL + BlueDesert member with Textures/World/Decals/RM_BlueDesert.png), the minimal list with all five DLC, any world loaded (Playing) with the world view shown (the terrain layer must render for the fade to run; map view reads UNMEASURED), jawa/static_call enabled. Read-only.
 live-proof A1: python3 src/RimMandrake/BiomesShell/live_world_decals.py
