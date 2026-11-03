@@ -152,6 +152,49 @@ def bind(rows, repo=REPO, donor_roots=afc.DONOR_ROOTS):
     return out
 
 
+def _pid(d):
+    try:
+        return (ET.parse(os.path.join(d, "About", "About.xml")).getroot().findtext("packageId") or "").strip().lower()
+    except (ET.ParseError, OSError):
+        return ""
+
+
+def required_mods(rows, binding, retired, repo=REPO):
+    """{packageId: why} the running load must hold before any row is judged: each live row's owner mod (manifest
+    `owner`), the mod of ours that DEFINES each bound kind (RM_Ollathrix is Webwork's, skinned by Shokk), and each live
+    (non-retired) donor a kind binds to. Read from the manifest and src/, never a hand list. Run 1 (2026-11-03) judged a
+    load without Shokk and read its skin patch as REPOINTED: a tier gap scored as a mod defect."""
+    homes = {}
+    for a in sorted(glob.glob(os.path.join(glob.escape(repo), "src", "*", "*", "About", "About.xml"))):
+        d = os.path.dirname(os.path.dirname(a))
+        for k in kind_texpaths([d]):
+            homes.setdefault(k, _pid(d) or "?" + os.path.relpath(d, repo))
+    need = {}
+    for r in rows:
+        b = binding.get(r["creature"]) or {}
+        if b.get("mode") == "dead" or not b.get("kinds"):
+            continue
+        if r.get("owner"):
+            d = os.path.join(repo, r["owner"])
+            need.setdefault(_pid(d) or "?" + r["owner"], "owner of " + r["creature"])
+        for k, src in b["kinds"].items():
+            if src == "ours" and k in homes:
+                need.setdefault(homes[k], "defines " + k)
+            elif src.startswith("donor:") and src.split(":", 1)[1].lower() not in retired:
+                need.setdefault(src.split(":", 1)[1].lower(), "live donor of " + k)
+    return need
+
+
+def load_gap(need, running):
+    """-> why the running load cannot be judged, or None. running: lower-case packageIds, None when unreadable."""
+    if running is None:
+        return "jawa/running_mods unreadable: the load is unknown"
+    miss = sorted(p for p in need if p not in running)
+    if miss:
+        return "not in the running load: " + ", ".join("%s (%s)" % (p, need[p]) for p in miss)
+    return None
+
+
 def retired_ids(path=RETIRED):
     try:
         d = json.load(open(path, encoding="utf-8"))
@@ -311,6 +354,11 @@ def run_live(rows, ticks=300, log=print):
     retired = retired_ids()
     kinds = sorted({k for b in binding.values() for k in b["kinds"]})
     B = vc.Bridge()
+    import live_def_check
+    gap = load_gap(required_mods(rows, binding, retired), live_def_check.running_ids(
+        B.call("jawa/running_mods", details=False, assembly="")))
+    if gap:
+        raise RuntimeError(gap)  # main: UNMEASURED, exit 2 -- the round restages the tier, nothing is judged
     if B.call("rimworld/get_ui_state").get("programState") != "Playing":
         log("no game in progress: starting a quicktest map")
         try:
@@ -443,7 +491,15 @@ def selftest():
                                   ("no rows", [], pb, 2)]:
             if exit_code(rr, bb) != wnt:
                 fails.append("exit %s: %s != %s" % (name, exit_code(rr, bb), wnt))
-    n = len(want) + 1 + len(cases) + 5
+        rows[0]["owner"] = "src/A/Own"
+        need = required_mods(rows, b, set(), repo=td)
+        gaps = [("owner and donor named", sorted(need) == ["d.old", "t.own"]),
+                ("retired donor not required", sorted(required_mods(rows, b, {"d.old"}, repo=td)) == ["t.own"]),
+                ("full load judged", load_gap(need, {"t.own", "d.old", "x"}) is None),
+                ("owner absent refuses", "t.own" in (load_gap(need, {"d.old"}) or "")),
+                ("unreadable load refuses", load_gap(need, None) is not None)]
+        fails += ["load %s" % g for g, ok in gaps if not ok]
+    n = len(want) + 1 + len(cases) + 5 + len(gaps)
     for f in fails:
         print("FAIL " + f)
     print("selftest %d/%d" % (n - len(fails), n))

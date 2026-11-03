@@ -1,1 +1,2 @@
+live-mods: SWBestiary, Shokk, Webwork, Scarlands, UtinniPatches
 live-proof A1: python.exe src/RimMandrake/Utils/art_fold_live.py --live < /dev/null

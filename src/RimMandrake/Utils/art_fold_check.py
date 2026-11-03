@@ -40,7 +40,18 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 MANIFEST = os.path.join(HERE, "art_fold_manifest.json")
-STEAM = "/mnt/c/Program Files (x86)/Steam/steamapps"
+
+
+def native(path):
+    """A /mnt/<drive>/ path as this interpreter must spell it: python.exe (os.name nt) cannot open /mnt/c/... and a
+    glob on it matches nothing, which once turned every donor-bound row of art_fold_live.py --live UNBOUND."""
+    m = re.match(r"^/mnt/([a-zA-Z])(/.*)?$", path or "")
+    if os.name == "nt" and m:
+        return m.group(1).upper() + ":" + (m.group(2) or "/")
+    return path
+
+
+STEAM = native("/mnt/c/Program Files (x86)/Steam/steamapps")
 DONOR_ROOTS = (STEAM + "/common/RimWorld/Mods", STEAM + "/workshop/content/294100")
 FACINGS = ("north", "south", "east")
 _donor_cache = {}
@@ -61,7 +72,7 @@ def donor_dir(pid, hint=None, roots=DONOR_ROOTS):
     pid = pid.lower()
     if pid in _donor_cache:
         return _donor_cache[pid]
-    cands = [hint] if hint else []
+    cands = [native(hint)] if hint else []
     cands += [os.path.dirname(os.path.dirname(a)) for r in roots
               for a in glob.glob(os.path.join(glob.escape(r), "*", "About", "About.xml"))]
     for d in cands:
