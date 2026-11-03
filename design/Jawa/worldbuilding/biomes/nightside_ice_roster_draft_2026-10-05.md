@@ -5,7 +5,13 @@ taken by card, not a quote): **"Design the strange life."** This is BENCH's draf
 organisms for him to judge on a later sheet. **Every row is DRAFT.** Nothing here is ruled until he
 rules it at the sitting.
 
-Authority: `design/Jawa/worldbuilding/biomes/nightside_ice.md` (frozen; this adds detail and changes
+**Judged 2026-11-03 (delegated: design, by the owner's 2026-10-29 triage and his 2026-10-31 card *"Leave all four with
+agents"*):** all ten admitted; hessarund, saallen, oolm and the ice-kept dead admitted WITH CHANGES. Verdicts, the
+§3 answers and the judge's factual flags: `infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json`.
+One build item per unbuilt organism (listed in `infrastructure/state/items/NIGHTSIDE_ICE_NEW_LIFE_1.md`); where a
+change there disagrees with a row below, the item wins.
+
+Authority: `design/Jawa/worldbuilding/biomes/sleeping_ice.md` (frozen; this adds detail and changes
 no ruling). Read with it: §4 (catalysts on seams, sessile and enormous, the one-move animal, thermal
 sensing only, clonal reproduction, nothing warm), §4c (the tunneler slate and the cast closed
 2026-09-24), §5/§6 (always and never true), "Roster consequences", and

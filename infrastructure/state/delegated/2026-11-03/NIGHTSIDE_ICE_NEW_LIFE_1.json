@@ -1,0 +1,183 @@
+{
+  "item": "NIGHTSIDE_ICE_NEW_LIFE_1",
+  "class": "delegated: design",
+  "decided": "2026-11-03",
+  "judge": {
+    "agent": "GPT via src/RimMandrake/Utils/gpt_consult.py (codex.exe), no maker context; the worker that files this did not write the draft",
+    "prompt": "judge_prompt.md (reproduced in field brief)"
+  },
+  "brief": "You are an independent DESIGN JUDGE for a RimWorld 1.6 mod project. You did not write the draft you are judging. Decide on the written constraints only.\n\nARTIFACT: `nightside_ice_roster_draft_2026-10-05.md` (attached) — a roster draft for the Nightside Ice biome (the mod is now called SleepingIce; same biome).\nGOVERNING DESIGN DOC (frozen, owner-ratified): excerpts of `sleeping_ice.md` (attached as biome_sections.md: §4 biology, §4c tunneler slate, §5 always true, §6 never true (hard bans), §7 uniquely available, roster consequences, owed).\nOWNER RULINGS ALREADY MADE: `bedazzle_s8.md` (attached: build order rows 2-8, hessarund \"only a landform\", the passed marks incl. kesshet, the Cold Ledger rite) and `rulings_extra.md` (one biome per animal; RM_ tier for invented names; no biome-specific sun or heat).\nFurther standing rulings, quoted:\n- \"Always assume all the dlcs.\" (no DLC-less path)\n- No worldgen of any kind (planet generation). Map generation (GenSteps on a colony map) is ordinary and allowed.\n- \"If it flies in the fiction, it flies in the game.\" Flyers get real flight.\n- Every mod ships superb Mod Settings: on/off per major feature.\n- \"no animal or pawn ever vanishes without a readable sign.\"\n- The six ruled organisms (sohl, shivven, frissim, wyrmlet, dhorrumak, hessarund) are admitted already by the owner; the 2026-10-29 triage says \"The six ruled organisms stay as they are.\" Shivven is BUILT.\n\nQUESTION. For each of the ten organisms give a verdict:\n- the six ruled ones: KEEP (already admitted) unless the DRAFT DETAIL under the name breaks a §6 ban or a quoted ruling, in which case CHANGE with the exact fix.\n- the four new ones (saallen, oolm, neshkoll, ice-kept dead): KEEP, CUT or CHANGE. CUT or CHANGE must quote the violated constraint and its source (section number). Judge: does it fit §4/§5/§6/§7, does it fill a real empty category, is it buildable at the stated cost, does it duplicate something, does it contradict a passed mark (kesshet passed), is its name in the nightside accent and free of the Abyss -ith/-tha/-ia sound.\nThen answer the draft's six §3 questions, each with a one-line decision and reason (Q3 and Q5 are art direction: answer from the written constraints; if the written constraints do not decide it, say UNSURE and give the default you would take).\nAlso flag any FACTUAL problems in the draft (e.g. a mechanic that contradicts the biome doc, a wrong build-cost estimate).\n\nOUTPUT: ONLY a JSON object, no prose around it:\n{\"organisms\": {\"sohl\": {\"verdict\": \"KEEP|CUT|CHANGE\", \"reasons\": [\"...\"], \"changes\": [\"...\"]}, \"shivven\": {...}, \"frissim\": {...}, \"wyrmlet\": {...}, \"dhorrumak\": {...}, \"hessarund\": {...}, \"saallen\": {...}, \"oolm\": {...}, \"neshkoll\": {...}, \"ice_kept_dead\": {...}},\n \"questions\": [{\"q\": 1, \"decision\": \"...\", \"reason\": \"...\"}, ... six entries],\n \"factual_flags\": [\"...\"]}\n",
+  "inputs": [
+    "design/Jawa/worldbuilding/biomes/nightside_ice_roster_draft_2026-10-05.md",
+    "design/Jawa/worldbuilding/biomes/sleeping_ice.md §4,§4c,§5,§6,§7,Roster consequences,Owed",
+    "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md §8",
+    "design/RimMandrake/biome_rulings.md (one biome per animal; RM_ tier naming; no biome-specific sun/heat)"
+  ],
+  "organisms": {
+    "sohl": {
+      "verdict": "KEEP",
+      "reasons": [
+        "Already admitted. Its single sudden commitment and visibly persistent spent body implement the expressly ruled one-move exception; they do not reopen the general surface-movement ban.",
+        "The building-to-pawn-to-building conversion leaves a readable result."
+      ],
+      "changes": [],
+      "build_item": "SOHL_BUILD_ONE_MOVE_TOTAL",
+      "row": "row 4 (sohl)"
+    },
+    "shivven": {
+      "verdict": "KEEP",
+      "reasons": [
+        "Already admitted and BUILT; the later owner instruction says the six ruled organisms stay as they are.",
+        "The draft proposes no replacement behaviour or art. Thermal pursuit within ice, travelling tells and open-ice breaches implement §4c."
+      ],
+      "changes": [],
+      "build_item": "NIGHTSIDEICE_SHIVVEN_BUILD_1",
+      "note": "BUILT (closed item); its larder is bedazzle §8 row 5"
+    },
+    "frissim": {
+      "verdict": "KEEP",
+      "reasons": [
+        "Already admitted. Thaw-released ground activity is an explicit §4/§4c exception to the general surface-fauna restrictions.",
+        "Folded wing-cases do not establish fictional flight. Keep both fiction and implementation flightless.",
+        "The refreezing/death discrepancy is flagged below; it is not grounds to revoke admission under the specified verdict rule."
+      ],
+      "changes": [],
+      "build_item": "FRISSIM_BUILD_WAITS_FOR_THAW",
+      "row": "row 2 (thaw/calving)"
+    },
+    "wyrmlet": {
+      "verdict": "KEEP",
+      "reasons": [
+        "Already admitted. Surfacing to feed where inclusion insects stir is expressly required by §4c.6.",
+        "No fast surface pursuit, alternative sensing or other new §6 violation is specified. Reused submerged movement must retain its readable tell."
+      ],
+      "changes": [],
+      "build_item": "WYRMLET_BUILD_SHIVVEN_HAND_ME_DOWNS",
+      "row": "row 6 (apex ladder)"
+    },
+    "dhorrumak": {
+      "verdict": "KEEP",
+      "reasons": [
+        "Already admitted. Sustained-heat and disturbed-nest triggers, open-ice breaches and incident-only presence follow §4c.6 and the hull rule.",
+        "The invented name remains RM_; genuine canon material belongs in the Utinni layer."
+      ],
+      "changes": [],
+      "build_item": "DHORRUMAK_BUILD_BIGGEST_LAST",
+      "row": "row 6 (apex ladder)"
+    },
+    "hessarund": {
+      "verdict": "CHANGE",
+      "reasons": [
+        "Keep the admitted, behaviourless mineable ridge. The proposed cold-rejection research role introduces a learned-tech offering where bedazzle §8, row 3 says: \"Ship, sound and learned tech stay unfilled for this biome by his choice: passed, not gaps to re-pitch.\""
+      ],
+      "changes": [
+        "Remove the proposed new cold-rejection research role. Retain catalyst crust as the ruled mining yield; ordinary integration into existing crafting does not require a new biome-specific technology.",
+        "Keep the ridge entirely without behaviour, as required by bedazzle §8, row 2."
+      ],
+      "build_item": "HESSARUND_BUILD_JUST_A_RIDGE",
+      "row": "row 7 (ice forms)"
+    },
+    "saallen": {
+      "verdict": "CHANGE",
+      "reasons": [
+        "It fills the requested catalytic-sheet category and adds a useful early visual stage to the existing breach loop. A ground seam crust is not, on the supplied evidence, a revival of the passed hull-crust kesshet.",
+        "The scraping promise overstates its defensive effect. §4c, hull rule: \"The colony's waste heat softening the surrounding ice IS the breach ring; flooring it is real defence.\" Removing a crust cannot remove the underlying heat-driven breach eligibility."
+      ],
+      "changes": [
+        "Make scraping remove the crust and its additional breach-placement weight only. Warm, unfloored open ice must remain eligible for breaches.",
+        "Replace \"remove that risk\" with an explicit statement that scraping reduces this local preference while cooling or flooring provides the established defence."
+      ],
+      "build_item": "SAALLEN_BUILD_BLISTERS_ON_CUE",
+      "row": "heat-dial follow-on (new, after row 7)"
+    },
+    "oolm": {
+      "verdict": "CHANGE",
+      "reasons": [
+        "Ancient clonal lobes fill the requested boulder-field/colonial-landform form; the name fits the accent.",
+        "Its relationship to sohl is biologically unresolved. §4 says: \"A new individual is a piece of an old one that reached a new seam.\" A sohl fragment cannot silently become an unrelated organism.",
+        "The insulating-wall reward is not buildable at the stated cost merely by declaring an insulating stuff stat."
+      ],
+      "changes": [
+        "Define oolm explicitly as the sessile clonal stage or colony form of the sohl lineage, rather than an independent species produced by sohl fragmentation.",
+        "Track colony identity rather than treating every lobe anywhere on the map as automatically one individual.",
+        "Drop the material-dependent wall-insulation promise from the small build, or budget and validate the required heat-transfer implementation separately.",
+        "Describe mining hardening as a passive physical response; do not introduce vibration sensing or awareness of remote mining."
+      ],
+      "build_item": "OOLM_BUILD_ONE_BODY_MANY_LOBES",
+      "row": "new (after row 7)"
+    },
+    "neshkoll": {
+      "verdict": "KEEP",
+      "reasons": [
+        "It fills the expressly wanted \"chemical-frost formations that are ambiguously alive\" category. Treat it as a terrain formation with unresolved biology, not an established rapidly reproducing surface animal.",
+        "Its directional heat indication differs from the existing hoarfrost scenery and breach warning. It introduces neither sound sensing nor a learned technology.",
+        "The name fits the accent and avoids the Abyss endings. No supplied description establishes duplication of a passed mark."
+      ],
+      "changes": [],
+      "build_item": "NESHKOLL_BUILD_POINTS_AT_LEAKS",
+      "row": "heat-dial follow-on (new, after row 7)"
+    },
+    "ice_kept_dead": {
+      "verdict": "CHANGE",
+      "reasons": [
+        "It directly fills §4's \"Corpses and the lost — not fauna, the biome's real population\" and §7's well-provisioned dead. Its plain English name is appropriate.",
+        "Exposure alone does not establish a warm signal. §4 says sensing is \"heat and only heat\"; §4c describes a dying body as the signal, while dead bodies are stored under perfect preservation."
+      ],
+      "changes": [
+        "Make tunnelers respond to an actual heat source used during extraction, a still-living occupant, or explicitly modelled residual warmth. A cold exposed corpse must not automatically emit heat.",
+        "Preserve extracted corpses and gear, and connect any theft to a visible drag/submergence sign and the recoverable larder.",
+        "Treat the ledger tablet as an optional proposed prop, not a confirmed requirement of the Cold Ledger rite; the supplied ruling establishes only the rite's admission."
+      ],
+      "build_item": "ICEKEPT_DEAD_BUILD_CUT_OUT_COLD",
+      "row": "row 2 (thaw/calving)"
+    }
+  },
+  "questions": [
+    {
+      "q": 1,
+      "decision": "Admit saallen, oolm and ice-kept dead with the listed changes; KEEP neshkoll.",
+      "reason": "Each addresses a written wanted form or population; their useful distinctions survive without reopening passed marks."
+    },
+    {
+      "q": 2,
+      "decision": "KEEP saallen, oolm and neshkoll.",
+      "reason": "Their long vowels, doubled consonants and consonant endings fit the stated accent; none uses -ith, -tha or -ia, and invented names belong in RM_."
+    },
+    {
+      "q": 3,
+      "decision": "UNSURE; default to retaining the shipped shivven art.",
+      "reason": "The later ruling retains the built organism; §6 constrains recognisable silhouettes, but pink itself is not banned and the supplied material contains no image on which to judge a new visual violation."
+    },
+    {
+      "q": 4,
+      "decision": "Keep frissim fictionally and mechanically flightless; do not add a native-frissim food harvest.",
+      "reason": "The admitted ground-inclusion role needs no flight, and §7 says \"Not food\"; §4c.2 separately and explicitly permits the deposited dayside insect-fall as food."
+    },
+    {
+      "q": 5,
+      "decision": "UNSURE; default to one distinct top-down spent-body graphic.",
+      "reason": "The rules require a permanent, readable spent state but do not prescribe sprite count; one distinct graphic makes that state clear."
+    },
+    {
+      "q": 6,
+      "decision": "Allow one shared catalyst-crust resource.",
+      "reason": "Bedazzle §8 guarantees the hessarund yield without making it exclusive; the other catalytic deposits can share it without creating another resource or reopening the passed hull-crust mark."
+    }
+  ],
+  "factual_flags": [
+    "Frissim refreezing is described inconsistently: §4 makes inclusion insects dormant outside thaw pulses, but the draft kills them when the ice refreezes. Default to renewed dormancy; actual deaths must leave readable remains rather than silently removing pawns.",
+    "The insect-fall is specifically a deposited, freeze-dried dayside swarm (§4c.2), not automatically a release of native frissim. Keep those populations and their food permissions distinct.",
+    "Oolm's vanilla insulation claim conflates stuff insulation stats with material-dependent wall heat transfer. Declaring StuffProperties does not by itself implement the promised insulating walls; the XML-plus-tiny-comp estimate omits that work.",
+    "The proposed oolm comp counts lobes remaining, but the stated behaviour depends on lobes mined from a particular colony. Those are different measurements, especially if lobes are destroyed, spawned or belong to different pan margins.",
+    "The sohl description offers non-heat commitments to fresh seams, but its implementation outline specifies only a heat trigger. The fragment-producing commitment needs an actual trigger if retained.",
+    "A cold corpse does not become a thermal beacon merely because it is exposed. The draft must identify and implement the actual source of warmth.",
+    "The supplied Cold Ledger ruling does not specify a ledger tablet, an item drop or a corpse-loot requirement. Those details remain proposals.",
+    "Rot4 provides four cardinal facings; it does not make a plume point exactly toward an arbitrarily positioned source. Use approximate wording or budget continuous rotation.",
+    "The displayed build table is not the ratified execution order: it begins with row-7 hessarund work before row-2 thaw/calving and row-4 sohl. Follow bedazzle §8's ordered backlog and explicitly schedule new work without jumping it.",
+    "The small cost estimates are conditional: frissim needs its thaw/calving infrastructure, wyrmlets need feeding and readable submergence behaviour, and ice-kept-dead theft needs the larder and recovery system. Those dependencies are not already completed merely because shivven movement is built.",
+    "The draft omits the standing requirement for on/off Mod Settings per major feature from its implementation and cost accounting.",
+    "Map-local GenSteps are allowed and are not prohibited planet worldgen. Likewise, subzero ice softening is not inherently liquid water; implementing an actual melt pool would violate §6.",
+    "The supplied excerpts do not substantiate claims about installed files, completed art, grep results or exact existing-code reuse. They can be accepted as draft premises, but this written-constraint review does not verify them."
+  ],
+  "art": "The four new organisms' artpipe jobs (nightsideice_newlife_*_v1) are in artpipe done/ but their renders no longer exist on disk and were never collected or judged; each build item re-queues its art through the art-evaluation pipeline. Ruled-cast art is untouched by this verdict."
+}
