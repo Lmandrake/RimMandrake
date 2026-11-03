@@ -5,3 +5,12 @@ live-site A1: python.exe src/RimMandrake/Utils/live_site.py --biome RM_LeaningSc
 live-proof A1: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_LeaningScrub < /dev/null
 live-site A2: python.exe src/RimMandrake/Utils/live_site.py --biome RM_WeepingStones
 live-proof A2: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_WeepingStones < /dev/null
+# A3/A4: the other two fixed biomes (Utinni PackAnimals_RestoreSaddles.xml path). A5: the droid enclave's own row must read
+# gen=True (--faction), so another faction's caravan cannot stand in for it. The free-tier clause (a vanilla caravan on a
+# list without UtinniPatches) needs a different load: SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS (its own live_proofs file).
+live-site A3: python.exe src/RimMandrake/Utils/live_site.py --biome RM_FeverWood
+live-proof A3: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_FeverWood < /dev/null
+live-site A4: python.exe src/RimMandrake/Utils/live_site.py --biome RM_Cauldron
+live-proof A4: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_Cauldron < /dev/null
+live-site A5: python.exe src/RimMandrake/Utils/live_site.py --biome RM_LeaningScrub
+live-proof A5: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_LeaningScrub --faction RUT_Jawa_FreeDroidEnclaves < /dev/null

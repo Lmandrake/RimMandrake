@@ -1,0 +1,2 @@
+A1 L2: on a regenerated RM_WeepingStones map with RimMandrake.Biomes and no UtinniPatches (all five DLC), the OutlanderCivil row of RM_StillsandTraderProbe.Report reads gen=True: a vanilla caravan can come (carriers RM_Tirbak/RM_Vellak from RM_TraderCarriers_WeepingStones.xml)
+A2 L2: on a regenerated RM_Stillsand map, same list, the OutlanderCivil row reads gen=True (carrier RM_Vaalok from RM_TraderCarriers_Stillsand.xml)

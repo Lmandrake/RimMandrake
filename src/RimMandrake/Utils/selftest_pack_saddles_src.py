@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""selftest for PACK_ANIMALS_RESTORE_EMPTY_SADDLES read straight from src (the dump lags src, so it cannot see a src break).
+
+    python3 src/RimMandrake/Utils/selftest_pack_saddles_src.py
+
+Pins: RUT_Jawa_FreeDroidEnclaves' Trader group has a <carriers> node whose every kind is a PawnKindDef in src, and its
+races meet the allowedPackAnimals of each fixed biome (RM_LeaningScrub, RM_WeepingStones, RM_FeverWood, RM_Cauldron) as
+src builds them: the inline RM_ list plus the Utinni PackAnimals_RestoreSaddles.xml additions (the engine rule:
+PawnGroupKindWorker_Trader.CanGenerateFrom = carriers.Any(race in biome.allowedPackAnimals)). Also drives
+vanilla_beast_carriers.item_problems (the plain run's exit gate) on fixtures, so it goes red if that gate is loosened.
+"""
+import os
+import sys
+import xml.etree.ElementTree as ET
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import vanilla_beast_carriers as v  # noqa: E402
+
+SRC = os.path.normpath(os.path.join(HERE, "..", ".."))
+ENCLAVE_XML = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Defs", "FactionDefs", "JawaFreeDroidEnclaves.xml")
+SADDLES = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Patches", "PackAnimals_RestoreSaddles.xml")
+FAILS = []
+
+
+def check(name, cond):
+    print("%s  %s" % ("ok  " if cond else "FAIL", name))
+    if not cond:
+        FAILS.append(name)
+
+
+def trader_carriers(path, faction):
+    """-> [[carrier kind] per Trader group] of that FactionDef in that file; a group with no <carriers> gives []."""
+    root = ET.parse(path).getroot()
+    out = []
+    for fd in root.iter("FactionDef"):
+        if (fd.findtext("defName") or "").strip() != faction:
+            continue
+        for li in fd.findall("pawnGroupMakers/li"):
+            if (li.findtext("kindDef") or "").strip() == "Trader":
+                c = li.find("carriers")
+                out.append([] if c is None else [k.tag for k in c])
+    return out
+
+
+def src_allowed(saddles=SADDLES):
+    al = {b: list(r) for b, r in v.src_rm_allowed().items()}
+    _, rm, pk = v.parse_patch(open(saddles, encoding="utf-8").read())
+    for b, r in rm:
+        al[b] = [x for x in al.get(b, []) if x != r]
+    for b, r in pk:
+        if r not in al.setdefault(b, []):
+            al[b].append(r)
+    return al
+
+
+def enclave_problems(groups, allowed, kr, fixed=v.FIXED_BIOMES):
+    bad = []
+    if not groups:
+        return ["%s has no Trader group" % v.ENCLAVE]
+    for g in groups:
+        if not g:
+            bad.append("a %s Trader group has no carriers" % v.ENCLAVE)
+        undefined = sorted(k for k in g if k not in kr)
+        if undefined:
+            bad.append("carrier kinds not PawnKindDefs in src: %s" % undefined)
+    races = {kr[k] for g in groups for k in g if k in kr}
+    for b in fixed:
+        if not set(allowed.get(b, [])) & races:
+            bad.append("%s carriers meet nothing in %s allowedPackAnimals %s" % (v.ENCLAVE, b, allowed.get(b)))
+    return bad
+
+
+# ---- the real src
+kr = v.src_pawnkinds()
+groups = trader_carriers(ENCLAVE_XML, v.ENCLAVE)
+allowed = src_allowed()
+check("sanity: src has PawnKindDefs (%d) and the enclave file parses (%d Trader group(s))" % (len(kr), len(groups)),
+      len(kr) > 50 and len(groups) >= 1)
+for b in v.FIXED_BIOMES:
+    check("src: %s allowedPackAnimals non-empty (%s)" % (b, ",".join(allowed.get(b, []))), bool(allowed.get(b)))
+bad = enclave_problems(groups, allowed, kr)
+check("src: %s Trader carriers meet every fixed biome: %s" % (v.ENCLAVE, bad or "ok"), not bad)
+
+# ---- the instrument can see a break (mutants on the real data)
+check("mutant: enclave <carriers> deleted -> red", enclave_problems([[] for _ in groups], allowed, kr) != [])
+noscrub = dict(allowed, RM_LeaningScrub=[])
+check("mutant: RM_LeaningScrub list emptied -> red", enclave_problems(groups, noscrub, kr) != [])
+check("mutant: carrier kind cut from src -> red", enclave_problems([g + ["RM_BovineBeetle"] for g in groups], allowed, kr) != [])
+
+# ---- vanilla_beast_carriers.item_problems, the plain run's exit gate
+ok = {"can_trade": True}
+no = {"can_trade": False}
+full = {b: {v.ENCLAVE: ok, "X": ok} for b in v.FIXED_BIOMES}
+al = {b: ["R"] for b in v.FIXED_BIOMES}
+check("gate: all good -> no problems", v.item_problems(full, ["Banned"], al, {"Banned"}) == [])
+check("gate: unbanned zero-carrier group -> red", v.item_problems(full, ["Live"], al, {"Banned"}) != [])
+m2 = {b: dict(r) for b, r in full.items()}
+m2["RM_Cauldron"][v.ENCLAVE] = no
+check("gate: enclave cannot reach RM_Cauldron -> red", v.item_problems(m2, [], al, set()) != [])
+m3 = {b: dict(r) for b, r in full.items()}
+del m3["RM_FeverWood"][v.ENCLAVE]
+check("gate: enclave absent from a fixed biome row -> red", v.item_problems(m3, [], al, set()) != [])
+check("gate: fixed biome with empty list -> red", v.item_problems(full, [], dict(al, RM_WeepingStones=[]), set()) != [])
+check("gate: real banned list names RM_Faction_CombHolds", "RM_Faction_CombHolds" in v.banned_factions())
+
+print("RESULT: %s" % ("GREEN" if not FAILS else "RED %d: %s" % (len(FAILS), FAILS)))
+sys.exit(1 if FAILS else 0)

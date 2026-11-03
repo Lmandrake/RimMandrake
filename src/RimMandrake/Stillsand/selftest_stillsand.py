@@ -1197,6 +1197,16 @@ def trader_check_verdicts(bad):
         got = T.verdict(reply, biome)[0]
         if got != want:
             bad.append("trader_probe_check.verdict(%r, %s) = %d, want %d" % (reply, biome, got, want))
+    # --faction: that faction's own row must read gen=True; another faction's gen=True does not stand in for it.
+    enc = scrub + "; RUT_Jawa_FreeDroidEnclaves:src=True,desp=False,carrierAllowed=True,gen=True,pts=0"
+    enc_no = enc.replace("carrierAllowed=True,gen=True,pts=0", "carrierAllowed=False,gen=False,pts=0")
+    for reply, fac, want in [({"success": True, "result": enc}, "RUT_Jawa_FreeDroidEnclaves", T.PASS),
+                             ({"success": True, "result": enc_no}, "RUT_Jawa_FreeDroidEnclaves", T.FAIL),
+                             ({"success": True, "result": scrub}, "RUT_Jawa_FreeDroidEnclaves", T.FAIL),
+                             ({"success": True, "result": enc_no}, None, T.PASS)]:
+        got = T.verdict(reply, "RM_LeaningScrub", fac)[0]
+        if got != want:
+            bad.append("trader_probe_check.verdict(%r, RM_LeaningScrub, %s) = %d, want %d" % (reply, fac, got, want))
 
 
 def trader_probe_points(bad):

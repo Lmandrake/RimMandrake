@@ -37,6 +37,10 @@ list: the official factions' trader groups with official carriers only, our RM_ 
 (no Utinni patch; a <li> whose MayRequire names anything but mandrake.rm.* or ludeon.* is dropped), and the free-tier
 carriers files (src/RimMandrake/*/Patches/RM_TraderCarriers_*.xml) simulated on top. Exit 3 if a biome whose list names
 an owned beast still admits no vanilla trader afterwards.
+The plain run exits 3 (item_problems, PACK_ANIMALS_RESTORE_EMPTY_SADDLES) if a world trader group outside
+factions/banned_factions.json has zero carriers, a fixed biome (FIXED_BIOMES) has an empty list or admits no world
+trader, or RUT_Jawa_FreeDroidEnclaves cannot trade into every fixed biome. It reads the dump: selftest_pack_saddles_src.py
+pins the same in src, which the dump lags.
 Sanity probes (exit 2 if either fails — the instrument is reading nothing): OutlanderCivil's trader carriers
 include Muffalo, and RM_LanternDeeps' allowedPackAnimals include Muffalo (both true of the unpatched dump).
 """
@@ -334,6 +338,33 @@ def free_tier_core(groups, allowed, kr, official, sk, files):
     return lines, bad
 
 
+FIXED_BIOMES = ("RM_LeaningScrub", "RM_WeepingStones", "RM_FeverWood", "RM_Cauldron")
+ENCLAVE = "RUT_Jawa_FreeDroidEnclaves"
+BANNED_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), "factions", "banned_factions.json")
+
+
+def banned_factions(path=BANNED_JSON):
+    """defNames of the banned (never generated) factions: their dead trader groups are tombstones, not defects."""
+    return {f["defName"] for f in json.load(open(path, encoding="utf-8")).get("factions", [])}
+
+
+def item_problems(m, dead_groups, allowed, banned, fixed=FIXED_BIOMES, enclave=ENCLAVE):
+    """PACK_ANIMALS_RESTORE_EMPTY_SADDLES on the dump: no live trader group with zero carriers, each fixed biome has a
+    pack list some faction meets, and the droid enclave trades into every fixed biome. -> [problem]."""
+    bad = []
+    dead = sorted(f for f in dead_groups if f not in banned)
+    if dead:
+        bad.append("trader groups with ZERO carriers outside the banned list: %s" % dead)
+    for b in fixed:
+        if not allowed.get(b):
+            bad.append("%s has an empty allowedPackAnimals" % b)
+        elif not any(c["can_trade"] for c in m.get(b, {}).values()):
+            bad.append("%s admits no world trader" % b)
+        if not m.get(b, {}).get(enclave, {}).get("can_trade"):
+            bad.append("%s cannot trade into %s" % (enclave, b))
+    return bad
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=DB)
@@ -372,7 +403,10 @@ def main(argv):
     out = dict(captured_utc=d["captured"], world_traders=traders, dead_trader_groups=dead_groups,
                biomes_without_pack_animals=no_pack, biomes_allowing_but_unmatched=closed,
                official_carrier_reachable=off_reach, matrix=m)
-    rc = 0
+    item_bad = item_problems(m, dead_groups, allowed, banned_factions())
+    print("PACK_ANIMALS_RESTORE_EMPTY_SADDLES: %s" % ("; ".join(item_bad) if item_bad else "OK"))
+    out["item_problems"] = item_bad
+    rc = 3 if item_bad else 0
     if a.simulate:
         adds, removals, pack_adds = [], [], []
         for path in a.simulate:
@@ -412,7 +446,7 @@ def main(argv):
         print("  biomes where an official carrier is still reachable after: %s" % (off2 or "none"))
         out["simulate"] = dict(added=added, removals=removals, pack_adds=pack_adds, opened=opened, lost=lost,
                                left=left, official_after=off2, empty_after=still)
-        rc = 3 if (lost or left) else 0
+        rc = 3 if (lost or left or rc) else 0
     if a.json:
         json.dump(out, open(a.json, "w"), indent=1)
     return rc

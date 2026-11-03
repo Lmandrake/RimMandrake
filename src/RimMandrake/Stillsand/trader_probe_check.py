@@ -9,7 +9,8 @@ RimMandrake.Stillsand.RM_StillsandTraderProbe.Report("-"), which runs the engine
 biome's allowedPackAnimals, RCellFinder.TryFindRandomPawnEntryCell) on Find.CurrentMap and changes nothing.
 
 --biome (default RM_Stillsand; PACK_ANIMALS_RESTORE_EMPTY_SADDLES reuses the probe for the biomes whose
-allowedPackAnimals it filled) names the biome the current map must be; any other map is UNMEASURED.
+allowedPackAnimals it filled) names the biome the current map must be; any other map is UNMEASURED. --faction F additionally requires F's own row to
+read gen=True (no row for F is a FAIL: the faction is not in the world or has no Trader kind).
 
 Exit 0: the current map is the named biome, an entry cell exists and generable >= 1 (a faction is a group source with a
 Trader group the engine would generate here). Exit 1: the game answered for an RM_Stillsand map and one of those is
@@ -37,7 +38,7 @@ LINE = re.compile(r"^TRADERS biome=(?P<biome>\S+) entryCell=(?P<entry>True|False
                   r"desperate=(?P<desp>\d+) generable=(?P<gen>\d+)\b")
 
 
-def verdict(reply, biome="RM_Stillsand"):
+def verdict(reply, biome="RM_Stillsand", faction=None):
     """bridge reply -> (exit code, one line). Pure: the selftest drives it with canned replies."""
     if not isinstance(reply, dict) or reply.get("success") is False:
         return UNMEASURED, "UNMEASURED: the probe did not answer: %s" % str(reply)[:200]
@@ -54,12 +55,20 @@ def verdict(reply, biome="RM_Stillsand"):
         return FAIL, "FAIL: no pawn entry cell on the %s map: %s" % (biome, res[:400])
     if int(m.group("gen")) < 1:
         return FAIL, "FAIL: no faction can send a trade caravan here (generable=0): %s" % res[:400]
+    if faction:
+        row = [r for r in rows if r.strip().startswith(faction + ":")]
+        if not row:
+            return FAIL, "FAIL: %s has no trader row on the %s map (not in the world, or no Trader kind): %s" % (
+                faction, biome, res[:400])
+        if ",gen=True" not in row[0]:
+            return FAIL, "FAIL: %s cannot send a trade caravan here: %s" % (faction, row[0].strip()[:200])
     return PASS, "PASS: %s" % res[:400]
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--biome", default="RM_Stillsand")
+    ap.add_argument("--faction", help="this faction's own row must read gen=True (absent row = FAIL)")
     a = ap.parse_args(argv)
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
     try:
@@ -73,7 +82,7 @@ def main(argv=None):
     except Exception as e:      # any bridge or import failure is ignorance, never a FAIL
         print("UNMEASURED: bridge call failed: %s" % str(e)[:200])
         return UNMEASURED
-    code, line = verdict(reply, a.biome)
+    code, line = verdict(reply, a.biome, a.faction)
     print(line)
     return code
 

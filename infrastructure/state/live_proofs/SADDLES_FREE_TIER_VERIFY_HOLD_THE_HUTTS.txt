@@ -1,0 +1,7 @@
+# Free tier (no UtinniPatches): an OFFICIAL faction's own probe row must read gen=True on each map, which on these biomes
+# only the Biomes mod's RM_TraderCarriers_*.xml (RM_Tirbak/RM_Vellak, RM_Vaalok on every trader group) can make true.
+live-mods: RimMandrake.Biomes
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --biome RM_WeepingStones
+live-proof A1: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_WeepingStones --faction OutlanderCivil < /dev/null
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand
+live-proof A2: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_Stillsand --faction OutlanderCivil < /dev/null
