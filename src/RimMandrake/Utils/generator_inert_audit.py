@@ -405,37 +405,58 @@ def reply(r):
     return r if isinstance(r, dict) else {}
 
 
+RELOAD_WHY = ("reload needed: the running load is not the A2 list; restart on SHIP.RULED_2026-10-20 "
+              "(infrastructure/state/modlists/, lacks oblitus.mylittleplanet and boots.sensiblefactions, holds both "
+              "Alien Worlds ids) with all five DLC; the live-site line then loads the canonical start save")
+
+
+def list_gap(rb):
+    """-> (code, lines): code None when the RUNNING load lacks both INERT mods and holds both Alien Worlds ids, else
+    UNMEASURED with the lines that say why. The last line a wrong list prints is RELOAD_WHY: relentless_live carries a
+    proof's or site's own `reload needed:` line as the row's why, which the game phase restages (RESTAGE)."""
+    import live_def_check
+    inert = [p for p, v in EXPECTED.items() if v == "INERT"]
+    running = live_def_check.running_ids(reply(rb.call("jawa/running_mods", {"details": False, "assembly": ""})))
+    code, pre = live_def_check.condition(list(ALIEN_WORLDS), inert, running, live_def_check.aliases())
+    if code is not None and running is not None:
+        pre = pre + [RELOAD_WHY]
+    return code, pre
+
+
+def bridge():
+    from rimbridge_client import RimBridge, resolve_endpoint
+    host, port, token = resolve_endpoint()
+    return RimBridge(host, port, token, timeout=60)
+
+
+def planet_of_save():
+    spath = os.path.join(game_paths.SAVES, canonical_save_name())
+    with open(spath, "rb") as fh:
+        m = re.search(r"<world>.*?<info>.*?<name>(.*?)</name>", fh.read(4 << 20).decode("utf-8", "replace"), re.S)
+    return m.group(1) if m else None
+
+
 def live(_args):
     """Read-only. Every load condition is read from the RUNNING load (jawa/running_mods), never ModsConfig.xml, which
     names the NEXT load; a condition unmet is UNMEASURED (exit 2), which the live round restages."""
-    import live_def_check
     inert = [p for p, v in EXPECTED.items() if v == "INERT"]
     try:
-        from rimbridge_client import RimBridge, resolve_endpoint
-        host, port, token = resolve_endpoint()
         # connected (the 2026-11-03 run built a RimBridge and never connected it: 'NoneType' has no sendall); in-process,
         # never live_def_check.call_running_mods, which shells out through wslpath, absent under python.exe
-        with RimBridge(host, port, token, timeout=60) as rb:
-            running = live_def_check.running_ids(reply(rb.call("jawa/running_mods", {"details": False, "assembly": ""})))
+        with bridge() as rb:
+            code, pre = list_gap(rb)
             gi = reply(rb.call("rimworld/get_game_info", {}))
             wi = reply(rb.call("jawa/world_info_get", {}))
     except Exception as e:  # noqa: BLE001  a bridge that does not answer measured nothing
         print("UNMEASURED: the bridge did not answer: %s: %s" % (type(e).__name__, str(e)[:200]))
         print("LIVE UNMEASURED")
         return UNMEASURED
-    code, pre = live_def_check.condition(list(ALIEN_WORLDS), inert, running, live_def_check.aliases())
     for ln in pre:
         print(ln)
     if code is not None:
-        print("needs: the list SHIP.RULED_2026-10-20 (infrastructure/state/modlists/) with all five DLC, and the "
-              "canonical start save (canon.yml planet.start_savegame) loaded")
-        print("LIVE UNMEASURED")
-        return code
+        return code     # a wrong list ends on RELOAD_WHY (list_gap): the round restages, never a FAIL
     name = (wi.get("info") or {}).get("name")
-    spath = os.path.join(game_paths.SAVES, canonical_save_name())
-    with open(spath, "rb") as fh:
-        m = re.search(r"<world>.*?<info>.*?<name>(.*?)</name>", fh.read(4 << 20).decode("utf-8", "replace"), re.S)
-    want = m.group(1) if m else None
+    want = planet_of_save()
     print("game %s, planet %r (save says %r), tiles %s" % (gi.get("status"), name, want, wi.get("tilesCount")))
     with open(game_paths.PLAYER_LOG, encoding="utf-8", errors="replace") as fh:
         log = fh.read().splitlines()

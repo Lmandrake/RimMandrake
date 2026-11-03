@@ -5,6 +5,7 @@
     python.exe src/RimMandrake/Utils/live_site.py --not-biome RM_LeaningScrub --biome RM_BlueDesert
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere
     python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
+    python.exe src/RimMandrake/Utils/live_site.py --without oblitus.mylittleplanet --needs 7f.alienworlds --save NAME
 
 RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: the live stage ran HORIZON_CARAVAN_VANILLA_REFUSES_1's Stillsand probe on a
 Leaning Scrub map eight times and LEANINGSCRUB_STALL_SHARED_MOVE_1's proof on the very biome its criteria exclude, while
@@ -26,10 +27,16 @@ on a map never shows. One jawa/ call first (the companion installs its probes on
 rimworld/go_to_main_menu, N seconds in the Entry scene, and rimworld/start_debug_game_ready so the game is back on a
 quicktest map for the proofs after it. Same --max-ticks refusal: the map it drops is a test map, never a colony.
 
+--needs / --without PKG (repeatable; GENERATOR_MODS_PROVE_INERT_AFTER_CREATION): checked first, against the RUNNING
+load (jawa/running_mods, never ModsConfig.xml, which names the NEXT load). A load that lacks a --needs id or holds a
+--without one cannot be made right without a restart, so the site ends on a `reload needed: ...` line (exit 2), which
+relentless_live carries as the row's why and the game phase restages; nothing is loaded on the wrong list.
+
 Exit 0 the scene is up (read back), 2 it could not be made (UNMEASURED; never 1: a site is not a verdict).
 Runs under Windows Python: RimBridge binds Windows loopback.
 """
 import argparse
+import json
 import os
 import sys
 import time
@@ -63,6 +70,46 @@ def wait_ready(rb, budget_s=300, step_s=5):
                 and st.get("programState") == "Playing":
             return True
     return False
+
+
+def reply(r):
+    """A tool reply -> its dict: an MCP-style {"content": [{"text": json}]} envelope is opened, anything else is {}."""
+    if isinstance(r, dict) and isinstance(r.get("content"), list) and r["content"]:
+        try:
+            r = json.loads(r["content"][0].get("text") or "")
+        except (ValueError, AttributeError, TypeError):
+            return {}
+    return r if isinstance(r, dict) else {}
+
+
+def load_gap(needs, without, running, alias):
+    """-> None when the running load fits, else the lines to print, the last a `reload needed:` line when the running
+    list was read (an unread one is plain NOT READY: a restart is not known to help). Pure."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import live_def_check
+    code, lines = live_def_check.condition(needs, without, running, alias)
+    if code is None:
+        return None
+    if running is None or (alias is None and without):
+        return lines + ["NOT READY: the running load could not be checked"]
+    return lines + ["reload needed: restart on a list (all five DLC) that %s" % "; ".join(
+        (["holds %s" % ", ".join(needs)] if needs else []) + (["lacks %s" % ", ".join(without)] if without else []))]
+
+
+def check_load(a):
+    """--needs/--without against the running load -> None, or the exit code after printing why."""
+    if not a.needs and not a.without:
+        return None
+    import live_def_check
+    with connect(60) as rb:
+        running = live_def_check.running_ids(reply(rb.call("jawa/running_mods", {"details": False, "assembly": ""})))
+    lines = load_gap(a.needs, a.without, running, live_def_check.aliases())
+    if lines is None:
+        print("load condition met: %s" % ", ".join(["has %s" % p for p in a.needs] + ["lacks %s" % p for p in a.without]))
+        return None
+    for ln in lines:
+        print(ln)
+    return NOT_READY
 
 
 def connect(timeout):
@@ -197,12 +244,17 @@ def main(argv=None):
     ap.add_argument("--menu-dwell", type=int, help="seconds at the main menu, then a quicktest map back")
     ap.add_argument("--max-ticks", type=int, default=120000)
     ap.add_argument("--budget", type=int, default=300)
+    ap.add_argument("--needs", action="append", default=[], help="a packageId the RUNNING load must hold (repeatable)")
+    ap.add_argument("--without", action="append", default=[], help="a packageId it must not hold (repeatable)")
     a = ap.parse_args(argv)
     if sum((bool(a.save), bool(a.biome or a.not_biome), a.menu_dwell is not None)) != 1:
         ap.error("give one of --save, --biome / --not-biome, --menu-dwell")
     if a.menu_dwell is not None and not 1 <= a.menu_dwell <= 300:
         ap.error("--menu-dwell is 1..300 seconds")
     try:
+        gap = check_load(a)
+        if gap is not None:
+            return gap
         if a.menu_dwell is not None:
             return menu_site(a)
         return save_site(a) if a.save else biome_site(a)

@@ -28,6 +28,8 @@ ONE RUN, in this order. Every refusal before step 5 leaves the item untouched an
      The same cause UNMEASURED `repeat_unmeasured` times running on one game is a RELOAD request, said once in the
      ledger: the row's why starts RELOAD, relentless_game restages on it, and the round skips it until the game changes.
      The repeats between are rows only (eight identical ledger notes in an hour was the old behaviour).
+     A proof or site that KNOWS the running game is the wrong load says so itself: its last line `reload needed: ...`
+     is the row's why at once (asked_reload), so the restage needs no repeats.
 
 Proofs here are the item's own read of the game. Nothing in this file changes the game; a proof that would restart it or
 swap the mod list is refused (rules live.forbid_re): the running game is the owner's, and a load is another tier. The
@@ -278,6 +280,15 @@ def last_line(path):
     """The last non-blank line of a log, cut to 200, or "" when it cannot be read."""
     lines = [x.strip() for x in read_text(path).splitlines() if x.strip()]
     return lines[-1][:200] if lines else ""
+
+
+def asked_reload(path):
+    """A proof or site whose last line starts `reload needed:` asks for another load (the running one is the wrong list
+    or save, which no rerun on it can change): that line is the row's why, so relentless_game restages (RESTAGE) instead
+    of sending the item back as a proof that measured nothing (GENERATOR_MODS_PROVE_INERT_AFTER_CREATION: a list that
+    must LACK two mods sat on a game holding them, ran twice, and went back to a worker). -> the line, or None."""
+    ln = last_line(path)
+    return ln if ln.startswith(RELOAD + ":") else None
 
 
 def read_text(path):
@@ -659,7 +670,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             row["site_log"] = slog
             sc = fx.run_proof(site, slog, lr["site_max_s"])
             if sc != 0:
-                crashed = "site not prepared: %s" % (last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
+                crashed = asked_reload(slog) or "site not prepared: %s" % (
+                    last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
         if crashed is None and code is None:
             code = fx.run_proof(proof, log, lr["proof_max_s"])
             again = wsl_rerun(proof, read_text(log)) if code not in (PASS, FAIL) else None
@@ -681,8 +693,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if not row["released"]:
         return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     if code not in (PASS, FAIL):
-        why = crashed or "the proof %s" % ("timed out" if code is None else "exited %d: it did not measure: %s"
-                                           % (code, last_line(log)))
+        why = crashed or (asked_reload(log) if code is not None else None) or "the proof %s" % (
+            "timed out" if code is None else "exited %d: it did not measure: %s" % (code, last_line(log)))
         if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
             return done("UNMEASURED", why, log=log)
         game = iso(started) if started else game_iso(fx)

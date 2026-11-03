@@ -41,14 +41,17 @@ class FakeRB:
             FakeRB.shared["programState"] = "Playing"
         if tool == "rimworld/get_ui_state":
             return {"programState": FakeRB.shared["programState"]}
+        if tool == "jawa/running_mods":
+            return {"packageIds": list(FakeRB.running)}
         if tool == "rimbridge/get_bridge_status":
             return {"state": {"automationReady": True, "currentMapId": 1, "longEventPending": False,
                               "programState": FakeRB.shared["programState"]}}
         return {"success": True}
 
 
-def run(argv, **kw):
+def run(argv, running=("ludeon.rimworld", "7f.alienworlds"), **kw):
     log = []
+    FakeRB.running = running
     FakeRB.shared = {"programState": "Playing"}
     L.connect = lambda timeout: FakeRB(log, **kw)
     clock = [0.0]       # a fake clock: every sleep advances it, so a wait that never succeeds ends at once
@@ -81,6 +84,28 @@ check("menu-dwell refuses a colony past --max-ticks", rc == L.NOT_READY and "rim
 # a menu that never comes is NOT READY, never READY, and no quicktest is started over a live map
 rc, log = run(["--menu-dwell", "5"], menu_ok=False)
 check("menu never reached -> NOT READY, no quicktest", rc == L.NOT_READY and "rimworld/start_debug_game_ready" not in log)
+
+# --needs/--without (GENERATOR_MODS_PROVE_INERT_AFTER_CREATION): a wrong RUNNING list ends on `reload needed:`, loads nothing
+import io, contextlib  # noqa: E401,E402
+import live_def_check  # noqa: E402
+live_def_check.aliases = lambda *a: {}
+out = io.StringIO()
+with contextlib.redirect_stdout(out):
+    rc, log = run(["--needs", "7f.alienworlds", "--without", "oblitus.mylittleplanet", "--save", "S"],
+                  running=("ludeon.rimworld", "7f.alienworlds", "oblitus.mylittleplanet"))
+last = [x for x in out.getvalue().splitlines() if x.strip()][-1]
+check("wrong list -> NOT READY, last line `reload needed:`, no load_game",
+      rc == L.NOT_READY and last.startswith("reload needed:") and "oblitus.mylittleplanet" in last
+      and "rimworld/load_game" not in log)
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--needs", "7f.alienworlds.tidallylocked", "--save", "S"])
+check("a missing --needs id -> reload needed, no load", rc == L.NOT_READY and "rimworld/load_game" not in log)
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--needs", "7f.alienworlds", "--without", "oblitus.mylittleplanet", "--save", "S"])
+check("right list -> the save loads, READY", rc == L.READY and log[0] == "jawa/running_mods" and "rimworld/load_game" in log)
+gap = L.load_gap([], ["x.y"], None, {})
+check("an unread running list is NOT READY, never `reload needed`", gap and not gap[-1].startswith("reload needed"))
+check("load_gap: a fitting list is None", L.load_gap(["a.b"], ["c.d"], {"a.b"}, {}) is None)
 
 # argument exclusivity
 for argv in (["--menu-dwell", "5", "--save", "x"], ["--menu-dwell", "0"], []):

@@ -624,6 +624,24 @@ def t_def_check_judge():
             pass
 
 
+def t_reload_line_is_the_why():
+    """GENERATOR_MODS_PROVE_INERT_AFTER_CREATION: a proof whose list must LACK two mods ran twice on a game holding them,
+    exited 2 with 'the proof exited 2: it did not measure', and went back to a worker; no restage was ever asked. A
+    proof's or site's own last line `reload needed: ...` is now the row's why (relentless_game RESTAGE)."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    fx = ScriptFx({"python3 probe.py": (2, "UNMEASURED: holds x\nreload needed: restart on a list that lacks x")})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000)
+    check("reload: a proof's `reload needed:` line is the why", row["outcome"] == "UNMEASURED"
+          and row["why"].startswith("reload needed: restart on a list that lacks x"), row)
+    fx = ScriptFx({"python.exe src/RimMandrake/Utils/live_site.py": (2, "reload needed: restart on a list that lacks x")})
+    row = L.run(fx, root, "ROT_Y", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_001, site=SITE)
+    check("reload: a site's `reload needed:` line is the why, no proof run", row["why"].startswith("reload needed: ")
+          and [c[1] for c in fx.calls if c[0] == "proof"] == [SITE], row)
+    fx = ScriptFx({"python3 probe.py": (2, "reload needed later, maybe")})
+    row = L.run(fx, root, "ROT_Z", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_002)
+    check("reload: only the exact `reload needed:` prefix counts", row["why"].startswith("the proof exited 2"), row)
+
+
 def t_unloaded_mod():
     """LIVEDEF_UNLOADED_MOD_FIX_READS_AS_FAIL: an unresolved def is a FAIL only when its mod is in the RUNNING load."""
     import tempfile
@@ -812,7 +830,7 @@ def t_composed_mod_reads_its_parent_about():
 
 
 def main():
-    for t in (t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
