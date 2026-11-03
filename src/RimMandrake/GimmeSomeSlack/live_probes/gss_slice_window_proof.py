@@ -5,7 +5,7 @@ StandingLamps, each spawn preceded by the probe's `slicereset`; after each spawn
 build settles (pending 0). Per window: winMaxSliceNoGcMs (the slowest frame rebuild no gen-0 collection landed in), the
 sliceWindow record of that slice, winSlices, winSliceGcHits. Round 9 left one window at 44.6 ms (C lamps, first slice:
 snapshot clone 20.5 + tail 14.8 ms, no collection counted); the round 10 fix pools the snapshot world.
-python.exe or python3 on WSL with the bridge held; GSS deployed; a quicktest map >= 160x160 (sites are cleared to soil,
+python.exe (Windows Python: WSL python3 cannot reach the bridge on Windows loopback) with the bridge held; GSS deployed; a quicktest map >= 160x160 (sites are cleared to soil,
 unroofed and unfogged first). argv: optional out JSON path (its folder is made). Exit 0 = every window measured and under 20 ms; 1 = a window
 at or over 20 ms, or a window that measured nothing (no slice, or the build never settled)."""
 import sys, os, json, time
@@ -37,6 +37,10 @@ def cells(x0, z0, lamps):
             if not lamps and ((z - z0) % STEP == 0 or (x - x0) % STEP == 0): out.add((x, z))
             if lamps and (((z - z0) % STEP == 0 and (x - x0) % STEP == LAMP) or ((x - x0) % STEP == 0 and (z - z0) % STEP == LAMP)): out.add((x, z))
     return sorted(out)
+_pf = call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial")
+if not (isinstance(_pf, dict) and _pf.get("success", True) is not False and "value" in _pf):
+    print("FAIL GimmeSomeSlack is not loaded in the running game (probe type unreadable): %s" % str((_pf or {}).get("message"))[:200])
+    sys.exit(1)
 res, fails = {"windows": []}, []
 call("rimworld/set_time_speed", speed=1)
 for i, (x0, z0) in enumerate(SITES):
