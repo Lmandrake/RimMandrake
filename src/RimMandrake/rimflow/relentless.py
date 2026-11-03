@@ -2927,7 +2927,7 @@ def spend_holds(store, fx, r, now, acts):
         if st["status"] in RUNS_A_PLACE + ("queued",) and st["spent"] + owed >= limit:
             if attention(store, fx, "item_spend_limit:%s" % st["item"],
                          "%s spent %d weighted tokens, over the advisory item_spend_limit %d by %d; nothing stopped. "
-                         "Look: relentless status %s, its spend.jsonl rows" % (st["item"], st["spent"] + owed, limit,
+                         "Look: relentless.py show %s, its spend.jsonl rows" % (st["item"], st["spent"] + owed, limit,
                                                                               st["spent"] + owed - limit, st["item"]),
                          now):
                 acts.append({"do": "spend_attention", "item": st["item"], "spent": st["spent"] + owed, "limit": limit})

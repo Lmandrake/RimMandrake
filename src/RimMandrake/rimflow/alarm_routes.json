@@ -25,6 +25,8 @@
     {"match": "integrity_damage", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_integrity found damage in a clone or item at its gate; the gate journals it every tick and notes it once per distinct damage"},
     {"match": "help_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless asked for help on an item and the ask itself failed"},
     {"match": "relentless.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "relentless_attention_*", "route": "role", "reader": "Operations", "cause": "spend"},
+    {"match": "queues.*", "route": "role", "reader": "Operations", "cause": "queues"},
     {"match": "seats.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "plan.*", "route": "role", "reader": "Operations", "cause": "plan"},
     {"match": "disk.pool_breach", "route": "role", "reader": "Operations", "cause": "work_belt"},
