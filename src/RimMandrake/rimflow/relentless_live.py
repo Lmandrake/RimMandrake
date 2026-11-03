@@ -18,6 +18,9 @@ ONE RUN, in this order. Every refusal before step 5 leaves the item untouched an
      full-list tier up; read BEFORE the bridge is taken, so a run this game cannot serve is a row with slot False and
      takes no slot (LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT);
   4. the bridge: `rimflow bridge take --idle-ok`; refused means busy, and nothing runs;
+  4a. the health check (LIVE_VERDICT_BUILD_INFRA_NOT_FAIL), bridge held: Fx.health pings the bridge from python.exe and
+     reads every game file the build changed against the built commit's bytes. A failure is the row's why, and the
+     proof does not run;
   4b. the site (RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED): a `live-site <CID>: <cmd>` line in the item's
      live_proofs file is run first, bridge held. It may only be Utils/live_site.py (SITE_CMD), which makes the map the
      proof reads (a biome on the scratch quicktest tile) or loads a named save; exit non-0 is UNMEASURED "site not
@@ -33,6 +36,11 @@ ONE RUN, in this order. Every refusal before step 5 leaves the item untouched an
      The repeats between are rows only (eight identical ledger notes in an hour was the old behaviour).
      A proof or site that KNOWS the running game is the wrong load says so itself: its last line `reload needed: ...`
      is the row's why at once (asked_reload), so the restage needs no repeats.
+
+VERDICT. Every row also carries `verdict` (VERDICTS), set by construction: INFRA when the proof never started (a
+refusal, a health check, a site, a harness error before the proof), and then no verify is written and relentless_game
+charges no strike; once the proof started, exit 0 is PASS and anything else FAIL. INFRA rows that held the bridge on
+`infra_games` games for one build end in a `harness` row: relentless_game._harness alarms and restages, never a strike.
 
 Proofs here are the item's own read of the game. Nothing in this file changes the game; a proof that would restart it or
 swap the mod list is refused (rules live.forbid_re): the running game is the owner's, and a load is another tier. The
@@ -71,8 +79,25 @@ DEFAULTS = {
     "proof_max_s": 600,
     "plan_max_s": 500,
     "site_max_s": 480,
+    "health_max_s": 120,
     "repeat_unmeasured": 3,
+    "infra_games": 3,       # INFRA on this many games for one build: a harness fault, held, never a strike
 }
+# LIVE_VERDICT_BUILD_INFRA_NOT_FAIL (design build_system_practices_2026-11-03.md top-5 #1): every row's `verdict`, set by
+# construction in run's done(), never by a worker. INFRA: the proof never started (a refusal, the health check, the site,
+# a harness exception before the proof); it charges no strike and writes no verify. Once the proof started, exit 0 is
+# PASS and anything else FAIL: a mod can crash the game or the bridge, so nothing after that step is the harness's.
+VERDICTS = ("PASS", "FAIL", "INFRA")
+UNHEALTHY = "health check failed"       # the health step's why; never a DEFECT, it counts to infra_games instead
+HARNESS = "harness fault"               # the row that ends an INFRA streak: relentless_game._harness, no strike
+
+
+def verdict(row):
+    """A runs.jsonl row -> PASS, FAIL or INFRA. A row written before the verdict existed keeps its outcome's meaning:
+    FAIL was a proof exit 1, PASS an exit 0, the rest never a verdict on the mod."""
+    if row.get("verdict") in VERDICTS:
+        return row["verdict"]
+    return row.get("outcome") if row.get("outcome") in ("PASS", "FAIL") else "INFRA"
 RELOAD = "reload needed"        # relentless_game RESTAGE reads this prefix; the round skips it on the same game
 STALE = "changed since the built commit"        # terminal for its build: no game can run it (relentless_live_round.due)
 DEFECT = "proof or site defect"     # the same UNMEASURED cause on two games: terminal for its build, back to a worker
@@ -214,6 +239,22 @@ def seen_on_other_game(rows, item_id, criterion, sha, key, game):
                 and (row.get("cause") or cause(row.get("why"))) == key):
             return row["game"]
     return None
+
+
+def infra_games(rows, item_id, criterion, sha, game):
+    """-> how many distinct games (this one included) held the bridge for (item, criterion, sha) and still ended INFRA
+    (the health check or the site refused, a row carrying `health`), since its last PASS or FAIL. The design's cap:
+    INFRA retries on the next healthy game at most twice, then it is a harness item. A row that took no slot (not in
+    the running load, not deployed) is the game phase's to restage, never counted here."""
+    seen = {game} if game else set()
+    for row in reversed(rows):
+        if (row.get("item"), row.get("criterion"), row.get("sha")) != (item_id, criterion, sha):
+            continue
+        if verdict(row) != "INFRA":
+            break
+        if row.get("outcome") == "UNMEASURED" and row.get("game") and "health" in row:
+            seen.add(row["game"])
+    return len(seen)
 
 
 def fingerprint(criterion, why, proof, text=""):
@@ -563,6 +604,59 @@ class Fx(object):
             return "%s: the running game has %d mods, %d of FULL.LATEST's %d" % (FINAL_WAIT, len(running), held, len(full))
         return None
 
+    def health(self, files, sha, timeout):
+        """The health check before a proof, bridge held (LIVE_VERDICT_BUILD_INFRA_NOT_FAIL) -> {"why": None or why the
+        game cannot judge the build, "ping": ..., "hashed": n, "unhashed": n}. Two reads, each one the proof depends on:
+          1. the bridge answers rimbridge/ping from python.exe: RimBridge binds Windows loopback, so python.exe is the one
+             interpreter on this host that drives it (a `python3` proof reaches it through python.exe, or reruns under it);
+          2. every game file the built commit changed holds the built commit's bytes. A direct copy (Mods/<Mod>/<rel>)
+             must match; a composed copy (Mods/*/*/<Mod>/<rel>) may be rewritten by biomes_compose (MayRequire), so one
+             that differs is counted `unhashed`, never a failure (run's mtime check still covers it)."""
+        import hashlib
+        out = {"why": None, "hashed": 0, "unhashed": 0}
+        client = os.path.join(os.path.dirname(HERE), "Utils", "rimbridge_client.py")
+        try:
+            path = subprocess.run(["wslpath", "-w", client], capture_output=True, text=True, timeout=20).stdout.strip()
+            r = subprocess.run(["python.exe", path or client, "--timeout", str(min(timeout, 60)), "--call", "rimbridge/ping"],
+                               capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
+                               env=dict(os.environ, PATH=windows_path(os.environ.get("PATH", ""))))
+            out["ping"] = r.returncode
+            if r.returncode:
+                out["why"] = "the bridge does not answer rimbridge/ping from python.exe (exit %d): %s" % (
+                    r.returncode, (r.stderr or r.stdout).strip()[-200:])
+                return out
+        except (OSError, ValueError, subprocess.TimeoutExpired) as e:
+            out["ping"], out["why"] = None, "the bridge ping from python.exe did not finish: %s" % str(e)[:200]
+            return out
+        src = os.path.join(self.books, "src")
+        tiers = sorted(d for d in os.listdir(src) if d.startswith("Rim") and os.path.isdir(os.path.join(src, d)))
+        for mod, rel in files:
+            blob = None
+            for t in tiers:
+                g = subprocess.run(["git", "cat-file", "blob", "%s:src/%s/%s/%s" % (sha, t, mod, rel)], cwd=self.books,
+                                   capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
+                if g.returncode == 0:
+                    blob = hashlib.sha256(g.stdout).hexdigest()
+                    break
+            if blob is None:
+                out["why"] = "%s/%s: the built commit %s has no such file under src/<tier>/" % (mod, rel, sha)
+                return out
+            direct = os.path.join(self.mods_dir, mod, rel)
+            copies = deployed_paths(self.mods_dir, mod, rel)
+            digests = {}
+            for c in copies:
+                with open(c, "rb") as f:
+                    digests[c] = hashlib.sha256(f.read()).hexdigest()
+            if direct in digests and digests[direct] != blob:
+                out["why"] = "%s: %s/%s in the game folder is not the built commit's bytes (sha256 %s, built %s)" % (
+                    UNDEPLOYED[0], mod, rel, digests[direct][:12], blob[:12])
+                return out
+            if blob in digests.values():
+                out["hashed"] += 1
+            else:
+                out["unhashed"] += 1
+        return out
+
     def run_proof(self, proof, log, timeout):
         """-> the proof's exit code, or None when it outran `timeout`. Output goes to `log`."""
         with open(log, "w", encoding="utf-8") as f:
@@ -597,6 +691,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
 
     def done(outcome, why, **kw):
         row.update(kw, outcome=outcome, why=why)
+        row["verdict"] = ("INFRA" if "proof_exit" not in row else "PASS" if row["proof_exit"] == PASS else "FAIL")
         if outcome == "UNMEASURED" and "game" not in row and why.startswith(UNDEPLOYED):
             row["game"] = game_iso(fx)      # relentless_live_round.due retries an undeployed build on another game only
         with open(os.path.join(root, "live", "runs.jsonl"), "a", encoding="utf-8") as f:
@@ -675,6 +770,15 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         try:
             if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
                 crashed = "the game or its deployed files changed while the bridge was being taken"
+            if crashed is None:     # bridge held, nothing spent yet: is the game fit to judge the mod at all?
+                try:
+                    h = fx.health(files, sha, lr["health_max_s"]) or {}
+                except Exception as e:      # noqa: BLE001  a health check that cannot run is no health
+                    h = {"why": "the health check could not run: %s: %s" % (type(e).__name__, str(e)[:200])}
+                row["health"] = {k: v for k, v in h.items() if k != "why"}
+                row["health"]["ok"] = not h.get("why")
+                if h.get("why"):
+                    crashed = h["why"] if h["why"].startswith(UNDEPLOYED) else "%s: %s" % (UNHEALTHY, h["why"])
             if crashed is None and code is None and site:
                 slog = log[:-len(".log")] + "-site.log"
                 row["site_log"] = slog
@@ -683,12 +787,15 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                     crashed = asked_reload(slog) or "site not prepared: %s" % (
                         last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
             if crashed is None and code is None:
+                row["proof_exit"] = None        # the proof starts: from here every outcome is the mod's (verdict)
                 code = fx.run_proof(proof, log, lr["proof_max_s"])
+                row["proof_exit"] = code
                 again = wsl_rerun(proof, read_text(log)) if code not in (PASS, FAIL) else None
                 if again:
                     os.replace(log, log[:-len(".log")] + "-wsl.log")
                     row["rerun"] = again
                     code = fx.run_proof(again, log, lr["proof_max_s"])
+                    row["proof_exit"] = code
                 if code in (PASS, FAIL) and files and (started != fx.game_started()
                                                        or stamps != [fx.mtime(m, rel) for m, rel in files]):
                     crashed, code = "the game or its deployed files changed while the proof ran", None
@@ -714,7 +821,15 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         n = 1 + repeats(rows, item_id, criterion, sha, key, game)
         row.update(game=game, repeat=n, cause=key)
         before = seen_on_other_game(rows, item_id, criterion, sha, key, game) if code is not None else None
-        if before:      # it outlived a reload: no further load or rerun of this build can say anything else
+        games = infra_games(rows, item_id, criterion, sha, game) if "proof_exit" not in row and "health" in row else 0
+        if games >= lr["infra_games"]:      # retried on healthy games and still INFRA: the harness's (relentless_game._harness), no strike
+            row["harness"] = True
+            if any(x.get("harness") for x in rows if (x.get("item"), x.get("criterion"), x.get("sha"))
+                   == (item_id, criterion, sha)):
+                return done("UNMEASURED", why, log=log)
+            why = "%s: INFRA on %d games for this build, so no game can judge it until the harness is fixed: %s" % (
+                HARNESS, games, why)
+        elif before:      # it outlived a reload: no further load or rerun of this build can say anything else
             row["defect"] = True
             if n > 1:
                 return done("UNMEASURED", why, log=log)

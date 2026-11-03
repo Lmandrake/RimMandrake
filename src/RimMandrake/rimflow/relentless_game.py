@@ -808,7 +808,9 @@ def step(store, fx, r, item, now, acts, sup):
     if g["phase"] == "prove":
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         rows = outcomes(fx.game_rows(), item, built, g["clauses"])
-        fails = [(k, v) for k, v in rows.items() if v.get("outcome") == "FAIL"]
+        import relentless_live
+        # LIVE_VERDICT_BUILD_INFRA_NOT_FAIL: only a FAIL verdict (the proof ran after a healthy check) is a strike
+        fails = [(k, v) for k, v in rows.items() if v.get("outcome") == "FAIL" and relentless_live.verdict(v) == "FAIL"]
         if fails:
             rd = fx.game_reading()      # still up on the build that failed: the next worker works it live, no reload
             live = ({"started": rd.get("started"), "at": now, "sha": sha, "clauses": [k for k, _ in fails]}
@@ -837,6 +839,12 @@ def step(store, fx, r, item, now, acts, sup):
             return _refuse(store, fx, sup, r, item, "game_refused", v.get("why") or "refused",
                            fx.refusal_print(item, v.get("criterion"), v.get("why"), v.get("proof")), now, acts)
         import relentless_live_round
+        infra = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and v.get("harness")
+                 and row_at(v) >= max(g.get("staged_at") or 0, g["entered_at"])]
+        if infra:       # INFRA on infra_games games: OUR failure, an alarm and a later restage, never a worker strike
+            v = infra[0]
+            return _harness(store, fx, r, item, "%s %s (%s)" % (v.get("criterion"), v.get("why") or "",
+                                                                v.get("log") or ""), now, acts)
         dead = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and relentless_live_round.decides(v)]
         if dead:        # a build no game can run, or a cause that outlived a reload: no stage or proof round can help
             v = dead[0]

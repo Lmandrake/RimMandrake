@@ -59,11 +59,11 @@ def item(**kw):
 class FakeFx(object):
     def __init__(self, it=None, touched=TOUCHED, plan=(0, PLAN), mtime=1000.0, started=2000.0, take_rc=0, proof=0,
                  verify_rc=0, proof_raises=False, later=(), deleted=(), release_rc=0, start_after_take=None, gap=None,
-                 full_gap=None):
+                 full_gap=None, health=None):
         self.later, self.gone, self.release_rc, self.start_after_take = list(later), list(deleted), release_rc, start_after_take
         self.it, self.t, self.plan, self.mt, self.started = (item() if it is None else it), touched, plan, mtime, started
         self.take_rc, self.proof, self.verify_rc, self.proof_raises = take_rc, proof, verify_rc, proof_raises
-        self.calls, self.gap, self.full_gap = [], gap, full_gap
+        self.calls, self.gap, self.full_gap, self.health_why = [], gap, full_gap, health
 
     def item(self, item_id):
         return self.it
@@ -112,6 +112,12 @@ class FakeFx(object):
     def full_list_gap(self):
         self.calls.append(("full_gap",))
         return self.full_gap
+
+    def health(self, files, sha, timeout):
+        self.calls.append(("health",))
+        if isinstance(self.health_why, Exception):
+            raise self.health_why
+        return {"why": self.health_why, "hashed": len(files), "unhashed": 0}
 
     def run_proof(self, proof, log, timeout):
         self.calls.append(("proof", proof))
@@ -220,7 +226,8 @@ def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
     check("pass outcome", row["outcome"] == "PASS", row)
-    check("order", fx.verbs() == ["touched", "changed", "plan", "gap", "take", "proof", "release", "verify"], fx.verbs())
+    check("order", fx.verbs() == ["touched", "changed", "plan", "gap", "take", "health", "proof", "release",
+                                       "verify"], fx.verbs())
     v = [c for c in fx.calls if c[:2] == ("rimflow", "verify")][0]
     for flag, want in (("--sha", SHA), ("--level", "L1"), ("--criterion", "A2"), ("--result", "pass")):
         check("verify %s" % flag, v[v.index(flag) + 1] == want, v)
