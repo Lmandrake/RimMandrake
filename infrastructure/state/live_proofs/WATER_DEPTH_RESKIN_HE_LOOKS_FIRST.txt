@@ -8,4 +8,5 @@ live-proof L3: python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.
 live-proof L4: python3 -c "import json,re,sys; ev=[json.loads(l) for l in open('infrastructure/state/ledger/events/OWNER.jsonl') if 'WATER_DEPTH_RESKIN_HE_LOOKS_FIRST' in l]; ok=[e for e in ev if e.get('ts','')>'2026-11-03T17:20' and re.search(r'review|water look|wall band|tint',(e.get('byCard') or '')+(e.get('ownerSaid') or '')+(e.get('text') or ''),re.I) and re.search(r'\bkeep|\bkept|approve',(e.get('byCard') or '')+(e.get('ownerSaid') or ''),re.I)]; sys.exit(0 if ok else 1)"
 # gen 3: L3's distinguishability is pinned OFFLINE first by SelfTest WallFaces_five_looks_by_drop_to_over_2m (drops 0.5..2.5 m give
 # five different faces) and WallFaces_floor_bands_past_2m (2/4/8 m floors differ); both RED at ca3c9d4a (faces and FootDarkness
-# saturate at D4 = 2 m). The live frame judge for L3 is still owed after the code is fixed.
+# saturate at D4 = 2 m). gen 5 fixed RM_WallFaceMath at 5232afe8 (fifth look, NorthMax 0.62; FootDarkness 2/4/8 m = 0.84/0.90/0.94):
+# both GREEN. The live frame judge for L3 (are the five looks and the floor bands legible on screen) is still owed.
