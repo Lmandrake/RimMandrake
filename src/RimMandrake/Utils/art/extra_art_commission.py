@@ -330,8 +330,9 @@ def _prompt(r: dict, c: dict) -> str:
     if r["slot"] in ("female", "female_pack"):
         pack = (" carrying the same packs, saddle bags and straps as the reference image, in the same places"
                 if r["slot"] == "female_pack" else "")
+        like = "the reference image" if r["slot"] == "female_pack" else "the adult"     # only a pack row has one
         return (f"RimWorld creature sprite of {who}: the FEMALE of the species{pack}. Same species, colours and pose as "
-                f"the reference image; the visible sex difference follows the species lore ({c['dimorph']}). "
+                f"{like}; the visible sex difference follows the species lore ({c['dimorph']}). "
                 f"Creature notes: {body}")
     lore = (f" The young look different from the adults: {c['young']}." if c["young"] else
             " A young animal's proportions: a larger head for its body, shorter legs, softer rounder features, and any "
