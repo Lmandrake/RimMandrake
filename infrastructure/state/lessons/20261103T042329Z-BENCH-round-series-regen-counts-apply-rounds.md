@@ -1,0 +1,1 @@
+round_series regen_counts/apply_to_rounds key per-def round counts by the reset record's defName; after a def rename the new name misses the series' +1 (stop/series/tag follow aliases since SERIES_STOP_FIX_RENAMED_DEF_ESCAPES 1cec24a030)
