@@ -1,0 +1,1 @@
+northstar_driver --mock (transport.py) has no jawa/set_pollution, so a USE_SUITE plan whose pads call _reset_pad->set_pollution (Wastes) FAILs every chain at site_ready_* offline; that FAIL is the mock, not the mod. Prove such a suite offline with its own selftest (src/RimMandrake/Wastes/selftest_wastes.py).
