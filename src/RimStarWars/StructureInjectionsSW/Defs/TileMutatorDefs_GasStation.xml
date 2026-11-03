@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Gas-Geyser Power Station - structure_procedural_spec.md section 8.8.
+       Same extraGenSteps responder shape as every sibling (RSW_RoadWarehouse,
+       RSW_MiningSite, ...). The F4 "found, never built" doctrine needs the
+       VHGE pump strip (required_mods.md, the MANDATORY STRIP), which is its
+       own item, not this def. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_GasStation</defName>
+    <label>gas power station</label>
+    <description>A helixien pump standing on a gas geyser, piped through a valve and tanks to a generator hall. A switch room with a cot for the night operator, a fenced yard, and a power line that runs off toward somewhere that needed it.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_GasStation</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

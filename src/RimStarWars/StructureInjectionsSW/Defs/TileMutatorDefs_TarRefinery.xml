@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Tar Refinery - structure_procedural_spec.md section 8.7.
+       Same extraGenSteps responder shape as every sibling (RSW_RoadWarehouse,
+       RSW_MiningSite, ...): the two Inhabited steps ride under MayRequire so a
+       tile that also holds a WorldObject_Inhabited place gets its cast and
+       goods inside the site (both no-op on a tile without one).
+       The F4 "found, never built" doctrine needs the Rimefeller buildability
+       strip (required_mods.md), which is its own item, not this def. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_TarRefinery</defName>
+    <label>tar refinery</label>
+    <description>Wellheads at the edge of a black tar seep, piped to one valve: a cracker on a concrete pad, a fenced tank farm, a control shack and a two-bunk room. A pipeline leaves for a customer somewhere past the edge of the map.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_TarRefinery</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

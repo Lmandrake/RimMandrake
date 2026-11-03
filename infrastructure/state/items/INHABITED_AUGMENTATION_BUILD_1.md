@@ -349,7 +349,7 @@ this pass's to invent.
 
 Staying `doing`.
 
-## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 8.9/8.11 wired, 14/14 built and wired, 0/14 placed
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 8.9/8.11 wired, 12/14 built and wired, 0/14 placed
 
 Lint-swept both large templates before wiring, per this item's own explicit
 ask: `crashed_ship.lua` (headings N/E/S/W x seeds {0,3,7,12} at 30x30, all 3
@@ -379,6 +379,26 @@ live roots (Steam `Mods/`, RimWorld `Data/`, Workshop `content/294100/`) —
 `RSW_GenStep_BeastLair` confirmed unique repo-wide). `rimplace selftest`:
 62/62.
 
-**Tally: 14/14 built, 14/14 wired, 0/14 placed.** All remaining work on
-this item is placement: needs the bridge free and a placement decision
-(which tile gets which archetype) that isn't a solo call. `needs=bridge`.
+**Tally: 12/14 built, 12/14 wired, 0/14 placed** (8.7 and 8.8 had no template; the FOUNDRY reconcile of 2026-10-07 caught it).
+
+## 2026-11-02 (Relentless build, gen 1) — 8.7 and 8.8 built and wired: 14/14 built, 12 responders + 8.12 transform + 8.14 whisper
+
+- **8.7 tar refinery**: `design/Jawa/templates/tar_refinery.lua` → `Templates/tar_refinery.txt`
+  (34x28, Industrial, seed 0, lived), `RSW_GenStep_TarRefinery` / `RSW_TarRefinery`.
+- **8.8 gas-geyser station**: `design/Jawa/templates/gas_station.lua` → `Templates/gas_station.txt`
+  (24x20, Industrial, seed 0, lived), `RSW_GenStep_GasStation` / `RSW_GasStation`.
+- Lint: lived reads 0 findings over every canvas x seed x road_dir x read swept (3 canvases x 15 seeds x
+  every road_dir, plus the Jawa and VE reads); the derelict/abandoned reads carry only
+  `room-not-sealed`/`room-unroofed` from `ctx:ruin(0.3)`, exactly as `garrison_tiny state=ruined`
+  does — lint has no notion of an intended ruin. `rimplace verify`: 41/41 and 34/34 defNames in
+  the 2026-11-02 dump. `validate_patch.py` on `StructureInjectionsSW/Defs` with all three roots:
+  33 files, 0 errors.
+- Departures forced by the live mod set (Alpha Biomes, HMC, VFE Furniture, AM windows,
+  `VHGE_IndustrialHelixienGenerator` absent from the dump) are listed in each template header.
+  New palette roles: `OIL_PIPE`, `GAS_PIPE`, `GAS_PIPE_BURIED`, `TAR` (`RM_TarShallow`),
+  `GAS_WALL_LIGHT`.
+- **The F4 strip** (Rimefeller/VHGE buildability) had no item: filed
+  `OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED`.
+- **Criterion 3 (placement on Ash'karr) is split** to `STRUCTURE_TILES_POPULATE_HOUSES_NO_ADDRESS`:
+  it is a placement decision plus a write on the canonical world save, which no read-only
+  live proof can perform.

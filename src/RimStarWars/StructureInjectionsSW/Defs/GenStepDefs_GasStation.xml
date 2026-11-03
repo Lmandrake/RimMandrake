@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Gas-Geyser Power Station - structure_procedural_spec.md section 8.8
+       (catalogue A5/A6). INHABITED_AUGMENTATION_BUILD_1. Replays
+       Templates/gas_station.txt (rimplace export of
+       design/Jawa/templates/gas_station.lua: 24x20, Industrial, seed 0,
+       road_dir S, state lived - the plan header carries the exact bake) via
+       mandrake.rm.injections' GenStep_RimplacePlan. The plan brings its own
+       VHGE_GasGeyser under the pump and RUNs a PowerConduit to the map edge. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_GasStation</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/gas_station.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

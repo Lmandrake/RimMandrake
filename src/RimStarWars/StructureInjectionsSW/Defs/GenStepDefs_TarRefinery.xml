@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Tar Refinery - structure_procedural_spec.md section 8.7 (catalogue
+       A7 / F3 / F4). INHABITED_AUGMENTATION_BUILD_1. Replays
+       Templates/tar_refinery.txt (rimplace export of
+       design/Jawa/templates/tar_refinery.lua: 34x28, Industrial, seed 0,
+       road_dir S, state lived - the plan header carries the exact bake) via
+       mandrake.rm.injections' GenStep_RimplacePlan. The plan carries a RUN
+       of OilPipeline from the valve to the map edge. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_TarRefinery</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/tar_refinery.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

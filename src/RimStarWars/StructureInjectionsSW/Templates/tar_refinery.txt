@@ -1,0 +1,691 @@
+# rimplace flat plan v2
+# template  tar_refinery (sha 7d12cd3596df1b58)
+# min_rect  26x22   baked at 34x28
+FOOTPRINT	0	0	34	28
+CLEAR	-1	-1	36	30	soft
+CLEAR	0	0	34	28	all
+TERRAIN	0	0	Gravel
+TERRAIN	0	1	PackedDirt
+TERRAIN	0	2	Gravel
+TERRAIN	0	14	Concrete
+TERRAIN	0	15	Concrete
+TERRAIN	0	16	Concrete
+TERRAIN	1	0	Gravel
+TERRAIN	1	1	Gravel
+TERRAIN	1	2	Gravel
+TERRAIN	1	4	Concrete
+TERRAIN	1	5	Concrete
+TERRAIN	1	6	Concrete
+TERRAIN	1	7	Concrete
+TERRAIN	1	10	StrawMatting
+TERRAIN	1	11	StrawMatting
+TERRAIN	1	12	StrawMatting
+TERRAIN	1	14	Concrete
+TERRAIN	1	15	Concrete
+TERRAIN	1	16	Concrete
+TERRAIN	2	0	Gravel
+TERRAIN	2	1	Gravel
+TERRAIN	2	2	Gravel
+TERRAIN	2	4	Concrete
+TERRAIN	2	5	Concrete
+TERRAIN	2	6	Concrete
+TERRAIN	2	7	Concrete
+TERRAIN	2	10	StrawMatting
+TERRAIN	2	11	StrawMatting
+TERRAIN	2	12	StrawMatting
+TERRAIN	2	14	Concrete
+TERRAIN	2	15	Concrete
+TERRAIN	2	16	Concrete
+TERRAIN	3	0	Gravel
+TERRAIN	3	1	PackedDirt
+TERRAIN	3	2	Gravel
+TERRAIN	3	4	Concrete
+TERRAIN	3	5	Concrete
+TERRAIN	3	6	Concrete
+TERRAIN	3	7	Concrete
+TERRAIN	3	10	StrawMatting
+TERRAIN	3	11	StrawMatting
+TERRAIN	3	12	StrawMatting
+TERRAIN	3	14	Concrete
+TERRAIN	3	15	Concrete
+TERRAIN	3	16	Concrete
+TERRAIN	4	0	Gravel
+TERRAIN	4	1	Gravel
+TERRAIN	4	2	PackedDirt
+TERRAIN	4	4	Concrete
+TERRAIN	4	5	Concrete
+TERRAIN	4	6	Concrete
+TERRAIN	4	7	Concrete
+TERRAIN	4	10	StrawMatting
+TERRAIN	4	11	StrawMatting
+TERRAIN	4	12	StrawMatting
+TERRAIN	4	14	Concrete
+TERRAIN	4	15	Concrete
+TERRAIN	4	16	Concrete
+TERRAIN	5	0	Gravel
+TERRAIN	5	1	Gravel
+TERRAIN	5	2	PackedDirt
+TERRAIN	5	4	Concrete
+TERRAIN	5	5	Concrete
+TERRAIN	5	6	Concrete
+TERRAIN	5	7	Concrete
+TERRAIN	5	10	StrawMatting
+TERRAIN	5	11	StrawMatting
+TERRAIN	5	12	StrawMatting
+TERRAIN	6	0	Gravel
+TERRAIN	6	1	PackedDirt
+TERRAIN	6	2	Gravel
+TERRAIN	7	0	Gravel
+TERRAIN	7	1	PackedDirt
+TERRAIN	7	2	PackedDirt
+TERRAIN	8	0	Gravel
+TERRAIN	8	1	Gravel
+TERRAIN	8	2	Gravel
+TERRAIN	9	0	Gravel
+TERRAIN	9	1	Gravel
+TERRAIN	9	2	PackedDirt
+TERRAIN	9	3	Concrete
+TERRAIN	9	4	Concrete
+TERRAIN	9	5	Concrete
+TERRAIN	9	6	Concrete
+TERRAIN	9	7	Concrete
+TERRAIN	9	8	Concrete
+TERRAIN	9	9	Concrete
+TERRAIN	9	10	Concrete
+TERRAIN	9	11	Concrete
+TERRAIN	10	0	PackedDirt
+TERRAIN	10	1	PackedDirt
+TERRAIN	10	2	PackedDirt
+TERRAIN	10	3	Concrete
+TERRAIN	10	4	Concrete
+TERRAIN	10	5	Concrete
+TERRAIN	10	6	Concrete
+TERRAIN	10	7	Concrete
+TERRAIN	10	8	Concrete
+TERRAIN	10	9	Concrete
+TERRAIN	10	10	Concrete
+TERRAIN	10	11	Concrete
+TERRAIN	11	0	PackedDirt
+TERRAIN	11	1	Gravel
+TERRAIN	11	2	Gravel
+TERRAIN	11	3	Concrete
+TERRAIN	11	4	Concrete
+TERRAIN	11	5	Concrete
+TERRAIN	11	6	Concrete
+TERRAIN	11	7	Concrete
+TERRAIN	11	8	Concrete
+TERRAIN	11	9	Concrete
+TERRAIN	11	10	Concrete
+TERRAIN	11	11	Concrete
+TERRAIN	12	0	Gravel
+TERRAIN	12	1	Gravel
+TERRAIN	12	2	Gravel
+TERRAIN	12	3	Concrete
+TERRAIN	12	4	Concrete
+TERRAIN	12	5	Concrete
+TERRAIN	12	6	Concrete
+TERRAIN	12	7	Concrete
+TERRAIN	12	8	Concrete
+TERRAIN	12	9	Concrete
+TERRAIN	12	10	Concrete
+TERRAIN	12	11	Concrete
+TERRAIN	13	0	PackedDirt
+TERRAIN	13	1	PackedDirt
+TERRAIN	13	2	PackedDirt
+TERRAIN	13	3	Concrete
+TERRAIN	13	4	Concrete
+TERRAIN	13	5	Concrete
+TERRAIN	13	6	Concrete
+TERRAIN	13	7	Concrete
+TERRAIN	13	8	Concrete
+TERRAIN	13	9	Concrete
+TERRAIN	13	10	Concrete
+TERRAIN	13	11	Concrete
+TERRAIN	14	0	PackedDirt
+TERRAIN	14	1	Gravel
+TERRAIN	14	2	PackedDirt
+TERRAIN	14	3	Concrete
+TERRAIN	14	4	Concrete
+TERRAIN	14	5	Concrete
+TERRAIN	14	6	Concrete
+TERRAIN	14	7	Concrete
+TERRAIN	14	8	Concrete
+TERRAIN	14	9	Concrete
+TERRAIN	14	10	Concrete
+TERRAIN	14	11	Concrete
+TERRAIN	15	0	Gravel
+TERRAIN	15	1	Gravel
+TERRAIN	15	2	Gravel
+TERRAIN	15	3	Concrete
+TERRAIN	15	4	Concrete
+TERRAIN	15	5	Concrete
+TERRAIN	15	6	Concrete
+TERRAIN	15	7	Concrete
+TERRAIN	15	8	Concrete
+TERRAIN	15	9	Concrete
+TERRAIN	15	10	Concrete
+TERRAIN	15	11	Concrete
+TERRAIN	16	0	Gravel
+TERRAIN	16	1	Gravel
+TERRAIN	16	2	Gravel
+TERRAIN	16	3	Concrete
+TERRAIN	16	4	Concrete
+TERRAIN	16	5	Concrete
+TERRAIN	16	6	Concrete
+TERRAIN	16	7	Concrete
+TERRAIN	16	8	Concrete
+TERRAIN	16	9	Concrete
+TERRAIN	16	10	Concrete
+TERRAIN	16	11	Concrete
+TERRAIN	17	0	Gravel
+TERRAIN	17	1	Gravel
+TERRAIN	17	2	Gravel
+TERRAIN	17	3	Concrete
+TERRAIN	17	4	Concrete
+TERRAIN	17	5	Concrete
+TERRAIN	17	6	Concrete
+TERRAIN	17	7	Concrete
+TERRAIN	17	8	Concrete
+TERRAIN	17	9	Concrete
+TERRAIN	17	10	Concrete
+TERRAIN	17	11	Concrete
+TERRAIN	17	20	RM_TarShallow
+TERRAIN	18	0	Gravel
+TERRAIN	18	1	Gravel
+TERRAIN	18	2	Gravel
+TERRAIN	18	3	Concrete
+TERRAIN	18	4	Concrete
+TERRAIN	18	5	Concrete
+TERRAIN	18	6	Concrete
+TERRAIN	18	7	Concrete
+TERRAIN	18	8	Concrete
+TERRAIN	18	9	Concrete
+TERRAIN	18	10	Concrete
+TERRAIN	18	11	Concrete
+TERRAIN	18	20	RM_TarShallow
+TERRAIN	18	21	RM_TarShallow
+TERRAIN	18	22	RM_TarShallow
+TERRAIN	19	0	Gravel
+TERRAIN	19	1	Gravel
+TERRAIN	19	2	Gravel
+TERRAIN	19	3	Concrete
+TERRAIN	19	4	Concrete
+TERRAIN	19	5	Concrete
+TERRAIN	19	6	Concrete
+TERRAIN	19	7	Concrete
+TERRAIN	19	8	Concrete
+TERRAIN	19	9	Concrete
+TERRAIN	19	10	Concrete
+TERRAIN	19	11	Concrete
+TERRAIN	19	20	RM_TarShallow
+TERRAIN	19	21	RM_TarShallow
+TERRAIN	19	22	RM_TarShallow
+TERRAIN	20	0	Gravel
+TERRAIN	20	1	Gravel
+TERRAIN	20	2	Gravel
+TERRAIN	20	3	Concrete
+TERRAIN	20	4	Concrete
+TERRAIN	20	5	Concrete
+TERRAIN	20	6	Concrete
+TERRAIN	20	7	Concrete
+TERRAIN	20	8	Concrete
+TERRAIN	20	9	Concrete
+TERRAIN	20	10	Concrete
+TERRAIN	20	11	Concrete
+TERRAIN	20	20	RM_TarShallow
+TERRAIN	20	21	RM_TarShallow
+TERRAIN	20	22	RM_TarShallow
+TERRAIN	21	0	Gravel
+TERRAIN	21	1	Gravel
+TERRAIN	21	2	Gravel
+TERRAIN	21	3	Concrete
+TERRAIN	21	4	Concrete
+TERRAIN	21	5	Concrete
+TERRAIN	21	6	Concrete
+TERRAIN	21	7	Concrete
+TERRAIN	21	8	Concrete
+TERRAIN	21	9	Concrete
+TERRAIN	21	10	Concrete
+TERRAIN	21	11	Concrete
+TERRAIN	21	20	RM_TarShallow
+TERRAIN	21	21	RM_TarShallow
+TERRAIN	22	0	Gravel
+TERRAIN	22	1	Gravel
+TERRAIN	22	2	Gravel
+TERRAIN	22	3	Concrete
+TERRAIN	22	4	Concrete
+TERRAIN	22	5	Concrete
+TERRAIN	22	6	Concrete
+TERRAIN	22	7	Concrete
+TERRAIN	22	8	Concrete
+TERRAIN	22	9	Concrete
+TERRAIN	22	10	Concrete
+TERRAIN	22	11	Concrete
+TERRAIN	22	21	RM_TarShallow
+TERRAIN	22	22	RM_TarShallow
+TERRAIN	23	0	Gravel
+TERRAIN	23	1	Gravel
+TERRAIN	23	2	Gravel
+TERRAIN	23	3	Concrete
+TERRAIN	23	4	Concrete
+TERRAIN	23	5	Concrete
+TERRAIN	23	6	Concrete
+TERRAIN	23	7	Concrete
+TERRAIN	23	8	Concrete
+TERRAIN	23	9	Concrete
+TERRAIN	23	10	Concrete
+TERRAIN	23	11	Concrete
+TERRAIN	23	22	RM_TarShallow
+TERRAIN	24	0	Gravel
+TERRAIN	24	1	Gravel
+TERRAIN	24	2	Gravel
+TERRAIN	24	3	Concrete
+TERRAIN	24	4	Concrete
+TERRAIN	24	5	Concrete
+TERRAIN	24	6	Concrete
+TERRAIN	24	7	Concrete
+TERRAIN	24	8	Concrete
+TERRAIN	24	9	Concrete
+TERRAIN	24	10	Concrete
+TERRAIN	24	11	Concrete
+TERRAIN	24	22	RM_TarShallow
+TERRAIN	24	23	RM_TarShallow
+TERRAIN	25	0	Gravel
+TERRAIN	25	1	Gravel
+TERRAIN	25	2	Gravel
+TERRAIN	25	22	RM_TarShallow
+TERRAIN	25	23	RM_TarShallow
+TERRAIN	26	0	Gravel
+TERRAIN	26	1	Gravel
+TERRAIN	26	2	Gravel
+TERRAIN	26	22	RM_TarShallow
+TERRAIN	26	23	RM_TarShallow
+TERRAIN	26	24	RM_TarShallow
+TERRAIN	27	0	Gravel
+TERRAIN	27	1	Gravel
+TERRAIN	27	2	Gravel
+TERRAIN	27	4	Concrete
+TERRAIN	27	5	Concrete
+TERRAIN	27	6	Concrete
+TERRAIN	27	10	Concrete
+TERRAIN	27	11	Concrete
+TERRAIN	27	12	Concrete
+TERRAIN	27	13	Concrete
+TERRAIN	27	14	Concrete
+TERRAIN	27	15	Concrete
+TERRAIN	27	22	RM_TarShallow
+TERRAIN	27	23	RM_TarShallow
+TERRAIN	27	24	RM_TarShallow
+TERRAIN	27	25	RM_TarShallow
+TERRAIN	27	26	RM_TarShallow
+TERRAIN	28	0	PackedDirt
+TERRAIN	28	1	Gravel
+TERRAIN	28	2	Gravel
+TERRAIN	28	4	Concrete
+TERRAIN	28	5	Concrete
+TERRAIN	28	6	Concrete
+TERRAIN	28	10	Concrete
+TERRAIN	28	11	Concrete
+TERRAIN	28	12	Concrete
+TERRAIN	28	13	Concrete
+TERRAIN	28	14	Concrete
+TERRAIN	28	15	Concrete
+TERRAIN	28	23	RM_TarShallow
+TERRAIN	28	24	RM_TarShallow
+TERRAIN	28	25	RM_TarShallow
+TERRAIN	29	0	Gravel
+TERRAIN	29	1	Gravel
+TERRAIN	29	2	Gravel
+TERRAIN	29	4	Concrete
+TERRAIN	29	5	Concrete
+TERRAIN	29	6	Concrete
+TERRAIN	29	10	Concrete
+TERRAIN	29	11	Concrete
+TERRAIN	29	12	Concrete
+TERRAIN	29	13	Concrete
+TERRAIN	29	14	Concrete
+TERRAIN	29	15	Concrete
+TERRAIN	29	23	RM_TarShallow
+TERRAIN	30	0	Gravel
+TERRAIN	30	1	PackedDirt
+TERRAIN	30	2	Gravel
+TERRAIN	30	4	Concrete
+TERRAIN	30	5	Concrete
+TERRAIN	30	6	Concrete
+TERRAIN	30	10	Concrete
+TERRAIN	30	11	Concrete
+TERRAIN	30	12	Concrete
+TERRAIN	30	13	Concrete
+TERRAIN	30	14	Concrete
+TERRAIN	30	15	Concrete
+TERRAIN	30	23	RM_TarShallow
+TERRAIN	31	0	Gravel
+TERRAIN	31	1	PackedDirt
+TERRAIN	31	2	Gravel
+TERRAIN	31	4	Concrete
+TERRAIN	31	5	Concrete
+TERRAIN	31	6	Concrete
+TERRAIN	31	10	Concrete
+TERRAIN	31	11	Concrete
+TERRAIN	31	12	Concrete
+TERRAIN	31	13	Concrete
+TERRAIN	31	14	Concrete
+TERRAIN	31	15	Concrete
+TERRAIN	32	0	Gravel
+TERRAIN	32	1	Gravel
+TERRAIN	32	2	Gravel
+TERRAIN	32	10	Concrete
+TERRAIN	32	11	Concrete
+TERRAIN	32	12	Concrete
+TERRAIN	32	13	Concrete
+TERRAIN	32	14	Concrete
+TERRAIN	32	15	Concrete
+TERRAIN	33	0	Gravel
+TERRAIN	33	1	Gravel
+TERRAIN	33	2	Gravel
+THING	DeepOilWell	15	21	0	-
+THING	OilWell	21	18	0	-
+THING	DeepOilWell	28	20	0	-
+THING	FilthOil	14	23	0	-
+THING	FilthOil	13	20	0	-
+THING	Filth_OilSlick	16	22	0	-
+THING	FilthOil	14	19	0	-
+THING	Filth_OilSlick	23	20	0	-
+THING	FilthOil	19	20	0	-
+THING	FilthOil	21	18	0	-
+THING	FilthOil	26	21	0	-
+THING	Filth_OilSlick	29	18	0	-
+THING	FilthOil	29	18	0	-
+THING	CrudeCracker	15	6	0	-
+THING	VFEPD_DecalWordRefinery	9	10	0	-
+THING	Filth_OilSmear	20	4	0	-
+THING	Filth_OilSmear	13	7	0	-
+THING	Wall	26	3	0	WoodLog
+THING	Wall	27	3	0	WoodLog
+THING	Wall	28	3	0	WoodLog
+THING	Wall	29	3	0	WoodLog
+THING	Wall	30	3	0	WoodLog
+THING	Wall	31	3	0	WoodLog
+THING	Wall	32	3	0	WoodLog
+THING	Wall	26	4	0	WoodLog
+THING	Wall	32	4	0	WoodLog
+THING	Wall	32	5	0	WoodLog
+THING	Wall	26	6	0	WoodLog
+THING	Wall	32	6	0	WoodLog
+THING	Wall	26	7	0	WoodLog
+THING	Wall	27	7	0	WoodLog
+THING	Wall	28	7	0	WoodLog
+THING	Wall	29	7	0	WoodLog
+THING	Wall	30	7	0	WoodLog
+THING	Wall	31	7	0	WoodLog
+THING	Wall	32	7	0	WoodLog
+THING	Door	26	5	0	WoodLog
+THING	RefineryLoadingBay	27	6	0	-
+THING	ChemfuelHopper	28	6	0	-
+THING	OilBarrel	31	5	0	-
+THING	Filth_Fuel	31	5	0	-
+THING	OilBarrel	30	6	0	-
+THING	Filth_Fuel	30	6	0	-
+THING	OilBarrel	29	6	0	-
+THING	Filth_Fuel	29	6	0	-
+THING	OilBarrel	31	4	0	-
+THING	Filth_Fuel	31	4	0	-
+THING	WallLamp	31	4	2	-
+THING	Fence	26	9	0	WoodLog
+THING	Fence	26	10	0	WoodLog
+THING	Fence	26	11	0	WoodLog
+THING	Fence	26	12	0	WoodLog
+THING	Fence	26	13	0	WoodLog
+THING	Fence	26	14	0	WoodLog
+THING	Fence	26	15	0	WoodLog
+THING	Fence	26	16	0	WoodLog
+THING	Fence	27	9	0	WoodLog
+THING	Fence	27	16	0	WoodLog
+THING	Fence	28	9	0	WoodLog
+THING	Fence	28	16	0	WoodLog
+THING	FenceGate	29	9	0	WoodLog
+THING	Fence	29	16	0	WoodLog
+THING	Fence	30	9	0	WoodLog
+THING	Fence	30	16	0	WoodLog
+THING	Fence	31	9	0	WoodLog
+THING	Fence	31	16	0	WoodLog
+THING	Fence	32	9	0	WoodLog
+THING	Fence	32	16	0	WoodLog
+THING	Fence	33	9	0	WoodLog
+THING	Fence	33	10	0	WoodLog
+THING	Fence	33	11	0	WoodLog
+THING	Fence	33	12	0	WoodLog
+THING	Fence	33	13	0	WoodLog
+THING	Fence	33	14	0	WoodLog
+THING	Fence	33	15	0	WoodLog
+THING	Fence	33	16	0	WoodLog
+THING	OilStorage	28	14	0	-
+THING	FuelStorage	31	14	1	-
+THING	ChemfuelTank	27	10	0	-
+THING	VFEPD_ChemfuelTank_Prop	30	10	0	-
+THING	Wall	0	3	0	WoodLog
+THING	Wall	1	3	0	WoodLog
+THING	Wall	2	3	0	WoodLog
+THING	Wall	3	3	0	WoodLog
+THING	Wall	5	3	0	WoodLog
+THING	Wall	6	3	0	WoodLog
+THING	Wall	0	4	0	WoodLog
+THING	Wall	6	4	0	WoodLog
+THING	Wall	0	5	0	WoodLog
+THING	Wall	6	5	0	WoodLog
+THING	Wall	0	6	0	WoodLog
+THING	Wall	6	6	0	WoodLog
+THING	Wall	0	7	0	WoodLog
+THING	Wall	6	7	0	WoodLog
+THING	Wall	0	8	0	WoodLog
+THING	Wall	1	8	0	WoodLog
+THING	Wall	2	8	0	WoodLog
+THING	Wall	3	8	0	WoodLog
+THING	Wall	4	8	0	WoodLog
+THING	Wall	5	8	0	WoodLog
+THING	Wall	6	8	0	WoodLog
+THING	Door	4	3	0	WoodLog
+THING	ResourceConsole	2	6	0	-
+THING	VGE_WallToolCabinet	5	7	0	-
+THING	RH2_DeskLamplight	5	6	0	-
+THING	Stool	2	5	0	-
+THING	Filth_ScatteredDocuments	3	6	0	-
+THING	WallLamp	5	6	1	-
+THING	Wall	0	9	0	WoodLog
+THING	Wall	1	9	0	WoodLog
+THING	Wall	2	9	0	WoodLog
+THING	Wall	3	9	0	WoodLog
+THING	Wall	4	9	0	WoodLog
+THING	Wall	5	9	0	WoodLog
+THING	Wall	6	9	0	WoodLog
+THING	Wall	0	10	0	WoodLog
+THING	Wall	6	10	0	WoodLog
+THING	Wall	0	11	0	WoodLog
+THING	Wall	0	12	0	WoodLog
+THING	Wall	6	12	0	WoodLog
+THING	Wall	0	13	0	WoodLog
+THING	Wall	1	13	0	WoodLog
+THING	Wall	2	13	0	WoodLog
+THING	Wall	3	13	0	WoodLog
+THING	Wall	4	13	0	WoodLog
+THING	Wall	5	13	0	WoodLog
+THING	Wall	6	13	0	WoodLog
+THING	Door	6	11	0	WoodLog
+THING	Bed	2	12	3	WoodLog
+THING	Bed	2	10	3	WoodLog
+THING	AncientCrate	1	11	0	-
+THING	WallLamp	1	12	3	-
+THING	FuelPowerplant	1	15	0	-
+THING	Battery	3	15	0	-
+THING	PowerConduit	4	15	0	-
+THING	PowerConduit	5	15	0	-
+THING	PowerConduit	6	15	0	-
+THING	PowerConduit	7	15	0	-
+THING	PowerConduit	7	2	0	-
+THING	PowerConduit	7	3	0	-
+THING	PowerConduit	7	4	0	-
+THING	PowerConduit	7	5	0	-
+THING	PowerConduit	7	6	0	-
+THING	PowerConduit	7	7	0	-
+THING	PowerConduit	7	8	0	-
+THING	PowerConduit	7	9	0	-
+THING	PowerConduit	7	10	0	-
+THING	PowerConduit	7	11	0	-
+THING	PowerConduit	7	12	0	-
+THING	PowerConduit	7	13	0	-
+THING	PowerConduit	7	14	0	-
+THING	PowerConduit	7	16	0	-
+THING	FloodLight	6	16	0	-
+THING	FloodLight	8	16	0	-
+THING	pipelineValve	25	17	0	-
+THING	OilPipeline	17	21	0	-
+THING	OilPipeline	18	21	0	-
+THING	OilPipeline	19	21	0	-
+THING	OilPipeline	20	21	0	-
+THING	OilPipeline	21	21	0	-
+THING	OilPipeline	22	21	0	-
+THING	OilPipeline	23	21	0	-
+THING	OilPipeline	24	21	0	-
+THING	OilPipeline	25	21	0	-
+THING	OilPipeline	25	20	0	-
+THING	OilPipeline	25	19	0	-
+THING	OilPipeline	25	18	0	-
+THING	OilPipeline	23	18	0	-
+THING	OilPipeline	24	18	0	-
+THING	OilPipeline	26	20	0	-
+THING	OilPipeline	25	15	0	-
+THING	OilPipeline	26	15	0	-
+THING	OilPipeline	27	15	0	-
+THING	OilPipeline	25	16	0	-
+THING	OilPipeline	25	10	0	-
+THING	OilPipeline	25	11	0	-
+THING	OilPipeline	25	12	0	-
+THING	OilPipeline	25	13	0	-
+THING	OilPipeline	25	14	0	-
+THING	OilPipeline	13	10	0	-
+THING	OilPipeline	14	10	0	-
+THING	OilPipeline	15	10	0	-
+THING	OilPipeline	16	10	0	-
+THING	OilPipeline	17	10	0	-
+THING	OilPipeline	18	10	0	-
+THING	OilPipeline	19	10	0	-
+THING	OilPipeline	20	10	0	-
+THING	OilPipeline	21	10	0	-
+THING	OilPipeline	22	10	0	-
+THING	OilPipeline	23	10	0	-
+THING	OilPipeline	24	10	0	-
+THING	AncientChemtruck	29	1	1	-
+THING	AncientChembarrelPallet	22	0	0	-
+RUN	25	17	S	OilPipeline	-
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
+ROOF	0	8	RoofConstructed
+ROOF	0	9	RoofConstructed
+ROOF	0	10	RoofConstructed
+ROOF	0	11	RoofConstructed
+ROOF	0	12	RoofConstructed
+ROOF	0	13	RoofConstructed
+ROOF	1	3	RoofConstructed
+ROOF	1	4	RoofConstructed
+ROOF	1	5	RoofConstructed
+ROOF	1	6	RoofConstructed
+ROOF	1	7	RoofConstructed
+ROOF	1	8	RoofConstructed
+ROOF	1	9	RoofConstructed
+ROOF	1	10	RoofConstructed
+ROOF	1	11	RoofConstructed
+ROOF	1	12	RoofConstructed
+ROOF	1	13	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	2	9	RoofConstructed
+ROOF	2	10	RoofConstructed
+ROOF	2	11	RoofConstructed
+ROOF	2	12	RoofConstructed
+ROOF	2	13	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	3	9	RoofConstructed
+ROOF	3	10	RoofConstructed
+ROOF	3	11	RoofConstructed
+ROOF	3	12	RoofConstructed
+ROOF	3	13	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	4	9	RoofConstructed
+ROOF	4	10	RoofConstructed
+ROOF	4	11	RoofConstructed
+ROOF	4	12	RoofConstructed
+ROOF	4	13	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	5	9	RoofConstructed
+ROOF	5	10	RoofConstructed
+ROOF	5	11	RoofConstructed
+ROOF	5	12	RoofConstructed
+ROOF	5	13	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	6	9	RoofConstructed
+ROOF	6	10	RoofConstructed
+ROOF	6	11	RoofConstructed
+ROOF	6	12	RoofConstructed
+ROOF	6	13	RoofConstructed
+ROOF	26	3	RoofConstructed
+ROOF	26	4	RoofConstructed
+ROOF	26	5	RoofConstructed
+ROOF	26	6	RoofConstructed
+ROOF	26	7	RoofConstructed
+ROOF	27	3	RoofConstructed
+ROOF	27	4	RoofConstructed
+ROOF	27	5	RoofConstructed
+ROOF	27	6	RoofConstructed
+ROOF	27	7	RoofConstructed
+ROOF	28	3	RoofConstructed
+ROOF	28	4	RoofConstructed
+ROOF	28	5	RoofConstructed
+ROOF	28	6	RoofConstructed
+ROOF	28	7	RoofConstructed
+ROOF	29	3	RoofConstructed
+ROOF	29	4	RoofConstructed
+ROOF	29	5	RoofConstructed
+ROOF	29	6	RoofConstructed
+ROOF	29	7	RoofConstructed
+ROOF	30	3	RoofConstructed
+ROOF	30	4	RoofConstructed
+ROOF	30	5	RoofConstructed
+ROOF	30	6	RoofConstructed
+ROOF	30	7	RoofConstructed
+ROOF	31	3	RoofConstructed
+ROOF	31	4	RoofConstructed
+ROOF	31	5	RoofConstructed
+ROOF	31	6	RoofConstructed
+ROOF	31	7	RoofConstructed
+ROOF	32	3	RoofConstructed
+ROOF	32	4	RoofConstructed
+ROOF	32	5	RoofConstructed
+ROOF	32	6	RoofConstructed
+ROOF	32	7	RoofConstructed
