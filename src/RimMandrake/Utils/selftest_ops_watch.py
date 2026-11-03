@@ -50,6 +50,16 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
+# the queues checks run first, in their own process (OPS_QUEUES_READING_RESTORE_HQXV): a crash later in this file
+# cannot hide them, and each of their lines counts here as it does there
+_qp = subprocess.run([sys.executable, str(HERE / "selftest_ops_watch_queues.py")], capture_output=True, text=True,
+                     timeout=120, stdin=subprocess.DEVNULL)
+for _ql in _qp.stdout.splitlines():
+    if _ql.startswith(("PASS ", "FAIL ")):
+        check(_ql[5:].split("  ", 1)[0], _ql.startswith("PASS "), _ql)
+check("queues: the standalone queues selftest exits 0", _qp.returncode == 0, (_qp.returncode, _qp.stderr[-300:]))
+
+
 def wj(p, obj):
     p = Path(p)
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -723,7 +733,7 @@ os.environ["TESTQ_QUEUE"] = str(TMP / "qhome")
 os.environ["STUB_LOG"] = str(TMP / "stub.log")
 (TMP / "qhome").mkdir(exist_ok=True)
 _cf = {"clone": str(TMP / "stubclone"), "lock_wait_s": 1, "parent": "P", "for": "BENCH", "needs": "offline"}
-_res = OW.real_filer(calls[0], _cf)
+_res = OW.real_filer(calls[0] if calls else [], _cf)   # an empty `calls` already failed above; do not crash past it
 _seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
 check("fixed id: the filer records `live <same id> --result broken` and spawns nothing",
       _res.get(FIX) is None and len(_seen) == 2 and _seen[0][:4] == ["live", FIX, "--result", "broken"], (_res, _seen))
@@ -1433,7 +1443,7 @@ _fc.mkdir(parents=True, exist_ok=True)
     "def rimflow(*a):\n    if any('\\x00' in x for x in a):\n        raise ValueError('embedded null byte')\n    return 0, ''\n"
     "def publish(n, message=''):\n    return None\n", encoding="utf-8")
 _fr = OW.real_filer([{"name": "A", "title": "bad\x00", "aid": "x"}, {"name": "B", "title": "good", "aid": "y"}],
-                    {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "FOUNDRY", "needs": "offline", "lock_wait_s": 1})
+                    {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "BENCH", "needs": "offline", "lock_wait_s": 1})
 check("filer: an alarm the spawn cannot carry costs itself, the next still files",
       "ValueError" in str(_fr.get("A")) and _fr.get("B") is None and "B" in _fr, _fr)
 _cxm, _dirs = sys.modules.get("csuite_codex_limits"), OW.codex_dirs
@@ -1891,41 +1901,5 @@ check("live measured: an unreadable file says so (c_relentless counts it blind)"
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.live_measured_pct"]
 check("the live-measured target alarms below a floor", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == "<"
       and 10 <= _tg[0]["value"] <= 50, _tg)
-# queues stalled (QUEUE_ORPHAN_WEDGE_1): pending > 0 with only a stale orphan in active/ is a stall, calm idle or not
-_qd = Path(_tf.mkdtemp(prefix="qs_")); _qn = time.time()
-for _x in ("pending", "active", "done", "failed"):
-    (_qd / _x).mkdir()
-_qr = {"queues": [{"name": "q", "pending": str(_qd / "pending"), "active": str(_qd / "active"),
-                   "progress": [str(_qd / "done"), str(_qd / "failed")], "paused_file": str(_qd / "paused.json")}]}
-def _qs(): return OW.c_queues(_qn, _qr, {})["queues.q.stalled_min"]
-check("queues: nothing pending reads 0", _qs()["v"] == 0.0 and _qs()["m"] == "MEASURED")
-(_qd / "pending" / "a.json").write_text("{}"); (_qd / "active" / "orph.json").write_text("{}")
-for _f in (_qd / "pending" / "a.json", _qd / "active" / "orph.json"):
-    os.utime(_f, (_qn - 3600, _qn - 3600))
-check("queues: pending plus a 1 h stale orphan reads ~60 min stalled", 59 <= _qs()["v"] <= 61, _qs())
-os.utime(_qd / "active" / "orph.json", (_qn - 60, _qn - 60))
-check("queues: a heartbeating active job is movement", _qs()["v"] <= 1.1, _qs())
-os.utime(_qd / "active" / "orph.json", (_qn - 3600, _qn - 3600))
-(_qd / "paused.json").write_text("{}")
-check("queues: a paused queue reads 0", _qs()["v"] == 0.0, _qs())
-(_qd / "paused.json").unlink()
-_qglob = Path.glob  # OPS_QUEUES_READING_RESTORE_HQXV: a pending job claimed between glob and stat is movement
-def _ghost_glob(self, pat):
-    yield from _qglob(self, pat)
-    if self == _qd / "pending":
-        yield self / "claimed_meanwhile.json"
-Path.glob = _ghost_glob
-try:
-    _qv = OW.c_queues(_qn, _qr, {})
-finally:
-    Path.glob = _qglob
-check("queues: a job claimed between glob and stat is not a blind queue", _qv["queues.blind"]["v"] == 0
-      and _qv["queues.q.pending"]["v"] == 1 and _qv["queues.q.stalled_min"]["m"] == "MEASURED", _qv)
-_qr["queues"][0]["pending"] = str(_qd / "nope")
-check("queues: an unlistable queue is blind, not 0", OW.c_queues(_qn, _qr, {})["queues.blind"]["v"] == 1
-      and OW.c_queues(_qn, _qr, {})["queues.q.stalled_min"]["m"] == "UNMEASURED")
-_rl = OW.load_rules()
-check("queues: artpipe is wired with one fixed alarm id", any(t["key"] == "queues.artpipe.stalled_min" and t["alarm"]
-      and t["name"] == "OPS_ARTPIPE_UNSTICK" for t in _rl["targets"]))
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
