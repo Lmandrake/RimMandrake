@@ -18,6 +18,8 @@ Offline: no bridge, no game, ModsConfig.xml and modcheck_status.json never touch
     run through northstar_full.main with its steps stubbed, drive `run --config full --list FULL.LATEST` and a
     full-tier verdict; A2's drive `needs-mods` and `--config current`. A proofs file pointing a full-list clause at a
     small-list command goes red here (mutants inside the test).
+  8 every clause's criterion text and proof line passes the supervisor's own refusals (flyer word, expansion,
+    forbidden act) under relentless_rules.json, so a game_refused shows offline; mutant 'pre-flight' goes red.
 """
 import atexit
 import copy
@@ -349,6 +351,26 @@ def t6_tiers():
 
 ITEM = "GRAFFITI_NORTHSTAR_GREEN_FULL_1"
 PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs")
+
+
+def _ledger_title():
+    """The item's last ledger title (the supervisor's gate reads it with the proof lines); '' when none is found."""
+    import glob
+    title, ts = "", ""
+    for f in glob.glob(os.path.join(ROOT, "infrastructure", "state", "ledger", "events", "*.jsonl")):
+        for ln in open(f, encoding="utf-8"):
+            if ITEM not in ln or '"title"' not in ln:
+                continue
+            try:
+                ev = json.loads(ln)
+            except ValueError:
+                continue
+            if ev.get("id") == ITEM and ev.get("title") and ev.get("ts", "") >= ts:
+                title, ts = ev["title"], ev.get("ts", "")
+    return title
+
+
+TITLE = _ledger_title()
 FULL_LATEST = "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml"
 
 
@@ -458,6 +480,44 @@ def t7_live_proofs():
           not northstar_full.full_rung_verdict(d, expected=["bar_a", "bar_b"], compat_required=COMPAT_REQ)[0])
 
 
+def _criteria_text(text):
+    """`ID LEVEL: text` lines -> {id: text}."""
+    import re
+    out = {}
+    for ln in text.splitlines():
+        m = re.match(r"^([A-Z]\d+)\s+[A-Z0-9-]+:\s*(.*)$", ln.strip())
+        if m:
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def t8_supervisor_gates():
+    """gen 7 ended game_refused: F2's criterion said 'pre-flight', which the supervisor's flyer_re reads as a flyer.
+    Run the supervisor's own refusals (relentless_live.refused_proof with relentless_rules.json's live rules, and
+    relentless_game.gate's word test) over every clause's full criterion text and proof line, offline."""
+    import re
+    import relentless_live
+    import relentless_live_round
+    rules = json.load(open(os.path.join(ROOT, "src", "RimMandrake", "rimflow", "relentless_rules.json"), encoding="utf-8"))
+    lr = relentless_live.live_rules(rules)
+    txt = open(os.path.join(PROOFS, ITEM + ".txt"), encoding="utf-8").read()
+    crit = _criteria_text(open(os.path.join(PROOFS, ITEM + ".criteria"), encoding="utf-8").read())
+    lines = relentless_live_round.proof_lines(txt)
+    check("8 the item's ledger title was read", bool(TITLE), TITLE)
+    check("8 criteria text read for every clause", crit and all(crit.get(k) for k in ("A1", "A2", "F1", "F2")), crit)
+    for cid in sorted(crit):
+        why = relentless_live.refused_proof(lr, TITLE, crit[cid], lines.get(cid))
+        check("8 %s passes the supervisor's refused_proof (no flyer word, expansion or forbidden act)" % cid,
+              why is None, why)
+    words = " ".join([TITLE] + [lines.get(c) or "" for c in sorted(crit)])
+    check("8 relentless_game.gate's word test: no flyer word in the title or proof lines",
+          not re.search(lr["flyer_re"], words, re.I), words)
+    # mutant: the gen-7 wording comes back
+    bad = crit.get("F2", "") + " the pre-flight running_list is PASS"
+    check("8 mutant: a criterion saying 'pre-flight' is refused as a flyer",
+          (relentless_live.refused_proof(lr, TITLE, bad, lines.get("F2")) or "").startswith("flyer:"))
+
+
 def _raises_any(fn, *a):
     try:
         fn(*a)
@@ -475,6 +535,7 @@ def main():
     t5_verdict()
     t6_tiers()
     t7_live_proofs()
+    t8_supervisor_gates()
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
 
