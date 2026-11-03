@@ -94,7 +94,8 @@ def interop(td):
         with open(tries) as f:
             return rc, len(f.readlines())
     waits = []
-    real_sleep, WB.time.sleep = WB.time.sleep, waits.append
+    # winbuild's own sleeps only: time.sleep itself is shared with subprocess, whose wait loop polls through it under load
+    real_time, WB.time = WB.time, types.SimpleNamespace(sleep=waits.append, time=WB.time.time)
     try:
         lost = "echo '<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110' >&2; "
         got = run('if [ "$n" -lt 2 ]; then %sexit 1; fi; exit 0\n' % lost)
@@ -112,7 +113,7 @@ def interop(td):
         got = run(lost + "exit 0\n")
         check(got == (0, 1), "a zero exit is never run again, whatever stderr said", got)
     finally:
-        WB.time.sleep = real_sleep
+        WB.time = real_time
     code = ("import sys; sys.path.insert(0, %r); import winbuild as WB\nsys.exit(WB.run_interop([%r], timeout=30))"
             % (os.path.dirname(os.path.abspath(__file__)), fake_exe(td, "talker", "echo to-stdout; echo to-stderr >&2; exit 3\n")))
     p = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, timeout=60)

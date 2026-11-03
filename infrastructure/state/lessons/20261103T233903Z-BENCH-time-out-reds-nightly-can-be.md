@@ -1,0 +1,1 @@
+Time-out reds in the nightly can be queueing, not slowness: a process in wchan locks_lock_inode is waiting on a flock and that wait is charged to the test's 240 s. Sample /proc/locks against ~/.cache/rm-winbuild/locks before raising a timeout; the machine-wide copy-back lock held 22 of 38 samples for one tree's rsync of 3 GB src.
