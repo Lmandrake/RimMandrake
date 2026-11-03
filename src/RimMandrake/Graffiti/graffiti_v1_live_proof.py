@@ -47,8 +47,8 @@ WANT = {
 OURS = re.compile(r"Graffiti|graffiti")
 # continuation = indented, a .NET frame "at ...", Unity's "(Filename: ...)", or an unindented Unity frame
 # "Namespace.Type:Method (args)" (UnityEngine StackTrace formatter)
-CONTINUATION = re.compile(r"^(?:\s|at |\(Filename|[\w.`<>+\[\],]+:[\w<>.`|$]+ ?\()")
-ERROR_KIND = re.compile(r"Config error|Could not resolve cross-reference|XML error|Could not find (?:a )?type|Exception|"
+CONTINUATION = re.compile(r"^(?:\s|at |\(Filename|\(wrapper |[\w.`<>+\[\],]+:[\w<>.`|$]+ ?\()")
+ERROR_KIND = re.compile(r"Config error|Could not resolve cross-reference|XML(?: format)? error|Could not find (?:a )?type|Exception|"
                         r"duplicate|Failed to find", re.I)
 
 

@@ -125,6 +125,12 @@ check(P.log_verdict(deep, LOADED)[0] == 1, "A8 a Graffiti frame deep in a long s
 unity = clean_log + "Exception ticking: NullReferenceException\nVerse.TickManager:DoSingleTick ()\nRimMandrake.Graffiti.RaidExitTaggerMod:Postfix (Verse.AI.Group.Lord,Verse.AI.Group.LordToil,bool)\n"
 check(P.log_verdict(unity, LOADED)[0] == 1, "A8 an exception owned by an unindented Unity frame passed")
 
+fmt = clean_log + "XML format error: duplicate list item in RM_Graffiti_Tag_A\n"
+check(P.log_verdict(fmt, LOADED)[0] == 1, "A8 an XML format error passed")
+harm = (clean_log + "Exception ticking: NullReferenceException\n(wrapper dynamic-method) MonoMod.Utils.DynamicMethodDefinition:"
+        "Verse.Log.Error_Patch1 (string)\nRimMandrake.Graffiti.Filth_Mark:Print (Verse.SectionLayer)\n")
+check(P.log_verdict(harm, LOADED)[0] == 1, "A8 a Harmony wrapper frame split the record and passed")
+
 # the bridge reply is unwrapped, so a non-ASCII faction name never ends a field early
 uni = P._reply({"success": True, "result": RAID.replace("Rough Pigs", "P\u00edgs \u00c6therfolk")})
 check(P.field(uni, "marksIn") == "0" and code("A2", EXIT, extra=uni) == 0, "A2 a non-ASCII faction name broke the RAID read: %r" % uni)
