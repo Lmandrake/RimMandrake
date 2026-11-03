@@ -1131,6 +1131,39 @@ for _v, _want in ((20.3, False), (22.2, False), (17.8, False), (24.2, False), (3
     check("incident: %.1f min %s the line (a measured alarm or ladder age)" % (_v, "breaches" if _want else "stays under"), (_v > _tg["value"]) == _want, _tg["value"])
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "doing", 40)), _M, NOW, RULES)
 check("incident: a claimed (doing) incident -> 0", r["v"] == 0.0, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "doing", 40, lease="lapsed")), _M, NOW, RULES)
+check("incident: doing with its lease lapsed has no claimant -> its age", abs(r["v"] - 40) < 0.1, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "doing", 40, blocked=True)), _M, NOW, RULES)
+check("incident: blocked with no lane fault (or the machine down) is waiting on the right thing -> 0", r["v"] == 0.0, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "OFFLINE_UNOWNED_6D94", "doing", 3000, blocked=True)), _M, NOW, RULES, NOW - 75 * 60)
+check("incident: 2026-11-03's 75 min of BRAKED under an item blocked on the old outage reads the fault's age, over the line",
+      abs(r["v"] - 75) < 0.1 and r["v"] > 30, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 10, blocked=True)), _M, NOW, RULES, NOW - 75 * 60)
+check("incident: a blocked item younger than the fault reads its own age", abs(r["v"] - 75) > 1 and abs(r["v"] - 10) < 0.1, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 90, lease="live", blocked=True)), _M, NOW, RULES, NOW - 75 * 60)
+check("incident: a live lease on a blocked item is a claimant -> 0", r["v"] == 0.0, r)
+_q0 = OW.qhome(); _q0.mkdir(parents=True, exist_ok=True)
+_sj0 = _q0 / "steward.json"; _sj0b = _sj0.read_text() if _sj0.exists() else None
+for _st, _fault, _hb, _want in (("BRAKED", True, 60, NOW - 4500), ("UNREACHABLE", True, 60, None), ("BRAKED", False, 60, None), ("BRAKED", True, 3600, None)):
+    _sj0.write_text(json.dumps({"state": _st, "fault": _fault, "epoch": NOW - _hb, "since": OW.iso(NOW - 4500)}))
+    check("lane_fault_since: %s fault=%s heartbeat %d s -> %s" % (_st, _fault, _hb, _want), OW.lane_fault_since(NOW) == _want, OW.lane_fault_since(NOW))
+_sj0.unlink()
+check("lane_fault_since: no steward.json -> None", OW.lane_fault_since(NOW) is None, "")
+if _sj0b is not None:
+    _sj0.write_text(_sj0b)
+_calls, _rf0, _sr0 = [], OW.real_filer, OW.steve_release
+OW.steve_release = lambda: _calls.append(1) or [{"rule": "brake_release", "key": "steve.brake_release", "value": None, "window": "now", "detail": "the brake release pass failed: x"}]
+OW.real_filer = lambda todo, conf: None
+try:
+    OW.run(now=NOW, rules=RULES, filer=None, families=["disk"])
+    OW.run(now=NOW, rules=RULES, filer=lambda todo, conf: None, families=["disk"])
+    check("steve_release: not on a pass that files nothing, nor a test's filer", _calls == [], _calls)
+    OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["disk"])
+    check("steve_release: not on a limited pass without the steve family", _calls == [], _calls)
+    _dg = OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["steve"])
+    check("steve_release: a filing pass runs it, once, and its failure is a flag", _calls == [1] and any(f.get("rule") == "brake_release" for f in _dg.get("flags") or []), _dg.get("flags"))
+finally:
+    OW.real_filer, OW.steve_release = _rf0, _sr0
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="live")), _M, NOW, RULES)
 check("incident: a live lease -> 0", r["v"] == 0.0, r)
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="lapsed")), _M, NOW, RULES)

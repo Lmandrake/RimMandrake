@@ -22,6 +22,8 @@ What it knows (section 6.1), first match wins:
                    dispatcher that stopped admitting)
   BRAKED           fill_plan's brake (two filler jobs in a row not DONE): a fault, at once when either failure is a
                    HARNESS-class cause (HARNESS, DEPLOY, SYNC, SOURCE_SHA_MISSING, BLOCKED_SELECTION) with the job ids;
+                   when both jobs have a recorded non-fault cause and Operations has not spent its canary on them
+                   (brake_release.py), a fault only RELEASE_GRACE_S after the later one finished;
                    the day's lane-time budget or job cap is a brake too but NOT a fault: it expires at local midnight,
                    and it ends an incident (the lane stands idle on purpose, every check above it passed)
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
@@ -98,6 +100,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import schema as S  # noqa: E402
 import testq as T  # noqa: E402
+import brake_release as BR  # noqa: E402
 
 RIMFLOW_DIR = os.path.join(T.REPO, "src", "RimMandrake", "rimflow")
 STEWARD_ITEM = os.environ.get("TESTQ_STEWARD_ITEM", "STEVE_STEWARD_BUILD_NO_LLM_OWNER")
@@ -190,6 +193,11 @@ def lane_state(now, mods=None):
         res = [t.get("result") or {} for t in tails]
         causes = ["%s/%s" % (r.get("outcome"), r.get("cause")) for r in res]
         harness = any(r.get("cause") in HARNESS_CAUSES for r in res)
+        if BR.releasable(tails, now):
+            due = max(S.parse_ts(t.get("finished") or (t.get("result") or {}).get("finished")) for t in tails)
+            return _st("BRAKED", "filler brake on %s on recorded non-fault causes (%s: %s): Operations' canary releases "
+                       "it" % (",".join(by["brake"]), ",".join(str(j) for j in jobs), ", ".join(causes)),
+                       due + BR.RELEASE_GRACE_S, jobs=jobs)
         return _st("BRAKED", "filler brake on %s: last two filler jobs not DONE (%s: %s)%s"
                    % (",".join(by["brake"]), ",".join(str(j) for j in jobs), ", ".join(causes),
                       "; HARNESS-class, escalated at once" if harness else ""), 0, at_once=harness, jobs=jobs)

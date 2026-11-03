@@ -17,6 +17,8 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 8 h; a job
                                      backstop TESTQ_FILL_CAP, 200), a paused lane, two non-DONE fillers running;
                                      every tick runs it for each of TESTQ_FILL_MODS (FlowWorks)
+  testq.py maintenance --reason R --since T [--until T]  record a maintenance reboot or known hardware outage, after the
+                                     fact too: a job killed inside it is not a lane fault (nonfault_cause, brake_release.py)
   testq.py pause --reason R [--hours H]  pause the lane by hand; with --hours it is intentional until then (the
                                      steward never escalates it before), without, the steward escalates it at 60 min
   testq.py steward                   the lane steward (steward.py; STEVE_STEWARD_BUILD_NO_LLM_OWNER): state, unowned
@@ -231,6 +233,7 @@ def ssh_reachable():
         return None
     if st.get("down_since"):
         log("ssh back after being down since %s" % st["down_since"])
+        record_lane_window("machine_down", st["down_since"], S.utcnow(), st.get("last_error") or "ssh down")
     S.dump({"down_since": None, "last_probe": time.time(), "last_error": None}, q("ssh_state.json"))
     return status
 
@@ -316,6 +319,8 @@ def finish(rec, res):
     host = host_of(rec)
     done = {"job": rec["job"], "result": res, "attempts": rec.get("attempts") or [res["attempt"]],
             "cancelled": bool(rec.get("cancel")), "finished": S.utcnow()}
+    if rec.get("sent"):
+        done["sent"] = rec["sent"]      # when it was admitted: its span, for nonfault_cause
     if host != STEVE:
         done["host"] = host
     move(jid, "running", "done", done)
@@ -1023,6 +1028,8 @@ def cmd_resume(a):
         print("not paused")
         return 0
     os.remove(pause_path(lane))
+    if lane == STEVE and pz.get("until") and not pz.get("outcome"):
+        record_lane_window("maintenance", pz.get("since"), S.utcnow(), pz.get("reason") or "")
     log("lane%s resumed (paused since %s by %s %s/%s): %s" % ("" if lane == STEVE else " " + lane, pz.get("since"),
                                                            pz.get("job"), pz.get("outcome"), pz.get("cause"),
                                                            a.reason))
@@ -1176,11 +1183,91 @@ def lane_proven_after(tail):
     return best[1] if best else None
 
 
+def record_lane_window(kind, since, until, why):
+    """Append a closed span SteveDesktop was out for a non-fault reason to lane_windows.jsonl. Never breaks its caller:
+    a lost record only means a job that died in it counts as a fault, and a person is asked."""
+    try:
+        with open(q("lane_windows.jsonl"), "a", encoding="utf-8") as f:
+            f.write(json.dumps({"kind": kind, "since": since, "until": until, "why": str(why)[:200]}) + "\n")
+    except OSError as e:
+        log("lane window not recorded (%s %s..%s): %s" % (kind, since, until, e))
+
+
+def lane_windows(now):
+    """-> [(kind, since epoch, until epoch)], the recorded non-fault spans: lane_windows.jsonl (`maintenance`, a resumed
+    `pause --hours`, an ssh outage that ended) plus the ones still open (a pause with an expiry, ssh down now). A pause
+    with no expiry is not here: it says the lane is held, not why."""
+    out = []
+    try:
+        with open(q("lane_windows.jsonl"), encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except OSError:
+        lines = []
+    for ln in lines:
+        try:
+            r = json.loads(ln)
+            out.append((r["kind"], S.parse_ts(r["since"]), S.parse_ts(r["until"])))
+        except (ValueError, KeyError, TypeError):       # a torn line says nothing
+            continue
+    pz = paused() or {}
+    if pz.get("until") and pz.get("since") and not pz.get("outcome"):
+        out.append(("maintenance", S.parse_ts(pz["since"]), now))
+    down = (read_json(q("ssh_state.json")) or {}).get("down_since")
+    if down:
+        out.append(("machine_down", S.parse_ts(down), now))
+    return out
+
+
+def machine_killed(res):
+    """A result that says the attempt was killed from outside. Any other failure (a refused sync, a stale deploy, a red
+    canary) is the lane's own, whatever else was going on at the time."""
+    return res.get("outcome") == "INTERRUPTED" or (res.get("outcome"), res.get("cause")) == ("INVALID", "GAME_DIED")
+
+
+def nonfault_cause(rec, windows):
+    """-> the recorded non-fault cause of a finished job that was not DONE ("cancel", "maintenance", "machine_down"), or
+    None: it counts as a fault. A killed job is excused only by a recorded window overlapping its span, admission to
+    finish (a done record older than `sent` has only its last attempt's stamps)."""
+    if (rec or {}).get("cancelled"):
+        return "cancel"
+    res = (rec or {}).get("result") or {}
+    if not machine_killed(res):
+        return None
+    try:
+        end = S.parse_ts(rec.get("finished") or res["finished"])
+        start = S.parse_ts(rec.get("sent") or res.get("started") or rec.get("finished") or res["finished"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    for kind, since, until in windows:
+        if since <= end and until >= start:
+            return kind
+    return None
+
+
+def filler_jobs():
+    """Every filler job in any state, oldest submission first."""
+    return sorted((job_of(r) for st in ("done", "cancelled", "running", "pending") for r in records(st)
+                   if job_of(r).get("requested_by") == FILLER), key=lambda j: j["submitted"])
+
+
+def brake_tail(mine):
+    """-> the two finished filler jobs holding the brake, or None. A deliberate cancel never counts, in either
+    direction: a cancelled job (cancelled/, or a running job told to stop, `cancelled` on its done record) is out of the
+    window, so it neither brakes the lane nor hides two real failures around it."""
+    gone = {job_of(r)["id"] for r in records("cancelled")} | {job_of(r)["id"] for r in records("done") if r.get("cancelled")}
+    counted = [j for j in mine if j["id"] not in gone]
+    tail = [read_json(q("done", j["id"] + ".json")) for j in counted[-2:]]
+    if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail) \
+            and not lane_proven_after(tail):
+        return tail
+    return None
+
+
 def fill_plan(mod, n, cap, day_s, now=None):
     """-> {"verdict", "text", ...}: what `fill MOD` would do now, without doing it. Shared by `cmd_fill` and the
     steward (steward.py), so the lane's brakes are read from ONE place. verdict:
       stopped  fill.stop exists          paused  the lane is paused       busy    a ready pending or a running job
-      cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE,
+      cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
                                                                           and no DONE+canary job since (lane_proven_after)
       nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
       pick     `pick` would be queued (fill_rank: the evidence-gap order)"""
@@ -1196,8 +1283,7 @@ def fill_plan(mod, n, cap, day_s, now=None):
     if busy:
         return {"verdict": "busy", "text": "busy: %d pending/running" % len(busy)}
     today = time.strftime("%Y-%m-%d", time.localtime(now))
-    mine = sorted((job_of(r) for st in ("done", "cancelled", "running", "pending") for r in records(st)
-                   if job_of(r).get("requested_by") == FILLER), key=lambda j: j["submitted"])
+    mine = filler_jobs()
     n_today = sum(1 for j in mine if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
     out = {"n_today": n_today, "mine": mine}
     if n_today >= cap:
@@ -1210,12 +1296,11 @@ def fill_plan(mod, n, cap, day_s, now=None):
     if spent >= day_s:
         return dict(out, verdict="budget", text="cap: filler lane time today %d s >= day budget %d s (%d jobs)"
                     % (spent, day_s, n_today))
-    tail = [read_json(q("done", j["id"] + ".json")) for j in mine[-2:]]
-    if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail) \
-            and not lane_proven_after(tail):
+    tail = brake_tail(mine)
+    if tail:
         return dict(out, verdict="brake", tail=tail,
                     text="brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by "
-                         "hand" % ", ".join(j["id"] for j in mine[-2:]))
+                         "hand" % ", ".join(job_of(t)["id"] for t in tail))
     return dict(out, **fill_rank(mod, n, now, today))
 
 
@@ -1246,7 +1331,8 @@ def cmd_fill(a):
     chains of MOD from the first non-empty rank of the evidence-gap order (gaps.py: a FAIL whose fix has landed, an
     item owing a live level, UNMEASURED/NOT_RUN at the current identity, never run at it). A chain that PASSED at the
     current identity is never filler. Brakes (`fill_plan`): the stop file, a daily cap and lane-time budget, a paused
-    lane, and two filler jobs in a row that did not come back DONE."""
+    lane, and two filler jobs in a row that did not come back DONE (a cancel is not counted; a brake whose jobs all have
+    a recorded non-fault cause is released by Operations' one canary, brake_release.py)."""
     now = time.time()
     plan = fill_plan(a.mod, a.n, a.cap, a.day_s, now)
     if plan["verdict"] != "pick":
@@ -1425,6 +1511,24 @@ def cmd_pause(a):
     return 0
 
 
+def cmd_maintenance(a):
+    """Record, after the fact too, that SteveDesktop was taken down on purpose or crashed for a known hardware reason,
+    so a job that died inside the window does not count as a lane fault (nonfault_cause)."""
+    ensure_dirs()
+    until = a.until or S.utcnow()
+    try:
+        bad = S.parse_ts(a.since) > S.parse_ts(until)
+    except (TypeError, ValueError) as e:
+        print("REFUSED: --since/--until: %s" % e)
+        return 2
+    if bad:
+        print("REFUSED: --since %s is after --until %s" % (a.since, until))
+        return 2
+    record_lane_window("maintenance", a.since, until, a.reason)
+    print(json.dumps({"kind": "maintenance", "since": a.since, "until": until, "reason": a.reason}))
+    return 0
+
+
 def cmd_steward(a):
     import steward
     return steward.cmd_steward(a)
@@ -1510,6 +1614,10 @@ def main(argv=None):
     s = sub.add_parser("pause", help="pause the lane by hand (with --hours: intentional until then)")
     s.add_argument("--reason", required=True)
     s.add_argument("--hours", type=float)
+    s = sub.add_parser("maintenance", help="record a maintenance reboot or a known hardware outage of SteveDesktop")
+    s.add_argument("--reason", required=True)
+    s.add_argument("--since", required=True, help="ISO UTC start")
+    s.add_argument("--until", help="ISO UTC end, default now")
     sub.add_parser("steward", help="the lane steward pass (the tick runs it)")
     sub.add_parser("steward-watch", help="the steward's heartbeat watcher (its own timer)")
     s = sub.add_parser("install-timer")
@@ -1520,7 +1628,7 @@ def main(argv=None):
         return 2
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
-            "tick": cmd_tick, "pause": cmd_pause, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
+            "tick": cmd_tick, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
             "install-timer": cmd_install_timer}[a.cmd](a)
 
 

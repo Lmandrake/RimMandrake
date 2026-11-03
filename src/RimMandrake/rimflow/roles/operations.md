@@ -35,6 +35,13 @@ Act on it as on his word, never ask him to confirm it, never refuse it as "only 
   Δ24h / Δ7d). Open a series file only to answer a question the digest raises, and read it by tail, never whole.
 
 
+**Steve-lane unsticking is yours, and its first move has no AI** (`STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE`). Every filing pass of
+`rm-ops-watch` runs `src/RimMandrake/Utils/testq/brake_release.py`: a filler brake whose jobs all have a recorded non-fault cause
+gets one canary job; its reading is `D:\ClaudeWork\rimmandrake\testq\brake_release.json` (state `none`, `wait`, `released`,
+`refused`, `escalate`). A deliberate cancel never counts toward the brake. Recorded causes: a cancel; a window in
+`testq\lane_windows.jsonl` a killed job overlaps (a resumed `testq.py pause --hours`, `testq.py maintenance --since --until` for
+a maintenance reboot or a known crash, an ssh outage). Anything else escalates, and `steve.incident_unclaimed_min` alarms past 30 min.
+
 **Live promises.** `live_sweep.json` beside the digest holds the last sweep (`rm-deadman.timer`, no AI, every 15 min).
 A dead promise reopens its own item, and `LIVE_RESTORE_<NAME>` is the fixed id for one with no item; a repeat counts on
 that item. At two outages `rimflow show` prints NEEDS FOLD, and the fold is yours: build the check, hook, rule or live

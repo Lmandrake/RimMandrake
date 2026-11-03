@@ -10,7 +10,8 @@ rimflow/dispatcher_schedule.json "measure"):
   GATHER   one record per metric family, reusing the instruments that already exist:
              accounts    account_usage.read_now() + slot_allocator.slope(): week % left, hours to reset, runway
              codex       sim/csuite_codex_limits.readings(): the weekly window's used %, reset, runway
-             steve       testq steward.json / steward_watch.json / done/*.json: state, fault, heartbeat, INVALID streak
+             steve       testq steward.json / steward_watch.json / done/*.json: state, fault, heartbeat, INVALID streak;
+                         a filing pass also runs testq/brake_release.py, which ACTS: one canary job on a known-cause brake
              testing     testq done jobs (Steve lane, per job) + testing_metrics history (archmagi, per day):
                          busy hours on runs that caught nothing (no FAIL, no finding, no close within 24 h)
              disk        free GB on / (WSL ext4), C:, D:; D: used GB (agent storage growth); scratch under the reaper
@@ -1244,33 +1245,49 @@ def c_flow(now, rules, ctx):
     lapsed = sum(1 for it in world.items.values() if it.open and model.lease_status(it, now) == "lapsed")
     out["flow.lapsed_leases"] = M(lapsed, "open items with a lapsed lease")
     try:
-        out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules)
+        out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules, lane_fault_since(now))
     except Exception as e:  # noqa: BLE001  a bad steve_incident rule costs this reading, not the family's
         out["steve.incident_unclaimed_min"] = U("steve_incident: %s: %s" % (type(e).__name__, str(e)[:160]))
     return out
 
 
-def steve_incident_unclaimed(world, model, now, rules):
+def lane_fault_since(now):
+    """-> the epoch the steward's current fault began, or None: no fault, a stale or unreadable steward.json, or the
+    machine down (an escalation blocked on the in-person step is waiting on the right thing then)."""
+    sj = read_json(qhome() / "steward.json")
+    if not isinstance(sj, dict) or not sj.get("fault") or sj.get("state") == "UNREACHABLE":
+        return None
+    hb, since = epoch(sj.get("epoch")), epoch(sj.get("since"))
+    return since if hb is not None and now - hb <= 30 * 60 and since is not None and since <= now else None
+
+
+def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
     """steve.incident_unclaimed_min: the age of the OLDEST open steward incident item (id prefix
     rules steve_incident.prefix) that no seat holds: still proposed/ready (not doing/built/validated) (claim/start), no live lease, not blocked. The steward
     escalating a stall makes c_steve call it owned; this is the point that says nobody has picked the escalation up
     (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm). An OWNER rung is
     no seat's to claim, so it never counts: the steward keeps a seat's UNOWNED item open beside it, and that one does
-    (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: 2E27 read 35.9 and went on rising with a wake working the incident)."""
+    (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: 2E27 read 35.9 and went on rising with a wake working the incident).
+    A `doing` item whose lease lapsed has no claimant either. A BLOCKED one has none once the lane is in a fault with the
+    machine up (FAULT_SINCE, lane_fault_since), for as long as that fault has stood: 2026-11-03 this read 0.0 for 75 min
+    of BRAKED, the only item blocked on the in-person step of the UNREACHABLE fault that had already ended."""
     cfg = rules.get("steve_incident") or {}
     pre, rung = cfg.get("prefix", "STEVE_LANE_UNSTICK_"), cfg.get("owner_rung", "_OWNER_")
     ages, names = [], []
     for it in world.items.values():
-        if not it.id.startswith(pre) or rung in it.id or it.state not in ("proposed", "ready") or it.blocked:
+        if not it.id.startswith(pre) or rung in it.id or it.state not in ("proposed", "ready", "doing"):
             continue
-        if model.lease_status(it, now) == "live":
+        lease = model.lease_status(it, now)
+        if lease == "live" or (it.blocked and fault_since is None):
+            continue
+        if not it.blocked and it.state == "doing" and lease != "lapsed":
             continue
         t = model.epoch(it.created_at)
         if t is None:
             return U("incident %s has no readable creation time" % it.id)
         if t > now + 300:
             return U("incident %s is dated %.0f min in the future" % (it.id, (t - now) / 60.0))
-        ages.append(max(0.0, (now - t) / 60.0))
+        ages.append(max(0.0, (now - (max(t, fault_since) if it.blocked else t)) / 60.0))
         names.append(it.id)
     if not ages:
         return M(0.0, "min the oldest unclaimed steward incident has waited", why="no unclaimed steward incident")
@@ -3082,6 +3099,21 @@ def publish_health(points, prev, ctx, rules, now):
             "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 
 
+def steve_release():
+    """Operations' deterministic hand on the Steve lane: testq/brake_release.py, its own process so its import of testq
+    reads TESTQ_QUEUE as this pass does. -> flags: it costs a flag when it fails, never the pass."""
+    why = None
+    try:
+        r = subprocess.run([sys.executable, str(HERE / "testq" / "brake_release.py")], capture_output=True, text=True,
+                           timeout=240)
+        if r.returncode != 0:
+            why = "exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:])
+    except (OSError, subprocess.SubprocessError) as e:
+        why = "%s: %s" % (type(e).__name__, str(e)[:200])
+    return [{"rule": "brake_release", "key": "steve.brake_release", "value": None, "window": "now",
+             "detail": "the brake release pass failed: " + why}] if why else []
+
+
 @_locked
 def run(now=None, rules=None, filer=None, families=None):
     now = now or time.time()
@@ -3118,6 +3150,8 @@ def run(now=None, rules=None, filer=None, families=None):
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
         points.update(pts)
+    if filer is real_filer and (not families or "steve" in families):      # acts only where alarms are really filed
+        sick += steve_release()
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
         if (not families or fam in families) and not counts_as_measured(points.get(key)):
