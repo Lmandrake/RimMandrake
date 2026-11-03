@@ -2139,3 +2139,7 @@
 {"seat":"RUNNER","event":"raise","id":"FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T09:03:17Z","tsn":1793696597111505984}
 {"seat":"RUNNER","event":"live","id":"FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/fleetwatch/last_write.json is 2050 s old (max 1800)","ts":"2026-11-03T09:03:19Z","tsn":1793696599603108939}
 {"seat":"RUNNER","event":"raise","id":"FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T09:03:22Z","tsn":1793696602086817060}
+{"seat":"RUNNER","event":"live","id":"FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:04Z","tsn":1793697484211756877}
+{"seat":"RUNNER","event":"live","id":"FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:07Z","tsn":1793697487020187205}
+{"seat":"RUNNER","event":"live","id":"FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:09Z","tsn":1793697489604914294}
+{"seat":"RUNNER","event":"live","id":"FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:12Z","tsn":1793697492179571917}
