@@ -251,6 +251,57 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "pipes: the section layer prints the stub");
                 Assert(draw.Contains("DrawPortStub(r, fe,") && draw.Contains("stubMeshes"), "hoses: the port stub is drawn from a cached mesh");
             });
+            Case("LiquidJoin_machine_coupler_on_tank_nozzle", () =>
+            {
+                // PUMP_ON_TANK_FIX_NO_COUPLER: a 1x1 machine beside a 2x2 RM_LiquidTank, every look, both lanes, both sides
+                const string tank = "RM_LiquidTank";
+                foreach (string look in TankPortGeometry.Looks)
+                {
+                    foreach (var (px, sx) in new[] { (12, -1), (9, 1) })   // the machine's x, the step from it into the tank (10..11)
+                    {
+                        foreach (int pz in new[] { 10, 11 })
+                        {
+                            var j = LiquidJoinRule.MachineTankJoin(tank, look, px, pz, 1, 1, 10, 10, 2, 2);
+                            Assert(j != null && j.OnDrawnPort && j.AlongX, $"{look} machine ({px},{pz}): coupler on the drawn port");
+                            Assert(TankPortGeometry.PortPoint(look, 10, 10, 2, 2, sx, 0, out var port), "the tank measures that port");
+                            Assert(Near(j.CouplerX, port.X) && Near(j.CouplerZ, port.Z), $"{look} ({px},{pz}): coupler at the port {port}, got ({j.CouplerX},{j.CouplerZ})");
+                            // the port is the tank's edge facing the machine, never the shared-edge midpoint the old print used
+                            Assert(Near(j.CouplerX, sx < 0 ? 12 : 10), $"{look} ({px},{pz}): coupler on the shared edge x");
+                            Assert(Math.Abs(j.CouplerZ - (pz + 0.5)) > 0.4, $"can-fail: {look} ({px},{pz}) coupler off the machine's own centre line");
+                            // the drop: starts on the machine's centre at its port height heading at the tank, ends under the nozzle level
+                            Assert(j.Drop != null && j.Drop.Count == 2, $"{look} ({px},{pz}): an S-bend drop");
+                            LiquidJoinRule.SegmentAt(j.Drop[0], 0, out double x0, out double z0, out double tx0, out double tz0);
+                            LiquidJoinRule.SegmentAt(j.Drop[j.Drop.Count - 1], 1, out double x1, out double z1, out double tx1, out double tz1);
+                            Assert(Math.Abs(x0 - (px + 0.5)) < 1e-6 && Math.Abs(z0 - (pz + 0.5)) < 1e-6, $"{look} ({px},{pz}): drop starts at the machine centre, got ({x0},{z0})");
+                            Assert(Math.Abs(x1 - (port.X + sx * LiquidJoinRule.UnderNozzle)) < 1e-6 && Math.Abs(z1 - port.Z) < 1e-6,
+                                $"{look} ({px},{pz}): drop ends under the nozzle, got ({x1},{z1})");
+                            Assert(Math.Abs(tx0 - sx) < 1e-6 && Math.Abs(tz0) < 1e-6 && Math.Abs(tx1 - sx) < 1e-6 && Math.Abs(tz1) < 1e-6,
+                                $"{look} ({px},{pz}): the drop leaves and enters level, heading into the tank");
+                            Assert(LiquidJoinRule.TravelsWest(j.Drop) == (sx < 0), "the strip keeps the tile's north rim up");
+                            // no kink: the strip carries the bore across the whole bend
+                            Assert(LiquidJoinRule.StripQuads(j.Drop, LiquidJoinRule.BoreHalf).Count >= 4, "the S is cut into a smooth strip");
+                        }
+                    }
+                }
+                // can-fail: every other pairing keeps the shared-edge midpoint and draws no drop
+                var south = LiquidJoinRule.MachineTankJoin(tank, "Industrial", 10, 9, 1, 1, 10, 10, 2, 2);
+                Assert(south != null && !south.OnDrawnPort && south.Drop == null && !south.AlongX && Near(south.CouplerX, 10.5) && Near(south.CouplerZ, 10),
+                    "a machine south of the tank: coupler on the edge midpoint, no drop");
+                var tall = LiquidJoinRule.MachineTankJoin("RM_LiquidTankTall", "Industrial", 12, 10, 1, 1, 10, 10, 2, 3);
+                Assert(tall != null && !tall.OnDrawnPort && tall.Drop == null && Near(tall.CouplerX, 12) && Near(tall.CouplerZ, 10.5),
+                    "an unmeasured tank: coupler on the edge midpoint");
+                Assert(LiquidJoinRule.MachineTankJoin(tank, "Industrial", 13, 10, 1, 1, 10, 10, 2, 2) == null, "can-fail: a gap of a cell joins nothing");
+                Assert(LiquidJoinRule.MachineTankJoin(tank, "Industrial", 12, 12, 1, 1, 10, 10, 2, 2) == null, "can-fail: a corner touch shares no edge");
+            });
+            Case("LiquidJoin_machine_drop_wiring_shipped", () =>
+            {
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains("LiquidJoinRule.MachineTankJoin(b.def.defName, look,"), "the joins layer asks the rule where the coupler goes");
+                Assert(joins.Contains("PrintStrip(this, pm, join.Drop, yPipe)"), "the drop prints at pipe altitude, under the machine");
+                Assert(joins.Contains("new Vector3((float)join.CouplerX, yTop, (float)join.CouplerZ)"), "the coupler prints on top, at the rule's point");
+                Assert(!joins.Contains("new Vector3((float)mx, yTop, (float)mz)"), "can-fail: the old shared-edge-midpoint coupler print is gone");
+                Assert(joins.Contains("public static string ProofMachineCouplers(string arg)"), "the live proof's static_call surface ships");
+            });
         }
     }
 }

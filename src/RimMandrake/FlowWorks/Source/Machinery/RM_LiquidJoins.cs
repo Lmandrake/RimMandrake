@@ -187,6 +187,98 @@ namespace RimMandrake.FlowWorks.Machinery
             return false;
         }
 
+        private static readonly Dictionary<string, Material> straightMats = new Dictionary<string, Material>();
+
+        /// <summary>PUMP_ON_TANK_FIX_NO_COUPLER: the universal pipe's straight east-west tile in one look (its linked atlas,
+        /// PipeStyles.AtlasPath), for pipe drawn where no pipe thing stands (the machine-to-tank drop); null when the atlas is
+        /// not installed.</summary>
+        public static Material PipeStraightMat(string look)
+        {
+            look = PipeStyles.DefaultLook(look);
+            if (straightMats.TryGetValue(look, out Material m)) return m;
+            Texture2D t = ContentFinder<Texture2D>.Get(PipeStyles.AtlasPath(look), reportFailure: false);
+            m = t == null ? null : MaterialAtlasPool.SubMaterialFromAtlas(MaterialPool.MatFrom(t, ShaderDatabase.Cutout, Color.white),
+                (LinkDirections)(LiquidJoinRule.LinkLeft | LiquidJoinRule.LinkRight));
+            straightMats[look] = m;
+            return m;
+        }
+
+        /// <summary>
+        /// PUMP_ON_TANK_FIX_NO_COUPLER live proof (jawa/static_call, dev surface only; nothing in the game calls it). WRITES,
+        /// then undoes: on the current map, at "x,z" (the tank's Position) or, for an empty arg, the first clear 4x2 block
+        /// spiralling out from the map centre, spawns a 2x2 RM_LiquidTank with an RM_LiquidPump touching it on the east (lower
+        /// lane) and one on the west (upper lane), regenerates each pump's SectionLayer_RM_LiquidJoins, reads what it printed,
+        /// and destroys all three. "COUPLERS ok=b E[...] W[...]": ok when each pump printed exactly one coupler, on the
+        /// tank's drawn port (TankPortGeometry.PortPoint, within 0.01 cell), and one drop, with no placeholder art.
+        /// </summary>
+        public static string ProofMachineCouplers(string arg)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED: no current map";
+            if (!RM_MachinerySettings.joinFittings) return "REFUSED: joinFittings is off";
+            ThingDef tankDef = DefDatabase<ThingDef>.GetNamedSilentFail(Hose.TankPortGeometry.TankDef);
+            ThingDef pumpDef = DefDatabase<ThingDef>.GetNamedSilentFail(PipeStyles.PumpDef);
+            if (tankDef == null || pumpDef == null) return "REFUSED: RM_LiquidTank or RM_LiquidPump not loaded";
+            bool Clear(IntVec3 q) => q.InBounds(map) && q.Standable(map) && q.GetThingList(map).Count == 0;
+            bool Block(IntVec3 p)
+            {
+                for (int dx = -1; dx <= 2; dx++)
+                    for (int dz = 0; dz <= 1; dz++)
+                        if (!Clear(new IntVec3(p.x + dx, 0, p.z + dz))) return false;
+                return true;
+            }
+            IntVec3 at = IntVec3.Invalid;
+            string[] xz = (arg ?? "").Split(',');
+            if (xz.Length == 2 && int.TryParse(xz[0], out int ax) && int.TryParse(xz[1], out int az)) at = new IntVec3(ax, 0, az);
+            else
+            {
+                foreach (IntVec3 q in GenRadial.RadialCellsAround(map.Center, 40f, true))
+                {
+                    if (Block(q)) { at = q; break; }
+                }
+            }
+            if (!at.IsValid || !Block(at)) return "REFUSED: no clear 4x2 block at " + at;
+            int placeholdersBefore = placeholderPieces;
+            var made = new List<Thing>();
+            var sb = new System.Text.StringBuilder();
+            bool ok = true;
+            try
+            {
+                Thing tank = GenSpawn.Spawn(ThingMaker.MakeThing(tankDef, tankDef.MadeFromStuff ? GenStuff.DefaultStuffFor(tankDef) : null), at, map);
+                made.Add(tank);
+                CellRect r = tank.OccupiedRect();
+                string look = LookOf(tank);
+                foreach ((string side, IntVec3 pos, int sx) in new[] { ("E", new IntVec3(r.maxX + 1, 0, r.minZ), 1), ("W", new IntVec3(r.minX - 1, 0, r.maxZ), -1) })
+                {
+                    Thing pump = GenSpawn.Spawn(ThingMaker.MakeThing(pumpDef, pumpDef.MadeFromStuff ? GenStuff.DefaultStuffFor(pumpDef) : null), pos, map);
+                    made.Add(pump);
+                    SectionLayer layer = map.mapDrawer.SectionAt(pump.Position)?.GetLayer(typeof(SectionLayer_RM_LiquidJoins));
+                    if (layer == null) { ok = false; sb.Append(" " + side + "[no joins layer]"); continue; }
+                    layer.Regenerate();
+                    // the port the tank draws on the side facing this pump (-sx: the step from the pump into the tank)
+                    Hose.TankPortGeometry.PortPoint(look, r.minX, r.minZ, r.Width, r.Height, -sx, 0, out var port);
+                    Vector2 c = SectionLayer_RM_LiquidJoins.lastCouplerAt;
+                    bool onPort = Mathf.Abs(c.x - (float)port.X) < 0.01f && Mathf.Abs(c.y - (float)port.Z) < 0.01f;
+                    bool sideOk = SectionLayer_RM_LiquidJoins.lastCouplers == 1 && SectionLayer_RM_LiquidJoins.lastCouplersOnPort == 1
+                        && SectionLayer_RM_LiquidJoins.lastDrops == 1 && onPort;
+                    ok &= sideOk;
+                    sb.Append(" " + side + "[pump=" + pump.Position.x + "," + pump.Position.z + " couplers=" + SectionLayer_RM_LiquidJoins.lastCouplers
+                        + " onPort=" + SectionLayer_RM_LiquidJoins.lastCouplersOnPort + " drops=" + SectionLayer_RM_LiquidJoins.lastDrops
+                        + " at=" + c.x.ToString("0.###") + "," + c.y.ToString("0.###") + " port=" + port.X.ToString("0.###") + "," + port.Z.ToString("0.###")
+                        + " ok=" + sideOk + "]");
+                }
+                bool art = placeholderPieces == placeholdersBefore && Mat("Coupler", look) != null && PipeStraightMat(look) != null;
+                ok &= art;
+                sb.Append(" art=" + art + " look=" + look);
+            }
+            finally
+            {
+                foreach (Thing t in made)
+                    if (!t.Destroyed) t.Destroy(DestroyMode.Vanish);
+            }
+            return "COUPLERS ok=" + ok + " tank=" + at.x + "," + at.z + sb;
+        }
+
         public static bool IsHoseReel(Thing t) => t is ThingWithComps tw && tw.GetComp<Hose.CompHoseReel>() != null;
 
         public static bool IsPartner(Thing t)
@@ -272,6 +364,7 @@ namespace RimMandrake.FlowWorks.Machinery
             ClearSubMeshes(MeshParts.All);
             if (!RM_MachinerySettings.joinFittings)
             {
+                lastCouplers = lastCouplersOnPort = lastDrops = 0;
                 FinalizeMesh(MeshParts.All);
                 return;
             }
@@ -279,6 +372,7 @@ namespace RimMandrake.FlowWorks.Machinery
             float yPipe = AltitudeLayer.FloorEmplacement.AltitudeFor() + 0.02f;
             float yTop = AltitudeLayer.BuildingOnTop.AltitudeFor();
             float s = (float)LiquidJoinRule.FlangeSize;
+            int couplers = 0, onPort = 0, drops = 0;
             foreach (IntVec3 c in section.CellRect)
             {
                 List<Thing> l = c.GetThingList(map);
@@ -309,7 +403,8 @@ namespace RimMandrake.FlowWorks.Machinery
                     }
                     else if (t.Position == c && RM_LiquidNet.RoleOfKind(t) == RM_NetRole.Machine)
                     {
-                        // a machine prints once (at its own position) a coupler on each edge it shares with a tank
+                        // a machine prints once (at its own position) a coupler on each edge it shares with a tank;
+                        // PUMP_ON_TANK_FIX_NO_COUPLER: on a 2x2 tank's drawn nozzle, with a drop under the machine to it
                         CellRect a = t.OccupiedRect();
                         var seen = new HashSet<Thing>();
                         foreach (IntVec3 n in a.ExpandedBy(1).EdgeCells)
@@ -321,19 +416,37 @@ namespace RimMandrake.FlowWorks.Machinery
                                 Thing b = nl[j];
                                 if (!(b is Building_LiquidTank) || !seen.Add(b)) continue;
                                 CellRect br = b.OccupiedRect();
-                                if (!LiquidJoinRule.SharedEdge(a.minX, a.minZ, a.Width, a.Height, br.minX, br.minZ, br.Width, br.Height,
-                                        out double mx, out double mz, out int sx, out int sz)) continue;
-                                Material m = RM_LiquidJoins.Mat("Coupler", RM_LiquidJoins.LookOf(b));
+                                string look = RM_LiquidJoins.LookOf(b);
+                                LiquidJoinRule.MachineJoin join = LiquidJoinRule.MachineTankJoin(b.def.defName, look, a.minX, a.minZ, a.Width, a.Height,
+                                    br.minX, br.minZ, br.Width, br.Height);
+                                if (join == null) continue;
+                                if (join.Drop != null)
+                                {
+                                    Material pm = RM_LiquidJoins.PipeStraightMat(look);
+                                    if (pm != null && SectionLayer_RM_PipeCentreStubs.PrintStrip(this, pm, join.Drop, yPipe) > 0) drops++;
+                                }
+                                Material m = RM_LiquidJoins.Mat("Coupler", look);
                                 if (m == null) continue;
-                                Printer_Plane.PrintPlane(this, new Vector3((float)mx, yTop, (float)mz), new Vector2(s, s), m,
-                                    sx != 0 ? 0f : 90f);
+                                Printer_Plane.PrintPlane(this, new Vector3((float)join.CouplerX, yTop, (float)join.CouplerZ), new Vector2(s, s), m,
+                                    join.AlongX ? 0f : 90f);
+                                couplers++;
+                                if (join.OnDrawnPort) onPort++;
+                                lastCouplerAt = new Vector2((float)join.CouplerX, (float)join.CouplerZ);
                             }
                         }
                     }
                 }
             }
+            lastCouplers = couplers;
+            lastCouplersOnPort = onPort;
+            lastDrops = drops;
             FinalizeMesh(MeshParts.All);
         }
+
+        /// <summary>State reads (PUMP_ON_TANK_FIX_NO_COUPLER live proof): machine-to-tank couplers printed by the last
+        /// regeneration of any section, how many sat on a tank's drawn port, drop pipes printed, and the last coupler's centre.</summary>
+        public static int lastCouplers, lastCouplersOnPort, lastDrops;
+        public static Vector2 lastCouplerAt;
     }
 
     /// <summary>
@@ -404,12 +517,20 @@ namespace RimMandrake.FlowWorks.Machinery
             }
             Material sm = StraightMat(t, true);
             if (sm == null) return 0;
-            LayerSubMesh mesh = GetSubMesh(sm);
+            return PrintStrip(this, sm, plan.Path, yTile + 0.001f);
+        }
+
+        /// <summary>Print a path (RiserPlan.Path segments) as a bent strip of the straight east-west pipe tile
+        /// <paramref name="sm"/> at height <paramref name="y"/>. Returns the quads printed. Shared by the risers and the
+        /// machine-to-tank drop (PUMP_ON_TANK_FIX_NO_COUPLER).</summary>
+        internal static int PrintStrip(SectionLayer layer, Material sm, List<double[]> path, float y)
+        {
+            LayerSubMesh mesh = layer.GetSubMesh(sm);
             // the cross-section is not symmetric (rim shadow on the south): StripQuads puts v "left of travel", which is north
             // only for eastward travel, so a riser travelling west (tank on its west, dx -1) swaps the two rims
-            float y = yTile + 0.001f, vr = 0.5f - (float)LiquidJoinRule.BoreHalf, vl = 0.5f + (float)LiquidJoinRule.BoreHalf;
-            if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }
-            List<LiquidJoinRule.StripQuad> quads = LiquidJoinRule.StripQuads(plan.Path, LiquidJoinRule.BoreHalf);
+            float vr = 0.5f - (float)LiquidJoinRule.BoreHalf, vl = 0.5f + (float)LiquidJoinRule.BoreHalf;
+            if (LiquidJoinRule.TravelsWest(path)) { float sw = vr; vr = vl; vl = sw; }
+            List<LiquidJoinRule.StripQuad> quads = LiquidJoinRule.StripQuads(path, LiquidJoinRule.BoreHalf);
             foreach (LiquidJoinRule.StripQuad q in quads)
             {
                 int k = mesh.verts.Count;

@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, a liquid pump touching a 2x2 RM_LiquidTank on its east (lower lane) and one on its west (upper lane) each print exactly one coupler on the tank's drawn nozzle (TankPortGeometry.PortPoint, within 0.01 cell) and one drop pipe, with no placeholder art (prove_pump_tank_coupler.py: COUPLERS ok=True)

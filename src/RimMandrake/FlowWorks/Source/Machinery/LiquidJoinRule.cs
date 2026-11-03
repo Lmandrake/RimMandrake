@@ -348,5 +348,41 @@ namespace RimMandrake.FlowWorks.Machinery
             }
             return list;
         }
+
+        /// <summary>MachineTankJoin's answer: the coupler's centre (cell units; it faces along x when <see cref="AlongX"/>, else
+        /// along z) and, when the tank's drawn port is off the machine's port line, the drop pipe that joins the two.</summary>
+        public sealed class MachineJoin
+        {
+            public double CouplerX, CouplerZ;
+            public bool AlongX;
+            /// <summary>True when the coupler sits on the tank's measured drawn port (Hose.TankPortGeometry), not the shared edge's midpoint.</summary>
+            public bool OnDrawnPort;
+            /// <summary>The drop: an S-bend (RiserPlan.Path segments) from the machine's footprint centre line, on the shared edge's
+            /// midpoint height, to just under the tank's drawn nozzle (<see cref="UnderNozzle"/> past the edge); null when none.</summary>
+            public System.Collections.Generic.List<double[]> Drop;
+        }
+
+        /// <summary>
+        /// PUMP_ON_TANK_FIX_NO_COUPLER (live capture 2026-10-23, s7_tank_group: "the pump east of the tank has no coupler and its
+        /// flange is offset from the tank's"). A machine (footprint a) sharing an edge with a tank (footprint b): where its
+        /// coupler is drawn and how it meets the tank. A 2x2 RM_LiquidTank on the machine's west or east has ONE drawn nozzle
+        /// per side, measured per look (TankPortGeometry.PortPoint, the same point a hose couples to), about half a cell off a
+        /// 1x1 machine's centred port in either lane; the coupler goes on that nozzle's face and a drop pipe, drawn at pipe
+        /// altitude so it runs UNDER the machine (owner 2026-10-23: couplers' art goes under the fixture, "have them seem to
+        /// go beneath, and all is well"), bends from the machine's port line up or down into the nozzle. Every other tank and
+        /// side keeps the coupler on the shared edge's midpoint with no drop. Null when the two share no edge.
+        /// </summary>
+        public static MachineJoin MachineTankJoin(string tankDef, string look, int ax, int az, int aw, int ah, int bx, int bz, int bw, int bh)
+        {
+            if (!SharedEdge(ax, az, aw, ah, bx, bz, bw, bh, out double mx, out double mz, out int sx, out int sz)) return null;
+            var j = new MachineJoin { CouplerX = mx, CouplerZ = mz, AlongX = sx != 0 };
+            if (sz != 0 || tankDef != Hose.TankPortGeometry.TankDef) return j;
+            if (!Hose.TankPortGeometry.PortPoint(look, bx, bz, bw, bh, sx, 0, out var port)) return j;
+            j.OnDrawnPort = true;
+            j.CouplerX = port.X;
+            j.CouplerZ = port.Z;
+            j.Drop = SBend(ax + aw / 2.0, mz, port.X + sx * UnderNozzle, port.Z);
+            return j;
+        }
     }
 }
