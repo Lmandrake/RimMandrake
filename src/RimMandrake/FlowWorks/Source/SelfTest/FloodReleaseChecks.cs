@@ -297,6 +297,13 @@ namespace RimMandrake.FlowWorks.SelfTest
 					"production SpreadOneTile counts one unpaid step per pour that paid less than a tile");
 				Assert(Regex.Matches(code, @"\bunpaidSteps\s*(\+\+|--|[-+*/]?=(?!=))").Count == 1 && !code.Contains("--unpaidSteps") && !code.Contains("++unpaidSteps"),
 					"unpaidSteps is written only by that increment (and the scribe), never reset or decremented");
+				// The expiry the counter feeds must be the one that ends the release: the property passes unpaidSteps and
+				// CompTick's clock gate compares against it. Bypassing either brings back the paid-tiles-only expiry.
+				Assert(code.Contains("private int ExpiryTick => RM_FloodReleaseMath.ExpiryTick(spawnedTick, TicksPerTile, estimatedFloodedTiles, unpaidSteps);"),
+					"the ExpiryTick property adds unpaidSteps");
+				Assert(code.Contains("if (Find.TickManager.TicksGame > ExpiryTick) { EndRelease(); return; }")
+					&& Regex.Matches(code, @"TicksGame\s*>").Count == 1,
+					"the one clock gate ends the release at ExpiryTick and no other tick comparison ends it");
 			});
 
 			Case("Depth_engine_switch_applies_on_reload_only", () =>
