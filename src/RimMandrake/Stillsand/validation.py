@@ -2580,11 +2580,14 @@ def gale_chain(t):
                 _unmeasured(t, "the mid-gale carry probes never ran (no gale weather seen?)")
             out = d.get("outcome", "")
             if out.startswith("moved"):
-                if int(d.get("dragAfter", "-1")) <= int(d.get("dragBefore", "0")):
-                    _fail("a dragged colonist (%s) left no RM_Filth_DragMark: %s" % (out, d.get("_raw")))
+                if int(d.get("pathMarks", "0")) < 1:
+                    _fail("a dragged colonist (%s) left no RM_Filth_DragMark on its path: %s" % (out, d.get("_raw")))
             elif out == "offmap":
-                if not any(l.startswith("Carried off") for l in letters):
-                    _fail("a dragged colonist went off the edge with no 'Carried off' letter: %s" % letters)
+                # this pawn's own take, not the ForceCarryOff pawn's letter
+                if d.get("spawned") != "False" or d.get("held") != "True":
+                    _fail("the drag went off the edge but the colonist is still on the map or unheld: %s" % d.get("_raw"))
+                if sum(1 for l in letters if l.startswith("Carried off")) < 2:
+                    _fail("a dragged colonist went off the edge with no 'Carried off' letter of its own: %s" % letters)
             else:
                 _unmeasured(t, "the forced drag did not carry the colonist: %s" % d.get("_raw"))
             if o.get("spawned") != "False" or o.get("held") != "True":
@@ -2595,7 +2598,8 @@ def gale_chain(t):
             back = _gale_probe(t, "ReturnGale", _STATE["gale_pawns"]["off"])
             given = [l[0] for l in _new_letters(before, _letters(t))]
             _note(t, "return", [back.get("_raw"), given])
-            if back.get("pawnBack") != "True" and not any(l.startswith("Given back") for l in given):
+            # the carry-off ran at alive chance 1 (ForceCarryOff), so THIS colonist walks back in, spawned
+            if back.get("pawnBack") != "True" or not any(l.startswith("Given back") for l in given):
                 _fail("the carried-off colonist did not come back: %s letters %s" % (back.get("_raw"), given))
 
     with _comp(t, "gale_emergence_off_quiet", toggle="emergenceEnabled"):

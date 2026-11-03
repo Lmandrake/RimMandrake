@@ -190,9 +190,19 @@ namespace RimMandrake.Stillsand
             IntVec3 from = p.Position;
             int before = DragMarks(map);
             string outcome = gale.CarryNowForProof(p);
+            // Marks on the walk itself (the rect from..to): a mark laid over an older one thickens it rather than adding
+            // a Thing, so the map-wide count alone can miss a real drag.
+            int path = 0;
+            ThingDef mark = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Filth_DragMark");
+            if (p.Spawned && mark != null)
+            {
+                foreach (IntVec3 c in CellRect.FromLimits(from, p.Position))
+                    if (c.InBounds(map) && c.GetFirstThing(map, mark) != null) path++;
+            }
             return "GALEDRAG pawn=" + p.thingIDNumber + " outcome=" + outcome.Replace(' ', ':') + " from=" + from.x + "," + from.z
                 + " to=" + (p.Spawned ? p.Position.x + "," + p.Position.z : "gone") + " dragBefore=" + before
-                + " dragAfter=" + DragMarks(map) + " spawned=" + p.Spawned;
+                + " dragAfter=" + DragMarks(map) + " pathMarks=" + path + " spawned=" + p.Spawned
+                + " held=" + RM_TakenByLand.IsHeld(p);
         }
 
         /// <summary>A carry off the edge by the active gale: the shared service takes the pawn (letter "Carried off: ..."),

@@ -587,7 +587,8 @@ class Fake(object):
                 if not gale:
                     return {"success": True, "result": "GALEDRAG error=no active gale"}
                 return {"success": True, "result": "GALEDRAG pawn=%s outcome=moved:4 from=1,1 to=5,1 dragBefore=0 "
-                        "dragAfter=%d spawned=True" % (args, 0 if "no_drag_mark" in b else 4)}
+                        "dragAfter=%d pathMarks=%d spawned=True held=False" % (args, 0 if "no_drag_mark" in b else 4,
+                                                                0 if "no_drag_mark" in b else 4)}
             if method == "ForceCarryOff":
                 if not gale:
                     return {"success": True, "result": "GALEOFF error=no active gale"}
