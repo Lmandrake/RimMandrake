@@ -508,3 +508,11 @@ Conductor, the Designer, the Dispatcher, timers, tests, tools: anything that is 
 creation: while such an item is open and buildable, Relentless takes it before any content item. When the system misses
 its health targets (its error budget is spent), content work stops until it is healthy again. Design: top-5 #5 of
 `design/RimMandrake/build_system_practices_2026-11-03.md`; build item `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`.
+
+🔑 **Operations owns the health assessment; Relentless only asks** — owner, 2026-11-03: *"I don't want relentless to own
+assessing system health. I want it to ask "the system" for its health assessment, and that belongs to the operations
+component."* Operations (ops_watch) publishes ONE health verdict: healthy or not, the error-budget state, and the ordered
+list of system items to take before content, with its own as-of time. Relentless reads that verdict and obeys it; it
+never computes health, budgets or SLOs itself. What Relentless observes (failures, refusals, spend) it reports to
+Operations as signals (the told ledger, alarms), never as a verdict. A missing or stale verdict is Operations' alarm
+to raise; Relentless then keeps its ordinary order and says so in its reading.
