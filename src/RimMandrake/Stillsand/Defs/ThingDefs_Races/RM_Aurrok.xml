@@ -135,6 +135,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Aurrok</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>aurrok</label>
     <race>RM_Aurrok</race>
     <combatPower>160</combatPower>

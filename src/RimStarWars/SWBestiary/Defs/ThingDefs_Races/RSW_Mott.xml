@@ -175,7 +175,7 @@
     <race>RSW_Mott</race>
     <combatPower>45</combatPower>
     <ecoSystemWeight>1.35</ecoSystemWeight>
-    <wildGroupSize>7~15</wildGroupSize>
+    <wildGroupSize>5~10</wildGroupSize>
     <moveSpeedFactorByTerrainTag>
       <li>
         <key>Water</key>

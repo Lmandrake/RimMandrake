@@ -156,6 +156,7 @@
 <!-- PawnKindDef -->
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Uvak</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>uvak</label>
     <labelPlural>uvak</labelPlural>
     <race>RSW_Uvak</race>

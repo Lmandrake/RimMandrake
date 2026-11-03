@@ -146,6 +146,7 @@ Not wired into any biome by this file - see the item for the wiring/dedup step.
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Maguana</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>maguana</label>
     <race>RSW_Maguana</race>
     <combatPower>75</combatPower>

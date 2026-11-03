@@ -136,6 +136,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Shiro</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>shiro</label>
     <race>RSW_Shiro</race>
     <combatPower>85</combatPower>

@@ -98,6 +98,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Hwelgrue</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>hwelgrue</label>
     <race>RM_Hwelgrue</race>
     <combatPower>500</combatPower>

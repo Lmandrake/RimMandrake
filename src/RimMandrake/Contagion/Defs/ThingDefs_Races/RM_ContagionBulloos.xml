@@ -125,6 +125,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_InfectedAerofleet</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>blistered bulloo</label>
     <race>RM_InfectedAerofleet</race>
     <combatPower>35</combatPower>
@@ -265,6 +266,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_OcularJelly</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>zhool</label>
     <race>RM_OcularJelly</race>
     <combatPower>35</combatPower>

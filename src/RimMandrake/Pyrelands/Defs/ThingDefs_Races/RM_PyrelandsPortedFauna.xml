@@ -185,6 +185,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Flamefang</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>flamefang</label>
     <race>RM_Flamefang</race>
     <combatPower>150</combatPower>
@@ -698,7 +699,7 @@
     <race>RM_Barbslinger</race>
     <combatPower>500</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>1</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

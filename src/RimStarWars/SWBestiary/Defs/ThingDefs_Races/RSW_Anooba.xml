@@ -186,7 +186,7 @@
     <race>RSW_Anooba</race>
     <combatPower>80</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
-    <wildGroupSize>3~6</wildGroupSize>
+    <wildGroupSize>6~8</wildGroupSize>
     <!-- ANOOBA_DRAWSIZE_FIX_1: the donor's own drawSize ladder (1.5/2/3,
          copied verbatim on port) put the adult Anooba's drawSize ABOVE
          vanilla Warg's (2.15) despite Anooba's baseBodySize (0.95, above)

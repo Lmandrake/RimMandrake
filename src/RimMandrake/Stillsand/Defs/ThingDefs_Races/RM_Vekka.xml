@@ -150,6 +150,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Vekka</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>vekka</label>
     <race>RM_Vekka</race>
     <combatPower>300</combatPower>

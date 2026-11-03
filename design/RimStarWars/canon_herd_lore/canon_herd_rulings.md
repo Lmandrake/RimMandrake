@@ -4,7 +4,7 @@ Delegated design calls under item `CANON_HERD_LORE_ARBITRATION_1`, 2026-11-01. T
 lore pass (`canon_herd_lore_2026-10-08.md`, CSV beside it) left UNCLEAR. Every row is in
 `canon_herd_lore_decisions.csv`; judge record `infrastructure/state/delegated/2026-11-01/CANON_HERD_LORE_ARBITRATION_1.json`.
 Owner by card 2026-10-08: each creature is settled at its biome's group-size walk (`BIOME_GROUP_SIZE_WALK_1`), so the
-tables below are per biome and carry no numbers: the walk sets those, and nothing here changes a def.
+tables below are per biome and carry no numbers: the walk set those, and nothing here changes a def.
 
 **Result on the 45:** 8 herd, 6 solitary, 31 leave default, 0 pack. Canon is simply silent on most of them; leave default
 is that honest answer, not a gap.
@@ -50,139 +50,140 @@ leave default. `RSW_CrimsonOpee`, `RSW_AbyssalColo`, `RSW_ThornbackColo`: solita
 
 ## By biome, for the group-size walk
 
-Creatures on an `RM_` roster, read from the BiomeDefs and the `WildAnimals_*` patches on 2026-11-01. Today's values are for
-the walk to compare; they are not a verdict.
+Creatures on an `RM_` roster, read from the BiomeDefs and the `WildAnimals_*` patches on 2026-11-01. The group-size walk
+set every number on 2026-11-03: `design/RimMandrake/biome_group_sizes/biome_group_sizes.csv` (checked by
+`src/RimMandrake/Utils/selftest_biome_group_sizes.py`). Only `RSW_YobshrimpJuv` is still on RM_Miasma; the adult left it.
 
 ### RM_Cauldron
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Granite slug | leave default | RSW_GraniteSlug=unset | RSW_GraniteSlug=2~4 |
-| Skalder | leave default | RSW_Skalder=true | RSW_Skalder=3~7 |
+| creature | decision |
+|---|---|
+| Granite slug | leave default |
+| Skalder | leave default |
 
 ### RM_FeverWood
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Gelagrub | leave default | RSW_Gelagrub=true | RSW_Gelagrub=3~9 |
-| Gorg | herd | RSW_Gorg=unset; RSW_LongtailGorg=unset; RSW_FrilledGorg=unset | RSW_Gorg=2~5; RSW_LongtailGorg=2~4; RSW_FrilledGorg=2~4 |
-| Nuna | herd | RSW_Nuna=true | RSW_Nuna=2~6 |
-| Urusai | leave default | RSW_Urusai=true | RSW_Urusai=1~3 |
-| Whisper bird | herd | RSW_Whisperbird=true | RSW_Whisperbird=2~6 |
+| creature | decision |
+|---|---|
+| Gelagrub | leave default |
+| Gorg | herd |
+| Nuna | herd |
+| Urusai | leave default |
+| Whisper bird | herd |
 
 ### RM_FloodedCanyon
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Can-cell | leave default | RSW_CanCell=true | RSW_CanCell=1~3 |
+| creature | decision |
+|---|---|
+| Can-cell | leave default |
 
 ### RM_Greentide
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Gizka | leave default | RSW_Gizka=true | RSW_Gizka=4~6 |
-| Dalgo | leave default | RSW_Dalgo=true | RSW_Dalgo=3~6 |
-| Gelagrub | leave default | RSW_Gelagrub=true | RSW_Gelagrub=3~9 |
-| Worrt | solitary | RSW_Worrt=unset | RSW_Worrt=unset |
-| Nuna | herd | RSW_Nuna=true | RSW_Nuna=2~6 |
-| Dragonsnake | solitary | RSW_Dragonsnake=unset | RSW_Dragonsnake=unset |
-| K'lor'slug | leave default | RSW_Klorslug=true | RSW_Klorslug=3~6 |
-| Shiro | leave default | RSW_Shiro=unset; RSW_ShiroTrap=unset | RSW_Shiro=unset; RSW_ShiroTrap=unset |
-| Whisper bird | herd | RSW_Whisperbird=true | RSW_Whisperbird=2~6 |
+| creature | decision |
+|---|---|
+| Gizka | leave default |
+| Dalgo | leave default |
+| Gelagrub | leave default |
+| Worrt | solitary |
+| Nuna | herd |
+| Dragonsnake | solitary |
+| K'lor'slug | leave default |
+| Shiro | leave default |
+| Whisper bird | herd |
 
 ### RM_LeaningScrub
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Gizka | leave default | RSW_Gizka=true | RSW_Gizka=4~6 |
-| Igitz | leave default | RSW_Igitz=unset | RSW_Igitz=unset |
-| Puffer pig | herd | RSW_Pufferpig=unset | RSW_Pufferpig=2~4 |
-| Worrt | solitary | RSW_Worrt=unset | RSW_Worrt=unset |
-| Saw-toothed grank | leave default | RSW_Grank=unset | RSW_Grank=unset |
-| Gorg | herd | RSW_Gorg=unset; RSW_LongtailGorg=unset; RSW_FrilledGorg=unset | RSW_Gorg=2~5; RSW_LongtailGorg=2~4; RSW_FrilledGorg=2~4 |
-| Nuna | herd | RSW_Nuna=true | RSW_Nuna=2~6 |
-| Loth-cat | solitary | RSW_Lothcat=unset | RSW_Lothcat=unset |
-| Urusai | leave default | RSW_Urusai=true | RSW_Urusai=1~3 |
-| Whisper bird | herd | RSW_Whisperbird=true | RSW_Whisperbird=2~6 |
-| Skalder | leave default | RSW_Skalder=true | RSW_Skalder=3~7 |
+| creature | decision |
+|---|---|
+| Gizka | leave default |
+| Igitz | leave default |
+| Puffer pig | herd |
+| Worrt | solitary |
+| Saw-toothed grank | leave default |
+| Gorg | herd |
+| Nuna | herd |
+| Loth-cat | solitary |
+| Urusai | leave default |
+| Whisper bird | herd |
+| Skalder | leave default |
 
 ### RM_LongShade
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Bolotaur | leave default | RSW_Bolotaur=true | RSW_Bolotaur=2~4 |
-| Worrt | solitary | RSW_Worrt=unset | RSW_Worrt=unset |
-| Jamel | leave default | RSW_Jamel=true | RSW_Jamel=2~6 |
-| Runyip | leave default | RSW_Runyip=true | RSW_Runyip=2~6 |
-| Tee-muss | herd | RSW_TeeMuss=true | RSW_TeeMuss=2~6 |
-| Gorg | herd | RSW_Gorg=unset; RSW_LongtailGorg=unset; RSW_FrilledGorg=unset | RSW_Gorg=2~5; RSW_LongtailGorg=2~4; RSW_FrilledGorg=2~4 |
-| Nuna | herd | RSW_Nuna=true | RSW_Nuna=2~6 |
-| Jimvu | leave default | RSW_Jimvu=true | RSW_Jimvu=4~8 |
-| Skalder | leave default | RSW_Skalder=true | RSW_Skalder=3~7 |
+| creature | decision |
+|---|---|
+| Bolotaur | leave default |
+| Worrt | solitary |
+| Jamel | leave default |
+| Runyip | leave default |
+| Tee-muss | herd |
+| Gorg | herd |
+| Nuna | herd |
+| Jimvu | leave default |
+| Skalder | leave default |
 
 ### RM_Miasma
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Saw-toothed grank | leave default | RSW_Grank=unset | RSW_Grank=unset |
-| Runyip | leave default | RSW_Runyip=true | RSW_Runyip=2~6 |
-| Blarth | leave default | RSW_Blarth=unset | RSW_Blarth=unset |
-| Yobshrimp | herd | RSW_Yobshrimp=true; RSW_YobshrimpJuv=unset | RSW_Yobshrimp=6~12; RSW_YobshrimpJuv=unset |
-| Opee sea killer | solitary | RSW_OpeeSeaKiller=unset; RSW_OpeeSeaKillerJuv=unset; RSW_CrimsonOpee=unset | RSW_OpeeSeaKiller=1; RSW_OpeeSeaKillerJuv=unset; RSW_CrimsonOpee=1 |
-| Laa | herd | RSW_Laa=true; RSW_LaaJuv=unset | RSW_Laa=3~6; RSW_LaaJuv=unset |
-| Shiro | leave default | RSW_Shiro=unset; RSW_ShiroTrap=unset | RSW_Shiro=unset; RSW_ShiroTrap=unset |
-| Whisper bird | herd | RSW_Whisperbird=true | RSW_Whisperbird=2~6 |
-| Blixus | leave default | RSW_Blixus=unset | RSW_Blixus=unset |
+| creature | decision |
+|---|---|
+| Saw-toothed grank | leave default |
+| Runyip | leave default |
+| Blarth | leave default |
+| Yobshrimp | herd |
+| Opee sea killer | solitary |
+| Laa | herd |
+| Shiro | leave default |
+| Whisper bird | herd |
+| Blixus | leave default |
 
 ### RM_Pyrelands
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Gizka | leave default | RSW_Gizka=true | RSW_Gizka=4~6 |
-| Dalgo | leave default | RSW_Dalgo=true | RSW_Dalgo=3~6 |
-| Orray | leave default | RSW_Orray=unset | RSW_Orray=unset |
-| Nuna | herd | RSW_Nuna=true | RSW_Nuna=2~6 |
+| creature | decision |
+|---|---|
+| Gizka | leave default |
+| Dalgo | leave default |
+| Orray | leave default |
+| Nuna | herd |
 
 ### RM_Stillsand
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Gizka | leave default | RSW_Gizka=true | RSW_Gizka=4~6 |
-| Greater krayt dragon | leave default | RSW_GreaterKraytDragon=unset | RSW_GreaterKraytDragon=1 |
-| Granite slug | leave default | RSW_GraniteSlug=unset | RSW_GraniteSlug=2~4 |
+| creature | decision |
+|---|---|
+| Gizka | leave default |
+| Greater krayt dragon | leave default |
+| Granite slug | leave default |
 
 ### RM_TheForge
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Lava flea | leave default | RSW_LavaFlea=true | RSW_LavaFlea=2~6 |
+| creature | decision |
+|---|---|
+| Lava flea | leave default |
 
 ### RM_TheRot
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Shiro | leave default | RSW_Shiro=unset; RSW_ShiroTrap=unset | RSW_Shiro=unset; RSW_ShiroTrap=unset |
+| creature | decision |
+|---|---|
+| Shiro | leave default |
 
 ### RM_TwilightSea
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Sando aqua monster | leave default | RSW_SandoAquaMonster=unset; RSW_ElderSando=unset; RSW_StormSando=unset | RSW_SandoAquaMonster=1; RSW_ElderSando=1; RSW_StormSando=1 |
+| creature | decision |
+|---|---|
+| Sando aqua monster | leave default |
 
 ### RM_Wastes
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Borcatu | leave default | RSW_Borcatu=unset | RSW_Borcatu=1~3 |
+| creature | decision |
+|---|---|
+| Borcatu | leave default |
 
 ### RM_WeepingStones
 
-| creature | decision | today herdAnimal | today wildGroupSize |
-|---|---|---|---|
-| Jamel | leave default | RSW_Jamel=true | RSW_Jamel=2~6 |
-| Dactillion | leave default | RSW_Dactillion=unset | RSW_Dactillion=unset |
-| Boma | leave default | RSW_Boma=unset | RSW_Boma=1~3 |
-| Fanback | leave default | RSW_Fanback=unset | RSW_Fanback=1~2 |
-| Ollopom | leave default | RSW_Ollopom=true | RSW_Ollopom=1~3 |
+| creature | decision |
+|---|---|
+| Jamel | leave default |
+| Dactillion | leave default |
+| Boma | leave default |
+| Fanback | leave default |
+| Ollopom | leave default |
 
 On no `RM_` roster today: Blurrg, Acklay, Krayt dragon, Sarlacc, Colo claw fish, Dianoga, Great Devourer, Brain worm.

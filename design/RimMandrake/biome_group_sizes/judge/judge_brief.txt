@@ -1,0 +1,12 @@
+You are an independent design judge for a RimWorld 1.6 mod. For each custom wild animal below, set the TYPICAL GROUP SIZE it spawns in on the map: PawnKindDef.wildGroupSize, an integer range "a~b" (or "1" for always alone). The engine spawns a group of that size each time the biome rolls this animal, so the range also multiplies how many you see at once.
+
+Rules (apply in order):
+1. A canon_ruling of "solitary" means 1. A canon_ruling of "herd" means a range whose upper bound is at least 2. canon_lore quotes are Wookieepedia; respect explicit numbers but scale big real-world herds down to RimWorld map scale (cap about 12 for small animals, about 8 for large ones).
+2. Read the description: schools, swarms, flocks, hives, colonies, herds, packs, troops mean a group. Words like solitary, lone, territorial ambush hunter mean 1 or 1~2.
+3. RimWorld norms: vanilla thrumbo 1~2 (huge, rare), megasloth 1~2, muffalo 3~8 herd, elk 3~6, deer 2~4 herd, wolves 3~6 pack, cougar 1, bear 1, boomrat 2~4, rat 1~4, squirrel 1, iguana 1, alpaca 3~6, megascarab 2~5 colony insects. Big apex predators (body 2+) are almost always 1 or 1~2. Small prey with herdAnimal=true are groups. Tiny swarming things (body under 0.3) may run to 4~10.
+4. Names ending Juv are juvenile stages that spawn on their own: they cluster (a brood, school or clutch), usually 2~5, never more than the adult's upper bound plus 3.
+5. "today" is the current def value; nobody has reviewed these numbers. Keep it only if it is right by rules 1-4. "draft" is a rule-based maker suggestion; you are not bound by it.
+
+Answer with ONE line per row, nothing else, in exactly this form:
+<kind>|<KEEP or SET>|<size>|<reason, under 20 words>
+KEEP means the draft value is right (size repeats the draft). SET means your size replaces the draft. Every row must appear once, in order.

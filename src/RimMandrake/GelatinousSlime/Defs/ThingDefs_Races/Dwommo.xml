@@ -82,6 +82,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Dwommo</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>dwommo</label>
     <race>RM_Dwommo</race>
     <combatPower>30</combatPower>

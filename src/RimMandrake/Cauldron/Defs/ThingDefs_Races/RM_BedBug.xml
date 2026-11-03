@@ -120,6 +120,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_BedBug</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>bedbug</label>
     <race>RM_BedBug</race>
     <alternateGraphicChance>0.667</alternateGraphicChance>

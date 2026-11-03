@@ -306,7 +306,7 @@
     <label>lesser gappo</label>
     <race>RM_GappoLesser</race>
     <combatPower>15</combatPower>
-    <wildGroupSize>6~14</wildGroupSize>
+    <wildGroupSize>6~12</wildGroupSize>
     <ecoSystemWeight>0.25</ecoSystemWeight>
     <lifeStages>
       <li>

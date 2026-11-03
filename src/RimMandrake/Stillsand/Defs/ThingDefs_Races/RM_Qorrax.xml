@@ -363,7 +363,7 @@
     <race>RM_Qorrax</race>
     <combatPower>250</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>1~2</wildGroupSize>
     <canArriveManhunter>true</canArriveManhunter>
     <moveSpeedFactorByTerrainTag>
       <li>

@@ -117,6 +117,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Gorrask</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>gorrask</label>
     <race>RM_Gorrask</race>
     <combatPower>900</combatPower>

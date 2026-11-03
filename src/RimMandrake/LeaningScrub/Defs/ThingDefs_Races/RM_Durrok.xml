@@ -96,6 +96,7 @@
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Durrok</defName>
+		<wildGroupSize>1~2</wildGroupSize>
 		<label>durrok</label>
 		<race>RM_Durrok</race>
 		<alternateGraphicChance>0.5</alternateGraphicChance>

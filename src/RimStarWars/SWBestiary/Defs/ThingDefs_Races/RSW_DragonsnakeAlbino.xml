@@ -283,6 +283,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_DragonsnakeAlbino</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>albino dragonsnake</label>
     <race>RSW_DragonsnakeAlbino</race>
     <combatPower>360</combatPower>

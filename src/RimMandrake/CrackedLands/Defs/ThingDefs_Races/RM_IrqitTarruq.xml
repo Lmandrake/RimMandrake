@@ -255,7 +255,7 @@
     <!-- Shy, low-commonality resident — roster commonality (~0.1-0.15 per the
          bible) is the wiring pass's, not this def's; wildGroupSize here just
          keeps it from reading as a herd animal. -->
-    <wildGroupSize>1~2</wildGroupSize>
+    <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
       <li>

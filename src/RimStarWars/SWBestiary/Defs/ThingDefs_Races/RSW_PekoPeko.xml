@@ -193,6 +193,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_PekoPeko</defName>
+    <wildGroupSize>2~2</wildGroupSize>
     <label>peko-peko</label>
     <labelPlural>peko-pekoes</labelPlural>
     <race>RSW_PekoPeko</race>

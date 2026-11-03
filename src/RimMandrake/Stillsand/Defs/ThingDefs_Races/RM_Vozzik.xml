@@ -69,6 +69,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Vozzik</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>vozzik</label>
     <race>RM_Vozzik</race>
     <combatPower>650</combatPower>

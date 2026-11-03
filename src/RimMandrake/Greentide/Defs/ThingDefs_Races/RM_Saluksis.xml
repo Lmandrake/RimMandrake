@@ -93,6 +93,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Saluksis</defName>
+    <wildGroupSize>4~8</wildGroupSize>
     <label>saluksis</label>
     <race>RM_Saluksis</race>
     <combatPower>10</combatPower>

@@ -210,7 +210,7 @@
     <label>shulla</label>
     <race>RM_Shulla</race>
     <combatPower>5</combatPower>
-    <wildGroupSize>5~15</wildGroupSize>
+    <wildGroupSize>5~10</wildGroupSize>
     <ecoSystemWeight>0.3</ecoSystemWeight>
     <lifeStages>
       <li>

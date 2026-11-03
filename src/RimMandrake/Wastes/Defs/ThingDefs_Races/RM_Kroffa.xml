@@ -103,6 +103,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Kroffa</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>kroffa</label>
     <labelFemale>kroffa doe</labelFemale>
     <race>RM_Kroffa</race>

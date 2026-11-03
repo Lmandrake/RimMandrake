@@ -171,6 +171,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Dragonsnake</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>dragonsnake</label>
     <race>RSW_Dragonsnake</race>
     <combatPower>300</combatPower>

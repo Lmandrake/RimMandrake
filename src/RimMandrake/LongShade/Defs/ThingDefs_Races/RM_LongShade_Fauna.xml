@@ -167,6 +167,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Bokka</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>bokka</label>
     <race>RM_Bokka</race>
     <combatPower>40</combatPower>
@@ -309,6 +310,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Vosska</defName>
+		<wildGroupSize>1</wildGroupSize>
 		<label>vosska</label>
 		<race>RM_Vosska</race>
 		<combatPower>275</combatPower>
@@ -448,6 +450,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Khorrak</defName>
+		<wildGroupSize>1~2</wildGroupSize>
 		<label>khorrak</label>
 		<race>RM_Khorrak</race>
 		<combatPower>80</combatPower>
@@ -536,6 +539,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Ommok</defName>
+		<wildGroupSize>2~5</wildGroupSize>
 		<label>ommok</label>
 		<race>RM_Ommok</race>
 		<combatPower>350</combatPower>
@@ -636,6 +640,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Ulgga</defName>
+		<wildGroupSize>1</wildGroupSize>
 		<label>ulgga</label>
 		<race>RM_Ulgga</race>
 		<combatPower>200</combatPower>
@@ -749,6 +754,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Dunejelly</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>dunejelly</label>
     <race>RM_Dunejelly</race>
     <combatPower>15</combatPower>
@@ -1059,6 +1065,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Gulloth</defName>
+		<wildGroupSize>1</wildGroupSize>
 		<label>gulloth</label>
 		<race>RM_Gulloth</race>
 		<combatPower>200</combatPower>
@@ -1243,6 +1250,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Oreclaw</defName>
+		<wildGroupSize>2~4</wildGroupSize>
 		<race>RM_Oreclaw</race>
 		<label>oreclaw</label>
 		<combatPower>350</combatPower>

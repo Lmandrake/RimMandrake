@@ -146,6 +146,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Neebray</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>neebray</label>
     <labelPlural>neebray</labelPlural>
     <race>RSW_Neebray</race>

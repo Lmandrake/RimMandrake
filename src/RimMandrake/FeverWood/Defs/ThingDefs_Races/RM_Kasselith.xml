@@ -103,6 +103,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Kasselith</defName>
+    <wildGroupSize>3~8</wildGroupSize>
     <label>kasselith</label>
     <race>RM_Kasselith</race>
     <combatPower>40</combatPower>

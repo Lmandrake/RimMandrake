@@ -125,6 +125,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Bulloo</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>bulloo</label>
     <race>RM_Bulloo</race>
     <abilities>

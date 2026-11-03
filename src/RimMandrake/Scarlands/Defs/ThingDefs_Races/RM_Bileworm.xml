@@ -114,6 +114,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Bileworm</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>bileworm</label>
     <race>RM_Bileworm</race>
     <alternateGraphicChance>0.5</alternateGraphicChance>

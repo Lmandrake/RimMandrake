@@ -122,6 +122,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Soorrak</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>soorrak</label>
     <race>RM_Soorrak</race>
     <combatPower>220</combatPower>
@@ -307,6 +308,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Gaanok</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>gaanok</label>
     <race>RM_Gaanok</race>
     <combatPower>300</combatPower>
@@ -514,6 +516,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Duumma</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>duumma</label>
     <race>RM_Duumma</race>
     <combatPower>40</combatPower>

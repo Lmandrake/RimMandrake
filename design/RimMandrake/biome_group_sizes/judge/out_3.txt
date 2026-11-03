@@ -1,0 +1,80 @@
+RM_Tapper|KEEP|1~2|No social cue; singles or occasional pairs suit this medium animal.
+RM_Pooler|KEEP|1|Independent feeding behavior gives no reason for grouped arrivals.
+RM_Vurra|KEEP|1~2|Following larger creatures does not imply substantial groups of vurra.
+RM_Chikka|KEEP|2~5|Small prey with herdAnimal enabled should arrive in groups.
+RM_Durrok|KEEP|1~2|Independent young and no herd behavior support singles or pairs.
+RM_Fuzzrunner|SET|1~4|Small tunnel prey fit rat-sized groups; no swarm behavior supports ten.
+RM_Thornhold|SET|1|A defensive, nest-bound animal suits solitary spawning.
+RM_Shokka|KEEP|1|Stationary ambush hunting favors solitary individuals.
+RM_Zellik|KEEP|1|An individual aerial hunter with no flocking cue.
+RM_Fuzzviper|KEEP|1|Tunnel ambush hunting favors solitary individuals.
+RM_Surrik|KEEP|1|A burrowing ambush predator without pack behavior.
+RM_Ribbonwhip|KEEP|1|A concealed canopy hunter without social hunting cues.
+RM_Vissler|SET|1~4|Tiny prey can occur loosely together, but no grouping cue warrants a minimum of two.
+RM_Dustflutter|SET|4~10|Explicit flocks warrant groups, scaled down from excessive map populations.
+RM_Shirrel|SET|1|A squirrel-like gliding climber without flock or troop behavior.
+RM_TruffleMole|KEEP|1|A specialized burrowing forager without social grouping cues.
+RM_Crustweevil|SET|2~5|Small grazing arthropods suit modest insect groups; no swarm is described.
+RM_Rollbug|KEEP|1~3|Tiny scavengers can occur singly or in loose local concentrations.
+RM_Tikkit|SET|4~10|Tiny chorusing insects suit substantial groups within the suggested swarm scale.
+RM_TunnelSnake|KEEP|1|A dormant corridor ambusher should spawn alone.
+RSW_FrilledGorg|KEEP|2~4|Canon herd ruling requires grouped spawning; modest amphibian groups fit.
+RSW_Gorg|KEEP|2~5|Canon herd ruling and small size support modest groups.
+RSW_Iriaz|KEEP|6~12|Canon massive herds justify the upper map-scale limit for smaller grazers.
+RSW_Eopie|SET|5~8|Canon herds of twenty or more scale to substantial groups of large animals.
+RSW_Lothcat|KEEP|1|Canon explicitly establishes solitary lives.
+RSW_Mudhorn|KEEP|1|Extreme territoriality and large predator size favor solitary spawning.
+RSW_Ronto|KEEP|2~4|Canon small groups fit these enormous herbivores.
+RSW_Scurrier|SET|6~12|Canon packs around thirty scale to sizeable groups of small rodents.
+RSW_Sketto|SET|3~6|Canon bloodfeeding swarms warrant consistent groups of several animals.
+RSW_Igitz|KEEP|1~2|A small omnivore without explicit social grouping cues.
+RSW_Kybuck|KEEP|3~6|Canon small herds and sociable behavior match standard ungulate groups.
+RSW_Massiff|KEEP|3~6|Canon packs fit vanilla wolf group sizes.
+RSW_Bantha|SET|3~8|Canon herds remain substantial while respecting the map-scale cap for huge animals.
+RSW_Pufferpig|KEEP|2~4|Canon herd ruling supports small groups of these compact herbivores.
+RSW_Anooba|SET|6~8|Canon packs of ten to twelve scale down while remaining larger than typical wolf packs.
+RSW_Corinathoth|KEEP|3~6|Canon herds support groups, moderated by massive body size.
+RSW_Grank|KEEP|1~2|Predator and scavenger behavior provides no pack cue.
+RSW_Qormot|KEEP|3~6|Canon small prides support consistent groups of several individuals.
+RSW_Strill|KEEP|1|Canon territorial behavior supports solitary hunters.
+RSW_Cannok|KEEP|3~7|Canon packs explicitly contain at least three animals.
+RSW_Pikobis|SET|2~6|Canon explicitly includes both pairs and groups of five to six.
+RSW_Vulptex|SET|6~12|Canon multifamily skulks warrant sizeable groups, scaled down from thirty to forty animals.
+RSW_FeralNerf|SET|3~8|Established grazing herds fit the standard map-scale herd ceiling.
+RSW_Porg|KEEP|2~5|Canon groups and small body size support modest flocks.
+RSW_Voorpak|KEEP|2~5|Canon small colonies override the usual solitary predator expectation.
+RSW_KowakianMonkeyLizard|KEEP|3~7|Protective packs and wild colonies support substantial groups of small primates.
+RSW_Kreetle|SET|4~5|Canon explicitly specifies groups of four to five.
+RSW_ShrublandGiant|KEEP|1~3|Colossal grazers warrant very small groups despite herd behavior.
+RSW_ScrapNestBird|KEEP|2~5|Small birds with herdAnimal enabled should arrive in groups.
+RSW_MossBeetle|KEEP|1~3|A grazing beetle without explicit colony or swarm behavior.
+RM_Qorrax|SET|1~2|A substantial venomous predator without pack behavior should rarely arrive in larger groups.
+RM_Bokka|KEEP|1~3|Small underground grazers can occur singly or in loose groups.
+RM_Khorrak|KEEP|1~2|A substantial specialized feeder without herd or colony cues.
+RM_Dunejelly|SET|2~5|Hive husbandry supports small clusters of these tended jelly producers.
+RM_Gulloth|KEEP|1|A large roaming predator without social hunting behavior.
+RM_Oreclaw|KEEP|2~4|Large herbivores with herdAnimal enabled suit modest groups.
+RM_Gloomcast|KEEP|1|Extreme body size and no herd behavior favor solitary spawning.
+RM_Chorn|KEEP|2~4|Explicit shelter-forming herds warrant small groups of these huge grazers.
+RM_Gennok|KEEP|2~4|Large herd animals should arrive in modest groups.
+RM_Tebbra|KEEP|2~5|Explicit tight herds support consistent groups of small grazers.
+RM_Dakkra|KEEP|1|A shade-bound ambush predator should spawn alone.
+RM_Pirrik|KEEP|1~2|Host-bound birds fit single individuals or breeding pairs.
+RM_Mirrak|KEEP|1|A stationary, concealed ambush hunter favors solitary spawning.
+RM_Harrok|KEEP|1|A stationary predator using its own shadow should spawn alone.
+RM_Skiralim|KEEP|1|A medium predator without pack or flock behavior.
+RM_Vrekka|KEEP|1~3|Scavengers can occur singly or in small loose gatherings.
+RM_Sippra|KEEP|1~3|Small grazers sharing limited shade margins suit loose groups.
+RM_Tazzok|KEEP|1~3|Small seasonal grazers lack evidence for organized herds.
+RSW_Shyrack|KEEP|3~6|Canon hunting swarms and explicit flock behavior justify predator groups.
+RSW_Gutkurr|SET|2~4|Explicit pack hunting warrants multiple animals despite their large predator size.
+RSW_Jamel|KEEP|2~6|Large herd animals suit moderate groups below the large-animal cap.
+RSW_Wraid|KEEP|2~6|Canon explicitly specifies clusters of two to six.
+RSW_WraidAlpha|SET|2~6|Canon herd ruling and explicit two-to-six clusters take precedence over predator size.
+RSW_Hrumph|KEEP|4~8|Defensive herds surrounding young justify substantial groups of large herbivores.
+RSW_IridonianReek|KEEP|2~3|Canon small herds and territoriality suit compact groups of massive animals.
+RSW_Jimvu|KEEP|4~8|HerdAnimal behavior supports sizeable groups within the large-animal cap.
+RSW_Kwi|KEEP|4~8|Canon traveling herds justify substantial groups of large herbivores.
+RSW_Uvak|KEEP|2~5|Canon herd evidence supports groups despite their predator classification.
+RSW_Varactyl|KEEP|2~4|Canon herds and giant body size favor modest groups.
+RSW_Zeer|KEEP|2~4|Canon herds support small groups of these very large browsers.

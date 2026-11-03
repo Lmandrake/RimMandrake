@@ -1081,6 +1081,7 @@
 
   <PawnKindDef ParentName="RM_SiltLamprey_Kind">
     <defName>RM_SiltLampreyJuv</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>gillclamper</label>
     <race>RM_SiltLampreyJuv</race>
     <lifeStages Inherit="False">
@@ -1277,6 +1278,7 @@
 
   <PawnKindDef ParentName="RM_RustNipper_Kind">
     <defName>RM_RustNipperJuv</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>young rust nipper</label>
     <race>RM_RustNipperJuv</race>
     <lifeStages Inherit="False">
@@ -1696,6 +1698,7 @@
 
   <PawnKindDef ParentName="RM_CrimsonOpee_Kind">
     <defName>RM_CrimsonOpeeJuv</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>young crimson opee</label>
     <race>RM_CrimsonOpeeJuv</race>
     <lifeStages Inherit="False">
@@ -1748,6 +1751,7 @@
 
   <PawnKindDef ParentName="RM_ShaleGorger_Kind">
     <defName>RM_ShaleGorgerJuv</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>young shale gorger</label>
     <race>RM_ShaleGorgerJuv</race>
     <lifeStages Inherit="False">
@@ -1800,6 +1804,7 @@
 
   <PawnKindDef ParentName="RM_ThornbackColo_Kind">
     <defName>RM_ThornbackColoJuv</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>young thornback colo</label>
     <race>RM_ThornbackColoJuv</race>
     <lifeStages Inherit="False">
@@ -1852,6 +1857,7 @@
 
   <PawnKindDef ParentName="RM_Reefback_Kind">
     <defName>RM_ReefbackJuv</defName>
+    <wildGroupSize>2~3</wildGroupSize>
     <label>young reefback</label>
     <race>RM_ReefbackJuv</race>
     <lifeStages Inherit="False">

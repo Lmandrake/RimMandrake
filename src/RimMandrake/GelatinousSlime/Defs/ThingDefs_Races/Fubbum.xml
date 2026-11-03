@@ -119,6 +119,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Fubbum</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>fubbum</label>
     <race>RM_Fubbum</race>
     <combatPower>60</combatPower>

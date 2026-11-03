@@ -219,6 +219,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Lylek</defName>
+    <wildGroupSize>4~8</wildGroupSize>
     <label>lylek</label>
     <race>RSW_Lylek</race>
     <combatPower>600</combatPower>

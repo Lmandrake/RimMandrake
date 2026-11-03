@@ -187,7 +187,7 @@
     <race>RSW_Tibidee</race>
     <combatPower>1000</combatPower>
     <ecoSystemWeight>0.2</ecoSystemWeight>
-    <wildGroupSize>1</wildGroupSize>
+    <wildGroupSize>1~2</wildGroupSize>
     <flyingAnimationFramePathPrefix>swanimals/Tibidee/Tibidee_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>

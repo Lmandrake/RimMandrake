@@ -140,6 +140,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Sharpshrimp</defName>
+    <wildGroupSize>1</wildGroupSize>
     <race>RM_Sharpshrimp</race>
     <label>sharpshrimp</label>
     <combatPower>300</combatPower>

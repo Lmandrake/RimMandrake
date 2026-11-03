@@ -175,7 +175,7 @@
     <race>RSW_Sketto</race>
     <combatPower>35</combatPower>
     <ecoSystemWeight>0.50</ecoSystemWeight>
-    <wildGroupSize>2~4</wildGroupSize>
+    <wildGroupSize>3~6</wildGroupSize>
     <flyingAnimationFramePathPrefix>swanimals/Sketto/Sketto_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>4</flyingAnimationTicksPerFrame>

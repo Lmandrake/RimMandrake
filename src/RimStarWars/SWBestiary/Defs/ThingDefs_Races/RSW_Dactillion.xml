@@ -172,6 +172,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Dactillion</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>dactillion</label>
     <labelPlural>dactillions</labelPlural>
     <race>RSW_Dactillion</race>

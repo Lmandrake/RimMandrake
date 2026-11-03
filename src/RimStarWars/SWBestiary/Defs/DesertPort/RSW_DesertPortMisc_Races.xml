@@ -121,6 +121,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_Vozzik</defName>
+		<wildGroupSize>1</wildGroupSize>
 		<label>vozzik</label>
 		<race>RSW_Vozzik</race>
 		<combatPower>650</combatPower>

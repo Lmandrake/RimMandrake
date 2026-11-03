@@ -358,7 +358,7 @@
     <race>RM_Shoal</race>
     <combatPower>8</combatPower>
     <ecoSystemWeight>0.04</ecoSystemWeight>
-    <wildGroupSize>8~15</wildGroupSize>
+    <wildGroupSize>8~12</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

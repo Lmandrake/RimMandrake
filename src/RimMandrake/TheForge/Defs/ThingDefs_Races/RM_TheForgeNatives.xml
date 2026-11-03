@@ -302,7 +302,7 @@
     <label>julmox</label>
     <race>RM_Julmox</race>
     <combatPower>50</combatPower>
-    <wildGroupSize>4~9</wildGroupSize>
+    <wildGroupSize>3~6</wildGroupSize>
     <ecoSystemWeight>0.6</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -550,7 +550,7 @@
     <label>dhuvvox</label>
     <race>RM_Dhuvvox</race>
     <combatPower>8</combatPower>
-    <wildGroupSize>6~14</wildGroupSize>
+    <wildGroupSize>6~10</wildGroupSize>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <lifeStages>
       <li>

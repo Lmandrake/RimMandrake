@@ -95,7 +95,7 @@
     <label>fever swarm</label>
     <race>RM_FeverSwarm</race>
     <combatPower>2</combatPower>
-    <wildGroupSize>12~30</wildGroupSize>
+    <wildGroupSize>4~10</wildGroupSize>
     <ecoSystemWeight>0.15</ecoSystemWeight>
     <lifeStages>
       <li>

@@ -132,6 +132,7 @@
 
   <PawnKindDef ParentName="BigBirdKindBase">
     <defName>RM_Rimclaw</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>rimclaw</label>
     <race>RM_Rimclaw</race>
     <combatPower>650</combatPower>

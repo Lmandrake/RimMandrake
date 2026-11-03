@@ -132,6 +132,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Rhossak</defName>
+    <wildGroupSize>2~3</wildGroupSize>
     <label>rhossak</label>
     <race>RM_Rhossak</race>
     <combatPower>40</combatPower>
@@ -200,6 +201,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_GalledRhossak</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>galled rhossak</label>
     <race>RM_GalledRhossak</race>
     <combatPower>30</combatPower>

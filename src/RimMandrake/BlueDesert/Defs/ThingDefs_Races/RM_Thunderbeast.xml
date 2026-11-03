@@ -137,6 +137,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Thunderbeast</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>thunderbeast</label>
     <race>RM_Thunderbeast</race>
     <combatPower>175</combatPower>

@@ -136,6 +136,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ElectricTick</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>electric tick</label>
     <race>RM_ElectricTick</race>
     <combatPower>40</combatPower>

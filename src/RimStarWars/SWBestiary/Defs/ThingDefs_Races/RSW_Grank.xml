@@ -185,6 +185,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Grank</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>grank</label>
     <race>RSW_Grank</race>
     <combatPower>80</combatPower>

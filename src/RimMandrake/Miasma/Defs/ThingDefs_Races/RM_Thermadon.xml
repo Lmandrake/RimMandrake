@@ -122,6 +122,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Thermadon</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>duskfire</label>
     <race>RM_Thermadon</race>
     <combatPower>175</combatPower>

@@ -1,0 +1,54 @@
+RM_Pallbearer|KEEP|1~2|Large armored scavenger; solitary animals or occasional pairs fit its size.
+RM_ScarRoach|SET|3~6|Explicit loose colonies and tiny bodies support several insects per spawn.
+RM_Rakeshank|KEEP|1~3|Medium nonpredator; small loose gatherings are plausible without stronger social cues.
+RM_Vozzik|KEEP|1|Enormous sedentary grazer with no grouping cue.
+RM_Korrum|KEEP|1|Massive armored crab with no herd or colony behavior described.
+RSW_MegaphoridLarva|KEEP|2~12|Rarely found alone; emergence from infected hosts supports substantial larval clusters.
+RSW_FoundryBeetle|KEEP|1|Large beetle with violent mate rivalry and no colony cue.
+RM_Scumslider|KEEP|1~3|Small scavenger; modest local concentrations fit its feeding habits.
+RM_Gripper|KEEP|2~5|Caravan lines and herd behavior clearly support small groups.
+RM_Gristleswarm|KEEP|3~6|Explicit coordinated pack defense supports a substantial small-animal group.
+RM_SootGristleswarm|KEEP|3~6|Shares the gristleswarm's explicit pack behavior.
+RM_Boilhide|KEEP|2~5|Explicit herd grazer; moderate body size supports small herds.
+RM_Slagmole|KEEP|1|Substantial burrower with no social or colony cue.
+RM_Scabspinner|KEEP|1|Burrow-based web ambusher fits solitary predator spawning.
+RM_Sloghog|KEEP|2~5|Herd grazer; this range suits its hog-sized body.
+RM_Sootgrazer|KEEP|2~4|Herd animal of moderate size; compact grazing groups fit.
+RM_Gravelgut|KEEP|1|Large armored ground-feeder with no grouping cue.
+RM_Grimewing|KEEP|1~2|Scavenging birds may gather around carrion, but no flock behavior is specified.
+RM_Smolderback|KEEP|1|Explicitly cannot stand its own company.
+RM_Frethik|KEEP|1|Small size alone does not establish colony or swarm behavior.
+RM_Kroffa|KEEP|1~2|Armored grazer without explicit herd behavior; singles or pairs fit.
+RM_Excretor|KEEP|2~6|Herd animal; moderate grazing groups suit its body size.
+RUT_BrineBattery|KEEP|1|Occupies a pool's deepest point like a fitted lid, suggesting one resident.
+RSW_Sacapillar|SET|2~3|Large herd animal; small groups preserve grouping without crowding the map.
+RSW_BloodletterPetrel|KEEP|2~3|Small predatory bird with herd behavior supports compact groups.
+RSW_Screecher|KEEP|4~5|Explicit pack hunter; this range matches vanilla pack sizes.
+RSW_Borcatu|KEEP|1~3|Small scavenger; loose concentrations are plausible without explicit pack behavior.
+RM_Ollathrix|KEEP|1|Elephant-sized predatory spider fits solitary apex spawning.
+RM_Quarrok|KEEP|1~2|Substantial beetle with no colony cue; singles or pairs fit.
+RM_Vennick|SET|6~12|Explicitly never alone; dense streams justify large groups capped near twelve.
+RM_Skennet|KEEP|2~4|Small herd prey; compact groups match its described trickle along web-lines.
+RM_Cravvet|KEEP|1~2|Small scavenger drawn to kill sites, without explicit colony behavior.
+RM_Sivvern|KEEP|1|Small aerial hunter with no flock or pack cue.
+RM_Colossia|KEEP|1~2|Calf-sized pool dweller without explicit social behavior.
+RM_Murrin|SET|4~8|Tiny herd fish filling pools with overlapping rings suggest larger schools.
+RM_Skarrin|KEEP|2~5|Small aquatic herd animal; a modest school fits.
+RM_Karrek|SET|6~10|Explicit boiling crowds and feeding swarms warrant numerous tiny fish.
+RM_Vizhik|KEEP|1~3|Tiny eel without explicit schooling; a small variable group is reasonable.
+RM_Loomu|KEEP|1~3|Small pool dweller; modest concentrations fit without implying a large colony.
+RM_Huldu|SET|1~2|Small active water-hunter without pack behavior; singles or pairs fit.
+RM_Ivvol|KEEP|1~3|Small passive bottom-dweller; modest pool concentrations are plausible.
+RM_Sillik|SET|4~8|Whole wet rock faces stippled with animals indicate dense aggregations.
+RM_Ssurr|KEEP|1~2|Hound-sized reptile without herd behavior; singles or pairs fit.
+RM_Kirruk|KEEP|1~3|Small nonpredatory soarer; modest gatherings along productive updrafts are plausible.
+RM_Tirbak|KEEP|1|Colossal grazer with no herd cue.
+RM_Burrak|KEEP|1|Description explicitly gives each working oasis one huge elder.
+RM_Vhakk|KEEP|1|Large concealed shallows ambusher fits solitary spawning.
+RM_Vellak|KEEP|2~5|Large herd animal; a compact group suits map scale.
+RM_Gorrask|SET|1|Body size fifteen and season-long settlement support one colossal resident; supplied description establishes no conspecific colony.
+RSW_Ollopom|SET|2~4|Small herd herbivores should reliably arrive in groups.
+RSW_Fanback|KEEP|1~2|Large predatory amphibian; singles or occasional pairs match apex norms.
+RSW_Boma|SET|1~2|Large ravenous predator with no pack cue; cap groups at two.
+RSW_Dactillion|KEEP|1|Large flying predator with no flock or pack cue.
+RUT_BurnerAscendant|KEEP|1|Substantial predator with no grouping cue.

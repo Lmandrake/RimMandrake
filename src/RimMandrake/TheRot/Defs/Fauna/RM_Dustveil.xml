@@ -187,6 +187,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Dustveil</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>dustveil</label>
     <race>RM_Dustveil</race>
     <combatPower>75</combatPower>

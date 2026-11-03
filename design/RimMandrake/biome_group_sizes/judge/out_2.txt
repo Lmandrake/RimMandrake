@@ -1,0 +1,80 @@
+RM_Skellick|SET|2~4|Tiny prey with herdAnimal enabled should spawn in groups.
+RM_Grolth|KEEP|1|Slow individual grazer with no grouping cue.
+RM_Brathek|KEEP|1~3|Wood-feeding larvae plausibly occur singly or in small clusters.
+RM_Silloch|KEEP|1|A concealed trunk resident suits solitary spawning.
+RSW_Urusai|KEEP|1~3|Small scavengers can gather loosely around a feeding site.
+RSW_Nuna|KEEP|2~6|Canon herd ruling supports modest groups of small reptavians.
+RSW_Gelagrub|SET|3~8|Large herd insects should stay within roughly eight per spawn.
+RSW_Convor|SET|2~2|Canon explicitly describes cooperative pairs.
+RSW_LongtailGorg|KEEP|2~4|Canon herd ruling supports small amphibian groups.
+RSW_Whisperbird|KEEP|2~6|Small birds with a canon herd ruling suit modest flocks.
+RSW_Fambaa|KEEP|2~5|Enormous amphibians retain small herds after map scaling.
+RM_Ommok|KEEP|2~5|The description explicitly identifies slow-moving grazing herds.
+RSW_Gornt|SET|5~10|Canonical packs of ten to thirty warrant substantial groups after scaling.
+RSW_CanCell|KEEP|1~3|Large scavenging insectoids suit small, loose aggregations.
+RSW_SandPillar|KEEP|1~3|Larval crawlers can occur individually or in modest local clusters.
+RSW_Woolamander|KEEP|3~8|Canonical troops of twenty scale comfortably to small map groups.
+RSW_MutagenicNorphea|KEEP|2~3|Small herd beetles suit compact feeding groups.
+RSW_SandLeaper|KEEP|1~4|Small rodentlike foragers fit the vanilla rat range.
+RSW_Creature_Mantrap|KEEP|1|A mobile trapping predator suits solitary spawning.
+RUT_SealedSleeper|KEEP|1|Separate dormant burrowers have no stated social grouping.
+RUT_EmperorVulture|KEEP|1~2|Large thermal riders suit individuals or occasional pairs.
+RM_Muttavaq|KEEP|1|A giant dormant creature without grouping cues should appear alone.
+RM_Uttaqar|KEEP|1|A colossal lair-dwelling predator should spawn alone.
+RM_Tarruq|SET|1|Territorial calls between neighboring individuals support solitary spawning.
+RM_Gelatid|KEEP|2~5|Explicit loose herds and communal nightly pooling support groups.
+RM_GappoLesser|SET|6~12|Tiny swarms justify dense groups, capped near twelve.
+RM_Gappo|KEEP|3~7|Explicit drifting swarms support substantial groups of grazers.
+RM_GappoGreater|KEEP|1~2|Large bulk feeders suit individuals or small herd fragments.
+RM_Fubbum|SET|1|The herds are its prey; this patient stalker should spawn alone.
+RM_Dwommo|SET|1~2|Floating feeders lack explicit herd behavior; individuals or occasional pairs suffice.
+RM_LesserOomb|KEEP|1~3|Small offspring produced by splitting suit loose sibling clusters.
+RM_Oomb|KEEP|1~2|Independent grazing lobes have no strong grouping cue.
+RM_GreaterOomb|KEEP|1~2|Larger mature lobes suit individuals or occasional pairs.
+RM_Wuum|SET|3~6|Rapid budding and countless cells support clustered colony spawns.
+RM_Titanoslime|KEEP|1|An enormous consuming predator should spawn alone.
+RM_Saluksis|SET|4~8|Explicit loose crowds of tiny creatures warrant larger groups.
+RM_Krannock|SET|1~4|The description specifies working alone or in a scattered handful.
+RM_Sulleth|KEEP|3~7|Explicit grazing herds fit large herbivore norms.
+RM_Dhollock|KEEP|1|A large river ambush predator should spawn alone.
+RM_Vurrak|KEEP|1|Concealed individual shoreline behavior provides no grouping cue.
+RM_Illisk|KEEP|6~12|Tiny predatory fish explicitly form shoals and never appear singly.
+RM_Yammeth|KEEP|6~12|Small canopy fliers explicitly travel in noisy flocks.
+RM_CanopySwinger|KEEP|2~5|Small herd climbers suit compact canopy groups.
+RM_Thurrock|SET|2~4|House-sized herd browsers warrant fewer simultaneous animals.
+RM_Gristle|KEEP|1|An individual subterranean ambush hunter suits solitary spawning.
+RSW_Gizka|KEEP|4~6|Tiny, rapidly breeding herd reptiles suit infestation-sized clusters.
+RSW_Clodhopper|KEEP|4~8|Canon explicitly describes feeding swarms.
+RSW_Worrt|KEEP|1|Canon ruling requires solitary spawning.
+RSW_Shiro|SET|1|A slow shelled reptile without social cues fits solitary reptile norms.
+RSW_ShiroTrap|SET|1|A concealed trapping predator suits solitary spawning.
+RSW_Klorslug|KEEP|3~6|Herd behavior and breeding infestations support groups of several.
+RSW_Mott|SET|5~10|Breeding communes warrant substantial groups, capped below fifteen.
+RSW_Falumpaset|SET|5~8|Canonical families contain at least five adults; cap large animals near eight.
+RSW_Kinrath|KEEP|3~6|Canonical hives support groups of several arachnoids.
+RSW_PekoPeko|SET|2~2|Canon explicitly says they generally travel in pairs.
+RSW_Dalgo|SET|1~2|Large carnivores lack explicit pack behavior and suit individuals or pairs.
+RSW_Hawkbat|KEEP|2~4|Canonical coordinated hunting flocks justify groups despite predator size.
+RSW_Hssiss|SET|2~2|Canon explicitly describes hunting in pairs.
+RSW_Dragonsnake|KEEP|1|Canon ruling requires solitary spawning.
+RSW_Beldon|KEEP|4~8|Canonical enormous herds scale to eight large animals.
+RSW_DragonsnakeAlbino|KEEP|1|A rare gigantic ambush predator should spawn alone.
+RM_Reefback|KEEP|1|Extreme body size makes solitary spawning appropriate.
+RM_Fessk|KEEP|1|An individual carcass picker has no grouping cue.
+RM_Essarn|KEEP|1|Small size alone does not establish schooling behavior.
+RM_Otheska|KEEP|1|Explicit scarcity and no grouping cue favor solitary spawning.
+RM_Nissik|KEEP|1|An individual sediment picker has no swarm or colony cue.
+RM_Grusk|SET|6~12|The description explicitly places roughly twelve together on a pillar.
+RM_Thollim|KEEP|1|Paired shell valves describe anatomy, with no grouping cue.
+RM_Corrik|KEEP|1|The description explicitly says it is never seen with another.
+RM_Orruhmu|KEEP|1|An individual brine-shore feeder has no grouping cue.
+RM_Gembug|KEEP|2~5|Small herd crawlers suit compact insect groups.
+RM_BloodropMoth|KEEP|1|An individual blood-feeding flier has no stated swarm behavior.
+RM_Drifter|KEEP|3~4|Small herd grazers suit loose drifting clusters.
+RM_Candler|KEEP|2~4|Moderately sized herd grazers suit small groups.
+RM_Shoal|SET|8~12|Described shoals start at eight; cap small-animal spawns near twelve.
+RM_Cleaver|KEEP|2~4|Herd behavior supports small predator groups; constituent shards do not determine group size.
+RM_Slick|KEEP|1~2|An independent segmented crawler suits individuals or occasional pairs.
+RM_Blinker|KEEP|3~5|Small herd animals suit groups of several.
+RM_Knocker|KEEP|1~2|An independent tapping forager has no strong grouping cue.
+RM_Sipper|KEEP|4~8|Explicit thumbnail-sized swarm vermin warrant numerous individuals.

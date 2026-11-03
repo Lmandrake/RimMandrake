@@ -109,6 +109,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Ossumatha</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>ossumatha</label>
     <race>RM_Ossumatha</race>
     <combatPower>65</combatPower>

@@ -165,7 +165,7 @@
     <race>RSW_Falumpaset</race>
     <combatPower>200</combatPower>
     <ecoSystemWeight>1.5</ecoSystemWeight>
-    <wildGroupSize>3~8</wildGroupSize>
+    <wildGroupSize>5~8</wildGroupSize>
     <abilities>
       <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
     </abilities>

@@ -1,0 +1,2726 @@
+[
+ {
+  "kind": "RM_Durrgak",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gharrek",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Krizzak",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Drokattak",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Summ",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Cindermare",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Skarnix",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Lirrith",
+  "today": "unset",
+  "draft": "3~8",
+  "why": "description says \"pack\""
+ },
+ {
+  "kind": "RM_Aveluthia",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Moravatha",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Ysvaltha",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Sesserith",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Ossumatha",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Olumetha",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 2.5"
+ },
+ {
+  "kind": "RM_Nevarithia",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.5"
+ },
+ {
+  "kind": "RSW_Taozin",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Vekkit",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Utikka",
+  "today": "4~10",
+  "draft": "4~10",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dorrak",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ossivel",
+  "today": "5~12",
+  "draft": "5~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Krissek",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vrisk",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Murrek",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dovvik",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Zhaaz",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vhaulk",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Thunderbeast",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.75"
+ },
+ {
+  "kind": "RSW_Vapaad",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Suush",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Garsulix",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Rhossak",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.667"
+ },
+ {
+  "kind": "RM_GalledRhossak",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.667"
+ },
+ {
+  "kind": "RM_Visceral",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_BedBug",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_CrystalMit",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"colony\""
+ },
+ {
+  "kind": "RM_SikkaSikka",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_DecayDrake",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Bileworm",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"cluster\""
+ },
+ {
+  "kind": "RM_Mullgoth",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 4.0"
+ },
+ {
+  "kind": "RM_Vexxiss",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Zisska",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Eskith",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Radyak",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Neebray",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RSW_Mynock",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_GraniteSlug",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_VentStalker",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Lylek",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RSW_Skalder",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Silooth",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gawpsack",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Scorchpod",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_BloodyMess",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ContagionIkee",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Peeper",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ogleknot",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Eyestinger",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Fleshsop",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Blisterfloat",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Bloodlurk",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sparkleech",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Doublemaw",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Meltgut",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Scaldhide",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gnashling",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Skinflap",
+  "today": "6~12",
+  "draft": "6~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sloshbelly",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Crispling",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Danglemaw",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gorekite",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_SparkleechGrub",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_OcularJelly",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_InfectedAerofleet",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Kasselith",
+  "today": "unset",
+  "draft": "3~8",
+  "why": "description says \"hive\""
+ },
+ {
+  "kind": "RM_Thornbug",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vaulm",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ollareth",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Drommath",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Chellow",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Murrelith",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Skellick",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Grolth",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Brathek",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Silloch",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Urusai",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Nuna",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Gelagrub",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Convor",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_LongtailGorg",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Whisperbird",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Fambaa",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ommok",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"herds\""
+ },
+ {
+  "kind": "RSW_Gornt",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_CanCell",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_SandPillar",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Woolamander",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_MutagenicNorphea",
+  "today": "2~3",
+  "draft": "2~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_SandLeaper",
+  "today": "1~4",
+  "draft": "1~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Creature_Mantrap",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RUT_SealedSleeper",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RUT_EmperorVulture",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Muttavaq",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 5.0"
+ },
+ {
+  "kind": "RM_Uttaqar",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Tarruq",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gelatid",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_GappoLesser",
+  "today": "6~14",
+  "draft": "6~14",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gappo",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_GappoGreater",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Fubbum",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"herds\""
+ },
+ {
+  "kind": "RM_Dwommo",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"herds\""
+ },
+ {
+  "kind": "RM_LesserOomb",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.2"
+ },
+ {
+  "kind": "RM_Oomb",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.8"
+ },
+ {
+  "kind": "RM_GreaterOomb",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.5"
+ },
+ {
+  "kind": "RM_Wuum",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.5"
+ },
+ {
+  "kind": "RM_Titanoslime",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Saluksis",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.2"
+ },
+ {
+  "kind": "RM_Krannock",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sulleth",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dhollock",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vurrak",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Illisk",
+  "today": "6~12",
+  "draft": "6~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Yammeth",
+  "today": "6~12",
+  "draft": "6~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_CanopySwinger",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Thurrock",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gristle",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Gizka",
+  "today": "4~6",
+  "draft": "4~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Clodhopper",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Worrt",
+  "today": "unset",
+  "draft": "1",
+  "why": "canon solitary"
+ },
+ {
+  "kind": "RSW_Shiro",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.5"
+ },
+ {
+  "kind": "RSW_ShiroTrap",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Klorslug",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Mott",
+  "today": "7~15",
+  "draft": "7~15",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Falumpaset",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Kinrath",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_PekoPeko",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RSW_Dalgo",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Hawkbat",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Hssiss",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Dragonsnake",
+  "today": "unset",
+  "draft": "1",
+  "why": "canon solitary"
+ },
+ {
+  "kind": "RSW_Beldon",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_DragonsnakeAlbino",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Reefback",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Fessk",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Essarn",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Otheska",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Nissik",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Grusk",
+  "today": "1~4",
+  "draft": "1~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Thollim",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Corrik",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Orruhmu",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gembug",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_BloodropMoth",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Drifter",
+  "today": "3~4",
+  "draft": "3~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Candler",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Shoal",
+  "today": "8~15",
+  "draft": "8~15",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Cleaver",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Slick",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Blinker",
+  "today": "3~5",
+  "draft": "3~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Knocker",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sipper",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Tapper",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Pooler",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vurra",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.6"
+ },
+ {
+  "kind": "RM_Chikka",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Durrok",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.4"
+ },
+ {
+  "kind": "RM_Fuzzrunner",
+  "today": "4~10",
+  "draft": "4~10",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Thornhold",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Shokka",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Zellik",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Fuzzviper",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Surrik",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ribbonwhip",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vissler",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dustflutter",
+  "today": "40~100",
+  "draft": "40~100",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Shirrel",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_TruffleMole",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Crustweevil",
+  "today": "4~12",
+  "draft": "4~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Rollbug",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Tikkit",
+  "today": "6~16",
+  "draft": "6~16",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_TunnelSnake",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_FrilledGorg",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Gorg",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Iriaz",
+  "today": "6~12",
+  "draft": "6~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Eopie",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Lothcat",
+  "today": "unset",
+  "draft": "1",
+  "why": "canon solitary"
+ },
+ {
+  "kind": "RSW_Mudhorn",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Ronto",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Scurrier",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Sketto",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Igitz",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Kybuck",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Massiff",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Bantha",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Pufferpig",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Anooba",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Corinathoth",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Grank",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Qormot",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Strill",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Cannok",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Pikobis",
+  "today": "5~6",
+  "draft": "5~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Vulptex",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"gregarious\""
+ },
+ {
+  "kind": "RSW_FeralNerf",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Porg",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Voorpak",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_KowakianMonkeyLizard",
+  "today": "3~7",
+  "draft": "3~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Kreetle",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.2"
+ },
+ {
+  "kind": "RSW_ShrublandGiant",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_ScrapNestBird",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_MossBeetle",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.45"
+ },
+ {
+  "kind": "RM_Qorrax",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Bokka",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.4"
+ },
+ {
+  "kind": "RM_Khorrak",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.5"
+ },
+ {
+  "kind": "RM_Dunejelly",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.65"
+ },
+ {
+  "kind": "RM_Gulloth",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Oreclaw",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Gloomcast",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Chorn",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Gennok",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Tebbra",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Dakkra",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Pirrik",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Mirrak",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Harrok",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Skiralim",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vrekka",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sippra",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Tazzok",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Shyrack",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Gutkurr",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Jamel",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Wraid",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_WraidAlpha",
+  "today": "1~1",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RSW_Hrumph",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_IridonianReek",
+  "today": "2~3",
+  "draft": "2~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Jimvu",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Kwi",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Uvak",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"pack\""
+ },
+ {
+  "kind": "RSW_Varactyl",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Zeer",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Jakobeast",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Nerf",
+  "today": "3~5",
+  "draft": "3~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Shaak",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_TeeMuss",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Bolotaur",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_FeralGrazer",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Krykna",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Runyip",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Horax",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Dewback",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Karrobel",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_FeverSwarm",
+  "today": "12~30",
+  "draft": "12~30",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_RustNipperJuv",
+  "today": "4~9",
+  "draft": "4~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_SiltLampreyJuv",
+  "today": "4~10",
+  "draft": "4~10",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_CrimsonOpeeJuv",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ThornbackColoJuv",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ShaleGorgerJuv",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ReefbackJuv",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Karravel",
+  "today": "8~24",
+  "draft": "8~24",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Karrimeth",
+  "today": "40~90",
+  "draft": "40~90",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Karrolun",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Bozzuga",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ondrukka",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Siezer",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Mantrap",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Sharpshrimp",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Thermadon",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.5"
+ },
+ {
+  "kind": "RM_Liliana",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Vornskyr",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Zakkeg",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_PodWorm",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_CrestedDragon",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_MeeJuv",
+  "today": "6~14",
+  "draft": "6~14",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_FaaJuv",
+  "today": "5~12",
+  "draft": "5~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_LaaJuv",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_YobshrimpJuv",
+  "today": "6~12",
+  "draft": "6~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_OpeeSeaKillerJuv",
+  "today": "1",
+  "draft": "1",
+  "why": "canon solitary"
+ },
+ {
+  "kind": "RSW_Blarth",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Blixus",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Bogwing",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_MarshHaunt",
+  "today": "2~8",
+  "draft": "2~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_FireHawk",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_FurnaceBeast",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ullai",
+  "today": "8~20",
+  "draft": "8~20",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Emberscythe",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sytheclaw",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Barbslinger",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_FireWasp",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Flamefang",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Ashwallow",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Orray",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"pack\""
+ },
+ {
+  "kind": "RM_CathedralRoach",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.15"
+ },
+ {
+  "kind": "RM_LivingBolt",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.15"
+ },
+ {
+  "kind": "RSW_Vozzik",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 5.0"
+ },
+ {
+  "kind": "RM_Zhissa",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RSW_CaveLemming",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.0"
+ },
+ {
+  "kind": "RSW_Wampa",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Tauntaun",
+  "today": "2~7",
+  "draft": "2~7",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Oommok",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Siidda",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ShadeMite",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vekka",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Drazzik",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Aurrok",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Soorrak",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"brood\""
+ },
+ {
+  "kind": "RM_Gaanok",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_LikkaLikka",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Duumma",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.8"
+ },
+ {
+  "kind": "RM_Veessa",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Loomma",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ulgga",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 6.0"
+ },
+ {
+  "kind": "RM_Vosska",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Ikee",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.133"
+ },
+ {
+  "kind": "RSW_WarWyrm",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_GreaterKraytDragon",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Heemin",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Oovanam",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Fessu",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Krellik",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Oddu",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Oovu",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Iliss",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Tarnn",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Zhiil",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Hesuun",
+  "today": "3~5",
+  "draft": "3~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Bulloo",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Metallovore",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 2.0"
+ },
+ {
+  "kind": "RM_Dhoggur",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_FleetFlier",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ColossalAerofleet",
+  "today": "unset",
+  "draft": "2~4",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Dhokkur",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Julmox",
+  "today": "4~9",
+  "draft": "4~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Jossur",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dhuvvox",
+  "today": "6~14",
+  "draft": "6~14",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ummisk",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_LavaFlea",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Maguana",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 2.1"
+ },
+ {
+  "kind": "RSW_Tibidee",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Shambles",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Hwelgrue",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 8.0"
+ },
+ {
+  "kind": "RM_Chittik",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Agaripod",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_MycoidColossus",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 6.0"
+ },
+ {
+  "kind": "RM_Agaripawn",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dustveil",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Thozzik",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_ThozzikColony",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Illoth",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Brullith",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 4.0"
+ },
+ {
+  "kind": "RM_Brogg",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Grellik",
+  "today": "2~3",
+  "draft": "2~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ThozzikQueen",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"hive\""
+ },
+ {
+  "kind": "RM_ThozzikColonyQueen",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Skerrith",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RSW_Snoruuk",
+  "today": "4~8",
+  "draft": "4~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Noohm",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Shulla",
+  "today": "5~15",
+  "draft": "5~15",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Eesh",
+  "today": "12~30",
+  "draft": "12~30",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Doss",
+  "today": "10~24",
+  "draft": "10~24",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Muddal",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ScaldWalker",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Bladderboil",
+  "today": "3~9",
+  "draft": "3~9",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Thuum",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Karrash",
+  "today": "1~4",
+  "draft": "1~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ekkel",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gulveth",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Thrummel",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ThrummelWarden",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ThrummelBroodmother",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_SumpMouse",
+  "today": "4~10",
+  "draft": "4~10",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Dredgel",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Skarrid",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Skellarn",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Kethrel",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Lanternwhale",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_GrippingTerror",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Noolim",
+  "today": "5~15",
+  "draft": "5~15",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Loohn",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Weloon",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Lunoowa",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Niim",
+  "today": "6~14",
+  "draft": "6~14",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Pallu",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Tikkarr",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Nuudal",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Aluun",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Kellu",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Murrol",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Hollu",
+  "today": "1~4",
+  "draft": "1~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_DancingSkresh",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Oobo",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Liiru",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Faa",
+  "today": "5~12",
+  "draft": "5~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Mee",
+  "today": "6~14",
+  "draft": "6~14",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_SandoAquaMonster",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ElectricTick",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.25"
+ },
+ {
+  "kind": "RM_ElectricGryllotalpa",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.5"
+ },
+ {
+  "kind": "RM_Rimclaw",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_JuggernautBeetle",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 3.0"
+ },
+ {
+  "kind": "RM_Chatrak",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Tetchik",
+  "today": "3~8",
+  "draft": "3~8",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Pallbearer",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_ScarRoach",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Rakeshank",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vozzik",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 5.0"
+ },
+ {
+  "kind": "RM_Korrum",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 4.0"
+ },
+ {
+  "kind": "RSW_MegaphoridLarva",
+  "today": "2~12",
+  "draft": "2~12",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_FoundryBeetle",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Scumslider",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gripper",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gristleswarm",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_SootGristleswarm",
+  "today": "3~6",
+  "draft": "3~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Boilhide",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Slagmole",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Scabspinner",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sloghog",
+  "today": "2~5",
+  "draft": "2~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sootgrazer",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Gravelgut",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Grimewing",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Smolderback",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Frethik",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Kroffa",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 1.0"
+ },
+ {
+  "kind": "RM_Excretor",
+  "today": "2~6",
+  "draft": "2~6",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RUT_BrineBattery",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Sacapillar",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_BloodletterPetrel",
+  "today": "2~3",
+  "draft": "2~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Screecher",
+  "today": "4~5",
+  "draft": "4~5",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Borcatu",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Ollathrix",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Quarrok",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Vennick",
+  "today": "6~14",
+  "draft": "6~14",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Skennet",
+  "today": "2~4",
+  "draft": "2~4",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Cravvet",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Sivvern",
+  "today": "1~1",
+  "draft": "1",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RM_Colossia",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.8"
+ },
+ {
+  "kind": "RM_Murrin",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Skarrin",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Karrek",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Vizhik",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.15"
+ },
+ {
+  "kind": "RM_Loomu",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.35"
+ },
+ {
+  "kind": "RM_Huldu",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.3"
+ },
+ {
+  "kind": "RM_Ivvol",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.4"
+ },
+ {
+  "kind": "RM_Sillik",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.2"
+ },
+ {
+  "kind": "RM_Ssurr",
+  "today": "unset",
+  "draft": "1~2",
+  "why": "no grouping cue, body 0.7"
+ },
+ {
+  "kind": "RM_Kirruk",
+  "today": "unset",
+  "draft": "1~3",
+  "why": "no grouping cue, body 0.5"
+ },
+ {
+  "kind": "RM_Tirbak",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 3.5"
+ },
+ {
+  "kind": "RM_Burrak",
+  "today": "unset",
+  "draft": "1",
+  "why": "no grouping cue, body 2.2"
+ },
+ {
+  "kind": "RM_Vhakk",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RM_Vellak",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "herd (canon or herdAnimal) with no size"
+ },
+ {
+  "kind": "RM_Gorrask",
+  "today": "unset",
+  "draft": "2~5",
+  "why": "description says \"colonies\""
+ },
+ {
+  "kind": "RSW_Ollopom",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Fanback",
+  "today": "1~2",
+  "draft": "1~2",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Boma",
+  "today": "1~3",
+  "draft": "1~3",
+  "why": "keep today's value"
+ },
+ {
+  "kind": "RSW_Dactillion",
+  "today": "unset",
+  "draft": "1",
+  "why": "predator, no grouping cue"
+ },
+ {
+  "kind": "RUT_BurnerAscendant",
+  "today": "1",
+  "draft": "1",
+  "why": "keep today's value"
+ }
+]

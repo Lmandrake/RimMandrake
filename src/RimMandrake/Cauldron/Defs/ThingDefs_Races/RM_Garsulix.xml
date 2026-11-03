@@ -121,6 +121,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Garsulix</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>garsulix</label>
     <race>RM_Garsulix</race>
     <combatPower>35</combatPower>

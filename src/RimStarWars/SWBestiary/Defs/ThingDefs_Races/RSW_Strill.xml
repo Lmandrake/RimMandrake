@@ -196,6 +196,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Strill</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>strill</label>
     <race>RSW_Strill</race>
     <combatPower>60</combatPower>

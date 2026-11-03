@@ -129,6 +129,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Bogwing</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>bogwing</label>
     <labelPlural>bogwings</labelPlural>
     <race>RSW_Bogwing</race>

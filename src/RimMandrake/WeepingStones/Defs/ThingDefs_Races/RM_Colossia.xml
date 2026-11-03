@@ -93,6 +93,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Colossia</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>colossia</label>
     <race>RM_Colossia</race>
     <combatPower>60</combatPower>

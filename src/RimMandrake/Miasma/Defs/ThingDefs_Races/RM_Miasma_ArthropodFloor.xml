@@ -159,7 +159,7 @@
     <label>karravel</label>
     <race>RM_Karravel</race>
     <combatPower>3</combatPower>
-    <wildGroupSize>8~24</wildGroupSize>
+    <wildGroupSize>4~10</wildGroupSize>
     <ecoSystemWeight>0.9</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -286,7 +286,7 @@
     <!-- INVENTED, same idiom RM_FeverSwarm's swarm already uses: "only ever
          a moving mass" is delivered by a very high wildGroupSize on an
          ordinary PawnKindDef, not new C#. -->
-    <wildGroupSize>40~90</wildGroupSize>
+    <wildGroupSize>6~12</wildGroupSize>
     <ecoSystemWeight>0.4</ecoSystemWeight>
     <lifeStages>
       <li>

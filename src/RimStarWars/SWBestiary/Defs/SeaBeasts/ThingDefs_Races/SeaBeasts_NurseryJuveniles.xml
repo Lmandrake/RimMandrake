@@ -58,6 +58,7 @@
 
   <PawnKindDef ParentName="RSW_Mee_Kind">
     <defName>RSW_MeeJuv</defName>
+    <wildGroupSize>6~12</wildGroupSize>
     <label>young mee scalefish</label>
     <race>RSW_MeeJuv</race>
     <lifeStages Inherit="False">
@@ -160,6 +161,7 @@
 
   <PawnKindDef ParentName="RSW_Laa_Kind">
     <defName>RSW_LaaJuv</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>young laa scalefish</label>
     <race>RSW_LaaJuv</race>
     <lifeStages Inherit="False">
@@ -211,6 +213,7 @@
 
   <PawnKindDef ParentName="RSW_Yobshrimp_Kind">
     <defName>RSW_YobshrimpJuv</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>young yobshrimp</label>
     <race>RSW_YobshrimpJuv</race>
     <lifeStages Inherit="False">

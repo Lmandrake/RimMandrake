@@ -129,6 +129,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Mantrap</defName>
+    <wildGroupSize>1</wildGroupSize>
     <race>RM_Mantrap</race>
     <label>lastvine</label>
     <combatPower>200</combatPower>

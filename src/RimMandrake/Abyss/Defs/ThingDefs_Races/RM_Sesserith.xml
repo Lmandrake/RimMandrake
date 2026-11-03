@@ -150,6 +150,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Sesserith</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>sesserith</label>
     <race>RM_Sesserith</race>
     <combatPower>125</combatPower>

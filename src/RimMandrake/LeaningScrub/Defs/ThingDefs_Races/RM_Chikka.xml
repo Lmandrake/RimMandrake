@@ -89,6 +89,7 @@
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Chikka</defName>
+		<wildGroupSize>2~5</wildGroupSize>
 		<label>chikka</label>
 		<race>RM_Chikka</race>
 		<combatPower>30</combatPower>

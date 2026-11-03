@@ -132,6 +132,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Vulptex</defName>
+    <wildGroupSize>6~12</wildGroupSize>
     <label>vulptex</label>
     <labelPlural>vulptices</labelPlural>
     <race>RSW_Vulptex</race>

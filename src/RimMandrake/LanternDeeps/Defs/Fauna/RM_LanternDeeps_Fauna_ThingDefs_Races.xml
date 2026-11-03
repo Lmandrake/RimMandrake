@@ -107,6 +107,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Gembug</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>gembug</label>
     <race>RM_Gembug</race>
     <combatPower>30</combatPower>

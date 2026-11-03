@@ -184,6 +184,7 @@
   </ThingDef>
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Orray</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>orray</label>
     <race>RSW_Orray</race>
     <combatPower>200</combatPower>

@@ -242,6 +242,7 @@
 
   <PawnKindDef ParentName="BaseMechanoidKind">
     <defName>RM_CathedralRoach</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>cathedral roach</label>
     <labelPlural>cathedral roaches</labelPlural>
     <race>RM_CathedralRoach</race>

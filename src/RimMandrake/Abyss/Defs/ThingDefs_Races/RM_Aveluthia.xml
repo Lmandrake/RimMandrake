@@ -127,6 +127,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Aveluthia</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>aveluthia</label>
     <race>RM_Aveluthia</race>
     <combatPower>125</combatPower>

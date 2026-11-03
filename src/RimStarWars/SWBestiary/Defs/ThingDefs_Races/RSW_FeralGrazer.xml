@@ -160,7 +160,7 @@
     <race>RSW_FeralGrazer</race>
     <combatPower>100</combatPower>
     <ecoSystemWeight>1.1</ecoSystemWeight>
-    <wildGroupSize>3~9</wildGroupSize>
+    <wildGroupSize>3~8</wildGroupSize>
     <lifeStages>
       <li>
         <label>wild grazer calf</label>

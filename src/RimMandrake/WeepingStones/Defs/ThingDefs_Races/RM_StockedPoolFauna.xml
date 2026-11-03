@@ -98,6 +98,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Murrin</defName>
+    <wildGroupSize>4~8</wildGroupSize>
     <label>murrin</label>
     <race>RM_Murrin</race>
     <combatPower>8</combatPower>
@@ -217,6 +218,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Skarrin</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>skarrin</label>
     <race>RM_Skarrin</race>
     <combatPower>18</combatPower>
@@ -337,6 +339,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Karrek</defName>
+    <wildGroupSize>6~10</wildGroupSize>
     <label>iaala</label>
     <race>RM_Karrek</race>
     <combatPower>6</combatPower>
@@ -453,6 +456,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Vizhik</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>fan eel</label>
     <race>RM_Vizhik</race>
     <combatPower>10</combatPower>
@@ -650,6 +654,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Loomu</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>loomu</label>
     <race>RM_Loomu</race>
     <combatPower>10</combatPower>
@@ -757,6 +762,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Huldu</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>huldu</label>
     <race>RM_Huldu</race>
     <combatPower>6</combatPower>
@@ -864,6 +870,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Ivvol</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>ivvol</label>
     <race>RM_Ivvol</race>
     <combatPower>8</combatPower>

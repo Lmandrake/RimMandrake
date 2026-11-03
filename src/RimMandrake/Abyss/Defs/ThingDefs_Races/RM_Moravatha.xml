@@ -106,6 +106,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Moravatha</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>moravatha</label>
     <race>RM_Moravatha</race>
     <combatPower>200</combatPower>

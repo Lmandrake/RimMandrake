@@ -342,7 +342,7 @@
     <label>grusk</label>
     <race>RM_Grusk</race>
     <combatPower>3</combatPower>
-    <wildGroupSize>1~4</wildGroupSize>
+    <wildGroupSize>6~12</wildGroupSize>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <lifeStages>
       <li>

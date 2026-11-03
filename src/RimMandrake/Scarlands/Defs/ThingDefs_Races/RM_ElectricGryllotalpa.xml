@@ -166,6 +166,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ElectricGryllotalpa</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>electric gryllotalpa</label>
     <race>RM_ElectricGryllotalpa</race>
     <combatPower>150</combatPower>

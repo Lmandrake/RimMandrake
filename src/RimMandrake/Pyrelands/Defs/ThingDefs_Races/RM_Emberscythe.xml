@@ -168,7 +168,7 @@
     <label>emberscythe mantis</label>
     <race>RM_Emberscythe</race>
     <combatPower>130</combatPower>
-    <wildGroupSize>2~4</wildGroupSize>
+    <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.4</ecoSystemWeight>
     <lifeStages>
       <li>

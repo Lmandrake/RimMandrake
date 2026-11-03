@@ -302,7 +302,7 @@
     <combatPower>250</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
     <ecoSystemWeight>1</ecoSystemWeight>
-    <wildGroupSize>2~6</wildGroupSize>
+    <wildGroupSize>2~4</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>
@@ -423,6 +423,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_MycoidColossus</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>vorrugath</label>
     <race>RM_MycoidColossus</race>
     <combatPower>500</combatPower>

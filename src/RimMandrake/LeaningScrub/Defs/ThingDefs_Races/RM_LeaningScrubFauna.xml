@@ -90,7 +90,7 @@
     <label>fuzzrunner</label>
     <race>RM_Fuzzrunner</race>
     <combatPower>15</combatPower>
-    <wildGroupSize>4~10</wildGroupSize>
+    <wildGroupSize>1~4</wildGroupSize>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -214,7 +214,7 @@
     <label>thornhold</label>
     <race>RM_Thornhold</race>
     <combatPower>45</combatPower>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.3</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -786,7 +786,7 @@
     <label>vissler</label>
     <race>RM_Vissler</race>
     <combatPower>8</combatPower>
-    <wildGroupSize>2~5</wildGroupSize>
+    <wildGroupSize>1~4</wildGroupSize>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -878,7 +878,7 @@
     <label>dustflutter</label>
     <race>RM_Dustflutter</race>
     <combatPower>4</combatPower>
-    <wildGroupSize>40~100</wildGroupSize>
+    <wildGroupSize>4~10</wildGroupSize>
     <ecoSystemWeight>0.02</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -995,7 +995,7 @@
     <label>shirrel</label>
     <race>RM_Shirrel</race>
     <combatPower>35</combatPower>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.25</ecoSystemWeight>
     <!-- SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES: the Gale glide's whole-body directional flip-book (flight.md). Files
          Textures/Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_<1..4>_{north,east,south}.png (west mirrors east);
@@ -1093,7 +1093,7 @@
     <label>crustweevil</label>
     <race>RM_Crustweevil</race>
     <combatPower>3</combatPower>
-    <wildGroupSize>4~12</wildGroupSize>
+    <wildGroupSize>2~5</wildGroupSize>
     <ecoSystemWeight>0.02</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -1265,7 +1265,7 @@
     <label>tikkit</label>
     <race>RM_Tikkit</race>
     <combatPower>2</combatPower>
-    <wildGroupSize>6~16</wildGroupSize>
+    <wildGroupSize>4~10</wildGroupSize>
     <ecoSystemWeight>0.02</ecoSystemWeight>
     <lifeStages>
       <li>

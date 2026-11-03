@@ -204,7 +204,7 @@
     <canArriveManhunter>false</canArriveManhunter>
     <!-- GROUP, not solo — the "canopy SWARM" design call (see header): a
          dispersed working party, not a lone apex predator. -->
-    <wildGroupSize>3~6</wildGroupSize>
+    <wildGroupSize>1~4</wildGroupSize>
     <ecoSystemWeight>0.15</ecoSystemWeight>
     <!-- No flyingAnimationFramePathPrefix/-FrameCount: the flip-book frame
          set is OWED with the rest of this creature's art (header).

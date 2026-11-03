@@ -157,6 +157,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Kreetle</defName>
+    <wildGroupSize>4~5</wildGroupSize>
     <label>kreetle</label>
     <race>RSW_Kreetle</race>
     <combatPower>20</combatPower>

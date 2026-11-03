@@ -118,6 +118,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Zhissa</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>zhissa</label>
     <race>RM_Zhissa</race>
     <combatPower>30</combatPower>

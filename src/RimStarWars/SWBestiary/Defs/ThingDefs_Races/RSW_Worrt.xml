@@ -151,6 +151,7 @@
 <!-- PawnKindDef -->
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Worrt</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>worrt</label>
     <race>RSW_Worrt</race>
     <combatPower>40</combatPower>

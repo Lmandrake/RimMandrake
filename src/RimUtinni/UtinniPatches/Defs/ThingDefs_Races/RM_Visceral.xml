@@ -156,6 +156,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Visceral</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>Visceral</label>
     <race>RM_Visceral</race>
     <combatPower>150</combatPower>

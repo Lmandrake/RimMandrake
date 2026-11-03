@@ -111,6 +111,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Nevarithia</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>nevarithia</label>
     <race>RM_Nevarithia</race>
     <combatPower>175</combatPower>

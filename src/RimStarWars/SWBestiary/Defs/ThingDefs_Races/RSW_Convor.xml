@@ -177,7 +177,7 @@
     <race>RSW_Convor</race>
     <combatPower>35</combatPower>
     <ecoSystemWeight>0.50</ecoSystemWeight>
-    <wildGroupSize>2~4</wildGroupSize>
+    <wildGroupSize>2~2</wildGroupSize>
     <flyingAnimationFramePathPrefix>swanimals/Convor/Convor_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFramePathPrefixFemale>swanimals/Convor/Convor_f_Flying_</flyingAnimationFramePathPrefixFemale>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>

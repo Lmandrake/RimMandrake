@@ -192,7 +192,7 @@
     <race>RM_Thurrock</race>
     <combatPower>400</combatPower><!-- PROVISIONAL -->
     <ecoSystemWeight>2</ecoSystemWeight><!-- PROVISIONAL -->
-    <wildGroupSize>3~6</wildGroupSize><!-- item §1 -->
+    <wildGroupSize>2~4</wildGroupSize><!-- item §1 -->
     <!-- Drawn huge on an ordinary footprint: drawSize carries the scale (art list: 4.5 adult). -->
     <lifeStages>
       <li>

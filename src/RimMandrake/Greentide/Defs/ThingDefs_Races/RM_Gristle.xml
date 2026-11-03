@@ -107,6 +107,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Gristle</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>gristle</label>
     <race>RM_Gristle</race>
     <combatPower>300</combatPower>

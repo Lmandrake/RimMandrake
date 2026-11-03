@@ -178,7 +178,7 @@
     <race>RSW_Pikobis</race>
     <combatPower>50</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
-    <wildGroupSize>5~6</wildGroupSize>
+    <wildGroupSize>2~6</wildGroupSize>
     <moveSpeedFactorByTerrainTag>
       <li>
         <key>Water</key>

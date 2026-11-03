@@ -148,6 +148,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Blixus</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>blixus</label>
     <race>RSW_Blixus</race>
     <combatPower>300</combatPower>

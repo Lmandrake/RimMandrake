@@ -158,7 +158,7 @@
     <ecoSystemWeight>1.1</ecoSystemWeight>
     <labelMale>bantha bull</labelMale>
     <labelFemale>bantha cow</labelFemale>
-    <wildGroupSize>3~9</wildGroupSize>
+    <wildGroupSize>3~8</wildGroupSize>
     <alternateGraphicChance>0.8</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 4 variants equally likely -->
     <alternateGraphics>
       <li>

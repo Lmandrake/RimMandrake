@@ -88,6 +88,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Siezer</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>siezer</label>
     <race>RM_Siezer</race>
     <combatPower>300</combatPower>

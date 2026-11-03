@@ -112,6 +112,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Wuum</defName>
+    <wildGroupSize>3~6</wildGroupSize>
     <label>wuum</label>
     <race>RM_Wuum</race>
     <combatPower>75</combatPower>

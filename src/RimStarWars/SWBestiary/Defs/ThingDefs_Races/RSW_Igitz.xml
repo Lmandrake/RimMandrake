@@ -194,6 +194,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Igitz</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>igitz</label>
     <labelPlural>igitz</labelPlural>
     <race>RSW_Igitz</race>

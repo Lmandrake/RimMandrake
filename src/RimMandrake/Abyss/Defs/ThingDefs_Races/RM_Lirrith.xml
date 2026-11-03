@@ -109,6 +109,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Lirrith</defName>
+    <wildGroupSize>3~8</wildGroupSize>
     <label>lirrith</label>
     <race>RM_Lirrith</race>
     <combatPower>40</combatPower>

@@ -121,6 +121,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Vapaad</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>vapaad</label>
     <race>RSW_Vapaad</race>
     <combatPower>300</combatPower>

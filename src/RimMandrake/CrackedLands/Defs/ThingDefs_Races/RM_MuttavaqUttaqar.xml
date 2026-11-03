@@ -347,6 +347,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Uttaqar</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>stone-hide uttaqar</label>
     <race>RM_Uttaqar</race>
     <combatPower>650</combatPower>
@@ -560,6 +561,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Muttavaq</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>muttavaq</label>
     <race>RM_Muttavaq</race>
     <combatPower>420</combatPower>

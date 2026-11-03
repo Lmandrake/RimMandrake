@@ -1,0 +1,80 @@
+RM_Oovu|KEEP|2~4|Tiny passive floaters plausibly accumulate in small feeding patches.
+RM_Iliss|KEEP|1~2|No schooling cue; single eels or occasional pairs fit.
+RM_Tarnn|KEEP|1|Each pawn represents an entire colonial organism, not one member of a roaming colony.
+RM_Zhiil|KEEP|1~3|Small bottom-dwelling fry suit scattered individuals and loose clusters.
+RM_Hesuun|KEEP|3~5|Explicit traveling files justify modest groups despite their large bodies.
+RM_Bulloo|KEEP|2~5|Small herd animals should drift together in modest groups.
+RM_Metallovore|KEEP|1|Large specialist feeder with no social grouping cue.
+RM_Dhoggur|KEEP|1~2|Independent mineral forager with no herd cue; occasional pairs are reasonable.
+RM_FleetFlier|KEEP|3~8|Tiny flying grazers with herd behavior suit small flocks.
+RM_ColossalAerofleet|KEEP|2~4|Large herd animals suit modest groups around shared drifting resources.
+RM_Dhokkur|KEEP|1|Enormous dormant animal with no grouping cue.
+RM_Julmox|SET|3~6|Medium-sized grazers suit elk-sized herds; nine per roll is excessive.
+RM_Jossur|KEEP|1~2|Large aerial hunter with no pack cue suits individuals or pairs.
+RM_Dhuvvox|SET|6~10|Explicit mass emergence warrants a swarm, scaled to manageable map numbers.
+RM_Ummisk|KEEP|1~2|The many tubes belong to one animal; no separate herd is described.
+RSW_LavaFlea|KEEP|2~6|Large herbivorous arthropods with herd behavior fit moderate groups.
+RSW_Maguana|KEEP|1|Large iguana relative with no grouping cue.
+RSW_Tibidee|SET|1~2|Enormous herd animals warrant occasional pairs, following thrumbo-scale spawning.
+RM_Shambles|KEEP|1|Each infected host wanders independently; no collective behavior is described.
+RM_Hwelgrue|KEEP|1|Hauler-sized scavenger with no grouping cue should appear singly.
+RM_Chittik|KEEP|2~5|Never-alone swarming insects require multiple individuals; this matches colony insect norms.
+RM_Agaripod|SET|2~4|Grove-associated giants suit small clusters that account for their substantial bulk.
+RM_MycoidColossus|KEEP|1|Rare colossal animal abandons offspring and has no herd cue.
+RM_Agaripawn|KEEP|1~3|Nearby kin support loose clusters without implying a substantial herd.
+RM_Dustveil|KEEP|2~5|Herd behavior supports modest feeding groups of these moths.
+RM_Thozzik|KEEP|2~5|Hive insects match vanilla colony insect group sizes.
+RM_ThozzikColony|SET|2~5|Queen-directed hive insects should form groups consistent with their wild counterparts.
+RM_Illoth|KEEP|1|Lure-based predator with no pack behavior suits solitary spawning.
+RM_Brullith|KEEP|1|Gigantic placid beast has no herd or other grouping cue.
+RM_Brogg|KEEP|1~2|Heavy grazer without explicit herd behavior suits individuals or pairs.
+RM_Grellik|KEEP|2~3|Abundant beetles with recurring broods suit small clusters.
+RM_ThozzikQueen|SET|1|A hive matriarch represents the colony's reproductive leader; workers provide its numbers.
+RM_ThozzikColonyQueen|KEEP|1|The colony answers to one matriarch.
+RM_Skerrith|KEEP|1|Large mantis ambush predator should spawn alone.
+RSW_Snoruuk|KEEP|4~8|Explicit gathering rings and coordinated movement justify substantial groups.
+RM_Noohm|KEEP|1|Individual drifting sail organism with no grouping cue.
+RM_Shulla|SET|5~10|Always-associated tiny shoaling animals warrant groups within map-scale swarm norms.
+RM_Eesh|SET|6~10|Dense synchronized shoals should remain substantial without spawning thirty animals per roll.
+RM_Doss|SET|6~10|Tiny communal bottom feeders suit swarms scaled to map capacity.
+RM_Muddal|KEEP|3~8|Tiny herd grazers fit moderately numerous feeding groups.
+RM_ScaldWalker|KEEP|3~6|Explicit herd behavior supports groups, with their enormous size limiting numbers.
+RM_Bladderboil|KEEP|3~9|Small herd-forming floaters can support moderately large groups.
+RM_Thuum|KEEP|1~2|Mat-dwelling eel has no schooling cue.
+RM_Karrash|KEEP|1~4|Small chimney grazers plausibly share localized feeding patches.
+RM_Ekkel|KEEP|1~3|Tiny vent-wall dwellers suit loose concentrations without requiring a swarm.
+RM_Gulveth|KEEP|1~2|Large shallow-water grazer lacks an explicit herd cue.
+RM_Thrummel|KEEP|2~5|Shared mound habitation supports small burrowing groups.
+RM_ThrummelWarden|KEEP|1~2|Specialized mound sentries suit one or two guards per appearance.
+RM_ThrummelBroodmother|KEEP|1|The hive depends on its single broodmother.
+RM_SumpMouse|KEEP|4~10|Explicitly never alone and moving in lines supports numerous small groups.
+RM_Dredgel|KEEP|1~2|Independent spoil-sifter with no collective behavior described.
+RM_Skarrid|KEEP|1|Stationary ambush predator should spawn alone.
+RM_Skellarn|KEEP|1|Specialized predatory wader lacks any flock or pack cue.
+RM_Kethrel|KEEP|1|Pony-sized scrap collector has no social grouping cue.
+RM_Lanternwhale|KEEP|1|Exceptional body size requires solitary map-scale spawning.
+RM_GrippingTerror|KEEP|1|Enormous individual bull and apex predator should appear alone.
+RM_Noolim|SET|5~10|Explicit shoals require groups, scaled below fifteen animals per roll.
+RM_Loohn|KEEP|1|Large patient ambush predator fits solitary spawning.
+RM_Weloon|KEEP|1~3|Small detritivores can loosely gather around fallen feeding material.
+RM_Lunoowa|KEEP|1|Independent drifting detritivore with no grouping cue.
+RM_Niim|SET|6~10|Dense schooling behavior warrants numerous fish within map-scale swarm norms.
+RM_Pallu|KEEP|3~8|Explicit concentrations throughout shared light columns justify groups.
+RM_Tikkarr|KEEP|1~2|Crab-like kelp forager has no schooling or colony cue.
+RM_Nuudal|KEEP|2~5|Cattle-like feeding concentrations beneath skylights support modest groups.
+RM_Aluun|SET|2~5|Multiple attached animals stud each kelp tower, supporting localized clusters.
+RM_Kellu|KEEP|1|Individual nocturnal squid hunter has no pack cue.
+RM_Murrol|KEEP|1~3|Small channel feeders suit loose feeding concentrations.
+RM_Hollu|KEEP|1~4|Gardens repeatedly shed individuals, supporting small simultaneous clusters.
+RM_DancingSkresh|KEEP|2~6|The description references packs, supporting grouped spawning.
+RM_Oobo|KEEP|1|Drop ambush hunter with no collective hunting cue.
+RM_Liiru|KEEP|1~2|Ribbon-eel description lacks schooling behavior; individuals and occasional pairs fit.
+RSW_Faa|KEEP|5~12|Canon schools reach thirty; twelve is an appropriate map-scale ceiling.
+RSW_Mee|SET|6~12|Canon schools number thousands, scaled down to twelve fish per map spawn.
+RSW_SandoAquaMonster|KEEP|1|Enormous apex predator should spawn alone.
+RM_ElectricTick|KEEP|1~3|Small engineered insects lack a hive cue but can appear in loose clusters.
+RM_ElectricGryllotalpa|KEEP|1~2|Large combat insect lacks a grouping cue; individuals or pairs fit.
+RM_Rimclaw|KEEP|1|Armoured predatory scavenger has no pack cue.
+RM_JuggernautBeetle|KEEP|1|Massive beetle with no colony or herd cue.
+RM_Chatrak|KEEP|1~3|Large herd grazers suit scattered individuals and small groups.
+RM_Tetchik|KEEP|3~8|Tiny herd-forming beetles suit numerous small feeding groups.

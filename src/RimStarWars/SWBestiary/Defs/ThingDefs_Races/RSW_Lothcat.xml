@@ -199,6 +199,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Lothcat</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>loth-cat</label>
     <race>RSW_Lothcat</race>
     <combatPower>35</combatPower>

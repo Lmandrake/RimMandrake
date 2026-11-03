@@ -1,0 +1,80 @@
+RM_Durrgak|KEEP|1|Shy, individual digging behavior gives no grouping cue.
+RM_Gharrek|KEEP|1|Responding simultaneously to wind does not imply social groups.
+RM_Krizzak|KEEP|3~6|Explicit swarms suit groups of these small mothlike grazers.
+RM_Drokattak|KEEP|1|Large apex hunter with no pack behavior.
+RM_Summ|KEEP|1|Enormous grazer without herd cues; solitary spawning suits its map footprint.
+RM_Cindermare|KEEP|1|Explicitly solitary.
+RM_Skarnix|SET|1|Catlike ambush stalker without social cues fits solitary predator norms.
+RM_Lirrith|KEEP|3~8|Small scavengers communicating with kin plausibly gather in substantial groups.
+RM_Aveluthia|KEEP|2~4|Large herd animal suits a modest group.
+RM_Moravatha|KEEP|2~4|Huge herd grazer warrants small herds at map scale.
+RM_Ysvaltha|KEEP|1|Specialized killing predator without pack cues.
+RM_Sesserith|KEEP|1|Night hunter without evidence of coordinated group hunting.
+RM_Ossumatha|KEEP|2~5|Explicitly roots in groups and defends collectively.
+RM_Olumetha|KEEP|1|Large defensive grazer without a clear grouping cue.
+RM_Nevarithia|KEEP|1~2|Substantial beast without herd cues suits solitary animals or occasional pairs.
+RSW_Taozin|KEEP|1|Gigantic armored predator should appear alone.
+RM_Vekkit|SET|6~12|Description explicitly places a dozen around shared scavenging sites.
+RM_Utikka|KEEP|4~10|Tiny, abundant grazers explicitly move in loose scatters.
+RM_Dorrak|KEEP|1~2|Heavy grazer without herd behavior suits solitary animals or pairs.
+RM_Ossivel|KEEP|5~12|Explicit gatherings of dozens scale down to twelve small animals.
+RM_Krissek|SET|1~2|No pack cue supports routinely spawning three predators together.
+RM_Vrisk|KEEP|1~2|Small drifting flyer lacks flock cues; singles and pairs fit.
+RM_Murrek|KEEP|1|Concealed, stationary ambush hunter fits solitary spawning.
+RM_Dovvik|KEEP|1|Individual stem-feeding behavior provides no grouping cue.
+RM_Zhaaz|KEEP|1|Large engulfing predator without social behavior.
+RM_Vhaulk|KEEP|1|Mountainlike size and immense grazing demand favor solitary spawning.
+RM_Thunderbeast|KEEP|1~2|No herd cue; a solitary animal or occasional pair is reasonable.
+RSW_Vapaad|KEEP|1|Huge tentacled predator fits solitary apex spawning.
+RM_Suush|KEEP|1|Independent floating filter feeder without swarm cues.
+RM_Garsulix|KEEP|2~5|Small social predators can form modest drifting groups.
+RM_Rhossak|SET|2~3|Description explicitly depicts three rhossaks standing together.
+RM_GalledRhossak|KEEP|1~2|No explicit herd cue supports more than occasional pairs.
+RM_Visceral|KEEP|2~5|Social predator flag supports a modest hunting group.
+RM_BedBug|KEEP|1~2|Medium insect predator without swarm cues suits singles or pairs.
+RM_CrystalMit|SET|1~2|Colony refers to settlers, not a group of crystalmits.
+RM_SikkaSikka|KEEP|2~5|Explicit feral flocks warrant grouped spawning.
+RM_DecayDrake|KEEP|1|Heavy predator without flock or pack cues.
+RM_Bileworm|SET|1|Cluster describes mouthparts; this enormous slug has no social grouping cue.
+RM_Mullgoth|KEEP|1|Massive animal without herd cues suits solitary spawning.
+RM_Vexxiss|KEEP|1|Vast armored animal without social grouping cues.
+RM_Zisska|KEEP|3~6|Medium herd grazers fit standard RimWorld herd sizes.
+RM_Eskith|KEEP|3~7|Small herd animals communicating through drumming suit sizeable groups.
+RM_Radyak|KEEP|2~5|Explicit large herd grazer suits moderate herds.
+RSW_Neebray|KEEP|2~5|Canon pods require groups; small juveniles suit this range.
+RSW_Mynock|SET|8~10|Canon explicitly describes packs of approximately ten.
+RSW_GraniteSlug|KEEP|2~4|Small mineral feeders plausibly gather around shared deposits.
+RSW_VentStalker|KEEP|1|Stationary ambush predator without pack cues.
+RSW_Lylek|SET|4~8|Canon queen-led hordes justify groups, scaled to eight for these huge predators.
+RSW_Skalder|KEEP|3~7|Large herd herbivores remain within the map-scale cap.
+RSW_Silooth|KEEP|1~2|Huge predatory warbeasts warrant minimal groups despite their social flag.
+RM_Gawpsack|KEEP|1~2|No swarm cue; solitary drifters and occasional pairs fit.
+RM_Scorchpod|KEEP|1~2|Independent wandering seed-cases lack herd cues.
+RM_BloodyMess|KEEP|1|A localized extension of the ground suits solitary spawning.
+RM_ContagionIkee|KEEP|1~2|Following larger creatures does not imply sizeable groups of ikee.
+RM_Peeper|KEEP|1~2|Docile browsing alone does not establish herd behavior.
+RM_Ogleknot|KEEP|1~3|Small skittering organisms plausibly occur singly or in loose clusters.
+RM_Eyestinger|KEEP|1|Large, heavy ambusher fits solitary apex spawning.
+RM_Fleshsop|KEEP|2~4|Explicitly advances in loose lines with others.
+RM_Blisterfloat|SET|1~2|Cluster describes one animal's blisters; no flock behavior supports larger groups.
+RM_Bloodlurk|KEEP|1|Motionless waterline ambush hunter fits solitary spawning.
+RM_Sparkleech|KEEP|1~2|Tree-feeding parasite without explicit swarm behavior.
+RM_Doublemaw|KEEP|1~2|Small carcass-feeding omnivore without pack cues.
+RM_Meltgut|KEEP|1|House-sized disposal feeder warrants solitary spawning.
+RM_Scaldhide|KEEP|1|Large armored scavenger without herd cues.
+RM_Gnashling|KEEP|4~8|Explicitly travels in numbers to strip shared carcasses.
+RM_Skinflap|KEEP|6~12|Tiny, numerous canopy organisms support large groups within the small-animal cap.
+RM_Sloshbelly|KEEP|1~3|Modest clusters are reasonable for these dog-sized burrowing feeders.
+RM_Crispling|KEEP|1~3|Small scavengers can gather loosely along shared feeding grounds.
+RM_Danglemaw|KEEP|1|Anchored canopy ambusher fits solitary spawning.
+RM_Gorekite|KEEP|1|Large aerial ambush predator without flock cues.
+RM_SparkleechGrub|SET|2~5|Juvenile root-feeders suit clutches; five stays within the adult maximum plus three.
+RM_OcularJelly|KEEP|2~5|Social floating organisms suit modest canopy groups.
+RM_InfectedAerofleet|KEEP|2~5|Tiny herd-flagged floaters warrant grouped spawning.
+RM_Kasselith|KEEP|3~8|Explicit hive workers moving in endless files warrant substantial groups.
+RM_Thornbug|KEEP|2~5|Description explicitly identifies a herd despite the false herd flag.
+RM_Vaulm|KEEP|1~3|Tiny bark dwellers plausibly occur singly or in small local clusters.
+RM_Ollareth|KEEP|1~3|Small bark dwellers with shared alarm responses suit loose clusters.
+RM_Drommath|KEEP|1~3|Tiny perched sap-feeders plausibly form small local clusters.
+RM_Chellow|KEEP|3~6|Small herd-flagged callers suit moderate groups.
+RM_Murrelith|KEEP|2~5|Tiny herd animals warrant modest groups.

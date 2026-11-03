@@ -200,7 +200,7 @@
     <race>RSW_Ollopom</race>
     <combatPower>50</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>2~4</wildGroupSize>
     <moveSpeedFactorByTerrainTag>
       <li>
         <key>Water</key>

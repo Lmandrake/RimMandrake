@@ -291,6 +291,7 @@
 
   <PawnKindDef ParentName="BaseMechanoidKind">
     <defName>RM_LivingBolt</defName>
+    <wildGroupSize>3~6</wildGroupSize>
     <label>living bolt</label>
     <labelPlural>living bolts</labelPlural>
     <race>RM_LivingBolt</race>

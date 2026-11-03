@@ -134,6 +134,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Blarth</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>blarth</label>
     <labelPlural>blarths</labelPlural>
     <race>RSW_Blarth</race>

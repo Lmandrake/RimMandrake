@@ -129,6 +129,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_CrystalMit</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>crystalmit</label>
     <race>RM_CrystalMit</race>
     <alternateGraphicChance>0.667</alternateGraphicChance>

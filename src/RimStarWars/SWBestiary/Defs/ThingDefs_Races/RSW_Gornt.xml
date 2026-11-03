@@ -139,7 +139,7 @@
     <race>RSW_Gornt</race>
     <combatPower>45</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
-    <wildGroupSize>3~6</wildGroupSize>
+    <wildGroupSize>5~10</wildGroupSize>
     <lifeStages>
       <li>
         <label>gorntling</label>

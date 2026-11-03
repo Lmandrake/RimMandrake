@@ -95,6 +95,7 @@
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Mullgoth</defName>
+		<wildGroupSize>1</wildGroupSize>
 		<label>mullgoth</label>
 		<race>RM_Mullgoth</race>
 		<alternateGraphicChance>0.667</alternateGraphicChance>

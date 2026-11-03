@@ -96,6 +96,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Korrum</defName>
+		<wildGroupSize>1</wildGroupSize>
 		<label>korrum</label>
 		<race>RM_Korrum</race>
 		<combatPower>350</combatPower>

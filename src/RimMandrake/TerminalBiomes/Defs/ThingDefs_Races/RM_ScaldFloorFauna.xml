@@ -193,7 +193,7 @@
     <label>eesh</label>
     <race>RM_Eesh</race>
     <combatPower>5</combatPower>
-    <wildGroupSize>12~30</wildGroupSize>
+    <wildGroupSize>6~10</wildGroupSize>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
       <li>
@@ -301,7 +301,7 @@
     <label>doss</label>
     <race>RM_Doss</race>
     <combatPower>5</combatPower>
-    <wildGroupSize>10~24</wildGroupSize>
+    <wildGroupSize>6~10</wildGroupSize>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
       <li>

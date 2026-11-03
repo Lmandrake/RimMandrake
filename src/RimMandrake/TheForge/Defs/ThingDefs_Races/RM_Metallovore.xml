@@ -115,6 +115,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Metallovore</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>metallovore</label>
     <race>RM_Metallovore</race>
     <combatPower>150</combatPower>

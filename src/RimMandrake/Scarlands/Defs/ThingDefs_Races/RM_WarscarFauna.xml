@@ -499,7 +499,7 @@
     <race>RM_ScarRoach</race>
     <combatPower>12</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>3~6</wildGroupSize>
     <ecoSystemWeight>0.08</ecoSystemWeight>
     <lifeStages>
       <li>

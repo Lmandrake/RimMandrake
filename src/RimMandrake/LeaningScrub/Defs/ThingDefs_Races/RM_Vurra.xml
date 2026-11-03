@@ -81,6 +81,7 @@
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_Vurra</defName>
+		<wildGroupSize>1~2</wildGroupSize>
 		<label>vurra</label>
 		<race>RM_Vurra</race>
 		<combatPower>50</combatPower>

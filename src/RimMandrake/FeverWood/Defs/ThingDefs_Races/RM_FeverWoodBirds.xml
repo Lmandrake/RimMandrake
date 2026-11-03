@@ -301,7 +301,7 @@
     <race>RM_Skellick</race>
     <combatPower>10</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
-    <wildGroupSize>1~3</wildGroupSize>
+    <wildGroupSize>2~4</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

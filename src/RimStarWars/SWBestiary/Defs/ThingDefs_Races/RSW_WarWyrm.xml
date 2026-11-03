@@ -176,6 +176,7 @@
 <!-- PawnKindDef -->
 <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_WarWyrm</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>war wyrm</label>
     <race>RSW_WarWyrm</race>
     <combatPower>2000</combatPower>

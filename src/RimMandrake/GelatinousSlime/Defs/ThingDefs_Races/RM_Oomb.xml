@@ -130,6 +130,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Oomb</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>oomb</label>
     <race>RM_Oomb</race>
     <combatPower>75</combatPower>
@@ -237,6 +238,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_LesserOomb</defName>
+    <wildGroupSize>1~3</wildGroupSize>
     <label>lesser oomb</label>
     <race>RM_LesserOomb</race>
     <combatPower>50</combatPower>
@@ -346,6 +348,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_GreaterOomb</defName>
+    <wildGroupSize>1~2</wildGroupSize>
     <label>greater oomb</label>
     <race>RM_GreaterOomb</race>
     <combatPower>105</combatPower>

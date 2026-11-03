@@ -155,7 +155,7 @@
     <race>RSW_Scurrier</race>
     <combatPower>30</combatPower>
     <ecoSystemWeight>1.20</ecoSystemWeight>
-    <wildGroupSize>3~9</wildGroupSize>
+    <wildGroupSize>6~12</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

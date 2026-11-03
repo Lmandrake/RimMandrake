@@ -158,7 +158,7 @@
     <labelFemale>dalgo mare</labelFemale>
     <combatPower>100</combatPower>
     <ecoSystemWeight>1.0</ecoSystemWeight>
-    <wildGroupSize>3~6</wildGroupSize>
+    <wildGroupSize>1~2</wildGroupSize>
     <abilities>
       <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
     </abilities>

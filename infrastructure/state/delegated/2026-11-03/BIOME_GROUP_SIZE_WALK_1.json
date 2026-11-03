@@ -1,0 +1,3191 @@
+{
+ "subject": "BIOME_GROUP_SIZE_WALK_1",
+ "item": "BIOME_GROUP_SIZE_WALK_1",
+ "brief": "design/RimMandrake/biome_group_sizes/judge/judge_brief.txt (prompts prompt_1..6.txt, answers out_1..6.txt)",
+ "judge_model": {
+  "gpt": "gpt-6.1-sol via gpt_consult --lockdown"
+ },
+ "maker": "relentless builder (Claude), rule draft judge/maker_draft_rules.py",
+ "procedure": "judge sees today, maker draft and the canon ruling per creature; KEEP or SET; the judge value stands on every row",
+ "rows": [
+  {
+   "subject": "RM_Agaripawn",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Nearby kin support loose clusters without implying a substantial herd.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Agaripod",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Grove-associated giants suit small clusters that account for their substantial bulk.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Aluun",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Multiple attached animals stud each kelp tower, supporting localized clusters.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Ashwallow",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Medium nonherding grazer; singles and small loose groups are reasonable.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Aurrok",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Large herd grazer; modest groups accommodate its bulk.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Aveluthia",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Large herd animal suits a modest group.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Barbslinger",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Cow-sized predatory scorpion without social cues; solitary spawning fits.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_BedBug",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Medium insect predator without swarm cues suits singles or pairs.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Bileworm",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Cluster describes mouthparts; this enormous slug has no social grouping cue.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Bladderboil",
+   "verdict": "KEEP",
+   "size": "3~9",
+   "reason": "Small herd-forming floaters can support moderately large groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Blinker",
+   "verdict": "KEEP",
+   "size": "3~5",
+   "reason": "Small herd animals suit groups of several.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Blisterfloat",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Cluster describes one animal's blisters; no flock behavior supports larger groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Bloodlurk",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Motionless waterline ambush hunter fits solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_BloodropMoth",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An individual blood-feeding flier has no stated swarm behavior.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_BloodyMess",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A localized extension of the ground suits solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Boilhide",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Explicit herd grazer; moderate body size supports small herds.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Bokka",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small underground grazers can occur singly or in loose groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Bozzuga",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Stationary ambush predator; singleton spawning fits its hunting behavior.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Brathek",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Wood-feeding larvae plausibly occur singly or in small clusters.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Brogg",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Heavy grazer without explicit herd behavior suits individuals or pairs.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Brullith",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Gigantic placid beast has no herd or other grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Bulloo",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small herd animals should drift together in modest groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Burrak",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Description explicitly gives each working oasis one huge elder.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Candler",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Moderately sized herd grazers suit small groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_CanopySwinger",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small herd climbers suit compact canopy groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_CathedralRoach",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small independent scavenger; modest loose clusters are reasonable.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Chatrak",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Large herd grazers suit scattered individuals and small groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Chellow",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Small herd-flagged callers suit moderate groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Chikka",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small prey with herdAnimal enabled should arrive in groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Chittik",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Never-alone swarming insects require multiple individuals; this matches colony insect norms.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Chorn",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Explicit shelter-forming herds warrant small groups of these huge grazers.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Cindermare",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Explicitly solitary.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Cleaver",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Herd behavior supports small predator groups; constituent shards do not determine group size.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_ColossalAerofleet",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Large herd animals suit modest groups around shared drifting resources.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Colossia",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Calf-sized pool dweller without explicit social behavior.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_ContagionIkee",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Following larger creatures does not imply sizeable groups of ikee.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Corrik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "The description explicitly says it is never seen with another.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Cravvet",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Small scavenger drawn to kill sites, without explicit colony behavior.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_CrimsonOpeeJuv",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Juveniles form small nursery groups despite adult predatory habits.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Crispling",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small scavengers can gather loosely along shared feeding grounds.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Crustweevil",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Small grazing arthropods suit modest insect groups; no swarm is described.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_CrystalMit",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Colony refers to settlers, not a group of crystalmits.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Dakkra",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A shade-bound ambush predator should spawn alone.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_DancingSkresh",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "The description references packs, supporting grouped spawning.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Danglemaw",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Anchored canopy ambusher fits solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_DecayDrake",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Heavy predator without flock or pack cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Dhoggur",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Independent mineral forager with no herd cue; occasional pairs are reasonable.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Dhokkur",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Enormous dormant animal with no grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Dhollock",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A large river ambush predator should spawn alone.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Dhuvvox",
+   "verdict": "SET",
+   "size": "6~10",
+   "reason": "Explicit mass emergence warrants a swarm, scaled to manageable map numbers.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Dorrak",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Heavy grazer without herd behavior suits solitary animals or pairs.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Doss",
+   "verdict": "SET",
+   "size": "6~10",
+   "reason": "Tiny communal bottom feeders suit swarms scaled to map capacity.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Doublemaw",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Small carcass-feeding omnivore without pack cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Dovvik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Individual stem-feeding behavior provides no grouping cue.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Drazzik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large stationary lure predator without social behavior.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Dredgel",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Independent spoil-sifter with no collective behavior described.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Drifter",
+   "verdict": "KEEP",
+   "size": "3~4",
+   "reason": "Small herd grazers suit loose drifting clusters.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Drokattak",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large apex hunter with no pack behavior.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Drommath",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Tiny perched sap-feeders plausibly form small local clusters.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Dunejelly",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Hive husbandry supports small clusters of these tended jelly producers.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Durrgak",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Shy, individual digging behavior gives no grouping cue.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Durrok",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Independent young and no herd behavior support singles or pairs.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Dustflutter",
+   "verdict": "SET",
+   "size": "4~10",
+   "reason": "Explicit flocks warrant groups, scaled down from excessive map populations.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Dustveil",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Herd behavior supports modest feeding groups of these moths.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Duumma",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large nonherding burrower; singles or occasional pairs fit.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Dwommo",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Floating feeders lack explicit herd behavior; individuals or occasional pairs suffice.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Eesh",
+   "verdict": "SET",
+   "size": "6~10",
+   "reason": "Dense synchronized shoals should remain substantial without spawning thirty animals per roll.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Ekkel",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Tiny vent-wall dwellers suit loose concentrations without requiring a swarm.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ElectricGryllotalpa",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large combat insect lacks a grouping cue; individuals or pairs fit.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ElectricTick",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small engineered insects lack a hive cue but can appear in loose clusters.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Emberscythe",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Mantis waits in ambush; no social hunting cue supports groups.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Eskith",
+   "verdict": "KEEP",
+   "size": "3~7",
+   "reason": "Small herd animals communicating through drumming suit sizeable groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Essarn",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Small size alone does not establish schooling behavior.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Excretor",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Herd animal; moderate grazing groups suit its body size.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Eyestinger",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large, heavy ambusher fits solitary apex spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Fessk",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An individual carcass picker has no grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Fessu",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Tiny drifting aquatic feeders plausibly form loose aggregations.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_FeverSwarm",
+   "verdict": "SET",
+   "size": "4~10",
+   "reason": "Explicit swarm; ten captures abundance without excessive pawn multiplication.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_FireHawk",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Raptor without flock cues; singles or occasional pairs fit.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_FireWasp",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Explicit loose swarms justify substantial insect groups.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Flamefang",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Venomous ambush serpent without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_FleetFlier",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Tiny flying grazers with herd behavior suit small flocks.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Fleshsop",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Explicitly advances in loose lines with others.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Frethik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Small size alone does not establish colony or swarm behavior.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Fubbum",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "The herds are its prey; this patient stalker should spawn alone.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_FurnaceBeast",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Giant herd grazer; small groups accommodate its substantial body.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Fuzzrunner",
+   "verdict": "SET",
+   "size": "1~4",
+   "reason": "Small tunnel prey fit rat-sized groups; no swarm behavior supports ten.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Fuzzviper",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Tunnel ambush hunting favors solitary individuals.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Gaanok",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Huge caravan-stalking creature without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_GalledRhossak",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "No explicit herd cue supports more than occasional pairs.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Gappo",
+   "verdict": "KEEP",
+   "size": "3~7",
+   "reason": "Explicit drifting swarms support substantial groups of grazers.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_GappoGreater",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large bulk feeders suit individuals or small herd fragments.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_GappoLesser",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Tiny swarms justify dense groups, capped near twelve.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Garsulix",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small social predators can form modest drifting groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Gawpsack",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "No swarm cue; solitary drifters and occasional pairs fit.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Gelatid",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Explicit loose herds and communal nightly pooling support groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Gembug",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small herd crawlers suit compact insect groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Gennok",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Large herd animals should arrive in modest groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Gharrek",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Responding simultaneously to wind does not imply social groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Gloomcast",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Extreme body size and no herd behavior favor solitary spawning.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Gnashling",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Explicitly travels in numbers to strip shared carcasses.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Gorekite",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large aerial ambush predator without flock cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Gorrask",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Body size fifteen and season-long settlement support one colossal resident; supplied description establishes no conspecific colony.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Gravelgut",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large armored ground-feeder with no grouping cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_GreaterOomb",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Larger mature lobes suit individuals or occasional pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Grellik",
+   "verdict": "KEEP",
+   "size": "2~3",
+   "reason": "Abundant beetles with recurring broods suit small clusters.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Grimewing",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Scavenging birds may gather around carrion, but no flock behavior is specified.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Gripper",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Caravan lines and herd behavior clearly support small groups.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_GrippingTerror",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Enormous individual bull and apex predator should appear alone.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Gristle",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An individual subterranean ambush hunter suits solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Gristleswarm",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Explicit coordinated pack defense supports a substantial small-animal group.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Grolth",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Slow individual grazer with no grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Grusk",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "The description explicitly places roughly twelve together on a pillar.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Gulloth",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A large roaming predator without social hunting behavior.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Gulveth",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large shallow-water grazer lacks an explicit herd cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Harrok",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A stationary predator using its own shadow should spawn alone.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Heemin",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Tiny aquatic prey can plausibly occur in loose groups.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Hesuun",
+   "verdict": "KEEP",
+   "size": "3~5",
+   "reason": "Explicit traveling files justify modest groups despite their large bodies.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Hollu",
+   "verdict": "KEEP",
+   "size": "1~4",
+   "reason": "Gardens repeatedly shed individuals, supporting small simultaneous clusters.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Huldu",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Small active water-hunter without pack behavior; singles or pairs fit.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Hwelgrue",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Hauler-sized scavenger with no grouping cue should appear singly.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Ikee",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Tiny nonherding creature; occasional loose clusters are reasonable.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Iliss",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "No schooling cue; single eels or occasional pairs fit.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Illisk",
+   "verdict": "KEEP",
+   "size": "6~12",
+   "reason": "Tiny predatory fish explicitly form shoals and never appear singly.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Illoth",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Lure-based predator with no pack behavior suits solitary spawning.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_InfectedAerofleet",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Tiny herd-flagged floaters warrant grouped spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ivvol",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small passive bottom-dweller; modest pool concentrations are plausible.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Jossur",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large aerial hunter with no pack cue suits individuals or pairs.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_JuggernautBeetle",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Massive beetle with no colony or herd cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Julmox",
+   "verdict": "SET",
+   "size": "3~6",
+   "reason": "Medium-sized grazers suit elk-sized herds; nine per roll is excessive.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Karrash",
+   "verdict": "KEEP",
+   "size": "1~4",
+   "reason": "Small chimney grazers plausibly share localized feeding patches.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Karravel",
+   "verdict": "SET",
+   "size": "4~10",
+   "reason": "Explicitly numerous tiny scuttlers; ten represents a map-scale aggregation.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Karrek",
+   "verdict": "SET",
+   "size": "6~10",
+   "reason": "Explicit boiling crowds and feeding swarms warrant numerous tiny fish.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Karrimeth",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Carpets of thousands scale down to twelve tiny animals.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Karrobel",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small nonherding scuttler; occasional loose clusters are reasonable.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Karrolun",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Nonherding scuttler with no explicit mass-group behavior.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Kasselith",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Explicit hive workers moving in endless files warrant substantial groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Kellu",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Individual nocturnal squid hunter has no pack cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Kethrel",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Pony-sized scrap collector has no social grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Khorrak",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "A substantial specialized feeder without herd or colony cues.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Kirruk",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small nonpredatory soarer; modest gatherings along productive updrafts are plausible.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Knocker",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "An independent tapping forager has no strong grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Korrum",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Massive armored crab with no herd or colony behavior described.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Krannock",
+   "verdict": "SET",
+   "size": "1~4",
+   "reason": "The description specifies working alone or in a scattered handful.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Krellik",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small bottom scavenger; singles and loose clusters fit.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Krissek",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "No pack cue supports routinely spawning three predators together.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Krizzak",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Explicit swarms suit groups of these small mothlike grazers.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Kroffa",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Armored grazer without explicit herd behavior; singles or pairs fit.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Lanternwhale",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Exceptional body size requires solitary map-scale spawning.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_LesserOomb",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small offspring produced by splitting suit loose sibling clusters.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Liiru",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Ribbon-eel description lacks schooling behavior; individuals and occasional pairs fit.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_LikkaLikka",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Tiny surface mites can plausibly occur in loose aggregations.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Liliana",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Dog-sized nonherding insect; singles and occasional pairs fit.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Lirrith",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Small scavengers communicating with kin plausibly gather in substantial groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_LivingBolt",
+   "verdict": "SET",
+   "size": "3~6",
+   "reason": "Description explicitly says they gather and move together.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Loohn",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large patient ambush predator fits solitary spawning.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Loomma",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Restricted tree-shadow habitat suits singles or small pairs.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Loomu",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small pool dweller; modest concentrations fit without implying a large colony.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Lunoowa",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Independent drifting detritivore with no grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Mantrap",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Large stationary ambush predator; description outweighs the herd flag.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Meltgut",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "House-sized disposal feeder warrants solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Metallovore",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large specialist feeder with no social grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Mirrak",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A stationary, concealed ambush hunter favors solitary spawning.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Moravatha",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Huge herd grazer warrants small herds at map scale.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Muddal",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Tiny herd grazers fit moderately numerous feeding groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Mullgoth",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Massive animal without herd cues suits solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Murrek",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Concealed, stationary ambush hunter fits solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Murrelith",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Tiny herd animals warrant modest groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Murrin",
+   "verdict": "SET",
+   "size": "4~8",
+   "reason": "Tiny herd fish filling pools with overlapping rings suggest larger schools.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Murrol",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small channel feeders suit loose feeding concentrations.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Muttavaq",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A giant dormant creature without grouping cues should appear alone.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_MycoidColossus",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Rare colossal animal abandons offspring and has no herd cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Nevarithia",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Substantial beast without herd cues suits solitary animals or occasional pairs.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Niim",
+   "verdict": "SET",
+   "size": "6~10",
+   "reason": "Dense schooling behavior warrants numerous fish within map-scale swarm norms.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Nissik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An individual sediment picker has no swarm or colony cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Noohm",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Individual drifting sail organism with no grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Noolim",
+   "verdict": "SET",
+   "size": "5~10",
+   "reason": "Explicit shoals require groups, scaled below fifteen animals per roll.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Nuudal",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Cattle-like feeding concentrations beneath skylights support modest groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_OcularJelly",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Social floating organisms suit modest canopy groups.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Oddu",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Stationary shell creature without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Ogleknot",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small skittering organisms plausibly occur singly or in loose clusters.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ollareth",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small bark dwellers with shared alarm responses suit loose clusters.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ollathrix",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Elephant-sized predatory spider fits solitary apex spawning.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Olumetha",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large defensive grazer without a clear grouping cue.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ommok",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "The description explicitly identifies slow-moving grazing herds.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Ondrukka",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Explicit chittering heaps justify groups of tiny grubs.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Oobo",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Drop ambush hunter with no collective hunting cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Oomb",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Independent grazing lobes have no strong grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Oommok",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Enormous nonherding animal; singleton spawning suits map scale.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Oovanam",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Independent bottom-sifting crawler without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Oovu",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Tiny passive floaters plausibly accumulate in small feeding patches.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Oreclaw",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Large herbivores with herdAnimal enabled suit modest groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Orruhmu",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An individual brine-shore feeder has no grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Ossivel",
+   "verdict": "KEEP",
+   "size": "5~12",
+   "reason": "Explicit gatherings of dozens scale down to twelve small animals.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ossumatha",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Explicitly roots in groups and defends collectively.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Otheska",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Explicit scarcity and no grouping cue favor solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Pallbearer",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large armored scavenger; solitary animals or occasional pairs fit its size.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Pallu",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Explicit concentrations throughout shared light columns justify groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Peeper",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Docile browsing alone does not establish herd behavior.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Pirrik",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Host-bound birds fit single individuals or breeding pairs.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Pooler",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Independent feeding behavior gives no reason for grouped arrivals.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Qorrax",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "A substantial venomous predator without pack behavior should rarely arrive in larger groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Quarrok",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Substantial beetle with no colony cue; singles or pairs fit.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Radyak",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Explicit large herd grazer suits moderate herds.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Rakeshank",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Medium nonpredator; small loose gatherings are plausible without stronger social cues.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Reefback",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Extreme body size makes solitary spawning appropriate.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_ReefbackJuv",
+   "verdict": "SET",
+   "size": "2~3",
+   "reason": "Juveniles cluster, but immense bodies warrant very small groups.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Rhossak",
+   "verdict": "SET",
+   "size": "2~3",
+   "reason": "Description explicitly depicts three rhossaks standing together.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ribbonwhip",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A concealed canopy hunter without social hunting cues.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Rimclaw",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Armoured predatory scavenger has no pack cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Rollbug",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Tiny scavengers can occur singly or in loose local concentrations.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_RustNipperJuv",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Juvenile clutch; not yet participating in adult massed crawls.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Saluksis",
+   "verdict": "SET",
+   "size": "4~8",
+   "reason": "Explicit loose crowds of tiny creatures warrant larger groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Scabspinner",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Burrow-based web ambusher fits solitary predator spawning.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_ScaldWalker",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Explicit herd behavior supports groups, with their enormous size limiting numbers.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Scaldhide",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large armored scavenger without herd cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_ScarRoach",
+   "verdict": "SET",
+   "size": "3~6",
+   "reason": "Explicit loose colonies and tiny bodies support several insects per spawn.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Scorchpod",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Independent wandering seed-cases lack herd cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Scumslider",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small scavenger; modest local concentrations fit its feeding habits.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Sesserith",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Night hunter without evidence of coordinated group hunting.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_ShadeMite",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Tiny scavengers sharing a giant's shadow plausibly form small aggregations.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_ShaleGorgerJuv",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Vulnerable juveniles cluster; large bodies limit brood size.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Shambles",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Each infected host wanders independently; no collective behavior is described.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Sharpshrimp",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Motionless cover hunter with no grouping cue.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Shirrel",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "A squirrel-like gliding climber without flock or troop behavior.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Shoal",
+   "verdict": "SET",
+   "size": "8~12",
+   "reason": "Described shoals start at eight; cap small-animal spawns near twelve.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Shokka",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Stationary ambush hunting favors solitary individuals.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Shulla",
+   "verdict": "SET",
+   "size": "5~10",
+   "reason": "Always-associated tiny shoaling animals warrant groups within map-scale swarm norms.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Siezer",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large predator without social hunting cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Siidda",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Wind dispersal of thousands does not establish coordinated living groups.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_SikkaSikka",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Explicit feral flocks warrant grouped spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Sillik",
+   "verdict": "SET",
+   "size": "4~8",
+   "reason": "Whole wet rock faces stippled with animals indicate dense aggregations.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Silloch",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A concealed trunk resident suits solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_SiltLampreyJuv",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Juveniles cluster in nursery pools; five suits a typical brood.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Sipper",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Explicit thumbnail-sized swarm vermin warrant numerous individuals.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Sippra",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small grazers sharing limited shade margins suit loose groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Sivvern",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Small aerial hunter with no flock or pack cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Skarnix",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Catlike ambush stalker without social cues fits solitary predator norms.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Skarrid",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Stationary ambush predator should spawn alone.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Skarrin",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small aquatic herd animal; a modest school fits.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Skellarn",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Specialized predatory wader lacks any flock or pack cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Skellick",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Tiny prey with herdAnimal enabled should spawn in groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Skennet",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Small herd prey; compact groups match its described trickle along web-lines.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Skerrith",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large mantis ambush predator should spawn alone.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Skinflap",
+   "verdict": "KEEP",
+   "size": "6~12",
+   "reason": "Tiny, numerous canopy organisms support large groups within the small-animal cap.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Skiralim",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A medium predator without pack or flock behavior.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Slagmole",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Substantial burrower with no social or colony cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Slick",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "An independent segmented crawler suits individuals or occasional pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Sloghog",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Herd grazer; this range suits its hog-sized body.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Sloshbelly",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Modest clusters are reasonable for these dog-sized burrowing feeders.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Smolderback",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Explicitly cannot stand its own company.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Soorrak",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Giant nesting animal; supplied description establishes no typical flock.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_SootGristleswarm",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Shares the gristleswarm's explicit pack behavior.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Sootgrazer",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Herd animal of moderate size; compact grazing groups fit.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Sparkleech",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Tree-feeding parasite without explicit swarm behavior.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_SparkleechGrub",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Juvenile root-feeders suit clutches; five stays within the adult maximum plus three.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Ssurr",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Hound-sized reptile without herd behavior; singles or pairs fit.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Sulleth",
+   "verdict": "KEEP",
+   "size": "3~7",
+   "reason": "Explicit grazing herds fit large herbivore norms.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Summ",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Enormous grazer without herd cues; solitary spawning suits its map footprint.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_SumpMouse",
+   "verdict": "KEEP",
+   "size": "4~10",
+   "reason": "Explicitly never alone and moving in lines supports numerous small groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Surrik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A burrowing ambush predator without pack behavior.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Suush",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Independent floating filter feeder without swarm cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Sytheclaw",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Explicit pack predator; modest groups suit its body size.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Tapper",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "No social cue; singles or occasional pairs suit this medium animal.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Tarnn",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Each pawn represents an entire colonial organism, not one member of a roaming colony.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Tarruq",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Territorial calls between neighboring individuals support solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Tazzok",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small seasonal grazers lack evidence for organized herds.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Tebbra",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Explicit tight herds support consistent groups of small grazers.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Tetchik",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Tiny herd-forming beetles suit numerous small feeding groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Thermadon",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Medium hunter without explicit pack behavior; occasional pairs are reasonable.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Thollim",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Paired shell valves describe anatomy, with no grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_ThornbackColoJuv",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Juvenile clutch; large bodies favor a modest group.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Thornbug",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Description explicitly identifies a herd despite the false herd flag.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Thornhold",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "A defensive, nest-bound animal suits solitary spawning.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Thozzik",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Hive insects match vanilla colony insect group sizes.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ThozzikColony",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Queen-directed hive insects should form groups consistent with their wild counterparts.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ThozzikColonyQueen",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "The colony answers to one matriarch.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ThozzikQueen",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "A hive matriarch represents the colony's reproductive leader; workers provide its numbers.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Thrummel",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Shared mound habitation supports small burrowing groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ThrummelBroodmother",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "The hive depends on its single broodmother.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_ThrummelWarden",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Specialized mound sentries suit one or two guards per appearance.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Thunderbeast",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "No herd cue; a solitary animal or occasional pair is reasonable.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Thurrock",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "House-sized herd browsers warrant fewer simultaneous animals.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Thuum",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Mat-dwelling eel has no schooling cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Tikkarr",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Crab-like kelp forager has no schooling or colony cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Tikkit",
+   "verdict": "SET",
+   "size": "4~10",
+   "reason": "Tiny chorusing insects suit substantial groups within the suggested swarm scale.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Tirbak",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Colossal grazer with no herd cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Titanoslime",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An enormous consuming predator should spawn alone.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_TruffleMole",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A specialized burrowing forager without social grouping cues.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_TunnelSnake",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A dormant corridor ambusher should spawn alone.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Ulgga",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Huge nonherding worm; historical worker ancestry does not establish present colonies.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Ullai",
+   "verdict": "SET",
+   "size": "3~8",
+   "reason": "Explicit herds of large grazers; eight suits map scale.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Ummisk",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "The many tubes belong to one animal; no separate herd is described.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Utikka",
+   "verdict": "KEEP",
+   "size": "4~10",
+   "reason": "Tiny, abundant grazers explicitly move in loose scatters.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Uttaqar",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A colossal lair-dwelling predator should spawn alone.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Vaulm",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Tiny bark dwellers plausibly occur singly or in small local clusters.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Veessa",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Tiny scavengers can aggregate around concentrated remains.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Vekka",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large big-cat ambush predator; solitary spawning fits.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Vekkit",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Description explicitly places a dozen around shared scavenging sites.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Vellak",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Large herd animal; a compact group suits map scale.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Vennick",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Explicitly never alone; dense streams justify large groups capped near twelve.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Vexxiss",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Vast armored animal without social grouping cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Vhakk",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large concealed shallows ambusher fits solitary spawning.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Vhaulk",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Mountainlike size and immense grazing demand favor solitary spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Visceral",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Social predator flag supports a modest hunting group.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Vissler",
+   "verdict": "SET",
+   "size": "1~4",
+   "reason": "Tiny prey can occur loosely together, but no grouping cue warrants a minimum of two.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Vizhik",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Tiny eel without explicit schooling; a small variable group is reasonable.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Vosska",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large sand-burrowing ambush predator without pack cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Vozzik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Enormous sedentary grazer with no grouping cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RM_Vrekka",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Scavengers can occur singly or in small loose gatherings.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Vrisk",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Small drifting flyer lacks flock cues; singles and pairs fit.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Vurra",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Following larger creatures does not imply substantial groups of vurra.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Vurrak",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Concealed individual shoreline behavior provides no grouping cue.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Weloon",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small detritivores can loosely gather around fallen feeding material.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Wuum",
+   "verdict": "SET",
+   "size": "3~6",
+   "reason": "Rapid budding and countless cells support clustered colony spawns.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Yammeth",
+   "verdict": "KEEP",
+   "size": "6~12",
+   "reason": "Small canopy fliers explicitly travel in noisy flocks.",
+   "batch": 2
+  },
+  {
+   "subject": "RM_Ysvaltha",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Specialized killing predator without pack cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Zellik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "An individual aerial hunter with no flocking cue.",
+   "batch": 3
+  },
+  {
+   "subject": "RM_Zhaaz",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large engulfing predator without social behavior.",
+   "batch": 1
+  },
+  {
+   "subject": "RM_Zhiil",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small bottom-dwelling fry suit scattered individuals and loose clusters.",
+   "batch": 5
+  },
+  {
+   "subject": "RM_Zhissa",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small herd grazer; moderate groups fit vanilla prey norms.",
+   "batch": 4
+  },
+  {
+   "subject": "RM_Zisska",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Medium herd grazers fit standard RimWorld herd sizes.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Anooba",
+   "verdict": "SET",
+   "size": "6~8",
+   "reason": "Canon packs of ten to twelve scale down while remaining larger than typical wolf packs.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Bantha",
+   "verdict": "SET",
+   "size": "3~8",
+   "reason": "Canon herds remain substantial while respecting the map-scale cap for huge animals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Beldon",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Canonical enormous herds scale to eight large animals.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Blarth",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Small predator without pack cues; singles and pairs are reasonable.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Blixus",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Rare, large swamp predator without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_BloodletterPetrel",
+   "verdict": "KEEP",
+   "size": "2~3",
+   "reason": "Small predatory bird with herd behavior supports compact groups.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_Bogwing",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Canon describes strong territoriality; solitary spawning fits.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Bolotaur",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Large herd herbivore; modest groups suit its size.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Boma",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Large ravenous predator with no pack cue; cap groups at two.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_Borcatu",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small scavenger; loose concentrations are plausible without explicit pack behavior.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_CanCell",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Large scavenging insectoids suit small, loose aggregations.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Cannok",
+   "verdict": "KEEP",
+   "size": "3~7",
+   "reason": "Canon packs explicitly contain at least three animals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_CaveLemming",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Description explicitly calls this grazer solitary.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Clodhopper",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Canon explicitly describes feeding swarms.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Convor",
+   "verdict": "SET",
+   "size": "2~2",
+   "reason": "Canon explicitly describes cooperative pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Corinathoth",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canon herds support groups, moderated by massive body size.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Creature_Mantrap",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A mobile trapping predator suits solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_CrestedDragon",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Small predator without explicit social behavior; singles or pairs fit.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Dactillion",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large flying predator with no flock or pack cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_Dalgo",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Large carnivores lack explicit pack behavior and suit individuals or pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Dewback",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Canon explicitly specifies wild groups of two to five.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Dragonsnake",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon ruling requires solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_DragonsnakeAlbino",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "A rare gigantic ambush predator should spawn alone.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Eopie",
+   "verdict": "SET",
+   "size": "5~8",
+   "reason": "Canon herds of twenty or more scale to substantial groups of large animals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Faa",
+   "verdict": "KEEP",
+   "size": "5~12",
+   "reason": "Canon schools reach thirty; twelve is an appropriate map-scale ceiling.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_FaaJuv",
+   "verdict": "KEEP",
+   "size": "5~12",
+   "reason": "Canon schools reach thirty; twelve suits small juveniles at map scale.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Falumpaset",
+   "verdict": "SET",
+   "size": "5~8",
+   "reason": "Canonical families contain at least five adults; cap large animals near eight.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Fambaa",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Enormous amphibians retain small herds after map scaling.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Fanback",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large predatory amphibian; singles or occasional pairs match apex norms.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_FeralGrazer",
+   "verdict": "SET",
+   "size": "3~8",
+   "reason": "Large herd grazer; cap groups at eight.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_FeralNerf",
+   "verdict": "SET",
+   "size": "3~8",
+   "reason": "Established grazing herds fit the standard map-scale herd ceiling.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_FoundryBeetle",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large beetle with violent mate rivalry and no colony cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_FrilledGorg",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canon herd ruling requires grouped spawning; modest amphibian groups fit.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Gelagrub",
+   "verdict": "SET",
+   "size": "3~8",
+   "reason": "Large herd insects should stay within roughly eight per spawn.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Gizka",
+   "verdict": "KEEP",
+   "size": "4~6",
+   "reason": "Tiny, rapidly breeding herd reptiles suit infestation-sized clusters.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Gorg",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Canon herd ruling and small size support modest groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Gornt",
+   "verdict": "SET",
+   "size": "5~10",
+   "reason": "Canonical packs of ten to thirty warrant substantial groups after scaling.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_GraniteSlug",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Small mineral feeders plausibly gather around shared deposits.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Grank",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Predator and scavenger behavior provides no pack cue.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_GreaterKraytDragon",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Rare colossal apex predator without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Gutkurr",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Explicit pack hunting warrants multiple animals despite their large predator size.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Hawkbat",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canonical coordinated hunting flocks justify groups despite predator size.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Horax",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon explicitly describes solitary hunters; colossal size reinforces singleton spawning.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Hrumph",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Defensive herds surrounding young justify substantial groups of large herbivores.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Hssiss",
+   "verdict": "SET",
+   "size": "2~2",
+   "reason": "Canon explicitly describes hunting in pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Igitz",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "A small omnivore without explicit social grouping cues.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Iriaz",
+   "verdict": "KEEP",
+   "size": "6~12",
+   "reason": "Canon massive herds justify the upper map-scale limit for smaller grazers.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_IridonianReek",
+   "verdict": "KEEP",
+   "size": "2~3",
+   "reason": "Canon small herds and territoriality suit compact groups of massive animals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Jakobeast",
+   "verdict": "SET",
+   "size": "3~8",
+   "reason": "Huge herd herbivore; eight keeps groups within large-animal map scale.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Jamel",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Large herd animals suit moderate groups below the large-animal cap.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Jimvu",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "HerdAnimal behavior supports sizeable groups within the large-animal cap.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Kinrath",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canonical hives support groups of several arachnoids.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Klorslug",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Herd behavior and breeding infestations support groups of several.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_KowakianMonkeyLizard",
+   "verdict": "KEEP",
+   "size": "3~7",
+   "reason": "Protective packs and wild colonies support substantial groups of small primates.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Kreetle",
+   "verdict": "SET",
+   "size": "4~5",
+   "reason": "Canon explicitly specifies groups of four to five.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Krykna",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canon hives support groups despite predatory behavior.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Kwi",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Canon traveling herds justify substantial groups of large herbivores.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Kybuck",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canon small herds and sociable behavior match standard ungulate groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_LaaJuv",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Explicit juvenile school without numerical canon; standard brood size fits.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_LavaFlea",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Large herbivorous arthropods with herd behavior fit moderate groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_LongtailGorg",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canon herd ruling supports small amphibian groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Lothcat",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon explicitly establishes solitary lives.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Lylek",
+   "verdict": "SET",
+   "size": "4~8",
+   "reason": "Canon queen-led hordes justify groups, scaled to eight for these huge predators.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Maguana",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large iguana relative with no grouping cue.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_MarshHaunt",
+   "verdict": "KEEP",
+   "size": "2~8",
+   "reason": "Canon explicitly specifies loose packs of two to eight.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Massiff",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canon packs fit vanilla wolf group sizes.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Mee",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Canon schools number thousands, scaled down to twelve fish per map spawn.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_MeeJuv",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Canon schools of thousands justify larger juvenile schools, capped at twelve.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_MegaphoridLarva",
+   "verdict": "KEEP",
+   "size": "2~12",
+   "reason": "Rarely found alone; emergence from infected hosts supports substantial larval clusters.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_MossBeetle",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "A grazing beetle without explicit colony or swarm behavior.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Mott",
+   "verdict": "SET",
+   "size": "5~10",
+   "reason": "Breeding communes warrant substantial groups, capped below fifteen.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Mudhorn",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Extreme territoriality and large predator size favor solitary spawning.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_MutagenicNorphea",
+   "verdict": "KEEP",
+   "size": "2~3",
+   "reason": "Small herd beetles suit compact feeding groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Mynock",
+   "verdict": "SET",
+   "size": "8~10",
+   "reason": "Canon explicitly describes packs of approximately ten.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Neebray",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Canon pods require groups; small juveniles suit this range.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Nerf",
+   "verdict": "KEEP",
+   "size": "3~5",
+   "reason": "Canon herd animal; moderate groups suit its large body.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Nuna",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Canon herd ruling supports modest groups of small reptavians.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Ollopom",
+   "verdict": "SET",
+   "size": "2~4",
+   "reason": "Small herd herbivores should reliably arrive in groups.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_OpeeSeaKillerJuv",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon solitary ruling takes precedence over juvenile clustering.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Orray",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Pack animal describes carrying loads; large predator lacks social grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_PekoPeko",
+   "verdict": "SET",
+   "size": "2~2",
+   "reason": "Canon explicitly says they generally travel in pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Pikobis",
+   "verdict": "SET",
+   "size": "2~6",
+   "reason": "Canon explicitly includes both pairs and groups of five to six.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_PodWorm",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Large nonherding grazer without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Porg",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Canon groups and small body size support modest flocks.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Pufferpig",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canon herd ruling supports small groups of these compact herbivores.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Qormot",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canon small prides support consistent groups of several individuals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Ronto",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canon small groups fit these enormous herbivores.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Runyip",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Herd herbivore with a reasonable medium-sized group range.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Sacapillar",
+   "verdict": "SET",
+   "size": "2~3",
+   "reason": "Large herd animal; small groups preserve grouping without crowding the map.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_SandLeaper",
+   "verdict": "KEEP",
+   "size": "1~4",
+   "reason": "Small rodentlike foragers fit the vanilla rat range.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_SandPillar",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Larval crawlers can occur individually or in modest local clusters.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_SandoAquaMonster",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Enormous apex predator should spawn alone.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_ScrapNestBird",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Small birds with herdAnimal enabled should arrive in groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Screecher",
+   "verdict": "KEEP",
+   "size": "4~5",
+   "reason": "Explicit pack hunter; this range matches vanilla pack sizes.",
+   "batch": 6
+  },
+  {
+   "subject": "RSW_Scurrier",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Canon packs around thirty scale to sizeable groups of small rodents.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Shaak",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Canon herds of fifteen scale down to eight enormous grazers.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Shiro",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "A slow shelled reptile without social cues fits solitary reptile norms.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_ShiroTrap",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "A concealed trapping predator suits solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_ShrublandGiant",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Colossal grazers warrant very small groups despite herd behavior.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Shyrack",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Canon hunting swarms and explicit flock behavior justify predator groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Silooth",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Huge predatory warbeasts warrant minimal groups despite their social flag.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Skalder",
+   "verdict": "KEEP",
+   "size": "3~7",
+   "reason": "Large herd herbivores remain within the map-scale cap.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Sketto",
+   "verdict": "SET",
+   "size": "3~6",
+   "reason": "Canon bloodfeeding swarms warrant consistent groups of several animals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Snoruuk",
+   "verdict": "KEEP",
+   "size": "4~8",
+   "reason": "Explicit gathering rings and coordinated movement justify substantial groups.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_Strill",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon territorial behavior supports solitary hunters.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Taozin",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Gigantic armored predator should appear alone.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Tauntaun",
+   "verdict": "KEEP",
+   "size": "2~7",
+   "reason": "Herd flag supports groups; range suits medium grazers.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_TeeMuss",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Canon herd ruling requires groups; this range suits a large ungulate.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Tibidee",
+   "verdict": "SET",
+   "size": "1~2",
+   "reason": "Enormous herd animals warrant occasional pairs, following thrumbo-scale spawning.",
+   "batch": 5
+  },
+  {
+   "subject": "RSW_Urusai",
+   "verdict": "KEEP",
+   "size": "1~3",
+   "reason": "Small scavengers can gather loosely around a feeding site.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Uvak",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Canon herd evidence supports groups despite their predator classification.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Vapaad",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Huge tentacled predator fits solitary apex spawning.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Varactyl",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canon herds and giant body size favor modest groups.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_VentStalker",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Stationary ambush predator without pack cues.",
+   "batch": 1
+  },
+  {
+   "subject": "RSW_Voorpak",
+   "verdict": "KEEP",
+   "size": "2~5",
+   "reason": "Canon small colonies override the usual solitary predator expectation.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Vornskyr",
+   "verdict": "KEEP",
+   "size": "3~6",
+   "reason": "Explicit canon pack hunting supports wolf-sized groups.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Vozzik",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Massive nonherding slug without grouping cues.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Vulptex",
+   "verdict": "SET",
+   "size": "6~12",
+   "reason": "Canon multifamily skulks warrant sizeable groups, scaled down from thirty to forty animals.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_Wampa",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon describes typically solitary hunters; huge size reinforces singles.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_WarWyrm",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Colossal lair-dwelling predator; singleton spawning fits.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Whisperbird",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Small birds with a canon herd ruling suit modest flocks.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Woolamander",
+   "verdict": "KEEP",
+   "size": "3~8",
+   "reason": "Canonical troops of twenty scale comfortably to small map groups.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Worrt",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon ruling requires solitary spawning.",
+   "batch": 2
+  },
+  {
+   "subject": "RSW_Wraid",
+   "verdict": "KEEP",
+   "size": "2~6",
+   "reason": "Canon explicitly specifies clusters of two to six.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_WraidAlpha",
+   "verdict": "SET",
+   "size": "2~6",
+   "reason": "Canon herd ruling and explicit two-to-six clusters take precedence over predator size.",
+   "batch": 3
+  },
+  {
+   "subject": "RSW_YobshrimpJuv",
+   "verdict": "SET",
+   "size": "2~5",
+   "reason": "Juveniles cluster but explicitly have not joined adult swarms.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Zakkeg",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Canon explicitly describes solitary, territorial apex predators.",
+   "batch": 4
+  },
+  {
+   "subject": "RSW_Zeer",
+   "verdict": "KEEP",
+   "size": "2~4",
+   "reason": "Canon herds support small groups of these very large browsers.",
+   "batch": 3
+  },
+  {
+   "subject": "RUT_BrineBattery",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Occupies a pool's deepest point like a fitted lid, suggesting one resident.",
+   "batch": 6
+  },
+  {
+   "subject": "RUT_BurnerAscendant",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Substantial predator with no grouping cue.",
+   "batch": 6
+  },
+  {
+   "subject": "RUT_EmperorVulture",
+   "verdict": "KEEP",
+   "size": "1~2",
+   "reason": "Large thermal riders suit individuals or occasional pairs.",
+   "batch": 2
+  },
+  {
+   "subject": "RUT_SealedSleeper",
+   "verdict": "KEEP",
+   "size": "1",
+   "reason": "Separate dormant burrowers have no stated social grouping.",
+   "batch": 2
+  }
+ ],
+ "class": "design"
+}

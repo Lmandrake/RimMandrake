@@ -123,6 +123,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Chorn</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>chorn</label>
     <race>RM_Chorn</race>
     <combatPower>220</combatPower>
@@ -230,6 +231,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Gennok</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>gennok</label>
     <race>RM_Gennok</race>
     <combatPower>110</combatPower>
@@ -332,6 +334,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Tebbra</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>tebbra</label>
     <race>RM_Tebbra</race>
     <combatPower>15</combatPower>

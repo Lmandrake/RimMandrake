@@ -124,6 +124,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Olumetha</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>olumetha</label>
     <race>RM_Olumetha</race>
     <combatPower>125</combatPower>

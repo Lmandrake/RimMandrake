@@ -123,6 +123,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_JuggernautBeetle</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>juggernaut beetle</label>
     <race>RM_JuggernautBeetle</race>
     <combatPower>300</combatPower>

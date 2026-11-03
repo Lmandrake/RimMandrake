@@ -130,6 +130,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Chittik</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>chittik</label>
     <race>RM_Chittik</race>
     <combatPower>35</combatPower>

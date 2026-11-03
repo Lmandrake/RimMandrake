@@ -392,6 +392,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Brullith</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>brullith</label>
     <race>RM_Brullith</race>
     <combatPower>500</combatPower>
@@ -564,6 +565,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ThozzikColonyQueen</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>thozzik queen</label>
     <race>RM_ThozzikColonyQueen</race>
     <combatPower>100</combatPower>
@@ -724,7 +726,7 @@
     <label>thozzik</label>
     <race>RM_ThozzikColony</race>
     <combatPower>75</combatPower>
-    <wildGroupSize>1~2</wildGroupSize>
+    <wildGroupSize>2~5</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>
@@ -1072,6 +1074,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Skerrith</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>skerrith</label>
     <race>RM_Skerrith</race>
     <combatPower>160</combatPower>
@@ -1242,6 +1245,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ThozzikQueen</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>thozzik queen</label>
     <race>RM_ThozzikQueen</race>
     <combatPower>150</combatPower>
@@ -1521,6 +1525,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Thozzik</defName>
+    <wildGroupSize>2~5</wildGroupSize>
     <label>thozzik</label>
     <race>RM_Thozzik</race>
     <combatPower>75</combatPower>

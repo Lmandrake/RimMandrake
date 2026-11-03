@@ -187,6 +187,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Taozin</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>taozin</label>
     <race>RSW_Taozin</race>
     <combatPower>650</combatPower>

@@ -218,6 +218,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_DecayDrake</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>fermatalis</label>
     <race>RM_DecayDrake</race>
     <combatPower>175</combatPower>

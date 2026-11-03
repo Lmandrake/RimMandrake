@@ -110,6 +110,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ColossalAerofleet</defName>
+    <wildGroupSize>2~4</wildGroupSize>
     <label>greater bulloo</label>
     <race>RM_ColossalAerofleet</race>
     <canArriveManhunter>false</canArriveManhunter>

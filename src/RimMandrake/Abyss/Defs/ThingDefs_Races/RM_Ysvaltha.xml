@@ -133,6 +133,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Ysvaltha</defName>
+    <wildGroupSize>1</wildGroupSize>
     <label>ysvaltha</label>
     <race>RM_Ysvaltha</race>
     <combatPower>125</combatPower>
