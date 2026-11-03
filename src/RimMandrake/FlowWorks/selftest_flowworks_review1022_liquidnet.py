@@ -53,7 +53,8 @@ def outside_origin_ok(src):
     order = "Components(origin.Map)" in store and store.index("Components(origin.Map)") < store.find("outsideOrigins.Add")
     clears = "outsideOrigins.Clear()" in bump and "revision++" in bump
     looks = "outsideOrigins.Contains(t)" in probe
-    bumps = re.search(r"else if \(RM_LiquidNet\.IsOutsideOrigin\(__state,\s*__instance\)\)\s*\{\s*RM_LiquidNet\.Bump\(__state\);", despawn) is not None
+    # LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: the despawn postfix is now `ChangesTopology || IsOutsideOrigin(...)` -> BumpAt(...)
+    bumps = re.search(r"if \(RM_LiquidNet\.ChangesTopology\(__instance\)\s*\|\|\s*RM_LiquidNet\.IsOutsideOrigin\(__state\.Key,\s*__instance\)\)\s*\{\s*RM_LiquidNet\.BumpAt\(", despawn) is not None
     return records and order and clears and looks and bumps
 
 
@@ -61,7 +62,7 @@ def test_outside_origin():
     src = read("Machinery/RM_LiquidNet.cs")
     check("outside origin: store recorded, bump clears, despawn bumps", outside_origin_ok(src))
     # planted regressions: each pre-fix shape must fail
-    pre_despawn = re.sub(r"\s*else if \(RM_LiquidNet\.IsOutsideOrigin\(__state,\s*__instance\)\)\s*\{\s*RM_LiquidNet\.Bump\(__state\);\s*\}", "", src)
+    pre_despawn = re.sub(r"\s*\|\|\s*RM_LiquidNet\.IsOutsideOrigin\(__state\.Key,\s*__instance\)", "", src)
     check("planted: despawn without the outside-origin bump fails", not outside_origin_ok(pre_despawn))
     pre_store = src.replace("StateOf(origin.Map).outsideOrigins.Add(origin);", "")
     check("planted: store that never records fails", not outside_origin_ok(pre_store))

@@ -184,7 +184,7 @@ def ho6_hose_fittings(rows):
 
 
 GPT_READ_FIX_SHAPES = [
-    ("B4 port cache uses CacheFresh", "Hose/CompHoseReel.cs", "HoseLive.CacheFresh(now, portTick, 60)"),
+    ("B4 port cache uses CacheFresh (phased: HoseLive.PhasedFresh is CacheFresh plus a per-reel phase, HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE)", "Hose/CompHoseReel.cs", "HoseLive.PhasedFresh(now, portTick, 60, parent.thingIDNumber)"),
     ("B1 tick lays hoses on every map", "Hose/RM_MapComponent_Hoses.cs", "% 250 == 0) TickRecheck(r, now);"),
     ("B5 no no-outlet fallback lay", "Hose/RM_MapComponent_Hoses.cs", "HoseMath.LeadOutBlocked"),
     ("B2 order need judged on shortest route", "Hose/CompHoseReel.cs", "new Cell(target.x, target.z), -1, false)"),
