@@ -22,6 +22,23 @@ os.environ["RM_DISPATCHER_STATE"] = str(TMP / "disp")
 os.environ["RELENTLESS_ROOT"] = str(TMP / "belt")
 import ops_watch as OW  # noqa: E402
 
+# the other two sources ops_watch reads off the belt: the books clone (a real clone level with its origin, made once) and
+# live/runs.jsonl (empty: too few runs to judge reads UNMEASURED, an unreadable file reads blind)
+import subprocess  # noqa: E402
+
+
+def _git(*x, cwd=None):
+    return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *x], cwd=cwd, capture_output=True,
+                          text=True, timeout=60, check=True)
+
+
+(TMP / "belt").mkdir()
+_git("init", "--bare", "-b", "main", str(TMP / "belt" / "origin.git"))
+_git("clone", str(TMP / "belt" / "origin.git"), str(TMP / "belt" / "books"))
+_git("commit", "--allow-empty", "-m", "x", cwd=TMP / "belt" / "books")
+_git("push", "origin", "HEAD:main", cwd=TMP / "belt" / "books")
+_git("fetch", "origin", cwd=TMP / "belt" / "books")
+_git("branch", "--set-upstream-to=origin/main", cwd=TMP / "belt" / "books")
 RULES_FILE = HERE / "ops_watch_rules.json"
 RULES = json.loads(RULES_FILE.read_text(encoding="utf-8"))
 for tg in RULES["targets"]:     # never the real Conductor log
@@ -59,6 +76,8 @@ def world(under=0, ready=3, why="filling", breaker=0, nolive=0, progress=0.0, id
     for d in (STORE, DISP):
         shutil.rmtree(d, ignore_errors=True)
         d.mkdir(parents=True)
+    (STORE.parent / "live").mkdir(exist_ok=True)
+    (STORE.parent / "live" / "runs.jsonl").write_text("")
     (STORE / "items").mkdir()                     # relentless.game_hold_idle_min reads it; none held reads 0
     run = max(breaker, nolive, 1)
     rows = []
@@ -172,8 +191,8 @@ for fam, drop in (("relentless", "staffing.jsonl"), ("seats", "state.json")):
     check("%s.blind's distressed line is its target's" % fam, tg["op"] == ">" and tg["value"] + 1 == limit, tg)
     filled += 2
 # plan.* takes its fixtures from src/RimMandrake/rimflow/selftest_priority_list.py, on a data clone this rig has not got;
-# roles.* from selftest_role_use.py, on a fixture ledger; disk.scratch_outside_* from selftest_ops_watch_scratch_outside.py
-every = sum(len(m["classes"]) for k, m in OW.ranges_of(RULES).items() if not k.startswith(("plan.", "roles.", "disk.scratch_outside"))) + len(RULES["ranges"]["relentless.why"]["classes"]["idle"]["in"]) - 1
+# roles.* from selftest_role_use.py, on a fixture ledger; queues.* from selftest_ops_watch_queues.py; disk.scratch_outside_* from selftest_ops_watch_scratch_outside.py
+every = sum(len(m["classes"]) for k, m in OW.ranges_of(RULES).items() if not k.startswith(("plan.", "roles.", "queues.", "disk.scratch_outside"))) + len(RULES["ranges"]["relentless.why"]["classes"]["idle"]["in"]) - 1
 check("every filled class of every metric had its fixture", filled == every, (filled, every))
 
 # idle_if: the class a stop gives, on the metrics that name it

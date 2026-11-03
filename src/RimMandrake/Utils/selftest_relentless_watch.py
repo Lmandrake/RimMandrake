@@ -8,6 +8,7 @@ is the real record, cut from the store's staffing.jsonl and journal.jsonl (03:30
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -51,6 +52,18 @@ def fresh():
     (STORE / "items").mkdir()
     (STORE / "journal.jsonl").write_text("")
     (STORE / "staffing.jsonl").write_text("")
+    # the other two sources ops_watch reads off the belt: the books clone (a real clone level with its origin) and
+    # live/runs.jsonl (empty: too few runs to judge is UNMEASURED, an unreadable file is blind)
+    (TMP / "belt" / "live").mkdir()
+    (TMP / "belt" / "live" / "runs.jsonl").write_text("")
+    g = lambda *x, cwd=None: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *x], cwd=cwd,
+                                            capture_output=True, text=True, timeout=60, check=True)
+    g("init", "--bare", "-b", "main", str(TMP / "belt" / "origin.git"))
+    g("clone", str(TMP / "belt" / "origin.git"), str(TMP / "belt" / "books"))
+    g("commit", "--allow-empty", "-m", "x", cwd=TMP / "belt" / "books")
+    g("push", "origin", "HEAD:main", cwd=TMP / "belt" / "books")
+    g("fetch", "origin", cwd=TMP / "belt" / "books")
+    g("branch", "--set-upstream-to=origin/main", cwd=TMP / "belt" / "books")
     FILED.clear()
 
 
@@ -220,10 +233,11 @@ def frozen(offset):
     add("journal.jsonl", {"at": OW.iso(T0 - 60), "do": "lease"})
     tick(sane_row(T0))
     out = []
-    for i in range(2):
+    for i in range(3):          # tick_age_s is 25 min (ops_watch_rules, d94e9da898): the alarm lands on the third 15-min pass
         now = T0 + offset + i * 900
         put("reading.json", {"at": OW.iso(now)})
         os.utime(STORE / "staffing.json", (now, now))       # a touched file is not a fresh reading
+        add("staffing.jsonl", sane_row(now))                # the row log stays live: only staffing.json is frozen
         dg = OW.run(now=now, rules=RULES, filer=filer)
         out.append("RELENTLESS_BLIND:relentless.blind" in dg["alarms"])
     return out
@@ -231,7 +245,7 @@ def frozen(offset):
 
 for off in (60, 300, 590):
     got = frozen(off)
-    check("frozen %d s before the first pass alarms within two passes" % off, got[1], got)
+    check("frozen %d s before the first pass alarms within the limit plus one pass" % off, got[-1], got)
     check("and says which source", any("staffing.json frozen" in a["title"] for a in FILED), FILED)
 
 # the stamp moves, the belt does not: the progress reading
