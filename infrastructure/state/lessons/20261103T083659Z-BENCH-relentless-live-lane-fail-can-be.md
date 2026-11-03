@@ -1,0 +1,1 @@
+A relentless live-lane FAIL can be a harness or site fault: EGROWTH live_proof.py printed FAIL for a preflight site refusal, and the GSS proof ran under WSL python with no bridge route. Read the evidence log before counting a FAIL as the mod's; terminal FAIL rows stop reruns on that sha (relentless_live_round.py:33).
