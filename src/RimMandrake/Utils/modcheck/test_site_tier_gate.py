@@ -8,8 +8,8 @@ OuterRim ...): prove said NOT CLEAN, the round wrote FAIL, and a FAIL stands for
 game, not the item. This gate runs first in each live line and turns "wrong game" into UNMEASURED (exit 2), which the
 round restages, instead of a FAIL.
 
-Fits (exit 0) when the running packageIds hold no retired donor, no mod beyond the resolved tier, every mod the tier
-`want`s, and all five DLC. Exit 2 = wrong game (restage on the tier); exit 3 = the instrument could not read. It never
+Fits (exit 0) when the running packageIds hold no retired donor, no mod beyond the resolved tier, every member of the
+resolved tier (not only the ones it `want`s: a 13-mod subset is not the 14-mod list), and all five DLC. Exit 2 = wrong game (restage on the tier); exit 3 = the instrument could not read. It never
 exits 1: it judges the game, never the item.
 
     python.exe src/RimMandrake/Utils/modcheck/test_site_tier_gate.py river
@@ -59,6 +59,9 @@ def tier_gaps(running, site, tier_list=None, want=None):
     lack = [i for i in want if i not in run]
     if lack:
         P.append("running list lacks tier %s mod(s) %s" % (tier, lack))
+    short = sorted(i for i in tl if i not in run and i not in lack)   # the tier is the WHOLE list (14 mods), not its want
+    if short:
+        P.append("running list lacks tier %s member(s) %s" % (tier, short))
     dlc = missing_dlc(run)
     if dlc:
         P.append("running list lacks DLC %s" % dlc)

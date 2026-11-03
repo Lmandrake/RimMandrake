@@ -436,5 +436,21 @@ _lm = RLR.live_mods("\n".join(_LPT))
 check("12 live-mods names FlowWorks, GimmeSomeSlack, RimMandrake.Biomes",
       {"FlowWorks", "GimmeSomeSlack", "RimMandrake.Biomes"} <= set(_lm), _lm)
 
+# 13. The tier is the WHOLE resolved list, not its want (blind check at 45efe188: an 11-mod subset holding only the want
+#     and the DLC read FITS, so A1 would build a v2 on a 13-mod game). Every non-want member, dropped alone, is a gap.
+_NW = [i for i in _TL if i not in _W and not i.startswith("ludeon.")]
+check("13 the tier has non-want members to drop (the probe can see)", len(_NW) >= 1, (_TL, _W))
+for _m in _NW:
+    _g = TG.tier_gaps([i for i in _TL if i != _m], "river", tier_list=_TL)
+    check("13 a list lacking non-want tier member %s is a wrong game" % _m,
+          any("lacks tier" in x and _m in x for x in _g), _g)
+if "mandrake.rm.luminouspigment" in _TL:
+    _g = TG.tier_gaps([i for i in _TL if i != "mandrake.rm.luminouspigment"], "river", tier_list=_TL)
+    check("13 the checker's 13-mod probe (no luminouspigment) is a gap", _g != [], _g)
+_sub = sorted(set(_W) | {i for i in _TL if i.startswith("ludeon.")})
+_g = TG.tier_gaps(_sub, "river", tier_list=_TL)
+check("13 the checker's want+DLC subset (%d of %d) is a gap" % (len(_sub), len(_TL)),
+      len(_sub) < len(_TL) and _g != [], (_sub, _g))
+
 print("selftest_test_site_saves: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
