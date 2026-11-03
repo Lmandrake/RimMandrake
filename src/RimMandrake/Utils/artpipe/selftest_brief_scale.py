@@ -125,6 +125,24 @@ def main() -> int:
                 raise sqlite3.OperationalError("no such table: defs")
         s = common.measure_in_game_size("RSW_TestWhaleKind", resolver=Broken())
         check(s["status"] == "unmeasured" and "UNMEASURED" in s["source"], "a broken dump yields UNMEASURED")
+
+        # 9. the PRODUCTION path: no size_resolver argument and world left at its default (the real art/subject.World),
+        #    as fill_queue's CLI files a row. The size must come from common._size_resolver() — here pointed at the
+        #    fixture dump — never be skipped as 'sizing not run' (blind-check mutant, gen 3).
+        saved = common._SIZE_RESOLVER
+        common._SIZE_RESOLVER = r
+        try:
+            row = dict(id="t_default", rimflow_item_id="ART_SHEETS_SCALE_CELLS_WIDEN_TOO_LATE", prompt="a subject",
+                       canvas_w=1024, canvas_h=512, target_def="RSW_TestWhaleKind", biome_neutral="1")
+            j = fill_queue.row_to_jobs(row)[0]
+            s = j["in_game_size"]
+            check(s.get("status") == "measured" and s.get("quad") == [10.0, 5.0],
+                  f"default-path filing (no resolver, default world) measures the 10x5 quad (got {s})")
+            p = artpiped.build_job_prompt(j)
+            check("10 x 5-cell quad" in p and "UNMEASURED" not in p,
+                  "default-path brief names the measured quad, not UNMEASURED")
+        finally:
+            common._SIZE_RESOLVER = saved
         r.db.close()
     print(f"RESULT: {'FAIL' if FAILS else 'PASS'} ({len(FAILS)} failing)")
     return 1 if FAILS else 0
