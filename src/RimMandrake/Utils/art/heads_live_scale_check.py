@@ -31,7 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 sys.path.insert(0, UTILS)
-import fit_head_canvas as F  # noqa: E402
+import bs_render_scale as F  # noqa: E402  (numpy-free: python.exe has no numpy)
 import rimbridge_client as rc  # noqa: E402
 
 for _s in (sys.stdout, sys.stderr):
@@ -127,6 +127,10 @@ def main():
             want = render[sp]
             if r["headType"] != "RSW_%s_Head" % sp:
                 fails.append("%s draws headType %s, not RSW_%s_Head" % (sp, r["headType"], sp))
+            if abs(off - want["size_offset"]) > TOL:
+                fails.append("%s body-size offset %.3f, def says %.3f (%s): the mod list lacks what supplies it "
+                             "(StarWarsPatches BodySizeIsReal.xml for HalfJotunFrame)" % (
+                                 sp, off, want["size_offset"], want.get("size_source", "?")))
             if abs(r["SM_HeadSize_Cosmetic"] - want["head_size_multiplier"]) > TOL:
                 fails.append("%s head size %.3f, def says %.3f" % (sp, r["SM_HeadSize_Cosmetic"],
                                                                    want["head_size_multiplier"]))
