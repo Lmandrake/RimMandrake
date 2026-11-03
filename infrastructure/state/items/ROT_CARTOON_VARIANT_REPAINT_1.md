@@ -26,7 +26,8 @@ replacements. Folders: `src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant
 Every folder above holds only painted variants (2-3 each) and `art.py guard worktree` is clean.
 
 ## verified 2026-11-03
-- `bash src/RimMandrake/TheRot/check_cartoon_variants_retired.sh` exit 0: none of the 23 retired cartoon
+- `python3 src/RimMandrake/TheRot/check_cartoon_variants_retired.py` exit 0 (no git or data root needed; blobs in
+  `cartoon_variants_retired.json`): none of the 23 retired cartoon
   blobs is live under any name; `art.py guard worktree` 0 unledgered. Later `_B`/`_C`/`_d`… files in these
   folders are owner sheet picks (d02fc874c7), e.g. Arpeau_B = the v3 Arpeau_p3b blob.
 - Contact sheet of all 42 live variants: all painted. One odd tile grid filed as VIOLETWIMPLE_TILEGRID_FIX_CAPS_ON_PARADE.

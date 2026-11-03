@@ -23,7 +23,8 @@ Used by `.claude/hooks/block_unledgered_texture.py` (PreToolUse on commit/publis
 by `infrastructure/githooks/pre-push` (via that hook's `--git-pre-push`). CLI for by-hand use:
 
     art_guard.py range <base>..<head>      check each non-merge commit in the range
-    art_guard.py worktree [<path>...]      check uncommitted PNG changes (default: all of src/)
+    art_guard.py worktree [<path>...]      check uncommitted PNG changes (default: all of src/); outside a git
+                                           checkout, check every PNG on disk against the folded ledger instead
 """
 from __future__ import annotations
 
@@ -496,6 +497,49 @@ def worktree_changes(cwd, paths: list[str] | None = None) -> list[tuple[str, str
     return rows
 
 
+def _in_git(cwd) -> bool:
+    try:
+        return _git(cwd, "rev-parse", "--is-inside-work-tree").strip() == "true"
+    except (RuntimeError, OSError):
+        return False
+
+
+def disk_vs_ledger(cwd, idx: L.Index, paths: list[str] | None = None) -> list[tuple[str, str]]:
+    """No git (a clean export): [(path, why)] for every texture slot under `paths` whose bytes on disk differ from
+    the folded ledger — a PNG the ledger never recorded, other bytes than the ledger's live sha, or a retired slot
+    still on disk. The same agreement check_tree makes for a pushed rev, made on the files themselves."""
+    root = Path(cwd)
+    roots = [root / p for p in (paths or ["src/"])]
+    def inside(rel: str) -> bool:
+        f = (root / rel).resolve()
+        return any(f == r.resolve() or r.resolve() in f.parents for r in roots)
+    disk = {}
+    for r in roots:
+        for f in ([r] if r.is_file() else sorted(r.rglob("*.png")) if r.is_dir() else []):
+            rel = f.relative_to(root).as_posix()
+            if is_texture_png(rel):
+                disk[rel] = L.sha256_file(f)
+    want = {}
+    for k in set(idx.live) | set(idx._retired):
+        rel = f"{k[0]}/Textures/{k[1]}"
+        if rel in disk or inside(rel):
+            want[rel] = expected_at(idx, k)[1]
+    out = []
+    for rel in sorted(set(disk) | set(want)):
+        got, sha = disk.get(rel), want.get(rel, "?")
+        if got == sha:
+            continue
+        if sha == "?":
+            out.append((rel, "no art-ledger record for this file"))
+        elif sha is None:
+            out.append((rel, f"the ledger retired this slot but the file is on disk ({got[:12]})"))
+        elif got is None:
+            out.append((rel, f"the ledger records {sha[:12]} live here but there is no such file"))
+        else:
+            out.append((rel, f"the ledger records {sha[:12]} live here but the file holds {got[:12]}"))
+    return out
+
+
 def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if not argv or argv[0] not in ("range", "worktree"):
@@ -508,8 +552,12 @@ def main(argv=None) -> int:
         for c, p, why in bad:
             print(f"UNLEDGERED {c[:10]} {p}: {why}")
     else:
-        ch = worktree_changes(cwd, argv[1:] or None)
-        bad = [("worktree", p, why) for p, why in check(ch, L.read_events())]
+        if _in_git(cwd):
+            ch = worktree_changes(cwd, argv[1:] or None)
+            bad = [("worktree", p, why) for p, why in check(ch, L.read_events())]
+        else:                       # a clean export has no HEAD to diff against: judge the files against the ledger
+            print("art guard: not a git checkout - comparing files on disk with the folded art ledger")
+            bad = [("disk", p, why) for p, why in disk_vs_ledger(cwd, L.Index(), argv[1:] or None)]
         for _c, p, why in bad:
             print(f"UNLEDGERED {p}: {why}")
     print(f"art guard: {len(bad)} unledgered texture change(s)")

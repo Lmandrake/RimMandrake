@@ -1,0 +1,140 @@
+{
+ "_doc": "ROT_CARTOON_VARIANT_REPAINT_1: the 23 cartoon Graphic_Random variants retired through the art ledger (sha256 of the bytes each commit deleted). check_cartoon_variants_retired.py refuses any of these bytes on disk under any name. A retired NAME may hold new bytes only if listed in reoccupied and the art ledger records those bytes live there.",
+ "retired": [
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Arpeau/Arpeau_B.png",
+   "sha256": "44c407aae6de9bc1314f9bb37194a3ba5381fb0b0d832e438cd9ab38b3159bdf",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/BleedingTooth/BMT_BleedingToothA.png",
+   "sha256": "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/BleedingTooth/BMT_BleedingToothB.png",
+   "sha256": "62d8fe6323a53d157029e16626f6d171ecd5e8ece0877ea729c47c39de82c160",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell/Brightbell_B.png",
+   "sha256": "05eb469ad8f94d83ba00ed9e68933e52fd63e8517ea6e45e895e8c339dad522a",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell/Brightbell_C.png",
+   "sha256": "aed2516c8e7bb5bfe049ead85bab2fd256eb6500965d991f47ad4b81a14b2464",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/MortalMorel/CavernalMorel_A.png",
+   "sha256": "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/MortalMorel/CavernalMorel_B.png",
+   "sha256": "987f1bdc0cb71bd76934887a3ac60ed9d3abc2f5b009a1d19665313990f90db6",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Nuitae/Nuitae_B.png",
+   "sha256": "6df316683965e7beb9381b6d77460863da06ad7ad9a814fffcbc9d18855ac05b",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Seadew/BMT_SeadewA.png",
+   "sha256": "1fa62377db397ce41e67996bbc7d1c38916bf44b21e1f7cab5c70c74ad76ac73",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Seadew/BMT_SeadewB.png",
+   "sha256": "c4a221c1ab2283e7e47b61afd3ebd62d42e715e274dbd8381c78e1e0c5d3d449",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Seadew/BMT_SeadewC.png",
+   "sha256": "77b598ace62f531f746c41354633fbc5327ca4915bd0a8d6a9730e0d6fd7a167",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Seadew/BMT_SeadewD.png",
+   "sha256": "d3e5eba1323b4b0c9a738228bff4c0765952d5500146726d3175ae3b8b759300",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Shinecap/ShinecapGrown/ShinecapGrown_b.png",
+   "sha256": "1b8b2e431ec66480feaae42150ab90610b74742a35dad405aba4bcff36ffbff1",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/VioletWimple/BMT_VioletWimpleA.png",
+   "sha256": "cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/VioletWimple/BMT_VioletWimpleB.png",
+   "sha256": "dd92e3f0fd219500f3d5c886d30fa9fd09f75716910d5756ef30b8f4ea26c4d4",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Wrinklecap/Wrinkle1.png",
+   "sha256": "e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Wrinklecap/Wrinkle2.png",
+   "sha256": "13d6c262a5de12707932e5bceb419de4cc35c0bdbe41307ba106f313c3b43219",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Wrinklecap/Wrinkle3.png",
+   "sha256": "4184c3fc2da5bc3e223a50d4e3b8519961925d62d875ebf4761d99ddb4905c81",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Wrinklecap/Wrinkle4.png",
+   "sha256": "529c78524bef9726077fc1114a11c6b4f860f30a550ab482ddcde309f5fe6bb1",
+   "retired_in": "a8367a60de"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/ArpeauGreen/ArpeauGreen_A.png",
+   "sha256": "271f27f51bbde5884ca3f1fa6d6a6a58dee49278299e2fbc78daac7f0061bb53",
+   "retired_in": "1ac6e93480"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/ArpeauGreen/ArpeauGreen_B.png",
+   "sha256": "703a9ed42c71bbec46eb1e5ce49c4523d34592d1a01bd1c6c3054d393c52af42",
+   "retired_in": "1ac6e93480"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Shinecap/ShinecapImmature/ShinecapImmature_a.png",
+   "sha256": "ad33e3e9720c66ecc24f1ccffacbdc44f9b88125bd46c137c67a1e22e5d11ea9",
+   "retired_in": "1ac6e93480"
+  },
+  {
+   "path": "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Shinecap/ShinecapImmature/ShinecapImmature_b.png",
+   "sha256": "8eb3740e09422a717cdff5a76f79145fdcfc8c0fe850feee9543da04aa93668f",
+   "retired_in": "1ac6e93480"
+  }
+ ],
+ "reoccupied": {
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Arpeau/Arpeau_B.png": "owner sheet pick, The Rot sheet d02fc874c7 (same bytes as Arpeau_p3b)",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Nuitae/Nuitae_B.png": "owner sheet pick, The Rot sheet d02fc874c7",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Shinecap/ShinecapGrown/ShinecapGrown_b.png": "owner sheet pick, The Rot sheet d02fc874c7",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell/Brightbell_B.png": "TEXREGEN_STANDINS_INSTALL_RENDERS_WAITING bulk-accepted render, 51ac4eb1cb"
+ },
+ "folders": [
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Arpeau",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/ArpeauGreen",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/BleedingTooth",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/MortalMorel",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Nuitae",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Seadew",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Shinecap/ShinecapImmature",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/VioletWimple",
+  "src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Wrinklecap"
+ ],
+ "min_variants": 2
+}

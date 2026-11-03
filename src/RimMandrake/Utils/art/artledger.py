@@ -49,7 +49,6 @@ from datetime import datetime as _datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-STORE_DEFAULT = Path(rm_str("artstore"))
 
 
 def ledger_dir() -> Path:
@@ -57,7 +56,8 @@ def ledger_dir() -> Path:
 
 
 def store_dir() -> Path:
-    return Path(os.environ.get("ARTSTORE") or STORE_DEFAULT)
+    # resolved at call time: a ledger-only reader (art guard in a clean export, no data root) never needs the store
+    return Path(os.environ.get("ARTSTORE") or rm_str("artstore"))
 
 
 def src_root() -> Path:
