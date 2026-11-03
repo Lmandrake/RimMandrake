@@ -12,9 +12,10 @@ splice that removes one source from PotableReachable in memory; the check must g
 
 BEHAVIOUR (gen 3, blind checker's gaps): a presence check stays green when a branch returns false, a finder is
 tested `== null`, or the filter variable is bound to BreakOnly. So PotableReachable is also parsed into its statements
-and EVALUATED as a truth model: each finder is a source that is either in reach (non-null / true) or not, with
-drinkFromTerrain on. With exactly one source in reach it must return true, for every source; with none it must return
-false; and every finder's last argument must be RM_DrinkUse.Potable (literally or through a local bound to it). Any
+and EVALUATED as a truth model: each finder is a source that is either in reach (non-null / true) or not, run
+with drinkFromTerrain both on and off (gen 7). With exactly one source in reach it must return true, for every source
+JobGiver_RM_Drink would use under that setting (with it off, only the finders the drinker gates on it, i.e. terrain, drop
+out); with none it must return false; and every finder's last argument must be RM_DrinkUse.Potable (literally or through a local bound to it). Any
 statement or term the model does not understand fails. Mutants for each gap are applied in memory and must go RED.
 
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py
@@ -135,12 +136,12 @@ def parse_reach(block: str) -> tuple[dict[str, str], list[tuple[str, str]], str]
             i = j + 1
 
 
-def eval_term(term: str, inreach: set[str], local: dict[str, str], seen: list[str]) -> bool:
+def eval_term(term: str, inreach: set[str], local: dict[str, str], seen: list[str], terrain: bool) -> bool:
     term = term.strip()
     if term in ("true", "false"):
         return term == "true"
     if term == "RM_ThirstSettings.drinkFromTerrain":
-        return True
+        return terrain
     neg = term.startswith("!")
     if neg:
         term = term[1:].strip()
@@ -167,32 +168,43 @@ def eval_term(term: str, inreach: set[str], local: dict[str, str], seen: list[st
     return (not val) if neg else val
 
 
-def eval_expr(expr: str, inreach: set[str], local: dict[str, str], seen: list[str]) -> bool:
+def eval_expr(expr: str, inreach: set[str], local: dict[str, str], seen: list[str], terrain: bool) -> bool:
     if "||" in expr:
         raise ModelError(f"|| not modelled: {expr!r}")
-    return all([eval_term(t, inreach, local, seen) for t in _split_top(expr, "&&")])
+    return all([eval_term(t, inreach, local, seen, terrain) for t in _split_top(expr, "&&")])
 
 
-def run_model(block: str, inreach: set[str]) -> tuple[bool, list[str]]:
+def run_model(block: str, inreach: set[str], terrain: bool = True) -> tuple[bool, list[str]]:
     local, branches, final = parse_reach(block)
     seen: list[str] = []
     for cond, ret in branches:
-        if eval_expr(cond, inreach, local, seen):
+        if eval_expr(cond, inreach, local, seen, terrain):
             return ret == "true", seen
-    return eval_expr(final, inreach, local, seen), seen
+    return eval_expr(final, inreach, local, seen, terrain), seen
 
 
-def behaviour(reach: str, want: set[str]) -> list[str]:
-    """Each source alone in reach -> true; nothing in reach -> false."""
+def terrain_gated(giver: str) -> set[str]:
+    """The finders JobGiver_RM_Drink only calls with RM_ThirstSettings.drinkFromTerrain on (`drinkFromTerrain && X(`)."""
+    return set(re.findall(r"RM_ThirstSettings\.drinkFromTerrain\s*&&\s*" + FINDER.pattern, giver))
+
+
+def behaviour(reach: str, want: set[str], gated: set[str] | None = None) -> list[str]:
+    """For drinkFromTerrain on and off: each source the drinker would use alone in reach -> true; a source the
+    drinker gates on drinkFromTerrain, alone with it off -> false (it mirrors the drinker); nothing in reach -> false."""
     fails: list[str] = []
+    gated = gated or set()
     try:
-        none, _ = run_model(reach, set())
-        if none:
-            fails.append("model: PotableReachable is true with NO potable source in reach")
-        for src in sorted(want):
-            got, _ = run_model(reach, {src})
-            if not got:
-                fails.append(f"model: PotableReachable is false with only {src} in reach")
+        for terrain in (True, False):
+            tag = f"drinkFromTerrain={'on' if terrain else 'off'}"
+            none, _ = run_model(reach, set(), terrain)
+            if none:
+                fails.append(f"model ({tag}): PotableReachable is true with NO potable source in reach")
+            for src in sorted(want):
+                got, _ = run_model(reach, {src}, terrain)
+                expect = terrain or src not in gated
+                if got != expect:
+                    fails.append(f"model ({tag}): PotableReachable is {str(got).lower()} with only {src} in reach "
+                                 f"(JobGiver_RM_Drink would {'drink from it' if expect else 'not use it'})")
         _, seen = run_model(reach, set())
         for src in sorted(want - set(seen)):
             fails.append(f"model: {src} is never evaluated when nothing is in reach")
@@ -218,7 +230,10 @@ def check(salt_src: str, drink_src: str) -> list[str]:
         tail = reach[call.end():reach.find(")", call.end()) + 1]
         if not re.search(r"\bpotable\)", tail):
             fails.append(f"{call.group(1)} in PotableReachable is not filtered to Potable")
-    fails += behaviour(reach, want)
+    gated = terrain_gated(giver)
+    if gated != {"RM_ThirstUtility.TryFindDrinkCell"}:
+        fails.append(f"instrument: JobGiver_RM_Drink gates {sorted(gated)} on drinkFromTerrain (expected only TryFindDrinkCell)")
+    fails += behaviour(reach, want, gated)
     return fails
 
 
@@ -242,6 +257,12 @@ def main() -> int:
         ("faucet tested == null", r"(BestFaucet\([^;]*?\)\s*)!=(\s*null)", r"\1==\2"),
         ("filter bound to BreakOnly", r"(RM_DrinkUse\s+potable\s*=\s*)RM_DrinkUse\.Potable", r"\1RM_DrinkUse.BreakOnly"),
         ("bottle tested == null", r"(BestBottle\([^;]*?\)\s*)!=(\s*null)", r"\1==\2"),
+        # gen 7, blind checker: a non-terrain source gated on drinkFromTerrain stayed green while the model held it on.
+        ("faucet gated on drinkFromTerrain", r"return\s+(Building_RM_PipeFaucet\.BestFaucet\()",
+         r"return RM_ThirstSettings.drinkFromTerrain && \1"),
+        ("container gated on drinkFromTerrain", r"if\s*\(\s*(RM_ThirstContainerUtility\.BestContainer\()",
+         r"if (RM_ThirstSettings.drinkFromTerrain && \1"),
+        ("terrain ungated", r"RM_ThirstSettings\.drinkFromTerrain\s*&&\s*(RM_ThirstUtility\.TryFindDrinkCell\()", r"\1"),
     ]
     for label, pat, rep in mutants:
         broken, k = re.subn(pat, rep, salt, count=1)
