@@ -1903,43 +1903,6 @@
     <specialTrainable>true</specialTrainable>
     <enablesAbility>RSW_SW_AcidSpew</enablesAbility>
   </TrainableDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggTaozinUnFertilized</defName>
-    <label>taozin egg (unfert.)</label>
-    <description>An unfertilized taozin egg. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swresource/EggSilk</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(75,100,50)</color>
-      <drawSize>1.25</drawSize>
-    </graphicData>
-    <statBases>
-      <Nutrition>1.0</Nutrition>
-      <MarketValue>140.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggTaozinFertilized</defName>
-    <label>taozin egg (fert.)</label>
-    <description>A fertilized taozin egg. If all goes well, it should hatch into a baby taozin. It can be eaten raw, but it's much better cooked.</description>
-    <possessionCount>1</possessionCount>
-    <graphicData>
-      <texPath>swresource/EggSilk</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(75,100,50)</color>
-      <drawSize>1.25</drawSize>
-    </graphicData>
-    <statBases>
-      <Nutrition>1.0</Nutrition>
-      <MarketValue>140.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Taozin</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
   <ThingDef ParentName="WoolBase">
     <defName>RSW_WoolTaozin</defName>
     <label>taozin silk</label>

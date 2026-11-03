@@ -1,0 +1,4 @@
+# TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO: the split's defs resolve in the RUNNING game (SWBestiary + Cuisine + Abyss loaded).
+# Offline proof: python3 src/RimStarWars/SWBestiary/selftest_taozin_split.py
+live-mods: SWBestiary, Cuisine, Abyss, UtinniPatches
+live-proof L1: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/RSW_Taozin --has PawnKindDef/RSW_Taozin --has ThingDef/RSW_TaozinGrub --has PawnKindDef/RSW_TaozinGrub --has GenStepDef/RSW_GenStep_TaozinNest --has ThingDef/RSW_TaozinBrine --has ThoughtDef/RSW_DrankTaozinBrine --has HediffDef/RSW_TaozinBrineFortitude
