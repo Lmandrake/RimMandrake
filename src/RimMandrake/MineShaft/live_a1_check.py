@@ -271,12 +271,29 @@ def selftest():
     expect("committed DLL is gate-free and stamped", bad, [])
     if not good_mvid or len(good_mvid) != 36:
         fails.append("committed DLL MVID unreadable: %r" % good_mvid)
-    old = subprocess.run(["git", "-C", REPO, "show", PRE_RETIRE + ":src/RimStarWars/Armoury/Assemblies/JawaArmoury.dll"],
-                         capture_output=True, timeout=60).stdout
-    old_mvid, old_bad = committed_build(old, hashlib.sha256(old).hexdigest()) if old else (None, ["no old DLL"])
-    expect("pre-retirement DLL names the gate (probe can see)", any("still names" in b for b in old_bad), True)
+    # The stale-gate mutant is synthesised from the committed bytes so the proof needs no git history
+    # (a blind checker runs on a history-free export): a new MVID written into #GUID, and the retired type's
+    # name as the pre-retirement DLL spelled it, written literally so a drifted GATE constant goes red here.
+    raw = uuid.UUID(good_mvid).bytes_le if good_mvid else b""
+    expect("committed MVID bytes occur once", data.count(raw) if raw else 0, 1)
+    flipped = bytes(b ^ 0xFF for b in raw)
+    stale = data.replace(raw, flipped, 1) + b"\0RSW_MineShaftCanonGate\0" if raw else b""
+    old_mvid, old_bad = committed_build(stale, hashlib.sha256(stale).hexdigest()) if stale else (None, ["no mutant"])
+    expect("stale-gate mutant names the gate (probe can see)", any("still names" in b for b in old_bad), True)
     if not old_mvid or old_mvid == good_mvid:
-        fails.append("pre-retirement MVID %r should be readable and differ from %r" % (old_mvid, good_mvid))
+        fails.append("stale-gate mutant MVID %r should be readable and differ from %r" % (old_mvid, good_mvid))
+    # When history exists, the real pre-retirement DLL must read red too; without history this is a stated skip.
+    try:
+        real = subprocess.run(["git", "-C", REPO, "show", PRE_RETIRE + ":src/RimStarWars/Armoury/Assemblies/JawaArmoury.dll"],
+                              capture_output=True, timeout=60).stdout
+    except (OSError, subprocess.SubprocessError):
+        real = b""
+    if real:
+        r_mvid, r_bad = committed_build(real, hashlib.sha256(real).hexdigest())
+        expect("real pre-retirement DLL names the gate", any("still names" in b for b in r_bad), True)
+        expect("real pre-retirement MVID differs", bool(r_mvid) and r_mvid != good_mvid, True)
+    else:
+        print("SELFTEST SKIP real pre-retirement DLL: no git history here; the synthesised mutant stands in")
     expect("srchash mismatch goes red", _code(committed_build(data, "0" * 64)[1]), FAIL)
 
     ids = ["ludeon.rimworld", "brrainz.harmony"] + list(NEEDS)
