@@ -2,4 +2,4 @@
 # UNMEASURED and is restaged. Stager: the list ALSO needs Large Pawns (neku.largepawns, workshop 3777700657), a workshop
 # mod live-mods cannot name (it reads Mods/<folder>/About.xml); without it row large_pawns_footprint_bridge is UNMEASURED.
 live-mods: HugeThings, HugeThingsTestRaces
-live-proof A2: python3 src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py
+live-proof A2: python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null

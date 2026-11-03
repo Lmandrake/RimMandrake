@@ -214,15 +214,34 @@ def body(R, cells):
           "sites before=%d after T3 kill=%d after T2 kill=%d; %s; %s" % (n0, n1, n2, k3[:120], k2[:120]))
 
 
+NO_VERDICT = 2      # exit code: the proof never reached the game (not PASS 0, not FAIL 1); the live round reruns/restages
+
+
+def open_bridge():
+    """-> a connected RimBridge, or None after printing why. An unreachable bridge (WSL python3, no game, no log) is a
+    harness fact that says nothing about the mod, so the caller exits NO_VERDICT, never FAIL: two A2 'FAIL's
+    (2026-11-02T20:21Z, 2026-11-03T06:01Z) were this traceback exiting 1."""
+    from rimbridge_client import RimBridge, RimBridgeError, discover_from_log
+    try:
+        host, port, token = discover_from_log()
+        rb = RimBridge(host, port, token, timeout=180.0)
+        rb.connect()
+        return rb
+    except (RimBridgeError, OSError) as e:
+        print("UNMEASURED: the bridge could not be reached, no verdict (exit %d): %s" % (NO_VERDICT, str(e)[:400]), flush=True)
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--site", default="", help="first probe cell X,Z (default: map centre, then offsets)")
     ap.add_argument("--out", default=os.path.join(REPO, "Transient", "modcheck",
                                                   "titan_test_races_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     a = ap.parse_args()
-    from rimbridge_client import RimBridge, discover_from_log
-    host, port, token = discover_from_log()
-    with RimBridge(host, port, token, timeout=180.0) as rb:
+    rb = open_bridge()
+    if rb is None:
+        return NO_VERDICT
+    with rb:
         R = Run(rb, a.out)
         snap = dict((f, R.get(f)) for f in FIELDS)
         if any(v is None for v in snap.values()):

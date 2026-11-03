@@ -136,7 +136,7 @@ def live_mods_row():
         pid = ET.parse(about).getroot().findtext("packageId") if os.path.isfile(about) else None
         check("live-mods folder %s has a packageId" % m, bool(pid and pid.strip()), "read %r" % pid)
     check("proofs file names neku.largepawns for the stager", "neku.largepawns" in text.lower())
-    check("A2 proof line still parses with the live-mods header", R.proof_lines(text).get("A2", "").endswith("test_titan_footprint_live.py"),
+    check("A2 proof line still parses with the live-mods header", R.proof_lines(text).get("A2", "") == "python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null",
           "%r" % R.proof_lines(text))
 
 
@@ -151,7 +151,7 @@ def footprint_row():
     with open(LIVE_PROOFS, encoding="utf-8") as fh:
         a2 = [ln.split(":", 1)[1].strip() for ln in fh if ln.startswith("live-proof A2:")]
     check("live-proof A2 is one line running the six-row wrapper",
-          a2 == ["python3 src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py"], "%r" % a2)
+          a2 == ["python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null"], "%r" % a2)
     check("wrapper rows = runner's five + large_pawns_footprint_bridge",
           tuple(F.ROWS) == tuple(L.ROWS) + ("large_pawns_footprint_bridge",) and len(L.ROWS) == 5, "%r" % (F.ROWS,))
     spec_words = {"tiers": "tier", "corpse site": "corpse", "yield curve": "yield", "roof": "roof", "footprint": "footprint"}
@@ -196,6 +196,66 @@ def footprint_row():
     check("wrapper verdict: footprint UNMEASURED SITE (no Large Pawns) -> 1",
           F.verdict(rows[:-1] + [dict(id=F.FOOT, status="UNMEASURED", cls="SITE")]) == 1)
     check("wrapper verdict: a runner row missing -> 1", F.verdict(rows[1:]) == 1)
+
+
+def no_bridge_no_verdict():
+    """Gen 7: both live A2 'FAIL's (2026-11-02T20:21Z, 2026-11-03T06:01Z) were the proof itself: run as WSL python3 it cannot
+    reach the bridge (Windows loopback), the RimBridgeError went uncaught, exit 1 read as FAIL, and relentless_live reruns under
+    python.exe only on a non-PASS/FAIL code. Pins: the A2 line runs under python.exe (asserted in footprint_row); an unreachable
+    bridge makes BOTH scripts return NO_VERDICT (2), never 0 or 1, and never touches the result JSON."""
+    import tempfile
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
+    import rimbridge_client as C
+    import titan_test_races_live as L
+    import test_titan_footprint_live as F
+    check("NO_VERDICT is neither PASS 0 nor FAIL 1", L.NO_VERDICT not in (0, 1), "%r" % L.NO_VERDICT)
+    saved = (C.discover_from_log, C.RimBridge.connect, sys.argv, F.subprocess.call)
+
+    def refuse(self):
+        raise C.RimBridgeError("cannot reach the bridge from WSL (selftest probe)")
+    for label, patch in (("connect refused", lambda: setattr(C.RimBridge, "connect", refuse)),
+                         ("no bridge log", lambda: setattr(C, "discover_from_log",
+                                                           lambda *a, **k: (_ for _ in ()).throw(OSError("no log"))))):
+        C.discover_from_log, C.RimBridge.connect = saved[0], saved[1]
+        if label == "connect refused":
+            C.discover_from_log = lambda *a, **k: ("127.0.0.1", 1, "t")
+        patch()
+        with tempfile.TemporaryDirectory() as td:
+            out = os.path.join(td, "a2.json")
+            def run(main, argv):
+                sys.argv = argv
+                try:
+                    return main()
+                except Exception as e:                        # the pre-gen-7 shape: an uncaught traceback (exit 1)
+                    return "raised %s" % type(e).__name__
+            rc_inner = run(L.main, ["titan_test_races_live.py", "--out", out])
+            rc_outer = {}
+            for inner in (L.NO_VERDICT, 1):                   # the runner's own no-verdict, and a runner exit the wrapper must
+                F.subprocess.call = lambda *a, **k: inner      # follow with its own (refused) connect
+                try:
+                    rc_outer[inner] = run(F.main, ["test_titan_footprint_live.py", "--out", out])
+                finally:
+                    F.subprocess.call = saved[3]
+            check("%s: runner and wrapper both return NO_VERDICT" % label,
+                  rc_inner == L.NO_VERDICT and set(rc_outer.values()) == {L.NO_VERDICT},
+                  "inner %r outer %r" % (rc_inner, rc_outer))
+            check("%s: no result JSON written" % label, not os.path.exists(out))
+    C.discover_from_log, C.RimBridge.connect = saved[0], saved[1]
+    # a runner no-verdict must stop the wrapper BEFORE it connects: a live wrapper bridge would judge five absent rows as FAIL
+    opened, ob = [], L.open_bridge
+    L.open_bridge = lambda: opened.append(1) or (_ for _ in ()).throw(RuntimeError("wrapper connected"))
+    F.subprocess.call = lambda *a, **k: L.NO_VERDICT
+    try:
+        sys.argv = ["test_titan_footprint_live.py", "--out", os.path.join(tempfile.gettempdir(), "titan_nv_probe.json")]
+        try:
+            rc = F.main()
+        except RuntimeError as e:
+            rc = "raised %s" % e
+    finally:
+        L.open_bridge, F.subprocess.call = ob, saved[3]
+    check("runner no-verdict: wrapper returns NO_VERDICT without connecting", rc == L.NO_VERDICT and not opened,
+          "rc %r connected %r" % (rc, bool(opened)))
+    sys.argv = saved[2]
 
 
 def tier_floors():
@@ -269,6 +329,7 @@ def main():
     judges()
     footprint_row()
     live_mods_row()
+    no_bridge_no_verdict()
     n_ok = sum(1 for r in results if r)
     print("%d/%d PASS" % (n_ok, len(results)))
     return 0 if n_ok == len(results) and results else 1

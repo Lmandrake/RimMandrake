@@ -1,10 +1,11 @@
 """test_titan_footprint_live.py -- A2's whole live proof for TITANIC_BODYSIZE_TEST_RACE_1: the five rows of
 titan_test_races_live.py, then the sixth row the item's spec names and that runner does not drive, the Large Pawns footprint.
 
-  python3 src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py [--site X,Z] [--out FILE]
+  python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py [--site X,Z] [--out FILE]
 
 LIST: Huge Things + Huge Things Test Races + Large Pawns (neku.largepawns, workshop 3777700657) + Harmony, all five DLC.
-Exit 0 only when every one of ROWS (the runner's five plus large_pawns_footprint_bridge) is PASS or a MOD-classified FAIL; 1 else.
+Exit 0 only when every one of ROWS (the runner's five plus large_pawns_footprint_bridge) is PASS or a MOD-classified FAIL; 2 (no verdict)
+when the bridge cannot be reached; 1 else.
 
 R6 large_pawns_footprint_bridge, existing bridge tools only (no new C#):
   * jawa/mod_settings_field LargePawns.Settings size2Min/size3Min/size4Min -- LargePawnsBridge.TryReconcile must have pushed our
@@ -131,6 +132,9 @@ def main():
     except subprocess.TimeoutExpired:
         rc = None
         print("five-row runner timed out and was killed: its settings restore may not have run", flush=True)
+    if rc == L.NO_VERDICT:                                      # the runner never reached the game: its five rows are not FAILs
+        print("five-row runner exit %d: no verdict for A2" % rc, flush=True)
+        return L.NO_VERDICT
     prior = []
     if rc in (0, 1):
         try:
@@ -138,9 +142,10 @@ def main():
                 prior = json.load(fh).get("rows") or []
         except (OSError, ValueError):
             prior = []
-    from rimbridge_client import RimBridge, discover_from_log
-    host, port, token = discover_from_log()
-    with RimBridge(host, port, token, timeout=180.0) as rb:
+    rb = L.open_bridge()
+    if rb is None:
+        return L.NO_VERDICT
+    with rb:
         R = L.Run(rb, a.out)
         R.rows = list(prior)
         mi = R.call("jawa/map_info")
