@@ -165,6 +165,9 @@ check("A13 ring grew past capacity", "A13", dict(d13, after=dict(a, retained={"i
 check("A13 status/journal disagree", "A13", dict(d13, journal={"overwritten": 59, "oldestRetainedSeq": 70}), 1)
 check("A13 counter inflated (journal repeats it)", "A13", dict(d13, after=dict(a, evictions={"incidents": 61}),
                                                           journal={"overwritten": 61, "oldestRetainedSeq": 70}), 1)
+check("A13 oldest seq did not advance", "A13", dict(d13, journal={"overwritten": 60, "oldestRetainedSeq": 5}), 1)
+check("A13 oldest seq went backwards", "A13", dict(d13, journal={"overwritten": 60, "oldestRetainedSeq": 3}), 1)
+check("A13 oldest seq missing", "A13", dict(d13, journal={"overwritten": 60}), 1)
 check("A13 status unreadable", "A13", {"before": {}, "after": {}, "calls": 0, "why": "x"}, 2)
 
 # every clause has a gatherer and a verdict
