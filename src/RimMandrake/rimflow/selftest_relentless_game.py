@@ -205,6 +205,19 @@ def t_not_owed_returns():
     x.done()
 
 
+def t_refused_proof_returns_offline():
+    """OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: a line the live lane would refuse goes back at implement, no live row."""
+    x = rig(1)
+    x.w.proofs[("I0", ".txt")] = 'live-proof A2: python.exe "$(wslpath -w src/RimMandrake/Utils/x.py)" < /dev/null\n'
+    to_game(x, "I0")
+    x.tick()
+    st = x.st("I0")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "game_contract" and "at run time" in st["last_fail"]["detail"]
+       and "A2" in st["last_fail"]["detail"], "a $-built live-proof line goes back to a worker before any live run")
+    ok(not x.w.rows, "and writes no live run row")
+    x.done()
+
+
 def t_gate():
     st = {"game": {"sha": "s2", "offline_green": {"sha": "s1"}}, "contract": {"game": {"clauses": ["A2"]}}}
     fl = r"\b(flight|flying)\b"
@@ -759,7 +772,7 @@ def t_owed_final_joins_the_clauses():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,

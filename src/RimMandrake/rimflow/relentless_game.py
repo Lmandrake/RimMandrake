@@ -504,6 +504,16 @@ def step(store, fx, r, item, now, acts, sup):
         # a GREEN-FULL clause the criteria file owes with a proof line joins the game clauses (a contract written before
         # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS names only the small ones), or the item would wait on it forever
         lines = proof_lines(fx.proofs_at(item, sha))
+        # the live lane refuses a line bash builds at run time or one that mutates the game; caught here it costs a
+        # worker round, caught there a live run that measures nothing (OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: 5 of 40)
+        import relentless_live
+        lr = relentless_live.live_rules(r)
+        bad = [(k, relentless_live.refused_proof(lr, led.get("title"), "", lines[k])) for k in sorted(lines)
+               if k in led["owed"]]
+        bad = [(k, w) for k, w in bad if w and not w.startswith("flyer:")]     # a flyer is put down, not sent back
+        if bad:
+            return _back(store, fx, sup, r, item, "game_contract", "; ".join(
+                "%s/%s.txt %s: %s" % (PROOFS_DIR, item, k, w) for k, w in bad), now, acts)
         finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
         _save(store, item, lambda s: s["game"].update(phase="prove", clauses=list(s["game"]["clauses"]) + finals))
         acts.append({"do": "game_implemented", "item": item, "sha": sha})
