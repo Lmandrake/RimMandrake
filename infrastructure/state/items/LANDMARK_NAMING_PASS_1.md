@@ -1,66 +1,33 @@
-
 ## Source
 Review B2 (`design/Jawa/worldbuilding/review/WORLDMAP_FINAL_REVIEW_2026-09-08.md`
-line ~154): 32 landmark names appear on 2+ landmarks (74 dupe rows total); "Dead
-Sarlacc" x7 worst. Corrective: hand-name the ~15 that matter, let a namer-variety
-pass cover the rest. Cost estimate: "an hour of naming, the fun kind."
+line ~154): landmark names reused on 2+ landmarks, "Dead Sarlacc" x7 worst.
+Corrective: hand-name the ones that matter in faction/region voice, variety for the rest.
 
-## Rename tool — EXISTS, source-committed, NOT YET DEPLOYED
-`jawa/world_landmark_rename` was built this session:
-`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLandmarkNameTool.cs`
-(commit d502e2e3, confirmed an ancestor of current HEAD). `Landmark.name` is a
-plain public scribed string (`Source/RimWorld/Landmark.cs:9`) — the write is
-durable in the save, no world_commit needed (labels redraw per frame).
-Deploy status: the currently-deployed companion DLL was built from commit
-5ed3e2a1 (2026-09-09 07:13), which PREDATES d502e2e3 (23:49) — so the live
-game does not yet expose this tool. This rides the same already-planned
-game-down deploy as `BRIDGETOOLS_DLL_GM_DRIFT_1` (rebuild with `--gm --apply`
-picks up both). Not a separate deploy problem — just not yet actionable
-because the game is up.
+## Done 2026-11-03 — offline, in the canonical start save
+The world was remade after the 09-09 pass, so its 18-row list was stale: only the seven
+Dead sarlacc tiles (1837, 2462, 2463, 2468, 15623, 15905, 20456) survived; the other rows'
+tiles carry unique names now. The list was deleted. Measured on
+`ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` (canon.yml `planet.start_savegame`):
+3008 landmarks, 24 names held by 2+ landmarks (56 rows), and tile 2403's `RUT_GapingDoom`
+named "Asonistia City" (its def's `NamerLandmark_Ruins` rolled a city name at the remake).
 
-## The ~15/16/18 that matter — NAMED, not yet applied
-`infrastructure/state/items/LANDMARK_NAMING_PASS_1.names.md` (commit 0fdb4990,
-fork product) hand-names 18 landmarks (6 Dead Sarlacc dupes across 3 regional
-voices + Sunmouth + Bad Investment + Old Drywell, plus cavern/karst/scar/ruins/
-vent pairs) in faction/region voice, one holder of each duplicated name kept as
-the "senior/central" instance. Tile reserved for The Gaping Doom
-(`GAPING_DOOM_SITE_1`) is explicitly excluded here. Owed: owner skim of the
-name list, then apply via the rename tool once deployed + world_commit + save
-(batch this with GAPING_DOOM_SITE_1's placement and OASIS_LANDMARK_PLACEMENT_1
-— all three are bridge-write items queued for the same session per
-GAPING_DOOM_SITE_1's note).
+- **Route:** `Landmark.name` is a plain scribed string, so the rename is an offline text
+  edit of one `<name>` element, no live game: `src/RimMandrake/Utils/landmark_rename_save.py`
+  (every row guarded by tile + def + old name; plans and verifies all saves before writing any;
+  backup `<save>.bak-pre-<tag>`). The live tool `jawa/world_landmark_rename` still exists for a
+  running game.
+- **Table:** `infrastructure/state/items/LANDMARK_NAMING_PASS_1.renames.json`, 33 rows: The
+  Gaping Doom, six Dead sarlacc in regional voice (15623 keeps the name), and one row per extra
+  holder of the other 23 names, named from the tile's region in `world/ASHKARR_WORLDMAP_tiles.csv`.
+  The first holder of each name keeps it. Delegated: naming (not on delegation_policy.md §2).
+- **Applied** to the Saves file and its repo copy `world/` (both sha256 `cfeb45446ff2f188…`);
+  only those 33 lines changed. Backups: `Saves\…R3.rws.bak-pre-landmark-names-2026-11-03` and
+  `D:\ClaudeWork\backups\saves_pre_landmark_names_2026-11-03\`.
+- **Proof:** `python3 src/RimMandrake/Utils/landmark_names_check.py` exits 0: both copies
+  identical, no name held twice, 2403 = The Gaping Doom, every table row reads back.
 
-## Namer variety for the remaining ~14 — NO MECHANISM EXISTS, checked
-Investigated whether the repo (or vanilla/DLC) has a namer convention that
-could auto-vary the rest without hand-authoring. Found vanilla Odyssey DOES
-have a per-instance procedural namer for its own landmark types
-(`RulePacks_Namers_Landmarks.xml` — `NamerLandmark_Oasis`, `_Lake`, `_Pond`,
-etc., resolved via GrammarResolver at generation time). But the actual
-offender, `sw_DeadSarlacc` (workshop mod 3497316713,
-`Defs/ThingDefs_Buildings/SW_Buildings_Natural.xml:319`), carries a bare
-static `<label>dead Sarlacc</label>` with no namer RulePack reference at all —
-every instance is the literal ThingDef label, not a generated name. Same
-appears true of the other reused defs in the review (Cavern, VEE_Cenotes,
-TerraformingScar, Ruins, AncientHeatVent — all fixed-label modded LandmarkDefs).
-**There is no automated "namer variety" route** — grepped the repo for any
-namer/RulePack tooling under our own tools (`src/RimMandrake/Utils/`,
-`bridgetools/`) and found none for landmarks specifically (settlement namers
-exist, e.g. `DV_NamerSettlementOutlanderBuzzer`, but nothing wired to
-landmarks). Giving the remaining ~14 duplicate groups variety means hand
-names via the same rename tool — i.e. the "fun/cheap" half of B2 is not
-actually cheaper than the "matters" half; it's the same mechanism, lower
-stakes per name. Left undone this pass per the owner's standing rule against
-inventing lore names ungrounded in an existing doc — this batch doesn't have
-one. Next agent: either get the owner to skim/approve names for these too, or
-treat "namer variety" as "good enough with the tool once it's live and nobody
-minds duplicates outside the ~18 that got individual treatment."
-
-## Owed
-1. Deploy the companion DLL (rides `BRIDGETOOLS_DLL_GM_DRIFT_1`'s already-owed
-   game-down window: `taskkill` → `build.py --gm --apply` → restart).
-2. Owner skim of `LANDMARK_NAMING_PASS_1.names.md`'s 18 names.
-3. Apply the 18 renames live via `jawa/world_landmark_rename`, batched with
-   `GAPING_DOOM_SITE_1` (tile 2403 placement + name) and
-   `OASIS_LANDMARK_PLACEMENT_1` in one bridge session.
-4. Decide (owner) whether the remaining ~14 duplicate groups get hand names
-   too, or stay as-is — no procedural fallback exists to fall back on.
+## Left for later
+- A running game that already has R3 loaded holds the old names in memory; saving it over R3
+  would undo this. Load R3 fresh before any re-save.
+- The final repaint (`BIOME_PAINT_ONCE_AT_THE_END_1`) saves a new start; if it is not built on
+  this R3, rerun the tool with the same table (its guards refuse any tile that changed).

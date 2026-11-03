@@ -168079,7 +168079,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Red Caverns</name>
+							<name>The Spore Cellars</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -168663,7 +168663,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Icychin Tunnel</name>
+							<name>Capwood Tunnel</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -168751,7 +168751,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Earl's Caves</name>
+							<name>The Mould Warrens</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -168827,7 +168827,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Rama Cavern</name>
+							<name>Sootreach Cavern</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -168875,7 +168875,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Emily's Caves</name>
+							<name>The Sandswallow Caves</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -168979,7 +168979,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Earl's Caves</name>
+							<name>Blindwood Undercaves</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -169099,7 +169099,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Eli's Caves</name>
+							<name>Rimewall Ice Caves</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -169283,7 +169283,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Yuuka's Caves</name>
+							<name>The Lampless Caves</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -169627,7 +169627,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Vince's Caves</name>
+							<name>Sporefield Hollows</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -169823,7 +169823,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Virgil's Caves</name>
+							<name>The Twilight Gullet</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -169835,7 +169835,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cavern</def>
-							<name>Lousa Cave Network</name>
+							<name>The Silk Galleries</name>
 						</li>
 						<li>
 							<def>Cavern</def>
@@ -171036,7 +171036,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Cliffs</def>
-							<name>White Cliffs</name>
+							<name>Coldstone Bluffs</name>
 						</li>
 						<li>
 							<def>Cliffs</def>
@@ -172832,7 +172832,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Oasis</def>
-							<name>White Oasis</name>
+							<name>Weeping Spring</name>
 						</li>
 						<li>
 							<def>Oasis</def>
@@ -173024,7 +173024,19 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>RSW_DeadSarlacc</def>
-							<name>Dead sarlacc</name>
+							<name>Sunmouth</name>
+						</li>
+						<li>
+							<def>RSW_DeadSarlacc</def>
+							<name>The Elder Mouth</name>
+						</li>
+						<li>
+							<def>RSW_DeadSarlacc</def>
+							<name>The Choked Mouth</name>
+						</li>
+						<li>
+							<def>RSW_DeadSarlacc</def>
+							<name>The Open Mouth</name>
 						</li>
 						<li>
 							<def>RSW_DeadSarlacc</def>
@@ -173032,23 +173044,11 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>RSW_DeadSarlacc</def>
-							<name>Dead sarlacc</name>
+							<name>Old Drywell</name>
 						</li>
 						<li>
 							<def>RSW_DeadSarlacc</def>
-							<name>Dead sarlacc</name>
-						</li>
-						<li>
-							<def>RSW_DeadSarlacc</def>
-							<name>Dead sarlacc</name>
-						</li>
-						<li>
-							<def>RSW_DeadSarlacc</def>
-							<name>Dead sarlacc</name>
-						</li>
-						<li>
-							<def>RSW_DeadSarlacc</def>
-							<name>Dead sarlacc</name>
+							<name>The Bad Investment</name>
 						</li>
 						<li>
 							<def>RSW_Sarlacc</def>
@@ -173344,7 +173344,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>RUT_ComplexStructures</def>
-							<name>Gorar Town</name>
+							<name>Ashfall Works</name>
 						</li>
 						<li>
 							<def>RUT_ComplexStructures</def>
@@ -173384,7 +173384,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>RUT_GapingDoom</def>
-							<name>Asonistia City</name>
+							<name>The Gaping Doom</name>
 						</li>
 						<li>
 							<def>Ruins</def>
@@ -173832,7 +173832,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Ruins</def>
-							<name>Purple Ruins</name>
+							<name>The Rusted Nave</name>
 						</li>
 						<li>
 							<def>Ruins</def>
@@ -174372,7 +174372,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>TerraformingScar</def>
-							<name>The Grand Howl</name>
+							<name>The Salt Howl</name>
 						</li>
 						<li>
 							<def>ToxicLake</def>
@@ -174488,7 +174488,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>VEE_Cenotes</def>
-							<name>Cervexa Water-Filled Cenotes</name>
+							<name>Blindwood Sinkwells</name>
 						</li>
 						<li>
 							<def>VEE_Cenotes</def>
@@ -175000,7 +175000,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>VEE_Cenotes</def>
-							<name>Rego Cenote Field</name>
+							<name>The Starlit Wells</name>
 						</li>
 						<li>
 							<def>VEE_Cenotes</def>
@@ -175008,7 +175008,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>VEE_Cenotes</def>
-							<name>Colmea Collapsed Limestone Pools</name>
+							<name>Ashwood Frozen Pools</name>
 						</li>
 						<li>
 							<def>VEE_Cenotes</def>
@@ -176754,7 +176754,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>VEE_JaggedRocks</def>
-							<name>Teresa's Jagged Rocks</name>
+							<name>The Verge Teeth</name>
 						</li>
 						<li>
 							<def>VEE_JaggedRocks</def>
@@ -177518,7 +177518,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>VEE_SerpentineCanyons</def>
-							<name>Black Canyons</name>
+							<name>The Webbed Coils</name>
 						</li>
 						<li>
 							<def>VEE_StagnantRivulet</def>
@@ -178286,7 +178286,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Valley</def>
-							<name>Orange Gully</name>
+							<name>Hanging Wood Gully</name>
 						</li>
 						<li>
 							<def>Valley</def>
@@ -178482,7 +178482,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Valley</def>
-							<name>Green Gully</name>
+							<name>Anvil Gully</name>
 						</li>
 						<li>
 							<def>Valley</def>
@@ -178586,7 +178586,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Valley</def>
-							<name>Gray Gully</name>
+							<name>Dew Horn Gully</name>
 						</li>
 						<li>
 							<def>Valley</def>
@@ -178742,7 +178742,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Valley</def>
-							<name>Green Gully</name>
+							<name>Glowmoss Gully</name>
 						</li>
 						<li>
 							<def>Valley</def>
@@ -178826,7 +178826,7 @@ We are saved by what we salvage.</descriptionTemplate>
 						</li>
 						<li>
 							<def>Valley</def>
-							<name>Green Gully</name>
+							<name>Hush Gully</name>
 						</li>
 						<li>
 							<def>Valley</def>

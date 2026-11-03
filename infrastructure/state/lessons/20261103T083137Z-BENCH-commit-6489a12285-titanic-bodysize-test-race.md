@@ -1,0 +1,1 @@
+Commit 6489a12285 (TITANIC_BODYSIZE_TEST_RACE_1) added items/STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF.md and items/TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS.md with no ledger row in any events shard, so selftest_items_glob_live real_glob_is_clean is red on main (seen 2026-11-03 by LANDMARK_NAMING_PASS_1). File through rimflow file, never by writing items/*.md alone.

@@ -22,8 +22,8 @@ a different reason: not writing test noise into the real, append-only ledger).
 This test never writes anything, so reading the real ledger is safe.
 
 ⚠️ One narrow, general exception: a COMPANION file for a still-live item, named
-`<LIVE_ITEM_ID>.<suffix>.md` (e.g. `LANDMARK_NAMING_PASS_1.names.md`, a rename
-table cited by the live `LANDMARK_NAMING_PASS_1.md`). It carries no ledger row of
+`<LIVE_ITEM_ID>.<suffix>.md` (e.g. a rename table
+`<ID>.names.md` cited by the live `<ID>.md`). It carries no ledger row of
 its own and never will — the parent item's row covers it. Recognised generically
 (prefix before the first `.` must itself be a live item), not by a hardcoded
 filename, so a second such companion file does not need this test edited.
@@ -54,7 +54,7 @@ def check(items_dir=None):
             continue
         # companion-file exception: <live-item-id>.<suffix>.md
         prefix = stem.split(".", 1)[0]
-        parent = state.items.get(prefix) if prefix != stem else None
+        parent = state.items.get(prefix) if prefix != stem and it is None else None
         if parent is not None and parent.state not in TERMINAL:
             ok.append(stem)
             continue

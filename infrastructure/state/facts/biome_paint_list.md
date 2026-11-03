@@ -16,7 +16,7 @@ deleting the 25 frozen `RUT_` twins, which carry 0 dev-world tiles.
 **Provenance.**
 - **Tiles** — MEASURED 2026-11-01 with `python3 src/RimMandrake/Utils/remake/repaint_biomes.py census` on the dev
   start `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` (sha256 prefix `2c6525bcc357f2eb`, the same bytes as
-  `Saves\` today), decoded against the dump `DefDump\captures\2026-10-28T23-26-38Z`. The histogram equals the
+  `Saves\` then; the 2026-11-03 landmark rename changed only landmark names, not a tile), decoded against the dump `DefDump\captures\2026-10-28T23-26-38Z`. The histogram equals the
   2026-10-21 census in the plan's §1a, tile for tile. The fingerprints differ (save 325 mods `f1c87543b447bab6`,
   dump 321 `e67d6d9c5d2548de`), but a shortHash depends only on the defName: 25 of 27 hashes resolve, and the two that
   do not, 18404 and 21915, are `short_hash_raw("RM_Wasteland")` and `short_hash_raw("RM_NightsideIce")`

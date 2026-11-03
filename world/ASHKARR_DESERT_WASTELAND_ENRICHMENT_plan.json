@@ -1563,7 +1563,7 @@
   "links_csv": "world/ASHKARR_PARITY_U4_links_mouthfirst_2026-10-20.csv",
   "mutator_capture": "2026-11-02T17-59-18Z",
   "save": "world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
-  "save_sha256": "2c6525bcc357f2ebc17ed8cb1d7ea98315eb945967b410d90563f70db1be6a18",
+  "save_sha256": "cfeb45446ff2f1880b52379f7265a938f8e7697cf66f565d80a34075767f57b3",
   "tiles_csv": "world/ASHKARR_WORLDMAP_tiles.csv"
  },
  "item": "BIOME_ENRICHMENT_DESERT_WASTELAND_1",
