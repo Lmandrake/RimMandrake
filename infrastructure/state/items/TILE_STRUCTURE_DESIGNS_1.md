@@ -65,7 +65,7 @@ directly):
   `design/Jawa/templates/podracer_wreck.lua`. No "podracer engine"
   ThingDef exists in the stack (verified against the live dump, not
   guessed) — uses `AncientPodCar` (this project's own existing
-  `PodCarIsLandspeeder.xml` reskin) as the one intact centerpiece plus
+  `AncientJunk_StarWarsReskin.xml` reskin) as the one intact centerpiece plus
   vanilla `ChunkSlagSteel`/`Steel` scatter. `lint`: 0 findings. `verify`:
   3/3 defNames found.
 - **The Hunting Lodge** (row 12, RSW) —

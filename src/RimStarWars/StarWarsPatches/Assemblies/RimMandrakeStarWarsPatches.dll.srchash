@@ -1,0 +1,7 @@
+# project: RimStarWars/StarWarsPatches/Source/StarWarsPatches/RSW_StarWarsPatches.csproj
+# dll: 843a7040e50d16164bf6d8b39682a4fdff9e511f4cd0a3c36298ba64eb08c74e
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
+574a9fa97d724a5984d829bc09f1caff62443d699e31bb78a2915256845f3a42 RSW_PatchOperationStarWarsPatchesSetting.cs
+9e399d7b188cfa4af0782b865607369125cc507eb746b74063ca9abb6e20a386 RSW_JunkReskinProof.cs
+c7bdd752da410ae36aec4a6060265d5df2848ea93c3784570b35cce5738241b8 RSW_StarWarsPatchesSettings.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs

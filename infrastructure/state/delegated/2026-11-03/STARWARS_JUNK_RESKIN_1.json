@@ -1,0 +1,3119 @@
+{
+ "judge_model": "claude-opus-5-5 (Relentless worker, not the maker: renders are codex imagegen output)",
+ "brief": "design/RimMandrake/art_judge_brief.md@da77891a76",
+ "subject": "STARWARS_JUNK_RESKIN_1 (24 vanilla ancient-junk ThingDefs)",
+ "method": "contact sheet per def on a sand ground at ~270px/tile; renders recovered from codex raw outputs (D:\\ClaudeWork\\rimmandrake\\junk_reskin\\recover.py)",
+ "install_rule": "one picture per variant slot: take A when KEEP, else take B (two takes of one canon subject add weight, not variety)",
+ "verdicts": [
+  {
+   "picture": "8959c78d03c643e423a8d412c606bb025516a9b6128d84b3042f6bc97a0fad51",
+   "job": "RSW_Junk_AncientAPC_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d51ba066e1662df354bb23daa95550cf9598efff1ee550ad28d71effeb6eb24b",
+   "job": "RSW_Junk_AncientAPC_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4edbd5d509c8677aeacda1004461ef1b01f65113d240d26934579f03fa5aaa16",
+   "job": "RSW_Junk_AncientAPC_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d3f69598b873181b4017495cbc6741fcf081068118c499c41682ecb5a385ae7a",
+   "job": "RSW_Junk_AncientAPC_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "34ecdd38be3c7e941578dd047da4d4ad947bc1777c659af05d4891d6f46716c1",
+   "job": "RSW_Junk_AncientAPC_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3feee29d67d3736ae8e378dcff7aca861d8c3c08c90b38ea640099d1e1c30968",
+   "job": "RSW_Junk_AncientAPC_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b8e2c90f3dc9c392e5346f1c7722afb879f87632270265e29a1b112e767c02b7",
+   "job": "RSW_Junk_AncientAPC_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "06535748385f6dbf1b2806c5abf8524828f7ce255c28e34bf2699a8cbd7d4f74",
+   "job": "RSW_Junk_AncientAPC_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b2c01e295f9667770c4d1a8088a8bf4069274e715504a8fd15dda9cb110aa9a3",
+   "job": "RSW_Junk_AncientAPC_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c30a72db24f50ffaa4793608417d3e67c17608a820e6a6ac8021448daf20f79b",
+   "job": "RSW_Junk_AncientAPC_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "dc43ab5abee65e19301cb0ca3bb541b5fddb9b547c2ae68f9641808ef067b6f4",
+   "job": "RSW_Junk_AncientAPC_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientAPC_07",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 13.94 n=1)"
+  },
+  {
+   "picture": "afb29ddc496599ba9d8cd1a2f17d6e302a753bffa88f44012bc7be3d4093dfcc",
+   "job": "RSW_Junk_AncientAPC_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "285ea83fe4dd7a9ae7f81254298dcce468a6add90676d20c6608440e82069d9e",
+   "job": "RSW_Junk_AncientDropshipEngine_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1a9d546745932b9b8938a6330e8dd7da5ca392cfe7d3ff7216ea8033ea64de04",
+   "job": "RSW_Junk_AncientDropshipEngine_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5108ff41730a684ced49a87306966489bbddc40f9ca219b458823146297e23c7",
+   "job": "RSW_Junk_AncientDropshipEngine_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "a1105d2f11adc13b1ef8099b68e76f666b5917f057bc3c21a390173ae7f7eb8a",
+   "job": "RSW_Junk_AncientDropshipEngine_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientDropshipEngine_03",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 18.99 n=2)"
+  },
+  {
+   "picture": "e3330363b90bb21c0b1db5c7773db7703ac0f55e3075ec8ffa660511e6d48286",
+   "job": "RSW_Junk_AncientDropshipEngine_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "65384412e21a80375263a55a3295260cc3c95cff8d787d70eb0e314c647b55c6",
+   "job": "RSW_Junk_AncientDropshipEngine_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "219f02d857a1a655c8ec0e9789c57b663e7fd57f86d4a0dc37f1982c19e87957",
+   "job": "RSW_Junk_AncientDropshipEngine_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9ef2a5bbf63c46cef4483e195adfe7ffac821bab2600fa80a88deabbe4f64b80",
+   "job": "RSW_Junk_AncientDropshipEngine_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8f8a2df60fc61ce1293172986dc5ed81ff0a7cb3f2dbf2c1519f61f5cdd9b0d3",
+   "job": "RSW_Junk_AncientDropshipEngine_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "563cecc5c22a10f5a8d873419cbcab879fc7fd7d5e105f39e98ce821eb984e16",
+   "job": "RSW_Junk_AncientDropshipEngine_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c270f69ebefb46dfeac091f74cb0753ce94912f98a7c90fb012cb83722e73903",
+   "job": "RSW_Junk_AncientDropshipEngine_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9120152dc83803138aff7ccf5cc07dd04e2276bdb62ebaf0264eb2c01018cbc5",
+   "job": "RSW_Junk_AncientDropshipEngine_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0cb923ab3859c779d85837d1b2166c130d7777220a576f8dd4b7df4e50fbbc46",
+   "job": "RSW_Junk_AncientDropshipEngine_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "de757c6c50c5cf8920be44906497142342cee4ecde60e33ca3901b395ad15243",
+   "job": "RSW_Junk_AncientGiantWheel_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3a44941eef391cad3453e7a2dafe82f2a5eec074ad64395e735ba4cccf591d64",
+   "job": "RSW_Junk_AncientGiantWheel_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c3f3b215a62fa1fa60b82c45a7b4956ae11902c77dce152a8ea2e1b5cf104be4",
+   "job": "RSW_Junk_AncientGiantWheel_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ea4e0371446b4783c3c6154e2c3ff4738e07eec718f59cb1b72d72afc86a46f5",
+   "job": "RSW_Junk_AncientGiantWheel_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e55095dd37559c5bccbd2a75bedb3ad26317ab0c7151e816d7dddfe1e4585228",
+   "job": "RSW_Junk_AncientGiantWheel_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "a549360851e1f44e99c467ff82d9359a3284a8c1906eb9c85aeafef351af965b",
+   "job": "RSW_Junk_AncientGiantWheel_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "328aa6e822708c5b321508d6fd65f7fd1f26e4d4ac507e62330f5f6966f1af7e",
+   "job": "RSW_Junk_AncientGiantWheel_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientGiantWheel_04_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 26.67 n=1)"
+  },
+  {
+   "picture": "b7c1480b027407633a7a2e1d2508567cc444856dc76ad06f5c29a3b848e9d50b",
+   "job": "RSW_Junk_AncientGiantWheel_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8be3d3216797b87cc05736ffd5ebff9c7d4314afe99c4f3fd3c3428fcea68d58",
+   "job": "RSW_Junk_AncientGiantWheel_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "982fb39d3ac8214cfb60af2272abf387795794401b2fcc511ed541dd981d0ce9",
+   "job": "RSW_Junk_AncientGiantWheel_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "90779594d9527a9d5c6c3dc3ae77cbd315cff1d78eefea80f015a764feaf963b",
+   "job": "RSW_Junk_AncientGiantWheel_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "fa4931715d076a933ef39a7c1b519a8cbf0dc0cab5e01a468d905404c4d60d65",
+   "job": "RSW_Junk_AncientGiantWheel_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "76bfadcb63d128dd0271169a3e9af1a9239d30488d09c3f8c604ed41902833ce",
+   "job": "RSW_Junk_AncientGiantWheel_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1663289130b21ba17a839b7145576531f5374db4cf9174c17be3587c5fd3cd03",
+   "job": "RSW_Junk_AncientJetEngine_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3d381c45dbbb064cf7d351b6fed74275f3e06f8e80e502da866ba5e17ef37a56",
+   "job": "RSW_Junk_AncientJetEngine_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ce7a19cdfd0afb49ca56fdb0879abd371ed9c8dc4bc6e14a0abdd2d88473923c",
+   "job": "RSW_Junk_AncientJetEngine_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "574373f68e82efd5e27216da323b6e47d48a4d9a49d35bd8ef01c7f4b802ea36",
+   "job": "RSW_Junk_AncientJetEngine_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "08828e3154741b2f11f538a3a8c4fcdb43a5d41c98979a09ee78295f7ac9a426",
+   "job": "RSW_Junk_AncientJetEngine_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0beb66303ea7789f8af7e0655391842d80512d0708b6dbc6dd86de22a069e3d5",
+   "job": "RSW_Junk_AncientJetEngine_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b9ec2ba66bc5f48d016d922f764bd9e6af4610f1e79a904336b258d1c0dcd591",
+   "job": "RSW_Junk_AncientJetEngine_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0a2bea40a619b7211d38507febaa18d87753f35bb200dad12fd179aea5e572d3",
+   "job": "RSW_Junk_AncientJetEngine_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2d9556afed079a60f32ac766c5a11fe80302dec5f0958e6e04fd563064fa3483",
+   "job": "RSW_Junk_AncientJetEngine_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6a4012942483fceb00e796f492ca15f9e427ddb079b26bf6f61ed47d7d748a84",
+   "job": "RSW_Junk_AncientJetEngine_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4d3600d5ef422b1df2356882b4acb73dc51c15aaaf06e9fc13eabd8efd711e2c",
+   "job": "RSW_Junk_AncientJetEngine_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientJetEngine_07_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 29.35 n=2)"
+  },
+  {
+   "picture": "7ef376a42a8d320ae553acaea1d458f0a31ba9bedeba055926af9ba3df3548a6",
+   "job": "RSW_Junk_AncientJetEngine_08",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "B3",
+   "quote": "a candidate that reads as a different artist or size class is REDO",
+   "seen": "a complete TIE interceptor (cockpit ball and both wings) in a 3x2 footprint; the brief asked for one dagger wing",
+   "redo_brief": "redraw per the art-list prompt: the brief asked for one dagger wing"
+  },
+  {
+   "picture": "RSW_Junk_AncientJetEngine_08_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 48.35 n=2)"
+  },
+  {
+   "picture": "872683b4ff7e5a91e09022aa7564760aba68bbdee82c807a4ee3e8ec432c3854",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "991f787bb58c023d877bf3b18151addb591359208effc2520fc526147ad4f66c",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientLargeRustedEngineBlock_02",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 7.10 n=1)"
+  },
+  {
+   "picture": "7ef4161cda5e60c49d1f49966f59f88a692aad1832fcbeda0ae43d31010c2987",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3e42bb8be8c34ee941d3adc9aaa7a150a77c3b21aaaf3e1fa08f059cccf7105b",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9fad03395efeda148dfc342a31dfc9d3fec8893fe3f771559baa68dc1a6c3879",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "fa602d499cad0a664457e2c2ac7e1e7ec39d3b7bbfc3ac426fc1d5db03275e23",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "333c8e7d5174970d4fd05c7fe33c11770889e4ae0992ae8c8ef75948f7769a39",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "07842c8d2e9dc5199e38334f91c5e9667a396abe22956dcdfbbffebd4af66a4d",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cff3b64a1fb3fb3f930770c6df9b10e310c2c1eb3d2d778ceabec6ca00e1a4d7",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8516ac9620cc69e945a6a8f0e140ac4fa5d0b7f18175c78b8feea16a3ead7d99",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "183d20e211998d11aeb24768dc6b716ca5a9b82cbd18736b44dc87d291491f51",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "413a470c403391fc8cc4d81bb252a7d4111ef0c05a15013c8a8d47af82e43a56",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b67408a53f148173bdc4fbc1ac2d01fd5f8adf326ec5a9894f4bf7dca12768b4",
+   "job": "RSW_Junk_AncientLargeRustedEngineBlock_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ce23313acb962f0577ce0a50d897da2bbd28903e1594c9ac5334212d803fd103",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1db81ae69f43dfe7953d907ae1505027bbf4eaa3e2705a3d7d8aea0d5528cae7",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_01_v2",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "C6",
+   "quote": "A pipe lying along the ground that shows its inside reads as \"bent up\"",
+   "seen": "barrel drawn as an upright tower on its base with the muzzle bore open toward the camera",
+   "redo_brief": "redraw per the art-list prompt: barrel drawn as an upright tower on its base with the muzzle bore open toward the camera"
+  },
+  {
+   "picture": "28dbf11a16982186b33411b168d3ff810841764087f43e0478471385821355ed",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_02",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "C6",
+   "quote": "A pipe lying along the ground that shows its inside reads as \"bent up\"",
+   "seen": "turbolaser barrel with its open bore facing the camera, reads standing up",
+   "redo_brief": "redraw per the art-list prompt: turbolaser barrel with its open bore facing the camera, reads standing up"
+  },
+  {
+   "picture": "aa70f640d7520650eecb1d7efa9b3b93d19ca80e6fd7e6b8da1eb2761b3bcbdb",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_02_v2",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "C6",
+   "quote": "A pipe lying along the ground that shows its inside reads as \"bent up\"",
+   "seen": "open bore toward the camera, reads standing up",
+   "redo_brief": "redraw per the art-list prompt: open bore toward the camera, reads standing up"
+  },
+  {
+   "picture": "7f4b3a5d213f0e730bd2cff0f30f1ff47ffc2e81365ddbb5df613c79646ad295",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "807bc64c8d8d9cb43189bbdf31ad04a608ec4f8b0c6ef2732e1a4eee1567a3d0",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "31c9b84d2ecc44a15523b37952f8af18c4913adf9378046ac220bf87c3c32f8b",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "bcf997a20f96aa8c366865f7bdcd200388ebdf43ac1c7993581c4bf42cac3338",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1f0c34fac87ded65add2bb143e1ef12c90ae0f8806e47f4aa550bafe1bf33c87",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "115b49d920e768966d74571eebc9fb5fbd23622ed20b2383225899bc70307270",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ccf0bc9d47fe0f878118ca90da54d5603e200c27822f5994046847abdd9d1e24",
+   "job": "RSW_Junk_AncientMegaCannonBarrel_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5b85ed776bc3bd3e4dc914aeb3826d248c6c166123122e917b5df58fc91f6cfc",
+   "job": "RSW_Junk_AncientMegaCannonTripod_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d2ee72ba3678467b57b62d8cec1ec0466853821bdec05d6dc2266896bb39798a",
+   "job": "RSW_Junk_AncientMegaCannonTripod_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "182cbf52ccddb9a76a3bb6dad799a3931de2f519c056449d7e90c985b96ff74b",
+   "job": "RSW_Junk_AncientMegaCannonTripod_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "64f2ef73055d2f0ccf83a2f6d2253c3ae9d797cdae41ab839ab64b351b13b41f",
+   "job": "RSW_Junk_AncientMegaCannonTripod_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "862039e5cb560fab317b5f9029662650d760814608d9f29d69f815af9bca9057",
+   "job": "RSW_Junk_AncientMegaCannonTripod_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "7c4e172c0c8b9fc065a49accdf7b4573a152a86c08addf0f36d897ff84b40d13",
+   "job": "RSW_Junk_AncientMegaCannonTripod_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b73c64a690b55211c17ed73e12e2f3e7ebb25ed2ce58caf487df3548f1687045",
+   "job": "RSW_Junk_AncientMegaCannonTripod_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c2c162ca7b1e215e3db1379fc075356d982cc5ba8fd5b8fd5bbfcb503b5c6f07",
+   "job": "RSW_Junk_AncientMegaCannonTripod_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4861e720dbe51632a7a37019929255b3eb70ca58ad51ed794d927742342aafb8",
+   "job": "RSW_Junk_AncientMegaCannonTripod_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "190d337f975d65c8cae39641e54ba66ae0bfa107185dc4f787afa8d88c60cf8e",
+   "job": "RSW_Junk_AncientMegaCannonTripod_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "09deae28280526d36bf1106f3f2f90e8808fb26319834e6b4d4c37e325fd5433",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "adb9ce23d5f760d75262157a3f286a49d1339e15c95470d4861ba61568de95c5",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e797cf8e0b9c1902878f1a1c81f95c3f12d9891165af034e615ca6166069da15",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4f39f4b16cfaa15af7884b1e89e06f0b4411b9a4279e8e35479dfcc13fa2c952",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "dce36991a18f0dbe849ae5ad821c9fe5f1ac8b136e0edad8ad114260c5b8ca42",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "53d25e624014fd2b350c7283852e65e8756d059fe798f456d73e3fdb0b8053ec",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b3d9bde9beb4da32dfdf821221facfbb3ae5bc28225f661f88558d4de75f58ac",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0a3a202fd9ccd0f6d78ee59cc63132df38f5c10c9fe1721a3bc08966b5f59804",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d61b59f2fca28d2c40887e1937ab9135919ff70de3cec89d1126d1cdd7fc9fc3",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d81d20b8dfe8ab95e075c0c93d9a8fbac8ef0ec515f77b6603c58ad181b6798f",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "97393ca028912103c28f1af7484b47e404c4075bd12472d304a0ed50ab1d96be",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "61350aacc8114f390a7ac5a9d4eda95de4a93993aed1474d4febdea21a407fd1",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "441d876d85b4540f4b2805c3a4aaa61dedc1f231783a51d63cc0176cc5e959a5",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "aba37fc05a7b79d78d533aeacb3eef25b86481bc059246a0fd12cc2bce82de8c",
+   "job": "RSW_Junk_AncientMiniWarwalkerRemains_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientPodCar_01",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 7.84 n=2)"
+  },
+  {
+   "picture": "70cc8909075131d32c09fa86a4cd4032124b89b37e0bfa82a5ed718e977b2610",
+   "job": "RSW_Junk_AncientPodCar_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e8bf1b11ab94fd40499405cc682193a2e23f51c0b52f6af452944671dfcb031a",
+   "job": "RSW_Junk_AncientPodCar_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d6cf77b666400564d211564bc109171b77f576b26c213ae6040e59da576874fe",
+   "job": "RSW_Junk_AncientPodCar_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ec696d270a8aedd2e4979a82f5e4ee46587d4a860360a46b23d1f91313a58e23",
+   "job": "RSW_Junk_AncientPodCar_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientPodCar_04",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 19.49 n=2)"
+  },
+  {
+   "picture": "0fe1ede0fa1aa9e05e9e371ff27d5a10082577b50e5681492b314b56c7d4e202",
+   "job": "RSW_Junk_AncientPodCar_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1fd67792b094b955925e26d3f74b2157417646f19c30d381c47b102413508e28",
+   "job": "RSW_Junk_AncientPodCar_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9e15fc0d10ccc839994b0a20ecadfc83b9b107c330cde23f06b78d9d75be579a",
+   "job": "RSW_Junk_AncientPodCar_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cdd0674d818c29ebbf9d534688716834294f05ffa6dde06da577406cf04f756d",
+   "job": "RSW_Junk_AncientPodCar_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d7f2b9a31445c8671ab7f979afe8b1cb2ceac63dc5e7a1777db8f477d27f2c45",
+   "job": "RSW_Junk_AncientPodCar_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8844b64c79535e9bfc07ae6932149d70f2195bee7e1b5435e2960f645047300a",
+   "job": "RSW_Junk_AncientPodCar_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientPodCar_08",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 11.41 n=2)"
+  },
+  {
+   "picture": "RSW_Junk_AncientPodCar_08_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 24.54 n=2)"
+  },
+  {
+   "picture": "1d0c8201672dd08dc703ac784f4f0cb43f5a24884809f095ec1666f7c2021345",
+   "job": "RSW_Junk_AncientRustedCarFrame_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2c19b86215fe661be092df4da7a06a601b94fa5f707c27b5e129d40ae6dade88",
+   "job": "RSW_Junk_AncientRustedCarFrame_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "09ef735ce3c27be20a64718abc0ce4e499397c18ebe941e4cbd16f83ddaaf5e8",
+   "job": "RSW_Junk_AncientRustedCarFrame_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8c5d4ce628e41777c6cc41583e6a14c2edff25072c6afdaaec85293505765b11",
+   "job": "RSW_Junk_AncientRustedCarFrame_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1ba44a4d2ab2144cec75649a311c9838d6130a7e03d82a6335f4d51519fb2ef9",
+   "job": "RSW_Junk_AncientRustedCarFrame_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "eb62dded0bfe2601d2db9139a72407653185f787e15bdcb2bab62933443db6f4",
+   "job": "RSW_Junk_AncientRustedCarFrame_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "91dc060143e0678dcc80f5e421bc5e052c5e933ee9b929539bbbcf0d9b11c0e0",
+   "job": "RSW_Junk_AncientRustedCarFrame_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "7e44951f9f7008ba8fac8e90c4fcf6a210d5d1374ad2147fca168c6cb06c8141",
+   "job": "RSW_Junk_AncientRustedCarFrame_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c35209cc97dadb9c939f48b38120ca96981d58e3a690174fb40c04686d50973e",
+   "job": "RSW_Junk_AncientRustedCarFrame_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8c123ccf94e73490ac987d31ef19c70aead9743966a1050f2fea240316a81a5d",
+   "job": "RSW_Junk_AncientRustedCarFrame_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedCarFrame_07_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 22.13 n=1)"
+  },
+  {
+   "picture": "7d15de7a5f3d3fd4072135fbf694985e0531d35300bbd698e188fa72d6baae8b",
+   "job": "RSW_Junk_AncientRustedCarFrame_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "369e0b7f34f2f5af2467e546637fb3698ec96f117e6ff262f19f259985ef3f3c",
+   "job": "RSW_Junk_AncientRustedCarFrame_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "42d3e425782fc8e82fca7bed406b89f033f5e2592ad5861e8aa777dedc4484e9",
+   "job": "RSW_Junk_AncientRustedCar_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "98c18fa5cdb3d4c1341478b95e8a9231635129ed142799c7d329a64a983aba20",
+   "job": "RSW_Junk_AncientRustedCar_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "dca86b3fef71794a64fb5a304db9526df4b039c15702da001073f083c4da3941",
+   "job": "RSW_Junk_AncientRustedCar_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6ccfebfc9d96d95130b28e717fe14561355d77c624fdc0fd40b101ff3b287894",
+   "job": "RSW_Junk_AncientRustedCar_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4630bdaf2831c76b33cbde7560775238453a4d784f911e1c10fc78e7aba2e5fa",
+   "job": "RSW_Junk_AncientRustedCar_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d05feaf9dca4daad8cc93fcbb32fd6f7dfe96e6d80dd0ab23d483250e6b79a53",
+   "job": "RSW_Junk_AncientRustedCar_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c731f080699f32fa7676a8c36723402391a4a930c066bc119d4a99a227daa1c3",
+   "job": "RSW_Junk_AncientRustedCar_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6fedf250224a125d5f97b04e76c6ce9f5e578fb506222d95b2ad2736903cb48e",
+   "job": "RSW_Junk_AncientRustedCar_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "87a96f56084c311f2b3e2cdd0171be6ec055f4beec1e0ef47abd4392b55101f5",
+   "job": "RSW_Junk_AncientRustedCar_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0a62cf1cded142aa2bfa7caef43d4b333a235a4f310491ec6df2fb5eb8706bcd",
+   "job": "RSW_Junk_AncientRustedCar_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "fc453edb1a02a46e9c51e1191bb2e3fb163eff219641805d60f3fec89ffb133a",
+   "job": "RSW_Junk_AncientRustedCar_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "86fb8c38d5cff8dcd9deca31365cffcfae35c94f6f7c8adc94c80d8d04239895",
+   "job": "RSW_Junk_AncientRustedCar_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f91e62d287181db474d1240db6713c25d29f9c63f416711225acb9e7c222be65",
+   "job": "RSW_Junk_AncientRustedCar_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "78b26c4893e383af5df119bf6cdce1c5639f4739e718a6429cbfd8bf47e37b99",
+   "job": "RSW_Junk_AncientRustedCar_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2e0199e642da923fbd86a75b222d7044d66f4e6003fbecdabb708da0472d07e2",
+   "job": "RSW_Junk_AncientRustedCar_09",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4928b0ad839aef7fc8db8a663d90922fb66bd15e88f747a1540b51221fb7624b",
+   "job": "RSW_Junk_AncientRustedCar_09_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "581d4bcfaaeb010bb83db3fb11ffd1c464d9e5a73ad3ca1a67094dbf114c29e4",
+   "job": "RSW_Junk_AncientRustedCar_10",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8a80b13a89114f83d3757275a2c7795798c190fca4879eab46c92d0a8b988673",
+   "job": "RSW_Junk_AncientRustedCar_10_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6b034cec24d3f8ed263bb36ef27b8745b16112c8c4afe951ff0e10e815fe7ec8",
+   "job": "RSW_Junk_AncientRustedDropship_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c74101cb120319c6b0a3b2d2914d8a7d0a5fce31210723c9fc185dfb9471a9da",
+   "job": "RSW_Junk_AncientRustedDropship_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "232cb12dd0061673338b77ad7731c4cd1deca63b673c06625a305061a819db72",
+   "job": "RSW_Junk_AncientRustedDropship_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "44a5fb57fd61883dc32e384d257fea206494dfd07674d8ab5ea02bc27b65057c",
+   "job": "RSW_Junk_AncientRustedDropship_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "fd184c252ad1b4687bb909fc10e0da78cda585ed3cf5a1717456ee010ce5e946",
+   "job": "RSW_Junk_AncientRustedDropship_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "84a755f08953d97138a6b263b11f525e63696e2320ed5e2e44c31f0645dbf59e",
+   "job": "RSW_Junk_AncientRustedDropship_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ed8b3f40a4d49dd6fddb37e3f83ffd6e91fdcb6cb804cff7fe53338cae8d9b57",
+   "job": "RSW_Junk_AncientRustedDropship_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedDropship_04_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 8.90 n=1)"
+  },
+  {
+   "picture": "5366d72d894e0fd8448c09121ca2fa92b9b78a3e9da4693b4e3c86b9a11b40be",
+   "job": "RSW_Junk_AncientRustedDropship_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cba9ec0389f4878bdc23715c9bd1e4422618c9e8d6225e1082b1022dbf418f4a",
+   "job": "RSW_Junk_AncientRustedDropship_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "171fdc8c93477cd8a29595416c79a5d08d86b354485f49f8445c6757001dc977",
+   "job": "RSW_Junk_AncientRustedDropship_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "76521e87ae98755c5cecd185b75df380c9bbedcdad8f6575ec7c52382d97cb88",
+   "job": "RSW_Junk_AncientRustedDropship_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "084d7fb4611f1c3a4782cf01252cebd122cc6ae3231200c4148fa078bc7a04d2",
+   "job": "RSW_Junk_AncientRustedDropship_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "468b4ce6e52cf25713b61fd9e5b0116b27b8a56587da66a555ed7bc8fbbb2d6c",
+   "job": "RSW_Junk_AncientRustedDropship_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c461a3132d9e1267423439cdfe00e1433f515998a8c127d92b1f74e4f038c1f2",
+   "job": "RSW_Junk_AncientRustedDropship_09",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f5819c14b31e955f9ee34fbf922dfcba1727200972a788ae741df9bab64f76cd",
+   "job": "RSW_Junk_AncientRustedDropship_09_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9a6960908898bd9ff1f3d986d8f0444b767860c8fd734c7eb4b92de800e805c2",
+   "job": "RSW_Junk_AncientRustedDropship_10",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f441333da641775461f37b878877284a65d3d6777544b969ed7333cdb64feaa7",
+   "job": "RSW_Junk_AncientRustedDropship_10_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedDropship_11",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 7.83 n=1)"
+  },
+  {
+   "picture": "d363e0441e267f84ee608d342933567d08384c3cb7f965bc9c51b38691267ba6",
+   "job": "RSW_Junk_AncientRustedDropship_11_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "003635b28c2675b6c2015b1d0a850c83e99c9ab3aca1d9790f9ef3d49659c0f3",
+   "job": "RSW_Junk_AncientRustedDropship_12",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "608a8a906d83cc5474d4192f023dfc0218ed1b9ba51f7e795287a418d0d4f8f0",
+   "job": "RSW_Junk_AncientRustedDropship_12_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "fde858839c8ee23fd9d9f76b777ff9db9d33cfd0a8d5ebff299192e44bad5038",
+   "job": "RSW_Junk_AncientRustedEngineBlock_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedEngineBlock_01_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 28.98 n=1)"
+  },
+  {
+   "picture": "bd207c9f1c5b374684b0c21e4039d9e06d16c0479782c07c29c351f79890a1d4",
+   "job": "RSW_Junk_AncientRustedEngineBlock_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5de622158e6486772413f46357ee27f4b1276b288015c9f5009a3fec1b555077",
+   "job": "RSW_Junk_AncientRustedEngineBlock_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0ee102f296b4242c9753cb8a75ee2aaec09883df7b57bd87dd7660103803c27c",
+   "job": "RSW_Junk_AncientRustedEngineBlock_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9081cca9e71194cafbf47a287a89223a849a4586d1aefde72242ba7a9ba9dc78",
+   "job": "RSW_Junk_AncientRustedEngineBlock_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b3795329d64b0567290718bbd8c00ab76c73c67431a7c29dac2b39c7719c2ceb",
+   "job": "RSW_Junk_AncientRustedEngineBlock_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "79a71dd7cc24557a243197fe30ec69485038a7f90f2e96176d2937fad53d41cb",
+   "job": "RSW_Junk_AncientRustedEngineBlock_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "701db489419d2dfdbda03aab518e0416ec8de72eced494be6f5ccdbfa17924ef",
+   "job": "RSW_Junk_AncientRustedEngineBlock_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedEngineBlock_05_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 24.74 n=1)"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedEngineBlock_06",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 14.26 n=1)"
+  },
+  {
+   "picture": "6aae4c42a8bc521924c8dc8d3c45b527dc86550ec1b51a805366ce5383b93797",
+   "job": "RSW_Junk_AncientRustedEngineBlock_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ee171598e32aeeda39d02b65bc43803c3c309258b0181a39ce42e42bba3aa2da",
+   "job": "RSW_Junk_AncientRustedEngineBlock_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "00c90cd5b7fe271f5df11ae2be3f1e17ff16a2ab1b9e63c17582383fcfdb48ab",
+   "job": "RSW_Junk_AncientRustedEngineBlock_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2e3b1a8e84e955200c53dcb2464d45062e5edda684c427b2aada4cd573ee7b32",
+   "job": "RSW_Junk_AncientRustedEngineBlock_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientRustedEngineBlock_08_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 23.47 n=1)"
+  },
+  {
+   "picture": "3c66dae0f427cdba30807695cdcc9dbd8d894731318bd1266623fb72cfa8b58e",
+   "job": "RSW_Junk_AncientRustedJeep_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "03f2834a318b69240b279c7a1d9f66b0a51b7888f3143fcc38babb00de5073d3",
+   "job": "RSW_Junk_AncientRustedJeep_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ed0b365c877af8c967920787593c0dbabe2156203dff0c0accd5409ed2561aec",
+   "job": "RSW_Junk_AncientRustedJeep_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2dd5fd033e32e86e20e4e9fdb96340a4578eb2d154870a1bc9f4c0007a14296a",
+   "job": "RSW_Junk_AncientRustedJeep_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b6b2872fffcb0ad510ac12187124d514ee0bab66c1dace36c5b37e9ad1f64bf3",
+   "job": "RSW_Junk_AncientRustedJeep_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2c09fa337913ea5dbfde201298a3fb6d71ee60c9e4801e0bd745b8f683bab26c",
+   "job": "RSW_Junk_AncientRustedJeep_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "94ce8f7f0f8ca10bd8501b9835ec41f68db16627dc3b6aca74524a15d21f2188",
+   "job": "RSW_Junk_AncientRustedJeep_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8bd82eba5f5fbbdd0d545db5768aefef662a1f9986773c4910a2d385996c2105",
+   "job": "RSW_Junk_AncientRustedJeep_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3d1224c7c0365d35d7e76f1ba791d06858083e42b79da77edac6f7227ffb8753",
+   "job": "RSW_Junk_AncientRustedJeep_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "06a2ddfcc58bcf9d9ad093349808baad1bf8b37d518ce3968f44a28021d74b29",
+   "job": "RSW_Junk_AncientRustedJeep_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8b5bf720a4b12859a927d239bf595f9813412da9f636e1ca0ae5c8341b9e97ab",
+   "job": "RSW_Junk_AncientRustedJeep_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2b964b0c804a683615499d7dc71e9cf9a55ca1a3d6bbb708c5c04b8e3265a0de",
+   "job": "RSW_Junk_AncientRustedJeep_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "40078c42527245e07ad063a75f604b349a358ebd543a2980e7f2a429959dd96b",
+   "job": "RSW_Junk_AncientRustedJeep_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "28eab15815511d91b91ec24be132860cdf2d2f58795b728696a73f476276364d",
+   "job": "RSW_Junk_AncientRustedJeep_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f890fc3b909b9823a03e46929f6221280fa6cf5cbea633489c7ce132e8b681c0",
+   "job": "RSW_Junk_AncientRustedJeep_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6869f7845b3218a6e42cae1727ba7910a87c5a03537b3189feef92b2c9ca7568",
+   "job": "RSW_Junk_AncientRustedTruck_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b6d1921ddfd73a6c45060cd10f2f6a2ff9c35cdc771e083ea7d275f4ff4c81f8",
+   "job": "RSW_Junk_AncientRustedTruck_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cafa834fc374f5f814a4173ac2bc4d8408b577e35706bafdf3e91d93817a1621",
+   "job": "RSW_Junk_AncientRustedTruck_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d5730c9cfedfa80ee5398d07153db0020b38f34a82ac0d849f8edd9a685749e6",
+   "job": "RSW_Junk_AncientRustedTruck_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5ce5d4652f12bea37ec21c9aa996cdea5a53a140e5c88622c07cfe7b0083a780",
+   "job": "RSW_Junk_AncientRustedTruck_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "13c2141079409e81dae03d54733cab6300ecbc6a419fec1e9fe0957b4d854c38",
+   "job": "RSW_Junk_AncientRustedTruck_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e4e31c2ec6db38a09201fc5dce5eedd2945e342c49282651b2a7b600d66b54f7",
+   "job": "RSW_Junk_AncientRustedTruck_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5711e42181849e2bd7fc9a74f2ed2e1ed77d8b613002394d2e861378ea65db1f",
+   "job": "RSW_Junk_AncientRustedTruck_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "414dd904a6f3f9d82421beeefcfeabd71e29083cdce29ba5aa6b3e6401f5f289",
+   "job": "RSW_Junk_AncientRustedTruck_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "31bebfe1a8cd4616cb5b5eaf074168c840fdfcc140dab14d35beeb14188c668a",
+   "job": "RSW_Junk_AncientRustedTruck_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "76307e76b72d26971475a0dce844d57ce88088a68f512f52fb26a9dd670f960a",
+   "job": "RSW_Junk_AncientRustedTruck_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "81fc259fc16fc129145e516731bef654debc6d5336daf0488aef0943d59fa1eb",
+   "job": "RSW_Junk_AncientRustedTruck_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "a9e9653265944b58796d191c3c7214ec7c75e90923957ddd7a3401a6903b7168",
+   "job": "RSW_Junk_AncientRustedTruck_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "a4a54a0ed1740831b94f165c16f000bc76781b117736f3f057ec3fb6a6b5444b",
+   "job": "RSW_Junk_AncientRustedTruck_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "037d67f74a7759dec5dd539a348a75f6fcb711f19904bb0569672afd70c6a506",
+   "job": "RSW_Junk_AncientRustedTruck_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2d4a47c1cc3dac3b92e29ef638e1e8b786ad4e0a05f1f61b34194beac6cc5c83",
+   "job": "RSW_Junk_AncientTankTrap_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "44fe564af41a1582ad8218d4dafd7b494d205825c43e5d7ea2e00a1ff23e21ec",
+   "job": "RSW_Junk_AncientTankTrap_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "88e311e527ba3385cafa61adf7328336726e5682ee3bb6f482e6212af4727f70",
+   "job": "RSW_Junk_AncientTankTrap_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b95abdab1a32682dcfb3b442b27f8a9676b3a797b28f81578ed660f706eebc90",
+   "job": "RSW_Junk_AncientTankTrap_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f77a27617c86b302cbea82d6333bd4d2148de2651b09299f303a7f56968d6a6c",
+   "job": "RSW_Junk_AncientTankTrap_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "74e0f252bb9bb3f2e84526f19e7ba6a56d222f2019374dcb369f0c58c936a81f",
+   "job": "RSW_Junk_AncientTankTrap_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "296314b0f6e774e4d4b7e1792b81d425ed1677ea6297515c2a6f140f2b93e76f",
+   "job": "RSW_Junk_AncientTankTrap_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientTankTrap_04_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 40.36 n=1)"
+  },
+  {
+   "picture": "91ec2075afd1c5c080e4e0774f17816df330216e9648e7879e012c5faf283dfa",
+   "job": "RSW_Junk_AncientTankTrap_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "06d41c3d390155e141bf7ee75e2c1e73375379645b2e2fac5a7f9a97869f09e3",
+   "job": "RSW_Junk_AncientTankTrap_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4ad1f99e7832ce176e619373470e254004bb54afda471219e25ee80ab5ca3b92",
+   "job": "RSW_Junk_AncientTankTrap_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "01e4484dfb4aa49e06b33a86799e67a0115825361ac643742e86a39e74a9f989",
+   "job": "RSW_Junk_AncientTankTrap_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f5da569cc17135d282e5e564f491ab8876ee4efab9e9436799f2c17df4d274f3",
+   "job": "RSW_Junk_AncientTankTrap_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientTankTrap_07_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 29.29 n=1)"
+  },
+  {
+   "picture": "cfaa27c673e5376bb4aa3970c62712ab3bde3a94744490c0adb6039038e5c063",
+   "job": "RSW_Junk_AncientTank_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "83b1339005493f6014f9f26330e8b1c12417e2cbf2d4ce4f9348452c9cb69dc4",
+   "job": "RSW_Junk_AncientTank_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5647c2eb800decb3cbb7ead98549f854addb024cad3a4feccd85ee1321e40674",
+   "job": "RSW_Junk_AncientTank_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "229e7bc07b879f789bdbfaad934188b39143055b2499c90357b8df4542094022",
+   "job": "RSW_Junk_AncientTank_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientTank_03",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 17.09 n=1)"
+  },
+  {
+   "picture": "689171c507c4bd4fb466982cc5a7534c242e2b46753d95a66cb217b760b1ff2a",
+   "job": "RSW_Junk_AncientTank_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "bcf12f9ab3bf87a869f757bbb6edcf81a4852000855842429e1edfa04df50cc4",
+   "job": "RSW_Junk_AncientTank_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "55def0db437ee5350e49a1b05f9eb89dbb49287f54bd98a5b8dc9bc3aa7fe302",
+   "job": "RSW_Junk_AncientTank_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "96ded6a64d75b3d91b1d935b287d0b66e535d79d9e7d8e642dd66e2363aa76fd",
+   "job": "RSW_Junk_AncientTank_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2b978edd6c84a4601d9c576c25d0ac648bd42162d9905a2eb30c2e90db7dd816",
+   "job": "RSW_Junk_AncientTank_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9739f903714d346066800d6582905e589bb892a9d414b6dff0bf5875538b0948",
+   "job": "RSW_Junk_AncientTank_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientTank_06_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 11.31 n=1)"
+  },
+  {
+   "picture": "49961a7ad94c0ce4e28e41d9b8be8e57c8cbb788ccbe705cabfc8590b16f7ca1",
+   "job": "RSW_Junk_AncientTank_07",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "C3",
+   "quote": "A building's south facing is drawn from the measured building camera (orthographic, ~35\u00b0",
+   "seen": "pure side elevation of a Juggernaut hull standing on its wheels, no top surface",
+   "redo_brief": "redraw per the art-list prompt: pure side elevation of a Juggernaut hull standing on its wheels, no top surface"
+  },
+  {
+   "picture": "fe5e35fd09c96533e3c3d7aa3b13255d70c2ad6cc5eefeab303928f42d75a769",
+   "job": "RSW_Junk_AncientTank_07_v2",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "C3",
+   "quote": "A building's south facing is drawn from the measured building camera (orthographic, ~35\u00b0",
+   "seen": "pure side elevation, same as take A",
+   "redo_brief": "redraw per the art-list prompt: pure side elevation, same as take A"
+  },
+  {
+   "picture": "d23a713f49dd4761f2d1f811ebc6b15de843d065105b49c1842ac34a221d535f",
+   "job": "RSW_Junk_AncientTank_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6520dfcc315afa2a4d900b511908f0c929f589543079c561d9b4feaae73acebe",
+   "job": "RSW_Junk_AncientTank_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f8b25474b3ce026315a8a964488b2fa88ddedd1bdc2fde0de8f521fde0de6851",
+   "job": "RSW_Junk_AncientWarspiderRemains_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "a8c3e3e6da897a9ec6d9aede421141e067e4a495027bae08657b188cb263223d",
+   "job": "RSW_Junk_AncientWarspiderRemains_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "53ceedf148861b1ed9440e95296712ccdc603c4aa37b8d82ce62c5b119b909de",
+   "job": "RSW_Junk_AncientWarspiderRemains_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1cf5ac95349b88267c328b824e329531ffd67e2be8b7ac91d681ff613fadf8d4",
+   "job": "RSW_Junk_AncientWarspiderRemains_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c1516d1fe3ff98d0c1ef1887ba581b83b4f9ff5054b9cb4eebb192bd52fe4cb8",
+   "job": "RSW_Junk_AncientWarspiderRemains_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "67bd258b2e1ab14440079af68965763a27b7dcd39467ba6df2a6839a8d757797",
+   "job": "RSW_Junk_AncientWarspiderRemains_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2212041a279b43a2fb06b194415acdfb612e7d0191e8818cd27bd15e1a3be0fa",
+   "job": "RSW_Junk_AncientWarspiderRemains_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "4135785ac0d59cb0df256ff15397e0274c0847b672a8f9ca79a6ce6dedf7f742",
+   "job": "RSW_Junk_AncientWarspiderRemains_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e217d6959787eea3d9e14d6594fee9b1190ffbb1b91261f99d58cd8318279669",
+   "job": "RSW_Junk_AncientWarspiderRemains_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6d8a62c8a1acc3cac20a1ba8071c19001a3a2db9c16463196d73273b62c56849",
+   "job": "RSW_Junk_AncientWarspiderRemains_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f93f62f2e6c66dd02cd7d881d5186dc165f8f332b1e535e4ef749150c5e2be2f",
+   "job": "RSW_Junk_AncientWarspiderRemains_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "303b1de9ab35374c525781909fd9eaf98781236960d7ed6904c5a933de26df5c",
+   "job": "RSW_Junk_AncientWarspiderRemains_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1c5e5406746367363b26fea84b8413126300b1aa3cad57c24496109024660dd7",
+   "job": "RSW_Junk_AncientWarspiderRemains_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ae96187ba45a56b47dbceae331edc1ce329c23ea93b4f0ebe3d6fea2d6d05104",
+   "job": "RSW_Junk_AncientWarspiderRemains_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "39a2acaa1ec35f38bec2265c9138ee592cc57c5a6e9e871acf06c65dc2bfdca0",
+   "job": "RSW_Junk_AncientWarwalkerClaw_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "53069f20ccb04aae9144efe84adab2af65621be3505eef4b4f5067968dd4da32",
+   "job": "RSW_Junk_AncientWarwalkerClaw_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "300057be494fd7869ce432240586695e24551d6e16cae3463cc8695f6a7cfb1c",
+   "job": "RSW_Junk_AncientWarwalkerClaw_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "792b0d8e1930bc08fc6d0d2db86e5748587c8c0648a879e0cb5274f7d3b4ba9a",
+   "job": "RSW_Junk_AncientWarwalkerClaw_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "fdd0ab1a67d997da7e664081ab02cbebc899ce42f0c53bc413937023586e7956",
+   "job": "RSW_Junk_AncientWarwalkerClaw_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e7cff8ebf8d9d020d5eca44ae97847eb71f695d862dff2a5b4b5197a336dd46b",
+   "job": "RSW_Junk_AncientWarwalkerClaw_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c6401778626e68f3bf12f3213f6a783ad90ce137886d5cd2ef9940ab488d7a06",
+   "job": "RSW_Junk_AncientWarwalkerClaw_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6eac4b9182d401f9d874e682e1e861341b1680c72de02372422c97780fa7ff6d",
+   "job": "RSW_Junk_AncientWarwalkerClaw_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "a266fed49f9040335eed08effcd74fb9f551569d4c1ae188df64be21e28679e8",
+   "job": "RSW_Junk_AncientWarwalkerClaw_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c1f245d7e176813679d8fd3b69352bebbd14350bfbbd283c2566b3e199e902f8",
+   "job": "RSW_Junk_AncientWarwalkerClaw_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3c4d59da811debc9dbea535d8fef604ca040ee306125928908f86718bc9e9406",
+   "job": "RSW_Junk_AncientWarwalkerClaw_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8663b0323a89d675cf8c0ae673fb2ea86776ad1a8d9bb9d817e9e534191567ac",
+   "job": "RSW_Junk_AncientWarwalkerClaw_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "107286bfa0665978a5f247f8060cf0833c6610f8bac1b3024930260b573a3bd0",
+   "job": "RSW_Junk_AncientWarwalkerClaw_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c717c3b5451b3e254971822f486b36e0a901c8d899f234c8a38f2b22867d5472",
+   "job": "RSW_Junk_AncientWarwalkerClaw_07_v2",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "A1",
+   "quote": "Sourced canon plus the entry's visual brief IS the acceptance target",
+   "seen": "a whole standing cloaked MagnaGuard with red eyes facing the camera; the job brief asked for a torn-off arm with an electrostaff stub",
+   "redo_brief": "redraw per the art-list prompt: the job brief asked for a torn-off arm with an electrostaff stub"
+  },
+  {
+   "picture": "59b6b5c9778bb6b733156fe8d33e1c045ce479b9ea787a0e928f38a19a3a17db",
+   "job": "RSW_Junk_AncientWarwalkerClaw_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b0da1f44f02f0b8bc81837a6bc22a43e53d52181d1114b5f75e8ee5aeac5ffc8",
+   "job": "RSW_Junk_AncientWarwalkerClaw_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1d2a0e4fd8e68bcb0b9d19a88c224fd670b0b1524c1ea9a5ad98e373c6aaff08",
+   "job": "RSW_Junk_AncientWarwalkerFoot_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "988c3995e3b543430e766932cb35bef6503476f5dba2451bbb3d9b0584c8a6a1",
+   "job": "RSW_Junk_AncientWarwalkerFoot_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "674bd275647a922c6528cc44365c2055515059ad12ae587cdb08aba5fd6f61e7",
+   "job": "RSW_Junk_AncientWarwalkerFoot_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9bfad278c66f054dcef0b65a94b3892a19e48b6f17480c595dc5918ea591f5c7",
+   "job": "RSW_Junk_AncientWarwalkerFoot_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "214bb20d4e6a28dd6fa4c3585dd07e50073b301e31743b01d6b76784af356aff",
+   "job": "RSW_Junk_AncientWarwalkerFoot_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "31d9c8dbab1030dda6c69fcc956004b4c003e84b65ec9362d9e3c9f1bfc1252f",
+   "job": "RSW_Junk_AncientWarwalkerFoot_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2d2eea59c8e612ab5a93e198f02ce8524a880143cf094c11ddec8a45663e34a0",
+   "job": "RSW_Junk_AncientWarwalkerFoot_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ca04226c35a73aeddead6ae52c10ef1b1c1096ef4520d9153974734a9818498f",
+   "job": "RSW_Junk_AncientWarwalkerFoot_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientWarwalkerFoot_05_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 29.66 n=1)"
+  },
+  {
+   "picture": "bdf8995abc7e5bfaf86495fc3cb69452852c92502c6167750d8ea3aafac923ef",
+   "job": "RSW_Junk_AncientWarwalkerFoot_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientWarwalkerFoot_06_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 35.84 n=1)"
+  },
+  {
+   "picture": "d593047fd163f3a7fff74d87a400709d042d37122a4ecac13c6570f45edec5dc",
+   "job": "RSW_Junk_AncientWarwalkerFoot_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "140bf0fe6b86725affdb5a830b7f826308a2e3f2e6ee719d6c4463071e2bfcc0",
+   "job": "RSW_Junk_AncientWarwalkerLeg_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "07b3a4b1909e37d999dc281154d42312a0e7c757bf697d6262101c76264ef993",
+   "job": "RSW_Junk_AncientWarwalkerLeg_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientWarwalkerLeg_02_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 10.21 n=1)"
+  },
+  {
+   "picture": "0807392f2b8996af9ccd096bd53999709498844c8463ea257fd2ad9546ffd860",
+   "job": "RSW_Junk_AncientWarwalkerLeg_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "01d0bd80699e0498bee1ef04d1891293b6386b04f552f588c9c9cb8b0fe72a93",
+   "job": "RSW_Junk_AncientWarwalkerLeg_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6fc1e0fade76efb254b31e999aed08f1a87ecb07c8e578b59c3b6197e56a9937",
+   "job": "RSW_Junk_AncientWarwalkerLeg_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientWarwalkerLeg_04_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 14.89 n=1)"
+  },
+  {
+   "picture": "64ef9c5bb4a94f8825658e521a785006d836e5d9ee13616b6f52effeb38a6125",
+   "job": "RSW_Junk_AncientWarwalkerLeg_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3c8a255cc433fb208e7a8fd291088101a4d55b6bd9956bcf08249bbad43b4dba",
+   "job": "RSW_Junk_AncientWarwalkerLeg_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "77cd26fbf0abb6cf97ceb45733e026ebe50ccfa0316424e587ffa7b5f454fba2",
+   "job": "RSW_Junk_AncientWarwalkerLeg_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cb113e151cb1634eeb967ce4ae8e57427441f9962ab330280109925be2f4438f",
+   "job": "RSW_Junk_AncientWarwalkerLeg_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "7d00b6a0e20822ba287bfb3c9ec6a7070fb339172ad6595ef9a5f080aba4869f",
+   "job": "RSW_Junk_AncientWarwalkerLeg_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b3280a3665b21cdd3d809fe1d6eaee2ddae5a5b75c655cba4f73561a6957d4e7",
+   "job": "RSW_Junk_AncientWarwalkerLeg_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "bc6b2640e2e7d04f8fa28c4dabab8bcef909b4c7460dfb3e54bea91fd00ee0d1",
+   "job": "RSW_Junk_AncientWarwalkerLeg_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "097aa5ef9e0c55c5e426b477b0bca24eb79bc12bdb8def8671debfc9a7448b9e",
+   "job": "RSW_Junk_AncientWarwalkerLeg_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c87ce3014790909e934d326bb10a7d9d23dd167fcbc9da86b41e68624aa25dc3",
+   "job": "RSW_Junk_AncientWarwalkerShell_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "bff8e4385857db7a9e18df67a4decdee72fa9a71d0345fa6d0938958c2e1f82e",
+   "job": "RSW_Junk_AncientWarwalkerShell_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "73f4a561af6e0d4f2e0c993be29e5d141a9ad49b0ef27b56cc1d1ea7fd37f2a5",
+   "job": "RSW_Junk_AncientWarwalkerShell_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cf52f71ee95a95b6fd2735583b005e41e79800b829c4bc65f50f42c1742a0780",
+   "job": "RSW_Junk_AncientWarwalkerShell_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "cfb8afa90a7a048e9ce111fe4af2a364d99b230cfc3098d6ba6fd65c4e6ffd00",
+   "job": "RSW_Junk_AncientWarwalkerShell_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e020eff348fc6d274669f574ff385095f5b1ca79bd1902ccc411e0e665a00285",
+   "job": "RSW_Junk_AncientWarwalkerShell_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e81a5cd52c7aba8aaa0efe2c8db070e91a8013a4a2db15893e741d19be0992dc",
+   "job": "RSW_Junk_AncientWarwalkerShell_05",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "B3",
+   "quote": "a candidate that reads as a different artist or size class is REDO",
+   "seen": "a complete miniature Star Destroyer filling a 5x3 footprint; the brief asked for a fallen hull-plating section, so it reads as a toy starship",
+   "redo_brief": "redraw per the art-list prompt: the brief asked for a fallen hull-plating section, so it reads as a toy starship"
+  },
+  {
+   "picture": "55c233b5c1d382ff64003998eb3a09d78a01a0404cc70db630690c6f03445fdc",
+   "job": "RSW_Junk_AncientWarwalkerShell_05_v2",
+   "facing": "north",
+   "verdict": "REDO",
+   "violated": "B3",
+   "quote": "a candidate that reads as a different artist or size class is REDO",
+   "seen": "complete miniature Star Destroyer again",
+   "redo_brief": "redraw per the art-list prompt: complete miniature Star Destroyer again"
+  },
+  {
+   "picture": "aab8a5b830cc1582c4a7b1088c2cce3cf8503f7a8aa06d5aa2e7ed72705d7c25",
+   "job": "RSW_Junk_AncientWarwalkerShell_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "814bf648c188a7ec00e4462da07aad331af44d639adb091d32eb903ecffa13dd",
+   "job": "RSW_Junk_AncientWarwalkerShell_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3ac9add84e7d5de8e2bc0a96b92a1578be61a4d69a3606d3679fc1faabff93eb",
+   "job": "RSW_Junk_AncientWarwalkerShell_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "da97a3cef606223e160f8384a704040cd1e8d8f312938a64a649a6ced6cbe725",
+   "job": "RSW_Junk_AncientWarwalkerShell_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "72d57e519d95d629898db6591de639efd906b6f6fecc1f81522ae8d81d44efaa",
+   "job": "RSW_Junk_AncientWarwalkerTorso_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "0cf6e910166e11b0e0a21250099805c98a27fd1de105a285f9c65dcbf066ba78",
+   "job": "RSW_Junk_AncientWarwalkerTorso_01_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "e918e1bffecfe372c3de7ee413fffc4c2816ca69d05ee442a4d908018ab4e29c",
+   "job": "RSW_Junk_AncientWarwalkerTorso_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2490ed2b26cd538ae8cb608204d4167bfbf9e2890fc1171e78addb51d7f5a376",
+   "job": "RSW_Junk_AncientWarwalkerTorso_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "2a8cd8d2f7e1f739fdd20b179d6683308bbacb573a486296345d0d7dbb7ca87f",
+   "job": "RSW_Junk_AncientWarwalkerTorso_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "b5c2ab3eef8006cd0db36cac866fa25b8955a3de327d61700e3247e3695058fe",
+   "job": "RSW_Junk_AncientWarwalkerTorso_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "52bbeabb6689946a24a8317463b606acae974a04b3bca57fcab12e469bef8125",
+   "job": "RSW_Junk_AncientWarwalkerTorso_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "21d4944e32563c286a1d4e0c6f3f6ce44261dfc96a17ea66f7da553f9ef8dfc9",
+   "job": "RSW_Junk_AncientWarwalkerTorso_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "89cc9b15e2034d65fa0be76533e61e17d3b50e6423a9d55ccbd5fe388a4f0870",
+   "job": "RSW_Junk_AncientWarwalkerTorso_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "9ff9951d61adc19d9269b995066f21cb8af4beb42cca530d3f6940523e9729c7",
+   "job": "RSW_Junk_AncientWarwalkerTorso_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "6ccc4d06786d4c5f161c941c1133114848c5b99ba9aa8ccbe8ab55a9f6615eca",
+   "job": "RSW_Junk_AncientWarwalkerTorso_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "d6d809a277e21f9829c48f603d798add7b07bdcc91ecc1039fdf656e50f99af3",
+   "job": "RSW_Junk_AncientWarwalkerTorso_06_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "60f91a10c9ad1404b6d2b5c5b930d4f0a2c254cd0834b929a8eb3ae25eab8f12",
+   "job": "RSW_Junk_AncientWarwalkerTorso_07",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "89eb290d17c8fdf26b724b43b745b00a35370aa84757d7e86f015c391d176f0a",
+   "job": "RSW_Junk_AncientWarwalkerTorso_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "3f3f85224f31d55f04f317227b6ece46a3aa9e9cb515c158d6a24b54ee42ccfc",
+   "job": "RSW_Junk_AncientWheel_01",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientWheel_01_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 26.88 n=1)"
+  },
+  {
+   "picture": "fdb64ff9409266c2d871e3531a17124b129422d3a664c87c46708c824e459cb2",
+   "job": "RSW_Junk_AncientWheel_02",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c4dd3657b38ce30b7e1c295fffa838831b1474ca7df6dc4c5471849ae8398f2c",
+   "job": "RSW_Junk_AncientWheel_02_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "07f9c7d95387ad6347baa650fa761c4929018b31afe4ee8ec93d7172d5e77b9d",
+   "job": "RSW_Junk_AncientWheel_03",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "908dccc96a7f7e1abc4382ee9919b685faa8848b8a484068e49fa8e1dd161922",
+   "job": "RSW_Junk_AncientWheel_03_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c7f792261f99baab327338c6acb8bddf26db8e25f891bab1e2a54ab09326df97",
+   "job": "RSW_Junk_AncientWheel_04",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "c67383711d3bd110710f6c647df38f4ec4b2ef77a98c00bbd3192a49626ae4a5",
+   "job": "RSW_Junk_AncientWheel_04_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "ada17fce779bb39e850852b82e18134fda109a0664e56f5faa5d39a541ec217b",
+   "job": "RSW_Junk_AncientWheel_05",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "8fb8d7bdeef77293321e4bc71a826fb43e0cda76b0f6d5eed0e542f94adbf38e",
+   "job": "RSW_Junk_AncientWheel_05_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "5eaa23f04afd3609571d745298a68e7b6bd5985ddc993f5d596de3f32a83ea78",
+   "job": "RSW_Junk_AncientWheel_06",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "RSW_Junk_AncientWheel_06_v2",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 20.27 n=1)"
+  },
+  {
+   "picture": "RSW_Junk_AncientWheel_07",
+   "verdict": "UNSURE",
+   "why": "full-resolution render not recoverable (only the 320px sheet thumbnail survives; recover_result: MISMATCH 19.88 n=1)"
+  },
+  {
+   "picture": "67d081efe461eb832bbddb6303680b570e810f6a2a09faab608f0271ef640895",
+   "job": "RSW_Junk_AncientWheel_07_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "1c6ba0d19a1abcdb32f0c32e7dc72aefa5179874e0baf3c967415b42b2e1362e",
+   "job": "RSW_Junk_AncientWheel_08",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f96521ce8095e1dd388a18934562d88591b21bf8bd83f0f81ecc8066e927ce32",
+   "job": "RSW_Junk_AncientWheel_08_v2",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  }
+ ],
+ "installed": {
+  "RSW_Junk_AncientAPC_01": {
+   "sha": "8959c78d03c643e423a8d412c606bb025516a9b6128d84b3042f6bc97a0fad51",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_01.png"
+  },
+  "RSW_Junk_AncientAPC_02": {
+   "sha": "4edbd5d509c8677aeacda1004461ef1b01f65113d240d26934579f03fa5aaa16",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_02.png"
+  },
+  "RSW_Junk_AncientAPC_03": {
+   "sha": "d3f69598b873181b4017495cbc6741fcf081068118c499c41682ecb5a385ae7a",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_03.png"
+  },
+  "RSW_Junk_AncientAPC_04": {
+   "sha": "3feee29d67d3736ae8e378dcff7aca861d8c3c08c90b38ea640099d1e1c30968",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_04.png"
+  },
+  "RSW_Junk_AncientAPC_05": {
+   "sha": "06535748385f6dbf1b2806c5abf8524828f7ce255c28e34bf2699a8cbd7d4f74",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_05.png"
+  },
+  "RSW_Junk_AncientAPC_06": {
+   "sha": "c30a72db24f50ffaa4793608417d3e67c17608a820e6a6ac8021448daf20f79b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_06.png"
+  },
+  "RSW_Junk_AncientAPC_07_v2": {
+   "sha": "afb29ddc496599ba9d8cd1a2f17d6e302a753bffa88f44012bc7be3d4093dfcc",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientAPC/RSW_Junk_AncientAPC_07.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_01": {
+   "sha": "285ea83fe4dd7a9ae7f81254298dcce468a6add90676d20c6608440e82069d9e",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_01.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_02": {
+   "sha": "5108ff41730a684ced49a87306966489bbddc40f9ca219b458823146297e23c7",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_02.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_03_v2": {
+   "sha": "e3330363b90bb21c0b1db5c7773db7703ac0f55e3075ec8ffa660511e6d48286",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_03.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_04": {
+   "sha": "65384412e21a80375263a55a3295260cc3c95cff8d787d70eb0e314c647b55c6",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_04.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_05": {
+   "sha": "9ef2a5bbf63c46cef4483e195adfe7ffac821bab2600fa80a88deabbe4f64b80",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_05.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_06": {
+   "sha": "563cecc5c22a10f5a8d873419cbcab879fc7fd7d5e105f39e98ce821eb984e16",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_06.png"
+  },
+  "RSW_Junk_AncientDropshipEngine_07": {
+   "sha": "9120152dc83803138aff7ccf5cc07dd04e2276bdb62ebaf0264eb2c01018cbc5",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientDropshipEngine/RSW_Junk_AncientDropshipEngine_07.png"
+  },
+  "RSW_Junk_AncientGiantWheel_01": {
+   "sha": "de757c6c50c5cf8920be44906497142342cee4ecde60e33ca3901b395ad15243",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_01.png"
+  },
+  "RSW_Junk_AncientGiantWheel_02": {
+   "sha": "c3f3b215a62fa1fa60b82c45a7b4956ae11902c77dce152a8ea2e1b5cf104be4",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_02.png"
+  },
+  "RSW_Junk_AncientGiantWheel_03": {
+   "sha": "e55095dd37559c5bccbd2a75bedb3ad26317ab0c7151e816d7dddfe1e4585228",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_03.png"
+  },
+  "RSW_Junk_AncientGiantWheel_04": {
+   "sha": "328aa6e822708c5b321508d6fd65f7fd1f26e4d4ac507e62330f5f6966f1af7e",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_04.png"
+  },
+  "RSW_Junk_AncientGiantWheel_05": {
+   "sha": "b7c1480b027407633a7a2e1d2508567cc444856dc76ad06f5c29a3b848e9d50b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_05.png"
+  },
+  "RSW_Junk_AncientGiantWheel_06": {
+   "sha": "982fb39d3ac8214cfb60af2272abf387795794401b2fcc511ed541dd981d0ce9",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_06.png"
+  },
+  "RSW_Junk_AncientGiantWheel_07": {
+   "sha": "fa4931715d076a933ef39a7c1b519a8cbf0dc0cab5e01a468d905404c4d60d65",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientGiantWheel/RSW_Junk_AncientGiantWheel_07.png"
+  },
+  "RSW_Junk_AncientJetEngine_01": {
+   "sha": "1663289130b21ba17a839b7145576531f5374db4cf9174c17be3587c5fd3cd03",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_01.png"
+  },
+  "RSW_Junk_AncientJetEngine_02_v2": {
+   "sha": "ce7a19cdfd0afb49ca56fdb0879abd371ed9c8dc4bc6e14a0abdd2d88473923c",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_02.png"
+  },
+  "RSW_Junk_AncientJetEngine_03": {
+   "sha": "574373f68e82efd5e27216da323b6e47d48a4d9a49d35bd8ef01c7f4b802ea36",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_03.png"
+  },
+  "RSW_Junk_AncientJetEngine_04": {
+   "sha": "0beb66303ea7789f8af7e0655391842d80512d0708b6dbc6dd86de22a069e3d5",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_04.png"
+  },
+  "RSW_Junk_AncientJetEngine_05": {
+   "sha": "b9ec2ba66bc5f48d016d922f764bd9e6af4610f1e79a904336b258d1c0dcd591",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_05.png"
+  },
+  "RSW_Junk_AncientJetEngine_06": {
+   "sha": "2d9556afed079a60f32ac766c5a11fe80302dec5f0958e6e04fd563064fa3483",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_06.png"
+  },
+  "RSW_Junk_AncientJetEngine_07": {
+   "sha": "4d3600d5ef422b1df2356882b4acb73dc51c15aaaf06e9fc13eabd8efd711e2c",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_07.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_01": {
+   "sha": "872683b4ff7e5a91e09022aa7564760aba68bbdee82c807a4ee3e8ec432c3854",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_01.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_02_v2": {
+   "sha": "7ef4161cda5e60c49d1f49966f59f88a692aad1832fcbeda0ae43d31010c2987",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_02.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_03": {
+   "sha": "3e42bb8be8c34ee941d3adc9aaa7a150a77c3b21aaaf3e1fa08f059cccf7105b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_03.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_04": {
+   "sha": "fa602d499cad0a664457e2c2ac7e1e7ec39d3b7bbfc3ac426fc1d5db03275e23",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_04.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_05": {
+   "sha": "07842c8d2e9dc5199e38334f91c5e9667a396abe22956dcdfbbffebd4af66a4d",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_05.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_06": {
+   "sha": "8516ac9620cc69e945a6a8f0e140ac4fa5d0b7f18175c78b8feea16a3ead7d99",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_06.png"
+  },
+  "RSW_Junk_AncientLargeRustedEngineBlock_07": {
+   "sha": "413a470c403391fc8cc4d81bb252a7d4111ef0c05a15013c8a8d47af82e43a56",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock/RSW_Junk_AncientLargeRustedEngineBlock_07.png"
+  },
+  "RSW_Junk_AncientMegaCannonBarrel_01": {
+   "sha": "ce23313acb962f0577ce0a50d897da2bbd28903e1594c9ac5334212d803fd103",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonBarrel/RSW_Junk_AncientMegaCannonBarrel_01.png"
+  },
+  "RSW_Junk_AncientMegaCannonBarrel_03_v2": {
+   "sha": "7f4b3a5d213f0e730bd2cff0f30f1ff47ffc2e81365ddbb5df613c79646ad295",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonBarrel/RSW_Junk_AncientMegaCannonBarrel_03.png"
+  },
+  "RSW_Junk_AncientMegaCannonBarrel_04": {
+   "sha": "807bc64c8d8d9cb43189bbdf31ad04a608ec4f8b0c6ef2732e1a4eee1567a3d0",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonBarrel/RSW_Junk_AncientMegaCannonBarrel_04.png"
+  },
+  "RSW_Junk_AncientMegaCannonBarrel_05": {
+   "sha": "bcf997a20f96aa8c366865f7bdcd200388ebdf43ac1c7993581c4bf42cac3338",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonBarrel/RSW_Junk_AncientMegaCannonBarrel_05.png"
+  },
+  "RSW_Junk_AncientMegaCannonBarrel_06": {
+   "sha": "115b49d920e768966d74571eebc9fb5fbd23622ed20b2383225899bc70307270",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonBarrel/RSW_Junk_AncientMegaCannonBarrel_06.png"
+  },
+  "RSW_Junk_AncientMegaCannonTripod_01": {
+   "sha": "5b85ed776bc3bd3e4dc914aeb3826d248c6c166123122e917b5df58fc91f6cfc",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod/RSW_Junk_AncientMegaCannonTripod_01.png"
+  },
+  "RSW_Junk_AncientMegaCannonTripod_02": {
+   "sha": "182cbf52ccddb9a76a3bb6dad799a3931de2f519c056449d7e90c985b96ff74b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod/RSW_Junk_AncientMegaCannonTripod_02.png"
+  },
+  "RSW_Junk_AncientMegaCannonTripod_03": {
+   "sha": "862039e5cb560fab317b5f9029662650d760814608d9f29d69f815af9bca9057",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod/RSW_Junk_AncientMegaCannonTripod_03.png"
+  },
+  "RSW_Junk_AncientMegaCannonTripod_04": {
+   "sha": "b73c64a690b55211c17ed73e12e2f3e7ebb25ed2ce58caf487df3548f1687045",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod/RSW_Junk_AncientMegaCannonTripod_04.png"
+  },
+  "RSW_Junk_AncientMegaCannonTripod_05": {
+   "sha": "c2c162ca7b1e215e3db1379fc075356d982cc5ba8fd5b8fd5bbfcb503b5c6f07",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod/RSW_Junk_AncientMegaCannonTripod_05.png"
+  },
+  "RSW_Junk_AncientMegaCannonTripod_06": {
+   "sha": "4861e720dbe51632a7a37019929255b3eb70ca58ad51ed794d927742342aafb8",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod/RSW_Junk_AncientMegaCannonTripod_06.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_01": {
+   "sha": "09deae28280526d36bf1106f3f2f90e8808fb26319834e6b4d4c37e325fd5433",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_01.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_02": {
+   "sha": "e797cf8e0b9c1902878f1a1c81f95c3f12d9891165af034e615ca6166069da15",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_02.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_03": {
+   "sha": "dce36991a18f0dbe849ae5ad821c9fe5f1ac8b136e0edad8ad114260c5b8ca42",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_03.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_04": {
+   "sha": "b3d9bde9beb4da32dfdf821221facfbb3ae5bc28225f661f88558d4de75f58ac",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_04.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_05": {
+   "sha": "d61b59f2fca28d2c40887e1937ab9135919ff70de3cec89d1126d1cdd7fc9fc3",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_05.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_06": {
+   "sha": "97393ca028912103c28f1af7484b47e404c4075bd12472d304a0ed50ab1d96be",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_06.png"
+  },
+  "RSW_Junk_AncientMiniWarwalkerRemains_07": {
+   "sha": "441d876d85b4540f4b2805c3a4aaa61dedc1f231783a51d63cc0176cc5e959a5",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains/RSW_Junk_AncientMiniWarwalkerRemains_07.png"
+  },
+  "RSW_Junk_AncientPodCar_01_v2": {
+   "sha": "70cc8909075131d32c09fa86a4cd4032124b89b37e0bfa82a5ed718e977b2610",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_01.png"
+  },
+  "RSW_Junk_AncientPodCar_02_v2": {
+   "sha": "e8bf1b11ab94fd40499405cc682193a2e23f51c0b52f6af452944671dfcb031a",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_02.png"
+  },
+  "RSW_Junk_AncientPodCar_03": {
+   "sha": "d6cf77b666400564d211564bc109171b77f576b26c213ae6040e59da576874fe",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_03.png"
+  },
+  "RSW_Junk_AncientPodCar_04_v2": {
+   "sha": "0fe1ede0fa1aa9e05e9e371ff27d5a10082577b50e5681492b314b56c7d4e202",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_04.png"
+  },
+  "RSW_Junk_AncientPodCar_05": {
+   "sha": "1fd67792b094b955925e26d3f74b2157417646f19c30d381c47b102413508e28",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_05.png"
+  },
+  "RSW_Junk_AncientPodCar_06": {
+   "sha": "cdd0674d818c29ebbf9d534688716834294f05ffa6dde06da577406cf04f756d",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_06.png"
+  },
+  "RSW_Junk_AncientPodCar_07": {
+   "sha": "8844b64c79535e9bfc07ae6932149d70f2195bee7e1b5435e2960f645047300a",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_07.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_01": {
+   "sha": "1d0c8201672dd08dc703ac784f4f0cb43f5a24884809f095ec1666f7c2021345",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_01.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_02": {
+   "sha": "09ef735ce3c27be20a64718abc0ce4e499397c18ebe941e4cbd16f83ddaaf5e8",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_02.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_03": {
+   "sha": "1ba44a4d2ab2144cec75649a311c9838d6130a7e03d82a6335f4d51519fb2ef9",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_03.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_04": {
+   "sha": "91dc060143e0678dcc80f5e421bc5e052c5e933ee9b929539bbbcf0d9b11c0e0",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_04.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_05": {
+   "sha": "7e44951f9f7008ba8fac8e90c4fcf6a210d5d1374ad2147fca168c6cb06c8141",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_05.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_06": {
+   "sha": "c35209cc97dadb9c939f48b38120ca96981d58e3a690174fb40c04686d50973e",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_06.png"
+  },
+  "RSW_Junk_AncientRustedCarFrame_08": {
+   "sha": "7d15de7a5f3d3fd4072135fbf694985e0531d35300bbd698e188fa72d6baae8b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame/RSW_Junk_AncientRustedCarFrame_08.png"
+  },
+  "RSW_Junk_AncientRustedCar_01": {
+   "sha": "42d3e425782fc8e82fca7bed406b89f033f5e2592ad5861e8aa777dedc4484e9",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_01.png"
+  },
+  "RSW_Junk_AncientRustedCar_02": {
+   "sha": "dca86b3fef71794a64fb5a304db9526df4b039c15702da001073f083c4da3941",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_02.png"
+  },
+  "RSW_Junk_AncientRustedCar_03": {
+   "sha": "4630bdaf2831c76b33cbde7560775238453a4d784f911e1c10fc78e7aba2e5fa",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_03.png"
+  },
+  "RSW_Junk_AncientRustedCar_04": {
+   "sha": "c731f080699f32fa7676a8c36723402391a4a930c066bc119d4a99a227daa1c3",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_04.png"
+  },
+  "RSW_Junk_AncientRustedCar_05": {
+   "sha": "87a96f56084c311f2b3e2cdd0171be6ec055f4beec1e0ef47abd4392b55101f5",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_05.png"
+  },
+  "RSW_Junk_AncientRustedCar_06": {
+   "sha": "fc453edb1a02a46e9c51e1191bb2e3fb163eff219641805d60f3fec89ffb133a",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_06.png"
+  },
+  "RSW_Junk_AncientRustedCar_07_v2": {
+   "sha": "f91e62d287181db474d1240db6713c25d29f9c63f416711225acb9e7c222be65",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_07.png"
+  },
+  "RSW_Junk_AncientRustedCar_08": {
+   "sha": "78b26c4893e383af5df119bf6cdce1c5639f4739e718a6429cbfd8bf47e37b99",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_08.png"
+  },
+  "RSW_Junk_AncientRustedCar_09": {
+   "sha": "2e0199e642da923fbd86a75b222d7044d66f4e6003fbecdabb708da0472d07e2",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_09.png"
+  },
+  "RSW_Junk_AncientRustedCar_10": {
+   "sha": "581d4bcfaaeb010bb83db3fb11ffd1c464d9e5a73ad3ca1a67094dbf114c29e4",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedCar/RSW_Junk_AncientRustedCar_10.png"
+  },
+  "RSW_Junk_AncientRustedDropship_01": {
+   "sha": "6b034cec24d3f8ed263bb36ef27b8745b16112c8c4afe951ff0e10e815fe7ec8",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_01.png"
+  },
+  "RSW_Junk_AncientRustedDropship_02": {
+   "sha": "232cb12dd0061673338b77ad7731c4cd1deca63b673c06625a305061a819db72",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_02.png"
+  },
+  "RSW_Junk_AncientRustedDropship_03": {
+   "sha": "fd184c252ad1b4687bb909fc10e0da78cda585ed3cf5a1717456ee010ce5e946",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_03.png"
+  },
+  "RSW_Junk_AncientRustedDropship_04": {
+   "sha": "ed8b3f40a4d49dd6fddb37e3f83ffd6e91fdcb6cb804cff7fe53338cae8d9b57",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_04.png"
+  },
+  "RSW_Junk_AncientRustedDropship_05": {
+   "sha": "5366d72d894e0fd8448c09121ca2fa92b9b78a3e9da4693b4e3c86b9a11b40be",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_05.png"
+  },
+  "RSW_Junk_AncientRustedDropship_06": {
+   "sha": "171fdc8c93477cd8a29595416c79a5d08d86b354485f49f8445c6757001dc977",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_06.png"
+  },
+  "RSW_Junk_AncientRustedDropship_07_v2": {
+   "sha": "76521e87ae98755c5cecd185b75df380c9bbedcdad8f6575ec7c52382d97cb88",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_07.png"
+  },
+  "RSW_Junk_AncientRustedDropship_08": {
+   "sha": "084d7fb4611f1c3a4782cf01252cebd122cc6ae3231200c4148fa078bc7a04d2",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_08.png"
+  },
+  "RSW_Junk_AncientRustedDropship_09": {
+   "sha": "c461a3132d9e1267423439cdfe00e1433f515998a8c127d92b1f74e4f038c1f2",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_09.png"
+  },
+  "RSW_Junk_AncientRustedDropship_10": {
+   "sha": "9a6960908898bd9ff1f3d986d8f0444b767860c8fd734c7eb4b92de800e805c2",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_10.png"
+  },
+  "RSW_Junk_AncientRustedDropship_11_v2": {
+   "sha": "d363e0441e267f84ee608d342933567d08384c3cb7f965bc9c51b38691267ba6",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_11.png"
+  },
+  "RSW_Junk_AncientRustedDropship_12": {
+   "sha": "003635b28c2675b6c2015b1d0a850c83e99c9ab3aca1d9790f9ef3d49659c0f3",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedDropship/RSW_Junk_AncientRustedDropship_12.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_01": {
+   "sha": "fde858839c8ee23fd9d9f76b777ff9db9d33cfd0a8d5ebff299192e44bad5038",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_01.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_02": {
+   "sha": "bd207c9f1c5b374684b0c21e4039d9e06d16c0479782c07c29c351f79890a1d4",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_02.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_03": {
+   "sha": "0ee102f296b4242c9753cb8a75ee2aaec09883df7b57bd87dd7660103803c27c",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_03.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_04": {
+   "sha": "b3795329d64b0567290718bbd8c00ab76c73c67431a7c29dac2b39c7719c2ceb",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_04.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_05": {
+   "sha": "701db489419d2dfdbda03aab518e0416ec8de72eced494be6f5ccdbfa17924ef",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_05.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_06_v2": {
+   "sha": "6aae4c42a8bc521924c8dc8d3c45b527dc86550ec1b51a805366ce5383b93797",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_06.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_07": {
+   "sha": "ee171598e32aeeda39d02b65bc43803c3c309258b0181a39ce42e42bba3aa2da",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_07.png"
+  },
+  "RSW_Junk_AncientRustedEngineBlock_08": {
+   "sha": "2e3b1a8e84e955200c53dcb2464d45062e5edda684c427b2aada4cd573ee7b32",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock/RSW_Junk_AncientRustedEngineBlock_08.png"
+  },
+  "RSW_Junk_AncientRustedJeep_01": {
+   "sha": "3c66dae0f427cdba30807695cdcc9dbd8d894731318bd1266623fb72cfa8b58e",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_01.png"
+  },
+  "RSW_Junk_AncientRustedJeep_02": {
+   "sha": "ed0b365c877af8c967920787593c0dbabe2156203dff0c0accd5409ed2561aec",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_02.png"
+  },
+  "RSW_Junk_AncientRustedJeep_03": {
+   "sha": "b6b2872fffcb0ad510ac12187124d514ee0bab66c1dace36c5b37e9ad1f64bf3",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_03.png"
+  },
+  "RSW_Junk_AncientRustedJeep_04": {
+   "sha": "94ce8f7f0f8ca10bd8501b9835ec41f68db16627dc3b6aca74524a15d21f2188",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_04.png"
+  },
+  "RSW_Junk_AncientRustedJeep_05": {
+   "sha": "3d1224c7c0365d35d7e76f1ba791d06858083e42b79da77edac6f7227ffb8753",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_05.png"
+  },
+  "RSW_Junk_AncientRustedJeep_06_v2": {
+   "sha": "8b5bf720a4b12859a927d239bf595f9813412da9f636e1ca0ae5c8341b9e97ab",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_06.png"
+  },
+  "RSW_Junk_AncientRustedJeep_07": {
+   "sha": "2b964b0c804a683615499d7dc71e9cf9a55ca1a3d6bbb708c5c04b8e3265a0de",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_07.png"
+  },
+  "RSW_Junk_AncientRustedJeep_08": {
+   "sha": "28eab15815511d91b91ec24be132860cdf2d2f58795b728696a73f476276364d",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedJeep/RSW_Junk_AncientRustedJeep_08.png"
+  },
+  "RSW_Junk_AncientRustedTruck_01": {
+   "sha": "6869f7845b3218a6e42cae1727ba7910a87c5a03537b3189feef92b2c9ca7568",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_01.png"
+  },
+  "RSW_Junk_AncientRustedTruck_02": {
+   "sha": "cafa834fc374f5f814a4173ac2bc4d8408b577e35706bafdf3e91d93817a1621",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_02.png"
+  },
+  "RSW_Junk_AncientRustedTruck_03_v2": {
+   "sha": "5ce5d4652f12bea37ec21c9aa996cdea5a53a140e5c88622c07cfe7b0083a780",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_03.png"
+  },
+  "RSW_Junk_AncientRustedTruck_04": {
+   "sha": "13c2141079409e81dae03d54733cab6300ecbc6a419fec1e9fe0957b4d854c38",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_04.png"
+  },
+  "RSW_Junk_AncientRustedTruck_05": {
+   "sha": "5711e42181849e2bd7fc9a74f2ed2e1ed77d8b613002394d2e861378ea65db1f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_05.png"
+  },
+  "RSW_Junk_AncientRustedTruck_06": {
+   "sha": "31bebfe1a8cd4616cb5b5eaf074168c840fdfcc140dab14d35beeb14188c668a",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_06.png"
+  },
+  "RSW_Junk_AncientRustedTruck_07": {
+   "sha": "81fc259fc16fc129145e516731bef654debc6d5336daf0488aef0943d59fa1eb",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_07.png"
+  },
+  "RSW_Junk_AncientRustedTruck_08": {
+   "sha": "a4a54a0ed1740831b94f165c16f000bc76781b117736f3f057ec3fb6a6b5444b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientRustedTruck/RSW_Junk_AncientRustedTruck_08.png"
+  },
+  "RSW_Junk_AncientTankTrap_01": {
+   "sha": "2d4a47c1cc3dac3b92e29ef638e1e8b786ad4e0a05f1f61b34194beac6cc5c83",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_01.png"
+  },
+  "RSW_Junk_AncientTankTrap_02": {
+   "sha": "88e311e527ba3385cafa61adf7328336726e5682ee3bb6f482e6212af4727f70",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_02.png"
+  },
+  "RSW_Junk_AncientTankTrap_03": {
+   "sha": "f77a27617c86b302cbea82d6333bd4d2148de2651b09299f303a7f56968d6a6c",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_03.png"
+  },
+  "RSW_Junk_AncientTankTrap_04": {
+   "sha": "296314b0f6e774e4d4b7e1792b81d425ed1677ea6297515c2a6f140f2b93e76f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_04.png"
+  },
+  "RSW_Junk_AncientTankTrap_05": {
+   "sha": "91ec2075afd1c5c080e4e0774f17816df330216e9648e7879e012c5faf283dfa",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_05.png"
+  },
+  "RSW_Junk_AncientTankTrap_06": {
+   "sha": "4ad1f99e7832ce176e619373470e254004bb54afda471219e25ee80ab5ca3b92",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_06.png"
+  },
+  "RSW_Junk_AncientTankTrap_07": {
+   "sha": "f5da569cc17135d282e5e564f491ab8876ee4efab9e9436799f2c17df4d274f3",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTankTrap/RSW_Junk_AncientTankTrap_07.png"
+  },
+  "RSW_Junk_AncientTank_01": {
+   "sha": "cfaa27c673e5376bb4aa3970c62712ab3bde3a94744490c0adb6039038e5c063",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_01.png"
+  },
+  "RSW_Junk_AncientTank_02": {
+   "sha": "5647c2eb800decb3cbb7ead98549f854addb024cad3a4feccd85ee1321e40674",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_02.png"
+  },
+  "RSW_Junk_AncientTank_03_v2": {
+   "sha": "689171c507c4bd4fb466982cc5a7534c242e2b46753d95a66cb217b760b1ff2a",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_03.png"
+  },
+  "RSW_Junk_AncientTank_04": {
+   "sha": "bcf12f9ab3bf87a869f757bbb6edcf81a4852000855842429e1edfa04df50cc4",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_04.png"
+  },
+  "RSW_Junk_AncientTank_05": {
+   "sha": "96ded6a64d75b3d91b1d935b287d0b66e535d79d9e7d8e642dd66e2363aa76fd",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_05.png"
+  },
+  "RSW_Junk_AncientTank_06": {
+   "sha": "9739f903714d346066800d6582905e589bb892a9d414b6dff0bf5875538b0948",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_06.png"
+  },
+  "RSW_Junk_AncientTank_08": {
+   "sha": "d23a713f49dd4761f2d1f811ebc6b15de843d065105b49c1842ac34a221d535f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_08.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_01": {
+   "sha": "f8b25474b3ce026315a8a964488b2fa88ddedd1bdc2fde0de8f521fde0de6851",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_01.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_02": {
+   "sha": "53ceedf148861b1ed9440e95296712ccdc603c4aa37b8d82ce62c5b119b909de",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_02.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_03": {
+   "sha": "c1516d1fe3ff98d0c1ef1887ba581b83b4f9ff5054b9cb4eebb192bd52fe4cb8",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_03.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_04": {
+   "sha": "2212041a279b43a2fb06b194415acdfb612e7d0191e8818cd27bd15e1a3be0fa",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_04.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_05": {
+   "sha": "e217d6959787eea3d9e14d6594fee9b1190ffbb1b91261f99d58cd8318279669",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_05.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_06": {
+   "sha": "f93f62f2e6c66dd02cd7d881d5186dc165f8f332b1e535e4ef749150c5e2be2f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_06.png"
+  },
+  "RSW_Junk_AncientWarspiderRemains_07": {
+   "sha": "1c5e5406746367363b26fea84b8413126300b1aa3cad57c24496109024660dd7",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains/RSW_Junk_AncientWarspiderRemains_07.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_01": {
+   "sha": "39a2acaa1ec35f38bec2265c9138ee592cc57c5a6e9e871acf06c65dc2bfdca0",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_01.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_02": {
+   "sha": "300057be494fd7869ce432240586695e24551d6e16cae3463cc8695f6a7cfb1c",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_02.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_03": {
+   "sha": "fdd0ab1a67d997da7e664081ab02cbebc899ce42f0c53bc413937023586e7956",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_03.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_04": {
+   "sha": "c6401778626e68f3bf12f3213f6a783ad90ce137886d5cd2ef9940ab488d7a06",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_04.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_05": {
+   "sha": "a266fed49f9040335eed08effcd74fb9f551569d4c1ae188df64be21e28679e8",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_05.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_06": {
+   "sha": "3c4d59da811debc9dbea535d8fef604ca040ee306125928908f86718bc9e9406",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_06.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_07": {
+   "sha": "107286bfa0665978a5f247f8060cf0833c6610f8bac1b3024930260b573a3bd0",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_07.png"
+  },
+  "RSW_Junk_AncientWarwalkerClaw_08": {
+   "sha": "59b6b5c9778bb6b733156fe8d33e1c045ce479b9ea787a0e928f38a19a3a17db",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw/RSW_Junk_AncientWarwalkerClaw_08.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_01_v2": {
+   "sha": "1d2a0e4fd8e68bcb0b9d19a88c224fd670b0b1524c1ea9a5ad98e373c6aaff08",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_01.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_02": {
+   "sha": "988c3995e3b543430e766932cb35bef6503476f5dba2451bbb3d9b0584c8a6a1",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_02.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_03": {
+   "sha": "9bfad278c66f054dcef0b65a94b3892a19e48b6f17480c595dc5918ea591f5c7",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_03.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_04": {
+   "sha": "31d9c8dbab1030dda6c69fcc956004b4c003e84b65ec9362d9e3c9f1bfc1252f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_04.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_05": {
+   "sha": "ca04226c35a73aeddead6ae52c10ef1b1c1096ef4520d9153974734a9818498f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_05.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_06": {
+   "sha": "bdf8995abc7e5bfaf86495fc3cb69452852c92502c6167750d8ea3aafac923ef",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_06.png"
+  },
+  "RSW_Junk_AncientWarwalkerFoot_07_v2": {
+   "sha": "d593047fd163f3a7fff74d87a400709d042d37122a4ecac13c6570f45edec5dc",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot/RSW_Junk_AncientWarwalkerFoot_07.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_01_v2": {
+   "sha": "140bf0fe6b86725affdb5a830b7f826308a2e3f2e6ee719d6c4463071e2bfcc0",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_01.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_02": {
+   "sha": "07b3a4b1909e37d999dc281154d42312a0e7c757bf697d6262101c76264ef993",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_02.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_03": {
+   "sha": "0807392f2b8996af9ccd096bd53999709498844c8463ea257fd2ad9546ffd860",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_03.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_04": {
+   "sha": "6fc1e0fade76efb254b31e999aed08f1a87ecb07c8e578b59c3b6197e56a9937",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_04.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_05": {
+   "sha": "64ef9c5bb4a94f8825658e521a785006d836e5d9ee13616b6f52effeb38a6125",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_05.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_06": {
+   "sha": "77cd26fbf0abb6cf97ceb45733e026ebe50ccfa0316424e587ffa7b5f454fba2",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_06.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_07": {
+   "sha": "7d00b6a0e20822ba287bfb3c9ec6a7070fb339172ad6595ef9a5f080aba4869f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_07.png"
+  },
+  "RSW_Junk_AncientWarwalkerLeg_08": {
+   "sha": "bc6b2640e2e7d04f8fa28c4dabab8bcef909b4c7460dfb3e54bea91fd00ee0d1",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg/RSW_Junk_AncientWarwalkerLeg_08.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_01": {
+   "sha": "c87ce3014790909e934d326bb10a7d9d23dd167fcbc9da86b41e68624aa25dc3",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_01.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_02": {
+   "sha": "73f4a561af6e0d4f2e0c993be29e5d141a9ad49b0ef27b56cc1d1ea7fd37f2a5",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_02.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_03_v2": {
+   "sha": "cfb8afa90a7a048e9ce111fe4af2a364d99b230cfc3098d6ba6fd65c4e6ffd00",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_03.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_04_v2": {
+   "sha": "e020eff348fc6d274669f574ff385095f5b1ca79bd1902ccc411e0e665a00285",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_04.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_06": {
+   "sha": "aab8a5b830cc1582c4a7b1088c2cce3cf8503f7a8aa06d5aa2e7ed72705d7c25",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_06.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_07": {
+   "sha": "3ac9add84e7d5de8e2bc0a96b92a1578be61a4d69a3606d3679fc1faabff93eb",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_07.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_01": {
+   "sha": "72d57e519d95d629898db6591de639efd906b6f6fecc1f81522ae8d81d44efaa",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_01.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_02": {
+   "sha": "e918e1bffecfe372c3de7ee413fffc4c2816ca69d05ee442a4d908018ab4e29c",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_02.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_03": {
+   "sha": "2a8cd8d2f7e1f739fdd20b179d6683308bbacb573a486296345d0d7dbb7ca87f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_03.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_04": {
+   "sha": "52bbeabb6689946a24a8317463b606acae974a04b3bca57fcab12e469bef8125",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_04.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_05": {
+   "sha": "89cc9b15e2034d65fa0be76533e61e17d3b50e6423a9d55ccbd5fe388a4f0870",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_05.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_06": {
+   "sha": "6ccc4d06786d4c5f161c941c1133114848c5b99ba9aa8ccbe8ab55a9f6615eca",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_06.png"
+  },
+  "RSW_Junk_AncientWarwalkerTorso_07": {
+   "sha": "60f91a10c9ad1404b6d2b5c5b930d4f0a2c254cd0834b929a8eb3ae25eab8f12",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso/RSW_Junk_AncientWarwalkerTorso_07.png"
+  },
+  "RSW_Junk_AncientWheel_01": {
+   "sha": "3f3f85224f31d55f04f317227b6ece46a3aa9e9cb515c158d6a24b54ee42ccfc",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_01.png"
+  },
+  "RSW_Junk_AncientWheel_02": {
+   "sha": "fdb64ff9409266c2d871e3531a17124b129422d3a664c87c46708c824e459cb2",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_02.png"
+  },
+  "RSW_Junk_AncientWheel_03": {
+   "sha": "07f9c7d95387ad6347baa650fa761c4929018b31afe4ee8ec93d7172d5e77b9d",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_03.png"
+  },
+  "RSW_Junk_AncientWheel_04": {
+   "sha": "c7f792261f99baab327338c6acb8bddf26db8e25f891bab1e2a54ab09326df97",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_04.png"
+  },
+  "RSW_Junk_AncientWheel_05": {
+   "sha": "ada17fce779bb39e850852b82e18134fda109a0664e56f5faa5d39a541ec217b",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_05.png"
+  },
+  "RSW_Junk_AncientWheel_06": {
+   "sha": "5eaa23f04afd3609571d745298a68e7b6bd5985ddc993f5d596de3f32a83ea78",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_06.png"
+  },
+  "RSW_Junk_AncientWheel_07_v2": {
+   "sha": "67d081efe461eb832bbddb6303680b570e810f6a2a09faab608f0271ef640895",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_07.png"
+  },
+  "RSW_Junk_AncientWheel_08": {
+   "sha": "1c6ba0d19a1abcdb32f0c32e7dc72aefa5179874e0baf3c967415b42b2e1362e",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_08.png"
+  }
+ },
+ "proposals": [
+  "A junk/wreck subject asked as a PART (wing, plate, arm) must not come back as the whole vehicle: the whole reads as a toy at that footprint (JetEngine_08, Shell_05)."
+ ]
+}

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AncientJunk_StarWarsReskin.xml        STARWARS_JUNK_RESKIN_1, 2026-11-03
+  ============================================================================
+
+  Reskins vanilla's ancient junk (cars, trucks, tanks, warwalker parts, wheels,
+  engines, dropships, mega-cannon pieces; 24 Core ThingDefs) as Star Wars wrecks.
+  Owner, 2026-10-03: "Reskin as Star-Wars-adjacent junk ... And diversity that
+  junk! Lots of different images to choose from." Spec:
+  design/RimMandrake/starwars_junk_reskin_2026-10-03.md.
+
+  Each def's texPath points at a folder, Textures/Things/Building/Ruins/RSW_Junk/<defName>/,
+  drawn with Graphic_Random (one picture per variant, chosen per thing). The
+  pictures were judged per variant (delegated, art_judge_brief.md):
+  infrastructure/state/delegated/2026-11-03/STARWARS_JUNK_RESKIN_1.json.
+  Folded in: PodCarIsLandspeeder.xml (owner request 2026-08-24); its picture is
+  AncientPodCar variant 00 and its label and description are kept word for word.
+
+  APPEARANCE ONLY. size, drawSize, shadowData, passability, fillPercent,
+  MaxHitPoints and killedLeavings are untouched, so every GenStep, prefab and
+  ruin layout that places these defs keeps working and they behave as vanilla.
+  No new defs, no new defNames.
+
+  ⚠️ Graphic_Multi -> Graphic_Random on the rotatable defs (car frame, truck,
+  troop carrier, warwalker claw/leg/torso, mega-cannon barrel): each folder PNG
+  loads as a Graphic_Single and the building draws it rotated, exactly as
+  vanilla's own AncientRustedCar does. Every picture is drawn pointing north.
+
+  ⚠️ No MayRequire and no FindMod guard: every target is Core, present on
+  every load (all DLC assumed). The whole set sits inside one Mod Settings gate
+  ("Star Wars junk", default on; read at the next game start).
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="RimMandrake.StarWars.Patches.RSW_PatchOperationStarWarsPatchesSetting">
+    <setting>junkReskin</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- AncientRustedCar: was "ancient car", Graphic_Random Things/Building/Ruins/RustedCars -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCar"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientRustedCar</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCar"]/label</xpath>
+          <value><label>landspeeder hulk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCar"]/description</xpath>
+          <value><description>A civilian landspeeder or airspeeder, long dead. Whatever it was - sport speeder, family runabout, air taxi - its repulsorlift coils were pulled out of it generations ago and the sun has been cooking the paint off ever since. The seats are split, the dash is gutted, and the turbines hang open and empty.</description></value>
+        </li>
+
+        <!-- AncientRustedCarFrame: was "ancient car frame", Graphic_Multi Things/Building/Ruins/RustedCarFrame -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCarFrame"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientRustedCarFrame</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCarFrame"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCarFrame"]/label</xpath>
+          <value><label>stripped speeder frame</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedCarFrame"]/description</xpath>
+          <value><description>The bare spaceframe of a speeder or swoop, picked clean. Every panel, coil and cable that could be pried off has been, long ago, leaving struts, mounts and a seat rail. Not much left here but the shape of the thing.</description></value>
+        </li>
+
+        <!-- AncientPodCar: was "ancient pod car", Graphic_Single Things/Building/Ruins/PodCar -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientPodCar"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientPodCar</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientPodCar"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientPodCar"]/label</xpath>
+          <value><label>wrecked landspeeder</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientPodCar"]/description</xpath>
+          <value><description>A civilian repulsorlift speeder, dead on the sand for longer than anyone here can count. The canopy is gone, the drive coils were pulled out of it generations ago, and what the salvagers left the sun has been bleaching and cooking ever since. Sand has drifted into the cockpit well and packed itself solid.</description></value>
+        </li>
+
+        <!-- AncientRustedTruck: was "ancient truck", Graphic_Multi Things/Building/Ruins/RustedTruck -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedTruck"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientRustedTruck</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedTruck"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedTruck"]/label</xpath>
+          <value><label>speeder truck hulk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedTruck"]/description</xpath>
+          <value><description>A cargo speeder truck, abandoned and stripped. Its cargo bed is empty, its repulsors are dead and its cab has been gutted to the frame.</description></value>
+        </li>
+
+        <!-- AncientRustedJeep: was "ancient troop carrier", Graphic_Multi Things/Building/Ruins/RustedMilitaryJeep -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedJeep"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientRustedJeep</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedJeep"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedJeep"]/label</xpath>
+          <value><label>armoured carrier hulk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedJeep"]/description</xpath>
+          <value><description>The burnt-out shell of an armoured carrier or patrol transport. Its turret ring is empty and its cab has been looted bare, but the armoured hull still stands.</description></value>
+        </li>
+
+        <!-- AncientRustedEngineBlock: was "ancient engine block", Graphic_Random Things/Building/Ruins/RustedEngineBlock -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedEngineBlock"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientRustedEngineBlock</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedEngineBlock"]/label</xpath>
+          <value><label>droid and drive scrap</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedEngineBlock"]/description</xpath>
+          <value><description>A chunk of dead machinery: a toppled droid shell, a power converter, a hyperdrive motivator or a cracked repulsorlift unit. Scavengers took the useful parts out generations ago; what is left is dented casing and loose wiring.</description></value>
+        </li>
+
+        <!-- AncientLargeRustedEngineBlock: was "ancient macro-engine block", Graphic_Single Things/Building/Ruins/LargeEngineBlock -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientLargeRustedEngineBlock"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientLargeRustedEngineBlock</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientLargeRustedEngineBlock"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientLargeRustedEngineBlock"]/label</xpath>
+          <value><label>fallen machinery</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientLargeRustedEngineBlock"]/description</xpath>
+          <value><description>A long piece of heavy machinery on its side: a moisture vaporator, a load lifter, a drive bogie or a ship's core assembly. It has not run for generations and everything inside worth taking has been taken.</description></value>
+        </li>
+
+        <!-- AncientWheel: was "ancient wheel", Graphic_Random Things/Building/Ruins/Wheel -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWheel"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWheel</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWheel"]/label</xpath>
+          <value><label>scrap fragment</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWheel"]/description</xpath>
+          <value><description>A small piece of old wreckage - a curled-up war droid, a droid's head or foot, a drive sprocket, a hatch. It is too battered to be worth hauling and too heavy to ignore.</description></value>
+        </li>
+
+        <!-- AncientGiantWheel: was "ancient giant wheel", Graphic_Random Things/Building/Ruins/GiantWheel -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientGiantWheel"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientGiantWheel</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientGiantWheel"]/label</xpath>
+          <value><label>giant drive wheel</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientGiantWheel"]/description</xpath>
+          <value><description>A huge drive wheel or tread section torn off a war droid, a sandcrawler or a heavy tank. Its bearings seized long ago and its teeth are worn smooth by the wind.</description></value>
+        </li>
+
+        <!-- AncientTankTrap: was "ancient tank trap", Graphic_Random Things/Building/Ruins/AncientTankTrap -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTankTrap"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientTankTrap</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTankTrap"]/label</xpath>
+          <value><label>durasteel barrier</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTankTrap"]/description</xpath>
+          <value><description>An old durasteel barricade, checkpoint pylon or dead shield emitter, left where some long-forgotten battle line once ran. Its warning stripes are worn away and its power cells are long gone.</description></value>
+        </li>
+
+        <!-- AncientAPC: was "ancient ruined APC", Graphic_Single Things/Building/Ruins/RuinedAPC -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientAPC"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientAPC</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientAPC"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientAPC"]/label</xpath>
+          <value><label>troop transport hulk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientAPC"]/description</xpath>
+          <value><description>The hull of a military troop transport, lying where it was knocked out. Its troop bays hang open and its drive systems were stripped generations ago. The armour still turns a blaster bolt, which is about all it is good for now.</description></value>
+        </li>
+
+        <!-- AncientTank: was "ancient ruined tank", Graphic_Single Things/Building/Ruins/RuinedTank -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTank"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientTank</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTank"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTank"]/label</xpath>
+          <value><label>assault tank hulk</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientTank"]/description</xpath>
+          <value><description>A wrecked repulsor tank or war droid, its main gun dead and its armour scored by old blaster fire. Salvagers emptied it of weapons and power cells long ago; the hull was too heavy to take.</description></value>
+        </li>
+
+        <!-- AncientWarwalkerClaw: was "ancient warwalker claw", Graphic_Multi Things/Building/Ruins/AncientWarwalkerClaw -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerClaw"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWarwalkerClaw</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerClaw"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerClaw"]/label</xpath>
+          <value><label>war machine limb</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerClaw"]/description</xpath>
+          <value><description>A weapon pod or limb torn off a walker or war droid. The barrels are fused and the actuators seized solid, but it still looks dangerous.</description></value>
+        </li>
+
+        <!-- AncientWarwalkerLeg: was "ancient warwalker leg", Graphic_Multi Things/Building/Ruins/AncientWarwalkerLeg -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerLeg"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWarwalkerLeg</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerLeg"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerLeg"]/label</xpath>
+          <value><label>walker leg</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerLeg"]/description</xpath>
+          <value><description>One leg of a fallen combat walker, snapped off at the hip. Its hydraulics bled out long ago and its joints have been stripped for parts.</description></value>
+        </li>
+
+        <!-- AncientWarwalkerFoot: was "ancient warwalker foot", Graphic_Single Things/Building/Ruins/AncientWarwalkerFoot -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerFoot"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWarwalkerFoot</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerFoot"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerFoot"]/label</xpath>
+          <value><label>walker foot</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerFoot"]/description</xpath>
+          <value><description>The foot of a combat walker or a spider droid, sheared off and half sunk where it fell. It is massive and almost impossible to move.</description></value>
+        </li>
+
+        <!-- AncientWarwalkerTorso: was "ancient warwalker torso", Graphic_Multi Things/Building/Ruins/AncientWarwalkerTorso -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerTorso"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWarwalkerTorso</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerTorso"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerTorso"]/label</xpath>
+          <value><label>walker hull</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerTorso"]/description</xpath>
+          <value><description>The body of a combat walker, toppled and gutted. Its cockpit glass is smashed and its weapon mounts are empty; the hull itself was simply too big to haul away.</description></value>
+        </li>
+
+        <!-- AncientWarwalkerShell: was "ancient warwalker shell", Graphic_Single Things/Building/Ruins/AncientWarwalkerShell -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerShell"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerShell"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerShell"]/label</xpath>
+          <value><label>armour wreckage</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarwalkerShell"]/description</xpath>
+          <value><description>A walker's head, a gun turret or a slab of warship armour, broken off and fallen here long ago. The plating is still tough enough to stop blaster fire.</description></value>
+        </li>
+
+        <!-- AncientWarspiderRemains: was "ancient warspider remains", Graphic_Single Things/Building/Ruins/AncientWarspiderRemains -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarspiderRemains"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientWarspiderRemains</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarspiderRemains"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarspiderRemains"]/label</xpath>
+          <value><label>war droid remains</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientWarspiderRemains"]/description</xpath>
+          <value><description>The sprawled wreck of a huge war droid or walker assembly, legs splayed where it went down. Its weapons and power core were salvaged generations ago.</description></value>
+        </li>
+
+        <!-- AncientMiniWarwalkerRemains: was "ancient warsprinter remains", Graphic_Single Things/Building/Ruins/AncientWarsprinterRemains -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMiniWarwalkerRemains"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientMiniWarwalkerRemains</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMiniWarwalkerRemains"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMiniWarwalkerRemains"]/label</xpath>
+          <value><label>light walker wreckage</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMiniWarwalkerRemains"]/description</xpath>
+          <value><description>The wreck of a scout walker, a pile of crushed battle droids or a tangle of speeder bikes. Everything small and valuable was picked off it long ago.</description></value>
+        </li>
+
+        <!-- AncientJetEngine: was "ancient jet engine", Graphic_Single Things/Building/Ruins/JetEngine -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientJetEngine"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientJetEngine</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientJetEngine"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientJetEngine"]/label</xpath>
+          <value><label>starfighter engine</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientJetEngine"]/description</xpath>
+          <value><description>An engine pod or wing torn off a starfighter or podracer. Its thrust cone is cracked and cold, its fuel lines long since cut and sold.</description></value>
+        </li>
+
+        <!-- AncientDropshipEngine: was "ancient dropship engine", Graphic_Single Things/Building/Ruins/AncientDropshipEngine -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientDropshipEngine"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientDropshipEngine</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientDropshipEngine"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientDropshipEngine"]/label</xpath>
+          <value><label>ship engine block</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientDropshipEngine"]/description</xpath>
+          <value><description>A sublight engine block from a shuttle, gunship or light freighter. The ion grilles are clogged with grit and the drive core was pulled out generations ago.</description></value>
+        </li>
+
+        <!-- AncientRustedDropship: was "ancient dropship", Graphic_Single Things/Building/Ruins/AncientRustedDropship -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedDropship"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientRustedDropship</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedDropship"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedDropship"]/label</xpath>
+          <value><label>starship wreck</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientRustedDropship"]/description</xpath>
+          <value><description>The broken hull of a crashed starship - a fighter, a shuttle or a gunship. It came down hard a very long time ago, and salvagers have been taking it apart ever since.</description></value>
+        </li>
+
+        <!-- AncientMegaCannonBarrel: was "ancient mega-cannon barrel", Graphic_Multi Things/Building/Ruins/AncientMegacannonBarrel -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonBarrel"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientMegaCannonBarrel</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonBarrel"]/graphicData/graphicClass</xpath>
+          <value><graphicClass>Graphic_Random</graphicClass></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonBarrel"]/label</xpath>
+          <value><label>heavy blaster barrel</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonBarrel"]/description</xpath>
+          <value><description>The barrel of a heavy blaster cannon or turbolaser, broken off its mount. Its focusing chamber is cracked and dark.</description></value>
+        </li>
+
+        <!-- AncientMegaCannonTripod: was "ancient mega-cannon platform", Graphic_Random Things/Building/Ruins/AncientMegacannonTripod -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonTripod"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/Ruins/RSW_Junk/AncientMegaCannonTripod</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonTripod"]/label</xpath>
+          <value><label>gun emplacement base</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AncientMegaCannonTripod"]/description</xpath>
+          <value><description>The base of a heavy gun emplacement or artillery walker. Its cannon was knocked out in some war nobody remembers, and its power systems were looted long ago.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

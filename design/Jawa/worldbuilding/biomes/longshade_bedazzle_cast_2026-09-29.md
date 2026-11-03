@@ -63,7 +63,7 @@ in `done/` and is visible in `SWBestiary/Textures`.
 | truffle mole | trufflemole, truffle_mole, pikkut | 0 in artpipe. The only PNG is the BMT donor copy in SWBestiary, so **queued** |
 | dewfringe sprig | sprig, dewfringe | Only the plant has art (`RM_Dewfringe`, 2 in done, KEEP). The sprig has none, so **queued** |
 | parasol / shade tent / sun shield | parasol, parisol, umbrella, shadetent, shade_tent, tent, sunshield, sun_shield, awning | 0 in artpipe. The `tent`/`shield` hits in Textures are tentacles, terminals and armoury items, so **queued** |
-| wrecked landspeeder | speeder, landspeeder, wreck | **EXISTS**: `src/RimStarWars/StarWarsPatches/Textures/Things/Building/Ruins/WreckedLandspeeder.png` (512×256, re-textures vanilla `AncientPodCar` via `PodCarIsLandspeeder.xml`). **Skipped** |
+| wrecked landspeeder | speeder, landspeeder, wreck | **EXISTS**: `src/RimStarWars/StarWarsPatches/Textures/Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_00.png` (512×256, one of the `AncientPodCar` variants of `AncientJunk_StarWarsReskin.xml`). **Skipped** |
 | dead sandcrawler | crawler, sandcrawler, DeadCrawler | **EXISTS as a structure**: the `RSW_DeadCrawler` tile mutator and `RSW_GenStep_DeadCrawler`, which lays `Templates/dead_crawler.txt` (25×9) out of `CrustySandcrawlerHull` walls (`src/RimStarWars/Armoury/Textures/Buildings/Walls/`). **Skipped**. The build gives it a tall `staticSunShadowHeight` |
 | other wreck/hulk art | wreck, hulk, skiff | Only the `scald*_wreck{hull,tank,frame}` sea wrecks (Scald shipping hulks, a different biome's register), `sporehulk` (a creature) and WreckedMachines' smelter. Desert vehicle hulks: 0, so the skiff, tread and cart are **queued** |
 | Inhabited / AshkarrInhabited / DesertVehicleReskin | (whole mod trees, deployed copies) | Inhabited has 0 PNGs and AshkarrInhabited has 0 PNGs (both are XML only: cast rosters, settlement manifests, security profiles). DesertVehicleReskin has 30 PNGs: **live** Tier-0 draught vehicles (Chariot, CoveredCarriage, DogSled, OxCart, WarChariot, each s/e/n + masks). None of them is wrecked. The cart hulk is queued as its own wreck, not a retint of `AV_OxCart` |
@@ -211,7 +211,7 @@ reconcile) · `rsw_sandmaw` → `RM_Ommok` · `rsw_tuskcoil` → `RM_Ulgga` · `
 the `JOE_Cephalope` rename · the filler sets `RM_Sollak`/`_b`, `RM_Gennok`/`_b`,
 `RM_Tebbra`/`_b`, `RM_Pirrik`/`_b`, `RM_Dakkra` (owner-ruled on the 09-27 sheet).
 
-**Skipped, with art already in the game:** the wrecked landspeeder (`WreckedLandspeeder.png`)
+**Skipped, with art already in the game:** the wrecked landspeeder (`RSW_Junk_AncientPodCar_00.png`)
 and the dead sandcrawler (the `RSW_DeadCrawler` plan built from `CrustySandcrawlerHull` walls).
 The Crawler Road build places them, and neither needs a job.
 
