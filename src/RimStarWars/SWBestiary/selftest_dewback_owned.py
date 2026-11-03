@@ -11,6 +11,9 @@ which has the donor's cartoonish art. The item closed because our port owns that
      fixture records the set-C blob sha256s, which must equal the sheet snapshot's column C. Each bound facing,
      fingerprinted the same way, must match the aspect within 5% and sit within MAD_MAX (a Tauntaun probe must
      land above it, so the comparison can see a swap). `--regen` rebuilds the fixture from git at 34bb644a86;
+  1a. EVERY body graphic RSW_Dewback's PawnKindDef can draw (each lifeStage body/female graphic and each
+     alternateGraphics li -- chance 0.8, the common spawn) has exactly that texPath, the ThingDef binds none other,
+     and no patch under src/ has an xpath touching an RSW_Dewback graphic; both pins are probed on planted XML;
   2. no def under src/ has the bare defName `Dewback` (that name is the donor's race);
   3. the donor packageId is absent from the shipping candidate list and from ModsConfig.FULL.LATEST (parsed
      activeMods; each list must hold all five DLC packageIds, or the parse is blind).
@@ -155,6 +158,41 @@ def check_art():
         check(dp > MAD_MAX, "probe: Tauntaun %s is NOT set C on pixels alone (MAD %.2f > %.1f)" % (facing, dp, MAD_MAX))
 
 
+BODY_NODES = ("bodyGraphicData", "femaleGraphicData")
+PLANT_GOOD = ("<PawnKindDef><defName>RSW_Dewback</defName><alternateGraphics><li><texPath>%s</texPath></li>"
+              "<li><texPath>%s</texPath></li></alternateGraphics><lifeStages><li><bodyGraphicData><texPath>%s</texPath>"
+              "</bodyGraphicData></li></lifeStages></PawnKindDef>") % (TEXPATH, TEXPATH, TEXPATH)
+PLANT_PATCH = ('<Patch><Operation Class="PatchOperationReplace"><xpath>/Defs/PawnKindDef[defName="RSW_Dewback"]'
+               '/lifeStages/li/bodyGraphicData/texPath</xpath></Operation></Patch>')
+GRAPHIC_XPATH = re.compile(r"<xpath>[^<]*RSW_Dewback[\"'\]][^<]*(texPath|GraphicData|alternateGraphic|lifeStages|graphicData)[^<]*</xpath>")
+
+
+def body_graphics(kind):
+    out = [("alternateGraphics/li[%d]" % i, li) for i, li in enumerate(kind.findall("alternateGraphics/li"), 1)]
+    for i, li in enumerate(kind.findall("lifeStages/li"), 1):
+        out += [("lifeStages/li[%d]/%s" % (i, n), g) for n in BODY_NODES for g in li.findall(n)]
+    return out
+
+
+def count_body_texpaths(kind):
+    return sum(1 for _, g in body_graphics(kind) if g.find("texPath") is not None)
+
+
+def body_texpath_faults(kind):
+    faults = []
+    for where, g in body_graphics(kind):
+        tp = (g.findtext("texPath") or "").strip()
+        if tp != TEXPATH:
+            faults.append("%s=%s" % (where, tp or "<none>"))
+    if not body_graphics(kind):
+        faults.append("no body graphics found")
+    return faults
+
+
+def patch_hits(text):
+    return len(GRAPHIC_XPATH.findall(COMMENT.sub("", text)))
+
+
 def main():
     # probe: the scanner sees a bare Dewback, ignores a commented one and the port's name
     check(bare_hits("<ThingDef><defName>Dewback</defName></ThingDef>") == 1, "probe: scanner sees a bare Dewback def")
@@ -166,12 +204,30 @@ def main():
     check(len(race) == 1, "RSW_Dewback ThingDef defined once in RSW_Dewback.xml")
     paths = {(t.text or "").strip() for t in root.iter("texPath")}
     check(TEXPATH in paths, "RSW_Dewback.xml binds texPath %s" % TEXPATH)
+    # 1a. EVERY body graphic the pawn can draw is ours: each lifeStage's body/female graphic and each
+    # alternateGraphics li (alternateGraphicChance 0.8 makes those the common spawn). Probed on planted XML first.
+    check(not body_texpath_faults(ET.fromstring(PLANT_GOOD)), "probe: body-texPath pin passes a planted all-Dewback kind")
+    check(len(body_texpath_faults(ET.fromstring(PLANT_GOOD.replace(TEXPATH, "x/Tauntaun/Tauntaun", 1)))) == 1,
+          "probe: body-texPath pin catches one planted alternateGraphics repoint")
+    kinds = [d for d in root.iter("PawnKindDef") if (d.findtext("defName") or "").strip() == "RSW_Dewback"]
+    check(len(kinds) == 1, "RSW_Dewback PawnKindDef defined once in RSW_Dewback.xml")
+    for kind in kinds:
+        faults = body_texpath_faults(kind)
+        check(not faults, "every RSW_Dewback body texPath (%d) is %s%s" % (
+            count_body_texpaths(kind), TEXPATH, "" if not faults else ": " + "; ".join(faults[:5])))
+        check(len(kind.findall("lifeStages/li")) == 3 and len(kind.findall("alternateGraphics/li")) >= 1,
+              "RSW_Dewback kind has 3 lifeStages and its alternateGraphics (pin sees them)")
+    for d in race:
+        stray = [(t.text or "").strip() for t in d.iter("texPath")]
+        check(not stray, "RSW_Dewback ThingDef binds no other texPath%s" % ("" if not stray else ": " + ", ".join(stray)))
+    check(patch_hits(PLANT_PATCH) == 1 and patch_hits(PLANT_PATCH.replace("/lifeStages/li/bodyGraphicData/texPath", "/statBases/MoveSpeed")) == 0,
+          "probe: patch scanner sees a planted RSW_Dewback graphic patch, ignores a stat patch")
     for facing in ("east", "north", "south"):
         p = os.path.join(TEX, "Dewback_%s.png" % facing)
         check(os.path.isfile(p) and png_rgba(p), "Dewback_%s.png is an RGBA PNG" % facing)
     check_art()
 
-    hits, seen = [], 0
+    hits, gpatch, seen = [], [], 0
     for dp, dns, fns in os.walk(SRC):
         dns[:] = [d for d in dns if d not in SKIP]
         for fn in fns:
@@ -179,9 +235,13 @@ def main():
                 continue
             seen += 1
             with open(os.path.join(dp, fn), encoding="utf-8", errors="replace") as f:
-                if bare_hits(f.read()):
+                text = f.read()
+                if bare_hits(text):
                     hits.append(os.path.relpath(os.path.join(dp, fn), ROOT))
+                if patch_hits(text):
+                    gpatch.append(os.path.relpath(os.path.join(dp, fn), ROOT))
     check(seen > 100, "scanned %d XML files under src/ (instrument sees the tree)" % seen)
+    check(not gpatch, "no patch under src/ repoints an RSW_Dewback graphic%s" % ("" if not gpatch else ": " + ", ".join(gpatch[:5])))
     check(not hits, "no bare <defName>Dewback</defName> under src/%s" % ("" if not hits else ": " + ", ".join(hits[:5])))
 
     for lst in LISTS:
