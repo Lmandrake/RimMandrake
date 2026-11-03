@@ -274,6 +274,29 @@ class Gate:
                     self.def_draws[dn].add(key(t))
 
         self._scan_contract_paths(src)
+        self._scan_commission_slots()
+
+    def _scan_commission_slots(self):
+        """A commissioned NEW look (EXTRA_ART_PER_BIOME_COMMISSION_1: a female, variant or young texture no def draws
+        until its art lands) counts as drawn by its race and kind. Only the slot is declared; the bytes at the path are
+        judged as usual, so the path must still be confirmed NONE. Table: design/RimMandrake/extra_art_commission/
+        commission.csv (extra_art_commission.py plan)."""
+        p = self.repo / "design/RimMandrake/extra_art_commission/commission.csv"
+        if not p.is_file():
+            return
+        import csv
+        try:
+            rows = list(csv.DictReader(open(p, newline="")))
+        except (OSError, csv.Error) as e:
+            raise GateError(f"commission table unreadable: {e}") from e
+        for r in rows:
+            t = (r.get("tex_path") or "").strip()
+            if not t:
+                continue
+            for dn in {(r.get("race") or "").strip(), (r.get("kind") or "").strip()} - {""}:
+                self.def_draws[dn].add(key(t))
+                self.drawn[low(t)].add(dn)
+                self.def_tex.setdefault(dn, set()).add(t)
 
     def _scan_contract_paths(self, src: Path):
         """TerrainDef / WeatherDef art is installed at a CONTRACT path the def's XML does not name (its texturePath is a
