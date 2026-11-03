@@ -162,6 +162,17 @@ def main():
     cap = int(sd.findtext("maxSimultaneous") or 0) if sd is not None else 0
     check("scuttle voices capped", 0 < cap <= SCUTTLE_VOICE_CAP, "RM_DhuvvoxScuttle maxSimultaneous %d" % cap)
 
+    # Q3: the shipped dhuvvox def must wire the scuttle and ask it to slow (the kernel's stretch is pinned in the fuzz).
+    dorm = [li for li in parse(NATIVES).iter("li")
+            if (li.get("Class") or "").endswith("CompProperties_ForgeCycleDormancy") and li.findtext("runSound")]
+    rs = dorm[0] if dorm else None
+    fac = float(rs.findtext("runSoundSlowFactor") or 1) if rs is not None else 0.0
+    hrs = float(rs.findtext("slowFinalHours") or 0) if rs is not None else 0.0
+    check("scuttle wired and slows", rs is not None and rs.findtext("runSound") == "RM_DhuvvoxScuttle"
+          and rs.findtext("runClock") == "true" and fac >= 3.5 and hrs > 0,
+          "runSound %s, runSoundSlowFactor %.2f (>=3.5), slowFinalHours %.2f"
+          % (rs.findtext("runSound") if rs is not None else None, fac, hrs))
+
 
 if __name__ == "__main__":
     main()

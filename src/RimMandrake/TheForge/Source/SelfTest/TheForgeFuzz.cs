@@ -892,6 +892,25 @@ namespace RimMandrake.TheForge.SelfTest
                       && RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.WeaponBuilding, false), "a pawn's attack, a turret or a trap provokes it");
                 Check(!RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.Environment, false), "rain scald / fire / melt-back must not provoke it (shipped)");
                 Check(RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.Environment, true), "'environment also triggers' on: the environment provokes it");
+                // Q3 "their movement and sound slow": the scuttle gap really stretches in the final window.
+                // A constant gap (f = 1) passed the run fuzz's bounds; these pins go red on it.
+                {
+                    const int g = 70, endT = 100000; const float h = 0.25f, fac = 4f;
+                    for (int left = 1; left <= 625; left++)
+                    {
+                        float tt = left / 625f;
+                        int spec = (int)Math.Round(g * (fac + (1f - fac) * tt));
+                        int got = RM_DormancyKernel.ScuttleDelay(g, endT, endT - left, h, fac, 1f);
+                        Check(got == spec, $"scuttle gap {got} != linear spec {spec} at {left} ticks left");
+                        if (left < 600) Check(got > g, $"scuttle not slowed inside the window ({got} at {left} ticks left)");
+                        if (left <= 10) Check(got >= 3.5f * g, $"scuttle near the run end {got} < 3.5x gap {g}");
+                    }
+                    Check(RM_DormancyKernel.ScuttleDelay(g, endT, endT - 1, h, fac, 1f) >= 279, "last tick: ~4x gap");
+                    Check(RM_DormancyKernel.ScuttleDelay(g, endT, endT - 626, h, fac, 1f) == g
+                          && RM_DormancyKernel.ScuttleDelay(g, endT, endT - 5000, h, fac, 1f) == g, "full speed before the window");
+                    Check(RM_DormancyKernel.ScuttleDelay(g, -1, 500, h, fac, 1f) == g, "no run end: full speed");
+                    Check(RM_DormancyKernel.ScuttleDelay(g, endT, endT - 1, h, fac, 1.3f) > RM_DormancyKernel.ScuttleDelay(g, endT, endT - 1, h, fac, 0.7f), "jitter scales the gap");
+                }
                 Steps++;
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
