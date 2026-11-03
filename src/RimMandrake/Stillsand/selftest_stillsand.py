@@ -599,7 +599,26 @@ class Fake(object):
             if method == "ProofReturnState":
                 return {"success": True, "result": "RETURN serial=%d obligations=%d sinceOpen=%d gap=30000 debt=%.3f ritual=%s"
                         % (self.serial, self.oblig, self.ticks - self.lastopen, self.debt, self.believed)}
+            if method == "ProofThirstDone":     # STILLSAND_RETURN_REMAINDER_1 A4: the pawn finishes the real drink
+                if getattr(self, "thirsty", False):
+                    self.thirsty = False
+                    self.debt += 0.0 if "dbh_drink_free" in self.b else 6.0
+                return {"success": True, "result": "THIRSTDONE held=0 job=Wait thirst=0.4"}
             x, z = [int(v) for v in str(args).split(",")[:2]]
+            if method == "ProofThirstJob":
+                if "no_dbh" in self.b:
+                    return {"success": True, "result": "THIRSTJOB dbh=False giver=False need=False"}
+                at = [i for i, t in self.things.items() if (t["x"], t["z"]) == (x, z)
+                      and t["def"] == "RM_GuzzkaEggUnfertilized"]
+                if not at:
+                    return {"success": True, "result": "NONE: no water item at %d,%d" % (x, z)}
+                del self.things[at[0]]
+                if "dbh_wrong_job" in self.b:
+                    return {"success": True, "result": "THIRSTJOB dbh=True job=DBHDrinkFromGround target=none "
+                            "item=RM_GuzzkaEggUnfertilized pawn=P1"}
+                self.thirsty = True
+                return {"success": True, "result": "THIRSTJOB dbh=True job=Ingest target=RM_GuzzkaEggUnfertilized "
+                        "item=RM_GuzzkaEggUnfertilized pawn=P1"}
             if method == "ProofStillCycle":
                 brine = [i for i, t in self.things.items() if t["def"] == "RM_Brine" and (t["x"], t["z"]) == (x, z)]
                 if not brine:
@@ -958,6 +977,8 @@ BREAKS = {
     "egg_drink_free": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "return_no_pay": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "return_no_ring": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
+    "dbh_drink_free": ["water.dbh_thirst_drink_books_debt"],
+    "dbh_wrong_job": ["water.dbh_thirst_drink_books_debt"],
     "still_books_wrong": ["water.still_water_charged_once"],
     "drink_double_charge": ["water.still_water_charged_once"],
     "regen_keeps_biome": ["site.site_stillsand_map"],
@@ -1157,9 +1178,12 @@ def _main(bad):
     rm = run(["rm_tier"])     # STILLSAND_RETURN_REMAINDER_1 A2: the RM tier (no Utinni layer) has no ledger
     for k, want in (("water.rm_tier_has_no_ledger", "PASS"), ("water.pour_blooms_on_sand", "PASS"),
                     ("water.return_sun_debt_gale_opens_good_outcome_pays", "UNMEASURED"),
+                    ("water.dbh_thirst_drink_books_debt", "UNMEASURED"),
                     ("water.wet_line_drawn_then_gale_wipes", "PASS")):
         if rm.get(k, ("",))[0] != want:
             bad.append("rm_tier run: %s should read %s: %s" % (k, want, rm.get(k)))
+    if run(["no_dbh"]).get("water.dbh_thirst_drink_books_debt", ("",))[0] != "UNMEASURED":   # A4 without DBH
+        bad.append("a tier without DBH's thirst did not read water.dbh_thirst_drink_books_debt UNMEASURED")
     if run(["rm_tier", "rm_ledger_live"]).get("water.rm_tier_has_no_ledger", ("",))[0] != "FAIL":
         bad.append("rm_tier run with a live ledger and no def did not turn water.rm_tier_has_no_ledger red")
     declared = len(V.suite.components_declared())

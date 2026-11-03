@@ -2181,6 +2181,45 @@ def water_chain(t):
             if not int(ko.get("bloom1", 0)) > int(ko.get("bloom0", 0)):
                 _fail("a good Return bloomed no ring at the stone: %s" % ro)
 
+    with _comp(t, "dbh_thirst_drink_books_debt"):
+        # A4: the REAL drink. A1 books its drink by running the egg's hook by hand; here a colonist made thirsty
+        # drinks a canteen egg through Dubs Bad Hygiene's own JobGiver_DrinkWater (decompiled 1.6: an Ingest job,
+        # and DBH only postfixes Thing.Ingested), and the ledger must move by the egg's 6 L when the egg is gone.
+        if _live(t):
+            res, kv = scall("ProofLedger")
+            if kv.get("live") != "True" or kv.get("countsHere") != "True":
+                _unmeasured(t, "the water ledger is not live on this map (%s): needs the Utinni layer and Ideology" % res)
+            scall("ProofBelieve")
+            bx, bz = x - 5, z - 5
+            # A1's eggs (and any other water item) leave the pad first: with DBH's thirst, another colonist could
+            # drink one during the wait below and add its litres to the delta
+            t.bridge_call("jawa/destroy_batch", rects="%d,%d,41,41" % (x - 20, z - 20), categories="Item")
+            t.bridge_call("jawa/destroy_batch", rects="%d,%d,5,5" % (bx - 2, bz - 2), categories="Plant,Item,Filth,Building")
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (EGG, bx, bz))
+            egg = _things(t, EGG, "%d,%d,3,3" % (bx - 1, bz - 1))
+            if not egg:
+                _unmeasured(t, "the water egg did not stand after spawn_batch")
+            d0 = float(scall("ProofLedger")[1]["debt"])
+            rj, kj = scall("ProofThirstJob", "%d,%d" % (egg[0]["x"], egg[0]["z"]))
+            _note(t, "thirst job", rj)
+            if kj.get("dbh") != "True":
+                _unmeasured(t, "Dubs Bad Hygiene's thirst need or giver is not loaded on this tier: %s" % rj)
+            if kj.get("job") != "Ingest" or kj.get("target") != EGG:
+                _fail("DBH's thirst giver did not choose to drink the canteen egg in the pawn's pack: %s" % rj)
+            rd = ""
+            for _ in range(12):            # the egg's ingest is well under 3,000 ticks
+                t.wait_ticks(250)
+                rd, kd = scall("ProofThirstDone", kj.get("pawn", "-"))
+                if kd.get("held") == "0" and kd.get("job") != "Ingest":
+                    break
+            d1 = float(scall("ProofLedger")[1]["debt"])
+            _note(t, "drink: debt before / after, pawn", [d0, d1, rd])
+            if not rd.startswith("THIRSTDONE") or rd.split("held=")[1].split()[0] != "0":
+                _unmeasured(t, "the pawn never finished drinking the egg: %s" % rd)
+            if abs((d1 - d0) - 6.0) > 1e-3:
+                _fail("a pawn drank a canteen egg through DBH's thirst job and the debt moved by %.3f (want 6 L): "
+                      "that path does not reach PostIngested" % (d1 - d0))
+
 # ----------------------------------------------------------------------------- chain: skeletons
 
 @_chain("skeleton")

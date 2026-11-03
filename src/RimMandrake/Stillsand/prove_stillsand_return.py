@@ -5,16 +5,21 @@ clause a state read through validation.py's water chain plus the log chain's log
   A1  UTINNI TIER (the Utinni layer + Ideology): a colony whose primary ideo holds RUT_Ritual_TheReturn accrues 6 L of
       Sun-Debt from one canteen egg's drink hook, the Return opens when a dune gale (RM_DuneGale) ends (opening serial
       up, the ritual holds an obligation), and a good outcome at a RUT_DebtStone lowers the debt and blooms hourbloom
-      in the ring (water.return_sun_debt_gale_opens_good_outcome_pays); the outcome's own Player.log line is
+      in the ring (water.return_sun_debt_gale_opens_good_outcome_pays), and a REAL drink books it too: A4's row is
+      part of A1 (so A1 wants DBH Lite + Thirst on the tier); the outcome's own Player.log line is
       "[RM_WaterLedgerProof] Return outcome 1 at RUT_DebtStone: ..."
   A2  RM TIER (no Utinni layer): no ledger def loads, so the settings window draws no debt row and nothing counts
       (water.rm_tier_has_no_ledger), and a poured canteen egg still blooms hourbloom (water.pour_blooms_on_sand)
   A3  either tier: a pour leaves a drawn darker stain on every live wet cell, none with the drawReturnLine toggle
       off, and a dune gale wipes the cells and the stain (water.wet_line_drawn_then_gale_wipes)
 
-A1 reads UNMEASURED (2) on the RM tier and A2 on the Utinni tier: each holds on its own tier.
+  A4  UTINNI TIER with Dubs Bad Hygiene Lite + Thirst: a colonist made thirsty drinks a canteen egg from its pack
+      through DBH's own JobGiver_DrinkWater (a real Ingest job, not A1's hand-run hook) and the debt rises by the egg's
+      6 L once the egg is gone (water.dbh_thirst_drink_books_debt); its line is "[RM_WaterLedgerProof] DBH thirst job"
 
-    python3 src/RimMandrake/Stillsand/prove_stillsand_return.py --clause A1|A2|A3
+A1 and A4 read UNMEASURED (2) on the RM tier, A4 also without DBH's thirst and A2 on the Utinni tier: each holds on its own tier.
+
+    python3 src/RimMandrake/Stillsand/prove_stillsand_return.py --clause A1|A2|A3|A4
     python3 src/RimMandrake/Stillsand/prove_stillsand_return.py --selftest      # offline, against selftest_stillsand's fake
 
 Exit 0 = the clause holds, 1 = it does not, 2 = UNMEASURED (no game, a tool missing, the wrong tier).
@@ -36,9 +41,10 @@ for _p in (UTILS, os.path.join(UTILS, "modcheck")):
 
 CHAINS = ("site", "water", "log")
 CLAUSES = {
-    "A1": ("water.return_sun_debt_gale_opens_good_outcome_pays", "log.log_clean"),
+    "A1": ("water.return_sun_debt_gale_opens_good_outcome_pays", "water.dbh_thirst_drink_books_debt", "log.log_clean"),
     "A2": ("water.rm_tier_has_no_ledger", "water.pour_blooms_on_sand", "log.log_clean"),
     "A3": ("water.wet_line_drawn_then_gale_wipes", "log.log_clean"),
+    "A4": ("water.dbh_thirst_drink_books_debt", "log.log_clean"),
 }
 CACHE_S = 30 * 60
 
@@ -128,14 +134,16 @@ def selftest():
         return run_chains(S.V, S.Fake(broken), (125, 125))
 
     tiers = {"utinni": run(), "rm": run(["rm_tier"])}
-    want = {("A1", "utinni"): 0, ("A1", "rm"): 2, ("A2", "utinni"): 2, ("A2", "rm"): 0,
+    want = {("A1", "utinni"): 0, ("A1", "rm"): 2, ("A4", "utinni"): 0, ("A4", "rm"): 2, ("A2", "utinni"): 2, ("A2", "rm"): 0,
             ("A3", "utinni"): 0, ("A3", "rm"): 0}
     for (c, tier), code in sorted(want.items()):
         got = judge(tiers[tier], c)
         if got[0] != code:
             bad.append("%s tier %s: want %d, got %s" % (tier, c, code, got))
-    breaks = {"A1": ([], ("gale_no_opening", "egg_drink_free", "return_no_pay", "return_no_ring", "log_error")),
+    breaks = {"A1": ([], ("gale_no_opening", "egg_drink_free", "return_no_pay", "return_no_ring", "dbh_drink_free",
+                          "dbh_wrong_job", "log_error")),
               "A2": (["rm_tier"], ("rm_ledger_live", "no_bloom", "log_error")),
+              "A4": ([], ("dbh_drink_free", "dbh_wrong_job", "log_error")),
               "A3": ([], ("line_not_drawn", "line_ignores_toggle", "gale_keeps_wet", "log_error"))}
     for c, (base, bs) in sorted(breaks.items()):
         for b in bs:

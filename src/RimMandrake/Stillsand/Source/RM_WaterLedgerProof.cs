@@ -90,7 +90,93 @@ namespace RimMandrake.Stillsand
             }
             return "NONE: no water item at " + x + "," + z;
         }
-            // ── STILLSAND_RETURN_REMAINDER_1 (prove_stillsand_return.py): the Sun-Debt colony, the Return's opening,
+
+        // ── STILLSAND_RETURN_REMAINDER_1 A4: the REAL drink. ProofDrinkHook runs the hook by hand; these two let a
+        //    thirsty colonist drink through Dubs Bad Hygiene's own thirst job giver, so the row sees whether that path
+        //    reaches RM_CompWaterVolume.PostIngested. DBH is reached by type name only (no assembly reference).
+
+        private static Need ThirstNeed(Pawn p)
+        {
+            return p?.needs?.AllNeeds?.FirstOrDefault(n => n.GetType().FullName == "DubsBadHygiene.Need_Thirst");
+        }
+
+        /// <summary>"x,z" (a cell holding a water item) -&gt; one unit moved into the first free colonist's inventory,
+        /// that colonist's DBH thirst set to 0, DBH's JobGiver_DrinkWater asked for a job and the job started:
+        /// "THIRSTJOB dbh=bool job=defName target=defName item=defName pawn=ThingID". dbh=False when DBH's thirst need
+        /// or giver is not loaded (nothing else is done then).</summary>
+        public static string ProofThirstJob(string arg)
+        {
+            Map map = Find.CurrentMap;
+            string[] a = (arg ?? "").Split(',');
+            if (map == null || a.Length != 2 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z))
+            {
+                return "REFUSED: arg must be x,z on a current map";
+            }
+            IntVec3 c = new IntVec3(x, 0, z);
+            if (!c.InBounds(map))
+            {
+                return "REFUSED: out of bounds";
+            }
+            Pawn drinker = map.mapPawns.FreeColonistsSpawned.FirstOrFallback();
+            if (drinker == null)
+            {
+                return "REFUSED: no free colonist on the map";
+            }
+            System.Type giverType = GenTypes.GetTypeInAnyAssembly("DubsBadHygiene.JobGiver_DrinkWater");
+            Need thirst = ThirstNeed(drinker);
+            if (giverType == null || thirst == null)
+            {
+                return "THIRSTJOB dbh=False giver=" + (giverType != null) + " need=" + (thirst != null);
+            }
+            Thing item = c.GetThingList(map).FirstOrDefault(t => t.TryGetComp<RM_CompWaterVolume>() != null);
+            if (item == null)
+            {
+                return "NONE: no water item at " + x + "," + z;
+            }
+            Thing one = item.SplitOff(1);
+            if (!drinker.inventory.innerContainer.TryAddOrTransfer(one))
+            {
+                return "REFUSED: the item would not go into " + drinker.ThingID + "'s inventory";
+            }
+            if (drinker.drafter != null)
+            {
+                drinker.drafter.Drafted = false;
+            }
+            thirst.CurLevel = 0f;
+            Verse.AI.ThinkNode_JobGiver giver = (Verse.AI.ThinkNode_JobGiver)System.Activator.CreateInstance(giverType);
+            Verse.AI.Job job = giver.TryIssueJobPackage(drinker, default(Verse.AI.JobIssueParams)).Job;
+            if (job == null)
+            {
+                return "THIRSTJOB dbh=True job=none target=none item=" + one.def.defName + " pawn=" + drinker.ThingID;
+            }
+            drinker.jobs.StartJob(job, Verse.AI.JobCondition.InterruptForced);
+            Log.Message("[RM_WaterLedgerProof] DBH thirst job " + job.def.defName + " on " + (job.targetA.Thing?.def.defName ?? "a cell")
+                + " for " + drinker.ThingID);
+            return "THIRSTJOB dbh=True job=" + job.def.defName + " target=" + (job.targetA.Thing?.def.defName ?? "none")
+                + " item=" + one.def.defName + " pawn=" + drinker.ThingID;
+        }
+
+        /// <summary>"pawnThingID" -&gt; "THIRSTDONE held=n job=defName|none thirst=level": n = water-volume items still
+        /// in that pawn's inventory or hands.</summary>
+        public static string ProofThirstDone(string arg)
+        {
+            Map map = Find.CurrentMap;
+            Pawn p = map?.mapPawns.AllPawnsSpawned.FirstOrDefault(q => q.ThingID == arg);
+            if (p == null)
+            {
+                return "NONE: no spawned pawn " + arg;
+            }
+            int held = p.inventory.innerContainer.Where(t => t.TryGetComp<RM_CompWaterVolume>() != null).Sum(t => t.stackCount);
+            Thing carried = p.carryTracker?.CarriedThing;
+            if (carried != null && carried.TryGetComp<RM_CompWaterVolume>() != null)
+            {
+                held += carried.stackCount;
+            }
+            return "THIRSTDONE held=" + held + " job=" + (p.CurJobDef?.defName ?? "none")
+                + " thirst=" + (ThirstNeed(p)?.CurLevel.ToString("0.###") ?? "none");
+        }
+
+        // ── STILLSAND_RETURN_REMAINDER_1 (prove_stillsand_return.py): the Sun-Debt colony, the Return's opening,
         //    one outcome at a stone, and the drawn wet-sand line. All read-only except ProofBelieve (adds the
         //    ledger's believer precept to the player's primary ideo, as the ideo editor would) and
         //    ProofReturnOutcome (runs the outcome the ritual would run, without staging the ritual).
