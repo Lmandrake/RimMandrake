@@ -8,7 +8,8 @@ Proves unproven_adjudicate.py's provenance instrument and verdict order, the par
   - adjudicate_one's order: a dhash near-duplicate of our render wins, then a donor twin, then BYTES_RULES, then
     FILE_RULES, then a sheet stem; nothing matched is UNRESOLVED (never silently ours);
   - the dhash threshold catches a LANCZOS rescale of the same picture and not an unrelated one;
-  - every hand-read rule names a known verdict, and the committed adjudication carries one valid verdict per row.
+  - every hand-read rule names a known basis, every basis maps to one of the item's three verdicts, and the committed
+    adjudication carries one of the three on every file AND every UNPROVEN roster row of the audit it was made from.
 """
 from __future__ import annotations
 
@@ -147,6 +148,11 @@ def main():
             A.store_get = lambda sha: store[sha]
             nb = U.Neighbours(FakeIdx())
             check(all("_artsrc/" not in loc for _h, _k, loc, _s in nb.pool), "_artsrc job inputs are not in the pool")
+            dk = U.Neighbours.kind_of
+            check(dk({"kind": "install", "provenance": {}}, "src/X/Textures/swanimals/BiomesTeam/a.png") == "donor"
+                  and dk({"kind": "install", "provenance": {"item": "J"}}, "src/X/Textures/swanimals/BiomesTeam/a.png")
+                  == "install" and dk({"kind": "install"}, "src/X/Textures/Things/a.png") == "install",
+                  "a provenance-less install under the donor port's folder counts as donor, any other install as ours")
             hit = nb.nearest(ph, U.OURS, o.getvalue())
             check(hit and hit[3] == "half" and hit[4] is not None and hit[4] <= U.MAD_MAX,
                   f"the brightened twin (dhash-identical) is rejected by pixels and the rescale accepted ({hit})")
@@ -167,11 +173,42 @@ def main():
     check(d_same <= U.DHASH_MAX, f"a 1/2 LANCZOS rescale is within DHASH_MAX ({d_same})")
     check(d_other > U.DHASH_MAX, f"an unrelated picture is beyond DHASH_MAX ({d_other})")
 
-    check(all(v in U.VERDICTS and v != "UNRESOLVED" and why for v, why in
-              list(U.BYTES_RULES.values()) + list(U.FILE_RULES.values())), "every hand-read rule names a real verdict")
+    check(all(v in U.BASES and v != "UNRESOLVED" and why for v, why in
+              list(U.BYTES_RULES.values()) + list(U.FILE_RULES.values())), "every hand-read rule names a real basis")
+    check(set(U.VERDICTS) == {"OWNER_PICKED", "HAND_MADE", "STAND_IN"}, "the verdict set is the item's three classes")
+    check(all(U.CLASS_OF[b] in U.VERDICTS for b in U.BASES if b != "UNRESOLVED") and U.CLASS_OF["UNRESOLVED"] is None,
+          "every basis maps to one of the three; UNRESOLVED maps to none (so --check refuses it)")
+    check(U.row_verdict({"OWNER_PICKED", "STAND_IN"}) == "STAND_IN" and U.row_verdict({"OWNER_PICKED", "HAND_MADE"})
+          == "HAND_MADE" and U.row_verdict(set()) is None, "a mixed roster row takes STAND_IN, then HAND_MADE; none is none")
+
+    # roster_specs: every UNPROVEN row, sheet-decided included, with its census body textures; other classes skipped
+    audit = {"roster": {"B": [{"row": "k1", "defName": "D1", "class": "UNPROVEN", "sheet_decided": True},
+                              {"row": "k2", "defName": "D2", "class": "UNPROVEN"},
+                              {"row": "k3", "defName": "D3", "class": "REGEN"}]}}
+    body = lambda m, r: {"res": r, "role": "body", "live": {"mod": m, "faces": {}}}  # noqa: E731
+    census = {"biomes": {"B": {"rows": [{"key": "k1", "art": {"resources": [body("src/M", "T/a"),
+                                                                             {"res": "T/m", "role": "mask"}]}},
+                                         {"key": "k2", "art": {"resources": [{"res": "T/b", "live": {"mod": "src/N"}}]}},
+                                         {"key": "k3", "art": {"resources": [body("src/M", "T/c")]}}]}}}
+    sp = U.roster_specs(audit, census)
+    check(sp == [("B", "D1", [("src/M", "T/a")]), ("B", "D2", [("src/N", "T/b")])],
+          f"roster_specs keeps sheet-decided UNPROVEN rows, body textures first, and skips other classes ({sp})")
+
     doc = json.load(open(U.OUT_JSON))
-    check(doc["files"] and all(r["verdict"] in U.VERDICTS and r["why"] for r in doc["files"]),
-          f"the committed adjudication has a valid verdict and reason on all {len(doc['files'])} rows")
+    check(doc["files"] and all(r["verdict"] in U.VERDICTS and U.CLASS_OF[r["basis"]] == r["verdict"] and r["why"]
+                               for r in doc["files"]),
+          f"the committed adjudication has one of the three verdicts, its basis and a reason on all {len(doc['files'])} files")
+    check(doc["roster"] and all(r["verdict"] in U.VERDICTS and r["bodies"] for r in doc["roster"]),
+          f"every committed roster row ({len(doc['roster'])}) has one of the three verdicts and its body textures")
+    try:
+        a = json.load(open(doc["audit"]))
+    except OSError as e:
+        a = None
+        print(f"SKIP audit cover check: {doc['audit']} unreadable here ({e}); --check fails on it")
+    if a is not None:
+        want = {(bd, r["defName"]) for bd, rr in a["roster"].items() for r in rr if r["class"] == "UNPROVEN"}
+        check(want and want <= {(r["biome"], r["def"]) for r in doc["roster"]},
+              f"every UNPROVEN roster row of the recorded audit ({len(want)}) is on record")
 
     import shutil
     shutil.rmtree(tmp, ignore_errors=True)

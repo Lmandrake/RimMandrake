@@ -2,29 +2,33 @@
 """unproven_adjudicate.py — where did live art with NO pipeline record come from?  (TEXREGEN_UNPROVEN_ASK_THE_SHEETS)
 
 texture_regen_audit.py classes a picture UNPROVEN when its exact bytes carry no artpipe / install / donor / derived
-record in the art ledger. This tool adjudicates each such picture into one verdict, with the evidence named:
+record in the art ledger. This tool adjudicates each such picture — every one the audit's def view walks AND every
+face of every UNPROVEN roster row — into exactly one of the item's three verdicts, with the evidence named:
 
-  OURS_RESAVED   a near-duplicate (dhash <= DHASH_MAX) of one of OUR renders or installs: a rescale / re-save of
-                 pipeline art whose new bytes were never recorded (the 2026-10-16 facing rescale is the known cause).
-  OURS_PRELEDGER our image-model art from before the art ledger tracked bytes (SW_SEA_MONSTERS_ART_1, early render
-                 waves): ours and generated, but no render record to bind it to.
-  STAND_IN       a near-duplicate of a donor or vanilla extract, or brought in by a commit that says it copied donor /
-                 Core art or a placeholder. Not ours.
-  OWNER_PICKED   the bytes commit says the owner kept / approved / locked this picture or its mockup, or (weakest,
-                 last) the stem was ruled on in a review sheet's *.decisions.json.
-  HAND_MADE      drawn or composed by an agent or script (no render, no donor twin).
-  UNRESOLVED     none of the above: must go to a sheet.
+  OWNER_PICKED   the owner kept / approved / locked this picture or its mockup (its bytes commit says so), or
+                 (weakest, last) the stem was ruled on in a review sheet's *.decisions.json.
+  HAND_MADE      made in-house outside the recorded pipeline: drawn or composed by an agent or script, OR our own
+                 image-model art the art ledger never bound (no owner pick on record, no donor twin).
+  STAND_IN       a donor or vanilla picture, or a placeholder: a near-duplicate of a donor/vanilla extract, or
+                 brought in by a commit that says it copied donor / Core art or a placeholder. Not ours.
+
+Each verdict also carries its BASIS, the finer label that decided it (BASES): OURS_RESAVED (HAND_MADE: a near-
+duplicate, dhash <= DHASH_MAX and pixel-confirmed, of one of OUR renders or installs, re-saved without a record — the
+2026-10-16 facing rescale is the known cause), OURS_PRELEDGER (HAND_MADE: our image-model art from before the art
+ledger tracked bytes), BYTES_RULE / FILE_LOOK / DONOR_TWIN / SHEET_STEM. A picture no rule reaches is UNRESOLVED,
+which --check refuses: it must go to a sheet.
 
 Provenance = the commit that first brought TODAY'S BYTES into the repo (git blob id, across moves and copies, looking
 past mechanical re-saves in PASS_THROUGH); BYTES_RULES records what each such commit's message says, read by hand.
 
-    python3 src/RimMandrake/Utils/art/unproven_adjudicate.py --audit <audit.json>     write the adjudication
-    python3 src/RimMandrake/Utils/art/unproven_adjudicate.py --check                  exit 0 iff every UNPROVEN
-                                                                                       no-record file, measured now,
-                                                                                       has a verdict on record
+    python3 src/RimMandrake/Utils/art/unproven_adjudicate.py --audit <audit.json> --census <census.json>   write it
+    python3 src/RimMandrake/Utils/art/unproven_adjudicate.py --check      exit 0 iff every UNPROVEN no-record file
+                                                                           (def view, measured now) and every UNPROVEN
+                                                                           roster row of the audit has one verdict
 
-The def view is re-measured in --check (parsed XML + ledger sha lookup, ~15 s); the census-based roster view
-is read from the audit given at write time. A dhash match is a comparison aid, so its threshold is measured each
+--check re-measures the def view (parsed XML + ledger sha lookup, ~15 s) and re-reads the audit named at write time:
+every UNPROVEN roster row in it must be on record with a verdict, and each row's files are re-resolved from the
+census's live mod + texPath (stored per row) and re-classified, so a changed picture is caught. A dhash match is a comparison aid, so its threshold is measured each
 write (calibrate(): rescaled renders vs chance nearest neighbours) — see DHASH_MAX.
 """
 from __future__ import annotations
@@ -50,7 +54,12 @@ OURS = {"artpipe", "install"}
 DONORISH = {"donor", "canon"}
 DHASH_MAX = 10          # of 256 bits; calibrate() re-measures each write: LANCZOS resaves of ledger renders sit at p99 ~7-8,
                         # and 40 (tried first) mostly matched chance. A dhash hit is only a candidate: mad() confirms it
-VERDICTS = ("OURS_RESAVED", "OURS_PRELEDGER", "STAND_IN", "OWNER_PICKED", "HAND_MADE", "UNRESOLVED")
+VERDICTS = ("OWNER_PICKED", "HAND_MADE", "STAND_IN")            # the item's three classes, and nothing else
+BASES = ("OURS_RESAVED", "OURS_PRELEDGER", "STAND_IN", "OWNER_PICKED", "HAND_MADE", "UNRESOLVED")   # adjudicate_one's
+CLASS_OF = {"OURS_RESAVED": "HAND_MADE", "OURS_PRELEDGER": "HAND_MADE", "STAND_IN": "STAND_IN",
+            "OWNER_PICKED": "OWNER_PICKED", "HAND_MADE": "HAND_MADE", "UNRESOLVED": None}
+ROW_ORDER = ("STAND_IN", "HAND_MADE", "OWNER_PICKED")  # a roster row with mixed faces takes the first: one donor face
+                                                       # means the creature still shows a stand-in
 # The commit that first brought today's bytes into the repo (PngHistory.bytes_commit), read by hand: what that
 # commit's own message says the picture IS. Keyed by the first 10 hex of the sha.
 S, P, O, H = "STAND_IN", "OURS_PRELEDGER", "OWNER_PICKED", "HAND_MADE"
@@ -137,8 +146,9 @@ def no_record_files(cl):
     return out
 
 
-MAD_MAX = 1.5           # mean |RGB diff| /255 at 32x32 over grey. Measured: a 1/2 LANCZOS rescale p99 0.53, max 0.55;
-                        # unrelated ledger renders p01 2.2; the dhash-7 chance hit (a spore item vs RM_Eesh) 6.3
+MAD_MAX = 0.8           # mean |RGB diff| /255 at 32x32 over grey. Measured: a 1/2 LANCZOS rescale p99 0.53, max 0.55;
+                        # unrelated ledger renders p01 2.2; chance hits: a spore item vs RM_Eesh 6.3, a larva vs a pipe
+                        # coupler 1.2 (dhash 8) — so 1.5, used first, let a stranger through
 
 
 def _vec(png_bytes):
@@ -166,7 +176,15 @@ class Neighbours:
             for v in vs:
                 loc = v.get("loc") or v.get("res") or sha
                 if v.get("ph") and v.get("kind") in OURS | DONORISH and "_artsrc/" not in loc:
-                    self.pool.append((int(v["ph"], 16), v["kind"], loc, sha))
+                    self.pool.append((int(v["ph"], 16), self.kind_of(v, loc), loc, sha))
+
+    @staticmethod
+    def kind_of(v, loc):
+        """An `install` is not proof of OUR render: the 2026-10-16 facing rescale installed the donor port's own
+        pictures under swanimals/BiomesTeam/ with an empty provenance. Those count as donor."""
+        if v["kind"] == "install" and "/swanimals/BiomesTeam/" in loc and str(v.get("provenance") or "{}") == "{}":
+            return "donor"
+        return v["kind"]
 
     def nearest(self, ph_hex, kinds, png_bytes=None):
         """(dhash d, kind, loc, sha, mad) of the closest pixel-confirmed match within DHASH_MAX, else the closest
@@ -190,6 +208,8 @@ PASS_THROUGH = {
     "8615f77098": "art: zero the sub-visible export halo across 241 of our facing sprites",
     "50d116b0d7": "NONDIV4_TEXTURE_FIX_1: pad 87 non-%4 textures (transparent, centered)",
     "3ce74b0946": "CAVERNS_PARITY_BUILD_1: Deep organics hue-tinted +70 deg (same picture, recoloured)",
+    "b654ffbf91": "Rescale S/N facings to ground-camera standard on 168 pictures via art install (owner card 2026-10-16)",
+    "e40639d97f": "Facings: S/N feet row re-seated on east's, 168 rescaled pictures, shift only",
 }
 
 
@@ -309,7 +329,45 @@ def calibrate(idx, n=150):
                                   "at_or_under_max": sum(x <= DHASH_MAX for x in null)}}
 
 
-def write(audit_path):
+def roster_specs(audit, census):
+    """[(biome, defName, [(live mod, res)])] for every UNPROVEN roster row of the audit (sheet-decided or not: the
+    audit's stem match is no verdict), its body textures taken from the census row it was audited from."""
+    by = {(bd, r["key"]): r for bd in census["biomes"] for r in census["biomes"][bd]["rows"]}
+    out = []
+    for bd, rr in audit["roster"].items():
+        for r in rr:
+            if r["class"] != "UNPROVEN":
+                continue
+            c = by.get((bd, r["row"]))
+            res = c and ([x for x in c["art"]["resources"] if x.get("role") == "body"] or c["art"]["resources"])
+            out.append((bd, r["defName"], [(x["live"]["mod"], x["res"]) for x in (res or []) if x.get("live")]))
+    return out
+
+
+def roster_files(cl, bodies):
+    """[(file Path, sha, unproven, live_reason)] the game draws for a roster row's bodies, resolved from its live mod
+    now. `unproven` is the AUDIT'S roster rule, exactly: the bytes carry no artpipe / install / donor / canon / derived
+    variant. (The def view's file_class also accepts an install-time live record of the path; the roster view does
+    not, so such a face is adjudicated here and its live record kept as evidence.)"""
+    roots = T.texture_roots()
+    out = []
+    for mod, res in bodies:
+        own = REPO / mod / "Textures"
+        r, files = T.resolve_files(res, own if own.is_dir() else None, roots)
+        for q in files:
+            sha = T.sha_of(q)
+            m = str(r.parent.relative_to(REPO)).replace("\\", "/")
+            ev = cl.idx.live.get((A.mod_key(m), A.rel_key(str(q.relative_to(r))))) or {}
+            live = (ev.get("reason") or "recorded") if ev.get("sha") == sha else ""
+            out.append((q, sha, not (cl.kinds(sha) & (OURS | DONORISH | {"derived"})), live))
+    return out
+
+
+def row_verdict(vs):
+    return next((v for v in ROW_ORDER if v in vs), None)
+
+
+def write(audit_path, census_path):
     idx = A.Index()
     cl = T.Classifier()
     cl.idx = idx
@@ -317,73 +375,97 @@ def write(audit_path):
     dec = decision_text()
     files = no_record_files(cl)
     audit = json.load(open(audit_path))
+    census = json.load(open(census_path))
     hist = PngHistory()
-    rows = []
+    rows, by_file = [], {}
+
+    def add(key, dn, q, sha):
+        rel = str(q.relative_to(REPO))
+        if (rel, sha) in by_file:
+            r = by_file[(rel, sha)]
+            if dn not in r["defs"]:
+                r["defs"].append(dn)
+            return r
+        basis, why, ev = adjudicate_one(dn, q, sha, nb, dec, hist)
+        r = {"group": key, "def": dn, "defs": [dn], "file": rel, "sha": sha, "verdict": CLASS_OF[basis] or "UNRESOLVED",
+             "basis": basis, "why": why, "evidence": ev}
+        rows.append(r)
+        by_file[(rel, sha)] = r
+        return r
+
     for key, dn, q, sha in files:
-        v, why, ev = adjudicate_one(dn, q, sha, nb, dec, hist)
-        rows.append({"group": key, "def": dn, "file": str(q.relative_to(REPO)), "sha": sha, "verdict": v,
-                     "why": why, "evidence": ev})
-    by_file = {}
-    for r in rows:
-        by_file.setdefault(r["file"], r)
+        add(key, dn, q, sha)
     roster = []
-    for bd, rr in audit["roster"].items():
-        for r in rr:
-            if r["class"] == "UNPROVEN" and not r.get("sheet_decided"):
-                fs = sorted({f["file"] for f in rows if f["def"] == r["defName"]})
-                roster.append({"biome": bd, "def": r["defName"], "files": fs,
-                               "verdicts": sorted({by_file[f]["verdict"] for f in fs})})
+    for bd, dn, bodies in roster_specs(audit, census):
+        fr = roster_files(cl, bodies)
+        recs = []
+        for q, sha, unp, live in fr:
+            if unp:
+                recs.append(add("ROSTER:" + bd, dn, q, sha))
+                if live:
+                    recs[-1]["evidence"]["live_record"] = live
+        vs = {r["verdict"] for r in recs}
+        roster.append({"biome": bd, "def": dn, "bodies": [list(b) for b in bodies],
+                       "files": sorted({r["file"] for r in recs}), "file_verdicts": sorted(vs),
+                       "verdict": row_verdict(vs) or ("NO_FILE" if not fr else "RECORDED_SINCE"),
+                       "recorded_since": sorted(str(q.relative_to(REPO)) for q, _s, unp, _l in fr if not unp)})
     vd = {}
     for r in rows:
-        vd.setdefault(r["def"], set()).add(r["verdict"])
+        for d in r["defs"]:
+            vd.setdefault(d, set()).add(r["verdict"])
     rejudge = {"defs": Counter(), "roster": Counter()}
     for v in audit["defs"].values():
         for r in v["rows"]:
             if r["class"] == "UNPROVEN" and r.get("sheet_decided"):
                 rejudge["defs"][" + ".join(sorted(vd.get(r["def"], {"not in the def view"})))] += 1
-    for rr in audit["roster"].values():
-        for r in rr:
-            if r["class"] == "UNPROVEN" and r.get("sheet_decided"):
-                rejudge["roster"][" + ".join(sorted(vd.get(r["defName"], {"not in the def view"})))] += 1
+    for r in roster:
+        if any(x["defName"] == r["def"] and x.get("sheet_decided") for x in audit["roster"][r["biome"]]):
+            rejudge["roster"][r["verdict"]] += 1
     doc = {"generated": A.now(), "git_head": subprocess.run(["git", "-C", str(REPO), "rev-parse", "--short", "HEAD"],
                                                             capture_output=True, text=True).stdout.strip(),
-           "audit": str(audit_path), "dhash_max": DHASH_MAX, "calibration": calibrate(idx),
+           "audit": str(audit_path), "census": str(census_path), "dhash_max": DHASH_MAX, "calibration": calibrate(idx),
            "counts": dict(Counter(r["verdict"] for r in rows)),
+           "counts_by_basis": dict(Counter(r["basis"] for r in rows)),
            "counts_by_group": {g: dict(Counter(r["verdict"] for r in rows if r["group"] == g))
                                for g in sorted({r["group"] for r in rows})},
+           "roster_counts": dict(Counter(r["verdict"] for r in roster)),
            "sheet_decided_rejudged": {k: dict(c) for k, c in rejudge.items()},
            "files": rows, "roster": roster}
     OUT_JSON.write_text(json.dumps(doc, indent=1) + "\n")
     OUT_MD.write_text(render_md(doc))
-    print("wrote", OUT_JSON, doc["counts"])
+    print("wrote", OUT_JSON, doc["counts"], "roster", doc["roster_counts"])
     return doc
 
 
 def render_md(doc):
     L = ["# Live art with no pipeline record, adjudicated (TEXREGEN_UNPROVEN_ASK_THE_SHEETS)", "",
          f"Generated {doc['generated']} at `{doc['git_head']}` by `src/RimMandrake/Utils/art/unproven_adjudicate.py` "
-         f"from `{doc['audit']}`. Data: `design/RimMandrake/texregen_unproven_adjudication.json`. Every picture the "
-         "texture audit classes UNPROVEN (no artpipe / install / donor / derived record of its exact bytes) gets one "
-         "verdict, keyed on the commit that first brought those bytes into the repo. Verdict meanings: the tool's "
-         "docstring.", "",
+         f"from `{doc['audit']}` and `{doc['census']}`. Data: `design/RimMandrake/texregen_unproven_adjudication.json`. "
+         "Every picture the texture audit classes UNPROVEN (no artpipe / install / donor / derived record of its exact "
+         "bytes), in the def view and on every UNPROVEN roster row, gets one of three verdicts (OWNER_PICKED, "
+         "HAND_MADE, STAND_IN), keyed on the commit that first brought those bytes into the repo. Meanings and the "
+         "basis labels: the tool's docstring.", "",
          f"dhash threshold {doc['dhash_max']}/256, measured: `{json.dumps(doc['calibration'])}`", "",
          "| verdict | pictures |", "|---|---|"]
     L += [f"| {v} | {doc['counts'].get(v, 0)} |" for v in VERDICTS]
+    L += ["", "| basis | pictures |", "|---|---|"]
+    L += [f"| {b} | {n} |" for b, n in sorted(doc["counts_by_basis"].items(), key=lambda x: -x[1])]
     L += ["", "## By mod", "", "| mod | " + " | ".join(VERDICTS) + " |", "|---|" + "---|" * len(VERDICTS)]
     for g, c in doc["counts_by_group"].items():
         L.append(f"| {g} | " + " | ".join(str(c.get(v, 0)) for v in VERDICTS) + " |")
-    L += ["", "## Where the bytes came from", "", "| pictures | verdict | evidence |", "|---|---|---|"]
-    key = lambda r: ("dhash <= %d/256 from %s" % (DHASH_MAX, "our render" if r["verdict"] == "OURS_RESAVED"  # noqa: E731
+    L += ["", "## Where the bytes came from", "", "| pictures | verdict (basis) | evidence |", "|---|---|---|"]
+    key = lambda r: ("dhash <= %d/256 from %s" % (DHASH_MAX, "our render" if r["basis"] == "OURS_RESAVED"  # noqa: E731
                                                    else "a donor/vanilla extract")) if r["why"].startswith("dhash") else r["why"]
-    for (v, why), n in Counter((r["verdict"], key(r)) for r in doc["files"]).most_common():
-        L.append(f"| {n} | {v} | {why.replace('|', '/')} |")
+    for (v, b, why), n in Counter((r["verdict"], r["basis"], key(r)) for r in doc["files"]).most_common():
+        L.append(f"| {n} | {v} ({b}) | {why.replace('|', '/')} |")
     L += ["", "## The audit's 'owner sheet decided' class, re-judged", "",
           "texture_regen_audit.py calls an UNPROVEN picture 'sheet decided' when its stem appears anywhere in a "
           "decisions.json. Traced to its bytes, that class is mostly NOT his pick:", ""]
     for k, c in doc["sheet_decided_rejudged"].items():
         L.append(f"- {k}: " + ", ".join(f"{v} {n}" for v, n in sorted(c.items(), key=lambda x: -x[1])))
-    L += ["", "## Roster rows with no sheet ruling", ""]
-    L += [f"- {r['biome']} `{r['def']}`: {', '.join(r['verdicts']) or 'no file'}" for r in doc["roster"]]
+    L += ["", "## Every UNPROVEN roster row", "", "| biome | def | verdict | faces | files |", "|---|---|---|---|---|"]
+    L += [f"| {r['biome']} | `{r['def']}` | {r['verdict']} | {', '.join(r['file_verdicts'])} | "
+          f"{'<br>'.join('`' + f + '`' for f in r['files'])} |" for r in doc["roster"]]
     return "\n".join(L) + "\n"
 
 
@@ -393,30 +475,47 @@ def check():
     cl = T.Classifier()
     now = no_record_files(cl)
     missing = [(k, dn, str(q.relative_to(REPO))) for k, dn, q, sha in now if (str(q.relative_to(REPO)), sha) not in rec]
-    bad = [r for r in doc["files"] if r["verdict"] not in VERDICTS or not r.get("why")]
-    unresolved = [r for r in doc["files"] if r["verdict"] == "UNRESOLVED"]
-    print(f"no-record (def, file) pairs now: {len(now)}; distinct (file, sha) on record: {len(rec)}; missing a verdict: {len(missing)}; "
-          f"malformed: {len(bad)}; unresolved: {len(unresolved)}")
-    # sanity probe: the instrument must see unproven files at all (a 0 here is a blind instrument, not success)
-    if not now:
-        print("BLIND: measured zero UNPROVEN files; the instrument cannot see"); return 1
+    bad = [r for r in doc["files"] if r["verdict"] not in VERDICTS or not r.get("why") or r.get("basis") not in BASES]
+    # roster: every UNPROVEN row of the audit is on record with one verdict, and its files measured NOW have one too
+    audit = json.load(open(doc["audit"]))           # fails loudly by name if the audit is gone: no audit, no check
+    want = {(bd, r["defName"]) for bd, rr in audit["roster"].items() for r in rr if r["class"] == "UNPROVEN"}
+    have = {(r["biome"], r["def"]): r for r in doc["roster"]}
+    r_missing = sorted(want - set(have))
+    r_bad = [k for k in sorted(want & set(have)) if have[k]["verdict"] not in VERDICTS]
+    r_stale = []
+    for k in sorted(want & set(have)):
+        for q, sha, unp, _live in roster_files(cl, [tuple(b) for b in have[k]["bodies"]]):
+            if unp and (str(q.relative_to(REPO)), sha) not in rec:
+                r_stale.append((*k, str(q.relative_to(REPO))))
+    print(f"def view: no-record (def, file) pairs now {len(now)}; (file, sha) on record {len(rec)}; missing a verdict "
+          f"{len(missing)}; malformed or outside {'/'.join(VERDICTS)} {len(bad)}")
+    print(f"roster: UNPROVEN rows in the audit {len(want)}; without a row verdict {len(r_missing)}; verdict outside "
+          f"the three {len(r_bad)}; face files measured now with no verdict {len(r_stale)}")
+    # sanity probe: the instrument must see unproven files and rows at all (a 0 here is a blind instrument)
+    if not now or not want:
+        print("BLIND: measured zero UNPROVEN files or roster rows; the instrument cannot see"); return 1
     for m in missing[:15]:
         print("  MISSING", *m)
-    for r in unresolved[:15]:
-        print("  UNRESOLVED", r["def"], r["file"])
-    return 0 if not missing and not bad and not unresolved else 1
+    for r in bad[:15]:
+        print("  BAD", r["def"], r["file"], r["verdict"])
+    for k in r_missing[:15] + r_bad[:15]:
+        print("  ROSTER", *k, have.get(k, {}).get("verdict", "no row"))
+    for k in r_stale[:15]:
+        print("  ROSTER FILE", *k)
+    return 0 if not (missing or bad or r_missing or r_bad or r_stale) else 1
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--audit")
+    ap.add_argument("--census")
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
     if a.check:
         return check()
-    if not a.audit:
-        ap.error("--audit <audit.json> (from texture_regen_audit.py) or --check")
-    write(Path(a.audit))
+    if not (a.audit and a.census):
+        ap.error("--audit <audit.json> --census <census.json> (texture_regen_audit.py's inputs and output) or --check")
+    write(Path(a.audit), Path(a.census))
     return 0
 
 
