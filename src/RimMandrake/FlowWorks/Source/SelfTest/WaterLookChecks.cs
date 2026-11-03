@@ -79,6 +79,41 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "north 0.75 at the lip, west 0.8 of it");
             });
 
+            // WATER_DEPTH_RESKIN_HE_LOOKS_FIRST L3 / plan V7 (flowworks_one_rebuild_plan_2026-10-17.md): "walls: five looks by the
+            // step to each neighbour (0.5, 1, 1.5, 2, over 2 m)". A notch is 0.5 m, so drops 1..5 notches must give five
+            // pairwise-different faces (north height, side width). Can fail: a NorthByDrop/SideByDrop that saturates at D4
+            // draws a 2.5 m step exactly like a 2 m one.
+            Case("WallFaces_five_looks_by_drop_to_over_2m", () =>
+            {
+                for (int a = 1; a <= 5; a++)
+                {
+                    for (int b = a + 1; b <= 5; b++)
+                    {
+                        float ha = RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(a, 0, 0));
+                        float hb = RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(b, 0, 0));
+                        float sa = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(a, 0, 0));
+                        float sb = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(b, 0, 0));
+                        Assert(Math.Abs(ha - hb) > 0.01f || Math.Abs(sa - sb) > 0.01f,
+                            "a " + (a * 0.5) + " m and a " + (b * 0.5) + " m step draw the same face (north " + ha + "/" + hb
+                            + ", side " + sa + "/" + sb + ")");
+                    }
+                }
+                Assert(RM_WallFaceMath.NorthFaceHeight(16) <= RM_WallFaceMath.NorthMax, "an 8 m step never draws taller than NorthMax");
+            });
+
+            // L3 / P5 A4 ("floor tint per depth band past 2 m", PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT handed it here). The dry floor
+            // terrain past 2 m is one def (RM_Channel_Superdeep, RM_ExcavationDepth.DryTerrainFor), so depth past 2 m can only show
+            // through the depth darkness (FootDarkness, which RM_ExcavationWalls.Dark draws). Can fail: a darkness that saturates
+            // at 2 m draws a 2 m, a 4 m and an 8 m floor alike. If a separate floor-tint function is built, point this at it with
+            // the same three-way distinctness.
+            Case("WallFaces_floor_bands_past_2m", () =>
+            {
+                float d2 = RM_WallFaceMath.FootDarkness(4), d4 = RM_WallFaceMath.FootDarkness(8), d8 = RM_WallFaceMath.FootDarkness(16);
+                Assert(d4 > d2 + 0.01f, "a 4 m floor reads darker than a 2 m one (" + d2 + " vs " + d4 + ")");
+                Assert(d8 > d4 + 0.01f, "an 8 m floor reads darker than a 4 m one (" + d4 + " vs " + d8 + ")");
+                Assert(d8 <= 1f, "darkness stays a fraction");
+            });
+
             Case("WaterLook_settings_and_layers_are_wired", () =>
             {
                 string looks = RiverSwitchFlipChecks.Src("RM_WaterLooks.cs");
