@@ -60,6 +60,10 @@ namespace RimMandrake.ColdStorage
                     {
                         t.Destroy();
                     }
+                    if (t is Pawn p && Find.WorldPawns.Contains(p))
+                    {
+                        Find.WorldPawns.RemoveAndDiscardPawnViaGC(p);   // a fixture pawn leaves no world pawn behind
+                    }
                 }
                 foreach (IntVec3 c in roofed)
                 {
@@ -72,9 +76,10 @@ namespace RimMandrake.ColdStorage
 
         private static bool Clear(Map map, IntVec3 c) => c.InBounds(map) && c.Standable(map) && c.GetEdifice(map) == null
             && c.GetFirstPawn(map) == null && c.GetFirstItem(map) == null && !c.Fogged(map) && !c.Roofed(map)
-            && !c.GetTerrain(map).IsWater && map.terrainGrid.FoundationAt(c) == null;
+            && !c.GetTerrain(map).IsWater && map.terrainGrid.FoundationAt(c) == null && c.GetZone(map) == null
+            && !(c.GetPlant(map) is Plant plant && plant.sown);
 
-        /// <summary>An open w×h patch near the centre holding no item, pawn, building or foundation; its plants and
+        /// <summary>An open w×h patch near the centre holding no item, pawn, building, foundation, zone or sown plant; its wild plants and
         /// filth are cleared (nothing a colony owns is destroyed).</summary>
         private static bool FindSite(Map map, int w, int h, out CellRect rect)
         {
@@ -343,7 +348,8 @@ namespace RimMandrake.ColdStorage
 
         private static Pawn Prisoner(Map map, List<Thing> made, Faction host, IntVec3 c)
         {
-            Pawn p = PawnGenerator.GeneratePawn(host.def.basicMemberKind, host);
+            Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(host.def.basicMemberKind, host,
+                forceGenerateNewPawn: true, canGeneratePawnRelations: false));   // never a reused world pawn
             Spawn(map, made, p, c, Rot4.South);
             p.guest.SetGuestStatus(Faction.OfPlayer, GuestStatus.Prisoner);
             return p;
