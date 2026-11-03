@@ -13,12 +13,17 @@ that hardcoded it (583, 578, 585) was wrong within days of being written.
     modlist_swap.py --minimal          # plan only
     modlist_swap.py --minimal --apply
     modlist_swap.py --restore --apply
+    modlist_swap.py --enable Graffiti UtinniPatches --apply   # add mods (and their deps) to the live list
+
+--enable is how Relentless's game phase makes the NEXT load hold an item's mods before it spends a game slot
+(LIVE_MODLIST_ENFORCE_BEFORE_SLOT: 6 of 28 live runs read "not enabled in ModsConfig" / "not in the running load").
+Owner 2026-10-24: the mod list is ours to change. Exit 2 names every mod or dependency it cannot resolve.
 """
 import argparse, hashlib, os, sys, datetime
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from game_paths import MODS_CONFIG  # noqa: E402
+from game_paths import MODS_CONFIG, GAME_DIR  # noqa: E402
 from atomic_copy import atomic_copy  # noqa: E402  temp+os.replace; never a bare copy2
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -162,6 +167,99 @@ def swap(src, apply_it):
     print("  verify: md5 %s" % md5(LIVE))
 
 
+def about(folder):
+    """A mod folder name -> (packageId, [dependency packageIds]) from its About.xml: the deployed copy in the game's Mods
+    folder, else the repo source, else (a folder folded into a composed mod) the composed mod's. None when none reads."""
+    import deploy_custom_mods as D
+    cands = [os.path.join(GAME_DIR, "Mods", folder)]
+    try:
+        cands.append(D.mod_dirs().get(folder) or "")
+        target = (D.folded().get(folder) or (None,))[0]
+        if target:
+            cands.append(os.path.join(GAME_DIR, "Mods", target))
+    except SystemExit:
+        pass
+    for d in cands:
+        try:
+            root = ET.parse(os.path.join(d, "About", "About.xml")).getroot()
+        except (OSError, ET.ParseError):
+            continue
+        pid = (root.findtext("packageId") or "").strip()
+        if pid:
+            deps = [(e.text or "").strip() for e in root.iter("packageId") if e is not root.find("packageId")]
+            return pid.lower(), [x.lower() for x in deps if x]
+    return None
+
+
+def merged(live_ids, add, full_ids):
+    """live_ids plus each id in `add` it lacks, each placed where the owner's FULL.LATEST order puts it (after the
+    nearest live id that precedes it there), else at the end. Pure; ids compared lower-case, live spelling kept."""
+    out = list(live_ids)
+    have = {m.lower() for m in out}
+    rank = {m.lower(): i for i, m in enumerate(full_ids or [])}
+    for m in add:
+        if m.lower() in have:
+            continue
+        at = len(out)
+        if m.lower() in rank:
+            before = [j for j, x in enumerate(out) if rank.get(x.lower(), -1) != -1 and rank[x.lower()] < rank[m.lower()]]
+            after = [j for j, x in enumerate(out) if rank.get(x.lower(), -1) > rank[m.lower()]]
+            at = (before[-1] + 1) if before else (after[0] if after else len(out))
+        out.insert(at, m)
+        have.add(m.lower())
+    return out
+
+
+def enable(names, apply_it):
+    """Add mod folders (or packageIds) and their About.xml dependencies to the live list. -> exit code: 0 written or
+    nothing to do, 2 a name or dependency that resolves nowhere (nothing written)."""
+    live_ids = mods(LIVE)
+    if live_ids is None:
+        print("REFUSING: the live list cannot be read: %s" % LIVE)
+        return 2
+    full_ids = mods(FULL) or []
+    known = {m.lower() for m in live_ids + full_ids}
+    add, lost = [], []
+    for n in names:
+        got = about(n) if "." not in n else (n.lower(), [])
+        if got is None:
+            lost.append("%s (no About.xml with a packageId in the game folder or the repo)" % n)
+            continue
+        pid, deps = got
+        for d in deps:      # a dependency must already be a mod this machine loads: the live list or the owner's list
+            if d not in known and not d.startswith("ludeon.rimworld"):
+                lost.append("%s needs %s, which neither the live list nor FULL.LATEST holds" % (n, d))
+            elif d not in add and not d.startswith("ludeon.rimworld"):
+                add.append(d)
+        if pid not in add:
+            add.append(pid)
+    if lost:
+        print("REFUSING: cannot enable %s" % "; ".join(lost))
+        return 2
+    new = merged(live_ids, add, full_ids)
+    gained = [m for m in new if m.lower() not in {x.lower() for x in live_ids}]
+    print("  live now : %d active" % len(live_ids))
+    print("  enable   : %s" % (", ".join(gained) or "nothing: every one is already active"))
+    if not gained:
+        return 0
+    if not apply_it:
+        print("\nplan only. re-run with --apply")
+        return 0
+    tree = ET.parse(LIVE)
+    am = tree.getroot().find("activeMods")
+    for li in list(am):
+        am.remove(li)
+    for m in new:
+        ET.SubElement(am, "li").text = m
+    arch = snapshot()
+    tmp = LIVE + ".enable.tmp"
+    tree.write(tmp, encoding="utf-8", xml_declaration=True)
+    os.replace(tmp, LIVE)
+    print("  archived live -> %s" % arch)
+    print("  WROTE live (%d active, +%d)" % (len(new), len(gained)))
+    return 0
+
+
 def capture_full(apply_it):
     """Adopt the live list as FULL.LATEST — the restore point must track deliberate changes.
 
@@ -237,11 +335,15 @@ def main():
     g.add_argument("--restore", action="store_true", help="put the owner's full list back")
     g.add_argument("--capture-full", action="store_true",
                    help="adopt the live list as FULL.LATEST, after a deliberate mod change")
+    g.add_argument("--enable", nargs="+", metavar="MOD", help="add mod folders/packageIds (and deps) to the live list")
     ap.add_argument("--apply", action="store_true", help="actually write; default is plan only")
     a = ap.parse_args()
 
     # `--apply` is a modifier, not a mode. On its own it used to print the status page
     # and exit 0 — a command that looks like it did something and did nothing.
+    if a.enable:
+        print("ENABLE ON THE LIVE LIST")
+        sys.exit(enable(a.enable, a.apply))
     if a.apply and not (a.minimal or a.restore or a.capture_full):
         sys.exit("REFUSING: --apply on its own has nothing to apply. Say which:\n"
                  "  --minimal --apply       swap to the minimal test list\n"

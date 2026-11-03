@@ -40,6 +40,7 @@ class GW(S.FakeWorld):
         self.owed = {"A2": "L1"}
         self.title = "a mod thing"
         self.pre, self.pre_calls = [], []        # relentless_live.preflight's answer, and who asked
+        self.gap, self.gap_calls, self.enabled, self.enable_why = {}, [], [], None     # relentless_live_round.mod_gap
 
     def game_preflight(self, item, lines, sites=None):
         self.pre_calls.append((item, dict(lines)))
@@ -59,6 +60,18 @@ class GW(S.FakeWorld):
 
     def proofs_at(self, item, sha, ext=".txt"):
         return self.proofs.get((item, ext), PROOF if ext == ".txt" else "")
+
+    def game_mod_gap(self, item, sha, running=True):
+        self.gap_calls.append((item, sha, running))
+        g = dict(self.gap.get(item) or {"mods": ["RM_X"]})
+        if not running:
+            g.pop("running", None)
+        return g
+
+    def modlist_enable(self, mods):
+        self.enabled.append(list(mods))
+        self.events.append("enable")
+        return self.enable_why
 
     def game_rows(self): return self.rows
     def clone_gap(self, c): return None
@@ -988,6 +1001,128 @@ def t_dead_rows_go_back():
         x.done()
 
 
+GAPS = {"running": {"mods": ["Graffiti"], "running": "not in the running load: Graffiti (mandrake.rm.graffiti)"},
+        "modsconfig": {"mods": ["UtinniPatches"], "off": {"UtinniPatches": "not enabled in ModsConfig"}},
+        "dll": {"mods": ["FlowWorks"], "dll": ["FlowWorks/Assemblies/FlowWorks.dll"]}}
+
+
+def t_modlist_gate_before_slot():
+    """LIVE_MODLIST_ENFORCE_BEFORE_SLOT: 6 of 28 live runs measured nothing because the game lacked the build's mods
+    (HORRORS x3 'UtinniPatches not enabled in ModsConfig', GRAFFITI x3 'not in the running load', DRAWBRIDGE a stale
+    FlowWorks DLL). Each is caught before the prove round takes the game: the item stages a load instead, the supervisor
+    enables its mods on the live list first, and the staging brief names the mods and the stale DLLs."""
+    for kind, gap in sorted(GAPS.items()):
+        x = rig(1)
+        to_game(x, "I0")
+        x.tick()
+        ok(x.st("I0")["game"]["phase"] == "prove", "%s: implemented" % kind)
+        x.w.started = x.now - 100
+        x.w.gap["I0"] = gap
+        x.tick()
+        st = x.st("I0")
+        ok(not x.w.proves, "%s: no prove round on a game that lacks the build's mods: %s" % (kind, x.w.proves))
+        ok(st["game"]["phase"] == "stage" and (st["game"].get("mod_gap") or {}).get("game") == x.w.started
+           and "modlist gate" in st["game"]["mod_gap"]["why"], "%s: it stages a load instead: %s" % (kind, st["game"]))
+        x.tick()
+        st = x.st("I0")
+        ok(x.w.enabled and x.w.enabled[-1] == gap["mods"] and "enable" in x.w.events
+           and x.w.events.index("enable") < x.w.events.index("take"),
+           "%s: the supervisor enables %s on the live list before it takes the game: %s %s"
+           % (kind, gap["mods"], x.w.enabled, x.w.events))
+        stage = [l for l in x.w.launches if "STAGING" in l[2]]
+        ok(st["game"]["phase"] == "staging" and stage and "--enable %s --apply" % gap["mods"][0] in stage[-1][2],
+           "%s: the staging brief carries the enable command: %s" % (kind, st["game"]["phase"]))
+        if kind == "dll":
+            ok("SHUTDOWN WINDOW: with the game DOWN" in stage[-1][2] and "deploy FlowWorks" in stage[-1][2],
+               "dll: the stale DLL is deployed in the shutdown window before the launch")
+        x.done()
+
+
+def t_modlist_gate_reads_once_per_game():
+    """A running load cannot gain a mod: the gate reads the gap once per game, not on every tick while it waits."""
+    x = rig(2, share=1.0, max_workers=2)
+    two_in_prove(x)
+    x.w.rows = []
+    x.w.gap["I0"] = GAPS["running"]
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"]["proved_at"] = None
+        x.s.save(st)
+    acts, proves = [], len(x.w.proves)
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    st = x.st("I0")
+    ok(len(x.w.proves) == proves and st["game"].get("waits_reload") and any(a["do"] == "game_mod_gap" for a in acts),
+       "the gap waits while I1 is untried on the running game: %s" % acts)
+    n = len(x.w.gap_calls)
+    G.step(x.s, x.w, x.r, "I0", x.now + 5, [], R)
+    ok(len(x.w.gap_calls) == n and len(x.w.proves) == proves, "the second tick reuses the reading of this game")
+    x.done()
+
+
+def t_modlist_enable_refused_holds():
+    """No restart path holds the mods (a name or dependency resolves nowhere): held with the reason and an alarm, never
+    a load that cannot serve it."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.started = x.now - 100
+    x.w.gap["I0"] = GAPS["modsconfig"]
+    x.w.enable_why = "REFUSING: cannot enable UtinniPatches needs foo.bar, which neither list holds"
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "held" and "foo.bar" in st["hold"]["why"] and "take" not in x.w.events,
+       "held with the reason, no bridge take: %s" % st.get("hold"))
+    ok(any("next load cannot hold its mods" in n for n in x.w.notes), "and the ledger says why")
+    x.done()
+
+
+def t_modlist_batch_enables_union():
+    """Items waiting for a reload ride one load: the supervisor enables every one's mods before it."""
+    x = rig(2, share=1.0, max_workers=2)
+    two_in_prove(x)
+    x.w.gap = {"I0": GAPS["running"], "I1": GAPS["modsconfig"]}
+    with x.s.lock():
+        st = x.s.load("I1")
+        st["game"].update(phase="stage")
+        x.s.save(st)
+    x.w.running = False
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    G.step(x.s, x.w, x.r, "I0", x.now + 1, acts, R)
+    ok(x.w.enabled and x.w.enabled[-1] == ["Graffiti", "UtinniPatches"], "one enable for the whole batch: %s %s"
+       % (x.w.enabled, acts))
+    x.done()
+
+
+def t_mod_gap_pure():
+    import relentless_live_round as LR
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import modlist_swap as M
+    ok(G.mod_gap_why({"mods": ["A"], "off": {}, "dll": [], "running": None, "error": "plan failed"}) is None,
+       "a clean gap (or an unread plan) blocks nothing")
+    for gap in GAPS.values():
+        ok((G.mod_gap_why(gap) or "").startswith("modlist gate:"), "each kind blocks: %s" % gap)
+    ok(G.enable_set([GAPS["running"], GAPS["dll"], None]) == ["FlowWorks", "Graffiti"], "enable set is the union")
+    ok(G.dll_mods([GAPS["dll"]]) == ["FlowWorks"], "stale DLL mods")
+    ok(M.merged(["a", "b", "d"], ["c", "x", "B"], ["a", "b", "c", "d"]) == ["a", "b", "c", "d", "x"],
+       "enable keeps the owner's order, appends the unknown, never repeats")
+
+    class F(object):
+        def mods_of(self, sha): return ["FlowWorks"]
+        def folded(self): return {}
+        def deploy_plan(self, args, t):
+            self.args = args
+            return 1, ("FlowWorks        mandrake.rm.flowworks      \n  ~ Assemblies/FlowWorks.dll\n"
+                       "UtinniPatches    mandrake.rut.patches       not enabled in ModsConfig\n")
+        def running_load_gap(self, mods): return "not in the running load: %s" % mods[0]
+    f = F()
+    g = LR.mod_gap(f, "s", "live-mods: UtinniPatches\n")
+    ok(g["mods"] == ["FlowWorks", "UtinniPatches"] and "--mod UtinniPatches" in f.args, "plans the build and its live-mods: %s" % g)
+    ok(g["off"] == {"UtinniPatches": "not enabled in ModsConfig"}, "reads not-enabled from the plan: %s" % g["off"])
+    ok(g["running"] and LR.mod_gap(f, "s", "", running=False)["running"] is None, "the running read only when asked")
+
+
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
@@ -999,7 +1134,8 @@ def main():
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_stale_build_caught_before_a_slot,
               t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_lapses_when_its_game_is_gone,
-              t_dead_prove_pid_frees_the_game):
+              t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,
+              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_mod_gap_pure):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

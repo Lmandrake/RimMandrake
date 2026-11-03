@@ -182,6 +182,35 @@ def deploy_args(mods, folded):
     return " ".join("--mod %s" % m for m in mods)
 
 
+def mod_gap(fx, sha, text, running=True):
+    """What a run of this build would find missing from the game, asked BEFORE a game slot is spent
+    (LIVE_MODLIST_ENFORCE_BEFORE_SLOT: 6 of 28 live runs were HORRORS 'UtinniPatches not enabled in ModsConfig',
+    GRAFFITI 'not in the running load', DRAWBRIDGE a stale FlowWorks DLL). The build's mods plus its `live-mods:` are
+    planned once (deploy_custom_mods.py, read only). -> {"mods", "off": {folder: flag} (NOT DEPLOYED / not enabled in
+    ModsConfig), "dll": [stale or missing DLLs in the game folder], "running": why the RUNNING load lacks them or None,
+    "error": why the plan could not be read or None}. running=False skips the bridge read (no game, or a staging)."""
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None}
+    try:
+        mods = sorted(set(fx.mods_of(sha)) | set(live_mods(text)))
+    except ValueError as e:
+        out["error"] = str(e)[:200]
+        return out
+    out["mods"] = mods
+    if not mods:
+        return out
+    rc, plan = fx.deploy_plan(deploy_args(mods, fx.folded()), L.live_rules({}).get("plan_max_s", 300))
+    if rc not in (0, 1):
+        out["error"] = "the deploy plan failed (exit %s): %s" % (rc, (plan or "")[-200:])
+        return out
+    _covered, drift, off = L.plan_sections(plan)
+    out["off"] = off
+    out["dll"] = sorted({"%s/%s" % (sec, e) if not e.startswith(sec + "/") else e
+                         for sec, flag, e in drift if flag != "H" and e.lower().endswith(".dll")})
+    if running:
+        out["running"] = fx.running_load_gap(mods)
+    return out
+
+
 class RoundFx(L.Fx):
     """relentless_live.Fx plus what a round needs: every item, one plan per args, the lane and the compose manifest."""
 

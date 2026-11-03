@@ -284,9 +284,10 @@ def not_measuring(rows, item, sha, clauses, limit):
     return {k: v for k, v in out.items() if limit and v[0] >= limit}
 
 
-def stage_prompt(st, r, sha, others=()):
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=()):
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
+    en = "python3 src/RimMandrake/Utils/modlist_swap.py --enable %s --apply" % " ".join(enable)
     return "\n".join([
         "You are Relentless's STAGING worker for item %s, generation %d. The supervisor holds the game bridge for you as "
         "seat %s and releases it the moment you exit. Your one job: the running game must run the build at %s, so the "
@@ -307,6 +308,13 @@ def stage_prompt(st, r, sha, others=()):
         "minutes on the full one. Wait for it with `./game` polls (each command under 540 s) up to that bound; if you "
         "must exit while it still loads, say so in game-ready: the supervisor waits out the load itself, bounded by "
         "the list's size, and holds no slot while it waits.",
+        ("   MOD LIST: the next load must hold %s and their dependencies (owner 2026-10-24: the list is ours to change; all "
+         "five DLC stay on). The supervisor already ran `%s`; after any list swap, and again with the game down right "
+         "before the launch, run it once more: a swap drops them, and a load without them measures nothing."
+         % (", ".join(enable), en)) if enable else "   MOD LIST: no mod of these builds needs enabling.",
+        ("   SHUTDOWN WINDOW: with the game DOWN and before the launch, deploy %s (`deploy_custom_mods.py --mod <Mod> "
+         "--apply`): the game folder holds a stale DLL for each, and a DLL cannot be written while the game runs."
+         % ", ".join(dlls)) if dlls else "   SHUTDOWN WINDOW: no stale DLL in the game folder for these mods.",
         ("   ONE LOAD FOR ALL: these game items wait for a reload too; deploy each one's build as well (rimworld-deploy) and "
          "choose the smallest list that holds the most of their mods; level your clone to origin/main first (./sync) so "
          "each build is in the tree: %s." % "; ".join(
@@ -339,6 +347,32 @@ def live_mod_count():
 def load_bound(c, mods):
     """Seconds a cold load of `mods` mods may take before it counts as failed."""
     return int(c["load_base_s"] + c["load_per_mod_s"] * mods) if mods else int(c["load_unknown_s"])
+
+
+def mod_gap_why(gap):
+    """relentless_live_round.mod_gap -> why the game cannot serve the build without a reload, or None. A plan that could
+    not be read blocks nothing here: the run reports it with its own row."""
+    gap = gap or {}
+    parts = []
+    if gap.get("off"):
+        parts.append("the live ModsConfig/game folder lacks %s"
+                     % ", ".join("%s (%s)" % kv for kv in sorted(gap["off"].items())))
+    if gap.get("dll"):
+        parts.append("stale DLL in the game folder: %s" % ", ".join(gap["dll"][:5]))
+    if gap.get("running"):
+        parts.append(gap["running"])
+    return ("modlist gate: " + "; ".join(parts)) if parts else None
+
+
+def enable_set(gaps):
+    """Every mod folder the next load must hold: [relentless_live_round.mod_gap] -> sorted folders (the build's mods and
+    its live-mods of each item riding the load)."""
+    return sorted({m for g in gaps for m in (g or {}).get("mods") or []})
+
+
+def dll_mods(gaps):
+    """The mod folders with a stale DLL in the game folder, deployed in the shutdown window before the launch."""
+    return sorted({d.split("/")[0] for g in gaps for d in (g or {}).get("dll") or []})
 
 
 class GameFx(object):
@@ -418,6 +452,19 @@ class GameFx(object):
         it = relentless_live.Fx(books=self.books, seat=self.r["seat"]).item(item) or {}
         text = ({c["id"]: c for c in it.get("criteria") or []}.get(criterion) or {}).get("text") or ""
         return relentless_live.fingerprint(criterion, why, proof, text)
+
+    def game_mod_gap(self, item, sha, running=True):
+        """relentless_live_round.mod_gap for the build at `sha`, read as a live run would read it."""
+        import relentless_live_round
+        fx = relentless_live_round.RoundFx(books=self.books, seat=self.r["seat"])
+        return relentless_live_round.mod_gap(fx, sha, self.proofs_at(item, sha), running)
+
+    def modlist_enable(self, mods):
+        """modlist_swap.py --enable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
+        r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--enable",
+                            *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
+                           stdin=subprocess.DEVNULL)
+        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
 
     def prove_launch(self, item):
         import relentless
@@ -621,6 +668,29 @@ def _waits(store, fx, item, why, now, acts):
     acts.append({"do": "game_waits", "item": item, "why": why})
 
 
+def _reload(store, fx, r, item, rd, why, now, acts):
+    """The running game cannot serve this build (mod_gap_why): no prove round. Another untried item gets the running
+    game first (bounded); then it stages the one load that enables its mods. A final item stages the full list."""
+    c = cfg(r)
+    g = store.load(item)["game"]
+    first = g.get("waits_reload") or now
+    mark = {"game": rd.get("started"), "why": why[:300], "at": now}
+    acts.append({"do": "game_mod_gap", "item": item, "why": why[:200]})
+    other = untried(store.states(), item, rd["started"]) if rd.get("started") and now - first < c["batch_wait_s"] else None
+    if other:
+        w = "waits for one reload: the running game may serve %s first (%s)" % (other, why[:120])
+        _save(store, item, lambda s: (s.update(put_down={"on": w[:200], "at": now}),
+                                      s["game"].update(waits_reload=first, mod_gap=mark)))
+        return
+    if g["stages"] >= c["stage_tries"]:
+        _save(store, item, lambda s: s["game"].update(mod_gap=mark))
+        return _harness(store, fx, r, item, "%d staging(s) and the game still cannot serve it: %s" % (g["stages"], why),
+                        now, acts)
+    _save(store, item, lambda s: (s.update(put_down={"on": why[:200], "at": now}),
+                                  s["game"].update(phase="stage", mod_gap=mark, waits_reload=None,
+                                                   full=True if s["game"].get("final_since") else s["game"].get("full"))))
+
+
 def step(store, fx, r, item, now, acts, sup):
     """One transition of an item in status `game`. `sup` is relentless (fail, settle, finished, run_desc, unit_name)."""
     st = store.load(item)
@@ -783,6 +853,11 @@ def step(store, fx, r, item, now, acts, sup):
                 return _waits(store, fx, item, why, now, acts)
             if _preflight(store, fx, sup, r, item, _owed_lines(fx, item, sha, g, led), now, acts, sha):
                 return      # HEAD may have moved the build's files since implement: caught here, not as a run row
+            mg = g.get("mod_gap") or {}     # a running load cannot gain a mod: one reading per game is enough
+            gap = (mg.get("why") if rd.get("started") and mg.get("game") == rd["started"]
+                   else mod_gap_why(fx.game_mod_gap(item, built)))
+            if gap:         # the running game lacks the build's mods: no prove round, a reload that enables them
+                return _reload(store, fx, r, item, rd, gap, now, acts)
             pid = fx.prove_launch(item)
             _save(store, item, lambda s: (s.pop("put_down", None), s["game"].update(phase="proving", prove_pid=pid,
                                                                                      proved_at=now, waits_reload=None)))
@@ -818,7 +893,7 @@ def step(store, fx, r, item, now, acts, sup):
             # while CONTAGION's staging restarted the game, and would have staged a third load untried)
             built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
             seen = [v for v in outcomes(fx.game_rows(), item, built, g["clauses"]).values() if row_at(v) >= rd["started"]]
-            if not seen and other_active(store.states(), item) is None:
+            if not seen and other_active(store.states(), item) is None and (g.get("mod_gap") or {}).get("game") != rd["started"]:
                 _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=rd["started"], waits_reload=None))
                 acts.append({"do": "game_try_running", "item": item, "started": rd["started"]})
                 return
@@ -831,6 +906,21 @@ def step(store, fx, r, item, now, acts, sup):
         if why:
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
+        others = batch(store.states(), item, now, full=bool(g.get("full")))
+        built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
+        gaps = [fx.game_mod_gap(item, built, running=False)] + [
+            fx.game_mod_gap(o["item"], (o.get("game") or {}).get("sha"), running=False) for o in others
+            if (o.get("game") or {}).get("sha")]
+        want = enable_set(gaps)
+        if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
+            why = fx.modlist_enable(want)
+            if why:     # no restart path holds these mods: held with the reason, never a load that cannot serve it
+                store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm",
+                               "kind": "game_modlist", "item": item, "why": why[:300]})
+                fx.ledger_note(item, "relentless game phase: held, the next load cannot hold its mods: %s" % why)
+                return _hold(store, fx, item, "game phase: modlist_swap.py --enable %s refused: %s"
+                             % (" ".join(want), why), now, acts)
+            acts.append({"do": "game_modlist_enable", "item": item, "mods": want})
         gap = fx.clone_gap(st["clone"])     # checked again at the launch: QUICKTEST_POLICY_NRE_FULLLIST_1 launched without
         if gap:                             # claude_bounded.sh; the bridge is never taken for a stage that cannot start
             return _waits(store, fx, item, "clone: %s lacks %s; the next prepare makes it again" % (st["clone"], gap),
@@ -842,8 +932,6 @@ def step(store, fx, r, item, now, acts, sup):
         unit = sup.unit_name("stage", item, st["gen"]) + "-s%d" % (g["stages"] + 1)
         desc = sup.run_desc(store, r, unit, now)
 
-        others = batch(store.states(), item, now, full=bool(g.get("full")))
-
         def f(s):
             s.pop("put_down", None)
             s["run"] = desc
@@ -854,7 +942,7 @@ def step(store, fx, r, item, now, acts, sup):
             fx.bridge_release()
             return
         st["_proofs_text"] = fx.proofs_at(item, sha)
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others), r["pilot_agent"], st["clone"], c["stage_max_s"],
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps)), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
