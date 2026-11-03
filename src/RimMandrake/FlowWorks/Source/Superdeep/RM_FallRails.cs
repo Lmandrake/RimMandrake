@@ -113,6 +113,94 @@ namespace RimMandrake.FlowWorks
 			return !RM_LadderRules.LadderLetsOut(map, next, pawn);
 		}
 
+		/// <summary>RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY: the walked-step door's live control (jawa/static_call; dev surface,
+		/// nothing in the game calls it). arg "pawnId;lipX,lipZ;dropX,dropZ[;force]". Sets the pawn on the lip (jobs stopped,
+		/// the detector told it arrived there), then asks the REAL per-move floor (RM_Patch_PathFollower_SuperdeepFloor.Prefix,
+		/// pather.nextCell = the drop cell, restored after) whether the step is walked, and which door refuses it
+		/// (RM_FallRailMath.WalkedStepDoor: "rail" on a railed lip; "floor" on an unrailed one with the cliff masks on, because
+		/// nobody walks off a lip anyway). With "force" it then makes the step the floor refused, marked WALKED
+		/// (NoteWalkedStep, as RM_PitPathing's postfix marks a real step): the stale-walked arrival the detector judges on its
+		/// next pass, put back on a railed lip and a fall on an unrailed one (read with RM_NorthstarProofs.ProofTrap).
+		/// Writes the pawn's position, its jobs and the detector's arrival marks only.
+		/// "WALK rail=b isRail=b guards=b floorRefuses=b prefixPass=b door=D falls=b expect=E forced=b".</summary>
+		public static string ProofWalkedStep(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || eng == null || a.Length < 3 || a.Length > 4 || (a.Length == 4 && a[3] != "force")
+				|| !ProofCell(a[1], out IntVec3 lip) || !ProofCell(a[2], out IntVec3 drop)
+				|| !lip.InBounds(map) || !drop.InBounds(map) || !lip.AdjacentTo8Way(drop))
+			{
+				return "REFUSED: arg must be pawnId;lipX,lipZ;dropX,dropZ[;force], two adjacent in-bounds cells on a map with an excavation engine";
+			}
+			Pawn p = null;
+			foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+			{
+				if (q.ThingID == a[0] || q.thingIDNumber.ToString() == a[0])
+				{
+					p = q;
+					break;
+				}
+			}
+			if (p == null || p.pather == null)
+			{
+				return "REFUSED: no spawned pawn " + a[0];
+			}
+			p.jobs?.StopAll();
+			p.pather.StopDead();
+			if (p.Position != lip)
+			{
+				p.Position = lip;
+				p.Notify_Teleported(false, true);
+			}
+			eng.SuperdeepTrap.NoteHandledArrival(p, lip);
+			bool rail = RefusesWalkedStep(p, eng, drop);
+			bool floorRefuses = RM_PocketGrid.Relative
+				? !RM_Patch_PathFollower_SuperdeepFloor.RelativeStepAllowed(p, eng, drop)
+				: RM_PitTrapMath.StepBlocked(RM_SuperdeepTrap.IsHeld(p), Pits.RM_PitCoverUtility.IsCovered(map, drop) ? 0 : eng.ExcavatedDepthAt(drop));
+			IntVec3 keep = p.pather.nextCell;
+			p.pather.nextCell = drop;
+			bool prefixPass;
+			try
+			{
+				prefixPass = RM_Patch_PathFollower_SuperdeepFloor.Prefix(p.pather, p);
+			}
+			finally
+			{
+				p.pather.nextCell = keep;
+			}
+			int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, lip);
+			int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, drop);
+			bool climbsDown = RM_PocketGrid.ClimbsOnGear(p) || RM_PitRamp.Joins(map, lip, drop, fromD, toD);
+			bool falls = RM_PitTrapMath.DescentFalls(true, RM_LadderRules.LadderLetsOut(map, drop, p) || climbsDown,
+				p.Faction == Faction.OfPlayer, RM_SuperdeepTrap.Captures(p));
+			bool guards = Guards(map, eng, p, lip, drop);
+			string expect = RM_FallRailMath.WalkedArrivalEnds(falls, guards, eng.SuperdeepTrap.IsJumper(p), lip.Standable(map));
+			bool forced = a.Length == 4;
+			if (forced)
+			{
+				eng.SuperdeepTrap.NoteWalkedStep(p, drop);
+				p.Position = drop;
+				p.Notify_Teleported(false, false);
+			}
+			return "WALK rail=" + rail + " isRail=" + IsRail(map, lip) + " guards=" + guards + " floorRefuses=" + floorRefuses
+				+ " prefixPass=" + prefixPass + " door=" + RM_FallRailMath.WalkedStepDoor(rail, floorRefuses) + " falls=" + falls
+				+ " expect=" + expect + " forced=" + forced;
+		}
+
+		private static bool ProofCell(string s, out IntVec3 c)
+		{
+			c = IntVec3.Invalid;
+			string[] p = (s ?? "").Split(',');
+			if (p.Length != 2 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z))
+			{
+				return false;
+			}
+			c = new IntVec3(x, 0, z);
+			return true;
+		}
+
 		/// <summary>The throw's door: where a throw from <paramref name="start"/> to <paramref name="land"/> stops at a rail, or
 		/// Invalid when it crosses no guarded edge.</summary>
 		public static IntVec3 ThrowStop(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 start, IntVec3 land)

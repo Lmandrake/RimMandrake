@@ -105,6 +105,55 @@ namespace RimMandrake.FlowWorks.SelfTest
                 rail[0] = true;
                 Assert(RM_FallRailMath.ThrowStopIndex(4, guarded, i => true) == -1, "a rail away from the lip guards nothing");
             });
+            // RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY: the walked-step door's verdicts, swept, and its live control wired.
+            Case("FallRail_walked_step_door_order", () =>
+            {
+                foreach (bool r in new[] { false, true })
+                    foreach (bool f in new[] { false, true })
+                        Assert(RM_FallRailMath.WalkedStepDoor(r, f) == (r ? "rail" : f ? "floor" : "none"), "door order rail, floor, none at " + r + "," + f);
+                // the A3 scenes at a person's climb, masks on: the floor refuses every past-climb step, the rail only a railed one
+                int fall = RM_FallRailMath.FallNotchesFor(Person);
+                bool floor = !RM_PitTrapMath.StepAllowed(0, 14, Person, false);
+                Assert(floor, "a 7 m step down is refused by the climb floor for everyone: nobody walks off anyway");
+                Assert(RM_FallRailMath.WalkedStepDoor(RM_FallRailMath.GuardsEdge(true, 0, 14, fall), floor) == "rail", "railed 7 m lip: the rail door refuses first");
+                Assert(RM_FallRailMath.WalkedStepDoor(RM_FallRailMath.GuardsEdge(false, 0, 14, fall), floor) == "floor", "unrailed 7 m lip: the floor holds it");
+                Assert(RM_FallRailMath.WalkedStepDoor(RM_FallRailMath.GuardsEdge(true, 0, 2, fall), !RM_PitTrapMath.StepAllowed(0, 2, Person, false)) == "none", "a 1 m step is walked, rail or not");
+            });
+            Case("FallRail_walked_arrival_ends_swept", () =>
+            {
+                foreach (bool falls in new[] { false, true })
+                    foreach (bool g in new[] { false, true })
+                        foreach (bool j in new[] { false, true })
+                            foreach (bool st in new[] { false, true })
+                            {
+                                string e = RM_FallRailMath.WalkedArrivalEnds(falls, g, j, st);
+                                string want = !falls ? "stands" : (g && !j && st) ? "putback" : "fell";
+                                Assert(e == want, "ends " + e + " want " + want + " at falls=" + falls + " g=" + g + " j=" + j + " st=" + st);
+                            }
+                // a hostile the hole captures, walked (stale) over the lip: the A3 control pair
+                bool hostileFalls = RM_PitTrapMath.DescentFalls(true, false, false, true);
+                Assert(hostileFalls, "a captured hostile's stale walked step over a lip falls");
+                Assert(RM_FallRailMath.WalkedArrivalEnds(hostileFalls, true, false, true) == "putback", "railed: put back on the lip");
+                Assert(RM_FallRailMath.WalkedArrivalEnds(hostileFalls, false, false, true) == "fell", "unrailed control: falls");
+                Assert(RM_FallRailMath.WalkedArrivalEnds(RM_PitTrapMath.DescentFalls(true, false, true, false), true, false, true) == "stands",
+                    "a colonist's stale walked step never falls (DescentFalls), so A3 uses a hostile");
+            });
+            Case("FallRail_walked_step_proof_wired", () =>
+            {
+                string rails = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_FallRails.cs"));
+                Assert(rails.Contains("public static string ProofWalkedStep(string arg)"), "the live control's static_call surface ships");
+                Assert(rails.Contains("RM_Patch_PathFollower_SuperdeepFloor.Prefix(p.pather, p)") && rails.Contains("p.pather.nextCell = keep;"),
+                    "asks the REAL per-move floor and restores nextCell");
+                Assert(rails.Contains("RM_Patch_PathFollower_SuperdeepFloor.RelativeStepAllowed(p, eng, drop)"), "the floor verdict is the floor's own");
+                Assert(rails.Contains("eng.SuperdeepTrap.NoteWalkedStep(p, drop)") && rails.Contains("eng.SuperdeepTrap.NoteHandledArrival(p, lip)"),
+                    "the forced step is marked WALKED from the lip, as RM_PitPathing's postfix marks a real step");
+                string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
+                int railAt = trap.IndexOf("RM_FallRails.RefusesWalkedStep(pawn, eng, __instance.nextCell)");
+                int floorAt = trap.IndexOf("RelativeStepAllowed(pawn, eng, __instance.nextCell)");
+                Assert(railAt > 0 && floorAt > railAt, "the prefix asks the rail before the floor (WalkedStepDoor's order)");
+                string path = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitPathing.cs"));
+                Assert(path.Contains("eng.SuperdeepTrap.NoteWalkedStep(___pawn, ___pawn.Position)"), "a real walked step is marked the same way");
+            });
             Case("FallRail_doors_def_and_setting_wired", () =>
             {
                 string rails = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_FallRails.cs"));

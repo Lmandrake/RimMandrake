@@ -120,5 +120,26 @@ namespace RimMandrake.FlowWorks
 			}
 			return -1;
 		}
+
+		/// <summary>RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY: which door of the per-move floor (RM_Patch_PathFollower_SuperdeepFloor)
+		/// refuses a walked step, in the prefix's own order: the rail first, then the climb floor. With the cliff masks on the
+		/// floor already refuses every walked step past a pawn's climb, so an unrailed lip answers Floor: nobody walks off anyway.
+		/// "none" = the step is walked.</summary>
+		public static string WalkedStepDoor(bool railRefuses, bool floorRefuses)
+		{
+			return railRefuses ? "rail" : floorRefuses ? "floor" : "none";
+		}
+
+		/// <summary>RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY: how a walked arrival over a lip ends once the detector judges it
+		/// (RM_SuperdeepTrapState.Tick): "putback" when the fall is stopped by a rail (FallBlocked, the lip standable), "fell" when
+		/// it falls (DescentFalls), otherwise "stands". The proof's expected answer for each scene.</summary>
+		public static string WalkedArrivalEnds(bool descentFalls, bool edgeGuarded, bool deliberateJump, bool lipStandable)
+		{
+			if (!descentFalls)
+			{
+				return "stands";
+			}
+			return FallBlocked(edgeGuarded, deliberateJump) && lipStandable ? "putback" : "fell";
+		}
 	}
 }
