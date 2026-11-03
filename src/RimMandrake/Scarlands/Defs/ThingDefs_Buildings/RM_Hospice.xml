@@ -61,5 +61,13 @@
     <statBases><MaxHitPoints>200</MaxHitPoints><WorkToBuild>3000</WorkToBuild><Flammability>0.4</Flammability><Mass>40</Mass></statBases>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <comps>
+      <!-- the cradle lights: dark while empty or diagnosing, lit from the lights stage until waking (CompHospiceGlower) -->
+      <li Class="CompProperties_Glower">
+        <compClass>RimMandrake.Scarlands.CompHospiceGlower</compClass>
+        <glowRadius>3</glowRadius>
+        <glowColor>(140,190,255,0)</glowColor>
+      </li>
+    </comps>
   </ThingDef>
 </Defs>

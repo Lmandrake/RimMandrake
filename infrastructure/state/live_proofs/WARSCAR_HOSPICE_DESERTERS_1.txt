@@ -1,0 +1,8 @@
+# WARSCAR_HOSPICE_DESERTERS_1: game up on a minimal list carrying Warscar (standalone mandrake.rm.warscar, or the Baroque
+# Biomes composite built at this sha) with all five DLC, a quicktest colony map loaded, bridge held. Each clause is one
+# jawa/static_call into RimMandrake.Scarlands.RM_HospiceProof on the current map; A4 also advances time with
+# jawa/safe_advance (test profile). Exit 0 holds, 1 fails, 2 instrument blind. Run A1..A4 in order on one map.
+live-proof A1: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A1 < /dev/null
+live-proof A2: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A2 < /dev/null
+live-proof A3: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A3 < /dev/null
+live-proof A4: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A4 < /dev/null

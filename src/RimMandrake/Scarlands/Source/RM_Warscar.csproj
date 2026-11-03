@@ -53,6 +53,7 @@
     <Compile Include="RM_Totchak.cs" />
     <Compile Include="RM_OldTongue.cs" />
     <Compile Include="RM_Hospice.cs" />
+    <Compile Include="RM_HospiceProof.cs" />
     <Compile Include="RM_ReactionPools.cs" />
     <Compile Include="RM_Chotrix.cs" />
     <Compile Include="RM_ChotrixSigns.cs" />

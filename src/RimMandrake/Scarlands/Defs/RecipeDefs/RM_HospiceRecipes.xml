@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_HOSPICE_DESERTERS_1: a failed wreck is studied for research (RecipeWorker_StudyFailedChassis adds
+     hospiceStudyResearch points to the current project and names the machine) or smelted (RM_FailedChassis is smeltable). -->
+<Defs>
+  <RecipeDef>
+    <defName>RM_StudyFailedChassis</defName>
+    <label>study failed chassis</label>
+    <description>Take a failed chassis apart slowly, reading what was done to it. Gives research toward the current project; nothing is left.</description>
+    <jobString>Studying failed chassis.</jobString>
+    <workerClass>RimMandrake.Scarlands.RecipeWorker_StudyFailedChassis</workerClass>
+    <workAmount>2400</workAmount>
+    <workSkill>Intellectual</workSkill>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
+    <researchPrerequisite>RM_OldTongue_Hospice</researchPrerequisite>
+    <recipeUsers><li>TableMachining</li></recipeUsers>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_FailedChassis</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter><thingDefs><li>RM_FailedChassis</li></thingDefs></fixedIngredientFilter>
+  </RecipeDef>
+</Defs>

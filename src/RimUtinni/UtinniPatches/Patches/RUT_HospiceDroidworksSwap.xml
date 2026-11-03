@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_HOSPICE_DESERTERS_1 spec 7, the campaign swap. On the RUT layer an intact kneeling chassis is a canon droid
+  chassis, and the hospice cradle hands the waking machine to Droidworks: RM_HospiceWakeExtension.wakeKinds names the
+  Droidworks pawn kinds it may become (an Imperial labor droid, a DUM-series pit droid). The deserter history carries
+  over as data: the woken droid keeps the unit name and the history's modification hediffs, and the waking letter
+  tells what was done to it (Building_HospiceCradle.Wake). Guarded twice: the cradle def must exist (Warscar ships
+  standalone OR inside the Baroque Biomes composite, so an xpath test, not a mod name) and Droidworks must be active
+  (FindMod: MayRequire on a top-level Operation is ignored).
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_HospiceCradle"]</xpath>
+    <match Class="PatchOperationFindMod">
+      <mods><li>Droidworks</li></mods>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_HospiceCradle"]</xpath>
+            <value>
+              <li Class="RimMandrake.Scarlands.RM_HospiceWakeExtension">
+                <wakeKinds>
+                  <li>RSW_DW_OuterRim_ImperialLaborDroid</li>
+                  <li>RSW_DW_OuterRim_DUMDroid</li>
+                </wakeKinds>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="RM_KneelingChassis_Intact"]/label</xpath>
+            <value><label>kneeling droid chassis</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="RM_KneelingChassis_Intact"]/description</xpath>
+            <value><description>A droid that walked away from its war and knelt, a long way from where it was made, with nothing visibly wrong with it. Every one is a deserter with a history. Carry it to a hospice cradle and it wakes as a working droid. It cannot be fabricated.</description></value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+</Patch>

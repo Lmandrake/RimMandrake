@@ -14,7 +14,7 @@
   <ThingDef>
     <defName>RM_FailedChassis</defName>
     <label>failed chassis</label>
-    <description>What is left when a repair did not take. It keeps the machine's name and what was wrong with it; it is not a blank chunk of scrap. It can be shredded for parts.</description>
+    <description>What is left when a repair did not take. It keeps the machine's name and what was wrong with it; it is not a blank chunk of scrap. It can be studied at a machining table for research, or smelted for parts.</description>
     <thingClass>ThingWithComps</thingClass>
     <category>Item</category>
     <graphicData><texPath>Things/Item/RM_FailedChassis</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>

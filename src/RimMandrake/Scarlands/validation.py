@@ -240,6 +240,8 @@ def static_checks():
     if re.search(r"\bVerb\b|Verb_|AttackTarget|TryStartCastOn|Projectile\b.*Launch", cs.split("OldLineTurretTuning")[0]):
         bad.append("the aim comp touches a verb or projectile -- it must stay verbless")
     # WARSCAR_HOSPICE_DESERTERS_1
+    if 'Compile Include="RM_HospiceProof.cs"' not in csproj:
+        bad.append("RM_HospiceProof.cs (the live proof hooks) missing from RM_Warscar.csproj")
     if 'Compile Include="RM_Hospice.cs"' not in csproj:
         bad.append("RM_Hospice.cs missing from RM_Warscar.csproj")
     D = os.path.join(HERE, "Defs")
@@ -293,6 +295,46 @@ def static_checks():
                    "It looked at the Cathedral first.", "RM_FailedChassis", "MakeMinified", "stage++"):
         if needle not in hs:
             bad.append("RM_Hospice.cs lacks %s" % needle)
+    # WARSCAR_HOSPICE_DESERTERS_1 spec 3/6/7/8: cradle lights, the accept/refuse walk-in, the pursuer, the wreck study,
+    # the campaign hand-off to Droidworks. Each check names a class the defs point at and the def that points at it.
+    for needle in ("class CompHospiceGlower : CompGlower", "stage >= 2", "class ChoiceLetter_DeserterWalkIn : ChoiceLetter",
+                   "public void Refuse()", "RM_KneelingChassis_Posed", "TryFindBestExitSpot", "hospicePursuerChance", "Mech_Scyther",
+                   "class RecipeWorker_StudyFailedChassis : RecipeWorker", "AddProgress", "class RM_HospiceWakeExtension : DefModExtension",
+                   "GetModExtension<RM_HospiceWakeExtension>", "DebugCompleteStage", "RefreshLights();"):
+        if needle not in hs:
+            bad.append("RM_Hospice.cs lacks %s" % needle)
+    glow = cradle.find("comps/li[@Class='CompProperties_Glower']")
+    if glow is None or glow.findtext("compClass") != NS + "CompHospiceGlower":
+        bad.append("cradle has no CompProperties_Glower driven by CompHospiceGlower (the cradle lights)")
+    let = ET.parse(os.path.join(D, "LetterDefs", "RM_HospiceLetters.xml")).getroot().find("LetterDef")
+    if let is None or let.findtext("defName") != "RM_DeserterWalkInLetter" or let.findtext("letterClass") != NS + "ChoiceLetter_DeserterWalkIn":
+        bad.append("RM_DeserterWalkInLetter missing or not of class ChoiceLetter_DeserterWalkIn")
+    rec = ET.parse(os.path.join(D, "RecipeDefs", "RM_HospiceRecipes.xml")).getroot().find("RecipeDef")
+    if rec is None or rec.findtext("workerClass") != NS + "RecipeWorker_StudyFailedChassis" \
+            or rec.findtext("ingredients/li/filter/thingDefs/li") != "RM_FailedChassis" or rec.findtext("recipeUsers/li") != "TableMachining":
+        bad.append("RM_StudyFailedChassis is not a machining-table study of RM_FailedChassis by RecipeWorker_StudyFailedChassis")
+    failed = [e for e in ET.parse(os.path.join(D, "ThingDefs_Items", "RM_HospiceItems.xml")).getroot() if e.findtext("defName") == "RM_FailedChassis"][0]
+    if failed.findtext("smeltable") != "true" or failed.find("comps/li").get("Class") != NS + "CompProperties_DeserterHistory":
+        bad.append("RM_FailedChassis must be smeltable (shredded) and carry the history comp (its name on hover)")
+    swap_p = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "RUT_HospiceDroidworksSwap.xml")
+    swap = ET.parse(swap_p).getroot().find("Operation")
+    dw = os.path.join(HERE, "..", "..", "RimStarWars", "Droidworks")
+    # Warscar ships standalone or inside the Baroque Biomes composite, so the outer guard tests the cradle def, not a mod name.
+    if swap.get("Class") != "PatchOperationConditional" or swap.findtext("xpath") != 'Defs/ThingDef[defName="RM_HospiceCradle"]':
+        bad.append("RUT swap outer guard must be a Conditional on the RM_HospiceCradle def (Warscar may load inside a composite)")
+    if swap.findtext("match/mods/li") != ET.parse(os.path.join(dw, "About", "About.xml")).getroot().findtext("name"):
+        bad.append("RUT swap FindMod does not name Droidworks by its About.xml name")
+    kinds = [li.text for li in swap.iter("wakeKinds") for li in li.findall("li")]
+    dw_kinds = set()
+    for root, _, files in os.walk(os.path.join(dw, "Defs")):
+        for f in files:
+            if f.endswith(".xml"):
+                dw_kinds.update(e.findtext("defName") for e in ET.parse(os.path.join(root, f)).getroot() if e.tag == "PawnKindDef")
+    if not kinds or [k for k in kinds if k not in dw_kinds]:
+        bad.append("RUT swap wakeKinds %r are not all Droidworks PawnKindDefs" % kinds)
+    ext = [li for li in swap.iter("li") if li.get("Class") == NS + "RM_HospiceWakeExtension"]
+    if not ext:
+        bad.append("RUT swap does not add RM_HospiceWakeExtension")
     # WARSCAR_RAINBOW_POOLS_1 (static: files, wiring and names; behaviour is the live chain below)
     if 'Compile Include="RM_ReactionPools.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
         bad.append("RM_ReactionPools.cs missing from RM_Warscar.csproj")

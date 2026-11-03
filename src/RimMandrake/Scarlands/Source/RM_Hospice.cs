@@ -4,13 +4,15 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace RimMandrake.Scarlands
 {
-    // WARSCAR_HOSPICE_DESERTERS_1 (standalone slice). Kneeling chassis rings, deserter histories, the
-    // five-stage hospice cradle, the overseer-free servitor, named failed wrecks, a walk-in incident.
-    // Not built here: Droidworks swap (campaign layer), pursuers, refusing a walk-in, etchant (pools unbuilt:
-    // the limbs stage degrades to slower+riskier when RM_Etchant does not exist), cradle lights art.
+    // WARSCAR_HOSPICE_DESERTERS_1. Kneeling chassis rings, deserter histories, the five-stage hospice cradle (its glow
+    // lights from the lights stage on), the overseer-free servitor, named failed wrecks (studied at a machining table for
+    // research, or smelted), and a walk-in the player may take in or refuse (refused: it kneels at the map edge as a posed
+    // chassis); sometimes a pursuer follows. The campaign layer (UtinniPatches RUT_HospiceDroidworksSwap.xml) hands the
+    // woken machine to Droidworks through RM_HospiceWakeExtension; the history's name and modifications carry over.
 
     public class RM_DeserterHistoryDef : Def
     {
@@ -32,7 +34,23 @@ namespace RimMandrake.Scarlands
         public static ThingDef RM_ChassisCore;
         public static PawnKindDef RM_AncientServitor;
         public static JobDef RM_HospiceHaul;
+        public static LetterDef RM_DeserterWalkInLetter;
         static RM_HospiceDefOf() { DefOfHelper.EnsureInitializedInCtor(typeof(RM_HospiceDefOf)); }
+    }
+
+    // On the cradle def: which pawn kinds a waking machine becomes (the campaign layer points it at Droidworks droids).
+    public class RM_HospiceWakeExtension : DefModExtension
+    {
+        public List<PawnKindDef> wakeKinds;
+    }
+
+    // The cradle's lights: dark while empty or diagnosing, lit from the lights stage until waking.
+    public class CompHospiceGlower : CompGlower
+    {
+        protected override bool ShouldBeLitNow
+        {
+            get { Building_HospiceCradle c = parent as Building_HospiceCradle; return c != null && c.LightsOn && base.ShouldBeLitNow; }
+        }
     }
 
     public class CompProperties_DeserterHistory : CompProperties
@@ -93,7 +111,24 @@ namespace RimMandrake.Scarlands
     public class CompDeserterWalker : ThingComp
     {
         public bool walking;
-        public override void PostExposeData() { Scribe_Values.Look(ref walking, "deserterWalking", false); }
+        public bool refused;
+        private IntVec3 exitCell = IntVec3.Invalid;
+        public override void PostExposeData()
+        {
+            Scribe_Values.Look(ref walking, "deserterWalking", false);
+            Scribe_Values.Look(ref refused, "deserterRefused", false);
+            Scribe_Values.Look(ref exitCell, "deserterExitCell", IntVec3.Invalid);
+        }
+
+        // The player turned it away: it walks to the nearest map edge, kneels there and stops, a posed chassis.
+        public void Refuse()
+        {
+            if (!walking) return;
+            refused = true;
+            exitCell = IntVec3.Invalid;
+            Pawn p = parent as Pawn;
+            if (p != null && p.Spawned && p.jobs != null) p.jobs.EndCurrentJob(JobCondition.InterruptForced);
+        }
 
         public override void CompTick()
         {
@@ -101,6 +136,7 @@ namespace RimMandrake.Scarlands
             Pawn p = parent as Pawn;
             if (p == null || p.Dead || p.Downed) { walking = false; return; }
             Map map = p.Map;
+            if (refused) { WalkAway(p, map); return; }
             Thing cradle = null;
             List<Thing> cradles = map.listerThings.ThingsOfDef(RM_HospiceDefOf.RM_HospiceCradle);
             for (int i = 0; i < cradles.Count; i++)
@@ -117,6 +153,37 @@ namespace RimMandrake.Scarlands
                 j.locomotionUrgency = LocomotionUrgency.Walk;
                 p.jobs.StartJob(j, JobCondition.InterruptForced);
             }
+        }
+
+        private void WalkAway(Pawn p, Map map)
+        {
+            if (!exitCell.IsValid || !p.CanReach(exitCell, PathEndMode.OnCell, Danger.Deadly))
+            {
+                IntVec3 spot;
+                exitCell = RCellFinder.TryFindBestExitSpot(p, out spot, TraverseMode.ByPawn) ? spot : p.Position;
+            }
+            if (p.Position.DistanceTo(exitCell) <= 1.5f || exitCell == p.Position) { KneelRefused(p, map); return; }
+            if (p.CurJob == null || p.CurJob.def != JobDefOf.Goto)
+            {
+                Job j = JobMaker.MakeJob(JobDefOf.Goto, exitCell);
+                j.locomotionUrgency = LocomotionUrgency.Walk;
+                p.jobs.StartJob(j, JobCondition.InterruptForced);
+            }
+        }
+
+        private void KneelRefused(Pawn p, Map map)
+        {
+            walking = false;
+            IntVec3 at = p.Position;
+            CompDeserterHistory h = p.TryGetComp<CompDeserterHistory>();
+            string unit = h != null && !h.unitName.NullOrEmpty() ? h.unitName : "The machine";
+            Rot4 rot = Rot4.FromAngleFlat((map.Center.ToVector3Shifted() - at.ToVector3Shifted()).AngleFlat());
+            IntVec3 cell;
+            if (!CellFinder.TryFindRandomCellNear(at, map, 4, c => c.Standable(map) && c.GetEdifice(map) == null && (c == at || c.GetFirstPawn(map) == null) && c.GetFirstItem(map) == null, out cell))
+                return;   // nowhere to kneel yet; it tries again on its next check
+            p.Destroy();
+            Thing posed = GenSpawn.Spawn(ThingMaker.MakeThing(RM_HospiceDefOf.RM_KneelingChassis_Posed), cell, map, rot);
+            Messages.Message(unit + " stopped at the edge of the map, knelt with its hands open, and did not move again.", posed, MessageTypeDefOf.NeutralEvent);
         }
 
         private void Kneel(Pawn p, IntVec3 at, Map map)
@@ -167,6 +234,27 @@ namespace RimMandrake.Scarlands
         private bool oddities;
 
         public static ThingDef EtchantDef { get { return DefDatabase<ThingDef>.GetNamedSilentFail("RM_Etchant"); } }
+        public int Stage { get { return stage; } }
+        public string UnitName { get { return unitName; } }
+        public bool LightsOn { get { return stage >= 2 && RM_WarscarSettings.hospiceEnabled; } }
+
+        private void RefreshLights()
+        {
+            CompGlower g = GetComp<CompGlower>();
+            if (g != null && Spawned) g.UpdateLit(Map);
+        }
+
+        // Dev and proof hooks: finish the current stage now (forceFail: the risky roll fails).
+        public void DebugCompleteStage(bool forceFail)
+        {
+            if (stage == 0) return;
+            if (forceFail && stage >= 2 && stage <= 4) { Fail(); return; }
+            if (stage == 2 || stage == 4) partIn = true;
+            if (stage == 3 && EtchantDef != null) etchantIn = true;
+            debugNoFail = true;
+            try { Complete(); } finally { debugNoFail = false; }
+        }
+        private bool debugNoFail;
         private static float StageDays { get { return RM_WarscarSettings.hospiceStageDays; } }
 
         public override void ExposeData()
@@ -222,6 +310,7 @@ namespace RimMandrake.Scarlands
                 CompDeserterHistory c = m.InnerThing.TryGetComp<CompDeserterHistory>();
                 if (c != null) { c.Roll(); history = c.history; unitName = c.unitName; }
                 stage = 1; ticksLeft = -1; revealed = 0; oddities = false; graceTicks = 0; partIn = false; etchantIn = false;
+                RefreshLights();
                 return;
             }
             if (stage == 3) etchantIn = true; else partIn = true;
@@ -256,7 +345,7 @@ namespace RimMandrake.Scarlands
                 float chance = RM_WarscarSettings.hospiceFailureChance;
                 if (RM_OldTongue.HospiceUnlocked) chance -= 0.04f;
                 if (stage == 3 && !etchantIn) chance += 0.15f;
-                if (Rand.Chance(Mathf.Clamp01(chance))) { Fail(); return; }
+                if (!debugNoFail && Rand.Chance(Mathf.Clamp01(chance))) { Fail(); return; }
             }
             switch (stage)
             {
@@ -274,6 +363,7 @@ namespace RimMandrake.Scarlands
             }
             stage++;
             partIn = false; etchantIn = false; ticksLeft = -1; graceTicks = 0;
+            RefreshLights();
         }
 
         private bool ReaderPresent()
@@ -330,7 +420,14 @@ namespace RimMandrake.Scarlands
 
         private void Wake()
         {
-            Pawn p = PawnGenerator.GeneratePawn(RM_HospiceDefOf.RM_AncientServitor, Faction.OfPlayer);
+            PawnKindDef kind = RM_HospiceDefOf.RM_AncientServitor;
+            RM_HospiceWakeExtension ext = def.GetModExtension<RM_HospiceWakeExtension>();
+            if (ext != null && ext.wakeKinds != null)
+            {
+                List<PawnKindDef> kinds = ext.wakeKinds.FindAll(k => k != null);
+                if (kinds.Count > 0) kind = kinds.RandomElement();
+            }
+            Pawn p = PawnGenerator.GeneratePawn(kind, Faction.OfPlayer);
             if (history != null && history.modifications != null)
                 for (int i = 0; i < history.modifications.Count; i++) p.health.AddHediff(history.modifications[i]);
             if (!unitName.NullOrEmpty()) p.Name = new NameSingle(unitName);
@@ -346,6 +443,7 @@ namespace RimMandrake.Scarlands
         private void Reset()
         {
             stage = 0; history = null; unitName = null; partIn = false; etchantIn = false; ticksLeft = -1; graceTicks = 0; revealed = 0; oddities = false;
+            RefreshLights();
         }
 
         public override string GetInspectString()
@@ -425,9 +523,9 @@ namespace RimMandrake.Scarlands
     {
         public override int SeedPart { get { return 84921911; } }
 
-        public override void Generate(Map map, GenStepParams parms)
+        // The ruin layout's centre: the centroid of ancient fortified walls (6 or more), else the map centre.
+        public static Vector3 RingCentre(Map map)
         {
-            if (!RM_WarscarSettings.hospiceEnabled) return;
             Vector3 centre = map.Center.ToVector3Shifted();
             ThingDef wallDef = DefDatabase<ThingDef>.GetNamedSilentFail("AncientFortifiedWall");
             if (wallDef != null)
@@ -440,6 +538,13 @@ namespace RimMandrake.Scarlands
                     centre = new Vector3(sx / walls.Count + 0.5f, 0f, sz / walls.Count + 0.5f);
                 }
             }
+            return centre;
+        }
+
+        public override void Generate(Map map, GenStepParams parms)
+        {
+            if (!RM_WarscarSettings.hospiceEnabled) return;
+            Vector3 centre = RingCentre(map);
             List<IntVec3> slots = new List<IntVec3>();
             int[] radii = { 6, 10, 14 };
             for (int r = 0; r < radii.Length; r++)
@@ -500,8 +605,83 @@ namespace RimMandrake.Scarlands
             if (w != null) w.walking = true;
             if (h != null && !h.unitName.NullOrEmpty()) p.Name = new NameSingle(h.unitName);
             GenSpawn.Spawn(p, cell, map);
-            SendStandardLetter("A damaged machine", "A damaged machine is walking in from the edge of the map, straight toward your hospice cradle. It is not hostile.", LetterDefOf.NeutralEvent, parms, p);
+            Pawn pursuer = TrySpawnPursuer(map, cell);
+            string unit = h != null && !h.unitName.NullOrEmpty() ? h.unitName : "A damaged machine";
+            string text = unit + " is walking in from the edge of the map, straight toward your hospice cradle. It is not hostile.\n\n"
+                + "Let it come, and it kneels by the cradle for repair. Refuse it, and it turns to the nearest edge, kneels there and stops.";
+            if (pursuer != null) text += "\n\nSomething followed it in: " + pursuer.LabelShort + " is hunting it, and will not stop at it.";
+            ChoiceLetter_DeserterWalkIn let = (ChoiceLetter_DeserterWalkIn)LetterMaker.MakeLetter("A deserter walks in", text, RM_HospiceDefOf.RM_DeserterWalkInLetter, new LookTargets(p));
+            let.deserter = p;
+            Find.LetterStack.ReceiveLetter(let);
             return true;
+        }
+
+        // Sometimes a pursuer follows (Mod Settings: hospicePursuerChance): one hostile mechanoid entering beside it.
+        private static Pawn TrySpawnPursuer(Map map, IntVec3 near)
+        {
+            if (!Rand.Chance(Mathf.Clamp01(RM_WarscarSettings.hospicePursuerChance)) || Faction.OfMechanoids == null) return null;
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("Mech_Scyther");
+            IntVec3 cell;
+            if (kind == null || !CellFinder.TryFindRandomEdgeCellNearWith(near, 12f, map, c => c.Standable(map) && c.GetFirstPawn(map) == null, out cell)) return null;
+            Pawn m = PawnGenerator.GeneratePawn(kind, Faction.OfMechanoids);
+            GenSpawn.Spawn(m, cell, map);
+            LordMaker.MakeNewLord(Faction.OfMechanoids, new LordJob_AssaultColony(Faction.OfMechanoids, false, false, false, false, false), map, new List<Pawn> { m });
+            return m;
+        }
+    }
+
+    // The walk-in letter: let it come (the default if never answered) or refuse it.
+    public class ChoiceLetter_DeserterWalkIn : ChoiceLetter
+    {
+        public Pawn deserter;
+
+        public override IEnumerable<DiaOption> Choices
+        {
+            get
+            {
+                if (ArchivedOnly) { yield return Option_Close; yield break; }
+                CompDeserterWalker w = deserter != null && !deserter.Destroyed ? deserter.TryGetComp<CompDeserterWalker>() : null;
+                DiaOption take = new DiaOption("Let it come to the cradle");
+                take.action = delegate { Find.LetterStack.RemoveLetter(this); };
+                take.resolveTree = true;
+                DiaOption refuse = new DiaOption("Refuse it");
+                refuse.action = delegate { if (w != null) w.Refuse(); Find.LetterStack.RemoveLetter(this); };
+                refuse.resolveTree = true;
+                if (w == null || !w.walking || w.refused) { take.Disable("it is no longer walking in"); refuse.Disable("it is no longer walking in"); }
+                yield return take;
+                yield return refuse;
+                if (lookTargets.IsValid()) yield return Option_JumpToLocation;
+                yield return Option_Postpone;
+            }
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_References.Look(ref deserter, "deserter");
+        }
+    }
+
+    // A failed wreck studied at a machining table: research toward the current project, and its story read aloud.
+    public class RecipeWorker_StudyFailedChassis : RecipeWorker
+    {
+        public override void ConsumeIngredient(Thing ingredient, RecipeDef recipe, Map map)
+        {
+            if (ingredient != null && ingredient.def == RM_HospiceDefOf.RM_FailedChassis)
+            {
+                CompDeserterHistory h = ingredient.TryGetComp<CompDeserterHistory>();
+                string unit = h != null && !h.unitName.NullOrEmpty() ? h.unitName : "the failed chassis";
+                ResearchProjectDef proj = Find.ResearchManager.GetProject();
+                float pts = RM_WarscarSettings.hospiceStudyResearch;
+                string what = h != null && h.history != null ? "\n\n" + h.history.oddityText : "";
+                if (proj != null && pts > 0f)
+                {
+                    Find.ResearchManager.AddProgress(proj, pts);
+                    Messages.Message("Studying " + unit + " gave " + Mathf.RoundToInt(pts) + " research toward " + proj.LabelCap + "." + what, MessageTypeDefOf.PositiveEvent);
+                }
+                else Messages.Message("Studied " + unit + ", but no research project was set: what it taught went nowhere." + what, MessageTypeDefOf.NeutralEvent);
+            }
+            base.ConsumeIngredient(ingredient, recipe, map);
         }
     }
 }

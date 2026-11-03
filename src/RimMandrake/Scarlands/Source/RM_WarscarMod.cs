@@ -56,6 +56,8 @@ namespace RimMandrake.Scarlands
         public static bool hospiceLashOut = true;            // limbs stage may hit an adjacent pawn once
         public static bool hospiceWalkInEnabled = true;      // deserter walk-in incident
         public static float hospiceWalkInFrequency = 1f;     // chance the incident proceeds when it rolls
+        public static float hospicePursuerChance = 0.25f;    // chance a hostile mechanoid follows a walk-in
+        public static float hospiceStudyResearch = 400f;     // research points from studying a failed chassis
 
         // WARSCAR_RAINBOW_POOLS_1 toggles.
         public static bool poolsEnabled = true;              // pools generate on new maps; taps work
@@ -227,6 +229,8 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref hospiceLashOut, "hospiceLashOut", true);
             Scribe_Values.Look(ref hospiceWalkInEnabled, "hospiceWalkInEnabled", true);
             Scribe_Values.Look(ref hospiceWalkInFrequency, "hospiceWalkInFrequency", 1f);
+            Scribe_Values.Look(ref hospicePursuerChance, "hospicePursuerChance", 0.25f);
+            Scribe_Values.Look(ref hospiceStudyResearch, "hospiceStudyResearch", 400f);
             Scribe_Values.Look(ref poolsEnabled, "poolsEnabled", true);
             Scribe_Values.Look(ref poolsPerMap, "poolsPerMap", 3f);
             Scribe_Values.Look(ref poolCycleHours, "poolCycleHours", 24f);
@@ -437,7 +441,7 @@ namespace RimMandrake.Scarlands
                 list.GapLine();
             }
 
-            if (Group(list, "Hospice (kneeling chassis and cradle)", RimMandrake.Shared.SettingScope.Now, new[] { "hospiceEnabled", "hospiceStageDays", "hospiceFailureChance", "hospiceLashOut", "hospiceWalkInEnabled", "hospiceWalkInFrequency" }))
+            if (Group(list, "Hospice (kneeling chassis and cradle)", RimMandrake.Shared.SettingScope.Now, new[] { "hospiceEnabled", "hospiceStageDays", "hospiceFailureChance", "hospiceLashOut", "hospiceWalkInEnabled", "hospiceWalkInFrequency", "hospicePursuerChance", "hospiceStudyResearch" }))
             {
                 list.CheckboxLabeled("Hospice (kneeling chassis and cradle)", ref hospiceEnabled,
                     "Rings of kneeling chassis in ruins; an intact one can be hauled to a hospice cradle and woken over days. Off: the cradle, its jobs and the walk-in stop now, and no rings are placed on new maps.");
@@ -451,6 +455,10 @@ namespace RimMandrake.Scarlands
                     "Rarely, a damaged machine walks onto the map toward your cradle. Only while a cradle stands.");
                 list.Label("Walk-in frequency: " + hospiceWalkInFrequency.ToString("0%") + " of rolls proceed");
                 hospiceWalkInFrequency = list.Slider(hospiceWalkInFrequency, 0f, 1f);
+                list.Label("Chance a pursuer follows a walk-in: " + hospicePursuerChance.ToString("0%"));
+                hospicePursuerChance = list.Slider(hospicePursuerChance, 0f, 1f);
+                list.Label("Research from studying a failed chassis: " + Mathf.RoundToInt(hospiceStudyResearch));
+                hospiceStudyResearch = Mathf.Round(list.Slider(hospiceStudyResearch, 0f, 2000f) / 50f) * 50f;
                 list.GapLine();
             }
 
