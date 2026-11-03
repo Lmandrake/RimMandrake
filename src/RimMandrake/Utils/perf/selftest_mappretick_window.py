@@ -25,7 +25,9 @@ def prof(pre_max, kids=None, calls=12000, as_dict=False):
 
 PF = "Verse.PathFinder:PathFinderTick"
 WP = "RimWorld.WildPlantSpawner:WildPlantSpawnerTick"
-ok = dict(ticks=10000, mods=321, map_size=325, biome="RUT_TheRot", tile=96532)
+FIVE = ["ludeon.rimworld", "Ludeon.RimWorld.Royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+        "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey"]
+ok = dict(ticks=10000, mods=321, map_size=325, biome="RUT_TheRot", tile=96532, dlcs=FIVE)
 
 # us() parses every rendering the profiler uses
 check("us str", W.us("8507.6 us"), 8507.6)
@@ -57,13 +59,13 @@ check("zero-call child", W.verdict(p, **ok)[:2], (1, "UNNAMED"))
 check("blind no calls", W.verdict(prof("unavailable: no calls timed", calls=0), **ok)[:2], (1, "BLIND"))
 check("blind absent", W.verdict({"methods": []}, **ok)[:2], (1, "BLIND"))
 check("blind none profile", W.verdict(None, **ok)[:2], (1, "BLIND"))
-check("blind no ticks", W.verdict(prof(1000.0), ticks=0, mods=321, map_size=325, biome="RUT_TheRot", tile=96532)[:2], (1, "BLIND"))
+check("blind no ticks", W.verdict(prof(1000.0), ticks=0, mods=321, map_size=325, biome="RUT_TheRot", tile=96532, dlcs=FIVE)[:2], (1, "BLIND"))
 # wrong scene: a minimal list or a small map proves nothing about the full-list 325 stall
-check("minimal list", W.verdict(prof(1000.0), ticks=100, mods=13, map_size=325, biome="RUT_TheRot", tile=96532)[:2], (1, "WRONG_LIST"))
-check("mods unknown", W.verdict(prof(1000.0), ticks=100, mods=None, map_size=325, biome="RUT_TheRot", tile=96532)[:2], (1, "WRONG_LIST"))
-check("small map", W.verdict(prof(1000.0), ticks=100, mods=321, map_size=250, biome="RUT_TheRot", tile=96532)[:2], (1, "WRONG_MAP"))
+check("minimal list", W.verdict(prof(1000.0), ticks=100, mods=13, map_size=325, biome="RUT_TheRot", tile=96532, dlcs=FIVE)[:2], (1, "WRONG_LIST"))
+check("mods unknown", W.verdict(prof(1000.0), ticks=100, mods=None, map_size=325, biome="RUT_TheRot", tile=96532, dlcs=FIVE)[:2], (1, "WRONG_LIST"))
+check("small map", W.verdict(prof(1000.0), ticks=100, mods=321, map_size=250, biome="RUT_TheRot", tile=96532, dlcs=FIVE)[:2], (1, "WRONG_MAP"))
 # wrong scene, pinned: the round-10 map is RUT_TheRot at tile 96532; any other wide map proves nothing
-sc = dict(ticks=100, mods=321, map_size=325)
+sc = dict(ticks=100, mods=321, map_size=325, dlcs=FIVE)
 check("other biome", W.verdict(prof(1000.0), biome="RUT_Basin", tile=96532, **sc)[:2], (1, "WRONG_MAP"))
 check("biome unknown", W.verdict(prof(1000.0), biome=None, tile=96532, **sc)[:2], (1, "WRONG_MAP"))
 check("other tile", W.verdict(prof(1000.0), biome="RUT_TheRot", tile=96533, **sc)[:2], (1, "WRONG_MAP"))
@@ -71,6 +73,23 @@ check("tile unknown", W.verdict(prof(1000.0), biome="RUT_TheRot", tile=None, **s
 check("other scene spike", W.verdict(prof(414000.0, {PF: "390000 us"}), biome="RUT_Basin", tile=1, **sc)[:2], (1, "WRONG_MAP"))
 check("pinned scene", W.verdict(prof(1000.0), biome="RUT_TheRot", tile=96532, **sc)[:2], (0, "NOT_REPRODUCED"))
 check("pin constants", (W.BIOME, W.TILE), ("RUT_TheRot", 96532))
+# "all five DLC": a 300+ list missing any one expansion, or an unread list, is WRONG_LIST (even with a named spike)
+for d in W.DLCS:
+    less = [x for x in FIVE if x.lower() != d]
+    check("missing " + d, W.verdict(prof(1000.0), **dict(ok, dlcs=less))[:2], (1, "WRONG_LIST"))
+    check("missing %s spike" % d, W.verdict(prof(414000.0, {PF: "390000 us"}), **dict(ok, dlcs=less))[:2], (1, "WRONG_LIST"))
+check("dlcs unread", W.verdict(prof(1000.0), **dict(ok, dlcs=None))[:2], (1, "WRONG_LIST"))
+check("dlcs empty", W.verdict(prof(1000.0), **dict(ok, dlcs=[]))[:2], (1, "WRONG_LIST"))
+check("core only", W.verdict(prof(1000.0), **dict(ok, dlcs=["ludeon.rimworld"]))[:2], (1, "WRONG_LIST"))
+check("case-insensitive five", W.verdict(prof(1000.0), **dict(ok, dlcs=[x.upper() for x in FIVE]))[:2], (0, "NOT_REPRODUCED"))
+check("dlc constants", sorted(W.DLCS), sorted("ludeon.rimworld." + x for x in
+                                              ("royalty", "ideology", "biotech", "anomaly", "odyssey")))
+try:
+    W.verdict(prof(1000.0), 100, 321, 325, "RUT_TheRot", 96532)
+    FAILS.append("dlcs is optional: a caller can skip the expansion check")
+except TypeError:
+    pass
+
 # every child name is 'Ns.Type:Method' (the profiler's allowlist grammar) and the list fits its 32-method cap
 check("child grammar", all(n.count(":") == 1 and "." in n.split(":")[0] for n in W.CHILDREN), True)
 check("cap 32", len(W.CHILDREN) + 2 <= 32, True)

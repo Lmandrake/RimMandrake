@@ -9,7 +9,7 @@ named (NAMED: one timed child's own max is at least half of MapPreTick's max).
 
 Exit 0 = NOT_REPRODUCED or NAMED. Exit 1 = UNNAMED (a spike no timed child explains: Harmony patches on MapPreTick and
 the GC count change are printed as suspects), BLIND (MapPreTick never timed, profiler refused, no ticks), or a wrong
-scene (fewer than --min-mods running mods, no map of --size, or a map whose biome is not RUT_TheRot or whose tile
+scene (fewer than --min-mods running mods, any of the five expansions not running, no map of --size, or a map whose biome is not RUT_TheRot or whose tile
 is not --tile). The verdict is a pure function, selftested offline
 (selftest_mappretick_window.py).
 
@@ -27,6 +27,9 @@ THRESHOLD_MS = 10.5
 BIOME = "RUT_TheRot"      # the round-10 scene's biome
 TILE = 96532              # the round-10 RM_PerfSite tile
 SHARE = 0.5
+# "all five DLC" (L1): the expansions' packageIds as LoadedModManager reports them (compared lower-case)
+DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+        "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
 PRETICK = "Verse.Map:MapPreTick"
 CHILDREN = (
     # resolved in the 2026-10-27 bisect (measure_Bcur.jsonl):
@@ -66,13 +69,20 @@ def rows(profile):
     return {(m.get("method") or m.get("name") or ""): m for m in ms}
 
 
-def verdict(profile, ticks, mods, map_size, biome, tile, *, min_mods=300, size=325, want_biome=BIOME, want_tile=TILE,
+def verdict(profile, ticks, mods, map_size, biome, tile, *, dlcs, min_mods=300, size=325, want_biome=BIOME, want_tile=TILE,
             threshold_ms=THRESHOLD_MS, share=SHARE):
     """-> (exit_code, word, text). Pure: profile is jawa/health_profile's `profile` object; biome is the measured
     map's mapBiome defName and tile its world tile (jawa/map_info). Only the round-10 scene counts: a map of
-    another biome or tile is WRONG_MAP however wide it is."""
+    another biome or tile is WRONG_MAP however wide it is. dlcs is the running packageIds (jawa/running_mods);
+    None (unread) or any of the five expansions missing is WRONG_LIST."""
     if mods is None or mods < min_mods:
         return 1, "WRONG_LIST", "running mods %s < %d: not the full list" % (mods, min_mods)
+    if dlcs is None:
+        return 1, "WRONG_LIST", "running packageIds unread: the five expansions are unproven"
+    have = {str(d).lower() for d in dlcs}
+    missing = [d for d in DLCS if d not in have]
+    if missing:
+        return 1, "WRONG_LIST", "expansions not running: %s (needs all five)" % ", ".join(missing)
     if map_size is None or map_size < size:
         return 1, "WRONG_MAP", "measured map is %s wide, needs >= %d" % (map_size, size)
     if biome != want_biome:
@@ -155,7 +165,9 @@ def _live(a):
 
         rm = c("jawa/running_mods")
         mods = rm.get("count") if rm.get("count") is not None else len(rm.get("packageIds") or [])
-        say("RUNNING_MODS", mods)
+        ids = rm.get("packageIds")
+        dlcs = [i for i in ids if str(i).lower().startswith("ludeon.rimworld.")] if isinstance(ids, list) else None
+        say("RUNNING_MODS", mods, "EXPANSIONS", dlcs)
         mi = wide_map() if c("rimworld/get_game_info").get("mapCount") else None
         if mi is None:
             say("STAGE load", a.load)
@@ -224,7 +236,7 @@ def _live(a):
             if m and m.get("calls"):
                 say("  %-62s calls=%-7s meanUs=%-10s maxUs=%s" % (name, m.get("calls"), m.get("meanUs"), m.get("maxUs")))
         code, word, text = verdict(prof, dk, mods, size, (mi or {}).get("mapBiome"), (mi or {}).get("tile"),
-                                   min_mods=a.min_mods, size=a.size, want_tile=a.tile)
+                                   dlcs=dlcs, min_mods=a.min_mods, size=a.size, want_tile=a.tile)
         if word == "UNNAMED":
             text += "; suspects: harmony=%s gcDelta=%s" % (suspects or "none", gcd)
         say("VERDICT", word, text)
@@ -232,7 +244,7 @@ def _live(a):
             os.makedirs(a.out, exist_ok=True)
             stamp = time.strftime("%Y%m%d_%H%M%S")
             with open(os.path.join(a.out, "mappretick_window_%s.json" % stamp), "w", encoding="utf-8") as f:
-                json.dump({"lines": out, "profile": prof, "ticks": dk, "wall": dt, "gcDelta": gcd, "mods": mods,
+                json.dump({"lines": out, "profile": prof, "ticks": dk, "wall": dt, "gcDelta": gcd, "mods": mods, "expansions": dlcs,
                            "mapSize": size, "biome": (mi or {}).get("mapBiome"), "tile": (mi or {}).get("tile"), "harmony": suspects, "verdict": [code, word, text]}, f, default=str, indent=1)
         return code
 
