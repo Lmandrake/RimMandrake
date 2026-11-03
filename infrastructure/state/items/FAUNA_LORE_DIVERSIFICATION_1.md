@@ -20,7 +20,8 @@ lore."*
   brought into the band by the size pass like everyone else.
 
 ## verify
-- [ ] Every divergence traces to an owner card; the manifest is committed and
+- [ ] Every divergence traces to a ruling — a delegated judge verdict since the owner's 2026-10-22 delegation
+      (`design/RimMandrake/delegation_policy.md`; damage tuning is not on §2), logged `delegated: fauna lore divergence`; the manifest is committed and
       the graphs regenerate showing deliberate, labeled off-band points.
 
 ## criteria

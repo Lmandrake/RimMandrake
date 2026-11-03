@@ -132,7 +132,9 @@ was a pre-law flag count, not a census under the ruled law.)
   shipped: one K = 12–15 × bodySize band, grazers rise too, AA_/BMT_/GR_/DA_/
   vanilla kinds in play. Above-band outliers come INTO the band — no exemption
   list now; per-beast diversification is a later art+lore round
-  (FAUNA_LORE_DIVERSIFICATION_1). bodySize itself does not change (ceiling-
+  (FAUNA_LORE_DIVERSIFICATION_1, done 2026-11-02: 28 ruled divergences in
+  `data/fauna_lore_divergence_manifest.csv`, record in
+  `fauna_lore_divergence_2026-11-02/README.md`). bodySize itself does not change (ceiling-
   fields lesson: each parameter its own law).
 - **Law 6 — products ∝ bodySize**: meat/leather amounts get bodySize-
   proportional defaults NOW; re-checked against live engine values when

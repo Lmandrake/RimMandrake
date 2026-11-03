@@ -100,3 +100,8 @@ the first time — tolerance normalization can finally be judged per-biome.
 - [ ] No rostered animal's comfort range excludes its assigned biome's envelope.
 - [ ] The manifest (defName, old/new values, exemptions) is the decision record,
       committed.
+
+## divergences (from FAUNA_LORE_DIVERSIFICATION_1, 2026-11-02)
+- The Law 3 rescale skips the 28 rows of `design/Jawa/worldbuilding/data/fauna_lore_divergence_manifest.csv`:
+  each takes its `ruled_best` (K_ruled x bodySize; keep K if bodySize moved). Record and judge:
+  `design/Jawa/worldbuilding/fauna_lore_divergence_2026-11-02/README.md`.

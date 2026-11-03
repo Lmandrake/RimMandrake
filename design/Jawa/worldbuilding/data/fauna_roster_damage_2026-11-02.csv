@@ -1,0 +1,667 @@
+defName,label,mod,bodySize,current_best,biomes
+AM_Dryad_Ocular,ocular dryad,Alpha Memes,0.667,9.0,RUT_Cauldron
+ColossusToad,colossus toad,Odyssey,0.8,10.0,RUT_WeepingStones
+GR_Chickenrabbit,chickenrabbit,Vanilla Genetics Expanded,0.15,5.0,RUT_Slime
+GR_Manbear,manbear,Vanilla Genetics Expanded,0.35,4.0,RUT_Slime
+GR_Molebear,molebear,Vanilla Genetics Expanded,1.0,12.0,RUT_Wastes
+GR_ParagonRat,rodent paragon,Vanilla Genetics Expanded,0.3,5.0,RUT_Wastes
+GR_Spidercat,spidercat,Vanilla Genetics Expanded,0.85,14.0,RUT_Wastes
+JOE_Landopus,thraia,RimUtinni Patches (Jawa campaign),0.15,32.0,RM_LongShade;RUT_Desert
+RM_AbyssalColo,abyssal colo,RimMandrake: Baroque Biomes,3.6,54.0,
+RM_Agaripawn,rennok,RimMandrake: Baroque Biomes,1.4,11.0,RM_TheRot
+RM_Agaripod,gromma,RimMandrake: Baroque Biomes,4.0,23.0,RM_TheRot
+RM_Aluun,aluun,RimMandrake: Baroque Biomes,0.1,1.0,RM_TwilightSea
+RM_AncientServitor,ancient servitor,RimMandrake: Baroque Biomes,0.7,6.0,
+RM_Ashwallow,ashwallow,RimMandrake: Baroque Biomes,1.3,7.0,RM_Pyrelands
+RM_Aurrok,aurrok,RimMandrake: Baroque Biomes,4.0,14.0,RM_Stillsand
+RM_Aveluthia,aveluthia,RimMandrake: Baroque Biomes,2.8,15.0,RM_Abyss;RUT_Abyss
+RM_Barbslinger,barbslinger,RimMandrake: Baroque Biomes,2.5,20.0,RM_Pyrelands
+RM_Baseopsis,Baseopsis,RimMandrake: Baroque Biomes,3.0,12.0,
+RM_BedBug,bedbug,RimMandrake: Baroque Biomes,0.5,7.0,RM_Cauldron
+RM_Bileworm,bileworm,RimMandrake: Baroque Biomes,4.0,18.0,RM_Cauldron;RM_Miasma;RM_Warscar;RUT_Scarlands
+RM_Bladderboil,bladderboil,RimMandrake: Baroque Biomes,0.3,1.0,RM_TheScald
+RM_Blinker,blinker,RimMandrake: Baroque Biomes,0.45,3.0,RM_LanternDeeps
+RM_Blisterfloat,blisterfloat,RimMandrake: Baroque Biomes,1.2,3.0,RM_Contagion
+RM_Bloodlurk,bloodlurk,RimMandrake: Baroque Biomes,0.8,9.0,RM_Contagion
+RM_BloodropMoth,drinker,RimMandrake: Baroque Biomes,0.77,14.0,RM_LanternDeeps
+RM_BloodyMess,bloody mess,RimMandrake: Baroque Biomes,1.0,7.0,RM_Contagion
+RM_Boilhide,boilhide,RimMandrake: Baroque Biomes,0.7,8.0,RM_Wastes
+RM_Bokka,bokka,RimMandrake: Baroque Biomes,0.4,10.0,RM_LongShade;RUT_Desert
+RM_Borehulk,borehulk,RimMandrake: Baroque Biomes,6.0,18.0,
+RM_Bostrach,bostrach,RimMandrake: Baroque Biomes,3.0,22.0,
+RM_Bozzuga,bozzuga,RimMandrake: Baroque Biomes,0.9,11.0,RM_Miasma
+RM_Brathek,brathek,RimMandrake: Baroque Biomes,0.9,9.0,RM_FeverWood
+RM_Brogg,brogg,RimMandrake: Baroque Biomes,2.1,14.0,RM_TheRot
+RM_Brullith,brullith,RimMandrake: Baroque Biomes,4.0,28.0,RM_TheRot
+RM_Bulloo,bulloo,RimMandrake: Baroque Biomes,0.2,7.0,RM_TheForge;RM_TwilightSea
+RM_Burrak,burra burra,RimMandrake: Baroque Biomes,2.2,18.0,RM_WeepingStones
+RM_Candler,candler,RimMandrake: Baroque Biomes,1.2,6.0,RM_LanternDeeps
+RM_CanopySwinger,ookala,RimMandrake: Baroque Biomes,0.4,5.0,RM_Greentide
+RM_CathedralRoach,cathedral roach,RimMandrake: Baroque Biomes,0.15,6.0,RM_RustCathedral
+RM_Chatrak,chatrak,RimMandrake: Baroque Biomes,3.0,14.0,RM_Warscar
+RM_Chellow,chellow,RimMandrake: Baroque Biomes,0.3,2.5,RM_FeverWood
+RM_Chikka,chikka,RimMandrake: Baroque Biomes,0.5,6.0,RM_LeaningScrub
+RM_Chittik,chittik,RimMandrake: Baroque Biomes,0.3,5.0,RM_TheRot
+RM_Chorn,chorn,RimMandrake: Baroque Biomes,4.0,14.0,RM_LongShade
+RM_Chotrix,chotrix,RimMandrake: Baroque Biomes,0.9,14.0,
+RM_Cindermare,saevitha,RimMandrake: Baroque Biomes,1.3,14.0,RM_Abyss;RUT_Abyss
+RM_Cleaver,cleaver,RimMandrake: Baroque Biomes,0.7,11.0,RM_LanternDeeps
+RM_ColossalAerofleet,greater bulloo,RimMandrake: Baroque Biomes,2.0,20.0,RM_TheForge
+RM_Colossia,colossia,RimMandrake: Baroque Biomes,0.8,10.0,RM_WeepingStones
+RM_ContagionIkee,ikee,RimMandrake: Baroque Biomes,0.3,2.0,RM_Contagion
+RM_CoolantEel,coolant eel,RimMandrake: Baroque Biomes,0.2,0.0,
+RM_Corrik,corrik,RimMandrake: Baroque Biomes,0.2,1.5,RM_GreySea
+RM_Cravvet,cravvet,RimMandrake: Baroque Biomes,0.5,7.0,RM_Webwork
+RM_CrimsonOpee,crimson opee,RimMandrake: Baroque Biomes,1.7,26.0,
+RM_CrimsonOpeeJuv,young crimson opee,RimMandrake: Baroque Biomes,1.7,26.0,RM_Miasma
+RM_Crispling,crispling,RimMandrake: Baroque Biomes,0.4,5.0,RM_Contagion
+RM_Crustweevil,crustweevil,RimMandrake: Baroque Biomes,0.05,1.0,RM_LeaningScrub
+RM_CrystalMit,crystalmit,RimMandrake: Baroque Biomes,0.5,8.0,RM_Cauldron
+RM_Dakkra,dakkra,RimMandrake: Baroque Biomes,1.6,14.0,RM_LongShade
+RM_DancingSkresh,dancing skresh,RimMandrake: Baroque Biomes,0.18,4.0,RM_TwilightSea
+RM_Danglemaw,danglemaw,RimMandrake: Baroque Biomes,1.0,22.0,RM_Contagion
+RM_DecayDrake,fermatalis,RimMandrake: Baroque Biomes,1.0,15.0,RM_Cauldron;RM_Miasma
+RM_Dhoggur,dhoggur,RimMandrake: Baroque Biomes,0.45,7.0,RM_TheForge
+RM_Dhokkur,dhokkur,RimMandrake: Baroque Biomes,6.0,28.0,RM_TheForge
+RM_Dhollock,dhollollo,RimMandrake: Baroque Biomes,2.5,22.0,RM_Greentide
+RM_Dhuvvox,dhuvvox,RimMandrake: Baroque Biomes,0.1,2.0,RM_TheForge
+RM_Diplocaulus,Diplocaulus,RimMandrake: Baroque Biomes,1.5,3.0,
+RM_Dorrak,dorrak,RimMandrake: Baroque Biomes,1.6,22.0,RM_BlueDesert;RUT_BlueDesert
+RM_Doss,doss,RimMandrake: Baroque Biomes,0.05,2.0,RM_TheScald
+RM_Doublemaw,doublemaw,RimMandrake: Baroque Biomes,0.6,6.0,RM_Contagion
+RM_Dovvik,dovvik,RimMandrake: Baroque Biomes,0.6,8.0,RM_BlueDesert
+RM_Drazzik,drazzik,RimMandrake: Baroque Biomes,2.2,19.0,RM_Stillsand;RUT_ExtremeDesert
+RM_Dredgel,dredgel,RimMandrake: Baroque Biomes,0.35,3.0,RM_TheSump
+RM_Drifter,drifter,RimMandrake: Baroque Biomes,0.35,2.0,RM_LanternDeeps
+RM_Drokattak,ombrathia,RimMandrake: Baroque Biomes,3.0,22.0,RM_Abyss;RUT_Abyss
+RM_Dunejelly,dunejelly,RimMandrake: Baroque Biomes,0.65,4.0,RM_LongShade;RUT_Desert
+RM_Durrgak,sorter,RimMandrake: Baroque Biomes,1.2,3.0,RM_Abyss
+RM_Durrok,durrok,RimMandrake: Baroque Biomes,1.4,11.0,RM_LeaningScrub;RM_TheRot
+RM_Dustflutter,dustflutter,RimMandrake: Baroque Biomes,0.08,1.0,RM_LeaningScrub
+RM_Dustveil,dustveil,RimMandrake: Baroque Biomes,0.75,15.0,RM_TheRot
+RM_DustveilLarva,dustveil larva,RimMandrake: Baroque Biomes,0.1,5.0,
+RM_Duumma,duumma,RimMandrake: Baroque Biomes,1.8,6.0,RM_Stillsand
+RM_Dwommo,dwommo,RimMandrake: Baroque Biomes,0.6,2.0,RM_GelatinousSlime
+RM_Eesh,eesh,RimMandrake: Baroque Biomes,0.05,2.0,RM_TheScald
+RM_Ekkel,ekkel,RimMandrake: Baroque Biomes,0.1,3.0,RM_TheScald
+RM_ElectricGryllotalpa,electric gryllotalpa,RimMandrake: Baroque Biomes,1.5,15.0,RM_Warscar;RUT_Scarlands
+RM_ElectricTick,electric tick,RimMandrake: Baroque Biomes,0.25,5.0,RM_Warscar;RUT_Scarlands;RUT_Wastes
+RM_Emberscythe,emberscythe mantis,RimMandrake: Baroque Biomes,1.3,16.0,RM_Pyrelands
+RM_Eskith,eskith,RimMandrake: Baroque Biomes,0.35,2.0,RM_Cauldron
+RM_Essarn,essarn,RimMandrake: Baroque Biomes,0.1,2.0,RM_GreySea
+RM_Excretor,excretor,RimMandrake: Baroque Biomes,1.1,10.0,RM_Wastes;RUT_Wastes
+RM_Eyestinger,eyestinger,RimMandrake: Baroque Biomes,2.5,13.0,RM_Contagion
+RM_FacetMothLarvae,soulchime,RimMandrake: Baroque Biomes,0.7,4.0,
+RM_Fessk,fessk,RimMandrake: Baroque Biomes,0.9,3.0,RM_GreySea
+RM_Fessu,fessu,RimMandrake: Baroque Biomes,0.06,1.0,RM_TheChill
+RM_Fethrik,fethrik,RimMandrake: Ship Vermin,1.35,10.0,
+RM_FeverSwarm,fever swarm,RimMandrake: Baroque Biomes,0.05,1.0,RM_Miasma;RUT_Miasma
+RM_FireHawk,fire-hawk,RimMandrake: Baroque Biomes,0.65,9.0,RM_Pyrelands
+RM_FireWasp,fire wasp,RimMandrake: Baroque Biomes,0.79,3.0,RM_Pyrelands
+RM_Flamefang,flamefang,RimMandrake: Baroque Biomes,1.5,10.0,RM_Pyrelands
+RM_FleetFlier,fleet flier,RimMandrake: Baroque Biomes,0.12,2.0,RM_TheForge
+RM_Fleshsop,fleshsop,RimMandrake: Baroque Biomes,0.8,6.0,RM_Contagion
+RM_Frethik,frethik,RimMandrake: Baroque Biomes,0.32,6.0,RM_Wastes
+RM_Fubbum,fubbum,RimMandrake: Baroque Biomes,0.9,7.0,RM_GelatinousSlime
+RM_FurnaceBeast,furnace-beast,RimMandrake: Baroque Biomes,6.0,24.0,RM_Pyrelands
+RM_Fuzzrunner,fuzzrunner,RimMandrake: Baroque Biomes,0.2,2.0,RM_LeaningScrub
+RM_Fuzzviper,fuzzviper,RimMandrake: Baroque Biomes,0.3,7.0,RM_LeaningScrub
+RM_Gaanok,gaanok,RimMandrake: Baroque Biomes,5.0,16.0,RM_Stillsand
+RM_GalledRhossak,galled rhossak,RimMandrake: Baroque Biomes,0.667,9.0,RM_Cauldron;RUT_Cauldron
+RM_Galuush,galuush,RimMandrake: Baroque Biomes,6.0,3.0,
+RM_Gappo,gappo,RimMandrake: Baroque Biomes,0.9,6.0,RM_GelatinousSlime
+RM_GappoGreater,greater gappo,RimMandrake: Baroque Biomes,3.0,11.0,RM_GelatinousSlime
+RM_GappoLesser,lesser gappo,RimMandrake: Baroque Biomes,0.25,4.0,RM_GelatinousSlime
+RM_Garsulix,garsulix,RimMandrake: Baroque Biomes,0.3,12.0,RM_Cauldron;RUT_Cauldron
+RM_Gawpsack,gawpsack,RimMandrake: Baroque Biomes,0.7,2.0,RM_Contagion
+RM_Gelatid,gelatid,RimMandrake: Baroque Biomes,0.55,0.0,RM_GelatinousSlime
+RM_Gembug,gembug,RimMandrake: Baroque Biomes,0.335,4.25,RM_LanternDeeps
+RM_Gennok,gennok,RimMandrake: Baroque Biomes,3.6,11.0,RM_LongShade
+RM_Gharrek,gharrek,RimMandrake: Baroque Biomes,0.6,1.0,RM_Abyss
+RM_Glomvar,glomvar,RimMandrake: Baroque Biomes,0.9,16.0,
+RM_Gloomcast,gloomcast,RimMandrake: Baroque Biomes,24.0,18.0,RM_LongShade
+RM_Gnashling,gnashling,RimMandrake: Baroque Biomes,1.0,3.0,RM_Contagion
+RM_Gorekite,gorekite,RimMandrake: Baroque Biomes,1.6,18.0,RM_Contagion
+RM_Gorrask,gorrask,RimMandrake: Baroque Biomes,15.0,45.0,RM_WeepingStones
+RM_GorraskCondenser,old gorrask,RimMandrake: Baroque Biomes,15.0,45.0,
+RM_Gorrud,gorrud,RimMandrake: Ship Vermin,0.75,8.5,
+RM_Gravelgut,gravelgut,RimMandrake: Baroque Biomes,2.0,12.0,RM_Wastes
+RM_GreatboleGrub,greatbole grub,RimMandrake: Baroque Biomes,0.45,9.0,
+RM_GreaterOomb,greater oomb,RimMandrake: Baroque Biomes,1.5,12.0,RM_GelatinousSlime
+RM_GreentideAntRace,giant ant,RimMandrake: Baroque Biomes,2.0,40.0,
+RM_Grellik,grellik,RimMandrake: Baroque Biomes,0.5,7.0,RM_TheRot
+RM_Grimewing,grimewing,RimMandrake: Baroque Biomes,0.5,4.0,RM_Wastes
+RM_Gripper,gripper,RimMandrake: Baroque Biomes,0.2,2.0,RM_Wastes;RUT_Wastes
+RM_GrippingTerror,gripping terror,RimMandrake: Baroque Biomes,20.0,300.0,RM_TwilightSea
+RM_Gristle,gristle,RimMandrake: Baroque Biomes,1.5,4.0,RM_Greentide
+RM_Gristleswarm,gristleswarm,RimMandrake: Baroque Biomes,0.3,4.0,RM_Wastes;RUT_Wastes
+RM_Grolth,grolth,RimMandrake: Baroque Biomes,0.8,8.0,RM_FeverWood
+RM_Grusk,grusk,RimMandrake: Baroque Biomes,0.12,2.0,RM_GreySea
+RM_Gulloth,gulloth,RimMandrake: Baroque Biomes,2.5,20.0,RM_LongShade;RUT_Desert
+RM_Gulveth,gulveth,RimMandrake: Baroque Biomes,1.5,9.0,RM_TheSump
+RM_Guzzka,guzzka,RimMandrake: Baroque Biomes,5.5,28.0,
+RM_Haarn,haarn,RimMandrake: Baroque Biomes,0.4,5.0,
+RM_Harrok,harrok,RimMandrake: Baroque Biomes,1.2,14.0,RM_LongShade
+RM_Heemin,heemin,RimMandrake: Baroque Biomes,0.05,2.0,RM_TheChill
+RM_Hessal,hessal,RimMandrake: Baroque Biomes,0.18,2.0,
+RM_Hesuun,hesuun,RimMandrake: Baroque Biomes,3.5,9.0,RM_TheChill
+RM_Holcorobeus,Holcorobeus,RimMandrake: Baroque Biomes,1.5,12.0,
+RM_Hollu,hollu,RimMandrake: Baroque Biomes,0.15,4.0,RM_TwilightSea
+RM_Hoolen,hoolen,RimMandrake: Baroque Biomes,0.15,4.0,
+RM_Huldu,huldu,RimMandrake: Baroque Biomes,0.3,0.0,RM_WeepingStones
+RM_HullBolt,hull bolt,RimMandrake: Baroque Biomes,0.15,1.0,
+RM_Hush,hush,RimMandrake: Baroque Biomes,1.6,14.0,
+RM_Hwelgrue,hwelgrue,RimMandrake: Baroque Biomes,8.0,30.0,RM_TheRot
+RM_Ikee,ikee,RimMandrake: Baroque Biomes,0.133,8.0,RM_Stillsand;RUT_ExtremeDesert
+RM_Iliss,iliss,RimMandrake: Baroque Biomes,0.2,7.0,RM_TheChill
+RM_Illisk,illisk,RimMandrake: Baroque Biomes,0.12,6.0,RM_Greentide
+RM_Illoth,illoth,RimMandrake: Baroque Biomes,0.77,10.0,RM_TheRot
+RM_IllothLarvae,illoth larva,RimMandrake: Baroque Biomes,0.5,4.0,
+RM_Immu,immu,RimMandrake: Baroque Biomes,0.08,1.0,
+RM_InfectedAerofleet,blistered bulloo,RimMandrake: Baroque Biomes,0.2,7.0,RM_Contagion
+RM_Irqit,irqit,RimMandrake: Baroque Biomes,0.12,1.5,
+RM_Ivvol,ivvol,RimMandrake: Baroque Biomes,0.4,0.0,RM_WeepingStones
+RM_Jossur,jossur,RimMandrake: Baroque Biomes,1.6,15.0,RM_TheForge
+RM_JuggernautBeetle,juggernaut beetle,RimMandrake: Baroque Biomes,3.0,20.0,RM_Warscar;RUT_Scarlands
+RM_Julmox,julmox,RimMandrake: Baroque Biomes,1.2,8.0,RM_TheForge
+RM_Karrash,karrash,RimMandrake: Baroque Biomes,0.3,8.0,RM_TheScald
+RM_Karrask,karrask,RimMandrake: Baroque Biomes,0.6,8.0,
+RM_Karravel,karravel,RimMandrake: Baroque Biomes,0.18,2.0,RM_Miasma
+RM_Karrek,iaala,RimMandrake: Baroque Biomes,0.08,4.0,RM_WeepingStones
+RM_Karrimeth,karrimeth,RimMandrake: Baroque Biomes,0.1,1.5,RM_Miasma
+RM_Karrobel,karrobel,RimMandrake: Baroque Biomes,0.5,5.0,RM_Miasma;RUT_Miasma
+RM_Karrolun,karrolun,RimMandrake: Baroque Biomes,0.35,4.0,RM_Miasma
+RM_Karrud,karrud,RimMandrake: Baroque Biomes,0.2,2.0,
+RM_Kasselith,kasselith,RimMandrake: Baroque Biomes,0.35,5.0,RM_FeverWood;RUT_FeverWood
+RM_Kellu,kellu,RimMandrake: Baroque Biomes,0.35,6.0,RM_TwilightSea
+RM_Kethrel,kethrel,RimMandrake: Baroque Biomes,1.3,10.0,RM_TheSump
+RM_Khorrak,khorrak,RimMandrake: Baroque Biomes,1.5,14.0,RM_LongShade;RUT_Desert
+RM_Kirruk,dewglider,RimMandrake: Baroque Biomes,0.5,10.0,RM_WeepingStones
+RM_Knocker,knocker,RimMandrake: Baroque Biomes,0.6,6.0,RM_LanternDeeps
+RM_Korrum,korrum,RimMandrake: Baroque Biomes,4.0,32.0,RM_Warscar;RUT_Scarlands
+RM_Krannock,krannock,RimMandrake: Baroque Biomes,1.6,11.0,RM_Greentide
+RM_Krellik,krellik,RimMandrake: Baroque Biomes,0.22,4.0,RM_TheChill
+RM_Krissek,krissek,RimMandrake: Baroque Biomes,0.9,14.0,RM_BlueDesert;RUT_BlueDesert
+RM_Krizzak,krizzak,RimMandrake: Baroque Biomes,0.3,1.0,RM_Abyss
+RM_Kroffa,kroffa,RimMandrake: Baroque Biomes,1.0,7.3,RM_Wastes
+RM_Kurreth,kurreth,RimMandrake: Baroque Biomes,0.55,11.0,
+RM_KurrethQueen,kurreth queen,RimMandrake: Baroque Biomes,1.6,16.0,
+RM_Lanternwhale,lanternwhale,RimMandrake: Baroque Biomes,40.0,600.0,RM_TwilightSea
+RM_LesserOomb,lesser oomb,RimMandrake: Baroque Biomes,0.2,4.0,RM_GelatinousSlime
+RM_Liiru,liiru,RimMandrake: Baroque Biomes,0.1,1.0,RM_TwilightSea
+RM_LikkaLikka,likka likka,RimMandrake: Baroque Biomes,0.12,1.0,RM_Stillsand
+RM_Liliana,liliana,RimMandrake: Baroque Biomes,1.0,6.0,RM_Miasma
+RM_Lirrith,lirrith,RimMandrake: Baroque Biomes,0.35,5.0,RM_Abyss;RUT_Abyss
+RM_LivingBolt,living bolt,RimMandrake: Baroque Biomes,0.15,1.0,RM_RustCathedral
+RM_Loohn,loohn,RimMandrake: Baroque Biomes,2.5,18.0,RM_TwilightSea
+RM_Loomma,loomma,RimMandrake: Baroque Biomes,0.25,2.0,RM_Stillsand
+RM_Loomu,loomu,RimMandrake: Baroque Biomes,0.35,0.0,RM_WeepingStones
+RM_Lunoowa,lunoowa,RimMandrake: Baroque Biomes,0.3,2.0,RM_TwilightSea
+RM_Maalu,maalu,RimMandrake: Baroque Biomes,0.15,1.0,
+RM_Mantrap,lastvine,RimMandrake: Baroque Biomes,2.0,9.0,RM_Miasma
+RM_Megapleura,megapleura,RimMandrake: Baroque Biomes,2.4,14.0,
+RM_Meltgut,meltgut,RimMandrake: Baroque Biomes,4.0,14.0,RM_Contagion
+RM_Metallovore,metallovore,RimMandrake: Baroque Biomes,2.0,15.0,RM_TheForge
+RM_Mirrak,mirrak,RimMandrake: Baroque Biomes,1.0,13.0,RM_LongShade
+RM_Mirrik,mirrik,RimMandrake: Baroque Biomes,0.05,1.0,
+RM_Moravatha,moravatha,RimMandrake: Baroque Biomes,3.0,18.0,RM_Abyss;RUT_Abyss
+RM_MossBeetleLarvae,moss grub,RimMandrake: Baroque Biomes,0.7,4.0,
+RM_Muddal,iridai,RimMandrake: Baroque Biomes,0.15,3.0,RM_TheScald
+RM_Mullgoth,mullgoth,RimMandrake: Baroque Biomes,4.0,23.0,RM_Cauldron;RM_LeaningScrub;RM_TheRot
+RM_Murrek,murrek,RimMandrake: Baroque Biomes,1.2,17.0,RM_BlueDesert
+RM_Murrelith,murrelith,RimMandrake: Baroque Biomes,0.28,2.5,RM_FeverWood
+RM_Murrin,murrin,RimMandrake: Baroque Biomes,0.12,0.0,RM_WeepingStones
+RM_Murrol,murrol,RimMandrake: Baroque Biomes,0.4,3.0,RM_TwilightSea
+RM_Muttavaq,muttavaq,RimMandrake: Baroque Biomes,5.0,22.0,RM_FloodedCanyon
+RM_Muurrok,muurrok,RimMandrake: Baroque Biomes,14.0,42.0,
+RM_MycoidColossus,vorrugath,RimMandrake: Baroque Biomes,6.0,20.0,RM_TheRot
+RM_Nevarithia,nevarithia,RimMandrake: Baroque Biomes,1.5,20.0,RM_Abyss;RUT_Abyss
+RM_Niim,niim,RimMandrake: Baroque Biomes,0.06,2.0,RM_TwilightSea
+RM_Nissik,nissik,RimMandrake: Baroque Biomes,0.08,1.0,RM_GreySea
+RM_Nizzek,nizzek,RimMandrake: Baroque Biomes,0.2,7.0,
+RM_Noohm,saal,RimMandrake: Baroque Biomes,0.3,2.0,RM_TheScald
+RM_Noolim,noolim,RimMandrake: Baroque Biomes,0.08,2.0,RM_TwilightSea
+RM_Nuudal,nuudal,RimMandrake: Baroque Biomes,0.5,3.0,RM_TwilightSea
+RM_OcularJelly,zhool,RimMandrake: Baroque Biomes,0.5,7.0,RM_Contagion
+RM_Oddu,oddu,RimMandrake: Baroque Biomes,0.15,2.0,RM_TheChill
+RM_Ogleknot,ogleknot,RimMandrake: Baroque Biomes,0.35,2.0,RM_Contagion
+RM_Ollathrix,ollathrix,RimMandrake: Baroque Biomes,2.6,16.0,RM_Webwork;RUT_Webwork
+RM_Olumetha,olumetha,RimMandrake: Baroque Biomes,2.5,15.0,RM_Abyss;RUT_Abyss
+RM_Ommok,ommok,RimMandrake: Baroque Biomes,1.0,10.0,RM_Miasma
+RM_Ondrukka,ondrukka,RimMandrake: Baroque Biomes,0.2,1.0,RM_Miasma;RUT_Miasma
+RM_Oobo,oobo,RimMandrake: Baroque Biomes,0.45,7.0,RM_TwilightSea
+RM_Oomal,oomal,RimMandrake: Baroque Biomes,0.25,4.0,
+RM_Oomb,oomb,RimMandrake: Baroque Biomes,0.8,8.0,RM_GelatinousSlime
+RM_Oommok,oommok,RimMandrake: Baroque Biomes,36.0,30.0,RM_Stillsand
+RM_Oorrik,oorrik,RimMandrake: Baroque Biomes,0.18,7.0,
+RM_Oovanam,oovanam,RimMandrake: Baroque Biomes,0.25,3.0,RM_TheChill
+RM_Oovu,oovu,RimMandrake: Baroque Biomes,0.08,1.0,RM_TheChill
+RM_Oreclaw,oreclaw,RimMandrake: Baroque Biomes,2.0,9.0,RM_LongShade;RUT_Desert
+RM_Orruhmu,orruhmu,RimMandrake: Baroque Biomes,0.6,4.0,RM_GreySea
+RM_OrunGhal,Orun-Ghal,RimMandrake: Baroque Biomes,2.5,6.0,
+RM_Ossivel,ossivel,RimMandrake: Baroque Biomes,0.35,4.0,RM_BlueDesert
+RM_Ossumatha,ossumatha,RimMandrake: Baroque Biomes,1.2,9.7,RM_Abyss;RUT_Abyss
+RM_Otheska,otheska,RimMandrake: Baroque Biomes,0.35,2.0,RM_GreySea
+RM_Pallbearer,pallbearer,RimMandrake: Baroque Biomes,2.2,9.0,RM_Warscar;RUT_Scarlands
+RM_Pallu,pallu,RimMandrake: Baroque Biomes,0.12,1.0,RM_TwilightSea
+RM_Peeper,peeper,RimMandrake: Baroque Biomes,1.0,3.0,RM_Contagion
+RM_Pirrik,pirrik,RimMandrake: Baroque Biomes,0.1,6.0,RM_LongShade
+RM_Platyhystrix,Platyhystrix,RimMandrake: Baroque Biomes,1.5,3.0,
+RM_Pooler,pooler,RimMandrake: Baroque Biomes,0.9,2.0,RM_LanternDeeps
+RM_Protosolpuga,Protosolpuga,RimMandrake: Baroque Biomes,1.5,12.0,
+RM_Protovermes,Protovermes,RimMandrake: Baroque Biomes,0.2,6.0,
+RM_Qorrax,qorrax,RimMandrake: Baroque Biomes,1.2,64.0,RM_LongShade;RM_Stillsand;RUT_Desert;RUT_ExtremeDesert
+RM_Quarrok,quarrok,RimMandrake: Baroque Biomes,1.4,9.0,RM_Webwork
+RM_Radyak,ossrith,RimMandrake: Baroque Biomes,2.5,13.0,RM_Cauldron
+RM_Rakeshank,rakeshank,RimMandrake: Baroque Biomes,0.6,8.0,RM_Warscar
+RM_Rattagh,rattagh,RimMandrake: Ship Vermin,0.5,8.0,
+RM_Reefback,reefback,RimMandrake: Baroque Biomes,32.0,480.0,RM_GreySea
+RM_ReefbackJuv,young reefback,RimMandrake: Baroque Biomes,32.0,480.0,RM_Miasma
+RM_Rhossak,rhossak,RimMandrake: Baroque Biomes,0.667,9.0,RM_Cauldron;RUT_Cauldron
+RM_Ribbonwhip,ribbonwhip,RimMandrake: Baroque Biomes,0.25,4.0,RM_LeaningScrub
+RM_Rimclaw,rimclaw,RimMandrake: Baroque Biomes,1.0,32.0,RM_Warscar;RUT_Scarlands
+RM_Rollbug,rollbug,RimMandrake: Baroque Biomes,0.06,1.0,RM_LeaningScrub
+RM_RustNipper,rust nipper,RimMandrake: Baroque Biomes,0.25,7.0,
+RM_RustNipperJuv,young rust nipper,RimMandrake: Baroque Biomes,0.25,7.0,RM_Miasma
+RM_Ruukka,ruukka,RimMandrake: Baroque Biomes,5.0,24.0,
+RM_Sallik,sallik,RimMandrake: Baroque Biomes,0.1,2.0,
+RM_Saluksis,saluksis,RimMandrake: Baroque Biomes,0.2,1.0,RM_Greentide;RM_Miasma;RUT_Greentide;RUT_Miasma
+RM_Scabspinner,scabspinner,RimMandrake: Baroque Biomes,0.75,6.0,RM_Wastes
+RM_ScaldWalker,iridesce,RimMandrake: Baroque Biomes,5.0,14.0,RM_TheScald
+RM_Scaldhide,scaldhide,RimMandrake: Baroque Biomes,1.8,10.0,RM_Contagion
+RM_ScarRoach,scar-roach,RimMandrake: Baroque Biomes,0.25,4.0,RM_Warscar
+RM_Scorchpod,scorchpod,RimMandrake: Baroque Biomes,0.55,4.0,RM_Contagion
+RM_Scumslider,scumslider,RimMandrake: Baroque Biomes,0.35,4.0,RM_Wastes
+RM_Segnosaurus,Segnosaurus,RimMandrake: Baroque Biomes,4.5,30.0,
+RM_Sekkulaath_Juvenile,sekkulaath,RimMandrake: Baroque Biomes,0.9,14.0,
+RM_Sesserith,sesserith,RimMandrake: Baroque Biomes,1.0,13.0,RM_Abyss;RUT_Abyss
+RM_ShadeMite,eemmok,RimMandrake: Baroque Biomes,0.18,3.0,RM_Stillsand
+RM_ShaleGorger,shale gorger,RimMandrake: Baroque Biomes,2.0,30.0,
+RM_ShaleGorgerJuv,young shale gorger,RimMandrake: Baroque Biomes,2.0,30.0,RM_Miasma
+RM_Shambles,the shambles,RimMandrake: Baroque Biomes,1.6,6.0,RM_TheRot
+RM_Sharpshrimp,sharpshrimp,RimMandrake: Baroque Biomes,1.4,25.0,RM_Miasma
+RM_Shirrel,shirrel,RimMandrake: Baroque Biomes,0.7,5.0,RM_LeaningScrub
+RM_Shivven,shivven,RimMandrake: Baroque Biomes,0.8,9.0,
+RM_Shoal,shoal,RimMandrake: Baroque Biomes,0.2,1.5,RM_LanternDeeps
+RM_Shokka,shokka,RimMandrake: Baroque Biomes,1.2,12.0,RM_LeaningScrub
+RM_Shulla,shulla,RimMandrake: Baroque Biomes,0.06,2.0,RM_TheScald
+RM_Siezer,siezer,RimMandrake: Baroque Biomes,2.5,13.0,RM_Miasma
+RM_Siidda,siidda,RimMandrake: Baroque Biomes,0.15,3.0,RM_Stillsand
+RM_SikkaSikka,Sikka Sikka,RimMandrake: Baroque Biomes,1.1,12.0,RM_Cauldron
+RM_Sillik,sillik,RimMandrake: Baroque Biomes,0.2,3.0,RM_WeepingStones
+RM_Silloch,silloch,RimMandrake: Baroque Biomes,0.6,10.0,RM_FeverWood
+RM_SiltLamprey,silt lamprey,RimMandrake: Baroque Biomes,0.2,6.0,
+RM_SiltLampreyJuv,gillclamper,RimMandrake: Baroque Biomes,0.2,6.0,RM_Miasma
+RM_Sipper,sipper,RimMandrake: Baroque Biomes,0.08,1.0,RM_LanternDeeps
+RM_Sippra,sippra,RimMandrake: Baroque Biomes,0.25,4.0,RM_LongShade
+RM_Sivvern,sivvern,RimMandrake: Baroque Biomes,0.3,5.0,RM_Webwork
+RM_Skarnix,ishvarith,RimMandrake: Baroque Biomes,0.7,12.0,RM_Abyss;RUT_Abyss
+RM_Skarrid,skarrid,RimMandrake: Baroque Biomes,0.75,16.0,RM_TheSump
+RM_Skarrin,skarrin,RimMandrake: Baroque Biomes,0.22,6.0,RM_WeepingStones
+RM_Skellarn,skellarn,RimMandrake: Baroque Biomes,0.7,10.0,RM_TheSump
+RM_Skellick,skellick,RimMandrake: Baroque Biomes,0.22,2.5,RM_FeverWood
+RM_Skennet,skennet,RimMandrake: Baroque Biomes,0.35,4.0,RM_Webwork
+RM_Skerrel,skerrel,RimMandrake: Baroque Biomes,0.1,0.05,
+RM_Skerrith,skerrith,RimMandrake: Baroque Biomes,2.0,9.0,RM_TheRot
+RM_Skinflap,skinflap,RimMandrake: Baroque Biomes,0.15,1.0,RM_Contagion
+RM_Skiralim,ski'ra'lim,RimMandrake: Baroque Biomes,0.9,11.0,RM_LongShade
+RM_Skivvik,skivvik,RimMandrake: Ship Vermin,0.12,3.0,
+RM_Skreth,skreth,RimMandrake: Baroque Biomes,2.5,16.0,
+RM_Slagmole,slagmole,RimMandrake: Baroque Biomes,1.6,9.0,RM_Wastes
+RM_Slick,slick,RimMandrake: Baroque Biomes,0.7,3.0,RM_LanternDeeps
+RM_Sloghog,sloghog,RimMandrake: Baroque Biomes,1.2,6.0,RM_Wastes
+RM_Sloshbelly,sloshbelly,RimMandrake: Baroque Biomes,0.6,3.0,RM_Contagion
+RM_Smolderback,hessekh,RimMandrake: Baroque Biomes,1.8,8.0,RM_Wastes
+RM_Soorrak,soorrak,RimMandrake: Baroque Biomes,4.5,14.0,RM_Stillsand
+RM_SootGristleswarm,soot gristleswarm,RimMandrake: Baroque Biomes,0.3,4.0,RM_Wastes;RUT_Wastes
+RM_Sootgrazer,sootgrazer,RimMandrake: Baroque Biomes,1.0,5.0,RM_Wastes
+RM_Sparkleech,sparkleech,RimMandrake: Baroque Biomes,0.45,3.0,RM_Contagion
+RM_SparkleechGrub,sparkleech grub,RimMandrake: Baroque Biomes,0.2,2.0,RM_Contagion
+RM_Ssurr,ssurr,RimMandrake: Baroque Biomes,0.7,8.0,RM_WeepingStones
+RM_Starmaw,starmaw,RimMandrake: Baroque Biomes,36.0,540.0,
+RM_StormSando,storm sando,RimMandrake: Baroque Biomes,12.0,180.0,
+RM_Sulleth,sulleth,RimMandrake: Baroque Biomes,2.0,10.0,RM_Greentide
+RM_Summ,summ,RimMandrake: Baroque Biomes,8.0,38.0,RM_Abyss;RUT_Abyss
+RM_SumpMouse,sump-mouse,RimMandrake: Baroque Biomes,0.15,4.0,RM_TheSump
+RM_Surrik,surrik,RimMandrake: Baroque Biomes,0.5,8.0,RM_LeaningScrub
+RM_Suulk,suulk,RimMandrake: Baroque Biomes,1.1,3.0,
+RM_Suush,suush,RimMandrake: Baroque Biomes,1.3,0.0,RM_Cauldron
+RM_Sytheclaw,sytheclaw,RimMandrake: Baroque Biomes,1.0,15.0,RM_Pyrelands;RUT_Contagion;RUT_Greentide
+RM_Tapper,tapper,RimMandrake: Baroque Biomes,0.5,2.0,RM_LanternDeeps
+RM_TarBeast,tar beast,RimMandrake: Baroque Biomes,9.0,1.0,
+RM_Tarnn,tarnn,RimMandrake: Baroque Biomes,0.3,1.0,RM_TheChill
+RM_Tarruq,tarruq,RimMandrake: Baroque Biomes,0.45,7.0,RM_FloodedCanyon
+RM_Tazzok,tazzok,RimMandrake: Baroque Biomes,0.3,4.0,RM_LongShade
+RM_Tebbra,tebbra,RimMandrake: Baroque Biomes,0.35,5.0,RM_LongShade
+RM_TelluroxRace,tellurox,RimMandrake: Baroque Biomes,2.6,9.0,
+RM_Termitotron,Termitotron,RimMandrake: Baroque Biomes,3.0,12.0,
+RM_Tetchik,tetchik,RimMandrake: Baroque Biomes,0.1,1.5,RM_Warscar
+RM_TheUnfinished,the Unfinished,RimMandrake: Baroque Biomes,0.55,3.0,
+RM_Thermadon,duskfire,RimMandrake: Baroque Biomes,1.5,14.0,RM_Miasma
+RM_Thollim,thollim,RimMandrake: Baroque Biomes,0.2,2.0,RM_GreySea
+RM_ThornbackColo,thornback colo,RimMandrake: Baroque Biomes,2.6,39.0,
+RM_ThornbackColoJuv,young thornback colo,RimMandrake: Baroque Biomes,2.6,39.0,RM_Miasma
+RM_Thornbug,thornbug,RimMandrake: Baroque Biomes,0.25,3.0,RM_FeverWood
+RM_Thornhold,thornhold,RimMandrake: Baroque Biomes,0.4,6.0,RM_LeaningScrub
+RM_Thozzik,thozzik,RimMandrake: Baroque Biomes,0.32,3.4,RM_TheRot
+RM_ThozzikColony,thozzik,RimMandrake: Baroque Biomes,0.32,3.4,RM_TheRot
+RM_ThozzikColonyQueen,thozzik queen,RimMandrake: Baroque Biomes,1.0,4.4,RM_TheRot
+RM_ThozzikQueen,thozzik queen,RimMandrake: Baroque Biomes,1.0,4.4,RM_TheRot
+RM_Thrummel,thrummel,RimMandrake: Baroque Biomes,0.3,4.0,RM_TheSump
+RM_ThrummelBroodmother,thrummel broodmother,RimMandrake: Baroque Biomes,0.9,8.0,RM_TheSump
+RM_ThrummelWarden,thrummel warden,RimMandrake: Baroque Biomes,0.5,10.0,RM_TheSump
+RM_Thunderbeast,thunderbeast,RimMandrake: Baroque Biomes,0.75,20.0,RM_BlueDesert
+RM_Thurrock,thurrock,RimMandrake: Baroque Biomes,8.0,28.0,RM_Greentide
+RM_Thuum,shimmer eel,RimMandrake: Baroque Biomes,0.2,4.0,RM_TheScald
+RM_Tikkarr,tikkarr,RimMandrake: Baroque Biomes,0.25,5.0,RM_TwilightSea
+RM_Tikkit,tikkit,RimMandrake: Baroque Biomes,0.04,1.0,RM_LeaningScrub
+RM_Tirbak,tirbak,RimMandrake: Baroque Biomes,3.5,25.0,RM_WeepingStones
+RM_Titanoslime,titanoslime,RimMandrake: Baroque Biomes,6.0,14.0,RM_GelatinousSlime;RUT_Slime
+RM_Totchak,totchak,RimMandrake: Baroque Biomes,14.0,40.0,
+RM_TruffleMole,truffle mole,RimMandrake: Baroque Biomes,0.9,6.0,RM_LeaningScrub
+RM_TunnelSnake,yanker,RimMandrake: Baroque Biomes,1.2,18.0,RM_LeaningScrub
+RM_Ulgga,ulgga,RimMandrake: Baroque Biomes,6.0,12.0,RM_Stillsand
+RM_Ullai,ullai,RimMandrake: Baroque Biomes,1.8,8.0,RM_Pyrelands
+RM_Ummisk,ummisk,RimMandrake: Baroque Biomes,0.8,5.0,RM_TheForge
+RM_Utikka,utikka,RimMandrake: Baroque Biomes,0.25,4.0,RM_BlueDesert
+RM_Uttaqar,stone-hide uttaqar,RimMandrake: Baroque Biomes,4.5,23.0,RM_FloodedCanyon
+RM_Vaalok,vaalok,RimMandrake: Baroque Biomes,4.0,12.0,
+RM_Vaulisk,vaulisk,RimMandrake: Baroque Biomes,1.4,16.0,
+RM_Vaulm,vaulm,RimMandrake: Baroque Biomes,0.25,3.0,RM_FeverWood
+RM_Vaunoom,vaunoom,RimMandrake: Baroque Biomes,1.1,16.0,
+RM_Veessa,veessa,RimMandrake: Baroque Biomes,0.15,1.0,RM_Stillsand
+RM_Vekka,vekka,RimMandrake: Baroque Biomes,2.0,18.0,RM_Stillsand
+RM_Vekkit,vekkit,RimMandrake: Baroque Biomes,0.45,6.0,RM_BlueDesert;RUT_BlueDesert
+RM_Vellak,vellak,RimMandrake: Baroque Biomes,1.6,15.0,RM_WeepingStones
+RM_Vennick,vennick,RimMandrake: Baroque Biomes,0.12,2.0,RM_Webwork
+RM_Vexxiss,vexxiss,RimMandrake: Baroque Biomes,6.0,26.0,RM_Cauldron
+RM_Vhakk,vhakk,RimMandrake: Baroque Biomes,1.8,22.0,RM_WeepingStones
+RM_Vhaulk,vhaulk,RimMandrake: Baroque Biomes,6.0,30.0,RM_BlueDesert
+RM_Vhorrin,vhorrin,RimMandrake: Baroque Biomes,0.75,10.0,
+RM_Visceral,visceral,RimUtinni Patches (Jawa campaign),1.2,0.0,RM_Cauldron;RUT_Cauldron
+RM_Vissler,vissler,RimMandrake: Baroque Biomes,0.15,2.0,RM_LeaningScrub
+RM_Vizhik,fan eel,RimMandrake: Baroque Biomes,0.15,3.0,RM_WeepingStones
+RM_Vosska,vosska,RimMandrake: Baroque Biomes,2.0,15.0,RM_Stillsand
+RM_Vozzik,vozzik,RimMandrake: Baroque Biomes,5.0,10.0,RM_Warscar
+RM_Vrekka,vrekka,RimMandrake: Baroque Biomes,0.5,9.0,RM_LongShade
+RM_Vrisk,vrisk,RimMandrake: Baroque Biomes,0.4,5.0,RM_BlueDesert
+RM_Vurra,vurra,RimMandrake: Baroque Biomes,0.6,10.0,RM_LeaningScrub;RUT_AridShrubland
+RM_Vurrak,vurrak,RimMandrake: Baroque Biomes,1.85,20.0,RM_Greentide
+RM_WardenMother,warden mother,RimMandrake: Baroque Biomes,8.0,22.0,
+RM_Weloon,weloon,RimMandrake: Baroque Biomes,0.2,3.0,RM_TwilightSea
+RM_Wuum,wuum,RimMandrake: Baroque Biomes,0.5,8.0,RM_GelatinousSlime
+RM_Yammeth,yammeth,RimMandrake: Baroque Biomes,0.3,3.0,RM_Greentide
+RM_Ysvaltha,ysvaltha,RimMandrake: Baroque Biomes,1.5,18.0,RM_Abyss;RUT_Abyss
+RM_Zellik,zellik,RimMandrake: Baroque Biomes,0.9,8.0,RM_LeaningScrub
+RM_Zhaaz,zhaaz,RimMandrake: Baroque Biomes,2.2,28.0,RM_BlueDesert
+RM_Zhiil,zhiil,RimMandrake: Baroque Biomes,0.15,5.0,RM_TheChill
+RM_Zhissa,zhissa,RimMandrake: Baroque Biomes,0.65,7.0,RM_SleepingIce
+RM_Zisska,zisska,RimMandrake: Baroque Biomes,1.0,6.0,RM_Cauldron
+RM_Zrrik,zrrik,RimMandrake: Baroque Biomes,1.0,15.0,
+RM_Zuurrik,zuurrik,RimMandrake: Baroque Biomes,0.12,1.0,
+RSW_AaroxisDendoria,aaroxis dendoria,RimMandrake: SW — Bestiary,1.0,6.0,RUT_Miasma
+RSW_AaroxisDendoriaLarvae,cinnabar caterpillar,RimMandrake: SW — Bestiary,0.8,10.0,
+RSW_AaroxisDendoriaPupa,aaroxis dendoria pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_AbyssalColo,abyssal colo,RimMandrake: SW — Bestiary,3.6,54.0,
+RSW_AcidSlug,acid slug,RimMandrake: SW — Bestiary,4.0,28.0,RUT_FeverWood
+RSW_Acklay,acklay,RimMandrake: SW — Bestiary,3.0,20.0,
+RSW_Akk,akk,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_Anooba,anooba,RimMandrake: SW — Bestiary,0.95,16.0,RUT_AridShrubland;RUT_Miasma
+RSW_Bantha,bantha,RimMandrake: SW — Bestiary,4.0,23.0,RUT_AridShrubland;RUT_Desert;RUT_WeepingStones
+RSW_Basilisk,basilisk,RimMandrake: SW — Bestiary,1.5,10.0,
+RSW_Behemoth,behemoth,RimMandrake: SW — Bestiary,6.0,90.0,
+RSW_Beldon,beldon,RimMandrake: SW — Bestiary,6.0,11.0,RUT_Greentide;RUT_TheForge
+RSW_Blarth,blarth,RimMandrake: SW — Bestiary,0.32,5.8,
+RSW_Blixus,blixus,RimMandrake: SW — Bestiary,4.0,24.0,
+RSW_BloodletterPetrel,bloodletter petrel,RimMandrake: SW — Bestiary,0.32,7.0,RUT_Wastes
+RSW_BloodropLarvae,bloodrop larvae,RimMandrake: SW — Bestiary,0.7,4.0,
+RSW_BloodropPupa,bloodrop pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Blurrg,blurrg,RimMandrake: SW — Bestiary,2.5,37.5,
+RSW_Boarwolf,Boar-wolf,RimMandrake: SW — Bestiary,2.0,30.0,
+RSW_Bogwing,bogwing,RimMandrake: SW — Bestiary,0.7,12.0,
+RSW_Bolotaur,bolotaur,RimMandrake: SW — Bestiary,3.0,16.0,RUT_Desert
+RSW_Boma,boma,RimMandrake: SW — Bestiary,2.0,16.0,RUT_WeepingStones
+RSW_Borcatu,Borcatu,RimMandrake: SW — Bestiary,0.4,6.0,RUT_Wastes
+RSW_Bordok,bordok,RimMandrake: SW — Bestiary,1.4,21.0,
+RSW_BovineBeetleLarvae,bovine grub,RimMandrake: SW — Bestiary,0.9,4.0,
+RSW_BovineBeetlePupa,bovine pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Brezak,brezak,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_BunkerBug,bunker bug,RimMandrake: SW — Bestiary,4.0,30.0,
+RSW_Bursa,bursa,RimMandrake: SW — Bestiary,2.5,37.5,
+RSW_CanCell,can-cell,RimMandrake: SW — Bestiary,1.45,7.0,RUT_CrackedLands
+RSW_Cannok,cannok,RimMandrake: SW — Bestiary,0.85,9.7,RUT_AridShrubland
+RSW_CaveLemming,mahllik,RimMandrake: SW — Bestiary,1.0,3.4,RUT_SleepingIce
+RSW_ChrysalideRancor,chrysalide rancor,RimMandrake: SW — Bestiary,8.0,120.0,
+RSW_Clodhopper,clodhopper,RimMandrake: SW — Bestiary,0.5,6.0,RUT_Desert;RUT_Greentide
+RSW_ColoClawFish,colo claw fish,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_ColonyPustuleHornet,pustule hornet,RimMandrake: SW — Bestiary,0.32,3.4,RUT_TheRot
+RSW_ColonyPustuleHornetQueen,pustule queen,RimMandrake: SW — Bestiary,1.0,4.4,RUT_TheRot
+RSW_Convor,convor,RimMandrake: SW — Bestiary,0.4,6.0,RUT_AridShrubland;RUT_CrackedLands;RUT_FeverWood;RUT_Greentide
+RSW_CorellianHound,corellian hound,RimMandrake: SW — Bestiary,0.85,14.0,
+RSW_Corinathoth,corinathoth,RimMandrake: SW — Bestiary,4.0,16.0,RUT_AridShrubland
+RSW_Creature_Mantrap,fang leaf,RimMandrake: SW — Bestiary,0.77,5.0,RUT_CrackedLands
+RSW_CrestedDragon,crested dragon,RimMandrake: SW — Bestiary,0.7,12.0,RUT_Miasma
+RSW_CrimsonOpee,crimson opee,RimMandrake: SW — Bestiary,1.7,26.0,
+RSW_CrystalCrab,crystal crab,RimMandrake: SW — Bestiary,2.4,30.0,
+RSW_Dactillion,dactillion,RimMandrake: SW — Bestiary,3.0,16.0,RUT_WeepingStones
+RSW_Dalgo,dalgo,RimMandrake: SW — Bestiary,2.5,10.0,RUT_Greentide
+RSW_Devourers,devourer,RimMandrake: SW — Bestiary,2.5,37.5,
+RSW_Dewback,dewback,RimMandrake: SW — Bestiary,3.0,15.0,RUT_WeepingStones
+RSW_Dianoga,dianoga,RimMandrake: SW — Bestiary,4.0,22.0,
+RSW_Diggerpede,gristle,RimMandrake: SW — Bestiary,1.5,4.0,RUT_Greentide
+RSW_Dragonsnake,dragonsnake,RimMandrake: SW — Bestiary,4.0,30.0,RUT_Greentide
+RSW_DragonsnakeAlbino,albino dragonsnake,RimMandrake: SW — Bestiary,5.0,32.0,
+RSW_Drexl,drexl,RimMandrake: SW — Bestiary,5.0,75.0,
+RSW_ElderSando,elder sando,RimMandrake: SW — Bestiary,20.0,300.0,
+RSW_EnergySpider,energy spider,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_Eopie,eopie,RimMandrake: SW — Bestiary,1.4,12.0,RUT_AridShrubland;RUT_CrackedLands;RUT_Desert;RUT_WeepingStones
+RSW_Faa,faa scalefish,RimMandrake: SW — Bestiary,0.2,3.0,RUT_TheScald
+RSW_FaaJuv,young faa scalefish,RimMandrake: SW — Bestiary,0.2,3.0,RUT_Miasma
+RSW_FacetMoth,facet moth,RimMandrake: SW — Bestiary,0.77,6.0,
+RSW_FacetMothPupa,facet pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Falumpaset,falumpaset,RimMandrake: SW — Bestiary,3.0,18.0,RUT_Desert;RUT_Greentide
+RSW_Fambaa,fambaa,RimMandrake: SW — Bestiary,6.0,28.0,RUT_FeverWood;RUT_Greentide
+RSW_Fanback,fanback,RimMandrake: SW — Bestiary,2.0,14.0,RUT_WeepingStones
+RSW_FeralGrazer,feral grazer,RimMandrake: SW — Bestiary,2.0,15.0,RUT_Desert
+RSW_FeralNerf,feral nerf,RimMandrake: SW — Bestiary,1.0,13.0,RUT_AridShrubland
+RSW_FleeceSpider,puffmite,RimMandrake: SW — Bestiary,0.32,6.0,RUT_Wastes
+RSW_FoundryBeetle,foundry beetle,RimMandrake: SW — Bestiary,2.4,26.0,RUT_Scarlands
+RSW_FoundryBeetleLarvae,foundry grub,RimMandrake: SW — Bestiary,1.8,4.0,
+RSW_FoundryBeetlePupa,foundry pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_FrilledGorg,frilled gorg,RimMandrake: SW — Bestiary,0.4,6.0,RUT_AridShrubland;RUT_Desert
+RSW_FrogDog,frog dog,RimMandrake: SW — Bestiary,0.85,12.0,
+RSW_FungalMantis,skerrith,RimMandrake: SW — Bestiary,2.0,9.0,RUT_TheRot
+RSW_FungalWeevil,plobbum,RimMandrake: SW — Bestiary,0.5,7.0,RUT_TheRot
+RSW_GastroToad,gastro toad,RimMandrake: SW — Bestiary,0.3,3.0,
+RSW_Gelagrub,gelagrub,RimMandrake: SW — Bestiary,2.4,14.0,RUT_FeverWood;RUT_Greentide
+RSW_Gizka,gizka,RimMandrake: SW — Bestiary,0.18,4.0,RUT_AridShrubland;RUT_Desert;RUT_ExtremeDesert;RUT_Greentide
+RSW_Glowtail,glowtail,RimMandrake: SW — Bestiary,0.32,3.0,
+RSW_Gorg,gorg,RimMandrake: SW — Bestiary,0.21,3.0,RUT_AridShrubland;RUT_Desert
+RSW_Gornt,gornt,RimMandrake: SW — Bestiary,0.85,9.0,RUT_CrackedLands
+RSW_GraniteSlug,granite slug,RimMandrake: SW — Bestiary,0.2,1.0,RUT_Cauldron;RUT_ExtremeDesert
+RSW_Grank,Grank,RimMandrake: SW — Bestiary,0.85,16.0,RUT_AridShrubland;RUT_Miasma
+RSW_Grazer,grazer,RimMandrake: SW — Bestiary,2.75,41.25,
+RSW_GreaterKraytDragon,greater krayt dragon,RimMandrake: SW — Bestiary,15.0,45.0,RUT_ExtremeDesert
+RSW_Gualaar,gualaar,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_Gullipud,gullipud,RimMandrake: SW — Bestiary,0.4,4.0,
+RSW_Gundark,gundark,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_Gutkurr,gutkurr,RimMandrake: SW — Bestiary,2.0,16.0,RUT_Desert
+RSW_HarvesterBeetle,harvester beetle,RimMandrake: SW — Bestiary,5.0,75.0,
+RSW_Hawkbat,hawk-bat,RimMandrake: SW — Bestiary,2.0,10.0,RUT_Greentide
+RSW_Horax,horax,RimMandrake: SW — Bestiary,15.0,32.0,RUT_Desert
+RSW_Hrumph,hrumph,RimMandrake: SW — Bestiary,2.5,20.0,RUT_Desert
+RSW_Hssiss,hssiss,RimMandrake: SW — Bestiary,2.75,18.0,RUT_Greentide
+RSW_Igitz,igitz,RimMandrake: SW — Bestiary,0.32,6.0,RUT_AridShrubland
+RSW_Insectomorph,insectomorph,RimMandrake: SW — Bestiary,2.0,30.0,
+RSW_Iriaz,iriaz,RimMandrake: SW — Bestiary,0.7,8.0,RUT_AridShrubland;RUT_Desert
+RSW_IridonianReek,iridonian reek,RimMandrake: SW — Bestiary,3.0,24.0,RUT_Desert
+RSW_IthorianReek,ithorian reek,RimMandrake: SW — Bestiary,4.5,67.5,
+RSW_Jakobeast,jakobeast,RimMandrake: SW — Bestiary,2.6,23.0,RUT_Desert
+RSW_Jamel,Jamel,RimMandrake: SW — Bestiary,1.9,16.0,RUT_Desert;RUT_WeepingStones
+RSW_Jerba,jerba,RimMandrake: SW — Bestiary,1.4,11.0,
+RSW_JewelBeetle,jewel beetle,RimMandrake: SW — Bestiary,2.45,6.0,RUT_FeverWood;RUT_Webwork
+RSW_JewelBeetleLarvae,jewel grub,RimMandrake: SW — Bestiary,0.9,4.0,
+RSW_JewelBeetlePupa,jewel pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Jimvu,jimvu,RimMandrake: SW — Bestiary,2.0,8.0,RUT_Desert
+RSW_JungleRancor,Jungle Rancor,RimMandrake: SW — Bestiary,15.0,225.0,
+RSW_Kaadu,kaadu,RimMandrake: SW — Bestiary,1.5,22.5,
+RSW_Katarn,katarn,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_KellDragon,kell dragon,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_Kinrath,kinrath,RimMandrake: SW — Bestiary,1.2,12.0,RUT_Greentide
+RSW_Klorslug,k'lor'slug,RimMandrake: SW — Bestiary,1.5,14.0,RUT_Greentide
+RSW_KowakianMonkeyLizard,kowakian monkey-lizard,RimMandrake: SW — Bestiary,0.35,5.0,RUT_AridShrubland
+RSW_Kreetle,kreetle,RimMandrake: SW — Bestiary,0.2,5.0,RUT_AridShrubland;RUT_Desert;RUT_ExtremeDesert;RUT_Miasma;RUT_Webwork
+RSW_Krykna,krykna,RimMandrake: SW — Bestiary,0.8,10.0,RUT_Desert
+RSW_KwazelMaw,kwazel maw,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_Kwi,Kwi,RimMandrake: SW — Bestiary,3.0,24.0,RUT_Desert
+RSW_Kybuck,kybuck,RimMandrake: SW — Bestiary,1.0,20.0,RUT_AridShrubland
+RSW_Laa,laa scalefish,RimMandrake: SW — Bestiary,0.4,5.0,
+RSW_LaaJuv,young laa scalefish,RimMandrake: SW — Bestiary,0.4,5.0,RUT_Miasma
+RSW_Lanternwhale,lanternwhale,RimMandrake: SW — Bestiary,40.0,600.0,RUT_TwilightSea
+RSW_LavaFlea,lava flea,RimMandrake: SW — Bestiary,2.4,14.0,RUT_TheForge
+RSW_Leaftail,leaf-tail,RimMandrake: SW — Bestiary,0.2,5.0,
+RSW_LongtailGorg,longtail gorg,RimMandrake: SW — Bestiary,0.42,5.0,RUT_AridShrubland;RUT_Desert;RUT_FeverWood
+RSW_LothWolf,loth-wolf,RimMandrake: SW — Bestiary,3.5,52.5,
+RSW_Lothcat,loth-cat,RimMandrake: SW — Bestiary,0.35,7.0,RUT_AridShrubland
+RSW_Lylek,lylek,RimMandrake: SW — Bestiary,5.0,28.0,RUT_Greentide
+RSW_Maalraas,maalraas,RimMandrake: SW — Bestiary,2.0,30.0,
+RSW_Maguana,maguana,RimMandrake: SW — Bestiary,2.1,10.0,RUT_TheForge
+RSW_Maligoat,kroffa,RimMandrake: SW — Bestiary,1.0,7.3,RUT_Wastes
+RSW_Manka,manka,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_MarshHaunt,marsh haunt,RimMandrake: SW — Bestiary,2.5,18.0,
+RSW_Massiff,massiff,RimMandrake: SW — Bestiary,0.85,16.0,RUT_AridShrubland
+RSW_MastiffPhalone,mastiff phalone,RimMandrake: SW — Bestiary,2.0,30.0,
+RSW_Mastmot,mastmot,RimMandrake: SW — Bestiary,6.0,90.0,
+RSW_Mawvorr,mawvorr,RimMandrake: SW — Bestiary,2.5,37.5,
+RSW_Maxolotl,maxolotl,RimMandrake: SW — Bestiary,2.4,20.0,
+RSW_Mee,mee scalefish,RimMandrake: SW — Bestiary,0.15,2.5,RUT_TheScald
+RSW_MeeJuv,young mee scalefish,RimMandrake: SW — Bestiary,0.15,2.5,RUT_Miasma
+RSW_Megakrill,megakrill,RimMandrake: SW — Bestiary,0.2,1.0,
+RSW_Megaphorid,megaphorid,RimMandrake: SW — Bestiary,0.6,1.0,
+RSW_MegaphoridLarva,megaphorid maggot,RimMandrake: SW — Bestiary,0.32,5.0,RUT_Scarlands
+RSW_Moornak,moornak,RimMandrake: SW — Bestiary,0.5,7.0,
+RSW_MossBeetle,moss beetle,RimMandrake: SW — Bestiary,0.45,6.0,RUT_AridShrubland
+RSW_MossBeetlePupa,moss pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Mott,mott,RimMandrake: SW — Bestiary,0.75,9.0,RUT_Greentide
+RSW_Mudhorn,mudhorn,RimMandrake: SW — Bestiary,4.0,26.0,RUT_AridShrubland
+RSW_MutagenicNorphea,qattora,RimMandrake: SW — Bestiary,0.32,5.0,RUT_CrackedLands
+RSW_MutatingTumorfishAdult,mutating tumorfish,RimMandrake: SW — Bestiary,1.8,12.0,
+RSW_MutatingTumorfishFry,mutating tumorfish fry,RimMandrake: SW — Bestiary,0.8,5.0,
+RSW_MutatingTumorfishSpawn,mutating tumorfish spawn,RimMandrake: SW — Bestiary,0.8,5.0,
+RSW_Mynock,mynock,RimMandrake: SW — Bestiary,0.12,3.0,
+RSW_Narglatch,narglatch,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_Neebray,neebray,RimMandrake: SW — Bestiary,0.2,2.5,RUT_Cauldron
+RSW_Nerf,nerf,RimMandrake: SW — Bestiary,2.0,8.8,RUT_Desert
+RSW_Nexu,nexu,RimMandrake: SW — Bestiary,2.5,37.5,
+RSW_Nuna,nuna,RimMandrake: SW — Bestiary,0.6,6.0,RUT_AridShrubland;RUT_Desert;RUT_FeverWood;RUT_Greentide
+RSW_Ollopom,ollopom,RimMandrake: SW — Bestiary,0.6,8.0,RUT_WeepingStones
+RSW_Onnik,onnik,RimMandrake: SW — Bestiary,1.1,9.0,
+RSW_OpeeSeaKiller,opee sea killer,RimMandrake: SW — Bestiary,1.4,21.0,
+RSW_OpeeSeaKillerJuv,sub-adult opee sea killer,RimMandrake: SW — Bestiary,1.4,21.0,RUT_Miasma
+RSW_Orray,orray,RimMandrake: SW — Bestiary,2.0,28.0,
+RSW_PaintedSpat,painted spat,RimMandrake: SW — Bestiary,1.5,22.5,
+RSW_PekoPeko,Peko-peko,RimMandrake: SW — Bestiary,2.5,16.0,RUT_Greentide
+RSW_Pikobis,pikobis,RimMandrake: SW — Bestiary,0.6,8.0,RUT_AridShrubland
+RSW_PodWorm,hell's lantern,RimMandrake: SW — Bestiary,4.0,10.0,RUT_Miasma
+RSW_Polluwog,polluwog,RimMandrake: SW — Bestiary,0.1,1.0,
+RSW_Porg,porg,RimMandrake: SW — Bestiary,0.18,3.0,RUT_AridShrubland
+RSW_Pufferpig,Pufferpig,RimMandrake: SW — Bestiary,0.5,10.0,RUT_AridShrubland
+RSW_PustuleHornet,pustule hornet,RimMandrake: SW — Bestiary,0.32,3.4,RUT_TheRot
+RSW_PustuleHornetQueen,pustule queen,RimMandrake: SW — Bestiary,1.0,4.4,RUT_TheRot
+RSW_PustuleHornetSpawned,pustule hornet,RimMandrake: SW — Bestiary,0.32,3.4,RUT_TheRot
+RSW_Qormot,qormot,RimMandrake: SW — Bestiary,1.0,10.0,RUT_AridShrubland
+RSW_Rancor,RSW_Rancor,RimMandrake: SW — Bestiary,6.0,90.0,
+RSW_Raxshir,raxshir,RimMandrake: SW — Bestiary,3.5,52.5,
+RSW_Reefback,reefback,RimMandrake: SW — Bestiary,32.0,480.0,RUT_GreySea
+RSW_Reek,reek,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_Rikknit,rikknit,RimMandrake: SW — Bestiary,0.3,8.0,
+RSW_Roggwart,roggwart,RimMandrake: SW — Bestiary,5.0,75.0,
+RSW_Ronto,ronto,RimMandrake: SW — Bestiary,6.0,28.0,RUT_AridShrubland;RUT_Desert
+RSW_RoyalRhino,royal rhino beetle,RimMandrake: SW — Bestiary,3.0,25.0,
+RSW_RoyalRhinoLarvae,royal rhino grub,RimMandrake: SW — Bestiary,0.9,25.0,
+RSW_RoyalRhinoPupa,royal rhino pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Runyip,runyip,RimMandrake: SW — Bestiary,1.5,16.0,RUT_Desert;RUT_Miasma
+RSW_RustNipper,rust nipper,RimMandrake: SW — Bestiary,0.25,7.0,
+RSW_RustNipperJuv,young rust nipper,RimMandrake: SW — Bestiary,0.25,7.0,RUT_Miasma
+RSW_Sacapillar,sacapillar,RimMandrake: SW — Bestiary,2.4,4.0,RUT_Wastes
+RSW_SandLeaper,qetta,RimMandrake: SW — Bestiary,0.2,3.4,RUT_CrackedLands
+RSW_SandPillar,luttaq,RimMandrake: SW — Bestiary,0.8,10.0,
+RSW_SandStalker,sand stalker,RimMandrake: SW — Bestiary,1.1,13.0,
+RSW_SandoAquaMonster,sando aqua monster,RimMandrake: SW — Bestiary,14.0,210.0,
+RSW_Scavrat,Scavrats,RimMandrake: SW — Bestiary,0.5,8.0,
+RSW_ScrapNestBird,scrap-nest bird,RimMandrake: SW — Bestiary,0.45,9.0,RUT_AridShrubland
+RSW_Screecher,screecher,RimMandrake: SW — Bestiary,1.0,11.0,RUT_Cauldron;RUT_Wastes
+RSW_Scurrier,scurrier,RimMandrake: SW — Bestiary,0.2,4.0,RUT_AridShrubland;RUT_ExtremeDesert
+RSW_Shaak,shaaks,RimMandrake: SW — Bestiary,3.0,12.0,RUT_Desert
+RSW_ShadeWhale,shade whale,RimMandrake: SW — Bestiary,16.0,18.0,RUT_Desert
+RSW_ShaleGorger,shale gorger,RimMandrake: SW — Bestiary,2.0,30.0,
+RSW_Shiro,shiro,RimMandrake: SW — Bestiary,0.5,9.0,RUT_Greentide;RUT_Miasma
+RSW_ShiroTrap,shiro-trap,RimMandrake: SW — Bestiary,0.75,12.0,RUT_Greentide;RUT_TheRot
+RSW_ShrublandGiant,thunderstep,RimMandrake: SW — Bestiary,6.0,26.0,RUT_AridShrubland
+RSW_Shyrack,shyrack,RimMandrake: SW — Bestiary,0.75,9.0,RUT_Desert;RUT_Webwork
+RSW_Silooth,silooth,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_SiltLamprey,silt lamprey,RimMandrake: SW — Bestiary,0.2,6.0,
+RSW_SiltLampreyJuv,young silt lamprey,RimMandrake: SW — Bestiary,0.2,6.0,RUT_Miasma
+RSW_Skalder,skalders,RimMandrake: SW — Bestiary,4.0,25.0,RUT_AridShrubland;RUT_Desert
+RSW_Sketto,sketto,RimMandrake: SW — Bestiary,0.4,12.0,RUT_AridShrubland;RUT_Desert
+RSW_SmogMoth,smog moth,RimMandrake: SW — Bestiary,0.77,10.0,RUT_TheRot
+RSW_SmogMothLarvae,smog caterpillar,RimMandrake: SW — Bestiary,0.5,4.0,
+RSW_SmogPupa,smog pupa,RimMandrake: SW — Bestiary,1.0,0.0,
+RSW_Snoruuk,snoruuk,RimMandrake: SW — Bestiary,0.5,2.0,RUT_TheRot
+RSW_Squall,squall,RimMandrake: SW — Bestiary,0.3,4.0,
+RSW_Starmaw,starmaw,RimMandrake: SW — Bestiary,36.0,540.0,
+RSW_Stintaril,stintaril,RimMandrake: SW — Bestiary,0.5,12.0,
+RSW_StormSando,storm sando,RimMandrake: SW — Bestiary,12.0,180.0,
+RSW_Strill,strill,RimMandrake: SW — Bestiary,1.0,18.0,RUT_AridShrubland
+RSW_Tach,tach,RimMandrake: SW — Bestiary,0.5,8.0,
+RSW_Taozin,taozin,RimMandrake: SW — Bestiary,8.0,90.0,
+RSW_TaozinGrub,taozin grub,RimMandrake: SW — Bestiary,0.1,3.0,
+RSW_Tauntaun,tauntaun,RimMandrake: SW — Bestiary,1.0,15.0,
+RSW_TeeMuss,tee muss,RimMandrake: SW — Bestiary,2.1,12.0,RUT_Desert
+RSW_TetnissCrab,tet'niss crab,RimMandrake: SW — Bestiary,0.5,5.0,
+RSW_ThornbackColo,thornback colo,RimMandrake: SW — Bestiary,2.6,39.0,
+RSW_Thranta,thranta,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_Thrumbungus,thrumbungus,RimMandrake: SW — Bestiary,4.0,28.0,RUT_TheRot
+RSW_Tibidee,tibidee,RimMandrake: SW — Bestiary,12.0,180.0,
+RSW_Tooke,tooke,RimMandrake: SW — Bestiary,0.1,5.0,
+RSW_Torton,torton,RimMandrake: SW — Bestiary,6.0,90.0,
+RSW_Tukata,tuk'ata,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_TunnelSnake,yanker,RimMandrake: SW — Bestiary,1.2,18.0,RUT_AridShrubland
+RSW_TuskCat,tusk cat,RimMandrake: SW — Bestiary,3.0,45.0,
+RSW_Urusai,urusai,RimMandrake: SW — Bestiary,0.75,10.0,RUT_AridShrubland;RUT_FeverWood
+RSW_Uvak,uvak,RimMandrake: SW — Bestiary,3.0,16.0,RUT_Desert
+RSW_Vapaad,vapaad,RimMandrake: SW — Bestiary,4.0,60.0,
+RSW_Varactyl,varactyl,RimMandrake: SW — Bestiary,3.0,16.0,RUT_Desert
+RSW_Veermok,veermok,RimMandrake: SW — Bestiary,2.0,30.0,
+RSW_VentStalker,vent stalker,RimMandrake: SW — Bestiary,1.2,12.0,RUT_Cauldron
+RSW_Voorpak,voorpak,RimMandrake: SW — Bestiary,0.35,6.0,RUT_AridShrubland;RUT_Desert
+RSW_Vornskyr,vornskyr,RimMandrake: SW — Bestiary,2.0,20.0,RUT_Miasma
+RSW_Vozzik,vozzik,RimMandrake: SW — Bestiary,5.0,10.0,
+RSW_Vulptex,vulptex,RimMandrake: SW — Bestiary,0.55,4.8,RUT_AridShrubland
+RSW_Wampa,wampa,RimMandrake: SW — Bestiary,6.0,30.0,
+RSW_WarWyrm,war wyrm,RimMandrake: SW — Bestiary,22.5,45.0,RUT_ExtremeDesert
+RSW_Warbird,RSW_Warbird,RimMandrake: SW — Bestiary,5.0,75.0,
+RSW_Whisperbird,whisperbird,RimMandrake: SW — Bestiary,0.4,8.0,RUT_AridShrubland;RUT_FeverWood;RUT_Greentide;RUT_Miasma
+RSW_WompRat,womp rat,RimMandrake: SW — Bestiary,0.75,8.5,
+RSW_Woolamander,woolamander,RimMandrake: SW — Bestiary,0.75,12.0,RUT_CrackedLands
+RSW_Worrt,worrt,RimMandrake: SW — Bestiary,0.6,8.0,RUT_AridShrubland;RUT_Desert;RUT_Greentide
+RSW_Wraid,wraid,RimMandrake: SW — Bestiary,3.0,16.0,RUT_Desert
+RSW_WraidAlpha,alpha wraid,RimMandrake: SW — Bestiary,3.4,18.0,RUT_Desert
+RSW_Yobshrimp,yobshrimp,RimMandrake: SW — Bestiary,0.2,4.0,RUT_Miasma
+RSW_YobshrimpJuv,young yobshrimp,RimMandrake: SW — Bestiary,0.2,4.0,RUT_Miasma
+RSW_Yooka,yooka,RimMandrake: SW — Bestiary,2.1,14.0,RUT_TheRot
+RSW_Zakkeg,zakkeg,RimMandrake: SW — Bestiary,5.0,26.0,RUT_Miasma
+RSW_Zakkro,zakkro,RimMandrake: SW — Bestiary,5.5,24.0,
+RSW_Zeer,zeer,RimMandrake: SW — Bestiary,4.5,16.0,RUT_Desert
+RSW_Zhakka,zhakka,RimMandrake: SW — Bestiary,1.35,10.0,
+RUT_BrineBattery,isi isi,RimUtinni Patches (Jawa campaign),0.7,8.0,RUT_Wastes
+RUT_BurnerAscendant,"burner, ascendant",RimUtinni Patches (Jawa campaign),1.3,20.0,RUT_Umbra
+RUT_EmperorVulture,ulvassk,RimUtinni Patches (Jawa campaign),1.4,6.0,RUT_CrackedLands
+RUT_FleetFlier,fleet flier,RimUtinni Patches (Jawa campaign),0.12,2.0,RUT_TheForge
+RUT_Placeholder_GreentideGnawerRace,gnawer (placeholder),RimUtinni Patches (Jawa campaign),0.3,7.0,
+RUT_Radiothermal,hessekh,RimUtinni Patches (Jawa campaign),2.0,14.0,
+RUT_SealedSleeper,tammuq,RimUtinni Patches (Jawa campaign),0.7,5.0,RUT_CrackedLands
+RUT_VWake,v-wake,RimUtinni Patches (Jawa campaign),1.1,16.0,RUT_PropaneLake
+RUT_Vhessk,vhessk,RimUtinni Patches (Jawa campaign),3.0,40.0,
+Toxalope,toxalope,Biotech,1.4,10.0,RUT_Wastes
+VAEWaste_Megatardi,thuffor,RimUtinni Patches (Jawa campaign),2.0,7.0,RUT_Wastes
