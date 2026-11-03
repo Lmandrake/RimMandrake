@@ -1908,6 +1908,19 @@ check("queues: a heartbeating active job is movement", _qs()["v"] <= 1.1, _qs())
 os.utime(_qd / "active" / "orph.json", (_qn - 3600, _qn - 3600))
 (_qd / "paused.json").write_text("{}")
 check("queues: a paused queue reads 0", _qs()["v"] == 0.0, _qs())
+(_qd / "paused.json").unlink()
+_qglob = Path.glob  # OPS_QUEUES_READING_RESTORE_HQXV: a pending job claimed between glob and stat is movement
+def _ghost_glob(self, pat):
+    yield from _qglob(self, pat)
+    if self == _qd / "pending":
+        yield self / "claimed_meanwhile.json"
+Path.glob = _ghost_glob
+try:
+    _qv = OW.c_queues(_qn, _qr, {})
+finally:
+    Path.glob = _qglob
+check("queues: a job claimed between glob and stat is not a blind queue", _qv["queues.blind"]["v"] == 0
+      and _qv["queues.q.pending"]["v"] == 1 and _qv["queues.q.stalled_min"]["m"] == "MEASURED", _qv)
 _qr["queues"][0]["pending"] = str(_qd / "nope")
 check("queues: an unlistable queue is blind, not 0", OW.c_queues(_qn, _qr, {})["queues.blind"]["v"] == 1
       and OW.c_queues(_qn, _qr, {})["queues.q.stalled_min"]["m"] == "UNMEASURED")
