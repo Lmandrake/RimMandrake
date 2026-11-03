@@ -80,7 +80,9 @@ namespace RimMandrake.FlowWorks.Thirst
 
 	public static class RM_SaltBreakUtility
 	{
-		/// <summary>Is any potable source in reach (a bottle, a tank, a pond)? The break needs "no fresh water in reach".</summary>
+		/// <summary>Is any potable source in reach? The break needs "no fresh water in reach", so this asks every source
+		/// JobGiver_RM_Drink drinks from: a bottle, a tank, a terrain edge, a bucket or barrel, a water item, a pipe faucet.
+		/// </summary>
 		public static bool PotableReachable(Pawn pawn, float level)
 		{
 			RM_DrinkUse potable = RM_DrinkUse.Potable;
@@ -92,8 +94,20 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				return true;
 			}
-			return RM_ThirstSettings.drinkFromTerrain
-				&& RM_ThirstUtility.TryFindDrinkCell(pawn, level, out _, out _, out _, out _, potable);
+			if (RM_ThirstSettings.drinkFromTerrain
+				&& RM_ThirstUtility.TryFindDrinkCell(pawn, level, out _, out _, out _, out _, potable))
+			{
+				return true;
+			}
+			if (RM_ThirstContainerUtility.BestContainer(pawn, level, out _, out _, out _, potable) != null)
+			{
+				return true;
+			}
+			if (RM_WaterItemUtility.BestItem(pawn, level, out _, out _, out _, potable) != null)
+			{
+				return true;
+			}
+			return Building_RM_PipeFaucet.BestFaucet(pawn, level, out _, out _, out _, potable) != null;
 		}
 
 		/// <summary>The nearest salt-water or brine source: a bottle (inventory first), else the nearer of a tank and a
