@@ -97,7 +97,7 @@ def gen(row, facing, out: Path, extra: str, pose: str, timeout: int) -> int:
     p = subprocess.run([sys.executable, str(CODEX), "edit", "--out", str(raw), "--prompt", prompt,
                         "--image", f["east"], "--image", img2, "--timeout", str(timeout),
                         "--model", MODEL, "--codex-home", CODEX_HOME],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, timeout=float(timeout) + 60)
     dt = round(time.time() - t0, 1)
     rec = {"texPath": row["texPath"], "facing": facing, "raw": (str(raw.relative_to(REPO)) if raw.is_relative_to(REPO) else str(raw)), "seconds": dt,
            "ok": p.returncode == 0 and raw.exists(), "rc": p.returncode, "at": time.strftime("%Y-%m-%dT%H:%M:%S"),

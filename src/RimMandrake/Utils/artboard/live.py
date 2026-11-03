@@ -53,9 +53,12 @@ def _bridge():
         import subprocess
 
         def relay(tool, **p):
-            r = subprocess.run(["python.exe", MIRROR_CLIENT, "--call", tool, "--json", json.dumps(p),
-                                "--yes-i-know-this-is-live", "--timeout", "600"],
-                               capture_output=True, text=True)
+            try:
+                r = subprocess.run(["python.exe", MIRROR_CLIENT, "--call", tool, "--json", json.dumps(p),
+                                    "--yes-i-know-this-is-live", "--timeout", "600"],
+                                   capture_output=True, text=True, timeout=660)
+            except subprocess.TimeoutExpired:
+                return {"success": False, "message": "bridge relay timed out after 660 s (INFRA, not a verdict)"}
             if r.returncode != 0:
                 return {"success": False, "message": "bridge relay exit %d: %s" % (r.returncode, r.stderr.strip()[-600:])}
             out = json.loads(r.stdout)

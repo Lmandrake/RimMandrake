@@ -43,6 +43,7 @@ import time
 REMOTE, BRANCH = "origin", "main"
 RM_ROOT = os.environ.get("PUBLISH_RM_ROOT", "/home/mandrake/rm")
 MAX_TRIES = 8
+GIT_TIMEOUT_S = float(os.environ.get("PUBLISH_GIT_TIMEOUT", "300"))   # one git call, push included; a hang is a loud TimeoutExpired, not a stall
 before_push = None          # selftest hook: called(attempt) between rebase and push
 before_reset = None         # selftest hook: called() between the replay and the HEAD check
 LOCK_TIMEOUT = float(os.environ.get("PUBLISH_LOCK_TIMEOUT", "600"))
@@ -61,7 +62,7 @@ class Stranded(Refuse):
 
 def run(top, *args, check=True):
     for i in range(12):                                  # a plain-git peer may hold .git/index.lock for a moment
-        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True)
+        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True, timeout=GIT_TIMEOUT_S)
         if not (r.returncode and "index.lock" in r.stderr and i < 11):
             break
         time.sleep(0.25 * (i + 1))

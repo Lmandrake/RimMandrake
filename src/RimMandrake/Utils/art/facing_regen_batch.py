@@ -197,7 +197,8 @@ def run_one(key: str, row: dict, home: Path) -> None:
             for _ in range(GEN_TRIES):
                 p = subprocess.run([sys.executable, str(HERE / "facing_regen.py"), "gen", "--row", row["texPath"],
                                     "--facing", f, "--out", str(out), "--rows", str(ROWS), "--timeout", "170"],
-                                   capture_output=True, text=True, env=dict(os.environ, FACING_REGEN_CODEX_HOME=env_home))
+                                   capture_output=True, text=True, env=dict(os.environ, FACING_REGEN_CODEX_HOME=env_home),
+                                   timeout=300)
                 sandbox_guard(home)
                 if p.returncode == 0:
                     ok = True
@@ -298,8 +299,8 @@ def publish(paths: list[str], n: int) -> str:
            "Landed by src/RimMandrake/Utils/art/facing_regen_batch.py")
     allp = sorted(set(paths)) + ([st, str(LOG.relative_to(REPO))] if STATE.is_relative_to(REPO) else []) + [
         "infrastructure/state/art/events/BENCH.jsonl"]
-    subprocess.run(["git", "-C", str(REPO), "pull", "--ff-only", "-q"], capture_output=True)
-    p = subprocess.run(["./publish", "-m", msg] + allp, capture_output=True, text=True, cwd=REPO)
+    subprocess.run(["git", "-C", str(REPO), "pull", "--ff-only", "-q"], capture_output=True, timeout=300)
+    p = subprocess.run(["./publish", "-m", msg] + allp, capture_output=True, text=True, cwd=REPO, timeout=600)
     tail = (p.stdout + p.stderr).strip()[-300:]
     for _ in range(10):                     # commit is on HEAD; a refused land is retried bare until it lands
         if "PUBLISHED" in tail or "already on origin" in tail:

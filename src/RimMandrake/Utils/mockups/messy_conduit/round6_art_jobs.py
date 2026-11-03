@@ -86,7 +86,7 @@ def run(job, home, log):
     for i in imgs:
         cmd += ["--image", i]
     t = time.time()
-    p = subprocess.run(cmd, capture_output=True, text=True)
+    p = subprocess.run(cmd, capture_output=True, text=True, timeout=720)
     ok = os.path.isfile(out) and p.returncode == 0
     with lock:
         log.write("%s %s rc=%d %.0fs %s\n" % ("OK" if ok else "FAIL", name, p.returncode, time.time() - t,

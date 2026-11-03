@@ -57,18 +57,22 @@ def _git_env() -> dict:
     return {**os.environ, "GIT_LITERAL_PATHSPECS": "1"}
 
 
+GIT_TIMEOUT_S = float(os.environ.get("SEAT_SYNC_GIT_TIMEOUT", "300"))   # one git call (fetch/push included); bounded, never a stall
+
 class Git:
     def __init__(self, repo: str):
         self.repo = repo
 
     def run(self, *a, check=True, inp: str | None = None) -> str:
-        r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, input=inp, env=_git_env())
+        r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, input=inp, env=_git_env(),
+                           timeout=GIT_TIMEOUT_S)
         if check and r.returncode:
             raise Refused(f"git {' '.join(a[:3])} failed: {(r.stderr or r.stdout).strip()[-600:]}")
         return r.stdout
 
     def ok(self, *a) -> bool:
-        return subprocess.run(["git", "-C", self.repo, *a], capture_output=True, env=_git_env()).returncode == 0
+        return subprocess.run(["git", "-C", self.repo, *a], capture_output=True, env=_git_env(),
+                              timeout=GIT_TIMEOUT_S).returncode == 0
 
     def lines(self, *a) -> list[str]:
         return [x for x in self.run(*a).split("\0" if "-z" in a else "\n") if x]

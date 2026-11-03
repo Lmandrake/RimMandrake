@@ -24,7 +24,7 @@ def curl(url):
             time.sleep(wait)
         _last[0] = time.time()
         r = subprocess.run(["curl", "-s", "--max-time", "30", "-w", "\n%{http_code}", url],
-                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
         body, _, code = r.stdout.rpartition("\n")
         if code == "429" or code == "000" or not code.startswith("2"):
             time.sleep(min(60, 5 * 2 ** attempt))

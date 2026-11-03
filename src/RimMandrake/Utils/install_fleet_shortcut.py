@@ -137,7 +137,7 @@ def main():
     ) % tuple(q(v) for v in (lnk, PS, arguments, REPO_WIN, WT, desc))
 
     r = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, timeout=120)
     if r.returncode:
         sys.exit(r.stderr.strip() or "powershell failed")
     print("written.")

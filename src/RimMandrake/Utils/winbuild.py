@@ -181,7 +181,7 @@ def source_sha(paths):
 def run_dotnet(csproj_win, cwd, config, extra):
     cmd = [dotnet_exe(), "build", csproj_win, "-c", config, "--nologo", "-v", "minimal", *extra]
     print("+ dotnet.exe build %s -c %s" % (csproj_win, config), flush=True)
-    return subprocess.run(cmd, cwd=cwd).returncode
+    return subprocess.run(cmd, cwd=cwd, timeout=900).returncode
 
 
 def built_outputs(tree, since):
@@ -199,7 +199,7 @@ def built_outputs(tree, since):
 
 
 def win(path):
-    return subprocess.run(["wslpath", "-w", path], capture_output=True, text=True).stdout.strip()
+    return subprocess.run(["wslpath", "-w", path], capture_output=True, text=True, timeout=30).stdout.strip()
 
 
 def rsync_stage(rels, stage, cwd, excl=()):
@@ -210,7 +210,8 @@ def rsync_stage(rels, stage, cwd, excl=()):
     MSBuild sees it newer than obj even when the clone file carries an old mtime (e.g. cp -p restore).
     Returns the CompletedProcess (stdout holds the itemize lines)."""
     r = subprocess.run(["rsync", "-rR", "-c", "-i", "--delete", "--no-perms", "--no-owner", "--no-group",
-                        *excl, *rels, stage + "/"], cwd=cwd, stdout=subprocess.PIPE, universal_newlines=True)
+                        *excl, *rels, stage + "/"], cwd=cwd, stdout=subprocess.PIPE, universal_newlines=True,
+                       timeout=600)
     now = time.time()
     for line in r.stdout.splitlines():
         if line.startswith(">f") and len(line) > 12:

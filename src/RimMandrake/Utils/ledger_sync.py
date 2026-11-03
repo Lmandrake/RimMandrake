@@ -109,7 +109,7 @@ def prepare_clone(path, origin_url, reference=None, dissociate=True):
         cmd = ["git", "clone", "-q"]
         if reference:
             cmd += ["--reference", reference] + (["--dissociate"] if dissociate else [])
-        r = subprocess.run(cmd + [origin_url, path], capture_output=True, text=True)
+        r = subprocess.run(cmd + [origin_url, path], capture_output=True, text=True, timeout=900)
         if r.returncode != 0:
             raise RuntimeError("clone failed: %s" % r.stderr.strip())
     if git(path, "status", "--porcelain", "--untracked-files=no").stdout.strip():

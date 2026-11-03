@@ -76,7 +76,7 @@ def stage(head=False):
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 shutil.copy2(src, dst)
     subprocess.run(["rsync", "-rt", "--delete", "--exclude", "bin/", "--exclude", "obj/",
-                    os.path.join(REPO, REPLAY_REL) + "/", os.path.join(root, REPLAY_REL) + "/"], check=True)
+                    os.path.join(REPO, REPLAY_REL) + "/", os.path.join(root, REPLAY_REL) + "/"], check=True, timeout=600)
     return root
 
 

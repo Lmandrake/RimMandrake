@@ -805,7 +805,7 @@ class TestContext(object):
             os.makedirs(os.path.dirname(out), exist_ok=True)
             subprocess.run(["python.exe",
                             os.path.join(utils, "system_screenshot.py"), out],
-                           check=False)
+                           check=False, timeout=120)
             path = out
         if self._current is not None:
             self._current.screenshots.append(path)

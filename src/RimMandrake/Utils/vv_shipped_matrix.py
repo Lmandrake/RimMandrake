@@ -254,7 +254,7 @@ def _patch(path, anchor, repl):
 def _rsync(rels, dest):
     excl = sum((["--exclude", e] for e in winbuild.RSYNC_EXCLUDES + ["__pycache__/", "art_source/"]), [])
     r = subprocess.run(["rsync", "-rtR", "--delete", "--no-perms", "--no-owner", "--no-group", "--modify-window=2",
-                        "--checksum", *excl, *rels, dest + "/"], cwd=ROOT)
+                        "--checksum", *excl, *rels, dest + "/"], cwd=ROOT, timeout=900)
     if r.returncode:
         sys.exit("VV: rsync failed (%d)" % r.returncode)
 

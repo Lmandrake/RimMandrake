@@ -62,7 +62,7 @@ def git(*args, target=None, check=True):
     if target:
         env["GIT_INDEX_FILE"] = index_for(target)
         cmd.append("--work-tree=" + target)
-    r = subprocess.run(cmd + list(args), capture_output=True, text=True, env=env)
+    r = subprocess.run(cmd + list(args), capture_output=True, text=True, env=env, timeout=1800)  # a whole-tree checkout onto D: is slow; still bounded
     if check and r.returncode:
         raise Fail("git %s: %s" % (" ".join(args[:2]), (r.stderr or r.stdout).strip()))
     return r.stdout.strip()
