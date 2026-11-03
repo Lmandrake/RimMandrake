@@ -1,0 +1,13 @@
+A1 L2: on a quicktest map (minimal list, all five DLC, companion deployed), a Tribal_Warrior spawn recruited after jawa/spawn_pawn returned gets a receipt whose independent list_pawns read-back shows requested Tribal_Warrior vs actual (Colonist); an untouched control spawn's receipt is clean
+A2 L2: expect("condition", any, max_count=1) admits Eclipse and condition_unexpected still reports Aurora
+A3 L2: an undeclared new player pawn is named by player_joiner; pawn_arrived and pawn_state_changed do not also claim it
+A4 L2: a manhunter Warg and a player joiner are both named by a detector, and scene_report prints both with decomposed hostility (no-faction + mental:Manhunter / player) and no over-claimed origin
+A5 L2: a factionless stranger in the baseline turned player reads pawn_state_changed (isPlayer False -> True), never player_joiner or pawn_arrived
+A6 L2: a colonist out by caravan and brought back while a newer pawn exists is reported by the set diff under its OLD id (number below the baseline maximum)
+A7 L2: jawa/thing_explain name=Muffalo with two Muffalo returns resolved false listing both ids; id= on one resolves
+A8 L2: a worker-false incident (ShortCircuit / CropBlight / SelfTame on a map with nothing to act on) journals called, outerBodyRan true, returned false, with no "fired" wording
+A9 L2: RaidEnemy via jawa/fire_incident journals chain bridge:jawa/fire_incident > incident:RaidEnemy, returned true, pawnsGeneratedDuring > 0, and the raid pawns' pawn_origin generation chain says the same
+A10 L2: a Mechanoid RaidEnemy delivered by drop pods (pawns generated during the call, 0 spawned during it) lands pawns whose generation chain keeps bridge:jawa/fire_incident > incident:RaidEnemy, involvement confirmedIndirectAction, spawn tick after the call
+A11 L2: after a cold launch with the test profile and "install.generation-early": true in <SaveData>/JawaBench/tps/awareness_settings.json, jawa/awareness reads startedBy bridge-registration and generationHook "installed early", and the first map's wildlife reads a generation chain containing mapgen (arming later does not alter an early install)
+A12 L2: a colonist out by caravan and back (JawaBenchAwarenessProof.CaravanBack) reads spawn classification observedRespawn or mapTransfer, never firstObservedSpawn
+A13 L2: 532 worker-false TryExecute calls leave the incident ring at 512 retained, the overwritten counter risen by at least the overflow, status and journal agreeing, oldest retained seq advanced
