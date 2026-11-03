@@ -120,3 +120,13 @@ least one tile and the tile list is exported as `world/ASHKARR_STRUCTURE_ARCHETY
 | 8.12 | battle site | none; it is the `state=ruined` read of another archetype | painted as a ruined host row above, at the painter's choice |
 | 8.13 | beast pens | `RSW_BeastPens` | Hutt or homestead country near a road |
 | 8.14 | storage cache | none yet; it is whisper-shaped and waits on the whisper engine | not painted until a responder exists |
+
+## Paint list addition 2026-11-03 — the Fall Line mutator (`FALL_LINE_MUTATOR_PLACEMENT_1`)
+
+At the final painting, stamp the tile mutator `RUT_FallLine` on every tile in `world/ASHKARR_FALL_LINE_MUTATOR_plan.json`.
+That is 308 tiles: the world features "Fall Line" (155) and "The Breaks" (153; the 2026-08-24 CSV calls it "Fall Line
+Barrens"). Start tile 17007 is one of them. The list is rebuilt from the canonical save (sha256 in `inputs`) by
+`src/RimMandrake/Utils/fall_line_mutator_plan.py`. If the save being painted is a different file, point its `SAVE` at
+that file and `--write` again before applying. The apply recipe is the plan's `apply` field. Until the painting,
+`FallLineGate` falls back to the tile's feature name. Both names are in its `FeatureNames`, so the gate already holds
+on these 308 tiles (proof: `src/RimMandrake/Utils/selftest_fall_line_mutator_plan.py`).

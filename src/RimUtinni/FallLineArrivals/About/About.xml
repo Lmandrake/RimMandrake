@@ -50,9 +50,9 @@ Line region names. A Mod Setting lets the events fire on any map instead.
     ride the same routes and behaviour. Enslave or recruit one and they
     keep a permanent Fall Line scar; unlike a droid, nothing wipes it.
 
-Not here yet (filed): placing
-the RUT_FallLine mutator on the region's tiles of the frozen world, and the
-two wreckage creatures that are not yet ported.
+Not here yet (filed): the two wreckage creatures that are not yet ported.
+The RUT_FallLine mutator goes onto the region's tiles of the frozen world when
+the planet is painted. Until then, the feature names do the job.
 
 Every switch is in Mod Settings ("Fall Line Arrivals").</description>
 </ModMetaData>
