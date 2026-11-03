@@ -1,0 +1,205 @@
+{
+ "schema": 1,
+ "generated": "2026-11-03T08:03:53-0800",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_sluice_panning_warden"
+ ],
+ "biomes": {
+  "SUBJECTS_sluice_panning_warden": {
+   "label": "Sluice panning warden",
+   "slug": "sluice_panning_warden",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Sluice panning warden \u2014 game art",
+   "lead_html": "",
+   "rows": [
+    {
+     "key": "RM_BankWeir",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "weir",
+     "defNames": [
+      "RM_BankWeir"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_BankWeir"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_BankWeir found"
+     }
+    },
+    {
+     "key": "RM_PanningSpot",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "panning spot",
+     "defNames": [
+      "RM_PanningSpot"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Rivers/RM_PanningSpot",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_PanningSpot"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_PanningSpot found"
+     }
+    },
+    {
+     "key": "RM_Sluice",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sluice gate",
+     "defNames": [
+      "RM_Sluice"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Canals/RM_Sluice",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Sluice"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Sluice found"
+     }
+    },
+    {
+     "key": "RM_SluiceBox",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sluice box",
+     "defNames": [
+      "RM_SluiceBox"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Rivers/RM_SluiceBox",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SluiceBox"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SluiceBox found"
+     }
+    },
+    {
+     "key": "RM_ThrummelWarden",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "thrummel warden",
+     "defNames": [
+      "RM_ThrummelWarden"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_ThrummelWarden"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_ThrummelWarden found"
+     }
+    }
+   ]
+  }
+ }
+}
