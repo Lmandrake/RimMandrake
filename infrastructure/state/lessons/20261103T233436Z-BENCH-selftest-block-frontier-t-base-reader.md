@@ -1,0 +1,1 @@
+selftest_block_frontier t_base_reader_tolerates_until and selftest_cli each_kind_of_authority fail only when RM_ROLE_UNIT is in the environment (any Relentless worker unit stamps events with role_unit): green with env -u RM_ROLE_UNIT. Not a code break; run them with it unset from a worker.

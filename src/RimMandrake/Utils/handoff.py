@@ -53,6 +53,9 @@ import re
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import bridge_holder  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 LEDGER = os.path.join(ROOT, "infrastructure", "state", "ledger", "events.jsonl")
@@ -109,6 +112,12 @@ def sh(*args, **kw):
                               timeout=kw.get("timeout", 60)).stdout.strip()
     except Exception as e:
         return "<could not run %s: %s>" % (args[0], e)
+
+
+def own_hold(who, me):
+    """Does this `rimflow bridge who` reading name `me`'s own hold? The holder is compared whole, under the name this
+    process holds as: a Relentless process holds as RELENTLESS, and a BENCH hold is the Conductor's."""
+    return bridge_holder.held_by(who) == bridge_holder.identity(me)
 
 
 def seat():
@@ -316,8 +325,7 @@ def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
     # even though `bridge give` only offers BENCH/FOUNDRY; `bridge take` gates on
     # no such list) would have this seat wrongly told IT holds the bridge and
     # must release something it never took.
-    m = re.match(r"^bridge held by (\S+)", who or "")
-    if m and m.group(1) == seat():
+    if own_hold(who, seat()):
         bad.append("BRIDGE still held by %s — release it before rebooting:\n      %s"
                    % (seat(), who.splitlines()[0] if who else "?"))
 

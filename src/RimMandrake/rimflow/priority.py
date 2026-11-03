@@ -77,7 +77,7 @@ BY_GAME = {
     # reassignment instead.
     "bridge":   lambda g, ctx: (g in LIVE
                                 and ctx.get("seat") in (None,) + BRIDGE_SEATS
-                                and ctx.get("bridge_holder") in (None, ctx.get("seat"))),
+                                and ctx.get("bridge_holder") in (None, model.bridge_identity(ctx.get("seat")))),
     "harvest":  lambda g, ctx: bool(ctx.get("harvest_pending")),
     "owner":    lambda g, ctx: ctx.get("mode") != "afk",
 }
@@ -453,7 +453,7 @@ def needs_reason(it, world, seat, ctx=None):
         return ("needs `bridge`, and %s cannot hold the lock — one driver at a "
                 "time (CHARTER.md). Hand it to a live window: "
                 "`rimflow reassign %s --to FOUNDRY`." % (seat, it.id))
-    if it.needs == "bridge" and world.game in LIVE and holder and holder != seat:
+    if it.needs == "bridge" and world.game in LIVE and holder and holder != model.bridge_identity(seat):
         return ("needs `bridge`, and %s is holding it. This is NOT blocked and it "
                 "will NOT reopen on its own — it reopens when %s runs "
                 "`rimflow bridge release`." % (holder, holder))

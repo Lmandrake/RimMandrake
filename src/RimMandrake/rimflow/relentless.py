@@ -1664,7 +1664,8 @@ class Effects(relentless_game.GameFx):
             at = argv.index("--")
             argv[at:at] = sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), [])
         at = argv.index("--")
-        argv[at:at] = ["--setenv", "RIMFLOW_BRIDGE_SEAT=" + BRIDGE_HOLDER]     # its worker's `bridge take` is Relentless's
+        argv[at:at] = ["--setenv", "RIMFLOW_BRIDGE_SEAT=" + BRIDGE_HOLDER,     # its worker's `bridge take` is Relentless's
+                       "--setenv", "WSLENV=RIMFLOW_BRIDGE_SEAT"]               # and a python.exe preflight it runs reads the same name
         at = argv.index("--")
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"

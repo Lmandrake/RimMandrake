@@ -7,7 +7,7 @@ never a pass. Exit 0 only when every row run is PASS (--allow-unmeasured relaxes
 never FAIL). Item FLOWWORKS_NORTHSTAR_SITE_PREP_1.
 
   python3  src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py offline
-  python.exe src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py live --seat FOUNDRY
+  python.exe src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py live --seat BENCH
   python3  src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py backup      # before the swap
   python3  src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py restore <manifest.json>
 
@@ -30,6 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import site_spec as S  # noqa: E402
+import bridge_holder  # noqa: E402
 from northstar_driver import PASS, FAIL, UNMEASURED  # noqa: E402
 from northstar_driver.preflight import Check, check_paused, check_no_modal, check_dev_god, \
     check_loaded_not_zombie, verdict  # noqa: E402
@@ -445,10 +446,10 @@ def p_b1(s, P, sc, seat):
         holder = out.strip() if rc == 0 else None
     if holder is None:
         return row("P-B1", UNMEASURED, "bridge holder unreadable (no BRIDGE file, `rimflow bridge who` failed)")
-    held = [t for t in S.SEATS if re.search(r"\b%s\b" % t, holder)]
-    if held != [seat]:
-        return row("P-B1", FAIL, "bridge held by %s, not %s: %s" % (held or "nobody", seat, holder[:120]))
-    return row("P-B1", PASS, "%d tools; bridge held by %s" % (len(s.tools), seat))
+    held, mine = bridge_holder.held_by(holder), bridge_holder.identity(seat)
+    if held != mine:
+        return row("P-B1", FAIL, "bridge held by %s, not %s: %s" % (held or "nobody", mine, holder[:120]))
+    return row("P-B1", PASS, "%d tools; bridge held by %s" % (len(s.tools), mine))
 
 
 def p_b2(s, P, sc):
@@ -790,7 +791,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("offline", "live", "all"):
         p = sub.add_parser(name)
-        p.add_argument("--seat", default="FOUNDRY", choices=S.SEATS)
+        p.add_argument("--seat", default="BENCH", choices=S.SEATS)
         p.add_argument("--only", nargs="*", help="row ids to run (default: every row)")
         p.add_argument("--fix", action="store_true", help="pause / god-mode fixes, each re-read")
         p.add_argument("--allow-unmeasured", action="store_true")

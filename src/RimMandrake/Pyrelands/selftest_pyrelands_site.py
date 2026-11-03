@@ -34,6 +34,7 @@ for p in (HERE, UTILS):
     if p not in sys.path:
         sys.path.insert(0, p)
 
+os.environ.pop("RIMFLOW_BRIDGE_SEAT", None)   # its fixtures hold as BENCH; a Relentless worker running this suite inherits the name
 import preflight_pyrelands as P          # noqa: E402
 import northstar_site as S               # noqa: E402
 import modset_builder as mb              # noqa: E402

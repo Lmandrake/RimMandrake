@@ -33,6 +33,7 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 _UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
+import bridge_holder  # noqa: E402
 from game_paths import MODS_CONFIG as MODSCONFIG, PLAYER_LOG  # noqa: E402
 
 
@@ -79,6 +80,15 @@ def launch_and_wait(budget=None):
     sys.exit("[4 launch] %s" % r["why"])
 
 
+def my_holder():
+    return bridge_holder.identity((os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT") or "BENCH").upper())
+
+
+def own_hold(who):
+    """Is this `rimflow bridge who` reading this process's own hold?"""
+    return bridge_holder.held_by(who) == my_holder()
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--mod", required=True)
@@ -92,8 +102,8 @@ def main():
     a = ap.parse_args()
 
     rc, who = sh(["python3", "src/RimMandrake/rimflow/cli.py", "bridge", "who"], timeout=120)
-    if "FOUNDRY" not in who:
-        sys.exit("bridge is not held by FOUNDRY: " + who.strip()[:120])
+    if not own_hold(who):
+        sys.exit("bridge is not held by %s: %s" % (my_holder(), who.strip()[:120]))
 
     if not a.no_restart:
         stop_game()

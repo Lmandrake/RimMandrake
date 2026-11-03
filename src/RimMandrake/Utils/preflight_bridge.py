@@ -45,6 +45,7 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
+import bridge_holder  # noqa: E402
 import game_paths as gp  # noqa: E402
 
 MODLISTS = os.path.join(REPO, 'infrastructure', 'state', 'modlists')
@@ -227,9 +228,7 @@ def c_bridge_lease(ctx):
         return PASS(line + (' -- take it before launching: rimflow bridge take --for "<what>"' if not ctx['live'] else ''))
     parts = line.split()
     holder = parts[1] if parts[0].upper() == 'HELD' and len(parts) > 1 else parts[0]
-    seat = ctx['seat'].upper()
-    if seat == 'BENCH' and os.environ.get('RIMFLOW_BRIDGE_SEAT'):   # a Relentless process holds as RELENTLESS, not BENCH
-        seat = os.environ['RIMFLOW_BRIDGE_SEAT'].strip().upper()
+    seat = bridge_holder.identity(ctx['seat'].upper())
     if holder.upper().startswith(seat):
         return PASS('held by this seat: ' + line)
     return FAIL('held by another seat: %s (rimflow bridge who; do offline work)' % line)

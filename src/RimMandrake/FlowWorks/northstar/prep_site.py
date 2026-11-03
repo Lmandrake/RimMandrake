@@ -4,7 +4,7 @@
 Run ONCE per version contract by the seat holding the bridge, on the `flowworks` tier, from a
 `rimworld/start_debug_game_ready` map (>= 200x200):
 
-    python.exe src/RimMandrake/FlowWorks/northstar/prep_site.py --seat FOUNDRY
+    python.exe src/RimMandrake/FlowWorks/northstar/prep_site.py --seat BENCH
     python3    src/RimMandrake/FlowWorks/northstar/prep_site.py --fake     # offline rehearsal
 
 What it does, each write checked for success, and the site state read back independently (steps 2,
@@ -350,7 +350,7 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--seat", default="FOUNDRY", choices=S.SEATS)
+    ap.add_argument("--seat", default="BENCH", choices=S.SEATS)
     ap.add_argument("--rebuild", action="store_true", help="move an existing golden save aside first")
     ap.add_argument("--fake", action="store_true", help="rehearse against FakeFlowWorksGame in a temp dir")
     ap.add_argument("--fake-without-new-tools", action="store_true", help="rehearse today's live tool set")

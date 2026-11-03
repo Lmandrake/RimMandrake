@@ -74,6 +74,7 @@ Stdlib only, and no daemon. Everything is a file in git.
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
+import bridge_holder  # noqa: E402
 import calendar
 import copy
 import fcntl
@@ -198,22 +199,8 @@ SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER
 # the key the Conductor's window also runs under, so a hold keyed on BENCH read as "ours" from both sides: Relentless saw
 # the owner's joint session as itself, and its own hold kept the Conductor's restart waiting 16 min (2026-11-03). Only
 # `bridge` events carry one of these; nobody files for, or runs as, a holder.
-RELENTLESS_HOLDER = "RELENTLESS"
-BRIDGE_HOLDERS = (RELENTLESS_HOLDER,)
-BRIDGE_SEAT_ENV = "RIMFLOW_BRIDGE_SEAT"
-
-
-def bridge_identity(seat):
-    """-> the name `seat` holds the bridge under. A process Relentless started says RIMFLOW_BRIDGE_SEAT=RELENTLESS; that
-    renames BENCH only, so OWNER (`./bridge`, `./game`) and RUNNER stay themselves. A redirected ledger keeps its
-    fixture seats unless it asks (RIMFLOW_BRIDGE_SEAT_IN_TEST): a selftest run by a Relentless worker inherits the
-    variable, and would otherwise read its BENCH fixtures as a stranger's."""
-    name = (os.environ.get(BRIDGE_SEAT_ENV) or "").strip().upper()
-    if seat != "BENCH" or name not in BRIDGE_HOLDERS:
-        return seat
-    if os.environ.get("RIMFLOW_LEDGER") and not os.environ.get("RIMFLOW_BRIDGE_SEAT_IN_TEST"):
-        return seat
-    return name
+RELENTLESS_HOLDER, BRIDGE_HOLDERS, BRIDGE_SEAT_ENV = bridge_holder.RELENTLESS, bridge_holder.HOLDERS, bridge_holder.ENV
+bridge_identity = bridge_holder.identity
 # 🔑 DISPLAY NAME vs SEAT KEY (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE, owner 2026-10-28: "make the Conductor
 # actually be named the Conductor, instead of Bench"). The v3 Conductor keeps seat KEY "BENCH" — every past event,
 # the shard events/BENCH.jsonl, `--seat BENCH`, the role file "AGENT BENCH" and BRIDGE holder names all carry it —

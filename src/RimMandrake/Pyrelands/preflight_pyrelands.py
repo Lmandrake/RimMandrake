@@ -42,6 +42,7 @@ ROOT = os.path.abspath(os.path.join(_HERE, "..", "..", ".."))
 UTILS = os.path.join(ROOT, "src", "RimMandrake", "Utils")
 if UTILS not in sys.path:
     sys.path.insert(0, UTILS)
+import bridge_holder  # noqa: E402
 
 PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
 
@@ -49,8 +50,7 @@ PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
 # Immutable manifests (plan §1.3 / §2.3a). selftest_pyrelands_site.py asserts these equal
 # validation.py's own manifests, so the suite and the pre-flight can never drift apart.
 TIER = "pyrelands"
-SEAT = os.environ.get("AGENT_SEAT") or "FOUNDRY"   # --seat overrides; the 2026-10-11 pilot is BENCH-owned and gate A
-                                                 # 3.8.1 refused a BENCH hold against this hard-coded FOUNDRY
+SEAT = os.environ.get("AGENT_SEAT") or "BENCH"     # --seat overrides; the hold it must match is bridge_holder.identity(SEAT)
 BIOME = "RM_Pyrelands"
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 BIOME_KEY = "Pyrelands"                    # RM_BiomesSettings.enabled key
@@ -284,16 +284,32 @@ class Env(object):
 
 # ------------------------------------------------------------------ gate A (session)
 
+def c_bridge_released(env):
+    def f():
+        # Under WSL with the seat named, exactly as a1_bridge_lock asks: a Windows interpreter carries no AGENT_SEAT
+        # (WSL does not export it), so rimflow could not tell whose hold to release and the bridge stayed held.
+        rimflow = ["env", *bridge_holder.rimflow_env(SEAT), "python3", "src/RimMandrake/rimflow/cli.py", "bridge"]
+        env.run_wsl(rimflow + ["release"], timeout=120)
+        rc, txt = env.run_wsl(rimflow + ["who"], timeout=120)
+        if rc is None:
+            raise Unmeasured("rimflow bridge who did not run: %s" % txt)
+        held = re.search(r"bridge held by (\w+)", txt or "")
+        mine = bridge_holder.identity(SEAT)
+        return (FAIL if held and held.group(1) == mine else PASS), (txt or "").strip()[:160], "not held by %s" % mine
+    return _row("C.bridge_released", "bridge released", f)
+
+
 def a1_bridge_lock(env):
     def f():
-        rc, out = env.run_wsl(["env", "AGENT_SEAT=" + SEAT, "python3", "src/RimMandrake/rimflow/cli.py", "bridge", "who"], timeout=120)
+        rc, out = env.run_wsl(["env", *bridge_holder.rimflow_env(SEAT), "python3", "src/RimMandrake/rimflow/cli.py", "bridge", "who"], timeout=120)
         if rc is None:
             raise Unmeasured("rimflow bridge who did not run: %s" % out)
         m = re.search(r"bridge held by (\w+)", out)
         held = m.group(1) if m else ("free" if "free" in out.lower() else None)
         if held is None:
             raise Unmeasured("bridge who output not understood: %s" % out.strip()[:160])
-        return (PASS if held == SEAT else FAIL), held, SEAT
+        mine = bridge_holder.identity(SEAT)
+        return (PASS if held == mine else FAIL), held, mine
     return _row("3.8.1", "bridge lock held by this seat", f)
 
 
@@ -812,17 +828,7 @@ def gate_c(s, env, snapshot_dir=None, storyteller_before=None, restore_tier=Fals
         return (PASS if storyteller_before in str(now) else FAIL), now, storyteller_before
     rows.append(_row("C.storyteller_restored", "storyteller restored", c_storyteller))
 
-    def c_bridge():
-        # Under WSL with the seat named, exactly as a1_bridge_lock asks: a Windows interpreter carries no AGENT_SEAT
-        # (WSL does not export it), so rimflow could not tell whose hold to release and the bridge stayed held.
-        rimflow = ["env", "AGENT_SEAT=" + SEAT, "python3", "src/RimMandrake/rimflow/cli.py", "bridge"]
-        env.run_wsl(rimflow + ["release"], timeout=120)
-        rc, txt = env.run_wsl(rimflow + ["who"], timeout=120)
-        if rc is None:
-            raise Unmeasured("rimflow bridge who did not run: %s" % txt)
-        held = re.search(r"bridge held by (\w+)", txt or "")
-        return (FAIL if held and held.group(1) == SEAT else PASS), (txt or "").strip()[:160], "not held by %s" % SEAT
-    rows.append(_row("C.bridge_released", "bridge released", c_bridge))
+    rows.append(c_bridge_released(env))
 
     def c_tier():
         if not restore_tier:
@@ -872,7 +878,7 @@ def main(argv=None):
     ap.add_argument("--storyteller-before", help="gate C: storyteller to restore (gate A evidence)")
     ap.add_argument("--restore-tier", action="store_true", help="gate C: game is CLOSED; restore the full list")
     ap.add_argument("--evidence", help="write the rows JSON here")
-    ap.add_argument("--seat", help="seat that must hold the bridge (default $AGENT_SEAT, else FOUNDRY)")
+    ap.add_argument("--seat", help="seat that must hold the bridge (default $AGENT_SEAT, else BENCH; RELENTLESS names a Relentless hold)")
     a = ap.parse_args(argv)
     global SEAT
     if a.seat:

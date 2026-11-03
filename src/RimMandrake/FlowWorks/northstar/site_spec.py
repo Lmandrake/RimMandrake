@@ -33,7 +33,7 @@ TIER = "flowworks"
 GOLDEN_NAME = "NS_FlowWorks_TrialSite_v1"
 REPO_SIDECAR_DIR = os.path.join(ROOT, "infrastructure", "state", "northstar")
 DLL_REL = os.path.join("Assemblies", "RimMandrakeFlowWorks.dll")
-SEATS = ("BENCH", "FOUNDRY")
+SEATS = ("BENCH", "FOUNDRY", "RELENTLESS")   # who `--seat` may name: RELENTLESS holds the bridge, it is no ledger seat
 
 # --------------------------------------------------------------------- Mod Settings
 # Shipped defaults, MEASURED from every settings class's static initialisers (one key per class below).

@@ -540,12 +540,13 @@ class GameFx(object):
         return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
 
     def prove_launch(self, item):
+        import model
         import relentless
         os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
         with open(os.path.join(self.base, "live", "round.out"), "a", encoding="utf-8") as out:
             p = subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py"),
                                   "round", "--item", item], cwd=self.books,
-                                 env=dict(os.environ, RELENTLESS_ROOT=self.base,
+                                 env=dict(model.bridge_holder.process_env(), RELENTLESS_ROOT=self.base,
                                           PATH=relentless.windows_path(os.environ.get("PATH", ""))),
                                  stdout=out, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
         return p.pid

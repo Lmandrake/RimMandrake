@@ -16,6 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RIM = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 sys.path.insert(0, RIM)
+REPO = os.path.dirname(os.path.dirname(RIM))
 CLI = os.path.join(HERE, "cli.py")
 FAILS = []
 
@@ -160,6 +161,8 @@ def identity_rows(g):
 def wiring_rows():
     """Each door Relentless opens the bridge through carries the name; a door without it silently holds as BENCH again."""
     os.environ.pop("RIMFLOW_LEDGER", None)
+    os.environ.pop("RIMFLOW_BRIDGE_SEAT", None)     # a worker running this suite inherits the name: each door must say it itself
+    os.environ.pop("WSLENV", None)
     import relentless
     import relentless_live
     from rimflow import model
@@ -185,8 +188,19 @@ def wiring_rows():
         argv = run.call_args.args[0]
         at = argv.index("RIMFLOW_BRIDGE_SEAT=RELENTLESS") if "RIMFLOW_BRIDGE_SEAT=RELENTLESS" in argv else -1
         check(0 < at < argv.index("--") and argv[at - 1] == "--setenv", "a worker's unit says RELENTLESS, before the `--`")
+        at = argv.index("WSLENV=RIMFLOW_BRIDGE_SEAT") if "WSLENV=RIMFLOW_BRIDGE_SEAT" in argv else -1
+        check(0 < at < argv.index("--") and argv[at - 1] == "--setenv", "and hands the name to a python.exe child")
     finally:
         shutil.rmtree(d, ignore_errors=True)
+
+    log = os.path.join(tempfile.mkdtemp(prefix="rf_seat_p_"), "proof.log")
+    rc = relentless_live.Fx.run_proof(types.SimpleNamespace(books=tempfile.gettempdir()), "printenv RIMFLOW_BRIDGE_SEAT", log, 30)
+    check(rc == 0 and "RELENTLESS" in open(log, encoding="utf-8").read(), "a live proof the supervisor runs says RELENTLESS")
+    import relentless_game
+    with mock.patch.object(subprocess, "Popen") as popen:
+        d2 = tempfile.mkdtemp(prefix="rf_seat_r_")
+        relentless_game.GameFx.prove_launch(types.SimpleNamespace(base=d2, books="/nowhere"), "I")
+    check(popen.call_args.kwargs["env"].get("RIMFLOW_BRIDGE_SEAT") == "RELENTLESS", "the live round the supervisor starts says RELENTLESS")
 
     shard = relentless.SHARD % "RELENTLESS"
     calls = []
@@ -201,6 +215,177 @@ def wiring_rows():
     check(any(shard in a for a in calls), "flush publishes the holder's shard: %s" % calls[:1])
 
 
+def p_b1_says(g, who, seat, mirror):
+    """preflight_flowworks.p_b1, the FlowWorks seat check prep_site.py refuses on, against the real mirror the cli wrote."""
+    return g.py(who, "import sys, types; sys.path.insert(0, %r); import preflight_flowworks as P\n"
+                     "s = types.SimpleNamespace(tools=['t']); paths = types.SimpleNamespace(bridge_file=%r, run=None)\n"
+                     "r = P.p_b1(s, paths, None, %r); print(r.status if hasattr(r, 'status') else r)"
+                     % (os.path.join(RIM, "FlowWorks", "northstar"), mirror, seat)).split("\n")[-1]
+
+
+def lease_says(g, who, mirror):
+    """preflight_bridge's lease row."""
+    return g.py(who, "import sys; sys.path.insert(0, %r); import preflight_bridge as P; P.BRIDGE_FILE = %r\n"
+                     "r = P.c_bridge_lease({'seat': 'BENCH', 'live': True}); print(r.status if hasattr(r, 'status') else r[0], r.reason if hasattr(r, 'reason') else r[1])" % (os.path.join(RIM, "Utils"), mirror))
+
+
+def wsl_says(g, who):
+    """Pyrelands' gate-A and gate-C rows, through a run_wsl that drops the caller's variables as wsl.exe does."""
+    return g.py(who, """import os, subprocess, sys
+sys.path.insert(0, %r)
+import preflight_pyrelands as P
+class Env:
+    def run_wsl(self, cmd, timeout=None):
+        e = {k: v for k, v in os.environ.items() if k not in ('RIMFLOW_SEAT', 'AGENT_SEAT', 'RIMFLOW_BRIDGE_SEAT')}
+        r = subprocess.run(cmd, env=e, capture_output=True, text=True, timeout=timeout, cwd=%r)
+        return r.returncode, r.stdout + r.stderr
+print(P.a1_bridge_lock(Env()).status)
+""" % (os.path.join(RIM, "Pyrelands"), REPO))
+
+
+def spelled_says(g, who, holder):
+    """What Pyrelands hands wsl.exe, and whether gate C sees a hold that its release did not free."""
+    return g.py(who, """import sys
+sys.path.insert(0, %r)
+import preflight_pyrelands as P
+class Env:
+    cmds = []
+    def run_wsl(self, cmd, timeout=None):
+        self.cmds.append(cmd)
+        return 0, 'bridge held by %s since x'
+e = Env()
+print(P.a1_bridge_lock(e).status, P.c_bridge_released(e).status, all('RIMFLOW_BRIDGE_SEAT=RELENTLESS' in c for c in e.cmds))
+""" % (os.path.join(RIM, "Pyrelands"), holder))
+
+
+def window_says(g, who, holder):
+    """The queue's bridge window: is a needs=bridge item offered, and what does the refusal say."""
+    return g.py(who, "import types; from rimflow import priority as p\n"
+                     "w = types.SimpleNamespace(game='UP', bridge_holder=%r); it = types.SimpleNamespace(needs='bridge', id='I')\n"
+                     "print(p.satisfiable(it, w, seat='BENCH'), '|', p.needs_reason(it, w, 'BENCH'))" % holder)
+
+
+def holder_check_rows(g):
+    """Every check that used to read the seat alone, against a hold of each kind. A door still reading the seat says
+    Relentless's own hold is a stranger's, or (the defect this item names) the Conductor's hold is its own."""
+    mirror = os.path.join(g.tmp, "BRIDGE")
+    g.rf("conductor", "bridge", "release", "--mine")
+    g.rf("relentless", "bridge", "release", "--mine")
+
+    rc, out = g.rf("relentless", "bridge", "take", "--for", "RELENTLESS row: names BENCH in its purpose", "--force")
+    check(rc == 0 and g.holder() == "RELENTLESS", "Relentless holds: %s" % out[:80])
+    check(p_b1_says(g, "relentless", "BENCH", mirror) == "PASS", "p_b1 BENCH from Relentless passes on its own hold")
+    check(p_b1_says(g, "relentless", "RELENTLESS", mirror) == "PASS", "p_b1 --seat RELENTLESS passes on its own hold")
+    check(p_b1_says(g, "conductor", "BENCH", mirror) == "FAIL", "p_b1 from the Conductor refuses Relentless's hold, BENCH in the purpose or not")
+    check("held by this seat" in lease_says(g, "relentless", mirror), "preflight_bridge's lease from Relentless reads its own hold as its own")
+    check("another seat" in lease_says(g, "conductor", mirror), "preflight_bridge's lease from the Conductor reads Relentless's as another's")
+    says = wsl_says(g, "relentless")
+    check(says == "PASS", "Pyrelands gate A from Relentless passes on its own hold: %s" % says[:90])
+    says = wsl_says(g, "conductor")
+    check(says == "FAIL", "Pyrelands gate A from the Conductor refuses Relentless's hold: %s" % says[:90])
+    says = window_says(g, "relentless", "RELENTLESS")
+    check(says.startswith("True"), "a bridge item is offered to Relentless on its own hold: %s" % says[:90])
+    check(window_says(g, "conductor", "RELENTLESS").startswith("False"), "and is not offered to the Conductor on it")
+    check("RELENTLESS is holding" in window_says(g, "conductor", "RELENTLESS"), "whose reason names Relentless")
+    code = "import sys; sys.path.insert(0, %r); import handoff; print(handoff.own_hold(%%r, 'BENCH'))" % os.path.join(RIM, "Utils")
+    held = "driver lock: FREE\nbridge held by %s since x"
+    check(g.py("relentless", code % (held % "RELENTLESS")) == "True", "handoff from Relentless sees its own hold")
+    check(g.py("conductor", code % (held % "RELENTLESS")) == "False", "handoff from the Conductor does not")
+    check(g.py("conductor", code % "bridge FREE") == "False", "handoff reads a free bridge as nobody's")
+    code = "import sys; sys.path[:0] = [%r, %r]; import live_session as L; print(L.own_hold(%%r))" % (os.path.join(RIM, "Utils"), os.path.join(RIM, "Utils", "northstar_driver"))
+    check(g.py("relentless", code % (held % "RELENTLESS")) == "True", "live_session from Relentless sees its own hold")
+    check(g.py("relentless", code % (held % "BENCH")) == "False", "live_session from Relentless refuses the Conductor's")
+
+    rc, out = g.rf("conductor", "bridge", "take", "--for", "the joint session", "--force")
+    check(rc == 0 and g.holder() == "BENCH", "the Conductor holds: %s" % out[:80])
+    check(p_b1_says(g, "relentless", "BENCH", mirror) == "FAIL", "p_b1 BENCH from Relentless refuses the owner's joint session (the defect)")
+    check(p_b1_says(g, "relentless", "RELENTLESS", mirror) == "FAIL", "p_b1 --seat RELENTLESS refuses it too")
+    check(p_b1_says(g, "conductor", "BENCH", mirror) == "PASS", "p_b1 from the Conductor passes on his hold")
+    check("another seat" in lease_says(g, "relentless", mirror), "preflight_bridge's lease from Relentless reads his hold as another's")
+    check("held by this seat" in lease_says(g, "conductor", mirror), "preflight_bridge's lease from the Conductor reads his as his")
+    says = wsl_says(g, "relentless")
+    check(says == "FAIL", "Pyrelands gate A from Relentless refuses his hold: %s" % says[:90])
+    says = wsl_says(g, "conductor")
+    check(says == "PASS", "Pyrelands gate A from the Conductor passes on his hold: %s" % says[:90])
+    says = window_says(g, "relentless", "BENCH")
+    check(says.startswith("False"), "a bridge item is NOT offered to Relentless on his hold: %s" % says[:90])
+    check("BENCH is holding" in says, "and the reason names him: %s" % says[:90])
+    check(window_says(g, "conductor", "BENCH").startswith("True"), "it is offered to the Conductor on his own")
+    check(g.py("relentless", code % (held % "BENCH")) == "False", "live_session from Relentless still refuses it")
+    code = "import sys; sys.path.insert(0, %r); import handoff; print(handoff.own_hold(%%r, 'BENCH'))" % os.path.join(RIM, "Utils")
+    check(g.py("relentless", code % (held % "BENCH")) == "False", "handoff from Relentless does not call his hold its own")
+    check(g.py("conductor", code % (held % "BENCH")) == "True", "handoff from the Conductor does")
+
+    env = dict(g.base, RIMFLOW_SEAT="BENCH")
+    env.pop("RIMFLOW_BRIDGE_SEAT", None)
+    for script, argv in (("prep_site.py", ["--seat", "RELENTLESS", "--help"]),
+                         ("preflight_flowworks.py", ["live", "--seat", "RELENTLESS", "--help"])):
+        r = subprocess.run([sys.executable, os.path.join(RIM, "FlowWorks", "northstar", script), *argv], env=env,
+                           capture_output=True, text=True, timeout=120, cwd=g.tmp)
+        check(r.returncode == 0, "%s takes --seat RELENTLESS: %s" % (script, r.stderr[-120:]))
+
+    # gate C's release, end to end under each name: Relentless releasing must free its own hold, not cross his
+    g.rf("relentless", "bridge", "take", "--for", "gate C", "--force")
+    rel = g.py("relentless", """import os, subprocess, sys
+sys.path.insert(0, %r)
+import preflight_pyrelands as P
+class Env:
+    def run_wsl(self, cmd, timeout=None):
+        e = {k: v for k, v in os.environ.items() if k not in ('RIMFLOW_SEAT', 'AGENT_SEAT', 'RIMFLOW_BRIDGE_SEAT')}
+        r = subprocess.run(cmd, env=e, capture_output=True, text=True, timeout=timeout, cwd=%r)
+        return r.returncode, r.stdout + r.stderr
+print(P.c_bridge_released(Env()).status)
+""" % (os.path.join(RIM, "Pyrelands"), REPO))
+    check(rel == "PASS" and g.holder() == "None", "Pyrelands gate C frees Relentless's own hold: %s %s" % (rel[:80], g.holder()))
+    rows = [json.loads(x) for x in open(os.path.join(g.tmp, "events", "RELENTLESS.jsonl"), encoding="utf-8")]
+    check(rows and rows[-1].get("state") == "released" and not rows[-1].get("override"), "and that release is Relentless's own, crossing nobody: %s" % (rows[-1:],))
+    check(spelled_says(g, "relentless", "RELENTLESS") == "PASS FAIL True", "Pyrelands spells the name out for wsl.exe, and a hold its release left is a FAIL: %s" % spelled_says(g, "relentless", "RELENTLESS"))
+    check(spelled_says(g, "conductor", "BENCH") == "PASS FAIL False", "the Conductor's stays bare: %s" % spelled_says(g, "conductor", "BENCH"))
+
+    # the role-file branch of the ambient seat: a window with no seat variable, only its session role file
+    role = os.path.join(g.tmp, ".claude", "session_roles")
+    os.makedirs(role, exist_ok=True)
+    with open(os.path.join(role, "sid"), "w", encoding="utf-8") as f:
+        f.write("AGENT-BENCH\n")
+    ambient = "from rimflow import model as m; m.ROOT = %r; print(m.ambient_window_seat())" % g.tmp
+    check(g.py("relentless", ambient, RIMFLOW_SEAT="", AGENT_SEAT="", CLAUDE_SESSION_ID="sid") == "RELENTLESS", "a role-file seat under Relentless reads RELENTLESS")
+    check(g.py("conductor", ambient, RIMFLOW_SEAT="", AGENT_SEAT="", CLAUDE_SESSION_ID="sid") == "BENCH", "and BENCH in his window")
+
+    # host_guard's own door, the one `./game` and bridge tools reach without the cli's rename
+    lock = os.path.join(g.tmp, "guard.lock")
+    guard = ("import json; from rimflow import host_guard as h; r = h.acquire('BENCH', 'x', path=%r); "
+             "print(r.get('ok'), json.load(open(%r)).get('seat') if r.get('ok') else r.get('why'))" % (lock, lock))
+    says = g.py("relentless", guard, RM_DRIVER_PID="")
+    check(says.endswith("True RELENTLESS"), "host_guard.acquire under Relentless writes RELENTLESS: %s" % says[-120:])
+
+    # a shard of a holder: the ledger routes to it, and a torn one names the repair flag
+    sh = "from rimflow import model as m; print(m.shard_path('RELENTLESS', %r).split('/')[-1])" % g.base["RIMFLOW_LEDGER"]
+    check(g.py("conductor", sh) == "RELENTLESS.jsonl", "a holder has a shard")
+    d = os.path.join(g.tmp, "torn", "events")
+    os.makedirs(d)
+    torn = os.path.join(d, "RELENTLESS.jsonl")
+    with open(torn, "w", encoding="utf-8") as f:
+        f.write('{"seat":\n{"seat": "RELENTLESS"}\n')
+    says = g.py("conductor", "from rimflow import model as m\ntry:\n    m.read(%r)\nexcept m.LedgerError as e:\n    print(e)" % torn)
+    check("--seat RELENTLESS" in says, "a torn holder shard names its repair flag: %s" % says[-120:])
+    r = subprocess.run([sys.executable, os.path.join(RIM, "Utils", "repair_torn_ledger.py"), "--seat", "RELENTLESS", "--help"], env=dict(g.base),
+                       capture_output=True, text=True, timeout=60, cwd=g.tmp)
+    check(r.returncode == 0, "and the repair tool takes that flag: %s" % r.stderr[-90:])
+
+    env_code = "import bridge_holder as B, json; e = B.process_env({'WSLENV': 'X/p'}); print(e['RIMFLOW_BRIDGE_SEAT'], e['WSLENV']); print(B.process_env(e)['WSLENV'])"
+    check(g.py("conductor", "import sys; sys.path.insert(0, %r)\n%s" % (os.path.join(RIM, "Utils"), env_code)).split() ==
+          ["RELENTLESS", "X/p:RIMFLOW_BRIDGE_SEAT", "X/p:RIMFLOW_BRIDGE_SEAT"], "process_env names the holder and passes it to python.exe, once")
+    wsl = "import sys; sys.path.insert(0, %r); import bridge_holder as B; print(' '.join(B.rimflow_env(%%r)))" % os.path.join(RIM, "Utils")
+    check(g.py("relentless", wsl % "BENCH") == "AGENT_SEAT=BENCH RIMFLOW_BRIDGE_SEAT=RELENTLESS", "a wsl.exe child of Relentless is spelled out")
+    check(g.py("conductor", wsl % "RELENTLESS") == "AGENT_SEAT=BENCH RIMFLOW_BRIDGE_SEAT=RELENTLESS", "and --seat RELENTLESS says the same, BENCH as the ledger seat")
+    check(g.py("conductor", wsl % "BENCH") == "AGENT_SEAT=BENCH", "the Conductor's stays bare")
+    mirror_read = "import sys; sys.path.insert(0, %r); import bridge_holder as B; print(B.held_by(%%r))" % os.path.join(RIM, "Utils")
+    for text, want in (("# head\nHELD    RELENTLESS    since x\nfor     BENCH work\n", "RELENTLESS"),
+                       ("# head\nFREE    since x    (released by BENCH)\n", "None"),
+                       ("BENCH holds the bridge (fake)\n", "BENCH"), ("", "None")):
+        check(g.py("conductor", mirror_read % text) == want, "held_by(%r) is %s" % (text[:30], want))
+
+
 def main():
     g = Rig()
     try:
@@ -208,6 +393,7 @@ def main():
         lock_rows(g)
         holder_is_not_a_seat(g)
         identity_rows(g)
+        holder_check_rows(g)
         wiring_rows()
     finally:
         shutil.rmtree(g.tmp, ignore_errors=True)

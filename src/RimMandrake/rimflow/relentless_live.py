@@ -664,7 +664,8 @@ class Fx(object):
             f.write("$ %s\n" % proof)
             f.flush()
             p = subprocess.Popen(proof, shell=True, cwd=self.books, stdout=f, stderr=subprocess.STDOUT,
-                                 stdin=subprocess.DEVNULL, executable="/bin/bash", start_new_session=True)
+                                 stdin=subprocess.DEVNULL, executable="/bin/bash", start_new_session=True,
+                                 env=model.bridge_holder.process_env())
             try:
                 return p.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
