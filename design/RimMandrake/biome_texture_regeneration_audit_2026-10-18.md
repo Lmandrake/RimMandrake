@@ -38,7 +38,7 @@ Every picture on disk is hashed (sha256) and looked up in the art ledger. First 
 | DONOR | the exact bytes are a ledger variant of kind `donor` (vanilla or donor-mod extract); donor wins even when the same bytes also carry an artpipe record |
 | REGEN | the bytes are an artpipe render, an `art install` result or an `artpipe-collect` |
 | DERIVED | bytes made by one of our scripts (mirror, flip, composite) |
-| UNPROVEN | in the repo, but the ledger holds no artpipe, install or donor record of those exact bytes. NOT counted as regenerated. Split into: owner sheet decided (the stem appears in a `decisions.json`, so he ruled on it and the live picture is probably his pick installed by older tooling), commit cites install (git log of the texture names install, regen, render, sheet), and no record |
+| UNPROVEN | in the repo, but the ledger holds no artpipe, install or donor record of those exact bytes. NOT counted as regenerated. Split into: owner sheet decided (the stem appears in a `decisions.json`, a stem match only: it does NOT show the live picture is his pick; see `texregen_unproven_adjudication.md`), commit cites install (git log of the texture names install, regen, render, sheet), and no record |
 | EXTERNAL | the def's texPath resolves to no file under any `src/` Textures folder: vanilla Core or DLC, or a donor mod's own folder. Counted as borrowed, never ours |
 
 A def is classed by its worst picture. UNMEASURED: defs whose texPath is inherited from a `ParentName` or set in C#;
@@ -91,7 +91,9 @@ Instrument checks made before trusting any number:
 | Weeping Stones | 50 | 34 | 0 | 0 | 0 | 7 | 5 | 4 | 68% |
 | **all** | **919** | **664** | **1** | **72** | **13** | **125** | **30** | **14** | **72%** |
 
-"Unproven, sheet decided" is mostly art the owner picked on a review sheet; "no record" needs adjudication. The seabed
+"Unproven, sheet decided" only means the stem appears in some `decisions.json`; traced to the commit that brought the
+bytes in, most of it is NOT his pick (61 of 121 such defs are donor stand-ins, 2026-11-03). Every UNPROVEN picture now
+has a verdict: `design/RimMandrake/texregen_unproven_adjudication.md` (`TEXREGEN_UNPROVEN_ASK_THE_SHEETS`). The seabed
 floors and RM_ChillCrater have no roster rows. Roster rows include the RSW_ and RUT_ ports a biome casts, so this view
 covers the twins' biome-specific animals and plants.
 
