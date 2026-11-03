@@ -828,6 +828,38 @@ TIERS["gizkastowaway"] = {
 }
 
 
+def mod_env(rel):
+    """(EXTRA_IDS, FORBID) of a mod's `modcheck_env.py`, the per-mod test environment kept beside its validation.py.
+    Read with ast as data (never imported, so a broken mod file cannot break the tier table); a missing or
+    malformed file raises by name, because a tier that silently lost its donors would test the wrong list."""
+    import ast
+    path = os.path.join(ROOT, rel)
+    with open(path, encoding="utf-8") as f:
+        tree = ast.parse(f.read(), path)
+    vals = {}
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            vals[node.targets[0].id] = ast.literal_eval(node.value)
+    if not vals.get("EXTRA_IDS"):
+        raise RuntimeError("%s: no EXTRA_IDS list" % path)
+    return [p.lower() for p in vals["EXTRA_IDS"]], [p.lower() for p in vals.get("FORBID", [])]
+
+
+# MODCHECK_DONOR_ENVIRONMENTS_1: the two mature mods whose donor environment was never composed. Their lists live
+# beside their validation.py (modcheck_env.py); these tiers only carry them, so `modcheck run Armoury` and
+# `modset_builder --tier armoury` load the same mods.
+for _tier, _rel, _why in (
+        ("armoury", "src/RimStarWars/Armoury/modcheck_env.py",
+         "MODCHECK_DONOR_ENVIRONMENTS_1: Armoury's modcheck environment, the closure of its own modDependencies. "
+         "ModularWeapons2 is cut (forbidden here) and KotORCore is absorbed, so neither donor loads."),
+        ("wreckedmachines", "src/RimMandrake/WreckedMachines/modcheck_env.py",
+         "MODCHECK_DONOR_ENVIRONMENTS_1: Wrecked Machines' modcheck environment, VFEFactory and its VE Framework. "
+         "No other VE mod is needed: VFEFactory's auto-process generator reads only vanilla and its own defs.")):
+    _ids, _forbid = mod_env(_rel)
+    TIERS[_tier] = {"why": _why, "want": [BRIDGE] + _ids, "dlc": True, "forbid": _forbid,
+                    "modcheck_closure": True, "env_file": _rel}
+
+
 TIERS["acc_green_min"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, HugeThings (Titanic Creatures merged in), "
            "Warcasket, GizkaStowaway, OasisMaker, ScarlandsLadder, LeaningScrub, "

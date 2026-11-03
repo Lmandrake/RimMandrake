@@ -1,0 +1,9 @@
+# staging: each mod on its OWN composed list, the suite run by modcheck (it swaps to MINIMAL, composes TIERS[<mod>] from
+# the mod's modcheck_env.py, deploys, and the caller restarts the game between the swap and the first session):
+#   python.exe src/RimMandrake/Utils/modcheck/cli.py run Armoury --full --seat BENCH
+#   python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --full --seat BENCH
+# Each proof below is read on the game that run left up; the verify half (env_verify_check.py) reads UNMEASURED until
+# that run has recorded its verdict at the mod's current hash.
+live-mods: Armoury, WreckedMachines
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rsw.armoury --needs ebsg.framework --needs adaptive.storage.framework --without kaitorisenkou.modularweapons2 --has ThingDef/guy762_gamorreanaxe --has SoundDef/kotorsound_GonkDroid && python3 src/RimMandrake/Utils/live_log_check.py --absent SetIngredients --absent RecipeDefGenerator && python3 src/RimMandrake/Utils/modcheck/env_verify_check.py Armoury
+live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --needs mandrake.rm.wreckedmachines --needs vanillaexpanded.vfefactory --has ThingDef/RM_WM_AutomatedSmelter_Kludged --has ThingDef/RM_WM_AutomatedSmelter_Repaired && python3 src/RimMandrake/Utils/live_log_check.py --absent SetIngredients --absent RecipeDefGenerator --absent GenerateAutoProcesses && python3 src/RimMandrake/Utils/modcheck/env_verify_check.py WreckedMachines

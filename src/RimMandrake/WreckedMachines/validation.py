@@ -34,6 +34,9 @@ dependency, OskarPotocki.VanillaFactionsExpanded.Core) MUST be on this
 mod's minimal test environment alongside `mandrake.rm.wreckedmachines`
 itself, or every ThingDef below fails to load with a "type not found"
 Config error rather than the failures these components are built to catch.
+That list is `modcheck_env.py` beside this file (MODCHECK_DONOR_ENVIRONMENTS_1),
+composed by `modcheck run` through TIERS["wreckedmachines"]; it says why no
+other VE mod is needed.
 `petetimessix.researchreinvented` is MayRequire-guarded (the Analyse
 special-opportunity def) and is NOT required for anything this suite
 exercises.

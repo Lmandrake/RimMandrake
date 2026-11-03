@@ -375,8 +375,14 @@ def compose_test_list(package_ids, config_path=None):
     MODS_CONFIG = config_path
     with open(MODS_CONFIG, encoding="utf-8") as f:
         xml = f.read()
-    live = set(re.findall(r"<li>([^<]+)</li>", xml))
-    add = [p for p in package_ids if p not in live]
+    # packageIds compare case-blind, as RimWorld's do: MINIMAL spells `Neronix17.OuterRim.Core` while About.xml
+    # dependencies arrive lowercased, and a case-sensitive test wrote the same mod twice (MODCHECK_DONOR_ENVIRONMENTS_1)
+    live = {p.strip().lower() for p in re.findall(r"<li>([^<]+)</li>", xml)}
+    add = []
+    for p in package_ids:
+        if p.lower() not in live:
+            live.add(p.lower())
+            add.append(p)
     if add:
         lis = "".join("    <li>%s</li>\n" % p for p in add)
         xml = xml.replace("</activeMods>", lis + "  </activeMods>")
@@ -386,8 +392,8 @@ def compose_test_list(package_ids, config_path=None):
         os.replace(tmp, MODS_CONFIG)
     # read back -- ModsConfig is the instrument for the NEXT load
     with open(MODS_CONFIG, encoding="utf-8") as f:
-        now = set(re.findall(r"<li>([^<]+)</li>", f.read()))
-    missing = [p for p in package_ids if p not in now]
+        now = {p.strip().lower() for p in re.findall(r"<li>([^<]+)</li>", f.read())}
+    missing = [p for p in package_ids if p.lower() not in now]
     if missing:
         raise RuntimeError("compose_test_list read-back missing %s" % missing)
     return add

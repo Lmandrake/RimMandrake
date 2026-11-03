@@ -53,11 +53,12 @@ suite to describe the shipped game -- if it is present, the weapons/armour
 under test render and behave with an inert donor mod alongside them, which
 proves nothing this suite claims to prove.
 
-`guy762.MM.KotORCore` (already this mod's own declared `<modDependencies>`
-entry, `About/About.xml:16`) remains a REAL dependency, unrelated to MW2:
-it is where every `kotorsound_*` SoundDef this mod's absorbed content plays
-actually lives (`Kotor_Misc_Sounds.xml:34`). The min16 test environment
-must still add that one packageId alongside `mandrake.rsw.armoury` itself.
+`guy762.MM.KotORCore` is not a dependency either: it was absorbed into this
+mod (WEAPONS_DONOR_RETIREMENT_1, 2026-09-19), and every `kotorsound_*`
+SoundDef now lives in `Defs/Absorbed_KotorCore/SoundDefs/`. The test
+environment is `modcheck_env.py` beside this file (MODCHECK_DONOR_ENVIRONMENTS_1):
+the closure of About.xml's `<modDependencies>`, composed by `modcheck run`
+through TIERS["armoury"], which forbids ModularWeapons2.
 
 GROUNDING PER MECHANISM (source read, not guessed):
   - `CompExtraSounds/HarmonyCompExtraSounds.cs` -- Harmony id
