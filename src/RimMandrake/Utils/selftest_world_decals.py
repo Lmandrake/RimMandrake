@@ -190,10 +190,10 @@ def check_math(d):
         if errs:
             break
         # outer reach: glyph corner must stay inside the hex's inscribed circle (apothem ~0.537 tile spacings for an
-        # equal-area hex), so a glyph never hangs over a neighbouring tile's land
+        # hex whose spacing is 1.612 x its circumradius, as the C# measures it), so a glyph never hangs over a neighbour
         reach = max(math.hypot(x, y) for x, y in pts) + d.size * 0.5 * math.sqrt(2)
-        if reach > 0.62:
-            errs.append("tile %d: a glyph reaches %.3f tile spacings from the centre (> 0.62)" % (t, reach)); break
+        if reach > 0.537:
+            errs.append("tile %d: a glyph reaches %.3f tile spacings from the centre (> the hex apothem 0.537)" % (t, reach)); break
         for i in range(n):
             for j in range(i + 1, n):
                 sep = max(abs(pts[i][0] - pts[j][0]), abs(pts[i][1] - pts[j][1]))
