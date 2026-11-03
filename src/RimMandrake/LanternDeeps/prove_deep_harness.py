@@ -1,8 +1,8 @@
 """Proof of DEEP_LAYER_BELT_HARNESS_1: the LanternDeeps Deep-only proofs get a real Lantern Deep pocket map.
 
     python3 src/RimMandrake/LanternDeeps/prove_deep_harness.py --offline
-    python.exe "$(wslpath -w src/RimMandrake/LanternDeeps/prove_deep_harness.py)" --clause A1 < /dev/null
-    python.exe "$(wslpath -w src/RimMandrake/LanternDeeps/prove_deep_harness.py)" --clause A2 < /dev/null
+    python.exe src/RimMandrake/LanternDeeps/prove_deep_harness.py --clause A1 < /dev/null
+    python.exe src/RimMandrake/LanternDeeps/prove_deep_harness.py --clause A2 < /dev/null
 
 Exit 0 = the clause holds, 1 = it does not, 2 = unmeasured (no game, no map).
 
