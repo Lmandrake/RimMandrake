@@ -86,6 +86,18 @@ with tempfile.TemporaryDirectory() as tmp:
         check("A2 with no STARTUP_TIMING FAILS", go("A2") == (1, False))
         stage(WITH, proc=dict(base_proc, gpu_counters=0), cfg_age=pac.LAUNCH_SLACK_S + 60)
         check("A1 staging + instrument reasons together FAIL", go("A1") == (1, False))
+        # A1/A2 are sampled at the MAIN MENU after the load: a launch that has since started or loaded a game
+        # (VRAM and private bytes swollen by a map) must never record. Markers are vanilla's own log lines
+        # (decomp rw16 Verse/Game.cs InitNewGame, Verse/SavedGameLoaderNow.cs); seen in a real Player-prev.log.
+        later = dt.timedelta(hours=2).total_seconds()
+        for marker in ("Initializing new game with mods:\nludeon.rimworld\n",
+                       "Loading game from file Colony1 with mods:\nludeon.rimworld\n"):
+            for clause, mods in (("A1", WITH), ("A2", WITHOUT)):
+                stage(mods, log=LOG + marker)
+                os.utime(plog, (now.timestamp() + later, now.timestamp() + later))
+                rc, wrote = go(clause)
+                check("%s after '%s' (in a game, not at the menu) refuses and records nothing"
+                      % (clause, marker.split(" with")[0]), rc in (1, 2) and not wrote)
         # both sides present, but no pair differing by the mod alone
         os.remove(samples)
         stage(WITH)
