@@ -616,6 +616,9 @@ namespace RimMandrake.GimmeSomeSlack
             // collection's slices need not move gcGen0, so the noGc maxima can still hold a pause: read gapMs and heapDelta)
             F("sliceWindow", comp.Window.Json());
             F("coalesceHolds", comp.CoalesceHolds.ToString());
+            // GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10: snapshots served by a refilled retired world / by a new one
+            F("snapPoolReused", comp.SnapPool.Reused.ToString());
+            F("snapPoolAllocated", comp.SnapPool.Allocated.ToString());
             F("gcIncremental", UnityEngine.Scripting.GarbageCollector.isIncremental ? "true" : "false");
             F("gcGen1", GC.CollectionCount(1).ToString());
             F("gcGen2", GC.CollectionCount(2).ToString());

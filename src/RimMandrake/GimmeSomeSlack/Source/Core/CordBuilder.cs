@@ -254,6 +254,24 @@ namespace RimMandrake.GimmeSomeSlack.Core
             public Dictionary<VId, LaidPiece> Junctions;
         }
 
+        // under layLock: the worlds a running worker reads (the lay batch's Build world and its graph's world; the graph job's)
+        private CordWorld layWorld, layGraphWorld, graphWorld;
+
+        /// <summary>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10 (SnapshotPool): adds every world this builder may still read
+        /// after its Build returned -- the current graph's, the plan's and junctions' graphs', a landed graph's, and a running
+        /// lay batch's or graph job's -- so a pooled snapshot is never refilled under a reader. Null entries are skipped.</summary>
+        internal void HeldWorlds(List<CordWorld> into)
+        {
+            void Add(CordWorld w) { if (w != null) into.Add(w); }
+            Add(Graph?.World); Add(planFor?.World); Add(junctionsFor?.World);
+            lock (layLock)
+            {
+                Add(graphLanded?.G?.World);
+                if (graphRunning) Add(graphWorld);
+                if (layRunning) { Add(layWorld); Add(layGraphWorld); }
+            }
+        }
+
         // under layLock: the graph worker's output, fault and running flag; graphFaulted is the caller's
         private GraphJob graphLanded;
         private string graphFault;
@@ -266,6 +284,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 if (graphRunning) return;
                 graphRunning = true;
+                graphWorld = w;
             }
             GraphJobs++;
             var job = new GraphJob { Inputs = new List<long>(inputs), Mach = mach };
@@ -284,11 +303,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     job.Junctions = new Dictionary<VId, LaidPiece>();
                     foreach (var kv in job.NodeOrder)
                         if (kv.Value.Type == NodeType.Junction) job.Junctions[kv.Key] = JunctionPiece(g, kv.Key, kv.Value, seed);
-                    lock (layLock) { graphLanded = job; graphRunning = false; }
+                    lock (layLock) { graphLanded = job; graphRunning = false; graphWorld = null; }
                 }
                 catch (Exception ex)
                 {
-                    lock (layLock) { graphFault = ex.ToString(); graphRunning = false; }
+                    lock (layLock) { graphFault = ex.ToString(); graphRunning = false; graphWorld = null; }
                 }
             });
         }
@@ -313,6 +332,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 layWanted = wantNow;
                 if (layRunning || queue.Count == 0) return;
                 layRunning = true;
+                layWorld = w; layGraphWorld = g.World;
             }
             foreach (LayJob j in queue) inFlight.Add(j.Fk);
             LayBatches++;
@@ -356,7 +376,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             finally
             {
-                lock (layLock) layRunning = false;
+                lock (layLock) { layRunning = false; layWorld = layGraphWorld = null; }
             }
         }
         /// <summary>The piece each edge (by endpoint key) last showed: what a deferred edge keeps showing.</summary>

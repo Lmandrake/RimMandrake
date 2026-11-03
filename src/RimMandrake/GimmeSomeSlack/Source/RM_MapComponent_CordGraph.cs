@@ -40,6 +40,9 @@ namespace RimMandrake.GimmeSomeSlack
         public double LastSnapBaseMs, LastSnapPowerMs, LastTapIdsMs, LastStylesMs, LastBuildMs;
         /// <summary>The snapshot base kept between rebuilds and patched at dirtied cells (CordWorldAdapter.SnapshotCache).</summary>
         internal readonly SnapshotCache Snap = new SnapshotCache();
+        /// <summary>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10: retired snapshot worlds refilled in place, so a rebuild
+        /// allocates no whole-map world (live round 9's 44.6 ms first slice: the per-rebuild clone ran 20.5 ms).</summary>
+        internal readonly SnapshotPool SnapPool = new SnapshotPool();
         internal CordWorld LastWorld;
 
         public RM_MapComponent_CordGraph(Map map) : base(map) { }
@@ -273,6 +276,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (!GimmeSomeSlackSettings.enabled)
             {
                 Snap.Invalidate("disabled");     // the dirty prefix records nothing while disabled
+                SnapPool.Clear();
                 pieces = new List<LaidPiece>();
                 bySection = new Dictionary<IntVec2, List<LaidPiece>>();
                 return;
@@ -289,7 +293,9 @@ namespace RimMandrake.GimmeSomeSlack
             // previously published pieces (a later regenerate retries) instead of publishing an empty map of cords
             try
             {
-                CordWorld world = CordWorldAdapter.Snapshot(map, Snap);
+                CordWorld world = CordWorldAdapter.Snapshot(map, Snap, SnapPool, b);
+                // the replaced snapshot is retired only now, after the new one exists: LastWorld never names a pooled world
+                SnapPool.Retire(LastWorld);
                 LastWorld = world;
                 LastSnapBaseMs = Snap.BaseMs;
                 LastSnapCloneMs = Snap.CloneMs;

@@ -82,6 +82,8 @@
     <Compile Include="CordScaleBench.cs" />
     <Compile Include="..\Core\RebuildGate.cs" />
     <Compile Include="..\Core\RebuildTail.cs" />
+    <Compile Include="..\Core\SnapshotPool.cs" />
+    <Compile Include="SnapshotPoolChecks.cs" />
     <Compile Include="..\Core\SliceWindow.cs" />
   </ItemGroup>
 

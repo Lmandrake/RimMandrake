@@ -1,0 +1,1 @@
+live-proof A1: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/gss_slice_window && python3 src/RimMandrake/GimmeSomeSlack/live_probes/gss_slice_window_proof.py /mnt/d/ClaudeWork/rimmandrake/scratch/gss_slice_window/proof.json > /mnt/d/ClaudeWork/rimmandrake/scratch/gss_slice_window/run.txt 2>&1; e=$?; tail -1 /mnt/d/ClaudeWork/rimmandrake/scratch/gss_slice_window/run.txt; exit $e

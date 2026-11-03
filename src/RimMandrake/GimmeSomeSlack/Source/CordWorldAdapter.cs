@@ -24,14 +24,17 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: with a cache, the per-cell base (fog, walls, doors, water,
         /// trees, busy cells) is the cache's copy patched at the cells dirtied since the last snapshot, instead of a whole-map
-        /// scan (5.5 ms live on a 325x325 map with no conduits at all); the power part is read fresh either way.</summary>
-        internal static CordWorld Snapshot(Map map, SnapshotCache cache)
+        /// scan (5.5 ms live on a 325x325 map with no conduits at all); the power part is read fresh either way.
+        /// <para>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10: with a pool, the copy of the base refills a retired snapshot
+        /// world in place (SnapshotPool; <paramref name="holder"/> names the worlds its workers still read) instead of a new
+        /// whole-map world per rebuild.</para></summary>
+        internal static CordWorld Snapshot(Map map, SnapshotCache cache, SnapshotPool pool = null, CordBuilder holder = null)
         {
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             // round 9: the cache's Base and the per-rebuild Clone (a whole-map array copy) are timed apart
             CordWorld b = cache != null ? cache.Base(map) : null;
             long tc = System.Diagnostics.Stopwatch.GetTimestamp();
-            CordWorld world = b != null ? b.Clone() : FullBase(map);
+            CordWorld world = b == null ? FullBase(map) : pool != null ? pool.Take(b, holder) : b.Clone();
             long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
             FogGrid fog = map.fogGrid;
             AddPower(map, world, fog);
@@ -45,10 +48,16 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>The whole-map per-cell scan: everything of the snapshot that is not the power network.</summary>
-        internal static CordWorld FullBase(Map map)
+        internal static CordWorld FullBase(Map map) => FullBase(map, null);
+
+        /// <summary>FullBase into <paramref name="into"/> (Reset in place; a new world when null or another size): the
+        /// SnapshotCache's periodic check rescan refills its spare instead of allocating a whole-map world.</summary>
+        internal static CordWorld FullBase(Map map, CordWorld into)
         {
             int w = map.Size.x, h = map.Size.z;
-            var world = new CordWorld(w, h);
+            CordWorld world;
+            if (into != null && into.Width == w && into.Height == h) { into.Reset(); world = into; }
+            else world = new CordWorld(w, h);
             PathGrid pg = map.pathing.Normal.pathGrid;
             CellIndices ci = map.cellIndices;
             FogGrid fog = map.fogGrid;
@@ -320,7 +329,7 @@ namespace RimMandrake.GimmeSomeSlack
     internal sealed class SnapshotCache
     {
         public const int Overflow = 4096, CheckEvery = 64;
-        private CordWorld baseWorld;
+        private CordWorld baseWorld, spareBase;
         private readonly HashSet<int> dirty = new HashSet<int>();
         private bool overflow;
         private int sinceCheck;
@@ -361,15 +370,19 @@ namespace RimMandrake.GimmeSomeSlack
             if (baseWorld != null && ++sinceCheck >= CheckEvery)
             {
                 sinceCheck = 0;
-                CordWorld fresh = CordWorldAdapter.FullBase(map);
+                // round 10: the rescan refills the spare (the base the previous check replaced) in place; the base is never
+                // handed out (Snapshot copies it), so nothing else holds it
+                CordWorld fresh = CordWorldAdapter.FullBase(map, spareBase);
                 FullScans++;
                 int n = CordWorldAdapter.BaseDiff(baseWorld, fresh, out string first);
                 if (n > 0) { Mismatches += n; LastMismatch = first; LastFullWhy = "check"; }
+                spareBase = baseWorld;
                 baseWorld = fresh;
             }
             if (baseWorld == null)
             {
-                baseWorld = CordWorldAdapter.FullBase(map);
+                baseWorld = CordWorldAdapter.FullBase(map, spareBase);
+                spareBase = null;
                 FullScans++;
                 sinceCheck = 0;
             }
