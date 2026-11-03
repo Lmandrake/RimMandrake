@@ -337,9 +337,25 @@ namespace RimMandrake.FlowWorks.Pits
 		public SuspensionBridgeRecord Register(SuspensionBridgeRecord r)
 		{
 			r.id = nextId++;
+			// DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT: a record whose every square the new bridge covers was torn down and
+			// not yet pruned (PruneDead runs every 600 ticks); left in the list it kept taking the rebuilt bridge's winch
+			HashSet<IntVec3> cover = new HashSet<IntVec3>(Cells(r));
+			bridges.RemoveAll(old => RM_DrawbridgeMath.ShadowedBy(Cells(old), cover));
 			bridges.Add(r);
 			Reindex();
 			return r;
+		}
+
+		/// <summary>Every square of a record, lane by lane.</summary>
+		private static IEnumerable<IntVec3> Cells(SuspensionBridgeRecord r)
+		{
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 0; i < r.length; i++)
+				{
+					yield return r.Cell(lane, i);
+				}
+			}
 		}
 
 		private void Reindex()

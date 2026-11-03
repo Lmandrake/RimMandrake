@@ -692,6 +692,11 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
+			// DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT: the pick is RM_DrawbridgeMath.PickWinchLeaf, over every leaf in the
+			// map's bridge order; a leaf whose record the map no longer indexes at its hinge anchor (torn down, shadowed by a
+			// rebuild on the same squares) is never current, so a rebuilt drawbridge's winch takes the rebuilt leaf
+			List<DrawbridgeLeaf> leaves = new List<DrawbridgeLeaf>();
+			List<RM_DrawbridgeMath.WinchCandidate> cands = new List<RM_DrawbridgeMath.WinchCandidate>();
 			foreach (SuspensionBridgeRecord r in comp.Bridges)
 			{
 				if (!r.IsDrawbridge)
@@ -700,34 +705,28 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				foreach (DrawbridgeLeaf l in r.leaves)
 				{
-					if (l.plannedWinch == w.Position && (l.winch == null || !l.winch.Spawned))
-					{
-						l.winch = w;
-						return;
-					}
-				}
-			}
-			foreach (SuspensionBridgeRecord r in comp.Bridges)
-			{
-				if (!r.IsDrawbridge)
-				{
-					continue;
-				}
-				foreach (DrawbridgeLeaf l in r.leaves)
-				{
-					if (l.winch != null && l.winch.Spawned)
-					{
-						continue;
-					}
+					int hinge = HingeIndex(l);
+					bool beside = false, current = false;
 					for (int lane = 0; lane < r.width; lane++)
 					{
-						if (w.Position.AdjacentToCardinal(r.Cell(lane, HingeIndex(l))))
-						{
-							l.winch = w;
-							return;
-						}
+						IntVec3 h = r.Cell(lane, hinge);
+						beside |= w.Position.AdjacentToCardinal(h);
+						current |= comp.RecordAt(h) == r;
 					}
+					leaves.Add(l);
+					cands.Add(new RM_DrawbridgeMath.WinchCandidate
+					{
+						Planned = l.plannedWinch == w.Position,
+						Beside = beside,
+						Current = current,
+						HasLiveWinch = l.winch != null && l.winch.Spawned,
+					});
 				}
+			}
+			int pick = RM_DrawbridgeMath.PickWinchLeaf(cands);
+			if (pick >= 0)
+			{
+				leaves[pick].winch = w;
 			}
 		}
 

@@ -20,7 +20,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static string Src(params string[] rel) => RiverSwitchFlipChecks.Src(Path.Combine(rel));
 
-        private static string Body(string src, string signature)
+        internal static string Body(string src, string signature)
         {
             int a = src.IndexOf(signature, StringComparison.Ordinal);
             Assert(a >= 0, "missing: " + signature);
@@ -251,8 +251,11 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 string link = Body(db, "public static void LinkWinch(Building_DrawbridgeWinch w)");
-                Assert(link.Contains("if (l.winch != null && l.winch.Spawned)") && link.Contains("AdjacentToCardinal(r.Cell(lane, HingeIndex(l)))"),
+                Assert(link.Contains("HasLiveWinch = l.winch != null && l.winch.Spawned") && link.Contains("int hinge = HingeIndex(l);")
+                    && link.Contains("IntVec3 h = r.Cell(lane, hinge);") && link.Contains("beside |= w.Position.AdjacentToCardinal(h);"),
                     "can-fail: a winch takes only a leaf with no winch, beside THAT leaf's hinge anchor");
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { new RM_DrawbridgeMath.WinchCandidate { Beside = true, Current = true, HasLiveWinch = true } }) == -1,
+                    "can-fail: a leaf already on a live winch never takes a second");
                 Assert(db.Contains("Scribe_References.Look(ref winch, \"winch\");"), "the leaf keeps a stable reference to its winch (R9)");
             });
 
@@ -674,8 +677,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 string link = Body(db, "public static void LinkWinch(Building_DrawbridgeWinch w)");
-                int planned = link.IndexOf("l.plannedWinch == w.Position");
-                Assert(planned >= 0 && planned < link.IndexOf("AdjacentToCardinal"), "the planned square links first; adjacency is the old-save fallback");
+                Assert(link.Contains("Planned = l.plannedWinch == w.Position,") && link.Contains("RM_DrawbridgeMath.PickWinchLeaf(cands)"),
+                    "the planned square is the link, read through PickWinchLeaf");
+                RM_DrawbridgeMath.WinchCandidate oldSave = new RM_DrawbridgeMath.WinchCandidate { Beside = true, Current = true };
+                RM_DrawbridgeMath.WinchCandidate plannedLeaf = new RM_DrawbridgeMath.WinchCandidate { Planned = true, Current = true };
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { oldSave, plannedLeaf }) == 1 && RM_DrawbridgeMath.PickWinchLeaf(new[] { oldSave }) == 0,
+                    "the planned square links first; adjacency is the old-save fallback");
                 Assert(db.Contains("Scribe_Values.Look(ref plannedWinch, \"plannedWinch\", IntVec3.Invalid);"), "saved; old saves load Invalid");
                 Assert(Body(db, "public static IEnumerable<Gizmo> Gizmos(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)").Contains("RM_DrawbridgePackage.WinchGizmo("),
                     "a leaf without its winch offers to place one");
@@ -1107,6 +1114,54 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!notify.Contains("MapMeshDirty(c, MapMeshFlagDefOf.Buildings)") && !around.Contains("MapMeshDirty(n, MapMeshFlagDefOf.Buildings)"), "can-fail: Buildings alone never repaints the deck");
                 Assert(around.Contains("MapMeshDirty(n, (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings)"),
                     "can-fail: the neighbours (anchors' ropes, linked decks) must be repainted on the Things layer too");
+            });
+
+            // DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT (live run6 2026-10-25): a steel one-drag drawbridge destroyed and dragged
+            // again on the same squares read winches=1 linked=0: the torn-down record (pruned only every 600 ticks) sat first in
+            // the list with the same planned winch square and its winch cleared, and LinkWinch gave it the new winch.
+            Case("Drawbridge_WinchRelink_rebuilt_leaf_takes_the_winch", () =>
+            {
+                RM_DrawbridgeMath.WinchCandidate stale = new RM_DrawbridgeMath.WinchCandidate { Planned = true, Beside = true, Current = false };
+                RM_DrawbridgeMath.WinchCandidate fresh = new RM_DrawbridgeMath.WinchCandidate { Planned = true, Beside = true, Current = true };
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { stale, fresh }) == 1, "the rebuilt (current) leaf takes the winch, not the stale one before it");
+                // can-fail: the pre-fix rule (every record current) hands it to the first, stale leaf: the run6 linked=0
+                RM_DrawbridgeMath.WinchCandidate staleAsOld = stale;
+                staleAsOld.Current = true;
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { staleAsOld, fresh }) == 0, "can-fail: with no current test the stale leaf wins (the bug)");
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { stale }) == -1, "a winch beside only a torn-down leaf links nothing");
+            });
+
+            Case("Drawbridge_WinchRelink_planned_before_beside_and_live_winch_kept", () =>
+            {
+                RM_DrawbridgeMath.WinchCandidate beside = new RM_DrawbridgeMath.WinchCandidate { Beside = true, Current = true };
+                RM_DrawbridgeMath.WinchCandidate planned = new RM_DrawbridgeMath.WinchCandidate { Planned = true, Current = true };
+                RM_DrawbridgeMath.WinchCandidate taken = new RM_DrawbridgeMath.WinchCandidate { Planned = true, Beside = true, Current = true, HasLiveWinch = true };
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { beside, planned }) == 1, "the planned leaf wins over an earlier adjacent one");
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { taken, beside }) == 1, "a leaf already on a live winch is skipped; adjacency is the fallback");
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { taken }) == -1, "one winch per leaf");
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new RM_DrawbridgeMath.WinchCandidate[0]) == -1, "no drawbridge: no link");
+            });
+
+            Case("Drawbridge_WinchRelink_shadowed_record_dropped_jetty_kept", () =>
+            {
+                int[] bridge = { 1, 2, 3, 4, 5, 6 };
+                Assert(RM_DrawbridgeMath.ShadowedBy(bridge, new HashSet<int>(bridge)), "a rebuild over every square forgets the old record");
+                Assert(RM_DrawbridgeMath.ShadowedBy(new[] { 2, 3 }, new HashSet<int>(bridge)), "a smaller torn-down record inside the new one is forgotten");
+                Assert(!RM_DrawbridgeMath.ShadowedBy(bridge, new HashSet<int> { 1, 9, 10 }), "can-fail: a jetty rooted on the anchor shares one square and must not erase the live bridge");
+                Assert(!RM_DrawbridgeMath.ShadowedBy(new int[0], new HashSet<int>(bridge)), "an empty record is not 'shadowed' (prune owns it)");
+            });
+
+            Case("Drawbridge_WinchRelink_call_sites", () =>
+            {
+                string db = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_Drawbridges.cs"));
+                string comp = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs"));
+                string link = DrawbridgeChecks.Body(db, "public static void LinkWinch(Building_DrawbridgeWinch w)");
+                Assert(link.Contains("RM_DrawbridgeMath.PickWinchLeaf(cands)") && link.Contains("current |= comp.RecordAt(h) == r;"),
+                    "LinkWinch picks through PickWinchLeaf with Current = the map indexes the hinge anchor to this record");
+                Assert(!link.Contains("l.winch = w;"), "can-fail: no first-match link left in LinkWinch");
+                string reg = DrawbridgeChecks.Body(comp, "public SuspensionBridgeRecord Register(SuspensionBridgeRecord r)");
+                int drop = reg.IndexOf("bridges.RemoveAll(old => RM_DrawbridgeMath.ShadowedBy(Cells(old), cover));", StringComparison.Ordinal);
+                Assert(drop >= 0 && drop < reg.IndexOf("bridges.Add(r);", StringComparison.Ordinal), "Register forgets the shadowed records before adding the new one");
             });
         }
     }

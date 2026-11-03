@@ -34,6 +34,7 @@ CAN_FAIL = {
     "drag_unlinked": ("ONE_DRAG_PACKAGE", "FAIL", "MOD"),
     "four_refused": ("ONE_DRAG_FOUR_WIDE", "FAIL", "MOD"),
     "wide_flat": ("ONE_DRAG_FOUR_WIDE", "FAIL", "MOD"),
+    "rebuild_unlinked": ("ONE_DRAG_PACKAGE", "FAIL", "MOD"),
     "no_free": ("RAISE_TIPS_RIDERS", "UNMEASURED", "SITE"),
     "far_reaches_winch": ("LOWER_ONLY_FROM_WINCH", "UNMEASURED", "SITE"),
     "far_raiders": ("RAID_UP", "UNMEASURED", "SITE"),

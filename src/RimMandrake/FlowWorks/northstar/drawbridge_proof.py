@@ -984,9 +984,26 @@ def one_drag_package(ctx):
     raised = kup.get("target") == "raised" and num(kup, "progress", -1) == num(kup, "full", -2)
     lowered = kdn.get("target") == "lowered" and num(kdn, "progress", -1) == 0
     blocked = up.get("found") == "False" or num(up, "decked", 1) == 0
-    good = placed and crosses(down0) and raised and blocked and lowered and crosses(down1)
+    # DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT (live run6 2026-10-25: a drawbridge rebuilt on the SAME squares read winches=1
+    # linked=0 and never raised): tear the package down (anchors, deck, winch, gate; the moat stays dug) and drag it again at
+    # once, well inside the 600-tick prune, so the torn-down record is still listed. EXPECT the rebuilt leaf linked to its
+    # winch and raised by it. LIES: a leaf read on the same squares could be the stale one, so the raise is read after the
+    # order on the rebuilt package's own centre square.
+    B = ctx["B"]
+    B.call("jawa/destroy_batch", rects="%d,%d,6,2" % P(0, z - 1), categories="Building")
+    ticks(10)
+    kv2, txt2 = dproof("ProofOneDrag", "%s;%s;steel" % (xz(P(5, z)), xz(P(0, z))))
+    relinked = kv2.get("ok") == "True" and kv2.get("winches") == "1" and kv2.get("linked") == "1"
+    if relinked:
+        ctx["power"](P(2, z), True)
+    ticks(10)
+    dproof("ProofOrder", "%s;raise;now" % xz(P(2, z)))
+    ticks(full + 30)
+    kre, tre = ctx["leaf"](P(2, z))
+    reraised = kre.get("target") == "raised" and num(kre, "progress", -1) == num(kre, "full", -2) and kre.get("winch") == "True"
+    good = placed and crosses(down0) and raised and blocked and lowered and crosses(down1) and relinked and reraised
     row("ONE_DRAG_PACKAGE", "PASS" if good else "FAIL", {"drag": txt, "downPath": td0, "raised": tup, "upPath": tu, "lowered": tdn,
-                                                         "downAgain": td1})
+                                                         "downAgain": td1, "rebuiltDrag": txt2, "rebuiltRaised": tre})
 
 
 def one_drag_four_wide(ctx):
@@ -1120,7 +1137,7 @@ class FakeBridge(object):
       wide_flat        MOD: a 4-lane leaf lifts as fast as a 1-lane one         -> ONE_DRAG_FOUR_WIDE FAIL"""
     FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "no_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
               "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
-              "replay_tip", "drag_unlinked", "four_refused", "wide_flat")
+              "replay_tip", "drag_unlinked", "four_refused", "wide_flat", "rebuild_unlinked")
 
     def __init__(self, faults=()):
         self.f = set(faults)
@@ -1292,6 +1309,14 @@ class FakeBridge(object):
             return {"success": False, "error": "no field %s" % f}
         if tool == "jawa/destroy_batch":
             x, z = (int(v) for v in str(kw.get("rects")).split(",")[:2])
+            rw, rh = (int(v) for v in (str(kw.get("rects")).split(",") + ["1", "1"])[2:4])
+            if (rw, rh) != (1, 1) and rw * rh <= 64:
+                # a small rect tears a whole package down (ONE_DRAG_PACKAGE's rebuild): its leaves leave the map; the scene
+                # rects (50x90 and up) only clear the plot, as before. rebuild_unlinked: the run6 stale record, kept
+                gone = [l for l in self.leaves if x <= l["ax"] <= x + rw - 1 and z <= l["z0"] <= z + rh - 1]
+                self.leaves = [l for l in self.leaves if l not in gone]
+                self._razed = getattr(self, "_razed", set()) | {(l["ax"], l["z0"]) for l in gone}
+                return {"success": True, "destroyed": len(gone)}
             hit = [l for l in self.leaves if l["winch"] == (x, z)]
             for l in hit:
                 l["winch"] = None
@@ -1401,7 +1426,8 @@ class FakeBridge(object):
                                     progress=0, full=self._full(tier, hi - lo - 1, lanes), target="lowered", hold=False, auto=False,
                                     pending="none", tip=False, winch=w, powered=False, frozen=False, w=lanes))
             return "ONEDRAG ok=True leaves=1 hinges=%s hingeAt=%d,%d winches=1 linked=%d winchAt=%d,%d gates=%d reason=-" % (
-                hinge, x1, z1, 0 if "drag_unlinked" in self.f else 1, w[0], w[1], lanes)
+                hinge, x1, z1, 0 if "drag_unlinked" in self.f or ("rebuild_unlinked" in self.f and (lo, min(z1, z2)) in
+                                       getattr(self, "_razed", set())) else 1, w[0], w[1], lanes)
         if m == "ProofLeaf":
             x, z = cell(a[0])
             l = self._leaf_at(x, z)

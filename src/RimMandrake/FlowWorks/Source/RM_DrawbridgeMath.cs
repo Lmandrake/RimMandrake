@@ -319,6 +319,58 @@ namespace RimMandrake.FlowWorks
 			return !bridgeTornLooseAtLaunch && WinchLossCrashes(progress);
 		}
 
+		/// <summary>One leaf a newly built winch house might take (RM_Drawbridges.LinkWinch), in the map's bridge order.
+		/// Planned: the one drag planned this leaf's winch on the winch's square. Beside: the winch stands cardinally beside one of
+		/// the leaf's hinge anchors. Current: the leaf's record is the one the map indexes its hinge anchor to (a record torn down
+		/// and not yet pruned, shadowed by a rebuild on the same squares, is not current). HasLiveWinch: it already hangs on a
+		/// spawned winch.</summary>
+		public struct WinchCandidate
+		{
+			public bool Planned;
+			public bool Beside;
+			public bool Current;
+			public bool HasLiveWinch;
+		}
+
+		/// <summary>DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT (live run6 2026-10-25): the leaf a new winch house takes, or -1.
+		/// First the leaf planned for its square, else the first leaf beside it (a drawbridge from before the one drag, or a
+		/// winch landed by gravship); either way only a current leaf with no live winch. A drawbridge destroyed and dragged again
+		/// on the same squares inside the prune interval left its old record first in the list, with the same planned square and
+		/// its winch cleared, so the old leaf took the new winch and the rebuilt one read linked=0 and never raised.</summary>
+		public static int PickWinchLeaf(IList<WinchCandidate> leaves)
+		{
+			for (int pass = 0; pass < 2; pass++)
+			{
+				for (int i = 0; i < leaves.Count; i++)
+				{
+					WinchCandidate c = leaves[i];
+					if (c.Current && !c.HasLiveWinch && (pass == 0 ? c.Planned : c.Beside))
+					{
+						return i;
+					}
+				}
+			}
+			return -1;
+		}
+
+		/// <summary>DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT: a bridge record is forgotten at once when a new bridge is placed
+		/// over every one of its squares (a live bridge cannot be built over, so a fully covered record is a torn-down one the
+		/// 600-tick prune has not reached yet). A record sharing only some squares stays: a jetty rooted on a bridge's anchor
+		/// shares that one square with a live bridge.</summary>
+		public static bool ShadowedBy<T>(IEnumerable<T> oldCells, ICollection<T> newCells)
+		{
+			bool any = false;
+			foreach (T c in oldCells)
+			{
+				if (!newCells.Contains(c))
+				{
+					return false;
+				}
+				any = true;
+			}
+			return any;
+		}
+
 		/// <summary>A tower may join a bridge's supports only when the bridge is not a drawbridge (a leaf swings from a bank,
 		/// never from a tower: CanBeDrawbridge). Read at placement, at frame completion and at a rebuild.</summary>
 		public static bool TowerMayJoin(bool isDrawbridge)
