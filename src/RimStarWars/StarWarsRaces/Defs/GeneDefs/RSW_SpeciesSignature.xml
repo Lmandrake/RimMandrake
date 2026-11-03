@@ -19,8 +19,9 @@
                                       for the sourced vacuum-surviving hide)
     RSW_LightAbsorbingFur   Defel     infobox "Ability to absorb visible light"
 
-  NOT built (needs C#, a design call): Bothan mood-sensitive fur (Wrendui),
-  Kel Dor poisoning when unmasked, Defel true invisibility. See
+  NOT built (needs C#, a design call): Kel Dor poisoning when unmasked, Defel
+  true invisibility. Bothan mood-showing fur is RSW_WrenduiFur in
+  RSW_SpeciesCharacter.xml (SPECIES_TRAITS_OVER_APTITUDES_1). See
   design/RimStarWars/species_signature_mechanics_spec.md.
   Numbers below are first-pass and owner-tunable.
   ============================================================================

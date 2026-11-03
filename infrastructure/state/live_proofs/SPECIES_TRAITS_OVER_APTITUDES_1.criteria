@@ -1,0 +1,1 @@
+A1 L1: with StarWarsRaces deployed from the fix sha (minimal list, all five DLC), the running game resolves GeneDef RSW_HiveMinded, RSW_WrenduiFur and RSW_TunnelBorn with their RimMandrake.StarWars.Races condition classes, and Player.log carries no error line naming those genes or classes

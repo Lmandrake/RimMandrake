@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RSW_SpeciesCharacter.xml
+  ============================================================================
+
+  SPECIES_TRAITS_OVER_APTITUDES_1. Owner, 2026-09-20: "we should consider deeply
+  making better traits that might do a better job of capturing these fine points
+  and nuances than pluses to skills", and the shape he ruled the same day: a unit
+  that applies to ALL members of a race is a gene, and it REPLACES the aptitude
+  that was a surrogate for it (never both).
+
+  Each gene below is a stat change that holds only in a situation, so the player
+  sees it as a "<gene> (<situation>)" line in the stat's explanation. The
+  situations are C# conditions in Source/RSW_SpeciesConditions.cs, each switched
+  by one Mod Setting (Star Wars Races > Species character).
+
+    RSW_HiveMinded   Geonosian  replaces AptitudeTerrible_Social
+    RSW_WrenduiFur   Bothan     replaces AptitudeStrong_Social
+    RSW_TunnelBorn   Abednedo   replaces AptitudeStrong_Construction
+
+  Hand-authored, not gen_races_mod.py output: the generator wires these onto the
+  xenotypes and drops the surrogates through OWNER_GENE_ADDITIONS/REMOVALS.
+  Checked offline by src/RimMandrake/Utils/selftest_species_character_genes.py.
+  Metabolism is priced against the aptitude each replaces (Terrible +2,
+  Strong -1); the hive gene is +1 because a Geonosian among kin gains from it.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>RSW_HiveMinded</defName>
+    <label>hive-minded</label>
+    <labelShortAdj>hive-minded</labelShortAdj>
+    <description>Carriers of this gene think as a hive. Among their own kind their work and study move as one, quicker and surer than any of them alone; cut off from every other member of the hive, they falter and their thinking slows.</description>
+    <iconPath>UI/Icons/Genes/Gene_KindInstinct</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>63</displayOrderInCategory>
+    <customEffectDescriptions>
+      <li>With 2 or more other hive-minded carriers within 15 cells: global work speed +10%, research speed +15%.</li>
+      <li>With no other hive-minded carrier on the map: global work speed -10%, research speed -25%.</li>
+    </customEffectDescriptions>
+    <conditionalStatAffecters>
+      <li Class="RimMandrake.StarWars.Races.ConditionalStatAffecter_NearKin">
+        <label>among the hive</label>
+        <setting>geonosianHiveEnabled</setting>
+        <kinGene>RSW_HiveMinded</kinGene>
+        <radius>15</radius>
+        <minKin>2</minKin>
+        <statOffsets>
+          <WorkSpeedGlobal>0.10</WorkSpeedGlobal>
+          <ResearchSpeed>0.15</ResearchSpeed>
+        </statOffsets>
+      </li>
+      <li Class="RimMandrake.StarWars.Races.ConditionalStatAffecter_NoKinOnMap">
+        <label>cut off from the hive</label>
+        <setting>geonosianHiveEnabled</setting>
+        <kinGene>RSW_HiveMinded</kinGene>
+        <statOffsets>
+          <WorkSpeedGlobal>-0.10</WorkSpeedGlobal>
+          <ResearchSpeed>-0.25</ResearchSpeed>
+        </statOffsets>
+      </li>
+    </conditionalStatAffecters>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_WrenduiFur</defName>
+    <label>mood-showing fur</label>
+    <labelShortAdj>wrendui-furred</labelShortAdj>
+    <description>The fur of carriers of this gene ripples with what they feel. A content carrier's ease shows plainly, and others trust it; an unhappy or anxious one is given away by every twitch of fur, which makes lying, bargaining and persuading hard.</description>
+    <iconPath>UI/Icons/Genes/Skills/Social/Strong</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>64</displayOrderInCategory>
+    <customEffectDescriptions>
+      <li>Mood 65% or more: negotiation ability +15%, trade price improvement +4%, social impact +10%.</li>
+      <li>Mood below 30%: negotiation ability -20%, trade price improvement -4%, social impact -10%.</li>
+    </customEffectDescriptions>
+    <conditionalStatAffecters>
+      <li Class="RimMandrake.StarWars.Races.ConditionalStatAffecter_MoodBand">
+        <label>content, fur at ease</label>
+        <setting>bothanWrenduiFurEnabled</setting>
+        <minMood>0.65</minMood>
+        <statOffsets>
+          <NegotiationAbility>0.15</NegotiationAbility>
+          <TradePriceImprovement>0.04</TradePriceImprovement>
+          <SocialImpact>0.10</SocialImpact>
+        </statOffsets>
+      </li>
+      <li Class="RimMandrake.StarWars.Races.ConditionalStatAffecter_MoodBand">
+        <label>unhappy, fur gives it away</label>
+        <setting>bothanWrenduiFurEnabled</setting>
+        <maxMood>0.30</maxMood>
+        <statOffsets>
+          <NegotiationAbility>-0.20</NegotiationAbility>
+          <TradePriceImprovement>-0.04</TradePriceImprovement>
+          <SocialImpact>-0.10</SocialImpact>
+        </statOffsets>
+      </li>
+    </conditionalStatAffecters>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_TunnelBorn</defName>
+    <label>tunnel-born</label>
+    <labelShortAdj>tunnel-born</labelShortAdj>
+    <description>Carriers of this gene descend from a people who built beneath the ground long before they took their world's surface and then the stars. Under rock the old instincts wake: they dig and build there faster than anywhere else.</description>
+    <iconPath>UI/Icons/Genes/Gene_CaveDweller</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>65</displayOrderInCategory>
+    <customEffectDescriptions>
+      <li>Under an overhead-mountain roof: mining speed +15%, construction speed +15%.</li>
+    </customEffectDescriptions>
+    <conditionalStatAffecters>
+      <li Class="RimMandrake.StarWars.Races.ConditionalStatAffecter_UnderThickRoof">
+        <label>under rock</label>
+        <setting>abednedoTunnelBornEnabled</setting>
+        <statOffsets>
+          <MiningSpeed>0.15</MiningSpeed>
+          <ConstructionSpeed>0.15</ConstructionSpeed>
+        </statOffsets>
+      </li>
+    </conditionalStatAffecters>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+  </GeneDef>
+
+</Defs>

@@ -42,8 +42,8 @@
       <li>RSW_Skin_MidGray</li>
       <li>DarkVision</li>
       <li>Outland_ThickSkin</li>
-      <li>AptitudeStrong_Construction</li>
       <li>AptitudeStrong_Intellectual</li>
+      <li>RSW_TunnelBorn</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -193,8 +193,8 @@
       <li>Hair_Grayless</li>
       <li>Outland_Furbody</li>
       <li>Outland_AcceleratedMaturation</li>
-      <li>AptitudeStrong_Social</li>
       <li>AptitudeStrong_Intellectual</li>
+      <li>RSW_WrenduiFur</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -740,7 +740,7 @@
       <li>Turn_Gene_MotivationHigh</li>
       <li>AptitudeRemarkable_Construction</li>
       <li>AptitudeRemarkable_Crafting</li>
-      <li>AptitudeTerrible_Social</li>
+      <li>RSW_HiveMinded</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>

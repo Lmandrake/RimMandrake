@@ -13,21 +13,13 @@ Owner question Q5 from the SPECIES_TRAITS_OVER_APTITUDES_1 draft (commit 931730d
 asked whether StarWarsRaces may have its own code library. The assembly now exists for
 other reasons, but the owner has not said that species mechanics may go into it.
 
-## 1. Bothan fur that shows mood (Wrendui): the one mechanic with no XML half
+## 1. Bothan fur that shows mood (Wrendui): BUILT, moved
 
-Canon (Legends, from the owner): Bothan fur ripples with emotion, so a Bothan who is
-upset or lying is easy to read for anyone who knows Bothans.
-
-- Gene `RSW_WrenduiFur` (replaces the stand-in gene `AptitudeStrong_Social`, per the
-  "replace the stand-in, don't count it twice" ruling) with a new
-  `ConditionalStatAffecter_MoodBand` (min/max mood fraction). Low mood gives a penalty,
-  high mood gives a bonus.
-- Open owner question Q3: which stats? Either (a) `NegotiationAbility` / `TradePriceImprovement`
-  (the Bothan's own dealings), or (b) how other pawns see the Bothan (`SocialImpact`,
-  or an opinion `ThoughtDef`). (a) is pure StatWorker: about 40 lines, no Harmony. (b) needs a
-  ThoughtWorker.
-- Setting `bothanFurMoodEnabled`. When it is off, the affecter returns false (no stat change).
-- Test: a unit check of the band edges; a bridge check of a Bothan's stat at mood 0.2 against 0.8.
+Built 2026-11-02 under `SPECIES_TRAITS_OVER_APTITUDES_1` as gene `RSW_WrenduiFur`
+(`src/RimStarWars/StarWarsRaces/Defs/GeneDefs/RSW_SpeciesCharacter.xml`, C# condition
+`ConditionalStatAffecter_MoodBand` in `Source/RSW_SpeciesConditions.cs`, setting
+`bothanWrenduiFurEnabled`). It replaces the stand-in `AptitudeStrong_Social`. The stats are
+the Bothan's own dealings (option (a)); see that item for the full record.
 
 ## 2. Kel Dor oxygen poisoning when unmasked
 
@@ -65,5 +57,4 @@ sky glow > 0.1", so a brightly lit room counts as dim.
 - Should Defel also get `RSW_UltravioletVision` (canon says they see UV), and should
   `Nearsighted` be replaced by the glare mechanic?
 - Kel Dor metabolism is now 2 lower (the two new genes cost -1 each). Should it be re-balanced?
-- Bothan `AptitudeStrong_Social` (and other stand-in aptitudes) stays until #1 is built.
 - The numbers (Sight +0.10, stealth +0.25, dodge +8) are first-pass values and the owner can tune them.

@@ -1227,6 +1227,11 @@ OWNER_GENE_REMOVALS = {
     "RSW_RimMandrakeRakata": ["PsychicAbility_Enhanced", "Turn_Gene_LatentPsychic",
                               "Turn_Gene_FastNeuralHeat"],       # post-plague Rakata are Force-blind
     "RSW_RimMandrakeOrtolan": ["Hands_Pig"],                     # canon: dexterous articulated digits
+    # SPECIES_TRAITS_OVER_APTITUDES_1 (owner 2026-09-20: the species gene REPLACES the aptitude that was its
+    # surrogate). Each removal is paired with its replacement in OWNER_GENE_ADDITIONS below.
+    "RSW_RimMandrakeGeonosianVariants": ["AptitudeTerrible_Social"],  # -> RSW_HiveMinded
+    "RSW_RimMandrakeBothan": ["AptitudeStrong_Social"],               # -> RSW_WrenduiFur
+    "RSW_RimMandrakeAbednedo": ["AptitudeStrong_Construction"],       # -> RSW_TunnelBorn
 }
 
 # Genes ADDED to the shipped list (after removals), same ruling: "sourced figure wins".
@@ -1240,6 +1245,11 @@ OWNER_GENE_ADDITIONS = {
     "RSW_RimMandrakeKelDor": ["RSW_AntioxRespiration",            # canon: oxygen poisonous, antiox mask
                               "VacuumResistance_Partial"],       # canon: hide survives vacuum "for a time"
     "RSW_RimMandrakeDefel": ["RSW_LightAbsorbingFur"],           # canon infobox: absorbs visible light
+    # SPECIES_TRAITS_OVER_APTITUDES_1: situational species genes, hand-authored in
+    # Defs/GeneDefs/RSW_SpeciesCharacter.xml, C# conditions in Source/RSW_SpeciesConditions.cs.
+    "RSW_RimMandrakeGeonosianVariants": ["RSW_HiveMinded"],      # hive: better among kin, worse cut off
+    "RSW_RimMandrakeBothan": ["RSW_WrenduiFur"],                 # Legends: fur shows mood
+    "RSW_RimMandrakeAbednedo": ["RSW_TunnelBorn"],               # underground-builder ancestry, "a light nod"
 }
 
 # Description sentences appended to the shipped description (owner 2026-10-18: Gand and

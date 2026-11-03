@@ -9,11 +9,31 @@ namespace RimMandrake.StarWars.Races
     public class RSW_StarWarsRacesSettings : ModSettings
     {
         public static bool hideFacialAnimationFace = true;
+        public static bool geonosianHiveEnabled = true;
+        public static bool bothanWrenduiFurEnabled = true;
+        public static bool abednedoTunnelBornEnabled = true;
+
+        /// <summary>The switch a species condition names in its XML `setting` field. An unknown or empty name reads
+        /// ON, so a typo in a def can never silently disable a mechanic; selftest_species_character_genes checks
+        /// that every name used in the defs is one of these.</summary>
+        public static bool SpeciesMechanicOn(string setting)
+        {
+            switch (setting)
+            {
+                case "geonosianHiveEnabled": return geonosianHiveEnabled;
+                case "bothanWrenduiFurEnabled": return bothanWrenduiFurEnabled;
+                case "abednedoTunnelBornEnabled": return abednedoTunnelBornEnabled;
+                default: return true;
+            }
+        }
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref hideFacialAnimationFace, "hideFacialAnimationFace", true);
+            Scribe_Values.Look(ref geonosianHiveEnabled, "geonosianHiveEnabled", true);
+            Scribe_Values.Look(ref bothanWrenduiFurEnabled, "bothanWrenduiFurEnabled", true);
+            Scribe_Values.Look(ref abednedoTunnelBornEnabled, "abednedoTunnelBornEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -32,6 +52,24 @@ namespace RimMandrake.StarWars.Races
                   + "listed in RSW_FacialAnimationOptOut, whatever its own settings say. Off: Facial Animation's own "
                   + "settings decide. Does nothing without Facial Animation. A pawn already on the map picks up the change "
                   + "when its graphics next refresh (for example on reload).");
+                list.GapLine();
+            }
+
+            if (Group(list, "Species character", RimMandrake.Shared.SettingScope.Now,
+                    new[] { "geonosianHiveEnabled", "bothanWrenduiFurEnabled", "abednedoTunnelBornEnabled" }))
+            {
+                list.CheckboxLabeled("Geonosian: hive-minded", ref geonosianHiveEnabled,
+                    "Shipped default: ON. Geonosians work and research faster with two or more other Geonosians within "
+                  + "15 cells, and slower when no other Geonosian is on the map. Off: the gene does nothing (it replaced "
+                  + "their old terrible-social aptitude, which does not come back).");
+                list.CheckboxLabeled("Bothan: mood-showing fur", ref bothanWrenduiFurEnabled,
+                    "Shipped default: ON. A content Bothan (mood 65% or more) negotiates, trades and persuades better; an "
+                  + "unhappy one (below 30%) is given away by its fur and does all three worse. Off: the gene does nothing "
+                  + "(it replaced their old strong-social aptitude, which does not come back).");
+                list.CheckboxLabeled("Abednedo: tunnel-born", ref abednedoTunnelBornEnabled,
+                    "Shipped default: ON. Abednedo mine and build faster under an overhead-mountain roof, a nod to their "
+                  + "underground ancestry. Off: the gene does nothing (it replaced their old strong-construction "
+                  + "aptitude, which does not come back).");
                 list.GapLine();
             }
 

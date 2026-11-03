@@ -111,3 +111,29 @@ number a surrogate for a concept?"*, not *"does this species have a trait now?"*
 The reach test answers *which unit*; it does not answer *which species qualify*.
 🔑 **That list is still the decision** — build it and put it to him, as this item
 already says. Do not start writing genes.
+
+---
+
+## BUILT 2026-11-02 (Relentless, approach A of the 2026-10-09 draft)
+
+The list (delegated: design, under `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`): the three
+species the owner named. Each gets a situational GENE (all members, per the reach test) that
+REPLACES its surrogate aptitude; the player sees it as a "<gene> (<situation>)" line in the
+stat explanation, and each is a Mod Setting (Star Wars Races > Species character), default on.
+
+| xenotype | gene | situation → effect | replaced |
+|---|---|---|---|
+| Geonosian | `RSW_HiveMinded` | 2+ other carriers within 15 cells: work +10 %, research +15 %; none on the map: work −10 %, research −25 % | `AptitudeTerrible_Social` |
+| Bothan | `RSW_WrenduiFur` | mood ≥ 65 %: negotiation +15 %, trade +4 %, social impact +10 %; mood < 30 %: −20 / −4 / −10 % | `AptitudeStrong_Social` |
+| Abednedo | `RSW_TunnelBorn` | under an overhead-mountain roof: mining and construction +15 % | `AptitudeStrong_Construction` (the "light nod") |
+
+- Defs: `src/RimStarWars/StarWarsRaces/Defs/GeneDefs/RSW_SpeciesCharacter.xml`; C#:
+  `src/RimStarWars/StarWarsRaces/Source/RSW_SpeciesConditions.cs`; wiring: `gen_races_mod.py`
+  OWNER_GENE_REMOVALS / OWNER_GENE_ADDITIONS. Offline proof:
+  `src/RimMandrake/Utils/selftest_species_character_genes.py`. Live clause:
+  `infrastructure/state/live_proofs/SPECIES_TRAITS_OVER_APTITUDES_1.txt`.
+- Bothan fur is a mechanic only; no appearance change, so no art-judge gate.
+- Gungan `AptitudePoor_Intellectual` untouched (the selftest asserts it stays).
+- Kept as genuine skill, not surrogates: Cerean `Strong_Intellectual`, Jawa trade/build
+  aptitudes, Echani melee (owner kept as culture, 2026-10-09).
+- Owed: Zeltron and Falleen pheromones (`PHEROMONE_GENES_BUILD_SMELLS_LIKE_PROGRESS`).
