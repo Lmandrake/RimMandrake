@@ -49,6 +49,8 @@ proc = {"running": True, "pid": 7, "start": "2026-11-02T09:00:00.1234567Z", "pri
 mods = ["ludeon.rimworld"] + pac.DLC + [pac.PKG]
 ok_row, bad = pac.judge_sample(proc, mods, start - dt.timedelta(seconds=60), log, start + dt.timedelta(hours=1))
 check("good sample has no reasons", bad == [] and ok_row["with"] is True and ok_row["load_ms"] == 98200)
+check("good sample records the GPU/private numbers in MB",
+      (ok_row.get("gpu_dedicated_mb"), ok_row.get("gpu_shared_mb"), ok_row.get("private_mb")) == (3072.0, 1.0, 2048.0))
 _, bad = pac.judge_sample(proc, mods, start + dt.timedelta(seconds=pac.LAUNCH_SLACK_S + 5), log,
                           start + dt.timedelta(hours=1))
 check("ModsConfig written after launch refuses", any("next load" in b for b in bad))
@@ -113,6 +115,30 @@ with tempfile.TemporaryDirectory() as tmp:
         rc, out, wrote = run(without_mods, "without")
         check("record: 'without' launch + --require without records (exit 0)",
               rc == 0 and wrote and "SAMPLE without" in out)
+        import json  # noqa: E402
+        with open(samples) as fh:
+            got = [json.loads(l) for l in fh if l.strip()]
+        check("record: the appended rows hold the launch's numbers",
+              [(r["with"], r["load_ms"], r["gpu_dedicated_mb"], r["gpu_shared_mb"], r["private_mb"]) for r in got]
+              == [(True, 98200, 3072.0, 1.0, 2048.0), (False, 98200, 3072.0, 1.0, 2048.0)])
+        # verdict(): pairs them and PRINTS the deltas (with minus without), figures and all
+        with open(samples, "w") as fh:
+            fh.write(json.dumps(dict(ok_row, at="W")) + "\n")
+            fh.write(json.dumps(dict(o, at="O", load_ms=88200, gpu_dedicated_mb=2048.0, gpu_shared_mb=0.0,
+                                     private_mb=1536.0)) + "\n")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = pac.verdict(types.SimpleNamespace())
+        check("verdict: a pair exits 0 and prints the load and VRAM deltas", rc == 0 and (
+              "A/B %s (with W, without O): load +10.0 s (98.2 vs 88.2), GPU dedicated +1024.0 MB, shared +1.0 MB, "
+              "private +512.0 MB" % pac.PKG) in buf.getvalue())
+        with open(samples, "w") as fh:
+            fh.write(json.dumps(ok_row) + "\n")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = pac.verdict(types.SimpleNamespace())
+        check("verdict: no pair exits 1 and says NO PAIR", rc == 1 and "NO PAIR" in buf.getvalue())
+        os.remove(samples)
         rc, out, wrote = run(without_mods, "with")
         check("record: 'without' launch refuses --require with", rc == 1 and not wrote
               and "'without' condition, not 'with'" in out)
