@@ -46,8 +46,14 @@ function Get-CommitAgeMinutes {
 
 function Test-WslWrite {
   if ($FakeWslFail) { return 'fake failure' }
-  $p = Start-Process -FilePath 'wsl.exe' -ArgumentList @('-e', 'sh', '-c', 'echo x > "$HOME/.hb_probe" && sync') `
-    -PassThru -WindowStyle Hidden
+  # CreateNoWindow + no shell: Start-Process (even -WindowStyle Hidden) lets wsl.exe take a console and Windows
+  # Terminal draws a black window (HEARTBEAT_FLASH_FIX_BLACK_WINDOW_EVERY_TEN).
+  $psi = New-Object System.Diagnostics.ProcessStartInfo
+  $psi.FileName = 'wsl.exe'
+  $psi.Arguments = '-e sh -c "echo x > $HOME/.hb_probe && sync"'
+  $psi.UseShellExecute = $false
+  $psi.CreateNoWindow = $true
+  $p = [System.Diagnostics.Process]::Start($psi)
   if (-not $p.WaitForExit($ProbeSeconds * 1000)) {
     try { $p.Kill() } catch {}
     return "write probe hung > ${ProbeSeconds}s"
