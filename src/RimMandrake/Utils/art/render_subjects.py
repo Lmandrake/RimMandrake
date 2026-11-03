@@ -5,7 +5,10 @@
 
 For every artpipe render variant in the art ledger, resolve which subject (defName) it is a picture of, by the
 spec's order, never mutating a job file in the artpipe state dir:
-  1 bound        a ledger `binding` event (the job's target_def) — or collected.jsonl installed it at a texPath
+  1 bound        a ledger `binding` event (the job's target_def) — or collected.jsonl installed it at a texPath;
+                 a binding whose own confidence is name-matched (a derived token guess, an agent's sheet pick) stays
+                 name-matched
+  no-subject     a binding_sheet.py `no_subject` event (§5.3 step 4: mock, concept, texture part, not-yet creature)
   1 bound        byte join: the render's sha is, or its dHash (<= NEAR bits) equals, a non-artpipe ledger variant
                  of a texPath (installed by hand; the bytes prove it)
   3 name-matched whole-token match of the job family to exactly ONE candidate subject
@@ -90,6 +93,9 @@ def build(w: "S.World | None" = None, idx: "L.Index | None" = None) -> dict:
     near_pool = [(int(ph, 16), res) for ph, rs in by_ph.items() for res in rs[:1]]
     dbt = w.def_by_tex
     only_defs = lambda tps: sorted({d for tp in tps for d in dbt.get(tp, ())})
+    # binding_sheet.py `no_subject` events: a reviewer ruled the render a picture of no def (mock, concept, texture part)
+    nosubj = {(e["sha"], e["job"]): f"{e.get('reason', '')} — {e.get('evidence', '')}"
+              for e in idx.events if e.get("type") == "no_subject" and e.get("sha") and e.get("job")}
     out, tally = {}, Counter()
     for sha, vs in idx.variants.items():
         for v in vs:
@@ -104,8 +110,12 @@ def build(w: "S.World | None" = None, idx: "L.Index | None" = None) -> dict:
             # -> RSW_Filth_Snail_Slime on the token 'slime') can only be corrected by a later bound event.
             bd = [b for b in bd if b.get("confidence") == "bound"] or bd
             if bd:
-                rec.update(resolution="bound", via="binding", subjects=sorted({b["subject"] for b in bd}),
+                # the binding's own confidence: a derived token guess or an agent's sheet pick stays name-matched
+                conf = "bound" if bd[0].get("confidence") == "bound" else "name-matched"
+                rec.update(resolution=conf, via="binding", subjects=sorted({b["subject"] for b in bd}),
                            evidence=bd[0]["evidence"])
+            elif (sha, job) in nosubj:
+                rec.update(resolution="no-subject", via="binding-sheet", subjects=[], evidence=nosubj[(sha, job)])
             elif w.collected.get(job) and dbt.get(w.collected[job]):
                 rec.update(resolution="bound", via="collected", subjects=sorted(dbt[w.collected[job]]), texpath=w.collected[job],
                            evidence=f"collected.jsonl installed it at {w.collected[job]}")
