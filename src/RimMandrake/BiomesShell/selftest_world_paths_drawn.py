@@ -15,7 +15,14 @@ steps at every edge.
   3. ROAD WEAR: LinkHash is symmetric and its gap / worn shares land within 2 points of AncientGapShare / DirtWornShare.
   4. WIRING: RM_WorldPaths calls into RM_WorldPathsDrawn; both settings are scribed and drawn; the highlight queue
      stays between the water (3530) and the roads (3540).
-  5. SHIPPED: the committed DLL is the one its .srchash stamped, built from these sources.
+  5. DRAWING: Source/RM_WorldPathsDrawn.cs itself is compiled against stand-in engine types
+     (selftest_world_paths_drawn_stubs.cs) and RoadPrefix, River and HighlightPostfix are RUN: every ancient-highway
+     link with LinkHash < AncientGapShare is drawn at width 0 (and only those), worn dirt links at DirtWornWidth on
+     the Dirt layer, stone untouched; river link widths x their graph factor, the bank pale (lighter than the water
+     and than the dark bank), the dry fade toward DryTan; a highlight strip of HighlightWidth on its own material,
+     coloured toward white, on wet water tiles only. Named mutants of that file (the blind checker's three plus more)
+     must each turn this red, or the check is blind.
+  6. SHIPPED: the committed DLL is the one its .srchash stamped, built from these sources.
 Constants are parsed from the C#, so this cannot drift from it.
 """
 import hashlib
@@ -39,7 +46,9 @@ DRAWN_CS = os.path.join(SRC, "RM_WorldPathsDrawn.cs")
 PATHS_CS = os.path.join(SRC, "RM_WorldPaths.cs")
 MOD_CS = os.path.join(SRC, "RM_BiomesMod.cs")
 DLL = os.path.join(HERE, "Assemblies", "RimMandrake.Biomes.dll")
-EXEC_SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/selftest_tmp"     # dotnet.exe needs a Windows drive
+STUBS_CS = os.path.join(HERE, "selftest_world_paths_drawn_stubs.cs")
+# dotnet.exe needs a Windows drive; a sandbox where D: is not visible to Windows may point this elsewhere.
+EXEC_SCRATCH = os.environ.get("RM_SELFTEST_EXEC_SCRATCH", "/mnt/d/ClaudeWork/rimmandrake/selftest_tmp")
 WATER_QUEUE, ROADS_QUEUE = 3530, 3540                               # WorldMaterials.Rivers / .Roads (decompiled 1.6)
 
 
@@ -58,7 +67,18 @@ def const(text, name):
 G = read(GRAPH_CS)
 D = read(DRAWN_CS)
 K = {n: const(G, n) for n in ("HeadMin", "TaperTiles", "MouthFan", "DryMin", "DryTiles")}
-W = {n: const(D, n) for n in ("AncientGapShare", "DirtWornShare", "DirtWornWidth", "HighlightWidth")}
+W = {n: const(D, n) for n in ("AncientGapShare", "DirtWornShare", "DirtWornWidth", "HighlightWidth", "BankPale",
+                              "HighlightMix", "HighlightAlpha")}
+
+
+def colour(text, name):
+    m = re.search(r"static readonly Color " + name + r" = new Color\(([0-9.]+)f, ([0-9.]+)f, ([0-9.]+)f\);", text)
+    if not m:
+        sys.exit("cannot parse %s" % name)
+    return tuple(float(x) for x in m.groups())
+
+
+PALE_BANK, DRY_TAN = colour(D, "PaleBank"), colour(D, "DryTan")
 
 
 def f32(x):
@@ -296,7 +316,7 @@ def disagree(cs, py):
     out = sorted(set(cs) ^ set(py), key=str)
     for key in set(cs) & set(py):
         a, b = cs[key], py[key]
-        if (a != b) if isinstance(a, tuple) else abs(a - b) > 1e-5:
+        if (a != b) if isinstance(a, tuple) else not abs(a - b) <= 1e-5:   # NaN never matches
             out.append(key)
     return out
 
@@ -405,6 +425,290 @@ def check_shipped(bad):
             bad.append("the committed DLL has no %s" % name.decode())
 
 
+# ---- 5. drawing: RM_WorldPathsDrawn.cs run against stand-in engine types ------------------------------------------
+DRAWN_CSPROJ = '''<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>disable</Nullable>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems><ImplicitUsings>disable</ImplicitUsings>
+  <NoWarn>CS0162;CS0649;CS0169;CS0414</NoWarn><StartupObject>DrawnHarness.P</StartupObject></PropertyGroup>
+  <ItemGroup><Compile Include="Stubs.cs" /><Compile Include="RM_WorldPathsDrawn.cs" /><Compile Include="RM_RiverGraph.cs" /></ItemGroup>
+</Project>
+'''
+# (name, what breaks, text in RM_WorldPathsDrawn.cs, its replacement). Each must occur exactly once and must turn
+# check_drawing red. A, C, D are the blind checker's (2026-11-03, at 3a54a06d).
+DRAWN_MUTANTS = (
+    ("A", "ancient highway not broken", "{ m.width = 0f; gap = true; }", "{ gap = true; }"),
+    ("C", "no mid highlight", "if (dry > 0f) return;", "return;"),
+    ("D", "dirt not worn", "m.width = n.width * DirtWornWidth", "m.width = n.width"),
+    ("E", "dark bank", "Color32 baseCol = bank ? Mix(water, PaleBank, BankPale) : water;", "Color32 baseCol = bank ? darkBank : water;"),
+    ("F", "no dry fade", "return Mix(baseCol, DryTan, dry * 0.8f);", "return baseCol;"),
+    ("G", "no taper/fan width", "m.width = Mathf.Max(0f, n.width * f);", "m.width = n.width;"),
+    ("H", "highlight full width", "m.width = n.width * HighlightWidth;", "m.width = n.width;"),
+    ("I", "highlight left in the foreign colour", "hiMesh.colors[i] = c;", "{ }"),
+    ("J", "wedge into a gap", "if (gap) allowSmoothTransition = false;", ""),
+    ("K", "all-gap tile still draws its centre", "return any;", "return true;"),
+    ("L", "highlight on a dry trace", "if (dry > 0f) return;", "if (dry > 1f) return;"),
+    # GPT review of this check, 2026-11-03:
+    ("M", "highlight recolours earlier tiles", "int from = hiMesh.colors.Count;", "int from = 0;"),
+    ("N", "highlight postfix not registered",
+     ",\n                postfix: new HarmonyMethod(typeof(RM_WorldPathsDrawn), nameof(HighlightPostfix))", ""),
+    ("O", "road kind not looked up per link", "if (rl.neighbor.tileId == n.neighbor.tileId) { road = rl.road; break; }",
+     "{ road = rl.road; break; }"),
+    ("P", "rivers ignore their setting", "public static bool Rivers => RM_WorldPaths.applied && RM_WorldPaths.drawnRivers;",
+     "public static bool Rivers => RM_WorldPaths.applied;"),
+    ("Q", "roads ignore their setting", "public static bool Roads => RM_WorldPaths.applied && RM_WorldPaths.wornRoads;",
+     "public static bool Roads => RM_WorldPaths.applied;"),
+)
+ROAD_LAYERS = {"Dirt": (120, 90, 60, 255), "Outline": (40, 30, 20, 255), "Stone": (150, 140, 120, 255)}
+ROAD_KINDS = ("AncientAsphaltRoad", "AncientAsphaltHighway", "DirtPath", "DirtRoad", "StoneRoad")
+HI_MAT = "RM_RiverHighlight"
+
+
+def mix(a, b, t):
+    """RM_WorldPathsDrawn.Mix: lerp the bytes toward a float colour, truncate, keep a's alpha."""
+    t = min(1.0, max(0.0, t))
+    return tuple(int(f32((x / 255.0 + (y - x / 255.0) * t) * 255.0)) for x, y in zip(a[:3], b[:3])) + (a[3],)
+
+
+def cstr(c):
+    return ",".join(str(int(x)) for x in c)
+
+
+def drawn_cases(rng):
+    """Commands for the harness, each with the Python expectation of its output line."""
+    cmds, want = [], {}
+    for name, c in ROAD_LAYERS.items():
+        cmds.append("LAYER %s %s" % (name, cstr(c)))
+
+    def road(on, worn, layer, kinds, tile, nbrs, colour=None):
+        """kinds: one road kind per link (a junction may join different roads)."""
+        cid = "r%d" % len(want)
+        ws = [f32(rng.uniform(.1, 1.2)) for _ in nbrs]
+        cmds.append("SET %d %d %d" % (on, rng.randint(0, 1), worn))
+        cmds.append("ROAD %s %s - %d %s" % (cid, cstr(colour or ROAD_LAYERS[layer]), tile,
+                                           " ".join("%d:%r:%s" % (n, w, k) for n, w, k in zip(nbrs, ws, kinds))))
+        out, gap = [], False
+        for n, w, kind in zip(nbrs, ws, kinds):
+            h = link_hash(tile, n)
+            if not (on and worn and colour is None):
+                out.append(w)
+            elif kind.startswith("AncientAsphalt") and h < f32(W["AncientGapShare"]):
+                out.append(0.0)
+                gap = True
+            elif kind.startswith("Dirt") and layer == "Dirt" and h < f32(W["DirtWornShare"]):
+                out.append(f32(w * f32(W["DirtWornWidth"])))
+            else:
+                out.append(w)
+        active = on and worn and colour is None
+        want[("ROAD", cid)] = (int(any(x > 0 for x in out)) if active else 1, 0 if gap else 1, list(zip(nbrs, out)), kinds, layer)
+
+    for i in range(500):
+        tile = rng.randrange(1, 400000)
+        nbrs = rng.sample(range(tile + 1, tile + 60), rng.randint(1, 6))
+        one = rng.choice(ROAD_KINDS)
+        road(1, 1, rng.choice(list(ROAD_LAYERS)), [one] * len(nbrs) if i % 2 else [rng.choice(ROAD_KINDS) for _ in nbrs], tile, nbrs)
+    # a tile whose every link is a gap: the prefix must skip it whole (no centre hexagon)
+    tile = next(t for t in range(1000, 10 ** 6) if link_hash(t, t + 1) < W["AncientGapShare"] and link_hash(t, t + 2) < W["AncientGapShare"])
+    road(1, 1, "Outline", ["AncientAsphaltHighway"] * 2, tile, [tile + 1, tile + 2])
+    for _ in range(30):   # switched off, or a colour no road layer has: nothing changes
+        tile = rng.randrange(1, 400000)
+        road(0, 1, "Dirt", [rng.choice(ROAD_KINDS)] * 3, tile, [tile + 1, tile + 2, tile + 3])
+        road(1, 0, "Dirt", [rng.choice(ROAD_KINDS)] * 3, tile, [tile + 1, tile + 2, tile + 3])
+        road(1, 1, "Dirt", ["AncientAsphaltRoad"] * 3, tile, [tile + 1, tile + 2, tile + 3], colour=(9, 9, 9, 255))
+
+    def river(applied, drawn, bank, graph, dry, with_f=True):
+        on = applied and drawn
+        cid = "v%d" % len(want)
+        tile = rng.randrange(1, 400000)
+        water = (rng.randrange(40, 160), rng.randrange(60, 170), rng.randrange(80, 200), 255)
+        dark = tuple(int(x * .22) for x in water[:3]) + (255,)
+        nbrs = [tile + 1 + i for i in range(rng.randint(1, 4))]
+        ws = [f32(rng.uniform(.2, 1.0)) for _ in nbrs]
+        fs = [f32(rng.uniform(.3, 1.6)) if with_f else None for _ in nbrs]
+        cmds.append("SET %d %d %d" % (applied, drawn, rng.randint(0, 1)))
+        cmds.append("RIVER %s %d %d %d %r %s %s %s" % (cid, bank, graph, tile, dry, cstr(water), cstr(dark), " ".join(
+            "%d:%r" % (n, w) + (":%r" % f if f is not None else "") for n, w, f in zip(nbrs, ws, fs))))
+        if on and graph:
+            base = mix(water, PALE_BANK, W["BankPale"]) if bank else water
+            col = mix(base, DRY_TAN, f32(f32(dry) * f32(.8)))
+            out = [max(0.0, f32(w * f)) if f is not None else w for w, f in zip(ws, fs)]
+        else:
+            col, out = (dark if bank else water), ws
+        want[("RIVER", cid)] = (col, list(zip(nbrs, out)), water, dark, bank, dry, on and graph)
+
+    for _ in range(150):
+        river(1, 1, rng.randint(0, 1), 1, rng.choice((0.0, 0.0, 0.0, f32(rng.uniform(.05, 1.0)))), with_f=rng.random() < .8)
+    for _ in range(20):
+        river(0, 1, rng.randint(0, 1), 1, 0.0)
+        river(1, 0, rng.randint(0, 1), 1, 0.0)
+        river(1, 1, rng.randint(0, 1), 0, 0.0)
+
+    def hi(applied, drawn, mat, graph, dry):
+        on = applied and drawn
+        cid = "h%d" % len(want)
+        tile = rng.randrange(1, 400000)
+        c = (rng.randrange(40, 160), rng.randrange(60, 170), rng.randrange(80, 200), 255)
+        nbrs = [tile + 1 + i for i in range(rng.randint(1, 4))]
+        ws = [f32(rng.uniform(.2, 1.0)) for _ in nbrs]
+        cmds.append("SET %d %d %d" % (applied, drawn, rng.randint(0, 1)))
+        cmds.append("HI %s %s %d %d %r %s %s" % (cid, mat, graph, tile, dry, cstr(c), " ".join("%d:%r" % (n, w) for n, w in zip(nbrs, ws))))
+        if on and graph and mat == "water" and dry == 0:
+            h = mix(c, (1.0, 1.0, 1.0), W["HighlightMix"])[:3] + (int(f32(255.0 * f32(W["HighlightAlpha"]))),)
+            want[("HI", cid)] = (h, tile, [(n, f32(w * f32(W["HighlightWidth"]))) for n, w in zip(nbrs, ws)], c)
+        else:
+            want[("HI", cid)] = None
+
+    for i in range(150):   # interleaved, so the shared highlight mesh holds earlier tiles when a later one draws
+        hi(1, 1, "water", 1, 0.0)
+        if i % 5 == 0:
+            hi(1, 1, "water", 1, f32(rng.uniform(.05, 1.0)))
+            hi(1, 1, "bank", 1, 0.0)
+            hi(1, 1, "water", 0, 0.0)
+            hi(0, 1, "water", 1, 0.0)
+            hi(1, 0, "water", 1, 0.0)
+    return cmds, want
+
+
+def run_drawn(source, cmds, bad):
+    """Compile `source` (RM_WorldPathsDrawn.cs text) with the stubs and RM_RiverGraph.cs; run `cmds`; raw stdout or None."""
+    os.makedirs(EXEC_SCRATCH, exist_ok=True)
+    where = tempfile.mkdtemp(prefix="pathsdrawn_", dir=EXEC_SCRATCH)
+    try:
+        shutil.copy(STUBS_CS, os.path.join(where, "Stubs.cs"))
+        shutil.copy(GRAPH_CS, os.path.join(where, "RM_RiverGraph.cs"))
+        for name, text in (("RM_WorldPathsDrawn.cs", source), ("PathsDrawnExec.csproj", DRAWN_CSPROJ), ("in.txt", "\n".join(cmds) + "\n")):
+            with open(os.path.join(where, name), "w") as f:
+                f.write(text)
+        dotnet = winbuild.dotnet_exe()
+        for _ in range(2):   # one retry: a dotnet.exe build on a fresh temp dir has failed once with no output (2026-11-03)
+            built = subprocess.run([dotnet, "build", winbuild.win(os.path.join(where, "PathsDrawnExec.csproj")), "-c", "Release",
+                                    "--nologo", "-v", "quiet"], cwd=where, capture_output=True, text=True, timeout=300)
+            if built.returncode == 0:
+                break
+        if built.returncode != 0:
+            bad.append("drawing: harness build failed: " + (built.stdout + built.stderr)[-1500:])
+            return None
+        ran = subprocess.run([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "PathsDrawnExec.dll")),
+                              winbuild.win(os.path.join(where, "in.txt"))], cwd=where, capture_output=True, text=True, timeout=200)
+        if ran.returncode != 0:
+            bad.append("drawing: harness exited %d: %s" % (ran.returncode, (ran.stdout + ran.stderr)[-600:]))
+            return None
+        return ran.stdout.replace("\r", "")
+    finally:
+        shutil.rmtree(where, ignore_errors=True)
+
+
+def pairs(tokens):
+    return [(int(n), float(w)) for n, w in (t.split(":") for t in tokens)]
+
+
+def close(a, b):
+    return len(a) == len(b) and all(x[0] == y[0] and abs(x[1] - y[1]) <= 1e-6 for x, y in zip(a, b))
+
+
+def near(a, b):
+    return all(abs(int(x) - int(y)) <= 1 for x, y in zip(a, b)) and a[3] == b[3]
+
+
+def lum(c):
+    return sum(c[:3])
+
+
+def check_drawing(out, want):
+    """Failures of one harness run against the expectations (an empty list is a pass)."""
+    fails, seen, n_gap, n_hi, n_dry = [], set(), 0, 0, 0
+    lines = out.splitlines()
+    if not lines or not lines[0].startswith("PATCHED ") or sorted(lines[0][8:].split(",")) != sorted(
+            ["WorldDrawLayer_Rivers.Regenerate pre=RegeneratePrefix post=-",
+             "WorldDrawLayer_Paths.GeneratePaths pre=RoadPrefix post=HighlightPostfix"]):
+        fails.append("Patch() did not patch Regenerate and GeneratePaths: %r" % (lines[:1],))
+    for line in lines[1:]:
+        p = line.split(" ")
+        key = (p[0], p[1])
+        if key not in want:
+            fails.append("unexpected harness line %r" % line[:80])
+            continue
+        seen.add(key)
+        w = want[key]
+        if p[0] == "ROAD":
+            ret, smooth, links, kind, layer = w
+            got = pairs(p[4:])
+            if (int(p[2]), int(p[3])) != (ret, smooth) or not close(got, links):
+                fails.append("road %s on %s: want ret %d smooth %d %s, got %s" % (kind, layer, ret, smooth, links, line))
+            n_gap += sum(1 for _, x in links if x == 0)
+        elif p[0] == "RIVER":
+            col, links, water, dark, bank, dry, active = w
+            got = tuple(int(x) for x in p[2].split(","))
+            if not near(got, col) or not close(pairs(p[3:]), links):
+                fails.append("river (bank %d, dry %s, drawn %s): want %s %s, got %s" % (bank, dry, active, col, links, line))
+            elif active and bank and dry == 0 and not (lum(got) > lum(water) and lum(got) > lum(dark)):
+                fails.append("river bank is not pale (lighter than water and dark bank): %s" % line)
+            elif active and dry > .5 and lum(got) == lum(mix(water, PALE_BANK, W["BankPale"]) if bank else water):
+                fails.append("dry river tile did not fade: %s" % line)
+            n_dry += 1 if active and dry > 0 else 0
+        elif p[0] == "HI":
+            body = line.split(" | ")
+            calls = int(p[2])
+            if w is None:
+                if calls or len(body) < 2 or not body[-1].startswith("prior 1 "):
+                    fails.append("highlight drawn (or earlier ones touched) where it must not be: %s" % line[:160])
+                continue
+            h, tile, links, c = w
+            n_hi += 1
+            if calls != 1 or len(body) != 3 or not body[2].startswith("prior 1 "):
+                fails.append("highlight: want one strip, got %s" % line[:160])
+                continue
+            call = body[1].split(" ")
+            got_c = tuple(int(x) for x in call[2].split(","))
+            if call[0] != HI_MAT or int(call[1]) != tile or not near(got_c, h) or call[3] != "1" or not close(pairs(call[4:]), links):
+                fails.append("highlight strip: want %s tile %d colour %s widths %s, got %s" % (HI_MAT, tile, h, links, body[1]))
+            if not (lum(got_c) > lum(c) and 0 < got_c[3] < 255):
+                fails.append("highlight is not a faint lighter line: %s" % body[1])
+            verts = body[2].split(" ")[3:]
+            want_v = []
+            for _ in links:
+                want_v += [HI_MAT + "=" + cstr(got_c), HI_MAT + "=" + cstr(got_c[:3] + (0,))]
+            if verts != want_v:
+                fails.append("highlight vertices not rewritten to its colour (FlowWorks recolours): %s" % body[2][:160])
+    missing = set(want) - seen
+    if missing:
+        fails.append("%d commands produced no line, e.g. %s" % (len(missing), sorted(missing)[:3]))
+    road_links = [x for k, v in want.items() if k[0] == "ROAD" for x in v[2]]
+    if n_gap < 50 or n_hi < 100 or n_dry < 20 or len(road_links) < 1500:
+        fails.append("sanity: too few cases seen (gaps %d, highlights %d, dry %d, road links %d)" % (n_gap, n_hi, n_dry, len(road_links)))
+    return fails
+
+
+def check_drawn(bad):
+    rng = random.Random(20261103)
+    cmds, want = drawn_cases(rng)
+    worn = sum(1 for k, v in want.items() if k[0] == "ROAD" and v[4] == "Dirt"
+               for kind in v[3] if kind.startswith("Dirt"))
+    if worn < 50:
+        bad.append("sanity: only %d dirt links on the Dirt layer in the sweep" % worn)
+    out = run_drawn(D, cmds, bad)
+    if out is None:
+        return
+    fails = check_drawing(out, want)
+    for f in fails[:8]:
+        bad.append("drawing: " + f)
+    if len(fails) > 8:
+        bad.append("drawing: ... %d failures in all" % len(fails))
+    blind = []
+    for name, what, old, new in DRAWN_MUTANTS:
+        if D.count(old) != 1:
+            bad.append("sanity: mutant %s (%s): its text occurs %d times in RM_WorldPathsDrawn.cs, want 1" % (name, what, D.count(old)))
+            continue
+        mb = []
+        mout = run_drawn(D.replace(old, new), cmds, mb)
+        if mout is None:
+            bad.append("sanity: mutant %s (%s) did not build or run, so it proves nothing: %s" % (name, what, mb[:1]))
+        elif not check_drawing(mout, want):
+            blind.append("%s (%s)" % (name, what))
+    if blind:
+        bad.append("sanity: the drawing check stays green on mutants %s: it is blind there" % ", ".join(blind))
+    print("ran RM_WorldPathsDrawn.cs on %d drawing cases; %d mutants all caught" % (len(want), len(DRAWN_MUTANTS) - len(blind)))
+
+
 def main():
     bad = []
     rng = random.Random(20261102)
@@ -414,6 +718,7 @@ def main():
     hashes = check_hash(bad)
     check_wiring(bad)
     check_shipped(bad)
+    check_drawn(bad)
     out = run_csharp(cases, hashes, bad)
     if out is not None:
         cs, py = csharp_lines(out), mirror_lines(cases, hashes)
