@@ -153,7 +153,7 @@ OVERRIDES: dict[str, tuple[str, str]] = {
     "RSW_Plant_HubbaGourd_Wild": (_UP, "a gourd crop plant"),
     "Plant_TookeTrap_Wild": (_UP, "a carnivorous flowering plant"),
     # -- stays borderline on purpose (listed for the owner)
-    "AB_RedLeaves": (_BL, "'ocular plant' 1.2 cells; desc says grass, label says plant"),
+    "RM_RedLeaves": (_BL, "'ocular plant' 1.2 cells; desc says grass, label says plant (port of AB_RedLeaves)"),
     "RM_Claithe": (_BL, "flat rosette, but on a root-plate that lifts clear of the mud"),
     "RM_FE_Plant_EmberGrass": (_BL, "a grass, but desc: 'puts everything into height'"),
     "RM_Ghostpane": (_BL, "hand-wide panes joined at angles: flat or standing?"),

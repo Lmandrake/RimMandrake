@@ -12,6 +12,8 @@
     <defName>RM_ToxiGrass</defName>
     <label>toxi grass</label>
     <description>Better not eat this...</description>
+    <!-- ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS: ground cover under the caps (owner 2026-10-14 "Lower all such plants in all biomes"); the donor was patched, the port must carry it. -->
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
     <statBases>
       <MaxHitPoints>85</MaxHitPoints>
       <Flammability>1.3</Flammability>
