@@ -1988,16 +1988,16 @@ def sky_pastures(t):
             n = int(f.get("skyFlockSpawned", "0") or 0)
             if n == 0:
                 _unmeasured(t, "no flock set down (no column, or no standable cell 18-30 from one): %s" % f.get("_line"))
-            w0 = int(f.get("skyPastureWanders", "0") or 0)
             t.bridge_call("rimworld/step_game_ticks", ticks=SKY_FLOCK_TICKS)
             r = _act(t, "Forge sky: report")
-            gov, home = int(r.get("skyPastureGoverned", "0") or 0), int(r.get("skyPastureHome", "0") or 0)
-            w1 = int(r.get("skyPastureWanders", "0") or 0)
+            # the flock's own counters, never the map's: resident creatures at home must not carry the bar
+            gov, home = int(r.get("skyFlockGoverned", "0") or 0), int(r.get("skyFlockHome", "0") or 0)
+            w1 = int(r.get("skyFlockWanders", "0") or 0)
             _note(t, "sky flock", {"spawned": f.get("_line"), "after": r.get("_line")})
-            if w1 <= w0:
-                _fail("no pasture wander job was given in %d ticks (wanders %d -> %d)" % (SKY_FLOCK_TICKS, w0, w1))
+            if w1 < 1:
+                _fail("no pasture wander job was given to the flock in %d ticks" % SKY_FLOCK_TICKS)
             if gov < 1 or home < SKY_FLOCK_HOME_SHARE * gov:
-                _fail("only %d of %d governed sky creatures stand in a column or their leash after %d ticks (need %.0f%%)"
+                _fail("only %d of %d surviving flock creatures stand in a column or their leash after %d ticks (need %.0f%%)"
                       % (home, gov, SKY_FLOCK_TICKS, 100 * SKY_FLOCK_HOME_SHARE))
     if _live(t):
         _note(t, "sky UNMEASURED", "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge "

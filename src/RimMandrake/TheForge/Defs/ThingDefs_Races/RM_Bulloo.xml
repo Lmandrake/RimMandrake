@@ -93,8 +93,8 @@
       <trainability>None</trainability>
       <lifeExpectancy>9</lifeExpectancy>
       <specialTrainables>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">VEF_CycleSeverance</li>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">VEF_ControlledDetonation</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey,OskarPotocki.VanillaFactionsExpanded.Core">VEF_CycleSeverance</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey,OskarPotocki.VanillaFactionsExpanded.Core">VEF_ControlledDetonation</li>
       </specialTrainables>
       <lifeStageAges>
         <li>

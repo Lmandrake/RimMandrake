@@ -70,8 +70,10 @@ def main(argv):
     if not os.path.exists(out):
         print("A1 FAIL: the driver wrote no %s (exit %d)" % (out, rc))
         return 1
+    # The driver's exit code is not the verdict: running one chain leaves every other chain NOT_RUN, which the driver
+    # may report as nonzero. The clause is this one bar, read from this run's own --out file.
     r = bar_status(out, BAR)
-    print("A1 %s: %s -> %r" % ("PASS" if r and r[0] == "PASS" else "FAIL", BAR, r))
+    print("A1 %s: %s -> %r (driver exit %d)" % ("PASS" if r and r[0] == "PASS" else "FAIL", BAR, r, rc))
     return 0 if r and r[0] == "PASS" else 1
 
 

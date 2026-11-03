@@ -332,7 +332,7 @@ namespace RimMandrake.TheForge
         public string PastureReport()
         {
             RM_MapComponent_VaporColumns cols = map.GetComponent<RM_MapComponent_VaporColumns>();
-            int governed = 0, home = 0, dhokkur = 0, dhokkurHome = 0;
+            int governed = 0, home = 0, dhokkur = 0, dhokkurHome = 0, flock = 0, flockHome = 0;
             if (cols != null)
             {
                 IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
@@ -347,6 +347,11 @@ namespace RimMandrake.TheForge
                     bool ok = RM_SkyKernel.WanderDestOk(inCol, leash, !inCol && leash > 0f && cols.NearestColumnCell(p.Position, leash).IsValid);
                     governed++;
                     if (ok) home++;
+                    if (testFlock.Contains(p))
+                    {
+                        flock++;
+                        if (ok) flockHome++;
+                    }
                     if (isDhokkur)
                     {
                         dhokkur++;
@@ -355,10 +360,23 @@ namespace RimMandrake.TheForge
                 }
             }
             return "skyPastureGoverned=" + governed + " skyPastureHome=" + home + " skyDhokkurGoverned=" + dhokkur
-                + " skyDhokkurHome=" + dhokkurHome + " skyPastureWanders=" + StatPastureWanders;
+                + " skyDhokkurHome=" + dhokkurHome + " skyPastureWanders=" + StatPastureWanders
+                + " skyFlockGoverned=" + flock + " skyFlockHome=" + flockHome + " skyFlockWanders=" + StatFlockWanders;
         }
 
-        public int StatPastureWanders;
+        public int StatPastureWanders, StatFlockWanders;
+
+        // The pawns the last test flock set down (debug/proof only, not saved): the live bar measures THESE, never the map.
+        private readonly HashSet<Pawn> testFlock = new HashSet<Pawn>();
+
+        public void NotePastureWander(Pawn p)
+        {
+            StatPastureWanders++;
+            if (testFlock.Contains(p))
+            {
+                StatFlockWanders++;
+            }
+        }
 
         public static readonly string[] TestFlockKinds = { "RM_FleetFlier", "RM_FleetFlier", "RM_FleetFlier", "RM_FleetFlier", "RM_Bulloo", "RM_Bulloo" };
 
@@ -385,6 +403,8 @@ namespace RimMandrake.TheForge
                 spots.Add(c);
             }
             int spawned = 0;
+            testFlock.Clear();
+            StatFlockWanders = 0;
             for (int i = 0; i < TestFlockKinds.Length && spots.Count > 0; i++)
             {
                 PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(TestFlockKinds[i]);
@@ -393,7 +413,9 @@ namespace RimMandrake.TheForge
                     continue;
                 }
                 IntVec3 at = spots[Rand.Range(0, spots.Count)];
-                GenSpawn.Spawn(PawnGenerator.GeneratePawn(kind, null), at, map);
+                Pawn bird = PawnGenerator.GeneratePawn(kind, null);
+                GenSpawn.Spawn(bird, at, map);
+                testFlock.Add(bird);
                 spawned++;
             }
             return "skyFlockSpawned=" + spawned + " skyFlockSpots=" + spots.Count + " skyFlockAnchor=" + anchor.x + "," + anchor.z
@@ -571,7 +593,7 @@ namespace RimMandrake.TheForge
                 RM_MapComponent_SkyPastures c = RM_MapComponent_SkyPastures.Of(pawn.Map);
                 if (c != null)
                 {
-                    c.StatPastureWanders++;
+                    c.NotePastureWander(pawn);
                 }
             }
             return job;

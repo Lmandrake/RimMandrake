@@ -447,12 +447,14 @@ class FGame(MockGame):
         unwired ('pasture_unwired', the stage-5 gap) or switched off."""
         flock = getattr(self, "sky_flock", None)
         if not flock:
-            return "skyPastureGoverned=0 skyPastureHome=0 skyPastureWanders=0"
+            return "skyPastureGoverned=0 skyPastureHome=0 skyPastureWanders=0 skyFlockGoverned=0 skyFlockHome=0 skyFlockWanders=0"
         n, t0 = flock
         on = self.settings[SET_FORGE].get("skyColumnWanderEnabled", "True") == "True"
         walked = on and "pasture_unwired" not in self.brk and self.ticks - t0 >= 1200
-        return "skyPastureGoverned=%d skyPastureHome=%d skyPastureWanders=%d" % (n if on else 0, n if walked else 0,
-                                                                                (self.ticks - t0) // 200 if walked else 0)
+        # 20 residents already at home: a bar reading the map-wide counters would pass on them alone ('pasture_unwired')
+        g, h, w = (n if on else 0), (n if walked else 0), ((self.ticks - t0) // 200 if walked else 0)
+        return "skyPastureGoverned=%d skyPastureHome=%d skyPastureWanders=%d skyFlockGoverned=%d skyFlockHome=%d " \
+               "skyFlockWanders=%d" % (20 + g, 20 + h, 50 + w, g, h, w)
 
     def t_rimworld_execute_debug_action(self, p):
         path = p.get("path", "")
