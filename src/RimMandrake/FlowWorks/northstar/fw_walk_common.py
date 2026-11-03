@@ -27,6 +27,13 @@ FR = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 WIN_FB = r"C:\Windows\Fonts\arialbd.ttf"
 WIN_FR = r"C:\Windows\Fonts\arial.ttf"
 ROT_NAMES = ("North", "East", "South", "West")
+# FakeGame's style menu (mock only): the defs that carry a "Choose style" button and the looks it offers
+STYLEABLE = ("RM_LiquidTank", "RM_LiquidTankTall", "RM_HoseReel", "RM_UniversalPipe", "RM_BankWeir")
+STYLE_PLAIN_MENU = ("RM_HoseReel", "RM_BankWeir")     # menu rows read just "<Look>", no ": this one / whole run" tail
+STYLE_TOOLS = ("rimworld/click_cell", "rimworld/clear_selection", "rimworld/list_selected_gizmos", "rimworld/execute_gizmo",
+               "rimworld/get_context_menu_options", "rimworld/execute_context_menu_option", "rimworld/close_context_menu")
+MOCK_DEFAULT_LOOK = "Standard"
+MOCK_LOOKS = ("Futuristic", "Industrial", "Modern", "Scrapper")
 
 
 # ---------------------------------------------------------------- things / rotation
@@ -82,9 +89,21 @@ def place(w, defname, cell, rot=None, stuff=None, wipe=False):
     kw = dict(ops=op, faction="player", wipeExisting=bool(wipe))
     if stuff:
         kw["stuff"] = stuff
+    rect = (cell[0] - 2, cell[1] - 2, 5, 5)
+
+    def key(t):   # a thing's identity: its id when the game reports one, else where it stands
+        raw = t["raw"]
+        return raw.get("id") or raw.get("thingId") or raw.get("thingID") or (t["cell"], t["rot"])
+    before = {key(t) for t in list_things(w, [defname], rect) if t["cell"] is not None}
+    if (w.last_list or {}).get("countMatched") is None or (w.last_list.get("countReturned") or 0) < (w.last_list.get("countMatched") or 0):
+        return dict(def_=defname, asked=cell, rot_asked=rot, rot_read=None, survived=False,
+                    note="pre-build list_things unreadable or truncated (%s): nothing to tell a new thing from an old one" % w.last_list)
     r = w.call("jawa/build_batch", **kw) or {}
-    got = [t for t in list_things(w, [defname], (cell[0] - 2, cell[1] - 2, 5, 5)) if t["cell"] is not None]
-    mine = [t for t in got if abs(t["cell"][0] - cell[0]) <= 1 and abs(t["cell"][1] - cell[1]) <= 1]
+    # only a thing that was NOT there before counts (a neighbour built earlier must never stand in for a failed build);
+    # exact cell first, else within one cell (a multi-cell thing may report a different anchor cell)
+    got = [t for t in list_things(w, [defname], rect) if t["cell"] is not None and key(t) not in before]
+    mine = ([t for t in got if tuple(t["cell"]) == tuple(cell)]
+            or [t for t in got if abs(t["cell"][0] - cell[0]) <= 1 and abs(t["cell"][1] - cell[1]) <= 1])
     t = mine[0] if mine else None
     note = ""
     if r.get("success") is False or (not r and not mine):
@@ -491,7 +510,57 @@ class FakeGame(object):
             return {"success": True, "sizeX": self.MAP[0], "sizeZ": self.MAP[1], "tile": 1234}
         if tool == "rimworld/get_ui_state":
             return {"success": True, "programState": "Playing"}
+        if tool in STYLE_TOOLS:
+            return self._style(tool, kw)
         return {"success": True}
+
+    # -- the "Choose style" gizmo and its float menu, as objects_sheet drives them (labels per the LIVE 2026-10-17 notes there)
+    def _style(self, tool, kw):
+        if tool == "rimworld/click_cell":
+            self.selected = (kw.get("x"), kw.get("z"))
+        elif tool == "rimworld/clear_selection":
+            self.selected = None
+        elif tool == "rimworld/list_selected_gizmos":
+            t = self._styled_at(getattr(self, "selected", None))
+            return {"success": True, "gizmos": [{"label": "Choose style", "gizmoId": "g_style"}] if t else []}
+        elif tool == "rimworld/execute_gizmo":
+            self.menu = self._styled_at(getattr(self, "selected", None))
+        elif tool == "rimworld/get_context_menu_options":
+            t = getattr(self, "menu", None)
+            if not t:
+                return {"success": True, "options": []}
+            cur, opts = t.get("look", MOCK_DEFAULT_LOOK), []
+            for look in (MOCK_DEFAULT_LOOK,) + MOCK_LOOKS:
+                tails = ("",) if t["defName"] in STYLE_PLAIN_MENU else (": this one", ": whole connected run")
+                for tail in tails:
+                    opts.append({"index": len(opts), "label": look + tail + (" (current)" if look == cur else ""), "_look": look,
+                                 "_run": tail == ": whole connected run"})
+            self.menu_opts = opts
+            return {"success": True, "menuId": "m_style", "options": opts}
+        elif tool == "rimworld/execute_context_menu_option":
+            o = next((q for q in getattr(self, "menu_opts", []) if q["index"] == kw.get("optionIndex")), None)
+            t = getattr(self, "menu", None)
+            if o and t:
+                for u in (self._run_of(t) if o["_run"] else [t]):
+                    u["look"] = o["_look"]
+            self.menu = None
+        elif tool == "rimworld/close_context_menu":
+            self.menu = None
+        return {"success": True}
+
+    def _styled_at(self, cell):
+        return next((t for t in self.things if cell and (t["x"], t["z"]) == tuple(cell) and t["defName"] in STYLEABLE), None)
+
+    def _run_of(self, t):
+        """Things of t's def joined to it orthogonally (a pipe's connected run)."""
+        run, todo = [t], [t]
+        while todo:
+            a = todo.pop()
+            for b in self.things:
+                if b not in run and b["defName"] == t["defName"] and abs(b["x"] - a["x"]) + abs(b["z"] - a["z"]) == 1:
+                    run.append(b)
+                    todo.append(b)
+        return run
 
     def probe_of(self, probe_type, cmd, wait_s=20.0, poll_s=0.3):
         if cmd == "colonists":

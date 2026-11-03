@@ -1,0 +1,5 @@
+# CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES: one sitting, a Playing quicktest map (minimal list + FlowWorks, all five DLC).
+# river_site.py makes the current map a river site (weirs/fords need moving shallow water); objects_sheet.py --prove stages,
+# reads back and photographs every group, exits 0 only when every row MATCHES and every group has its labelled picture.
+# Verdict: Transient/fw_scenes/live/objects/prove.txt; sheet: Transient/fw_scenes/live/objects/index.html
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/river_site.py < /dev/null && python.exe src/RimMandrake/FlowWorks/northstar/objects_sheet.py --prove --reset-index < /dev/null

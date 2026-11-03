@@ -1,6 +1,7 @@
 """objects_sheet.py -- RUNBOOK: python.exe src/RimMandrake/FlowWorks/northstar/objects_sheet.py   (~6-8 min live; bridge held, a Playing map; river groups want a river map: river_site.py first)
    offline proof of the script itself: python3 src/RimMandrake/FlowWorks/northstar/objects_sheet.py --mock   (seconds, no game)
-   options: --only ladders,styles,river  --no-shots  --mock-fail <group>
+   options: --only ladders,styles,river  --no-shots  --mock-fail <group>  --prove (exit 0 only when every row MATCHES and
+            every group has its rows and labelled picture; verdict in <out>/prove.txt)
 
 CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES. Stages and photographs, one labelled picture per group:
   ladders_lowered / ladders_raised   RM_Ladder on each of the four walls of a 3x3 pit (lowered, then slid up onto the rim)
@@ -66,6 +67,14 @@ def ford_line(terrain, size, n=4, margin=12):
     return best
 
 
+def final_rot(w, defname, cell):
+    """The rotation the game reads NOW for `defname` at `cell` (exact cell first, else one cell off for a multi-cell
+    anchor), re-read AFTER a raise or a style pick; None = UNMEASURED."""
+    got = [t for t in C.list_things(w, [defname], (cell[0] - 1, cell[1] - 1, 3, 3)) if t["cell"] is not None]
+    hit = [t for t in got if tuple(t["cell"]) == tuple(cell)] or got
+    return hit[0]["rot"] if hit else None
+
+
 # ---------------------------------------------------------------- groups
 def status(ok):
     return "UNMEASURED" if ok is None else ("MATCHES" if ok else "DIFFERS")
@@ -88,24 +97,21 @@ def ladder_group(w, gid, title, row, mode, out_dir):
         asked = (r + 2) % 4 if mode == "autoturn" else r      # autoturn: faces INTO the pit, away from its wall
         res = C.place(w, "RM_Ladder", c, rot=asked)
         raised = None
-        if res["survived"] and mode == "raised":
-            ok, txt = w.proof(PROMO, "ProofLadder", "%d,%d,raise" % c)
-            raised = ("raised=True" in txt) if ok else None
-            notes.append("raise %s: %s" % (c, txt[:100]))
+        if res["survived"]:
+            # raised: slide it up, then read; lowered/autoturn: read only. Each must read back the state its caption claims.
+            ok, txt = w.proof(PROMO, "ProofLadder", "%d,%d,%s" % (c[0], c[1], "raise" if mode == "raised" else "read"))
+            raised = (True if "raised=True" in txt else False if "raised=False" in txt else None) if ok and "present=True" in txt else None
+            notes.append("%s %s: %s" % ("raise" if mode == "raised" else "read", c, txt[:100]))
         name = C.ROT_NAMES[r]
-        read = C.rot_text(res["rot_read"])
-        if not res["survived"]:
-            ok = None
-        elif res["rot_read"] is None:
-            ok = None
-        else:
-            ok = res["rot_read"] == r
-        if mode == "raised" and ok and raised is not True:
+        now = final_rot(w, "RM_Ladder", c) if res["survived"] else None     # after the raise, not the build-time read
+        read = C.rot_text(now)
+        ok = None if (not res["survived"] or now is None) else (now == r)
+        want_raised = mode == "raised"
+        if ok and raised is not want_raised:
             ok = None if raised is None else False
-        caps.append("%s wall: asked %s, game reads %s%s" % (name, C.rot_text(asked), read,
-                                                           ", raised=%s" % raised if mode == "raised" else ""))
+        caps.append("%s wall: asked %s, game reads %s, raised=%s" % (name, C.rot_text(asked), read, raised))
         readings.append((status(ok), "%s wall (cell %d,%d): asked %s -> game reads %s%s%s" % (
-            name, c[0], c[1], C.rot_text(asked), read, "; raised=%s" % raised if mode == "raised" else "",
+            name, c[0], c[1], C.rot_text(asked), read, "; raised=%s" % raised,
             "; " + res["note"] if res["note"] else "")))
         w.rows.append(dict(id="%s.%s" % (gid, name), status=status(ok), game=readings[-1][1]))
     w.ticks(1)
@@ -142,6 +148,11 @@ def _style_menu(w, cell):
     return o.get("menuId"), o.get("options") or []
 
 
+def look_of(label):
+    """A style-menu row's look name: "Futuristic: this tank (current)" -> "Futuristic"; "Scrapper" -> "Scrapper"."""
+    return str(label).split(" (current)")[0].split(":")[0].strip()
+
+
 def current_look(w, cell):
     """The look the game says this thing wears now (the menu's "(current)" entry); None = UNMEASURED."""
     mid, opts = _style_menu(w, cell)
@@ -149,7 +160,8 @@ def current_look(w, cell):
     w.B.call("rimworld/clear_selection")
     if mid is None:
         return None
-    cur = [str(o.get("label")).split(" (current)")[0] for o in opts if "(current)" in str(o.get("label"))]
+    # the label carries a tail on tanks/pipes ("Futuristic: this tank (current)"): the look is the part before ":"
+    cur = [look_of(o.get("label")) for o in opts if "(current)" in str(o.get("label"))]
     return cur[0] if cur else None
 
 
@@ -159,8 +171,10 @@ def choose_look(w, cell, look, run=False):
     if mid is None:
         return None
     # tanks/pipes read "<Look>: this tank" / "<Look>: whole connected run"; the reel's menu reads just "<Look>" (LIVE 2026-10-17)
-    want = [o for o in opts if str(o.get("label")).split(" (current)")[0].split(":")[0] == look]
-    pick = [o for o in want if ("whole connected run" in str(o.get("label"))) == run] or want
+    want = [o for o in opts if look_of(o.get("label")) == look]
+    pick = [o for o in want if ("whole connected run" in str(o.get("label"))) == run]
+    if not pick and not run:
+        pick = want            # the reel/weir menus have no ': this one' tail: the bare look row is the single-thing pick
     if not pick:
         w.B.call("rimworld/close_context_menu")
         return None
@@ -185,15 +199,25 @@ def style_group(w, gid, kind_label, base, size_, row, out_dir):
         if not placed:
             ok, got = None, "not placed (nothing to read a look from: UNMEASURED, as the ladder groups do)"
         elif not suf:
-            got = current_look(w, cells[0])
-            ok = None if got is None else True
-            got = "default look = %s" % got
+            # the default's own name is the game's; on every cell it must be readable and must not be one of the four styles
+            every = [current_look(w, c) for c in cells]
+            got = every[0]
+            ok = None if None in every else all(g not in STYLE_LABEL[1:] for g in every)
+            got = "default look = %s" % (got if len(cells) == 1 else ", ".join(str(g) for g in every))
         else:
             got = choose_look(w, cells[0], look, run=len(cells) > 1)
             ok = None if got is None else (got == look)
+            if ok and len(cells) > 1:           # a pipe: the whole run must wear it, not just the cell we clicked
+                rest = [current_look(w, c) for c in cells[1:]]
+                ok = None if None in rest else all(g == look for g in rest)
+                got = "%s (run: %s)" % (got, ", ".join(str(g) for g in rest))
+        rots = [final_rot(w, d, c) if r["survived"] else None for r, c in zip(res, cells)]   # after the look was picked
+        if placed and ok is not None:        # every placed cell reads back the North we asked, as the module doc promises
+            ok = None if None in rots else (ok and all(q == 0 for q in rots))
         caps.append("%s = %s (%s)" % (look, d, got))
-        readings.append((status(ok), "%s %s: %d of %d placed; game reads look %s%s" % (
-            d, look, sum(r["survived"] for r in res), len(res), got, "; " + res[0]["note"] if res[0]["note"] else "")))
+        readings.append((status(ok), "%s %s: %d of %d placed; asked North -> reads %s; game reads look %s%s" % (
+            d, look, sum(r["survived"] for r in res), len(res), ", ".join(C.rot_text(q) for q in rots), got,
+            "; " + res[0]["note"] if res[0]["note"] else "")))
         w.rows.append(dict(id="%s.%s" % (gid, STYLE_LABEL[k]), status=status(ok), game=readings[-1][1]))
     w.ticks(1)
     png = C.snap(w, gid, rect)
@@ -246,22 +270,30 @@ def weirs_group(w, out_dir, size, terr, why):
         look = None
         if res["survived"]:
             look = current_look(w, c) if not STYLE_SUFFIX[k] else choose_look(w, c, STYLE_LABEL[k])
-        ok = None if (not res["survived"] or res["rot_read"] is None) else (res["rot_read"] == r)
-        if ok and STYLE_SUFFIX[k]:
-            ok = None if look is None else (look == STYLE_LABEL[k])
-        caps.append("%s: asked %s, game reads %s, look %s" % (STYLE_LABEL[k], C.rot_text(r), C.rot_text(res["rot_read"]), look))
+        now = final_rot(w, d, c) if res["survived"] else None               # after the look was picked
+        ok = None if (not res["survived"] or now is None) else (now == r)
+        if ok:
+            ok = None if look is None else ((look == STYLE_LABEL[k]) if STYLE_SUFFIX[k] else (look not in STYLE_LABEL[1:]))
+        caps.append("%s: asked %s, game reads %s, look %s" % (STYLE_LABEL[k], C.rot_text(r), C.rot_text(now), look))
         readings.append((status(ok), "%s %s at %d,%d: asked %s -> reads %s; look %s%s" % (
-            d, STYLE_LABEL[k], c[0], c[1], C.rot_text(r), C.rot_text(res["rot_read"]), look, "; " + res["note"] if res["note"] else "")))
+            d, STYLE_LABEL[k], c[0], c[1], C.rot_text(r), C.rot_text(now), look, "; " + res["note"] if res["note"] else "")))
         w.rows.append(dict(id="%s.%s" % (gid, STYLE_LABEL[k]), status=status(ok), game=readings[-1][1]))
     w.say("  note: placed with god-mode build_batch (no PlaceWorker); the bank-edge rule itself is the river suite's place_weir_bank_edge")
     xs, zs = [c[0] for c in cells], [c[1] for c in cells]
     rect = (max(0, min(xs) - 6), max(0, min(zs) - 6), max(xs) - min(xs) + 13, max(zs) - min(zs) + 13)
-    rect = (rect[0], rect[1], min(rect[2], 60), min(rect[3], 40))
     w.ticks(1)
-    png = C.snap(w, gid, rect)
-    if png:
-        dst = C.label_image(png, os.path.join(out_dir, gid + "_labelled.png"), title, "Placing order, west to east or as the camera frames them", caps)
-        base["images"] = [(os.path.basename(dst), title)]
+    base["images"] = []
+    if rect[2] <= 60 and rect[3] <= 40:          # all five fit one readable frame
+        frames = [(gid, rect, title, "Placing order, west to east or as the camera frames them", caps)]
+    else:                                         # spread too wide to read in one frame: one picture per weir
+        frames = [("%s_%s" % (gid, STYLE_LABEL[k]), (max(0, c[0] - 6), max(0, c[1] - 6), 13, 13), "Bank weir: %s" % STYLE_LABEL[k],
+                   "One of five weirs (spread too wide for one frame)", [caps[k]]) for k, c in enumerate(cells)]
+    base["shots_owed"] = len(frames)
+    for name, fr, ttl, sub, cp in frames:
+        png = C.snap(w, name, fr)
+        if png:
+            dst = C.label_image(png, os.path.join(out_dir, name + "_labelled.png"), ttl, sub, cp)
+            base["images"].append((os.path.basename(dst), ttl))
     base["readings"] = readings
     base["notes"] = ["Weirs are spread at least 7 cells apart, so the camera may frame them small."]
     for line in readings:
@@ -303,6 +335,33 @@ def fords_group(w, out_dir, size, terr, why):
 
 
 ALL = ("ladders", "styles", "river")
+# --prove: the groups each family must yield, and how many MATCHES rows each must carry (a vacuous pass is a fail)
+EXPECT = {"ladders": {"ladders_lowered": 4, "ladders_raised": 4, "ladders_autoturn": 4},
+          "styles": {"styles_" + base: len(STYLE_SUFFIX) for _l, base, _s in KINDS},
+          "river": {"river_weirs": len(STYLE_SUFFIX), "river_fords": 1}}
+
+
+def prove_verdict(rows, groups, only, shots=True):
+    """-> list of reasons the run is NOT the finished sheet ([] = proven). Every row MATCHES, every expected group present with
+    its full count of rows and (when shots) its labelled picture. UNMEASURED fails: a sheet with a blind row is not proven."""
+    bad = ["%s %s: %s" % (r.get("status"), r.get("id"), str(r.get("game"))[:160]) for r in rows if r.get("status") != "MATCHES"]
+    by_id = {g.get("id"): g for g in groups}
+    if not only:
+        bad.append("no group family chosen")
+    bad += ["unknown group family %r (have %s)" % (f, ", ".join(ALL)) for f in only if f not in EXPECT]
+    for fam in only:
+        for gid, n in EXPECT.get(fam, {}).items():
+            got = [r for r in rows if r.get("id") == gid or str(r.get("id")).startswith(gid + ".")]
+            if gid not in by_id:
+                bad.append("group %s missing" % gid)
+                continue
+            if len(got) < n:
+                bad.append("group %s: %d of %d rows" % (gid, len(got), n))
+            if shots and len(by_id[gid].get("images") or []) < max(1, by_id[gid].get("shots_owed") or 1):
+                bad.append("group %s: %d of %d labelled pictures" % (gid, len(by_id[gid].get("images") or []),
+                                                                     max(1, by_id[gid].get("shots_owed") or 1)))
+    return bad
+
 
 
 def build_groups(w, only, out_dir):
@@ -352,9 +411,13 @@ def main(argv=None):
     ap.add_argument("--mock", action="store_true", help="offline fake game; proves this script's own paths only")
     ap.add_argument("--mock-fail", default=None, help="with --mock: raise inside this group id to prove a crash is kept and the walk goes on")
     ap.add_argument("--fresh-map", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--prove", action="store_true", help="exit 1 unless every row MATCHES and every group has its rows and picture")
     ap.add_argument("--reset-index", action="store_true", help="start index.html afresh (default: it accumulates every group run)")
     a = ap.parse_args(argv)
     only = [s.strip() for s in a.only.split(",") if s.strip()]
+    if not only or any(f not in ALL for f in only):
+        print("--only takes %s; got %r" % (",".join(ALL), a.only))
+        return 2
     out_dir = OUT_MOCK if a.mock else OUT_LIVE
     mf = a.mock_fail
     w = C.make_walk(a, out_dir)
@@ -376,6 +439,16 @@ def main(argv=None):
     with open(os.path.join(out_dir, "log_%s.txt" % time.strftime("%Y%m%dT%H%M%S")), "w", encoding="utf-8") as f:
         f.write("\n".join(w.log_lines) + "\n")
     w.say("index: %s" % idx)
+    if a.prove:
+        bad = prove_verdict(w.rows, groups, only, shots=not a.no_shots)
+        if a.no_shots:
+            bad.append("--prove with --no-shots: the sheet is the pictures")
+        with open(os.path.join(out_dir, "prove.txt"), "w", encoding="utf-8") as f:
+            f.write(("PROVEN\n" if not bad else "NOT PROVEN\n") + "".join(b + "\n" for b in bad))
+        w.say("PROVE: %s" % ("PROVEN (%d rows MATCHES)" % len(w.rows) if not bad else "NOT PROVEN, %d reason(s)" % len(bad)))
+        for b in bad[:40]:
+            w.say("  " + b)
+        return 0 if not bad else 1
     return 1 if any(r.get("status") == "CRASHED" for r in w.rows) else 0
 
 

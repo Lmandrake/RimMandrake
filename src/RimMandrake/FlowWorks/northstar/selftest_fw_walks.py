@@ -89,6 +89,121 @@ C.thing_rot = _orig
 rows = rows_of(OS_.OUT_MOCK)
 check("objects_sheet: unreadable rotation -> UNMEASURED on every ladder row", all(r["status"] == "UNMEASURED" for r in rows if r["id"].startswith("ladders_")), rows[:2])
 
+# ---- styles: the look is read back from the menu, its ": this tank" tail stripped (CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES)
+check("look_of strips the tail and (current)", OS_.look_of("Futuristic: this tank (current)") == "Futuristic"
+      and OS_.look_of("Scrapper") == "Scrapper" and OS_.look_of("Modern: whole connected run") == "Modern")
+rc, out = quiet(OS_.main, ["--mock", "--prove"])
+rows = rows_of(OS_.OUT_MOCK)
+check("objects_sheet --mock --prove: every style row MATCHES its asked look", all(r["status"] == "MATCHES" for r in rows if r["id"].startswith("styles_")),
+      [r for r in rows if r["id"].startswith("styles_") and r["status"] != "MATCHES"][:2])
+check("objects_sheet --mock --prove: PROVEN, exit 0, prove.txt says so", rc == 0 and "PROVEN (38 rows" in out
+      and open(os.path.join(OS_.OUT_MOCK, "prove.txt"), encoding="utf-8").read().startswith("PROVEN"), (rc, out[-300:]))
+_pipe = [r for r in rows if r["id"] == "styles_RM_UniversalPipe.Scrapper"]
+check("pipe look picked for the whole connected run", _pipe and "Scrapper" in _pipe[0]["game"], _pipe)
+# a style menu that never says which look is current -> UNMEASURED -> NOT PROVEN
+_ol = OS_.look_of
+OS_.look_of = lambda label: None
+rc, out = quiet(OS_.main, ["--mock", "--only", "styles", "--prove"])
+OS_.look_of = _ol
+check("objects_sheet --prove: unreadable look -> NOT PROVEN, exit 1", rc == 1 and "NOT PROVEN" in out, (rc, out[-300:]))
+rc, out = quiet(OS_.main, ["--mock", "--only", "ladders", "--mock-fail", "ladders_raised", "--prove"])
+check("objects_sheet --prove: a crashed group -> NOT PROVEN", rc == 1 and "NOT PROVEN" in out, (rc, out[-200:]))
+rc, out = quiet(OS_.main, ["--mock", "--only", "ladders", "--no-shots", "--prove"])
+check("objects_sheet --prove --no-shots refuses (the sheet is the pictures)", rc == 1 and "the sheet is the pictures" in out, (rc, out[-200:]))
+_g = [dict(id=g, images=[("x.png", g)]) for g in OS_.EXPECT["ladders"]]
+_r = [dict(id="%s.%s" % (g, n), status="MATCHES", game="") for g in OS_.EXPECT["ladders"] for n in C.ROT_NAMES]
+check("prove_verdict: a full ladder family passes", OS_.prove_verdict(_r, _g, ["ladders"]) == [])
+check("prove_verdict: one DIFFERS fails", OS_.prove_verdict(_r[:-1] + [dict(_r[-1], status="DIFFERS")], _g, ["ladders"]) != [])
+check("prove_verdict: a missing picture fails", OS_.prove_verdict(_r, _g[:-1] + [dict(id=_g[-1]["id"], images=[])], ["ladders"]) != [])
+check("prove_verdict: a short group (3 of 4 rows) fails", OS_.prove_verdict(_r[1:], _g, ["ladders"]) != [])
+check("prove_verdict: a missing family fails (no vacuous pass)", OS_.prove_verdict([], [], ["river"]) != [])
+
+# review findings (gpt, 2026-11-03): pipe run checked on every cell; unknown --only refused; a neighbour never stands in
+_fe = C.FakeGame._style
+
+
+def _no_run(self, tool, kw):     # a menu offering only ': this one' rows: the run cannot be styled
+    r = _fe(self, tool, kw)
+    if tool == "rimworld/get_context_menu_options":
+        r["options"] = [o for o in r.get("options") or [] if not o.get("_run")]
+        self.menu_opts = r["options"]
+    return r
+
+
+C.FakeGame._style = _no_run
+rc, out = quiet(OS_.main, ["--mock", "--only", "styles", "--prove"])
+C.FakeGame._style = _fe
+rows = rows_of(OS_.OUT_MOCK)
+check("pipe with no whole-run option -> its styled rows not MATCHES, NOT PROVEN",
+      rc == 1 and all(r["status"] != "MATCHES" for r in rows if r["id"].startswith("styles_RM_UniversalPipe.") and not r["id"].endswith("default")),
+      [r for r in rows if r["id"].startswith("styles_RM_UniversalPipe.")][:2])
+rc, out = quiet(OS_.main, ["--mock", "--only", "styels", "--prove"])
+check("--only with an unknown family refuses (exit 2)", rc == 2 and "--only takes" in out, (rc, out[-200:]))
+check("prove_verdict: unknown family / empty selection fail", OS_.prove_verdict([], [], ["styels"]) != [] and OS_.prove_verdict([], [], []) != [])
+_fw = C.make_walk(type("A", (), dict(mock=True, no_shots=True, pace=0.0, mock_fail=None, fresh_map=False))(), tempfile.mkdtemp())
+C.place(_fw, "RM_UniversalPipe", (10, 10), rot=0)
+_fb = _fw.B.call
+
+
+def _refuse(tool, **kw):
+    return {"success": False, "error": "refused"} if tool == "jawa/build_batch" else _fb(tool, **kw)
+
+
+_fw.B.call = _refuse
+_pr = C.place(_fw, "RM_UniversalPipe", (11, 10), rot=0)
+check("place(): a failed build next to an earlier one is not survived", _pr["survived"] is False, _pr)
+check("prove_verdict: a group owing 5 pictures with 4 fails",
+      OS_.prove_verdict([dict(id="river_fords", status="MATCHES")] + [dict(id="river_weirs.%s" % l, status="MATCHES") for l in OS_.STYLE_LABEL],
+                        [dict(id="river_fords", images=[1]), dict(id="river_weirs", images=[1, 2, 3, 4], shots_owed=5)], ["river"]) != [])
+
+_fw2 = C.make_walk(type("A", (), dict(mock=True, no_shots=True, pace=0.0, mock_fail=None, fresh_map=False))(), tempfile.mkdtemp())
+C.place(_fw2, "RM_UniversalPipe", (10, 10), rot=0)
+_fb2 = _fw2.B.call
+_fw2.B.call = lambda tool, **kw: ({"success": False} if tool in ("jawa/list_things", "jawa/build_batch") else _fb2(tool, **kw))
+_pr = C.place(_fw2, "RM_UniversalPipe", (10, 10), rot=0)
+check("place(): an unreadable pre-build list is not survived", _pr["survived"] is False and "unreadable" in _pr["note"], _pr)
+# a default pipe whose third cell wears a named style -> the default row is not MATCHES
+_cl = OS_.current_look
+OS_.current_look = lambda w, cell: "Scrapper" if tuple(cell) == (152, 168) else _cl(w, cell)
+rc, out = quiet(OS_.main, ["--mock", "--only", "styles", "--prove"])
+OS_.current_look = _cl
+rows = rows_of(OS_.OUT_MOCK)
+_d = [r for r in rows if r["id"] == "styles_RM_UniversalPipe.default"]
+check("default pipe: a styled non-first cell -> DIFFERS, NOT PROVEN", rc == 1 and _d and _d[0]["status"] == "DIFFERS", _d)
+
+# a lowered ladder that reads raised=True is not "slid down"
+_st = C.FakeGame._static
+C.FakeGame._static = lambda self, typ, m, arg: ({"success": True, "result": "LADDER cell=%s present=True raised=True inspect=x" % arg}
+                                                if m == "ProofLadder" else _st(self, typ, m, arg))
+rc, out = quiet(OS_.main, ["--mock", "--only", "ladders", "--prove"])
+C.FakeGame._static = _st
+rows = rows_of(OS_.OUT_MOCK)
+check("ladders_lowered reading raised=True -> DIFFERS, NOT PROVEN", rc == 1 and all(r["status"] == "DIFFERS" for r in rows if r["id"].startswith("ladders_lowered.")),
+      [r for r in rows if r["id"].startswith("ladders_lowered.")][:1])
+
+_orig = C.thing_rot
+C.thing_rot = lambda t: None
+rc, out = quiet(OS_.main, ["--mock", "--only", "styles", "--prove"])
+C.thing_rot = _orig
+rows = rows_of(OS_.OUT_MOCK)
+check("styles: unreadable rotation -> UNMEASURED on every style row, NOT PROVEN", rc == 1 and all(r["status"] == "UNMEASURED" for r in rows if r["id"].startswith("styles_")), rows[:1])
+
+# a style pick that turns the thing: the verdict uses the rotation read AFTER the pick
+def _turns(self, tool, kw):
+    t = getattr(self, "menu", None)
+    r = _fe(self, tool, kw)
+    if tool == "rimworld/execute_context_menu_option" and t:
+        t["rotation"] = "East"
+    return r
+
+
+C.FakeGame._style = _turns
+rc, out = quiet(OS_.main, ["--mock", "--only", "styles", "--prove"])
+C.FakeGame._style = _fe
+rows = rows_of(OS_.OUT_MOCK)
+check("a style pick that turns the tank -> DIFFERS (rotation re-read after the pick)", rc == 1 and any(
+    r["id"] == "styles_RM_LiquidTank.Futuristic" and r["status"] == "DIFFERS" for r in rows), [r for r in rows if r["id"].startswith("styles_RM_LiquidTank.")][:2])
+
 # ---- river_scenes_walk, clean
 rc, out = quiet(RS.main, ["all", "--mock"])
 check("river_scenes_walk all --mock exits 0", rc == 0, (rc, out[-300:]))
