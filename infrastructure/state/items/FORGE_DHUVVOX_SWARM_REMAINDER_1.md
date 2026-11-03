@@ -21,3 +21,12 @@ The pawn is never removed. Sealed, it is drawn as its nodule, so none vanishes. 
 2. "Swarm aggregation for performance": is there a measured performance problem? Nobody has counted dhuvvox on a
    Forge map.
 3. "Their movement **and sound** slow": the dhuvvox has no running sound to slow. Add one?
+
+## answered (2026-11-03, Relentless)
+1. Kept the pawn-as-nodule build (question card 2026-10-08). Nothing converted.
+2. Measured offline, not built. Vanilla `WildAnimalSpawner` arithmetic over the parsed roster gives 0.9 to 2.1 wild
+   dhuvvox per map. The Rain's `EruptSwarm` adds 60. Peak on a 325x325 map, taking the residents as the expected count
+   plus one more full group of 14: 76 awake, under a 100 budget. The SoundDef caps the scuttle at 6 voices.
+   `src/RimMandrake/TheForge/selftest_dhuvvox_swarm_budget.py` turns red if a roster or weight change pushes the peak over the budget.
+3. Built in 2b45ba7168: `RM_DhuvvoxScuttle` (vanilla `UI/TickHigh`) ticks while awake, and its gap stretches up to 4x in
+   the final window (`RM_DormancyKernel.ScuttleDelay`, fuzzed by `selftest_theforge_fuzz.py`). Toggle "Scuttling sound".
