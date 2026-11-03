@@ -215,6 +215,14 @@ class WSGame(MockGame):
         rows = [dict({"spawned": True, "dead": False, "downed": False}, **q) for q in self.pawns]
         if "handler_vanishes" in self.brk:     # LIVE 2026-10-07: every chain-spawned pawn left AllPawnsSpawned
             rows = [q for q in rows if not (q.get("kindDef") == "Colonist" and q["id"] in getattr(self, "_handlers", ()))]
+        net_at = getattr(self, "_net_tick", None)
+        if net_at is not None and self.ticks - net_at >= 400:     # WEEPINGSTONES_HANDLER_VANISHES_1: mid-job exits
+            netter = getattr(self, "_netter", None)
+            if "handler_leaves_mid_job" in self.brk:
+                rows = [q for q in rows if q["id"] != netter]
+            elif "handler_dies_mid_job" in self.brk:
+                rows = [dict(q, dead=True, spawned=False, health={"hediffs": [{"label": "Bite", "def": "Bite"}]})
+                        if q["id"] == netter else q for q in rows]
         if p.get("rect"):
             x, z, w, h = [int(v) for v in str(p["rect"]).split(",")]
             rows = [q for q in rows if x <= q["x"] < x + w and z <= q["z"] < z + h]
@@ -252,7 +260,11 @@ class WSGame(MockGame):
             return {"success": False}
         job, a = p.get("jobDef"), p.get("targetAId")
         ok = {"success": True, "accepted": True, "nowRunningRequested": True}
-        if job == "RM_NetPoolBreeder" and "net_noop" not in self.brk:
+        if job == "RM_NetPoolBreeder":
+            self._net_tick, self._netter = self.ticks, p.get("pawnId")
+        if job == "RM_NetPoolBreeder" and "target_flees" in self.brk:
+            self.pawns.remove(self._pawn(a))       # off the map with no stock (WEEPINGSTONES_NET_TARGET_FLEES_1's path)
+        elif job == "RM_NetPoolBreeder" and "net_noop" not in self.brk:
             q = self._pawn(a)
             self.pawns.remove(q)
             self.things.setdefault((q["x"], q["z"]), []).append("%sBreedingStock" % q["kindDef"])
@@ -352,6 +364,27 @@ def main():
     bad = [(k, gone[k][0]) for k in jobs if gone[k][0] != "UNMEASURED"]
     check("break handler_vanishes: every job/flora proof goes UNMEASURED, none PASS or FAIL (%d)" % len(jobs),
           len(jobs) >= 9 and not bad, "got %s" % bad)
+    # -- WEEPINGSTONES_HANDLER_VANISHES_1: the stepped fate trace names WHEN and HOW a pawn left ----------------
+    hf = dict((k, v) for k, v in healthy.items() if k.startswith("handler_fate."))
+    check("healthy: handler_fate has its 4 components, all PASS", len(hf) == 4 and all(v[0] == "PASS" for v in hf.values()), hf)
+    for brk, comp, needle in (("handler_leaves_mid_job", "net_job_handler_stays_on_map", "despawned alive"),
+                              ("handler_dies_mid_job", "net_job_handler_stays_on_map", "dead (corpse at")):
+        res = run((brk,))
+        v, d = res.get("handler_fate." + comp, (None, ""))
+        check("break %s: handler_fate.%s FAILs naming the tick and '%s'" % (brk, comp, needle),
+              v == "FAIL" and needle in d and "at tick " in d and "step " in d, (v, d[:300]))
+        ctl = res.get("handler_fate.control_no_job_nobody_vanishes", (None,))[0]
+        check("break %s: the no-job control still PASSes (the exit is the job's)" % brk, ctl == "PASS", ctl)
+    check("break handler_dies_mid_job: the injury is named", "Bite" in run(("handler_dies_mid_job",)).get(
+        "handler_fate.net_job_handler_stays_on_map", ("", ""))[1])
+    tf = run(("target_flees",))
+    check("break target_flees: only the target row reddens, the handler row PASSes",
+          tf.get("handler_fate.net_job_target_leaves_only_as_stock", ("",))[0] == "FAIL"
+          and tf.get("handler_fate.net_job_handler_stays_on_map", ("",))[0] == "PASS",
+          dict((k, v[0]) for k, v in tf.items() if k.startswith("handler_fate.")))
+    hv = run(("handler_vanishes",)).get("handler_fate.control_no_job_nobody_vanishes", ("", ""))
+    check("break handler_vanishes: the no-job control FAILs (the exit is not the job's)", hv[0] == "FAIL", hv)
+
     for brk, want in cases:
         got = reds(run((brk,)))
         check("break %-24s reddens exactly %s" % (brk, sorted(want)), set(got) == want, "got %s" % got)

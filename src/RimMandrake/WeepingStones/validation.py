@@ -1326,6 +1326,136 @@ def job_net(t):
         _teardown(t)
 
 
+FATE_STEP, FATE_STEPS = 100, 9     # the item's repro: step 100 ticks at a time to 900
+
+
+def _fate_row(p):
+    """One jawa/list_pawns row reduced to its fate: where, alive, spawned, and the injuries that could explain a death.
+    The hediff list is NESTED at row['health']['hediffs'] (the flat key reads empty for every pawn)."""
+    hed = ((p.get("health") or {}).get("hediffs") or []) if isinstance(p.get("health"), dict) else []
+    return {"x": p.get("x"), "z": p.get("z"), "spawned": p.get("spawned"), "dead": p.get("dead"),
+            "downed": p.get("downed"), "injuries": [h.get("label") or h.get("def") for h in hed][:8]}
+
+
+def _fate_word(row):
+    """None = not on the map and no corpse: despawned ALIVE (left the map, taken, or destroyed without a corpse)."""
+    if row is None:
+        return "despawned alive (no row, no corpse)"
+    if row.get("dead"):
+        return "dead (corpse at %s,%s; injuries %s)" % (row.get("x"), row.get("z"), row.get("injuries"))
+    if not row.get("spawned"):
+        return "unspawned but alive (carried or held)"
+    return None
+
+
+def _trace(t, ids, phase, captured=None):
+    """Step FATE_STEPS x FATE_STEP real ticks, reading every id's fate map-wide WITH corpses after each step, plus the
+    colonists' current jobs. `captured(id)` -> True excuses a target that left by the job's own success. Returns
+    {id: leave} for every pawn that left, leave = {"tick","step","fate","last","jobs"}; a pawn is followed until it
+    leaves, the others to the end, so one pawn's exit never hides another's."""
+    trail, last, leaves, done = [], {}, {}, set()
+    for step in range(1, FATE_STEPS + 1):
+        with _patient(t):
+            t.wait_ticks(FATE_STEP)
+        r = t.bridge_call("jawa/list_pawns", includeCorpses=True, includeHealth=True, limit=500)
+        if not _live(t):
+            return {}
+        r = _ok(r, "list_pawns(includeCorpses)")
+        rows = dict((p.get("id"), p) for p in (r.get("pawns") or []))
+        jobs = None
+        try:                                    # evidence only: the colonist roster carries the current job
+            col = t.bridge_call("rimworld/list_colonists", currentMapOnly=False) or {}
+            jobs = dict((c.get("pawnId") or c.get("id") or c.get("name"), c.get("job") or c.get("currentJob"))
+                        for c in (col.get("colonists") or []) if isinstance(c, dict))
+        except Exception:                       # noqa: BLE001 - a job read never gates the verdict
+            pass
+        tick = r.get("ticksGame")
+        snap = {"step": step, "tick": tick, "totalOnMap": r.get("totalOnMap"), "jobs": jobs, "pawns": {}}
+        for i in ids:
+            if i in done:
+                continue
+            row = rows.get(i)
+            row = None if row is None else _fate_row(row)
+            snap["pawns"][i] = row
+            word = _fate_word(row)
+            if word and captured is not None and captured(i):
+                done.add(i)
+                snap["pawns"][i] = "captured (the job's own success)"
+            elif word:
+                done.add(i)
+                leaves[i] = {"tick": tick, "step": step, "fate": word, "last": last.get(i), "jobs": jobs}
+            else:
+                last[i] = row
+        trail.append(snap)
+        if len(done) == len(ids):
+            break
+    _note(t, "fate trace %s" % phase, trail)
+    return leaves
+
+
+def _left_msg(who, pid, phase, left):
+    return ("%s %s left %s at tick %s (step %d of %d x %d ticks): %s; last seen %s; colonist jobs %s"
+            % (who, pid, phase, left["tick"], left["step"], FATE_STEPS, FATE_STEP, left["fate"],
+               json.dumps(left["last"], default=str), json.dumps(left["jobs"], default=str)[:300]))
+
+
+@suite.chain("handler_fate")
+def handler_fate(t):
+    """WEEPINGSTONES_HANDLER_VANISHES_1. LIVE 2026-10-07 every chain-spawned pawn (handler AND target) left
+    map.mapPawns.AllPawnsSpawned during the forced jobs (totalOnMap 13 -> 11), on the same map where LeaningScrub's
+    dripping_survives_harvest lost its pawns too. Prime suspect then: live hostile insects ~45 cells S of the pad that
+    destroy_batch could not remove (since fixed: JAWABENCH_DESTROY_PAWNS_1; the Watch's prepare_bland_map now kills
+    hostiles before a chain). This chain is the item's own repro, so the next live run says WHEN and HOW a pawn leaves:
+      control  -- handler (+8,0, needs full) and a wild RM_Skarrin (+6,+5), no job, 9 x 100 ticks;
+      net      -- the same handler ordered RM_NetPoolBreeder on the skarrin, 9 x 100 ticks.
+    Every step reads jawa/list_pawns includeCorpses+includeHealth (dead vs despawned-alive, injuries) and the colonist
+    roster's current job. The target may leave only as the job's success (one RM_SkarrinBreedingStock on the pad).
+    PASS = nobody vanished. FAIL names the pawn, the tick, the fate, its last seen row and the jobs at that step."""
+    _enter(t)
+    box = {}
+    try:
+        with _comp(t, "site_ready_fate"):
+            _reset_pad(t)
+            if _live(t):
+                try:                            # evidence: the item's control, what hostiles and hives the map holds
+                    hp = (t.bridge_call("jawa/list_pawns", faction="hostile", limit=200) or {}).get("pawns") or []
+                    hv = (t.bridge_call("jawa/list_things", defName="Hive", limit=50) or {}).get("things") or []
+                    _note(t, "hostiles and hives at the start", {
+                        "hostiles": [{k: p.get(k) for k in ("id", "kindDef", "x", "z", "dead", "downed")} for p in hp],
+                        "hives": [{k: h.get(k) for k in ("id", "x", "z")} for h in hv]})
+                except Exception:               # noqa: BLE001 - evidence only
+                    pass
+            x, z = t.anchor
+            box["handler"] = _handler(t)
+            box["wild"] = _spawn(t, "RM_Skarrin", x + 6, z + 5, "none")
+            if _live(t):
+                n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
+                if n != 1:
+                    _fail("precondition: expected 1 wild skarrin on the pad, got %d" % n)
+        with _comp(t, "control_no_job_nobody_vanishes"):
+            leaves = _trace(t, [box["handler"], box["wild"]], "control (no job)")
+            for who, k in (("the handler", "handler"), ("the wild skarrin", "wild")):
+                if box[k] in leaves:
+                    _fail(_left_msg(who, box[k], "with NO job", leaves[box[k]]))
+        net = {}
+        with _comp(t, "net_job_handler_stays_on_map"):
+            with _patient(t):
+                _order(t, box["handler"], "RM_NetPoolBreeder", box["wild"])
+
+            def captured(i):
+                return i == box["wild"] and len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t))) == 1
+            net.update(_trace(t, [box["handler"], box["wild"]], "RM_NetPoolBreeder", captured=captured))
+            if box["handler"] in net:
+                _fail(_left_msg("the handler", box["handler"], "during RM_NetPoolBreeder", net[box["handler"]]))
+        with _comp(t, "net_job_target_leaves_only_as_stock", independent=True):
+            # a fleeing skarrin outrunning the throw is WEEPINGSTONES_NET_TARGET_FLEES_1's path; this row names it
+            if box["wild"] in net:
+                _fail(_left_msg("the wild skarrin", box["wild"], "during RM_NetPoolBreeder without becoming stock",
+                                net[box["wild"]]))
+    finally:
+        _teardown(t)
+
+
 @suite.chain("job_stock")
 def job_stock(t):
     """STOCK: a handler carries a breeding-stock item into a pen and releases a live pawn of the species

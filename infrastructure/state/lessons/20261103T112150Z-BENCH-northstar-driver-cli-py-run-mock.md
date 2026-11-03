@@ -1,0 +1,1 @@
+northstar_driver cli.py run --mock on WeepingStones is NOT GREEN on every chain: the generic MockGame has no jawa/map_zones, so each chain's _reset_pad FAILs site_ready (measured 2026-11-03, PASS=11 FAIL=33). Offline proof of WeepingStones chains is src/RimMandrake/WeepingStones/selftest_weepingstones.py (WSGame mock), never the generic --mock run.
