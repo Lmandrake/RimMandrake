@@ -1,0 +1,7 @@
+# Tier donor_off_phase0 (modset_builder.py; all five DLC, neither art donor), a debug quicktest colony map loaded.
+# Each line derives the manifest on this sha, drives l1_donor_off_round.py under python.exe (one phase), judges its rows.
+# A running donor or a missing DLC prints `reload needed:` as the last line. Def-state rows are the offline clause.
+live-mods: SWBestiary, Shokk, UtinniPatches, RimMandrake.Biomes
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/donor_off_w4_verdict.py --clause A1 < /dev/null
+live-proof A2: python3 src/RimMandrake/Utils/modcheck/donor_off_w4_verdict.py --clause A2 < /dev/null
+live-proof A3: python3 src/RimMandrake/Utils/modcheck/donor_off_w4_verdict.py --clause A3 < /dev/null

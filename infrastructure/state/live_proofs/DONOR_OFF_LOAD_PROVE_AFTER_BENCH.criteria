@@ -1,0 +1,3 @@
+A1 L1: on the donor_off_phase0 load (all five DLC, mlie.starwarsanimalcollection absent) P01_TIER_TRUTH PASS, no exception names our defs or the retired donor (L01 ours 0, retiredDonor 0, log not capped), L02_XREF_OURS and L03_TEX_PORTED PASS
+A2 L2: on a quicktest map every species of the derived manifest reads SPAWN_<kind> PASS (two spawned, two alive, no substitution, no log line naming it)
+A3 L2: MAPGEN_RUT_AridShrubland, MAPGEN_RM_TheRot and MAPGEN_RM_Webwork PASS: the generated map's biome is the asked one, it carries life, and no exception is logged during generation
