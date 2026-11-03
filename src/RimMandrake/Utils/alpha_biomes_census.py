@@ -36,8 +36,12 @@ CATEGORIES = ("TerrainDef", "WeatherDef", "ThoughtDef", "BiomeDef", "TileMutator
 DECISION_WORDS = ("PORTED", "VANILLA", "DROPPED", "UNPORTED")
 MIN_TOKENS = 100  # a scan seeing fewer was blind: src/ held 223 on 2026-11-01
 TOKEN = re.compile(r"\bAB_[A-Za-z0-9_]+")
-# Its fixtures are made-up AB_ names; every other tracked file counts.
-FIXTURES = {"src/RimMandrake/Utils/selftest_alpha_biomes_census.py"}
+# Fixtures with made-up AB_ names (not donor defs); every other tracked file counts.
+FIXTURES = {"src/RimMandrake/Utils/selftest_alpha_biomes_census.py",
+            "src/RimMandrake/Utils/selftest_art_size_audit.py",        # sheet-row fixtures
+            "src/RimMandrake/Utils/selftest_donor_retire_standin.py",  # stand-in fixtures
+            "src/RimMandrake/Utils/art/selftest_move_mod_textures.py",  # a made-up texture path
+            "src/RimMandrake/Utils/check_derelict_lab_design_coverage.py"}  # a made-up mutator name in its planted-break table
 BINARY = (".png", ".dds", ".dll", ".pdb", ".jpg", ".jpeg", ".wav", ".ogg", ".psd", ".mp3", ".zip", ".rws")
 
 
