@@ -1,8 +1,12 @@
 {
  "biome": "RM_Wastes",
- "built": "2026-11-03T02:49:11-0800",
- "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar/census/census.json",
- "census_git_head": "0716297d8d",
+ "built": "2026-11-03T04:03:45-0800",
+ "census": "/tmp/bffar3/census.json",
+ "census_git_head": "bf2500e37f",
+ "droppedAllRuled": [
+  "RM_TallScumgrass",
+  "RM_VaultRoot"
+ ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
  "rows": {
   "RM_Boilbulb": {

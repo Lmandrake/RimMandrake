@@ -1,0 +1,800 @@
+{
+ "biome": "RM_TheSump",
+ "built": "2026-11-03T04:01:04-0800",
+ "census": "/tmp/bffar3/census.json",
+ "census_git_head": "bf2500e37f",
+ "droppedAllRuled": [
+  "RM_Kethrel",
+  "RM_Lanneth"
+ ],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_Brindeth": {
+   "columns": {
+    "A": {
+     "single": "b8b30e331c24e7a90e230ee0e5eaf8a2cce8099cdfddaea037a709221f39d6dd"
+    },
+    "B": {
+     "single": "bc5301cb855d8f7f056836a14f19222fe883cdd9df53f616c3362c23288c22ef"
+    },
+    "C": {
+     "single": "16e9d586601eed8a647986067f4e4ce2384b363d36f05407e495b82b83eec247"
+    },
+    "D": {
+     "single": "00ef3a915e8a1d1a1adf164fee58287653c8db8ff119d99375fcac09aa745c61"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+    "B": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+    "C": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+    "D": "Things/Plant/RM_Brindeth/RM_Brindeth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Brindeth_var1",
+    "C": "render thesump_Brindeth_var2",
+    "D": "render thesump_Brindeth_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Brindeth/RM_Brindeth_a"
+   ],
+   "res": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "brindeth"
+  },
+  "RM_Dorvel": {
+   "columns": {
+    "A": {
+     "single": "8a3a5377f0e6bf7823a5d137c2cb3c47b9134644c24e15bacb2f92f52ebfa4c2"
+    },
+    "B": {
+     "single": "96fb00a17ec7dcc1de38002c65b1a8509596274d8ecdf3a3ff53a06d85b6de55"
+    },
+    "C": {
+     "single": "657ce8f1528d3271977861d484107c9631047f9b42660b07f09e668aed0932f7"
+    },
+    "D": {
+     "single": "3794c7a5643911ad17b2296800fd9c5565626dae53ddd610972d28762f411ad3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+    "B": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+    "C": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+    "D": "Things/Plant/RM_Dorvel/RM_Dorvel_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Dorvel_var1",
+    "C": "render thesump_Dorvel_var2",
+    "D": "render thesump_Dorvel_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Dorvel/RM_Dorvel_a"
+   ],
+   "res": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "dorvel"
+  },
+  "RM_Dredgel": {
+   "columns": {
+    "A": {
+     "east": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
+     "north": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
+     "south": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    },
+    "B": {
+     "north": "f2a5b3f5ea110a81b54d22be44c3e634ed7571fa23c1a7c97bb0056393a8fde5",
+     "south": "39e45d48506d58e91b161f6687ebae9023d4a517ae8146ef4108862dda534b4e"
+    },
+    "C": {
+     "south": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+    "B": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+    "C": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Dredgel_v2",
+    "C": "render RM_Dredgel"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel"
+   ],
+   "res": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dredgel"
+  },
+  "RM_Gulveth": {
+   "columns": {
+    "A": {
+     "east": "003618df6de8bb6ddc6dba758cf7f13125bdc8fe56b9a89fcaa0e0745e49990d",
+     "north": "17f4c852d89955df0099fbbf1f8a17789e7c624c4df79d19c3db018a3573e150",
+     "south": "80dcfd08bfa0a29611342923de216fdd959300004f1d47044a8cc766e664585b"
+    },
+    "B": {
+     "east": "003618df6de8bb6ddc6dba758cf7f13125bdc8fe56b9a89fcaa0e0745e49990d",
+     "north": "966965fb45e0d02312ef20fe7b90a9f13427aeda32be5129a26c459b0ff5989f",
+     "south": "8008fe4c474c8f60e72ac332853042871c576bfee5476553b329011d98b86692"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
+    "B": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render RM_Gulveth"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "gulveth"
+  },
+  "RM_Korveth": {
+   "columns": {
+    "A": {
+     "single": "96fc2b8881c42a2253a58243e3202d58235a88472f4a888d43f3e479f0cf4567"
+    },
+    "B": {
+     "single": "bf78a9f28fb88d511c5d5f8d41d7399c22ca1f8d95a4e001422dfaa81a4b4d8d"
+    },
+    "C": {
+     "single": "dca3945380f147bac2602755f50812c2b52f9077d0da39dd9159399294f413d1"
+    },
+    "D": {
+     "single": "719c2a071879af479543afc4ea2c633bedf5776be717cee1f7aafc53c55aa637"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Korveth/RM_Korveth_a",
+    "B": "Things/Plant/RM_Korveth/RM_Korveth_a",
+    "C": "Things/Plant/RM_Korveth/RM_Korveth_a",
+    "D": "Things/Plant/RM_Korveth/RM_Korveth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Korveth_var1",
+    "C": "render thesump_Korveth_var2",
+    "D": "render thesump_Korveth_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Korveth/RM_Korveth_a"
+   ],
+   "res": "Things/Plant/RM_Korveth/RM_Korveth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "korveth"
+  },
+  "RM_Mirrelin": {
+   "columns": {
+    "A": {
+     "single": "cf7f863be32a238c5d7c623bfd068b7c012276c954025bcc17c4f5ecf3b1af01"
+    },
+    "B": {
+     "single": "0b12cef9fdec259a68dec8257563af1dc91fc52f6d5d047e46eec97d12664dba"
+    },
+    "C": {
+     "single": "abd2406349eef79c35a782e2dce9bb03faed581920b5cf21fa9ef28250ac4f5a"
+    },
+    "D": {
+     "single": "cf94d395b7ee3a9baf97fe329281b65867648ea358b25ba5b7bf58fe3d62826a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+    "B": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+    "C": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+    "D": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Mirrelin_var2",
+    "C": "render thesump_Mirrelin_var3",
+    "D": "render thesump_Mirrelin_var1"
+   },
+   "pools": [
+    "Things/Plant/RM_Mirrelin/RM_Mirrelin_a"
+   ],
+   "res": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "mirrelin"
+  },
+  "RM_Pallick": {
+   "columns": {
+    "A": {
+     "single": "74e65868b227230e88ee1f63a5975afe5a8d9305eaa80e0f92ed704218f7e52a"
+    },
+    "B": {
+     "single": "2424336f51239167dd097e738aa674fa55d638c35a5f350af9e64bfcd33f15b1"
+    },
+    "C": {
+     "single": "91a808842627871d4aeb1ad08aebcbd548c39f9dad555befe27ecd9d5bae729a"
+    },
+    "D": {
+     "single": "34c9e8237e63444cceef601d0e6ff7e573d02123350ddd0fff06c16e7bcb51d2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Pallick/RM_Pallick_a",
+    "B": "Things/Plant/RM_Pallick/RM_Pallick_a",
+    "C": "Things/Plant/RM_Pallick/RM_Pallick_a",
+    "D": "Things/Plant/RM_Pallick/RM_Pallick_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Pallick_var1",
+    "C": "render thesump_Pallick_var2",
+    "D": "render thesump_Pallick_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Pallick/RM_Pallick_a"
+   ],
+   "res": "Things/Plant/RM_Pallick/RM_Pallick_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "pallick"
+  },
+  "RM_Skarrid": {
+   "columns": {
+    "A": {
+     "east": "c9fbcb96dbf3aa938e2abd7c9cd616bec24cb3985d832de74ee9e79feed5964a",
+     "north": "d0ad4fcc7488d35392fd4494c74f73e57a78ecb5ca1045fc882348eb8e18096c",
+     "south": "ce1ec2d5df04d776c12620c4dded2b5943cec2298474beb9b16548507f0f7c39"
+    },
+    "B": {
+     "east": "c9fbcb96dbf3aa938e2abd7c9cd616bec24cb3985d832de74ee9e79feed5964a",
+     "north": "a361baa2e721e2dca7c84166bb9b2ad879b3d41d9533d32f5aa712e118651f7a",
+     "south": "c7c6444f44c85673966b66ade33a40fb7feab858035fc604e274b3e63cd8a395"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid",
+    "B": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render RM_Skarrid"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid"
+   ],
+   "res": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "skarrid"
+  },
+  "RM_Skellarn": {
+   "columns": {
+    "A": {
+     "east": "33e73e6038c4b3645ee8fbde1437f86ea9e186080dd522aa463c9084a8f47e73",
+     "north": "1742866dcaeb12585bf8282dcfe0ff5354f4d8bd987f6048f0f1e40539e9531e",
+     "south": "f7084298e38ff2d35af264d3264501edd817d5c1833d6103c8fd702881238be5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn"
+   ],
+   "res": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "skellarn"
+  },
+  "RM_Skelver": {
+   "columns": {
+    "A": {
+     "single": "a45a5c53047768a6eabb657fbd92e43349e67c35ad2d8f092a8bdf72c1f4cb55"
+    },
+    "B": {
+     "single": "44e077a491c0d6c6a7ab0abb655ead9c09a40c78b3dcbe896049f56c8e859989"
+    },
+    "C": {
+     "single": "64c97066d9e1dc0bab751e4f57e7b33988925bfe916cf9f6216184e7670a9e07"
+    },
+    "D": {
+     "single": "94f8e511d02b1921d60e442bb7b554205288d6352e14ea00523635a77bc0fa5c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Skelver/RM_Skelver_a",
+    "B": "Things/Plant/RM_Skelver/RM_Skelver_a",
+    "C": "Things/Plant/RM_Skelver/RM_Skelver_a",
+    "D": "Things/Plant/RM_Skelver/RM_Skelver_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Skelver_var1",
+    "C": "render thesump_Skelver_var2",
+    "D": "render thesump_Skelver_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Skelver/RM_Skelver_a"
+   ],
+   "res": "Things/Plant/RM_Skelver/RM_Skelver_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "skelver"
+  },
+  "RM_Soffeth": {
+   "columns": {
+    "A": {
+     "single": "1a4dd401609435b2d741c4eec5a1fe8f36c67da6934b7b44f00fbc10b3424d09"
+    },
+    "B": {
+     "single": "bc920d365c33b57705b18a066c84603a3da3000c9b0aea1a50621c197e51cb23"
+    },
+    "C": {
+     "single": "66ade52c39b84b34458f46e45407cdc9b2763bd4738f05751e5314baa10c65ac"
+    },
+    "D": {
+     "single": "c5880794764afc8ec36de7df1505f1ba02cb153e665ff534a88c367cc476d56c"
+    },
+    "E": {
+     "single": "9d3f549c60590cdf99b0cb5fda0e5ba9160299ffa06ebbfbfa60045e7807666e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+    "B": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+    "C": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+    "D": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+    "E": "Things/Plant/RM_Soffeth/RM_Soffeth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Soffeth_v2",
+    "C": "render thesump_Soffeth_var1",
+    "D": "render thesump_Soffeth_var2",
+    "E": "render thesump_Soffeth_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Soffeth/RM_Soffeth_a"
+   ],
+   "res": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "soffeth"
+  },
+  "RM_SumpMouse": {
+   "columns": {
+    "A": {
+     "east": "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563",
+     "north": "09a8b5cd20db9ffc22219bbd231f99a48450506b3b7d8e57b857ea8d41c675d6",
+     "south": "dee1e9a0055391f183d779e09beb4e563b70f426058c6d016099832aeba44e39"
+    },
+    "B": {
+     "east": "174afd5fe477e83e0126fd89fdd9d508029ef5f2c7279be6ab69cb828f0256c3",
+     "north": "6f1db31be29e0ea7bdfb7c81b410038d4c6064ef2028add471a4e31445cf733d",
+     "south": "614fe2f71728659469fb7c329630313a7880f1b8786ef4fc614a0fb3e0fba7d0"
+    },
+    "C": {
+     "east": "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563",
+     "north": "632de18c9d302f01b6bbd960bcfb244a7a909191e2913b1403074e4d834125d0",
+     "south": "9d407c7364f96a9b05eb514dee8159ab49d7ee9feb59511b30e64c028f5cd700"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+    "B": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+    "C": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_SumpMouse_v2",
+    "C": "render RM_SumpMouse"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+   ],
+   "res": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sumpmouse"
+  },
+  "RM_Thrummel": {
+   "columns": {
+    "A": {
+     "east": "8d129e538bf592a048d266bbf93236c4a0770ac6957bacfff709c77c8735b6c4",
+     "north": "df438355fda7912b7a2074e7cf0e0b66c4e16fa1ca50ba3a2ba853ca20dae513",
+     "south": "87d6456c5bc372b02da3997a5cefc58e3dfc6e5041db7ea9f6cb48755cdec79c"
+    },
+    "B": {
+     "east": "688001e68c3ac6f6795eea5c7628e2c6e82f36c82a74535435b1c3c9293452c9",
+     "north": "813369780f50ef21646581703d8ac56e2cc4067a1f59b13dccf8e27c6ff9f2bd",
+     "south": "839e79145c50c2e6c179db394060d5d01b7d41ab2001ceb0db4522b5f37e96a2"
+    },
+    "C": {
+     "east": "4e7699d87f443498397e96568ecf5212cfa34503dccd894705d78cad40abb670",
+     "north": "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
+     "south": "0a440f60020d59ca8183c15674358637ee949905e38c52169df9a610d3de270e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+    "B": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+    "C": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Thrummel_v2",
+    "C": "render RM_Thrummel"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+   ],
+   "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "thrummel"
+  },
+  "RM_ThrummelBroodmother": {
+   "columns": {
+    "A": {
+     "east": "bf90aaa2f4f309f6d90d0174538718211fa84d59dc3de630b893086d04462400",
+     "north": "2c787c9c3d9698ef14eb99e00110a5fa1b6757cc4c353c008144dd5787384b38",
+     "south": "dcebf9c3f9f18e16df83b6dd6ba96df4da460734180dd3c11749f998458a734c"
+    },
+    "B": {
+     "east": "b0902c3ccff93e8b3e9b45b3bffc5de70d2e2425194f5518db094a6511ac1295",
+     "north": "9d02c0460f9972ac08fb382c338c374d6500fd5e090817c2b20b6ebcaaed80ef",
+     "south": "719a5a401a92ae599271ddacf887b2a201824b9a3948e9279dfc83f7e2fbe86c"
+    },
+    "C": {
+     "east": "bf90aaa2f4f309f6d90d0174538718211fa84d59dc3de630b893086d04462400",
+     "north": "789a3ad0e760eed30a3789960a69ded3f244f0d4141d33b2608cac2e3ac8fff9",
+     "south": "0aa82d7df7b707e6fb5d455e5943e4b36c892bd2c4c5771c79b54aee7b68a562"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+    "B": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+    "C": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_ThrummelBroodmother_v2",
+    "C": "render RM_ThrummelBroodmother"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
+   ],
+   "res": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "thrummelbroodmother"
+  },
+  "RM_ThrummelWarden": {
+   "columns": {
+    "A": {
+     "east": "07e7bde15b9f44128c14e43bbfb3a7a6771119f017a37e843fd3e0610761095a",
+     "north": "d1c78d305a29991475ff711dd2d9644ce5bc549d86bcaa55eee175d39a00effb",
+     "south": "29effc954689c8408fe1a5d02bd829dddba505a8494ab24717fe93ff8ab96255"
+    },
+    "B": {
+     "east": "6106782b8c490da4f8bef34ffbef27a0ceeac81865ae0bc571401bfbfda96697",
+     "north": "5ee015af323f53f6130ebb92511d9d1cbab3569bf5c3d17e3d3370e1d848e9b5",
+     "south": "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc"
+    },
+    "C": {
+     "east": "173f909396efd7df29ea87c49b3cd5d7edb071c60af50ba771f3e202b5e69030",
+     "north": "13b1a7e47cd4833db71839a47e806668b9597d8634791da7828c4c4bec9a9364",
+     "south": "54d94ca80a5b30c187803212a431767ba382a8c706aa81e3838336bf548601df"
+    },
+    "D": {
+     "east": "6106782b8c490da4f8bef34ffbef27a0ceeac81865ae0bc571401bfbfda96697",
+     "north": "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8",
+     "south": "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+    "B": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+    "C": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+    "D": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render standtall_b1_rm_thrummelwarden",
+    "C": "render thesump_ThrummelWarden_v2",
+    "D": "render RM_ThrummelWarden"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+   ],
+   "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "thrummelwarden"
+  },
+  "RM_Tolleth": {
+   "columns": {
+    "A": {
+     "single": "774ce307491f08cbf4cadf2a33bd28bf002a89ad28e237dd20745f57eb40d8a3"
+    },
+    "B": {
+     "single": "6b4a27ef92ff780bef553c967f9378210ef5426e4aa5d6db8c3c4205793b579a"
+    },
+    "C": {
+     "single": "a45189649e37e1d00dc3225044de758dbe69f0dda8896e713ffbf169e3ef4421"
+    },
+    "D": {
+     "single": "138fa3e31dc179d1a128578e35b20e7200c15d334569dedf1152c1e366cdcda8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+    "B": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+    "C": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+    "D": "Things/Plant/RM_Tolleth/RM_Tolleth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Tolleth_var1",
+    "C": "render thesump_Tolleth_var2",
+    "D": "render thesump_Tolleth_var3"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "tolleth"
+  },
+  "RM_Velloch": {
+   "columns": {
+    "A": {
+     "single": "fa96726ed239fa9ca9f9ab671aef6596173e6ea878ab74c960fef86f992b30cb"
+    },
+    "B": {
+     "single": "07b9dfc9af0d6e90b492e043b3b3d99068e426219daf6c5033a39b7f3f0af4c7"
+    },
+    "C": {
+     "single": "f8f4d818e62d7b1a30a723d0aded65650ef4e4c98f1f7c865f2eae32ec3e8862"
+    },
+    "D": {
+     "single": "742eced76678b8a4299c9a1f6051f21eaa4c6e3e52eb462ebace9de650a8af68"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Velloch/RM_Velloch_a",
+    "B": "Things/Plant/RM_Velloch/RM_Velloch_a",
+    "C": "Things/Plant/RM_Velloch/RM_Velloch_a",
+    "D": "Things/Plant/RM_Velloch/RM_Velloch_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Velloch_var1",
+    "C": "render thesump_Velloch_var2",
+    "D": "render thesump_Velloch_var3"
+   },
+   "pools": [
+    "Things/Plant/RM_Velloch/RM_Velloch_a"
+   ],
+   "res": "Things/Plant/RM_Velloch/RM_Velloch_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "velloch"
+  },
+  "RSW_Hssiss": {
+   "columns": {
+    "A": {
+     "east": "5e7fb654fe024701fe4fa96f4c039df9a70f617a00630e7815b011ff7e62eb79",
+     "north": "a462a8479ffc73860cfbcb9b2a05e4eacdeb13390de83fa1e385840f5003730c",
+     "south": "be3ce096e356a4e986adc595d0ff6b144344677d3048b01a2f2b1abee532e462"
+    },
+    "B": {
+     "east": "15241b9244b357fb0a08723d929a3615934c452222d54f337a3ef406bf4d9ca8",
+     "north": "caa228d5c7f95e467fcaca1ebbd5f27d60bd14f13a141e87eb2efacff09f9d9a",
+     "south": "f91391a709975472a87dda5465aa0cc9e3d94a35962fc6a891fcf164cfc7b042"
+    },
+    "C": {
+     "east": "980e61dbe6a026a073199851f16c33d6c2df9e841aceceed630788bf546be47e",
+     "north": "f5cc3c557c56ce2d1f5d969b7ec702320b9553701ed678f5071fdc63eca06724",
+     "south": "35e23bef4ebbd7eefb8dddbd116d0ddc053920c5a3bbe6c814da1346df1c1007"
+    },
+    "D": {
+     "east": "0d30a373b760c4e69bf470d0c2a520f00159d1b73ab46c6108865581cc4c7746",
+     "north": "b3177bac6db8e882be247e63d84b960d0c31e771bf12904b7976455216a02ee1",
+     "south": "350f2b9759d65713b642acc5959dd597266007db703f51c1e9ee907daed74f3b"
+    },
+    "E": {
+     "east": "980e61dbe6a026a073199851f16c33d6c2df9e841aceceed630788bf546be47e",
+     "north": "f5cc3c557c56ce2d1f5d969b7ec702320b9553701ed678f5071fdc63eca06724",
+     "south": "e84e3fba38c7a0e5cfd71104587134708b800a650f55d9481696ef3fab0e15be"
+    },
+    "F": {
+     "east": "24ac8ee79856c3a4cb779aaabf512f35ef97d0688e08774205078176161c9c68",
+     "north": "e0f18f3f10577e1c13a6f3c25cc0c8eba1508e4ff4934a642d94279986f53ebe",
+     "south": "e242bfec7b768df5f97d0bcca3dd116631106ac12812cc56771aaac4c7876faa"
+    },
+    "G": {
+     "east": "1610fad573f93456f03500ab342c0a8fd9c4d3e9c3937ea75c41f1d2264ab208",
+     "north": "47707a93892884f47570c1624be90861111e67583e6f9c232036c0662e7ff92b",
+     "south": "460ee85a100bea7c868b1adb0ec52f45d2e522240627a69359cf5ba45f2c751a"
+    },
+    "H": {
+     "east": "3207a7c7e2aec5767329957e8b49b6f0c16cda92c836fbf1299e606afc51f5d1",
+     "north": "129b327a36a4bb1c4ae5baf954eca6a60fab1d4566728d9aa0c311be718b32a3",
+     "south": "91d30b28f55403aad9b8b9ba58050c9fe2f20dfff759734ded608194b18b6987"
+    },
+    "I": {
+     "east": "3207a7c7e2aec5767329957e8b49b6f0c16cda92c836fbf1299e606afc51f5d1",
+     "north": "129b327a36a4bb1c4ae5baf954eca6a60fab1d4566728d9aa0c311be718b32a3",
+     "south": "cf701d99ec561510e91063b07687bc849280375eecea7c6a1f5b136c5b7a3cd3"
+    },
+    "J": {
+     "east": "0e982716a3adb2eda82d02c39bc31a7995be845f172be8407cb4200a99ce8168",
+     "north": "6444afa4da1f0ddd7e1af645fc32f313137a14372265f6acc2010062ecd9b300",
+     "south": "e6ffe21911aff87bbbed86745221e253f8eea68fc90aba6a02c8f81e9815eced"
+    },
+    "K": {
+     "east": "0e982716a3adb2eda82d02c39bc31a7995be845f172be8407cb4200a99ce8168",
+     "north": "6444afa4da1f0ddd7e1af645fc32f313137a14372265f6acc2010062ecd9b300",
+     "south": "cd910c670783c5456758dfa077676a38e566520c6ff16ce8149c55ad84aa46c7"
+    },
+    "L": {
+     "east": "cf760a28ecc0a86790947892e5d4bee5f555e629a0291173f8bcb1bb7bef0182",
+     "north": "d829fca05cb706b10723bb197bb075a6ca04f27ab5573286ab594d95804ee45d",
+     "south": "3293b570cc466c5363b38661ffd68cf949d54aeac82f7ab5e86a76f61118d558"
+    },
+    "M": {
+     "east": "cfbde7d6ff4bed683a71fddf25382b1d48586c706b8f53dcaf961d0d3c47735f",
+     "north": "36340c513c69a0bd99ae90ab90fff462cbe02e57022ff17090b57db4d0181052",
+     "south": "46e94d3d54d8bd9284554cef77f7057ebf718516d5f77b9f14dd6a045b2e813d"
+    },
+    "N": {
+     "east": "6ae941b01d6907d59c050519a3c034fbaeb980ce90b002d456c0f449e3d8cc76",
+     "north": "7420211a52facfd8d9c6f5b95700d1745fc3cad6139af546fa561dd1d7de6f1a",
+     "south": "74a5a231ddd3131818f7589a6df3ad989a27d5fc945007ff76193bfc84856798"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Hssiss/Hssiss",
+    "B": "swanimals/Hssiss/Hssiss",
+    "C": "swanimals/Hssiss/Hssiss",
+    "D": "swanimals/Hssiss/Hssiss",
+    "E": "swanimals/Hssiss/Hssiss",
+    "F": "swanimals/Hssiss/Hssiss_Swimming",
+    "G": "swanimals/Hssiss/Hssiss_Swimming",
+    "H": "swanimals/Hssiss/HssissB",
+    "I": "swanimals/Hssiss/HssissB",
+    "J": "swanimals/Hssiss/HssissC",
+    "K": "swanimals/Hssiss/HssissC",
+    "L": "_byname",
+    "M": "_byname",
+    "N": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dregen_RSW_Hssiss_HssissSwimming_v1",
+    "C": "render standtall_b1_hssiss",
+    "D": "render thesump_Hssiss_v2",
+    "E": "history SWBestiary 2026-09-17",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render enact_48662a6a_hssiss_v1",
+    "H": "IN GAME \u2014 SWBestiary",
+    "I": "render standtall_b1_hssissb",
+    "J": "IN GAME \u2014 SWBestiary",
+    "K": "render standtall_b1_hssissc",
+    "L": "render enact_3c4de41e_hssiss_v1",
+    "M": "render enact_77873763_hssiss_v1",
+    "N": "render enact_8f27e7e9_hssiss_v1"
+   },
+   "pools": [
+    "swanimals/Hssiss/Hssiss"
+   ],
+   "res": "swanimals/Hssiss/Hssiss",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "shownBase": [],
+   "subject_key": "hssiss"
+  }
+ },
+ "sheetId": "thesump_sheet_2026-11-03",
+ "snapshotId": "27643694062e3f11"
+}

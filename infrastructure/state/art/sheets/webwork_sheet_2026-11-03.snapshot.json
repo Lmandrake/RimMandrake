@@ -1,0 +1,547 @@
+{
+ "biome": "RM_Webwork",
+ "built": "2026-11-03T04:04:29-0800",
+ "census": "/tmp/bffar3/census.json",
+ "census_git_head": "bf2500e37f",
+ "droppedAllRuled": [
+  "RM_Dulloth",
+  "RM_Fellome",
+  "RM_Glasmaw",
+  "RM_Grennick",
+  "RM_Kollavane",
+  "RM_Quarrok",
+  "RM_Sellith",
+  "RM_Sivvern",
+  "RM_Tavrosk",
+  "RM_Threllick",
+  "RM_Vessark"
+ ],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_Brennoth": {
+   "columns": {
+    "A": {
+     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
+    },
+    "B": {
+     "single": "e34a12a61138f08702a603b800ade9755b25848ad0cbdc0b91989b02ef65e7ab"
+    },
+    "C": {
+     "single": "6db304f1c22d6373bdd6e961ac1a21f11e55a572564f449a0cdfc8b4d3d49fe8"
+    },
+    "D": {
+     "single": "07256d177a0c49836131c2e790763498482e938bb692ed7e4d1df199e7049537"
+    },
+    "E": {
+     "single": "187ba92c60befbc558645620aa4e3b1fc65180f5853339833681cc192485bc03"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+    "B": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+    "C": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+    "D": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+    "E": "Things/Plant/RM_Brennoth/RM_Brennoth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25",
+    "C": "render webwork_brennoth_real_v1a",
+    "D": "render webwork_brennoth_real_v1b",
+    "E": "render webwork_brennoth_real_v1c"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "brennoth"
+  },
+  "RM_Brimlock": {
+   "columns": {
+    "A": {
+     "single": "4db3f0a5e8f13badace3fd7e378ff7d366a2795b4ad482e0ee2fde980dfc1e76"
+    },
+    "B": {
+     "single": "ef14b7600dbbf26eeacc577fe2f2ea063e38e38edee3e403520e7fb9c7b404d9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Brimlock/RM_Brimlock_a",
+    "B": "Things/Plant/RM_Brimlock/RM_Brimlock_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Brimlock/RM_Brimlock_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "brimlock"
+  },
+  "RM_Cravvet": {
+   "columns": {
+    "A": {
+     "east": "715dc6307a564dc16caf4306e79ae2ac58e6bf297f9cca81b2523820a499f699",
+     "north": "72bfa56faf61ead3506dd46e11bc8306df79e14c34658c52a2a4b839f53b9b25",
+     "south": "acf8688da4be6dbe9b92e5d16378f51b9239b06fc3ba87ae263b31446c53f379"
+    },
+    "B": {
+     "east": "24a2620354c66fc27fe285a973d6072b4fdbe262307078b02a77ecb1633ab1ac"
+    },
+    "C": {
+     "east": "715dc6307a564dc16caf4306e79ae2ac58e6bf297f9cca81b2523820a499f699"
+    },
+    "D": {
+     "north": "d187e03ae2b1b5bf5f3b3d91ab5c6f225d48b35599eae4493bc12824ddea06a0",
+     "south": "80bc56e6ef5697f55ccc2db43e61a17efb4fbec36df26471c2fb9869d283d759"
+    },
+    "E": {
+     "east": "df9a038495afedb3a61683cae883fb135acc03c6cb0da0129182de2e2bca8249",
+     "north": "8fc24e98141fcf1b7550f39d8cbfd2835f03c44fcbd4fa3155cb71c033664cdd",
+     "south": "44ab2f9572fbd444ec4c6163476f198bd325e71e33b562f8787d2715a0142737"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+    "B": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+    "C": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+    "D": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+    "E": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render regen_wb_cravvet_east_v4",
+    "C": "render ",
+    "D": "render RM_Cravvet_v2",
+    "E": "history Webwork 2026-09-25"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet"
+   ],
+   "res": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "cravvet"
+  },
+  "RM_Kessaroth": {
+   "columns": {
+    "A": {
+     "single": "a9ccac026a22e1ff3deea19f75d203fe7402e640710dbf6e458ccf37a74edd3e"
+    },
+    "B": {
+     "single": "a6be5e150455e21f3908cd3a2feca737cfe8877070c3608b18ac9ba43771c757"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Kessaroth/RM_Kessaroth_a",
+    "B": "Things/Plant/RM_Kessaroth/RM_Kessaroth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Kessaroth/RM_Kessaroth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "kessaroth"
+  },
+  "RM_Norrveth": {
+   "columns": {
+    "A": {
+     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
+    },
+    "B": {
+     "single": "1016f075623f7ce29f3edcf0315b71583305b6f6993148ae9b1093e5b396bd3e"
+    },
+    "C": {
+     "single": "021588e923cb114f8b26366848977a123c5e6190a9b2b6402b713d3a7d333226"
+    },
+    "D": {
+     "single": "c1da625eed8a22f214c3d2305fcbfd9e98ce3478196a8c6c1e604b2b56c2bdb3"
+    },
+    "E": {
+     "single": "22dbfbbef306dd8106360a437a9c310e3db83b3a5f81397df9cf7be5fd925108"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
+    "B": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
+    "C": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
+    "D": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
+    "E": "Things/Plant/RM_Norrveth/RM_Norrveth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25",
+    "C": "render webwork_norrveth_redo_v2a",
+    "D": "render webwork_norrveth_redo_v2b",
+    "E": "render webwork_norrveth_redo_v2c"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "norrveth"
+  },
+  "RM_Ollathrix": {
+   "columns": {
+    "A": {
+     "east": "f55e010211625e46d7ce1bbbedea2999d35a44e118a626835549fe03b4f94b11",
+     "north": "1525fd795786df13a2ac44fa3d5dee8d5317f736d752029f58a351601a91d07d",
+     "south": "60b8452bb9e8ecebad0a62887e2893f3c2ba87f603979dad6e067f9c21616733"
+    },
+    "B": {
+     "east": "f55e010211625e46d7ce1bbbedea2999d35a44e118a626835549fe03b4f94b11",
+     "north": "5cdb320de39113b75466b6ba97c21974e0b40e01af1f0c1e8aadb06964278543",
+     "south": "f073a9fd6fdea3b3ceff659fc81b5ed9b3e0583a287fbd67a2022e83a178e0d9"
+    },
+    "C": {
+     "east": "bd9731c301928ef132cd7b55b0edcba4b4cb77a099332c68a867dad84fdae704",
+     "north": "a5dbb13bd0c89eb97d4fe2f1a1de5960727d0186c87ebdaa86809f4daafaa6dc",
+     "south": "1882a438503a851c42b57b9d3ef675d8f362ea25e58c15cddd69bc0decd30f8b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+    "B": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+    "C": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render phreg_RM_Ollathrix_v1",
+    "C": "history Webwork 2026-09-26"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ollathrix"
+  },
+  "RM_Pellareth": {
+   "columns": {
+    "A": {
+     "single": "757d2c044d1770897b537aac379e07b93481ba7c36e124ba626b2c9c89a0a678"
+    },
+    "B": {
+     "single": "8980027a0b9a8615764f3040ff9f507a1daf262f30b03739da60e2f8fd5ff4bb"
+    },
+    "C": {
+     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Pellareth/RM_Pellareth_a",
+    "B": "Things/Plant/RM_Pellareth/RM_Pellareth_a",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25",
+    "C": "render webwork_plant_pellareth"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Pellareth/RM_Pellareth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "pellareth"
+  },
+  "RM_Ruddreth": {
+   "columns": {
+    "A": {
+     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
+    },
+    "B": {
+     "single": "590add898a7791919c445fd564571aa137236a68563c64bcaf0ea7f340734702"
+    },
+    "C": {
+     "single": "3cb1770b062ba8b58d7c7cd11bdc95cc08d718d8f0901cf2f3ee588439a478d3"
+    },
+    "D": {
+     "single": "f9eda4bb4b1c218e0d0fb13fd5f317e91b24b0872213a3fe3878391d256bca3d"
+    },
+    "E": {
+     "single": "7a02df472d6cf8f8430c2a79a64c2369a4171fbd8d355b1321e12d721b76143f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+    "B": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+    "C": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+    "D": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+    "E": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25",
+    "C": "render webwork_ruddreth_real_v1a",
+    "D": "render webwork_ruddreth_real_v1b",
+    "E": "render webwork_ruddreth_real_v1c"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "ruddreth"
+  },
+  "RM_Skennet": {
+   "columns": {
+    "A": {
+     "east": "70cc008831d222f0f78ed499c0486d867509138aacad54e3b0e35b28fcab93d0",
+     "north": "c908bc2a4f67757e0f033b6c5e0a17ee7c004a2e6a8ff1fb2f1e8601170451a4",
+     "south": "8d41cd4b69b4535ce1832125c0b362221235f6ec1880f3be9dadf962c675a68f"
+    },
+    "B": {
+     "east": "1c94cca12221c4ca156300ab100e617e9dd61f763eeeaa05460a03fe9b9da9a9",
+     "north": "ee2116a27d08b299b5ce29296b34b154b8ef2e67109613cf022afe2b615ae5a0",
+     "south": "26225e9a940c2c004a4dc3b636eed20acbc5e09e7962c2ef214be1f3c824c391"
+    },
+    "C": {
+     "east": "1cb155edd03021a4efc73e0b6d9ca0d778632d36993e364acd52e24078206ecd"
+    },
+    "D": {
+     "east": "67a0044b3096a5910e04e526905f28f7f1fca7f6c83b61c05c0248e896a2aab9",
+     "north": "c782ccf9d8633ae206e14c4b35b570d936680659b766ee53f7f0dd7fbeeb97dc",
+     "south": "e748fcc07e70650be1aacab1454657f9a7a6c0770b0173848c7599f68746b7bc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skennet/RM_Skennet",
+    "B": "Things/Pawn/Animal/RM_Skennet/RM_Skennet",
+    "C": "Things/Pawn/Animal/RM_Skennet/RM_Skennet",
+    "D": "Things/Pawn/Animal/RM_Skennet/RM_Skennet"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render ",
+    "C": "render RM_Skennet_v2",
+    "D": "history Webwork 2026-09-25"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Skennet/RM_Skennet"
+   ],
+   "res": "Things/Pawn/Animal/RM_Skennet/RM_Skennet",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "skennet"
+  },
+  "RM_Sorrivel": {
+   "columns": {
+    "A": {
+     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
+    },
+    "B": {
+     "single": "b8b5856ddaaabd7071c518459fd6071aef4c136fbd2fad2247b0276ce16d37d1"
+    },
+    "C": {
+     "single": "a0d0d70f8860f7a0b69137a1a9b7a93ce97e69ebdee74cc75e0125aa85c9bdc2"
+    },
+    "D": {
+     "single": "486fa15d76649fd6472999e22f3fc5da02012029b83fd88c88e2baa19d7563e8"
+    },
+    "E": {
+     "single": "81872aa5fe21bb2c013ad1e2c77282f97b78922c9cdbc737dd1a219bb8dbf3b7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+    "B": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+    "C": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+    "D": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+    "E": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25",
+    "C": "render webwork_sorrivel_real_v1a",
+    "D": "render webwork_sorrivel_real_v1b",
+    "E": "render webwork_sorrivel_real_v1c"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "sorrivel"
+  },
+  "RM_Varrisk": {
+   "columns": {
+    "A": {
+     "single": "34a9e1e7faecbda3208e12a5dd3bf6310464024bab55dda55fd3ebbb9f65b398"
+    },
+    "B": {
+     "single": "c9eeffd3c86e4434f6e25eaf7d952b019754c8f81cc0dc1a207e9fc090faaa9c"
+    },
+    "C": {
+     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Varrisk/RM_Varrisk_a",
+    "B": "Things/Plant/RM_Varrisk/RM_Varrisk_a",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "history Webwork 2026-09-25",
+    "C": "render webwork_plant_varrisk"
+   },
+   "pools": [],
+   "res": "Things/Plant/RM_Varrisk/RM_Varrisk_a",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "varrisk"
+  },
+  "RM_Vennick": {
+   "columns": {
+    "A": {
+     "east": "eea1944a0d9dc518dfface29ad8e839980b5cc9a315b879882a1e437f39f41f4",
+     "north": "719a89c2881925cd2e7a59eadc47cce963d02b0e90c382e07ddd5b991a8efe62",
+     "south": "756c60053ae1f44f6242ff2b6070571f65b2159abe711d57de315c8bf9cec4f1"
+    },
+    "B": {
+     "east": "545e085e883bd3b6bccb0e399b4f3b563ca096925bd452ef825cfdc800bb48ca",
+     "north": "c1c1648b3597c5860412b253816dd4a8d8807ecccd42f7fea3e7e082e1ec9b8d",
+     "south": "847ebfc91e965c7637e96935f7be7fa1653e5f7f149bd23897d3c592b1ba5c36"
+    },
+    "C": {
+     "east": "eea1944a0d9dc518dfface29ad8e839980b5cc9a315b879882a1e437f39f41f4",
+     "north": "0f074616c763fe742d2c56406eb87903e4129ce18b5fc2c13dacf65c261b49be",
+     "south": "756c60053ae1f44f6242ff2b6070571f65b2159abe711d57de315c8bf9cec4f1"
+    },
+    "D": {
+     "east": "7674e41713d0eeae9f097b3c02f7d5b85fc1c2624f29828a736b700de2d7f279",
+     "north": "7d42ef51e4076b067cebe1d4fa24c192638381a6f35c59c63d6737e60dc9048f",
+     "south": "8a802d0375db893dc4b357144397388a8f761cc9bdc72d463a1f22de191c8c66"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "B": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "C": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "D": "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render webwork_vennick_redo_v3",
+    "C": "render RM_Vennick_v2",
+    "D": "history Webwork 2026-09-25"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "vennick"
+  },
+  "RSW_Plant_TookeTrap_Wild": {
+   "columns": {
+    "A": {
+     "single": "3171a7befb931a5cf5ff41de26edb5a5d483678ede5330aa10219b2c4c224f5e"
+    },
+    "B": {
+     "single": "17afca25e456ddcadec920e0eb029e1c9eef6df6aada0d905cafb059fced7f25"
+    },
+    "C": {
+     "single": "98240d5e368db8ac4b6eac9778de9029264b7f1c47f429cb667171c77f8cf595"
+    },
+    "D": {
+     "single": "f556fdb08866111ee9c6c0e199e70bdc5f9117cf9d9a53aca4ffd7b58daba59b"
+    },
+    "E": {
+     "single": "4bf9fbb9b496e18be992580e1af022200d892bda373efc8c12eb37b2442d7dce"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+    "B": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+    "C": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+    "D": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+    "E": "Things/Plant/RSW_Plant_TookeTrap_Wild"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_WildA (1 of 2) \u2014 SWBestiary",
+    "B": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_Wild_c (2 of 2) \u2014 SWBestiary",
+    "C": "render webwork_tooketrap_redo_v3",
+    "D": "render webwork_tooketrap_redo_v2",
+    "E": "render gapall_Plant_TookeTrap_Wild_v1"
+   },
+   "pools": [
+    "Things/Plant/RSW_Plant_TookeTrap_Wild"
+   ],
+   "res": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "tooketrap_wild"
+  }
+ },
+ "sheetId": "webwork_sheet_2026-11-03",
+ "snapshotId": "eb9524ac4182309c"
+}

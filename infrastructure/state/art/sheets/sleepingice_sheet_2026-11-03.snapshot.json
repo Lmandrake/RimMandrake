@@ -1,8 +1,11 @@
 {
  "biome": "RM_SleepingIce",
- "built": "2026-11-03T02:46:59-0800",
- "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar/census/census.json",
- "census_git_head": "0716297d8d",
+ "built": "2026-11-03T03:44:40-0800",
+ "census": "/tmp/bffar3/census.json",
+ "census_git_head": "bf2500e37f",
+ "droppedAllRuled": [
+  "RSW_Wampa"
+ ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
  "rows": {
   "RM_Zhissa": {

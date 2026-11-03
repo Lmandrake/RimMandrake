@@ -3077,8 +3077,12 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         # picture outside it is labelled "in game now, never shown"
         _shown_before = shown_base(r["key"], ruled, prev_rows)
         _base_of[r["key"]] = _shown_before
-        _assign_letters(allcols, mem.get("columns"), mem.get("reserved"),
-                        lanes=[g["res"] or "_byname" for g in graphics for _c in g["cols"]], prev_lanes=mem.get("graphic_of"))
+        try:
+            _assign_letters(allcols, mem.get("columns"), mem.get("reserved"),
+                            lanes=[g["res"] or "_byname" for g in graphics for _c in g["cols"]], prev_lanes=mem.get("graphic_of"))
+        except SystemExit as e:
+            raise SystemExit(f"{e} [row {r['key']}: {len(allcols)} sets: "
+                             + "; ".join(c.get('label', '?') for c in allcols)[:3000] + "]")
         kept = _kept_cols(allcols, mem, used_letters.get(r["key"]) or set())
         _k = [c for c in kept if not any(_gone(idx, sh) for sh in c["faces"].values())]
         for c in kept:      # a set he picked that has since been purged is hidden from the page but its letter stays in the snapshot
@@ -3496,7 +3500,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     ordered = tag_state_sets(ordered)
 
     snap = {"sheetId": sheet_id, "built": L.now(), "loadOrder": fp, "census": _rel(Path(census_path)),
-            "census_git_head": census.get("git_head"), "biome": biome, "rows": snap_rows}
+            "census_git_head": census.get("git_head"), "biome": biome, "rows": snap_rows,
+            # census rows left off because every option is already his ruling: a coverage check reads this
+            # (not part of snapshotId, which hashes the rows only)
+            "droppedAllRuled": sorted(dropped_all_ruled)}
     new_id = hashlib.sha1(json.dumps(snap_rows, sort_keys=True).encode()).hexdigest()[:16]
     superset = bool(prev_rows) and all(
         snap_rows.get(rk, {}).get("columns", {}).get(l) == f

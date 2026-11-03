@@ -1,0 +1,1423 @@
+{
+ "biome": "RM_Stillsand",
+ "built": "2026-11-03T03:52:19-0800",
+ "census": "/tmp/bffar3/census.json",
+ "census_git_head": "bf2500e37f",
+ "droppedAllRuled": [
+  "RM_LikkaLikka",
+  "RM_Murrowbulb"
+ ],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_Aurrok": {
+   "columns": {
+    "A": {
+     "east": "3511b5ed892e0e19545d465466f29b3907c5ccb0e1084a710248c68d731e3cd9",
+     "north": "ec4ddbba4e418c387d4df3f2ba2a1fc77cb469c4eebdb530c4a2e13dc2e13503",
+     "south": "c3dcd7ac694cc559863b0893b86200d88cd88ccf99dc60dee53b1592b9a1b1f9"
+    },
+    "B": {
+     "east": "191b739b1efc6c336890bf7d95538979a7da5b7008e225b7a6f61274b7ceb136",
+     "north": "f47d7bdc7682a8bad7a9493c74a5df7beda6d28a4e49c88a58be1293b0599111",
+     "south": "57c742c9e5386b4946baa1af372ac05bd04eb696b210c841330afd27e1fee34f"
+    },
+    "C": {
+     "east": "3511b5ed892e0e19545d465466f29b3907c5ccb0e1084a710248c68d731e3cd9",
+     "north": "5f1ddc63c80bac5004161539c45367600c6ebabd2d7cffbd9f59c84257bffaec",
+     "south": "d165910a7108085d8b452601f593b0e05d79942f4f183c7d916804a16e461814"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
+    "B": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
+    "C": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_s2_RM_Aurrok_v3",
+    "C": "render RM_Aurrok"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "aurrok"
+  },
+  "RM_Drazzik": {
+   "columns": {
+    "A": {
+     "east": "89bf5dee645d839b93555f135f91b886ecc1d21917691169ed748fc488235838",
+     "north": "89509dbedca3af954dcc2454c1890a0f2fbc689b013cef98eb52862325f1f842",
+     "south": "0ce9743ba6b9c2f3dbdc02f22f85a6420d142a463f0ca4d339648a53be1d15f2"
+    },
+    "B": {
+     "east": "89bf5dee645d839b93555f135f91b886ecc1d21917691169ed748fc488235838",
+     "north": "52504edc50913c2f61dd1e4768feefec1f0fbde25cd19e9951dec70cb22b29d9",
+     "south": "8853b193d2c23fccfc2f0607e93b8cfe112b99b2a9557f886da2a336cdd96a45"
+    },
+    "C": {
+     "east": "944b55f4b32ba088f6431a12ce7a9c0215b413c86284d8d30e4dfb45740ab1b2",
+     "north": "7e2eb9d6cc15e95714fbdf1b0f0ce3599d6547aede50baab324a508d8b3f6a2c",
+     "south": "02037441bbdb999cb1f08ba063384c4aad316c5309c886ce3188dcd82b430b9a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+    "B": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Drazzik",
+    "C": "render stillsand_regen_RM_Drazzik_swimming_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "drazzik"
+  },
+  "RM_DuneCrawler": {
+   "columns": {
+    "A": {
+     "single": "983657f86e29d1f0e2c53626b940f1813b6ec7d6524feb6f20100036f6f155ea"
+    },
+    "B": {
+     "single": "85d47356ad87e3daaf8c007e30cbd4913c7da1f1a5e511890350b871bcd90987"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_DuneCrawler",
+    "B": "Things/Item/Resource/RM_DuneCrawler"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "history Stillsand 2026-10-01"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_DuneCrawler",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dunecrawler"
+  },
+  "RM_Duumma": {
+   "columns": {
+    "A": {
+     "east": "0dedf4298d91bd298b17c36e5a0e8b384b1fbfcdb4eebe423b3608881e4e3247",
+     "north": "5322b6fea7ea52fa699df60a1435e2e4be48ffac299635dd4f483134c8f4bd31",
+     "south": "479fc204200a9841128fe620e806c29b940d17f70697788dc23f1c4312ba26d6"
+    },
+    "B": {
+     "east": "0dedf4298d91bd298b17c36e5a0e8b384b1fbfcdb4eebe423b3608881e4e3247",
+     "north": "e03e4b7df69582e41cf607e23a9c1cbfd32fd0dd8a5ad5550c933fabcddde995",
+     "south": "479fc204200a9841128fe620e806c29b940d17f70697788dc23f1c4312ba26d6"
+    },
+    "C": {
+     "east": "e2d5f2108cb5e2351638ec10127d2643b64233d2ff52e24a73c18ed370689784",
+     "north": "e36c6aab4b5ab0672f05c7824b349f409029a7d5a9267e87c20d08190715a1b4",
+     "south": "cea8df5e02d2f51d42dd22f5385c8c808ebe41e78c2a70b56f50b49235b8a16e"
+    },
+    "D": {
+     "east": "db8e2fbae3a07f085e1bb22312f9af7a1d5da554474dccc51a30b17fab72dbfd"
+    },
+    "E": {
+     "east": "db8e2fbae3a07f085e1bb22312f9af7a1d5da554474dccc51a30b17fab72dbfd",
+     "north": "377afb497bec5889d8142a19c673a9ba31ddd6e28bd7da9bbf27007c95b9aa97",
+     "south": "d1f6b2709eb2e8203c3cd35f7ea4aada07417e3851482bd89858430811bbb0cd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
+    "B": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
+    "C": "Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse",
+    "D": "Things/Pawn/Animal/RM_Duumma/RM_Duumma_Surfaced",
+    "E": "Things/Pawn/Animal/RM_Duumma/RM_Duumma_Surfaced"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Duumma",
+    "C": "render stillsand_regen_RM_Duumma_corpse_v1 \u2014 grader flagged (advisory)",
+    "D": "IN GAME \u2014 Stillsand",
+    "E": "render stillsand_s2_RM_Duumma_surfaced"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Duumma/RM_Duumma"
+   ],
+   "res": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "duumma"
+  },
+  "RM_Gaanok": {
+   "columns": {
+    "A": {
+     "east": "6a2c73a6ab3adc5fcf30314b2c01b8c7cdf34969c4472bfc11880f26fb4c28e4",
+     "north": "14c62d63d5ca7642cb6608ac84c2c08e874a8eaf6686f1c9534512c738c433e2",
+     "south": "d23778afab12cc16f66d460bddadabf03915a7e17385cae40bbf16ac2edbb5b8"
+    },
+    "B": {
+     "east": "6a2c73a6ab3adc5fcf30314b2c01b8c7cdf34969c4472bfc11880f26fb4c28e4",
+     "north": "641305e1b37353c979d41306285f1bd1897152c8a357a920b09830448ddaedb4",
+     "south": "d23778afab12cc16f66d460bddadabf03915a7e17385cae40bbf16ac2edbb5b8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
+    "B": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Gaanok_b"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "gaanok"
+  },
+  "RM_Glasscrust": {
+   "columns": {
+    "A": {
+     "single": "7b63862b7bdf38ea37af382f89a2dd7161b414c4aea0311e36eeb767cfa8e4ec"
+    },
+    "B": {
+     "single": "e15b6cb46eeb8803b2d22abffd2881a847964a3fbc4ffd96f6627c2c42089da5"
+    },
+    "C": {
+     "single": "ce311ccb3b20622978b28192c927da45fac62338f88ff8e5546c239bbd746178"
+    },
+    "D": {
+     "single": "bbf9487479404e5d964aeea659738ddbf06ffe0985542fcbb032e77b0e102563"
+    },
+    "E": {
+     "single": "41615e7153d0bbadd167b4ba66a44c3261f780d2a39481e94500ef4f662735d8"
+    },
+    "F": {
+     "single": "23848771ed181e045232d64ac588203a44093a9fda3be3405bb217d430fdd914"
+    },
+    "G": {
+     "single": "66d9bb17b66cf8d51cdbf8b2d2759abf6a10ec49003607721c8a8056c156d67a"
+    },
+    "H": {
+     "single": "c26ddcac7ad96c66b873d19a03c3cd8fdda49bf39d96da740830885c927bdb18"
+    },
+    "I": {
+     "single": "8d02f3a2673d1797a8215651f1e3e324e7b6fc7acd6586b4eaf254ef1a2b1b2b"
+    },
+    "J": {
+     "single": "b1730b227eeafc48cabba40e953958e99c36d442ca2085ce378fca0c58640775"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Glasscrust",
+    "B": "Things/Plant/RM_Glasscrust",
+    "C": "Things/Plant/RM_Glasscrust",
+    "D": "Things/Plant/RM_Glasscrust",
+    "E": "Things/Plant/RM_Glasscrust",
+    "F": "Things/Plant/RM_Glasscrust",
+    "G": "Things/Plant/RM_Glasscrust",
+    "H": "Things/Plant/RM_Glasscrust",
+    "I": "Things/Plant/RM_Glasscrust",
+    "J": "Things/Plant/RM_Glasscrust"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_GlasscrustA (1 of 8) \u2014 Stillsand",
+    "B": "IN GAME \u2014 random variant RM_GlasscrustB (2 of 8) \u2014 Stillsand",
+    "C": "IN GAME \u2014 random variant RM_GlasscrustC (3 of 8) \u2014 Stillsand",
+    "D": "IN GAME \u2014 random variant RM_GlasscrustD (4 of 8) \u2014 Stillsand",
+    "E": "IN GAME \u2014 random variant RM_GlasscrustE (5 of 8) \u2014 Stillsand",
+    "F": "IN GAME \u2014 random variant RM_GlasscrustF (6 of 8) \u2014 Stillsand",
+    "G": "IN GAME \u2014 random variant RM_GlasscrustG (7 of 8) \u2014 Stillsand",
+    "H": "IN GAME \u2014 random variant RM_GlasscrustH (8 of 8) \u2014 Stillsand",
+    "I": "render stillsand_s2_RM_Glasscrust_var8",
+    "J": "render RM_Glasscrust"
+   },
+   "pools": [
+    "Things/Plant/RM_Glasscrust"
+   ],
+   "res": "Things/Plant/RM_Glasscrust",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "shownBase": [],
+   "subject_key": "glasscrust"
+  },
+  "RM_Ikee": {
+   "columns": {
+    "A": {
+     "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+     "north": "45d1b249a41a3bf2e01ab26d22403dc77d66d8da7a5f2714a74cb97789e956cd",
+     "south": "3a24a901d6f573770dfbd3d08b262d3184b337abacc62732295c15896403d13c"
+    },
+    "B": {
+     "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+     "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
+     "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
+    },
+    "C": {
+     "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+     "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+     "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
+    "B": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
+    "C": "Things/Pawn/Animal/RM_Ikee/RM_Ikee"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Ikee",
+    "C": "history Stillsand 2026-09-28"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ikee/RM_Ikee"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ikee"
+  },
+  "RM_KneelOllim": {
+   "columns": {
+    "A": {
+     "single": "f4ff6d6afd5e4b92a6e85a50658476a0dcca8d1b78286168ed847e35db75cbef"
+    },
+    "B": {
+     "single": "593086a9db5ca71afc82d3811c06ed19f9c2898685c70fc778214af8f8e26c34"
+    },
+    "C": {
+     "single": "72d07d87611055828082c4f9262e93ab2dde5b5e6e94adfc057089e564c8fc90"
+    },
+    "D": {
+     "single": "7a9179c24feb69629c9df7a7dbceb9e93ee3776661756b3117554e787f870f0a"
+    },
+    "E": {
+     "single": "895895b7bf4dd7def7f9fb8dc1eb1fc569059499fc9a48eba64cf89825b80f8a"
+    },
+    "F": {
+     "single": "9cc335f4e59aef6e681830188aaecf33008fd1dd8e679f954a35bbada27edc99"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_KneelOllim",
+    "B": "Things/Plant/RM_KneelOllim",
+    "C": "Things/Plant/RM_KneelOllim",
+    "D": "Things/Plant/RM_KneelOllim",
+    "E": "Things/Plant/RM_KneelOllim",
+    "F": "Things/Plant/RM_KneelOllim"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_KneelOllimA (1 of 8) \u2014 Stillsand",
+    "B": "IN GAME \u2014 random variant RM_KneelOllimG (2 of 8) \u2014 Stillsand",
+    "C": "IN GAME \u2014 random variant RM_KneelOllimH (3 of 8) \u2014 Stillsand",
+    "D": "IN GAME \u2014 random variant RM_KneelOllim_b (4 of 8) \u2014 Stillsand",
+    "E": "IN GAME \u2014 random variant RM_KneelOllim_e (7 of 8) \u2014 Stillsand",
+    "F": "render RM_KneelOllim_b"
+   },
+   "pools": [
+    "Things/Plant/RM_KneelOllim"
+   ],
+   "res": "Things/Plant/RM_KneelOllim",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "kneelollim"
+  },
+  "RM_LightPipeNub": {
+   "columns": {
+    "A": {
+     "single": "9bcf4daf7e1eb13b59ee16f058d4c83e73a403143bbc6188e9b228160490a099"
+    },
+    "B": {
+     "single": "2731d919555cf53555e8270132b24825579a5a7efd0b638d943070e974c14400"
+    },
+    "C": {
+     "single": "9315eab290fb74cece8122fb8beda7277c25f2dd440a9f4b518a4ebff74b8302"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_LightPipeNub",
+    "B": "Things/Plant/RM_LightPipeNub",
+    "C": "Things/Plant/RM_LightPipeNub"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_LightPipeNubA (1 of 2) \u2014 Stillsand",
+    "B": "IN GAME \u2014 random variant RM_LightPipeNubB (2 of 2) \u2014 Stillsand",
+    "C": "our deployed art (render rslpn_v1) \u2014 RimMandrake: Baroque Biomes"
+   },
+   "pools": [
+    "Things/Plant/RM_LightPipeNub"
+   ],
+   "res": "Things/Plant/RM_LightPipeNub",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "lightpipenub"
+  },
+  "RM_Loomma": {
+   "columns": {
+    "A": {
+     "east": "f2147abf95da83445e586b40a2f99389778bfaba40120a1d7686a50f91391ace",
+     "north": "0ce15df6be513cbd1ef1a1a1a0f069261f30234c29ea51d541be45963d735a99",
+     "south": "f1f1e0743a50aa7acc3956b40cc20f6abe1a69cbbadaea596fcc7bae01a068f4"
+    },
+    "B": {
+     "east": "f2147abf95da83445e586b40a2f99389778bfaba40120a1d7686a50f91391ace",
+     "north": "009059673d5d4f09126961d6215e639ad19c14125b001fe6722e072ed025ea6c",
+     "south": "f1f1e0743a50aa7acc3956b40cc20f6abe1a69cbbadaea596fcc7bae01a068f4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
+    "B": "Things/Pawn/Animal/RM_Loomma/RM_Loomma"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Loomma_b"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Loomma/RM_Loomma"
+   ],
+   "res": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "loomma"
+  },
+  "RM_Ollim": {
+   "columns": {
+    "A": {
+     "single": "33e4726e38410d45acfca459a1f6bcebaee1e1569204f3aa5d58e4073b092d8e"
+    },
+    "B": {
+     "single": "74cb4deb7367672a13fd4933c0587530987beadac60c3c68d7d4b93c714c76fd"
+    },
+    "C": {
+     "single": "d7af8269006a51b8c5ab322b7d16de52b98f0b23012a7989fbcffc8e582ec824"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ollim",
+    "B": "Things/Plant/RM_Ollim",
+    "C": "Things/Plant/RM_Ollim"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_OllimA (1 of 2) \u2014 Stillsand",
+    "B": "IN GAME \u2014 random variant RM_Ollim_b (2 of 2) \u2014 Stillsand",
+    "C": "render dregen_RM_Ollim_RMOllimA_v1"
+   },
+   "pools": [
+    "Things/Plant/RM_Ollim"
+   ],
+   "res": "Things/Plant/RM_Ollim",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ollim"
+  },
+  "RM_Oommok": {
+   "columns": {
+    "A": {
+     "east": "827359f7258db2a77e60bde1143fc98e9598e8cb19e2e09e2fdc1320112fe824",
+     "north": "03b796ba9bd97f9ccbfa771c9d47e2ee2f780e45c6d102ed803b859372954a08",
+     "south": "5e6976fd4c1eb36dd222826bd9b8fc781ef32f219a59c2df21a1bc97239c37f2"
+    },
+    "B": {
+     "east": "465ac43f9269f5442539b0dc590f87e3b3be401a829de00a13f3b421f42ac7bd",
+     "north": "3f97c59189da16e3649a8dee0d637ceb14f033f4c48634f1e207da36066dd14e",
+     "south": "b732c7e066b6b49e46ea589d6eecdb7b7cad4a7a841a993a3c367ed3e8c518b6"
+    },
+    "C": {
+     "east": "827359f7258db2a77e60bde1143fc98e9598e8cb19e2e09e2fdc1320112fe824",
+     "north": "1a39d81a3a7f9bef164328563cbfd525499df28c029d0bc832c1c0d8084be1f8",
+     "south": "741d5bf04f41814fcc88bed4d179b6cad70ac59bbfabe0c5b0bf14b167c55b35"
+    },
+    "D": {
+     "east": "0de995dc3a96f4a2fc7b8d692012432e4b34a938b4cdf1515feaca76ebc16c04",
+     "north": "33e801b13a9ad4c425a322c3ea26d2fd7c252fe94fee0cbc0de85d6fe5292120",
+     "south": "cf471436e28c9c31cafe7570f754229b7b467b4db571d9a15b9c98bc7f598331"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+    "B": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+    "C": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+    "D": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_s2_RM_Oommok_v3",
+    "C": "render stillsand_regen_RM_Oommok_v2",
+    "D": "history Stillsand 2026-10-01"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "oommok"
+  },
+  "RM_Qorrax": {
+   "columns": {
+    "A": {
+     "east": "d9d92a42e7410ea482d9f3e797f1637997310f766978e8f3d8f2ddf4fed04bb4",
+     "north": "2f225329b77ca63368685ef522845ce35221651a0eef265808cdf394ad2903fe",
+     "south": "507d84cf347563257b5e83f9949eaf9b44fb72d628691cdc6f62fdae91273406"
+    },
+    "B": {
+     "east": "d9d92a42e7410ea482d9f3e797f1637997310f766978e8f3d8f2ddf4fed04bb4",
+     "north": "2dd46af366ed36159462fc2a5718ede7e1cf087509b64ebfcb3138a01080b1e1",
+     "south": "da2f73171ae951ec24ab8bec5c42023c1268ce673e44adbde2e70527ac8ac1bf"
+    },
+    "C": {
+     "east": "125bc9e16093f82c33e2aa586d96388b8664504dbb7e90a16314e52f024aeb4a",
+     "north": "207016afcc77718d263cae722a1562bf366f1d48069c452003f2da1647b6fbac",
+     "south": "cc31f7366d3bdf7a3b0c1786d9329b43dc9aec9745e02cc45cc5a3f1d11f6b25"
+    },
+    "D": {
+     "east": "3d85dc0a873ac199e86ae02d70cb15bc132be9e644d912a203dd4139eb0bd9fd",
+     "north": "ad4aeb6d16532d79d54a39e8c70ac4130bb1b8720dd9699248f083ae7507337d",
+     "south": "75b7e827192655cbb7d0232c4ed854f0a45ee69546726670e4e5fbaae3b58ef1"
+    },
+    "E": {
+     "east": "63ce82a102ef14a1135cc8b9d7cc879009504663f9a3bf91f2f051429e07814d",
+     "north": "e18957c59d2c1a8709a7081566a503f36319d78f278a3bfb0ccb6057214c5551",
+     "south": "f28b02999528dee5a6d6a1ea856214f44e7f4d0b5242e2b782dd5815fc7006da"
+    },
+    "F": {
+     "east": "4d5dabb5e06dcaa907cb03ab345c939218007bd307e2ab4915c2214473ce01dd",
+     "north": "886af507a8035822a758c74c7f7bf5f9131f1205ee4746f964cc2a8b54415340",
+     "south": "798687f5229bfcbe27531e1219d9604c5eea7e010c99fdff6590fb286d6424af"
+    },
+    "G": {
+     "east": "4d5dabb5e06dcaa907cb03ab345c939218007bd307e2ab4915c2214473ce01dd",
+     "north": "c8f22c8c67151126ca4832242615ce9ffe5bfcaa306a9e33d9b0b41b33da5207",
+     "south": "707707d0eb0f2ca8de3af41738fabc07e9d7ea8f048355dfaadb92a17fdaffc4"
+    },
+    "H": {
+     "east": "4d5dabb5e06dcaa907cb03ab345c939218007bd307e2ab4915c2214473ce01dd",
+     "north": "c8f22c8c67151126ca4832242615ce9ffe5bfcaa306a9e33d9b0b41b33da5207",
+     "south": "798687f5229bfcbe27531e1219d9604c5eea7e010c99fdff6590fb286d6424af"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
+    "B": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
+    "C": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming",
+    "D": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming",
+    "E": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming",
+    "F": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated",
+    "G": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated",
+    "H": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Qorrax",
+    "C": "IN GAME \u2014 Stillsand",
+    "D": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 grader flagged (advisory)",
+    "E": "render enact_05c3df91_qorrax_v1",
+    "F": "IN GAME \u2014 Stillsand",
+    "G": "render standtall_b1_rm_qorrax_dessicated",
+    "H": "history Stillsand 2026-10-01"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax"
+   ],
+   "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "qorrax"
+  },
+  "RM_ShadeMite": {
+   "columns": {
+    "A": {
+     "east": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+     "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
+     "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
+    },
+    "B": {
+     "east": "9e1f1fbf4334b155d9b23e6f9e97b33c3620f8f4dff4fbc41956e81582fbf9b8",
+     "north": "fe4f77a7a37999e51c9a5751f895c1f3c919b06a207fe0365291aab8bd0c6f14",
+     "south": "bfef350bbcd5d02ab62d6af73712910955525fe6de2384302ecb006e50e20087"
+    },
+    "C": {
+     "east": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+     "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
+     "single": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+     "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
+    },
+    "D": {
+     "east": "ae789ac5e4076c2e415db03ab7153c28a1ce7db6cffa066cb70f80488b9b139f",
+     "north": "9078c35b257ac0b34a6137557ab7c3f0b305d00486631cf499ab436b9d5324d9",
+     "south": "5ba66fa8e967f738aee8ce21e0e7821a940f4abdd99969e90a42132ea09d4cca"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+    "B": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+    "C": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+    "D": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_s2_RM_ShadeMite_grey",
+    "C": "render RM_ShadeMite_tint_v1",
+    "D": "history Stillsand 2026-10-01"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
+   ],
+   "res": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "shademite"
+  },
+  "RM_Siidda": {
+   "columns": {
+    "A": {
+     "east": "32a393d544b6f05deead05fa2d54328bdbcfda124fbdb9c5f651aec05f6a423b",
+     "north": "4fa19c80f7e431f13f0fa06d385aa65b43dd7ee7e21210653b6c1cd83e26fac9",
+     "south": "ce97199bf48b288919cc1a6382397c049b1c8ca36f6e52c217bccefe95ebb780"
+    },
+    "B": {
+     "east": "32a393d544b6f05deead05fa2d54328bdbcfda124fbdb9c5f651aec05f6a423b",
+     "north": "097f8d9a67cd7a4e3a234018cbffbf9e05689975541abbc1cb347c335baf7b6c",
+     "south": "6e016a0a2a89b911651e1106397b038d19d19b2f1fec39384c36cc842f5cb910"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
+    "B": "Things/Pawn/Animal/RM_Siidda/RM_Siidda"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "history Stillsand 2026-10-01"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Siidda/RM_Siidda"
+   ],
+   "res": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "siidda"
+  },
+  "RM_Soorrak": {
+   "columns": {
+    "A": {
+     "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
+     "north": "e07f6bf1812fb724a93ca7d832c63a62d35a4a76084dfdf0a66d31385eefc6c4",
+     "south": "acd322e7f06fbb80bdd0274170a7ee992f89bf625d40cb04d54947072ad478b1"
+    },
+    "B": {
+     "east": "dfcd5eb69dbccb2a028558f91f9c4296d48cf015af577c48f6da787f559dc248",
+     "north": "df039de2cd698f89aeba782bb624ee0d8807a5dab82f76c7ae7e7bb60ef15d64",
+     "south": "548fbd21c88e1f506b2fa2fc9ae3955faff2043d4bc1db32238e5bfaab20f21e"
+    },
+    "C": {
+     "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
+     "north": "e07f6bf1812fb724a93ca7d832c63a62d35a4a76084dfdf0a66d31385eefc6c4",
+     "south": "fa087c1492f47c1a4bfd8f21fcbd0c59a72d759408c5f3699e5a8abc6c70de8d"
+    },
+    "D": {
+     "east": "907d0f6eed120660dfcb7624e0286233a9bbbd826b0c5036730e6c8126c9ae9d",
+     "north": "21c9191a00e167f61b89bffbd026f9d2a9034e05fef6efeaea6e94ecc11a2f9e",
+     "south": "a5de1dd5dbeb01398353ce9644f6a3bb308948c92673976e97d7414e3b5a83f3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+    "B": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+    "C": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+    "D": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_s2_RM_Soorrak_v3",
+    "C": "render stillsand_regen_RM_Soorrak_v2",
+    "D": "render RM_Soorrak_b"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
+   ],
+   "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "soorrak"
+  },
+  "RM_Ulgga": {
+   "columns": {
+    "A": {
+     "east": "0f639b7b0ec3dbdf102307be47fcc8e5552daff3d60ef3e83db2cfb72228eb5a",
+     "north": "7d7181cdeffffe3014b019786bae6adc7ff3fc05065b5fd83c6d9a4e41d76256",
+     "south": "87f49b2ace46e5ab40cd96194c768b2823ef7cc45a06ae880565b60c704a30a4"
+    },
+    "B": {
+     "east": "2216a69e240624340eca100a8afa9a242fe39d0b387a8a144be0ee7e502a3b8c",
+     "north": "3b556e674543276dbefc611e35e6ab0fb42b0599f5af304fbff591d8aff44f16",
+     "south": "f452aebb9cc850d7514065ab44cfa8f8de21c1b446fede3fb1db445ed037ec85"
+    },
+    "C": {
+     "east": "ea88a04e8682744fe2a7526714a0c391d8298a364c7c13ddee01cb23b460f71c",
+     "north": "479f5b09e93f7f08c953e4bcd78c419860808cff5ecded5070911bb31ee205ce",
+     "south": "67b953ccfee8d320b24f44a40fead25362827e6ac476ee1da4737766e4ed48f2"
+    },
+    "D": {
+     "east": "361b681d4e81658343ccf6c379afdebc5135072458feeec91e583f9fdfd25c66",
+     "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
+     "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "B": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "C": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "D": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render enact_6fe353e8_ulgga_v1",
+    "C": "render longshade_rsw_ulgga_v1",
+    "D": "history LongShade 2026-09-29"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "ulgga"
+  },
+  "RM_UltrissPad": {
+   "columns": {
+    "A": {
+     "single": "bf899a41c71d3c89c40a11c04c77433a8085f305dd2650f363e6974bca63019a"
+    },
+    "B": {
+     "single": "0e12ca9111947aed88b3a697177a65666fe277696d68ed598248ada185fdd8b0"
+    },
+    "C": {
+     "single": "a49e8d6b6a520c0f40cd981a8afd9d2ebe344c3252439c86b9be3ff961c810a1"
+    },
+    "D": {
+     "single": "aba3edd42fcd16360c25e0e4ec84e2d38b8a2ab11b18d4aa0dbc8670d5f28677"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ultracactus",
+    "B": "Things/Plant/RM_Ultracactus",
+    "C": "Things/Plant/RM_Ultracactus",
+    "D": "Things/Plant/RM_Ultracactus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Ultracactus_a (1 of 1) \u2014 LongShade",
+    "B": "render enact_6f47cc65_ultracactus_v1",
+    "C": "render longshade_rsw_ultracactus_v1",
+    "D": "our deployed art (render rswultracactus_v1) \u2014 RimMandrake: Baroque Biomes"
+   },
+   "pools": [
+    "Things/Plant/RM_Ultracactus"
+   ],
+   "res": "Things/Plant/RM_Ultracactus",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "ultrisspad"
+  },
+  "RM_Veessa": {
+   "columns": {
+    "A": {
+     "east": "c6a47079630f9ae4cdea9ec62ca1c8062bc259b966e2a23b8a6f734ff4d2babb",
+     "north": "f217e1ecdd7da8ef28ae5c3aa323909277af85f651ae32715931a3dc50de45b9",
+     "south": "ca8743ab2a754be487c2e2aa0e67fc63aa528dd207b646ea47e2035f94d2cac5"
+    },
+    "B": {
+     "east": "c6a47079630f9ae4cdea9ec62ca1c8062bc259b966e2a23b8a6f734ff4d2babb",
+     "north": "1d87a14284f93df40868768269f0e4b1ff84c47c185ba604d76ecce7c809e452",
+     "south": "a7ab80f53b3f9a77d31f96f11b948d36c4d23d8831ecde40065d0a9e6ce9ba68"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Veessa/RM_Veessa",
+    "B": "Things/Pawn/Animal/RM_Veessa/RM_Veessa"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Veessa"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Veessa/RM_Veessa"
+   ],
+   "res": "Things/Pawn/Animal/RM_Veessa/RM_Veessa",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "veessa"
+  },
+  "RM_Vekka": {
+   "columns": {
+    "A": {
+     "east": "cbe62372e95f459a56a9c6913e4c4d331dd56e21cdeec6c7008aed316283b9c9",
+     "north": "cab719245b1a554188eda51b83b09020a53e85bb8dde971d99b80758ba36265a",
+     "south": "525324b886d3f6ea0aaa884db20f09c37663c5da974e075ebb39315ccc377c4a"
+    },
+    "B": {
+     "east": "cbe62372e95f459a56a9c6913e4c4d331dd56e21cdeec6c7008aed316283b9c9",
+     "north": "cab719245b1a554188eda51b83b09020a53e85bb8dde971d99b80758ba36265a",
+     "south": "d6a2257a89c7f88fa1880b154145f88476bcffbaf88620b0e9bc9c93bea34054"
+    },
+    "C": {
+     "east": "cbe62372e95f459a56a9c6913e4c4d331dd56e21cdeec6c7008aed316283b9c9",
+     "north": "3a8187936aea4ce3e939d182cd8fd8bee0228ad6e7110d3c1d42f558581ed0e1",
+     "south": "d6a2257a89c7f88fa1880b154145f88476bcffbaf88620b0e9bc9c93bea34054"
+    },
+    "D": {
+     "east": "a69adc3dafdc86982b904836d5d387425aa7682e839cbfd027f13c706f62f22e",
+     "north": "5b07f772bbbbeb46979b9594fdf47e27ec94f1c121a7472d7139f2e5b99c09ef",
+     "south": "8cf787a26316921b1a7a2a3eeeb509674bebbc61e64e8e60474bdb634480f908"
+    },
+    "E": {
+     "east": "58b7021cad6f7edccebf678bdcc142f567747cae783fe0e39888187538cb2c35",
+     "north": "ec5b27665b38639588b336d1d49f3a0c62b4f3994e904f65f2bb852bd483b14d",
+     "south": "ba7e8415da2a9da4915e2af371e1d29a9ce5d6ab56ad3b4d9e5456e4dc318a3a"
+    },
+    "F": {
+     "east": "2f333951f8e94d525080eb799f83ebc6cdb9a19ea3cff3ed81a70c9bc55fdabd",
+     "north": "ef478147c8db27261de69ea29041087c07d5d3784a55c60334733233f994d163",
+     "south": "455f884a4294f194f3d045d226c4bfef47ba7ac3e3bc24b293fb8d5ae79d3a2a"
+    },
+    "G": {
+     "east": "b547882f66da5930fff269f50858099203f11721ccc583a6310dae418d7bd676",
+     "north": "113e8122f4e6f59f50cecbd052e9dcac6f6a2df903924a659b8fde534cb24909",
+     "south": "fe1bfc38c8aaf8933adde698ecd898b3faae27a1a5c437799bdd9538eac44606"
+    },
+    "H": {
+     "east": "4041ab67791eb2f1f401daa2517e8bdc1b9e5a8fc64c4a6e23c8f0410a3944b0",
+     "north": "39ee3bd0709fce63a10d73add607c2c468eef5275298e06b6839c93b5d5b2a1a",
+     "south": "c5d7144b734e48fd599cdc289d6625cf56476e992bde2e3b1951fa49aa1075a5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
+    "B": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
+    "C": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
+    "D": "Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion",
+    "E": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
+    "F": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
+    "G": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
+    "H": "Things/Pawn/Animal/AA_SandLion/AA_SandLion"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render standtall_b1_rm_vekka",
+    "C": "render RM_Vekka",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "render donorart_sandlion_v1",
+    "G": "donor original \u2014 Alpha Animals",
+    "H": "render donorart_vekka_v2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vekka/RM_Vekka"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "vekka"
+  },
+  "RM_Vosska": {
+   "columns": {
+    "A": {
+     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+     "north": "30393ad39084ac34b890e1a2f8ea3ea38ab9cddc07b58a19f3c7960802120b67",
+     "south": "a45fc8911328d0ed39a6b78365cf70f0c402e7435f951f959484bdaf2758a2ef"
+    },
+    "B": {
+     "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
+     "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
+     "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
+    },
+    "C": {
+     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+     "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+     "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+    },
+    "D": {
+     "east": "74078e9d6dd26c74dcfd835d00d070167e6c44662411cb5811b734ce1b7cf136",
+     "north": "ff1c2fc7c7077f1a45c24bf3379f2917958b2cba516e3cd9da4078f7f7fc3181",
+     "south": "b92f64772e59e128889fb0fa54c9ceb964da5b836b34790696caa0f115d10da8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+    "B": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+    "C": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+    "D": "Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render RM_Vosska",
+    "C": "history LongShade 2026-09-29",
+    "D": "IN GAME \u2014 LongShade"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vosska/RM_Vosska"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "vosska"
+  },
+  "RSW_Gizka": {
+   "columns": {
+    "A": {
+     "east": "974b7c73e1b7b590028d338fb29c6c37357eeedf68a140d1a29b1ebc5149fe9f",
+     "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
+     "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
+    },
+    "B": {
+     "east": "974b7c73e1b7b590028d338fb29c6c37357eeedf68a140d1a29b1ebc5149fe9f",
+     "north": "c62be1390e393acd10b86bfdd318f8b675c0df61a305091ef43e1ae33b373489",
+     "south": "6479ef39d171dd8dfb335dd66fc4814f667ba1e1fe4e78dcc1be8173b2379d75"
+    },
+    "C": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    },
+    "D": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    },
+    "E": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "3ac2823a74f47dbdd057342c7f469f248f99d8a0c0418bd97617c0d2dfe0bc90",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "B": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "C": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "D": "RimStarWars/SWBestiary/Gizka/GizkaW",
+    "E": "RimStarWars/SWBestiary/Gizka/GizkaW"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render standtall_b1_gizka",
+    "C": "render canonregen_rsw_gizka_v1 \u2014 grader flagged (advisory)",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render standtall_b1_gizkaw"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Gizka/Gizka",
+    "RimStarWars/SWBestiary/Gizka/GizkaW"
+   ],
+   "res": "RimStarWars/SWBestiary/Gizka/Gizka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "gizka"
+  },
+  "RSW_GraniteSlug": {
+   "columns": {
+    "A": {
+     "east": "efd923996ac19754fa0bc545a4dc823cb4ab9968cc6d6529fe5ade17d94dcd75",
+     "north": "68343e61079beaf4ed2c9ee3c8bd2d7af6f6aa043e57c0bbd89c3ef81e6dff50",
+     "south": "cc457702d778dc9ff1b2c87dab63d8b5f83390502efe2f5e18315985d4407e36"
+    },
+    "B": {
+     "east": "efd923996ac19754fa0bc545a4dc823cb4ab9968cc6d6529fe5ade17d94dcd75",
+     "north": "5acb23c0e87d2e815511979595b57e2c069d7244e404c0d3dae837e952e0cd8f",
+     "south": "a8ba302dc700373cbb387089e6083d19ca10eccd362f1ecef28e5553f42dcff6"
+    },
+    "C": {
+     "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d"
+    },
+    "D": {
+     "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
+     "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
+     "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
+    },
+    "E": {
+     "east": "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
+     "north": "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
+     "south": "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/GraniteSlug/GraniteSlug",
+    "B": "swanimals/GraniteSlug/GraniteSlug",
+    "C": "swanimals/GraniteSlug/GraniteSlug",
+    "D": "swanimals/GraniteSlug/GraniteSlug",
+    "E": "swanimals/GraniteSlug/GraniteSlug"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_b3a52e48_graniteslug_v1",
+    "C": "render standtall_b1_graniteslug",
+    "D": "render stillsand_regen_RSW_GraniteSlug_v2",
+    "E": "history SWBestiary 2026-09-17"
+   },
+   "pools": [
+    "swanimals/GraniteSlug/GraniteSlug"
+   ],
+   "res": "swanimals/GraniteSlug/GraniteSlug",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "graniteslug"
+  },
+  "RSW_GreaterKraytDragon": {
+   "columns": {
+    "A": {
+     "east": "26e10e7b17fdd713ddd2e2fb5b54f1efdc03d7ceda508efb29e67f9998905320",
+     "north": "dfc6bab2f60bedab4227c3076f9cc0bb7b839147cc99449301e3d73ae4d77966",
+     "south": "bc7f4cfcb4f3547ee98fae2a9fa5496890f98341f21dd70b67af0f3f0338d9e6"
+    },
+    "B": {
+     "east": "8928b49719178c532e431246762a906b4b962f2b2e301280943ce55dd8e9769d",
+     "north": "2812bcf457fc0d95db39315c413d59273bed7bc2dacee3ba7b37a43021035a05",
+     "south": "ce7d26c06ea03dbee7cca49c13a76a0317602b38389db9cb44f05d36fed3b5ce"
+    },
+    "C": {
+     "east": "c5ede570f7e950b87d962742260ee3d519beb7511db29608844795c1e60c4cb2",
+     "north": "d92afdcfd53f7e3d9c714fdbdd3729542265c77f326bc1f2194d40629c3384f9",
+     "south": "47ddd4cb149e691d9895589ac172f0d141ae55c0a27ddb21ee3d0344b129e816"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon",
+    "B": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon",
+    "C": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render stillsand_s2_RSW_GreaterKraytDragon_v3 \u2014 grader flagged (advisory)",
+    "C": "render stillsand_regen_RSW_GreaterKraytDragon_v2"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon"
+   ],
+   "res": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "greaterkraytdragon"
+  },
+  "RSW_Kreetle": {
+   "columns": {
+    "A": {
+     "east": "4276ef9859691a613dce4845c1ef91ab932c841f9aee7469b6a2b7e8d1b0ca33",
+     "north": "d3373a092778bca6a7d9f98b4c723eb8b47a57e9300adf11daedc3212b34318a",
+     "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
+    },
+    "B": {
+     "east": "2f7713ad3e718e8ff941b146758a890283762954ee65892df9eaf718ea8bb521",
+     "north": "d9cf620fad7610e0bfc2f20e462ea37190e36878b2e2e2980fcf4db206d5ffdf",
+     "south": "1078f5b057005734ec9031beba82d3d9250b0a6ea4a3a65f247d972300501309"
+    },
+    "C": {
+     "east": "4b10d89cb7171469300a51b252075c87d0f14178d7e541bb60d492b071c48dea",
+     "north": "d816f59d547d4f94b9d06cc6e8fe28e55018b7c0e5b228b7969a9396c8f95d19",
+     "south": "fdde3cfaf5f9edcb93bf50dea73a32e1a76bfd52c757dc74981168b38f00b285"
+    },
+    "D": {
+     "east": "4276ef9859691a613dce4845c1ef91ab932c841f9aee7469b6a2b7e8d1b0ca33",
+     "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6",
+     "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
+    },
+    "E": {
+     "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
+     "north": "ec9e68dcb32a8531c398865f3877fec058127903322030dbe873b7d74493a3e1",
+     "south": "03ba0b2da4c1cc998aeb4c87c368160b1dc3b1c932a7521aee7566a7e5bbd1b1"
+    },
+    "F": {
+     "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
+     "north": "a537922ed82b16113ba4dcd7ceb86d51bbf4752a80ed3e6d57497d3b7dfc2234",
+     "south": "1c8e0e0de3ba9450409c3481a6ad20fc7eb6a6113798b2577871eea32adabc6a"
+    },
+    "G": {
+     "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
+     "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
+     "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
+    },
+    "H": {
+     "east": "723186d87cddcd305adfda5cadebbb503225589d3982e7f6bde4fdeec4cd100d",
+     "north": "cdfc40eed1554083965f0e7cacd9308fd314d51b1f884c6caa7eac1f9333a4e0",
+     "south": "5a0f9f9817d388cfca20fee31428829b02efda88200d3c5f87c2d553f661f049"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+    "B": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+    "C": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+    "D": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+    "E": "swanimals/Kreetle/Kreetle_j",
+    "F": "swanimals/Kreetle/Kreetle_j",
+    "G": "swanimals/Kreetle/Kreetle_j",
+    "H": "swanimals/Kreetle/Kreetle_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dregen_RSW_Kreetle_Kreetlej_v1",
+    "C": "render leaningscrub_kreetle_v1 \u2014 grader flagged (advisory)",
+    "D": "render stillsand_s2_RSW_Kreetle_v2",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "render standtall_b1_kreetle_j",
+    "G": "history SWBestiary 2026-09-17",
+    "H": "render enact_ecbdcbc1_kreetle_v1"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Kreetle/Kreetle"
+   ],
+   "res": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "kreetle"
+  },
+  "RSW_Plant_Bloddle": {
+   "columns": {
+    "A": {
+     "single": "8e44340d01599d35a657bb17389e52f4d9d27ea85756e9534767add5651618a4"
+    },
+    "B": {
+     "single": "0f35431ae70ca1f3c22e67b7ae387f8b17f6aa514358bbde646b9b42e793e480"
+    },
+    "C": {
+     "single": "372060452ed2933976d5e9512ac43a897854b9868905d10320bfa52aa7afa83e"
+    },
+    "D": {
+     "single": "62d66a32e1b4ebb8f9b3fc46f4884f75f64ccb87f05c9cf87cda73a9e0286b0c"
+    },
+    "E": {
+     "single": "2e8dd050cb44bf46cb993249c130dc9acf79bd1a5ad83444b6d308914f98549f"
+    },
+    "F": {
+     "single": "82602ff97ace79d8e382c8284b22a3ad32ae611e72c9bc582b064789ab0bbb25"
+    },
+    "G": {
+     "single": "7e46a06226533de20765e8881bfee6075517ab29eea532cc5a4457b77d731bf8"
+    },
+    "H": {
+     "single": "4a2dbc4f27f86124be1d3884b210cb72c3e819d94c27b2d7a4a64cab99dee7f9"
+    },
+    "I": {
+     "single": "21f13693fa8e167b794939dd8242e6553851859352787094ea6f2b3e12127a42"
+    },
+    "J": {
+     "single": "dc7fe47e313e98d46afd06892c8a0df0c02b22323122fee76c329ee49466f73b"
+    },
+    "K": {
+     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
+    },
+    "L": {
+     "single": "28b1293c57bb36f69bec31ecce50b46d08a2b632fdc684d5fff73c1f8541ac32"
+    },
+    "M": {
+     "single": "77c4d02480525c96798dd7480636357618a9d7ef8055a5018fa0ba0cafa8cc0f"
+    },
+    "N": {
+     "single": "40aef25b6315b970d1832be5485537a882c9185e985b4bf72862961df68fb5d7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RSW_Plant_Bloddle",
+    "B": "Things/Plant/RSW_Plant_Bloddle",
+    "C": "Things/Plant/RSW_Plant_Bloddle",
+    "D": "Things/Plant/RSW_Plant_Bloddle",
+    "E": "Things/Plant/RSW_Plant_Bloddle",
+    "F": "Things/Plant/RSW_Plant_Bloddle",
+    "G": "Things/Plant/RSW_Plant_Bloddle",
+    "H": "Things/Plant/RSW_Plant_Bloddle",
+    "I": "Things/Plant/RSW_Plant_Bloddle",
+    "J": "Things/Plant/RSW_Plant_Bloddle",
+    "K": "Things/Plant/RSW_Plant_Bloddle",
+    "L": "Things/Plant/RSW_Plant_Bloddle",
+    "M": "swresource/PlantFoodRaw/Bloddle",
+    "N": "swresource/PlantFoodRaw/Bloddle"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_Plant_BloddleA (1 of 8) \u2014 SWBestiary",
+    "B": "IN GAME \u2014 random variant RSW_Plant_BloddleB (2 of 8) \u2014 SWBestiary",
+    "C": "IN GAME \u2014 random variant RSW_Plant_BloddleC (3 of 8) \u2014 SWBestiary",
+    "D": "IN GAME \u2014 random variant RSW_Plant_BloddleD (4 of 8) \u2014 SWBestiary",
+    "E": "IN GAME \u2014 random variant RSW_Plant_BloddleE (5 of 8) \u2014 SWBestiary",
+    "F": "IN GAME \u2014 random variant RSW_Plant_BloddleF (6 of 8) \u2014 SWBestiary",
+    "G": "IN GAME \u2014 random variant RSW_Plant_BloddleG (7 of 8) \u2014 SWBestiary",
+    "H": "render stillsand_s2_RSW_Plant_Bloddle_var6",
+    "I": "render stillsand_s2_RSW_Plant_Bloddle_var8",
+    "J": "render stillsand_s2_RSW_Plant_Bloddle_var9",
+    "K": "render desertportb_plant_bloddle",
+    "L": "render dregen_RSW_Plant_Bloddle_RSWPlantBloddleB_v1",
+    "M": "IN GAME \u2014 SWBestiary",
+    "N": "donor original \u2014 ?"
+   },
+   "pools": [
+    "Things/Plant/RSW_Plant_Bloddle"
+   ],
+   "res": "Things/Plant/RSW_Plant_Bloddle",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N"
+   ],
+   "shownBase": [],
+   "subject_key": "bloddle"
+  },
+  "RSW_Scurrier": {
+   "columns": {
+    "A": {
+     "east": "6a33bb08142a148e889d4f040a811b3c9fcedfbe83021bd70426c02c142379f4",
+     "north": "1787830a31834451bc7ef5055ec04c9a0efb5a267ad315fb33967c41595f4e9f",
+     "south": "d1193f1cc6d3fefa8f8f1ce685a74aa2c12548d74e9b804aaf5ae791d571ac58"
+    },
+    "B": {
+     "east": "932391c6be270b100b5eda76bd76d26e92738bda0e2140775ef75816bcb1eda9",
+     "north": "531761298c19aa92e458d12ae52d76aaef121fc9a5d374568825f66448dc2926",
+     "south": "70961ccef88ed8960dc9ac969e19749bec7f28129a1c9414f7af39b2cd13ad21"
+    },
+    "C": {
+     "east": "ae37d0bd8f1e6dbea459d14c1353bd04dd8a4b054549075b84bab1dfb4b03fc7",
+     "north": "2de4fd4ac5ca9b4b64806a691b39959b8fe19155326eaa2abd722dc27815a58e",
+     "south": "41ff681882e72cda967e61dce44e36eadebf8dd93437f696e2b3726d7217bf1b"
+    },
+    "D": {
+     "east": "4cabbdc8bcaae547d310892d13ce260044cb7066009d8bf1c6829426b10ee440",
+     "north": "8b455f1876be5d207557b2e95ced971bd8de84309b793fb6e209e8cf6097b847",
+     "south": "cf27cdf001b09e273a9474c3a1b302b918477d492a0c8cad24b0504b93e4f5b1"
+    },
+    "E": {
+     "east": "47575af1c9897b4eea716230832e9abd2df40a28b037ecef3d39dad442e244b1",
+     "north": "371a40754ca0d8be577d332e88c30faa55f5cd9752d2fe2683d73393de108bf1",
+     "south": "056a0859b11d95e47a477697c099a54723a708d2992612e14127f411bcce3fc7"
+    },
+    "F": {
+     "east": "3bf8294dea4b3d8308dab97b1d05b86d46a8cfebb930ba0014d8ec862ebf6e1e",
+     "north": "27065f6cabf93b95c4686728998dab9f1d1a540d7c4179f6337dc98c9cd6bf4b",
+     "south": "11f20107cbd58557d424e2238370e46ab0370879e13cbb58b61ac550758518ef"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Scurrier/Scurrier_f",
+    "B": "swanimals/Scurrier/Scurrier_f",
+    "C": "swanimals/Scurrier/Scurrier_m",
+    "D": "swanimals/Scurrier/Scurrier_m",
+    "E": "swanimals/Scurrier/Scurrier_m",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render stillsand_s2_RSW_Scurrier_v3 \u2014 grader flagged (advisory)",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render scurrier_male_commission_20261014_b",
+    "E": "render regen_c17_scurrier_v1",
+    "F": "render stillsand_regen_RSW_Scurrier_v2"
+   },
+   "pools": [
+    "swanimals/Scurrier/Scurrier_f"
+   ],
+   "res": "swanimals/Scurrier/Scurrier_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "scurrier"
+  },
+  "RSW_WarWyrm": {
+   "columns": {
+    "A": {
+     "east": "d40fb5498f06c59ef2ca34ec3d828bd18b0f9a3f3f75255588e49655bb3798a7",
+     "north": "7a0dc9b12a0b9ac8402bfd0e040b7d3706f2e4ee26317abc828e7827388e4d6a",
+     "south": "468e5f160216d8e2e14bed726cba69be1386fd219441be2b15d9326fa9535e1e"
+    },
+    "B": {
+     "east": "0e49c427708df6f7d62d123353e87a4245a5514c0c12f881ff3ecca5e5184f23",
+     "north": "deecb384906c57f59a63ead7483d6000b91ac309fb2e98d8ce7977c2f98c821c",
+     "south": "a8e89ad6e79e80676dd1f5abce3f96c5e3012b947b344d5dc5f0563f1cc0ea73"
+    },
+    "C": {
+     "east": "8cab92f7e37f047cef315f93133ff3acb6cd96c8dd70a2595468a859114557dc",
+     "north": "400bf1437ae63181c3affd80fedcb780062e62e845bb3e2dd8f0d7c4bee4365f",
+     "south": "3d53f451b1c0c3474ddf19622609b879303f460a00509a5347ae7ca541fe9677"
+    },
+    "D": {
+     "east": "a30dadb5653f47d232a77c5a532d8d1abecd6fad1d06ba25642ba928a77a7fc0",
+     "north": "b1321e00704a3f10ba14f338544ca16eb86ea7994c46f061dbc683bdbc8f9cde",
+     "south": "72a3eac00775c60b388c250caa8b1d82c754a617b3d739bd13aa714f9e192f1e"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/WarWyrm/WarWyrm",
+    "B": "swanimals/WarWyrm/WarWyrm",
+    "C": "swanimals/WarWyrm/WarWyrm",
+    "D": "swanimals/WarWyrm/WarWyrm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render stillsand_s2_RSW_WarWyrm_v3",
+    "C": "render stillsand_regen_RSW_WarWyrm_v2",
+    "D": "history SWBestiary 2026-09-18"
+   },
+   "pools": [
+    "swanimals/WarWyrm/WarWyrm"
+   ],
+   "res": "swanimals/WarWyrm/WarWyrm",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "warwyrm"
+  }
+ },
+ "sheetId": "deep_desert_sheet_2026-11-03",
+ "snapshotId": "24e9985b5f86dcb9"
+}

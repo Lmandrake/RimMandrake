@@ -1,0 +1,505 @@
+{
+ "biome": "RM_Warscar",
+ "built": "2026-11-03T03:22:14-0800",
+ "census": "/tmp/bffar3/census.json",
+ "census_git_head": "bf2500e37f",
+ "droppedAllRuled": [
+  "RM_Bileworm",
+  "RM_ElectricTick",
+  "RM_Glower",
+  "RM_JuggernautBeetle",
+  "RM_Rakeshank"
+ ],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "rows": {
+  "RM_Chatrak": {
+   "columns": {
+    "A": {
+     "east": "6aef1e9b46ccdbd9437b59922693c133b1ee2e3410a760f2c18a50e79eecf877",
+     "north": "d200232e339f2f26184d40b2559dada05938361d69c7c87fac0ce2a70e160d12",
+     "south": "1ea001f795d414b0203edefbb4d268fff50ff838253efce19f4bf36c0a1cc9ca"
+    },
+    "B": {
+     "east": "6aef1e9b46ccdbd9437b59922693c133b1ee2e3410a760f2c18a50e79eecf877",
+     "north": "bb25dc81b6d69f7e80e36778c9974e67862daa558efcf7ad9f5b7719c5237e24",
+     "south": "63e4cb9ea02e6f3eb706101f1fdf4d752136724b0c12fa2215d6e284e70a6a87"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak",
+    "B": "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_Chatrak"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak"
+   ],
+   "res": "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "chatrak"
+  },
+  "RM_ElectricGryllotalpa": {
+   "columns": {
+    "A": {
+     "east": "247c2982e007d3d0abc8e3d761049149e980932e99b39a26369ae9029d0d10bf",
+     "north": "d78989082ed66ed21cc78ce1434f139e3fd41083a6a109c7263d4901b9c46042",
+     "south": "6725f17a380f1ce9fceb729dc5b86e242f5acac7d4b5dfe70c491c8d42258520"
+    },
+    "B": {
+     "east": "247c2982e007d3d0abc8e3d761049149e980932e99b39a26369ae9029d0d10bf",
+     "north": "9676fefbf6b36de5e99d364a0a596883499d371fcaa40b79a3ce39b4cc2c7a5a",
+     "south": "027ca7f11b21fa6819a5a89960d1d8fcc2f37bae25afdd6f080b587dac936b0a"
+    },
+    "C": {
+     "single": "ccae0d2b349786e37785a6cfc952231de18d46f990f1bd54e5daf3bde3c68241"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa",
+    "B": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render gapall_SW_Electricgryllotalpa_v1",
+    "C": "render dregen_RM_ElectricGryllotalpa_Arc_LauncherShot_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa"
+   ],
+   "res": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "electricgryllotalpa"
+  },
+  "RM_Korrum": {
+   "columns": {
+    "A": {
+     "east": "8f7ae4846c0ef27f4198b49b16c7efa7ea22e3f115b9270bf3be5e2a77cceaa4",
+     "north": "7cd9444338539996be222ec4ff7ad8aebb08112ac6f499ee98d936158bd95fe7",
+     "south": "6f9560e5d3c9c7fa6a7107b575db52388bc0ca545be6c91e95072ebd63471529"
+    },
+    "B": {
+     "east": "8dbcabeec5c08a05739b3a58d4ab381d16ce5a3b7b8bcea01e0537d8cc31e51a",
+     "north": "56a594a5f898b4955e522e09a8b89229273a72d4c863dd12417519c250872e12",
+     "south": "1f6ce37a3b0fd23ac463e67f439b2ba58bef52736c018b4c560fbd255024125c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Korrum/RM_Korrum",
+    "B": "Things/Pawn/Animal/RM_Korrum/RM_Korrum"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RSW_Korrum"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Korrum/RM_Korrum"
+   ],
+   "res": "Things/Pawn/Animal/RM_Korrum/RM_Korrum",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "korrum"
+  },
+  "RM_Pallbearer": {
+   "columns": {
+    "A": {
+     "east": "4f49c7f68e6366d7e83a318e099d21fee493da87869ec2a9f501c1741f46b489",
+     "north": "5494983d613b8d58dd45036aac839ba586a030675d06ea796810a0276fb387ef",
+     "south": "f541f640cf64299f5166999eb5638bf98d5a6d1c5f0cc80b44bc1011d4c26b34"
+    },
+    "B": {
+     "east": "4f49c7f68e6366d7e83a318e099d21fee493da87869ec2a9f501c1741f46b489",
+     "north": "d46d41cb27548078b5c81bdb8afc281ebdd8b1cba02906367d34b917e09a63c5",
+     "south": "4b41b1e8500cd5425719476006224e88ee66722f0f080a8e709d16d4c5977ba2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer",
+    "B": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "history Scarlands 2026-10-01"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer"
+   ],
+   "res": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pallbearer"
+  },
+  "RM_Rimclaw": {
+   "columns": {
+    "A": {
+     "east": "925b20823132e5981ace220accf280ab3f0b370a04f8507fbeed771fe7e3df47",
+     "north": "cc121b83df936aa2fdaf744d70036e93ae17af72ea3cc3754eb32e2ad37a2bf5",
+     "south": "baeb9072cd3a636e2048cb73374efd8171f04ef7659d4bc71cf8fd5017326afb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw"
+   ],
+   "res": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "rimclaw"
+  },
+  "RM_ScarRoach": {
+   "columns": {
+    "A": {
+     "east": "fa9f70984cf2e72b57d0686acd5ef14a14923198d7fa924b27a0ffb6c300012f",
+     "north": "41e4419a8a5ba183a143b58bfc7267645ea58caebf2849617d88064066dd6eb7",
+     "south": "e9892d6d7f550e2d7916aeb2b32a26c4176687d2dba6748d742d8df89c1bf4d6"
+    },
+    "B": {
+     "east": "fa9f70984cf2e72b57d0686acd5ef14a14923198d7fa924b27a0ffb6c300012f",
+     "north": "f6fce5d6f475832ba94a1cd9197c0356a27602ce11eb6ae94741c7b8d339f55e",
+     "south": "adc568a65dcc5eb835868f0dda167cfe3ea0769aa3d7198f5ec433f61943f07c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach",
+    "B": "Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "history Scarlands 2026-10-01"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach"
+   ],
+   "res": "Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "scarroach"
+  },
+  "RM_ScorchedStars": {
+   "columns": {
+    "A": {
+     "single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
+    },
+    "B": {
+     "single": "f6db81cb64ac1b1f4ba739529980b43c623a4f292ec234d602b1a2a8ce2a564e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_ScorchedStars",
+    "B": "Things/Plant/RM_ScorchedStars"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_ScorchedStars_a (1 of 2) \u2014 Scarlands",
+    "B": "IN GAME \u2014 random variant RM_ScorchedStars_b (2 of 2) \u2014 Scarlands"
+   },
+   "pools": [
+    "Things/Plant/RM_ScorchedStars"
+   ],
+   "res": "Things/Plant/RM_ScorchedStars",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "scorchedstars"
+  },
+  "RM_Tetchik": {
+   "columns": {
+    "A": {
+     "east": "cfb56fdde3de22331930b868c08ce6ffe93a1d5cfa717b2298331b57d9f3d7cf",
+     "north": "077ed6c7c9bbfad8e034fee69373c3c794d6a37b56f2a8b0050b8e547c729768",
+     "south": "e79b610a8d4efe4cf8bb6c9652ffbd744463f6944ee36d689a4e00cdf3a093cc"
+    },
+    "B": {
+     "east": "cfb56fdde3de22331930b868c08ce6ffe93a1d5cfa717b2298331b57d9f3d7cf",
+     "north": "077ed6c7c9bbfad8e034fee69373c3c794d6a37b56f2a8b0050b8e547c729768",
+     "south": "00b28efc95c8ff111a57b5511108939e0550d1a718aca7a2953e99dc5a1f1d87"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Tetchik/RM_Tetchik",
+    "B": "Things/Pawn/Animal/RM_Tetchik/RM_Tetchik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_Tetchik"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Tetchik/RM_Tetchik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Tetchik/RM_Tetchik",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tetchik"
+  },
+  "RM_Vozzik": {
+   "columns": {
+    "A": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "3cb1b68052c1d1d8b71001749b59d00ccfed33ae3d07aed2b0a5a4138ef6c535"
+    },
+    "B": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "C": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "D": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "1848c970fea85ca22815ad7180f6570a6943b75398822da6d20c20282cc9bc28",
+     "south": "a7e86717d4593b5144eca4941c780437cff30f08d39596bf7d00c296af4f10d9"
+    },
+    "E": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+    },
+    "F": {
+     "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+     "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+     "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+    "B": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+    "C": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+    "D": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "E": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "F": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render standtall_b1_rm_vozzik",
+    "C": "render RM_Vozzik",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render stillsand_regen_RSW_Vozzik_v2",
+    "F": "history SWBestiary 2026-10-03"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "vozzik"
+  },
+  "RSW_FoundryBeetle": {
+   "columns": {
+    "A": {
+     "east": "35b66a2ad4d6ba7e67b086be048302b9981e506d038c159d590f2b68ea63a288",
+     "north": "65f1152e304b546588393a0e71c484f15e036a945fdf30b620ba02bc9ad6b7ca",
+     "south": "331048261e7fe6bf29bad908b147fd11d5c1d00a13d31ba41d0412e9333fe39a"
+    },
+    "B": {
+     "east": "35b66a2ad4d6ba7e67b086be048302b9981e506d038c159d590f2b68ea63a288",
+     "north": "d5c46d60da621c47d296691a68d6c860eaa5544bd8948d838f31d395e9f2150c",
+     "south": "7a2d190015ccfccb423fc130e1e06215572ece40a4dd9acc48ffc2bdf38224b7"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-18"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "foundrybeetle"
+  },
+  "RSW_MegaphoridLarva": {
+   "columns": {
+    "A": {
+     "east": "9024a09c35caa054e010e2da5fdab186c5ad9d6b80ab7fe292166445ef62f9f5",
+     "north": "63220d8a762ffcb8e7e1ffa6491efa324a815348811f65ca4266945105bb17e7",
+     "south": "3febe8c3fe4031d120e499260f1eb28a250b46854f5761ae3532c56a6068b024"
+    },
+    "B": {
+     "east": "cfe016ec17edbe1ecb346a080ab330588b622343637a269044feedd7fb77fda4",
+     "north": "bb89303cbfc417e8685259fe0f0f527f5fa7b7f736185f35d4f3dff6218d8655",
+     "south": "fec6864a70479ec4dc0d813f894993aa4088450242e28b9b2b57475bc0dd2ea3"
+    },
+    "C": {
+     "east": "9024a09c35caa054e010e2da5fdab186c5ad9d6b80ab7fe292166445ef62f9f5",
+     "north": "9bb9f217fa56a34c54b2c46ddf3e9855957446b0ffa06b912dbac452e981c557",
+     "south": "0930aca68fbb08b5a8f5b6f958f602936cc232ff3122a01d0008754bd3cb1537"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render warscar_MegaphoridLarva_v2",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "megaphoridlarva"
+  },
+  "RSW_Mynock": {
+   "columns": {
+    "A": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+     "south": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "B": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
+    },
+    "C": {
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render warscar_Mynock_v2",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   ],
+   "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mynock"
+  },
+  "RSW_Vozzik": {
+   "columns": {
+    "A": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "1848c970fea85ca22815ad7180f6570a6943b75398822da6d20c20282cc9bc28",
+     "south": "a7e86717d4593b5144eca4941c780437cff30f08d39596bf7d00c296af4f10d9"
+    },
+    "B": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+    },
+    "C": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "D": {
+     "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+     "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+     "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
+    },
+    "E": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "3cb1b68052c1d1d8b71001749b59d00ccfed33ae3d07aed2b0a5a4138ef6c535"
+    },
+    "F": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "D": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "E": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+    "F": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render stillsand_regen_RSW_Vozzik_v2",
+    "C": "render RM_Vozzik",
+    "D": "history SWBestiary 2026-10-03",
+    "E": "IN GAME \u2014 Stillsand",
+    "F": "render standtall_b1_rm_vozzik"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+   ],
+   "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "vozzik"
+  }
+ },
+ "sheetId": "warscar_sheet_2026-11-03",
+ "snapshotId": "dc578629a3358915"
+}
