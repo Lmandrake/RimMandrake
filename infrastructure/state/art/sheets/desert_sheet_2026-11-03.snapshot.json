@@ -1,19 +1,241 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-11-03T03:58:30-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T06:03:41-0800",
+ "census": "/tmp/bffar_proof/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Bokka",
   "RM_Dunejelly",
   "RM_Gulloth",
   "RM_Oreclaw",
   "RM_Skiralim",
-  "RM_Thrannagourd",
-  "RSW_Bolotaur",
-  "RSW_Zeer"
+  "RM_Thrannagourd"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Bantha": {
+   "brief": "a towering shaggy pack grazer with forward-curled horns, milked, shorn and ridden",
+   "kind": "drafted",
+   "name": "grullox",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Bolotaur": {
+   "brief": "a long-necked browsing reptile that eats almost without pause and is broken to the saddle",
+   "kind": "drafted",
+   "name": "bhalloruk",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Clodhopper": {
+   "brief": "a wingless swarming forager that leaps between fields on heavy hind legs",
+   "kind": "drafted",
+   "name": "gribbik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Dewback": {
+   "brief": "a heavy sun-basking lizard that carries riders and packs across hot sand",
+   "kind": "drafted",
+   "name": "dewvakka",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Eopie": {
+   "brief": "a thin-legged long-snouted pack beast, slow but tireless over rock",
+   "kind": "drafted",
+   "name": "eppuvi",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Falumpaset": {
+   "brief": "a huge long-legged draught grazer that wades the marsh hauling loads",
+   "kind": "drafted",
+   "name": "borrumba",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_FeralGrazer": {
+   "brief": "a lean spotted feral herd grazer gone wild from farm stock",
+   "kind": "drafted",
+   "name": "dwumma",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gorg": {
+   "brief": "a small squat amphibian kept live and eaten as cheap food",
+   "kind": "drafted",
+   "name": "plibb",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gutkurr": {
+   "brief": "a pack-hunting armoured insect predator on powerful hind legs",
+   "kind": "drafted",
+   "name": "skraddik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Horax": {
+   "brief": "a colossal slow armoured reptile with sabre fangs and a clubbed tail that uproots trees",
+   "kind": "drafted",
+   "name": "bhoggun",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Hrumph": {
+   "brief": "a broad-backed horned grazer whose deep booming call carries for miles",
+   "kind": "drafted",
+   "name": "wumbo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Iriaz": {
+   "brief": "a long-necked spotted herd grazer with swept-back horns that charges when cornered",
+   "kind": "drafted",
+   "name": "jevvuti",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_IridonianReek": {
+   "brief": "a massive territorial three-horned grazer that turns red when fed on meat",
+   "kind": "drafted",
+   "name": "gruhnor",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Jakobeast": {
+   "brief": "a huge tusked striped herd beast of the frozen plains, raised for meat and fur",
+   "kind": "drafted",
+   "name": "dommoz",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Jamel": {
+   "brief": "a high-humped spindly-legged pack beast that endures long dry marches",
+   "kind": "drafted",
+   "name": "kemmu",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Jimvu": {
+   "brief": "a lean six-legged beaked reptile that escapes predators by outrunning them",
+   "kind": "drafted",
+   "name": "yoggra",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Krykna": {
+   "brief": "a pale six-legged cave hunter whose hide shrugs off gunfire",
+   "kind": "drafted",
+   "name": "shukkar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Kwi": {
+   "brief": "a large striped bipedal herd grazer that honks and grunts to its kin",
+   "kind": "drafted",
+   "name": "evvaru",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_LongtailGorg": {
+   "brief": "a plibb with an unusually long flattened tail, sold as live food",
+   "kind": "drafted",
+   "name": "longtail plibb",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Nerf": {
+   "brief": "a stocky shaggy antlered herd grazer raised for milk, meat and hide",
+   "kind": "drafted",
+   "name": "nollux",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Nuna": {
+   "brief": "a plump flightless wattled swamp fowl kept for meat",
+   "kind": "drafted",
+   "name": "plokka",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Plant_Chakroot_Wild": {
+   "brief": "a red marsh root plant prized for its flavour",
+   "kind": "drafted",
+   "name": "wild ottuz plant",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Plant_HubbaGourd_Wild": {
+   "brief": "a ribbed tough-skinned gourd vine of shaded rock recesses",
+   "kind": "drafted",
+   "name": "wild zubbuk gourd",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Ronto": {
+   "brief": "a huge gentle long-necked pack beast with broad earflaps that startles easily",
+   "kind": "drafted",
+   "name": "thoombar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Runyip": {
+   "brief": "a squat antlered forest grazer with a flexible snout and striped coat",
+   "kind": "drafted",
+   "name": "nibbov",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Shaak": {
+   "brief": "a bulbous short-legged herd grazer raised for meat and hide",
+   "kind": "drafted",
+   "name": "loabbo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Shyrack": {
+   "brief": "a bat-winged cave flyer, clumsy alone and deadly in a converging flock",
+   "kind": "drafted",
+   "name": "ghessik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Skalder": {
+   "brief": "a heavy tusked grazer with a ridged mantle that shrugs off acid springs",
+   "kind": "drafted",
+   "name": "tambrek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Sketto": {
+   "brief": "a lean four-winged night flyer with fangs and a grasping tail",
+   "kind": "drafted",
+   "name": "vipsa",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_TeeMuss": {
+   "brief": "a long-legged maned ungulate with jaw tusks, kept as a farm beast and mount",
+   "kind": "drafted",
+   "name": "ommivar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Uvak": {
+   "brief": "a large four-legged beaked flyer used as a pack animal and flying mount",
+   "kind": "drafted",
+   "name": "khessor",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Varactyl": {
+   "brief": "a beaked maned climbing grazer with a long tail that scales cliffs",
+   "kind": "drafted",
+   "name": "raskaya",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Voorpak": {
+   "brief": "a small round six-legged soft-furred carnivore kept as a pet",
+   "kind": "drafted",
+   "name": "fizzum",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Worrt": {
+   "brief": "a squat warty sand-sitting amphibian that snatches prey with long fingers",
+   "kind": "drafted",
+   "name": "guppok",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Wraid": {
+   "brief": "a big plated-skull desert reptile that bounds on enormous forelimbs",
+   "kind": "drafted",
+   "name": "hraxxen",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_WraidAlpha": {
+   "brief": "a larger, tougher hraxxen that waits in shade and attacks in a bounding rush",
+   "kind": "drafted",
+   "name": "alpha hraxxen",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Zeer": {
+   "brief": "a tall banded long-necked herd browser with hooked-back horns",
+   "kind": "drafted",
+   "name": "tallusk",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -1244,6 +1466,44 @@
    ],
    "shownBase": [],
    "subject_key": "bantha"
+  },
+  "RSW_Bolotaur": {
+   "columns": {
+    "A": {
+     "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b",
+     "north": "801f040f7596c13db9e73983fa190dbea3011192655f1a8782b021abce41c0a1",
+     "south": "846fa4d4f6213c621d58c0a21f097e9ae45bf004e51ca4d3a00db854758e3c1e"
+    },
+    "B": {
+     "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b"
+    },
+    "C": {
+     "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b",
+     "north": "a47592f78c40e079cce681b721a52b6ad81e9641127f5553eb248168db9becb3",
+     "south": "ad9c0c32664157500524be460e4bb074cf8753469f522888735423b3c1ef7ab2"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Bolotaur/Bolotaur",
+    "B": "swanimals/Bolotaur/Bolotaur",
+    "C": "swanimals/Bolotaur/Bolotaur"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render longshade_rsw_bolotaur_v1",
+    "C": "render longshade_rsw_bolotaur_v1"
+   },
+   "pools": [
+    "swanimals/Bolotaur/Bolotaur"
+   ],
+   "res": "swanimals/Bolotaur/Bolotaur",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bolotaur"
   },
   "RSW_Clodhopper": {
    "columns": {
@@ -4352,6 +4612,30 @@
    ],
    "shownBase": [],
    "subject_key": "wraidalpha"
+  },
+  "RSW_Zeer": {
+   "columns": {
+    "A": {
+     "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+     "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
+     "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Zeer/Zeer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Zeer/Zeer"
+   ],
+   "res": "RimStarWars/SWBestiary/Zeer/Zeer",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "zeer"
   }
  },
  "sheetId": "desert_sheet_2026-11-03",

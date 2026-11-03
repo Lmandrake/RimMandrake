@@ -109,6 +109,11 @@
     "swanimals/Bantha/BanthaRPack": "N"
    }
   },
+  "RSW_Bolotaur": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Clodhopper": {
    "decision": "D",
    "note": "",
@@ -381,6 +386,11 @@
    "picks": {
     "swanimals/WraidAlpha/WraidAlphaV_D": "E"
    }
+  },
+  "RSW_Zeer": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
   },
   "RM_Dewfringe": {
    "decision": "A",
