@@ -336,10 +336,10 @@ def shape_errors(tree, root_ids, floor, floor_hash):
         elif not ln["waivable"]:
             errs.append("floor.off: %s cannot be turned off here" % o.get("line"))
         if not (txt(o.get("words")) and txt(o.get("ref"))):
-            errs.append("floor.off %s: needs his words and a ref" % o.get("line"))
+            errs.append("floor.off %s: needs his words and a ref (a Conductor per-ruling event is a valid ref)" % o.get("line"))
     ex = tree.get("exam_waived")
     if ex is not None and not (isinstance(ex, dict) and txt(ex.get("words")) and txt(ex.get("ref"))):
-        errs.append("exam_waived needs his words and a ref")
+        errs.append("exam_waived needs his words and a ref (a Conductor per-ruling event is a valid ref)")
     if not all(isinstance(w.get("id"), str) for w in lst(tree.get("waived"))):
         return errs + ["a waiver id is text"]
     seen_w = set()

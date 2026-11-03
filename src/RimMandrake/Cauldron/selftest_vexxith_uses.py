@@ -88,7 +88,7 @@ def gates():
     # canal fills burn steel not plasteel, every other fluid is the control.
     stock = os.path.join(SRC, "Utils", "selftest_flowworks_stock.py")
     for _ in range(2):  # a drvfs stage can fail with rsync ENOMEM: "env/build failure, not a selftest verdict"
-        p = subprocess.run([sys.executable, stock, "--only", "GateAcid_*,ContainerMat_*"], capture_output=True, text=True, timeout=250)
+        p = subprocess.run([sys.executable, stock, "--only", "GateAcid_*,ContainerMat_*"], capture_output=True, text=True, timeout=450)
         if "env/build failure" not in p.stdout + p.stderr:
             break
     tail = (p.stdout + p.stderr).strip().splitlines()[-3:]

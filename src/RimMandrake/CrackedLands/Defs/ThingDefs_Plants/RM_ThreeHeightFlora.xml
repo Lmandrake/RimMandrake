@@ -73,10 +73,7 @@
       <maxMeshCount>1</maxMeshCount>
       <topWindExposure>0.05</topWindExposure>
       <visualSizeRange>0.6~0.9</visualSizeRange>
-      <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
-      <harvestYield>4</harvestYield>
-      <harvestWork>400</harvestWork>
+      <!-- No harvest: owner ruling "stop giving wood" (plant economy rule E3, wood only from plants drawn 3.0+); a clasp is 0.9. -->
       <wildOrder>2</wildOrder>
     </plant>
     <modExtensions>

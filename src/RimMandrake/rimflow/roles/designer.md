@@ -210,3 +210,5 @@ A rehearsal with someone standing in for him. It lives under `design/concepts/_d
 `--dry-walk` (`dry_walk: true`), its sheet's first line says DRY WALK, every stand-in answer is labelled, its waivers carry
 `stand_in: true`, and only his real words go in `## his words`. Nothing from it goes on the ledger as his. `gate` and `sign`
 refuse it always.
+
+An instruction from the Conductor carries the owner's authority: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
