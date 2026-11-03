@@ -2245,3 +2245,6 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T18:33:12Z","tsn":1793730792799980246}
 {"seat":"RUNNER","event":"live","id":"TOKEN_LIMITS_TAME_BARK_NO_BITE","result":"broken","detail":"last firing of rm-relentless.timer is 760 s old (max 600)","ts":"2026-11-03T18:33:15Z","tsn":1793730795473920710}
 {"seat":"RUNNER","event":"raise","id":"TOKEN_LIMITS_TAME_BARK_NO_BITE","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T18:33:18Z","tsn":1793730798181146575}
+{"seat":"RUNNER","event":"note","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","text":"ops_watch: cleared at 2026-11-03T18:37:00Z (disk.pool_breach now 0)","ts":"2026-11-03T18:39:01Z","tsn":1793731141653428204}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_READING_RESTORE_IUUR","result":"broken","detail":"Ops alarm RELENTLESS_BLIND: staffing.jsonl frozen: last row 2026-11-03T18:14:34Z -- relentless.blind = 1 sources not seen (MEASURED), line > 0","ts":"2026-11-03T18:39:04Z","tsn":1793731144984149963}
+{"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_READING_RESTORE_IUUR","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T18:39:08Z","tsn":1793731148151793700}
