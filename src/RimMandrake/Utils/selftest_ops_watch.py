@@ -30,6 +30,7 @@ os.environ["TESTQ_QUEUE"] = str(TMP / "q")
 os.environ["RM_SCRATCH_REAP_RUNS"] = str(TMP / "reap.jsonl")
 os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
 os.environ["RM_TESTING_METRICS_DIR"] = str(TMP / "no_testing_metrics")     # no collector call may read the real one
+os.environ["RM_DATA_ROOT"] = str(TMP / "data")      # REAL mint_name reaches rmpaths: a bare box has no root and no Lodestar
 import ops_watch as OW  # noqa: E402
 REAL_MINT = OW.mint_name
 FIX = "OPS_TIMER_REPAIR_" + OW.alarm_twist("OPS_TIMER_REPAIR")   # the timers rule's fixed id
@@ -734,11 +735,12 @@ os.environ["STUB_LOG"] = str(TMP / "stub.log")
 (TMP / "qhome").mkdir(exist_ok=True)
 _cf = {"clone": str(TMP / "stubclone"), "lock_wait_s": 1, "parent": "P", "for": "BENCH", "needs": "offline"}
 _res = OW.real_filer(calls[0] if calls else [], _cf)   # an empty `calls` already failed above; do not crash past it
+(TMP / "stub.log").touch()      # an empty `calls` writes nothing, and that is a FAIL below, not a crash
 _seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
 check("fixed id: the filer records `live <same id> --result broken` and spawns nothing",
       _res.get(FIX) is None and len(_seen) == 2 and _seen[0][:4] == ["live", FIX, "--result", "broken"], (_res, _seen))
 # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): a reopened alarm is raised, so relentless pool_order takes it first
-check("T2: a reopened alarm is raised after its `live`", _seen[1][:2] == ["raise", FIX], _seen)
+check("T2: a reopened alarm is raised after its `live`", _seen[1:] and _seen[1][:2] == ["raise", FIX], _seen)
 (TMP / "stub.log").write_text("")
 _res = OW.real_filer([{"name": "OPS_T2_NEW_X", "title": "t", "aid": "a"}], _cf)
 _seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
