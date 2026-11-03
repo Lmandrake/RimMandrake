@@ -36,6 +36,8 @@ MODS = {
         "Mod switch": "Now",
         "Natives, flora detonations and cues": "Now",
         "Flora roster": "NextGameStart",
+        "Carbon Garden": "NextGameStart",
+        "Hazebell": "NextPulse",
         "Vhaulk": "Now",
         "Vhaulk stay length": "NextPulse",
         "Blue Desert weathers": "NextPulse",
@@ -54,6 +56,10 @@ MODS = {
         "Muttavaq": "Now",
         "After the water recedes": "NextPulse",
         "Native plants": "NextGameStart",
+        "Qirra mats": "NextPulse",
+        "The veqma's shade": "Now",
+        "Talus clasp seeding (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Talus clasps at work": "Now",
         "Refuge ledges and carvings": "Now",
         "Cliff ledges (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Map controls (placed in development mode)": "Now",   # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: read per tick/press
@@ -371,7 +377,7 @@ MODS = {
         "Under the sand: thumper, fishing and swimmers": "Now",
         "The Listening": "Now",
         "Footprints in moving sand": "Now",
-    }, ("genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "wallRingEnabled", "rowEnabled", "rowWeight", "preservationEnabled", "bloomOnPour", "ledgerEnabled", "ledgerIncidentWeighting", "thumperEnabled", "thumperRadius", "sandFishingWakeEnabled", "sandFishingWakeChance", "driftSwimEnabled", "driftSwimDepth", "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "singingWarningCells", "listeningRumbleEnabled", "duneErasesTracks")),
+    }, ("genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "wallRingEnabled", "rowEnabled", "rowWeight", "preservationEnabled", "bloomOnPour", "drawReturnLine", "ledgerEnabled", "ledgerIncidentWeighting", "thumperEnabled", "thumperRadius", "sandFishingWakeEnabled", "sandFishingWakeChance", "driftSwimEnabled", "driftSwimDepth", "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "singingWarningCells", "listeningRumbleEnabled", "duneErasesTracks")),
     "Stillsand#Skeletons": ("RM_SkeletonSettings.cs", "RM_Stillsand.csproj", {
         "Giant skeletons on new maps (fixed at map generation)": "NewMapsOnly",
         "Giant corpses become skeletons": "Now",
@@ -661,8 +667,8 @@ MODS = {
         "Defusing mines": "Now",
         "Bonus finds while mining": "Now",
         "Ship alloys, doonium and slag re-melt": "NextGameStart",
-        # CANON_MATERIALS_BUILD_1 added a 13th group: the beskar-smelt and mine-shaft-gate toggles share it.
-        "Beskar smelting and mine shafts": "Now",
+        # CANON_MATERIALS_BUILD_1 added a 13th group; the screen now calls it "Beskar smelting" (one toggle).
+        "Beskar smelting": "Now",
         "Gear that buffs its wearer": "Now",
         "Thrown weapons that come back": "Now",
         "Ion and stun damage": "Now",
