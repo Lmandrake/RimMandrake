@@ -921,7 +921,7 @@ class Effects(relentless_game.GameFx):
             return "books %s behind: staged: %s" % (behind, ", ".join(staged[:5]))
         shuffled = self.shuffled_shards(rows)
         if shuffled:
-            self.journal({"do": "books_reorder_restored", "paths": sorted(shuffled)})
+            self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
         alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED) and p not in shuffled]
         if alien:
             return "books %s behind: dirty outside the ledger: %s" % (behind, ", ".join(alien[:5]))
