@@ -1657,6 +1657,36 @@ def rl_books_behind(books, now):
     return (0.0, 0) if not ts else (round(max(now - min(ts), 0) / 60.0, 1), len(ts))
 
 
+def rl_game_hold_idle(items_dir, now):
+    """-> (minutes the running game has been held by a game-phase holder that does not use it, {holder, kind}), or
+    (None, why). RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: one live user at a time, so an idle holder parks every other game item
+    (ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP held it 47 min on 2026-11-03, bridge free, ten items waiting). Counted:
+    a `proving` item whose prove pid is gone (minutes since proved_at), and a live-iterating worker (minutes since it
+    last held the bridge for its item, or since the FAIL). relentless_game.lapse_holds frees both within live_idle_s
+    (20 min) on a tick; above 30 the release is not happening."""
+    try:
+        names = sorted(os.listdir(items_dir))
+    except OSError as e:
+        return None, "items unreadable: %s" % str(e)[:120]
+    worst, who = 0.0, {"holder": None, "kind": None}
+    for n in names:
+        st = read_json(Path(items_dir) / n / "state.json")
+        if not isinstance(st, dict):
+            continue
+        g, li, since, kind = st.get("game") or {}, st.get("live_iter"), None, None
+        if st.get("status") == "game" and g.get("phase") == "proving":
+            pid = g.get("prove_pid")
+            if not (is_num(pid) and os.path.exists("/proc/%d" % int(pid))):
+                since, kind = g.get("proved_at"), "proving, pid gone"
+        elif st.get("status") == "running" and isinstance(li, dict):
+            since, kind = (li.get("bridge_seen") or li.get("at")), "live_iter"
+        if is_num(since) and finite(since) and since <= now + 300:
+            m = round(max(now - since, 0) / 60.0, 1)
+            if m > worst:
+                worst, who = m, {"holder": n, "kind": kind}
+    return worst, who
+
+
 def rl_live_measured(live_dir, now, cfg):
     """-> (percent of the recent live runs that measured: PASS or FAIL, {n, measured, cause}) or (None, why).
     LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 25 of 263 live runs (9.5%) measured anything while every other reading was
@@ -1792,6 +1822,12 @@ def c_relentless(now, rules, ctx):
         bad.append(str(behind_n))       # an unreadable books clone must reach relentless.blind (the MEASURED alarm cannot)
     else:
         pts["relentless.books_behind_min"] = M(behind_min, "min", behind=behind_n)
+    held, who = rl_game_hold_idle(store / "items", now)
+    if held is None:
+        pts["relentless.game_hold_idle_min"] = U(who, "min")
+        bad.append(str(who))
+    else:
+        pts["relentless.game_hold_idle_min"] = M(held, "min", **who)
     pct, got = rl_live_measured(rl_root(cfg) / "live", now, cfg)
     pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
     if pct is None and "unreadable" in str(got):     # too few runs is idle, not blind; an unreadable file is blind

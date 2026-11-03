@@ -59,6 +59,7 @@ def world(under=0, ready=3, why="filling", breaker=0, nolive=0, progress=0.0, id
     for d in (STORE, DISP):
         shutil.rmtree(d, ignore_errors=True)
         d.mkdir(parents=True)
+    (STORE / "items").mkdir()                     # relentless.game_hold_idle_min reads it; none held reads 0
     run = max(breaker, nolive, 1)
     rows = []
     for m in range(int(run * 60), -1, -60):        # a staffing row a minute, up to T0

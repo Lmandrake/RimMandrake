@@ -376,7 +376,7 @@ def reload_needed(store, item, gen, text, now=None):
     with store.lock():
         st = store.load(item)
         _fence(st, item, gen)
-        li = st.pop("live_iter", None)
+        li = st.pop("live_iter", None) or st.get("live_lapsed")     # a lapsed hold (lapse_holds) still takes its proof
         if li is None:
             raise ValueError("%s is not iterating on the running game (no live_iter): nothing to free" % item)
         st["reload_needed"] = {"at": now, "gen": gen, "why": text[:1000], "session": li.get("started")}
@@ -1780,7 +1780,8 @@ def worker_prompt(st, text, learned, r):
         head.append("LIVE: the running game (started %s) holds your build %s, and %s FAILED on it. Work it THERE as far "
                     "as it goes before any rebuild (owner 2026-11-02, to save game loads): take the bridge with `python3 "
                     "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"relentless live iteration %s\"`, renew "
-                    "it while you work, release it (`bridge release --mine`) when you step away; read the failing proof's "
+                    "it while you work, release it (`bridge release --mine`) when you step away (with the bridge not held for "
+                    "this item %d min your hold on the game lapses and the next item proves); read the failing proof's "
                     "log, run bridge experiments, hot-reloadable XML/def changes and reads (`rimbridge`, "
                     "`live-debugging-proof-harness`). You are the game's one live user until you finish, snag or record "
                     "`%s reload-needed --item %s --gen %d \"what needs the reload and why the running game cannot take it "
@@ -1788,7 +1789,7 @@ def worker_prompt(st, text, learned, r):
                     "the next item; then go on offline and land the fix. If the game did not start at that time (`./game`), it no "
                     "longer runs your build: record reload-needed at once and work offline. Never restart, fullscreen or focus the game; "
                     "never a flyer." % (iso(li["started"]), (li.get("sha") or "")[:12], ", ".join(li.get("clauses") or []),
-                                        i, rc, i, g))
+                                        i, relentless_game.cfg(r)["live_idle_s"] // 60, rc, i, g))
     if st["contract"]:
         head.append("Contract so far: %s" % json.dumps(st["contract"]))
     if st["last_fail"]:
@@ -3390,6 +3391,11 @@ def tick(store=None, fx=None, r=None, now=None):
         relentless_block.sweep(store, fx, now, acts, iso)
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
+        try:        # a holder that no longer uses the game frees it before anyone asks for it this tick
+            relentless_game.lapse_holds(store, fx, r, now, acts)
+        except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run
+            acts.append({"do": "error", "item": None, "why": "lapse_holds %s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)[:300]})
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":

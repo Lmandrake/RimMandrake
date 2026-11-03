@@ -34,6 +34,7 @@ class GW(S.FakeWorld):
         self.led, self.impl, self.rows, self.events, self.proves = {}, [], [], [], []
         self.running, self.idle, self.take_why, self.palive = True, None, None, set()
         self.proofs = {}
+        self.bridge_held = None
         self.started, self.mods = None, 13
         self.books = "/books"
         self.owed = {"A2": "L1"}
@@ -65,6 +66,7 @@ class GW(S.FakeWorld):
         state = {True: "UP", False: "DOWN"}.get(self.running, self.running)
         return {"state": state, "started": self.started, "mods": self.mods, "evidence": "fake %s" % state}
     def bridge_idle(self, p): return self.idle
+    def bridge_reading(self): return dict(self.bridge_held or {"holder": None, "purpose": "", "since": None})
 
     def bridge_take(self, p):
         self.events.append("take")
@@ -670,6 +672,87 @@ def t_fail_on_a_running_game_is_worked_live():
     x.done()
 
 
+def live_iterating(x, i="I0"):
+    """I0 FAILed on the running game and its worker now iterates on it (live_iter)."""
+    to_game(x, i)
+    x.tick()
+    x.tick()
+    x.w.started = x.now - 100
+    x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": i, "criterion": "A2", "sha": SHA, "outcome": "FAIL",
+                 "log": "/l/A2.log"}]
+    x.tick()
+    x.run_one(i)
+    ok(x.st(i).get("live_iter") and x.st(i)["status"] == "running", "%s iterates live" % i)
+
+
+def held(x, i="I0"):
+    return G.other_active(x.s.states() + [{"item": "I7", "status": "game", "game": {}}], "I7") == i
+
+
+def t_idle_live_hold_lapses():
+    """RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: a live-iterating worker that leaves the bridge free for live_idle_s no longer
+    holds the game (2026-11-03: ATMOSBASE held it 47 min, bridge free, ten items waiting). Red on the old code: the
+    hold lasted as long as the worker."""
+    x = rig(1)
+    live_iterating(x)
+    x.r = dict(x.r, game=dict(x.r.get("game") or {}, live_idle_s=600))     # inside the worker's run_max_s
+    idle = G.cfg(x.r)["live_idle_s"]
+    gen = x.st("I0")["gen"]
+    x.w.bridge_held = {"holder": "BENCH", "purpose": "relentless live iteration I0", "since": x.now}
+    R.beat(x.s, "I0", gen, now=x.now + idle - 60)
+    x.tick(idle - 60)
+    R.beat(x.s, "I0", gen, now=x.now + idle - 60)
+    x.tick(idle - 60)
+    ok(held(x), "a worker that drives the bridge for its item keeps the game past live_idle_s")
+    x.w.bridge_held = {"holder": "BENCH", "purpose": "someone else's look at I7", "since": x.now}
+    R.beat(x.s, "I0", gen, now=x.now + 120)
+    x.tick()
+    ok(held(x), "within live_idle_s of its last bridge use it still holds")
+    R.beat(x.s, "I0", gen, now=x.now + idle)
+    x.tick(idle)
+    st = x.st("I0")
+    ok(not held(x) and st["status"] == "running" and not st.get("live_iter") and st.get("live_lapsed"),
+       "bridge not held for it for live_idle_s: the hold lapses, the worker runs on offline: %s" % st.get("live_lapsed"))
+    ok(any(j.get("do") == "game_hold_released" and j.get("item") == "I0" and "bridge" in j.get("why", "")
+           for j in map(json.loads, open(x.s.p("journal.jsonl")))), "the release is journaled with its reason")
+    ok("hold lapsed" in x.s.learned("I0"), "the item's record says the hold lapsed")
+    R.reload_needed(x.s, "I0", gen, "the fix is a DLL; only a cold load reads it", now=x.now)
+    ok("DLL" in x.st("I0")["reload_needed"]["why"], "reload-needed after a lapse still records its proof")
+    x.done()
+
+
+def t_live_hold_lapses_when_its_game_is_gone():
+    x = rig(1)
+    live_iterating(x)
+    x.w.bridge_held = {"holder": "BENCH", "purpose": "relentless live iteration I0", "since": x.now}
+    x.w.started = x.now + 5         # another load: not the game that showed the FAIL
+    x.tick()
+    ok(not held(x) and "no longer runs" in (x.st("I0").get("live_lapsed") or {}).get("why", ""),
+       "a different game than the one that failed: the hold lapses")
+    x.done()
+
+
+def t_dead_prove_pid_frees_the_game():
+    """stale_holds is pure: a proving holder whose pid is dead is named, a live one is not."""
+    c = G.cfg({})
+    st = [{"item": "P", "status": "game", "game": {"phase": "proving", "prove_pid": 41}}]
+    ok(G.stale_holds(st, 1e6, c, lambda p: False, dict, dict)[0][:2] == ("P", "proving"), "dead prove pid: stale")
+    ok(G.stale_holds(st, 1e6, c, lambda p: True, dict, dict) == [], "running prove pid: still holds")
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    with x.s.lock():
+        s = x.s.load("I0")
+        s["game"].update(phase="proving", prove_pid=777)
+        x.s.save(s)
+    acts = []
+    G.lapse_holds(x.s, x.w, x.r, x.now, acts)
+    ok(x.st("I0")["game"]["phase"] == "prove" and acts and acts[0]["kind"] == "proving",
+       "lapse_holds frees a proving holder whose pid is dead before any step runs: %s" % acts)
+    x.done()
+
+
 def t_fail_with_no_game_is_offline():
     x = rig(1)
     to_game(x, "I0")
@@ -915,7 +998,8 @@ def main():
               t_stage_tries_a_newer_running_game_first,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_stale_build_caught_before_a_slot,
-              t_dead_rows_go_back):
+              t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_lapses_when_its_game_is_gone,
+              t_dead_prove_pid_frees_the_game):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

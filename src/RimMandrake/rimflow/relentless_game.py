@@ -55,7 +55,11 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS: one full-list load (15-25 min) verifies a batch of final clauses
             "final_batch_min": 4, "final_wait_s": 8 * 3600,
             # a clause whose proof ran and measured nothing this many times on one build goes back to a worker
-            "unmeasured_back": 2}
+            "unmeasured_back": 2,
+            # RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: a live-iterating worker that has not held the bridge for its item this
+            # long is working offline, not on the game; its hold lapses so the next item may prove (ATMOSBASE held the
+            # game 47 min, bridge free, ten items waiting, 2026-11-03)
+            "live_idle_s": 1200}
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
@@ -383,6 +387,12 @@ class GameFx(object):
         return {"state": m.get("implies"), "started": started, "mods": live_mod_count(),
                 "evidence": m.get("evidence") or ""}
 
+    def bridge_reading(self):
+        """-> {"holder", "purpose", "since"} of the bridge lock as the ledger reads now."""
+        import model
+        w = model.replay(model.read())
+        return {"holder": w.bridge_holder, "purpose": w.bridge_purpose or "", "since": w.bridge_since}
+
     def bridge_idle(self, purpose):
         r = self.rimflow("bridge", "idle", "--for", purpose)
         return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-300:]
@@ -421,6 +431,83 @@ class GameFx(object):
 
     def prove_alive(self, pid):
         return self.live_round_alive(pid)
+
+
+# ---------------------------------------------------------------- holds that outlived their user
+
+def stale_holds(states, now, c, alive, bridge, reading):
+    """-> [(item, kind, why)]: every game-phase holder other_active would count that no longer uses the game. Pure but
+    for the callables: alive(pid) -> bool; bridge() -> bridge_reading(); reading() -> game_reading(), each asked only
+    when a holder needs it. RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: other_active held the game for as long as such a holder
+    existed, and only that holder's own step (or its worker's reload-needed) could end it, so one idle holder parked
+    every other game item ("one live user at a time") for 47 minutes on 2026-11-03.
+      proving   its prove pid is dead: the round ended (its rows, if any, are on runs.jsonl for its step to read)
+      live_iter its worker has not held the bridge for this item for live_idle_s, or the game it iterates on is down or
+                is a different game than the one that showed the FAIL"""
+    out, br, rd = [], None, None
+    for s in states:
+        g = s.get("game") or {}
+        if s["status"] == GAME and g.get("phase") == "proving":
+            if not g.get("prove_pid") or not alive(g["prove_pid"]):
+                out.append((s["item"], "proving", "its prove pid %s is not running: the round ended"
+                            % g.get("prove_pid")))
+        li = s.get("live_iter")
+        if s["status"] == "running" and li:
+            if rd is None:
+                rd = reading() or {}
+            if rd.get("state") == "DOWN" or (rd.get("state") == "UP" and rd.get("started") and li.get("started")
+                                             and int(rd["started"]) != int(li["started"])):
+                out.append((s["item"], "live_iter", "the game that showed its FAIL (started %s) no longer runs: %s"
+                            % (li.get("started"), rd.get("state") if rd.get("state") == "DOWN"
+                               else "started %s" % rd.get("started"))))
+                continue
+            if br is None:
+                br = bridge() or {}
+            if br.get("holder") and s["item"] in (br.get("purpose") or ""):
+                out.append((s["item"], "seen", now))       # it drives the game now: the idle clock starts again
+                continue
+            seen = li.get("bridge_seen") or li.get("at") or now
+            if now - seen >= c["live_idle_s"]:
+                out.append((s["item"], "live_iter", "its worker has not held the bridge for it in %d s (limit %d s): "
+                            "it works offline" % (now - seen, c["live_idle_s"])))
+    return out
+
+
+def lapse_holds(store, fx, r, now, acts):
+    """Each tick, before any item steps: free the game from every holder stale_holds names, and journal why."""
+    c = cfg(r)
+    states = store.states()
+    if not any(((s.get("game") or {}).get("phase") == "proving" and s["status"] == GAME)
+               or (s["status"] == "running" and s.get("live_iter")) for s in states):
+        return
+    stale = stale_holds(states, now, c, fx.prove_alive, getattr(fx, "bridge_reading", lambda: {}),
+                        getattr(fx, "game_reading", lambda: {}))
+    for item, kind, why in stale:
+        if kind == "seen":
+            with store.lock():
+                st = store.load(item)
+                if st.get("live_iter"):
+                    st["live_iter"]["bridge_seen"] = why
+                    store.save(st)
+            continue
+        with store.lock():
+            st = store.load(item)
+            if kind == "proving":
+                if st["status"] != GAME or (st.get("game") or {}).get("phase") != "proving":
+                    continue
+                st["game"]["phase"] = "prove"
+            else:
+                li = st.pop("live_iter", None)
+                if st["status"] != "running" or li is None:
+                    continue
+                st["live_lapsed"] = dict(li, lapsed_at=now, why=why[:300])
+                store.learn(item, "- %s: the game hold lapsed (%s); the game is free for the next item. Work offline; "
+                            "a live iteration needs the game again through a game phase" % (
+                                time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), why))
+            store.save(st)
+        store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "game_hold_released",
+                       "item": item, "kind": kind, "why": why[:300]})
+        acts.append({"do": "game_hold_released", "item": item, "kind": kind, "why": why[:200]})
 
 
 # ---------------------------------------------------------------- the step

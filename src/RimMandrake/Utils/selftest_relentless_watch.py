@@ -48,6 +48,7 @@ def fresh():
     shutil.rmtree(TMP / "belt", ignore_errors=True)
     shutil.rmtree(TMP / "ops", ignore_errors=True)
     STORE.mkdir(parents=True)
+    (STORE / "items").mkdir()
     (STORE / "journal.jsonl").write_text("")
     (STORE / "staffing.jsonl").write_text("")
     FILED.clear()
@@ -293,6 +294,35 @@ order, OW.ORDER = OW.ORDER, tuple(k for k in OW.ORDER if k != "relentless")
 dg = OW.run(now=T0 + 900, rules=RULES, filer=filer)
 OW.ORDER = order
 check("a collector dropped from the pass alarms too", "RELENTLESS_BLIND:relentless.blind" in dg["alarms"], dg["alarms"])
+
+# ------------------------------------------------------------------------- RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER
+def item(name, st):
+    (STORE / "items" / name).mkdir(parents=True, exist_ok=True)
+    (STORE / "items" / name / "state.json").write_text(json.dumps(dict(st, item=name)))
+
+
+fresh()
+add("journal.jsonl", {"at": OW.iso(T0 - 60), "do": "lease"})
+tick(sane_row(T0))
+item("Q", {"status": "queued"})
+item("A", {"status": "running", "live_iter": {"at": T0 - 47 * 60, "started": T0 - 3 * 3600}})
+item("B", {"status": "running", "live_iter": {"at": T0 - 50 * 60, "bridge_seen": T0 - 5 * 60}})
+item("P", {"status": "game", "game": {"phase": "proving", "prove_pid": 2 ** 22 + 7, "proved_at": T0 - 12 * 60}})
+item("L", {"status": "game", "game": {"phase": "proving", "prove_pid": os.getpid(), "proved_at": T0 - 90 * 60}})
+pts = OW.c_relentless(T0, RULES, {})
+gh = pts["relentless.game_hold_idle_min"]
+check("an idle live-iterating holder reads its minutes and names itself (the 2026-11-03 ATMOSBASE hold)",
+      gh["m"] == "MEASURED" and gh["v"] == 47.0 and gh["x"]["holder"] == "A", gh)
+dg = OW.run(now=T0, rules=RULES, filer=filer)
+check("over 30 min it alarms", "RELENTLESS_GAME_HOLD_IDLE:relentless.game_hold_idle_min" in dg["alarms"], dg["alarms"])
+(STORE / "items" / "A" / "state.json").unlink()
+gh = OW.c_relentless(T0, RULES, {})["relentless.game_hold_idle_min"]
+check("a holder that used the bridge 5 min ago and a dead prove pid 12 min ago read 12, a live prove pid nothing",
+      gh["v"] == 12.0 and gh["x"]["holder"] == "P", gh)
+shutil.rmtree(STORE / "items")
+gh = OW.c_relentless(T0, RULES, {})
+check("no items directory is blind, never 0", gh["relentless.game_hold_idle_min"]["m"] == "UNMEASURED"
+      and gh["relentless.blind"]["v"] >= 1, gh["relentless.game_hold_idle_min"])
 
 shutil.rmtree(TMP, ignore_errors=True)
 print("selftest_relentless_watch: %s" % ("FAIL " + ", ".join(FAILS) if FAILS else "OK"))
