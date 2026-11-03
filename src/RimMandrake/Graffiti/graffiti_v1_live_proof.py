@@ -153,8 +153,14 @@ def log_verdict(log_text, loaded_reply):
         return 2, "Player.log empty or unreadable"
     # a record counts when its head is error-worded and any line names Graffiti, or when any of its lines is a Graffiti
     # stack frame (a frame of ours is only printed under an error or exception, whatever its heading looked like)
+    # and, whatever the grouping, an error-worded line with Graffiti on it or on any of the next WINDOW lines (RimWorld's
+    # own continuations - "Full node:", "Context:", "[Ref ...]" - keep coming in new shapes; a false FAIL here costs a
+    # look at the named line, a false PASS certifies a broken load)
     hits = [rec[0].strip()[:200] for rec in _records(log_text)
             if (ERROR_KIND.search(rec[0]) and any(OURS.search(x) for x in rec)) or any(OUR_FRAME.search(x) for x in rec)]
+    lines = log_text.splitlines()
+    hits += [l.strip()[:200] for i, l in enumerate(lines)
+             if ERROR_KIND.search(l) and any(OURS.search(x) for x in lines[i:i + 1 + WINDOW]) and l.strip()[:200] not in hits]
     if hits:
         return 1, "Player.log names %d Graffiti load error line(s): %s" % (len(hits), " || ".join(hits[:5]))
     if field(ln, "thought") != "True" or field(ln, "raidHook") != "True":
@@ -162,6 +168,7 @@ def log_verdict(log_text, loaded_reply):
     return 0, "Player.log clean of Graffiti load errors | " + ln
 
 
+WINDOW = 3
 OUR_FRAME = re.compile(r"(?:^\s*at |^)RimMandrake\.Graffiti\.[\w.`<>+]+[:.][\w<>`]+ ?\(")
 
 

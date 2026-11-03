@@ -104,7 +104,11 @@ check(P.log_verdict(fileonly, LOADED)[0] == 1, "A8 an error naming only a Graffi
 multi = clean_log + "Exception in Verse.DefDatabase: NullReferenceException\n  at RimMandrake.Graffiti.Filth_Mark.Print ()\n"
 check(P.log_verdict(multi, LOADED)[0] == 1, "A8 an exception whose Graffiti frame is on the next line passed")
 adjacent = "RimWorld 1.6\nConfig error in SomeoneElse_Thing: bad\n[RimMandrake] Graffiti settings loaded\n"
-check(P.log_verdict(adjacent, LOADED)[0] == 0, "A8 another mod's error blamed on the Graffiti record after it")
+# deliberately conservative: another mod's error right before a Graffiti line FAILS (a look at the named line settles it)
+check(P.log_verdict(adjacent, LOADED)[0] == 1, "A8 the error window no longer reaches the next lines")
+fullnode = ('RimWorld 1.6.4633\nXML error: Could not find parent node named "FilthBsae" for node "ThingDef".\n'
+            'Full node: <ThingDef ParentName="FilthBsae"><defName>RM_Graffiti_Tag_A</defName></ThingDef>\n')
+check(P.log_verdict(fullnode, LOADED)[0] == 1, "A8 an XML error whose Graffiti def is on its Full node line passed")
 other = clean_log + "Config error in SomeoneElse_Thing: bad\nLoading textures\nLoading sounds\nLoading language\n"
 check(P.log_verdict(other, LOADED)[0] == 0, "A8 another mod's error blamed on Graffiti")
 check(P.log_verdict(clean_log, wrap("REFUSED no current map"))[0] == 2, "A8 without Graffiti loaded not UNMEASURED")
