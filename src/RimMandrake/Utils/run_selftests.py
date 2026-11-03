@@ -660,7 +660,11 @@ def _run_one_in(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path,
         state, why = classify(proc.returncode, out, rep if _HARNESS else None, cap)
         if state == "PASS":
             return path, "PASS", elapsed, ("" if out.strip() else "silent: printed nothing at all")
-        return path, state, elapsed, "\n".join([why] + tail[-20 if state == "CRASH" else -40:])
+        shown = tail[-20 if state == "CRASH" else -40:]
+        # A FAIL above the tail is the only record of what failed; after the tail, so known_reds' first error is unmoved.
+        cut = out.strip().splitlines()[:-len(shown)]
+        lost = [ln.strip()[:600] for ln in cut if ln.lstrip().startswith("FAIL")][:10]
+        return path, state, elapsed, "\n".join([why] + shown + lost)
     except subprocess.TimeoutExpired:
         elapsed = time.monotonic() - start
         return path, "CRASH", elapsed, f"timeout: exceeded {per_test_timeout(path)}s"

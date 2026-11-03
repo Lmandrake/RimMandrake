@@ -125,6 +125,17 @@ err, rep = rs._split_marker("real stderr\n" + rs._MARKER + '{"ok": true, "oom_ki
 eq(err, "real stderr\nmore\n", "wrapper marker is removed from the test's stderr")
 eq(rep, {"ok": True, "oom_kill": 2}, "wrapper marker parses")
 
+# A FAIL line above the output's tail survives into the detail, after the tail; a FAIL inside the tail is not doubled.
+with tempfile.TemporaryDirectory() as tmp:
+    long = Path(tmp) / "long.py"
+    long.write_text("import sys\nprint('FAIL early check {detail}')\n"
+                    "for i in range(60):\n    print('PASS', i)\nprint('FAIL late check')\nprint('RED: 2 failed')\nsys.exit(1)\n")
+    _, status, _, detail = run_one(long)
+    eq(status, "FAIL", "a test that prints FAIL and exits 1 is FAIL")
+    eq(detail.count("FAIL early check {detail}"), 1, "a FAIL above the tail is kept in the detail")
+    eq(detail.count("FAIL late check"), 1, "a FAIL in the tail is not doubled")
+    eq(detail.index("RED: 2 failed") < detail.index("FAIL early check"), True, "the kept FAIL follows the tail")
+
 # Planted break, live where the pen exists: a test that blows a 128 MiB cap must come
 # back KILLED (never PASS, never a plain FAIL), even though it would exit 0 if it lived.
 pen_note = "memory pen: UNMEASURED here"

@@ -1475,6 +1475,9 @@ _fc.mkdir(parents=True, exist_ok=True)
 (_fc / "ingest.py").write_text(
     "def rimflow(*a):\n    if any('\\x00' in x for x in a):\n        raise ValueError('embedded null byte')\n    return 0, ''\n"
     "def publish(n, message=''):\n    return None\n", encoding="utf-8")
+# this check is about the NUL: its clone answers the receiver question, or the live tree's rules decide it (T2 tests those)
+(_fc.parents[1] / "rimflow").mkdir(parents=True, exist_ok=True)
+(_fc.parents[1] / "rimflow" / "incident.py").write_text("def receiver_problem(seat, needs):\n    return None\n", encoding="utf-8")
 _fr = OW.real_filer([{"name": "A", "title": "bad\x00", "aid": "x"}, {"name": "B", "title": "good", "aid": "y"}],
                     {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "BENCH", "needs": "offline", "lock_wait_s": 1})
 check("filer: an alarm the spawn cannot carry costs itself, the next still files",
