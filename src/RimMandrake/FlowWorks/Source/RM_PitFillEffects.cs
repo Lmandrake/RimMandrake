@@ -58,10 +58,10 @@ namespace RimMandrake.FlowWorks
 						if (sadd > 0f)
 						{
 							HealthUtility.AdjustSeverity(p, drowning, sadd);
-							if (!Swimming.RM_SwimWater.On)
-							{
-								Swimming.RM_Swim.DrownMessage(p);
-							}
+							// OVERFLOW_DROWNING_FIX_NO_WARNING: the readable sign whether swimming is on or off. RM_Swim.Tick skips
+							// undug dry soil (the overlay leaves the terrain as it is) and measures natural/dug water, never the
+							// sheet, so this pass is the only sender here; DrownMessage throttles per pawn, so no double.
+							Swimming.RM_Swim.DrownMessage(p);
 						}
 					}
 					continue;

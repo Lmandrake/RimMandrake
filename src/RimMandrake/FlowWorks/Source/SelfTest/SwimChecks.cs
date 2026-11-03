@@ -280,6 +280,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // review 2026-10-21: RM_Swim.Tick (the message site for dug cells too) skips everyone with swimming off
                 Assert(fe.Contains("if (!Swimming.RM_SwimWater.On)") && fe.Contains("Swimming.RM_Swim.DrownMessage(p);")
                     && sw.Contains("if (!on || p.Flying || wadeableOff"), "a pit drowning is announced with swimming switched off");
+                // OVERFLOW_DROWNING_FIX_NO_WARNING: sheet water on undug soil is announced with swimming ON too (RM_Swim.Tick skips
+                // that cell: "the common case: dry ground"), so the sheet branch sends the message with no swimming guard
+                int sheetAt = fe.IndexOf("int sdl = Sheet.RM_MapComponent_Sheet.StandingDlAt(map, c);");
+                int sheetEnd = sheetAt < 0 ? -1 : fe.IndexOf("continue;", sheetAt);
+                string sheetBranch = sheetEnd < 0 ? "" : fe.Substring(sheetAt, sheetEnd - sheetAt);
+                Assert(sheetBranch.Contains("HealthUtility.AdjustSeverity(p, drowning, sadd);") && sheetBranch.Contains("Swimming.RM_Swim.DrownMessage(p);")
+                    && !sheetBranch.Contains("RM_SwimWater.On") && sw.Contains("if (exh == null && !dug && (t == null || !t.IsWater))"),
+                    "sheet drowning on undug soil is announced with swimming on or off");
                 string route = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitPathing.cs"));
                 Assert(route.Contains("customizer = Swimming.RM_SwimPathing.Combine(pawn.Map, pit ? customizer : null, swim);"), "the swim grid rides every path request");
                 string eng = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
