@@ -98,7 +98,10 @@ def interop(td):
     real_time, WB.time = WB.time, types.SimpleNamespace(sleep=waits.append, time=WB.time.time)
     try:
         lost = "echo '<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110' >&2; "
-        got = run('if [ "$n" -lt 2 ]; then %sexit 1; fi; exit 0\n' % lost)
+        # This exe closes stderr and lingers, so subprocess's wait poll always runs, loaded machine or not: a stub on the
+        # shared time.sleep goes red here every time instead of only under load.
+        linger = "exec 2>&-; sleep 0.3; "
+        got = run('if [ "$n" -lt 2 ]; then %sexit 1; fi; %sexit 0\n' % (lost, linger))
         check(got == (0, 2) and waits == [WB.INTEROP_WAIT_S], "one lost launch goes again and the exe's 0 is the answer", (got, waits))
         got = run('if [ "$n" -lt 4 ]; then %sexit 1; fi; exit 0\n' % lost)
         check(got == (0, 4), "a launch succeeding on the last try still passes (3 lost in a row was measured)", got)
@@ -134,9 +137,32 @@ def interop(td):
           "run_dotnet builds through run_interop", (rc, built))
 
 
+def wastes_fuzz_launch(td):
+    """The fuzz's own DLL launch goes through run_interop too: a lost launch at that step reads as a red test otherwise."""
+    import selftest_wastes_fuzz as WF
+    launched = []
+
+    def interop_stub(cmd, cwd=None, timeout=900):
+        launched.append(cmd)
+        return 6
+    stubs = {"stage_build": lambda csproj, **kw: (0, {}), "staged_win": lambda rec, path: "S",
+             "dotnet_exe": lambda: fake_exe(td, "dotnet", "exit 0\n"), "run_interop": interop_stub}
+    saved = {k: getattr(WB, k) for k in stubs}
+    for k, v in stubs.items():
+        setattr(WB, k, v)
+    try:
+        rc = WF.main(["--fuzz-seed", "9"])
+    finally:
+        for k, v in saved.items():
+            setattr(WB, k, v)
+    check(rc == 6 and len(launched) == 1 and launched[0][-2:] == ["--fuzz-seed", "9"],
+          "the Wastes fuzz runs its DLL through run_interop and answers with its code", (rc, launched))
+
+
 def main():
     with tempfile.TemporaryDirectory() as td:
         interop(td)
+        wastes_fuzz_launch(td)
         rc, rec, calls, built = stage_with([(23, ENOMEM), (0, "")], td)
         check(rc == 0 and calls == [23, 0] and len(built) == 1 and rec.get("staged") is True,
               "one ENOMEM: staged again and the build ran", (rc, calls, built))
