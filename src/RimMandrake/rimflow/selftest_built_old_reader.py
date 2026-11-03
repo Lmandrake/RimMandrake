@@ -17,7 +17,8 @@ What it pins (the measured answer, printed at the end):
     `next` still OFFERS it as build work (the step-1 reconcile guard is the only thing
     that can stop that, and only when git names the item);
   * a `verify` carrying `level`/`criterion` is refused WHOLE there (unknown field) -> one
-    more error, and the run does not appear in its `show`;
+    more error (the fixture records two: a --criterion pass and a --level pass, the latter
+    since close is earned), and the run does not appear in its `show`;
   * an item `implemented` straight to `done` is still OPEN on the old reader;
   * the NEW reader replays the same ledger with zero errors.
 """
@@ -156,7 +157,7 @@ def t_old_model_replays_without_crashing():
     r = old_replay()
     CTX["old"] = r
     verbs = sorted(e[0] for e in r["errors"] if e[0] != "lease")
-    assert verbs == ["implemented", "implemented", "verify"], r["errors"]
+    assert verbs == ["implemented", "implemented", "verify", "verify"], r["errors"]
     assert sum(1 for e in r["errors"] if e[0] == "lease") == 3, r["errors"]
     assert any("unknown verb 'implemented'" in e[1] for e in r["errors"]), r["errors"]
     assert any("no field" in e[1] for e in r["errors"] if e[0] == "verify"), r["errors"]

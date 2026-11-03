@@ -321,8 +321,9 @@ def t_acceptance_groups_by_cheapest_level_and_seat():
                  ("GREEN-FULL", ["SECOND_BUILT_THING_PROBE_FIXTURE"]), ("L4", ["THIRD_BUILT_THING_PROBE_FIXTURE"])], g
     f = [lv for lv, _ in priority.acceptance(w, "FOUNDRY")]
     b = [lv for lv, _ in priority.acceptance(w, "BENCH")]
-    assert f == ["L1", "L2", "GREEN-FULL"] and b == ["L4"], (f, b)
-    text = render.acceptance_view(w, "FOUNDRY")
+    # FOUNDRY is retired (owner by card 2026-11-02): BENCH sits every level, FOUNDRY none
+    assert f == [] and b == ["L1", "L2", "GREEN-FULL", "L4"], (f, b)
+    text = render.acceptance_view(w, "BENCH")
     assert "GREEN-FULL" in text and "FULL list" in text and IID in text, text
 
 
@@ -375,10 +376,11 @@ def t_cli_implemented_from_prose_then_acceptance_then_verify_to_done():
     assert state_of() == "built"
     out = ok("next")
     assert "rimflow start %s" % IID not in out, "built item offered as build work:\n" + out
-    acc = ok("next", "--acceptance")
+    # FOUNDRY is retired (owner by card 2026-11-02): BENCH sits every level, FOUNDRY none
+    acc = ok("next", "--acceptance", seat="BENCH")
     assert "## L1" in acc and IID in acc and "A1 L1" in acc, acc
-    assert IID not in ok("next", "--acceptance", seat="BENCH"), "L1 is FOUNDRY's sitting"
-    assert IID in ok("queue", "FOUNDRY", "--acceptance")
+    assert IID not in ok("next", "--acceptance"), "FOUNDRY sits no level any more"
+    assert IID in ok("queue", "BENCH", "--acceptance", seat="BENCH")
     q = ok("queue", "FOUNDRY")
     assert "# BUILT" in q and IID in q.split("# BUILT", 1)[1], q
     out = ok("verify", IID, "--criterion", "A1", "--result", "pass", "--config", "min-13")

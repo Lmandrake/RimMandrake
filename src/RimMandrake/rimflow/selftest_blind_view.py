@@ -137,7 +137,8 @@ def test_real_ledger():
     blind, raw = [], []
     for seat in ("BENCH", "FOUNDRY"):
         q = B.queue_text(world, seat)
-        check(q.count("\n- **") >= 5, "%s blind queue lists items (%d)" % (seat, q.count("\n- **")))
+        # FOUNDRY is retired (owner by card 2026-11-02): its items were re-homed to BENCH, so its queue is empty
+        check(q.count("\n- **") >= (5 if seat == "BENCH" else 0), "%s blind queue lists items (%d)" % (seat, q.count("\n- **")))
         blind.append(q)
         for it in world.items.values():
             if it.owner == seat and it.open:

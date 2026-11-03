@@ -1737,6 +1737,8 @@ def _unretire(name):
     to = RETIRED_SEATS.get(name)
     if to is None:
         return name
+    if os.environ.get("RIMFLOW_LEDGER"):   # a test ledger keeps its fixture seats (as _reader_or_die does)
+        return name
     print("%s is retired (owner by card 2026-11-02): this goes to %s, where Relentless takes it." % (name, to))
     return to
 

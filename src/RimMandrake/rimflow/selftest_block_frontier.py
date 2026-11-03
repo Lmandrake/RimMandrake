@@ -354,8 +354,10 @@ def t_base_reader_tolerates_until():
     assert p.returncode == 0, p.stderr.decode()
     r = json.loads(p.stdout.decode())
     assert r["errors"] == 0, r
-    assert r["tolerated"] and all(t[1] == "block" and t[2] == ["until"]
-                                  for t in r["tolerated"]), r["tolerated"]
+    # close --no-code (a field BASE_REF predates) is tolerated too: the fixture closes the blocker with it
+    assert any(t[1] == "block" and t[2] == ["until"] for t in r["tolerated"]) and \
+        all((t[1] == "block" and t[2] == ["until"]) or (t[1] == "close" and t[2] == ["noCode"])
+            for t in r["tolerated"]), r["tolerated"]
     assert r["d"] == [True, "FRONTIER_BLOCKER_C_PROBE_FIXTURE"], "the base reader lost the block: %r" % r
     ok("why", "FRONTIER_WAITER_D_PROBE_FIXTURE", cli=os.path.join(dest, "cli.py"))
 
