@@ -1219,9 +1219,57 @@ def sac_static_mutants(bad):
             bad.append("sac mutant %r: sac_static_defect stayed clean" % name)
 
 
+def loomma_hop_defect(fill=None, dash_src=None):
+    """STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1: the global RM_JobGiver_ShadeHop dashes a wild animal across open sun on a
+    heatstroke budget, which a loomma (killed by RM_LoommaSunstruck) cannot afford. RM_Loomma must carry
+    RM_SunDashExtension with rangeFactor <= 0 (never hop) and not exempt (SunEscape must still run), and
+    RM_DashMath.DashRangeCost must still return 0 for a zero range. None when sound, else the defect."""
+    import re as _re
+    import xml.etree.ElementTree as _ET
+    if fill is None:
+        fill = open(os.path.join(V.HERE, "Defs", "ThingDefs_Races", "RM_Stillsand_Fillout.xml"), encoding="utf-8").read()
+    if dash_src is None:
+        dash_src = open(os.path.join(V.HERE, "..", "CreatureBehaviors", "Source", "RM_ShadePatchGraph.cs"),
+                        encoding="utf-8").read()
+    races = [d for d in _ET.fromstring(fill).findall("ThingDef") if d.findtext("defName") == "RM_Loomma"]
+    if len(races) != 1:
+        return "expected one RM_Loomma ThingDef, found %d" % len(races)
+    dash = [li for li in races[0].findall("modExtensions/li")
+            if li.get("Class") == "RimMandrake.CreatureBehaviors.RM_SunDashExtension"]
+    if len(dash) != 1:
+        return "RM_Loomma carries %d RM_SunDashExtension (want 1): ShadeHop will dash it through the sun" % len(dash)
+    rf = float(dash[0].findtext("rangeFactor") or "1")
+    if rf > 0:
+        return "RM_Loomma RM_SunDashExtension rangeFactor %s > 0: it still hops across open sun" % rf
+    if (dash[0].findtext("exempt") or "false").strip().lower() == "true":
+        return "RM_Loomma RM_SunDashExtension exempt: SunEscape would no longer pull it out of the open"
+    if not _re.search(r"if \(toleratedTicks <= 0 \|\| strictnessRange <= 0f\)\s*\{\s*return 0;", dash_src):
+        return "RM_DashMath.DashRangeCost no longer returns 0 for a zero range: rangeFactor 0 would not stop hops"
+    return None
+
+
+def loomma_hop_mutants(bad):
+    import re as _re
+    fill = open(os.path.join(V.HERE, "Defs", "ThingDefs_Races", "RM_Stillsand_Fillout.xml"), encoding="utf-8").read()
+    d = loomma_hop_defect()
+    if d is not None:
+        bad.append("loomma_hop_defect on the shipped XML: %s" % d)
+    no_ext = _re.sub(r'<li Class="RimMandrake\.CreatureBehaviors\.RM_SunDashExtension">.*?</li>', "", fill, flags=_re.S)
+    one = fill.replace("<rangeFactor>0</rangeFactor>", "<rangeFactor>1</rangeFactor>")
+    ex = fill.replace("<rangeFactor>0</rangeFactor>", "<rangeFactor>0</rangeFactor><exempt>true</exempt>")
+    for name, m in (("extension deleted", no_ext), ("rangeFactor 1", one), ("exempt", ex)):
+        if m == fill:
+            bad.append("loomma hop mutant %r did not change the XML (the mutant's pattern is stale)" % name)
+        elif loomma_hop_defect(m) is None:
+            bad.append("loomma hop mutant %r: loomma_hop_defect stayed clean" % name)
+    if loomma_hop_defect(None, "return (int)Math.Round(cells);") is None:
+        bad.append("loomma hop mutant 'DashRangeCost guard gone': loomma_hop_defect stayed clean")
+
+
 def _main(bad):
     vekka_rock_check(bad)
     sac_static_mutants(bad)
+    loomma_hop_mutants(bad)
     trader_check_verdicts(bad)
     trader_probe_points(bad)
     healthy = run()

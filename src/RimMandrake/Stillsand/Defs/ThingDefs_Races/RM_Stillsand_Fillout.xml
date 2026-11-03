@@ -743,6 +743,15 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension">
         <minShadeToPrefer>0.6</minShadeToPrefer>
       </li>
+      <!-- Never hops between shade patches. On a sun-heat map the global RM_JobGiver_ShadeHop (Animal_PreWander,
+           priority 10) outranks the shade-seeking wander and dashes a wild animal across open sun to the next
+           patch on a HEATSTROKE budget, but a loomma dies of RM_LoommaSunstruck, not heatstroke. rangeFactor 0
+           makes AnimalDashCost 0 (RM_DashMath.DashRangeCost), so it rests or mills inside its own patch;
+           RM_JobGiver_SunEscape still sprints it back to shade if it is caught in the open
+           (STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1: roofed loommas left their roof and burned faster than open ones). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunDashExtension">
+        <rangeFactor>0</rangeFactor>
+      </li>
     </modExtensions>
     <comps>
       <!-- The rent: waste that seeds and feeds, gated on shade so a drop in the

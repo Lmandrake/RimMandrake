@@ -1,0 +1,4 @@
+# One targeted modcheck chain (records against this item), then row_verdict.py reads that run's results JSON
+# (Transient/modcheck/Stillsand_<stamp>.json, < 30 min old): exit 0 only when the named row reads PASS.
+live-mods: RimMandrake.Biomes
+live-proof A1: python.exe src/RimMandrake/Utils/modcheck/cli.py run Stillsand --chains loomma --gate off --purpose fix --item Stillsand=STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1 --seat BENCH < /dev/null; python3 src/RimMandrake/Utils/modcheck/live_queue/row_verdict.py --max-age-min 30 --mod Stillsand --row loomma_sunstruck_open_vs_roofed

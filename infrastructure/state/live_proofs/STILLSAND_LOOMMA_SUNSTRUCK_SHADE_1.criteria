@@ -1,0 +1,1 @@
+A1 L2: modcheck Stillsand chain loomma live on a Stillsand quicktest pad: row loomma_sunstruck_open_vs_roofed PASS (roofed loommas stay under the roof for both samples and read lower RM_LoommaSunstruck than open-sand ones; RM_SunDashExtension rangeFactor 0 stops ShadeHop dashing them into the sun)
