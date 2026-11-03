@@ -119,6 +119,67 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(rooms.Contains("RM_PitRooms.FindCaptureLip(warden, clickedPawn.Position, out IntVec3 lip) == RM_PitRoomMath.CaptureLip.None"),
                     "the float menu offers capture down for a pawn on the pit centre");
             });
+            Case("PitCapture_finds_a_wait_lip_for_a_pawn_on_the_pit_centre", () =>
+            {
+                // PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES gen 3 (blind check: the mutant 'near = false;' in FindCaptureLip
+                // stayed green). Scene: a 3x3 pit at (5..7, 5..7) on a 13x13 map, the held pawn on its centre (6,6) -- where
+                // the 10-26 FAIL ended. FindCaptureLip's radial search is replayed over the scene with the PRODUCTION
+                // LipCandidate and RadiusFor, then the production body is pinned to that search.
+                Func<int, int, bool> pit = (x, z) => x >= 5 && x <= 7 && z >= 5 && z <= 7;
+                const int cx = 6, cz = 6;
+                Func<RM_PitRoomMath.LipKind, int[]> nearest = kind =>
+                {
+                    float r = RM_PitRoomMath.RadiusFor(kind);
+                    int[] best = null;
+                    float bestD = float.MaxValue;
+                    int span = (int)Math.Ceiling(r);
+                    for (int x = cx - span; x <= cx + span; x++)
+                    {
+                        for (int z = cz - span; z <= cz + span; z++)
+                        {
+                            if ((x == cx && z == cz) || x < 0 || z < 0 || x > 12 || z > 12)
+                            {
+                                continue;
+                            }
+                            float d = (float)Math.Sqrt((x - cx) * (x - cx) + (z - cz) * (z - cz));
+                            if (d < bestD && RM_PitRoomMath.LipCandidate(pit(x, z), true, d, r))
+                            {
+                                bestD = d;
+                                best = new[] { x, z };
+                            }
+                        }
+                    }
+                    return best;
+                };
+                Assert(nearest(RM_PitRoomMath.LipKind.Touch) == null, "the centre of a 3x3 pit touches no lip cell (the failure's cause)");
+                int[] wait = nearest(RM_PitRoomMath.LipKind.Interact);
+                Assert(wait != null, "can-fail: a lip within talking range of the pit centre exists to wait at");
+                Assert(!pit(wait[0], wait[1]), "can-fail: the wait cell is a lip, never a pit cell");
+                Assert(Math.Abs(wait[0] - cx) + Math.Abs(wait[1] - cz) == 2 && (wait[0] == cx || wait[1] == cz),
+                    "the wait cell is the nearest lip, one step outside the pit's edge");
+                Assert(RM_PitRoomMath.CaptureLipPick(false, wait != null) == RM_PitRoomMath.CaptureLip.Wait,
+                    "the scene picks Wait, not None: the job does not end");
+
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                int a = rooms.IndexOf("public static RM_PitRoomMath.CaptureLip FindCaptureLip(", StringComparison.Ordinal);
+                int b = rooms.IndexOf("public static bool TryFindLipCell(", StringComparison.Ordinal);
+                Assert(a > 0 && b > a, "FindCaptureLip precedes TryFindLipCell in RM_PitRooms.cs");
+                string f = rooms.Substring(a, b - a);
+                Assert(f.Contains("bool touch = TryFindLipCell(warden, victimPos, RM_PitRoomMath.LipKind.Touch, out lip);"),
+                    "a touching lip is tried first");
+                Assert(f.Contains("if (!touch)"), "can-fail: the wait search runs exactly when no lip touches");
+                Assert(f.Contains("float radius = RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact);")
+                    && f.Contains("GenRadial.RadialCellsAround(victimPos, radius, false)"),
+                    "can-fail: the wait search spans the Interact radius around the held pawn (the scene's radius)");
+                Assert(f.Contains("RM_PitRoomMath.LipCandidate(IsPitFloor(map, eng, c), c.Standable(map), c.DistanceTo(victimPos), radius)"),
+                    "can-fail: the wait search filters by the production LipCandidate (the scene's filter)");
+                Assert(f.Contains("float d = c.DistanceToSquared(victimPos);") && f.Contains("d >= best") && f.Contains("best = d;")
+                    && f.Contains("lip = c;"), "can-fail: the wait search keeps the cell nearest the held pawn");
+                Assert(f.Contains("near = lip.IsValid;"), "can-fail: a found wait lip sets near (mutant 'near = false;')");
+                Assert(System.Text.RegularExpressions.Regex.Matches(f, @"\bnear\s*=[^=]").Count == 2,
+                    "can-fail: near is assigned only by its declaration and by the search result");
+                Assert(f.Contains("return RM_PitRoomMath.CaptureLipPick(touch, near);"), "can-fail: the pick reads both results");
+            });
             Case("PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed", () =>
             {
                 // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18)
