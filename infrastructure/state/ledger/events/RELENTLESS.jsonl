@@ -1,0 +1,12 @@
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A1 (L2), read-only proof","ts":"2026-11-03T23:20:23Z","tsn":1793748023417582841}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:20:31Z","tsn":1793748031756282139}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A2 (L2), read-only proof","ts":"2026-11-03T23:20:49Z","tsn":1793748049186887095}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:20:59Z","tsn":1793748059805579603}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A3 (L2), read-only proof","ts":"2026-11-03T23:21:15Z","tsn":1793748075646229124}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:21:24Z","tsn":1793748084106453239}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A4 (L2), read-only proof","ts":"2026-11-03T23:21:39Z","tsn":1793748099594875292}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:21:47Z","tsn":1793748107933719777}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A5 (L2), read-only proof","ts":"2026-11-03T23:22:02Z","tsn":1793748122965387546}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:22:12Z","tsn":1793748132242509231}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A6 (L2), read-only proof","ts":"2026-11-03T23:22:32Z","tsn":1793748152086840531}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:22:47Z","tsn":1793748167912559811}
