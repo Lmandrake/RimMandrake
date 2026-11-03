@@ -196,6 +196,41 @@ def _evidence(row, required=False):
         print("[rimbridge_client] evidence row NOT written to %s" % EVIDENCE_LOG, file=sys.stderr)
 
 
+# BRIDGE_STALL_DIAGNOSTIC_1: a call that blocked this long names, on its `end` row, the stall dumps the companion's
+# watchdog wrote meanwhile (stall_<session>_NN.json in the game's JawaBench\tps record dir: phase stack, tick bucket
+# and its pawns' jobs, main-thread CPU). MUST equal JawaBenchStallDump.DumpSeconds (selftest_bridge_stall_client.py).
+STALL_DUMP_SECONDS = 60.0
+
+
+def _stall_dir():
+    if os.environ.get("RIMBRIDGE_STALL_DIR"):
+        return os.environ["RIMBRIDGE_STALL_DIR"]
+    try:
+        from game_paths import LOCALLOW
+        return os.path.join(LOCALLOW, "JawaBench", "tps")
+    except Exception:  # noqa: BLE001 - no game paths on this machine: the row says so
+        return ""
+
+
+def _stall_fields(t0, now=None):
+    """{} for a call under STALL_DUMP_SECONDS; else the dumps written since it started (or why there are none)."""
+    now = time.time() if now is None else now
+    if now - t0 < STALL_DUMP_SECONDS:
+        return {}
+    d = _stall_dir()
+    out = {"stall_dir": d, "stall_dumps": []}
+    try:
+        names = [n for n in os.listdir(d) if n.startswith("stall_") and n.endswith(".json")]
+        # 2 s of slack for clock rounding; a dump written before the call began belongs to an earlier stall
+        out["stall_dumps"] = sorted(n for n in names if os.path.getmtime(os.path.join(d, n)) >= t0 - 2)
+        if not out["stall_dumps"]:
+            out["stall_note"] = ("no stall dump since the call began: the main thread kept beating (the call itself was "
+                                 "slow, or the watchdog is off), or the dir is not the game's")
+    except OSError as ex:
+        out["stall_note"] = "stall dir unreadable: %s" % ex
+    return out
+
+
 def _inflight_write(rec):
     if not EVIDENCE_LOG:
         return
@@ -802,9 +837,9 @@ class RimBridge:
             timed_out = "timed out" in str(ex).lower()
             # outcome/transport/timeout folded in from the retired rimdrive.obs_events (design 08 P5)
             outcome = "error" if answered else ("timeout" if timed_out else "lost")
-            _evidence({"ev": "end", "cid": cid, "status": status, "ms": int((time.time() - t0) * 1000),
-                       "error": str(ex)[:300], "t": _ev_now(), "outcome": outcome, "timeout": timed_out,
-                       "transport": "ok" if answered else outcome})
+            _evidence(dict({"ev": "end", "cid": cid, "status": status, "ms": int((time.time() - t0) * 1000),
+                            "error": str(ex)[:300], "t": _ev_now(), "outcome": outcome, "timeout": timed_out,
+                            "transport": "ok" if answered else outcome}, **_stall_fields(t0)))
             if mutating and status == "INDETERMINATE":
                 try:
                     _inflight_write(dict(start, status="INDETERMINATE", error=str(ex)[:300]))
@@ -820,9 +855,9 @@ class RimBridge:
             # (an OSError/ValueError escaping the socket read <1 s after the send, game alive) undiagnosable.
             why = "client interrupted: %s: %s" % (type(ex).__name__, str(ex)[:240])
             try:
-                _evidence({"ev": "end", "cid": cid, "status": "INDETERMINATE" if mutating else "lost",
-                           "ms": int((time.time() - t0) * 1000), "error": why, "t": _ev_now(),
-                           "outcome": "lost", "timeout": False, "transport": type(ex).__name__})
+                _evidence(dict({"ev": "end", "cid": cid, "status": "INDETERMINATE" if mutating else "lost",
+                                "ms": int((time.time() - t0) * 1000), "error": why, "t": _ev_now(),
+                                "outcome": "lost", "timeout": False, "transport": type(ex).__name__}, **_stall_fields(t0)))
             except Exception:  # noqa: BLE001 - evidence is best effort here; the original exception must propagate
                 pass
             if mutating:
@@ -832,9 +867,9 @@ class RimBridge:
                     pass
             raise
         ok_success = out.get("success") if isinstance(out, dict) else None
-        _evidence({"ev": "end", "cid": cid, "status": "ok", "ms": int((time.time() - t0) * 1000), "t": _ev_now(),
-                   "success": ok_success, "outcome": "reply_fail" if ok_success is False else "ok",
-                   "timeout": False, "transport": "ok"})
+        _evidence(dict({"ev": "end", "cid": cid, "status": "ok", "ms": int((time.time() - t0) * 1000), "t": _ev_now(),
+                        "success": ok_success, "outcome": "reply_fail" if ok_success is False else "ok",
+                        "timeout": False, "transport": "ok"}, **_stall_fields(t0)))
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
         return out

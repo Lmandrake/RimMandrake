@@ -443,7 +443,7 @@ namespace JawaBench.BridgeTools
         {
             try
             {
-                Prune(Dir, new[] { "tps_*.jsonl", "hb_*.json", "session_*.json" }, RetentionCapBytes);
+                Prune(Dir, new[] { "tps_*.jsonl", "hb_*.json", "session_*.json", "stall_*.json" }, RetentionCapBytes);
                 Prune(LogDir, new[] { "*.log" }, LogRetentionCapBytes);
             }
             catch (Exception e)

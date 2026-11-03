@@ -158,7 +158,7 @@ namespace JawaBench.BridgeTools
                     }
                     // per-profile POLICY (JawaBenchSafetyCore): attribution stays on in campaign because it explains a slowdown
                     if (Settings.Attribution && JawaBenchCompanionSafety.PolicyNow().TpsAttribution) JawaBenchTpsProfiler.Install();
-                    if (Settings.Watchdog) WD.Start(RecordDir);
+                    if (Settings.Watchdog) { JawaBenchStallProbe.Install(); WD.Start(RecordDir); }
                     try { UnityEngine.Application.quitting += OnQuit; } catch { }
                     try { AppDomain.CurrentDomain.ProcessExit += (s, e) => OnQuit(); } catch { }
                     Installed = true;

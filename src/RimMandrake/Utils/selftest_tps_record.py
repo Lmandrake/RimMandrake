@@ -663,7 +663,7 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
             "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
-            "GuardOriginalSkippedAndThrewCounted"]
+            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s"]
 
 
 def unit_checks(lines):
@@ -732,6 +732,15 @@ def _j_invalid(rows):
           % rows)
 
 
+def _j_stall(rows):
+    """BRIDGE_STALL_DIAGNOSTIC_1: the production stall dump names what the main thread was doing."""
+    check(len(rows) == 1, "one composed stall dump expected, got %d" % len(rows))
+    for r in rows:
+        for k in ("phaseStack", "phase", "phaseS", "ticksGame", "silentS", "probe", "mainStack", "threads",
+                  "mainCpuDeltaS", "session", "pid", "utc"):
+            check(k in r, "stall dump lacks %s: %s" % (k, sorted(r)))
+
+
 def _j_heartbeat(rows):
     from datetime import datetime as _dt
     h = rows[0] if rows else {}
@@ -782,7 +791,7 @@ def _j_tier_flight(rows):
 
 J_CHECKS = [("tier-hist", _j_tier_hist), ("tier-exc", _j_tier_exc), ("tier-exc-first", _j_tier_exc_first),
             ("tier-flight-header", _j_tier_flight),
-            ("heartbeat", _j_heartbeat), ("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
+            ("heartbeat", _j_heartbeat), ("stall", _j_stall), ("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
             ("stages-invalid", _j_invalid)]   # assertions on production-composed lines
 
 

@@ -215,6 +215,7 @@ namespace JawaBench.BridgeTools
             int c;
             try { c = TlCat(__instance); }      // pure field read; the category is captured ONCE, here, for the finalizer
             catch (Exception e) { Fail("tl-prefix", e); __state.Rejected = true; return; }
+            JawaBenchStallProbe.CurTickList = __instance;   // BRIDGE_STALL_DIAGNOSTIC_1: one reference store, read only by a stall dump
             Begin(WD.PTlNormal + c - CNormal, c, out __state);
         }
 

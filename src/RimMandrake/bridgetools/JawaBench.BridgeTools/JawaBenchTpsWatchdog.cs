@@ -103,12 +103,33 @@ namespace JawaBench.BridgeTools
 
         internal static string PhaseName => PhaseNames[Math.Max(0, Math.Min(PhaseNames.Length - 1, _phase))];
 
+        private static string NameOf(int p) => PhaseNames[Math.Max(0, Math.Min(PhaseNames.Length - 1, p))];
+
+        /// <summary>BRIDGE_STALL_DIAGNOSTIC_1: the whole nested phase stack, outermost first, the current phase last, as a
+        /// JSON array. A racy read from the watchdog thread - harmless while the main thread is the one that is stuck.</summary>
+        internal static string PhaseStackJson()
+        {
+            int d = Math.Min(_depth, Stack.Length);
+            var sb = new StringBuilder(64).Append('[');
+            for (int i = 0; i < d; i++) sb.Append('"').Append(NameOf(Stack[i])).Append("\",");
+            return sb.Append('"').Append(PhaseName).Append("\"]").ToString();
+        }
+
+        /// <summary>Test seam: lay a phase stack as the main thread would (Beat, then nested Enters).</summary>
+        internal static void SetPhasesForTest(params int[] nested)
+        {
+            _depth = 0;
+            Set(PUpdate);
+            foreach (int p in nested) Enter(p);
+        }
+
         internal static void Start(string dir)
         {
             if (_thread != null) return;
             ProcessStartUtc();
             HeartbeatPath = Path.Combine(dir, "hb_" + W.Session + ".json");
             Interlocked.Exchange(ref _beatTicks, W.Clock.ElapsedTicks);
+            JawaBenchStallDump.CaptureMainThread();
             WarmOnCaller();
             _thread = new Thread(Loop) { IsBackground = true, Name = "JawaBench.TpsWatchdog" };
             _thread.Start();
@@ -127,7 +148,18 @@ namespace JawaBench.BridgeTools
                 double quiet = now - Seconds(Interlocked.Read(ref _beatTicks));
                 WriteHeartbeat(now, quiet);
                 WriteHeartbeat(Now, quiet);
-                var unused = ContextFields() + PhaseName + M.F(quiet, 1);
+                var unused = ContextFields() + PhaseName + M.F(quiet, 1) + PhaseStackJson();
+            }
+            catch { }
+            try
+            {
+                // the stall dump runs on this thread only after a minute of silence: compile its whole path now, and
+                // run the two parts that touch no file (threads, stack attempt) once so their callees are JIT-ed too
+                foreach (var mi in typeof(JawaBenchStallDump).GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public))
+                    if (!mi.IsAbstract && !mi.ContainsGenericParameters && mi.DeclaringType == typeof(JawaBenchStallDump) && mi.GetMethodBody() != null)
+                        System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(mi.MethodHandle);
+                var warm = JawaBenchStallDump.ThreadsFields() + JawaBenchStallDump.MainStackJson();
+                JawaBenchStallDump.Reset();
             }
             catch { }
             try
@@ -175,6 +207,7 @@ namespace JawaBench.BridgeTools
                             SilenceLines++;
                             W.Enqueue("silence", "\"silentS\":" + M.F(quiet, 1) + "," + ContextFields());
                         }
+                        JawaBenchStallDump.Tick(now, quiet, beat);
                     }
                     else if (silent)
                     {
