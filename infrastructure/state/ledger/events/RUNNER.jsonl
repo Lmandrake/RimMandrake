@@ -2210,3 +2210,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T14:54:25Z","tsn":1793717665232694814}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC","result":"kept","detail":"sweep: running again","ts":"2026-11-03T15:03:06Z","tsn":1793718186662069284}
 {"seat":"RUNNER","event":"note","id":"OPS_RELENTLESS_READING_RESTORE_IUUR","text":"ops_watch: cleared at 2026-11-03T15:07:00Z (relentless.blind now 0)","ts":"2026-11-03T15:08:36Z","tsn":1793718516273474566}
+{"seat":"RUNNER","event":"note","id":"OPS_RELENTLESS_UNSTICK_XARX","text":"ops_watch: cleared at 2026-11-03T15:37:00Z (relentless.distressed now 0)","ts":"2026-11-03T15:38:31Z","tsn":1793720311759988665}
