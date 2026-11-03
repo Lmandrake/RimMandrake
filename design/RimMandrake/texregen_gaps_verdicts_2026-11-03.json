@@ -1,0 +1,186 @@
+{
+ "item": "TEXREGEN_GAPS_REDRAW_EIGHTEEN_QUEUED",
+ "about": "one judge verdict per gap def of design/RimMandrake/biome_texture_regen_jobs_2026-10-18.json; checked by src/RimMandrake/Utils/art/texregen_gaps_check.py. Delegated art call (delegation_policy.md); the owner accepted all these renders for now on 2026-10-18 and will re-review later.",
+ "verdicts": [
+  {
+   "def": "RM_Sekkulaath_Bloom",
+   "job_id": "texregen_RM_Sekkulaath_Bloom_v1",
+   "png": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Bloom.png",
+   "sha256": "76fb7667bc18a4b6e6e3e4f36c3b4d60c2e665f263b20a70805a733838a9beeb",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "carnivorous bloom, ring of fleshy petals round a toothed maw and eye; reads as one plant-creature, painterly, transparent ground"
+  },
+  {
+   "def": "RM_SekkulaathTank",
+   "job_id": "texregen_RM_SekkulaathTank_v1",
+   "png": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_SekkulaathTank/RM_SekkulaathTank.png",
+   "sha256": "8c57fa454dd81d9ace7d143b5f85c014d6084d31585322ec652553b934caf69f",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "top-down iron-banded timber tank of dark green fluid; reads as a building, square footprint, no baked ground"
+  },
+  {
+   "def": "RM_SekkulaathCream",
+   "job_id": "texregen_RM_SekkulaathCream_v1",
+   "png": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream.png",
+   "sha256": "d48108745c66af70bfdec490922638864b0414543f35fda24ce978a4556c37e4",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a dollop of pale cream; reads as a small resource item at stack scale"
+  },
+  {
+   "def": "RM_SkerrelGall",
+   "job_id": "texregen_RM_SkerrelGall_v1",
+   "png": "src/RimMandrake/Greentide/Textures/RotSporeKit/Things/Plant/RM_SkerrelGall/RM_SkerrelGall.png",
+   "sha256": "70ef3a206cbd87b794a8a587b54654a51a531ea39aadc722eefed3ba5ead53f4",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a single papery bulb-gall on a twisted stem; readable plant gall, not the donor veil"
+  },
+  {
+   "def": "RM_UltrissPad",
+   "job_id": "texregen_RM_UltrissPad_v1",
+   "png": "src/RimMandrake/LongShade/Textures/Things/Plant/RM_Ultracactus/RM_Ultracactus_a.png",
+   "sha256": "bf899a41c71d3c89c40a11c04c77433a8085f305dd2650f363e6974bca63019a",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a flat, low pale-green lobed pad lying flush to the ground, matching the prompt (no canopy, no shade)"
+  },
+  {
+   "def": "RM_GlowTank",
+   "job_id": "texregen_RM_GlowTank_v1",
+   "png": "src/RimMandrake/LuminousPigment/Textures/Things/Building/Production/RM_GlowTank.png",
+   "sha256": "89f2595835eb744d3682fa423ec9573542177bbfcf1bbd64fcefa739f58cf063",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "caged glass tank of glowing blue-green growth with side lamps; reads as a production building"
+  },
+  {
+   "def": "RM_GuzzkaEggFertilized",
+   "job_id": "texregen_RM_GuzzkaEggFertilized_v1",
+   "png": "src/RimMandrake/Stillsand/Textures/Things/Item/Egg/RM_EggScaled/EggScaled_a.png",
+   "sha256": "ba3459729f17bc50fed84a3582e568727d8b8cea983060b2ac5b8f52e1ab6275",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a translucent pale scaled egg; one shared egg picture for the six Stillsand egg defs, which is the intended family share, not a borrow"
+  },
+  {
+   "def": "RM_CargoFloat",
+   "job_id": "texregen_RM_CargoFloat_v1",
+   "png": "src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_GreySea/RM_SeaCatchItem.png",
+   "sha256": "d7129b5c11b6be7fa2ee1d819d59191f7e149aa42cf77607fad288ed1d7a87f7",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a rope-lashed crate on a grey float bladder; reads as sea salvage"
+  },
+  {
+   "def": "RM_HullSaltCrust",
+   "job_id": "texregen_RM_HullSaltCrust_v1",
+   "png": "src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_HullSaltCrust/RM_HullSaltCrust_a.png",
+   "sha256": "1ccb64bff42801d1d6539b6277c7d7483abbb15645c77c830a2720292c73858f",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a hull plate crusted in white salt clusters; reads as the crust building"
+  },
+  {
+   "def": "RM_VauliskLureOrgan",
+   "job_id": "texregen_RM_VauliskLureOrgan_v1",
+   "png": "src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EeshCatch/RM_EeshCatch_a.png",
+   "sha256": "57067b1ab1f8e455b1201b3d279de819d12d239c92562dffc9739ecbf6a6362e",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-10-18",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "an iridescent lumpy organ with glowing yellow lobes; its own picture, no longer the Eesh catch (Eesh draws Things/Item/Fish/RM_EeshCatch)"
+  },
+  {
+   "def": "RM_RawSalt",
+   "job_id": "texregen_RM_RawSalt_v2",
+   "png": "src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_GreySea/RM_SaltCrystalItem/RM_SaltCrystalItem_a.png",
+   "sha256": "eee4a1dd3fe99057ef3e10bc49e9d5fbebbcd551c1606d194198210e97f516d5",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a heap of pale salt crystals; reads as a raw resource, and stays neutral enough for the four tinted salt variants that share it"
+  },
+  {
+   "def": "RM_ElderSealedRelic",
+   "job_id": "texregen_RM_ElderSealedRelic_v2",
+   "png": "src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_GreySea/RM_ElderSealedRelic.png",
+   "sha256": "fed907ba7bafea9c105ffe449af24893c37ba3354e1be51b8c2417e44c1540a8",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a seamless lump of grown salt with something reddish held inside; its own picture now, no longer the raw-salt crystal"
+  },
+  {
+   "def": "RM_GaslightLamp",
+   "job_id": "texregen_RM_GaslightLamp_v2",
+   "png": "src/RimMandrake/TheSump/Textures/Things/Building/Furniture/RM_GaslightLamp/RM_GaslightLamp.png",
+   "sha256": "6949f740b40d4f579cd245ceca12e7efbb9390863c2abdef9779283038eb8e69",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a brass-ringed glass globe with a live flame, top-down; reads as a lamp building"
+  },
+  {
+   "def": "RM_TarVault",
+   "job_id": "texregen_RM_TarVault_v2",
+   "png": "src/RimMandrake/TheSump/Textures/Things/Building/RM_TarVault/RM_TarVault.png",
+   "sha256": "c3b7234b69adb3bf49d1df91ca8c2aef15b82fc31d80573e416f1d9cd3494e24",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "an iron-banded vault basin of black tar with amber lamps, top-down; reads as a storage building"
+  },
+  {
+   "def": "RM_WeakTarSolvent",
+   "job_id": "texregen_RM_WeakTarSolvent_v2",
+   "png": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_WeakTarSolvent/RM_WeakTarSolvent.png",
+   "sha256": "e4361faf4dfeb7715c91790da175f23121aa313ae8823b73a30f02a0987e36d4",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "an amber solvent in a caged jug; readable item. The def tint (178,196,110) was dropped so the painted colour shows"
+  },
+  {
+   "def": "RM_GloomcastHide",
+   "job_id": "texregen_RM_GloomcastHide_v2",
+   "png": "src/RimMandrake/LongShade/Textures/Things/Item/Resource/RM_GloomcastHide/RM_GloomcastHide_a.png",
+   "sha256": "cbe37fff6eb1ce6eddd3e8eca548518ffd432ce73ff45adc046d09522031eb72",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a dark grey-brown stretched hide; reads as leather. Def repointed off the donor swresource/Leather_Heavy; its graphic tint (0,76,156) dropped, the stuff colour kept"
+  },
+  {
+   "def": "RM_GloomcastMeat",
+   "job_id": "texregen_RM_GloomcastMeat_v2",
+   "png": "src/RimMandrake/LongShade/Textures/Things/Item/Resource/RM_GloomcastMeat/RM_GloomcastMeat_a.png",
+   "sha256": "45614f44648e94ec5e4395081197aa95e56153878f866e01d26348ff4d843062",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus), not the maker: the render came from the artpipe codex worker 2026-11-03 (a re-render: the v1 render was pruned from _artsrc before it was collected)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "a marbled red cut of meat; reads as raw meat. Def repointed off the donor swresource/Meat_Saurian"
+  },
+  {
+   "def": "RM_Vashuu",
+   "job_id": null,
+   "png": "src/RimMandrake/Greentide/Textures/Things/Item/Fish/RM_Vashuu.png",
+   "sha256": "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+   "verdict": "pass",
+   "judge": "Relentless builder (Opus)",
+   "looked": "2026-11-03, on a 256 px contact sheet over a neutral ground",
+   "why": "NOT a gap: the owner moved this picture here himself \u2014 ruling a679e07d6a5f759ebcc2 on the RSW_Mee row, 2026-10-07: \"Again, move this fish art to the Greentide rivers as fishable, and redo this according to Canon carefully.\" The art ledger holds it PROTECTED; the re-render texregen_RM_Vashuu_v2 was refused by art.py and is not installed. A blue river fish with a dotted line of pale lights, which matches the vashuu's own description."
+  }
+ ]
+}

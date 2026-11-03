@@ -161,7 +161,7 @@
 
 	<!-- Gloomcast's own leather and meat — duplicated off RSW_Leather_Horax /
 	     RSW_Saurian_Meat (ThingDefs_Items/RSW_MlieWaveC_Resources.xml,
-	     RSW_MlieWaveB_Resources.xml), same stats and texPath, because those two
+	     RSW_MlieWaveB_Resources.xml), same stats (own pictures since 2026-11-03), because those two
 	     originals are also used by ~18 other SW-tier creatures (Dewback, Wraid,
 	     Hssiss, Massiff, Boma, ...) that stay in the Utinni layer. -->
 	<ThingDef ParentName="LeatherBase">
@@ -169,8 +169,7 @@
 		<label>gloomcast hide</label>
 		<description>Tanned, dried gloomcast hide. Strong, durable and pricey.</description>
 		<graphicData>
-			<texPath>swresource/Leather_Heavy</texPath>
-			<color>(0,76,156)</color>
+			<texPath>Things/Item/Resource/RM_GloomcastHide</texPath>
 		</graphicData>
 		<statBases>
 			<MarketValue>15.0</MarketValue>
@@ -200,7 +199,7 @@
 		<description>A piece of meat from a gloomcast.</description>
 		<thingClass>ThingWithComps</thingClass>
 		<graphicData>
-			<texPath>swresource/Meat_Saurian</texPath>
+			<texPath>Things/Item/Resource/RM_GloomcastMeat</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
 		<socialPropernessMatters>true</socialPropernessMatters>

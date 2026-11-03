@@ -61,7 +61,9 @@
   texPath is a FOLDER, confirmed against Verse/Graphic_Collection.cs, same
   finding RM_Filth_Tar.xml's header already made for Graphic_Cluster) with
   simple procedurally-drawn placeholder chunk icons, same posture as that
-  def's own art. Real (hand-authored, reviewed) art is still owed.
+  def's own art. RM_WeakTarSolvent has its painted art since 2026-11-03
+  (TEXREGEN_GAPS_REDRAW_EIGHTEEN_QUEUED; untinted, the picture carries its
+  colour); the other two still wear placeholders.
 -->
 <Defs>
 
@@ -111,7 +113,6 @@
     <graphicData>
       <texPath>Things/Item/Resource/RM_WeakTarSolvent</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(178, 196, 110)</color>
     </graphicData>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>
