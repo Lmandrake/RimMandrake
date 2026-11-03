@@ -1,0 +1,1 @@
+A new alarm kind in relentless/ops code goes unrouted until the nightly sweep: selftest_incident's routing census runs only if the author's --only list names it. Seen with game_modlist, lapse_holds_raised and expedite_raised (from fdf1374675). When adding kind= to a journal/alarm call, add the alarm_routes.json row in the same commit and run selftest_incident.
