@@ -134,6 +134,17 @@ namespace RimMandrake.FlowWorks
 			return AttachChance(inPit, onIntactDeck, false);
 		}
 
+		/// <summary>SUMP_TAR_FIRE_NETWORK_1 (SUMP_TAR_HYDROLOGY_1 ruling 5: "a lit canal burns to its gate"): does a square
+		/// carry the fire front? Only when burnable liquid stands in it AND no shut sluice stands on it. A shut sluice is the
+		/// firebreak: its square neither catches nor passes the front, and a square alight when its gate drops goes out (the
+		/// Maintain re-read finds no burnable liquid there). A lifted sluice or a grate (never sealing) lets it through. The
+		/// seal verdict is the same one the flow kernel uses for liquid (RM_FlowDoorRules.SealsLiquid ->
+		/// RM_PitTrapMath.FlowDoorSeals), so a gate that holds tar back also holds its fire back.</summary>
+		public static bool CarriesFront(bool burnableLiquid, bool sealedByShutSluice)
+		{
+			return burnableLiquid && !sealedByShutSluice;
+		}
+
 		/// <summary>Rain douse chance per 60-tick check on an open burning cell. PROVISIONAL: 0.03 at full rain.</summary>
 		public static float RainDouseChance(float rainRate)
 		{

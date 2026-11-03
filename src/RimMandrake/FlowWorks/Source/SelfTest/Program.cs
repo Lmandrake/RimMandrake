@@ -2146,6 +2146,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             RunPaletteExhaustion();   // FlowWorks P7: fluid palette exhaustion (PaletteExhaustionChecks.cs)
             RunHeatBudget();          // FlowWorks P9a: heat budget split and rotation (HeatBudgetChecks.cs)
             FuelFireChecks.Run(Case);          // CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chemfuel inferno + astrofuel detonation (FuelFireChecks.cs)
+            GateFirebreakChecks.Run(Case);     // SUMP_TAR_FIRE_NETWORK_1: a shut sluice is a firebreak on the tar front (GateFirebreakChecks.cs)
             RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
             HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
             PipeStraightVariantChecks.Run(Case);   // SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW: straight-run variants by cell hash

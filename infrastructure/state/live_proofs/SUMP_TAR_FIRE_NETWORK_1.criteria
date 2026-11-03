@@ -1,0 +1,3 @@
+A1 L2: on a quicktest map, a 1x12 D=1 canal filled with RM_Fluid_Tar with a shut WoodLog RM_Sluice on its 7th square, lit at its mouth: after 2,000 ticks squares 1-6 burn and squares 7-12 are neither burning nor pending (RM_LiquidFireProof.ProofCell) -- the lit canal burns to its gate and stops
+A2 L2: the same scene, sluice then lifted (RM_FlowDoorRules.ProofSetGate): after 2,000 more ticks squares 7-12 burn -- an open gate lets the fire through
+A3 L2: the same scene, a tar Flood_FlowWorks (jawa/flowworks_spawn_flood, the belch's own three calls) seeded in a dry dug arm beside the burning canal: after 3,000 ticks every canal square that burned still burns and at least one arm square that took tar is burning -- a belch mid-burn does not no-op the fire

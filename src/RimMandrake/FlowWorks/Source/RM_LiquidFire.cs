@@ -28,6 +28,9 @@ namespace RimMandrake.FlowWorks
 	///   and a moat piped from a larger body burns as long as inflow beats the burn. Burned liquid is GONE (the second disclosed exit, beside overflow):
 	///   counted in <see cref="BurnedLevelsTotal"/>, debited outside the pulse's conservation ledger.
 	/// - EFFECT: pawns in the burning cell catch fire; one held in a D=4 pit always does (ruling 22).
+	/// - GATES (SUMP_TAR_FIRE_NETWORK_1): a shut sluice is a firebreak; its square neither catches nor passes the front
+	///   (BurnableFluidAt reads RM_FlowDoorRules.SealsLiquid), so a lit canal burns to its gate and stops. Lifting the gate
+	///   lets a neighbour still alight relight the square on the next check and the front runs on; a grate never stops it.
 	/// - SPENT: a canal cell that burns dry is left scorched (ash) — the `canal_spent_after_burn` bar.
 	/// - EXPLOSIONS: a flame or bomb blast lights burnable liquid in every cell it touches, Fire or no Fire
 	///   (DamageWorker.ExplosionAffectCell postfix). A firefoam blast (Extinguish) smothers instead.
@@ -214,7 +217,9 @@ namespace RimMandrake.FlowWorks
 			{
 				f = ex.Stock.BodyAt(map, c, ex)?.fluid;
 			}
-			return f != null && f.fireKind != RM_FluidFireKind.None ? f : null;
+			// SUMP_TAR_FIRE_NETWORK_1: a shut sluice on the square is a firebreak (RM_FireMath.CarriesFront).
+			return RM_FireMath.CarriesFront(f != null && f.fireKind != RM_FluidFireKind.None,
+				RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c])) ? f : null;
 		}
 
 		// ── ignition ──────────────────────────────────────────────────────

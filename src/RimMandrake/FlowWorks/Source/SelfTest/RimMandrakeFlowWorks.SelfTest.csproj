@@ -199,6 +199,7 @@
     <Compile Include="PaletteExhaustionChecks.cs" />
     <Compile Include="HeatBudgetChecks.cs" />
     <Compile Include="FuelFireChecks.cs" />
+    <Compile Include="GateFirebreakChecks.cs" />
     <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
     <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
     <Compile Include="TransferChecks.cs" />

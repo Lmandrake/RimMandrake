@@ -79,3 +79,12 @@ visible glass rim after its flood recedes.
 Tar is genuinely dangerous to burn and genuinely controllable with gates —
 the "gate placement is life-and-death craft" ruling is playable, not just
 described.
+
+## built (2026-11-03)
+Both halves now exist. Tar burns as a CreepingFuse (`RM_Fluid_Tar.fireKind`, 120 ticks a square) through the centrally driven
+`RM_LiquidFire` (no Thing per cell, terrain Flammability stays ~0), and `RM_Sluice` (FLOWWORKS_SLUICE_TWO_DOORS_1) is the
+gate. The missing link was the firebreak: `RM_LiquidFire.BurnableFluidAt` ignored the gate, so fire crossed a shut sluice
+whose square still held tar. It now answers through `RM_FireMath.CarriesFront(burnable, RM_FlowDoorRules.SealsLiquid(edifice))`:
+a shut sluice neither catches nor passes the front, a lifted sluice or a grate lets it on, a gate dropped on a burning square
+puts that square out. Offline: `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GateFirebreak_*`.
+Live: `infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.txt` (`src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py`).
