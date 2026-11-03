@@ -173,7 +173,9 @@ def main():
           not probs, "; ".join(probs[:5]))
 
     # planted break 1: the old whole-block Replace on one hide that has its own stats.
-    dn, items = ops[0]
+    # a hide that HAS own statFactors in the synthetic defs (ops[0] need not be one: co-declared hides collapse in the dict)
+    own = {td.findtext("defName") for td in synthetic_defs({d: dict(i) for d, i in ops}) if td.find("stuffProps/statFactors") is not None}
+    dn, items = next((d, i) for d, i in ops if d in own)
     old = ('<Operation Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="%s"]/stuffProps/statFactors</xpath>'
            "<value><statFactors>%s</statFactors></value></Operation>"
            % (dn, "".join("<%s>%s</%s>" % (f, v, f) for f, v in items)))
