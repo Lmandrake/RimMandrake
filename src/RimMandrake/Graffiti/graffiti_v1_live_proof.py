@@ -11,7 +11,9 @@ Exit 0 = the clause holds, 1 = it answered and something is wrong, 2 = UNMEASURE
                inside the room under LordJob_AssaultColony (marksIn 0), 120 ticks run, RaidExit moves the lord onto its own
                leaving toil: mid 0 (none on the way in), after >= 1, every tag raidExitEligible, on a wall and exterior
                (outside the room by geometry, unroofed, in the outdoors room); interiorClosed False, inside 0 or outsideOpen False is a SITE
-               fault (UNMEASURED)
+               fault (UNMEASURED). "In its faction's mark": the driver then saves the game (RM_GraffitiA2Proof.rws, deleted after)
+               and reads every mark placed since RaidStart's tick: factionOk (makerFaction = the RAID line's faction) must cover
+               every exit tag; an unreadable save is UNMEASURED
   A3 sigil     Sigil paints RM_Graffiti_IdeoSigil by a colonist: ideo True, frame halo_0, iconIsIdeo True, tinted True
   A4 over      GoingOver: a colonist's Tag_A, then an enemy's ThrowUp_A on the same cell: firstGone True, marksAtCell 1,
                def RM_Graffiti_ThrowUp_A, rivalFaction True
@@ -28,6 +30,8 @@ import json
 import os
 import re
 import sys
+import time
+import xml.etree.ElementTree as ET
 
 PROBE = "RimMandrake.Graffiti.RM_GraffitiProof"
 CLAUSES = ("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8")
@@ -94,6 +98,41 @@ def _match(text, want):
     return ["%s %s (want %s)" % (k, field(text, k), v) for k, v in want.items() if field(text, k) != v]
 
 
+SAVE_NAME = "RM_GraffitiA2Proof"
+
+
+def exit_faction_marks(save_text, faction_name, since_tick):
+    """-> (factionOk, sinceMarks, None) or (None, None, why) from a .rws text: of the Filth_Marks placed at or after
+    since_tick, how many carry makerFaction = the faction named faction_name (Scribe ref 'Faction_<loadID>'; a loadID of 0
+    is the Scribe default and is omitted from the save, so a missing loadID reads 0)."""
+    try:
+        root = ET.fromstring(save_text)
+    except ET.ParseError as ex:
+        return None, None, "save does not parse: %s" % ex
+    facs = root.find(".//factionManager/allFactions")
+    if facs is None:
+        return None, None, "save has no factionManager/allFactions"
+    ids = ["Faction_" + ((li.findtext("loadID") or "").strip() or "0") for li in facs.findall("li")
+           if (li.findtext("name") or "").strip() == faction_name]
+    if len(ids) != 1:
+        return None, None, "faction %r is named by %d factions in the save" % (faction_name, len(ids))
+    since = ok = 0
+    for el in root.iter():
+        tick = el.findtext("rmMarkPlacedTick")
+        if tick is None:
+            continue
+        try:
+            tick = int(tick)
+        except ValueError:
+            return None, None, "unreadable rmMarkPlacedTick %r" % tick
+        if tick < since_tick:
+            continue
+        since += 1
+        if (el.findtext("rmMarkMakerFaction") or "").strip() == ids[0]:
+            ok += 1
+    return ok, since, None
+
+
 def verdict(clause, text, extra=None):
     """-> (exit code, reason) for one clause's decisive reply text (A2: the EXIT line with `extra` = the RAID line;
     A6: the CLEAN line with `extra` = the DONE line)."""
@@ -127,6 +166,10 @@ def verdict(clause, text, extra=None):
             fails.append("a tag not raidExitEligible or not on a wall")
         elif _int(ln, "exterior") != after:
             fails.append("a tag on an interior wall (exterior %s of %s)" % (field(ln, "exterior"), after))
+        if after and _int(ln, "factionOk") is None:
+            return 2, "the exit tags' maker faction was not read (no factionOk): " + ln
+        if after and _int(ln, "factionOk") < after:
+            fails.append("a tag not in the raid faction's mark (factionOk %s of %s)" % (field(ln, "factionOk"), after))
         if _int(ln, "standing") == 0:
             return 2, "SITE: no raider was standing when the exit fired: " + ln
         if field(ln, "interiorClosed") != "True" or not _int(ln, "inside"):
@@ -201,6 +244,34 @@ def _reply(out):
     return json.dumps(out, ensure_ascii=False)
 
 
+def _exit_factions(rb, R, faction_name, since):
+    """' | factionOk N | sinceMarks M' read from a fresh save of this game, or ' | factionUnread <why>' (verdict A2 then
+    says UNMEASURED)."""
+    if not faction_name or not isinstance(since, int):
+        return " | factionUnread no RAID faction or RaidStart tick"
+    dirs = [os.path.join(os.path.dirname(p), "Saves") for p in R._player_log_candidates() if p]
+    t0 = time.time() - 2
+    r = rb.call("rimworld/save_game", {"saveName": SAVE_NAME})
+    paths = ([r["path"]] if isinstance(r, dict) and isinstance(r.get("path"), str) else []) + \
+        [os.path.join(d, SAVE_NAME + ".rws") for d in dirs]
+    for _ in range(20):  # the write is not instant
+        fresh = [p for p in paths if os.path.isfile(p) and os.path.getmtime(p) >= t0 and os.path.getsize(p) > 1000]
+        if fresh:
+            time.sleep(1.0)
+            with open(fresh[0], encoding="utf-8", errors="replace") as fh:
+                text = fh.read()
+            try:
+                os.remove(fresh[0])
+            except OSError:
+                pass
+            ok, n, why = exit_faction_marks(text, faction_name, since)
+            if ok is None:
+                return " | factionUnread " + why.replace("|", "/")
+            return " | factionOk %d | sinceMarks %d" % (ok, n)
+        time.sleep(0.5)
+    return " | factionUnread no fresh %s.rws in %s" % (SAVE_NAME, "; ".join(paths).replace("|", "/"))
+
+
 def _read_log(R):
     for p in R._player_log_candidates():
         if p and os.path.isfile(p):
@@ -220,7 +291,12 @@ def _until(rb, call, method, done, limit):
 
 
 def run(clause, rb, R):
-    call = lambda m, a="": _reply(rb.call("jawa/static_call", {"type": PROBE, "method": m, "args": a}))
+    last = {}
+
+    def call(m, a=""):
+        last["out"] = rb.call("jawa/static_call", {"type": PROBE, "method": m, "args": a})
+        return _reply(last["out"])
+
     if clause == "A1":
         s = call("SpreeStart")
         sp = line(s, "SPREE")
@@ -235,8 +311,13 @@ def run(clause, rb, R):
         raid = call("RaidStart")
         if "REFUSED" in raid:
             return verdict("A2", raid)
+        since = last["out"].get("ticksGame") if isinstance(last["out"], dict) else None
         rb.call("rimworld/step_game_ticks", {"ticks": 120})
-        return verdict("A2", call("RaidExit"), extra=raid)
+        ex = call("RaidExit")
+        ln = line(ex, "EXIT")
+        if ln and "REFUSED" not in ex:
+            ex = ln + _exit_factions(rb, R, field(line(raid, "RAID") or "", "faction"), since)
+        return verdict("A2", ex, extra=raid)
     if clause in ("A3", "A4", "A5"):
         return verdict(clause, call({"A3": "Sigil", "A4": "GoingOver", "A5": "HostileThought"}[clause]))
     if clause == "A6":

@@ -43,7 +43,7 @@ check(code("A1", "") == 2, "A1 empty not UNMEASURED")
 # A2 raid
 RAID = "RAID spawned 3 | faction Rough Pigs | marksIn 0 | toil LordToil_AssaultColony"
 EXIT = ("EXIT mid 0 | after 3 | eligible 3 | onWall 3 | exterior 3 | outsideOpen True | interiorClosed True | inside 1 | standing 4"
-        " | toil LordToil_AssaultColony->LordToil_ExitMap")
+        " | toil LordToil_AssaultColony->LordToil_ExitMap | factionOk 3 | sinceMarks 3")
 check(code("A2", wrap(EXIT), extra=wrap(RAID)) == 0, "A2 pass shape not passed: %s" % (P.verdict("A2", EXIT, extra=RAID),))
 check(code("A2", EXIT.replace("mid 0", "mid 1"), extra=RAID) == 1, "A2 a tag on the way in passed")
 check(code("A2", EXIT, extra=RAID.replace("marksIn 0", "marksIn 2")) == 1, "A2 marks before arrival passed")
@@ -59,6 +59,84 @@ check(code("A2", EXIT.replace("outsideOpen True", "outsideOpen False"), extra=RA
 check(code("A2", EXIT.replace("standing 4", "standing 0").replace("after 3 | eligible 3 | onWall 3", "after 0 | eligible 0 | onWall 0"),
            extra=RAID) == 2, "A2 a raid with nobody standing scored as a mod result")
 check(code("A2", EXIT, extra="") == 2, "A2 without its RAID line not UNMEASURED")
+# "in its faction's mark": the blind checker's mutant (makerFaction null / OfPlayer after MakeMark) reads factionOk 0
+check(code("A2", EXIT.replace("factionOk 3", "factionOk 0"), extra=RAID) == 1, "A2 exit tags in no faction's mark passed")
+check(code("A2", EXIT.replace("factionOk 3", "factionOk 2"), extra=RAID) == 1, "A2 one exit tag in the wrong faction's mark passed")
+check(code("A2", EXIT.replace(" | factionOk 3 | sinceMarks 3", ""), extra=RAID) == 2, "A2 an unread maker faction not UNMEASURED")
+check(code("A2", EXIT.replace(" | factionOk 3 | sinceMarks 3", " | factionUnread no fresh save"), extra=RAID) == 2,
+      "A2 an unreadable save not UNMEASURED")
+
+
+def save(marks, factions=(("Rough Pigs", "7"), ("Colony", None), ("Other Pigs", "9"))):
+    """A minimal .rws: factions (name, loadID or None = the Scribe default 0) and marks (placedTick, makerFaction ref)."""
+    fl = "".join("<li><def>Pirate</def><name>%s</name>%s</li>" % (n, "" if i is None else "<loadID>%s</loadID>" % i)
+                 for n, i in factions)
+    ml = "".join('<thing Class="RimMandrake.Graffiti.Filth_Mark"><def>RM_Graffiti_Tag_A</def>%s<rmMarkMakerFaction>%s'
+                 '</rmMarkMakerFaction></thing>' % ("" if t is None else "<rmMarkPlacedTick>%d</rmMarkPlacedTick>" % t, f)
+                 for t, f in marks)
+    return ("<savegame><game><world><factionManager><allFactions>%s</allFactions></factionManager></world>"
+            "<maps><li><things>%s<thing><def>Steel</def></thing></things></li></maps></game></savegame>" % (fl, ml))
+
+
+good = save([(1000, "Faction_7"), (1050, "Faction_7"), (1100, "Faction_7"), (500, "Faction_9"), (1200, "Faction_0")])
+check(P.exit_faction_marks(good, "Rough Pigs", 1000) == (3, 4, None), "save read: %r" % (P.exit_faction_marks(good, "Rough Pigs", 1000),))
+check(P.exit_faction_marks(good, "Colony", 1000)[:2] == (1, 4), "save read: a loadID-0 faction (Scribe default, omitted) not matched")
+check(P.exit_faction_marks(save([(1000, "null")] * 3), "Rough Pigs", 1000)[:2] == (0, 3), "save read: null makerFaction counted")
+check(P.exit_faction_marks(save([(1000, "Faction_0")] * 3), "Rough Pigs", 1000)[:2] == (0, 3), "save read: player makerFaction counted")
+check(P.exit_faction_marks(save([(999, "Faction_7")]), "Rough Pigs", 1000)[:2] == (0, 0), "save read: a mark older than the raid counted")
+check(P.exit_faction_marks(save([(None, "Faction_7")]), "Rough Pigs", 1000)[:2] == (0, 0), "save read: a mark without placedTick counted")
+check(P.exit_faction_marks(save([], factions=(("Rough Pigs", "7"), ("Rough Pigs", "8"))), "Rough Pigs", 0)[0] is None,
+      "save read: an ambiguous faction name was guessed")
+check(P.exit_faction_marks(good, "Nobody", 0)[0] is None, "save read: an absent faction not refused")
+check(P.exit_faction_marks("<savegame><game>", "Rough Pigs", 0)[0] is None, "save read: a truncated save not refused")
+check(P.exit_faction_marks("<savegame/>", "Rough Pigs", 0)[0] is None, "save read: a save without factions not refused")
+
+
+# run("A2") end to end on a fake bridge: the EXIT line gains factionOk from the save it writes, so a raid-path makerFaction
+# mutant (the save's marks in no faction / the player's) goes red, and a missing save is UNMEASURED
+import shutil  # noqa: E402
+import tempfile  # noqa: E402
+
+
+class FakeBridge:
+    def __init__(self, saves, save_text):
+        self.saves, self.save_text, self.calls = saves, save_text, []
+
+    def call(self, tool, params=None):
+        self.calls.append(tool)
+        if tool == "jawa/static_call":
+            m = params["method"]
+            return {"success": True, "result": RAID if m == "RaidStart" else EXIT.split(" | factionOk")[0], "ticksGame": 1000}
+        if tool == "rimworld/save_game" and self.save_text is not None:
+            with open(os.path.join(self.saves, params["saveName"] + ".rws"), "w", encoding="utf-8") as fh:
+                fh.write(self.save_text + " " * 1200)
+        return {"success": True}
+
+
+class FakeR:
+    def __init__(self, d):
+        self.d = d
+
+    def _player_log_candidates(self):
+        yield os.path.join(self.d, "Player.log")
+
+
+tmp = tempfile.mkdtemp(prefix="graffiti_a2_")
+try:
+    os.makedirs(os.path.join(tmp, "Saves"))
+    _sleep, P.time.sleep = P.time.sleep, (lambda s: None)
+    for text, want, what in ((good, 0, "a raid whose exit tags carry its faction"),
+                             (save([(1000, "null")] * 3), 1, "the makerFaction=null mutant"),
+                             (save([(1000, "Faction_0")] * 3), 1, "the makerFaction=OfPlayer mutant"),
+                             (None, 2, "no save written")):
+        fb = FakeBridge(os.path.join(tmp, "Saves"), text)
+        got = P.run("A2", fb, FakeR(tmp))
+        check(got[0] == want, "run A2 on %s: %r (want %d)" % (what, got, want))
+        check("rimworld/save_game" in fb.calls, "run A2 never saved the game to read the tags' faction")
+        check(not os.path.exists(os.path.join(tmp, "Saves", P.SAVE_NAME + ".rws")), "run A2 left its proof save behind")
+    P.time.sleep = _sleep
+finally:
+    shutil.rmtree(tmp, ignore_errors=True)
 
 # A3 sigil
 A3 = "SIGIL ideo True | frame halo_0 | iconIsIdeo True | tinted True | wallSide 0 | cell 120,121"
