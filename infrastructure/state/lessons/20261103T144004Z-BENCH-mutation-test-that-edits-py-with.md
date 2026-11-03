@@ -1,0 +1,1 @@
+A mutation test that edits a .py with sed and restores it with cp can leave a stale __pycache__ .pyc (same size, same-second mtime) so the restored file still runs the mutant: delete __pycache__ after restoring, before trusting a green/red run (HUGETHINGS_TRUNK_ZERO_BLOCKERS_1, 2026-11-03)
