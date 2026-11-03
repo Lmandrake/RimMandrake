@@ -21,8 +21,8 @@ TOOLS_NEEDED = (
     "jawa/fire_incident", "jawa/game_condition", "jawa/get_def", "jawa/get_defs", "jawa/get_roof_batch",
     "jawa/get_terrain_layers", "jawa/inspect_string", "jawa/letter_list", "jawa/list_pawns",
     "jawa/list_things", "jawa/make_empty_room", "jawa/map_info", "jawa/mod_settings_field",
-    "jawa/ordered_job", "jawa/pawn_flight", "jawa/pawn_need", "jawa/room_heat", "jawa/set_draft",
-    "jawa/designate_batch", "jawa/set_thing_props", "jawa/comp_read", "jawa/map_fire",
+    "jawa/ordered_job", "jawa/pawn_flight", "jawa/pawn_force_incapacitate", "jawa/pawn_need", "jawa/room_heat", "jawa/set_draft",
+    "jawa/designate_batch", "jawa/set_thing_props", "jawa/thing_refuel", "jawa/comp_read", "jawa/map_fire",
     "jawa/set_pawn_skill", "jawa/set_plants", "jawa/set_terrain_batch", "jawa/spawn_batch",
     "jawa/spawn_pawn", "jawa/weather_get", "jawa/weather_set", "jawa/window_list_close",
     "jawa/static_call", "jawa/world_cache_audit", "rimworld/open_mod_settings", "rimworld/set_time_speed")

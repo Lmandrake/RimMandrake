@@ -1378,6 +1378,12 @@ def cold_rack(t):
                 ids["held0"] = _cold_held(t, ids["a"])
                 if ids["held0"] <= 0:
                     _unmeasured(t, "rack A holds no cold after the refuel job (held %r)" % ids["held0"])
+                # LIVE gen 11 2026-11-03: with the hauler left in room A (door traffic) and only what it carried, A ran
+                # just 2.0 C under B; a rack filled to capacity in a shut room ran 9.8 C under B by 1500 ticks. The haul
+                # is proved above; the colonist now leaves the map and the rack is topped up (CompRefuelable.Refuel).
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=ids["col"], action="vanish")
+                t.bridge_call("jawa/thing_refuel", thingId=ids["a"], amount=30)
+                ids["held0"] = _cold_held(t, ids["a"])
                 for c in (ca, cb):
                     t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=28.0)
         with _comp(t, "rack_cools_loaded_room_only", toggle="coldSinkCapacityFactor"):
@@ -1636,6 +1642,10 @@ def vhaulk_departs(t):
             letters = (t.bridge_call("jawa/letter_list") or {}).get("letters") or []
             labels = [(l.get("label") or {}).get("RawText") if isinstance(l.get("label"), dict) else l.get("label") for l in letters]
             _note(t, "after the wait", {"gone": gone, "letters_before": before, "labels": labels[-6:]})
+            if gone and v in _rows(t, whole=True, corpses=True):
+                # LIVE gen 11 2026-11-03: on an un-retiled 42 C map the vhaulk died of the heat; a corpse is not a walk-off.
+                _unmeasured(t, "the vhaulk died on this site instead of walking off (a %s map): use "
+                               "prove_vhaulk_departs.py, which retiles to RM_BlueDesert" % (info or {}).get("mapBiome"))
             if not gone:
                 _fail("the vhaulk was still on the map after 42000 ticks with the stay factor at its floor "
                       "(max stay 0.5 day = 30000 ticks plus the walk): it never walks off")

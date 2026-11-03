@@ -623,6 +623,20 @@ class FakeGame(MockGame):
                 self.hed(q, "RM_ButaneGut", 0.25)
         return {"success": True, "accepted": True, "nowRunningRequested": True}
 
+    def t_jawa_pawn_force_incapacitate(self, p):
+        q = self.pawn(p.get("pawn"))
+        if q is not None and p.get("action") == "vanish":
+            q["spawned"] = False
+        return {"success": q is not None}
+
+    def t_jawa_thing_refuel(self, p):
+        th = self.things.get(p.get("thingId"))
+        if th is None or "fuel" not in th:
+            return {"success": False}
+        before = th["fuel"]
+        th["fuel"] = min(30.0, before + float(p.get("amount") or 0))
+        return {"success": True, "fuelBefore": before, "fuelAfter": th["fuel"]}
+
     def t_jawa_set_thing_props(self, p):
         return {"success": True, "changed": ["faction"]}
 
@@ -773,6 +787,7 @@ UNMEASURED_CASES = {
 sys.path.insert(0, HERE)
 import prove_ablation_stages as PA                                     # noqa: E402
 import prove_carbon_garden as PC                                       # noqa: E402
+import prove_vhaulk_departs as PV                                     # noqa: E402
 
 
 def _cs_range(src, field):
@@ -781,9 +796,10 @@ def _cs_range(src, field):
 
 
 def stage_window_misses(sil_range, exp_range, pace, tph, rare=250, steps=24):
-    """Sweep every roll of both stage delays and every rare-tick phase; return the cases where the proof's two reads
-    (PA.STAGE1_READ, PA.STAGE2_READ ticks after the fire) would not see stage 1 then stage 2. A port of
-    RM_BlueKernel.SilhouetteTick / ExposureTick / AblationStage (the source is checked to still read that way)."""
+    """Sweep every roll of both stage delays and every rare-tick phase; return the cases where the proof's poll trace
+    (a read every PA.POLL ticks after the fire, up to PA.DEADLINE) would not see stage 0 first, then a poll at stage 1,
+    then stage 2 by the deadline. A port of RM_BlueKernel.SilhouetteTick / ExposureTick / AblationStage (the source is
+    checked to still read that way)."""
     misses = []
     for i in range(steps + 1):
         h1 = sil_range[0] + (sil_range[1] - sil_range[0]) * i / steps
@@ -792,17 +808,17 @@ def stage_window_misses(sil_range, exp_range, pace, tph, rare=250, steps=24):
             sil = int(round(h1 * tph * max(0.1, pace)))
             exp = sil + int(round(h2 * tph * max(0.1, pace)))
             for phase in range(0, rare, 50):
-                stage, seen = 0, {}
-                for t in range(phase, PA.STAGE2_READ + 1, rare):
-                    if stage == 0 and t >= sil:
-                        stage = 1
-                    if stage == 1 and t >= exp:
-                        stage = 2
-                    for read in (PA.STAGE1_READ, PA.STAGE2_READ):
-                        if t <= read:
-                            seen[read] = stage
-                if seen.get(PA.STAGE1_READ) != 1 or seen.get(PA.STAGE2_READ) != 2:
-                    misses.append((round(h1, 3), round(h2, 3), phase, seen))
+                stage, polls, t = 0, [], phase
+                for read in range(0, PA.DEADLINE + 1, PA.POLL):
+                    while t <= read:
+                        if stage == 0 and t >= sil:
+                            stage = 1
+                        if stage == 1 and t >= exp:
+                            stage = 2
+                        t += rare
+                    polls.append(stage)
+                if polls[0] != 0 or 1 not in polls or polls[-1] != 2:
+                    misses.append((round(h1, 3), round(h2, 3), phase, polls))
     return misses
 
 
@@ -823,10 +839,10 @@ def proof_judges():
     if sil and exp and tph:
         tph = int(tph.group(1))
         misses = stage_window_misses(sil, exp, PA.PACE, tph)
-        check("A3 window: at pace %s every roll shows the shape by tick %d and the wreck by tick %d"
-              % (PA.PACE, PA.STAGE1_READ, PA.STAGE2_READ), not misses, str(misses[:3]))
-        wide = stage_window_misses((sil[0], sil[1] * 2), exp, PA.PACE, tph)
-        check("mutant stage_window_too_slow (silhouette range doubled) -> the sweep misses", bool(wide), "no miss")
+        check("A3 window: at pace %s a poll every %d ticks sees the crack, then the shape, then the wreck by tick %d"
+              % (PA.PACE, PA.POLL, PA.DEADLINE), not misses, str(misses[:3]))
+        wide = stage_window_misses((sil[0], sil[1] * 4), exp, PA.PACE, tph)
+        check("mutant stage_window_too_slow (silhouette range x4) -> the sweep misses", bool(wide), "no miss")
         early = stage_window_misses((0.0, 0.5), (0.0, 0.5), PA.PACE, tph)
         check("mutant stage_window_too_fast (both stages before the first read) -> the sweep misses", bool(early), "no miss")
 
@@ -850,6 +866,29 @@ def proof_judges():
                       ("no_payload", mut(("stage2", "payload"), 0)),
                       ("no_letter", mut(("stage2", "letters"), []))):
         check("mutant ablation_%-22s -> A3 judge FAILs" % name, PA.judge(obs) != [], str(obs))
+
+    # --- staged ablation: the poll trace is summarized the way judge() reads it
+    def row(tk, label, scav=0, letters=(), payload=0):
+        return {"ticks": tk, "label": label, "scavengers": scav, "letters": list(letters), "payload": payload}
+    crack = "deep crack in the ice"
+    trace = [row(0, crack), row(250, crack), row(500, PA.STAGE1_LABEL, 0), row(750, PA.STAGE1_LABEL, 2),
+             row(1000, None, 2, [PA.LETTER], 4)]
+    check("A3 summarize: a staged trace -> judge PASS", PA.judge(PA.summarize(trace)) == [], str(PA.summarize(trace)))
+    for name, tr in (("trace_skips_shape", [trace[0], trace[1], trace[4]]),
+                     ("trace_letter_with_shape", [trace[0], row(500, PA.STAGE1_LABEL, 2, [PA.LETTER]), trace[4]]),
+                     ("trace_no_scavengers", [trace[0], row(500, PA.STAGE1_LABEL), row(1000, None, 0, [PA.LETTER], 4)]),
+                     ("trace_never_exposed", trace[:4])):
+        check("mutant ablation_%-22s -> A3 FAILs" % name, PA.judge(PA.summarize(tr)) != [], str(PA.summarize(tr)))
+
+    # --- vhaulk departure: the live proof's verdict tells a walk-off from a death or a silent exit
+    alive = {"ticks": 0, "state": "alive", "letter": False}
+    check("A5 judge: alive, then gone with the letter -> PASS",
+          PV.judge([alive, {"ticks": 27000, "state": "gone", "letter": True}])[0] == 0)
+    for name, last in (("vhaulk_dies", {"ticks": 9000, "state": "dead", "letter": False}),
+                       ("silent_departure", {"ticks": 27000, "state": "gone", "letter": False}),
+                       ("never_departs", {"ticks": 42000, "state": "alive", "letter": False}),
+                       ("letter_while_present", {"ticks": 42000, "state": "alive", "letter": True})):
+        check("mutant %-22s -> A5 judge FAILs" % name, PV.judge([alive, last])[0] == 1, str(last))
 
     # --- carbon garden: the live proof's verdict can fail on each defect
     closed, opened = ["Growth: 100%"], ["Growth: 100%", "Open: " + PC.OPEN_WORD + "."]
