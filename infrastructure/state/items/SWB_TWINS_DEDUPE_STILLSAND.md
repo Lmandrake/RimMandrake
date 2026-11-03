@@ -11,5 +11,5 @@ The RSW_Vozzik tier move belongs to `VOLTMAW_TIER_MIGRATE_SPARKS_INCLUDED`: a ne
 - donor_name_map now maps AA_SandLion to RM_Vekka.
 - Proof: `src/RimStarWars/SWBestiary/selftest_swb_twins_dedupe.py` (needs RM_DATA_ROOT). It asserts RSW_SandLion is defined nowhere, is aliased, and appears in no element or xpath outside the alias file. It also guards that RSW_Vozzik is still defined.
 
-## contract defect
-The gen-1 contract text says RSW_Vozzik is "defined nowhere, aliased to RM_Vozzik". That contradicts the ruling above. A redesign attempt must reissue the contract with SandLion-only wording. The proof command itself is right.
+## contract (reissued gen 7)
+The contract was reissued with SandLion-only wording and the same proof command, run with `RM_DATA_ROOT` set. The ledger title still names RSW_Vozzik and InnateAbility because rimflow has no retitle verb: a title is set only when the item is filed. Read the title through the scope above. The work is in 8fc80dc7dc.
