@@ -79,6 +79,8 @@ POOL_IGNORED_MAX = 2 * 10**9
 LEDGER_DIR = "infrastructure/state/ledger/events/"
 ITEMS_DIR = "infrastructure/state/items/"
 BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
+# a live site build run from the books clone rewrites its registry there; the save is on disk, the file is a run artefact
+BOOKS_RUN_ARTEFACTS = ("src/RimMandrake/Utils/modcheck/test_site_saves.json",)
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged")     # one road: strengthen the proof, never redesign the code
 PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
@@ -922,7 +924,7 @@ class Effects(relentless_game.GameFx):
         shuffled = self.shuffled_shards(rows)
         if shuffled:
             self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
-        alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED) and p not in shuffled]
+        alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED) and p not in shuffled and p not in BOOKS_RUN_ARTEFACTS]
         if alien:
             return "books %s behind: dirty outside the ledger: %s" % (behind, ", ".join(alien[:5]))
         changed = self.git_ok(self.books, "diff", "--name-only", "origin/main...HEAD").split()
