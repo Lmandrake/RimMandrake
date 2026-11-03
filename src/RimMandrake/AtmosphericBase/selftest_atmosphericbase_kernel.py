@@ -20,6 +20,13 @@ DOTNET = ("/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotn
 
 
 def main():
+    # The compositor is not compiled into the C# selftest (it needs a live Map): its ember clock/position wiring and
+    # hitch counter are checked at source level first (spec §2.6a).
+    w = subprocess.run([sys.executable, os.path.join(HERE, "selftest_atmosphericbase_wiring.py")], capture_output=True, text=True)
+    sys.stdout.write(w.stdout)
+    if w.returncode != 0:
+        sys.stderr.write(w.stderr)
+        return 1
     dotnet = next((c for c in DOTNET if os.path.exists(c)), None)
     if dotnet is None:
         print("UNMEASURED: dotnet.exe not found; the C# kernel selftest needs the Windows-side .NET SDK")
