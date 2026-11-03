@@ -18,6 +18,11 @@ file can prove without the game, each as one numbered check:
      for the UtinniPatches DLL: meaningful only on a committed tree, which is where the blind checker runs it.
   8. The canonical world save holds no Horrors faction at all (so no settlement of one); positive control: it does hold
      Insect and Mechanoid, so the reader can see factions.
+  9. The sinkhole is the dungeon door into the cave network: RUT_HorrorSinkhole is a MapPortal whose pocketMapGenerator
+     RUT_HorrorTunnels is an underground Core cave map (biome Underground, UndergroundCave mutator, every genStep resolves,
+     PlaceCaveExit before the nests, Fog), colder than every crysalis's thaw line; its nest GenStep holds hives,
+     crysalises and larders and no further sinkhole, and is gated on the pocket map's SOURCE map being in reach; the
+     first lair on a surface map always tries for a door; the live probe RUT_HorrorSinkholeProbe.Descend exists.
 Exit 0 = all pass. Offline, no game."""
 import os
 import re
@@ -109,7 +114,10 @@ def body(sig):
 gates = {
     "CanFireNowSub": "MapInReach(" in body("protected override bool CanFireNowSub"),
     "TryExecuteWorker": "MapInReach(" in body("protected override bool TryExecuteWorker"),
-    "GenStep.Generate": "MapInReach(" in body("public override void Generate"),
+    "GenStep.Generate": "if (!InReach(map)) return;" in body("public override void Generate"),
+    "lair InReach=MapInReach": "RUT_HorrorFaction.MapInReach(map," in body("protected virtual bool InReach"),
+    "tunnel InReach=source map in reach": "map?.Parent is PocketMapParent pocket && RUT_HorrorFaction.MapInReach(pocket.sourceMap,"
+                                          in body("protected override bool InReach"),
     "MapInReach=nightside band": "WeatherGeometryUtility.MapInNightsideBand(map)" in body("public static bool MapInReach"),
     "InReach=enabled&&nightside": "return enabled && nightside;" in body("public static bool InReach"),
 }
@@ -166,6 +174,53 @@ i, j = b.find(b"<factionManager>"), b.find(b"</factionManager>")
 fdefs = [li.findtext("def") for li in ET.fromstring(b[i:j + len(b"</factionManager>")]).find("allFactions")] if i >= 0 < j else []
 check(8, {"Insect", "Mechanoid"} <= set(fdefs) and not {"RUT_Horrors", "Horrors"} & set(fdefs),
       "canonical save: %d factions read (control Insect+Mechanoid present), no Horrors faction, so 0 Horror settlements" % len(fdefs))
+
+# 9 the sinkhole door into the tunnels
+core_defs = {}
+core = os.path.join(VANILLA_DATA, "Core", "Defs")
+if os.path.isdir(core):
+    for r_, _, fs in os.walk(core):
+        for fn in fs:
+            if fn.endswith(".xml"):
+                try:
+                    for d in ET.parse(os.path.join(r_, fn)).getroot():
+                        if d.findtext("defName"):
+                            core_defs.setdefault(d.tag, set()).add(d.findtext("defName"))
+                except ET.ParseError:
+                    pass
+ours = {}
+for d in defs:
+    if d.findtext("defName"):
+        ours.setdefault(d.tag, {})[d.findtext("defName")] = d
+hole = ours.get("ThingDef", {}).get("RUT_HorrorSinkhole", ET.Element("x"))
+gen = ours.get("MapGeneratorDef", {}).get(hole.findtext("portal/pocketMapGenerator") or "", ET.Element("x"))
+nests = ours.get("GenStepDef", {}).get("RUT_HorrorTunnelNests", ET.Element("x"))
+steps = [li.text for li in gen.findall("genSteps/li")]
+gsdefs = core_defs.get("GenStepDef", set()) | set(ours.get("GenStepDef", {}))
+thaw = [float(c.findtext("comps/li/thawTemperature") or 0) for c in defs.iter("ThingDef") if c.find("comps/li/pawnKind") is not None]
+ng = nests.find("genStep") if nests.find("genStep") is not None else ET.Element("x")
+door = {
+    "sinkhole thingClass MapPortal": hole.findtext("thingClass") == "MapPortal",
+    "generator RUT_HorrorTunnels": hole.findtext("portal/pocketMapGenerator") == "RUT_HorrorTunnels" and gen.findtext("defName") == "RUT_HorrorTunnels",
+    "exitDef CaveExit in Core": hole.findtext("portal/exitDef") == "CaveExit" and "CaveExit" in core_defs.get("ThingDef", set()),
+    "portal ITab": "ITab_ContentsMapPortal" in [li.text for li in hole.findall("inspectorTabs/li")],
+    "isUnderground": gen.findtext("isUnderground") == "true",
+    "biome Underground in Core": gen.findtext("pocketMapProperties/biome") == "Underground" and "Underground" in core_defs.get("BiomeDef", set()),
+    "UndergroundCave mutator": [li.text for li in gen.findall("pocketMapProperties/tileMutators/li")] == ["UndergroundCave"]
+                              and "UndergroundCave" in core_defs.get("TileMutatorDef", set()),
+    "every genStep resolves": bool(steps) and all(x in gsdefs for x in steps),
+    "PlaceCaveExit, nests, Fog": all(x in steps for x in ("PlaceCaveExit", "RUT_HorrorTunnelNests", "Fog")),
+    "nests after the exit (order > 400)": float(nests.findtext("order") or 0) > 400,
+    "colder than every thaw line": bool(thaw) and float(gen.findtext("pocketMapProperties/temperature") or 99) < min(thaw),
+    "nest class": ng.get("Class") == "RimMandrake.Utinni.UtinniPatches.RUT_GenStep_HorrorTunnelNests"
+                  and "public class RUT_GenStep_HorrorTunnelNests : RUT_GenStep_NightHorrorLairs" in cs,
+    "nests hold hive, crysalises, larder, no sinkhole": bool(ng.findtext("hive")) and bool(ng.findtext("larder"))
+                  and len(ng.findall("crysalises/li")) > 0 and ng.find("sinkhole") is None,
+    "first lair tries for a door": "(!doorPlaced || Rand.Chance(0.5f))" in body("private bool BuildLair") and "doorPlaced = false;" in body("public override void Generate"),
+    "probe Descend": "public static string Descend(string arg)" in cs and "portal.GetOtherMap()" in body("public static string Descend"),
+}
+check(9, len(core_defs.get("GenStepDef", ())) > 20 and all(door.values()),
+      "sinkhole is a working door to RUT_HorrorTunnels (%d genSteps): %s" % (len(steps), {k: v for k, v in door.items() if not v}))
 
 print("RESULT", "PASS" if not fails else "FAIL %s" % sorted(set(fails)))
 sys.exit(1 if fails else 0)

@@ -8,8 +8,11 @@ Runs under WINDOWS python: RimBridge binds Windows loopback. Needs a loaded game
 the terminator (the Ash'karr world does; a low-coverage quicktest world may not, and then the clause FAILS, saying so).
 
   A2  on a freshly generated NIGHTSIDE player map (tile arc from the substellar point > nightsideBandMinArc + 5):
-      at least one RUT_HorrorHive lair is on the map (the self-gating GenStep ran), and RUT_HorrorRaid, forced, fires
-      and leaves pawns of the RUT_Horrors faction on the map.
+      at least one RUT_HorrorHive lair is on the map (the self-gating GenStep ran); the lair's RUT_HorrorSinkhole is a
+      working door: RUT_HorrorSinkholeProbe.Descend (jawa/static_call) goes down it the player's way and the pocket map
+      it opens is RUT_HorrorTunnels holding at least one hive, crysalis and mite larder and exactly one CaveExit (the
+      probe then destroys that pocket map); and RUT_HorrorRaid, forced, fires and leaves pawns of the RUT_Horrors
+      faction on the map.
   A3  on a freshly generated DAYSIDE player map (arc < terminatorBandMinArc - 5): no lair structure or crysalis of
       ours is on the map, and RUT_HorrorRaid, forced, reports canFireNow=false (dry run, nothing fires).
 
@@ -128,13 +131,20 @@ def run(clause):
         lair = count(g, LAIR)
         hives = [t for t in lair if t.get("def") == "RUT_HorrorHive"]
         if night:
+            r = g.call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_HorrorSinkholeProbe", method="Descend", args="go")
+            below = str((r or {}).get("result", "")) or "no result: %r" % (r,)
+            kv = dict(x.split("=", 1) for x in below.split()[1:] if "=" in x)
+            num = lambda k: int(kv.get(k, "-1")) if kv.get(k, "").lstrip("-").isdigit() else -1
+            door = (below.startswith("descended ") and kv.get("pocket") == "True" and kv.get("generator") == "RUT_HorrorTunnels"
+                    and num("hives") >= 1 and num("crysalises") >= 1 and num("larders") >= 1 and num("exits") == 1)
+            print("sinkhole descent: %s -> %s" % (below, "door works" if door else "DOOR BROKEN"))
             fire = g.call("jawa/fire_incident", incidentDef="RUT_HorrorRaid", forced=True)
             time.sleep(1)
             facs = g.call("jawa/list_factions", includeHidden=True, defName="RUT_Horrors")
             forms = [t for t in count(g, FORMS, pawns=True) if "Horror" in str(t.get("faction", "")) or "Assailant" in str(t.get("faction", ""))]
             print("lair things %d (hives %d); raid fired=%s canFireNow=%s blockedByDialog=%s; faction rows %s; Horror-faction forms on map %d"
                   % (len(lair), len(hives), fire.get("fired"), fire.get("canFireNow"), fire.get("blockedByDialog"), str(facs)[:200], len(forms)))
-            ok = len(hives) >= 1 and fire.get("canFireNow") is True and fire.get("success") is True and len(forms) >= 1
+            ok = door and len(hives) >= 1 and fire.get("canFireNow") is True and fire.get("success") is True and len(forms) >= 1
         else:
             dry = g.call("jawa/fire_incident", incidentDef="RUT_HorrorRaid", forced=True, dryRun=True)
             print("lair things %d; dry-run canFireNow=%s" % (len(lair), dry.get("canFireNow")))

@@ -18,7 +18,11 @@
     steps out joins the Horrors and attacks.
   Forms: RM_Visceral (RM_Visceral.xml) and RUT_HorrorBulwark/Harvester/Prowler/BroodLord (RUT_NightHorrors_Races.xml).
   Art: donor bundle textures, stand-in (Textures/RimUtinni/UtinniPatches/NightHorrors/).
-  Not built here: the sinkhole as a working door into a cave pocket map (filed as its own item, see the item's notes).
+  - The sinkhole is the dungeon door into the cave network: a MapPortal whose pocket map, MapGeneratorDef RUT_HorrorTunnels
+    (vanilla Core cave pocket-map shape, as the Sarlacc cavity and the Lantern Deeps), is frozen tunnels holding nest
+    chambers of hives, dormant crysalises and mite larders (GenStepDef RUT_HorrorTunnelNests). The first lair on a map
+    always has one, so every nightside lair map has its door; you leave by the vanilla CaveExit. The tunnels' GenStep is
+    gated on the SOURCE map being in reach, so the cave content exists only below a nightside lair.
 -->
 <Defs>
 
@@ -201,19 +205,95 @@
     </statBases>
   </ThingDef>
 
+  <!-- The dungeon door: a MapPortal (the RM_LanternDeepMineshaft / RUT_FoundryTowerEntrance shape). Entering it makes the
+       RUT_HorrorTunnels pocket map on first use; the way back is the vanilla CaveExit. -->
   <ThingDef ParentName="RUT_HorrorLairBase">
     <defName>RUT_HorrorSinkhole</defName>
     <label>horror sinkhole</label>
-    <description>The ground has given way into the cave dark beneath the ice. The weapon's forms come and go by it; no rope you carry reaches the bottom.</description>
+    <description>The ground has given way into the cave dark beneath the ice. The weapon's forms come and go by it, down into frozen tunnels where it keeps its nests, its sleepers and its larders. A colonist can climb down; the way back up is the only one.</description>
+    <thingClass>MapPortal</thingClass>
     <size>(3,3)</size>
     <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <fillPercent>0</fillPercent>
+    <holdsRoof>true</holdsRoof>
     <graphicData>
       <texPath>RimUtinni/UtinniPatches/NightHorrors/Hive/HorrorSinkhole</texPath>
       <drawSize>(3.4,3.4)</drawSize>
     </graphicData>
+    <building>
+      <isEdifice>true</isEdifice>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>RUT_HorrorTunnels</pocketMapGenerator>
+      <exitDef>CaveExit</exitDef>
+      <pocketMapSize>60</pocketMapSize>
+    </portal>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
   </ThingDef>
+
+  <!-- ===== the cave network below the sinkhole ===== -->
+
+  <!-- Core-only cave pocket map (RSW_SarlaccCavity / RM_LanternDeepGenerator shape): biome Underground, the
+       UndergroundCave mutator digs the tunnels (without it the map is solid rock, measured on the Deeps 2026-09-18).
+       -18 C: the cold that keeps the crysalises asleep (they wake above 0 C). -->
+  <MapGeneratorDef>
+    <defName>RUT_HorrorTunnels</defName>
+    <label>horror tunnels</label>
+    <isUnderground>true</isUnderground>
+    <forceCaves>true</forceCaves>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableCallAid>true</disableCallAid>
+    <pocketMapProperties>
+      <biome>Underground</biome>
+      <temperature>-18</temperature>
+      <tileMutators>
+        <li>UndergroundCave</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>MutatorPostElevationFertility</li>
+      <li>Underground_RocksFromGrid</li>
+      <li>Terrain</li>
+      <li>MutatorPostTerrain</li>
+      <li>RockChunks</li>
+      <li>PlaceCaveExit</li>
+      <li>RUT_HorrorTunnelNests</li>
+      <li>MutatorFinal</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <!-- Order 800: after PlaceCaveExit (400) so a nest is never laid on the way out. Gated on the pocket map's SOURCE map
+       being in reach (RUT_GenStep_HorrorTunnelNests); on any other map it places nothing. -->
+  <GenStepDef>
+    <defName>RUT_HorrorTunnelNests</defName>
+    <order>800</order>
+    <genStep Class="RimMandrake.Utinni.UtinniPatches.RUT_GenStep_HorrorTunnelNests">
+      <lairCountRange>2~4</lairCountRange>
+      <minDistFromStart>12</minDistFromStart>
+      <minDistBetweenLairs>14</minDistBetweenLairs>
+      <edgeMargin>4</edgeMargin>
+      <lairRadius>5</lairRadius>
+      <hive>RUT_HorrorHive</hive>
+      <den>RUT_HorrorDen</den>
+      <larder>RUT_HorrorMiteLarder</larder>
+      <crysalises>
+        <li>RUT_HorrorCrysalis_Visceral</li>
+        <li>RUT_HorrorCrysalis_Visceral</li>
+        <li>RUT_HorrorCrysalis_Prowler</li>
+        <li>RUT_HorrorCrysalis_Harvester</li>
+        <li>RUT_HorrorCrysalis_Bulwark</li>
+      </crysalises>
+    </genStep>
+  </GenStepDef>
 
   <ThingDef ParentName="RUT_HorrorLairBase">
     <defName>RUT_HorrorMiteLarder</defName>

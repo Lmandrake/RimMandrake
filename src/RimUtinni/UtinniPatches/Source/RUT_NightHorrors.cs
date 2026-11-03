@@ -110,9 +110,18 @@ namespace RimMandrake.Utinni.UtinniPatches
 
         public override int SeedPart => 418806271;
 
+        /// <summary>This map gets lairs: a surface map whose own tile is in the reach.</summary>
+        protected virtual bool InReach(Map map) { return RUT_HorrorFaction.MapInReach(map, UtinniPatchesSettings.nightHorrorLairsEnabled); }
+
+        /// <summary>Lair cells may be under a roof (true only in the tunnels below a sinkhole, which are all roofed).</summary>
+        protected virtual bool AllowRoofed => false;
+
+        private bool doorPlaced;
+
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!RUT_HorrorFaction.MapInReach(map, UtinniPatchesSettings.nightHorrorLairsEnabled)) return;
+            if (!InReach(map)) return;
+            doorPlaced = false;
             int want = lairCountRange.RandomInRange, placed = 0;
             var centers = new List<IntVec3>();
             IntVec3 start = MapGenerator.PlayerStartSpotValid ? MapGenerator.PlayerStartSpot : map.Center;
@@ -122,7 +131,7 @@ namespace RimMandrake.Utinni.UtinniPatches
                 centers.Add(center);
                 if (BuildLair(center, map)) placed++;
             }
-            if (placed == 0) Log.Warning("[RUT_GenStep_NightHorrorLairs] nightside map " + map + ": no lair placed (no open ground away from the start?).");
+            if (placed == 0) Log.Warning("[" + GetType().Name + "] map " + map + " in reach: no lair placed (no open ground away from the start?).");
         }
 
         private bool CenterOk(IntVec3 c, Map map, IntVec3 start, List<IntVec3> centers)
@@ -133,9 +142,9 @@ namespace RimMandrake.Utinni.UtinniPatches
             return true;
         }
 
-        private static bool Open(IntVec3 c, Map map)
+        private bool Open(IntVec3 c, Map map)
         {
-            if (!c.InBounds(map) || !c.Standable(map) || c.Roofed(map)) return false;
+            if (!c.InBounds(map) || !c.Standable(map) || (c.Roofed(map) && !AllowRoofed)) return false;
             TerrainDef t = c.GetTerrain(map);
             return t != null && !t.IsWater && t.passability != Traversability.Impassable;
         }
@@ -145,7 +154,8 @@ namespace RimMandrake.Utinni.UtinniPatches
             if (!TrySpawn(hive, center, map, 0)) return false;
             TrySpawn(den, center, map, lairRadius);
             for (int i = Rand.RangeInclusive(1, 3); i > 0; i--) TrySpawn(burrow, center, map, lairRadius);
-            if (Rand.Chance(0.5f)) TrySpawn(sinkhole, center, map, lairRadius);
+            // The first lair that has room for one always gets its door into the tunnels; later lairs half the time.
+            if (sinkhole != null && (!doorPlaced || Rand.Chance(0.5f)) && TrySpawn(sinkhole, center, map, lairRadius)) doorPlaced = true;
             TrySpawn(larder, center, map, lairRadius);
             if (!crysalises.NullOrEmpty())
                 for (int i = Rand.RangeInclusive(2, 5); i > 0; i--) TrySpawn(crysalises.RandomElement(), center, map, lairRadius);
@@ -169,6 +179,51 @@ namespace RimMandrake.Utinni.UtinniPatches
                 return true;
             }
             return false;
+        }
+    }
+
+    /// <summary>The nests in the frozen tunnels below a horror sinkhole (MapGeneratorDef RUT_HorrorTunnels): the same lair
+    /// builder, under the roof, with no sinkhole of its own. In reach only when this is a pocket map whose SOURCE map is in
+    /// the nightside band, so the cave content exists only below a nightside lair (the pocket map's own tile is invalid).
+    /// PlaceCaveExit (order 400) sets MapGenerator.PlayerStartSpot to the exit, which keeps nests off the way out.</summary>
+    public class RUT_GenStep_HorrorTunnelNests : RUT_GenStep_NightHorrorLairs
+    {
+        public override int SeedPart => 731150923;
+
+        protected override bool AllowRoofed => true;
+
+        protected override bool InReach(Map map)
+        {
+            return map?.Parent is PocketMapParent pocket && RUT_HorrorFaction.MapInReach(pocket.sourceMap, UtinniPatchesSettings.nightHorrorLairsEnabled);
+        }
+    }
+
+    /// <summary>Live-proof probe (jawa/static_call, prove_night_horrors_live.py A2): goes down the first horror sinkhole on the
+    /// current map the player's way (MapPortal.GetOtherMap makes the pocket map on first use), counts what the tunnels
+    /// hold, and destroys the pocket map again unless arg contains "keep". Changes nothing on the surface map.</summary>
+    public static class RUT_HorrorSinkholeProbe
+    {
+        public static string Descend(string arg)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "no map";
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_HorrorSinkhole");
+            if (def == null) return "no def RUT_HorrorSinkhole";
+            List<Thing> holes = map.listerThings.ThingsOfDef(def);
+            if (holes.Count == 0) return "no sinkhole on map " + map.uniqueID;
+            MapPortal portal = holes[0] as MapPortal;
+            if (portal == null) return "sinkhole is not a MapPortal (thingClass " + def.thingClass + ")";
+            Map below = portal.GetOtherMap();
+            if (below == null || below == map) return "sinkhole at " + portal.Position + " opened no pocket map";
+            int crysalises = below.listerThings.AllThings.Count(t => t.TryGetComp<RUT_CompHorrorCrysalis>() != null);
+            int larders = below.listerThings.AllThings.Count(t => t.def.defName == "RUT_HorrorMiteLarder");
+            int hives = below.listerThings.AllThings.Count(t => t.def.defName == "RUT_HorrorHive");
+            int exits = below.listerThings.ThingsOfDef(ThingDefOf.CaveExit).Count;
+            string result = "descended sinkholes=" + holes.Count + " pocket=" + below.IsPocketMap + " generator=" + (below.Parent as PocketMapParent)?.mapGenerator?.defName
+                + " biome=" + below.Biome?.defName + " temp=" + below.mapTemperature.OutdoorTemp.ToString("F0")
+                + " hives=" + hives + " crysalises=" + crysalises + " larders=" + larders + " exits=" + exits;
+            if (arg == null || !arg.Contains("keep")) PocketMapUtility.DestroyPocketMap(below);
+            return result;
         }
     }
 
