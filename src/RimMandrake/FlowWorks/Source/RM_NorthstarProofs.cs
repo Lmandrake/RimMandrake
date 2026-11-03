@@ -727,7 +727,8 @@ namespace RimMandrake.FlowWorks
 		/// 2026-10-06: destroy_batch + Soil paint left a previous run's 3x3 pit under pit_fill_effects' 1x1 poison pit,
 		/// the pirate stood on a dry cell, "got {}"; wall_faces read 76 -> 76 verts on cells already cut). The rect's dig-find
 		/// rolled depths are forgotten too (DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS: they are saved and only grow, so a
-		/// re-dug cell found nothing). "RESET cells=n levels=n rolled=n left=n".</summary>
+		/// re-dug cell found nothing). Every body's claim on the rect is released last (PLOT_D_BODY_PRUNE_STALE_SEA).
+		/// "RESET cells=n levels=n rolled=n released=n bodies=n left=n".</summary>
 		public static string ProofResetRect(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -743,7 +744,7 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: no excavation engine on the current map";
 			}
 			CellRect r = new CellRect(x, z, w, h).ClipInsideMap(map);
-			int cells = 0, levels = 0, left = 0;
+			int cells = 0, levels = 0, left = 0, dropped = 0;
 			// ExcavatedDepthAt, not DepthAt: DepthAt reads a natural liquid cell as SUPERDEEP, and FillIn cannot raise it
 			// (the plot's Soil repaint removes it). MEASURED 2026-10-06: plot F "cells=1 levels=8 left=1".
 			foreach (IntVec3 c in r)
@@ -765,7 +766,11 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			int rolled = eng.DigDiscovery?.ResetRolled(map, r) ?? 0;
-			return "RESET cells=" + cells + " levels=" + levels + " rolled=" + rolled + " left=" + left;
+			// PLOT_D_BODY_PRUNE_STALE_SEA: AFTER the fill-in (FillIn reattaches a dug bed square to its pond), release every
+			// body's claim on the rect, so the next chain's pond here forms its own body instead of joining a far one.
+			int released = eng.Stock?.ReleaseRect(map, r, eng, out dropped) ?? 0;
+			return "RESET cells=" + cells + " levels=" + levels + " rolled=" + rolled + " released=" + released
+				+ " bodies=" + dropped + " left=" + left;
 		}
 
 		/// <summary>The hose reel whose footprint holds <paramref name="c"/>, or null.</summary>

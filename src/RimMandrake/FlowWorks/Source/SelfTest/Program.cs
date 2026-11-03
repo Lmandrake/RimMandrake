@@ -2220,6 +2220,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             ShovelChecks.Run(Case);            // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: who needs one, raid shares (siege none, sappers more), wiring (ShovelChecks.cs)
             LadderParityChecks.Run(Case);      // LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: no keys, carried/taken ladders, slow fill + repair, ladder over a wall (LadderParityChecks.cs)
             FwFix2Checks.Run(Case);            // FlowWorks C# fix batch 2 (review debt 2026-10-26): pipe arm redraw, river probe leaks, ladder inspect, detached bed (FwFix2Checks.cs)
+            PlotDBodyPruneChecks.Run(Case);    // PLOT_D_BODY_PRUNE_STALE_SEA: the dev plot reset releases body claims (PlotDBodyPruneChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
             PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)

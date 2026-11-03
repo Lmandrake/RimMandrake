@@ -256,6 +256,7 @@
     <Compile Include="SettingsResetChecks.cs" />
     <Compile Include="ReviewBatch56Checks.cs" />
     <Compile Include="FwFix2Checks.cs" />
+    <Compile Include="PlotDBodyPruneChecks.cs" />
     <Compile Include="ReviewFixBatch01Checks.cs" />
     <Compile Include="LevelSetChecks.cs" />
     <Compile Include="RulingsWetDoorWakeBottleChecks.cs" />

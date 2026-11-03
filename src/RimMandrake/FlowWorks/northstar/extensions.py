@@ -585,10 +585,11 @@ def _limitless_source(t, key, w=10, h=6, terrain="WaterDeep"):
 
 
 def _limited_pond(t, key, size=5, terrain="WaterShallow", dz=4):
-    """A size x size pond at (x0+3, z0+dz). A pond's body stays classified for the life of the map (ruling 16; the
-    plot reset resets excavation, not bodies), so two chains that pond the SAME cells share one body: give each
-    pond its own rows (`dz`) WITH A DRY ROW BETWEEN PONDS -- classification joins any 8-adjacent cell of an earlier
-    body, even one repainted Soil -- and gate on `_expect_fresh_pond`."""
+    """A size x size pond at (x0+3, z0+dz). A pond's body stays classified for the life of the map (ruling 16), and
+    classification joins any 8-adjacent cell of an earlier body, even one repainted Soil. `_prep_plot`'s reset
+    (ProofResetRect) releases every body's claim on the plot + buffer (PLOT_D_BODY_PRUNE_STALE_SEA), but two ponds
+    WITHIN one chain share a reset: give each its own rows (`dz`) WITH A DRY ROW BETWEEN PONDS, and gate on
+    `_expect_fresh_pond`."""
     x0, z0 = _plot(t, key)
     px, pz = x0 + 3, z0 + dz
     _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(px, pz, size, size)))

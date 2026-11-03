@@ -458,6 +458,54 @@ namespace RimMandrake.FlowWorks
 			return excess;
 		}
 
+		/// <summary>Dev fixture surface (RM_NorthstarProofs.ProofResetRect; PLOT_D_BODY_PRUNE_STALE_SEA): every body gives up
+		/// its squares inside <paramref name="r"/> (footprint, receded list and index), a limited one losing their bed share of
+		/// capacity as <see cref="DetachBedCell"/> does, and a body left with no square is dropped. The plot reset repaints
+		/// Soil and fills dug cells back in (which REATTACHES them to their pond), so without this a cleared plot kept an
+		/// earlier body's claims and the next chain's pond joined it (RM_FlowKernel.ReleaseClaimsInRect). Never called in
+		/// play: ruling 16 keeps a classified cell its body's. Returns the squares released; <paramref name="dropped"/> the
+		/// bodies removed.</summary>
+		public int ReleaseRect(Map map, CellRect r, RM_MapComponent_Excavation owner, out int dropped)
+		{
+			dropped = 0;
+			if (RM_StockMath.NeedsIndexRebuild(indexDirty, bodies.Count, cellToBody.Count))
+			{
+				RebuildIndex(map);
+			}
+			int released = 0;
+			for (int b = bodies.Count - 1; b >= 0; b--)
+			{
+				RM_LiquidBody body = bodies[b];
+				int before = body.cells.Count;
+				float unit = body.limitless ? 0f : LevelUnitOf(body, owner);
+				body.cells.RemoveAll(c => r.Contains(c));
+				if (body.cells.Count == before)
+				{
+					continue;
+				}
+				body.receded.RemoveAll(c => r.Contains(c));
+				released += before - body.cells.Count;
+				if (body.cells.Count == 0)
+				{
+					bodies.RemoveAt(b);
+					byId.Remove(body.id);
+					dropped++;
+					continue;
+				}
+				if (!body.limitless)
+				{
+					body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));
+					if (body.stock > body.capacity)
+					{
+						body.AddStock(body.capacity - body.stock);
+					}
+				}
+			}
+			// The index too: a truncated body's far squares can be indexed without being in its footprint list.
+			RM_FlowKernel.ReleaseClaimsInRect(cellToBody, map.Size.x, map.Size.z, r.minX, r.minZ, r.Width, r.Height);
+			return released;
+		}
+
 		/// <summary>Ruling 6's other half: filling a dug bed square back in to the surface returns it to its pond, dry
 		/// (receded, refillable by any inflow), with its capacity share back. Never writes water: the stock that would
 		/// fill it has not been paid (the G5 bug this replaces).</summary>

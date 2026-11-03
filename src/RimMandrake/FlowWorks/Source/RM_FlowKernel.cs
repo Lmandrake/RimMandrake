@@ -2729,5 +2729,29 @@ namespace RimMandrake.FlowWorks
 			}
 			return -1;
 		}
+
+		/// <summary>PLOT_D_BODY_PRUNE_STALE_SEA: forget every claim <paramref name="cellToBody"/> holds on the cells of the
+		/// rect (<paramref name="x"/>, <paramref name="z"/>, <paramref name="w"/> x <paramref name="h"/>, clipped to the
+		/// width x height map). <see cref="CollectBody"/> joins ANY claimed 8-neighbour, a repainted Soil cell included, so
+		/// a claim left on cleared ground makes the next pond painted beside it that far body (live 2026-10-24: a fresh 5x5
+		/// pond on plot D read back as limitless body 9, 17,434 cells, with no water near it). A dev fixture reset calls
+		/// this; play never does (ruling 16 keeps a classified cell its body's). Returns the claims dropped.</summary>
+		public static int ReleaseClaimsInRect(Dictionary<int, int> cellToBody, int width, int height, int x, int z, int w, int h)
+		{
+			int x0 = Math.Max(0, x), z0 = Math.Max(0, z);
+			int x1 = Math.Min(width, x + w), z1 = Math.Min(height, z + h);
+			int released = 0;
+			for (int cz = z0; cz < z1; cz++)
+			{
+				for (int cx = x0; cx < x1; cx++)
+				{
+					if (cellToBody.Remove(cz * width + cx))
+					{
+						released++;
+					}
+				}
+			}
+			return released;
+		}
 	}
 }
