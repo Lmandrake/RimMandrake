@@ -23,6 +23,8 @@ file can prove without the game, each as one numbered check:
      PlaceCaveExit before the nests, Fog), colder than every crysalis's thaw line; its nest GenStep holds hives,
      crysalises and larders and no further sinkhole, and is gated on the pocket map's SOURCE map being in reach; the
      first lair on a surface map always tries for a door; the live probe RUT_HorrorSinkholeProbe.Descend exists.
+ 10. No load-time Config error the 2026-11-03 live A1 read (Player.log lines 250/257/258): no PawnKindDef of ours sets
+     weaponMoney without weaponTags, and no ThingDef of ours with useHitPoints false is flammable (Flammability > 0).
 Exit 0 = all pass. Offline, no game."""
 import os
 import re
@@ -221,6 +223,26 @@ door = {
 }
 check(9, len(core_defs.get("GenStepDef", ())) > 20 and all(door.values()),
       "sinkhole is a working door to RUT_HorrorTunnels (%d genSteps): %s" % (len(steps), {k: v for k, v in door.items() if not v}))
+
+# 10 load-time Config errors the engine logs (seen live 2026-11-03)
+allk = [k for p in (RACES, VISCERAL) for k in ET.parse(p).getroot().iter("PawnKindDef")]
+money = [k.findtext("defName") for k in allk if k.find("weaponMoney") is not None and k.find("weaponTags") is None]
+check(10, bool(allk) and not money, "%d pawnkinds, none with weaponMoney but no weaponTags (offenders %s)" % (len(allk), money))
+abstract = {d.get("Name"): d for d in defs.iter("ThingDef") if d.get("Name")}
+
+
+def flam(d):
+    while d is not None:
+        v = d.findtext("statBases/Flammability")
+        if v is not None:
+            return float(v)
+        d = abstract.get(d.get("ParentName"))
+    return None
+
+
+nohp = [d for d in defs.iter("ThingDef") if d.findtext("useHitPoints") == "false"]
+burn = [d.findtext("defName") for d in nohp if flam(d) != 0]
+check(10, bool(nohp) and not burn, "%d hit-point-less things, none flammable (offenders %s)" % (len(nohp), burn))
 
 print("RESULT", "PASS" if not fails else "FAIL %s" % sorted(set(fails)))
 sys.exit(1 if fails else 0)

@@ -680,10 +680,6 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-    <weaponMoney>
-      <min>5000</min>
-      <max>5000</max>
-    </weaponMoney>
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_HorrorProwler</defName>

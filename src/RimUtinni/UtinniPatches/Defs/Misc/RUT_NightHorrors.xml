@@ -215,6 +215,10 @@
     <size>(3,3)</size>
     <useHitPoints>false</useHitPoints>
     <destroyable>false</destroyable>
+    <!-- no hit points, so it must not burn: Flammability 0 (the load reported "flammable but has no hitpoints") -->
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <fillPercent>0</fillPercent>
     <holdsRoof>true</holdsRoof>
