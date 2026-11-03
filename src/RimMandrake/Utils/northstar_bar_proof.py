@@ -18,14 +18,16 @@ one is absent. That proves the bar ids are real, offline, so a live line can nev
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
 NORTHSTAR = os.path.join(HERE, "northstar_driver", "cli.py")
-SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/scratch/northstar_bar_proof"
+sys.path.insert(0, HERE)
 TIMEOUT = 520
 
 
@@ -70,21 +72,31 @@ def main(argv=None):
     if bad_chain:
         print("bar(s) outside --chains, they could never run: %s" % bad_chain)
         return 2
-    os.makedirs(SCRATCH, exist_ok=True)
+    if a.mock:   # offline: a private temp dir, so the check needs no agent storage root (a blind box has none)
+        scratch = tempfile.mkdtemp(prefix="northstar_bar_proof_")
+    else:        # live: the driver runs under python.exe and writes on the Windows side, under the agent storage root
+        import rmpaths
+        scratch = rmpaths.rm_str("scratch", "northstar_bar_proof")
+        os.makedirs(scratch, exist_ok=True)
     # a name of this run alone: a stale or concurrent run's file can never pass for this one
-    out = os.path.join(SCRATCH, "%s_%d_%d.json" % (a.mod, os.getpid(), time.time_ns()))
+    out = os.path.join(scratch, "%s_%d_%d.json" % (a.mod, os.getpid(), time.time_ns()))
     if a.mock:
         argv_ = [sys.executable, NORTHSTAR, "run", "--mock", "--mock-skip-site", "--mod", a.mod, "--plan", plan,
                  "--chains", a.chains, "--out", out]
     else:
         argv_ = ["python.exe", win(NORTHSTAR), "run", "--mod", a.mod, "--plan", win(plan), "--chains", a.chains,
-                 "--out", win(SCRATCH) + "\\" + os.path.basename(out)]
+                 "--out", win(scratch) + "\\" + os.path.basename(out)]
     print("$ " + " ".join(argv_), flush=True)
-    rc = subprocess.run(argv_, stdin=subprocess.DEVNULL, timeout=TIMEOUT).returncode
-    if not os.path.exists(out):
-        print("FAIL: the driver wrote no %s (exit %d)" % (out, rc))
-        return 1
-    ok, lines = verdict(bar_rows(out), a.bar, a.mock)
+    try:
+        rc = subprocess.run(argv_, stdin=subprocess.DEVNULL, timeout=TIMEOUT).returncode
+        if not os.path.exists(out):
+            print("FAIL: the driver wrote no %s (exit %d)" % (out, rc))
+            return 1
+        rows = bar_rows(out)
+    finally:
+        if a.mock:
+            shutil.rmtree(scratch, ignore_errors=True)
+    ok, lines = verdict(rows, a.bar, a.mock)
     print("\n".join(lines))
     print("%s (%s, driver exit %d, %s)" % ("PASS" if ok else "FAIL", "mock: bars exist" if a.mock else "live", rc, out))
     return 0 if ok else 1

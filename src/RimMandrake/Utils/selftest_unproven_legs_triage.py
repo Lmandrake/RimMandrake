@@ -3,7 +3,10 @@
 
 A1: each of the four triaged items carries a ledger note from the triage giving every scoped leg a verdict from the
     triage's vocabulary and a NEXT.
-A2: every item named in a NEXT exists (a `file` event and its items/<ID>.md); the legs found bridge-measurable now are
+A2: every item named in a NEXT is re-filed on the ledger: a `file` event caused_by this item, with a title and a
+    `why` giving its triage class (needs a tool / a map / owner / half bridge-measurable). Read from the ledger only:
+    the blind checker's tree leaves infrastructure/state/items out (relentless_rules.json walls.marker.tree_exclude).
+    The legs found bridge-measurable now are
     bound to live proofs in infrastructure/state/live_proofs/UNPROVEN_LIVE_LEGS_TRIAGE_1.txt whose bars exist (each
     live-proof line rerun with --mock, which exits 0 only when every named bar is present in a mock suite run).
 Planted breaks (a note missing a leg, a verdict word, a NEXT; a NEXT naming an unfiled item) must redden, so a
@@ -27,6 +30,7 @@ SCOPE = {   # the item's spec: which owed legs of which item this triage covers
 }
 VERDICTS = ("BRIDGE-MEASURABLE NOW", "NEEDS A TOOL", "NEEDS A GENERATED MAP", "OWNER")
 LEG = re.compile(r"\bA(\d+)(?:-A(\d+))?\b")
+REFILE_WHY = re.compile(r"needs (?:a tool|a (?:generated )?map|(?:the )?owner)|owner[- ]eyes|bridge-measurable", re.I)
 NEXT_IDS = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
 
 
@@ -83,10 +87,13 @@ def check(evs, filed):
         text = notes[-1]
         bad += note_problems(item, legs, text)
         for nid in next_ids(text):
-            if nid not in filed:
+            f = filed.get(nid)
+            if f is None:
                 bad.append("%s: NEXT names %s, which has no file event" % (item, nid))
-            elif not os.path.exists(os.path.join(REPO, "infrastructure/state/items", nid + ".md")):
-                bad.append("%s: NEXT names %s, which has no items/%s.md" % (item, nid, nid))
+            elif f.get("caused_by") != ITEM or not (f.get("title") or "").strip():
+                bad.append("%s: NEXT names %s, not re-filed by this triage (caused_by/title)" % (item, nid))
+            elif not REFILE_WHY.search(f.get("why") or ""):
+                bad.append("%s: NEXT names %s, whose file event gives no triage class in why" % (item, nid))
     return bad
 
 
@@ -124,12 +131,19 @@ def planted(evs, filed):
             e["text"] = e["text"].replace("NEXT:", "NEXT: build NO_SUCH_ITEM_FILED_EVER, and")
     if not any("NO_SUCH_ITEM_FILED_EVER" in b for b in check(fake, filed)):
         missed.append("unfiled NEXT id")
+    for nid in [n for e in evs if e.get("event") == "note" and e.get("id") in SCOPE
+                and (e.get("text") or "").startswith(ITEM + " triage") for n in next_ids(e["text"])][:1]:
+        for field, val in (("caused_by", "SOMEONE_ELSE_ENTIRELY"), ("why", "because")):
+            alt = dict(filed)
+            alt[nid] = dict(filed.get(nid) or {}, **{field: val})
+            if not any(nid in b for b in check(evs, alt)):
+                missed.append("re-filed %s with a wrong %s" % (nid, field))
     return missed
 
 
 def main():
     evs = events()
-    filed = {e.get("id") for e in evs if e.get("event") == "file"}
+    filed = {e.get("id"): e for e in evs if e.get("event") == "file"}
     bad = check(evs, filed)
     missed = planted(evs, filed)
     bad += ["planted break did not redden: %s" % m for m in missed]
