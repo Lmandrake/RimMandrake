@@ -3,8 +3,8 @@
 
 **Item:** `BEDAZZLE_FLORA_EXPANSION_1` (owner, 2026-09-29: *"Need more plant-like members of this
 biome"*). **Second Blue Desert list.** The first is the Carbon Garden
-(`bluedesert_carbon_garden_2026-09-30.md`: milelace, hazebell, longglass — unshipped, awaiting
-its art sheet). Nothing here repeats it or the built four (palefloss, glassfern, chimeglobe,
+(`bluedesert_carbon_garden_2026-09-30.md`: milelace, hazebell, longglass — shipped
+2026-11-03). Nothing here repeats it or the built four (palefloss, glassfern, chimeglobe,
 virr in `src/RimMandrake/BlueDesert/Defs/ThingDefs_Plants/RM_BlueDesertFlora.xml`; roster
 `RM_BlueDesert` `<wildPlants>`, shorthand form, 4 rows).
 

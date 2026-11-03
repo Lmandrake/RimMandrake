@@ -15,6 +15,7 @@ Load and wiring
 - The blue-ice mineable carries the thaw comp, cold wax the ruined-detonator comp, the rack the cold-sink comp, and all eight flora the plant-charge comp. → defs.charge_comps_wired
 - The rack carries no power comp (it works in a blackout). → defs.rack_needs_no_power
 - The four expansion flora (qeshra, kethevar, lisqueth, vashpuk) are never sowable, carry the plant-charge comp, stay at 40 HP or less and sit in the wild roster; qeshra roe carries the three cold-wax comps and char-lace carries none. → defs.flora_expansion_shape
+- The Carbon Garden three (milelace, hazebell, longglass) are never sowable, carry the plant-charge comp, yield only cold wax, stay at 40 HP or less, have their textures and sit in the wild roster; the hazebell carries its bloom class and open texture, and `carbonGardenEnabled` off removes all three from the roster. → defs.carbon_garden_shape
 - The three salvage incidents are restricted to `RM_BlueDesert` (`allowedBiomes`) and the ice-sand drift weather carries the murrek re-seed extension. → defs.ablation_and_murrek_wired
 - All 22 Mod Settings fields exist and read their shipped defaults; a nonexistent field fails loudly. → settings.defaults
 - The log carries no `BlueDesert` or `RimMandrake.BlueDesert` error, no cross-reference error and no Config error naming one of this mod's defs (the `LOAD_ERRORS_FAUNA_FLORA_1` class: tool body-part groups the BodyDef lacks, zero-nutrition edible plants). → log.log_clean
@@ -65,6 +66,7 @@ The vhaulk
 - With `masterEnabled` off a heat kill detonates nothing. → vhaulk_gates.master_off_no_blast
 - A wild vhaulk walks off the map after its stay (`vhaulkStayDaysFactor`, `vhaulkDepartsEnabled`) with a letter and never silently despawns. → vhaulk_departs.vhaulk_walks_off_with_a_letter
 - The `vhaulkStayDaysFactor` field exists and is writable (it is also driven by the walk-off run). → settings.vhaulkStayDaysFactor_roundtrip
+- The `hazebellBloomEnabled` and `hazebellOpenHours` fields exist and are writable; the bloom itself (a hazebell opens in the Haze) is live proof A4 of BLUEDESERT_GPT_ENRICHMENT_1 (`prove_carbon_garden.py`). → settings.hazebellBloomEnabled_roundtrip, settings.hazebellOpenHours_roundtrip
 
 - The audible sound itself (the murrek's Fleshbeast-dig burst on surfacing, the drift's storm wind as Odyssey's own sandstorm uses). → UNCOVERED: audio has no state read; only the driving state above is read, and the wiring is a static check (validation.py static_checks)
 

@@ -1,0 +1,47 @@
+{
+ "judge_model": "claude-opus-5-5 (relentless worker; not the maker: the pictures are the artpipe codex renders of 2026-10-01)",
+ "brief": "design/RimMandrake/art_judge_brief.md@52661a1505",
+ "subject": "BLUEDESERT_GPT_ENRICHMENT_1 Carbon Garden flora",
+ "inputs": "full-res renders on grey and light backgrounds; 32 px/cell play-zoom copies at each def's max visualSize beside sibling keeps RM_Palefloss and RM_Glassfern (D:\\ClaudeWork\\rimmandrake\\relentless\\BLUEDESERT_GPT_ENRICHMENT_1\\plants_sheet.png, plants_scale.png). No canon entry: invented RM_ flora, section A does not apply. No owner notes on these subjects; none owner-kept (E3 n/a).",
+ "verdicts": [
+  {
+   "picture": "d215a6e1fd74c81cad71c622d19ad03effe9d0039ba38006257cac620bbdef59",
+   "subject": "RM_Milelace",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "flat lace mat of transparent loops, ground readable through it; matches palefloss register; clean alpha; reads as faint ground cover at play zoom, as palefloss does"
+  },
+  {
+   "picture": "95b1e945e4fe57534a00003035351fbf6a37102c0fd9f4c4d8c5c7523c8d177d",
+   "subject": "RM_Hazebell",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "closed glass bud of lobes on a short fractal stem; glassy, cold, no warm colour; clean alpha"
+  },
+  {
+   "picture": "38dde20690355cc55a70b7a7bc267b7f599047a9d6ef47a37cecafa18c89efc9",
+   "subject": "RM_Hazebell_Open",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "same material spread open with a pale vapour curl; reads as the open state of the bud; stem darker than the closed bud's, acceptable at 0.3-0.45 cells"
+  },
+  {
+   "picture": "0444b23f14eb8705b512552a82b316f53b07085a6399ac147f0e327ab12b38f5",
+   "subject": "RM_Longglass",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "upright leaning spire with rimed tips, distinct from the glassfern frond; clean alpha"
+  }
+ ],
+ "proposals": [],
+ "design_calls": {
+  "class": "delegated: design",
+  "item": "BLUEDESERT_GPT_ENRICHMENT_1",
+  "calls": [
+   "milelace yields RM_ColdWax; no frost-fibre item (ban 3: no warm-safe hydrocarbon organics, the_blue_desert.md section 6)",
+   "the pitch's Ninefold Censer ships as hazebell (RM_Hazebell): Ninefold is our mod mandrake.rm.ninefold; collision sweep clear",
+   "longglass leans with the prevailing wind in its art (engine limit: plants have no facing), sways with vanilla wind",
+   "milelace drift re-seed (marked optional in the vetting doc) not built"
+  ]
+ }
+}

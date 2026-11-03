@@ -99,6 +99,16 @@ namespace RimMandrake.BlueDesert
             return departing ? 0 : 2;
         }
 
+        // ── hazebell (BLUEDESERT_GPT_ENRICHMENT_1 §3): open while the Haze falls and for openHours after it ends ──
+        // lastHazeTick < 0 = never seen Haze. Returns whether the bell stands open.
+        public static bool HazebellOpen(bool enabled, bool hazeNow, int lastHazeTick, int now, float openHours)
+        {
+            if (!enabled) return false;
+            if (hazeNow) return true;
+            if (lastHazeTick < 0) return false;
+            return now - lastHazeTick < (long)Math.Round(Math.Max(0f, openHours) * TicksPerHour);
+        }
+
         // ── ablation emergence ──
         public static int SilhouetteTick(int now, float hoursRoll, float pace) { return now + (int)Math.Round(hoursRoll * TicksPerHour * Math.Max(0.1f, pace)); }
         public static int ExposureTick(int silhouetteTick, float hoursRoll, float pace) { return silhouetteTick + (int)Math.Round(hoursRoll * TicksPerHour * Math.Max(0.1f, pace)); }

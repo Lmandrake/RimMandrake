@@ -78,6 +78,7 @@ DEFAULTS = {
     "coldSinkCapacityFactor": 1.0, "ablationSalvageEnabled": True, "ablationPaceFactor": 1.0,
     "vhaulkDepartsEnabled": True,
     "vhaulkStayDaysFactor": 1.0,
+    "carbonGardenEnabled": True, "hazebellBloomEnabled": True, "hazebellOpenHours": 24.0,
 }
 suite.toggles = sorted(DEFAULTS)
 
@@ -527,7 +528,7 @@ def defs_chain(t):
     with _comp(t, "defs_resolve"):
         if _live(t):
             # The parser must see the mod: a broken regex would read "all 0 defs resolve".
-            if len(SHIPPED) < 60 or len(NATIVES) != 10 or not DEFS_BY_TYPE.get("WeatherDef") or len(FLORA) != 9:  # 9 = the 8 + RM_Rimetangle (owner, picks_plants_and_gaps 2026-10-19)
+            if len(SHIPPED) < 60 or len(NATIVES) != 10 or not DEFS_BY_TYPE.get("WeatherDef") or len(FLORA) != 12:  # 12 = the 8 + RM_Rimetangle (owner, picks_plants_and_gaps 2026-10-19) + the Carbon Garden three (BLUEDESERT_GPT_ENRICHMENT_1)
                 _fail("parsed only %d shipped defs / %d natives / %d flora from %s (parser broken?)"
                       % (len(SHIPPED), len(NATIVES), len(FLORA), HERE))
             r = t.bridge_call("jawa/get_defs", defs=";".join(SHIPPED), fields="defName", limit=200)
@@ -575,6 +576,45 @@ def defs_chain(t):
             bad.append("RM_QeshraRoe lacks the three cold-wax comps")
         if not lace or "CompProperties_Explosive" in lace.group(1):
             bad.append("RM_CharLace missing or carries CompExplosive")
+        if bad:
+            _fail("; ".join(bad))
+
+    with _comp(t, "carbon_garden_shape", toggle="carbonGardenEnabled"):
+        # BLUEDESERT_GPT_ENRICHMENT_1 section 3: parsed from the mod's own XML and source, so it needs no live game.
+        # The bloom itself is live proof A4 (prove_carbon_garden.py).
+        txt = _xml_text("ThingDefs_Plants/RM_BlueDesertFlora.xml")
+        biome = _xml_text("BiomeDefs/RM_BlueDesert.xml")
+        bad = []
+        for n in ("RM_Milelace", "RM_Hazebell", "RM_Longglass"):
+            m = re.search(r"<defName>%s</defName>(.*?)</ThingDef>" % n, txt, flags=re.S)
+            if not m:
+                bad.append("%s missing" % n)
+                continue
+            body = m.group(1)
+            if "sowTags" in body:
+                bad.append("%s is sowable" % n)
+            if "PlantCharge" not in body:
+                bad.append("%s has no PlantCharge" % n)
+            if "<harvestedThingDef>RM_ColdWax</harvestedThingDef>" not in body:
+                bad.append("%s yields something other than cold wax (ban 3)" % n)
+            hp = re.search(r"<MaxHitPoints>(\d+)</MaxHitPoints>", body)
+            if not hp or int(hp.group(1)) > 40:
+                bad.append("%s MaxHitPoints > 40" % n)
+            if not re.search(r"<%s>[\d.]+</%s>" % (n, n), biome):
+                bad.append("%s not in RM_BlueDesert wildPlants (XML element form)" % n)
+            tex = re.search(r"<texPath>([^<]+)</texPath>", body)
+            if not tex or not os.path.isfile(os.path.join(HERE, "Textures", tex.group(1) + ".png")):
+                bad.append("%s texture missing" % n)
+        hb = re.search(r"<defName>RM_Hazebell</defName>(.*?)</ThingDef>", txt, flags=re.S)
+        if hb and ("RM_Plant_Hazebell" not in hb.group(1) or "CompProperties_HazeBloom" not in hb.group(1)):
+            bad.append("RM_Hazebell lacks its bloom thingClass/comp")
+        op = re.search(r"<openTexPath>([^<]+)</openTexPath>", txt)
+        if not op or not os.path.isfile(os.path.join(HERE, "Textures", op.group(1) + ".png")):
+            bad.append("hazebell open texture missing")
+        with open(os.path.join(HERE, "Source", "RM_Hazebell.cs"), encoding="utf-8") as fh:
+            gate = fh.read()
+        if not all(n in gate for n in ('"RM_Milelace"', '"RM_Hazebell"', '"RM_Longglass"', "carbonGardenEnabled")):
+            bad.append("RM_CarbonGardenGate does not remove all three when carbonGardenEnabled is off")
         if bad:
             _fail("; ".join(bad))
 
@@ -714,7 +754,7 @@ def settings_chain(t):
     # Settings whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("burnerHaloEnabled", "crackCueEnabled", "murrekReseedEnabled", "ablationSalvageEnabled",
-                  "ablationPaceFactor", "vhaulkStayDaysFactor"):
+                  "ablationPaceFactor", "vhaulkStayDaysFactor", "hazebellBloomEnabled", "hazebellOpenHours"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):

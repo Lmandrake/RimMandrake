@@ -71,6 +71,12 @@ namespace RimMandrake.BlueDesert
         public static bool vhaulkDepartsEnabled = true;
         public static float vhaulkStayDaysFactor = 1f;
 
+        // BLUEDESERT_GPT_ENRICHMENT_1 §3 (RM_Hazebell.cs). carbonGardenEnabled = milelace, hazebell and longglass in the
+        // wild roster (next launch, as floraExpansionEnabled); the bell opens in Haze and for hazebellOpenHours after.
+        public static bool carbonGardenEnabled = true;
+        public static bool hazebellBloomEnabled = true;
+        public static float hazebellOpenHours = 24f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -95,6 +101,9 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref ablationPaceFactor, "ablationPaceFactor", 1f);
             Scribe_Values.Look(ref vhaulkDepartsEnabled, "vhaulkDepartsEnabled", true);
             Scribe_Values.Look(ref vhaulkStayDaysFactor, "vhaulkStayDaysFactor", 1f);
+            Scribe_Values.Look(ref carbonGardenEnabled, "carbonGardenEnabled", true);
+            Scribe_Values.Look(ref hazebellBloomEnabled, "hazebellBloomEnabled", true);
+            Scribe_Values.Look(ref hazebellOpenHours, "hazebellOpenHours", 24f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -144,6 +153,24 @@ namespace RimMandrake.BlueDesert
                 list.CheckboxLabeled("Flora expansion (restart to apply)", ref floraExpansionEnabled,
                     "Qeshra, kethevar, lisqueth and vashpuk in the wild roster, and kethevar's char-lace. "
                   + "Off: only palefloss, glassfern, virr and chimeglobe grow. The roster change applies on the next launch.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Carbon Garden", RimMandrake.Shared.SettingScope.Now, new[] { "carbonGardenEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Carbon Garden flora (restart to apply)", ref carbonGardenEnabled,
+                    "Milelace, hazebell and longglass in the wild roster. Off: they no longer grow wild. "
+                  + "The roster change applies on the next launch.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Hazebell", RimMandrake.Shared.SettingScope.NextPulse, new[] { "hazebellBloomEnabled", "hazebellOpenHours" }))
+            {
+                list.CheckboxLabeled("Hazebells open in the Haze", ref hazebellBloomEnabled,
+                    "While the Haze falls, and for a while after, hazebells open and breathe out pale vapour. "
+                  + "Off: they stay closed.");
+                list.Label("Hours a hazebell stays open after the Haze: " + hazebellOpenHours.ToString("0"));
+                hazebellOpenHours = list.Slider(hazebellOpenHours, 0f, 72f);
                 list.GapLine();
             }
 

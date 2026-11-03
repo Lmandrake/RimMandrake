@@ -627,4 +627,191 @@
     </comps>
   </ThingDef>
 
+  <!-- ============== The Carbon Garden (BLUEDESERT_GPT_ENRICHMENT_1 §3) ==============
+       Owner, typed on the card 2026-09-30: "Only hydrocarbon plants please." Vetting, collision sweep and the
+       delegated calls (milelace yields cold wax, no fibre; hazebell for the "Ninefold Censer"; longglass leans,
+       it cannot turn): design/Jawa/worldbuilding/biomes/bluedesert_carbon_garden_2026-09-30.md.
+       Numbers INVENTED on the existing flora's scale; calibrate in play. Gated by carbonGardenEnabled
+       (RM_CarbonGardenGate, RM_Hazebell.cs). -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Milelace</defName>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover, as palefloss -->
+    <label>milelace</label>
+    <description>An ankle-high mat of transparent filament laced flat across the ice in loops, like frost-lace that grew. Every strand is a sealed thread of liquid butane; a careful hand strips it for cold wax, and a warm one should leave it alone.</description>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Milelace</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>false</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>5</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>30</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <maxMeshCount>4</maxMeshCount>
+      <wildOrder>1</wildOrder>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.1</radius>
+        <damage>30</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Hazebell</defName>
+    <thingClass>RimMandrake.BlueDesert.RM_Plant_Hazebell</thingClass>
+    <label>hazebell</label>
+    <description>A hand-high glass cup of nine sealed lobes on a short fractal stem. When the Haze falls it opens wide and breathes out its own hydrocarbon vapour, a pale curl you can watch from across the ice, and it stays open for a while after.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Hazebell</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>9</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>90</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.3~0.45</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.4</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+      <li Class="RimMandrake.BlueDesert.CompProperties_HazeBloom">
+        <openTexPath>Things/Plant/RM_Hazebell_Open</openTexPath>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Longglass</defName>
+    <label>longglass</label>
+    <description>A knee-high branching spire of transparent hydrocarbon, grown leaning the way the wind has always blown. The Haze settles on its newest tips as a white rime. It is a charge of butane from root to tip.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Nutrition>0.25</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Longglass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>100</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.45~0.65</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.9</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>

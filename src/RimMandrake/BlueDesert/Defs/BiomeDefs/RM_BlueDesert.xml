@@ -134,6 +134,10 @@
       <RM_Kethevar>0.05</RM_Kethevar>
       <RM_Lisqueth>0.1</RM_Lisqueth>
       <RM_Vashpuk>0.05</RM_Vashpuk>
+      <!-- BLUEDESERT_GPT_ENRICHMENT_1 §3, the Carbon Garden: gated by carbonGardenEnabled (RM_CarbonGardenGate). INVENTED. -->
+      <RM_Milelace>0.35</RM_Milelace>
+      <RM_Hazebell>0.12</RM_Hazebell>
+      <RM_Longglass>0.15</RM_Longglass>
     </wildPlants>
     <hasVirtualPlants>false</hasVirtualPlants>
     <forageability>0</forageability>

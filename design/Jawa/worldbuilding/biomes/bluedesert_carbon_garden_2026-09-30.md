@@ -7,9 +7,11 @@ Desert's first contribution to `BEDAZZLE_FLORA_EXPANSION_1` (the owner's "Need m
 members of this biome"): that item has produced no Blue Desert pitch list yet, so these rows are
 its Blue Desert list, and its sitting for this biome is this page.
 
-**Status: NO DEF SHIPS YET.** The item's own gate: new names collision-swept (done, §2), art
-commissioned (rows written, §4, not queued), and art to an owner review sheet **before any def
-ships**. The draft stats in §3 are the def work waiting on that sheet.
+**Status: SHIPPED 2026-11-03** in `src/RimMandrake/BlueDesert/Defs/ThingDefs_Plants/RM_BlueDesertFlora.xml`
+(the three defs), `RM_BlueDesert` wildPlants, and `Source/RM_Hazebell.cs` (the Haze bloom and the roster gate).
+Art: the artpipe renders of 2026-10-01, judged KEEP under the delegation policy (agents decide art, owner
+2026-10-22) in `infrastructure/state/delegated/2026-11-03/BLUEDESERT_GPT_ENRICHMENT_1_carbon_garden.json`, which
+also records the §5 calls. He sees them in the daily digest and may overturn them.
 
 ## 1. What "hydrocarbon plant" has to mean here
 
@@ -51,7 +53,7 @@ same pass. Files read: repo `src/` 2,098, repo `design/` 781, local `Mods/` 2,02
   variant **"Censer"**, and `tile_augmentation_matrix.md` uses the word in passing. That is a
   second reason, beside `mandrake.rm.ninefold`, not to ship "Ninefold Censer".
 
-## 3. Draft defs (NOT shipped — wait for the art sheet)
+## 3. The defs (shipped; numbers INVENTED, calibrate in play)
 
 All three: `ParentName="PlantBase"`, the palefloss plant block (`completelyIgnoreFertility`,
 `fertilityMin 0`, growth band -90/-60/-20/-1 °C, `growMinGlow 0`, `growOptimalGlow 0`,
@@ -69,18 +71,16 @@ scale (palefloss 20 HP / r1.1, glassfern r1.9).
 Roster rows land on `RM_BlueDesert`'s `<wildPlants>` in the shorthand element form
 (`<RM_Milelace>0.35</RM_Milelace>`), never `<li>`.
 
-## 4. Art commission
+## 4. Art
 
-Rows written to `infrastructure/artpipe/art_lists/bluedesert_gpt_enrichment.csv` (not queued: the
-daemon only takes jobs `fill_queue.py` puts in `pending/`). Checked first: no existing art for
-any of these subjects. A walk of all 3,734 files under `infrastructure/artpipe/` found 0 hits for
-milelace, longglass, hazebell or censer (probe: `palefloss` 8 hits). Seven rows: the three plants
-(hazebell twice, closed and open) plus the three non-flora textures the same item's built parts
-need (cold rack, meltwater can, ablation silhouette). The rime road reuses vanilla's Ice texture,
-tinted, so it needs none.
+Rows in `infrastructure/artpipe/art_lists/bluedesert_gpt_enrichment.csv`, rendered by the artpipe on 2026-10-01
+and installed 2026-11-03 through `art.py install` (`Textures/Things/Plant/RM_Milelace.png`, `RM_Hazebell.png`,
+`RM_Hazebell_Open.png`, `RM_Longglass.png`). One picture each, `Graphic_Single`.
 
-## 5. Owner questions for the sitting
+## 5. The three open calls, decided (delegated: design, 2026-11-03)
 
-1. Milelace's fibre: drop it (yields cold wax) or keep it as a warm-reactive cold-store material?
-2. Hazebell as the censer's new name, or another?
-3. Longglass: leaning-with-the-wind art in place of turning, acceptable?
+1. Milelace yields `RM_ColdWax`; there is no frost-fibre item (ban 3).
+2. The censer ships as **hazebell** (`RM_Hazebell`).
+3. Longglass leans with the prevailing wind in its art and sways with vanilla wind; it does not turn.
+
+The drift re-seed for milelace (optional in §2) was not built.

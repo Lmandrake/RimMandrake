@@ -279,6 +279,17 @@ namespace RimMandrake.BlueDesert.SelfTest
         private static string RulesUnits(int seed)
         {
             var r = new Random(seed ^ 0x2c);
+            // hazebell: open in Haze, open for openHours after the last Haze tick, never when off or never hazed
+            for (int k = 0; k < 64; k++)
+            {
+                bool on = r.Next(2) == 0, haze = r.Next(2) == 0;
+                int last = r.Next(4) == 0 ? -1 : r.Next(200000), hbNow = Math.Max(0, last) + r.Next(120000);
+                float hours = (float)(r.NextDouble() * 48);
+                bool spec = on && (haze || (last >= 0 && hbNow - last < Math.Round(hours * RM_BlueKernel.TicksPerHour)));
+                Check(RM_BlueKernel.HazebellOpen(on, haze, last, hbNow, hours) == spec, $"hazebell open on={on} haze={haze} last={last} now={hbNow} h={hours}");
+            }
+            Check(RM_BlueKernel.HazebellOpen(true, false, 1000, 1000 + 24 * 2500 - 1, 24f) && !RM_BlueKernel.HazebellOpen(true, false, 1000, 1000 + 24 * 2500, 24f)
+                && !RM_BlueKernel.HazebellOpen(false, true, 0, 0, 24f) && !RM_BlueKernel.HazebellOpen(true, false, -1, 5, 24f), "hazebell edges");
             for (int m = 0; m < 16; m++)
             {
                 bool on = (m & 1) != 0, emp = (m & 2) != 0, gate = (m & 4) != 0, heat = (m & 8) != 0;
