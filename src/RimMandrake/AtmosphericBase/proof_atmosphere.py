@@ -519,6 +519,16 @@ def judge_held_lamp_rules(mc, co, st):
     return _r(PASS, MOD, "external edit released and kept, Utinni offence reported, switch-off silent, reload restarts, whole-map hand-over gated and reversible (disk)")
 
 
+def _long_path(p):
+    """Windows Python (python.exe, the only one that reaches the bridge) opens the WSL clone as
+    \\\\wsl.localhost\\..., and the deepest def files there pass MAX_PATH (260): plain open() raises
+    FileNotFoundError on a file that exists. The \\\\?\\ prefix lifts the limit; elsewhere p is unchanged."""
+    if os.name != "nt" or p.startswith("\\\\?\\"):
+        return p
+    p = os.path.abspath(p)
+    return "\\\\?\\UNC\\" + p[2:] if p.startswith("\\\\") else "\\\\?\\" + p
+
+
 def repo_scheme_xml():
     out = {}
     root = os.path.join(REPO, "src")
@@ -527,7 +537,7 @@ def repo_scheme_xml():
         for fn in files:
             if fn.endswith(".xml"):
                 p = os.path.join(dirpath, fn)
-                t = open(p, encoding="utf-8", errors="replace").read()
+                t = open(_long_path(p), encoding="utf-8", errors="replace").read()
                 if "RM_AtmosphericSchemeDef" in t:
                     out[os.path.relpath(p, root)] = t
     return out
