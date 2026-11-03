@@ -3358,6 +3358,23 @@ def test_artreg_withdraw_retires_stale_queued_targets():
             artreg.REGISTRY_LOCK = lock
 
 
+def test_artreg_retired_verdict_events_never_move_state():
+    """ART_VERSION_WRANGLING_1: owner verdicts live in the art ledger, not the
+    registry. A legacy `verdict`/`committed`/`deployed`/`parked` row must be
+    inert in the replay: it may not set accepted/committed/parked, nor count."""
+    import artreg
+    base = [{"event": "registered", "target": "x/south", "source": "s", "ts": 1},
+            {"event": "queued", "target": "x/south", "job_id": "j", "ts": 2},
+            {"event": "generated", "target": "x/south", "ts": 3}]
+    want = artreg.compute_target_states(base)["x/south"]["state"]
+    for kind in ("verdict", "committed", "deployed", "parked"):
+        ev = {"event": kind, "target": "x/south", "verdict": "accept",
+              "ts": 4, "sha": "abc", "source": "legacy"}
+        got = artreg.compute_target_states(base + [ev])["x/south"]
+        ok(f"artreg: retired '{kind}' event leaves state unchanged",
+           got["state"] == want and got["renders"] == 1, str(got))
+
+
 def test_dry_run_never_creates_queue_directories():
     """Finding 4: --dry-run promises to touch nothing. Before the fix,
     main() called ensure_queue_dirs() (mkdir's pending/active/done/failed/
@@ -4568,6 +4585,7 @@ def main() -> int:
         test_default_reconcile_min_age_accounts_for_gemini_timeout_too,
         test_dry_run_never_creates_queue_directories,
         test_artreg_withdraw_retires_stale_queued_targets,
+        test_artreg_retired_verdict_events_never_move_state,
         test_read_gemini_spend_counts_skipped_unparseable_lines,
         test_gemini_budget_ledger_strict_refuses_admission_on_torn_line,
         test_read_gemini_spend_locked_caches_by_size_and_mtime,
