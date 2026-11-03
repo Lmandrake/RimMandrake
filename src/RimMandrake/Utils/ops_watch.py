@@ -1639,6 +1639,24 @@ def rl_verdict(rec, points, ms):
     return worst
 
 
+def rl_books_behind(books, now):
+    """-> (minutes the books clone has been behind origin/main, commits behind), or (None, why). The age is the oldest
+    commit it lacks: a clone that jams (BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT) runs stale code with every other reading sane."""
+    def git(*a, t=60):
+        return subprocess.run(["git", "-C", str(books), *a], capture_output=True, text=True, timeout=t)
+    try:
+        if not (Path(books) / ".git").exists():
+            return None, "no books clone at %s" % books
+        git("fetch", "--quiet", "origin", t=30)        # a refused fetch leaves the old ref: the age then only grows
+        r = git("log", "--format=%ct", "HEAD..origin/main")
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "books clone unreadable: %s" % str(e)[:120]
+    if r.returncode:
+        return None, "books clone unreadable: %s" % r.stderr[-120:]
+    ts = [int(x) for x in r.stdout.split() if x.isdigit()]
+    return (0.0, 0) if not ts else (round(max(now - min(ts), 0) / 60.0, 1), len(ts))
+
+
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
@@ -1743,6 +1761,11 @@ def c_relentless(now, rules, ctx):
         pts["relentless.cause"] = M(cause)
     else:
         pts["relentless.distressed"] = pts["relentless.cause"] = U(why or "; ".join(bad)[:300])
+    behind_min, behind_n = rl_books_behind(rl_root(cfg) / "books", now)
+    if behind_min is None:
+        pts["relentless.books_behind_min"] = U(behind_n, "min")
+    else:
+        pts["relentless.books_behind_min"] = M(behind_min, "min", behind=behind_n)
     pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
     return pts
 

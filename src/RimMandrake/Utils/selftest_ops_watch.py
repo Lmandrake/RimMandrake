@@ -1854,5 +1854,23 @@ try:
     check("untriaged: a bad table is UNMEASURED, never a count", OW.untriaged_reading([_F])["m"] == "UNMEASURED")
 finally:
     _FF.no_outcome = _dfn
+# books_behind: the books clone behind origin reads its oldest missing commit's age (BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT)
+import subprocess as _sp, tempfile as _tf
+_d = Path(_tf.mkdtemp(prefix="bb_"))
+def _g(c, *a, env=None):
+    _sp.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True, capture_output=True,
+            env=dict(os.environ, **(env or {})))
+_g(_d, "init", "-q", "--bare", "-b", "main", "o.git")
+_g(_d, "clone", "-q", "o.git", "up"); _g(_d / "up", "checkout", "-q", "-b", "main")
+(_d / "up" / "f").write_text("1"); _g(_d / "up", "add", "f"); _g(_d / "up", "commit", "-qm", "a"); _g(_d / "up", "push", "-q", "origin", "main")
+_g(_d, "clone", "-q", "o.git", "books")
+check("books level: 0 behind", OW.rl_books_behind(_d / "books", time.time()) == (0.0, 0))
+(_d / "up" / "f").write_text("2"); _old = str(int(time.time()) - 3 * 3600) + " +0000"
+_g(_d / "up", "commit", "-qam", "b", env={"GIT_COMMITTER_DATE": _old, "GIT_AUTHOR_DATE": _old}); _g(_d / "up", "push", "-q", "origin", "main")
+_m, _n = OW.rl_books_behind(_d / "books", time.time())
+check("books behind: age of the oldest missing commit, count", _n == 1 and 170 <= _m <= 190, (_m, _n))
+check("books absent: unmeasured, not zero", OW.rl_books_behind(_d / "nope", time.time())[0] is None)
+_tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.books_behind_min"]
+check("the books-stale target alarms", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["value"] <= 60, _tg)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

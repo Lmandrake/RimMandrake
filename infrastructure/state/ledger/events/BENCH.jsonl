@@ -11297,3 +11297,14 @@
 {"seat":"BENCH","event":"start","id":"PROOF_SPOILED_RUNS_BUILD_NO_BLANKET_GREEN","why":"relentless supervisor takes the item","ts":"2026-11-03T03:40:00Z","tsn":1793677200893511616}
 {"seat":"BENCH","event":"reassign","id":"FLIER_LINE_CHECK_FIX_SIDEWAYS_UNSEEN","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-03T03:40:38Z","tsn":1793677238792448272}
 {"seat":"BENCH","event":"start","id":"FLIER_LINE_CHECK_FIX_SIDEWAYS_UNSEEN","why":"relentless supervisor takes the item","ts":"2026-11-03T03:40:41Z","tsn":1793677241354034805}
+{"seat":"BENCH","event":"lease","id":"BOOKS_STALE_FIX_ART_SHARD_REORDER","action":"take","token":"BENCH.pid48742.f83ca47e","expires":"2026-11-03T04:24:59Z","ts":"2026-11-03T03:39:59Z","tsn":1793677199697170339}
+{"seat":"BENCH","event":"claim","id":"BOOKS_STALE_FIX_ART_SHARD_REORDER","ts":"2026-11-03T03:40:00Z","tsn":1793677200480136988}
+{"seat":"BENCH","event":"start","id":"BOOKS_STALE_FIX_ART_SHARD_REORDER","ts":"2026-11-03T03:40:01Z","tsn":1793677201195118915}
+{"seat":"BENCH","event":"file","id":"BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT","title":"ops_watch cannot see a books clone stuck behind origin","kind":"task","target":"v1","for":"BENCH","ts":"2026-11-03T03:44:29Z","tsn":1793677469205319693}
+{"seat":"BENCH","event":"file","id":"BOOKS_JAM_FIX_CODE_REVIEW_SHARD_SHUFFLES","title":"books jam: code_review shard rewritten as a pure reorder","kind":"task","target":"v1","for":"BENCH","ts":"2026-11-03T03:44:31Z","tsn":1793677471719677722}
+{"seat":"BENCH","event":"lease","id":"BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT","action":"take","token":"BENCH.pid50893.a122db60","expires":"2026-11-03T04:29:33Z","ts":"2026-11-03T03:44:33Z","tsn":1793677474025984098}
+{"seat":"BENCH","event":"claim","id":"BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT","ts":"2026-11-03T03:44:34Z","tsn":1793677474708828140}
+{"seat":"BENCH","event":"start","id":"BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT","ts":"2026-11-03T03:44:35Z","tsn":1793677475352840856}
+{"seat":"BENCH","event":"lease","id":"BOOKS_JAM_FIX_CODE_REVIEW_SHARD_SHUFFLES","action":"take","token":"BENCH.pid50919.89c18e1f","expires":"2026-11-03T04:29:37Z","ts":"2026-11-03T03:44:37Z","tsn":1793677477823086521}
+{"seat":"BENCH","event":"claim","id":"BOOKS_JAM_FIX_CODE_REVIEW_SHARD_SHUFFLES","ts":"2026-11-03T03:44:38Z","tsn":1793677478508282083}
+{"seat":"BENCH","event":"start","id":"BOOKS_JAM_FIX_CODE_REVIEW_SHARD_SHUFFLES","ts":"2026-11-03T03:44:39Z","tsn":1793677479153242681}

@@ -890,6 +890,25 @@ class Effects(relentless_game.GameFx):
                 return "books behind: ignored file %s differs from what origin now tracks there" % p
         return None
 
+    def shuffled_shards(self, rows):
+        """-> the tracked *.jsonl outside the ledger dir whose lines are HEAD's lines in another order. Landing replays
+        the append-only shards (code_review, art) with merge=union, which reorders them; nothing is lost, so it is no
+        dirt. Set-equal multisets only: one added, dropped or changed line keeps the file alien."""
+        out = set()
+        for st, p in rows:
+            if not p.endswith(".jsonl") or p.startswith(BOOKS_DERIVED) or st.strip() != "M":
+                continue
+            try:
+                with open(os.path.join(self.books, p), "rb") as f:
+                    here = f.read().splitlines()
+                there = subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True,
+                                       check=True, timeout=60).stdout.splitlines()
+            except (OSError, subprocess.SubprocessError):
+                continue
+            if sorted(here) == sorted(there):
+                out.add(p)
+        return out
+
     def level_books(self):
         """Behind origin: level the clone when all it holds is ledger already landed and item files rimflow rewrites."""
         behind = self.git_ok(self.books, "rev-list", "--count", "HEAD..origin/main").strip()
@@ -900,7 +919,10 @@ class Effects(relentless_game.GameFx):
         staged = self.git_ok(self.books, "diff", "--cached", "--name-only").split()
         if staged:      # the index is nobody's projection, and the checks below read the working tree
             return "books %s behind: staged: %s" % (behind, ", ".join(staged[:5]))
-        alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED)]
+        shuffled = self.shuffled_shards(rows)
+        if shuffled:
+            self.journal({"do": "books_reorder_restored", "paths": sorted(shuffled)})
+        alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED) and p not in shuffled]
         if alien:
             return "books %s behind: dirty outside the ledger: %s" % (behind, ", ".join(alien[:5]))
         changed = self.git_ok(self.books, "diff", "--name-only", "origin/main...HEAD").split()
