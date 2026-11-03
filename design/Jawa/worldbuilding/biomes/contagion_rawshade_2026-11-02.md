@@ -17,6 +17,9 @@ Render C = `arteval_RM_Scaldhide_r1`, 256 px canvas, kept (not purged) on the sh
 | east | `dc94663f97a2` |
 | north | `69a6e7907900` |
 
+Byte-identical copies are committed beside this doc in
+`design/Jawa/worldbuilding/biomes/contagion_rawshade_art/` so the design check can verify them from any clone.
+
 What the picture shows: a dome of raw red flesh, veined and folded, held high on four long jointed stilt
 legs with hoof-like feet. Black char crusts the top of the dome. The rim hangs down in a wet, scalloped
 skirt. It has no head; on the east facing a small fold at the front edge could be a mouth.
