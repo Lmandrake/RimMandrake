@@ -46,20 +46,33 @@ WANT = {
 # loaded beside it fails A8 too.
 OURS = re.compile(r"Graffiti|graffiti")
 CONTINUATION = re.compile(r"^(?:\s|at |\(Filename)")
-MAX_CONTINUATION = 40
-ERROR_KIND = re.compile(r"Config error|Could not resolve cross-reference|XML error|Could not find type|Exception|"
+ERROR_KIND = re.compile(r"Config error|Could not resolve cross-reference|XML error|Could not find (?:a )?type|Exception|"
                         r"duplicate|Failed to find", re.I)
+
+
+def _text(text):
+    """A reply as plain probe text: a JSON-serialised bridge reply is decoded to its `result` string, so neither its
+    escaping nor its closing quote reaches a field, and a faction name holding a quote or backslash stays whole."""
+    s = str(text)
+    if s.lstrip().startswith("{"):
+        try:
+            d = json.loads(s)
+        except ValueError:
+            return s
+        if isinstance(d, dict) and isinstance(d.get("result"), str):
+            return d["result"]
+    return s
 
 
 def field(text, key):
     """The token after `key ` in a probe line (' |' ends it), or None."""
-    m = re.search(r"(?:^|\| |\b(?:%s) )%s ([^|\"\\]*)" % ("|".join(HEADS), re.escape(key)), str(text))
+    m = re.search(r"(?:^|\| |\b(?:%s) )%s ([^|\n]*)" % ("|".join(HEADS), re.escape(key)), _text(text))
     return m.group(1).strip() if m else None
 
 
 def line(text, head):
     """The probe's own line starting with `head` out of a reply text, or None."""
-    m = re.search(r"\b%s [^\"\\]*" % re.escape(head), str(text))
+    m = re.search(r"\b%s [^\n]*" % re.escape(head), _text(text))
     return m.group(0) if m else None
 
 
@@ -128,6 +141,8 @@ def log_verdict(log_text, loaded_reply):
     ln = line(r, "LOADED")
     if not ln:
         return 2, "RimMandrake.Graffiti not reachable in this game (a clean log would prove nothing): " + r[:200]
+    if field(ln, "graffiti") != "True":
+        return 2, "the probe answered but does not report Graffiti loaded: " + ln
     if field(ln, "ideology") != "True":
         return 2, "Ideology is not active: every DLC is assumed, restage with all five: " + ln
     if not log_text or "RimWorld" not in log_text:
@@ -144,7 +159,7 @@ def _records(log_text):
     """Player.log split into records: a line plus the continuation lines (indented / stack frames) that follow it."""
     recs = []
     for l in log_text.splitlines():
-        if recs and CONTINUATION.match(l) and len(recs[-1]) <= MAX_CONTINUATION:
+        if recs and CONTINUATION.match(l):
             recs[-1].append(l)
         else:
             recs.append([l])

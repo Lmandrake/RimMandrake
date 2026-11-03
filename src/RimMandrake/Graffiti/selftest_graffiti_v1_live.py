@@ -112,6 +112,16 @@ check(P.log_verdict(clean_log, LOADED.replace("ideology True", "ideology False")
 check(P.log_verdict(clean_log, LOADED.replace("raidHook True", "raidHook False"))[0] == 1, "A8 a missing raid hook passed")
 check(P.log_verdict("", LOADED)[0] == 2, "A8 empty log passed")
 
+quoted = RAID.replace("Rough Pigs", 'The "Red" Pigs \\ back')
+check(P.field(quoted, "marksIn") == "0" and code("A2", EXIT, extra=wrap(quoted)) == 0, "A2 a quoted faction name broke the RAID read")
+check(P.field(wrap(A4), "rivalFaction") == "True", "the last field of a wrapped reply kept the JSON tail")
+typed = clean_log + "Could not find a type named RimMandrake.Graffiti.Missing\n"
+check(P.log_verdict(typed, LOADED)[0] == 1, "A8 'Could not find a type named' passed")
+
+check(P.log_verdict(clean_log, LOADED.replace("graffiti True", "graffiti False"))[0] == 2, "A8 with Graffiti not loaded passed")
+deep = clean_log + "Exception in Verse.DefDatabase: NullReferenceException\n" + "  at Some.Frame ()\n" * 60 + "  at RimMandrake.Graffiti.X ()\n"
+check(P.log_verdict(deep, LOADED)[0] == 1, "A8 a Graffiti frame deep in a long stack trace passed")
+
 # the bridge reply is unwrapped, so a non-ASCII faction name never ends a field early
 uni = P._reply({"success": True, "result": RAID.replace("Rough Pigs", "P\u00edgs \u00c6therfolk")})
 check(P.field(uni, "marksIn") == "0" and code("A2", EXIT, extra=uni) == 0, "A2 a non-ASCII faction name broke the RAID read: %r" % uni)
@@ -121,7 +131,8 @@ check(P._reply("x") == "x" and "\\u" not in P._reply({"other": "\u00ed"}), "_rep
 src = open(os.path.join(HERE, "Source", "RM_GraffitiProof.cs"), encoding="utf-8").read()
 driver = open(os.path.join(HERE, "graffiti_v1_live_proof.py"), encoding="utf-8").read()
 called = set(re.findall(r'call\("(\w+)"', driver))
-called |= {"Sigil", "GoingOver", "HostileThought"}
+called |= set(re.findall(r'_until\(rb, call, "(\w+)"', driver)) | {"Sigil", "GoingOver", "HostileThought"}
+check({"SpreeRead", "CleanDone", "DesignateRead"} <= called, "the method scan is blind to the _until reads: %s" % sorted(called))
 for m in sorted(called):
     check(re.search(r"public static string %s\(string args\)" % m, src), "probe method %s missing from RM_GraffitiProof.cs" % m)
 check(P.PROBE == "RimMandrake.Graffiti.RM_GraffitiProof" and "namespace RimMandrake.Graffiti" in src
