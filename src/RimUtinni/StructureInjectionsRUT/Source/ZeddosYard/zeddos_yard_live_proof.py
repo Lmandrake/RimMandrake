@@ -12,7 +12,7 @@ A1 holds when, after one run of the GenStep:
   * the ship-wreck defs the plan names grew by >= 60 things on the map and AncientFortifiedWall by >= 10
     (before/after delta, so pre-existing map content cannot pass for the yard);
   * none of the plan's defNames stands inside the map-placed landing clearing (the plan's centred
-    100x94 rect, offset exactly as RM_PlanKernel.Offset centres a footprint on map.Center);
+    100x94 rect, at least the item's fixed 96x90, offset exactly as RM_PlanKernel.Offset centres a footprint on map.Center);
   * a cell the plan paints AncientMegastructure reads back as AncientMegastructure.
 """
 import json
@@ -27,6 +27,8 @@ import gen_zeddos_yard_plan as gen  # noqa: E402
 import rimbridge_client as rb  # noqa: E402
 
 GENSTEP = "RUT_GenStep_ZeddosYard"
+# The item's floor, FIXED (not gen's constants): v2 ring hull 92x86 + 2-cell margin each side.
+NEED_W, NEED_H = 92 + 2 * 2, 86 + 2 * 2   # 96, 90
 
 
 def count(b, defs, rect=None):
@@ -62,6 +64,9 @@ def main(argv):
             return 1
         dx, dz = sx // 2 - gen.W // 2, sz // 2 - gen.H // 2      # RM_PlanKernel.Offset, centerOnMap
         cx0, cz0, cw, ch = gen.clearing_rect()
+        if cw < NEED_W or ch < NEED_H:
+            print("A1 FAIL: the plan's landing clearing is %dx%d, below the item's 96x90 (hull 92x86 + 2)" % (cw, ch))
+            return 1
         clearing = (cx0 + dx, cz0 + dz, cw, ch)
         # list_things / run_genstep / get_terrain_batch act on Find.CurrentMap and take no map id, so the
         # proof re-reads mapId after EVERY call and fails on any change: a map switch can then only hide

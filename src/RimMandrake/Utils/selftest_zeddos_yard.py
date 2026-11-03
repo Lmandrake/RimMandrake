@@ -18,7 +18,7 @@ Bars (each prints PASS/FAIL; exit 1 on any FAIL):
      plain safe_load keeps the last silently) and planet.start_tile_mutator == RUT_ZeddosYard, whose start_tile_mutator_src names the final-paint list
      (BIOME_PAINT_ONCE_AT_THE_END_1). canon.yml is the committed record the paint list defers to; the item
      prose under infrastructure/state/items/ is not in a clean export, so it is cross-checked only where present
-  B8 planted defects are caught: a thing in the clearing fails B3; a non-DLC def and a ThingDef used as
+  B8 planted defects are caught: a thing in the clearing and a 95x90 clearing fail B3; a non-DLC def and a ThingDef used as
      terrain fail B5; a duplicate canon key fails B7's loader
 """
 import os
@@ -40,7 +40,10 @@ DEFS = os.path.join(MOD, "Defs", "GenStepDefs_ZeddosYard.xml")
 CANON = os.path.join(REPO, "infrastructure", "state", "canon.yml")
 PAINT = os.path.join(REPO, "infrastructure", "state", "items", "BIOME_PAINT_ONCE_AT_THE_END_1.md")
 GAME_DATA = os.environ.get("RIMWORLD_DATA", "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data")
-NEED_W, NEED_H = gen.HULL_W + 2 * gen.MARGIN, gen.HULL_H + 2 * gen.MARGIN
+# The item's own numbers, FIXED here (never read from the generator, whose constants a bad edit could
+# shrink together with the plan): v2 ring hull 92x86 + a 2-cell margin each side = 96x90.
+ITEM_HULL_W, ITEM_HULL_H, ITEM_MARGIN = 92, 86, 2
+NEED_W, NEED_H = ITEM_HULL_W + 2 * ITEM_MARGIN, ITEM_HULL_H + 2 * ITEM_MARGIN   # 96, 90
 
 fails = []
 
@@ -206,6 +209,10 @@ def main():
     # B8 planted defects: the instruments must be able to see a failure.
     planted = dict(p, things=p["things"] + [("ShipChunk", gen.W // 2, gen.H // 2, 0)])
     _, bad8 = clearing_violations(planted)
+    # a plan whose centred clearing is one cell short of 96x90 must fail B3 (the fixed floor, not gen's)
+    short = dict(p, clears=[c for c in p["clears"] if c[4] != "all" or (c[2], c[3]) == tuple(p["foot"][2:4])]
+                 + [((gen.W - 95) // 2, (gen.H - 90) // 2, 95, 90, "all")])
+    short_rect, _ = clearing_violations(short)
     planted2 = dict(p, things=p["things"] + [("RSW_WreckedSkiff", 3, 3, 0)])
     miss8 = missing_defs(planted2)
     planted3 = dict(p, terrain=p["terrain"] + [(3, 3, "Steel")])        # a ThingDef named as terrain
@@ -215,9 +222,9 @@ def main():
         tf.write("planet:\n  start_tile: 1\n  start_tile: 17007\n  start_tile_mutator: RUT_ZeddosYard\n")
     _, dup_err = load_planet(tf.name)
     os.unlink(tf.name)
-    bar("B8 planted defects caught", bool(bad8) and miss8 is not None and "THING RSW_WreckedSkiff" in miss8
+    bar("B8 planted defects caught", bool(bad8) and short_rect is None and miss8 is not None and "THING RSW_WreckedSkiff" in miss8
         and miss8b is not None and "TERRAIN Steel" in miss8b and dup_err is not None,
-        "clearing=%s defs=%s terrain-type=%s dup-key=%r" % (bad8[:1], miss8, miss8b, dup_err))
+        "clearing=%s short95x90=%s defs=%s terrain-type=%s dup-key=%r" % (bad8[:1], short_rect, miss8, miss8b, dup_err))
 
     print("RESULT: %s" % ("GREEN" if not fails else "RED " + ", ".join(fails)))
     return 1 if fails else 0
