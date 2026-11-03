@@ -8,7 +8,9 @@ save; `world/ASHKARR_WORLDMAP_tiles.csv` is only a dated record of it):
 
 Pass (exit 0) when, on the save named by `infrastructure/state/canon.yml` planet.start_savegame:
   * 0 tiles sit on any of the 23 donor/vanilla BiomeDefs the item measured on 2026-09-12;
-  * every tile's biome resolves to an `RM_`/`RUT_` defName;
+  * every tile's biome resolves to an `RM_`/`RUT_` defName AND that defName is declared by a BiomeDef under
+    src/ -- the item's "owned successor": a retired or renamed name still painted (RM_Wasteland, renamed
+    RM_Wastes; RM_NightsideIce, renamed RM_SleepingIce) resolves to nothing on a load, so it FAILs;
   * tile 17007 (the player start, the owner's "GRiNDTerra" complaint) is on an owned def that some repo mod
     under src/ declares.
 Exit 1 is a real FAIL (a donor or non-owned def painted wins over an unnamed hash). Exit 2 is UNMEASURED: a tile
@@ -138,6 +140,8 @@ def main(argv=None):
     # By decoded name only: a bare formula hash is not evidence (a collision makes it ambiguous).
     donor_tiles = [i for i, n in enumerate(names) if n in DONORS]
     foreign = sorted({n for n in names if not OWNED.match(n) and not n.startswith("?")})
+    # Owned means declared by one of our mods today, not merely spelled with our prefix.
+    dead = sorted({n for n in names if OWNED.match(n) and n not in src_defs})
     counts = {}
     for n in names:
         counts[n] = counts.get(n, 0) + 1
@@ -146,11 +150,16 @@ def main(argv=None):
         print("  %-24s %6d%s" % (n, c, "" if n in src_defs else "  (no src BiomeDef: retired/renamed name)"))
     start = names[START_TILE] if START_TILE < len(names) else None
     print("tile %d: %s, declared by %s" % (START_TILE, start, sorted(src_defs.get(start, ())) or "no src mod"))
-    print("donor tiles: %d   non-owned defs: %s   unnamed hashes: %s"
-          % (len(donor_tiles), foreign or "none", sorted(unnamed) or "none"))
+    print("donor tiles: %d   non-owned defs: %s   dead owned names: %s   unnamed hashes: %s"
+          % (len(donor_tiles), foreign or "none",
+             ", ".join("%s %d" % (n, counts[n]) for n in dead) or "none", sorted(unnamed) or "none"))
 
     if donor_tiles or foreign:
         print("FAIL: donor or non-owned defs still painted")
+        return 1
+    if dead:
+        print("FAIL: %d tiles on %d RM_/RUT_ name(s) no src BiomeDef declares (retired/renamed; repaint them)"
+              % (sum(counts[n] for n in dead), len(dead)))
         return 1
     if unnamed:
         print("UNMEASURED: %d tile hash(es) no source names" % len(unnamed))
@@ -158,7 +167,8 @@ def main(argv=None):
     if not start or not OWNED.match(start) or start not in src_defs:
         print("FAIL: tile %d is not on an owned def a src mod declares" % START_TILE)
         return 1
-    print("PASS: 0 of %d tiles on the %d donor/vanilla defs; every tile on an RM_/RUT_ def" % (len(names), len(DONORS)))
+    print("PASS: 0 of %d tiles on the %d donor/vanilla defs; every tile on an RM_/RUT_ def a src mod declares"
+          % (len(names), len(DONORS)))
     return 0
 
 
