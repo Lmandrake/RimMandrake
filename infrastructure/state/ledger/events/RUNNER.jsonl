@@ -2143,3 +2143,6 @@
 {"seat":"RUNNER","event":"live","id":"FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:07Z","tsn":1793697487020187205}
 {"seat":"RUNNER","event":"live","id":"FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:09Z","tsn":1793697489604914294}
 {"seat":"RUNNER","event":"live","id":"FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:18:12Z","tsn":1793697492179571917}
+{"seat":"RUNNER","event":"note","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","text":"ops_watch: cleared at 2026-11-03T09:22:04Z (disk.pool_breach now 0)","ts":"2026-11-03T09:23:21Z","tsn":1793697801953411104}
+{"seat":"RUNNER","event":"spawn","name":"OPS_QUEUES_READING_RESTORE_HQXV","kind":"task","needs":"offline","title":"Ops alarm QUEUE_BLIND: queues.blind = 1 queues not seen (MEASURED), line > 0","for":"BENCH","from":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","why":"ops_watch alarm (deterministic, no AI): QUEUE_BLIND:queues.blind","ts":"2026-11-03T09:23:24Z","tsn":1793697804614086453}
+{"seat":"RUNNER","event":"raise","id":"OPS_QUEUES_READING_RESTORE_HQXV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T09:23:26Z","tsn":1793697806622221553}
