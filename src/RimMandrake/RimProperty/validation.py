@@ -23,22 +23,14 @@ Source/ tree for `DebugAction`/`Log.Message`/`Log.Warning` found exactly
 ONE debug action in the entire mod -- `DebugActions_TheftHauler.cs`'s own
 test harness -- versus Pits' purpose-built `[RMPitsDebug]` log-tag family):
 
-  - SalvageClaim (`FloatMenuOptionProvider_PaySalvageClaim`) and
-    WalkableCommerce (`FloatMenuOptionProvider_BuyMerchandise`) BOTH run
-    their entire transaction (silver deduction + `PropertyEngine.Fire`)
-    directly inside the float-menu option's own delegate -- there is no
-    JobDef/JobDriver backing either verb (their own doc comments say so
-    explicitly: "no JobDriver/JobDef at all"). `jawa/ordered_job` (the
-    escape valve used below for the other two verbs) can only dispatch a
-    JobDef; there is nothing to give it here, and no bridge tool exists to
-    click a float-menu option directly. **Both toggles
-    (`salvageClaimFeeEnabled`, `walkableCommerceEnabled`) are therefore
-    UNCOVERED by any component in this suite -- a genuine floor gap, not an
-    oversight** (matches the exact shape of Pits' own two uncovered
-    toggles, `fallDamageEnabled`/`pitCellExposureEnabled`, and
-    `modcheck.floor.uncovered()`'s own docstring: "callers ... decide
-    whether an uncovered toggle is fatal to a run", never enforced by
-    `load_validation` itself).
+  - The five settlement verbs (salvage claim fee, walkable commerce,
+    pickpocket, hiring the placeless, bribes) run their whole transaction
+    inside the float-menu option's own delegate -- no JobDef/JobDriver.
+    They are covered by `RM_SettlementVerbsProof.RunOne(<verb>)` through
+    `jawa/static_call` (SETTLEMENT_VERBS_WAVE_1): it builds the real
+    right-click menu with `FloatMenuMakerMap.GetOptions`, clicks the
+    option, reads the ledger, and checks the option is gone with the
+    verb's toggle off -- see the chains below.
   - `perceptionEnabled` gates `PropertyEngine.RollPerceptionAndPropagate`
     (witness roll + `FactionRecord.RegisterWitness`), which has no getter,
     no debug action, and no log line anywhere in this mod -- its only
@@ -50,8 +42,8 @@ test harness -- versus Pits' purpose-built `[RMPitsDebug]` log-tag family):
     left uncovered rather than faked with a component that can't actually
     distinguish on/off.
 
-That leaves two of the five toggles covered: `animalTheftEnabled` and
-`theftHaulerEnabled` (the latter honestly caveated below -- see
+`perceptionEnabled` stays uncovered; `animalTheftEnabled` and
+`theftHaulerEnabled` are covered (the latter honestly caveated below -- see
 `theft_hauler_uninstall`'s own comment on what it does NOT prove).
 
 WHY NEITHER CHAIN USES `t.set_setting`: `PropertySettings`'s fields are
@@ -425,38 +417,51 @@ def perception_unmeasured(t):
                        "that fires a TakingEvent with perceptionEnabled on/off and reports witnesses/suspicion")
 
 
-@suite.chain("salvage_fee_unmeasured")
-def salvage_fee_unmeasured(t):
+# SETTLEMENT_VERBS_WAVE_1: the five settlement verbs run inside float-menu delegates (no JobDef), so they are driven
+# by RM_SettlementVerbsProof.RunOne(<verb>) through jawa/static_call: it builds the REAL right-click menu
+# (FloatMenuMakerMap.GetOptions), clicks the option, reads the ledger, checks the toggle-off menu, and cleans up.
+VERBS_PROOF = "RimMandrake.Property.RM_SettlementVerbsProof"
+
+
+def _verb_proof(t, verb):
+    if not t._guard():
+        return
+    r = t.bridge_call("jawa/static_call", type=VERBS_PROOF, method="RunOne", args=verb)
+    text = str((r or {}).get("result", ""))
+    if not text.startswith("PASS"):
+        raise ExpectationFailed("settlement verb proof %s: %s (raw: %s)" % (verb, text or "no result", r))
+
+
+@suite.chain("salvage_claim_fee")
+def salvage_claim_fee(t):
     with t.component("salvage_claim_fee_float_menu", toggle="salvageClaimFeeEnabled"):
-        _unmeasured(t, "FloatMenuOptionProvider_PaySalvageClaim runs inside the float-menu delegate (no JobDef); "
-                       "no bridge tool lists or clicks float-menu options")
+        _verb_proof(t, "salvage")
+    with t.component("salvage_claim_fee_downed_droid", beyond_toggle=True):
+        _verb_proof(t, "droid")
 
 
-@suite.chain("walkable_commerce_unmeasured")
-def walkable_commerce_unmeasured(t):
+@suite.chain("walkable_commerce")
+def walkable_commerce(t):
     with t.component("walkable_commerce_float_menu", toggle="walkableCommerceEnabled"):
-        _unmeasured(t, "FloatMenuOptionProvider_BuyMerchandise runs inside the float-menu delegate (no JobDef); "
-                       "no bridge tool lists or clicks float-menu options")
+        _verb_proof(t, "commerce")
 
 
-@suite.chain("pickpocket_unmeasured")
-def pickpocket_unmeasured(t):
+@suite.chain("pickpocket")
+def pickpocket(t):
     with t.component("pickpocket_float_menu", toggle="pickpocketEnabled"):
-        _unmeasured(t, "FloatMenuOptionProvider_Pickpocket is float-menu only; no tool lists/clicks float-menu options "
-                       "(PickpocketUtility.TransferToActor takes Thing/Pawn objects static_call cannot pass)")
+        _verb_proof(t, "pickpocket")
 
 
-@suite.chain("hire_placeless_unmeasured")
-def hire_placeless_unmeasured(t):
+@suite.chain("hire_placeless")
+def hire_placeless(t):
     with t.component("hire_placeless_float_menu", toggle="hirePlacelessEnabled"):
-        _unmeasured(t, "FloatMenuOptionProvider_HirePlaceless is float-menu only; no tool lists/clicks float-menu options")
+        _verb_proof(t, "hire")
 
 
-@suite.chain("bribe_unmeasured")
-def bribe_unmeasured(t):
+@suite.chain("bribe")
+def bribe(t):
     with t.component("bribe_float_menu_and_dampen", toggle="bribeEnabled"):
-        _unmeasured(t, "FloatMenuOptionProvider_Bribe is float-menu only and FactionRecord suspicion has no getter; "
-                       "no tool lists/clicks float-menu options or reads FactionRecord")
+        _verb_proof(t, "bribe")
 
 
 @suite.chain("claim_recording_unmeasured")

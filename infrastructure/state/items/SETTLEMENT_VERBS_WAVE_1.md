@@ -1,3 +1,16 @@
+## 2026-11-02 (Relentless, gen 1) — click-through proof of all five verbs, offline-green
+`RM_SettlementVerbsProof.RunOne(<verb>)` (`src/RimMandrake/RimProperty/Source/RM_SettlementVerbsProof.cs`), run by
+`jawa/static_call`: on the current map it gives a colonist silver, spawns its own target beside it, builds the REAL
+right-click menu (`FloatMenuMakerMap.GetOptions`, so each provider's own gate runs), clicks the option, reads the
+ledger, checks the option is gone with the verb's toggle off, then destroys what it made and takes the silver back.
+Cases: `salvage` (A1, weakly foreign-claimed revolver: fee = `ComputeFeeSilver`, ClaimFeePaid, payer wins, fee rises
+with claim strength and follows recognizability), `droid` (A2, downed mechanoid), `commerce` (A3), `pickpocket` (A4),
+`hire` (A5), `bribe` (A6, suspicion falls by `bribeDampenFraction`). `validation.py`'s five float-menu chains now call
+it instead of raising UNMEASURED. Offline: `selftest_settlement_verbs_static.py` (Compile-list coverage, labels the
+proof clicks = labels the providers build, DLL carries the type; three planted breaks caught). Live lines:
+`infrastructure/state/live_proofs/SETTLEMENT_VERBS_WAVE_1.txt` A1–A6. Still out of scope: burglary, fencing,
+smuggling, rumors, sabacc (blocked on `SETTLEMENT_VISIT_LOOP_1` / AccessPolicy, as below).
+
 ## 2026-09-19 (FOUNDRY, overnight full-621-mod batch) — PARTIAL live confirmation: HirePlaceless + Pickpocket
 
 `RimProperty` deployed clean (in sync). Full 621-mod cold load confirmed via `Bridge
@@ -10,10 +23,10 @@ the actor (`rimworld/select_pawn`), right-clicked the target
 - `"Cannot hire Poiork: not enough silver (need 20, have 0)"` — **HirePlaceless option
   present**, correctly disabled with the correct reason (actor genuinely has 0 silver,
   gate reads `hirePlacelessFeeSilver` default 20 correctly).
-- `"Can's steal from Poiork (No items)"` — **Pickpocket option present**, correctly
-  disabled (target genuinely carries no items). Note: pre-existing label typo in the
-  mod's own text ("Can's" should read "Can't") — cosmetic, not this item's scope, flagged
-  for whoever next touches that string.
+- `"Can's steal from Poiork (No items)"` — **NOT our Pickpocket option**: it is
+  another mod's string (no `Can's` exists anywhere in `src/RimMandrake/RimProperty`), and
+  our `FloatMenuOptionProvider_Pickpocket` returns no option at all when the target
+  carries nothing. Our Pickpocket was not observed in this pass.
 - **Bribe did not appear** — correctly absent: this test's target had `faction: null`
   (placeless), and Bribe's own gate requires `targetPawn.Faction != null`. This is the
   gate working as designed, not a miss; Bribe's actual presence/behavior against a

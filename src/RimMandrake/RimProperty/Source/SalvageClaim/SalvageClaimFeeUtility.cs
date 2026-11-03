@@ -26,13 +26,13 @@ namespace RimMandrake.SalvageClaim
         // claim record at all) still costs a nominal admin fee — the gizmo
         // is deliberately never free (spec item 1 frames this whole family
         // as a GRAY ZONE, not a free-for-all).
-        private const int MinFeeSilver = 5;
+        internal const int MinFeeSilver = 5;
 
         // A maximally recognizable Thing (named/mechanoid/high-quality/
         // high-value — RecognizabilityUtility.Score saturating at 1.0) with
         // a fresh, undecayed prior claim (EffectiveStrength 1.0): the worst
         // case for "someone is going to notice this is missing."
-        private const int MaxFeeSilver = 350;
+        internal const int MaxFeeSilver = 350;
 
         // Even at claimStrength 0 (fully decayed, or genuinely never
         // claimed), a highly recognizable Thing still carries this fraction
@@ -41,7 +41,7 @@ namespace RimMandrake.SalvageClaim
         // named droid from pricing identically to a decayed claim on a
         // steel bar; recognizability alone, not just claim strength, is
         // allowed to move the price.
-        private const float UnclaimedStrengthFloor = 0.2f;
+        internal const float UnclaimedStrengthFloor = 0.2f;
 
         public static int ComputeFeeSilver(Thing thing, ClaimResolution? priorClaim)
         {

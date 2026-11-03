@@ -1,0 +1,6 @@
+A1 L2: on a quicktest map a colonist with silver right-clicks a weakly foreign-claimed revolver; the real menu offers "Pay salvage claim fee (N silver)" with N = SalvageClaimFeeUtility.ComputeFeeSilver; clicking it takes exactly N silver and records ClaimFeePaid for the payer, who then holds the winning claim; the fee rises with prior-claim strength (not flat); with salvageClaimFeeEnabled off the option is gone.
+A2 L2: the same claim fee on a downed (alive) mechanoid pawn records ClaimFeePaid for the payer and takes the fee.
+A3 L2: a merchant-claimed (foreign Purchased) revolver offers "Buy X (price silver)"; clicking takes the price and records Purchased for the buyer; with walkableCommerceEnabled off the option is gone.
+A4 L2: a non-hostile faction pawn carrying gold offers "Pickpocket <item> from"; clicking moves the item into the thief's inventory and records Stolen naming the victim; with pickpocketEnabled off the option is gone.
+A5 L2: a factionless WildMan offers "Hire X (fee silver)"; clicking takes the fee and records Purchased on the hired pawn for the payer.
+A6 L2: a non-hostile faction pawn offers "Buy X a round (fee silver)"; clicking takes the fee and the payer's suspicion in that faction falls by bribeDampenFraction (planted 2-day-old witness, read before and after); with bribeEnabled off the option is gone.

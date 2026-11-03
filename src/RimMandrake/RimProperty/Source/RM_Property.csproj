@@ -46,6 +46,7 @@
     <Compile Include="ClaimRecordList.cs" />
     <Compile Include="ClaimWipe.cs" />
     <Compile Include="RM_ClaimEraseProof.cs" />
+    <Compile Include="RM_SettlementVerbsProof.cs" />
     <Compile Include="ClaimResolution.cs" />
     <Compile Include="ClaimDecay.cs" />
     <Compile Include="ClaimEngine.cs" />
