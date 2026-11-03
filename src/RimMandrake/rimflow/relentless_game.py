@@ -42,6 +42,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import relentless_expedite  # noqa: E402
 
 GAME = "game"
 DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "stage_max_s": 3600, "stage_tries": 2,
@@ -171,7 +172,21 @@ def other_active(states, item):
             return s["item"]
         if s["item"] != item and s["status"] == "running" and s.get("live_iter"):
             return s["item"]        # a worker iterating on the running game is its one live user
-    return None
+    return expedited_ahead(states, item) if item is not None else None
+
+
+def expedited_ahead(states, item):
+    """An expedited item waiting its turn on the game goes next: nothing behind it starts. It stops no one (owner's card
+    2026-11-03: "leaves the live game alone"), and one put down on a retry holds nothing; its 4 h expiry bounds the rest."""
+    mine = next((s.get("expedite") for s in states if s["item"] == item), None)
+    best = None
+    for s in states:
+        e, g = s.get("expedite"), s.get("game") or {}
+        if (s["item"] != item and e and s["status"] == GAME and g.get("phase") in ("prove", "stage", "final")
+                and not g.get("retry_at") and (not mine or relentless_expedite.rank(e) < relentless_expedite.rank(mine))
+                and (best is None or relentless_expedite.rank(e) < relentless_expedite.rank(best["expedite"]))):
+            best = s
+    return best["item"] if best else None
 
 
 def untried(states, item, started):
@@ -195,9 +210,10 @@ def batch(states, item, now, full=False):
 
 
 def finals_waiting(states):
-    """The game items waiting in phase final, oldest first: [(final_since, item)]."""
-    return sorted(((s["game"].get("final_since") or 0), s["item"]) for s in states
-                  if s["status"] == GAME and (s.get("game") or {}).get("phase") == "final")
+    """The game items waiting in phase final, expedited then oldest first: [(final_since, item)]."""
+    rows = [s for s in states if s["status"] == GAME and (s.get("game") or {}).get("phase") == "final"]
+    rows.sort(key=lambda s: (not s.get("expedite"), s["game"].get("final_since") or 0, s["item"]))
+    return [(s["game"].get("final_since") or 0, s["item"]) for s in rows]
 
 
 def final_split(rows, owed, clauses, started):
@@ -947,7 +963,7 @@ def step(store, fx, r, item, now, acts, sup):
         queue = finals_waiting(store.states())
         if not queue or queue[0][1] != item:
             return      # the oldest final stages the one load for the batch
-        if len(queue) < c["final_batch_min"] and now - queue[0][0] < c["final_wait_s"]:
+        if len(queue) < c["final_batch_min"] and now - queue[0][0] < c["final_wait_s"] and not st.get("expedite"):
             return
         _save(store, item, lambda s: s["game"].update(phase="stage", full=True, stages=0))
         acts.append({"do": "game_final_stage", "item": item, "batch": [q[1] for q in queue]})

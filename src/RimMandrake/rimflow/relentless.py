@@ -33,6 +33,7 @@ import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
 import relentless_game  # noqa: E402
+import relentless_expedite  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_strikes  # noqa: E402
 import relentless_live  # noqa: E402
@@ -232,11 +233,12 @@ def new_state(item, now, why):
 
 
 def queue_order(states, plan=None, first=None):
-    """System items first (`first`: {item: place}, Operations' verdict, PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF), then the
-    priority list (`plan`: {item: place}, DI3), then returned items, oldest return first, then fresh in enrol order. Pure."""
+    """An expedited item first (relentless_expedite), then system items (`first`: {item: place}, Operations' verdict,
+    PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF), then the priority list (`plan`: {item: place}, DI3), then returned items, oldest return first, then fresh in enrol order. Pure."""
     plan, first = plan or {}, first or {}
     q = [s for s in states if s["status"] == "queued"]
-    return sorted(q, key=lambda s: (-1, first[s["item"]], s["item"]) if s["item"] in first
+    return sorted(q, key=lambda s: (-2, relentless_expedite.rank(s["expedite"]), s["item"]) if s.get("expedite")
+                  else (-1, first[s["item"]], s["item"]) if s["item"] in first
                   else (0, plan[s["item"]], s["item"]) if s["item"] in plan
                   else (1, s["returned_at"], s["item"]) if s["returned_at"] is not None
                   else (2, s["enrolled_at"], s["item"]))
@@ -1264,6 +1266,11 @@ class Effects(relentless_game.GameFx):
 
     def ledger_note(self, item, text):
         r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
+    def expedite_note(self, item, text):
+        """One use of the lane on the ledger; the `delegated:` why is what puts it in the daily digest."""
+        r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "delegated: expedite lane, set by Operations or the Conductor")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_needs_owner(self, item, why):
@@ -2389,6 +2396,48 @@ def reenrol(store, item, why, now):
         return st
 
 
+def expedite_cli(a, store, now, r, env=None):
+    """`relentless.py expedite`. A request puts the item in line at once, past every cap (the owner set none); the tick
+    folds it onto the state. Anything the line could never start is refused here, not left to wait 4 h."""
+    env = os.environ if env is None else env
+    if a.verb == "list":
+        print("\n".join(relentless_expedite.listing(store, now)))
+        return 0
+    if not a.item:
+        print("relentless: REFUSED: expedite %s needs an item" % a.verb, file=sys.stderr)
+        return 2
+    try:
+        if a.verb == "set":
+            st = store.load(a.item)
+            why = expedite_refusal(a.item, st, r)
+            if why:
+                raise ValueError(why)
+        e = relentless_expedite.request(store, a.verb, a.item, now, env, a.level, a.by, a.why)
+        if a.verb == "set":
+            if st is None:
+                st = enrol_one(store, a.item, "expedite %s by %s: %s" % (a.level, a.by, a.why), now)
+            elif st["status"] == "retired":
+                st = reenrol(store, a.item, "expedite %s by %s: %s" % (a.level, a.by, a.why), now)
+    except ValueError as ex:
+        print("relentless: REFUSED: %s" % ex, file=sys.stderr)
+        return 2
+    print("%s %s" % (a.item, "cleared" if e is None else "%s until %s (status %s)" % (
+        e["level"], iso(e["until"]), (store.load(a.item) or {}).get("status"))))
+    return 0
+
+
+def expedite_refusal(item, st, r):
+    """Why this item can never take the lane, or None."""
+    if not ledger_has(item):
+        return "%s has never been filed" % item
+    if item in r.get("pool_ids_exclude", []):
+        return "%s is on pool_ids_exclude: the line retires it on sight; take it off the list first" % item
+    if st is not None and st["status"] == "done":
+        return "%s is done in the store" % item
+    filed = [e.get("kind") for e in pkg("model").read() if e.get("id") == item and e.get("event") == "file"]
+    return concept_refused(pkg("concept_tree").REPO, item, filed[-1] if filed else None)
+
+
 def run_of(st, key):
     return st.get("run") if key == "run" else (st.get(key) or {}).get("run")
 
@@ -3137,7 +3186,7 @@ def lease(store, fx, r, now, acts):
     first = getattr(fx, "first", None) or {}
     paused = content_paused(fx, store.states())
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
-        if paused and st["item"] not in first and st["item"] not in (getattr(fx, "plan", None) or {}):
+        if paused and not st.get("expedite") and st["item"] not in first and st["item"] not in (getattr(fx, "plan", None) or {}):
             # degraded: content waits, what runs finishes; the priority list is his word and still goes
             acts.append({"do": "wait", "why": "health degraded: content paused while system items wait"})
             return
@@ -3589,12 +3638,23 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
             acts.append({"do": "error", "item": None, "why": "reap_boxes %s: %s" % (type(e).__name__, e)})
         spend_holds(store, fx, r, now, acts)
+        try:        # before the order is read; a broken log costs the lane, never the tick
+            relentless_expedite.sync(store, fx, now, acts)
+        except Exception as e:  # noqa: BLE001
+            acts.append({"do": "error", "item": None, "why": "expedite %s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)[:300]})
         enrol_acts = enrol(store, fx, r, now)
         acts += [{"do": "enrol", "item": i} for i in enrol_acts]
         h = getattr(fx, "_health", None)
         if h:       # what Relentless obeyed this tick; a missing or stale verdict is said here (Operations raises it)
             acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),
                          "why": h["why"][:300]})
+        try:        # after enrol, which reads the verdict the choice of victim needs
+            active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
+            relentless_expedite.make_room(store, fx, r, now, acts, active, admission(store, fx, r, now, active), fail)
+        except Exception as e:  # noqa: BLE001
+            acts.append({"do": "error", "item": None, "why": "expedite interrupt %s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)[:300]})
         try:
             launch_proved(store, now)
             lease(store, fx, r, now, acts)
@@ -3699,6 +3759,13 @@ def main(argv=None):
     p = sub.add_parser("enrol", help="carry one named item, ahead of the share's next picks")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
+    p = sub.add_parser("expedite", help="the escalation route: Operations or the Conductor only; 4 h unless renewed")
+    p.add_argument("verb", choices=["set", "renew", "clear", "list"])
+    p.add_argument("item", nargs="?")
+    p.add_argument("--level", choices=relentless_expedite.LEVELS, help="interrupt: very rare, an imminent threat to machine "
+                   "safety or a panicked owner; may stop running work. expedited: the next available place")
+    p.add_argument("--by", choices=relentless_expedite.SETTERS)
+    p.add_argument("--why")
     p = sub.add_parser("reenrol", help="put a retired item back in line; journals why")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
@@ -3771,6 +3838,8 @@ def main(argv=None):
                 return 2
             st = enrol_one(Store(), a.item, a.why, time.time())
             print("%s %s" % (a.item, st["status"]))
+        elif a.cmd == "expedite":
+            return expedite_cli(a, Store(), time.time(), rules())
         elif a.cmd == "reenrol":
             st = reenrol(Store(), a.item, a.why, time.time())
             print("%s %s gen %d" % (a.item, st["status"], st["gen"]))

@@ -175,5 +175,9 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
   Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the BENCH lane from the goals);
   schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
   evidence, to him (INCONCLUSIVE is never success).
+- **Escalation route (owner's card 2026-11-03):** `python3 src/RimMandrake/rimflow/relentless.py expedite {set,renew,clear,list} <item> --level interrupt|expedited --by Conductor --why "..."`.
+  `expedited` takes the next free place, ahead of everything in line, and stops nothing. `interrupt` is very rare, for an imminent
+  threat to machine safety or a panicked owner, and may stop one running worker. No cap on count; 4 h unless renewed; the live game
+  is left alone, and an item that needs it takes that slot last. Relentless never sets it on its own work. Every use reaches the daily digest.
 - **Never:** answer from memory instead of the numbers; exempt its own builds from the Arbiter or Auditor; edit
   `canon.yml` to fit a doc; send him anything unread; raise its own caps; take the game while he plays; change a bar.

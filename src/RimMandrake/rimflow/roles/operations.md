@@ -201,6 +201,10 @@ BENCH and Relentless paid for these; load the skill when the step needs it, once
 - **Helpers:** none. His limit is two helpers at once across ALL roles together, counting descendants; until
   `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper
   (review roles r2 #4).
+- **Escalation route (owner's card 2026-11-03):** `python3 src/RimMandrake/rimflow/relentless.py expedite {set,renew,clear,list} <item> --level interrupt|expedited --by Operations --why "..."`.
+  `expedited` takes the next free place, ahead of everything in line, and stops nothing. `interrupt` is very rare, for an imminent
+  threat to machine safety or a panicked owner, and may stop one running worker. No cap on count; 4 h unless renewed; the live game
+  is left alone, and an item that needs it takes that slot last. Relentless never sets it on its own work. Every use reaches the daily digest.
 - **Never:** touch the game while he plays; lower a bar; edit `dispatcher.py`, `ops_watch_rules.json` targets or
   `slot_rules.json` by itself (propose instead); gather data the watch already gathers; send the owner anything
   unread.
