@@ -1,0 +1,1 @@
+live-proof L1: python3 src/RimMandrake/Utils/live_def_check.py --has PawnKindDef/RM_WardenMother --has LifeStageDef/RM_WardenMotherElder && python3 src/RimMandrake/Utils/live_log_check.py --never Miasma/WardenMother/WardenMother

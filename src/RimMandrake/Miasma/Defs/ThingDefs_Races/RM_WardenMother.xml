@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_WardenMother.xml   UtinniPatches - WARDEN_MOTHER_BEFRIENDING_1
+  RM_WardenMother.xml   Miasma - WARDEN_MOTHER_BEFRIENDING_1
 
   The Miasma's centrepiece giant, ruled by the owner 2026-09-23
   (miasma_fauna_roster_2026-09-23.md §6): "a not-so-gentle giant who can be
@@ -11,7 +11,7 @@
   comment was always wrong for this reason, per that file's own retraction).
 
   Spawned exclusively via RM_GenStep_CrecheScatterer
-  (Defs/MapGeneration/RUT_Miasma_CrecheScatterer.xml, RM_GenStep_PlacedSetPieces),
+  (Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml, RM_GenStep_PlacedSetPieces),
   never via <wildAnimals> — zero biome wild-spawn commonality, matching the
   already-shipped GenStep's own "the GenStep is their only entry" posture.
   That GenStep's own validator (RM_ScattererValidator_BrineShallowWater)
@@ -49,9 +49,10 @@
   short for a creature this size, so a colony that raises her stranded young
   across a normal campaign has a real chance of outliving her — the
   succession payoff (§6a) depends on that. Full succession-on-death (the
-  young inheriting the crèche) and the art/UX foreshadowing (slowing
+  young inheriting the crèche) and the UX foreshadowing (slowing
   measurably, an NPC who tells you) are NOT built here — filed as
-  WARDEN_MOTHER_SUCCESSION_1.
+  WARDEN_MOTHER_SUCCESSION_1. The visible-age half is: her elder stage
+  (RM_WardenMotherElder, age 38+) draws the aged art.
 
   CompProperties_TerritorialAnchor dutyDef RM_AnchorGuard / anchorRadius 16:
   her reach. CompProperties_WaterLocked: the movement constraint's own tick
@@ -60,13 +61,12 @@
   About.xml dependency on that mod.
 
   ART: artpipe RM_WardenMother (south/east/north, 512px) wired at Things/Pawn/Animal/Miasma/WardenMother/WardenMother
-  (MIASMA_WARDEN_MOTHER_ART_1). The first aged set (RM_WardenMother_Aged) came back as a different creature (spindly
-  crab legs, no flippers) so it is NOT wired: the elder stage draws the same art until RM_WardenMother_Aged2 (a reskin
-  of this south view) lands.
+  (MIASMA_WARDEN_MOTHER_ART_1). Her elder stage (last season) draws WardenMotherAged: the same creature, bleached,
+  cracked, barnacles dead, edited from each adult facing so the footprint matches.
 -->
 <Defs>
 
-  <!-- Her last season: age 38 of lifeExpectancy 45 (ART job RM_WardenMother_Aged2, pending). Visible-age swap only;
+  <!-- Her last season: age 38 of lifeExpectancy 45 (draws WardenMotherAged). Visible-age swap only;
        whatever the succession code reads is WARDEN_MOTHER_SUCCESSION_1's. -->
   <LifeStageDef>
     <defName>RM_WardenMotherElder</defName>
@@ -193,7 +193,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>7.5</drawSize>
         </bodyGraphicData>
