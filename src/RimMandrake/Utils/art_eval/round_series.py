@@ -53,6 +53,12 @@ def _instant(s):
         return 0.0
 
 
+def _order(r: dict) -> tuple:
+    """When a reset/stop line happened: its stamp, then its place in the file. Stamps are whole seconds, so a reset
+    appended in the same second as a stop is newer only by file order (ROUND_SERIES_FIX_SAME_SECOND_RESTART)."""
+    return (_instant(r.get("at")), r.get("_seq", -1))
+
+
 def _jsonl(p: Path) -> list:
     if not p.is_file():
         return []
@@ -61,17 +67,18 @@ def _jsonl(p: Path) -> list:
 
 def resets(path: Path = RESETS) -> dict:
     """{def: latest reset record}; the record's series = how many resets that def has had. A STOP line
-    ({"stop": true}) newer than the reset is attached as rec["stopped"] (the series is over: nothing is filed,
+    ({"stop": true}) after the reset (stamp, then file order) is attached as rec["stopped"] (the series is over: nothing is filed,
     judged or installed for it until a new reset)."""
     out, stops = {}, {}
-    for r in _jsonl(path):
+    for n, r in enumerate(_jsonl(path)):
         if not r.get("def"):
             continue
+        r = dict(r, _seq=n)             # file order breaks a same-second tie (stamps are whole seconds)
         box = stops if r.get("stop") else out
-        if r["def"] not in box or _instant(r["at"]) >= _instant(box[r["def"]]["at"]):
+        if r["def"] not in box or _order(r) >= _order(box[r["def"]]):
             box[r["def"]] = r
     for d, s in stops.items():
-        if d in out and _instant(s["at"]) >= _instant(out[d]["at"]):
+        if d in out and _order(s) > _order(out[d]):
             out[d] = dict(out[d], stopped=s)
     return out
 
@@ -104,7 +111,8 @@ def subject(defname: str, memo: dict | None = None) -> str:
 
 def record(defname: str, rs: dict | None = None):
     """The def's current series record, merged across every def name that is the same creature: the newest reset
-    among them, with `stopped` set when the newest stop among them is not older than it. None without a reset."""
+    among them, with `stopped` set when the newest stop among them came after it (stamp, then file order). None without
+    a reset."""
     rs = resets() if rs is None else rs
     if not rs:
         return None
@@ -113,11 +121,11 @@ def record(defname: str, rs: dict | None = None):
     same = [r for d, r in rs.items() if d == defname or subject(d, memo) == me]
     if len(same) <= 1:
         return same[0] if same else None
-    cur = max(same, key=lambda r: _instant(r.get("at")))
+    cur = max(same, key=_order)
     stops = [r["stopped"] for r in same if r.get("stopped")]
-    stop = max(stops, key=lambda s: _instant(s.get("at"))) if stops else None
+    stop = max(stops, key=_order) if stops else None
     cur = {k: v for k, v in cur.items() if k != "stopped"}
-    if stop and _instant(stop.get("at")) >= _instant(cur.get("at")):
+    if stop and _order(stop) > _order(cur):
         cur["stopped"] = stop
     return cur
 

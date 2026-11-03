@@ -52,6 +52,13 @@ def renamed_def_checks():
             try:
                 RS.add_stop("D_new", {"why": "x"}, path=rp, now="2026-10-25T07:00:00-07:00")
                 check("rename: add_stop accepts the new name of a reset def", bool(RS.stopped("D_old", RS.resets(rp))))
+                # same second across names: the line written later wins
+                RS.add_reset("D_old", "fauna_x_00", {"by_card": "q → a"}, path=rp, now="2026-10-25T07:00:00-07:00")
+                check("rename: same-second reset under the old name restarts the new name",
+                      RS.stopped("D_new", RS.resets(rp)) is None)
+                RS.add_stop("D_new", {"why": "z"}, path=rp, now="2026-10-25T07:00:00-07:00")
+                check("rename: same-second stop under the new name stops the old name",
+                      bool(RS.stopped("D_old", RS.resets(rp))))
             except ValueError:
                 check("rename: add_stop accepts the new name of a reset def", False)
         finally:
@@ -123,6 +130,13 @@ def main():
         check("stop does not move the reset time", RS.regen_counts(later, rs2)["D"] == 1)
         RS.add_reset("D", "fauna_x_00", {"by_card": "q → a"}, path=rp, now="2026-10-26T07:00:00-07:00")
         check("a newer reset clears the stop", not RS.stopped("D", RS.resets(rp)) and RS.tag("D", 1, RS.resets(rp)) == "s3r1")
+        # ROUND_SERIES_FIX_SAME_SECOND_RESTART: stamps are whole seconds; file order breaks a same-second tie
+        RS.add_stop("D", {"why": "x"}, path=rp, now="2026-10-27T07:00:00-07:00")
+        RS.add_reset("D", "fauna_x_00", {"by_card": "q → a"}, path=rp, now="2026-10-27T07:00:00-07:00")
+        check("same second: a reset after a stop restarts the series",
+              not RS.stopped("D", RS.resets(rp)) and RS.tag("D", 1, RS.resets(rp)) == "s4r1")
+        RS.add_stop("D", {"why": "y"}, path=rp, now="2026-10-27T07:00:00-07:00")
+        check("same second: a stop after a reset stops it", bool(RS.stopped("D", RS.resets(rp))))
 
         # install gate: the 2026-10-23 kept-art card covers keeps the REALLY_BAD judgement saw, never a keep he made
         # AFTER it (he looked again and kept it); a keep with no time is treated as newer (refuse, never overwrite)
