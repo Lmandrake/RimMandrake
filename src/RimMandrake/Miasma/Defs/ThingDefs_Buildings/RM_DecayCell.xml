@@ -137,28 +137,6 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- MIASMA_ROTTING_BED_CORPSES_1: no bone item exists in 1.6 + DLCs (MEASURED 2026-10-03, RimSage). ART: own
-       (artpipe RM_Bones). -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RM_Bones</defName>
-    <label>bones</label>
-    <description>Clean bones left when a rotting bed has finished with a body. Light, dry and slightly greasy.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/RM_Bones</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <drawSize>(0.7,0.7)</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>0.4</MarketValue>
-      <MaxHitPoints>60</MaxHitPoints>
-      <Mass>0.2</Mass>
-      <Flammability>0.2</Flammability>
-      <DeteriorationRate>0.5</DeteriorationRate>
-      <Beauty>-3</Beauty>
-    </statBases>
-    <stackLimit>75</stackLimit>
-    <thingCategories>
-      <li>ResourcesRaw</li>
-    </thingCategories>
-  </ThingDef>
+  <!-- RM_Bones (bonesDef above) moved to src/RimMandrake/Bones (BONES_LEAN_PORT_BUILD_TREELESS_WORLD), composed
+       into the same mandrake.rm.biomes package. -->
 </Defs>

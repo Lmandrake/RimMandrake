@@ -1,0 +1,5 @@
+# mod list: TEST.RULED_2026-10-20 (infrastructure/state/modlists/ModsConfig.TEST.RULED_2026-10-20.xml: carries mandrake.rm.biomes, no sihv.rombonesPort), all five DLC; a debug quicktest map is enough
+live-proof G1: python3 src/RimMandrake/Bones/prove_bones.py --clause G1 < /dev/null
+live-proof G2: python3 src/RimMandrake/Bones/prove_bones.py --clause G2 < /dev/null
+live-proof G3: python3 src/RimMandrake/Bones/prove_bones.py --clause G3 < /dev/null
+live-proof G4: python3 src/RimMandrake/Bones/prove_bones.py --clause G4 < /dev/null

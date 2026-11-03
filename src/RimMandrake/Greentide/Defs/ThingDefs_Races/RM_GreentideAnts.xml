@@ -27,7 +27,7 @@ Relentless and hungry.</description>
       <MarketValue>150</MarketValue>
       <!-- Stated directly: bodySize 2.0 squared, the numbers the donor's yield patches computed. -->
       <MeatAmount>280</MeatAmount>
-      <BoneAmount MayRequire="sihv.rombonesPort">100</BoneAmount>
+      <RM_BoneAmount>100</RM_BoneAmount>
       <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
       <ComfyTemperatureMax>75.8</ComfyTemperatureMax>
       <ArmorRating_Blunt>0.2</ArmorRating_Blunt>

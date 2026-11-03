@@ -862,38 +862,6 @@
     </match>
   </Operation>
 
-  <!-- BoneRefine -> The Refinery (RUT_Tree_Refinery) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="BoneRefine"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="BoneRefine"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefine"]/tab</xpath>
-        <value><tab>RUT_Tree_Refinery</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefine"]</xpath>
-        <value><tab>RUT_Tree_Refinery</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <!-- BoneRefineII -> The Refinery (RUT_Tree_Refinery) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/tab</xpath>
-        <value><tab>RUT_Tree_Refinery</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
-        <value><tab>RUT_Tree_Refinery</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
   <!-- BreadMoAM_AncientMiningTechniques -> The Refinery (RUT_Tree_Refinery) -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="BreadMoAM_AncientMiningTechniques"]</xpath>

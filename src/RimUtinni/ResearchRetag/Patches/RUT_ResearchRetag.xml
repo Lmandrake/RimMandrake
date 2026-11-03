@@ -713,42 +713,6 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/techLevel</xpath>
-        <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/techLevel</xpath>
-          <value><techLevel>Industrial</techLevel></value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
-          <value><techLevel>Industrial</techLevel></value>
-        </nomatch>
-      </li>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefine"]</xpath>
-        <match Class="PatchOperationSequence">
-          <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/prerequisites</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/prerequisites</xpath>
-            <value><prerequisites><li>BoneRefine</li></prerequisites></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
-            <value><prerequisites><li>BoneRefine</li></prerequisites></value>
-          </nomatch>
-        </li>
-          </operations>
-        </match>
-      </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="CGT_HalothaneGasProduction"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>

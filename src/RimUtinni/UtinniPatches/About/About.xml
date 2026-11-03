@@ -86,7 +86,6 @@
          the Armoury gap was (ARMOURY_LOADAFTER_STALE_1). Mostly BiomeCast_Ashkarr.xml,
          which MayRequire-gates against ~20 biome/animal mods individually. -->
     <li>Arcjc007.GravshipCrashes</li>                       <!-- JawaGroundHulk_Register.xml -->
-    <li>sihv.rombonesPort</li>                              <!-- Bones_CutFuelAndPlasteelRecipes.xml: must run after Bones' BoneRefinePatch.xml -->
     <li>BiomesTeam.BiomesCore</li>                          <!-- BiomeCast_Ashkarr.xml -->
     <li>mandrake.rsw.droidworks</li>                        <!-- GalacticEmpire.xml, HomesteadDefenseLeague.xml -->
     <li>mandrake.rsw.swbestiary</li>                        <!-- SandFishing_CrackedLands.xml: RM_DuneCrawler, RSW_SandStalker, RM_GlassPearl, RSW_RareSandCatches -->

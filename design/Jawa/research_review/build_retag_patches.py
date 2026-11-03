@@ -151,6 +151,7 @@ RETIRED_SOURCE_MODS = {
     "Shield Generators",              # neronix17.shieldgenerators
     "ReGrowth 2",                     # retired 2026-10-18 (460a7fe81): its patches and rows left the ship
     "Vanilla Factions Expanded - Insectoids 2",   # retired 2026-10-18 (c3e7e84a8)
+    "Rim of Madness - Bones Unofficial Fix",      # retired 2026-11-03 (BONES_LEAN_PORT_BUILD_TREELESS_WORLD)
 }
 
 

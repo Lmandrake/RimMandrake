@@ -11,7 +11,7 @@ RSW_SandLion (SWBestiary) was a twin of RM_Vekka (Stillsand, mandrake.rm.biomes)
   5. the frozen RUT_ExtremeDesert row names RM_Vekka behind MayRequire="mandrake.rm.biomes";
   6. the Utinni stat patches were REPOINTED, not just stripped: AnimalTolerances_Ashkarr.xml targets
      ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMin and Max and writes -1.1 and 100;
-     Doctrine/MegafaunaYield.xml targets RM_Vekka's statBases/MeatAmount and BoneAmount and writes 280 and 100.
+     Doctrine/MegafaunaYield.xml targets RM_Vekka's statBases/MeatAmount and RM_BoneAmount and writes 280 and 100.
 
 And one guard against the wrong dedupe: RSW_Vozzik is NOT a twin of RM_Vozzik. The owner gave them separate homes
 on 2026-10-04 (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1: RSW_Vozzik to the Rust Cathedral, "regenerate to make it
@@ -175,7 +175,7 @@ def main():
           px == {'/Defs/ThingDef[defName="RM_Vekka"]/statBases'}
           and pw == {('/Defs/ThingDef[defName="RM_Vekka"]/statBases', "MeatAmount", "280")}, repr((px, pw)))
     vekka_stat_checks("6a. AnimalTolerances", TOLER, {"ComfyTemperatureMin": "-1.1", "ComfyTemperatureMax": "100"})
-    vekka_stat_checks("6b. MegafaunaYield", MEGA, {"MeatAmount": "280", "BoneAmount": "100"})
+    vekka_stat_checks("6b. MegafaunaYield", MEGA, {"MeatAmount": "280", "RM_BoneAmount": "100"})
 
     # guard: the vozziks are two creatures by the owner's 2026-10-04 placement
     for n in ("RSW_Vozzik", "RM_Vozzik"):

@@ -204,8 +204,11 @@ def static_checks():
                    "<bonesDef>RM_Bones</bonesDef>"):
         if needle not in bed:
             bad.append("RM_RottingBed lacks %s" % needle)
-    if dc.count("<defName>RM_Bones</defName>") != 1:
-        bad.append("RM_Bones ThingDef missing or duplicated")
+    # BONES_LEAN_PORT_BUILD_TREELESS_WORLD: RM_Bones moved to the Bones engine (same composed package)
+    bones_xml = os.path.join(HERE, "..", "Bones", "Defs", "ThingDefs_Items", "RM_Bones.xml")
+    bones = open(bones_xml, encoding="utf-8").read() if os.path.exists(bones_xml) else ""
+    if bones.count("<defName>RM_Bones</defName>") != 1 or "<defName>RM_Bones</defName>" in dc:
+        bad.append("RM_Bones ThingDef must be defined once, in src/RimMandrake/Bones")
     rb = open(os.path.join(HERE, "Source", "RM_RottingBed.cs"), encoding="utf-8").read()
     for needle in ("rottingBedCorpsesEnabled", "rottingBedRotDays", '"Skull"', "AddSource(inner.LabelShort)",
                    "BodyPartDefOf.Head", "corpse.Strip(", "TickRare"):

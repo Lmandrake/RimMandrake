@@ -261,7 +261,7 @@ TIERS = {
             "neronix17.asimov",             # Asimov_Automaton flesh type
             "neronix17.outerrim.droiddepot",  # the actual droid RACES to shoot
             # --- butcher yields (bodySize^2 meat and bone)
-            "sihv.rombonesport",            # BoneAmount stat
+            "mandrake.rm.biomes",           # RM_BoneAmount stat (Bones engine; sihv.rombonesport retired)
         ],
         "dlc": True,
     },

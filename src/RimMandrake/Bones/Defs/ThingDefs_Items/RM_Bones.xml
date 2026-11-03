@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_Bones: first made for the Miasma rotting bed (MIASMA_ROTTING_BED_CORPSES_1, which still yields it);
+     moved here and made a Woody stuff by BONES_LEAN_PORT_BUILD_TREELESS_WORLD. ART: own (artpipe RM_Bones).
+     Stuff numbers (INVENTED, set against vanilla WoodLog): weaker than wood (hit points x0.55), barely
+     flammable (x0.3), a little slower to work, harder against heat. -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Bones</defName>
+    <label>bones</label>
+    <description>Clean, dry bones, from butchering or from a rotting bed that has finished with a body. On a world with almost no trees, bone is building stock: walls, doors and furniture can be made of it wherever wood would do.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Bones</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>(0.7,0.7)</drawSize>
+    </graphicData>
+    <soundInteract>Wood_Drop</soundInteract>
+    <soundDrop>Wood_Drop</soundDrop>
+    <statBases>
+      <MarketValue>0.4</MarketValue>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>-3</Beauty>
+      <StuffPower_Armor_Sharp>0.45</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.40</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.60</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>6</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>3</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>0.60</SharpDamageMultiplier>
+      <BluntDamageMultiplier>0.80</BluntDamageMultiplier>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <burnableByRecipe>true</burnableByRecipe>
+    <stuffProps>
+      <stuffAdjective>bone</stuffAdjective>
+      <categories>
+        <li>Woody</li>
+      </categories>
+      <commonality>0.5</commonality>
+      <color>(222,212,188)</color>
+      <constructEffect>ConstructWood</constructEffect>
+      <appearance>Smooth</appearance>
+      <soundImpactBullet>BulletImpact_Wood</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Wood</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Wood</soundMeleeHitBlunt>
+      <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Wood</soundImpactMelee>
+      <statFactors>
+        <MaxHitPoints>0.55</MaxHitPoints>
+        <Beauty>0.8</Beauty>
+        <Flammability>0.3</Flammability>
+        <WorkToMake>0.8</WorkToMake>
+        <WorkToBuild>0.8</WorkToBuild>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+</Defs>

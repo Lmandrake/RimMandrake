@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.bones</packageId>
+  <name>RimMandrake: Bones</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.environmentalhazards</li>
+  </loadAfter>
+  <description>BONES_LEAN_PORT_BUILD_TREELESS_WORLD: bone as building stock on a treeless world. A lean port of
+"Rim of Madness - Bones" (sihv.rombonesPort, MIT, Copyright (c) 2018 Rim of Madness Team), with our art and
+numbers. Composed into RimMandrake: Baroque Biomes (mandrake.rm.biomes) as an engine entry.
+
+Ships:
+  1. RM_Bones, a Woody stuff: walls, doors, furniture and anything wood-stuffed can be built of bone.
+  2. RM_BoneAmount, a pawn stat (50 per unit of body size; the megafauna yield patches scale it with
+     body size squared). Butchering a fleshy, non-insect corpse that yields more than one meat also yields
+     RoundRandom(RM_BoneAmount x multiplier x butcher efficiency) bones.
+  3. RM_BoneFloor, a bone-tile floor.
+  4. Save back-compat (RM_DefAliasDef): the donor's BoneItem, BoneChina, Bonecrete and BonePlastic load as
+     RM_Bones and its five floors as RM_BoneFloor, so the ancient bone-china walls and doors keep loading.
+  5. Mod Settings: butcher bones on/off, bone yield multiplier.
+Left out on purpose: the donor's chemfuel, calcium-polymer and plasteel routes, marrow and gelatin, the
+throne, the masks and the bow restuffing.</description>
+</ModMetaData>

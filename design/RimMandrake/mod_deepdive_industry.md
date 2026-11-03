@@ -378,6 +378,16 @@ No path pays twice for one item, so rewards do not literally double. But the yie
 2. **Fix Finding 4 regardless.** Gate every `BoneAmount` write on the mod or on its port.
 3. **Then let the owner choose C or D.** The deep dive leans to **C**: bone as a Woody stuff on a treeless world fits the scenario better than C13's default "drop".
 
+**Ruled C by owner card; built 2026-11-03 (BONES_LEAN_PORT_BUILD_TREELESS_WORLD).** `src/RimMandrake/Bones` is an engine entry of
+Baroque Biomes (`mandrake.rm.biomes`): `RM_Bones` (moved from Miasma, now a Woody stuff), `RM_BoneAmount` (default 50,
+`StatPart_BodySize`; every Doctrine yield patch now writes it under a FindMod on Baroque Biomes), a `Pawn.ButcherProducts`
+postfix (meat > 1, never from an insectoid or non-flesh body, Mod Settings toggle and multiplier) and `RM_BoneFloor`. No
+fuel, polymer or plasteel route was ported. `RM_BonesRetireAliases` loads the donor's `BoneItem`, `BoneChina`,
+`Bonecrete`, `BonePlastic` as `RM_Bones` and its five floors as `RM_BoneFloor`, so the 204 bone-china walls and doors
+load stuffed bone. `sihv.rombonesPort` is retired (`infrastructure/state/facts/retired_mods.json`); the B-patch
+`Bones_CutFuelAndPlasteelRecipes.xml` and the `BoneRefine` retags were deleted with it. Offline proof:
+`src/RimMandrake/Bones/selftest_bones_port.py`.
+
 ## 4. Recommendations and tickets
 
 | mod | recommendation | biggest risk |

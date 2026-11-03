@@ -7,7 +7,7 @@
      (bodySize^2 rule: base = unit x bodySize) onto the ports, numbers copied from the generated
      file's donor ops. PROVISIONAL until the generator is re-run on a def dump that holds the
      ports; once it emits ops for them, delete this file (the generated ops would set the same
-     values). BoneAmount ops sit under a FindMod for the Bones mod. -->
+     values). RM_BoneAmount ops sit under a FindMod for RimMandrake: Baroque Biomes, which composes the Bones engine (RM_BoneAmount). -->
 <Patch>
 
   <!-- RM_Olumetha (port of AA_NightRam), bodySize 2.5 -->
@@ -26,20 +26,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_Olumetha BoneAmount 125 -->
+  <!-- RM_Olumetha RM_BoneAmount 125 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>125</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>125</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases</xpath>
-          <value><BoneAmount>125</BoneAmount></value>
+          <value><RM_BoneAmount>125</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>
@@ -61,20 +61,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_Aveluthia BoneAmount 140 -->
+  <!-- RM_Aveluthia RM_BoneAmount 140 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>140</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>140</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
-          <value><BoneAmount>140</BoneAmount></value>
+          <value><RM_BoneAmount>140</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>
@@ -113,20 +113,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_Ossumatha BoneAmount 60 -->
+  <!-- RM_Ossumatha RM_BoneAmount 60 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>60</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>60</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
-          <value><BoneAmount>60</BoneAmount></value>
+          <value><RM_BoneAmount>60</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>
@@ -148,20 +148,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_Ysvaltha BoneAmount 75 -->
+  <!-- RM_Ysvaltha RM_BoneAmount 75 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>75</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>75</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
-          <value><BoneAmount>75</BoneAmount></value>
+          <value><RM_BoneAmount>75</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>
@@ -183,20 +183,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_Nevarithia BoneAmount 75 -->
+  <!-- RM_Nevarithia RM_BoneAmount 75 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>75</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>75</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
-          <value><BoneAmount>75</BoneAmount></value>
+          <value><RM_BoneAmount>75</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>

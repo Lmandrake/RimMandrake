@@ -1,0 +1,4 @@
+G1 L1: with mandrake.rm.biomes loaded and sihv.rombonesPort absent, RM_BonesProof.ProofDefs reads PASS: RM_Bones is Woody stuff a Wall accepts, RM_BoneAmount and RM_BoneFloor are loaded, no donor def is; row bone_is_woody_stuff_no_donor_defs PASS
+G2 L1: RM_DefAliasProof.ProofAliases shows PASS BoneChina->RM_Bones (and BoneItem, Bonecrete, BonePlastic) and PASS for the five donor floors -> RM_BoneFloor via the terrain short hash, so the 204 ancient bone-china walls and doors load stuffed bone; row donor_bone_defs_load_as_ours PASS
+G3 L2: on a quicktest map RM_BonesProof.ProofButcher reads PASS: the real Pawn.ButcherProducts yields RM_Bones and meat from a muffalo, no bones from a megascarab, and none from a muffalo with butcherBones off; row butchering_yields_bones_gated PASS
+G4 L1: no load error names RimMandrake.Bones or an RM_Bones* def; row no_errors_naming_this_mod PASS

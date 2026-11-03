@@ -32,11 +32,11 @@ Not wired into any biome by this file - see the item for the wiring/dedup step.
       <!-- Ash'karr retune + megafauna yield baked in from the campaign's
            BMT_Maguana patches (AnimalTolerances_Ashkarr.xml, MegafaunaYield.xml)
            at port time - we own this def, so the values live here, not in a patch.
-           Donor values were 37.7778/352.222, no MeatAmount/BoneAmount override. -->
+           Donor values were 37.7778/352.222, no MeatAmount/RM_BoneAmount override. -->
       <ComfyTemperatureMin>19.1</ComfyTemperatureMin>
       <ComfyTemperatureMax>352.2</ComfyTemperatureMax>
       <MeatAmount>294</MeatAmount>
-      <BoneAmount MayRequire="sihv.rombonesPort">105</BoneAmount>
+      <RM_BoneAmount>105</RM_BoneAmount>
       <Flammability>0.0</Flammability>
       <FilthRate>2</FilthRate>
       <Wildness>0.85</Wildness>

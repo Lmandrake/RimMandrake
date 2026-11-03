@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BONES_LEAN_PORT_BUILD_TREELESS_WORLD: sihv.rombonesPort is retired. A save that holds its defs loads them
+  as ours through RM_DefAliasDef (EnvironmentalHazards, RM_DefAliases.cs; it applies only when the old name
+  resolves to nothing, so it is inert while the donor is still loaded). The canonical save holds 204 ancient
+  walls and doors stuffed BoneChina (design/RimMandrake/mod_deepdive_industry.md §3.3): they load stuffed
+  RM_Bones. Floors are saved by shortHash; the alias maps each old floor's base hash (defType TerrainDef).
+  The strings name donor defs only as save history; nothing here needs the donor loaded.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_BonesRetireAliases</defName>
+    <aliases>
+      <li><from>BoneItem</from><to>RM_Bones</to><defType>ThingDef</defType></li>
+      <li><from>BoneChina</from><to>RM_Bones</to><defType>ThingDef</defType></li>
+      <li><from>Bonecrete</from><to>RM_Bones</to><defType>ThingDef</defType></li>
+      <li><from>BonePlastic</from><to>RM_Bones</to><defType>ThingDef</defType></li>
+      <li><from>BoneFloor</from><to>RM_BoneFloor</to><defType>TerrainDef</defType></li>
+      <li><from>BoneFloor_Blackened</from><to>RM_BoneFloor</to><defType>TerrainDef</defType></li>
+      <li><from>BoneFloor_Ashen</from><to>RM_BoneFloor</to><defType>TerrainDef</defType></li>
+      <li><from>BoneFloor_Tile</from><to>RM_BoneFloor</to><defType>TerrainDef</defType></li>
+      <li><from>BoneChinaFloor</from><to>RM_BoneFloor</to><defType>TerrainDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

@@ -16,8 +16,9 @@ deliberately emits none. Read the stat before writing a patch for it.
 HOW THE ENGINE COMPUTES YIELD (Core Stats_Pawns_General.xml, decompiled parts):
 
     MeatAmount : defaultBaseValue 140, parts include StatPart_BodySize
-    BoneAmount : defaultBaseValue  50, parts include StatPart_BodySize
-                 (Rim of Madness - Bones, sihv.rombonesport)
+    RM_BoneAmount : defaultBaseValue  50, parts include StatPart_BodySize
+                 (src/RimMandrake/Bones, composed into mandrake.rm.biomes; it replaced
+                 the retired donor sihv.rombonesport's BoneAmount, same unit)
 
     public class StatPart_BodySize : StatPart {
         public override void TransformValue(StatRequest req, ref float val) {
@@ -31,7 +32,7 @@ the second factor. Writing `unit * bodySize^2` would give bodySize^3 and is the
 easiest mistake to make here.
 
     statBases/MeatAmount = 140 * bodySize   ->  final 140 * bodySize^2
-    statBases/BoneAmount =  50 * bodySize   ->  final  50 * bodySize^2
+    statBases/RM_BoneAmount =  50 * bodySize   ->  final  50 * bodySize^2
 
 WHAT IS DELIBERATELY LEFT ALONE
 
@@ -39,17 +40,17 @@ WHAT IS DELIBERATELY LEFT ALONE
     Squaring a fraction SHRINKS it, so an unguarded rule would quietly nerf
     every small animal in the game. Below 1.0 the two curves cross and the
     change would be a nerf disguised as a buff.
-  * Anything already at MeatAmount 0 or BoneAmount 0. Mechanoids, insects and
-    the three arthropods Rim of Madness explicitly declares boneless
+  * Anything already at MeatAmount 0 or (RM_)BoneAmount 0. Mechanoids, insects and
+    the three arthropods the retired Rim of Madness declared boneless
     (Arthropleura, Meganeura, Pulmonoscorpius) stay at zero. Multiplying zero
     is harmless but emitting the operation is noise, and re-adding a stat some
     other mod deliberately stripped is worse than noise.
   * Defs that exist only at runtime. You cannot patch XML that was never on
     disk, so every target is checked against the offline inventory first.
 
-BoneAmount also carries a postProcessCurve -- (0,0) (5,14) (40,40)
-(100000,100000) -- which is roughly 1:1 above 40 and therefore does not fight
-this. It compresses only the very small end, which we are not touching anyway.
+RM_BoneAmount has no postProcessCurve (the donor's (0,0) (5,14) (40,40)
+(100000,100000) one only compressed the small end). The Bones engine also yields
+no bone from an insectoid or non-flesh body, whatever the stat says.
 """
 import collections
 import io
@@ -101,12 +102,15 @@ def cesc(s):
 
 EXPONENT = 2.0          # meat and bone; see the header before changing this
 MEAT_UNIT = 140.0       # Core MeatAmount defaultBaseValue
-BONE_UNIT = 50.0        # Rim of Madness BoneAmount defaultBaseValue
+BONE_UNIT = 50.0        # RM_BoneAmount defaultBaseValue (src/RimMandrake/Bones/Defs/Stats)
 MIN_BODY_SIZE = 1.0     # below this we do nothing at all
-# BoneAmount exists only while the Bones mod is loaded. An unguarded write leaves a
-# null-stat StatModifier and a red cross-reference error per race when it is absent
-# (MEGAFAUNA_YIELD_HARDEN_BONEAMOUNT_GUARD). The name is the <name> in its About.xml.
-BONES_MOD_NAME = "Rim of Madness - Bones Unofficial Fix"
+# RM_BoneAmount exists only while Baroque Biomes (which composes the Bones engine) is
+# loaded. An unguarded write leaves a null-stat StatModifier and a red cross-reference
+# error per race when it is absent (MEGAFAUNA_YIELD_HARDEN_BONEAMOUNT_GUARD). The name is
+# the composite's <name> (src/RimMandrake/Biomes.compose.json "about").
+BONE_STAT = "RM_BoneAmount"
+LEGACY_BONE_STAT = "BoneAmount"   # the retired donor's stat, still in older def dumps
+BONES_MOD_NAME = "RimMandrake: Baroque Biomes"
 
 # Values here are constants times a body size, never a function of the current
 # yield, so this generator cannot eat its own output the way the armoury one
@@ -223,8 +227,8 @@ for d in iter_live_defs(os.path.join(D_DUMP, "defs", "ThingDef.json")):
           for s in (f.get("statBases") or []) if isinstance(s, dict)}
     mod = d.get("modName") or "?"
 
-    for stat, unit in (("MeatAmount", MEAT_UNIT), ("BoneAmount", BONE_UNIT)):
-        cur = sb.get(stat)
+    for stat, unit in (("MeatAmount", MEAT_UNIT), (BONE_STAT, BONE_UNIT)):
+        cur = sb.get(stat, sb.get(LEGACY_BONE_STAT) if stat == BONE_STAT else None)
         if cur == 0:
             skipped["%s already zero (left alone)" % stat] += 1
             continue
@@ -244,9 +248,9 @@ for d in iter_live_defs(os.path.join(D_DUMP, "defs", "ThingDef.json")):
                 pad + "    <value><%s>%.0f</%s></value>" % (stat, new_base, stat) + NL +
                 pad + "  </nomatch>" + NL +
                 pad + "</li>" + NL)
-        if stat == "BoneAmount":
+        if stat == BONE_STAT:
             # Nested FindMod returns true when Bones is absent, so the enclosing
-            # sequence carries on; only the BoneAmount write is skipped.
+            # sequence carries on; only the RM_BoneAmount write is skipped.
             cond = (
                 '        <li Class="PatchOperationFindMod">' + NL +
                 "          <mods><li>%s</li></mods>" % xesc(BONES_MOD_NAME) + NL +

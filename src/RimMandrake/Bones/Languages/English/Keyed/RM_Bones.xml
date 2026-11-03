@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_Bones_SettingsCategory>RimMandrake: Bones</RM_Bones_SettingsCategory>
+  <RM_Bones_ButcherBones>Butchering yields bones</RM_Bones_ButcherBones>
+  <RM_Bones_ButcherBones_Tip>Butchering a fleshy, non-insect body also yields bones (its bone amount x the multiplier below x the butcher's efficiency). Off: no bones from butchering; bones still come from a rotting bed and stay a building material.</RM_Bones_ButcherBones_Tip>
+  <RM_Bones_Multiplier>Bone yield multiplier: {0}</RM_Bones_Multiplier>
+  <RM_Bones_Multiplier_Tip>Scales every butchering bone yield. 1 is the shipped amount; 0 yields none.</RM_Bones_Multiplier_Tip>
+  <RM_Bones_Reset>Reset to defaults</RM_Bones_Reset>
+</LanguageData>

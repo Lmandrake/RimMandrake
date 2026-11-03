@@ -171,7 +171,7 @@ def megafauna_yield_group_count(t):
 @suite.chain("bear_grizzly_yield_readback")
 def bear_grizzly_yield_readback(t):
     """Minimal-safe (walk step 3): Bear_Grizzly is base-game Core content,
-    needs no third-party mod. MeatAmount/BoneAmount rewritten to
+    needs no third-party mod. MeatAmount/RM_BoneAmount rewritten to
     unit*bodySize (301/108) so the engine's own StatPart_BodySize multiply
     lands the final value at unit*bodySize^2 (301*2.15=647.15,
     108*2.15=232.2, per the file's own inline comment)."""
@@ -187,7 +187,7 @@ def bear_grizzly_yield_readback(t):
         if not (ok_meat and ok_bone):
             raise ExpectationFailed(
                 "Bear_Grizzly.statBases = %r, expected to contain MeatAmount "
-                "301 and BoneAmount 108" % stat_text)
+                "301 and RM_BoneAmount 108" % stat_text)
 
 
 @suite.chain("droid_factory_hidden")

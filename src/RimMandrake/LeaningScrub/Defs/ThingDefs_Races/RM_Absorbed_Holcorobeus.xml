@@ -42,7 +42,7 @@
    * MeatAmount is the value MegafaunaYield.xml's doctrine had been patching in
      (base = unit x bodySize; the engine multiplies by bodySize again). Baked in
      here because the Jurassic group in that generated file was deleted with the
-     mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
+     mod. RM_BoneAmount is NOT baked - it is the Bones engine's StatDef and belongs in the
      generated doctrine patch, not in a def.
    * texPath Things/Pawn/Animal/Holcorobeus -> Things/Pawn/Animal/RM_Holcorobeus/RM_Holcorobeus; the art
      was pulled out of the donor's AssetBundle via

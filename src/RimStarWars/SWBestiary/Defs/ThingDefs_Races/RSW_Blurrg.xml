@@ -19,8 +19,8 @@
   Values baked in, because the campaign patches that normalised the donor def key on
   the donor defName `Blurrg` and never touch this one: BeastNorm_Law3.xml (bite power
   37.5 / cooldown 2.37, manhunterOnDamageChance 0.9, manhunterOnTameFailChance 0.4) and
-  MegafaunaYield.xml (MeatAmount 350). BoneAmount 125 is NOT baked - it is a modded
-  StatDef and belongs in the generated doctrine patch, not in a def.
+  MegafaunaYield.xml (MeatAmount 350). RM_BoneAmount 125 is NOT baked - it is the Bones
+  engine's StatDef and belongs in the generated doctrine patch, not in a def.
 
   Mount sizing, scaled from vanilla Dromedary (MoveSpeed 4.3, MarketValue 300,
   CaravanRidingSpeedFactor 1.3, bodySize 2.1, healthScale 1.6): the blurrg is the faster,

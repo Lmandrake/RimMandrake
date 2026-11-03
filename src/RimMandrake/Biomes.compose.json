@@ -31,6 +31,7 @@
     {"key": "ExplosiveGrowth", "source": "ExplosiveGrowth", "group": "engine", "wave": 2, "label": "Plant Growth (everyday and explosive)", "blurb": "Plants grow fast every day (x4, x10 in the wet jungles); soaked plants grow where you can watch them, swell past natural size and reach a top. In Baroque Biomes' own biomes only, unless its own (unsupported) option extends it."},
     {"key": "EnvironmentalHazards", "source": "EnvironmentalHazards", "group": "engine", "wave": 2, "label": "Environmental Hazards", "blurb": "Shared hazard engine: configurable terrain, gas and weather mechanics used across biomes."},
     {"key": "Wreckage", "source": "Wreckage", "group": "engine", "wave": 2, "label": "Wreckage", "blurb": "Shared wreck engine: careful salvage of a wreck gives a tiered loot roll that skill improves."},
+    {"key": "Bones", "source": "Bones", "group": "engine", "wave": 2, "label": "Bones", "blurb": "Butchering yields bone, a Woody building stuff for a world with almost no trees (lean port of Rim of Madness - Bones)."},
 
     {"key": "Abyss", "source": "Abyss", "group": "biome", "wave": 0, "label": "The Abyss", "blurb": "Obsidian-black highlands drowned in darkness."},
     {"key": "BlueDesert", "source": "BlueDesert", "group": "biome", "wave": 2, "label": "Blue Desert", "blurb": "A plateau of hydrocarbon ice where warmth is detonation."},

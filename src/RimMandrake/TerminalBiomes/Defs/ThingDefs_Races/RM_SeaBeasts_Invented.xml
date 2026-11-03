@@ -46,7 +46,7 @@
   RM_TwilightSea.xml, RM_Miasma.xml).
 
   Two generated balance passes (ComfyTemperature tolerance pins,
-  MeatAmount/BoneAmount megafauna-yield scaling) that exist for the RSW_
+  MeatAmount/RM_BoneAmount megafauna-yield scaling) that exist for the RSW_
   originals are NOT replicated onto these new defs — extending that tuning
   pass to the RM_ copies is separate, un-owed balance work, not part of
   this tier-classification fix.

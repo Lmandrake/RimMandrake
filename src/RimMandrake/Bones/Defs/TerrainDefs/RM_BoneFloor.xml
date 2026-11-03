@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BONES_LEAN_PORT_BUILD_TREELESS_WORLD: one bone floor, tiles of flat-cut bone. Art: the vanilla stone-tile
+     surface (Core TileStoneBase, Terrain/Surfaces/TileStone) tinted bone, no texture of its own. -->
+<Defs>
+  <TerrainDef ParentName="FloorBase">
+    <defName>RM_BoneFloor</defName>
+    <label>bone tile</label>
+    <description>Tiles of flat-cut bone set in a bed of sand. Quick to lay and a little prettier than bare ground.</description>
+    <texturePath>Terrain/Surfaces/TileStone</texturePath>
+    <color>(214,204,180)</color>
+    <edgeType>Hard</edgeType>
+    <renderPrecedence>250</renderPrecedence>
+    <statBases>
+      <WorkToBuild>500</WorkToBuild>
+      <Beauty>1</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <costList>
+      <RM_Bones>4</RM_Bones>
+    </costList>
+    <tags>
+      <li>Floor</li>
+    </tags>
+    <constructEffect>ConstructWood</constructEffect>
+    <designationCategory>Floors</designationCategory>
+  </TerrainDef>
+</Defs>

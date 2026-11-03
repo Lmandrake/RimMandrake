@@ -6,7 +6,7 @@
      The Warscar's donor creatures were ported to owned RM_ defs, so the generated ops that tune the donors no
      longer reach the animals the Warscar casts. These ops carry the SAME values onto the ports, numbers copied
      from the generated file's donor ops. PROVISIONAL until the generator is re-run on a def dump that holds the
-     ports; once it emits ops for them, delete this file. BoneAmount assumes the bones stat mod the generated file
+     ports; once it emits ops for them, delete this file. RM_BoneAmount (the Bones engine of Baroque Biomes) is guarded as in the generated file,
      already assumes. RM_Rimclaw / RM_ElectricTick: their donors carry no op there. -->
 <Patch>
 
@@ -43,20 +43,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_ElectricGryllotalpa BoneAmount 75 -->
+  <!-- RM_ElectricGryllotalpa RM_BoneAmount 75 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>75</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>75</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
-          <value><BoneAmount>75</BoneAmount></value>
+          <value><RM_BoneAmount>75</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>
@@ -78,20 +78,20 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- RM_JuggernautBeetle BoneAmount 150 -->
+  <!-- RM_JuggernautBeetle RM_BoneAmount 150 -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/RM_BoneAmount</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
-        <value><BoneAmount>150</BoneAmount></value>
+        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/RM_BoneAmount</xpath>
+        <value><RM_BoneAmount>150</RM_BoneAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
-          <value><BoneAmount>150</BoneAmount></value>
+          <value><RM_BoneAmount>150</RM_BoneAmount></value>
         </match>
       </nomatch>
     </match>

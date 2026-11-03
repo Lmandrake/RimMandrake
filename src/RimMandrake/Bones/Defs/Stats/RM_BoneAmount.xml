@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BONES_LEAN_PORT_BUILD_TREELESS_WORLD: the bone half of butchering. 50 per unit of body size keeps every
+     number the megafauna yield patches already write (src/RimUtinni/Doctrine/Source/gen_megafauna_yield.py,
+     BONE_UNIT 50) and gives about 10 kg of bone (50 x 0.2 kg) from a human-sized body. No post-curve (the donor's only
+     compressed values under 40).
+     The insect and non-flesh gate is in C# (RM_BonesKernel), not in per-race zeroes. -->
+<Defs>
+  <StatDef>
+    <defName>RM_BoneAmount</defName>
+    <label>bone amount</label>
+    <description>The number of bones yielded when butchering this creature. Scaled by the butcher's efficiency and by how much of the body is still there.</description>
+    <category>BasicsPawn</category>
+    <defaultBaseValue>50</defaultBaseValue>
+    <minValue>0</minValue>
+    <showOnMechanoids>false</showOnMechanoids>
+    <showOnDrones>false</showOnDrones>
+    <toStringStyle>Integer</toStringStyle>
+    <parts>
+      <li Class="StatPart_BodySize" />
+      <li Class="StatPart_NaturalNotMissingBodyPartsCoverage" />
+    </parts>
+  </StatDef>
+</Defs>
