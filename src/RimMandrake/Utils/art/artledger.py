@@ -572,6 +572,15 @@ def scan_def_slots(root: Path | None = None) -> dict:
                             sub = name + ("#f" if tag == "femaleGraphicData" else "")
                             out[tp.text.strip()].append({"subject": sub, "role": role,
                                                          "field": tag, "file": str(f.relative_to(root))})
+                    elif tag == "alternateGraphics":
+                        # PawnKindDef alternateGraphics/li: drawn at alternateGraphicChance (engine default 0.5).
+                        # Without this role the Gizka frog (GizkaW, 80% of spawns) had "(none in our defs)" slots
+                        # and no ruling could bind to it (ALT_GRAPHICS_FIX_SIX_SECOND_FACES).
+                        for li in ch.findall("li"):
+                            t = (li.findtext("texPath") or "").strip()
+                            if t:
+                                out[t].append({"subject": name, "role": "alternate",
+                                               "field": "alternateGraphics", "file": str(f.relative_to(root))})
                     elif tag in ("flyingAnimationFramePathPrefix", "flyingAnimationFramePathPrefixFemale"):
                         if (ch.text or "").strip():
                             out[ch.text.strip()].append({"subject": name, "role": "flying",
