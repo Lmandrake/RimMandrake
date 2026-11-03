@@ -1650,7 +1650,8 @@ def build_job_prompt(job: dict) -> str:
     prompt, _n = common.scrub_stale_outline(job["prompt"])
     style, _m = common.scrub_stale_outline(job.get("style_notes") or "")
     parts = [f"[artpipe job {job['id']}] {prompt}",
-             f"Canvas: exactly {canvas['width']}x{canvas['height']} pixels."]
+             f"Canvas: exactly {canvas['width']}x{canvas['height']} pixels.",
+             common.size_clause(job)]
     bg = job.get("background") or "transparent"
     if bg == "transparent":
         parts.append("Background: a genuinely transparent alpha channel — "

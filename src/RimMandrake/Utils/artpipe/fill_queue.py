@@ -309,7 +309,8 @@ def _refuse_unlocked_frames(row: dict) -> None:
 
 
 def row_to_jobs(row: dict, default_channel: str = "codex",
-                 derive_facings: bool = True, no_subject: str | None = None, world=None) -> list[dict]:
+                 derive_facings: bool = True, no_subject: str | None = None, world=None,
+                 size_resolver=None) -> list[dict]:
     missing = [f for f in REQUIRED_ROW_FIELDS if not row.get(f)]
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
@@ -346,7 +347,23 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     # sprite may legitimately be small).
     # The actual arithmetic now lives once, in common.canvas_for_cells —
     # FLORA_LEGIBILITY_BAR_1 spec item 3 (this used to re-derive it inline).
-    ds = float(row.get("drawsize") or 1.0)
+    # ART_SHEETS_SCALE_CELLS_WIDEN_TOO_LATE: the brief carries the subject's MEASURED in-game size (common.size_clause).
+    # world=False resolves nothing (no dump read) unless a size_resolver is handed in.
+    if binding.get("target_def") and (world is not False or size_resolver is not None):
+        in_game_size = common.measure_in_game_size(binding["target_def"], binding.get("target_original") or (),
+                                                   resolver=size_resolver)
+    elif binding.get("no_subject"):
+        in_game_size = {"status": "none", "source": f"no subject ({binding['no_subject']})"}
+    else:
+        in_game_size = {"status": "unmeasured", "source": "UNMEASURED — sizing not run for this filing"}
+    for w in common.size_warnings(in_game_size, canvas, row.get("drawsize")):
+        print(f"  ⚠️  {base_id}: {w} (ART_SHEETS_SCALE_CELLS_WIDEN_TOO_LATE)", file=sys.stderr)
+    if str(row.get("drawsize") or "").strip():
+        ds, ds_from = float(row["drawsize"]), "row"
+    elif in_game_size.get("status") == "measured" and None not in (in_game_size.get("quad") or [None]):
+        ds, ds_from = float(max(in_game_size["quad"])), "def"
+    else:
+        ds, ds_from = 1.0, "default"
     ceiling = common.canvas_for_cells(ds)
     if max(canvas["width"], canvas["height"]) > ceiling and not (row.get("oversize_reason") or "").strip():
         print(f"  ⚠️  {base_id}: canvas {canvas['width']}x{canvas['height']} exceeds the "
@@ -442,6 +459,8 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             "reference": reference,
             "canvas": canvas,
             "drawsize": ds,
+            "drawsize_from": ds_from,
+            "in_game_size": in_game_size,
             "prompt": prompt,
             "style_notes": style,
             "priority": priority,

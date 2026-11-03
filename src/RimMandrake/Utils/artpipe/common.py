@@ -193,6 +193,123 @@ def canvas_for_cells(cells: float) -> int:
     return max(CANVAS_FLOOR_PX, min(CANVAS_CEILING_PX, px))
 
 
+# ── In-game size on every brief (ART_SHEETS_SCALE_CELLS_WIDEN_TOO_LATE) ──────────────────────────────────────────────
+# Owner, 2026-10-14: "I note your sheets have no scale information nor cell width information, that's a problem. Your
+# Aiwha is supposed to be like 10 cells wide". The sheets carry it (art/scale_panel.py, gated by scaled_review_gate.py);
+# a BRIEF must carry it too, or the model draws a 10-cell creature as a 1-cell icon. The size is a MEASUREMENT from the
+# live def dump through scale_panel.Resolver (the same resolver the sheets use), never a row author's guess; a subject
+# the dump cannot see says UNMEASURED in the brief rather than a number.
+HUMAN_SCALE_LINE = ("For scale: a vanilla human colonist is about 1 cell wide and stands on a 1.5-cell mesh; one cell "
+                    "is a single floor tile.")
+_SIZE_RESOLVER = None
+
+
+def _size_resolver():
+    """scale_panel.Resolver over the live def dump, opened once. Raises if the dump or the module is unreachable."""
+    global _SIZE_RESOLVER
+    if _SIZE_RESOLVER is None:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "art"))
+        import scale_panel  # noqa: E402
+        _SIZE_RESOLVER = scale_panel.Resolver()
+    return _SIZE_RESOLVER
+
+
+def _cells(v) -> float | None:
+    try:
+        return round(float(v), 3)
+    except (TypeError, ValueError):
+        return None
+
+
+def measure_in_game_size(target_def: str, originals=(), resolver=None) -> dict:
+    """{status, kind, quad:[w,h] cells, footprint:[x,z] | None, mesh, source} for the def a render is a picture of.
+    status 'measured' (from the dump) · 'fallback' (resolver guessed: src XML or 1 cell — never trusted as a number)
+    · 'none' (drawn only in the UI) · 'unmeasured' (no dump, no def). A PawnKindDef name is sized by its race."""
+    try:
+        r = resolver if resolver is not None else _size_resolver()
+    except Exception as exc:  # no dump on this machine, sqlite locked, module missing: say so, never guess
+        return {"status": "unmeasured", "def": target_def, "source": f"UNMEASURED — def dump unreachable ({exc})"}
+    names = [target_def] + [n for n in originals if n and n != target_def]
+    try:
+        kd = r._def(target_def, "PawnKindDef")
+        if kd and kd.get("race") and kd["race"] not in names:
+            names.insert(0, kd["race"])
+        s = r.size({"key": names[0], "defNames": names[1:]})
+    except Exception as exc:
+        return {"status": "unmeasured", "def": target_def, "source": f"UNMEASURED — resolver failed ({exc})"}
+    status = s.get("status") or "unmeasured"
+    out = {"status": status, "kind": s.get("kind"), "def": s.get("def") or target_def,
+           "source": str(s.get("source") or "")[:300]}
+    if status in ("measured", "fallback"):
+        ds = s.get("drawSize") or [None, None]
+        w = _cells(s.get("quad"))
+        if s.get("kind") == "plant":
+            h = w            # Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange.max
+        else:
+            h = _cells(ds[1]) if len(ds) > 1 and ds[1] is not None else w
+        out["quad"] = [w, h]
+        out["mesh"] = int(s.get("mesh") or 1)
+        if s.get("footprint"):
+            out["footprint"] = [int(x) for x in s["footprint"]]
+    if status == "fallback":
+        out["source"] = "UNMEASURED (resolver fallback, not a measurement): " + out["source"]
+    return out
+
+
+def size_clause(job: dict) -> str:
+    """The brief's scale sentence: what the engine draws this canvas onto, in cells, beside a human."""
+    size = job.get("in_game_size") or {}
+    st = size.get("status")
+    ds = job.get("drawsize")
+    canvas = job.get("canvas") or {}
+    cw, ch = canvas.get("width"), canvas.get("height")
+    if st == "none":
+        return f"In-game size: none — {size.get('source') or 'drawn only in the UI'}."
+    if st == "measured" and size.get("quad") and None not in size["quad"]:
+        w, h = size["quad"]
+        kind = size.get("kind") or "thing"
+        bits = [f"In-game size (measured from the live def dump): the engine stretches the WHOLE {cw}x{ch} canvas "
+                f"onto a {w:g} x {h:g}-cell quad"]
+        if size.get("footprint"):
+            fx, fz = size["footprint"]
+            bits.append(f", over a {fx} x {fz}-cell footprint")
+        if kind == "plant" and int(size.get("mesh") or 1) > 1:
+            bits.append(f"; up to {size['mesh']} copies share one cell")
+        if cw and w:
+            ppc = cw / w
+            bits.append(f", so {ppc:.0f} canvas px = 1 cell and a human colonist beside it would be about "
+                        f"{ppc:.0f} px wide and {1.5 * ppc:.0f} px tall on this canvas")
+        bits.append(f". Paint the {kind} at that real scale. " + HUMAN_SCALE_LINE)
+        return "".join(bits)
+    how = size.get("source") or "UNMEASURED — no in-game size recorded on this job"
+    if not how.startswith("UNMEASURED"):
+        how = "UNMEASURED — " + how
+    stated = (f" The filing states drawSize {float(ds):g} cells (not checked against a def)."
+              if ds and job.get("drawsize_from", "row") == "row" else "")
+    return f"In-game size: {how}.{stated} {HUMAN_SCALE_LINE}"
+
+
+def size_warnings(size: dict, canvas: dict, row_drawsize) -> list[str]:
+    """What is wrong between a measured size and the filing: a stated drawsize that disagrees with the def, or a canvas
+    whose aspect differs from the quad's (the engine stretches the canvas onto the quad, so the art is distorted)."""
+    out = []
+    if size.get("status") != "measured" or not size.get("quad") or None in size["quad"]:
+        return out
+    w, h = size["quad"]
+    if row_drawsize not in (None, ""):
+        try:
+            rd = float(row_drawsize)
+        except ValueError:
+            rd = None
+        if rd is not None and abs(rd - max(w, h)) > 0.05 * max(w, h):
+            out.append(f"row drawsize {rd:g} disagrees with the def's measured {w:g} x {h:g}-cell quad")
+    cw, ch = canvas.get("width"), canvas.get("height")
+    if cw and ch and w and h and abs((cw / ch) / (w / h) - 1) > 0.05:
+        out.append(f"canvas {cw}x{ch} (aspect {cw / ch:.2f}) is not the quad's aspect {w / h:.2f} — "
+                   f"the engine will stretch the art")
+    return out
+
+
 _CELLS_NOTE_RE = None  # compiled lazily — most callers never need it
 
 
