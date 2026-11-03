@@ -287,6 +287,46 @@ def main() -> int:
           abs(e.get("dy", 9)) <= S.LINE_TOL_PX and abs(e.get("ddeg", 9)) <= lc["worst"]["eye"]["tol_deg"], str(e))
     check("LINES spread seen as a length change ~4 px", abs(e.get("dlen", 0) - 4.0) < 1.0, f"dlen {e.get('dlen')}")
     check("LINES spread verdict MOVING", lc["verdict"] == "MOVING", lc["verdict"])
+    # the length gate on its own (blind check at 8d60822a: the 2 px spread above is already caught by the endpoint
+    # gate). The tracker is stubbed so frame 3 puts each eye 0.8 px outward along the row: every endpoint, the
+    # midpoint, the angle and the eye-to-shoulder distance are within LINE_TOL_PX; only the length (+1.6 px) is not.
+    # A 0.8 px slide of both eyes the same way is the control: same endpoint numbers, no length change, LEVEL.
+    real_tp = S.track_point
+
+    def stub(shift):
+        def tp(g_ref, g, mmask, p, r, search):
+            dx = shift(p) if g is moved_g[0] else 0.0
+            return {"ok": True, "score": 1.0, "pt": (float(p[0]) + dx, float(p[1]))}
+        return tp
+    real_ge = S.grey_edges
+    fr = frames(lambda k: B)
+    moved_g = [None]
+
+    def ge(f):
+        g = real_ge(f)
+        if f is fr[2]:
+            moved_g[0] = g
+        return g
+    S.grey_edges = ge
+    try:
+        eye_x = sorted(p[0] for p in fc["eyes"])
+        S.track_point = stub(lambda p: (-0.8 if p[0] <= eye_x[0] else 0.8) if p in fc["eyes"] or list(p) in fc["eyes"]
+                             else 0.0)
+        lc = S.line_check(fr, fc, "south", 0)
+        w, e = lc["worst"]["eye"], lc["lines"]["eye"]["rows"][2]
+        check("LINES sub-tol spread: endpoints, midpoint, angle, eye-to-shoulder all within LINE_TOL_PX",
+              w["end_px"] <= S.LINE_TOL_PX and w["dy_px"] <= S.LINE_TOL_PX and w["ddeg"] <= w["tol_deg"]
+              and lc["eye_shoulder"]["worst_change_px"] <= S.LINE_TOL_PX and lc["worst"]["shoulder"]["dlen_px"] == 0,
+              f"{w} {lc.get('eye_shoulder')}")
+        check("LINES sub-tol spread seen as a length change 1.6 px", abs(e.get("dlen", 0) - 1.6) < 0.05,
+              f"dlen {e.get('dlen')}")
+        check("LINES sub-tol spread verdict MOVING (length gate alone)", lc["verdict"] == "MOVING", lc["verdict"])
+        S.track_point = stub(lambda p: 0.8 if p in fc["eyes"] or list(p) in fc["eyes"] else 0.0)
+        lc = S.line_check(fr, fc, "south", 0)
+        check("LINES sub-tol slide (control, no length change) verdict LEVEL", lc["verdict"] == "LEVEL",
+              f"{lc['verdict']} {lc['worst']}")
+    finally:
+        S.track_point, S.grey_edges = real_tp, real_ge
     # eye-to-shoulder distance: the head bobbed 3 px down onto a still torso and still wing roots
     head = B.copy()
     head[:60] = np.roll(B[:60], 3, axis=0)
