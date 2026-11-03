@@ -255,7 +255,7 @@ counts["alias rows"] = len(amap)
 writers = []
 for p, text in live_texts:
     low = text.lower()
-    if re.search(r"<BoneAmount\b|/BoneAmount\b|\[BoneAmount\]", text):
+    if re.search(r"""<BoneAmount\b|/BoneAmount\b|\[BoneAmount\]|defName=["']BoneAmount["']""", text):
         writers.append(rel(p) + " writes BoneAmount")
     # the Bones mod's About <description> credits the donor (MIT attribution); its other fields are checked below
     if DONOR_ID in low and not p.startswith(os.path.join(SRC, "Jawa")) and p != os.path.join(HERE, "About", "About.xml"):
@@ -264,7 +264,7 @@ for p, text in live_texts:
         writers.append(rel(p) + " FindMods the donor")
     for n in DONOR_STUFF + DONOR_FLOORS + ("BoneWall", "BoneRefine", "BoneRefineII"):
         if not (alias_defs and p == alias_defs[0][0]):
-            if re.search(r'(>|"|\[defName=")%s(<|"|\])' % re.escape(n), text):
+            if re.search(r"""(>|"|'|\[defName=["'])%s(<|"|'|\])""" % re.escape(n), text):
                 writers.append(rel(p) + " names donor def " + n)
 about = ET.parse(os.path.join(HERE, "About", "About.xml")).getroot()
 about.remove(about.find("description"))
@@ -280,7 +280,9 @@ for dp, dn, fn in os.walk(SRC):
             fp = os.path.join(dp, f)
             if fp == os.path.join(HERE, "Source", "RM_BonesProof.cs"):  # names donor defs to prove they are absent
                 continue
-            t_ = re.sub(r"//[^\n]*|/\*.*?\*/", "", open(fp, encoding="utf-8", errors="replace").read(), flags=re.S)
+            # drop comments, keep string literals (a "//" inside a string is not a comment)
+            t_ = re.sub(r'("(?:\\.|[^"\\\n])*")|//[^\n]*|/\*.*?\*/', lambda m: m.group(1) or "",
+                        open(fp, encoding="utf-8", errors="replace").read(), flags=re.S)
             if donor_lit.search(t_) or DONOR_ID in t_.lower():
                 writers.append(rel(fp) + " names a donor def or the donor in C#")
 counts["cs files scanned"] = cs_files
