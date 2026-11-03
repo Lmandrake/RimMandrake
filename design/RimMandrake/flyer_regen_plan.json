@@ -775,9 +775,9 @@
    "frames": ""
   },
   "RSW_Hawkbat": {
-   "tier": 1,
-   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
-   "flipbook": "gate_fails",
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
    "sets": [
     "Hawkbat",
     "Hawkbat_j"
@@ -982,9 +982,9 @@
    "frames": "4"
   },
   "RSW_Sketto": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "gate_fails",
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
    "sets": [
     "Sketto"
    ],

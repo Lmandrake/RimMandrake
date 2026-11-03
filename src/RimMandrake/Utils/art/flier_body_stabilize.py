@@ -330,19 +330,26 @@ def body_mask_from(cfg_facing: dict, ref: np.ndarray) -> np.ndarray:
 
 
 def measure_facing(frames: list[np.ndarray], mask: np.ndarray, named_parts: dict | None = None,
-                   cover: dict | None = None) -> dict:
-    """COVER: coverage() of MASK (None = not checked, e.g. a bare fixture)."""
+                   cover: dict | None = None, occluder: np.ndarray | None = None) -> dict:
+    """COVER: coverage() of MASK (None = not checked, e.g. a bare fixture).
+
+    OCCLUDER: pixels a near ("over") wing may paint in any frame (_wing_envelopes, unioned). They are taken out of the
+    PARTS templates only: a masked template match has no outlier rejection, so a near wing sweeping across a side
+    view's body dragged the part fit 2-11 px while ECC, features and the exported pixels all read 0 (Hawkbat and
+    Bogwing east, measured 2026-11-03). A rigid body that moves still moves its unoccluded pixels, so this hides no
+    drift; a part left under 30 px fails as "not found" exactly as before."""
     ref = frames[0]
     ys, xs = np.nonzero(mask)
     cx, cy = float(xs.mean()), float(ys.mean())          # centre of the ANNOTATED body, for reporting motion there
     radius = float(np.hypot(xs - cx, ys - cy).max())     # a scale error s moves the body's rim by |s - 1| * radius
     self_feat = est_features(ref, ref, mask)
     ref_measurable = self_feat.get("inliers", 0) >= INLIERS_MIN
-    parts = split_parts(mask)
+    pmask = mask if occluder is None else mask & ~occluder
+    parts = split_parts(pmask) if pmask.any() else {"front": pmask, "back": pmask}
     for n, box in (named_parts or {}).items():
         m = np.zeros_like(mask)
         m[box[1]:box[3], box[0]:box[2]] = True
-        parts[n] = m & (ref[..., 3] > 128)
+        parts[n] = m & (ref[..., 3] > 128) & pmask
     rows = []
     for k, frm in enumerate(frames):
         feat = est_features(ref, frm, mask)
@@ -982,7 +989,11 @@ def main(argv=None) -> int:
             print(f"UNMEASURED {a.set} {facing}: the protect polygons cover {int(mask.sum())} opaque px of frame {ref + 1}")
             worst_rc = max(worst_rc, 2)
             continue
-        res = measure_facing(fr, mask, fc.get("parts"), coverage(fc, facing, mask))
+        try:
+            occl = np.any(_wing_envelopes(fc, fr[0].shape[:2], len(fr)), 0)
+        except SystemExit:                                  # pose count does not match the frame count
+            occl = None
+        res = measure_facing(fr, mask, fc.get("parts"), coverage(fc, facing, mask), occl)
         for r, i in zip(res["rows"], order):
             r["frame"] = i + 1
         wv = res["worst"]

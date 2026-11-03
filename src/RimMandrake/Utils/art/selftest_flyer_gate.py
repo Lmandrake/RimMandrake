@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600
 """selftest_flyer_gate.py - the flyer gate can fail where it must (FLYER_STABLE_BODY_GATE_1).
 
 Planted, in memory and in a temp dir, offline:

@@ -203,6 +203,51 @@ def gpt_review_cases(B):
     check("WINGS flapping fixture -> FLAPS", wm["verdict"] == "FLAPS", str(wm))
 
 
+def near_wing(k):
+    """A side view's near wing: a textured blade drawn OVER the body, sweeping across its lower half."""
+    a = np.zeros((N, N, 4), np.uint8)
+    hx, hy = 80, 70
+    poly = np.int32([[hx - 6, hy], [hx + 6, hy], (hx + 30, hy + 75), (hx - 30, hy + 75)])
+    m = np.zeros((N, N), np.uint8)
+    cv2.fillPoly(m, [poly], 255)
+    t = texture(11, (N, N))
+    a[..., 0], a[..., 1], a[..., 2] = (60 * t + 20), (200 * t + 30), (220 * t + 20)
+    a[..., 3] = m
+    R = cv2.getRotationMatrix2D((hx, hy), (40, 0, -40, 0)[k], 1.0)
+    return cv2.warpAffine(a, R, (N, N), flags=cv2.INTER_LINEAR)
+
+
+def near_wing_cases(B):
+    """2026-11-03: a near wing sweeping over the body dragged the PARTS fit (Hawkbat east 2.3 px, Bogwing east 10.9 px)
+    while ECC, features and the exported pixels read 0. The occluder (every pixel the near wing paints) leaves the
+    parts templates; it must not hide a body that really moves."""
+    env = np.zeros((N, N), bool)
+    for k in range(4):
+        env |= near_wing(k)[..., 3] > 0
+    for _ in range(2):
+        env = S.FC._dilate8(env)
+
+    def fr_for(body_for):
+        return [over(f, near_wing(k)) for k, f in enumerate(frames(body_for))]
+    fr = fr_for(lambda k: B)
+    mask = S.FC.poly_mask((N, N), [BODY_POLY]) & (fr[0][..., 3] > 128)
+    blind = S.measure_facing(fr, mask)
+    r = S.measure_facing(fr, mask, None, None, env)
+    check("NEAR WING static body with the occluder -> LOCKED", r["verdict"] == "LOCKED", f"{r['verdict']} {r['worst']}")
+    check("NEAR WING occluder leaves parts <= 0.5 px", r["worst"]["parts_px"] <= 0.5,
+          f"with {r['worst']['parts_px']} px, without {blind['worst']['parts_px']} px")
+    M = cv2.getRotationMatrix2D((80, 80), 4.0, 1.0)
+    M[0, 2] += 3
+    moved = cv2.warpAffine(B, M, (N, N), flags=cv2.INTER_CUBIC)
+    fr = fr_for(lambda k: moved if k == 2 else B)
+    r = S.measure_facing(fr, mask, None, None, env)
+    check("NEAR WING moving body with the occluder still -> DRIFT", r["verdict"] in ("DRIFT", "APPEARANCE CHANGED"),
+          f"{r['verdict']} {r['worst']}")
+    p = r["rows"][2]["parts"]
+    check("NEAR WING occluded parts still see the 4 deg turn", p.get("deg") is not None and abs(abs(p["deg"]) - 4.0) < 1.0,
+          str(p))
+
+
 def main() -> int:
     B = body_layer()
     r = run(frames(lambda k: B))
@@ -238,6 +283,7 @@ def main() -> int:
     check("REPOSED verdict APPEARANCE CHANGED (residual evidence)", r["verdict"] == "APPEARANCE CHANGED",
           f"{r['verdict']} {r['why']}")
     gpt_review_cases(B)
+    near_wing_cases(B)
     # Owner's line test: eye line and shoulder line must stay put on a static body and must SEE a bob and a turn.
     # the body annotation hugs the body here, as the real sets' do (BODY_POLY is loose and takes in wing pixels)
     fc = {"protect": [[[67, 30], [93, 30], [95, 80], [92, 150], [68, 150], [65, 80]]], "eyes": [[74, 38], [86, 38]],
