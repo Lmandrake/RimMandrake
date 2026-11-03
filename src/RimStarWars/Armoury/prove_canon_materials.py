@@ -514,6 +514,9 @@ def lesser_ores_check(kernel=None, smelt=None, csproj=None, settings=None):
     return bad
 
 
+MINES_PACKAGE = "cain.mineshaft"
+
+
 def mineshaft_check(kernel=None, gate=None, recipes=None, rocks=None):
     """L1/L7 Mines 2.0: replay RSW_MineShaftCanonGate's rule (Mines prefixes + product in the kernel's banned list) over the live
     capture's Mines recipes. The must-unlist set is derived here independently: products of every zeroed/gated rock (GATED, read
@@ -533,6 +536,17 @@ def mineshaft_check(kernel=None, gate=None, recipes=None, rocks=None):
         d = latest_capture()
         if not d:
             return bad + ["UNMEASURED: no capture for the Mines 2.0 replay"], info
+        man = os.path.join(os.path.dirname(d), "manifest.json")
+        rows = (json.load(open(man)).get("mods") or []) if os.path.exists(man) else []
+        mods = {(m.get("packageId") or "").lower() for m in rows if isinstance(m, dict)}
+        if not rows or "" in mods or len(mods) != len(rows):
+            return bad + ["UNMEASURED: capture has no manifest mod list, cannot tell whether Mines 2.0 loaded (no list, or a row without a packageId)"], info
+        if MINES_PACKAGE not in mods:
+            # 2026-11-02 capture: the live list no longer loads Mines 2.0 (cain.mineshaft), so no shaft recipe exists to gate;
+            # the gate C# stays shape-checked above and arms itself if the mod returns (MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG).
+            info.append("Mines 2.0 (%s) not in the captured mod set (%d mods): its shaft recipes are not loaded; gate dormant (not a pass of the loaded integration)"
+                        % (MINES_PACKAGE, len(mods)))
+            return bad, info
         R = json.load(open(os.path.join(d, "RecipeDef.json")))["defs"]
         recipes = [(x["defName"], [p.get("thingDef") for p in (x["fields"].get("products") or [])]) for x in R]
         T = json.load(open(os.path.join(d, "ThingDef.json")))["defs"]
@@ -968,12 +982,20 @@ def run():
             put("L9", "FAIL", "census probes failed: %r" % pb)
         else:
             sm = cen.summarize(rows)
-            rc = cen.rule_check(rows, cen.load_baseline(), cen.NAMES)
+            base = cen.load_baseline()
+            cands = cen.new_hard_cands(rows, base)
+            named = cen.src_named(c for c, _, _ in cands)
+            prov = cen.donor_xml_fixes(cd, cands)
+            rc = cen.rule_check(rows, base, cen.NAMES, named=named, provenance=prov)
+            dn = cen.donor_native(rows, base, named, prov)
             lines = ["census %d consumer rows, probes 5/5 (python3 canon_materials_census.py --csv <out>)" % len(rows),
                      "rule (card 2026-10-11): already-hard uses remain (baseline %s), every other key-job use a preference, "
                      "hard only for an unusual non-mechanical attribute (ATTRIBUTE_HARD: %d)" % (cen.load_baseline().get("_capture"), len(cen.ATTRIBUTE_HARD))]
             for job, s in sm.items():
                 lines.append("%-21s right %-13s %s" % (job, s["right"], ("already hard, kept: %d (%s)" % (len(s["fixed_right"]), ", ".join(s["fixed_right"][:4]))) if s["enforced"] else "preference only"))
+            if dn:
+                lines.append("donor-native hard uses since the baseline (INFO: the donor's own XML fixes it, no src file names it; not a rule of ours): %d, %s"
+                             % (len(dn), ", ".join(sorted({"%s/%s" % (p, j) for j, _, p in dn}))))
             lines += rc
             put("L9", "FAIL" if rc else "PASS", *lines)
     put("L10", "OWED", "live minimal-list load required (L1 level)")

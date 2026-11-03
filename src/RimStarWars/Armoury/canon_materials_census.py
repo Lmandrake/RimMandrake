@@ -22,6 +22,10 @@ can make a hard requirement."):
     canon_materials_l9_baseline.json; one of them that still exists but no longer fixes its material is a defect (loosened);
   * every other key-job use is a preference: a NEW fixed right-material consumer is a defect unless ATTRIBUTE_HARD names it
     with the unusual attribute (beyond strength, weight, speed, cost) that only that material has.
+  * a new fixed consumer that is a DONOR's own (one non-mandrake packageId, named by no src .xml/.cs, AND the donor's own
+    XML under its manifest rootDir fixes that material) is reported as donor-native,
+    not failed: a donor update shipping its own plasteel prosthetic (Outer Rim Core's cybernetics, workshop 2026-10-29) is the
+    same kind of use the baseline froze, not a hard rule of ours. Ours (a mandrake def, or a donor def our patch names) fails.
   python3 canon_materials_census.py --freeze-baseline   rewrites the baseline from the newest capture (only on a new ruling)
 """
 import csv, glob, json, os, re, sys
@@ -139,15 +143,132 @@ def fixed_right(rows):
             for job, (right, _) in KEY_JOBS.items()}
 
 
-def rule_check(rows, baseline, names, attribute_hard=None):
-    """The 2026-10-11 rule. baseline: job -> consumers already hard at the ruling. Returns the list of problems."""
+SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
+
+
+def src_named(cands, root=SRC):
+    """The subset of cands that some .xml/.cs file under src/ names as a whole word (our def, or our patch onto a donor's).
+    Raises on a missing root or an unreadable file: a scan that could not look must not read as 'nobody names it'."""
+    cands = set(cands)
+    if not cands:
+        return set()
+    if not os.path.isdir(root):
+        raise OSError("src root missing: %s" % root)
+    pat = re.compile(r"(?<![\w])(%s)(?![\w])" % "|".join(re.escape(c) for c in sorted(cands, key=len, reverse=True)))
+    hit = set()
+
+    def boom(e):
+        raise e
+    for dp, dn, fn in os.walk(root, onerror=boom):
+        dn[:] = [d for d in dn if d not in (".git", "bin", "obj")]
+        for f in fn:
+            if f.lower().endswith((".xml", ".cs")):
+                with open(os.path.join(dp, f), encoding="utf-8", errors="replace") as fh:
+                    hit.update(pat.findall(fh.read()))
+    return hit
+
+
+def _winpath(p):
+    """C:\\x\\y -> /mnt/c/x/y under WSL; anything else unchanged."""
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", p or "")
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/")) if m and os.name != "nt" else p
+
+
+def donor_xml_fixes(capdir, cands):
+    """Provenance from the donor's OWN files, not from our silence. cands: [(consumer, packageId, material)]. For each, find the
+    mod's rootDir in the capture's manifest, read every XML under a Defs folder there, and find the def (a Make_X recipe is
+    judged by its product X): True when that def's own costList names the material, or its own ingredients list it as their
+    only thingDef. Anything not found (no manifest row, no rootDir, def inherited or patched in) is False: fail closed."""
+    import xml.etree.ElementTree as ET
+    man = os.path.join(os.path.dirname(capdir), "manifest.json")
+    roots = {}
+    if os.path.exists(man):
+        for m in json.load(open(man, encoding="utf-8")).get("mods") or []:
+            if m.get("packageId") and m.get("rootDir"):
+                roots[m["packageId"].lower()] = _winpath(m["rootDir"])
+    want = {}
+    for c, pkg, mat in cands:
+        want.setdefault((pkg or "").lower(), []).append((c, c[5:] if c.startswith("Make_") else c, mat))
+    out = {c: False for c, _, _ in cands}
+    for pkg, items in want.items():
+        root = roots.get(pkg)
+        if not root or not os.path.isdir(root):
+            continue
+        need = {d for _, d, _ in items}
+        found = {}
+        for dp, dn, fn in os.walk(root):
+            if "Defs" not in dp.replace("\\", "/").split("/"):
+                continue
+            for f in fn:
+                if not f.lower().endswith(".xml"):
+                    continue
+                try:
+                    tree = ET.parse(os.path.join(dp, f))
+                except (ET.ParseError, OSError):
+                    continue
+                for el in tree.getroot():
+                    dn_ = el.findtext("defName")
+                    if dn_ in need:
+                        found.setdefault(dn_, []).append(el)
+        for c, d, mat in items:
+            for el in found.get(d, []):
+                cost = el.find("costList")
+                if cost is not None and cost.find(mat) is not None:
+                    out[c] = True
+                for ing in el.findall("ingredients/li"):
+                    tds = [x.text for x in ing.findall("filter/thingDefs/li")]
+                    if tds == [mat]:
+                        out[c] = True
+    return out
+
+
+def new_hard(rows, baseline, attribute_hard=None):
+    """job -> consumers fixing the right material now that the ruling-time baseline did not hold (ATTRIBUTE_HARD excepted)."""
+    ah = ATTRIBUTE_HARD if attribute_hard is None else attribute_hard
+    return {job: [c for c in cons if c not in set(baseline.get(job) or []) and c not in ah] for job, cons in fixed_right(rows).items()}
+
+
+def new_hard_cands(rows, baseline, attribute_hard=None):
+    """[(consumer, packageId, right material)] for every new hard consumer, the input donor_xml_fixes() takes."""
+    pkg = {}
+    for r in rows:
+        pkg.setdefault(r[0], set()).add(r[5])
+    return sorted({(c, p, KEY_JOBS[job][0]) for job, cs in new_hard(rows, baseline, attribute_hard).items() for c in cs
+                   for p in pkg.get(c, {None}) if len(pkg.get(c, ())) == 1})
+
+
+def donor_native(rows, baseline, named, provenance, attribute_hard=None):
+    """New fixed right-material consumers that are a donor's own: exactly one, non-mandrake packageId on its rows; no src file
+    names the def; and the donor's own XML fixes that material (provenance: donor_xml_fixes()). The 2026-10-11 ruling binds
+    the exclusivity WE build; a donor update shipping its own plasteel prosthetic is the same kind of use the baseline froze
+    (vanilla's and the donors' own prosthetics on plasteel), not a rule of ours. Unknown owner or provenance stays ours.
+    Returns sorted (job, consumer, packageId)."""
+    pkgs = {}
+    for r in rows:
+        pkgs.setdefault(r[0], set()).add(r[5])
+    out = []
+    for job, cs in new_hard(rows, baseline, attribute_hard).items():
+        for c in cs:
+            ps = pkgs.get(c, set())
+            if len(ps) != 1:
+                continue
+            p = next(iter(ps))
+            if p and not p.lower().startswith("mandrake.") and c not in named and provenance.get(c) is True:
+                out.append((job, c, p))
+    return sorted(out)
+
+
+def rule_check(rows, baseline, names, attribute_hard=None, named=None, provenance=None):
+    """The 2026-10-11 rule. baseline: job -> consumers already hard at the ruling. named/provenance: src_named() and
+    donor_xml_fixes() of the new consumers, or None to treat every new consumer as ours (strict). Returns the problems."""
     ah = ATTRIBUTE_HARD if attribute_hard is None else attribute_hard
     bad = []
     now = fixed_right(rows)
+    native = set() if (named is None or provenance is None) else {c for _, c, _ in donor_native(rows, baseline, named, provenance, ah)}
     for job, cons in now.items():
         old = set(baseline.get(job) or [])
         for c in cons:
-            if c not in old and c not in ah:
+            if c not in old and c not in ah and c not in native:
                 bad.append("%s: NEW hard requirement %s fixes %s (a preference job; no unusual attribute named)" % (job, c, KEY_JOBS[job][0]))
         for c in sorted(old - set(cons)):
             if c in names:
@@ -198,6 +319,20 @@ def selftest():
     loose = [("BionicArm", "thing", "Plasteel", "broad", ["prosthetics_implants"], "x")]
     assert len(rule_check(loose, base, {"BionicArm"}, {})) == 1                    # an already-hard use loosened
     assert rule_check([], base, set(), {}) == []                                    # a removed def is not a loosening
+    # donor-native new hard use (a donor update): reported, not our rule; ours, or unproven provenance, still fails
+    don = ok + [("OuterRim_CyberneticArm", "thing", "Plasteel", "fixed", ["prosthetics_implants"], "neronix17.outerrim.core")]
+    yes = {"OuterRim_CyberneticArm": True}
+    assert len(rule_check(don, base, {"BionicArm"}, {})) == 1                                         # strict: flagged
+    assert rule_check(don, base, {"BionicArm"}, {}, named=set(), provenance=yes) == []
+    assert donor_native(don, base, set(), yes, {}) == [("prosthetics_implants", "OuterRim_CyberneticArm", "neronix17.outerrim.core")]
+    assert len(rule_check(don, base, {"BionicArm"}, {}, named={"OuterRim_CyberneticArm"}, provenance=yes)) == 1  # our src names it
+    assert len(rule_check(don, base, {"BionicArm"}, {}, named=set(), provenance={})) == 1             # donor XML does not fix it
+    assert len(rule_check(new, base, {"BionicArm", "RM_Factory"}, {}, named=set(), provenance={"RM_Factory": True})) == 1  # mandrake
+    nopkg = ok + [("X_Arm", "thing", "Plasteel", "fixed", ["prosthetics_implants"], None)]
+    assert len(rule_check(nopkg, base, {"BionicArm"}, {}, named=set(), provenance={"X_Arm": True})) == 1  # unknown owner
+    two = don + [("OuterRim_CyberneticArm", "thing", "Plasteel", "fixed", ["prosthetics_implants"], "mandrake.rsw.x")]
+    assert len(rule_check(two, base, {"BionicArm"}, {}, named=set(), provenance=yes)) == 1               # two owners: ours
+    assert _winpath("C:\\A b\\c") == ("/mnt/c/A b/c" if os.name != "nt" else "C:\\A b\\c")
     return "census selftest ok"
 
 
@@ -217,7 +352,14 @@ def main():
             json.dump(fr, fh, indent=1, sort_keys=True)
             fh.write("\n")
         print("baseline frozen:", BASELINE)
-    rc = rule_check(rows, load_baseline(), NAMES)
+    cands = new_hard_cands(rows, load_baseline())
+    named = src_named(c for c, _, _ in cands)
+    prov = donor_xml_fixes(d, cands)
+    rc = rule_check(rows, load_baseline(), NAMES, named=named, provenance=prov)
+    dn = donor_native(rows, load_baseline(), named, prov)
+    if dn:
+        print("donor-native hard uses since the baseline (info: the donor's own XML fixes it, no src file names it): %d: %s"
+              % (len(dn), ", ".join("%s (%s)" % (c, p) for _, c, p in dn[:8])))
     print("2026-10-11 rule: %s" % ("PASS (already-hard uses kept, no new hard rule)" if not rc else "FAIL %d: %s" % (len(rc), "; ".join(rc[:5]))))
     if "--csv" in sys.argv:
         p = sys.argv[sys.argv.index("--csv") + 1]
