@@ -25,6 +25,10 @@ status-hint: engine for the graffiti program, superseding Mlie.GraffitiMod's van
 ## [S]
 Whether the six shipped texture variants of `RM_Graffiti_Vandal` (Graffiti Mod (Continued)'s art) actually read as legible marks on a wall at normal zoom is a human-pass concern (MOD_HUMAN_EXPLORATION_PASS_1). ⬇️ **Superseded as the authority by the `## north star` section below** — that question is now a binding bar, not a deferred concern.
 
+## anti-guessing notes
+- RULED OUT: the spree mod fails to start. Live A2 2026-11-03T14:36Z: `jawa/pawn_force_mental_break` returned `mentalStateAfter` = `RM_GraffitiPaintingSpreeState`; the row's UNMEASURED was the harness (the companion latches the painter's own new mental state as a `threat` stop). validation.py now declares it with `_own_spree` (clockgate.expected_disturbance, painters only, spree state only); guard `src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py`.
+- UNTESTED (SITE theories, A2 2026-11-03): `forced_paint_job` stopped on `hostile_arrival: Toughspike` (a wild hostile not cleared before the wait); `spree_wall.spree_runs` stopped on `death: Crush` at 60 ticks (roof collapse after `clear_area`?). Neither is a mod fault until shown.
+
 ## north star
 state: VALIDATED
 validated-hash: 335bccf3b6cbda91ab995e52922ffd51ae11365b0652dc0481dc6bf8fc10693c

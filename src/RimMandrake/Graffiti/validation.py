@@ -35,6 +35,7 @@ raidExitEligible mark's `onViewHostileMaker`, GRAFFITI_V1_LIVE_PROOF_1) and Sacr
 `breachBiasEnabled` gates `BreachBiasHook` on `RM_Graffiti_WarningGlyph` (`breachLure`=true);
 its behavioural A/B needs a breaching raid, not built here.
 """
+import contextlib
 import os
 import re
 
@@ -192,6 +193,27 @@ def _settle_painter(t, pid):
     t.bridge_call("jawa/set_draft", pawnId=pid, drafted=False)
 
 
+SPREE_STATE = "RM_GraffitiPaintingSpreeState"
+
+
+@contextlib.contextmanager
+def _own_spree(painters):
+    """clockgate.expected_disturbance for the row's OWN forced spree (GRAFFITI_NORTHSTAR_GREEN_FULL_1, pilot gen 11):
+    the companion latches a colonist's new mental state as kind 'mental', severity 'threat', so without this the
+    painter's own RM_GraffitiPaintingSpreeState stops safe_advance and the row reads UNMEASURED on every run. Matches
+    only kind 'mental' on one of `painters` whose detail ends in the spree state: another pawn's break, any death or
+    hostile still stops the clock (guard: selftest_graffiti_spree_surprise.py)."""
+    import clockgate
+    ids = set(n for n in (clockgate._thing_number(p) for p in painters if p) if n is not None)
+
+    def pred(tr):
+        return (isinstance(tr, dict) and tr.get("kind") == "mental"
+                and clockgate._thing_number(tr.get("subjectId")) in ids
+                and str(tr.get("detail") or "").endswith(SPREE_STATE))
+    with clockgate.expected_disturbance("painter's own forced %s" % SPREE_STATE, pred):
+        yield
+
+
 def _no_cleaning(t):
     for p in _all_colonists(t):
         t.bridge_call("jawa/set_work_priority", pawnId=p["id"], workType="Cleaning", priority=0)
@@ -268,7 +290,8 @@ def mental_break_spree(t):
                     and (r or {}).get("mentalStateAfter") == "RM_GraffitiPaintingSpreeState"):
                 raise ExpectationFailed(
                     "jawa/pawn_force_mental_break did not start RM_GraffitiPaintingSpreeState: %r" % r)
-        t.wait_ticks(900)
+        with _own_spree([walker]):
+            t.wait_ticks(900)
         if t._guard():
             job = t.bridge_call("jawa/pawn_get", pawn=walker)
             after = len(_marks_in(t, rect))
@@ -303,7 +326,8 @@ def spree_wall(t):
                 started.append(bool((r or {}).get("started")))
     per_lane = []
     with t.component("spree_runs"):
-        t.wait_ticks(3000)
+        with _own_spree(painters):
+            t.wait_ticks(3000)
         # painters out of frame before any shutter: a body must not occlude a mark
         for ln in lanes:
             _remove_pawns_in(t.bridge_call, ln["rect"])
