@@ -118,6 +118,67 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitDrawMath.HumanlikeHalfHeight(4f) >= RM_PitDrawMath.BodyEstimateHalf(4f), "never below the estimate");
             });
 
+            // PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES (GPT art review of s8_pitlip_close.png): "the cover runs past the pit's west edge
+            // and ghosts a pawn standing partly outside the pit"; "the occupant is more than half hidden with no window".
+            Case("PitLip_s8_outside_muffalo_is_never_ghosted", () =>
+            {
+                // the colonist on 135,114 (D4), drawn centre (135.5, 114.0), humanlike box x 134.9..136.1, z 113.25..114.75; its
+                // near-lip band in column 136 is [136, 136.1] x [113.25, 114]. The muffalo on the ground at 137,113 (D0): drawSize 3,
+                // centre (137.5, 113.5), box x 136..139, z 112..115. They overlap: that piece is skipped, never drawn over it.
+                float half = RM_PitDrawMath.BodyEstimateHalf(1f);
+                float colL = 135.5f - half, colR = 135.5f + half;
+                Assert(colR > 136f, "precondition: the colonist's box reaches column 136, " + colR);
+                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(136f, colR, 113.25f, 114f, 136f, 139f, 112f, 115f, 0, 4),
+                    "the colonist's east piece over the ground muffalo is skipped");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(136f, colR, 113.25f, 114f, 136f, 139f, 112f, 115f, 4, 4),
+                    "can-fail: a pawn as deep as the occupant is covered like it");
+                // the in-pit muffalo's cover (x 131..134) never reaches the outside muffalo's box (x >= 136)
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(131f, 134f, 112.5f, 114.82f, 136f, 139f, 112f, 115f, 0, 4),
+                    "nothing of the SW muffalo's cover lies on the outside muffalo");
+                Assert(colL > 134f, "the colonist's west edge stays in the pit");
+            });
+
+            Case("PitLip_s8_west_overhang_is_the_pit_muffalo_not_an_outsider", () =>
+            {
+                // br1f s8_pitlip.json: 132,114 is RM_Channel_Superdeep D4; the pawn read as "partly outside" is the muffalo ON it
+                Assert(S8Pit(132, 114) == 4 && S8Pit(131, 114) == 0, "can-fail: the SW muffalo stands in the pit, its west neighbour is ground");
+                // column 131 (west of the pit): the near lip covers below 114 and the side bank from 114 up to the hidden share, so
+                // the overhang reads as one body under the bank; the seam at 114 the review saw was the pre-76779c19e6 frame
+                float bottom = 112.5f, top = 115.5f;
+                float lip = RM_PitDrawMath.LipZBelow(131, 114, 4, S8Pit, 16);
+                float side = RM_PitDrawMath.SideHiddenTop(bottom, top, 4, 0.3f, RM_PitDrawMath.BodyHeightCells(2.4f));
+                Assert(RM_WallFaceMath.OccludedBand(lip, bottom, top, out float z0, out float z1) && z0 == bottom && z1 == lip,
+                    "the near lip covers column 131 up to 114");
+                Assert(side > z1 + 0.5f, "the side band continues above the lip: no seam at 114, got " + side);
+                // the in-pit columns show from the lip up; the overhang only from the side-bank height up (it is under the bank)
+                Assert(side < top, "the muffalo's top still shows above the bank");
+            });
+
+            Case("PitLip_s8_occupant_window_opens_past_half", () =>
+            {
+                // clamp ON (shipped, owner card 2026-10-15): drawn centre held on the lip, 114.0: exactly half hidden, no window
+                // (PIT_LIP_FIX_BOAR_HANGS_OUT 2026-10-16: the window opens only when the lip would hide MORE than half)
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(114f, 113.25f, 114.75f), "clamp on: half hidden, the window stays shut");
+                // clamp OFF: sunk D4 x 0.3 = 1.2 from 114.5: centre 113.3, box 112.55..114.05, the lip hides 97%
+                float c = 114.5f - 4 * 0.3f;
+                Assert(RM_WallFaceMath.OccupantCutNeeded(114f, c - 0.75f, c + 0.75f), "can-fail: past half the window opens");
+                // the window: the colonist's band [134.9, 136.1] cut at 135.5 +- 0.5 leaves [135, 136] bare
+                int n = RM_WallFaceMath.CutCoverSpan(134.9f, 136.1f, 135f, 136f, out float l1, out float r1, out float l2, out float r2);
+                Assert(n == 2 && Math.Abs(r1 - 135f) < 1e-4f && Math.Abs(l2 - 136f) < 1e-4f, "two pieces either side of the window");
+            });
+
+            Case("PitLip_occlusion_records_its_last_frame", () =>
+            {
+                string src = Src("Superdeep", "RM_PitLipOcclusion.cs");
+                Assert(src.Contains("public static string LastFrameCovers()"), "the live proof's read (jawa/static_call)");
+                string band = Between(src, "private void DrawBand(", "Graphics.DrawMesh(frameMesh, m, mat, 0);");
+                Assert(band.Contains("RecordPiece(p, 'X'"), "a skipped piece is recorded as X");
+                string draw = Between(src, "Graphics.DrawMesh(frameMesh, m, mat, 0);", "bool sun = SunMayShade(");
+                Assert(draw.Contains("RecordPiece(p, sideOf >= 0 ? 'S' : 'N'"), "every drawn piece is recorded with its kind");
+                string update = Between(src, "public override void MapComponentUpdate()", "if (!RimMandrakeFlowWorksSettings.pitLipOcclusionEnabled");
+                Assert(update.Contains("framePieces.Clear()"), "the record is the LAST frame's, cleared before the early outs");
+            });
+
             Case("PitSide_lip_occlusion_wires_the_side_bank", () =>
             {
                 string src = Src("Superdeep", "RM_PitLipOcclusion.cs");

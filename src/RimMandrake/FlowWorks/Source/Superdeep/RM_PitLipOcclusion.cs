@@ -276,6 +276,12 @@ namespace RimMandrake.FlowWorks
 
 		public override void MapComponentUpdate()
 		{
+			if (Find.CurrentMap == map)
+			{
+				frameSunk.Clear();
+				framePieces.Clear();
+				frameNumber = Time.frameCount;
+			}
 			if (!RimMandrakeFlowWorksSettings.pitLipOcclusionEnabled || !RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled
 				|| Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldRendered)
 			{
@@ -329,6 +335,9 @@ namespace RimMandrake.FlowWorks
 				float sideTop = RM_PitDrawMath.SideHiddenTop(bottom, top, d, RimMandrakeFlowWorksSettings.pitSinkPerLevel,
 					RM_PitDrawMath.BodyHeightCells(p.BodySize));
 				int pawnCol = Mathf.FloorToInt(dp.x);
+				bool cutAny = false;
+				int sunkAt = frameSunk.Count;
+				frameSunk.Add(new SunkRec { pawn = p, d = d, l = dp.x - half, r = dp.x + half, bot = bottom, top = top });
 				int x0 = Mathf.FloorToInt(dp.x - half);
 				int x1 = Mathf.FloorToInt(dp.x + half);
 				for (int cx = x0; cx <= x1; cx++)
@@ -364,8 +373,9 @@ namespace RimMandrake.FlowWorks
 							z0 = Mathf.Max(z0, RM_PitDrawMath.CoverStopZ(cx, lipZ, z0, BlocksCover));
 							if (z1 > z0 + 0.001f)
 							{
-								DrawBand(p, d, cx, left, right, z0, z1, dp.x, -1, RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled
-									&& RM_WallFaceMath.OccupantCutNeeded(lipZ, bottom, top));
+								bool cut = RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled && RM_WallFaceMath.OccupantCutNeeded(lipZ, bottom, top);
+								cutAny |= cut;
+								DrawBand(p, d, cx, left, right, z0, z1, dp.x, -1, cut);
 							}
 						}
 					}
@@ -377,7 +387,80 @@ namespace RimMandrake.FlowWorks
 						DrawBand(p, d, cx, left, right, sideLo, sideHi, dp.x, pawnCol, false);
 					}
 				}
+				if (cutAny)
+				{
+					SunkRec rec = frameSunk[sunkAt];
+					rec.cut = true;
+					frameSunk[sunkAt] = rec;
+				}
 			}
+		}
+
+		// PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES: what the last frame decided, kept for a live proof (LastFrameCovers). Reused
+		// lists of structs, formatted only on request: nothing is allocated per frame.
+		private struct SunkRec
+		{
+			public Pawn pawn;
+			public int d;
+			public float l, r, bot, top;
+			public bool cut;
+		}
+
+		private struct PieceRec
+		{
+			public Pawn pawn;
+			public char kind;   // N near lip, S side bank, X skipped (it would cover a shallower pawn)
+			public float l, r, a, b;
+		}
+
+		private readonly System.Collections.Generic.List<SunkRec> frameSunk = new System.Collections.Generic.List<SunkRec>();
+		private readonly System.Collections.Generic.List<PieceRec> framePieces = new System.Collections.Generic.List<PieceRec>();
+		private int frameNumber = -1;
+
+		private void RecordPiece(Pawn p, char kind, float l, float r, float a, float b)
+		{
+			if (framePieces.Count < 4096) framePieces.Add(new PieceRec { pawn = p, kind = kind, l = l, r = r, a = a, b = b });
+		}
+
+		/// <summary>PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES — the current map's last drawn frame as text, for a live proof through
+		/// jawa/static_call (read-only). Lines: <c>frame N</c>; <c>sunk id d l r bot top cut</c> per covered pawn;
+		/// <c>piece id N|S|X l r a b</c> per cover piece (X: skipped over a shallower pawn); <c>pawn id d l r bot top</c> for
+		/// every spawned, non-flying pawn in view, its drawn rect read now (paused: the same as the frame's).</summary>
+		public static string LastFrameCovers()
+		{
+			Map m = Find.CurrentMap;
+			RM_PitLipOcclusion c = m?.GetComponent<RM_PitLipOcclusion>();
+			if (c == null) return "REFUSED: no current map or no RM_PitLipOcclusion on it";
+			var sb = new System.Text.StringBuilder();
+			var inv = System.Globalization.CultureInfo.InvariantCulture;
+			sb.Append("frame ").Append(c.frameNumber).Append(" now ").Append(Time.frameCount)
+				.Append(" enabled ").Append(RimMandrakeFlowWorksSettings.pitLipOcclusionEnabled ? 1 : 0)
+				.Append(" cutSetting ").Append(RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled ? 1 : 0)
+				.Append(" clamp ").Append(RimMandrakeFlowWorksSettings.pitSinkClampEnabled ? 1 : 0)
+				.Append(" cutWidth ").Append(RimMandrakeFlowWorksSettings.pitLipOccupantCutWidth.ToString("0.###", inv)).Append('\n');
+			string F(float v) => v.ToString("0.###", inv);
+			foreach (SunkRec r in c.frameSunk)
+			{
+				sb.Append("sunk ").Append(r.pawn?.ThingID).Append(' ').Append(r.d).Append(' ').Append(F(r.l)).Append(' ').Append(F(r.r))
+					.Append(' ').Append(F(r.bot)).Append(' ').Append(F(r.top)).Append(' ').Append(r.cut ? 1 : 0).Append('\n');
+			}
+			foreach (PieceRec r in c.framePieces)
+			{
+				sb.Append("piece ").Append(r.pawn?.ThingID).Append(' ').Append(r.kind).Append(' ').Append(F(r.l)).Append(' ').Append(F(r.r))
+					.Append(' ').Append(F(r.a)).Append(' ').Append(F(r.b)).Append('\n');
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(m);
+			CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(2);
+			foreach (Pawn q in m.mapPawns.AllPawnsSpawned)
+			{
+				if (q.Flying || !view.Contains(q.Position)) continue;
+				Vector3 qp = q.DrawPos;
+				Vector2 qh = HalfExtent(q);
+				int qd = eng != null ? Pits.RM_SuspensionUnderpass.DrawDepth(q, q.Position, RM_Patch_PitDepthDrawOffset.DrawHollow(q, eng, q.Position)) : 0;
+				sb.Append("pawn ").Append(q.ThingID).Append(' ').Append(qd).Append(' ').Append(F(qp.x - qh.x)).Append(' ').Append(F(qp.x + qh.x))
+					.Append(' ').Append(F(qp.z - qh.y)).Append(' ').Append(F(qp.z + qh.y)).Append('\n');
+			}
+			return sb.ToString();
 		}
 
 		// one frame's drawing state, set at the top of MapComponentUpdate
@@ -441,6 +524,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (HitsShallowerPawn(p, d, left, right, a, b))
 				{
+					RecordPiece(p, 'X', left, right, a, b);
 					continue;   // never draw the cover over a pawn standing at ground level or on the lip
 				}
 				// FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the cover at the occupant, but only where the lip would
@@ -459,6 +543,7 @@ namespace RimMandrake.FlowWorks
 					float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
 					Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, frameY, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
 					Graphics.DrawMesh(frameMesh, m, mat, 0);
+					RecordPiece(p, sideOf >= 0 ? 'S' : 'N', pl, pr, a, b);
 					bool sun = SunMayShade(pl, pr, a, b);
 					if (casters != 0 || sun)
 					{

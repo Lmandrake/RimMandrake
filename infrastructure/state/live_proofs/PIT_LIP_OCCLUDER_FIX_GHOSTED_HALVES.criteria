@@ -1,0 +1,3 @@
+A1 L2: on the restaged br1f s8 pit (4x4, D4; muffalo on its SW corner, colonist on its SE corner, a muffalo on the ground past the SE corner), no near-lip or side-bank cover piece drawn in the last frame overlaps a pawn shallower than the pawn it hides: the ground muffalo is never ghosted
+A2 L2: every cover piece lies inside its own sunk pawn's drawn rect, and the in-pit muffalo's overhang west of the pit carries a side-bank piece above the lip row (one body under the bank, no seam at the lip)
+A3 L2: with the occupant-window setting on and the sink clamp OFF, the colonist the lip hides past half gets the window (cut=1, no near-lip piece inside its centre +-0.5); with the clamp ON (shipped) the window stays shut, per PIT_LIP_FIX_BOAR_HANGS_OUT (2026-10-16)

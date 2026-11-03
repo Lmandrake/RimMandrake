@@ -143,7 +143,7 @@ MEMORY_HEAVY = {"selftest_starwarspatches_semantics.py", "selftest_utinnipatches
 # rest of the pool), so each gets the machine's dotnet to itself and the timeout means what it says.
 DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_oracle.py",
                "selftest_empire_ladder.py", "selftest_flowworks_stock.py",
-               "selftest_flowworks_trench_cover.py", "selftest_gimmesomeslack.py",
+               "selftest_flowworks_trench_cover.py", "selftest_gimmesomeslack.py", "selftest_pit_lip_cover.py",
                "selftest_property_fabric.py", "selftest_reclamation_trigger.py",
                "selftest_seashores.py", "selftest_stun_scaling.py", "selftest_sun_heat.py",
                "selftest_track_grid.py", "selftest_wasterun_kernel.py"}
