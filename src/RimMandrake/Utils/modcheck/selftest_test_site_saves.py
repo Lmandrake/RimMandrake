@@ -399,5 +399,42 @@ check("11 live A2 proves the load, then reads river edges",
       len(_a2) == 1 and "test_site_saves.py prove river" in _a2[0] and "&& " in _a2[0]
       and "test_site_river_edges.py river" in _a2[0].split("&&", 1)[1], _a2)
 
+# 12. Tier gate (live 2026-11-03: prove ran on another item's 28-mod game and the round wrote FAIL): the gate reads the
+#     RUNNING list against the site's tier and exits 2 (UNMEASURED, restage) on a wrong game, never 1; both live lines
+#     run it first, and the proof file names live-mods so the round restages on a list holding the tier's mods.
+import test_site_tier_gate as TG  # noqa: E402
+
+import modset_builder as _MB  # noqa: E402  (section 7 fakes T.tier_ids; resolve the real tier here)
+_ids, _miss, _ref = _MB.resolve_tier("fw_gss_sitting", _MB.scan())
+_TL = [i.lower() for i in _ids]
+check("12 fw_gss_sitting resolves", _TL and not _miss and not _ref, (_miss, _ref))
+_W = TG.tier_want("fw_gss_sitting")
+check("12 tier want carries the bridge, FlowWorks, GSS, Biomes, VEF core",
+      {"mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes",
+       "oskarpotocki.vanillafactionsexpanded.core"} <= set(_W) and set(_W) <= set(_TL), _W)
+check("12 the resolved tier itself fits", TG.tier_gaps(_TL, "river", tier_list=_TL) == [], TG.tier_gaps(_TL, "river", tier_list=_TL))
+_G28 = list(_TL) + ["sarg.alphabiomes", "erdelf.humanoidalienraces"]
+_g = TG.tier_gaps(_G28, "river", tier_list=_TL)
+check("12 the 2026-11-03 game (retired alphabiomes + HAR) is a wrong game",
+      any("retired" in x for x in _g) and any("beyond tier" in x for x in _g), _g)
+_g = TG.tier_gaps([i for i in _TL if i != "mandrake.rm.gimmesomeslack"], "river", tier_list=_TL)
+check("12 a list lacking a tier want is a wrong game", any("lacks tier" in x and "gimmesomeslack" in x for x in _g), _g)
+_g = TG.tier_gaps([i for i in _TL if i != "ludeon.rimworld.odyssey"], "river", tier_list=_TL)
+check("12 a list lacking a DLC is a wrong game", any("DLC" in x for x in _g), _g)
+check("12 an empty running read is a problem, never a fit", TG.tier_gaps([], "river", tier_list=_TL) != [])
+check("12 the gate never exits 1 (it judges the game, not the item)", 1 not in (TG.FITS, TG.WRONG_GAME, TG.BLIND),
+      (TG.FITS, TG.WRONG_GAME, TG.BLIND))
+_LPT = open(_LP, encoding="utf-8").read().splitlines()
+for _c in ("A1", "A2"):
+    _ln = [ln for ln in _LPT if ln.startswith("live-proof %s:" % _c)]
+    check("12 live %s runs the tier gate first, then the prove" % _c,
+          len(_ln) == 1 and _ln[0].split(":", 1)[1].strip().startswith("python.exe src/RimMandrake/Utils/modcheck/test_site_tier_gate.py river")
+          and "test_site_saves.py prove river" in _ln[0].split("&&", 1)[1], _ln)
+sys.path.insert(0, os.path.join(HERE, "..", "..", "rimflow"))
+import relentless_live_round as RLR  # noqa: E402
+_lm = RLR.live_mods("\n".join(_LPT))
+check("12 live-mods names FlowWorks, GimmeSomeSlack, RimMandrake.Biomes",
+      {"FlowWorks", "GimmeSomeSlack", "RimMandrake.Biomes"} <= set(_lm), _lm)
+
 print("selftest_test_site_saves: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

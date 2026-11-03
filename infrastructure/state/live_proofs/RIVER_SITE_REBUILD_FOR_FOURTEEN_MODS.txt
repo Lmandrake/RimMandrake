@@ -1,2 +1,3 @@
-live-proof A1: python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py prove river --build-if-missing --no-load < /dev/null
-live-proof A2: python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py prove river < /dev/null && python.exe src/RimMandrake/Utils/modcheck/test_site_river_edges.py river < /dev/null
+live-proof A1: python.exe src/RimMandrake/Utils/modcheck/test_site_tier_gate.py river < /dev/null && python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py prove river --build-if-missing --no-load < /dev/null
+live-proof A2: python.exe src/RimMandrake/Utils/modcheck/test_site_tier_gate.py river < /dev/null && python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py prove river < /dev/null && python.exe src/RimMandrake/Utils/modcheck/test_site_river_edges.py river < /dev/null
+live-mods: FlowWorks, GimmeSomeSlack, RimMandrake.Biomes
