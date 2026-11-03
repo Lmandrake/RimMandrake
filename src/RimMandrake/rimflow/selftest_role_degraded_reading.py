@@ -49,7 +49,7 @@ check([a for a in plain if a.get("do") == "role_launch"] and any(
     a.get("do") == "alarm" and "LAUNCHED on a degraded" in a.get("why", "") for a in plain),
       "unflagged (the default since 2026-11-02): launches, with the attention alarm")
 cond = drive(SD.conductor(quick_checks_local=["07:30"], degraded_reading_ok=False))
-check(not [a for a in cond if a.get("do") == "role_launch"], "a role without the flag stays refused")
+check(not [a for a in cond if a.get("do") == "role_launch"], "a role that sets the flag false stays refused")
 
 # OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE: the stale / missing-or-unreadable status.json / unresolved account readings,
 # Operations and the Conductor due at the same tick: Operations launches marked UNMEASURED and told to diagnose the
