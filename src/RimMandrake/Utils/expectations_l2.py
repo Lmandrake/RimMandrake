@@ -328,10 +328,20 @@ def _readback(B, plan) -> dict:
     return out
 
 
+def map_size(mi: dict) -> tuple[int, int]:
+    """jawa/map_info -> (x, z). The live response carries sizeX/sizeZ (MEASURED 2026-11-03; a
+    read of a `mapSize` key returned {} and planned against a 0x0 map). A missing or zero size
+    is an error by name, never a 0x0 plan."""
+    x, z = mi.get("sizeX"), mi.get("sizeZ")
+    if not isinstance(x, int) or not isinstance(z, int) or x <= 0 or z <= 0:
+        raise ValueError("jawa/map_info gave no sizeX/sizeZ: %r" % {k: mi.get(k) for k in ("sizeX", "sizeZ", "mapId")})
+    return x, z
+
+
 def _clock(B) -> dict:
     mi = B.call("jawa/map_info")
     gi = B.call("rimworld/get_game_info")
-    return {"mapId": mi.get("mapId"), "ticksGame": gi.get("ticksGame"), "size": mi.get("mapSize") or {}}
+    return {"mapId": mi.get("mapId"), "ticksGame": gi.get("ticksGame"), "size": map_size(mi)}
 
 
 def _open_near(B, x, z, tries=12):
@@ -380,8 +390,7 @@ def run_l2_live(manifests, *, shot_name="l2_batch", log=print) -> list[Row]:
         if refused:
             return refused  # nothing spawned: a flyer (or an unreadable race) stops the batch
     start = _clock(B)
-    size = (int(start["size"].get("x") or 0), int(start["size"].get("z") or 0))
-    plan = plan_batch(manifests, size)
+    plan = plan_batch(manifests, start["size"])
     rb = _RB(B)
     for p in plan:
         p.x, p.z = _open_near(rb, p.x, p.z)

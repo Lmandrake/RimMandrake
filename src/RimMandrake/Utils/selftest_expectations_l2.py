@@ -145,6 +145,17 @@ fr = {r.subject: r.status for r in l2.flyer_refusals(kf, rf)}
 check("flyers: flyer refused, walker passes, unreadable refused",
       fr == {"pawn:Fly": "FLYER", "pawn:Lost": "FLYER-UNKNOWN", "pawn:NoStats": "FLYER-UNKNOWN"}, fr)
 
+# ---- map_size: the live jawa/map_info shape (MEASURED 2026-11-03 on a 250x250 Playing map;
+# reading a `mapSize` key planned against 0x0 and failed the live A1 run)
+LIVE_MAP_INFO = {"success": True, "tile": 43716, "mapId": 0, "sizeX": 250, "sizeZ": 250, "cellCount": 62500,
+                 "mapBiome": "RM_Webwork", "ticksGame": 93673}
+check("map_size reads sizeX/sizeZ from the live shape", l2.map_size(LIVE_MAP_INFO) == (250, 250), l2.map_size(LIVE_MAP_INFO))
+check("map_size refuses a response with no size", raises(l2.map_size, {"success": True, "mapId": 0, "mapSize": {}}))
+check("map_size refuses a zero size", raises(l2.map_size, dict(LIVE_MAP_INFO, sizeX=0)))
+check("the live shape plans the real batch", len(l2.plan_batch(
+    [em.load_manifest(str(p)) for p in sorted((REPO / "infrastructure/state/expectations").glob("*.expectations.json"))],
+    l2.map_size(LIVE_MAP_INFO))) > 0)
+
 # ---- CLI over the real manifests (offline plan) and flag guards
 RUN = [sys.executable, str(HERE / "run_expectations.py")]
 GLOB = str(REPO / "infrastructure/state/expectations/*.expectations.json")
