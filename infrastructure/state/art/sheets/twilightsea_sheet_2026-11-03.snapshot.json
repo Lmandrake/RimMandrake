@@ -1,8 +1,8 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-11-03T04:01:45-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:32:24-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_AluunCatch",
   "RM_DancingSkresh",
@@ -25,6 +25,26 @@
   "RM_TikkarrCatch"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Faa": {
+   "brief": "a fast small-mouthed predatory schooling fish of warm channels",
+   "kind": "drafted",
+   "name": "qelloq",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Mee": {
+   "brief": "a silver-blue schooling fish with a glowing flank line, the bulk catch of the shallows",
+   "kind": "drafted",
+   "name": "yissil",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_SandoAquaMonster": {
+   "brief": "a colossal wide-mouthed deep-water predator that breaks the surface only to feed",
+   "kind": "drafted",
+   "name": "ghaarvuun",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Almslight": {
    "columns": {

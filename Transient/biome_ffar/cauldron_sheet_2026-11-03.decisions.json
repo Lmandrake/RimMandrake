@@ -95,7 +95,10 @@
   "RSW_Mynock": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock_Flying_": "D"
+   }
   },
   "RSW_Neebray": {
    "decision": "D",

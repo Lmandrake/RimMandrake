@@ -1,0 +1,466 @@
+{
+ "_doc": [
+  "The non-canon alternative for every canon (RSW_) creature or plant on a Baroque biome sheet (BIOME_FLORAFAUNA_ART_REVIEW_1: 'the non-canon alternative spelled out as an option').",
+  "Each entry is a franchise-free RM_-tier stand-in, spelled out but NOT built: a coined name and a one-line brief of the same game role. The owner picks per row on the biome sheet: keep canon, or use the non-canon alternative (decision field 'noncanon'). Only a pick commissions a def and art.",
+  "Where a real RM_/RUT_ stand-in def already exists (census noncanon_twin), the sheet links that row instead and this table is not consulted.",
+  "Names: coined per design/Jawa/worldbuilding/biomes/noncanon_beast_names_*.md rules 1-4 (variants keep the stem with a plain modifier); every stem passes src/RimMandrake/Utils/check_pseudo_sw_name.py and shares no 4-letter opening with a coined label in src/. Drafted 2026-11-03, unruled."
+ ],
+ "alternatives": {
+  "RSW_Anooba": {
+   "name": "skevva",
+   "brief": "a lean striped pack scavenger that circles herds and drags down the weak"
+  },
+  "RSW_Bantha": {
+   "name": "grullox",
+   "brief": "a towering shaggy pack grazer with forward-curled horns, milked, shorn and ridden"
+  },
+  "RSW_Beldon": {
+   "name": "ombaruun",
+   "brief": "a vast drifting gasbag grazer that trails feeding filaments through high air"
+  },
+  "RSW_Blarth": {
+   "name": "urbo",
+   "brief": "a small round-bellied household predator that croaks when content"
+  },
+  "RSW_Blixus": {
+   "name": "vlissek",
+   "brief": "a half-armoured lagoon crustacean that ambushes from shallow water"
+  },
+  "RSW_Bogwing": {
+   "name": "drevvit",
+   "brief": "a quick leathery-winged marsh flyer that snaps small prey off the water"
+  },
+  "RSW_Bolotaur": {
+   "name": "bhalloruk",
+   "brief": "a long-necked browsing reptile that eats almost without pause and is broken to the saddle"
+  },
+  "RSW_Boma": {
+   "name": "khubbo",
+   "brief": "a ravenous stocky tusked hunter of the rocky ground"
+  },
+  "RSW_Borcatu": {
+   "name": "tchelvar",
+   "brief": "a small bad-tempered scavenger in a thick grit-proof scaly hide"
+  },
+  "RSW_CanCell": {
+   "name": "chizzrit",
+   "brief": "a big-winged scavenging insect flyer that strips carcasses and canyon refuse"
+  },
+  "RSW_Cannok": {
+   "name": "pokkra",
+   "brief": "a squat fanged pest that breeds fast and eats anything that fits its jaws"
+  },
+  "RSW_Clodhopper": {
+   "name": "gribbik",
+   "brief": "a wingless swarming forager that leaps between fields on heavy hind legs"
+  },
+  "RSW_Convor": {
+   "name": "tweelo",
+   "brief": "a plump owl-shaped tree flyer that grips branches with a prehensile tail"
+  },
+  "RSW_Corinathoth": {
+   "name": "dhurrumat",
+   "brief": "an enormous slow frilled grazer whose fearsome head hides a mild temper"
+  },
+  "RSW_Dactillion": {
+   "name": "skaarix",
+   "brief": "a great long-winged scaly flyer that nests in sheer stone faces"
+  },
+  "RSW_Dalgo": {
+   "name": "ploddu",
+   "brief": "a long-legged running carnivore with a fan crest, trainable as a mount"
+  },
+  "RSW_Dewback": {
+   "name": "dewvakka",
+   "brief": "a heavy sun-basking lizard that carries riders and packs across hot sand"
+  },
+  "RSW_Dragonsnake": {
+   "name": "sliskarr",
+   "brief": "a long finned mud-water serpent that drags prey under from the shallows"
+  },
+  "RSW_DragonsnakeAlbino": {
+   "name": "pale sliskarr",
+   "brief": "the rare eyeless bone-white colour form of the sliskarr, hunting by feel"
+  },
+  "RSW_Eopie": {
+   "name": "eppuvi",
+   "brief": "a thin-legged long-snouted pack beast, slow but tireless over rock"
+  },
+  "RSW_Faa": {
+   "name": "qelloq",
+   "brief": "a fast small-mouthed predatory schooling fish of warm channels"
+  },
+  "RSW_FaaJuv": {
+   "name": "young qelloq",
+   "brief": "a qelloq still too small for the open channels, picking at fry in the shallows"
+  },
+  "RSW_Falumpaset": {
+   "name": "borrumba",
+   "brief": "a huge long-legged draught grazer that wades the marsh hauling loads"
+  },
+  "RSW_Fambaa": {
+   "name": "zhavoru",
+   "brief": "a giant scaly swamp amphibian strong enough to carry a platform on its back"
+  },
+  "RSW_Fanback": {
+   "name": "brissaq",
+   "brief": "a cold-blooded swamp predator with a tall dorsal sail and a scenting snout"
+  },
+  "RSW_FeralGrazer": {
+   "name": "dwumma",
+   "brief": "a lean spotted feral herd grazer gone wild from farm stock"
+  },
+  "RSW_FeralNerf": {
+   "name": "feral nollux",
+   "brief": "a nollux herd gone wild, leaner and quicker to charge"
+  },
+  "RSW_Gelagrub": {
+   "name": "blorro",
+   "brief": "a huge ground beetle grub that burrows through rotting wood"
+  },
+  "RSW_Gizka": {
+   "name": "tippik",
+   "brief": "a tiny fast-breeding hopping reptile that swarms stores and chews wiring"
+  },
+  "RSW_Gorg": {
+   "name": "plibb",
+   "brief": "a small squat amphibian kept live and eaten as cheap food"
+  },
+  "RSW_Gornt": {
+   "name": "druvva",
+   "brief": "a stolid domesticated omnivore raised for meat by herders"
+  },
+  "RSW_GraniteSlug": {
+   "name": "ghommul",
+   "brief": "a small stone-eating slug whose acid spit softens rock it grazes"
+  },
+  "RSW_Grank": {
+   "name": "oskarr",
+   "brief": "a low-slung shell-cracking scavenger that feels prey through its body hairs"
+  },
+  "RSW_GreaterKraytDragon": {
+   "name": "greater zaruuk",
+   "brief": "the colossal many-legged sand-swimming apex predator of the deep dunes"
+  },
+  "RSW_Gutkurr": {
+   "name": "skraddik",
+   "brief": "a pack-hunting armoured insect predator on powerful hind legs"
+  },
+  "RSW_Hawkbat": {
+   "name": "krivask",
+   "brief": "a hook-beaked leather-winged hunter that dives on small prey from rooftops and ledges"
+  },
+  "RSW_Horax": {
+   "name": "bhoggun",
+   "brief": "a colossal slow armoured reptile with sabre fangs and a clubbed tail that uproots trees"
+  },
+  "RSW_Hrumph": {
+   "name": "wumbo",
+   "brief": "a broad-backed horned grazer whose deep booming call carries for miles"
+  },
+  "RSW_Hssiss": {
+   "name": "sseevek",
+   "brief": "a slow venomous dark-scaled lizard that ambushes at the water's edge"
+  },
+  "RSW_Igitz": {
+   "name": "ippel",
+   "brief": "a small finned swamp amphibian, clawed in front, kept as a pet"
+  },
+  "RSW_Iriaz": {
+   "name": "jevvuti",
+   "brief": "a long-necked spotted herd grazer with swept-back horns that charges when cornered"
+  },
+  "RSW_IridonianReek": {
+   "name": "gruhnor",
+   "brief": "a massive territorial three-horned grazer that turns red when fed on meat"
+  },
+  "RSW_Jakobeast": {
+   "name": "dommoz",
+   "brief": "a huge tusked striped herd beast of the frozen plains, raised for meat and fur"
+  },
+  "RSW_Jamel": {
+   "name": "kemmu",
+   "brief": "a high-humped spindly-legged pack beast that endures long dry marches"
+  },
+  "RSW_Jimvu": {
+   "name": "yoggra",
+   "brief": "a lean six-legged beaked reptile that escapes predators by outrunning them"
+  },
+  "RSW_Kinrath": {
+   "name": "aschikk",
+   "brief": "a large venom-limbed forest arachnid that hunts the undergrowth"
+  },
+  "RSW_Klorslug": {
+   "name": "ghelbek",
+   "brief": "a giant poisonous toothed swamp worm that lunges from the mire"
+  },
+  "RSW_KowakianMonkeyLizard": {
+   "name": "kekkalo",
+   "brief": "a small cackling big-eared tree lizard kept as a mischievous pet"
+  },
+  "RSW_Kreetle": {
+   "name": "zhitter",
+   "brief": "a small burrowing shelled arthropod that rides in on supplies and infests stores"
+  },
+  "RSW_Krykna": {
+   "name": "shukkar",
+   "brief": "a pale six-legged cave hunter whose hide shrugs off gunfire"
+  },
+  "RSW_Kwi": {
+   "name": "evvaru",
+   "brief": "a large striped bipedal herd grazer that honks and grunts to its kin"
+  },
+  "RSW_Kybuck": {
+   "name": "tovvak",
+   "brief": "a swift spiral-horned forest ungulate, sociable and easily tamed"
+  },
+  "RSW_LaaJuv": {
+   "name": "young quoola",
+   "brief": "a quoola scalefish not yet grown into its streamer fins, schooling in the shallows"
+  },
+  "RSW_LavaFlea": {
+   "name": "dzurrik",
+   "brief": "a giant armoured hopper that grazes rock and walks on molten crust"
+  },
+  "RSW_LongtailGorg": {
+   "name": "longtail plibb",
+   "brief": "a plibb with an unusually long flattened tail, sold as live food"
+  },
+  "RSW_Lothcat": {
+   "name": "nirravo",
+   "brief": "a small fluffy tall-eared hunter of vermin, temperamental but often kept"
+  },
+  "RSW_Lylek": {
+   "name": "izzara",
+   "brief": "a large forest insect predator on spear legs with raised spiked pincers"
+  },
+  "RSW_MarshHaunt": {
+   "name": "oolumev",
+   "brief": "a pale red-eyed marsh stalker seen mostly at dusk"
+  },
+  "RSW_Massiff": {
+   "name": "grokkel",
+   "brief": "a low armoured spine-crested guard beast, fiercely loyal once trained"
+  },
+  "RSW_Mee": {
+   "name": "yissil",
+   "brief": "a silver-blue schooling fish with a glowing flank line, the bulk catch of the shallows"
+  },
+  "RSW_MeeJuv": {
+   "name": "young yissil",
+   "brief": "an yissil too young for the open sea, still schooling in the shallows"
+  },
+  "RSW_Mott": {
+   "name": "buhlo",
+   "brief": "a tubby semi-aquatic swamp grazer, the staple prey of the marsh"
+  },
+  "RSW_Mudhorn": {
+   "name": "baakor",
+   "brief": "a massive one-horned charging grazer that lays a single woolly egg"
+  },
+  "RSW_Mynock": {
+   "name": "sefflik",
+   "brief": "a small leather-winged parasite that clings to hulls and drinks power from cables"
+  },
+  "RSW_Neebray": {
+   "name": "ulliva",
+   "brief": "a small limbless ray-winged flyer that rides warm updrafts"
+  },
+  "RSW_Nerf": {
+   "name": "nollux",
+   "brief": "a stocky shaggy antlered herd grazer raised for milk, meat and hide"
+  },
+  "RSW_Nuna": {
+   "name": "plokka",
+   "brief": "a plump flightless wattled swamp fowl kept for meat"
+  },
+  "RSW_Ollopom": {
+   "name": "tovuma",
+   "brief": "a squat gentle six-legged water grazer often mistaken for a weed clump"
+  },
+  "RSW_OpeeSeaKillerJuv": {
+   "name": "young gneshuun",
+   "brief": "the young of a lure-tongued armoured ambush predator of the deep"
+  },
+  "RSW_Orray": {
+   "name": "haddusk",
+   "brief": "a stout short-legged rooting reptile, strong and quick enough to pull carts"
+  },
+  "RSW_PekoPeko": {
+   "name": "tseetsa",
+   "brief": "a large raucous colourful swamp flyer whose cries carry for miles"
+  },
+  "RSW_Pikobis": {
+   "name": "chibbi",
+   "brief": "a small long-legged flightless wader with a toothed beak and whip tail"
+  },
+  "RSW_Plant_Bloddle": {
+   "name": "dhavva plant",
+   "brief": "a low bulb plant with sweet edible flesh"
+  },
+  "RSW_Plant_Chakroot_Wild": {
+   "name": "wild ottuz plant",
+   "brief": "a red marsh root plant prized for its flavour"
+  },
+  "RSW_Plant_HubbaGourd_Wild": {
+   "name": "wild zubbuk gourd",
+   "brief": "a ribbed tough-skinned gourd vine of shaded rock recesses"
+  },
+  "RSW_Plant_Nysyllin_Wild": {
+   "name": "wild essolin plant",
+   "brief": "a slender herb with spotted red pods used in healing"
+  },
+  "RSW_Plant_TookeTrap_Wild": {
+   "name": "wild jhorrik plant",
+   "brief": "a showy carnivorous swamp plant that snaps shut on small creatures"
+  },
+  "RSW_Porg": {
+   "name": "pubbet",
+   "brief": "a small round flat-faced seabird that dives for fish and steals shiny things"
+  },
+  "RSW_Pufferpig": {
+   "name": "bloffo",
+   "brief": "a small barrel-bodied snouted forager that inflates itself when frightened"
+  },
+  "RSW_Qormot": {
+   "name": "drassuk",
+   "brief": "a stocky quilled one-eyed forest omnivore, savage in the mating season"
+  },
+  "RSW_Ronto": {
+   "name": "thoombar",
+   "brief": "a huge gentle long-necked pack beast with broad earflaps that startles easily"
+  },
+  "RSW_Runyip": {
+   "name": "nibbov",
+   "brief": "a squat antlered forest grazer with a flexible snout and striped coat"
+  },
+  "RSW_SandoAquaMonster": {
+   "name": "ghaarvuun",
+   "brief": "a colossal wide-mouthed deep-water predator that breaks the surface only to feed"
+  },
+  "RSW_ScrapNestBird": {
+   "name": "kittivo",
+   "brief": "an oil-dark scavenger bird that lines a thorny nest with stolen wire and metal"
+  },
+  "RSW_Scurrier": {
+   "name": "skuvvit",
+   "brief": "a small hairless long-eared rodent that breeds fast and raids stores"
+  },
+  "RSW_Shaak": {
+   "name": "loabbo",
+   "brief": "a bulbous short-legged herd grazer raised for meat and hide"
+  },
+  "RSW_Shiro": {
+   "name": "yulvik",
+   "brief": "a slow benign spiny-shelled reptile that retracts entirely into its shell"
+  },
+  "RSW_ShiroTrap": {
+   "name": "trap-backed yulvik",
+   "brief": "a yulvik carrying a snapping trap plant rooted between its shell ridges"
+  },
+  "RSW_Shyrack": {
+   "name": "ghessik",
+   "brief": "a bat-winged cave flyer, clumsy alone and deadly in a converging flock"
+  },
+  "RSW_Silooth": {
+   "name": "krugavor",
+   "brief": "a huge six-legged armoured war-beetle with crushing forward mandibles"
+  },
+  "RSW_Skalder": {
+   "name": "tambrek",
+   "brief": "a heavy tusked grazer with a ridged mantle that shrugs off acid springs"
+  },
+  "RSW_Sketto": {
+   "name": "vipsa",
+   "brief": "a lean four-winged night flyer with fangs and a grasping tail"
+  },
+  "RSW_Snoruuk": {
+   "name": "moolup",
+   "brief": "a walking red mushroom that gathers in rings and scatters when touched"
+  },
+  "RSW_Strill": {
+   "name": "dwessik",
+   "brief": "a clever six-legged gliding hunter with loose skin folds and a keen nose"
+  },
+  "RSW_Taozin": {
+   "name": "ulgorreth",
+   "brief": "a giant ringed armoured centipede-worm that spits and hides from senses"
+  },
+  "RSW_Tauntaun": {
+   "name": "snuvva",
+   "brief": "a shaggy bipedal cold-plains mount that runs through the frost"
+  },
+  "RSW_TeeMuss": {
+   "name": "ommivar",
+   "brief": "a long-legged maned ungulate with jaw tusks, kept as a farm beast and mount"
+  },
+  "RSW_Tibidee": {
+   "name": "gormuth",
+   "brief": "a giant rock-bodied mountain grazer, docile unless its herd is threatened"
+  },
+  "RSW_Urusai": {
+   "name": "pyrrella",
+   "brief": "a four-winged bright scavenger flyer that picks the teeth of great beasts clean"
+  },
+  "RSW_Uvak": {
+   "name": "khessor",
+   "brief": "a large four-legged beaked flyer used as a pack animal and flying mount"
+  },
+  "RSW_Varactyl": {
+   "name": "raskaya",
+   "brief": "a beaked maned climbing grazer with a long tail that scales cliffs"
+  },
+  "RSW_Voorpak": {
+   "name": "fizzum",
+   "brief": "a small round six-legged soft-furred carnivore kept as a pet"
+  },
+  "RSW_Vornskyr": {
+   "name": "zhirrek",
+   "brief": "a nocturnal pack hunter with a whip-like stinging tail"
+  },
+  "RSW_Vulptex": {
+   "name": "glissara",
+   "brief": "a gregarious fox-like scavenger with a coat of white crystal bristles"
+  },
+  "RSW_Wampa": {
+   "name": "ghorra",
+   "brief": "a huge white-furred ice predator that drags prey to its cave"
+  },
+  "RSW_WarWyrm": {
+   "name": "thazzurok",
+   "brief": "a colossal armoured war-serpent bred to break armies"
+  },
+  "RSW_Whisperbird": {
+   "name": "sollivar",
+   "brief": "a golden long-tailed rainforest bird that flies almost silently"
+  },
+  "RSW_Woolamander": {
+   "name": "muppaloo",
+   "brief": "a curious social pot-bellied fruit eater that sways when its meal ferments"
+  },
+  "RSW_Worrt": {
+   "name": "guppok",
+   "brief": "a squat warty sand-sitting amphibian that snatches prey with long fingers"
+  },
+  "RSW_Wraid": {
+   "name": "hraxxen",
+   "brief": "a big plated-skull desert reptile that bounds on enormous forelimbs"
+  },
+  "RSW_WraidAlpha": {
+   "name": "alpha hraxxen",
+   "brief": "a larger, tougher hraxxen that waits in shade and attacks in a bounding rush"
+  },
+  "RSW_YobshrimpJuv": {
+   "name": "young chessip",
+   "brief": "a pale young carcass-swarming shrimp, still picking the shallows alone"
+  },
+  "RSW_Zakkeg": {
+   "name": "vorgaal",
+   "brief": "a rare huge armoured solitary apex predator of the jungle"
+  },
+  "RSW_Zeer": {
+   "name": "tallusk",
+   "brief": "a tall banded long-necked herd browser with hooked-back horns"
+  }
+ }
+}

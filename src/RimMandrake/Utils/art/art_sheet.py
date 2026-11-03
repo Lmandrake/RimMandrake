@@ -155,6 +155,27 @@ def _world():
     return _WORLD
 
 
+NONCANON_ALTS = L.REPO_ROOT / "design" / "RimMandrake" / "noncanon_alternatives.json"
+_NCA: dict = {}
+
+
+def noncanon_option(r: dict) -> dict | None:
+    """The non-canon alternative of a canon row, spelled out as an option (BIOME_FLORAFAUNA_ART_REVIEW_1: "the non-canon
+    alternative spelled out as an option"; canon and non-canon versions are separate rows, linked, 2026-10-04). An RM_/RUT_
+    stand-in def that already exists (census noncanon_twin) wins and is linked; otherwise the drafted, unbuilt stand-in in
+    design/RimMandrake/noncanon_alternatives.json. None = this canon row has no alternative on record (flagged)."""
+    tw = [t for t in r.get("noncanon_twin") or [] if t.startswith(("RM_", "RUT_", "rut_"))]
+    if tw:
+        return {"kind": "standin", "defs": tw}
+    if not _NCA and NONCANON_ALTS.exists():
+        _NCA.update(json.loads(NONCANON_ALTS.read_text()).get("alternatives") or {})
+    a = _NCA.get(r["key"]) or _NCA.get(r.get("port") or "")
+    if a and (a.get("name") or "").strip() and (a.get("brief") or "").strip():
+        return {"kind": "drafted", "name": a["name"].strip(), "brief": a["brief"].strip(),
+                "source": str(NONCANON_ALTS.relative_to(L.REPO_ROOT))}
+    return None
+
+
 def canon_entry(*names: str) -> dict:
     """The canon-library entry for the first of NAMES that has one ({} if none). Default on every
     sheet (owner rule 2026-10-04): reference images + Must show are shown on each row.
@@ -2071,6 +2092,12 @@ const _itemBody = it => {
       <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
+  const nco = it.noncanonOption, ncv = d.noncanon || '';
+  const ncb = (v, t) => `<button class="sl-b${ncv === v ? ' on' : ''}" data-act="ncset" data-id="${esc(it.id)}" data-v="${v}">${t}</button>`;
+  const noncanon = nco ? `<div class="bs-noncanon"><b>Non-canon alternative</b> ${nco.kind === 'standin'
+      ? 'our stand-in, its own row: ' + nco.defs.map(x => `<a href="#" data-jump="${esc(x)}">${esc(x)}</a>`).join(', ')
+      : `<b>${esc(nco.name)}</b> — ${esc(nco.brief)} <span class="sub">(drafted, not built: pick it and we build the def and art)</span>`}
+      <div>${ncb('canon', 'keep canon')} ${ncb('noncanon', 'use the non-canon alternative')}</div></div>` : '';
   const purgedNote = it.purgedHidden ? `<div class="sub" title="pictures you rejected with the purge mark; they no longer appear on any sheet">${it.purgedHidden} purged picture${it.purgedHidden === 1 ? '' : 's'} hidden</div>` : '';
   const noart = it.noArt ? `<div class="bs-noart">NO ART YET — nothing found after searching every source:<div style="font-size:11px;font-weight:normal;opacity:.85;margin-top:3px;word-break:break-word">${esc(it.noArtWhy)}</div></div>` : '';
   const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
@@ -2089,7 +2116,7 @@ const _itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${desc}${sibHtml}${window.artQuestionHtml(it, d)}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
+    ${desc}${sibHtml}${window.artQuestionHtml(it, d)}${links}${elsewhere}${noncanon}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${rowHead}${lanes.map(sec).join('')}${window.artAsksHtml(it, d)}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled"${it.ruledOpen || d.at || d.decidedAt ? ' open' : ''}>${reHead}${inner}</details>` : inner;
 };
@@ -2171,6 +2198,7 @@ window.artAct = (el, ev) => {
   else if (act === 'legacy') r = SLX.legacyRule(rec, L, v);
   else if (act === 'ask') { const num = el.type === 'number'; r = SLX.setAsk(rec, k, num ? (el.value === '' ? '' : +el.value) : el.value.trim()); }
   else if (act === 'askcheck') r = SLX.setAsk(rec, k, el.checked);
+  else if (act === 'ncset') { if (rec.noncanon === v) delete rec.noncanon; else rec.noncanon = v; }
   else if (act === 'qset') { const qk = CFG.question.key, q = Object.assign({}, rec.q || {}); if (q[qk] === v) delete q[qk]; else q[qk] = v; rec.q = q; }
   else if (act === 'askset') { const cur = k.includes('.') ? ((rec.asks || {})[k.split('.')[0]] || {})[k.split('.')[1]] : (rec.asks || {})[k]; r = SLX.setAsk(rec, k, k === 'cut' ? !cur : (cur === v ? '' : v)); }
   else if (act === 'facing') { const fa = Object.assign({}, (rec.asks || {}).facings || {}); const s = new Set(fa.faces || []); el.checked ? s.add(v) : s.delete(v); fa.faces = [...s]; r = SLX.setAsk(rec, 'facings', fa.faces.length ? fa : ''); }
@@ -2292,7 +2320,7 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-must pre{white-space:pre-wrap;font:inherit;margin:1px 0 4px}
 .bs-must summary{cursor:pointer;color:var(--dim)}
 .bs-prior{font-size:11.5px;color:#9fe0a8;margin:1px 0 2px}
-.bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
+.bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-noncanon{font-size:12px;margin:4px 0;padding:4px 6px;border:1px dashed #5a4a2a;color:#d8c7a8}.bs-links a{color:#e8b64c}
 .bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
 .bs-question{margin:6px 0;padding:6px 8px;border:1px solid #5a4a2a;border-radius:6px}.bs-qguess{border-style:dashed!important;outline:1px dashed #e8b64c}
 .bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
@@ -3191,6 +3219,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
 
     maxl = max([LETTERS.index(c["letter"]) + 1 for _, gs in built for g in gs for c in g["cols"]] + [1])
     items, snap_rows, prefills = [], {}, {}
+    noncanon_opts: dict = {}       # canon row key -> its non-canon alternative (snapshot top level, outside snapshotId)
     cluster_ids, n_sit1 = {}, 0
     ref_dupes: dict = {}           # row key -> reference_textures entries that are already one of the row's columns
     for r, graphics in built:
@@ -3315,6 +3344,9 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             tier, tier_text = "canon", f"canon Star Wars creature (entry for the base species: {base})"
         canon_tag = (canon_state(key) or "no canon-library entry for this subject — judge on its own") if not canon else ""
         flags = []
+        nco = noncanon_option(r) if canon else None
+        if canon and not nco:
+            flags.append("NO NON-CANON ALTERNATIVE ON RECORD")
         _fc = FG.cell_for([key, r.get("port"), *(r.get("defNames") or [])])
         if _fc:
             flags.append(_fc)      # FLYER_STABLE_BODY_GATE_1: no flyer's static is ruled without its cell showing
@@ -3377,6 +3409,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                           else None),
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
+            "noncanonOption": nco,
             "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0), "donorPurged": key in donor_purged,
             "noArtWhy": ((r.get("art") or {}).get("searched") or "searched by graphic and by name: " + ", ".join(sorted(w for w in {_stem(key)} | set(r.get("defNames") or []) if w))
                          + ("; artpipe jobs on record: " + ", ".join(r.get("artpipe_state_jobs") or []) if r.get("artpipe_state_jobs") else "")),
@@ -3401,8 +3434,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             item["ruledElsewhere"] = {"sheet": _re["sheet"], "sheetId": _re["sheet_id"], "pick": _re["decision"],
                                       "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}
         _gcols = [c for g in gitems for c in g["cols"]]
+        # a canon row whose non-canon question he has not answered stays live even when every picture is ruled
+        _nc_open = bool(nco) and not ((old or {}).get("decisions", {}).get(key) or {}).get("noncanon")
         if key not in _own_touched and not r.get("reopen") and not item.get("reopenedByNewSets") \
-                and all_options_ruled(_gcols, idx):
+                and not _nc_open and all_options_ruled(_gcols, idx):
             dropped_all_ruled.append(key)      # every option is already his ruling: dropping it, not re-asking him
             print(f"art_sheet: row {key} dropped: every option is already ruled (protected/purged)", file=sys.stderr)
             continue
@@ -3426,6 +3461,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             if item["scale"].get("status") == "fallback":     # req 2: a FALLBACK size is allowed but must be flagged
                 item["flags"].append(f"{SG.SIZE_FALLBACK_FLAG} — {item['scale'].get('source')}")
         items.append(item)
+        if nco:
+            noncanon_opts[key] = nco
         prefills[key] = (letter, picks)
         snap_rows[key] = {"subject_key": _stem(key).lower(), "res": (gitems[0]["res"] if gitems else None),
                           "columns": {c["letter"]: c["faces"] for g in gitems for c in g["cols"]},
@@ -3503,7 +3540,9 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "census_git_head": census.get("git_head"), "biome": biome, "rows": snap_rows,
             # census rows left off because every option is already his ruling: a coverage check reads this
             # (not part of snapshotId, which hashes the rows only)
-            "droppedAllRuled": sorted(dropped_all_ruled)}
+            "droppedAllRuled": sorted(dropped_all_ruled),
+            # every canon row's non-canon alternative as shown (a coverage check reads this; not part of snapshotId)
+            "noncanonOptions": dict(sorted(noncanon_opts.items()))}
     new_id = hashlib.sha1(json.dumps(snap_rows, sort_keys=True).encode()).hexdigest()[:16]
     superset = bool(prev_rows) and all(
         snap_rows.get(rk, {}).get("columns", {}).get(l) == f

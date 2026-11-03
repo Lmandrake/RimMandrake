@@ -1,13 +1,21 @@
 {
  "biome": "RM_Wastes",
- "built": "2026-11-03T04:03:45-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:16:55-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_TallScumgrass",
   "RM_VaultRoot"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Borcatu": {
+   "brief": "a small bad-tempered scavenger in a thick grit-proof scaly hide",
+   "kind": "drafted",
+   "name": "tchelvar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Boilbulb": {
    "columns": {

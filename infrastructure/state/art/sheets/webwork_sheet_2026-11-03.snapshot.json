@@ -1,8 +1,8 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-11-03T04:04:29-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T04:57:49-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Dulloth",
   "RM_Fellome",
@@ -17,6 +17,14 @@
   "RM_Vessark"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Plant_TookeTrap_Wild": {
+   "brief": "a showy carnivorous swamp plant that snaps shut on small creatures",
+   "kind": "drafted",
+   "name": "wild jhorrik plant",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Brennoth": {
    "columns": {

@@ -1,13 +1,21 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-11-03T04:01:04-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:10:35-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Kethrel",
   "RM_Lanneth"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Hssiss": {
+   "brief": "a slow venomous dark-scaled lizard that ambushes at the water's edge",
+   "kind": "drafted",
+   "name": "sseevek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Brindeth": {
    "columns": {

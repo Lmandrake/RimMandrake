@@ -1712,6 +1712,13 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     continue
                 P["asks"].append(f"{row}: ask {kind} — {json.dumps(asks[kind], ensure_ascii=False)[:120]} "
                                  f"(`--mark-done {row} --ask {kind}` once done)")
+            # the canon row's non-canon alternative, picked on the sheet (BIOME_FLORAFAUNA_ART_REVIEW_1): building the
+            # RM_ stand-in (def + art) is def-side work, one TODO until --mark-done <row> --ask noncanon
+            if v.get("noncanon") == "noncanon" and (sheet, row, "ask:noncanon:") not in done_marks:
+                nco = (snap.get("noncanonOptions") or {}).get(row) or {}
+                what = nco.get("name") or ", ".join(nco.get("defs") or []) or "(no alternative on record)"
+                P["asks"].append(f"{row}: use the non-canon alternative {what} instead of the canon creature "
+                                 f"(`--mark-done {row} --ask noncanon` once done)")
         # ── 6c every --mark-done --evidence "OWNER: <question>" on this row is a CONFLICT, whatever else the row has
         # (jobs, a followed note, a pick): bug 2026-10-10, 11 of 14 Rot rename questions on rows with art jobs were
         # recorded in the ledger and never shown to him
@@ -2112,16 +2119,17 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     for row in mark_done:
         v = (doc.get("decisions") or {}).get(row) or {}
         if ask:
-            a = DV.asks_of(v).get(ask)
+            a = DV.asks_of(v).get(ask) if ask != "noncanon" else ("" if v.get("noncanon") == "noncanon" else None)
             if a is None:
                 R["conflicts"].append(f"--mark-done {row} --ask {ask}: that row carries no such ask — nothing recorded")
                 continue
-            key = f"ask:{ask}:{json.dumps(a, sort_keys=True)}"
+            key = f"ask:{ask}:{json.dumps(a, sort_keys=True)}" if ask != "noncanon" else "ask:noncanon:"
             w = L.Writer({e["id"] for e in idx.events})
             w.add({"type": "enact_done", "id": L.det_id("enact_done", sheet, row, key), "sheet": sheet, "row": row,
                    "note": key, "by": "agent", "evidence": done_evidence or "", "via": I.rel_via(decisions)})
             w.flush()
-            P["asks"] = [x for x in P["asks"] if not x.startswith(f"{row}: ask {ask} ")]
+            P["asks"] = [x for x in P["asks"] if not x.startswith(
+                f"{row}: use the non-canon alternative " if ask == "noncanon" else f"{row}: ask {ask} ")]
             P["done"].append(f"{row}: ask {ask} marked done")
             continue
         note = I.open_note(v)
@@ -2500,7 +2508,7 @@ def main(argv=None) -> int:
     ap.add_argument("--hold", action="append", default=[], help="skip rows whose key contains this (repeatable)")
     ap.add_argument("--mark-done", action="append", default=[], help="record a row's note as enacted by hand")
     ap.add_argument("--evidence", default="", help="with --mark-done: the commit/file that did it")
-    ap.add_argument("--ask", choices=("rename", "describe", "size", "move"),
+    ap.add_argument("--ask", choices=("rename", "describe", "size", "move", "noncanon"),
                     help="with --mark-done: record that row's schema-2 ask of this kind as done (not its note)")
     ap.add_argument("--no-deploy", action="store_true")
     a = ap.parse_args(argv)

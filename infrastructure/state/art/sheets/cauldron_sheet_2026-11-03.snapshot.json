@@ -1,8 +1,8 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-11-03T03:27:35-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:29:42-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Bileworm",
   "RM_CrystalMit",
@@ -14,6 +14,44 @@
   "RSW_VentStalker"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_GraniteSlug": {
+   "brief": "a small stone-eating slug whose acid spit softens rock it grazes",
+   "kind": "drafted",
+   "name": "ghommul",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Lylek": {
+   "brief": "a large forest insect predator on spear legs with raised spiked pincers",
+   "kind": "drafted",
+   "name": "izzara",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Mynock": {
+   "brief": "a small leather-winged parasite that clings to hulls and drinks power from cables",
+   "kind": "drafted",
+   "name": "sefflik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Neebray": {
+   "brief": "a small limbless ray-winged flyer that rides warm updrafts",
+   "kind": "drafted",
+   "name": "ulliva",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Silooth": {
+   "brief": "a huge six-legged armoured war-beetle with crushing forward mandibles",
+   "kind": "drafted",
+   "name": "krugavor",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Skalder": {
+   "brief": "a heavy tusked grazer with a ridged mantle that shrugs off acid springs",
+   "kind": "drafted",
+   "name": "tambrek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_BedBug": {
    "columns": {
@@ -1077,17 +1115,45 @@
     },
     "C": {
      "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "D": {
+     "1_east": "d6f93111e67c92611c0ecfeaace369ad1196b7488f3385fd106b8124d502e1c1",
+     "1_north": "290bea00350f493a090c7fe7042b95043c09f1f96539e6c586534fc342741941",
+     "1_south": "8cecacb641e9ffe4a5495b10417cf0681c748f335d236f924aaa02f285d49272",
+     "2_east": "212875cfc18715ef7fe44d3e08e5e15ae756bbf2a10d8fd4fe5c929a8c39ba34",
+     "2_north": "c2d8ea0cd64fc8d5595e452ab482a901f16fdd00d2c7aec55aff68321d27a92c",
+     "2_south": "43b4f903e3694c37b765e438420bb082398c8033c0d0451dd41a798e9deb6512",
+     "3_east": "a0dec1a4080cb09d6d1381f2e41bb607d90c6809c406827afbe340416897f25c",
+     "3_north": "00a2f9857b24aa0553c033ec28fa6372387953063b74a2f488313b713025fe1d",
+     "3_south": "67a9bec3a054dc847ed1347dc3b36e1f93fd52fc61945b2bcf0f672dba847da4",
+     "4_east": "f55aeb412dbe6e245affc6e1b75998fcfdc45d1ffe33296feffced8c0676a7b6",
+     "4_north": "1ca79d55d96437bd68d8fd0706eb9a8fc782bb56983b4de5f08f852cf02c9576",
+     "4_south": "38dcaab24890840bd834f96377c5df5700574e068fe34b8b518df8044bc39f5c",
+     "5_east": "df2e791f8c6ccf24e585d68a1412f22a9f961873f92e0ff7589c6ae358f07658",
+     "5_north": "ad96014e0a4ab26703a3339023fa2342adaf92b7439adf675636fa9e81dad6f0",
+     "5_south": "eb93513bc0c873708f59243ad72e1648b21efeb7ad7b566188dc96dfcbfe94e4",
+     "6_east": "f55aeb412dbe6e245affc6e1b75998fcfdc45d1ffe33296feffced8c0676a7b6",
+     "6_north": "1ca79d55d96437bd68d8fd0706eb9a8fc782bb56983b4de5f08f852cf02c9576",
+     "6_south": "38dcaab24890840bd834f96377c5df5700574e068fe34b8b518df8044bc39f5c",
+     "7_east": "a0dec1a4080cb09d6d1381f2e41bb607d90c6809c406827afbe340416897f25c",
+     "7_north": "00a2f9857b24aa0553c033ec28fa6372387953063b74a2f488313b713025fe1d",
+     "7_south": "67a9bec3a054dc847ed1347dc3b36e1f93fd52fc61945b2bcf0f672dba847da4",
+     "8_east": "212875cfc18715ef7fe44d3e08e5e15ae756bbf2a10d8fd4fe5c929a8c39ba34",
+     "8_north": "c2d8ea0cd64fc8d5595e452ab482a901f16fdd00d2c7aec55aff68321d27a92c",
+     "8_south": "43b4f903e3694c37b765e438420bb082398c8033c0d0451dd41a798e9deb6512"
     }
    },
    "graphic_of": {
     "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
     "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "D": "_flip:RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render warscar_Mynock_v2",
-    "C": "history SWBestiary 2026-09-11"
+    "C": "history SWBestiary 2026-09-11",
+    "D": "IN GAME \u2014 Mynock_Flying_"
    },
    "pools": [
     "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
@@ -1096,7 +1162,8 @@
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [],
    "subject_key": "mynock"

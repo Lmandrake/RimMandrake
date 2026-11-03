@@ -1,13 +1,57 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-11-03T03:52:19-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:03:10-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_LikkaLikka",
   "RM_Murrowbulb"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Gizka": {
+   "brief": "a tiny fast-breeding hopping reptile that swarms stores and chews wiring",
+   "kind": "drafted",
+   "name": "tippik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_GraniteSlug": {
+   "brief": "a small stone-eating slug whose acid spit softens rock it grazes",
+   "kind": "drafted",
+   "name": "ghommul",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_GreaterKraytDragon": {
+   "brief": "the colossal many-legged sand-swimming apex predator of the deep dunes",
+   "kind": "drafted",
+   "name": "greater zaruuk",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Kreetle": {
+   "brief": "a small burrowing shelled arthropod that rides in on supplies and infests stores",
+   "kind": "drafted",
+   "name": "zhitter",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Plant_Bloddle": {
+   "brief": "a low bulb plant with sweet edible flesh",
+   "kind": "drafted",
+   "name": "dhavva plant",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Scurrier": {
+   "brief": "a small hairless long-eared rodent that breeds fast and raids stores",
+   "kind": "drafted",
+   "name": "skuvvit",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_WarWyrm": {
+   "brief": "a colossal armoured war-serpent bred to break armies",
+   "kind": "drafted",
+   "name": "thazzurok",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Aurrok": {
    "columns": {

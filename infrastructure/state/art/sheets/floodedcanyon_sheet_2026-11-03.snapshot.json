@@ -1,10 +1,36 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-11-03T03:32:04-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:25:14-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_CanCell": {
+   "brief": "a big-winged scavenging insect flyer that strips carcasses and canyon refuse",
+   "kind": "drafted",
+   "name": "chizzrit",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Convor": {
+   "brief": "a plump owl-shaped tree flyer that grips branches with a prehensile tail",
+   "kind": "drafted",
+   "name": "tweelo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gornt": {
+   "brief": "a stolid domesticated omnivore raised for meat by herders",
+   "kind": "drafted",
+   "name": "druvva",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Woolamander": {
+   "brief": "a curious social pot-bellied fruit eater that sways when its meal ferments",
+   "kind": "drafted",
+   "name": "muppaloo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_CrackedThornwood": {
    "columns": {

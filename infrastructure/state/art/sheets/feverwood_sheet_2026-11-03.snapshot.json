@@ -1,8 +1,8 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-11-03T03:33:56-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T05:40:35-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_CorriskTree",
   "RM_Crimmelroot",
@@ -16,6 +16,56 @@
   "RSW_Plant_JoganTree_Wild"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Convor": {
+   "brief": "a plump owl-shaped tree flyer that grips branches with a prehensile tail",
+   "kind": "drafted",
+   "name": "tweelo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Fambaa": {
+   "brief": "a giant scaly swamp amphibian strong enough to carry a platform on its back",
+   "kind": "drafted",
+   "name": "zhavoru",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gelagrub": {
+   "brief": "a huge ground beetle grub that burrows through rotting wood",
+   "kind": "drafted",
+   "name": "blorro",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_LongtailGorg": {
+   "brief": "a plibb with an unusually long flattened tail, sold as live food",
+   "kind": "drafted",
+   "name": "longtail plibb",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Nuna": {
+   "brief": "a plump flightless wattled swamp fowl kept for meat",
+   "kind": "drafted",
+   "name": "plokka",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Plant_Chakroot_Wild": {
+   "brief": "a red marsh root plant prized for its flavour",
+   "kind": "drafted",
+   "name": "wild ottuz plant",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Urusai": {
+   "brief": "a four-winged bright scavenger flyer that picks the teeth of great beasts clean",
+   "kind": "drafted",
+   "name": "pyrrella",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Whisperbird": {
+   "brief": "a golden long-tailed rainforest bird that flies almost silently",
+   "kind": "drafted",
+   "name": "sollivar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Ammeth": {
    "columns": {

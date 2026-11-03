@@ -1,0 +1,296 @@
+{
+ "biome": "RM_RustCathedral",
+ "built": "2026-11-03T05:12:47-0800",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "census_git_head": "00d9c443e3",
+ "droppedAllRuled": [],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Mynock": {
+   "brief": "a small leather-winged parasite that clings to hulls and drinks power from cables",
+   "kind": "drafted",
+   "name": "sefflik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
+ "rows": {
+  "RM_CathedralRoach": {
+   "columns": {
+    "A": {
+     "east": "0b5174cb95f57571fb45ab38470f68eab02e9f77fa3ec21fcdba8c4d708c41c6",
+     "north": "a150c2251b03be58ac3ce5728b477489c86e8054bb2a047780d476b1c6c0a8e7",
+     "south": "ec1f1539e0bd7434f8ba85be2c21933f9d1bdc1b94f40e521a17d609f6f40f8f"
+    },
+    "B": {
+     "east": "afb2f61d35ba1ad6c3d367477aad0d34cc32574f49d1e47faefc104e451e1f0c",
+     "north": "6aef557545c11404640a5fe247a6665f1aa6f5d1079c62f57e013822cd6e7762",
+     "south": "436cc5fc81c52a8fccf1fd27569f64947b1b18a3c0ec0b3ecf890411487f7735"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
+    "B": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RustCathedral",
+    "B": "history RustCathedral 2026-09-25"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach"
+   ],
+   "res": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "cathedralroach"
+  },
+  "RM_CoolantEelCatch": {
+   "columns": {
+    "A": {
+     "single": "869745b2d6618f505d2bf6dadfbc56dadafb08e05e84191beb57f94956a192c4"
+    },
+    "B": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "55892a86db39608ca90f1820174a7eefd93591eedf57513773cd1f0755c3f0f8",
+     "south": "7028cc6c36b5e3b202eee3842da4de4c39727a80f98cb8296e256b06e50e47e5"
+    },
+    "C": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "4ccb2beecc02030138a17535cf5087a5de34135c5c783c5aef0b4fefff811db4",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    },
+    "D": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    },
+    "E": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    },
+    "F": {
+     "single": "9bde039faa3fd7fa12e88cc2a035060d378098a6610d696d40ea01431f637424"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_CoolantEelCatch",
+    "B": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+    "C": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+    "D": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+    "E": "_reference:RM_CoolantEel",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RustCathedral",
+    "B": "IN GAME \u2014 RustCathedral",
+    "C": "render standtall_b1_rm_coolanteel",
+    "D": "render RM_CoolantEel",
+    "E": "render RM_CoolantEel",
+    "F": "render gapall_RM_CoolantEelCatch_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_CoolantEelCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "coolanteelcatch"
+  },
+  "RM_LivingBolt": {
+   "columns": {
+    "A": {
+     "east": "cfce652fa171dc4c11f82aa921c11812c7784c505b601c3bc0f6b43b506554b9",
+     "north": "3be9863ccdcea84d0187a058f16c31f0676147f06515e4e5fc5b3c5ea566c355",
+     "south": "27e29f3e2c40e232dd802a048e26a79f895fb913cbb8082282fe47179e134957"
+    },
+    "B": {
+     "east": "cfce652fa171dc4c11f82aa921c11812c7784c505b601c3bc0f6b43b506554b9",
+     "north": "3be9863ccdcea84d0187a058f16c31f0676147f06515e4e5fc5b3c5ea566c355",
+     "south": "11f0f3ddc4fde9f18abb84d223fbb908997f7f0322770db5a97e82089737e071"
+    },
+    "C": {
+     "east": "47e7de96f33036d17ca3f2608c7eb8189f2cb50559a0d4d10f6843ea517a07f2",
+     "north": "507f524f19789f4dc28e4ffcc83f6d33748c39c71847bda8d28afd60ed4bf38a",
+     "south": "342dc505109ba3a2e9983239a3a1541cb3c843820c44ab005e830e9cbfeee810"
+    },
+    "D": {
+     "east": "e5f402e5bea7dd858fffbb70de56ee86388d86ff31f69aa2e21b74b1b3fc77f9",
+     "north": "b80e6f50df39cc6c4eac58e81697134b7142534483ec6f059dae1e886b2bf9ba",
+     "south": "040b5806c09da4cadfc3a16a0bd8260baea06919ba8a43c651d5098c0f3e9d70"
+    },
+    "E": {
+     "east": "e5f402e5bea7dd858fffbb70de56ee86388d86ff31f69aa2e21b74b1b3fc77f9",
+     "north": "b80e6f50df39cc6c4eac58e81697134b7142534483ec6f059dae1e886b2bf9ba",
+     "south": "fd70d0dfc66a9315010dffee2d956fedad9f243be959d8a13a06795a835c73bf"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+    "B": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+    "C": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+    "D": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBoltCorpse",
+    "E": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBoltCorpse"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RustCathedral",
+    "B": "render rustcathedral_livingbolt_v1",
+    "C": "render rut_livingbolt_v2",
+    "D": "IN GAME \u2014 RustCathedral",
+    "E": "render rustcathedral_livingbolt_corpse_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt"
+   ],
+   "res": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "livingbolt"
+  },
+  "RSW_Mynock": {
+   "columns": {
+    "A": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+     "south": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "B": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
+    },
+    "C": {
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "D": {
+     "1_east": "d6f93111e67c92611c0ecfeaace369ad1196b7488f3385fd106b8124d502e1c1",
+     "1_north": "290bea00350f493a090c7fe7042b95043c09f1f96539e6c586534fc342741941",
+     "1_south": "8cecacb641e9ffe4a5495b10417cf0681c748f335d236f924aaa02f285d49272",
+     "2_east": "212875cfc18715ef7fe44d3e08e5e15ae756bbf2a10d8fd4fe5c929a8c39ba34",
+     "2_north": "c2d8ea0cd64fc8d5595e452ab482a901f16fdd00d2c7aec55aff68321d27a92c",
+     "2_south": "43b4f903e3694c37b765e438420bb082398c8033c0d0451dd41a798e9deb6512",
+     "3_east": "a0dec1a4080cb09d6d1381f2e41bb607d90c6809c406827afbe340416897f25c",
+     "3_north": "00a2f9857b24aa0553c033ec28fa6372387953063b74a2f488313b713025fe1d",
+     "3_south": "67a9bec3a054dc847ed1347dc3b36e1f93fd52fc61945b2bcf0f672dba847da4",
+     "4_east": "f55aeb412dbe6e245affc6e1b75998fcfdc45d1ffe33296feffced8c0676a7b6",
+     "4_north": "1ca79d55d96437bd68d8fd0706eb9a8fc782bb56983b4de5f08f852cf02c9576",
+     "4_south": "38dcaab24890840bd834f96377c5df5700574e068fe34b8b518df8044bc39f5c",
+     "5_east": "df2e791f8c6ccf24e585d68a1412f22a9f961873f92e0ff7589c6ae358f07658",
+     "5_north": "ad96014e0a4ab26703a3339023fa2342adaf92b7439adf675636fa9e81dad6f0",
+     "5_south": "eb93513bc0c873708f59243ad72e1648b21efeb7ad7b566188dc96dfcbfe94e4",
+     "6_east": "f55aeb412dbe6e245affc6e1b75998fcfdc45d1ffe33296feffced8c0676a7b6",
+     "6_north": "1ca79d55d96437bd68d8fd0706eb9a8fc782bb56983b4de5f08f852cf02c9576",
+     "6_south": "38dcaab24890840bd834f96377c5df5700574e068fe34b8b518df8044bc39f5c",
+     "7_east": "a0dec1a4080cb09d6d1381f2e41bb607d90c6809c406827afbe340416897f25c",
+     "7_north": "00a2f9857b24aa0553c033ec28fa6372387953063b74a2f488313b713025fe1d",
+     "7_south": "67a9bec3a054dc847ed1347dc3b36e1f93fd52fc61945b2bcf0f672dba847da4",
+     "8_east": "212875cfc18715ef7fe44d3e08e5e15ae756bbf2a10d8fd4fe5c929a8c39ba34",
+     "8_north": "c2d8ea0cd64fc8d5595e452ab482a901f16fdd00d2c7aec55aff68321d27a92c",
+     "8_south": "43b4f903e3694c37b765e438420bb082398c8033c0d0451dd41a798e9deb6512"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "D": "_flip:RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock_Flying_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render warscar_Mynock_v2",
+    "C": "history SWBestiary 2026-09-11",
+    "D": "IN GAME \u2014 Mynock_Flying_"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   ],
+   "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "mynock"
+  },
+  "RSW_Vozzik": {
+   "columns": {
+    "A": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "1848c970fea85ca22815ad7180f6570a6943b75398822da6d20c20282cc9bc28",
+     "south": "a7e86717d4593b5144eca4941c780437cff30f08d39596bf7d00c296af4f10d9"
+    },
+    "B": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+    },
+    "C": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "D": {
+     "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+     "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+     "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
+    },
+    "E": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "3cb1b68052c1d1d8b71001749b59d00ccfed33ae3d07aed2b0a5a4138ef6c535"
+    },
+    "F": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "D": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "E": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+    "F": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render stillsand_regen_RSW_Vozzik_v2",
+    "C": "render RM_Vozzik",
+    "D": "history SWBestiary 2026-10-03",
+    "E": "IN GAME \u2014 Stillsand",
+    "F": "render standtall_b1_rm_vozzik"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+   ],
+   "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "vozzik"
+  }
+ },
+ "sheetId": "rustcathedral_sheet_2026-11-03",
+ "snapshotId": "27c2f8cd39dc081a"
+}
