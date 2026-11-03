@@ -146,3 +146,7 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   `mandrake.rm.flowworks` (RE-VERIFIED 2026-09-19 against `About.xml` and the live
   Mods folder). Owner: *"That file may be VERY old… do not accept stale info."*
   Sweep: `STALE_RENAME_GATE_SWEEP_1`.
+- 🔴 **memwatch's `oom_kill ... in rm-harness.slice` does not mean the slice ran out.** cgroup counters are hierarchical and a
+  short test's scope is gone before the next sample; the kernel's `oom_memcg=` names the limit that fired. On 2026-11-03 all 19
+  were the planted `bomb.py` in `selftest_run_selftests.py`, which reads PASS. Read kills with `src/RimMandrake/Utils/oom_attribution.py`;
+  measured: `infrastructure/state/facts/oom_kills_2026-11-03.md`.

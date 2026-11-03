@@ -43,7 +43,7 @@ in NOT_STANDALONE with its real invocation, so it is a VISIBLE `SKIPPED` line ra
 than a glob miss nobody can see.
 
 🔴 MEMORY PEN (2026-10-08, SEAT_MEMORY_CLONES_DRIVES_1). Every test runs in its OWN
-transient scope inside `rm-harness.slice` (12G, a sibling of claude.slice — never inside
+transient scope inside `rm-harness.slice` (bounded, a sibling of claude.slice — never inside
 the Claude seat that launched the run), with a per-test MemoryMax and no swap. A
 16-worker in-seat fan-out repeatedly filled the seat's 10G cap and the kernel killed
 Claude itself. The runner FAILS CLOSED: a probe must land under rm-harness.slice with a
