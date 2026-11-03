@@ -13,3 +13,16 @@ function Make($name, $title, $arg, $icon) {
 }
 Make 'Claude - SteveDesktop test centre' 'Claude - test centre' 'centre'   'C:\Windows\System32\shell32.dll,15'
 Make 'Claude - Lodestar'                 'Claude - Lodestar'    'lodestar' 'C:\Windows\System32\shell32.dll,21'
+
+# Plain Terminal tiles (no Claude): profile names are from kit/wt_settings.json.
+function MakeWt($name, $wtArgs, $icon) {
+    $l = $sh.CreateShortcut("$dir\$name.lnk")
+    $l.TargetPath = $wt
+    $l.Arguments  = $wtArgs
+    $l.IconLocation = $icon
+    $l.Description = $name
+    $l.Save()
+}
+MakeWt 'Terminal - Ubuntu'               '-p "Ubuntu (mandrake)"'  'C:\Windows\System32\shell32.dll,15'
+MakeWt 'Terminal - SteveDesktop status'  'new-tab --title "SteveDesktop status" powershell.exe -NoExit -ExecutionPolicy Bypass -File C:\SteveDesktop\status.ps1' 'C:\Windows\System32\shell32.dll,22'
+MakeWt 'Terminal - Archmagi (SSH)'       '-p "SSH Archmagi (WSL)"' 'C:\Windows\System32\shell32.dll,18'
