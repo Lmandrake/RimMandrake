@@ -15,6 +15,7 @@ import json
 import os
 import re
 import sys
+import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -248,16 +249,42 @@ class WatchdogAbort(Exception):
     writes every unwritten row UNMEASURED/HARNESS and exits; it never waits on."""
 
 
+def bounded(fn, timeout_s, *a, **kw):
+    """fn(*a, **kw) on a daemon thread, waited on for at most timeout_s -> (True, result), or (False, None) when it has not
+    returned by then (the thread is abandoned: a frozen game never answers it, and a daemon thread does not hold the process
+    open). An exception fn raises re-raises here. LEVEL_PERF_PROOF_SHRINK_TO_FIT_BUDGET (2026-11-02): a probe call into a
+    frozen main thread never returned, so a between-calls deadline outlived its budget by 35 s."""
+    box = {}
+
+    def run():
+        try:
+            box["r"] = fn(*a, **kw)
+        except BaseException as ex:  # noqa: BLE001  (handed back to the caller)
+            box["ex"] = ex
+
+    t = threading.Thread(target=run, name="bounded-call", daemon=True)
+    t.start()
+    t.join(max(0.0, float(timeout_s)))
+    if t.is_alive():
+        return False, None
+    if "ex" in box:
+        raise box["ex"]
+    return True, box.get("r")
+
+
 class Watchdog(object):
     """Wraps a bridge (normally a Guarded one) so a proof cannot hang silently (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT,
     2026-10-23: pipe_levelling --rehearsal sat 9 min after a mech raid landed, every probe timing out at 20 s while 400 hose
     lays queued behind it). Every call first checks the budget; every hp/probe/probe_of reply whose channel is dead
     (_channel_dead) counts, `dead_max` in a row raises WatchdogAbort; any live reply resets the count. Everything else passes
-    through to the wrapped bridge."""
+    through to the wrapped bridge.
+    call_cap_s (LEVEL_PERF_PROOF_SHRINK_TO_FIT_BUDGET): when set, each watched call also runs under a deadline of
+    min(call_cap_s, budget left) through bounded(), so a call that never returns raises WatchdogAbort at the budget instead of
+    after it. None (the default) keeps the old between-calls check only."""
 
-    def __init__(self, B, budget_s, dead_max=3, clock=time.time):
+    def __init__(self, B, budget_s, dead_max=3, clock=time.time, call_cap_s=None):
         self.__dict__.update(_B=B, _clock=clock, _deadline=clock() + float(budget_s), _dead=0, _dead_max=int(dead_max),
-                             budget_s=float(budget_s))
+                             budget_s=float(budget_s), call_cap_s=None if call_cap_s is None else float(call_cap_s))
 
     def __getattr__(self, k):
         return getattr(self._B, k)
@@ -265,9 +292,22 @@ class Watchdog(object):
     def __setattr__(self, k, v):
         setattr(self._B, k, v)
 
+    def remaining(self):
+        return self._deadline - self._clock()
+
     def _check(self, what):
         if self._clock() > self._deadline:
             raise WatchdogAbort("wall-clock budget of %.0f s spent (at %s)" % (self.budget_s, str(what)[:80]))
+
+    def _run(self, what, fn, *a, **kw):
+        self._check(what)
+        if self.call_cap_s is None:
+            return fn(*a, **kw)
+        wait = max(0.0, min(self.call_cap_s, self.remaining()))
+        done, r = bounded(fn, wait, *a, **kw)
+        if not done:
+            raise WatchdogAbort("call never returned within %.1f s (main thread frozen?) (at %s)" % (wait, str(what)[:80]))
+        return r
 
     def _count(self, what, r):
         if _channel_dead(r):
@@ -280,24 +320,19 @@ class Watchdog(object):
         return r
 
     def call(self, tool, *a, **kw):
-        self._check(tool)
-        return self._B.call(tool, *a, **kw)
+        return self._run(tool, self._B.call, tool, *a, **kw)
 
     def hp(self, cmd, *a, **kw):
-        self._check(cmd)
-        return self._count(cmd, self._B.hp(cmd, *a, **kw))
+        return self._count(cmd, self._run(cmd, self._B.hp, cmd, *a, **kw))
 
     def probe(self, cmd, *a, **kw):
-        self._check(cmd)
-        return self._count(cmd, self._B.probe(cmd, *a, **kw))
+        return self._count(cmd, self._run(cmd, self._B.probe, cmd, *a, **kw))
 
     def probe_of(self, probe_type, cmd, *a, **kw):
-        self._check(cmd)
-        return self._count(cmd, self._B.probe_of(probe_type, cmd, *a, **kw))
+        return self._count(cmd, self._run(cmd, self._B.probe_of, probe_type, cmd, *a, **kw))
 
     def ticks(self, n):
-        self._check("ticks %s" % n)
-        return self._B.ticks(n)
+        return self._run("ticks %s" % n, self._B.ticks, n)
 
 
 # ------------------------------------------------------------------ site disturbances (not the mod's doing)

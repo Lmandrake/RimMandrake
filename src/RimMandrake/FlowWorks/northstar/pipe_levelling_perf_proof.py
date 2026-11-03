@@ -14,6 +14,10 @@ never the A3 measurement. Exit 0 = every row PASS; 1 = a FAIL; 2 = a row could n
 Never hangs (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT, 2026-10-23): site_calm + kill_hostiles + queue clear in preflight, game
 time only through the governed B.ticks (an intruder is recovered; a stop it cannot clear -> every unwritten row UNMEASURED/SITE),
 and validation_core.Watchdog: --budget-s spent or 3 dead probe replies in a row -> unwritten rows UNMEASURED/HARNESS, exit 2.
+Fits the foreground cap (LEVEL_PERF_PROOF_SHRINK_TO_FIT_BUDGET, 2026-11-02): --budget-s is clamped by fit_budget() so the whole
+run, restores included, ends inside --hard-cap-s (540); every watched call runs under a per-call deadline (Watchdog call_cap_s),
+so a call into a frozen main thread is abandoned at the budget, and each restore through G waits at most fit_budget's restore_s.
+A run that needs longer is phased (above), never given a bigger budget.
 
 Calls (built 2026-10-22, fixer I): RM_NorthstarProofs.ProofStageBasin (dig + fill a rect through the engine's own Deepen /
 TrySetDriverFill, in strips), ProofLevelLink (per-reel levelling state + process counters + intakes/outflows), ProofLevelPerf
@@ -44,6 +48,7 @@ import json
 import os
 import sys
 import tempfile
+import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -60,6 +65,19 @@ WATER_FLUID = "RM_Fluid_Water"
 ITEM, CRIT = "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "A3"
 ROW_IDS = ["LEVEL_PERF_TICK_TIME", "LEVEL_PERF_ALLOC"]
 MAP_NEED = 325
+HARD_CAP_S = 540.0      # the foreground-command cap every run must end inside, restores included
+CALL_CAP_S = 120.0      # no single bridge call may take longer than this (a frozen main thread is abandoned)
+
+
+def fit_budget(requested, cap=HARD_CAP_S):
+    """-> (budget_s, restore_s, call_cap_s) so that budget + 2 bounded restores + startup/finish slack <= cap. Pure.
+    requested None = the most that fits; a request above that is clamped (phase the run with --resume --lay instead)."""
+    cap = float(cap)
+    restore_s = min(15.0, 0.04 * cap)           # each of the two restores (hose maxLength, site calm) waits at most this
+    slack = min(20.0, 0.04 * cap)               # imports, the result writes, the process exit
+    most = max(0.0, cap - slack - 2 * restore_s)
+    budget = most if requested is None else max(-1.0, min(float(requested), most))
+    return budget, restore_s, min(CALL_CAP_S, max(0.0, budget))
 BAR_MS_CYCLE, BAR_MS_TICK, BAR_ALLOC_KB = 16.0, 0.1, 1024.0
 LEVELS, FILL_A, FILL_B = 4, 4, 1
 
@@ -150,8 +168,11 @@ def main(argv=None):
     ap.add_argument("--rigs", type=int, default=200)
     ap.add_argument("--calls", type=int, default=20, help="levelling cycles timed (1..200)")
     ap.add_argument("--rehearsal", action="store_true", help="scaled layout on a smaller map; rows capped at UNMEASURED")
-    ap.add_argument("--budget-s", type=float, default=480.0,
-                    help="wall-clock budget; spent, or 3 dead probe replies in a row, writes the unwritten rows UNMEASURED/HARNESS")
+    ap.add_argument("--budget-s", type=float, default=None,
+                    help="wall-clock budget (default: the most that fits --hard-cap-s; a larger one is clamped); spent, a call "
+                         "that never returns, or 3 dead probe replies in a row writes the unwritten rows UNMEASURED/HARNESS")
+    ap.add_argument("--hard-cap-s", type=float, default=HARD_CAP_S,
+                    help="the whole run, restores included, ends inside this many seconds (the 540 s foreground cap)")
     # LEVEL_PERF_PROOF_FIX_LAYS_OUTRUN_BUDGET (2026-10-26): site + 80,000-cell staging + 400 serial lays outran one <=540 s
     # foreground call. Phases: run 1 --no-time (site, basins, rigs, lays of --lay A:B), runs 2.. --resume --lay A:B --no-time,
     # last --resume --lay 0:0 (time). The links counter (>= --rigs) is still the gate, so a missed slice reads SITE, never PASS.
@@ -164,6 +185,8 @@ def main(argv=None):
     ap.add_argument("--mock", action="store_true")
     ap.add_argument("--mock-faults", default="", help="comma list: " + ",".join(FakeBridge.FAULTS))
     a = ap.parse_args(argv)
+    t0 = time.time()
+    budget_s, restore_s, call_cap_s = fit_budget(a.budget_s, a.hard_cap_s)
     faults = [f for f in a.mock_faults.split(",") if f]
     if a.resume and not a.no_time and a.restore_length is None:
         # an earlier --no-time phase left maxLength at 80, so "the value read at start" would put back 80
@@ -179,16 +202,30 @@ def main(argv=None):
     G = V.guard(raw)
     # restores (hose maxLength, site calm) go through G, never the watchdog: once the budget is spent every watched call
     # raises WatchdogAbort, so a restore through B would be skipped and leave the live game at maxLength 80, storyteller off
-    B = V.Watchdog(G, a.budget_s)
+    B = V.Watchdog(G, budget_s - (time.time() - t0), call_cap_s=call_cap_s)
     out = a.out or (os.path.join(tempfile.gettempdir(), "level_perf_mock_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
                     if a.mock else os.path.join(HERE, "level_perf_result_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     rows = []
-    res = {"script": "pipe_levelling_perf_proof.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
+    res = {"script": "pipe_levelling_perf_proof.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a),
+           "budget": {"requested": a.budget_s, "effective": round(budget_s, 2), "restoreS": restore_s, "callCapS": call_cap_s,
+                      "hardCapS": a.hard_cap_s}}
+    if a.budget_s is not None and a.budget_s > budget_s:
+        res["budget"]["clamped"] = "requested %.0f s does not fit the %.0f s cap; phase the run (--no-time --lay, --resume)" % (
+            a.budget_s, a.hard_cap_s)
+        print("budget: " + res["budget"]["clamped"] + "; running %.0f s" % budget_s, flush=True)
     if a.mock:
         res["mode"] = "mock"
     else:
         import driver_stamp
-        driver_stamp.stamp(res, raw.call)
+        V.bounded(driver_stamp.stamp, restore_s, res, raw.call)     # counted inside the budget (B's deadline runs from t0)
+
+    def restore(what, fn, *args, **kw):
+        """A restore through G, waited on for at most restore_s: a frozen game must not hold the run past the cap."""
+        done, r = V.bounded(fn, restore_s, *args, **kw)
+        if not done:
+            res.setdefault("restoreTimeouts", []).append(what)
+            print("RESTORE TIMED OUT after %.0f s: %s (left as the run set it)" % (restore_s, what), flush=True)
+        return r
 
     def save():
         with open(out + ".tmp", "w", encoding="utf-8") as f:
@@ -242,7 +279,9 @@ def main(argv=None):
         if not a.mock:
             # LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: a fresh quicktest map rolled a mech raid mid-rehearsal (RM_HullBolt,
             # 2026-10-23). Static boring world first: storyteller off, threats and intruders gone, the queue cleared.
-            res["calm"] = V.site_calm(G)          # its SettingsTransaction restores through G too
+            done, res["calm"] = V.bounded(V.site_calm, max(0.0, B.remaining()), G)   # its SettingsTransaction restores through G
+            if not done:
+                raise V.WatchdogAbort("site_calm never returned within the budget (main thread frozen?)")
             res["killHostiles"] = str(B.call("jawa/kill_hostiles", _answer=True))[:160]
             B.call("jawa/incident_queue_clear", _answer=True)
         probe = static("ProofLevelPerf", "0")[1]
@@ -318,7 +357,8 @@ def main(argv=None):
             return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
         finally:
             if len0 is not None and not a.no_time:
-                G.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value=str(len0), _answer=True)
+                restore("hose maxLength -> %s" % len0, G.call, "jawa/mod_settings_field", typeName=HS, action="set",
+                        field="maxLength", value=str(len0), _answer=True)
 
     def unwritten(st, why, cls):
         done = {r["id"] for r in rows}
@@ -339,7 +379,7 @@ def main(argv=None):
         return finish(2)
     finally:
         if not a.mock:
-            res["calmRestore"] = str(V.site_calm_restore(G))[:160]
+            res["calmRestore"] = str(restore("site calm", V.site_calm_restore, G))[:160]
             save()
 
 def lay_slice(spec, n):
@@ -398,8 +438,11 @@ class FakeBridge(object):
       gc_every     every timed call saw a collection         -> LEVEL_PERF_ALLOC UNMEASURED/HARNESS
       small_map    the map is 250x250 (no --rehearsal)       -> both rows UNMEASURED/SITE
       probe_dead   every hose-probe reply times out          -> both rows UNMEASURED/HARNESS (watchdog), no hang
-      mech_raid    a governed advance stops on a hostile the recovery cannot clear -> both rows UNMEASURED/SITE"""
-    FAULTS = ("old_deploy", "no_link", "slow", "gc_every", "small_map", "probe_dead", "mech_raid")
+      mech_raid    a governed advance stops on a hostile the recovery cannot clear -> both rows UNMEASURED/SITE
+      freeze       the game's main thread freezes at the first hose lay (maxLength already 80): that call and every later one never return
+                   -> both rows UNMEASURED/HARNESS (watchdog per-call deadline), the run still ends inside --hard-cap-s"""
+    FAULTS = ("old_deploy", "no_link", "slow", "gc_every", "small_map", "probe_dead", "mech_raid", "freeze")
+    _NEVER = threading.Event()      # never set: a frozen call waits on it forever
 
     def __init__(self, faults=(), size=MAP_NEED):
         self.f = set(faults)
@@ -408,7 +451,12 @@ class FakeBridge(object):
         self.pipes = set()
         self.dug = 0
 
+    def _frozen(self):
+        if getattr(self, "frozen", False):
+            self._NEVER.wait()
+
     def static(self, ty, m, arg):
+        self._frozen()
         if m == "ProofLevelPerf":
             if "old_deploy" in self.f:
                 return None
@@ -459,18 +507,23 @@ class FakeBridge(object):
         return sum(1 for rs in roles.values() if {"Intake", "Outflow"} <= rs)
 
     def hp(self, cmd, wait_s=20.0, answer=False):
+        if "freeze" in self.f:
+            self.frozen = True
+        self._frozen()
         self.hps = getattr(self, "hps", 0) + 1
         if "probe_dead" in self.f:
             return {"success": False, "error": "probe timed out (no frame serviced it)"}
         return {"success": True, "layOk": True}
 
     def ticks(self, n):
+        self._frozen()
         if "mech_raid" in self.f:
             raise V._clockgate().GovernorStop({"state": "stopped", "executed": 0, "requested": n, "stopBy": {
                 "kind": "hostile_arrival", "severity": "threat", "critical": True, "detail": "arrived: RM_HullBolt (mech)"}})
         return {"success": True, "advanced": n}
 
     def call(self, tool, **kw):
+        self._frozen()
         if tool == "jawa/static_call":
             txt = self.static(kw.get("type"), kw.get("method"), kw.get("args") or "")
             if txt is None:

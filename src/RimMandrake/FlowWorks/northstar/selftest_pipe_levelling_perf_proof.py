@@ -10,6 +10,8 @@ import json
 import os
 import sys
 import tempfile
+import threading
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -129,7 +131,7 @@ lb = _LenBridge([], 120)
 L.FakeBridge = type("_OneLen", (orig,), {"__new__": lambda cls, *a, **k: lb})
 real_wd = L.V.Watchdog
 # the clock runs out once the rigs are built (pipes exist), i.e. after the set-80 and before the first lay
-L.V.Watchdog = lambda B, budget: real_wd(B, budget, clock=lambda: 1e12 if lb.pipes else 0.0)
+L.V.Watchdog = lambda B, budget, **kw: real_wd(B, budget, clock=lambda: 1e12 if lb.pipes else 0.0)
 try:
     out = os.path.join(tmp, "lp_len.json")
     with contextlib.redirect_stdout(io.StringIO()):
@@ -142,5 +144,55 @@ check("watchdog abort mid-run still restores hose maxLength (sets %s)" % lb.sets
 check("phased lays: --lay A:B slices, clips and 0:0 lays none (LEVEL_PERF_PROOF_FIX_LAYS_OUTRUN_BUDGET)",
       L.lay_slice(None, 400) == (0, 400) and L.lay_slice("0:100", 400) == (0, 100) and L.lay_slice("100:200", 400) == (100, 200)
       and L.lay_slice("300:900", 400) == (300, 400) and L.lay_slice("0:0", 400) == (0, 0) and L.lay_slice("50:10", 400) == (50, 50))
+# LEVEL_PERF_PROOF_SHRINK_TO_FIT_BUDGET: any --budget-s fits the 540 s foreground cap, restores included, and a call into a
+# frozen main thread is abandoned at the budget (the 2026-10-24 run: budget 500, killed at 535, two calls reconciled by hand)
+for req in (None, 0, 100, 480, 500, 900, 1e9):
+    bud, rs, cc = L.fit_budget(req)
+    if not (bud + 2 * rs + min(20.0, 0.04 * 540) <= 540 and 0 < cc <= 120 or bud <= 0):
+        check("fit_budget(%s) fits 540: budget %.1f restore %.1f callcap %.1f" % (req, bud, rs, cc), False)
+check("fit_budget: 900 is clamped below 540 with room for both restores",
+      L.fit_budget(900)[0] < 540 - 2 * L.fit_budget(900)[1] and L.fit_budget(900)[0] == L.fit_budget(None)[0])
+check("fit_budget: a request that fits is kept", L.fit_budget(100)[0] == 100.0)
+out = os.path.join(tmp, "lp_900.json")
+with contextlib.redirect_stdout(io.StringIO()):
+    L.main(["--mock", out, "--budget-s", "900"])
+res = json.load(open(out))
+check("--budget-s 900: recorded clamped, effective under the cap",
+      "clamped" in res["budget"] and res["budget"]["effective"] < 540 and res["budget"]["callCapS"] <= 120)
+# the hung call: the game freezes at the first hose lay; every later call (the maxLength restore too) never returns
+alive0 = threading.active_count()
+out = os.path.join(tmp, "lp_freeze.json")
+t = time.time()
+with contextlib.redirect_stdout(io.StringIO()):
+    code = L.main(["--mock", out, "--mock-faults", "freeze", "--budget-s", "900", "--hard-cap-s", "4", "--restore-length", "40"])
+wall = time.time() - t
+res = json.load(open(out))
+check("hung call: watchdog kills it, run ends inside the 4 s cap (%.2f s), exit 2" % wall, wall < 4.0 and code == 2)
+check("hung call: both rows UNMEASURED/HARNESS naming the never-returned call (%s)" % res.get("watchdog"),
+      [(r["detail"].get("mock"), r["class"]) for r in res["rows"]] == [("UNMEASURED", "HARNESS")] * 2
+      and "never returned" in res.get("watchdog", ""))
+check("hung call: the frozen maxLength restore is abandoned and recorded, not waited on (%s)" % res.get("restoreTimeouts"),
+      any("maxLength" in w for w in res.get("restoreTimeouts") or []))
+# the Watchdog's per-call deadline on its own (validation_core.Watchdog call_cap_s)
+class _Hang(object):
+    def call(self, tool, **kw):
+        threading.Event().wait()
+t = time.time()
+try:
+    L.V.Watchdog(_Hang(), 100, call_cap_s=0.3).call("x")
+    hit = False
+except L.V.WatchdogAbort as ex:
+    hit = "never returned" in str(ex)
+check("Watchdog call_cap_s: a call that never returns raises WatchdogAbort at the cap (%.2f s)" % (time.time() - t),
+      hit and time.time() - t < 1.5)
+t = time.time()
+try:
+    L.V.Watchdog(_Hang(), 0.3, call_cap_s=60).call("x")
+    hit = False
+except L.V.WatchdogAbort:
+    hit = True
+check("Watchdog call_cap_s: the budget left bounds the call deadline (%.2f s)" % (time.time() - t), hit and time.time() - t < 1.5)
+check("Watchdog call_cap_s: a returning call passes its value and its exception through",
+      L.V.Watchdog(type("_R", (), {"call": lambda self, t: 7})(), 10, call_cap_s=5).call("x") == 7)
 print("%d FAIL" % len(fails))
 sys.exit(1 if fails else 0)
