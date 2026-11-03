@@ -1,0 +1,3 @@
+LEVEL_PERF_TICK_TIME   PASS       MOD      {"perf": "LEVELPERF calls=20 msAvg=6.902 msMax=10.672 msPerTick=0.02761 allocKBAvg=428.4 allocCalls=20 gcs=0 links=100 moves=755 cycleTicks=250", "levelLink": "LEVELLINK reel=120421 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=4 links=100 moves=64 movedDl=1280000", "links"
+LEVEL_PERF_ALLOC       PASS       MOD      {"perf": "LEVELPERF calls=20 msAvg=6.902 msMax=10.672 msPerTick=0.02761 allocKBAvg=428.4 allocCalls=20 gcs=0 links=100 moves=755 cycleTicks=250", "levelLink": "LEVELLINK reel=120421 state=Flowing role=Intake laid=True intakes=1 outflows=1 on=True cycles=4 links=100 moves=64 movedDl=1280000", "links"
+level perf: 2 rows -> D:\ClaudeWork\rimmandrake\live_round5_20261026\perf_L0_timed.json

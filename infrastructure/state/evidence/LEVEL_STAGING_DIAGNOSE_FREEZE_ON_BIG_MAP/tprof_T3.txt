@@ -1,0 +1,17 @@
+POST {'vals': {'mateSolves': '0', 'lastMateJoins': '109'}, 'relays': 901, 'liveCorridorChecks': 572, 'lastLayMs': 36, 'tick': 8938, 'leg': 'legacyFrame=0'}
+Verse.Root_Play:Update                                         calls=54      meanUs=1728534.441 us maxUs=90548476.5 us totalMs=93340.86
+Verse.Map:MapUpdate                                            calls=110     meanUs=848381.774 us maxUs=90547375.6 us totalMs=93321.995
+ndrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentUpdate calls=110     meanUs=847463.966 us maxUs=90545856.4 us totalMs=93221.036
+RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:DrawAll       calls=55      meanUs=1694925.944 us maxUs=90545854.9 us totalMs=93220.927
+RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:EnsureLay     calls=22000   meanUs=4019.032 us  maxUs=4274116.5 us totalMs=88418.699
+RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:LayFrom       calls=150     meanUs=589373.814 us maxUs=4274048.8 us totalMs=88406.072
+RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:RefreshMates  calls=15444   meanUs=0.599 us     maxUs=311 us       totalMs=9.253
+RimMandrake.FlowWorks.Hose.HoseMateCache:Get                   calls=5610    meanUs=0.435 us     maxUs=18.1 us      totalMs=2.442
+RimMandrake.FlowWorks.Hose.HoseMateCache:Key                   calls=547     meanUs=1.505 us     maxUs=6 us         totalMs=0.823
+RimMandrake.FlowWorks.Hose.HoseMateCache:Queue                 calls=6       meanUs=8.417 us     maxUs=11.5 us      totalMs=0.05
+RimMandrake.FlowWorks.Hose.HoseMateCache:BeginFrame            calls=55      meanUs=0.551 us     maxUs=4.1 us       totalMs=0.03
+RimMandrake.FlowWorks.Hose.HoseMateCache:Prune                 calls=55      meanUs=0.027 us     maxUs=0.1 us       totalMs=0.002
+Mandrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentTick calls=0       meanUs=unavailable: no calls timed maxUs=unavailable: no calls timed totalMs=None
+RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:SolveMate     calls=0       meanUs=unavailable: no calls timed maxUs=unavailable: no calls timed totalMs=None
+RimMandrake.FlowWorks.Machinery.RM_Levelling:Tick              calls=0       meanUs=unavailable: no calls timed maxUs=unavailable: no calls timed totalMs=None
+Verse.TickManager:DoSingleTick                                 calls=0       meanUs=unavailable: no calls timed maxUs=unavailable: no calls timed totalMs=None
