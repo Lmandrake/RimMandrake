@@ -2876,11 +2876,11 @@ def t_one_builder_per_mod():
     x.w.item_mods = lambda st: m[st["item"]]
     for i in range(6):
         x.tick(60)
-    run = {i for i in m if x.st(i)["status"] in R.HOLDS_A_PLACE}
+    run = {i for i in m if x.st(i) and x.st(i)["status"] in R.HOLDS_A_PLACE}
     ok(run == {"I0", "I2"}, "one mod, one builder; another mod still starts: %s" % sorted(run))
     x.r["one_builder_per_mod"] = False
     x.tick(60)
-    ok(x.st("I1")["status"] in R.HOLDS_A_PLACE, "the rule is the only thing that kept it out")
+    ok(x.st("I1") and x.st("I1")["status"] in R.HOLDS_A_PLACE, "the rule is the only thing that kept it out")
 
 
 def t_parked_items_hold_no_place():
@@ -2894,6 +2894,20 @@ def t_parked_items_hold_no_place():
     others = [i for i in ("I4", "I5", "I6", "I7") if x.st(i) is not None]
     ok(len(others) >= 2, "ready work on other mods is enrolled past a line of parked same-mod items: %s" % others)
     ok(any(x.st(i)["status"] in R.HOLDS_A_PLACE for i in others), "and one of them starts")
+    x.done()
+
+
+def t_enrol_skips_taken_mod():
+    """Pool order puts one mod first: enrol must walk past its items to others instead of filling the line with them."""
+    x = Rig(n=8, share=1.0, max_workers=4, staffing=None)
+    x.r["one_builder_per_mod"] = True
+    x.r["max_queued"] = 8
+    x.w.item_mods = lambda st: ["RimMandrake/Abyss"] if st["item"] in ("I0", "I1", "I2", "I3") else ["RimUtinni/" + st["item"]]
+    for i in range(6):
+        x.tick(60)
+    abyss = [i for i in ("I0", "I1", "I2", "I3") if x.st(i) is not None]
+    others = [i for i in ("I4", "I5", "I6", "I7") if x.st(i) is not None]
+    ok(len(abyss) == 1 and len(others) == 4, "one Abyss item, the rest enrolled from other mods: %s %s" % (abyss, others))
     x.done()
 
 
@@ -3140,7 +3154,7 @@ def t_review_wrong_verdicts_two():
 
 
 def main():
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

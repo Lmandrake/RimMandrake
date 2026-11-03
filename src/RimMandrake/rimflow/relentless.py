@@ -2115,12 +2115,23 @@ def enrol(store, fx, r, now):
         want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in RUNS_A_PLACE) - queued)
     room = min(want, r["enrol_per_tick"], r["max_queued"] - queued)
     took = []
+    one_per_mod = bool(r.get("one_builder_per_mod")) and hasattr(fx, "item_mods")
+    taken = set()       # mods held by a run, or by an item already waiting its turn in the line, or enrolled just now
+    if one_per_mod:
+        for x in live:
+            if x["status"] in HOLDS_A_PLACE or in_line(x):
+                taken |= set(fx.item_mods(x))
     plan = getattr(fx, "plan", None) or {}      # a listed item never waits for room: the list holds under 30 (DI3)
     for i in order:
         if room <= 0 and i not in plan:
             break
         if i in ours:
             continue
+        if one_per_mod:     # a candidate whose mod is already taken would only park: walk on to work that can start
+            mods = set(fx.item_mods({"item": i, "last_sha": None}))
+            if mods & taken:
+                continue
+            taken |= mods
         with store.lock():
             if store.load(i) is None:
                 st = new_state(i, now, "share %.2f of %d" % (share, pool))
