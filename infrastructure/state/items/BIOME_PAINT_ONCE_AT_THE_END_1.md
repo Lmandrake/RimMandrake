@@ -86,3 +86,9 @@ gaps). Owner ruling 2026-09-20, option (b). The dune sea gets nothing. The plan 
 its `inputs` (sha256 recorded); if the save being painted is a different file, point the generator's `SAVE` at it and
 rebuild (tiles that are no longer that biome, or no longer bare, drop out) before applying. The apply recipe
 is the plan's `apply` field. Its proof is `src/RimMandrake/Utils/selftest_desert_wasteland_enrichment_plan.py`.
+
+## Paint list addition 2026-11-02 (from `PLAYER_START_SITE_1`)
+
+The player start tile, `canon.yml` `planet.start_tile` (17007, Zeddo's Yard), carries the tile mutator
+`planet.start_tile_mutator` (`RUT_ZeddosYard`): stamp it on that tile at the final painting, before the start
+landing is flown and the start savegame is cut, so the arrival map generates the junkyard around the landing clearing.

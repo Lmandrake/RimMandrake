@@ -1,0 +1,1 @@
+live-proof A1: python.exe "$(wslpath -w src/RimUtinni/StructureInjectionsRUT/Source/ZeddosYard/zeddos_yard_live_proof.py)" A1 < /dev/null

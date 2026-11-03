@@ -1,0 +1,1 @@
+canon.yml planet: had TWO start_tile keys (17007 at ~line 110, a struck 2026-08-24 'start_tile: null' at ~line 251); YAML keeps the LAST, so every parser read start_tile=None while a human grep saw 17007. Read canon values with yaml.safe_load, never grep; a struck value is deleted, not re-keyed beside its successor (fixed by PLAYER_START_SITE_1).
