@@ -103,7 +103,9 @@ Two 256×256 RGBA overlays at `Textures/Things/Plant/RM_TrunkDeposits/Deposits_S
 
 - **Registration (offline, every overlay):** at least 95 % of the overlay's pixels with alpha > 16 lie
   inside the tree's alpha > 16 mask dilated by 9 px. The same instrument measures today's flecks at
-  about 69 % inside, so it can see a miss. `selftest_cauldron_trunk_deposits.py` holds the instrument.
+  about 69 % inside (about 31 % off-trunk), so it can see a miss; the selftest pins that art by sha256
+  and asserts it reads 65-72 % inside, and applies the 95 % bar once the art is redrawn.
+  `selftest_cauldron_trunk_deposits.py` holds the instrument.
 - **Coverage (offline):** Scab covers 8-25 % of the tree's own pixels, Slag 20-45 %, so the coat reads
   without burying the kept tree.
 - **Tier function (offline):** the Python mirror of `DepositTier` agrees with the C# on the full grid.

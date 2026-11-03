@@ -14,6 +14,7 @@ item CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS).
 
     python3 src/RimMandrake/Cauldron/selftest_cauldron_trunk_deposits.py
 """
+import hashlib
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -103,14 +104,23 @@ check("probe: a full-canvas overlay reads far below the bar", probe < 0.6, probe
 
 # ---- 3. the overlays on disk ----------------------------------------------------------------------
 tree_px = alpha_mask(TREE_PNG)
+# Today's fleck art is pinned by content hash, not by whether a follow-on item file exists: on this art the
+# instrument must SEE the miss (~69 % inside, ~31 % off-trunk). Redrawn art (CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR)
+# has a new hash and must clear the bar.
+PRE_FIX = {"Flecks_Light": "33c18a42d36c6ab2f94a835ae8b7a5d63e61c5e9daf79f4b858dfc2970d81403",
+           "Flecks_Heavy": "f8efaeae0f4fa175a0c129b898f961ac4a2a432f08f59db1cb39d6d262ba9b46"}
+PRE_FIX_INSIDE = (0.65, 0.72)
 for name in ("Flecks_Light", "Flecks_Heavy"):
     p = os.path.join(TEX, "RM_AssayFlecks", name + ".png")
+    with open(p, "rb") as f:
+        digest = hashlib.sha256(f.read()).hexdigest()
     share = inside_share(alpha_mask(p), tree_d)
-    item_open = os.path.exists(os.path.join(REPO, "infrastructure/state/items/CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR.md"))
-    if item_open:
-        check("%s pre-fix art measured off-trunk (%.3f inside, design says ~69%%)" % (name, share), 0.5 < share < BAR, share)
+    if digest == PRE_FIX[name]:
+        lo, hi = PRE_FIX_INSIDE
+        check("%s pre-fix art measured off-trunk (%.3f inside = %.0f%% off; design: ~69%% inside, below the %.2f bar)"
+              % (name, share, 100 * (1 - share), BAR), lo <= share <= hi and share < BAR, share)
     else:
-        check("%s registered to the trunk (%.3f inside >= %.2f)" % (name, share, BAR), share >= BAR, share)
+        check("%s redrawn art registered to the trunk (%.3f inside >= %.2f)" % (name, share, BAR), share >= BAR, share)
 
 dep = os.path.join(TEX, "RM_TrunkDeposits")
 for name, (lo, hi) in COVERAGE.items():
