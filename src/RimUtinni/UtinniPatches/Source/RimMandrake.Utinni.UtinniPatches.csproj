@@ -78,6 +78,9 @@
     <Compile Include="RUT_GenStep_ZersiumForgeLumps.cs" />
     <!-- Biome card 5 (2026-10-22): the rare-thrixweave stock generator, ported from the cut mandrake.rut.shokkweaveeconomy. -->
     <Compile Include="RUT_StockGenerator_RareThrixweave.cs" />
+    <!-- HORRORS_RAIDING_FACTION_1 (2026-11-02): the Horrors faction getter, the nightside-only RUT_HorrorRaid worker, the
+         lair GenStep and the crysalis comp; see the file header. -->
+    <Compile Include="RUT_NightHorrors.cs" />
   </ItemGroup>
 
   <ItemGroup>

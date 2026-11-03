@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HORRORS_RAIDING_FACTION_1: register the self-gating Assailant lair scatter (Defs/Misc/RUT_NightHorrors.xml) on player
+     home maps and caravan encounter maps (shape: RUT_ZersiumForgeLumps_Register.xml). The GenStep checks the nightside
+     band and the setting itself, so a dayside or terminator map is untouched. -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RUT_NightHorrorLairs</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Encounter"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Encounter"]/genSteps</xpath>
+      <value>
+        <li>RUT_NightHorrorLairs</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

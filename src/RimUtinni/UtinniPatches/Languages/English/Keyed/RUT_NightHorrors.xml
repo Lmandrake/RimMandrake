@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HORRORS_RAIDING_FACTION_1: strings for Source/RUT_NightHorrors.cs (the Assailant crysalises). -->
+<LanguageData>
+  <RUT_HorrorCrysalisWoke>A crysalis has broken open: a {0} comes out of the cold.</RUT_HorrorCrysalisWoke>
+  <RUT_HorrorCrysalisDormant>Dormant. Wakes if someone comes close, or if it thaws above {0}.</RUT_HorrorCrysalisDormant>
+</LanguageData>

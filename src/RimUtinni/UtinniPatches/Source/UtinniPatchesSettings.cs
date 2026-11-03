@@ -49,6 +49,10 @@ namespace RimMandrake.Utinni.UtinniPatches
         // ASTEROID_DESERT_ORES_1 — worldgen-affecting (new Stillsand / extreme-desert maps only).
         public static bool phrikiteDesertEnabled = true;
 
+        // HORRORS_RAIDING_FACTION_1 — Horror raids (any time) and lairs (WORLDGEN-AFFECTING: new nightside maps only).
+        public static bool nightHorrorRaidsEnabled = true;
+        public static bool nightHorrorLairsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -60,6 +64,8 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref mindstoneGalleryEnabled, "mindstoneGalleryEnabled", true);
             Scribe_Values.Look(ref zersiumForgeEnabled, "zersiumForgeEnabled", true);
             Scribe_Values.Look(ref phrikiteDesertEnabled, "phrikiteDesertEnabled", true);
+            Scribe_Values.Look(ref nightHorrorRaidsEnabled, "nightHorrorRaidsEnabled", true);
+            Scribe_Values.Look(ref nightHorrorLairsEnabled, "nightHorrorLairsEnabled", true);
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -148,6 +154,15 @@ namespace RimMandrake.Utinni.UtinniPatches
                     "On: newly generated Forge maps carry a few small seams of zersium ore, the mineral that turns steel into durasteel, and the only place on the planet it can be mined. Off: no zersium seams anywhere.");
                 list.CheckboxLabeled("Phrikite ore in the extreme desert", ref phrikiteDesertEnabled,
                     "On: newly generated extreme-desert (Stillsand) maps carry a few small seams of phrikite ore, smelted aboard into phrik, and the only place on the planet it can be mined. Off: no phrikite seams anywhere.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Assailant horrors on the nightside", RimMandrake.Shared.SettingScope.Now, new[] { "nightHorrorRaidsEnabled", "nightHorrorLairsEnabled" }))
+            {
+                list.CheckboxLabeled("Horror patrols raid nightside maps", ref nightHorrorRaidsEnabled,
+                    "On: the storyteller can send a patrol of the starved-cold Assailant weapon against a map on the nightside, and only there; the dayside and the terminator never see one. Off: no Horror raid anywhere.");
+                list.CheckboxLabeled("Horror lairs on new nightside maps (WORLDGEN-AFFECTING)", ref nightHorrorLairsEnabled,
+                    "On: a newly generated nightside map holds one to three lairs (hive, den, burrows, a sinkhole, a mite larder) with dormant crysalises that break open when someone comes close or they thaw. Off: no new lairs, and crysalises already placed stay asleep.");
                 list.GapLine();
             }
 
