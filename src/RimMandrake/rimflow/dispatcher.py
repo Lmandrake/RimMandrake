@@ -511,9 +511,15 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
         said.append("%s: %s" % (r["id"], r["how"]))
     if fresh:
         ids = [r["id"] for r in fresh]
-        text = fresh[0]["text"] if len(fresh) == 1 else (
-            "INCIDENTS %s all reach him next: one run, take them in order (rimflow incidents); write his line for each "
-            "(rimflow incident-line <id> \"<line>\"). First: %s" % (", ".join(ids), fresh[0]["text"]))
+        if len(fresh) == 1:
+            text = fresh[0]["text"]
+        elif all(r.get("revisit") for r in fresh):
+            text = ("INCIDENTS %s at his rung, revisits due together: one run, take them in order (rimflow incidents): fixed, "
+                    "say so; else rimflow ack <id> --plan \"<next>\"; and rimflow incident-line <id> \"<line>\" for each. "
+                    "First: %s" % (", ".join(ids), fresh[0]["text"]))
+        else:
+            text = ("INCIDENTS %s all reach him next: one run, take them in order (rimflow incidents); write his line for each "
+                    "(rimflow incident-line <id> \"<line>\"). First: %s" % (", ".join(ids), fresh[0]["text"]))
         res = incident_run(sch, st, "Operations", "run", text, now, ids)
         said.append(res)
         if res.startswith("held") or "already asked" in res:

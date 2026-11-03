@@ -106,7 +106,11 @@ do nothing, exit.
    At his rung an incident is never left to sit: `owner_revisit_min` (240) after it reached him or was last revisited,
    or at its recover_by if you acked it for longer, it is revisited: its ack and plan are cleared (the old plan kept as
    `last_plan`) and you are asked a fresh run naming it. Re-read it then: fixed, say so; still yours, ack it again with
-   a real current plan; truly his, rewrite his line saying exactly what he must do. The
+   a real current plan; truly his, rewrite his line saying exactly what he must do. A revisit
+   comes only with news, named in the ask and in `rimflow incidents`: when the readings and your plan have not moved since
+   the last one it is re-armed with no run (a `revisit_quiet` row in `told.jsonl`), for at most `revisit_quiet_max_min`
+   (a day), and an ack with no plan of yours counts as no answer. One run takes every revisit due inside
+   `revisit_batch_min`. So write a plan you can stand behind for a day. The
    routing table `rimflow/alarm_routes.json` is yours: every alarm kind has a route there or a selftest fails.
 1. Read `digest.md`. For each open alarm: is it real (the instrument can see: check the point's mark and `why`), who
    owns the cause, and what moves it. A RUNWAY_LOW on an ESTIMATE runway is checked against the meter first. A lent account alarms on `accounts.<account>.loan_runway` (its allowance against the lent window); its `runway` stays the week figure and raises nothing.

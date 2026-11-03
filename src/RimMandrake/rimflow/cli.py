@@ -1786,9 +1786,10 @@ def cmd_incidents(args, seat):
     incs = incident.fold(incident.read_rows() or [])[0]
     for x in sorted(incs.values(), key=lambda a: a["told_t"]):
         if args.all or x.get("state") == "open":
-            print("%s  %s %s rung %s reader %s told %s ack_due %s recover_by %s by %s plan %s  %s" % (
+            print("%s  %s %s rung %s reader %s told %s ack_due %s recover_by %s by %s plan %s%s  %s" % (
                 x["id"], x.get("state"), x.get("class"), x.get("rung"), x.get("reader"), x.get("told_at"), x.get("ack_due"),
-                x.get("recover_by"), x.get("ack_by"), x.get("plan"), ", ".join(sorted(x.get("metrics") or {}))))
+                x.get("recover_by"), x.get("ack_by"), x.get("plan"),
+                " news %s" % "; ".join(x["news"]) if x.get("news") else "", ", ".join(sorted(x.get("metrics") or {}))))
 
 
 def cmd_file(args, seat):

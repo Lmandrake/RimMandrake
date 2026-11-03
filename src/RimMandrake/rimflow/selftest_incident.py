@@ -595,7 +595,7 @@ def test_owner_rung_revisited():
     IN.ack(x["id"], "OPERATIONS", "pool restore lands at 18:00", now=t1 + 5 * M)          # default recover_min 60
     r.tick(t1 + 70 * M, relentless__under_min=100)
     check("revisit: an ack shorter than the floor waits the floor", len(r.evs("revisited")) == 1, r.evs("revisited"))
-    r.tick(t1 + rev * M, relentless__under_min=100)
+    r.tick(t1 + rev * M, relentless__under_min=90)                                   # the clock went back: news
     e = r.evs("revisited")
     check("revisit: past the floor it is revisited again, ack and plan cleared, last_plan kept",
           len(e) == 2 and not r.inc()[0].get("acked_t") and r.inc()[0].get("plan") is None
@@ -603,17 +603,186 @@ def test_owner_rung_revisited():
     clear_ask()
     t2 = t1 + rev * M
     IN.ack(x["id"], "OPERATIONS", "Steve's desk is off until Monday", recover_min=3 * rev, now=t2 + 1 * M)
-    r.tick(t2 + (rev + 5) * M, relentless__under_min=100)
+    r.tick(t2 + (rev + 5) * M, relentless__under_min=80)
     check("revisit: an ack longer than the floor is waited out", len(r.evs("revisited")) == 2, r.evs("revisited"))
-    r.tick(t2 + (3 * rev + 2) * M, relentless__under_min=100)
+    r.tick(t2 + (3 * rev + 2) * M, relentless__under_min=80)
     check("revisit: and revisited at its recover_by", len(r.evs("revisited")) == 3 and r.inc()[0]["rung"] == IN.OWNER_RUNG,
           r.evs("revisited"))
     check("revisit: never escalated past his rung", all(v["rung"] <= IN.OWNER_RUNG for v in r.evs("escalated")))
 
 
+def at_his_rung(*iids, plan="waiting on the fix"):
+    """Rows of these incidents at his rung, last revisited 4 min apart from T0, each metric's baseline reading 5."""
+    table = IN.load_table()
+    # these planted metrics stand, but on a program route: they open no incident of their own beside the planted one
+    table["routes"] = [{"match": g, "route": "program"} for g in ("m.*", "r.*", "sig.*")] + table["routes"]
+    rev = table["policy"]["owner_revisit_min"]
+    t = T0
+    rows = []
+    for k, iid in enumerate(iids):
+        tk = t + k * 4 * M
+        rows.append(dict({"ev": "opened", "id": iid, "at": IN.iso(tk), "t": tk, "state": "open", "rung": IN.OWNER_RUNG, "rung_t": tk,
+                          "told_t": tk - 9 * H, "told_at": IN.iso(tk - 9 * H), "cause": iid.split("-")[0], "class": "distressed",
+                          "metrics": {"m.%s" % iid: {"class": "distressed", "event": False}}, "items": [], "reader": "Operations",
+                          "ack_min": 30, "acked_t": tk + M, "recover_by_t": tk + H, "recover_by": IN.iso(tk + H), "ack_by": "OPERATIONS",
+                          "plan": plan, "revisit_t": tk, "revisit_seen_t": tk, "revisits": 1,
+                          "revisit_read": {"m.%s" % iid: [True, "distressed", 5, True, 0]}}))
+    return table, rev, rows
+
+
+def status_of(now, **vals):
+    """Each metric is `m.<name with _ for ->`, read and standing: its OPEN alarm is what makes `bad` see it."""
+    pts = {"m.%s" % k.replace("_", "-"): {"m": "MEASURED", "v": v, "class": "distressed"} for k, v in vals.items()}
+    return {"t": now, "points": pts, "alarms": {}}
+
+
+def test_revisits_batched():
+    """INCIDENT_REVISIT_TAME_SAME_NEWS_HOURLY (1): revisits falling due minutes apart are one Operations run, and the
+    incidents stay in step after it. An unexpired ack is not cut short; a revisit outside the window waits."""
+    table, rev, rows = at_his_rung("a-1", "b-1")
+    now = T0 + rev * M + M
+    moved = status_of(now, a_1=6, b_1=6)         # both have news; a-1 is due now, b-1 in 3 min
+    res = IN.step(table, rows, moved, now)
+    ids = [x["id"] for x in res["rows"] if x["ev"] == "revisited"]
+    check("batch: a revisit due 4 min later goes out with the one due now", ids == ["a-1", "b-1"] and len(res["rings"]) == 2, res["rows"])
+    r = Rig("revbatch")
+    dst = {"roles": {}}
+    D.incident_execute(dict(res), r.sch, dst, "/nonexistent", now, lambda *x: None, lambda *x: None)
+    req = dst["roles"]["Operations"]["run_now"]
+    check("batch: they are ONE Operations run naming both, one counted against the hour",
+          req["ids"] == ["a-1", "b-1"] and len(dst["incident"]["runs"]) == 1 and "a-1" in req["why"] and "b-1" in req["why"], req)
+    incs = IN.fold(rows + res["rows"])[0]
+    check("batch: they stay in step, both next due together",
+          IN.next_due(table, incs["a-1"]) == IN.next_due(table, incs["b-1"]) == now + rev * M, incs)
+    far = [rows[0], dict(rows[1], rung_t=now - rev * M + (table["policy"]["revisit_batch_min"] + 5) * M)]
+    res2 = IN.step(table, far, moved, now)
+    check("batch: a revisit due outside the window waits for its own time",
+          [x["id"] for x in res2["rows"] if x["ev"] == "revisited"] == ["a-1"], res2["rows"])
+    acked = [rows[0], dict(rows[1], acked_t=now - M, recover_by_t=now + 10 * M)]
+    res3 = IN.step(table, acked, moved, now)
+    check("batch: an unexpired ack is not cut short by another incident's run",
+          [x["id"] for x in res3["rows"] if x["ev"] == "revisited"] == ["a-1"], res3["rows"])
+    res4 = IN.step(table, rows, status_of(now, a_1=6, b_1=5), now)
+    check("batch: an incident with no news is not pulled in; it waits and is re-armed at its own time",
+          [x["id"] for x in res4["rows"]] == ["a-1"] and len(res4["rings"]) == 1, res4["rows"])
+
+
+def test_revisit_quiet():
+    """INCIDENT_REVISIT_TAME_SAME_NEWS_HOURLY (2): no news is a re-arm with no run, and the log says so. Everything that
+    is news still launches; what cannot be compared is news."""
+    table, rev, rows = at_his_rung("q-1")
+    now = T0 + rev * M
+    st = status_of(now, q_1=5)
+    pt = st["points"]["m.q-1"]
+
+    def run(rows, status=st, now=now, events=None):
+        res = IN.step(table, rows, status, now, events=events)
+        return res, [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
+    res, ev = run(rows)
+    check("quiet: unchanged readings and plan launch nothing", not res["rings"], res)
+    check("quiet: the incident log says so", [x["ev"] for x in ev] == ["revisit_quiet"] and "unchanged" in ev[0]["why"]
+          and "no run" in ev[0]["why"], ev)
+    x = IN.fold(rows + res["rows"])[0]["q-1"]
+    check("quiet: re-armed for a whole floor, plan kept, count kept",
+          x["rung_t"] == now and x["plan"] == "waiting on the fix" and x["quiet_revisits"] == 1
+          and IN.next_due(table, x) == now + rev * M and x["revisits"] == 1, x)
+    r = Rig("quietrun")
+    dst = {"roles": {}}
+    D.incident_execute(dict(res), r.sch, dst, "/nonexistent", now, lambda *x: None, lambda *x: None)
+    check("quiet: no Operations run is asked", not (dst["roles"].get("Operations") or {}).get("run_now"), dst)
+    res2, ev2 = run(rows + res["rows"], {"t": now + rev * M, "points": {"m.q-1": pt}, "alarms": {}}, now + rev * M)
+    check("quiet: and quiet again a floor later", [x["ev"] for x in ev2] == ["revisit_quiet"] and not res2["rings"], ev2)
+
+    def fires(name, rows_, status=st, now_=now, events=None, says=None):
+        res, ev = run(rows_, status, now_, events)
+        ok = [x["ev"] for x in ev] == ["revisited"] and [r["id"] for r in res["rings"] if r.get("revisit")] == ["q-1"] and (says is None or says in " ".join(ev[0]["news"]))
+        check("quiet: %s launches" % name, ok, ev)
+        return res, ev
+    fires("a changed value", rows, {"t": now, "points": {"m.q-1": dict(pt, v=6)}, "alarms": {}}, says="readings moved")
+    fires("a changed class", rows, {"t": now, "points": {"m.q-1": dict(pt, **{"class": "emergency"})}, "alarms": {}}, says="readings moved")
+    fires("an unmeasured reading", rows, {"t": now, "points": {"m.q-1": dict(pt, m="UNMEASURED")}, "alarms": {}}, says="readings moved")
+    fires("a reading gone from status", rows, {"t": now, "points": {}, "alarms": {}}, says="readings moved")
+    fires("a blind status", rows, {"t": now - H, "points": {"m.q-1": pt}}, says="not fresh")
+    fires("no earlier revisit (first look)", [dict(rows[0], revisit_read=None, revisit_seen_t=None)], says="no earlier")
+    fires("no plan (the last run did not answer)", [dict(rows[0], plan=None, acked_t=None)], says="no run has answered")
+    fires("only an auto-ack (an item action is not an answer)", [dict(rows[0], auto_ack=True, plan="start on X")], says="no run has answered")
+    fires("a rewritten plan after a quiet look", rows + [{"ev": "revisit_quiet", "id": "q-1", "t": now - rev * M, "revisit_plan": "waiting on the fix",
+                                                           "rung_t": now - rev * M, "revisit_seen_t": now - rev * M, "revisit_read": rows[0]["revisit_read"]},
+                                                          {"ev": "acked", "id": "q-1", "t": now - H, "plan": "a new plan", "acked_t": now - H,
+                                                           "recover_by_t": now - H + M}], says="the plan changed")
+    rows_join = rows + [{"ev": "joined", "id": "q-1", "t": now - H, "metrics": {"m.q-1": {"class": "distressed", "event": False},
+                                                                               "m.new": {"class": "distressed", "event": False}}}]
+    fires("a metric that joined", rows_join, says="m.new")
+    fires("a sane blip since the last look", rows + [{"ev": "sane", "id": "q-1", "t": now - 2 * H, "sane_since": now - 2 * H},
+                                                     {"ev": "relapsing", "id": "q-1", "t": now - H, "sane_since": None}], says="state moved")
+    ev_rows = [dict(rows[0], metrics={"sig.x": {"class": "distressed", "event": True}}, revisit_read={"sig.x": [False, None, None, False, 1]}),
+               {"kind": "sig.x", "metric": "sig.x"}, {"kind": "sig.x", "metric": "sig.x"}]
+    fires("a signal fired again", ev_rows, says="sig.x")
+    ledger = [{"id": "OPS_X", "event": "close", "seat": "BENCH", "ts": IN.iso(now - H)}]
+    fires("an action on a named item", [dict(rows[0], items=["OPS_X"])], events=lambda: ledger, says="close on OPS_X")
+    fires("a day with no run", [dict(rows[0], revisit_t=now - (24 * H + M), revisit_seen_t=now - rev * M)], says="no run has read it")
+    clock = dict(rows[0], metrics={"r.under_min": {"class": "distressed", "event": False}}, revisit_read={"r.under_min": [True, "distressed", 100, True, 0]})
+    res, ev = run([clock], {"t": now, "points": {"r.under_min": dict(pt, v=340)}, "alarms": {}})
+    check("quiet: a clock rising is only time passing", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
+    fires("a clock that went back", [clock], {"t": now, "points": {"r.under_min": dict(pt, v=40)}, "alarms": {}}, says="r.under_min")
+    sane = dict(rows[0], metrics=dict(rows[0]["metrics"], **{"m.z": {"class": "distressed", "event": False}}),
+                revisit_read=dict(rows[0]["revisit_read"], **{"m.z": [False, "sane", 3, True, 0]}))
+    res, ev = run([sane], {"t": now, "points": {"m.q-1": pt, "m.z": {"m": "MEASURED", "v": 4, "class": "sane"}}, "alarms": {}})
+    check("quiet: a value moving with no alarm on it either time is not news", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
+
+
+def test_quiet_on_the_real_path():
+    """Through dispatcher.tick --apply: a revisit launched, answered with a plan, then a floor of nothing: no run, one row."""
+    rev = IN.load_table()["policy"]["owner_revisit_min"]
+    r = Rig("quietpath")
+    r.tick(T0, relentless__under_min=40)
+    for m in (30, 60, 240):
+        r.tick(T0 + m * M, relentless__under_min=100)
+    st_path = r.root + "/state/state.json"
+
+    def clear_ask():
+        st = json.load(open(st_path))
+        st.get("roles", {}).get("Operations", {}).pop("run_now", None)
+        st.get("incident", {}).pop("runs", None)
+        json.dump(st, open(st_path, "w"))
+    clear_ask()
+    t1 = T0 + (240 + rev) * M
+    r.tick(t1, relentless__under_min=120)
+    check("real path: the first revisit has nothing to compare with, and launches", len(r.evs("revisited")) == 1
+          and r.asked("Operations"), r.evs("revisited"))
+    clear_ask()
+    x = r.inc()[0]
+    IN.ack(x["id"], "OPERATIONS", "Steve's desk is off until Monday", now=t1 + 5 * M)
+    r.tick(t1 + rev * M, relentless__under_min=360)
+    check("real path: a floor later with the clock only risen: no revisit, no ask, a quiet row", len(r.evs("revisited")) == 1
+          and len(r.evs("revisit_quiet")) == 1 and x["id"] not in (r.asked("Operations") or {}).get("ids", []), (r.evs("revisit_quiet"), r.asked("Operations")))
+    check("real path: the snapshot counts it", [o for o in r.snap()["open"] if o["id"] == x["id"]][0].get("quiet_revisits") == 1, r.snap())
+    clear_ask()
+    r.tick(t1 + 2 * rev * M, relentless__under_min=50)
+    check("real path: and that run names it", x["id"] in (r.asked("Operations") or {}).get("ids", []), r.asked("Operations"))
+    check("real path: the reading moves and the next revisit launches", len(r.evs("revisited")) == 2
+          and "relentless.under_min" in " ".join(r.evs("revisited")[-1]["news"]), r.evs("revisited")[-1:])
+
+
+def replay_batch():
+    """Read-only: the real told.jsonl's revisits, as launched and as revisit_batch_min would have grouped them."""
+    rows = IN.read_rows(os.path.join(IN.REAL_OPS, "told.jsonl")) or []
+    ts = sorted(r["t"] for r in rows if r.get("ev") == "revisited" and not r.get("news"))
+    win = TABLE["policy"]["revisit_batch_min"] * 60
+    groups, head = 0, None
+    for t in ts:
+        if head is None or t - head > win:
+            groups, head = groups + 1, t
+    print("replay: %d revisits landed before this change; batched inside %d min they are %d runs (%d distinct launch ticks on record)"
+          % (len(ts), win // 60, groups, len({int(t // 120) for t in ts})))
+    return 0
+
+
+if "--replay-batch" in sys.argv:
+    sys.exit(replay_batch())
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
-          test_owner_rung_revisited):
+          test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)

@@ -18,11 +18,15 @@ The Dispatcher tick runs step() in decide (pure) and execute() in its execute pa
     revisited (unacked), it is REVISITED -- the ack and plan go, and a fresh Operations run is rung to re-read it and
     resolve it, re-ack it with a current plan, or rewrite his line (OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS: seven
     incidents sat at rung 3 for a day with recover_by long past, because nothing came after him).
+    A revisit is rung only when there is news (revisit_news); with none it is re-armed with no run and a revisit_quiet
+    row says so, for at most revisit_quiet_max_min. One run takes every revisit due inside revisit_batch_min
+    (INCIDENT_REVISIT_TAME_SAME_NEWS_HOURLY: 9 of 15 Operations runs in a day re-read incidents that had not moved).
 incidents.json is the snapshot stamped every tick: pulse reads its `owner` rows, the deadman reads its age.
 """
 import fnmatch
 import json
 import os
+import re
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +37,8 @@ BAD = ("distressed", "emergency")
 ACTIONS = ("claim", "start", "close", "implemented", "drop")     # a note is not one: the 2026-11-01 diagnosis was a note
 NOT_READERS = ("DISPATCHER", "RUNNER", "RELENTLESS")
 OWNER_RUNG = 3
+CLOCK_METRIC = re.compile(r"(_min|_h|_age|_s)$")      # its value is "how long": rising is only time passing
+NEWS_EVS = ("joined", "sane", "relapsing", "reopened", "escalated")
 
 
 def iso(t):
@@ -162,15 +168,72 @@ def ring_of(table, inc, now, rung=None):
     return {"id": inc["id"], "how": how or "doorbell", "reader": reader, "seat": None if how else reader, "text": why}
 
 
-def revisit_ring(inc, was_plan):
+def revisit_ring(inc, was_plan, news=()):
     """The ring of an incident at his rung whose plan ran out: one fresh Operations run, batched with the pass's other
-    fresh rings (dispatcher.incident_execute)."""
+    fresh rings (dispatcher.incident_execute). The news comes first: the run's `why` is cut at 300 characters."""
     i = inc["id"]
-    return {"id": i, "how": "fresh_run", "reader": "Operations:fresh", "seat": None, "text": (
-        "INCIDENT %s (%s, at his rung, revisit %d): %s. Its plan ran out%s. Re-read it now: fixed, say so (it closes on "
-        "its readings); else rimflow ack %s --plan \"<the current next step>\" [--recover-min N]; and rewrite his line, "
-        "rimflow incident-line %s \"<line>\"." % (i, inc["class"], inc.get("revisits", 0), ", ".join(sorted(inc["metrics"])),
-                                                    " (was: %s)" % str(was_plan)[:160] if was_plan else "", i, i))}
+    return {"id": i, "how": "fresh_run", "reader": "Operations:fresh", "seat": None, "revisit": True, "text": (
+        "INCIDENT %s (%s, at his rung, revisit %d). News: %s. Its plan ran out%s. Re-read it now: fixed, say so (it closes "
+        "on its readings); else rimflow ack %s --plan \"<the current next step>\" [--recover-min N]; and rewrite his line, "
+        "rimflow incident-line %s \"<line>\". Metrics: %s." % (
+            i, inc["class"], inc.get("revisits", 0), "; ".join(news)[:120] or "none recorded",
+            " (was: %s)" % str(was_plan)[:60] if was_plan else "", i, i, ", ".join(sorted(inc["metrics"]))))}
+
+
+def revisit_reads(inc, status, bad, signals):
+    """What this incident's metrics read now: {metric: [standing?, class, value, measured?, signals fired so far]}."""
+    points = (status.get("points") or {}) if isinstance(status, dict) else {}
+    fired = {}
+    for _, r in signals:
+        kind = r.get("metric") or r.get("kind")
+        fired[kind] = fired.get(kind, 0) + 1
+    out = {}
+    for m in inc["metrics"]:
+        p = points.get(m) if isinstance(points.get(m), dict) else {}
+        out[m] = [m in bad, p.get("class"), p.get("v"), p.get("m") == "MEASURED", fired.get(m, 0)]
+    return out
+
+
+def reading_moved(metric, old, new):
+    """Did one metric move? A signal fired, a standing alarm came or went, its class or measured mark changed, a standing
+    value changed (a clock metric only when it went back: rising is time passing). A value moving while no alarm stands
+    on it either time is not a move: an incident keeps every metric it ever tripped, most of them long sane."""
+    if old is None or new is None:
+        return old != new
+    if old[0] != new[0] or old[1] != new[1] or old[3] != new[3] or old[4] != new[4]:
+        return True
+    if not new[0] or old[2] == new[2]:
+        return False
+    if CLOCK_METRIC.search(metric) and isinstance(old[2], (int, float)) and isinstance(new[2], (int, float)):
+        return new[2] < old[2]
+    return True
+
+
+def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None):
+    """-> why this revisit needs a run, or [] when nothing moved since the last one. Anything not known to be unchanged is
+    news: no earlier look, a blind status, no plan a run wrote (an auto-ack from an item action is not an answer)."""
+    seen_t = inc.get("revisit_seen_t")
+    if not seen_t or inc.get("revisit_read") is None:
+        return ["no earlier revisit to compare with"]
+    if not fresh:
+        return ["status not fresh: the readings cannot be compared"]
+    news = []
+    if not inc.get("plan") or inc.get("auto_ack"):
+        news.append("no run has answered: no plan of its own")
+    elif inc.get("revisit_plan") and inc["plan"] != inc["revisit_plan"]:
+        news.append("the plan changed")
+    old = inc["revisit_read"]
+    moved = sorted(m for m in set(old) | set(reads) if reading_moved(m, old.get(m), reads.get(m)))
+    if moved:
+        news.append("readings moved: %s%s" % (", ".join(moved[:4]), " +%d more" % (len(moved) - 4) if len(moved) > 4 else ""))
+    if any(r.get("id") == inc["id"] and r.get("ev") in NEWS_EVS and r.get("t", 0) > seen_t for r in list(rows) + out):
+        news.append("its state moved since the last look")
+    hit = item_acted(events(), inc.get("items") or (), iso(seen_t)) if events is not None and inc.get("items") else None
+    if hit:
+        news.append("%s on %s" % (hit[2], hit[0]))
+    if now - inc.get("revisit_t", 0) >= pol.get("revisit_quiet_max_min", 1440) * 60:
+        news.append("no run has read it for %d min, the most a quiet incident waits" % ((now - inc.get("revisit_t", 0)) // 60))
+    return news
 
 
 def template(inc):
@@ -198,6 +261,14 @@ def step(table, rows, status, now, cursor=0, events=None):
         inc.update(f)
         out.append(dict(f, ev=ev, id=inc["id"], at=iso(now), t=now))
 
+    def revisit(inc, reads, news):
+        was = inc.get("plan")
+        emit("revisited", inc, rung_t=now, acked_t=None, ack_by=None, plan=None, last_plan=was, recover_by=None,
+             recover_by_t=None, revisits=inc.get("revisits", 0) + 1, revisit_t=now, revisit_seen_t=now, revisit_read=reads,
+             revisit_plan=None, auto_ack=False, quiet_revisits=0, news=news)
+        rings.append(revisit_ring(inc, was, news))
+
+    looked = set()
     bad, fresh, seen = readings(table, status, now)
     fired = {}
     for i, r in signals:
@@ -260,7 +331,7 @@ def step(table, rows, status, now, cursor=0, events=None):
         if inc["items"] and not inc.get("acked_t") and events is not None:
             hit = item_acted(events(), inc["items"], inc["told_at"])
             if hit:
-                emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]),
+                emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]), auto_ack=True,
                      recover_by_t=now + pol["recover_min"] * 60, recover_by=iso(now + pol["recover_min"] * 60))
         states = []
         for m, v in inc["metrics"].items():
@@ -281,10 +352,15 @@ def step(table, rows, status, now, cursor=0, events=None):
             emit("relapsing", inc, sane_since=None)
         due = next_due(table, inc)
         if due is not None and now >= due and not inc.get("sane_since") and inc["rung"] >= OWNER_RUNG:
-            was = inc.get("plan")
-            emit("revisited", inc, rung_t=now, acked_t=None, ack_by=None, plan=None, last_plan=was, recover_by=None,
-                 recover_by_t=None, revisits=inc.get("revisits", 0) + 1)
-            rings.append(revisit_ring(inc, was))
+            looked.add(inc["id"])
+            reads = revisit_reads(inc, status, bad, signals)
+            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events)
+            if news:
+                revisit(inc, reads, news)
+            else:
+                emit("revisit_quiet", inc, rung_t=now, revisit_seen_t=now, revisit_read=reads, revisit_plan=inc["plan"],
+                     quiet_revisits=inc.get("quiet_revisits", 0) + 1, news=None,
+                     why="readings and plan unchanged since %s: re-armed, no run" % iso(inc["revisit_t"]))
         elif due is not None and now >= due and not inc.get("sane_since"):
             r = inc["rung"] + 1
             f = dict(rung=r, rung_t=now, acked_t=None, ack_by=None, plan=None, recover_by=None, recover_by_t=None)
@@ -293,13 +369,26 @@ def step(table, rows, status, now, cursor=0, events=None):
             d = next_due(table, inc)
             emit("escalated", inc, was_acked=was, ack_due=iso(d) if d else None, ack_due_t=d, **f)
             rings.append(ring_of(table, inc, now, r))
+    if any(r["how"] == "fresh_run" for r in rings):      # a run is going: it takes every revisit about to fall due
+        for inc in sorted(incs.values(), key=lambda x: x["id"]):
+            if (inc["state"] != "open" or inc["rung"] < OWNER_RUNG or inc["id"] in looked or inc.get("sane_since")
+                    or (inc.get("acked_t") and (inc.get("recover_by_t") or 0) > now)):   # an ack is never cut short
+                continue
+            due = next_due(table, inc)
+            if due is None or due - now > pol.get("revisit_batch_min", 0) * 60:
+                continue
+            reads = revisit_reads(inc, status, bad, signals)
+            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events)
+            if news:                                     # with none it waits for its own time and is re-armed then
+                revisit(inc, reads, news)
     live = [x for x in incs.values() if x["state"] == "open"]
     keys = sorted("incident:%s#%d" % (x["id"], x.get("reopens", 0)) for x in live
                   if x["rung"] == 0 and x["reader"] == "Operations")
     owner = [dict(id=x["id"], line=x.get("line") or template(x), unread=not x.get("line"), since=x["told_t"],
                   **{"class": x["class"]}) for x in live if x["rung"] >= OWNER_RUNG]
     snap = {"t": now, "at": iso(now), "fresh": fresh, "open": sorted(
-        ({k: x.get(k) for k in ("id", "class", "cause", "rung", "reader", "told_at", "ack_due", "recover_by", "ack_by", "plan")}
+        ({k: x.get(k) for k in ("id", "class", "cause", "rung", "reader", "told_at", "ack_due", "recover_by", "ack_by", "plan",
+                                "revisits", "quiet_revisits")}
          for x in live), key=lambda a: a["id"]), "owner": sorted(owner, key=lambda a: a["id"])}
     return {"rows": out, "rings": rings, "keys": keys, "cursor": len(rows), "snapshot": snap}
 
@@ -316,7 +405,7 @@ def ack(iid, seat, plan, recover_min=None, path=None, now=None):
     if not inc or inc.get("state") != "open":
         raise ValueError("%s is not an open incident (rimflow incidents)" % iid)
     mins = recover_min or load_table()["policy"]["recover_min"]
-    row = {"ev": "acked", "id": iid, "at": iso(now), "t": now, "acked_t": now, "ack_by": seat, "plan": plan.strip(),
+    row = {"ev": "acked", "id": iid, "at": iso(now), "t": now, "acked_t": now, "ack_by": seat, "plan": plan.strip(), "auto_ack": False,
            "recover_by_t": now + mins * 60, "recover_by": iso(now + mins * 60)}
     append([row], path)
     return row
