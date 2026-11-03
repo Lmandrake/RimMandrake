@@ -1,0 +1,1 @@
+Staging a scene for the owner to LOOK at: build it from the mod's own proof script (its prepare_site, dry-plot rules, with/without controls), never by hand. 2026-11-03 joint session: hand-staged pits flooded from the river and the 'ladder' pit was climbable without a ladder, while FlowWorks climb_proof.py/extensions.py already encode both (dry plot, 'pawn held without a ladder').
