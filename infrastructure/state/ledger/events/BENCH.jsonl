@@ -13249,3 +13249,14 @@
 {"seat":"BENCH","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"Operations, a loosening for the Conductor: the scratch cleaner's end line for session folders (scratch_reap_sanity.json) was set for a quiet machine. Nearly all folders over it are young work, not a leak, so that reading stays above its line whatever REAPER_FIX_OWN_SELFTEST_LITTERS_FAKE_SAVES fixes, and incident disk-20261101160557 cannot close. Proposal: raise that one line to fit the busy machine, or keep it and accept the open incident.","role_unit":"rm-role-operations-1793740527","why":"Operations incident run: disk-20261101160557 / testing-20261101162433","ts":"2026-11-03T21:21:04Z","tsn":1793740864180387993}
 {"seat":"BENCH","event":"lease","id":"EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE","action":"take","token":"BENCH.pid11567.2dd5c378","expires":"2026-11-03T22:06:17Z","ts":"2026-11-03T21:21:17Z","tsn":1793740878486169430}
 {"seat":"BENCH","event":"claim","id":"EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE","ts":"2026-11-03T21:21:19Z","tsn":1793740879466220980}
+{"seat":"BENCH","event":"start","id":"EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE","ts":"2026-11-03T21:21:20Z","tsn":1793740880339864813}
+{"seat":"BENCH","event":"lease","id":"TICK_SPEED_FIX_GAME_IDLES_WAITING","action":"take","token":"BENCH.pid11575.6f772a61","expires":"2026-11-03T22:06:22Z","ts":"2026-11-03T21:21:22Z","tsn":1793740883701054094}
+{"seat":"BENCH","event":"claim","id":"TICK_SPEED_FIX_GAME_IDLES_WAITING","ts":"2026-11-03T21:21:24Z","tsn":1793740884641775737}
+{"seat":"BENCH","event":"start","id":"TICK_SPEED_FIX_GAME_IDLES_WAITING","ts":"2026-11-03T21:21:25Z","tsn":1793740885569256988}
+{"seat":"BENCH","event":"lease","id":"RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE","action":"take","token":"BENCH.pid11586.5d7e4264","expires":"2026-11-03T22:06:28Z","ts":"2026-11-03T21:21:28Z","tsn":1793740889037191365}
+{"seat":"BENCH","event":"claim","id":"RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE","ts":"2026-11-03T21:21:29Z","tsn":1793740889952008558}
+{"seat":"BENCH","event":"start","id":"RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE","ts":"2026-11-03T21:21:30Z","tsn":1793740890831062804}
+{"seat":"BENCH","event":"lease","id":"RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS","action":"take","token":"BENCH.pid11595.c98f117d","expires":"2026-11-03T22:06:33Z","ts":"2026-11-03T21:21:33Z","tsn":1793740894398016045}
+{"seat":"BENCH","event":"claim","id":"RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS","ts":"2026-11-03T21:21:35Z","tsn":1793740895413168853}
+{"seat":"BENCH","event":"start","id":"RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS","ts":"2026-11-03T21:21:36Z","tsn":1793740896370170906}
+{"seat":"BENCH","event":"verify","id":"ZOOM_MOD_ENFORCE_NOT_JUST_ONE_DOOR","result":"pass","config":"selftest_zoom_guard + modset_restore + arena_switch + relentless_game + donor_envs","evidence":"/tmp/zt.txt","sha":"536086a48d80","level":"L0","ts":"2026-11-03T21:22:59Z","tsn":1793740979706612166}
