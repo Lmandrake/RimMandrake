@@ -339,6 +339,24 @@ namespace RimMandrake.Stillsand
             {
                 return;
             }
+            CarryNow(p, map, ext);
+        }
+
+        /// <summary>Bridge proof (RM_GaleTakenProof.ForceDrag): the carry itself, without the crest gate and the dice.
+        /// Returns "offmap", "blocked" or "moved N".</summary>
+        public string CarryNowForProof(Pawn p)
+        {
+            RM_DuneGaleExtension ext = Ext;
+            Map map = SingleMap;
+            if (ext == null || map == null || p == null || !p.Spawned || p.Map != map)
+            {
+                return "unavailable";
+            }
+            return CarryNow(p, map, ext);
+        }
+
+        private string CarryNow(Pawn p, Map map, RM_DuneGaleExtension ext)
+        {
             IntVec3 wind = Downwind(map);
             int steps = ext.carryCells.RandomInRange;
             // A blocked first step is no carry at all: fetched up against a wall or rock.
@@ -356,11 +374,11 @@ namespace RimMandrake.Stillsand
             {
                 carried++;
                 RM_GameComponent_GaleCarried.Get()?.CarryOff(p, map, wind, ext);
-                return;
+                return "offmap";
             }
             if (walk.moved == 0)
             {
-                return;
+                return "blocked";
             }
             carried++;
             if (ext.dragFilth != null)
@@ -375,6 +393,7 @@ namespace RimMandrake.Stillsand
                 Messages.Message(p.LabelShortCap + " was dragged " + BearingName(wind) + " by the gale.",
                     p, MessageTypeDefOf.NegativeEvent);
             }
+            return "moved " + walk.moved;
         }
 
         public static void Bruise(Pawn p, int total)
@@ -554,9 +573,16 @@ namespace RimMandrake.Stillsand
                     }
                 }
             }
+            LastEmergenceKey = pick.key;
+            LastEmergencePlaced = new List<Thing>(placed);
             Find.LetterStack.ReceiveLetter(pick.letterLabel ?? "What the wind uncovered", pick.letterText ?? "",
                 LetterDefOf.NeutralEvent, placed.Count > 0 ? new LookTargets(placed) : new LookTargets(new TargetInfo(focus, map)));
         }
+
+        /// <summary>Session-only, for the bridge proof (RM_GaleTakenProof.LastEmergence): the last emergence row and the
+        /// things it placed (the letter's look targets). Never saved.</summary>
+        public static string LastEmergenceKey;
+        public static List<Thing> LastEmergencePlaced = new List<Thing>();
 
         /// <summary>Nearest natural-rock cell with open, standable ground beside it.</summary>
         private static bool FindRockFace(Map map, IntVec3 near, float radius, out IntVec3 mouth, out IntVec3 inward)

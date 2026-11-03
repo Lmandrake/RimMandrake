@@ -41,8 +41,8 @@ KNOWN PAST BUGS GUARDED (each is a component that would have gone red):
   (site.site_cave_logged).
 
 NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason): the leviathan incident toggles and odds
-(private dictionaries, no tool reads them), carry-and-return of gale-borne pawns (a rare, random event
-on a crest), the mirage and chasing-water states (CreatureBehaviors'
+(private dictionaries, no tool reads them), the gale's own carry dice (a rare, random event on a crest: the
+carry rows force one drag and one carry-off through RM_GaleTakenProof, STILLSAND_DUNE_GALE_LIVE_1), the mirage and chasing-water states (CreatureBehaviors'
 own script), the acoustic payload (needs mandrake.rm.acousticscanner), the Return ritual's own lord job (its
 outcome runs through RM_WaterLedgerProof.ProofReturnOutcome; the ledger rows read UNMEASURED on the RM tier), the horizon plume mote and the bone harp sound (visual/audio), flight in the air
 (never live-tested unattended, CLAUDE.md), and appearance of any kind.
@@ -2426,8 +2426,28 @@ def _weather_locks(t):
                if c.get("def") == "WeatherController" and c.get("permanent") and c.get("affectsThisMap", True))
 
 
-def _run_gale(t, x, z):
-    """Start a 6000-tick gale, return (weather sequence, ended-log line or None, letters at the end)."""
+def _gale_probe(t, method, arg="-"):
+    """One RM_GaleTakenProof static_call (STILLSAND_DUNE_GALE_LIVE_1): {key: value} off its 'TAG k=v k=v' answer, or
+    UNMEASURED when the probe does not answer."""
+    r = t.bridge_call("jawa/static_call", type=NS + "RM_GaleTakenProof", method=method, args=arg)
+    if not _live(t):
+        return {}
+    res = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    if not isinstance(r, dict) or r.get("success") is False or not res.startswith("GALE"):
+        _unmeasured(t, "static_call RM_GaleTakenProof.%s did not answer: %s" % (method, str(r)[:200]))
+    out = {"_raw": res}
+    for tok in res.split(" ")[1:]:
+        if "=" in tok:
+            k, v = tok.split("=", 1)
+            out[k] = v
+    if "error" in out:
+        _unmeasured(t, "RM_GaleTakenProof.%s(%s): %s" % (method, arg, res))
+    return out
+
+
+def _run_gale(t, x, z, mid=None):
+    """Start a 6000-tick gale, return (weather sequence, ended-log line or None, letters at the end). `mid`, when
+    given, is called once while the gale weather is in force (after the mid-gale exposure read)."""
     # A leftover permanent WeatherController (a weather lock) is listed ahead of the gale in the map's
     # conditions and its forced weather shadows the gale's herald/gale weather (the 2026-10-03 run saw
     # 'Clear' for 4000 ticks, then the gale, and never the herald). Let an unlock take its tick, then refuse
@@ -2449,6 +2469,8 @@ def _run_gale(t, x, z):
         if w == "RM_DuneGale" and mid_exposure is None:
             t.wait_ticks(500)
             mid_exposure = _exposure(_sun(t, "%d,%d" % (x, z)), x, z)
+            if mid is not None:
+                mid()
         lines = _log_lines(t, "dune gale ended")[0]
         if len(lines) > before_log:
             line = lines[-1]
@@ -2492,7 +2514,20 @@ def gale_chain(t):
         if _live(t):
             clear = _exposure(_sun(t, "%d,%d" % (x, z)), x, z)
             t.bridge_call("jawa/weather_set", unlock=True)     # a locked weather would shadow the condition's
-            seq, gale_exp, line, new = _run_gale(t, x, z)
+            # STILLSAND_DUNE_GALE_LIVE_1: one colonist read on the open anchor cell under a clear sky and again in the
+            # gale (A2); two more carried by the gale mid-storm, one dragged, one off the edge (A4).
+            gp = _STATE["gale_pawns"] = {"sun": _spawn(t, "Colonist", x, z, faction="player"),
+                                         "drag": _spawn(t, "Colonist", x + 3, z, faction="player"),
+                                         "off": _spawn(t, "Colonist", x - 3, z, faction="player")}
+            _STATE["gale_pawn_clear"] = _gale_probe(t, "PawnExposure", "%s@%d,%d" % (gp["sun"], x, z))
+
+            def _mid():
+                _STATE["gale_pawn_gale"] = _gale_probe(t, "PawnExposure", "%s@%d,%d" % (gp["sun"], x, z))
+                _STATE["gale_drag"] = _gale_probe(t, "ForceDrag", gp["drag"])
+                _STATE["gale_off"] = _gale_probe(t, "ForceCarryOff", gp["off"])
+
+            seq, gale_exp, line, new = _run_gale(t, x, z, mid=_mid)
+            _STATE["gale_new_letters"] = new
             _STATE["gale_clear_exposure"], _STATE["gale_exposure"] = clear, gale_exp
             _note(t, "gale weather sequence / ended line / new letters", [seq, line, [l[0] for l in new]])
             if "RM_DuneGaleHerald" not in seq or "RM_DuneGale" not in seq or \
@@ -2509,15 +2544,59 @@ def gale_chain(t):
             emerged = [l for l in new if l[0] in EMERGENCE_LABELS]
             if len(emerged) != 1:
                 _fail("expected exactly one emergence letter at gale end, got %s" % [l[0] for l in new])
+            # A3: the things the letter names (its look targets) are on the map
+            em = _gale_probe(t, "LastEmergence")
+            _note(t, "last emergence", em.get("_raw"))
+            if int(em.get("placed", "0")) < 1 or em.get("onMap") != em.get("placed"):
+                _fail("the emergence letter's things are not all on the map: %s" % em.get("_raw"))
 
     with _comp(t, "gale_dims_sun_exposure"):
         if _live(t):
-            # shadegrid_read returns RM_MapComponent_ShadeGrid.ExposureAt(cell), which does NOT include the
-            # weather factor: RM_WeatherSenseExtension.SunFactor is applied only in ExposureFor(pawn). So a
-            # cell read is 1.00 in a gale by construction. No bridge tool reads pawn exposure.
-            _unmeasured(t, "shadegrid_read reads cell exposure, which excludes the gale's sun factor "
-                           "(applied per pawn in ExposureFor); no tool reads pawn exposure, so the dimming "
-                           "cannot be measured here")
+            # A2: ShadeGrid.ExposureFor(pawn), the read every sun consumer uses (it carries the weather's sun factor;
+            # the bare cell read does not), for one colonist stood on the same open cell under a clear sky and in the
+            # gale. The gale's sunExposureFactor is 0.2 (RM_DuneGale.xml): about 0.2 of the clear-sky read.
+            c, g = _STATE.get("gale_pawn_clear") or {}, _STATE.get("gale_pawn_gale") or {}
+            _note(t, "pawn exposure clear / gale", [c.get("_raw"), g.get("_raw")])
+            if "exposure" not in c or "exposure" not in g:
+                _unmeasured(t, "no pawn exposure read (clear %r, gale %r)" % (c.get("_raw"), g.get("_raw")))
+            ce, ge = float(c["exposure"]), float(g["exposure"])
+            if ce < 0.6 or c.get("roofed") != "False":
+                _unmeasured(t, "the clear-sky read is not full sun (exposure %.3f roofed %s): no baseline" % (ce, c.get("roofed")))
+            if g.get("gale") != "True":
+                _unmeasured(t, "the gale read was taken with no gale condition active: %s" % g.get("_raw"))
+            ratio = ge / ce
+            if not 0.15 <= ratio <= 0.25:
+                _fail("in the gale a colonist in full sun reads %.3f of its clear-sky %.3f (ratio %.2f, want ~0.2)"
+                      % (ge, ce, ratio))
+
+    with _comp(t, "gale_carry_drag_and_return", toggle="carryEnabled"):
+        if _live(t):
+            # A4: every carried pawn has a drag line (RM_Filth_DragMark) or a "Carried off" letter, and the one
+            # carried off comes back (what the next gale's end does: ReturnGale gives back earlier gale takes).
+            d, o = _STATE.get("gale_drag") or {}, _STATE.get("gale_off") or {}
+            letters = [l[0] for l in (_STATE.get("gale_new_letters") or [])]
+            _note(t, "drag / carry-off / letters", [d.get("_raw"), o.get("_raw"), letters])
+            if not d or not o:
+                _unmeasured(t, "the mid-gale carry probes never ran (no gale weather seen?)")
+            out = d.get("outcome", "")
+            if out.startswith("moved"):
+                if int(d.get("dragAfter", "-1")) <= int(d.get("dragBefore", "0")):
+                    _fail("a dragged colonist (%s) left no RM_Filth_DragMark: %s" % (out, d.get("_raw")))
+            elif out == "offmap":
+                if not any(l.startswith("Carried off") for l in letters):
+                    _fail("a dragged colonist went off the edge with no 'Carried off' letter: %s" % letters)
+            else:
+                _unmeasured(t, "the forced drag did not carry the colonist: %s" % d.get("_raw"))
+            if o.get("spawned") != "False" or o.get("held") != "True":
+                _fail("the carry-off left the colonist on the map or unheld: %s" % o.get("_raw"))
+            if not any(l.startswith("Carried off") for l in letters):
+                _fail("a colonist carried off the edge got no 'Carried off' letter: %s" % letters)
+            before = _letters(t)
+            back = _gale_probe(t, "ReturnGale", _STATE["gale_pawns"]["off"])
+            given = [l[0] for l in _new_letters(before, _letters(t))]
+            _note(t, "return", [back.get("_raw"), given])
+            if back.get("pawnBack") != "True" and not any(l.startswith("Given back") for l in given):
+                _fail("the carried-off colonist did not come back: %s letters %s" % (back.get("_raw"), given))
 
     with _comp(t, "gale_emergence_off_quiet", toggle="emergenceEnabled"):
         if _live(t):

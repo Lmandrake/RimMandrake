@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_DUNE_GALE_LIVE_1 spec 2: the mummified caravan's water skins, "its most valuable thing" (the
+  RM_DuneGale emergence row mummifiedCaravan, Defs/WeatherDefs/RM_DuneGale.xml). Sealed leather, so the water
+  outlived the riders. Like the duumma water sac it books the water ledger when drunk (RM_CompWaterVolume.PostIngested),
+  can be poured into the sand or set at a debt stone, and under Dubs Bad Hygiene a thirsty pawn seeks it.
+  PLACEHOLDER ART: CreatureBehaviors' RM_DrainedFluids blob, tinted leather-brown (no water-skin sprite exists yet).
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CaravanWaterSkin</defName>
+    <label>caravan water skin</label>
+    <description>A sealed leather water skin from a caravan the dunes swallowed. The riders dried to leather around it; the skin kept its water. Eight litres, stale and tasting of hide, worth more in the Stillsand than anything else the caravan carried. Drink it, pour it into the sand, or carry it to a debt stone.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DrainedFluids/RM_DrainedFluids</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(150,110,75)</color>
+      <drawSize>0.95</drawSize>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>30</MarketValue>
+      <Mass>8.5</Mass>
+      <Nutrition>0.05</Nutrition>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestCommandString>Drink from {0}</ingestCommandString>
+      <ingestReportString>Drinking from {0}.</ingestReportString>
+      <tableDesired>false</tableDesired>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_WaterVolume">
+        <litres>8</litres>
+        <drawnAs>caravan water skin</drawnAs>
+      </li>
+      <li Class="CompProperties" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <water>8</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

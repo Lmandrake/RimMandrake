@@ -1,0 +1,4 @@
+A1 L2: on a Stillsand quicktest a 6000-tick RM_DuneGale writes '[Stillsand] dune gale ended on ... dune field mass A -> B (delta ...); cells moved past ...' with a non-zero delta or cell count; modcheck row gale_phases_and_aftermath PASS
+A2 L2: a colonist stood on the open anchor cell reads 0.15..0.25 of its clear-sky RM_MapComponent_ShadeGrid.ExposureFor while the gale blows (static_call RM_GaleTakenProof.PawnExposure); row gale_dims_sun_exposure PASS
+A3 L2: exactly one emergence letter at gale end, and every thing it placed (RM_GaleTakenProof.LastEmergence) is spawned on the map; row gale_phases_and_aftermath PASS
+A4 L2: a colonist dragged by the gale leaves RM_Filth_DragMark (or a 'Carried off' letter if it went off the edge), one carried off the edge gets 'Carried off: <name>' and is given back by the next gale end's return (RM_GaleTakenProof.ReturnGale); row gale_carry_drag_and_return PASS

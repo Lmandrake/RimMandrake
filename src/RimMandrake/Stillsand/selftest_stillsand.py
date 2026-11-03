@@ -237,6 +237,7 @@ class Fake(object):
             return
         if self.on("emergenceEnabled") or "emergence_ignores_toggle" in b:
             self.letter(V.EMERGENCE_LABELS[2], "uncovered")
+            self.last_emerge = (4, 2 if "emergence_things_gone" in b else 4)
 
     def blood_cells(self):
         return [t for t in self.of("Filth_Blood")]
@@ -576,6 +577,33 @@ class Fake(object):
             return {"success": True, "result": "WAKETROUGH prints=%d total=0 all=0" % getattr(self, "trough", {}).get(args, 0)}
         if type.endswith("RM_GaleTakenProof") and method == "Registered":
             return {"success": True, "result": "GALETAKEN registered=%s" % ("gale_not_taker" not in self.b)}
+        if type.endswith("RM_GaleTakenProof"):      # STILLSAND_DUNE_GALE_LIVE_1 A2-A4
+            b, gale = self.b, self.cond is not None
+            if method == "PawnExposure":
+                ex = 0.2 if gale and "gale_not_dim" not in b else 1.0
+                return {"success": True, "result": "GALEEXPO pawn=%s at=1,1 exposure=%.3f cell=1.000 roofed=False "
+                        "weather=%s gale=%s" % (args.split("@")[0], ex, self.cur_weather(), gale)}
+            if method == "ForceDrag":
+                if not gale:
+                    return {"success": True, "result": "GALEDRAG error=no active gale"}
+                return {"success": True, "result": "GALEDRAG pawn=%s outcome=moved:4 from=1,1 to=5,1 dragBefore=0 "
+                        "dragAfter=%d spawned=True" % (args, 0 if "no_drag_mark" in b else 4)}
+            if method == "ForceCarryOff":
+                if not gale:
+                    return {"success": True, "result": "GALEOFF error=no active gale"}
+                if "no_carry_letter" not in b:
+                    self.letter("Carried off: Fake", "off the crest")
+                self.off_held = True
+                return {"success": True, "result": "GALEOFF pawn=%s spawned=False held=True pendingGale=1" % args}
+            if method == "LastEmergence":
+                placed, on = getattr(self, "last_emerge", (0, 0))
+                return {"success": True, "result": "GALEEMERGE key=sealedCache placed=%d onMap=%d things=x" % (placed, on)}
+            if method == "ReturnGale":
+                back = getattr(self, "off_held", False) and "no_return" not in b
+                if back:
+                    self.off_held = False
+                    self.letter("Given back: Fake", "walked back in")
+                return {"success": True, "result": "GALERETURN returned=%d pawnBack=%s pendingGale=0" % (int(back), back)}
         if type.endswith("RM_WaterLedgerProof"):     # WATER_LEDGER_DOUBLE_CHARGE_1's row
             self.debt = getattr(self, "debt", 0.0)
             rm = "rm_tier" in self.b
@@ -1052,6 +1080,12 @@ BREAKS = {
     "gale_ignores_toggle": ["gale.gale_toggle_off_refuses"],
     "no_herald": ["gale.gale_phases_and_aftermath"],
     "dunes_still": ["gale.gale_phases_and_aftermath"],
+    # STILLSAND_DUNE_GALE_LIVE_1: the pawn-exposure read, the emergence's things, the carry rows
+    "emergence_things_gone": ["gale.gale_phases_and_aftermath"],
+    "gale_not_dim": ["gale.gale_dims_sun_exposure"],
+    "no_drag_mark": ["gale.gale_carry_drag_and_return"],
+    "no_carry_letter": ["gale.gale_carry_drag_and_return"],
+    "no_return": ["gale.gale_carry_drag_and_return"],
     "emergence_ignores_toggle": ["gale.gale_emergence_off_quiet"],
     "no_muurrok": ["muurrok.muurrok_emergence_fires"],
     "muurrok_never_arrives": ["muurrok.muurrok_emergence_fires"],
@@ -1182,7 +1216,6 @@ def _main(bad):
     trader_check_verdicts(bad)
     trader_probe_points(bad)
     healthy = run()
-    # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
     # glass.recipe_toggles_hide_recipes: no bridge tool reads RecipeDef.AvailableNow (not a live criterion)
     owed = ("glass.recipe_toggles_hide_recipes",
             # STILLSAND_EVENT_CREATURES_REMAINDER_1: RSW/RUT content, not on the driven tier
@@ -1195,9 +1228,7 @@ def _main(bad):
         if healthy.get(k, ("",))[0] != "UNMEASURED":
             bad.append("%s should read UNMEASURED: %s" % (k, healthy.get(k)))
     notpass = dict((k, v) for k, v in healthy.items()
-                   if v[0] != "PASS" and k != "gale.gale_dims_sun_exposure" and k not in owed)
-    if healthy.get("gale.gale_dims_sun_exposure", ("",))[0] != "UNMEASURED":
-        bad.append("gale.gale_dims_sun_exposure should read UNMEASURED: %s" % (healthy.get("gale.gale_dims_sun_exposure"),))
+                   if v[0] != "PASS" and k not in owed)
     n_comp = len(healthy)
     if notpass:
         bad.append("healthy run: %d of %d components not PASS: %s" % (len(notpass), n_comp, notpass))

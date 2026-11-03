@@ -46,6 +46,9 @@ namespace RimMandrake.Stillsand
         static RM_DuneTrackEraser()
         {
             const string rule = "[RimMandrake.Stillsand] dune track eraser: ";
+            // STILLSAND_DUNE_GALE_LIVE_1 spec 3: the gale's own wipe (every cell whose sand moved past wipeDepthDelta)
+            // clears the track grid too, whatever the per-write tally has reached. Subscribed first: it needs no SandGrid field.
+            RM_GameCondition_DuneGale.TracksWiped += OnGaleWiped;
             try
             {
                 MapRef = AccessTools.FieldRefAccess<SandGrid, Map>("map");
@@ -76,6 +79,27 @@ namespace RimMandrake.Stillsand
                     Log.Error(rule + "patch of SandGrid." + writer + " FAILED, sand it writes will not bury tracks: " + e.Message);
                 }
             }
+        }
+
+        /// <summary>Subscriber of RM_GameCondition_DuneGale.TracksWiped: clear the print on every wiped cell.
+        /// Honours duneErasesTracks; returns the number cleared (the bridge proof reads Erased).</summary>
+        public static int OnGaleWipedCount(Map map, System.Collections.Generic.List<IntVec3> cells)
+        {
+            if (!RM_DuneTrackEraserSettings.duneErasesTracks || map == null || cells == null) return 0;
+            RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
+            if (grid == null) return 0;
+            int n = 0;
+            for (int i = 0; i < cells.Count; i++)
+            {
+                if (cells[i].InBounds(map) && grid.ClearCell(cells[i])) n++;
+            }
+            Erased += n;
+            return n;
+        }
+
+        private static void OnGaleWiped(Map map, System.Collections.Generic.List<IntVec3> cells)
+        {
+            OnGaleWipedCount(map, cells);
         }
 
         public static void Prefix(SandGrid __instance, IntVec3 c, out float __state)

@@ -1,0 +1,4 @@
+live-proof A1: python3 src/RimMandrake/Stillsand/prove_dune_gale.py --clause A1 < /dev/null
+live-proof A2: python3 src/RimMandrake/Stillsand/prove_dune_gale.py --clause A2 < /dev/null
+live-proof A3: python3 src/RimMandrake/Stillsand/prove_dune_gale.py --clause A3 < /dev/null
+live-proof A4: python3 src/RimMandrake/Stillsand/prove_dune_gale.py --clause A4 < /dev/null
