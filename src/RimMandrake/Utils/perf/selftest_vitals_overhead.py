@@ -4,6 +4,10 @@ import copy, json, os, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+# never read a cached .pyc: a mutant restored within the same second at the same size leaves bytecode that
+# py_compile's mtime+size check accepts, so the selftest would judge the MUTANT (seen gen 7: TIERS read (30, 80))
+sys.dont_write_bytecode = True
+sys.pycache_prefix = tempfile.mkdtemp(prefix="vo_selftest_pyc_")
 import vitals_overhead as V
 
 FAILS = []
@@ -179,6 +183,44 @@ with tempfile.TemporaryDirectory() as td:
     cp = subprocess.run([sys.executable, os.path.join(HERE, "vitals_overhead.py"), "--tier", "minimal", "--judge", p],
                         capture_output=True, text=True, timeout=60)
     check("cli unmeasured exit", cp.returncode, 1)
+
+# live clause A1 is the 23-mod tier (ratchet_pilot + mandrake.rm.patches), pinned by MAKEUP, not by the 10..80 count:
+# test_vitals_tier_makeup.makeup must refuse the 13-mod minimal list and a 70-mod list that vitals_overhead accepts
+import test_vitals_tier_makeup as TM
+_t = TM.MB.TIERS["ratchet_pilot"]
+_base = [w for w in _t["want"] if not TM.MB._is_retired_donor(w)] + [TM.MB.CORE] + list(TM.MB.DLC_IDS) + [TM.MB.HARMONY]
+PILOT = _base + ["dep.pilot.%02d" % i for i in range(23 - len(_base))]
+check("pilot list is 23", len(PILOT), 23)
+check("tier 23 makeup ok", TM.makeup(PILOT)[:2], (0, "TIER_OK"))
+MIN13 = [TM.MB.CORE] + list(TM.MB.DLC_IDS) + [TM.MB.HARMONY, TM.MB.BRIDGE] + ["dep.min.%02d" % i for i in range(5)]
+check("min13 is 13", len(MIN13), 13)
+check("13 passes count tier (the gap)", V.verdict(run(mods=13), "minimal")[:2], (0, "MEASURED"))
+check("13-mod minimal refused for A1", TM.makeup(MIN13)[:2], (1, "WRONG_TIER"))
+check("70 passes count tier (the gap)", V.verdict(run(mods=70), "minimal")[:2], (0, "MEASURED"))
+check("70-mod list refused for A1", TM.makeup(PILOT + ["dep.big.%02d" % i for i in range(47)])[:2], (1, "WRONG_TIER"))
+for _w in [w for w in _t["want"] if not TM.MB._is_retired_donor(w)]:     # drop ANY tier mod, e.g. rm.patches
+    _l = [x for x in PILOT if x != _w] + ["dep.pad"]
+    check("23 lacking %s refused" % _w, TM.makeup(_l)[:2], (1, "WRONG_TIER"))
+for _d in TM.MB.DLC_IDS:
+    check("23 lacking %s refused" % _d, TM.makeup([x for x in PILOT if x != _d] + ["dep.pad"])[:2], (1, "WRONG_TIER"))
+check("forbidden swac refused", TM.makeup(PILOT[:-1] + ["mlie.starwarsanimalcollection"])[:2], (1, "WRONG_TIER"))
+check("forbid_substr refused", TM.makeup(PILOT[:-1] + ["someone.manywaters"])[:2], (1, "WRONG_TIER"))
+check("empty is blind", TM.makeup([])[:2], (2, "BLIND"))
+check("None is blind", TM.makeup(None)[:2], (2, "BLIND"))
+with tempfile.TemporaryDirectory() as td:   # the CLI A1 runs exits with makeup's code
+    for name, ids, want in (("pilot", PILOT, 0), ("min13", MIN13, 1)):
+        p = os.path.join(td, name + ".json")
+        with open(p, "w") as f:
+            json.dump({"packageIds": ids}, f)
+        cp = subprocess.run([sys.executable, os.path.join(HERE, "test_vitals_tier_makeup.py"), "--ids", p],
+                            capture_output=True, text=True, timeout=60)
+        check("makeup cli %s exit" % name, cp.returncode, want)
+_a1 = [l for l in open(os.path.join(HERE, "..", "..", "..", "..", "infrastructure", "state", "live_proofs",
+                                      "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.txt")) if l.startswith("live-proof A1:")]
+check("A1 line checks makeup before and after the run",
+      len(_a1) == 1 and _a1[0].count("test_vitals_tier_makeup.py") == 2
+      and _a1[0].index("test_vitals_tier_makeup.py") < _a1[0].index("--tier minimal")
+      < _a1[0].rindex("test_vitals_tier_makeup.py") and "&&" in _a1[0], True)
 
 if FAILS:
     print("FAIL selftest_vitals_overhead: %d" % len(FAILS))
