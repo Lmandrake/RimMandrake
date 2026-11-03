@@ -78,6 +78,8 @@ class Rig:
         self.points, self.ledger = dict(SANE), []
         self.sch["ops_status"] = self.root + "/ops/status.json"
         self.sch.pop("account_pick", None)
+        # the shipped schedule enables it; left on, every tick computes this machine's real token pacing and may ring
+        self.sch["helper_budget"] = {"enabled": False}
 
     def plant(self, now, **points):
         vals = dict(BASE, **self.points)
@@ -449,6 +451,14 @@ def test_alarms_reach_ledger():
         D.HB.publish = real
     check("a failed helper budget reaches told.jsonl, once for one alarm",
           [x.get("kind") for x in IN.read_rows()].count("budget:failed") == 1, IN.read_rows())
+    r = Rig("budget_off")
+    called = []
+    real, D.HB.publish = D.HB.publish, lambda *a, **k: called.append(a)
+    try:
+        r.tick(T0)
+    finally:
+        D.HB.publish = real
+    check("a rig's tick never computes the machine's real helper budget", not called, called)
     r = Rig("relentless")
     s = RN.Store(r.root + "/rn")
     fx = RN.Effects(dict(RN.rules(), ops_watch_dir=r.root + "/ops"), s)
