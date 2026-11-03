@@ -175,11 +175,11 @@
     </comps>
   </ThingDef>
 
-  <!-- hollu — jellyfish, uncommon. "roof-drip." -->
+  <!-- hollu — a shed curl of waveglass (owner, Twilight Sea sheet 2026-10-07), uncommon. "roof-drip." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Hollu</defName>
     <label>hollu</label>
-    <description>A bell that forms on the underside of the waveglass, up in the ceiling gardens, and lets go — falling slowly down the whole height of the column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night. Divers learn the fall pattern of their skylight the way farmers learn rain. Netted mid-fall it is a sting and a bell of salt water; cooked, it is a delicacy in exactly one dock.</description>
+    <description>A section of the waveglass itself, the beautifully coloured, transparent organism that sheets so much of the topside ocean like stained glass. In its final life stage a pane of the sheet curls in on itself, a curved shell of leaded cells glowing teal, gold and violet, breaks from the canopy and sinks, trailing a fringe of pale stinging threads, to settle on the floor and be eaten by nuudal. A big stretch of waveglass sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain. Netted mid-fall it is a sting and a curl of living glass; cooked, it is a delicacy in exactly one dock.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RUT_Hollu</texPath>
       <graphicClass>Graphic_Single</graphicClass>

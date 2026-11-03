@@ -438,7 +438,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Hollu</defName>
     <label>hollu</label>
-    <description>A bell that forms on the underside of the waveglass up in the ceiling gardens and lets go, falling slowly the whole height of the column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain.</description>
+    <description>A section of the waveglass itself, the beautifully coloured, transparent organism that sheets so much of the topside ocean like stained glass. In its final life stage a pane of the sheet curls in on itself, a curved shell of leaded cells glowing teal, gold and violet, breaks from the canopy and sinks, trailing a fringe of pale stinging threads, to settle on the floor and be eaten by nuudal. A big stretch of waveglass sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain.</description>
     <statBases>
       <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.15: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
       <LeatherAmount>0</LeatherAmount>
