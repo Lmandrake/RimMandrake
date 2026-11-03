@@ -173,6 +173,7 @@ ok("shipped: a drifted SLI is an alarm with one fixed item name",
 # --- ops_watch writes the verdict on a full pass and never on a limited one
 os.environ["RM_OPS_WATCH_DIR"] = str(d / "ow")
 import ops_watch as OW  # noqa: E402
+REAL_COLLECTORS = dict(OW.COLLECTORS)   # the shipped family table, before the stubs below
 for k in list(OW.COLLECTORS):
     OW.COLLECTORS[k] = (lambda now, rules, ctx: {})
 OW.COLLECTORS["testing"] = lambda now, rules, ctx: {"testing.nightly_news": M(84)}
@@ -189,6 +190,104 @@ KR.measure = real_measure
 ok("collector: list faults read 0 while 84 reds stand", night["testing.nightly_news"]["v"] == 0 and night["testing.nightly_unparked_reds"]["v"] == 84, night)
 b = H.budget(night, {}, sc, NOW)["nightly_reds"]
 ok("collector: the shipped nightly_reds SLI sees the 84", b["now"] == "bad" and b["v"] == 84, b)
+
+# --- every shipped SLI against the REAL collector of its family, by equality on key and unit, fed from fixtures. The
+# literal scan above cannot pin a unit: ops_watch holds the literal '%s%s', which matches anything.
+fx = Path(tempfile.mkdtemp(prefix="ops_health_fx_"))
+for var in ("RM_OPS_DISKS", "RM_POOL_MAX_BYTES", "RM_POOL_MAX_CLONES"):   # the shipped mounts and caps, whatever this shell set
+    os.environ.pop(var, None)
+(fx / "pool").mkdir()
+os.environ.update(RM_POOL_ROOT=str(fx / "pool"), RM_OBJSTORE_STATE=str(fx / "state"), RM_SCRATCH_ROOT=str(fx / "scratch"),
+                  RM_SESSION_GLOB=str(fx / "none" / "*"), RM_POOL_STATE_GLOB=str(fx / "none" / "*"),
+                  RM_SCRATCH_REAP_RUNS=str(fx / "reap" / "runs.jsonl"), RM_TESTING_METRICS_DIR=str(fx / "metrics"),
+                  RELENTLESS_ROOT=str(fx / "belt"))
+(fx / "belt" / "live").mkdir(parents=True)
+(fx / "belt" / "store").mkdir()
+(fx / "belt" / "live" / "runs.jsonl").write_text("".join(
+    json.dumps({"at": OW.iso(NOW - 60 * i), "outcome": "PASS" if i % 2 else "INFRA", "why": "fixture"}) + "\n" for i in range(20)))
+KR.measure = lambda *a, **k: {"night": "n", "news": [], "reds": ["t%d" % i for i in range(84)], "listed": [],
+                              "unlisted": ["t%d" % i for i in range(84)], "expired": [], "cured": [],
+                              "cop": {"groups": [], "overdue": [], "overdue_said": "", "detail_read": False}}
+emitted = {}
+for fam, c_ in (("testing", {"steve_jobs": [], "steve_jobs_bad": [], "open_ids": set()}), ("disk", {}), ("relentless", {})):
+    emitted.update(REAL_COLLECTORS[fam](NOW, shipped, c_))
+KR.measure = real_measure
+ok("real collectors: the five shipped SLIs are the ones walked here",
+   {s_["name"] for s_ in sc["slis"]} >= {"infra_share", "nightly_reds", "tmp_headroom", "root_headroom", "pool_headroom"})
+for s_ in sc["slis"]:
+    pt = emitted.get(s_["key"]) or {}
+    ok("real collector: %s key %s reads MEASURED" % (s_["name"], s_["key"]), pt.get("m") == "MEASURED", pt)
+    ok("real collector: %s unit is exactly %r" % (s_["name"], s_["unit"]), pt.get("unit") == s_["unit"], pt)
+    b = H.budget(emitted, {}, sc, NOW)[s_["name"]]
+    ok("real collector: %s judged, not drifted" % s_["name"], b["now"] in ("ok", "bad") and not b.get("drifted"), b)
+ok("real collector: nightly_reds still reads the 84, live_measured_pct its 50%",
+   emitted["testing.nightly_unparked_reds"]["v"] == 84 and emitted["relentless.live_measured_pct"]["v"] == 50.0, emitted["relentless.live_measured_pct"])
+
+# --- the was unit is what the old collector really wrote: the real series around the redefinition, and that commit's parent
+was_ = next(s_ for s_ in sc["slis"] if s_["name"] == "nightly_reds")["was"][0]
+REAL = [json.loads(x) for x in (HERE / "testdata" / "ops_health_nightly_series.jsonl").read_text(encoding="utf-8").splitlines()]
+REAL_T = REAL[-1]["t"]      # the 2026-11-03 22:37Z pass whose health.json read nightly_reds bad_h=28.25 v=84, now=bad, spent
+old_units = {r["points"]["testing.nightly_news"].get("unit") for r in REAL if r["points"].get("testing.nightly_news", {}).get("m") == "MEASURED"}
+ok("was: its unit is the one the real series holds before the redefinition, its successor differs",
+   old_units == {was_["unit"], NARROW} and was_["key"] == "testing.nightly_news" and was_["unit"] != emitted["testing.nightly_news"]["unit"], old_units)
+import subprocess  # noqa: E402
+git = subprocess.run(["git", "-C", str(HERE.parents[2]), "show", "1ff82747f3^:src/RimMandrake/Utils/ops_watch.py"], capture_output=True, text=True, errors="replace")
+if git.returncode:      # a wall with no object store: said, and not a pass; the series row above still pins it
+    print("UNMEASURED was: the parent of 1ff82747f3 is unreadable here: %s" % git.stderr.strip()[:120])
+else:
+    ok("was: its unit is what c_testing wrote at the parent of the redefinition", 'M(len(v["news"]), "%s"' % was_["unit"] in git.stdout)
+
+# --- replay of that real series: history before the redefinition still counts, and the new point carries on
+newest = REAL[-1]["points"]
+b = H.budget(newest, {"testing": REAL[:-1]}, sc, REAL_T)["nightly_reds"]
+ok("replay: the real series under the shipped rules matches the live verdict (bad, v=84, 28.25 h, spent)",
+   b["now"] == "bad" and b["v"] == 84 and b["bad_h"] == 28.25 and b["spent"], b)
+pre = [r for r in REAL[:-1] if "testing.nightly_unparked_reds" not in r["points"]]
+b = H.budget(newest, {"testing": pre}, sc, REAL_T)["nightly_reds"]
+ok("replay: the hours before the redefinition alone spend it", b["spent"] and b["bad_h"] > 24, b)
+b = H.budget(newest, {"testing": REAL[:-1]}, dict(sc, slis=[dict(blind, name="prefix")]), REAL_T)["prefix"]
+ok("replay: the SLI as it stood before this fix cannot read ok on 0", b["now"] == "UNMEASURED" and b.get("drifted"), b)
+
+# --- publish_health itself, with SLIs drifted: the point counts them and names them, and health.json agrees
+ow_rules = dict(shipped)
+drift_pts = dict(emitted)
+drift_pts["testing.nightly_unparked_reds"] = PT(84, "a unit nobody wrote")
+hp = OW.publish_health(drift_pts, {}, {}, ow_rules, NOW)["health.drifted_slis"]
+ok("publish_health: one drifted SLI reads MEASURED 1 and names it",
+   hp["m"] == "MEASURED" and hp["v"] == 1 and hp["x"]["said"] == "nightly_reds", hp)
+hj = json.loads((d / "ow" / "health.json").read_text())
+ok("publish_health: health.json says drifted, UNMEASURED, 0 h",
+   hj["drifted"] == ["nightly_reds"] and hj["budget"]["nightly_reds"]["now"] == "UNMEASURED" and hj["budget"]["nightly_reds"]["bad_h"] == 0, hj["budget"]["nightly_reds"])
+drift_pts["relentless.live_measured_pct"] = PT(50.0, "share")
+hp = OW.publish_health(drift_pts, {}, {}, ow_rules, NOW)["health.drifted_slis"]
+ok("publish_health: two drifted SLIs read 2, each named", hp["v"] == 2 and hp["x"]["said"] == "infra_share, nightly_reds", hp)
+hp = OW.publish_health(emitted, {}, {}, ow_rules, NOW)["health.drifted_slis"]
+ok("publish_health: none drifted reads MEASURED 0, nothing named", hp["m"] == "MEASURED" and hp["v"] == 0 and not hp["x"]["said"], hp)
+real_publish = H.publish
+
+
+def _no_verdict(*a, **k):
+    raise OSError("disk full")
+
+
+H.publish = _no_verdict
+hf = OW.publish_health(emitted, {}, {}, ow_rules, NOW)
+H.publish = real_publish
+ok("publish_health: a failed verdict reads all three UNMEASURED, said",
+   sorted(hf) == ["health.drifted_slis", "health.spent_slis", "health.state"]
+   and all(p["m"] == "UNMEASURED" and "health verdict not written" in p["why"] and "disk full" in p["why"] for p in hf.values()), hf)
+# and the point reaches the alarm with its one fixed name
+drift_tg = [t for t in shipped["targets"] if t.get("key") == "health.drifted_slis"]
+filed = []
+hp = OW.publish_health(drift_pts, {}, {}, ow_rules, NOW)
+st_ = OW.run_alarms(hp, dict(shipped, targets=drift_tg, ranges={}), NOW, set(), lambda todo, conf: filed.extend(todo) or {})
+ok("alarm: drifted SLIs file the one fixed item", [a["name"][:len("OPS_SLI_DRIFT_DIAGNOSE")] for a in filed] == ["OPS_SLI_DRIFT_DIAGNOSE"], (filed, st_))
+filed.clear()
+(d / "ow" / "alarms.json").unlink(missing_ok=True)
+st_ = OW.run_alarms(OW.publish_health(emitted, {}, {}, ow_rules, NOW), dict(shipped, targets=drift_tg, ranges={}), NOW + 900, set(), lambda todo, conf: filed.extend(todo) or {})
+ok("alarm: none drifted files nothing", not filed, filed)
+(d / "ow" / "health.json").unlink()
+(d / "ow" / "alarms.json").unlink(missing_ok=True)
 
 ok("ops_watch: a limited pass writes no verdict", not (d / "ow" / "health.json").exists())
 OW.run(now=NOW, rules=rules, filer=None)
