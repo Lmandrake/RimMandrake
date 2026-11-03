@@ -76,3 +76,13 @@ The Scald (`RM_TheScald`): its 312 tiles are at arc 23–51 (median 36), where t
 (owner, by card 2026-10-22). They are 7.8 °C under the ruled curve on every tile (perched-1,411 m values never
 re-derived after the −30 m ruling; `design/RimMandrake/world_physics_audit_2026-10-20.md` §3). Stamp
 `world/repaint_2026-10-21/scald_temperature.csv` (`tile,temp_c`) at the final painting.
+
+## Paint list addition 2026-11-02 — Long Shade and Wasteland mutator density (`BIOME_ENRICHMENT_DESERT_WASTELAND_1`)
+
+Apply `world/ASHKARR_DESERT_WASTELAND_ENRICHMENT_plan.json` at the final painting: 735 bare Long Shade tiles and 626
+bare Wasteland tiles each gain one existing mutator (Caves, Junkyard, AncientRuins, MineralRich, Stockpile), taking
+both from ~61–64 % mutator-free to 30 %; the bare tiles left are the ones farthest from any road (the sheets' wide
+gaps). Owner ruling 2026-09-20, option (b). The dune sea gets nothing. The plan is built from the save named in
+its `inputs` (sha256 recorded); if the save being painted is a different file, point the generator's `SAVE` at it and
+rebuild (tiles that are no longer that biome, or no longer bare, drop out) before applying. The apply recipe
+is the plan's `apply` field. Its proof is `src/RimMandrake/Utils/selftest_desert_wasteland_enrichment_plan.py`.

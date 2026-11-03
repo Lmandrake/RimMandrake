@@ -1,0 +1,1 @@
+relentless contract --proof with run_selftests --only must name the selftest_ stem (discovery glob selftest*.py, exact stem match); set the contract AFTER naming the test file, because a set contract is frozen to the worker (BIOME_ENRICHMENT_DESERT_WASTELAND_1)

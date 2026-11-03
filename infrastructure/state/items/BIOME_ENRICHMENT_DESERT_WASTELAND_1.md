@@ -78,18 +78,27 @@ sole blocker (confirmed via `rimflow why`: "needs owner to name mutators or
 rule on density approach") — now answered, so the item is unblocked. The
 density-raising work itself is still owed.
 
-## Disposition
+## Built 2026-11-02 — a plan for the terminal painting, not a write to today's world
 
-Left **`doing`**, not closed. No bridge call made (bridge stayed FREE the whole
-session — confirmed free at start and left free). No world file, tile CSV, or
-frozen stamp touched.
+**Why a plan.** Putting a mutator on a tile is world painting, and the painting is one terminal step
+(`BIOME_PAINT_ONCE_AT_THE_END_1`, owner 2026-09-20). Tile-placed content waits for that pass, as
+`WARSCAR_PILGRIM_CAMP_SITES_1` did by card. So this item delivers the plan, checked against the canonical
+save, and puts it on the paint list.
 
-**What would unblock this:** either (a) the owner/BENCH names concrete
-TileMutatorDefs (or authors new biome-general ones — none exist for Desert
-today) against Desert's §7/§8 kit and Wasteland's §8 family table, the way
-`structure_injection_roster.md` did for the PROMISE content, or (b) a ruling
-that increasing DENSITY of the biomes' own already-legal, already-in-use
-mutators (Caves/Oasis/MineralRich/AncientRuins/etc., whichever pass
-`TileMutatorDef.IsValidTile` for Desert/Wasteland) satisfies "place from the
-kit" well enough to proceed without new thematic defs — that's a scope call
-for the owner, not mine to assume.
+**Measured on the canonical start** (`world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`). The CSV's
+`RUT_Desert` tiles are exactly the save's `RM_LongShade` tiles (2,390). Its `RUT_Wasteland` tiles are exactly the
+save's biome hash 18404 (1,853), which the 2026-11-02 def capture does not resolve; the successor is `RM_Wastes`.
+Mutator-free share: Long Shade 60.8 %, Wasteland 63.7 %.
+
+**What counts as legal** (the ruling: "whichever pass `TileMutatorDef.IsValidTile`"). Oasis, DryLake,
+VEE_SaltPlains, both VEE cacti, TerraformingScar and AncientWarehouse whitelist vanilla `Desert` only. No patch adds
+our biomes to those lists, so they fail IsValidTile here and are not planned. The plan uses only existing,
+in-use mutators with no biome whitelist: Caves, Junkyard (max SmallHills), AncientRuins, MineralRich and Stockpile.
+Each is mapped to a sheet line (the plan's `why`). No PROMISE mutators and no new defs.
+
+**Result.** `world/ASHKARR_DESERT_WASTELAND_ENRICHMENT_plan.json`, built by
+`src/RimMandrake/Utils/desert_wasteland_enrichment_plan.py`, adds 735 Long Shade and 626 Wasteland mutators,
+taking both to 30 % mutator-free. The bare tiles that remain are the ones farthest from a road. The proof is
+`python3 src/RimMandrake/Utils/run_selftests.py --only selftest_desert_wasteland_enrichment_plan`, which checks
+the save sha, biome, bareness, gates, settlements, landmarks, the start tile, the dune sea and the share,
+and confirms that four broken plans are each caught. Each successor's tiles must equal the CSV's tiles for its legacy biome. The dune sea (`RM_Stillsand`) is untouched.
