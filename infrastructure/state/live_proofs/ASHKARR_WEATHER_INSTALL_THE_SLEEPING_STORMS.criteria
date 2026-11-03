@@ -1,0 +1,2 @@
+A1 L1: with mandrake.rm.weathersuite and mandrake.rut.weathersuite (directly after it) in the running load, jawa/get_defs resolves PlanetGeometryDef RUT_WS_AshkarrGeometry with substellar 0,0, terminator 63-117, nightside 117 -- the def WeatherGeometryUtility.ActiveGeometry hands the terminator storm, nightside aurora and geothermal nightside cutoff.
+A2 L1: in the same load, the resolved descriptions of Clear, Fog, DryThunderstorm, SnowGentle and SnowHard each carry their folk-sign sentence (the patches applied).
