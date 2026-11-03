@@ -69,7 +69,7 @@ the pipe (MEASURED).
 | `AA_FungalHusk` | the walking dead | **the Shambles** | `RM_Shambles` |
 | `AA_OcularNightling` | the watcher-kin | **Peeper** | `RM_Peeper` |
 | `AG_OcularSlinger` | the tail | **Eyestinger** | `RM_Eyestinger` |
-| `GR_Fleshling` | the pitiable | **Fleshsop** (owner's word) | `RM_Fleshsop` |
+| `GR_Fleshling` | the screen | **Fleshsop** (owner's word) | `RM_Fleshsop` |
 | *(authored, already built)* | the experiments | **the Unfinished** — stays as-is | `RM_TheUnfinished` (live: `src/RimMandrake/Contagion/Defs/ThingDefs/RM_TheUnfinished.xml`) |
 
 | donor flora | new name | RM_ defName |
@@ -250,16 +250,16 @@ stings with it anyway.
 - **Wiring:** `RM_ContagionFauna.xml`.
 
 ### Fleshsop (`RM_Fleshsop`)
-A wet rag of a creature, barely holding a shape, that leans on things to stay
-standing. Owner, 2026-10-24 (owner_escalations_contagion sheet note): *"These are
-weapon systems, not sad zombies. Eliminate the 'it needs to be loved to live
-another day.' That's ridiculous."* The needs-love framing and the pitiable art
-direction are cut; the reframe as a weapon system is owed (rimflow item
-FLESHSOP_REDESIGN_AS_WEAPON_SYSTEM).
-- **Cycle:** the failing chimera (donor bs 0.2 MEASURED) — what an Unfinished
-  looks like when the goo forgets to take it back.
-- **Stats:** bodySize 0.2 · commonality 0.5 · omnivore (fed by hand) · speed 2.0 ·
-  needs-affection flavour cut 2026-10-24 (it was never wired).
+A sponge of the goo's own tissue, grown to soak: a weapon system. Owner, 2026-10-24
+(owner_escalations_contagion sheet note): *"These are weapon systems, not sad zombies.
+Eliminate the 'it needs to be loved to live another day.' That's ridiculous."*
+- **Cycle:** the goo's screen. Fleshsops walk out in a loose line to meet whatever comes
+  up the valley, soak the fire meant for the pool behind them and pin what they reach
+  until the goo arrives; what an Unfinished becomes when the goo finishes it on purpose.
+- **Stats (the def):** bodySize 0.8 (donor bs 0.2) · commonality 0.5 · omnivore · speed
+  3.2 · health scale 1.2, sponge armour (sharp 0.3, blunt 0.15) · smothering wrap +
+  sopping bite · answers every hit (manhunter-on-damage 1.0) · packs of 2–4 · lives
+  about two years.
 - **Wiring:** `RM_ContagionFauna.xml`.
 
 ### the Unfinished (`RM_TheUnfinished`) — the experiments
