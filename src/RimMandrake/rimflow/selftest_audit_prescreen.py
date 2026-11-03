@@ -163,6 +163,9 @@ ok("events after --now are invisible", [(r["item"], [f for f in r["flags"] if "a
 from rimflow import model                                          # noqa: E402
 FIX = "ARBITERTRIAL_PROVE_FAKE_CLOSE_FAILS"
 fixture = [e for e in model.read() if e.get("id") == FIX]
+# The ledger line pins 9e68653bbb, a hash a later rebase rewrote; the same commit (the ledger-only line that filed and
+# closed the fixture) is 4bfeef234f. Ledger events are immutable, so the test follows the commit to its new name.
+fixture = [dict(e, sha="4bfeef234f") if e.get("sha") == "9e68653bbb" else e for e in fixture]
 ok("fixture events are on the ledger", any(e.get("event") == "close" for e in fixture), True)
 fr = ap.score(fixture, R, ap._epoch("2026-10-28T00:00:00Z"), until=ap._epoch("2026-10-29T00:45:00Z"))
 ok("fixture screened", [r["item"] for r in fr], [FIX])
