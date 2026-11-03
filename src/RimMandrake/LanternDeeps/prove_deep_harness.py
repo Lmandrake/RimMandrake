@@ -47,6 +47,9 @@ def _read(rel):
         return fh.read()
 
 
+# A1's bare Deep (no 'furnish'); never "": the bridge's static_call reads "" as zero params, EnterDeep takes one
+# (live A1 FAILED on "" at f9d1592: "No public static EnterDeep with 0 params.")
+A1_ARGS = "bare"
 ENTER_ARGS = set()   # the EnterDeep args the real validation.py chains pass (filled by _probe_chains)
 DEEP_CHAINS = ("creep_cleavers", "aurora_collapse", "hydrocarbon_wave2", "hydrocarbon_wave3")
 OPENED = "entered biome=RM_LanternDeeps pocket=True comps=Creep,Aurora,Collapse"
@@ -295,6 +298,9 @@ def _probe_shivven():
 
 def offline():
     bad = []
+    if not A1_ARGS.strip() or "furnish" in A1_ARGS:
+        bad.append("live A1 enters with args %r: must be non-empty (the bridge reads '' as zero params) and not "
+                   "'furnish' (A1 is the bare Deep)" % A1_ARGS)
     harness_cs = _read("Source/RM_DeepHarness.cs")
     if 'arg.Contains("furnish")' not in harness_cs or '"Battery"' not in harness_cs:
         bad.append("RM_DeepHarness.cs no longer stands a Battery on arg 'furnish'")
@@ -392,7 +398,7 @@ def live(clause):
             return 1
         enter_args = ENTER_ARGS.pop()
     else:
-        enter_args = ""
+        enter_args = A1_ARGS
     print("EnterDeep args: %r" % enter_args)
     entered = s.static(HARNESS, "EnterDeep", enter_args)
     print("EnterDeep: " + entered)
