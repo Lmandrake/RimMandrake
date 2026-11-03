@@ -632,6 +632,26 @@ def test_mirrored_and_cropped_foreign_copy() -> None:
             hit = ci.foreign_source(mirrored_copy(square, td / "probe" / "m3.png", (64, 64)), home,
                                     ci.snapshot_generated(home))
             check("the verdict names the mirror", hit is not None and "mirrored" in hit[1], str(hit))
+
+            # Direct pins (blind check at b4db048e): do_image above may keep the sibling west by another
+            # path (its own render harvested), so ask the guard itself. Our own exec-sib.png is left out of
+            # the pre-run set, as do_image's own snapshot would; the peer sibE east stays a candidate.
+            own_sib = home / ci.GENERATED_SUBDIR / "sib" / "exec-sib.png"
+            hit = ci.foreign_source(outS, home, ci.snapshot_generated(home) - {own_sib}, (), outS)
+            check("the guard itself keeps an independently drawn sibling west beside a peer's east "
+                  "(detail refuses the mirrored coarse match)", hit is None, str(hit))
+
+            # A west mirrored from this call's own east reference, when a PRIOR mirror of that reference
+            # already sits in the cache: the prior mirror is near our output unmirrored, and only the
+            # mirrored input thumbnail recognises it as an edit of our own reference.
+            mirrored_copy(square, cache / "prior_west.png")
+            outR2 = mirrored_copy(square, td / "probe" / "west_again.png", (64, 64))
+            hit = ci.foreign_source(outR2, home, ci.snapshot_generated(home), (str(square),))
+            check("a west from its own east reference is kept beside a prior mirror of that reference",
+                  hit is None, str(hit))
+            hit = ci.foreign_source(outR2, home, ci.snapshot_generated(home))
+            check("precondition: without the reference that prior mirror is caught", hit is not None,
+                  str(hit))
     finally:
         ci.run_codex, ci.base_codex_home = real_run_codex, real_base
         ci.HARVEST_GRACE_S = real_grace
