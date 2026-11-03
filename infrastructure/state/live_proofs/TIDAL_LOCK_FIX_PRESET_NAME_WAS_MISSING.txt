@@ -1,1 +1,9 @@
+# LOAD: A1 reads Alien Worlds and Worldbuilder, which are WORKSHOP mods live-mods cannot name (it reads Mods/<folder>/About.xml).
+# Stager: the list MUST also hold 7f.alienworlds (workshop 3626210061), 7f.alienworlds.tidallylocked (workshop 3631364335)
+# and ferny.Worldbuilder (workshop 3522102833), plus all five DLC; without them the readback is UNMEASURED
+# ("Type not found: AlienWorlds.PlanetTypeManager", 20 runs 2026-11-03). The full list holds all three; a small list may too.
+# SITE: the fixture save has alienWorldsFrameworkPlanetType TidallyLocked and NO worldPresetName (the shape the guard repairs);
+# loading it after launch is what writes the "planet lock at load:" line the proof reads.
+live-mods: CreatureBehaviors
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere
 live-proof A1: python3 src/RimMandrake/Utils/tidal_lock_readback.py --expect-restored

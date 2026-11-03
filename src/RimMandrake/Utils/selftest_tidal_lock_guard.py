@@ -13,6 +13,10 @@ No game, no bridge. Checks:
   3. tidal_lock_readback.py parses and judges the guard's line (locked, restored, unlocked, absent).
   4. the remake runbook's S13/G12 name the dev start save of record (canon.yml planet.start_savegame), and the
      PAINT-made originals that loaded unlocked are named only as gone.
+  5. the live proof file can measure A1: a live-site line loads a fixture save (that save, when the Saves folder is
+     readable, reads TidallyLocked with NO worldPresetName), live-mods names CreatureBehaviors, the stager is told the
+     three workshop packageIds A1 reads, and the proof line runs the readback with --expect-restored. Without these the
+     round ran A1 20 times on a game with no Alien Worlds and no save loaded and measured nothing (2026-11-03).
 """
 import os
 import re
@@ -167,12 +171,86 @@ def runbook():
         check("TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING" in row, "runbook %s cites the item" % k)
 
 
+SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+WORKSHOP_NEEDS = ("7f.alienworlds", "7f.alienworlds.tidallylocked", "ferny.Worldbuilder")
+
+
+def live_proof_file(text=None, saves=SAVES):
+    """The live_proofs file -> list of what is missing for A1 to measure (empty = measurable)."""
+    # the round's OWN parsers, so this reads the file exactly as the live round does
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    import relentless_live_round as R
+    if text is None:
+        text = read(REPO, "infrastructure", "state", "live_proofs", "TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING.txt")
+    gaps = []
+    lines = text.splitlines()
+    proofs = [m for m in (R.PROOF_LINE.match(l) for l in lines) if m]
+    sites = [m for m in (R.SITE_LINE.match(l) for l in lines) if m]
+    cmd = lambda m: m.group("cmd1") or m.group("cmd2")
+    cid = lambda m: m.group("cid1") or m.group("cid2")
+    a1 = [cmd(m) for m in proofs if cid(m) == "A1"]
+    if not (len(a1) == 1 and "tidal_lock_readback.py" in a1[0] and "--expect-restored" in a1[0]):
+        gaps.append("proof: one live-proof A1 running tidal_lock_readback.py --expect-restored")
+    site = [cmd(m) for m in sites if cid(m) == "A1"]
+    save = re.search(r"live_site\.py\s+--save\s+(\S+)", site[0]) if len(site) == 1 else None
+    if not save:
+        gaps.append("site: one live-site A1 that loads a save (live_site.py --save NAME)")
+    elif os.path.isdir(saves):
+        path = os.path.join(saves, save.group(1) + ".rws")
+        try:
+            with open(path, encoding="utf-8", errors="replace") as fh:
+                head = fh.read()  # whole file: worldPresetName sits past 6 MB in the canon start save
+        except OSError:
+            head = None
+        if head is None:
+            gaps.append("site: the save %s is not in the Saves folder" % save.group(1))
+        else:
+            t = re.search(r"<alienWorldsFrameworkPlanetType>\s*([^<\s]*)", head)
+            if not (t and t.group(1) == "TidallyLocked"):
+                gaps.append("site: %s does not read alienWorldsFrameworkPlanetType TidallyLocked" % save.group(1))
+            if re.search(r"<worldPresetName>\s*[^<\s]", head):
+                gaps.append("site: %s carries a worldPresetName, so the guard has nothing to restore" % save.group(1))
+    else:
+        print("NOTE  Saves folder unreadable here: the fixture's shape is not checked")
+    if "CreatureBehaviors" not in R.live_mods(text):
+        gaps.append("mods: live-mods names CreatureBehaviors")
+    comments = "\n".join(l for l in lines if l.lstrip().startswith("#"))
+    for pid in WORKSHOP_NEEDS:
+        if not re.search(r"(?<![\w.])%s(?![\w.])" % re.escape(pid), comments):
+            gaps.append("stager: the load note names %s" % pid)
+    return gaps
+
+
+def live_proofs():
+    gaps = live_proof_file()
+    check(not gaps, "live proof file can measure A1%s" % ("" if not gaps else ": missing " + "; ".join(gaps)))
+    good = read(REPO, "infrastructure", "state", "live_proofs", "TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING.txt")
+    # the instrument sees: each mutant of the real file must be caught
+    mutants = {
+        "no live-site": "\n".join(l for l in good.splitlines() if not l.startswith("live-site")),
+        "site loads a quicktest": good.replace("--save rm_proof_atmosphere", "--biome TemperateForest"),
+        "site loads a save with a preset": good.replace("rm_proof_atmosphere", "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3"),
+        "site loads a missing save": good.replace("rm_proof_atmosphere", "rm_no_such_save_xyz"),
+        "no live-mods": "\n".join(l for l in good.splitlines() if not l.startswith("live-mods")),
+        "no Worldbuilder in the note": good.replace("ferny.Worldbuilder", "ferny.Other"),
+        "no tidallylocked in the note": good.replace("7f.alienworlds.tidallylocked", "7f.other"),
+        "proof without --expect-restored": good.replace(" --expect-restored", ""),
+    }
+    for name, text in mutants.items():
+        g = live_proof_file(text)
+        if name in ("site loads a save with a preset", "site loads a missing save") and not os.path.isdir(SAVES):
+            print("NOTE  mutant not checkable without the Saves folder: %s" % name)
+            continue
+        check(bool(g), "live proof mutant caught: %s" % name)
+
+
 def main():
     wiring()
     kernel()
     harvest()
     readback()
     runbook()
+    live_proofs()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
