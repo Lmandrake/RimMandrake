@@ -68,6 +68,31 @@ def renamed_def_checks():
                 os.environ["ART_LEDGER_DIR"] = prev
 
 
+def same_second_cross_name_record_check():
+    """ROUND_SERIES_FIX_SAME_SECOND_RESTART: record() must pick the newest reset across names by file order, not by
+    stamp alone. All at one second: reset D_old, stop D_old, reset D_new -> the reset written after the stop wins."""
+    import os
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        prev = os.environ.get("ART_LEDGER_DIR")
+        os.environ["ART_LEDGER_DIR"] = str(td)
+        try:
+            (td / "subject_aliases.json").write_text(json.dumps({"aliases": {"D_old": "D_new"}}))
+            rp = td / "round_resets.jsonl"
+            t = "2026-10-26T07:00:00-07:00"
+            RS.add_reset("D_old", "fauna_x_00", {"per_ruling": "t"}, path=rp, now=t)
+            RS.add_stop("D_old", {"why": "kept"}, path=rp, now=t)
+            RS.add_reset("D_new", "fauna_y_00", {"per_ruling": "again"}, path=rp, now=t)
+            rs = RS.resets(rp)
+            check("same second across names: a later reset under the new name beats an earlier stopped old-name reset",
+                  RS.stopped("D_new", rs) is None and RS.stopped("D_old", rs) is None)
+        finally:
+            if prev is None:
+                os.environ.pop("ART_LEDGER_DIR", None)
+            else:
+                os.environ["ART_LEDGER_DIR"] = prev
+
+
 def main():
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
@@ -201,6 +226,7 @@ def main():
         except ValueError:
             check("adopting a run with no decisions refused", True)
     renamed_def_checks()
+    same_second_cross_name_record_check()
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 
