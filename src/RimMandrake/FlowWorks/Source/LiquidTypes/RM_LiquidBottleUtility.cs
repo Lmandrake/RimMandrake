@@ -206,6 +206,33 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return ex.Stock.TryDebit(map, c, stock, ex);
         }
 
+        /// <summary>TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: would <see cref="TryDebitTerrain"/> pay <paramref name="units"/>
+        /// here? Spends nothing. A search gates on this, never on CanSupply's whole level, or a pond holding less than one
+        /// level refuses a drink of 1.5 L.</summary>
+        public static bool CanDebitTerrain(Map map, IntVec3 c, int units)
+        {
+            RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+            if (ex?.Stock == null || units <= 0)
+            {
+                return true;
+            }
+            if (ex.IsExcavated(c))
+            {
+                return RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U) >= 0;
+            }
+            if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)
+            {
+                return true;
+            }
+            RM_LiquidBody body = ex.Stock.BodyAt(map, c, ex);
+            if (body == null)
+            {
+                return true;
+            }
+            FluidDef fluid = body.fluid ?? ex.ActiveFluid;
+            return RM_ContainerMaterialMath.BodyAffords(body.limitless, body.stock, units, fluid != null ? fluid.volumePerTile : 1f, RM_PumpMath.TankUnitsPerLevel);
+        }
+
         /// <summary>Q9: the non-potable liquids a player tank is asking for right now (Fill mode, already holding it, room
         /// for at least a bottle).</summary>
         public static System.Collections.Generic.HashSet<LiquidDef> StandingOrders(Map map)

@@ -192,6 +192,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return units * volumePerTile / unitsPerLevel;
         }
 
+        /// <summary>TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: may a body afford <paramref name="units"/> container units? The SAME
+        /// stock <see cref="BodyStockFor"/> charges, so a search asking this never disagrees with the debit that follows. The
+        /// whole-level CanSupply gate refused a 500 L pond for a 1.5 L drink.</summary>
+        public static bool BodyAffords(bool limitless, float stock, int units, float volumePerTile, int unitsPerLevel)
+        {
+            return RimMandrake.FlowWorks.RM_StockMath.CanDebit(limitless, stock, BodyStockFor(units, volumePerTile, unitsPerLevel));
+        }
+
         /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F9): the hit points a container keeps through a chain step (fill, use,
         /// wash, pour, revert make a NEW Thing): the same fraction of the new def's maximum, at least 1, never above it.
         /// A source without hit points (<paramref name="fromMax"/> &lt;= 0) gives the new container its full maximum.</summary>

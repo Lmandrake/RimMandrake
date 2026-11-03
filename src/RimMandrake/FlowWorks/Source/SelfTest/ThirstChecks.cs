@@ -30,6 +30,41 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED (GPT FA_core_sim_3.2): the drink search gated on CanSupply (stock >= one whole
+            // level, 1000 L of water) while the drink debits 1.5 L, so a pond holding 500 L was refused beside a thirsty pawn.
+            Case("Thirst_small_pond_drink_admitted", () =>
+            {
+                int units = RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres);
+                int upl = RM_PumpMath.TankUnitsPerLevel;
+                Assert(units == 15 && upl == 10000, "a terrain drink is 15 units of a 10000-unit level");
+                Assert(!RM_StockMath.CanSupply(false, 0.5f, 1f), "can-fail: the old whole-level gate refuses a 500 L pond");
+                Assert(LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, 0.5f, units, 1f, upl), "a 500 L pond admits a 1.5 L drink");
+                Assert(LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, 0.0015f, units, 1f, upl), "exactly one drink's stock admits it");
+                Assert(!LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, 0.0014f, units, 1f, upl), "less than a drink's stock refuses");
+                Assert(!LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, 0f, units, 1f, upl), "a spent body refuses");
+                Assert(!LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, 0.0025f, units, 2f, upl)
+                       && LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, 0.003f, units, 2f, upl), "a viscous liquid charges its share, same as the debit");
+                Assert(LiquidTypes.RM_ContainerMaterialMath.BodyAffords(true, 0f, units, 1f, upl), "a limitless body always admits");
+                // search and debit agree across the space: affordability == the debit's own CanDebit on BodyStockFor
+                for (int s = 0; s <= 400; s++)
+                {
+                    float stock = s * 0.00001f;
+                    foreach (float vpt in new[] { 0.5f, 1f, 2f, 3f })
+                    {
+                        bool can = LiquidTypes.RM_ContainerMaterialMath.BodyAffords(false, stock, units, vpt, upl);
+                        bool deb = RM_StockMath.CanDebit(false, stock, LiquidTypes.RM_ContainerMaterialMath.BodyStockFor(units, vpt, upl));
+                        Assert(can == deb, "search and debit disagree at stock " + stock + " vpt " + vpt);
+                    }
+                }
+                string util = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
+                RiverSwitchFlipChecks.Has(util, @"!RM_LiquidBottleUtility\.CanDebitTerrain\(map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink search gates on the drink it debits");
+                Assert(!util.Contains("ex.Stock.CanSupply("), "can-fail: the drink search no longer asks for a whole level");
+                string jobs = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
+                RiverSwitchFlipChecks.Has(jobs, @"RM_LiquidBottleUtility\.TryDebitTerrain\(Map, c, RM_Volume\.Units\(RM_ThirstMath\.TerrainDrinkLitres\)\)", "the drink job debits the same units");
+                string bot = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
+                RiverSwitchFlipChecks.Has(bot, @"return RM_ContainerMaterialMath\.BodyAffords\(body\.limitless, body\.stock, units, fluid != null \? fluid\.volumePerTile : 1f, RM_PumpMath\.TankUnitsPerLevel\);", "CanDebitTerrain prices like TryDebitTerrain");
+            });
+
             Case("Thirst_dubs_cut_incompatible", () =>
             {
                 // THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE (owner 2026-10-31): our thirst only; DBH full and its Thirst add-on are

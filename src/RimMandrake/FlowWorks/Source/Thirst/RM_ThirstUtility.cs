@@ -446,9 +446,9 @@ namespace RimMandrake.FlowWorks.Thirst
 				{
 					continue;
 				}
-				if (ex?.Stock != null && !ex.Stock.CanSupply(map, c, ex))
+				if (ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))
 				{
-					continue;   // a spent pond body gives nothing (C2-F2, the bottle fill's rule)
+					continue;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: a body that cannot pay the drink the job debits gives nothing
 				}
 				if (c.IsForbidden(pawn) || !pawn.CanReach(c, PathEndMode.Touch, Danger.Some))
 				{
