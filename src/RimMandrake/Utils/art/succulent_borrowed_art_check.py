@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline proof for SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE.
+"""Offline proof for SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE and DONOR_SUCCULENT_ART_DECIDE_A_STAND_IN.
 
 The item filed 14 defs whose sprites lived only in the donor mod
 Vanilla Plants Expanded - Succulents (not Core 1.6). This check passes
@@ -12,10 +12,6 @@ Vanilla Plants Expanded - Succulents (not Core 1.6). This check passes
      own texPath (a sprite copied from another of OUR defs is borrowed too);
   5. a filed def that is not a plant (the LungerFry fish items) has no
      texPath under Things/Plant (a fish must not wear a plant sprite).
-Rule 4 has ONE held exception, printed as HELD, never as PASS: RM_LungerFry's file is an owner-kept
-placeholder (a copy of RM_Zeev); replacing kept art is his call (delegation_policy.md section 2.3),
-filed as LUNGERFRY_DECIDE_WEARS_ZEEVS_COAT. The hold names the exact kept sha, so any other bytes
-there are judged normally, and it lifts by itself once that item installs its own art.
 Exit 1 on any failure, listing each.
 """
 import glob
@@ -34,9 +30,6 @@ DONOR_FOLDERS = {"AloeVera", "BunnyEarsCactus", "Echeveria", "FairyWashboard", "
 FILED = ["RM_Glasskelle", "RM_Pulsebead", "RM_Rimebeard", "RM_Stillbloom", "RM_Simmerlace",
          "RM_Kettlewick", "RM_Vekkfan", "RM_Thurlsponge", "RM_Foamgorse", "RM_Seepcandle",
          "RM_Threshreed", "RM_NoothelmPlant", "RM_LungerFry", "RUT_LungerFry"]
-# defName -> (sha256 of the owner-kept picture the hold covers, the item that owns the decision)
-HELD = {"RM_LungerFry": ("dc13e3551854e7fbf7b9ad31922a36f23b2564d2ede56493f04764af2d6717f9",
-                         "LUNGERFRY_DECIDE_WEARS_ZEEVS_COAT")}
 PATH_TAGS = ("texPath", "iconPath", "graphicPath", "leaflessGraphicPath", "immatureGraphicPath")
 
 
@@ -83,7 +76,7 @@ def is_plant_def(el):
 def main():
     folders, md5s, donor_present = donor_folders()
     index = src_png_index()
-    bad, found, plant, held = [], {}, {}, []
+    bad, found, plant = [], {}, {}
     for xml in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True):
         try:
             root = ET.parse(xml).getroot()
@@ -113,17 +106,11 @@ def main():
                 if hashlib.md5(open(p, "rb").read()).hexdigest() in md5s:
                     bad.append("%s: %s is a byte copy of a donor PNG" % (dn, os.path.relpath(p, ROOT)))
                 copies = sorted(index.get(md5(p), set()) - own)
-                hold = HELD.get(dn)
-                if copies and hold and hashlib.sha256(open(p, "rb").read()).hexdigest() == hold[0]:
-                    held.append("%s: owner-kept copy %s, decision owed in %s" % (dn, hold[0][:12], hold[1]))
-                    copies = []
                 for other in copies:
                     bad.append("%s: %s is a byte copy of %s" % (dn, os.path.relpath(p, ROOT),
                                                               os.path.relpath(other, ROOT)))
             print("%-18s %s (%d png)" % (dn, tp, len(pngs)))
     print("donor installed: %s (%d donor PNGs hashed)" % (donor_present, len(md5s)))
-    for h in held:
-        print("HELD", h)
     for b in bad:
         print("FAIL", b)
     print("PASS" if not bad else "FAIL %d" % len(bad))

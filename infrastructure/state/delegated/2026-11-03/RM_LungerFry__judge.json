@@ -1,0 +1,17 @@
+{
+ "subject": "RM_LungerFry",
+ "item": "DONOR_SUCCULENT_ART_DECIDE_A_STAND_IN",
+ "class": "art",
+ "decision": "KEEP",
+ "judge": "Opus builder (not the maker; candidate pre-existed in the art store), side-by-side with RUT_LungerFry (GPT KEEP) and the replaced RM_Zeev copy",
+ "brief": "design/RimMandrake/art_judge_brief.md + def description ('no longer than your arm')",
+ "why_not_pipeline": "art_eval runner HOLD_INPUT: catch module requires living_reference; the Lunger creature is not built yet",
+ "reasons": [
+  "reads as a small predatory river fish at item scale; arm-length proportion matches the description",
+  "distinct bytes from every other src PNG (succulent_borrowed_art_check.py rule 4 PASS)"
+ ],
+ "authority": "owner by card 2026-10-19T11:58Z on this item: 'Draw new art for all 14'; postdates the placeholder keep 72b8112cbcc0a9c1345a (2026-10-19T07:27Z)",
+ "replaced_sha256": "dc13e3551854e7fbf7b9ad31922a36f23b2564d2ede56493f04764af2d6717f9",
+ "installed_sha256": "c51112075b9ef6ec182428fa150ea7f9ecfb9520987f93688dc3a30ebce641fb",
+ "strip": "D:\\ClaudeWork\\rimmandrake\\scratch\\succ_art\\lf_strip.png"
+}
