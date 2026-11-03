@@ -90,6 +90,35 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(rooms.Contains("RM_PitRoomMath.CaptureDownNext(") && rooms.Contains("PawnUtility.ForceWait(Victim, RM_PitRoomMath.CaptureDownTicks"),
                     "the job driver asks the step and pins the victim for the hold");
             });
+            Case("PitCapture_waits_for_a_held_pawn_no_lip_touches", () =>
+            {
+                // PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES: testq J20261026T004751Z / J20261101T083051Z ended held=True
+                // prisoner=False. The centre of a 3x3 pit touches no lip cell, so walk's TryFindLipCell(Touch) ended the job
+                // with the repath budget unspent; and a victim slipping away mid-hold failed the hold outright.
+                Assert(RM_PitRoomMath.CaptureLipPick(true, true) == RM_PitRoomMath.CaptureLip.Touch, "a touching lip wins");
+                Assert(RM_PitRoomMath.CaptureLipPick(false, true) == RM_PitRoomMath.CaptureLip.Wait,
+                    "can-fail: no lip touches it (pit centre): wait at the nearest lip, do not end the job");
+                Assert(RM_PitRoomMath.CaptureLipPick(false, false) == RM_PitRoomMath.CaptureLip.None, "no lip at all: cannot be done");
+                Assert(RM_PitRoomMath.CapturePauseTicks(0) == 0, "no pause before the first walk");
+                Assert(RM_PitRoomMath.CapturePauseTicks(1) == RM_PitRoomMath.CaptureRepathPauseTicks && RM_PitRoomMath.CaptureRepathPauseTicks > 0,
+                    "can-fail: a repath waits, so the budget is not spent in a few ticks");
+                Assert(RM_PitRoomMath.CaptureRepathLimit * RM_PitRoomMath.CaptureRepathPauseTicks + RM_PitRoomMath.CaptureDownTicks <= 900,
+                    "the whole bounded chase fits pit_prison_room's 900-tick wait");
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                int drv = rooms.IndexOf("class JobDriver_CaptureDown", StringComparison.Ordinal);
+                Assert(drv > 0, "the driver is in RM_PitRooms.cs");
+                string body = rooms.Substring(drv);
+                Assert(body.Contains("RM_PitRooms.FindCaptureLip(pawn, Victim.Position, out lip) == RM_PitRoomMath.CaptureLip.None"),
+                    "walk ends the job only when no lip at all is in reach");
+                Assert(!body.Contains("TryFindLipCell(pawn, Victim.Position, RM_PitRoomMath.LipKind.Touch"),
+                    "can-fail: walk no longer gives up on a pawn no lip touches");
+                Assert(!body.Contains("hold.FailOn("), "can-fail: the hold no longer fails when the victim moves");
+                Assert(body.Contains("hold.AddPreTickIntervalAction(") && body.Contains("JumpToToil(pause)")
+                    && body.Contains("RM_PitRoomMath.CapturePauseTicks(repaths)"),
+                    "the hold re-asks CaptureDownNext and a repath goes through the pause");
+                Assert(rooms.Contains("RM_PitRooms.FindCaptureLip(warden, clickedPawn.Position, out IntVec3 lip) == RM_PitRoomMath.CaptureLip.None"),
+                    "the float menu offers capture down for a pawn on the pit centre");
+            });
             Case("PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed", () =>
             {
                 // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18)

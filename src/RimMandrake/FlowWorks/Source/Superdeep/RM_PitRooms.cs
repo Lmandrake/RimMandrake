@@ -247,6 +247,41 @@ namespace RimMandrake.FlowWorks
 			return k;
 		}
 
+		/// <summary>Capture down's lip: one touching the held pawn (nearest the warden), else the reachable lip cell NEAREST THE
+		/// HELD PAWN within talking range, to wait at until it comes close (RM_PitRoomMath.CaptureLipPick).</summary>
+		public static RM_PitRoomMath.CaptureLip FindCaptureLip(Pawn warden, IntVec3 victimPos, out IntVec3 lip)
+		{
+			bool touch = TryFindLipCell(warden, victimPos, RM_PitRoomMath.LipKind.Touch, out lip);
+			bool near = false;
+			if (!touch)
+			{
+				Map map = warden?.Map;
+				RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+				float radius = RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact);
+				float best = float.MaxValue;
+				if (eng != null)
+				{
+					foreach (IntVec3 c in GenRadial.RadialCellsAround(victimPos, radius, false))
+					{
+						if (!c.InBounds(map))
+						{
+							continue;
+						}
+						float d = c.DistanceToSquared(victimPos);
+						if (d >= best || !RM_PitRoomMath.LipCandidate(IsPitFloor(map, eng, c), c.Standable(map), c.DistanceTo(victimPos), radius)
+							|| !warden.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
+						{
+							continue;
+						}
+						best = d;
+						lip = c;
+					}
+				}
+				near = lip.IsValid;
+			}
+			return RM_PitRoomMath.CaptureLipPick(touch, near);
+		}
+
 		/// <summary>The best cell to do a job on <paramref name="target"/> from WITHOUT standing in
 		/// the pit: not superdeep, standable, reachable, within the kind's radius (and, for a social
 		/// interaction, in vanilla's interaction position: 6 cells with line of sight). Nearest to the
@@ -645,7 +680,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return new FloatMenuOption(label + " (" + RM_PitRooms.VerdictText(v) + ")", null);
 			}
-			if (!RM_PitRooms.TryFindLipCell(warden, clickedPawn.Position, RM_PitRoomMath.LipKind.Touch, out IntVec3 lip))
+			if (RM_PitRooms.FindCaptureLip(warden, clickedPawn.Position, out IntVec3 lip) == RM_PitRoomMath.CaptureLip.None)
 			{
 				return new FloatMenuOption(label + " (" + "RMFlow_CaptureDownNoLip".Translate() + ")", null);
 			}
@@ -683,6 +718,22 @@ namespace RimMandrake.FlowWorks
 		{
 			this.FailOnDespawnedOrNull(TargetIndex.A);
 			this.FailOn(() => RM_PitRooms.CaptureDownVerdict(Victim) != RM_PitRoomMath.CaptureDownVerdict.Allowed);
+			// PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES: after a repath, stand a moment at the lip so the held pawn can move
+			// (none before the first walk).
+			Toil pause = ToilMaker.MakeToil("RM_CaptureDown_Pause");
+			pause.initAction = delegate
+			{
+				int ticks = RM_PitRoomMath.CapturePauseTicks(repaths);
+				if (ticks <= 0)
+				{
+					ReadyForNextToil();
+					return;
+				}
+				pawn.pather.StopDead();         // the Delay is defaultDuration = CaptureRepathPauseTicks
+			};
+			pause.defaultCompleteMode = ToilCompleteMode.Delay;
+			pause.defaultDuration = RM_PitRoomMath.CaptureRepathPauseTicks;
+			yield return pause;
 			Toil walk = ToilMaker.MakeToil("RM_CaptureDown_ToLip");
 			walk.initAction = delegate
 			{
@@ -690,7 +741,8 @@ namespace RimMandrake.FlowWorks
 				if (!lip.IsValid || !lip.AdjacentTo8WayOrInside(Victim.Position)
 					|| RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), lip))
 				{
-					if (!RM_PitRooms.TryFindLipCell(pawn, Victim.Position, RM_PitRoomMath.LipKind.Touch, out lip))
+					// a lip touching it, else the lip nearest it to wait at (no lip touches the centre of a 3x3 pit)
+					if (RM_PitRooms.FindCaptureLip(pawn, Victim.Position, out lip) == RM_PitRoomMath.CaptureLip.None)
 					{
 						EndJobWith(JobCondition.Incompletable);
 						return;
@@ -714,7 +766,7 @@ namespace RimMandrake.FlowWorks
 					case RM_PitRoomMath.CaptureStep.Repath:
 						repaths++;
 						job.targetB = IntVec3.Invalid;      // walk's initAction finds a lip touching where the pawn is now
-						JumpToToil(walk);
+						JumpToToil(pause);
 						return;
 					default:
 						EndJobWith(JobCondition.Incompletable);
@@ -725,8 +777,25 @@ namespace RimMandrake.FlowWorks
 			yield return reach;
 			Toil hold = Toils_General.Wait(RM_PitRoomMath.CaptureDownTicks, TargetIndex.A)
 				.WithProgressBarToilDelay(TargetIndex.A);
-			hold.FailOn(() => !pawn.Position.AdjacentTo8WayOrInside(Victim.Position)
-				|| RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position));
+			// PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES: the pin is not a cage (a hostile it holds keeps swinging at the
+			// warden); a held pawn that slips out of reach mid-hold is followed (bounded), not a failed job.
+			hold.AddPreTickIntervalAction(delegate(int delta)
+			{
+				bool onPit = RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position);
+				switch (RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths))
+				{
+					case RM_PitRoomMath.CaptureStep.Hold:
+						return;
+					case RM_PitRoomMath.CaptureStep.Repath:
+						repaths++;
+						job.targetB = IntVec3.Invalid;
+						JumpToToil(pause);
+						return;
+					default:
+						EndJobWith(JobCondition.Incompletable);
+						return;
+				}
+			});
 			yield return hold;
 			yield return Toils_General.Do(delegate
 			{

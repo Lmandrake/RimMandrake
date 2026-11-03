@@ -162,5 +162,33 @@ namespace RimMandrake.FlowWorks
 			}
 			return repaths < CaptureRepathLimit ? CaptureStep.Repath : CaptureStep.GiveUp;
 		}
+
+		/// <summary>Where the capture-down warden walks.</summary>
+		public enum CaptureLip
+		{
+			/// <summary>A lip cell 8-adjacent to the held pawn: walk there and hold.</summary>
+			Touch,
+			/// <summary>No lip touches it (the centre of a 3x3 pit): wait at the nearest lip in talking range for it to come close.</summary>
+			Wait,
+			/// <summary>No lip at all within reach: the job cannot be done.</summary>
+			None,
+		}
+
+		/// <summary>PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES: a held pawn on a cell no lip touches (the 3x3 pit's centre;
+		/// testq J20261026T004751Z ended at 96,167) used to end the job at once with the repath budget unspent.</summary>
+		public static CaptureLip CaptureLipPick(bool touchLipFound, bool nearLipFound)
+		{
+			return touchLipFound ? CaptureLip.Touch : nearLipFound ? CaptureLip.Wait : CaptureLip.None;
+		}
+
+		/// <summary>PROVISIONAL (no owner number): one second at the lip before looking again, so a repath gives the held
+		/// pawn time to move instead of spending the whole budget in a few ticks.</summary>
+		public const int CaptureRepathPauseTicks = 60;
+
+		/// <summary>The pause before a walk: none on the first approach, CaptureRepathPauseTicks after a repath.</summary>
+		public static int CapturePauseTicks(int repaths)
+		{
+			return repaths <= 0 ? 0 : CaptureRepathPauseTicks;
+		}
 	}
 }
