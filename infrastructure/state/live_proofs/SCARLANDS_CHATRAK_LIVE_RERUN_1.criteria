@@ -1,1 +1,1 @@
-A1 L2: modcheck Scarlands live, chain chatrak_snap: row snap_stage_0_2 verdict exactly PASS and no FAIL row in the chain (a missing colonist reads UNMEASURED, never FAIL) -- chatrak_live_proof.py on the run JSON
+A1 L2: modcheck Scarlands live on an RM_Warscar map, chain chatrak_snap: row snap_stage_0_2 verdict exactly PASS and no FAIL row in the chain (a missing colonist reads UNMEASURED, never FAIL); the current map's biome (bridge jawa/map_info) is RM_Warscar -- chatrak_live_proof.py --biome RM_Warscar
