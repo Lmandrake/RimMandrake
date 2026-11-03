@@ -5,7 +5,9 @@
  "relentless": {
   "_doc": "c_relentless (OP2, DI2 in operating_requirements_2026-11-01.md), read from the belt's store under RELENTLESS_ROOT or root. Every limit is in the ranges block. progress_acts: the journal acts that count as the belt moving",
   "root": "/home/mandrake/rm/relentless",
-  "progress_acts": ["lease", "done", "check_started", "returned", "blind_fail", "retired", "closed_waiting_for_seat"]
+  "progress_acts": ["lease", "done", "check_started", "returned", "blind_fail", "retired", "closed_waiting_for_seat"],
+  "measured_runs": 40, "measured_window_h": 24, "measured_min_runs": 12,
+  "_measured_doc": "relentless.live_measured_pct: PASS+FAIL share of the newest measured_runs live/runs.jsonl rows within measured_window_h; under measured_min_runs rows it is UNMEASURED (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)"
  },
  "seats": {
   "_doc": "c_seats (OP2 in operating_requirements_2026-11-01.md), read from the Dispatcher's journal.jsonl and state.json under RM_DISPATCHER_STATE or state_dir. Every limit is in the ranges block. Bringing the seat back is DI1's, not this metric's",
@@ -415,6 +417,9 @@
   {"key": "relentless.books_behind_min", "op": ">", "value": 30, "alarm": true, "tag": "RELENTLESS_BOOKS_STALE", "name": "OPS_RELENTLESS_BOOKS_UNSTICK", "marks": ["MEASURED"],
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT: the books clone runs the engine; behind origin the belt runs stale code while every other reading is sane (jammed 2026-11-02/03 by dirty shard reorders). The age is that of the oldest commit it lacks; normal levelling takes one 3 min tick"},
+  {"key": "relentless.live_measured_pct", "op": "<", "value": 25, "alarm": true, "tag": "RELENTLESS_LIVE_UNMEASURED", "name": "OPS_RELENTLESS_LIVE_MEASURE_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 25 of 263 live runs (9.5%) gave a PASS or FAIL on 2026-11-02/03, most of the rest one refusal or one unmeasured cause repeated every round, while every other reading was sane. Under a quarter of the recent runs measuring means the live tier spends the bridge on runs that cannot judge; the cause names the top repeats. Read live/runs.jsonl under RELENTLESS_ROOT"},
   {"key": "relentless.blind", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_BLIND", "name": "OPS_RELENTLESS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: a relentless source is missing, torn, frozen, or the collector did not run. Nothing can say the belt is sane until it is seen again; the cause names which source"},

@@ -718,12 +718,50 @@ def t_tiers_small_first_final_last():
     check("tiers: on the full list the final proof runs", row["outcome"] == "PASS" and ("full_gap",) in fx.calls, fx.calls)
 
 
+def t_refusal_row_has_its_sha():
+    """LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: a refusal before the build is read (owed() raising) still names the built
+    sha, so relentless_live_round.history counts it as judged on that build; a cut criterion's row says cut."""
+    it = item()
+    it["criteria"] = [dict(cr, cut=True) if cr["id"] == "A2" else cr for cr in it["criteria"]]
+    row = go(FakeFx(it=it))
+    check("cut refusal row carries the built sha and cut", row["outcome"] == "REFUSED" and row.get("sha") == SHA
+          and row.get("cut") is True, row)
+    row = go(FakeFx(it=item(outstanding=["A3"])))
+    check("not-owed refusal row carries the built sha, not cut", row["outcome"] == "REFUSED" and row.get("sha") == SHA
+          and "cut" not in row, row)
+
+
+def t_composed_mod_reads_its_parent_about():
+    """A folder folded into a composed mod (Stillsand in RimMandrake.Biomes) has no Mods/Stillsand: its packageId is the
+    composed mod's (HORIZON_CARAVAN_VANILLA_REFUSES_1 UNMEASURED 'Stillsand has no readable packageId')."""
+    import live_def_check
+    mods = tempfile.mkdtemp(prefix="rl_mods_")
+    os.makedirs(os.path.join(mods, "RimMandrake.Biomes", "About"))
+    os.makedirs(os.path.join(mods, "RimMandrake.Biomes", "Biomes", "Stillsand", "Defs"))
+    with open(os.path.join(mods, "RimMandrake.Biomes", "About", "About.xml"), "w") as f:
+        f.write("<ModMetaData><packageId>mandrake.rm.biomes</packageId><modDependencies><li>"
+                "<packageId>brrainz.harmony</packageId></li></modDependencies></ModMetaData>")
+    fx = L.Fx(mods_dir=mods)
+    old = live_def_check.call_running_mods
+    try:
+        live_def_check.call_running_mods = lambda t: {"mandrake.rm.biomes", "brrainz.harmony"}
+        check("composed: loaded under the composed mod", fx.running_load_gap(["Stillsand"]) is None,
+              fx.running_load_gap(["Stillsand"]))
+        live_def_check.call_running_mods = lambda t: {"brrainz.harmony"}
+        gap = fx.running_load_gap(["Stillsand"]) or ""
+        check("composed: the composed mod missing names its packageId", "mandrake.rm.biomes" in gap, gap)
+        check("absent mod still has no packageId", "no readable packageId" in (fx.running_load_gap(["Nope"]) or ""))
+    finally:
+        live_def_check.call_running_mods = old
+
+
 def main():
     for t in (t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
-              t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last):
+              t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last,
+              t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about):
         try:
             t()
         except Exception as e:     # a crash is a red, named

@@ -1657,6 +1657,31 @@ def rl_books_behind(books, now):
     return (0.0, 0) if not ts else (round(max(now - min(ts), 0) / 60.0, 1), len(ts))
 
 
+def rl_live_measured(live_dir, now, cfg):
+    """-> (percent of the recent live runs that measured: PASS or FAIL, {n, measured, cause}) or (None, why).
+    LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 25 of 263 live runs (9.5%) measured anything while every other reading was
+    sane. Recent = the newest `measured_runs` rows of runs.jsonl within `measured_window_h`; fewer than
+    `measured_min_runs` there is too few to judge, UNMEASURED (the lane idle is not a low share)."""
+    n_max, win_h, n_min = (cfg.get("measured_runs", 40), cfg.get("measured_window_h", 24), cfg.get("measured_min_runs", 12))
+    try:
+        rows = tail_json_lines(Path(live_dir) / "runs.jsonl")
+    except OSError as e:
+        return None, "live/runs.jsonl unreadable: %s" % str(e)[:120]
+    recent = [r for r in rows if isinstance(r, dict) and r.get("outcome") and
+              now - win_h * 3600 <= (epoch(r.get("at")) or 0) <= now + 300][-n_max:]
+    if len(recent) < n_min:
+        return None, "only %d live runs in %gh (%d needed to judge)" % (len(recent), win_h, n_min)
+    good = sum(r["outcome"] in ("PASS", "FAIL") for r in recent)
+    whys = {}
+    for r in recent:
+        if r["outcome"] not in ("PASS", "FAIL"):
+            k = "%s: %s" % (r["outcome"], re.sub(r"[0-9a-f]{7,}|\d+", "N", str(r.get("why") or ""))[:80])
+            whys[k] = whys.get(k, 0) + 1
+    top = sorted(whys.items(), key=lambda kv: -kv[1])[:3]
+    return round(100.0 * good / len(recent), 1), {"n": len(recent), "measured": good,
+                                                  "cause": "; ".join("%dx %s" % (v, k) for k, v in top) or "none"}
+
+
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
@@ -1766,6 +1791,8 @@ def c_relentless(now, rules, ctx):
         pts["relentless.books_behind_min"] = U(behind_n, "min")
     else:
         pts["relentless.books_behind_min"] = M(behind_min, "min", behind=behind_n)
+    pct, got = rl_live_measured(rl_root(cfg) / "live", now, cfg)
+    pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
     pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
     return pts
 

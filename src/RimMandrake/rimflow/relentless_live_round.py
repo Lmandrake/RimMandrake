@@ -30,7 +30,8 @@ A round, in order:
   2. candidates: built/validated, built sha, an owed criterion at a live level with a live-proof line; FlowWorks and Gimme
      Some Slack items are FOUNDRY's (flowworks_lane.json, or a FlowWorks/GimmeSomeSlack game file) and are skipped;
   3. history (live/runs.jsonl): a criterion already PASS, FAIL or REFUSED on the same built sha is not run again (a FAIL
-     stands until a new build); UNMEASURED retries after live.unmeasured_retry_s;
+     stands until a new build; a refusal of a criterion cut on the ledger stands until its prose holds it whole);
+     UNMEASURED retries after live.unmeasured_retry_s;
   4. each run is relentless_live.run(): flyer and forbidden-proof refusal, files changed since the build, the deploy plan
      (args derived from the item's own mods, one plan per args per round), the game started after the deploy, the bridge
      taken with --idle-ok and released at once after each proof, the verdict a `rimflow verify` on the built sha;
@@ -102,7 +103,8 @@ def history(rows):
     for row in rows:
         if row.get("item") and row.get("criterion"):
             k = (row["item"], row["criterion"], row.get("sha"))
-            if out.get(k, {}).get("outcome") not in TERMINAL:
+            last = out.get(k, {})
+            if last.get("outcome") not in TERMINAL or last.get("cut"):     # a cut refusal yields to a later row
                 out[k] = row
     return out
 
@@ -149,7 +151,10 @@ def candidates(items, proofs_of, foundry_seat, hist, now, retry_s, game=None):
             if cid not in proofs:
                 skip("no proof")
                 continue
-            why = due(hist.get((it["id"], cid, it["built_sha"])), it["built_sha"], now, retry_s, game)
+            last = hist.get((it["id"], cid, it["built_sha"]))
+            if last and last.get("cut") and not crit[cid].get("cut"):
+                last = None     # refused while cut on the ledger; its prose now holds it whole: run it
+            why = due(last, it["built_sha"], now, retry_s, game)
             if why:
                 skip(why)
                 continue

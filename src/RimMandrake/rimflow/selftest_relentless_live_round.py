@@ -380,9 +380,29 @@ def t_real_lane():
           isinstance(got, tuple) and got[0] and got[1] is None, got)
 
 
+def t_cut_refusal_is_terminal():
+    """LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 95 of 263 live runs re-refused one cut criterion every round, because the
+    refusal row had no sha and so never stood for its build. A row with the sha stands; a cut refusal stands only while
+    the criterion is still cut, and yields once its prose holds it whole."""
+    now = 1_800_000_000
+    rows = [{"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "REFUSED", "cut": True, "at": R.L.iso(now)}]
+    cut = item()
+    cut["criteria"] = [dict(c, cut=True) if c["id"] == "A1" else c for c in cut["criteria"]]
+    todo, counts = R.candidates([cut], lambda i: PROSE, lambda i: None, R.history(rows), now, 3600)
+    check("cut refusal: stands while the criterion is still cut", todo == [] and counts.get("judged on this build") == 1,
+          (todo, counts))
+    todo, _ = R.candidates([item()], lambda i: PROSE, lambda i: None, R.history(rows), now, 3600)
+    check("cut refusal: runs once the prose holds the criterion whole", len(todo) == 1, todo)
+    later = rows + [{"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "PASS", "at": R.L.iso(now + 60)}]
+    check("cut refusal: a later PASS decides", R.history(later)[("EG_X", "A1", "abc123")]["outcome"] == "PASS")
+    sha_less = [dict(rows[0], sha=None)]
+    todo, _ = R.candidates([cut], lambda i: PROSE, lambda i: None, R.history(sha_less), now, 3600)
+    check("cut refusal: (the old bug) a sha-less row stood for nothing", len(todo) == 1, todo)
+
+
 def main():
     for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never, t_real_lane,
-              t_history_review, t_tick_env):
+              t_history_review, t_tick_env, t_cut_refusal_is_terminal):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

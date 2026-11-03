@@ -432,11 +432,18 @@ class Fx(object):
         import live_def_check
         want = {}
         for mod in sorted(set(mods)):
-            try:
-                with open(os.path.join(self.mods_dir, mod, "About", "About.xml"), encoding="utf-8-sig") as f:
-                    text = f.read()
-            except OSError:
-                text = ""
+            text = ""
+            # a folder folded into a composed mod (Stillsand -> RimMandrake.Biomes/Biomes/Stillsand) loads under the
+            # composed mod's About.xml; its own folder is absent from the game (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)
+            for about in [os.path.join(self.mods_dir, mod, "About", "About.xml")] + sorted(
+                    os.path.join(os.path.dirname(os.path.dirname(d)), "About", "About.xml") for d in
+                    glob.glob(os.path.join(glob.escape(self.mods_dir), "*", "*", glob.escape(mod))) if os.path.isdir(d)):
+                try:
+                    with open(about, encoding="utf-8-sig") as f:
+                        text = f.read()
+                    break
+                except OSError:
+                    continue
             m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", text, re.I)
             if not m:
                 return "not in the running load: %s has no readable packageId in its deployed About.xml" % mod
@@ -510,6 +517,12 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
 
     try:
         item = fx.item(item_id)
+        if item and item.get("built_sha"):
+            # LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: a refusal row with no sha was never terminal on its build
+            # (relentless_live_round.history keys by sha), so 95 of 263 runs re-refused one cut criterion every round
+            row["sha"] = item["built_sha"]
+            if (({c["id"]: c for c in item.get("criteria") or []}.get(criterion) or {}).get("cut")):
+                row["cut"] = True       # stands until the criterion reads whole (relentless_live_round.candidates)
         level, text = owed(item, criterion)
     except ValueError as e:
         return done("REFUSED", str(e))

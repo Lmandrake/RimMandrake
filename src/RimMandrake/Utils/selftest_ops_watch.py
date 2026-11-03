@@ -1872,5 +1872,23 @@ check("books behind: age of the oldest missing commit, count", _n == 1 and 170 <
 check("books absent: unmeasured, not zero", OW.rl_books_behind(_d / "nope", time.time())[0] is None)
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.books_behind_min"]
 check("the books-stale target alarms", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["value"] <= 60, _tg)
+# live measured share (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING): PASS+FAIL of the recent live runs, too few is UNMEASURED
+_lv = Path(_tf.mkdtemp(prefix="lm_")); _now = 1_800_000_000
+def _runs(outs, age_s=60):
+    with open(_lv / "runs.jsonl", "w") as f:
+        for i, o in enumerate(outs):
+            f.write(json.dumps({"at": OW.iso(_now - age_s - i), "outcome": o, "why": "proof exited 2" if o == "UNMEASURED" else ""}) + "\n")
+_lc = {"measured_runs": 40, "measured_window_h": 24, "measured_min_runs": 12}
+_runs(["PASS"] * 2 + ["UNMEASURED"] * 18)
+_p, _g = OW.rl_live_measured(_lv, _now, _lc)
+check("live measured: 2 of 20 is 10%, cause names the repeat", _p == 10.0 and _g["n"] == 20 and "18x UNMEASURED" in _g["cause"], (_p, _g))
+_runs(["FAIL"] * 3 + ["REFUSED"] * 2)
+check("live measured: too few runs is UNMEASURED, not a share", OW.rl_live_measured(_lv, _now, _lc)[0] is None)
+_runs(["PASS"] * 20, age_s=30 * 3600)
+check("live measured: runs older than the window do not count", OW.rl_live_measured(_lv, _now, _lc)[0] is None)
+check("live measured: no file is UNMEASURED", OW.rl_live_measured(_lv / "nope", _now, _lc)[0] is None)
+_tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.live_measured_pct"]
+check("the live-measured target alarms below a floor", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == "<"
+      and 10 <= _tg[0]["value"] <= 50, _tg)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
