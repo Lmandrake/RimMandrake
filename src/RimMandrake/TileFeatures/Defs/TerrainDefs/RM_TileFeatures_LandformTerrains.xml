@@ -172,6 +172,9 @@
     <color>(190,196,92)</color>
     <toxicBuildupFactor>1</toxicBuildupFactor>
     <statBases><Beauty>-4</Beauty></statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_AcidWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallowBase">
@@ -185,6 +188,9 @@
     <color>(190,196,92)</color>
     <toxicBuildupFactor>1</toxicBuildupFactor>
     <statBases><Beauty>-4</Beauty></statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_AcidWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallowBase">
@@ -200,6 +206,9 @@
     <affordances><li>MovingFluid</li></affordances>
     <tags><li>River</li></tags>
     <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_AcidWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterChestDeepBase">
@@ -213,6 +222,9 @@
     <affordances><li>MovingFluid</li></affordances>
     <tags><li>River</li></tags>
     <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_AcidWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterDeepBase">
@@ -223,6 +235,9 @@
     <color>(140,200,110)</color>
     <toxicBuildupFactor>8</toxicBuildupFactor>
     <statBases><Beauty>-10</Beauty></statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_ToxicWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallowBase">
@@ -236,6 +251,9 @@
     <color>(140,200,110)</color>
     <toxicBuildupFactor>8</toxicBuildupFactor>
     <statBases><Beauty>-10</Beauty></statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_ToxicWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallowBase">
@@ -251,6 +269,9 @@
     <affordances><li>MovingFluid</li></affordances>
     <tags><li>River</li></tags>
     <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_ToxicWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterChestDeepBase">
@@ -264,6 +285,9 @@
     <affordances><li>MovingFluid</li></affordances>
     <tags><li>River</li></tags>
     <waterDepthShaderParameters><_UseWaterOffset>1</_UseWaterOffset></waterDepthShaderParameters>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_ToxicWater</liquid></li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="MarshBase">
