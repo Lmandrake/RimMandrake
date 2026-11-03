@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, each of Lasat/Mimbanese/Nelvaanian/Ortolan draws RSW_<S>_Head and its live SM_HeadSize_Cosmetic + size offsets give Big and Small head scale = head_envelope.json engine_head_scale and onscreen_skull_target within 0.01 (Lasat 1.20, Nelvaanian 1.05, Mimbanese 1.00, Ortolan 1.00); Baseliner reads 1.0

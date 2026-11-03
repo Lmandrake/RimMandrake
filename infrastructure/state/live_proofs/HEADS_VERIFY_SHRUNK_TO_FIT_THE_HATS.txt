@@ -1,0 +1,9 @@
+# Head size in game after the owner's "Tune in the def" card (2026-10-20): a STATE read, no screenshot judging.
+# The probe stages a Baseliner + Lasat/Mimbanese/Nelvaanian/Ortolan with stage_xenotype_grid.py on the current Playing
+# map, reads headType and SM_HeadSize_Cosmetic / SM_BodySizeOffset / SM_Cosmetic_BodySizeOffset on each live pawn
+# (jawa/static_call StatExtension.GetStatValue) and holds Big and Small's head scale to head_envelope.json species_render.
+# Seating and helmet cover were LOOKED at live 2026-10-20 on the same head art (D:\ClaudeWork\rimmandrake\scratch\live5\PHONE_lineup_bare.png,
+# PHONE_lineup_hat.png); the art is unchanged since c425f5ea7a. Mod list: StarWarsRaces + its About.xml dependencies
+# (Big and Small among them), all five DLC; a quicktest map is enough. No flyer.
+live-mods: StarWarsRaces
+live-proof A1: python.exe src/RimMandrake/Utils/art/heads_live_scale_check.py < /dev/null
