@@ -172,6 +172,30 @@ def tree_scan(roots):
     return found, unread, stale, builders
 
 
+# The only files in the whole tree that may name the codes: the item def and the symbol that places it in the
+# Spire's isolated room. Matched by full path, so a sibling file of the same name is still a giver.
+CODES_HOMES = {os.path.join(SPIRE, "ThingDefs_Items", "RUT_RakatanCommandCodes.xml"),
+               os.path.join(SPIRE, "SymbolDefs_Spire.xml")}
+
+
+def codes_givers(roots):
+    """Every xml (comments stripped) or C# (comments stripped) under the roots that names the codes, but the homes."""
+    givers = []
+    for root in roots:
+        for base, _, names in os.walk(root):
+            for name in names:
+                path = os.path.join(base, name)
+                if name.endswith(".xml"):
+                    body = uncommented(path)
+                elif name.endswith(".cs"):
+                    body = code_only(path)
+                else:
+                    continue
+                if "RUT_RakatanCommandCodes" in body and path not in CODES_HOMES:
+                    givers.append(os.path.relpath(path, REPO) if path.startswith(REPO) else name)
+    return givers
+
+
 def tree_checks(extra=()):
     """A dark tower anywhere in the tree fails, under any of these names, in defName or label."""
     roots = [os.path.join(REPO, "src", r) for r in TREE_ROOTS]
@@ -188,6 +212,10 @@ def tree_checks(extra=()):
         check(hits == [name], "in all of src, the one %s of the Spire is %s: %s" % (tag, name, hits))
     check(builders == ["SitePartDefs_Spire.xml"], "in all of src, one site builds the Spire's layout: %s" % builders)
     check(not stale, "in all of src, no xml carries an old dungeon name: %s" % sorted(set(stale)))
+    check(all(os.path.isfile(h) and "RUT_RakatanCommandCodes" in uncommented(h) for h in CODES_HOMES),
+          "probe: the giver scan's two homes exist and name the codes, so it can see the name")
+    givers = codes_givers(roots + list(extra))
+    check(not givers, "in all of src (xml and C#), nothing outside the Spire hands out the codes: %s" % givers)
 
 
 def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
@@ -367,6 +395,17 @@ TREE_PLANTS = [
      "<Defs><LandmarkDef><defName>RM_DarkTower</defName></LandmarkDef></Defs>"),
     ("an old dungeon name in a sibling mod", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml",
      "<Defs><ThingDef><defName>RUT_DarkTowerGate</defName></ThingDef></Defs>"),
+    ("a sibling mod's ThingSetMaker that hands out the codes", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml",
+     "<Defs><ThingSetMakerDef><defName>RUT_SpareLoot</defName><root Class=\"ThingSetMaker_StackCount\"><fixedParams>"
+     "<filter><thingDefs><li>RUT_RakatanCommandCodes</li></thingDefs></filter></fixedParams></root></ThingSetMakerDef></Defs>"),
+    ("a trader stock patched to sell the codes", "RimMandrake/Atlas/Patches/Spare_Mutant.xml",
+     '<Patch><Operation Class="PatchOperationAdd"><xpath>Defs/TraderKindDef/stockGenerators</xpath><value>'
+     '<li Class="StockGenerator_SingleDef"><thingDef>RUT_RakatanCommandCodes</thingDef></li></value></Operation></Patch>'),
+    ("a sibling file wearing the item def's name", "RimStarWars/Spare/Defs/RUT_RakatanCommandCodes.xml",
+     "<Defs><ThingSetMakerDef><defName>RSW_Loot</defName><root><fixedParams><filter><thingDefs>"
+     "<li>RUT_RakatanCommandCodes</li></thingDefs></filter></fixedParams></root></ThingSetMakerDef></Defs>"),
+    ("C# in a sibling mod that spawns the codes", "RimMandrake/Atlas/Source/Spare_Mutant.cs",
+     'class Spare { void Give() { GenSpawn.Spawn(ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed("RUT_RakatanCommandCodes")), c, m); } }'),
     ("a file the scan cannot read", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml", "<Defs><SitePartDef>"),
 ]
 
