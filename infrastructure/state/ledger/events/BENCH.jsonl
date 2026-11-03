@@ -12465,3 +12465,5 @@
 {"seat":"BENCH","event":"start","id":"SPRINT_KIT_ART_SKETCH_BEFORE_THE_VETO","why":"relentless supervisor takes the item","ts":"2026-11-03T16:55:29Z","tsn":1793724929430591375}
 {"seat":"BENCH","event":"start","id":"SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE","why":"relentless supervisor takes the item","ts":"2026-11-03T16:55:36Z","tsn":1793724936763937586}
 {"seat":"BENCH","event":"start","id":"ART_SHEETS_TAIL_1","why":"relentless supervisor takes the item","ts":"2026-11-03T16:55:43Z","tsn":1793724943863297795}
+{"seat":"BENCH","event":"implemented","id":"STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1","sha":"9d62dffa0dc0","ref":"origin/main","criteria":[{"id":"A1","level":"L2","text":"modcheck Stillsand chain loomma live on a Stillsand quicktest pad: row loomma_sunstruck_open_vs_roofed PASS (roofed loommas stay under the roof for both samples"}],"needs":"bridge","why":"relentless: blind offline PASS; the game clauses stay owed","ts":"2026-11-03T17:01:25Z","tsn":1793725285202938416}
+{"seat":"BENCH","event":"start","id":"DESSICATED_CORPSES_INSTALL_AFTER_PICKS","why":"relentless supervisor takes the item","ts":"2026-11-03T17:03:01Z","tsn":1793725381872462053}
