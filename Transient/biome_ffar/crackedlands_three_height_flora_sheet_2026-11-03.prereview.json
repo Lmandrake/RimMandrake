@@ -1,0 +1,25 @@
+{
+ "sheet": "crackedlands_three_height_flora_sheet_2026-11-03.html",
+ "looked_by": "judge:art_eval-opus+gpt",
+ "when": "2026-11-03T01:31:25-0800",
+ "caught": "qirra mat v1 read as an Earth shelf fungus; redrawn flat (art-eval round 1) and accepted",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RM_QirraMat": {
+   "fp": "3128311b1cdc3db4",
+   "verdict": "FIXED",
+   "note": "v1 (ruffled rosette) judged REGEN by art-eval run thf_20261103b (STYLE_EARTHLY: read as shelf fungus); redraw arteval_RM_QirraMat_r1 (flat cracked-clay crust mat, no green) ACCEPTed by run thf_20261103c (GPT strong_accept) and installed; ~0.95 cell beside a human, FALLBACK size (new def not in dump yet)"
+  },
+  "RM_TalusClasp": {
+   "fp": "57b847d564606c3c",
+   "verdict": "OK",
+   "note": "pale gnarled root-knot, no green, not Earth-nameable; ACCEPT by art-eval run thf_20261103 (GPT strong_accept); ~0.9 cell beside a human, FALLBACK size (new def not in dump yet)"
+  }
+ },
+ "dropped": []
+}

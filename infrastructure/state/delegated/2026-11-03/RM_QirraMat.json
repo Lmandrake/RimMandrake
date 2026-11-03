@@ -3,34 +3,26 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 30.6,
+    "seconds": 31.9,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.319376
+    "cost_usd": 0.29753599999999997
    }
   ],
   "gpt": [
    {
     "model_reported": "gpt-6.1-sol",
-    "seconds": 52.5
+    "seconds": 19.2
    }
-  ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 10.0,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.1185442
-  }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_QirraMat",
- "decision": "REGEN",
+ "decision": "ACCEPT",
  "reasons": [
-  "opus band WEAK (model said weak); blocking ['STYLE_EARTHLY', 'LUMP', 'STYLE_OFF']; polish ['WANTS_VARIANTS']",
-  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['STYLE_EARTHLY', 'DESC_MISS', 'STYLE_OFF']"
+  "opus band WEAK (model said good); blocking ['CONSTRUCTED']; polish ['WANTS_VARIANTS']",
+  "gpt strong_accept: unsettled [], own blocking []"
  ],
  "prompt_versions": {
   "preamble": {
@@ -63,7 +55,7 @@
   }
  },
  "image_sha256": {
-  "single.png": "c30a3119732dd5fab770c2a8c35dec169b39773e69231a94689e74ae32f2d3da",
-  "scale.png": "f8fb0183872d29d4e4257771b3a2c1f60be6211aa6857f64aca88823b123c6ca"
+  "single.png": "256aeba1a20004d855565a5829776630cfa05845846a067eb0e91fea963ed45d",
+  "scale.png": "27adaadd5ec228015c52a3cc5bf5e93b352073baca86f0a3ae5bd120cdb56647"
  }
 }
