@@ -705,6 +705,8 @@ def live_proof_checks():
             fails.append("live proof %s: bad line %s not a FAIL" % (c, bad[c][1]))
         if lp.verdict(c, "REFUSED: %s no clear patch" % c)[0] != 2:
             fails.append("live proof %s: REFUSED not UNMEASURED" % c)
+    if lp.verdict("A6", good["A6"].replace("unitTemp=-28", "unitTemp=-31"))[0] != 1:
+        fails.append("live proof A6: a unit that lost its seeded -28 C must FAIL even on a frozen map")
     if lp.verdict("A1", good["A1"].replace("floorRot=60000", "floorRot=0"))[0] != 2:
         fails.append("live proof A1: a cold room (floor rot 0) must be UNMEASURED, not a comparison")
     src = open(os.path.join(HERE, "Source", "RM_ColdStorageProof.cs")).read()

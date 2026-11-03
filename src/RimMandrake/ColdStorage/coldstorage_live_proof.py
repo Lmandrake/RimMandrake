@@ -23,7 +23,8 @@ import sys
 PROBE = "RimMandrake.ColdStorage.RM_ColdStorageProof"
 CLAUSES = ("A1", "A2", "A3", "A4", "A5", "A6")
 AGED = "RM_AmberAgedMeat"   # what RM_ResinSealedMeat must age into, named here, not read from the def
-DAY_ROT_MIN = 50000.0   # a day at 25 C is 60000 rot ticks; below this the room did not hold and nothing is compared
+DAY_ROT_MIN = 50000.0
+SEED_TEMP = -28.0       # RM_ColdStorageProof A6 sets the cryo unit to this before the lift   # a day at 25 C is 60000 rot ticks; below this the room did not hold and nothing is compared
 
 
 def parse(text, clause):
@@ -91,8 +92,10 @@ def verdict(clause, text):
             fails.append(" ".join("%s=%s" % (k, d.get(k)) for k in keys))
         if d.get("stack") != "10":
             fails.append("stack %s, want 10" % d.get("stack"))
-        if not _f(d, "foodAmbient") <= -20:
-            fails.append("carried meat at %s C, want <= -20" % d.get("foodAmbient"))
+        # the probe seeds the unit at -28 C; landing takes no game time, so it must still read -28 and the meat with it
+        # (an outdoor map below -20 C cannot pass a unit that lost its temperature)
+        if not (abs(_f(d, "unitTemp") - SEED_TEMP) <= 0.5 and abs(_f(d, "foodAmbient") - SEED_TEMP) <= 0.5):
+            fails.append("unit %s C / carried meat %s C, want both %s" % (d.get("unitTemp"), d.get("foodAmbient"), SEED_TEMP))
     line = " ".join("%s=%s" % kv for kv in d.items())
     return (1, "; ".join(fails) + " | " + line) if fails else (0, line)
 
