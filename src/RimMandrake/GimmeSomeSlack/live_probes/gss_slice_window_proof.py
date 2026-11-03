@@ -7,7 +7,9 @@ sliceWindow record of that slice, winSlices, winSliceGcHits. Round 9 left one wi
 snapshot clone 20.5 + tail 14.8 ms, no collection counted); the round 10 fix pools the snapshot world.
 python.exe (Windows Python: WSL python3 cannot reach the bridge on Windows loopback) with the bridge held; GSS deployed; a quicktest map >= 160x160 (sites are cleared to soil,
 unroofed and unfogged first). argv: optional out JSON path (its folder is made). Exit 0 = every window measured and under 20 ms; 1 = a window
-at or over 20 ms, or a window that measured nothing (no slice, or the build never settled)."""
+at or over 20 ms, a window that measured nothing (no slice, or the build never settled), or a window whose laidOnCaller
+is not 0 (GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: no cord edge is laid on the main thread; edges go to the lay worker);
+2 = GSS not loaded (UNMEASURED)."""
 import sys, os, json, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
 import rimbridge_client as rb
@@ -78,6 +80,7 @@ for i, (x0, z0) in enumerate(SITES):
         elif not w["winSlices"] or mx is None: fails.append("%s: UNMEASURED (no slice in the window)" % tag)
         elif w["pending"] != 0: fails.append("%s: never settled (pending %s)" % (tag, w["pending"]))
         elif mx >= BAR_MS: fails.append("%s: slice %.1f ms >= %.0f (record %s)" % (tag, mx, BAR_MS, json.dumps(w["maxNoGc"])[:400]))
+        if w["laidOnCaller"] != 0: fails.append("%s: laidOnCaller %s (a cord edge laid on the main thread, or unmeasured)" % (tag, w["laidOnCaller"]))
 res["fails"] = fails
 if OUT:
     os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True)
