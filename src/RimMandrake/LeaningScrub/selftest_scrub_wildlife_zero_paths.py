@@ -365,6 +365,16 @@ _rows = [dict(_A, kind="RM_Vurra"),
          dict(_A, kind="Tame", faction="PlayerColony", isPlayer=True),
          {}, {"kind": "NoFields"}, dict(_A, kind="NoDead", dead=None), dict(_A, kind=None)]
 check("L wild_rows", L.wild_rows(_rows) == ["RM_Vurra"], L.wild_rows(_rows))
+# the REAL row shape (list_pawns, live 2026-11-02, a wild RM_Durrok): no faction key at all
+_live = {"id": "RM_Durrok37089", "name": "Durrok", "kind": "RM_Durrok", "kindDef": "RM_Durrok", "def": "RM_Durrok",
+         "hasGenes": False, "uniqueXenotype": False, "isPlayer": False, "hostile": False, "x": 77, "z": 221,
+         "spawned": True, "dead": False, "downed": False, "stunned": False, "stunTicksLeft": 0, "fleshType": "Normal",
+         "isMechanoid": False, "isFlesh": True, "intelligence": "Animal", "bodySize": 1.4}
+check("L wild_rows live shape", L.wild_rows([_live]) == ["RM_Durrok"], L.wild_rows([_live]))
+check("L wild_rows owned live shape", L.wild_rows([dict(_live, faction="PlayerColony", factionName="x")]) == [])
+check("L wild_rows factionName only", L.wild_rows([dict(_live, factionName="Pirates")]) == [])
+check("L verdict blind count", L.verdict(0, {"RM_Fuzzrunner": 6}, 1, {})[0] is False and
+      "blind" in L.verdict(0, {"RM_Fuzzrunner": 6}, 1, {})[1])
 check("L wild_rows empty", L.wild_rows([]) == [] and L.wild_rows(None) == [])
 check("L verdict pass", L.verdict(20, {"RM_Vurra": 3}, 1, {})[0] is True)
 check("L verdict zero wild", L.verdict(0, {"RM_Vurra": 0}, 1, {"tileInfo": {"pollution": 1.0}})[0] is False)

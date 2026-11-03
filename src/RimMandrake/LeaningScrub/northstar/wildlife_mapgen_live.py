@@ -35,13 +35,15 @@ TIMEOUT = 520
 
 def wild_rows(pawns):
     """Unowned, living animals from an UNFILTERED list_pawns reply. Row shape (JawaBenchTerrainTools ListPawns):
-    faction = the faction's defName or null; no humanlike field, so intelligence == 'Humanlike' is the person test
+    an unowned pawn's row OMITS the faction key (and factionName) altogether; an owned one carries the faction's
+    defName (live read 2026-11-02: 14 wild rows, every one without a faction key; requiring the key made A1 count 0
+    on a map holding 6 natives). No humanlike field, so intelligence == 'Humanlike' is the person test
     (lesson 20261102T170737Z); isMechanoid; dead.
-    A row counts only when it AFFIRMS every field: faction present and null, isPlayer False, dead False, isMechanoid
-    False and intelligence 'Animal'; a row missing any of them is not wildlife (never counted on absence)."""
+    A row counts when it has no faction (key absent or null) and AFFIRMS the rest: isPlayer False, dead False,
+    isMechanoid False and intelligence 'Animal'; a row missing any of those is not wildlife."""
     out = []
     for p in pawns or []:
-        if not isinstance(p, dict) or "faction" not in p or p["faction"] is not None:
+        if not isinstance(p, dict) or p.get("faction") is not None or p.get("factionName") is not None:
             continue
         if p.get("isPlayer") is not False or p.get("dead") is not False or p.get("isMechanoid") is not False:
             continue
@@ -54,6 +56,9 @@ def wild_rows(pawns):
 def verdict(wild, natives, min_natives, diag):
     """(ok, line) from the counts; pure, so the selftest can sweep it."""
     n_nat = sum(natives.values())
+    if wild < n_nat:   # every native on a fresh map is unowned wildlife: fewer wild than natives = a blind count
+        return False, "A1 FAIL: UNMEASURED: wild count %d < native census %d, the list_pawns filter is blind" % (
+            wild, n_nat)
     if wild >= 1 and n_nat >= min_natives:
         return True, "A1 PASS: %d wild animal(s), %d native(s) at map generation" % (wild, n_nat)
     return False, "A1 FAIL: %d wild animal(s), %d native(s) (want >= 1 and >= %d); inputs %s" % (
