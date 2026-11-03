@@ -1,0 +1,1315 @@
+{
+"item": "TANK_SHADOW_DIAGNOSE_DRIFTS_OFF_THE_SKID",
+"save": "RM_fw_walkthrough_20261023e.rws",
+"capture": "Transient/live_batch_20261023/r3b/hose_bend_wall_corner.png",
+"window": [
+102,
+117,
+201,
+212
+],
+"placement": {
+"px_x110": 913,
+"px_z210_top": 229,
+"cell": 114
+},
+"covered": {
+"wall x110 z206-210": [
+[
+110,
+206
+],
+[
+110,
+207
+],
+[
+110,
+208
+],
+[
+110,
+209
+],
+[
+110,
+210
+]
+],
+"RM_LiquidTankTall 116,208 (2x2, art 1 cell above)": [
+[
+116,
+208
+],
+[
+116,
+209
+],
+[
+116,
+210
+],
+[
+117,
+208
+],
+[
+117,
+209
+],
+[
+117,
+210
+]
+],
+"RM_LiquidTank 116,202 (2x2)": [
+[
+116,
+202
+],
+[
+116,
+203
+],
+[
+117,
+202
+],
+[
+117,
+203
+]
+],
+"RM_HoseReel 104,208": [
+[
+103,
+207
+],
+[
+103,
+208
+],
+[
+103,
+209
+],
+[
+104,
+207
+],
+[
+104,
+208
+],
+[
+104,
+209
+],
+[
+105,
+207
+],
+[
+105,
+208
+],
+[
+105,
+209
+]
+],
+"RM_HoseReel 104,202": [
+[
+103,
+201
+],
+[
+103,
+202
+],
+[
+103,
+203
+],
+[
+104,
+201
+],
+[
+104,
+202
+],
+[
+104,
+203
+],
+[
+105,
+201
+],
+[
+105,
+202
+],
+[
+105,
+203
+]
+]
+},
+"roofed_cells_in_window": 0,
+"cells": [
+{
+"x": 102,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 103,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 104,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 105,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 106,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 107,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 108,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 109,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 110,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 111,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 112,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 113,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 114,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 115,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 116,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 117,
+"z": 212,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 102,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 103,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 104,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 105,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 106,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 107,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 108,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 109,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 110,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 111,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 112,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 113,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 114,
+"z": 211,
+"terrain": "SoilRich",
+"lum": 80
+},
+{
+"x": 115,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 116,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 117,
+"z": 211,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 102,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 103,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 104,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 105,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 106,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 107,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 108,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 109,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 71
+},
+{
+"x": 110,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 59
+},
+{
+"x": 111,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 92
+},
+{
+"x": 112,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 113,
+"z": 210,
+"terrain": "SoilRich",
+"lum": 77
+},
+{
+"x": 114,
+"z": 210,
+"terrain": "SoilRich",
+"lum": 65
+},
+{
+"x": 115,
+"z": 210,
+"terrain": "SoilRich",
+"lum": 78
+},
+{
+"x": 116,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 90
+},
+{
+"x": 117,
+"z": 210,
+"terrain": "GrasslandSoil",
+"lum": 84
+},
+{
+"x": 102,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 103,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 104,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 105,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 106,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 107,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 108,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 70
+},
+{
+"x": 109,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 67
+},
+{
+"x": 110,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 55
+},
+{
+"x": 111,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 112,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 113,
+"z": 209,
+"terrain": "SoilRich",
+"lum": 76
+},
+{
+"x": 114,
+"z": 209,
+"terrain": "SoilRich",
+"lum": 70
+},
+{
+"x": 115,
+"z": 209,
+"terrain": "SoilRich",
+"lum": 69
+},
+{
+"x": 116,
+"z": 209,
+"terrain": "SoilRich",
+"lum": 61
+},
+{
+"x": 117,
+"z": 209,
+"terrain": "GrasslandSoil",
+"lum": 56
+},
+{
+"x": 102,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 103,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 104,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 90
+},
+{
+"x": 105,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 91
+},
+{
+"x": 106,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 107,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 88
+},
+{
+"x": 108,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 71
+},
+{
+"x": 109,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 66
+},
+{
+"x": 110,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 55
+},
+{
+"x": 111,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 92
+},
+{
+"x": 112,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 113,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 114,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 115,
+"z": 208,
+"terrain": "SoilRich",
+"lum": 85
+},
+{
+"x": 116,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 78
+},
+{
+"x": 117,
+"z": 208,
+"terrain": "GrasslandSoil",
+"lum": 80
+},
+{
+"x": 102,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 103,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 104,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 79
+},
+{
+"x": 105,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 106,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 107,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 85
+},
+{
+"x": 108,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 71
+},
+{
+"x": 109,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 67
+},
+{
+"x": 110,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 55
+},
+{
+"x": 111,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 92
+},
+{
+"x": 112,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 113,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 114,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 115,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 116,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 117,
+"z": 207,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 102,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 103,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 104,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 105,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 106,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 107,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 92
+},
+{
+"x": 108,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 72
+},
+{
+"x": 109,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 70
+},
+{
+"x": 110,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 73
+},
+{
+"x": 111,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 112,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 113,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 114,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 115,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 116,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 117,
+"z": 206,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 102,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 103,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 104,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 105,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 106,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 107,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 90
+},
+{
+"x": 108,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 72
+},
+{
+"x": 109,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 72
+},
+{
+"x": 110,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 89
+},
+{
+"x": 111,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 112,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 113,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 114,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 115,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 101
+},
+{
+"x": 116,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 117,
+"z": 205,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 102,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 103,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 104,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 105,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 106,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 107,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 91
+},
+{
+"x": 108,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 78
+},
+{
+"x": 109,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 92
+},
+{
+"x": 110,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 111,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 112,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 113,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 114,
+"z": 204,
+"terrain": "SoilRich",
+"lum": 80
+},
+{
+"x": 115,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 116,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 117,
+"z": 204,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 102,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 103,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 104,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 105,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 80
+},
+{
+"x": 106,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 80
+},
+{
+"x": 107,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 108,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 109,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 110,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 111,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 112,
+"z": 203,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 113,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 75
+},
+{
+"x": 114,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 68
+},
+{
+"x": 115,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 71
+},
+{
+"x": 116,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 82
+},
+{
+"x": 117,
+"z": 203,
+"terrain": "SoilRich",
+"lum": 87
+},
+{
+"x": 102,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 103,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 104,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 88
+},
+{
+"x": 105,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 89
+},
+{
+"x": 106,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 107,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 108,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 109,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 110,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 100
+},
+{
+"x": 111,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 101
+},
+{
+"x": 112,
+"z": 202,
+"terrain": "GrasslandSoil",
+"lum": 99
+},
+{
+"x": 113,
+"z": 202,
+"terrain": "SoilRich",
+"lum": 72
+},
+{
+"x": 114,
+"z": 202,
+"terrain": "SoilRich",
+"lum": 63
+},
+{
+"x": 115,
+"z": 202,
+"terrain": "SoilRich",
+"lum": 61
+},
+{
+"x": 116,
+"z": 202,
+"terrain": "SoilRich",
+"lum": 79
+},
+{
+"x": 117,
+"z": 202,
+"terrain": "SoilRich",
+"lum": 131
+},
+{
+"x": 102,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 103,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 104,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 82
+},
+{
+"x": 105,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 106,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 97
+},
+{
+"x": 107,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 98
+},
+{
+"x": 108,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 109,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 110,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 94
+},
+{
+"x": 111,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 96
+},
+{
+"x": 112,
+"z": 201,
+"terrain": "GrasslandSoil",
+"lum": 95
+},
+{
+"x": 113,
+"z": 201,
+"terrain": "SoilRich",
+"lum": 69
+},
+{
+"x": 114,
+"z": 201,
+"terrain": "SoilRich",
+"lum": 63
+},
+{
+"x": 115,
+"z": 201,
+"terrain": "SoilRich",
+"lum": 64
+},
+{
+"x": 116,
+"z": 201,
+"terrain": "SoilRich",
+"lum": 63
+},
+{
+"x": 117,
+"z": 201,
+"terrain": "SoilRich",
+"lum": 62
+}
+]
+}

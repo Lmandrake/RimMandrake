@@ -1,0 +1,2 @@
+A dark soft-edged cross/T blob near a building in a live capture is a TERRAIN question before a draw bug: TANK_SHADOW_DIAGNOSE_DRIFTS_OFF_THE_SKID's 'drifting tank shadows' were vanilla SoilRich patches in GrasslandSoil (cross outline = terrain edge blending). Decode the save's topGridDeflate over the cells (or read the census terrain) and compare against a real sun shadow's direction before chasing shadowData. Guard: src/RimMandrake/FlowWorks/selftest_flowworks_tank_shadow.py.
+home: skills/rimworld-live-review
