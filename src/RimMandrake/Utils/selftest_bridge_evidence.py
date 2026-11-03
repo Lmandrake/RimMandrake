@@ -90,6 +90,10 @@ def main():
                      rows()[-1]["status"] == "ok" and rows()[-2]["tool"] == "jawa/companion_handshake"
                      and not b.looks_read_only("jawa/spawn_pawn"), rows()[-1]))
 
+    reads = ("jawa/map_info", "jawa/thing_graphic", "jawa/thing_explain")
+    good.append(case("the map/thing reads a live proof needs pass the read-only guard; a mutation does not",
+                     all(b.looks_read_only(t) for t in reads) and not b.looks_read_only("jawa/destroy_batch"), reads))
+
     sc = {"type": "HarmonyLib.Harmony", "method": "HasAnyPatches", "args": "x"}
     good.append(case("a static_call is a mutation unless declared, and declared only for a reviewed pair",
                      not b.looks_read_only("jawa/static_call", sc) and C.read_only_static(sc) is None
