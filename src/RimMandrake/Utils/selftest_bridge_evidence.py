@@ -117,6 +117,23 @@ def main():
                      any(x["cid"] == "dead1" for x in C.outstanding_indeterminate())))
     C.reconcile_resolve("dead1", "not-applied", "selftest")
 
+    # MODCHECK_DIAGNOSE_DRIVER_DIES_MID_SETFOG: a non-RimBridgeError escaping the socket read (a reset, a bad decode)
+    # used to leave only "client interrupted" and no end row; the marker and the end row now name the exception.
+    try:
+        bridge(ConnectionResetError(10054, "forcibly closed")).call("jawa/set_fog", {"action": "unfog"}, check=False)
+        escaped = None
+    except ConnectionResetError as e:
+        escaped = e
+    pend = [x for x in C.outstanding_indeterminate() if x.get("tool") == "jawa/set_fog"]
+    good.append(case("an escaping non-RimBridgeError still propagates unchanged", escaped is not None, escaped))
+    good.append(case("its marker names the exception type", len(pend) == 1 and
+                     "ConnectionResetError" in pend[0].get("error", ""), pend))
+    good.append(case("it writes an INDETERMINATE end row naming the exception",
+                     rows()[-1]["ev"] == "end" and rows()[-1]["status"] == "INDETERMINATE" and
+                     "ConnectionResetError" in rows()[-1].get("error", ""), rows()[-1]))
+    for x in pend:
+        C.reconcile_resolve(x["cid"], "not-applied", "selftest")
+
     # MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL: a process under a hard kill deadline (a modcheck driver) must not
     # START a mutating call that could still be in flight at the kill: that strands an UNKNOWN-outcome marker.
     import time as _t

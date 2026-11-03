@@ -809,11 +809,20 @@ class RimBridge:
                 _inflight_clear(cid)
             _ACTIVE.discard(cid)
             raise
-        except BaseException:
+        except BaseException as ex:
             _ACTIVE.discard(cid)                      # KeyboardInterrupt etc: marker stays, read as orphaned
+            # Name the exception: a bare "client interrupted" left testq J20261026T182927Z-c2508c's set_fog death
+            # (an OSError/ValueError escaping the socket read <1 s after the send, game alive) undiagnosable.
+            why = "client interrupted: %s: %s" % (type(ex).__name__, str(ex)[:240])
+            try:
+                _evidence({"ev": "end", "cid": cid, "status": "INDETERMINATE" if mutating else "lost",
+                           "ms": int((time.time() - t0) * 1000), "error": why, "t": _ev_now(),
+                           "outcome": "lost", "timeout": False, "transport": type(ex).__name__})
+            except Exception:  # noqa: BLE001 - evidence is best effort here; the original exception must propagate
+                pass
             if mutating:
                 try:
-                    _inflight_write(dict(start, status="INDETERMINATE", error="client interrupted"))
+                    _inflight_write(dict(start, status="INDETERMINATE", error=why))
                 except OSError:
                     pass
             raise
