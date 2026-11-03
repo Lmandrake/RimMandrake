@@ -1,0 +1,1 @@
+live-proof A1: python.exe src/RimMandrake/LeaningScrub/repro_crown_mob.py --out D:/ClaudeWork/rimmandrake/LEANINGSCRUB_CROWN_MOB_LIVE_1/repro_crown_mob.json < /dev/null

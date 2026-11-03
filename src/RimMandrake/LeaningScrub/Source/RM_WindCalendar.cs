@@ -169,15 +169,10 @@ namespace RimMandrake.LeaningScrub
         // think-tree nodes and are untouched.
         public static bool Wander_Prefix(Pawn pawn, ref Job __result)
         {
-            if (!RM_WindCalendar.On(RM_LeaningScrubSettings.stallFreezeEnabled))
-            {
-                return true;
-            }
-            if (pawn == null || pawn.Faction != null || !pawn.RaceProps.Animal || pawn.Flying)
-            {
-                return true;
-            }
-            if (pawn.BodySize > RM_LeaningScrubSettings.stallFreezeMaxBodySize || !RM_WindCalendar.IsStall(pawn.Map))
+            // An airborne animal is frozen too: the wait lands it (RM_StallHuntKernel.Freezes says why).
+            if (pawn == null || !RM_StallHuntKernel.Freezes(RM_WindCalendar.On(RM_LeaningScrubSettings.stallFreezeEnabled),
+                    RM_WindCalendar.IsStall(pawn.Map), pawn.Faction == null, pawn.RaceProps.Animal, pawn.BodySize,
+                    RM_LeaningScrubSettings.stallFreezeMaxBodySize))
             {
                 return true;
             }

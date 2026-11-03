@@ -41,6 +41,14 @@ namespace RimMandrake.LeaningScrub.SelfTest
             Eq("visible prey taken", RM_StallHuntKernel.Prey(true, false, false, false, 0.2f, 0.65f), true);
             Eq("own kind safe", RM_StallHuntKernel.Prey(true, true, false, false, 0.2f, 0.65f), false);
             Eq("big prey safe", RM_StallHuntKernel.Prey(true, false, false, false, 1.0f, 0.65f), false);
+            // stall freeze: airborne is no exemption (the Freezes signature has no flying input at all)
+            Eq("freeze small wild in stall", RM_StallHuntKernel.Freezes(true, true, true, true, 0.08f, 0.5f), true);
+            Eq("freeze at size limit", RM_StallHuntKernel.Freezes(true, true, true, true, 0.5f, 0.5f), true);
+            Eq("no freeze above size", RM_StallHuntKernel.Freezes(true, true, true, true, 0.51f, 0.5f), false);
+            Eq("no freeze in wind", RM_StallHuntKernel.Freezes(true, false, true, true, 0.08f, 0.5f), false);
+            Eq("no freeze tame", RM_StallHuntKernel.Freezes(true, true, false, true, 0.08f, 0.5f), false);
+            Eq("no freeze non-animal", RM_StallHuntKernel.Freezes(true, true, true, false, 0.08f, 0.5f), false);
+            Eq("no freeze off", RM_StallHuntKernel.Freezes(false, true, true, true, 0.08f, 0.5f), false);
             // pyre gate
             Eq("off refuses", RM_PyreKernel.Gate(false, RM_PyreKernel.BeliefVenerated, 1), RM_PyreKernel.ReasonOff);
             Eq("forbidden refuses", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefForbidden, 5), RM_PyreKernel.ReasonForbidden);

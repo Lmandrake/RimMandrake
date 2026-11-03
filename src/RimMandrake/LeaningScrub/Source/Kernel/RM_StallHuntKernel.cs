@@ -22,5 +22,15 @@ namespace RimMandrake.LeaningScrub
         {
             return wild && !sameKind && !dead && !invisible && bodySize <= maxPreyBodySize;
         }
+
+        // The Stall freeze (RM_WindCalendar.Wander_Prefix): a small wild animal's wander fallback becomes a wait.
+        // Airborne is deliberately NOT an exemption (LEANINGSCRUB_CROWN_MOB_LIVE_1): vanilla JobGiver_Wander never
+        // waits while flying and GotoWander keeps a flyer up (decompiled 1.6), so an exempted dustflutter that
+        // arrived at a crown stand still airborne wandered off instead of holding. The wait lands it: Wait_Wander is
+        // neither tryStartFlying nor ifFlyingKeepFlying, so Pawn_FlightTracker.Notify_JobStarted calls ForceLand.
+        public static bool Freezes(bool featureOn, bool stall, bool wild, bool animal, float bodySize, float maxBodySize)
+        {
+            return featureOn && stall && wild && animal && bodySize <= maxBodySize;
+        }
     }
 }
