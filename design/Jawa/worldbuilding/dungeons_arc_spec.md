@@ -363,7 +363,7 @@ These are agent-drafted questions. Nothing below is ruled unless marked RULED.
 
 The specimen choices and what a recovery leaves are in §2.10.
 
-### 2.10 The specimens: the choice, the breakout, recover or fail — DELEGATED 2026-11-01, SHAPE KEPT BY HIM 2026-11-02, STRIKE CUTOFF OWNER-RULED 2026-11-02, JUDGE ROUNDS CLOSED, NUMBERS PROVISIONAL
+### 2.10 The specimens: the choice, the breakout, recover or fail — DELEGATED 2026-11-01, SHAPE KEPT BY HIM 2026-11-02, STRIKE CUTOFF OWNER-RULED 2026-11-02, JUDGE-KEPT 2026-11-02 (ROUND 6), NUMBERS PROVISIONAL
 
 Delegated design (`delegation_policy.md` §1, class `design`; item
 `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`; judge record
@@ -373,12 +373,12 @@ shape (owner, by card, 2026-11-02: "What should happen to the dive design? → K
 judge"; `WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE`): the five console choices, the breakout and
 recover or fail stand; round 3's gaps are fixed below (seals work from either side, a stated pace
 and hold time, the Held Lab's kill outcome); one more fresh judge was authorized past the
-three-round stop. **Not judge-kept.** Round 4 (2026-11-02, GPT via `gpt_consult.py` standing in for a fresh
-opus judge, which the maker could not start) found round 3's four gaps fixed and one new defect:
-the late-strike carve-out left the dive's guarantees conditional on a strike his *"strike OR dive,
-never both"* already excludes. That is fixed below (the dive begins at the wake; no strike after
-it), and the fix has had no judge. No fifth round was run: the item stays open for him. It works inside his rulings of 2026-10-10, 2026-10-12 and
-2026-11-02 (§2.1, §2.6) and overturns none. The detail is not his, and any line falls to his word.
+three-round stop. Round 4 (2026-11-02, GPT via `gpt_consult.py`) found round 3's four gaps fixed
+and one new defect, the late-strike carve-out. Round 5 (fresh opus) said REDO on the same point:
+where the strike stops being callable. He ruled it (the wake, gate 4; below), which closed
+`WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE`. Round 6 (fresh opus, the whole section with his
+rulings landed) said KEEP. The judge record holds every round and its verdict. It
+works inside his rulings of 2026-10-10, 2026-10-12 and 2026-11-02 (§2.1, §2.6) and overturns none. The detail is not his, and any line falls to his word.
 All numbers are PROVISIONAL.
 
 **The shape, from his three sentences:** *"Player decides what to do. Then there is the start of a

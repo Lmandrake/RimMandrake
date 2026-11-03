@@ -1663,9 +1663,9 @@ assailant_reveal_arc:
     stays for good. Three opus rounds REDO; he kept the shape by card
     (WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE, 2026-11-02: "What should happen
     to the dive design? → Keep shape, fix, 4th judge"). Round 4 (GPT
-    judge): REDO on one new point, the late-strike carve-out, since fixed
-    (no strike after the wake, by "strike OR dive, never both"); unjudged,
-    not judge-kept.
+    judge) and round 5 (opus): REDO on where the strike stops; he ruled it
+    (the wake, gate 4). Round 6 (fresh opus, whole section, 2026-11-02):
+    KEEP.
   strike_breakout_ruled: true
   strike_breakout_src: >
     Owner, 2026-11-02, by question card
