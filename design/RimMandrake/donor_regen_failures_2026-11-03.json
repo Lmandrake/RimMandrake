@@ -1,0 +1,613 @@
+{
+ "what": "dregen_ jobs that failed in the artpipe and were never retried (none was a 429, so donor_regen_jobs requeue does not take them). Gate verdict is regen_eligibility.Gate at listing time.",
+ "listed": "2026-11-03",
+ "item": "DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO",
+ "count": 60,
+ "gate_now": {
+  "REFUSED_REGEN": 47,
+  "REFUSED_UNCONFIRMED": 12,
+  "REFUSED_KEPT": 1
+ },
+ "rows": [
+  {
+   "id": "dregen_RM_ContagionMulch_Kibble_v1",
+   "target_def": "RM_ContagionMulch",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Dripfringe_RMDripfringeb_v1",
+   "target_def": "RM_Dripfringe",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_FirevineTree_ABFirevineTreeA_v1",
+   "target_def": "RM_FirevineTree",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_FlakespireFungus_Flakespirefungusa_v1",
+   "target_def": "RM_FlakespireFungus",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_FloatstoneDoor_DoorSimpleMenuIcon_v1",
+   "target_def": "RM_FloatstoneDoor",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_FogWater_Beer_v1",
+   "target_def": "RM_FogWater",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_GlassVeilKelp_RMGlassVeilKelpA_v1",
+   "target_def": "RM_GlassVeilKelp",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_GlobularPlant_ABGlobularPlant_v1",
+   "target_def": "RM_GlobularPlant",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_GloomcastMeat_MeatSauriana_v1",
+   "target_def": "RM_GloomcastMeat",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_GloomcastMeat_MeatSaurianb_v1",
+   "target_def": "RM_GloomcastMeat",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_GloomcastMeat_MeatSaurianc_v1",
+   "target_def": "RM_GloomcastMeat",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_GlowGlobe_RMGlowGlobea_v1",
+   "target_def": "RM_GlowGlobe",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Greatbole_RMGreatboleaa_v1",
+   "target_def": "RM_Greatbole",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_HumPrimer_SchematicOpen_v1",
+   "target_def": "RM_HumPrimer",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_HumPrimer_SchematicVertical_v1",
+   "target_def": "RM_HumPrimer",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Iashiphus_ABIashiphus_v1",
+   "target_def": "RM_Iashiphus",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_JungleTree_ABJungleTreeA_v1",
+   "target_def": "RM_JungleTree",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Kaddrath_RMKaddrathaa_v1",
+   "target_def": "RM_Kaddrath",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Lanternstone_Medium_A_v1",
+   "target_def": "RM_Lanternstone_Medium",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Lanternstone_Medium_B_v1",
+   "target_def": "RM_Lanternstone_Medium",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_LungerFry_v1",
+   "target_def": "RM_LungerFry",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Masonmat_RMMasonmatA_v1",
+   "target_def": "RM_Masonmat",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Mournweft_RMMournweftA_v1",
+   "target_def": "RM_Mournweft",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Murkblush_RMMurkblushA_v1",
+   "target_def": "RM_Murkblush",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Nemmer_RMNemmeraa_v1",
+   "target_def": "RM_Nemmer",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_KEPT",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Plant_Bellows_RMBellowsa_v1",
+   "target_def": "RM_Plant_Bellows",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_PrennaLace_A_v1",
+   "target_def": "RM_PrennaLace",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_QuorrFern_A_v1",
+   "target_def": "RM_QuorrFern",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Rockfinger_RMRockfingerb_v1",
+   "target_def": "RM_Rockfinger",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_RustPuff_RustPuffA_v1",
+   "target_def": "RM_RustPuff",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_SaltBladeGrey_RMSaltBladeGreyA_v1",
+   "target_def": "RM_SaltBladeGrey",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_SaltBladeTwilight_RMSaltBladeTwilightA_v1",
+   "target_def": "RM_SaltBladeTwilight",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Sarquin_RMSarquinab_v1",
+   "target_def": "RM_Sarquin",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_ScorchedStars_RMScorchedStarsa_v1",
+   "target_def": "RM_ScorchedStars",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_SpunstoneHull_GravshipHullAtlas_v1",
+   "target_def": "RM_SpunstoneHull",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_SugarFamewort_ABSugarFamewort_v1",
+   "target_def": "RM_SugarFamewort",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_TinkleGrass_ABTinkleGrass_v1",
+   "target_def": "RM_TinkleGrass",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_TollukCapHarvest_RawFungus_v1",
+   "target_def": "RM_TollukCapHarvest",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_ToxiGrass_ABToxiGrass_v1",
+   "target_def": "RM_ToxiGrass",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_TwitchingPuffer_a_v1",
+   "target_def": "RM_TwitchingPuffer",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_VellokReed_A_v1",
+   "target_def": "RM_VellokReed",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_VexxithDoor_DoorSimpleMover_v1",
+   "target_def": "RM_VexxithDoor",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_WindVaporator_MoisturePump_v1",
+   "target_def": "RM_WindVaporator",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_Wrinklecap_WrinklecapA_v1",
+   "target_def": "RM_Wrinklecap",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RM_ZivvitTaper_A_v1",
+   "target_def": "RM_ZivvitTaper",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_UNCONFIRMED",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Acklay_AcklayA_v1_north",
+   "target_def": "RSW_Acklay",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Acklay_AcklayA_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Acklay_AcklayA_v1_south",
+   "target_def": "RSW_Acklay",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Acklay_AcklayA_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Acklay_AcklaySwimming_v1_north",
+   "target_def": "RSW_Acklay",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Acklay_AcklaySwimming_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Acklay_AcklaySwimming_v1_south",
+   "target_def": "RSW_Acklay",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Acklay_AcklaySwimming_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Akk_AkkDessicated_v1",
+   "target_def": "RSW_Akk",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Devourers_DevourerDessicated_v1",
+   "target_def": "RSW_Devourers",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Dianoga_DianogaSwimming_v1_north",
+   "target_def": "RSW_Dianoga",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Dianoga_DianogaSwimming_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Dianoga_DianogaSwimming_v1_south",
+   "target_def": "RSW_Dianoga",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Dianoga_DianogaSwimming_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_FrogDog_FrogDog_v1_north",
+   "target_def": "RSW_FrogDog",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Jerba_Bantha_v1_east",
+   "target_def": "RSW_Jerba",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Jerba_Bantha_v1_north",
+   "target_def": "RSW_Jerba",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Jerba_Bantha_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Jerba_Bantha_v1_south",
+   "target_def": "RSW_Jerba",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Jerba_Bantha_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Jerba_DessicatedDromedary_v1_north",
+   "target_def": "RSW_Jerba",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Jerba_DessicatedDromedary_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Jerba_DessicatedDromedary_v1_south",
+   "target_def": "RSW_Jerba",
+   "fault": "master_failed",
+   "note": "master dregen_RSW_Jerba_DessicatedDromedary_v1_east failed; derivation impossible",
+   "failed_attempts": null,
+   "rate_limited": false,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  },
+  {
+   "id": "dregen_RSW_Torton_Tortonf_v1_south",
+   "target_def": "RSW_Torton",
+   "fault": "worker_error",
+   "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 3 attempt(s), no image: 2 retries with the firm image-tool line",
+   "failed_attempts": 3,
+   "rate_limited": true,
+   "gate_now": "REFUSED_REGEN",
+   "gate_eligible": false
+  }
+ ]
+}
