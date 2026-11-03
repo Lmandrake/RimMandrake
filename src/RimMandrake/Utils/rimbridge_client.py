@@ -125,10 +125,11 @@ WSL = sys.platform.startswith("linux") and os.path.isdir("/mnt/c")
 # ADHOC_BRIDGE_CALL_LOG_1: every session (connect -> close) appends one row here so
 # northstar_driver/bridge_utilization.py can count ad-hoc python.exe scripts as ACTIVE
 # bridge time. Outside git (a program reads it). RIMBRIDGE_SESSION_LOG overrides; "" disables.
-SESSION_LOG = os.environ.get(
-    "RIMBRIDGE_SESSION_LOG",
-    rm_win("scratch", "bridge_sessions.jsonl") if os.name == "nt"
-    else rm_str("scratch", "bridge_sessions.jsonl"))
+# The default is resolved only when the variable is unset: a .get() default runs eagerly, so a caller that set it
+# (a selftest with "") still died on RmDataRootUnset with no data root configured.
+SESSION_LOG = (os.environ["RIMBRIDGE_SESSION_LOG"] if "RIMBRIDGE_SESSION_LOG" in os.environ
+               else rm_win("scratch", "bridge_sessions.jsonl") if os.name == "nt"
+               else rm_str("scratch", "bridge_sessions.jsonl"))
 
 
 def _log_session(started, calls, client):
@@ -155,8 +156,8 @@ def _log_session(started, calls, client):
 # first). If the intent row cannot be written, the mutation is refused; a read only warns.
 # Default on Windows only: the bridge is reachable only from python.exe (WSL2 is NAT-mode, so a WSL call dies at
 # connect, before any tools/call), and a WSL selftest faking a lost reply must never leave a REAL marker behind.
-EVIDENCE_LOG = os.environ.get("RIMBRIDGE_EVIDENCE_LOG",
-                              rm_win("scratch", "bridge_calls.jsonl") if os.name == "nt" else "")
+EVIDENCE_LOG = (os.environ["RIMBRIDGE_EVIDENCE_LOG"] if "RIMBRIDGE_EVIDENCE_LOG" in os.environ   # lazy: SESSION_LOG
+                else rm_win("scratch", "bridge_calls.jsonl") if os.name == "nt" else "")
 EVIDENCE_MAX_BYTES = 20 * 1024 * 1024
 _RUN_ID = uuid.uuid4().hex[:12]
 _ACTIVE = set()                       # cids in flight in THIS process
