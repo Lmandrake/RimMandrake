@@ -3,6 +3,8 @@
     python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py                 # rewrite the Rot patch
     python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py --check         # exit 1 if the patch is stale
     python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py --preview DIR   # also write overlay PNGs
+    python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py --crowns        # rewrite tree_crowns_measured.json
+    python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py --crowns --check [--preview DIR]
 
 Owner decisions HUGE_THINGS_FOOTPRINT_1 (decision taken by question card 2026-10-07 20:05 PDT):
   1. the selection rect wraps the WHOLE drawn picture at its current growth, where the engine draws it;
@@ -37,9 +39,27 @@ WHAT IS MEASURED, per texture variant, unflipped, at full growth (size S = drawS
     kernel refuses to block outside the drawn picture at any growth or setting, so the data must agree with it.
     The root cell itself is never contact: a plant cannot share its cell with an impassable edifice
     (GenSpawn.SpawningWipes -> BlocksPlanting would wipe the plant).
+
+CROWNS (--crowns; TREE_CROWN_MEASURE_FROM_THE_ART, design/RimMandrake/sun_and_shade_modularity_2026-10-19.md sec 6 item 5):
+  The tree shade model (design/RimMandrake/tree_shade_model_2026-10-19.md sec 4.2) holds a crown disc of radius
+  r = crownRadiusFactor x s/2 at height hc = crownHeightFactor x s, with INVENTED defaults 0.8 and 0.5. For the six
+  day-side giants (CROWN_GIANTS) the factors are measured here from the same visible-pixel silhouette instead:
+  * crown rows: from the silhouette's top row down to its NECK. The crown's widest row is the widest row in the
+    silhouette's top CROWN_SEARCH share (so stilt roots or a flared trunk below can never be read as the crown); the
+    neck is the first narrowest row between that row and the NECK_WINDOW line. A neck no narrower than NECK_DISTINCT x
+    the widest row means the plant has no distinct crown (a bush-shaped tree): the crown is the whole silhouette.
+  * crownRadiusFactor = the crown rows' visible-pixel u-span (so r = factor x s/2 is half the crown's drawn width).
+  * crownHeightFactor = height of the crown pixels' centroid above the silhouette's lowest visible row (the ground
+    contact), in quad units (so hc = factor x s). crownBottom/crownTop are the crown rows' extent on the same scale.
+  * crownFill = visible share of the crown rows' bounding box: data for the opacity question (tree design sec 7 Q2),
+    not an opacity.
+  Per def: each Graphic_Random variant, and the mean over variants (the engine picks one uniformly). Written to
+  CROWNS_JSON (generated, never hand-edited). RM_TreeCrownExtension does not exist yet (it is a Sun & Shade type,
+  TREE_SHADE_BUILD_CROWNS_ON_STILTS); that build reads this file, so no XML here names the type.
 """
 import argparse
 import glob
+import json
 import os
 import re
 import sys
@@ -66,6 +86,14 @@ JITTER_MARGIN = 0.06   # cells: Plant.Print's x jitter is +-0.05, the kernel kee
 WORK_PX = 1024         # textures are measured at this side (alpha box-resampled)
 
 TOOL_CMD = "python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py"
+
+CROWNS_JSON = os.path.join(HERE, "tree_crowns_measured.json")
+CROWN_GIANTS = ("RM_Greatbole", "RM_Nogtyl", "RSW_Plant_HydenockTree_Wild", "RM_CorriskTree", "RM_Veluthar", "RM_Kaddrath")
+CROWN_SEARCH = 0.5     # share of the silhouette's height, from its top, that holds the crown's widest row
+NECK_WINDOW = 0.8      # the neck is looked for between the widest row and this share of the height, from the top
+NECK_DISTINCT = 0.75   # a neck at least this x the widest row is no neck: the crown is the whole silhouette
+INVENTED_RADIUS_FACTOR = 0.8   # tree_shade_model sec 4.2 defaults, kept beside the measurement for comparison
+INVENTED_HEIGHT_FACTOR = 0.5
 
 
 # ---- defs ---------------------------------------------------------------------------------------------------
@@ -255,6 +283,177 @@ def measure(plant):
     return size, out
 
 
+def measure_crown(alpha):
+    """-> crown dict for one variant (quad units; u left->right, v bottom->top). Size-free: factors scale with s."""
+    n = alpha.shape[0]
+    vis = alpha >= ALPHA_CUTOFF
+    rows = np.where(vis.any(axis=1))[0]
+    if rows.size == 0:
+        raise SystemExit("texture has no visible pixels")
+    top, bot = int(rows[0]), int(rows[-1])
+    span = np.zeros(n, dtype=np.int64)
+    for r in range(top, bot + 1):
+        c = np.where(vis[r])[0]
+        span[r] = 0 if c.size == 0 else c[-1] - c[0] + 1
+    h = bot - top + 1
+    search_end = top + max(1, int(round(CROWN_SEARCH * h)))
+    wide = top + int(np.argmax(span[top:search_end]))
+    win_end = max(wide + 1, top + int(round(NECK_WINDOW * h)))
+    neck = wide + int(np.argmin(span[wide:win_end]))
+    distinct = span[neck] < NECK_DISTINCT * span[wide]
+    c_bot = neck if distinct else bot
+    crown = np.zeros_like(vis)
+    crown[top:c_bot + 1] = vis[top:c_bot + 1]
+    ys, xs = np.nonzero(crown)
+    u0, u1 = xs.min() / n, (xs.max() + 1) / n
+    ground = (n - 1 - bot) / n                         # v of the lowest visible row's bottom edge
+    v_cent = (n - 0.5 - ys.mean()) / n
+    box = (xs.max() - xs.min() + 1) * (c_bot - top + 1)
+    return {"crownRadiusFactor": u1 - u0, "crownHeightFactor": v_cent - ground,
+            "crownBottom": (n - 1 - c_bot) / n - ground, "crownTop": (n - top) / n - ground,
+            "crownU": (u0, u1), "crownFill": float(len(xs)) / box, "neckDistinct": bool(distinct),
+            "_rows": (top, c_bot)}
+
+
+def _src_def_sources():
+    for tier in ("RimMandrake", "RimStarWars", "RimUtinni"):
+        for p in glob.glob(os.path.join(RM, "..", tier, "*", "Defs", "**", "*.xml"), recursive=True):
+            yield p
+
+
+def crown_patch_hits(path_lists):
+    """[(file, giant, xpath)] for each patch operation that changes a crown giant's picture or size.
+
+    The defs are read as written, so such a patch must refuse the run. An operation counts when its xpath names a giant
+    (either quote style; the giants' only ParentName in src, RM_CorriskTree, is one of them) and its xpath or its value
+    touches a field the measure reads, or it removes or replaces the def, its /plant or its /graphicData.
+    Temperature patches on /plant pass."""
+    names = re.compile(r"""defName\s*=\s*['"](%s)['"]""" % "|".join(CROWN_GIANTS))
+    fields = re.compile(r"graphicData|texPath|graphicClass|drawSize|visualSizeRange|maxMeshCount")
+    ancestor = re.compile(r"(\]|/plant|/graphicData)\s*$")   # removing or replacing the def, /plant or /graphicData
+    hits = []
+    for paths in path_lists:
+        for pp in paths:
+            try:
+                proot = ET.parse(pp).getroot()
+            except ET.ParseError:
+                continue
+            for op in proot.iter():
+                xp = op.find("xpath")
+                if xp is None or not xp.text or not names.search(xp.text):
+                    continue
+                val = op.find("value")
+                body = "" if val is None else ET.tostring(val, encoding="unicode")
+                cls = op.get("Class") or ""
+                drops_ancestor = ("Remove" in cls or "Replace" in cls) and ancestor.search(xp.text)
+                if fields.search(xp.text) or fields.search(body) or drops_ancestor:
+                    hits.append((pp, names.search(xp.text).group(1), xp.text.strip()))
+    return hits
+
+
+def crown_plants():
+    """The six day-side giants, resolved from every src tier's own defs (Name/ParentName chains followed)."""
+    named, abstract = {}, {}
+    for p in _src_def_sources():
+        try:
+            root = ET.parse(p).getroot()
+        except ET.ParseError:
+            continue
+        for el in root:
+            if not isinstance(el.tag, str) or el.tag != "ThingDef":
+                continue
+            if el.get("Name"):
+                abstract[el.get("Name")] = el
+            dn = el.findtext("defName")
+            if dn and dn.strip() in CROWN_GIANTS:
+                if dn.strip() in named:
+                    raise SystemExit("crown giant %s is defined twice under src/" % dn.strip())
+                named[dn.strip()] = el
+    hits = crown_patch_hits(glob.glob(os.path.join(RM, "..", tier, "*", "Patches", "**", "*.xml"), recursive=True)
+                            for tier in ("RimMandrake", "RimStarWars", "RimUtinni"))
+    if hits:
+        raise SystemExit("%s patches %s (%s): the crown measure reads unpatched defs; teach it the patch" % hits[0])
+    missing = [d for d in CROWN_GIANTS if d not in named]
+    if missing:
+        raise SystemExit("sanity probe: cannot find crown giants %r under src/*/*/Defs" % missing)
+    out = []
+    for dn in CROWN_GIANTS:
+        el = named[dn]
+        tex = _inherited(el, abstract, "graphicData/texPath")
+        cls = _inherited(el, abstract, "graphicData/graphicClass") or "Graphic_Random"
+        ds = _inherited(el, abstract, "graphicData/drawSize") or "(1,1)"
+        vr = _inherited(el, abstract, "plant/visualSizeRange")
+        mesh = _inherited(el, abstract, "plant/maxMeshCount") or "1"
+        if not tex or not vr:
+            raise SystemExit("%s: texPath %r / visualSizeRange %r unresolved" % (dn, tex, vr))
+        vmin, vmax = (float(x) for x in vr.split("~"))
+        out.append({"def": dn, "texPath": tex, "graphicClass": cls, "drawSizeX": float(ds.strip("()").split(",")[0]),
+                    "visual": (vmin, vmax), "maxMeshCount": int(mesh), "label": el.findtext("label")})
+    return out
+
+
+def _r4(x):
+    return round(float(x), 4)
+
+
+def measure_crowns():
+    """-> (json-able dict, [(plant, size, [(variantName, file, crown)])])."""
+    plants, rows = {}, []
+    for p in crown_plants():
+        if p["maxMeshCount"] != 1:
+            raise SystemExit("%s: maxMeshCount %d is not measured" % (p["def"], p["maxMeshCount"]))
+        size = p["drawSizeX"] * p["visual"][1]
+        vs = [(name, f, measure_crown(alpha_of(f))) for name, f in variant_files(p["texPath"], p["graphicClass"])]
+        keys = ("crownRadiusFactor", "crownHeightFactor", "crownBottom", "crownTop", "crownFill")
+        mean = {k: _r4(np.mean([c[k] for _, _, c in vs])) for k in keys}
+        plants[p["def"]] = dict(mean,
+            label=p["label"], texPath=p["texPath"], drawSizeX=p["drawSizeX"], visualSizeRange=list(p["visual"]),
+            fullGrowthSize=_r4(size),
+            crownRadiusCells=_r4(mean["crownRadiusFactor"] * size / 2), crownHeightCells=_r4(mean["crownHeightFactor"] * size),
+            variants=[{"texture": name, "file": os.path.relpath(f, os.path.join(RM, "..", "..")).replace(os.sep, "/"),
+                       **{k: _r4(c[k]) for k in keys}, "neckDistinct": c["neckDistinct"]} for name, f, c in vs])
+        rows.append((p, size, vs))
+    doc = {"_generated": "GENERATED by `%s --crowns`. Do not hand-edit; rerun it. Method: the tool's docstring, CROWNS." % TOOL_CMD,
+           "_item": "TREE_CROWN_MEASURE_FROM_THE_ART",
+           "_model": "r = crownRadiusFactor * s / 2, hc = crownHeightFactor * s, s = drawSize.x * visualSizeRange at growth "
+                     "(design/RimMandrake/tree_shade_model_2026-10-19.md sec 4.2). Cells fields are at full growth.",
+           "inventedDefaults": {"crownRadiusFactor": INVENTED_RADIUS_FACTOR, "crownHeightFactor": INVENTED_HEIGHT_FACTOR},
+           "params": {"ALPHA_CUTOFF": ALPHA_CUTOFF, "CROWN_SEARCH": CROWN_SEARCH, "NECK_WINDOW": NECK_WINDOW,
+                      "NECK_DISTINCT": NECK_DISTINCT, "WORK_PX": WORK_PX},
+           "plants": plants}
+    return doc, rows
+
+
+def render_crowns(doc):
+    return json.dumps(doc, indent=1, sort_keys=True) + "\n"
+
+
+def preview_crowns(rows, outdir):
+    os.makedirs(outdir, exist_ok=True)
+    T, tiles = 384, []
+    for p, size, vs in rows:
+        for name, f, c in vs:
+            im = Image.open(f).convert("RGBA").resize((T, T))
+            bg = Image.new("RGBA", (T, T), (70, 70, 70, 255))
+            bg.alpha_composite(im)
+            d = ImageDraw.Draw(bg)
+            sc = T / WORK_PX
+            r0, r1 = c["_rows"]
+            u0, u1 = c["crownU"]
+            d.rectangle([u0 * T, r0 * sc, u1 * T, (r1 + 1) * sc], outline=(0, 255, 255, 255), width=2)
+            gy = (c["_rows"][0] * sc) + c["crownTop"] * T      # the ground line: crown top row + crownTop
+            cy = gy - c["crownHeightFactor"] * T
+            d.line([0, gy, T, gy], fill=(255, 255, 0, 255), width=2)
+            d.line([u0 * T, cy, u1 * T, cy], fill=(255, 0, 255, 255), width=3)
+            d.text((4, 4), "%s %s r%.2f h%.2f" % (p["def"], name, c["crownRadiusFactor"], c["crownHeightFactor"]), fill=(255, 255, 0, 255))
+            tiles.append(bg.convert("RGB"))
+    cols = 5
+    sheet = Image.new("RGB", (T * cols, T * ((len(tiles) + cols - 1) // cols)), (0, 0, 0))
+    for i, t in enumerate(tiles):
+        sheet.paste(t, ((i % cols) * T, (i // cols) * T))
+    sheet.save(os.path.join(outdir, "crown_sheet.png"))
+
+
 # ---- writing ------------------------------------------------------------------------------------------------
 def _fmt(v):
     return ("%.4f" % v).rstrip("0").rstrip(".") if v % 1 else "%d" % v
@@ -349,7 +548,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true", help="exit 1 if the patch differs from a fresh measurement")
     ap.add_argument("--preview", metavar="DIR", help="write overlay PNGs (red contact, cyan picture box, yellow root)")
+    ap.add_argument("--crowns", action="store_true", help="measure the six day-side giants' crowns into %s" % os.path.basename(CROWNS_JSON))
     a = ap.parse_args(argv)
+    if a.crowns:
+        return main_crowns(a)
     gs = giants()
     probe = {"RM_AgariluxPrime", "RM_Nogtyl", "RM_DribblingCap"} - {p["def"] for p in gs}
     if probe:
@@ -373,6 +575,28 @@ def main(argv=None):
     with open(PATCH, "w", encoding="utf-8") as fh:
         fh.write(text)
     print("wrote %s (%d giants)" % (PATCH, len(results)))
+    return 0
+
+
+def main_crowns(a):
+    doc, rows = measure_crowns()
+    for dn, c in doc["plants"].items():
+        print("%-28s %5s wide  radiusFactor %.3f (r %.2f cells)  heightFactor %.3f (hc %.2f cells)  %d variants" % (
+            dn, _fmt(c["fullGrowthSize"]), c["crownRadiusFactor"], c["crownRadiusCells"], c["crownHeightFactor"],
+            c["crownHeightCells"], len(c["variants"])))
+    if a.preview:
+        preview_crowns(rows, a.preview)
+    text = render_crowns(doc)
+    if a.check:
+        cur = open(CROWNS_JSON, encoding="utf-8").read() if os.path.isfile(CROWNS_JSON) else ""
+        if cur != text:
+            print("STALE: %s differs from a fresh measurement; rerun `%s --crowns`" % (CROWNS_JSON, TOOL_CMD))
+            return 1
+        print("CURRENT: %s" % CROWNS_JSON)
+        return 0
+    with open(CROWNS_JSON, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    print("wrote %s (%d giants)" % (CROWNS_JSON, len(doc["plants"])))
     return 0
 
 
