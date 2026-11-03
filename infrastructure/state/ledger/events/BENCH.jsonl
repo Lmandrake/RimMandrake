@@ -11457,3 +11457,4 @@
 {"seat":"BENCH","event":"start","id":"WORLD_MAP_POLISH_THE_REST_LATER","why":"relentless supervisor takes the item","ts":"2026-11-03T04:52:53Z","tsn":1793681573742498831}
 {"seat":"BENCH","event":"reassign","id":"NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-03T04:53:15Z","tsn":1793681595852190626}
 {"seat":"BENCH","event":"start","id":"NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS","why":"relentless supervisor takes the item","ts":"2026-11-03T04:53:18Z","tsn":1793681598565002328}
+{"seat":"BENCH","event":"verify","id":"ARTPIPE_ORPHAN_UNSTICK_WEDGE","result":"pass","config":"selftest_artpipe + selftest_ops_watch GREEN; daemon restarted, WORKING 5/5","evidence":"/mnt/d/ClaudeWork/rimmandrake/st.txt","sha":"9b5e7b04d22e","level":"L0","ts":"2026-11-03T04:56:03Z","tsn":1793681763846218175}
