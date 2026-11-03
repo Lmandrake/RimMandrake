@@ -13278,3 +13278,4 @@
 {"seat":"BENCH","event":"start","id":"OPS_ERROR_BUDGET_DIAGNOSE_CIRG","why":"relentless supervisor takes the item","ts":"2026-11-03T21:37:25Z","tsn":1793741845877928929}
 {"seat":"BENCH","event":"start","id":"NIGHTLY_COP_FIX_RED_ADEAUS_MRKD","why":"relentless supervisor takes the item","ts":"2026-11-03T21:37:50Z","tsn":1793741870042730364}
 {"seat":"BENCH","event":"start","id":"NIGHTLY_COP_FIX_RED_ATJKEB_FBYD","why":"relentless supervisor takes the item","ts":"2026-11-03T21:38:15Z","tsn":1793741895971403093}
+{"seat":"BENCH","event":"verify","id":"TICK_SPEED_FIX_GAME_IDLES_WAITING","result":"pass","config":"selftest_relentless, _game, _live_round, _disk, selftest_driver_lock, selftest_no_owner_presence on the published tree; live: tick 21:33:13Z wall_s 303, 4 leases","evidence":"/mnt/d/ClaudeWork/rimmandrake/relentless_tick_fix/st5.txt","sha":"b010c5b289e8","level":"L0","ts":"2026-11-03T21:39:32Z","tsn":1793741972198483715}
