@@ -1,0 +1,1 @@
+A roster row on a frozen RUT_ twin is not a creature on the planet: check the biome's PAINT verdict in infrastructure/state/facts/biome_paint_list.md before reasoning about who a player can meet, and stage reviews on the RM_ biome. RSW_Thrumbungus reached the owner through a staged RUT_TheRot map while RM_Brullith, its finished replacement, sat on the real RM_TheRot.
