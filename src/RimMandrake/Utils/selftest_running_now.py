@@ -173,6 +173,11 @@ check("every process counted lands in exactly one root", p["tree"]["total"] >= 5
 text = "\n".join(lines)
 check("the tree's TOTAL line shows the same sum", "TOTAL %d Linux processes" % roots in text)
 check("no tree line outgrows the code fence", max(len(x) for x in lines) <= 84)
+env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"}])
+far = R.gather(env, {})
+moved = next(x for x in far["tree"]["groups"].values() if x["family"] == "relentless")
+moved.update(family="seats", name="CONDUCTOR", cwd="/somewhere/else", model="o", who="CONDUCTOR", unit="x", age=1.0)
+check("a Conductor sitting outside the clones is counted once", R.tree_lines(far)[1] == far["tree"]["total"])
 
 # 3. a worker finds its item by the unit's hash, and shows it in plain words with its children
 check("worker row carries the item's plain words", "Graffiti v1 live proof 1" in text and "item UNMEASURED" not in text)

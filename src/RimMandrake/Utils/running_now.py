@@ -967,7 +967,7 @@ def tree_lines(p):
 
     # ---- every other root
     windows = [x for x in fam("seats") if not is_conductor(x) and not is_other_project(x)]
-    other = [x for x in g if is_other_project(x)]
+    other = [x for x in g if is_other_project(x) and not is_conductor(x)]    # Conductor counts under Dispatch, wherever it sits
     roots = under
     head("OTHER WINDOWS OF OURS  %d" % len(windows), n_procs(windows))
     roots += n_procs(windows)
