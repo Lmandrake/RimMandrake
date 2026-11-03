@@ -414,6 +414,44 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL: "pawnId;x,z": reachability and A* side by side for that pawn to x,z,
+		/// each through production. veto = RM_SuperdeepTrap.RelativeVeto for the pawn; reach = Reachability.CanReach with the
+		/// pawn's TraverseParms (the CanReach postfix included); reachPawnless = the pawnless PassDoors CanReach vanilla
+		/// Pawn_PathFollower.StartPath asks before every walk; found/cells = pathFinder.FindPathNow; onDeck = path squares that
+		/// carry a deck; under = path squares a passing deck covers; view = the view the path swap plans this pawn on; agree =
+		/// reach == found. The reach cache is cleared first so the read is of the scene as staged, not an earlier one.
+		/// → "REACH veto=b reach=b reachPawnless=b found=b cells=N onDeck=N under=N view=floor|deck agree=b"</summary>
+		public static string ProofReach(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn p = map == null || a.Length != 2 ? null : PawnById(map, a[0]);
+			if (p == null || !Cell(a[1], out IntVec3 dest) || !dest.InBounds(map))
+			{
+				return "REFUSED: arg must be pawnId;x,z";
+			}
+			map.reachability.ClearCache();
+			bool veto = RM_SuperdeepTrap.RelativeVeto(map, p.Position, dest, PathEndMode.OnCell, p);
+			bool reach = map.reachability.CanReach(p.Position, dest, PathEndMode.OnCell, TraverseParms.For(p));
+			bool reachPawnless = map.reachability.CanReach(p.Position, dest, PathEndMode.OnCell,
+				TraverseParms.For(TraverseMode.PassDoors));
+			string view = RM_SuspensionUnderpass.UsesFloorView(p) ? "floor" : "deck";
+			bool found = false;
+			int cells = 0, onDeck = 0, under = 0;
+			using (PawnPath path = map.pathFinder.FindPathNow(p.Position, dest, p))
+			{
+				if (path != null && path.Found)
+				{
+					found = true;
+					cells = path.NodesLeftCount;
+					onDeck = path.NodesReversed.Count(n => RM_MapComponent_SuspensionBridges.DeckAt(map, n) != null);
+					under = path.NodesReversed.Count(n => RM_SuspensionUnderpass.PassingDeckAt(map, n) != null);
+				}
+			}
+			return "REACH veto=" + veto + " reach=" + reach + " reachPawnless=" + reachPawnless + " found=" + found
+				+ " cells=" + cells + " onDeck=" + onDeck + " under=" + under + " view=" + view + " agree=" + (reach == found);
+		}
+
 		/// <summary>"pawnId;x,z": set that pawn down UNDER the deck at x,z (the floor band), as if it had walked in along the
 		/// floor. → "PUTUNDER under=b"</summary>
 		public static string ProofPutUnder(string arg)
