@@ -47,7 +47,7 @@ WANT = {
 OURS = re.compile(r"Graffiti|graffiti")
 # continuation = indented, a .NET frame "at ...", Unity's "(Filename: ...)", or an unindented Unity frame
 # "Namespace.Type:Method (args)" (UnityEngine StackTrace formatter)
-CONTINUATION = re.compile(r"^(?:\s|at |\(Filename|\(wrapper |[\w.`<>+\[\],]+:[\w<>.`|$]+ ?\()")
+CONTINUATION = re.compile(r"^(?:\s|at |\(Filename|\(wrapper |\[Ref |[\w.`<>+\[\],]+:[\w<>.`|$]+ ?\()")
 # wide on purpose (a keyword list kept missing wordings: "XML format error", "is not a Def type"): any error, exception,
 # failure, could-not, not-found, invalid or duplicate wording counts
 ERROR_KIND = re.compile(r"error|exception|fail|could not|couldn't|cannot|not found|could not be found|not a Def type|invalid|"
@@ -151,12 +151,18 @@ def log_verdict(log_text, loaded_reply):
         return 2, "Ideology is not active: every DLC is assumed, restage with all five: " + ln
     if not log_text or "RimWorld" not in log_text:
         return 2, "Player.log empty or unreadable"
-    hits = [rec[0].strip()[:200] for rec in _records(log_text) if ERROR_KIND.search(rec[0]) and any(OURS.search(x) for x in rec)]
+    # a record counts when its head is error-worded and any line names Graffiti, or when any of its lines is a Graffiti
+    # stack frame (a frame of ours is only printed under an error or exception, whatever its heading looked like)
+    hits = [rec[0].strip()[:200] for rec in _records(log_text)
+            if (ERROR_KIND.search(rec[0]) and any(OURS.search(x) for x in rec)) or any(OUR_FRAME.search(x) for x in rec)]
     if hits:
         return 1, "Player.log names %d Graffiti load error line(s): %s" % (len(hits), " || ".join(hits[:5]))
     if field(ln, "thought") != "True" or field(ln, "raidHook") != "True":
         return 1, "the load lacks the hostile-maker thought or the raid-exit hook: " + ln
     return 0, "Player.log clean of Graffiti load errors | " + ln
+
+
+OUR_FRAME = re.compile(r"(?:^\s*at |^)RimMandrake\.Graffiti\.[\w.`<>+]+[:.][\w<>`]+ ?\(")
 
 
 def _records(log_text):

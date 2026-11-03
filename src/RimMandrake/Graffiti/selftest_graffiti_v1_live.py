@@ -134,6 +134,11 @@ check(P.log_verdict(harm, LOADED)[0] == 1, "A8 a Harmony wrapper frame split the
 notdef = clean_log + "Type ThingDeff is not a Def type or could not be found, in file ThingDefs_Graffiti.xml.\n"
 check(P.log_verdict(notdef, LOADED)[0] == 1, "A8 a rejected Graffiti def root passed")
 
+ref = clean_log + "Could not execute post-long-event action. Exception: System.NullReferenceException\n[Ref 12345678]\n  at RimMandrake.Graffiti.Startup.Initialize ()\n"
+check(P.log_verdict(ref, LOADED)[0] == 1, "A8 a [Ref] marker split the record and passed")
+orphan = clean_log + "Something odd\nRimMandrake.Graffiti.Filth_Mark:Print (Verse.SectionLayer)\n"
+check(P.log_verdict(orphan, LOADED)[0] == 1, "A8 a bare Graffiti stack frame passed")
+
 # the bridge reply is unwrapped, so a non-ASCII faction name never ends a field early
 uni = P._reply({"success": True, "result": RAID.replace("Rough Pigs", "P\u00edgs \u00c6therfolk")})
 check(P.field(uni, "marksIn") == "0" and code("A2", EXIT, extra=uni) == 0, "A2 a non-ASCII faction name broke the RAID read: %r" % uni)
