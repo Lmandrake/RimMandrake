@@ -10,3 +10,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:22:12Z","tsn":1793748132242509231}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A6 (L2), read-only proof","ts":"2026-11-03T23:22:32Z","tsn":1793748152086840531}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:22:47Z","tsn":1793748167912559811}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORRORS_RAIDING_FACTION_1 A3 (L2), read-only proof","ts":"2026-11-03T23:33:12Z","tsn":1793748792012120285}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-03T23:33:42Z","tsn":1793748822173024590}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-03T23:40:16Z","tsn":1793749216923883949}
