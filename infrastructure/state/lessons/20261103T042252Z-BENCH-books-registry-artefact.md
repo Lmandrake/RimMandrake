@@ -1,0 +1,1 @@
+A live site build run with the relentless books clone as its tree rewrites Utils/modcheck/test_site_saves.json there (write_registry uses its own clone). relentless.level_books read it as alien dirt -> books_stale jam. Fixed b8a7f64329: BOOKS_RUN_ARTEFACTS tolerated and restored at levelling. No selftest exists for level_books.
