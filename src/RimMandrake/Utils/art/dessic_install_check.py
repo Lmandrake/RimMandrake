@@ -7,7 +7,13 @@ For each `binding` event of a dessic_* job (a finished render bound to its slot)
 XML of ours draws that texPath any more (the def was cut or redrawn onto other art since), which
 is reported as RETIRED, not as a failure.
 
-Exit 0 when every bound render is LIVE or RETIRED; 1 when any is STALE (other bytes at a path a
+Bytes alone do not prove the install went THROUGH art.py: a LIVE slot must also be the art ledger's current
+live picture (artledger.Index().live, folded by causal prev) at that sha, and the ledger must hold a
+type=live event for that slot and sha written by an art.py install path — `art.py install` (reason
+"install") or the 2026-10-18 bulk accept (bulk_accept_renders.py, which calls artledger.install). A file
+whose bytes match but whose slot has no such event is UNLEDGERED (a plain copy that bypassed art.py).
+
+Exit 0 when every bound render is LIVE or RETIRED; 1 when any is UNLEDGERED (right bytes, no art.py install event), STALE (other bytes at a path a
 def still draws) or MISSING (a path a def still draws has no file); 2 when the instrument is blind
 (no dessic bindings found — a zero here is a query bug, never a pass).
 """
@@ -21,7 +27,17 @@ import re
 import sys
 from collections import Counter
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import artledger as A  # noqa: E402
+
 FACING = re.compile(r"_(east|west|north|south)$")
+ART_PY_REASONS = ("install",)
+ART_PY_REASON_PREFIXES = ("script:src/RimMandrake/Utils/art/bulk_accept_renders.py bulk accept",)
+
+
+def installed_through_art_py(ev: dict) -> bool:
+    r = ev.get("reason") or ""
+    return r in ART_PY_REASONS or r.startswith(ART_PY_REASON_PREFIXES)
 
 
 def repo_root() -> str:
@@ -31,10 +47,12 @@ def repo_root() -> str:
 def main() -> int:
     root = repo_root()
     os.chdir(root)
-    events = []
-    for f in sorted(glob.glob("infrastructure/state/art/events/*.jsonl")):
-        with open(f, encoding="utf-8") as fh:
-            events += [json.loads(line) for line in fh if line.strip()]
+    events = A.read_events()          # every shard, archives included, deduped by id
+    index = A.Index(events)
+    slot_installs: dict[tuple, list] = {}
+    for e in events:
+        if e.get("type") == "live" and e.get("mod") and e.get("rel") and e.get("sha"):
+            slot_installs.setdefault((A.mod_key(e["mod"]), A.rel_key(e["rel"])), []).append(e)
     binding = {e["job"]: e for e in events
                if e.get("type") == "binding" and str(e.get("job", "")).startswith("dessic_")}
     install_to = {e["job"]: e["install_to"] for e in events
@@ -66,6 +84,12 @@ def main() -> int:
             cur = None
         if cur == b["sha"]:
             cls = "LIVE"
+            split = A.split_texture_path(path)
+            key = (A.mod_key(split[0]), A.rel_key(split[1])) if split else None
+            led = index.live.get(key) if key else None
+            via = [e for e in slot_installs.get(key, []) if e["sha"] == b["sha"] and installed_through_art_py(e)]
+            if led is None or led.get("sha") != b["sha"] or not via:
+                cls = "UNLEDGERED"
         elif not still_drawn:
             cls = "RETIRED"
         elif cur is None:
@@ -73,7 +97,7 @@ def main() -> int:
         else:
             cls = "STALE"
         counts[cls] += 1
-        if cls in ("STALE", "MISSING", "NO_INSTALL_TO"):
+        if cls in ("STALE", "MISSING", "NO_INSTALL_TO", "UNLEDGERED"):
             bad.append((job, cls, path))
         if "-v" in sys.argv:
             print(cls, job, path)
