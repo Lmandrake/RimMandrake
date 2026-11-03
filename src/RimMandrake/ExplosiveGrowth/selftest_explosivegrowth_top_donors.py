@@ -365,6 +365,35 @@ def load_registry_inputs():
     return rows, exempt, by_def, by_name
 
 
+def _chain(el, by_name):
+    """the def, then each ParentName ancestor (RimWorld XML inheritance)."""
+    seen = set()
+    while el is not None and id(el) not in seen:
+        seen.add(id(el))
+        yield el
+        el = by_name.get(el.get("ParentName") or "")
+
+
+def eg_extension(name, by_def, by_name):
+    """the RM_ExplosiveGrowthExtension the def carries or inherits (nearest first), or None."""
+    for el in _chain(by_def.get(name), by_name):
+        for x in el.findall("./modExtensions/li"):
+            if (x.get("Class") or "").endswith("RM_ExplosiveGrowthExtension"):
+                return x
+    return None
+
+
+def visual_max(name, by_def, by_name):
+    for el in _chain(by_def.get(name), by_name):
+        vs = el.findtext("./plant/visualSizeRange")
+        if vs:
+            try:
+                return float(vs.split("~")[-1])
+            except ValueError:
+                return None
+    return None
+
+
 def grow_days(el, by_name):
     seen = set()
     while el is not None and id(el) not in seen:
@@ -380,11 +409,9 @@ def registry_exempt_reason(name, rows, exempt, by_def, by_name):
     """RM_ExplosiveGrowthRegistry.Rebuild's Exempt rule, offline: an Exempt plant's top is None, so Fire does nothing.
     None when the plant keeps its row's top."""
     li = rows.get(name)
-    el = by_def.get(name)
-    ext = [x for x in (el.findall("./modExtensions/li") if el is not None else ())
-           if (x.get("Class") or "").endswith("RM_ExplosiveGrowthExtension")]
-    if ext:
-        li = ext[0]          # C#: the def's own extension outranks any roster row
+    ext = eg_extension(name, by_def, by_name)
+    if ext is not None:
+        li = ext             # C#: the def's own (or inherited) extension outranks any roster row
     arche = (li.findtext("archetype") or "").strip() if li is not None else ""
     fire = (li.findtext("fireAdapted") or "").strip().lower() == "true" if li is not None else False
     decided = (arche not in ("", "Auto")) or fire
@@ -478,6 +505,9 @@ def main():
           donors.get("Tinder"))
     check("five _top_chain calls, each naming a TOP_DONORS key", len(chain_tops) == 5 and all(c in donors for c in chain_tops),
           chain_tops)
+    check("the five _top_chain calls name the five tops once each", sorted(chain_tops) == sorted(donors), chain_tops)
+    check("control: a duplicated top (Flush call naming Slime) is refused",
+          sorted(["Burst", "Tinder", "Slime", "Rupture", "Slime"]) != sorted(donors))
     placed = [p for p in literal_places if p[0] == "_place" and p[1] in rows]
     check("no chain places a hard-coded roster plant", not placed, placed)
     control = donor_errors({"Tinder": ("RM_FE_Plant_Quickgrass",)}, rows, defs)
@@ -580,6 +610,12 @@ def main():
         for n in names:
             why = registry_exempt_reason(n, rrows, rexempt, rby_def, rby_name)
             check("registry keeps %s donor %s enrolled (not Exempt)" % (top, n), why is None, why)
+            ext = eg_extension(n, rby_def, rby_name)
+            etop = ((ext.findtext("top") or "Churn").strip()) if ext is not None else None
+            check("%s donor %s carries no extension with another top" % (top, n), etop in (None, top), etop)
+            vm = visual_max(n, rby_def, rby_name)
+            check("%s donor %s is below the registry's tree size (inherited visualSizeRange)" % (top, n),
+                  vm is not None and vm < TREE_MIN_VISUAL_SIZE, vm)
     sf = rrows.get("RM_FE_Plant_ScorchFruit")
     if sf is not None:
         bare = ET.fromstring(ET.tostring(sf))
@@ -598,6 +634,16 @@ def main():
         check("control: a def extension without archetype outranks the fireAdapted row and reads Exempt",
               registry_exempt_reason("RM_FE_Plant_ScorchFruit", rrows, rexempt,
                                      dict(rby_def, RM_FE_Plant_ScorchFruit=xdef), rby_name) is not None)
+        par = ET.fromstring('<ThingDef Name="EGBaseX" Abstract="True"><plant><visualSizeRange>1~3.5</visualSizeRange>'
+                            '</plant><modExtensions><li Class="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthExtension">'
+                            '<top>Burst</top></li></modExtensions></ThingDef>')
+        kid = ET.fromstring('<ThingDef ParentName="EGBaseX"><defName>EGKidX</defName><plant><growDays>0.05</growDays>'
+                            '</plant></ThingDef>')
+        kd, kn = {"EGKidX": kid}, {"EGBaseX": par}
+        check("control: an INHERITED extension is found, its top read, and it outranks the row",
+              eg_extension("EGKidX", kd, kn) is not None and eg_extension("EGKidX", kd, kn).findtext("top") == "Burst"
+              and registry_exempt_reason("EGKidX", {"EGKidX": sf}, rexempt, kd, kn) is not None)
+        check("control: an INHERITED visualSizeRange max is read (3.5 >= tree size)", visual_max("EGKidX", kd, kn) == 3.5)
         check("control: a listed-exempt donor reads Exempt",
               registry_exempt_reason("RM_FE_Plant_ScorchFruit", rrows, rexempt | {"RM_FE_Plant_ScorchFruit"},
                                      rby_def, rby_name) is not None)
