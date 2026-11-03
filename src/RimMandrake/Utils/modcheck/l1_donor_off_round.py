@@ -59,6 +59,10 @@ OURS_RE = re.compile(r"\b(RM|RSW|RUT)_")
 # The Phase 0 commits named by the L1 brief (2026-10-15). Their touched Def files are a subject source.
 PHASE0_COMMITS = ("e557bc1c0440 8c2ff0e85c97 c6a57926a8e4 3ee43febc9ad 1262b5714523 b0b19a31226c 52959b619418 8343f64cabf5 1419bd46834a "
                   "3afba4675579 3f54372c54ff 4ce83afd00a3 b266aa33f538 0bc8139c67ab 180a1f57faa2 dfcd13201f79 91f64dbf83f5 a5edc1c3435e").split()
+# The Phase 0 subject inputs that live outside the tree (the commits' touched Def files need git history; the P2
+# outcomes are an untracked Transient file), pinned so derive runs the same in an export with neither.
+# Re-pin with `l1_donor_off_round.py pin` in a full clone after a port; it also records the expected counts.
+PIN = os.path.join(HERE, "donor_off_phase0_inputs.json")
 TRACKER = os.path.join(REPO, "design", "RimMandrake", "donor_pack_port_tracker.md")
 P2_CLASSIFICATION = os.path.join(REPO, "Transient", "phase0_p2_classification.md")
 P6_CENSUS = os.path.join(REPO, "Transient", "phase0_p6_save_census.md")
@@ -312,8 +316,21 @@ def classification_names(path=P2_CLASSIFICATION):
     return keep
 
 
+def load_pin(path=None):
+    """-> (pin dict, None) or ({}, error). The pin is the only subject source derive reads for commits and P2."""
+    path = path or PIN
+    try:
+        pin = json.load(open(path, encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        return {}, "pin %s unreadable: %s" % (os.path.relpath(path, REPO), e)
+    for k in ("commitFiles", "p2Names", "expect"):
+        if k not in pin:
+            return {}, "pin %s lacks %s" % (os.path.relpath(path, REPO), k)
+    return pin, None
+
+
 def commit_def_files(commits=PHASE0_COMMITS):
-    """Def XML files the Phase 0 commits touched and that still exist (one git call)."""
+    """Def XML files the Phase 0 commits touched and that still exist (one git call; `pin` only)."""
     try:
         out = subprocess.run(["git", "-C", REPO, "show", "--name-only", "--format=@@%h"] + list(commits),
                              capture_output=True, text=True, timeout=120)
@@ -373,16 +390,19 @@ def tier_closure():
         return {"ordered": [], "missing": [], "refusals": [], "error": "%s: %s" % (type(e).__name__, e)}
 
 
-def derive(include_frozen=False, closure=None, commit_files=None):
+def derive(include_frozen=False, closure=None, commit_files=None, p2_names=None):
     races, kinds, kind_tex, plants, biomes = scan_defs()
     patch_flyers = scan_patches(biomes)
     pids = _package_ids()
     tracked, skipped = tracker_names()
-    p2 = classification_names()
+    pin, git_err = ({"p2Names": classification_names() if p2_names is None else p2_names, "expect": None}, None) \
+        if commit_files is not None else load_pin()
+    p2 = list(pin.get("p2Names") or [])
     if commit_files is None:
-        commit_files, git_err = commit_def_files()
-    else:
-        git_err = None
+        commit_files = [f for f in pin.get("commitFiles") or [] if os.path.isfile(os.path.join(REPO, f))]
+        gone = sorted(set(pin.get("commitFiles") or []) - set(commit_files))
+        if gone and not git_err:
+            git_err = "pinned def file(s) gone, re-pin: %s" % gone[:5]
     from_commits = []
     plant_subjects = []
     for f in commit_files:
@@ -449,8 +469,14 @@ def derive(include_frozen=False, closure=None, commit_files=None):
     for s in species + plant_rows:
         s["inTier"] = (s.get("packageId") in in_tier) if in_tier else None
     problems = []
-    if git_err:       # without the Phase 0 commits the subject list is silently shorter
-        problems.append("Phase 0 commit def files unreadable: %s" % git_err)
+    if git_err:       # without the Phase 0 inputs the subject list is silently shorter
+        problems.append("Phase 0 subject pin: %s" % git_err)
+    exp = pin.get("expect")
+    if exp:           # a shorter (or longer) manifest than the pin's is a lost source or an un-pinned port
+        got = {"species": len(species), "flyers": sum(1 for s in species if s["flyer"])}
+        for k in ("species", "flyers"):
+            if got[k] != exp.get(k):
+                problems.append("%s: derived %d, pin expects %s (re-pin after a port)" % (k, got[k], exp.get(k)))
     subj = {s["kind"] for s in species} | {s["race"] for s in species} | set(kinds)
     for b in BURSTS:
         if b["kind"] not in subj:
@@ -1243,12 +1269,34 @@ def run(args, B=None, V=None):
     return res
 
 
+def write_pin(path=PIN, p2_path=P2_CLASSIFICATION):
+    files, err = commit_def_files()
+    if err:
+        print("pin refused: %s" % err)
+        return 2
+    if not os.path.isfile(p2_path):     # Transient is per-clone: name the clone that has it with --p2
+        print("pin refused: %s missing (pass --p2 <path>)" % p2_path)
+        return 2
+    p2 = sorted(set(classification_names(p2_path)))
+    man = derive(commit_files=files, p2_names=p2)
+    pin = {"schema": 1, "head": _git_head(), "commits": list(PHASE0_COMMITS), "commitFiles": files,
+           "p2Names": p2, "p2From": "Transient/" + os.path.basename(p2_path),
+           "expect": {"species": len(man["species"]), "flyers": len(man["flyers"])}}
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(pin, fh, indent=1)
+        fh.write("\n")
+    print("pinned %s: %d def files, %d P2 names, expect %s" % (path, len(files), len(pin["p2Names"]), pin["expect"]))
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     d = sub.add_parser("derive", help="offline: build the subject manifest (WSL python3)")
     d.add_argument("--out", required=True)
     d.add_argument("--include-frozen", action="store_true", help="also mapgen the frozen RUT_ twins with donor rows")
+    pp = sub.add_parser("pin", help="offline, full clone: re-pin the Phase 0 inputs and expected counts (git + Transient)")
+    pp.add_argument("--p2", default=P2_CLASSIFICATION, help="the P2 classification file (default: this clone's Transient)")
     r = sub.add_parser("run", help="live: drive the bridge (python.exe)")
     r.add_argument("--manifest", required=True)
     r.add_argument("--phase", default="all", help="all, or a comma list of %s" % ",".join(PHASES))
@@ -1260,6 +1308,8 @@ def main(argv=None):
     r.add_argument("--force", action="store_true", help="continue after a failed preflight")
     r.add_argument("--out")
     a = ap.parse_args(argv)
+    if a.cmd == "pin":
+        return write_pin(p2_path=a.p2)
     if a.cmd == "derive":
         man = derive(include_frozen=a.include_frozen)
         man["offlineRows"] = []
