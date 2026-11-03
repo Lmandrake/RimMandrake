@@ -1754,7 +1754,7 @@ def worker_prompt(st, text, learned, r):
             "`measuring-large-artifacts` and infrastructure/state/facts/instrument_traps.md before you trust a count. "
             "Owner preferences no skill holds yet: %s (an index; read only the entries your item touches)." % MEMORY_INDEX,
             "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
-            "bulk output to files. FOUNDRY's tree and src/RimMandrake/Utils/arena/ are not yours to touch."]
+            "bulk output to files. The /home/mandrake/rm/foundry clone (FOUNDRY retired 2026-11-02) and src/RimMandrake/Utils/arena/ are not yours to touch."]
     if relentless_game.cfg(r)["enabled"]:
         head += relentless_game.BRIEF
     if st.get("proof_only"):

@@ -1,8 +1,10 @@
 {
-  "_why": "Owner 2026-10-28 (v3 cutover, V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY): \"Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry.\" Every FlowWorks and Gimme Some Slack (GSS) item belongs to the seat in `seat` (FOUNDRY since the cutover): build, art, live testing, acceptance, code review, deploys; BENCH (the Conductor's window) takes only an item that needs the owner live (needs=owner). rimflow reads this file in `file` (a FlowWorks id filed for another seat is filed for `seat`) and in `acceptance` (a FlowWorks item is swept by `seat` at every level). `v3_cutover.py revert` flips `seat` back to BENCH. Match is on the item ID; add a pattern when a FlowWorks item slips through.",
-  "seat": "FOUNDRY",
+  "_why": "Every FlowWorks and Gimme Some Slack (GSS) item belongs to the seat in `seat`: BENCH, where Relentless builds, proves and accepts it (FOUNDRY retired 2026-11-02, owner by card \"What should happen to FOUNDRY? -> Retire it\"); an item that needs the owner live (needs=owner) stays the Conductor's. rimflow reads this file in `file` (a FlowWorks id filed for another seat is filed for `seat`) and in `acceptance` (a FlowWorks item is swept by `seat` at every level). Match is on the item ID; add a pattern when a FlowWorks item slips through.",
+  "seat": "BENCH",
   "id_patterns": [
-    "FLOWWORKS", "^FW_", "_FW_",
+    "FLOWWORKS",
+    "^FW_",
+    "_FW_",
     "^(HOSE|PIPE|POND|CANAL|PUMP|REEL|TAP|FAUCET|TANK|LIQUID_(BOTTLE|THIRST|LOOK|CONTAINERS|TANK)|LAVA|FLUID|EXCAVATION|QUARRY|DRAWBRIDGE|SUSPENSION|RAILING|GUARDRAIL|FALL_GUARDRAILS|DIG_RIG)_",
     "^(WATER_(LEVEL|DEPTH|LOOK|ART)|LAKE_FLOORS|DRAWDOWN|SPILL|CAUSEWAY|SINK_CAP|PIT_(SUPERDEEP|CLIMB|DEEPSTONE|TEMPERATURE)|RIVER_(TOGGLE|SCENES)|SURFACE_RIVER|SWALE_CANAL|GLOW_TANK_LIQUID|GLOWTANK|JOINT_GATE|UNDER_COUPLER|CARGO_UPPER_PORT|TAR_COOLING|HEAT_BUDGET|NATURAL_HEAT|MISSION_TANK|MODERN_REEL|FAUCET_REDRAW|PUMP_PORTS|CORD_PLUG|BLEED_WELL|UNDERCOUPLER)",
     "^(SETTINGS_SEARCH_FIX|SESSION_HURT_DIAGNOSE|WET_FOXHOLE|HAZARD_TAR_TERRAIN)",

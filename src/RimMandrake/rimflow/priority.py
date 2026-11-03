@@ -539,21 +539,20 @@ def why_not(world, seat, iid, target="v1", ctx=None):
 # ---------------------------------------------------------------------------
 # ACCEPTANCE — built work, grouped for a sitting (rimflow redesign step 2)
 # ---------------------------------------------------------------------------
-# 🔑 Who sits which level — owner, 2026-10-06: *"Foundry is supposed to own automated
-# processes. Bench is about human interaction, design work, and emergency response."*
-# FOUNDRY sits L0..GREEN-FULL and L3; BENCH only L4. OWNER sees every group.
+# 🔑 Who sits which level: BENCH, every level. FOUNDRY retired 2026-11-02 (owner by card): its acceptance sweeps are
+# Relentless's live round (relentless_live_round.py), which runs under BENCH; L4 looks stay the Conductor's with him.
+# OWNER sees every group.
 ACCEPTANCE_SEAT = {"L4": "BENCH"}
-ACCEPTANCE_DEFAULT_SEAT = "FOUNDRY"
+ACCEPTANCE_DEFAULT_SEAT = "BENCH"
 
 
 def acceptance_seat(level):
     return ACCEPTANCE_SEAT.get(level, ACCEPTANCE_DEFAULT_SEAT)
 
 
-# 🔑 ONE SEAT OWNS ALL FLOWWORKS + GSS: FOUNDRY since the v3 cutover (owner, 2026-10-28: *"all bench
-# items get reassigned to Dispatch-> Foundry"*; BENCH before it, owner 2026-10-23). The lane is DATA:
-# `infrastructure/state/flowworks_lane.json` (id patterns + the seat; `v3_cutover.py revert` flips the
-# seat). A FlowWorks item is swept by that seat at EVERY level, and `file` files it for that seat.
+# 🔑 ONE SEAT OWNS ALL FLOWWORKS + GSS: BENCH, where Relentless builds and proves it (FOUNDRY retired 2026-11-02,
+# owner by card). The lane is DATA: `infrastructure/state/flowworks_lane.json` (id patterns + the seat). A FlowWorks
+# item is swept by that seat at EVERY level, and `file` files it for that seat.
 FLOWWORKS_LANE_FILE = os.path.join(model.ROOT, "infrastructure", "state", "flowworks_lane.json")
 
 

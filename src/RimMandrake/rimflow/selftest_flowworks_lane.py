@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Selftest: one seat owns all FlowWorks + GSS (FOUNDRY since the v3 cutover, owner 2026-10-28; BENCH
-before it, owner 2026-10-23). The lane is data (infrastructure/state/flowworks_lane.json): `acceptance`
-routes a FlowWorks item to the lane's seat at every level and never to the other seat; the shipped
-pattern file names the seat the cutover record implies and matches the names it must (FlowWorks and
-GSS) and not other biomes' work.
+"""Selftest: one seat owns all FlowWorks + GSS: BENCH, where Relentless builds and proves it (FOUNDRY retired
+2026-11-02, owner by card; FOUNDRY held it from the v3 cutover 2026-10-28). The lane is data
+(infrastructure/state/flowworks_lane.json): `acceptance` routes a FlowWorks item to the lane's seat at every level
+and never to a retired seat; the shipped pattern file names BENCH and matches the names it must (FlowWorks and GSS)
+and not other biomes' work.
 
     python3 src/RimMandrake/rimflow/selftest_flowworks_lane.py
 """
@@ -24,23 +24,19 @@ OTHER = "STILLSAND_DUNE_GALE_LIVE_1"
 
 
 def t_flowworks_acceptance_is_bench_at_every_level():
+    # Items still owned by the retired FOUNDRY (an old ledger) are swept by BENCH too: no level is FOUNDRY's.
     evs = (sb.filed("FOUNDRY", FW, 0) + [sb.impl(2, sb.crit(("A1", "L1"), ("A2", "GREEN-FULL")), "FOUNDRY", FW)]
-           + sb.filed("FOUNDRY", OTHER, 4) + [sb.impl(6, sb.crit(("A1", "L1")), "FOUNDRY", OTHER)])
+           + sb.filed("BENCH", OTHER, 4) + [sb.impl(6, sb.crit(("A1", "L1")), "BENCH", OTHER)])
     w = model.replay(evs)
     f = {i.id for _, its in priority.acceptance(w, "FOUNDRY") for i in its}
     b = {i.id for _, its in priority.acceptance(w, "BENCH") for i in its}
-    # The lane's seat is data (FOUNDRY since the v3 cutover; BENCH again after `v3_cutover.py revert`).
-    seat, _ = priority.flowworks_lane()
-    want = ({OTHER, FW}, set()) if seat == "FOUNDRY" else ({OTHER}, {FW})
-    assert (f, b) == want, (seat, f, b)
+    assert priority.flowworks_lane()[0] == "BENCH"
+    assert (f, b) == (set(), {OTHER, FW}), (f, b)
 
 
 def t_shipped_lane_file_matches_flowworks_and_gss_not_others():
     lane = priority.flowworks_lane()
-    # The v3 cutover (V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY) moves the lane BENCH -> FOUNDRY; its
-    # record says which side of it this tree is on, so the test is true both before and after.
-    rec = os.path.join(model.ROOT, "infrastructure", "state", "v3_cutover", "record.json")
-    want = "FOUNDRY" if os.path.exists(rec) and json.load(open(rec)).get("state") == "applied" else "BENCH"
+    want = "BENCH"
     assert lane[0] == want and lane[1], (lane, want)
     for n in (FW, "FLOWWORKS_NORTHSTAR_SHIP_1", "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES",
               "DRAWBRIDGE_CABLES_FIX_STOP_SHORT", "SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING", "POND_PUMP_FIX_LAST_DROP_COUNTS",

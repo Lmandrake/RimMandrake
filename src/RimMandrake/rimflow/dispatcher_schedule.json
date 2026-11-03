@@ -3,7 +3,8 @@
  "focus_cap": {
   "per_seat": 8,
   "waits_max": 2,
-  "seats": ["FOUNDRY"],
+  "seats": [],
+  "_seats": "FOUNDRY retired 2026-11-02 (owner by card): no window's `next` is held now; relentless still reads per_seat as its ceiling.",
   "since": "2026-11-01T16:46:00Z",
   "_doc": "RO2 in design/RimMandrake/operating_requirements_2026-11-01.md: the Producer's WIP cap, set here by the Producer. `rimflow next` (priority.focus_config) offers only next steps of focus items at per_seat; `rimflow wait` takes an item out of the count until its date, waits_max at once. relentless reads per_seat as a ceiling on its places. per_seat 5 -> 8 follows the owner's card 2026-11-02 18:35 PST, (How hard should Relentless run this machine? -> 8 workers, 16 clones / 70 GB). since: older `doing` items are history, not focus."
  },

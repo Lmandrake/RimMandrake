@@ -1728,6 +1728,19 @@ def cmd_namecheck(args, seat):
     return 0
 
 
+# Owner by card 2026-11-02 ("What should happen to FOUNDRY?" -> "Retire it"): no FOUNDRY window. Work filed, spawned or
+# reassigned to it goes to BENCH, the key Relentless and the Conductor's roles run under; its old events still replay.
+RETIRED_SEATS = {"FOUNDRY": "BENCH"}
+
+
+def _unretire(name):
+    to = RETIRED_SEATS.get(name)
+    if to is None:
+        return name
+    print("%s is retired (owner by card 2026-11-02): this goes to %s, where Relentless takes it." % (name, to))
+    return to
+
+
 def _reader_or_die(reader):
     """RO4: nobody files for a reader nothing wakes. A test ledger (RIMFLOW_LEDGER) keeps its fixture seats unless it
     names a table with RIMFLOW_ROUTES."""
@@ -1779,6 +1792,7 @@ def cmd_incidents(args, seat):
 def cmd_file(args, seat):
     _, w = load()
     _mint_or_die(args.id, w)
+    args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
           "kind": args.kind, "row": args.row, "target": args.target_field,
@@ -2060,6 +2074,8 @@ def _print_frontier(w, seat):
 def _simple(verb, extra=()):
     def run(args, seat):
         _, w = load()
+        if verb == "reassign":
+            args.to = _unretire(args.to)
         ev = {"seat": seat, "event": verb, "id": args.id}
         for field, attr in extra:
             ev[field] = getattr(args, attr, None)
@@ -2621,6 +2637,7 @@ def cmd_spawn(args, seat):
     nominating some third item as the host was an artefact of the old schema.
     ⛔ Do not reintroduce `--id` here.
     """
+    args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
     _, w = load()
     _mint_or_die(args.name, w)
@@ -3379,7 +3396,7 @@ def cmd_bridge(args, seat):
     # another without a subparser per action.
     if args.to and args.action != "give":
         die("`bridge %s` takes no target, and %r was about to be ignored.\n"
-            "  a target is for `bridge give`:  rimflow bridge give BENCH|FOUNDRY|free\n"
+            "  a target is for `bridge give`:  rimflow bridge give BENCH|free\n"
             "  what you probably meant:        rimflow bridge %s --for \"<what for>\""
             % (args.action, args.to, args.action))
 
@@ -4044,7 +4061,7 @@ def build_parser():
             cmd_bridge)
     s.add_argument("action", choices=("take", "release", "who", "give", "idle"))
     s.add_argument("to", nargs="?",
-                   help="give only: BENCH | FOUNDRY | free")
+                   help="give only: BENCH | free")
     s.add_argument("--for", dest="purpose",
                    help="one line: what you are driving it FOR. The other window reads "
                         "this to judge whether to wait or go do something else.")

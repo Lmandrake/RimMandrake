@@ -51,19 +51,18 @@ def t_proof_lines():
 def t_candidates():
     now = 1_800_000_000
     its = [item(), item("FLOWWORKS_Y"), item("EG_Z", state="claimed"), item("EG_W", sha=None)]
-    todo, counts = R.candidates(its, lambda i: PROSE, lambda i: "FOUNDRY" if i.startswith("FLOWWORKS") else None,
-                                {}, now, 3600)
-    check("candidates: only a live-level owed criterion with a proof runs (A3 is L3, A2 has no proof)",
-          todo == [("EG_X", "A1", "python3 live_log_check.py --absent RUT_A", "abc123")], todo)
-    check("candidates: FOUNDRY's lane and missing proofs are counted, not run",
-          counts == {"FOUNDRY's lane": 1, "no proof": 1}, counts)
+    todo, counts = R.candidates(its, lambda i: PROSE, {}, now, 3600)
+    check("candidates: only a live-level owed criterion with a proof runs (A3 is L3, A2 has no proof); FlowWorks too",
+          todo == [("EG_X", "A1", "python3 live_log_check.py --absent RUT_A", "abc123"),
+                   ("FLOWWORKS_Y", "A1", "python3 live_log_check.py --absent RUT_A", "abc123")], todo)
+    check("candidates: missing proofs are counted, not run", counts == {"no proof": 2}, counts)
     at = lambda t: R.L.iso(t)    # noqa: E731
     for outcome, when, sha, runs in (("FAIL", now - 10 ** 6, "abc123", False), ("PASS", now, "abc123", False),
                                       ("REFUSED", now, "abc123", False), ("FAIL", now, "def456", True),
                                       ("UNMEASURED", now - 60, "abc123", False),
                                       ("UNMEASURED", now - 7200, "abc123", True)):
         hist = R.history([{"item": "EG_X", "criterion": "A1", "sha": sha, "outcome": outcome, "at": at(when)}])
-        todo, _ = R.candidates([item()], lambda i: PROSE, lambda i: None, hist, now, 3600)
+        todo, _ = R.candidates([item()], lambda i: PROSE, hist, now, 3600)
         check("history: %s on %s %ds ago -> %s" % (outcome, sha, now - when, "runs" if runs else "waits"),
               bool(todo) == runs, todo)
 
@@ -74,7 +73,7 @@ def t_history_review():
     rows = [{"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "FAIL", "at": R.L.iso(now - 10 ** 6)},
             {"item": "EG_X", "criterion": "A1", "sha": "def456", "outcome": "PASS", "at": R.L.iso(now - 10 ** 5)},
             {"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "UNMEASURED", "at": R.L.iso(now - 10 ** 5)}]
-    todo, _ = R.candidates([item()], lambda i: PROSE, lambda i: None, R.history(rows), now, 3600)
+    todo, _ = R.candidates([item()], lambda i: PROSE, R.history(rows), now, 3600)
     check("history: a FAIL on this build stands after a later build's PASS and a later UNMEASURED", todo == [], todo)
     old = os.environ.get("TZ")
     try:
@@ -116,9 +115,6 @@ class FakeFx(object):
     def proofs(self, i):
         return PROSE
 
-    def foundry_seat(self, i):
-        return None
-
     def folded(self):
         return {}
 
@@ -152,17 +148,11 @@ def t_round():
         s = R.run_round(FakeFx(), root, {}, now=1_800_000_000, run=run)
         check("round: a busy bridge ends the sitting at once", len(calls) == 1 and s["why"].startswith("stopped"), s)
         run, calls = fake_run({})
-        s = R.run_round(FakeFx(mods={"abc123": ["FlowWorks"]}), root, {}, now=1_800_000_000, run=run)
-        check("round: a FlowWorks game file is FOUNDRY's, never run here",
-              calls == [] and all(x["outcome"] == "SKIPPED" for x in s["runs"]), s)
-        run, calls = fake_run({})
-        fx = FakeFx(mods={"abc123": ["FlowWorks"]})
-        fx.its[3] = item("EG_D", sha="b2")
-        s = R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=run)
-        check("round: FOUNDRY skips do not count toward round_max, so the item behind them runs",
-              [c[0] for c in calls] == ["EG_D"], (calls, s))
+        s = R.run_round(FakeFx(mods={"abc123": ["FlowWorks"]}), root, {"live": {"round_max": 1}}, now=1_800_000_000, run=run)
+        check("round: a FlowWorks game file runs here too (FOUNDRY retired 2026-11-02)",
+              len(calls) == 1 and not any(x["outcome"] == "SKIPPED" for x in s["runs"]), s)
         rows = R.read_rows(os.path.join(root, "live", "rounds.jsonl"))
-        check("round: every sitting is a rounds.jsonl row", len(rows) == 5, len(rows))
+        check("round: every sitting is a rounds.jsonl row", len(rows) == 4, len(rows))
 
 
 class TickFx(object):
@@ -368,18 +358,6 @@ def t_live_mods():
     check("live-mods: the round passes them to the gate", NEEDS[:1] == [("EG_A", ("Graffiti",))], NEEDS)
 
 
-def t_real_lane():
-    """The real lane lookup imports priority as the package does (a plain `import priority` fails on its relative
-    imports, and the fakes above never reach it)."""
-    fx = R.RoundFx.__new__(R.RoundFx)
-    try:
-        got = (fx.foundry_seat("FLOWWORKS_SELFTEST_PROBE"), fx.foundry_seat("EGROSTER_SELFTEST_PROBE"))
-    except Exception as e:     # noqa: BLE001
-        got = e
-    check("lane: the real FlowWorks lane loads and names a seat for a FlowWorks id only",
-          isinstance(got, tuple) and got[0] and got[1] is None, got)
-
-
 def t_cut_refusal_is_terminal():
     """LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 95 of 263 live runs re-refused one cut criterion every round, because the
     refusal row had no sha and so never stood for its build. A row with the sha stands; a cut refusal stands only while
@@ -388,15 +366,15 @@ def t_cut_refusal_is_terminal():
     rows = [{"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "REFUSED", "cut": True, "at": R.L.iso(now)}]
     cut = item()
     cut["criteria"] = [dict(c, cut=True) if c["id"] == "A1" else c for c in cut["criteria"]]
-    todo, counts = R.candidates([cut], lambda i: PROSE, lambda i: None, R.history(rows), now, 3600)
+    todo, counts = R.candidates([cut], lambda i: PROSE, R.history(rows), now, 3600)
     check("cut refusal: stands while the criterion is still cut", todo == [] and counts.get("judged on this build") == 1,
           (todo, counts))
-    todo, _ = R.candidates([item()], lambda i: PROSE, lambda i: None, R.history(rows), now, 3600)
+    todo, _ = R.candidates([item()], lambda i: PROSE, R.history(rows), now, 3600)
     check("cut refusal: runs once the prose holds the criterion whole", len(todo) == 1, todo)
     later = rows + [{"item": "EG_X", "criterion": "A1", "sha": "abc123", "outcome": "PASS", "at": R.L.iso(now + 60)}]
     check("cut refusal: a later PASS decides", R.history(later)[("EG_X", "A1", "abc123")]["outcome"] == "PASS")
     sha_less = [dict(rows[0], sha=None)]
-    todo, _ = R.candidates([cut], lambda i: PROSE, lambda i: None, R.history(sha_less), now, 3600)
+    todo, _ = R.candidates([cut], lambda i: PROSE, R.history(sha_less), now, 3600)
     check("cut refusal: (the old bug) a sha-less row stood for nothing", len(todo) == 1, todo)
 
 
@@ -423,7 +401,7 @@ def t_dead_rows_and_undeployed():
 
 
 def main():
-    for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never, t_real_lane,
+    for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never,
               t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

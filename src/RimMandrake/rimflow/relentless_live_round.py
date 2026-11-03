@@ -27,8 +27,9 @@ no line is counted as `no proof` in `eligible` and waits for one.
 
 A round, in order:
   1. no running game -> one rounds.jsonl row and nothing else (no bridge, no plan);
-  2. candidates: built/validated, built sha, an owed criterion at a live level with a live-proof line; FlowWorks and Gimme
-     Some Slack items are FOUNDRY's (flowworks_lane.json, or a FlowWorks/GimmeSomeSlack game file) and are skipped;
+  2. candidates: built/validated, built sha, an owed criterion at a live level with a live-proof line, of any owner and
+     any mod (FlowWorks and Gimme Some Slack included: FOUNDRY retired 2026-11-02, owner by card, and its acceptance
+     sweeps became this lane);
   3. history (live/runs.jsonl): a criterion already PASS, FAIL or REFUSED on the same built sha is not run again (a FAIL
      stands until a new build; a refusal of a criterion cut on the ledger stands until its prose holds it whole);
      UNMEASURED retries after live.unmeasured_retry_s;
@@ -56,7 +57,6 @@ LINE = (r"^\s*(?:[-*]\s+)?(?:`{verb}\s+(?P<cid1>[A-Z]{{1,3}}\d{{1,3}})\s*:\s*(?P
 PROOF_LINE = re.compile(LINE.format(verb="live-proof"))
 # `live-site <CID>: <cmd>`: what makes the map or save the proof reads, run first with the bridge held (relentless_live)
 SITE_LINE = re.compile(LINE.format(verb="live-site"))
-FOUNDRY_MODS = ("FlowWorks", "GimmeSomeSlack")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
 STOP = ("no running game to test", "bridge not taken")
@@ -141,8 +141,8 @@ def due(last, sha, now, retry_s, game=None, per_game=True):
     return None
 
 
-def candidates(items, proofs_of, foundry_seat, hist, now, retry_s, game=None):
-    """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of/foundry_seat.
+def candidates(items, proofs_of, hist, now, retry_s, game=None):
+    """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of.
     proofs_of(item id) -> the text of its live_proofs file, empty when it has none.
     `items` are ledger items in relentless_live.Fx.item's shape (criteria already whole or marked cut)."""
     todo, counts = [], {}
@@ -156,9 +156,6 @@ def candidates(items, proofs_of, foundry_seat, hist, now, retry_s, game=None):
         crit = {c["id"]: c for c in it.get("criteria") or []}
         owed = [c for c in it.get("outstanding") or [] if c in crit and crit[c]["level"] in L.LIVE_LEVELS]
         if not owed:
-            continue
-        if foundry_seat(it["id"]):
-            skip("FOUNDRY's lane")
             continue
         proofs = proof_lines(proofs_of(it["id"]))
         for cid in owed:
@@ -215,14 +212,6 @@ class RoundFx(L.Fx):
             self._plans[args] = L.Fx.deploy_plan(self, args, timeout)
         return self._plans[args]
 
-    def foundry_seat(self, item_id):
-        if not hasattr(self, "_lane"):    # priority uses relative imports: load it as the package does, read the lane once
-            import importlib
-            sys.path.insert(0, os.path.dirname(HERE))
-            self._prio = importlib.import_module("rimflow.priority")
-            self._lane = self._prio.flowworks_lane()
-        return self._prio.flowworks_seat(item_id, self._lane)
-
     def folded(self):
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
         import deploy_custom_mods
@@ -250,7 +239,7 @@ def plan(fx, root, r, now, only=None, game=None):
     lr = rules(r)
     hist = history(read_rows(os.path.join(root, "live", "runs.jsonl")))
     items = [it for it in fx.items() if only is None or it["id"] == only]
-    return candidates(items, fx.proofs, fx.foundry_seat, hist, now, 0 if only else lr["unmeasured_retry_s"], game)
+    return candidates(items, fx.proofs, hist, now, 0 if only else lr["unmeasured_retry_s"], game)
 
 
 def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
@@ -279,10 +268,6 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
             mods = fx.mods_of(sha)
         except ValueError as e:
             summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)[:200]})
-            continue
-        if any(m in FOUNDRY_MODS for m in mods):
-            summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "SKIPPED",
-                                    "why": "FOUNDRY's lane: %s" % ", ".join(m for m in mods if m in FOUNDRY_MODS)})
             continue
         if folded is None:
             folded = fx.folded()

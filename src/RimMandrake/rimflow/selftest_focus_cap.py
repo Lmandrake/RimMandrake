@@ -37,25 +37,26 @@ class Sandbox(object):
         self.sched = os.path.join(self.d, "schedule.json")
         with open(REAL) as f:
             c = json.load(f)["focus_cap"]
-        c.update(over)
+        # The shipped list is empty since FOUNDRY retired (2026-11-02); the cap's mechanism is tested on BENCH.
+        c.update(dict({"seats": ["BENCH"]}, **over))
         self.cap = c
         with open(self.sched, "w") as f:
             json.dump({"focus_cap": c}, f)
         self.env = dict(os.environ, RIMFLOW_LEDGER=os.path.join(self.ledger, "events.jsonl"), RIMFLOW_SCHEDULE=self.sched,
                         RIMFLOW_ITEMS=os.path.join(self.d, "items"), RM_PRIORITY_LIST=os.path.join(self.d, "no_list.json"))
 
-    def run(self, *a, seat="FOUNDRY"):
+    def run(self, *a, seat="BENCH"):
         return subprocess.run([sys.executable, CLI] + list(a), env=dict(self.env, RIMFLOW_SEAT=seat), capture_output=True,
                               text=True, timeout=120, stdin=subprocess.DEVNULL)
 
-    def ok(self, *a, seat="FOUNDRY"):
+    def ok(self, *a, seat="BENCH"):
         r = self.run(*a, seat=seat)
         assert r.returncode == 0, "%s: %s %s" % (a, r.stdout[-400:], r.stderr[-400:])
         return r.stdout
 
     def item(self, i, start=False):
         """Filed and, with `start`, claimed and started. A claim takes a lease, so a claimed item is already focus."""
-        self.ok("file", i, "--for", "FOUNDRY", "--kind", "task", "--title", "t", "--target", "v1", seat="BENCH")
+        self.ok("file", i, "--for", "BENCH", "--kind", "task", "--title", "t", "--target", "v1", seat="BENCH")
         if start:
             self.ok("claim", i)
             self.ok("start", i)
@@ -128,8 +129,8 @@ def expired_wait_and_history():
     w = model.replay(model_read(x))
     now = model.epoch_now()
     a, b = w.items["APLANT_FIX_STILL_OPEN"], w.items["BPLANT_FIX_STILL_OPEN"]
-    check(len(priority.focus_items(w, "FOUNDRY", now, x.cap["since"])) == 2, "started items count as focus")
-    check(priority.focus_items(w, "FOUNDRY", now, "2099-01-01") == [], "`doing` older than since is history, not focus")
+    check(len(priority.focus_items(w, "BENCH", now, x.cap["since"])) == 2, "started items count as focus")
+    check(priority.focus_items(w, "BENCH", now, "2099-01-01") == [], "`doing` older than since is history, not focus")
     a.wait_until = "2099-01-01T00:00:00Z"
     check(not priority.is_focus(a, now, x.cap["since"]), "a running wait is out of the count")
     a.wait_until = "2001-01-01T00:00:00Z"
@@ -141,7 +142,7 @@ def expired_wait_and_history():
 
 
 def unlisted_seat_and_damage():
-    x = Sandbox(seats=["FOUNDRY"], per_seat=1)
+    x = Sandbox(seats=["RUNNER"], per_seat=1)
     x.ok("file", "BENCHA_FIX_STILL_OPEN", "--for", "BENCH", "--kind", "task", "--title", "t", seat="BENCH")
     x.ok("claim", "BENCHA_FIX_STILL_OPEN", seat="BENCH")
     x.ok("start", "BENCHA_FIX_STILL_OPEN", seat="BENCH")
@@ -156,7 +157,7 @@ def unlisted_seat_and_damage():
 
 def focus_count(x):
     w = model.replay(model_read(x))
-    return len(priority.focus_items(w, "FOUNDRY", model.epoch_now(), x.cap["since"]))
+    return len(priority.focus_items(w, "BENCH", model.epoch_now(), x.cap["since"]))
 
 
 def reserve(x):
