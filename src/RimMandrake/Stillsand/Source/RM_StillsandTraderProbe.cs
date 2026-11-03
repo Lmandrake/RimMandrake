@@ -18,7 +18,8 @@ namespace RimMandrake.Stillsand
     public static class RM_StillsandTraderProbe
     {
         /// <summary>"-" -&gt; one line: "TRADERS biome=defName entryCell=bool source=n desperate=n generable=n | rows",
-        /// a row per non-player faction with trader kinds: "defName:src=bool,desp=bool,carrierAllowed=bool,gen=bool".
+        /// a row per non-player faction with trader kinds: "defName:src=bool,desp=bool,carrierAllowed=bool,gen=bool,pts=n",
+        /// pts being the points handed to CanGenerateFrom, so a gen=False row says whether points or carriers refused it.
         /// generable counts factions that are a group source (normal or desperate) AND have a Trader group the engine
         /// would generate here; 0 means a vanilla trade caravan cannot arrive on this map.</summary>
         public static string Report(string arg)
@@ -59,7 +60,7 @@ namespace RimMandrake.Stillsand
                 if (src) source++;
                 if (desp) desperate++;
                 if ((src || desp) && gen) generable++;
-                rows.Add(f.def.defName + ":src=" + src + ",desp=" + desp + ",carrierAllowed=" + carrier + ",gen=" + gen);
+                rows.Add(f.def.defName + ":src=" + src + ",desp=" + desp + ",carrierAllowed=" + carrier + ",gen=" + gen + ",pts=" + gp.points.ToString("0"));
             }
             return "TRADERS biome=" + biome.defName + " entryCell=" + entry + " source=" + source + " desperate=" + desperate
                 + " generable=" + generable + " | " + string.Join("; ", rows);
