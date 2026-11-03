@@ -11,7 +11,7 @@ It sets the game speed (--speed, default Normal) because the tool never does; it
 Writes the full reply to Transient/perf/game_comp_<utc>.json and prints the spikes and the by-mod ranking.
 
 Exit 0 when the instrument SAW the window and its answer is self-consistent (verdict() below): success, at least one
-patched override, ticks observed >= --min-ticks, a component and a mod ranked, coverage of the stage >= 0.5, a load
+patched override, ticks observed >= --min-ticks, a component and a mod ranked (an owner of "?" is no mod), coverage of the stage >= 0.5, a load
 seen when --load was given (and the load and speed calls succeeded), and - the point of the item - if the gameComp
 stage itself had a call >= spikeMs then the component the tool found INSIDE that same stage call (stageMaxTop*, one
 event, not a look-alike spike from another tick) took at least half of it, so a stall is NAMED, not just measured.
@@ -37,6 +37,11 @@ def _num(v):
     return v if math.isfinite(v) else None
 
 
+def _named(pkg):
+    """A real owning-mod packageId: the tool reports '?' for a type whose assembly it could not map to a mod."""
+    return isinstance(pkg, str) and pkg.strip() not in ("", "?")
+
+
 def verdict(r, min_ticks=1, expect_load=False, spike_ms=None):
     """(ok, [reasons]) for one jawa/game_comp_timing reply. Pure: no bridge. spike_ms: the threshold requested."""
     why = []
@@ -55,23 +60,54 @@ def verdict(r, min_ticks=1, expect_load=False, spike_ms=None):
         why.append("no component timed")
     if not r.get("byMod"):
         why.append("no mod ranked")
-    elif any(not m.get("packageId") for m in r["byMod"]):
-        why.append("a byMod row has no packageId")
+    elif any(not _named(m.get("packageId")) for m in r["byMod"]):
+        if all(not _named(m.get("packageId")) for m in r["byMod"]):
+            why.append("no byMod row names a mod (every packageId is '?' or empty): nothing was ranked by owner mod")
+        else:
+            why.append("a byMod row has no packageId")
     if not (n["stageMs"] or 0) > 0 or not (n["stageCalls"] or 0) > 0:
         why.append("the gameComp stage was never timed (stageMs %s, stageCalls %s)" % (r.get("stageMs"), r.get("stageCalls")))
     elif n["coverage"] is None or n["coverage"] < 0.5:
         why.append("coverage %s < 0.5: most of the stage ran outside the patched overrides" % r.get("coverage"))
+    else:
+        # The totals must agree with each other, or a stuck accumulator could switch a check off unseen.
+        # Rounding in the reply: stageMs and componentSumMs to 0.1 ms, stageMaxMs to 0.01 ms, coverage to 0.001.
+        stage, calls, smax, csum = n["stageMs"], n["stageCalls"], n["stageMaxMs"] or 0, _num(r.get("componentSumMs"))
+        eps = 1e-9
+        # true stage in [stage-0.05, stage+0.05]; true max between the true mean and the true total; shown max +-0.005
+        if smax > stage + 0.055 + eps or smax < max(0.0, stage - 0.05) / calls - 0.005 - eps:
+            why.append("stageMaxMs %s is impossible for stageMs %s over %s calls (max must lie between the mean and the "
+                       "total): the worst-call accumulator is broken" % (r.get("stageMaxMs"), r.get("stageMs"), r.get("stageCalls")))
+        if csum is None or csum < 0:
+            why.append("componentSumMs %s missing or negative" % r.get("componentSumMs"))
+        else:
+            s_lo, s_hi = max(stage - 0.05, 0.0), stage + 0.05
+            c_lo, c_hi = max(csum - 0.05, 0.0), csum + 0.05
+            lo = c_lo / s_hi
+            hi = c_hi / s_lo if s_lo > 0 else math.inf
+            if not lo - 0.0005 - eps <= n["coverage"] <= hi + 0.0005 + eps:
+                why.append("coverage %s disagrees with componentSumMs/stageMs = %s/%s" % (r.get("coverage"), csum, stage))
     if expect_load and (n["loadsSeen"] or 0) < 1:
         why.append("no load seen while armed")
     thr = n["spikeMs"]
     if thr is None or thr <= 0:
         why.append("spikeMs %s: stall attribution was not armed" % r.get("spikeMs"))
-    elif spike_ms is not None and abs(thr - spike_ms) > 0.06:   # the reply rounds to 0.1 ms
+    elif spike_ms is not None and abs(thr - spike_ms) > 0.05 + 1e-9:   # the reply rounds to 0.1 ms
         why.append("spikeMs %s is not the requested %s" % (thr, spike_ms))
     stage_max = n["stageMaxMs"] or 0
-    if thr and thr > 0 and stage_max >= thr:
-        top_ms = _num(r.get("stageMaxTopMs"))
-        if not r.get("stageMaxTopType") or not r.get("stageMaxTopPackageId") or top_ms is None or top_ms < 0.5 * stage_max:
+    top_ms = _num(r.get("stageMaxTopMs"))
+    csum = _num(r.get("componentSumMs"))
+    # The component inside the worst call can never outlast that call or all components together (rounding allowed),
+    # stalled or not: an impossible attribution is a broken instrument either way.
+    if top_ms is not None and (top_ms > stage_max + 0.01 + 1e-9 or (csum is not None and top_ms > csum + 0.055 + 1e-9)):
+        why.append("the component inside the worst call took %s ms, more than the call (%s ms) or all components "
+                   "(%s ms): the attribution is impossible" % (r.get("stageMaxTopMs"), r.get("stageMaxMs"), r.get("componentSumMs")))
+    # A stall is a call at or over the requested threshold (the echo is rounded to 0.1 ms; the max to 0.01 ms).
+    gate = spike_ms if spike_ms is not None else thr
+    if thr and thr > 0 and gate and gate > 0 and stage_max >= gate - 0.005:
+        # both shown to 0.01 ms: true top >= half the true call can show up to 0.0075 ms short
+        if not r.get("stageMaxTopType") or not _named(r.get("stageMaxTopPackageId")) or top_ms is None \
+                or top_ms < 0.5 * stage_max - 0.0075 - 1e-9:
             why.append("stage stalled %.1f ms at tg %s but the component inside that call took %s ms (%s): the stall is unnamed"
                        % (stage_max, r.get("stageMaxAtTick"), r.get("stageMaxTopMs"), r.get("stageMaxTopType")))
     return not why, why
