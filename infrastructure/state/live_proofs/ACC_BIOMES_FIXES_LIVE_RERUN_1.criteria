@@ -1,0 +1,4 @@
+A1 L2: modcheck GelatinousSlime chain seeker_proofs live (biomes + UtinniPatches loaded, so RM_Gene_B25_TheReek exists): rows seeker_loads_without_the_dialog and injection_marks_starts_fast_clock_and_antidote_wins_the_race both PASS
+A2 L2: modcheck LeaningScrub chain bloom live: row bloom_toggle_off_quiet PASS (runwayBloomEnabled off sheds no vissler arm)
+A3 L2: modcheck RustCathedral chain settings_roundtrip live: row RM_Setti_crossBiomeBiomeList_round_trips PASS (the string field writes, reads back and restores)
+A4 L2: modcheck Miasma chain mothers_price live: row returning_a_young_wins_her_tolerance PASS, or UNMEASURED naming "no warden mother and no water cell" -- never FAIL
