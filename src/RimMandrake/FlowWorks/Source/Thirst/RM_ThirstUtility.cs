@@ -67,6 +67,24 @@ namespace RimMandrake.FlowWorks.Thirst
 				RM_ThirstSettings.lastResortDrinking);
 		}
 
+		/// <summary>May this pawn still drink this liquid from a tank it is already walking to or sipping from? The same rule
+		/// the tank search used: MayDrink at the pawn's current level, except that a pawn inside the salt-water break may
+		/// drink the BreakOnly (salt) water it went for. Used by JobDriver_RM_DrinkFromTank so a tank refilled mid-job
+		/// with a forbidden liquid ends the job instead of being drunk.</summary>
+		public static bool MayDrinkFromTankNow(Pawn pawn, LiquidDef liquid)
+		{
+			if (pawn == null || liquid == null)
+			{
+				return false;
+			}
+			float level = LevelAny(pawn);
+			if (MayDrink(pawn, liquid, level))
+			{
+				return true;
+			}
+			return pawn.MentalState is MentalState_RM_DrinkBrine && MayDrink(pawn, liquid, level, RM_DrinkUse.BreakOnly);
+		}
+
 		/// <summary>The thirst need running for this pawn: RM_Thirst, or null (thirst off, or a pawn without it).</summary>
 		public static Need ThirstNeedAny(Pawn p)
 		{

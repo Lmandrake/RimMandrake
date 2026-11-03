@@ -230,7 +230,9 @@ namespace RimMandrake.FlowWorks.Thirst
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-			this.FailOn(() => Tank == null || !RM_ThirstUtility.QualityOf(Tank.storedLiquid).HasValue);
+			// Re-checked every tick and again at the sip: the tank may be emptied and refilled with another liquid
+			// (brine, toxic water) after the job was chosen, and that liquid must pass MayDrink on its own.
+			this.FailOn(() => Tank == null || !RM_ThirstUtility.MayDrinkFromTankNow(pawn, Tank.storedLiquid));
 			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
 			Toil drink = Toils_General.Wait(RM_ThirstMath.TankDrinkTicks).WithProgressBarToilDelay(TargetIndex.A);
 			drink.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
@@ -240,7 +242,8 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				Building_LiquidTank tank = Tank;
 				LiquidDef liquid = tank?.storedLiquid;
-				if (liquid == null || !tank.TryRemoveLiquid(RM_Volume.Units(RM_ThirstMath.TankDrinkLitres)))
+				if (liquid == null || !RM_ThirstUtility.MayDrinkFromTankNow(pawn, liquid)
+					|| !tank.TryRemoveLiquid(RM_Volume.Units(RM_ThirstMath.TankDrinkLitres)))
 				{
 					return;
 				}
