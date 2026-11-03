@@ -8,7 +8,10 @@ RSW_SandLion (SWBestiary) was a twin of RM_Vekka (Stillsand, mandrake.rm.biomes)
      PawnKindDef) and Corpse_RSW_SandLion;
   4. no XML outside that alias file names RSW_SandLion in an element, attribute or text (comments are history and
      are stripped), and no C# names it;
-  5. the frozen RUT_ExtremeDesert row names RM_Vekka behind MayRequire="mandrake.rm.biomes".
+  5. the frozen RUT_ExtremeDesert row names RM_Vekka behind MayRequire="mandrake.rm.biomes";
+  6. the Utinni stat patches were REPOINTED, not just stripped: AnimalTolerances_Ashkarr.xml targets
+     ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMin and Max and writes -1.1 and 100;
+     Doctrine/MegafaunaYield.xml targets RM_Vekka's statBases/MeatAmount and BoneAmount and writes 280 and 100.
 
 And one guard against the wrong dedupe: RSW_Vozzik is NOT a twin of RM_Vozzik. The owner gave them separate homes
 on 2026-10-04 (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1: RSW_Vozzik to the Rust Cathedral, "regenerate to make it
@@ -27,6 +30,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 SRC = os.path.join(ROOT, "src")
 ALIASES = os.path.join(SRC, "RimMandrake", "LeaningScrub", "Defs", "Misc", "RM_SWBRehome_Aliases.xml")
+TOLER = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Patches", "AnimalTolerances_Ashkarr.xml")
+MEGA = os.path.join(SRC, "RimUtinni", "Doctrine", "Patches", "MegafaunaYield.xml")
 EXTREME = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Defs", "BiomeDefs", "RUT_ExtremeDesert.xml")
 OLD, NEW = "RSW_SandLion", "RM_Vekka"
 SKIP = {"obj", "bin", "Textures", ".git", "node_modules"}
@@ -78,6 +83,35 @@ def defs_named(name):
             if dn is not None and (dn.text or "").strip() == name:
                 out.append((p, el.tag))
     return out
+
+
+def patch_ops(text):
+    """(xpaths, writes) of a patch file: every <xpath> text, and every (xpath, stat, value) an operation with a
+    <value> child writes. Parsed as XML, so comments do not count."""
+    root = ET.fromstring(text.encode("utf-8"))
+    xpaths, writes = set(), set()
+    for op in root.iter():
+        xp = op.find("xpath")
+        if xp is None or not (xp.text or "").strip():
+            continue
+        x = xp.text.strip()
+        xpaths.add(x)
+        val = op.find("value")
+        if val is not None:
+            for stat in val.iter():
+                if stat is not val and len(stat) == 0:
+                    writes.add((x, stat.tag, (stat.text or "").strip()))
+    return xpaths, writes
+
+
+def vekka_stat_checks(label, path, stats):
+    """stats: {stat: value}. Each needs its own xpath on RM_Vekka and a write of that value under RM_Vekka."""
+    base = '/Defs/ThingDef[defName="%s"]' % NEW
+    xpaths, writes = patch_ops(read(path))
+    for stat, value in stats.items():
+        check("%s targets %s/statBases/%s" % (label, base, stat), base + "/statBases/" + stat in xpaths)
+        ok = any(x.startswith(base) and t == stat and v == value for x, t, v in writes)
+        check("%s writes %s=%s on RM_Vekka" % (label, stat, value), ok)
 
 
 def main():
@@ -132,6 +166,16 @@ def main():
     check("5a. RUT_ExtremeDesert has no RSW_SandLion row", OLD not in rows)
     check("5b. RUT_ExtremeDesert names RM_Vekka 0.5 behind mandrake.rm.biomes",
           rows.get(NEW) == ("0.5", "mandrake.rm.biomes"), repr(rows.get(NEW)))
+
+    # 6. the Utinni stat patches point at RM_Vekka (probe first: the extractor sees a planted op)
+    px, pw = patch_ops('<Patch><!-- <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/Fake</xpath> -->'
+                       '<Operation><xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases</xpath>'
+                       '<value><MeatAmount>280</MeatAmount></value></Operation></Patch>')
+    check("probe: patch_ops sees an xpath and its write, not a commented one",
+          px == {'/Defs/ThingDef[defName="RM_Vekka"]/statBases'}
+          and pw == {('/Defs/ThingDef[defName="RM_Vekka"]/statBases', "MeatAmount", "280")}, repr((px, pw)))
+    vekka_stat_checks("6a. AnimalTolerances", TOLER, {"ComfyTemperatureMin": "-1.1", "ComfyTemperatureMax": "100"})
+    vekka_stat_checks("6b. MegafaunaYield", MEGA, {"MeatAmount": "280", "BoneAmount": "100"})
 
     # guard: the vozziks are two creatures by the owner's 2026-10-04 placement
     for n in ("RSW_Vozzik", "RM_Vozzik"):
