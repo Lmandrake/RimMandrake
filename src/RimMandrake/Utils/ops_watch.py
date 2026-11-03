@@ -2099,13 +2099,26 @@ def c_seats(now, rules, ctx):
 QUEUE_STALL_MIN = 20.0
 
 
+def _mtimes(d, pattern, skip_worker_msg=False):
+    """mtimes of the files still there: one moved between the glob and the stat (a claim or a finish) is skipped."""
+    ts = []
+    for f in Path(d).glob(pattern):
+        if skip_worker_msg and f.name.endswith(".worker_last_message.json"):
+            continue
+        try:
+            ts.append(f.stat().st_mtime)
+        except FileNotFoundError:
+            pass
+    return ts
+
+
 def newest_mtime(d, pattern="*.json"):
-    ts = [f.stat().st_mtime for f in Path(d).glob(pattern) if not f.name.endswith(".worker_last_message.json")]
+    ts = _mtimes(d, pattern, skip_worker_msg=True)
     return max(ts) if ts else None
 
 
 def oldest_mtime(d, pattern="*.json"):
-    ts = [f.stat().st_mtime for f in Path(d).glob(pattern)]
+    ts = _mtimes(d, pattern)
     return min(ts) if ts else None
 
 
@@ -2128,7 +2141,7 @@ def c_queues(now, rules, ctx):
             pend, act = Path(q["pending"]), Path(q["active"])
             if not pend.is_dir() or not act.is_dir():
                 raise OSError('queue dir missing: %s' % (pend if not pend.is_dir() else act))
-            plist = [f for f in pend.glob("*.json")]
+            plist = _mtimes(pend, "*.json")  # a job claimed between the glob and the stat is movement, not blindness
             alist = [f for f in act.glob("*.json") if not f.name.endswith(".worker_last_message.json")]
             marks = [newest_mtime(d) for d in [act] + [Path(x) for x in q.get("progress", [])]]
             marks = [m for m in marks if m is not None]
@@ -2137,7 +2150,7 @@ def c_queues(now, rules, ctx):
             elif not plist:
                 stalled = 0.0
             else:
-                ref = max(marks + [min(f.stat().st_mtime for f in plist)])
+                ref = max(marks + [min(plist)])
                 stalled = max(0.0, (now - ref) / 60.0)
             out[k + "pending"] = M(len(plist), "jobs waiting")
             out[k + "active"] = M(len(alist), "files in active")
