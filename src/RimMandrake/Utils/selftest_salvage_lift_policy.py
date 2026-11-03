@@ -203,7 +203,7 @@ SECTIONS = {
         "| `RM_TheftHaulUninstall` | `Minifiable` |",
         "| Capture comp (WreckedMachines) | `RM_Lift_TURRET` |",
         "| Jawa disarm-and-take | `RM_Lift_TRAP` |",
-        "| Scrap yield | `RM_Lift_RUIN`, `RM_Lift_WRECK` |",
+        "| Scrap yield | `RM_Lift_RUIN`, `RM_Lift_WRECK`, `RM_Lift_HULK` |",
     ]),
     "Capture, degraded": (200, [
         "Follow `convenience_replacements.md` §7 route (i): claim, then uninstall.",
@@ -240,6 +240,43 @@ LIFTABLE_LOOKALIKES = {"FenceGate": "owner-ruled fortification (trap_renaissance
 
 def fold(text):
     return " ".join(text.split())
+
+
+# passages pinned whole: a sentence added inside, or trailing text appended, is red
+EXACT = {
+    "one-list": ("One list, one pass", "`salvage_lift_policy.json` is the source. A generator emits it as a def in `mandrake.rm.patches` "
+                     "(game-generic, loads for everyone); nothing else states a membership."),
+    "enemy gear": ("The answer", "- **Enemy gear is earned.** Battlefield categories need a claim first, which vanilla already refuses while hostiles "
+                   "are about. Only the droid lifts from a live site, and it pays for that with a `TakingEvent`."),
+}
+# no line of the design may speak of a second list or carve an exception out of the claim rule
+FORBIDDEN = re.compile(r"\b(own|separate|second|another|other|its own|private|local) (lift )?lists?\b|\bclaim first, except\b|\bwithout (a |any )?claim\b", re.I)
+
+
+def paragraphs(body):
+    """Paragraphs and bullets of a section, each folded to one line."""
+    out, cur = [], []
+    for line in body.splitlines():
+        if not line.strip() or line.startswith("- ") or line.startswith("|"):
+            if cur:
+                out.append(fold(" ".join(cur)))
+            cur = [line] if line.startswith("- ") else []
+            continue
+        cur.append(line)
+    if cur:
+        out.append(fold(" ".join(cur)))
+    return out
+
+
+def exact_faults(text):
+    out = []
+    for label, (heading, want) in EXACT.items():
+        if want not in paragraphs(section(text, heading)):
+            out.append("the %s passage is not exactly the pinned text" % label)
+    for n, line in enumerate(text.splitlines(), 1):
+        if FORBIDDEN.search(line):
+            out.append("line %d speaks of another list or a claim exception: %s" % (n, line.strip()[:120]))
+    return out
 
 
 def section(text, heading):
@@ -312,9 +349,10 @@ def table_faults(text, p):
     return out
 
 
-def prose_faults(text, p):
+def prose_faults(text, p, populated=None):
     """The sections the design owes: each must keep its substance, sentence by sentence, and agree with the policy."""
-    out = []
+    out = exact_faults(text)
+    populated = POPULATED if populated is None else populated
     for heading, (floor, sentences) in SECTIONS.items():
         body = fold(section(text, heading))
         if len(body.split()) < floor:
@@ -341,6 +379,11 @@ def prose_faults(text, p):
                 for name in re.findall(r"`RM_Lift_([A-Z_]+)`", line):
                     if name not in by_id or not want(by_id[name]):
                         out.append("%s reads %s, which the policy does not support" % (reader, name))
+    scrap_row = [line for line in one.splitlines() if line.startswith("| Scrap yield")]
+    read = set(re.findall(r"`RM_Lift_([A-Z_]+)`", scrap_row[0])) if scrap_row else set()
+    for c in p["categories"]:
+        if c["route"] == "scrap_for_yield" and populated.get(c["id"]) and c["id"] not in read:
+            out.append("Scrap yield does not read %s, a populated scrap category" % c["id"])
     build = section(text, "Build order")
     for item in ALL_BUILD_ITEMS:
         if "| `%s` |" % item not in build:
@@ -368,6 +411,7 @@ def scrap_faults(census, p, comp_source):
     return out
 
 
+POPULATED = {name: sum(1 for r in rows if r["category"] == name) for name in PIN}
 with open(os.path.join(REPO, "src", "RimMandrake", "Wreckage", "Source", "RM_CompSalvageLoot.cs"), encoding="utf-8") as f:
     loot_source = f.read()
 check(not scrap_faults(rows, policy, loot_source), "scrap facts: %s" % scrap_faults(rows, policy, loot_source))
@@ -462,6 +506,23 @@ must_redden("loot comp lost the salvager", scrap_faults(rows, policy, loot_sourc
 must_redden("capture reads another tag", prose_faults(doc_text.replace("| Capture comp (WreckedMachines) | `RM_Lift_TURRET` |", "| Capture comp (WreckedMachines) | `RM_Lift_KIT` |"), policy))
 must_redden("the droid's class", prose_faults(doc_text.replace("**Reach.** `HEAVY_MACHINE` and `WRECKED_TIER` are droid-only", "**Reach.** `HEAVY_MACHINE` are droid-only"), policy))
 must_redden("the droid class leaves the JSON", prose_faults(doc_text, mutated(named(WRECKED_TIER=dict(actor="colonist")))))
+# the checker's mutants at 1d43590c, each must now go red
+GEN = "A generator emits it as a def in `mandrake.rm.patches` (game-generic, loads\nfor everyone);"
+check(GEN in doc_text, "the generator sentence moved: the mutants below would test nothing")
+must_redden("capture keeps its own list", prose_faults(doc_text.replace(GEN, "Capture keeps its own list in `mandrake.rm.property`; a generator emits the rest;"), policy))
+must_redden("generator sentence deleted", prose_faults(doc_text.replace(GEN, ""), policy))
+must_redden("generator moves mods", prose_faults(doc_text.replace("`mandrake.rm.patches` (game-generic", "`mandrake.rm.property` (game-generic"), policy))
+CLAIM = "need a claim first, which vanilla"
+check(CLAIM in doc_text, "the claim sentence moved: the mutants below would test nothing")
+must_redden("turrets exempt from the claim", prose_faults(doc_text.replace(CLAIM, "need a claim first, except turrets, which any colonist lifts freely, which vanilla"), policy))
+must_redden("claim sentence extended at the end", prose_faults(doc_text.replace("with a `TakingEvent`.\n", "with a `TakingEvent`. Turrets need no claim.\n", 1), policy))
+must_redden("a private list elsewhere", prose_faults(doc_text + "\nWreckedMachines keeps a separate list of turrets.\n", policy))
+HULK_ROW = ", `RM_Lift_HULK` |"
+check(HULK_ROW in doc_text, "the scrap reader row lost HULK")
+must_redden("scrap reader drops HULK", prose_faults(doc_text.replace(HULK_ROW, " |"), policy))
+must_redden("scrap reader drops RUIN", prose_faults(doc_text.replace("| Scrap yield | `RM_Lift_RUIN`, ", "| Scrap yield | "), policy))
+must_redden("scrap reader row gone", prose_faults("\n".join(l for l in doc_text.splitlines() if not l.startswith("| Scrap yield")), policy))
+must_redden("a scrap category populated and unread", prose_faults(doc_text, mutated(named(KIT=dict(route="scrap_for_yield")))))
 for item in ALL_BUILD_ITEMS:
     must_redden("build order row " + item, prose_faults(doc_text.replace("| `%s` |" % item, "| dropped |"), policy))
 

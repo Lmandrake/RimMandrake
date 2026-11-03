@@ -114,7 +114,7 @@ for everyone); nothing else states a membership.
 | `RM_TheftHaulUninstall` | `Minifiable` | unchanged; the widened set is now its reach |
 | Capture comp (WreckedMachines) | `RM_Lift_TURRET` | marks and degrades, below |
 | Jawa disarm-and-take | `RM_Lift_TRAP` | the verb, on armed enemy traps |
-| Scrap yield | `RM_Lift_RUIN`, `RM_Lift_WRECK` | one salvage rule, below |
+| Scrap yield | `RM_Lift_RUIN`, `RM_Lift_WRECK`, `RM_Lift_HULK` | one salvage rule, below |
 
 ## Capture, degraded
 
