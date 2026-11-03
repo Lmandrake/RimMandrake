@@ -1,0 +1,1 @@
+Root steps inside WSL need no owner sudo: wsl.exe -u root -e <cmd> runs as root without a password (used 2026-11-03 to mask tmp.mount, SEAT_MEMORY_STANDARD_FALLBACK_1). wsl --shutdown still kills every window, so a restart stays a stopping-point act.

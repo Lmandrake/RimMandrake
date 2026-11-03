@@ -486,6 +486,9 @@ so the agent steps wait for `findmnt -no FSTYPE --target /tmp` to print somethin
 
 1. The owner's step: `sudo systemctl mask tmp.mount`, then `wsl --shutdown` at a stopping point. `/tmp` is lost
    (disposable scratch). On ext4 it ages at 10 days (`/usr/lib/tmpfiles.d/tmp.conf`).
+   **Mask done 2026-11-03** by an agent (`wsl.exe -u root -e systemctl mask tmp.mount`; the owner had lifted the
+   hold); `systemctl is-enabled tmp.mount` prints `masked`. It takes effect at the next WSL restart, which closes
+   every window, so no agent forces it: any restart (reboot, `wsl --shutdown`) completes step 1.
 2. Then agents delete `.claude/hooks/block_tmpfs_clone.py`, its selftest, its `.claude/settings.json` entry and its
    `src/RimMandrake/rimflow/live_baseline.txt` line; drop the `TMPDIR`/`CLAUDE_CODE_TMPDIR` lines from
    `src/RimMandrake/Utils/claude_bounded.sh`; and replace admission in `src/RimMandrake/Utils/run_selftests.py` with
