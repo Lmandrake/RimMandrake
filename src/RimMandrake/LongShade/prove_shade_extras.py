@@ -29,9 +29,13 @@ Harrok -> enabled run 600 -> Harrok -> run 1000 -> Harrok -> Cleanup.
       than 1 + (ticks since the first)/900
   A10 with harrokEnabled=false (the same harrok and prey, 1000 ticks) no strike, no Stab, no message
   A11 the up-sun colonist (outside the strip) takes no Stab through every window
+  A8-A11 also need the staged geometry to be the item's: HSTAGED reports length 6, half width 0.9, cooldown 900, max prey
+      1.5, dmg 12-20, and judge() recomputes the strip itself (STRIP_LEN/STRIP_HALF, not the def's numbers): both prey
+      cells inside it, the control outside.
 Probe: RimMandrake.LongShade.RM_ShadeExtrasProof (Source/RM_ShadeExtrasProof.cs) through jawa/static_call.
 --offline  the wiring and the verdict logic (no game): the probe is compiled, every method the driver calls exists, the
-           message text and toggles still match the mechanism, and judge() passes a good record and fails each clause on
+           message text and toggles still match the mechanism, the harrok comp's shipped defaults are the item's
+           6/0.9/1.5/900/12-20 and RM_Harrok does not override them, and judge() passes a good record and fails each clause on
            a record broken for that clause.
 """
 import json
@@ -55,6 +59,9 @@ OFF_TEXT = "Lure awning switched off in Mod Settings."
 MSG = "A harrok's shadow fell across "
 NEVER = -999999
 DMG = (12.0, 20.0)
+# The item's own harrok numbers (criterion 3): strip 6 cells long, half width 0.9, one strike per 900 ticks,
+# prey of body size <= 1.5, a Stab of 12-20. Pinned here, never read back from the def under test.
+STRIP_LEN, STRIP_HALF, COOLDOWN, MAX_PREY = 6.0, 0.9, 900, 1.5
 
 
 def kv(line):
@@ -81,6 +88,35 @@ def _i(d, k, default=None):
 
 def _wild_deep(t, r):
     return _f(t, r + "_shade") >= 0.7 and _f(t, r + "_roof") <= 0.01 and _f(t, r + "_gear") <= 0.01
+
+
+def in_strip(dx, dz, dir_x, dir_z, length=STRIP_LEN, half=STRIP_HALF):
+    """The item's strip, independent of the C# kernel: along (0, length], sideways <= half."""
+    along = dx * dir_x + dz * dir_z
+    side = abs(dx * -dir_z + dz * dir_x)
+    return 0.0 < along <= length and side <= half
+
+
+def _xy(d, k):
+    try:
+        a, b = d.get(k).split(",")
+        return float(a), float(b)
+    except (AttributeError, ValueError):
+        return None
+
+
+def _geometry(hs):
+    """HSTAGED reports the item's numbers, and its cells sit where the item's strip says they should."""
+    near = lambda k, v: abs(_f(hs, k) - v) <= 1e-3
+    if not (near("length", STRIP_LEN) and near("halfWidth", STRIP_HALF) and _i(hs, "cooldown") == COOLDOWN
+            and near("maxPrey", MAX_PREY) and hs.get("dmg") == "%g-%g" % DMG):
+        return False
+    h, d = _xy(hs, "harrok"), _xy(hs, "dir")
+    cells = [_xy(hs, r) for r in ("prey1", "prey2", "ctrl")]
+    if h is None or d is None or None in cells or abs(d[0] ** 2 + d[1] ** 2 - 1.0) > 0.01:
+        return False
+    rel = [(c[0] - h[0], c[1] - h[1]) for c in cells]
+    return (in_strip(*rel[0], *d) and in_strip(*rel[1], *d) and not in_strip(*rel[2], *d))
 
 
 def _still(t, r):
@@ -117,7 +153,7 @@ def judge(rec):
 
     hs = kv(rec.get("harrok_stage"))
     ho, h1, h2 = kv(rec.get("harrok_off")), kv(rec.get("harrok_w1")), kv(rec.get("harrok_w2"))
-    staged = (hs.get("_head") == "HSTAGED" and hs.get("downed") == "True")
+    staged = (hs.get("_head") == "HSTAGED" and hs.get("downed") == "True" and _geometry(hs))
 
     def placed(h):
         return (h.get("_head") == "HARROK" and h.get("moved") == "False" and h.get("roofed") == "False"
@@ -141,8 +177,8 @@ def judge(rec):
           and off_now is not None and last1 is not None and last1 >= off_now)
     out["A8"] = (a8, "%s | stage: %s" % (rec.get("harrok_w1"), rec.get("harrok_stage")))
     a9 = (a8 and placed(h2) and last2 is not None and _i(h1, "now") is not None and _i(h1, "now") - off_now < 900
-          and _i(h2, "exact", 0) >= 2 and last2 - last1 >= 900
-          and _i(h2, "exact", 0) <= 1 + (_i(h2, "now", 0) - last1) // 900)
+          and _i(h2, "exact", 0) >= 2 and last2 - last1 >= COOLDOWN
+          and _i(h2, "exact", 0) <= 1 + (_i(h2, "now", 0) - last1) // COOLDOWN)
     out["A9"] = (a9, "w1: %s | w2: %s" % (rec.get("harrok_w1"), rec.get("harrok_w2")))
     out["A10"] = (a10 and a8, "off: %s | then on: exact=%s" % (rec.get("harrok_off"), h1.get("exact")))
     a11 = a8 and all(_i(h, "ctrl_stab") == 0 and h.get("ctrl_inStrip") == "False" for h in (ho, h1, h2))
@@ -196,7 +232,11 @@ def _breaks():
                ("awning_on", "full=Made%20of%20wood%0AGame%20sheltering%20nearby%3A%201", "full=Made%20of%20wood")],
         "A6": [("awning_off", "extra=Lure%20awning%20switched%20off%20in%20Mod%20Settings.", "extra=Game%20sheltering%20nearby%3A%201")],
         "A7": [("awning_on", "gear=0.7", "gear=0")],
-        "A8": [("harrok_w1", "exact=1", "exact=0"), ("harrok_w1", "prey1_stabsev=15.2", "prey1_stabsev=30"),
+        "A8": [("harrok_stage", "length=6", "length=20"), ("harrok_stage", "halfWidth=0.9", "halfWidth=3"),
+               ("harrok_stage", "cooldown=900", "cooldown=300"), ("harrok_stage", "maxPrey=1.5", "maxPrey=3"),
+               ("harrok_stage", "dmg=12-20", "dmg=12-40"), ("harrok_stage", "prey2=77,78", "prey2=79,78"),
+               ("harrok_stage", "prey1=76,77", "prey1=79,83"), ("harrok_stage", "ctrl=73,73", "ctrl=76,76"),
+               ("harrok_w1", "exact=1", "exact=0"), ("harrok_w1", "prey1_stabsev=15.2", "prey1_stabsev=30"),
                ("harrok_w1", "roofed=False", "roofed=True"), ("harrok_w1", "prey1_size=1", "prey1_size=2")],
         "A9": [("harrok_w2", "last=9420", "last=9100"), ("harrok_w2", "exact=2", "exact=1"),
                ("harrok_w1", "now=9180", "now=9500")],
@@ -222,6 +262,22 @@ def offline():
         bad.append("the lure awning's inspect strings in RM_ShadeExtras.cs changed")
     if '"A harrok\'s shadow fell across " + p.LabelShort + ", and the harrok struck."' not in src:
         bad.append("the probe's expected harrok message drifted from the mechanism's")
+    pins = {"shadowLengthCells": r"6f", "shadowHalfWidth": r"0\.9f", "maxPreyBodySize": r"1\.5f", "cooldownTicks": r"900",
+            "strikeDamageRange": r"new FloatRange\(12f, 20f\)"}
+    for field, val in pins.items():
+        if not re.search(r"public \w+ %s = %s;" % (field, val), mech):
+            bad.append("CompProperties_RM_HarrokAmbush.%s default is not the item's %s" % (field, val.replace("\\", "")))
+    race = _read("src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Harrok.xml")
+    if not re.search(r'<li Class="RimMandrake\.LongShade\.CompProperties_RM_HarrokAmbush"\s*/>', race):
+        bad.append("RM_Harrok's ambush comp overrides (or lost) the defaults; the item's 6/0.9/1.5/900/12-20 are unpinned")
+    if "HarrokAmbush" in "".join(_read(os.path.join("src/RimMandrake/LongShade/Patches", f)) for f in
+                                 (os.listdir(os.path.join(REPO, "src/RimMandrake/LongShade/Patches"))
+                                  if os.path.isdir(os.path.join(REPO, "src/RimMandrake/LongShade/Patches")) else [])):
+        bad.append("a LongShade patch touches the harrok ambush comp; the pinned defaults may not be what loads")
+    for args, want in (((2.2, 0, 1, 0), True), ((6, 0, 1, 0), True), ((6.01, 0, 1, 0), False), ((3, 0.9, 1, 0), True),
+                       ((3, 0.91, 1, 0), False), ((-1, 0, 1, 0), False), ((0, 0, 1, 0), False)):
+        if in_strip(*args) != want:
+            bad.append("judge's own strip geometry is wrong at %s" % (args,))
     if "private int lastStrike" not in mech:
         bad.append("RM_CompHarrokAmbush.lastStrike (read by reflection) was renamed")
     sett = _read("src/RimMandrake/LongShade/Source/RM_LongShadeMod.cs")
