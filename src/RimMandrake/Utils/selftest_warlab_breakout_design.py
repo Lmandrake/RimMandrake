@@ -140,6 +140,94 @@ def start_and_choices(sec):
     return bad
 
 
+BREAKOUT = "**The breakout (start of the third act).**"
+RECFAIL = "**Recover or fail: one check, at the seals.**"
+LATCH = "Failure latches the moment"
+
+
+def _bullet(sec, head):
+    """The top-level '- **X:**' bullet starting with head, with its indented continuation and sub-bullets."""
+    lines = sec.splitlines()
+    i = next((n for n, l in enumerate(lines) if l.startswith(head)), None)
+    if i is None:
+        return ""
+    out = [lines[i]]
+    for l in lines[i + 1:]:
+        if not l.strip() or not l.startswith(" "):
+            break
+        out.append(l)
+    return "\n".join(out)
+
+
+def breakout_recover_fail(sec):
+    """The breakout and the recover-or-fail beat, by content (blind check, gen 9: deleting them stayed green)."""
+    bad = []
+    brk = _block(sec, BREAKOUT, RECFAIL)
+    seals = _block(sec, RECFAIL, LATCH)
+    if not brk or not seals:
+        return ["§2.10 breakout / recover-or-fail blocks not found in order"]
+    fb = " ".join(brk.split())
+    for want in ("Failing cells release live originals into the core", "band by band", "outer gate", "attack them"):
+        if want not in fb:
+            bad.append(f"breakout paragraph lacks {want!r}")
+    fs = " ".join(seals.split())
+    for want in ("three bulkhead seals", "the last at the outer gate", "works from either side",
+                 "Shutting takes one pawn 8 in-game hours", "A shut seal stops everything behind it",
+                 "The pace is a schedule", "W/3", "passes the outer gate exactly as the window closes"):
+        if want not in fs:
+            bad.append(f"seals/pace block lacks {want!r}")
+    if PLACEHOLDER.search(brk + seals):
+        bad.append("breakout or recover-or-fail block holds a placeholder")
+    rec = " ".join(_bullet(seals, "- **Recover:**").split())
+    fail = " ".join(_bullet(seals, "- **Fail:**").split())
+    if not rec:
+        bad.append("no '- **Recover:**' bullet")
+    else:
+        if "every live specimen is dead or behind a shut seal" not in rec:
+            bad.append("Recover bullet does not say every live specimen dead or behind a shut seal")
+        if "settled by the choice" not in rec:
+            bad.append("Recover bullet does not say the choice settles what is sealed in")
+        m = re.search(r"Under Burn the cells, Leave them and Loose the experiments, the purge settles it(.*?)Recovery latches when the purge fires", rec)
+        if not m or "every specimen there dies" not in m.group(1) or "calls the purge off" not in m.group(1):
+            bad.append("Recover bullet lacks the purge settling Burn / Leave / Loose")
+        m = re.search(r"Under Hold them and Take a specimen, recovery latches at once(.*?)not a live specimen, for this check", rec)
+        if not m or "back in stasis" not in m.group(1) or "Imperial attempt" not in m.group(1) or "Shattered Lab" not in m.group(1):
+            bad.append("Recover bullet lacks the stasis settling Hold / Take")
+        if "Recovery latches in every case" not in rec:
+            bad.append("Recover bullet does not say recovery latches in every case")
+    if not fail:
+        bad.append("no '- **Fail:**' bullet")
+    else:
+        for want in ("a specimen passes the outer gate", "leaves the map with one loose", "One specimen out is enough"):
+            if want not in fail:
+                bad.append(f"Fail bullet lacks {want!r}")
+    if rec and fail and seals.find("- **Recover:**") > seals.find("- **Fail:**"):
+        bad.append("Fail bullet comes before Recover bullet")
+    if "nothing undoes it" not in " ".join(sec[sec.find(LATCH):sec.find(LATCH) + 400].split()):
+        bad.append("failure does not latch for good")
+    return bad
+
+
+def breakout_mutants(sec):
+    """The gen-9 checker's four deletions plus each half of Recover: every one must go red."""
+    b, r, l = sec.index(BREAKOUT), sec.index(RECFAIL), sec.index(LATCH)
+    rb, fb = sec.index("- **Recover:**"), sec.index("- **Fail:**")
+    fend = sec.index("\n\n", fb)
+    pu, ho = sec.index("  - Under Burn the cells"), sec.index("  - Under Hold them")
+    ev = sec.index("  - Recovery latches in every case")
+    gutted = {
+        "seals, pace, Recover and Fail deleted": sec[:r] + sec[l:],
+        "Fail bullet deleted": sec[:fb] + sec[fend:],
+        "Recover bullet deleted": sec[:rb] + sec[fb:],
+        "breakout paragraph deleted": sec[:b] + sec[r:],
+        "purge sub-bullet deleted": sec[:pu] + sec[ho:],
+        "stasis sub-bullet deleted": sec[:ho] + sec[ev:],
+        "Fail loses the crew-leaves case": sec.replace("leaves the map with one loose", "leaves"),
+    }
+    bad = [f"mutant {k!r} changed nothing" for k, s in gutted.items() if s == sec]
+    return bad + [f"breakout/recover-fail checks stay green on mutant {k!r}" for k, s in gutted.items() if not breakout_recover_fail(s)]
+
+
 def start_mutants(sec):
     """The checker's two mutants (trigger list deleted; choices paragraph+table+drive paragraph deleted) and a blanked cell."""
     w, c, k = sec.index("**What starts the breakout"), sec.index("**The choices.**"), sec.index("**The Specimen Casket.**")
@@ -191,11 +279,13 @@ def main():
             bad.append(f"§2.10 lacks {want!r}")
     bad += planet_content(sec)
     bad += start_and_choices(sec)
+    bad += breakout_recover_fail(sec)
     if "### 2.9 " not in spec:
         bad.append("no §2.9 in dungeons_arc_spec.md")
     if not bad:
         bad += mutants(sec)
         bad += start_mutants(sec)
+        bad += breakout_mutants(sec)
     q = spec[spec.index("### 2.9 "):spec.index("### 2.10 ")] if "### 2.9 " in spec else ""
     for gone in ("What are the specimen choices", "What does a successful recovery leave"):
         if gone in q:
