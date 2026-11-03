@@ -7,7 +7,10 @@ Three checks, each proven able to fail by a planted break on a temp copy:
      "0 errors" while shipping the verb dead (Pickpocket, d95d7ec55, did exactly that);
   2. RM_SettlementVerbsProof.cs runs all six cases and every option label it clicks is the label its
      provider really builds (a renamed label would make the live proof read "no option");
-  3. the committed DLL carries the proof type's name and its .srchash names the proof source.
+  3. the committed DLL carries the proof type's name and its .srchash names the proof source;
+  4. every live-proof line in infrastructure/state/live_proofs/SETTLEMENT_VERBS_WAVE_1.txt (A1-A6) passes the
+     live gate's own relentless_live.refused_proof, and settlement_verbs_live_proof.verdict() passes only a PASS
+     line naming the clause's own verb.
 
     python3 src/RimMandrake/Utils/selftest_settlement_verbs_static.py
 """
@@ -43,6 +46,37 @@ LABELS = {
               '"Buy " + drinker.LabelShort + " a round (" + fee + " silver)"'),
 }
 PROOF = "RM_SettlementVerbsProof.cs"
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+LIVE = os.path.join(REPO, "infrastructure", "state", "live_proofs", "SETTLEMENT_VERBS_WAVE_1.txt")
+CLAUSES = ("A1", "A2", "A3", "A4", "A5", "A6")
+
+
+def live_faults(path):
+    """-> faults in the live-proof file: a clause missing, or a line the live gate would refuse."""
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+    import json
+    import relentless_live as RL
+    rules = RL.live_rules(json.load(open(RL.RULES, encoding="utf-8")) if os.path.exists(RL.RULES) else None)
+    lines = {}
+    for ln in open(path, encoding="utf-8").read().splitlines():
+        m = re.match(r"^live-proof (\w+): (.+)$", ln)
+        if m:
+            lines[m.group(1)] = m.group(2)
+    out = ["%s: no live-proof line" % c for c in CLAUSES if c not in lines]
+    for c, cmd in sorted(lines.items()):
+        why = RL.refused_proof(rules, "settlement verbs", "", cmd)
+        if why:
+            out.append("%s: gate refuses: %s" % (c, why))
+    return out
+
+
+def verdict_faults():
+    sys.path.insert(0, MOD)
+    import settlement_verbs_live_proof as P
+    cases = [("A1", '"PASS salvage fee=12 strong=30"', 0), ("A1", '"FAIL salvage no ClaimFeePaid"', 1),
+             ("A2", '"PASS salvage fee=12"', 2), ("A6", '"PASS bribe suspicion 0.8->0.52"', 0),
+             ("A4", '"REFUSED: static_call disabled"', 2), ("A5", '""', 2), ("A3", '"PASS commerce"', 0)]
+    return ["verdict(%s, %s) = %s, want %s" % (c, t, P.verdict(c, t)[0], w) for c, t, w in cases if P.verdict(c, t)[0] != w]
 
 
 def compile_gaps(src):
@@ -85,7 +119,8 @@ def dll_faults(dll):
 def main():
     bad = []
     g, lf, df = compile_gaps(SRC), label_faults(SRC), dll_faults(DLL)
-    for name, got in (("compile list", g), ("labels", lf), ("dll", df)):
+    lv, vd = live_faults(LIVE), verdict_faults()
+    for name, got in (("compile list", g), ("labels", lf), ("dll", df), ("live gate", lv), ("verdict", vd)):
         print("%-12s %s" % (name, "ok" if not got else "FAIL " + "; ".join(got)))
         bad += got
     with tempfile.TemporaryDirectory() as tmp:
@@ -108,6 +143,12 @@ def main():
         open(fake, "wb").write(b"MZ nothing here")
         if not dll_faults(fake):
             bad.append("planted bare DLL not caught")
+        # planted: a live line that builds its command at run time
+        lp = os.path.join(tmp, "live.txt")
+        open(lp, "w", encoding="utf-8").write(open(LIVE, encoding="utf-8").read().replace(
+            "settlement_verbs_live_proof.py A3", "settlement_verbs_live_proof.py $(echo A3)"))
+        if not any(f.startswith("A3: gate refuses") for f in live_faults(lp)):
+            bad.append("planted run-time live line not caught")
     print("planted breaks %s" % ("caught" if not any(b.startswith("planted") for b in bad) else "MISSED"))
     print("PASS" if not bad else "FAIL")
     return 0 if not bad else 1
