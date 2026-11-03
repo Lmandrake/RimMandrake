@@ -274,3 +274,14 @@ and renaming `fall_line.json` contradicts this pass's own explicit instruction.
   1,235 road edges over the canonical 1,387: that 152-edge delta is **pre-existing
   drift**, not this pass's doing (potential links were 2,470 before and after), and
   absorbing it silently into this change would have hidden it. Needs its own look.
+
+### proof 2026-11-03 (Relentless) — offline on the save players receive, live clauses batched
+- `python3 src/RimMandrake/Utils/biome_world_switch_check.py` decodes `canon.yml` planet.start_savegame
+  (`world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`): **0 of 21,872 tiles** on the 23 donor/vanilla
+  defs, every tile on an `RM_`/`RUT_` def, tile 17007 on `RM_Stillsand` (declared only by our Stillsand mod).
+  Probe: the same decoder finds 17,702 donor tiles on the pre-switch `world/ASHKARR_DRAFT_2026-08-24.rws`.
+  Selftest `selftest_biome_world_switch_check`.
+- The save still paints two retired names (`RM_Wasteland` 1,853, `RM_NightsideIce` 1,506; no src BiomeDef):
+  owned by `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`, not this item.
+- Live clauses A2 (tile 17007's def resolves from our mod) and A3 (full-list Player.log names no painted owned
+  biome def in an error line): `infrastructure/state/live_proofs/BIOME_WORLD_SWITCH_WAVE_1.txt`.
