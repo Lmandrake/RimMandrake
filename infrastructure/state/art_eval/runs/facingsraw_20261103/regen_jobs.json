@@ -1,0 +1,90 @@
+[
+ {
+  "id": "arteval_RSW_Dragonsnake__Dragonsnake_A_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Dragonsnake__Dragonsnake_A_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same hide colour, same subdued olive moss and spines along the back, same faint bioluminescent dots, same leaf-shaped paddle at the end of the tail, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the dragonsnake, a large semi-aquatic predatory serpentine reptile of muddy swamp waters, with sharp fangs, bioluminescent spots along its back and a long muscular body on splayed legs. Rear view, seen from behind: the back, spined and covered in subdued olive-green moss, runs away from the viewer; the moss has the same muted olive mottling and low highlight intensity as the east side view. Small, faint bioluminescent dots are set sparsely along the dorsal ridge and the tail base, at the same size, density and softness as the east view, glinting gently against the olive moss. The haunches and splayed legs are broad, about 300 px wide across the legs, and the long tail tapers toward the camera and ends in the same leaf-shaped paddle as the side view; the head faces away and the eyes are hidden. The animal is large and bulky and fills the canvas to the same degree as the side view, the whole body visible with nothing cut off. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingsraw_20261103",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Dragonsnake__Dragonsnake_B_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Dragonsnake__Dragonsnake_B_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same hide colour and texture, same short pink dorsal spikes, same pale pink tail fan with whitish-cream highlights, same speckled glowing bioluminescent spots, same body size on the canvas, now seen from behind. A creature sprite for RimWorld: the dragonsnake, a large semi-aquatic predatory serpentine reptile with sharp fangs and bioluminescent spots along its back, dweller of muddy swamp waters. This is the rear view, drawn from the game's low oblique camera (about 35 degrees above the horizon, the same elevation as the east view): the camera stands behind the animal at about shoulder height and looks slightly down. The broad haunches, hips and hind legs are large and nearest the viewer in the foreground. The back is foreshortened and recedes upward in the picture as a short, compact mass. The torso overlaps and hides the head, so only a small sliver of the head's rear shows above the shoulders and the eyes are out of sight. The thick tail base curves toward the viewer, foreshortened, and ends in the large tail fan. The silhouette is a compact, rounded rear view of the body, with its outline made from the haunches and tail fan. The tail fan spreads wide in pale pink rays with broad whitish-cream highlights, the same colour as in the east view, under soft natural lighting. Along the back, a row of short, separate pink dorsal spikes, each one distinct, runs from the shoulders toward the tail, with clearly visible speckled glowing bioluminescent spots scattered between them. The body fills the canvas at the same scale as the east view. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_TOPDOWN, F_INCONSISTENT, F_TOPDOWN, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingsraw_20261103",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Dragonsnake__Dragonsnake_C_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Dragonsnake__Dragonsnake_C_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same hide colour, same spine row, same row of glowing bioluminescent spots along the back, same body bulk, same size on the canvas. A creature sprite for RimWorld: the dragonsnake, a large semi-aquatic predatory serpentine reptile with sharp fangs and bioluminescent spots along its back. Show it in a LOW OBLIQUE REAR VIEW, seen from behind at the game camera's gentle downward tilt of about 35\u00b0 (the same camera height as the side view, with the viewer's eye only a little above the animal's back): the heavy haunches, the splayed hind legs and the thick tail base are the nearest forms and fill the lower and central canvas. The tail leaves the haunches toward the viewer and curls to one side in a single S-curve, shortened by perspective so it overlaps the hips. The back recedes behind the haunches, strongly foreshortened into a short band, with the spine row and glowing spots running up it; only a narrow strip of each flank shows. The head and snout are hidden beyond the shoulders, eyes not visible, so the view shows only the back half: tail, hind legs, haunches and the receding back. The whole visible body fits inside the frame with nothing cut off. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingsraw_20261103",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Dragonsnake__Dragonsnake_D_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Dragonsnake__Dragonsnake_D_n",
+  "prompt": "Draw the SAME individual animal as the attached reference images (its accepted east side view and south front view): same anatomy, same proportions, same colours, same large size on the canvas, and the same yellow-green scale mottling on the back. A creature sprite for RimWorld: the dragonsnake, a large semi-aquatic predatory serpentine reptile of muddy swamp waters, with a thick muscular body covered in scales. Its back carries irregular yellow-green mottled markings set into the scales, soft uneven patches of luminous yellow-green spread across the back, with the same scale, distribution and brightness as on the accepted east side view and south front view. This is the rear view, seen from behind: the broad scaly back with its yellow-green mottling runs away from the viewer, the thick haunches and tail base fill the foreground, and the head and eyes sit hidden behind the body mass. The rear view fills the canvas at the same size as the front view: the same body width (about 395 px across) and the same foreshortened height (about 380 px), centred on the same footprint, the whole animal visible with nothing cut off. Realistic painterly vanilla RimWorld sprite style with a clean dark outline and soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingsraw_20261103",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "swimmer"
+ }
+]
