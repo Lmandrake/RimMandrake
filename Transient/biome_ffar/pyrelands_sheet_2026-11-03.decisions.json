@@ -51,6 +51,11 @@
    "note": "",
    "prefill": "A"
   },
+  "RSW_Dalgo": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Gizka": {
    "decision": "A",
    "note": "",
@@ -76,6 +81,11 @@
    "decision": "B",
    "note": "",
    "prefill": "B"
+  },
+  "RSW_Zeer": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
   },
   "RM_FE_Plant_EmberGrass": {
    "decision": "D",

@@ -1,15 +1,13 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-11-03T05:35:43-0800",
- "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
+ "built": "2026-11-03T05:53:36-0800",
+ "census": "/tmp/bffar_proof/census.json",
  "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Barbslinger",
   "RM_FireWasp",
   "RM_FurnaceBeast",
-  "RM_Ullai",
-  "RSW_Dalgo",
-  "RSW_Zeer"
+  "RM_Ullai"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
  "noncanonOptions": {
@@ -17,6 +15,12 @@
    "brief": "a lean striped pack scavenger that circles herds and drags down the weak",
    "kind": "drafted",
    "name": "skevva",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Dalgo": {
+   "brief": "a long-legged running carnivore with a fan crest, trainable as a mount",
+   "kind": "drafted",
+   "name": "ploddu",
    "source": "design/RimMandrake/noncanon_alternatives.json"
   },
   "RSW_Gizka": {
@@ -41,6 +45,12 @@
    "brief": "a stout short-legged rooting reptile, strong and quick enough to pull carts",
    "kind": "drafted",
    "name": "haddusk",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Zeer": {
+   "brief": "a tall banded long-necked herd browser with hooked-back horns",
+   "kind": "drafted",
+   "name": "tallusk",
    "source": "design/RimMandrake/noncanon_alternatives.json"
   }
  },
@@ -527,6 +537,44 @@
    "shownBase": [],
    "subject_key": "anooba"
   },
+  "RSW_Dalgo": {
+   "columns": {
+    "A": {
+     "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5",
+     "north": "5a28d4a36453b50155b278315a0cd3ca28fa2705f028b28735d590bf984ed63f",
+     "south": "bcab5562086210a7b75967ab5e14623fcb95075c1333414e17990bb8bce8a78f"
+    },
+    "B": {
+     "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5"
+    },
+    "C": {
+     "east": "3c899a7822f892fca6000caf78c46ba1069e4eb9dd137124d214bbb31ec277dc",
+     "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
+     "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Dalgo/Dalgo",
+    "B": "swanimals/Dalgo/Dalgo",
+    "C": "swanimals/Dalgo/Dalgo"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render canonregen_rsw_dalgo_v1 \u2014 grader flagged (advisory)",
+    "C": "history DalgoArtOverride 2026-09-20"
+   },
+   "pools": [
+    "swanimals/Dalgo/Dalgo"
+   ],
+   "res": "swanimals/Dalgo/Dalgo",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dalgo"
+  },
   "RSW_Gizka": {
    "columns": {
     "A": {
@@ -695,6 +743,30 @@
    ],
    "shownBase": [],
    "subject_key": "orray"
+  },
+  "RSW_Zeer": {
+   "columns": {
+    "A": {
+     "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+     "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
+     "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Zeer/Zeer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Zeer/Zeer"
+   ],
+   "res": "RimStarWars/SWBestiary/Zeer/Zeer",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "zeer"
   }
  },
  "sheetId": "pyrelands_sheet_2026-11-03",
