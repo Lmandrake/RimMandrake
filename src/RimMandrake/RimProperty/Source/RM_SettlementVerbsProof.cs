@@ -131,6 +131,7 @@ namespace RimMandrake.Property
 
             ClaimResolution? prior = ClaimEngine.ResolveClaim(gun, now);
             int fee = SalvageClaimFeeUtility.ComputeFeeSilver(gun, prior);
+            // restore-check: ok the setter lambda runs only in ToggleOff, whose finally puts back the value on entry
             string off = ToggleOff(() => PropertySettings.salvageClaimFeeEnabled, v => PropertySettings.salvageClaimFeeEnabled = v, map, actor, gun, "Pay salvage claim fee");
             if (off != null) return "FAIL salvage " + off;
             string clicked = Click(map, actor, gun, "Pay salvage claim fee (" + fee + " silver) on", out string menu);
@@ -171,6 +172,7 @@ namespace RimMandrake.Property
             if (ware == null) return "FAIL commerce could not spawn Gun_Revolver";
             ledger.RecordClaim(ware, new ClaimRecord(ClaimantRef.OfCommons(merchant), 1f, ClaimBasis.Purchased, Find.TickManager.TicksGame));
             int price = BuyMerchandiseUtility.ComputePriceSilver(ware);
+            // restore-check: ok the setter lambda runs only in ToggleOff, whose finally puts back the value on entry
             string off = ToggleOff(() => PropertySettings.walkableCommerceEnabled, v => PropertySettings.walkableCommerceEnabled = v, map, actor, ware, "Buy " + ware.LabelShort + " (");
             if (off != null) return "FAIL commerce " + off;
             string clicked = Click(map, actor, ware, "Buy " + ware.LabelShort + " (" + price + " silver)", out string menu);
@@ -201,6 +203,7 @@ namespace RimMandrake.Property
             Thing gold2 = ThingMaker.MakeThing(ThingDefOf.Gold);
             gold2.stackCount = 20;
             mark.inventory.innerContainer.TryAdd(gold2);
+            // restore-check: ok the setter lambda runs only in ToggleOff, whose finally puts back the value on entry
             string off = ToggleOff(() => PropertySettings.pickpocketEnabled, v => PropertySettings.pickpocketEnabled = v, map, actor, mark, "Pickpocket ");
             if (off != null) return "FAIL pickpocket " + off;
             return "A4 took " + loot.LabelShort + " Stolen(victim) toggleOff=absent";
@@ -251,6 +254,7 @@ namespace RimMandrake.Property
                 float want = before * (1f - frac);
                 string nums = "suspicion " + before.ToString("F4") + " -> " + afterS.ToString("F4") + " want " + want.ToString("F4");
                 if (!(afterS < before) || Math.Abs(afterS - want) > 0.02f * Math.Max(1e-3f, before) + 1e-4f) return "FAIL bribe " + nums;
+                // restore-check: ok the setter lambda runs only in ToggleOff, whose finally puts back the value on entry
                 string off = ToggleOff(() => PropertySettings.bribeEnabled, v => PropertySettings.bribeEnabled = v, map, actor, drinker, "Buy " + drinker.LabelShort + " a round");
                 if (off != null) return "FAIL bribe " + off;
                 return "A6 fee=" + fee + " " + nums + " toggleOff=absent";

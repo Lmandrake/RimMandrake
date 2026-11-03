@@ -247,6 +247,7 @@ namespace RimMandrake.LeaningScrub
         private static void Arm(Map map, IntVec3 at, Vector2 dir, bool leanOn, out int down, out int hits, out int misses)
         {
             down = hits = misses = 0;
+            // restore-check: ok only ProofFire calls Arm, inside its try; that finally writes savedFire back
             RM_LeaningScrubSettings.leanFireEnabled = leanOn;
             for (int i = 0; i < FireTrials; i++)
             {

@@ -108,6 +108,7 @@ namespace RimMandrake.LuminousPigment
         {
             var arr = new bool[DeepfireFamilies.All.Count];
             for (int i = 0; i < arr.Length; i++) arr[i] = i != off;
+            // restore-check: ok every caller is inside the probe's try; that finally reloads the file and writes snapshot back
             LuminousPigmentSettings.familyEnabled = arr;
         }
 

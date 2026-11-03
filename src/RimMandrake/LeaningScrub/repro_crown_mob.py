@@ -43,6 +43,7 @@ ARMS = (("mob_on", {"crownMobEnabled": True, "runwayBloomEnabled": True, "leanSc
         ("mob_off_bloom_off", {"crownMobEnabled": False, "runwayBloomEnabled": False, "leanScentEnabled": True}),
         ("mob_off_scent_off", {"crownMobEnabled": False, "runwayBloomEnabled": True, "leanScentEnabled": False}),
         ("mob_on_quiet", {"crownMobEnabled": True, "runwayBloomEnabled": False, "leanScentEnabled": False}))
+TOUCHED = ("crownMobEnabled", "runwayBloomEnabled", "leanScentEnabled", "stallFreezeEnabled")
 
 
 def _dist(a, b):
@@ -201,6 +202,7 @@ def live(out_path):
     def arm(name, fields):
         # the freeze is the premise of every arm (an unfrozen flyer wanders airborne by vanilla design)
         for f, v in list(fields.items()) + [("stallFreezeEnabled", True)]:
+            # restore-check: ok live()'s finally puts back every field's captured prior; arm runs only inside that try
             if not setting(f, v):
                 print("UNMEASURED: %s=%s did not take" % (f, v))
                 return False
@@ -260,6 +262,13 @@ def live(out_path):
                              "threats": sorted(threats), "near_pawns": others}
         return True
 
+    priors = {}
+    for f in TOUCHED:
+        priors[f] = call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f).get("value")
+        if priors[f] is None:
+            print("UNMEASURED: could not read %s before touching it" % f)
+            call("jawa/weather_set", unlock=True)
+            return 2
     ok = True
     try:
         for name, fields in ARMS:
@@ -267,8 +276,8 @@ def live(out_path):
                 ok = False
                 break
     finally:
-        for f in ("crownMobEnabled", "runwayBloomEnabled", "leanScentEnabled", "stallFreezeEnabled"):
-            setting(f, True)
+        for f, was in priors.items():
+            setting(f, was)
         call("jawa/weather_set", weather="Clear", lockWeather=True)
         call("jawa/weather_set", unlock=True)
     code, lines = verdict(rec["arms"]) if ok else (2, ["UNMEASURED: an arm could not be staged"])

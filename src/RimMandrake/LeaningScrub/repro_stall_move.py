@@ -144,7 +144,14 @@ def live(out_path):
         call("jawa/weather_set", unlock=True)
         return 2
 
+    prior_scent = call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="leanScentEnabled").get("value")
+    if prior_scent is None:
+        print("UNMEASURED: could not read leanScentEnabled before touching it")
+        call("jawa/weather_set", unlock=True)
+        return 2
+
     def arm(name, scent):
+        # restore-check: ok the finally below puts back prior_scent; arm runs only inside that try
         r = call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="leanScentEnabled", value=str(scent))
         got = call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="leanScentEnabled").get("value")
         if str(got).strip().lower() != str(scent).lower():
@@ -188,7 +195,7 @@ def live(out_path):
         on = arm("scent_on", True)
         off = arm("scent_off", False) if on else None
     finally:
-        call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="leanScentEnabled", value="True")
+        call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="leanScentEnabled", value=str(prior_scent))
         call("jawa/weather_set", weather="Clear", lockWeather=True)
         call("jawa/weather_set", unlock=True)
     if not on:
