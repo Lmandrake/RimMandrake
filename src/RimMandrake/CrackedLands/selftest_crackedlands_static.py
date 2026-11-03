@@ -91,5 +91,87 @@ check("break: soak zone never ticks -> red", any("tick Rare" in f for f in V._ma
     defs_xml=_xml.replace("<tickerType>Rare</tickerType>", ""))))
 check("break: soak zone ungated -> red", any("soakZonesEnabled" in f for f in V._map_control_findings(
     soak=_soak.replace('if (!RM_CrackedLandsSettings.soakZonesEnabled) return', 'if (false) return'))))
+
+# CRACKEDLANDS_THREE_HEIGHT_FLORA_1: "Art is reviewed on a sheet before the defs ship." Every flora def's texPath
+# resolves to a shipped PNG, the sheet holds a row for that def whose reviewed picture IS that PNG (sha256), and
+# prereview.py check passes on the sheet. Goes red if the PNG is deleted or swapped, the row or the record is missing.
+import hashlib  # noqa: E402
+import subprocess  # noqa: E402
+import xml.etree.ElementTree as ET  # noqa: E402
+
+REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
+FLORA_XML = os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_ThreeHeightFlora.xml")
+FLORA_SHEET = os.path.join(REPO, "Transient", "biome_ffar", "crackedlands_three_height_flora_sheet_2026-11-03.html")
+PREREVIEW = os.path.join(REPO, "src", "RimMandrake", "Utils", "art", "prereview.py")
+FLORA_DEFS = ("RM_QirraMat", "RM_TalusClasp")
+sys.path.insert(0, os.path.dirname(PREREVIEW))
+import prereview as PR  # noqa: E402
+
+
+def _flora_art_findings(tex_root=os.path.join(HERE, "Textures"), sheet=FLORA_SHEET, flora_xml=FLORA_XML):
+    out = []
+    root = ET.parse(flora_xml).getroot()
+    texs = {d.findtext("defName"): d.findtext("graphicData/texPath") for d in root.iter("ThingDef")}
+    for dn in FLORA_DEFS:
+        if dn not in texs:
+            out.append("%s: no ThingDef" % dn)
+            continue
+        if not texs[dn]:
+            out.append("%s: no graphicData/texPath" % dn)
+            continue
+        png = os.path.join(tex_root, *texs[dn].split("/")) + ".png"
+        if not os.path.isfile(png):
+            out.append("%s: texPath %s resolves to no PNG" % (dn, texs[dn]))
+            continue
+        if not os.path.isfile(sheet):
+            out.append("review sheet missing: %s" % sheet)
+            continue
+        items = {str(it.get("id")): it for it in (PR.items_of(open(sheet, encoding="utf-8").read()) or [])}
+        if dn not in items:
+            out.append("%s: no row on the review sheet" % dn)
+            continue
+        sha = hashlib.sha256(open(png, "rb").read()).hexdigest()
+        if sha not in (items[dn].get("fulls") or {}):
+            out.append("%s: shipped PNG %s is not the picture reviewed on the sheet" % (dn, sha[:12]))
+    if os.path.isfile(sheet):
+        r = subprocess.run([sys.executable, PREREVIEW, "check", sheet], capture_output=True, text=True)
+        if r.returncode != 0:
+            out.append("prereview check refused the sheet: %s" % (r.stdout + r.stderr).strip()[:200])
+        else:
+            rec = os.path.splitext(sheet)[0] + ".prereview.json"
+            import json
+            rows = json.load(open(rec, encoding="utf-8")).get("rows", {})
+            for dn in FLORA_DEFS:
+                if (rows.get(dn) or {}).get("verdict") not in ("OK", "FIXED"):
+                    out.append("%s: prereview verdict %r, not OK/FIXED" % (dn, (rows.get(dn) or {}).get("verdict")))
+    return out
+
+
+_fa = _flora_art_findings()
+check("flora art: shipped PNGs are the sheet-reviewed pictures, prereview OK", _fa == [], "; ".join(_fa))
+import shutil  # noqa: E402
+import tempfile  # noqa: E402
+
+with tempfile.TemporaryDirectory() as _td:
+    _tex = os.path.join(_td, "Textures")
+    shutil.copytree(os.path.join(HERE, "Textures", "Things", "Plant"), os.path.join(_tex, "Things", "Plant"))
+    _q = os.path.join(_tex, "Things", "Plant", "RM_QirraMat.png")
+    os.remove(_q)
+    check("break: qirra PNG deleted -> red", any("RM_QirraMat: texPath" in f for f in _flora_art_findings(tex_root=_tex)))
+    with open(_q, "wb") as fh:
+        fh.write(open(os.path.join(_tex, "Things", "Plant", "RM_TalusClasp.png"), "rb").read())
+    check("break: qirra PNG swapped for unreviewed art -> red",
+          any("RM_QirraMat: shipped PNG" in f for f in _flora_art_findings(tex_root=_tex)))
+    _sh = os.path.join(_td, os.path.basename(FLORA_SHEET))
+    shutil.copy(FLORA_SHEET, _sh)
+    check("break: sheet without its prereview record -> red",
+          any("prereview check refused" in f for f in _flora_art_findings(sheet=_sh)))
+    check("break: no review sheet -> red",
+          any("review sheet missing" in f for f in _flora_art_findings(sheet=os.path.join(_td, "none.html"))))
+    _x = os.path.join(_td, "flora.xml")
+    open(_x, "w", encoding="utf-8").write(open(FLORA_XML, encoding="utf-8").read().replace(
+        "<texPath>Things/Plant/RM_TalusClasp</texPath>", "<texPath>Things/Plant/RM_TalusClaspX</texPath>"))
+    check("break: talus texPath to nothing -> red",
+          any("RM_TalusClasp: texPath" in f for f in _flora_art_findings(flora_xml=_x)))
 print("%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
