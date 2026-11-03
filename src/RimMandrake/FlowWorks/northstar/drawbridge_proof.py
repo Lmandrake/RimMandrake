@@ -370,6 +370,9 @@ def main(argv=None):
         B.call("jawa/kill_hostiles")
         B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
                args="%d;%d;%d;%d" % rect)
+        # 2026-11-03 (DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT): a full-list quicktest map carried 5000 RM_HugeTrunkBlocker
+        # cells, and prepare_site cannot clear them (Huge Things re-plans a blocker while its giant stands) -> SITE UNMEASURED.
+        res["hugePlantsCleared"] = V.clear_huge_plants(B)
         site_rows = []
         with V.scope("site"):
             V.prepare_site(B, rect, site_rows, "drawbridge_site")
