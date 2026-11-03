@@ -1,0 +1,5 @@
+# One staged cell instead of hunting Captain's (the theft run logged no positions): the script paints the pool, spawns and
+# drafts the Jawa, reads RM_PitFillEffects.ProofDrown + RM_Swim.ProofSwim at the cell, ticks <= 6000 in 250s until
+# RM_PitDrowning appears. Exit 0 only when JS1-JS4 all PASS; the JSON at the out path holds the cell and every read.
+live-mods: FlowWorks, StarWarsRaces, UtinniPatches
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/jawa_shallows_proof.py D:/ClaudeWork/rimmandrake/relentless/jawa_shallows_live.json --fresh-map --cell 120,120 < /dev/null

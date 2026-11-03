@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, a Jawa colonist (RUT_Jawa_Colonist) drafted mid-pool in a 5x5 RM_WaterBrineShallow patch at 120,120 reads ProofDrown H=0.50, water > 0.45 m standing with under=True, and RM_PitDrowning appears on it after RM_Swim reads it swimming, headUp=False at that read; result JSON records the cell (the verify record the item's done-when asks for).
