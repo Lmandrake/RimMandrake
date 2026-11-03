@@ -1,0 +1,23 @@
+{
+ "subject": "agent_improve_using-rimflow",
+ "item": "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS",
+ "day": "2026-11-02",
+ "target": "using-rimflow",
+ "path": "skills/using-rimflow/SKILL.md",
+ "maker": "agent_improve Curator (fresh claude -p opus, no tools)",
+ "judge_model": "fresh claude -p opus, no tools, blind to the Curator's reasoning",
+ "verdict": "KEEP",
+ "reasons": "Piece [1] shows the skill's 'global flags' wording directly causes a refused call ('cli.py --seat BENCH bridge take' fails). The text is read before every rimflow call, so the error recurs rather than being one item's quirk. The fix is a 2-line in-place correction with the exact right and wrong forms, changes no ruling, gate or cap, and the recheck is observable in future lessons. Two caveats: making the parser accept --seat before the verb would be an alternative fix, but not clearly a better one while the doc is simply wrong. The diff also extends 'after the verb' to --target, --mode and --owner-said, which the evidence does not show directly, though the original text grouped them as one class.",
+ "violated": "",
+ "cites": [
+  {
+   "path": "/home/mandrake/rm/bench/infrastructure/state/lessons/20261102T021348Z-BENCH-rimflow-seat-after-verb.md",
+   "text": "rimflow's --seat is a per-verb flag: 'cli.py --seat BENCH bridge take' fails with invalid choice 'BENCH'; write 'cli.py bridge take --seat BENCH'. The using-rimflow skill calls it a global flag, which"
+  }
+ ],
+ "recheck": "No new lesson or tool failure shows --seat or another per-verb flag placed before the verb.",
+ "diff": "--- a/skills/using-rimflow/SKILL.md\n+++ b/skills/using-rimflow/SKILL.md\n@@ -25,7 +25,8 @@\n \n ## Verbs\n \n-Every verb takes the global flags `--seat`, `--target`, `--mode`,\n+Every verb takes the per-verb (not global) flags, written AFTER the verb\n+(`cli.py bridge take --seat BENCH`; `cli.py --seat BENCH bridge take` is refused): `--seat`, `--target`, `--mode`,\n `--owner-said`. Syntax below is exact, from `--help` \u2014 check `--help` again\n before relying on flags not listed here; the CLI has more verbs\n (`block`/`unblock`/`finding`/`spawn`/`needs`/`retarget`/`reassign`/`reclaim`/\n",
+ "applied_sha": "6c5ee18b7403c63ac794220a5a3ea415c95674d7",
+ "tag": "agent/using-rimflow/v1",
+ "change": "infrastructure/state/agent_improve/changes/using-rimflow_v1.json"
+}
