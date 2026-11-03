@@ -5,13 +5,13 @@
   ============================================================================
 
   Wires the campaign's Star Wars fauna onto RM_Cauldron's wildAnimals,
-  layered on top of the 13 non-Star-Wars rows that mod ships inline (Genetic
-  Rim/Alpha Animals/Alpha Memes/Horrors — Q9 permits those directly on a
-  RM_ def). Per §7 Q11 ("RimMandrake should not name star wars ever"),
-  RM_Cauldron may not carry any Star Wars creature by any route, so
-  every one of the frozen RUT_Cauldron.xml's (renamed from RUT_PoisonForest,
-  CAULDRON_FULL_RENAME_1, 2026-09-30) 5 Star Wars/campaign-tier
-  rows rides HERE instead. Shape: WildAnimals_LeaningScrub.xml /
+  layered on top of the non-Star-Wars rows that mod ships inline (all RM_
+  defs now; the former Genetic Rim/Alpha Animals/Alpha Memes/Horrors donor
+  rows are our ports). Per §7 Q11 ("RimMandrake should not name star wars ever"),
+  RM_Cauldron may not carry any Star Wars creature inline, so the frozen
+  RUT_Cauldron.xml's (renamed from RUT_PoisonForest, CAULDRON_FULL_RENAME_1,
+  2026-09-30) Star Wars/campaign-tier rows ride HERE instead (all but
+  RSW_Screecher, cut 2026-10-09, below). Shape: WildAnimals_LeaningScrub.xml /
   WildAnimals_Pyrelands.xml.
 
   🔑 SOURCE OF TRUTH: every defName and weight below is copied verbatim from
@@ -23,22 +23,24 @@
   🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the 3 rows once gated
   mlie.starwarsanimalcollection (Neebray, Mynock, GraniteSlug) all already
   have our own RSW_ ports too — retargeted into the single
-  mandrake.rsw.swbestiary op below, alongside RSW_Screecher/RSW_VentStalker.
+  mandrake.rsw.swbestiary op below, alongside RSW_VentStalker.
   CAULDRON_RULED_CONTENT_1 (2026-09-29) adds the owner-ruled imports: Lylek and
   Skalder and Silooth (RSW_ ports, all in the swbestiary op; Silooth was a
   donor row with its own FindMod op until RSW_Silooth was ported, Phase 0
   cleanup 2026-10-15). The op guards with PatchOperationFindMod; the old
   Operation MayRequire attribute was inert.
 
-  RSW_Screecher is multi-homed on purpose (owner approved 2026-09-22,
-  BIOME_SPECIFIC_FAUNA_LAW_1 — a real flier that migrates from this wetter
-  biome into the hot Wasteland to lay; the law's own carve-out, not a
-  violation. Do not "fix" it by cutting either home.
+  RSW_Screecher is NOT a row here: the owner cut it from the Cauldron roster
+  on the Cauldron sheet 2026-10-09 ("cut: no longer needed.", enacted by
+  9fb3504f22). It stays in WildAnimals_Wastes.xml and in the frozen
+  RUT_Cauldron.xml twin. The rows below are the whole Star Wars set
+  RM_Cauldron gets; RM_Cauldron.xml's header and the mod's About.xml name
+  the same seven (selftest_cauldron_roster_boundary.py checks it).
 
   No unconditional PatchOperationReplace op is needed here: RM_Cauldron's
-  own BiomeDef already ships a real 13-species wildAnimals block inline, so
-  both ops below are plain PatchOperationConditional + PatchOperationAdd
-  onto that existing node.
+  own BiomeDef already ships a real wildAnimals block inline, so the one op
+  below is a plain PatchOperationConditional + PatchOperationAdd onto that
+  existing node.
 
   ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
   returns true on no match) — validated with
@@ -63,7 +65,6 @@
           <RSW_Neebray>0.8</RSW_Neebray>
           <RSW_Mynock>0.2</RSW_Mynock>
           <RSW_GraniteSlug>0.15</RSW_GraniteSlug>
-          <!-- MULTI-HOMED ON PURPOSE - see file header. -->
           <RSW_VentStalker>0.25</RSW_VentStalker>
           <!-- CAULDRON_RULED_CONTENT_1: owner-ruled imports, wired and kept
                on purpose (overrides the frozen sheet's no-grazer line for

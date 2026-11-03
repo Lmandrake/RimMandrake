@@ -107,8 +107,9 @@ The world-map texture is our own (World/Biomes/RM_Cauldron), and every
 inline fauna and flora row is an RM_ def; the former Genetic Rim, Alpha
 Animals, Alpha Memes and Horrors rows are our ports.
 
-NOT in this mod: the Star Wars-tier fauna (Neebray, Mynock, GraniteSlug,
-RSW_Screecher, RSW_VentStalker) that inhabit this biome in the campaign —
+NOT in this mod: the Star Wars-tier fauna (RSW_Neebray, RSW_Mynock,
+RSW_GraniteSlug, RSW_VentStalker, RSW_Lylek, RSW_Skalder, RSW_Silooth) that
+inhabit this biome in the campaign —
 those ride a Utinni patch onto this mod's own RM_Cauldron def rather than
 living inside it, per the Q11a naming-tier ruling. The toxic-meat Star Wars
 cuisine chain and any other campaign plot content stay in Utinni entirely.</description>

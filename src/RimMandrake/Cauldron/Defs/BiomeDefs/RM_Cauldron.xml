@@ -25,12 +25,15 @@
         undeclared hard dependency in the twin) become this mod's own
         RM_CauldronSoil/RM_CauldronSoilRich (net-new TerrainDefs, this mod's
         Defs/TerrainDefs/RM_Cauldron_Terrains.xml).
-      - wildAnimals: the 5 Star Wars/campaign-tier rows (Neebray, Mynock,
-        GraniteSlug — mlie.starwarsanimalcollection; RSW_Screecher,
-        RSW_VentStalker — mandrake.rsw.swbestiary) are OUT, per §7 Q11
-        ("RimMandrake should not name star wars ever"). They ride
-        src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml as
-        PatchOperationAdd onto this def instead. The other inline rows were
+      - wildAnimals: every Star Wars/campaign-tier row is OUT, per §7 Q11
+        ("RimMandrake should not name star wars ever"). Seven ride
+        src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml as one
+        PatchOperationAdd onto this def instead, all our own
+        mandrake.rsw.swbestiary ports: RSW_Neebray, RSW_Mynock,
+        RSW_GraniteSlug, RSW_VentStalker, RSW_Lylek, RSW_Skalder,
+        RSW_Silooth. RSW_Screecher is not one of them: the owner cut it from
+        this roster on the Cauldron sheet 2026-10-09 ("cut: no longer
+        needed."); it lives on in the Wastes patch and the frozen twin. The other inline rows were
         donor kinds (Genetic Rim, Alpha Animals, Alpha Memes, Horrors) and are
         now our own ports (RM_Garsulix, RM_Rhossak/RM_GalledRhossak, RM_Visceral,
         RM_BedBug, RM_CrystalMit, RM_SikkaSikka, RM_DecayDrake, RM_Bileworm,
@@ -48,7 +51,8 @@
         RM_Zisska, RM_Eskith) and the owner-ruled Alpha Animals import Radyak,
         now our port RM_Radyak (Plasmorph and LuciferBug are no longer rows).
         The import overrides the frozen sheet's no-grazer and ban-9 lines on
-        purpose. Lylek, Skalder and Silooth (RSW_ ports) ride the Utinni patch.
+        purpose. Lylek, Skalder and Silooth (RSW_ ports) ride the Utinni patch
+        listed above.
       - texture: our own World/Biomes/RM_Cauldron (the donor PoisonForest
         texture is gone).
 
