@@ -26,7 +26,8 @@ WHAT A SIZE IS
 THE RULES (severity HIGH gates --check; MEDIUM and INFO are listed for the review)
 ================================================================================
 HIGH  TREE_TIER        a tree the owner tiered on the tree-tiers sheet (q.tier) whose mature
-                       cells sit outside that tier (small 3-5, big 5-8, giant 8-12, titanic 12+).
+                       cells sit outside that tier (small 3-5, big 5-8, giant 8-12, titanic 12+),
+                       with 5% slack at each edge for the enactment's rounding.
 HIGH  OWNER_ORDER      the newest owner size order (a saved sheet note: "N cells|squares", "size N",
                        or a bare number on a `resize` row) for this def -- or its donor ancestor,
                        matched by name stem -- is off by more than 1.25x, and no later tree tier
@@ -34,7 +35,8 @@ HIGH  OWNER_ORDER      the newest owner size order (a saved sheet note: "N cells
 REVIEW ANIMAL_ENVELOPE adult drawSize vs bodySize is outside everything vanilla does: the log-log
                        residual against the vanilla fit exceeds 1.25x the largest vanilla residual.
                        Not a gate: whether a creature is MEANT to read tiny or huge is a taste call
-                       for a true-scale judge sitting, so these are listed, never auto-fixed.
+                       for a true-scale judge sitting, so these are listed, never auto-fixed. A
+                       creature with a numeric owner order is exempt: its size is his call.
 HIGH  NO_SPRITE        the texPath resolves to no loose texture in the def's own mod or ours, nor
                        in any loaded non-vanilla mod, and no vanilla def draws that texPath.
 MEDIUM VANILLA_TEXTURE the def draws a vanilla texture (a placeholder, or art never made).
@@ -45,10 +47,14 @@ MEDIUM SPRITE_PADDED   the subject fills under 55% of its canvas on both axes: i
 MEDIUM DONOR_TEXTURE   the texture resolves only inside a non-mandrake, non-ludeon mod.
 MEDIUM FICTION         the description's words or metres disagree with the drawn size
                        ("towering"/"giant"/"N metres tall" drawn small, "tiny" drawn big).
-MEDIUM BIN_RESCALE     the owner moved the size bin off the prefill and the size is outside it.
+MEDIUM BIN_RESCALE     the owner moved the size bin off the prefill and the size is outside it
+                       (10% slack); a numeric order or a tree tier, being more precise, outranks it.
 INFO  ORDER_MATCHED    an owner order honoured (within 1.25x), for the record.
 
-A HIGH may be waived only in art_size_audit_waivers.json ({defName: {code: why}}), with a reason.
+A HIGH may be waived only in art_size_audit_waivers.json ({defName: {code: why}}), with a reason
+(a blank reason waives nothing). --check also fails a scan that cannot be complete: a mod of the
+load set missing, an xpath error, or a size patch the runner cannot apply.
+Known blind spot: a def ADDED by a patch carries no defining package and is not audited.
 
 USAGE
     python3 src/RimMandrake/Utils/art_size_audit.py                    # summary + HIGH list
@@ -86,7 +92,8 @@ ORDER_SOURCES = [
 ]
 SANITY = {"our_plants": 100, "our_animals": 40, "ref_plants": 30, "ref_animals": 40}
 
-KEEP_TAG = re.compile(r"(^|\.)(ThingDef|PawnKindDef)$")
+# BiomeDef is kept only so a patch's Conditional on one sees what the engine sees.
+KEEP_TAG = re.compile(r"(^|\.)(ThingDef|PawnKindDef|BiomeDef)$")
 ALPHA_MIN = 16
 
 BIG_WORDS = re.compile(r"\b(towering|gigantic|giant|huge|massive|enormous|colossal|immense|"
@@ -127,7 +134,7 @@ def build_doc(mods, active):
                     continue
                 if not PDL._may_require_ok(e, active):
                     continue
-                e.tag = "ThingDef" if e.tag.endswith("ThingDef") else "PawnKindDef"
+                e.tag = e.tag.split(".")[-1]
                 e.set("_pkg", m["packageId"])
                 e.set("_file", p)
                 root.append(e)
@@ -202,7 +209,8 @@ class Textures:
     def __init__(self, mods):
         self.roots = {}          # packageId -> [Textures dirs]
         for m in mods:
-            ds = [os.path.join(d, "Textures") for d in m["contentDirs"]]
+            # later LoadFolders roots override earlier ones, so search them first
+            ds = [os.path.join(d, "Textures") for d in reversed(m["contentDirs"])]
             self.roots[m["packageId"]] = [d for d in ds if os.path.isdir(d)]
         self.ours = [d for p, ds in self.roots.items() if p.startswith("mandrake.") for d in ds]
         self.others = [(p, d) for p, ds in self.roots.items()
@@ -234,7 +242,7 @@ class Textures:
 
 
 def sprite_fill(paths):
-    fs = [f for f in (_fill(p) for p in paths[:6]) if f]
+    fs = [f for f in (_fill(p) for p in paths[:24]) if f]
     if not fs:
         return None
     return (round(sum(f[0] for f in fs) / len(fs), 3), round(sum(f[1] for f in fs) / len(fs), 3))
@@ -295,7 +303,8 @@ def extract(root, mods, active):
             ks = sorted(kinds.get(dn, []), key=lambda k: (PDL._txt(k, "defName") != dn,
                                                           PDL._txt(k, "defName") or ""))
             g = _adult_graphic(K, ks[0]) if ks else None
-            ds = _vec(PDL._txt(g, "drawSize")) if g is not None else None
+            # a bodyGraphicData with no drawSize draws at GraphicData's default (1,1)
+            ds = (_vec(PDL._txt(g, "drawSize")) or [1.0]) if g is not None else None
             r.update(kind="animal", body=body, kindDef=PDL._txt(ks[0], "defName") if ks else None,
                      drawSize=ds, cells=round(max(ds), 3) if ds else None,
                      texPath=PDL._txt(g, "texPath") if g is not None else None,
@@ -464,7 +473,7 @@ def owner_orders(sources=None):
                     cells = order_cells(txt, dec)
                     if cells is None:
                         continue
-                    sig = (name, txt.strip(), at[:10])
+                    sig = (name, txt.strip(), at)
                     if sig in seen:
                         continue
                     seen.add(sig)
@@ -548,8 +557,9 @@ def fiction(r, visible):
     return out
 
 
-def judge(rows, fit, env, tiers):
+def judge(rows, fit, env, tiers, vtex=None):
     vanilla_tex = {r.get("texPath") for r in rows if not r["ours"] and r.get("texPath")}
+    vanilla_tex |= set(vtex or ())
     for r in rows:
         if not r["ours"]:
             continue
@@ -612,6 +622,8 @@ def judge(rows, fit, env, tiers):
                     fl.append(("MEDIUM", "PLANT_ENVELOPE", "%s draws %.2f cells; vanilla %ss %g-%g" % (
                         "tree" if r["tree"] else "plant", cells, "tree" if r["tree"] else "plant",
                         e["min"], e["max"])))
+        if not r.get("texPath") and r["kind"] == "plant":
+            fl.append(("HIGH", "NO_SPRITE", "no graphicData/texPath"))
         if r.get("texPath"):
             w = r.get("texWhere")
             if w is None and r["texPath"] in vanilla_tex:
@@ -631,7 +643,7 @@ def apply_waivers(rows, waivers):
     for r in rows:
         w = waivers.get(r["defName"], {})
         for i, (sev, code, msg) in enumerate(r.get("flags", [])):
-            if sev == "HIGH" and code in w:
+            if sev == "HIGH" and isinstance(w.get(code), str) and w[code].strip():
                 r["flags"][i] = ("WAIVED", code, msg + " -- waived: " + w[code])
 
 
@@ -645,7 +657,13 @@ def audit(modlist=PDL.FULL_MODLIST):
             npatch += 1
             pt.run_file(p)
     rows = extract(root, mods, active)
-    stats = {"version": version, "mods": len(mods), "missing": missing, "defFiles": nfiles,
+    vtex = sorted({(t.text or "").strip() for e in root if (e.get("_pkg") or "").startswith("ludeon.")
+                   for t in e.iter("texPath") if t.text and t.text.strip()})
+    stats = {"vanillaTex": vtex,
+             "unsupportedSizeOps": [list(x) for x in pt.unsupported_watched
+                                    if re.search(r"drawSize|visualSizeRange|baseBodySize|lifeStages",
+                                                 str(x[2] or ""))],
+             "version": version, "mods": len(mods), "missing": missing, "defFiles": nfiles,
              "patchFiles": npatch, "patchOps": pt.ops, "xpathErrors": pt.xpath_errors,
              "unsupportedWatched": len(pt.unsupported_watched)}
     return rows, stats
@@ -661,7 +679,7 @@ def finish(rows, stats, tiers=None, orders=None, waivers=None):
     for r in rows:
         r.pop("orders", None)
     unmatched = match_orders(rows, orders)
-    judge(rows, fit, env, tiers)
+    judge(rows, fit, env, tiers, stats.get("vanillaTex"))
     if waivers is None:
         try:
             waivers = json.load(open(WAIVERS))
@@ -740,6 +758,12 @@ def check(rows, st):
             bad.append("instrument blind? %s=%d < %d" % (k, st["counts"][k], floor))
     if not st.get("fit"):
         bad.append("no vanilla animal fit")
+    if st.get("missing"):
+        bad.append("incomplete load set: %d mod(s) missing: %s" % (len(st["missing"]), st["missing"][:5]))
+    if st.get("xpathErrors"):
+        bad.append("patch run blind in places: %d xpath error(s)" % st["xpathErrors"])
+    for x in st.get("unsupportedSizeOps") or []:
+        bad.append("a size patch this runner cannot apply: %s %s %s" % tuple(x))
     for r in rows:
         if r["ours"]:
             for f in r["flags"]:

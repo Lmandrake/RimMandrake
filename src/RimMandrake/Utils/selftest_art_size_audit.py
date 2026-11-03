@@ -23,7 +23,8 @@ def plant(dn, cells, tree=False, ours=True, **kw):
     r = {"defName": dn, "package": "mandrake.rm.x" if ours else "ludeon.rimworld", "ours": ours,
          "label": kw.pop("label", dn.lower()), "description": kw.pop("description", ""),
          "kind": "plant", "drawSize": [1.0], "visualSizeRange": [cells * 0.7, cells], "tree": tree,
-         "cells": cells, "texPath": kw.pop("texPath", None), "graphicClass": "Graphic_Single"}
+         "cells": cells, "texPath": kw.pop("texPath", "Things/Plant/" + dn), "texWhere": "own",
+         "graphicClass": "Graphic_Single"}
     r.update(kw)
     return r
 
@@ -56,6 +57,9 @@ def fixture():
         animal("RM_Bigword", 1.0, 1.9, description="A towering beast, nine metres tall."),
         animal("RM_Padded", 1.0, 1.9, fill=[0.4, 0.3]),
         animal("RM_Waived", 1.0, 1.9, texPath="Things/Pawn/Animal/Gone", texWhere=None),
+        animal("RM_BlankWaiver", 1.0, 1.9, texPath="Things/Pawn/Animal/Gone2", texWhere=None),
+        plant("RM_NoTex", 1.0, texPath=None),
+        animal("RM_ItemArt", 1.0, 1.9, texPath="Things/Item/Vanilla", texWhere=None),
     ]
     return ref + ours
 
@@ -66,11 +70,11 @@ def flags(rows, dn):
 
 def main():
     rows = fixture()
-    st = {"patchOps": 1}
+    st = {"patchOps": 1, "vanillaTex": ["Things/Item/Vanilla"]}
     orders = {"AB_Ordered": [{"cells": 7.0, "note": "7 cells", "at": "2026-09-11T00:00", "file": "x"}],
               "RM_OrderedOk": [{"cells": 7.0, "note": "7 cells", "at": "2026-09-11T00:00", "file": "x"}]}
     tiers = {"RM_TierOk": "giant", "RM_TierSmall": "giant"}
-    waivers = {"RM_Waived": {"NO_SPRITE": "fixture"}}
+    waivers = {"RM_Waived": {"NO_SPRITE": "fixture"}, "RM_BlankWaiver": {"NO_SPRITE": "  "}}
     rows, st = A.finish(rows, st, tiers=tiers, orders=orders, waivers=waivers)
     fit = st["fit"]
     check("vanilla fit recovers the fixture's exponent", abs(fit["b"] - 0.42) < 0.06, fit)
@@ -91,11 +95,20 @@ def main():
     check("padded sprite flagged", ("MEDIUM", "SPRITE_PADDED") in flags(rows, "RM_Padded"))
     check("waiver turns HIGH into WAIVED", flags(rows, "RM_Waived") == [("WAIVED", "NO_SPRITE")],
           flags(rows, "RM_Waived"))
+    check("blank waiver reason waives nothing", ("HIGH", "NO_SPRITE") in flags(rows, "RM_BlankWaiver"))
+    check("plant with no texPath: HIGH NO_SPRITE", ("HIGH", "NO_SPRITE") in flags(rows, "RM_NoTex"))
+    check("vanilla item art (index from every vanilla def): VANILLA_TEXTURE",
+          flags(rows, "RM_ItemArt") == [("MEDIUM", "VANILLA_TEXTURE")], flags(rows, "RM_ItemArt"))
     bad = A.check(rows, st)
     check("check() gates exactly the unwaived HIGHs (plus the blind-scan floors)",
           sorted(b.split()[0] for b in bad if not b.startswith("instrument")) ==
-          ["RM_Lost", "RM_Ordered", "RM_TierSmall"], bad)
+          ["RM_BlankWaiver", "RM_Lost", "RM_NoTex", "RM_Ordered", "RM_TierSmall"], bad)
     check("check() refuses a blind scan", any(b.startswith("instrument blind") for b in bad))
+    st2 = dict(st, missing=["some.mod"], xpathErrors=2,
+               unsupportedSizeOps=[["f.xml", "PatchOperationMath", "Defs/ThingDef/graphicData/drawSize"]])
+    bad2 = " | ".join(A.check(rows, st2))
+    check("check() refuses an incomplete load set, xpath errors and unrunnable size patches",
+          "incomplete load set" in bad2 and "xpath error" in bad2 and "cannot apply" in bad2, bad2)
     md = A.md_report(rows, st)
     check("report lists every HIGH row", all(("`%s`" % d) in md for d in ("RM_Lost", "RM_Ordered", "RM_TierSmall")))
 
