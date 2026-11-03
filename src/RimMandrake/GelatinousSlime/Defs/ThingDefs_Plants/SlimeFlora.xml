@@ -41,7 +41,7 @@
            (RimWorld/PlantProperties.cs LifespanDays); 13 keeps a fast plant
            from churning dying-plant messages. -->
       <lifespanDaysPerGrowDays>13</lifespanDaysPerGrowDays>
-      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>
+      <leaflessGraphicPath>Things/Plant/RM_SlimeGrass_Leafless</leaflessGraphicPath>
       <harvestWork>30</harvestWork>
       <maxMeshCount>9</maxMeshCount>
       <visualSizeRange>0.4~0.8</visualSizeRange>

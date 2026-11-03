@@ -72,10 +72,9 @@
     <description>A lined, sunken vat with a slow burner under it. Raw slime rendered down long enough stops tasting of pennies and starts tasting of something a cook can work with. Everyone who has spent a season on the body has an opinion about how long is long enough.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/TableStoveFueled</texPath>
+      <texPath>Things/Building/RM_SlimePit/RM_SlimePit</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(3.5,1.5)</drawSize>
-      <color>(140, 168, 118)</color>
     </graphicData>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.20</staticSunShadowHeight>

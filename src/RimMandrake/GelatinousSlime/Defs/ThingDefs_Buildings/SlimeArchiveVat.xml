@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- GELATINOUSSLIME_ARCHIVE_RESURRECTION_1. ART: green-tinted vanilla sheet, placeholder (artpipe searched: none exists). Numbers [INVENTED]. -->
+  <!-- GELATINOUSSLIME_ARCHIVE_RESURRECTION_1. Art: own render (GELATINOUSSLIME_KIT_ART_1, kit_art_derive.py). Numbers [INVENTED]. -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_ArchiveVat</defName>
     <label>archive vat</label>
     <description>A glass-fronted tank fed by the flow. Choose a dead colonist the body has read and the vat grows them back from the last entry it filed: their genes, skills, traits and kin as they were then, and no memory of anything since. It costs raw slime, spacer components and three days of power. The old grave stays where it is.</description>
     <thingClass>RimMandrake.GelatinousSlime.Building_SlimeArchiveVat</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/TableStonecutter</texPath>
+      <texPath>Things/Building/RM_ArchiveVat/RM_ArchiveVat</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <color>(110, 190, 110)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>

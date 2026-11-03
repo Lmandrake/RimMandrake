@@ -1,0 +1,1 @@
+A2 L2: on a quicktest RM_GelatinousSlime map with GelatinousSlime deployed from the fix sha, live_kit_art.py reads HOLDS: no thing on the map draws a Tortoise or Dandelion texture (thing_graphic, complete read), no RM_ thing draws BadTex, at least one kit plant is present, and every RM_Gelatid's configured appearance paths (body and desiccated) name no Tortoise.
