@@ -427,6 +427,7 @@ class FGame(MockGame):
             {"label": "Forge plumes: report (current map)", "path": "Actions\\RMTheForge\\plume_report"},
             {"label": "Forge plumes: spawn a front on a crust cell (mouse cell if none)", "path": "Actions\\RMTheForge\\plume_spawn"},
             {"label": "Forge sky: report (current map)", "path": "Actions\\RMTheForge\\sky_report"},
+            {"label": "Forge sky: spawn a pasture test flock (current map)", "path": "Actions\\RMTheForge\\sky_flock"},
             {"label": "Spunstone: report knowledge", "path": "Actions\\RMTheForge\\spun_report"},
             {"label": "Spunstone: reveal now", "path": "Actions\\RMTheForge\\spun_reveal"},
             {"label": "Dhoggur swell: report (newest dhoggur, current map)", "path": "Actions\\RMTheForge\\dhoggur_report"}]}
@@ -441,8 +442,25 @@ class FGame(MockGame):
             return False
         return "project_visible" not in self.brk
 
+    def sky_line(self):
+        """The pasture read-back: a flock set down out of every leash walks home after ~1200 ticks unless the wander is
+        unwired ('pasture_unwired', the stage-5 gap) or switched off."""
+        flock = getattr(self, "sky_flock", None)
+        if not flock:
+            return "skyPastureGoverned=0 skyPastureHome=0 skyPastureWanders=0"
+        n, t0 = flock
+        on = self.settings[SET_FORGE].get("skyColumnWanderEnabled", "True") == "True"
+        walked = on and "pasture_unwired" not in self.brk and self.ticks - t0 >= 1200
+        return "skyPastureGoverned=%d skyPastureHome=%d skyPastureWanders=%d" % (n if on else 0, n if walked else 0,
+                                                                                (self.ticks - t0) // 200 if walked else 0)
+
     def t_rimworld_execute_debug_action(self, p):
         path = p.get("path", "")
+        if path.endswith("sky_flock"):
+            self.sky_flock = (6, self.ticks)
+            return self.log("[RMTheForgeDebug] skyFlockSpawned=6 skyFlockSpots=40 " + self.sky_line())
+        if path.endswith("sky_report"):
+            return self.log("[RMTheForgeDebug] skyColumnCells=120 " + self.sky_line())
         if path.endswith("dhoggur_report"):
             return self.log("[RMTheForgeDebug] " + self.dhoggur_line())
         if path.endswith("plume_report") or path.endswith("plume_spawn"):
@@ -825,7 +843,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("50 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23)", len(V.SETTINGS_DEFAULTS) == 50, sorted(V.SETTINGS_DEFAULTS))
+    check("52 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23; sky pasture wander +2, 2026-11-03)", len(V.SETTINGS_DEFAULTS) == 52, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -838,7 +856,7 @@ def main():
           'private const string CAT = "RMTheForge"' in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"),
                                                               encoding="utf-8").read())
     for lab in ("Forge cycle: report state", "Forge cycle: advance one phase", "Spunstone: report knowledge",
-                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front", "Forge sky: report",
+                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front", "Forge sky: report", "Forge sky: spawn a pasture test flock",
                 "Dhoggur swell: report"):
         check("debug action label exists in the C#: %s" % lab,
               lab in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"), encoding="utf-8").read())
@@ -931,6 +949,8 @@ def main():
         ("dhoggur_attack_ignored", {"dhoggur_swell.provoked_dhoggur_swells_x3"}),
         ("dhoggur_source_misread", {"dhoggur_swell.rain_scald_does_not_swell"}),
         ("dhoggur_env_optin_ignored", {"dhoggur_swell.environment_opt_in_swells"}),
+        # FORGE_SKY_PASTURES_1 stage 5: a pasture wander that never runs leaves the flock out on the ash
+        ("pasture_unwired", {"sky_pastures.sky_live_flock_reaches_columns"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))

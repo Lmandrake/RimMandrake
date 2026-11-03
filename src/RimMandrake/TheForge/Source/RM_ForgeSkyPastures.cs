@@ -15,6 +15,8 @@ namespace RimMandrake.TheForge
     //   stage 2  spirals   : ash flecks winding up inside columns near the camera
     //   stage 3  hunting   : column-aware prey score + the jossur stoop (see the end of this file)
     //   stage 4  highlight : outline of the columns a selected column-bound flier can reach, drawn per frame, nothing otherwise
+    //   stage 5  pasture   : the wander that actually puts the sky creatures in the columns (RM_JobGiver_SkyPastureWander,
+    //                        Defs/ThinkTreeDefs/RM_ThinkTree_ForgeSkyPasture.xml) and the dhokkur's vent-to-vent walk
     // Design record: Transient/work_SKY_PASTURES_20261003.md.
 
     /// <summary>Prints the haze for the column cells owned by this section. Mesh rebuilds only when RM_SkyColumns dirties
@@ -301,13 +303,19 @@ namespace RimMandrake.TheForge
             float r2 = reach * reach;
             IntVec3 at = p.Position;
             CellIndices ci = map.cellIndices;
-            for (int i = 0; i < columnCells.Count && highlight.Count < MaxHighlightCells; i++)
+            for (int i = 0; i < columnCells.Count; i++)
             {
                 IntVec3 c = ci.IndexToCell(columnCells[i]);
                 if ((c - at).LengthHorizontalSquared <= r2)
                 {
                     highlight.Add(c);
                 }
+            }
+            // columnCells is in map order, so the cap must cut by distance, not by position in the list
+            if (highlight.Count > MaxHighlightCells)
+            {
+                highlight.Sort((a, b) => (a - at).LengthHorizontalSquared.CompareTo((b - at).LengthHorizontalSquared));
+                highlight.RemoveRange(MaxHighlightCells, highlight.Count - MaxHighlightCells);
             }
         }
 
@@ -316,7 +324,80 @@ namespace RimMandrake.TheForge
             return "skyColumnCells=" + columnCells.Count + " skyPolls=" + StatPolls + " skyDirtyBursts=" + StatDirtyBursts
                 + " skyMotesLive=" + motes.Count + " skyMotesSpawned=" + StatMotesSpawned + " skyFlecks=" + StatFlecks
                 + " skyStoops=" + StatStoops + " skyHighlightCells=" + highlight.Count
-                + " skyGridPrinted=" + SectionLayer_RM_SkyColumns.LastPrintedCells;
+                + " skyGridPrinted=" + SectionLayer_RM_SkyColumns.LastPrintedCells + " " + PastureReport();
+        }
+
+        // Stage 5 read-back: the wild pawns the pasture wander governs right now (awake, unsealed), and how many of them stand
+        // where that wander would put them (a column cell, or within their own leash of one). A live proof reads these two.
+        public string PastureReport()
+        {
+            RM_MapComponent_VaporColumns cols = map.GetComponent<RM_MapComponent_VaporColumns>();
+            int governed = 0, home = 0, dhokkur = 0, dhokkurHome = 0;
+            if (cols != null)
+            {
+                IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+                for (int i = 0; i < pawns.Count; i++)
+                {
+                    Pawn p = pawns[i];
+                    if (!RM_JobGiver_SkyPastureWander.Leash(p, out float search, out float leash, out bool isDhokkur))
+                    {
+                        continue;
+                    }
+                    bool inCol = cols.InColumn(p.Position);
+                    bool ok = RM_SkyKernel.WanderDestOk(inCol, leash, !inCol && leash > 0f && cols.NearestColumnCell(p.Position, leash).IsValid);
+                    governed++;
+                    if (ok) home++;
+                    if (isDhokkur)
+                    {
+                        dhokkur++;
+                        if (ok) dhokkurHome++;
+                    }
+                }
+            }
+            return "skyPastureGoverned=" + governed + " skyPastureHome=" + home + " skyDhokkurGoverned=" + dhokkur
+                + " skyDhokkurHome=" + dhokkurHome + " skyPastureWanders=" + StatPastureWanders;
+        }
+
+        public int StatPastureWanders;
+
+        public static readonly string[] TestFlockKinds = { "RM_FleetFlier", "RM_FleetFlier", "RM_FleetFlier", "RM_FleetFlier", "RM_Bulloo", "RM_Bulloo" };
+
+        /// <summary>Debug/proof only: spawns the test flock, wild, on standable cells 18-30 cells from one column cell and
+        /// outside every column and leash, and returns a tagged line (skyFlockSpawned=0 when the map has no column).</summary>
+        public string SpawnTestFlock()
+        {
+            PollNow();
+            RM_MapComponent_VaporColumns cols = map.GetComponent<RM_MapComponent_VaporColumns>();
+            if (cols == null || columnCells.Count == 0)
+            {
+                return "skyFlockSpawned=0 skyFlockWhy=no_column_cells";
+            }
+            IntVec3 anchor = map.cellIndices.IndexToCell(columnCells[Rand.Range(0, columnCells.Count)]);
+            List<IntVec3> spots = new List<IntVec3>();
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(anchor, 30f, false))
+            {
+                float d = (c - anchor).LengthHorizontal;
+                if (d < 18f || !c.InBounds(map) || !c.Standable(map) || c.Fogged(map) || cols.InColumn(c)
+                    || cols.NearestColumnCell(c, 12.5f).IsValid)
+                {
+                    continue;
+                }
+                spots.Add(c);
+            }
+            int spawned = 0;
+            for (int i = 0; i < TestFlockKinds.Length && spots.Count > 0; i++)
+            {
+                PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(TestFlockKinds[i]);
+                if (kind == null)
+                {
+                    continue;
+                }
+                IntVec3 at = spots[Rand.Range(0, spots.Count)];
+                GenSpawn.Spawn(PawnGenerator.GeneratePawn(kind, null), at, map);
+                spawned++;
+            }
+            return "skyFlockSpawned=" + spawned + " skyFlockSpots=" + spots.Count + " skyFlockAnchor=" + anchor.x + "," + anchor.z
+                + " " + DebugReport();
         }
     }
 
@@ -410,6 +491,112 @@ namespace RimMandrake.TheForge
             bool inColumn = cols.InColumn(prey.Position);
             __result += RM_SkyKernel.PreyScoreDelta(inColumn, d.Props.forageRadiusBeyondColumns,
                 !inColumn && d.Props.forageRadiusBeyondColumns > 0f && cols.NearestColumnCell(prey.Position, d.Props.forageRadiusBeyondColumns).IsValid);
+        }
+    }
+
+    // ---- stage 5: the pasture itself ------------------------------------------------------------------------------
+    // Until this stage nothing put a sky creature IN a column: EnvironmentalHazards' RM_JobGiver_ColumnWander was wired into no
+    // think tree, so drifters wandered like any animal. This JobGiver sits at vanilla's Animal_PreWander tag (after needs,
+    // hunting and fleeing, before the stock wander) and returns null for every pawn it does not govern, so every other animal
+    // and every map without a column in reach falls through to vanilla wander the same tick.
+    //   governed: a WILD (no faction) pawn carrying RM_CompVaporDrifter (fleet flier, jossur, bulloo = the ruled Fumerider)
+    //             while skyColumnWanderEnabled; and an awake wild dhokkur (RM_DhokkurColumnsExtension) while dhokkurColumnsEnabled.
+    //   root    : the nearest column cell within the pawn's search radius; destinations must be in a column or within the
+    //             pawn's leash of one (RM_SkyKernel.WanderDestOk).
+    // The dhokkur (owner card 2026-10-09: "the dhokkur gets a column behaviour"): awake in the boiling rain it walks vent to
+    // vent, drinking the scald where it is thickest, so its polished tracks (RM_ForgeDhokkurWays path memory) come to run
+    // between the vents. Every number INVENTED.
+    public class RM_DhokkurColumnsExtension : DefModExtension
+    {
+        public float searchRadius = 45f;
+        public float leash = 6f;
+    }
+
+    public class RM_JobGiver_SkyPastureWander : JobGiver_Wander
+    {
+        public RM_JobGiver_SkyPastureWander()
+        {
+            wanderRadius = 8f;
+            ticksBetweenWandersRange = new IntRange(120, 300);
+            wanderDestValidator = DestOk;
+        }
+
+        /// <summary>Whether this wander governs the pawn now, and with what search radius and leash.</summary>
+        public static bool Leash(Pawn pawn, out float search, out float leash, out bool isDhokkur)
+        {
+            search = 0f;
+            leash = 0f;
+            isDhokkur = false;
+            if (pawn == null || !pawn.Spawned || pawn.Map == null || !pawn.RaceProps.Animal)
+            {
+                return false;
+            }
+            RM_CompVaporDrifter d = pawn.TryGetComp<RM_CompVaporDrifter>();
+            RM_DhokkurColumnsExtension ext = d == null ? pawn.def.GetModExtension<RM_DhokkurColumnsExtension>() : null;
+            RM_CompForgeCycleDormancy dorm = ext == null ? null : pawn.TryGetComp<RM_CompForgeCycleDormancy>();
+            if (!RM_SkyKernel.PastureGoverns(pawn.Faction == null,
+                    d != null, RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnWanderEnabled),
+                    ext != null, RM_TheForgeSettings.Active(RM_TheForgeSettings.dhokkurColumnsEnabled), dorm != null && dorm.IsSealed))
+            {
+                return false;
+            }
+            if (d != null)
+            {
+                search = d.Props.columnSearchRadius;
+                leash = d.Props.forageRadiusBeyondColumns;
+            }
+            else
+            {
+                search = ext.searchRadius;
+                leash = ext.leash;
+                isDhokkur = true;
+            }
+            return true;
+        }
+
+        protected override Job TryGiveJob(Pawn pawn)
+        {
+            if (!Leash(pawn, out float search, out _, out _))
+            {
+                return null;
+            }
+            RM_MapComponent_VaporColumns cols = pawn.Map.GetComponent<RM_MapComponent_VaporColumns>();
+            if (cols == null || !cols.NearestColumnCell(pawn.Position, search).IsValid)
+            {
+                return null; // no column in reach: the stock wander takes it
+            }
+            Job job = base.TryGiveJob(pawn);
+            if (job != null)
+            {
+                RM_MapComponent_SkyPastures c = RM_MapComponent_SkyPastures.Of(pawn.Map);
+                if (c != null)
+                {
+                    c.StatPastureWanders++;
+                }
+            }
+            return job;
+        }
+
+        protected override IntVec3 GetWanderRoot(Pawn pawn)
+        {
+            RM_MapComponent_VaporColumns cols = pawn.Map?.GetComponent<RM_MapComponent_VaporColumns>();
+            if (cols == null || !Leash(pawn, out float search, out _, out _))
+            {
+                return pawn.Position;
+            }
+            IntVec3 nearest = cols.NearestColumnCell(pawn.Position, search);
+            return nearest.IsValid ? nearest : pawn.Position;
+        }
+
+        private static bool DestOk(Pawn pawn, IntVec3 dest, IntVec3 root) // engine order: (pawn, candidate, root)
+        {
+            RM_MapComponent_VaporColumns cols = pawn.Map?.GetComponent<RM_MapComponent_VaporColumns>();
+            if (cols == null || !Leash(pawn, out _, out float leash, out _))
+            {
+                return true;
+            }
+            bool inCol = cols.InColumn(dest);
+            return RM_SkyKernel.WanderDestOk(inCol, leash, !inCol && leash > 0f && cols.NearestColumnCell(dest, leash).IsValid);
         }
     }
 }

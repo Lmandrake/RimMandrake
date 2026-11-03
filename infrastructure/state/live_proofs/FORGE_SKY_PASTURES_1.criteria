@@ -1,0 +1,2 @@
+A1 L2: on a Forge map, a wild flock of fleet fliers and bulloos set down 18-30 cells from a vapour column (outside every leash) stands >=70% in a column or its leash after 5000 ticks, and the pasture wander gave jobs (bar sky_pastures.sky_live_flock_reaches_columns PASS)
+A2 L1: the loaded defs carry ThinkTreeDef RM_ThinkTree_ForgeSkyPasture (RM_JobGiver_SkyPastureWander), RM_Bulloo's VaporDrifter comp and RM_Dhokkur's RM_DhokkurColumnsExtension, and Player.log names none of them in an error

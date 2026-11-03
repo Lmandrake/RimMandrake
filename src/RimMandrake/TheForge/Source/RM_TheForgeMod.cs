@@ -75,6 +75,9 @@ namespace RimMandrake.TheForge
         public static bool skyColumnHuntEnabled = true;
         public static bool jossurStoopEnabled = true;
         public static bool skyColumnHighlightEnabled = true;
+        // Stage 5: wild sky creatures wander in the columns; the awake dhokkur walks vent to vent (owner card 2026-10-09).
+        public static bool skyColumnWanderEnabled = true;
+        public static bool dhokkurColumnsEnabled = true;
 
         // FORGE_DHOKKUR_WAYS_1 — the dhokkur's ways. Each is read live.
         // PROVISIONAL defaults; the item's two owner questions (how a shove
@@ -157,6 +160,8 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref skyColumnHuntEnabled, "skyColumnHuntEnabled", true);
             Scribe_Values.Look(ref jossurStoopEnabled, "jossurStoopEnabled", true);
             Scribe_Values.Look(ref skyColumnHighlightEnabled, "skyColumnHighlightEnabled", true);
+            Scribe_Values.Look(ref skyColumnWanderEnabled, "skyColumnWanderEnabled", true);
+            Scribe_Values.Look(ref dhokkurColumnsEnabled, "dhokkurColumnsEnabled", true);
             Scribe_Values.Look(ref dhokkurWakeEffectsEnabled, "dhokkurWakeEffectsEnabled", true);
             Scribe_Values.Look(ref dhokkurPathMemoryEnabled, "dhokkurPathMemoryEnabled", true);
             Scribe_Values.Look(ref dhokkurPassesToPolish, "dhokkurPassesToPolish", 3);
@@ -344,7 +349,7 @@ namespace RimMandrake.TheForge
                 list.GapLine();
             }
 
-            if (Group(list, "Vapour columns and sky creatures", RimMandrake.Shared.SettingScope.Now, new[] { "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled" }))
+            if (Group(list, "Vapour columns and sky creatures", RimMandrake.Shared.SettingScope.Now, new[] { "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled", "skyColumnWanderEnabled" }))
             {
                 list.CheckboxLabeled("Vapour-column haze", ref skyColumnGridEnabled,
                     "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze.");
@@ -356,14 +361,19 @@ namespace RimMandrake.TheForge
                     "A hunting jossur takes to the air when its prey is a way off and closes in on the wing.");
                 list.CheckboxLabeled("  Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
                     "While a column-bound flier is selected, the columns it can reach are outlined. Nothing is shown otherwise.");
+                list.CheckboxLabeled("  Sky creatures graze in the columns", ref skyColumnWanderEnabled,
+                    "Wild fleet fliers, bulloos and jossurs wander inside the vapour columns (or close by them) whenever a column is in reach. Off: they wander like any animal.");
                 list.GapLine();
             }
 
-            if (Group(list, "The dhokkur", RimMandrake.Shared.SettingScope.Now, new[] { "dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade", "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct" }))
+            if (Group(list, "The dhokkur", RimMandrake.Shared.SettingScope.Now, new[] { "dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade", "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct", "dhokkurColumnsEnabled" }))
             {
                 list.CheckboxLabeled("Dhokkur wakes with a groan", ref dhokkurWakeEffectsEnabled,
                     "When the boiling rain wakes a dhokkur, the hill groans and water pours off its plates "
                   + "for a few seconds. Off: it stands up silently.");
+                list.CheckboxLabeled("Dhokkur walks vent to vent", ref dhokkurColumnsEnabled,
+                    "An awake wild dhokkur wanders between the vapour columns in the rain, drinking the scald where it is thickest, "
+                  + "so its worn tracks come to run between the vents. Off: it wanders like any animal.");
                 list.CheckboxLabeled("Dhokkur paths wear into the ground", ref dhokkurPathMemoryEnabled,
                     "Ground a dhokkur walks on separate rains is polished to glass, and it seals in a worn "
                   + "hollow at the end of its tracks. Off: no new wear (polished ground already laid stays).");

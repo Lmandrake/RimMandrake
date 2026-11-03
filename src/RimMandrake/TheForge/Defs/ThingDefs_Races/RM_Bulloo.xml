@@ -69,6 +69,13 @@
         <resourceAmount>6</resourceAmount>
         <customResourceString>blue gel</customResourceString>
       </li>
+      <!-- FORGE_SKY_PASTURES_1: the bulloo is the ruled Fumerider (owner card 2026-10-09: the sky pastures carry the
+           Fumerider, fleet flier and jossur). Column-bound (leash 0, the drifter comp's fumerider reading); immune to the
+           scald like every column drifter. -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_VaporDrifter">
+        <forageRadiusBeyondColumns>0</forageRadiusBeyondColumns>
+        <groundHazardImmune>true</groundHazardImmune>
+      </li>
     </comps>
     <race>
       <deathAction>

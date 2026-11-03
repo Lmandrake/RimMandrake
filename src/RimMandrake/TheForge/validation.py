@@ -236,6 +236,7 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength",
          "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
+         "skyColumnWanderEnabled", "dhokkurColumnsEnabled",
          "floatstoneDoorEnabled", "spunstoneHullEnabled",
          # DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB: driven by the dhoggur_swell chain
          "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale",
@@ -1920,6 +1921,12 @@ def plume_fronts(t):
               "exemption in play: no bridge tool reads them")
 
 
+# Stage 5 live bar: the flock is set down 18-30 cells from a column, outside every leash; vanilla wander would leave
+# most of it out there, so after this many ticks at least this share must stand in a column or its leash. INVENTED.
+SKY_FLOCK_TICKS = 5000
+SKY_FLOCK_HOME_SHARE = 0.7
+
+
 @suite.chain("sky_pastures")
 def sky_pastures(t):
     """FORGE_SKY_PASTURES_1: the vapour-column grid haze, ash spirals, column-aware hunting, the jossur stoop and the
@@ -1964,6 +1971,34 @@ def sky_pastures(t):
         need("SingleSelectedThing" in src and "MapComponentUpdate" in src, "the outline is not tied to the current selection")
     with _comp(t, "sky_source_debug_report_exists", independent=True):
         need("Forge sky: report" in dbg, "no sky report debug action")
+    tree = _read_text(os.path.join("Defs", "ThinkTreeDefs", "RM_ThinkTree_ForgeSkyPasture.xml"))
+    bulloo = _read_text(os.path.join("Defs", "ThingDefs_Races", "RM_Bulloo.xml"))
+    with _comp(t, "sky_source_pasture_wander_is_wired", independent=True, toggle="skyColumnWanderEnabled"):
+        need("<insertTag>Animal_PreWander</insertTag>" in tree and "RimMandrake.TheForge.RM_JobGiver_SkyPastureWander" in tree,
+             "the pasture wander is in no think tree (the stage-5 gap: drifters never went to the columns)")
+        need("class RM_JobGiver_SkyPastureWander : JobGiver_Wander" in src and "skyColumnWanderEnabled" in src,
+             "no gated pasture JobGiver")
+        need("CompProperties_VaporDrifter" in bulloo, "the bulloo (the ruled Fumerider) carries no drifter comp")
+    with _comp(t, "sky_source_dhokkur_walks_vent_to_vent", independent=True, toggle="dhokkurColumnsEnabled"):
+        need("RimMandrake.TheForge.RM_DhokkurColumnsExtension" in defs, "the dhokkur carries no column extension")
+        need("dhokkurColumnsEnabled" in src and "IsSealed" in src, "the dhokkur's column walk is ungated or ignores its seal")
+    with _comp(t, "sky_live_flock_reaches_columns", independent=True, toggle="skyColumnWanderEnabled"):
+        if _live(t):
+            f = _act(t, "Forge sky: spawn a pasture test flock")
+            n = int(f.get("skyFlockSpawned", "0") or 0)
+            if n == 0:
+                _unmeasured(t, "no flock set down (no column, or no standable cell 18-30 from one): %s" % f.get("_line"))
+            w0 = int(f.get("skyPastureWanders", "0") or 0)
+            t.bridge_call("rimworld/step_game_ticks", ticks=SKY_FLOCK_TICKS)
+            r = _act(t, "Forge sky: report")
+            gov, home = int(r.get("skyPastureGoverned", "0") or 0), int(r.get("skyPastureHome", "0") or 0)
+            w1 = int(r.get("skyPastureWanders", "0") or 0)
+            _note(t, "sky flock", {"spawned": f.get("_line"), "after": r.get("_line")})
+            if w1 <= w0:
+                _fail("no pasture wander job was given in %d ticks (wanders %d -> %d)" % (SKY_FLOCK_TICKS, w0, w1))
+            if gov < 1 or home < SKY_FLOCK_HOME_SHARE * gov:
+                _fail("only %d of %d governed sky creatures stand in a column or their leash after %d ticks (need %.0f%%)"
+                      % (home, gov, SKY_FLOCK_TICKS, 100 * SKY_FLOCK_HOME_SHARE))
     if _live(t):
         _note(t, "sky UNMEASURED", "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge "
               "tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters")

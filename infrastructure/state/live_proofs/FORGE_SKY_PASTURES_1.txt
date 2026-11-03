@@ -1,0 +1,5 @@
+# FORGE_SKY_PASTURES_1: game up with mandrake.rm.biomes (TheForge composed, RimMandrake.TheForge.dll at this sha) and
+# EnvironmentalHazards, bridge held. A1 runs ONLY validation.py's sky_pastures chain (northstar TheForge plan) and reads
+# one bar; A2 is read-only. No flight is ever exercised (flock wander only).
+live-proof A1: python3 src/RimMandrake/TheForge/live_proof.py A1 < /dev/null
+live-proof A2: python3 src/RimMandrake/TheForge/live_proof.py A2 < /dev/null

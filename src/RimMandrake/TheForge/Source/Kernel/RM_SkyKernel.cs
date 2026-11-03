@@ -24,6 +24,21 @@ namespace RimMandrake.TheForge
 
         public static float HighlightReach(float searchRadius) { return Math.Min(60f, Math.Max(8f, searchRadius)); }
 
+        // Stage 5, the pasture wander. A destination is good inside a column, or within a positive leash of one.
+        public static bool WanderDestOk(bool destInColumn, float leash, bool columnWithinLeash)
+        {
+            return destInColumn || (leash > 0f && columnWithinLeash);
+        }
+
+        // Who the pasture wander governs: wild only (a tame animal keeps its colony wander); a drifter while the sky wander is
+        // on; otherwise a dhokkur-extension pawn while its toggle is on and it is not sealed in dormancy.
+        public static bool PastureGoverns(bool wild, bool hasDrifter, bool skyWanderOn, bool hasDhokkurExt, bool dhokkurOn, bool isSealed)
+        {
+            if (!wild) return false;
+            if (hasDrifter) return skyWanderOn;
+            return hasDhokkurExt && dhokkurOn && !isSealed;
+        }
+
         public static bool MoteAlive(int age) { return age < MoteLifeTicks; }
 
         public static void MotePos(float cx, float cz, float phase, float spin, int age, out float x, out float z)

@@ -108,6 +108,14 @@
         <wakeWaterSound>EmergeFromWater</wakeWaterSound>
       </li>
     </comps>
+    <!-- FORGE_SKY_PASTURES_1 stage 5 (owner card 2026-10-09, "the dhokkur gets a column behaviour"): awake, it walks
+         vent to vent (RM_JobGiver_SkyPastureWander, Source/RM_ForgeSkyPastures.cs). Numbers INVENTED. -->
+    <modExtensions>
+      <li Class="RimMandrake.TheForge.RM_DhokkurColumnsExtension">
+        <searchRadius>45</searchRadius>
+        <leash>6</leash>
+      </li>
+    </modExtensions>
     <race>
       <renderTree>RM_DormantAnimalBody</renderTree>
       <body>QuadrupedAnimalWithHooves</body>

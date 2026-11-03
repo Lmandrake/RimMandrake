@@ -850,6 +850,23 @@ namespace RimMandrake.TheForge.SelfTest
                 Check(RM_SkyKernel.PreyScoreDelta(true, 0f, false) == 30f && RM_SkyKernel.PreyScoreDelta(false, 0f, true) == -60f && RM_SkyKernel.PreyScoreDelta(false, 20f, false) == -60f && RM_SkyKernel.PreyScoreDelta(false, 20f, true) == 0f && RM_SkyKernel.PreyScoreDelta(true, 20f, true) == 30f, "PreyScoreDelta table");
                 Check(RM_SkyKernel.HighlightReach(1f) == 8f && RM_SkyKernel.HighlightReach(100f) == 60f && RM_SkyKernel.HighlightReach(25f) == 25f, "HighlightReach clamp");
                 Check(RM_SkyKernel.MoteAlive(239) && !RM_SkyKernel.MoteAlive(240), "mote lifetime");
+                // stage 5 pasture wander: the whole truth table of who it governs, and the destination leash on a swept grid
+                for (int bits = 0; bits < 64; bits++)
+                {
+                    bool wild = (bits & 1) != 0, drift = (bits & 2) != 0, skyOn = (bits & 4) != 0, ext = (bits & 8) != 0, dhOn = (bits & 16) != 0, seal = (bits & 32) != 0;
+                    bool spec = wild && (drift ? skyOn : (ext && dhOn && !seal));
+                    Check(RM_SkyKernel.PastureGoverns(wild, drift, skyOn, ext, dhOn, seal) == spec, $"PastureGoverns bits {bits}"); Steps++;
+                }
+                // one column cell at the origin: a destination (x,z) is good iff it is that cell, or the leash reaches it
+                for (int dx = -15; dx <= 15; dx++)
+                    for (int dz = -15; dz <= 15; dz++)
+                        foreach (float leash in new[] { 0f, 0.5f, 6f, 12f })
+                        {
+                            bool inCol = dx == 0 && dz == 0;
+                            bool within = !inCol && leash > 0f && Math.Sqrt(dx * dx + dz * dz) <= leash;
+                            bool spec = inCol || (leash > 0f && Math.Sqrt(dx * dx + dz * dz) <= leash);
+                            Check(RM_SkyKernel.WanderDestOk(inCol, leash, within) == spec, $"WanderDestOk ({dx},{dz}) leash {leash}"); Steps++;
+                        }
                 RM_SkyKernel.MotePos(10f, 10f, 0f, 7.5f, 0, out float x0, out float z0);
                 Check(Near(x0, 11.6, 1e-4) && Near(z0, 10.0, 1e-4), "mote starts 1.6 east of its column cell");
                 RM_SkyKernel.MotePos(10f, 10f, 0f, 7.5f, 239, out float x1, out float z1);

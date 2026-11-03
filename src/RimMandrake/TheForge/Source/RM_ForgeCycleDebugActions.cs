@@ -112,6 +112,16 @@ namespace RimMandrake.TheForge
             SkyReport();
         }
 
+        // FORGE_SKY_PASTURES_1 stage 5 live proof: a wild flock set down 18-30 cells from a column, out of every leash, so a
+        // later report counts how many the pasture wander walked home (validation.py sky_live_flock_reaches_columns).
+        [DebugAction(CAT, "Forge sky: spawn a pasture test flock (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SkyFlock()
+        {
+            RM_MapComponent_SkyPastures c = RM_MapComponent_SkyPastures.Of(Find.CurrentMap);
+            Log.Message("[RMTheForgeDebug] " + (c == null ? "no sky component" : c.SpawnTestFlock()));
+        }
+
         // FORGE_GPT_ENRICHMENT_1 quicktest surface.
         [DebugAction(CAT, "Spunstone: report knowledge",
             allowedGameStates = AllowedGameStates.Playing)]
