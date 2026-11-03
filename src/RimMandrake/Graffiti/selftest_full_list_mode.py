@@ -518,6 +518,20 @@ def t8_supervisor_gates():
           (relentless_live.refused_proof(lr, TITLE, bad, lines.get("F2")) or "").startswith("flyer:"))
 
 
+def t9_spree_rows_measurable():
+    """A2/F2 read 'every Graffiti bar and every functional row is PASS'. The spree rows (mental_break_spree, spree_wall)
+    can only be measured if their wait declares the painters' own forced spree an expected disturbance (c7020a239d,
+    live A2 2026-11-03T14:36Z read them UNMEASURED without it). The blind check at c7020a23 found this contract proof
+    did not reach that change; this runs its guard, so dropping validation.py's _own_spree goes red here too."""
+    import subprocess
+    st = os.path.join(HERE, "selftest_graffiti_spree_surprise.py")
+    r = subprocess.run([sys.executable, st], capture_output=True, text=True, timeout=240, cwd=ROOT)
+    out = (r.stdout or "") + (r.stderr or "")
+    check("9 the spree rows' own forced spree is an expected disturbance, nothing broader "
+          "(selftest_graffiti_spree_surprise)",
+          r.returncode == 0 and "selftest graffiti spree surprise: PASS" in out, out[-600:])
+
+
 def _raises_any(fn, *a):
     try:
         fn(*a)
@@ -536,6 +550,7 @@ def main():
     t6_tiers()
     t7_live_proofs()
     t8_supervisor_gates()
+    t9_spree_rows_measurable()
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
 
