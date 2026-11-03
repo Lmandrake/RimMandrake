@@ -1,0 +1,585 @@
+{
+ "files_scanned": 661,
+ "item": "NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS",
+ "jobs": [
+  {
+   "host": "stevedesktop",
+   "job": "J20261026T004751Z-6e5292",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "ExpectationFailed: hostile not a prisoner after the capture-down job: {'held': 'True', 'prisoner': 'False', 'cell': '96,167'}",
+     "row": "capture_down_from_the_lip",
+     "verdict": "FAIL"
+    },
+    {
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261026T062947Z-4039ea",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "surprise: safe_advance stopped after 240 of 900 tick(s): hurt: health 1 -> 0.84; newest hediff Bruise/Torso age 15 from Human",
+     "row": "capture_down_from_the_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 240 of 900 tick(s): hurt: health 1 -> 0.84; newest hediff Bruise/Torso age 15 from Human",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 240 of 900 tick(s): hurt: health 1 -> 0.84; newest hediff Bruise/Torso age 15 from Human",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 240 of 900 tick(s): hurt: health 1 -> 0.84; newest hediff Bruise/Torso age 15 from Human",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261026T074314Z-b0e9f5",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "surprise: safe_advance stopped after 60 of 900 tick(s): hurt: health 0.84 -> 0.7; newest hediff Bruise/Leg age 15 from Human",
+     "row": "capture_down_from_the_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 900 tick(s): hurt: health 0.84 -> 0.7; newest hediff Bruise/Leg age 15 from Human",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 900 tick(s): hurt: health 0.84 -> 0.7; newest hediff Bruise/Leg age 15 from Human",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 900 tick(s): hurt: health 0.84 -> 0.7; newest hediff Bruise/Leg age 15 from Human",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261026T082603Z-2edef1",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "capture_down_from_the_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "capture_down_off",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "warden_served_from_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "warden_lip_off",
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261026T151755Z-fe1986",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 0.86 -> 0.67; newest hediff Bruise/Arm age 15 from Human",
+     "row": "capture_down_from_the_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 0.86 -> 0.67; newest hediff Bruise/Arm age 15 from Human",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 0.86 -> 0.67; newest hediff Bruise/Arm age 15 from Human",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 0.86 -> 0.67; newest hediff Bruise/Arm age 15 from Human",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261027T083004Z-b0e62f",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "surprise: safe_advance stopped after 480 of 900 tick(s): hurt: health 1 -> 0.86; newest hediff Crack/Jaw age 30 from Human",
+     "row": "capture_down_from_the_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 480 of 900 tick(s): hurt: health 1 -> 0.86; newest hediff Crack/Jaw age 30 from Human",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 480 of 900 tick(s): hurt: health 1 -> 0.86; newest hediff Crack/Jaw age 30 from Human",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 480 of 900 tick(s): hurt: health 1 -> 0.86; newest hediff Crack/Jaw age 30 from Human",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261028T083004Z-31e045",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "surprise: safe_advance stopped after 120 of 780 tick(s): hurt: health 0.84 -> 0.69; newest hediff MissingBodyPart/Toe age 0",
+     "row": "capture_down_from_the_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 120 of 780 tick(s): hurt: health 0.84 -> 0.69; newest hediff MissingBodyPart/Toe age 0",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 120 of 780 tick(s): hurt: health 0.84 -> 0.69; newest hediff MissingBodyPart/Toe age 0",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 120 of 780 tick(s): hurt: health 0.84 -> 0.69; newest hediff MissingBodyPart/Toe age 0",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261029T083002Z-af6894",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "capture_down_from_the_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "capture_down_off",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "warden_served_from_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "warden_lip_off",
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261031T212349Z-3091f9",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "capture_down_from_the_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "capture_down_off",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "warden_served_from_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "warden_lip_off",
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "host": "stevedesktop",
+   "job": "J20261101T083051Z-386617",
+   "rows": [
+    {
+     "detail": "",
+     "row": "pit_is_its_own_room",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "rooms_off_pit_joins_lip",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "",
+     "row": "prisoner_bed_makes_prison_cell",
+     "verdict": "PASS"
+    },
+    {
+     "detail": "ExpectationFailed: hostile not a prisoner after the capture-down job: {'held': 'True', 'prisoner': 'False', 'cell': '95,167'}",
+     "row": "capture_down_from_the_lip",
+     "verdict": "FAIL"
+    },
+    {
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "row": "capture_down_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "row": "warden_served_from_lip",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "row": "warden_lip_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  }
+ ],
+ "last_file": "J20261102T000218Z-381f76.json",
+ "record_sha256": {
+  "J20261026T004751Z-6e5292": "e4e6d4ba8d49e5be07208f2906c8595572f8a4d4910edd0a34d2eb9de32df1c0",
+  "J20261026T062947Z-4039ea": "5799a073aeca6d0a7ca82fc34d872708bef8927b74aed8ded209c670ded66e81",
+  "J20261026T074314Z-b0e9f5": "0687f99dbd74c6991082b975e577afbd62c76b43dac6ca6118432f349a37d453",
+  "J20261026T082603Z-2edef1": "df716937704ca60bd539837f8ed48e0525f7a322284acb628d48809bcbf18a38",
+  "J20261026T151755Z-fe1986": "0680c4aaf6abf06c25e1a02b94d9a2b6d6b29a44dcc7bae610709d9d917e40ac",
+  "J20261027T083004Z-b0e62f": "0ec0a7627e315592829d4ee8c9e4677ab72c65cc5ac5561043042d314a48b5b1",
+  "J20261028T083004Z-31e045": "e0e8110145231e01b7b0a3f1943893ff6d890c813bb9299b8f8d2778cb7a05e8",
+  "J20261029T083002Z-af6894": "d8877eb774d26e23814f5f1dba9099c94e9e2e43e6ed0fb680b2e700221f4ee6",
+  "J20261030T005604Z-e60c6c": "d984fd964bfa7041275d90556314f2d206153fa6d06d16c7ac5ebbc02ecf8702",
+  "J20261031T064216Z-a4234f": "78b149b5b8f5f898396222754952d07151b9eff80fa4c569244fa8989f85299a",
+  "J20261031T110607Z-090f73": "0f052b336f900f989faf558a5e9d454ceeba0882766a58bf836eb3f76fd18e0b",
+  "J20261031T212349Z-3091f9": "2d6d254f07b790b65e1c98689bcb8769184b6824e9121d4f29537506ac22c979",
+  "J20261101T083051Z-386617": "3cee495b62e346cac9ec728f9355eb048fdfd5483a3249e1a874b0a579e81659"
+ },
+ "sanity_probe": [
+  {
+   "job": "J20261027T083004Z-b0e62f",
+   "rows": [
+    {
+     "chain": "ladder_prison_door",
+     "row": "lowered_holds_hostile",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "ladder_prison_door",
+     "row": "prison_door_off_lets_hostile_out",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "pit_fill_effects",
+     "row": "pit_fluid_effects_per_cell",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "pit_fill_effects",
+     "row": "oil_pit_burns_occupant",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "toggle_trap_trigger",
+     "row": "trap_trigger_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "job": "J20261028T083004Z-31e045",
+   "rows": [
+    {
+     "chain": "ladder_prison_door",
+     "row": "lowered_holds_hostile",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "ladder_prison_door",
+     "row": "prison_door_off_lets_hostile_out",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "pit_fill_effects",
+     "row": "pit_fluid_effects_per_cell",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "pit_fill_effects",
+     "row": "oil_pit_burns_occupant",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "toggle_trap_trigger",
+     "row": "trap_trigger_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "job": "J20261029T083002Z-af6894",
+   "rows": [
+    {
+     "chain": "ladder_prison_door",
+     "row": "lowered_holds_hostile",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "ladder_prison_door",
+     "row": "prison_door_off_lets_hostile_out",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "pit_fill_effects",
+     "row": "pit_fluid_effects_per_cell",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "pit_fill_effects",
+     "row": "oil_pit_burns_occupant",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "toggle_trap_trigger",
+     "row": "trap_trigger_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "job": "J20261030T005604Z-e60c6c",
+   "rows": [
+    {
+     "chain": "toggle_river_steam",
+     "row": "river_steam_biome_gate",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "job": "J20261031T064216Z-a4234f",
+   "rows": [
+    {
+     "chain": "toggle_river_steam",
+     "row": "river_steam_biome_gate",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "job": "J20261031T110607Z-090f73",
+   "rows": [
+    {
+     "chain": "toggle_river_steam",
+     "row": "river_steam_biome_gate",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  },
+  {
+   "job": "J20261101T083051Z-386617",
+   "rows": [
+    {
+     "chain": "ladder_prison_door",
+     "row": "lowered_holds_hostile",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "ladder_prison_door",
+     "row": "prison_door_off_lets_hostile_out",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "toggle_pit_fill_effects",
+     "row": "pit_drowning_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "toggle_pit_fill_effects",
+     "row": "poison_fill_off",
+     "verdict": "UNMEASURED"
+    },
+    {
+     "chain": "toggle_trap_trigger",
+     "row": "trap_trigger_off",
+     "verdict": "UNMEASURED"
+    }
+   ]
+  }
+ ],
+ "window_start": "J20261025"
+}
