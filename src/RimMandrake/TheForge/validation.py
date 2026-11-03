@@ -1925,6 +1925,7 @@ def plume_fronts(t):
 # most of it out there, so after this many ticks at least this share must stand in a column or its leash. INVENTED.
 SKY_FLOCK_TICKS = 5000
 SKY_FLOCK_HOME_SHARE = 0.7
+SKY_FLOCK_SIZE = 6   # RM_MapComponent_SkyPastures.TestFlockKinds: both kinds must be in it
 
 
 @suite.chain("sky_pastures")
@@ -1988,6 +1989,9 @@ def sky_pastures(t):
             n = int(f.get("skyFlockSpawned", "0") or 0)
             if n == 0:
                 _unmeasured(t, "no flock set down (no column, or no standable cell 18-30 from one): %s" % f.get("_line"))
+            if n != SKY_FLOCK_SIZE:
+                _fail("only %d of %d flock pawns spawned: a PawnKindDef of RM_MapComponent_SkyPastures.TestFlockKinds "
+                      "(4 RM_FleetFlier, 2 RM_Bulloo) did not resolve: %s" % (n, SKY_FLOCK_SIZE, f.get("_line")))
             t.bridge_call("rimworld/step_game_ticks", ticks=SKY_FLOCK_TICKS)
             r = _act(t, "Forge sky: report")
             # the flock's own counters, never the map's: resident creatures at home must not carry the bar
