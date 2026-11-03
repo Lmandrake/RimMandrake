@@ -205,6 +205,13 @@ def t_same_cause_becomes_one_reload_request():
           notes == [True, False, True, False, True], (notes, whys))
     check("repeat: the 3rd says reload needed, which relentless_game restages on",
           whys[2].startswith(L.RELOAD) and not whys[3].startswith(L.RELOAD) and not whys[4].startswith(L.RELOAD), whys)
+    rows = [json.loads(x) for x in open(os.path.join(root, "live", "runs.jsonl"))]
+    check("repeat: the same cause on a second game is a defect, terminal, said once (LIVE_EXIT2_FIX_DEFECT_"
+          "AFTER_TWO_GAMES)", whys[4].startswith(L.DEFECT) and rows[4].get("defect") is True
+          and not any(r.get("defect") for r in rows[:4]), (whys[4], rows[4]))
+    import relentless_live_round as RR
+    check("repeat: the defect row decides its build; a reload request does not", RR.decides(rows[4])
+          and not RR.decides(rows[2]), rows[2])
     check("repeat: the cause drops numbers and log paths", L.cause("the proof exited 2: x at 601 (/a/b-20261102T1.log)")
           == L.cause("the proof exited 2: x at 7 (/a/c.log)"), L.cause("the proof exited 2: x at 601"))
 
@@ -491,6 +498,55 @@ def t_cut_criterion():
     check("flyer word past the cap is seen", go(FakeFx(it=it))["outcome"] == "REFUSED")
 
 
+def t_preflight_before_a_slot():
+    """LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT, LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT: what a run would refuse whatever the game
+    does is known before a game slot is spent, with a fingerprint that moves only when the worker changes something."""
+    lr = L.live_rules({})
+    ok_line = "python3 live_def_check.py --has ThingDef/RM_Chittik=CompProperties_WoundLink"
+    fx = FakeFx()
+    check("preflight: a clean build and line has nothing to say", L.preflight(fx, lr, "ROT_X", {"A2": ok_line}) == [],
+          L.preflight(fx, lr, "ROT_X", {"A2": ok_line}))
+    check("preflight: no bridge, no deploy plan", not any(v in ("take", "plan", "proof") for v in fx.verbs()), fx.verbs())
+    it = item()
+    it["criteria"] = [dict(cr, cut=True) if cr["id"] == "A2" else cr for cr in it["criteria"]]
+    bad = L.preflight(FakeFx(it=it), lr, "ROT_X", {"A2": ok_line, "A3": ok_line})
+    check("preflight: a cut criterion is refused, a clause no longer owed is skipped... (A3 is L3: refused as not live)",
+          [b["cid"] for b in bad] == ["A2", "A3"] and "cut at" in bad[0]["why"] and bad[0]["kind"] == "refused", bad)
+    it2 = item(outstanding=["A3"])
+    check("preflight: a criterion not owed is skipped", [b["cid"] for b in
+                                                        L.preflight(FakeFx(it=it2), lr, "ROT_X", {"A2": ok_line})] == [])
+    bad = L.preflight(FakeFx(), lr, "ROT_X", {"A2": "python3 x.py --tick $N"})
+    check("preflight: a $-built line is refused", len(bad) == 1 and "run time" in bad[0]["why"], bad)
+    bad = L.preflight(FakeFx(), lr, "ROT_X", {"A2": ok_line}, {"A2": "python3 make_map.py"})
+    check("preflight: a live-site command other than live_site.py is refused", len(bad) == 1
+          and "live-site" in bad[0]["why"], bad)
+    bad = L.preflight(FakeFx(), lr, "ROT_X", {"A2": ok_line + " --flying"})
+    check("preflight: a flyer is the game phase's put-down, not a refusal", bad == [], bad)
+    fx = FakeFx(later=[("src/RimMandrake/TheRot/Defs/Fauna/RM_Chittik.xml", "ef081426f0")])
+    bad = L.preflight(fx, lr, "ROT_X", {"A2": ok_line})
+    check("preflight: a stale build is caught once, for the build", [(b["kind"], b["cid"]) for b in bad] ==
+          [("stale", None)] and bad[0]["why"].startswith(L.STALE) and "ef081426f0" in bad[0]["why"], bad)
+    fx2 = FakeFx(it=item(built_sha="other"), later=fx.later)
+    check("preflight: the stale fingerprint moves with the sha",
+          L.preflight(fx2, lr, "ROT_X", {"A2": ok_line})[0]["fp"] != bad[0]["fp"])
+    f1 = L.fingerprint("A2", "cut at 160 (/a/b.log) 12", ok_line, "text")
+    check("fingerprint: paths and numbers in the why do not move it", f1 == L.fingerprint("A2", "cut at 7 (/c.log) 3",
+                                                                                          ok_line, "text"))
+    check("fingerprint: the text, the proof or the criterion moves it", len({f1, L.fingerprint("A2", "cut", ok_line, "text2"),
+          L.fingerprint("A2", "cut", ok_line + " x", "text"), L.fingerprint("A1", "cut", ok_line, "text")}) == 4)
+
+
+def t_undeployed_row_carries_its_game():
+    """relentless_live_round.due retries an undeployed build on another game only, so the row names its game."""
+    row = go(FakeFx(gap="not in the running load: RM_Biomes (mandrake.rm.biomes)"))
+    check("undeployed: the row has its game", row.get("game"), row)
+    row = go(FakeFx(plan=(0, PLAN + "Pyrelands        mandrake.rm.pyrelands          NOT DEPLOYED\n"),
+                    touched=["src/RimMandrake/Pyrelands/Defs/A.xml"]))
+    check("undeployed (plan): the row has its game", row["why"].startswith(L.UNDEPLOYED) and row.get("game"), row)
+    row = go(FakeFx(plan=(1, "Traceback")))
+    check("a failed deploy plan is the harness's: no game stamp", not row.get("game"), row)
+
+
 def t_no_game_files_skips_the_deploy_check():
     fx = FakeFx(touched=["src/RimMandrake/TheRot/validation.py"])
     row = go(fx)
@@ -761,7 +817,8 @@ def main():
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
               t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last,
-              t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about):
+              t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about,
+              t_preflight_before_a_slot, t_undeployed_row_carries_its_game):
         try:
             t()
         except Exception as e:     # a crash is a red, named

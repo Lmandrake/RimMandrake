@@ -400,9 +400,31 @@ def t_cut_refusal_is_terminal():
     check("cut refusal: (the old bug) a sha-less row stood for nothing", len(todo) == 1, todo)
 
 
+def t_dead_rows_and_undeployed():
+    """LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT, LIVE_EXIT2_FIX_DEFECT_AFTER_TWO_GAMES: a build no game can run and a cause
+    that outlived a reload stand for their build like a verdict; an undeployed build waits for another game, but the game
+    phase's own round (retry 0) is the staging that deploys it, so it runs."""
+    now = 1_800_000_000
+    at = R.L.iso(now - 30 * 86400)
+    stale = {"sha": "s", "outcome": "UNMEASURED", "at": at, "why": R.L.STALE + ", so the game cannot run s: a (b)"}
+    defect = {"sha": "s", "outcome": "UNMEASURED", "at": at, "why": R.L.DEFECT + ": ...", "defect": True}
+    plain = {"sha": "s", "outcome": "UNMEASURED", "at": at, "why": "the proof exited 2: x"}
+    check("dead: a stale build decides its sha", R.decides(stale) and R.due(stale, "s", now, 3600, "G1") is not None)
+    check("dead: a defect decides its sha", R.decides(defect) and R.due(defect, "s", now, 0, "G2") is not None)
+    check("dead: an ordinary UNMEASURED does not", not R.decides(plain) and R.due(plain, "s", now, 3600, "G1") is None)
+    check("dead: a new sha runs again", R.due(stale, "s2", now, 3600, "G1") is None)
+    rows = [dict(stale, item="I", criterion="A2"), dict(plain, item="I", criterion="A2", at=R.L.iso(now))]
+    check("dead: history keeps the stale row over a later rerun on the same sha",
+          R.history(rows)[("I", "A2", "s")]["why"].startswith(R.L.STALE))
+    und = {"sha": "s", "outcome": "UNMEASURED", "at": at, "why": "not deployed: RM_X", "game": "G1"}
+    check("undeployed: waits on the same game", R.due(und, "s", now, 3600, "G1") == "not deployed on this game")
+    check("undeployed: runs on another game", R.due(und, "s", now, 3600, "G2") is None)
+    check("undeployed: the game phase's own round runs it", R.due(und, "s", now, 3600, "G1", per_game=False) is None)
+
+
 def main():
     for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never, t_real_lane,
-              t_history_review, t_tick_env, t_cut_refusal_is_terminal):
+              t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

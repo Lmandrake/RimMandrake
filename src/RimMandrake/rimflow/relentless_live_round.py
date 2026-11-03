@@ -104,18 +104,32 @@ def history(rows):
         if row.get("item") and row.get("criterion"):
             k = (row["item"], row["criterion"], row.get("sha"))
             last = out.get(k, {})
-            if last.get("outcome") not in TERMINAL or last.get("cut"):     # a cut refusal yields to a later row
+            if not decides(last) or last.get("cut"):     # a cut refusal yields to a later row
                 out[k] = row
     return out
 
 
-def due(last, sha, now, retry_s, game=None):
+def decides(row):
+    """A row that stands for its build whatever comes after: PASS, FAIL, REFUSED, a build the game can never run
+    (relentless_live.STALE) and a cause that outlived a reload (row `defect`). Rerunning any of them on the same sha can
+    only write the same row again (LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD: 18 stale-build rows reran six-hourly)."""
+    return bool(row) and (row.get("outcome") in TERMINAL or bool(row.get("defect"))
+                          or (row.get("outcome") == "UNMEASURED" and (row.get("why") or "").startswith(L.STALE)))
+
+
+def due(last, sha, now, retry_s, game=None, per_game=True):
     """-> None when this criterion may run now, else why not. `last` is its deciding runs.jsonl row on `sha`, or None.
-    game: the running game's start (relentless_live.iso); a reload request made on it stands until another game runs."""
+    game: the running game's start (relentless_live.iso); a reload request made on it stands until another game runs.
+    per_game: an undeployed build waits for another game (the cron round); a game phase's own round passes False, its
+    staging is what deploys it."""
     if not last or last.get("sha") != sha:
         return None
     if last.get("outcome") in TERMINAL:
         return "judged on this build"
+    if decides(last):
+        return "no game can measure this build"
+    if per_game and (last.get("why") or "").startswith(L.UNDEPLOYED) and game and last.get("game") == game:
+        return "not deployed on this game"      # only a load (the game phase's staging) deploys and enables it
     if (last.get("why") or "").startswith(L.RELOAD) and game and last.get("game") == game:
         return "reload needed"
     try:
@@ -154,7 +168,7 @@ def candidates(items, proofs_of, foundry_seat, hist, now, retry_s, game=None):
             last = hist.get((it["id"], cid, it["built_sha"]))
             if last and last.get("cut") and not crit[cid].get("cut"):
                 last = None     # refused while cut on the ledger; its prose now holds it whole: run it
-            why = due(last, it["built_sha"], now, retry_s, game)
+            why = due(last, it["built_sha"], now, retry_s, game, per_game=bool(retry_s))   # a game phase restages
             if why:
                 skip(why)
                 continue

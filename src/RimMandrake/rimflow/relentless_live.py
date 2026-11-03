@@ -69,6 +69,9 @@ DEFAULTS = {
     "repeat_unmeasured": 3,
 }
 RELOAD = "reload needed"        # relentless_game RESTAGE reads this prefix; the round skips it on the same game
+STALE = "changed since the built commit"        # terminal for its build: no game can run it (relentless_live_round.due)
+DEFECT = "proof or site defect"     # the same UNMEASURED cause on two games: terminal for its build, back to a worker
+UNDEPLOYED = ("not deployed", "not in the running load")    # retried on another game only (relentless_live_round.due)
 SITE_CMD = re.compile(r"^python\.exe src/RimMandrake/Utils/live_site\.py(?: --[a-z][a-z-]*(?: [A-Za-z0-9_.\-]+)?)+$")
 # rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game
 WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python")
@@ -194,6 +197,74 @@ def repeats(rows, item_id, criterion, sha, key, game):
             break
         n += 1
     return n
+
+
+def seen_on_other_game(rows, item_id, criterion, sha, key, game):
+    """-> the earlier game on which (item, criterion, sha) was already UNMEASURED on `key`, or None. A cause that outlives
+    a reload is the proof's or the site's, not a stale game's (LIVE_EXIT2_FIX_DEFECT_AFTER_TWO_GAMES: 74 of 76
+    `exited 2` rows were five criteria rerun every 17 min and reloaded every third run on one unchanging cause)."""
+    for row in reversed(rows):
+        if ((row.get("item"), row.get("criterion"), row.get("sha")) == (item_id, criterion, sha)
+                and row.get("outcome") == "UNMEASURED" and row.get("game") and game and row["game"] != game
+                and (row.get("cause") or cause(row.get("why"))) == key):
+            return row["game"]
+    return None
+
+
+def fingerprint(criterion, why, proof, text=""):
+    """A refusal -> the key that stays the same while nothing a worker could change has changed: the criterion, the cause
+    (no paths, numbers or times), the proof line and the criterion's whole text. The same key twice means the item came
+    back unchanged, and running it again can only say the same thing (LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD)."""
+    import hashlib
+    raw = "\x1f".join([criterion or "", cause(why), proof or "", text or ""])
+    return hashlib.sha1(raw.encode("utf-8", "replace")).hexdigest()[:16]
+
+
+def stale_build(fx, sha):
+    """-> (why or None, game files of the build). why says the game cannot run `sha`: it deleted a shipped file (a stale
+    game copy cannot be told from the build), or a game file it touched changed in a later commit (STALE). Raises
+    ValueError when the built commit cannot be read."""
+    gone = [p for p in fx.deleted(sha) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
+    if gone:
+        return "the build deleted %s: a stale game copy cannot be told from the build" % ", ".join(gone[:5]), []
+    touched = fx.touched(sha)
+    files = game_files(touched, fx.shippable)
+    paths = [p for p in touched if SRC_MOD.match(p) and SRC_MOD.match(p).group(2, 3) in files]
+    later = fx.changed_since(sha, paths) if paths else []
+    if later:
+        # the game folder holds today's bytes; a verdict on them is not a verdict on the built sha
+        return "%s, so the game cannot run %s: %s" % (STALE, sha, ", ".join("%s (%s)" % pc for pc in later[:5])), files
+    return None, files
+
+
+def preflight(fx, lr, item_id, lines, sites=None):
+    """What a live run of each line would refuse whatever the game does, asked before any game slot is spent
+    (LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT, LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT). lines: {criterion: proof line}.
+    -> [{"cid", "why", "fp", "kind"}]: kind "refused" (owed() or a proof/site refusal; a flyer is left to the game
+    phase's own put-down) or "stale" (STALE, once for the build, cid None). A criterion no longer owed is skipped."""
+    item = fx.item(item_id)
+    out = []
+    crit = {c["id"]: c for c in (item or {}).get("criteria") or []}
+    for cid in sorted(lines):
+        text = (crit.get(cid) or {}).get("text") or ""
+        try:
+            _level, text = owed(item, cid)
+        except ValueError as e:
+            if str(e).endswith(" is not owed"):
+                continue
+            out.append({"cid": cid, "why": str(e), "fp": fingerprint(cid, str(e), lines[cid], text), "kind": "refused"})
+            continue
+        why = refused_proof(lr, item["title"], text, lines[cid]) or refused_site((sites or {}).get(cid))
+        if why and not why.startswith("flyer:"):
+            out.append({"cid": cid, "why": why, "fp": fingerprint(cid, why, lines[cid], text), "kind": "refused"})
+    if item and item.get("built_sha"):
+        try:
+            why, _files = stale_build(fx, item["built_sha"])
+        except ValueError:
+            why = None      # an unreadable commit is the run's to report, with its own row
+        if why and why.startswith(STALE):
+            out.append({"cid": None, "why": why, "fp": fingerprint("", why, item["built_sha"]), "kind": "stale"})
+    return out
 
 
 def wsl_rerun(proof, log_text):
@@ -511,6 +582,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
 
     def done(outcome, why, **kw):
         row.update(kw, outcome=outcome, why=why)
+        if outcome == "UNMEASURED" and "game" not in row and why.startswith(UNDEPLOYED):
+            row["game"] = game_iso(fx)      # relentless_live_round.due retries an undeployed build on another game only
         with open(os.path.join(root, "live", "runs.jsonl"), "a", encoding="utf-8") as f:
             f.write(json.dumps(row, sort_keys=True) + "\n")
         return row
@@ -537,24 +610,16 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if site:
         row["site"] = site
     try:
-        gone = [p for p in fx.deleted(sha) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
-        if gone:
-            return done("UNMEASURED", "the build deleted %s: a stale game copy cannot be told from the build" % ", ".join(gone[:5]))
-        touched = fx.touched(sha)
-        files = game_files(touched, fx.shippable)
-        paths = [p for p in touched if SRC_MOD.match(p) and SRC_MOD.match(p).group(2, 3) in files]
-        later = fx.changed_since(sha, paths) if paths else []
+        why, files = stale_build(fx, sha)
     except ValueError as e:
         return done("UNMEASURED", "cannot read the built commit: %s" % e)
-    if later:
-        # the game folder holds today's bytes; a verdict on them is not a verdict on the built sha
-        return done("UNMEASURED", "changed since the built commit, so the game cannot run %s: %s" % (
-            sha, ", ".join("%s (%s)" % pc for pc in later[:5])))
+    if why:
+        return done("UNMEASURED", why)
     if files:
         rc, plan = fx.deploy_plan(deploy or "", lr["plan_max_s"])
         why = deploy_gap(files, rc, plan)
-        if why:
-            return done("UNMEASURED", "not deployed: %s" % why)
+        if why:     # a plan that failed or timed out is the harness's: it may pass in a minute, so no game stamp
+            return done("UNMEASURED", "not deployed: %s" % why, **({"game": None} if rc != 0 else {}))
         stamps = [fx.mtime(mod, rel) for mod, rel in files]
         if None in stamps:
             lost = [("%s/%s" % f) for f, t in zip(files, stamps) if t is None]
@@ -622,9 +687,17 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             return done("UNMEASURED", why, log=log)
         game = iso(started) if started else game_iso(fx)
         key = cause(why)
-        n = 1 + repeats(read_rows(os.path.join(root, "live", "runs.jsonl")), item_id, criterion, sha, key, game)
+        rows = read_rows(os.path.join(root, "live", "runs.jsonl"))
+        n = 1 + repeats(rows, item_id, criterion, sha, key, game)
         row.update(game=game, repeat=n, cause=key)
-        if n == lr["repeat_unmeasured"]:
+        before = seen_on_other_game(rows, item_id, criterion, sha, key, game) if code is not None else None
+        if before:      # it outlived a reload: no further load or rerun of this build can say anything else
+            row["defect"] = True
+            if n > 1:
+                return done("UNMEASURED", why, log=log)
+            why = "%s: the same cause on the game of %s and on this one (%s), so a reload cannot help: %s" % (
+                DEFECT, before, game, why)
+        elif n == lr["repeat_unmeasured"]:
             why = "%s: the same cause %d times on this game (%s): %s" % (RELOAD, n, game, why)
         elif n > 1:     # said once already, or the reload request stands: a row, no ledger note
             return done("UNMEASURED", why, log=log)

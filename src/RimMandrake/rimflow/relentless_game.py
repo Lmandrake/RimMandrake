@@ -395,6 +395,19 @@ class GameFx(object):
         r = self.rimflow("bridge", "release", "--mine")
         return None if r.returncode == 0 else ((r.stderr or "") + (r.stdout or "")).strip()[-300:]
 
+    def game_preflight(self, item, lines, sites=None):
+        """relentless_live.preflight on the ledger and books as a live run would read them: [{cid, why, fp, kind}]."""
+        import relentless_live
+        return relentless_live.preflight(relentless_live.Fx(books=self.books, seat=self.r["seat"]),
+                                         relentless_live.live_rules(self.r), item, lines, sites)
+
+    def refusal_print(self, item, criterion, why, proof):
+        """A runs.jsonl refusal -> relentless_live.fingerprint over the criterion's whole text as the ledger reads now."""
+        import relentless_live
+        it = relentless_live.Fx(books=self.books, seat=self.r["seat"]).item(item) or {}
+        text = ({c["id"]: c for c in it.get("criteria") or []}.get(criterion) or {}).get("text") or ""
+        return relentless_live.fingerprint(criterion, why, proof, text)
+
     def prove_launch(self, item):
         import relentless
         os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
@@ -447,6 +460,45 @@ def _hold(store, fx, item, why, now, acts):
 
 
 FLYER = "flyer:"
+REFUSED_KEEP = 20       # fingerprints kept per item: enough for every clause of an item and its stale builds
+
+
+def _refuse(store, fx, sup, r, item, klass, why, fp, now, acts):
+    """A refusal no game can change (LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD). The first time, the item goes back to a
+    worker with the reason, and `fp` (relentless_live.fingerprint: criterion, cause, proof, whole criterion text) is
+    kept; the same fp again means the worker changed none of that, so it is held with the reason and takes no game slot
+    or worker round again until a person lifts it. Before: GRAFFITI_NORTHSTAR_GREEN_FULL_1 A1 and A2 were refused 35
+    times each on one unchanging cut criterion."""
+    seen = (store.load(item).get("refused_fps") or {})
+    if fp in seen:
+        return _hold(store, fx, item, "game phase: refused again unchanged after a return (%s, first %s): %s"
+                     % (klass, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(seen[fp])), why), now, acts)
+
+    def keep(s):
+        fps = dict(s.get("refused_fps") or {})
+        fps[fp] = now
+        s["refused_fps"] = dict(sorted(fps.items(), key=lambda kv: kv[1])[-REFUSED_KEEP:])
+    _save(store, item, keep)
+    return _back(store, fx, sup, r, item, klass, why, now, acts)
+
+
+def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
+    """relentless_live.preflight before a game slot is spent (implement, before a staging load, before a proof round):
+    -> True when the item was sent back or held. A stale build goes back to be rebuilt on the newer bytes; a refused
+    clause goes back to have its criterion or proof line fixed (LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT,
+    LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT)."""
+    import relentless_live_round
+    bad = fx.game_preflight(item, lines, relentless_live_round.proof_lines(fx.proofs_at(item, sha),
+                                                                           relentless_live_round.SITE_LINE))
+    if not bad:
+        return False
+    stale = [b for b in bad if b["kind"] == "stale"]
+    first = stale[0] if stale else bad[0]
+    klass = "game_stale_build" if stale else "game_contract"
+    why = first["why"] if stale else "; ".join("%s %s" % (b["cid"], b["why"]) for b in bad)
+    fp = first["fp"] if stale else "+".join(sorted(b["fp"] for b in bad))
+    _refuse(store, fx, sup, r, item, klass, "live preflight: %s" % why, fp, now, acts)
+    return True
 
 
 def _harness(store, fx, r, item, why, now, acts):
@@ -505,7 +557,8 @@ def step(store, fx, r, item, now, acts, sup):
         return
 
     if g["phase"] == "implement":
-        if led["state"] in ("built", "validated") and same_sha(led["built_sha"], sha):
+        recorded = led["state"] in ("built", "validated") and same_sha(led["built_sha"], sha)
+        if recorded:
             why = None
         else:
             why = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"), (st["contract"] or {}).get("live"))
@@ -532,6 +585,14 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_contract", "; ".join(
                 "%s/%s.txt %s: %s" % (PROOFS_DIR, item, k, w) for k, w in bad), now, acts)
         finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
+        owed_lines = {k: lines[k] for k in list(g["clauses"]) + finals if k in lines}
+        if recorded and any("re-tiered" in b["why"] for b in fx.game_preflight(item, owed_lines)):
+            # the ledger holds an older criterion under the id (GRAFFITI_NORTHSTAR_GREEN_FULL_1): record the manifest
+            # again from the .criteria file before anything is judged against it
+            again = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"), (st["contract"] or {}).get("live"))
+            acts.append({"do": "game_rerecorded", "item": item, "why": (again or "ok")[:200]})
+        if _preflight(store, fx, sup, r, item, owed_lines, now, acts, sha):
+            return
         _save(store, item, lambda s: s["game"].update(phase="prove", clauses=list(s["game"]["clauses"]) + finals))
         acts.append({"do": "game_implemented", "item": item, "sha": sha})
         return
@@ -570,7 +631,17 @@ def step(store, fx, r, item, now, acts, sup):
             return _hold(store, fx, item, "game phase: %s" % lane[0].get("why"), now, acts)
         refused = [v for v in rows.values() if v.get("outcome") == "REFUSED"]
         if refused:
-            return _back(store, fx, sup, r, item, "game_refused", refused[0].get("why") or "refused", now, acts)
+            v = refused[0]
+            return _refuse(store, fx, sup, r, item, "game_refused", v.get("why") or "refused",
+                           fx.refusal_print(item, v.get("criterion"), v.get("why"), v.get("proof")), now, acts)
+        import relentless_live_round
+        dead = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and relentless_live_round.decides(v)]
+        if dead:        # a build no game can run, or a cause that outlived a reload: no stage or proof round can help
+            v = dead[0]
+            return _refuse(store, fx, sup, r, item, "game_proof_unmeasured" if v.get("defect") else "game_stale_build",
+                           "%s %s UNMEASURED (%s): %s" % (v.get("criterion"), v.get("proof") or "", v.get("log") or "",
+                                                          v.get("why") or ""),
+                           fx.refusal_print(item, v.get("criterion"), v.get("why"), v.get("proof")), now, acts)
         dud = not_measuring(fx.game_rows(), item, built, g["clauses"], c["unmeasured_back"])
         if dud:     # the proof ran and said it measured nothing, again: a proof defect, no reload fixes it
             return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
@@ -622,6 +693,8 @@ def step(store, fx, r, item, now, acts, sup):
             why = _lease_why(store, fx, r, item, sha, led)
             if why:
                 return _waits(store, fx, item, why, now, acts)
+            if _preflight(store, fx, sup, r, item, _owed_lines(fx, item, sha, g, led), now, acts, sha):
+                return      # HEAD may have moved the build's files since implement: caught here, not as a run row
             pid = fx.prove_launch(item)
             _save(store, item, lambda s: (s.pop("put_down", None), s["game"].update(phase="proving", prove_pid=pid,
                                                                                      proved_at=now, waits_reload=None)))
@@ -664,6 +737,8 @@ def step(store, fx, r, item, now, acts, sup):
         why = _lease_why(store, fx, r, item, sha, led)
         if why:
             return _waits(store, fx, item, why, now, acts)
+        if _preflight(store, fx, sup, r, item, _owed_lines(fx, item, sha, g, led), now, acts, sha):
+            return      # a staging is a game load: never spent on a build no game can run or a clause a run refuses
         why = _clone(store, fx, r, st, now, acts, sup)
         if why:
             return _waits(store, fx, item, "clone: " + why, now, acts)
@@ -742,6 +817,12 @@ def _clone(store, fx, r, st, now, acts, sup):
             return hold
         acts.append({"do": "clone_try", "by": "check"})
     return fx.prepare(st)
+
+
+def _owed_lines(fx, item, sha, g, led):
+    """The game clauses still owed on the ledger -> {clause: its live-proof line at `sha`}."""
+    lines = proof_lines(fx.proofs_at(item, sha))
+    return {k: lines[k] for k in g["clauses"] if k in lines and k in (led.get("owed") or {})}
 
 
 def _lease_why(store, fx, r, item, sha, led):

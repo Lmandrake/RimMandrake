@@ -38,6 +38,15 @@ class GW(S.FakeWorld):
         self.books = "/books"
         self.owed = {"A2": "L1"}
         self.title = "a mod thing"
+        self.pre, self.pre_calls = [], []        # relentless_live.preflight's answer, and who asked
+
+    def game_preflight(self, item, lines, sites=None):
+        self.pre_calls.append((item, dict(lines)))
+        return [dict(b) for b in (self.pre(lines) if callable(self.pre) else self.pre)]
+
+    def refusal_print(self, item, criterion, why, proof):
+        import relentless_live
+        return relentless_live.fingerprint(criterion, why, proof, self.title)
 
     def game_ledger(self, item):
         return self.led.get(item) or {"state": "doing", "built_sha": None, "title": self.title, "owed": {}}
@@ -90,7 +99,8 @@ GAME = {"clauses": ["A2"], "why": "the comp only exists once the defs load"}
 def to_game(x, i, game=GAME, word="PASS"):
     x.run_one(i)
     st = x.st(i)
-    R.contract(x.s, i, st["gen"], "python3 selftest_x.py", game=game)
+    if not st.get("contract"):      # a returned item keeps its contract
+        R.contract(x.s, i, st["gen"], "python3 selftest_x.py", game=game)
     R.finish(x.s, i, st["gen"], SHA, "evidence")
     x.w.up[st["run"]["unit"]] = False
     x.tick()
@@ -794,6 +804,107 @@ def t_owed_final_joins_the_clauses():
     x.done()
 
 
+CUT = {"cid": "A2", "why": "I0 A2 is cut at 160 chars on the ledger and no prose holds the rest", "fp": "fpA",
+       "kind": "refused"}
+
+
+def t_refusal_returns_once_then_holds():
+    """LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD + LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT: a clause the live lane would refuse
+    whatever the game does goes back at implement, before any prove round or staging; back again with nothing a worker
+    could change (same fingerprint) it is held with the reason; a changed criterion text is a new fingerprint."""
+    x = rig(1)
+    x.w.pre = [CUT]
+    to_game(x, "I0")
+    x.tick()
+    st = x.st("I0")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "game_contract" and "cut at 160" in st["last_fail"]["detail"],
+       "a cut criterion goes back at implement: %s" % st.get("last_fail"))
+    ok(not x.w.proves and "take" not in x.w.events and not x.w.rows, "and spends no prove round, bridge or row")
+    ok("fpA" in (st.get("refused_fps") or {}), "its fingerprint is kept")
+    to_game(x, "I0")
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "held" and "refused again unchanged" in st["hold"]["why"] and "cut at 160" in st["hold"]["why"],
+       "back with the same fingerprint: held with the reason, no second worker round: %s" % st.get("hold"))
+    ok(not x.w.proves, "still no prove round")
+    x.done()
+    y = rig(1)
+    y.w.pre = [CUT]
+    to_game(y, "I0")
+    y.tick()
+    y.w.pre = [dict(CUT, fp="fpB")]      # the worker changed the criterion: the refusal is a new one
+    to_game(y, "I0")
+    y.tick()
+    ok(y.st("I0")["status"] != "held" and y.st("I0")["last_fail"]["class"] == "game_contract",
+       "a changed text is a new refusal: back again, not held")
+    y.w.pre = []
+    to_game(y, "I0")
+    y.tick()
+    ok(y.st("I0")["game"]["phase"] == "prove", "fixed: on to the prove phase")
+    y.done()
+
+
+def t_retiered_criteria_are_rerecorded():
+    """GRAFFITI_NORTHSTAR_GREEN_FULL_1: the ledger held an older criterion under the id; a recorded build re-records the
+    criteria file once before judging, and a clean preflight after it goes on to prove."""
+    x = rig(1)
+    retier = dict(CUT, why="I0 A2 is cut at 160 chars on the ledger and the item's criteria now say something else "
+                           "under that id (re-tiered): re-record them")
+    x.w.led["I0"] = {"state": "built", "built_sha": SHA, "title": x.w.title, "owed": dict(x.w.owed)}
+    x.w.pre = lambda lines: [retier] if len(x.w.impl) < 1 else []
+    to_game(x, "I0")
+    x.tick()
+    acts = [a for a in x.w.impl]
+    ok(len(acts) == 1 and x.st("I0")["game"]["phase"] == "prove",
+       "a re-tiered criterion is re-recorded, then the item proves: impl %s phase %s" % (acts, x.st("I0")["game"]["phase"]))
+    x.done()
+
+
+def t_stale_build_caught_before_a_slot():
+    """LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT: a game file of the build changed in a later commit: no staging load and no
+    prove round can run that sha, so it goes back to be rebuilt before either is spent."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    ok(x.st("I0")["game"]["phase"] == "prove", "implemented, clean")
+    x.w.pre = [{"cid": None, "why": "changed since the built commit, so the game cannot run sha1: a.xml (c0ffee)",
+                "fp": "fpS", "kind": "stale"}]
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "game_stale_build" and "c0ffee" in st["last_fail"]["detail"],
+       "a stale build goes back before the staging load: %s" % st.get("last_fail"))
+    ok("take" not in x.w.events and not x.w.proves, "no bridge take, no staging, no prove round")
+    x.done()
+    y = rig(1)
+    to_game(y, "I0")
+    y.tick()
+    y.w.pre = [{"cid": None, "why": "changed since the built commit, so ...", "fp": "fpS", "kind": "stale"}]
+    y.tick()
+    ok(not y.w.proves and y.st("I0")["last_fail"]["class"] == "game_stale_build", "and before a prove round")
+    y.done()
+
+
+def t_dead_rows_go_back():
+    """A stale-build row or a defect row (the same cause on two games) decides its build: the item goes back once with
+    the row's reason instead of being proved every 15 minutes and reloaded every third run."""
+    for row, klass in (({"why": "changed since the built commit, so the game cannot run sha1: a (b)"}, "game_stale_build"),
+                       ({"why": "proof or site defect: the same cause on the game of G1 and on this one (G2)",
+                         "defect": True}, "game_proof_unmeasured")):
+        x = rig(1)
+        to_game(x, "I0")
+        x.tick()
+        x.tick()
+        ok(x.w.proves == ["I0"], "proving")
+        x.w.rows = [dict({"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA,
+                          "outcome": "UNMEASURED", "proof": "python3 p.py"}, **row)]
+        x.tick()
+        st = x.st("I0")
+        ok(st["last_fail"] and st["last_fail"]["class"] == klass, "%s row goes back: %s" % (klass, st.get("last_fail")))
+        ok(x.w.proves == ["I0"], "no second prove round on it")
+        x.done()
+
+
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
@@ -802,7 +913,9 @@ def main():
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
               t_stage_tries_a_newer_running_game_first,
-              t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses):
+              t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses,
+              t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_stale_build_caught_before_a_slot,
+              t_dead_rows_go_back):
         print("--", t.__name__)
         t()
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
