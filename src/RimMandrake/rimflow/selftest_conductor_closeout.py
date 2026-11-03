@@ -198,6 +198,8 @@ def t_carry():
     tx, root = world("carry", [human("rename the pump to sump", "u1"), human("goodbye", "u2")])
     old = SR.REPO
     SR.REPO = root
+    old_inh = SR.inherited_gaps
+    SR.inherited_gaps = lambda: []      # isolation: the machine's real killed record carries real open gaps
     try:
         out = SR.closeout_check(tx, {"seat_log": os.path.join(TMP, "log.md"), "goodbye_phrases": ["goodbye"]})
         check(out["closeout"] == "partial" and len(out["gaps"]) == 1, "the request's check stores verdict and gaps")
@@ -205,10 +207,9 @@ def t_carry():
               "the request's check on an unreadable transcript is unmeasured")
         tx2, root2 = world("carry2", [human("goodbye", "u3")])
         SR.REPO = root2
-        old_inh = SR.inherited_gaps
         SR.inherited_gaps = lambda: out["gaps"]
         inherited = SR.closeout_check(tx2, {"seat_log": os.path.join(TMP, "log.md"), "goodbye_phrases": ["goodbye"]})
-        SR.inherited_gaps = old_inh
+        SR.inherited_gaps = lambda: []
         SR.REPO = root
         check(inherited["closeout"] == "partial" and inherited["gaps"] == out["gaps"],
               "a clean window does not report ok over the last window's open gap")
@@ -222,7 +223,7 @@ def t_carry():
         tx4, root4 = world("after_blind", [human("goodbye", "u3")])
         SR.REPO = root4
         after = SR.closeout_check(tx4, {"seat_log": os.path.join(TMP, "log.md"), "goodbye_phrases": ["goodbye"]})
-        SR.inherited_gaps = old_inh
+        SR.inherited_gaps = lambda: []
         SR.REPO = root
         check(after["closeout"] == "partial" and "gone.jsonl" in after["gaps"][0]["text"],
               "a clean window does not report ok over a transcript nobody could read")
@@ -239,7 +240,7 @@ def t_carry():
         SR.inherited_gaps = lambda: out["gaps"]
         forced = SR._kill_record("BENCH", {"pid": 1, "session_id": "s", "argv": []},
                                  {"seat_restart": {"enabled": True, "seats": {"BENCH": {"kind": "conductor"}}}}, {}, 1, 2)
-        SR.inherited_gaps = old_inh
+        SR.inherited_gaps = lambda: []
         check(forced.get("closeout") == "partial" and forced.get("gaps") == out["gaps"],
               "a forced restart keeps the gaps of the record it overwrites")
         check("rename the pump to sump" in wake(kr), "the wake prints an open gap whole")
@@ -252,12 +253,14 @@ def t_carry():
         check(wake({"closeout": "ok"}) == "", "an ok close-out adds nothing to the wake")
     finally:
         SR.REPO = old
+        SR.inherited_gaps = old_inh
 
 
 def t_wired():
     with open(os.path.join(REPO, ".claude", "hooks", "conductor_goodbye.py"), encoding="utf-8") as f:
         hook = f.read()
-    check("conductor_closeout.py check" in hook, "the goodbye hook's close-out runs the check")
+    # the check itself moved into the goodbye REQUEST (asserted below); the hook still names the gaps it leaves
+    check("conductor_closeout.py` gaps" in hook, "the goodbye hook's close-out names the gaps the request carries")
     check("OWNER.jsonl" in hook, "the close-out publishes OWNER.jsonl, where --owner-said writes")
     with open(SR.__file__, encoding="utf-8") as f:
         src = f.read()
