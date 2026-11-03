@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily findings judge at 07:20 local (Fridays add the memory sweep)
+
+[Timer]
+OnCalendar=*-*-* 07:20:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

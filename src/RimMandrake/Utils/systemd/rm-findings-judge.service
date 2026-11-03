@@ -1,0 +1,14 @@
+# Daily findings judge + Friday memory sweep, a `claude -p` (opus) on BENCH's clone. Replaces FOUNDRY's window duty
+# (owner by card 2026-11-02: "What should happen to FOUNDRY? -> Retire it (Recommended)"). Reading: last.json.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-findings-judge.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-findings-judge.timer
+[Unit]
+Description=RimMandrake daily findings judge (BENCH clone, claude -p opus)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/bench
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Nice=15
+TimeoutStartSec=90min
+ExecStart=/home/mandrake/rm/bench/src/RimMandrake/Utils/findings_judge.sh
