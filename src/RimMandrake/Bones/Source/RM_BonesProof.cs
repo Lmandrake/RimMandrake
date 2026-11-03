@@ -25,14 +25,20 @@ namespace RimMandrake.Bones
             Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pk, null, PawnGenerationContext.NonPlayer, -1,
                 forceGenerateNewPawn: true, fixedBiologicalAge: 5f, fixedChronologicalAge: 5f));
             int bones = 0;
-            List<Thing> made = new List<Thing>(p.ButcherProducts(null, efficiency));
-            foreach (Thing t in made)
+            try
             {
-                if (t.def == RM_BonesDefOf.RM_Bones) bones += t.stackCount;
-                else if (t.def == p.RaceProps.meatDef) meat += t.stackCount;
-                t.Destroy();
+                foreach (Thing t in p.ButcherProducts(null, efficiency))
+                {
+                    if (t == null) continue;
+                    if (t.def == RM_BonesDefOf.RM_Bones) bones += t.stackCount;
+                    else if (t.def == p.RaceProps.meatDef) meat += t.stackCount;
+                    if (!t.Destroyed) t.Destroy();
+                }
             }
-            Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.Discard);
+            finally
+            {
+                if (!p.Discarded) Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.Discard);
+            }
             return bones;
         }
 

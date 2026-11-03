@@ -75,6 +75,9 @@ def aliases(t):
     with t.component("donor_bone_defs_load_as_ours", beyond_toggle=True):
         if t._guard():
             text = _proof(t, ALIAS_PROOF, "ProofAliases")
+            # A row reads PASS only when BackCompatibleDefName gives the target AND, for a TerrainDef row,
+            # BackCompatibleTerrainWithShortHash(saved hash) gives the same def (RM_DefAliasProof), so the five floor
+            # rows cover the short-hash path; other mods' rows are not this suite's to judge.
             bad = []
             for n, want in WANT.items():
                 if ("PASS %s->%s;" % (n, want)) not in text:

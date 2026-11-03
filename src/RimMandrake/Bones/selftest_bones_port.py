@@ -7,7 +7,8 @@ BoneChina in the canonical save must keep loading. Each clause below is checked 
 
   A  RM_Bones is a Woody stuff, defined once in src (in this mod), with our own texture;
   B  RM_BoneAmount (StatPart_BodySize) and the butcher postfix exist; the DLL's stamp matches its sources;
-     the kernel's gates (off, not flesh, insect, meat <= 1) hold over a swept input space (Python mirror);
+     the kernel's gates (off, not flesh, insect, meat <= 1) hold over a swept input space (a Python mirror of the
+     gate line, pinned by text; the compiled behaviour is live clause G3, RM_BonesProof.ProofButcher);
   C  RM_BoneFloor is a floor costing RM_Bones;
   D  no recipe anywhere in src turns RM_Bones into chemfuel, plasteel or polymer;
   E  RM_BonesRetireAliases maps BoneChina, BoneItem, Bonecrete, BonePlastic -> RM_Bones and the donor's five
@@ -208,9 +209,9 @@ for name, rows in defs_by_name.items():
         prods = {c.tag for x in links for c in x.findall("products/*")}
         bad = sorted(prods & set(FORBIDDEN_PRODUCTS))
         check(not bad, "D: %s turns RM_Bones into %s (%s)" % (name, bad, rel(p)))
-for p, text in live_texts:  # a patch that adds a bone ingredient or a forbidden product to some recipe
-    if "/Patches/" in p.replace(os.sep, "/") and "RM_Bones" in text and any(x in text for x in FORBIDDEN_PRODUCTS):
-        fails.append("D: %s patches RM_Bones and %s together; read it" % (rel(p), [x for x in FORBIDDEN_PRODUCTS if x in text]))
+for p, text in live_texts:  # any patch that puts bone into a recipe is read by a human, whatever it produces
+    if "/Patches/" in p.replace(os.sep, "/") and "RM_Bones" in text and "RecipeDef" in text:
+        fails.append("D: %s patches RM_Bones into a RecipeDef; check it adds no fuel/plasteel/polymer route" % rel(p))
 counts["recipes naming RM_Bones"] = recipes_with_bone
 
 # ---- E. aliases
@@ -256,7 +257,7 @@ for p, text in live_texts:
     low = text.lower()
     if re.search(r"<BoneAmount\b|/BoneAmount\b|\[BoneAmount\]", text):
         writers.append(rel(p) + " writes BoneAmount")
-    # the Bones mod's own About.xml credits the donor (MIT attribution); that is not a dependency
+    # the Bones mod's About <description> credits the donor (MIT attribution); its other fields are checked below
     if DONOR_ID in low and not p.startswith(os.path.join(SRC, "Jawa")) and p != os.path.join(HERE, "About", "About.xml"):
         writers.append(rel(p) + " names " + DONOR_ID)
     if DONOR_NAME.lower() in low:
@@ -265,6 +266,25 @@ for p, text in live_texts:
         if not (alias_defs and p == alias_defs[0][0]):
             if re.search(r'(>|"|\[defName=")%s(<|"|\])' % re.escape(n), text):
                 writers.append(rel(p) + " names donor def " + n)
+about = ET.parse(os.path.join(HERE, "About", "About.xml")).getroot()
+about.remove(about.find("description"))
+if DONOR_ID in ET.tostring(about, encoding="unicode").lower():
+    writers.append("Bones About.xml names %s outside its description" % DONOR_ID)
+cs_files = 0
+donor_lit = re.compile(r'"(%s)"' % "|".join(map(re.escape, DONOR_STUFF + DONOR_FLOORS + ("BoneAmount", "BoneWall"))))
+for dp, dn, fn in os.walk(SRC):
+    dn[:] = [d for d in dn if d not in (".git", "obj", "bin")]
+    for f in fn:
+        if f.endswith(".cs"):
+            cs_files += 1
+            fp = os.path.join(dp, f)
+            if fp == os.path.join(HERE, "Source", "RM_BonesProof.cs"):  # names donor defs to prove they are absent
+                continue
+            t_ = re.sub(r"//[^\n]*|/\*.*?\*/", "", open(fp, encoding="utf-8", errors="replace").read(), flags=re.S)
+            if donor_lit.search(t_) or DONOR_ID in t_.lower():
+                writers.append(rel(fp) + " names a donor def or the donor in C#")
+counts["cs files scanned"] = cs_files
+check(cs_files > 300, "F: sanity: only %d C# files scanned" % cs_files)
 check(not writers, "F: live donor references: %s" % writers[:12])
 counts["donor references"] = len(writers)
 
