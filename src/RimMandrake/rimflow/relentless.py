@@ -59,6 +59,7 @@ RUNS_A_PLACE = ("running", "checking", "stopping", "retiring")
 PUT_DOWN = ("held", "blocked", relentless_game.GAME)
 ENDED = ("done", "retired")
 SHARD = "infrastructure/state/ledger/events/%s.jsonl"
+BRIDGE_HOLDER = "RELENTLESS"    # model.RELENTLESS_HOLDER: items are the seat's, a bridge hold is Relentless's own
 NOTE_MAX = 400
 NOT_READ = object()
 ALLOCATION_FRESH_S = 1800
@@ -859,6 +860,7 @@ class Effects(relentless_game.GameFx):
     # the ledger, through the books clone
     def rimflow(self, *args, timeout=60, seat=None):
         env = dict(os.environ, RIMFLOW_SEAT=seat or self.r["seat"], AGENT_SEAT=seat or self.r["seat"],
+                   RIMFLOW_BRIDGE_SEAT=BRIDGE_HOLDER,
                    RELENTLESS_SUPERVISOR="1", CLAUDE_PROJECT_DIR=self.books)
         return subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/cli.py"), *args],
                               cwd=self.books, env=env, capture_output=True, text=True, timeout=timeout,
@@ -987,7 +989,8 @@ class Effects(relentless_game.GameFx):
 
     def flush(self):
         """Publish the shard: retried each tick until it lands, so a close never stays local."""
-        shards = [SHARD % self.r["seat"], SHARD % "RUNNER"]     # RUNNER: the alarm's `live` line
+        shards = [SHARD % self.r["seat"], SHARD % "RUNNER",     # RUNNER: the alarm's `live` line
+                  SHARD % BRIDGE_HOLDER]                        # its bridge takes and releases
         got = self.git(self.books, "status", "--porcelain", "--", *shards).stdout.strip()
         moved = self.prose_moves()
         ahead = self.git(self.books, "rev-list", "--count", "origin/main..HEAD").stdout.strip()
@@ -1660,6 +1663,8 @@ class Effects(relentless_game.GameFx):
                 return "run tmp dir: %s" % e
             at = argv.index("--")
             argv[at:at] = sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), [])
+        at = argv.index("--")
+        argv[at:at] = ["--setenv", "RIMFLOW_BRIDGE_SEAT=" + BRIDGE_HOLDER]     # its worker's `bridge take` is Relentless's
         at = argv.index("--")
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"

@@ -140,6 +140,7 @@ def acquire(seat, purpose, force=None, identity=None, path=None, owner_cleared=N
     inherited = _reentrant(path) if identity is None else None
     if inherited is not None:
         return {"ok": True, "reentrant": True, "generation": inherited, "why": "inherited take", "path": path}
+    seat = _model().bridge_identity(seat)   # the name its `bridge take` wrote into the shared file
     other = _shared_window_holder(seat)
     if other and (not force or (other.startswith("OWNER ") and not owner_cleared)):
         return {"ok": False, "why": "a window holds this machine's bridge: %s" % other, "path": path}

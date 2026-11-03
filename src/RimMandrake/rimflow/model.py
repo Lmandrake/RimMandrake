@@ -147,7 +147,7 @@ def shard_dir(path=None):
 def shard_path(seat, path=None):
     """-> the one file every event from `seat` is appended to. Deterministic from the
     seat name alone — no registry, no external state, no per-window configuration."""
-    if seat not in SEATS:
+    if seat not in SEATS + BRIDGE_HOLDERS:
         raise SchemaError("seat %r is not one of %s" % (seat, ", ".join(SEATS)))
     return os.path.join(shard_dir(path), "%s.jsonl" % seat)
 
@@ -194,6 +194,26 @@ def item_path(iid, for_write=False):
 # ... records") is no window either: `rimflow/dispatcher.py` notes on an item what it handed out, woke, verified
 # or gave up on. It may emit DISPATCHER_VERBS only — it never claims, closes or files.
 SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
+# Who may hold the bridge without being a seat (RELENTLESS_SEAT_UNTANGLE_FROM_BENCH). Relentless owns its items as BENCH,
+# the key the Conductor's window also runs under, so a hold keyed on BENCH read as "ours" from both sides: Relentless saw
+# the owner's joint session as itself, and its own hold kept the Conductor's restart waiting 16 min (2026-11-03). Only
+# `bridge` events carry one of these; nobody files for, or runs as, a holder.
+RELENTLESS_HOLDER = "RELENTLESS"
+BRIDGE_HOLDERS = (RELENTLESS_HOLDER,)
+BRIDGE_SEAT_ENV = "RIMFLOW_BRIDGE_SEAT"
+
+
+def bridge_identity(seat):
+    """-> the name `seat` holds the bridge under. A process Relentless started says RIMFLOW_BRIDGE_SEAT=RELENTLESS; that
+    renames BENCH only, so OWNER (`./bridge`, `./game`) and RUNNER stay themselves. A redirected ledger keeps its
+    fixture seats unless it asks (RIMFLOW_BRIDGE_SEAT_IN_TEST): a selftest run by a Relentless worker inherits the
+    variable, and would otherwise read its BENCH fixtures as a stranger's."""
+    name = (os.environ.get(BRIDGE_SEAT_ENV) or "").strip().upper()
+    if seat != "BENCH" or name not in BRIDGE_HOLDERS:
+        return seat
+    if os.environ.get("RIMFLOW_LEDGER") and not os.environ.get("RIMFLOW_BRIDGE_SEAT_IN_TEST"):
+        return seat
+    return name
 # 🔑 DISPLAY NAME vs SEAT KEY (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE, owner 2026-10-28: "make the Conductor
 # actually be named the Conductor, instead of Bench"). The v3 Conductor keeps seat KEY "BENCH" — every past event,
 # the shard events/BENCH.jsonl, `--seat BENCH`, the role file "AGENT BENCH" and BRIDGE holder names all carry it —
@@ -529,7 +549,7 @@ VERBS = {
     # whether to wait or go offline. Optional — a take without one is still a take.
     # `host` (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25): which machine's game. Absent means Archmagi, so every
     # event written before the widening still reads as the Archmagi bridge it was.
-    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ("purpose", "host", "idleProbe")},
+    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK", RELENTLESS_HOLDER), "req": ("state",), "opt": ("purpose", "host", "idleProbe")},
     # 🔑 `text` is what --note lands in, and it was MISSING here until
     # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
     # --note` and every `./game up "note"` raised SchemaError instead. The flag
@@ -731,6 +751,8 @@ def _check_verb(ev):
 
 def _check_seat(ev):
     seat = ev.get("seat")
+    if seat in BRIDGE_HOLDERS and ev.get("event") == "bridge":
+        return
     if seat not in SEATS:
         raise SchemaError("seat %r is not one of %s" % (seat, ", ".join(SEATS)))
 
@@ -1503,7 +1525,7 @@ def _read_one(path):
             seat_flag = ""
             base = os.path.basename(path)
             if os.path.basename(os.path.dirname(path)) == SHARD_DIR and \
-                    base[:-6] in SEATS:
+                    base[:-6] in SEATS + BRIDGE_HOLDERS:
                 seat_flag = " --seat %s" % base[:-6]
             raise LedgerError(
                 "%s line %d is not valid JSON (%s). The ledger is append-only, so "
@@ -1810,7 +1832,7 @@ def _who_refusal(ev, item):
     if seat in who:
         return None
     if verb == "bridge":
-        return ("only a live window (BENCH, FOUNDRY) takes the bridge, one at a time. "
+        return ("only a live window (BENCH, FOUNDRY) or Relentless takes the bridge, one at a time. "
                 "This is not a formality: two seats driving one live game produce "
                 "results neither can attribute.")
     if verb == "game":
@@ -2738,14 +2760,14 @@ def ambient_window_seat():
     for k in ("RIMFLOW_SEAT", "AGENT_SEAT"):
         v = (os.environ.get(k) or "").strip().upper()
         if v:
-            return v if v in ("BENCH", "FOUNDRY") else None
+            return bridge_identity(v) if v in ("BENCH", "FOUNDRY") else None
     sid = os.environ.get("CLAUDE_SESSION_ID")
     if sid:
         try:
             with open(os.path.join(ROOT, ".claude", "session_roles", sid), encoding="utf-8") as fh:
                 for w in fh.read().replace("-", " ").split():
                     if w.upper() in ("BENCH", "FOUNDRY"):
-                        return w.upper()
+                        return bridge_identity(w.upper())
         except OSError:
             pass
     return None

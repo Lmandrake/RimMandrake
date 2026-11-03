@@ -543,7 +543,8 @@ class Fx(object):
             return None
 
     def rimflow(self, *args, timeout=120):
-        env = dict(os.environ, RIMFLOW_SEAT=self.seat, AGENT_SEAT=self.seat, CLAUDE_PROJECT_DIR=self.books)
+        env = dict(os.environ, RIMFLOW_SEAT=self.seat, AGENT_SEAT=self.seat, CLAUDE_PROJECT_DIR=self.books,
+                   **{model.BRIDGE_SEAT_ENV: model.RELENTLESS_HOLDER})
         return subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/cli.py"), *args],
                               cwd=self.books, env=env, capture_output=True, text=True, timeout=timeout,
                               stdin=subprocess.DEVNULL)

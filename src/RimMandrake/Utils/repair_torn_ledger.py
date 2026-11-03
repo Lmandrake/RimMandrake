@@ -287,7 +287,7 @@ def main():
     ap.add_argument("--per-ruling", default=None,
                      help="With --why: a Conductor instruction under conductor_authority.RULING, in place of --owner-said.")
     ap.add_argument("--why", default=None, help="The Conductor's instruction, with --per-ruling.")
-    ap.add_argument("--seat", default=None, choices=SEATS,
+    ap.add_argument("--seat", default=None, choices=SEATS + ("RELENTLESS",),   # RELENTLESS: a bridge holder's shard
                      help="Repair that SEAT'S shard (ledger/events/<SEAT>.jsonl) instead "
                           "of the frozen events.jsonl. A seat name, never a path.")
     args = ap.parse_args()

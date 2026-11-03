@@ -3388,6 +3388,7 @@ def _stamp_bare_bridge(w):
 def cmd_bridge(args, seat):
     """Dispatch only. Each action is its own function so the take rule — the one piece
     with a real race in it — can be read and tested without the other three."""
+    seat = model.bridge_identity(seat)      # Relentless holds as itself, so every holder-vs-seat check below can tell
     evs, w = load()
     holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
 
