@@ -1789,10 +1789,13 @@ def c_relentless(now, rules, ctx):
     behind_min, behind_n = rl_books_behind(rl_root(cfg) / "books", now)
     if behind_min is None:
         pts["relentless.books_behind_min"] = U(behind_n, "min")
+        bad.append(str(behind_n))       # an unreadable books clone must reach relentless.blind (the MEASURED alarm cannot)
     else:
         pts["relentless.books_behind_min"] = M(behind_min, "min", behind=behind_n)
     pct, got = rl_live_measured(rl_root(cfg) / "live", now, cfg)
     pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
+    if pct is None and "unreadable" in str(got):     # too few runs is idle, not blind; an unreadable file is blind
+        bad.append(str(got))
     pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
     return pts
 

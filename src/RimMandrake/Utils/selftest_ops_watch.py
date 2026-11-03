@@ -1887,6 +1887,7 @@ check("live measured: too few runs is UNMEASURED, not a share", OW.rl_live_measu
 _runs(["PASS"] * 20, age_s=30 * 3600)
 check("live measured: runs older than the window do not count", OW.rl_live_measured(_lv, _now, _lc)[0] is None)
 check("live measured: no file is UNMEASURED", OW.rl_live_measured(_lv / "nope", _now, _lc)[0] is None)
+check("live measured: an unreadable file says so (c_relentless counts it blind)", "unreadable" in str(OW.rl_live_measured(_lv / "nope", _now, _lc)[1]), OW.rl_live_measured(_lv / "nope", _now, _lc))
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.live_measured_pct"]
 check("the live-measured target alarms below a floor", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == "<"
       and 10 <= _tg[0]["value"] <= 50, _tg)
