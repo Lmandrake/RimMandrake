@@ -17,6 +17,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")
 
 # (sheet row, defName, owner note, {field: expected}) — "desc~" is a list of lowercase
 # substrings the description must all contain; "label", "bodySize", "adultDraw" are exact.
+# "kind" demands a PawnKindDef of that defName whose <race> is the row's ThingDef; "roster" =
+# (BiomeDef, minimum commonality) — the creature must be on that biome's <wildAnimals>, so a
+# new creature cannot silently stop spawning.
 ROWS = [
     ("abyss/DuskProwler", "RM_Ysvaltha",
      "Change description to match image. Make four glowing yellow eyes though.",
@@ -65,7 +68,8 @@ ROWS = [
      {"label": "sump-mouse"}),  # art half outstanding: SUMPMOUSE_ART_INSTALL_STILL_SQUEAKS
     ("twilightsea/DancingSkresh", "RM_DancingSkresh",
      "The existing (B) render should be made into its own new creature: The Dancing Skresh, new description.",
-     {"label": "dancing skresh", "desc~": ["skresh"]}),
+     {"label": "dancing skresh", "desc~": ["skresh"], "kind": "RM_DancingSkresh",
+      "roster": ("RM_TwilightSea", 0.0)}),
     ("twilightsea/Hollu", "RM_Hollu",
      "this Hollu is supposed to be a section of almost stained glass-like waveglass ... curved-in piece of this sheet in its final life stage.",
      {"desc~": ["section of the waveglass", "stained glass", "transparent", "final life stage", "curls in"]}),
@@ -76,7 +80,7 @@ CATCH_DESC = {"RM_HolluCatch": ["section of the waveglass", "stained glass"],
 
 
 def load():
-    things, kinds = {}, {}
+    things, kinds, biomes = {}, {}, {}
     for f in glob.glob(os.path.join(ROOT, "src", "**", "Defs", "**", "*.xml"), recursive=True):
         try:
             root = ET.parse(f).getroot()
@@ -90,11 +94,13 @@ def load():
                 things[dn] = d
             elif d.tag == "PawnKindDef":
                 kinds[dn] = d
-    return things, kinds
+            elif d.tag == "BiomeDef":
+                biomes[dn] = d
+    return things, kinds, biomes
 
 
 def main():
-    things, kinds = load()
+    things, kinds, biomes = load()
     if len(things) < 500:  # sanity: the instrument can see the repo's defs
         print(f"FAIL: only {len(things)} ThingDefs parsed under {ROOT}/src — instrument blind")
         return 1
@@ -118,6 +124,24 @@ def main():
                 got = float(ls[-1].findtext("bodyGraphicData/drawSize")) if ls else None
                 if got != v:
                     bad.append(f"{row}: {dn} adult drawSize {got} != {v}")
+            elif k == "kind":
+                k_ = kinds.get(v)
+                if k_ is None:
+                    bad.append(f"{row}: PawnKindDef {v} missing — {dn} cannot spawn")
+                elif (k_.findtext("race") or "").strip() != dn:
+                    bad.append(f"{row}: PawnKindDef {v} race {k_.findtext('race')!r} != {dn!r}")
+            elif k == "roster":
+                biome, floor = v
+                b = biomes.get(biome)
+                el = b.find(f"wildAnimals/{dn}") if b is not None else None
+                try:
+                    c = float(el.text) if el is not None else None
+                except (TypeError, ValueError):
+                    c = None
+                if b is None:
+                    bad.append(f"{row}: BiomeDef {biome} missing")
+                elif c is None or c <= floor:
+                    bad.append(f"{row}: {dn} not on {biome} wildAnimals (commonality {c})")
     for dn, subs in CATCH_DESC.items():
         d = things.get(dn)
         desc = " ".join((d.findtext("description") or "").lower().split()) if d is not None else ""
