@@ -266,6 +266,14 @@ namespace RimMandrake.FlowWorks.Thirst
 			return 0f;
 		}
 
+		/// <summary>DEHYDRATION_FIX_STAYS_WHEN_THIRST_OFF: dehydration with no live RM_Thirst need behind it (thirst switched
+		/// off, animal thirst off, an exempt gene, the need removed) heals at the drinking recovery rate over
+		/// <paramref name="ticks"/>; while the need drives it, nothing here moves it (the need's interval does).</summary>
+		public static float OrphanDehydrationDelta(bool needDrivesIt, float ticks)
+		{
+			return needDrivesIt ? 0f : -DehydrationLossPerDay * ticks / TicksPerDay;
+		}
+
 		/// <summary>0 = fine, 1 = thirsty (&lt; 0.3), 2 = parched (&lt; 0.1), 3 = dehydrated (empty).</summary>
 		public static int Category(float level)
 		{

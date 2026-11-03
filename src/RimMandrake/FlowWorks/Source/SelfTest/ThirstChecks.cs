@@ -417,6 +417,30 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_ThirstMath.DehydrationDelta(0.5f, 150f) < 0f, "above 0.3: heals");
                 Assert(RM_ThirstMath.Category(0f) == 3 && RM_ThirstMath.Category(0.05f) == 2 && RM_ThirstMath.Category(0.2f) == 1 && RM_ThirstMath.Category(0.5f) == 0, "thresholds 0 / 0.1 / 0.3");
             });
+            Case("Thirst_dehydration_orphan_heals", () =>
+            {
+                // DEHYDRATION_FIX_STAYS_WHEN_THIRST_OFF: with no live need behind it, dehydration heals at the drinking rate
+                // and reaches 0 (dropped); with the need live, the comp adds nothing (the need's interval owns it).
+                float sev = 0.95f;
+                int ticks = 0;
+                while (sev > 0f && ticks < 10 * (int)RM_ThirstMath.TicksPerDay)
+                {
+                    sev += RM_ThirstMath.OrphanDehydrationDelta(false, 250f);
+                    ticks += 250;
+                }
+                Assert(sev <= 0f, "can-fail: orphaned extreme dehydration never cleared, sev " + sev);
+                Assert(Near(ticks / RM_ThirstMath.TicksPerDay, 0.95f / RM_ThirstMath.DehydrationLossPerDay, 0.01f), "clears at -0.6 / day, took " + ticks + " ticks");
+                Assert(RM_ThirstMath.OrphanDehydrationDelta(true, 250f) == 0f, "can-fail: a live need is not double-healed");
+                Assert(Near(RM_ThirstMath.OrphanDehydrationDelta(false, RM_ThirstMath.TicksPerDay), -RM_ThirstMath.DehydrationLossPerDay, 1e-5f), "one day orphaned = -0.6");
+                // the comp is shipped on the hediff and reads the live need, not just the setting
+                XDocument hd = XDocument.Load(Path.Combine(ModRoot, "Defs", "Thirst", "RM_Dehydration.xml"));
+                XElement h = Def(hd, "HediffDef", "RM_Dehydration");
+                Assert(h.Element("comps") != null && h.Element("comps").Elements("li").Any(li => (string)li.Attribute("Class") == "RimMandrake.FlowWorks.Thirst.HediffCompProperties_RM_DehydrationOrphan"), "can-fail: RM_Dehydration carries the orphan comp");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "Need_RM_Thirst.cs"));
+                RiverSwitchFlipChecks.Has(src, @"compClass = typeof\(HediffComp_RM_DehydrationOrphan\);", "the props name the comp class");
+                RiverSwitchFlipChecks.Has(src, @"public override void CompPostTickInterval\(ref float severityAdjustment, int delta\)\s*\{\s*severityAdjustment \+= RM_ThirstMath\.OrphanDehydrationDelta\(NeedDrivesIt\(Pawn\), delta\);", "the comp applies the orphan delta every interval");
+                RiverSwitchFlipChecks.Has(src, @"return RM_ThirstProvider\.OursLive && p\?\.needs\?\.TryGetNeed\(RM_ThirstDefOf\.RM_Thirst\) != null;", "driven only while thirst is on AND the pawn has the need");
+            });
             Case("Thirst_defs_shipped", () =>
             {
                 string dir = Path.Combine(ModRoot, "Defs", "Thirst");

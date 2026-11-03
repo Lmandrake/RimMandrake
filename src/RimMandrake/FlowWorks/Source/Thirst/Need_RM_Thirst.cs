@@ -109,6 +109,32 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 	}
 
+	/// <summary>DEHYDRATION_FIX_STAYS_WHEN_THIRST_OFF: on RM_Dehydration. Only Need_RM_Thirst.NeedInterval moves the hediff,
+	/// so once the need is gone (thirst switched off, animal thirst off, an exempt gene, a settings Reapply) nothing would
+	/// ever lower it. This comp heals it at the drinking recovery rate whenever no live need drives it; it then drops off
+	/// at severity 0 like any hediff.</summary>
+	public class HediffCompProperties_RM_DehydrationOrphan : HediffCompProperties
+	{
+		public HediffCompProperties_RM_DehydrationOrphan()
+		{
+			compClass = typeof(HediffComp_RM_DehydrationOrphan);
+		}
+	}
+
+	public class HediffComp_RM_DehydrationOrphan : HediffComp
+	{
+		public override void CompPostTickInterval(ref float severityAdjustment, int delta)
+		{
+			severityAdjustment += RM_ThirstMath.OrphanDehydrationDelta(NeedDrivesIt(Pawn), delta);
+		}
+
+		/// <summary>True while our thirst is on and the pawn carries the RM_Thirst need.</summary>
+		public static bool NeedDrivesIt(Pawn p)
+		{
+			return RM_ThirstProvider.OursLive && p?.needs?.TryGetNeed(RM_ThirstDefOf.RM_Thirst) != null;
+		}
+	}
+
 	/// <summary>On a HediffDef: while the hediff is at or above <see cref="minSeverity"/>, thirst falls <see cref="factor"/>
 	/// times as fast (Own mode). Data, so any mod's hediff can say it costs water.</summary>
 	public class RM_ThirstFallExtension : DefModExtension
