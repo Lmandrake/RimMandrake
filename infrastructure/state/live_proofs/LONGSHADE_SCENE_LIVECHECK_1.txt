@@ -1,0 +1,11 @@
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A1 < /dev/null
+live-proof A2: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A2 < /dev/null
+live-proof A3: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A3 < /dev/null
+live-proof A4: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A4 < /dev/null
+live-proof A5: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A5 < /dev/null
+live-proof A6: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A6 < /dev/null
+live-proof A7: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A7 < /dev/null
+live-proof A8: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A8 < /dev/null
+live-proof A9: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A9 < /dev/null
+live-proof A10: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A10 < /dev/null
+live-proof A11: python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A11 < /dev/null

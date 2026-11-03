@@ -1,0 +1,11 @@
+A1 L2: on a generated RM_LongShade map, a drafted colonist still 3300 ticks on a wild deep-shade cell (ShadeAt >= 0.7, no roof shade, no gear shade) carries HediffDef RM_TollokInfestation.
+A2 L2: the same colonist under a built roof (RoofConstructed; the cell cast >= 0.7 before roofing, roof shade read after) carries no RM_TollokInfestation.
+A3 L2: the same colonist under an RM_LureAwning (gear shade read at its cell) carries no RM_TollokInfestation.
+A4 L2: with tollokTicksEnabled=false a fresh colonist still 3300 ticks on the same wild deep cell carries no RM_TollokInfestation.
+A5 L2: RM_LureAwning's inspect line reads "Game sheltering nearby: N", N = the wild animals in its shade (>= 1, a Hare under it), and Thing.GetInspectString carries it.
+A6 L2: with lureAwningEnabled=false the inspect line reads "Lure awning switched off in Mod Settings."
+A7 L2: the cell under RM_LureAwning reads shade via the gear grid (GearShadeAt > 0) and ShadeAt carries it.
+A8 L2: a wild, unroofed RM_Harrok held still strikes once in a 600-tick window: a Stab of 12-20 on a downed colonist (body size <= 1.5) lying in its 6-cell, 0.9 half-width shadow strip, and posts "A harrok's shadow fell across <name>, and the harrok struck."
+A9 L2: the harrok strikes at most once per 900 ticks: one strike in the first window, the next >= 900 ticks after it, never more than 1 + elapsed/900.
+A10 L2: with harrokEnabled=false the same harrok and prey go 1000 ticks with no strike, no Stab and no message.
+A11 L2: a downed colonist up-sun of the harrok (outside its strip) takes no Stab in any window.
