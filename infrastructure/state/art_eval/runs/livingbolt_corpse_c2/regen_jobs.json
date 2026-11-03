@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_LivingBolt__corpse_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LivingBolt",
+  "prompt": "A sprite sheet of three views of the same dead Living Bolt, a tiny Rust Cathedral creature of mechanoid flesh, in painterly vanilla RimWorld style, realistic, with a clean dark outline on a transparent background. The body is a large chrome nut with a short shank and a bolthead above it, a machined object with smooth metal surfaces. The creature is spent and stilled: tipped onto its side on the ground, limp, its chrome dulled and streaked with rust-orange, a jagged crack running through the nut. The views are south, east and north, drawn at one identical scale: the nut has the same width in all three, and the bolthead, shank and cracked nut keep the same size and proportions in every view, each centered in its own cell with the same margin around the body. South and east share the same tipped resting pose; east shows the nut and bolthead side by side in profile, and south shows the same parts from the front of the pose with the same dimensions, differing only by viewing angle. North shows the same body from behind with the same nut width and the same crack on the back of the nut. Simple, bold shapes that stay readable at button size.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "livingbolt_corpse_c2",
+  "drawsize": 0.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt"
+ }
+]

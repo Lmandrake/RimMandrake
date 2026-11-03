@@ -68,8 +68,9 @@
   killing one costs anything.
 
   ART: body art ships (Textures/.../RM_LivingBolt_*), installed through the art
-  ledger; the owner ruled a redo (RUSTCATHEDRAL_SHEET_ART_REDO_1). No corpse
-  render exists, so the PawnKindDef carries no corpseGraphicData.
+  ledger; the owner ruled a redo (RUSTCATHEDRAL_SHEET_ART_REDO_1). The corpse
+  render (RM_LivingBoltCorpse_*, a spent bolt tipped on its side) is installed
+  through the art ledger too (LIVINGBOLT_CORPSE_ART_1).
 -->
 <Defs>
 
@@ -302,9 +303,13 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.1</drawSize>
         </bodyGraphicData>
-        <!-- No corpseGraphicData: no corpse render exists, and a texPath with no
-             PNGs draws magenta (PawnRenderNode_AnimalPart swaps to it on death).
-             Without it a dead bolt draws its body graphic. Corpse art: LIVINGBOLT_CORPSE_ART_1. -->
+        <!-- Dead bolt: PawnRenderNode_AnimalPart swaps to this on death. -->
+        <corpseGraphicData>
+          <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBoltCorpse</texPath>
+          <shaderType>CutoutWithOverlay</shaderType>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.1</drawSize>
+        </corpseGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>
