@@ -20,7 +20,7 @@ NOT PROVEN HERE (first pokes for the next live pass):
 
 STATIC (offline): `python3 validation.py` runs modcheck.mod_static over the mod -- every Defs/Patches XML parses, no
 inert top-level `<Operation MayRequire>`, every Source/*.cs is in the csproj, a ModSettings class exists and every
-Scribed setting has a control.
+Scribed setting has a control, and every graphicData texPath resolves in this mod's own Textures/.
 """
 import os
 import sys
@@ -31,8 +31,42 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from modcheck import mod_static  # noqa: E402
 
 
+# Core art this mod reuses on purpose (lives in RimWorld's resources.assets, so it has no file on disk to find).
+VANILLA_TEXPATHS = {"Things/Building/Linked/RockFlecked_Atlas"}
+COLLECTION_CLASSES = {"Graphic_StackCount", "Graphic_Random", "Graphic_Collection", "Graphic_Appearances"}
+
+
+def texture_findings(mod_dir=HERE):
+    """Every graphicData texPath resolves in THIS mod's own Textures/ (FUNGAL_SOIL_RESCUE_RETIRED_MOD_ART):
+    a collection class needs a folder holding PNGs, any other class a PNG (or a _south facing). A path into a
+    retired or sibling mod is a finding, whether or not that mod happens to be loaded."""
+    import glob
+    import xml.etree.ElementTree as ET
+    tex_root = os.path.join(mod_dir, "Textures")
+    out, seen = [], 0
+    for xml in sorted(glob.glob(os.path.join(mod_dir, "Defs", "**", "*.xml"), recursive=True)):
+        for gd in ET.parse(xml).getroot().iter("graphicData"):
+            tp = (gd.findtext("texPath") or "").strip()
+            if not tp:
+                continue
+            seen += 1
+            cls = (gd.findtext("graphicClass") or "Graphic_Single").strip()
+            where = "%s: %s (%s)" % (os.path.relpath(xml, mod_dir), tp, cls)
+            if tp in VANILLA_TEXPATHS:
+                continue
+            base = os.path.join(tex_root, *tp.split("/"))
+            if cls in COLLECTION_CLASSES:
+                if not (os.path.isdir(base) and glob.glob(os.path.join(base, "*.png"))):
+                    out.append("texture: %s needs a folder of PNGs under this mod's Textures/" % where)
+            elif not (os.path.isfile(base + ".png") or os.path.isfile(base + "_south.png")):
+                out.append("texture: %s has no PNG under this mod's Textures/" % where)
+    if seen == 0:
+        out.append("texture: no graphicData texPath found at all -- the scan cannot see the defs")
+    return out
+
+
 def static_checks():
-    return mod_static.static_findings(HERE)
+    return mod_static.static_findings(HERE) + texture_findings()
 
 
 def _build_suite():
