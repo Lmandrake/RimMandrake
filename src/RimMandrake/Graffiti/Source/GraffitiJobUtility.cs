@@ -73,7 +73,9 @@ namespace RimMandrake.Graffiti
         // is an instant environmental stamp near where they stood, not a
         // job. No CanReserveAndReach gate (nobody needs to path there);
         // still requires a cardinal wall and an in-bounds standable cell,
-        // same physical eligibility as the ordinary finder.
+        // same physical eligibility as the ordinary finder, and the cell
+        // must be EXTERIOR (IsExteriorCell): a raider who turned to leave
+        // from inside the base must not tag an interior wall.
         private const int RaidExitSearchRadius = 6;
 
         public static bool TryFindWallMarkCellNear(IntVec3 near, Map map, out IntVec3 result)
@@ -83,13 +85,20 @@ namespace RimMandrake.Graffiti
             int bareSeen = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, RaidExitSearchRadius, useCenter: true))
             {
-                bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map);
+                bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map) && IsExteriorCell(c, map);
                 cells.Add(c);
                 bool marked = usable && AlreadyMarked(c, map);
                 states.Add(new RM_MarkCell(usable, marked));
                 if (usable && !marked && ++bareSeen >= RM_GraffitiKernel.MaxCandidates) break;
             }
             return PickFrom(cells, states, out result);
+        }
+
+        /// <summary>An exterior cell: unroofed, and its room known and psychologically outdoors (Verse.Room, rw16).</summary>
+        internal static bool IsExteriorCell(IntVec3 c, Map map)
+        {
+            Room room = c.GetRoom(map);
+            return RM_GraffitiKernel.ExteriorFace(c.Roofed(map), room != null, room != null && room.PsychologicallyOutdoors);
         }
 
         internal static bool HasCardinalWall(IntVec3 c, Map map)

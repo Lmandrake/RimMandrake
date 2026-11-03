@@ -149,6 +149,10 @@ namespace RimMandrake.Graffiti
         /// once per departure, never for a lord already leaving that switches between leaving toils.</summary>
         public static bool TurnsToLeave(bool wasLeaving, bool nowLeaving) { return nowLeaving && !wasLeaving; }
 
+        /// <summary>A raid-exit tag goes only on an EXTERIOR face (GRAFFITI_V1_LIVE_PROOF_1 A2): the standing cell is unroofed and its
+        /// room is known and psychologically outdoors, so a raider who turned to leave from inside the base never tags an interior wall.</summary>
+        public static bool ExteriorFace(bool roofed, bool roomKnown, bool outdoors) { return !roofed && roomKnown && outdoors; }
+
         /// <summary>Going over: a different mark already on the cell is destroyed first; the same def is thickened, not replaced.</summary>
         public static bool IsRival(bool isMark, bool sameDef) { return isMark && !sameDef; }
 

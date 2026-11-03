@@ -42,14 +42,21 @@ check(code("A1", "") == 2, "A1 empty not UNMEASURED")
 
 # A2 raid
 RAID = "RAID spawned 3 | faction Rough Pigs | marksIn 0 | toil LordToil_AssaultColony"
-EXIT = "EXIT mid 0 | after 3 | eligible 3 | onWall 3 | standing 3 | toil LordToil_AssaultColony->LordToil_ExitMap"
+EXIT = ("EXIT mid 0 | after 3 | eligible 3 | onWall 3 | exterior 3 | outsideOpen True | interiorClosed True | inside 1 | standing 4"
+        " | toil LordToil_AssaultColony->LordToil_ExitMap")
 check(code("A2", wrap(EXIT), extra=wrap(RAID)) == 0, "A2 pass shape not passed: %s" % (P.verdict("A2", EXIT, extra=RAID),))
 check(code("A2", EXIT.replace("mid 0", "mid 1"), extra=RAID) == 1, "A2 a tag on the way in passed")
 check(code("A2", EXIT, extra=RAID.replace("marksIn 0", "marksIn 2")) == 1, "A2 marks before arrival passed")
-check(code("A2", EXIT.replace("after 3 | eligible 3 | onWall 3", "after 0 | eligible 0 | onWall 0"), extra=RAID) == 1,
+check(code("A2", EXIT.replace("after 3 | eligible 3 | onWall 3 | exterior 3", "after 0 | eligible 0 | onWall 0 | exterior 0"), extra=RAID) == 1,
       "A2 no exit tag passed")
 check(code("A2", EXIT.replace("onWall 3", "onWall 2"), extra=RAID) == 1, "A2 an off-wall tag passed")
-check(code("A2", EXIT.replace("standing 3", "standing 0").replace("after 3 | eligible 3 | onWall 3", "after 0 | eligible 0 | onWall 0"),
+check(code("A2", EXIT.replace("exterior 3", "exterior 2"), extra=RAID) == 1, "A2 an interior-wall tag passed")
+check(code("A2", EXIT.replace(" | exterior 3", ""), extra=RAID) == 1, "A2 a reply without the exterior count passed")
+check(code("A2", EXIT.replace("interiorClosed True", "interiorClosed False"), extra=RAID) == 2,
+      "A2 an open (untestable) interior scored as a mod result")
+check(code("A2", EXIT.replace("inside 1", "inside 0"), extra=RAID) == 2, "A2 no raider inside scored as a mod result")
+check(code("A2", EXIT.replace("outsideOpen True", "outsideOpen False"), extra=RAID) == 2, "A2 an enclosed outside scored as a mod result")
+check(code("A2", EXIT.replace("standing 4", "standing 0").replace("after 3 | eligible 3 | onWall 3", "after 0 | eligible 0 | onWall 0"),
            extra=RAID) == 2, "A2 a raid with nobody standing scored as a mod result")
 check(code("A2", EXIT, extra="") == 2, "A2 without its RAID line not UNMEASURED")
 

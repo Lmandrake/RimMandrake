@@ -18,6 +18,7 @@ namespace RimMandrake.Graffiti
     ///
     /// Every set-up method rebuilds the same 20x12 site at the map centre: Concrete floor, unroofed, unfogged, home area, an
     /// 18-cell Steel wall along z = oz+6 with marks painted on its south face (z = oz+5) and raiders spawned on its north side.
+    /// A2 alone also closes and roofs the south half into a room (BuildInterior) with one raider inside, so exterior is tested.
     /// The site is cleared of every non-colonist thing first, so a clause never reads another clause's marks.
     /// </summary>
     public static class RM_GraffitiProof
@@ -32,6 +33,7 @@ namespace RimMandrake.Graffiti
         private static Filth_Mark ownMark, devotionalMark, controlMark;
         private static List<IntVec3> designated = new List<IntVec3>();
         private static List<ThingDef> chosen = new List<ThingDef>();
+        private static List<ThingDef> designatedDefs = new List<ThingDef>();
 
         private static IntVec3 Cell(int dx, int dz) => new IntVec3(origin.x + dx, 0, origin.z + dz);
         private static IntVec3 Face(int dx) => Cell(dx, WallRow - 1);
@@ -173,6 +175,7 @@ namespace RimMandrake.Graffiti
             if (r != null) return r;
             raidFaction = Enemy();
             if (raidFaction == null) return "REFUSED no humanlike enemy faction in this game";
+            BuildInterior(map);
             raiders = new List<Pawn>();
             raidTick = Find.TickManager.TicksGame;
             for (int i = 0; i < 3; i++)
@@ -181,28 +184,68 @@ namespace RimMandrake.Graffiti
                 GenSpawn.Spawn(p, Cell(3 + 2 * i, WallRow + 2), map);
                 raiders.Add(p);
             }
+            // one raider INSIDE the roofed room: the exit must not leave it an interior tag (A2 "on an exterior wall")
+            Pawn inside = EnemyPawn(raidFaction);
+            GenSpawn.Spawn(inside, Cell(14, WallRow - 3), map);
+            raiders.Add(inside);
             raidLord = LordMaker.MakeNewLord(raidFaction, new LordJob_AssaultColony(raidFaction, canKidnap: false, canTimeoutOrFlee: false,
                 sappers: false, useAvoidGridSmart: false, canSteal: false), map, raiders);
             return "RAID spawned " + raiders.Count + " | faction " + raidFaction.Name + " | marksIn " + Marks(map).Count(m => m.makerFaction == raidFaction && m.placedTick >= raidTick)
                 + " | toil " + raidLord.CurLordToil?.GetType().Name;
         }
 
+        // A2's interior: the south side of the site wall becomes a closed, roofed room (walls at dx 0 and W-1 for z 0..WallRow,
+        // and along z 0), so the raid-exit finder's radius reaches interior wall faces from the raiders outside and from the one
+        // raider inside. The proof reads interior by this geometry (InInterior) plus the roof, not by the mod's own predicate.
+        private static bool InInterior(IntVec3 c) => c.x > origin.x && c.x < origin.x + W - 1 && c.z > origin.z && c.z < origin.z + WallRow;
+
+        private static void BuildInterior(Map map)
+        {
+            var ring = new List<IntVec3>();
+            for (int dz = 0; dz <= WallRow; dz++) { ring.Add(Cell(0, dz)); ring.Add(Cell(W - 1, dz)); }
+            for (int dx = 1; dx < W - 1; dx++) ring.Add(Cell(dx, 0));
+            foreach (IntVec3 c in ring)
+            {
+                foreach (Pawn p in c.GetThingList(map).OfType<Pawn>().ToList()) Place(p, Cell(W / 2, 2));
+                Thing wall = ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.Steel);
+                wall.SetFaction(Faction.OfPlayer);
+                GenSpawn.Spawn(wall, c, map);
+            }
+            for (int dx = 1; dx < W - 1; dx++)
+                for (int dz = 1; dz < WallRow; dz++)
+                    map.roofGrid.SetRoof(Cell(dx, dz), RoofDefOf.RoofConstructed);
+        }
+
         public static string RaidExit(string args)
         {
             Map map = Find.CurrentMap;
             if (map == null || raidLord == null) return "REFUSED no raid started (RaidStart first)";
-            int mid = Marks(map).Count(m => m.makerFaction == raidFaction && m.placedTick >= raidTick);
+            // only marks made by THIS probe's raiders count, so another raid of the same faction elsewhere on the map never scores
+            int mid = Marks(map).Count(m => m.placedTick >= raidTick && m.maker != null && raiders.Contains(m.maker));
             string before = raidLord.CurLordToil?.GetType().Name ?? "none";
             LordToil exit = raidLord.Graph.lordToils.FirstOrDefault(RaidExitTaggerMod.IsLeavingToil);
             if (exit == null) return "REFUSED the raid lord's graph holds no leaving toil";
             int standing = raiders.Count(p => p.Spawned && !p.Downed);
             raidLord.GotoToil(exit);
-            List<Filth_Mark> after = Marks(map).Where(m => m.makerFaction == raidFaction && m.placedTick >= raidTick).ToList();
+            List<Filth_Mark> after = Marks(map).Where(m => m.placedTick >= raidTick && m.maker != null && raiders.Contains(m.maker)).ToList();
             int eligible = after.Count(m => m.def.GetModExtension<ModExtension_Graffiti>()?.raidExitEligible ?? false);
             int onWall = after.Count(m => m.wallSide != RM_GraffitiKernel.NoWall);
+            // exterior = outside the built room, unroofed, and in the SAME room as an open reference cell north of the wall (the map's
+            // outdoors), so an unroofed courtyard of some other enclosed room near the site never counts
+            Room outdoors = Cell(W / 2, H - 2).GetRoom(map);
+            int exterior = after.Count(m => !InInterior(m.Position) && !m.Position.Roofed(map) && outdoors != null
+                && m.Position.GetRoom(map) == outdoors);
+            // the site can tell exterior from interior only if the interior is really closed and roofed when the exit fires
+            int roofedInterior = 0, interiorCells = 0;
+            for (int dx = 1; dx < W - 1; dx++)
+                for (int dz = 1; dz < WallRow; dz++) { interiorCells++; if (Cell(dx, dz).Roofed(map)) roofedInterior++; }
+            Room room = Cell(W / 2, 2).GetRoom(map);
+            bool closed = room != null && !room.TouchesMapEdge && !room.PsychologicallyOutdoors;
+            int inside = raiders.Count(p => p.Spawned && !p.Downed && InInterior(p.Position));
             foreach (Pawn p in raiders) Retire(p);
             raiders.Clear();
             return "EXIT mid " + mid + " | after " + after.Count + " | eligible " + eligible + " | onWall " + onWall
+                + " | exterior " + exterior + " | outsideOpen " + B(outdoors != null && outdoors.PsychologicallyOutdoors) + " | interiorClosed " + B(closed && roofedInterior == interiorCells) + " | inside " + inside
                 + " | standing " + standing + " | toil " + before + "->" + exit.GetType().Name;
         }
 
@@ -335,6 +378,7 @@ namespace RimMandrake.Graffiti
             var designator = new Designator_PaintGraffitiMark();
             var field = AccessTools.Field(typeof(Designator_PaintGraffitiMark), "chosenMark");
             designated = new List<IntVec3>();
+            designatedDefs = new List<ThingDef>();
             int accepted = 0;
             for (int i = 0; i < chosen.Count; i++)
             {
@@ -344,6 +388,7 @@ namespace RimMandrake.Graffiti
                 field.SetValue(designator, chosen[i]);
                 designator.DesignateSingleCell(c);
                 designated.Add(c);
+                designatedDefs.Add(chosen[i]);
             }
             WorkGiverDef wgDef = DefDatabase<WorkGiverDef>.GetNamed("RM_PaintGraffitiDesignated");
             var wg = (WorkGiver_Scanner)wgDef.Worker;
@@ -371,7 +416,7 @@ namespace RimMandrake.Graffiti
                 got.Add(m?.def.defName ?? "none");
                 if (m == null) continue;
                 painted++;
-                if (m.def == chosen[i] && m.maker == colonist) matched++;
+                if (m.def == designatedDefs[i] && m.maker == colonist) matched++;
             }
             int pending = designated.Count(c => map.designationManager.DesignationAt(c, RMGraffitiDefOf.RM_PaintGraffitiHere) != null);
             return "READ painted " + painted + " | matched " + matched + " | of " + designated.Count + " | pending " + pending

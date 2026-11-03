@@ -172,6 +172,13 @@ namespace RimMandrake.Graffiti.SelfTest
                     bool was = (m & 1) != 0, now = (m & 2) != 0;
                     Check(RM_GraffitiKernel.TurnsToLeave(was, now) == (now && !was), $"TurnsToLeave({was},{now})");
                 }
+                for (int m = 0; m < 8; m++)
+                {
+                    Steps++;
+                    bool roofed = (m & 1) != 0, known = (m & 2) != 0, outdoors = (m & 4) != 0;
+                    Check(RM_GraffitiKernel.ExteriorFace(roofed, known, outdoors) == (!roofed && known && outdoors), $"ExteriorFace({roofed},{known},{outdoors})");
+                    if (roofed) Check(!RM_GraffitiKernel.ExteriorFace(roofed, known, outdoors), "a roofed cell counted as an exterior face");
+                }
                 for (int m = 0; m < 4; m++)
                 {
                     Steps++;

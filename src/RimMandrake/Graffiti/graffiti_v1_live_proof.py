@@ -7,9 +7,11 @@ the same 20x12 walled site at the map centre (see the C# class), so the clauses 
 Exit 0 = the clause holds, 1 = it answered and something is wrong, 2 = UNMEASURED (no bridge, REFUSED, no line).
   A1 spree     SpreeStart forces RM_GraffitiPaintingSpreeState on a colonist, the clock runs up to 3000 ticks, SpreeRead:
                marks >= 1 and every one has factionOk and ideoOk (maker/faction/ideo stamped)
-  A2 raid      RaidStart spawns 3 enemy pawns under LordJob_AssaultColony beside the site's wall (marksIn 0), 120 ticks run,
-               RaidExit moves the lord onto its own leaving toil: mid 0 (none on the way in), after >= 1, every tag
-               raidExitEligible and on a wall
+  A2 raid      RaidStart closes and roofs the site's south half into a room, spawns 3 enemy pawns outside the wall and 1
+               inside the room under LordJob_AssaultColony (marksIn 0), 120 ticks run, RaidExit moves the lord onto its own
+               leaving toil: mid 0 (none on the way in), after >= 1, every tag raidExitEligible, on a wall and exterior
+               (outside the room by geometry, unroofed, in the outdoors room); interiorClosed False, inside 0 or outsideOpen False is a SITE
+               fault (UNMEASURED)
   A3 sigil     Sigil paints RM_Graffiti_IdeoSigil by a colonist: ideo True, frame halo_0, iconIsIdeo True, tinted True
   A4 over      GoingOver: a colonist's Tag_A, then an enemy's ThrowUp_A on the same cell: firstGone True, marksAtCell 1,
                def RM_Graffiti_ThrowUp_A, rivalFaction True
@@ -123,8 +125,14 @@ def verdict(clause, text, extra=None):
             fails.append("no tag when the raid turned to leave (after %s)" % field(ln, "after"))
         elif _int(ln, "eligible") != after or _int(ln, "onWall") != after:
             fails.append("a tag not raidExitEligible or not on a wall")
+        elif _int(ln, "exterior") != after:
+            fails.append("a tag on an interior wall (exterior %s of %s)" % (field(ln, "exterior"), after))
         if _int(ln, "standing") == 0:
             return 2, "SITE: no raider was standing when the exit fired: " + ln
+        if field(ln, "interiorClosed") != "True" or not _int(ln, "inside"):
+            return 2, "SITE: the roofed interior was not closed or held no raider, so exterior is not tested: " + ln
+        if field(ln, "outsideOpen") != "True":
+            return 2, "SITE: the raiders' side of the wall is not open outdoors (enclosed terrain), so no exterior face exists: " + ln
         return (1, "; ".join(fails) + " | " + ln) if fails else (0, ln)
     if clause == "A6":
         fails = _match(ln, WANT["A6"])
