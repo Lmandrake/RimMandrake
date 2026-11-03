@@ -10,7 +10,7 @@ rc=0
 if [ -f "$root/.git/relentless.json" ] && [ -f "$root/src/RimMandrake/rimflow/relentless.py" ]; then
   python3 "$root/src/RimMandrake/rimflow/relentless.py" fence-hook || rc=1
 fi
-for g in block_dll_source_mismatch.py block_ledger_lint.py block_unledgered_texture.py; do
+for g in block_dll_source_mismatch.py block_ledger_lint.py block_unledgered_texture.py block_orphan_item_prose.py; do
   [ -f "$root/.claude/hooks/$g" ] || continue
   printf '%s\n' "$input" | python3 "$root/.claude/hooks/$g" --git-pre-push
   r=$?

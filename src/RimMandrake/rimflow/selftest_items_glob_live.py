@@ -39,6 +39,22 @@ from rimflow import model                                          # noqa: E402
 TERMINAL = {"done", "dropped", "superseded"}
 
 
+def verdict(stem, state):
+    """-> None when items/<stem>.md belongs in the live glob of `state`, else why not.
+    block_orphan_item_prose.py applies the same verdict at pre-push."""
+    it = state.items.get(stem)
+    if it is not None and it.state not in TERMINAL:
+        return None
+    # companion-file exception: <live-item-id>.<suffix>.md
+    prefix = stem.split(".", 1)[0]
+    parent = state.items.get(prefix) if prefix != stem and it is None else None
+    if parent is not None and parent.state not in TERMINAL:
+        return None
+    if it is None:
+        return "no ledger row at all"
+    return "ledger state is %r (terminal) but prose is still in items/, not items/closed/" % it.state
+
+
 def check(items_dir=None):
     """-> (ok_ids, bad) where bad is [(filename, reason)]. `items_dir` overrides
     `model.ITEMS` for the self-check below — never for the real run."""
@@ -48,21 +64,11 @@ def check(items_dir=None):
     ok, bad = [], []
     for f in files:
         stem = os.path.basename(f)[:-3]
-        it = state.items.get(stem)
-        if it is not None and it.state not in TERMINAL:
-            ok.append(stem)
-            continue
-        # companion-file exception: <live-item-id>.<suffix>.md
-        prefix = stem.split(".", 1)[0]
-        parent = state.items.get(prefix) if prefix != stem and it is None else None
-        if parent is not None and parent.state not in TERMINAL:
-            ok.append(stem)
-            continue
-        if it is None:
-            bad.append((stem, "no ledger row at all"))
+        why = verdict(stem, state)
+        if why:
+            bad.append((stem, why))
         else:
-            bad.append((stem, "ledger state is %r (terminal) but prose is still "
-                               "in items/, not items/closed/" % it.state))
+            ok.append(stem)
     return ok, bad
 
 
