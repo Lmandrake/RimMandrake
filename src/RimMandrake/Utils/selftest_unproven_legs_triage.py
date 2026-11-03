@@ -6,10 +6,11 @@ A1: each of the four triaged items carries a ledger note from the triage giving 
 A2: every item named in a NEXT is re-filed on the ledger: a `file` event caused_by this item, with a title and a
     `why` giving its triage class (needs a tool / a map / owner / half bridge-measurable). Read from the ledger only:
     the blind checker's tree leaves infrastructure/state/items out (relentless_rules.json walls.marker.tree_exclude).
-    The legs found bridge-measurable now are
-    bound to live proofs in infrastructure/state/live_proofs/UNPROVEN_LIVE_LEGS_TRIAGE_1.txt whose bars exist (each
-    live-proof line rerun with --mock, which exits 0 only when every named bar is present in a mock suite run).
-Planted breaks (a note missing a leg, a verdict word, a NEXT; a NEXT naming an unfiled item) must redden, so a
+    Every scoped leg whose verdict says BRIDGE-MEASURABLE NOW (or PARTLY ...) must be bound to a live proof in
+    infrastructure/state/live_proofs/UNPROVEN_LIVE_LEGS_TRIAGE_1.txt: a line with the item's --mod that runs every
+    bar the verdict names; and those bars exist (each live-proof line rerun with --mock, which exits 0 only when every named bar is present in a mock suite run).
+Planted breaks (a note missing a leg, a verdict word, a NEXT; a NEXT naming an unfiled item; a leg flipped to
+bridge-measurable now with no line running it, a bound bar dropped, a line moved to another mod) must redden, so a
 blind parser cannot pass. Exit 0 green, 1 red.
 """
 import glob
@@ -32,6 +33,14 @@ VERDICTS = ("BRIDGE-MEASURABLE NOW", "NEEDS A TOOL", "NEEDS A GENERATED MAP", "O
 LEG = re.compile(r"\bA(\d+)(?:-A(\d+))?\b")
 REFILE_WHY = re.compile(r"needs (?:a tool|a (?:generated )?map|(?:the )?owner)|owner[- ]eyes|bridge-measurable", re.I)
 NEXT_IDS = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
+MOD = {     # the mod whose validation.py holds each item's live components (the --mod of a live-proof line)
+    "CAULDRON_ENRICHMENT_LIVE_PROOF_1": "Cauldron",
+    "FEVERWOOD_BROOD_RANSOM_1": "FeverWood",
+    "RUSTCATHEDRAL_BASE_FINISH_BUILD_1": "RustCathedral",
+    "FORGE_ENRICHMENT_QUICKTEST_1": "TheForge",
+}
+NOW = re.compile(r"bridge-measurable now", re.I)   # also matches "PARTLY BRIDGE-MEASURABLE NOW"
+BAR = re.compile(r"\b[a-z]+\.[a-z][a-z0-9]*_[a-z0-9_]+\b")   # chain.bar_name (bar names carry an underscore)
 
 
 def events():
@@ -97,6 +106,50 @@ def check(evs, filed):
     return bad
 
 
+def triage_notes(evs):
+    """-> {item: text of its latest triage note}."""
+    out = {}
+    for e in evs:
+        if e.get("event") == "note" and e.get("id") in SCOPE and (e.get("text") or "").startswith(ITEM + " triage"):
+            out[e["id"]] = e["text"]
+    return out
+
+
+def parse_line(cmd):
+    """-> (mod, {bars}) of a northstar_bar_proof.py live-proof command."""
+    argv = shlex.split(cmd.split("<", 1)[0])
+    mod, bars = None, set()
+    for i, a in enumerate(argv[:-1]):
+        if a == "--mod":
+            mod = argv[i + 1]
+        elif a == "--bar":
+            bars.add(argv[i + 1])
+    return mod, bars
+
+
+def binding_problems(evs, lines):
+    """A2: every scoped leg whose verdict says BRIDGE-MEASURABLE NOW (or PARTLY ...) is run by a live-proof line:
+    a line whose --mod is the item's mod, and every bar the verdict names is a --bar of such a line."""
+    bad = []
+    parsed = [parse_line(c) for c in lines]
+    for item, text in triage_notes(evs).items():
+        seg = leg_segments(text)
+        for leg in SCOPE[item]:
+            if not NOW.search(seg.get(leg, "")):
+                continue
+            mine = set().union(*[b for m, b in parsed if m == MOD[item]] or [set()])
+            if not any(m == MOD[item] for m, _ in parsed):
+                bad.append("%s %s: verdict says bridge-measurable now, but no live-proof line runs --mod %s"
+                           % (item, leg, MOD[item]))
+                continue
+            named = set(BAR.findall(seg[leg]))
+            if not named:
+                bad.append("%s %s: bridge-measurable verdict names no bar to run" % (item, leg))
+            for b in sorted(named - mine):
+                bad.append("%s %s: bar %s is in the verdict but no live-proof line runs it" % (item, leg, b))
+    return bad
+
+
 def live_lines():
     p = os.path.join(REPO, "infrastructure/state/live_proofs", ITEM + ".txt")
     with open(p) as f:
@@ -138,6 +191,33 @@ def planted(evs, filed):
             alt[nid] = dict(filed.get(nid) or {}, **{field: val})
             if not any(nid in b for b in check(evs, alt)):
                 missed.append("re-filed %s with a wrong %s" % (nid, field))
+    lines = live_lines()
+    notes = triage_notes(evs)
+    if binding_problems(evs, lines):
+        missed.append("binding red on the real notes before any plant")
+    # the blind checker's mutant: a NEEDS A TOOL leg flipped to BRIDGE-MEASURABLE NOW with no line running it
+    fw = "FEVERWOOD_BROOD_RANSOM_1"
+    if fw in notes:
+        mut = [dict(e) for e in evs]
+        for e in mut:
+            if e.get("event") == "note" and e.get("id") == fw and (e.get("text") or "").startswith(ITEM + " triage"):
+                e["text"] = e["text"].replace("NEEDS A TOOL", "BRIDGE-MEASURABLE NOW")
+        if not any(fw in b for b in binding_problems(mut, lines)):
+            missed.append("FeverWood leg flipped to bridge-measurable now, unbound")
+    else:
+        missed.append("no FeverWood triage note to plant on")
+    # a bound bar dropped from its line, and a line moved to another mod, must each redden
+    for i, cmd in enumerate(lines):
+        mod, bars = parse_line(cmd)
+        for b in sorted(bars)[:1]:
+            alt = list(lines)
+            alt[i] = cmd.replace(" --bar " + b, "")
+            if not any(b in x for x in binding_problems(evs, alt)):
+                missed.append("bar %s dropped from its live-proof line" % b)
+        alt = list(lines)
+        alt[i] = cmd.replace("--mod " + str(mod), "--mod NoSuchMod")
+        if not binding_problems(evs, alt):
+            missed.append("live-proof line for %s moved to another mod" % mod)
     return missed
 
 
@@ -148,6 +228,7 @@ def main():
     missed = planted(evs, filed)
     bad += ["planted break did not redden: %s" % m for m in missed]
     lines = live_lines()
+    bad += binding_problems(evs, lines)
     if len(lines) < 2:
         bad.append("live_proofs file binds %d live-proof lines, expected the Cauldron and Forge lines" % len(lines))
     if "--fast" not in sys.argv:
