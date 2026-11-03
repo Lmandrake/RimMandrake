@@ -943,16 +943,55 @@ def c_testing(now, rules, ctx):
 def nightly_news(now, ctx):
     """TE1: the nightly's news, the only part of it that alarms (known_reds.py). A blind reading holds the alarm."""
     import known_reds
-    keys = ("testing.nightly_news", "testing.nightly_known_reds")
+    keys = ("testing.nightly_news", "testing.nightly_known_reds", "testing.nightly_unparked_reds", "testing.nightly_reds_overdue")
     try:
-        v = known_reds.measure(ctx.get("open_ids"), now)
+        v = known_reds.measure(ctx.get("open_ids"), now, with_cop=True)
     except Exception as e:  # noqa: BLE001  a list that cannot be read costs these readings, not the family's
         v = {"why": "%s: %s" % (type(e).__name__, str(e)[:160])}
     if v.get("why"):
         return {k: U(v["why"]) for k in keys}
-    return {keys[0]: M(len(v["news"]), "nightly reds not on the known-red list, and entries past their age", night=v["night"],
-                       said=v["said"], news=v["news"][:30], reds=len(v["reds"])),
-            keys[1]: M(len(v["listed"]), "nightly reds on the known-red list", night=v["night"], cured=v["cured"][:30])}
+    c = v["cop"]
+    # news is the list's own faults (entries past their age, bad entries): a red no entry parks is a build-cop group
+    lnews = [n for n in v["news"] if not n.startswith("red, not listed: ")]
+    unparked = known_reds.uncovered(v)
+    out = {keys[0]: M(len(lnews), "known-red list entries past their age, and bad entries", night=v["night"],
+                      said="; ".join(lnews[:3]), news=lnews[:30], reds=len(v["reds"])),
+           keys[1]: M(len(v["listed"]), "nightly reds on the known-red list", night=v["night"], cured=v["cured"][:30]),
+           keys[2]: M(len(unparked), "nightly reds no known-red entry parks", night=v["night"], groups=len(c["groups"]),
+                      detail_read=c["detail_read"]),
+           keys[3]: M(len(c["overdue"]), "nightly reds red past their fix deadline, owned or not", night=v["night"],
+                      said=c["overdue_said"], news=c["overdue"][:30])}
+    out.update(red_groups(c, v["night"]))
+    return out
+
+
+def red_groups(c, night, state=None):
+    """BUILD COP (known_reds.py): one testing.red_<id> reading per root-cause group of the night's unparked reds, for
+    the wildcard alarm NIGHTLY_COP_FIX (one raised item per group). An absent key holds its alarm, so a group gone from
+    a READ night reads 0 and clears; an unread night (the sweep is rewriting its output) emits no group and holds all.
+    New groups come at most selftest.red_new_items_per_pass a pass (the unit's deadline bounds the spawns), biggest
+    first; the rest are absent, so held, and come next pass."""
+    import known_reds
+    if not c.get("detail_read"):
+        return {}
+    if state is None:
+        p = ops_dir() / "alarms.json"
+        state = read_json(p) if p.exists() else {}
+    held = {aid.split(":", 1)[1] for aid in (state if isinstance(state, dict) else {})
+            if aid.startswith("NIGHTLY_RED:testing.red_")}
+    cap = known_reds.new_items_per_pass()
+    out, fresh = {}, 0
+    for g in c["groups"]:
+        if g["key"] not in held:
+            if fresh >= cap:
+                continue
+            fresh += 1
+        out[g["key"]] = M(len(g["tests"]), "nightly reds with one first error line, no entry parking them", night=night,
+                          said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"])
+    live = {g["key"] for g in c["groups"]}
+    for k in sorted(held - live):
+        out[k] = M(0, "nightly reds with one first error line, no entry parking them", night=night, said="green or parked")
+    return out
 
 
 def scratch_runs_path() -> Path:

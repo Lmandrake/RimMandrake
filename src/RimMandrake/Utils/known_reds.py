@@ -10,8 +10,10 @@ The nightly was RED 14 of 14 nights, so RED said nothing. Now:
            and on the record. An entry whose item has since closed covers nothing: its test is news again.
   HISTORY  Transient/selftests_nightly.log of the data clone (each sweep's FAIL and CRASH summary lines). A night is read
            only if its summary is whole; a sweep in progress has no RESULT line yet and the night before stands.
-  NEWS     a red not covered by the list, or an entry past its age. ops_watch reads this as testing.nightly_news, and
-           alarms on it (tag NIGHTLY_NEWS, one fixed item OPS_NIGHTLY_RED_DIAGNOSE_*). A listed red is silence.
+  NEWS     a red not covered by the list, or an entry past its age. The list's own faults (entries past their age, bad
+           entries) are ops_watch's testing.nightly_news (tag NIGHTLY_NEWS, one fixed item OPS_NIGHTLY_RED_DIAGNOSE_*).
+           Every red no entry parks belongs to the BUILD COP below: an item per root cause and a deadline. A listed red
+           is silence.
 
     python3 src/RimMandrake/Utils/known_reds.py report [--json]
     python3 src/RimMandrake/Utils/known_reds.py add <test path> --item <ID> --why "..."
@@ -135,8 +137,163 @@ def judge(entries, ns, open_ids, now, problems=()):
             "itemless": itemless, "cured": sorted(t for t in by if t not in last["reds"]), "news": news, "said": said}
 
 
-def measure(open_ids, now):
-    """The verdict of the live inputs, or raises / returns {"why": ...} when they cannot be read."""
+def uncovered(v):
+    """The newest night's reds no entry parks: not listed, or listed past its age (an entry with no open item already
+    counts as not listed). Each one is owed an item and runs against its deadline."""
+    return sorted(set(v["unlisted"]) | (set(v["expired"]) & set(v["reds"])))
+
+
+# ---- BUILD COP (RED_COP_BUILD_NO_ORPHAN_REDS; design/RimMandrake/build_system_practices_2026-11-03.md top-5 #4):
+# every red no entry parks gets an item, one per root cause, raised to the top of relentless' pool, with a deadline;
+# a red still red past its deadline alarms, item or no item. The item makes a red owned, never fixed.
+#   GROUPS   the night's full output (Transient/selftests_nightly.last) gives each red its first error line; reds whose
+#            normalised line is the same (one root cause, e.g. a full disk) are one group. A group is the ops_watch
+#            reading testing.red_<6 letters>; the wildcard alarm NIGHTLY_COP_FIX files and raises one item per group.
+#   DEADLINE the first night of a red's current streak + selftest.red_fix_deadline_h (testing_policy.json). Past it the
+#            red is in testing.nightly_reds_overdue, one fixed alarm (OPS_RED_OVERDUE_CHASE_*), owned or not.
+ROW = re.compile(r"^(PASS|FAIL|CRASH|SKIP\w*|FLAKY\w*|UNMEASURED)\s+[\d.]+s\s+(\S+)\s*$")
+EXC = re.compile(r"^[\w.]*(Error|Exception|Exit|Interrupt|Warning)\b:?")
+SKIP_LINE = re.compile(r"^(rc -?\d+|Traceback \(most recent call last\):|File \".*|[~^\s]+|ok\b.*|PASS\b.*|RESULT:.*)$")
+ERRORISH = re.compile(r"FAIL|Error|error|failed|Exception|timeout|refused|not found|missing", re.I)
+GENERIC_MIN = 16           # a normalised line shorter than this ("AssertionError") names no cause: its test stands alone
+
+
+def last_path():
+    return data_clone() / "Transient" / "selftests_nightly.last"
+
+
+def details(text):
+    """The night's full output -> {test: (status, [detail lines])}. The sorted listing after the progress rows has one
+    `STATUS  N.Ns  path` row per test and its indented detail under it; a later row for a test wins."""
+    out, cur = {}, None
+    for ln in text.splitlines():
+        m = ROW.match(ln)
+        if m:
+            cur = [m.group(1), []]
+            out[m.group(2)] = cur
+        elif cur is not None and ln[:1] in (" ", "\t") and ln.strip():
+            cur[1].append(ln.strip())
+        else:
+            cur = None
+    return {t: (s, d) for t, (s, d) in out.items()}
+
+
+def first_error(status, lines):
+    """The line that says what broke: a crash's exception message (the last exception line), else the first line that
+    reads as an error, else the first line that is not boilerplate. '' when there is none."""
+    body = [ln for ln in lines if not SKIP_LINE.match(ln) and not ln.startswith("uncaught ")]
+    if status == "CRASH":
+        exc = [ln for ln in body if EXC.match(ln)]
+        if exc:
+            return exc[-1]
+    hit = next((ln for ln in body if ERRORISH.search(ln)), None)
+    return hit or (body[0] if body else next((ln for ln in lines if ln.startswith("uncaught ")), ""))
+
+
+ERRNO = re.compile(r"(\w*(?:Error|Exception))?:? ?\[Errno \d+\] ([^:'\"()\[\]]+)")
+UNCAUGHT = re.compile(r"^uncaught ")
+
+
+def normalise(line, test):
+    """One root cause reads the same in every test it breaks: an OS error is its errno text alone (a full disk breaks
+    each test on a different file); otherwise the test's own name, directories, hex runs and numbers are taken out.
+    A bare `uncaught X` names no cause: '' (its test stands alone)."""
+    m = ERRNO.search(line)
+    if m:
+        return "%s: [Errno] %s" % (m.group(1) or "OSError", m.group(2).strip())
+    if UNCAUGHT.match(line):
+        return ""
+    s = line.replace(test, "<test>").replace(Path(test).stem, "<test>")
+    s = re.sub(r"(?:/[\w.\-]+)+/([\w.\-]+)", r"\1", s)          # a path -> its last part
+    s = re.sub(r"\b[0-9a-fA-F]{6,}\b", "#", s)
+    s = re.sub(r"\d+(\.\d+)?", "#", s)
+    return re.sub(r"\s+", " ", s).strip()[:160]
+
+
+def letters(text, n=6):
+    """A stable n-letter word for text (a name's word needs letters; crc32 keeps it the same every night)."""
+    import zlib
+    v = zlib.crc32(text.encode())
+    return "".join(chr(65 + (v // 26 ** i) % 26) for i in range(n))
+
+
+def groups(tests, det):
+    """-> [{key, sig, tests}] for the reds in `tests`, one per root cause. A test with no readable error line, or a
+    line too generic to name a cause, is its own group, keyed by its path so it stays the same group every night."""
+    by = {}
+    for t in sorted(tests):
+        status, lines = det.get(t, ("RED", []))
+        sig = normalise(first_error(status, lines), t)
+        if len(sig) < GENERIC_MIN:
+            ident, sig = "test:" + t, "%s: %s" % (status, sig or "no error line in the night's output")
+        else:
+            ident = "sig:" + sig
+        g = by.setdefault(ident, {"key": "testing.red_" + letters(ident).lower(), "sig": sig, "tests": []})
+        g["tests"].append(t)
+    return sorted(by.values(), key=lambda g: (-len(g["tests"]), g["key"]))
+
+
+def deadlines(ns, tests, hours):
+    """-> {test: (first red night of its current streak, due epoch)}."""
+    out = {}
+    for t in tests:
+        n = streak(ns, t)
+        if n:
+            start = ns[-n]
+            out[t] = (start["at"], start["t"] + hours * 3600)
+        else:
+            out[t] = (ns[-1]["at"], ns[-1]["t"] + hours * 3600)
+    return out
+
+
+def cop(v, ns, det, now, hours):
+    """Pure. The build cop's verdict on a judged night: {groups: [{key, sig, tests, due, said}], overdue: [...],
+    overdue_said}. det None (the night's detail unreadable) groups every red alone; ops_watch then files no group at all
+    and waits for a readable night, so a guess never files an item."""
+    reds = uncovered(v)
+    dl = deadlines(ns, reds, hours)
+    gs = groups(reds, det or {})
+    for g in gs:
+        due = min(dl[t][1] for t in g["tests"])
+        g["first_red"] = min(dl[t][0] for t in g["tests"])
+        g["due"] = stamp(due)
+        g["said"] = "%d red since %s, due %s: %s (%s)" % (len(g["tests"]), g["first_red"][:10], g["due"][:16], g["sig"],
+                                                        ", ".join(Path(t).name for t in g["tests"][:4])
+                                                        + (" +%d" % (len(g["tests"]) - 4) if len(g["tests"]) > 4 else ""))
+    late = sorted((t for t in reds if dl[t][1] <= now), key=lambda t: (dl[t][1], t))
+    over = ["%s red since %s, due %s" % (t, dl[t][0], stamp(dl[t][1])) for t in late]
+    said = "; ".join(over[:3]) + (" and %d more" % (len(over) - 3) if len(over) > 3 else "")
+    return {"groups": gs, "overdue": over, "overdue_said": said}
+
+
+def read_details(night):
+    """The full output of `night`, or None: it is that night's only if it is whole (holds its RESULT line) and was
+    written after the night began (a sweep in progress has rewritten it)."""
+    p = last_path()
+    try:
+        if p.stat().st_mtime < night["t"]:
+            return None
+        text = p.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    return details(text) if re.search(r"^RESULT:", text, re.M) else None
+
+
+def red_deadline_h():
+    sys.path.insert(0, str(HERE.parent / "rimflow"))
+    import testing_policy as TP
+    return float(TP.param("selftest.red_fix_deadline_h"))
+
+
+def new_items_per_pass():
+    sys.path.insert(0, str(HERE.parent / "rimflow"))
+    import testing_policy as TP
+    return int(TP.param("selftest.red_new_items_per_pass"))
+
+
+def measure(open_ids, now, with_cop=False):
+    """The verdict of the live inputs, or raises / returns {"why": ...} when they cannot be read. with_cop adds the
+    build cop's verdict under "cop" (cop.detail_read False: the night's detail is unreadable, its groups are a guess)."""
     p = log_path()
     if not p.exists():
         return {"why": "%s not found" % p}
@@ -148,7 +305,13 @@ def measure(open_ids, now):
     if open_ids is None:
         return {"why": "the ledger was not readable, so which items are open is unknown"}
     entries, bad = read_list()
-    return judge(entries, ns, open_ids, now, bad)
+    v = judge(entries, ns, open_ids, now, bad)
+    if with_cop:
+        det = read_details(ns[-1])
+        c = cop(v, ns, det, now, red_deadline_h())
+        c["detail_read"] = det is not None
+        v["cop"] = c
+    return v
 
 
 def ledger_open():
@@ -193,7 +356,7 @@ def main(argv=None):
     ns_args = ap.parse_args(argv)
     now = time.time()
     if ns_args.cmd == "report":
-        v = measure(ledger_open(), now)
+        v = measure(ledger_open(), now, with_cop=True)
         if ns_args.json:
             print(json.dumps(v, indent=1, sort_keys=True))
         elif v.get("why"):
@@ -206,6 +369,16 @@ def main(argv=None):
                 print("  cured (drop it)  " + t)
             for e in read_list()[0]:
                 print("  %-70s %s until %s" % (e["test"], e["item"], e["expires"][:10]))
+            c = v["cop"]
+            print("build cop: %d unparked red(s) in %d group(s)%s, %d overdue" % (
+                sum(len(g["tests"]) for g in c["groups"]), len(c["groups"]),
+                "" if c["detail_read"] else " (the night's output is unread: each red stands alone)", len(c["overdue"])))
+            for g in c["groups"]:     # item NIGHTLY_COP_FIX_RED_<KEY>_* carries group testing.red_<key>
+                print("  %s  due %s  %s" % (g["key"], g["due"], g["sig"]))
+                for t in g["tests"]:
+                    print("      " + t)
+            for o in c["overdue"]:
+                print("  OVERDUE  " + o)
         return 0
     entries, bad = read_list()
     if bad:

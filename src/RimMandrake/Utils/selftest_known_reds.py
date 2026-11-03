@@ -2,6 +2,7 @@
 """selftest_known_reds.py -- TE1's own test: plant a new red, alarm; plant a listed red, silence; an entry past its age
 alarms; an entry with no open item is refused and covers nothing; a new red on an open alarm is said, not swallowed."""
 import json
+import re
 import os
 import sys
 import tempfile
@@ -89,7 +90,8 @@ check("CLI: drop removes it", K.main(["drop", A, "--why", "w"]) == 0 and K.read_
 # ---- blind is never clean
 K.save([entry()])
 pts = OW.nightly_news(NOW, {"open_ids": OPEN})
-check("metric: listed reds are counted, the unlisted ones are the news", pts["testing.nightly_news"]["v"] == 2
+check("metric: listed reds are counted, the unlisted ones are unparked (the list's own news is none)",
+      pts["testing.nightly_unparked_reds"]["v"] == 2 and pts["testing.nightly_news"]["v"] == 0
       and pts["testing.nightly_known_reds"]["v"] == 1, pts)
 check("metric: no ledger is UNMEASURED, not 0", OW.nightly_news(NOW, {})["testing.nightly_news"]["m"] == "UNMEASURED")
 check("metric: a stale newest night is UNMEASURED", OW.nightly_news(NOW + 2 * K.DAY, {"open_ids": OPEN})["testing.nightly_news"]["m"] == "UNMEASURED")
@@ -98,10 +100,9 @@ check("metric: an unreadable list is UNMEASURED, not 0", OW.nightly_news(NOW, {"
 K.save([dict(entry(), item="")])
 check("a malformed entry is refused: it covers nothing and is news", any("bad list entry" in n for n in K.measure(OPEN, NOW)["news"]))
 
-# ---- TE1 end to end, through the real rules and the real alarm step
+# ---- TE1 end to end, through the real rules and the real alarm step: NIGHTLY_NEWS is the list's own faults now
 RULES = OW.load_rules(HERE / "ops_watch_rules.json")
-KEY = "testing.nightly_news"
-AID = "NIGHTLY_NEWS:" + KEY
+AID = "NIGHTLY_NEWS:testing.nightly_news"
 calls = []
 
 
@@ -110,32 +111,160 @@ def filer(todo, conf):
     return {a["name"]: None for a in todo}
 
 
+def filed():
+    return [a for a in calls if not a.get("note_only")]
+
+
+def last(at, rows, result=True, mtime=None):
+    """The night's full output: progress rows (ignored), then the sorted listing with each red's detail."""
+    s = "[1/9] PASS          0.1s  src/x/selftest_ok.py\n"
+    for t, status, lines in rows:
+        s += "%-5s        1.0s  %s\n" % (status, t) + "".join("             %s\n" % ln for ln in lines)
+    s += "PASS          0.1s  src/x/selftest_ok.py\n" + ("RESULT: RED (green = FAIL 0 and CRASH 0)\n" if result else "")
+    K.last_path().write_text(s, encoding="utf-8")
+    t = K.epoch(at) + 60 if mtime is None else mtime
+    os.utime(K.last_path(), (t, t))
+
+
+def run(now, known, open_ids):
+    return OW.run_alarms(OW.nightly_news(now, {"open_ids": OPEN}), RULES, now, known, filer, open_ids)
+
+
+def reset():
+    calls.clear()
+    (TMP / "ops" / "alarms.json").unlink(missing_ok=True)
+
+
+reset()
 K.save([entry()])
-write_log(night("2026-11-04T10:00:00Z", [A]))
-st = OW.run_alarms(OW.nightly_news(NOW, {"open_ids": OPEN}), RULES, NOW, set(OPEN), filer, OPEN)
-check("TE1 end to end: a listed red files nothing", calls == [] and not st, (calls, st))
 write_log(night("2026-11-04T10:00:00Z", [A, B]))
-st = OW.run_alarms(OW.nightly_news(NOW, {"open_ids": OPEN}), RULES, NOW, set(OPEN), filer, OPEN)
-filed = [a for a in calls if not a.get("note_only")]
-check("TE1 end to end: a new red files one item naming the test", len(filed) == 1 and B in filed[0]["title"]
-      and filed[0]["name"].startswith("OPS_NIGHTLY_RED_DIAGNOSE_"), calls)
-item = st[AID]["item"]
+last("2026-11-04T10:00:00Z", [(A, "FAIL", ["rc 1", "FAIL a broke"]), (B, "FAIL", ["rc 1", "FAIL b broke: the widget count is 3"])])
+st = run(NOW, set(OPEN), OPEN)
+check("TE1 end to end: a new red is no list news (the build cop files it)", AID not in st and
+      not any(a["name"].startswith("OPS_NIGHTLY_RED_DIAGNOSE") for a in filed()), (calls, st))
+reset()
+K.save([entry(expires="2026-11-03T00:00:00Z")])
+st = run(NOW, set(OPEN), OPEN)
+f = [a for a in filed() if a["name"].startswith("OPS_NIGHTLY_RED_DIAGNOSE_")]
+check("TE1 end to end: an entry past its age files the one list item, naming the test", len(f) == 1 and A in f[0]["title"], calls)
+
+# ---- BUILD COP: the first error line, and grouping by it
+check("cop: a crash's cause is its last exception line", K.first_error("CRASH", [
+    "uncaught OSError (rc 1) - the test died before reaching a verdict", "Traceback (most recent call last):",
+    '  File "/x/y.py", line 3, in main', "~~~~^^", "OSError: [Errno 28] No space left on device: 'a.xml'"])
+    == "OSError: [Errno 28] No space left on device: 'a.xml'")
+check("cop: a fail's cause is its first error-like line, past rc and ok rows",
+      K.first_error("FAIL", ["rc 1", "ok    fine thing", "FAIL the count is 3"]) == "FAIL the count is 3")
+n1 = K.normalise("OSError: [Errno 28] No space left on device: 'a.xml' -> 'b.xml'", A)
+n2 = K.normalise("FAIL s4_scratch crashed: OSError: [Errno 28] No space left on device", B)
+check("cop: one OS error on different files reads the same", n1 == n2 == "OSError: [Errno] No space left on device", (n1, n2))
+check("cop: numbers, hex and directories are taken out", K.normalise("timeout: exceeded 240s in /a/b/c.py at d378a4b2", A)
+      == "timeout: exceeded #s in c.py at #")
+check("cop: a bare `uncaught X` names no cause", K.normalise("uncaught OSError (rc 1) - died", A) == "")
+det = K.details("[3/9] FAIL   1.0s  src/x/selftest_a.py\nFAIL          1.0s  src/x/selftest_a.py\n             rc 1\n"
+                "             FAIL x\nPASS          1.0s  src/x/selftest_b.py\n             noise\n")
+check("cop: details are read from the sorted listing, not the progress rows",
+      det.get(A) == ("FAIL", ["rc 1", "FAIL x"]) and det.get(B) == ("PASS", ["noise"]), det)
+D = "src/x/selftest_d.py"
+gs = K.groups([A, B, C, D], {A: ("CRASH", ["OSError: [Errno 28] No space left on device: 'p'"]),
+                             B: ("FAIL", ["FAIL q crashed: OSError: [Errno 28] No space left on device"]),
+                             C: ("CRASH", ["AssertionError"]), D: ("CRASH", ["AssertionError"])})
+check("cop: reds with one cause are one group; a generic line stands alone",
+      [len(g["tests"]) for g in gs] == [2, 1, 1] and gs[0]["tests"] == [A, B], gs)
+check("cop: a group's key is stable and a valid alarm key", gs[0]["key"] == K.groups([B, A], {
+    A: ("CRASH", ["OSError: [Errno 28] No space left on device: 'zz'"]), B: ("FAIL", ["OSError: [Errno 28] No space left on device"])})[0]["key"]
+      and re.fullmatch(r"testing\.red_[a-z]{6}", gs[0]["key"]), gs[0]["key"])
+H = K.red_deadline_h()
+check("cop: the deadline comes from testing_policy.json, at least the nights it takes to park a red",
+      H >= 24 * K.policy()[0], H)
+
+# ---- BUILD COP end to end, through the real rules and the real alarm step
+reset()
+K.save([entry()])
+E1 = ["rc 1", "OSError: [Errno 28] No space left on device: 'one.xml'"]
+E2 = ["rc 1", "FAIL tmp crashed: OSError: [Errno 28] No space left on device"]
+write_log(night("2026-11-04T10:00:00Z", [A, B, C]))
+last("2026-11-04T10:00:00Z", [(A, "FAIL", ["rc 1", "FAIL listed"]), (B, "CRASH", E1), (C, "FAIL", E2)])
+known = set(OPEN)
+st = run(NOW, known, OPEN)
+f = filed()
+check("BUILD COP: two new reds with one cause file ONE item, its title naming the cause, the tests and the deadline",
+      len(f) == 1 and f[0]["name"].startswith("NIGHTLY_COP_FIX_RED_") and "No space left" in f[0]["title"]
+      and "due 2026-11-07" in f[0]["title"] and "selftest_b.py" in f[0]["title"] and "selftest_c.py" in f[0]["title"], f)
+check("BUILD COP: a listed red files nothing", not any("selftest_a.py" in a["title"] for a in f), f)
+import pulse_core as PC  # noqa: E402  (ops_watch put pulse/ on the path)
+check("BUILD COP: the minted name passes the ledger's name rules", f and not PC._model().mint_problems(f[0]["name"], set()), f)
+item = f[0]["name"]
+check("BUILD COP: the real filer raises every item it files (first in relentless pool_order)",
+      'ing.rimflow("raise", a["name"]' in Path(OW.__file__).read_text(encoding="utf-8"))
+known |= {item}
 calls.clear()
-write_log(night("2026-11-05T10:00:00Z", [A, B]))
-live = {item, "OPEN_ITEM"}
-OW.run_alarms(OW.nightly_news(NOW + K.DAY, {"open_ids": OPEN}), RULES, NOW + K.DAY, live, filer, live)
-check("the same red next night is said once", calls == [], calls)
-write_log(night("2026-11-06T10:00:00Z", [A, B, C]))
-st = OW.run_alarms(OW.nightly_news(NOW + 2 * K.DAY, {"open_ids": OPEN}), RULES, NOW + 2 * K.DAY, live, filer, live)
-check("a second new red on the open alarm is a note on its item", [(a.get("note_only"), a.get("item")) for a in calls] == [(True, item)]
-      and C in calls[0]["text"] and B not in calls[0]["text"], calls)
+write_log(night("2026-11-04T10:00:00Z", [A, B, C]) + night("2026-11-05T10:00:00Z", [A, B, C]))
+last("2026-11-05T10:00:00Z", [(A, "FAIL", ["rc 1", "FAIL listed"]), (B, "CRASH", E1), (C, "FAIL", E2)])
+st = run(NOW + K.DAY, known, known)
+check("BUILD COP: the same group next night files nothing and says nothing", calls == [], calls)
+last("2026-11-05T10:00:00Z", [], result=False, mtime=K.epoch("2026-11-05T10:00:00Z") + 60)
+pts = OW.nightly_news(NOW + K.DAY, {"open_ids": OPEN})
+check("BUILD COP: a night whose output is being rewritten emits no group (absent holds; no guess files)",
+      not any(k.startswith("testing.red_") for k in pts) and pts["testing.nightly_unparked_reds"]["v"] == 2, sorted(pts))
+check("BUILD COP: ... but the deadline reading stands on the log alone", pts["testing.nightly_reds_overdue"]["m"] == "MEASURED")
+
+# the deadline: owned or not
+three = night("2026-11-04T10:00:00Z", [A, B, C]) + night("2026-11-05T10:00:00Z", [A, B, C]) + night("2026-11-06T10:00:00Z", [A, B, C]) \
+    + night("2026-11-07T10:00:00Z", [A, B, C])
+write_log(three)
+last("2026-11-07T10:00:00Z", [(A, "FAIL", ["rc 1", "FAIL listed"]), (B, "CRASH", E1), (C, "FAIL", E2)])
 calls.clear()
-OW.run_alarms(OW.nightly_news(NOW + 2 * K.DAY, {"open_ids": OPEN}), RULES, NOW + 2 * K.DAY + 900, live, filer, live)
-check("and is said once", calls == [], calls)
-write_log(night("2026-11-07T10:00:00Z", [A, B, C], ["src/x/selftest_d.py"]))
-st = OW.run_alarms(OW.nightly_news(NOW + 3 * K.DAY, {"open_ids": OPEN}), RULES, NOW + 3 * K.DAY, live, filer, set(OPEN))
-check("a new red after the alarm's item closed reopens that item, it does not note a closed one",
-      [(bool(a.get("reopen")), a["name"]) for a in calls] == [(True, item)] and st[AID]["state"] == "OPEN", calls)
+LATE = K.epoch("2026-11-07T11:00:00Z")
+st = run(LATE, known, known)
+over = [a for a in filed() if a["name"].startswith("OPS_RED_OVERDUE_CHASE_")]
+check("BUILD COP: a red past its deadline alarms though its item is open (owned is not fixed)",
+      len(over) == 1 and "selftest_b.py" in over[0]["title"] and not any(n.startswith("NIGHTLY_COP_FIX") for n in (a["name"] for a in filed())), calls)
+check("BUILD COP: a parked (listed) red is never overdue", "selftest_a.py" not in json.dumps(over), over)
+check("BUILD COP: the overdue alarm owes the Conductor a line", over and over[0].get("conductor_log"), over)
+K.save([entry(), entry(test=B), entry(test=C)])
+pts = OW.nightly_news(LATE, {"open_ids": OPEN})
+check("BUILD COP: parking every red ends the deadline and the groups", pts["testing.nightly_reds_overdue"]["v"] == 0
+      and (pts.get(item.replace("NIGHTLY_COP_FIX_RED_", "testing.red_")[:-5].lower()) or {}).get("v") == 0, pts)
+
+# a cured group reads 0 and clears; the cap spreads a flood over passes
+reset()
+K.save([])
+reds = ["src/x/selftest_r%d.py" % i for i in range(12)]
+write_log(night("2026-11-04T10:00:00Z", reds))
+last("2026-11-04T10:00:00Z", [(t, "FAIL", ["rc 1", "FAIL cause number %s is its own" % chr(65 + i)]) for i, t in enumerate(reds)])
+cap = K.new_items_per_pass()
+known = set(OPEN)
+st = run(NOW, known, OPEN)
+check("BUILD COP: a flood files at most the per-pass cap of new items", 0 < len(filed()) == cap < 12, len(filed()))
+known |= {a["name"] for a in filed()}
+calls.clear()
+st = run(NOW + 900, known, known)
+check("BUILD COP: and the rest the next pass, none twice", len(filed()) == min(cap, 12 - cap)
+      and not (set(a["name"] for a in filed()) & (known - set(OPEN))), filed())
+known |= {a["name"] for a in filed()}
+write_log(night("2026-11-04T10:00:00Z", reds) + night("2026-11-05T10:00:00Z", reds[1:]))
+last("2026-11-05T10:00:00Z", [(t, "FAIL", ["rc 1", "FAIL cause number %s is its own" % chr(65 + i)]) for i, t in enumerate(reds) if i])
+gone = [k for k, p in OW.nightly_news(NOW + K.DAY, {"open_ids": OPEN}).items() if k.startswith("testing.red_") and p["v"] == 0]
+check("BUILD COP: a group gone green on a read night reads 0 (an absent key would hold its alarm open)", len(gone) == 1, gone)
+calls.clear()
+for k in range(4):
+    st = run(NOW + K.DAY + 900 * k, known, known)
+cleared = [a for a in calls if a.get("note_only") and "cleared" in a.get("text", "")]
+check("BUILD COP: and clears after clear_passes, with a note on its item", len(cleared) == 1, calls)
+
+import contextlib  # noqa: E402
+import io  # noqa: E402
+buf = io.StringIO()
+real_time = K.time.time
+K.time.time = lambda: NOW + K.DAY      # report reads the clock: pin it to the planted nights
+try:
+    with contextlib.redirect_stdout(buf):
+        rc = K.main(["report"])
+finally:
+    K.time.time = real_time
+check("CLI: report lists every group with its due date and each of its tests", rc == 0 and "build cop: 11 unparked red(s) in 11 group(s)"
+      in buf.getvalue() and "selftest_r5.py" in buf.getvalue() and " due 2026-11-07" in buf.getvalue(), buf.getvalue()[-600:])
 
 print("known_reds: " + ("FAIL %d" % len(FAILS) if FAILS else "ok"))
 sys.exit(1 if FAILS else 0)
