@@ -134,6 +134,81 @@ def go(fx, crit="A2", proof="python3 live_def_check.py --has ThingDef/RM_Chittik
     return row
 
 
+SITE = "python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand"
+
+
+class ScriptFx(FakeFx):
+    """run_proof answers per command from `codes` {command prefix: (exit, log text)} and writes the log."""
+    def __init__(self, codes, **kw):
+        FakeFx.__init__(self, **kw)
+        self.codes = codes
+
+    def run_proof(self, proof, log, timeout):
+        self.calls.append(("proof", proof))
+        code, text = next((v for k, v in self.codes.items() if proof.startswith(k)), (0, ""))
+        with open(log, "w") as f:
+            f.write("$ %s\n%s\n" % (proof, text))
+        return code
+
+
+def t_site_runs_first_and_gates_the_proof():
+    """RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: HORIZON_CARAVAN's Stillsand probe ran on a Leaning Scrub map; the
+    item's live-site line now makes the map first, bridge held, and a site not made is UNMEASURED with no proof run."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    fx = ScriptFx({"python.exe src/RimMandrake/Utils/live_site.py": (0, "READY: map RM_Stillsand")})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000, site=SITE)
+    proofs = [c[1] for c in fx.calls if c[0] == "proof"]
+    check("site: runs before the proof, the bridge held", proofs == [SITE, "python3 probe.py"]
+          and fx.verbs().index("take") < fx.verbs().index("proof") and row["outcome"] == "PASS"
+          and row.get("site_log", "").endswith("-site.log"), (fx.verbs(), proofs, row))
+    fx = ScriptFx({"python.exe src/RimMandrake/Utils/live_site.py": (2, "NOT READY: the game is at tick 900000")})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_001, site=SITE)
+    check("site: not made -> UNMEASURED with the site's own last line, no proof, released",
+          row["outcome"] == "UNMEASURED" and row["why"] == "site not prepared: NOT READY: the game is at tick 900000"
+          and [c[1] for c in fx.calls if c[0] == "proof"] == [SITE] and "release" in fx.verbs(), (row, fx.verbs()))
+    for bad in ("python3 src/RimMandrake/Utils/live_site.py --biome X", SITE + "; rm -rf x",
+                "python.exe src/RimMandrake/Utils/modlist_swap.py --apply"):
+        fx = FakeFx()
+        row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_002, site=bad)
+        check("site: %r refused before the bridge" % bad[:40], row["outcome"] == "REFUSED" and "take" not in fx.verbs(),
+              (row, fx.verbs()))
+
+
+def t_wsl_proof_reruns_under_windows_python():
+    """WORLD_NULLTEX_FLOOD_HUNT: a python3 proof cannot reach the bridge (Windows loopback); it reruns once as python.exe."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    fx = ScriptFx({"python3 ": (2, "RimBridgeError: cannot reach the bridge from WSL ...\n  Re-run under Windows Python:"),
+                   "python.exe ": (1, "FAIL: 3 null textures")})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 src/x/nulltex_probe.py --live A1", "--compose biomes", {},
+                now=1_800_000_000)
+    proofs = [c[1] for c in fx.calls if c[0] == "proof"]
+    check("wsl: rerun under python.exe gives the real verdict", row["outcome"] == "FAIL"
+          and proofs == ["python3 src/x/nulltex_probe.py --live A1", "python.exe src/x/nulltex_probe.py --live A1"]
+          and row.get("rerun") == proofs[1] and os.path.exists(row["log"][:-4] + "-wsl.log"), (row, proofs))
+    fx = ScriptFx({"python3 ": (2, "UNMEASURED: no save loaded")})
+    L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_001)
+    check("wsl: another exit 2 is not rerun", len([c for c in fx.calls if c[0] == "proof"]) == 1, fx.calls)
+
+
+def t_same_cause_becomes_one_reload_request():
+    """TIDAL_LOCK and HORIZON were noted UNMEASURED every 17 minutes on one game: the third same-cause row is a reload
+    request said once, the second and the later ones are rows without a ledger note, and another game starts over."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    notes, whys = [], []
+    for i in range(5):
+        fx = ScriptFx({"python3 ": (2, "UNMEASURED: map is RM_LeaningScrub at tick %d, not RM_Stillsand" % (600 + i))},
+                      started=2000.0 if i < 4 else 3000.0, mtime=1000.0)
+        row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000 + i)
+        notes.append("note" in fx.verbs())
+        whys.append(row["why"])
+    check("repeat: noted on the 1st, silent on the 2nd, the reload request on the 3rd, silent after, anew on a new game",
+          notes == [True, False, True, False, True], (notes, whys))
+    check("repeat: the 3rd says reload needed, which relentless_game restages on",
+          whys[2].startswith(L.RELOAD) and not whys[3].startswith(L.RELOAD) and not whys[4].startswith(L.RELOAD), whys)
+    check("repeat: the cause drops numbers and log paths", L.cause("the proof exited 2: x at 601 (/a/b-20261102T1.log)")
+          == L.cause("the proof exited 2: x at 7 (/a/c.log)"), L.cause("the proof exited 2: x at 601"))
+
+
 def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
@@ -396,6 +471,15 @@ def t_cut_criterion():
     whole = L.whole_criterion(c, "## Criteria\n- A1 L0: other\n- A2 L1: %s and lands, a flyer\n" % head)
     check("cut, prose holds it -> whole", whole["text"].endswith("a flyer") and "cut" not in whole, whole)
     check("other id's line not taken", L.whole_criterion(c, "- A3 L1: %s more\n" % head).get("cut") is True)
+    # RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: GRAFFITI's ledger kept pre-retier text; the refusal must say so
+    re_c = L.whole_criterion(c, "A2 L2: on a fresh map, something new\n")
+    check("same id, other text -> retiered", re_c.get("cut") is True and re_c.get("retiered") is True, re_c)
+    check("no same-id line -> not retiered", "retiered" not in L.whole_criterion(c, "- A3 L1: x\n"))
+    it = item()
+    it["criteria"] = [dict(cr, cut=True, retiered=True) if cr["id"] == "A2" else cr for cr in it["criteria"]]
+    row = go(FakeFx(it=it))
+    check("retiered refusal names the re-record", row["outcome"] == "REFUSED" and "re-tiered" in row["why"]
+          and "implemented --criteria-file" in row["why"], row)
     it = item()
     it["criteria"] = [dict(cr, cut=True) if cr["id"] == "A2" else cr for cr in it["criteria"]]
     fx = FakeFx(it=it)
@@ -635,7 +719,8 @@ def t_tiers_small_first_final_last():
 
 
 def main():
-    for t in (t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
+    for t in (t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+              t_same_cause_becomes_one_reload_request, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
               t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last):

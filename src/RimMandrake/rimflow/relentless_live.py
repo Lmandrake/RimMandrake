@@ -15,13 +15,23 @@ ONE RUN, in this order. Every refusal before step 5 leaves the item untouched an
   3. the build is deployed: deploy_custom_mods.py's plan (with --deploy's args) covers every mod the built commit changed,
      lists none of its game files as drift or held, and the running game started after the newest of them was written;
   4. the bridge: `rimflow bridge take --idle-ok`; refused means busy, and nothing runs;
+  4b. the site (RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED): a `live-site <CID>: <cmd>` line in the item's
+     live_proofs file is run first, bridge held. It may only be Utils/live_site.py (SITE_CMD), which makes the map the
+     proof reads (a biome on the scratch quicktest tile) or loads a named save; exit non-0 is UNMEASURED "site not
+     prepared", and the proof does not run. Before it, HORIZON_CARAVAN ran its Stillsand probe on a Leaning Scrub map
+     eight times and LEANINGSCRUB_STALL_SHARED_MOVE_1 ran on the very biome its criteria exclude;
   5. the proof runs (exit 0 PASS, 1 FAIL, anything else or a timeout UNMEASURED) and the bridge is released (--mine)
-     whatever happened, before anything is written to the ledger;
+     whatever happened, before anything is written to the ledger. A `python3 ...` proof that dies on the bridge's
+     "cannot reach the bridge from WSL" (RimBridge binds Windows loopback) is rerun once under python.exe;
   6. PASS or FAIL is a `verify --criterion --level --sha <built sha>`, so a pass drops the criterion and a fail stands;
      UNMEASURED is a note, never a run. Every outcome, refusals too, is a row in <RELENTLESS_ROOT>/live/runs.jsonl.
+     The same cause UNMEASURED `repeat_unmeasured` times running on one game is a RELOAD request, said once in the
+     ledger: the row's why starts RELOAD, relentless_game restages on it, and the round skips it until the game changes.
+     The repeats between are rows only (eight identical ledger notes in an hour was the old behaviour).
 
 Proofs here are the item's own read of the game. Nothing in this file changes the game; a proof that would restart it or
-swap the mod list is refused (rules live.forbid_re): the running game is the owner's, and a load is another tier.
+swap the mod list is refused (rules live.forbid_re): the running game is the owner's, and a load is another tier. The
+one change allowed is the site step above, through one reviewed tool that refuses a game past two in-game days.
 """
 import argparse
 import calendar
@@ -55,7 +65,13 @@ DEFAULTS = {
                  r"|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
     "proof_max_s": 600,
     "plan_max_s": 500,
+    "site_max_s": 480,
+    "repeat_unmeasured": 3,
 }
+RELOAD = "reload needed"        # relentless_game RESTAGE reads this prefix; the round skips it on the same game
+SITE_CMD = re.compile(r"^python\.exe src/RimMandrake/Utils/live_site\.py(?: --[a-z][a-z-]*(?: [A-Za-z0-9_.\-]+)?)+$")
+# rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game
+WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python")
 SRC_MOD = re.compile(r"^src/(Rim[A-Za-z]+)/([^/]+)/(.+)$", re.S)     # src/<tier>/<Mod>/<path in the mod>
 DRIFT = re.compile(r"^\s{2,6}([~+\-H])\s+(\S.*?)(?:\s{2,}\(.*\))?\s*$")
 SECTION = re.compile(r"^(\S+)\s+(mandrake\.\S+)(.*)$")      # deploy_custom_mods prints one per mod, drift or not
@@ -106,6 +122,8 @@ def whole_criterion(c, prose):
         if m and m.group("cid") == c["id"] and m.group("level") == c["level"] and m.group("text").strip().startswith(text):
             c["text"] = m.group("text").strip()
             return c
+        if m and m.group("cid") == c["id"]:
+            c["retiered"] = True     # a line of that id says something else: the ledger holds an older criterion
     c["cut"] = True
     return c
 
@@ -124,6 +142,10 @@ def owed(item, criterion):
     if criterion not in (item.get("outstanding") or []):
         raise ValueError("%s %s is not owed" % (item["id"], criterion))
     level = crit[criterion]["level"]
+    if crit[criterion].get("cut") and crit[criterion].get("retiered"):
+        raise ValueError("%s %s is cut at %d chars on the ledger and the item's criteria now say something else under "
+                         "that id (re-tiered): re-record them (`rimflow implemented --criteria-file`, the supervisor's "
+                         "verb) before a proof can be judged" % (item["id"], criterion, CUT_AT))
     if crit[criterion].get("cut"):
         raise ValueError("%s %s is cut at %d chars on the ledger and no prose holds the rest: a proof cannot be judged "
                          "against a criterion nobody can read whole" % (item["id"], criterion, CUT_AT))
@@ -145,6 +167,74 @@ def refused_proof(lr, title, text, proof):
     if m:
         return "the proof would change the running game (%r): a load or a mutation is not this tier" % m.group(0)
     return None
+
+
+def refused_site(site):
+    """-> why a live-site command may not run, or None. Only live_site.py, plain arguments: the site step is the one
+    change this tier makes to the game, so it is one reviewed tool, never a free command."""
+    if site and not SITE_CMD.match(site.strip()):
+        return "the live-site command %r is not `python.exe src/RimMandrake/Utils/live_site.py <plain args>`" % site[:200]
+    return None
+
+
+def cause(why):
+    """An UNMEASURED why -> the key two runs share when the same thing stopped them: no paths, numbers or times."""
+    w = re.sub(r"\([^()]*\.log\)|/\S+|\b\d[\d:.TZ-]*\b", "", why or "")
+    return re.sub(r"\s+", " ", w).strip()[:120]
+
+
+def repeats(rows, item_id, criterion, sha, key, game):
+    """runs.jsonl rows -> how many of the newest rows for (item, criterion, sha), running back, are UNMEASURED on `key`
+    on the same game. Any other outcome, cause or game ends the run."""
+    n = 0
+    for row in reversed(rows):
+        if (row.get("item"), row.get("criterion"), row.get("sha")) != (item_id, criterion, sha):
+            continue
+        if row.get("outcome") != "UNMEASURED" or row.get("game") != game or (row.get("cause") or cause(row.get("why"))) != key:
+            break
+        n += 1
+    return n
+
+
+def wsl_rerun(proof, log_text):
+    """-> the proof under python.exe when it is a plain `python3 <script>` that died on the WSL bridge refusal, else None."""
+    if proof.startswith("python3 ") and any(s in (log_text or "") for s in WSL_BRIDGE):
+        return "python.exe " + proof[len("python3 "):]
+    return None
+
+
+def last_line(path):
+    """The last non-blank line of a log, cut to 200, or "" when it cannot be read."""
+    lines = [x.strip() for x in read_text(path).splitlines() if x.strip()]
+    return lines[-1][:200] if lines else ""
+
+
+def read_text(path):
+    try:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            return f.read()
+    except OSError:
+        return ""
+
+
+def read_rows(path):
+    """runs.jsonl -> its rows; a torn line is skipped."""
+    out = []
+    for line in read_text(path).splitlines():
+        try:
+            out.append(json.loads(line))
+        except ValueError:
+            pass
+    return out
+
+
+def game_iso(fx):
+    """The running game's start as the row's `game` key, or None when it cannot be read."""
+    try:
+        t = fx.game_started()
+    except Exception:       # noqa: BLE001  a fake or a failing read: the key is only a grouping
+        return None
+    return iso(t) if t else None
 
 
 def refused_deploy(deploy):
@@ -401,11 +491,12 @@ class Fx(object):
                     pass
 
 
-def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=()):
+def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
     needs: mod folders the proof declares (live_proofs `live-mods:`) beyond the ones the built commit changed; with
     those, each one's About.xml modDependencies must be in the RUNNING load, or the row is UNMEASURED (restage), never
-    run. A FINAL (GREEN-FULL) criterion also needs the full-list tier up: else UNMEASURED FINAL_WAIT, never run."""
+    run. A FINAL (GREEN-FULL) criterion also needs the full-list tier up: else UNMEASURED FINAL_WAIT, never run.
+    site: the item's `live-site` command for this criterion (refused_site), run with the bridge held before the proof."""
     now = time.time() if now is None else now
     lr = live_rules(r)
     row = {"at": iso(now), "item": item_id, "criterion": criterion, "proof": proof, "deploy": deploy}
@@ -427,9 +518,11 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=()):
     why = refused_proof(lr, item["title"], text, proof)
     if why:
         return done("REFUSED", why)
-    why = refused_deploy(deploy)
+    why = refused_deploy(deploy) or refused_site(site)
     if why:
         return done("REFUSED", why)
+    if site:
+        row["site"] = site
     try:
         gone = [p for p in fx.deleted(sha) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
         if gone:
@@ -483,8 +576,19 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=()):
             need = sorted({m for m, _ in files} | set(needs))
             crashed = (fx.running_load_gap(need) if need else None) or (fx.full_list_gap() if level == FINAL else None)
             code = None
+        if crashed is None and code is None and site:
+            slog = log[:-len(".log")] + "-site.log"
+            row["site_log"] = slog
+            sc = fx.run_proof(site, slog, lr["site_max_s"])
+            if sc != 0:
+                crashed = "site not prepared: %s" % (last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
         if crashed is None and code is None:
             code = fx.run_proof(proof, log, lr["proof_max_s"])
+            again = wsl_rerun(proof, read_text(log)) if code not in (PASS, FAIL) else None
+            if again:
+                os.replace(log, log[:-len(".log")] + "-wsl.log")
+                row["rerun"] = again
+                code = fx.run_proof(again, log, lr["proof_max_s"])
             if code in (PASS, FAIL) and files and (started != fx.game_started()
                                                    or stamps != [fx.mtime(m, rel) for m, rel in files]):
                 crashed, code = "the game or its deployed files changed while the proof ran", None
@@ -499,8 +603,17 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=()):
     if not row["released"]:
         return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     if code not in (PASS, FAIL):
-        why = crashed or "the proof %s" % ("timed out" if code is None else "exited %d: it did not measure" % code)
+        why = crashed or "the proof %s" % ("timed out" if code is None else "exited %d: it did not measure: %s"
+                                           % (code, last_line(log)))
         if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
+            return done("UNMEASURED", why, log=log)
+        game = iso(started) if started else game_iso(fx)
+        key = cause(why)
+        n = 1 + repeats(read_rows(os.path.join(root, "live", "runs.jsonl")), item_id, criterion, sha, key, game)
+        row.update(game=game, repeat=n, cause=key)
+        if n == lr["repeat_unmeasured"]:
+            why = "%s: the same cause %d times on this game (%s): %s" % (RELOAD, n, game, why)
+        elif n > 1:     # said once already, or the reload request stands: a row, no ledger note
             return done("UNMEASURED", why, log=log)
         note = fx.rimflow("note", item_id, "--text", "relentless live %s %s UNMEASURED: %s (%s)" % (criterion, level, why,
                                                                                                   log)[:400],
@@ -524,11 +637,12 @@ def main(argv=None):
     p.add_argument("--criterion", required=True)
     p.add_argument("--proof", required=True, help="a shell command run from the repo root; exit 0 PASS, 1 FAIL")
     p.add_argument("--deploy", default="", help="deploy_custom_mods.py plan arguments covering the item's mods")
+    p.add_argument("--site", default=None, help="a live_site.py command run, bridge held, before the proof")
     a = ap.parse_args(argv)
     with open(os.environ.get("RELENTLESS_RULES") or RULES, encoding="utf-8") as f:
         r = json.load(f)
     root = os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless"
-    row = run(Fx(seat=r.get("seat") or "BENCH"), root, a.item, a.criterion, a.proof, a.deploy, r)
+    row = run(Fx(seat=r.get("seat") or "BENCH"), root, a.item, a.criterion, a.proof, a.deploy, r, site=a.site)
     print(json.dumps(row, indent=1, sort_keys=True))
     return {"PASS": 0, "FAIL": 1}.get(row["outcome"], 2 if row["outcome"] == "UNMEASURED" else 3)
 

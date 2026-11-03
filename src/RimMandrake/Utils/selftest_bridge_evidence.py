@@ -90,6 +90,20 @@ def main():
                      rows()[-1]["status"] == "ok" and rows()[-2]["tool"] == "jawa/companion_handshake"
                      and not b.looks_read_only("jawa/spawn_pawn"), rows()[-1]))
 
+    sc = {"type": "HarmonyLib.Harmony", "method": "HasAnyPatches", "args": "x"}
+    good.append(case("a static_call is a mutation unless declared, and declared only for a reviewed pair",
+                     not b.looks_read_only("jawa/static_call", sc) and C.read_only_static(sc) is None
+                     and C.read_only_static({"type": "Verse.Find", "method": "set_x"}) is not None, sc))
+    b.static_reads = True
+    good.append(case("a declared reviewed static_call is a read: it runs while a mutation is indeterminate; an "
+                     "unreviewed one stays a mutation", b.looks_read_only("jawa/static_call", sc)
+                     and not b.looks_read_only("jawa/static_call", {"type": "Verse.Find", "method": "set_x"})))
+    b.static_reads = False
+    rc = C._main(["--token", "t", "--call", "jawa/static_call", "--read-only-static",
+                  "--json", json.dumps({"type": "Verse.Find", "method": "set_x"})])
+    good.append(case("CLI: --read-only-static on an unreviewed static_call is refused (exit 3) before any connection",
+                     rc == 3, rc))
+
     cid = C.outstanding_indeterminate()[0]["cid"]
     C.reconcile_resolve(cid, "applied", "get_game_info shows the muffalo")
     good.append(case("reconcile clears it and records the verdict", not C.outstanding_indeterminate() and

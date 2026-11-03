@@ -1,1 +1,2 @@
 live-proof A1: python.exe src/RimMandrake/Stillsand/trader_probe_check.py < /dev/null
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand --temperature 15

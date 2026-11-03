@@ -50,8 +50,11 @@ sys.path.insert(0, HERE)
 import relentless_live as L     # noqa: E402
 
 # Bare, or wrapped whole in one pair of Markdown backticks; a bare command keeps its own backticks (echo `date`).
-PROOF_LINE = re.compile(r"^\s*(?:[-*]\s+)?(?:`live-proof\s+(?P<cid1>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd1>[^`\s][^`]*?)`"
-                        r"|live-proof\s+(?P<cid2>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd2>\S.*?))\s*$")
+LINE = (r"^\s*(?:[-*]\s+)?(?:`{verb}\s+(?P<cid1>[A-Z]{{1,3}}\d{{1,3}})\s*:\s*(?P<cmd1>[^`\s][^`]*?)`"
+        r"|{verb}\s+(?P<cid2>[A-Z]{{1,3}}\d{{1,3}})\s*:\s*(?P<cmd2>\S.*?))\s*$")
+PROOF_LINE = re.compile(LINE.format(verb="live-proof"))
+# `live-site <CID>: <cmd>`: what makes the map or save the proof reads, run first with the bridge held (relentless_live)
+SITE_LINE = re.compile(LINE.format(verb="live-site"))
 FOUNDRY_MODS = ("FlowWorks", "GimmeSomeSlack")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
@@ -64,11 +67,12 @@ def rules(r):
     return out
 
 
-def proof_lines(prose):
-    """An item's prose -> {criterion id: proof command}. A second line for the same criterion is ignored (first wins)."""
+def proof_lines(prose, pattern=PROOF_LINE):
+    """An item's prose -> {criterion id: proof command}. A second line for the same criterion is ignored (first wins).
+    pattern=SITE_LINE reads the `live-site` lines the same way."""
     out = {}
     for line in (prose or "").splitlines():
-        m = PROOF_LINE.match(line)
+        m = pattern.match(line)
         if m:
             cid, cmd = (m.group("cid1"), m.group("cmd1")) if m.group("cid1") else (m.group("cid2"), m.group("cmd2"))
             out.setdefault(cid, cmd.strip())
@@ -103,12 +107,15 @@ def history(rows):
     return out
 
 
-def due(last, sha, now, retry_s):
-    """-> None when this criterion may run now, else why not. `last` is its deciding runs.jsonl row on `sha`, or None."""
+def due(last, sha, now, retry_s, game=None):
+    """-> None when this criterion may run now, else why not. `last` is its deciding runs.jsonl row on `sha`, or None.
+    game: the running game's start (relentless_live.iso); a reload request made on it stands until another game runs."""
     if not last or last.get("sha") != sha:
         return None
     if last.get("outcome") in TERMINAL:
         return "judged on this build"
+    if (last.get("why") or "").startswith(L.RELOAD) and game and last.get("game") == game:
+        return "reload needed"
     try:
         at = calendar.timegm(time.strptime(last.get("at", ""), "%Y-%m-%dT%H:%M:%SZ"))
     except ValueError:
@@ -118,7 +125,7 @@ def due(last, sha, now, retry_s):
     return None
 
 
-def candidates(items, proofs_of, foundry_seat, hist, now, retry_s):
+def candidates(items, proofs_of, foundry_seat, hist, now, retry_s, game=None):
     """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of/foundry_seat.
     proofs_of(item id) -> the text of its live_proofs file, empty when it has none.
     `items` are ledger items in relentless_live.Fx.item's shape (criteria already whole or marked cut)."""
@@ -142,7 +149,7 @@ def candidates(items, proofs_of, foundry_seat, hist, now, retry_s):
             if cid not in proofs:
                 skip("no proof")
                 continue
-            why = due(hist.get((it["id"], cid, it["built_sha"])), it["built_sha"], now, retry_s)
+            why = due(hist.get((it["id"], cid, it["built_sha"])), it["built_sha"], now, retry_s, game)
             if why:
                 skip(why)
                 continue
@@ -218,13 +225,13 @@ def read_rows(path):
     return rows
 
 
-def plan(fx, root, r, now, only=None):
+def plan(fx, root, r, now, only=None, game=None):
     """-> (todo, counts) for this moment. Read-only. `only`: one item, the supervisor's game phase for it
     (relentless_game.py): it has just staged the game, so an UNMEASURED row is no reason to wait."""
     lr = rules(r)
     hist = history(read_rows(os.path.join(root, "live", "runs.jsonl")))
     items = [it for it in fx.items() if only is None or it["id"] == only]
-    return candidates(items, fx.proofs, fx.foundry_seat, hist, now, 0 if only else lr["unmeasured_retry_s"])
+    return candidates(items, fx.proofs, fx.foundry_seat, hist, now, 0 if only else lr["unmeasured_retry_s"], game)
 
 
 def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
@@ -240,9 +247,10 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
             f.write(json.dumps(summary, sort_keys=True) + "\n")
         return summary
 
-    if fx.game_started() is None:
+    started = fx.game_started()
+    if started is None:
         return done("no running game")
-    todo, counts = plan(fx, root, r, now, only)
+    todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
     folded, ran, cap = None, 0, max_items or lr["round_max"]
     for item_id, cid, proof, sha in todo:     # the cap counts runs: a skip never starves the items behind it
@@ -260,8 +268,9 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         if folded is None:
             folded = fx.folded()
         ran += 1
+        text = fx.proofs(item_id)
         row = run(fx, root, item_id, cid, proof, deploy_args(mods, folded), r, now=time.time(),
-                  needs=live_mods(fx.proofs(item_id)))
+                  needs=live_mods(text), site=proof_lines(text, SITE_LINE).get(cid))
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if row["outcome"] == "UNMEASURED" and any(row.get("why", "").startswith(s) for s in STOP):
             return done("stopped: %s" % row["why"][:200])

@@ -224,11 +224,13 @@ def running_ids(reply):
     return {x.lower() for x in ids}
 
 
-def _bridge(tool, params, timeout):
-    """-> (reply or None, why). Read-only; runs the client under Windows Python."""
+def _bridge(tool, params, timeout, read_only_static=False):
+    """-> (reply or None, why). Read-only; runs the client under Windows Python. read_only_static: declare a jawa/static_call
+    a read (the client accepts it only for its reviewed READ_ONLY_STATIC_CALLS, else refuses with exit 3)."""
     try:
         path = subprocess.run(["wslpath", "-w", CLIENT], capture_output=True, text=True, timeout=20).stdout.strip()
-        r = subprocess.run(["python.exe", path, "--timeout", str(timeout), "--call", tool, "--json", json.dumps(params)],
+        r = subprocess.run(["python.exe", path, "--timeout", str(timeout), "--call", tool, "--json", json.dumps(params)]
+                           + (["--read-only-static"] if read_only_static else []),
                            capture_output=True, text=True, timeout=timeout + 30, stdin=subprocess.DEVNULL)
     except (OSError, ValueError, subprocess.TimeoutExpired) as e:      # ValueError: UnicodeDecodeError on the reply bytes
         return None, "the bridge call did not finish: %s" % str(e)[:200]

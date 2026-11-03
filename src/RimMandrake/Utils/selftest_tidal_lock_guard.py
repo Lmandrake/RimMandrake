@@ -135,7 +135,8 @@ def bridge(r):
 
     def run(cur, patched, preset):
         answers = {"get_Current": cur, "HasAnyPatches": patched, "get_WorldPresetName": preset}
-        live_def_check._bridge = lambda tool, params, timeout: answers[params["method"]]
+        live_def_check._bridge = lambda tool, params, timeout, read_only_static=False: (
+            answers[params["method"]] if read_only_static else (None, "exit 3: REFUSING 'jawa/static_call'"))
         try:
             return r.bridge_reads()[0]
         finally:
@@ -148,6 +149,8 @@ def bridge(r):
     check(run(ok("TidallyLocked"), ok(True), ({"success": False, "message": "Invoke threw"}, None)) == r.UNMEASURED,
           "bridge: a preset read that failed for another reason is UNMEASURED, not 'no Worldbuilder'")
     check(run((None, "no bridge"), ok(True), ok("TidallyLocked")) == r.UNMEASURED, "bridge: no answer is UNMEASURED")
+    # RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: the stub refuses an undeclared static call as the client does, so a
+    # pass above also proves every read declares itself read-only (else the client's guard refused it, exit 3)
 
 
 def runbook():

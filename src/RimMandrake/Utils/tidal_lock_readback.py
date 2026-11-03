@@ -80,13 +80,13 @@ def worldbuilder_absent(reply):
 def bridge_reads(timeout=60):
     """-> (verdict, why). Three read-only static calls through the Windows-side client."""
     from live_def_check import _bridge
-    cur, why = _bridge("jawa/static_call", {"type": "AlienWorlds.PlanetTypeManager", "method": "get_Current", "args": ""}, timeout)
+    cur, why = _bridge("jawa/static_call", {"type": "AlienWorlds.PlanetTypeManager", "method": "get_Current", "args": ""}, timeout, read_only_static=True)
     if cur is None:
         return UNMEASURED, "bridge: " + why
-    patched, why = _bridge("jawa/static_call", {"type": "HarmonyLib.Harmony", "method": "HasAnyPatches", "args": LOCK_HARMONY_ID}, timeout)
+    patched, why = _bridge("jawa/static_call", {"type": "HarmonyLib.Harmony", "method": "HasAnyPatches", "args": LOCK_HARMONY_ID}, timeout, read_only_static=True)
     if patched is None:
         return UNMEASURED, "bridge: " + why
-    preset, why = _bridge("jawa/static_call", {"type": "Worldbuilder.World_ExposeData_Patch", "method": "get_WorldPresetName", "args": ""}, timeout)
+    preset, why = _bridge("jawa/static_call", {"type": "Worldbuilder.World_ExposeData_Patch", "method": "get_WorldPresetName", "args": ""}, timeout, read_only_static=True)
     if preset is None:
         return UNMEASURED, "bridge: " + why
     c, p = _result(cur), _result(patched)

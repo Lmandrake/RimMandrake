@@ -245,6 +245,12 @@ if __name__ == "__main__":
             print("UNMEASURED: %s" % e)
             sys.exit(2)
         bad = check_record(rec)
+        wrong_map = [b for b in bad if "10-07 move" in b]
+        if wrong_map:
+            # RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: a record from the wrong map measured nothing about the
+            # move (live 2026-11-02 21:51Z on RM_LeaningScrub was logged game_fail); the site was wrong, not the mod
+            print("UNMEASURED: %s" % wrong_map[0])
+            sys.exit(2)
     else:
         bad = offline()
     for b in bad:

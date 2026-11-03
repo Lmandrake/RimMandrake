@@ -57,7 +57,8 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
-RESTAGE = ("not deployed", "no running game to test", "the game started", "not in the running load")
+# "reload needed": relentless_live asks for one when the same cause stopped a criterion repeat_unmeasured times on one game
+RESTAGE = ("not deployed", "no running game to test", "the game started", "not in the running load", "reload needed")
 SESSIONS = "live_sessions.json"
 FINAL_LEVEL = "GREEN-FULL"      # relentless_live.FINAL
 FINAL_WAIT = "final verification waits for the full list"      # relentless_live.FINAL_WAIT: a row's why, never a restage

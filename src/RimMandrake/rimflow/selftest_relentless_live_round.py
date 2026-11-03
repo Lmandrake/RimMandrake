@@ -129,9 +129,10 @@ class FakeFx(object):
 def fake_run(outcomes):
     calls = []
 
-    def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=()):
+    def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=(), site=None):
         calls.append((item_id, cid, deploy))
         NEEDS.append((item_id, tuple(needs)))
+        SITES.append((item_id, cid, site))
         o, why = outcomes.get(item_id, ("PASS", "proof exit 0"))
         return {"item": item_id, "criterion": cid, "outcome": o, "why": why, "sha": "abc123"}
     return run, calls
@@ -315,7 +316,8 @@ def t_proofs_file():
         with open(os.path.join(real, n), encoding="utf-8") as f:
             for line in f:
                 ok = crit_line.match(line) if n.endswith(".criteria") else (R.PROOF_LINE.match(line.rstrip("\n"))
-                                                                             or R.LIVE_MODS.match(line.rstrip("\n")))
+                                                                             or R.LIVE_MODS.match(line.rstrip("\n"))
+                                                                             or R.SITE_LINE.match(line.rstrip("\n")))
                 if line.strip() and not line.startswith("#") and not ok:
                     bad.append("%s: %s" % (n, line[:60]))
     check("proofs: every real live_proofs file is .txt (or .criteria) and every line parses", names and all(
@@ -323,6 +325,31 @@ def t_proofs_file():
 
 
 NEEDS = []
+SITES = []
+
+
+def t_live_site():
+    """RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: `live-site <CID>:` lines are read like proof lines, never as proofs,
+    and the round hands each criterion its own; a reload request stands on its game, not on the next one."""
+    text = "live-site A1: python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand\n" + PROSE
+    check("live-site: read per criterion", R.proof_lines(text, R.SITE_LINE)
+          == {"A1": "python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand"}, R.proof_lines(text, R.SITE_LINE))
+    check("live-site: a site line is not a proof line", "python.exe" not in R.proof_lines(text).get("A1", ""))
+    del SITES[:]
+    fx = FakeFx()
+    fx.proofs = lambda i: text
+    with tempfile.TemporaryDirectory() as root:
+        R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=fake_run({})[0])
+        fx.proofs = lambda i: PROSE
+        R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_001, run=fake_run({})[0])
+    check("live-site: the round passes A1 its site, and none when the file has no site line",
+          SITES[:2] == [("EG_A", "A1", "python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand"),
+                        ("EG_A", "A1", None)], SITES)
+    last = {"sha": "s", "outcome": "UNMEASURED", "why": "reload needed: the same cause 3 times", "game": "G1",
+            "at": "2026-11-02T00:00:00Z"}
+    check("live-site: a reload request skips the criterion on the game it was made on, even with no retry wait",
+          R.due(last, "s", 1e12, 0, "G1") == "reload needed", R.due(last, "s", 1e12, 0, "G1"))
+    check("live-site: another game runs it again", R.due(last, "s", 1e12, 0, "G2") is None)
 
 
 def t_live_mods():
@@ -354,7 +381,7 @@ def t_real_lane():
 
 
 def main():
-    for t in (t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never, t_real_lane,
+    for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never, t_real_lane,
               t_history_review, t_tick_env):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

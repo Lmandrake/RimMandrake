@@ -294,6 +294,22 @@ READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
 # running_mods only lists LoadedModManager's running mods (and hashes an assembly file when asked); without this entry
 # live_def_check's owner lookup was refused on every call (exit 3) and every unresolved def read UNMEASURED (2026-11-02).
 READ_ONLY_TOOLS = ("jawa/companion_handshake", "jawa/running_mods")
+# jawa/static_call runs ANY static method, so it is mutating by default. These (type, method) pairs are reviewed getters:
+# a caller that declares its call read-only (CLI --read-only-static, live_def_check._bridge(read_only_static=True)) passes
+# the guard for these and only these. TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING's readback was refused as not read-only on
+# every relentless live run (RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED). Add a pair only after reading its source.
+READ_ONLY_STATIC_CALLS = frozenset((
+    ("AlienWorlds.PlanetTypeManager", "get_Current"),             # a property getter
+    ("HarmonyLib.Harmony", "HasAnyPatches"),                      # Harmony's own query: a dictionary read
+    ("Worldbuilder.World_ExposeData_Patch", "get_WorldPresetName"),   # a static property getter
+))
+
+
+def read_only_static(params):
+    """-> None when this jawa/static_call is a reviewed read (READ_ONLY_STATIC_CALLS), else why it is not."""
+    p = params if isinstance(params, dict) else {}
+    pair = (p.get("type"), p.get("method"))
+    return None if pair in READ_ONLY_STATIC_CALLS else "%s.%s is not a reviewed read-only static call" % pair
 
 # Tools the owner has RETIRED. The bridge still registers them; we refuse to be the
 # thing that calls one. A doc saying "don't" is read by whoever already looked it up;
@@ -733,7 +749,7 @@ class RimBridge:
             unchecked = self.check_params(tool, params)
             if unchecked:
                 print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
-        mutating = not self.looks_read_only(tool)
+        mutating = not self.looks_read_only(tool, params)
         crossed = None
         if mutating:
             crossed = _driver_crossing(self.host)
@@ -807,9 +823,12 @@ class RimBridge:
         _ACTIVE.discard(cid)
         return out
 
-    def looks_read_only(self, tool):
-        """Cheap heuristic only - a False here is a warning, a True is not a promise."""
+    def looks_read_only(self, tool, params=None):
+        """Cheap heuristic only - a False here is a warning, a True is not a promise. A jawa/static_call is a read only
+        when this client was told so (static_reads, the --read-only-static declaration) AND it is a reviewed pair."""
         leaf = tool.split("/", 1)[-1]
+        if tool == "jawa/static_call" and getattr(self, "static_reads", False):
+            return read_only_static(params) is None
         return leaf.startswith(READ_ONLY_PREFIXES) or tool in READ_ONLY_TOOLS
 
 
@@ -832,6 +851,8 @@ def _main(argv=None):
     ap.add_argument("--raw", action="store_true", help="dump the full envelope result")
     ap.add_argument("--yes-i-know-this-is-live", action="store_true",
                     help="required to call a tool that fails the read-only heuristic")
+    ap.add_argument("--read-only-static", action="store_true",
+                    help="declare a jawa/static_call a read; accepted only for READ_ONLY_STATIC_CALLS")
     ap.add_argument("--reconcile", action="store_true",
                     help="list mutating calls with an UNKNOWN outcome (touches no game); with --resolve, record one")
     ap.add_argument("--resolve", metavar="CID")
@@ -862,7 +883,17 @@ def _main(argv=None):
 
     if args.call and not args.list_tools:
         probe = RimBridge(host, port, token, timeout=args.timeout)
-        if not probe.looks_read_only(args.call) and not args.yes_i_know_this_is_live:
+        try:
+            params = json.loads(args.params)
+        except ValueError:
+            params = None
+        if args.read_only_static:
+            why = "--read-only-static is for jawa/static_call" if args.call != "jawa/static_call" else read_only_static(params)
+            if why:
+                print("REFUSING '%s': %s" % (args.call, why), file=sys.stderr)
+                return 3
+            probe.static_reads = True
+        if not probe.looks_read_only(args.call, params) and not args.yes_i_know_this_is_live:
             print("REFUSING '%s': it does not look read-only. This drives a LIVE game.\n"
                   "Pass --yes-i-know-this-is-live if you really mean it." % args.call,
                   file=sys.stderr)
@@ -874,6 +905,7 @@ def _main(argv=None):
                 tools = rb.list_tools()
                 print(json.dumps({"count": len(tools), "tools": tools}, indent=2))
             if args.call:
+                rb.static_reads = bool(args.read_only_static)
                 out = rb.call(args.call, json.loads(args.params))
                 print(json.dumps(out, indent=2))
             if not args.list_tools and not args.call:

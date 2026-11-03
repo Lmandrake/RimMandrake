@@ -1,1 +1,2 @@
 live-proof A1: python.exe src/RimMandrake/LeaningScrub/repro_stall_move.py --out D:/ClaudeWork/rimmandrake/LEANINGSCRUB_STALL_SHARED_MOVE_1/repro_stall_move.json < /dev/null && python3 src/RimMandrake/LeaningScrub/repro_stall_move_proof.py --record /mnt/d/ClaudeWork/rimmandrake/LEANINGSCRUB_STALL_SHARED_MOVE_1/repro_stall_move.json
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --not-biome RM_LeaningScrub --biome TemperateForest
