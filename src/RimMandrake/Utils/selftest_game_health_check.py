@@ -113,6 +113,19 @@ with tempfile.TemporaryDirectory() as tmp:
     check("mem: gfx 0 everywhere is UNMEASURED, never 0", not G.is_m(ma.get("mem.gfx_peak_mb")), ma.get("mem.gfx_peak_mb"))
     check("mem: curves are buckets of 10 min since load", [p[0] for p in a["curves"]["managed"]][:3] == [0, 10, 20],
           a.get("curves", {}).get("managed"))
+    for cname, lo_hi in (("private", (6900, 7300, 9100, 9500)), ("native", (2000, 2010, 2105, 2115))):
+        cv = a.get("curves", {}).get(cname) or []
+        check("mem: %s-memory-vs-time curve is recorded, one [minute, median, max] point per 10-min bucket (120 min -> 12)"
+              % cname, len(cv) == 12 and all(isinstance(p, list) and len(p) == 3 for p in cv)
+              and [p[0] for p in cv] == [10 * k for k in range(12)], cv)
+        check("mem: %s curve rises over time from the fixture's own values (max >= median per point)" % cname,
+              len(cv) == 12 and lo_hi[0] <= cv[0][1] <= lo_hi[1] and lo_hi[2] <= cv[-1][1] <= lo_hi[3]
+              and all(cv[k][1] < cv[k + 1][1] for k in range(11)) and all(p[2] >= p[1] for p in cv), cv)
+    check("mem: gfx 0 everywhere draws no curve (0 is 'not read', never a flat line)",
+          "gfx" not in a.get("curves", {}), sorted(a.get("curves", {})))
+    check("mem: the old-companion session draws a managed curve but no private/native one",
+          "managed" in c.get("curves", {}) and not ({"private", "native"} & set(c.get("curves", {}))),
+          sorted(c.get("curves", {})))
     check("tps: decay first->last at the dominant speed ~ 45-50 %",
           40 <= (ma.get("tps.ratio_decay_pct") or 0) <= 50, ma.get("tps.ratio_decay_pct"))
     rc = a.get("curves", {}).get("ratio") or []
