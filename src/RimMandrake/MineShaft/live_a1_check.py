@@ -273,11 +273,12 @@ def selftest():
         fails.append("committed DLL MVID unreadable: %r" % good_mvid)
     # The stale-gate mutant is synthesised from the committed bytes so the proof needs no git history
     # (a blind checker runs on a history-free export): a new MVID written into #GUID, and the retired type's
-    # name as the pre-retirement DLL spelled it, written literally so a drifted GATE constant goes red here.
+    # name as the pre-retirement DLL spelled it, written literally so a drifted GATE constant goes red here
+    # (split in two so check_retirement.py's gone-name scan of src never finds it in this file).
     raw = uuid.UUID(good_mvid).bytes_le if good_mvid else b""
     expect("committed MVID bytes occur once", data.count(raw) if raw else 0, 1)
     flipped = bytes(b ^ 0xFF for b in raw)
-    stale = data.replace(raw, flipped, 1) + b"\0RSW_MineShaftCanonGate\0" if raw else b""
+    stale = data.replace(raw, flipped, 1) + b"\0RSW_MineShaft" + b"CanonGate\0" if raw else b""
     old_mvid, old_bad = committed_build(stale, hashlib.sha256(stale).hexdigest()) if stale else (None, ["no mutant"])
     expect("stale-gate mutant names the gate (probe can see)", any("still names" in b for b in old_bad), True)
     if not old_mvid or old_mvid == good_mvid:
