@@ -1,0 +1,4 @@
+# staging: the targeted run below drives the live game (modcheck swaps to the Scarlands tier, deploys, runs chain chatrak_snap,
+# records against this item); the proof line runs it, then reads the run JSON it wrote. Any map: each ProofStage spawns its own
+# chatrak near the map centre (validation.py chatrak_snap docstring), so no Warscar site is needed for the stage rows.
+live-proof A1: python.exe src/RimMandrake/Utils/modcheck/cli.py run Scarlands --chains chatrak_snap --gate off --purpose fix --item SCARLANDS_CHATRAK_LIVE_RERUN_1 --seat BENCH < /dev/null; python3 src/RimMandrake/Scarlands/chatrak_live_proof.py --max-age-min 30
