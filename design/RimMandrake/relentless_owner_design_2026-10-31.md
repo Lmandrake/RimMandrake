@@ -162,8 +162,8 @@ All in `relentless_rules.json`.
 | `same_failure_limit` | 3 | Owner-approved safeguard. Pilot cliff: 3 misses, `testpilot_route.py` header |
 | `run_max_s` | 3600 | Long enough for a build pass. A full worker is replaced, not lost |
 | `stale_s` | 1500 | Silent by beat AND transcript. The 600 s silence rule is per call, so a long test does not trip this |
-| `item_spend_limit` | 8M weighted | A set spend limit, approved. Reaching it holds the item and tells the Conductor |
-| `day_spend_limit` | 24M weighted | Daily. Reaching it holds launches. Items keep their place |
+| `item_spend_limit` | 3M weighted | ADVISORY since owner 2026-11-02 ("make token limits advisory at this time everywhere. Nothing gets killed or stopped for that", TOKEN_LIMITS_TAME_BARK_NO_BITE): reaching it tells the Conductor and Operations (`relentless.attention`), holds nothing |
+| `day_spend_limit` | 10^12 weighted | Daily, ADVISORY since owner 2026-11-02: reaching it tells the Conductor and Operations; launches go ahead |
 | `run_reserve` | 1.2M weighted | Outstanding spend is reserved at admission, so two launches cannot pass one floor (Codex finding 4). A run with no measured usage is charged this reserve, never less |
 | `min_mem_available_gb` | 6 | Host admission (Codex finding 4) |
 
@@ -312,8 +312,8 @@ filed, noted while open, or reopened through RUNNER `live` if done, once per epi
 no alarm: nothing is wrong. A filled stage ends the episode; a done alarm item with no live line just reopens.
 
 **Limits this build did not lift.** `day_spend_limit` stays 24M: a choice for him and the Conductor, and measured 14.4M in
-2.7 h at 3 workers (1.8M per worker-hour), 3 workers end it in about 4.5 h of a UTC day, 8 in under 2. When it stops the filler, the reading says
-`day_spend_limit` and the alarm goes. Burn at 8 may pass the 3%/h stop line, so the rise may stop at 5, by design.
+2.7 h at 3 workers (1.8M per worker-hour), 3 workers end it in about 4.5 h of a UTC day, 8 in under 2. (Superseded 2026-11-02:
+spend limits are advisory, owner "Nothing gets killed or stopped for that"; a crossing raises an attention line and stops nothing.) Burn at 8 may pass the 3%/h stop line, so the rise may stop at 5, by design.
 Queues for heavy tests and Windows builds are not measured (plan step 8). The memory low is sampled at each tick and after
 each clone, not continuously; the OOM count catches what it misses.
 

@@ -123,6 +123,12 @@ class FakeWorld:
     refuse = False
     jams = ()
     jam_fail = None
+    attn = ()
+    signals = ()
+    def conductor_attention(self, text):
+        self.attn = list(self.attn) + [text]
+    def alarm_signal(self, rec):
+        self.signals = list(self.signals) + [rec["kind"]]
     def pool_clones(self): return sorted(self.pool)
     def pool_load(self): return len(self.pool), 0, self.pool_max, 10**12
     def clone_present(self, c): return c in self.pool
@@ -357,15 +363,15 @@ def t_spend():
     x.tick()
     x.tick()
     x.tick()
-    ok(x.st("I0")["status"] == "held", "spend limit: held")
-    ok("I0" in x.w.needs, "spend limit: delivered to the owner route")
+    ok(x.st("I0")["status"] != "held", "spend limit is advisory: not held (owner 2026-11-02)")
+    ok("I0" not in x.w.needs, "spend limit: nothing routed to the owner")
+    att = [j for j in journal(x) if j.get("do") == "attention" and j.get("key") == "item_spend_limit:I0"]
+    ok(len(att) == 1 and "over the advisory item_spend_limit" in att[0]["why"], "spend limit: one attention, journalled")
+    ok(any("I0 spent" in a and "nothing stopped" in a for a in x.w.attn), "spend limit: one line for the Conductor")
+    ok(any(k == "relentless_attention_item_spend_limit:I0" for k in x.w.signals), "spend limit: told to Operations")
     x.tick()
-    ok(x.w.needs.count("I0") == 1, "spend limit: delivered once")
-    ok(x.st("I1")["status"] == "running", "spend limit: holds nothing else")
-    R.unhold(x.s, "I0", "go on", now=x.now)
-    ok(x.st("I0")["status"] == "queued" and x.st("I0")["returned_at"], "his word lifts the hold, to the top")
-    x.tick()
-    ok(("I0", "offline") in x.w.needs, "his word restores the ledger needs")
+    ok(len([j for j in journal(x) if j.get("do") == "attention"]) == 1, "spend limit: attention once, not per tick")
+    ok(not any(st["status"] == "held" for st in x.s.states()), "spend limit: holds nothing")
     # unmeasured run charged at the reserve
     y = Rig(n=1, share=1.0)
     y.run_one("I0")
@@ -375,10 +381,13 @@ def t_spend():
     y.w.up[st["run"]["unit"]] = False
     y.tick()
     ok(y.st("I0")["spent"] == y.r["run_reserve"], "unmeasured run costs the reserve")
-    # day limit holds launches, keeps places
+    # day limit is advisory: the launch goes ahead and the Conductor hears of it
     z = Rig(n=1, share=1.0, day_spend_limit=500)
     z.tick()
-    ok(z.st("I0")["status"] == "queued" and not z.w.launches, "day limit: no launch, item keeps its place")
+    ok(z.st("I0")["status"] == "running" and z.w.launches, "day limit is advisory: the run starts")
+    ok(any(j.get("do") == "attention" and j.get("key") == "day_spend_limit" for j in journal(z)),
+       "day limit: attention journalled")
+    ok(any("day_spend_limit 500" in a for a in z.w.attn), "day limit: the Conductor line says the limit")
     x.done(), y.done(), z.done()
 
 
@@ -835,8 +844,10 @@ def t_third_review():
         st["spent"] = RULES["item_spend_limit"] - RULES["run_reserve"]
         st["quarantined"].append({"run": {"unit": "gone"}, "clone": None, "reaped": False})
         x.s.save(st)
-    R.spend_holds(x.s, x.w, RULES, x.now, [])
-    ok(x.st("I0")["status"] == "held", "an unreaped quarantined run counts toward the item's spend limit")
+    acts = []
+    R.spend_holds(x.s, x.w, RULES, x.now, acts)
+    ok(x.st("I0")["status"] == "queued" and any(a["do"] == "spend_attention" for a in acts),
+       "an unreaped quarantined run counts toward the item's advisory spend limit; it is not held")
     # a retiring item's run still holds its place
     x = Rig(n=2, share=1.0, max_workers=1)
     x.run_one("I0")
@@ -1162,6 +1173,19 @@ def staffed(n=12, **cfg):
 
 def running(x):
     return sum(1 for st in x.s.states() if st["status"] in R.HOLDS_A_PLACE)
+
+
+def journal(x):
+    try:
+        with open(x.s.p("journal.jsonl"), encoding="utf-8") as f:
+            return [json.loads(l) for l in f if l.strip()]
+    except OSError:
+        return []
+
+
+def shut(x):
+    """The breaker open: admission refuses every start (a non-spend reason; spend limits are advisory)."""
+    x.s._write(x.s.p("breaker.json"), json.dumps({"fails": 1, "until": x.now + 600, "why": "test"}))
 
 
 def reading(x):
@@ -1681,10 +1705,10 @@ def t_staffing_edges():
     x = staffed(n=3, check_backlog_max=9)
     x.tick(), x.tick()
     finish_all(x)
-    x.r["day_spend_limit"] = 0
+    shut(x)
     x.tick()
     r = reading(x)
-    ok(r["under"] and r["live"] == 0 and r["why"] == "day_spend_limit", "places full of waiting checks read as under")
+    ok(r["under"] and r["live"] == 0 and r["why"].startswith("breaker open"), "places full of waiting checks read as under")
     x.done()
     x = staffed(n=3, check_backlog_max=9)
     x.tick(), x.tick()
@@ -1692,10 +1716,10 @@ def t_staffing_edges():
     R.contract(x.s, st["item"], st["gen"], "proof", live="once: test")
     R.finish(x.s, st["item"], st["gen"], "sha1", "evidence")
     x.w.up[st["run"]["unit"]] = False
-    x.r["day_spend_limit"] = 0
+    shut(x)
     x.tick()
     r = reading(x)
-    ok(r["under"] and r["live"] >= 1 and r["why"] == "day_spend_limit", "one running, a check stuck: still under")
+    ok(r["under"] and r["live"] >= 1 and r["why"].startswith("breaker open"), "one running, a check stuck: still under")
     x.done()
     # builders and checkers each draw on their own clone budget a tick, never more
     x = staffed(n=4, check_backlog_max=9, stages=[4])

@@ -30,6 +30,7 @@
   "launch_grace_s": 240,
   "stop_force_s": 180,
   "stop_quarantine_s": 600,
+  "_spend_limits": "ADVISORY (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: \"Please make token limits advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based reasons.\"). item_spend_limit and day_spend_limit are thresholds: crossing one journals an attention act and writes one line to the Conductor log and the told ledger (relentless.attention, each kind once per 6 h). Nothing is held, refused or stopped by them; run_reserve is the per-run estimate they add.",
   "item_spend_limit": 3000000,
   "day_spend_limit": 1000000000000,
   "run_reserve": 1200000,

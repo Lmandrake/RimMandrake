@@ -55,10 +55,11 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      than `ops_stale_s` (45 min, conductor.md), its account cannot be resolved, or the account's runway or
      week_left_pct point is UNMEASURED. (conductor.md's table puts UNMEASURED/stale in AMBER; the build brief of
      2026-10-27 says refuse: refusing is the stricter of the two, so a quick run never launches on a blind reading.)
-     EXCEPT a role with `degraded_reading_ok: true` (Operations, the role that reads the watch; items
+     EXCEPT a role with `degraded_reading_ok: true` (EVERY role by default since owner 2026-11-02, token limits
+     advisory everywhere, TOKEN_LIMITS_TAME_BARK_NO_BITE; first Operations, the role that reads the watch; items
      OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE and the 2026-11-01 brief): it launches on the most cautious band with a
      noted alarm, its message marking the reading UNMEASURED and saying to diagnose the watch first. Caps and the
-     account gate still apply; every other role is still refused.
+     account gate still apply; only a role that sets it false is still refused.
      The account is the switcher-registry label whose email is the one this machine is logged in as
      (account_usage.registry()/live_email()): no account is named here.
   3. throttle band (role `throttle_bands`, as conductor.md writes them): FLOOR when week_left_pct < its line, else
@@ -67,8 +68,8 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      A role with no bands runs at x1.0. "quick" / "quick_one" (Operations): see slot_blocked.
   4. caps: the run's budget = its cap x the band factor; it is REFUSED (alarm) when today's spend plus that budget
      passes `daily_token_cap`. Today's spend = tokens of finished runs (measured from the transcript when the result
-     is missing) + the full budget of runs still going. A role with `caps_advisory: true` (Operations, owner
-     2026-11-02) is never refused, held, skipped or shrunk by a band, budget, daily cap or daily alarm-run count: its
+     is missing) + the full budget of runs still going. A role with `caps_advisory: true` (EVERY role by default
+     since owner 2026-11-02: "Nothing gets killed or stopped for that"; first Operations, e7069d65ba) is never refused, held, skipped or shrunk by a band, budget, daily cap or daily alarm-run count: its
      band is read as all slots at x1.0, and overspend raises an immediate alarm instead (overspend_day, overbudget).
   5. account (dispatcher.account_gate, account_pick.py): the schedule's `account_pick` rule, asked at the moment of
      release; a SWITCH pick holds the launch (journaled once per slot) until the machine is switched or the slot is
@@ -128,7 +129,13 @@ except ImportError:
     from rimflow import audit_prescreen as AP
 
 LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
-ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800}
+# Token limits are ADVISORY for every role (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: "Please make token limits
+# advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention from another
+# agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based
+# reasons."): caps_advisory and degraded_reading_ok default true, so no band, budget, daily cap or blind runway reading
+# refuses, holds or shrinks a run; overspend_day / overbudget / role:<name>:ops raise the attention line instead. A role
+# that sets either key false is back on the strict gates (kept, and tested, for when he lifts this).
+ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800, "caps_advisory": True, "degraded_reading_ok": True}
 ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger item) in alarms_seen: "alarm:<aid>" (V2)
 ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
 OPS_STALE_S = 45 * 60

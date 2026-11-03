@@ -115,14 +115,13 @@
   "relentless.why": {
    "owner": "Operations",
    "max_age_min": 10,
-   "why": "A stop somebody chose reads idle, never distressed: pause, no budget, the day's ceiling. Anything else is the belt filling.",
+   "why": "A stop somebody chose reads idle, never distressed: pause, no budget. Anything else is the belt filling. The day's spend ceiling stops nothing since owner 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE: token limits advisory everywhere), so it is no reason here.",
    "classes": {
     "idle": {
      "in": [
       "paused",
       "budget 0",
-      "share 0",
-      "day_spend_limit"
+      "share 0"
      ]
     },
     "sane": {

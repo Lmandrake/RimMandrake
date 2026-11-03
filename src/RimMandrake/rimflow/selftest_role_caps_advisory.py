@@ -14,6 +14,8 @@ A role with `caps_advisory: true`, against the same state that holds or refuses 
   A5 a finished run over its budget alarms at once with a RAISE FIRST line, and a day past the cap raises
      overspend_day once; unflagged the overrun alarm stays note-only.
   A6 the schedule validates the flag and the real Operations entry carries it.
+  A7 since owner 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE) every role is advisory by DEFAULT: "unflagged" above
+     means `caps_advisory: false` set explicitly (the strict gates, kept for when he lifts the ruling).
 Pure: fake observers (selftest_dispatcher helpers)."""
 import json
 import os
@@ -83,8 +85,11 @@ def main():
     la = launched(acts)
     check(len(la) == 1 and la[0]["budget"] == 60000, "A2 advisory: FLOOR (slots none) neither skips nor shrinks it (%r)"
           % [(a.get("do"), a.get("budget"), a.get("why")) for a in acts])
+    acts, _ = drive(SD.operations(caps_advisory=False, throttle_bands=bands), t, status=floor)
+    check(not launched(acts), "A2 strict (caps_advisory false): FLOOR skips the slot")
     acts, _ = drive(SD.operations(throttle_bands=bands), t, status=floor)
-    check(not launched(acts), "A2 unflagged: FLOOR skips the slot")
+    check(len(launched(acts)) == 1, "A2 unflagged is advisory by default (owner 2026-11-02, token limits advisory "
+          "everywhere): FLOOR does not skip it")
     # A3
     t = SD.at_local("12:00")
     al = {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}
@@ -146,6 +151,18 @@ def main():
     check(bad, "A6 caps_advisory must be true or false")
     check(ops and ops[0].get("caps_advisory") is True and "e7069d65ba" in ops[0].get("_caps_advisory_why", ""),
           "A6 the real Operations entry is advisory and cites the ruling")
+    # A7 (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: "Please make token limits advisory at this time
+    # everywhere. Nothing gets killed or stopped for that, but it might call attention"): a role with NO flag, past its
+    # daily cap, launches and raises the attention line (overspend_day, Conductor log); the defaults say so
+    check(RL.ROLE_DEFAULTS.get("caps_advisory") is True and RL.ROLE_DEFAULTS.get("degraded_reading_ok") is True,
+          "A7 every role is advisory by default")
+    t = SD.at_local("07:30")
+    plain = {k: v for k, v in SD.operations().items() if k not in ("caps_advisory", "degraded_reading_ok")}
+    acts, _ = drive(plain, t, spent_rs(t, 290000))
+    od = [a for a in acts if a.get("do") == "alarm" and str(a.get("kind", "")).endswith(":overspend_day")]
+    check(len(launched(acts)) == 1 and len(od) == 1 and od[0].get("conductor_log") and "LAUNCHED anyway" in od[0]["why"],
+          "A7 unflagged past its daily cap: launched, one attention alarm to the Conductor log (%r)"
+          % [(a.get("do"), a.get("kind")) for a in acts])
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

@@ -38,6 +38,7 @@ def inp(**kw):
 
 R = copy.deepcopy(SA.load_rules())
 R["split"] = {"rule": "v3", "conductor_session_n": 3}
+R["advisory"] = {"enabled": False}   # the paced seats (the pace math); the advisory pass is tested below with RA
 
 
 def d(state=None, rules=None, **kw):
@@ -118,6 +119,35 @@ r = d({"overage_t": NOW, "overage_h": 40.0, "overage_base": {"BENCH": 0, "FOUNDR
       helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans=None)
 check("absent, 40 helper-h owed, 42 h window -> FOUNDRY lowered by 1, CONDUCTOR stays 0",
       seats(r) == (0, 5) and r["overage"]["cut"] == 1, (r["seats"], r["overage"]))
+
+# ---- token pacing is ADVISORY (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE): it never lowers the placed seats
+check("slot_rules.json ships the advisory pass on", (live.get("advisory") or {}).get("enabled") is True
+      and isinstance((live.get("advisory") or {}).get("n_total"), int), live.get("advisory"))
+RA = copy.deepcopy(R)
+RA["advisory"] = {"enabled": True, "n_total": 6}
+r = d(rules=RA, owner_window_min=2.0, week_pct_used=99.0, week_pct_left=1.0)
+check("advisory: DARK still places the floor and the Conductor's session (paced 0/0 kept as advice)",
+      seats(r) == (3, 6) and r["advice"]["paced_seats"] == {"BENCH": 0, "FOUNDRY": 0} and r["token_mode"] == "DARK"
+      and r["advice"]["short"] == {"BENCH": 3, "FOUNDRY": 6} and r["why"].startswith("ADVISORY"), (r["seats"], r.get("advice")))
+r = d(rules=RA, owner_window_min=300.0, rate_pct_per_h=1.2, mean_helpers=6.0)
+check("advisory: a pace fit of 4 is raised to the floor 6; advice says 4", seats(r) == (0, 6)
+      and r["advice"]["paced_seats"]["FOUNDRY"] == 4, (r["seats"], r.get("advice")))
+r = d({"overage_t": NOW, "overage_h": 40.0, "overage_base": {"BENCH": 0, "FOUNDRY": 6}}, rules=RA, owner_window_min=300.0,
+      helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans=None)
+check("advisory: the payback cut is owed and advised, not taken (FOUNDRY 6, paced 5, debt carried)",
+      seats(r) == (0, 6) and r["advice"]["paced_seats"]["FOUNDRY"] == 5 and r["overage"]["cut"] == 1
+      and r["state"]["overage_h"] > 0, (r["seats"], r.get("advice"), r["overage"]))
+r = d(rules=RA, owner_window_min=2.0, session_pct_used=95.0)
+check("advisory: the 5-hour session brake advises only", seats(r) == (3, 6)
+      and r["advice"]["paced_seats"] == {"BENCH": 0, "FOUNDRY": 0}, (r["seats"], r.get("advice")))
+r = d(rules=RA, owner_window_min=2.0)
+check("advisory: when pacing places the same, no ADVISORY line and no shortfall", seats(r) == (3, 6)
+      and "short" not in r["advice"] and not r["why"].startswith("ADVISORY"), (r["seats"], r["why"][:80]))
+r = d(rules=RA, owner_window_min=300.0, week_pct_used=99.0, week_pct_left=1.0,
+      override=ov(seats={"FOUNDRY": 1}))
+check("advisory: his word still binds (FOUNDRY 1 by override)", seats(r)[1] == 1, (r["seats"], r["why"][:120]))
+r0 = d(owner_window_min=2.0, week_pct_used=99.0, week_pct_left=1.0)
+check("advisory off restores the paced decision exactly (no advice key)", "advice" not in r0 and seats(r0) == (0, 0), r0["seats"])
 
 # ---- the legacy rule still works when named (rollback = set split.rule "share")
 L = copy.deepcopy(R)

@@ -20,7 +20,7 @@ Written by a helper of the Conductor. Nothing here changes a running system.
 - **"v3" in the arena**: today's FOUNDRY helper instructions plus a fresh tester after the close. This is not the six roles.
 - **relentless**: the worker pool running on the live queue since 31 October. It was never in the arena.
 - **The refit**: this morning's rerun of the simulator against 30 days of real records.
-- **The brake**: the check in the arms' loop that refuses to start work when the weekly allowance looks short. The code calls it the runway gate.
+- **The brake**: the check in the arms' loop that refuses to start work when the weekly allowance looks short. The code calls it the runway gate. (Since 2026-11-02 it no longer refuses: owner, "token limits advisory at this time everywhere"; it writes `ctl/runway_attention.json` and a Conductor log line instead, TOKEN_LIMITS_TAME_BARK_NO_BITE.)
 - **The watcher**: a small script that relaunches a stopped arm when the brake would let it through.
 - **MEASURED**: read from a real record. **ESTIMATE**: came out of the simulator, or is arithmetic of mine that assumes something.
 

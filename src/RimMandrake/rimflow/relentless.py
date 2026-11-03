@@ -1429,6 +1429,19 @@ class Effects(relentless_game.GameFx):
             return str(e)[:200]
         return None
 
+    def conductor_attention(self, text):
+        """An advisory line for the Conductor: something crossed a threshold and nothing was stopped (owner
+        2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE). -> None, or why it did not land."""
+        path = (self.r.get("staffing") or {}).get("conductor_log")
+        if not path:
+            return "no conductor_log in the rules"
+        try:
+            with open(path, "a", encoding="utf-8") as f:
+                f.write("\n%s — RELENTLESS ATTENTION (advisory, nothing stopped): %s\n" % (iso(time.time()), text))
+        except OSError as e:
+            return str(e)[:200]
+        return None
+
     def told(self, row):
         """One row of the told ledger (OP3), beside ops_watch's alarms.json. -> None, or why it did not land."""
         d = os.environ.get("RM_OPS_WATCH_DIR") or self.r["ops_watch_dir"]
@@ -1887,9 +1900,46 @@ def admission(store, fx, r, now, active, extra=0):
         return "paused"
     if fx.mem_gb() < r["min_mem_available_gb"]:
         return "memory"
-    if spent_today(store, now) + (active + 1 + unreaped(store)) * r["run_reserve"] > r["day_spend_limit"]:
-        return "day_spend_limit"
+    want = spent_today(store, now) + (active + 1 + unreaped(store)) * r["run_reserve"]
+    if want > r["day_spend_limit"]:     # advisory (owner 2026-11-02): it calls attention, the run still starts
+        attention(store, fx, "day_spend_limit", "day spend %d (spent + reserve for %d runs) over the advisory "
+                  "day_spend_limit %d by %d weighted tokens; nothing stopped. Look: relentless staffing.json, "
+                  "spend.jsonl" % (want, active + 1 + unreaped(store), r["day_spend_limit"], want - r["day_spend_limit"]),
+                  now)
     return None
+
+
+ATTENTION_EVERY_S = 6 * 3600     # one line per crossing kind per 6 h: a standing crossing does not flood the log
+
+
+def attention(store, fx, key, text, now):
+    """A spend number over its advisory threshold. Owner 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE): "Please make
+    token limits advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention
+    from another agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for
+    evidence-based reasons." So this journals, writes one line to the Conductor log and the told ledger (Operations),
+    each key at most once in ATTENTION_EVERY_S, and never holds, refuses or stops anything. A failure to tell stays on
+    the journal."""
+    path = store.p("attention.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            said = json.load(f)
+    except (OSError, ValueError):
+        said = {}
+    if now - said.get(key, -1e18) < ATTENTION_EVERY_S:
+        return False
+    said[key] = now
+    store._write(path, json.dumps(said, sort_keys=True))
+    fails = []
+    line = getattr(fx, "conductor_attention", None)
+    why = line(text) if line else "no conductor_attention on this effects"
+    if why:
+        fails.append(why)
+    sig = getattr(fx, "alarm_signal", None)
+    if sig:
+        sig({"kind": "relentless_attention_" + key, "why": text})
+    store.journal({"at": iso(now), "do": "attention", "key": key, "why": text[:500], "advisory": True,
+                   "told_failed": fails or None})
+    return True
 
 
 def load_breaker(store):
@@ -2844,17 +2894,18 @@ def retire(store, fx, states, now, acts, r=None):
 
 
 def spend_holds(store, fx, r, now, acts):
+    """An item over item_spend_limit calls attention and keeps running: advisory since owner 2026-11-02 ("Nothing gets
+    killed or stopped for that"; TOKEN_LIMITS_TAME_BARK_NO_BITE). One attention per item per ATTENTION_EVERY_S."""
     for st in store.states():
         limit = r["item_spend_limit"] + (st.get("spent_grace") or 0)
         owed = sum(1 for q in st["quarantined"] if not q.get("reaped")) * r["run_reserve"]   # charged when reaped
-        if st["status"] == "queued" and st["spent"] + owed >= limit:
-            with store.lock():
-                cur = store.load(st["item"])
-                cur["status"] = "held"
-                relentless_strikes.hold(cur, "item spend limit: %d of %d weighted tokens; lift with relentless.py unhold"
-                                        % (cur["spent"] + owed, limit), "spend", now)
-                store.save(cur)
-            acts.append({"do": "hold_spend", "item": st["item"]})
+        if st["status"] in RUNS_A_PLACE + ("queued",) and st["spent"] + owed >= limit:
+            if attention(store, fx, "item_spend_limit:%s" % st["item"],
+                         "%s spent %d weighted tokens, over the advisory item_spend_limit %d by %d; nothing stopped. "
+                         "Look: relentless status %s, its spend.jsonl rows" % (st["item"], st["spent"] + owed, limit,
+                                                                              st["spent"] + owed - limit, st["item"]),
+                         now):
+                acts.append({"do": "spend_attention", "item": st["item"], "spent": st["spent"] + owed, "limit": limit})
 
 
 def clones_this_tick(acts, by=None):

@@ -8,8 +8,11 @@ different agent tests what was built, before the builder's next build pass). The
 one in `ralph_a/`: loop.sh (the supervisor's entry), PROMPT.md, POLICY.md, TESTER.md.
 
 ONE STEP OF THE LOOP (Loop.step), in this order:
-  0  STOP file -> stop. Runway below $RALPH_A_RUNWAY_MIN (default 0.15 x the time to reset) or UNMEASURED -> refuse
-     to start any model pass (checked before EVERY build and tester pass; fail closed).
+  0  STOP file -> stop. Runway below $RALPH_A_RUNWAY_MIN (default 0.15 x the time to reset) or UNMEASURED is
+     ADVISORY (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: "Please make token limits advisory at this time
+     everywhere. Nothing gets killed or stopped for that, but it might call attention from another agent"): checked
+     before EVERY build and tester pass, it writes ctl/runway_attention.json and one Conductor log line (once per 6 h),
+     and the pass starts anyway.
   1  a live candidate waiting on its minimal-list lane -> WAIT (no build, no tester pass) until the lane records a
      verdict for that exact sha: pass -> final gate -> publish; fail -> the failure feeds the next build pass.
   2  a gate-passed build with no tester verdict (state.pending: e.g. the loop was killed between build_end and the
@@ -542,6 +545,26 @@ def default_runway():
         return {"state": "UNMEASURED", "why": "runway reading failed: %s: %s" % (type(e).__name__, e)}
 
 
+RUNWAY_ATTENTION_EVERY_S = 6 * 3600
+CONDUCTOR_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
+
+
+def conductor_log_path():
+    """The Conductor's log; a selftest points RALPH_A_CONDUCTOR_LOG at a temp file."""
+    return os.environ.get("RALPH_A_CONDUCTOR_LOG") or CONDUCTOR_LOG
+
+
+def runway_reading(r, lim):
+    """-> None when the runway reading is at or over lim, else what crossed and by how much."""
+    if not isinstance(r, dict) or r.get("state") != "MEASURED":
+        return "runway UNMEASURED (%s)" % ((r or {}).get("why") if isinstance(r, dict) else r)
+    v = r.get("runway")
+    if not isinstance(v, (int, float)) or isinstance(v, bool) or not v >= lim:
+        by = (" by %.3f" % (lim - v)) if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(lim) else ""
+        return "runway %r below the advisory %s%s" % (v, lim, by)
+    return None
+
+
 def runway_min():
     try:
         v = float(os.environ.get("RALPH_A_RUNWAY_MIN", "0.15"))
@@ -1053,15 +1076,33 @@ class Loop:
         return f.read_text() if f.is_file() else ""
 
     # ---- runway
-    def runway_refusal(self):
-        r = self.runway()
-        lim = runway_min()
-        if not isinstance(r, dict) or r.get("state") != "MEASURED":
-            return "runway UNMEASURED (%s): no pass started" % ((r or {}).get("why") if isinstance(r, dict) else r)
-        v = r.get("runway")
-        if not isinstance(v, (int, float)) or isinstance(v, bool) or not v >= lim:
-            return "runway %r below %s: no pass started" % (v, lim)
-        return None
+    def runway_attention(self):
+        """Token runway is ADVISORY (owner, 2026-11-02: "Please make token limits advisory at this time everywhere.
+        Nothing gets killed or stopped for that, but it might call attention from another agent (Conductor,
+        Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based reasons.").
+        A low, UNMEASURED or garbled reading never stops a pass: it is written to ctl/runway_attention.json and, once
+        per RUNWAY_ATTENTION_EVERY_S, to the Conductor log. -> the reason, or None when the runway is fine."""
+        why = runway_reading(self.runway(), runway_min())
+        if not why:
+            return None
+        f = Path(self.ctl) / "runway_attention.json"
+        now = time.time()
+        try:
+            last = float(json.loads(f.read_text()).get("told_t") or 0)
+        except (OSError, ValueError, AttributeError, TypeError):
+            last = 0.0
+        tell = now - last >= RUNWAY_ATTENTION_EVERY_S
+        rec = {"t": now, "why": why, "told_t": now if tell else last, "advisory": True}
+        try:
+            f.write_text(json.dumps(rec, sort_keys=True))
+            if tell:
+                with open(conductor_log_path(), "a", encoding="utf-8") as out:
+                    out.write("\n%s — ARENA RUNWAY ATTENTION (advisory, nothing stopped): %s; the pass started anyway. "
+                              "Look: %s, the account meter\n" % (time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)),
+                                                                   why, f))
+        except OSError:
+            pass                                # an advisory line must never stop the pass it reports on
+        return why
 
     # ---- one step
     def step(self):
@@ -1072,9 +1113,7 @@ class Loop:
             return self.status("done: no task left")
         if self.state.get("lane_wait"):
             return self._lane_step(task)
-        why = self.runway_refusal()
-        if why:
-            return self.status("runway: " + why)
+        self.runway_attention()                 # advisory (owner 2026-11-02): reports, never stops the pass
         self._recover(task)
         if self.state.get("pending"):
             return self.tester_pass(task)
@@ -1284,9 +1323,7 @@ class Loop:
         return Path(tempfile.mkdtemp(prefix="rt-", dir=str(base)))
 
     def tester_pass(self, task):
-        why = self.runway_refusal()                               # re-checked here too: build_pass calls straight in
-        if why:
-            return self.status("runway: " + why)
+        self.runway_attention()                                   # re-checked here too: build_pass calls straight in
         pend = self.state["pending"]
         n = self.state["n"]
         diff = self.git("diff", *NO_DRIVER, pend["base"], pend["head"])

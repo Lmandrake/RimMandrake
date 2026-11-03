@@ -26,8 +26,8 @@ def check(name, cond, detail=""):
 
 class FakeSA(object):
     """The slot_allocator surface helper_budget uses; compute() counts its calls."""
-    def __init__(self, seats, streams, raise_=None):
-        self.seats, self.streams, self.raise_, self.calls = seats, streams, raise_, 0
+    def __init__(self, seats, streams, raise_=None, advice=None):
+        self.seats, self.streams, self.raise_, self.calls, self.advice = seats, streams, raise_, 0, advice
 
     def streams_dir(self):
         from pathlib import Path
@@ -40,8 +40,11 @@ class FakeSA(object):
         self.calls += 1
         if self.raise_:
             raise self.raise_
-        return {"t": now, "at": "x", "mode": "CRUISE", "presence": "AFK", "seats": dict(self.seats),
-                "why": "v3: machine total 2 -> FOUNDRY 2", "override": None}
+        dec = {"t": now, "at": "x", "mode": "CRUISE", "presence": "AFK", "seats": dict(self.seats),
+               "why": "v3: machine total 2 -> FOUNDRY 2", "override": None}
+        if self.advice is not None:
+            dec["advice"] = self.advice
+        return dec
 
     @staticmethod
     def seat_label(k):
@@ -125,9 +128,42 @@ check("tick_step: recovery clears the alarm stamp", "budget:failed" not in (st.g
 off = HB.tick_step({"helper_budget": {"enabled": False}}, st, root, NOW + 4000, sa=sa, journal=lambda rec: jr.append(rec))
 check("tick_step: helper_budget.enabled false -> nothing published", off is None and json.load(open(p))["t"] == NOW + 3800)
 
+# ---- token pacing is advisory (owner 2026-11-02): the paced seats are published as advice and raise attention
+adv = FakeSA({"BENCH": 3, "FOUNDRY": 6}, streams, advice={"paced_seats": {"BENCH": 0, "FOUNDRY": 0}, "paced_total": 0,
+                                                           "token_mode": "DARK", "short": {"BENCH": 3, "FOUNDRY": 6},
+                                                           "why": "lukas 1% left -> DARK"})
+ast, ajr, told = {}, [], []
+out = HB.tick_step(ON, ast, root, NOW, sa=adv, journal=ajr.append, tell=told.append)
+pubd = json.load(open(p))
+check("advisory: the PLACED seats are published, not the paced ones", pubd["seats"] == {"CONDUCTOR": 3, "FOUNDRY": 6}, pubd)
+check("advisory: the paced seats ride along as advice under v3 names",
+      pubd.get("advice", {}).get("paced_seats") == {"CONDUCTOR": 0, "FOUNDRY": 0}
+      and pubd["advice"].get("short") == {"CONDUCTOR": 3, "FOUNDRY": 6}, pubd.get("advice"))
+check("advisory: attention fires once: journalled and told the Conductor, saying what crossed, by how much, where to look",
+      out and out["kind"] == HB.ATTENTION_KIND and out["advisory"] and len(ajr) == 1 and len(told) == 1
+      and "DARK" in out["why"] and "9 helper(s) fewer" in out["why"] and "nothing was cut" in out["why"]
+      and "helper_budget.json advice" in out["why"], out)
+again = HB.tick_step(ON, ast, root, NOW + 120, sa=adv, journal=ajr.append, tell=told.append)
+check("advisory: 2 min later it is not said again", again is None and len(ajr) == 1 and len(told) == 1, (again, ajr))
+HB.tick_step(ON, ast, root, NOW + 3700, sa=adv, journal=ajr.append, tell=told.append)
+check("advisory: ... but is after alarm_every_s", len(ajr) == 2 and len(told) == 2, ajr)
+same = FakeSA({"FOUNDRY": 6}, streams, advice={"paced_seats": {"FOUNDRY": 6}, "token_mode": "CRUISE", "why": ""})
+quiet = HB.tick_step(ON, ast, root, NOW + 3800, sa=same, journal=ajr.append, tell=told.append)
+check("advisory: pacing placing the same says nothing and clears the stamp",
+      quiet is None and len(ajr) == 2 and HB.ATTENTION_KIND not in ast.get("alarms", {}), ast)
+def raising(rec):
+    raise OSError("log gone")
+try:
+    o2 = HB.tick_step(ON, {}, root, NOW, sa=adv, journal=raising, tell=raising)
+    check("advisory: a journal or tell that raises never stops the tick", o2 and o2["kind"] == HB.ATTENTION_KIND, o2)
+except Exception as e:  # noqa: BLE001
+    check("advisory: a journal or tell that raises never stops the tick", False, repr(e))
+
 # ---- dispatcher wires it into the tick
 src = open(os.path.join(HERE, "dispatcher.py")).read()
 check("dispatcher.tick calls helper_budget.tick_step", "HB.tick_step(" in src)
+check("dispatcher.tick tells the Conductor log on the budget's advisory alarm", "tell=(lambda rec:" in src
+      and 'get("conductor_log", conductor_log)' in src)
 
 # ---- the hook reads the Dispatcher's budget first
 hook = open(os.path.join(HERE, "..", "..", "..", ".claude", "hooks", "block_agent_over_slots.py")).read()

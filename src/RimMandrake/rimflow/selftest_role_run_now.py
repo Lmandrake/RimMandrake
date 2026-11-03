@@ -290,6 +290,7 @@ TESTS = (test_request_validated, test_launch_disabled_role_once, test_refusals_c
 
 
 def main():
+    SD.strict_roles()       # strict gates under test; the advisory default: selftest_role_caps_advisory A7
     for t in TESTS:
         try:
             t()

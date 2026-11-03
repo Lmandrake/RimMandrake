@@ -140,7 +140,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
    - [LIVE but neutralized] Every band on every role is `"slots": "all"` with `quick_cap_x` 1.0 (for example `sched:52-55`), so the band no longer changes what runs.
    - Neutralized 2026-10-28 by commit d92c4c825e, on the owner's order: *"Stop the whole account rated RED on runeway crap. Just do the checkout."*
    - Throttle order as designed: Innovator, then Auditor, then Producer, then Arbiter, then Operations; the Conductor is never throttled (`v3design`).
-5. **Daily token cap.** The day's weighted tokens must still be under the role's `daily_token_cap`.
+5. **Daily token cap (advisory since 2026-11-02).** Every role is `caps_advisory` by default (`role_launch.ROLE_DEFAULTS`): a day over `daily_token_cap` launches anyway and raises `role:<name>:cap` as an alarm. Owner, 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE): *"Please make token limits advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based reasons."*
 6. **account_pick verdict.** `account_pick` must return KEEP, SWITCH, UNMEASURED or HOLD (§2.13). `act` is "recommend" and `hold` is `[]` (`sched:141`), so the verdict blocks nothing today.
 
 **Slot rules** [LIVE, `rl` header]:
@@ -156,7 +156,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - A transient unit `systemd-run --user rm-role-<name>-<epoch>` runs `claude_bounded.sh -p <prompt> --output-format json`. The Arbiter's runs add `--json-schema`.
 - An optional `pre_launch` program runs first (in each card).
 - The only hard stop is wall time, `run_max_s`. The default is 1800 s, and some roles set 2700 s.
-- **Tokens are not stopped mid-run.** Caps are an admission check at launch (refused with `role:<name>:cap` when the day's spend plus the run budget would pass `daily_token_cap`) plus an alarm after the fact: a run over its `run_token_cap` raises `role:<name>:overbudget` in state.json. Only `run_max_s` stops a run.
+- **Tokens never stop a run or a launch.** Since 2026-11-02 (owner, TOKEN_LIMITS_TAME_BARK_NO_BITE) the launch check is advisory: a day past `daily_token_cap` raises `role:<name>:cap` as an alarm and launches. After the fact: a run over its `run_token_cap` raises `role:<name>:overbudget` in state.json. Only `run_max_s` stops a run.
 - Weighting `weighted_v1`: input 1, cache write 1.25 (5 min) or 2 (1 h), cache read 0.1, output 5.
 
 **Run-now** [LIVE, `rl:1393`]:
@@ -887,7 +887,7 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 
 **Caps are admission checks plus alarms, not stops:**
 
-18. Token caps are admission checks at launch plus after-the-fact alarms: a launch is refused (`role:<name>:cap`) when the day's spend plus the run budget would pass `daily_token_cap`, and an overrun raises `role:<name>:overbudget` after the run. Only `run_max_s` stops a run. Day-one overruns:
+18. Token caps are alarms only (owner, 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: token limits are advisory everywhere): a launch past `daily_token_cap` raises `role:<name>:cap` and still launches, and an overrun raises `role:<name>:overbudget` after the run. Only `run_max_s` stops a run. Day-one overruns:
     - Arbiter 11:00: 1,020,596 tokens against a 500000 run cap (state.json).
     - Producer 05:06Z weekly re-plan: 943k against 800k (HC).
     - Auditor trial: 537k against 375k (HC; the cap was later raised to 700000).

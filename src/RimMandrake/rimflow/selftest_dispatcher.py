@@ -3707,7 +3707,16 @@ def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():
           and not D.agents_read(None), "a malformed session list is no good tick for the heartbeat")
 
 
+def strict_roles():
+    """These tests drive the STRICT role gates (bands, daily caps, a blind reading refused). Since owner 2026-11-02
+    (TOKEN_LIMITS_TAME_BARK_NO_BITE, token limits advisory everywhere) every role defaults to caps_advisory and
+    degraded_reading_ok; the strict gates stay for a role that sets them false, so their tests pin that here.
+    selftest_role_caps_advisory A7 and selftest_role_degraded_reading prove the advisory default."""
+    RL.ROLE_DEFAULTS = dict(RL.ROLE_DEFAULTS, caps_advisory=False, degraded_reading_ok=False)
+
+
 def main():
+    strict_roles()
     for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,

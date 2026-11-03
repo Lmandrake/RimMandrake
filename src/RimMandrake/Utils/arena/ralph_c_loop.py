@@ -459,7 +459,7 @@ class LoopC(RA.Loop):
                 r = self.step()
                 out = (out + [r])[-200:]
                 i += 1
-                if r.startswith(("STOP", "done", "runway", "red start", "sync failed", "idle: no open task")):
+                if r.startswith(("STOP", "done", "red start", "sync failed", "idle: no open task")):
                     break
                 if r.startswith(("waiting", "idle")):
                     self.sleep(self.poll_s)

@@ -19,7 +19,10 @@ file is missing, older than MAX_AGE_S, or older than his last word (slot_overrid
 compute() is pure reading (about 0.2 s); the allocator's stateful record (allocation.json: overage, sitting) stays
 with its own 15-min writer, so two writers never advance that state.
 
-Role runs (rm-role-* units) are counted as the seat they run as (AGENT_SEAT) and keep their token caps.
+Role runs (rm-role-* units) are counted as the seat they run as (AGENT_SEAT); their token caps are advisory.
+
+Token pacing never lowers the published seats (owner 2026-11-02; slot_rules.json advisory): the paced seats ride
+along as `advice`, and attention() raises them to the Conductor log and Operations when they would place fewer.
 
     python3 src/RimMandrake/rimflow/helper_budget.py show      # what the Dispatcher last published
     python3 src/RimMandrake/rimflow/helper_budget.py now       # compute now, print, publish nothing
@@ -64,9 +67,16 @@ def compute(now, sa=None):
     seats = {}
     for k, v in (dec.get("seats") or {}).items():
         seats[budget_seat(sa.seat_label(k))] = int(v)
-    return {"t": now, "at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(now)), "by": "dispatcher",
-            "seats": seats, "mode": dec.get("mode"), "presence": dec.get("presence"), "why": dec.get("why", ""),
-            "override": dec.get("override")}
+    rec = {"t": now, "at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(now)), "by": "dispatcher",
+           "seats": seats, "mode": dec.get("mode"), "presence": dec.get("presence"), "why": dec.get("why", ""),
+           "override": dec.get("override")}
+    adv = dec.get("advice")
+    if isinstance(adv, dict):
+        # the paced seats token pacing would have placed: advisory since owner 2026-11-02, reported, never applied
+        rec["advice"] = dict(adv, paced_seats={budget_seat(sa.seat_label(k)): int(v)
+                                               for k, v in (adv.get("paced_seats") or {}).items()},
+                             short={budget_seat(sa.seat_label(k)): int(v) for k, v in (adv.get("short") or {}).items()})
+    return rec
 
 
 def _write_atomic(path, text):
@@ -120,16 +130,56 @@ def read(root=None, now=None, max_age_s=MAX_AGE_S, sa=None):
         return None
 
 
-def tick_step(sch, st, root, now, sa=None, journal=None):
-    """One Dispatcher tick's budget step. Returns None, or the alarm record (journalled once per alarm_every_s).
-    Opt-in: only a schedule with helper_budget.enabled true publishes (the live dispatcher_schedule.json does), so a
-    fixture schedule in a selftest never computes over the real transcripts."""
+ATTENTION_KIND = "budget:token_pacing"
+
+
+def attention(sch, st, rec, now, journal=None, tell=None):
+    """Token pacing is ADVISORY (owner, 2026-11-02: "Please make token limits advisory at this time everywhere. Nothing
+    gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to
+    investigate and THAT agent may determine it needs to be killed for evidence-based reasons."). When the published
+    budget's advice says pacing would place fewer helpers than were placed, say so: journalled (the journal callback
+    also signals Operations' incident ledger) and one line to the Conductor log via `tell`, once per alarm_every_s
+    while it lasts. -> the alarm record when it fired, else None."""
+    alarms = st.setdefault("alarms", {})
+    adv = (rec or {}).get("advice") or {}
+    short = {k: v for k, v in (adv.get("short") or {}).items() if isinstance(v, int) and v > 0}
+    if not short:
+        alarms.pop(ATTENTION_KIND, None)
+        return None
+    if now - alarms.get(ATTENTION_KIND, -1e18) < sch.get("alarm_every_s", 6 * 3600):
+        return None
+    alarms[ATTENTION_KIND] = now
+    paced = adv.get("paced_seats") or {}
+    placed = rec.get("seats") or {}
+    out = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": ATTENTION_KIND,
+           "advisory": True, "conductor_log": True,
+           "why": "token pacing over its advisory line (%s): it would place %s, %d helper(s) fewer than the %s placed; "
+                  "nothing was cut (owner 2026-11-02, token limits are advisory). Look: helper_budget.json advice, "
+                  "slot_allocator why: %s" % (
+                      adv.get("token_mode"),
+                      ", ".join("%s %s" % (k, paced.get(k, 0)) for k in sorted(placed)), sum(short.values()),
+                      ", ".join("%s %s" % (k, placed[k]) for k in sorted(placed)), str(adv.get("why") or "")[:300]),
+           "raise_first": "Token pacing is past its line; nothing stopped. Judge on evidence whether anything should."}
+    for f in (journal, tell):
+        if f:
+            try:
+                f(out)
+            except Exception:  # noqa: BLE001  an advisory line must never stop a tick
+                pass
+    return out
+
+
+def tick_step(sch, st, root, now, sa=None, journal=None, tell=None):
+    """One Dispatcher tick's budget step. Returns None, or the alarm record (journalled once per alarm_every_s): a
+    publish failure, or the advisory token-pacing attention (see attention()), which `tell` also writes to the
+    Conductor log. Opt-in: only a schedule with helper_budget.enabled true publishes (the live
+    dispatcher_schedule.json does), so a fixture schedule in a selftest never computes over the real transcripts."""
     if (sch.get("helper_budget") or {}).get("enabled") is not True:
         return None
     alarms = st.setdefault("alarms", {})
     key = "budget:failed"
     try:
-        publish(root, now, sa)
+        pub = publish(root, now, sa)
     except Exception as e:  # noqa: BLE001  a budget failure must never stop a tick: the hook falls back on its own
         rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": key,
                "why": "helper budget not published (%s: %s); the spawn hook computes for itself"
@@ -143,7 +193,7 @@ def tick_step(sch, st, root, now, sa=None, journal=None):
                     pass
         return rec
     alarms.pop(key, None)
-    return None
+    return attention(sch, st, pub, now, journal, tell)
 
 
 def main(argv=None):

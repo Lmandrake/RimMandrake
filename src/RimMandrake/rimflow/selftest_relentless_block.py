@@ -301,7 +301,7 @@ def shipped(**over):
 def t_strikes():
     r = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
     ok(r["same_failure_limit"] == 2 and r["max_approach_changes"] == 2, "shipped: two strikes, two changes")
-    ok(r["item_spend_limit"] <= 5 * 10 ** 6, "shipped: a per-item token cap of a few million (was 10^12, off)")
+    ok(r["item_spend_limit"] <= 5 * 10 ** 6, "shipped: a per-item advisory threshold of a few million (was 10^12, off)")
     x = SR.Rig(n=1, share=1.0)
     x.r = dict(x.r, **shipped(snag_again_wait_h=0))
     x.tick()
@@ -334,8 +334,9 @@ def t_strikes():
         x.s.save(cur)
     x.tick()
     st = x.st("I0")
-    ok(st["status"] == "held" and st["hold"]["kind"] == "spend" and "weighted tokens" in st["hold"]["why"]
-       and "returns" in st["hold"]["why"], "over the token cap: held for the Conductor with a summary")
+    ok(st["status"] != "held" and not st.get("hold"), "over the token threshold: not held (advisory, owner 2026-11-02)")
+    ok(any("I0 spent 6000" in a and "item_spend_limit 5000" in a for a in x.w.attn),
+       "over the token threshold: the Conductor hears what crossed and by how much")
     x.done()
 
 

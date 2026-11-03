@@ -44,6 +44,10 @@ R = SA.load_rules()
 # This file pins the v2 share split it was written against (kept as the rollback rule); the live v3 split
 # (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER) has its own test, selftest_slot_allocator_v3.py.
 R["split"] = {"rule": "share", "FOUNDRY_share": 0.25}
+# ... and the PACED seats: token pacing is advisory by default since owner 2026-11-02 (slot_rules.json advisory);
+# this file tests the pace math itself, so it turns the advisory pass off. The advisory pass has its own cases in
+# selftest_slot_allocator_v3.py.
+R["advisory"] = {"enabled": False}
 _LEGACY_RULES = Path(tempfile.mkdtemp()) / "slot_rules_legacy.json"
 _LEGACY_RULES.write_text(json.dumps(R))
 os.environ["RM_SLOT_RULES"] = str(_LEGACY_RULES)  # the CLI subprocesses below read the same pinned rules

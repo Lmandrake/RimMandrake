@@ -1024,7 +1024,38 @@ def spare_line(sp, rules, now):
 
 
 def decide(inp, state, rules, now):
-    """Pure: inputs + the previous state -> the decision (mode, total, per-seat N, why) and the next state."""
+    """Pure: inputs + the previous state -> the decision (mode, total, per-seat N, why) and the next state.
+
+    Token pacing is ADVISORY (owner, 2026-11-02: "Please make token limits advisory at this time everywhere. Nothing
+    gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to
+    investigate and THAT agent may determine it needs to be killed for evidence-based reasons."). With
+    rules["advisory"]["enabled"] the placed seats come from a token-free pass: the pace fit may raise the total but
+    never cut it below advisory.n_total, DARK does not zero the Conductor, and the payback cut, the switching-plan
+    notice, the 5-hour session brake and the session cap are computed and reported, never applied. The paced pass is
+    kept whole in dec["advice"] (helper_budget raises it to the Conductor log when it would place fewer helpers) and
+    its state is the next state, so the pace and debt accounting run on as before. His word (slot_override.json) and
+    the disk brake still bind: neither is a token limit."""
+    paced = _decide_core(inp, state, rules, now, advisory=False)
+    if (rules.get("advisory") or {}).get("enabled") is not True:
+        return paced
+    free = _decide_core(inp, state, rules, now, advisory=True)
+    free["state"], free["overage"] = paced["state"], paced["overage"]
+    advice = {"paced_seats": dict(paced["seats"]), "paced_total": paced["n_total"], "token_mode": paced["token_mode"],
+              "paced_mode": paced["mode"], "why": paced["why"]}
+    if paced["seats"] != free["seats"]:
+        short = {s: free["seats"][s] - paced["seats"].get(s, 0) for s in free["seats"]
+                 if free["seats"][s] != paced["seats"].get(s, 0)}
+        advice["short"] = short
+        free["why"] = ("ADVISORY (owner 2026-11-02, token limits never stop work): token pacing would place "
+                       + ", ".join(f"{seat_label(s)} {paced['seats'].get(s, 0)}" for s in sorted(free["seats"]))
+                       + "; placed " + ", ".join(f"{seat_label(s)} {free['seats'][s]}" for s in sorted(free["seats"]))
+                       + "; " + free["why"])
+    free["advice"] = advice
+    return free
+
+
+def _decide_core(inp, state, rules, now, advisory=False):
+    """decide()'s one pass. advisory=True is the token-free pass (see decide)."""
     state = dict(state or {})
     tk, fit, seats = rules["token"], rules["fit"], rules["seats"]
     P = pace(inp)
@@ -1086,6 +1117,11 @@ def decide(inp, state, rules, now):
         if prev_total is not None and total > prev_total + fit["raise_step"] and not state.get("_fresh_week"):
             why.append(f"raised one step from {prev_total} (at most {fit['raise_step']} per check)")
             total = prev_total + fit["raise_step"]
+    if advisory:
+        floor = _count((rules.get("advisory") or {}).get("n_total"), 0)
+        if total < floor:
+            why.append(f"advisory: token pacing fits {total}, placing the advisory floor {floor}")
+            total = floor
     total = max(0, min(total, rules["total_max"]))
     total, ops_advice = _ops(inp, rules, total, why)
     # split per seat
@@ -1098,7 +1134,8 @@ def decide(inp, state, rules, now):
         bt = _num(inp.get("owner_window_t"), None)
         if bt is None or (now - bt) / 60 > rules["presence"]["bench_min"]:
             cpres, pwhy = "ELSEWHERE", pwhy + ", not in the Conductor's window"
-    split = lambda t, m=mode: split_seats(t, seats, rules, cpres, m)  # noqa: E731
+    smode = "CRUISE" if (advisory and mode == "DARK") else mode   # DARK is a token mode: advisory, it zeroes no seat
+    split = lambda t, m=smode: split_seats(t, seats, rules, cpres, m)  # noqa: E731
     per = split(total)
     if rules["split"].get("rule") == "v3":
         why.append(f"v3: machine total {total} -> FOUNDRY {per.get('FOUNDRY', 0)}; CONDUCTOR "
@@ -1145,7 +1182,12 @@ def decide(inp, state, rules, now):
         overage = {"owed_h": max(0.0, _num(state.get("overage_h"), 0.0)),
                    "post_reset_h": max(0.0, _num(state.get("overage_post_h"), 0.0)), "paying": False, "cut": 0, "accrued_h": 0.0, "credited_h": 0.0,
                    "forgiven_h": 0.0, "deadline_h": None, "eta_h": None, "plan": ""}
+    if advisory:
+        per.clear()
+        per.update(per_before)   # the payback cut is a token limit: owed and reported, not taken
     pn = _plan_notice_live(inp.get("plan_notice"), now)
+    if advisory:
+        pn = None                # the switching notice, the session brake and the session cap advise only
     if pn and not (ov and (epoch(ov.get("set_at")) or 0) > (epoch(pn.get("since")) or now)):
         # his word given after the notice stands over it; given before, the switch the plan is about to make wins
         per = {s: 0 for s in per}
@@ -1156,7 +1198,7 @@ def decide(inp, state, rules, now):
         # a stale or estimated 5-hour reading may predate the window's reset: it brakes nothing
         why.append(f"5-hour window {sess:.0f}% used per a {inp.get('source') or 'UNMEASURED'} reading: not braking on it")
         sess = None
-    if sess is not None and sess > tk["session_brake_pct_used_gt"]:
+    if sess is not None and sess > tk["session_brake_pct_used_gt"] and not advisory:
         per = {s: 0 for s in per}
         why.insert(0, f"5-hour window {sess:.0f}% used: no new helpers until it resets")
     sit, live, drop, _m = sitting_step(inp, state, now)
@@ -1165,7 +1207,7 @@ def decide(inp, state, rules, now):
     # his word stands over the cap only where it speaks for BENCH: a FOUNDRY-only override leaves BENCH's cap in force
     ov_bench = bool(ov) and not (isinstance(ov.get("seats"), dict) and ov["seats"]
                                  and "BENCH" not in {seat_key(k) for k in ov["seats"]})
-    if cap is not None and live and "BENCH" in per and not ov_bench:
+    if cap is not None and live and "BENCH" in per and not ov_bench and not advisory:
         if drop is not None and drop >= cap:
             per["BENCH"] = 0
             why.insert(0, f"session cap reached: {drop:.1f}% of the week this sitting (cap {cap:g}%, started at "

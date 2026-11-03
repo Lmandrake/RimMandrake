@@ -3927,6 +3927,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
 
 
 def main():
+    SD.strict_roles()       # strict gates under test; the advisory default: selftest_role_caps_advisory A7
     got = {}
     for fn in SCEN:
         try:

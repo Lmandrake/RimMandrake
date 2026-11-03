@@ -19,7 +19,8 @@ green is itself a failure of this selftest.
     builder testing itself), without invoking the model.                           mutation: require_tested removed
   E a live task waits on its lane: no build and no tester pass until the lane has a verdict.
                                                                                   mutation: lane wait removed
-  F runway low / UNMEASURED / garbled threshold refuses every pass.                mutation: runway check removed
+  F runway low / UNMEASURED / garbled threshold is ADVISORY (owner 2026-11-02): the pass starts, attention is
+    written (ctl/runway_attention.json + one Conductor log line).                mutation: runway check removed
   I blindness: the tester prompt has no builder output, prompt or failure note; its cwd has no .git.
                                                                                   mutation: tester cwd = the clone
   S the tester id may never equal the builder's.                                   mutation: id check removed
@@ -46,6 +47,8 @@ sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
 import arena_tasks as A  # noqa: E402
 import ralph_a_loop as R  # noqa: E402
+# the runway attention writes one Conductor log line: never the real log from a test
+os.environ["RALPH_A_CONDUCTOR_LOG"] = os.path.join(tempfile.mkdtemp(prefix="ra_clog_"), "log.md")
 
 FAILS = []
 SRC = (HERE / "ralph_a_loop.py").read_text()
@@ -210,7 +213,7 @@ def run_steps(w, n=6):
     out = []
     for _ in range(n):
         out.append(w.loop.step())
-        if out[-1].startswith(("published", "parked", "STOP", "done", "runway", "waiting")):
+        if out[-1].startswith(("published", "parked", "STOP", "done", "waiting")):
             break
     return out
 
@@ -353,23 +356,54 @@ def sc_lane_wait(tmp, mod, tag):
             and s4.startswith("published") and len(w.calls) == n)
 
 
+def attention(w):
+    f = w.ctl / "runway_attention.json"
+    return json.loads(f.read_text()) if f.is_file() else None
+
+
+def clog():
+    p = os.environ["RALPH_A_CONDUCTOR_LOG"]
+    return open(p).read() if os.path.exists(p) else ""
+
+
 def sc_runway(tmp, mod, tag):
+    """F: token runway is advisory (owner 2026-11-02): a low / UNMEASURED / garbled reading starts the pass anyway and
+    says so (ctl/runway_attention.json, one Conductor log line naming what crossed)."""
     ok = True
     for i, rw in enumerate(({"state": "MEASURED", "runway": 0.10}, {"state": "UNMEASURED", "why": "no meter"},
                             {"state": "MEASURED", "runway": None}, "garbage")):
-        w = World(tmp, "F%d%s" % (i, tag), mod, runway=lambda rw=rw: rw)
-        ok = ok and w.loop.step().startswith("runway") and w.calls == []
+        # a build the gate fails: no tester pass follows, so only step()'s own check can have said it
+        w = World(tmp, "F%d%s" % (i, tag), mod, builder=lambda prompt: (BROKEN, 0), runway=lambda rw=rw: rw)
+        before = clog().count("ARENA RUNWAY ATTENTION")
+        w.loop.step()
+        a = attention(w)
+        ok = ok and w.roles()[:1] == ["build"] and bool(a) and a.get("advisory") is True and "runway" in a["why"] \
+            and clog().count("ARENA RUNWAY ATTENTION") == before + 1
+    w = World(tmp, "Fb" + tag, mod, runway=lambda: {"state": "MEASURED", "runway": 0.10})
+    w.loop.step()
+    ok = ok and "below the advisory 0.15 by 0.050" in (attention(w) or {}).get("why", "")
     os.environ["RALPH_A_RUNWAY_MIN"] = "not-a-number"
     try:
         w = World(tmp, "Fg" + tag, mod)
-        ok = ok and w.loop.step().startswith("runway") and w.calls == []
+        w.loop.step()
+        ok = ok and w.roles()[:1] == ["build"] and bool(attention(w))
     finally:
         os.environ.pop("RALPH_A_RUNWAY_MIN")
-    # a pending tester pass is a pass too: low runway does not start it
+    # a pending tester pass is a pass too: low runway starts it and says so
     w = World(tmp, "Fp" + tag, mod)
     w.loop.state["pending"] = {"build_id": "x", "base": "HEAD", "head": "HEAD", "builder": "b"}
     w.loop.runway = lambda: {"state": "MEASURED", "runway": 0.01}
-    return ok and w.loop.step().startswith("runway") and w.calls == []
+    try:
+        w.loop.step()
+    except Exception:  # noqa: BLE001  the fake pending build is not a real one: only the start matters here
+        pass
+    ok = ok and bool(attention(w))
+    # the Conductor line is said once per RUNWAY_ATTENTION_EVERY_S per loop, the file every time
+    w = World(tmp, "Fo" + tag, mod, runway=lambda: {"state": "MEASURED", "runway": 0.01})
+    before = clog().count("ARENA RUNWAY ATTENTION")
+    w.loop.runway_attention()
+    w.loop.runway_attention()
+    return ok and clog().count("ARENA RUNWAY ATTENTION") == before + 1 and bool(attention(w))
 
 
 def sc_blind(tmp, mod, tag):
@@ -662,21 +696,22 @@ def sc_dup_build_end(tmp, mod, tag):
 
 
 def sc_runway_tester(tmp, mod, tag):
-    """L4: runway good at the build, gone by the tester -> the tester pass does not start."""
+    """L4: runway good at the build, gone by the tester -> the tester pass still starts, and the re-check says so."""
     seq = iter([{"state": "MEASURED", "runway": 0.9}] + [{"state": "MEASURED", "runway": 0.01}] * 5)
     w = World(tmp, "L4" + tag, mod, runway=lambda: next(seq))
-    out = w.loop.step()
-    return out.startswith("runway") and w.roles() == ["build"] and w.loop.state.get("pending")
+    w.loop.step()
+    return w.roles()[:2] == ["build", "test"] and bool(attention(w))
 
 
 def sc_runway_neg(tmp, mod, tag):
-    """L5: a negative / NaN threshold refuses instead of waving runway 0.0 through."""
+    """L5: a negative / NaN threshold reads as crossed (attention) instead of waving runway 0.0 through silently."""
     ok = True
     for v in ("-1", "nan", "-inf"):
         os.environ["RALPH_A_RUNWAY_MIN"] = v
         try:
             w = World(tmp, "L5%s%s" % (v.strip("-"), tag), mod, runway=lambda: {"state": "MEASURED", "runway": 0.0})
-            ok = ok and w.loop.step().startswith("runway") and w.calls == []
+            w.loop.step()
+            ok = ok and bool(attention(w)) and w.roles()[:1] == ["build"]
         finally:
             os.environ.pop("RALPH_A_RUNWAY_MIN", None)
     return ok
@@ -1320,8 +1355,8 @@ MUTATIONS = [
      "        pass                                                      # HARD CHECK"),
     ("E lane wait removed", sc_lane_wait, "        if self.state.get(\"lane_wait\"):\n", "        if False:\n"),
     ("F runway check removed", sc_runway,
-     "        if why:\n            return self.status(\"runway: \" + why)\n        self._recover(task)",
-     "        if False:\n            return self.status(\"runway: \" + why)\n        self._recover(task)"),
+     "        self.runway_attention()                 # advisory (owner 2026-11-02): reports, never stops the pass\n",
+     "        pass\n"),
     ("I tester cwd = the clone", sc_blind, "        work = self.tester_workdir(pend[\"head\"], troot / \"tree\")",
      "        work = self.root"),
     ("S tester id check removed", sc_same_id, "            if agent_key(tester) == agent_key(pend[\"builder\"]) or not agent_key(tester):",
@@ -1350,8 +1385,8 @@ MUTATIONS = [
      "                pass"),
     ("L2 duplicate build_end kept", sc_dup_build_end, "                if key in seen:\n", "                if False:\n"),
     ("L4 tester runway unchecked", sc_runway_tester,
-     "        why = self.runway_refusal()                               # re-checked here too",
-     "        why = None                               # re-checked here too"),
+     "        self.runway_attention()                                   # re-checked here too",
+     "        pass                                   # re-checked here too"),
     ("L5 negative threshold accepted", sc_runway_neg,
      "    return v if math.isfinite(v) and v >= 0 else float(\"inf\")", "    return v"),
     ("P1 dirty tree not parked", sc_dirty_sync,
@@ -1963,7 +1998,7 @@ def main():
                          ("D build pass refused without a different-agent test_start", sc_refuses_untested),
                          ("A2 tester spend captured before its root is deleted", sc_capture),
                          ("E live task waits on the lane", sc_lane_wait),
-                         ("F runway low/UNMEASURED refuses", sc_runway),
+                         ("F runway low/UNMEASURED is advisory: pass starts, attention said", sc_runway),
                          ("I tester is blind", sc_blind),
                          ("S tester id never the builder's", sc_same_id),
                          ("M1 killed after build_end: the restart tests that build (from the log)", sc_recover),
@@ -1976,7 +2011,7 @@ def main():
                          ("L1 homoglyph / accent builder id is the same agent", sc_homoglyph),
                          ("L2 duplicate build_end does not wedge", sc_dup_build_end),
                          ("L4 runway re-checked before the tester", sc_runway_tester),
-                         ("L5 negative runway threshold refuses", sc_runway_neg),
+                         ("L5 negative runway threshold reads as crossed", sc_runway_neg),
                          ("L6 pull main first, 3 tries", sc_sync),
                          ("L6 the pull keeps the owner's $GIT_CONFIG_GLOBAL", sc_sync_user_config),
                          ("P1 dirty tree after killed build is parked", sc_dirty_sync),

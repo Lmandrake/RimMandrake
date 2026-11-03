@@ -22,7 +22,7 @@ Ids, priority, area, proof, live and base_sha always come from the FROZEN task: 
 prompt and criteria. Parts build cumulatively on the work branch; only the last part goes through the final gate
 (the frozen proof) and publishes, so the parts together must deliver the parent's outcome.
 
-Inherited from ralph_a_loop (subclassed, not edited): STOP file, runway refusal, sync, precheck, busy-clone check,
+Inherited from ralph_a_loop (subclassed, not edited): STOP file, runway attention (advisory), sync, precheck, busy-clone check,
 pidfile reaping, the gate run by the loop, build_end -> test_start AT ONCE, the hard check (a build pass is refused
 while any trio build_end lacks a test_start by a different agent), recovery of a pending build from the log.
 
@@ -520,9 +520,7 @@ class TrioLoop(RA.Loop):
             return self._park(task, "no valid live_plan: " + bad)
         if self.state.get("lane_wait"):
             return self._lane_step(task)
-        why = self.runway_refusal()
-        if why:
-            return self.status("runway: " + why)
+        self.runway_attention()                 # advisory (owner 2026-11-02): reports, never stops the pass
         pend = self.state.get("pending")
         if pend and voided_build(self.recs(), task["id"], pend.get("build_id")):   # its round was voided: no verdict
             self.state["pending"] = None                                            # for it; a fresh build pass runs
@@ -889,9 +887,7 @@ class TrioLoop(RA.Loop):
 
     # ---- the critic (in place of ralph_a's tester)
     def tester_pass(self, task):
-        why = self.runway_refusal()
-        if why:
-            return self.status("runway: " + why)
+        self.runway_attention()                 # advisory (owner 2026-11-02): reports, never stops the pass
         pend = self.state["pending"]
         done = self._logged_verdict(task, pend)
         if done is not None:

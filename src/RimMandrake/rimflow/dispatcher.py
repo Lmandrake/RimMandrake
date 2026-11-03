@@ -1957,7 +1957,8 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline)
             # the helper budget every seat's spawn hook reads (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER); never raises
             bud = HB.tick_step(sch, st, root, now, journal=lambda rec: (
-                journal(root, rec), apply and signal_alarm(sch, st, rec["kind"], rec["why"], now)))
+                journal(root, rec), apply and signal_alarm(sch, st, rec["kind"], rec["why"], now)),
+                tell=(lambda rec: (fx or {}).get("conductor_log", conductor_log)(sch, rec, now)) if apply else None)
             if bud:
                 acts.append(bud)
             if apply:

@@ -349,8 +349,8 @@ class Procedure:
     def git(self, *a):
         return safe_git(self.root, *a)
 
-    def runway_refusal(self):
-        return RA.Loop.runway_refusal(self)
+    def runway_attention(self):
+        return RA.Loop.runway_attention(self)
 
     def status(self, what):
         (self.ctl / "status").write_text("%s %s n=%d %s\n" % (L.now_ts(), self.arm, self.n, what))
@@ -367,9 +367,7 @@ class Procedure:
     def build(self, task, base, feedback=""):
         """Brief one fresh build helper. -> pending build dict, or (None, why) when nothing was closed."""
         require_tested(self.records(), self.arm)                  # HARD CHECK: before anything else of the brief
-        why = self.runway_refusal()
-        if why:
-            raise Refused("runway: " + why)
+        self.runway_attention()                 # advisory (owner 2026-11-02): reports, never refuses
         busy = self.procs(self.root) if self.procs else []
         if busy:
             raise Refused("refused: process(es) %s have their cwd in the clone %s" % (busy[:8], self.root))
@@ -414,9 +412,7 @@ class Procedure:
 
     def test(self, task, pend):
         """A fresh tester helper on pend's sha; test_start is written BEFORE its model runs. -> (verdict, text)."""
-        why = self.runway_refusal()
-        if why:
-            raise Refused("runway: " + why)
+        self.runway_attention()                 # advisory (owner 2026-11-02): reports, never refuses
         diff = self.git("diff", "--no-ext-diff", "--no-textconv", pend["base"], pend["head"])
         prompt = self.tester_prompt(task, diff)
         verdict, text = None, ""
