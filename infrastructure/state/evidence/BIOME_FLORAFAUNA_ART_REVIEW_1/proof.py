@@ -85,8 +85,9 @@ def main(argv=None):
                     fails.append("C3 %s %s: canon entry %s has no Must show" % (bk, k, c["entry"]))
                 if not c.get("images"):
                     fails.append("C3 %s %s: canon entry %s has no reference image" % (bk, k, c["entry"]))
-                if k not in nco:
-                    continue                    # dropped as all-ruled: C1 already accounts for it
+                if k not in nco:              # dropped as all-ruled: its non-canon question is never shown
+                    fails.append("C4 %s %s: canon row is on no sheet, so its non-canon option is never offered" % (bk, k))
+                    continue
                 o = nco[k] or {}
                 if o.get("kind") == "standin":
                     tw = set(r.get("noncanon_twin") or [])

@@ -30,6 +30,11 @@
     "swanimals/Tauntaun/Tauntaun_Dessicated": "B",
     "swanimals/Tauntaun/Tauntaun_j_Dessicated": "D"
    }
+  },
+  "RSW_Wampa": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
   }
  }
 }

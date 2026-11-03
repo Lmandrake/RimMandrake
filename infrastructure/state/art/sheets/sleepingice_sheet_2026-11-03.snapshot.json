@@ -1,17 +1,21 @@
 {
  "biome": "RM_SleepingIce",
- "built": "2026-11-03T05:08:07-0800",
- "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/bffar7/census/census.json",
- "census_git_head": "00d9c443e3",
- "droppedAllRuled": [
-  "RSW_Wampa"
- ],
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "built": "2026-11-03T06:16:03-0800",
+ "census": "/tmp/bffar_proof/census.json",
+ "census_git_head": "3903bb6346",
+ "droppedAllRuled": [],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 316 active",
  "noncanonOptions": {
   "RSW_Tauntaun": {
    "brief": "a shaggy bipedal cold-plains mount that runs through the frost",
    "kind": "drafted",
    "name": "snuvva",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Wampa": {
+   "brief": "a huge white-furred ice predator that drags prey to its cave",
+   "kind": "drafted",
+   "name": "ghorra",
    "source": "design/RimMandrake/noncanon_alternatives.json"
   }
  },
@@ -135,6 +139,45 @@
    ],
    "shownBase": [],
    "subject_key": "tauntaun"
+  },
+  "RSW_Wampa": {
+   "columns": {
+    "A": {
+     "east": "cad3172607aeaa7f52d84c81c82d31943c0872c1d7a9dffebd9f940d6b0e2afd",
+     "north": "24baa93cba65defdead28d67289550d6850339b805bc6e88a73336d46902a4b2",
+     "south": "1b1323fc5250fc02c823b0ffd4bd47da2ba99da6df677fb5d1dfb5fc4532a5f8"
+    },
+    "B": {
+     "east": "e64862a4879bcacccd3846a30e271e10c040534e3a6d4b72a77aad1857099be3",
+     "north": "281e4251a54530e4fc5b60754b456147441f5a3f03480046ff936d10b8807497",
+     "south": "415af8fe2c222bc1647065f9166ef34f32ecbe506146b6a0c1e9976444de67ce"
+    },
+    "C": {
+     "east": "11b6d0329c9b724c7dad9db4eb0b349a633edc1f55dade01ec91b5449675935b",
+     "south": "8ea03da849e75951165f9b1253f20cb41edd7f99262ba797cb81dd7e6b3ab49b"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Wampa/Wampa",
+    "B": "swanimals/Wampa/Wampa",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render canon_wampa_v1",
+    "C": "render standtall_b1_wampa_j"
+   },
+   "pools": [
+    "swanimals/Wampa/Wampa"
+   ],
+   "res": "swanimals/Wampa/Wampa",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "wampa"
   }
  },
  "sheetId": "sleepingice_sheet_2026-11-03",
