@@ -8,6 +8,7 @@ Item MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG (design/RimMandrake/mines_mod_assessmen
   * no src About.xml names either retired mod in loadAfter / forceLoadAfter / loadBefore;
   * the Mines 2.0 C# gate and its kernel, setting and prove pieces are gone from src (names below);
   * the Armoury canon policy (the single list now) bars the nine products the gate and its extension barred.
+  * the item's live_proofs criteria list each clause id once, each with one live-proof line (rimflow refuses a repeat).
 Sanity probes keep each read honest: the list parse must see the Armoury, the About scan must see a loadAfter list, and the
 name scan must see the policy file it is told to skip.
 """
@@ -29,6 +30,10 @@ GONE_NAMES = ("RSW_MineShaftCanonGate", "MineShaftBanned", "MineShaftPrefixes", 
 BARRED = ("KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar", "RSW_Durasteel", "KotORChunk_durasteel",
           "Plasteel", "RSW_DooniumOre", "OuterRim_ComponentHypertech")
 SELF = os.path.abspath(__file__)
+ITEM = "MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG"
+PROOFS = os.path.join(REPO, "infrastructure", "state", "live_proofs")
+CRIT_RE = re.compile(r"^([A-Z]\d+) (L\d+): \S")
+PROOF_RE = re.compile(r"^live-proof ([A-Z]\d+): \S")
 
 
 def check_list(path=FULL):
@@ -108,10 +113,36 @@ def check_policy(path=POLICY):
     return bad
 
 
+def check_live_proofs(root=PROOFS, item=ITEM):
+    """The item's game clauses as `rimflow implemented` will read them: each criterion id once (a repeat is refused
+    as 'criterion A1 is listed twice', gen 7), every line parses, and every criterion has exactly one live-proof line."""
+    bad, ids, proofs = [], [], []
+    for ext, rx, out in ((".criteria", CRIT_RE, ids), (".txt", PROOF_RE, proofs)):
+        p = os.path.join(root, item + ext)
+        if not os.path.isfile(p):
+            bad.append("missing %s" % os.path.relpath(p, REPO))
+            continue
+        for n, line in enumerate(open(p, encoding="utf-8").read().splitlines(), 1):
+            if not line.strip() or line.startswith("#"):
+                continue
+            m = rx.match(line)
+            if not m:
+                bad.append("%s:%d does not parse: %r" % (os.path.basename(p), n, line[:60]))
+            else:
+                out.append(m.group(1))
+    if not ids and not bad:
+        bad.append("SANITY: no criterion read from %s.criteria: the read is blind" % item)
+    for kind, xs in (("criterion", ids), ("live-proof", proofs)):
+        bad += ["%s %s is listed %d times" % (kind, c, xs.count(c)) for c in sorted(set(xs)) if xs.count(c) > 1]
+    bad += ["criterion %s has no live-proof line" % c for c in sorted(set(ids) - set(proofs))]
+    bad += ["live-proof %s has no criterion" % c for c in sorted(set(proofs) - set(ids))]
+    return bad
+
+
 def main():
     bad = []
     for name, fn in (("list", check_list), ("retired_mods", check_retired_json), ("about", check_about),
-                     ("names", check_names), ("policy", check_policy)):
+                     ("names", check_names), ("policy", check_policy), ("live_proofs", check_live_proofs)):
         b = fn()
         print("%-13s %s" % (name, "PASS" if not b else "FAIL"))
         for x in b:
