@@ -169,23 +169,24 @@
     <abilities>
       <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForceInvisibility</li>
     </abilities>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "3 cells, dangerous, ability to cloak and hunt, dangerous event" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x1.5); was 2 cells. -->
     <lifeStages>
       <li>
         <label>maalraas cub</label>
         <labelPlural>malraas cubs</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Maalraas/Maalraas</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>1.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Maalraas/Maalraas_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>1.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Maalraas/Maalraas</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>2.25</drawSize>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>
             <offset>(0,0,0.0)</offset>
@@ -193,13 +194,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Maalraas/Maalraas_Dessicated</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>2.25</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Maalraas/Maalraas</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>3</drawSize>
           <shadowData>
             <volume>(0.3, 0.4, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -207,7 +208,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Maalraas/Maalraas_Dessicated</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

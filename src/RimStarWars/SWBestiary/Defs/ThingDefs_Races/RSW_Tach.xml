@@ -131,23 +131,24 @@
     <combatPower>60</combatPower>
     <ecoSystemWeight>1.3</ecoSystemWeight>
     <wildGroupSize>2~6</wildGroupSize>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "1 cell, this creature can steal, lives in the Jungle" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.667); was 1.5 cells. -->
     <lifeStages>
       <li>
         <label>tach infant</label>
         <labelPlural>tach infants</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Tach/Tach</texPath>
-          <drawSize>0.5</drawSize>
+          <drawSize>0.333</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Tach/Tach_Dessicated</texPath>
-          <drawSize>0.5</drawSize>
+          <drawSize>0.333</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Tach/Tach</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.667</drawSize>
           <shadowData>
             <volume>(0.2, 0.2, 0.2)</volume>
             <offset>(0,0,-0.2)</offset>
@@ -155,13 +156,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Tach/Tach_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.667</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Tach/Tach</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>1</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
             <offset>(0,0,-0.2)</offset>
@@ -169,7 +170,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Tach/Tach_Dessicated</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>1</drawSize>
         </dessicatedBodyGraphicData>
         <butcherBodyPart>
           <bodyPartGroup>HeadAttackTool</bodyPartGroup>

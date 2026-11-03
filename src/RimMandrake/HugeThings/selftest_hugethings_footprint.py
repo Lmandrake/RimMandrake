@@ -36,19 +36,19 @@ PATCH = tool.PATCH
 # in the art or the method shows here first. Rerun the tool, LOOK at --preview, then update this table.
 EXPECTED = {
     "RM_AgariluxPrime": {"AgariluxPrime": 118},
-    "RM_DribblingCap": {"DribblingCap_A": 28, "DribblingCap_b": 10, "DribblingCap_c": 22},   # b/c added to the pool by the owner, picks_plants_and_gaps 2026-10-19
+    "RM_DribblingCap": {"DribblingCap_A": 14, "DribblingCap_b": 5, "DribblingCap_c": 12},   # b/c added to the pool by the owner, picks_plants_and_gaps 2026-10-19; 12 -> 9 wide 2026-11-03 (owner re-judge "9", ART_SIZES_AUDIT_AFTER_DONORS_LEAVE)
     "RM_Nogtyl": {"Nogtyl_A": 17, "Nogtyl_B": 13, "Nogtyl_C": 10},
     "RM_Arpeau": {"Arpeau_A": 4, "Arpeau_B": 7, "Arpeau_C": 10, "Arpeau_p3b": 7},
     "RM_ArbuscularMycorrhiza": {"ArbuscularMycorrhiza_A": 16},
-    "RM_AgaricusDomeCap": {"AgaricusDomeCap": 10},
     "RM_GiantAgarilux": {"GiantAgarilux_A": 0, "GiantAgarilux_b": 0, "GiantAgarilux_c": 3},   # b/c added 2026-10-19 (same sheet); _c touches 3 cells, so it is no longer root-only
     "RM_Ullumbra": {"RM_Ullumbra_a": 2, "RM_Ullumbra_b": 2, "RM_Ullumbra_c": 1},   # new Rot mushroom, owner 2026-10-19
-    "RM_WitchesOyster": {"WitchesOyster_A": 9, "WitchesOyster_b": 3, "WitchesOyster_c": 8},   # folder installed 80b9b9f7c
     "RM_PaleTree": {"PaleTree_A": 4, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # PaleTree_B retired 2026-10-19 (case-twin of _b, 0cccafd27)
 }
 # Before this rework every giant blocked a trunkWidth x trunkDepth column north of its root (minus the root):
 BEFORE = {"RM_AgariluxPrime": 15, "RM_DribblingCap": 8, "RM_Nogtyl": 8, "RM_Arpeau": 3, "RM_ArbuscularMycorrhiza": 8,
-          "RM_AgaricusDomeCap": 5, "RM_GiantAgarilux": 3, "RM_PaleTree": 3, "RM_WitchesOyster": 1}
+          "RM_GiantAgarilux": 3, "RM_PaleTree": 3}
+# RM_AgaricusDomeCap (7 -> 2 wide) and RM_WitchesOyster (6 -> 3) left the giants 2026-11-03: the owner's Rot size
+# re-judge (2026-09-19, "2" and "3") had never reached their port (ART_SIZES_AUDIT_AFTER_DONORS_LEAVE).
 
 
 def f32(x):

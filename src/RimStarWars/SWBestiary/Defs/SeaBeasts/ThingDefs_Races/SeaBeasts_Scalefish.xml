@@ -94,41 +94,42 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "Scald only, 0.3 cells" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.3); was 1 cells. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.165</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.165</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.80</drawSize>
+          <drawSize>0.24</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.80</drawSize>
+          <drawSize>0.24</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.3</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.3</drawSize>
         </swimmingGraphicData>
       </li>
     </lifeStages>
@@ -222,41 +223,42 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "only underwater biomes place... The Scald underwater. 0.2 cells" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.2); was 1 cells. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.11</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.11</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.80</drawSize>
+          <drawSize>0.16</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.80</drawSize>
+          <drawSize>0.16</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.2</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.2</drawSize>
         </swimmingGraphicData>
       </li>
     </lifeStages>

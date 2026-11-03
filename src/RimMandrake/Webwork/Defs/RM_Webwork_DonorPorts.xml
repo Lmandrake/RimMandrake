@@ -31,7 +31,8 @@
       <harvestYield>18</harvestYield>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>11</wildClusterWeight>
-      <visualSizeRange>2.8~3.8</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "10 cells wide" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 3.8 cells. -->
+      <visualSizeRange>7.368~10</visualSizeRange>
     </plant>
     <ingestible/>
   </ThingDef>
@@ -76,7 +77,8 @@
     <plant>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>4</wildClusterWeight>
-      <visualSizeRange>1.5~2</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "4 cells wide" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 2 cells. -->
+      <visualSizeRange>3~4</visualSizeRange>
     </plant>
   </ThingDef>
 

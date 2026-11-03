@@ -147,12 +147,13 @@
     <aiAvoidCover>true</aiAvoidCover>
     <defendPointRadius>0</defendPointRadius>
     <forceDeathOnDowned>true</forceDeathOnDowned>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "0.2 cells, come in large numbers" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.133); was 1.5 cells. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_ElectricTick/RM_ElectricTick</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.2</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>

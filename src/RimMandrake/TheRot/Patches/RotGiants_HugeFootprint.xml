@@ -45,54 +45,6 @@
     </match>
   </Operation>
 
-  <!-- RM_DribblingCap, amber weeper (12 wide): DribblingCap_A 28 contact cells, DribblingCap_b 10 contact cells, DribblingCap_c 22 contact cells -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
-      <value>
-        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
-          <measuredSize>12</measuredSize>
-          <variants>
-            <li>
-              <texture>DribblingCap_A</texture>
-              <opaqueMin>(0.0088,0.1191)</opaqueMin>
-              <opaqueMax>(0.9912,0.8555)</opaqueMax>
-              <contact>
-                <li>(-3,1)</li><li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li><li>(3,1)</li>
-                <li>(-3,2)</li><li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li><li>(3,2)</li>
-                <li>(-2,3)</li><li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li><li>(2,3)</li>
-                <li>(-2,4)</li><li>(-1,4)</li><li>(0,4)</li><li>(1,4)</li><li>(2,4)</li>
-                <li>(-1,5)</li><li>(0,5)</li><li>(1,5)</li><li>(2,5)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>DribblingCap_b</texture>
-              <opaqueMin>(0.1055,0.0703)</opaqueMin>
-              <opaqueMax>(0.8984,0.9102)</opaqueMax>
-              <contact>
-                <li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-                <li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li>
-                <li>(0,3)</li><li>(1,3)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>DribblingCap_c</texture>
-              <opaqueMin>(0.0117,0.0859)</opaqueMin>
-              <opaqueMax>(0.9922,0.8984)</opaqueMax>
-              <contact>
-                <li>(-3,1)</li><li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li><li>(3,1)</li>
-                <li>(-3,2)</li><li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
-                <li>(-2,3)</li><li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li><li>(2,3)</li>
-                <li>(-2,4)</li><li>(-1,4)</li><li>(0,4)</li><li>(1,4)</li>
-              </contact>
-            </li>
-          </variants>
-        </li>
-      </value>
-    </match>
-  </Operation>
-
   <!-- RM_Nogtyl, brommok timber (12 wide): Nogtyl_A 17 contact cells, Nogtyl_B 13 contact cells, Nogtyl_C 10 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Nogtyl"]</xpath>
@@ -216,22 +168,42 @@
     </match>
   </Operation>
 
-  <!-- RM_AgaricusDomeCap, skarrowdome (7 wide): AgaricusDomeCap 10 contact cells -->
+  <!-- RM_DribblingCap, amber weeper (9 wide): DribblingCap_A 14 contact cells, DribblingCap_b 5 contact cells, DribblingCap_c 12 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
-          <measuredSize>7</measuredSize>
+          <measuredSize>9</measuredSize>
           <variants>
             <li>
-              <texture>AgaricusDomeCap</texture>
-              <opaqueMin>(0.0098,0.2451)</opaqueMin>
-              <opaqueMax>(0.9902,0.7158)</opaqueMax>
+              <texture>DribblingCap_A</texture>
+              <opaqueMin>(0.0088,0.1191)</opaqueMin>
+              <opaqueMax>(0.9912,0.8555)</opaqueMax>
               <contact>
+                <li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
                 <li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
-                <li>(-2,3)</li><li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li><li>(2,3)</li>
+                <li>(-2,3)</li><li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>DribblingCap_b</texture>
+              <opaqueMin>(0.1055,0.0703)</opaqueMin>
+              <opaqueMax>(0.8984,0.9102)</opaqueMax>
+              <contact>
+                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li>
+                <li>(0,2)</li><li>(1,2)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>DribblingCap_c</texture>
+              <opaqueMin>(0.0117,0.0859)</opaqueMin>
+              <opaqueMax>(0.9922,0.8984)</opaqueMax>
+              <contact>
+                <li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
+                <li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li>
+                <li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li>
               </contact>
             </li>
           </variants>
@@ -372,47 +344,6 @@
               <opaqueMax>(0.9844,0.9766)</opaqueMax>
               <contact>
                 <li>(1,0)</li>
-              </contact>
-            </li>
-          </variants>
-        </li>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- RM_WitchesOyster, Tumrata's shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
-      <value>
-        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
-          <measuredSize>6</measuredSize>
-          <variants>
-            <li>
-              <texture>WitchesOyster_A</texture>
-              <opaqueMin>(0.0117,0.1855)</opaqueMin>
-              <opaqueMax>(0.9863,0.8066)</opaqueMax>
-              <contact>
-                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-                <li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>WitchesOyster_b</texture>
-              <opaqueMin>(0.0469,0.1289)</opaqueMin>
-              <opaqueMax>(0.957,0.875)</opaqueMax>
-              <contact>
-                <li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>WitchesOyster_c</texture>
-              <opaqueMin>(0.0078,0.1406)</opaqueMin>
-              <opaqueMax>(0.9922,0.875)</opaqueMax>
-              <contact>
-                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-                <li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
               </contact>
             </li>
           </variants>

@@ -89,7 +89,8 @@
       <harvestYield>10</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
-      <visualSizeRange>3~3.75</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "5 cells wide" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 3.75 cells. -->
+      <visualSizeRange>4~5</visualSizeRange>
       <topWindExposure>0.3</topWindExposure>
       <sowResearchPrerequisites>
         <li>TreeSowing</li>
@@ -236,7 +237,8 @@
       <harvestYield>15</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
-      <visualSizeRange>2.3~3</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "5 cells" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 3 cells. -->
+      <visualSizeRange>3.833~5</visualSizeRange>
       <topWindExposure>0.3</topWindExposure>
     </plant>
   </ThingDef>
@@ -312,7 +314,8 @@
       <harvestYield>10</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
-      <visualSizeRange>2.3~3</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "6 squares wide, needs some special aspect given to it. Perhaps it spawns a bunch of red slime masses when dama" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 3 cells. -->
+      <visualSizeRange>4.6~6</visualSizeRange>
       <topWindExposure>0.3</topWindExposure>
     </plant>
     <comps>
@@ -361,7 +364,8 @@
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.5</harvestAfterGrowth>
       <harvestedThingDef>RawBerries</harvestedThingDef>
-      <visualSizeRange>2.3~3</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "7 cells" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 3 cells. -->
+      <visualSizeRange>5.367~7</visualSizeRange>
       <topWindExposure>0.3</topWindExposure>
     </plant>
   </ThingDef>

@@ -310,7 +310,8 @@
       <fertilityMin>0.1</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
-      <visualSizeRange>3.0~4.5</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "9 cells" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 4.5 cells. -->
+      <visualSizeRange>6~9</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <wildOrder>5</wildOrder>
@@ -338,7 +339,8 @@
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
-      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "4 squares wide" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 3 cells. -->
+      <visualSizeRange>2.667~4</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <wildOrder>4</wildOrder>
     </plant>

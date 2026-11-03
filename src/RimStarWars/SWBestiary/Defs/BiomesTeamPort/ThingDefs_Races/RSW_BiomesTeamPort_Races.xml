@@ -2768,11 +2768,12 @@ copied verbatim from the donor mods' own Textures trees.
     <combatPower>70</combatPower>
     <ecoSystemWeight>1.1</ecoSystemWeight>
     <wildGroupSize>1</wildGroupSize>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "0.6 cells" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.6); was 1 cells. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider</texPath>
-          <drawSize>0.2</drawSize>
+          <drawSize>0.12</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -2783,7 +2784,7 @@ copied verbatim from the donor mods' own Textures trees.
       <li>
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider</texPath>
-          <drawSize>0.6</drawSize>
+          <drawSize>0.36</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -2794,7 +2795,7 @@ copied verbatim from the donor mods' own Textures trees.
       <li>
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider</texPath>
-          <drawSize>1</drawSize>
+          <drawSize>0.6</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

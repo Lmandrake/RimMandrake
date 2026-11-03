@@ -1,0 +1,9 @@
+{
+  "_doc": "art_size_audit.py waivers: {defName: {HIGH code: why}}. Every entry names the item that settles it; delete the entry when that item closes.",
+  "RSW_CrimsonOpee": {
+    "OWNER_ORDER": "two owner marks on one row disagree (fauna_assignment_register 2026-09-10: note '9 squares long', yet sizeBin moved large -> medium, 1-2.2 cells); settled at CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE"
+  },
+  "RSW_Behemoth": {
+    "OWNER_ORDER": "false stem match: RSW_Behemoth ports Star Wars Animal Collection's behemoth (its own register row 'Behemoth': 'huuuge trader pack animal', no number). Alpha Animals' AA_Behemoth ('crag, 16 squares') was ported as RM_Summ (8.6 cells), whose size is judged at CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE"
+  }
+}

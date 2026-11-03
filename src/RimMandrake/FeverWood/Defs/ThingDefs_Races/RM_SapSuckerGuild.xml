@@ -169,26 +169,27 @@
     <combatPower>15</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
     <wildGroupSize>2~5</wildGroupSize>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "Good concept, but make it three cells wide" (feverwood_sheet_2026-10-05.decisions.json, 2026-10-09) enacted (every lifeStage drawSize x3.75); was 0.8 cells. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Thornbug/RM_Thornbug</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.5</drawSize>
+          <drawSize>1.875</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Thornbug/RM_Thornbug</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.65</drawSize>
+          <drawSize>2.438</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Thornbug/RM_Thornbug</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.8</drawSize>
+          <drawSize>3</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>

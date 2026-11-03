@@ -139,37 +139,38 @@
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <wildGroupSize>1~3</wildGroupSize>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "Large tree biomes. 'rikknit was a crustacean native to New Plympto. They had eight to twelve legs and lived at" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.2); was 2 cells. -->
     <lifeStages>
       <li>
         <label>rikklet</label>
         <labelPlural>rikklets</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Rikknit/Rikknit</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.15</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Rikknit/Rikknit_Dessicated</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.15</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Rikknit/Rikknit</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.3</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Rikknit/Rikknit_Dessicated</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Rikknit/Rikknit</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>0.4</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Rikknit/Rikknit_Dessicated</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>0.4</drawSize>
         </dessicatedBodyGraphicData>
         <butcherBodyPart>
           <bodyPartGroup>RSW_SWTailAttackTool</bodyPartGroup>

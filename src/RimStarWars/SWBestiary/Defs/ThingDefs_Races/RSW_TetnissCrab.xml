@@ -136,37 +136,38 @@
         <texPath>swanimals/TetnissCrab/TetnissCrabC</texPath>
       </li>
     </alternateGraphics>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "0.5 cells, grey sea" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.333); was 1.5 cells. -->
     <lifeStages>
       <li>
         <label>tet'niss megalopa</label>
         <labelPlural>tet'niss megalopa</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/TetnissCrab/TetnissCrab_j</texPath>
-          <drawSize>0.5</drawSize>
+          <drawSize>0.167</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/TetnissCrab/TetnissCrab_j_Dessicated</texPath>
-          <drawSize>0.5</drawSize>
+          <drawSize>0.167</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/TetnissCrab/TetnissCrab_j</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.333</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/TetnissCrab/TetnissCrab_j_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.333</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/TetnissCrab/TetnissCrab_j</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/TetnissCrab/TetnissCrab_j_Dessicated</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.5</drawSize>
         </dessicatedBodyGraphicData>
         <butcherBodyPart>
           <bodyPartGroup>HeadAttackTool</bodyPartGroup>

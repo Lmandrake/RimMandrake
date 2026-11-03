@@ -153,13 +153,14 @@
     <combatPower>60</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <wildGroupSize>4~8</wildGroupSize>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "Hideous vermin that can appear literally anywhere, especially injected wrecks, settlements, or attempting to i" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.571); was 1.75 cells. -->
     <lifeStages>
       <li>
         <label>stintaril joey</label>
         <labelPlural>stintaril joeys</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Stintaril/Stintaril</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.429</drawSize>
           <shadowData>
             <volume>(0.30, 0.25, 0.20)</volume>
             <offset>(0,0,-0.01)</offset>
@@ -167,13 +168,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Stintaril/Stintaril_Dessicated</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.429</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Stintaril/Stintaril</texPath>
-          <drawSize>1.25</drawSize>
+          <drawSize>0.714</drawSize>
           <shadowData>
             <volume>(0.375, 0.375, 0.375)</volume>
             <offset>(0,0,-0.02)</offset>
@@ -181,13 +182,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Stintaril/Stintaril_Dessicated</texPath>
-          <drawSize>1.25</drawSize>
+          <drawSize>0.714</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Stintaril/Stintaril</texPath>
-          <drawSize>1.75</drawSize>
+          <drawSize>1</drawSize>
           <shadowData>
             <volume>(0.5, 0.5, 0.4)</volume>
             <offset>(0,0,-0.03)</offset>
@@ -195,7 +196,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Stintaril/Stintaril_Dessicated</texPath>
-          <drawSize>1.75</drawSize>
+          <drawSize>1</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

@@ -31,7 +31,8 @@
       <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 10 berries in 3 days -->
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>4</wildClusterWeight>
-      <visualSizeRange>1.5~2</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "4 cells wide" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 2 cells. -->
+      <visualSizeRange>3~4</visualSizeRange>
       <harvestYield>8</harvestYield>
       <harvestWork>250</harvestWork>
       <harvestTag>Standard</harvestTag>

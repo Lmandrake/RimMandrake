@@ -50,7 +50,8 @@
       </sowTags>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_RawGiantLeaf</harvestedThingDef>
-      <visualSizeRange>0.5~1.3</visualSizeRange>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "2 squares wide" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 1.3 cells. -->
+      <visualSizeRange>0.769~2</visualSizeRange>
       <wildOrder>2</wildOrder>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>100</wildClusterWeight>

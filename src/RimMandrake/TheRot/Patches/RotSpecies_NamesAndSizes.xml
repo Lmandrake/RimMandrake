@@ -25,7 +25,7 @@
        Sizes: flora <plant><visualSizeRange> MAX set to the ruled width, MIN
        scaled to keep the def's own existing min:max ratio. -->
 
-  <!-- ============== RM_AgaricusDomeCap -> skarrowdome (7 wide) ============== -->
+  <!-- ============== RM_AgaricusDomeCap -> skarrowdome (2 wide; was 7, owner re-judge 2026-09-19 "2") ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]</xpath>
     <match Class="PatchOperationSequence">
@@ -38,9 +38,10 @@
           <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/description</xpath>
           <value><description>A squat, swollen dome of a mushroom as wide as a hut, its skin blotched in the yellows and bruise-purples that every other living thing reads as a warning. People read it as an invitation. Under the skin lies a pale psychotropic flesh, cut away a sliver at a time: one sliver opens the mind, two take it somewhere it does not come back from easily. It grows slowly, and each skarrowdome gives up very little.</description></value>
         </li>
+        <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "2" (2026-09-19_rot_size_rejudge_2026-09-19.decisions.json, 2026-09-19) enacted; was 7 cells. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>5.25~7</visualSizeRange></value>
+          <value><visualSizeRange>1.5~2</visualSizeRange></value>
         </li>
       </operations>
     </match>
@@ -113,7 +114,7 @@
     </match>
   </Operation>
 
-  <!-- ============== RM_DribblingCap -> amber weeper (12 wide) ============== -->
+  <!-- ============== RM_DribblingCap -> amber weeper (9 wide; was 12, owner re-judge 2026-09-19 "9") ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
     <match Class="PatchOperationSequence">
@@ -126,9 +127,10 @@
           <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/description</xpath>
           <value><description>A tall pink-lilac cap that weeps without stopping: a thick, sharp-smelling resin beads at the rim, runs down the stalk and pools around its foot. The resin is a nerve poison strong enough to drop a warg in a few breaths. Gathered with care it tips a single poison dart; gathered carelessly, it is gathered once. Slow to grow, and it can be planted.</description></value>
         </li>
+        <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "9" (2026-09-19_rot_size_rejudge_2026-09-19.decisions.json, 2026-09-19) enacted; was 12 cells. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>8.4~12</visualSizeRange></value>
+          <value><visualSizeRange>6.3~9</visualSizeRange></value>
         </li>
       </operations>
     </match>
@@ -256,7 +258,7 @@
     </match>
   </Operation>
 
-  <!-- ============== RM_WitchesOyster -> Tumrata's shelf (6 wide) ============== -->
+  <!-- ============== RM_WitchesOyster -> Tumrata's shelf (3 wide; was 6, owner re-judge 2026-09-19 "3") ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
     <match Class="PatchOperationSequence">
@@ -269,9 +271,10 @@
           <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/description</xpath>
           <value><description>A branching stack of pink shelf-caps growing one over another from a single woody foot, sharp-smelling enough to make the eyes water. The caps are tough and slow to rot: cut and stored, they keep far longer than anything else the pale forest gives, which makes it what colonists plant when they are thinking about winter.</description></value>
         </li>
+        <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "3" (2026-09-19_rot_size_rejudge_2026-09-19.decisions.json, 2026-09-19) enacted; was 6 cells. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/visualSizeRange</xpath>
-          <value><visualSizeRange>3~6</visualSizeRange></value>
+          <value><visualSizeRange>1.5~3</visualSizeRange></value>
         </li>
       </operations>
     </match>

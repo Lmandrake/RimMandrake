@@ -153,43 +153,44 @@
         <swimmingTexPath>swanimals/Blarth/Blarth_Swimming</swimmingTexPath>
       </li>
     </alternateGraphics>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "Miasma, domesticatable, Hutt pets, 1 cell" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.5); was 2 cells. -->
     <lifeStages>
       <li>
         <label>blarth puppy</label>
         <labelPlural>blarth puppies</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Blarth/Blarth</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.375</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.375</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.375</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Blarth/Blarth</texPath>
           <drawSize>1</drawSize>
-        </bodyGraphicData>
-        <swimmingGraphicData>
-          <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1</drawSize>
-        </swimmingGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
-          <drawSize>1</drawSize>
-        </dessicatedBodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>swanimals/Blarth/Blarth</texPath>
-          <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.20, 0.3, 0.20)</volume>
             <offset>(0,0,0.0)</offset>
@@ -198,11 +199,11 @@
         <swimmingGraphicData>
           <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2</drawSize>
+          <drawSize>1</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
-          <drawSize>2</drawSize>
+          <drawSize>1</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

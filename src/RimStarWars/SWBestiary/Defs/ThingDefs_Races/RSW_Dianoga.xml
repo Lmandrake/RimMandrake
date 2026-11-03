@@ -160,13 +160,14 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "6 cells, would be awesome if we could add tentacle pulling capabilities like the lasso power or future sarlacc" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x1.579); was 3.8 cells. -->
     <lifeStages>
       <li>
         <label>dianoga larva</label>
         <labelPlural>dianoga larvae</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Dianoga/Dianoga</texPath>
-          <drawSize>0.8</drawSize>
+          <drawSize>1.263</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -175,17 +176,17 @@
         <swimmingGraphicData>
           <texPath>swanimals/Dianoga/Dianoga_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.8</drawSize>
+          <drawSize>1.263</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Dianoga/Dianoga_Dessicated</texPath>
-          <drawSize>0.8</drawSize>
+          <drawSize>1.263</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Dianoga/Dianoga</texPath>
-          <drawSize>2.6</drawSize>
+          <drawSize>4.105</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
             <offset>(0,0,0.0)</offset>
@@ -194,17 +195,17 @@
         <swimmingGraphicData>
           <texPath>swanimals/Dianoga/Dianoga_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.6</drawSize>
+          <drawSize>4.105</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Dianoga/Dianoga_Dessicated</texPath>
-          <drawSize>2.6</drawSize>
+          <drawSize>4.105</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Dianoga/Dianoga</texPath>
-          <drawSize>3.8</drawSize>
+          <drawSize>6</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
             <offset>(0,0,0.0)</offset>
@@ -213,11 +214,11 @@
         <swimmingGraphicData>
           <texPath>swanimals/Dianoga/Dianoga_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>3.8</drawSize>
+          <drawSize>6</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Dianoga/Dianoga_Dessicated</texPath>
-          <drawSize>3.8</drawSize>
+          <drawSize>6</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

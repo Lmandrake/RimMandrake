@@ -175,6 +175,8 @@
       </shadowData>
     </graphicData>
     <plant>
+      <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order ".8 cells, propane lakes" (flora_assignment_register.decisions.json, 2026-09-11) enacted; was 1.265 cells. -->
+      <visualSizeRange>0.443~0.696</visualSizeRange>
       <growDays>3</growDays>
     </plant>
   </ThingDef>

@@ -175,26 +175,27 @@
     <defaultFactionType>Insect</defaultFactionType>
     <aiAvoidCover>false</aiAvoidCover>
     <defendPointRadius>0</defendPointRadius>
+    <!-- ART_SIZES_AUDIT_AFTER_DONORS_LEAVE (2026-11-03): owner order "1 cell" (fauna_assignment_register.decisions.json, 2026-09-10) enacted (every lifeStage drawSize x0.364); was 2.75 cells. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.545</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2</drawSize>
+          <drawSize>0.727</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.75</drawSize>
+          <drawSize>1</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>
