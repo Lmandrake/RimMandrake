@@ -1,0 +1,1 @@
+A live proof whose load must LACK mods cannot be served by live-mods (enable-only, folder names): end the proof or its live_site step on a 'reload needed: ...' line (relentless_live.asked_reload) so the game phase restages; live_site.py --needs/--without checks the RUNNING list first (GENERATOR_MODS_PROVE_INERT_AFTER_CREATION).
