@@ -119,6 +119,27 @@ LIVE_PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs", "TITA
 KERNEL = os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "Source", "Kernel", "RM_TitanicKernel.cs")
 
 
+
+def live_mods_row():
+    """Gen 5 (A2 game_fail 2026-11-02T20:21Z): the built sha changed no mod folder, so the live round gated A2 on no mod and ran
+    it on a load without the test races. Pins: the proofs file's `live-mods:` line, read by the round's own parser, names
+    HugeThings and HugeThingsTestRaces (each a real mod folder with a packageId, the gate's input), and the file tells the
+    stager about neku.largepawns, which that line cannot name."""
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
+    import relentless_live_round as R
+    with open(LIVE_PROOFS, encoding="utf-8") as fh:
+        text = fh.read()
+    mods = R.live_mods(text)
+    check("live-mods names HugeThings and HugeThingsTestRaces", set(mods) >= {"HugeThings", "HugeThingsTestRaces"}, "%r" % mods)
+    for m in mods:                                   # every folder the gate will demand must exist, or A2 is UNMEASURED forever
+        about = os.path.join(ROOT, "src", "RimMandrake", m, "About", "About.xml")
+        pid = ET.parse(about).getroot().findtext("packageId") if os.path.isfile(about) else None
+        check("live-mods folder %s has a packageId" % m, bool(pid and pid.strip()), "read %r" % pid)
+    check("proofs file names neku.largepawns for the stager", "neku.largepawns" in text.lower())
+    check("A2 proof line still parses with the live-mods header", R.proof_lines(text).get("A2", "").endswith("test_titan_footprint_live.py"),
+          "%r" % R.proof_lines(text))
+
+
 def footprint_row():
     """Gen 3 (blind check WEAK, GAP footprint): the item's spec names the rows 'T2/T3 tiers, yield curve, roof, footprint', so A2's
     live proof must drive a footprint row. Pins: the A2 line runs the six-row wrapper; the wrapper's rows are the runner's five
@@ -230,7 +251,7 @@ def main():
     for tier_dir in ("RimMandrake", "RimStarWars", "RimUtinni"):
         base = os.path.join(ROOT, "src", tier_dir)
         for dp, dns, fs in os.walk(base):
-            if os.path.abspath(dp).startswith(MOD):
+            if os.path.commonpath([os.path.abspath(dp), MOD]) == MOD:
                 continue
             for f in fs:
                 if f.endswith(".xml"):
@@ -247,6 +268,7 @@ def main():
 
     judges()
     footprint_row()
+    live_mods_row()
     n_ok = sum(1 for r in results if r)
     print("%d/%d PASS" % (n_ok, len(results)))
     return 0 if n_ok == len(results) and results else 1
