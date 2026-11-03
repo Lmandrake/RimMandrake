@@ -129,6 +129,11 @@
     "swanimals/Bantha/BanthaRPack": "N"
    }
   },
+  "RSW_Cannok": {
+   "decision": "B",
+   "note": "",
+   "prefill": "B"
+  },
   "RSW_Convor": {
    "decision": "A",
    "note": "",
@@ -156,6 +161,11 @@
     "swanimals/Eopie/EopieD": "S",
     "swanimals/Eopie/EopieE": "U"
    }
+  },
+  "RSW_FeralNerf": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
   },
   "RSW_FrilledGorg": {
    "decision": "A",
@@ -270,6 +280,11 @@
    "picks": {
     "swanimals/Lothcat/Lothcat_m": "G"
    }
+  },
+  "RSW_Massiff": {
+   "decision": "B",
+   "note": "",
+   "prefill": "B"
   },
   "RSW_Mudhorn": {
    "decision": "C",

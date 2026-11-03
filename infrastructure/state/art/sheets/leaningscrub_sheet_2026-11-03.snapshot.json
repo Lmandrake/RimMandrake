@@ -1,8 +1,8 @@
 {
  "biome": "RM_LeaningScrub",
- "built": "2026-11-03T03:42:47-0800",
- "census": "/tmp/bffar3/census.json",
- "census_git_head": "bf2500e37f",
+ "built": "2026-11-03T06:00:18-0800",
+ "census": "/tmp/bffar_proof/census.json",
+ "census_git_head": "00d9c443e3",
  "droppedAllRuled": [
   "RM_Cruststar",
   "RM_Pillowmoss",
@@ -10,12 +10,227 @@
   "RM_TruffleMole",
   "RM_Vissler",
   "RM_WildHealroot",
-  "RSW_Cannok",
-  "RSW_FeralNerf",
-  "RSW_Massiff",
   "RSW_MossBeetle"
  ],
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 34 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Anooba": {
+   "brief": "a lean striped pack scavenger that circles herds and drags down the weak",
+   "kind": "drafted",
+   "name": "skevva",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Bantha": {
+   "brief": "a towering shaggy pack grazer with forward-curled horns, milked, shorn and ridden",
+   "kind": "drafted",
+   "name": "grullox",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Cannok": {
+   "brief": "a squat fanged pest that breeds fast and eats anything that fits its jaws",
+   "kind": "drafted",
+   "name": "pokkra",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Convor": {
+   "brief": "a plump owl-shaped tree flyer that grips branches with a prehensile tail",
+   "kind": "drafted",
+   "name": "tweelo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Corinathoth": {
+   "brief": "an enormous slow frilled grazer whose fearsome head hides a mild temper",
+   "kind": "drafted",
+   "name": "dhurrumat",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Eopie": {
+   "brief": "a thin-legged long-snouted pack beast, slow but tireless over rock",
+   "kind": "drafted",
+   "name": "eppuvi",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_FeralNerf": {
+   "brief": "a nollux herd gone wild, leaner and quicker to charge",
+   "kind": "drafted",
+   "name": "feral nollux",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gizka": {
+   "brief": "a tiny fast-breeding hopping reptile that swarms stores and chews wiring",
+   "kind": "drafted",
+   "name": "tippik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Gorg": {
+   "brief": "a small squat amphibian kept live and eaten as cheap food",
+   "kind": "drafted",
+   "name": "plibb",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Grank": {
+   "brief": "a low-slung shell-cracking scavenger that feels prey through its body hairs",
+   "kind": "drafted",
+   "name": "oskarr",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Igitz": {
+   "brief": "a small finned swamp amphibian, clawed in front, kept as a pet",
+   "kind": "drafted",
+   "name": "ippel",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Iriaz": {
+   "brief": "a long-necked spotted herd grazer with swept-back horns that charges when cornered",
+   "kind": "drafted",
+   "name": "jevvuti",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_KowakianMonkeyLizard": {
+   "brief": "a small cackling big-eared tree lizard kept as a mischievous pet",
+   "kind": "drafted",
+   "name": "kekkalo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Kreetle": {
+   "brief": "a small burrowing shelled arthropod that rides in on supplies and infests stores",
+   "kind": "drafted",
+   "name": "zhitter",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Kybuck": {
+   "brief": "a swift spiral-horned forest ungulate, sociable and easily tamed",
+   "kind": "drafted",
+   "name": "tovvak",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_LongtailGorg": {
+   "brief": "a plibb with an unusually long flattened tail, sold as live food",
+   "kind": "drafted",
+   "name": "longtail plibb",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Lothcat": {
+   "brief": "a small fluffy tall-eared hunter of vermin, temperamental but often kept",
+   "kind": "drafted",
+   "name": "nirravo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Massiff": {
+   "brief": "a low armoured spine-crested guard beast, fiercely loyal once trained",
+   "kind": "drafted",
+   "name": "grokkel",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Mudhorn": {
+   "brief": "a massive one-horned charging grazer that lays a single woolly egg",
+   "kind": "drafted",
+   "name": "baakor",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Nuna": {
+   "brief": "a plump flightless wattled swamp fowl kept for meat",
+   "kind": "drafted",
+   "name": "plokka",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Pikobis": {
+   "brief": "a small long-legged flightless wader with a toothed beak and whip tail",
+   "kind": "drafted",
+   "name": "chibbi",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Plant_Nysyllin_Wild": {
+   "brief": "a slender herb with spotted red pods used in healing",
+   "kind": "drafted",
+   "name": "wild essolin plant",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Porg": {
+   "brief": "a small round flat-faced seabird that dives for fish and steals shiny things",
+   "kind": "drafted",
+   "name": "pubbet",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Pufferpig": {
+   "brief": "a small barrel-bodied snouted forager that inflates itself when frightened",
+   "kind": "drafted",
+   "name": "bloffo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Qormot": {
+   "brief": "a stocky quilled one-eyed forest omnivore, savage in the mating season",
+   "kind": "drafted",
+   "name": "drassuk",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Ronto": {
+   "brief": "a huge gentle long-necked pack beast with broad earflaps that startles easily",
+   "kind": "drafted",
+   "name": "thoombar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_ScrapNestBird": {
+   "brief": "an oil-dark scavenger bird that lines a thorny nest with stolen wire and metal",
+   "kind": "drafted",
+   "name": "kittivo",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Scurrier": {
+   "brief": "a small hairless long-eared rodent that breeds fast and raids stores",
+   "kind": "drafted",
+   "name": "skuvvit",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Skalder": {
+   "brief": "a heavy tusked grazer with a ridged mantle that shrugs off acid springs",
+   "kind": "drafted",
+   "name": "tambrek",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Sketto": {
+   "brief": "a lean four-winged night flyer with fangs and a grasping tail",
+   "kind": "drafted",
+   "name": "vipsa",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Strill": {
+   "brief": "a clever six-legged gliding hunter with loose skin folds and a keen nose",
+   "kind": "drafted",
+   "name": "dwessik",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Urusai": {
+   "brief": "a four-winged bright scavenger flyer that picks the teeth of great beasts clean",
+   "kind": "drafted",
+   "name": "pyrrella",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Voorpak": {
+   "brief": "a small round six-legged soft-furred carnivore kept as a pet",
+   "kind": "drafted",
+   "name": "fizzum",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Vulptex": {
+   "brief": "a gregarious fox-like scavenger with a coat of white crystal bristles",
+   "kind": "drafted",
+   "name": "glissara",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Whisperbird": {
+   "brief": "a golden long-tailed rainforest bird that flies almost silently",
+   "kind": "drafted",
+   "name": "sollivar",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  },
+  "RSW_Worrt": {
+   "brief": "a squat warty sand-sitting amphibian that snatches prey with long fingers",
+   "kind": "drafted",
+   "name": "guppok",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
  "rows": {
   "RM_Chikka": {
    "columns": {
@@ -2459,6 +2674,38 @@
    "shownBase": [],
    "subject_key": "bantha"
   },
+  "RSW_Cannok": {
+   "columns": {
+    "A": {
+     "east": "5e7d585cca750b6e940e752f941be3733420b178e1f8ef2e4e662f536c64dee3",
+     "north": "c822a2f2c1af489db3173e9d00478fb81ab754fb5d2afe36ad2eb25f6a1863a6",
+     "south": "bfb45443b26395416758f4c2d2f327ba3e7a30de1704d8fd0bbc9ec905e4bc53"
+    },
+    "B": {
+     "east": "5e7d585cca750b6e940e752f941be3733420b178e1f8ef2e4e662f536c64dee3",
+     "north": "872d60936a695cae739748abfc50f9e16bbfbdf141c74b6669b7b92f7b318554",
+     "south": "257188638d418a86c06d05d94a731baddebc2919fdee274de41cc20ae83080da"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Cannok/Cannok",
+    "B": "swanimals/Cannok/Cannok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render leaningscrub_cannok_v1"
+   },
+   "pools": [
+    "swanimals/Cannok/Cannok"
+   ],
+   "res": "swanimals/Cannok/Cannok",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "cannok"
+  },
   "RSW_Convor": {
    "columns": {
     "A": {
@@ -2795,6 +3042,38 @@
    ],
    "shownBase": [],
    "subject_key": "eopie"
+  },
+  "RSW_FeralNerf": {
+   "columns": {
+    "A": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "7fe6f50df8a7e84c9f6874bb071cc38c22e5712d0d9687a9de75e6b765bc007b",
+     "south": "a0060ea348821f8c5ce276c5978c3cfcea454a428b7f25a0a1867bf4eaf82087"
+    },
+    "B": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79",
+     "south": "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/FeralNerf/FeralNerf",
+    "B": "swanimals/FeralNerf/FeralNerf"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render leaningscrub_feralnerf_v1"
+   },
+   "pools": [
+    "swanimals/FeralNerf/FeralNerf"
+   ],
+   "res": "swanimals/FeralNerf/FeralNerf",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "feralnerf"
   },
   "RSW_FrilledGorg": {
    "columns": {
@@ -4187,6 +4466,38 @@
    ],
    "shownBase": [],
    "subject_key": "lothcat"
+  },
+  "RSW_Massiff": {
+   "columns": {
+    "A": {
+     "east": "5b31cad119008627ea5bb80b9de87fc95c36231446d1afc06725098a783d833c",
+     "north": "fcab6305c64e22cdcdf1d166e78a25da31a2877139a499f2d82207e55567beee",
+     "south": "52d55cfe93999b27325a90f1c31c401be58355119eba9b8bdfbf3bf22c91ca3a"
+    },
+    "B": {
+     "east": "5b31cad119008627ea5bb80b9de87fc95c36231446d1afc06725098a783d833c",
+     "north": "18b31e12206cd389893812aaa8807bc188e47676cb7747f6e832ef2f2fa6c8f3",
+     "south": "3ce3b0fbe7de233e20aa4c97b77a06f8767d433df784ddadce1966130e3711e7"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Massiff/Massiff",
+    "B": "swanimals/Massiff/Massiff"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render leaningscrub_massiff_v1 \u2014 grader flagged (advisory)"
+   },
+   "pools": [
+    "swanimals/Massiff/Massiff"
+   ],
+   "res": "swanimals/Massiff/Massiff",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "massiff"
   },
   "RSW_Mudhorn": {
    "columns": {
