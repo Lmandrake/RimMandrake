@@ -65,6 +65,7 @@ POOL_REFUSED = "POOL REFUSED"        # scratch_clone's word: the pool said no, t
 CAUSE_TOKEN = re.compile(r"\S*[\d/_]\S*")   # a run name, a path, a number, an item id: what changes between tries of one fault
 POOL_FULL = ("pool full", "pool at")  # make_room's holds: what the staffing reading looks for in the tick's acts
 # dirt no worker made on purpose: session dumps and ledger shards the seats' projection rewrites. Bundled, never restored
+POOL_STATE = ("infrastructure/state/lessons/",)     # records a worker commits as it finishes; the bundle carries them, a fresh clone re-applies them
 POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
 POOL_ORPHAN_IDLE_S = 3600
 # What a usable clone must hold: every launch runs claude_bounded.sh from it. A clone released for room while its item
@@ -1322,11 +1323,22 @@ class Effects(relentless_game.GameFx):
         """-> {"kept": commits or a stash no remote has, "real": changed paths a worker meant}. An unreadable clone is
         kept: nothing about it is known. Commits have no way back into a fresh clone, so only a dead item's may go."""
         try:
-            kept = self.git_ok(c, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes").strip() != ""
+            shas = self.git_ok(c, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes").split()
+            # POOL_UNLANDED_COMMITS_NEVER_RELEASE (2026-11-03): a worker's last commit is often a lesson or ledger record made after
+            # its landing; "commits stay" then held 9 of 16 pool places for items parked on the game. Commits that touch only
+            # state records are carried by the bundle and cherry-picked into the item's next clone, so they do not pin the clone.
+            state = bool(shas)
+            for sha in shas:
+                files = self.git_ok(c, "diff-tree", "--no-commit-id", "--name-only", "-r", "-m", "--root", sha).split("\n")
+                if len(self.git_ok(c, "rev-list", "--parents", "-n1", sha).split()) > 2 or any(
+                        f and not f.startswith(POOL_NOISE + POOL_STATE) for f in files):
+                    state = False
+                    break
+            kept = bool(shas) and not state
             kept = kept or self.git_ok(c, "stash", "list").strip() != ""
-            return {"kept": kept, "real": [p for p in self.changed_paths(c) + self.ignored_paths(c) if not p.startswith(POOL_NOISE)]}
+            return {"kept": kept, "carry": bool(shas) and state, "real": [p for p in self.changed_paths(c) + self.ignored_paths(c) if not p.startswith(POOL_NOISE)]}
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError):
-            return {"kept": True, "real": []}
+            return {"kept": True, "carry": False, "real": []}
 
     def git_ok(self, cwd, *args):
         r = self.git(cwd, *args, timeout=300)
@@ -1377,6 +1389,8 @@ class Effects(relentless_game.GameFx):
                                input="\0".join(want).encode(), check=True, timeout=300)
         for i, sha in enumerate(stash):   # refs/stash names only the newest; the rest live in a reflog no bundle carries
             self.git_ok(c, "update-ref", "refs/rm-stash/%d" % i, sha)
+        if commits and self.clone_wip(c).get("carry"):
+            open(os.path.join(out, "carry"), "w").close()
         if commits or stash:
             r = self.git(c, "bundle", "create", os.path.join(out, "commits.bundle"), "HEAD", "--all", "--not", "--remotes")
             if r.returncode:
@@ -1386,6 +1400,18 @@ class Effects(relentless_game.GameFx):
     def restore_bundle(self, item, bundle, c):
         """A fresh clone takes the WIP of the one evicted. What will not apply stays in the bundle and the record says so."""
         bad = []
+        cb = os.path.join(bundle, "commits.bundle")
+        if os.path.exists(os.path.join(bundle, "carry")) and os.path.exists(cb):     # state-only commits come back as commits
+            r = self.git(c, "fetch", "-q", cb, "HEAD", timeout=300)
+            shas = self.git(c, "rev-list", "--reverse", "FETCH_HEAD", "--not", "--remotes", timeout=300).stdout.split() if not r.returncode else []
+            for sha in shas:
+                r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=relentless@localhost", "cherry-pick", "--allow-empty", sha, timeout=300)
+                if r.returncode:
+                    self.git(c, "cherry-pick", "--abort", timeout=60)
+                    bad.append("commit %s did not re-apply: %s" % (sha[:10], r.stderr[-120:]))
+                    break
+            if r.returncode and not shas:
+                bad.append("commits.bundle: %s" % r.stderr[-200:])
         patch = os.path.join(bundle, "real.patch")
         if os.path.exists(patch) and os.path.getsize(patch):
             r = self.git(c, "apply", "--3way", "--whitespace=nowarn", patch, timeout=300)
@@ -2125,7 +2151,7 @@ def release_parked(store, fx, r, now, acts):
         wip = fx.clone_wip(row["clone"])
         if not wip["kept"]:
             evict(store, fx, row, now, acts, "parked: %s %s" % (row["kind"], row["status"]),
-                  bundle_pointer(store, row, wip["real"] and row["kind"] == "work"))
+                  bundle_pointer(store, row, (wip["real"] or wip.get("carry")) and row["kind"] == "work"))
 
 
 def make_room(store, fx, r, now, acts, reserve=0):
@@ -2147,7 +2173,7 @@ def make_room(store, fx, r, now, acts, reserve=0):
         if wip["kept"] and row["rank"]:
             row["hold"] = "commits"
             continue
-        parked.append((row["rank"], bool(wip["real"]), order.get(row["status"], 0), row, wip))
+        parked.append((row["rank"], bool(wip["real"] or wip.get("carry")), order.get(row["status"], 0), row, wip))
     for rank, real, _o, row, wip in sorted(parked, key=lambda p: p[:3]):
         gone, _b = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""),
                          bundle_pointer(store, row, real and row["kind"] == "work" and rank))
