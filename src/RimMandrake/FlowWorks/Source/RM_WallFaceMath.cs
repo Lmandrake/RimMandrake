@@ -20,14 +20,16 @@ namespace RimMandrake.FlowWorks
 	/// PROVISIONAL numbers, judged on the review sheet art_source/visual_principles_2026-10-05.</summary>
 	public static class RM_WallFaceMath
 	{
-		/// <summary>North-face band height (cells) by exposed drop 1..4. D3 = a vanilla wall's face (0.35, MEASURED,
-		/// see WallFaceLight); D4 "even more extended".</summary>
-		public static readonly float[] NorthByDrop = { 0f, 0.12f, 0.23f, 0.35f, 0.50f };
+		/// <summary>North-face band height (cells) by exposed drop 1..4, then ONE look for every drop over 2 m (index 5, V7's
+		/// fifth wall look, WATER_DEPTH_RESKIN_HE_LOOKS_FIRST). D3 = a vanilla wall's face (0.35, MEASURED, see WallFaceLight);
+		/// D4 "even more extended"; over 2 m taller again, and the clamp for every deeper drop.</summary>
+		public static readonly float[] NorthByDrop = { 0f, 0.12f, 0.23f, 0.35f, 0.50f, 0.62f };
 
-		/// <summary>Side-face strip width (cells) by exposed drop 1..4 (D3 = the wall's side bevel, 0.17, MEASURED).</summary>
-		public static readonly float[] SideByDrop = { 0f, 0.06f, 0.11f, 0.17f, 0.23f };
+		/// <summary>Side-face strip width (cells) by exposed drop 1..4, then over 2 m (D3 = the wall's side bevel, 0.17, MEASURED).</summary>
+		public static readonly float[] SideByDrop = { 0f, 0.06f, 0.11f, 0.17f, 0.23f, 0.29f };
 
-		public const float NorthMax = 0.50f;
+		/// <summary>The tallest face: the over-2 m look, which every deeper drop clamps to.</summary>
+		public const float NorthMax = 0.62f;
 
 		/// <summary>MEASURED 2026-10-05 from the owner's in-game shot of steel walls round a D4 pit (cell ~126 px): flat
 		/// dark top 52, south bevel band 96 (x1.85) and 44 px = 0.35 cell, side bevels 67 (x1.29) and ~22 px = 0.17 cell,
@@ -77,11 +79,15 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>0..1 darkness at the FOOT of a face for a cell of total depth D (deeper = darker), so even two
-		/// faces of equal height read as different depths.</summary>
+		/// faces of equal height read as different depths. D1..D3 step 0.15 each (0.5/0.65/0.8); past D3 the darkness keeps
+		/// growing by a log of the depth, so 2 m, 4 m and 8 m floors read apart (P5 A4 "floor tint per depth band past 2 m",
+		/// handed to WATER_DEPTH_RESKIN_HE_LOOKS_FIRST: the dry floor past 2 m is one terrain, so depth shows only here):
+		/// 2 m 0.84, 4 m 0.90, 8 m 0.94, reaching 0.95 at 9 m.</summary>
 		public static float FootDarkness(int depth)
 		{
 			if (depth <= 0) return 0f;
-			float d = 0.35f + 0.15f * depth;
+			if (depth <= 3) return 0.35f + 0.15f * depth;
+			float d = 0.80f + 0.0375f * (float)(Math.Log(depth - 2) / Math.Log(2));
 			return d > 0.95f ? 0.95f : d;
 		}
 
