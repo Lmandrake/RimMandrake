@@ -34,6 +34,8 @@ namespace RimMandrake.Biomes
     // river, but it isn't"); no road layer is blue or teal, so blue reads as water only.
     // The ancient highway is old asphalt, left broken in pieces as the record has it (owner: "old asphalt broken from
     // long ago"); its pieces are deliberately not joined.
+    // Drawn rivers and worn roads (taper, mouths, dry ends, pale bank, highlight; worn dirt, lighter stone, broken
+    // highway) ride on this and live in RM_WorldPathsDrawn.cs (RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT).
     // Values chosen by contrast against every face each tier crosses on the dev world (all tiers clear casing
     // WCAG >= 3 and fill dE76 >= 20 on every crossed land face, day side): design/Jawa/worldbuilding/world_paths_readable_2026-10-20.md.
     [StaticConstructorOnStartup]
@@ -64,6 +66,9 @@ namespace RimMandrake.Biomes
             { "Creek", 0.32f }, { "River", 0.46f }, { "LargeRiver", 0.62f }, { "HugeRiver", 0.82f },
         };
 
+        // "Planet: worn roads": the stone road lighter and solid (RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT).
+        public static readonly Color StoneWorn = new Color(0.36f, 0.31f, 0.25f);
+
         public static Color32 riverWater = new Color32(20, 41, 77, 255);    // (0.08, 0.16, 0.30): the same blue-grey as FlowWorks' default water
         public static Color32 riverBank = new Color32(4, 9, 17, 255);       // riverWater x bankShade
         public static float bankShade = 0.22f;   // bank of a river another mod coloured = its water colour x this
@@ -75,7 +80,10 @@ namespace RimMandrake.Biomes
         static readonly Dictionary<RiverDef, float> origRiver = new Dictionary<RiverDef, float>();
 
         static Material waterMat, bankMat;
-        public static bool applied;
+        static bool drawnPatchFailed;
+        public static bool applied, drawnRivers, wornRoads;
+        public static Material WaterMaterial => waterMat;
+        public static Material BankMaterial => bankMat;
         public static string lastInfo = "never applied";
 
         static RM_WorldPaths()
@@ -97,6 +105,12 @@ namespace RimMandrake.Biomes
                 if (getSub == null || gen == null) throw new Exception("GetSubMesh/GeneratePaths not found");
                 h.Patch(getSub, prefix: new HarmonyMethod(typeof(RM_WorldPaths), nameof(GetSubMeshPrefix)));
                 h.Patch(gen, prefix: new HarmonyMethod(typeof(RM_WorldPaths), nameof(GeneratePathsPrefix)) { priority = Priority.Last });
+                try { RM_WorldPathsDrawn.Patch(h, WorldMaterials.Roads, WorldMaterials.Rivers.renderQueue); }
+                catch (Exception e)
+                {
+                    drawnPatchFailed = true;
+                    Log.Warning("[RimMandrake.Biomes] drawn rivers / worn roads patch failed, paths keep the readable look: " + e.Message);
+                }
             }
             catch (Exception e)
             {
@@ -112,7 +126,11 @@ namespace RimMandrake.Biomes
             int layers = 0, steps = 0, rivers = 0;
             foreach (KeyValuePair<RoadWorldLayerDef, Color> kv in origLayer)
             {
-                if (on && LayerColor.TryGetValue(kv.Key.defName, out Color c)) { kv.Key.color = c; layers++; }
+                if (on && LayerColor.TryGetValue(kv.Key.defName, out Color c))
+                {
+                    kv.Key.color = kv.Key.defName == "Stone" && RM_BiomesSettings.worldWornRoads && !drawnPatchFailed ? StoneWorn : c;
+                    layers++;
+                }
                 else kv.Key.color = kv.Value;
             }
             foreach (RoadDef r in DefDatabase<RoadDef>.AllDefsListForReading)
@@ -133,9 +151,13 @@ namespace RimMandrake.Biomes
                 else kv.Key.widthOnWorld = kv.Value;
             }
             applied = on;
+            drawnRivers = RM_BiomesSettings.worldDrawnRivers;
+            wornRoads = RM_BiomesSettings.worldWornRoads;
+            bool drawnOk = on && waterMat != null && !drawnPatchFailed;
             lastInfo = "readable world paths " + (on ? "ON" : "off") + " (" + why + "): " + layers + " road layer colours, "
                        + steps + " road widths, " + rivers + " river widths, river material swap "
-                       + (waterMat != null && on ? "on" : "off");
+                       + (waterMat != null && on ? "on" : "off") + ", drawn rivers " + (drawnOk && drawnRivers ? "on" : "off")
+                       + ", worn roads " + (drawnOk && wornRoads ? "on" : "off");
             Log.Message("[RimMandrake.Biomes] " + lastInfo);
         }
 
@@ -151,14 +173,28 @@ namespace RimMandrake.Biomes
         // (RM_RiverColors.cs: blue-grey water, tinted inside the Contagion, Miasma, Wasteland and Rust Cathedral) sets the
         // water colour per tile; that colour is KEPT, and only the bank becomes a dark shade of it. Only when nobody
         // recoloured the river (the colour is still vanilla riverColor) does the water get riverWater.
-        static void GeneratePathsPrefix(WorldDrawLayer_Paths __instance, LayerSubMesh subMesh, ref Color32 color)
+        // With "Planet: drawn rivers" the final colour and the per-link widths come from RM_WorldPathsDrawn.River.
+        static void GeneratePathsPrefix(WorldDrawLayer_Paths __instance, LayerSubMesh subMesh, PlanetTile tile,
+            ref List<WorldDrawLayer_Paths.OutputDirection> nodes, ref Color32 color)
         {
             if (!applied || waterMat == null || !(__instance is WorldDrawLayer_Rivers) || subMesh == null) return;
+            bool isBank = subMesh.material == bankMat;
+            if (!isBank && subMesh.material != waterMat) return;
             bool vanilla = color.r == VanillaRiver.r && color.g == VanillaRiver.g && color.b == VanillaRiver.b;
             Color32 water = vanilla ? riverWater : color;
-            if (subMesh.material == bankMat)
-                color = vanilla ? riverBank : new Color32((byte)(water.r * bankShade), (byte)(water.g * bankShade), (byte)(water.b * bankShade), 255);
-            else if (subMesh.material == waterMat) color = water;
+            Color32 bank = vanilla ? riverBank : new Color32((byte)(water.r * bankShade), (byte)(water.g * bankShade), (byte)(water.b * bankShade), 255);
+            color = drawnPatchFailed ? (isBank ? bank : water) : RM_WorldPathsDrawn.River(__instance, isBank, tile, ref nodes, water, bank);
+        }
+
+        /// <summary>The road layer a GeneratePaths call is drawing, from the colour it was handed (each layer has its own).</summary>
+        public static RoadWorldLayerDef LayerOf(Color32 color)
+        {
+            foreach (RoadWorldLayerDef l in origLayer.Keys)
+            {
+                Color32 c = l.color;
+                if (c.r == color.r && c.g == color.g && c.b == color.b) return l;
+            }
+            return null;
         }
     }
 }

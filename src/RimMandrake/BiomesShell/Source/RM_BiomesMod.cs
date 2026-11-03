@@ -74,6 +74,13 @@ namespace RimMandrake.Biomes
         // (RM_WorldPaths.cs). Looks only; links are untouched. Applies at once.
         public static bool worldReadablePaths = true;
 
+        // RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT (2026-11-02): rivers drawn as rivers (thin at the head, widening, fanning at
+        // the mouth, thinning to a dry trace where they die inland, a pale bank and a faint highlight) and roads worn by
+        // kind (dirt in worn dashes, stone lighter, the ancient highway broken in pieces). Both ride on readable paths
+        // (they need its river material); looks only, links untouched. Applies at once (the planet redraws).
+        public static bool worldDrawnRivers = true;
+        public static bool worldWornRoads = true;
+
         // SOFT LANDMARK ICONS (owner by card 2026-10-20, LANDMARK_ICONS_DECIDE_THE_REAL_SPECKLE): Odyssey landmark icons
         // draw smaller and fainter on the planet, back to full near the ground (RM_WorldLandmarks.cs). Looks only; which
         // tiles carry landmarks is untouched. Applies at once.
@@ -91,6 +98,8 @@ namespace RimMandrake.Biomes
             worldSoftHills = true;
             worldSunPeaks = true;
             worldReadablePaths = true;
+            worldDrawnRivers = true;
+            worldWornRoads = true;
             worldSoftLandmarks = true;
             worldLandmarkSize = 0.6f;
             worldLandmarkOpacity = 0.55f;
@@ -121,6 +130,8 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref worldSoftHills, "worldSoftHills", true);
             Scribe_Values.Look(ref worldSunPeaks, "worldSunPeaks", true);
             Scribe_Values.Look(ref worldReadablePaths, "worldReadablePaths", true);
+            Scribe_Values.Look(ref worldDrawnRivers, "worldDrawnRivers", true);
+            Scribe_Values.Look(ref worldWornRoads, "worldWornRoads", true);
             Scribe_Values.Look(ref worldSoftLandmarks, "worldSoftLandmarks", true);
             Scribe_Values.Look(ref worldLandmarkSize, "worldLandmarkSize", 0.6f);
             Scribe_Values.Look(ref worldLandmarkOpacity, "worldLandmarkOpacity", 0.55f);
@@ -142,6 +153,9 @@ namespace RimMandrake.Biomes
         {
             Instance = this;
             settings = GetSettings<RM_BiomesSettings>();
+            // What the planet was last drawn with = the loaded settings, so the first change after a load redraws it.
+            worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
+            peaksShown = RM_BiomesSettings.worldSunPeaks;
             plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
             RM_BiomesSettings.Instance = settings;
             roster = ReadRoster(Path.Combine(content.RootDir, "Biomes.roster.xml"));
@@ -197,7 +211,9 @@ namespace RimMandrake.Biomes
                 peaksShown = RM_BiomesSettings.worldSunPeaks;
                 if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
             }
-            if (RM_WorldPaths.applied != RM_BiomesSettings.worldReadablePaths)
+            if (RM_WorldPaths.applied != RM_BiomesSettings.worldReadablePaths
+                || RM_WorldPaths.drawnRivers != RM_BiomesSettings.worldDrawnRivers
+                || RM_WorldPaths.wornRoads != RM_BiomesSettings.worldWornRoads)
             {
                 RM_WorldPaths.Apply("settings changed");
                 if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
@@ -304,10 +320,22 @@ namespace RimMandrake.Biomes
                     + "previous hill drawing (see soft hill shading).\n\nLooks only; which tiles are hilly is not changed. "
                     + "Default: on. Takes effect at once (the planet redraws).");
                 list.CheckboxLabeled("Planet: readable roads and rivers [now]", ref RM_BiomesSettings.worldReadablePaths,
-                    "On the world map, roads get a dark casing and a colour per kind (umber dirt, slate stone, gold "
-                    + "ancient highway) and rivers get a dark bank and a hard edge, a little wider (their colour stays FlowWorks' River Colours where that is on, else bright blue). "
-                    + "Off restores the vanilla road and river look.\n\nLooks only; which tiles have roads or rivers is "
+                    "On the world map, roads get a dark casing and a colour per kind (umber dirt, grey-brown stone, "
+                    + "old dark asphalt on the ancient highway) and rivers get a bank and a hard edge, a little wider (their colour "
+                    + "stays FlowWorks' River Colours where that is on, else blue-grey). Off restores the vanilla road and river "
+                    + "look, and turns off the two settings below.\n\nLooks only; which tiles have roads or rivers is "
                     + "not changed. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: drawn rivers [now]", ref RM_BiomesSettings.worldDrawnRivers,
+                    "Needs readable roads and rivers. On the world map, a river starts thin at its head and widens "
+                    + "downstream, fans out where it meets the sea or a lake, and thins to a pale dry trace where it dies "
+                    + "inland. Its bank is a pale line instead of a dark one, with a faint highlight down the middle of the "
+                    + "water. Off: rivers keep one width per kind and a dark bank.\n\nLooks only; which tiles have rivers "
+                    + "is not changed. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: worn roads [now]", ref RM_BiomesSettings.worldWornRoads,
+                    "Needs readable roads and rivers. On the world map, dirt roads show as a worn track (thinner in "
+                    + "stretches), stone roads are lighter and solid, and the ancient highway is broken into pieces with "
+                    + "gaps, old asphalt from long ago. Off: every road is drawn whole.\n\nLooks only; which tiles have "
+                    + "roads, and travel along them, are not changed. Default: on. Takes effect at once (the planet redraws).");
                 list.CheckboxLabeled("Planet: soft landmark icons [now]", ref RM_BiomesSettings.worldSoftLandmarks,
                     "On the world map, landmark icons (ruins, vents, caves, cliffs...) draw smaller and fainter, so a region "
                     + "full of them no longer reads as speckle over its land, rivers and roads.\n\nLooks only; every "
