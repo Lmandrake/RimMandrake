@@ -82,7 +82,7 @@ class Hw(IB.World):
         self.write(w, {"type": "assistant", "message": {"stop_reason": "end_turn", "usage": {"input_tokens": 1000},
                                                         "content": [{"type": "text", "text": "done.\n\nHANDOFF READY"}]}})
 
-    def hand_off(self, w, live=()):
+    def hand_off(self, w, live=(), now=False):
         """The real cmd_request, as the hook calls it, then the request's ts brought onto the simulated clock."""
         os.environ["RM_SEAT_RESTART_SCHEDULE"] = os.path.join(self.dir, "sched.json")
         SR.unpublished_shard = lambda seat, repo: self.shard
@@ -91,7 +91,7 @@ class Hw(IB.World):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             rc = SR.cmd_request(argparse.Namespace(seat=SEAT, ticket="HANDOFF", reason="handoff", note="", fresh=True,
-                                                   pid=w["pid"]))
+                                                   pid=w["pid"], now=now))
         p = SR.request_path(SEAT)
         req = json.load(open(p))
         req["ts"] = self.now
@@ -389,6 +389,14 @@ class Fake:
     def kick_handoff(self, cfg):
         self.kicked += 1
 
+    def kick_now(self, seat):
+        self.kicked_now = getattr(self, "kicked_now", 0) + 1
+
+
+REPLAY_2055 = ("Wrapped up, Mandrake. All my helpers have finished and the live game is released.\n\n"
+               "The session is paused, not finished:\n- **The game is saved**\n\n"
+               "HANDOFF READY \u2014 Tue Nov 3, 12:55 PM PST\n- `D:\\x\\BENCH_REBOOT_HANDOFF_202611032054.md`\n")
+
 
 def hook_case(fake, text="x\nHANDOFF READY", chk=(0, "ok"), req=(0, "RESTART REQUESTED"), lands=True):
     calls = []
@@ -397,8 +405,8 @@ def hook_case(fake, text="x\nHANDOFF READY", chk=(0, "ok"), req=(0, "RESTART REQ
         calls.append("check")
         return chk
 
-    def _request(seat):
-        calls.append("request")
+    def _request(seat, now=False):
+        calls.append("request-now" if now else "request")
         fake.drain = lands and req[0] == 0
         return req
     H.check, H.request = _check, _request
@@ -407,14 +415,88 @@ def hook_case(fake, text="x\nHANDOFF READY", chk=(0, "ok"), req=(0, "RESTART REQ
     return did, calls, json.loads(out.getvalue()) if out.getvalue() else None
 
 
+class Cw(Hw):
+    """A Conductor window: kind conductor, the owner's last message typed, no goodbye anywhere."""
+    def schedule(self):
+        s = IB.World.schedule(self)
+        s["seat_restart"]["dry"] = False
+        s["seat_restart"]["seats"][SEAT]["kind"] = "conductor"
+        return D.load_schedule(self._dump(s))
+
+    def _dump(self, s):
+        p = os.path.join(self.dir, "sched_c.json")
+        with open(p, "w") as f:
+            json.dump(s, f)
+        return p
+
+
+def test_conductor_now():
+    """CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES: the real cmd_request --now for a Conductor handoff with no goodbye, then
+    the real Dispatcher tick: killed on the first tick, no grace, no cursor wait."""
+    w = Cw("cond_now")
+    IB.patch(w)
+    w.spawn()
+    win = w.windows[0]
+    w.write(win, {"type": "user", "message": {"role": "user", "content": "please prepare for reboot"}})
+    w.say_ready(win)
+    t0 = w.now
+    rc, out = w.hand_off(win, now=True)
+    check(rc == 0 and os.path.exists(SR.request_path(SEAT)), "Conductor handoff --now with no goodbye: request recorded (rc %s)" % rc)
+    req = json.load(open(SR.request_path(SEAT)))
+    check(req.get("now") is True and req.get("handoff") is True and os.path.exists(SR.now_stamp_path(SEAT)),
+          "the request carries now+handoff and the watcher's stamp is written")
+    w.at(1)
+    check(w.killed(), "killed on the first tick, %d s after the request (grace_s %d, quiet_s %d not waited)" % (
+        w.now - t0, w.sch["seat_restart"]["seats"][SEAT].get("grace_s", 0), CFG["quiet_s"]))
+    w.close()
+    w = Cw("cond_now_helper")
+    IB.patch(w)
+    w.spawn()
+    win = w.windows[0]
+    w.write(win, {"type": "user", "message": {"role": "user", "content": "go"}})
+    w.say_ready(win)
+    w.helpers = [{"id": "h1", "alive": True, "last_at": w.now, "desc": "fixer"}]
+    w.hand_off(win, now=True)
+    w.at(1)
+    check(not w.killed(), "a live helper still holds a Conductor handoff")
+    w.helpers = []
+    SR.kick_now(SEAT, root=w.state)
+    st = json.load(open(SR.now_stamp_path(SEAT)))
+    check(st.get("kick_at") and SR.now_owed(st, D.load_state(w.state), time.time(), 240, seats={SEAT}) == "pending"
+          or SR.now_owed(st, D.load_state(w.state), time.time(), 240, seats={SEAT}) is not None,
+          "kick_now rewrites the stamp")
+    w.at(1)
+    check(w.killed(), "the last helper ended: killed on the next tick")
+    w.close()
+    st = {"seat": SEAT, "req_ts": 1000.0, "kick_at": 1900.0}
+    check(SR.now_owed(st, {"seat_restart": {SEAT: {"req_ts": 1000.0, "state": "pending"}}}, 2000.0, 240) == "pending"
+          and SR.now_owed({"seat": SEAT, "req_ts": 1000.0}, {"seat_restart": {SEAT: {"req_ts": 1000.0, "state": "pending"}}},
+                          2000.0, 240) is None, "kick_at restarts the 240 s hold; without it the stamp is spent")
+
+
 def test_hook():
     f = Fake()
     did, calls, blk = hook_case(f)
     check(did == "requested" and calls == ["check", "request"] and blk is None, "the words + a passing check: requested")
     did, calls, _ = hook_case(Fake(), text="more to do")
     check(did == "no" and not calls, "no words: nothing runs")
-    did, calls, _ = hook_case(Fake(cfg=dict(CFG, kind="conductor")))
-    check(did == "skip" and not calls, "the Conductor is out of scope")
+    # CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES: the Conductor is served, always through --now
+    CC = dict(CFG, kind="conductor")
+    did, calls, _ = hook_case(Fake(cfg=CC))
+    check(did == "requested" and calls == ["check", "request-now"], "the Conductor's words: checked, then request --now")
+    did, calls, _ = hook_case(Fake(cfg=CC), text="Fixed the hose. Next I will say HANDOFF READY once the helper ends.")
+    check(did == "no" and not calls, "an ordinary Conductor turn never fires")
+    did, calls, _ = hook_case(Fake(cfg=CC), text=REPLAY_2055)
+    check(did == "requested" and calls == ["check", "request-now"], "replay of the 20:55 message: fires")
+    f = Fake(cfg=CC, live=True)
+    did, calls, _ = hook_case(f, chk=(1, "doing items open"))
+    check(did == "requested" and calls == ["request-now"], "Conductor with a helper: deferred, still --now")
+    f.live = False
+    did, calls, _ = hook_case(f, text="helper notice read")
+    check(did == "kicked" and getattr(f, "kicked_now", 0) == 1 and not f.kicked,
+          "the last helper ended: kick_now, not the 120 s tick kick")
+    did, calls, _ = hook_case(Fake(cfg=dict(CFG, kind="doorbell")))
+    check(did == "requested" and calls == ["check", "request"], "a worker seat is unchanged: no --now")
     f = Fake()
     did, calls, blk = hook_case(f, chk=(1, "NOT READY - unpushed"))
     check(did == "refused" and calls == ["check"] and blk["decision"] == "block" and "unpushed" in blk["reason"],
@@ -480,7 +562,7 @@ def test_doorbell():
 
 if __name__ == "__main__":
     try:
-        for t in (test_schedule, test_wait, test_rings, test_human, test_deferred, test_spin, test_fresh, test_hook, test_doorbell):
+        for t in (test_schedule, test_wait, test_rings, test_human, test_deferred, test_spin, test_fresh, test_conductor_now, test_hook, test_doorbell):
             print("== " + t.__name__)
             t()
     finally:

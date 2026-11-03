@@ -841,7 +841,9 @@ REFUSED_ALARM_S = 120                          # a refused handoff the window di
 
 def says_handoff_ready(text):
     """A message that closes a seat's handoff: a line of its own reading HANDOFF READY (bold or a full stop allowed), or
-    a last line opening with those words. The words inside a sentence, a quote or a code span are not the signal."""
+    a last line opening with those words, or any line opening with them and then a stamp (HANDOFF READY — Tue 12:55 PM,
+    then the file list: the 2026-11-03 Conductor handoff, whose words sat mid-message and read as not said, so nothing
+    fired). The words inside a sentence, a quote or a code span are not the signal."""
     lines, fenced = [], False
     for x in (text or "").splitlines():
         x = x.strip()
@@ -852,7 +854,8 @@ def says_handoff_ready(text):
         if x and not fenced and not x.startswith((">", "`")):   # a quote line or a code span is not the signal either
             lines.append(x)
     return bool(lines) and (any(x.rstrip(".!") == "HANDOFF READY" for x in lines)
-                            or bool(re.match(r"HANDOFF READY\b", lines[-1])))
+                            or bool(re.match(r"HANDOFF READY\b", lines[-1]))
+                            or any(re.match(r"HANDOFF READY\s*[\u2014\u2013:(-]", x) for x in lines))
 
 
 def last_assistant_text(path, tail_bytes=1 << 20):
@@ -2562,6 +2565,23 @@ def kick_handoff(cfg):
     _tick_soon(w + 1, w + 11, w + 41)
 
 
+def kick_now(seat, root=None):
+    """A `--now` request that waited on helpers: the last one has ended, so the watcher must tick now. Its stamp may be
+    spent (now_hold_s from the request); rewrite it with kick_at so the hold restarts. -> True if written."""
+    st = _read_json(os.path.join(root or doorbell.state_dir(), "state.json")) or {}
+    rs = (st.get("seat_restart") or {}).get(seat) or {}
+    req = _read_json(request_path(seat, root)) or {}
+    ts = rs.get("req_ts") if rs.get("state") in ACTIVE else req.get("ts")
+    if ts is None:
+        return False
+    try:
+        os.makedirs(now_dir(), exist_ok=True)
+        _write_json(now_stamp_path(seat), {"seat": seat, "req_ts": ts, "kick_at": time.time()})
+        return True
+    except OSError:
+        return False
+
+
 def kick_fresh(seat, session_id, root=None):
     """The doorbell, arming: a window a restart is waiting on has ended its first turn. Without a tick now it sits out the
     timer, 120 s for each state. -> True if ticks were kicked. A slow status reading gets the later two."""
@@ -2665,7 +2685,11 @@ def cmd_request(args):
               "message)." % path)
         return 3
     in_ts, in_rec, in_end, size = lh or (None, None, None, None)   # a doorbell seat keeps its tail check alone
-    if cfg.get("kind") == "conductor":
+    if cfg.get("kind") == "conductor" and args.ticket == HANDOFF_TICKET:
+        # CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES: the window said HANDOFF READY itself; no goodbye of his is owed.
+        # The cursor is the transcript's end now, so whatever he types after reaches the next window's wake.
+        in_ts, cursor = None, os.path.getsize(path)
+    elif cfg.get("kind") == "conductor":
         import goodbye_phrase as GP
         phr = GP.phrases(cfg)
         in_ts, in_rec, in_end = last_goodbye(path, lambda t: GP.is_goodbye(t, phr)) or (None, None, None)
@@ -2686,7 +2710,7 @@ def cmd_request(args):
         req["now"] = True
     if deferred:
         req.update(deferred=True, helpers=[{"id": h["id"], "desc": h.get("desc")} for h in live], shard_owed=unpub)
-    if cfg.get("kind") == "conductor":
+    if cfg.get("kind") == "conductor" and args.ticket != HANDOFF_TICKET:   # a handoff has no goodbye to check
         req.update(closeout_check(path, cfg))
     _write_json(request_path(seat), req)
     if args.now:
@@ -2996,7 +3020,7 @@ def now_owed(stamp, st, now, hold_s, root=None, seats=None):
     seat, ts = stamp.get("seat"), stamp.get("req_ts")
     if not seat or ts is None or (seats is not None and seat not in seats):
         return None
-    if now - float(ts) >= hold_s:
+    if now - float(stamp.get("kick_at") or ts) >= hold_s:   # kick_at: a drain's last helper ended, the hold starts again
         return None
     rs = (st.get("seat_restart") or {}).get(seat) or {}
     if rs.get("req_ts") == ts:

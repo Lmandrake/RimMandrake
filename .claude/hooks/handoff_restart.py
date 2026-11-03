@@ -15,7 +15,12 @@ is 20 s and not the 120 s timer.
 
 Every block is written to restart/<SEAT>.refused.json, and at most MAX_BLOCKS stop one session: past that the turn ends
 and the file stands, so the Dispatcher alarms (restart:<SEAT>:handoff_refused). Hence loud, and never a stuck window.
-The Conductor is out of scope: its goodbye is instant and has its own hook. A seat not on restarts passes.
+The Conductor (kind conductor) is served too, by the same words, and always with `--now` (CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES,
+owner 2026-11-03: "I would like you to make it so that the Conductor window reboots within seconds when the user is
+present and the handoff is reached"): rm-restart-now.path ticks the Dispatcher back to back, so the kill follows the
+turn end by seconds, not by the 120 s timer. The words, not the owner's presence, are the trigger. With helpers alive the
+request is deferred; when the last ends, kick_now restarts the watcher's hold. His goodbye is unchanged (conductor_goodbye.py).
+A seat not on restarts passes.
 """
 import json
 import os
@@ -43,10 +48,10 @@ def check(seat):
     return run([os.path.join(REPO, "src", "RimMandrake", "Utils", "handoff.py"), "--check"], seat)
 
 
-def request(seat):
+def request(seat, now=False):
     return run([os.path.join(REPO, "src", "RimMandrake", "rimflow", "seat_restart.py"), "request", "--seat", seat,
-                "--ticket", "HANDOFF", "--reason", "handoff", "--fresh",
-                "--note", "The window said HANDOFF READY; its restart was requested by the Stop hook."], seat)
+                "--ticket", "HANDOFF", "--reason", "handoff", "--fresh"] + (["--now"] if now else []) +
+               ["--note", "The window said HANDOFF READY; its restart was requested by the Stop hook."], seat)
 
 
 def refuse(SR, seat, sid, why, out=None):
@@ -79,8 +84,9 @@ def live_helpers(SR, cfg, path):
 def on_stop(hook, seat, SR, out=None):
     """-> what was done: one word, for the selftest."""
     cfg = SR.config(SR._schedule()).get(seat)
-    if not cfg or cfg.get("kind") == "conductor":
+    if not cfg:
         return "skip"
+    now = cfg.get("kind") == "conductor"
     sid, path = hook.get("session_id"), hook.get("transcript_path")
     if SR.handoff_drain(seat, sid):
         if live_helpers(SR, cfg, path):
@@ -91,7 +97,10 @@ def on_stop(hook, seat, SR, out=None):
             refuse(SR, seat, sid, txt, out)
             return "refused"
         cleared(SR, seat)
-        SR.kick_handoff(cfg)
+        if now:
+            SR.kick_now(seat)
+        else:
+            SR.kick_handoff(cfg)
         return "kicked"
     if not SR.says_handoff_ready(hook.get("last_assistant_message") or SR.last_assistant_text(path)):
         return "no"
@@ -100,7 +109,7 @@ def on_stop(hook, seat, SR, out=None):
         if rc:
             refuse(SR, seat, sid, txt, out)
             return "refused"
-    rc, txt = request(seat)
+    rc, txt = request(seat, now)
     if rc or not SR.handoff_drain(seat, sid):   # rc 0 with no request recorded is a refusal too (a seat off restarts)
         refuse(SR, seat, sid, txt or "no request was recorded", out)
         return "refused"

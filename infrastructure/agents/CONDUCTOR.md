@@ -102,7 +102,7 @@ everything he sent the old window after the goodbye, and lists it again until a 
 window that dies on it costs nothing; a window opened without a token runs the same command with no `--gen`. If the request prints
 REFUSED (shard unpublished or unmeasured with no helper alive, or his last message is no longer the goodbye: answer him), fix
 what it names and request again; if it still refuses, tell him in one line that this window
-stays open. A full handoff is written only when a keyboard sitting ends.
+stays open. A full handoff is written only when a keyboard sitting ends. When a handoff is written, it ends in the window's last message saying `HANDOFF READY` on a line of its own (or opening a line, then a stamp): the Stop hook `.claude/hooks/handoff_restart.py` then runs `handoff.py --check` and `seat_restart.py request --ticket HANDOFF --fresh --now` (no goodbye of his needed; his presence is not read), so the kill follows the turn end by seconds, not by the Dispatcher's 120 s timer (CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES, owner 2026-11-03). Live helpers still hold the kill; the last one's end re-kicks it.
 
 ## Start of turn
 
