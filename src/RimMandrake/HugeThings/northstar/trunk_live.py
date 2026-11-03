@@ -53,6 +53,14 @@ def rects(x, z):
     return "%d,%d,17,17" % (x - 8, z - 2), "%d,%d,17,2" % (x - 8, z - 2)
 
 
+def map_centre(mi):
+    """Default site (centre +30,-30) from a jawa/map_info reply ({sizeX, sizeZ, ...}, JawaBenchMapInfoTools), or None."""
+    try:
+        return int(mi["sizeX"]) // 2 + 30, int(mi["sizeZ"]) // 2 - 30
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
 def judge(around, south, allowed, probe):
     """(status, detail). around/south are blocker counts, allowed the measured counts, probe the DebugPlantState text."""
     d = "blockers around=%s south=%s (allowed %r) | probe: %s" % (around, south, allowed, probe)
@@ -129,11 +137,10 @@ def run(rb, site, out):
         x, z = (int(v) for v in site.split(","))
     else:
         mi = call("jawa/map_info")
-        size = mi.get("size") or mi.get("mapSize") or {}
-        try:
-            x, z = int(size.get("x")) // 2 + 30, int(size.get("z")) // 2 - 30
-        except (TypeError, ValueError, AttributeError):
+        xz = map_centre(mi)
+        if xz is None:
             return finish("UNMEASURED", "HARNESS: map_info unreadable: %s" % str(mi)[:200])
+        x, z = xz
     call("jawa/destroy_batch", rects="%d,%d,30,30" % (x - 15, z - 15), categories="All")
     around_r, south_r = rects(x, z)
     pre = count(around_r)

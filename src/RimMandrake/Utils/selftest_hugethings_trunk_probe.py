@@ -97,6 +97,15 @@ check("settings gate refuses trunk off / scale 0.75 / unreadable",
       T.settings_ok({"giantPlantsEnabled": "True", "plantTrunkEnabled": "False", "plantTrunkScale": "1"})
       and T.settings_ok({"giantPlantsEnabled": "True", "plantTrunkEnabled": "True", "plantTrunkScale": "0.75"})
       and T.settings_ok({}))
+# the 2026-11-03 live run died UNMEASURED reading map_info's size as {"size": {x, z}}; the tool replies sizeX/sizeZ
+MI_CS = os.path.join(ROOT, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools", "JawaBenchMapInfoTools.cs")
+mi_src = open(MI_CS, encoding="utf-8").read() if os.path.exists(MI_CS) else ""
+check("jawa/map_info replies sizeX/sizeZ (JawaBenchMapInfoTools.cs)",
+      "sizeX = map.Size.x" in mi_src and "sizeZ = map.Size.z" in mi_src)
+check("map_centre reads the real map_info reply (250x250 -> 155,95)",
+      T.map_centre({"success": True, "mapId": 0, "sizeX": 250, "sizeZ": 250, "cellCount": 62500}) == (155, 95))
+check("map_centre on an unreadable reply is None",
+      T.map_centre({"success": False}) is None and T.map_centre({"size": {"x": 250, "z": 250}}) is None)
 txt = open(LIVE, encoding="utf-8").read() if os.path.exists(LIVE) else ""
 check("live proof file runs trunk_live.py for A2", re.search(r"^live-proof A2: .*trunk_live\.py", txt, re.M) is not None)
 
