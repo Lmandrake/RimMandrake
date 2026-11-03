@@ -13,7 +13,11 @@ Player.log carries "null texture passed to GUI.DrawTexture" with no stack. The J
                  VideoPlayer.texture with no null check, and VBE's DrawBG reads texture.width first
                  (a null there throws, it cannot log this warning).
   --live A1   game up, bridge reachable: the probe is installed and has recorded >=1 null call with a
-              managed caller. 0 calls is INCONCLUSIVE (exit 1): this session drew no null texture yet.
+              managed caller. 0 calls is INCONCLUSIVE (exit 2, UNMEASURED, never a FAIL): this session
+              drew no null texture since the first jawa/ call. Run under python.exe (RimBridge binds
+              Windows loopback; python3 in WSL cannot reach it). The flood's suspect draws only in the
+              Entry scene, so the live_proofs file stages it first with
+              `live_site.py --menu-dwell N` (arm the companion, main menu, dwell, quicktest back).
   --live A2   the most frequent caller is in aRandomKiwi.RimThemes (the offline prediction). Prints the
               real caller either way, so a refutation names its replacement.
 
@@ -30,7 +34,7 @@ FINDINGS SO FAR (offline, 2026-11-02; decompiled copies in D:\ClaudeWork\rimmand
 - The load-to-load spread (19,519 vs 77) is UNEXPLAINED offline; the probe's byProgramState and
   duringLongEvent split says when the nulls land.
 
-Exit 0 = the clause holds, 1 = it does not (or cannot be shown), 2 = usage/instrument error.
+Exit 0 = the clause holds, 1 = a reading refutes it, 2 = no reading (instrument error, or 0 null calls).
 """
 from __future__ import annotations
 
@@ -41,6 +45,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -127,15 +132,28 @@ def offline() -> int:
     return 0 if not fails else 1
 
 
+REREAD_S = 8.0
+
+
+def read_probe(s) -> dict:
+    r = s.call("jawa/nulltex_probe", {"action": "get", "top": 5}) or {}
+    if isinstance(r, dict) and r.get("content"):
+        r = json.loads(r["content"][0]["text"])
+    return r if isinstance(r, dict) else {}
+
+
 def live(clause: str) -> int:
     sys.path.insert(0, str(ROOT / "src/RimMandrake/Utils"))
     import rimbridge_client as rb  # noqa: E402
     host, port, token = rb.resolve_endpoint()
     s = rb.RimBridge(host=host, port=port, token=token, timeout=45.0)
     s.connect()
-    r = s.call("jawa/nulltex_probe", {"action": "get", "top": 5}) or {}
-    if isinstance(r, dict) and r.get("content"):
-        r = json.loads(r["content"][0]["text"])
+    r = read_probe(s)
+    if r.get("installed") and not int(r.get("nullCalls") or 0):
+        # the first jawa/ call installs the probe: a reading taken by that very call is 0 by construction,
+        # and a main-menu frame draws within the wait; a game on a map draws no menu background at all
+        time.sleep(REREAD_S)
+        r = read_probe(s)
     out = Path(os.environ.get("NULLTEX_OUT", tempfile.gettempdir())) / "nulltex_probe_live.json"
     out.write_text(json.dumps(r, indent=1))
     print(f"probe reading -> {out}")
@@ -148,9 +166,9 @@ def live(clause: str) -> int:
         print(f"  {c['count']:>7}  {c['caller']}")
     if n == 0 or not callers:
         print(f"INCONCLUSIVE {clause}: installed, armed={r.get('armed')}, 0 null calls since install "
-              "- this session drew no null texture after the first jawa/ call (load a save or a quicktest "
-              "from the main menu with RimThemes + MenuShell active, then re-read)")
-        return 1
+              "- this session drew no null texture after the first jawa/ call (stage the main menu with "
+              "RimThemes + MenuShell active: live_site.py --menu-dwell, then re-read). Not a verdict.")
+        return 2
     top = callers[0]["caller"]
     if clause == "A1":
         ok = not top.startswith("<no managed caller")

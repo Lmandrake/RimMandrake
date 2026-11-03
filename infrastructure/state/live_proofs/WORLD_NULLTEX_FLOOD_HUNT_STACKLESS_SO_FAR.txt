@@ -1,3 +1,5 @@
-live-proof A1: python3 src/RimMandrake/bridgetools/nulltex_probe.py --live A1
-live-proof A2: python3 src/RimMandrake/bridgetools/nulltex_probe.py --live A2
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
+live-proof A1: python.exe src/RimMandrake/bridgetools/nulltex_probe.py --live A1 < /dev/null
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
+live-proof A2: python.exe src/RimMandrake/bridgetools/nulltex_probe.py --live A2 < /dev/null
 live-mods: MenuShell

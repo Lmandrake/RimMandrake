@@ -4,6 +4,7 @@
     python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand [--temperature 30]
     python.exe src/RimMandrake/Utils/live_site.py --not-biome RM_LeaningScrub --biome RM_BlueDesert
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere
+    python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
 
 RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: the live stage ran HORIZON_CARAVAN_VANILLA_REFUSES_1's Stillsand probe on a
 Leaning Scrub map eight times and LEANINGSCRUB_STALL_SHARED_MOVE_1's proof on the very biome its criteria exclude, while
@@ -19,6 +20,11 @@ past --max-ticks (default two in-game days) is refused: that is someone's colony
 
 --save: rimworld/load_game, then wait for Playing with a map (validation_core._wait_playing's rule). Canonical saves
 (infrastructure/state/canon.yml) load read-only by definition: this tool never saves.
+
+--menu-dwell N (WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR): for a proof of what the MAIN MENU draws, which a game staged
+on a map never shows. One jawa/ call first (the companion installs its probes on first contact, JawaBenchInit), then
+rimworld/go_to_main_menu, N seconds in the Entry scene, and rimworld/start_debug_game_ready so the game is back on a
+quicktest map for the proofs after it. Same --max-ticks refusal: the map it drops is a test map, never a colony.
 
 Exit 0 the scene is up (read back), 2 it could not be made (UNMEASURED; never 1: a site is not a verdict).
 Runs under Windows Python: RimBridge binds Windows loopback.
@@ -135,18 +141,70 @@ def save_site(a):
         return READY
 
 
+def wait_state(rb, want, budget_s, step_s=2):
+    """Poll get_ui_state until programState == want (Entry for the menu, as perf/vitals_overhead.py reads it)."""
+    t0 = time.time()
+    while time.time() - t0 < budget_s:
+        try:
+            if (rb.call("rimworld/get_ui_state", {}) or {}).get("programState") == want:
+                return True
+        except Exception:      # noqa: BLE001  the call can drop across the scene change: poll, never trust
+            pass
+        time.sleep(step_s)
+    return False
+
+
+def menu_site(a):
+    with connect(120) as rb:
+        try:        # first jawa/ contact: the companion arms its probes here, whatever this call answers
+            info = rb.call("jawa/map_info", {})
+        except Exception as e:      # noqa: BLE001  at the menu already there is no map to describe
+            info = {"error": str(e)[:200]}
+        ticks = int((rb.call("jawa/time_clock", {}) or {}).get("ticksGame") or 0) \
+            if isinstance(info, dict) and info.get("tile") is not None else 0
+        if ticks > a.max_ticks:
+            print("NOT READY: the game is at tick %d (> %d): a colony, not a test map; not leaving it" % (ticks, a.max_ticks))
+            return NOT_READY
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import bridge_concurrency_guard as guard
+        guard.refuse_if_foreign_activity("rimworld/go_to_main_menu")
+        rb.call("rimworld/go_to_main_menu", {})
+        if not wait_state(rb, "Entry", 120):
+            print("NOT READY: never reached the main menu in 120 s")
+            return NOT_READY
+        print("site: main menu reached; dwelling %ds" % a.menu_dwell)
+        time.sleep(a.menu_dwell)
+    with connect(900) as rb:
+        try:
+            rb.call("rimworld/start_debug_game_ready", {"timeoutMs": 900000, "readiness": "mapData", "pauseIfNeeded": True})
+        except Exception as e:      # noqa: BLE001  the connection may drop while the map generates
+            print("quicktest call ended: %s" % str(e)[:200])
+    with connect(60) as rb:
+        if not wait_ready(rb, a.budget):
+            print("NOT READY: the quicktest after the menu dwell did not reach Playing with a map in %ds" % a.budget)
+            return NOT_READY
+        info = rb.call("jawa/map_info", {})
+        print("READY: %ds at the main menu, then a quicktest map %s" % (a.menu_dwell, info.get("mapBiome")))
+        return READY
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--biome", help="BiomeDef the current map must be")
     ap.add_argument("--not-biome", action="append", default=[], help="a BiomeDef the map must not be (repeatable)")
     ap.add_argument("--temperature", type=float)
     ap.add_argument("--save", help="a save name to load (no .rws)")
+    ap.add_argument("--menu-dwell", type=int, help="seconds at the main menu, then a quicktest map back")
     ap.add_argument("--max-ticks", type=int, default=120000)
     ap.add_argument("--budget", type=int, default=300)
     a = ap.parse_args(argv)
-    if bool(a.save) == bool(a.biome or a.not_biome):
-        ap.error("give --save, or --biome / --not-biome")
+    if sum((bool(a.save), bool(a.biome or a.not_biome), a.menu_dwell is not None)) != 1:
+        ap.error("give one of --save, --biome / --not-biome, --menu-dwell")
+    if a.menu_dwell is not None and not 1 <= a.menu_dwell <= 300:
+        ap.error("--menu-dwell is 1..300 seconds")
     try:
+        if a.menu_dwell is not None:
+            return menu_site(a)
         return save_site(a) if a.save else biome_site(a)
     except Exception as e:      # noqa: BLE001  any bridge failure is a site not made, never a verdict
         print("NOT READY: %s: %s" % (type(e).__name__, str(e)[:300]))
