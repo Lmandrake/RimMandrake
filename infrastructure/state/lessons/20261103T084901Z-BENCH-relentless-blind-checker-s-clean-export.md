@@ -1,0 +1,1 @@
+The Relentless blind checker's clean export drops infrastructure/state/items/: a proof must never read data from there. Put a proof's input table beside what it checks (e.g. world/). LANDMARK_NAMING_PASS_1 gen 2 blind_fail.
