@@ -17,7 +17,10 @@ infrastructure/state/live_proofs/<ID>.txt. The blind checker passes the offline 
              back to an offline worker with the live finding. Not deployed, or no game: stage;
   stage      the one step that changes the game: the supervisor takes the bridge (`bridge take --idle-ok`, which keeps
              his OWNER hold and `./bridge` override) and launches ONE staging worker that deploys and restarts the game
-             on the smallest list that holds the item's mods, then exits. The bridge is released the moment it ends.
+             on the smallest list that holds the item's mods, then exits. The bridge is released the moment it ends,
+             or once the game it staged has been UP stage_idle_s (staged_idle): a worker still alive then holds the
+             game for nothing. A clause whose proof ran and measured nothing on this game and build goes back to a
+             worker at once (blocked_here): the round will not rerun it until the build or the game changes.
 
   final      PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02: "small mod lists should always be the way to
              test until a final verification pass on the whole huge mod list"): every clause but a GREEN-FULL one is
@@ -851,7 +854,7 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
                 "%s: the proof ran on this game and build and measured nothing; the same game and build can only say "
                 "it again (%s)" % (k, why[:160]) for k, why in sorted(here.items())), now, acts)
-        since =max(g.get("staged_at") or 0, g["entered_at"])
+        since = max(g.get("staged_at") or 0, g["entered_at"])
         stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
         rd = fx.game_reading()
