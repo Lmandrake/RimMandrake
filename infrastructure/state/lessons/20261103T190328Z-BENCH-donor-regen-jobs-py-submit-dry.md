@@ -1,0 +1,1 @@
+donor_regen_jobs.py submit --dry-run at the default --cap 40 never reaches the row check while other artpipe jobs (xart_ idle-fill, 300+) are in flight: it prints only 'queue at cap'. To ask 'is every row filed' pass --cap 100000 or test queue_view() ids directly (DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO, 2026-11-03).
