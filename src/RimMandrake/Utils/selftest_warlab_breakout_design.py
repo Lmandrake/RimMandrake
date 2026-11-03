@@ -12,6 +12,79 @@ ITEM = "WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE"
 LEDGER = ROOT / "infrastructure/state/ledger/events"
 
 
+CHOICES = ("Burn the cells", "Hold them", "Loose the experiments", "Take a specimen", "Leave them")
+LABS = ("the Shattered Lab", "the Held Lab", "the Feeding Lab", "the Emptied Lab")
+
+
+def _block(sec, start, end):
+    i = sec.find(start)
+    j = sec.find(end, i + 1) if i >= 0 else -1
+    return sec[i:j] if i >= 0 and j > i else ""
+
+
+def planet_content(sec):
+    """What recover and fail each LEAVE ON THE PLANET, not just the headings (blind check, gen 5)."""
+    bad = []
+    rec = _block(sec, "**What a recovery leaves.**", "**What a failure leaves")
+    fail = _block(sec, "**What a failure leaves", "**The strike branch")
+    if not rec or not fail:
+        return ["§2.10 recovery/failure blocks not found in order"]
+    for name, body in (("recovery", rec), ("failure", fail)):
+        if re.search(r"\bTBD\b|\bTODO\b", body):
+            bad.append(f"§2.10 {name} block holds a placeholder")
+    # Recovery: a table with an 'on the planet' column and one filled row per choice.
+    if not re.search(r"^\| *choice recovered *\| *the lab afterwards *\| *on the planet *\|", rec, re.M):
+        bad.append("recovery block has no 'choice recovered | the lab afterwards | on the planet' table")
+    rows = {}
+    for line in rec.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) == 3 and cells[0] in CHOICES:
+            rows[cells[0]] = cells
+    for ch in CHOICES:
+        r = rows.get(ch)
+        if not r:
+            bad.append(f"recovery table has no row for {ch!r}")
+            continue
+        if not (any(lab in r[1] for lab in LABS) or r[1].startswith("as the Held Lab")):
+            bad.append(f"recovery row {ch!r} names no lab state")
+        if len(r[2]) < 15:
+            bad.append(f"recovery row {ch!r} says nothing about the planet")
+    for lab in LABS:
+        if lab not in rec:
+            bad.append(f"recovery block lacks {lab!r}")
+    if "spreads nothing" not in rec:
+        bad.append("recovery block does not say a recovery spreads nothing")
+    if not any(ch in rows and "over for good" in rows[ch][2] for ch in ("Burn the cells", "Leave them")):
+        bad.append("recovery table does not say the threat is over for good")
+    if "Hold them" in rows and "Imperial attempt" not in rows["Hold them"][2]:
+        bad.append("Held Lab row lacks its Imperial attempt on the planet")
+    # Failure: his ruling and the planet consequences.
+    flat = " ".join(fail.split())
+    for want in ("failure = reinfection spreads from the lake across the world over seasons, game continues harder",
+                 "reinfection node", "world site", "each season", "hand-authored list", "never rewrites a tile",
+                 "sends raids", "never ends the game", "can be pushed back", "threat points", "capped at +40%",
+                 "never lowers"):
+        if want not in flat:
+            bad.append(f"failure block lacks {want!r}")
+    return bad
+
+
+def mutants(sec):
+    """The planet checks must see: each gutting of the blocks has to go red (blind checker's mutant included)."""
+    a, b, c = sec.index("**What a recovery leaves.**"), sec.index("**What a failure leaves"), sec.index("**The strike branch")
+    gutted = {
+        "checker: both bodies TBD, lab names kept": sec[:a] + "**What a recovery leaves.** TBD (" + ", ".join(LABS)
+        + ").\n\n**What a failure leaves (ruled; the detail delegated).** TBD.\n\n" + sec[c:],
+        "recovery planet column blanked": sec[:a] + "\n".join(
+            "|".join(x if i != 3 else " - " for i, x in enumerate(l.split("|")))
+            if len(l.split("|")) == 5 and l.split("|")[1].strip() in CHOICES else l
+            for l in sec[a:b].splitlines()) + "\n" + sec[b:],
+        "failure keeps only his ruling": sec[:b] + "**What a failure leaves (ruled; the detail delegated).** His ruling: "
+        "*\"failure = reinfection spreads from the lake across the world over seasons, game continues harder.\"*\n\n" + sec[c:],
+    }
+    return [f"planet checks stay green on mutant {k!r}" for k, s in gutted.items() if not planet_content(s)]
+
+
 def main():
     bad = []
     spec = (ROOT / "design/Jawa/worldbuilding/dungeons_arc_spec.md").read_text(encoding="utf-8")
@@ -26,6 +99,9 @@ def main():
                  "the Feeding Lab", "the Emptied Lab"):
         if want not in sec:
             bad.append(f"§2.10 lacks {want!r}")
+    bad += planet_content(sec)
+    if not bad:
+        bad += mutants(sec)
     q = spec[spec.index("### 2.9 "):spec.index("### 2.10 ")]
     for gone in ("What are the specimen choices", "What does a successful recovery leave"):
         if gone in q:
