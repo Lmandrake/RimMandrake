@@ -1674,6 +1674,15 @@ assailant_reveal_arc:
     outright: no choice, no breakout, no recovery, no reinfection, the drive
     lost. "Breakout always starts" applies to the dive. dungeons_arc_spec.md
     §2.10.
+  strike_cutoff_ruled: true
+  strike_cutoff_src: >
+    Owner, 2026-11-02, by question card
+    (WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE): "Up to what point can the
+    player still call the Cradle strike? → At the wake, gate 4". The point of
+    no return is seating the core. Before it, even after the codes open the
+    door (gate 3) and even when Route 6 opened it, the crew may scout the
+    dormant approach band, leave, and still call the strike. Route 6 needs no
+    special rule. dungeons_arc_spec.md §2.3, §2.9 q2, §2.10.
   superseded:
     - value: "a separate flesh complex adjacent to tile 20853 in deep Umbra"
       why: >

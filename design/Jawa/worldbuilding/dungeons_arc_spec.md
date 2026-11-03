@@ -176,8 +176,10 @@ what you came in to.** The socket is inside the door, so the order is forced.
   gate 4 is not a door. What overran the Empire is the last watch at the inner wall, which goes back
   to its posts.
 - **The strike branch** skips all of this: it ends the lab from outside (§2.6). Gate 4 is the wake,
-  which is the dive, so by *"strike OR dive, never both"* no strike follows gate 4. Whether one can
-  follow gate 3 (door open, lab not woken) stays §2.9 question 2.
+  which is the dive, so by *"strike OR dive, never both"* no strike follows gate 4. **RULED 2026-11-02** (owner, by card: "Up to what point can the player still call the Cradle strike? → At the wake, gate 4"; §2.9 question 2): the
+  point of no return is seating the core. Before it, even after the codes open the door (gate 3), and even
+  when Route 6 opened it, the crew may enter and scout the dormant approach band, leave, and still call the
+  strike. Route 6 needs no special rule.
 
 **Who stands where, and when (the §2.5 roster against hard ban #8). RULED 2026-11-02** (owner, by
 card: "Does ban #8 bind the lab site too? → Biome map only"; the gloss is in `the_propane_lakes.md`
@@ -351,17 +353,17 @@ to the quest at build.
 
 ### 2.9 Open questions from the 2026-10-12 rulings (for the owner, not decided)
 
-These are agent-drafted questions. Nothing below is ruled.
+These are agent-drafted questions. Nothing below is ruled unless marked RULED.
 
 1. **What does defying the Cathedral cost?** Trust lost, hostility, the droids' standing, the Hutt-knowledge deal (§2.6 chain)?
-2. **Where is the choice made?** Before the player enters (refuse the strike), or can the player go in first and call the strike later? Only up to the wake: waking the lab is the dive, and his *"strike OR dive, never both"* already rules out a strike after it (§2.3, §2.10).
+2. ~~Where is the choice made?~~ **RULED 2026-11-02** (owner, by card: "Up to what point can the player still call the Cradle strike? → At the wake, gate 4"; `WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE`). The point of no return is seating the core (gate 4, the wake). Before that, even after the codes open the door and even when Route 6 opened it, the crew may enter and scout the dormant approach band, leave, and still call the strike. Once the core is seated, no strike (§2.3, §2.10). Route 6 needs no special rule.
 3. **Is the hyperdrive the only way off the planet?** If so, the strike branch leaves the Utinni planet-bound for good. Does that stand?
 4. **Does leaving the planet end the game?** v1 is ruled open-ended, nothing rolls credits (`design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G14). What happens after the hyperdrive is fitted is unruled. So is how it relates to the older "punch through the orbital blockade" endgame (`desert_world_design.md` §4-Orbital).
 5. ~~Does the breakout happen on the strike branch?~~ **RULED 2026-11-02** (owner, by card: "Does the Cradle strike skip the breakout? → Strike ends it, no breakout"; `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`). No: the strike ends the lab outright, and *"Breakout always starts"* applies to the dive. §2.10 carries it.
 
 The specimen choices and what a recovery leaves are in §2.10.
 
-### 2.10 The specimens: the choice, the breakout, recover or fail — DELEGATED 2026-11-01, SHAPE KEPT BY HIM 2026-11-02, PROVISIONAL
+### 2.10 The specimens: the choice, the breakout, recover or fail — DELEGATED 2026-11-01, SHAPE KEPT BY HIM 2026-11-02, STRIKE CUTOFF OWNER-RULED 2026-11-02, JUDGE ROUNDS CLOSED, NUMBERS PROVISIONAL
 
 Delegated design (`delegation_policy.md` §1, class `design`; item
 `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`; judge record
@@ -535,8 +537,7 @@ always starts"* is the dive's. His words on the strike: *"destroy them once and 
 sad shattered remains of the assailants will survive as homages to patient hatred."* Everything else
 in this section is the dive, and the dive begins at the wake (gate 4, §2.3). By his *"strike OR
 dive, never both"*, no strike can be called once the lab is woken, so nothing in this section is
-conditional on one. Whether a strike can be called after the door opens but before the wake is
-§2.9 question 2; such a strike ends the lab before any of this starts.
+conditional on one. **The cutoff: RULED 2026-11-02** (owner, by card: "Up to what point can the player still call the Cradle strike? → At the wake, gate 4"; §2.9 question 2). A strike can be called up to the wake, even after the door is open and even when Route 6 opened it; such a strike ends the lab before any of this starts. Seating the core is the point of no return.
 
 **Player-facing text (three voices, never mixed; canon.yml `game_fact_voice`, `narrator`,
 `cathedral_voice`).** The word for the player is "specimens"; the enemy stays unnamed.
