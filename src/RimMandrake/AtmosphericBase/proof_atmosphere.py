@@ -1183,6 +1183,27 @@ def judge_unlit_undo(proof_cs):
         bad.append("power is not restored to what the flick found")
     if "s.undo.Add(restore)" not in proof_cs:
         bad.append("the undo is not queued on the session")
+    # The flick site: 'restore' must BE UndoFlick, and the skip branch (a fixture still glowing after FlickedOff) must
+    # put it back through restore(), never a hand-rolled switch-on that leaves CompPowerTrader.PowerOn false
+    # (blind check 2026-11-03: reverting that branch to 'fl.SwitchIsOn = true; g.ReceiveCompSignal("FlickedOn");' passed).
+    code = re.sub(r"//[^\n]*", "", proof_cs)
+    a = code.find('if (scenario == "unlit")')
+    b = code.find('"{\\"unsupported\\":\\"no held fixture could be flicked off', a) if a >= 0 else -1
+    site = code[a:b] if a >= 0 and b > a else ""
+    if not site:
+        bad.append("the 'unlit' flick site is missing")
+    else:
+        if not re.search(r"System\.Action\s+restore\s*=\s*\(\)\s*=>\s*UndoFlick\(\s*fl\s*,\s*pt\s*,\s*powerWasOn\s*,\s*g\s*\)\s*;", site):
+            bad.append("the queued restore is not UndoFlick(fl, pt, powerWasOn, g)")
+        m = re.search(r"if\s*\(\s*g\.Glows\s*\)\s*\{([^{}]*)\}", site)
+        if not m:
+            bad.append("the still-glowing skip branch is missing")
+        else:
+            body = m.group(1)
+            if not re.search(r"(?<![\w.])restore\s*\(\s*\)\s*;", body):
+                bad.append("the still-glowing skip branch does not call restore(), so its flick is never undone with power")
+            if "SwitchIsOn" in body or "FlickedOn" in body or "PowerOn" in body:
+                bad.append("the still-glowing skip branch hand-rolls its undo instead of calling restore()")
     if not re.search(r'rows\.Add\([^;]*g\.Glows \? 1 : 0', _member(proof_cs, "Snapshot")):
         bad.append("Snapshot carries no lit state, so R2 compares colour only")
     if bad:
@@ -1889,6 +1910,15 @@ def metric_controls():
         real.replace("if (pt != null && powerWasOn && !pt.PowerOn) pt.PowerOn = true;", ""))[0], FAIL))
     out.append(("judge_unlit_undo old undo (switch only)", judge_unlit_undo(
         real.replace("private static void UndoFlick(", "private static void UndoFlickGone("))[0], FAIL))
+    skip_ok = "if (g.Glows) { unlit = null; s.undo.Remove(restore); restore(); continue; }"
+    assert skip_ok in real, "selftest anchor: the shipped skip branch moved; update the judge_unlit_undo controls"
+    out.append(("judge_unlit_undo skip branch switch-on without power", judge_unlit_undo(real.replace(
+        skip_ok, 'if (g.Glows) { unlit = null; s.undo.Remove(restore); fl.SwitchIsOn = true; g.ReceiveCompSignal("FlickedOn"); continue; }'))[0], FAIL))
+    out.append(("judge_unlit_undo skip branch drops restore", judge_unlit_undo(real.replace(
+        skip_ok, "if (g.Glows) { unlit = null; s.undo.Remove(restore); continue; }"))[0], FAIL))
+    out.append(("judge_unlit_undo restore not UndoFlick", judge_unlit_undo(real.replace(
+        "System.Action restore = () => UndoFlick(fl, pt, powerWasOn, g);",
+        'System.Action restore = () => { fl.SwitchIsOn = true; g.ReceiveCompSignal("FlickedOn"); };'))[0], FAIL))
     out.append(("judge_unlit_undo snapshot colour only", judge_unlit_undo(
         real.replace(' + "," + (g.Glows ? 1 : 0) + "]"', ' + "]"'))[0], FAIL))
     s5 = lambda lit: {"fx": [[1, 9, 9, 9, 1], [2, 9, 9, 9, lit]]}
