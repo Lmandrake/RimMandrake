@@ -82,6 +82,16 @@ routine use, the failure, the payoff. Ask what is wrong or missing. Trial format
 **Enjoyment**: a judge agent may rule on it a priori, and you then confirm with him that it got it right (*"The judge
 agent can a priori rule on enjoyment, but verify with the human to ensure you got it."*).
 
+**Element 1 goes stale, and element 7 includes whatever already does this job.** Re-test why anyone reaches for it when
+a neighbour changes: *"With Relentless, I think Rimpulse's purpose is tremendously different."* (2026-11-02), then *"It
+was supposed to mostly deliver information just like this page ... It does not do that right now at all."* (2026-11-03),
+after 27 RimPulse items in eleven days. He asks this of built things himself (*"What is Foundry for anymore?"*; *"We may
+not need ANY of that ported over art and creatures anymore"*, 2026-11-03), so reason it through and state the finding as
+a Claim; Stage 0's rule against asking him to keep or cut a built thing stands. Name each neighbour doing part of this
+job, which one owns it, and any service this mod must opt into (*"These need to brought in harmony with each other."*;
+*"I thought we already had "huge things" mod (or something like that) that gave large objects like trees a big click
+box? No?"*, 2026-11-03).
+
 ## A turn with him
 
 Five parts, in this order, short:
@@ -109,7 +119,7 @@ The five moves, the agent's only tools:
 
 ## What draws requirements out of him
 
-Mined from his sittings of 2026-11-03; every quote in this section is his, that date. Evidence:
+Mined from his sittings of 2026-11-03; every quote in this section is his, that date unless marked. Evidence:
 `D:\ClaudeWork\rimmandrake\designer\mined_2026-11-03.md`. "Once so far" marks a rule from one instance.
 
 **He specifies by reacting, so show before you ask.** With nothing to look at he said *"Not sure how to handle that yet. Open
@@ -118,12 +128,16 @@ to beg a little more"*, and a page of requirements after it. The first running p
 to be a snapshot of what's running, not a narrative walk."* The first drawbridge sheet drew *"always show a little "still open"
 look"*. So when a question is about how something looks or moves, the turn's Picture is a picture: a cheap mock (skill
 `generating-images`, over our real art, never shipped, kept in `D:\ClaudeWork\rimmandrake\designer\` and linked from `log.md`) or a scene the
-Conductor stages for you. It passes the same pre-review as an ask.
+Conductor stages for you. It passes the same pre-review as an ask. Cheapest form first: *"We should prototype in markdowns
+first so I don't have you chasing design all over the place in the meantime."* (2026-11-02). First sight changes the
+definition (*"it needs to be much more streamlined"*, *"Try again."*) and draws demands nobody asked about (*"OMG we should do an
+audit to ensure that we need all these timers."*), so plan for the amendment.
 
 **Every picture says what it is, and a mock never accepts.** He had to ask *"these are just renders, not actual in game art,
 correct?"*, *"I also have no idea what the little build area of flooring is"* and *"is the pond supposed to be connected to the
 canal?"* Label capture or mock, name each cheat, and draw or explain whatever he would otherwise ask about. A mock picks a
-direction: *"You'll find this might not predict how they'll look in the game when connected in various ways"*. Stills an agent
+direction: *"You'll find this might not predict how they'll look in the game when connected in various ways"*. A status
+page's mock is nearly the page; a mock of a game object is not, so his reaction to it settles less. Stills an agent
 called good met *"This is all not the expected human experience here."* in the game.
 
 **Walk him through the decision without being asked** (*"walk me through what precisely I'm deciding"*): how many decisions
@@ -135,6 +149,13 @@ answer you"*).
 flagged as our untested reasoning, drew *"No, the winch would always be on the hinged-side"*; a stated limit of two urgent
 items drew *"No limits on how many can be requested"* and a design of his own. His test is the world's logic: *"that makes no
 sense"*, *"that would be strange"*, *"wouldn't the water run back into the pond?"* Apply it before he has to.
+List each ruling the picture depends on, with the picture that produced it, because a ruling against one bad picture is not
+yet general: *"VERY weird image ... Ropes should now be slack and disconnected."* (2026-10-23) became *"still connected when
+it's in its raised state (to the winch side)"* minutes after the walk-through listed it as settled.
+
+**"Unproven" on the ledger may only mean unrecorded.** *"wake-on-LAN was in fact already tested successfully, not sure why you
+don't know that."*; *"The power cut test was already run"*. Before planning around a row he may have exercised by hand, ask in a
+phrase.
 
 **Recommend, and name what you judged on** (*"Cards but also your recommendation and why."*). He overturns freely on design, and
 typed his own answers on the cards that shaped one, so give the recommendation. Option A had the recommendation, GPT and a blind
@@ -149,6 +170,11 @@ from each point, any earlier ruling it narrows, and where you would push back.
 **Keep asks ready for when he is waiting.** *"Give me cards now while I wait thanks."* *"Any question cards while I wait? Happy to
 help on any items of taste or something tricky."* Keep your pre-reviewed asks in `log.md`, taste first, so the Conductor can
 serve them; ready is not sent.
+
+**Ask the form per surface; never infer it.** On one day, *"Much less Prose, this is intended to be a snapshot of what's
+running, not a narrative walk."* and, of another page, *"The English write-up you provided here is superb."* The reader's job
+decides, and the unit is the reader's (*"Organize by Mod"*; *"Yes on the descriptions from the player point of view."*). In a
+mod, say which moments are a glance and which a read, in the player's nouns.
 
 **Plain words, and an example for any term you coin.** *""The test never named a live state" gets a human to look baffled and ask
 "what? could you give an example?""*; *"Some cryptic one: workers may not install"*.
@@ -167,11 +193,11 @@ it reads as and what it must not read as. No new field: the reject goes in `red`
 | He says | What is being tested | Line |
 |---|---|---|
 | *"such a thin line I can't even see it"*, *"not just a vertical bar"* | Seen and recognised | At play zoom in game, someone who has not read the label says what it is, in every direction and state |
-| *"looks as though it's down, yet it says it's up"* (once so far) | Picture agrees with the words | In each state, the drawing and the inspect text say the same thing |
+| *"looks as though it's down, yet it says it's up"*, *"Says "needs you 5" and yet I seem to be needed in a whole bunch of places"* | Picture agrees with the words | In each state, the drawing and the inspect text say the same thing |
 | *"so that it's clear what they're doing"*, *"enigmatic"* | Parts explain themselves | Each visible part: a viewer can say what it is for; none is left over |
 | *"stretching will NOT work, that would look ridiculous"*, *"appears to be "jumping up" in size"*, *"moving around without changing its facing"* | Motion | Through every step of the change, solid parts keep their size and it faces the way it moves; a still cannot pass this |
 | *"When I clicked on a button to raise/lower it, nothing happened"*, *"I can't click on the tree"* | It answers him | Clicking what is drawn selects it; every order shows at once that it was taken, even while waiting for a colonist |
-| *"Cartoonish and wholly not aligned with our modern art"*, *"It doesn't even look like ours"*, *"a regular-looking tree in a mushroom biome"* | It belongs | Beside its neighbours, in place, a judge says it is of this world and this biome |
+| *"Cartoonish and wholly not aligned with our modern art"*, *"It doesn't even look like ours"*, *"a regular-looking tree in a mushroom biome"*, *"The white is glaring."* | It belongs | Beside its neighbours, in place, a judge says it is of this world and this biome |
 | *"You would never have a winch on the "enemy" side"*, *"shouldn't rot any faster than meat normally does"* | World logic | Written as the plain rule he stated, with its reject case |
 
 "Looks ridiculous" alone is not a leaf: write your candidate line and a reject picture and let him correct them. Cover the zoom

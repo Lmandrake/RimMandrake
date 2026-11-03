@@ -1,0 +1,2 @@
+Relaunching a detached helper with a corrected brief does not stop the first unit. On 2026-11-03 the Conductor said it restarted the Designer-brief miner about a minute in, but unit ...1793747280 kept running and landed designer.md on the old, narrower brief while ...1793747347 was still working; the second run found this only when its sync moved the file under it. Before relaunching, stop the old unit by name; a run should re-read the file it will edit just before editing.
+home: infrastructure/state/facts/tool_traps.md
