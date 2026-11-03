@@ -895,8 +895,17 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     all_green = bool(all_comps) and all(c["verdict"] == "PASS" or
                                         (isinstance(c["verdict"], str) and c["verdict"].startswith("PASS"))
                                         for c in all_comps)
+    # PROOF_SPOILED_RUNS_BUILD_NO_BLANKET_GREEN: a spoiled run (unknown/open blocking window, visitor gap on a
+    # need/mood/job row, empty rows, DRAFT verdict, capped list, log blindness) never grades GREEN. Recorded on every
+    # run; it vetoes all_green only under --situational (a non-situational run grades envelope_off, INDETERMINATE,
+    # and keeps its old status until NORTHSTAR_SITUATIONAL_ROLLOUT_1 flips the default). The walk's DRAFT checklist
+    # is status.verdict_for's, not repeated here.
+    import spoil_gate as _SG  # noqa: E402
+    acceptance = _SG.grade({"chains": chains_out}, situational=bool(situational))
+    if situational and acceptance["overall"] != _SG.GREEN:
+        all_green = False
     summary = {"chains": chains_out, "all_green": all_green,
-               "findings": findings, "refused": "", "walk": walk}
+               "findings": findings, "refused": "", "walk": walk, "acceptance": acceptance}
     if hold_restore_err:
         summary["hold_restore_error"] = hold_restore_err
     # option B fields: what was reused (never a fresh PASS), the canary, and the leads an invalid row kept
