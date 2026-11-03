@@ -1,1 +1,2 @@
+live-mods: KeelHoist, UtinniPatches
 live-proof A1: python3 src/RimMandrake/KeelHoist/selftest_peaceful_landing.py --live
