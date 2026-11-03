@@ -33,6 +33,10 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     frame unchanged           outside the region installed == waterworks_blue.recolour(red original) pixel for pixel
     drum_hose_reads_as_firehose   FAIL on the all-blue recolour and on the glossy red original, PASS installed
     pinned                    installed == firehose_reel.build(name) pixel for pixel
+  Modern blue masked parts:
+    flange rings / valve handles  (MODERN_FLANGES_POLISH_DARKER_THAN_THE_BODY) inside waterworks_blue.PART_MASKS: flange luma
+                              <= 0.70 x the atlas pipe body's (unmasked: ~0.82) and still blue; valve mean sat < 0.12; both FAIL on the
+                              unmasked recolour; the masked non-reel pieces == recolour(red original) exactly
   portable ladder, north + south from the ground sprite (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND):
     ladder_north_not_compressed   FAIL on the shipped north (art_source/Ladder/v6/before), PASS installed; can-fail: the
                                   installed north moved 60 px down or 20 px sideways (shape alone would pass), or squeezed 0.8x across
@@ -293,6 +297,61 @@ def modern_blue():
         ex = ~redrawn(rel, b.shape)
         want(a.shape == b.shape and np.array_equal(a[..., 3][ex], b[..., 3][ex]),
              "modern blue: %s alpha == red original's byte for byte (fits unchanged)" % rel)
+    modern_blue_parts(pairs)
+
+
+def modern_blue_parts(pairs):
+    """MODERN_FLANGES_POLISH_DARKER_THAN_THE_BODY: flange rings darker (and still blue) than the pipe body, valve handles
+    galvanised grey. Each row also runs on the unmasked recolour (PART_MASKS emptied), which must FAIL it: the check can fail."""
+    import numpy as np
+    from PIL import Image
+
+    def stats(im, rel, kind, red):
+        a = np.asarray(im.convert("RGBA")).astype(float) / 255.0
+        m = wb.part_mask(rel, kind, a.shape[:2]) & (a[..., 3] > 0.5) & (wb.red_weight(red[..., :3]) > 0.5)
+        rgb = a[..., :3][m]
+        mx, mn = rgb.max(-1), rgb.min(-1)
+        sat = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0.0)
+        return int(m.sum()), float(wb._luma(rgb).mean()), float(sat.mean()), float(np.median(rgb[:, 2] - rgb[:, 0]))
+
+    atlas = np.asarray(Image.open(wb.TEX / wb.PIECES[0]).convert("RGBA")).astype(float) / 255.0
+    atlas_red = np.asarray(Image.open(wb.RED / wb.PIECES[0]).convert("RGBA")).astype(float) / 255.0
+    body_m = (atlas[..., 3] > 0.5) & (wb.red_weight(atlas_red[..., :3]) > 0.5)
+    body = float(wb._luma(atlas[..., :3][body_m]).mean())
+    want(body_m.sum() > 1000, "modern parts: pipe body sample is real (%d px of the atlas)" % body_m.sum())
+    saved = dict(wb.PART_MASKS)
+    plain = {}
+    try:
+        wb.PART_MASKS.clear()
+        for rel, red, path in pairs:
+            if rel in saved:
+                plain[rel] = wb.recolour(red, rel)[0]
+    finally:
+        wb.PART_MASKS.update(saved)
+    reels = {fr.REL % n for n in fr.MASKS}
+    want(sum("flange" in v for v in saved.values()) >= 3 and sum("valve" in v for v in saved.values()) >= 7,
+         "modern parts: flange masks on Flange, Coupler, Pump; valve masks on the faucet and all six reels")
+    for rel, red, path in pairs:
+        if rel not in saved:
+            continue
+        r = np.asarray(red).astype(float) / 255.0
+        live = Image.open(path).convert("RGBA")
+        if rel not in reels:   # the reels' pin is firehose_reel.build (it calls this recolour); the rest pin here
+            want(np.array_equal(np.asarray(wb.recolour(red, rel)[0]), np.asarray(live)),
+                 "modern parts: %s installed == masked recolour(red original)" % rel)
+        if "flange" in saved[rel]:
+            for lab, im, exp in (("installed", live, True), ("unmasked recolour", plain[rel], False)):
+                n, lum, sat, bmr = stats(im, rel, "flange", r)
+                ok = n > 100 and lum <= 0.70 * body and bmr > 0.15
+                want(ok == exp, "modern parts: %s flange rings %s darker than the pipe body and blue on the %s "
+                     "(%d px, luma %.3f vs body %.3f, limit %.3f; blue-red %.3f > 0.15)"
+                     % (rel, "ARE" if exp else "are NOT", lab, n, lum, body, 0.70 * body, bmr))
+        if "valve" in saved[rel]:
+            for lab, im, exp in (("installed", live, True), ("unmasked recolour", plain[rel], False)):
+                n, lum, sat, bmr = stats(im, rel, "valve", r)
+                ok = n > 30 and sat < 0.12
+                want(ok == exp, "modern parts: %s valve handle %s galvanised grey on the %s (%d px, mean sat %.3f < 0.12; the one-px feather onto a blue disc counts)"
+                     % (rel, "IS" if exp else "is NOT", lab, n, sat))
 
 
 def ladder():
