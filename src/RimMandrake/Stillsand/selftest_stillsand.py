@@ -1187,6 +1187,16 @@ def trader_check_verdicts(bad):
         got = T.verdict(reply)[0]
         if got != want:
             bad.append("trader_probe_check.verdict(%r) = %d, want %d" % (reply, got, want))
+    # PACK_ANIMALS_RESTORE_EMPTY_SADDLES: --biome names the map the probe must be on, and nothing else changes.
+    scrub = (ok % 2).replace("RM_Stillsand", "RM_LeaningScrub")
+    for reply, biome, want in [({"success": True, "result": scrub}, "RM_LeaningScrub", T.PASS),
+                               ({"success": True, "result": scrub}, "RM_Stillsand", T.UNMEASURED),
+                               ({"success": True, "result": ok % 2}, "RM_LeaningScrub", T.UNMEASURED),
+                               ({"success": True, "result": (ok % 0).replace("RM_Stillsand", "RM_Cauldron")},
+                                "RM_Cauldron", T.FAIL)]:
+        got = T.verdict(reply, biome)[0]
+        if got != want:
+            bad.append("trader_probe_check.verdict(%r, %s) = %d, want %d" % (reply, biome, got, want))
 
 
 def trader_probe_points(bad):

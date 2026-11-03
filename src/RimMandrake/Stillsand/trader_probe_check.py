@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """trader_probe_check.py -- can a vanilla trade caravan arrive on the RUNNING Stillsand map? One read-only call.
 
-    python.exe src/RimMandrake/Stillsand/trader_probe_check.py < /dev/null
+    python.exe src/RimMandrake/Stillsand/trader_probe_check.py [--biome RM_LeaningScrub] < /dev/null
 
 Item HORIZON_CARAVAN_VANILLA_REFUSES_1, criterion A1. It calls jawa/static_call on
 RimMandrake.Stillsand.RM_StillsandTraderProbe.Report("-"), which runs the engine's own predicates
 (IncidentWorker_TraderCaravanArrival.FactionCanBeGroupSource, PawnGroupMaker.CanGenerateFrom against the tile
 biome's allowedPackAnimals, RCellFinder.TryFindRandomPawnEntryCell) on Find.CurrentMap and changes nothing.
 
-Exit 0: the current map is RM_Stillsand, an entry cell exists and generable >= 1 (a faction is a group source with a
+--biome (default RM_Stillsand; PACK_ANIMALS_RESTORE_EMPTY_SADDLES reuses the probe for the biomes whose
+allowedPackAnimals it filled) names the biome the current map must be; any other map is UNMEASURED.
+
+Exit 0: the current map is the named biome, an entry cell exists and generable >= 1 (a faction is a group source with a
 Trader group the engine would generate here). Exit 1: the game answered for an RM_Stillsand map and one of those is
-false (a real FAIL). Exit 2 UNMEASURED: no bridge, no answer, no current map, the map is not RM_Stillsand, or a faction
+false (a real FAIL). Exit 2 UNMEASURED: no bridge, no answer, no current map, the map is not that biome, or a faction
 row lacks pts= (the game runs a Stillsand DLL older than 208cc2f911, whose probe handed CanGenerateFrom points of -1 and
 so read gen=False for every faction: its verdict says nothing about the mod).
 
@@ -22,6 +25,7 @@ The type and method are fixed: this script can run that one read-only probe and 
 bridge library directly instead of the CLI (whose read-only heuristic does not know static_call targets).
 RimBridge binds Windows loopback, so it runs under Windows Python (python.exe), as rimbridge_client.py says.
 """
+import argparse
 import os
 import re
 import sys
@@ -33,7 +37,7 @@ LINE = re.compile(r"^TRADERS biome=(?P<biome>\S+) entryCell=(?P<entry>True|False
                   r"desperate=(?P<desp>\d+) generable=(?P<gen>\d+)\b")
 
 
-def verdict(reply):
+def verdict(reply, biome="RM_Stillsand"):
     """bridge reply -> (exit code, one line). Pure: the selftest drives it with canned replies."""
     if not isinstance(reply, dict) or reply.get("success") is False:
         return UNMEASURED, "UNMEASURED: the probe did not answer: %s" % str(reply)[:200]
@@ -41,19 +45,22 @@ def verdict(reply):
     m = LINE.match(res)
     if not m:
         return UNMEASURED, "UNMEASURED: not a TRADERS line: %s" % res[:200]
-    if m.group("biome") != "RM_Stillsand":
-        return UNMEASURED, "UNMEASURED: the current map is %s, not RM_Stillsand" % m.group("biome")
+    if m.group("biome") != biome:
+        return UNMEASURED, "UNMEASURED: the current map is %s, not %s" % (m.group("biome"), biome)
     rows = [r for r in res.partition(" | ")[2].split("; ") if r.strip()]
     if any(",pts=" not in r for r in rows):
         return UNMEASURED, "UNMEASURED: a row has no pts=, so the deployed probe predates 208cc2f911: %s" % res[:300]
     if m.group("entry") != "True":
-        return FAIL, "FAIL: no pawn entry cell on the Stillsand map: %s" % res[:400]
+        return FAIL, "FAIL: no pawn entry cell on the %s map: %s" % (biome, res[:400])
     if int(m.group("gen")) < 1:
         return FAIL, "FAIL: no faction can send a trade caravan here (generable=0): %s" % res[:400]
     return PASS, "PASS: %s" % res[:400]
 
 
-def main():
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--biome", default="RM_Stillsand")
+    a = ap.parse_args(argv)
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
     try:
         import rimbridge_client as rc
@@ -66,7 +73,7 @@ def main():
     except Exception as e:      # any bridge or import failure is ignorance, never a FAIL
         print("UNMEASURED: bridge call failed: %s" % str(e)[:200])
         return UNMEASURED
-    code, line = verdict(reply)
+    code, line = verdict(reply, a.biome)
     print(line)
     return code
 

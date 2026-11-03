@@ -1,0 +1,7 @@
+# Each clause: a map of the fixed biome (live_site regenerates the tile's biome), then the Stillsand DLL's read-only
+# trader probe (engine predicates FactionCanBeGroupSource + PawnGroupMaker.CanGenerateFrom vs the tile biome's allowedPackAnimals).
+live-mods: RimMandrake.Biomes, SWBestiary, UtinniPatches
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --biome RM_LeaningScrub
+live-proof A1: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_LeaningScrub < /dev/null
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --biome RM_WeepingStones
+live-proof A2: python.exe src/RimMandrake/Stillsand/trader_probe_check.py --biome RM_WeepingStones < /dev/null
