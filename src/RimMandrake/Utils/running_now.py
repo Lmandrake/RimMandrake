@@ -656,7 +656,8 @@ def collect_steve(env, state):
     out["jobs_known"] = False
     names, why = guarded(env.listdir, TESTQ + "/done")
     if names is not None:
-        days = {time.strftime("J%Y%m%d", time.gmtime(now)), time.strftime("J%Y%m%d", time.gmtime(now - 86400))}
+        # the name dates the job's birth, not its finish: a week back catches one that sat queued (results are memoised)
+        days = {time.strftime("J%Y%m%d", time.gmtime(now - k * 86400)) for k in range(8)}
         keep = {n for n in names if n[:9] in days and n.endswith(".json")}
         memo = state.setdefault("steve_jobs", {})
         for n in list(memo):

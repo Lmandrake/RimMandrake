@@ -235,6 +235,11 @@ page = page_of(Fake(files=jfiles, dirs=jdirs))
 check("the plain-text twin says UNMEASURED there too", "done 24 h UNMEASURED, failed 24 h UNMEASURED" in page)
 check("the panel says UNMEASURED there and not 0", "DONE 24 H" in page and "UNMEASURED" in page.split("DONE 24 H")[1][:200])
 
+old = "J" + R.time.strftime("%Y%m%d", R.time.gmtime(NOW - 3 * 86400))
+late = R.time.strftime("%Y-%m-%dT%H:%M:%SZ", R.time.gmtime(NOW - 100))
+sv = R.collect_steve(Fake(files=dict(files, **{R.TESTQ + "/done/%sA.json" % old: {"result": {"outcome": "DONE", "finished": late}}}), dirs=dict(dirs, **{R.TESTQ + "/done": [old + "A.json"]})), {})
+check("a job born days ago and finished now counts in the 24 h", sv["jobs_known"] and sv["done"] == 1)
+
 # 8c. a bad reading in the machine cache costs its tile, not the page
 env = Fake(files=dict(files, **{R.STEVE_CACHE: {"good": {"gpu": "NVIDIA X, [N/A], [N/A], 11264", "ram": "x y", "up": "n/a"}, "good_t": NOW}}), dirs=dirs)
 page = page_of(env)
