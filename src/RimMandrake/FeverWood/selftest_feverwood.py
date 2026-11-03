@@ -79,6 +79,90 @@ def plug_spawns_move_items_aside(cs_path):
     return all("WipeMode.VanishOrMoveAside" in c for c in calls)
 
 
+LURE_MOD_CS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", "RM_FeverWoodMod.cs")
+LURE_MAP_CS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", "RM_MapComponent_TwoFrontLure.cs")
+LURE_STAKE_CS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", "RM_CompLureStake.cs")
+
+
+def lure_lock_defaults(mod_cs):
+    """FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 5: (field default, Scribe default) of twoFrontLureLockOnceTriggered,
+    each 'true'/'false' or None when not found. Both must be true: the wager is locked in by default."""
+    import re
+    src = open(mod_cs, encoding="utf-8").read()
+    f = re.search(r"public\s+static\s+bool\s+twoFrontLureLockOnceTriggered\s*=\s*(true|false)\s*;", src)
+    sc = re.search(r"Scribe_Values\.Look\(\s*ref\s+twoFrontLureLockOnceTriggered\s*,\s*\"twoFrontLureLockOnceTriggered\""
+                   r"\s*,\s*(true|false)\s*\)", src)
+    return (f.group(1) if f else None, sc.group(1) if sc else None)
+
+
+def _method_body(src, signature):
+    """The brace-matched body of the first method whose header contains `signature`, or None."""
+    i = src.find(signature)
+    if i < 0:
+        return None
+    j = src.find("{", i)
+    depth = 0
+    for k in range(j, len(src)):
+        if src[k] == "{":
+            depth += 1
+        elif src[k] == "}":
+            depth -= 1
+            if depth == 0:
+                return src[j:k + 1]
+    return None
+
+
+def lure_wiring_problems(map_cs, stake_cs):
+    """FEVERWOOD_TWO_FRONT_LURE_TUNING_1 spec 1 in the mod itself, not only the kernel: the first-wave roll in
+    RM_MapComponent_TwoFrontLure.MapComponentTick picks the BEST bait by lure.BaitDraw, takes its MTB from
+    RM_LureKernel.EffectiveMtbDays(base, bestDraw), returns when no bait draws (origin null) or the MTB is
+    infinite, and launches from that best bait; and RM_CompLureStake.BaitDraw comes from RM_LureKernel.Draw
+    under the gate setting. Returns the list of broken links ([] = wired)."""
+    import re
+    body = _method_body(open(map_cs, encoding="utf-8").read(), "void MapComponentTick(")
+    if body is None:
+        return ["MapComponentTick not found"]
+    code = re.sub(r"//[^\n]*", "", body)
+    out = []
+    loop = re.search(r"foreach\s*\(\s*RM_CompLureStake\s+(\w+)\s+in\s+activeLures\s*\)\s*\{(.*?)\n\s*\}", code, re.S)
+    if not loop:
+        out.append("no foreach over activeLures")
+    else:
+        v, lb = loop.group(1), loop.group(2)
+        d = re.search(r"float\s+(\w+)\s*=\s*" + v + r"\.BaitDraw\s*;", lb)
+        if not d:
+            out.append("loop does not read %s.BaitDraw" % v)
+        elif not (re.search(r"if\s*\(\s*" + d.group(1) + r"\s*>\s*bestDraw\s*\)", lb)
+                  and re.search(r"bestDraw\s*=\s*" + d.group(1) + r"\s*;", lb)
+                  and re.search(r"origin\s*=\s*" + v + r"\s*;", lb)):
+            out.append("loop does not keep the best bait as origin")
+    if not re.search(r"float\s+bestDraw\s*=\s*0f\s*;", code):
+        out.append("bestDraw does not start at 0")
+    if not re.search(r"if\s*\(\s*origin\s*==\s*null\s*\)\s*\{?\s*return\s*;", code):
+        out.append("no return when no bait draws (origin == null)")
+    m = re.search(r"float\s+(\w+)\s*=\s*RM_LureKernel\.EffectiveMtbDays\(\s*RM_FeverWoodSettings\.twoFrontLureRaidMtbHours"
+                  r"\s*,\s*bestDraw\s*\)\s*;", code)
+    if not m:
+        out.append("MTB not RM_LureKernel.EffectiveMtbDays(twoFrontLureRaidMtbHours, bestDraw)")
+    else:
+        mv = m.group(1)
+        g = re.search(r"if\s*\(\s*float\.Is(?:Positive)?Infinity\(\s*" + mv + r"\s*\)\s*\|\|\s*!Rand\.MTBEventOccurs\(\s*" + mv
+                      + r"\b[^)]*\)\s*\)\s*\{?\s*return\s*;", code)
+        if not g:
+            out.append("no return on an infinite MTB before the roll")
+    if "RandomElement" in code:
+        out.append("origin picked at random")
+    launches = re.findall(r"LaunchFirstWave\(\s*(\w+)\s*\)", code)
+    if launches != ["origin"]:
+        out.append("first wave not launched from origin: %s" % launches)
+    stake = re.sub(r"//[^\n]*", "", open(stake_cs, encoding="utf-8").read())
+    if not re.search(r"public\s+float\s+BaitDraw\s*=>\s*RM_LureKernel\.Draw\(\s*RM_FeverWoodSettings\.twoFrontLurePreyQualityGate"
+                     r"\s*,\s*BaitValue\s*,\s*RM_FeverWoodSettings\.twoFrontLureMinBaitValue\s*,"
+                     r"\s*RM_FeverWoodSettings\.twoFrontLureFullDrawBaitValue\s*\)", stake):
+        out.append("BaitDraw not RM_LureKernel.Draw(gate, BaitValue, min, full)")
+    return out
+
+
 def check(name, cond, detail=""):
     print("%s  %s %s" % ("ok  " if cond else "FAIL", name, ("" if cond else detail)))
     if not cond:
@@ -811,6 +895,51 @@ def main():
           [k for k, v in orphan.items() if v == "FAIL"] == ["source_guards.hidden_raider_factions_have_a_name_source"], orphan)
     found, bad = V.hidden_faction_findings([os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")])
     check("every shipped hidden FactionDef under src/ has a name source (%d found)" % found, found >= 5 and not bad, bad)
+
+    # FEVERWOOD_TWO_FRONT_LURE_TUNING_1: the wager lock defaults ON (spec 5) and the map component, not only the
+    # kernel, gates the first wave on the best bait's draw (spec 1). Each mutant below must redden its check.
+    def _mut(path, old, new):
+        text = open(path, encoding="utf-8").read()
+        assert old in text, "mutant anchor gone: %r" % old
+        tf = tempfile.NamedTemporaryFile("w", suffix=".cs", delete=False, encoding="utf-8")
+        tf.write(text.replace(old, new, 1))
+        tf.close()
+        return tf.name
+    check("wager lock defaults on (field and Scribe)", lure_lock_defaults(LURE_MOD_CS) == ("true", "true"),
+          lure_lock_defaults(LURE_MOD_CS))
+    for label, old, new in [
+            ("field default false", "public static bool twoFrontLureLockOnceTriggered = true;",
+             "public static bool twoFrontLureLockOnceTriggered = false;"),
+            ("Scribe default false", '"twoFrontLureLockOnceTriggered", true);', '"twoFrontLureLockOnceTriggered", false);')]:
+        t = _mut(LURE_MOD_CS, old, new)
+        check("break lock %s -> caught" % label, lure_lock_defaults(t) != ("true", "true"), lure_lock_defaults(t))
+        os.unlink(t)
+    check("lure first wave rolls on the best bait's draw", lure_wiring_problems(LURE_MAP_CS, LURE_STAKE_CS) == [],
+          lure_wiring_problems(LURE_MAP_CS, LURE_STAKE_CS))
+    map_mutants = [
+        ("MTB at full draw (pre-gate)", "twoFrontLureRaidMtbHours, bestDraw)", "twoFrontLureRaidMtbHours, 1f)"),
+        ("origin picked at random", "LaunchFirstWave(origin);", "origin = activeLures.RandomElement();\n            LaunchFirstWave(origin);"),
+        ("pre-commit roll (full draw + random origin)", "twoFrontLureRaidMtbHours, bestDraw)", None),
+        ("no infinite-MTB return", "float.IsInfinity(mtbDays) || ", ""),
+        ("no-draw return dropped", "if (origin == null)\n            {\n                return;\n            }\n", ""),
+        ("first bait not best", "if (d > bestDraw)", "if (origin == null)"),
+        ("bait draw ignored", "float d = lure.BaitDraw;", "float d = 1f;"),
+    ]
+    for label, old, new in map_mutants:
+        if new is None:
+            t1 = _mut(LURE_MAP_CS, old, "twoFrontLureRaidMtbHours, 1f)")
+            t = _mut(t1, "LaunchFirstWave(origin);", "LaunchFirstWave(activeLures.RandomElement());")
+            os.unlink(t1)
+        else:
+            t = _mut(LURE_MAP_CS, old, new)
+        got = lure_wiring_problems(t, LURE_STAKE_CS)
+        check("break %s -> caught" % label, got != [], got)
+        os.unlink(t)
+    t = _mut(LURE_STAKE_CS, "public float BaitDraw => RM_LureKernel.Draw(RM_FeverWoodSettings.twoFrontLurePreyQualityGate,",
+             "public float BaitDraw => RM_LureKernel.Draw(false,")
+    got = lure_wiring_problems(LURE_MAP_CS, t)
+    check("break BaitDraw ignores the gate setting -> caught", got != [], got)
+    os.unlink(t)
 
     print()
     if FAILS:
