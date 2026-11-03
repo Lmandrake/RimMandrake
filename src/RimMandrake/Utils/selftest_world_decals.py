@@ -153,6 +153,8 @@ def check_source(mod, look, dec, proj):
     for line in MIRRORED:
         if line not in dec:
             errs.append("C# drifted from the Python mirror: %r" % line[:60])
+    if "TilesCount));" in dec.split("public static string Build", 1)[-1] or "tileSpacing = 1.612f * circ / verts.Count;" not in dec:
+        errs.append("glyph size not taken from the tile's own geometry (4 pi r^2 / TilesCount is wrong on a partial planet)")
     if WORLD_WRITES.search(dec):
         errs.append("writes world data or forces a redraw (must be look-only)")
     return errs
@@ -333,6 +335,7 @@ def main():
         ("mirror drift", lambda: check_source(mod, look, dec.replace("% 2u);", "% 3u);"), proj)),
         ("hash tail dropped", lambda: check_source(mod, look, dec.replace("h *= 0xC2B2AE35u;\n                h ^= h >> 16;", "h *= 0xC2B2AE35u;"), proj)),
         ("decals not in redraw key", lambda: check_source(mod.replace('+ "/" + RM_BiomesSettings.worldBiomeDecals', ""), look, dec, proj)),
+        ("spacing from tile count", lambda: check_source(mod, look, dec.replace("tileSpacing = 1.612f * circ / verts.Count;", "tileSpacing = Mathf.Sqrt(4f * Mathf.PI / Mathf.Max(1, pl.TilesCount));"), proj)),
         ("fade never ends", lambda: check_math(Decals(dec.replace("decalGoneAlt = 620f", "decalGoneAlt = 1200f")))),
         ("glyphs too big", lambda: check_math(Decals(dec.replace("decalSize = 0.30f", "decalSize = 0.55f")))),
     ]

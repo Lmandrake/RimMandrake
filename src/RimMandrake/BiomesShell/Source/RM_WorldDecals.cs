@@ -175,12 +175,13 @@ namespace RimMandrake.Biomes
                 pl.GetTileVertices(i, verts);
                 if (verts.Count < 3) continue;
                 Vector3 center = pl.GetTileCenter(i);
-                if (tileSpacing == 0f)
-                {
-                    float radius = center.magnitude;
-                    tileSpacing = Mathf.Sqrt(4f * Mathf.PI * radius * radius / Mathf.Max(1, pl.TilesCount));
+                if (windSign == 0f)
                     windSign = Mathf.Sign(Vector3.Dot(Vector3.Cross(verts[1] - verts[2], verts[0] - verts[2]), center));
-                }
+                // the tile's own size, not 4 pi r^2 / TilesCount: a partial-coverage planet holds fewer tiles than the
+                // sphere would, which would inflate every glyph. sqrt(area) of a regular hex = 1.612 x its circumradius.
+                float circ = 0f;
+                foreach (Vector3 v in verts) circ += (v - center).magnitude;
+                tileSpacing = 1.612f * circ / verts.Count;
                 Vector3 n = center.normalized;
                 Vector3 up = Vector3.up - n * Vector3.Dot(n, Vector3.up);
                 if (up.sqrMagnitude < 1e-6f) up = Vector3.forward - n * Vector3.Dot(n, Vector3.forward);
