@@ -4,7 +4,8 @@
 Covers: plan() (parts writes carry if_version only for known docs; a feed line per status change, none on the first
 run; facts), judge() (a relay that alters a write, adds a call, drops the board write or carries the wrong
 board version is FAILED; a tool error is FAILED; a clean relay is ok and yields the written versions), parse of
-`list` results for version sync, and the cost gate's hash ignoring elapsed minutes.
+`list` results for version sync (an unread next_cursor makes sync_versions
+refuse with None, end to end on a faked model stream), and the cost gate's hash ignoring elapsed minutes.
 """
 import json
 import os
@@ -118,6 +119,24 @@ check("cursor followed: both pages parse", F.parse_versions(pg, pres) == {"parts
 check("cursor followed: nothing unread", F.unfollowed(pg, pres) == [])
 check("cursor dropped: parts unread", F.unfollowed(pg[:1], {"p1": pres["p1"]}) == ["parts"])
 check("no cursor: nothing unread", F.unfollowed(lst, res) == [])
+
+# sync_versions end to end on a faked model run: it must REFUSE (None) when a page went unread
+blist = {"type": "tool_use", "id": "b", "name": "ArtifactData", "input": {"action": "list", "collection": "board"}}
+bres = {"type": "tool_result", "tool_use_id": "b", "content": '{"id":"summary","data":{},"version":10}\n=== END ==='}
+tr = lambda uid: dict(pres[uid], type="tool_result", tool_use_id=uid)
+real_run = F.run_claude
+try:
+    F.run_claude = lambda *a, **k: stream([pg[0], blist], [tr("p1"), bres])
+    v, use = F.sync_versions(tmp)
+    check("sync: unfollowed cursor -> None", v is None)
+    check("sync: usage still reported", use.get("output") == 9)
+    F.run_claude = lambda *a, **k: stream(pg + [blist], [tr("p1"), tr("p2"), bres])
+    v, _ = F.sync_versions(tmp)
+    check("sync: followed cursor -> every page", v == {"parts/A": 5, "parts/Z": 7, "board/summary": 10})
+    F.run_claude = lambda *a, **k: stream(pg, [tr("p1"), tr("p2")])
+    check("sync: no board/summary -> None", F.sync_versions(tmp)[0] is None)
+finally:
+    F.run_claude = real_run
 
 print("%d failed" % len(FAILS))
 sys.exit(1 if FAILS else 0)
