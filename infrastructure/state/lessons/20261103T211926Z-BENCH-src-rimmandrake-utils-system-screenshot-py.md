@@ -1,0 +1,1 @@
+src/RimMandrake/Utils/system_screenshot.py refuses under WSL (Windows-only, ctypes.windll), though CLAUDE.md lists it as the always-OK desktop capture. Route used 2026-11-03: PowerShell CopyFromScreen with SetProcessDPIAware, saving under D:\ClaudeWork\scratch.
