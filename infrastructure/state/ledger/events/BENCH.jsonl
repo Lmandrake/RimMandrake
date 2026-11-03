@@ -11022,3 +11022,5 @@
 {"seat":"BENCH","event":"reassign","id":"TERRAIN_DRINK_FIX_SMALL_POND_REFUSED","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-03T01:20:41Z","tsn":1793668841499923062}
 {"seat":"BENCH","event":"start","id":"TERRAIN_DRINK_FIX_SMALL_POND_REFUSED","why":"relentless supervisor takes the item","ts":"2026-11-03T01:20:45Z","tsn":1793668845177915861}
 {"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORIZON_CARAVAN_VANILLA_REFUSES_1 A1 (L2), read-only proof","ts":"2026-11-03T01:23:18Z","tsn":1793668998524339896}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-11-03T01:23:25Z","tsn":1793669005830449223}
+{"seat":"BENCH","event":"note","id":"HORIZON_CARAVAN_VANILLA_REFUSES_1","text":"relentless live A1 L2 UNMEASURED: the proof exited 2: it did not measure (/home/mandrake/rm/relentless/live/HORIZON_CARAVAN_VANILLA_REFUSES_1-A1-20261103T012314Z.log)","why":"relentless live tier: no verdict, no run recorded","ts":"2026-11-03T01:23:29Z","tsn":1793669009543994425}
