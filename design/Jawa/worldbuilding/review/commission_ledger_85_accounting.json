@@ -1,0 +1,1041 @@
+{
+ "item": "COMMISSION_LEDGER_CLEANUP_1",
+ "verified": "2026-11-03",
+ "source": "design/Jawa/worldbuilding/review/flora_assignment_register.decisions.json",
+ "resolutions": {
+  "built": "defs (or files) exist in src/ on this sha",
+  "queued": "an open rimflow item owns building it",
+  "superseded": "folded into another item's scope (or a ruling merged it)",
+  "dropped": "cut by an owner ruling; commit names the cut"
+ },
+ "checker": "src/RimMandrake/Utils/selftest_commission_ledger_accounting.py",
+ "rows": [
+  {
+   "key": "ledger:arid_shrubland:scrap-nest-bird-analogs-glittering-treasure-nests-steal-from",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "SHRUBLAND_SCRAPNEST_BIRDS_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "mechanics ask (nest-theft C#); wave 2"
+  },
+  {
+   "key": "ledger:arid_shrubland:the-fuzz-knee-high-silver-green-canopy-plant",
+   "resolution": "built",
+   "defs": [
+    "RM_Fuzz"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 2; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:arid_shrubland:the-huge-grazer-large-young-parental-enrage-body-donors-famb",
+   "resolution": "built",
+   "defs": [
+    "RSW_ShrublandGiant"
+   ],
+   "items": [
+    "SHRUBLAND_GIANT_ENRAGE_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "def built; enrage C# split; wave 2"
+  },
+  {
+   "key": "ledger:arid_shrubland:tree-guardian-uniques-owner-candidate-not-yet-ruled",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "SHRUBLAND_TREE_GUARDIAN_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "unruled owner candidate, owner card; wave 2"
+  },
+  {
+   "key": "ledger:arid_shrubland:tunnel-snake-analog-the-signature-corridor-predator",
+   "resolution": "built",
+   "defs": [
+    "RSW_TunnelSnake"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 2"
+  },
+  {
+   "key": "ledger:arid_shrubland:venomvine-fortress-flora-passability-by-body-size",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "VENOMVINE_FORTRESS_PASSABILITY_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "mechanics ask; wave 2"
+  },
+  {
+   "key": "ledger:desert:burst-predator-flagship-bursts-grabs-retreats-to-cool",
+   "resolution": "built",
+   "defs": [
+    "RSW_WraidAlpha"
+   ],
+   "items": [
+    "DESERT_BURST_PREDATOR_FLAGSHIP_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 1"
+  },
+  {
+   "key": "ledger:desert:defending-shade-plants-thorn-venom-patch-flora",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "DESERT_SHADE_PLANTS_DESIGN_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "claimed by its own design item at filing; wave 1"
+  },
+  {
+   "key": "ledger:desert:filter-feeding-shade-whale-megafauna-body-donor-gr-paraceram",
+   "resolution": "built",
+   "defs": [
+    "RSW_ShadeWhale"
+   ],
+   "items": [
+    "DESERT_SHADE_WHALE_FILTERFEED_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "def built; filter-feed C# split; wave 1"
+  },
+  {
+   "key": "ledger:desert:glitter-birds-megafauna-shadow-commensals",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "DESERT_GLITTER_BIRDS_COMMENSALS_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "shade-follow mechanics ask; wave 1"
+  },
+  {
+   "key": "ledger:desert:shade-grid-mapcomponent-shadeat-the-keystone",
+   "resolution": "built",
+   "defs": [],
+   "items": [
+    "DESERT_SHADE_GRID_KEYSTONE_1"
+   ],
+   "commit": "50c022770",
+   "files": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs"
+   ],
+   "note": "C# MapComponent RM_MapComponent_ShadeGrid; wave 1"
+  },
+  {
+   "key": "ledger:desert:staggerseed-cycle-plant-prepared-seed-euphoric-dish",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "DESERT_STAGGERSEED_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "claimed by its own build item at filing; wave 1"
+  },
+  {
+   "key": "ledger:desert:ultracactus-owner-s-own-name-stands",
+   "resolution": "built",
+   "defs": [
+    "RM_UltracactusPad",
+    "RM_RawUltracactus"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "already built at filing (audit)"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:cavern-beast-with-prized-massive-eggs-mandalorian-reference",
+   "resolution": "built",
+   "defs": [
+    "RSW_Zakkro",
+    "RSW_ZakkroEgg"
+   ],
+   "items": [
+    "EXTREME_DESERT_CAVERN_BEAST_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 12"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:dormancy-trigger-dune-fauna-reskin-lane-107-live-vfei2-dorma",
+   "resolution": "built",
+   "defs": [
+    "RM_Siidda"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "renamed RM_DustHusk -> RM_Siidda (STILLSAND_RULED_CONTENT_1); wave 12"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:drum-lure-subsurface-predator-lures-that-drum-juicy",
+   "resolution": "built",
+   "defs": [
+    "RM_Drazzik"
+   ],
+   "items": [
+    "DRUM_LURE_PREDATOR_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 12; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:egg-trap-clutch-birth-trap-eggs",
+   "resolution": "built",
+   "defs": [
+    "RM_Drazzik"
+   ],
+   "items": [
+    "DRUM_LURE_PREDATOR_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "same creature as drum-lure; wave 12; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:glass-nub-light-pipe-flora",
+   "resolution": "built",
+   "defs": [
+    "RM_LightPipeNub"
+   ],
+   "items": [
+    "EXTREME_DESERT_SIGNATURE_FLORA_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 12; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:mirror-plated-sun-axis-asymmetric-giant",
+   "resolution": "built",
+   "defs": [
+    "RM_Oommok"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "renamed RM_MirrorGiant -> RM_Oommok (STILLSAND_RULED_CONTENT_1); wave 12"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:shade-commensal-micro-fauna-living-under-a-walking-giant",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "third shade-follow consumer; wave 12"
+  },
+  {
+   "key": "ledger:dune_sea + deep_desert:silverbole-owner-to-name-silver-required-heat-flame-immune-w",
+   "resolution": "built",
+   "defs": [
+    "RM_Ollim",
+    "RM_OllimWood"
+   ],
+   "items": [
+    "EXTREME_DESERT_SIGNATURE_FLORA_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 12; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:fall_line:feral-droid-behaviour-flee-prone-memwipe-capture-no-droid-re",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "FALL_LINE_ARRIVAL_MECHANISM_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "Band B of its spec; wave 9"
+  },
+  {
+   "key": "ledger:fall_line:feral-races-crash-survivors-pawnkind-permanent-mental-scar-h",
+   "resolution": "queued",
+   "defs": [],
+   "items": [
+    "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 9"
+  },
+  {
+   "key": "ledger:fall_line:wreck-shade-flora-pockets-gate-hardy-smalls-on-wreck-mutator",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "FALL_LINE_ARRIVAL_MECHANISM_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "gated on its wreck mutator; wave 9"
+  },
+  {
+   "key": "ledger:nightside_ice:chemical-frosts-ambiguously-alive",
+   "resolution": "queued",
+   "defs": [],
+   "items": [
+    "NESHKOLL_BUILD_POINTS_AT_LEAKS"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "roster draft 2026-10-05 table 2: chemical-frost formations -> neshkoll"
+  },
+  {
+   "key": "ledger:nightside_ice:hectare-scale-sessile-catalytic-sheets-landform-catalysts",
+   "resolution": "queued",
+   "defs": [],
+   "items": [
+    "SAALLEN_BUILD_BLISTERS_ON_CUE",
+    "HESSARUND_BUILD_JUST_A_RIDGE",
+    "OOLM_BUILD_ONE_BODY_MANY_LOBES"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "roster draft 2026-10-05 table 2: sessile catalytic sheets -> hessarund+saallen+oolm"
+  },
+  {
+   "key": "ledger:nightside_ice:icy-insects-of-the-inclusions",
+   "resolution": "queued",
+   "defs": [],
+   "items": [
+    "FRISSIM_BUILD_WAITS_FOR_THAW"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "ruled name frissim (NIGHTSIDE_ICE_DESIGN_SITTING_1 card)"
+  },
+  {
+   "key": "ledger:nightside_ice:the-one-move-animal",
+   "resolution": "queued",
+   "defs": [],
+   "items": [
+    "SOHL_BUILD_ONE_MOVE_TOTAL"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "ruled name sohl (NIGHTSIDE_ICE_DESIGN_SITTING_1 card)"
+  },
+  {
+   "key": "ledger:nightside_ice:the-tunnelers-within-ice-blind-thermal",
+   "resolution": "built",
+   "defs": [
+    "RM_Shivven"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "ruled name shivven; src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml"
+  },
+  {
+   "key": "ledger:nightside_ice:thermal-sensing-seam-striker",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "DHORRUMAK_BUILD_BIGGEST_LAST"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "merged into dhorrumak by question card at NIGHTSIDE_ICE_DESIGN_SITTING_1 2026-09-24 (sleeping_ice.json new_defs)"
+  },
+  {
+   "key": "ledger:poison_forest:dark-crust-phototroph-flora-black-purple-red-films-on-starwa",
+   "resolution": "built",
+   "defs": [
+    "RM_DarkCrust"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 3; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:poison_forest:eyeless-vibration-sensing-ambusher-the-signature",
+   "resolution": "built",
+   "defs": [
+    "RSW_VentStalker"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 3"
+  },
+  {
+   "key": "ledger:poison_forest:toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb",
+   "resolution": "built",
+   "defs": [
+    "RUT_NeebrayMeat",
+    "RUT_ScreecherMeat",
+    "RUT_VisceralMeat",
+    "RUT_HelixienMeat"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [
+    "src/RimUtinni/UtinniPatches/Patches/Cauldron_ToxicPrizedMeat.xml"
+   ],
+   "note": "specificMeatDef on the four flagged keepers (Neebray/Screecher/Visceral/Helixien); wave 3"
+  },
+  {
+   "key": "ledger:terminator_sea + the_grey_deep:salt-rimed-blade-flora-grey-shore-variant-distinct-def-from-",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "TERMINAL_SEAS_FLOOR_DRESSING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_grey_deep:shadow-lane-detritivore-condensate-drinker-grey-shore-distin",
+   "resolution": "built",
+   "defs": [
+    "RM_Otheska",
+    "RM_Essarn"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "RM_Sorruth (third half) cut from the Grey Sea by the owner 2026-10-06 (RM_GreySea.xml); otheska grazes, essarn drinks the murk; wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_grey_deep:the-ossuary-shrimp-man-sized-skeletal-seeming-shy-and-evasiv",
+   "resolution": "built",
+   "defs": [
+    "RM_Fessk"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_grey_deep:the-pillar-mason-grey-monoculture-crystal-binding-film-that-",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "TERMINAL_SEAS_FLOOR_DRESSING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_twilight_deep:condensate-drinker-fog-lick-fauna",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "TERMINAL_SEAS_FLOOR_DRESSING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_twilight_deep:salt-rimed-blade-flora-black-sail-on-white-pan-planar-vertic",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "TERMINAL_SEAS_FLOOR_DRESSING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_twilight_deep:shadow-lane-detritivore",
+   "resolution": "built",
+   "defs": [
+    "RM_Lunoowa"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_twilight_deep:shore-scavenger-on-stranded-carcasses-stonecrab-hermitcrab-b",
+   "resolution": "built",
+   "defs": [
+    "RM_Weloon"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_twilight_deep:the-mold-mat-roof-organism-twilight-monoculture-shore-to-sho",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "TERMINAL_SEAS_FLOOR_DRESSING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:terminator_sea + the_twilight_deep:the-twilight-deep-set-deferred-to-diving-mods-kelp-forest-fl",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "SEA_FLOOR_AND_CATCH_PASS_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "self-deferred to diving mods (roster mechanic_load); the open sea-floor pass owns it"
+  },
+  {
+   "key": "ledger:the_blue_desert:burner-fast-oxidizer-blue-fire-halo-at-speed-explodes-when-g",
+   "resolution": "built",
+   "defs": [
+    "RM_Krissek"
+   ],
+   "items": [
+    "BLUE_DESERT_LIFE_AUTHORING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 8"
+  },
+  {
+   "key": "ledger:the_blue_desert:picker-ablation-line-scavenger",
+   "resolution": "built",
+   "defs": [
+    "RM_Vekkit"
+   ],
+   "items": [
+    "BLUE_DESERT_LIFE_AUTHORING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 8"
+  },
+  {
+   "key": "ledger:the_blue_desert:swallower-sealed-armored-herbivore-whole-root-swallow-anaero",
+   "resolution": "built",
+   "defs": [
+    "RM_Dorrak"
+   ],
+   "items": [
+    "BLUE_DESERT_LIFE_AUTHORING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 8"
+  },
+  {
+   "key": "ledger:the_blue_desert:transparent-fractal-flora-set-ferns-dandelion-heads-fuzzball",
+   "resolution": "built",
+   "defs": [
+    "RM_Palefloss",
+    "RM_Glassfern",
+    "RM_Chimeglobe"
+   ],
+   "items": [
+    "BLUE_DESERT_LIFE_AUTHORING_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 8"
+  },
+  {
+   "key": "ledger:the_contagion:the-unfinished-random-stat-short-lived-chimera-spawns-goo-co",
+   "resolution": "built",
+   "defs": [
+    "RM_TheUnfinished"
+   ],
+   "items": [
+    "CONTAGION_UNFINISHED_SPAWNER_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:the_cracked_lands:bloom-crop-flood-week-boom-bust-harvest-visible-growth",
+   "resolution": "built",
+   "defs": [
+    "RM_BloomCrop"
+   ],
+   "items": [
+    "EXPLOSIVE_PLANT_GROWTH_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "stand-in; visible-growth mechanic owned there; wave 10; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_cracked_lands:emperor-vulture-the-sky-s-undertaker-rides-the-flats-thermal",
+   "resolution": "built",
+   "defs": [
+    "RUT_EmperorVulture"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 10"
+  },
+  {
+   "key": "ledger:the_cracked_lands:sealed-signature-sleeper-wax-lined-burrow-water-wake-sheds-c",
+   "resolution": "built",
+   "defs": [
+    "RUT_SealedSleeper"
+   ],
+   "items": [
+    "CRACKED_LANDS_SEALED_WAKE_MECHANISM_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "interim; water-wake owned there; wave 10"
+  },
+  {
+   "key": "ledger:the_cracked_lands:twisted-trees-shade-line-grasses-mosses-our-own-vegetation-o",
+   "resolution": "built",
+   "defs": [
+    "RM_TwistingThornwood",
+    "RM_TwistingThorngrass",
+    "RM_TwistingThornweed"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 10; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_fever_wood:ant-raider-wiring-theft-hauling-two-front-war",
+   "resolution": "dropped",
+   "defs": [],
+   "items": [],
+   "commit": "0cccae18d6",
+   "files": [],
+   "note": "built under FEVERWOOD_ANT_THEFT_RAIDBACK_1 (62913db1a), then cut by owner card 2026-10-23 \"I cut, you veto\" (fluff review)"
+  },
+  {
+   "key": "ledger:the_forge:contagion-corpse-ring-ambient-die-off",
+   "resolution": "built",
+   "defs": [
+    "RM_DeadCreep",
+    "RM_DyingCreep",
+    "RUT_ContagionProbe"
+   ],
+   "items": [
+    "FORGE_MECHANICS_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 4; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_forge:fleet-fliers-small-darting-fireweed-eaters",
+   "resolution": "built",
+   "defs": [
+    "RUT_FleetFlier"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 4"
+  },
+  {
+   "key": "ledger:the_greentide:canopy-swinger",
+   "resolution": "built",
+   "defs": [
+    "RM_CanopySwinger"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 11; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_greentide:digestive-accelerant-fruit-the-fruit-that-yearns",
+   "resolution": "built",
+   "defs": [
+    "RM_YearningFruit",
+    "RM_DigestiveAccelerant"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 11; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_miasma:delta-loam-composter-castings-producer",
+   "resolution": "built",
+   "defs": [
+    "RM_Karrobel",
+    "RM_DeltaLoam"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 7; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_miasma:karr-fever-swarm-vector-pollinator-one-swarm",
+   "resolution": "built",
+   "defs": [
+    "RM_FeverSwarm"
+   ],
+   "items": [
+    "MIASMA_KARRATHIL_POLLINATION_GATE_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "renamed RUT_Karrathil -> RM_FeverSwarm (MIASMA_SHIPPING_NAMES_1); pollination gate owned by MIASMA_KARRATHIL_POLLINATION_GATE_1; wave 7"
+  },
+  {
+   "key": "ledger:the_miasma:the-stranded-transitional-orphan-forms-2-3-species",
+   "resolution": "built",
+   "defs": [
+    "RM_StrandedDeformation"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 7; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_propane_lakes:burner-polar-ascendant-form-blue-fire-halo-as-locomotion-alm",
+   "resolution": "built",
+   "defs": [
+    "RUT_BurnerAscendant"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 6"
+  },
+  {
+   "key": "ledger:the_propane_lakes:v-wake-propane-sea-exotic-kin-propane-native-agitated-by-pum",
+   "resolution": "built",
+   "defs": [
+    "RUT_VWake"
+   ],
+   "items": [
+    "PROPANE_LAKE_PIPE_MECHANICS_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "pumping agitation owned there; wave 6"
+  },
+  {
+   "key": "ledger:the_pyrelands:burrower-grazer-dives-under-the-burn-emerges-into-ash",
+   "resolution": "built",
+   "defs": [
+    "RM_Ashwallow"
+   ],
+   "items": [
+    "PYRELANDS_DEDICATED_GRAZER_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 8 filed PYRELANDS_BURROWER_GRAZER_1; it was dropped on a misread, corrected 2026-09-28 (owner: build a dedicated grazer) into PYRELANDS_DEDICATED_GRAZER_1, which shipped RM_Ashwallow"
+  },
+  {
+   "key": "ledger:the_rot:health-share-species-tagging-both-variants",
+   "resolution": "built",
+   "defs": [],
+   "items": [
+    "THEROT_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [
+    "src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml"
+   ],
+   "note": "both variants tagged in RotSpecies_NamesAndSizes.xml; the health-share comp itself is the_rot.md Owed work; wave 15"
+  },
+  {
+   "key": "ledger:the_rot:heat-generating-gene",
+   "resolution": "built",
+   "defs": [
+    "RM_Gene_Furnaceblood"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "ROT_WARM_MAT_1 is the item; the GeneDef is RM_Gene_Furnaceblood (RM_RotSporeKit_Furnaceblood.xml); wave 15"
+  },
+  {
+   "key": "ledger:the_rot:symbiont-parasites-three-ratified-bargain-pairs",
+   "resolution": "built",
+   "defs": [
+    "RM_Sym_Quickflesh",
+    "RM_Sym_Nightwake",
+    "RM_Sym_Sheenblood"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 15"
+  },
+  {
+   "key": "ledger:the_rot:tea-source-guardian-mushrooms-per-species-defense-repertoire",
+   "resolution": "built",
+   "defs": [],
+   "items": [
+    "THEROT_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [
+    "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_GuardianGroves.xml"
+   ],
+   "note": "RM_RotSporeKit_GuardianGroves.xml; wave 15"
+  },
+  {
+   "key": "ledger:the_scald:welcome-blanket-thermophile-mats-rainbow-banded-by-temperatu",
+   "resolution": "built",
+   "defs": [
+    "RM_Crowncarpet",
+    "RM_Deepfire"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "renamed RUT_WelcomeBlanket -> RM_Crowncarpet, RUT_RainbowPigment -> RM_Deepfire (DEEPFIRE_PIGMENT_MOD_1); wave 9"
+  },
+  {
+   "key": "ledger:the_scarlands:mortuary-guild-carrion-specialist-dedicated-body",
+   "resolution": "built",
+   "defs": [
+    "RM_Pallbearer"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "RUT_MortuaryCrawler retired, replaced by RM_Pallbearer (RUT_Scarlands.xml); wave 5"
+  },
+  {
+   "key": "ledger:the_scarlands:the-glowers-black-radiotrophic-crust-flora-crater-bowl-varni",
+   "resolution": "built",
+   "defs": [
+    "RM_Glower",
+    "RM_GlowerCrust"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 5; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:the_slime:filter-feeder-line-scooping-mouthed-slime-grazers",
+   "resolution": "built",
+   "defs": [
+    "RM_Gappo"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "RUT_SlimeGrazer became the gappo line (RM_GappoLesser/RM_Gappo/RM_GappoGreater, Gappo.xml); wave 11"
+  },
+  {
+   "key": "ledger:the_webwork:parasitic-root-mat-flora-the-stolen-river-s-plumbing",
+   "resolution": "built",
+   "defs": [
+    "RM_Threllick"
+   ],
+   "items": [
+    "WEBWORK_FLORA_ROSTER_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "row 4 of the ruled webwork flora roster, built by WEBWORK_FLORA_ROSTER_1 (wave 8 recorded it queued)"
+  },
+  {
+   "key": "ledger:wasteland:brine-battery-pool-owner-ion-gradient-discharge",
+   "resolution": "built",
+   "defs": [
+    "RUT_BrineBattery"
+   ],
+   "items": [
+    "WASTELAND_BRINE_BATTERY_CREATURE_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 11"
+  },
+  {
+   "key": "ledger:wasteland:excretor-herd-creature-metal-salt-bezoar-product-def",
+   "resolution": "built",
+   "defs": [
+    "RM_Excretor",
+    "RUT_MetalSaltBezoar"
+   ],
+   "items": [
+    "WASTELAND_EXCRETOR_BEZOAR_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 11; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:wasteland:radiothermal-solitary-living-furnace-spacing-law",
+   "resolution": "built",
+   "defs": [
+    "RUT_Radiothermal"
+   ],
+   "items": [
+    "WASTELAND_RADIOTHERMAL_SOLITARY_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 11"
+  },
+  {
+   "key": "ledger:wasteland:radiotroph-flora-dosimeter-lawn-vault-root-sequestration-tre",
+   "resolution": "built",
+   "defs": [
+    "RM_DosimeterLawn",
+    "RM_VaultRoot"
+   ],
+   "items": [],
+   "commit": "",
+   "files": [],
+   "note": "wave 11; defs renamed to RM_ tier since the wave (rename aliases in src)"
+  },
+  {
+   "key": "ledger:wasteland:the-three-storm-weather-defs-ash-radiation-halo-plasma-termi",
+   "resolution": "superseded",
+   "defs": [],
+   "items": [
+    "WASTELAND_STORM_WEATHER_DEFS_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "owner scope card; wave 11"
+  },
+  {
+   "key": "ledger:weeping_stones:blade-flora-with-bladder-fruit-forage-target-re-points-donor",
+   "resolution": "built",
+   "defs": [
+    "RM_Bladderquill",
+    "RM_BladderFruit"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:burrak-burradar-well-digger-claw-combs-elder-form",
+   "resolution": "built",
+   "defs": [
+    "RM_Burrak"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:mirrik-dew-smoke-swarm-dewsilk-cocoon-source",
+   "resolution": "built",
+   "defs": [
+    "RM_Mirrik"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:sillik-weep-face-licker-whisker-combs-prey-base",
+   "resolution": "built",
+   "defs": [
+    "RM_Sillik"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:ssurr-crest-fan-display-reptile-the-romance-ruling-made-anim",
+   "resolution": "built",
+   "defs": [
+    "RM_Ssurr"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:tirbak-walking-cistern-caravan-colossus-dorsal-rain-fins",
+   "resolution": "built",
+   "defs": [
+    "RM_Tirbak"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:vhakk-the-warden-margin-apex-never-hunts-at-water-by-design",
+   "resolution": "built",
+   "defs": [
+    "RM_Vhakk"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  },
+  {
+   "key": "ledger:weeping_stones:weep-mat-drip-garden-corduroy-mats-ridged-wind-square",
+   "resolution": "built",
+   "defs": [
+    "RM_Weepmat"
+   ],
+   "items": [
+    "WEEPINGSTONES_RM_MOD_BUILD_1"
+   ],
+   "commit": "",
+   "files": [],
+   "note": "wave 13"
+  }
+ ]
+}

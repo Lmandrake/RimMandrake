@@ -1136,3 +1136,31 @@ art-queuing-only pass** — the next pass against them needs to be a
 design-authoring pass (author the nightside_ice concepts, or rule
 mahllik/zhissa onto specific slugs) or wait for `the_fever_wood`'s raid-AI
 mechanic to be designed elsewhere. This item stays open (doing).
+
+## Wave 17 (2026-11-03, Relentless) — all 85 resolved per slug; the accounting is now a checked file
+
+The per-slug record is `design/Jawa/worldbuilding/review/commission_ledger_85_accounting.json`
+(one row per slug: resolution, defs/files/items/commit, note), re-measured by
+`src/RimMandrake/Utils/selftest_commission_ledger_accounting.py` (rows = this item's 85, every key
+live in the register, built defs exist under `src/`, queued items still open, superseded items not
+dropped, dropped rows name an existing commit). Result: 62 built, 17 superseded, 5 queued, 1 dropped.
+
+- **The last 7.** nightside_ice: `the-tunnelers…` built (`RM_Shivven`); chemical frosts → queued
+  `NESHKOLL_BUILD_POINTS_AT_LEAKS`; sessile catalytic sheets → queued `SAALLEN_BUILD_BLISTERS_ON_CUE` +
+  `HESSARUND_BUILD_JUST_A_RIDGE` + `OOLM_BUILD_ONE_BODY_MANY_LOBES`; icy insects → `FRISSIM_BUILD_WAITS_FOR_THAW`;
+  one-move animal → `SOHL_BUILD_ONE_MOVE_TOTAL` (all filed by `NIGHTSIDE_ICE_NEW_LIFE_1` from the
+  2026-10-05 roster draft's §2 table); seam striker superseded into `DHORRUMAK_BUILD_BIGGEST_LAST` (merge
+  ruled by card at `NIGHTSIDE_ICE_DESIGN_SITTING_1`). fever_wood ant-raider wiring: built
+  (`FEVERWOOD_ANT_THEFT_RAIDBACK_1`, 62913db1a), then **dropped**, cut by owner card 2026-10-23 ("I cut,
+  you veto"), commit `0cccae18d6`.
+- **Drift caught in the earlier waves' "built" rows** (they named defs that no longer exist): ~30 were
+  RUT_/RSW_ → RM_ tier renames (alias tables in `src/`); others renamed by ruling: `RM_MirrorGiant` →
+  `RM_Oommok`, `RM_DustHusk` → `RM_Siidda`, `RUT_Karrathil` → `RM_FeverSwarm`, `RUT_WelcomeBlanket` →
+  `RM_Crowncarpet`, `RUT_RainbowPigment` → `RM_Deepfire`, `RUT_MortuaryCrawler` → `RM_Pallbearer`,
+  `RUT_SlimeGrazer` → `RM_Gappo` line, heat gene = `RM_Gene_Furnaceblood`. `RM_Sorruth` was cut by the owner
+  2026-10-06; the grey detritivore row stands on `RM_Otheska` + `RM_Essarn`.
+- **Corrected verdicts:** pyrelands burrower-grazer (wave 8: queued `PYRELANDS_BURROWER_GRAZER_1`) — that
+  item was dropped on a misread and replaced by `PYRELANDS_DEDICATED_GRAZER_1`, which shipped
+  `RM_Ashwallow`: built. webwork root-mat (wave 8: queued) — `WEBWORK_FLORA_ROSTER_1` shipped
+  `RM_Threllick`: built. twilight-deep set (self-deferred) → superseded into the open
+  `SEA_FLOOR_AND_CATCH_PASS_1`.
