@@ -59,6 +59,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             public double AllReusedMs, WorstMs, Inputs, Reduce, EdgesMs, Keys, Corr, Nodes, Reach;
             public int OnCaller, GcFrames;
             public double WorstNoGcMs, P95Ms;
+            /// <summary>Round 10: bytes the caller allocated per frame for the snapshot copy (pooled, as the component does) and the Build.</summary>
+            public long SnapAllocMax, SnapAllocSum, BuildAllocMax, BuildAllocSum;
+            public int PoolReused, PoolAllocated;
             public List<(double, string)> Top;
         }
 
@@ -83,15 +86,27 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var wall = Stopwatch.StartNew();
             var times = new List<double>();
             row.Top = new List<(double, string)>();
+            var pool = new SnapshotPool();
+            CordWorld prev = null;
             while (true)
             {
                 if (nc < cells.Count) nc = Math.Min(cells.Count, nc + cellBatch);
                 else if (nl < lamps.Count) nl = Math.Min(lamps.Count, nl + lampBatch);
-                CordWorld w = World(k, nc, nl);
+                CordWorld src = World(k, nc, nl);
+                long a0 = GC.GetAllocatedBytesForCurrentThread();
+                CordWorld w = pool.Take(src, b);    // the component's snapshot copy (CordWorldAdapter.Snapshot with SnapPool)
+                pool.Retire(prev);
+                prev = w;
+                long a1 = GC.GetAllocatedBytesForCurrentThread();
                 int gc0 = GC.CollectionCount(0);
                 sw.Restart();
                 b.Build(w, new BuildOptions { AsyncLay = true }, live);
                 double t = sw.Elapsed.TotalMilliseconds;
+                long a2 = GC.GetAllocatedBytesForCurrentThread();
+                row.SnapAllocMax = Math.Max(row.SnapAllocMax, a1 - a0);
+                row.SnapAllocSum += a1 - a0;
+                row.BuildAllocMax = Math.Max(row.BuildAllocMax, a2 - a1);
+                row.BuildAllocSum += a2 - a1;
                 bool gc = GC.CollectionCount(0) != gc0;
                 row.Frames++;
                 times.Add(t);
@@ -109,6 +124,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 if (wall.Elapsed.TotalSeconds > 300) break;
                 System.Threading.Thread.Sleep(4);    // a frame: the worker gets time, as it does between live frames
             }
+            row.PoolReused = pool.Reused; row.PoolAllocated = pool.Allocated;
             times.Sort();
             row.P95Ms = times[(int)Math.Floor(0.95 * (times.Count - 1))];
             row.Top = row.Top.OrderByDescending(x => x.Item1).Take(4).ToList();
@@ -125,7 +141,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             {
                 Row r = Measure(k);
                 Console.WriteLine($"scale-bench: k={r.K,2} E={r.Edges,5} allReused {r.AllReusedMs,7:0.00} | frames {r.Frames,3} worst {r.WorstMs,7:0.00} noGC {r.WorstNoGcMs,6:0.00} p95 {r.P95Ms,6:0.00} gcFrames {r.GcFrames} | worst = " +
-                                  $"in {r.Inputs:0.00} red {r.Reduce:0.00} edg {r.EdgesMs:0.00} (key {r.Keys:0.00} cor {r.Corr:0.00}) nod {r.Nodes:0.00} rch {r.Reach:0.00} | caller {r.OnCaller}");
+                                  $"in {r.Inputs:0.00} red {r.Reduce:0.00} edg {r.EdgesMs:0.00} (key {r.Keys:0.00} cor {r.Corr:0.00}) nod {r.Nodes:0.00} rch {r.Reach:0.00} | caller {r.OnCaller}" +
+                                  $" | alloc/frame snapshot max {r.SnapAllocMax / 1024} KB (the first, cold) mean {r.SnapAllocSum / Math.Max(1, r.Frames) / 1024} KB (pool reused {r.PoolReused} new {r.PoolAllocated}), build max {r.BuildAllocMax / 1024} KB mean {r.BuildAllocSum / Math.Max(1, r.Frames) / 1024} KB");
                 if (args.Contains("--trace")) foreach (var x in r.Top) Console.WriteLine("scale-bench:    top " + x.Item2);
             }
         }

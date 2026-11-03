@@ -77,6 +77,9 @@ def main(argv):
     for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
+    if "--scale-bench" in argv:   # CordScaleBench.cs: --scale-bench [K,K,...] (frame cost and per-frame allocation vs lattices)
+        i = argv.index("--scale-bench")
+        args += ["--scale-bench"] + [a for a in argv[i + 1:i + 2] if not a.startswith("--")]
     if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
         i = argv.index("--unroutable-census")
         args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
