@@ -139,6 +139,7 @@ def reap_boxes(store, r, now, in_use, acts=None):
                 out.append((b, "box"))
         elif os.path.isdir(os.path.join(b, "tree")):
             if remove_tree(os.path.join(b, "tree")) is None:
+                remove_tree(os.path.join(b, "tmp"))     # the run's TMPDIR (relentless_wall.tmp_env): over with the tree
                 out.append((b, "tree"))
             if os.path.isdir(os.path.join(b, "tmp")):       # the check's scratch dies with its tree, not after box_keep_s
                 remove_tree(os.path.join(b, "tmp"))

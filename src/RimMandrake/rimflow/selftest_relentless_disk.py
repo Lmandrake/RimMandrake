@@ -323,6 +323,7 @@ def t_reap_done_boxes_early():
     def box(name, age, verdict=None):
         b = os.path.join(root, name)
         put(os.path.join(b, "tree", "f"), "x" * 100)
+        put(os.path.join(b, "tmp", "scratch"), "x" * 100)
         put(os.path.join(b, "nonce"), name)
         if verdict:
             put(os.path.join(b, "verdict.json"), json.dumps({"word": verdict, "reasons": "r", "at": now - age}))
@@ -345,6 +346,8 @@ def t_reap_done_boxes_early():
         ok(not os.path.exists(os.path.join(b, "tree")) and os.path.exists(os.path.join(b, "verdict.json")),
            "a %s check's tree goes after the grace; its verdict stays" % w)
     ok(not os.path.exists(os.path.join(expired, "tree")), "an expired check its record moved past frees its tree")
+    ok(not os.path.exists(os.path.join(boxes["PASS"], "tmp")), "a run's TMPDIR goes with its tree")
+    ok(os.path.exists(os.path.join(still, "tmp")), "a check still running keeps its TMPDIR")
     for why, b in (("still checking", still), ("inside the grace", racing), ("no verdict, no record", fresh),
                    ("a process in it", inproc)):
         ok(os.path.exists(os.path.join(b, "tree")), "kept: %s" % why)

@@ -132,7 +132,7 @@ def props(prof, box, extra=()):
 
 def tmp_env(box):
     """A walled run's TMPDIR: inside its box. run_tmp's root (~/.seat-tmp/runs) sits behind the wall, and Claude dies at
-    start on a TMPDIR it cannot mkdir in, so no checker ever gave a verdict. remove_box takes this with the box."""
+    start on a TMPDIR it cannot mkdir in, so no checker ever gave a verdict. relentless_disk.reap_boxes takes this with the tree."""
     d = os.path.join(box, "tmp")
     return {"TMPDIR": d, "TMP": d, "TEMP": d}
 
