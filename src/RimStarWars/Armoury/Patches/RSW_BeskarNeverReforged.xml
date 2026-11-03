@@ -15,7 +15,7 @@
       counts; both Outer Rim beskars' deep-drill deposits zeroed under the Outer Rim gate (Outer Rim ships
       OuterRim_Beskar deepCommonality 0.001 itself, LK raises both to .75; BESKAR_FIX_DEEPDRILL_UNDER_LK_GATE); the Ideology mining worksite beskar rows
       removed (beskar is salvage only). KOTOR_MineableBeskar is zeroed in source. Meteorite and MineralRich gates for all
-      beskar rocks: RSW_ZeroedOreGates.xml. Mines 2.0 mine-shaft recipes: Source/CanonMaterials/RSW_MineShaftCanonGate.cs.
+      beskar rocks: RSW_ZeroedOreGates.xml. Mine-shaft bills: Defs/ThingDefs/RSW_MineShaftCanonPolicy.xml.
   Guards are PatchOperationFindMod per donor (a top-level Operation MayRequire is ignored by the engine). Display names are
   read from each donor's About.xml. Proof: prove_canon_materials.py (L7 replay with planted defect).
 -->

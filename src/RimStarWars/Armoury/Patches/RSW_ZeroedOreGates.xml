@@ -11,8 +11,7 @@
   So each zeroed rock gets mineablePreventMeteorite and a MineralRich blacklist row. RSW_MineableDoonium (asteroid only,
   already meteorite-proof) is blacklisted too so no mineral-rich planet tile scatters it. Every row is guarded by a
   Conditional on the rock existing, never by MayRequire on an Operation (ignored by the engine).
-  Mines 2.0 (cain.mineshaft) builds a mine-shaft recipe for EVERY isResourceRock def regardless of commonality, in code, so
-  XML cannot reach it: Source/CanonMaterials/RSW_MineShaftCanonGate.cs unlists those recipes by product.
+  Mine-shaft bills (mandrake.rm.mineshaft) are barred by product in Defs/ThingDefs/RSW_MineShaftCanonPolicy.xml.
 -->
 <Patch>
   <Operation Class="PatchOperationConditional">

@@ -6,7 +6,8 @@
        owner 2026-09-25: "components and plasteel are never mined from rock") or asteroid-only (doonium ore). The shaft's base policy
        already bars ComponentIndustrial and ComponentSpacer. Gold, silver, uranium, jade and gems are not listed: the shaft's
        "only the veins this map holds" rule already keeps them to their home biomes (MINERALS_WHERE_THEY_BELONG_1).
-       Same products as RSW_MaterialsKernel.MineShaftBanned (the Mines 2.0 gate), plus the hypertech component.
+       The products the retired Mines 2.0 C# gate barred, plus the hypertech component: this file is now the single list
+       (MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG; src/RimMandrake/MineShaft/check_retirement.py holds it to them).
        MayRequire on the def element: without the shaft mod this def is skipped whole. -->
   <RimMandrake.MineShaft.MineShaftPolicyDef MayRequire="mandrake.rm.mineshaft">
     <defName>RSW_MineShaftPolicy_CanonMaterials</defName>

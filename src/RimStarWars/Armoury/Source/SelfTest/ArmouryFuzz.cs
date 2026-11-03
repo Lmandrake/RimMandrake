@@ -549,15 +549,15 @@ namespace RimMandrake.StarWars.Armoury.SelfTest
         }
 
         // ════════════════════════ materials (CANON_MATERIALS_BUILD_1 L7/L1) ════════════════════════
-        // Tables, not sequences: the smelt and mine-shaft kernels are pure lookups. Live recipe names and products below are copied from
-        // the 2026-10-11 DefDump capture (76 Mines 2.0 recipes); a gate that unlists nothing, or unlists an ordinary ore, fails.
-        public static long Lessers, Unlisted;
+        // Tables, not sequences: the smelt kernel is a pure lookup. (The Mines 2.0 shaft gate went with the mod,
+        // MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG; our own shaft's bars are fuzzed by selftest_mineshaft_fuzz.py.)
+        public static long Lessers;
         private static List<string> MaterialsTables()
         {
             var fails = new List<string>();
             try
             {
-                foreach (var b in RSW_MaterialsKernel.Beskar) Check(RSW_MaterialsKernel.IsMineShaftBanned(b), "beskar " + b + " not banned from mine shafts");
+                foreach (var b in RSW_MaterialsKernel.Beskar) Check(RSW_MaterialsKernel.IsBeskar(b), "beskar " + b + " not read as beskar");
                 Check(!RSW_MaterialsKernel.IsBeskar(null) && !RSW_MaterialsKernel.IsBeskar("Steel") && !RSW_MaterialsKernel.IsBeskar("ChunkSlagSteel"), "steel or slag read as beskar");
                 // lesser ores: no beskar, nothing back; any beskar, one slag and the vanilla share in steel (floor and ceiling rounding)
                 for (int n = -3; n <= 2000; n++)
@@ -577,35 +577,6 @@ namespace RimMandrake.StarWars.Armoury.SelfTest
                     bool want = v || (en && !relic && ds && mfs && (st == "OuterRim_Beskar" || st == "KOTOR_IngotBeskar"));
                     Check(got == want, $"Smeltable(v {v}, on {en}, relic {relic}, defSmeltable {ds}, stuffed {mfs}, {st}) = {got}"); Steps++;
                 }
-                // mine shafts: the live capture's recipes, exact expected unlist set
-                var live = new (string recipe, string product)[]
-                {
-                    ("MinesAutomated_RecipeDef_MineableSteel", "Steel"), ("MinesAutomated_RecipeDef_MineableGold", "Gold"),
-                    ("MinesAutomated_RecipeDef_LKDurasteel_Ore", "RSW_Durasteel"), ("MinesAutomated_RecipeDef_KOTOR_MineableDurasteel", "KotORChunk_durasteel"),
-                    ("MinesAutomated_RecipeDef_LKBeskar_Ore", "OuterRim_Beskar"), ("MinesAutomated_RecipeDef_LKPureBeskar_Ore", "OuterRim_PureBeskar"),
-                    ("MinesAutomated_RecipeDef_KOTOR_MineableBeskar", "KOTOR_RawBeskar"), ("MinesAutomated_RecipeDef_MineablePlasteel", "Plasteel"),
-                    ("MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineableDoonium", "RSW_DooniumOre"),
-                    ("MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineableZersium", "RSW_Zersium"),
-                    ("MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineablePhrikite", "RSW_Phrikite"),
-                    ("MinesAutomated_RecipeDef_GU_AncientMetals", "ChunkSlagSteel"), ("MinesAutomated_RecipeDef_KOTOR_MineableCortosis", "KOTOR_IngotCortosis"),
-                    ("MinesAutomatedExtension_RecipeDef_OuterRim_Duracrete", "OuterRim_Duracrete"),
-                    ("MinesAutomatedExtension_RecipeDef_OuterRim_Beskar", "OuterRim_Beskar"), ("MinesAutomated_CustomRecipeDef_Plasteel", "Plasteel"),
-                    ("Make_Plasteel_NotAMine", "Plasteel"),
-                };
-                var wantUnlisted = new HashSet<string> { "MinesAutomated_RecipeDef_LKDurasteel_Ore", "MinesAutomated_RecipeDef_KOTOR_MineableDurasteel",
-                    "MinesAutomated_RecipeDef_LKBeskar_Ore", "MinesAutomated_RecipeDef_LKPureBeskar_Ore", "MinesAutomated_RecipeDef_KOTOR_MineableBeskar",
-                    "MinesAutomated_RecipeDef_MineablePlasteel", "MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineableDoonium",
-                    "MinesAutomatedExtension_RecipeDef_OuterRim_Beskar", "MinesAutomated_CustomRecipeDef_Plasteel" };
-                foreach (var (recipe, product) in live)
-                {
-                    bool got = RSW_MaterialsKernel.UnlistMineShaft(true, recipe, new[] { product });
-                    Check(got == wantUnlisted.Contains(recipe), $"mine shaft {recipe} ({product}): unlist {got}");
-                    Check(!RSW_MaterialsKernel.UnlistMineShaft(false, recipe, new[] { product }), $"mine shaft {recipe} unlisted with the gate off");
-                    if (got) Unlisted++; Steps++;
-                }
-                Check(!RSW_MaterialsKernel.UnlistMineShaft(true, "MinesAutomated_RecipeDef_X", null) && !RSW_MaterialsKernel.UnlistMineShaft(true, null, new[] { "Plasteel" }), "null recipe or products unlisted");
-                Check(RSW_MaterialsKernel.UnlistMineShaft(true, "MinesAutomated_RecipeDef_Mixed", new[] { "Steel", "OuterRim_Beskar" }), "a recipe with one banned product among several was kept");
-                Check(!RSW_MaterialsKernel.IsMineShaftRecipe("minesautomated_recipedef_LKBeskar_Ore"), "prefix match must be ordinal and case-exact (Mines 2.0 uses Ordinal)");
                 Cases++;
             }
             catch (Exception e) { fails.Add("materials table: " + e.Message); }
@@ -646,7 +617,7 @@ namespace RimMandrake.StarWars.Armoury.SelfTest
                 if ((all || only == "yield") && (Drops == 0 || Picks == 0)) { Console.WriteLine("FAIL yield fuzz never dropped or picked (blind)"); ok = false; }
                 if ((all || only == "gear") && Cooldowns == 0) { Console.WriteLine("FAIL gear fuzz never started a cooldown (blind)"); ok = false; }
                 if ((all || only == "kolto") && (Heals == 0 || Fills == 0 || Ejects == 0)) { Console.WriteLine("FAIL kolto fuzz never healed / filled / ejected (blind)"); ok = false; }
-                if ((all || only == "materials") && (Lessers == 0 || Unlisted != 9)) { Console.WriteLine($"FAIL materials tables blind: {Lessers} lesser-ore rows, {Unlisted} shafts unlisted (want 9)"); ok = false; }
+                if ((all || only == "materials") && Lessers == 0) { Console.WriteLine($"FAIL materials tables blind: {Lessers} lesser-ore rows"); ok = false; }
                 if ((all || only == "combat") && (Jumps == 0 || Flanks == 0 || Wicks == 0 || Defused == 0)) { Console.WriteLine("FAIL combat fuzz never jumped / flanked / lit a wick / defused (blind)"); ok = false; }
             }
             Console.WriteLine($"armoury fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

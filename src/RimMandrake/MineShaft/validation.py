@@ -35,6 +35,8 @@ from game_paths import LOCALLOW  # noqa: E402  (the one-path seam: never a Local
 CAPTURES = os.path.join(LOCALLOW, "DefDump", "captures")
 POLICY_TAG = "RimMandrake.MineShaft.MineShaftPolicyDef"
 PREFIX = "RM_MineShaft_"
+CANON_BARRED = ("KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar", "RSW_Durasteel", "KotORChunk_durasteel",
+                "Plasteel", "RSW_DooniumOre", "OuterRim_ComponentHypertech")
 
 DEFAULTS = {"shaftBills": True, "onlyMapVeins": True, "stoneBills": True, "yieldMultiplier": 1.0, "workMultiplier": 1.0}
 ALT = {"shaftBills": False, "onlyMapVeins": False, "stoneBills": False, "yieldMultiplier": 2.0, "workMultiplier": 0.5}
@@ -123,14 +125,11 @@ def static_checks():
         for p in croot:
             if p.tag == POLICY_TAG and p.get("MayRequire") != "mandrake.rm.mineshaft":
                 bad.append("canon policy def is not guarded by MayRequire=\"mandrake.rm.mineshaft\"")
-        kern = open(os.path.join(REPO, "src", "RimStarWars", "Armoury", "Source", "Kernel", "RSW_ArmouryKernel.cs"), encoding="utf-8").read()
-        m = re.search(r"MineShaftBanned\s*=\s*\{([^}]*)\}", kern)
-        gate = re.findall(r'"([^"]+)"', m.group(1)) if m else []
-        if not gate:
-            bad.append("could not read RSW_MaterialsKernel.MineShaftBanned (the Mines 2.0 gate) to cross-check")
-        for p in gate:
+        # The 8 products the retired Mines 2.0 gate barred (its kernel list was deleted with the gate,
+        # MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG) plus the hypertech component: the policy XML is now the single list.
+        for p in CANON_BARRED:
             if p not in policy_products(CANON_POLICY):
-                bad.append("canon policy lacks %s, which the Mines 2.0 gate bars" % p)
+                bad.append("canon policy lacks %s" % p)
     if os.path.isfile(WALK):
         w = open(WALK, encoding="utf-8").read().split("## must be true", 1)[-1].split("\n## ", 1)[0]
         for ln in w.splitlines():

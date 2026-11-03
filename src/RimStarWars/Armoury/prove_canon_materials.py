@@ -532,10 +532,10 @@ def beskar_src_check():
     return bad
 
 
-# ---------------------------------------------------------------- phase 3 (2026-10-11): L7 lesser ores, L1/L7 Mines 2.0 shafts
+# ---------------------------------------------------------------- phase 3 (2026-10-11): L7 lesser ores, L1/L7 mine-shaft bars
 KERNEL_CS = os.path.join(ARM, "Source", "Kernel", "RSW_ArmouryKernel.cs")
 SMELT_CS = os.path.join(ARM, "Source", "CanonMaterials", "RSW_BeskarSmelt.cs")
-GATE_CS = os.path.join(ARM, "Source", "CanonMaterials", "RSW_MineShaftCanonGate.cs")
+SHAFT_POLICY = os.path.join(ARM, "Defs", "ThingDefs", "RSW_MineShaftCanonPolicy.xml")
 CSPROJ = os.path.join(ARM, "Source", "JawaArmoury.csproj")
 SETTINGS_CS = os.path.join(ARM, "Source", "RSW_ArmourySettings.cs")
 
@@ -580,66 +580,48 @@ def lesser_ores_check(kernel=None, smelt=None, csproj=None, settings=None):
             bad.append("smelt patches not both gated on beskarLesserOresEnabled")
         if "IsBeskar(t.def.defName)) continue" not in smelt:
             bad.append("SmeltProducts postfix does not drop beskar the vanilla list yields")
-    for f in ("CanonMaterials\\RSW_BeskarSmelt.cs", "CanonMaterials\\RSW_MineShaftCanonGate.cs"):
+    for f in ("CanonMaterials\\RSW_BeskarSmelt.cs",):
         if '<Compile Include="%s" />' % f not in csproj:
             bad.append("%s not in JawaArmoury.csproj (EnableDefaultCompileItems is false: it would compile into nothing)" % f)
-    for fld in ("beskarLesserOresEnabled", "mineShaftCanonGateEnabled"):
+    for fld in ("beskarLesserOresEnabled",):
         if not re.search(r"public static bool %s = true;" % fld, settings) or ('"%s"' % fld) not in settings:
             bad.append("setting %s missing, not default-on, or not scribed" % fld)
     return bad
 
 
-MINES_PACKAGE = "cain.mineshaft"
-
-
-def mineshaft_check(kernel=None, gate=None, recipes=None, rocks=None):
-    """L1/L7 Mines 2.0: replay RSW_MineShaftCanonGate's rule (Mines prefixes + product in the kernel's banned list) over the live
-    capture's Mines recipes. The must-unlist set is derived here independently: products of every zeroed/gated rock (GATED, read
-    from the capture's mineableThing) plus every beskar def and Plasteel. Returns (problems, info)."""
-    kernel = _read(KERNEL_CS) if kernel is None else kernel
-    gate = _read(GATE_CS) if gate is None else gate
+def mineshaft_check(policy=None, rocks=None):
+    """L1/L7 mine shafts: our shaft (mandrake.rm.mineshaft) makes a bill per resource rock unless a MineShaftPolicyDef bars its
+    product, so the Armoury's canon policy must bar every product derived here independently: every beskar def, Plasteel, and
+    the mineableThing of every zeroed/gated rock (GATED, read from the latest capture). Mines 2.0 and its C# gate retired
+    (MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG). Returns (problems, info)."""
+    if policy is None:
+        policy = _read(SHAFT_POLICY)
     bad, info = [], []
-    banned = cs_array(kernel, "MineShaftBanned") or []
-    prefixes = cs_array(kernel, "MineShaftPrefixes") or []
-    if not banned or not prefixes:
-        return ["kernel has no MineShaftBanned / MineShaftPrefixes"], info
-    for need in ("MinesAutomated.CreateRecipeDefs", "MinesAutomatedExtension.OnStartup", "RunClassConstructor", "recipeUsers?.Clear()",
-                 "allRecipesCached", "MinesAutomated_ThingDef_Mine", "mineShaftCanonGateEnabled"):
-        if need not in gate:
-            bad.append("RSW_MineShaftCanonGate.cs lacks %s" % need)
-    if recipes is None or rocks is None:
+    try:
+        root = ET.fromstring(policy) if policy else None
+    except ET.ParseError as e:
+        return ["RSW_MineShaftCanonPolicy.xml does not parse: %s" % e], info
+    defs = [] if root is None else [d for d in root if d.tag == "RimMandrake.MineShaft.MineShaftPolicyDef"]
+    if not defs:
+        return ["no RimMandrake.MineShaft.MineShaftPolicyDef in RSW_MineShaftCanonPolicy.xml"], info
+    for d in defs:
+        if d.get("MayRequire") != "mandrake.rm.mineshaft":
+            bad.append("policy %s not guarded by MayRequire=\"mandrake.rm.mineshaft\"" % d.findtext("defName"))
+    barred = {li.text for d in defs for li in d.findall("bannedProducts/li")}
+    if rocks is None:
         d = latest_capture()
         if not d:
-            return bad + ["UNMEASURED: no capture for the Mines 2.0 replay"], info
-        man = os.path.join(os.path.dirname(d), "manifest.json")
-        rows = (json.load(open(man)).get("mods") or []) if os.path.exists(man) else []
-        mods = {(m.get("packageId") or "").lower() for m in rows if isinstance(m, dict)}
-        if not rows or "" in mods or len(mods) != len(rows):
-            return bad + ["UNMEASURED: capture has no manifest mod list, cannot tell whether Mines 2.0 loaded (no list, or a row without a packageId)"], info
-        if MINES_PACKAGE not in mods:
-            # 2026-11-02 capture: the live list no longer loads Mines 2.0 (cain.mineshaft), so no shaft recipe exists to gate;
-            # the gate C# stays shape-checked above and arms itself if the mod returns (MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG).
-            info.append("Mines 2.0 (%s) not in the captured mod set (%d mods): its shaft recipes are not loaded; gate dormant (not a pass of the loaded integration)"
-                        % (MINES_PACKAGE, len(mods)))
-            return bad, info
-        R = json.load(open(os.path.join(d, "RecipeDef.json")))["defs"]
-        recipes = [(x["defName"], [p.get("thingDef") for p in (x["fields"].get("products") or [])]) for x in R]
+            return bad + ["UNMEASURED: no capture to read the gated rocks' products"], info
         T = json.load(open(os.path.join(d, "ThingDef.json")))["defs"]
-        rocks = {t["defName"]: ((t["fields"].get("building") or {}).get("mineableThing")) for t in T if t["defName"] in GATED or t["defName"] == "MineablePlasteel"}
+        rocks = {t["defName"]: ((t["fields"].get("building") or {}).get("mineableThing")) for t in T if t["defName"] in GATED}
     must = set(BESKAR) | {"Plasteel"} | {v for v in rocks.values() if v}
-    mines = [(n, ps) for n, ps in recipes if any(n.startswith(px) for px in prefixes)]
-    if not mines:
-        return bad + ["SANITY: no Mines 2.0 recipe in the capture (prefixes wrong, or the mod not loaded)"], info
-    unlisted = sorted(n for n, ps in mines if any(p in banned for p in ps))
-    for n, ps in mines:
-        hit = [p for p in ps if p in must]
-        if hit and n not in unlisted:
-            bad.append("Mines 2.0 shaft %s still makes %s" % (n, ", ".join(hit)))
-    over = [n for n in unlisted if not any(p in must for p in dict(mines)[n])]
-    info.append("Mines 2.0 replay: %d shaft recipes in capture, %d unlisted (%s); must-unlist products %d; unlisted beyond them: %s"
-                % (len(mines), len(unlisted), ", ".join(u.split("_RecipeDef_")[-1] for u in unlisted), len(must), over or "none"))
-    if not unlisted:
-        bad.append("SANITY: the gate unlists nothing on the live capture")
+    if len(must) <= len(BESKAR) + 1:
+        bad.append("SANITY: no gated rock product read from the capture (%d rocks): the census is blind" % len(rocks))
+    miss = sorted(must - barred)
+    if miss:
+        bad.append("mine-shaft canon policy does not bar %s" % ", ".join(miss))
+    info.append("mine-shaft canon policy bars %d products; must-bar %d (beskar, Plasteel, %d gated rocks' products); missing: %s"
+                % (len(barred), len(must), len(rocks), miss or "none"))
     return bad, info
 
 
@@ -1015,8 +997,8 @@ def run():
         "LK beskar rocks unscattered + out of PreciousLump/asteroids; deep deposits 0; worksite loot rows removed; "
         "meteorite + MineralRich gates on every zeroed rock (replayed on donor-shaped fixtures)",
         "smelting beskar gear: smeltable again via the Thing.Smeltable postfix, returns steel (vanilla 25% share) + 1 slag chunk, never beskar "
-        "(RSW_BeskarSmelt.cs; behaviour fuzzed: selftest_armoury_fuzz.py --fuzz-only materials); Mines 2.0 shafts unlisted by product "
-        "(RSW_MineShaftCanonGate.cs). Live behaviour is L10's load"] + [x for x in ms7 if x.startswith("UNMEASURED")]))
+        "(RSW_BeskarSmelt.cs; behaviour fuzzed: selftest_armoury_fuzz.py --fuzz-only materials); mine-shaft bills barred by product "
+        "(RSW_MineShaftCanonPolicy.xml, read by mandrake.rm.mineshaft). Live behaviour is L10's load"] + [x for x in ms7 if x.startswith("UNMEASURED")]))
     # ---- L8 roles
     l8, l8i = roles_check()
     put("L8", "FAIL" if l8 else "PASS", *(l8 + [x for x in l8i if x] + ([] if l8 else [
@@ -1108,19 +1090,17 @@ def selftest():
     assert lesser_ores_check() == [], lesser_ores_check()
     k = _read(KERNEL_CS)
     assert any("misses OuterRim_PureBeskar" in x for x in lesser_ores_check(kernel=k.replace('"OuterRim_PureBeskar" };', '};'))), "dropped beskar not caught"
-    assert len([x for x in lesser_ores_check(csproj="") if "csproj" in x]) == 2
-    assert len(lesser_ores_check(smelt="")) >= 1 and len(lesser_ores_check(settings="")) == 2
+    assert len([x for x in lesser_ores_check(csproj="") if "csproj" in x]) == 1
+    assert len(lesser_ores_check(smelt="")) >= 1 and len(lesser_ores_check(settings="")) == 1
     fake_rocks = {"LKBeskar_Ore": "OuterRim_Beskar", "MineablePlasteel": "Plasteel", "KOTOR_MineableDurasteel": "KotORChunk_durasteel"}
-    fake = [("MinesAutomated_RecipeDef_MineableSteel", ["Steel"]), ("MinesAutomated_RecipeDef_LKBeskar_Ore", ["OuterRim_Beskar"]),
-            ("MinesAutomated_RecipeDef_MineablePlasteel", ["Plasteel"]), ("MinesAutomated_RecipeDef_KOTOR_MineableDurasteel", ["KotORChunk_durasteel"]),
-            ("MinesAutomatedExtension_RecipeDef_OuterRim_PureBeskar", ["OuterRim_PureBeskar"]), ("Make_Plasteel", ["Plasteel"])]
-    assert mineshaft_check(recipes=fake, rocks=fake_rocks)[0] == [], mineshaft_check(recipes=fake, rocks=fake_rocks)
-    planted_k = k.replace('"KotORChunk_durasteel", "Plasteel", "RSW_DooniumOre",', '"KotORChunk_durasteel", "RSW_DooniumOre",')
-    assert planted_k != k
-    pb = mineshaft_check(kernel=planted_k, recipes=fake, rocks=fake_rocks)[0]
-    assert pb == ["Mines 2.0 shaft MinesAutomated_RecipeDef_MineablePlasteel still makes Plasteel"], pb
-    assert any("SANITY" in x for x in mineshaft_check(recipes=[("Make_Steel", ["Steel"])], rocks=fake_rocks)[0])
-    assert any("lacks recipeUsers" in x for x in mineshaft_check(gate="", recipes=fake, rocks=fake_rocks)[0])
+    pol = _read(SHAFT_POLICY)
+    assert mineshaft_check(rocks=fake_rocks)[0] == [], mineshaft_check(rocks=fake_rocks)
+    planted = pol.replace("<li>Plasteel</li>", "")
+    assert planted != pol
+    assert mineshaft_check(policy=planted, rocks=fake_rocks)[0] == ["mine-shaft canon policy does not bar Plasteel"], mineshaft_check(policy=planted, rocks=fake_rocks)
+    assert any("SANITY" in x for x in mineshaft_check(rocks={})[0])
+    assert any("not guarded" in x for x in mineshaft_check(policy=pol.replace(' MayRequire="mandrake.rm.mineshaft"', ""), rocks=fake_rocks)[0])
+    assert any("no RimMandrake" in x for x in mineshaft_check(policy="<Defs/>", rocks=fake_rocks)[0])
     # phase 4 planted defects: L6
     assert l6_defs_check() == [], l6_defs_check()
     assert trade_check() == [], trade_check()

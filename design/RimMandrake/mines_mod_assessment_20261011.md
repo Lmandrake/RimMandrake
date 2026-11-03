@@ -59,7 +59,7 @@ Every reference we have is there to *contain* it:
 
 | Reference | What it does | After retirement |
 |---|---|---|
-| `src/RimStarWars/Armoury/Source/CanonMaterials/RSW_MineShaftCanonGate.cs` (+ `RSW_MaterialsKernel.MineShaftBanned`, setting `mineShaftCanonGateEnabled`, fuzz family `materials`, `prove_canon_materials.py` `mineshaft_check`) | removes 7 of the 76 bills after Mines builds them | does nothing once Mines is off the list (`Apply` returns 0 when the type is absent). Delete it at the list swap (§6). |
+| `src/RimStarWars/Armoury/Source/CanonMaterials/RSW_MineShaftCanonGate.cs` (+ `RSW_MaterialsKernel.MineShaftBanned`, setting `mineShaftCanonGateEnabled`, fuzz family `materials`, `prove_canon_materials.py` `mineshaft_check`) | removes 7 of the 76 bills after Mines builds them | deleted 2026-11-03 (§6). |
 | `src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml`, `RUT_TechprintGating.xml`, `RUT_ResearchTabAssign.xml` | retag `MinesAutomated_ResearchProjectDef_minecraft` (Industrial, no techprint, Refinery tab) | each is a `PatchOperationConditional` on the def, so it skips silently. These files are generated (`design/Jawa/research_review/build_retag_patches.py`), so the generator owns their removal. Whether `RM_Research_MineShaft` gets the same retag is the generator's call. |
 | `src/RimUtinni/ResearchRetag/About/About.xml` `loadAfter cain.mineshaft` | load order | leave it until the list swap, then remove it |
 | `src/RimUtinni/UtinniPatches/About/About.xml` `loadAfter leutiankane.mines2patchouterrim`, `Patches/TibannaEmbargo_CutMineableRoute.xml` | removes LK's tibanna mine route | the patch is guarded and skips once LK is gone. Removing the loadAfter **before** the swap could run the embargo before LK's patch and re-open the tibanna route, so it goes in the same step. |
@@ -131,6 +131,16 @@ installed mod touched.
    list. Drop the cross-check in `MineShaft/validation.py` that reads `MineShaftBanned`. Rebuild the Armoury DLL.
 6. Load the canonical save once on the new list (accept the mod-mismatch dialog; no placed Things depend on it) and save it,
    so `meta/modIds` stops naming `cain.mineshaft`.
+
+**Done 2026-11-03 (`MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG`):** Wave 4 (2026-10-20) had already taken both mods off
+`ModsConfig.FULL.LATEST.xml` and the UtinniPatches `loadAfter`. This pass added `mandrake.rm.mineshaft` to FULL.LATEST (before
+the Armoury), added both mods to `retired_mods.json`, removed ResearchRetag's `forceLoadAfter cain.mineshaft`, and deleted the
+gate, its kernel lists, setting and fuzz cases. It rebuilt the Armoury DLL. `prove_canon_materials.py`'s `mineshaft_check` now
+holds the policy XML to the independently derived must-bar set. Proof: `python3 src/RimMandrake/MineShaft/check_retirement.py`.
+Step 6 is moot: the canonical start is now `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`, and its `meta/modIds` (325)
+never named `cain.mineshaft`. The 09-12 frozen record still names it, among 616 mods from every wave. It stays frozen
+(`infrastructure/state/CANONICAL_SAVE.md`). Deploying the mod and the Armoury, and the live load
+(`infrastructure/state/live_proofs/MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG.txt`), are the supervisor's.
 
 **Only the owner can do:** unsubscribe Mines 2.0 and LK's compat in Steam, if he wants them off disk. Deleting installed
 mods is not an agent's job, and nothing here needs it.

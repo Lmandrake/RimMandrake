@@ -247,46 +247,18 @@ namespace RimMandrake.StarWars.Armoury
     }
 
     /// <summary>CANON_MATERIALS_BUILD_1 (design canon_materials_design_2026-10-09.md 3.7, owner typed 2026-10-09: "Never can reforge
-    /// yourself, smelting destroys it (converts into other lesser ores)"): what smelting beskar gives back, and which mine-shaft
-    /// recipes (Mines 2.0, cain.mineshaft) are unlisted. Every defName here was read from the 2026-10-11 DefDump capture.</summary>
+    /// yourself, smelting destroys it (converts into other lesser ores)"): what smelting beskar gives back. Every defName here was read
+    /// from the 2026-10-11 DefDump capture. Which products no mine shaft makes is data now, not code: RSW_MineShaftCanonPolicy.xml
+    /// (a MineShaftPolicyDef read by mandrake.rm.mineshaft), since Mines 2.0 retired (MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG).</summary>
     public static class RSW_MaterialsKernel
     {
         /// <summary>Every beskar def a costList or stuff can name. Smelting never returns any of them.</summary>
         public static readonly string[] Beskar = { "KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar" };
 
-        /// <summary>Products no mine shaft may make: beskar (salvage only), durasteel and its slag chunk (salvage and the alloy forge),
-        /// plasteel (owner 2026-09-25: never mined from rock), doonium ore (asteroid maps only). Each was a live Mines 2.0 recipe product.</summary>
-        public static readonly string[] MineShaftBanned =
-        {
-            "KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar",
-            "RSW_Durasteel", "KotORChunk_durasteel", "Plasteel", "RSW_DooniumOre",
-        };
-
-        /// <summary>Mines 2.0's three generated-recipe prefixes (MineRecipes.RecipePrefix / ExtensionRecipePrefix / CustomRecipePrefix).</summary>
-        public static readonly string[] MineShaftPrefixes = { "MinesAutomated_RecipeDef_", "MinesAutomatedExtension_RecipeDef_", "MinesAutomated_CustomRecipeDef_" };
-
         /// <summary>The vanilla share of a cost-list stuff that smelting returns (Thing.SmeltProducts: count x 0.25, random rounding).</summary>
         public const float SmeltFraction = 0.25f;
 
         public static bool IsBeskar(string defName) { return defName != null && Array.IndexOf(Beskar, defName) >= 0; }
-
-        public static bool IsMineShaftBanned(string defName) { return defName != null && Array.IndexOf(MineShaftBanned, defName) >= 0; }
-
-        public static bool IsMineShaftRecipe(string recipeDefName)
-        {
-            if (recipeDefName == null) return false;
-            for (int i = 0; i < MineShaftPrefixes.Length; i++)
-                if (recipeDefName.StartsWith(MineShaftPrefixes[i], StringComparison.Ordinal)) return true;
-            return false;
-        }
-
-        /// <summary>A mine-shaft recipe is unlisted when it is one of Mines 2.0's and any product is banned.</summary>
-        public static bool UnlistMineShaft(bool enabled, string recipeDefName, IList<string> productDefNames)
-        {
-            if (!enabled || !IsMineShaftRecipe(recipeDefName) || productDefNames == null) return false;
-            for (int i = 0; i < productDefNames.Count; i++) if (IsMineShaftBanned(productDefNames[i])) return true;
-            return false;
-        }
 
         /// <summary>Thing.Smeltable with beskar: the stuff def is smeltable=false (so vanilla never hands beskar back), which also makes
         /// beskar-made gear unsmeltable. With the mechanic on, such gear is smeltable again (relics never are, as in vanilla); the products
