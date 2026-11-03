@@ -3065,7 +3065,7 @@ def carry_last_measured(lastm, saved, points, now):
 
 def publish_health(points, prev, ctx, rules, now):
     """Operations' one verdict (ops_health.py, health.json) from this pass's points and the series. -> its points:
-    health.state and health.spent_slis (the OPS_ERROR_BUDGET_DIAGNOSE target). A failure is UNMEASURED and flagged;
+    health.state, health.spent_slis (the OPS_ERROR_BUDGET_DIAGNOSE target) and health.drifted_slis. A failure is UNMEASURED and flagged;
     the old verdict then ages until Relentless reads it as stale."""
     import ops_health
     try:
@@ -3076,9 +3076,10 @@ def publish_health(points, prev, ctx, rules, now):
         v = ops_health.publish(points, prev, world, rules, str(data_clone()), now)
     except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
         why = "health verdict not written: %s: %s" % (type(e).__name__, str(e)[:160])
-        return {"health.state": U(why), "health.spent_slis": U(why)}
+        return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why)}
     x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"][:300]}
-    return {"health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x)}
+    return {"health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
+            "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 
 
 @_locked

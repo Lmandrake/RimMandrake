@@ -9,10 +9,13 @@ are already being worked non system work can be selected." Ruling text: design/R
 "Relentless fixes the system first"; design: build_system_practices_2026-11-03.md idea 5.
 
 ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.json:
-  {schema, as_of, t, state: healthy|degraded, budget: {<sli>: {...}}, spent: [<sli>], system_items: [ids, best first],
+  {schema, as_of, t, state: healthy|degraded, budget: {<sli>: {...}}, spent: [<sli>], drifted: [<sli>], system_items: [ids, best first],
    content_paused: bool, why}
   SLI      a point ops_watch already measured, bad when it crosses its line (rules "health" block, `slis`). UNMEASURED is
            not bad and not good: it is said, and spends nothing.
+  UNIT     every SLI names the unit its line was written against. A point that says another unit has changed meaning under
+           the SLI: it reads UNMEASURED and the SLI is listed in `drifted` (alarm SLI_DRIFT), never a confident number. An
+           SLI moved to a new key keeps its past through `was` [{key, unit}], read only for passes the new key is absent from.
   BUDGET   per SLI, the hours it read bad in the last window_h, a gap between passes counted at most max_gap_h. Spent at
            allowed_bad_h ("When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers").
   STATE    degraded while any SLI's budget is spent, else healthy. Degraded pauses NEW content; running work continues.
@@ -75,11 +78,29 @@ def bad_of(point, sli):
     return bool(OPS[sli["op"]](point["v"], sli["x"]))
 
 
+def reading_of(points, sli):
+    """The point this SLI reads in one pass's {key: point}. Its own key with the unit it was written against; a MEASURED point
+    in another unit -> UNMEASURED, marked drifted; its own key absent -> a `was` key, only in that key's old unit."""
+    p = points.get(sli["key"])
+    if isinstance(p, dict):
+        if p.get("m") != "MEASURED" or p.get("unit") == sli["unit"]:
+            return p
+        return {"m": "UNMEASURED", "v": None, "drifted": True,
+                "why": "%s now says %r; this SLI's line was written against %r" % (sli["key"], p.get("unit"), sli["unit"])}
+    for w in sli.get("was") or ():
+        q = points.get(w["key"])
+        if isinstance(q, dict) and q.get("unit") == w["unit"]:
+            return q
+    return p
+
+
 def sli_problems(c):
     out = []
     for s in c.get("slis") or []:
-        if not isinstance(s, dict) or not s.get("name") or not s.get("key") or s.get("op") not in OPS or not is_num(s.get("x")):
-            out.append("health sli needs name, key, op in %s and a numeric x: %r" % (sorted(OPS), s))
+        if not isinstance(s, dict) or not s.get("name") or not s.get("key") or s.get("op") not in OPS or not is_num(s.get("x")) \
+                or not s.get("unit") or not isinstance(s.get("was") or [], list) or not all(
+                    isinstance(w, dict) and w.get("key") and w.get("unit") for w in s.get("was") or []):
+            out.append("health sli needs name, key, unit, op in %s, a numeric x and was [{key, unit}]: %r" % (sorted(OPS), s))
     for k in ("max_age_min", "window_h", "allowed_bad_h", "max_gap_h"):
         if not is_num(c.get(k)) or c[k] <= 0:
             out.append("health.%s must be a positive number" % k)
@@ -90,7 +111,7 @@ def bad_hours(samples, sli, now, window_h, max_gap_h):
     """samples: [(t, point)] in any order. -> (hours bad in the window, hours measured in it). A sample holds until the
     next one, at most max_gap_h: a watcher that stopped measuring spends no budget and earns none."""
     lo = now - window_h * HOUR
-    pts = sorted((t, p) for t, p in samples if is_num(t) and t <= now)
+    pts = sorted(((t, p) for t, p in samples if is_num(t) and t <= now), key=lambda x: x[0])    # never compare two points on a tied t
     bad = seen = 0.0
     for n, (t, p) in enumerate(pts):
         end = min(pts[n + 1][0] if n + 1 < len(pts) else now, t + max_gap_h * HOUR, now)
@@ -111,9 +132,9 @@ def budget(points, history, c, now):
     out = {}
     for s in c.get("slis") or []:
         fam = s["key"].split(".")[0]
-        samples = [(r.get("t"), (r.get("points") or {}).get(s["key"])) for r in history.get(fam) or []
+        samples = [(r.get("t"), reading_of(r.get("points") or {}, s)) for r in history.get(fam) or []
                    if isinstance(r, dict)]
-        cur = points.get(s["key"])
+        cur = reading_of(points, s)
         samples.append((now, cur))
         bad_h, seen_h = bad_hours(samples, s, now, c["window_h"], c["max_gap_h"])
         now_bad = bad_of(cur, s)
@@ -125,6 +146,8 @@ def budget(points, history, c, now):
                           "spent": bad_h >= c["allowed_bad_h"]}
         if now_bad is None:
             out[s["name"]]["why"] = (cur or {}).get("why") if isinstance(cur, dict) else "no reading this pass"
+            if isinstance(cur, dict) and cur.get("drifted"):
+                out[s["name"]]["drifted"] = True
     for name, why in (c.get("unmeasured_slis") or {}).items():     # an SLI the design names and no instrument has yet
         out[name] = {"now": "UNMEASURED", "why": why, "spent": False}
     return out
@@ -195,6 +218,7 @@ def verdict(points, history, world, rules, root, now):
     probs = sli_problems(c)
     b = budget(points, history, c, now) if not probs else {}
     spent = sorted(k for k, v in b.items() if v.get("spent"))
+    drifted = sorted(k for k, v in b.items() if v.get("drifted"))
     state = "degraded" if spent else "healthy"
     items = system_items(world, rules, root) if world is not None else None
     ids = [it.id for it in items] if items is not None else None
@@ -203,11 +227,13 @@ def verdict(points, history, world, rules, root, now):
                  for it in items or () if getattr(it, "live_repeats", 0)]
     why = ("error budget spent: " + ", ".join("%s %sh bad of %sh" % (k, b[k]["bad_h"], c["allowed_bad_h"]) for k in spent)
            if spent else "every SLI inside its budget")
+    if drifted:
+        why += "; meaning changed under: " + ", ".join(drifted)
     if probs:
         why = "health rules unusable, no budget read: " + "; ".join(probs)
     if ids is None:
         why += "; no ledger this pass: system_items unknown"
-    return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "budget": b, "spent": spent,
+    return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "budget": b, "spent": spent, "drifted": drifted,
             "system_items": ids, "recurring": recurring, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
 
 
@@ -248,7 +274,7 @@ def main(argv=None):
     v, why = read_verdict()
     print(why)
     if v:
-        print("state %s; spent %s; %d system items first" % (v["state"], v["spent"] or "none", len(v["system_items"])))
+        print("state %s; spent %s; drifted %s; %d system items first" % (v["state"], v["spent"] or "none", v.get("drifted") or "none", len(v["system_items"] or ())))
     return 0 if v else 1
 
 

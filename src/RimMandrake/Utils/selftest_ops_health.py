@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """ops_health (PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF) with planted series: the budget spends at allowed_bad_h and not an
 hour before, a silent watcher spends nothing, UNMEASURED is neither bad nor good, the classifier keeps content out,
-a died-once fix leads, a stale or foreign verdict reads as none, and the shipped rules block is usable and wired to an
-alarm. No network; the ledger is a fake world."""
+a died-once fix leads, a stale or foreign verdict reads as none, the shipped rules block is usable and wired to an alarm,
+and an SLI cannot go blind when its point changes meaning (OPS_ERROR_BUDGET_DIAGNOSE_CIRG). No network; the ledger is a fake world."""
 import json
 import os
 import sys
@@ -25,10 +25,10 @@ def ok(what, cond, got=None):
 
 
 def M(v):
-    return {"v": v, "m": "MEASURED"}
+    return {"v": v, "m": "MEASURED", "unit": "reds"}
 
 
-SLI = {"name": "reds", "key": "testing.nightly_news", "op": ">", "x": 25}
+SLI = {"name": "reds", "key": "testing.nightly_news", "unit": "reds", "op": ">", "x": 25}
 RULES = {"health": {"slis": [SLI], "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0, "max_age_min": 45,
                     "system_words": ["relentless", "ops", "selftest"], "system_prefixes": ["OPS_"],
                     "content_words": ["redraw"], "content_kinds": ["mod", "art"]}}
@@ -129,6 +129,47 @@ tg = [t for t in shipped["targets"] if t.get("key") == "health.spent_slis"]
 ok("shipped: a spent budget is an alarm with one fixed item name",
    len(tg) == 1 and tg[0].get("alarm") is True and tg[0].get("name") == "OPS_ERROR_BUDGET_DIAGNOSE", tg)
 
+# --- an SLI cannot go blind under a redefined point (OPS_ERROR_BUDGET_DIAGNOSE_CIRG): 1ff82747f3 narrowed
+# testing.nightly_news to the list's own faults, 3 minutes after the SLI was written on it; 84 reds then read 0, "ok"
+OLD_UNIT, NEW_UNIT = "nightly reds not on the known-red list, and entries past their age", "nightly reds no known-red entry parks"
+NARROW = "known-red list entries past their age, and bad entries"
+PT = lambda v, u: {"v": v, "m": "MEASURED", "unit": u}  # noqa: E731
+blind = {"name": "reds", "key": "testing.nightly_news", "unit": OLD_UNIT, "op": ">", "x": 25}
+cb = dict(H.conf(RULES), slis=[blind])
+b = H.budget({"testing.nightly_news": PT(0, NARROW)}, {}, cb, NOW)["reds"]
+ok("drift: the very SLI that went blind now reads UNMEASURED, not ok", b["now"] == "UNMEASURED" and b.get("drifted") and NARROW in b["why"], b)
+hist = {"testing": [{"t": NOW - h * H_, "points": {"testing.nightly_news": PT(0, NARROW)}} for h in range(30)]}
+b = H.budget({"testing.nightly_news": PT(84, NARROW)}, hist, cb, NOW)["reds"]
+ok("drift: another unit neither spends nor earns", b["bad_h"] == 0 and b["measured_h"] == 0 and not b["spent"], b)
+ok("drift: an SLI with no unit is refused", any("unit" in p for p in H.sli_problems(dict(cb, slis=[{"name": "n", "key": "k", "op": ">", "x": 1}]))))
+ok("drift: a bad was is refused", H.sli_problems(dict(cb, slis=[dict(blind, was=[{"key": "k"}])])))
+dv = H.verdict({"testing.nightly_news": PT(0, NARROW)}, {}, None, dict(RULES, health=dict(RULES["health"], slis=[blind])), root, NOW)
+ok("drift: the verdict names it", dv["drifted"] == ["reds"] and "reds" in dv["why"], dv)
+moved = dict(next(s for s in sc["slis"] if s["name"] == "nightly_reds"), name="moved")
+cm = dict(sc, slis=[moved])
+past = [{"t": NOW - h * H_, "points": {"testing.nightly_news": PT(84, OLD_UNIT)}} for h in range(26, 2, -1)]
+past += [{"t": NOW - h * H_, "points": {"testing.nightly_news": PT(0, NARROW), "testing.nightly_unparked_reds": PT(84, NEW_UNIT)}} for h in (2, 1)]
+b = H.budget({"testing.nightly_news": PT(0, NARROW), "testing.nightly_unparked_reds": PT(84, NEW_UNIT)}, {"testing": past}, cm, NOW)["moved"]
+ok("was: the old key's bad hours still count, the new key carries on", b["now"] == "bad" and b["spent"] and 25 < b["bad_h"] < 27, b)
+b = H.budget({"testing.nightly_unparked_reds": PT(3, NEW_UNIT)}, {"testing": [{"t": NOW - h * H_, "points": {"testing.nightly_news": PT(84, NARROW)}} for h in range(30)]}, cm, NOW)["moved"]
+ok("was: the old key in a third unit counts for nothing", b["bad_h"] == 0 and not b["spent"], b)
+
+b = H.budget({"testing.nightly_news": M(84)}, {"testing": [{"t": NOW, "points": {"testing.nightly_news": M(84)}}]}, c, NOW)["reds"]
+ok("tie: a series record stamped this very pass does not crash the verdict", b["now"] == "bad", b)
+
+# the class: every shipped SLI's key and unit are ones ops_watch can emit (a literal, %s a wildcard); rename either and this fails
+import ast  # noqa: E402
+import re  # noqa: E402
+src_lits = [n.value for n in ast.walk(ast.parse((HERE / "ops_watch.py").read_text(encoding="utf-8")))
+            if isinstance(n, ast.Constant) and isinstance(n.value, str)]
+pats = [re.compile(re.escape(x).replace(re.escape("%s"), ".+")) for x in src_lits if len(x) < 120]
+for s_ in sc["slis"]:
+    ok("emitted: %s key %s" % (s_["name"], s_["key"]), any(p.fullmatch(s_["key"]) for p in pats))
+    ok("emitted: %s unit %r" % (s_["name"], s_["unit"]), any(p.fullmatch(s_["unit"]) for p in pats))
+tg = [t for t in shipped["targets"] if t.get("key") == "health.drifted_slis"]
+ok("shipped: a drifted SLI is an alarm with one fixed item name",
+   len(tg) == 1 and tg[0].get("alarm") is True and tg[0].get("name") == "OPS_SLI_DRIFT_DIAGNOSE", tg)
+
 # --- ops_watch writes the verdict on a full pass and never on a limited one
 os.environ["RM_OPS_WATCH_DIR"] = str(d / "ow")
 import ops_watch as OW  # noqa: E402
@@ -137,12 +178,25 @@ for k in list(OW.COLLECTORS):
 OW.COLLECTORS["testing"] = lambda now, rules, ctx: {"testing.nightly_news": M(84)}
 rules = dict(shipped, alarm={}, targets=[], ranges={})
 OW.run(now=NOW, rules=rules, filer=None, families=["testing"])
+# the real collector on the night that went blind: list faults 0, unparked 84 -> the shipped SLI reads bad
+import known_reds as KR  # noqa: E402
+real_measure = KR.measure
+KR.measure = lambda *a, **k: {"night": "n", "news": ["red, not listed: t%d" % i for i in range(84)], "reds": ["t%d" % i for i in range(84)],
+                              "listed": [], "unlisted": ["t%d" % i for i in range(84)], "expired": [], "cured": [],
+                              "cop": {"groups": [], "overdue": [], "overdue_said": "", "detail_read": False}}
+night = OW.nightly_news(NOW, {"open_ids": set()})
+KR.measure = real_measure
+ok("collector: list faults read 0 while 84 reds stand", night["testing.nightly_news"]["v"] == 0 and night["testing.nightly_unparked_reds"]["v"] == 84, night)
+b = H.budget(night, {}, sc, NOW)["nightly_reds"]
+ok("collector: the shipped nightly_reds SLI sees the 84", b["now"] == "bad" and b["v"] == 84, b)
+
 ok("ops_watch: a limited pass writes no verdict", not (d / "ow" / "health.json").exists())
 OW.run(now=NOW, rules=rules, filer=None)
 got, why = H.read_verdict(NOW + 1, d / "ow" / "health.json")
 st = json.loads((d / "ow" / "status.json").read_text())
 ok("ops_watch: a full pass publishes health.json and its points",
    (d / "ow" / "health.json").exists() and st["points"]["health.spent_slis"]["m"] == "MEASURED"
+   and st["points"]["health.drifted_slis"]["m"] == "MEASURED"
    and st["points"]["health.state"]["v"] in ("healthy", "degraded"), st["points"].get("health.state"))
 
 # the hand order: named beats words both ways, a family takes its new members, a closed name holds no place
