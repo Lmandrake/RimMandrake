@@ -1331,7 +1331,7 @@ class Effects(relentless_game.GameFx):
             for sha in shas:
                 files = self.git_ok(c, "diff-tree", "--no-commit-id", "--name-only", "-r", "-m", "--root", sha).split("\n")
                 if len(self.git_ok(c, "rev-list", "--parents", "-n1", sha).split()) > 2 or any(
-                        f and not f.startswith(POOL_NOISE + POOL_STATE) for f in files):
+                        not f or not f.startswith(POOL_NOISE + POOL_STATE) for f in files if f) or not any(files):
                     state = False
                     break
             kept = bool(shas) and not state

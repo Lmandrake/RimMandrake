@@ -199,6 +199,22 @@ def main() -> int:
         rd = sc.pool_reading()
         check(rd["stranded"] == ["p2"] and rd["breach"] == 1, f"a transcript alone strands nothing: {rd['stranded']}")
         check(sc.pool_reuse(pool / "p6") == pool / "p6" and not (pool / "p4").exists(), "and blocks no reuse")
+        # POOL_STATE_COMMITS_PIN_CLONE_FOREVER: a trailing lesson commit is not stranded work; a clone a live item owns is not stranded
+        (pool / "p6" / "infrastructure/state/lessons").mkdir(parents=True, exist_ok=True)
+        (pool / "p6" / "infrastructure/state/lessons/l.md").write_text("a lesson\n")
+        sh("git", "-C", str(pool / "p6"), "add", "infrastructure/state/lessons/l.md")
+        sh("git", "-C", str(pool / "p6"), "commit", "-q", "-m", "lesson")
+        check(sc.clone_unpushed(pool / "p6") == [] and sc.clone_unpushed(pool / "p6", strict=True) == ["commits"],
+              "a state-only commit is not stranded work, but reuse (strict) never drops it")
+        owner = BASE / "owner" / "items" / "I" / "state.json"
+        owner.parent.mkdir(parents=True)
+        owner.write_text(json.dumps({"status": "game", "clone": str(pool / "p2")}))
+        os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "owner" / "items" / "*" / "state.json")
+        rd = sc.pool_reading()
+        check(rd["stranded"] == [] and rd["breach"] == 0, f"a live item's clone is the belt's, not stranded: {rd['stranded']}")
+        owner.write_text(json.dumps({"status": "done", "clone": str(pool / "p2")}))
+        check(sc.pool_reading()["stranded"] == ["p2"], "a finished item owns nothing")
+        os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "nostate*.json")
         os.environ["RM_POOL_MAX_CLONES"] = "9"
         os.environ["RM_POOL_MAX_BYTES"] = "1"
         r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)

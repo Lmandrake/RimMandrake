@@ -385,12 +385,27 @@ def dirty_beyond_origin(c: Path) -> bool:
     return False
 
 
-def clone_unpushed(c: Path) -> list[str]:
+POOL_STATE = ("infrastructure/state/lessons/",)     # relentless.py POOL_STATE, the same list
+
+
+def commit_is_state(c: Path, sha: str) -> bool:
+    """True when the commit is a single-parent commit touching only POOL_NOISE / POOL_STATE paths."""
+    if len(git("rev-list", "--parents", "-n1", sha, cwd=c, timeout=60).split()) > 2:
+        return False
+    files = git("diff-tree", "--no-commit-id", "--name-only", "-r", "--root", sha, cwd=c, timeout=60).split("\n")
+    files = [f for f in files if f]
+    return bool(files) and all(f.startswith(POOL_NOISE + POOL_STATE) for f in files)
+
+
+def clone_unpushed(c: Path, strict: bool = False) -> list[str]:
     """What this clone holds that no remote ref does: commits, a stash, dirty or untracked files. Empty = nothing at risk.
     Fails closed: a clone git cannot read reports itself unreadable."""
     out = []
     try:
-        if git("rev-list", "--branches", "--tags", "--not", "--remotes", cwd=c, timeout=120):
+        shas = git("rev-list", "--branches", "--tags", "--not", "--remotes", cwd=c, timeout=120).split()
+        # a worker's trailing lesson/ledger commit is carried by relentless's eviction bundle (POOL_STATE_COMMITS_PIN_CLONE_FOREVER):
+        # it must not read as stranded work, or the alarm fires on a clone the belt can already release
+        if any(strict or not commit_is_state(c, x) for x in shas):
             out.append("commits")
         if git("stash", "list", cwd=c, timeout=60):
             out.append("stash")
@@ -413,6 +428,23 @@ def clone_in_use(c: Path) -> bool:
             continue
         if cwd == str(c) or cwd.startswith(pre):
             return True
+    return False
+
+
+def owned_by_item(c: Path) -> bool:
+    """A live relentless item (not done or retired) names this clone as its work, check or help clone. The belt owns it then:
+    release_parked frees it when the item is put down, and a live game phase keeps it on purpose, so the idle hour does not
+    make it stranded. POOL_STATE_COMMITS_PIN_CLONE_FOREVER: GRAVSHIP read stranded for hours while its item waited on the game."""
+    for f in glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "items" / "*" / "state.json"))):
+        try:
+            st = json.loads(Path(f).read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(st, dict) or st.get("status") in ("done", "retired"):
+            continue
+        for h in (st, st.get("check"), st.get("help")):
+            if isinstance(h, dict) and h.get("clone") and os.path.abspath(h["clone"]) == str(c):
+                return True
     return False
 
 
@@ -440,7 +472,7 @@ def pool_reading() -> dict:
             born = now
         risk = clone_unpushed(c)
         # unpushed work in a clone someone is working in is the job; unpushed work nobody touches for an hour is stranded
-        stranded = bool(risk) and clone_idle_s(c) >= POOL_IDLE_S and not clone_in_use(c)
+        stranded = bool(risk) and clone_idle_s(c) >= POOL_IDLE_S and not clone_in_use(c) and not owned_by_item(c)
         rows.append({"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
                      "unpushed": risk, "stranded": stranded})
     tot = sum(r["bytes"] for r in rows)
@@ -573,7 +605,7 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
     if dest.parent != root:
         return None
     named = ""
-    for f in glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "*.json"))):
+    for f in glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "items" / "*" / "state.json"))):
         try:
             named += Path(f).read_text()
         except OSError:
@@ -583,7 +615,7 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
         if c == dest or not (c / ".git").exists() or str(c) in named:
             continue
         idle_ok = c.name.startswith(POOL_WARM) or clone_idle_s(c) >= POOL_IDLE_S
-        if not idle_ok or clone_in_use(c) or clone_unpushed(c):
+        if not idle_ok or clone_in_use(c) or clone_unpushed(c, strict=True):   # reuse resets to main: no commit may be dropped
             continue
         try:
             os.rename(c, dest)
