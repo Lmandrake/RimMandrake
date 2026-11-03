@@ -23,6 +23,8 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 DEFS = os.path.join(HERE, "Defs", "TerrainDefs", "RM_SumpWalkways.xml")
 PROVE = os.path.join(HERE, "prove_glasswalk_speed.py")
 SCENELIB = os.path.join(ROOT, "src", "RimMandrake", "Utils", "scenes", "scenelib.py")
+LIVE_PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs", "SUMP_GLASSWALK_SPEED_RATIO_1.txt")
+RIMFLOW = os.path.join(ROOT, "src", "RimMandrake", "rimflow")
 
 BAND = (0.72, 0.90)          # the spec's "~80%" acceptance band (as the 2026-10-10 scene judged it)
 STANDARD_T = 60.0 / 4.6      # vanilla Human MoveSpeed 4.6 -> 13.04 ticks per cardinal cell
@@ -307,6 +309,32 @@ def main_end_to_end(path):
     return ok, rows
 
 
+def live_line_runnable(path=LIVE_PROOFS):
+    """The supervisor's game gate reads infrastructure/state/live_proofs/<ID>.txt with the rimflow parsers: is the A1 line
+    there, does the real refused_proof() accept it (no $ / backtick / eval expansion, no load or mutation, no flyer word),
+    and does it run THIS proof script with stdin closed? Returns (ok, why)."""
+    if RIMFLOW not in sys.path:
+        sys.path.insert(0, RIMFLOW)
+    import relentless_live as L
+    import relentless_live_round as R
+    try:
+        text = open(path, encoding="utf-8").read()
+    except OSError as e:
+        return False, "cannot read %s: %s" % (path, e)
+    line = R.proof_lines(text).get("A1")
+    if not line:
+        return False, "no `live-proof A1:` line in %s" % path
+    why = L.refused_proof(L.live_rules(None), "Glasswalk speed ratio", "", line)
+    if why:
+        return False, "the game gate refuses the A1 line: %s" % why
+    toks = line.split()
+    if len(toks) < 2 or toks[0] not in ("python.exe", "python3") or toks[1] != "src/RimMandrake/TheSump/prove_glasswalk_speed.py":
+        return False, "the A1 line does not run src/RimMandrake/TheSump/prove_glasswalk_speed.py: %r" % line
+    if "< /dev/null" not in line:
+        return False, "the A1 line leaves stdin open: %r" % line
+    return True, line
+
+
 def main():
     fails = []
 
@@ -366,6 +394,10 @@ def main():
             print("   main[%s] exit %s (want %d): %s" % (label, got, want, line))
         check(ok2, "prove_glasswalk_speed.main() on a fake bridge: the checker's T=9.8 pawn exits 1 UNMEASURED, a T=13.04 "
                    "pawn on law readings exits 0 PASS (also as the 2nd spawn after an off-band one), a pawn drifting off-band after the pick exits 1 UNMEASURED, delta 5 (ratio 0.72) and the 0.65 world exit 1 FAIL, so do walks wrong singly but law-perfect on average; the map is dropped every time")
+
+    # The live proof line must be one the supervisor's gate will run (gen 5 ended game_refused on a "$(wslpath ...)" line).
+    ok3, why3 = live_line_runnable()
+    check(ok3, "live-proofs A1 line passes relentless_live.refused_proof and runs prove_glasswalk_speed.py: %s" % why3)
 
     print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/offline %s (%d failed)" % ("PASS" if not fails else "FAIL", len(fails)))
     return 0 if not fails else 1
