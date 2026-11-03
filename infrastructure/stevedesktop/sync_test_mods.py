@@ -47,7 +47,7 @@ TARGET = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
 GAME = os.environ.get("STEVE_GAME_WSL", "/mnt/d/SteamLibrary/steamapps/common/RimWorld")
 INBOX = os.environ.get("STEVE_TESTQ_HOME", "/mnt/d/RimTest/testq") + "/companion"
 ARTIFACT = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "artifacts", "BridgeTools", "JawaBench")
-SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "-o", "LogLevel=ERROR", TARGET]
+SSH = shlex.split(os.environ.get("TESTQ_SSH", "ssh -o BatchMode=yes -o ConnectTimeout=8 -o LogLevel=ERROR")) + [TARGET]
 _SKIP = re.compile(r"<(modDependencies\w*|loadAfter\w*|loadBefore\w*|incompatibleWith\w*)>.*?</\1>", re.S)
 
 

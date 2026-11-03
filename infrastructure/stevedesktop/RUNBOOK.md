@@ -317,7 +317,10 @@ First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archma
   deploy phase compares the game's companion with the job's sources (the source hash build.py embeds,
   `bridgetools/companion_identity.py`). A FRESH copy in the inbox is installed with the game down.
   With no FRESH copy, the job ends INVALID/DEPLOY and the note names the DLL, so rows never run on a
-  stale companion.
+  stale companion. Nobody does this by hand any more: `src/RimMandrake/Utils/testq/companion_stage.py run`,
+  in testq-tick.service before `tick` and `fill`, builds in the dispatch clone and stages at every change
+  to the companion's sources; its reading is `QHOME/companion_stage.json`, and the filler holds while it
+  is not `staged`. `companion_stage.py status` gives the live answer.
 - `remote_modcheck.sh [--sync] [--deploy M1,M2] [--no-run] <Mod> [modcheck args]`: from Archmagi.
   **The one command for code updates is `--sync`:** the runner pulls origin/main, plans a deploy of
   `<Mod>` and every `--deploy` mod, and only if anything drifted stops the game and applies it.

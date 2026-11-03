@@ -7,7 +7,7 @@ the owner asked. rm-ops-watch runs this on every full pass (ops_watch.steve_rele
 
 A pass, reading the lane through testq.fill_plan and nothing else:
   none       no filler brake (the normal answer)
-  wait       a brake, but the machine is down or quarantined: a canary could only fail
+  wait       a brake, but the machine is down, quarantined or has no fresh companion yet: a canary could only fail
   escalate   a tail job has no recorded non-fault cause (testq.nonfault_cause), or the canary spent on this tail did not
              come back DONE: the steward's ladder has it, and steve.incident_unclaimed_min alarms if nobody claims it
   released   the brake's jobs all have a recorded cause: one canary job submitted, requested_by Operations.canary
@@ -115,6 +115,9 @@ def decide(now, mods):
     spent = spent_on(tails)
     if spent:
         return dict(rec, state="escalate", reason="canary %s spent on this tail and it did not end the brake" % spent.get("job"))
+    hold = T.companion_hold()
+    if hold:            # a canary now could only die the same death
+        return dict(rec, state="wait", reason=hold)
     req = canary_request(mod, tails, now)
     if not req:
         return dict(rec, state="refused", reason="nothing to ask of %s: no pick and no chain on the tail" % mod)

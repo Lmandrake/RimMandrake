@@ -131,6 +131,9 @@ def mods_default():
 
 # ---------------------------------------------------------------- what state the lane is in
 
+COMPANION_GRACE_S = 900     # a hold outlasting a build and a push, and more than one retry of a blip, is a fault
+
+
 def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
     """fault_at: the epoch from which the state is a fault (0: already; None: never). settled: the lane is working as
     intended, so this state ends an incident."""
@@ -204,6 +207,9 @@ def lane_state(now, mods=None):
     if "pick" in by:
         return _st("IDLE_EMPTY", "fill would queue %s but nothing is pending (the fill failed?)"
                    % "; ".join("%s: %s" % (m, ",".join(plans[m]["pick"])) for m in by["pick"]), 0)
+    if "companion" in by:   # the stager is failing or behind: the filler holds rather than die at deploy
+        m = by["companion"][0]
+        return _st("IDLE_EMPTY", "filler held: " + plans[m]["text"][:200], plans[m]["since"] + COMPANION_GRACE_S)
     gaps = [m for v in ("nohist", "dry") for m in by.get(v, [])]
     if gaps:
         return _st("IDLE_EMPTY", "nothing selectable: " + "; ".join(plans[m]["text"][:160] for m in gaps), 0)

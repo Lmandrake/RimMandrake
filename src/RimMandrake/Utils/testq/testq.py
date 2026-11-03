@@ -406,6 +406,11 @@ def admit(status):
         return
     cands.sort(key=lambda j: (-j["priority"], j["profile"] != train, j["submitted"], j["id"]))
     job = cands[0]
+    why = job.get("requested_by") == FILLER and companion_unready(job)
+    if why:     # the filler picks again next tick; a cancel is not counted by the brake (brake_tail)
+        move(job["id"], "pending", "cancelled", {"job": job, "reason": why, "at": S.utcnow()})
+        log("%s cancelled at admission: %s" % (job["id"], why))
+        return
     rc, o = remote(["start"], stdin=json.dumps(job))
     if rc == EX_BUSY:
         log("%s: worker busy (%s); stays pending" % (job["id"], o.get("busy_with")))
@@ -1224,13 +1229,36 @@ def machine_killed(res):
     return res.get("outcome") == "INTERRUPTED" or (res.get("outcome"), res.get("cause")) == ("INVALID", "GAME_DIED")
 
 
+def companion_hold(rev="origin/main"):
+    """Why the filler may not submit at `rev`, or None: the stager's record (companion_stage.py) has not staged the
+    companion those sources need. No record: the stager never ran, no hold, and the worker's refusal still stands."""
+    st = read_json(q("companion_stage.json"))
+    if not st:
+        return None
+    import companion_stage as CS
+    return CS.hold_reason(st, rev)
+
+
+def companion_unready(job):
+    """Live, at admission: why this job's companion is not on SteveDesktop, or None. Only once a stager has run."""
+    if not read_json(q("companion_stage.json")):
+        return None
+    import companion_stage as CS
+    return CS.unready_at(job["source_sha"])
+
+
 def nonfault_cause(rec, windows):
-    """-> the recorded non-fault cause of a finished job that was not DONE ("cancel", "maintenance", "machine_down"), or
-    None: it counts as a fault. A killed job is excused only by a recorded window overlapping its span, admission to
-    finish (a done record older than `sent` has only its last attempt's stamps)."""
+    """-> the recorded non-fault cause of a finished job that was not DONE ("cancel", "maintenance", "machine_down",
+    "companion_stale"), or None: it counts as a fault. A killed job is excused only by a recorded window overlapping its
+    span, admission to finish (a done record older than `sent` has only its last attempt's stamps). A job the worker
+    refused for a companion not built from its sources is a cause the stager (companion_stage.py) fixes by itself, and
+    brake_release holds its canary until it has."""
     if (rec or {}).get("cancelled"):
         return "cancel"
     res = (rec or {}).get("result") or {}
+    if (res.get("outcome"), res.get("cause")) == ("INVALID", "DEPLOY") \
+            and re.search(r"companion (STALE|UNSTAMPED|MISSING) ", str(res.get("note") or "")):
+        return "companion_stale"
     if not machine_killed(res):
         return None
     try:
@@ -1270,6 +1298,7 @@ def fill_plan(mod, n, cap, day_s, now=None):
       cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
                                                                           and no DONE+canary job since (lane_proven_after)
       nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
+      companion  a job at origin/main could only die at deploy: its companion is not staged (companion_hold)
       pick     `pick` would be queued (fill_rank: the evidence-gap order)"""
     ensure_dirs()
     now = time.time() if now is None else now
@@ -1301,6 +1330,10 @@ def fill_plan(mod, n, cap, day_s, now=None):
         return dict(out, verdict="brake", tail=tail,
                     text="brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by "
                          "hand" % ", ".join(job_of(t)["id"] for t in tail))
+    hold = companion_hold()
+    if hold:
+        since = (read_json(q("companion_stage.json")) or {}).get("since") or now
+        return dict(out, verdict="companion", text=hold, since=since)
     return dict(out, **fill_rank(mod, n, now, today))
 
 
@@ -1432,6 +1465,7 @@ Description=testq dispatch tick (TESTQ_DISPATCHER_BUILD_SSH_NO_LLM)
 Type=oneshot
 WorkingDirectory={clone}
 {git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
+ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/companion_stage.py run
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward
