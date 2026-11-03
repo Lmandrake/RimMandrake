@@ -14,6 +14,15 @@
     <combatPower>5</combatPower>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <wildGroupSize>1~2</wildGroupSize>
+    <!-- MYNOCK_FLIPBOOK_FRAMES_1: 8-frame whole-body flip-book cut from the statics below
+         (src/RimMandrake/Utils/art/flyer_cutout_sets/Mynock.json); the body is pixel-identical in
+         every frame, only the wings beat. Multiplier 1.0 = drawn at the life stage's drawSize. -->
+    <flyingAnimationFramePathPrefix>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>3</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <label>mynock pup</label>

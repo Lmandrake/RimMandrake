@@ -54,10 +54,8 @@
      duplicate's numbers, which were donor intent only, not a spec.
      canLeaveMapFlying is deliberately OMITTED: a mynock lairs on its host
      hull rather than migrating off the map, unlike the wildlife above that
-     all set it true. No flyingAnimationFramePathPrefix - no flip-book frames
-     exist for this species' own art, so it flies with no wing-beat, which
-     is documented correct behaviour (CLAUDE.md, "the flying ANIMATION is
-     separate from the flight STAT"), not a thing to block on. -->
+     all set it true. The wing-beat flip-book (Mynock_Flying_1..8) is wired on
+     the PawnKindDef (MYNOCK_FLIPBOOK_FRAMES_1). -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">

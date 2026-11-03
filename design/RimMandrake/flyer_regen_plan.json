@@ -52,9 +52,9 @@
    "sets": [],
    "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
    "static": {
-    "g1": 0.839,
-    "g2": 0.528,
-    "g4": 0.816
+    "g1": 0.835,
+    "g2": 0.408,
+    "g4": 0.605
    },
    "static_fails": [],
    "provenance": "no flip-book",
@@ -142,15 +142,13 @@
    "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
    "flipbook": "none",
    "sets": [],
-   "tex": "Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier",
+   "tex": "Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B",
    "static": {
-    "g1": 0.137,
-    "g2": 1.04,
-    "g4": 0.129
+    "g1": 0.581,
+    "g2": 0.979,
+    "g4": 0.637
    },
-   "static_fails": [
-    "G1 body share 0.14 < 0.5"
-   ],
+   "static_fails": [],
    "provenance": "no flip-book",
    "frames": ""
   },
@@ -285,14 +283,14 @@
    "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
    "flipbook": "none",
    "sets": [],
-   "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+   "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_C",
    "static": {
-    "g1": 0.285,
-    "g2": 0.951,
-    "g4": 0.27
+    "g1": 0.405,
+    "g2": 0.64,
+    "g4": 0.656
    },
    "static_fails": [
-    "G1 body share 0.28 < 0.5"
+    "G1 body share 0.41 < 0.5"
    ],
    "provenance": "no flip-book",
    "frames": ""
@@ -621,10 +619,12 @@
    "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
    "static": {
     "g1": 0.856,
-    "g2": 0.363,
-    "g4": 0.48
+    "g2": 0.306,
+    "g4": 0.41
    },
-   "static_fails": [],
+   "static_fails": [
+    "G2 N/S width 0.31 < 0.33"
+   ],
    "provenance": "generated/ours",
    "frames": "1"
   },
@@ -655,7 +655,7 @@
    "tex": "swanimals/Brezak/Brezak",
    "static": {
     "g1": 0.677,
-    "g2": 0.436,
+    "g2": 0.543,
     "g4": 0.371
    },
    "static_fails": [],
@@ -808,17 +808,21 @@
    "frames": ""
   },
   "RSW_Mynock": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "none",
-   "sets": [],
-   "tex": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-   "static": null,
-   "static_fails": [
-    "G? static UNMEASURED"
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Mynock"
    ],
-   "provenance": "no flip-book",
-   "frames": ""
+   "tex": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "static": {
+    "g1": 0.765,
+    "g2": 0.887,
+    "g4": 0.77
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RSW_Neebray": {
    "tier": 1,
@@ -827,9 +831,9 @@
    "sets": [],
    "tex": "swanimals/Neebray/Neebray",
    "static": {
-    "g1": 0.901,
-    "g2": 0.607,
-    "g4": 0.84
+    "g1": 0.903,
+    "g2": 0.504,
+    "g4": 0.699
    },
    "static_fails": [],
    "provenance": "donor-copy (cartoon)",

@@ -1,0 +1,81 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 64.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5037306
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Mynock",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "7be4f59b26c789e154b3c316aa7b9dd3e573ac1baaeaa3c342be8751666402c1",
+  "east.png": "7f6f08e260d424b7b8eb5959677270bfc488eea6a8863ef7cb7bc98f2ce44ac9",
+  "north.png": "0a2e72202f33eb34a72b126c09c3dacbb7b92aa42d08611fb16a56d0be26ac2a",
+  "scale.png": "cba0e8b987d9a80feaaf0834655fc2db782fd860ce13d307e4a85f7c159abd29",
+  "flight_1.png": "d6f93111e67c92611c0ecfeaace369ad1196b7488f3385fd106b8124d502e1c1",
+  "flight_2.png": "212875cfc18715ef7fe44d3e08e5e15ae756bbf2a10d8fd4fe5c929a8c39ba34",
+  "flight_3.png": "a0dec1a4080cb09d6d1381f2e41bb607d90c6809c406827afbe340416897f25c",
+  "flight_4.png": "f55aeb412dbe6e245affc6e1b75998fcfdc45d1ffe33296feffced8c0676a7b6",
+  "flight_5.png": "df2e791f8c6ccf24e585d68a1412f22a9f961873f92e0ff7589c6ae358f07658",
+  "flight_6.png": "f55aeb412dbe6e245affc6e1b75998fcfdc45d1ffe33296feffced8c0676a7b6",
+  "flight_7.png": "a0dec1a4080cb09d6d1381f2e41bb607d90c6809c406827afbe340416897f25c",
+  "flight_8.png": "212875cfc18715ef7fe44d3e08e5e15ae756bbf2a10d8fd4fe5c929a8c39ba34",
+  "flight_9.png": "290bea00350f493a090c7fe7042b95043c09f1f96539e6c586534fc342741941",
+  "flight_10.png": "c2d8ea0cd64fc8d5595e452ab482a901f16fdd00d2c7aec55aff68321d27a92c",
+  "flight_11.png": "00a2f9857b24aa0553c033ec28fa6372387953063b74a2f488313b713025fe1d",
+  "flight_12.png": "1ca79d55d96437bd68d8fd0706eb9a8fc782bb56983b4de5f08f852cf02c9576",
+  "flight_13.png": "ad96014e0a4ab26703a3339023fa2342adaf92b7439adf675636fa9e81dad6f0",
+  "flight_14.png": "1ca79d55d96437bd68d8fd0706eb9a8fc782bb56983b4de5f08f852cf02c9576",
+  "flight_15.png": "00a2f9857b24aa0553c033ec28fa6372387953063b74a2f488313b713025fe1d",
+  "flight_16.png": "c2d8ea0cd64fc8d5595e452ab482a901f16fdd00d2c7aec55aff68321d27a92c",
+  "flight_17.png": "8cecacb641e9ffe4a5495b10417cf0681c748f335d236f924aaa02f285d49272",
+  "flight_18.png": "43b4f903e3694c37b765e438420bb082398c8033c0d0451dd41a798e9deb6512",
+  "flight_19.png": "67a9bec3a054dc847ed1347dc3b36e1f93fd52fc61945b2bcf0f672dba847da4",
+  "flight_20.png": "38dcaab24890840bd834f96377c5df5700574e068fe34b8b518df8044bc39f5c",
+  "flight_21.png": "eb93513bc0c873708f59243ad72e1648b21efeb7ad7b566188dc96dfcbfe94e4",
+  "flight_22.png": "38dcaab24890840bd834f96377c5df5700574e068fe34b8b518df8044bc39f5c",
+  "flight_23.png": "67a9bec3a054dc847ed1347dc3b36e1f93fd52fc61945b2bcf0f672dba847da4",
+  "flight_24.png": "43b4f903e3694c37b765e438420bb082398c8033c0d0451dd41a798e9deb6512",
+  "facings.png": "0a881efefd1b2a7e57e39163ae6589a4479f7dc27c5ff4a4b9d8a8881e3f5ec5"
+ }
+}
