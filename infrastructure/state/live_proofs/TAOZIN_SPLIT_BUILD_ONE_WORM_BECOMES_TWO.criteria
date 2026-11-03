@@ -1,1 +1,4 @@
 L1 L1: in the running game RSW_Taozin, RSW_TaozinGrub (race + kind), RSW_GenStep_TaozinNest, RSW_TaozinBrine, RSW_DrankTaozinBrine and RSW_TaozinBrineFortitude all resolve
+L2 L2: a freshly generated RM_Abyss map holds the taozin nest: 2-4 living RSW_TaozinGrub, 2-3 RSW_WoolTaozin stacks within 10 cells of the grubs, and a living unowned RSW_Taozin within 14 cells on guard
+L3 L2: every nest grub and the guarding adult reads (thing_explain appearance) its shipped body texPath, held by a running pack (no BadTex)
+L4 L1: Player.log carries no error line naming either creature's texture path

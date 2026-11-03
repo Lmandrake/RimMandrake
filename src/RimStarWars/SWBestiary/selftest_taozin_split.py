@@ -78,6 +78,40 @@ def tex_ok(tp):
     return all(os.path.isfile(base + "_" + f + ".png") for f in ("north", "east", "south"))
 
 
+def grub_wild_homes(root, grub="RSW_TaozinGrub"):
+    """Every way an XML tree gives the grub a wild home: a roster row TAGGED with its defName (UtinniPatches
+    WildAnimals_*.xml and BiomeDef <wildAnimals> both write <defName>weight</defName>), its defName as text under a
+    <wildAnimals> node, or a patch op aimed at the grub that writes wildBiomes. Empty = no wild home in this tree."""
+    out = []
+    def walk(el, wild):
+        wild = wild or el.tag == "wildAnimals"
+        if el.tag == grub:
+            out.append("row <%s>%s</%s>" % (grub, (el.text or "").strip(), grub))
+        elif wild and (el.text or "").strip() == grub:
+            out.append("<%s>%s under wildAnimals" % (el.tag, grub))
+        xp = el.findtext("xpath") or ""
+        if grub in xp and ("wildBiomes" in xp or el.find(".//wildBiomes") is not None):
+            out.append("patch op writes wildBiomes on %s" % grub)
+        for ch in el:
+            walk(ch, wild)
+    walk(root, False)
+    return out
+
+
+def grub_wild_homes_in(src_root):
+    """{path: [reasons]} over every *.xml under src_root (every mod, every WildAnimals_*.xml, every BiomeDef)."""
+    hits = {}
+    for p in glob.glob(os.path.join(src_root, "**", "*.xml"), recursive=True):
+        try:
+            root = ET.parse(p).getroot()
+        except ET.ParseError:
+            continue
+        found = grub_wild_homes(root)
+        if found:
+            hits[os.path.relpath(p, src_root)] = found
+    return hits
+
+
 def main():
     swb = defs_in(SWB)
     cui = defs_in(CUISINE)
@@ -112,6 +146,21 @@ def main():
     with open(WILD_ABYSS, encoding="utf-8") as f:
         wild_xml = f.read()
     check("grub is on no wild roster row", "RSW_TaozinGrub" not in wild_xml)
+    homes = grub_wild_homes_in(os.path.join(ROOT, "src"))
+    check("grub has no wild home in ANY src xml (every WildAnimals_*.xml, BiomeDef, patch)", not homes, str(homes))
+    xml_files = glob.glob(os.path.join(ROOT, "src", "**", "WildAnimals_*.xml"), recursive=True)
+    check("the scan can see: >= 10 WildAnimals_*.xml files under src", len(xml_files) >= 10, str(len(xml_files)))
+    for label, mut in (
+            ("a WildAnimals row", '<Patch><Operation Class="PatchOperationAdd"><xpath>Defs/BiomeDef[defName="RM_BlueDesert"]'
+                                  '/wildAnimals</xpath><value><RSW_TaozinGrub>1</RSW_TaozinGrub></value></Operation></Patch>'),
+            ("a BiomeDef wildAnimals row", '<Defs><BiomeDef><defName>X</defName><wildAnimals><RSW_TaozinGrub>0.2'
+                                           '</RSW_TaozinGrub></wildAnimals></BiomeDef></Defs>'),
+            ("a wildAnimals li", '<Defs><BiomeDef><wildAnimals><li><animal>RSW_TaozinGrub</animal></li></wildAnimals>'
+                                 '</BiomeDef></Defs>'),
+            ("a wildBiomes patch on the grub", '<Patch><Operation Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName='
+                                               '"RSW_TaozinGrub"]/race</xpath><value><wildBiomes><RM_Abyss>1</RM_Abyss>'
+                                               '</wildBiomes></value></Operation></Patch>')):
+        check("self-check: the wild-home scan catches " + label, bool(grub_wild_homes(ET.fromstring(mut))))
 
     # Abyss row for the adult (parsed as elements).
     rows = [el for el in ET.parse(WILD_ABYSS).getroot().iter("RSW_Taozin")]
