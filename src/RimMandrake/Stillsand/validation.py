@@ -1434,6 +1434,12 @@ def soorrak_chain(t):
             idle = ("Wait_MaintainPosture", "Wait", None)
             busy = [i for i in alive if moved[i] >= 3.0 or any(j not in idle for j in jobs[i])]
             _note(t, "soorrak path length / jobs seen", {"moved": moved, "jobs": dict((i, sorted(set(map(str, jobs[i])))) for i in alive)})
+            # SOORRAK_INSTANT_JOB_LOOP_1: every 500-tick sample (track[i][k] is +500*k, jobs[i][k-1] is +500*k),
+            # and RM_FlightJobStartGuard's one-shot warning, which names the job that ends the tick it starts.
+            _note(t, "soorrak samples", dict((i, [[500 * k, track[i][k], jobs[i][k - 1] if k else None]
+                                                   for k in range(len(track[i]))]) for i in alive))
+            loop_lines = _log_lines(t, "instant job loop", strict=False)[0]
+            _note(t, "instant job loop lines", [x for x in (loop_lines or []) if "Soorrak" in x])
             if not busy:
                 _fail("%d soorrak(s) stayed on the map for 3000 ticks and never moved 3 cells or read any "
                       "job but the 1-tick filler (an instantly-ending job every think cycle)" % len(alive))
