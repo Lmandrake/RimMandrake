@@ -1,0 +1,1 @@
+Relentless contract is set once: decide --game clauses and write live_proofs/<ID>.txt BEFORE the first 'relentless.py contract' call; a later contract with --game is refused (only redesign/proof-only workers may change it).
