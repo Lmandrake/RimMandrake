@@ -135,15 +135,45 @@ with tempfile.TemporaryDirectory() as tmp:
         # A1/A2 are sampled at the MAIN MENU after the load: a launch that has since started or loaded a game
         # (VRAM and private bytes swollen by a map) must never record. Markers are vanilla's own log lines
         # (decomp rw16 Verse/Game.cs InitNewGame, Verse/SavedGameLoaderNow.cs); seen in a real Player-prev.log.
+        # Each is a FRESH launch (its own pid) that went straight to a game, so no main-menu row of it exists.
         later = dt.timedelta(hours=2).total_seconds()
+        fresh = iter(range(100, 200))
         for marker in ("Initializing new game with mods:\nludeon.rimworld\n",
                        "Loading game from file Colony1 with mods:\nludeon.rimworld\n"):
             for clause, mods in (("A1", WITH), ("A2", WITHOUT)):
-                stage(mods, log=LOG + marker)
+                stage(mods, proc=dict(base_proc, pid=next(fresh)), log=LOG + marker)
                 os.utime(plog, (now.timestamp() + later, now.timestamp() + later))
                 rc, wrote = go(clause)
                 check("%s after '%s' (in a game, not at the menu) refuses and records nothing"
                       % (clause, marker.split(" with")[0]), rc in (1, 2) and not wrote)
+        # staging records at the main menu, then starts a map; the supervisor's later A1/A2 run sees the game
+        # marker. A main-menu row of THIS launch (same pid and start, wanted condition, all numbers) passes it,
+        # without writing a second row; anything else stays UNMEASURED, and an instrument FAIL stays FAIL.
+        GAME = "Initializing new game with mods:\nludeon.rimworld\n"
+        menu = dict(base_proc, pid=500)
+        stage(WITH, proc=menu)
+        check("staging's main-menu A1 records", go("A1") == (0, True))
+        stage(WITH, proc=menu, log=LOG + GAME)
+        check("A1 later in a game, with a menu row of this launch, PASSES and writes nothing", go("A1") == (0, False))
+        check("A1 rescue prints the menu row's figures",
+              "MENU SAMPLE with of this launch (pid 500, start %s)" % proc_start in LAST["out"]
+              and "load 98.2 s, GPU dedicated 3072.0 MB, shared 1.0 MB, private 2048.0 MB" in LAST["out"])
+        check("A2 in a game on a 'with' launch stays UNMEASURED", go("A2") == (2, False))
+        stage(WITH, proc=dict(menu, pid=501), log=LOG + GAME)
+        check("A1 in a game, menu row of ANOTHER pid, stays UNMEASURED", go("A1") == (2, False))
+        later_start = (now - dt.timedelta(seconds=30)).isoformat().replace("+00:00", "Z")
+        stage(WITH, proc=dict(menu, start=later_start), log=LOG + GAME)
+        check("A1 in a game, menu row of another start (pid reused), stays UNMEASURED", go("A1") == (2, False))
+        stage(WITH, proc=dict(menu, gpu_counters=0), log=LOG + GAME)
+        check("A1 instrument FAIL is not rescued by a menu row", go("A1") == (1, False))
+        stage(WITH, proc=menu, log=LOG + GAME, cfg_age=pac.LAUNCH_SLACK_S + 60)
+        check("A1 in a game with ModsConfig moved since launch is not rescued", go("A1") == (2, False))
+        with open(samples, "a") as fh:
+            fh.write(json.dumps({"at": "x", "pid": 502, "start": proc_start, "with": False, "mods": WITHOUT,
+                                 "dlc_missing": [], "load_ms": 1000, "gpu_dedicated_mb": 1.0,
+                                 "gpu_shared_mb": None, "private_mb": 1.0}) + "\n")
+        stage(WITHOUT, proc=dict(base_proc, pid=502), log=LOG + GAME)
+        check("A2 in a game, menu row missing a number, stays UNMEASURED", go("A2") == (2, False))
         # both sides present, but no pair differing by the mod alone
         os.remove(samples)
         stage(WITH)
@@ -166,6 +196,23 @@ check("recorded_ok refuses a row missing a number", not live.recorded_ok(okline,
 check("recorded_ok refuses a row whose numbers the line does not show",
       not live.recorded_ok(okline, [dict(ok, gpu_dedicated_mb=6.0)], "with"))
 check("recorded_ok refuses the wrong condition", not live.recorded_ok(okline, [ok], "without"))
+mrow = {"pid": 9, "start": "s", "with": True, "mods": WITH, "dlc_missing": [], "load_ms": 1000,
+        "gpu_dedicated_mb": 5.0, "gpu_shared_mb": 1.0, "private_mb": 2.0}
+mproc = {"running": True, "pid": 9, "start": "s"}
+check("menu_row_ok accepts this launch's row", live.menu_row_ok(mrow, mproc, WITH, "with"))
+check("menu_row_ok refuses a stopped game", not live.menu_row_ok(mrow, {"running": False}, WITH, "with"))
+check("menu_row_ok refuses a stopped game even at the same pid/start",
+      not live.menu_row_ok(mrow, dict(mproc, running=False), WITH, "with"))
+check("menu_row_ok refuses a row whose own condition flag is the other one",
+      not live.menu_row_ok(dict(mrow, **{"with": False}), mproc, WITH, "with"))
+check("menu_row_ok refuses another list", not live.menu_row_ok(mrow, mproc, WITH + ["x.y"], "with"))
+check("menu_row_ok refuses the wrong condition", not live.menu_row_ok(mrow, mproc, WITH, "without"))
+check("menu_row_ok refuses a row missing DLC", not live.menu_row_ok(dict(mrow, dlc_missing=["d"]), mproc, WITH, "with"))
+check("menu_row_ok refuses a row with no mods", not live.menu_row_ok(dict(mrow, mods=None), mproc, WITH, "with"))
+check("only_in_a_game: the marker alone", live.only_in_a_game("UNMEASURED: a game was started after the load: x\n"))
+check("only_in_a_game: marker plus ModsConfig moved is not rescued",
+      not live.only_in_a_game("UNMEASURED: ModsConfig.xml written 900 s after launch; a game was started after the load\n"))
+check("only_in_a_game: no UNMEASURED line", not live.only_in_a_game("SAMPLE with: ...\n"))
 check("classify_verdict rc 0 with no output FAILS", live.classify_verdict(0, [], "") == 1)
 
 print("PLANET_ATMOSPHERE_CLOUD_COST_1_selftest: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

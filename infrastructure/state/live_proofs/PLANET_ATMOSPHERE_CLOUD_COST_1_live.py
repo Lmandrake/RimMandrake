@@ -11,6 +11,14 @@ other clause a standing FAIL. Here a launch that is the wrong condition (or not 
 launch, or lacks a DLC, or has left the main menu for a game: staging facts, not the clause) is UNMEASURED and rides
 the next load on that list. A broken instrument (no GPU counter, no load timing) stays FAIL. A3 is UNMEASURED until both sides exist, and FAIL when both
 exist but no with/without pair differs by this mod alone.
+
+Main-menu rows recorded earlier in THIS launch: relentless staging always ends "up on a map", so by the time the
+supervisor reruns A1/A2 Player.log holds a game-start marker and record() refuses (twice, 2026-11-03). The proofs
+file asks the staging worker to run `record` at the main menu before any map; record() writes a row only when
+every gate passed (main menu included). So when this run's record is UNMEASURED, A1/A2 PASS on such a row if it
+belongs to the RUNNING process (same pid and start), is the wanted condition, carries all four numbers, lists the
+same mods the live ModsConfig does, and lacks no DLC. A row of another launch, the wrong condition, or missing a
+number never passes; only a refusal whose sole reason is the game marker is rescued, never an instrument FAIL.
 """
 import contextlib
 import io
@@ -103,6 +111,38 @@ def classify_verdict(rc, rows, out=""):
     return FAIL
 
 
+IN_A_GAME = "a game was started after the load"
+
+
+def only_in_a_game(out):
+    """Pure: record() refused for one reason alone, that the launch has left the main menu for a game. Any other
+    staging fact (ModsConfig moved, DLC missing, wrong condition, no game) keeps the run UNMEASURED."""
+    line = [l for l in out.splitlines() if l.startswith("UNMEASURED: ")]
+    reasons = [r.strip() for r in line[-1][len("UNMEASURED: "):].split("; ") if r.strip()] if line else []
+    return bool(reasons) and all(r.startswith(IN_A_GAME) for r in reasons)
+
+
+def menu_row_ok(row, proc, mods, want):
+    """Pure: is this sample row a main-menu A1/A2 measurement of the running launch, of the wanted condition?"""
+    if not proc.get("running") or row.get("pid") != proc.get("pid") or row.get("start") != proc.get("start"):
+        return False
+    if row.get("with") is not (want == "with") or not all(_num(row.get(f)) for f in FIELDS):
+        return False
+    if row.get("dlc_missing") or (pac.PKG in mods) is not (want == "with"):
+        return False
+    return isinstance(row.get("mods"), list) and sorted(row["mods"]) == sorted(mods)
+
+
+def menu_row_this_launch(rows, want):
+    """The latest row of `rows` recorded at the main menu of the running launch, or None (impure: samples the game)."""
+    proc = pac.sample_process()
+    mods = pac.active_mods()
+    for r in reversed(rows):
+        if menu_row_ok(r, proc, mods, want):
+            return r
+    return None
+
+
 def run(fn, **kw):
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
@@ -132,6 +172,14 @@ def main(argv):
             out += "record exited 0 but did not append one '%s' row with real load/GPU/private numbers " \
                    "matching its SAMPLE line\n" % want
             code = FAIL
+        if code == UNMEASURED and only_in_a_game(out):
+            r = menu_row_this_launch(before, want)
+            if r is not None:
+                out += ("MENU SAMPLE %s of this launch (pid %s, start %s) recorded at %s: load %.1f s, GPU dedicated "
+                        "%.1f MB, shared %.1f MB, private %.1f MB\n"
+                        % (want, r["pid"], r["start"], r["at"], r["load_ms"] / 1000.0, r["gpu_dedicated_mb"],
+                           r["gpu_shared_mb"], r["private_mb"]))
+                code = PASS
     else:
         rc, out = run(pac.verdict)
         rows = read_rows()
