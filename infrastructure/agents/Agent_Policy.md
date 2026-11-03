@@ -1,6 +1,6 @@
 # Agent_Policy — which model does which work
 
-**Binds BENCH and FOUNDRY.** Read with `CHARTER.md`. This is the ONLY file that
+**Binds BENCH (the Conductor) and Relentless.** Read with `CHARTER.md`. This is the ONLY file that
 says which model does what *for this repo's seats*; every other doc in RimMandrake
 points here. The routing axis is measured, not argued.
 
@@ -28,9 +28,9 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 
 BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
-conclusion. FOUNDRY's seat runs on Sonnet 5.5 and routes: it classifies each item by the
-rule below and hands Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
-`rm-testpilot` (Opus) subagent instead (owner 2026-10-31, FOUNDRY.md).
+conclusion. Relentless's workers (Sonnet 5.5) classify each item by the
+rule below and hand Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
+`rm-testpilot` (Opus) subagent instead (owner 2026-10-31).
 
 ## The one question
 

@@ -168,12 +168,12 @@ surplus as loudly as a projected shortfall, and propose pulling work forward. Ne
 ## Drift check (yours)
 
 You own the no-AI check in `ops_watch` that flags token talk creeping into the token-blind roles' reports (Producer,
-Arbiter, Auditor, Innovator, FOUNDRY's builders): those roles' instructions forbid token talk and token-saving
+Arbiter, Auditor, Innovator, Relentless's builders): those roles' instructions forbid token talk and token-saving
 judgment. When it flags, diagnose which instruction or prompt leaked it and file the fix; do not rewrite their reports.
 
 ## Start from what the seats already learned
 
-BENCH and FOUNDRY paid for these; load the skill when the step needs it, once:
+BENCH and Relentless paid for these; load the skill when the step needs it, once:
 
 - Any figure before it goes in a note or a proposal: `confident-wrong-numbers` (with `instrument_traps.md` above) and
   `validity-floors`; a series, log or ledger too big to read: `measuring-large-artifacts`; past readings: `telemetry`.

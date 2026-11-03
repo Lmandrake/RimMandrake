@@ -253,16 +253,11 @@ def t_a_stale_patch_refuses_apply_before_any_write():
         shutil.rmtree(p["root"], ignore_errors=True)
 
 
-def t_shipped_patch_and_record_are_consistent():
-    """The real staged patch applies to the real docs while the cutover is pending (or is already in when applied)."""
-    real = vc.Paths()
-    rec = vc.read_record(real)
-    st = (rec or {}).get("state")
-    ok, why = vc.patch_status(real)
-    if st == "applied":
-        assert why == "already applied", why
-    else:
-        assert ok and why == "applies cleanly", why
+def t_shipped_record_is_applied_and_docs_moved_on():
+    """The cutover was applied and FOUNDRY was then retired (owner card 2026-11-02): the shipped record says applied,
+    and the docs it patched were rewritten by the retirement, so the staged patch is history, not something to apply."""
+    rec = vc.read_record(vc.Paths())
+    assert (rec or {}).get("state") == "applied", rec and rec.get("state")
 
 
 CASES = [v for k, v in sorted(globals().items()) if k.startswith("t_") and callable(v)]

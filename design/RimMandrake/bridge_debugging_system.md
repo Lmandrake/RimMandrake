@@ -187,7 +187,7 @@ Maturity scale: **built** (code exists, selftests offline) → **deployed** (in 
   `modals` (`BAD_MODALS` regex; WEDGED after > 2 heartbeats), `runner`, `heartbeat`, `run_output`, `belt_logs`
   (subagent silence 20 min), `modcheck`, `tps`, `tps-observer`. Constants MEASURED: `LOG_FROZEN_S=300`,
   `LOOP_MIN_REPEATS=20`, `NOT_RESPONDING_WEDGE_S=240`, `LOAD_BUDGET_S=1500`, `MODAL_WEDGE_BEATS=2`. Doctrine: run it
-  every ~5 min of any live run (`infrastructure/agents/FOUNDRY.md` § Hangs).
+  every ~5 min of any live run (this document and `live_test_hang_runbook.md`).
 - **belt_heartbeat** — runner writes `.belt_state/heartbeat_<job>.json` every ≤ 30 s from a daemon thread;
   per-step budget (`BELT_SUITE_BUDGET_S`, default 1500 s) and job budget; on overrun records UNMEASURED(BUDGET) and
   `os._exit` (exit 4) because a Windows socket read cannot be interrupted otherwise.

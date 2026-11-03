@@ -1,4 +1,4 @@
-# CHARTER — binds BENCH and FOUNDRY
+# CHARTER — binds BENCH and Relentless
 
 *Adopted 2026-08-27 (owner's ruling, this date), replacing POLICY.md, the four seat
 files, and most of the process prose. Git holds everything removed. **This file does
@@ -57,12 +57,12 @@ close/drop/supersede the prose moves to `items/closed/<ID>.md`** — so `items/*
 the LIVE set and a sweep stops walking finished work; `rimflow show` resolves both.
 Reboot handoffs are not items and live in `infrastructure/state/handoffs/`. The
 ledger — the frozen `events.jsonl` plus one `ledger/events/<SEAT>.jsonl` shard per
-seat since 2026-09-23, written only by `rimflow` — is the truth; `queue/BENCH.md`/`FOUNDRY.md` are
+seat since 2026-09-23, written only by `rimflow` — is the truth; `queue/<SEAT>.md` files are
 gitignored rendered views you never edit — read one with `rimflow queue <SEAT>`, which
 renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
-🔴 **FOUNDRY OWNS ALL FLOWWORKS AND GSS SINCE THE v3 CUTOVER — owner, 2026-10-28:** *"Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry."* Code, art, live testing, acceptance, code review and deploys; BENCH (the Conductor's window) takes only an item that needs him live (needs=owner, an L4 look). A FlowWorks finding is filed `--for FOUNDRY`. Lane list (data, field `seat`): `infrastructure/state/flowworks_lane.json`, enforced by `rimflow file` and `--acceptance`; what moved: `infrastructure/state/v3_cutover/record.json`.
+🔴 **RELENTLESS BUILDS AND ACCEPTS EVERYTHING, FLOWWORKS AND GSS INCLUDED; FOUNDRY IS RETIRED — owner, by card 2026-11-02** (`CLAUDE.md`). BENCH (the Conductor's window) takes only an item that needs him live (needs=owner, an L4 look, flyer live tests). A FlowWorks finding is filed `--for BENCH`; lane data: `infrastructure/state/flowworks_lane.json`.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
@@ -179,8 +179,7 @@ the game down (OS lock).
 
 ## Windows
 
-**BENCH** (with the owner, permanent bench) and **FOUNDRY** (autonomous, pulls the
-queue) — `BENCH.md` / `FOUNDRY.md`; every model choice, seat and subagent alike:
+**BENCH** (with the owner, permanent bench; `BENCH.md`, `CONDUCTOR.md`) and **Relentless** (the autonomous builder, no window; `src/RimMandrake/rimflow/relentless.py`); every model choice, seat and subagent alike:
 `Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
 is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.
@@ -193,7 +192,7 @@ write the handoff with `RIMFLOW_SEAT=<SEAT> python3 src/RimMandrake/Utils/handof
 the four sections it leaves marked (it lands `conversations/` itself; `--check` refuses while a record is
 uncommitted — owner 2026-10-18), pass `--check`, then say **HANDOFF READY** as
 your last line and start nothing new. The phrase is the signal, and only a seat may say it — the script refuses to.
-On a seat with a restart (FOUNDRY) the phrase fires it: the Stop hook `.claude/hooks/handoff_restart.py` requests the
+On a seat with a restart the phrase fires it: the Stop hook `.claude/hooks/handoff_restart.py` requests the
 restart and the Dispatcher relaunches the window 20 s after its helpers finish (owner, 2026-11-01: "20 seconds, build it
 now and implement."). The Conductor's window closes on his goodbye instead, and otherwise he reboots on his own clock.
 Say it **once**: until real work comes in, `handoff.py` reports ALREADY HANDED OFF

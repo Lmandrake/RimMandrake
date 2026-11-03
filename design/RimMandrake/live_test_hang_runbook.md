@@ -5,7 +5,7 @@ get better at debugging."* Each class below cost minutes to hours on the 2026-10
 
 **First move, always:** `python3 src/RimMandrake/Utils/belt_watchdog.py`. It prints one line per signal and one
 verdict (HEALTHY / STALLED / WEDGED / DEAD) with a remedy. Run it every ~5 min during a live run and before
-calling a run "running" (doctrine: `infrastructure/agents/FOUNDRY.md` § Hangs and the watchdog).
+calling a run "running" (this runbook is the doctrine).
 
 ## Symptom → cause → remedy
 

@@ -211,7 +211,7 @@ def test_injection():
         tmp = tempfile.mkdtemp()
         try:
             os.makedirs(os.path.join(tmp, ".claude", "session_roles"))
-            for seat in ("BENCH", "FOUNDRY"):
+            for seat in ("BENCH",):  # FOUNDRY retired 2026-11-02
                 sid = "sid-" + seat.lower()
                 with open(os.path.join(tmp, ".claude", "session_roles", sid), "w") as fh:
                     fh.write("AGENT " + seat)

@@ -401,8 +401,7 @@ def _run_request(sch, ctx, extra, unpub):
 
 
 def test_docs_name_now_once():
-    docs = {"FOUNDRY close-out": "infrastructure/agents/FOUNDRY.md",
-            "Conductor": "src/RimMandrake/rimflow/roles/conductor.md",
+    docs = {"Conductor": "src/RimMandrake/rimflow/roles/conductor.md",
             "Designer": "src/RimMandrake/rimflow/roles/designer.md",
             "Operations": "src/RimMandrake/rimflow/roles/operations.md"}
     for label, rel in docs.items():

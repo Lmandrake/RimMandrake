@@ -32,7 +32,7 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
   drops is deleted, git holds the history; it is not `GOAL_SHEET.md`, which is the inventory of what the game needs). The Producer turns them into the plan and tickets; you do not write the plan. Until the Producer
   runs (Friday wave), you order the BENCH lane from the goals yourself.
 - **Up:** every role's questions and status come to you: the Producer's plan status and cut lists, Operations'
-  hand-ups, the Arbiter's bar defects and loosening drafts, Foundry's questions. Nothing else talks to him; you gate,
+  hand-ups, the Arbiter's bar defects and loosening drafts, Relentless's questions. Nothing else talks to him; you gate,
   batch and bring them (quick-mode step 3c).
 
 ## Split of work
@@ -159,8 +159,8 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 
 ## Session mode (he is at the bench)
 
-Today's BENCH: design, the hardest bugs and live testing with him. FlowWorks + GSS are FOUNDRY's since the v3 cutover
-(owner, 2026-10-28; `infrastructure/state/flowworks_lane.json`); BENCH takes only their needs=owner live looks.
+Today's BENCH: design, the hardest bugs and live testing with him. Relentless builds FlowWorks + GSS too (FOUNDRY retired, owner by card 2026-11-02);
+BENCH takes only their needs=owner live looks.
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
 (Owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor." The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from this session's transcript; unreadable = two. Numbers: `conductor_window` in `slot_rules.json`. A Conductor helper running over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log and a ledger note, `long_helper` in `dispatcher_schedule.json`.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
 limits unchanged. A helper never starts helpers of its own (say so in its brief). Quick mode runs no helper. On arrival, the headless FlowWorks builder that worked

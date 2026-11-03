@@ -58,7 +58,7 @@ human clicking**. Concretely, it is used to:
 3. **Stage scenes for the owner to judge.** Review maps and keeper savegames
    (CLAUDE.md "Options he must LOOK at ship as a savegame").
 4. **Run regression and north-star suites** unattended in "belt" mode
-   (`infrastructure/agents/FOUNDRY.md:128-181`).
+   (Relentless game_prove lane, `src/RimMandrake/rimflow/relentless_live_round.py`).
 5. **Observe health.** TPS, hangs and log loops (the sibling document's half).
 
 The ideal it serves (CLAUDE.md "How we debug", owner 2026-10-01): *every mod gets a
@@ -71,7 +71,7 @@ functional script and is debugged through it*. The bridge is what those scripts 
 | **OWNER** (Lukas) | plays the game; announces game state (`./game`); overrides the lease (`./bridge bench\|foundry\|free`) | final. His `./bridge` lands in the same ledger file |
 | **FOUNDRY** | the main driver: belt suites, proofs, deploy→restart cycles | "FOUNDRY now owns bridge driving directly" (DOC `skills/rimbridge/SKILL.md:47-57`). It may reboot the game without asking (DOC `GAME_STATE_WORKFLOW.md:44-67`) |
 | **BENCH** | drives only for L3 evaluation sittings and joint live reviews with the owner | DOC `skills/rimbridge/SKILL.md:54-57` |
-| **subagents** of either seat | do the actual driving in belt mode ("one subagent engaged with the Bridge whenever it is available", DOC `FOUNDRY.md:132`) | inherit the parent seat's lease. **No per-subagent identity exists** (MEASURED, §4.1) |
+| **subagents** of either seat | do the actual driving in belt mode ("one subagent engaged with the Bridge whenever it is available", the retired FOUNDRY.md, in git history) | inherit the parent seat's lease. **No per-subagent identity exists** (MEASURED, §4.1) |
 | **scheduled observers** | `tps_observer.py` (every 2 min) and `health_observer.py` (every 5 min) run as Windows scheduled tasks, per their docstrings | read-only. They do not take the lease |
 
 ### 1.3 Principles (owner rulings, in order of authority)

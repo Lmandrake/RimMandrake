@@ -180,14 +180,14 @@ only, no live flight test without him, our names.
    to stamp `root_hash`, and the Arbiter signs again, so ask him before the signature if you can.
 5. You file the item, **`--kind mod`**, with `## verify` citing `design/concepts/<Mod>/tree.json`. A new mod under another
    kind escapes the gate. The Producer admits it. Relentless runs `gate` at the pool, at the lease, and at `enrol`.
-6. FlowWorks and GSS go to FOUNDRY.
+6. FlowWorks and GSS go to Relentless like every other mod.
 
 Changing a locked tree: his word only, for an edit, removal or waiver; a new concept comes back through you as an
 amendment. Either gives a new hash and a new signature.
 
 ## Start from what the seats already learned
 
-BENCH and FOUNDRY paid for these; load the skill when the step needs it, once (never paste it into a tree or sheet):
+BENCH and Relentless paid for these; load the skill when the step needs it, once (never paste it into a tree or sheet):
 
 - Stage 0 engine feasibility, defs, patches, load order: skill `rimworld-modding`; a Star Wars species or droid: `rimworld-canon-references`.
 - Any count you cite about a def dump, save or log: `measuring-large-artifacts`, then `infrastructure/state/facts/instrument_traps.md`.

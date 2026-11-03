@@ -1,7 +1,7 @@
 # Delegation policy — agents decide nearly everything, art included
 
 *Adopted 2026-10-22 on the owner's word (item `DELEGATION_POLICY_BUILD_AGENTS_ASK_AGENTS`). Binds BENCH,
-FOUNDRY and every subagent. Model tiers are `infrastructure/agents/Agent_Policy.md`'s, never restated here.*
+Relentless and every subagent. Model tiers are `infrastructure/agents/Agent_Policy.md`'s, never restated here.*
 
 ## The ruling
 
@@ -27,7 +27,7 @@ Everything not on the §2 list. That includes, and is not limited to:
 |---|---|
 | `technical` | harness thresholds, test-site choice, refactors inside a mod, MOD/SITE/HARNESS calls with evidence, tool design |
 | `scope` | splitting, narrowing, ordering, closing and dropping items; which of several valid routes to build |
-| `design` | mechanics detail, numbers (already PROVISIONAL-marked per FOUNDRY.md), roster rows inside a biome sheet's open questions, prose and labels a player reads |
+| `design` | mechanics detail, numbers (already PROVISIONAL-marked), roster rows inside a biome sheet's open questions, prose and labels a player reads |
 | `art` | keep/redo of a render, which candidate goes live, regen briefs, queueing regens (only for NONE/PLACEHOLDER/DONOR destinations, plus the art-eval pipeline's redraws of kept art under §2.3's exception) |
 | `cosmetic` | gene, head, eye, skin, hair, body, texPath and tint changes; face-part art; building looks; water and terrain tints |
 
@@ -58,7 +58,7 @@ may not validate.
 1. **North-star bars.** The `## north star` sections are hash-bound and his: agents write and approve the
    functional scripts, *"the owner's hash-bound `## north star` bars stay his"* (CHARTER, How we debug;
    CLAUDE.md, North-star validation, 2026-09-17). The 2026-09-16 carve-out stands: a model's `must read` YES
-   greens a line (Agent_Policy.md). Criteria tagged **L4** are his by definition (FOUNDRY.md).
+   greens a line (Agent_Policy.md). Criteria tagged **L4** are his by definition (CLAUDE.md, validation levels).
    **Delegated (owner, 2026-10-26 23:0x PDT, *"Both autonomy questions are yes, it has authorization for
    autonomy."*):** regression checks against bars he already approved, and NEW bars, are the Arbiter's to add
    (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 1). Loosening a bar (remove, merge,

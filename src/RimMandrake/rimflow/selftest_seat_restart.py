@@ -1125,11 +1125,6 @@ def test_v3_close_out_continues_while_context_is_ok():
     with open(SR.seat_log_path("FOUNDRY"), encoding="utf-8") as f:
         log = f.read()
     check(log.count("landed x") >= 5, "V3 the note reaches the seat log whether or not a restart is requested")
-    fmd = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), "infrastructure", "agents", "FOUNDRY.md")
-    with open(fmd, encoding="utf-8") as f:
-        doc = f.read()
-    check("CONTEXT OK" in doc and "next --seat FOUNDRY" in doc and "--ringed" not in doc and "110000" in doc.replace(",", "").replace(" ", ""),
-          "V3 FOUNDRY.md's close-out tells the seat to continue on CONTEXT OK and names the 110000 backstop")
 
 
 # ---- Codex review 2026-10-29 (rev/out.txt P1 1 + 2)

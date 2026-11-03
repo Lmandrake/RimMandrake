@@ -74,7 +74,7 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    `REPLAN REQUEST`, `CUT LIST`, `CUT DECISION` and `CUT APPLIED` note on the parent item (`python3
    src/RimMandrake/rimflow/blind_view.py show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --last 0 --prefix "REPLAN
    REQUEST"`, then the same with `--prefix "CUT"`; `--last 0` is all of them, never the newest few), the
-   Arbiter's verdicts since your last run, the alarm and flag lines of `digest_blind.md` (never `digest.md`), and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH` / `... queue FOUNDRY`
+   Arbiter's verdicts since your last run, the alarm and flag lines of `digest_blind.md` (never `digest.md`), and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH`
    (never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values; the
    blind view is a closed type that withholds items about accounts and shows a note only as its time, seat and the
    item ids and shas it names, never its text: `--prefix` finds and counts the requests, their content is not
@@ -112,7 +112,7 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    stopping point, by you before you raise it (for work you file or spawn) or by its filer; a plan item without one
    gets it from you first, in the same run. Moving an item between v1 and v2 (`retarget`) is a scope call: a
    proposal to the Conductor, not an edit. FlowWorks + GSS are
-   FOUNDRY's lane since the v3 cutover (owner, 2026-10-28; `infrastructure/state/flowworks_lane.json`); BENCH takes
+   Relentless's like every other mod (FOUNDRY retired, owner by card 2026-11-02); BENCH takes
    only their needs=owner live looks.
 4. **Wednesday, the weekly plan**: per focus mod, the critical path to the goal; a review of the named scenarios the
    week's items already carry (written before building, step 3; they are the Arbiter's acceptance targets), merging
@@ -143,7 +143,7 @@ Every run then does, in this order:
      the named scenarios each item carries or the gap you filled, what the week cuts first if short (the goals' own
      cut order), bar coverage (any part of the goal with no bar), and backlog hygiene (blocked and stale plan items,
      with what you did about each).
-   - `## Daily list`: per seat (BENCH, FOUNDRY), the ordered item ids for today, each with the goal number it serves
+   - `## Daily list`: for the seat BENCH, the ordered item ids for today, each with the goal number it serves
      and its stopping point (finish / strengthen / explore).
    - `## WIP cap`: one line, `WIP cap: <n> focus items open per seat`, and why in one line. A changed number is set in
      `src/RimMandrake/rimflow/dispatcher_schedule.json`, `focus_cap.per_seat`: that key is what `rimflow next` and relentless obey.
