@@ -329,7 +329,10 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE: the readout line a player sees over "x,z" (the bridge-readable form of
-		/// the mouseover), "OK &lt;line&gt;" or "OK -" when the square has none. Read-only: never forms a body.</summary>
+		/// the mouseover), "OK &lt;line&gt;" or "OK -" when the square has none. Read-only: never forms a body.
+		/// READOUT_PROOF_FIX_BYPASSES_MOUSEOVER: the line comes from RM_Patch_MouseoverDepth.DepthSuffix, the very function the
+		/// mouseover prints, so the sheet-water and natural-liquid fallbacks are measured too (the player-side settings toggle
+		/// and fog gate are not: the proof reads the line, not whether it is shown).</summary>
 		public static string ProofReadout(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -348,7 +351,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED out of bounds";
 			}
-			return "OK " + (eng.DepthReadoutAt(c) ?? "-");
+			return "OK " + (RM_Patch_MouseoverDepth.DepthSuffix(map, c) ?? "-");
 		}
 
 		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: test staging that replaces the deleted pond budget slider. Sets the LIMITED body
