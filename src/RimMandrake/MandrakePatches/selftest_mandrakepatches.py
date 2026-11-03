@@ -173,6 +173,47 @@ def install_flow_problems(src):
     return out
 
 
+# Every assignment statement in Install(), in order, whitespace-normalised. Pinned exactly: binding `fog` to SightField,
+# `finderSettings` to FinderModField or `write` to another method keeps every guard and Patch text in place yet stops
+# the fog write landing on CombatAI.Settings.FogOfWar_Enabled (or the save-time prefix hooking WriteSettings).
+INSTALL_BINDS = ["installed = true;",
+                 "Type finderT = AccessTools.TypeByName(FinderType);",
+                 "Type modT = AccessTools.TypeByName(ModType);",
+                 "finderSettings = AccessTools.Field(finderT, FinderSettingsField);",
+                 "finderMod = AccessTools.Field(finderT, FinderModField);",
+                 "Type settingsT = finderSettings?.FieldType;",
+                 "fog = settingsT == null ? null : AccessTools.Field(settingsT, FogField);",
+                 "sight = settingsT == null ? null : AccessTools.Field(settingsT, SightField);",
+                 "prevFog = modT == null ? null : AccessTools.Field(modT, PrevFogField);",
+                 "MethodInfo write = modT == null ? null : AccessTools.Method(modT, WriteSettingsMethod, Type.EmptyTypes);",
+                 'Status = "CAI 5000 is loaded but its fog setting was not found (CAI changed): fog NOT forced off.";',
+                 "bound = true;"]
+# Every reflective GetValue/SetValue statement in Force(), in order: which object each read and write goes through.
+FORCE_REFLECT = ["object settings = finderSettings.GetValue(null);",
+                 "bool was = (bool)fog.GetValue(settings);",
+                 "fog.SetValue(settings, false);",
+                 "if (sight != null && sight.FieldType == typeof(bool)) sight.SetValue(settings, false);",
+                 "object mod = finderMod?.GetValue(null);",
+                 "if (mod != null) prevFog.SetValue(mod, false);"]
+
+
+def binding_problems(src):
+    """[problem] when Install()'s assignments or Force()'s reflective reads/writes differ from the pinned lists."""
+    import re
+    norm = lambda c: [" ".join(l.split()) for l in re.findall(r"[^;{}]*;", c)]
+    out = []
+    code = method_body(src, r"public static void Install\(\)\s*\{")
+    binds = [l for l in norm(code or "") if re.search(r"(?<![=!<>])=(?!=)", l)
+             and not l.startswith(("if ", "Log.")) and "Log.Warning" not in l]
+    if binds != INSTALL_BINDS:
+        out.append("Install() assignments %r != INSTALL_BINDS" % binds)
+    code = method_body(src, r"public static bool Force\(string why\)\s*\{")
+    refl = [l for l in norm(code or "") if re.search(r"\.(?:Get|Set)Value\(", l)]
+    if refl != FORCE_REFLECT:
+        out.append("Force() reflective reads/writes %r != FORCE_REFLECT" % refl)
+    return out
+
+
 def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
     """[problem] for the CAI fog forcer: constants, the forcing writes, the default-on setting, About, and the DLL stamp.
     Pure function of the texts so the break checks can plant each defect."""
@@ -187,6 +228,7 @@ def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
         out.append("Force() no longer writes FogOfWar_Enabled=false")
     out += force_flow_problems(src)
     out += install_flow_problems(src)
+    out += binding_problems(src)
     if not re.search(r"Patch\(write,\s*prefix: new HarmonyMethod\(typeof\(CaiFogOff\), nameof\(Prefix_WriteSettings\)\)\)", src):
         out.append("no Harmony prefix on CombatAIMod.WriteSettings")
     if "public static void Prefix_WriteSettings() => Force(" not in src:
@@ -248,8 +290,21 @@ def cai_fog_check():
                   "            new Harmony(\"mandrake.rm.patches.caifogoff\")", "            bound = true;\n            new Harmony(\"mandrake.rm.patches.caifogoff\")"
               ).replace("prefix: new HarmonyMethod(typeof(CaiFogOff), nameof(Prefix_WriteSettings)));\n            bound = true;",
                         "prefix: new HarmonyMethod(typeof(CaiFogOff), nameof(Prefix_WriteSettings)));"), mod_src, about, srchash),
-              ("the startup class no longer forces", src.replace('CaiFogOff.Force("startup");', ""), mod_src, about, srchash)]
-    for name, a, *_ in breaks[-10:]:
+              ("the startup class no longer forces", src.replace('CaiFogOff.Force("startup");', ""), mod_src, about, srchash),
+              ("Install binds fog to SightField", src.replace("AccessTools.Field(settingsT, FogField)",
+                                                              "AccessTools.Field(settingsT, SightField)"), mod_src, about, srchash),
+              ("Install binds finderSettings to FinderModField", src.replace(
+                  "AccessTools.Field(finderT, FinderSettingsField)", "AccessTools.Field(finderT, FinderModField)"),
+               mod_src, about, srchash),
+              ("Install hooks the wrong CAI method", src.replace(
+                  "AccessTools.Method(modT, WriteSettingsMethod, Type.EmptyTypes)",
+                  'AccessTools.Method(modT, "DoSettingsWindowContents")'), mod_src, about, srchash),
+              ("Force reads settings through finderMod", src.replace("object settings = finderSettings.GetValue(null);",
+                                                                     "object settings = finderMod.GetValue(null);"),
+               mod_src, about, srchash),
+              ("Force writes fog on a different object", src.replace("fog.SetValue(settings, false);",
+                                                                     "fog.SetValue(null, false);"), mod_src, about, srchash)]
+    for name, a, *_ in breaks[-15:]:
         check("break: planted %s actually changed the source" % name, a != src)
     for name, a, b, c, d in breaks:
         check("break: %s is reported" % name, len(cai_fog_problems(a, b, c, d, cs)) >= 1)
