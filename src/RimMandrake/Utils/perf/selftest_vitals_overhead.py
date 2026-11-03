@@ -222,6 +222,19 @@ check("A1 line checks makeup before and after the run",
       and _a1[0].index("test_vitals_tier_makeup.py") < _a1[0].index("--tier minimal")
       < _a1[0].rindex("test_vitals_tier_makeup.py") and "&&" in _a1[0], True)
 
+# the supervisor's game gate refuses a proof bash builds at run time ($(...), backticks, eval, braces) or one that would
+# change the game: every live-proof line must pass relentless_live.refused_proof as the gate reads it (gen7 died there)
+sys.path.insert(0, os.path.join(HERE, "..", "..", "rimflow"))
+import relentless_live as RL
+import relentless_game as RG
+_lp = open(os.path.join(HERE, "..", "..", "..", "..", "infrastructure", "state", "live_proofs",
+                        "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.txt")).read()
+_lines = RG.proof_lines(_lp)
+check("live-proof lines A1 and A2 parse", sorted(_lines), ["A1", "A2"])
+for _c, _cmd in sorted(_lines.items()):
+    check("live-proof %s passes the game gate" % _c, RL.refused_proof(RL.live_rules({}), "", "", _cmd), None)
+check("A2 line runs --tier full", "--tier full" in _lines.get("A2", ""), True)
+
 if FAILS:
     print("FAIL selftest_vitals_overhead: %d" % len(FAILS))
     for f in FAILS:
