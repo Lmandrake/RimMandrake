@@ -1,0 +1,1 @@
+robocopy's default /R:1000000 /W:30 turns one unreadable file into a hang that lasts for hours. A seat's background robocopy of a USB stick held BENCH past its 200k hard restart for 3.6 h (seats-20261102012009). Always pass /R:2 /W:5.
