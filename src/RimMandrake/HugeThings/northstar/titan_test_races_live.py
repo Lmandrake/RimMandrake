@@ -12,7 +12,8 @@ Rows {id, criterion, status PASS|FAIL|UNMEASURED, cls MOD|SITE|HARNESS, detail};
                                     tiered races carry CompTitanicWake.
   R2 t3_corpse_becomes_a_harvest_site KillTitanAt T3 -> one more RM_TitanicCorpseSite; KillTitanAt T2 -> none more.
   R3 butcher_yield_curve_reduces_t1_t2_yield ButcherYieldReport: T2 meat = control meat x the kernel factor (< 1), within
-                                    per-pawn rounding; the same-mass forced-out control is unreduced.
+                                    per-pawn rounding; the same-mass forced-out control is unreduced. A kernel factor of
+                                    exactly 1 (subject on its tier floor) is UNMEASURED HARNESS, never a MOD verdict.
   R4 t2_holes_thin_roofs_and_crushes_walls RoofWallProbe: a T2 stepping into a roofed wall cell holes RoofConstructed and damages
                                     or breaks the wood wall; the control leaves both.
   R5 thick_roof_route_excluded      ThickRoofCostProbe: a T2's step cost under RoofRockThick >= 2000 and above open ground;
@@ -136,6 +137,11 @@ def judge_yield(t2, ctl):
         return "FAIL", "control is tiered or curved: " + d
     if mc <= 0:
         return None, "control butchered no meat: " + d
+    if f == 1.0:
+        # SubLinearFactor = sqrt(floor / bodySize): a subject ON its tier floor (the T2 test race is bodySize 8 = the T2 floor)
+        # gets 1 by design, so equal meat proves nothing about the curve. Not a MOD FAIL: the row has no reducing subject
+        # (gen 7, live 2026-11-03: T2 6720 == control 6720 at factor 1.0000 was filed as MOD FAIL and passed A2)
+        return None, "no reducing subject: the kernel factor is 1 (a T1/T2 body above its tier floor is needed): " + d
     ok = f < 1.0 and m2 < mc and abs(m2 - mc * f) <= n
     return ("PASS" if ok else "FAIL"), d
 

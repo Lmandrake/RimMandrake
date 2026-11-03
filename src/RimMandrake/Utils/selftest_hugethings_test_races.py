@@ -99,6 +99,9 @@ def judges():
     check("judge_yield: 300 of 600 at factor 0.5 passes", L.judge_yield(y % 300, c)[0] == "PASS")
     check("judge_yield: an unreduced T2 fails", L.judge_yield(y % 600, c)[0] == "FAIL")
     check("judge_yield: off by more than n fails", L.judge_yield(y % 310, c)[0] == "FAIL")
+    floor = "RM_TestTitanT2 tier=T2 n=6 meat=6720 leather=1920 factor=1.0000"     # live 2026-11-03: the T2 race ON the T2 floor
+    check("judge_yield: a factor-1 subject (on its tier floor) has no verdict, never MOD FAIL or PASS",
+          L.judge_yield(floor, c.replace("meat=600", "meat=6720"))[0] is None)
     r2 = "RM_TestTitanT2 tier=T2 roofAfter=none wallHpBefore=%d wallHpAfter=%d wallDestroyed=%s"
     rc = "RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False"
     check("judge_roof: holed roof + broken wall passes", L.judge_roof(r2 % (195, 0, "True"), rc)[0] == "PASS")
@@ -253,6 +256,12 @@ def no_bridge_no_verdict():
             rc = "raised %s" % e
     finally:
         L.open_bridge, F.subprocess.call = ob, saved[3]
+    with open(F.__file__, encoding="utf-8") as fh:
+        wsrc = fh.read()
+    # live 2026-11-03: spawned pawns came in at 23-33y (forward-only aging refused), and static_call could not resolve a
+    # ThingID whose defName ends in a digit (STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF): both left R6 UNMEASURED
+    check("R6 ages with allowBackwards=True", 'biologicalYears=3.0, allowBackwards=True' in wsrc)
+    check("R6 calls OccupiedRect by bare thingIDNumber", 'method="OccupiedRect", args=num)' in wsrc and "args=pid)" not in wsrc)
     check("runner no-verdict: wrapper returns NO_VERDICT without connecting", rc == L.NO_VERDICT and not opened,
           "rc %r connected %r" % (rc, bool(opened)))
     sys.argv = saved[2]

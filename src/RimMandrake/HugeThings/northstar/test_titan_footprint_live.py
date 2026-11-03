@@ -100,12 +100,19 @@ def footprint(R, cells):
         pid = ((s.get("pawns") or [{}])[0] or {}).get("id") if s.get("success") is True else None
         if not pid:
             return R.row(FOOT, "UNMEASURED", "HARNESS", "spawn %s at %d,%d failed: %s" % (kind, x, z, str(s)[:200]))
-        a = R.call("jawa/set_pawn_age", pawn=pid, biologicalYears=3.0)
+        # spawned pawns come in at any age (23 seen live) and DebugSetAge only ages FORWARD: the raw setter puts every one at
+        # 3 years, past the test races' AnimalAdult floor 0.666 (gen 7, 2026-11-03: the forward-only call left the row UNMEASURED)
+        a = R.call("jawa/set_pawn_age", pawn=pid, biologicalYears=3.0, allowBackwards=True)
         stage = (a.get("after") or {}).get("lifeStage") or (a.get("before") or {}).get("lifeStage")
         if stage != "AnimalAdult":
             return R.row(FOOT, "UNMEASURED", "HARNESS", "%s %s not adult (lifeStage %r): %s" % (kind, pid, stage, str(a)[:200]))
         R.ticks(1)
-        o = R.call("jawa/static_call", type="Verse.GenAdj", method="OccupiedRect", args=pid)
+        # the bare thingIDNumber, never the ThingID: static_call's resolver splits trailing digits off a ThingID, so a defName
+        # ending in a digit (RM_TestTitanT2 + 53196) parses as #253196 and finds nothing (STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF)
+        num = pid[len(kind):] if pid.startswith(kind) else ""
+        if not num.isdigit():
+            return R.row(FOOT, "UNMEASURED", "HARNESS", "%s id %r is not <defName><thingIDNumber>" % (kind, pid))
+        o = R.call("jawa/static_call", type="Verse.GenAdj", method="OccupiedRect", args=num)
         txt = str(o.get("result") if o.get("success") is True else o.get("error") or o.get("message") or o)
         print("    OccupiedRect(%s %s) -> %s" % (kind, pid, txt[:300]), flush=True)
         if o.get("success") is not True:
