@@ -251,6 +251,20 @@ EXACT = {
 }
 # no line of the design may speak of a second list or carve an exception out of the claim rule
 FORBIDDEN = re.compile(r"\b(own|separate|second|another|other|its own|private|local) (lift )?lists?\b|\bclaim first, except\b|\bwithout (a |any )?claim\b", re.I)
+# every line that uses a list-family noun is pinned verbatim: a line naming any other list of members, in any
+# word order ("keeps a turret list of its own", "a list of turrets kept in XML"), is not on this set and goes red
+LIST_NOUN = re.compile(r"\b(list(s|ed|ing)?|rosters?|registr(y|ies)|catalog(ue)?s?|allowlists?|whitelists?)\b", re.I)
+LIST_LINES = sorted([
+    "# What Salvage may lift: the one list",
+    "the hauler droid's role, and one list shared with battlefield capture. Design only; the build items are in the last",
+    "the daily digest; none of it is on the `delegation_policy.md` \u00a72 short list. It keeps every owner ruling below.",
+    "- **The list is rules, not defs.** Owner, 2026-08-31 (`trap_renaissance_spec.md` \u00a72b): *\"no curation sheet is needed.",
+    "The scope is a CATEGORY, not a list.\"* So `design/RimMandrake/salvage_lift_policy.json` holds ordered category",
+    "hand, which \u00a71.3 e forbids (*\"it must not grow into a blanket allowlist\"*, our own design text).",
+    "## One list, one pass",
+    "swaps to pieces with no change to this list. It pays once, on the Deconstruct destroy, and neither category can be",
+    "launders through a claim, which holds for pieces and not for this list, since nothing on a scrap route reinstalls.",
+])
 
 
 def paragraphs(body):
@@ -276,6 +290,10 @@ def exact_faults(text):
     for n, line in enumerate(text.splitlines(), 1):
         if FORBIDDEN.search(line):
             out.append("line %d speaks of another list or a claim exception: %s" % (n, line.strip()[:120]))
+    said = sorted(line.strip() for line in text.splitlines() if LIST_NOUN.search(line))
+    if said != LIST_LINES:
+        extra = [l for l in said if l not in LIST_LINES] or [l for l in LIST_LINES if l not in said]
+        out.append("the lines that speak of a list are not the pinned set: %s" % [l[:100] for l in extra])
     return out
 
 
@@ -517,6 +535,18 @@ check(CLAIM in doc_text, "the claim sentence moved: the mutants below would test
 must_redden("turrets exempt from the claim", prose_faults(doc_text.replace(CLAIM, "need a claim first, except turrets, which any colonist lifts freely, which vanilla"), policy))
 must_redden("claim sentence extended at the end", prose_faults(doc_text.replace("with a `TakingEvent`.\n", "with a `TakingEvent`. Turrets need no claim.\n", 1), policy))
 must_redden("a private list elsewhere", prose_faults(doc_text + "\nWreckedMachines keeps a separate list of turrets.\n", policy))
+# the checker's mutants at d80f4761: a list of members named in any word order, anywhere in the doc
+BUILD = "\n## Build order"
+check(BUILD in doc_text, "the Build order heading moved: the mutants below would test nothing")
+for label, added in (("a turret list of its own", "WreckedMachines also keeps a turret list of its own."),
+                     ("a list of turrets in XML", "Capture reads a list of turrets kept in WreckedMachines XML."),
+                     ("a roster elsewhere", "Capture reads its turrets from a roster in WreckedMachines."),
+                     ("turrets listed elsewhere", "The turrets capture takes are listed in WreckedMachines XML.")):
+    must_redden(label, prose_faults(doc_text.replace(BUILD, "\n" + added + "\n" + BUILD, 1), policy))
+    must_redden(label + " (one-list section)", prose_faults(doc_text.replace("\n## One list, one pass\n", "\n## One list, one pass\n\n" + added + "\n", 1), policy))
+must_redden("a pinned list line edited", prose_faults(doc_text.replace("not for this list, since", "not for this list or capture's turret list, since"), policy))
+check("swaps to pieces with no change to this list." in doc_text, "the pinned list line moved: the mutant below would test nothing")
+must_redden("a pinned list line deleted", exact_faults(doc_text.replace("swaps to pieces with no change to this list.", "swaps to pieces with no change.", 1)))
 HULK_ROW = ", `RM_Lift_HULK` |"
 check(HULK_ROW in doc_text, "the scrap reader row lost HULK")
 must_redden("scrap reader drops HULK", prose_faults(doc_text.replace(HULK_ROW, " |"), policy))
