@@ -108,6 +108,11 @@ def main():
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--json", help="write the per-sheet report here")
     a = ap.parse_args()
+    if a.json and Path(a.json).name.endswith(".decisions.json"):
+        # 🔴 2026-10-22 a --json report landed on phase0_remaining_art_sheet_2026-10-16.decisions.json and
+        # destroyed his ruled sheet; the report also falls into every *.decisions.json glob (enact, ingest).
+        ap.error(f"--json {a.json}: a report must not be named *.decisions.json (it would overwrite a ruling "
+                 f"and be read as one)")
     rep = {}
     for dp in sorted(OUT.glob("*.decisions.json")):
         base = dp.name[:-len(".decisions.json")]
