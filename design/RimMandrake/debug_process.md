@@ -107,8 +107,10 @@ Functional checks belong in the suite.
 **The `*ArtOverride` family is gone.** All 60 standalone art-override mods were folded into
 the mods that own their creatures (ART_OVERRIDE_FOLD_ALL_1, 2026-10-09): the art sits at a path
 of the owner mod's own and the donor def is pointed at it by a `Patches/ArtFold/` patch. The
-offline proof is `src/RimMandrake/Utils/art_fold_check.py` over `art_fold_manifest.json`; a
-creature's live look is its owner mod's script's business.
+offline proof is `src/RimMandrake/Utils/art_fold_check.py` over `art_fold_manifest.json`; the
+live half is `src/RimMandrake/Utils/art_fold_live.py --live` over the same manifest (each bound
+kind spawned wild in one expectations_l2 batch, its texPath read back, missing-texture lines
+attributed per creature; ART_OVERRIDE_FAMILY_SCRIPT_1). No owner mod's script covers these rows.
 
 **Folded mods.** A mod folded into a composed mod, such as a biome folded into
 `RimMandrake.Biomes`, is covered by the composed mod's script only if that script's
