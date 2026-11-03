@@ -221,6 +221,44 @@ Step 6 is what makes the whole design affordable, and it is inherited rather tha
 because the quantised step usually has not moved. Cost therefore tracks the size of the
 moving *front*, not the size of the grid.
 
+### 2.6a Small counts, hitches and the ember — the integer rules
+
+*(ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS, 2026-11-02; agent's rules, answering the GPT review of
+`atmospheric_base_review_package_2026-10-24.md`. Code: `Source/Kernel/RM_Quotas.cs`; tests:
+`Source/SelfTest/QuotaTests.cs`, run by `selftest_atmosphericbase_kernel.py`.)* Percentages break on small
+groups: 4% of 11 lamps is 0.44, and `max(1, 10%)` lets the only lamp of a one-lamp group flash 100% of the
+time. Every share is therefore integer arithmetic in per-mille, with its rounding and minimum stated:
+
+| quota | rule, for a group of *n* | minimum | consequence at small *n* |
+|---|---|---|---|
+| tremor flickers at one instant (L6) | `min(ceil(n × share), floor(n / 10))`, share clamped to 1/10 | 1 whenever *n* ≥ 10 and the share > 0 | **0 below 10 fixtures**: one flicker would be more than the tenth that `never_tremor_reads_as_territory` allows, so the bar wins and the tremor is off. 11 lamps at 4% → 1. |
+| flashers (L7) | `min(asked, max(1, floor(n / 10)))` when *n* ≥ 2, else 0 | 1 whenever asked and *n* ≥ 2 | **never the whole group**: a one-lamp group has no flasher; 11 lamps asking 2 get 1; 25 asking 2 get 2. |
+
+Rounding the asked tremor share **up** means a nonzero share is never silently zero once the group is big
+enough; the **floor** of the tenth means rounding up can never break the bar. Both rules are swept over every
+*n* from 0 to 25 in the selftest.
+
+**A hitch is one recompute.** Every pattern is a pure function of the clock, and the only records that carry
+time (a scar's flip time, a hush's start) are time-stamped, so nothing is ever queued and nothing can be
+replayed. A gap between evaluations longer than **`RM_Hitch.MaxDelaySeconds` = 0.5 s** (an ordinary step is
+6 frames, 0.1 s at 60 fps, 0.4 s at 15 fps) is a **hitch**: it is counted (`hitches`, `maxGapSeconds` on the
+compositor), and the next evaluation computes the current state once at the current clock. A flicker, flash or
+territory step whose window closed inside the gap is obsolete and is never shown; writes after a hitch are at
+most one per fixture, the same bound as any evaluation (restores included: a release writes each fixture once).
+
+**The ember travels (L8).** A chosen dark is never still: in a dark room exactly one holdable lamp (a mood owns
+it and it is not on a tremor flicker) shows the ember, the lowest *lit* palette entry, and that lamp **moves**
+every **`RM_Ember.StepSeconds` = 4 s** to the next lamp in the room's sweep order (x, then z), turning back at
+either end, so each move is to a neighbour and every lamp of the room is visited. A room with **one** holdable
+lamp blinks it ember / black each step (going out is the change). An **empty** room (no holdable lamp) has no
+keeper, and no lamp of it is taken to black by the dark either, because only a holdable lamp reaches the dark at
+all; what it shows is its tremor flicker or its own glow. Today the hush (M4) is the only dark path built; every
+future dark scheme uses the same `RM_Ember.Keeper`.
+
+**Cost at 11 / 200 / 1000 fixtures** (the kernel half of an evaluation, and the glow-grid dirties it causes):
+`design/RimMandrake/atmospheric_base_cost_2026-11-02.md`. What the in-game frame and the regrid each dirty
+triggers cost is a live measurement, not an offline one.
+
 ### 2.7 Witness ledger
 
 For each gesture and each mood transition, whether **an awake colonist was present in an

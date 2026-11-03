@@ -155,15 +155,18 @@ namespace RimMandrake.AtmosphericBase
             return RM_PatternEvaluator.Index(s, ref c, time, flasher);
         }
 
-        /// <summary>L7: the framework picks which fixtures flash -- the flasherCount with the lowest hash, so the choice is
-        /// stable while membership is stable and never depends on list order.</summary>
+        /// <summary>L7: the framework picks which fixtures flash -- the lowest hashes, so the choice is stable while
+        /// membership is stable and never depends on list order. How many is RM_Quota.FlasherCap (spec §2.6a): at least
+        /// one when asked and the group has two or more, never the whole group, at most a tenth above one.</summary>
         public static HashSet<int> PickFlashers(IList<int> emitters, int flasherCount)
         {
             var set = new HashSet<int>();
-            if (flasherCount <= 0 || emitters == null || emitters.Count == 0) return set;
+            if (emitters == null) return set;
+            int k = RM_Quota.FlasherCap(emitters.Count, flasherCount);
+            if (k <= 0) return set;
             var order = new List<int>(emitters);
-            order.Sort((x, y) => Mix(x, 7).CompareTo(Mix(y, 7)));
-            for (int i = 0; i < order.Count && i < flasherCount; i++) set.Add(order[i]);
+            order.Sort((x, y) => Mix(x, 7) != Mix(y, 7) ? Mix(x, 7).CompareTo(Mix(y, 7)) : x.CompareTo(y));
+            for (int i = 0; i < order.Count && i < k; i++) set.Add(order[i]);
             return set;
         }
 

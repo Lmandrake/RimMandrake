@@ -1,0 +1,6 @@
+# ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS Q3 -- kernel cost + regrid dirties at 11/200/1000 fixtures, measured 2026-11-02 on Archmagi
+# by Source/SelfTest/QuotaTests.cs Q3Measure (selftest_atmosphericbase_kernel.py reprints these each run; timings vary, write counts do not).
+# writes_per_eval = glow-grid dirties (regrids) per evaluation. Reading and limits: design/RimMandrake/atmospheric_base_cost_2026-11-02.md
+MEASURE n=11 evals=600 initial_writes=11 mean_eval_ms=0.0020 max_eval_ms=0.0235 writes_per_eval=0.26 regrid_dirties_per_s=2.6 max_burst=3 (eval 516) alloc_bytes_per_eval=3631 flashers=1 tremor_cap=1 hitch_writes=0 hitch_ms=0.0019
+MEASURE n=200 evals=600 initial_writes=200 mean_eval_ms=0.0391 max_eval_ms=1.4087 writes_per_eval=1.38 regrid_dirties_per_s=13.8 max_burst=8 (eval 404) alloc_bytes_per_eval=69057 flashers=2 tremor_cap=8 hitch_writes=6 hitch_ms=0.0352
+MEASURE n=1000 evals=600 initial_writes=1000 mean_eval_ms=0.1995 max_eval_ms=0.5318 writes_per_eval=5.44 regrid_dirties_per_s=54.4 max_burst=13 (eval 33) alloc_bytes_per_eval=347342 flashers=2 tremor_cap=40 hitch_writes=35 hitch_ms=0.1851

@@ -55,6 +55,7 @@
     <Compile Include="..\Kernel\RM_PatternModifiers.cs" />
     <Compile Include="..\Kernel\RM_TerritoryKernel.cs" />
     <Compile Include="..\Kernel\RM_TerritoryShapes.cs" />
+    <Compile Include="..\Kernel\RM_Quotas.cs" />
     <Compile Include="..\Kernel\RM_PatternChoice.cs" />
     <Compile Include="..\Kernel\RM_GodGate.cs" />
     <Compile Include="..\RM_GlowAccess.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="TerritoryTests.cs" />
     <Compile Include="ChoiceTests.cs" />
     <Compile Include="NineTests.cs" />
+    <Compile Include="QuotaTests.cs" />
   </ItemGroup>
 
 </Project>

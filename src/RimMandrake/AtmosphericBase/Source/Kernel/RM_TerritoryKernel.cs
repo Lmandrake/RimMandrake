@@ -210,11 +210,9 @@ namespace RimMandrake.AtmosphericBase
             return true;
         }
 
-        public static int InstantCap(int drivenCount, float maxFraction)
-        {
-            if (drivenCount <= 0) return 0;
-            return Math.Max(1, (int)Math.Floor(drivenCount * (double)Math.Min(MaxFraction, Math.Max(0f, maxFraction)) + 1e-4));   // 0.04f is 0.03999..: 300 x 4% is 12, not 11
-        }
+        /// <summary>The integer rule (RM_Quota.TremorCap, spec §2.6a): min(ceil(n x share), floor(n / 10)); 0 below ten
+        /// fixtures, because one flicker there would be more than the bar's tenth.</summary>
+        public static int InstantCap(int drivenCount, float maxFraction) => RM_Quota.TremorCap(drivenCount, maxFraction);
 
         /// <summary>Which fixtures flicker now: id -> (contributor index, palette index). Contributors are given loudest
         /// first; beyond LawCap (or tuning.cap) they are ignored. A fixture two contributors want goes to the louder. At

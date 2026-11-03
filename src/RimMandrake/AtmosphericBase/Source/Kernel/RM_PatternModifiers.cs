@@ -178,17 +178,40 @@ namespace RimMandrake.AtmosphericBase
             return 0;
         }
 
-        /// <summary>Per hushed room, the one lamp that keeps the ember: the lowest id among the lamps the hush can hold
-        /// (a mood owns it and it is not flickering for a tremor). A substrate-shown or tremor lamp never reaches Apply,
-        /// so choosing one would leave the room without its ember (L8). `owned` / `tremor` are parallel to `ids`.</summary>
-        public static Dictionary<int, int> PickKeepers(IList<int> ids, IList<int> rooms, IList<bool> owned, IList<bool> tremor, ICollection<int> hushed)
+        /// <summary>Per hushed room, the lamp that keeps the ember NOW (L8, spec §2.6a): among the lamps the hush can
+        /// hold (a mood owns it and it is not flickering for a tremor), in sweep order (x, then z, then id; id alone when
+        /// no positions are given), RM_Ember.Keeper walks the ember from lamp to lamp every RM_Ember.StepSeconds. A
+        /// substrate-shown or tremor lamp never reaches Apply, so choosing one would leave the room without its ember.
+        /// A room with one such lamp blinks it ember/black; a room with none has no keeper and no lamp it takes to black.
+        /// `owned` / `tremor` / `xs` / `zs` are parallel to `ids`.</summary>
+        public static Dictionary<int, int> PickKeepers(IList<int> ids, IList<int> rooms, IList<bool> owned, IList<bool> tremor, ICollection<int> hushed,
+                                                       double time = 0, IList<float> xs = null, IList<float> zs = null)
         {
-            var keepers = new Dictionary<int, int>();
+            var byRoom = new Dictionary<int, List<int>>();
             for (int i = 0; i < ids.Count; i++)
             {
                 int rm = rooms[i];
                 if (rm < 0 || !hushed.Contains(rm) || !owned[i] || tremor[i]) continue;
-                if (!keepers.TryGetValue(rm, out int k) || ids[i] < k) keepers[rm] = ids[i];
+                if (!byRoom.TryGetValue(rm, out List<int> l)) byRoom[rm] = l = new List<int>();
+                l.Add(i);
+            }
+            var keepers = new Dictionary<int, int>();
+            foreach (KeyValuePair<int, List<int>> kv in byRoom)
+            {
+                List<int> l = kv.Value;
+                l.Sort((a, b) =>
+                {
+                    if (xs != null && zs != null)
+                    {
+                        int c = xs[a].CompareTo(xs[b]); if (c != 0) return c;
+                        c = zs[a].CompareTo(zs[b]); if (c != 0) return c;
+                    }
+                    return ids[a].CompareTo(ids[b]);
+                });
+                var ordered = new List<int>(l.Count);
+                foreach (int i in l) ordered.Add(ids[i]);
+                int k = RM_Ember.Keeper(ordered, time);
+                if (k >= 0) keepers[kv.Key] = k;
             }
             return keepers;
         }

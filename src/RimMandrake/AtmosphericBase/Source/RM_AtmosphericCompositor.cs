@@ -132,6 +132,7 @@ namespace RimMandrake.AtmosphericBase
         public long evaluations, fixtureEvaluations, writes, skippedUnchanged, skippedUnlit;
         public int lastEvalWrites, maxEvalWrites;
         public long allocations, territoryFlips, tremorWrites;   // Phase 3-4
+        public long hitches; public double maxGapSeconds;               // §2.6a: gaps over RM_Hitch.MaxDelaySeconds
         public long tideAllocations;                                 // allocations that ran as a TIDE (RM_TerritoryShapes)
         public string lastPlan;                                      // the last territory plan, for the proof readout
         public int lastTremorCount, maxTremorCount, lastTremorContributors, lastUnionCount, lastDrivenCount;
@@ -326,6 +327,14 @@ namespace RimMandrake.AtmosphericBase
             comp.ReleaseExternallyEdited();   // §9.9: before anything is written
             if (refreshMembership) RefreshMembership(comp);
             RM_AtmosphericBaseSettings set = RM_AtmosphericBaseSettings.Cur;
+            // §2.6a hitch: everything below is a pure function of `time` plus a few time-stamped records (scar, hush), so a
+            // long gap is ONE recompute at the current clock. Nothing is queued, so nothing is replayed; a flicker or step
+            // that closed inside the gap is obsolete and never shown. Counted here so the proof can see hitches happen.
+            if (evaluations > 0 && RM_Hitch.IsHitch(lastTime, time))
+            {
+                hitches++;
+                if (time - lastTime > maxGapSeconds) maxGapSeconds = time - lastTime;
+            }
             lastTime = time;
             List<RM_MoodClaim> ranked = set.compositor ? comp.RankedMoods() : new List<RM_MoodClaim>();
             RM_MoodClaim lead = ranked.Count > 0 ? ranked[0] : null;
@@ -430,20 +439,21 @@ namespace RimMandrake.AtmosphericBase
             lastTremorCount = tremorAt?.Count ?? 0;
             if (lastTremorCount > maxTremorCount) maxTremorCount = lastTremorCount;
 
-            // M4: the one lamp per hushed room that keeps the ember in a dark hush (its lowest-id driven fixture that a mood owns)
+            // M4: the one lamp per hushed room that keeps the ember in a dark hush NOW; it walks the room (RM_Ember, §2.6a)
             Dictionary<int, int> keepers = null;
             if (hushOf.Count > 0)
             {
                 var kIds = new List<int>(); var kRooms = new List<int>(); var kOwned = new List<bool>(); var kTremor = new List<bool>();
+                var kXs = new List<float>(); var kZs = new List<float>();
                 foreach (Thing t in driven)
                 {
                     int id0 = t.thingIDNumber;
-                    kIds.Add(id0);
+                    kIds.Add(id0); kXs.Add(t.Position.x); kZs.Add(t.Position.z);
                     kRooms.Add(roomOf.TryGetValue(id0, out int rr) ? rr : -1);
                     kTremor.Add(tremorAt != null && tremorAt.ContainsKey(id0));
                     kOwned.Add((second != null && leadOf.ContainsKey(id0)) || (lead != null && InGroup(comp, t, lead.group)));
                 }
-                keepers = RM_Hush.PickKeepers(kIds, kRooms, kOwned, kTremor, hushOf.Keys);
+                keepers = RM_Hush.PickKeepers(kIds, kRooms, kOwned, kTremor, hushOf.Keys, time, kXs, kZs);   // L8: the ember travels (§2.6a)
             }
 
             // steps 5-6: one quantised value per fixture, written only on change

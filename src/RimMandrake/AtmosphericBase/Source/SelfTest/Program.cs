@@ -209,7 +209,7 @@ internal static class Program
         HashSet<int> f1 = RM_SchemeKernel.PickFlashers(ids, 2);
         ids.Reverse();
         HashSet<int> f2 = RM_SchemeKernel.PickFlashers(ids, 2);
-        Check("L7: exactly flasherCount fixtures flash", f1.Count == 2);
+        Check("L7: flasherCount fixtures flash, within the §2.6a cap (6 fixtures asking 2 get max(1, 6/10) = 1)", f1.Count == RM_Quota.FlasherCap(ids.Count, 2) && f1.Count == 1);
         Check("L7: the choice does not depend on list order", f1.SetEquals(f2));
         Check("L7: zero flashers when the scheme asks none", RM_SchemeKernel.PickFlashers(ids, 0).Count == 0);
 
@@ -572,7 +572,8 @@ internal static class Program
         Phase3();
         Phase4();
         PatternTests.Run();
-        NineTests.Run();   // T3 (c): the Nine aboard the Utinni, read off the campaign tier's XML
+        NineTests.Run();
+        QuotaTests.Run();   // ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS: §2.6a quotas, hitch, cost, ember   // T3 (c): the Nine aboard the Utinni, read off the campaign tier's XML
 
         if (Fails.Count > 0)
         {
