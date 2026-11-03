@@ -20,14 +20,7 @@
   register (FishBase baseline nutrition/mass/rot) with the doc's own single
   deliberate override, MarketValue 12 — "the Greentide's one prize fish."
 
-  Placeholder art (owed, not generated this pass): every texPath below
-  reuses a non-fish vanilla plant sprite already cited (and validated clean)
-  by this mod's own other fish-item files (RUT_WeepingStonesFish_Items.xml /
-  RUT_CrackedLandsFish_Items.xml / RUT_TwilightFish_Niim.xml), distinct
-  within THIS table per the commission's own art law (§0 "Art") — none
-  shared with another entry here, though several are reused from paths
-  already cited elsewhere, which is fine since the "no shared texPath" rule
-  is scoped per-table.
+  Art: every fish here has its own item render at Things/Item/Fish/<defName>.
 -->
 <Defs>
 
@@ -200,7 +193,7 @@
     <label>lunger fry</label>
     <description>A Lunger no longer than your arm, which means its mother is under this bank -- eat it now, before it eats you next year. The Greentide's one prize fish: netted rarer than anything else the river gives up, and the one catch every Wildsteam crew brags about.</description>
     <graphicData>
-      <texPath>Things/Plant/RUT_LungerFry/RUT_LungerFry_StandIn</texPath>
+      <texPath>Things/Item/Fish/RUT_LungerFry</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

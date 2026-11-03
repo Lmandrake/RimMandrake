@@ -35,7 +35,8 @@
 
   Art: Zeev, Uvva, Karrun, Dubbol, Lozh and Saava carry their own render
   (Things/Item/Fish/<defName>, owner's Greentide sheet picks 2026-10-08).
-  Tuun and LungerFry still borrow a vanilla plant sprite until theirs land.
+  Tuun has its own render; LungerFry still wears RM_Zeev's picture, an owner-kept
+  placeholder (LUNGERFRY_DECIDE_WEARS_ZEEVS_COAT).
 
   RM_ScaaLumsigh and RM_Vashuu (last in this file) are NOT RUT_ duplicates:
   new river fish the owner asked for on the Twilight Sea sheet, wearing the

@@ -1,0 +1,47 @@
+{
+ "subject": "RUT_LungerFry",
+ "item": "SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE",
+ "class": "art",
+ "decision": "KEEP",
+ "judge": "gpt_consult.py (GPT via codex), fresh call per round, not the maker",
+ "brief": "design/RimMandrake/art_judge_brief.md + def description + sibling strip",
+ "why_not_pipeline": "art_eval runner HOLD_INPUT: catch module requires living_reference; the Lunger creature is not built yet",
+ "rounds": [
+  {
+   "verdict": "REDO",
+   "reasons": [
+    "Scale conflicts with the subject\u2019s def description: \u201cA Lunger no longer than your arm.\u201d In the true-scale panel, the fish\u2019s length is roughly 80% of the human\u2019s full height, making it read substantially larger than arm-length.",
+    "Otherwise, it reads clearly as a caught predatory fish at play zoom. The painterly shading, outline and side-resting presentation suit the item."
+   ],
+   "defects": [
+    "Oversized relative to the supplied human; reduce its displayed size.",
+    "No obvious clipping, halo or fringe is visible."
+   ],
+   "image_sha256": "48de05566ff8e85d30f92fb4863d00e276312cc05bad900b3d7bda740ee0a7a8"
+  },
+  {
+   "verdict": "UNSURE",
+   "reasons": [
+    "Input completeness: not given sibling-keep status or donor/past-art status. The brief\u2019s \u201cWhat you are given\u201d section requires \u201cMissing any of these \u2192 UNSURE\u201d; the undrawn adult accounts for the missing adult reference only.",
+    "Visually, the tapered body, fins and tail read as a caught predatory fish at play zoom. Its arm-length scale, painterly shading and presentation are compatible with the stated item brief."
+   ],
+   "defects": [
+    "No obvious clipping, halo or fringe is visible. Real alpha cannot be confirmed from the displayed images."
+   ],
+   "image_sha256": "1ba73946e2016db90b896ec473ea0e25d02467fd3fafd021463da055515272eb"
+  },
+  {
+   "verdict": "KEEP",
+   "reasons": [
+    "At play zoom, the tapered head, solid body and finned tail read as a caught fish.",
+    "The large head, heavy jaws and spiny back suggest a young river predator; its arm-length scale fits the description.",
+    "Painterly shading, earthy colours and anatomical detail fit the supplied sibling catches (B1, B3).",
+    "The side exposed while lying on the ground is consistent with a fish item; creature-facing rules do not apply to Graphic_Single.",
+    "The silhouette fits the cell, with no visible clipping, halo, fringe or ground shadow. Fully transparent corners are supplied."
+   ],
+   "defects": [],
+   "image_sha256": "1ba73946e2016db90b896ec473ea0e25d02467fd3fafd021463da055515272eb"
+  }
+ ],
+ "installed_sha256": "1ba73946e2016db90b896ec473ea0e25d02467fd3fafd021463da055515272eb"
+}

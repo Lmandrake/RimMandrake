@@ -1,0 +1,43 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LungerFry",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['living_reference']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "single.png": "633f126dabffbd39b219a705222cfc924a3ad818103dd0b5779a7c6eff9dfdd8",
+  "scale.png": "d39ff1f534eda4ec28bb98fef6b0234fe8a6763aa624671e19d50e3161ed317f"
+ }
+}

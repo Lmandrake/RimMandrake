@@ -12,10 +12,7 @@
   monoculture) so both can be found wild before a player ever builds a
   RM_ConstellationCage grower for them.
 
-  PLACEHOLDER ART: the same two confirmed-present textures
-  RM_TwilightSeaFlora.xml already uses (EcheveriaA, SnakePlantA), reused here
-  and distinguished purely by <color>/<colorTwo> — exactly the convention
-  that file's own header recommends for a sea with no unique art yet.
+  Art: each plant has its own render; neither borrows another def's sprite.
   ============================================================================
 -->
 <Defs>
@@ -30,7 +27,7 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_NoothelmPlant/RM_NoothelmPlant_StandIn</texPath>
+      <texPath>Things/Plant/RM_NoothelmPlant/RM_NoothelmPlant</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(180,150,80)</colorTwo>
       <drawSize>(1.2,1.2)</drawSize>

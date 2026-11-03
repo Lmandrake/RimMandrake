@@ -1,0 +1,17 @@
+[
+ {
+  "id": "arteval_RM_NoothelmPlant__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_NoothelmPlant",
+  "prompt": "A single RimWorld plant sprite on a transparent background: the noothelm, a squat sealed deep-sea plant. The body is a low, thick, closed capsule-rosette, wider than it is tall, made of fused, waxy, sea-floor tissue in muted slate, blue-green and dull teal. Its leaves are fused into smooth, tightly overlapping armoured plates that close around the base of the bulb, giving a compact, rounded, enclosed silhouette with no stalk showing and no loose or drooping leaf tips. At the crown, resting in the closed plates, sits one clearly visible, glossy golden bulb, the brightest and only warm-coloured element, inert and smooth. The stand is short and broad, a compact mass of layered, joined growth with subtle sediment-dusted texture, belonging to a dim twilight sea floor. Painterly vanilla RimWorld art style, realistic, soft shading, clean dark outline, three-quarter top-down view, centered, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DESC_MISS, STYLE_EARTHLY, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "succulent_wardrobe_g3b",
+  "drawsize": 1.2,
+  "module": "bush"
+ }
+]
