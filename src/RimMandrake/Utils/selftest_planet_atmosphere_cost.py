@@ -60,6 +60,11 @@ _, bad = pac.judge_sample(dict(proc, gpu_counters=0), mods, start, log, start + 
 check("no GPU counter refuses", any("GPU" in b for b in bad))
 _, bad = pac.judge_sample(proc, mods, start, log, start - dt.timedelta(seconds=10))
 check("stale Player.log refuses", any("older" in b for b in bad))
+for marker in ("Initializing new game with mods:\nludeon.rimworld\n", "Loading game from file Ashkarr with mods:\n"):
+    _, bad = pac.judge_sample(proc, mods, start, log + marker, start + dt.timedelta(hours=2))
+    check("a sample after a game start is refused (%s)" % marker.split(" with")[0],
+          any("game was started" in b for b in bad))
+check("a main-menu log holds no game-start marker", not pac.GAME_STARTED.search(log))
 _, bad = pac.judge_sample({"running": False}, mods, start, log, start)
 check("not running refuses", bad != [])
 

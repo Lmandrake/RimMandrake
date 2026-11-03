@@ -8,8 +8,8 @@ Exit codes follow relentless_live: 0 PASS, 1 FAIL, 2 UNMEASURED (retried on a la
 Why it exists: A1 needs a launch WITH rwnodetree.rwplanetatmosphere, A2 one WITHOUT it. Any one staged launch is
 only one of the two, and a FAIL stands until a new build, so `record --require` straight on the live line made the
 other clause a standing FAIL. Here a launch that is the wrong condition (or not up, or whose ModsConfig moved since
-launch, or lacks a DLC: staging facts, not the clause) is UNMEASURED and rides the next load on that list. A broken
-instrument (no GPU counter, no load timing) stays FAIL. A3 is UNMEASURED until both sides exist, and FAIL when both
+launch, or lacks a DLC, or has left the main menu for a game: staging facts, not the clause) is UNMEASURED and rides
+the next load on that list. A broken instrument (no GPU counter, no load timing) stays FAIL. A3 is UNMEASURED until both sides exist, and FAIL when both
 exist but no with/without pair differs by this mod alone.
 """
 import contextlib
@@ -26,7 +26,8 @@ import planet_atmosphere_cost as pac  # noqa: E402
 PASS, FAIL, UNMEASURED = 0, 1, 2
 # record()'s reasons that describe the staged launch, not the clause (prefixes of its own messages)
 STAGING = ("RimWorldWin64 is not running", "powershell gave no JSON", "ModsConfig.xml written",
-           "DLC missing from the list", "this launch is the ")
+           "DLC missing from the list", "this launch is the ",
+           "a game was started after the load")
 
 
 def classify_record(rc, out):

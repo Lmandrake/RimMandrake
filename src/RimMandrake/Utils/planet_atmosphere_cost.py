@@ -215,6 +215,10 @@ def parse_utc(s):
     return dt.datetime.fromisoformat(s)
 
 
+# vanilla's game-start lines (Verse/Game.cs InitNewGame, Verse/SavedGameLoaderNow.cs): past the main menu
+GAME_STARTED = re.compile(r"^(Initializing new game with mods|Loading game from file )", re.M)
+
+
 def judge_sample(proc, mods, cfg_mtime, log_text, log_mtime):
     """Pure: build the sample row and the list of reasons it is not a measurement."""
     bad = []
@@ -238,6 +242,8 @@ def judge_sample(proc, mods, cfg_mtime, log_text, log_mtime):
     row["dlc_missing"] = [d for d in DLC if d not in mods]
     if row["dlc_missing"]:
         bad.append("DLC missing from the list: " + ", ".join(row["dlc_missing"]))
+    if GAME_STARTED.search(log_text):
+        bad.append("a game was started after the load: not at the main menu")
     row["load_ms"] = load_ms(log_text)
     if row["load_ms"] is None:
         bad.append("no RimBridge STARTUP_TIMING line in Player.log: load time UNMEASURED")
