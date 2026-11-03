@@ -554,10 +554,12 @@ def collect_throughput(env, now):
     lines = text.splitlines()
     first = None
     for i, line in enumerate(lines):
-        if '"acts"' not in line:
-            continue
         try:
             d = json.loads(line)
+            if not isinstance(d, dict):
+                raise ValueError("not a record")
+            if "acts" not in d:
+                continue
             at = iso_epoch(d["at"])
         except (ValueError, KeyError, TypeError):
             # the tail read can start mid-line and the last line can be mid-write; any other is damage
@@ -1259,7 +1261,7 @@ def read_history(env):
         try:
             r = json.loads(line)
             # v2 counts processes; v1 samples counted "things" and would not compare
-            if r.get("v") == 2 and isinstance(r.get("t"), (int, float)) and isinstance(r.get("n"), int):
+            if isinstance(r, dict) and r.get("v") == 2 and isinstance(r.get("t"), (int, float)) and isinstance(r.get("n"), int):
                 out.append(r)
         except ValueError:
             continue
