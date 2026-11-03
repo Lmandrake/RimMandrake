@@ -47,13 +47,28 @@ def main():
             fails.append("%s has no phaseStack" % n)
         if not isinstance(r.get("probe"), dict):
             fails.append("%s probe is not an object" % n)
+        else:   # the probe's shape on a real stall (offline twin: src/RimMandrake/Utils/selftest_stall_probe.py)
+            pr = r["probe"]
+            for k in ("ticksGameNow", "capture", "tickList", "errors"):
+                if k not in pr:
+                    fails.append("%s probe lacks %r: %r" % (n, k, sorted(pr)))
+            if pr.get("errors"):
+                fails.append("%s probe read errors on a still main thread: %r" % (n, pr.get("errors")))
+            if pr.get("tickList") is not None:   # inside a tick list: the bucket is the entered tick's, and nothing moved
+                iv = {"Rare": 250, "Long": 2000}.get(pr.get("tickList"), 1)
+                et = pr.get("enteredTick")
+                if not isinstance(et, int) or et < 0 or pr.get("bucket") != et % iv:
+                    fails.append("%s probe bucket %r is not enteredTick %r %% %d" % (n, pr.get("bucket"), et, iv))
+                if pr.get("changedDuringRead") is not False:
+                    fails.append("%s probe changedDuringRead %r on a frozen main thread" % (n, pr.get("changedDuringRead")))
         ms = r.get("mainStack") or {}
         if not ("text" in ms or "error" in ms):
             fails.append("%s mainStack has neither text nor error" % n)
         if not any(t.get("main") for t in r.get("threads") or []):
             fails.append("%s does not flag the main thread among %d threads" % (n, len(r.get("threads") or [])))
-        print("dump %s: phaseStack=%s silentS=%s mainStack=%s probe.keys=%s"
-              % (n, r.get("phaseStack"), r.get("silentS"), (ms.get("error") or "text")[:120], sorted(r.get("probe") or {})))
+        print("dump %s: phaseStack=%s silentS=%s mainStack=%s probe.keys=%s tickList=%r"
+              % (n, r.get("phaseStack"), r.get("silentS"), (ms.get("error") or "text")[:120], sorted(r.get("probe") or {}),
+                 (r.get("probe") or {}).get("tickList")))
     ends = []
     if rb.EVIDENCE_LOG and os.path.exists(rb.EVIDENCE_LOG):
         rows = [json.loads(x) for x in open(rb.EVIDENCE_LOG, encoding="utf-8").read().splitlines()[-400:] if x.strip()]
