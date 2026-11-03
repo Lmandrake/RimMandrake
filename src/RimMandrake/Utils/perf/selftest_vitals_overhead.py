@@ -46,6 +46,14 @@ check("paused meter share", s["paused"]["meter_share_pct"], round(100.0 * 6 * 2 
 check("wrong list", V.verdict(run(mods=13), "full")[:2], (1, "WRONG_LIST"))
 check("no count", V.verdict(run(mods=None), "minimal")[:2], (1, "WRONG_LIST"))
 check("full ok", V.verdict(run(mods=540), "full")[:2], (0, "MEASURED"))
+# the minimal tier refuses a full list (else A1 would record a full-list run as the 23-mod tier),
+# holds the 23-mod tier, and the two tiers never overlap
+check("minimal refuses full list", V.verdict(run(mods=540), "minimal")[:2], (1, "WRONG_LIST"))
+check("minimal refuses 300", V.verdict(run(mods=300), "minimal")[:2], (1, "WRONG_LIST"))
+check("minimal holds 23", V.verdict(run(mods=23), "minimal")[:2], (0, "MEASURED"))
+check("full refuses 23", V.verdict(run(mods=23), "full")[:2], (1, "WRONG_LIST"))
+check("23 inside minimal bounds", V.TIERS["minimal"][0] <= 23 <= V.TIERS["minimal"][1], True)
+check("tiers disjoint", V.TIERS["minimal"][1] < V.TIERS["full"][0], True)
 
 # a channel that never ran while armed (subjects without specimens) is UNMEASURED, never free
 mm = meters()
