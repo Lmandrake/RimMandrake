@@ -301,6 +301,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 				// CompTick's clock gate compares against it. Bypassing either brings back the paid-tiles-only expiry.
 				Assert(code.Contains("private int ExpiryTick => RM_FloodReleaseMath.ExpiryTick(spawnedTick, TicksPerTile, estimatedFloodedTiles, unpaidSteps);"),
 					"the ExpiryTick property adds unpaidSteps");
+				// The count must survive a reload: the scribe line is live code, not a commented-out leftover.
+				Assert(code.Contains("Scribe_Values.Look(ref unpaidSteps, \"unpaidSteps\", 0);"), "the unpaid-step count is saved (live code), so a reload keeps the extended expiry");
 				Assert(code.Contains("if (Find.TickManager.TicksGame > ExpiryTick) { EndRelease(); return; }")
 					&& Regex.Matches(code, @"TicksGame\s*>").Count == 1,
 					"the one clock gate ends the release at ExpiryTick and no other tick comparison ends it");
