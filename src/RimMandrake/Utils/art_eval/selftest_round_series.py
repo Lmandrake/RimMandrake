@@ -20,6 +20,47 @@ def check(name, ok):
         FAILS.append(name)
 
 
+def renamed_def_checks():
+    """SERIES_STOP_FIX_RENAMED_DEF_ESCAPES: a reset or stop keyed by an old defName governs the renamed def."""
+    import os
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        prev = os.environ.get("ART_LEDGER_DIR")
+        os.environ["ART_LEDGER_DIR"] = str(td)
+        try:
+            (td / "subject_aliases.json").write_text(json.dumps({"aliases": {"D_old": "D_new", "gristle": "diggerpede"}}))
+            rp = td / "round_resets.jsonl"
+            RS.add_reset("D_old", "fauna_x_00", {"per_ruling": "t"}, path=rp, now="2026-10-24T06:00:00-07:00")
+            RS.add_stop("D_old", {"why": "kept"}, path=rp, now="2026-10-24T07:00:00-07:00")
+            rs = RS.resets(rp)
+            check("rename: stop under D_old stops D_new (alias)", bool(RS.stopped("D_new", rs)))
+            check("rename: stop under D_old still stops D_old", bool(RS.stopped("D_old", rs)))
+            check("rename: series and tag follow the alias", RS.series("D_new", rs) == 1 and RS.tag("D_new", 2, rs) == "s1r2")
+            check("rename: an unrelated def is not stopped", RS.stopped("D_other", rs) is None and RS.series("D_other", rs) == 0)
+            RS.add_reset("RSW_Chikka", "fauna_x_00", {"per_ruling": "t"}, path=rp, now="2026-10-24T06:00:00-07:00")
+            RS.add_stop("RSW_Chikka", {"why": "kept"}, path=rp, now="2026-10-24T07:00:00-07:00")
+            rs = RS.resets(rp)
+            check("rename: tier move RSW_Chikka -> RM_Chikka is the same creature", bool(RS.stopped("RM_Chikka", rs)))
+            RS.add_reset("RSW_Gristle", "fauna_x_00", {"per_ruling": "t"}, path=rp, now="2026-10-24T06:00:00-07:00")
+            RS.add_stop("RSW_Gristle", {"why": "kept"}, path=rp, now="2026-10-24T07:00:00-07:00")
+            check("rename: subject-key alias gristle -> diggerpede", bool(RS.stopped("RM_Diggerpede", RS.resets(rp))))
+            # a NEWER reset under the new name restarts the series: the old stop no longer applies
+            RS.add_reset("D_new", "fauna_y_00", {"per_ruling": "again"}, path=rp, now="2026-10-25T06:00:00-07:00")
+            rs = RS.resets(rp)
+            check("rename: newer reset under the new name reopens the series",
+                  RS.stopped("D_new", rs) is None and RS.stopped("D_old", rs) is None and RS.series("D_new", rs) == 2)
+            try:
+                RS.add_stop("D_new", {"why": "x"}, path=rp, now="2026-10-25T07:00:00-07:00")
+                check("rename: add_stop accepts the new name of a reset def", bool(RS.stopped("D_old", RS.resets(rp))))
+            except ValueError:
+                check("rename: add_stop accepts the new name of a reset def", False)
+        finally:
+            if prev is None:
+                os.environ.pop("ART_LEDGER_DIR", None)
+            else:
+                os.environ["ART_LEDGER_DIR"] = prev
+
+
 def main():
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
@@ -145,6 +186,7 @@ def main():
             check("adopting a run with no decisions refused", False)
         except ValueError:
             check("adopting a run with no decisions refused", True)
+    renamed_def_checks()
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

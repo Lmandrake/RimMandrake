@@ -76,9 +76,56 @@ def resets(path: Path = RESETS) -> dict:
     return out
 
 
+_SUBJECTS: dict = {"aliases": None, "memo": {}}   # memo valid while the art ledger's alias map object is unchanged
+
+
+def _subject_memo() -> dict:
+    import sys
+    art = str(HERE.parent / "art")
+    if art not in sys.path:
+        sys.path.insert(0, art)
+    import artledger as AL
+    al = AL.subject_aliases()          # the same object until the alias file changes (artledger reloads by mtime)
+    if _SUBJECTS["aliases"] is not al:
+        _SUBJECTS.update(aliases=al, memo={}, AL=AL)
+    return _SUBJECTS["memo"]
+
+
+def subject(defname: str, memo: dict | None = None) -> str:
+    """The creature a def is, following renames (SERIES_STOP_FIX_RENAMED_DEF_ESCAPES): the art ledger's subject key
+    ('RSW_Chikka' and 'RM_Chikka' -> 'chikka') folded through its alias file (subject_aliases.json, whose keys may be
+    a bare subject key or a whole def), so a reset or stop recorded under an old defName governs the renamed def."""
+    memo = _subject_memo() if memo is None else memo
+    if defname not in memo:
+        AL = _SUBJECTS["AL"]
+        memo[defname] = AL.canonical_subject(AL.subject_key(AL.canonical_subject(defname)))
+    return memo[defname]
+
+
+def record(defname: str, rs: dict | None = None):
+    """The def's current series record, merged across every def name that is the same creature: the newest reset
+    among them, with `stopped` set when the newest stop among them is not older than it. None without a reset."""
+    rs = resets() if rs is None else rs
+    if not rs:
+        return None
+    memo = _subject_memo()
+    me = subject(defname, memo)
+    same = [r for d, r in rs.items() if d == defname or subject(d, memo) == me]
+    if len(same) <= 1:
+        return same[0] if same else None
+    cur = max(same, key=lambda r: _instant(r.get("at")))
+    stops = [r["stopped"] for r in same if r.get("stopped")]
+    stop = max(stops, key=lambda s: _instant(s.get("at"))) if stops else None
+    cur = {k: v for k, v in cur.items() if k != "stopped"}
+    if stop and _instant(stop.get("at")) >= _instant(cur.get("at")):
+        cur["stopped"] = stop
+    return cur
+
+
 def stopped(defname: str, rs: dict | None = None):
-    """The stop record if the def's current series was stopped, else None."""
-    r = (resets() if rs is None else rs).get(defname)
+    """The stop record if the def's current series was stopped (under this name or any name of the same creature),
+    else None."""
+    r = record(defname, rs)
     return r.get("stopped") if r else None
 
 
@@ -86,7 +133,7 @@ def add_stop(defname: str, prov: dict, path: Path = RESETS, now: str | None = No
     """End the def's current series (e.g. the owner kept or picked its art meanwhile). Append-only, like a reset."""
     if not any(prov.get(k) for k in ("by_card", "owner_said", "per_ruling", "why")):
         raise ValueError("say why the series stops (--owner-said/--by-card/--per-ruling/--why)")
-    if defname not in resets(path):
+    if record(defname, resets(path)) is None:
         raise ValueError(f"{defname} has no fresh series to stop")
     rec = {"at": now or datetime.now().astimezone().isoformat(timespec="seconds"), "def": defname, "stop": True,
            "series": series(defname, resets(path))}
@@ -110,7 +157,7 @@ def keeps_after(keeps: list, judged_at) -> list:
 
 
 def series(defname: str, rs: dict | None = None) -> int:
-    r = (resets() if rs is None else rs).get(defname)
+    r = record(defname, rs)
     return int(r["series"]) if r else 0
 
 
@@ -178,8 +225,8 @@ def production_decisions(runs_dir: Path = STATE / "runs"):
 
 
 def _in_series(r: dict, rs: dict) -> bool:
-    d = r["subject"]
-    return not (d in rs and _instant(r.get("at")) <= _instant(rs[d]["at"]))
+    cur = record(r["subject"], rs)
+    return not (cur and _instant(r.get("at")) <= _instant(cur["at"]))
 
 
 def regened_pictures(recs, rs: dict | None = None) -> dict:
