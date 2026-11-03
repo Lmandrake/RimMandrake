@@ -12417,3 +12417,5 @@
 {"seat":"BENCH","event":"start","id":"ROT_REGEN_SHEET_FINISH_SIX_OPTIONS_SERVED","why":"relentless supervisor takes the item","ts":"2026-11-03T15:41:55Z","tsn":1793720515188226749}
 {"seat":"BENCH","event":"start","id":"OLD_ART_SHEETS_REBUILD_WITH_SCALE_PANELS","why":"relentless supervisor takes the item","ts":"2026-11-03T15:42:13Z","tsn":1793720533239114987}
 {"seat":"BENCH","event":"start","id":"PAINTER_REGIONS_RETHINK_GHOSTS_MAY_HAUNT","why":"relentless supervisor takes the item","ts":"2026-11-03T15:42:31Z","tsn":1793720551069729999}
+{"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1 (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-03T15:45:03Z","tsn":1793720703884993717}
+{"seat":"BENCH","event":"start","id":"OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN","why":"relentless supervisor takes the item","ts":"2026-11-03T15:48:01Z","tsn":1793720881859074336}
