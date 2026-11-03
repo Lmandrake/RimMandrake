@@ -16,6 +16,9 @@ CHOICES = ("Burn the cells", "Hold them", "Loose the experiments", "Take a speci
 LABS = ("the Shattered Lab", "the Held Lab", "the Feeding Lab", "the Emptied Lab")
 
 
+PLACEHOLDER = re.compile(r"\b(TBD|TODO|TBC|to be (decided|determined|written|confirmed)|placeholder|fill in)\b", re.I)
+
+
 def _block(sec, start, end):
     i = sec.find(start)
     j = sec.find(end, i + 1) if i >= 0 else -1
@@ -30,7 +33,7 @@ def planet_content(sec):
     if not rec or not fail:
         return ["§2.10 recovery/failure blocks not found in order"]
     for name, body in (("recovery", rec), ("failure", fail)):
-        if re.search(r"\bTBD\b|\bTODO\b", body):
+        if PLACEHOLDER.search(body):
             bad.append(f"§2.10 {name} block holds a placeholder")
     # Recovery: a table with an 'on the planet' column and one filled row per choice.
     if not re.search(r"^\| *choice recovered *\| *the lab afterwards *\| *on the planet *\|", rec, re.M):
@@ -39,6 +42,8 @@ def planet_content(sec):
     for line in rec.splitlines():
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if len(cells) == 3 and cells[0] in CHOICES:
+            if cells[0] in rows:
+                bad.append(f"recovery table has two rows for {cells[0]!r}")
             rows[cells[0]] = cells
     for ch in CHOICES:
         r = rows.get(ch)
@@ -69,6 +74,91 @@ def planet_content(sec):
     return bad
 
 
+def start_and_choices(sec):
+    """What starts the breakout and what the choices are, by content, not headings (blind check, gen 7)."""
+    bad = []
+    trig = _block(sec, "**What starts the breakout", "**The choices.**")
+    cho = _block(sec, "**The choices.**", "**The Specimen Casket.**")
+    if not trig or not cho:
+        return ["§2.10 trigger/choices blocks not found in order"]
+    if PLACEHOLDER.search(trig) or PLACEHOLDER.search(cho):
+        bad.append("§2.10 trigger or choices block holds a placeholder")
+    items = {}
+    cur = None
+    for line in trig.splitlines():
+        m = re.match(r"^(\d)\. (.*)", line)
+        if m:
+            cur = int(m.group(1))
+            if cur in items:
+                bad.append(f"trigger {cur} is listed twice")
+            items[cur] = m.group(2)
+        elif cur and line.startswith("   ") and line.strip():
+            items[cur] += " " + line.strip()
+        elif not line.strip():
+            cur = None
+    if sorted(items) != [1, 2, 3]:
+        bad.append(f"trigger list is not three numbered triggers (found {sorted(items)})")
+    t1, t2, t3 = (items.get(k, "") for k in (1, 2, 3))
+    if "console" not in t1 or "choice" not in t1:
+        bad.append("trigger 1 is not the choice finishing at the console")
+    if "hyperdrive" not in t2 or "lifted" not in t2 or "Leave them" not in t2:
+        bad.append("trigger 2 is not the hyperdrive lifted (as Leave them)")
+    if "stasis decay runs out" not in t3 or "15-day clock" not in t3 or "Leave them" not in t3:
+        bad.append("trigger 3 is not the 15-day stasis decay (as Leave them)")
+    if "the first of three things" not in trig:
+        bad.append("trigger block does not say the first of three starts it")
+    flat = " ".join(cho.split())
+    for want in ("One pick, made once at the console", "how bad the breakout is, never whether it comes"):
+        if want not in flat:
+            bad.append(f"choices block lacks {want!r}")
+    if not re.search(r"^\| *choice *\| *what is done *\| *cells that fail *\| *seal window *\| *what it costs or pays *\|", cho, re.M):
+        bad.append("choices block has no 'choice | what is done | cells that fail | seal window | what it costs or pays' table")
+    rows = {}
+    for line in cho.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) == 5 and cells[0].strip("*") in CHOICES:
+            if cells[0].strip("*") in rows:
+                bad.append(f"choices table has two rows for {cells[0]!r}")
+            rows[cells[0].strip("*")] = cells
+    for ch in CHOICES:
+        r = rows.get(ch)
+        if not r:
+            bad.append(f"choices table has no row for {ch!r}")
+            continue
+        if PLACEHOLDER.search(" ".join(r)):
+            bad.append(f"choice {ch!r} holds a placeholder")
+        if len(r[1]) < 10 or len(r[4]) < 10:
+            bad.append(f"choice {ch!r} has an empty 'what is done' or 'costs' cell")
+        if not re.match(r"[1-4] of 4\b", r[2]):
+            bad.append(f"choice {ch!r} sets no count of failing cells")
+        if not re.match(r"\d+ days?$", r[3]):
+            bad.append(f"choice {ch!r} sets no seal window")
+    if "Leave them" in rows and "4 of 4" not in rows["Leave them"][2]:
+        bad.append("Leave them (the default) does not fail every cell")
+    if "every pick leaves it obtainable" not in flat:
+        bad.append("choices block does not keep the hyperdrive obtainable on every pick")
+    return bad
+
+
+def start_mutants(sec):
+    """The checker's two mutants (trigger list deleted; choices paragraph+table+drive paragraph deleted) and a blanked cell."""
+    w, c, k = sec.index("**What starts the breakout"), sec.index("**The choices.**"), sec.index("**The Specimen Casket.**")
+    trig = sec[w:c].splitlines()
+    t = next((i for i, l in enumerate(trig) if re.match(r"^\d\. ", l)), len(trig))
+    e = next((i for i in range(t, len(trig)) if not trig[i].strip()), len(trig))
+    blank = "\n".join("| Hold them |  |  |  |  |"
+                      if l.strip().strip("|").split("|")[0].strip().strip("*") == "Hold them" else l
+                      for l in sec[c:k].splitlines())
+    gutted = {
+        "trigger list deleted": sec[:w] + "\n".join(trig[:t] + trig[e:]) + "\n" + sec[c:],
+        "choices paragraph, table and drive paragraph deleted": sec[:c] + sec[k:],
+        "Hold them row blanked": sec[:c] + blank + "\n" + sec[k:],
+        "trigger 3 lost its clock": sec.replace("15-day clock", "clock"),
+    }
+    bad = [f"mutant {name!r} changed nothing" for name, s in gutted.items() if s == sec]
+    return bad + [f"start/choice checks stay green on mutant {name!r}" for name, s in gutted.items() if not start_and_choices(s)]
+
+
 def mutants(sec):
     """The planet checks must see: each gutting of the blocks has to go red (blind checker's mutant included)."""
     a, b, c = sec.index("**What a recovery leaves.**"), sec.index("**What a failure leaves"), sec.index("**The strike branch")
@@ -88,7 +178,7 @@ def mutants(sec):
 def main():
     bad = []
     spec = (ROOT / "design/Jawa/worldbuilding/dungeons_arc_spec.md").read_text(encoding="utf-8")
-    sec = re.search(r"^### 2\.10 .*?(?=^## 3\. )", spec, re.S | re.M)
+    sec = re.search(r"^### 2\.10 .*?(?=^#{1,3} |\Z)", spec, re.S | re.M)
     if not sec:
         print("FAIL: no §2.10 in dungeons_arc_spec.md")
         return 1
@@ -100,9 +190,13 @@ def main():
         if want not in sec:
             bad.append(f"§2.10 lacks {want!r}")
     bad += planet_content(sec)
+    bad += start_and_choices(sec)
+    if "### 2.9 " not in spec:
+        bad.append("no §2.9 in dungeons_arc_spec.md")
     if not bad:
         bad += mutants(sec)
-    q = spec[spec.index("### 2.9 "):spec.index("### 2.10 ")]
+        bad += start_mutants(sec)
+    q = spec[spec.index("### 2.9 "):spec.index("### 2.10 ")] if "### 2.9 " in spec else ""
     for gone in ("What are the specimen choices", "What does a successful recovery leave"):
         if gone in q:
             bad.append(f"§2.9 still asks {gone!r}")
@@ -128,24 +222,30 @@ def main():
         bad.append("canon does not carry both strike rulings")
     v = json.loads((ROOT / "infrastructure/state/delegated/2026-11-01/warlab_specimens_breakout.json").read_text(encoding="utf-8"))
     rounds = v["rounds"]
-    order = sorted(rounds, key=int)
+    order = sorted(rounds, key=lambda k: (not re.fullmatch(r"[0-9]{1,3}", k), int(k) if re.fullmatch(r"[0-9]{1,3}", k) else 0, k))
+    placeholder = False
     if v["item"] != ITEM or not rounds:
         bad.append("judge record is not on this item")
+        placeholder = True
+        order = ["0"]
+        rounds = {"0": {"verdict": "", "models": []}}
     if v.get("scope") != "whole §2.10, strike paragraph included":
         bad.append("the judge did not have the whole section in scope")
+    if order != [str(i) for i in range(1, len(order) + 1)] and not placeholder:
+        bad.append(f"judge rounds are not numbered 1..n in a row ({order})")
     # delegation_policy §4.5: three opus REDOs go to him flagged; rounds past three only on his word.
     first3 = [rounds[k] for k in order[:3]]
-    if not all(any("opus" in m for m in r["models"]) for r in first3):
+    if not all(any(isinstance(m, str) and re.search(r"\bopus\b", m) for m in r["models"]) for r in first3):
         bad.append("one of the first three rounds was not opus (Agent_Policy)")
     if len(order) > 3:
-        if not all(r["verdict"].startswith("VERDICT: REDO") for r in first3) or not v.get("flagged", "") or v["flagged"] not in sec:
+        if not all(r["verdict"].startswith("VERDICT: REDO") for r in first3) or v.get("flagged") != "WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE" or v["flagged"] not in sec:
             bad.append("rounds past three without three REDOs flagged to him in §2.10")
         if "Keep shape, fix, 4th judge" not in v.get("owner_authorized_past_three", ""):
             bad.append("rounds past three carry no owner authorization (delegation_policy §4.5)")
     last = rounds[order[-1]]
     if not last["verdict"].startswith("VERDICT: KEEP") or v.get("verdict") != "KEEP":
         bad.append("the last judge round is not a KEEP")
-    if not any("opus" in m for m in last["models"]):
+    if not any(isinstance(m, str) and re.search(r"\bopus\b", m) for m in last["models"]):
         bad.append("the KEEP round was not a fresh opus (Agent_Policy)")
     if "WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE" not in q:
         bad.append("§2.9 does not name WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE")
