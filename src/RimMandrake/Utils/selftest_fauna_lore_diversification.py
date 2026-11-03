@@ -96,8 +96,10 @@ def figure_findings(manifest, fig):
                     got[k].append((round(float(x), 4), round(float(y), 4)))
     # the shaded band the reader sees must be the 12-15 x bodySize band the points are judged against
     band = [c for c in ax.collections if "band" in str(c.get_label()).lower()]
-    if len(band) != 1 or not band[0].get_visible():
-        bad.append("graph: expected one visible shaded band, found %d" % len(band))
+    band_fc = band[0].get_facecolors() if len(band) == 1 else []
+    if len(band) != 1 or not band[0].get_visible() or len(band_fc) == 0 \
+            or min(float(c[3]) for c in band_fc) < 0.15:
+        bad.append("graph: expected one visible (opacity >= 0.15) shaded band, found %d" % len(band))
     else:
         ks = set()
         for pth in band[0].get_paths():
