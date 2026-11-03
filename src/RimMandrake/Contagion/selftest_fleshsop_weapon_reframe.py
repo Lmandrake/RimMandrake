@@ -156,7 +156,9 @@ def main():
                  ("<manhunterOnDamageChance>1.0</manhunterOnDamageChance>",
                   "<manhunterOnDamageChance>0.0</manhunterOnDamageChance>"),
                  ("<combatPower>30</combatPower>", "<combatPower>4</combatPower>"),
-                 ("<wildGroupSize>2~4</wildGroupSize>", "<wildGroupSize>1~1</wildGroupSize>")):
+                 ("<wildGroupSize>2~4</wildGroupSize>", "<wildGroupSize>1~1</wildGroupSize>"),
+                 ("<ArmorRating_Sharp>0.3</ArmorRating_Sharp>", "<ArmorRating_Sharp>0</ArmorRating_Sharp>"),
+                 ("<power>5</power>", "<power>2</power>")):
         t_, k_ = fleshsop_defs(old)
         before = len(body_failures(t_, k_))
         i = old.index("<defName>RM_Fleshsop</defName>")
@@ -168,6 +170,15 @@ def main():
         t2, k2 = fleshsop_defs(m_)
         if len(body_failures(t2, k2)) <= before:
             mut.append(f"mutation {b} not caught")
+    # the live def's description reverted to the pre-reframe text must be caught through the same parse path
+    t_, _ = fleshsop_defs(old)
+    cur = t_.findtext("description") if t_ is not None else None
+    if not cur:
+        mut.append("RM_Fleshsop description not found for the revert mutation")
+    else:
+        t3, _ = fleshsop_defs(old.replace(cur, OLD_DESCRIPTION, 1))
+        if not pitiable_hits(t3.findtext("description")):
+            mut.append("description reverted to the pre-reframe text not caught")
     fails += [f"MUTATION: {x}" for x in mut]
 
     for x in fails:
