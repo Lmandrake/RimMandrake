@@ -48,6 +48,24 @@ check(P.verdict("A4", wrap(A4_OK))[0] == 0, "A4 pass shape not passed")
 check(P.verdict("A4", "READ nodePresent True | weaveNear 0 | lastYield 3")[0] == 1, "A4 uncut node passed")
 check(P.verdict("A4", "READ nodePresent False | weaveNear 3 | lastYield 0")[0] == 1, "A4 lastYield 0 passed")
 
+# every field each clause reads is pinned here, independent of the proof's want-dicts: breaking any one value in a
+# pass line must FAIL (exit 1), so dropping a key from a want-dict turns this selftest red (blind check, gen 1)
+PINS = {
+    "A1": (A1_OK, [("designatable", "True", "False"), ("workgiver", "True", "False"), ("yield", "3", "0"),
+                   ("weaveNear", "0->3", "0->0"), ("weaveNear", "0->3", "0->2"), ("spawned", "1", "0")]),
+    "A2": (A2_OK, [("yield", "2", "3"), ("weaveNear", "0->2", "0->0"), ("spawned", "0", "1")]),
+    "A3": (A3_OK, [("designatable", "False", "True"), ("yield", "0", "3")]),
+    "A4": (A4_OK, [("nodePresent", "False", "True"), ("weaveNear", "3", "0"), ("weaveNear", "3", "2"),
+                   ("lastYield", "3", "0")]),
+}
+for clause, (ok, muts) in PINS.items():
+    for key, good, bad in muts:
+        lead = "| " if not ok.startswith(("HARVEST %s " % key, "READ %s " % key)) else ok.split(" ")[0] + " "
+        old, new = "%s%s %s" % (lead, key, good), "%s%s %s" % (lead, key, bad)
+        check(ok.count(old) == 1, "pin %s %s: %r not once in the pass line" % (clause, key, old))
+        got = P.verdict(clause, wrap(ok.replace(old, new)))
+        check(got[0] == 1, "%s passed with %s %s (want %s): %s" % (clause, key, bad, good, got))
+
 loaded = wrap("REFUSED: no current map")
 log = "RimWorld 1.6.4633 rev1261\nLoading mandrake.rm.webwork\n"
 check(P.log_verdict(log, loaded)[0] == 0, "clean log not passed")
