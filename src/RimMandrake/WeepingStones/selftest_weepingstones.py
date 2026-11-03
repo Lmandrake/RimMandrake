@@ -14,6 +14,7 @@ This is evidence about the SUITE, not about the game: the mock encodes the respo
 ASSUMES (the header of validation.py lists which are unproven live).
 Run: python3 src/RimMandrake/WeepingStones/selftest_weepingstones.py
 """
+import json
 import os
 import sys
 import tempfile
@@ -329,6 +330,33 @@ def reds(result):
     return sorted(k for k, (v, _) in result.items() if v == "FAIL")
 
 
+LIVE_PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs", "WEEPINGSTONES_HANDLER_VANISHES_1.txt")
+
+
+def _a1_rows():
+    """The row ids live proof A1 hands prove_rows.py (the tokens after its results path), or None."""
+    try:
+        with open(LIVE_PROOFS, encoding="utf-8") as fh:
+            lines = [ln for ln in fh if ln.startswith("live-proof A1:")]
+    except OSError:
+        return None
+    if len(lines) != 1 or "prove_rows.py " not in lines[0]:
+        return None
+    return lines[0].split("prove_rows.py ", 1)[1].split()[1:]
+
+
+def _prove_rows_exit(result, rows):
+    """Run the real prove_rows.py on a results file built from a mock run, with A1's row list."""
+    import subprocess
+    bars = [{"id": k, "status": v[0], "evidence": v[1]} for k, v in result.items()]
+    with tempfile.TemporaryDirectory() as d:
+        p = os.path.join(d, "a1.json")
+        with open(p, "w", encoding="utf-8") as fh:
+            json.dump({"bars": bars}, fh)
+        return subprocess.run([sys.executable, os.path.join(ROOT, "src", "RimMandrake", "BlueDesert", "prove_rows.py"),
+                               p] + list(rows), capture_output=True, timeout=60).returncode
+
+
 def main():
     # -- the instrument itself ------------------------------------------------------------------
     check("source parse is clean", not V._ERRORS, V._ERRORS)
@@ -414,6 +442,18 @@ def main():
           tf.get("handler_fate.net_job_target_leaves_only_as_stock", ("",))[0] == "FAIL"
           and tf.get("handler_fate.net_job_handler_stays_on_map", ("",))[0] == "PASS",
           dict((k, v[0]) for k, v in tf.items() if k.startswith("handler_fate.")))
+    # the live A1 line must hand prove_rows EVERY handler_fate row: a row it omits can FAIL and A1 stays green
+    a1 = _a1_rows()
+    check("live proof A1 names every handler_fate component", a1 is not None and set(hf) <= set(a1),
+          "missing %s" % sorted(set(hf) - set(a1 or ())))
+    for label, res, want in (("healthy", healthy, 0), ("target_flees", tf, 1),
+                             ("handler_leaves_mid_job", run(("handler_leaves_mid_job",)), 1),
+                             # the blind checker's probe: every row PASS but the target, which despawned alive
+                             ("healthy-but-target-despawned", dict(healthy, **{
+                                 "handler_fate.net_job_target_leaves_only_as_stock":
+                                     ("FAIL", "wild skarrin despawned alive")}), 1)):
+        got = _prove_rows_exit(res, a1 or [])
+        check("live proof A1's prove_rows on the %s results exits %d" % (label, want), got == want, got)
     hv = run(("handler_vanishes",)).get("handler_fate.control_no_job_nobody_vanishes", ("", ""))
     check("break handler_vanishes: the no-job control FAILs (the exit is not the job's)", hv[0] == "FAIL", hv)
 
