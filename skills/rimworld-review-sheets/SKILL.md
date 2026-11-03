@@ -7,7 +7,7 @@ description: >-
   in-game size is shown at true scale beside a vanilla human (enforced in code at serve, commit and phone),
   sheets are built and gated by art_sheet.py, served by serve_gated.py, and his rulings are carried out by
   `art.py enact`. Also use when a sheet is "missing the scaled portrayal", repeats rows he already ruled,
-  loses or moves his picks, re-fires a note he already had followed, is invisible in RimPulse, or a
+  loses or moves his picks, re-fires a note he already had followed, is not listed where the owner looks, or a
   sheet tool refuses. Not for live in-game staging (rimworld-live-review).
 ---
 
@@ -55,8 +55,8 @@ the resolver, re-asked by the gate, is the only thing that exempts a row from a 
    sheet), then `prereview.py init <sheet> --by seat:<SEAT>|judge:<model>` and fill each row OK / FIXED / FLAG + note,
    `caught`, `dropped`. `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without it
    (exit 4); a row whose pictures change afterwards needs a fresh look (`init` resets only it).
-3. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet, or RimPulse cannot
-   list it. Give him the URL; the page writes every click as he goes (owner, 2026-10-31).
+3. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet (`refresh_sheets.py` and
+   status tooling find it there; RimPulse is retired, the owner has the URL from you). Give him the URL; the page writes every click as he goes (owner, 2026-10-31).
 4. **Refresh** as renders land — `refresh_sheets.py` keeps URLs stable, rebuilds only changed sheets, and
    prints an `UNPUBLISHED:` publish command for a rebuilt sheet only if it is pinned (tracked). Run it.
 5. **Remap** after any rebuild of a sheet he has touched — `remap_decisions.py` (dry run, then `--apply`), so
@@ -69,7 +69,7 @@ the resolver, re-asked by the gate, is the only thing that exempts a row from a 
    without checking it was not already followed (owner, 2026-10-08: *"You shouldn't leave my notes AFTER you
    follow the notes... it can produce accidental multiple firings."*).
 
-Commands, flags, files and the RimPulse hand-off: `references/lifecycle.md`. The 14 rulings, verbatim, and
+Commands, flags, files and the hand-off: `references/lifecycle.md`. The 14 rulings, verbatim, and
 which tool refuses what: `references/art_requirements.md`. Failures that have actually happened, each with
 its check: `references/traps.md`.
 

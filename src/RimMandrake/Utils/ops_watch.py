@@ -22,7 +22,7 @@ rimflow/dispatcher_schedule.json "measure"):
                          closes and verify passes in 24 h, lapsed leases
              process     process-commit share (git log, the resp_register PROC regex) over 24 h and 7 d
              tps         tps_record.py --json: tick ratio, stalls, coverage
-             production  every RimPulse stream measure (rm-pulse-streams' series.jsonl, reused, not recomputed)
+             production  every stream measure (rm-streams-collect's series.jsonl, reused, not recomputed)
              v3          the section 6 success metrics no instrument measures yet, UNMEASURED with the reason
              relentless  the belt, from its own store: live, under_min, breaker_open_min, checks_wait, ready, tick_age_s,
                          progress_age_min; distressed and cause (OP2, DI2); blind when a source is missing or frozen
@@ -54,7 +54,7 @@ rimflow/dispatcher_schedule.json "measure"):
 
     python3 src/RimMandrake/Utils/ops_watch.py run [--file-alarms]   one pass (the timer passes --file-alarms)
     python3 src/RimMandrake/Utils/ops_watch.py digest                 print digest.md
-    python3 src/RimMandrake/Utils/ops_watch.py backfill               seed production from rm-pulse-streams' history
+    python3 src/RimMandrake/Utils/ops_watch.py backfill               seed production from rm-streams-collect' history
     python3 src/RimMandrake/Utils/ops_watch.py install [--apply]      the systemd user timer (plan unless --apply)
 """
 import argparse
@@ -1409,14 +1409,14 @@ def c_production(now, rules, ctx):
     age = (now - rt) / 60.0
     if age < -5:
         return {"production._collector": U("the streams record is dated %.0f min in the future" % -age)}
-    out = {"production.record_age_min": M(round(age, 1), "min since rm-pulse-streams' last record")}
+    out = {"production.record_age_min": M(round(age, 1), "min since rm-streams-collect' last record")}
     stale = age > 60
     for k, p in sorted((rec.get("measures") or {}).items()):
         if not isinstance(p, dict):
             out["production." + k] = U("malformed measure in the streams record (%s)" % type(p).__name__)
             continue
         if stale:
-            out["production." + k] = U("the streams record is %.0f min old (rm-pulse-streams stopped?)" % age)
+            out["production." + k] = U("the streams record is %.0f min old (rm-streams-collect stopped?)" % age)
         elif p.get("m") == "MEASURED" and not (is_num(p.get("v")) and finite(p["v"])):
             out["production." + k] = U("the streams record marks this MEASURED with no number: %r" % (p.get("v"),))
         elif p.get("m") == "MEASURED":
@@ -3253,7 +3253,7 @@ def run(now=None, rules=None, filer=None, families=None):
 
 @_locked
 def backfill_production(now=None, rules=None):
-    """Seed series/production.jsonl from rm-pulse-streams' own history so the KPI bands have a baseline on day one.
+    """Seed series/production.jsonl from rm-streams-collect' own history so the KPI bands have a baseline on day one.
     Only into an empty production series (never rewrites what is there); each record keeps its source time."""
     now = now or time.time()
     rules = rules or load_rules()
@@ -3279,7 +3279,7 @@ def backfill_production(now=None, rules=None):
                 else:
                     pts["production." + k] = soft_point(p)
             append("production", {"schema": SCHEMA, "t": t, "at": iso(t), "family": "production", "points": pts,
-                                  "src_t": t, "backfill": "rm-pulse-streams series.jsonl"})
+                                  "src_t": t, "backfill": "rm-streams-collect series.jsonl"})
             n += 1
     return n
 
@@ -3287,7 +3287,7 @@ def backfill_production(now=None, rules=None):
 # =================================================================================================== install
 UNIT = """# rm-ops-watch: ops_watch.py, the Dispatcher's deterministic measurement arm for Operations
 # (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE; listed in src/RimMandrake/rimflow/dispatcher_schedule.json "measure").
-# Runs from the pulse-deploy checkout (rm-pulse-update fast-forwards it), like rm-pulse-streams. No AI.
+# Runs from the pulse-deploy checkout (rm-deploy-update fast-forwards it), like rm-streams-collect. No AI.
 [Unit]
 Description=Ops watch (accounts, Codex, Steve lane, disk, timers, KPIs; Andon flags; alarms)
 
@@ -3340,7 +3340,7 @@ def main(argv=None):
     r.add_argument("--family", action="append", help="only these families (testing)")
     d = sub.add_parser("digest")
     d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
-    sub.add_parser("backfill", help="seed an empty production series from rm-pulse-streams' history")
+    sub.add_parser("backfill", help="seed an empty production series from rm-streams-collect' history")
     ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
     ln.add_argument("--rules", help="the rules file, default the shipped one")
     i = sub.add_parser("install")

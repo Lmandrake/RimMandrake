@@ -1026,7 +1026,7 @@ def compact_metrics(path: Path) -> tuple[int, int]:
     return before, after
 
 
-# Worst case of one health run; rm-pulse-health.service's TimeoutStartSec must cover it (selftest_pulse_health.py).
+# Worst case of one health run; the (retired) health unit's TimeoutStartSec must cover it.
 HEALTH_ASK_S, HEALTH_RETRY_S, HEALTH_RESTART_S = 10, 15, 20
 
 

@@ -1,9 +1,0 @@
-# "Since you left" digest at 06:00 and 17:30 (owner ruling 2026-10-08, typed: "When I say
-# I'm back, and 6am, and 5:30pm"). The I'm-back form is `./pulse back`.
-[Unit]
-Description=RimFlow pulse scheduled digest
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/python3 ${RM_PULSE_DEPLOY}/src/RimMandrake/Utils/pulse/pulse.py since --scheduled --quiet
-TimeoutStartSec=60s

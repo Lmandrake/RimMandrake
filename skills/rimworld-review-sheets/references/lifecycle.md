@@ -10,7 +10,7 @@ serve logs live in `Transient/biome_ffar/`; snapshots in `infrastructure/state/a
 | `<name>_sheet_<date>.html` | `art_sheet.py` / `refresh_sheets.py` (gated, stamped) | yes | the owner's browser, the gate |
 | `<name>_sheet_<date>.decisions.json` | the sidecar (his clicks); prefill by `art_sheet.py` only while untouched | yes | `art.py enact`, `remap_decisions.py`, the gate (req 8) |
 | `infrastructure/state/art/sheets/<sheet>.snapshot.json` | `art_sheet.py` | yes | letters → pictures; `L.snapshot_by_id` recovers ruled ones from git |
-| `<name>_sheet_<date>.serve.log` | the server's stdout | no (gitignored) | RimPulse, `refresh_sheets.served_url` |
+| `<name>_sheet_<date>.serve.log` | the server's stdout | no (gitignored) | `refresh_sheets.served_url` |
 | `sheets_state.json` | `refresh_sheets.py` (fingerprint per sheet) | no | `refresh_sheets.py` — missing means rebuild all once |
 | `<name>.subjects.json` | `art_sheet.py --subjects` (the subject sheet's one-entry census) | yes | rebuilds, the gate (via the snapshot's `census`) |
 | `img/scale_*.png` | `scale_panel.render_panel` | untracked | the sheet |
@@ -39,7 +39,7 @@ python3 src/RimMandrake/Utils/art/game_art.py classify <html>...                
 python3 src/RimMandrake/Utils/art/game_art.py deliver <html>...                           # what serve/commit/phone apply
 ```
 
-## Serve, and the RimPulse hand-off
+## Serve, and the hand-off
 
 ```bash
 cd Transient/biome_ffar
@@ -47,9 +47,8 @@ setsid python3 ../../src/RimMandrake/Utils/art/serve_gated.py --no-open --sheet 
     --decisions X_sheet_D.decisions.json > X_sheet_D.serve.log 2>&1 < /dev/null &
 ```
 
-- RimPulse lists sheets ONLY from a `<sheet>.serve.log` beside the sheet in `Transient/` or one subfolder down
-  (`pulse_core.SHEETS_DIRS`; the last URL that answers 200). Output sent anywhere else makes the sheet invisible to
-  it; a dead server's log keeps the sheet listed until stopped. Art sheets live in `Transient/biome_ffar/`; a
+- Keep the `<sheet>.serve.log` beside the sheet in `Transient/` or one subfolder down: `refresh_sheets.served_url` reads the last URL
+  there that answers 200 (RimPulse, which also listed it, is retired 2026-11-03; give the owner the URL yourself). Art sheets live in `Transient/biome_ffar/`; a
   non-art sheet is REFUSED there (`nonart_sheet.py`), so serve it from `Transient/` itself.
 - Start servers one at a time: eight at once raced the WSL loopback relay and four tabs showed "Network error".
 - `refresh_sheets.py` restarts a dead server itself (same log), so an already-served sheet needs nothing.

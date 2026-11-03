@@ -6,7 +6,7 @@ dormant logins: `~/.claude-accounts/<acct>/`. Each account has two caps, both fr
 - **Current session** - the 5-hour cap; resets inside hours; seldom binding.
 The meter (`account_usage.py`, timer rm-account-usage) polls every account and writes
 `/mnt/d/ClaudeWork/rimmandrake/account_usage/{series.jsonl,latest.json}`. A reading whose email does not match the
-registry is discarded. Read order: live here, live remote (ssh), vault here (token valid 15+ min), RimPulse (<20 min),
+registry is discarded. Read order: live here, live remote (ssh), vault here (token valid 15+ min),
 ESTIMATE, UNMEASURED.
 
 Per account (rules in switching_plan.json; verify with `status`, times change weekly):

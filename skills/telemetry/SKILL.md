@@ -35,7 +35,7 @@ producers (unchanged)                      Windows, E:\telemetry  (survives wsl 
  artpipe               D:\ClaudeWork\rimmandrake\artpipe ┤     ├─► VictoriaMetrics 127.0.0.1:8428  (series, 2 y)
  deploy/winbuild/modset_builder → inbox\changes ┤ ├─► events.db SQLite WAL             (events, calls, proofs)
  WSL exporter (rm-telemetry-export.timer) → inbox\wsl ┘ ├─► raw\<src>\<day>.jsonl.gz   (90 d, then F:\telemetry_archive)
-                                                        └─► state\alerts.json ──► RimPulse rows + 4 sparklines
+                                                        └─► state\alerts.json ──► alerts.json (RimPulse is retired; read by ops_watch)
  Grafana http://localhost:3000 (5 dashboards, anonymous viewer)      `telemetry` CLI (python.exe)
 ```
 

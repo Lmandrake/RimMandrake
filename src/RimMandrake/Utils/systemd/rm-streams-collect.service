@@ -1,0 +1,13 @@
+# The Level 1 stream collector (was rm-pulse-streams; RimPulse is retired, the collector is not): one record of every
+# measure appended to D:\ClaudeWork\rimmandrake\streams\series.jsonl, which rm-ops-watch's production domain reads, and the
+# testing-rig collector runs first (its history.jsonl feeds ops_watch's testing domain). No LLM.
+[Unit]
+Description=stream collector (Level 1 series + testing metrics)
+
+[Service]
+Type=oneshot
+Environment=RM_PULSE_DEPLOY=/mnt/d/ClaudeWork/rimmandrake/pulse-deploy
+ExecStart=-/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/src/RimMandrake/Utils/pulse/testing_metrics.py
+ExecStart=/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/src/RimMandrake/Utils/pulse/streams.py collect
+TimeoutStartSec=420s
+Nice=10

@@ -236,7 +236,7 @@ a stale seat clone's view.
 
 🔴 **Never re-derive item state from raw events by hand — fold through
 `model.replay(events, observe=cb)`.** A reader that knew only the `needs` verb
-missed `implemented` and `file --needs owner`, so RimPulse hid 29 owner items
+missed `implemented` and `file --needs owner`, so the old RimPulse board hid 29 owner items
 and listed one item 9.5 h after it moved (2026-10-11). `observe(ev, world, ok)`
 is called after every folded event, so it tells you which event moved a field
 without re-implementing the verbs.

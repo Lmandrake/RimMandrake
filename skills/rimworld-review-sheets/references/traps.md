@@ -9,7 +9,7 @@
 | A note followed twice | 7 Greentide notes already filed as jobs were briefed out again (2026-10-08); an old note rode along on a new click (2026-10-07) | enact moves followed notes to `notes_followed`; compare the job's `created` with `decidedAt`, never `at` |
 | A redo carrying the rejected picture as its reference | a "make it alien" redo kept redrawing the rejected creature and failed canon twice (2026-10-10) | a redo whose note rejects the anatomy carries NO reference; build the prompt from the def's description |
 | Pre-snapshot decisions | 229 rows of legacy (pre-2026-10-04) decisions were refused by enact | `legacy_redo_triage.py`; never hand-translate them |
-| A served sheet invisible in RimPulse | server stdout went elsewhere (2026-10-10) | serve into `<sheet>.serve.log` beside the sheet |
+| A served sheet `refresh_sheets` cannot find | server stdout went elsewhere (2026-10-10) | serve into `<sheet>.serve.log` beside the sheet |
 | A size that was never measured | plants drawn at the fallback size while their defs set sizes several times larger | every size prints its source; FALLBACK is flagged on the row and checked by the gate |
 | Enacting slowly | four helpers chained serially took ~2 h (2026-10-08) | one `art.py enact` pass, one batched card at most |
 

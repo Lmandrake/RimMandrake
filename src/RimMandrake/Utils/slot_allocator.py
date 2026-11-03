@@ -46,7 +46,7 @@ never measures tokens itself; the spawn hook reading allocation.json is what ref
 
 Files (program-read, so scratch): $RM_STREAMS_DIR (default D:\\ClaudeWork\\rimmandrake\\streams) allocation.json
 (the latest decision and its hysteresis state) and slot_override.json (his word). The 15-min writer is
-pulse/streams.py collect (rm-pulse-streams.timer); the spawn hook is .claude/hooks/block_agent_over_slots.py.
+pulse/streams.py collect (rm-streams-collect.timer); the spawn hook is .claude/hooks/block_agent_over_slots.py.
 """
 from __future__ import annotations
 

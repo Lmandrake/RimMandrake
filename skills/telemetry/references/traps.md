@@ -10,7 +10,7 @@
 - **Store python's pid.** `pythonw.exe` from WindowsApps is a launcher; the pid Popen returns is not the
   interpreter (`pythonw3.13.exe`). telemetryd is judged by its own heartbeat (`state\heartbeat.json`).
 - **NAT.** WSL cannot reach Windows localhost: the CLI runs under `python.exe`. Windows can reach WSL's
-  (RimPulse on 8765).
+  (a service on a WSL port).
 - **SQLite over drvfs** is unsafe: only Windows processes open `E:\telemetry\events.db` (telemetryd writes,
   Grafana and the CLI read).
 - **bridge_calls keeps ~10 h** (20 MB, one `.1`); telemetry's raw copy is the long record. Rotation is by

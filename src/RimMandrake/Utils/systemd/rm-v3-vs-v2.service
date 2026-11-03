@@ -3,7 +3,7 @@
 # Monday 07:00 local, writes D:\ClaudeWork\rimmandrake\v3_vs_v2\ (weeks/<end>.json, history.jsonl, verdict.md,
 # quality_blind.md); Operations reads verdict.md at its 07:30 economy pass. Re-running a week rewrites that week's
 # row (history is keyed by week end), so a manual start is safe.
-# Runs from the pulse-deploy checkout (rm-pulse-update fast-forwards it), like rm-ops-watch.
+# Runs from the pulse-deploy checkout (rm-deploy-update fast-forwards it), like rm-ops-watch.
 # Install:  cp src/RimMandrake/Utils/systemd/rm-v3-vs-v2.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload
 # Turn on (the owner's switch, with "enabled": true in the schedule): systemctl --user enable --now rm-v3-vs-v2.timer
