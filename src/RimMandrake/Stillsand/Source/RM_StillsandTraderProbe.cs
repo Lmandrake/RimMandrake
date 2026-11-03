@@ -47,10 +47,14 @@ namespace RimMandrake.Stillsand
                 bool src = worker.FactionCanBeGroupSource(f, parms, false);
                 bool desp = !src && worker.FactionCanBeGroupSource(f, parms, true);
                 parms.faction = f;
-                PawnGroupMakerParms gp = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDefOf.Trader, parms);
+                // ensureCanGenerateAtLeastOnePawn: true, exactly as the engine's SpawnPawns (IncidentWorker_NeutralGroup)
+                // builds it. Without it the points stay at IncidentParms' default -1f, below the Trader worker's minimum 0,
+                // and PawnGroupMaker.CanGenerateFrom refuses every group: the 2026-11-03 live FAIL was that probe bug.
+                PawnGroupMakerParms gp = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDefOf.Trader, parms, true);
                 IEnumerable<PawnGroupMaker> traders = (f.def.pawnGroupMakers ?? new List<PawnGroupMaker>())
                     .Where(g => g.kindDef == PawnGroupKindDefOf.Trader);
-                bool carrier = traders.Any(g => g.carriers.Any(c => biome.IsPackAnimalAllowed(c.kind.race)));
+                BiomeDef tileBiome = Find.WorldGrid[map.Tile].PrimaryBiome;   // what CanGenerateFrom reads, not map.Biome
+                bool carrier = traders.Any(g => g.carriers.Any(c => tileBiome.IsPackAnimalAllowed(c.kind.race)));
                 bool gen = traders.Any(g => g.CanGenerateFrom(gp));
                 if (src) source++;
                 if (desp) desperate++;

@@ -901,9 +901,22 @@ def trader_check_verdicts(bad):
             bad.append("trader_probe_check.verdict(%r) = %d, want %d" % (reply, got, want))
 
 
+def trader_probe_points(bad):
+    """HORIZON_CARAVAN_VANILLA_REFUSES_1 A1, 2026-11-03 live FAIL: the probe built PawnGroupMakerParms with points left at
+    IncidentParms' default -1f, so PawnGroupMaker.CanGenerateFrom refused every Trader group (minimum 0). The engine's
+    SpawnPawns passes ensureCanGenerateAtLeastOnePawn: true; the probe must too, and read the TILE's biome as the engine does."""
+    src = open(os.path.join(HERE, "Source", "RM_StillsandTraderProbe.cs"), encoding="utf-8").read()
+    if "GetDefaultPawnGroupMakerParms(PawnGroupKindDefOf.Trader, parms, true)" not in src:
+        bad.append("RM_StillsandTraderProbe: GetDefaultPawnGroupMakerParms without ensureCanGenerateAtLeastOnePawn=true "
+                   "(points -1 < 0 refuses every Trader group)")
+    if "Find.WorldGrid[map.Tile].PrimaryBiome" not in src:
+        bad.append("RM_StillsandTraderProbe: carrier check must read the tile's PrimaryBiome, as Trader.CanGenerateFrom does")
+
+
 def _main(bad):
     vekka_rock_check(bad)
     trader_check_verdicts(bad)
+    trader_probe_points(bad)
     healthy = run()
     # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
     # glass.* below: STILLSAND_GLASS_CHAIN_REMAINDER_1 live-proof arms, UNMEASURED until a driven session

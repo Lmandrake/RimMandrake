@@ -11144,3 +11144,4 @@
 {"seat":"BENCH","event":"lease","id":"RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED","action":"renew","token":"BENCH.pid41698.4b1f208f","ts":"2026-11-03T02:22:39Z","expires":"2026-11-03T03:07:39Z","tsn":1793672560498042357}
 {"seat":"BENCH","event":"reassign","id":"ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-03T02:27:12Z","tsn":1793672832219106419}
 {"seat":"BENCH","event":"start","id":"ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP","why":"relentless supervisor takes the item","ts":"2026-11-03T02:27:14Z","tsn":1793672834912594810}
+{"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live iteration HORIZON_CARAVAN_VANILLA_REFUSES_1","role_unit":"rm-relentless-work-2eeacfcd8b-g5","ts":"2026-11-03T02:25:12Z","tsn":1793672712300246891}
