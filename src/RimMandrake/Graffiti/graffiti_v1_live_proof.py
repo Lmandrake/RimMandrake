@@ -45,7 +45,9 @@ WANT = {
 # "at ..."), never on the next record. Deliberately wide: an error in a Graffiti family mod (SacredGraffiti, GraffitiImperial)
 # loaded beside it fails A8 too.
 OURS = re.compile(r"Graffiti|graffiti")
-CONTINUATION = re.compile(r"^(?:\s|at |\(Filename)")
+# continuation = indented, a .NET frame "at ...", Unity's "(Filename: ...)", or an unindented Unity frame
+# "Namespace.Type:Method (args)" (UnityEngine StackTrace formatter)
+CONTINUATION = re.compile(r"^(?:\s|at |\(Filename|[\w.`<>+\[\],]+:[\w<>.`|$]+ ?\()")
 ERROR_KIND = re.compile(r"Config error|Could not resolve cross-reference|XML error|Could not find (?:a )?type|Exception|"
                         r"duplicate|Failed to find", re.I)
 

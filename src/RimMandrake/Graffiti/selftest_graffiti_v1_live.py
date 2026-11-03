@@ -122,6 +122,9 @@ check(P.log_verdict(clean_log, LOADED.replace("graffiti True", "graffiti False")
 deep = clean_log + "Exception in Verse.DefDatabase: NullReferenceException\n" + "  at Some.Frame ()\n" * 60 + "  at RimMandrake.Graffiti.X ()\n"
 check(P.log_verdict(deep, LOADED)[0] == 1, "A8 a Graffiti frame deep in a long stack trace passed")
 
+unity = clean_log + "Exception ticking: NullReferenceException\nVerse.TickManager:DoSingleTick ()\nRimMandrake.Graffiti.RaidExitTaggerMod:Postfix (Verse.AI.Group.Lord,Verse.AI.Group.LordToil,bool)\n"
+check(P.log_verdict(unity, LOADED)[0] == 1, "A8 an exception owned by an unindented Unity frame passed")
+
 # the bridge reply is unwrapped, so a non-ASCII faction name never ends a field early
 uni = P._reply({"success": True, "result": RAID.replace("Rough Pigs", "P\u00edgs \u00c6therfolk")})
 check(P.field(uni, "marksIn") == "0" and code("A2", EXIT, extra=uni) == 0, "A2 a non-ASCII faction name broke the RAID read: %r" % uni)
