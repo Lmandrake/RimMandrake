@@ -500,8 +500,11 @@ A code version is `gate.code_version`: the chain's runtime hash, the runtime has
 
 *"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* A limit states what it limits and what requires it, then is kept, loosened or removed. An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
 
-## Relentless fixes itself first — owner, 2026-11-03
+## Relentless fixes the system first — owner, 2026-11-03
 
-*"Yes relentless fixes itself first."* When the pipeline misses its health targets (its error budget is spent), Relentless
-takes only pipeline-repair items until it is healthy again; new feature work waits. Design: top-5 #5 of
+*"Yes relentless fixes itself first."* · *"Relentless fixes operations or conductor or designer or any other part of the
+system before continuing content creation yes."* Any known fault in the system itself (Relentless, Operations, the
+Conductor, the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranks content
+creation: while such an item is open and buildable, Relentless takes it before any content item. When the system misses
+its health targets (its error budget is spent), content work stops until it is healthy again. Design: top-5 #5 of
 `design/RimMandrake/build_system_practices_2026-11-03.md`; build item `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`.
