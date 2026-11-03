@@ -528,7 +528,9 @@ def submit(biome: str, dry: bool) -> int:
         print(f"{biome}: {len(miss)} filed jobs have no registry 'queued' line (e.g. {miss[:3]}); state not written",
               file=sys.stderr)
         return 1
-    STATE.write_text(json.dumps(st, indent=1, sort_keys=True) + "\n")
+    tmp = STATE.with_suffix(".tmp")
+    tmp.write_text(json.dumps(st, indent=1, sort_keys=True) + "\n")
+    tmp.replace(STATE)
     print(f"{biome}: filed {len(jobs)} looks, {len(job_ids(rows))} jobs; state {STATE.relative_to(REPO)}")
     return 0
 
