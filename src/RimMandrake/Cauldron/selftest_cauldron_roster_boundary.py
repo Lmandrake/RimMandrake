@@ -22,6 +22,9 @@ PATCH = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Patches", "WildAnimals_
 ABOUT = os.path.join(HERE, "About", "About.xml")
 BIOME = os.path.join(HERE, "Defs", "BiomeDefs", "RM_Cauldron.xml")
 fails = []
+# The contract's fixed row set: a row added to or dropped from the patch (and the texts with it) must go red.
+EXPECTED = {"RSW_Neebray", "RSW_Mynock", "RSW_GraniteSlug", "RSW_VentStalker", "RSW_Lylek", "RSW_Skalder",
+            "RSW_Silooth"}
 
 
 def check(name, ok, detail=""):
@@ -49,6 +52,8 @@ check("patch rows are all RSW_", all(r.startswith("RSW_") for r in rows), rows)
 check("RSW_Screecher is not a Cauldron patch row", "RSW_Screecher" not in rows, rows)
 check("no duplicate patch rows", len(rows) == len(set(rows)), rows)
 want = set(rows)
+check("patch rows == the contract's fixed seven", want == EXPECTED,
+      f"missing {sorted(EXPECTED - want)} extra {sorted(want - EXPECTED)}")
 
 about = ET.parse(ABOUT).getroot().findtext("description") or ""
 m = re.search(r"NOT in this mod:(.*?)that\s+inhabit", about, re.S)
@@ -56,15 +61,24 @@ check("About.xml has the NOT-in-this-mod list", m is not None)
 about_names = set(re.findall(r"RSW_\w+", m.group(1))) if m else set()
 check("About.xml list == patch rows", about_names == want,
       f"missing {sorted(want - about_names)} extra {sorted(about_names - want)}")
+check("About.xml list == the contract's fixed seven", about_names == EXPECTED, sorted(about_names))
 
 biome_text = open(BIOME, encoding="utf-8").read()
 cm = re.search(r"- wildAnimals: every Star Wars(.*?)\n\s*- wildPlants", biome_text, re.S)
 check("RM_Cauldron.xml header has the wildAnimals boundary note", cm is not None)
 note = cm.group(1) if cm else ""
-ride = note.split("is not one of them")[0]
-named = set(re.findall(r"RSW_\w+", ride)) - {"RSW_Screecher"}
+# RSW_Screecher may appear in the note exactly once, as the subject of its own "is not one of them" clause;
+# the ride list is everything before that clause and must not name it.
+CUT = "RSW_Screecher is not one of them"
+check("RM_Cauldron.xml note states Screecher is cut, once", note.count(CUT) == 1, note.count(CUT))
+check("RM_Cauldron.xml note names RSW_Screecher only in the cut clause", note.count("RSW_Screecher") == 1,
+      note.count("RSW_Screecher"))
+ride = note.split(CUT)[0]
+check("RM_Cauldron.xml ride list does not name RSW_Screecher", "RSW_Screecher" not in ride)
+named = set(re.findall(r"RSW_\w+", ride))
 check("RM_Cauldron.xml note == patch rows", named == want,
       f"missing {sorted(want - named)} extra {sorted(named - want)}")
+check("RM_Cauldron.xml note == the contract's fixed seven", named == EXPECTED, sorted(named))
 
 inline = []
 for b in ET.parse(BIOME).getroot().iter("BiomeDef"):
