@@ -40,6 +40,9 @@ def case(name, fn):
 # Every entry here must name a reason a reader can check. "It was like that" is
 # not one — an unexplained exemption is how this list becomes the new problem.
 EXEMPT = {
+    "infrastructure/state/evidence/COLD_LOAD_RUN_SHEET_4_proof.py":
+        "a frozen evidence script for a run already done (COLD_LOAD_RUN_SHEET_4); evidence is kept as it ran, "
+        "and rewriting its locators would change what the committed proof says it executed.",
     "src/RimMandrake/Utils/game_paths.py":
         "IS the seam. The literals live here by definition.",
     ".claude/hooks/block_blind_scan.py":

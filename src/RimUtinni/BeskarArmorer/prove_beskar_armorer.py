@@ -21,7 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 sys.path.insert(0, UTILS)
-LOCALLOW = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+from game_paths import LOCALLOW  # noqa: E402
 PROBE = os.path.join(LOCALLOW, "BeskarArmorerProbe.jsonl")
 WIN_PROBE = os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\BeskarArmorerProbe.jsonl")
 PLAYER_LOG = os.path.join(LOCALLOW, "Player.log")

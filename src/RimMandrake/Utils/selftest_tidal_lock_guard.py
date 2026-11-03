@@ -174,7 +174,9 @@ def runbook():
         check("TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING" in row, "runbook %s cites the item" % k)
 
 
-SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
+SAVES = LOCALLOW + "/Saves"
 WORKSHOP_NEEDS = ("7f.alienworlds", "7f.alienworlds.tidallylocked", "ferny.Worldbuilder")
 
 

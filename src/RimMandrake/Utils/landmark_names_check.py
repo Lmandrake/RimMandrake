@@ -21,7 +21,9 @@ sys.path.insert(0, HERE)
 from canon_save import start_savegame_name  # noqa: E402
 from landmark_rename_save import read_landmarks  # noqa: E402
 
-SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
+SAVES = LOCALLOW + "/Saves"
 RENAMES = os.path.join(REPO, "world", "ASHKARR_R3_landmark_renames_2026-11-03.json")
 
 

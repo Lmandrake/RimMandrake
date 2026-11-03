@@ -79,7 +79,30 @@ TARGETS = {
 }
 # Selftests that import a target module but are deliberately NOT in its list ({target: {relpath: why}}); audit_targets
 # reports every other importing selftest missing from TARGETS.
-TARGET_EXCLUDE = {}
+_SCAFFOLD = "imports the module as scaffolding for another subject; not its oracle, so a mutant here would be caught by the target's own list (audited 2026-11-03, NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS)"
+TARGET_EXCLUDE = {
+    "arbiter_tiers": {
+        R + "selftest_audit_prescreen.py": _SCAFFOLD,
+    },
+    "dispatcher": {
+        R + "selftest_dispatcher_busy_replay.py": _SCAFFOLD,
+        R + "selftest_focus_cap.py": _SCAFFOLD,
+        R + "selftest_helper_receipts.py": _SCAFFOLD,
+        R + "selftest_idle_bringback.py": _SCAFFOLD,
+        R + "selftest_incident.py": _SCAFFOLD,
+        U + "selftest_restart_reconcile.py": _SCAFFOLD,
+        U + "selftest_seats_watch.py": _SCAFFOLD,
+    },
+    "role_launch": {
+        R + "selftest_close_gate.py": _SCAFFOLD,
+        R + "selftest_incident.py": _SCAFFOLD,
+        R + "selftest_relentless_usage.py": _SCAFFOLD,
+        R + "selftest_role_caps_advisory.py": _SCAFFOLD,
+        R + "selftest_role_degraded_reading.py": _SCAFFOLD,
+        R + "selftest_role_transcript_tokens.py": _SCAFFOLD,
+        R + "selftest_run_tmp.py": _SCAFFOLD,
+    },
+}
 # Checks that flake for reasons outside the mutated module; a run failing ONLY these counts as a pass for that
 # target (otherwise every flake reads as a killed mutant). Each entry names the item that tracks the flake.
 FLAKY = {

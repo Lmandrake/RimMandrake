@@ -174,8 +174,9 @@ def main():
     ap.add_argument("verb", choices=["run", "analyze"])
     ap.add_argument("--arm", choices=["on", "off", "fix"])
     ap.add_argument("--out", required=True)
-    ap.add_argument("--saves", default="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                                       "RimWorld by Ludeon Studios/Saves")
+    import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from game_paths import LOCALLOW  # noqa: E402
+    ap.add_argument("--saves", default=LOCALLOW + "/Saves")
     a = ap.parse_args()
     if a.verb == "run":
         N, s = _bridge()

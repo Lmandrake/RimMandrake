@@ -31,8 +31,9 @@ GL = "m00nl1ght.geologicallandforms"
 WORKSHOP = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 GAME_MODS = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 GL_DIR = os.path.join(WORKSHOP, "2773943594")
-CONFIG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/"
-          "Mod_2773943594_GeologicalLandformsMod.xml")
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
+CONFIG = (LOCALLOW + "/Config/Mod_2773943594_GeologicalLandformsMod.xml")
 SAVE = os.path.join(ROOT, "world", "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws")
 OUT = os.path.join(ROOT, "design", "RimMandrake", "geological_landforms_judgment_2026-11-02.evidence.json")
 LIST = os.path.join(ROOT, "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")

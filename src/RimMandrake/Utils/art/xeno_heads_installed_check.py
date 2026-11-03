@@ -27,9 +27,11 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..",
 MOD_REL = os.path.join("src", "RimStarWars", "StarWarsRaces")
 GAME_MOD = os.environ.get(
     "RM_GAME_MODS", "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods") + "/StarWarsRaces"
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from game_paths import LOCALLOW  # noqa: E402
 SHOTS = os.environ.get(
     "RM_GAME_SCREENSHOTS",
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots")
+    LOCALLOW + "/Screenshots")
 MANIFEST = os.environ.get("RM_XENO_MANIFEST",
                           "/mnt/d/ClaudeWork/rimmandrake/scratch/xeno_heads/xeno_heads_v3_manifest.json")
 SHOT_NAMES = [f"xeno_heads_v3{part}_{f}.png" for part in ("A", "B") for f in ("south", "east", "north", "west")]

@@ -59,7 +59,9 @@ SND_EXT = (".ogg", ".wav", ".mp3")
 STREAM_OVER = 307200
 MIPS = 4.0 / 3.0
 MB = 1048576.0
-PREFS = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Prefs.xml"
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from game_paths import LOCALLOW  # noqa: E402
+PREFS = LOCALLOW + "/Config/Prefs.xml"
 REPORT = os.path.join(REPO, "Transient", "memory_attribution.md")
 LIST_XML = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")
 STEAM_SUFFIX = "_steam"

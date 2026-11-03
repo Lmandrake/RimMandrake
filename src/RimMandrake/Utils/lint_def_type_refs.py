@@ -385,7 +385,10 @@ class Index:
             for full, kind, mods in parse_cs(f):
                 self.decl[full].append((f, kind, mods))
                 self.short[full.split("+")[-1].split(".")[-1]].add(full)
-                if "." in full and full.split(".")[0] not in ("System", "Verse", "RimWorld", "UnityEngine", "HarmonyLib"):
+                # a test fake (src/**/tests/**) re-declares donor namespaces (PipeSystem, VanillaFurnitureExpandedFactory);
+                # that does not make them OUR roots, or every donor type in a def reads UNRESOLVED
+                if "." in full and full.split(".")[0] not in ("System", "Verse", "RimWorld", "UnityEngine", "HarmonyLib") \
+                        and (os.sep + "tests" + os.sep) not in f:
                     self.roots.add(full.split(".")[0])
         self._owner = {}
 

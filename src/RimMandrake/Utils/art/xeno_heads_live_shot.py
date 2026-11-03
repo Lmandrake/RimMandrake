@@ -44,9 +44,10 @@ FACINGS = ("south", "east", "north", "west")
 WIN = os.name == "nt"
 GAME_MODS = os.environ.get("RM_GAME_MODS", r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods"
                            if WIN else "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods")
+from game_paths import LOCALLOW  # noqa: E402
 SHOTS = os.environ.get("RM_GAME_SCREENSHOTS", os.path.expanduser(
     r"~\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots") if WIN else
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots")
+    LOCALLOW + "/Screenshots")
 WORK = os.environ.get("RM_CLAUDEWORK", r"D:\ClaudeWork\rimmandrake" if WIN else "/mnt/d/ClaudeWork/rimmandrake")
 MANIFEST = os.environ.get("RM_XENO_MANIFEST", os.path.join(WORK, "scratch", "xeno_heads", "xeno_heads_v3_manifest.json"))
 HEAD_TEX = "Textures/RimMandrakeSW/Heads"

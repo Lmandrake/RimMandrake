@@ -44,8 +44,10 @@ GAME_DATA_CANDIDATES = [
     "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data",
     r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data",
 ]
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
 DUMP_CANDIDATES = [
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
+    LOCALLOW + "/DefDump/defs.sqlite",
 ]
 
 # ---- the bar (design/RimMandrake/plant_economy_rule_2026-11-01.md §2; keep the two in step) ----
