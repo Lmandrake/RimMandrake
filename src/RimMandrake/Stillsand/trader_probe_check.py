@@ -10,7 +10,13 @@ biome's allowedPackAnimals, RCellFinder.TryFindRandomPawnEntryCell) on Find.Curr
 
 Exit 0: the current map is RM_Stillsand, an entry cell exists and generable >= 1 (a faction is a group source with a
 Trader group the engine would generate here). Exit 1: the game answered for an RM_Stillsand map and one of those is
-false (a real FAIL). Exit 2 UNMEASURED: no bridge, no answer, no current map, or the map is not RM_Stillsand.
+false (a real FAIL). Exit 2 UNMEASURED: no bridge, no answer, no current map, the map is not RM_Stillsand, or a faction
+row lacks pts= (the game runs a Stillsand DLL older than 208cc2f911, whose probe handed CanGenerateFrom points of -1 and
+so read gen=False for every faction: its verdict says nothing about the mod).
+
+The proof guards its own build on purpose: the commit that owns it touches no shipped file, so another item's rebuild of
+the shared RimMandrake.Stillsand.dll cannot stale it (relentless_live.stale_build), and the pts= rows are what tell a
+current probe from an old game copy.
 
 The type and method are fixed: this script can run that one read-only probe and nothing else, which is why it calls the
 bridge library directly instead of the CLI (whose read-only heuristic does not know static_call targets).
@@ -37,6 +43,9 @@ def verdict(reply):
         return UNMEASURED, "UNMEASURED: not a TRADERS line: %s" % res[:200]
     if m.group("biome") != "RM_Stillsand":
         return UNMEASURED, "UNMEASURED: the current map is %s, not RM_Stillsand" % m.group("biome")
+    rows = [r for r in res.partition(" | ")[2].split("; ") if r.strip()]
+    if any(",pts=" not in r for r in rows):
+        return UNMEASURED, "UNMEASURED: a row has no pts=, so the deployed probe predates 208cc2f911: %s" % res[:300]
     if m.group("entry") != "True":
         return FAIL, "FAIL: no pawn entry cell on the Stillsand map: %s" % res[:400]
     if int(m.group("gen")) < 1:

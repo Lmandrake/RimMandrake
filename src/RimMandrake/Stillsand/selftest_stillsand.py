@@ -1169,11 +1169,16 @@ def trader_check_verdicts(bad):
     ts = importlib.util.spec_from_file_location("trader_probe_check", os.path.join(HERE, "trader_probe_check.py"))
     T = importlib.util.module_from_spec(ts)
     ts.loader.exec_module(T)
-    ok = "TRADERS biome=RM_Stillsand entryCell=True source=3 desperate=0 generable=%d | x"
+    ok = ("TRADERS biome=RM_Stillsand entryCell=True source=3 desperate=0 generable=%d | "
+          "OutlanderCivil:src=True,desp=False,carrierAllowed=True,gen=True,pts=0")
+    old_dll = (ok % 0).replace(",pts=0", "")       # a pre-208cc2f911 game copy: gen=False everywhere, no pts=
     cases = [({"success": True, "result": ok % 2}, T.PASS), ({"success": True, "result": ok % 0}, T.FAIL),
              ({"success": True, "result": (ok % 2).replace("entryCell=True", "entryCell=False")}, T.FAIL),
              ({"success": True, "result": (ok % 2).replace("RM_Stillsand", "AridShrubland")}, T.UNMEASURED),
              ({"success": True, "result": "REFUSED: no current map"}, T.UNMEASURED),
+             ({"success": True, "result": old_dll}, T.UNMEASURED),
+             ({"success": True, "result": "TRADERS biome=RM_Stillsand entryCell=True source=0 desperate=0 generable=0 | "},
+              T.FAIL),
              ({"success": False}, T.UNMEASURED), (None, T.UNMEASURED)]
     for reply, want in cases:
         got = T.verdict(reply)[0]
