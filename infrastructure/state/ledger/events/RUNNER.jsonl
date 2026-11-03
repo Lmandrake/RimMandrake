@@ -2152,3 +2152,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T09:38:26Z","tsn":1793698706335354396}
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:48:05Z","tsn":1793699285502902175}
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-03T09:48:08Z","tsn":1793699288796078951}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"broken","detail":"Ops alarm RELENTLESS_DISTRESS: under 42 min: 6 of 8 places, 767 ready: pool full: 16 clones, cap 16 (1 kept for checks), nothing to release: ARTIST_BIOME_INSPIR","ts":"2026-11-03T09:54:46Z","tsn":1793699686504754426}
+{"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-03T09:54:49Z","tsn":1793699689669948582}
