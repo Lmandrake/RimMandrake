@@ -55,6 +55,10 @@ class WSGame(MockGame):
 
     def __init__(self, brk=()):
         MockGame.__init__(self, sizex=200, sizez=200)
+        self._ws_init(brk)
+
+    def _ws_init(self, brk=()):
+        """The WeepingStones model's own state; also run on a generic MockGame adopted by northstar_plan.mock_extension."""
         self.brk = set(brk)
         self.zones = []                    # {"label","type","cells":set}
         self.toggle = True
@@ -218,15 +222,28 @@ class WSGame(MockGame):
         net_at = getattr(self, "_net_tick", None)
         if net_at is not None and self.ticks - net_at >= 400:     # WEEPINGSTONES_HANDLER_VANISHES_1: mid-job exits
             netter = getattr(self, "_netter", None)
+            hx, hz = self.size[0] // 2 + V.PAD_OFFSET, self.size[1] // 2 + V.PAD_OFFSET      # the home pad's centre
+            me = self._pawn(netter) or {}
+            on_pad = abs(me.get("x", -999) - hx) <= V.PAD // 2 and abs(me.get("z", -999) - hz) <= V.PAD // 2
             if "handler_leaves_mid_job" in self.brk:
                 rows = [q for q in rows if q["id"] != netter]
-            elif "handler_dies_mid_job" in self.brk:
+                self._log_once(netter, "%s left the map (mock: despawned mid-job)" % netter)
+            elif "handler_dies_mid_job" in self.brk or ("pad_site_kills" in self.brk and on_pad):
                 rows = [dict(q, dead=True, spawned=False, health={"hediffs": [{"label": "Bite", "def": "Bite"}]})
                         if q["id"] == netter else q for q in rows]
+                self._log_once(netter, "%s died: Bite by Megascarab (mock)" % netter)
         if p.get("rect"):
             x, z, w, h = [int(v) for v in str(p["rect"]).split(",")]
             rows = [q for q in rows if x <= q["x"] < x + w and z <= q["z"] < z + h]
         return {"success": True, "pawns": rows}
+
+    def _log_once(self, pid, line):
+        """The game's Player.log line for a pawn's exit, written once, as the live game would during that step."""
+        seen = self.__dict__.setdefault("_logged", set())
+        if pid not in seen and getattr(game_paths, "PLAYER_LOG", None):
+            seen.add(pid)
+            with open(game_paths.PLAYER_LOG, "a", encoding="utf-8") as fh:
+                fh.write(line + "\n")
 
     def t_jawa_list_things(self, p):
         r = MockGame.handle(self, "jawa/list_things", p)
@@ -327,6 +344,10 @@ def main():
     decl = V.suite.components_declared()
     check("the Mod Settings toggle floor is met", V.TOGGLE in set(c["toggle"] for c in decl if c["toggle"]))
 
+    import northstar_plan as PLAN
+    check("northstar_plan.MOCK_LIVE_ONLY is exactly validation.LIVE_ONLY_UNMEASURED",
+          set(PLAN.MOCK_LIVE_ONLY) == set(V.LIVE_ONLY_UNMEASURED), (PLAN.MOCK_LIVE_ONLY, V.LIVE_ONLY_UNMEASURED))
+
     # -- healthy world: every component passes --------------------------------------------------
     healthy = run()
     check("healthy: %d components all PASS" % len(healthy),
@@ -366,15 +387,26 @@ def main():
           len(jobs) >= 9 and not bad, "got %s" % bad)
     # -- WEEPINGSTONES_HANDLER_VANISHES_1: the stepped fate trace names WHEN and HOW a pawn left ----------------
     hf = dict((k, v) for k, v in healthy.items() if k.startswith("handler_fate."))
-    check("healthy: handler_fate has its 4 components, all PASS", len(hf) == 4 and all(v[0] == "PASS" for v in hf.values()), hf)
-    for brk, comp, needle in (("handler_leaves_mid_job", "net_job_handler_stays_on_map", "despawned alive"),
-                              ("handler_dies_mid_job", "net_job_handler_stays_on_map", "dead (corpse at")):
+    check("healthy: handler_fate has its 5 components, all PASS", len(hf) == 5 and all(v[0] == "PASS" for v in hf.values()), hf)
+    for brk, comp, needle, logged in (
+            ("handler_leaves_mid_job", "net_job_handler_stays_on_map", "despawned alive", "left the map (mock"),
+            ("handler_dies_mid_job", "net_job_handler_stays_on_map", "dead (corpse at", "died: Bite by Megascarab")):
         res = run((brk,))
         v, d = res.get("handler_fate." + comp, (None, ""))
         check("break %s: handler_fate.%s FAILs naming the tick and '%s'" % (brk, comp, needle),
               v == "FAIL" and needle in d and "at tick " in d and "step " in d, (v, d[:300]))
+        check("break %s: the FAIL carries that step's Player.log tail line" % brk,
+              "Player.log that step" in d and logged in d, d[-400:])
         ctl = res.get("handler_fate.control_no_job_nobody_vanishes", (None,))[0]
         check("break %s: the no-job control still PASSes (the exit is the job's)" % brk, ctl == "PASS", ctl)
+        off = res.get("handler_fate.off_pad_control_net_job_nobody_vanishes", (None, ""))
+        check("break %s: the off-pad control FAILs too (the job, not the site)" % brk,
+              off[0] == "FAIL" and "off the pad" in off[1] and logged in off[1], off)
+    ps = run(("pad_site_kills",))
+    psv = dict((k.split(".", 1)[1], v[0]) for k, v in ps.items() if k.startswith("handler_fate."))
+    check("break pad_site_kills: the on-pad job row FAILs while the off-pad and no-job controls PASS (the site)",
+          psv.get("net_job_handler_stays_on_map") == "FAIL" and psv.get("off_pad_control_net_job_nobody_vanishes") == "PASS"
+          and psv.get("control_no_job_nobody_vanishes") == "PASS", psv)
     check("break handler_dies_mid_job: the injury is named", "Bite" in run(("handler_dies_mid_job",)).get(
         "handler_fate.net_job_handler_stays_on_map", ("", ""))[1])
     tf = run(("target_flees",))

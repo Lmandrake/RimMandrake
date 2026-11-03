@@ -1348,12 +1348,47 @@ def _fate_word(row):
     return None
 
 
+LOG_TAIL = 12                      # Player.log lines kept per fate step
+_LOG_SUSPECT = re.compile(r"rror|xception|Warning|killed|died|despawn|Destroy|left the map|exit", re.I)
+
+
+def _log_mark():
+    """The Player.log byte offset now (None = no log): every fate step reads only what the game wrote since."""
+    from game_paths import PLAYER_LOG
+    try:
+        return os.path.getsize(PLAYER_LOG)
+    except OSError:
+        return None
+
+
+def _log_tail(mark, ids=()):
+    """(new mark, tail) -- the Player.log lines written since `mark`: how many, the last LOG_TAIL of them, and every
+    line that names one of `ids` or reads like an error/death/despawn (those explain a leave). A log shorter than the
+    mark was rewritten (a new session): read it from the start."""
+    from game_paths import PLAYER_LOG
+    now = _log_mark()
+    if now is None:
+        return mark, {"error": "no Player.log at %s" % PLAYER_LOG}
+    start = 0 if (mark is None or now < mark) else mark
+    try:
+        with open(PLAYER_LOG, "rb") as fh:
+            fh.seek(start)
+            text = fh.read(now - start).decode("utf-8", "replace")
+    except OSError as ex:
+        return mark, {"error": "Player.log unreadable: %s" % ex}
+    lines = [ln.rstrip() for ln in text.splitlines() if ln.strip()]
+    hits = [ln[:240] for ln in lines if (any(i and i in ln for i in ids) or _LOG_SUSPECT.search(ln))]
+    return now, {"new": len(lines), "tail": [ln[:240] for ln in lines[-LOG_TAIL:]], "suspect": hits[-LOG_TAIL:]}
+
+
 def _trace(t, ids, phase, captured=None):
     """Step FATE_STEPS x FATE_STEP real ticks, reading every id's fate map-wide WITH corpses after each step, plus the
-    colonists' current jobs. `captured(id)` -> True excuses a target that left by the job's own success. Returns
-    {id: leave} for every pawn that left, leave = {"tick","step","fate","last","jobs"}; a pawn is followed until it
-    leaves, the others to the end, so one pawn's exit never hides another's."""
+    colonists' current jobs and the Player.log lines written during the step (the item's "Player.log tail").
+    `captured(id)` -> True excuses a target that left by the job's own success. Returns {id: leave} for every pawn
+    that left, leave = {"tick","step","fate","last","jobs","log"}; a pawn is followed until it leaves, the others to
+    the end, so one pawn's exit never hides another's."""
     trail, last, leaves, done = [], {}, {}, set()
+    mark = _log_mark()
     for step in range(1, FATE_STEPS + 1):
         with _patient(t):
             t.wait_ticks(FATE_STEP)
@@ -1369,8 +1404,9 @@ def _trace(t, ids, phase, captured=None):
                         for c in (col.get("colonists") or []) if isinstance(c, dict))
         except Exception:                       # noqa: BLE001 - a job read never gates the verdict
             pass
+        mark, log = _log_tail(mark, ids)
         tick = r.get("ticksGame")
-        snap = {"step": step, "tick": tick, "totalOnMap": r.get("totalOnMap"), "jobs": jobs, "pawns": {}}
+        snap = {"step": step, "tick": tick, "totalOnMap": r.get("totalOnMap"), "jobs": jobs, "log": log, "pawns": {}}
         for i in ids:
             if i in done:
                 continue
@@ -1383,7 +1419,7 @@ def _trace(t, ids, phase, captured=None):
                 snap["pawns"][i] = "captured (the job's own success)"
             elif word:
                 done.add(i)
-                leaves[i] = {"tick": tick, "step": step, "fate": word, "last": last.get(i), "jobs": jobs}
+                leaves[i] = {"tick": tick, "step": step, "fate": word, "last": last.get(i), "jobs": jobs, "log": log}
             else:
                 last[i] = row
         trail.append(snap)
@@ -1394,9 +1430,13 @@ def _trace(t, ids, phase, captured=None):
 
 
 def _left_msg(who, pid, phase, left):
-    return ("%s %s left %s at tick %s (step %d of %d x %d ticks): %s; last seen %s; colonist jobs %s"
+    log = left.get("log") or {}
+    said = log.get("error") or (log.get("suspect") or log.get("tail") or ["(no new Player.log lines)"])[-3:]
+    return ("%s %s left %s at tick %s (step %d of %d x %d ticks): %s; last seen %s; colonist jobs %s; Player.log "
+            "that step (%s new lines): %s"
             % (who, pid, phase, left["tick"], left["step"], FATE_STEPS, FATE_STEP, left["fate"],
-               json.dumps(left["last"], default=str), json.dumps(left["jobs"], default=str)[:300]))
+               json.dumps(left["last"], default=str), json.dumps(left["jobs"], default=str)[:300],
+               log.get("new", "?"), json.dumps(said, default=str)[:600]))
 
 
 @suite.chain("handler_fate")
@@ -1407,9 +1447,11 @@ def handler_fate(t):
     destroy_batch could not remove (since fixed: JAWABENCH_DESTROY_PAWNS_1; the Watch's prepare_bland_map now kills
     hostiles before a chain). This chain is the item's own repro, so the next live run says WHEN and HOW a pawn leaves:
       control  -- handler (+8,0, needs full) and a wild RM_Skarrin (+6,+5), no job, 9 x 100 ticks;
-      net      -- the same handler ordered RM_NetPoolBreeder on the skarrin, 9 x 100 ticks.
+      net      -- the same handler ordered RM_NetPoolBreeder on the skarrin, 9 x 100 ticks;
+      off-pad  -- a fresh handler + skarrin on a site OUTSIDE the pad rect, the same job, 9 x 100 ticks.
     Every step reads jawa/list_pawns includeCorpses+includeHealth (dead vs despawned-alive, injuries) and the colonist
-    roster's current job. The target may leave only as the job's success (one RM_SkarrinBreedingStock on the pad).
+    roster's current job and the Player.log lines the game wrote during that step. The target may leave only as the
+    job's success (one RM_SkarrinBreedingStock on the pad).
     PASS = nobody vanished. FAIL names the pawn, the tick, the fate, its last seen row and the jobs at that step."""
     _enter(t)
     box = {}
@@ -1438,7 +1480,7 @@ def handler_fate(t):
                 if box[k] in leaves:
                     _fail(_left_msg(who, box[k], "with NO job", leaves[box[k]]))
         net = {}
-        with _comp(t, "net_job_handler_stays_on_map"):
+        with _comp(t, "net_job_handler_stays_on_map", independent=True):   # the off-pad control below runs anyway
             with _patient(t):
                 _order(t, box["handler"], "RM_NetPoolBreeder", box["wild"])
 
@@ -1452,6 +1494,38 @@ def handler_fate(t):
             if box["wild"] in net:
                 _fail(_left_msg("the wild skarrin", box["wild"], "during RM_NetPoolBreeder without becoming stock",
                                 net[box["wild"]]))
+        with _comp(t, "off_pad_control_net_job_nobody_vanishes", independent=True):
+            # the item's second control: the same job on a site OUTSIDE the pad rect (the pad's mirror through the map
+            # centre, far from the 2026-10-07 insects ~45 cells S of the pad). On-pad FAIL + off-pad PASS = the SITE
+            # takes pawns; both FAIL = the job does; only the off-pad row FAIL = look at that site's hostiles.
+            home = t.anchor
+            t.anchor = (home[0] - 2 * PAD_OFFSET, home[1] - 2 * PAD_OFFSET)
+            off = {}
+            try:
+                _reset_pad(t)
+                x, z = t.anchor
+                h2 = _handler(t)
+                w2 = _spawn(t, "RM_Skarrin", x + 6, z + 5, "none")
+                if _live(t) and len(_pawns(t, _pad_rect(t), "RM_Skarrin")) != 1:
+                    _fail("precondition: expected 1 wild skarrin on the off-pad site %s" % _pad_rect(t))
+                with _patient(t):
+                    _order(t, h2, "RM_NetPoolBreeder", w2)
+                off.update(_trace(t, [h2, w2], "RM_NetPoolBreeder off the pad (%s)" % _pad_rect(t), captured=lambda i: (
+                    i == w2 and len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t))) == 1)))
+                _note(t, "pad vs off-pad", {"onPadLeft": sorted(net), "offPadLeft": sorted(off),
+                                            "reading": "site" if (box["handler"] in net and h2 not in off) else
+                                            "job" if (box["handler"] in net and h2 in off) else
+                                            "off-pad site" if h2 in off else "nobody left"})
+                for who, pid in (("the off-pad handler", h2), ("the off-pad wild skarrin", w2)):
+                    if pid in off:
+                        _fail(_left_msg(who, pid, "during RM_NetPoolBreeder off the pad", off[pid]))
+            finally:
+                if t.session is not None:       # best-effort clear of the off-pad site, even after a FAIL
+                    try:
+                        t.session.call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
+                    except Exception as ex:     # noqa: BLE001 - never mask the verdict
+                        print("[ws] off-pad clear failed: %s" % ex, file=sys.stderr, flush=True)
+                t.anchor = home
     finally:
         _teardown(t)
 

@@ -232,6 +232,16 @@ def cmd_run(args):
             doc["bars"] = rows
             doc["summary"] = B.summarize(rows)
             doc["all_green"] = run_all_green(rows, exp)
+            if args.mock and getattr(plan, "MOCK_LIVE_ONLY", None):
+                # a row the plan DECLARES unmeasurable offline (it needs a live map) reads UNMEASURED in every mock run;
+                # a mock run is judged without those rows and names them. Only UNMEASURED is set aside: a FAIL fails.
+                lo = set(plan.MOCK_LIVE_ONLY)
+                skip = [r["id"] for r in rows if r["id"] in lo and r["status"] == UNMEASURED]
+                if skip:
+                    doc["mock_live_only_unmeasured"] = skip
+                    doc["all_green"] = run_all_green([r for r in rows if r["id"] not in skip], exp)
+                    print("mock: %d live-only row(s) set aside, UNMEASURED offline by declaration: %s"
+                          % (len(skip), ", ".join(skip)))
             code = 0 if doc["all_green"] else 1
         doc["timing"] = s.timing
     doc["partial"] = False

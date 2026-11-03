@@ -1,0 +1,1 @@
+northstar_driver/selftest_lint_calls.py is red on origin/main 2026-11-03: 'every companion [Tool] in source is in the snapshot' misses jawa/nulltex_probe (a new JawaBench tool from the WORLD_NULLTEX_FLOOD work, snapshot not refreshed). Not caused by WeepingStones changes.
