@@ -38,17 +38,13 @@
     "ts": 1789295361.399615
   },
   "Armoury": {
-    "hash": "9c11b4131491b740f7841fa42dd7bdc17c6ac6033e50f208c9349db859523071",
+    "hash": "56fca3738cf8bfce73b802ac5e2f02d80502d4c19da7d60197b46bff974d3319",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Armoury@1791234245",
-    "source": {
-      "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Armoury_summary.json",
-      "verb": "situational_rerun"
-    },
-    "status": "RED",
-    "ts": 1791234245.5245605
+    "run_id": "Armoury@1793697836",
+    "status": "DRAFT-CHECKLIST",
+    "ts": 1793697861.3854253
   },
   "AssailantSalvage": {
     "hash": "3d8e2cc737a63c400ed4354acfbc7af625ea2a3a96528c8499af9d0fe14e0a14",
@@ -1583,12 +1579,12 @@
     "ts": 1791367764.3915405
   },
   "WreckedMachines": {
-    "hash": "fc1f375fcd64201c52f43cc4a56d3ba54362a8d669e82f7dc666562424c0e102",
+    "hash": "a8d8d3d4d2792c9bcb0e3f96cbb4854af61cf19081e73d1cf84b21db254b6f08",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "WreckedMachines@1791372247",
+    "run_id": "WreckedMachines@1793698020",
     "status": "RED",
-    "ts": 1791372248.4764724
+    "ts": 1793698021.6747055
   }
 }
