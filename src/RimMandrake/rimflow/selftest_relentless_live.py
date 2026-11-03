@@ -220,7 +220,7 @@ def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
     check("pass outcome", row["outcome"] == "PASS", row)
-    check("order", fx.verbs() == ["touched", "changed", "plan", "take", "gap", "proof", "release", "verify"], fx.verbs())
+    check("order", fx.verbs() == ["touched", "changed", "plan", "gap", "take", "proof", "release", "verify"], fx.verbs())
     v = [c for c in fx.calls if c[:2] == ("rimflow", "verify")][0]
     for flag, want in (("--sha", SHA), ("--level", "L1"), ("--criterion", "A2"), ("--result", "pass")):
         check("verify %s" % flag, v[v.index(flag) + 1] == want, v)
@@ -754,9 +754,10 @@ def t_running_load_gap_is_unmeasured():
     row = go(fx)
     check("gap row unmeasured, restageable", row["outcome"] == "UNMEASURED" and
           row["why"].startswith("not in the running load"), row)
-    check("gap: no proof, bridge released, no verify", "proof" not in fx.verbs() and "release" in fx.verbs()
-          and "verify" not in fx.verbs(), fx.verbs())
-    check("gap asked with the bridge held", fx.verbs().index("gap") > fx.verbs().index("take"), fx.verbs())
+    check("gap: no proof, no verify", "proof" not in fx.verbs() and "verify" not in fx.verbs(), fx.verbs())
+    # LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: read before the slot, so a game that cannot serve the run gives it none
+    check("gap asked before the bridge, which is never taken", "gap" in fx.verbs() and "take" not in fx.verbs()
+          and "release" not in fx.verbs() and row.get("slot") is False, (fx.verbs(), row))
     import relentless_game
     check("the game phase restages on it", any(row["why"].startswith(w) for w in relentless_game.RESTAGE), row["why"])
 
@@ -782,7 +783,9 @@ def t_tiers_small_first_final_last():
     row = L.run(fx, root, "ROT_X", "F1", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
     check("tiers: a final clause on a small game is UNMEASURED FINAL_WAIT, the proof never runs",
           row["outcome"] == "UNMEASURED" and row["why"].startswith(L.FINAL_WAIT) and "proof" not in fx.verbs()
-          and "release" in fx.verbs(), (row, fx.verbs()))
+          and "take" not in fx.verbs() and row.get("slot") is False, (row, fx.verbs()))
+    check("tiers: the FINAL_WAIT row carries its game (one row per game, relentless_live_round.due)",
+          row.get("game") == L.iso(2000.0), row)
     check("tiers: and no ledger note, no verify", "note" not in fx.verbs() and "verify" not in fx.verbs(), fx.verbs())
     check("tiers: FINAL_WAIT is no restage reason (the batched final load is)",
           not any(row["why"].startswith(w) for w in relentless_game.RESTAGE)

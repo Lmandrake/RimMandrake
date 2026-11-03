@@ -644,59 +644,66 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         row.update(game_started=iso(started), deployed=iso(max(stamps)), files=len(files))
     else:
         stamps, started = [], None
-    took = fx.rimflow("bridge", "take", "--idle-ok", "--for",
-                      "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
-    if took.returncode != 0:
-        return done("UNMEASURED", "bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
-    log, n = None, 0
-    while log is None or os.path.exists(log):      # a retry in the same second must not overwrite the evidence of the last
-        log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime("%Y%m%dT%H%M%SZ",
-                                                              time.gmtime(now)), "" if not n else "-%d" % n))
-        n += 1
-    crashed = None
+    # The build is deployed and older than the game, but the running list may not load its mod (or a mod it declares,
+    # or their dependencies) at all (owner 2026-11-02: a game fits an item by its RUNNING mods, not ModsConfig); a FINAL
+    # clause also needs the full-list tier. Read BEFORE the bridge is taken, one read each: a run the running game cannot
+    # serve takes no slot (LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: 18:00-18:16Z 2026-11-03 GRAFFITI F1/F2 took the bridge
+    # four times to read "48 mods, 40 of FULL.LATEST's 316"). row["slot"] False: no bridge, no proof, no game time.
+    need = sorted({m for m, _ in files} | set(needs))
     try:
-        if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
-            crashed = "the game or its deployed files changed while the bridge was being taken"
-            code = None
-        else:
-            # the build is deployed and older than the game, but the running list may not load its mod (or a mod it
-            # declares, or their dependencies) at all (owner 2026-11-02: a game fits an item by its RUNNING mods, not
-            # ModsConfig); a FINAL clause also needs the full-list tier. Asked with the bridge held, one read each.
-            need = sorted({m for m, _ in files} | set(needs))
-            crashed = (fx.running_load_gap(need) if need else None) or (fx.full_list_gap() if level == FINAL else None)
-            code = None
-        if crashed is None and code is None and site:
-            slog = log[:-len(".log")] + "-site.log"
-            row["site_log"] = slog
-            sc = fx.run_proof(site, slog, lr["site_max_s"])
-            if sc != 0:
-                crashed = asked_reload(slog) or "site not prepared: %s" % (
-                    last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
-        if crashed is None and code is None:
-            code = fx.run_proof(proof, log, lr["proof_max_s"])
-            again = wsl_rerun(proof, read_text(log)) if code not in (PASS, FAIL) else None
-            if again:
-                os.replace(log, log[:-len(".log")] + "-wsl.log")
-                row["rerun"] = again
-                code = fx.run_proof(again, log, lr["proof_max_s"])
-            if code in (PASS, FAIL) and files and (started != fx.game_started()
-                                                   or stamps != [fx.mtime(m, rel) for m, rel in files]):
-                crashed, code = "the game or its deployed files changed while the proof ran", None
-    except Exception as e:                          # the proof never ran to an exit code: no verdict, but the row stands
-        crashed, code = "the proof could not run: %s: %s" % (type(e).__name__, str(e)[:200]), None
-    finally:
+        gap = (fx.running_load_gap(need) if need else None) or (fx.full_list_gap() if level == FINAL else None)
+    except Exception as e:                          # noqa: BLE001  an unread list is the harness's, never a verdict
+        gap = "the running load's mod list could not be read: %s: %s" % (type(e).__name__, str(e)[:200])
+    log, code, crashed = None, None, gap
+    if gap:
+        row["slot"] = False
+    else:
+        took = fx.rimflow("bridge", "take", "--idle-ok", "--for",
+                          "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
+        if took.returncode != 0:
+            return done("UNMEASURED", "bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
+        log, n = None, 0
+        while log is None or os.path.exists(log):  # a retry in the same second must not overwrite the last evidence
+            log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime(
+                "%Y%m%dT%H%M%SZ", time.gmtime(now)), "" if not n else "-%d" % n))
+            n += 1
+        crashed = None
         try:
-            gave = fx.rimflow("bridge", "release", "--mine")
-            row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()[-200:]
-        except Exception as e:                      # a timed-out release still leaves the row
-            row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
-    if not row["released"]:
-        return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
+            if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
+                crashed = "the game or its deployed files changed while the bridge was being taken"
+            if crashed is None and code is None and site:
+                slog = log[:-len(".log")] + "-site.log"
+                row["site_log"] = slog
+                sc = fx.run_proof(site, slog, lr["site_max_s"])
+                if sc != 0:
+                    crashed = asked_reload(slog) or "site not prepared: %s" % (
+                        last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
+            if crashed is None and code is None:
+                code = fx.run_proof(proof, log, lr["proof_max_s"])
+                again = wsl_rerun(proof, read_text(log)) if code not in (PASS, FAIL) else None
+                if again:
+                    os.replace(log, log[:-len(".log")] + "-wsl.log")
+                    row["rerun"] = again
+                    code = fx.run_proof(again, log, lr["proof_max_s"])
+                if code in (PASS, FAIL) and files and (started != fx.game_started()
+                                                       or stamps != [fx.mtime(m, rel) for m, rel in files]):
+                    crashed, code = "the game or its deployed files changed while the proof ran", None
+        except Exception as e:                          # the proof never ran to an exit code: no verdict, but the row stands
+            crashed, code = "the proof could not run: %s: %s" % (type(e).__name__, str(e)[:200]), None
+        finally:
+            try:
+                gave = fx.rimflow("bridge", "release", "--mine")
+                row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()[-200:]
+            except Exception as e:                      # a timed-out release still leaves the row
+                row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
+        if not row["released"]:
+            return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     if code not in (PASS, FAIL):
         why = crashed or (asked_reload(log) if code is not None else None) or "the proof %s" % (
             "timed out" if code is None else "exited %d: it did not measure: %s" % (code, last_line(log)))
         if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
-            return done("UNMEASURED", why, log=log)
+            # its game: relentless_live_round.due runs it again only on another game (one row per game, not per round)
+            return done("UNMEASURED", why, log=log, game=iso(started) if started else game_iso(fx))
         game = iso(started) if started else game_iso(fx)
         key = cause(why)
         rows = read_rows(os.path.join(root, "live", "runs.jsonl"))

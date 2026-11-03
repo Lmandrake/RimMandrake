@@ -59,7 +59,11 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             # RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: a live-iterating worker that has not held the bridge for its item this
             # long is working offline, not on the game; its hold lapses so the next item may prove (ATMOSBASE held the
             # game 47 min, bridge free, ten items waiting, 2026-11-03)
-            "live_idle_s": 1200}
+            "live_idle_s": 1200,
+            # LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: a staging whose game has been UP this long since a start after the
+            # staging began has done its load; a worker still alive then holds the game for nothing (ART_OVERRIDE's
+            # staging held the bridge 18:20-19:20Z, 2026-11-03, while 40 game items waited)
+            "stage_idle_s": 600}
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
@@ -282,6 +286,43 @@ def not_measuring(rows, item, sha, clauses, limit):
             n, _ = out.get(v["criterion"], (0, ""))
             out[v["criterion"]] = (n + 1, v.get("why") or "")
     return {k: v for k, v in out.items() if limit and v[0] >= limit}
+
+
+def staged_idle(fx, g, c, now):
+    """-> why a live staging is over in all but name, or None: the game is UP, started after the staging began, and has
+    run stage_idle_s since. The staging's step then ends its run (settle) and releases the bridge, as at stage_max_s."""
+    rd = fx.game_reading() or {}
+    started = rd.get("started")
+    if rd.get("state") != "UP" or not started or started <= (g.get("staged_at") or 0):
+        return None
+    up = now - started
+    if up < c["stage_idle_s"]:
+        return None
+    return "the game it staged has been UP %ds (started %s, limit %ds): the load is done" % (
+        up, time.strftime("%H:%M:%SZ", time.gmtime(started)), c["stage_idle_s"])
+
+
+def blocked_here(rows, clauses, sha, started, now):
+    """-> {clause: why} of the proof-ran-and-measured-nothing clauses, when EVERY clause not yet PASSed is one the round
+    will not run again on the game that started at `started` (relentless_live_round.due: a dud or FINAL_WAIT on this
+    game and build) and at least one is a dud; else {}. LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: the round no longer reruns
+    those, so without this the item would sit in prove until some other item reloaded the game."""
+    if not started:
+        return {}
+    import relentless_live
+    import relentless_live_round as R
+    game = relentless_live.iso(started)
+    out = {}
+    for k in clauses:
+        v = rows.get(k)
+        if (v or {}).get("outcome") == "PASS":
+            continue
+        why = R.due(v, v.get("sha"), now, 0, game, per_game=False) if v else None
+        if why not in (R.DUD_HERE, R.WAITS_TIER):
+            return {}
+        if why == R.DUD_HERE:
+            out[k] = v.get("why") or ""
+    return out
 
 
 def stage_prompt(st, r, sha, others=(), enable=(), dlls=()):
@@ -805,7 +846,12 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
                 "%s: the proof ran %d times on this build and measured nothing (%s)" % (k, n, why[:160])
                 for k, (n, why) in sorted(dud.items())), now, acts)
-        since = max(g.get("staged_at") or 0, g["entered_at"])
+        here = blocked_here(rows, g["clauses"], built, rd0.get("started"), now)
+        if here:    # nothing left this game can measure, and a proof ran and measured nothing: the worker's, at once
+            return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
+                "%s: the proof ran on this game and build and measured nothing; the same game and build can only say "
+                "it again (%s)" % (k, why[:160]) for k, why in sorted(here.items())), now, acts)
+        since =max(g.get("staged_at") or 0, g["entered_at"])
         stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
         rd = fx.game_reading()
@@ -954,7 +1000,10 @@ def step(store, fx, r, item, now, acts, sup):
 
     if g["phase"] == "staging":
         run = st.get("run")
-        if fx.alive(run) and now - g["staged_at"] < c["stage_max_s"] and not g.get("ready"):
+        done = staged_idle(fx, g, c, now) if fx.alive(run) and not g.get("ready") else None
+        if done:
+            acts.append({"do": "game_stage_idle", "item": item, "why": done})
+        if fx.alive(run) and now - g["staged_at"] < c["stage_max_s"] and not g.get("ready") and not done:
             if now - g.get("taken_at", 0) >= c["renew_s"]:      # a hold with no event for 45 min is anyone's
                 if not fx.bridge_take("relentless staging %s (renew)" % item):
                     _save(store, item, lambda s: s["game"].update(taken_at=now))

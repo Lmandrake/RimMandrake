@@ -60,6 +60,10 @@ SITE_LINE = re.compile(LINE.format(verb="live-site"))
 PROOFS_DIR = "infrastructure/state/live_proofs"
 DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
 STOP = ("no running game to test", "bridge not taken")
+# a proof that ran on the game and measured nothing (relentless_game.RAN_DUD's words), or a site that would not prepare:
+# rerun on the same game and build it can only say the same again
+SAME_GAME_DUD = re.compile(r"the proof (exited \d+: it did not measure|timed out)|^site not prepared")
+WAITS_TIER, DUD_HERE = "waits for the full-list tier", "measured nothing on this game"    # due()'s, relentless_game reads
 
 
 def rules(r):
@@ -132,6 +136,16 @@ def due(last, sha, now, retry_s, game=None, per_game=True):
         return "not deployed on this game"      # only a load (the game phase's staging) deploys and enables it
     if (last.get("why") or "").startswith(L.RELOAD) and game and last.get("game") == game:
         return "reload needed"
+    # LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: the same game and the same build can only say the same thing again. A final
+    # clause read FINAL_WAIT, or a proof that RAN and measured nothing, waits for a new build (a new sha: another `last`)
+    # or another game; a game phase's round is no exception (2026-11-03 17:47-18:16Z: GRAFFITI A2/F1/F2 and GENERATOR A2
+    # re-ran every 15 min on one game, six UNMEASURED runs that could not differ)
+    if game and last.get("outcome") == "UNMEASURED":
+        why, on = last.get("why") or "", last.get("game")
+        if why.startswith(L.FINAL_WAIT) and (on == game or (not on and last.get("at", "") >= game)):
+            return WAITS_TIER       # a row before 2026-11-03 has no game: written after this game started, it is its
+        if on == game and SAME_GAME_DUD.search(why):
+            return DUD_HERE
     try:
         at = calendar.timegm(time.strptime(last.get("at", ""), "%Y-%m-%dT%H:%M:%SZ"))
     except ValueError:

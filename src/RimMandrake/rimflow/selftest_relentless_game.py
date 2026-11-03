@@ -267,6 +267,55 @@ def t_unmeasured_twice_returns_offline():
     x.done()
 
 
+def t_dud_on_this_game_returns_at_once():
+    """LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: the round no longer reruns a dud on the game and build it ran on, so a
+    single dud on THIS game, with nothing else left to measure here, goes back to a worker at once instead of waiting."""
+    import relentless_live
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.started = x.now - 3000.0
+    dud = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+           "why": "the proof exited 2: it did not measure: Type not found: X.Y", "game": relentless_live.iso(1.0)}
+    x.w.rows = [dict(dud)]
+    x.tick()
+    ok(x.st("I0")["status"] == "game", "a dud from another game is retried on this one")
+    x.w.rows = [dict(dud, game=relentless_live.iso(x.w.started))]
+    x.tick()
+    st = x.st("I0")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "game_unmeasured" and "this game and build" in
+       st["last_fail"]["detail"] and "Type not found" in st["last_fail"]["detail"],
+       "one dud on this game and build goes back at once: %s" % st.get("last_fail"))
+    ok(G.blocked_here({"A2": dict(dud, game=relentless_live.iso(x.w.started), why="bridge not taken: busy")}, ["A2"],
+                      SHA, x.w.started, x.now) == {}, "a transient that is not a dud never sends it back")
+    x.done()
+
+
+def t_stage_idle_releases():
+    """LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: a staging worker whose game has been UP stage_idle_s since it started
+    the load is done in all but name; the supervisor ends it and releases the bridge instead of holding to stage_max_s."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "staging", "staging")
+    x.w.running = True
+    x.w.started = st["game"]["staged_at"] - 50.0      # a game from before the staging: not this staging's load
+    x.tick()
+    ok("release" not in x.w.events, "a game older than the staging does not end it")
+    x.w.started = st["game"]["staged_at"] + 10.0      # the load this staging started
+    x.tick(dt=100)
+    ok("release" not in x.w.events, "a fresh load not yet idle long: the worker keeps the bridge")
+    x.tick(dt=600)
+    x.tick()
+    ok("release" in x.w.events and x.st("I0")["game"]["phase"] in ("prove", "proving"),
+       "UP 600 s on its load: the staging ends and the bridge is released: %s" % x.w.events[-4:])
+    x.done()
+
+
 def t_gate():
     st = {"game": {"sha": "s2", "offline_green": {"sha": "s1"}}, "contract": {"game": {"clauses": ["A2"]}}}
     fl = r"\b(flight|flying)\b"
@@ -1146,7 +1195,7 @@ def t_mod_gap_pure():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,

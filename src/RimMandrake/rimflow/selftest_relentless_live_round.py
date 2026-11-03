@@ -402,9 +402,43 @@ def t_dead_rows_and_undeployed():
     check("undeployed: the game phase's own round runs it", R.due(und, "s", now, 3600, "G1", per_game=False) is None)
 
 
+def t_same_game_same_build_waits():
+    """LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: 2026-11-03 17:47-18:16Z, GRAFFITI A2/F1/F2 and GENERATOR A2 re-ran every 15
+    min on one game and one build, six UNMEASURED runs that could not differ. A dud or a FINAL_WAIT on (game, build) is
+    not run again there, the game phase's round (retry 0) included; another game or another build runs it."""
+    now = 1_800_000_000
+    g1, g2 = R.L.iso(now - 3600), R.L.iso(now - 60)
+    dud = {"sha": "s", "outcome": "UNMEASURED", "at": R.L.iso(now - 900), "game": g1,
+           "why": "the proof exited 2: it did not measure: Graffiti: REFUSED  PASS=0"}
+    fin = {"sha": "s", "outcome": "UNMEASURED", "at": R.L.iso(now - 900), "game": g1,
+           "why": R.L.FINAL_WAIT + ": the running game has 48 mods, 40 of FULL.LATEST's 316"}
+    old_fin = dict(fin, game=None)
+    for name, row, want in (("dud", dud, R.DUD_HERE), ("final", fin, R.WAITS_TIER)):
+        check("same game: %s waits, game phase too" % name, R.due(row, "s", now, 0, g1, per_game=False) == want,
+              R.due(row, "s", now, 0, g1, per_game=False))
+        check("same game: %s runs on another game" % name, R.due(row, "s", now, 0, g2, per_game=False) is None)
+        check("same game: %s runs on a new build" % name, R.due(row, "s2", now, 0, g1, per_game=False) is None)
+    check("same game: a gameless FINAL_WAIT row written on this game waits",
+          R.due(old_fin, "s", now, 0, g1, per_game=False) == R.WAITS_TIER)
+    check("same game: a gameless FINAL_WAIT row from before this game runs",
+          R.due(old_fin, "s", now, 0, g2, per_game=False) is None)
+    busy = dict(dud, why="bridge not taken: busy")
+    check("same game: a transient cause is no wait", R.due(busy, "s", now, 0, g1, per_game=False) is None)
+    site = dict(dud, why="site not prepared: exit 2")
+    check("same game: a site that would not prepare waits", R.due(site, "s", now, 0, g1, per_game=False) == R.DUD_HERE)
+    it = item(sha="s", owed=("A2", "F1"), levels={"A2": "L2", "F1": R.L.FINAL})
+    hist = {("EG_X", "A2", "s"): dict(dud, item="EG_X", criterion="A2"),
+            ("EG_X", "F1", "s"): dict(fin, item="EG_X", criterion="F1")}
+    todo, counts = R.candidates([it], lambda i: "live-proof A2: python3 a.py\nlive-proof F1: python3 f.py\n", hist,
+                                now, 0, g1)
+    check("same game: the game phase's round runs neither", todo == [] and counts.get(R.DUD_HERE) == 1
+          and counts.get(R.WAITS_TIER) == 1, (todo, counts))
+
+
 def main():
     for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never,
-              t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed):
+              t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed,
+              t_same_game_same_build_waits):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
