@@ -218,6 +218,30 @@ def t_refused_proof_returns_offline():
     x.done()
 
 
+def t_unmeasured_twice_returns_offline():
+    """OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: a proof that ran and measured nothing twice on one build goes back to a
+    worker; it is not re-proved, nor a reload asked for (one build re-proved 4x, all UNMEASURED)."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    dud = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+           "why": "the proof exited 2: it did not measure: Type not found: X.Y"}
+    x.w.rows = [dict(dud)]
+    x.tick()
+    ok(x.st("I0")["status"] == "game", "one not-measured exit is retried on the game (a busy bridge happens)")
+    x.w.rows.append(dict(dud, at="2099-01-01T00:20:00Z"))
+    x.w.rows.append(dict(dud, sha="other0000000", at="2099-01-01T00:21:00Z"))
+    x.tick()
+    st = x.st("I0")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "game_unmeasured" and "A2" in st["last_fail"]["detail"]
+       and "2 times" in st["last_fail"]["detail"] and "Type not found" in st["last_fail"]["detail"],
+       "the second goes back to a worker with the proof's last line: %s" % st.get("last_fail"))
+    ok(G.not_measuring([dict(dud, why="not deployed: RM_Y")] * 3, "I0", SHA, ["A2"], 2) == {},
+       "a staging cause (not deployed) is the restage path, never a proof defect")
+    x.done()
+
+
 def t_gate():
     st = {"game": {"sha": "s2", "offline_green": {"sha": "s1"}}, "contract": {"game": {"clauses": ["A2"]}}}
     fl = r"\b(flight|flying)\b"
@@ -772,7 +796,7 @@ def t_owed_final_joins_the_clauses():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_gate, t_stage_and_release, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,

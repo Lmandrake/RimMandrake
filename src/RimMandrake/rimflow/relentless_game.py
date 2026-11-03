@@ -53,7 +53,9 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             # game item has not yet been tried on the RUNNING game; the reload then deploys every waiting item at once
             "batch_wait_s": 1800,
             # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS: one full-list load (15-25 min) verifies a batch of final clauses
-            "final_batch_min": 4, "final_wait_s": 8 * 3600}
+            "final_batch_min": 4, "final_wait_s": 8 * 3600,
+            # a clause whose proof ran and measured nothing this many times on one build goes back to a worker
+            "unmeasured_back": 2}
 CLAUSE = re.compile(r"^[A-Z]{1,3}\d{1,3}$")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 # UNMEASURED reasons (relentless_live.run's own words) that only a deploy or a restart can change
@@ -261,6 +263,21 @@ def outcomes(rows, item, sha, clauses):
     import relentless_live_round
     h = relentless_live_round.history(rows)
     return {c: h[(item, c, sha)] for c in clauses if (item, c, sha) in h}
+
+
+RAN_DUD = re.compile(r"the proof (exited \d+: it did not measure|timed out)")
+
+
+def not_measuring(rows, item, sha, clauses, limit):
+    """-> {clause: (rows, newest why)} for each clause whose proof RAN on `sha` and exited neither PASS nor FAIL at least
+    `limit` times (OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: one build re-proved 4x, then reloaded, all UNMEASURED)."""
+    out = {}
+    for v in rows:
+        if (v.get("item") == item and v.get("criterion") in clauses and (v.get("sha") == sha or same_sha(v.get("sha"), sha))
+                and v.get("outcome") == "UNMEASURED" and RAN_DUD.search(v.get("why") or "")):
+            n, _ = out.get(v["criterion"], (0, ""))
+            out[v["criterion"]] = (n + 1, v.get("why") or "")
+    return {k: v for k, v in out.items() if limit and v[0] >= limit}
 
 
 def stage_prompt(st, r, sha, others=()):
@@ -554,6 +571,11 @@ def step(store, fx, r, item, now, acts, sup):
         refused = [v for v in rows.values() if v.get("outcome") == "REFUSED"]
         if refused:
             return _back(store, fx, sup, r, item, "game_refused", refused[0].get("why") or "refused", now, acts)
+        dud = not_measuring(fx.game_rows(), item, built, g["clauses"], c["unmeasured_back"])
+        if dud:     # the proof ran and said it measured nothing, again: a proof defect, no reload fixes it
+            return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
+                "%s: the proof ran %d times on this build and measured nothing (%s)" % (k, n, why[:160])
+                for k, (n, why) in sorted(dud.items())), now, acts)
         since = max(g.get("staged_at") or 0, g["entered_at"])
         stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
