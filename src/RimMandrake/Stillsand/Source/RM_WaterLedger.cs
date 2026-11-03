@@ -113,6 +113,7 @@ namespace RimMandrake.Stillsand
 
         public float Debt => book.debt;
         public int OpeningSerial => book.openingSerial;
+        public int LastOpeningTick => book.lastOpeningTick;
 
         /// <summary>The ledger def, or null: the RM tier ships none, so the whole ledger is inert there.</summary>
         public static RM_WaterLedgerDef ActiveDef => DefDatabase<RM_WaterLedgerDef>.AllDefsListForReading.FirstOrDefault();
@@ -402,6 +403,15 @@ namespace RimMandrake.Stillsand
             {
                 return;
             }
+            extraOutcomeDesc = ApplyReturn(def, map, stone, outcome.positivityIndex, outcome.Positive, ref letterLookTargets);
+        }
+
+        /// <summary>The Return's effect at a stone for an outcome of this positivity: the pour, the ring (positive),
+        /// the debt paid, the cache (great), the woken (terrible). Public so RM_WaterLedgerProof can run one outcome
+        /// without staging a whole ritual. Returns the letter's extra text.</summary>
+        public static string ApplyReturn(RM_WaterLedgerDef def, Map map, TargetInfo stone, int positivityIndex, bool positive,
+            ref LookTargets letterLookTargets)
+        {
             var sb = new StringBuilder();
 
             // 1. The pour: the water set beside the stone goes into the sand in a line toward the star.
@@ -426,7 +436,7 @@ namespace RimMandrake.Stillsand
             List<IntVec3> line = RM_StillsandWater.LineCells(map, stone.Cell, RM_StillsandWater.TowardSun(map),
                 Mathf.Clamp(Mathf.RoundToInt(poured / 3f), 3, 14));
             int bloomed = RM_StillsandWater.Pour(map, line, poured);
-            if (outcome.Positive)
+            if (positive)
             {
                 // The ring at the stone: the sand answering the pour.
                 List<IntVec3> ring = GenRadial.RadialCellsAround(stone.Cell, def.bloomRingRadius, false)
@@ -437,23 +447,23 @@ namespace RimMandrake.Stillsand
             sb.Append(bloomed > 0 ? "; the sand will bloom within hours." : ".");
 
             // 2. The debt.
-            float factor = outcome.positivityIndex >= 2 ? def.repayFactorGreat
-                : outcome.positivityIndex >= 1 ? def.repayFactorGood
-                : outcome.positivityIndex <= -2 ? def.repayFactorTerrible
+            float factor = positivityIndex >= 2 ? def.repayFactorGreat
+                : positivityIndex >= 1 ? def.repayFactorGood
+                : positivityIndex <= -2 ? def.repayFactorTerrible
                 : def.repayFactorPoor;
             float paid = RM_WaterLedger.Pay(map, poured * factor);
             if (paid > 0f)
             {
                 sb.Append("\n\n").Append(def.LabelCap).Append(" is lighter by ").Append(paid.ToString("0")).Append(" litres.");
             }
-            if (outcome.Positive)
+            if (positive)
             {
                 RM_WaterLedger.AffectGoodwill(def, def.goodwillOnPositiveReturn);
             }
 
             // 3. Great: the sand gives back one buried cache near the stone (the dunes engine's own reveal:
             //    a cache dropped by Destroy with any mode but Vanish spills its contents).
-            if (outcome.positivityIndex >= 2)
+            if (positivityIndex >= 2)
             {
                 ThingDef cacheDef = DefDatabase<ThingDef>.GetNamedSilentFail(def.buriedCacheDef ?? "");
                 Thing cache = cacheDef == null ? null : map.listerThings.ThingsOfDef(cacheDef)
@@ -474,7 +484,7 @@ namespace RimMandrake.Stillsand
             }
 
             // 4. Terrible: the pour wakes what sleeps, read as a debt refused.
-            if (outcome.positivityIndex <= -2 && def.refusalKind != null)
+            if (positivityIndex <= -2 && def.refusalKind != null)
             {
                 int n = def.refusalCount.RandomInRange;
                 var woken = new List<Pawn>();
@@ -504,7 +514,7 @@ namespace RimMandrake.Stillsand
             {
                 sb.Append("\n\n").Append(state).Append('.');
             }
-            extraOutcomeDesc = sb.ToString();
+            return sb.ToString();
         }
     }
 }

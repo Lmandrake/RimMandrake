@@ -470,12 +470,12 @@
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
       </li>
     </tools>
-    <!-- The prize: a fresh duumma butchers into carried drink (RM_DrainedFluids,
-         creaturebehaviors), the eggs-as-water economy without an egg. The
-         signal falsification itself is description plus stats; no shipped comp
-         expresses "drums dry". -->
+    <!-- The prize: a fresh duumma butchers into carried drink, three RM_DuummaWaterSac (6 L each,
+         Defs/ThingDefs_Items/RM_DuummaWaterSac.xml; STILLSAND_RETURN_REMAINDER_1), the eggs-as-water
+         economy without an egg. The signal falsification itself is description plus stats; no shipped
+         comp expresses "drums dry". -->
     <butcherProducts>
-      <RM_DrainedFluids>6</RM_DrainedFluids>
+      <RM_DuummaWaterSac>3</RM_DuummaWaterSac>
     </butcherProducts>
     <race>
       <body>TurtleLike</body>

@@ -43,8 +43,8 @@ KNOWN PAST BUGS GUARDED (each is a component that would have gone red):
 NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason): the leviathan incident toggles and odds
 (private dictionaries, no tool reads them), carry-and-return of gale-borne pawns (a rare, random event
 on a crest), the mirage and chasing-water states (CreatureBehaviors'
-own script), the acoustic payload (needs mandrake.rm.acousticscanner), the Return ledger (an RM tier
-ships no ledger def), the horizon plume mote and the bone harp sound (visual/audio), flight in the air
+own script), the acoustic payload (needs mandrake.rm.acousticscanner), the Return ritual's own lord job (its
+outcome runs through RM_WaterLedgerProof.ProofReturnOutcome; the ledger rows read UNMEASURED on the RM tier), the horizon plume mote and the bone harp sound (visual/audio), flight in the air
 (never live-tested unattended, CLAUDE.md), and appearance of any kind.
 
 Settings fields are `public static` (or instance, for RM_StillsandSettings); `jawa/mod_settings_field`
@@ -83,7 +83,7 @@ SETTINGS = {
                                  "dustSettledLetterEnabled": True},
     NS + "RM_StillsandEventsSettings": {"mirrorBeamEnabled": True, "hornEnabled": True,
                                         "hornAnswerChance": 0.15, "denQuestEnabled": True},
-    NS + "RM_StillsandWaterSettings": {"bloomOnPour": True, "ledgerEnabled": True,
+    NS + "RM_StillsandWaterSettings": {"bloomOnPour": True, "drawReturnLine": True, "ledgerEnabled": True,
                                        "ledgerIncidentWeighting": True},
     NS + "RM_GlassChainSettings": {"sunFurnaceEnabled": True, "lensBenchEnabled": True,
                                    "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0,
@@ -2057,6 +2057,129 @@ def water_chain(t):
             if abs(d2 - d1) > 1e-3:
                 _fail("drinking the still's flask moved the ledger by %.3f litres: the water is charged twice" % (d2 - d1))
 
+
+    # ---- STILLSAND_RETURN_REMAINDER_1 (prove_stillsand_return.py): the Return line, the Sun-Debt colony, the RM tier.
+    P = NS + "RM_WaterLedgerProof"
+
+    def scall(method, arg="-"):
+        r = t.bridge_call("jawa/static_call", type=P, method=method, args=arg)
+        res = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if not isinstance(r, dict) or r.get("success") is False or not res:
+            _unmeasured(t, "static_call %s.%s did not answer: %s" % (P, method, str(r)[:200]))
+        return res, dict(tok.split("=", 1) for tok in res.split() if "=" in tok)
+
+    def gale(on, ticks=300):
+        t.bridge_call("jawa/weather_set", weather="RM_DuneGale" if on else "Clear", lockWeather=True)
+        t.wait_ticks(ticks)
+        if on and _weather_now(t) != "RM_DuneGale":
+            _unmeasured(t, "the gale weather did not take (weather reads %r)" % _weather_now(t))
+
+    def frames():
+        """Show the pad and let the renderer draw a few frames."""
+        t.bridge_call("rimworld/jump_camera_to_cell", x=x, z=z)
+        t.wait_ticks(30)
+        time.sleep(1.5)      # real frames: MapComponentUpdate runs per frame, not per tick
+        t.wait_ticks(30)
+
+    with _comp(t, "wet_line_drawn_then_gale_wipes", toggle="drawReturnLine"):
+        # A3: a pour leaves a drawn stain on every wet cell; the toggle off draws none; a gale wipes the cells and the
+        # stain with them. RM_MapComponent_WetSand.MapComponentUpdate counts what it drew (ProofWetSand drawn=).
+        if _live(t):
+            gale(True)
+            gale(False)
+            _, w0 = scall("ProofWetSand")
+            if w0.get("cells") != "0":
+                _fail("a dune gale left %s wet cells (it must wipe the sand)" % w0.get("cells"))
+            left, bloom = pour("Sand")
+            if left:
+                _unmeasured(t, "the colonist never poured the egg")
+            frames()
+            r1, w1 = scall("ProofWetSand")
+            _note(t, "after a pour: wet sand", r1)
+            if int(w1.get("inView", 0)) < 3:
+                _fail("a 6 L pour on sand left %s live wet cells in view (want the line and its halo)" % w1.get("inView"))
+            if int(w1.get("drawn", 0)) < int(w1.get("inView", 0)):
+                _fail("the renderer drew %s stains for %s live wet cells on screen: the Return line is not drawn"
+                      % (w1.get("drawn"), w1.get("inView")))
+            with _setting(t, "drawReturnLine", False):
+                frames()
+                r2, w2 = scall("ProofWetSand")
+            _note(t, "drawReturnLine off: wet sand", r2)
+            if w2.get("drawn") != "0" or int(w2.get("cells", 0)) < 3:
+                _fail("with drawReturnLine off: drawn=%s cells=%s (want 0 drawn, the cells still wet)"
+                      % (w2.get("drawn"), w2.get("cells")))
+            gale(True)
+            frames()
+            r3, w3 = scall("ProofWetSand")
+            gale(False)
+            _note(t, "after the gale: wet sand", r3)
+            if w3.get("cells") != "0" or w3.get("drawn") != "0":
+                _fail("after a dune gale: cells=%s drawn=%s (the gale must wipe the line)" % (w3.get("cells"), w3.get("drawn")))
+
+    with _comp(t, "rm_tier_has_no_ledger"):
+        # A2 (with pour_blooms_on_sand): without the Utinni layer no ledger def loads, so no debt row is drawn in
+        # settings (RM_StillsandMod gates every ledger row on RM_WaterLedger.ActiveDef) and nothing counts.
+        if _live(t):
+            res, kv = scall("ProofLedger")
+            _note(t, "ledger on this tier", res)
+            if kv.get("def") != "none":
+                _unmeasured(t, "a ledger def is loaded (%s): this is the Utinni tier; the RM-tier clause reads only "
+                               "without the Utinni layer" % kv.get("def"))
+            if kv.get("live") != "False":
+                _fail("no ledger def, yet the ledger reads live: %s" % res)
+
+    with _comp(t, "return_sun_debt_gale_opens_good_outcome_pays"):
+        # A1: a colony whose ideo holds the Return precept accrues debt from drinking water (the canteen egg's drink
+        # hook), the Return opens when a dune gale ends (serial up, the ritual holds an obligation), and a good
+        # outcome at a debt stone lowers the debt and blooms the ring there.
+        if _live(t):
+            res, kv = scall("ProofLedger")
+            if kv.get("live") != "True" or kv.get("countsHere") != "True":
+                _unmeasured(t, "the water ledger is not live on this map (%s): needs the Utinni layer and Ideology" % res)
+            rb, kb = scall("ProofBelieve")
+            _note(t, "believe", rb)
+            if kb.get("ritual") != "True":
+                _fail("the player's ideo does not hold the Return ritual after ProofBelieve: %s" % rb)
+            t.wait_ticks(600)   # the obligation trigger's first sight (250-tick cadence) records the serial
+            # the drink: one canteen egg's hook books its 6 L
+            bx, bz = x + 5, z - 5
+            t.bridge_call("jawa/destroy_batch", rects="%d,%d,9,9" % (bx - 4, bz - 4), categories="Plant,Item,Filth,Building")
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (EGG, bx, bz))
+            egg = _things(t, EGG, "%d,%d,3,3" % (bx - 1, bz - 1))
+            if not egg:
+                _unmeasured(t, "the water egg did not stand after spawn_batch")
+            d0 = float(scall("ProofLedger")[1]["debt"])
+            dr, _ = scall("ProofDrinkHook", "%d,%d" % (egg[0]["x"], egg[0]["z"]))
+            d1 = float(scall("ProofLedger")[1]["debt"])
+            _note(t, "drink: debt before / hook / after", [d0, dr, d1])
+            if abs((d1 - d0) - 6.0) > 1e-3:
+                _fail("drinking a canteen egg moved the debt by %.3f (want 6 L)" % (d1 - d0))
+            # the gale, after the opening gap has passed
+            rs, ks = scall("ProofReturnState")
+            since, gap = int(ks.get("sinceOpen", 0)), int(ks.get("gap", 0))
+            if since < gap:
+                clk = _ok(t.bridge_call("jawa/time_clock"), "time_clock")
+                t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + gap - since + 500, timeException=True)
+                rs, ks = scall("ProofReturnState")
+            gale(True)
+            gale(False, 600)
+            ra, ka = scall("ProofReturnState")
+            _note(t, "return state before / after the gale", [rs, ra])
+            if int(ka.get("serial", -1)) <= int(ks.get("serial", -1)):
+                _fail("the dune gale ended and the Return did not open: %s -> %s" % (rs, ra))
+            if int(ka.get("obligations", 0)) < 1:
+                _fail("the Return opened but the ritual holds no obligation: %s" % ra)
+            # the good outcome at a stone with water beside it
+            t.bridge_call("jawa/spawn_batch", ops="RUT_DebtStone:%d,%d;%s:%d,%d" % (bx, bz, EGG, bx + 1, bz))
+            stone = _things(t, "RUT_DebtStone", "%d,%d,3,3" % (bx - 1, bz - 1))
+            if not stone:
+                _unmeasured(t, "the debt stone did not stand after spawn_batch")
+            ro, ko = scall("ProofReturnOutcome", "%d,%d,1" % (stone[0]["x"], stone[0]["z"]))
+            _note(t, "good outcome", ro)
+            if not float(ko.get("debt1", 0)) < float(ko.get("debt0", 0)):
+                _fail("a good Return did not lower the debt: %s" % ro)
+            if not int(ko.get("bloom1", 0)) > int(ko.get("bloom0", 0)):
+                _fail("a good Return bloomed no ring at the stone: %s" % ro)
 
 # ----------------------------------------------------------------------------- chain: skeletons
 

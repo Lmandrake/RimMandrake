@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_RETURN_REMAINDER_1 spec 4: the duumma's prize, "drink you can carry" (stillsand_roster_fillout_2026-09-27.md
+  §duumma). A fresh duumma butchers into three of these (RM_Stillsand_Fillout.xml). Like the canteen egg it books the
+  water ledger when drunk (RM_CompWaterVolume.PostIngested), and it can be poured into the sand or set at a debt stone.
+  Under Dubs Bad Hygiene a thirsty pawn seeks it (WaterExt, the egg's figure). Not a solar-still feed: it already is water.
+  PLACEHOLDER ART: CreatureBehaviors' RM_DrainedFluids blob, tinted pale.
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DuummaWaterSac</defName>
+    <label>duumma water sac</label>
+    <description>A tough bladder cut from a duumma, still sloshing with the water it was ferrying between buried pockets. Six litres, a little warm and faintly earthy. Drink it, pour it into the sand, or carry it to a debt stone.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DrainedFluids/RM_DrainedFluids</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(185,200,190)</color>
+      <drawSize>0.95</drawSize>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>6</Mass>
+      <Nutrition>0.05</Nutrition>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <techLevel>Neolithic</techLevel>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestCommandString>Drink from {0}</ingestCommandString>
+      <ingestReportString>Drinking from {0}.</ingestReportString>
+      <tableDesired>false</tableDesired>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_WaterVolume">
+        <litres>6</litres>
+        <drawnAs>duumma water sac</drawnAs>
+      </li>
+      <li Class="CompProperties" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <water>6</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

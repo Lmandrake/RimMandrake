@@ -1,3 +1,5 @@
+using RimWorld;
+using System.Linq;
 using Verse;
 
 namespace RimMandrake.Stillsand
@@ -87,6 +89,109 @@ namespace RimMandrake.Stillsand
                 return "DRINK item=" + t.def.defName + " bookedAtSource=" + comp.Props.bookedAtSource + " by=" + drinker.ThingID;
             }
             return "NONE: no water item at " + x + "," + z;
+        }
+            // ── STILLSAND_RETURN_REMAINDER_1 (prove_stillsand_return.py): the Sun-Debt colony, the Return's opening,
+        //    one outcome at a stone, and the drawn wet-sand line. All read-only except ProofBelieve (adds the
+        //    ledger's believer precept to the player's primary ideo, as the ideo editor would) and
+        //    ProofReturnOutcome (runs the outcome the ritual would run, without staging the ritual).
+
+        private static Precept_Ritual ReturnRitual(out Ideo ideo)
+        {
+            ideo = Faction.OfPlayer?.ideos?.PrimaryIdeo;
+            PreceptDef pd = RM_WaterLedger.ActiveDef?.believerPrecept;
+            if (ideo == null || pd == null)
+            {
+                return null;
+            }
+            return ideo.PreceptsListForReading.FirstOrDefault(p => p.def == pd) as Precept_Ritual;
+        }
+
+        /// <summary>"-" -&gt; the player's primary ideo holds the ledger's believer precept (added if absent):
+        /// "BELIEVE added=bool ideo=name precept=defName ritual=bool".</summary>
+        public static string ProofBelieve(string arg)
+        {
+            PreceptDef pd = RM_WaterLedger.ActiveDef?.believerPrecept;
+            if (pd == null)
+            {
+                return "REFUSED: no ledger def with a believer precept (this tier ships none)";
+            }
+            Precept_Ritual r = ReturnRitual(out Ideo ideo);
+            if (ideo == null)
+            {
+                return "REFUSED: the player has no primary ideo";
+            }
+            bool added = false;
+            if (r == null)
+            {
+                ideo.AddPrecept(PreceptMaker.MakePrecept(pd), true, null, pd.ritualPatternBase);
+                added = true;
+                r = ReturnRitual(out ideo);
+            }
+            return "BELIEVE added=" + added + " ideo=" + ideo.name.Replace(' ', '_') + " precept=" + pd.defName
+                + " ritual=" + (r != null);
+        }
+
+        /// <summary>"-" -&gt; "RETURN serial=n obligations=n sinceOpen=ticks gap=ticks debt=litres ritual=bool"
+        /// (an opening is refused while sinceOpen &lt; gap, the def's minTicksBetweenOpenings).</summary>
+        public static string ProofReturnState(string arg)
+        {
+            RM_WaterLedger ledger = RM_WaterLedger.Current;
+            Precept_Ritual r = ReturnRitual(out Ideo _);
+            return "RETURN serial=" + (ledger?.OpeningSerial.ToString() ?? "none")
+                + " obligations=" + (r?.activeObligations?.Count ?? 0)
+                + " sinceOpen=" + (ledger != null ? (Find.TickManager.TicksGame - ledger.LastOpeningTick).ToString() : "none")
+                + " gap=" + (RM_WaterLedger.ActiveDef?.minTicksBetweenOpenings.ToString() ?? "none")
+                + " debt=" + (ledger != null ? ledger.Debt.ToString("0.###") : "none") + " ritual=" + (r != null);
+        }
+
+        /// <summary>"x,z,positivity" (a debt stone's cell; positivity -2..2) -&gt; the Return's outcome run there:
+        /// "OUTCOME debt0=n debt1=n bloom0=n bloom1=n stone=defName". bloom counts the biome's bloom plant within
+        /// the ring radius + 1 of the stone.</summary>
+        public static string ProofReturnOutcome(string arg)
+        {
+            Map map = Find.CurrentMap;
+            RM_WaterLedgerDef def = RM_WaterLedger.ActiveDef;
+            string[] a = (arg ?? "").Split(',');
+            if (map == null || def == null || a.Length != 3 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z)
+                || !int.TryParse(a[2], out int pos))
+            {
+                return "REFUSED: arg must be x,z,positivity on a current map with a ledger def";
+            }
+            IntVec3 c = new IntVec3(x, 0, z);
+            Thing stone = c.InBounds(map) ? c.GetFirstBuilding(map) : null;
+            if (stone == null)
+            {
+                return "NONE: no building at " + x + "," + z;
+            }
+            ThingDef bloomDef = RM_StillsandWater.Ext(map)?.bloomPlant;
+            float radius = def.bloomRingRadius + 1f;
+            int Bloom() => bloomDef == null ? 0 : map.listerThings.ThingsOfDef(bloomDef).Count(t => t.Position.InHorDistOf(c, radius));
+            float d0 = RM_WaterLedger.Current?.Debt ?? -1f;
+            int b0 = Bloom();
+            LookTargets look = null;
+            string text = RM_RitualOutcomeEffectWorker_WaterReturn.ApplyReturn(def, map, new TargetInfo(stone), pos, pos > 0, ref look);
+            float d1 = RM_WaterLedger.Current?.Debt ?? -1f;
+            Log.Message("[RM_WaterLedgerProof] Return outcome " + pos + " at " + stone.def.defName + ": " + (text ?? "").Replace('\n', ' '));
+            return "OUTCOME debt0=" + d0.ToString("0.###") + " debt1=" + d1.ToString("0.###") + " bloom0=" + b0
+                + " bloom1=" + Bloom() + " stone=" + stone.def.defName;
+        }
+
+        /// <summary>"-" -&gt; the current map's wet sand and its drawn line: "WET cells=n live=n inView=n drawn=n drawTick=t
+        /// now=t setting=bool". drawn is the stain count of the last frame the map was on screen; inView counts the live
+        /// wet cells inside the camera's view now.</summary>
+        public static string ProofWetSand(string arg)
+        {
+            Map map = Find.CurrentMap;
+            RM_MapComponent_WetSand wet = RM_MapComponent_WetSand.For(map);
+            if (wet == null)
+            {
+                return "NONE: no wet-sand component on the current map";
+            }
+            CellRect view = Find.CameraDriver.CurrentViewRect;
+            return "WET cells=" + wet.WetCellCount + " live=" + wet.WetCells.Count(wet.IsWet)
+                + " inView=" + wet.WetCells.Count(c => wet.IsWet(c) && view.Contains(c)) + " drawn=" + wet.DrawnLastFrame
+                + " drawTick=" + wet.LastDrawTick + " now=" + Find.TickManager.TicksGame
+                + " setting=" + RM_StillsandWaterSettings.drawReturnLine;
         }
     }
 }

@@ -69,6 +69,7 @@ class Fake(object):
         self.things, self.pawns = {}, {}
         self.terrain, self.roofs = [], []
         self.weather, self.locked = "Clear", False
+        self.wet, self.camera, self.serial, self.lastopen, self.oblig, self.believed = set(), None, 0, -999999, 0, False
         self.letters, self.log = [], []
         self.cond, self.sched = None, []
         self.lev_visits, self.unforced_armed = [], False   # RM_MapComponent_SandLeviathans.visits
@@ -449,8 +450,22 @@ class Fake(object):
         if unlock:
             self.locked = False
         if weather:
+            was = self.weather
             self.weather = weather
             self.locked = bool(lockWeather)
+            # STILLSAND_RETURN_REMAINDER_1: the gale wipes the wet sand; its end opens the Return (ledger tier only)
+            if weather == "RM_DuneGale" and "gale_keeps_wet" not in self.b:
+                self.wet = set()
+            if was == "RM_DuneGale" and weather != "RM_DuneGale" and "rm_tier" not in self.b \
+                    and "gale_no_opening" not in self.b and self.ticks - self.lastopen >= 30000:
+                self.serial += 1
+                self.lastopen = self.ticks
+                if self.believed:
+                    self.oblig = 1
+        return {"success": True}
+
+    def t_jump_camera_to_cell(self, x=0, z=0, **k):
+        self.camera = (x, z)
         return {"success": True}
 
     def t_weather_get(self, **k):
@@ -563,10 +578,28 @@ class Fake(object):
             return {"success": True, "result": "GALETAKEN registered=%s" % ("gale_not_taker" not in self.b)}
         if type.endswith("RM_WaterLedgerProof"):     # WATER_LEDGER_DOUBLE_CHARGE_1's row
             self.debt = getattr(self, "debt", 0.0)
+            rm = "rm_tier" in self.b
             if method == "ProofLedger":
+                if rm:
+                    return {"success": True, "result": "LEDGER live=%s debt=none def=none enabled=True countsHere=False"
+                            % ("rm_ledger_live" in self.b)}
                 return {"success": True, "result": "LEDGER live=True debt=%.3f def=RUT_SunDebt enabled=True countsHere=True"
                         % self.debt}
-            x, z = [int(v) for v in str(args).split(",")]
+            if method == "ProofWetSand":    # STILLSAND_RETURN_REMAINDER_1 A3
+                seen = self.camera is not None and "line_not_drawn" not in self.b
+                drawn = len(self.wet) if seen and (self.on("drawReturnLine") or "line_ignores_toggle" in self.b) else 0
+                return {"success": True, "result": "WET cells=%d live=%d inView=%d drawn=%d drawTick=%d now=%d setting=%s"
+                        % (len(self.wet), len(self.wet), len(self.wet) if self.camera else 0, drawn, self.ticks, self.ticks, self.on("drawReturnLine"))}
+            if rm:
+                return {"success": True, "result": "REFUSED: no ledger def with a believer precept (this tier ships none)"}
+            if method == "ProofBelieve":
+                added, self.believed = not self.believed, True
+                return {"success": True, "result": "BELIEVE added=%s ideo=Sun-Debt precept=RUT_Ritual_TheReturn ritual=True"
+                        % added}
+            if method == "ProofReturnState":
+                return {"success": True, "result": "RETURN serial=%d obligations=%d sinceOpen=%d gap=30000 debt=%.3f ritual=%s"
+                        % (self.serial, self.oblig, self.ticks - self.lastopen, self.debt, self.believed)}
+            x, z = [int(v) for v in str(args).split(",")[:2]]
             if method == "ProofStillCycle":
                 brine = [i for i, t in self.things.items() if t["def"] == "RM_Brine" and (t["x"], t["z"]) == (x, z)]
                 if not brine:
@@ -575,7 +608,23 @@ class Fake(object):
                 self.debt += 2.0 if "still_books_wrong" in self.b else 3.0
                 self.new("RM_StilledWater", x + 1, z, stackCount=3)
                 return {"success": True, "result": "CYCLE ran=True feed=RM_Brine units=1 litres=3 water=RM_StilledWater still=T0"}
+            if method == "ProofReturnOutcome":
+                x, z = [int(v) for v in str(args).split(",")[:2]]
+                if not [t for t in self.things.values() if t["def"] == "RUT_DebtStone" and (t["x"], t["z"]) == (x, z)]:
+                    return {"success": True, "result": "NONE: no building at %d,%d" % (x, z)}
+                d0, b0 = self.debt, len(self.of("RM_Hourbloom"))
+                if "return_no_pay" not in self.b:
+                    self.debt = max(0.0, self.debt - 9.0)
+                if "return_no_ring" not in self.b:
+                    for i in range(8):
+                        self.new("RM_Hourbloom", x + 2, z + i - 4)
+                return {"success": True, "result": "OUTCOME debt0=%.3f debt1=%.3f bloom0=%d bloom1=%d stone=RUT_DebtStone"
+                        % (d0, self.debt, b0, len(self.of("RM_Hourbloom")))}
             if method == "ProofDrinkHook":
+                at = [t for t in self.things.values() if (t["x"], t["z"]) == (x, z)]
+                if at and at[0]["def"] == "RM_GuzzkaEggUnfertilized":
+                    self.debt += 0.0 if "egg_drink_free" in self.b else 6.0
+                    return {"success": True, "result": "DRINK item=RM_GuzzkaEggUnfertilized bookedAtSource=False by=P1"}
                 twice = "drink_double_charge" in self.b
                 if twice:
                     self.debt += 1.0
@@ -722,6 +771,8 @@ class Fake(object):
                 if not egg:
                     return
                 sand = self.terr(egg["x"], egg["z"]) == "Sand" or "bloom_on_gravel" in b
+                if sand:
+                    self.wet |= set((egg["x"] + i, egg["z"] + j) for i in range(-1, 3) for j in (-1, 0, 1))
                 if sand and "no_bloom" not in b and (self.on("bloomOnPour") or "bloom_ignores_toggle" in b):
                     for i in range(3):
                         self.new("RM_Hourbloom", egg["x"] + i, egg["z"])
@@ -899,6 +950,14 @@ BREAKS = {
     "oven_in_shade": ["glass.oven_cooks_in_sun_not_shade"],
     "oven_fuel": ["glass.oven_cooks_in_sun_not_shade"],
     "drift_no_yield": ["glass.drift_clear_drops_glass_sand"],
+    # STILLSAND_RETURN_REMAINDER_1 live rows A1 and A3 (A2 is the rm_tier run in _main)
+    "line_not_drawn": ["water.wet_line_drawn_then_gale_wipes"],
+    "line_ignores_toggle": ["water.wet_line_drawn_then_gale_wipes"],
+    "gale_keeps_wet": ["water.wet_line_drawn_then_gale_wipes"],
+    "gale_no_opening": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
+    "egg_drink_free": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
+    "return_no_pay": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
+    "return_no_ring": ["water.return_sun_debt_gale_opens_good_outcome_pays"],
     "still_books_wrong": ["water.still_water_charged_once"],
     "drink_double_charge": ["water.still_water_charged_once"],
     "regen_keeps_biome": ["site.site_stillsand_map"],
@@ -1082,7 +1141,9 @@ def _main(bad):
             # STILLSAND_EVENT_CREATURES_REMAINDER_1: RSW/RUT content, not on the driven tier
             "remainder.remainder_horn_routs_and_logs_roll",
             "remainder.remainder_seep_incident_refuses_other_maps_roots_at_seep",
-            "remainder.remainder_den_quest_generates", "remainder.remainder_charged_thumper_is_loudest")
+            "remainder.remainder_den_quest_generates", "remainder.remainder_charged_thumper_is_loudest",
+            # STILLSAND_RETURN_REMAINDER_1 A2 reads only without the Utinni layer: the rm_tier run below
+            "water.rm_tier_has_no_ledger")
     for k in owed:
         if healthy.get(k, ("",))[0] != "UNMEASURED":
             bad.append("%s should read UNMEASURED: %s" % (k, healthy.get(k)))
@@ -1093,6 +1154,14 @@ def _main(bad):
     n_comp = len(healthy)
     if notpass:
         bad.append("healthy run: %d of %d components not PASS: %s" % (len(notpass), n_comp, notpass))
+    rm = run(["rm_tier"])     # STILLSAND_RETURN_REMAINDER_1 A2: the RM tier (no Utinni layer) has no ledger
+    for k, want in (("water.rm_tier_has_no_ledger", "PASS"), ("water.pour_blooms_on_sand", "PASS"),
+                    ("water.return_sun_debt_gale_opens_good_outcome_pays", "UNMEASURED"),
+                    ("water.wet_line_drawn_then_gale_wipes", "PASS")):
+        if rm.get(k, ("",))[0] != want:
+            bad.append("rm_tier run: %s should read %s: %s" % (k, want, rm.get(k)))
+    if run(["rm_tier", "rm_ledger_live"]).get("water.rm_tier_has_no_ledger", ("",))[0] != "FAIL":
+        bad.append("rm_tier run with a live ledger and no def did not turn water.rm_tier_has_no_ledger red")
     declared = len(V.suite.components_declared())
     if declared != n_comp:
         bad.append("declared %d components but the run produced %d" % (declared, n_comp))

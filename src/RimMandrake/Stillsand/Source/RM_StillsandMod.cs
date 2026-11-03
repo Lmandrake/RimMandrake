@@ -181,11 +181,14 @@ namespace RimMandrake.Stillsand
                 list.GapLine();
             }
 
-            if (Group(list, "Water on the sand", RimMandrake.Shared.SettingScope.Now, new[] { "bloomOnPour", "ledgerEnabled" }))
+            if (Group(list, "Water on the sand", RimMandrake.Shared.SettingScope.Now, new[] { "bloomOnPour", "drawReturnLine", "ledgerEnabled" }))
             {
                 list.CheckboxLabeled("Poured water blooms", ref bloomOnPour,
                     "Water poured onto Stillsand sand sows a short-lived bloom along the pour. Off: the sand only gets wet "
                     + "(a fresh pour still draws the swimmers).");
+                list.CheckboxLabeled("Wet sand shows a darker stain", ref drawReturnLine,
+                    "Every poured cell is drawn darker until it dries (48 hours, fading over the last 12) or a dune gale "
+                    + "wipes it: the Return's line in the sand. Off: the sand is still wet, just not drawn.");
                 // The ledger rows exist only when a tier above ships a ledger def: the RM
                 // tier has no debt and shows no debt UI.
                 RM_WaterLedgerDef ledger = RM_WaterLedger.ActiveDef;

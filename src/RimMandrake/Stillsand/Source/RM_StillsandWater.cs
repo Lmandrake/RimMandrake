@@ -5,6 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using RimWorld.Planet;
 
 namespace RimMandrake.Stillsand
 {
@@ -299,6 +300,96 @@ namespace RimMandrake.Stillsand
             drawUntilTick = -1;
         }
 
+        // ── The Return line (STILLSAND_RETURN_REMAINDER_1 spec 2): every wet cell is drawn as a darker damp stain
+        //    on the sand, under plants, filth and items, fading over its last hours. A gale clears the cells
+        //    (ClearAll), so the stain goes with them. Procedural texture: no art file to ship or miss.
+        private const int FadeTicks = 12 * 2500;
+        private const int Shades = 4;
+        private static Material[] stainMats;
+
+        /// <summary>Wet cells drawn on the last frame this map was on screen (the proof's read of the renderer).</summary>
+        public int DrawnLastFrame { get; private set; }
+
+        /// <summary>Unscaled game ticks of the last frame that drew (so a proof can tell "drew nothing" from "never ran").</summary>
+        public int LastDrawTick { get; private set; } = -1;
+
+        /// <summary>0..Shades-1: how dark a cell's stain is with this many ticks of wetness left.</summary>
+        public static int ShadeFor(int ticksLeft)
+        {
+            if (ticksLeft <= 0)
+            {
+                return -1;
+            }
+            return Mathf.Clamp(Mathf.CeilToInt((float)ticksLeft / FadeTicks * Shades) - 1, 0, Shades - 1);
+        }
+
+        private static Material StainMat(int shade)
+        {
+            if (stainMats == null)
+            {
+                const int N = 32;
+                var tex = new Texture2D(N, N, TextureFormat.ARGB32, false)
+                {
+                    name = "RM_WetSandStain",
+                    wrapMode = TextureWrapMode.Clamp,
+                    filterMode = FilterMode.Bilinear
+                };
+                for (int y = 0; y < N; y++)
+                {
+                    for (int x = 0; x < N; x++)
+                    {
+                        float dx = (x + 0.5f) / N * 2f - 1f;
+                        float dy = (y + 0.5f) / N * 2f - 1f;
+                        float d = Mathf.Sqrt(dx * dx + dy * dy);
+                        tex.SetPixel(x, y, new Color(1f, 1f, 1f, Mathf.Clamp01((1f - d) / 0.5f)));
+                    }
+                }
+                tex.Apply(false, true);
+                stainMats = new Material[Shades];
+                for (int i = 0; i < Shades; i++)
+                {
+                    stainMats[i] = MaterialPool.MatFrom(tex, ShaderDatabase.Transparent,
+                        new Color(0.28f, 0.2f, 0.12f, 0.55f * (i + 1) / Shades));
+                }
+            }
+            return stainMats[shade];
+        }
+
+        public override void MapComponentUpdate()
+        {
+            if (wetUntil.Count == 0 || !RM_StillsandWaterSettings.drawReturnLine || Find.CurrentMap != map
+                || WorldRendererUtility.WorldSelected)
+            {
+                if (Find.CurrentMap == map)
+                {
+                    DrawnLastFrame = 0;
+                }
+                return;
+            }
+            CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(1);
+            int now = Find.TickManager.TicksGame;
+            float y = AltitudeLayer.TerrainScatter.AltitudeFor();
+            int drawn = 0;
+            foreach (KeyValuePair<IntVec3, int> kv in wetUntil)
+            {
+                IntVec3 c = kv.Key;
+                int shade = ShadeFor(kv.Value - now);
+                if (shade < 0 || !view.Contains(c))
+                {
+                    continue;
+                }
+                // A per-cell jitter so a line of stains reads as soaked sand, not a grid of discs.
+                int h = c.GetHashCode();
+                Vector3 pos = new Vector3(c.x + 0.5f + ((h & 7) - 3.5f) * 0.03f, y, c.z + 0.5f + (((h >> 3) & 7) - 3.5f) * 0.03f);
+                float size = 1.45f + ((h >> 6) & 3) * 0.08f;
+                Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(size, 1f, size)),
+                    StainMat(shade), 0);
+                drawn++;
+            }
+            DrawnLastFrame = drawn;
+            LastDrawTick = now;
+        }
+
         public override void MapComponentTick()
         {
             if (Find.TickManager.TicksGame % 250 != 0)
@@ -428,9 +519,11 @@ namespace RimMandrake.Stillsand
         public static bool bloomOnPour = true;
         public static bool ledgerEnabled = true;
         public static bool ledgerIncidentWeighting = true;
+        public static bool drawReturnLine = true;
 
         public static void Expose()
         {
+            Scribe_Values.Look(ref drawReturnLine, "water_drawReturnLine", true);
             Scribe_Values.Look(ref bloomOnPour, "water_bloomOnPour", true);
             Scribe_Values.Look(ref ledgerEnabled, "water_ledgerEnabled", true);
             Scribe_Values.Look(ref ledgerIncidentWeighting, "water_ledgerIncidentWeighting", true);
