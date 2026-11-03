@@ -36,7 +36,7 @@ DINOSAUR-like reptile, emphatically not a frog or toad**: a compact
 theropod build with the **body held horizontal** over two strong hind
 legs, and a **thick tapering tail extending behind for balance** — the
 tail is prominent in both references and is part of the silhouette. Small
-vestigial forelimbs are held tucked against the chest, never
+forelimbs are held tucked against the chest, never
 weight-bearing. The **head** is oversized relative to the body with a
 **rounded, blunt, beak-like snout**, broad fleshy cheeks, a downturned
 mouth, and a **backswept crest at the rear of the skull**. **TWO
@@ -57,7 +57,7 @@ entry.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the owner's two KOTOR reference images (`owner_reference_sideview.jpg`, `owner_reference_card.jpg`), `kotor_screenshot.jpg`, and the three 2026-09-16 rulings in `## ruling` below.*
-- [ ] BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body held HORIZONTAL over two strong hind legs, a thick tapering TAIL extending behind for balance (part of the silhouette in every facing), tiny vestigial forelimbs tucked against the chest and never weight-bearing (owner ruling 2026-09-16: "I see clear references to bipedal and no mention of four legs.")
+- [ ] BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body held HORIZONTAL over two strong hind legs, a thick tapering TAIL extending behind for balance (part of the silhouette in every facing), tiny forelimbs tucked against the chest and never weight-bearing (owner ruling 2026-09-16: "I see clear references to bipedal and no mention of four legs.")
 - [ ] Head: oversized relative to the body, with a rounded, blunt, beak-like snout, broad fleshy cheeks, a downturned mouth and a backswept crest at the rear of the skull
 - [ ] Eyes: TWO modest-sized eyes, one on each side of the head; a front (south) view shows both (owner ruling 2026-09-16: gizka has TWO eyes); never a single central cyclops eye, never huge bulging frog eyes
 - [ ] COLOUR LAYOUT: scaly hide mottled in tan, warm orange-brown and olive patches over back, flanks and head, never a flat colour; paler skin at the belly and joints

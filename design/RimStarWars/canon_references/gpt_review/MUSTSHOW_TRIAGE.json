@@ -853,9 +853,10 @@
    "entry": "zakkeg",
    "n": 1,
    "proposal": "Colour: the red anchor is KOTOR II's quote but the KOTOR II model image (Zakkeg.jpg) is dark; the rust-red render is the SWTOR Cartel Market pet. The owner ruled the red image; flag that the ruling picked a SWTOR pet render mislabelled as KOTOR II. Source https://starwars.fandom.com/wiki/File:JuvenileZakkeg.png",
-   "disposition": "OWNER",
+   "disposition": "OWNER_RULED",
    "why": "The ruled file wookieepedia_kotor2_juvenile.png is a SWTOR Cartel Market pet render, not KOTOR II. Does the ruling stand knowing that?",
-   "ruled_entry": true
+   "ruled_entry": true,
+   "owner_answer": "KEEP the red image as reference; label fixed: file renamed swtor_cartel_pet_juvenile.png (a SWTOR Cartel Market pet render, not KOTOR II); red is backed by KOTOR II's text quote. (owner by question card 2026-11-02)"
   },
   {
    "entry": "zakkeg",
@@ -1068,9 +1069,10 @@
    "entry": "gizka",
    "n": 1,
    "proposal": "Owner-ruled bars (bipedal, \"vestigial\") untouched; GPT's suggestion to drop \"vestigial\" is a wording question for the owner only.",
-   "disposition": "OWNER",
+   "disposition": "OWNER_RULED",
    "why": "The vestigial wording in your ruling: GPT suggests dropping it. Keep?",
-   "ruled_entry": true
+   "ruled_entry": true,
+   "owner_answer": "CHANGE: 'vestigial' dropped from the forelimb line; bipedal stays. (owner by question card 2026-11-02)"
   },
   {
    "entry": "gorg",
@@ -1084,9 +1086,10 @@
    "entry": "gorg",
    "n": 1,
    "proposal": "Must show: \"Two legs only\" is owner-supplied, GPT disputes (limb count vs \"feet front and back\"); wiki has no limb count. Owner decision, flagged only.",
-   "disposition": "OWNER",
+   "disposition": "OWNER_RULED",
    "why": "Your supplied note says two legs, with feet front and back; the wiki gives no limb count and the Must show has four splayed limbs. Which?",
-   "ruled_entry": false
+   "ruled_entry": false,
+   "owner_answer": "FOUR limbs: his 'feet front and back, two legs' means a pair at the front and a pair at the back, as on the film props. (owner by question card 2026-11-02)"
   },
   {
    "entry": "gornt",
@@ -1144,9 +1147,10 @@
    "entry": "greaterkraytdragon",
    "n": 2,
    "proposal": "Must show: spit colour — wiki says \"greenish yellow acidic fluid\", entry says \"bright yellow-white\" and \"no green\". Propose \"yellow to greenish-yellow\". Source: https://starwars.fandom.com/wiki/Krayt_dragon_venom",
-   "disposition": "OWNER",
+   "disposition": "OWNER_RULED",
    "why": "Must show says bright yellow-white spit, no green; canon says greenish-yellow acid. Ruled render: keep or change?",
-   "ruled_entry": true
+   "ruled_entry": true,
+   "owner_answer": "CHANGE: spit colour is now yellow to greenish-yellow; 'no green' removed from the spit. (owner by question card 2026-11-02)"
   },
   {
    "entry": "greaterkraytdragon",
@@ -1592,9 +1596,10 @@
    "entry": "dewback",
    "n": 0,
    "proposal": "Must show \"Long heavy tail\": replace with \"short tail\" ; reason: wiki states \"long, rounded heads and short tails\" (A New Hope). Source: https://starwars.fandom.com/wiki/Dewback",
-   "disposition": "OWNER",
+   "disposition": "OWNER_RULED",
    "why": "Must show says long heavy tail and NEGATIVE 'not short-tailed'; canon text (A New Hope) says short tails. The ruled image decides: keep or change?",
-   "ruled_entry": true
+   "ruled_entry": true,
+   "owner_answer": "KEEP: long heavy tail and 'not short-tailed' stay; the film and his picked image override Wookieepedia's 'short tails'. (owner by question card 2026-11-02)"
   },
   {
    "entry": "dewback",
@@ -1634,9 +1639,10 @@
    "entry": "eopie",
    "n": 0,
    "proposal": "Must show \"never brown\": delete \"never brown\"; canon gives no colour, Legends lists brown/pale/white. Source: https://starwars.fandom.com/wiki/Eopie/Legends",
-   "disposition": "OWNER",
+   "disposition": "OWNER_RULED",
    "why": "Must show says never brown; canon gives no colour, Legends lists brown. Ruled image: keep or change?",
-   "ruled_entry": true
+   "ruled_entry": true,
+   "owner_answer": "KEEP: 'never brown' stays; canon gives no colour and the pale look is his pick over the Legends brown. (owner by question card 2026-11-02)"
   },
   {
    "entry": "eopie",

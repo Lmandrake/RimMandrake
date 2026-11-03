@@ -49,7 +49,7 @@ scaled hide.
 - [ ] Broad, heavy, blunt-snouted head with a wide mouth line and small eyes under a heavy brow
 - [ ] Dense small pebbled scale texture all over, with thick folded skin at neck and legs
 - [ ] Realistic rendering: natural pebbled reptile-hide texture and desert lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not a rounded, blobby, seal- or manatee-like silhouette; not a smooth, unscaled body; not short-tailed. A pale/white base on the sprite may be a colour mask (owner ruling 2026-09-14: "I think the Donor white shading means it can come in a variety of colors or something, Rimworld seems to do this sometimes.")
+- [ ] NEGATIVE: not a rounded, blobby, seal- or manatee-like silhouette; not a smooth, unscaled body; not short-tailed. (Owner ruling by card 2026-11-02: the film and his picked image override Wookieepedia's "short tails" text; the long heavy tail and this negative stay, reviewers should not flag them.) A pale/white base on the sprite may be a colour mask (owner ruling 2026-09-14: "I think the Donor white shading means it can come in a variety of colors or something, Rimworld seems to do this sometimes.")
 
 ## Engine limits
 none known

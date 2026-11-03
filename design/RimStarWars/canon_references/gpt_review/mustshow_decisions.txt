@@ -99,7 +99,7 @@ yobshrimp 2 REJECTED ~ The line is already scoped "(food item only)" and the ent
 ysalamir 0 REJECTED ~ The header names the two realistic Legends paintings as the target, and his 2026-10-08 realism ruling put them there; white fur from one novel infobox has no image, and splitting the list adds no check. ~
 ysalamir 1 REJECTED ~ The head line already says four-eyed is canon text, clear in no image; ear-flaps and spots follow the paintings by the header's own statement, so a further tag adds nothing. ~
 zakkeg 0 REJECTED ~ "Built like a Baragwin battle tank" is the sourced quote and the entry is ruled; the header already states Legends text, and a bare 4 m would shrink a line about mass. ~
-zakkeg 1 OWNER ~ The ruled file wookieepedia_kotor2_juvenile.png is a SWTOR Cartel Market pet render, not KOTOR II. Does the ruling stand knowing that? ~
+zakkeg 1 OWNER ~ The ruled file swtor_cartel_pet_juvenile.png is a SWTOR Cartel Market pet render, not KOTOR II. Does the ruling stand knowing that? ~
 zakkeg 2 REJECTED ~ Its Engine limits line already adds that art ships in AssetBundles and nothing on disk could be tested; the "none known" is qualified, not a false pass. ~
 zeer 0 MET ~ Height now in BODY PLAN. Swivelling horns are unshowable on a still sprite, and length adds no read on a giraffe plan. ~ (about 4.6 m tall)
 zeer 1 REJECTED ~ Engine limits there says the donor mod is on no disk here, which states the lack of a test; the proposed wording says the same in fewer words. ~

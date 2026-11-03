@@ -73,7 +73,7 @@ owner's word.
 ### Owner-supplied description (2026-10-04) — image `owner_canon_gorgs_1.webp`
 Film still of Mos Espa market gorgs hanging by their feet (the Gorg-seller). Owner, verbatim: "The hanging creatures are Gorgs.
 They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long
-tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like
+tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. [Clarified by owner by card 2026-11-02: he means a pair of legs at the front and a pair at the back, four limbs, as on the film props.] They do NOT look like frogs, more like
 amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY
 variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or
 large, numbering two to four." Longtail kind: "unusually long tails with an odd flat tail spread horizontally." Frilled kind:

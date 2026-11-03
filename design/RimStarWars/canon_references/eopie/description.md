@@ -52,7 +52,7 @@ What the realistic images show:
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images.*
 - [ ] BODY PLAN: four tall, very thin, stilt-like legs (leg length clearly greater than body depth) under a short barrel body that is higher at the haunches; a long neck thrust FORWARD roughly level with the back (not raised upright); a long head that ends in a drooping trunk-like snout pointing down-forward
-- [ ] COLOUR LAYOUT: pale all over (cream-white, grey-lavender or pinkish-grey); legs and flanks mottled slightly darker grey; snout tip pink; never brown
+- [ ] COLOUR LAYOUT: pale all over (cream-white, grey-lavender or pinkish-grey); legs and flanks mottled slightly darker grey; snout tip pink; never brown (owner ruling by card 2026-11-02: canon gives no colour; the pale look is his pick over the Legends brown)
 - [ ] Feet: wide flat splayed pads with 3-4 thick blunt toes, elephant-like, visibly broader than the thin legs above them; knobbly bumps at the knees
 - [ ] One large heavy-lidded eye set far back on each side of the long head
 - [ ] Smooth, finely wrinkled leathery hide with no visible fur (a few sparse bristles on the head only)

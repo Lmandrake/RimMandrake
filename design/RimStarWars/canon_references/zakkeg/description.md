@@ -40,10 +40,10 @@ brief describes:
 Two candidate images, both game-rendered 3D models rather than illustration,
 and they show a body-plan match but a color disagreement worth flagging:
 
-- `wookieepedia_kotor2_juvenile.png` (file `JuvenileZakkeg.png`, captioned
+- `swtor_cartel_pet_juvenile.png` (file `JuvenileZakkeg.png`, captioned
   "A juvenile zakkeg"; the wiki file page sources it to the 2020 SWTOR Cartel
   Market announcement, so it is a SWTOR pet render, NOT a KOTOR II render;
-  the filename is historical) — a **rust-red/copper-brown** quadruped with a jagged
+  the file was renamed 2026-11-02 from a misleading `wookieepedia_kotor2_juvenile.png`) — a **rust-red/copper-brown** quadruped with a jagged
   spiked ridge running along the spine from head to tail, a low-slung
   reptilian toothy head with small yellow eyes, thick knobbed/bumpy hide,
   and stocky clawed legs. This is the closer color match to the in-universe
@@ -72,7 +72,7 @@ Liana Kor Databank entry.
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text, both game renders as described in the visual brief, and the `## ruling` below (juvenile render chosen).*
 - [ ] BODY PLAN: a huge, low-slung, stocky reptilian quadruped ("built like a Baragwin battle tank"), stegosaur-like, on four heavy, thick taloned/clawed legs; low head carried forward; a tapered tail
-- [ ] COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (owner ruling 2026-09-14 chose `wookieepedia_kotor2_juvenile.png`, the rust-red render, matching the sourced "huge, red lizard"); a darker brown-black variant is attested but unconfirmed as a separate life stage
+- [ ] COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (owner ruling 2026-09-14 chose `swtor_cartel_pet_juvenile.png`, the rust-red render, matching the sourced "huge, red lizard", which is KOTOR II's own text quote; the image itself is a SWTOR Cartel Market pet render, owner kept it as the red reference by card 2026-11-02); a darker brown-black variant is attested but unconfirmed as a separate life stage
 - [ ] A jagged spiked ridge running along the spine from head to tail
 - [ ] Thick, knobbed/bumpy armoured hide over the whole body
 - [ ] Low-slung reptilian head with visible fangs/teeth and small eyes
@@ -90,7 +90,7 @@ none known — no donor-mod sprite could be obtained at all (creature art ships 
 - https://static.wikia.nocookie.net/starwars/images/3/30/Zakkeg.jpg (SWTOR
   adult render)
 - https://static.wikia.nocookie.net/starwars/images/5/5b/JuvenileZakkeg.png
-  (KOTOR II juvenile render)
+  (SWTOR Cartel Market juvenile pet render, not KOTOR II)
 - Donor mod `mlie.starwarsanimalcollection` — `About.xml` confirms
   packageId `Mlie.StarWarsAnimalCollection`, GitHub mirror
   `github.com/emipa606/StarWarsAnimalCollection`; its `Textures/` folder
@@ -100,8 +100,8 @@ none known — no donor-mod sprite could be obtained at all (creature art ships 
   Zakkeg was located this pass.
 
 ## Candidate images
-- `wookieepedia_kotor2_juvenile.png` — juvenile zakkeg, KOTOR II in-game
-  render: rust-red/copper hide, spiked dorsal ridge, reptilian head.
+- `swtor_cartel_pet_juvenile.png` — juvenile zakkeg, SWTOR Cartel Market pet
+  render (not KOTOR II): rust-red/copper hide, spiked dorsal ridge, reptilian head.
   **Best color match to the sourced "red lizard" quote.**
 - `wookieepedia_swtor_adult.jpg` — adult zakkeg, SWTOR in-game render: same
   spiked-ridge stegosaur-like body plan, but dark brown-to-black hide
@@ -111,4 +111,4 @@ none known — no donor-mod sprite could be obtained at all (creature art ships 
   installed locally or a labeled preview surfaces.
 
 ## ruling
-**RULED** (owner, 2026-09-14, review sheet): `wookieepedia_kotor2_juvenile.png`
+**RULED** (owner, 2026-09-14, review sheet): `swtor_cartel_pet_juvenile.png`
