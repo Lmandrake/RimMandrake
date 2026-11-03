@@ -24,7 +24,8 @@
     "xart_RM_Ossumatha_variant_v1_east",
     "xart_RM_Ossumatha_variant_v1_north",
     "xart_RM_Ossumatha_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "04fc487c2b8a42295acd1496f753da22b1290eb68fe0b7d39f83647d9aaabd9b"
   },
   "RM_BlueDesert": {
    "filed": "2026-11-03T13:22:05Z",
@@ -38,7 +39,8 @@
     "xart_RM_Vekkit_variant_v1_east",
     "xart_RM_Vekkit_variant_v1_north",
     "xart_RM_Vekkit_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "8222964b3b9b9ce35fa562ff6ef0833be8e26584ecf009934b5af535c57a6bf2"
   },
   "RM_Cauldron": {
    "filed": "2026-11-03T13:24:01Z",
@@ -82,7 +84,8 @@
     "xart_RSW_Skalder_young_v1_east",
     "xart_RSW_Skalder_young_v1_north",
     "xart_RSW_Skalder_young_v1_south"
-   ]
+   ],
+   "rows_sha": "b9e8c4b464d1dbbd7490b42fd9a4e2b04cbae7554b38167213b085b30c7bac4a"
   },
   "RM_Contagion": {
    "filed": "2026-11-03T13:22:11Z",
@@ -96,7 +99,8 @@
     "xart_RM_OcularJelly_variant_v1_east",
     "xart_RM_OcularJelly_variant_v1_north",
     "xart_RM_OcularJelly_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "68453eca4dac1d5cf517e735f4aec8a57417c03ef4c17d2bf3ea0d9e2bcbb2c3"
   },
   "RM_FeverWood": {
    "filed": "2026-11-03T13:23:20Z",
@@ -122,7 +126,8 @@
     "xart_RSW_Whisperbird_variant_v1_east",
     "xart_RSW_Whisperbird_variant_v1_north",
     "xart_RSW_Whisperbird_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "75994468e90028e9ee8f4fbdf7f81dbbb11481a703452f23d4b36b824f39ca7a"
   },
   "RM_FloodedCanyon": {
    "filed": "2026-11-03T13:23:36Z",
@@ -151,7 +156,8 @@
     "xart_RUT_SealedSleeper_young_v1_east",
     "xart_RUT_SealedSleeper_young_v1_north",
     "xart_RUT_SealedSleeper_young_v1_south"
-   ]
+   ],
+   "rows_sha": "f05e3d523f798db8a8ff605991c01c712d485c37a10a4b88f7a21db7cf3946e1"
   },
   "RM_GelatinousSlime": {
    "filed": "2026-11-03T13:22:22Z",
@@ -168,7 +174,8 @@
     "xart_RM_Gelatid_variant_v1_east",
     "xart_RM_Gelatid_variant_v1_north",
     "xart_RM_Gelatid_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "2bb394e1ad1a9a2f0eaf7b551bdbba157a92794ab4c0bc340b6d6bd485a98acb"
   },
   "RM_Greentide": {
    "filed": "2026-11-03T13:24:45Z",
@@ -209,7 +216,8 @@
     "xart_RSW_Mott_young_v1_east",
     "xart_RSW_Mott_young_v1_north",
     "xart_RSW_Mott_young_v1_south"
-   ]
+   ],
+   "rows_sha": "120f19ecbd0e3884d0dfafa2ed4d2a7ae04fc7ae73d1b97e506d3e9f3ac903da"
   },
   "RM_LanternDeeps": {
    "filed": "2026-11-03T13:22:51Z",
@@ -232,7 +240,8 @@
     "xart_RM_Sipper_variant_v1_east",
     "xart_RM_Sipper_variant_v1_north",
     "xart_RM_Sipper_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "5276d35a859f5808dc6b22c041670809976e760eb3eb1b04298c8e925ed8ad3d"
   },
   "RM_LeaningScrub": {
    "filed": "2026-11-03T13:24:58Z",
@@ -303,7 +312,8 @@
     "xart_RSW_Vulptex_young_v1_east",
     "xart_RSW_Vulptex_young_v1_north",
     "xart_RSW_Vulptex_young_v1_south"
-   ]
+   ],
+   "rows_sha": "be9d6f8da9f24a21fda85204894809ec7cc64871fda16b22ce24cdef67a06424"
   },
   "RM_LongShade": {
    "filed": "2026-11-03T13:25:14Z",
@@ -386,7 +396,8 @@
     "xart_RSW_Wraid_variant_v1_east",
     "xart_RSW_Wraid_variant_v1_north",
     "xart_RSW_Wraid_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "5b107d765df0f820bb7e9472772ec92c39c88432350faea7296f74e680275c4f"
   },
   "RM_Miasma": {
    "filed": "2026-11-03T13:24:17Z",
@@ -427,7 +438,8 @@
     "xart_RSW_YobshrimpJuv_variant_v1_east",
     "xart_RSW_YobshrimpJuv_variant_v1_north",
     "xart_RSW_YobshrimpJuv_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "93b869bf29e8a7793befa90cb2e6269dbce84755ed69faf971f354ab91b258ff"
   },
   "RM_Pyrelands": {
    "filed": "2026-11-03T13:23:44Z",
@@ -459,7 +471,8 @@
     "xart_RSW_Zeer_young_v1_east",
     "xart_RSW_Zeer_young_v1_north",
     "xart_RSW_Zeer_young_v1_south"
-   ]
+   ],
+   "rows_sha": "61fe1cda54041aebea2b27c130b1719b0ffbdaf35280fd4331d2fe9f60f6b620"
   },
   "RM_SleepingIce": {
    "filed": "2026-11-03T13:22:17Z",
@@ -473,7 +486,8 @@
     "xart_RSW_Tauntaun_young_v1_east",
     "xart_RSW_Tauntaun_young_v1_north",
     "xart_RSW_Tauntaun_young_v1_south"
-   ]
+   ],
+   "rows_sha": "3bceafe73e06dd3dff48b66c83f5721ea9d607b24e7d77270cff48254fa5b657"
   },
   "RM_Stillsand": {
    "filed": "2026-11-03T13:22:29Z",
@@ -493,13 +507,15 @@
     "xart_RM_Soorrak_young_v1_east",
     "xart_RM_Soorrak_young_v1_north",
     "xart_RM_Soorrak_young_v1_south"
-   ]
+   ],
+   "rows_sha": "0a496af8796732c8243fd4258e9afebe7af0274277525af13cba6dc9d74928f1"
   },
   "RM_TheChill": {
    "filed": "2026-11-03T13:21:48Z",
    "jobs": [
     "xart_RM_Hesuun_variant_v1"
-   ]
+   ],
+   "rows_sha": "6afe8629e8a280a7acf5024cb215086bad3d410534edd128c7b3304b9df60cc0"
   },
   "RM_TheForge": {
    "filed": "2026-11-03T13:23:51Z",
@@ -528,7 +544,8 @@
     "xart_RSW_Tibidee_variant_v1_east",
     "xart_RSW_Tibidee_variant_v1_north",
     "xart_RSW_Tibidee_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "70a5fa549819054998deb0f12c74601e6765c0351349a456abac2b7cffb530b9"
   },
   "RM_TheRot": {
    "filed": "2026-11-03T13:22:37Z",
@@ -548,7 +565,8 @@
     "xart_RSW_Snoruuk_variant_v1_east",
     "xart_RSW_Snoruuk_variant_v1_north",
     "xart_RSW_Snoruuk_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "002f239a8e5c0b17b90755fcac89bbd1051c513b9bffe17d570074e4559a9b0b"
   },
   "RM_TheScald": {
    "filed": "2026-11-03T13:22:58Z",
@@ -571,7 +589,8 @@
     "xart_RM_Shulla_variant_v1_east",
     "xart_RM_Shulla_variant_v1_north",
     "xart_RM_Shulla_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "a2fd21924f3eb10ea0d836270720b23b897ce45a0d1bbce4facc3aeeab575d59"
   },
   "RM_TheSump": {
    "filed": "2026-11-03T13:21:52Z",
@@ -579,7 +598,8 @@
     "xart_RM_SumpMouse_variant_v1_east",
     "xart_RM_SumpMouse_variant_v1_north",
     "xart_RM_SumpMouse_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "ef12f85cf6126c4e539397eeeb737b3ca75cb98fcf0c001a4bec518d2d951d94"
   },
   "RM_TwilightSea": {
    "filed": "2026-11-03T13:23:28Z",
@@ -605,7 +625,8 @@
     "xart_RSW_Mee_variant_v1_east",
     "xart_RSW_Mee_variant_v1_north",
     "xart_RSW_Mee_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "664d97f2317f1fb32aa46fddbc4ef4e961d4470d5c17bceb4922815e2e7442d1"
   },
   "RM_Warscar": {
    "filed": "2026-11-03T13:22:45Z",
@@ -625,7 +646,8 @@
     "xart_RM_Tetchik_variant_v1_east",
     "xart_RM_Tetchik_variant_v1_north",
     "xart_RM_Tetchik_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "8cad4dc634c519eee2103c221d19dcb36b42365f36cd2f76e3dcfea7ff204e63"
   },
   "RM_Wastes": {
    "filed": "2026-11-03T13:24:37Z",
@@ -675,7 +697,8 @@
     "xart_RUT_BrineBattery_young_v1_east",
     "xart_RUT_BrineBattery_young_v1_north",
     "xart_RUT_BrineBattery_young_v1_south"
-   ]
+   ],
+   "rows_sha": "edd5a4f458c2687c828078c46b81f27df645262062c95e3044f034f0c6b005bd"
   },
   "RM_Webwork": {
    "filed": "2026-11-03T13:21:58Z",
@@ -686,7 +709,8 @@
     "xart_RM_Vennick_variant_v1_east",
     "xart_RM_Vennick_variant_v1_north",
     "xart_RM_Vennick_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "331f17a692d5fa43468eb0f8342b8d9fd5dabc4bec13008cf3308da5638db97d"
   },
   "RM_WeepingStones": {
    "filed": "2026-11-03T13:24:26Z",
@@ -730,7 +754,8 @@
     "xart_RSW_Ollopom_variant_v1_east",
     "xart_RSW_Ollopom_variant_v1_north",
     "xart_RSW_Ollopom_variant_v1_south"
-   ]
+   ],
+   "rows_sha": "81bbc07b158e07a23a37861f44b6cc1b4b21e6670a17a02172356b14d3fcd372"
   }
  },
  "item": "EXTRA_ART_PER_BIOME_COMMISSION_1"

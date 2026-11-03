@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import re
@@ -63,6 +64,7 @@ GROUPS = REPO / "design/RimMandrake/biome_group_sizes/biome_group_sizes.csv"
 OUTDIR = REPO / "design/RimMandrake/extra_art_commission"
 TABLE = OUTDIR / "commission.csv"
 STATE = OUTDIR / "commission_state.json"
+RECEIPT = OUTDIR / "registry_receipt.jsonl"   # verbatim artpipe registry 'queued' lines of every filed job
 ITEM = "EXTRA_ART_PER_BIOME_COMMISSION_1"
 SKIP = {"Utils", "bridgetools", "mapsynth", "rimflow", "RimDefDump"}
 FACINGS = ["east", "south", "north"]
@@ -398,29 +400,74 @@ def _register(biome: str) -> str:
     return PJ.REGISTER.get(biome, PJ.DEFAULT_REG)
 
 
-def queued_ids(art_root: Path | None = None) -> set[str]:
-    root = art_root or _art_root()
-    ids = set()
-    reg = root / "registry.jsonl"
-    if reg.is_file():
-        for line in open(reg, errors="replace"):
-            if '"queued"' in line:
-                try:
-                    e = json.loads(line)
-                except ValueError:
-                    continue
-                if e.get("event") == "queued" and e.get("job_id"):
-                    ids.add(e["job_id"])
-    for d in ("pending", "active", "done", "failed"):
-        if (root / d).is_dir():
-            ids.update(p.stem for p in (root / d).glob("*.json") if not p.name.endswith(".manifest.json"))
-    return ids
-
-
 def _art_root() -> Path:
     sys.path.insert(0, str(HERE.parent / "artpipe"))
     import state_dir                                                    # noqa: E402
     return Path(state_dir.STATE_ROOT)
+
+
+def live_root() -> Path | None:
+    """The live artpipe state dir, or None when this machine cannot reach it (no data root, no registry)."""
+    try:
+        root = _art_root()
+    except Exception:                                                   # rmpaths.RmDataRootUnset and kin
+        return None
+    return root if (root / "registry.jsonl").is_file() else None
+
+
+def registry_queued_lines(root: Path) -> dict[str, str]:
+    """job_id -> the registry's own 'queued' line for it (last one wins), verbatim."""
+    out = {}
+    for line in open(root / "registry.jsonl", errors="replace"):
+        if '"queued"' not in line:
+            continue
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        if e.get("event") == "queued" and e.get("job_id"):
+            out[e["job_id"]] = line.rstrip("\n")
+    return out
+
+
+def read_receipt(path: Path = RECEIPT) -> dict[str, str]:
+    out = {}
+    if path.is_file():
+        for line in open(path):
+            line = line.rstrip("\n")
+            if line:
+                e = json.loads(line)
+                if e.get("event") == "queued" and e.get("job_id"):
+                    out[e["job_id"]] = line
+    return out
+
+
+def write_receipt(state: dict, root: Path, path: Path = RECEIPT) -> list[str]:
+    """Copy, for every job of every commissioned biome, its registry 'queued' line into the committed receipt."""
+    live = registry_queued_lines(root)
+    want = sorted({j for rec in state.get("biomes", {}).values() for j in rec.get("jobs", [])})
+    miss = [j for j in want if j not in live]
+    if not miss:                                # an incomplete registry never replaces the receipt on record
+        tmp = path.with_suffix(".tmp")
+        tmp.write_text("".join(live[j] + "\n" for j in want))
+        tmp.replace(path)
+    return miss
+
+
+def rows_digest(rows: list[dict]) -> str:
+    """A biome's commission rows as filed: a changed row (path, canvas, prompt input) under the same job id shows."""
+    norm = sorted(tuple(str(r.get(k, "")) for k in COLUMNS) for r in rows)
+    return hashlib.sha256(json.dumps(norm).encode()).hexdigest()
+
+
+def receipt_errors(receipt: dict[str, str], root: Path | None) -> list[str]:
+    """Where the live registry is reachable, every receipt line must stand on it byte for byte."""
+    if root is None:
+        return []
+    live = registry_queued_lines(root)
+    bad = sorted(j for j, line in receipt.items() if live.get(j) != line)
+    return [f"registry_receipt.jsonl: {len(bad)} of {len(receipt)} lines are not on the live registry verbatim "
+            f"(e.g. {bad[:3]})"] if bad else []
 
 
 def check(rows_now: list[dict], table: list[dict], state: dict, ids: set[str] | None) -> list[str]:
@@ -446,10 +493,12 @@ def check(rows_now: list[dict], table: list[dict], state: dict, ids: set[str] | 
         want = set(job_ids(by_b[b]))
         if set(rec.get("jobs", [])) != want:
             errs.append(f"{b}: state lists {len(rec.get('jobs', []))} jobs, the table owes {len(want)}")
+        if rec.get("rows_sha") != rows_digest(by_b[b]):
+            errs.append(f"{b}: its commission.csv rows differ from the rows filed (rows_sha); refile the biome")
         if ids is not None:
             miss = sorted(want - ids)
             if miss:
-                errs.append(f"{b}: {len(miss)} of {len(want)} jobs not on the artpipe queue/registry (e.g. {miss[:3]})")
+                errs.append(f"{b}: {len(miss)} of {len(want)} jobs have no registry queued line in registry_receipt.jsonl (e.g. {miss[:3]})")
     return errs
 
 
@@ -473,7 +522,12 @@ def submit(biome: str, dry: bool) -> int:
         return p.returncode
     st = read_state()
     st["biomes"][biome] = {"filed": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                           "jobs": job_ids(rows)}
+                           "jobs": job_ids(rows), "rows_sha": rows_digest(rows)}
+    miss = write_receipt(st, _art_root())
+    if miss:                                    # the biome is NOT marked commissioned; submit --next retries it
+        print(f"{biome}: {len(miss)} filed jobs have no registry 'queued' line (e.g. {miss[:3]}); state not written",
+              file=sys.stderr)
+        return 1
     STATE.write_text(json.dumps(st, indent=1, sort_keys=True) + "\n")
     print(f"{biome}: filed {len(jobs)} looks, {len(job_ids(rows))} jobs; state {STATE.relative_to(REPO)}")
     return 0
@@ -493,6 +547,7 @@ def main(argv=None) -> int:
     sub.add_parser("plan")
     c = sub.add_parser("check")
     c.add_argument("--no-queue", action="store_true", help="skip the artpipe queue/registry lookup")
+    sub.add_parser("receipt", help="rewrite registry_receipt.jsonl from the live registry")
     s = sub.add_parser("submit")
     g = s.add_mutually_exclusive_group(required=True)
     g.add_argument("--biome")
@@ -508,11 +563,22 @@ def main(argv=None) -> int:
               f"{sum(r['slot'] == 'female_pack' for r in rows)}, variant {sum(r['slot'] == 'variant' for r in rows)}; "
               f"YOUNG {sum(r['slot'] == 'young' for r in rows)}) -> {TABLE.relative_to(REPO)}")
         return 0
+    if a.cmd == "receipt":
+        root = live_root()
+        if root is None:
+            print("live artpipe registry unreachable on this machine (set RM_DATA_ROOT)", file=sys.stderr)
+            return 2
+        miss = write_receipt(read_state(), root)
+        print(f"receipt: {len(read_receipt())} lines -> {RECEIPT.relative_to(REPO)}; {len(miss)} jobs not queued")
+        return 1 if miss else 0
     if a.cmd == "check":
         defs = Defs()
-        errs = unread_hits(defs) + check(plan(defs), read_table(), read_state(), None if a.no_queue else queued_ids())
+        receipt, root = read_receipt(), (None if a.no_queue else live_root())
+        errs = unread_hits(defs) + check(plan(defs), read_table(), read_state(), None if a.no_queue else set(receipt))
+        errs += receipt_errors(receipt, root)
         for e in errs:
             print("FAIL", e)
+        print(f"live registry: {'checked ' + str(root) if root else 'UNMEASURED (unreachable); receipt only'}")
         print("OK" if not errs else f"{len(errs)} failure(s)")
         return 1 if errs else 0
     b = a.biome or next_biome()

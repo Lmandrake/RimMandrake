@@ -24,14 +24,17 @@ priority is 50 + the biome's order, so the artpipe daemon draws the art one biom
 
 - `commission.csv`: one row per look: biome, order, race, kind, rule, look, slot, the new texture path, the reference
   sprite, canvas, facings, job count, the evidence, the artpipe job id.
-- `commission_state.json`: the biomes filed, when, and their job ids.
+- `commission_state.json`: the biomes filed, when, their job ids, and a digest of their rows as filed (`rows_sha`).
+- `registry_receipt.jsonl`: the artpipe registry's own `queued` line for every filed job, copied verbatim (the
+  registry itself is machine state under the data root, `D:\ClaudeWork\rimmandrake\artpipe`). `receipt` rewrites it.
 
 ## Tools
 
-    python3 src/RimMandrake/Utils/art/extra_art_commission.py plan | check | submit --next | submit --biome RM_X
+    python3 src/RimMandrake/Utils/art/extra_art_commission.py plan | check | receipt | submit --next | submit --biome RM_X
 
 `src/RimMandrake/Utils/art/selftest_extra_art_commission.py` proves the table matches the defs and the walk, and that
-every filed job is on the artpipe queue. The eligibility gate (`regen_eligibility.py`) reads `commission.csv`: a
+every filed job has its registry `queued` line in the receipt; where the live registry is reachable, every receipt line
+must stand on it byte for byte (unreachable, that cross-check reads UNMEASURED and the receipt alone is checked). The eligibility gate (`regen_eligibility.py`) reads `commission.csv`: a
 commissioned new slot counts as drawn by its def, and must still be confirmed NONE.
 
 ## Known limits
@@ -39,3 +42,5 @@ commissioned new slot counts as drawn by its def, and must still be confirmed NO
 - A variant of a flyer flies in the base colours: flight frames are per kind, not per variant.
 - The new textures are not drawn by any def until they land. Wiring them (`femaleGraphicData`, `alternateGraphics`,
   the young life stages' `bodyGraphicData`) once all facings exist is the follow-on item.
+- `rows_sha` covers the table's columns, not the prompt text: a creature description edited after filing changes
+  what a refile would prompt, and nothing flags it. The art is still the commissioned look; refile by hand if it matters.

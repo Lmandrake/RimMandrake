@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Selftest: the per-biome extra-art commission (EXTRA_ART_PER_BIOME_COMMISSION_1).
 
-Offline except for one read of the artpipe registry. Checks:
+Offline. The artpipe registry is machine state: the filing is checked against the committed
+registry_receipt.jsonl (the registry's own 'queued' lines), and where the live registry is reachable every
+receipt line must stand on it verbatim; unreachable, that cross-check prints UNMEASURED and is skipped. Checks:
  1 sanity probe: the def reader sees >= 500 animal kinds, >= 100 canon entries and reads RSW_Kybuck as a pack herd with
    canon dimorphism; the walk table has >= 400 rows; the hand-read detector, emptied, finds >= 10 unread hits
  2 extra_art_commission.check(): commission.csv equals a fresh plan from today's defs and walk, no canon hit is unread,
-   and every job of each biome in commission_state.json is on the artpipe queue/registry
+   and every job of each biome in commission_state.json has its registry 'queued' line in the receipt
  3 coverage: every walked herd creature (herdAnimal or canon herd, max group > 1, not canon solitary) with neither a
    female look nor an alternateGraphics variant has exactly one HERD look row, female only on an accepted canon
    dimorphism, a female pack row exactly when it is a female pack beast; every YOUNG row meets the guideline rule
@@ -18,6 +20,7 @@ Offline except for one read of the artpipe registry. Checks:
 """
 import copy
 import csv
+import json
 import os
 import sys
 
@@ -53,8 +56,14 @@ for d, s in zip((E.DIMORPH_ACCEPT, E.DIMORPH_REJECT, E.YOUNG_ACCEPT, E.YOUNG_REJ
 expect(len(blind) >= 10, f"unread-hit detector is blind: {len(blind)} hits with every list emptied")
 
 # 2 the tool's own check, queue included
-ids = E.queued_ids()
-errs = E.unread_hits(defs) + E.check(E.plan(defs), table, state, ids)
+receipt = E.read_receipt()
+ids = set(receipt)
+root = E.live_root()
+print(f"live artpipe registry: {'checked ' + str(root) if root else 'UNMEASURED (unreachable here); receipt only'}")
+for j, line in receipt.items():
+    e = json.loads(line)
+    expect(e.get("by") == "fill_queue" and isinstance(e.get("ts"), (int, float)), f"receipt line for {j} is not a fill_queue registry record")
+errs = E.unread_hits(defs) + E.check(E.plan(defs), table, state, ids) + E.receipt_errors(receipt, root)
 for e in errs:
     fails.append(f"check: {e}")
 expect(len(state.get("biomes", {})) >= 1, "no biome is commissioned yet (commission_state.json)")
@@ -99,18 +108,33 @@ if state.get("biomes"):
     bad = copy.deepcopy(state)
     bad["biomes"][b]["jobs"] = rec["jobs"][1:]
     expect(E.check(fresh, fresh, bad, ids), "check() blind to a state biome missing a job id")
-    expect(E.check(fresh, fresh, state, ids - {rec["jobs"][0]}), "check() blind to a job absent from the queue")
+    bad = copy.deepcopy(state)
+    bad["biomes"][b]["rows_sha"] = "0" * 64
+    expect(E.check(fresh, fresh, bad, ids), "check() blind to a biome whose rows changed since filing")
+    expect(E.check(fresh, fresh, state, ids - {rec["jobs"][0]}), "check() blind to a job absent from the receipt")
+    if root is not None:
+        j0 = rec["jobs"][0]
+        forged = dict(receipt, **{j0: receipt[j0].replace('"queued"', '"queued" ', 1)})
+        expect(E.receipt_errors(forged, root), "receipt_errors() blind to a receipt line not on the live registry")
 
 # 5 the gate
 sys.path.insert(0, os.path.dirname(HERE))
+import rmpaths  # noqa: E402
+
+try:
+    rmpaths.rm_data_root()
+except rmpaths.RmDataRootUnset:                 # a checker with no data root: the gate's art store is an empty stand-in
+    import tempfile
+    os.environ[rmpaths.ENV_VAR] = tempfile.mkdtemp(prefix="xart_selftest_root_")
+    print(f"no RimMandrake data root here; the gate runs on an empty stand-in {os.environ[rmpaths.ENV_VAR]}")
 import regen_eligibility as RE  # noqa: E402
 
 gate = RE.Gate()
 r0 = next(r for r in table if r["facings"])
 dest = f"src/{r0['install_mod']}/Textures/{r0['tex_path']}_east.png"
 v = gate.classify({"id": "probe", "target_def": r0["race"], "install_to": dest})
-expect(v["verdict"] != "REFUSED_UNCONFIRMED",              # NONE before its art lands, REGEN after
-       f"gate does not see the commissioned slot {dest}: {v['verdict']} {v['reason'][:120]}")
+want_v = "REFUSED_REGEN" if (E.REPO / dest).is_file() else "NONE"     # NONE before its art lands, ours after
+expect(v["verdict"] == want_v, f"gate misreads the commissioned slot {dest}: {v['verdict']} (want {want_v}) {v['reason'][:120]}")
 v2 = gate.classify({"id": "probe2", "target_def": r0["race"], "install_to": dest.replace(r0["tex_path"], r0["tex_path"] + "Bogus")})
 expect(v2["verdict"] not in RE.ELIGIBLE, f"gate accepts an uncommissioned path: {v2['verdict']}")
 
