@@ -66,6 +66,49 @@ def main():
     html = BS.render_html(rows, {})
     check(all(f'data-id="{r}"' in html for r in by) and "RSW_Plonk" in html and "no subject" in html,
           "sheet has a row, candidates and the no-subject choice for every family")
+    # canon refs per row: a candidate's own canon entry, else a family token naming a canon dir
+    canon = tmp / "canon"
+    for slug, rgb in (("plonk", (4, 4, 4, 255)), ("mystery", (1, 2, 3, 255))):
+        (canon / slug).mkdir(parents=True)
+        (canon / slug / "description.md").write_text(f"# {slug}\n")
+        (canon / slug / "ref.png").write_bytes(png(rgb))
+    cworld = lambda: S.World(src_root=tmp / "src", canon_root=canon, artpipe_root=tmp / "ap", facts_root=tmp / "nofacts")
+    cby = {r["id"]: r for r in BS.worklist(res["entries"], cworld())}
+    cref = lambda fam: [(c["slug"], c["match"]) for c in cby[fam]["canon"]]
+    check([s for s, _ in cref("plonk_v1")] == ["plonk"] and cref("plonk_v1")[0][1] != "family-token"
+          and cby["plonk_v1"]["canon"][0]["images"],
+          f"an ambiguous row carries its candidates' canon entry with images ({cref('plonk_v1')})")
+    check(cref("mystery_thing_v1") == [("mystery", "family-token")] and cby["mystery_thing_v1"]["canon"][0]["images"],
+          f"an unresolved row with no candidate gets the canon entry its family token names ({cref('mystery_thing_v1')})")
+    check(cref("mock_hose_v1") == [], f"a row whose family names no canon dir shows none ({cref('mock_hose_v1')})")
+    # build(): worklist + sheet + decisions skeleton on disk, every render thumbnailed from the store, canon images copied
+    ix = tmp / "ix.json"
+    ix.write_text(json.dumps(res))
+    real_world = S.World
+    S.World = lambda *a, **k: real_world(src_root=tmp / "src", canon_root=canon, artpipe_root=tmp / "ap", facts_root=tmp / "nofacts")
+    try:
+        out = tmp / "sheet"
+        bres = BS.build(ix, out)
+    finally:
+        S.World = real_world
+    n_renders = sum(len(r["renders"]) for r in cby.values())
+    check(bres["families"] == 3 and bres["renders"] == n_renders == 4 and bres["ambiguous"] == 1
+          and bres["thumbs_missing_from_store"] == 0, f"build counts every open family and render, none missing ({bres})")
+    wl = json.loads((out / "binding_sheet.worklist.json").read_text())
+    dsk = json.loads((out / "binding_sheet.decisions.json").read_text())
+    check({r["id"] for r in wl} == set(cby) and dsk["sheetId"] == "binding_sheet" and dsk["decisions"] == {},
+          "build writes the worklist and an empty decisions skeleton")
+    bhtml = (out / "binding_sheet.html").read_text()
+    thumbs_ok = []
+    for r in wl:
+        for rr in r["renders"]:
+            name = L.store_path(rr["sha"]).name
+            thumbs_ok.append(f'<img src="img/{name}" title="{rr["job"]}">' in bhtml and (out / "img" / name).read_bytes()
+                             == L.store_path(rr["sha"]).read_bytes())
+    check(len(thumbs_ok) == 4 and all(thumbs_ok), f"the sheet shows every render's thumbnail, copied from the store ({thumbs_ok})")
+    check(all((out / "img" / f"canon_{s}_0.png").is_file() and f'<img src="img/canon_{s}_0.png">' in bhtml
+              for s in ("plonk", "mystery")) and "mystery [family-token]" in bhtml,
+          "the sheet shows each row's canon entry and its copied canon image")
     known = set(w.defs)
     ev_count = lambda t: len([e for e in L.read_events() if e.get("type") == t])
     b0, n0 = ev_count("binding"), ev_count("no_subject")
