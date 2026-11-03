@@ -50,7 +50,7 @@ def check_doc():
         return False, "doc missing"
     s = open(DOC, encoding="utf-8").read()
     missing = [h for h in ("Name", "Description", "Behaviour") if not re.search(r"^## %s(\s[^\n]*)?$" % h, s, re.M)]
-    if "`RM_Rawshade`" not in s:
+    if not re.search(r"\bRM_Rawshade\b", s):
         missing.append("RM_Rawshade")
     return (not missing), "doc: " + ("name/description/behaviour present" if not missing else "missing " + ", ".join(missing))
 
@@ -96,7 +96,7 @@ def check_collision():
 def check_judge():
     if not os.path.isfile(JUDGE):
         return False, "judge record missing"
-    rows = [l for l in open(JUDGE, encoding="utf-8") if re.match(r"\|\s*\d+\s*\|", l)]
+    rows = [l for l in open(JUDGE, encoding="utf-8") if re.match(r"\s*\|\s*\d+\s*\|", l)]
     if not rows:
         return False, "judge record has no round rows"
     cells = [c.strip() for c in rows[-1].strip().strip("|").split("|")]
