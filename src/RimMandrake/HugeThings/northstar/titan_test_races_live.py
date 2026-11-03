@@ -11,9 +11,10 @@ Rows {id, criterion, status PASS|FAIL|UNMEASURED, cls MOD|SITE|HARNESS, detail};
   R1 t2_t3_tiers                    TierReport: T2 race reads T2, T3 reads T3, the forced-out control None, Elephant T1;
                                     tiered races carry CompTitanicWake.
   R2 t3_corpse_becomes_a_harvest_site KillTitanAt T3 -> one more RM_TitanicCorpseSite; KillTitanAt T2 -> none more.
-  R3 butcher_yield_curve_reduces_t1_t2_yield ButcherYieldReport: T2 meat = control meat x the kernel factor (< 1), within
-                                    per-pawn rounding; the same-mass forced-out control is unreduced. A kernel factor of
-                                    exactly 1 (subject on its tier floor) is UNMEASURED HARNESS, never a MOD verdict.
+  R3 butcher_yield_curve_reduces_t1_t2_yield ButcherYieldReport on the body-size 12 pair (RM_TestTitanT2Heavy and its
+                                    same-mass forced-out control): T2 meat = control meat x the kernel factor (expected
+                                    sqrt(8/12) = 0.8165), within per-pawn rounding; the control is unreduced. A kernel factor
+                                    of exactly 1 (a subject on its tier floor) is UNMEASURED HARNESS, never a MOD verdict.
   R4 t2_holes_thin_roofs_and_crushes_walls RoofWallProbe: a T2 stepping into a roofed wall cell holes RoofConstructed and damages
                                     or breaks the wood wall; the control leaves both.
   R5 thick_roof_route_excluded      ThickRoofCostProbe: a T2's step cost under RoofRockThick >= 2000 and above open ground;
@@ -36,6 +37,10 @@ ITEM = "TITANIC_BODYSIZE_TEST_RACE_1"
 HOOKS = "RimMandrake.TitanicCreatures.TitanValidationHooks"
 SETTINGS = "RimMandrake.HugeThings.RM_HugeThingsSettings"
 T2, T3, CTL = "RM_TestTitanT2", "RM_TestTitanT3", "RM_TestTitanT2Control"
+# The yield row's pair: SubLinearFactor = sqrt(T2 floor / bodySize) is 1 ON the floor (T2 above is bodySize 8 = the floor), so
+# the curve is only visible on a T2 body above it (gen 7, live 2026-11-03: 6720 == 6720 at factor 1).
+T2Y, CTLY = "RM_TestTitanT2Heavy", "RM_TestTitanT2HeavyControl"
+YIELD_FACTOR = (8.0 / 12.0) ** 0.5   # the kernel factor the heavy T2 must report (yieldCurveMinFactor 0.15 does not clamp it)
 FIELDS = {"giantAnimalsEnabled": True, "wakeEnabled": True, "wakeRoofHolingEnabled": True, "yieldCurveEnabled": True,
           "roofAvoidanceEnabled": True, "corpseSiteEnabled": True}
 THICK_ROOF_PENALTY = 2000.0          # Patch_ThickRoofAvoidance.ThickRoofPenalty
@@ -117,9 +122,9 @@ def verdict(rows):
 
 
 def judge_tiers(rep):
-    want = {T2: "T2", T3: "T3", CTL: "None", "Elephant": "T1"}
+    want = {T2: "T2", T3: "T3", CTL: "None", T2Y: "T2", CTLY: "None", "Elephant": "T1"}
     bad = [k for k, v in want.items() if rep.get(k, {}).get("tier") != v or rep.get(k, {}).get("adultTier") != v]
-    bad += ["%s wakeComp" % k for k in (T2, T3) if rep.get(k, {}).get("wakeComp") != "True"]
+    bad += ["%s wakeComp" % k for k in (T2, T3, T2Y) if rep.get(k, {}).get("wakeComp") != "True"]
     return bad
 
 
@@ -142,6 +147,8 @@ def judge_yield(t2, ctl):
         # gets 1 by design, so equal meat proves nothing about the curve. Not a MOD FAIL: the row has no reducing subject
         # (gen 7, live 2026-11-03: T2 6720 == control 6720 at factor 1.0000 was filed as MOD FAIL and passed A2)
         return None, "no reducing subject: the kernel factor is 1 (a T1/T2 body above its tier floor is needed): " + d
+    if abs(f - YIELD_FACTOR) > 1e-3:
+        return "FAIL", "kernel factor is not sqrt(8/12) for a bodySize-12 T2: " + d
     ok = f < 1.0 and m2 < mc and abs(m2 - mc * f) <= n
     return ("PASS" if ok else "FAIL"), d
 
@@ -170,9 +177,9 @@ def judge_thick(t2, ctl):
 
 
 def body(R, cells):
-    ok, txt = R.hook("TierReport", "%s,%s,%s,Elephant" % (T2, T3, CTL))
+    ok, txt = R.hook("TierReport", "%s,%s,%s,%s,%s,Elephant" % (T2, T3, CTL, T2Y, CTLY))
     rep = parse_tiers(txt) if ok else {}
-    if not ok or any(k not in rep or rep[k].get("tier") is None for k in (T2, T3, CTL)):
+    if not ok or any(k not in rep or rep[k].get("tier") is None for k in (T2, T3, CTL, T2Y, CTLY)):
         R.row("t2_t3_tiers", "UNMEASURED", "HARNESS", "test races not readable (is mandrake.rm.hugethingstestraces on the list?): "
               + txt[:200])
         return
@@ -197,8 +204,8 @@ def body(R, cells):
     st, d = judge_thick(tr2, trc) if tr2 and trc else (None, "no usable cell or probe failed: %s || %s" % (tr2, trc))
     R.row("thick_roof_route_excluded", st or "UNMEASURED", "MOD" if st else "SITE", d)
 
-    ok2, y2 = R.hook("ButcherYieldReport", T2)
-    okc, yc = R.hook("ButcherYieldReport", CTL)
+    ok2, y2 = R.hook("ButcherYieldReport", T2Y)
+    okc, yc = R.hook("ButcherYieldReport", CTLY)
     st, d = judge_yield(y2, yc) if ok2 and okc else (None, "hook failed: %s || %s" % (y2, yc))
     R.row("butcher_yield_curve_reduces_t1_t2_yield", st or "UNMEASURED", "MOD" if st else "HARNESS", d)
 

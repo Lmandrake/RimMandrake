@@ -60,4 +60,16 @@
     <race>RM_TestTitanT2Control</race>
     <combatPower>400</combatPower>
   </PawnKindDef>
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT2Heavy</defName>
+    <label>test titan (T2 heavy)</label>
+    <race>RM_TestTitanT2Heavy</race>
+    <combatPower>500</combatPower>
+  </PawnKindDef>
+  <PawnKindDef ParentName="RM_TestTitanKindBase">
+    <defName>RM_TestTitanT2HeavyControl</defName>
+    <label>test titan heavy control</label>
+    <race>RM_TestTitanT2HeavyControl</race>
+    <combatPower>500</combatPower>
+  </PawnKindDef>
 </Defs>

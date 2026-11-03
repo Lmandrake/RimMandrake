@@ -4,7 +4,8 @@
 
 No vanilla race reaches body size 8, so Huge Things' T2/T3 rows could not run on a minimal list. The harness-only mod
 src/RimMandrake/HugeThingsTestRaces carries RM_TestTitanT2 (8), RM_TestTitanT3 (20) and RM_TestTitanT2Control (8, forced
-out). This pins, from the XML alone:
+out), plus the yield row's pair RM_TestTitanT2Heavy (12) and RM_TestTitanT2HeavyControl (12, forced out). This pins, from the
+XML alone:
   * each race's effective baseBodySize (inheritance resolved) and the tier the kernel gives it against the live
     RM_TitanicTierDef thresholds (RM_TitanicKernel.TierFor mirrored, `>=` boundaries);
   * the control carries RM_TitanicExtension forceEnabled=false, so it is the untiered same-mass control;
@@ -29,7 +30,8 @@ DOC = os.path.join(ROOT, "skills", "rimbridge-companion", "references", "extendi
 PROBE = os.path.join(ROOT, "src", "RimMandrake", "TheRot", "Defs", "Fauna", "RM_Hwelgrue.xml")
 EXT = "RimMandrake.TitanicCreatures.RM_TitanicExtension"
 EXPECT = {"RM_TestTitanT2": (8.0, "T2", None), "RM_TestTitanT3": (20.0, "T3", None),
-          "RM_TestTitanT2Control": (8.0, "None", False)}
+          "RM_TestTitanT2Control": (8.0, "None", False), "RM_TestTitanT2Heavy": (12.0, "T2", None),
+          "RM_TestTitanT2HeavyControl": (12.0, "None", False)}
 
 results = []
 
@@ -89,16 +91,34 @@ def judges():
     sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
     import titan_test_races_live as L
     good = ("RM_TestTitanT2 tier=T2 adultTier=T2 bodySize=8.0 wakeComp=True | RM_TestTitanT3 tier=T3 adultTier=T3 bodySize=20.0 "
-            "wakeComp=True | RM_TestTitanT2Control tier=None adultTier=None bodySize=8.0 wakeComp=False | Elephant tier=T1 "
-            "adultTier=T1 bodySize=4.0 wakeComp=True")
+            "wakeComp=True | RM_TestTitanT2Control tier=None adultTier=None bodySize=8.0 wakeComp=False | RM_TestTitanT2Heavy "
+            "tier=T2 adultTier=T2 bodySize=12.0 wakeComp=True | RM_TestTitanT2HeavyControl tier=None adultTier=None bodySize=12.0 "
+            "wakeComp=False | Elephant tier=T1 adultTier=T1 bodySize=4.0 wakeComp=True")
     check("judge_tiers: a right ladder passes", L.judge_tiers(L.parse_tiers(good)) == [])
     check("judge_tiers: a control read as T2 fails",
           L.judge_tiers(L.parse_tiers(good.replace("Control tier=None", "Control tier=T2"))) != [])
-    y = "RM_TestTitanT2 tier=T2 n=6 meat=%d leather=40 factor=0.5000"
-    c = "RM_TestTitanT2Control tier=None n=6 meat=600 leather=80 factor=1.0000"
-    check("judge_yield: 300 of 600 at factor 0.5 passes", L.judge_yield(y % 300, c)[0] == "PASS")
+    check("judge_tiers: the heavy T2 read as T3 fails",
+          L.judge_tiers(L.parse_tiers(good.replace("T2Heavy tier=T2 adultTier=T2", "T2Heavy tier=T3 adultTier=T3"))) != [])
+    check("judge_tiers: a missing heavy pair fails", L.judge_tiers(L.parse_tiers(good.split(" | RM_TestTitanT2Heavy ")[0])) != [])
+    y = "RM_TestTitanT2Heavy tier=T2 n=6 meat=%d leather=40 factor=0.8165"
+    c = "RM_TestTitanT2HeavyControl tier=None n=6 meat=600 leather=80 factor=1.0000"
+    check("judge_yield: 490 of 600 at factor 0.8165 passes", L.judge_yield(y % 490, c)[0] == "PASS")
     check("judge_yield: an unreduced T2 fails", L.judge_yield(y % 600, c)[0] == "FAIL")
-    check("judge_yield: off by more than n fails", L.judge_yield(y % 310, c)[0] == "FAIL")
+    check("judge_yield: off by more than n fails", L.judge_yield(y % 500, c)[0] == "FAIL")
+    check("judge_yield: a factor other than sqrt(8/12) fails (curve shape drift)",
+          L.judge_yield((y % 300).replace("0.8165", "0.5000"), c)[0] == "FAIL")
+    check("R3 butchers the body-size 12 pair, not the floor races",
+          (L.T2Y, L.CTLY) == ("RM_TestTitanT2Heavy", "RM_TestTitanT2HeavyControl")
+          and 'R.hook("ButcherYieldReport", T2Y)' in SRC_LIVE and 'R.hook("ButcherYieldReport", CTLY)' in SRC_LIVE
+          and 'R.hook("ButcherYieldReport", T2)' not in SRC_LIVE)
+    t1f, t2f, t3f = tier_floors()
+    heavy = EXPECT[L.T2Y][0]
+    want_f = min(1.0, max(0.15, (t2f / max(heavy, t2f)) ** 0.5))     # RM_TitanicKernel.SubLinearFactor, default min 0.15
+    check("YIELD_FACTOR is the kernel mirror for the heavy T2 and strictly below 1",
+          abs(L.YIELD_FACTOR - want_f) < 1e-9 and want_f < 0.95 and t2f <= heavy < t3f, "%r vs %r" % (L.YIELD_FACTOR, want_f))
+    with open(KERNEL) as fh:
+        check("kernel SubLinearFactor is still sqrt(floor/b) clamped (drift guard)",
+              "Clamp((float)Math.Sqrt(floor / b), minFactor, 1f)" in fh.read())
     floor = "RM_TestTitanT2 tier=T2 n=6 meat=6720 leather=1920 factor=1.0000"     # live 2026-11-03: the T2 race ON the T2 floor
     check("judge_yield: a factor-1 subject (on its tier floor) has no verdict, never MOD FAIL or PASS",
           L.judge_yield(floor, c.replace("meat=600", "meat=6720"))[0] is None)
@@ -118,6 +138,7 @@ def judges():
     check("verdict: a missing row -> 1", L.verdict(rows[:-1]) == 1)
 
 
+SRC_LIVE = open(os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar", "titan_test_races_live.py")).read()
 LIVE_PROOFS = os.path.join(ROOT, "infrastructure", "state", "live_proofs", "TITANIC_BODYSIZE_TEST_RACE_1.txt")
 KERNEL = os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "Source", "Kernel", "RM_TitanicKernel.cs")
 
@@ -282,7 +303,7 @@ def main():
 
     nodes = defs_in(os.path.join(MOD, "Defs"))
     races = resolve(nodes, "ThingDef")
-    check("exactly the three test races", sorted(races) == sorted(EXPECT), "%r" % sorted(races))
+    check("exactly the five test races", sorted(races) == sorted(EXPECT), "%r" % sorted(races))
     for d, (size, tier, force) in sorted(EXPECT.items()):
         got = races.get(d, (None, None, False))
         check("%s harnessOnly (never a titan-passage pick)" % d, got[2] is True)

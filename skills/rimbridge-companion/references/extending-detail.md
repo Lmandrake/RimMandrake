@@ -92,7 +92,7 @@ honest instrument is a harness-only race, not a tool.
 
 | mod (harness only, never shipped) | defs (ThingDef + PawnKindDef, same name) | use |
 |---|---|---|
-| `src/RimMandrake/HugeThingsTestRaces` (`mandrake.rm.hugethingstestraces`, needs `mandrake.rm.hugethings`) | `RM_TestTitanT2` (bodySize 8, T2) · `RM_TestTitanT3` (bodySize 20, T3) · `RM_TestTitanT2Control` (bodySize 8, forced out: the same-mass untiered control) | Huge Things titan rows on a minimal list; spawn with `jawa/static_call RimMandrake.TitanicCreatures.TitanValidationHooks.KillTitanAt` or any pawn-spawn tool |
+| `src/RimMandrake/HugeThingsTestRaces` (`mandrake.rm.hugethingstestraces`, needs `mandrake.rm.hugethings`) | `RM_TestTitanT2` (bodySize 8, T2) · `RM_TestTitanT3` (bodySize 20, T3) · `RM_TestTitanT2Control` (bodySize 8, forced out: the same-mass untiered control) · `RM_TestTitanT2Heavy` (bodySize 12, T2 above its floor: yield factor sqrt(8/12)) · `RM_TestTitanT2HeavyControl` (bodySize 12, forced out: the yield row's control) | Huge Things titan rows on a minimal list; spawn with `jawa/static_call RimMandrake.TitanicCreatures.TitanValidationHooks.KillTitanAt` or any pawn-spawn tool |
 
 Deploy it with `deploy_custom_mods.py --mod HugeThingsTestRaces --apply` and put it on the test list after Huge Things;
 no biome lists these races and they carry no trade tags, so they exist only when a test spawns them. Pinned offline by

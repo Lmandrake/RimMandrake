@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- HARNESS ONLY (TITANIC_BODYSIZE_TEST_RACE_1): elephant-bodied races at the Huge Things T2 and T3 floors (RM_TitanicTierDef
-     8 / 20). The tier reads race.baseBodySize x the largest lifestage bodySizeFactor (AnimalAdult = 1), so these sizes ARE the
+     8 / 20), plus a body-size 12 T2 pair for the yield curve. The tier reads race.baseBodySize x the largest lifestage bodySizeFactor (AnimalAdult = 1), so these sizes ARE the
      tiers. No biome, no trade tags, never a manhunter (kinds) or a titan-passage pick (harnessOnly): they exist only when a
      test spawns them. -->
 <Defs>
@@ -101,6 +101,38 @@
     <description>Harness-only test race: body size 8 but forced out of titan tiering, the same-mass untiered control.</description>
     <race>
       <baseBodySize>8</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <forceEnabled>false</forceEnabled>
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The yield-curve pair: SubLinearFactor = sqrt(T2 floor / bodySize), so a race ON the floor (RM_TestTitanT2, 8) gets 1 and
+       proves nothing. Body size 12 sits inside T2 (8 <= 12 < 20) with factor sqrt(8/12) = 0.8165; its control has the same mass
+       and is forced out of tiering, so butchering both isolates the curve. -->
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT2Heavy</defName>
+    <label>test titan (T2 heavy)</label>
+    <description>Harness-only test race: an elephant of body size 12, inside the Huge Things T2 band and above its floor, so the yield curve reduces it.</description>
+    <race>
+      <baseBodySize>12</baseBodySize>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
+        <harnessOnly>true</harnessOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TestTitanBase">
+    <defName>RM_TestTitanT2HeavyControl</defName>
+    <label>test titan heavy control</label>
+    <description>Harness-only test race: body size 12 but forced out of titan tiering, the same-mass untiered control for the yield curve.</description>
+    <race>
+      <baseBodySize>12</baseBodySize>
     </race>
     <modExtensions>
       <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension">
