@@ -1,0 +1,5 @@
+A1 L2: on a quicktest map (Webwork + CreatureBehaviors, all DLC), ProofHarvest "true;RM_Webwork_Anchor;34" reads designatable True | workgiver True | yield 3 | weaveNear 0->3 | spawned 1
+A2 L2: ProofHarvest "true;RM_Webwork_Web;0" reads yield 2 | weaveNear 0->2 | spawned 0
+A3 L2: ProofHarvest "false;RM_Webwork_Anchor;0" (webHarvestEnabled off) reads designatable False | yield 0
+A4 L2: an anchor designated for Deconstruct beside an undrafted colonist is cut by him within 4000 ticks: ProofHarvestRead reads nodePresent False | weaveNear 3 | lastYield 3
+A5 L1: Player.log of the load (Webwork reachable by static_call) names none of: "RM_CompProperties_HarvestYield has no yield", "Could not find type named RimMandrake.Webwork.RM_CompProperties_HarvestYield", "alwaysDeconstructible=true but deconstructible=false" on an RM_Webwork_ def
