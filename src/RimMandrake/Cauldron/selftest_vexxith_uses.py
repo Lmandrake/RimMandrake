@@ -82,7 +82,7 @@ def gates():
     check("BurnIfTouchingAcid" in src and "GateBurnsInAcid" in src, "a canal gate burns where acid touches it")
     check(src.count("RM_FluidIdentity.CellHoldsAcid(Map") == 2 and "GenAdj.CardinalDirections" in src, "the gate reads canal fluid on its own cell and all four sides")
     ident = text(FW, "Source/RM_FluidIdentity.cs")
-    check("ex.FillAt(c) > 0 ? ex.FluidAt(c)" in ident, "a recorded fluid counts only while the cell holds some")
+    check("ex.WaterDlAt(c) > 0 ? ex.FluidAt(c)" in ident, "a recorded fluid counts only while the cell holds some")
     check("index.AddFluid(f.defName, f.floodTerrain" in ident and "f.fillTerrainSuperdeep" in ident, "the in-game index reads every canal fill terrain")
     # The production index on the shipped defs (FlowWorks SelfTest, GateAcidChecks.cs): red slime, acid water, reaction liquor
     # canal fills burn steel not plasteel, every other fluid is the control.
