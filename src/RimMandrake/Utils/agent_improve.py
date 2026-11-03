@@ -32,6 +32,7 @@ import os
 import re
 import subprocess
 import sys
+import shutil
 import tempfile
 import time
 
@@ -544,7 +545,7 @@ def parse_json_reply(raw):
 def claude_fresh(prompt, timeout=420, model_name="opus"):
     """One fresh, tool-less `claude -p` session in an empty temp dir: no repo context, no memory, no MCP."""
     with tempfile.TemporaryDirectory(prefix="agent_improve_") as d:
-        r = subprocess.run(["claude", "-p", "--model", model_name, "--tools", "", "--no-session-persistence",
+        r = subprocess.run([shutil.which("claude") or os.path.expanduser("~/.local/bin/claude"), "-p", "--model", model_name, "--tools", "", "--no-session-persistence",
                             "--strict-mcp-config"], input=prompt, capture_output=True, text=True, cwd=d,
                            timeout=timeout)
     if r.returncode != 0 or not r.stdout.strip():
