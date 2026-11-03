@@ -532,7 +532,7 @@ def main():
                 ok, why, use = judge(run_claude(prompt(writes, head, now, board_version), rows_dir), writes, board_version,
                                      head, now)
             except (subprocess.TimeoutExpired, OSError) as e:
-                ok, why, use = False, "claude -p did not run: %s" % type(e).__name__, {}
+                ok, why, use = False, "claude -p did not run: %s: %s" % (type(e).__name__, str(e)[:120]), {}
             add_use(rec, use)
             if ok or "version_mismatch" not in why:
                 break
