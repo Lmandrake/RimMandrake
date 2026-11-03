@@ -1011,10 +1011,18 @@ def step(store, fx, r, item, now, acts, sup):
                 if not fx.bridge_take("relentless staging %s (renew)" % item):
                     _save(store, item, lambda s: s["game"].update(taken_at=now))
             return
-        if not sup.settle(store, fx, r, item, "run", g["staged_at"], now, acts):
+        # settle's stop/force/quarantine clock runs from the first stop, never from staged_at: a staging ended at
+        # stage_max_s (or by staged_idle) is already past stop_quarantine_s from staged_at, and was quarantined
+        # unstopped on the first tick ("unit ... would not die", ART_OVERRIDE_FAMILY_SCRIPT_1 19:22:51Z, 2026-11-03)
+        stop_since = g.get("stop_since")
+        if stop_since is None and fx.alive(run):
+            stop_since = now
+            _save(store, item, lambda s: s["game"].update(stop_since=now))
+        if not sup.settle(store, fx, r, item, "run", stop_since if stop_since is not None else now, now, acts):
             return
         gave = fx.bridge_release()       # at once, however staging ended
-        st = _save(store, item, lambda s: s["game"].update(phase="prove", released=gave is None, full=None))
+        st = _save(store, item, lambda s: s["game"].update(phase="prove", released=gave is None, full=None,
+                                                          stop_since=None))
         rode = []
 
         def ride(s):

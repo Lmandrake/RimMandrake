@@ -316,6 +316,30 @@ def t_stage_idle_releases():
     x.done()
 
 
+def t_stage_max_stops_before_quarantine():
+    """LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: a staging that reaches stage_max_s is STOPPED first; settle's quarantine
+    clock runs from that stop, not from staged_at (ART_OVERRIDE_FAMILY_SCRIPT_1's unit was quarantined unstopped)."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "staging", "staging")
+    unit = st["run"]["unit"]
+    x.w.unkillable.add(unit)
+    x.tick(dt=G.DEFAULTS["stage_max_s"] + 10)
+    st = x.st("I0")
+    ok(not st["quarantined"] and any(u == unit for u, _ in x.w.stops),
+       "past stage_max_s: the unit is stopped, not quarantined unstopped: stops %s quarantined %s"
+       % (x.w.stops, st["quarantined"]))
+    x.tick(dt=x.r["stop_quarantine_s"] + 10)
+    st = x.st("I0")
+    ok(st["quarantined"] and st["game"]["phase"] in ("prove", "proving") and "release" in x.w.events,
+       "still alive stop_quarantine_s after the stop: quarantined, the bridge released")
+    x.done()
+
+
 def t_gate():
     st = {"game": {"sha": "s2", "offline_green": {"sha": "s1"}}, "contract": {"game": {"clauses": ["A2"]}}}
     fl = r"\b(flight|flying)\b"
@@ -1195,7 +1219,7 @@ def t_mod_gap_pure():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
