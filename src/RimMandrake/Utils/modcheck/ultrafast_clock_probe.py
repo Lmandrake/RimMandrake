@@ -4,10 +4,11 @@
 On a Playing map, paused, runs helpers.fast_advance for --ticks (default 3000) game ticks -- the exact call the seven
 validation _wait helpers now make (rimworld/play_for at Ultrafast, then jawa/set_game_speed Paused) -- and reads
 ticksGame before and after. It advances the game clock by about --ticks (that is the clause), touches nothing else.
-  exit 0  the fast run reached its goal (why=None) and ticksGame moved >= ticks-400 within --wall seconds, game paused
-  exit 1  the fast run gave up (refused / stalled) or moved too little: the stall is still there
+  exit 0  the fast run reached its goal (why=None), ticksGame moved >= ticks-400 within --wall seconds, every play_for
+          asked for speed 4 (Ultrafast), the observed rate is >= --min-rate ticks/s (Normal is 60/s), game paused
+  exit 1  the fast run gave up (refused / stalled), moved too little, ran slower than --min-rate or at another speed
   exit 2  no clock to read (no map loaded, bridge down): UNMEASURED
-Usage: python3 src/RimMandrake/Utils/modcheck/ultrafast_clock_probe.py [--ticks N] [--wall S]
+Usage: python3 src/RimMandrake/Utils/modcheck/ultrafast_clock_probe.py [--ticks N] [--wall S] [--min-rate R]
 """
 import argparse
 import os
@@ -24,16 +25,39 @@ import rimbridge_client as rb  # noqa: E402
 
 class _Session(object):
     def __init__(self, client):
-        self.c = client
+        self.c, self.speeds = client, []
 
     def call(self, tool, **p):
+        if tool == "rimworld/play_for":
+            self.speeds.append(p.get("speed"))
         return self.c.call(tool, p)
+
+
+def judge(start, now, why, wall, paused, speeds, ticks, wall_max, min_rate):
+    """-> (ok, reasons). The verdict alone, so selftest_fastwait can prove it rejects a slow or non-Ultrafast run."""
+    bad = []
+    moved = (now or start) - start
+    if why is not None:
+        bad.append("fast run gave up: %s" % why)
+    if moved < ticks - 400:
+        bad.append("moved %d < %d" % (moved, ticks - 400))
+    if wall > wall_max:
+        bad.append("wall %.1fs > %.1fs" % (wall, wall_max))
+    if not speeds or any(sp != 4 for sp in speeds):
+        bad.append("play_for speeds %s, not all 4 (Ultrafast)" % (speeds,))
+    rate = moved / wall if wall > 0 else 0.0
+    if rate < min_rate:
+        bad.append("rate %.0f ticks/s < %.0f (Normal is 60)" % (rate, min_rate))
+    if paused is not True:
+        bad.append("game not paused after (paused=%s)" % paused)
+    return not bad, bad
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ticks", type=int, default=3000)
     ap.add_argument("--wall", type=float, default=120.0)
+    ap.add_argument("--min-rate", type=float, default=150.0)
     a = ap.parse_args()
     h, p, tok = rb.resolve_endpoint()
     c = rb.RimBridge(host=h, port=p, token=tok, timeout=60.0)
@@ -54,9 +78,11 @@ def main():
     except clockgate.ClockLost:
         paused = None
     moved = (now or start) - start
-    print("fast_advance %d ticks: start=%d now=%s moved=%d why=%s wall=%.1fs paused=%s"
-          % (a.ticks, start, now, moved, why, wall, paused))
-    ok = why is None and moved >= a.ticks - 400 and wall <= a.wall and paused is True
+    print("fast_advance %d ticks: start=%d now=%s moved=%d why=%s wall=%.1fs rate=%.0f/s speeds=%s paused=%s"
+          % (a.ticks, start, now, moved, why, wall, moved / wall if wall > 0 else 0.0, sorted(set(s.speeds)), paused))
+    ok, bad = judge(start, now, why, wall, paused, s.speeds, a.ticks, a.wall, a.min_rate)
+    for b in bad:
+        print("FAIL  " + b)
     return 0 if ok else 1
 
 

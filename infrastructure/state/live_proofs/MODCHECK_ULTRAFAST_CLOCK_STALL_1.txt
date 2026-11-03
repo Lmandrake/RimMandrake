@@ -1,2 +1,2 @@
-live-proof A1: python3 src/RimMandrake/Utils/modcheck/ultrafast_clock_probe.py --ticks 3000 --wall 120
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/ultrafast_clock_probe.py --ticks 6000 --wall 60 --min-rate 150
 live-proof A2: python3 src/RimMandrake/Utils/modcheck/setplants_reason_probe.py
