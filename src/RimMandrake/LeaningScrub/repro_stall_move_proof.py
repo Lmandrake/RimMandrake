@@ -77,17 +77,18 @@ def check_record(rec, need_named=True):
 class Fake:
     """A recording RimBridge: one map, two animals that flee +12,+12 over the first four steps when scent is on."""
 
-    def __init__(self):
+    def __init__(self, biome="TemperateForest", down=False):
         self.log, self.tick, self.weather, self.scent = [], 1000, "Clear", "True"
-        self.pawns, self.next_id = {}, 1
+        self.pawns, self.next_id, self.biome, self.down = {}, 1, biome, down
 
     def connect(self):
-        pass
+        if self.down:
+            raise sys.modules["rimbridge_client"].RimBridgeError("refused (fake: game down)")
 
     def call(self, tool, kw):
         self.log.append((tool, dict(kw)))
         if tool == "jawa/map_info":
-            return {"sizeX": 250, "sizeZ": 250, "mapBiome": "TemperateForest", "tile": 1}
+            return {"sizeX": 250, "sizeZ": 250, "mapBiome": self.biome, "tile": 1}
         if tool == "rimworld/get_game_info":
             return {"ticksGame": self.tick}
         if tool == "rimworld/step_game_ticks":
@@ -124,8 +125,8 @@ class Fake:
         return {"success": True}
 
 
-def drive_fake():
-    fake = Fake()
+def drive_fake(**kw):
+    fake = Fake(**kw)
     mod = types.ModuleType("rimbridge_client")
     mod.RimBridgeError = type("RimBridgeError", (Exception,), {})
     mod.resolve_endpoint = lambda: ("h", 0, "t")
@@ -136,6 +137,8 @@ def drive_fake():
     sys.stdout = open(os.devnull, "w")
     try:
         code = R.live(out)
+    except Exception as e:  # an unguarded bridge error must read as a proof failure, not a crash
+        code = "raised %s" % type(e).__name__
     finally:
         sys.stdout.close()
         sys.stdout = stdout
@@ -202,6 +205,14 @@ def offline():
         bad.append("check_record passed a record from an RM_LeaningScrub map (the 10-07 move was off-Scrub)")
     if not any("10-07 move" in b for b in check_record(dict(rec, map=dict(rec["map"], mapBiome=None)))):
         bad.append("check_record passed a record that does not name its map biome")
+    # the repro itself refuses a site that measures nothing, BEFORE touching the pad: exit 2 (UNMEASURED), never 1
+    # (LIVE 2026-11-02 21:51Z on RM_LeaningScrub and 2026-11-03 02:53Z with the game down were both read as a fail)
+    for label, kw in (("an RM_LeaningScrub map", {"biome": "RM_LeaningScrub"}), ("a map with no biome", {"biome": None}),
+                      ("an unreachable bridge", {"down": True})):
+        c2, log2, rec2 = drive_fake(**kw)
+        touched = [t for t, _ in log2 if t in ("jawa/spawn_pawn", "jawa/destroy_batch", "jawa/weather_set")]
+        if c2 != 2 or touched or rec2:
+            bad.append("%s: live() exit %r (not 2), touched %s, record %s" % (label, c2, touched[:3], bool(rec2)))
     bad += check_live_line()
     return bad
 

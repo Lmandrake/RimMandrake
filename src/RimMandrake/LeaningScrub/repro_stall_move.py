@@ -101,7 +101,12 @@ def live(out_path):
 
     h, p, tok = rb.resolve_endpoint()
     S = rb.RimBridge(host=h, port=p, token=tok, timeout=120.0)
-    S.connect()
+    try:
+        S.connect()
+    except rb.RimBridgeError as e:
+        # LIVE 2026-11-03 gen19: a down game read as a Python traceback, exit 1 = "not reproduced"; it measured nothing
+        print("UNMEASURED: bridge unreachable: %s" % str(e)[:200])
+        return 2
 
     def call(tool, **kw):
         try:
@@ -115,6 +120,12 @@ def live(out_path):
     mi = call("jawa/map_info")
     if not mi.get("sizeX"):
         print("UNMEASURED: no current map: %s" % str(mi)[:200])
+        return 2
+    if not mi.get("mapBiome") or mi.get("mapBiome") == "RM_LeaningScrub":
+        # checked BEFORE the pad is touched: the 10-07 move was on a NON-Scrub quicktest map (validation.py@f9647fd94a).
+        # LIVE 2026-11-02 21:51Z ran on RM_LeaningScrub, exited 1 "not shared", and was logged game_fail although the
+        # wrong site measured nothing (consult 2026-11-03; --record's own map guard never ran behind the &&)
+        print("UNMEASURED: map biome %r; the item's repro needs a NON-Scrub quicktest map" % mi.get("mapBiome"))
         return 2
     x, z = mi["sizeX"] // 2 + PAD[0], mi["sizeZ"] // 2 + PAD[1]
     call("jawa/set_game_speed", speed=0)
