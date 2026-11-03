@@ -670,8 +670,63 @@ def duplicate_comp_checks(ET, files):
     return fails
 
 
+def live_proof_checks():
+    """coldstorage_live_proof.verdict on canned probe replies (COLD_STORAGE_PROOF_VERIFY_ROT_RATES_LIVE): each clause
+    passes its good line, fails a bad one, and reads UNMEASURED on REFUSED or a cold room. Every key the verdict reads
+    must be written by RM_ColdStorageProof.cs, and every clause must be a case there."""
+    import importlib.util
+    import json
+    import re
+    spec = importlib.util.spec_from_file_location("cs_live", os.path.join(HERE, "coldstorage_live_proof.py"))
+    lp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lp)
+    good = {
+        "A1": "COLDPROOF A1 floorRot=60000 heldRot=2100 room=25 heldAmbient=-25 unit=RSW_CryoUnit mode=Chill active=True"
+              " unitTemp=-25 setpoint=-25 holding=True",
+        "A2": "COLDPROOF A2 floorRot=60000 heldRot=0 room=25 heldAmbient=25 unit=RM_AncientStasisLocker_Original"
+              " mode=Stasis active=True unitTemp=25 setpoint=-10 holding=True",
+        "A3": "COLDPROOF A3 floorRot=60000 heldRot=0 room=25 heldAmbient=25 sealed=True item=RM_ResinSealedMeat",
+        "A4": "COLDPROOF A4 agingTicks=1200 earlyHeld=True oldGone=True aged=RM_AmberAgedMeat want=RM_AmberAgedMeat"
+              " stack=10 ingredientsKept=True",
+        "A5": "COLDPROOF A5 food=Meat_Cow unitFacing=South roomCells=25 roomIntact=True roomSide=True holding=True"
+              " insideProper=True outsideProper=False insideReach=True",
+        "A6": "COLDPROOF A6 carried=True despawnedInFlight=True landed=True foodOnUnit=True registered=True"
+              " setpointKept=True setpoint=-28 unitTemp=-28 foodAmbient=-28 stack=10",
+    }
+    bad = {"A1": ("heldRot=2100", "heldRot=30000"), "A2": ("heldRot=0", "heldRot=15000"),
+           "A3": ("sealed=True", "sealed=False"), "A4": ("aged=RM_AmberAgedMeat want=RM_AmberAgedMeat", "aged=RM_PitchAgedMeat want=RM_PitchAgedMeat"),
+           "A5": ("outsideProper=False", "outsideProper=True"), "A6": ("setpointKept=True", "setpointKept=False")}
+    fails = []
+    for c, line in good.items():
+        wrapped = json.dumps({"result": line})       # the bridge reply is JSON; the verdict reads it dumped
+        if lp.verdict(c, wrapped)[0] != 0:
+            fails.append("live proof %s: good line judged %r" % (c, lp.verdict(c, wrapped)))
+        if lp.verdict(c, wrapped.replace(*bad[c]))[0] != 1:
+            fails.append("live proof %s: bad line %s not a FAIL" % (c, bad[c][1]))
+        if lp.verdict(c, "REFUSED: %s no clear patch" % c)[0] != 2:
+            fails.append("live proof %s: REFUSED not UNMEASURED" % c)
+    if lp.verdict("A1", good["A1"].replace("floorRot=60000", "floorRot=0"))[0] != 2:
+        fails.append("live proof A1: a cold room (floor rot 0) must be UNMEASURED, not a comparison")
+    src = open(os.path.join(HERE, "Source", "RM_ColdStorageProof.cs")).read()
+    for c in lp.CLAUSES:
+        if 'case "%s"' % c not in src:
+            fails.append("live proof: RM_ColdStorageProof.Run has no case %s" % c)
+    vsrc = open(os.path.join(HERE, "coldstorage_live_proof.py")).read()
+    vsrc = vsrc[vsrc.index("def verdict("):vsrc.index("def main(")]
+    keys = set(re.findall(r'(?:d\.get|_f)\((?:d, )?"(\w+)"', vsrc))
+    for group in re.findall(r'(?:_t\(d, |keys = \()([^)]*)\)', vsrc):
+        keys |= set(re.findall(r'"(\w+)"', group))
+    if len(keys) < 20:
+        fails.append("live proof: only %d verdict keys found (instrument blind?)" % len(keys))
+    for k in sorted(keys):
+        if not re.search(r'[" ]%s=' % k, src):
+            fails.append("live proof: verdict reads %s but the probe never writes it" % k)
+    return fails
+
+
 def main():
     fails = static_checks()
+    fails += live_proof_checks()
     for f in fails:
         print("FAIL static: " + f)
     print("coldstorage static checks: %d failed" % len(fails))

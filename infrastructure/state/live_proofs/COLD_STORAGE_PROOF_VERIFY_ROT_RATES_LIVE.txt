@@ -1,0 +1,6 @@
+live-proof A1: python.exe src/RimMandrake/ColdStorage/coldstorage_live_proof.py A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/ColdStorage/coldstorage_live_proof.py A2 < /dev/null
+live-proof A3: python.exe src/RimMandrake/ColdStorage/coldstorage_live_proof.py A3 < /dev/null
+live-proof A4: python.exe src/RimMandrake/ColdStorage/coldstorage_live_proof.py A4 < /dev/null
+live-proof A5: python.exe src/RimMandrake/ColdStorage/coldstorage_live_proof.py A5 < /dev/null
+live-proof A6: python.exe src/RimMandrake/ColdStorage/coldstorage_live_proof.py A6 < /dev/null

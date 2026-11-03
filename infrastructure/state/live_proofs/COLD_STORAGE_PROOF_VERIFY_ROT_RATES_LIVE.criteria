@@ -1,0 +1,6 @@
+A1 L2: on a quicktest map (ColdStorage + Cuisine + TheSump, all DLC), RSW_CryoUnit in a 25 C room holds meat below 0 C and it rots < 10 % of floor meat's day (RM_ColdStorageProof.Run A1)
+A2 L2: meat in RM_AncientStasisLocker_Original rots 0 over a day while floor meat in the same 25 C room rots a full day (Run A2)
+A3 L2: RM_ResinSealedMeat rots 0 over a day in a 25 C room while floor meat rots a full day (Run A3)
+A4 L2: a resin seal one tick short of its aging time stays sealed; past due it becomes RM_AmberAgedMeat x10 with its ingredients kept (Run A4)
+A5 L2: RSW_CoolingUnit_Wall set in a room's wall keeps the room closed (25 cells); a prisoner in the facing room may eat from it and reach it, one outside may not (Run A5)
+A6 L2: RSW_CryoUnit holding meat on a grav engine's substructure is carried by GravshipUtility.GenerateGravship and set down 12 cells east on the same map (no flight): landed, meat on it, unit re-registered, custom setpoint kept, meat <= -20 C (Run A6)
