@@ -266,7 +266,52 @@ try:
             check("prove A2 carries the FinalizeLoading error", any("FinalizeLoading" in x for x in prec["A2"]), prec)
         else:
             check("prove A2 clean on a clean load", prec["A2"] == [], prec)
-except Exception as ex:                                    # noqa: BLE001 - a crash here is a failure, never a pass
+    # GAP 1 (blind check 05d368ee): prove's A2 must carry the reload's own site reads, not just load_site's problems.
+    for kw, word, why in (({"burn": True}, "Burn", "Burn active after reload"),
+                          ({"biome": "TemperateForest"}, "biome", "wrong biome after reload"),
+                          ({"natives": 0}, "natives", "no native alive after reload")):
+        _Sess.fake = LoadFake(**kw)
+        rc, prec = PS.prove(saves_dir=_pd)
+        check("prove exit 1 on %s" % why, rc == 1 and not prec["A1"], (rc, prec))
+        check("prove A2 names %s" % why, any(word in x for x in prec["A2"]), prec)
+    # GAP 2: a dirty check_map read-back must make load_site unverified and reach prove's A2.
+    TS.check_map = lambda call, site: {"verified": False, "problems": ["fog over the colony"]}
+    try:
+        ld = TS.load_site(LoadFake().call, S.SITE, sleep=lambda x: None)
+        check("dirty check_map -> load_site verified False", ld.get("verified") is False
+              and "fog over the colony" in ld["problems"], ld)
+        _Sess.fake = LoadFake()
+        rc, prec = PS.prove(saves_dir=_pd)
+        check("dirty check_map -> prove exit 1, A2 names it", rc == 1 and "fog over the colony" in prec["A2"], (rc, prec))
+    finally:
+        TS.check_map = lambda call, site: {"verified": True, "problems": []}
+    # GAP 3: A2 "loaded from the main menu" -- a game already Playing goes to the main menu BEFORE load_game.
+    class PlayingFake(LoadFake):
+        def __init__(self, **kw):
+            LoadFake.__init__(self, **kw)
+            self.menu = False
+
+        def call(self, tool, **p):
+            if tool == "rimworld/get_ui_state":
+                return {"programState": "Playing" if (self.loaded or not self.menu) else "Entry"}
+            if tool == "rimworld/go_to_main_menu":
+                self.log.append(tool)
+                self.menu = True
+                return {"success": True}
+            return LoadFake.call(self, tool, **p)
+
+    pf = PlayingFake()
+    ld = TS.load_site(pf.call, S.SITE, sleep=lambda x: None)
+    lg = pf.log
+    check("Playing at start -> go_to_main_menu before load_game",
+          "rimworld/go_to_main_menu" in lg and "rimworld/load_game" in lg
+          and lg.index("rimworld/go_to_main_menu") < lg.index("rimworld/load_game"), lg)
+    check("Playing at start -> load still verified", ld.get("verified") is True, ld)
+    ef = LoadFake()
+    ld = TS.load_site(ef.call, S.SITE, sleep=lambda x: None)
+    check("control: from Entry no go_to_main_menu", ld.get("verified") is True
+          and "rimworld/go_to_main_menu" not in ef.log, (ld, ef.log))
+except Exception as ex:                                   # noqa: BLE001 - a crash here is a failure, never a pass
     check("A2 FinalizeLoading cases ran", False, repr(ex))
 finally:
     for k, v in _orig_ld.items():
