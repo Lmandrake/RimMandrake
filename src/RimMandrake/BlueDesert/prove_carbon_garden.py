@@ -60,6 +60,17 @@ def advance(s, n):
     return None if end is None else end - start
 
 
+def judge(lost, why, verdict):
+    """The verdict on one run's observations: (0, "") when it held, else (1, why). Pure (selftested)."""
+    if lost or why:
+        return 1, "Carbon Garden flora refused on a -5 C RM_BlueDesert retile"
+    if is_open(verdict["clear"]):
+        return 1, "the hazebell stood open under Clear with no Haze seen"
+    if not is_open(verdict["haze"]):
+        return 1, "the hazebell did not open after a long tick of RM_Haze"
+    return 0, ""
+
+
 def main():
     s = Session()
     if s.call("rimworld/get_ui_state").get("programState") != "Playing":
@@ -132,14 +143,9 @@ def main():
         if problems:
             print("restore problems: %s" % problems)
     print("garden lost=%s rejectionReasons=%s bloom=%s" % (lost, json.dumps(why), json.dumps(verdict)))
-    if lost or why:
-        print("FAIL: Carbon Garden flora refused on a -5 C RM_BlueDesert retile")
-        return 1
-    if is_open(verdict["clear"]):
-        print("FAIL: the hazebell stood open under Clear with no Haze seen")
-        return 1
-    if not is_open(verdict["haze"]):
-        print("FAIL: the hazebell did not open after a long tick of RM_Haze")
+    code, msg = judge(lost, why, verdict)
+    if code:
+        print("FAIL: " + msg)
         return 1
     print("PASS: the Carbon Garden three stand on RM_BlueDesert, and the hazebell is closed in Clear and opens in Haze")
     return 0

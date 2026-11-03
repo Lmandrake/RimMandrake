@@ -26,14 +26,14 @@ Blue Desert sitting ruled.
    `BEDAZZLE_FLORA_EXPANSION_1`, which also owes the Blue Desert more flora. Build: XML only, plus small
    C# if they flower on Haze. New names must be collision-swept and go through art commission, with art
    to an owner review sheet before any def ships. **Model: sonnet.**
-4. **The vhaulk road**, which deepens the ruled giant. Its pillar feet compress blue ice into a broad
-   rime road, nearby flora is cropped flat, cistern seams boom at long intervals and frost hangs in its
-   wake. It departs with a map-edge trail and a letter, never by silently despawning. Build: a movement
-   comp that places temporary terrain or filth and grazing scars, plus entrance and departure handling.
-   It must respect the ruled heat, ion and lightning detonation gates. Small C#. **Model: sonnet.**
+4. **The vhaulk's walk-off.** The vhaulk arrives with a letter, walks off a map edge after its stay and
+   leaves with a departure letter, never by silently despawning. It respects the ruled heat, ion and
+   lightning detonation gates. The rime road, flora cropping, cistern booms and frost wake that were first
+   built here were cut on 2026-10-23 under the owner's card *"I cut, you veto"*
+   (`design/RimMandrake/fluff_cuts_2026-10-23.md`, `d5bfcd46e`); the walk-off and its letters were kept.
 
 Each ships a Mod Settings toggle and tuning.
 
 ## criteria
 
-Each of the four is quicktest-proven. The vhaulk always leaves a trail.
+Each of the four is quicktest-proven. The vhaulk always leaves by walking off a map edge with a letter, never a silent despawn.

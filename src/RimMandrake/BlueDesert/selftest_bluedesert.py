@@ -643,13 +643,51 @@ class FakeGame(MockGame):
         return {"success": True, "totalInBuffer": 50, "messages": msgs}
 
 
+def _segment_sub(txt, defname, old, new):
+    """Replace `old` with `new` inside one ThingDef's body only (the span the shape check reads)."""
+    m = re.search(r"<defName>%s</defName>(.*?)</ThingDef>" % defname, txt, flags=re.S)
+    assert m and old in m.group(1), (defname, old)
+    return txt[:m.start(1)] + m.group(1).replace(old, new) + txt[m.end(1):]
+
+
+# Carbon Garden XML mutants: bug -> (file the check reads, how the text is broken). Each must turn
+# defs/carbon_garden_shape FAIL (a sanity probe that the XML-reading check can see each defect).
+XML_MUTANTS = {
+    "cg_def_missing": ("ThingDefs_Plants/RM_BlueDesertFlora.xml",
+                       lambda t: t.replace("<defName>RM_Longglass</defName>", "<defName>RM_LongglassGone</defName>")),
+    "cg_sowable": ("ThingDefs_Plants/RM_BlueDesertFlora.xml",
+                   lambda t: _segment_sub(t, "RM_Milelace", "</plant>", "<sowTags><li>Ground</li></sowTags></plant>")),
+    "cg_no_charge": ("ThingDefs_Plants/RM_BlueDesertFlora.xml",
+                     lambda t: _segment_sub(t, "RM_Hazebell", "PlantCharge", "PlantChrgGone")),
+    "cg_wrong_yield": ("ThingDefs_Plants/RM_BlueDesertFlora.xml",
+                       lambda t: _segment_sub(t, "RM_Longglass", "<harvestedThingDef>RM_ColdWax</harvestedThingDef>",
+                                              "<harvestedThingDef>WoodLog</harvestedThingDef>")),
+    "cg_off_roster": ("BiomeDefs/RM_BlueDesert.xml",
+                      lambda t: re.sub(r"<RM_Hazebell>[\d.]+</RM_Hazebell>", "", t)),
+}
+
+
 def run(bugs=()):
     g = FakeGame(bugs=bugs)
     s = FastSession(transport=MockTransport(g), strict=False)
     for f in glob.glob(os.path.join(CFG, "*.xml")):
         os.remove(f)
-    with s:
-        res = runner.run_suite(V, s, anchor=(126, 126), mod=None)
+    gl = dict(V.chains)["defs"].__wrapped__.__globals__   # the validation module the suite runs (not VM, a second copy)
+    real_xml = gl["_xml_text"]
+    xml_bugs = [XML_MUTANTS[b] for b in bugs if b in XML_MUTANTS]
+    if xml_bugs:
+        def broken_xml(rel):
+            txt = real_xml(rel)
+            for r, f in xml_bugs:
+                if r == rel:
+                    txt = f(txt)
+            return txt
+        gl["_xml_text"] = broken_xml
+    try:
+        with s:
+            res = runner.run_suite(V, s, anchor=(126, 126), mod=None)
+    finally:
+        gl["_xml_text"] = real_xml
     return dict(("%s/%s" % (ch["name"], c["name"]), (c["verdict"], c.get("detail"))) for ch in res["chains"]
                 for c in ch["components"])
 
@@ -707,6 +745,11 @@ MUTANTS = {
     "emp_toggle_ignored": "vhaulk_gates/emp_trap_off_is_ordinary_damage",
     "vhaulk_native_toggle_ignored": "vhaulk_gates/native_toggle_off_no_blast",
     "vhaulk_master_ignored": "vhaulk_gates/master_off_no_blast",
+    "cg_def_missing": "defs/carbon_garden_shape",
+    "cg_sowable": "defs/carbon_garden_shape",
+    "cg_no_charge": "defs/carbon_garden_shape",
+    "cg_wrong_yield": "defs/carbon_garden_shape",
+    "cg_off_roster": "defs/carbon_garden_shape",
     "never_departs": "vhaulk_departs/vhaulk_walks_off_with_a_letter",
     "silent_departure": "vhaulk_departs/vhaulk_walks_off_with_a_letter",
     "haze_never": "haze/haze_film_on_outdoor_colonist",
@@ -724,6 +767,101 @@ UNMEASURED_CASES = {
     "no_ordered_job": {"butane/foreign_grazer_takes_butane_gut": "UNMEASURED",
                        "cold_rack/rack_site_ready": "UNMEASURED", "thaw/thaw_toggle_off_mines_cleanly": "UNMEASURED"},
 }
+
+
+# --------------------------------------------------------------------------- live-proof judges (BLUEDESERT_GPT_ENRICHMENT_1)
+sys.path.insert(0, HERE)
+import prove_ablation_stages as PA                                     # noqa: E402
+import prove_carbon_garden as PC                                       # noqa: E402
+
+
+def _cs_range(src, field):
+    m = re.search(r"public FloatRange %s = new FloatRange\(([\d.]+)f, ([\d.]+)f\);" % field, src)
+    return (float(m.group(1)), float(m.group(2))) if m else None
+
+
+def stage_window_misses(sil_range, exp_range, pace, tph, rare=250, steps=24):
+    """Sweep every roll of both stage delays and every rare-tick phase; return the cases where the proof's two reads
+    (PA.STAGE1_READ, PA.STAGE2_READ ticks after the fire) would not see stage 1 then stage 2. A port of
+    RM_BlueKernel.SilhouetteTick / ExposureTick / AblationStage (the source is checked to still read that way)."""
+    misses = []
+    for i in range(steps + 1):
+        h1 = sil_range[0] + (sil_range[1] - sil_range[0]) * i / steps
+        for j in range(steps + 1):
+            h2 = exp_range[0] + (exp_range[1] - exp_range[0]) * j / steps
+            sil = int(round(h1 * tph * max(0.1, pace)))
+            exp = sil + int(round(h2 * tph * max(0.1, pace)))
+            for phase in range(0, rare, 50):
+                stage, seen = 0, {}
+                for t in range(phase, PA.STAGE2_READ + 1, rare):
+                    if stage == 0 and t >= sil:
+                        stage = 1
+                    if stage == 1 and t >= exp:
+                        stage = 2
+                    for read in (PA.STAGE1_READ, PA.STAGE2_READ):
+                        if t <= read:
+                            seen[read] = stage
+                if seen.get(PA.STAGE1_READ) != 1 or seen.get(PA.STAGE2_READ) != 2:
+                    misses.append((round(h1, 3), round(h2, 3), phase, seen))
+    return misses
+
+
+def proof_judges():
+    # --- staged ablation: the window the live proof reads must catch both stages for every roll
+    src = open(os.path.join(HERE, "Source", "RM_AblationSalvage.cs"), encoding="utf-8").read()
+    kern = open(os.path.join(HERE, "Source", "Kernel", "RM_BlueKernel.cs"), encoding="utf-8").read()
+    xml = open(os.path.join(HERE, "Defs", "IncidentDefs", "RM_AblationSalvage.xml"), encoding="utf-8").read()
+    sil, exp = _cs_range(src, "hoursToSilhouette"), _cs_range(src, "hoursToExposure")
+    tph = re.search(r"public const int TicksPerHour = (\d+);", kern)
+    check("sanity probe: the C# scan read both stage-delay ranges and TicksPerHour", sil and exp and tph, str((sil, exp, tph)))
+    check("the incident XML does not override the stage delays (the C# defaults are what the game uses)",
+          "hoursToSilhouette" not in xml and "hoursToExposure" not in xml)
+    check("the kernel still computes the stage ticks the way the sweep ports them",
+          kern.count("hoursRoll * TicksPerHour * Math.Max(0.1f, pace)") == 2
+          and "if (stage == 0 && now >= silhouetteTick) { stage = 1; callScavengers = true; }" in kern
+          and "if (stage == 1 && now >= exposureTick) { stage = 2; expose = true; }" in kern)
+    if sil and exp and tph:
+        tph = int(tph.group(1))
+        misses = stage_window_misses(sil, exp, PA.PACE, tph)
+        check("A3 window: at pace %s every roll shows the shape by tick %d and the wreck by tick %d"
+              % (PA.PACE, PA.STAGE1_READ, PA.STAGE2_READ), not misses, str(misses[:3]))
+        wide = stage_window_misses((sil[0], sil[1] * 2), exp, PA.PACE, tph)
+        check("mutant stage_window_too_slow (silhouette range doubled) -> the sweep misses", bool(wide), "no miss")
+        early = stage_window_misses((0.0, 0.5), (0.0, 0.5), PA.PACE, tph)
+        check("mutant stage_window_too_fast (both stages before the first read) -> the sweep misses", bool(early), "no miss")
+
+    # --- staged ablation: the live proof's verdict can fail on each stage defect
+    good = {"stage0": {"label": "salvage emergence", "letters": []},
+            "stage1": {"label": PA.STAGE1_LABEL, "scavengers": 2, "letters": []},
+            "stage2": {"markers": 0, "payload": 1, "letters": [PA.LETTER]}}
+    check("A3 judge: a staged run PASSes", PA.judge(good) == [], str(PA.judge(good)))
+    import copy
+
+    def mut(path, value):
+        o = copy.deepcopy(good)
+        o[path[0]][path[1]] = value
+        return o
+    for name, obs in (("shape_at_once", mut(("stage0", "label"), PA.STAGE1_LABEL)),
+                      ("letter_at_once", mut(("stage0", "letters"), [PA.LETTER])),
+                      ("no_shape", mut(("stage1", "label"), "salvage emergence")),
+                      ("no_scavengers", mut(("stage1", "scavengers"), 0)),
+                      ("letter_before_wreck", mut(("stage1", "letters"), [PA.LETTER])),
+                      ("marker_never_goes", mut(("stage2", "markers"), 1)),
+                      ("no_payload", mut(("stage2", "payload"), 0)),
+                      ("no_letter", mut(("stage2", "letters"), []))):
+        check("mutant ablation_%-22s -> A3 judge FAILs" % name, PA.judge(obs) != [], str(obs))
+
+    # --- carbon garden: the live proof's verdict can fail on each defect
+    closed, opened = ["Growth: 100%"], ["Growth: 100%", "Open: " + PC.OPEN_WORD + "."]
+    check("A4 judge: all three stand, closed in Clear, open in Haze -> PASS",
+          PC.judge([], {}, {"clear": closed, "haze": opened})[0] == 0)
+    for name, args in (("plant_lost", (["RM_Longglass"], {}, {"clear": closed, "haze": opened})),
+                       ("plant_refused", ([], {"RM_Milelace": ["too warm"]}, {"clear": closed, "haze": opened})),
+                       ("open_in_clear", ([], {}, {"clear": opened, "haze": opened})),
+                       ("never_opens", ([], {}, {"clear": closed, "haze": closed}))):
+        check("mutant garden_%-24s -> A4 judge FAILs" % name, PC.judge(*args)[0] == 1, str(args))
+    check("the A4 open word is the one RM_CompHazeBloom writes",
+          PC.OPEN_WORD in open(os.path.join(HERE, "Source", "RM_Hazebell.cs"), encoding="utf-8").read())
 
 
 def main():
@@ -811,6 +949,9 @@ def main():
     lint = os.path.join(UTILS, "northstar_driver", "lint_calls.py")
     p = subprocess.run([sys.executable, lint, "--summary", HERE], capture_output=True, text=True)
     check("the static schema lint passes over this mod's script files", p.returncode == 0, (p.stdout + p.stderr)[-400:])
+
+    # --- 7 the live proofs' own verdicts and the A3 stage window (BLUEDESERT_GPT_ENRICHMENT_1)
+    proof_judges()
 
     print("\n%s" % ("ALL OK" if not FAILS else "FAILED: %s" % FAILS))
     return 1 if FAILS else 0

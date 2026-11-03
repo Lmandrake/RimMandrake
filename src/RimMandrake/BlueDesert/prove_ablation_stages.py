@@ -34,6 +34,28 @@ SCAVENGERS = ("RM_Vekkit", "RM_Vrisk")
 PAYLOAD = "ShipChunk"
 
 
+PACE = 0.25                                          # ablationPaceFactor for the run (its slider floor)
+STAGE1_READ = 2400                                   # ticks after the fire when stage 1 is read
+STAGE2_READ = 5200                                   # ticks after the fire when stage 2 is read
+
+
+def judge(obs):
+    """The verdict on one run's observations: [] when the stages held, else what went wrong. Pure (selftested)."""
+    bad = []
+    if STAGE1_LABEL in str(obs["stage0"]["label"]) or LETTER in obs["stage0"]["letters"]:
+        bad.append("stage 0 already showed the shape or the letter")
+    if obs["stage1"]["label"] is None or STAGE1_LABEL not in str(obs["stage1"]["label"]):
+        bad.append("no dark shape under the ice after %d ticks at pace %s" % (STAGE1_READ, PACE))
+    if obs["stage1"]["scavengers"] <= 0:
+        bad.append("no vekkit or vrisk came to the shape")
+    if LETTER in obs["stage1"]["letters"]:
+        bad.append("the letter came before the ice gave way")
+    if obs["stage2"]["markers"] != 0 or obs["stage2"]["payload"] < 1 or LETTER not in obs["stage2"]["letters"]:
+        bad.append("after %d ticks: markers %d, payload %d, letter %s" % (
+            STAGE2_READ, obs["stage2"]["markers"], obs["stage2"]["payload"], LETTER in obs["stage2"]["letters"]))
+    return bad
+
+
 class Session(object):
     def __init__(self):
         host, port, token = rb.resolve_endpoint()
@@ -126,7 +148,7 @@ def main():
         if biome != "RM_BlueDesert":
             print("UNMEASURED: the map does not read RM_BlueDesert after the retile (%r)" % (biome,))
             return 2
-        s.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="ablationPaceFactor", value="0.25")
+        s.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="ablationPaceFactor", value=str(PACE))
         if things(s, MARKER):
             print("UNMEASURED: a salvage marker already stands on this map")
             return 2
@@ -139,11 +161,11 @@ def main():
             print("UNMEASURED: the incident did not place a marker (fire_incident %r, markers %r)" % (r, m))
             return 2
         obs["stage0"] = {"label": label_of(s, m[0]), "letters": letters(s)[len(letters0):]}
-        advance_to(s, t0 + 2400)
+        advance_to(s, t0 + STAGE1_READ)
         m = things(s, MARKER) or []
         obs["stage1"] = {"ticks": (ticks(s) or 0) - t0, "label": label_of(s, m[0]) if m else None,
                          "scavengers": (count_pawns(s) or 0) - scav0, "letters": letters(s)[len(letters0):]}
-        advance_to(s, t0 + 5200)
+        advance_to(s, t0 + STAGE2_READ)
         payload = things(s, PAYLOAD) or []
         obs["stage2"] = {"ticks": (ticks(s) or 0) - t0, "markers": len(things(s, MARKER) or []),
                          "payload": len(payload), "letters": letters(s)[len(letters0):]}
@@ -153,18 +175,7 @@ def main():
         if problems:
             print("restore problems: %s" % problems)
     print(json.dumps(obs, default=str))
-    bad = []
-    if STAGE1_LABEL in str(obs["stage0"]["label"]) or LETTER in obs["stage0"]["letters"]:
-        bad.append("stage 0 already showed the shape or the letter")
-    if obs["stage1"]["label"] is None or STAGE1_LABEL not in str(obs["stage1"]["label"]):
-        bad.append("no dark shape under the ice after 2400 ticks at pace 0.25")
-    if obs["stage1"]["scavengers"] <= 0:
-        bad.append("no vekkit or vrisk came to the shape")
-    if LETTER in obs["stage1"]["letters"]:
-        bad.append("the letter came before the ice gave way")
-    if obs["stage2"]["markers"] != 0 or obs["stage2"]["payload"] < 1 or LETTER not in obs["stage2"]["letters"]:
-        bad.append("after 5200 ticks: markers %d, payload %d, letter %s" % (
-            obs["stage2"]["markers"], obs["stage2"]["payload"], LETTER in obs["stage2"]["letters"]))
+    bad = judge(obs)
     if bad:
         print("FAIL: " + "; ".join(bad))
         return 1
