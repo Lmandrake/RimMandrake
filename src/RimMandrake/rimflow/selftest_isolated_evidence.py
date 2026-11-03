@@ -4,7 +4,7 @@ The Arbiter's independent pre-step (isolated_evidence.py) on a throwaway git rep
 dry run writes nothing, --run records isolated close_evidence under the runner seat that arbiter_tiers counts as
 independent, the checkout is deleted, the journal skips a repeat, a maker seat is refused, a failing test is FAIL.
 The live evidence store, key and journal are never touched (all pointed into temp dirs)."""
-import io, json, os, subprocess, sys, tempfile, contextlib
+import io, json, os, subprocess, sys, tempfile, types, contextlib
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 T = tempfile.mkdtemp(prefix="st_isoev_")
@@ -18,6 +18,9 @@ for k in ("RIMFLOW_SEAT", "AGENT_SEAT", "RIMFLOW_ITEM"):
     os.environ.pop(k, None)
 from rimflow import isolated_evidence as ie        # noqa: E402
 from rimflow import arbiter_tiers as at            # noqa: E402
+# The 12 GB floor guards a real checkout; this fixture repo is tiny, so the nightly's /tmp must not decide this test
+# (NIGHTLY_COP_FIX_RED_CYGHVG_QCWJ: 1.8 GB free -> --run exit 2 -> no journal). Guard cases patch their own reading.
+ie.shutil.disk_usage = lambda root: types.SimpleNamespace(free=1024 ** 4)
 ce = ie.ce
 ce._key(create=True)
 ROOT = os.path.join(T, "iso")
