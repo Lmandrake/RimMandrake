@@ -37,8 +37,10 @@ REVIEW ANIMAL_ENVELOPE adult drawSize vs bodySize is outside everything vanilla 
                        Not a gate: whether a creature is MEANT to read tiny or huge is a taste call
                        for a true-scale judge sitting, so these are listed, never auto-fixed. A
                        creature with a numeric owner order is exempt: its size is his call.
-HIGH  NO_SPRITE        the texPath resolves to no loose texture in the def's own mod or ours, nor
-                       in any loaded non-vanilla mod, and no vanilla def draws that texPath.
+HIGH  BAD_SIZE         a drawn size of zero or less.
+HIGH  NO_SPRITE        no texPath at all; or the texPath resolves to no loose texture in the
+                       def's own mod or ours, nor in any loaded non-vanilla mod, and no vanilla
+                       def draws that texPath. A Graphic_Single must be exactly <texPath>.png.
 MEDIUM VANILLA_TEXTURE the def draws a vanilla texture (a placeholder, or art never made).
 MEDIUM PLANT_ENVELOPE  mature cells below 0.8x or above 1.5x the vanilla range for its class
                        (tree / non-tree), and no owner tier or order covers it.
@@ -54,7 +56,8 @@ INFO  ORDER_MATCHED    an owner order honoured (within 1.25x), for the record.
 A HIGH may be waived only in art_size_audit_waivers.json ({defName: {code: why}}), with a reason
 (a blank reason waives nothing). --check also fails a scan that cannot be complete: a mod of the
 load set missing, an xpath error, or a size patch the runner cannot apply.
-Known blind spot: a def ADDED by a patch carries no defining package and is not audited.
+Known blind spots: a def ADDED by a patch carries no defining package and is not audited; a
+patch Conditional on a def type other than ThingDef/PawnKindDef/BiomeDef sees no match.
 
 USAGE
     python3 src/RimMandrake/Utils/art_size_audit.py                    # summary + HIGH list
@@ -92,9 +95,12 @@ ORDER_SOURCES = [
 ]
 SANITY = {"our_plants": 100, "our_animals": 40, "ref_plants": 30, "ref_animals": 40}
 
-# BiomeDef is kept only so a patch's Conditional on one sees what the engine sees.
+# Only these types go through the patch runner (keeping every type is >3x slower): BiomeDef so
+# a Conditional on one sees what the engine sees. The vanilla texture index is taken from EVERY
+# ludeon def at load (build_doc), so terrain, building and item art count as vanilla.
 KEEP_TAG = re.compile(r"(^|\.)(ThingDef|PawnKindDef|BiomeDef)$")
 ALPHA_MIN = 16
+VANILLA_TEX = set()   # texPaths named by any ludeon def, any type (filled by build_doc)
 
 BIG_WORDS = re.compile(r"\b(towering|gigantic|giant|huge|massive|enormous|colossal|immense|"
                        r"titanic|mountainous|leviathan|behemoth)\b", re.I)
@@ -130,7 +136,12 @@ def build_doc(mods, active):
             if r is None or r.tag != "Defs":
                 continue
             for e in list(r):
-                if not isinstance(e.tag, str) or not KEEP_TAG.search(e.tag):
+                if not isinstance(e.tag, str):
+                    continue
+                if m["packageId"].startswith("ludeon."):
+                    VANILLA_TEX.update(t.text.strip() for t in e.iter("texPath")
+                                       if t.text and t.text.strip())
+                if not KEEP_TAG.search(e.tag):
                     continue
                 if not PDL._may_require_ok(e, active):
                     continue
@@ -189,6 +200,10 @@ def _candidates(root, tex, gclass, prefer):
     """PNG files this texPath names under one Textures root, best facing first."""
     base = os.path.join(root, tex)
     out = []
+    gclass = gclass or ""   # unknown class: lenient (directory, then facings)
+    single = gclass.split(".")[-1] == "Graphic_Single"
+    if single:   # the engine loads exactly <texPath>.png for a Graphic_Single, nothing else
+        return [base + ".png"] if os.path.isfile(base + ".png") else []
     if gclass.endswith("Random") or gclass.endswith("Collection") or os.path.isdir(base):
         if os.path.isdir(base):
             fs = sorted(f for f in os.listdir(base) if f.lower().endswith(".png")
@@ -565,6 +580,10 @@ def judge(rows, fit, env, tiers, vtex=None):
             continue
         fl = []
         cells = r.get("cells")
+        if cells is not None and cells <= 0:
+            fl.append(("HIGH", "BAD_SIZE", "nonpositive drawn size %r" % cells))
+            cells = None
+            r["badSize"] = True
         fill = r.get("fill")
         f1 = max(fill) if fill else None
         visible = round(cells * (fill[1] if r["kind"] == "plant" else f1), 3) \
@@ -600,9 +619,9 @@ def judge(rows, fit, env, tiers, vtex=None):
                 fl.append(("MEDIUM", "BIN_RESCALE", "owner moved bin %s->%s (%g-%s) but %.2f cells" % (
                     bins[-1]["from"], bins[-1]["bin"], lo, "%g" % hi if hi < 1e8 else "+", cells)))
         if r["kind"] == "animal":
-            if cells is None:
+            if cells is None and not r.get("badSize"):
                 fl.append(("HIGH", "NO_SPRITE", "no PawnKindDef lifeStage bodyGraphicData drawSize"))
-            elif fit and r["body"] > 0:
+            elif cells and fit and (r["body"] or 0) > 0:
                 pred = math.exp(fit["a"] + fit["b"] * math.log(r["body"]))
                 res = math.log(cells) - math.log(pred)
                 r["fitCells"] = round(pred, 3)
@@ -622,8 +641,8 @@ def judge(rows, fit, env, tiers, vtex=None):
                     fl.append(("MEDIUM", "PLANT_ENVELOPE", "%s draws %.2f cells; vanilla %ss %g-%g" % (
                         "tree" if r["tree"] else "plant", cells, "tree" if r["tree"] else "plant",
                         e["min"], e["max"])))
-        if not r.get("texPath") and r["kind"] == "plant":
-            fl.append(("HIGH", "NO_SPRITE", "no graphicData/texPath"))
+        if not r.get("texPath") and not any(c == "NO_SPRITE" for _, c, _ in fl):
+            fl.append(("HIGH", "NO_SPRITE", "no texPath"))
         if r.get("texPath"):
             w = r.get("texWhere")
             if w is None and r["texPath"] in vanilla_tex:
@@ -657,12 +676,16 @@ def audit(modlist=PDL.FULL_MODLIST):
             npatch += 1
             pt.run_file(p)
     rows = extract(root, mods, active)
-    vtex = sorted({(t.text or "").strip() for e in root if (e.get("_pkg") or "").startswith("ludeon.")
-                   for t in e.iter("texPath") if t.text and t.text.strip()})
+    vtex = sorted(VANILLA_TEX)
     stats = {"vanillaTex": vtex,
+             # an op the runner skips whose text mentions drawSize/visualSizeRange (PDL's watch):
+             # gating when it has an xpath not confined to BiomeDefs, or is in one of OUR mods. A
+             # foreign mod's custom op class with no xpath (e.g. a robots toggle) only touches
+             # its own defs as far as anyone can read; listed as unsupportedWatchedOps, not gated.
              "unsupportedSizeOps": [list(x) for x in pt.unsupported_watched
-                                    if re.search(r"drawSize|visualSizeRange|baseBodySize|lifeStages",
-                                                 str(x[2] or ""))],
+                                    if (x[2] and not re.search(r"BiomeDef", x[2]))
+                                    or os.path.abspath(x[0]).startswith(REPO + os.sep)],
+             "unsupportedWatchedOps": [list(x) for x in pt.unsupported_watched],
              "version": version, "mods": len(mods), "missing": missing, "defFiles": nfiles,
              "patchFiles": npatch, "patchOps": pt.ops, "xpathErrors": pt.xpath_errors,
              "unsupportedWatched": len(pt.unsupported_watched)}

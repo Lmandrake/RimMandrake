@@ -33,7 +33,8 @@ def animal(dn, body, cells, ours=True, **kw):
     r = {"defName": dn, "package": "mandrake.rm.x" if ours else "ludeon.rimworld", "ours": ours,
          "label": kw.pop("label", dn.lower()), "description": kw.pop("description", ""),
          "kind": "animal", "body": body, "kindDef": dn, "drawSize": [cells], "cells": cells,
-         "texPath": kw.pop("texPath", None), "graphicClass": "Graphic_Multi"}
+         "texPath": kw.pop("texPath", "Things/Pawn/Animal/" + dn), "texWhere": "own",
+         "graphicClass": "Graphic_Multi"}
     r.update(kw)
     return r
 
@@ -59,6 +60,8 @@ def fixture():
         animal("RM_Waived", 1.0, 1.9, texPath="Things/Pawn/Animal/Gone", texWhere=None),
         animal("RM_BlankWaiver", 1.0, 1.9, texPath="Things/Pawn/Animal/Gone2", texWhere=None),
         plant("RM_NoTex", 1.0, texPath=None),
+        animal("RM_NoTexAnimal", 1.0, 1.9, texPath=None),
+        animal("RM_ZeroSize", 1.0, 0.0),
         animal("RM_ItemArt", 1.0, 1.9, texPath="Things/Item/Vanilla", texWhere=None),
     ]
     return ref + ours
@@ -99,10 +102,24 @@ def main():
     check("plant with no texPath: HIGH NO_SPRITE", ("HIGH", "NO_SPRITE") in flags(rows, "RM_NoTex"))
     check("vanilla item art (index from every vanilla def): VANILLA_TEXTURE",
           flags(rows, "RM_ItemArt") == [("MEDIUM", "VANILLA_TEXTURE")], flags(rows, "RM_ItemArt"))
+    check("animal with no texPath: HIGH NO_SPRITE", ("HIGH", "NO_SPRITE") in flags(rows, "RM_NoTexAnimal"))
+    check("zero drawn size: HIGH BAD_SIZE, no crash", flags(rows, "RM_ZeroSize") == [("HIGH", "BAD_SIZE")],
+          flags(rows, "RM_ZeroSize"))
+    with tempfile.TemporaryDirectory() as td:
+        os.makedirs(os.path.join(td, "Things", "Dir"))
+        open(os.path.join(td, "Things", "Dir", "a.png"), "wb").close()
+        open(os.path.join(td, "Things", "Multi_south.png"), "wb").close()
+        check("Graphic_Single never resolves a directory or a facing suffix",
+              A._candidates(td, "Things/Dir", "Graphic_Single", "east") == [] and
+              A._candidates(td, "Things/Multi", "Graphic_Single", "east") == [])
+        check("Graphic_Random resolves a directory; Graphic_Multi a facing",
+              len(A._candidates(td, "Things/Dir", "Graphic_Random", "east")) == 1 and
+              len(A._candidates(td, "Things/Multi", "Graphic_Multi", "east")) == 1)
     bad = A.check(rows, st)
     check("check() gates exactly the unwaived HIGHs (plus the blind-scan floors)",
           sorted(b.split()[0] for b in bad if not b.startswith("instrument")) ==
-          ["RM_BlankWaiver", "RM_Lost", "RM_NoTex", "RM_Ordered", "RM_TierSmall"], bad)
+          ["RM_BlankWaiver", "RM_Lost", "RM_NoTex", "RM_NoTexAnimal", "RM_Ordered", "RM_TierSmall",
+           "RM_ZeroSize"], bad)
     check("check() refuses a blind scan", any(b.startswith("instrument blind") for b in bad))
     st2 = dict(st, missing=["some.mod"], xpathErrors=2,
                unsupportedSizeOps=[["f.xml", "PatchOperationMath", "Defs/ThingDef/graphicData/drawSize"]])
