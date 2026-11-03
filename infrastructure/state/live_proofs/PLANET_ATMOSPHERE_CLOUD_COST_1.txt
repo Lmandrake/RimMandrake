@@ -1,8 +1,8 @@
-STAGING NOTE (A1/A2 are sampled at the MAIN MENU; a map swells VRAM and private bytes, so the proofs refuse a launch
-that has started a game): once the load finishes and BEFORE you start or load any game, run
-`python3 src/RimMandrake/Utils/planet_atmosphere_cost.py record --require with` if the live list holds
-rwnodetree.rwplanetatmosphere, else `--require without`. It only measures and appends one row; exit 1 just means
-this launch is not measurable. The A1/A2 lines below then pass on that row of this launch even after the map starts.
+# STAGING NOTE (A1/A2 are sampled at the MAIN MENU; a map swells VRAM and private bytes, so the proofs refuse a launch
+# that has started a game): once the load finishes and BEFORE you start or load any game, run
+# `python3 src/RimMandrake/Utils/planet_atmosphere_cost.py record --require with` if the live list holds
+# rwnodetree.rwplanetatmosphere, else `--require without`. It only measures and appends one row; exit 1 just means
+# this launch is not measurable. The A1/A2 lines below then pass on that row of this launch even after the map starts.
 live-proof A1: python3 infrastructure/state/live_proofs/PLANET_ATMOSPHERE_CLOUD_COST_1_live.py A1
 live-proof A2: python3 infrastructure/state/live_proofs/PLANET_ATMOSPHERE_CLOUD_COST_1_live.py A2
 live-proof A3: python3 infrastructure/state/live_proofs/PLANET_ATMOSPHERE_CLOUD_COST_1_live.py A3

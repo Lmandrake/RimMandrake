@@ -303,6 +303,8 @@ def t_proofs_file():
     bad = []
     crit_line = re.compile(r"^[A-Z]+\d+ [A-Z0-9-]+: \S")     # <ID>.criteria: `A2 L1: what is observed` (worker brief)
     for n in names:
+        if n.endswith((".py", ".json")) or n.count(".") > 1 and n.endswith(".txt"):   # <ID>.<kind>.txt is data
+            continue        # a proof's own script/fixture (`live-proof A1: python3 <ID>_live.py`), not a proof file
         with open(os.path.join(real, n), encoding="utf-8") as f:
             for line in f:
                 ok = crit_line.match(line) if n.endswith(".criteria") else (R.PROOF_LINE.match(line.rstrip("\n"))
@@ -310,8 +312,8 @@ def t_proofs_file():
                                                                              or R.SITE_LINE.match(line.rstrip("\n")))
                 if line.strip() and not line.startswith("#") and not ok:
                     bad.append("%s: %s" % (n, line[:60]))
-    check("proofs: every real live_proofs file is .txt (or .criteria) and every line parses", names and all(
-        n.endswith((".txt", ".criteria")) for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
+    check("proofs: every real live_proofs file is .txt/.criteria (or a proof's .py/.json) and every line parses", names and all(
+        n.endswith((".txt", ".criteria", ".py", ".json")) for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
 
 
 NEEDS = []

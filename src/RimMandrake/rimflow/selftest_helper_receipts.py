@@ -127,7 +127,7 @@ def real_kill():
     check([h["id"] for h in rec["died"]] == ["dead1"], "the running helper reads DIED (%r)" % rec["died"])
     check([b["id"] for b in rec["bash"]] == ["bwatch"], "the background command reads no-reader (%r)" % rec["bash"])
     check(rec["died"] and rec["died"][0]["last_cmd"] == "pytest -k thirst", "the receipt names its last command")
-    check("quit or a crash" in str(rec.get("ended")), "a kill with no record reads as a crash (%r)" % rec.get("ended"))
+    check("quit or crash" in str(rec.get("ended")), "a kill with no record reads as a crash (%r)" % rec.get("ended"))
     check(HR.collect(SEAT, CLONE, force=[sid]) == [], "read once: a second collect adds nothing")
     return sid
 
