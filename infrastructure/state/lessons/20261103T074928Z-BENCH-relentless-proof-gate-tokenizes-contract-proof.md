@@ -1,0 +1,1 @@
+relentless proof_gate tokenizes the contract proof on whitespace and quotes/=:,;() but NOT '.', so a proof-file path that ends a sentence ('...FloodReleaseChecks.cs.') never matches the changed path and the proof-only commit reads proof_rework. End a named path with a space or comma. Cost FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL two gens (3, 5).
