@@ -14,10 +14,10 @@ live tier left a Rot map up: two runs measured nothing.
 
 On that map (read only: jawa/map_info, jawa/thing_graphic, jawa/thing_explain):
   * every thing (one thing_graphic rect read, complete list required) has no graphicPath, resolvedPath or variant path
-    naming Tortoise or Dandelion, and no RM_ thing draws BadTex;
+    naming Tortoise or Dandelion (defName included), and no RM_ non-pawn thing draws BadTex;
   * at least one kit plant (slime grass, bellows, thumbstalk or readerbloom) is present, so the read is not blind;
-  * every RM_Gelatid on the map has no appearance texPath naming Tortoise (thing_explain lists the body AND desiccated
-    graphic paths the def configures).
+  * every pawn on the map (thing_graphic cannot see pawn art: Thing.Graphic is BadTexture for EVERY pawn) has
+    thing_explain appearance rows, each texPath held by a running pack and none naming Tortoise or Dandelion.
 Exit 0 holds, 1 a stand-in is drawn, 2 UNMEASURED (no bridge, wrong load, wrong map, truncated read, nothing of ours).
 Callers hold the bridge lock; this never takes it.
 """
@@ -52,35 +52,52 @@ def strings(o):
             yield from strings(v)
 
 
+def is_pawn(t):
+    """thing_graphic's thingClass names a Pawn (Verse.Pawn or a subclass named ...Pawn)."""
+    return str(t.get("thingClass") or "").split(".")[-1].endswith("Pawn")
+
+
 def judge(things, explain):
-    """(fails, kit, gelatid ids, unread gelatids) from a complete thing_graphic list; explain(id) -> thing_explain reply."""
+    """(fails, kit, explained pawn ids, unread pawns) from a complete thing_graphic list; explain(id) -> thing_explain.
+
+    A pawn is NOT judged by thing_graphic's badTex: that tool reads Thing.Graphic, which for every Pawn is the ThingDef's
+    null graphicData, i.e. UI/Misc/BadTexture whatever the art (live, 2026-11-03: all four pawns on a Slime map). Pawns
+    draw through PawnRenderer from the life-stage graphic, so each pawn of ours (and any pawn whose defName names a
+    stand-in) is judged by thing_explain's appearance rows: every row's texPath held by at least one running pack (the
+    ContentFinder lookup the renderer makes; held by none = the renderer draws BadTex) and no path naming a stand-in."""
     fails = []
     for t in things:
-        hits = [s for s in strings({k: t.get(k) for k in ("graphicPath", "resolvedPath", "variantPath",
+        hits = [s for s in strings({k: t.get(k) for k in ("defName", "graphicPath", "resolvedPath", "variantPath",
                                                            "variantPaths", "textureName")})
                 if any(w in s.lower() for w in FORBIDDEN)]
         if hits:
             fails.append(f"{t.get('defName')} {t.get('id')} draws {hits[0]}")
-        if str(t.get("defName", "")).startswith("RM_") and t.get("badTex"):
+        if str(t.get("defName", "")).startswith("RM_") and t.get("badTex") and not is_pawn(t):
             fails.append(f"{t.get('defName')} {t.get('id')} draws BadTex")
     kit = sorted({t.get("defName") for t in things} & KIT_PLANTS)
-    gels = [t.get("id") for t in things if t.get("defName") == "RM_Gelatid"]
+    pawns = [t for t in things if is_pawn(t) or t.get("defName") == "RM_Gelatid"]
     blind = []
-    for gid in gels:
-        ex = explain(gid) or {}
-        paths = list(strings(ex.get("appearance")))
-        if ex.get("success") is False or not paths:   # an unread appearance never counts as clean
-            blind.append(f"RM_Gelatid {gid} appearance unread: {str(ex)[:150]}")
+    for t in pawns:
+        pid, name = t.get("id"), t.get("defName")
+        ex = explain(pid) or {}
+        app = ex.get("appearance") or {}
+        rows = app.get("paths") if isinstance(app, dict) else None
+        if ex.get("success") is False or not rows:   # an unread appearance of OURS never counts as clean
+            if not str(name or "").startswith("RM_"):
+                continue   # a colonist or vanilla visitor: its defName was already screened above
+            blind.append(f"{name} {pid} appearance unread: {str(ex)[:150]}")
             continue
-        for s in paths:
-            if any(w in s.lower() for w in FORBIDDEN):
-                fails.append(f"RM_Gelatid {gid} appearance names {s}")
-                break
-    return fails, kit, gels, blind
+        for r in rows:
+            tp = str(r.get("texPath") or "")
+            if any(w in tp.lower() for w in FORBIDDEN):
+                fails.append(f"{name} {pid} appearance names {tp}")
+            elif not r.get("packsHoldingPath"):
+                fails.append(f"{name} {pid} {r.get('role')} path {tp or '(none)'} is held by no running pack: draws BadTex")
+    return fails, kit, [t.get("id") for t in pawns], blind
 
 
 def verdict(things, fails, kit, gels, blind=()):
-    lines = [f"map things read {len(things)}; kit plants present {kit}; gelatids {len(gels)}"]
+    lines = [f"map things read {len(things)}; kit plants present {kit}; pawns explained {len(gels)}"]
     lines += ["FAIL " + f for f in fails]
     if fails:
         return 1, lines
@@ -133,7 +150,7 @@ def inner(out_path, current):
             things = g.get("things") or []
             fails, kit, gels, blind = judge(things, lambda gid: s.call("jawa/thing_explain", id=gid))
             rc, lines = verdict(things, fails, kit, gels, blind)
-            rec.update({"things": len(things), "kit": kit, "gelatids": len(gels), "fails": fails, "blind": blind})
+            rec.update({"things": len(things), "kit": kit, "pawns": len(gels), "fails": fails, "blind": blind})
     except Exception as ex:   # every failure is UNMEASURED with its reason on disk, never a silent pass
         msg = str(ex)[:400]
         if rc != 1:

@@ -17,11 +17,9 @@
     docile predator; it has no mouth. Adding a tool here is reverting the
     owner's standing ruling (spec §3 law 2).
 
-    ART: green-tinted vanilla tortoise sheets — PLACEHOLDER, and the least
-    convincing one in the mod. The register wanted is a rounded soft-bodied
-    blob; the tortoise's silhouette is the closest rounded low-slung vanilla
-    body available without shipping magenta. §7 prices the real bill at ~3
-    textures. Marked here so nobody mistakes it for a considered art choice.
+    ART: the mod's own sheets, Textures/Things/Pawn/Animal/RM_Gelatid/ (body and
+    desiccated, three facings each; GELATINOUSSLIME_KIT_ART_1). Still a vanilla
+    tortoise sound set (Pawn_Tortoise_*), not art.
   -->
 
   <ThingDef ParentName="AnimalThingBase">

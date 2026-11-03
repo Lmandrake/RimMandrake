@@ -19,15 +19,38 @@ def check(ok, what):
 
 
 grass = {"defName": "RM_Plant_SlimeGrass", "id": "Plant1", "graphicPath": "Plants/RM_SlimeGrass"}
-gel = {"defName": "RM_Gelatid", "id": "Gel1", "graphicPath": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid"}
-clean_ex = {"appearance": {"bodyTexPath": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid",
-                           "dessicatedTexPath": "Things/Pawn/Animal/RM_Gelatid/Dessicated_RM_Gelatid"}}
-bad_ex = {"appearance": {"bodyTexPath": "x", "dessicatedTexPath": "Things/Pawn/Animal/Tortoise/Dessicated_Tortoise"}}
+# a pawn as thing_graphic really reports it (live 2026-11-03): Thing.Graphic is BadTexture for EVERY pawn
+gel = {"defName": "RM_Gelatid", "id": "Gel1", "thingClass": "Verse.Pawn", "graphicClass": "Graphic_Single",
+       "graphicPath": "UI/Misc/BadTexture", "textureName": "BadTexture", "badTex": True}
+gappo = dict(gel, defName="RM_GappoGreater", id="Gap1")
+OURS = ["mandrake.rm.biomes"]
+clean_ex = {"success": True, "appearance": {"paths": [
+    {"role": "body", "texPath": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid", "packsHoldingPath": OURS}]}}
+bad_ex = {"success": True, "appearance": {"paths": [
+    {"role": "body", "texPath": "Things/Pawn/Animal/Tortoise/Tortoise", "packsHoldingPath": ["ludeon.rimworld"]}]}}
+orphan_ex = {"success": True, "appearance": {"paths": [
+    {"role": "body", "texPath": "Things/Pawn/Animal/RM_Gelatid/Gone", "packsHoldingPath": []}]}}
 
 f, k, g, b = L.judge([grass, gel], lambda i: clean_ex)
 check(L.verdict([grass, gel], f, k, g, b)[0] == 0, "a kit plant and a clean gelatid HOLD")
 f, k, g, b = L.judge([grass, gel], lambda i: bad_ex)
-check(L.verdict([grass, gel], f, k, g, b)[0] == 1, "a gelatid whose desiccated path is the tortoise FAILs")
+check(L.verdict([grass, gel], f, k, g, b)[0] == 1, "a gelatid whose body path is the tortoise FAILs")
+f, k, g, b = L.judge([grass, gel, gappo], lambda i: clean_ex)
+check(L.verdict([grass, gel, gappo], f, k, g, b)[0] == 0 and len(g) == 2,
+      "pawns reading BadTexture from thing_graphic HOLD when their life-stage paths are held (Thing.Graphic blind spot)")
+f, k, g, b = L.judge([grass, gappo], lambda i: orphan_ex)
+check(L.verdict([grass, gappo], f, k, g, b)[0] == 1, "a pawn whose body path no running pack holds FAILs (draws BadTex)")
+f, k, g, b = L.judge([grass, gappo], lambda i: {"success": True, "appearance": {"paths": []}})
+check(L.verdict([grass, gappo], f, k, g, b)[0] == 2, "any pawn with no appearance rows is UNMEASURED, not only gelatids")
+tort = {"defName": "Tortoise", "id": "T1", "thingClass": "Verse.Pawn", "graphicPath": "UI/Misc/BadTexture", "badTex": True}
+f, k, g, b = L.judge([grass, tort], lambda i: clean_ex)
+check(L.verdict([grass, tort], f, k, g, b)[0] == 1, "a vanilla tortoise wandering the map FAILs by defName")
+col = {"defName": "Human", "id": "H1", "thingClass": "Verse.Pawn", "badTex": True}
+f, k, g, b = L.judge([grass, col], lambda i: {"success": True, "appearance": {"paths": []}})
+check(L.verdict([grass, col], f, k, g, b)[0] == 0, "a colonist with no appearance rows neither fails nor blinds the read")
+bp = {"defName": "RM_SlimeBlock", "id": "B2", "thingClass": "RimMandrake.X.NotAPawnHolder", "badTex": True}
+f, k, g, b = L.judge([grass, bp], lambda i: {})
+check(L.verdict([grass, bp], f, k, g, b)[0] == 1, "a non-pawn thing class containing 'Pawn' mid-name still FAILs on BadTex")
 dand = {"defName": "RM_Plant_Readerbloom", "id": "P2", "resolvedPath": "Things/Plant/Dandelion"}
 f, k, g, b = L.judge([grass, dand], lambda i: {})
 check(L.verdict([grass, dand], f, k, g, b)[0] == 1, "a dandelion resolvedPath FAILs")
