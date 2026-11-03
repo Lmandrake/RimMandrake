@@ -140,6 +140,8 @@ def reap_boxes(store, r, now, in_use, acts=None):
         elif os.path.isdir(os.path.join(b, "tree")):
             if remove_tree(os.path.join(b, "tree")) is None:
                 out.append((b, "tree"))
+            if os.path.isdir(os.path.join(b, "tmp")):       # the check's scratch dies with its tree, not after box_keep_s
+                remove_tree(os.path.join(b, "tmp"))
     if out:
         store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "boxes_reaped",
                        "boxes": [os.path.basename(b) + ":" + w for b, w in out][:50]})

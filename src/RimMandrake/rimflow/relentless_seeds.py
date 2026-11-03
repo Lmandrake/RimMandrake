@@ -674,6 +674,7 @@ def launch_case(k, attempt, source, R, rules, store, fx, wall=False):
     env = {"RM_DATA_ROOT": str(data), "AGENT_STORAGE_ROOT": str(data)}
     if box:
         prompt, props = W.marker_prompt(st, k["words"], box), W.props(W.profile(rules), box, [store.root])
+        env.update(W.tmp_env(box))
     else:
         prompt = R.checker_prompt(st, k["words"], nonce).replace(LOCAL_VERB, "python3 " + BOOKS_VERB)
         props = ()

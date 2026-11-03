@@ -284,6 +284,7 @@ def t_reap_boxes():
     def box(name, age):
         b = os.path.join(root, name)
         put(os.path.join(b, "tree", "f"), "x" * 100)
+        put(os.path.join(b, "tmp", "scratch"), "x" * 100)
         put(os.path.join(b, "projects", "t.jsonl"), "{}\n")
         put(os.path.join(b, "nonce"), name)
         os.utime(os.path.join(b, "nonce"), (now - age, now - age))
@@ -296,6 +297,8 @@ def t_reap_boxes():
     got = D.reap_boxes(s, r, now, lambda b: b == busy)
     ok(not os.path.exists(os.path.join(done, "tree")) and os.path.exists(os.path.join(done, "projects", "t.jsonl")),
        "an ended check's tree goes; its transcript stays for the audit")
+    ok(not os.path.exists(os.path.join(done, "tmp")) and os.path.exists(os.path.join(live, "tmp")),
+       "an ended check's temp goes with its tree; a live check keeps its own")
     ok(all(os.path.exists(os.path.join(b, "tree")) for b in (live, young, busy)),
        "a box still checked, one younger than a check may run, and one a process is in all stay")
     ok(not os.path.exists(ancient), "past box_keep_s the whole box goes")
