@@ -1014,6 +1014,38 @@ def main():
     check("stripped dhoggur damage trigger reddens only the source wiring component",
           set(bad) == {"dhoggur_swell.dhoggur_source_wiring"}, bad)
 
+    # FORGE_SKY_PASTURES_1 clause 3, "no permanent overlay": each way the outline could outlive its selection must
+    # redden only the highlight component (the blind checker's mutant first: the deselect branch draws, not clears)
+    clear_blk = "                if (highlight.Count > 0)\n                {\n                    highlight.Clear();\n                }\n                return;"
+    draw_call = "GenDraw.DrawFieldEdges(highlight, new Color(0.98f, 0.86f, 0.45f, 0.9f));"
+    hl_mutants = [
+        ("deselect draws instead of clearing", lambda c: c.replace(clear_blk, clear_blk.replace("highlight.Clear();", draw_call), 1)),
+        ("deselect keeps the cells", lambda c: c.replace(clear_blk, clear_blk.replace("highlight.Clear();", ";"), 1)),
+        ("deselect falls through to the draw", lambda c: c.replace(clear_blk, clear_blk.replace("return;", ""), 1)),
+        ("outline drawn every frame from OnGUI", lambda c: c.replace("public override void MapComponentUpdate()",
+            "public override void MapComponentOnGUI() { " + draw_call + " }\n        public override void MapComponentUpdate()", 1)),
+        ("a cached selection outlives the deselect (GPT review)", lambda c: c.replace(
+            "Pawn sel = Find.Selector.SingleSelectedThing as Pawn;", "Pawn sel = highlightFor ?? Find.Selector.SingleSelectedThing as Pawn;", 1)),
+        ("the drifter is read from the cached pawn", lambda c: c.replace(
+            "sel.TryGetComp<RM_CompVaporDrifter>();", "sel.TryGetComp<RM_CompVaporDrifter>();\n            if (d == null && highlightFor != null) d = highlightFor.TryGetComp<RM_CompVaporDrifter>();", 1)),
+        ("switching drifters keeps the old outline (GPT review)", lambda c: c.replace(
+            "sel != highlightFor || Time.frameCount", "sel != highlightFor && Time.frameCount", 1)),
+        ("outline drawn before the selection check", lambda c: c.replace("            Pawn sel = Find.Selector.SingleSelectedThing as Pawn;",
+            "            " + draw_call + "\n            Pawn sel = Find.Selector.SingleSelectedThing as Pawn;", 1)),
+    ]
+    real = V._read_cs
+    sky_src = real("RM_ForgeSkyPastures.cs")
+    for label, mut in hl_mutants:
+        mutated = mut(sky_src)
+        check("highlight mutant applies to the source (%s)" % label, mutated != sky_src)
+        try:
+            V._read_cs = lambda n, m=mutated: m if n == "RM_ForgeSkyPastures.cs" else real(n)
+            bad = reds(run())
+        finally:
+            V._read_cs = real
+        check("highlight mutant (%s) reddens only the selection-only component" % label,
+              set(bad) == {"sky_pastures.sky_source_highlight_is_selection_only"}, bad)
+
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
     dropped = run(("dhoggur_instigator_dropped",))
     check("break dhoggur_instigator_dropped (companion without instigatorId): the provoked arm is UNMEASURED, no red",
@@ -1042,7 +1074,7 @@ def main():
         for f in FAILS:
             print("  - " + f)
         return 1
-    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 7))
+    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 7 + len(hl_mutants)))
     return 0
 
 

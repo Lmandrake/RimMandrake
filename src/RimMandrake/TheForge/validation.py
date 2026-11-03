@@ -1928,6 +1928,79 @@ SKY_FLOCK_HOME_SHARE = 0.7
 SKY_FLOCK_SIZE = 6   # RM_MapComponent_SkyPastures.TestFlockKinds: both kinds must be in it
 
 
+def _cs_method_body(src, signature):
+    """The brace-matched body of the first method whose header contains `signature`, or None. Strings and comments
+    are not lexed: good enough for our own sources, which put no braces in literals inside these methods."""
+    at = src.find(signature)
+    if at < 0:
+        return None
+    open_at = src.find("{", at)
+    if open_at < 0:
+        return None
+    depth = 0
+    for i in range(open_at, len(src)):
+        if src[i] == "{":
+            depth += 1
+        elif src[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return src[open_at + 1:i]
+    return None
+
+
+def _highlight_selection_only_problems(src):
+    """Why the flier highlight could outlive its selection, or [] (FORGE_SKY_PASTURES_1 clause 3, 'no permanent
+    overlay'). Reads MapComponentUpdate structurally: the outline is drawn exactly once in the whole file, inside
+    MapComponentUpdate, after the not-a-selected-drifter branch; that branch clears the cells, returns, and draws
+    nothing; the toggle/off-map early return draws nothing either."""
+    out = []
+    body = _cs_method_body(src, "void MapComponentUpdate()")
+    if body is None:
+        return ["no MapComponentUpdate body"]
+    if src.count("GenDraw.DrawFieldEdges") != 1 or body.count("GenDraw.DrawFieldEdges") != 1:
+        out.append("the outline is drawn %d times in the file, %d in MapComponentUpdate (want exactly 1, there)"
+                   % (src.count("GenDraw.DrawFieldEdges"), body.count("GenDraw.DrawFieldEdges")))
+    # the branch must test THIS frame's selection: no cached fallback (`highlightFor ?? ...`), no later reassignment.
+    # The comp type is matched by backreference, not by name: the plume selftest strips RM_CompVaporDrifter everywhere.
+    if not re.search(r"Pawn\s+sel\s*=\s*Find\.Selector\.SingleSelectedThing\s+as\s+Pawn\s*;", body):
+        out.append("sel is not exactly this frame's Find.Selector.SingleSelectedThing")
+    if len(re.findall(r"(?<![\w.])sel\s*=(?!=)", body)) != 1:
+        out.append("sel is reassigned after it is read from the selector")
+    if not re.search(r"(\w+)\s+d\s*=\s*sel\s*==\s*null\s*\?\s*null\s*:\s*sel\.TryGetComp<\1>\(\)\s*;", body) \
+            or len(re.findall(r"(?<![\w.])d\s*=(?!=)", body)) != 1:
+        out.append("d is not the selected pawn's own drifter comp")
+    sel_at = body.find("SingleSelectedThing")
+    m = re.search(r"if\s*\(\s*d\s*==\s*null[^)]*\)", body)
+    if sel_at < 0 or m is None or m.start() < sel_at:
+        out.append("no not-a-selected-drifter branch (if (d == null ...)) after reading SingleSelectedThing")
+        return out
+    branch = _cs_method_body(body[m.end():], "")
+    if branch is None or not body[m.end():].lstrip().startswith("{"):
+        out.append("the deselect branch is not a braced block")
+        return out
+    if "highlight.Clear()" not in branch:
+        out.append("the deselect branch does not clear the highlight cells")
+    if "return;" not in branch:
+        out.append("the deselect branch does not return before the draw")
+    if "DrawFieldEdges" in branch or "highlightFor = sel" in branch:
+        out.append("the deselect branch still draws or keeps the outline")
+    # a new selection rebuilds before the draw, or the previous drifter's outline is shown under the new one
+    rb = re.search(r"if\s*\(\s*sel\s*!=\s*highlightFor\s*\|\|[^{]*\)\s*\{[^}]*RebuildHighlight\(\s*sel\s*,", body)
+    if rb is None:
+        out.append("a new selection does not force a rebuild (want if (sel != highlightFor || ...) { ... RebuildHighlight(sel, ...")
+    elif body.find("GenDraw.DrawFieldEdges") >= 0 and body.find("GenDraw.DrawFieldEdges") < rb.end():
+        out.append("the outline is drawn before a new selection rebuilds it")
+    draw_at = body.find("GenDraw.DrawFieldEdges")
+    if draw_at >= 0 and draw_at < m.end():
+        out.append("the outline is drawn before the selection is checked")
+    first_if = re.search(r"if\s*\(", body)
+    if first_if is not None:
+        gate = _cs_method_body(body[first_if.start():], ")")
+        if gate is not None and "DrawFieldEdges" in gate:
+            out.append("the toggle/off-map early return draws the outline")
+    return out
+
+
 @suite.chain("sky_pastures")
 def sky_pastures(t):
     """FORGE_SKY_PASTURES_1: the vapour-column grid haze, ash spirals, column-aware hunting, the jossur stoop and the
@@ -1970,6 +2043,8 @@ def sky_pastures(t):
     with _comp(t, "sky_source_highlight_is_selection_only", independent=True, toggle="skyColumnHighlightEnabled"):
         need("GenDraw.DrawFieldEdges" in src and "skyColumnHighlightEnabled" in src, "no gated field-edge outline")
         need("SingleSelectedThing" in src and "MapComponentUpdate" in src, "the outline is not tied to the current selection")
+        hl = _highlight_selection_only_problems(src)
+        need(not hl, "the outline can outlive its selection (a permanent overlay): " + "; ".join(hl))
     with _comp(t, "sky_source_debug_report_exists", independent=True):
         need("Forge sky: report" in dbg, "no sky report debug action")
     tree = _read_text(os.path.join("Defs", "ThinkTreeDefs", "RM_ThinkTree_ForgeSkyPasture.xml"))
