@@ -951,21 +951,32 @@ class Effects(relentless_game.GameFx):
         reopens the new file), never in between; the directory lock keeps a new shard from being created meanwhile.
         Not re-entrant: a flock from a second open file blocks this process."""
         fds = []
+        with self.ledger_dir_locked():
+            try:
+                for p in sorted(glob.glob(os.path.join(self.books, LEDGER_DIR, "*.jsonl"))):
+                    try:
+                        fd = os.open(p, os.O_RDONLY)
+                    except FileNotFoundError:
+                        continue
+                    fds.append(fd)
+                    fcntl.flock(fd, fcntl.LOCK_EX)
+                yield
+            finally:
+                for fd in fds:
+                    os.close(fd)
+
+    @contextlib.contextmanager
+    def ledger_dir_locked(self):
+        """The ledger dir EXCLUSIVE: model.append holds it SHARED for each append, so no shard is created or written
+        meanwhile. Not re-entrant (a second flock on the dir from this process blocks)."""
+        d = os.path.join(self.books, LEDGER_DIR)
+        fd = os.open(d, os.O_RDONLY) if os.path.isdir(d) else None
         try:
-            d = os.path.join(self.books, LEDGER_DIR)
-            if os.path.isdir(d):    # model.append holds this dir SHARED for each append: no shard is created mid-checkout
-                fds.append(os.open(d, os.O_RDONLY))
-                fcntl.flock(fds[-1], fcntl.LOCK_EX)
-            for p in sorted(glob.glob(os.path.join(d, "*.jsonl"))):
-                try:
-                    fd = os.open(p, os.O_RDONLY)
-                except FileNotFoundError:
-                    continue
-                fds.append(fd)
+            if fd is not None:
                 fcntl.flock(fd, fcntl.LOCK_EX)
             yield
         finally:
-            for fd in fds:
+            if fd is not None:
                 os.close(fd)
 
     def ignored_collision(self):
@@ -1074,20 +1085,21 @@ class Effects(relentless_game.GameFx):
                 f.write(read[p] + cur[len(head):])
                 f.flush()
                 os.fsync(f.fileno())
-        for p, kept in list(moved_out.items()):
-            src = os.path.join(self.books, p)
-            if not os.path.exists(src):
-                os.rename(kept, src)        # with whatever a late writer appended to it
-            else:                           # a writer made a new one meanwhile: the kept events go after its own
-                with open(kept, "rb") as f:
-                    back = f.read()
-                fd = os.open(src, os.O_WRONLY | os.O_APPEND)
-                try:
-                    fcntl.flock(fd, fcntl.LOCK_EX)
-                    os.write(fd, back)
-                finally:
-                    os.close(fd)
-            del moved_out[p]
+        with self.ledger_dir_locked():      # no writer creates a shard between the look and the rename
+            for p, kept in list(moved_out.items()):
+                src = os.path.join(self.books, p)
+                if not os.path.exists(src):
+                    os.rename(kept, src)        # with whatever a late writer appended to it
+                else:                           # a writer made a new one meanwhile: the kept events go after its own
+                    with open(kept, "rb") as f:
+                        back = f.read()
+                    fd = os.open(src, os.O_WRONLY | os.O_APPEND)
+                    try:
+                        fcntl.flock(fd, fcntl.LOCK_EX)
+                        os.write(fd, back)
+                    finally:
+                        os.close(fd)
+                del moved_out[p]
 
     def _level_rows(self, rows, read, keep, moved_out, restored, behind, shuffled):
         for state, p in rows:
