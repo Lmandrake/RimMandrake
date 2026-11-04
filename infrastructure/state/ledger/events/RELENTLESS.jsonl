@@ -271,3 +271,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A3 (L2), read-only proof","ts":"2026-11-04T11:48:12Z","tsn":1793792892059031340}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T11:57:05Z","tsn":1793793425681931411}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A1 (L2), read-only proof","ts":"2026-11-04T11:57:12Z","tsn":1793793432998553745}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:01:57Z","tsn":1793793717796708084}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T12:02:53Z","tsn":1793793773142040632}
