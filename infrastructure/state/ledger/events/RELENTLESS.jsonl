@@ -120,3 +120,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:01:59Z","tsn":1793761319972328313}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN A1 (L1), read-only proof","ts":"2026-11-04T03:04:23Z","tsn":1793761463523590093}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:04:29Z","tsn":1793761469138170400}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS A1 (L1), read-only proof","ts":"2026-11-04T03:05:10Z","tsn":1793761510703454511}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:05:16Z","tsn":1793761516139410984}
