@@ -244,5 +244,13 @@ for verb in ("verify", "claim", "start"):
     ev = {"event": verb, "seat": "BENCH", "id": "I0"}
     check(M._who_refusal(ev, _it("OWNER")) is None, "BENCH may `%s` an item owned by OWNER" % verb)
     check(M._who_refusal(ev, _it("DESIGNER")) is not None, "BENCH still may not `%s` another seat's item" % verb)
+import relentless as RL  # noqa: E402
+_leased = types.SimpleNamespace(load=lambda item: {"status": "running", "gen": 9})
+check(RL.guard("close", "I0", ["--per-ruling", CA.RULING, "--why", "done"], env={}, store=_leased) is None,
+      "relentless guard passes the Conductor's ruling with its text")
+check(RL.guard("close", "I0", ["--per-ruling", CA.RULING], env={}, store=_leased) is not None,
+      "relentless guard refuses the ruling without the Conductor's text")
+check(RL.guard("close", "I0", ["--why", "done"], env={}, store=_leased) is not None,
+      "relentless guard refuses a bare reason")
 print("%d failure(s)" % len(fails))
 sys.exit(1 if fails else 0)

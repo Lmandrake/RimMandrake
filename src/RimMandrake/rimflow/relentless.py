@@ -807,6 +807,19 @@ def hook_fence(toplevel, store=None):
     return fence_check(store or Store(), item, gen)
 
 
+def _conductor_carried(argv):
+    """True when argv cites --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM with a non-empty --why."""
+    def flag(name):
+        for i, a in enumerate(argv):
+            if a == name and i + 1 < len(argv):
+                return argv[i + 1]
+            if a.startswith(name + "="):
+                return a.split("=", 1)[1]
+        return None
+    return (flag("--per-ruling") or "").strip() == "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM" and \
+        bool((flag("--why") or "").strip())
+
+
 def guard(verb, item, argv, env=None, store=None):
     """rimflow calls this. A leased item's ledger state belongs to the supervisor; his own word always passes.
     -> None, or why not."""
@@ -814,6 +827,8 @@ def guard(verb, item, argv, env=None, store=None):
     if verb not in GUARDED_VERBS or not item or env.get("RELENTLESS_SUPERVISOR") == "1":
         return None
     if any(a == "--owner-said" or a.startswith("--owner-said=") for a in argv):
+        return None
+    if _conductor_carried(argv):             # the Conductor speaks with his authority (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)
         return None
     if store is None and not os.path.isdir(os.path.join(root(), "store")):
         return None
