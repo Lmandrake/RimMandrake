@@ -114,6 +114,64 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _
     return "started"
 
 
+def active_mods(config_path=None):
+    """-> lower-case packageIds of ModsConfig's <activeMods>, parsed (never a regex over <li>, which also matches
+    <knownExpansions>)."""
+    import xml.etree.ElementTree as ET
+    if config_path is None:
+        from game_paths import MODS_CONFIG
+        config_path = MODS_CONFIG
+    node = ET.parse(config_path).getroot().find("activeMods")
+    if node is None:
+        raise RuntimeError("%s has no <activeMods>" % config_path)
+    return [(li.text or "").strip().lower() for li in node.findall("li") if (li.text or "").strip()]
+
+
+def load_gap(want, running, exact, alias=None):
+    """Pure. `want`: the packageIds the run needs loaded; `running`: the running load's ids (lower) or None (unread).
+    exact=True: the running load must EQUAL `want` (the composed ModsConfig); False: only hold it (MODCHECK_KEEP_MODLIST,
+    the owner's list, which run() never composes). A folded member counts as loaded through its composed mod.
+    -> [] when the load fits, else the reasons it does not."""
+    if running is None:
+        return ["jawa/running_mods could not be read"]
+    alias = alias or {}
+    running = {p.lower() for p in running}
+    want = [p.lower() for p in want]
+    missing = [p for p in want if p not in running and alias.get(p) not in running]
+    gap = ["not loaded: %s" % ", ".join(missing)] if missing else []
+    if exact:
+        held = set(want) | {alias[p] for p in want if p in alias}
+        extra = sorted(p for p in running if p not in held)
+        if extra:
+            gap.append("loaded but not composed: %s%s" % (", ".join(extra[:12]),
+                                                          " (+%d more)" % (len(extra) - 12) if len(extra) > 12 else ""))
+    return gap
+
+
+def verify_loaded_list(package_ids, keep, _client=None, _config_path=None):
+    """MODCHECK_SESSION_FIX_STALE_LIST_ACCEPTED: ModsConfig names the NEXT load, so a game already Playing when run()
+    composed its list may still be on the PREVIOUS one, and a chain run there certifies the wrong list. Read the
+    RUNNING load (jawa/running_mods) and compare: composed (not keep) -> it must equal ModsConfig's activeMods, which
+    compose_test_list just wrote; keep -> it must hold `package_ids`. -> [] when it fits, else the reasons (the caller
+    records the mod UNMEASURED). Never raises: an unreadable load is itself a reason."""
+    try:
+        want = list(package_ids) if keep else active_mods(_config_path)
+    except Exception as e:  # noqa: BLE001
+        return ["ModsConfig activeMods unreadable (%s: %s)" % (type(e).__name__, e)]
+    try:
+        import live_def_check  # noqa: E402
+        if _client is None:
+            import rimbridge_client as rb
+            host, port, token = rb.resolve_endpoint()
+            _client = rb.RimBridge(host=host, port=port, token=token, timeout=60.0)
+            _client.connect()
+        running = live_def_check.running_ids(_rb_call(_client, "jawa/running_mods", {"details": False, "assembly": ""}))
+        alias = live_def_check.aliases()
+    except Exception as e:  # noqa: BLE001
+        return ["jawa/running_mods raised (%s: %s)" % (type(e).__name__, e)]
+    return load_gap(want, running, exact=not keep, alias=alias)
+
+
 def _rb_call(client, tool, args):
     """One bridge call through a raw rimbridge_client.RimBridge -> its dict reply (MCP content unwrapped)."""
     r = client.call(tool, args) or {}
@@ -1123,6 +1181,20 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 print("[modcheck] %s TARGETED: %d of %d chains: %s" % (mod_folder, len(run_this.chains),
                       len(suite.chains), ", ".join(sel["chains"])), file=sys.stderr)
             ensure_playing_map()
+            # a session already Playing may be on the PREVIOUS list (ModsConfig names the next load): never certify it
+            stale = verify_loaded_list(package_ids, keep)
+            if stale:
+                why = "UNMEASURED: the running load is not the composed list (restart the game on it): %s" % "; ".join(stale)
+                print("[modcheck] %s HARNESS %s" % (mod_folder, why), file=sys.stderr, flush=True)
+                results[mod_folder] = {"chains": [], "all_green": False, "findings": [], "refused": why,
+                                       "unmeasured": "stale_load", "walk": walk}
+                if sel:
+                    results[mod_folder]["targeted"] = dict(sel, of_chains=len(suite.chains))
+                try:
+                    write_sheet(mod_folder, results[mod_folder])
+                except Exception as ex:  # noqa: BLE001 - the log line above stands
+                    print("[modcheck] stale-load sheet not written: %s: %s" % (type(ex).__name__, ex), file=sys.stderr)
+                continue                # no status entry: not a verdict on the mod
             ensure_test_profile()
             # TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS: with --drivers on (the SteveDesktop worker), the external live drivers
             # whose result files the selected chains read run now, so those rows are measured at this mod hash instead
