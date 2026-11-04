@@ -239,3 +239,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T09:24:24Z","tsn":1793784264769306995}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:28:57Z","tsn":1793784537054061468}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T09:30:38Z","tsn":1793784638012369287}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:48:11Z","tsn":1793785691273189871}
