@@ -156,6 +156,16 @@ def move(job_id, src, dst, record):
             pass
 
 
+def heartbeat(job_id):
+    """The worker just confirmed this job is running: bump running/<job>.json's mtime. ops_watch's
+    queues.testq.stalled_min sees a running job only through that mtime, so a long healthy run with jobs pending
+    behind it read as a stall (OPS_TESTQ_UNSTICK_ECPK); an orphan the worker no longer confirms still goes stale."""
+    try:
+        os.utime(q("running", job_id + ".json"))
+    except FileNotFoundError:
+        pass
+
+
 def records(state):
     """Every readable record file in `state`. An unreadable one is skipped as before, but named on stderr: a
     skipped file is accounted, never silent (contracts policy)."""
@@ -262,6 +272,7 @@ def reconcile(rec):
         rec["attempt"] = latest
         move(jid, "running", "running", rec)
     if state == "running":
+        heartbeat(jid)
         if host == ARCHMAGI and not rec.get("yield"):
             holder = bridge_holder()
             if holder:     # a window took the bridge anyway (forced): the seat wins, the job goes back

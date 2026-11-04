@@ -416,8 +416,36 @@ def t_result_hardening():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_running_heartbeat():
+    """OPS_TESTQ_UNSTICK_ECPK: a job the worker confirms running has its running/ record's mtime bumped each tick,
+    so ops_watch's queues.testq.stalled_min does not read a long healthy run (pending behind it) as a stall."""
+    import testq as T
+    jid = "J20261104T100736Z-d73263"
+    att = jid + ".a1"
+    tmp = tempfile.mkdtemp(prefix="rf_testq_hb_")
+    saved = (T.QHOME, T.remote)
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+        job = S.make_job("FlowWorks", {"chains": ["core_offline"]}, "fix", "BENCH", "5403169aab")
+        job["id"] = jid
+        rec = {"job": job, "attempt": att, "attempts": [att]}
+        T.move(jid, "running", "running", rec)
+        path = T.q("running", jid + ".json")
+        old = time.time() - 3600
+        os.utime(path, (old, old))
+        T.remote = lambda args, stdin=None, timeout=180: (0, {"state": "running", "attempt": att})
+        T.reconcile(rec)
+        age = time.time() - os.path.getmtime(path)
+        check(age < 60, "a confirmed-running job's record is heartbeated (age after tick %.0f s, was 3600)" % age)
+    finally:
+        T.QHOME, T.remote = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     try:
+        t_running_heartbeat()
         t_bad_selection()
         t_driver_sizing()
         t_sweep_split()
