@@ -59,7 +59,51 @@ check("queues: an unlistable queue is blind, not 0", OW.c_queues(_qn, _qr, {})["
 _rl = OW.load_rules()
 check("queues: artpipe is wired with one fixed alarm id", any(t["key"] == "queues.artpipe.stalled_min" and t["alarm"]
       and t["name"] == "OPS_ARTPIPE_UNSTICK" for t in _rl["targets"]))
-for _d in (_TMP, _qd):
+
+# every class of every queues.* metric in the real ranges block has its fixture (selftest_ops_ranges excludes queues.*
+# from its count and delegates here; OPS_RANGES_FIXTURE_REPAIR_FOUR_CLASSES_SHORT). The real rules, the queue dirs
+# swapped for fixtures under the same names, so a new queue or class in the rules without a fixture here goes red.
+import copy  # noqa: E402
+_cr = copy.deepcopy(_rl)
+_cd = Path(_tf.mkdtemp(prefix="qc_"))
+_cr["queues"] = []
+for _q in _rl["queues"]:
+    _b = _cd / _q["name"]
+    for _x in ("pending", "active", "done"):
+        (_b / _x).mkdir(parents=True)
+    _cr["queues"].append({"name": _q["name"], "pending": str(_b / "pending"), "active": str(_b / "active"),
+                          "progress": [str(_b / "done")], "paused_file": str(_b / "paused.json")})
+_cms = {k: m for k, m in OW.ranges_of(_cr).items() if k.startswith("queues.")}
+
+
+def _classes():
+    pts = OW.c_queues(_qn, _cr, {})
+    OW.stamp_ranges(pts, _cr)
+    return {k: pts.get(k, {}).get("class") for k in _cms}
+
+
+_seen = set()
+_calm = _classes()
+check("queues classes: every queue idle and listable reads sane on every queues.* metric",
+      all(c == "sane" for c in _calm.values()), _calm)
+_seen |= {(k, c) for k, c in _calm.items()}
+for _q in _cr["queues"]:
+    _p = Path(_q["pending"]) / "stuck.json"; _p.write_text("{}")
+    os.utime(_p, (_qn - 3600, _qn - 3600))
+_stuck = _classes()
+_sk = ["queues.%s.stalled_min" % q["name"] for q in _cr["queues"]]
+check("queues classes: a pending job stalled 1 h reads distressed on its queue's stalled_min",
+      all(_stuck.get(k) == "distressed" for k in _sk) and _stuck.get("queues.blind") == "sane", _stuck)
+_seen |= {(k, c) for k, c in _stuck.items()}
+_cr["queues"][0]["pending"] = str(_cd / "nope")
+_blind = _classes()
+check("queues classes: an unlistable queue reads distressed on queues.blind", _blind.get("queues.blind") == "distressed",
+      _blind)
+_seen |= {(k, c) for k, c in _blind.items()}
+_every = {(k, c) for k, m in _cms.items() for c in m["classes"]}
+check("queues classes: every class of every queues.* metric had its fixture", _every <= _seen and len(_every) > 0,
+      sorted(_every - _seen))
+for _d in (_TMP, _qd, _cd):
     shutil.rmtree(_d, ignore_errors=True)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
