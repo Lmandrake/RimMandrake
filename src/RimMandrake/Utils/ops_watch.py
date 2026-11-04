@@ -2789,6 +2789,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                     # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
                     if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
                         try:
+                            conductor_guard().refuse_if_test(a["conductor_log"])
                             with open(a["conductor_log"], "a", encoding="utf-8") as f:
                                 f.write("\n- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]))
                         except OSError as e:
@@ -2805,6 +2806,14 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             for r in log:
                 f.write(json.dumps(r, sort_keys=True) + "\n")
     return state
+
+
+def conductor_guard():
+    rf = str(Path(__file__).resolve().parent.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import conductor_log_guard
+    return conductor_log_guard
 
 
 def conductor_line_owed(key, said):

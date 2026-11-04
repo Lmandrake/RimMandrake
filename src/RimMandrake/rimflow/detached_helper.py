@@ -211,6 +211,8 @@ def conductor_line(text, now, path=None):
     if (os.path.abspath(path) == os.path.abspath(REAL_LOG)
             and os.environ.get("RM_DISPATCHER_STATE", doorbell.DEFAULT_STATE) != doorbell.DEFAULT_STATE):
         raise RuntimeError("refusing to write the REAL conductor log from a test process: " + path)
+    import conductor_log_guard
+    conductor_log_guard.refuse_if_test(path)
     with open(path, "a", encoding="utf-8") as f:
         f.write("\n%s — DETACHED RUN ENDED: %s\n" % (iso(now), text))
     return path

@@ -1115,6 +1115,10 @@ def conductor_log(sch, a, now):
             and os.environ.get("RM_DISPATCHER_STATE", doorbell.DEFAULT_STATE) != doorbell.DEFAULT_STATE):
         raise RuntimeError("refusing to write the REAL conductor log from a test process (RM_DISPATCHER_STATE is "
                            "not the real state dir): point no_handoff.conductor_log at a temp path: " + path)
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
+    import conductor_log_guard
+    conductor_log_guard.refuse_if_test(path)
     line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s\n" % (
         iso(now), a.get("kind"), a.get("blind") or a.get("why"), a.get("raise_first") or ("%s idle with work waiting." % a.get("seat") if a.get("seat") else "Read the line above."))
     with open(path, "a", encoding="utf-8") as f:

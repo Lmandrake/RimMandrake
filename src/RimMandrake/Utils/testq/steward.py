@@ -391,6 +391,10 @@ def conductor_raise(why, first, now):
         if not p:
             with open(os.path.join(RIMFLOW_DIR, "dispatcher_schedule.json"), encoding="utf-8") as f:
                 p = json.load(f)["no_handoff"]["conductor_log"]
+        if RIMFLOW_DIR not in sys.path:
+            sys.path.insert(0, RIMFLOW_DIR)
+        import conductor_log_guard
+        conductor_log_guard.refuse_if_test(p)
         with open(p, "a", encoding="utf-8") as f:
             f.write("\n%s — STEWARD ESCALATION: %s\n  RAISE FIRST: %s\n" % (iso(now), why, first))
         return "logged"

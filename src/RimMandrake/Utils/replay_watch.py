@@ -482,7 +482,11 @@ class World:
 
     def conductor(self, line):
         sch = json.loads(Path(self.cfg["schedule"]).read_text("utf-8"))
-        with open((sch.get("no_handoff") or {}).get("conductor_log"), "a", encoding="utf-8") as f:
+        path = (sch.get("no_handoff") or {}).get("conductor_log")
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "rimflow"))
+        import conductor_log_guard
+        conductor_log_guard.refuse_if_test(path)
+        with open(path, "a", encoding="utf-8") as f:
             f.write(line)
 
 

@@ -27,6 +27,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
+import conductor_log_guard  # noqa: E402
 import relentless_disk  # noqa: E402
 import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
@@ -1613,6 +1614,7 @@ class Effects(relentless_game.GameFx):
         if not path:
             return "no conductor_log in the rules"
         try:
+            conductor_log_guard.refuse_if_test(path)
             with open(path, "a", encoding="utf-8") as f:
                 f.write("\n%s — RELENTLESS JAM: %s\n  RAISE FIRST: relentless is stalled\n" % (iso(time.time()), text))
         except OSError as e:
@@ -1626,6 +1628,7 @@ class Effects(relentless_game.GameFx):
         if not path:
             return "no conductor_log in the rules"
         try:
+            conductor_log_guard.refuse_if_test(path)
             with open(path, "a", encoding="utf-8") as f:
                 f.write("\n%s — RELENTLESS ATTENTION (advisory, nothing stopped): %s\n" % (iso(time.time()), text))
         except OSError as e:
