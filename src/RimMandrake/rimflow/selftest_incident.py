@@ -1159,6 +1159,48 @@ def test_each_field_of_a_reading():
     check("batch: and one that moved is", pulled(aged + 30) == ["a-1", "b-1"], pulled(aged + 30))
 
 
+def test_signal_through_step():
+    """Blind check b666afff: 'a fired signal still launches' with the count step() itself stores. A standing metric and an
+    event metric under one cause: launch, ack, quiet, then a signal fires -> the next due launches, news names it."""
+    table, _, rows = at_his_rung("q-1")
+    ms = {"m.q-1": {"class": "distressed", "event": False}, "sig.x": {"class": "distressed", "event": True}}
+    rows = [dict(rows[0], metrics=ms, revisit_read={"m.q-1": [True, "distressed", 5, True, 0], "sig.x": [False, None, None, False, 0]})]
+    path = os.path.join(TMP, "sigchain.jsonl")
+    IN.append(rows, path)
+    inc = lambda: IN.fold(IN.read_rows(path))[0]["q-1"]
+    due = lambda: IN.next_due(table, inc())
+
+    def look(now, v=6):
+        res = IN.step(table, IN.read_rows(path), {"t": now, "points": {"m.q-1": {"m": "MEASURED", "v": v, "class": "distressed"}}, "alarms": {}}, now)
+        IN.append(res["rows"], path)
+        return res, [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
+
+    def fire(now):
+        IN.append([{"kind": "sig.x", "metric": "sig.x", "why": "fired", "told_at": IN.iso(now), "class": "distressed"}], path)
+
+    def launched(name, res, ev):
+        check(name, [x["ev"] for x in ev] == ["revisited"] and [r["id"] for r in res["rings"] if r.get("revisit")] == ["q-1"]
+              and "sig.x" in " ".join(ev[0]["news"]) and "m.q-1" not in " ".join(ev[0]["news"]), res["rows"])
+    t = due()
+    res, ev = look(t)
+    check("chain: signal: the standing metric moved, it launches", [x["ev"] for x in ev] == ["revisited"] and res["rings"], res["rows"])
+    IN.ack("q-1", "OPERATIONS", "waiting on the fix", path=path, now=t + M)
+    res, ev = look(due())
+    check("chain: signal: answered, nothing fired, unchanged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
+    fire(due() - M)
+    t = due()
+    res, ev = look(t)
+    launched("chain: signal: a signal fired after a quiet look launches, the standing metric unchanged", res, ev)
+    check("chain: signal: the launch stores the count step() read", inc()["revisit_read"]["sig.x"][4] == 1, inc()["revisit_read"])
+    IN.ack("q-1", "OPERATIONS", "waiting on the fix", path=path, now=t + M)
+    res, ev = look(due())
+    check("chain: signal: answered, no new signal: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
+    fire(due() - M)
+    res, ev = look(due())
+    launched("chain: signal: a second signal (count 1 to 2) launches again", res, ev)
+    check("chain: signal: and the count is now 2", inc()["revisit_read"]["sig.x"][4] == 2, inc()["revisit_read"])
+
+
 def test_news_each_state_event():
     table, rev, rows = at_his_rung("q-1")
     now = T0 + rev * M
@@ -1357,7 +1399,7 @@ if "--replay-batch" in sys.argv:
 for t in (test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
-          test_chains_through_step, test_each_field_of_a_reading, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
+          test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
