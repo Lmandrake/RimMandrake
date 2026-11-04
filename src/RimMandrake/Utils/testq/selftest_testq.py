@@ -189,6 +189,11 @@ def t_sweep_split():
     check(len(g) == 2 and sorted(sum(g, [])) == ["c1", "c2", "c3", "c4", "c5"], "split covers every chain once: %s" % g)
     check(any({"c2", "c3"} <= set(x) for x in g), "drivers sharing a chain stay in one job: %s" % g)
     check(T.split_sweep(d[:2], dc, ["c1", "c2"], cap_s=7200) == [["c1", "c2"]], "when it all fits, one job")
+    # TESTQ_SWEEP_FIX_EMPTY_BOX_SHIPPED: a driver whose only chains already hold a verdict (not in todo) makes no job.
+    g = T.split_sweep(d, dc, ["c1", "c2", "c3"], cap_s=3200)
+    check(all(g) and sorted(sum(g, [])) == ["c1", "c2", "c3"], "a stopped driver's bin yields no empty group: %s" % g)
+    g = T.split_sweep(d, {"a": ["c1"], "b": ["c2"], "c": ["c3"], "d": ["c4"]}, ["c1", "c2"], cap_s=7200)
+    check(g == [["c1", "c2"]], "drivers serving only settled chains cost nothing: %s" % g)
     tmp = tempfile.mkdtemp(prefix="rf_testq_split_")
     try:
         r = subprocess.run([sys.executable, TESTQ, "sweep", "FlowWorks", "--by", "BENCH"],

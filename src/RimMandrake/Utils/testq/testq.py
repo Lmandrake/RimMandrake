@@ -797,11 +797,16 @@ def split_sweep(drivers, driver_chains, chains, cap_s=WORKER_DRIVER_CAP_S):
     """TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP -> a list of chain-name lists, one per sweep job, each needing at most cap_s of
     driver time, covering every chain once. Drivers that share a chain go together (a chain selection starts every
     driver that serves any selected chain); components are packed first-fit-decreasing; chains no driver serves ride
-    with the first job. One list (all chains) when everything already fits."""
+    with the first job. One list (all chains) when everything already fits.
+    TESTQ_SWEEP_FIX_EMPTY_BOX_SHIPPED: only chains in CHAINS count; a driver serving none of them (every chain it serves
+    already holds a verdict) costs nothing and makes no group, so no returned group is ever empty."""
     need = {d["name"]: int(d.get("timeout_s") or 0) + DRIVER_SLACK_S for d in drivers or []}
+    wanted = set(chains)
     comps = []                          # [set of driver names, set of chains]
     for name, cs in (driver_chains or {}).items():
-        mine = [{name}, set(cs)]
+        mine = [{name}, set(cs) & wanted]
+        if not mine[1]:
+            continue
         for c in [c for c in comps if c[1] & mine[1]]:
             mine[0] |= c[0]
             mine[1] |= c[1]
@@ -822,7 +827,7 @@ def split_sweep(drivers, driver_chains, chains, cap_s=WORKER_DRIVER_CAP_S):
     served = set().union(*[b[1] for b in bins]) if bins else set()
     out = [[c for c in chains if c in b[1]] for b in bins]
     out[0] += [c for c in chains if c not in served]
-    return out
+    return [g for g in out if g]
 
 
 def bad_selection(mod, sel):
