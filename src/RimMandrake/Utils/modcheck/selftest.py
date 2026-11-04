@@ -609,6 +609,47 @@ def t_ensure_playing_map():
         check("runner: a fresh quicktest that still has no colonist raises", "no live colonist" in str(e), e)
 
 
+def t_preflight_accepts_restarted_map():
+    # RUNNER_COLONY_REVIVE_NOBODY_HOME: the testq preflight runs before the canary; if its map check refused
+    # 'restarted', the very restart this item asks for would still pause the lane.
+    lq = os.path.join(_HERE, "live_queue")
+    if lq not in sys.path:
+        sys.path.insert(0, lq)
+    import preflight
+
+    class J:
+        dry_run = False
+        def __init__(self): self.checks = []
+        def check(self, name, ok, detail=""): self.checks.append((name, bool(ok))); return bool(ok)
+        def note(self, k, v): pass
+
+    class Stop(Exception):
+        pass
+
+    def tool_stop(s, t):
+        raise Stop()
+
+    real_epm, real_tp = runner.ensure_playing_map, preflight.tool_present
+    try:
+        preflight.tool_present = tool_stop      # stop right after the map check: nothing past it is under test
+        verdicts = {}
+        for state in ("restarted", "playing", "started", "colonists_zero"):
+            runner.ensure_playing_map = lambda st=state: st
+            j = J()
+            try:
+                preflight.body(None, j)
+            except Stop:
+                pass
+            maps = [ok for name, ok in j.checks if name.startswith("a Playing map exists")]
+            verdicts[state] = maps[0] if len(maps) == 1 else None
+    finally:
+        runner.ensure_playing_map, preflight.tool_present = real_epm, real_tp
+    check("preflight: a map restarted for zero colonists passes the map check", verdicts["restarted"] is True)
+    check("preflight: playing/started still pass", verdicts["playing"] is True and verdicts["started"] is True)
+    check("preflight: an unknown map state fails the map check (the instrument can say no)",
+          verdicts["colonists_zero"] is False)
+
+
 def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
     """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: droid_dig_live left zero colonists, the canary after the drivers read red
     and voided the job (and the next jobs on the kept game). A driver that leaves none is named and a fresh map started;
@@ -927,6 +968,7 @@ TESTS = [
     t_run_dry_run_never_calls_subprocess,
     t_windows_python_shells_posix_scripts_through_wsl,
     t_ensure_playing_map,
+    t_preflight_accepts_restarted_map,
     t_driver_that_kills_the_colony_is_named_and_the_map_restored,
     t_ensure_test_profile,
     t_restore_full_runs_even_when_a_mod_load_fails,
