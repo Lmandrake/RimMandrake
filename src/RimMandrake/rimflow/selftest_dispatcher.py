@@ -3716,6 +3716,17 @@ def strict_roles():
     RL.ROLE_DEFAULTS = dict(RL.ROLE_DEFAULTS, caps_advisory=False, degraded_reading_ok=False)
 
 
+def test_schedule_names_no_retired_seat():
+    """FOUNDRY_SEAT_RETIRE_ALARM_STILL_MOURNING: a seat whose window the owner retired (cli.RETIRED_SEATS; FOUNDRY,
+    owner by card 2026-11-02) left in seats{} raised dead:FOUNDRY every tick and held incident seats-20261102012009
+    open on its readings. No retired seat may come back in the shipped schedule's seats or seat_restart.seats."""
+    from rimflow import cli
+    sch = shipped_schedule()
+    for where, seats in (("seats", sch.get("seats") or {}), ("seat_restart.seats", (sch.get("seat_restart") or {}).get("seats") or {})):
+        back = sorted(set(seats) & set(cli.RETIRED_SEATS))
+        check(not back, "no retired seat in the schedule's %s (back: %s)" % (where, back))
+
+
 def main():
     strict_roles()
     for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
@@ -3734,7 +3745,8 @@ def main():
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
               test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
-              test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_unring_gives_back_a_backoff_and_bad_roles_are_skipped, test_golive_m7_dst_yesterday, test_review_night_n1):
+              test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_unring_gives_back_a_backoff_and_bad_roles_are_skipped, test_golive_m7_dst_yesterday, test_review_night_n1,
+              test_schedule_names_no_retired_seat):
         try:
             t()
         except Exception as e:  # noqa: BLE001
