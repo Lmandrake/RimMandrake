@@ -457,3 +457,11 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:24:23Z","tsn":1793820263157964432}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE A1 (L2), read-only proof","ts":"2026-11-04T19:25:27Z","tsn":1793820327225578722}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:25:33Z","tsn":1793820333207804498}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-04T19:55:26Z","tsn":1793822126273135212}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:55:35Z","tsn":1793822135004357007}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP A1 (L2), read-only proof","ts":"2026-11-04T19:55:41Z","tsn":1793822141412215776}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:55:47Z","tsn":1793822147460427231}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT G1 (L1), read-only proof","ts":"2026-11-04T19:55:55Z","tsn":1793822155376740223}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:56:01Z","tsn":1793822161112324815}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE A1 (L1), read-only proof","ts":"2026-11-04T19:56:09Z","tsn":1793822169600870199}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:56:16Z","tsn":1793822176566176507}
