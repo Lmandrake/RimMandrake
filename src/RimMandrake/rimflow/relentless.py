@@ -1014,6 +1014,13 @@ class Effects(relentless_game.GameFx):
             if lost:
                 return "books %s behind: %d lines of %s not landed" % (behind, len(lost), p)
         keep = self.store.p("books_dirt", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
+        moved_out = {}      # untracked shards renamed into `keep`: a late event there is carried back after the reset
+        try:
+            return self._level_rows(rows, read, keep, moved_out, behind, shuffled)
+        finally:
+            self._carry_late(read, moved_out)
+
+    def _level_rows(self, rows, read, keep, moved_out, behind, shuffled):
         for state, p in rows:
             src = os.path.join(self.books, p)
             if p in read:   # a ledger shard: held under the flock model.append takes, so no event lands between check and restore
@@ -1024,10 +1031,11 @@ class Effects(relentless_game.GameFx):
                     if f.read() != read[p]:     # a writer came in behind the check
                         return "books %s behind: %s moved while levelling" % (behind, p)
                     os.makedirs(os.path.dirname(os.path.join(keep, p)), exist_ok=True)
-                    shutil.copy2(src, os.path.join(keep, p))
-                    if state == "??":
-                        os.remove(src)
+                    if state == "??":   # renamed, not unlinked: a writer waiting on this lock appends to the backup
+                        os.rename(src, os.path.join(keep, p))
+                        moved_out[p] = os.path.join(keep, p)
                     else:
+                        shutil.copy2(src, os.path.join(keep, p))
                         f.seek(0)
                         f.truncate()
                         f.write(head)
@@ -1048,6 +1056,22 @@ class Effects(relentless_game.GameFx):
         if shuffled:    # only now: a level that refuses above restored nothing
             self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
         return None
+
+    def _carry_late(self, read, moved_out):
+        """An event a writer appended to an untracked shard's inode after level_books renamed it away: back onto the
+        shard, under the same flock, whole lines as written. Nothing appended: nothing to do."""
+        for p, kept in moved_out.items():
+            with open(kept, "rb") as f:
+                late = f.read()[len(read[p]):]
+            if not late:
+                continue
+            fd = os.open(os.path.join(self.books, p), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX)
+                os.write(fd, late)
+            finally:
+                os.close(fd)
+            self.store.journal({"at": iso(time.time()), "do": "books_late_event_carried", "path": p, "bytes": len(late)})
 
     def flush(self):
         """Publish the shard: retried each tick until it lands, so a close never stays local."""

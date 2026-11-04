@@ -1088,6 +1088,25 @@ def t_level_books_shard_under_lock():
        and g(books, "rev-list", "--count", "HEAD..origin/main").strip() == "0", "with the shard quiet it levels")
     kept = glob.glob(fx.store.p("books_dirt", "*", shard))
     ok(len(kept) == 1, "and the restored shard is backed up: %s" % kept)
+
+    # an untracked shard origin now tracks: renamed into the backup (a writer waiting on its lock appends there), and an
+    # event that lands on that inode after the rename is carried back onto the shard
+    new = R.LEDGER_DIR + "RUNNER.jsonl"
+    put(up, new, "r\n")
+    g(up, "add", "--", new)
+    g(up, "commit", "-qm", "runner")
+    g(up, "push", "-q", "origin", "main")
+    g(books, "fetch", "-q", "origin")
+    put(books, new, "r\n")
+    ok(fx.level_books() is None and read(books, new) == "r\n", "an untracked landed shard levels")
+    kept = glob.glob(fx.store.p("books_dirt", "*", new))
+    ok(len(kept) == 1 and read(os.path.dirname(kept[0]), os.path.basename(kept[0])) == "r\n", "renamed into the backup: %s" % kept)
+    with open(kept[0], "a") as f:
+        f.write("late\n")
+    fx._carry_late({new: b"r\n"}, {new: kept[0]})
+    ok(read(books, new) == "r\nlate\n", "a late event on the renamed inode is carried back: %r" % read(books, new))
+    fx._carry_late({new: b"r\nlate\n"}, {new: kept[0]})
+    ok(read(books, new) == "r\nlate\n", "and nothing new carries nothing")
     shutil.rmtree(d, ignore_errors=True)
 
 
