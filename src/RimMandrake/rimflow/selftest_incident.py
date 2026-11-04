@@ -302,15 +302,6 @@ def test_batched_run_held_and_covers_slot():
     D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 3700, nop, nop)
     check("the held run is asked once the hour has room",
           st["roles"]["Operations"].get("run_now", {}).get("ids") == ["d-4"], st)
-    IN.append([{"ev": "opened", "id": "dn-1", "at": IN.iso(T0), "t": T0, "state": "open", "rung": 2, "cause": "dn",
-                "class": "distressed", "metrics": {"dn.m": {"class": "distressed"}}, "items": [], "reader": "Operations",
-                "told_t": T0, "rung_t": T0, "acked_t": None}])
-    pinged = []
-    st["roles"]["Operations"]["run_now_last"] = {"by": "DISPATCHER", "ids": ["dn-1"], "decided": T0 + 9,
-                                                 "outcome": "refused: daily cap"}
-    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 3800, nop, lambda sc, x, n: pinged.append(x))
-    check("a run refused on the daily cap moves its incident to him now and tells the Conductor",
-          IN.fold(IN.read_rows())[0]["dn-1"]["rung"] == IN.OWNER_RUNG and len(pinged) == 1, (IN.read_rows()[-1:], pinged))
     today = [("07:30", "economy", 1), ("19:30", "run", 1)]
     now = time.mktime(time.strptime("2026-11-01 14:00", "%Y-%m-%d %H:%M"))
     check("an incident run covers today's next slot still to come, not one already done",
@@ -323,6 +314,62 @@ def test_batched_run_held_and_covers_slot():
     t1800 = time.mktime(time.strptime("2026-11-01 18:00", "%Y-%m-%d %H:%M"))
     check("an incident run within the cover window still covers the slot it stands in for",
           RL.covered_slot({"done": {}}, today, t1800) == "19:30")
+
+
+def test_denied_goes_to_conductor_first():
+    """OPS_REFUSAL_REWIRE_TO_CONDUCTOR: a refused Operations incident run goes to the Conductor first, never straight to
+    his phone; on to the owner rung only when the Conductor role is off or its handed run is refused too."""
+    r = Rig("denied")
+    sch = r.sch
+    a = lambda rings: {"rows": [], "rings": rings, "cursor": 0, "snapshot": {"t": T0, "at": IN.iso(T0), "fresh": True, "open": [], "owner": []}}
+    nop = lambda *x: None
+    rung = lambda i: IN.fold(IN.read_rows())[0][i]["rung"]
+
+    def opened(iid):
+        IN.append([{"ev": "opened", "id": iid, "at": IN.iso(T0), "t": T0, "state": "open", "rung": 2, "cause": iid,
+                    "class": "distressed", "metrics": {iid + ".m": {"class": "distressed"}}, "items": [], "reader": "Operations",
+                    "told_t": T0, "rung_t": T0, "acked_t": None}])
+
+    def refuse(st, role, ids, t, outcome="refused: daily cap"):
+        st["roles"].setdefault(role, {}).pop("run_now", None)
+        st["roles"][role]["run_now_last"] = {"by": "DISPATCHER", "ids": ids, "decided": t, "outcome": outcome}
+
+    opened("dn-1")
+    st = {"roles": {}}
+    pinged = []
+    refuse(st, "Operations", ["dn-1"], T0 + 9)
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 10, nop, lambda sc, x, n: pinged.append(x))
+    req = st["roles"].get("Conductor", {}).get("run_now") or {}
+    check("a run refused on the daily cap goes to the Conductor first: its rung stands, a Conductor run names it",
+          rung("dn-1") == 2 and req.get("ids") == ["dn-1"] and "dn-1" in req.get("why", "") and len(pinged) == 1,
+          (IN.read_rows()[-1:], req, pinged))
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 11, nop, nop)
+    check("the same refusal is read once", rung("dn-1") == 2 and len(st["incident"].get("held") or []) == 0, st["incident"])
+    refuse(st, "Conductor", ["dn-1"], T0 + 20)
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 21, nop, nop)
+    check("the Conductor's handed run refused too: the incident goes on to the owner rung", rung("dn-1") == IN.OWNER_RUNG,
+          IN.read_rows()[-1:])
+    opened("dn-2")
+    st = {"roles": {}}
+    refuse(st, "Operations", ["dn-2"], T0 + 30, outcome="refused: expired")
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 31, nop, nop)
+    check("an expired ask is no refusal: nothing moves, no Conductor run", rung("dn-2") == 2
+          and not st["roles"].get("Conductor", {}).get("run_now"), st)
+    off = dict(sch, roles=[dict(x, enabled=False) if x["name"] == "Conductor" else x for x in sch["roles"]])
+    refuse(st, "Operations", ["dn-2"], T0 + 40)
+    D.incident_execute(a([]), off, st, "/nonexistent", T0 + 41, nop, nop)
+    check("with the Conductor role off, a refused run goes to the owner rung now", rung("dn-2") == IN.OWNER_RUNG
+          and not st["roles"].get("Conductor", {}).get("run_now"), IN.read_rows()[-1:])
+    opened("dn-3")
+    st = {"roles": {}, "incident": {"runs": [T0 + 49, T0 + 49]}}
+    refuse(st, "Operations", ["dn-3"], T0 + 50)
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 51, nop, nop)
+    check("a Conductor hand held by the hour budget waits in held, the incident unmoved",
+          rung("dn-3") == 2 and [h.get("ids") for h in st["incident"]["held"]] == [["dn-3"]], st["incident"])
+    st["incident"]["runs"] = []
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 3700, nop, nop)
+    check("the held hand is asked once the hour has room",
+          (st["roles"].get("Conductor", {}).get("run_now") or {}).get("ids") == ["dn-3"], st)
 
 
 def test_relapse():
@@ -1147,7 +1194,7 @@ def replay_batch():
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
-          test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
+          test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_chains_through_step, test_each_field_of_a_reading, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded):

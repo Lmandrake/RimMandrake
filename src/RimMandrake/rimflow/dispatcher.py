@@ -485,31 +485,99 @@ def incident_run(sch, st, role, mode, why, now, ids=None):
     return "%s run asked for" % role
 
 
-def denied_runs(sch, st, root, now, do_conductor):
-    """A run the incidents asked of Operations that the launcher REFUSED is not a silent end: the incidents it named
-    go on to the owner rung now, with the reason in their plan, and the Conductor is told (INCIDENTS_FIX_ONE_READER)."""
+def _refused_last(st, role, seen_key):
+    """-> the role's last run_now if the Dispatcher asked it and the launcher REFUSED it and no tick has read it, else
+    None. An expired ask is not a refusal: the ladder's own clock moves it."""
     ist = st.setdefault("incident", {})
-    last = ((st.get("roles") or {}).get("Operations") or {}).get("run_now_last") or {}
+    last = ((st.get("roles") or {}).get(role) or {}).get("run_now_last") or {}
     if (last.get("by") != "DISPATCHER" or not str(last.get("outcome", "")).startswith("refused")
-            or last.get("outcome") == "refused: expired"       # the ladder's own clock moves an expired ask
-            or ist.get("denied_seen") == last.get("decided")):
+            or last.get("outcome") == "refused: expired" or ist.get(seen_key) == last.get("decided")):
         return None
-    ist["denied_seen"] = last.get("decided")
+    ist[seen_key] = last.get("decided")
+    return last
+
+
+def conductor_problem(sch):
+    """-> why no Conductor run can be asked (the role is gone or off in the schedule), or None."""
+    cfg = next((r for r in (sch or {}).get("roles") or [] if isinstance(r, dict) and r.get("name") == "Conductor"), None)
+    if cfg is None:
+        return "no Conductor role in the schedule"
+    if not cfg.get("enabled", True):
+        return "the Conductor role is off in the schedule"
+    return None
+
+
+def _to_owner(incs, ids, now, plan):
+    moved = []
+    for iid in ids or []:
+        inc = incs.get(iid)
+        if inc and inc.get("state") == "open" and inc.get("rung", 0) < IN.OWNER_RUNG:
+            f = dict(rung=IN.OWNER_RUNG, rung_t=now, acked_t=None, ack_by=None, recover_by=None, recover_by_t=None, plan=plan)
+            IN.append([dict(f, ev="escalated", id=iid, at=iso(now), t=now, was_acked=False, ack_due=None, ack_due_t=None)])
+            moved.append(iid)
+    return moved
+
+
+def conductor_hand(sch, st, ids, text, now):
+    """Ask the Conductor ONE quick run for incidents a refused Operations run named. -> what happened. Its run_now
+    carries the ids, so its own refusal is read back by denied_runs and goes on to him. A pending Conductor run takes
+    the ids into its ask; one held by the hour budget waits in held and is asked next tick, never dropped."""
+    rs = st.setdefault("roles", {}).setdefault("Conductor", {})
+    if rs.get("run_now"):
+        req = rs["run_now"]
+        req["ids"] = sorted(set(req.get("ids") or []) | set(ids))
+        req["why"] = (req.get("why", "") + " | " + text)[:600]
+        return "the pending Conductor run takes %s" % ", ".join(ids)
+    res = incident_run(sch, st, "Conductor", "quick", text, now)
+    if res.startswith("held"):
+        st["incident"].setdefault("held", []).append({"how": "denied_hand", "id": ids[0], "ids": list(ids), "text": text})
+    elif rs.get("run_now"):
+        rs["run_now"]["ids"] = list(ids)
+    return res
+
+
+def denied_runs(sch, st, root, now, do_conductor):
+    """A run the incidents asked of Operations that the launcher REFUSED is not a silent end, and it is not his phone
+    either: the Conductor gets it first, as a quick run naming the incidents (their rung and ladder clock stand). They
+    go on to the owner rung now only when the Conductor is dead (its role off) or its handed run is refused too
+    (OPS_REFUSAL_REWIRE_TO_CONDUCTOR, operations_metronome_strategy_2026-11-02.md section 5: a cap-refused run moved
+    plan-20261101164253, a mechanical plan-list cause, straight to his phone)."""
+    said = []
+    ops = _refused_last(st, "Operations", "denied_seen")
+    cond = _refused_last(st, "Conductor", "denied_seen_conductor")
+    if not (ops or (cond and cond.get("ids"))):
+        return None
     rows = IN.read_rows()
     if rows is None:
         return "denied run not read: told.jsonl torn"
     incs = IN.fold(rows)[0]
-    moved = []
-    for iid in last.get("ids") or []:
-        inc = incs.get(iid)
-        if inc and inc.get("state") == "open" and inc.get("rung", 0) < IN.OWNER_RUNG:
-            f = dict(rung=IN.OWNER_RUNG, rung_t=now, acked_t=None, ack_by=None, recover_by=None, recover_by_t=None,
-                     plan="Operations run %s; moved to him now, not left waiting" % last["outcome"])
-            IN.append([dict(f, ev="escalated", id=iid, at=iso(now), t=now, was_acked=False, ack_due=None, ack_due_t=None)])
-            moved.append(iid)
-    do_conductor(sch, {"kind": "incident:denied", "why": "Operations run for %s %s" % (
-        ", ".join(last.get("ids") or []) or "incidents", last["outcome"]), "raise_first": "An incident run was denied."}, now)
-    return "Operations run denied (%s): %s to the owner rung" % (last["outcome"], ", ".join(moved) or "none open")
+    if cond and cond.get("ids"):
+        moved = _to_owner(incs, cond["ids"], now, "Operations run refused, and the Conductor run %s too; moved to him now"
+                          % cond["outcome"])
+        do_conductor(sch, {"kind": "incident:denied", "why": "Conductor run for %s %s" % (", ".join(cond["ids"]),
+                     cond["outcome"]), "raise_first": "An incident run was denied twice."}, now)
+        said.append("Conductor run denied (%s): %s to the owner rung" % (cond["outcome"], ", ".join(moved) or "none open"))
+    if ops:
+        live = [i for i in ops.get("ids") or [] if (incs.get(i) or {}).get("state") == "open"
+                and (incs.get(i) or {}).get("rung", 0) < IN.OWNER_RUNG]
+        dead = conductor_problem(sch)
+        do_conductor(sch, {"kind": "incident:denied", "why": "Operations run for %s %s" % (
+            ", ".join(ops.get("ids") or []) or "incidents", ops["outcome"]), "raise_first": "An incident run was denied."}, now)
+        if dead:
+            moved = _to_owner(incs, live, now, "Operations run %s and %s; moved to him now" % (ops["outcome"], dead))
+            said.append("Operations run denied (%s), %s: %s to the owner rung" % (ops["outcome"], dead,
+                                                                                 ", ".join(moved) or "none open"))
+        elif live:
+            text = ("INCIDENTS %s: the Operations run for them was %s, so they come to you first, not to him. Take them "
+                    "in order (rimflow incidents): fixed, say so; else rimflow ack <id> --plan \"<next>\"; and if one "
+                    "must reach him, rimflow incident-line <id> \"<line>\"." % (", ".join(live), ops["outcome"]))
+            IN.append([dict(ev="handed", id=i, at=iso(now), t=now, handed="Operations run %s; handed to the Conductor"
+                            % ops["outcome"]) for i in live])
+            said.append("Operations run denied (%s): %s to the Conductor first; %s" % (
+                ops["outcome"], ", ".join(live), conductor_hand(sch, st, live, text, now)))
+        else:
+            said.append("Operations run denied (%s): none open" % ops["outcome"])
+    return "; ".join(said)
 
 
 def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
@@ -536,6 +604,9 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
             said.append(res)
             if res.startswith("held"):
                 ist["held"].append(r)           # a held run is asked again, never dropped
+        elif r["how"] == "denied_hand":
+            said.append(conductor_hand(sch, st, r["ids"], r["text"], now))
+            continue
         elif r["how"] == "fresh_run":
             fresh.append(r)                     # every fresh-run ring of this pass is ONE Operations run
         said.append("%s: %s" % (r["id"], r["how"]))

@@ -1,0 +1,1 @@
+A new alarm kind journaled by relentless.py (restore_incomplete, 7684d1bcbe) shipped with no alarm_routes.json route, turning selftest_incident red on origin/main ('every alarm kind is in the routing table'). Whoever adds an alarm kind runs selftest_incident.py, not only the selftest of the file they touched.
