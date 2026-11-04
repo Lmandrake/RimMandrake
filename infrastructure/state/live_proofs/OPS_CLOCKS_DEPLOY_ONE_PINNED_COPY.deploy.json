@@ -1,0 +1,9 @@
+{
+ "deploy": "/home/mandrake/rm/dispatch",
+ "head": "44b1ec87f1807d61c5796f74a43c04bc05965174",
+ "src_tree": "01c678ee1c71cc7d98bd91b975a0b3c3e9f5f8d0",
+ "porcelain_src": [],
+ "uid": 1000,
+ "taken": 1793763366,
+ "taken_utc": "2026-11-04T03:36:06Z"
+}

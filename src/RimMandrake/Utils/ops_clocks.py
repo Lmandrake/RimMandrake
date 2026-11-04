@@ -9,6 +9,10 @@ src/RimMandrake/Utils/systemd/ops_clocks.json; `RM_OPS_DEPLOY` overrides the dep
                              exists, the deploy holds no local edits under src/, and every loaded rm-*/testq-*/
                              timer-guard/account-plan unit is a clock or named in "outside"; else exit 1, one line each
     ops_clocks.py deploy     print the deploy path (installers default their --deploy to it)
+    ops_clocks.py snapshot   record the deploy's HEAD and `git status --porcelain -- src` in SNAPSHOT (commit it), for
+                             a checker that cannot read the deploy: there `check` judges the pinned clause from that
+                             reading (younger than SNAPSHOT_MAX_H hours, HEAD an ancestor of the checker's HEAD,
+                             no local edit) and says so on its last line; everything systemd shows is still read live
 """
 import fnmatch
 import json
@@ -16,12 +20,16 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 CONF = HERE / "systemd" / "ops_clocks.json"
 UNIT_GLOBS = ("rm-*", "testq-*", "timer-guard*", "account-plan*")
 EXEC_KEYS = ("ExecStart", "ExecStartPre", "ExecStartPost", "ExecStop", "ExecStopPost", "ExecReload")
+REPO = HERE.parents[2]
+SNAPSHOT = REPO / "infrastructure/state/live_proofs/OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY.deploy.json"
+SNAPSHOT_MAX_H = 48
 CODE_PATH = re.compile(r"(/[^\s'\";]*?)/src/RimMandrake/")   # the checkout a script path lives in
 
 
@@ -99,12 +107,69 @@ def deploy_dirty(dep):
     return ["local edit in the deploy: %s" % ln for ln in r.stdout.splitlines()]
 
 
-def check(conf):
+def snapshot_path():
+    return Path(os.environ.get("RM_OPS_SNAPSHOT") or SNAPSHOT)
+
+
+def _git(dep, *a):
+    return subprocess.run(["git", "-C", str(dep), *a], capture_output=True, text=True, timeout=60)
+
+
+def take_snapshot(dep, out=None):
+    """Read the deploy (which must be readable here) and write the reading; returns it."""
+    if not (Path(dep) / "src/RimMandrake").is_dir():
+        raise SystemExit("deploy %s holds no src/RimMandrake" % dep)
+    st = _git(dep, "status", "--porcelain", "--", "src")
+    if st.returncode:
+        raise SystemExit("git status in the deploy failed: %s" % st.stderr.strip()[:200])
+    snap = {"deploy": str(dep).rstrip("/"), "head": _git(dep, "rev-parse", "HEAD").stdout.strip(),
+            "src_tree": _git(dep, "rev-parse", "HEAD:src").stdout.strip(),
+            "porcelain_src": st.stdout.splitlines(), "uid": os.getuid(), "taken": int(time.time()),
+            "taken_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    p = Path(out) if out else snapshot_path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(snap, indent=1) + "\n", encoding="utf-8")
+    return snap
+
+
+def judge_snapshot(snap, dep, now=None, repo=REPO):
+    """Pure but for one `git merge-base --is-ancestor`: problems with a recorded reading of an unreadable deploy."""
+    now = time.time() if now is None else now
+    probs = []
+    if snap.get("deploy", "").rstrip("/") != str(dep).rstrip("/"):
+        probs.append("snapshot is of %s, not the deploy %s" % (snap.get("deploy"), dep))
+    age_h = (now - snap.get("taken", 0)) / 3600.0
+    if not 0 <= age_h <= SNAPSHOT_MAX_H:
+        probs.append("snapshot is %.1f h old (limit %d h): rerun `ops_clocks.py snapshot` where the deploy is readable"
+                     % (age_h, SNAPSHOT_MAX_H))
+    head = snap.get("head", "")
+    if not re.fullmatch(r"[0-9a-f]{40}", head) or _git(repo, "merge-base", "--is-ancestor", head, "HEAD").returncode:
+        probs.append("snapshot HEAD %r is not an ancestor of this checkout's HEAD" % head)
+    probs += ["local edit in the deploy (snapshot): %s" % ln for ln in snap.get("porcelain_src", ["?"])]
+    return probs
+
+
+def readable(dep):
+    return os.access(dep, os.R_OK | os.X_OK)
+
+
+def check(conf, notes=None):
     dep = deploy(conf)
     probs = []
-    if not (Path(dep) / "src/RimMandrake").is_dir():
+    if Path(dep).exists() and not readable(dep):
+        sp = snapshot_path()
+        try:
+            snap = json.loads(sp.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as e:
+            return ["deploy %s is unreadable here and its snapshot %s cannot be read (%s)" % (dep, sp, e)]
+        probs += judge_snapshot(snap, dep)
+        if notes is not None:
+            notes.append("deploy unreadable here: pinned clause judged from snapshot %s taken %s by uid %s at %s"
+                         % (sp.name, snap.get("taken_utc"), snap.get("uid"), str(snap.get("head", ""))[:10]))
+    elif not (Path(dep) / "src/RimMandrake").is_dir():
         return ["deploy %s holds no src/RimMandrake" % dep]
-    probs += deploy_dirty(dep)
+    else:
+        probs += deploy_dirty(dep)
     for name, trigger in sorted(conf["clocks"].items()):
         r = _sc("cat", name + ".service")
         if r.returncode:
@@ -126,14 +191,21 @@ def main(argv=None):
     if cmd == "deploy":
         print(deploy(conf))
         return 0
+    if cmd == "snapshot":
+        snap = take_snapshot(deploy(conf))
+        print("snapshot %s: deploy %s at %s, %d local edit(s) under src/"
+              % (snapshot_path(), snap["deploy"], snap["head"][:10], len(snap["porcelain_src"])))
+        return 0
     if cmd != "check":
         print(__doc__)
         return 2
-    probs = check(conf)
-    head = subprocess.run(["git", "-C", deploy(conf), "log", "-1", "--format=%h"], capture_output=True, text=True,
-                          timeout=30).stdout.strip()
+    notes = []
+    probs = check(conf, notes)
+    head = _git(deploy(conf), "log", "-1", "--format=%h").stdout.strip() if readable(deploy(conf)) else ""
     for p in probs:
         print("FAIL " + p)
+    for n in notes:
+        print("NOTE " + n)
     print("%s: %d Operations clocks, deploy %s at %s, %d problem(s)"
           % ("OK" if not probs else "FAIL", len(conf["clocks"]), deploy(conf), head or "?", len(probs)))
     return 1 if probs else 0
