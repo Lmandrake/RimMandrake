@@ -502,6 +502,11 @@ def run(root: Path, *args, extra=None, state=None, timeout=240):
                RM_SELFTEST_LOCK=str(root.parent / f"{root.name}.lock"), RM_SELFTEST_NO_HARNESS="1",
                RM_SELFTEST_KNOWN_RESULTS="1", RM_SELFTEST_CACHE_STORE=str(root.parent / f"{root.name}.cache"),
                SELFTEST_TIMINGS_FILE=str(root.parent / f"{root.name}.timings.json"))
+    # The temp dir sits on the fixture's filesystem: selftest_renamed os.rename()s a fixture file into a mkdtemp dir,
+    # which is EXDEV (a CRASH) when the caller's TMPDIR is the tmpfs /tmp, as in the nightly sweep (2026-11-04).
+    tmp = root.parent / f"{root.name}.tmp"
+    tmp.mkdir(parents=True, exist_ok=True)
+    env["TMPDIR"] = str(tmp)
     env.update(extra or {})
     p = subprocess.run([sys.executable, str(RUNNER), *args], cwd=root, env=env, capture_output=True, text=True,
                        timeout=timeout)
