@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 500000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-04T12:02:16Z",
+    "kind": "helper",
+    "ref": "script_audit",
+    "stage": 0,
+    "tokens": 113904
+   }
+  ],
   "reserve": 50000,
-  "spent": 0
+  "spent": 113904
  },
  "history": [
   {
@@ -12,13 +20,42 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 500000 (reserve 50000)"
+  },
+  {
+   "at": "2026-11-04T11:55:59Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1793793342, stage 0, budget 450000"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/FlowWorks",
  "recovery": [],
  "results": [],
- "running": null,
+ "running": {
+  "at": "2026-11-04T11:55:59Z",
+  "inputs": {
+   "exam": null,
+   "floor": null,
+   "owner": "2e75412d761a144d24ccee6abcb3c6e4b310748b1a79bc1f4b15b326e9bf4ad1",
+   "root": null,
+   "scenes": null,
+   "sheet": null,
+   "tree": null
+  },
+  "manifest": {
+   "designer.md": "66ff37dbd7ac28e780a0e7829755cc07bacff2ca6e54480c1bc7b2f489c5b84b",
+   "designer_grounding.md": "c207121b0d1bf63d17841dde6904a760fc5e26518c3abcb080e72399ed84d2e6",
+   "designer_scene_contract.md": "f18f957919dee3760365bebdf9d44313d0d8336546b9463c424aa9b52649392b"
+  },
+  "owner_uncited": [
+   "1793766819481702813",
+   "1793793310786156340"
+  ],
+  "reserved": 450000,
+  "run": "rm-role-designer-1793793342",
+  "stage": 0
+ },
  "schema": 1,
  "stage": 0,
  "status": "ready"

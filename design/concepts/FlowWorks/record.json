@@ -1,0 +1,766 @@
+{
+ "scope": [
+  {
+   "id": "sc_pass_asked",
+   "text": "He asked for this deep pass on FlowWorks among the four recently touched mods, and picked it by card 2026-11-04 03:53",
+   "source": [
+    "OWNER:1793766819481702813",
+    "OWNER:1793793310786156340"
+   ],
+   "speaker": "owner"
+  },
+  {
+   "id": "sc_experience",
+   "text": "The canal experience in his words (walk ## the experience): dig from an ambient source, flows at its viscosity, limited vs limitless, partial fill, reservoir pays, flammable canals burn and light the source, slime nearly uncrossable, natural irrigation",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md:77"
+   ],
+   "speaker": "agent"
+  },
+  {
+   "id": "sc_ranking",
+   "text": "Defense first, then irrigation, then industry, then terraforming (ruling 1)",
+   "source": [
+    "design/RimMandrake/flowworks_mod_definition.md:52"
+   ],
+   "speaker": "agent"
+  },
+  {
+   "id": "sc_stock",
+   "text": "Every source is stock and refills slowly (rulings 2 and 4)",
+   "source": [
+    "design/RimMandrake/flowworks_mod_definition.md:55"
+   ],
+   "speaker": "agent"
+  },
+  {
+   "id": "sc_one_surface",
+   "text": "North star checks level surfaces",
+   "source": [
+    "OWNER:1792258162801304562"
+   ],
+   "speaker": "owner"
+  },
+  {
+   "id": "sc_hoses_here",
+   "text": "Hoses belong to FlowWorks; GSS is cables only",
+   "source": [
+    "OWNER:1791668361069985398",
+    "OWNER:1792127026346111603"
+   ],
+   "speaker": "owner"
+  }
+ ],
+ "decisions": [],
+ "asks": [
+  {
+   "id": "ask_irrigation",
+   "status": "draft",
+   "about": [
+    "inv_irrigation"
+   ],
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md:101"
+   ],
+   "text": "Picture a field beside a filled canal in a dry summer. Today only flood water that soaks into the ground waters plants (and only with Explosive Growth loaded). Is the canal itself meant to water the field beside it, and how far from the bank?"
+  },
+  {
+   "id": "ask_defense_story",
+   "status": "draft",
+   "about": [
+    "inv_flow_level",
+    "inv_stock",
+    "inv_fire"
+   ],
+   "source": [
+    "design/RimMandrake/flowworks_mod_definition.md:69"
+   ],
+   "text": "Walk me through the raid you want FlowWorks to win: where is the canal, what is in it, when do you open it, and what do the raiders do? I want the one scene that, if it fails, means FlowWorks failed you."
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_dig_depth",
+   "what": "Dig, deepen and fill in: Dig canal designator, work giver and job; depth ladder D1-D4 (Empty/Mid/Deep/Superdeep), deeper digs to 8 m, restore ground, fill-in displacing liquid, digging takes hours",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks",
+    "src/RimMandrake/FlowWorks/Source/Designator_DigCanal.cs",
+    "src/RimMandrake/FlowWorks/Source/JobDriver_DigCanal.cs",
+    "src/RimMandrake/FlowWorks/Source/WorkGiver_DigCanal.cs",
+    "src/RimMandrake/FlowWorks/Source/Designator_FillInCanal.cs",
+    "src/RimMandrake/FlowWorks/Source/Designator_RestoreGround.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigLabor.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
+    "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json"
+   ],
+   "note": "core rows S1_dig_ladder, E8_player_dig. live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_flow_level",
+   "what": "Liquid flows from a body into dug ground and every connected still body stands at one level (decilitre level solve, flow order, large networks with moving seams, thick-liquid creep, fill tiers incl. very-shallow)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelSolve.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelPour.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+    "ITEM:FLOWWORKS_CHANNEL_OSCILLATION_1",
+    "ITEM:FLOWWORKS_SHARED_SOURCE_STALL_1",
+    "ITEM:FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL",
+    "ITEM:FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK",
+    "ITEM:FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS",
+    "ITEM:FLOWWORKS_ORACLE_SYNC_V2_MISSES_THE_CREEP",
+    "ITEM:FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS",
+    "ITEM:FLOWWORKS_VERYSHALLOW_FIX_RESIDUE_GAP"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792258162801304562",
+    "OWNER:1790949165226480131"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
+    "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json",
+    "src/RimMandrake/FlowWorks/northstar/level_water.py"
+   ],
+   "note": "offline oracle + kernel parity in validation_v2 O-tier. live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_stock",
+   "what": "Every source is stock: bodies formed from terrain, limitless when touching the map edge, debit at pulse boundaries, recession / drawdown, refill by rain and season, 'Endless' readout over never-drying water",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidBody.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WaterBodyMath.cs",
+    "ITEM:FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY",
+    "ITEM:FLOWWORKS_RAIN_SETTING_CALLSITES_FIX_DRIFT",
+    "ITEM:FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "design/RimMandrake/flowworks_mod_definition.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json"
+   ],
+   "note": "S5_sticky_limitless FAILed in the last core run; deep_lake_proof DL_shallow_dries_first FAIL (DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE). live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_overflow_sheet",
+   "what": "Overspill: liquid over open ground as a sheet/film, soaks in, kills crops under standing overflow after a week, audited for every FlowWorks liquid; legacy Flood_FlowWorks temporary-terrain release",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Flood_FlowWorks.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792701721547462029"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/sheet_overflow_proof.py"
+   ],
+   "note": "canal_overflow SAVE_LOAD_CONTINUES_IDENTICAL failed 7x (FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES, open)"
+  },
+  {
+   "id": "inv_irrigation",
+   "what": "Plants near a filled canal act watered (his 2026-09-16 experience text); ruling 36 cut only the visible sign",
+   "impl": "unknown",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs",
+    "src/RimMandrake/FlowWorks/Source/Swale/RM_Swale.cs"
+   ],
+   "proof": "missing",
+   "scope": "open_question",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "design/RimMandrake/flowworks_mod_definition.md:118"
+   ],
+   "speaker": "agent",
+   "note": "What exists: overflow soak irrigates via Explosive Growth when loaded (sheetIrrigates), and the swale walks fertility. Canal-side watering itself: not found in a grep of Source for 'irrigat'; spec section 4 and 11 say UNBUILT here, solved in CrackedLands. See contradiction c_irrigation."
+  },
+  {
+   "id": "inv_liquid_roster",
+   "what": "Liquid roster and faces: LiquidDef/FluidDef registry, every supported liquid and fuel considered for floods, rain, rivers, lakes and oceans; donor terrain dependencies removed",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/FluidDef.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidDef.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidProperties.cs",
+    "ITEM:FLOWWORKS_LIQUID_FACES_1",
+    "ITEM:FLOWWORKS_DONOR_AFFORDANCE_GAP_1",
+    "ITEM:FLOWWORKS_ALPHABIOMES_RETIRE_GHOST_TERRAINS"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md"
+   ],
+   "speaker": "agent",
+   "note": "offline: selftest_flowworks_gpt_b (hazardous fill tiers). live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_fire",
+   "what": "Flammable liquid in a canal ignites from a real cause, burns long, runs back to the reservoir, leaves a spent channel; corrosion, heat, ice melting ride the same liquid properties",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FireMath.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidIgnition.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidCorrosion.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidHeat.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_IceMelter.cs",
+    "ITEM:FLOWWORKS_ENGINE_OFF_SCHEDULE_1"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py"
+   ],
+   "note": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED: liquid_ignition, liquid_corrosion toggle chains never measured a row"
+  },
+  {
+   "id": "inv_slime",
+   "what": "Slime is slippery: pawns in slime-filled dug ground (and natural slime pools) slip and slide back on the climb out",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RM_SlimeSlip.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_SlimeMath.cs"
+   ],
+   "proof": "missing",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792156099751111322"
+   ],
+   "speaker": "agent",
+   "note": "spec: BUILT OFFLINE, no live proof yet; chain slime_slip in northstar/extensions.py"
+  },
+  {
+   "id": "inv_pits",
+   "what": "The pit is a superdeep cell: falls only when forced/blown in (enemies also when concealed), pit cover that drops occupants, spikes, scorch, lip occlusion so the occupant reads as down in the hole, stuck alert, pit rooms",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitLipOcclusion.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_Spikes.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitDepthDraw.cs",
+    "ITEM:FLOWWORKS_PIT_FALL_ONLY_FORCED_1",
+    "ITEM:FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED",
+    "ITEM:FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED",
+    "ITEM:FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1",
+    "ITEM:FLOWWORKS_PIT_PAWN_ROWS_RED_1",
+    "ITEM:FLOWWORKS_FORCED_PIT_FALL_ROW_1",
+    "ITEM:FLOWWORKS_V2_FIX_PIT_ROWS_RESCUE_LADDER"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1791304039837927694",
+    "OWNER:1792336669123652661"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json",
+    "src/RimMandrake/FlowWorks/northstar/pit_superdeep_walk.py",
+    "src/RimMandrake/FlowWorks/northstar/proof_pit_lip_cover.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_pit_access",
+   "what": "Getting in and out: wall ladder on rails (raise from below or above, lower only from above), portable/rescue ladder, climbing gear, wall scaling, raider trenches, flyers/jumpers/floaters cross pits freely",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderUtility.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FallRails.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccess.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+    "ITEM:FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE",
+    "ITEM:FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792553539545734826",
+    "OWNER:1792338532028995451"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/climb_proof.py",
+    "src/RimMandrake/FlowWorks/northstar/rail_walk_live.py",
+    "src/RimMandrake/FlowWorks/northstar/raid_ladder_live.py",
+    "src/RimMandrake/FlowWorks/northstar/pit_rescue_live.py"
+   ],
+   "note": "flight crossing: state reads only, never a live flyer test without him. live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_doors",
+   "what": "Flow doors: sealed sluice gate holds liquid, grate gate always passes it (two kinds of door)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FlowDoors.cs",
+    "ITEM:FLOWWORKS_SLUICE_TWO_DOORS_1",
+    "ITEM:FLOWWORKS_DOOR_FAMILY_1"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1791304039105250167"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_bridges",
+   "what": "Spans over dug ground and water: suspension bridges (deck hung between anchors, pawns walk under), drawbridges with winch and raid behaviour, span decks, guardrails",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_MapComponent_SuspensionBridges.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/RM_Drawbridges.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_SpanDeck.cs",
+    "ITEM:FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792261641497137424",
+    "OWNER:1792352747799411210",
+    "OWNER:1792651866767938220"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py",
+    "src/RimMandrake/FlowWorks/northstar/drawbridge_proof.py"
+   ],
+   "note": "drawbridges judged in game (owner 2026-10-22). live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_trench_cover",
+   "what": "Dug ground gives cover: a pawn in a hole is covered by higher neighbouring ground like a sandbag; raiders shelter only where they can climb out",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RM_TrenchCover.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TrenchCoverMath.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py",
+    "src/RimMandrake/FlowWorks/northstar/raid_trench_proof.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_swim",
+   "what": "The water ladder: wading costs, swimming at 2 m and deeper, drowning slowly in shallows (default on), recreational swimming refused in hazardous liquids, the river sweeps pawns away and returns them (taken-by-land service)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs",
+    "src/RimMandrake/FlowWorks/Source/Swimming/RM_WetCosts.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WaterLadder.cs",
+    "src/RimMandrake/FlowWorks/Source/TakenByLand/RM_TakenByLand.cs",
+    "src/RimMandrake/FlowWorks/Source/ManyWaters/RM_NoRecreationalSwimExtension.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792336669123652661"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/wet_costs_live.py",
+    "src/RimMandrake/FlowWorks/northstar/water_looks_proof.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_hoses",
+   "what": "Flexible hoses (moved from Gimme Some Slack): reel, deploy by dragging the free end, plumps when flowing, routes round walls, relay chains, free-end roles, hose holds and spills liquid, four looks",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Hose/CompHoseReel.cs",
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseFlow.cs",
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseCarry.cs",
+    "ITEM:FLOWWORKS_HOSE_DEPLOY_DRAG_1",
+    "ITEM:FLOWWORKS_HOSE_FIX_NAN_WINDING_INSTANT",
+    "ITEM:FLOWWORKS_HOSE_FIX_PAUSE_REMESH_EVERY_FRAME",
+    "ITEM:FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1791668361069985398",
+    "OWNER:1792127026346111603"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/proof_hose.py",
+    "src/RimMandrake/FlowWorks/validation_hose_offline.py"
+   ],
+   "note": "last proof_hose result 2026-10-25 (proof_hose_20261025T0216_run4.json); hose girth still unsettled by eye"
+  },
+  {
+   "id": "inv_liquid_net",
+   "what": "Pipes, pumps and tanks as one liquid network: universal pipe in four looks, components (tanks attach, never conduct), tank jobs Store/Fill/Empty/Dump, a tank passes liquid to a screwed-in hose with no pump, pump is the only mover out of the world, one port per pump side, VE pipe adapters (Send/Take/Shut), conserved transfers, spills, theft",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidTransfer.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidPipeAdapter.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidTheft.cs",
+    "ITEM:FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+    "ITEM:FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES",
+    "ITEM:FLOWWORKS_AB_FINDMOD_DELETE_LAST_HOLDOUT"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1791703998985967897",
+    "OWNER:1792553540986471343"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py",
+    "src/RimMandrake/FlowWorks/northstar/pond_pump.py"
+   ],
+   "note": "pump_pours_back last FAIL 3.00 to 3.00, UNMEASURED since (FLOWWORKS_PUMP_FIX_POURS_BACK_STILL_THREE). live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_converters",
+   "what": "Machines that change liquids: converters and reactions on the network",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+    "ITEM:FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST",
+    "ITEM:FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE",
+    "ITEM:FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/liquid_checks.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_bottles_thirst",
+   "what": "Bottles, barrels and thirst: own thirst need, bottles of any liquid filled/emptied/washed by jobs, material picked by the player, Dubs Bad Hygiene Lite compatible but not required, pipe faucet",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Thirst/Need_RM_Thirst.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/JobDriver_FillBottle.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerMaterials.cs",
+    "src/RimMandrake/FlowWorks/Source/Thirst/Building_RM_PipeFaucet.cs",
+    "ITEM:FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY",
+    "ITEM:FLOWWORKS_BOTTLED_LIQUID_TYPE_MISSING_1"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792184553543922840",
+    "OWNER:1791354883289378977"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/thirst_live.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_drilling",
+   "what": "Drilling liquids on the right maps (subsurface survey), the bleed well",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+    "src/RimMandrake/FlowWorks/Source/Drilling/RM_MapComponent_SubsurfaceLiquid.cs",
+    "ITEM:FLOWWORKS_KEYS_PRUNE_DEAD_DRILL_STRINGS"
+   ],
+   "proof": "missing",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "design/RimMandrake/flowworks_mod_definition.md:58"
+   ],
+   "speaker": "agent",
+   "note": "liquid_drilling toggle chain never measured a row (FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED)"
+  },
+  {
+   "id": "inv_sprinklers",
+   "what": "Sprinkler heads on a universal pipe, needing a pump on the network",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Sprinklers/Building_RM_SprinklerHead.cs",
+    "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792179322801352027"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/sprinkler_live.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_rivers",
+   "what": "Rivers: current, weirs, ferry and levee, silt, river colours, river steam",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorks.cs",
+    "src/RimMandrake/FlowWorks/Source/Rivers/RM_MapComponent_RiverCurrent.cs",
+    "src/RimMandrake/FlowWorks/Source/RiverColors/RM_RiverColors.cs",
+    "src/RimMandrake/FlowWorks/Source/ManyWaters/RiverSteamHook.cs",
+    "ITEM:FLOWWORKS_RIVERCOLOR_FIX_DICT_SELF_ENUM"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792204040634108642"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/extensions_rivers.py",
+    "src/RimMandrake/FlowWorks/northstar/river_scenes_walk.py"
+   ],
+   "note": "RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED filed. live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_map_controls",
+   "what": "Map-maker controls: Source and Sink taps for any FlowWorks liquid at a set rate, level holder, current painter, edge setter, flow meter, thermostat, timer switch",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/MapControls/RM_FlowTaps.cs",
+    "src/RimMandrake/FlowWorks/Source/MapControls/RM_MapControls.cs"
+   ],
+   "proof": "missing",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1792156168633267106"
+   ],
+   "speaker": "agent"
+  },
+  {
+   "id": "inv_quarry",
+   "what": "Digging uncovers local materials (quarry finds, deep stone), spoil",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerWorks.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigSpoil.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/quarry_find_live.py",
+    "src/RimMandrake/FlowWorks/northstar/deep_stone_live.py"
+   ],
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+  },
+  {
+   "id": "inv_settings",
+   "what": "Superb Mod Settings: master switches, per-section reset, units in metres/litres, search, mid-game toggle safety",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_SettingsReset.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_SettingsSearchIndex.cs",
+    "ITEM:FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET",
+    "ITEM:FLOWWORKS_SETTINGS_POLISH_SUPERDEEP_LEAKS",
+    "ITEM:FLOWWORKS_SETTINGS_SCOPE_RESET_1",
+    "ITEM:FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER",
+    "ITEM:FLOWWORKS_SETTINGS_WIRE_AFTER_TANKS",
+    "ITEM:FLOWWORKS_LABELS_POLISH_LEVELS_TO_METRES",
+    "ITEM:FLOWWORKS_TOGGLE_MEND_MIDGAME_LEFTOVERS"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "CLAUDE.md"
+   ],
+   "speaker": "agent",
+   "proof_evidence": [
+    "src/RimMandrake/FlowWorks/northstar/settings_registry.py"
+   ],
+   "note": "twelve settings screens still lack Reset (FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING, open)"
+  },
+  {
+   "id": "inv_looks",
+   "what": "The look: depth legible by wall faces, water looks per depth (silt at 0.5 m), liquid colours, pipe/reel/tank styles, scorch, pit not a vanilla trap",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/FlowWorks/Source/RM_WaterLooks.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidLooks.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/PipeStyles.cs",
+    "src/RimMandrake/FlowWorks/Textures"
+   ],
+   "proof": "exercised_unrecorded",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md",
+    "OWNER:1791344924227351587",
+    "OWNER:1792641789435201800"
+   ],
+   "speaker": "agent",
+   "note": "most north-star bars are visual; he judged looks on walks (2026-10-07 'Yes, that looks great!', 2026-10-21/22 girth rulings) but no bar records a current pass"
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "c_irrigation",
+   "text": "His experience text promises canal-side irrigation; spec section 4 says UNBUILT in FlowWorks (solved in CrackedLands, section 11); the code irrigates only from overflow soak via Explosive Growth. Unsettled whether canal-side watering is still owed.",
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md:101",
+    "design/RimMandrake/flowworks_mod_definition.md:118",
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs:32"
+   ],
+   "core": false,
+   "resolved": false
+  },
+  {
+   "id": "c_spec_stale",
+   "text": "The spec's mechanics table (section 4) and the walk's status-hint line still describe the reservoir era and 'zero bespoke textures'; the code has moved far past both. Stage 3 must write from code + his rulings, not that table.",
+   "source": [
+    "design/RimMandrake/flowworks_mod_definition.md:97",
+    "design/validation_walks/RimMandrake/FlowWorks.md:7"
+   ],
+   "core": false,
+   "resolved": false
+  },
+  {
+   "id": "c_proof_stale",
+   "text": "The north star reads VALIDATED but no live row has a result at the current mod hash, and the lessons doc measured that in the validated walk only 4 of 43 bars proved anything. Built is not proven.",
+   "source": [
+    "ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH",
+    "design/RimMandrake/mod_definition_lessons_2026-11-02.md:104"
+   ],
+   "core": false,
+   "resolved": false
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "ITEM:FLOWWORKS_DLL_REBUILD_AFTER_SHARED_COMMIT",
+   "not_a_capability": "build hygiene: rebuilt the DLL + .srchash after another helper's commit"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_MECHANICS_TABLE_STALE_1",
+   "not_a_capability": "doc correction of the spec's mechanics table (section 4)"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_OWNER_RECONCILE_CUTOVER_STALE",
+   "not_a_capability": "seat-ownership prose reconciliation"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS",
+   "not_a_capability": "test hygiene: selftests leaking temp files"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_STOCK_BISECT_RED_CHECK",
+   "not_a_capability": "proof harness: bisected a red stock selftest check"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_NORTHSTAR_BASELINE_RUN_1",
+   "not_a_capability": "proof harness: first timed live baseline of the core proof"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_NORTHSTAR_REVALIDATE_1",
+   "not_a_capability": "north-star bars merged and re-validated by him (the walk's ## north star)"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_NORTHSTAR_SITE_PREP_1",
+   "not_a_capability": "proof harness: golden trial site, manifest, preflight refusing a dirty site (northstar/prep_site.py, preflight_flowworks.py); counted in the script audit"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_NORTHSTAR_WIRE_1",
+   "not_a_capability": "proof harness: validation.py rewritten so every bar and toggle is claimed"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_PROBES_MEND_HOOK_HAZARDS",
+   "not_a_capability": "proof harness: proof hooks (map-switch mailbox, destructive filltank, overflow guard)"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_ROWS_FILL_STAGE_THE_UNSEEN",
+   "not_a_capability": "review staging: owner_review_stage.py rows for the bar sitting"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_LIQUID_KITS_WIRE_NO_REVIEW_ROW",
+   "not_a_capability": "review sheet row in human_review.py for the liquid kits"
+  },
+  {
+   "ref": "ITEM:FLOWWORKS_TANK_LOOP_ROW_WRONG_1",
+   "not_a_capability": "proof harness: a toggle row that asserted a mechanic that does not exist"
+  }
+ ],
+ "failure_modes": [
+  "It works but does not read: the state is right while the screen shows something else (a pit that reads as a labelled trap, a canal that reads as gravel, deep water a pawn just walks out of). In the validated walk only 4 of 43 bars proved anything, so 'passing' can hide this.",
+  "The defense spine does not bite in a real raid: the canal is empty or level-broken when the raid comes, the source never visibly pays or refills, fire or slime do not deny the corridor, raiders path round or shelter in the trench. Then 'hold the gate' is not a decision and the mod's reason to exist is gone.",
+  "Breadth breaks the colony: pits, hoses, pipes, bridges, thirst, rivers and sprinklers each pass alone but fight together on a long game (hoses under walls, full-list speed down from 346 to ~120 TPS, toggles leaving leftovers, a reload that diverges, a port losing what worked). He experiences it as FlowWorks being broken, whatever any one row says."
+ ],
+ "script_audit": {
+  "file": "design/concepts/FlowWorks/script_audit.json",
+  "summary": "175 scenes across validation*.py and the northstar runners: 59 lack an asserted start (prepare_site asserts cleared+dry, wet/fire scenes do not re-read what they staged), 86 lack a discriminating control (64 none, 22 weak), 19 no restore and 96 partial (fresh throwaway maps left staged; settings poked and not restored, cf. FLOWWORKS_PROOF_POKES_RESTORE_PRIOR), hold decided by none. Worst: validation_hose.py run_live/run_relay/run_maze; live_session.py b6_flood (no flood-without-canal control); river_scenes_walk.py R2/R4/R5 repaint the shared river map with no restore.",
+  "caveat": "165 of 175 rows machine-classified, 15 read by hand, 2 of 5 spot-checks misclassified: expect 10-20% wrong rows. Stage 3 re-reads each scene it files a build item for.",
+  "source": "design/concepts/FlowWorks/script_audit.json"
+ }
+}

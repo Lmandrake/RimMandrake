@@ -1,0 +1,2 @@
+{"run": "rm-role-designer-1793793342", "stage": 0, "outcome": "done",
+ "summary": "Stage 0 read: 25 capabilities inventoried with impl/proof/scope apart (all live proof stale at the current hash), every built line accounted for (13 as not-a-capability harness/hygiene items), three failure modes named, three contradictions (irrigation owed?, stale spec table, VALIDATED-but-unproven) and two draft asks for stage 1. Proof-script scene audit: design/concepts/FlowWorks/script_audit.json."}
