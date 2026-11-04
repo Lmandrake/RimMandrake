@@ -1482,6 +1482,10 @@ def _race(a):
             n += 1
         except R.Fenced:
             pass
+        with s.lock():      # a read-modify-write beside the beats: a store lock that does not exclude loses some
+            st = s.load("I0")
+            st["race_n"] = st.get("race_n", 0) + 1
+            s.save(st)
     q.put(n)
 
 
@@ -1507,9 +1511,10 @@ def t_concurrency():
         except queue.Empty:
             pass
     last = s.load("I0")
-    ok(all(p.exitcode == 0 for p in ps) and beats == 160 and last["gen"] == 1
+    ok(all(p.exitcode == 0 for p in ps) and beats == 160 and last["gen"] == 1 and last.get("race_n") == 160
        and last["last_beat"] in {k * 1000 + 40 for k in range(4)},
-       "four beating processes do not tear the state: %d beats, last %r" % (beats, last.get("last_beat")))
+       "four beating processes do not tear the state: %d beats, %r updates kept, last %r"
+       % (beats, last.get("race_n"), last.get("last_beat")))
     m.shutdown()
     # two ticks: the second is refused by tick.lock
     import fcntl
@@ -3279,10 +3284,11 @@ def t_pool_real_git():
     git(c, "commit", "-qm", "ledger tail")
     w = fx.clone_wip(c)
     ok(not w["kept"] and w["carry"], "a ledger-only commit does not pin the clone: %s" % (w,))
-    b = fx.remove_clone({"clone": c, "item": "I0"})
+    store.save(R.new_state("I2", 0, "t"))   # a fresh item name, as for I1: an earlier I0 bundle of the same second would answer
+    b = fx.remove_clone({"clone": c, "item": "I2"})
     ok(b and os.path.exists(os.path.join(b, "carry")) and not fx.clone_present(c), "released with the ledger commit in the bundle")
     git(d, "clone", "-q", o, c)
-    ok(fx.restore_bundle("I0", b, c) == [], "the next clone re-applies the ledger commit")
+    ok(fx.restore_bundle("I2", b, c) == [], "the next clone re-applies the ledger commit")
     ok(os.path.exists(os.path.join(c, led)) and fx.clone_wip(c)["carry"], "the ledger line came back as a commit")
     # one commit holding a ledger line AND real work is real work
     put(led, '{"tail":"after the landing"}\n{"tail":"and more"}\n')
