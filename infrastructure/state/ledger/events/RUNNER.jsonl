@@ -3025,3 +3025,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-04T16:18:05Z","tsn":1793809085343348139}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"broken","detail":"Ops alarm STEVE_INCIDENT_UNCLAIMED: steve.incident_unclaimed_min = 87.4 min the oldest unclaimed steward incident has waited (MEASURED), line > 30; owner: Relentless, STEVE_LANE_UNSTICK_BRAKED_UNOWNED_B4F8 expedited by Operations","ts":"2026-11-04T16:23:43Z","tsn":1793809423856436994}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-04T16:23:47Z","tsn":1793809427526400772}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-04T16:33:04Z","tsn":1793809984728020629}
