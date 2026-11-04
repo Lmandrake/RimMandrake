@@ -469,3 +469,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:20:52Z","tsn":1793823652911553909}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T20:27:51Z","tsn":1793824071554927060}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:33:43Z","tsn":1793824423354575163}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T20:34:45Z","tsn":1793824485593034450}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:34:55Z","tsn":1793824495404518356}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANON_MATERIALS_BUILD_1 A10 (L1), read-only proof","ts":"2026-11-04T20:35:01Z","tsn":1793824501502542636}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:35:08Z","tsn":1793824508078758019}
