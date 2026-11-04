@@ -451,3 +451,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:56:16Z","tsn":1793818576616090654}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A7 (L2), read-only proof","ts":"2026-11-04T18:56:24Z","tsn":1793818584551017935}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:56:30Z","tsn":1793818590694431216}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR A1 (L2), read-only proof","ts":"2026-11-04T19:24:02Z","tsn":1793820242035716537}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:24:07Z","tsn":1793820247985940615}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR A2 (L2), read-only proof","ts":"2026-11-04T19:24:17Z","tsn":1793820257331704912}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:24:23Z","tsn":1793820263157964432}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE A1 (L2), read-only proof","ts":"2026-11-04T19:25:27Z","tsn":1793820327225578722}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T19:25:33Z","tsn":1793820333207804498}
