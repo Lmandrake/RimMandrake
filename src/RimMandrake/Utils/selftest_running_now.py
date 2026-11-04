@@ -16,6 +16,7 @@ import re
 import sys
 import time
 import tempfile
+import xml.etree.ElementTree as R_ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import running_now as R  # noqa: E402
@@ -264,7 +265,7 @@ sv = R.collect_steve(Fake(files=jfiles, dirs=jdirs), {})
 check("one unreadable job result: done/failed are not known", sv["jobs_known"] is False)
 page = page_of(Fake(files=jfiles, dirs=jdirs))
 check("the plain-text twin says UNMEASURED there too", "done 24 h UNMEASURED, failed 24 h UNMEASURED" in page)
-check("the panel says UNMEASURED there and not 0", "DONE 24 H" in page and "UNMEASURED" in page.split("DONE 24 H")[1][:200])
+check("the panel says UNMEASURED there and not 0", "UNMEASURED" in page.split('data-reading="DONE 24 H"')[1].split("</g>")[0])
 
 old = "J" + R.time.strftime("%Y%m%d", R.time.gmtime(NOW - 3 * 86400))
 late = R.time.strftime("%Y-%m-%dT%H:%M:%SZ", R.time.gmtime(NOW - 100))
@@ -597,6 +598,268 @@ os.unlink(tmp.name)
 check("the real Env on a missing rules file is unread, not off", R.guarded(R.collect_pause, R.Env())[0] is None)
 R.RULES_FILE = real_rules
 
+# ---- every number on every instrument panel, read panel by panel and tile by tile, never as words anywhere on the page.
+# The text twin, the how-to-read prose and another machine's panel cannot satisfy these. A list row (a process, an item line,
+# a receipt) is a list; the numbers judged here are the instruments: the owner's "every number gets a verdict and rough normal range".
+VERDICT = re.compile(r"(^|[;:] )(ok|normal|high|low|bad)\b")
+RANGE = re.compile(r"\b(normal|usual|rough) \S")
+LIVE_TILES = {"BUSY / IDLE", "PROOF ROWS BY RESULT", "CLOSED BY LIVE PROOF", "BUGS FOUND", "FALSIFIED EXPECTATIONS"}
+EXPECTED = {
+    "Relentless": {"PLACES", "TICK", "BREAKER", "LIVE GAME", "TOKENS TODAY", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED, GOAL IS ALL", "FAIL LOOP"}
+    | {x.upper() for x in R.BELT + R.SIDE} | {"BAR " + x for x in ("CLOSED", "PASS", "WEAK", "FAIL", "GAME UNMEASURED", "REFUSED", "PUT BACK")}
+    | {"TREND " + x for x in ("closed", "Judge fails", "live proofs", "game idle")},
+    "Archmagi": {"UPTIME", "LOAD", "WSL RAM USED", "EXT4 FREE", "D: FREE", "GAME THIS 24 H"} | LIVE_TILES,
+    "SteveDesktop": {"STATE", "ROUTES", "UPTIME", "LOAD", "WSL RAM USED", "CPU", "DISK FREE", "GPU", "GAME", "RUNNING", "QUEUED", "DONE 24 H", "FAILED 24 H", "LAST JOB", "ROWS/HOUR 24 H",
+                     "STEWARD WROTE", "MACHINE READING"} | LIVE_TILES,
+}
+NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"}       # the page says plainly that nothing records it, so there is nothing to judge
+# a digit outside any reading is a naked number, unless it only names a window or a stage of the axis
+FRAME = re.compile(r"^(48 h ago|LIVE TESTING, LAST 24 H|LAST 24 H, EVENTS \(SEVERAL PER ITEM\)|TRENDS, 48 H, TWO-HOUR POINTS)$")
+SVGNS = "{http://www.w3.org/2000/svg}"
+
+
+def panels_of(page):
+    """-> {first word of aria-label: svg element}; a panel that is not well-formed raises."""
+    out = {}
+    for raw in re.findall(r"<svg.*?</svg>", page, re.S):
+        root = R_ET.fromstring(raw)
+        out[root.get("aria-label").split(":")[0].split(" ")[0]] = root
+    return out
+
+
+def readings_of(root):
+    """-> {label: (element, [(size, text), ...])}; a repeated label keeps every copy apart by a trailing #."""
+    out = {}
+    for g in root.iter(SVGNS + "g"):
+        name = g.get("data-reading")
+        if name:
+            name = re.sub(r"^(LOAD/).*", "LOAD", name)
+            name = re.sub(r"^LAST JOB.*", "LAST JOB", name)
+            name = re.sub(r"^GPU.*", "GPU", name)
+            while name in out:
+                name += "#"
+            out[name] = (g, [(t.get("font-size"), "".join(t.itertext())) for t in g.iter(SVGNS + "text")])
+    return out
+
+
+def judged(note):
+    return bool(VERDICT.search(note) and RANGE.search(note))
+
+
+def panel_problems(page, cards_have_oldest=True):
+    """Every way the instrument panels can lose a verdict, a range, a tile or a trend line, as a list of plain sentences."""
+    bad = []
+    pans = panels_of(page)
+    for name, want in EXPECTED.items():
+        root = pans.get(name)
+        if root is None:
+            bad.append("%s: no panel" % name)
+            continue
+        rs = readings_of(root)
+        for label in sorted(want - set(rs)):
+            bad.append("%s: no reading %s" % (name, label))
+        for label in sorted(set(rs) - want):
+            bad.append("%s: a reading nobody pinned: %s" % (name, label))
+        inside = {id(t) for g, _ in rs.values() for t in g.iter(SVGNS + "text")}
+        for t in root.iter(SVGNS + "text"):
+            words = "".join(t.itertext())
+            if id(t) not in inside and re.search(r"\d", words) and not FRAME.match(words):
+                bad.append("%s: naked number: %s" % (name, words))
+        for label, (_, texts) in rs.items():
+            notes = [w for size, w in texts if (size == "9" or label in ("FAIL LOOP", "STATE")) and not w.startswith("top ")]
+            for w in notes:
+                if label not in NOT_A_NUMBER and not judged(w):
+                    bad.append("%s %s: note with no verdict or range: %s" % (name, label, w))
+                if "…" in w:
+                    bad.append("%s %s: note clipped: %s" % (name, label, w))
+                if label.rstrip("#").lower() in R.BELT + R.SIDE and len(w) > 32:
+                    bad.append("%s %s: note wider than its card: %s" % (name, label, w))
+            value = [w for size, w in texts if w not in notes and re.search(r"\d", w)]
+            if value and label not in NOT_A_NUMBER and not notes:
+                bad.append("%s %s: a number with no note: %s" % (name, label, value))
+            if any(w == "UNMEASURED" for _, w in texts):
+                bad.append("%s %s: UNMEASURED on the full fixture" % (name, label))
+    root = pans.get("Relentless")
+    if root is not None:
+        rs = readings_of(root)
+        lines = list(root.iter(SVGNS + "polyline"))
+        if len(lines) != 4 or len({x.get("stroke") for x in lines}) != 4:
+            bad.append("trends: %d polylines drawn, want 4 in 4 colours" % len(lines))
+        for lab in ("closed", "Judge fails", "live proofs", "game idle"):
+            g = rs.get("TREND " + lab)
+            if g is None or len(list(g[0].iter(SVGNS + "polyline"))) != 1:
+                bad.append("trend %s: no line of its own" % lab)
+            elif len(g[0].find(SVGNS + "polyline").get("points").split()) != R.TREND_POINTS:
+                bad.append("trend %s: not %d points" % (lab, R.TREND_POINTS))
+        for stage in R.BELT + R.SIDE:
+            if stage.upper() in rs and not any(re.match(r"(ok|high|low), normal \S", w) for _, w in rs[stage.upper()][1]):
+                bad.append("%s: no verdict on its count" % stage)
+        if cards_have_oldest:
+            for stage in ("QUEUED", "RUNNING", "CANDIDATE", "CHECKING", "CLOSING", "GAME", "HELD", "BLOCKED", "STOPPING", "RETIRING"):
+                if stage in rs and not any(w.startswith("oldest ") and judged(w) for _, w in rs[stage][1]):
+                    bad.append("%s: no judged oldest" % stage)
+            if "DONE" in rs and not any(w.startswith("last ") and judged(w) for _, w in rs["DONE"][1]):
+                bad.append("DONE: no judged last close")
+    # a how-to-read line right under each panel, and the one under the Pipeline explains places
+    for name, words in (("Relentless", "9 of 8"), ("Archmagi", "Busy means"), ("SteveDesktop", "Busy means"), ("Chain", "Follow an arrow")):
+        hit = re.search(r'aria-label="%s[^\n]*</svg></div>\n(?:\n*)<div[^\n]*How to read:</b>([^\n]*)' % name, page)
+        if not hit or words not in hit.group(1):
+            bad.append("%s: no how-to-read under it saying %s" % (name, words))
+    if not re.search(r'aria-label="Relentless[^\n]*</svg></div>\n<div[^\n]*How to read:</b>[^\n]*A place is ', page):
+        bad.append("no how-to-read under the Pipeline says what a place is")
+    if "CLOSED PER HOUR" in page:
+        bad.append("CLOSED PER HOUR is back")
+    return bad
+
+
+def fixture_env(extreme=False):
+    """Everything readable; `extreme` puts every reading out of its normal, the long way, so a note that does not fit gets clipped and shows."""
+    day = lambda k: R.time.strftime("%Y%m%d", R.time.gmtime(NOW - k * 86400))  # noqa: E731
+    per = 3 if extreme else 1
+    rows = [{"at": iso(NOW - 50 - i), "item": "A", "criterion": "A%d" % i, "outcome": "FAIL" if extreme else "PASS"} for i in range(3)]
+    rows += [{"at": iso(NOW - 80 - i), "item": "C", "criterion": "U%d" % i, "outcome": "UNMEASURED"} for i in range(40 if extreme else 1)]
+    journal = [{"at": iso(NOW - 3600), "acts": [{"do": "done", "item": "A"}, {"do": "blind_fail", "item": "I2"}]}]
+    journal += [{"at": iso(NOW - k * 86400 - 60), "acts": [{"do": "done", "item": "D%d" % i} for i in range(k + 1)]} for k in range(1, 5)]
+    stage_item = {"queued": {"enrolled_at": 1}, "running": {"started_at": 1}, "candidate": {"candidate": {"at": 1}}, "checking": {"check": {"at": 1}}, "closing": {"tomb_since": 1},
+                  "game": {"game": {"entered_at": 1}}, "held": {"hold": {"at": 1}}, "blocked": {"blocked_at": 1}, "stopping": {"stopping_since": 1}, "retiring": {"stopping_since": 1}}
+    age = 30 * 3600 if extreme else 60
+
+    def aged(d):
+        return {k: (aged(v) if isinstance(v, dict) else NOW - age) for k, v in d.items()}
+
+    items = []
+    for stage, fields in stage_item.items():
+        top = R.STAGE_NORMAL[stage][0]
+        for i in range(top + 1 if extreme else 1):
+            items.append(dict(aged(fields), item="%s_%d" % (stage.upper(), i), status=stage))
+    items += [{"item": "OVER", "status": "done"}, {"item": "OUT", "status": "retired"}]
+    done_dir = R.TESTQ + "/done"
+    job = "J%sT000000Z-aaaaaa.json" % day(10)
+    files = {R.FLEET_CACHE: FLEET, STEWARD: {"state": "BRAKED" if extreme else "RUNNING", "epoch": NOW - (900 if extreme else 10), "reason": "x", "since": iso(NOW - 9000)},
+             R.LIVE_RUNS: "\n".join(json.dumps(r) for r in rows) + "\n", SHADOW: "", JOURNAL: "\n".join(json.dumps(j) for j in journal) + "\n",
+             done_dir + "/" + job: {"job": {"purpose": "guard", "mod": "FlowWorks", "item": "A"},
+                                    "result": {"outcome": "DONE", "started": iso(NOW - 7700), "finished": iso(NOW - (7100 if extreme else 100)), "rows": [{"chain": "c", "row": "r", "verdict": "PASS"}, {"chain": "c", "row": "s", "verdict": "PASS"}], "counts": {"PASS": 2}}},
+             R.STEVE_CACHE: {"good_t": NOW - (2000 if extreme else 30), "routes": {"tailscale": True, "lan": not extreme, "wsl": True},
+                             "good": {"up": "100" if extreme else "20000", "load": "99.9" if extreme else "0.5", "cores": "18", "ram": "63000 64000" if extreme else "1000 64000", "disk": "50 1000" if extreme else "900 1000",
+                                      "gpu": "NVIDIA GeForce RTX 2080 Ti, %s, 4400, 11264" % ("99" if extreme else "27"), "game": "0" if extreme else "1", "cpu_pct": 99 if extreme else 3}}}
+    files.update({STAFFING: {"t": NOW - 5, "target": 8, "places": 8, "spent_today": 950e6 if extreme else 30e6}, BREAKER: {"until": NOW - 60}, BRIDGE: "FREE since 2026-11-03T20:00:00Z\n"})
+    for k in range(0, 5):
+        files[R.RELENTLESS_STORE + "/spend-%s.json" % day(k)] = {"spent": (900e6 if extreme and k == 0 else 50e6 * (k + 1))}
+    pending = ["p%d.json" % i for i in range(25 if extreme else 1)]
+
+    class Full(Fake):
+        def local_stats(self):
+            return {"up": 100.0 if extreme else 90000.0, "load": 99.9 if extreme else 7.0, "cores": 14, "ram": (34000, 35000) if extreme else (8000, 35000), "disk": 50 if extreme else 500, "disk_d": 50 if extreme else 1700}
+
+        def tick_show(self):
+            return {"ActiveState": "activating", "TimeoutStartUSec": "20min", "Result": "success", "mono": 10000.0, "ExecMainStartTimestampMonotonic": str(int((10000 - (1100 if extreme else 60)) * 1e6))}
+
+    env = Full(ps=PS, cg=WORKER, items=items, files=files, dirs={done_dir: [job], R.TESTQ + "/running": ["r%d.json" % i for i in range(per)], R.TESTQ + "/pending": pending})
+    env.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
+    return env, [{"t": NOW - 60, "n": 1, "f": {"game": 0 if extreme else 1}}, {"t": NOW - 120, "n": 1, "f": {"game": 1 if not extreme else 0}}]
+
+
+def page_problems():
+    bad = []
+    for extreme in (False, True):
+        env, hist = fixture_env(extreme)
+        bad += ["%s: %s" % ("extreme" if extreme else "normal", x) for x in panel_problems(R.build(env, {}, hist)[0])]
+    return bad
+
+
+found = page_problems()
+for x in found:
+    print("  " + x)
+check("every instrument on all three panels carries a verdict and a rough normal, tile by tile, in normal and out-of-range states", not found)
+env, hist = fixture_env()
+pans = panels_of(R.build(env, {}, hist)[0])
+for machine in ("Archmagi", "SteveDesktop"):
+    rs = readings_of(pans[machine])
+    check("%s's own panel has its Live Testing tiles and its own busy figure" % machine, LIVE_TILES <= set(rs) and "UNMEASURED" not in " ".join(w for _, w in rs["BUSY / IDLE"][1]))
+check("closed by a live proof says a verdict and a range on each machine", all(judged(next(w for s, w in readings_of(pans[m])["CLOSED BY LIVE PROOF"][1] if s == "9")) for m in ("Archmagi", "SteveDesktop")))
+tiles = readings_of(pans["Relentless"])
+for label in ("TOKENS TODAY", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED, GOAL IS ALL"):
+    check("%s has a verdict word and a range of its own" % label, judged(next(w for s, w in tiles[label][1] if s == "9")))
+check("hover text sits on the tile it explains", tiles and readings_of(pans["Archmagi"])["CLOSED BY LIVE PROOF"][0].find(SVGNS + "title") is not None)
+
+check("a systemd duration reads whole", (R.systemd_seconds("20min"), R.systemd_seconds("1min 30s"), R.systemd_seconds("1h 5min"), R.systemd_seconds("30s")) == (1200, 90, 3900, 30))
+check("infinity is no limit, not a number", R.systemd_seconds("infinity") is None and R.systemd_seconds("") is None)
+env, hist = fixture_env()
+env.files[STAFFING] = dict(env.files[STAFFING], t=NOW - 86400)
+stale_page = R.build(env, {}, hist)[0]
+check("yesterday's staffing file is no today's spend", "UNMEASURED" in readings_of(panels_of(stale_page)["Relentless"])["TOKENS TODAY"][1][1][1])
+TAILED = "\n".join(json.dumps({"at": iso(NOW - k * 86400), "acts": [{"do": "done", "item": "T"}]}) for k in (1.5, 0.1)) + "\n"
+
+
+class Tail(Fake):
+    def read_tail(self, path, n):
+        return self.read_text(path), True
+
+
+tailed = R.collect_throughput(Tail(files={SHADOW: "", JOURNAL: "x\n" + TAILED}), NOW)
+check("the day a cut journal tail starts in is no whole day", sum(tailed["closed_day"].values()) == 1)
+check("a cut tail short of 24 h is UNMEASURED, not a short count", R.guarded(R.collect_throughput, Tail(files={SHADOW: "", JOURNAL: "x\n" + json.dumps({"at": iso(NOW - 3600), "acts": []}) + "\n"}), NOW)[1] is not None)
+env, hist = fixture_env()
+env.items = None
+env.files[R.LIVE_RUNS] = json.dumps({"at": iso(NOW - 50), "item": "A", "criterion": "A", "outcome": "PASS"}) + "\n"
+unread = R.build(env, {}, hist)[0]
+check("an unread queue never reads as nothing waits", "nothing waits" not in unread.split("</svg>")[0] and "verdict UNMEASURED" in unread.split("</svg>")[0])
+env, hist = fixture_env()
+env.tick_show = lambda: {"ActiveState": "inactive", "TimeoutStartUSec": "10min", "Result": "success", "mono": 10000.0, "InactiveExitTimestampMonotonic": str(int(9000 * 1e6)), "InactiveEnterTimestampMonotonic": str(int(9540 * 1e6))}
+slow = R.build(env, {}, hist)[0]
+check("a finished tick near its limit reads high", "high, normal under 8 min" in slow)
+
+midnight = time.mktime(time.localtime(NOW)[:3] + (0, 0, 0, 0, 0, -1))
+late = Fake(ps=PS, files={R.FLEET_CACHE: dict(FLEET, t=midnight - 60, good_t=midnight - 60)})
+late.clock = midnight + 60
+check("receipts from before midnight are not FINISHED TODAY", "FINISHED TODAY, 1" not in R.build(late, {}, [])[0])
+
+# ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
+SRC = open(R.__file__).read()
+QUIET = "(lambda *a, **k: None)("
+MUTANTS = [
+    ("Steve loses its Live Testing row", 'live_row(s, 248, sv.get("live"),', QUIET + 's, 248, sv.get("live"),'),
+    ("Archmagi loses its Live Testing row", "live_row(s, 130, live,", QUIET + "s, 130, live,"),
+    ("a tile never draws its note", "s.text(x + 8, y + 53, clip(note, int((w - 12) / 4.7)), 9, note_colour)", "pass"),
+    ("Archmagi LOAD has no verdict", '*against(d["load"], d["cores"] * 1.5, "0-%d" % (d["cores"] * 1.5)), "Processes', 'None, DIM, "Processes'),
+    ("Archmagi WSL RAM has no verdict", 'TEXT, frac, *against(frac * 100, 85, "under 85%"))\n        tile(s, 428', "TEXT, frac)\n        tile(s, 428"),
+    ("Steve WSL RAM has no verdict", 'TEXT, frac, *against(frac * 100, 85, "under 85%"))\n    else:', "TEXT, frac)\n    else:"),
+    ("Steve UPTIME has no verdict", "*(uptime_note(upv) if upv is not None else (None, DIM))", "None, DIM"),
+    ("Archmagi UPTIME has no verdict", '*uptime_note(d["up"])', "None, DIM"),
+    ("the belt cards lose oldest", "s.text(x + 10, y0 + 96, note_, 9, col_)\n        elif", "pass\n        elif"),
+    ("the side cards lose oldest", "s.text(x + 10, sy + 72, note_, 9, col_)", "pass"),
+    ("a stage count loses its verdict", 's.text(x + 10, y0 + 83, verdict, 9, col)', "pass"),
+    ("the game idle trend is gone", 'live.get("idle_trend") if live else None, WARN', "None, WARN"),
+    ("the trend lines are never drawn", "s.polyline([(lx +", QUIET + "[(lx +"),
+    ("a trend's point has no verdict", "s.text(rx + 8, yy + 27, verdict, 9, ncol)", "pass"),
+    ("a bar has no verdict", "s.text(350, yy + 11, note, 9, ncol)", "pass"),
+    ("closed by live proof is a description again", "cn = versus(c, None, False, closed_rough) if c is not None else (None, DIM)", 'cn = ("closed with a PASS here", DIM)'),
+    ("tokens today has no verdict", '("high," if high else "ok,") + verdict.split(",", 1)[1] + " a day"', '"UTC day"'),
+    ("tokens per item has no verdict", '"%s; %s/%s: %d closed" % (verdict,', '"%s; %s/%s: %d closed" % ("days seen",'),
+    ("mods accepted has no range", '"%s, normal over half; GREEN', '"%s; GREEN'),
+    ("the proof rows tile has no verdict", '"%s, %d of %d measured%s; normal over 30%%" % ("low" if low else "ok", measured, total,', '"%s %d of %d measured%s" % ("", measured, total,'),
+    ("the Falsified tile is gone", 'tile(s, 864, y, 162, "FALSIFIED EXPECTATIONS",', QUIET + 's, 864, y, 162, "FALSIFIED EXPECTATIONS",'),
+    ("Steve loses a machine tile", 'tile_(cols[3][0], y, cols[3][1], "CPU",', QUIET + 'cols[3][0], y, cols[3][1], "CPU",'),
+    ("a tile too narrow clips its verdict", 'tile_(102, y, 96, "QUEUED",', 'tile_(102, y, 60, "QUEUED",'),
+    ("Steve's how-to-read is gone", 'how_to_read("The second machine', '(lambda t: "")("The second machine'),
+    ("a number outside any reading", 's.reading_open("FAIL LOOP")', 's.reading_open("FAIL LOOP"); s.text(0, 0, "42", 12)'),
+    ("the page's places words are gone", "A place is one running Builder or Judge", "One running Builder or Judge"),
+]
+survivors = []
+try:
+    for name, old, new in MUTANTS:
+        check("mutant applies: " + name, old in SRC)
+        exec(compile(SRC.replace(old, new, 1), R.__file__, "exec"), R.__dict__)
+        try:
+            caught = page_problems()
+        except Exception as e:      # a panel that cannot parse is caught too
+            caught = [repr(e)]
+        if not caught:
+            survivors.append(name)
+finally:
+    exec(compile(SRC, R.__file__, "exec"), R.__dict__)
+check("every mutant of the page goes red (%d mutants)%s" % (len(MUTANTS), ": survivors " + "; ".join(survivors) if survivors else ""), not survivors)
+check("the page's own source passes again after the mutants", not page_problems())
 # --------------------------------------------------------------------------- the fuel gauge
 AU = R.account_usage_module()
 LATEST, SERIES = str(AU.DATA_DIR / "latest.json"), str(AU.DATA_DIR / "series.jsonl")

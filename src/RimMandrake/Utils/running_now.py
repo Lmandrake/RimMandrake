@@ -107,6 +107,14 @@ SIDE_WORD = {"game": "needs the live game", "held": "held for the seat or the ow
 STAGE_NORMAL = {"queued": (400, "100-400"), "running": (9, "3-9"), "candidate": (6, "0-6"), "checking": (9, "0-9"), "closing": (40, "0-40"),
                 "done": (None, "only grows"), "game": (40, "0-40"), "held": (40, "0-40"), "blocked": (70, "0-70"), "stopping": (3, "0-3"),
                 "retiring": (3, "0-3"), "retired": (None, "only grows")}
+# How old the oldest item of a stage normally is: (seconds, words). An old one is the thing to look at, so the top is short.
+STAGE_OLD = {"queued": (2 * 86400, "<2d"), "running": (3 * 3600, "<3h"), "candidate": (3600, "<1h"), "checking": (3600, "<1h"), "closing": (86400, "<1d"),
+             "game": (2 * 86400, "<2d"), "held": (7 * 86400, "<7d"), "blocked": (7 * 86400, "<7d"), "stopping": (900, "<15m"), "retiring": (900, "<15m")}
+LAST_CLOSE = (3 * 3600, "<3h")
+# A rough normal for a number with no measured baseline yet, read off the records on 2026-11-03. A measured range replaces it as the record grows.
+ROUGH = {"pass": (100, 300), "weak": (50, 200), "fail": (30, 120), "unmeasured": (0, 20), "refused": (10, 60), "closed": (50, 100), "blind_fail": (20, 80), "put_back": (100, 400),
+         "tokens_day": (100e6, 400e6), "tokens_per": (1e6, 6e6), "steve_done": (5, 150), "steve_failed": (0, 15), "steve_rows_h": (1, 130),
+         "closed_here": (5, 30), "closed_steve": (0, 10), "trend_closed": (0, 18), "trend_blind_fail": (0, 9), "trend_proofs": (0, 63)}
 FEED_WORD = {"done": "closed", "blind_fail": "a Judge failed it", "game_fail": "live proof failed", "held_delivered": "held for the seat or the owner",
              "retired": "dropped", "jam_alarm": "jam alarm", "game_staged": "game staged for it"}
 
@@ -655,10 +663,17 @@ def game_idle_text(g):
             % (g["idle_pct"], g["window_min"], g["used_min"], "UNMEASURED" if g["waiting"] is None else g["waiting"]))
 
 
+def systemd_seconds(words):
+    """systemd's "20min", "1min 30s", "1h 5min" -> seconds; anything else (infinity, nothing) -> None."""
+    parts = re.findall(r"(\d+)(h|min|s)\b", words)
+    if not parts or re.sub(r"\s+", "", words) != "".join(n + u for n, u in parts):
+        return None
+    return sum(int(n) * {"h": 3600, "min": 60, "s": 1}[u] for n, u in parts)
+
+
 def collect_tick(env, state):
     d = env.tick_show()
-    limit = re.match(r"(\d+)min", d.get("TimeoutStartUSec", ""))
-    out = {"limit_s": int(limit.group(1)) * 60 if limit else None, "result": d.get("Result", "")}
+    out = {"limit_s": systemd_seconds(d.get("TimeoutStartUSec", "")), "result": d.get("Result", "")}
     running = d.get("ActiveState") == "activating"
     out["running"] = running
     if running:
@@ -733,25 +748,31 @@ def collect_throughput(env, now):
                 recent_done.append((at, x.get("item") or ""))
             if at >= start and w in FEED_WORD:
                 feed.append((at, FEED_WORD[w], x.get("item") or ""))
+    if cut_off and first is not None:
+        # tokens per item divides a whole day's spend by that day's closes: the day the journal tail starts in is not whole
+        if first > cut:
+            raise Unmeasured("journal.jsonl tail reaches back less than 24 h")
+        closed_day.pop(time.strftime("%Y%m%d", time.gmtime(first)), None)
     recent_done.sort(reverse=True)
     feed.sort(reverse=True)
 
     def fold(c):
         return {"closed": c["done"], "pass": c["PASS"], "weak": c["WEAK"], "fail": c["FAIL"] + c["game_fail"],
-                "unmeasured": c["game_unmeasured"] + c["game_proof_unmeasured"], "refused": c["game_refused"] + c["start_refused"] + c["close_refused"]}
+                "unmeasured": c["game_unmeasured"] + c["game_proof_unmeasured"], "refused": c["game_refused"] + c["start_refused"] + c["close_refused"],
+                "blind_fail": c["FAIL"], "put_back": c["returned"]}
 
     # a window counts toward "usual" only when the record behind that count reaches back past its start
     out = fold(t)
     from_journal = first if first is not None else now
     from_verdicts = first_verdict if first_verdict is not None else now
     reach = {"closed": from_journal, "unmeasured": from_journal, "refused": from_journal, "pass": from_verdicts, "weak": from_verdicts,
-             "fail": max(from_journal, from_verdicts)}
+             "fail": max(from_journal, from_verdicts), "blind_fail": from_verdicts, "put_back": from_journal}
     usual = {}
     for key, since in reach.items():
         vals = [fold(days[k])[key] for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= since]
         if vals:
             usual[key] = (min(vals), max(vals))
-    out.update({"blind_fail": t["FAIL"], "put_back": t["returned"], "recent": recent_done[:3], "trend": trend, "feed": feed[:30], "closed_day": closed_day,
+    out.update({"recent": recent_done[:3], "trend": trend, "feed": feed[:30], "closed_day": closed_day,
                 "usual": usual,
                 "short": bool(cut_off and first is not None and first > start)})
     return out
@@ -1005,10 +1026,11 @@ class Svg:
     def polyline(self, pts, stroke=LIVE, sw=1.6):
         self.parts.append('<polyline points="%s" fill="none" stroke="%s" stroke-width="%s" stroke-linejoin="round"/>' % (" ".join("%.1f,%.1f" % q for q in pts), stroke, sw))
 
-    def hover_open(self, words):
-        self.parts.append("<g><title>%s</title>" % escape(words))
+    def reading_open(self, label, hover=None):
+        """One reading: a named group, so a panel's readings can be told apart. A hover line is free, it adds the why where the viewer shows it."""
+        self.parts.append('<g data-reading="%s">' % escape(str(label), {'"': "&quot;"}) + ("<title>%s</title>" % escape(hover) if hover else ""))
 
-    def hover_close(self):
+    def reading_close(self):
         self.parts.append("</g>")
 
     def arrow_r(self, x1, x2, y, stroke=EDGE):
@@ -1027,17 +1049,21 @@ class Svg:
 
 
 # --------------------------------------------------------------------------- what a number means
-def versus(n, usual, high_is_bad=True):
-    """A 24 h count against the same count in the six windows before it -> (note, colour)."""
+def versus(n, usual, high_is_bad=True, rough=None, show=None):
+    """A count against the same count in the windows before it -> (note, colour). With no such windows yet, against a rough
+    range read off the records, and the note says "rough"; with neither, it says so and never guesses."""
+    word = "usual"
+    if usual is None:
+        usual, word = rough, "rough"
     if usual is None:
         return "no baseline yet", DIM
     fmt = "%d-%d" if all(float(x).is_integer() for x in usual) else "%.0f-%.0f"
-    rng = fmt % usual
+    rng = "%s-%s" % (show(usual[0]), show(usual[1])) if show else fmt % tuple(usual)
     if n > usual[1]:
-        return "high, usual %s" % rng, WARN if high_is_bad else GOOD
+        return "high, %s %s" % (word, rng), WARN if high_is_bad else GOOD
     if n < usual[0]:
-        return "low, usual %s" % rng, GOOD if high_is_bad else WARN
-    return "normal, usual %s" % rng, DIM
+        return "low, %s %s" % (word, rng), GOOD if high_is_bad else WARN
+    return "normal, %s %s" % (word, rng), DIM
 
 
 def against(n, top, words):
@@ -1045,10 +1071,29 @@ def against(n, top, words):
     return ("high, normal %s" % words, WARN) if n > top else ("ok, normal %s" % words, DIM)
 
 
+def uptime_note(up):
+    return ("low, normal 1 h+", WARN) if up < 3600 else ("ok, normal 1 h+", DIM)
+
+
+def stage_note(name, n):
+    """A stage's count -> (verdict and normal, colour). Done and retired only grow, so no count of theirs is off."""
+    top, words = STAGE_NORMAL[name]
+    bottom = re.match(r"(\d+)-", words)
+    if n is not None and top and n > top:
+        return "high, normal " + words, WARN
+    if n is not None and bottom and n < int(bottom.group(1)):
+        return "low, normal " + words, WARN
+    return "ok, normal " + words, DIM
+
+
+def age_note(head, age, limit):
+    """An age -> "oldest 3 h: ok, normal <1 d" and its colour."""
+    return "%s %s: %s, normal %s" % (head, ago(age).replace(" ", ""), "high" if age > limit[0] else "ok", limit[1]), WARN if age > limit[0] else DIM
+
+
 def tile(s, x, y, w, label, val, colour=TEXT, bar=None, note=None, note_colour=DIM, hover=None):
-    """One number with its verdict under it. A hover line is free: where the viewer shows it, it adds the why."""
-    if hover:
-        s.hover_open(hover)
+    """One number with its verdict under it."""
+    s.reading_open(label, hover)
     s.rect(x, y, w, 62, CARD, None, 5)
     s.text(x + 8, y + 14, label, 9.5, DIM, "700")
     missing = val == "?"
@@ -1059,11 +1104,10 @@ def tile(s, x, y, w, label, val, colour=TEXT, bar=None, note=None, note_colour=D
         s.rect(x + 8, y + 38, (w - 16) * min(bar, 1), 3, WARN if bar >= 0.9 else LIVE, None, 1)
     if note:
         s.text(x + 8, y + 53, clip(note, int((w - 12) / 4.7)), 9, note_colour)
-    if hover:
-        s.hover_close()
+    s.reading_close()
 
 
-def live_row(s, y, d, busy_means, closed_means):
+def live_row(s, y, d, busy_means, closed_means, closed_rough):
     """The Live Testing tiles, the same five on each machine, so the two read side by side."""
     s.text(18, y - 6, "LIVE TESTING, LAST 24 H", 10.5, DIM, "700")
     if d is None:
@@ -1073,7 +1117,7 @@ def live_row(s, y, d, busy_means, closed_means):
     if busy is None:
         tile(s, 14, y, 200, "BUSY / IDLE", "?", WARN)
     else:
-        note, col = ("idle most of the day" if busy < 0.15 else "ok, normal busy 20-90%"), (WARN if busy < 0.15 else DIM)
+        note, col = ("low, normal busy 20-90%", WARN) if busy < 0.2 else (("high, normal busy 20-90%", WARN) if busy > 0.9 else ("ok, normal busy 20-90%", DIM))
         tile(s, 14, y, 200, "BUSY / IDLE", "%d%% / %d%%" % (round(busy * 100), 100 - round(busy * 100)), TEXT, busy, note, col, busy_means)
     r = d.get("rows") or {}
     total = sum(r.values())
@@ -1081,12 +1125,13 @@ def live_row(s, y, d, busy_means, closed_means):
     words = " ".join("%s %d" % (k, r.get(k, 0)) for k in ("PASS", "FAIL", "UNMEASURED", "REFUSED") if r.get(k) or k in ("PASS", "FAIL"))
     if total:
         low = measured / total < 0.3
-        note = "%d of %d measured%s" % (measured, total, ", most said nothing; normal over 30%" if low else "; normal over 30%")
+        note = "%s, %d of %d measured%s; normal over 30%%" % ("low" if low else "ok", measured, total, ", most said nothing" if low else "")
         tile(s, 222, y, 338, "PROOF ROWS BY RESULT", words, TEXT, measured / total, note, WARN if low else DIM, "PASS and FAIL measured something; UNMEASURED and REFUSED ran or were turned away without an answer")
     else:
-        tile(s, 222, y, 338, "PROOF ROWS BY RESULT", "none", DIM, None, "no live proof ran in 24 h")
+        tile(s, 222, y, 338, "PROOF ROWS BY RESULT", "none", DIM, None, "low, no live proof ran in 24 h; normal: some every day", WARN)
     c = d.get("closed")
-    tile(s, 568, y, 150, "CLOSED BY LIVE PROOF", "?" if c is None else "%d items" % c, TEXT if c is not None else WARN, None, "closed with a PASS here", DIM, closed_means)
+    cn = versus(c, None, False, closed_rough) if c is not None else (None, DIM)
+    tile(s, 568, y, 150, "CLOSED BY LIVE PROOF", "?" if c is None else "%d items" % c, TEXT if c is not None else WARN, None, cn[0], cn[1], closed_means)
     b = d.get("bugs")
     tile(s, 726, y, 130, "BUGS FOUND", "%d" % b, BAD if b else TEXT, None, *against(b, 20, "0-20"), "Distinct clauses with a FAIL in 24 h. Some will turn out to be the harness, not the mod.")
     tile(s, 864, y, 162, "FALSIFIED EXPECTATIONS", "not recorded", DIM, None, "nothing records these yet", DIM, "A player expectation a live test proved false. No program writes this down yet.")
@@ -1126,38 +1171,44 @@ def trend_rows(p):
     thr, live = p["throughput"], p["live_here"]
     tr = thr["trend"] if thr else {}
     count = lambda v: "%d" % v  # noqa: E731
-    return [("closed", tr.get("closed"), GOOD, count), ("Judge fails", tr.get("blind_fail"), BAD, count),
-            ("live proofs", live["proofs"] if live else None, LIVE, count),
-            ("game idle", live.get("idle_trend") if live else None, WARN, lambda v: "%d%%" % round(v * 100))]
+    return [("closed", tr.get("closed"), GOOD, count, lambda v: versus(v, None, False, ROUGH["trend_closed"])),
+            ("Judge fails", tr.get("blind_fail"), BAD, count, lambda v: versus(v, None, True, ROUGH["trend_blind_fail"])),
+            ("live proofs", live["proofs"] if live else None, LIVE, count, lambda v: versus(v, None, False, ROUGH["trend_proofs"])),
+            ("game idle", live.get("idle_trend") if live else None, WARN, lambda v: "%d%%" % round(v * 100), lambda v: against(v * 100, 50, "under 50%"))]
 
 
 def pipeline_svg(p):
     """The instrument panel. Numbers are the primary layer; items secondary; arrows context."""
     now, it, thr, title = p["now"], p["items"], p["throughput"], p["title"]
-    W, H = 1040, 584
+    W, H = 1040, 610
     s = Svg(W, H, "Relentless Pipeline: stage counts, places, tick, breaker, trends, last 24 hours")
     # ---- header gauges
     s.text(18, 34, "RELENTLESS", 20, TEXT, "700")
     s.text(18, 58, "PIPELINE", 20, TEXT, "700")
     places, live = p["places"], it["live"] if it else None
     x = 172
+    s.reading_open("PLACES")
     s.text(x, 20, "PLACES", 10, DIM, "600")
     if places and live is not None:
-        for i in range(max(places, live)):
+        shown = min(max(places, live), 9)     # the number says how many; past nine the row would run under TICK
+        for i in range(shown):
             s.rect(x + i * 17, 26, 14, 12, LIVE if i < live else "none", LIVE if i < live else FAINT, 2)
-        x2 = x + max(places, live) * 17 + 4
+        x2 = x + shown * 17 + 4
         s.text(x2, 37, "%d / %d" % (live, places), 15, TEXT, "700", font=MONO)
-        under = live < places - 2
-        s.text(x, 50, "under, normal %d-%d" % (places - 2, places + 1) if under else "ok, normal %d-%d" % (places - 2, places + 1), 9, WARN if under else DIM)
+        word = "low" if live < places - 2 else ("high" if live > places + 1 else "ok")
+        s.text(x, 50, "%s, normal %d-%d" % (word, places - 2, places + 1), 9, DIM if word == "ok" else WARN)
     else:
         s.text(x, 37, "UNMEASURED", 13, WARN, "700")
+    s.reading_close()
     tick, gx = p["tick"], 390
 
     def gauge(xx, label, value, colour=TEXT, note=None, note_colour=DIM, yy=0):
+        s.reading_open(label)
         s.text(xx, 20 + yy, label, 10, DIM, "600")
         s.text(xx, 37 + yy, value, 13, colour, "700", font=MONO)
         if note:
             s.text(xx, 50 + yy, note, 9, note_colour)
+        s.reading_close()
 
     if tick:
         limit = tick["limit_s"]
@@ -1165,31 +1216,42 @@ def pipeline_svg(p):
         if tick["running"]:
             over = limit and tick["for_s"] > limit * 0.8
             val = "running %s" % ago(tick["for_s"]) + (" of %s" % ago(limit) if limit else "")
-            gauge(gx, "TICK", val, WARN if over else TEXT, ("near the limit, " if over else "ok, ") + note, WARN if over else DIM)
+            gauge(gx, "TICK", val, WARN if over else TEXT, ("high, near the limit, " if over else "ok, ") + note, WARN if over else DIM)
         else:
             gauge(gx, "TICK", "%s ago, took %s" % (ago(tick["ended_s"]), ago(tick["last_s"]) if tick["last_s"] else "UNMEASURED"), BAD if tick["result"] not in ("success", "") else TEXT,
-                  ("last run failed; " if tick["result"] not in ("success", "") else "ok, ") + note)
+                  ("bad, last run failed; " if tick["result"] not in ("success", "") else ("high, " if limit and tick["last_s"] and tick["last_s"] > limit * 0.8 else "ok, ")) + note)
     else:
         gauge(gx, "TICK", "UNMEASURED", WARN)
     br = breaker_word(p)
-    gauge(600, "BREAKER", br, WARN if br == "UNMEASURED" else (GOOD if br == "clear" else BAD), "normal clear")
+    gauge(600, "BREAKER", br, WARN if br == "UNMEASURED" else (GOOD if br == "clear" else BAD), "ok, normal clear" if br == "clear" else ("bad, normal clear" if br != "UNMEASURED" else None))
     gi = p.get("game_idle")
-    idle_note = "idle %d%% of %d min, %s wait; normal under 50%%" % (gi["idle_pct"], gi["window_min"], "UNMEASURED" if gi["waiting"] is None else gi["waiting"]) if gi else "idle UNMEASURED"
+    idle_note = "idle %d%% of %d min, %s wait; %s, normal under 50%%" % (gi["idle_pct"], gi["window_min"], "UNMEASURED" if gi["waiting"] is None else gi["waiting"],
+                                                                        "ok" if gi["idle_pct"] < 50 else ("high" if gi["waiting"] else ("ok, nothing waits" if gi["waiting"] == 0 else "verdict UNMEASURED"))) if gi else "idle UNMEASURED"
     gauge(700, "LIVE GAME", p["game_text"], p["game_colour"], idle_note, WARN if not gi or (gi["idle_pct"] >= 50 and gi["waiting"]) else DIM)
     # second row: what the pipeline costs and what it is for
     yy = 52
     tk = p["tokens"]
     full = full_days(tk, now) if tk else []
-    gauge(172, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN, "UTC day; %s/%s: %s" % (full[0]["day"][4:6], full[0]["day"][6:], tokens(full[0]["spent"])) if full else None, yy=yy)
+    if p.get("spent_n") is not None:
+        days_seen = [r["spent"] for r in full]
+        verdict = versus(p["spent_n"], (min(days_seen), max(days_seen)) if len(days_seen) > 1 else None, True, ROUGH["tokens_day"], tokens)[0]
+        high = verdict.startswith("high")
+        # the day is still running: under the range says nothing yet, so it is only ever ok or high
+        gauge(172, "TOKENS TODAY", p["spent"], WARN if high else TEXT,
+              ("high," if high else "ok,") + verdict.split(",", 1)[1] + " a day" + ("; %s/%s: %s" % (full[0]["day"][4:6], full[0]["day"][6:], tokens(full[0]["spent"])) if full else ""), WARN if high else DIM, yy=yy)
+    else:
+        gauge(172, "TOKENS TODAY", "UNMEASURED", WARN, yy=yy)
     if full:
-        pers = [r["per"] for r in full]
-        gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "%s" % tokens(full[0]["per"]), TEXT, "%s/%s: %d closed; days seen %s-%s" % (full[0]["day"][4:6], full[0]["day"][6:], full[0]["closed"], tokens(min(pers)), tokens(max(pers))), yy=yy)
+        earlier = [r["per"] for r in full[1:]]
+        verdict, col = versus(full[0]["per"], (min(earlier), max(earlier)) if len(earlier) > 1 else None, True, ROUGH["tokens_per"], tokens)
+        gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "%s" % tokens(full[0]["per"]), TEXT, "%s; %s/%s: %d closed" % (verdict, full[0]["day"][4:6], full[0]["day"][6:], full[0]["closed"]), col, yy=yy)
     else:
         gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "UNMEASURED", WARN, yy=yy)
     ac = p["accepted"]
     if ac:
-        gauge(600, "MODS ACCEPTED, GOAL IS ALL", "%d of %d" % (ac["green"], ac["total"]), WARN if ac["green"] * 2 < ac["total"] else TEXT,
-              "GREEN at today's code; %d green at older code, %d red, %d draft, %d never run" % (ac["stale"], ac["red"], ac["draft"], ac["never"]), yy=yy)
+        low = ac["green"] * 2 < ac["total"]
+        gauge(600, "MODS ACCEPTED, GOAL IS ALL", "%d of %d" % (ac["green"], ac["total"]), WARN if low else TEXT,
+              "%s, normal over half; GREEN at today's code; %d at older code, %d red, %d draft, %d never run" % ("low" if low else "ok", ac["stale"], ac["red"], ac["draft"], ac["never"]), WARN if low else DIM, yy=yy)
     else:
         gauge(600, "MODS ACCEPTED, GOAL IS ALL", "UNMEASURED", WARN, yy=yy)
     # ---- the belt
@@ -1201,17 +1263,20 @@ def pipeline_svg(p):
         n = it["counts"][name] if it else None
         hot = name in ("running", "checking") and n
         s.rect(x, y0, cw, ch, CARD, LIVE if hot else (GOOD if name == "done" else EDGE), 7, 2 if hot else 1)
-        top, words = STAGE_NORMAL[name]
+        s.reading_open(name.upper())
         s.text(x + 10, y0 + 19, name.upper(), 11, DIM, "700")
-        s.text(x + 10, y0 + 54, "UNMEASURED" if n is None else n, 13 if n is None else 34, WARN if n is None or (top and n > top) else (TEXT if n else FAINT), "700", font=MONO)
-        word = BELT_WORD[name]
-        if name == "done" and thr and thr["recent"]:
-            word = "closed, last %s ago" % ago(now - thr["recent"][0][0])
-        s.text(x + 10, y0 + 70, word, 10.5, DIM)
-        s.text(x + 10, y0 + 83, ("high, " if n is not None and top and n > top else "") + "normal " + words, 9, WARN if n is not None and top and n > top else FAINT)
+        s.text(x + 10, y0 + 54, "UNMEASURED" if n is None else n, 13 if n is None else 34, WARN if n is None or stage_note(name, n)[0].startswith("high") else (TEXT if n else FAINT), "700", font=MONO)
+        s.text(x + 10, y0 + 70, BELT_WORD[name], 10.5, DIM)
+        verdict, col = stage_note(name, n)
+        if n is not None:
+            s.text(x + 10, y0 + 83, verdict, 9, col)
         old = oldest_in(it, name, now) if it else None
         if old:
-            s.text(x + 10, y0 + 96, "oldest %s" % ago(old[0]), 9.5, TEXT, "600")
+            note_, col_ = age_note("oldest", old[0], STAGE_OLD[name])
+            s.text(x + 10, y0 + 96, note_, 9, col_)
+        elif name == "done" and thr and thr["recent"]:
+            note_, col_ = age_note("last", now - thr["recent"][0][0], LAST_CLOSE)
+            s.text(x + 10, y0 + 96, note_, 9, col_)
         lines = []
         if it and name in ("running", "checking", "candidate", "closing"):
             rows = sorted(it["by_status"][name], key=lambda v: v.get("started_at") or 0)
@@ -1221,13 +1286,13 @@ def pipeline_svg(p):
         elif name == "done" and thr:
             lines = [clip(title(i), 25) for _, i in thr["recent"]]
         elif name == "queued" and it:
+            # shares of the card's own count, which carries the verdict; the 24 h put-backs are a bar below
             exp = sum(1 for v in it["by_status"]["queued"] if v.get("expedite"))
             ret = sum(1 for v in it["by_status"]["queued"] if v.get("returns"))
             lines = ["%d failed a check before" % ret] + (["%d expedited" % exp] if exp else [])
-            if thr:
-                lines.append("%d put back in 24 h" % thr["put_back"])
         for j, ln in enumerate(lines):
             s.text(x + 10, y0 + 112 + j * 14, ln, 10.5, TEXT if name != "queued" else DIM, font=MONO)
+        s.reading_close()
         if i < len(BELT) - 1:
             s.arrow_r(x + cw + 1, x + cw + gap - 1, y0 + 40, BAR)
     # FAIL loop: checking back to queued, along the top of the belt
@@ -1236,11 +1301,13 @@ def pipeline_svg(p):
     s.line(kx, y0, kx, ly, BAD, 1.5)
     s.line(kx, ly, qx, ly, BAD, 1.5)
     s.arrow_d(qx, ly, y0, BAD)
-    label = "a Judge's FAIL goes back to the queue: %s in 24 h" % (thr["blind_fail"] if thr else "UNMEASURED")
+    label = "a Judge's FAIL goes back to the queue: %s in 24 h%s" % (thr["blind_fail"] if thr else "UNMEASURED", "; " + versus(thr["blind_fail"], thr["usual"].get("blind_fail"), True, ROUGH["blind_fail"])[0] if thr else "")
     s.rect(qx + 96, ly - 9, len(label) * 5.9 + 16, 18, BG, None, 0)
+    s.reading_open("FAIL LOOP")
     s.text(qx + 104, ly + 4, label, 11, BAD, "600")
+    s.reading_close()
     # ---- side branches off RUNNING
-    ry, sy, sh = y0 + ch + 18, y0 + ch + 34, 70
+    ry, sy, sh = y0 + ch + 18, y0 + ch + 34, 84
     runx = cx["running"] + cw / 2
     s.line(runx, y0 + ch, runx, ry, FAINT, 1.5, "4 3")
     s.line(cx["queued"] + cw / 2, ry, cx["closing"] + cw + 20 + cw / 2, ry, FAINT, 1.5, "4 3")
@@ -1251,47 +1318,59 @@ def pipeline_svg(p):
         n = it["counts"][name] if it else None
         s.arrow_d(x + cw / 2, ry, sy, FAINT)
         s.rect(x, sy, cw, sh, CARD, EDGE, 6)
+        s.reading_open(name.upper())
         s.text(x + 10, sy + 16, name.upper(), 10.5, DIM, "700")
         s.text(x + cw - 10, sy + 26, "UNMEASURED" if n is None else n, 11 if n is None else 24, WARN if n is None else (TEXT if n else FAINT), "700", "end", MONO)
         s.text(x + 10, sy + 42, SIDE_WORD[name], 10, DIM)
-        top, words = STAGE_NORMAL[name]
-        high = n is not None and top and n > top
+        verdict, col = stage_note(name, n)
+        if n is not None:
+            s.text(x + 10, sy + 58, verdict, 9, col)
         old = oldest_in(it, name, now) if it else None
-        s.text(x + 10, sy + 58, ("oldest %s, " % ago(old[0]) if old else "") + ("high, " if high else "") + "normal " + words, 9, WARN if high else FAINT)
+        if old:
+            note_, col_ = age_note("oldest", old[0], STAGE_OLD[name])
+            s.text(x + 10, sy + 72, note_, 9, col_)
+        s.reading_close()
     # ---- throughput: common zero baseline, direct labels
     ty = sy + sh + 18
     s.line(16, ty - 8, W - 16, ty - 8, EDGE, 1)
     s.text(18, ty + 8, "LAST 24 H, EVENTS (SEVERAL PER ITEM)", 10.5, DIM, "700")
     if thr:
         rows = [("CLOSED", "closed", GOOD, False), ("PASS", "pass", GOOD, False), ("WEAK", "weak", WARN, True), ("FAIL", "fail", BAD, True),
-                ("GAME UNMEASURED", "unmeasured", WARN, True), ("REFUSED", "refused", BAR, True)]
+                ("GAME UNMEASURED", "unmeasured", WARN, True), ("REFUSED", "refused", BAR, True), ("PUT BACK", "put_back", BAR, True)]
         top = max(max(thr[r[1]] for r in rows), 1)
         for j, (lab, key, col, bad) in enumerate(rows):
             yy = ty + 18 + j * 19
             n = thr[key]
-            note, ncol = versus(n, thr["usual"].get(key), bad)
+            note, ncol = versus(n, thr["usual"].get(key), bad, ROUGH.get(key))
+            s.reading_open("BAR " + lab)
             s.text(112, yy + 11, lab, 10.5, DIM, anchor="end", weight="600")
             s.rect(118, yy + 1, 190, 13, CARD, None, 2)
             s.rect(118, yy + 1, max(190 * n / top, 2 if n else 0), 13, col, None, 2)
             s.text(314, yy + 12, n, 12, TEXT, "700", font=MONO)
             s.text(350, yy + 11, note, 9, ncol)
+            s.reading_close()
     else:
         s.text(120, ty + 40, "UNMEASURED: %s" % clip(p["throughput_why"], 100), 13, WARN, "700")
     # trends: each line on its own zero baseline, since a count and a share cannot share an axis
-    bx, lx, rx, rh = 486, 556, 900, 28
+    bx, lx, rx, rh = 486, 556, 900, 30
     s.text(bx, ty + 8, "TRENDS, 48 H, TWO-HOUR POINTS", 10.5, DIM, "700")
-    for j, (lab, vals, col, show) in enumerate(trend_rows(p)):
+    for j, (lab, vals, col, show, judge) in enumerate(trend_rows(p)):
         yy = ty + 18 + j * rh
+        s.reading_open("TREND " + lab)
         s.text(bx, yy + 17, lab, 10.5, DIM, weight="600")
         s.line(lx, yy + rh - 4, rx, yy + rh - 4, EDGE, 1)
         if vals is None:
             s.text(lx + 4, yy + 17, "UNMEASURED", 10, WARN, "700")
+            s.reading_close()
             continue
         top = max(max(vals), 1 if lab != "game idle" else 1.0)
         n = len(vals) - 1
         s.polyline([(lx + (rx - lx) * i / n, yy + rh - 4 - (rh - 8) * v / top) for i, v in enumerate(vals)], col)
         s.text(rx + 8, yy + 17, "now " + show(vals[-1]), 10.5, TEXT, "700", font=MONO)
         s.text(1024, yy + 17, "top " + show(top if lab != "game idle" else max(vals)), 9, DIM, anchor="end")
+        verdict, ncol = judge(vals[-1])
+        s.text(rx + 8, yy + 27, verdict, 9, ncol)
+        s.reading_close()
     yy = ty + 18 + 4 * rh
     s.text(lx, yy + 9, "48 h ago", 9, DIM)
     s.text(rx, yy + 9, "now", 9, DIM, anchor="end")
@@ -1330,7 +1409,7 @@ def pipeline_text(p):
     title = p["title"]
     olds = [(k, oldest_in(it, k, p["now"])) for k in BELT + SIDE]
     out.append("oldest: " + "; ".join("%s %s (%s)" % (k, ago(o[0]), clip(title(o[1]), 40)) for k, o in olds if o))
-    for lab, vals, _, show in trend_rows(p):
+    for lab, vals, _, show, _ in trend_rows(p):
         out.append("trend %-12s %s" % (lab, " ".join(show(v) for v in vals) if vals else "UNMEASURED"))
     return "\n".join(out)
 
@@ -1495,8 +1574,12 @@ def steve_svg(p):
     s.text(190, 41, state + (" AND IDLE" if idle else ""), 20, fg, "800", font=MONO)
     since = "for %s" % ago(now - sv["since"]) if sv.get("since") else ""
     inc = sv.get("incident") or {}
-    extra = ("  incident level %s" % inc.get("level")) if inc.get("level") is not None else ""
+    extra = ("  incident level %s, normal none" % inc.get("level")) if inc.get("level") is not None else ""
+    if since:
+        since += ": " + ("high, normal not at all" if tone == BAD else (("high" if now - sv["since"] > 3600 else "ok") + ", normal under 1 h" if tone == WARN else "ok, normal any length"))
+    s.reading_open("STATE")
     s.text(W - 28, 40, "%s%s" % (since, extra), 12, fg, "600", "end", MONO)
+    s.reading_close()
     s.text(18, 73, clip(sv["reason"], 150) or "no reason recorded", 11.5, TEXT if tone != BAD else "#ffb4b0")
 
     good = cache.get("good") or {}
@@ -1508,14 +1591,16 @@ def steve_svg(p):
     # ---- machine row
     y = 84
     routes = cache.get("routes") or {}
+    s.reading_open("ROUTES")
     s.rect(14, y, 148, 62, CARD, None, 5)
-    s.text(22, y + 53, "normal: all green", 9, DIM)
+    s.text(22, y + 53, "ok, normal all green" if all((cache.get("routes") or {}).get(k) for k in ("tailscale", "lan", "wsl")) else "low, normal all green", 9, DIM)
     s.text(22, y + 14, "ROUTES", 9.5, DIM, "700")
     for i, (k, lab) in enumerate((("tailscale", "tail"), ("lan", "LAN"), ("wsl", "wsl"))):
         v = routes.get(k)
         s.parts.append('<circle cx="%d" cy="%d" r="5" fill="%s"/>' % (28 + i * 46, y + 31, FAINT if v is None else (GOOD if v else BAD)))
         s.text(36 + i * 46, y + 35, lab, 10.5, TEXT if v else DIM)
-    cols = [(170, 92), (270, 88), (366, 148), (522, 88), (618, 128), (754, 180), (942, 84)]
+    s.reading_close()
+    cols = [(170, 92), (270, 96), (374, 132), (514, 100), (622, 124), (754, 180), (942, 84)]
 
     def num(k):
         return good.get(k) or ""
@@ -1523,7 +1608,7 @@ def steve_svg(p):
     up = num("up")
     up = up if re.fullmatch(r"\d+(\.\d+)?", up) else ""
     upv = float(up) if up else None
-    tile_(cols[0][0], y, cols[0][1], "UPTIME", ago(upv).replace(" ", "") if up else "?", TEXT if up else WARN, None, *(("just restarted", WARN) if upv is not None and upv < 900 else ("normal: hours+", DIM)))
+    tile_(cols[0][0], y, cols[0][1], "UPTIME", ago(upv).replace(" ", "") if up else "?", TEXT if up else WARN, None, *(uptime_note(upv) if upv is not None else (None, DIM)))
     load, cores = num("load"), num("cores")
     lnote = against(float(load), float(cores), "0-%s" % cores) if load and cores else (None, DIM)
     tile_(cols[1][0], y, cols[1][1], "LOAD/%s" % (cores or "CORES?"), load or "?", TEXT if load else WARN, None, lnote[0], lnote[1], "Processes wanting a CPU core. Below the core count means nothing is waiting.")
@@ -1534,7 +1619,7 @@ def steve_svg(p):
     else:
         tile_(cols[2][0], y, cols[2][1], "WSL RAM USED", "?", WARN)
     cpu = good.get("cpu_pct")
-    tile_(cols[3][0], y, cols[3][1], "CPU", "%d%%" % cpu if cpu is not None else "?", TEXT if cpu is not None else WARN, cpu / 100 if cpu is not None else None, "normal 0-90%", DIM)
+    tile_(cols[3][0], y, cols[3][1], "CPU", "%d%%" % cpu if cpu is not None else "?", TEXT if cpu is not None else WARN, cpu / 100 if cpu is not None else None, *(against(cpu, 90, "0-90%") if cpu is not None else (None, DIM)))
     disk = num("disk").split()
     if disk:
         tile_(cols[4][0], y, cols[4][1], "DISK FREE", "%s GB" % disk[0], TEXT, None, *(("low, normal over 100 GB", WARN) if int(disk[0]) < 100 else ("ok, normal over 100 GB", DIM)))
@@ -1542,42 +1627,44 @@ def steve_svg(p):
         tile_(cols[4][0], y, cols[4][1], "DISK FREE", "?", WARN)
     gpu = [x.strip() for x in num("gpu").split(",")]
     if len(gpu) == 4 and all(x.isdigit() for x in gpu[1:]):     # "[N/A]" on some cards
-        tile_(cols[5][0], y, cols[5][1], "GPU " + re.sub(r"NVIDIA |GeForce ", "", gpu[0]), "%s%%  %.1f/%.0f GB" % (gpu[1], int(gpu[2]) / 1024, int(gpu[3]) / 1024), TEXT, int(gpu[1]) / 100, "normal 0-60% with the game up", DIM)
+        tile_(cols[5][0], y, cols[5][1], "GPU " + re.sub(r"NVIDIA |GeForce ", "", gpu[0]), "%s%%  %.1f/%.0f GB" % (gpu[1], int(gpu[2]) / 1024, int(gpu[3]) / 1024), TEXT, int(gpu[1]) / 100, *against(int(gpu[1]), 60, "0-60% with the game up"))
     else:
         tile_(cols[5][0], y, cols[5][1], "GPU", "?", WARN)
     gm = num("game")
     run_v, q_v = sv.get("running"), sv.get("pending")
     wasted = gm == "0" and bool(q_v or run_v)
-    tile_(cols[6][0], y, cols[6][1], "GAME", ("up" if gm != "0" else "down") if gm else "?", (LIVE if gm != "0" else DIM) if gm else WARN, None, "down, jobs wait" if wasted else "normal: up", WARN if wasted else DIM)
+    tile_(cols[6][0], y, cols[6][1], "GAME", ("up" if gm != "0" else "down") if gm else "?", (LIVE if gm != "0" else DIM) if gm else WARN, None, "bad, normal up" if wasted else ("ok, normal up" if gm else None), WARN if wasted else DIM, "Up is normal. Down is fine while no job waits; jobs waiting with the game down cannot run.")
 
     # ---- jobs row
     y = 154
     known = sv.get("jobs_known")
     n = lambda v: "?" if v is None else str(v)  # noqa: E731
-    tile_(14, y, 84, "RUNNING", n(run_v), BAD if idle else (LIVE if run_v else DIM), None, "normal 1", WARN if run_v == 0 else DIM)
+    rv = (("low, normal 1", WARN) if run_v == 0 else (("high, normal 1", WARN) if run_v > 1 else ("ok, normal 1", DIM))) if run_v is not None else (None, DIM)
+    tile_(14, y, 80, "RUNNING", n(run_v), BAD if idle else (LIVE if run_v else DIM), None, rv[0], rv[1])
     qn = against(q_v, 20, "0-20") if q_v is not None else (None, DIM)
-    tile_(106, y, 84, "QUEUED", n(q_v), WARN if q_v and not run_v else TEXT, None, qn[0], qn[1])
-    dn = versus(sv.get("done") or 0, sv.get("usual_done"), False) if known else (None, DIM)
-    tile_(198, y, 112, "DONE 24 H", n(sv.get("done")) if known else "?", TEXT if known else WARN, None, dn[0], dn[1])
+    tile_(102, y, 96, "QUEUED", n(q_v), WARN if q_v and not run_v else TEXT, None, qn[0], qn[1])
+    dn = versus(sv.get("done") or 0, sv.get("usual_done"), False, ROUGH["steve_done"]) if known else (None, DIM)
+    tile_(206, y, 112, "DONE 24 H", n(sv.get("done")) if known else "?", TEXT if known else WARN, None, dn[0], dn[1])
     fl = sv.get("failed")
-    fn = versus(fl or 0, sv.get("usual_failed")) if known else (None, DIM)
-    tile_(318, y, 112, "FAILED 24 H", n(fl) if known else "?", (BAD if fl else DIM) if known else WARN, None, fn[0], fn[1])
+    fn = versus(fl or 0, sv.get("usual_failed"), True, ROUGH["steve_failed"]) if known else (None, DIM)
+    tile_(326, y, 112, "FAILED 24 H", n(fl) if known else "?", (BAD if fl else DIM) if known else WARN, None, fn[0], fn[1])
     last = sv.get("last")
     if last and known:     # an unread result could be the newest job
         word = last["o"] + ("/" + last["c"] if last["c"] else "")
-        tile_(438, y, 240, "LAST JOB, %s AGO" % ago(now - last["f"]).upper(), clip("%s %s" % (last["p"], word), 26), GOOD if last["o"] == "DONE" else BAD, None, "normal: under 1 h while the lane runs", DIM)
+        tile_(446, y, 232, "LAST JOB, %s AGO" % ago(now - last["f"]).upper(), clip("%s %s" % (last["p"], word), 26), GOOD if last["o"] == "DONE" else BAD, None, *against(now - last["f"], 3600, "under 1 h while the lane runs"))
     else:
-        tile_(438, y, 240, "LAST JOB", "none in 8 days" if known else "?", WARN)
-    rn = versus(sv.get("rows_h") or 0, sv.get("usual_rows_h"), False) if known else (None, DIM)
+        tile_(446, y, 232, "LAST JOB", "none in 8 days" if known else "?", WARN, None, "low, normal under 1 h while the lane runs" if known else None, WARN)
+    rn = versus(sv.get("rows_h") or 0, sv.get("usual_rows_h"), False, ROUGH["steve_rows_h"]) if known else (None, DIM)
     tile_(686, y, 110, "ROWS/HOUR 24 H", "%.0f" % sv["rows_h"] if known else "?", TEXT if known else WARN, None, rn[0], rn[1])
     age = sv["age"]
     if age is None:
         tile_(804, y, 102, "STEWARD WROTE", "?", WARN)
     else:
-        tile_(804, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT, None, "normal under 5 min", BAD if age > 300 else DIM)
+        tile_(804, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT, None, "high, normal <5 min" if age > 300 else "ok, normal <5 min", BAD if age > 300 else DIM)
     pa = "%s old" % ago(good_age) if good_age is not None else "never"
-    tile_(914, y, 112, "MACHINE READING", pa, WARN if cache.get("why") or good_age is None or good_age > 900 else DIM, None, "normal under 15 min", DIM)
-    live_row(s, 248, sv.get("live"), "Busy: share of 24 h with a finished job running. A job still running counts once it ends.", "Jobs here that named an item, had PASS rows, and that item closed in 24 h")
+    stale = good_age is None or good_age > 900
+    tile_(914, y, 112, "MACHINE READING", pa, WARN if cache.get("why") or stale else DIM, None, "high, normal <15 min" if stale else "ok, normal <15 min", WARN if stale else DIM)
+    live_row(s, 248, sv.get("live"), "Busy: share of 24 h with a finished job running. A job still running counts once it ends.", "Jobs here that named an item, had PASS rows, and that item closed in 24 h", ROUGH["closed_steve"])
     return s.out()
 
 
@@ -1596,19 +1683,19 @@ def archmagi_svg(p):
     d = p["local"]
     y = 44
     if d:
-        tile(s, 14, y, 110, "UPTIME", ago(d["up"]).replace(" ", ""), TEXT, None, *(("just restarted", WARN) if d["up"] < 900 else ("normal: hours+", DIM)))
+        tile(s, 14, y, 110, "UPTIME", ago(d["up"]).replace(" ", ""), TEXT, None, *uptime_note(d["up"]))
         tile(s, 132, y, 110, "LOAD/%d" % d["cores"], "%.1f" % d["load"], TEXT, None, *against(d["load"], d["cores"] * 1.5, "0-%d" % (d["cores"] * 1.5)), "Processes wanting a CPU core. This machine runs fine a little above its core count.")
         frac = d["ram"][0] / max(d["ram"][1], 1)
         tile(s, 250, y, 170, "WSL RAM USED", "%.1f/%.0f GB" % (d["ram"][0] / 1024, d["ram"][1] / 1024), TEXT, frac, *against(frac * 100, 85, "under 85%"))
-        tile(s, 428, y, 130, "EXT4 FREE", "%d GB" % d["disk"], TEXT, None, *(("low, normal over 100 GB", WARN) if d["disk"] < 100 else ("ok, over 100 GB", DIM)))
-        tile(s, 566, y, 130, "D: FREE", "%d GB" % d["disk_d"], TEXT, None, *(("low, normal over 100 GB", WARN) if d["disk_d"] < 100 else ("ok, over 100 GB", DIM)))
+        tile(s, 428, y, 130, "EXT4 FREE", "%d GB" % d["disk"], TEXT, None, *(("low, normal over 100 GB", WARN) if d["disk"] < 100 else ("ok, normal over 100 GB", DIM)))
+        tile(s, 566, y, 130, "D: FREE", "%d GB" % d["disk_d"], TEXT, None, *(("low, normal over 100 GB", WARN) if d["disk_d"] < 100 else ("ok, normal over 100 GB", DIM)))
     else:
         s.text(18, y + 30, "machine stats UNMEASURED: %s" % clip(p["local_why"], 90), 12, WARN, "700")
     w, live = p["win"], p["live_here"]
     gu = live.get("game_up") if live else None
     tile(s, 704, y, 322, "GAME THIS 24 H", "?" if not w else ("up, %s" % game_gb(w["game_mem"]) if w["game"] else "down"), TEXT if w else WARN, gu,
-         None if gu is None else "up %d%% of the minutes sampled; normal 60-100%%" % round(gu * 100), DIM)
-    live_row(s, 130, live, "Busy: share of 24 h somebody held the bridge, from the ledger's bridge events (a hold silent for 45 min stops counting).", "Items closed in 24 h with a PASS proof row here")
+         None if gu is None else "%s, up %d%% of the minutes sampled; normal 60-100%%" % ("low" if gu < 0.6 else "ok", round(gu * 100)), DIM if gu is None or gu >= 0.6 else WARN)
+    live_row(s, 130, live, "Busy: share of 24 h somebody held the bridge, from the ledger's bridge events (a hold silent for 45 min stops counting).", "Items closed in 24 h with a PASS proof row here", ROUGH["closed_here"])
     return s.out()
 
 
@@ -1815,7 +1902,8 @@ def event_rows(p):
 
 def receipts_html(p):
     f = fleet_of(p)
-    if not f:
+    # a reading from before midnight is not today's, however young
+    if not f or time.localtime(f.get("good_t", 0))[:3] != time.localtime(p["now"])[:3]:
         return box(HEAD % "FINISHED TODAY", '<b style="color:%s">UNMEASURED</b>' % WARN)
     rows = f.get("receipts") or []
 
@@ -2261,7 +2349,10 @@ def gather(env, state, hist=(), write=True):
     p["places"] = (staffing or {}).get("target")   # "places" in that file is what this tick allowed; target is the 8 he asks about
     p["checks"] = (staffing or {}).get("checks")
     sp = (staffing or {}).get("spent_today")
-    p["spent"] = tokens(sp) if isinstance(sp, (int, float)) else None
+    # a staffing file from another UTC day holds that day's spend, not today's
+    same_day = staffing and time.strftime("%Y%m%d", time.gmtime(staffing["t"])) == time.strftime("%Y%m%d", time.gmtime(now))
+    p["spent_n"] = sp if same_day and isinstance(sp, (int, float)) else None
+    p["spent"] = tokens(p["spent_n"]) if p["spent_n"] is not None else None
     p["tick"], why = guarded(collect_tick, env, state)
     if why:
         p["unmeasured"].append("Relentless tick (%s)" % why)
