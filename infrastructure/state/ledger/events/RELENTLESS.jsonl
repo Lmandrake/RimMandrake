@@ -406,3 +406,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_NORTHSTAR_GREEN_FULL_1 F1 (GREEN-FULL), read-only proof","ts":"2026-11-04T16:49:21Z","tsn":1793810961468185224}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:49:27Z","tsn":1793810967856677624}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_NORTHSTAR_GREEN_FULL_1 F2 (GREEN-FULL), read-only proof","ts":"2026-11-04T16:49:37Z","tsn":1793810977102270006}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:54:23Z","tsn":1793811263299468850}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GENERATOR_MODS_PROVE_INERT_AFTER_CREATION A2 (L1), read-only proof","ts":"2026-11-04T16:54:31Z","tsn":1793811271401803370}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:54:38Z","tsn":1793811278044833605}
