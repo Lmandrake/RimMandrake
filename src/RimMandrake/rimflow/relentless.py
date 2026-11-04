@@ -1016,10 +1016,24 @@ class Effects(relentless_game.GameFx):
         keep = self.store.p("books_dirt", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
         for state, p in rows:
             src = os.path.join(self.books, p)
-            if p in read:
-                with open(src, "rb") as f:
+            if p in read:   # a ledger shard: held under the flock model.append takes, so no event lands between check and restore
+                head = b"" if state == "??" else \
+                    subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout
+                with open(src, "r+b") as f:
+                    fcntl.flock(f.fileno(), fcntl.LOCK_EX)
                     if f.read() != read[p]:     # a writer came in behind the check
                         return "books %s behind: %s moved while levelling" % (behind, p)
+                    os.makedirs(os.path.dirname(os.path.join(keep, p)), exist_ok=True)
+                    shutil.copy2(src, os.path.join(keep, p))
+                    if state == "??":
+                        os.remove(src)
+                    else:
+                        f.seek(0)
+                        f.truncate()
+                        f.write(head)
+                        f.flush()
+                        os.fsync(f.fileno())
+                continue
             if os.path.isfile(src):
                 os.makedirs(os.path.dirname(os.path.join(keep, p)), exist_ok=True)
                 shutil.copy2(src, os.path.join(keep, p))

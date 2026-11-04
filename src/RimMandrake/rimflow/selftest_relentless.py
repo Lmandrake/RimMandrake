@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import types
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -1027,6 +1028,64 @@ def t_level_books_leaves_run_output():
     advance("other.py", "x\n")
     why = fx.level_books()
     ok(why and "code.py" in why and read(books, "code.py") == "a hand edit\n", "other dirt refuses as before: %s" % why)
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_level_books_shard_under_lock():
+    """level_books restores a ledger shard under the flock model.append takes: an event appended while it waits on the
+    lock is never truncated away (GPT review 2026-11-03: the check-then-truncate window lost it from tree and backup)."""
+    d = tempfile.mkdtemp(prefix="rlbl-")
+    shard = R.LEDGER_DIR + "BENCH.jsonl"
+
+    def g(cwd, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=cwd, capture_output=True, text=True, check=True).stdout
+
+    def put(root, p, text, mode="w"):
+        os.makedirs(os.path.dirname(os.path.join(root, p)), exist_ok=True)
+        with open(os.path.join(root, p), mode) as f:
+            f.write(text)
+
+    def read(root, p):
+        with open(os.path.join(root, p)) as f:
+            return f.read()
+    origin, up, books = (os.path.join(d, n) for n in ("o.git", "up", "books"))
+    g(d, "init", "-q", "--bare", "-b", "main", origin)
+    g(d, "clone", "-q", origin, up)
+    g(up, "checkout", "-q", "-B", "main")
+    put(up, shard, "a\n")
+    g(up, "add", "--", shard)
+    g(up, "commit", "-qm", "one")
+    g(up, "push", "-q", "origin", "main")
+    g(d, "clone", "-q", origin, books)
+    put(up, shard, "b\n", "a")
+    g(up, "commit", "-qam", "landed")
+    g(up, "push", "-q", "origin", "main")
+    g(books, "fetch", "-q", "origin")
+    put(books, shard, "b\n", "a")      # the local event origin already holds: levelling may restore it
+    fx = R.Effects.__new__(R.Effects)
+    fx.books, fx.store = books, R.Store(os.path.join(d, "store"))
+    ready = os.path.join(d, "ready")
+    holder = subprocess.Popen([sys.executable, "-c", (
+        "import fcntl, os, sys, time\n"
+        "fd = os.open(sys.argv[1], os.O_WRONLY | os.O_APPEND)\n"
+        "fcntl.flock(fd, fcntl.LOCK_EX)\n"
+        "open(sys.argv[2], 'w').close()\n"
+        "time.sleep(1.0)\n"
+        "os.write(fd, b'c\\n')\n"
+        "fcntl.flock(fd, fcntl.LOCK_UN)\n"), os.path.join(books, shard), ready])
+    for _ in range(200):
+        if os.path.exists(ready):
+            break
+        time.sleep(0.02)
+    why = fx.level_books()
+    holder.wait(timeout=30)
+    ok(why and "moved while levelling" in why and read(books, shard) == "a\nb\nc\n",
+       "an event appended under the lock refuses the level and survives: %s %r" % (why, read(books, shard)))
+    put(books, shard, "a\nb\n")
+    ok(fx.level_books() is None and read(books, shard) == "a\nb\n"
+       and g(books, "rev-list", "--count", "HEAD..origin/main").strip() == "0", "with the shard quiet it levels")
+    kept = glob.glob(fx.store.p("books_dirt", "*", shard))
+    ok(len(kept) == 1, "and the restored shard is backed up: %s" % kept)
     shutil.rmtree(d, ignore_errors=True)
 
 
@@ -4204,7 +4263,7 @@ def main():
     for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
-              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
+              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
               t_help_forced_once, t_help_own_call_spends_hits, t_help_reaches_brief, t_help_refused, t_help_lifecycle):
         if picked and t.__name__ not in picked:
             continue
