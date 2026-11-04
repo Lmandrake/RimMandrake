@@ -315,7 +315,8 @@ def t_dud_on_this_game_returns_at_once():
     x.tick()
     x.w.started = x.now - 3000.0
     dud = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
-           "why": "the proof exited 2: it did not measure: Type not found: X.Y", "game": relentless_live.iso(1.0)}
+           "log": "/l/here.log", "why": "the proof exited 2: it did not measure: Type not found: X.Y",
+           "game": relentless_live.iso(1.0)}
     x.w.rows = [dict(dud)]
     x.tick()
     ok(x.st("I0")["status"] == "game", "a dud from another game is retried on this one")
@@ -325,8 +326,40 @@ def t_dud_on_this_game_returns_at_once():
     ok(st["last_fail"] and st["last_fail"]["class"] == "game_unmeasured" and "this game and build" in
        st["last_fail"]["detail"] and "Type not found" in st["last_fail"]["detail"],
        "one dud on this game and build goes back at once: %s" % st.get("last_fail"))
+    ok("/l/here.log" in st["last_fail"]["detail"], "that return names the log too: %s" % st["last_fail"])
     ok(G.blocked_here({"A2": dict(dud, game=relentless_live.iso(x.w.started), why="bridge not taken: busy")}, ["A2"],
                       SHA, x.w.started, x.now) == {}, "a transient that is not a dud never sends it back")
+    x.done()
+
+
+def t_long_reason_survives_both_unmeasured_returns():
+    """PROOF_RERUNS_TAME_UNMEASURED_REPEATS: the log now comes first in the line, so a cut sized for a bare reason would
+    take the reason's end. Both game_unmeasured returns must hand the worker the whole of a long reason, and the log."""
+    import relentless_live
+    reason = "the proof exited 2: it did not measure: " + "x" * 300 + " THE_END_OF_THE_REASON"
+    dud = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+           "log": "/l/long.log", "why": reason}
+
+    def seen(st):
+        d = (st.get("last_fail") or {})
+        return d.get("class") == "game_unmeasured" and "THE_END_OF_THE_REASON" in (d.get("detail") or "") \
+            and "/l/long.log" in (d.get("detail") or "")
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.rows = [dict(dud), dict(dud, at="2099-01-01T00:20:00Z")]
+    x.tick()
+    ok(seen(x.st("I0")), "the ran-N-times return keeps the end of a long reason: %s" % x.st("I0").get("last_fail"))
+    x.done()
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.started = x.now - 3000.0
+    x.w.rows = [dict(dud, game=relentless_live.iso(x.w.started))]
+    x.tick()
+    ok(seen(x.st("I0")), "the this-game-and-build return keeps the end of a long reason: %s" % x.st("I0").get("last_fail"))
     x.done()
 
 
@@ -1311,7 +1344,7 @@ def t_mod_gap_pure():
 
 def main():
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,

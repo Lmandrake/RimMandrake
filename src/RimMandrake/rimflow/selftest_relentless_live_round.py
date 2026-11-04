@@ -449,12 +449,55 @@ def t_census():
     check("census: causes sort by count, numbers gone", c["causes"][0][0] == 3 and "601" not in c["causes"][0][1], c)
     check("census: what held the game, and what that bought", (c["took_bridge"], c["took_bridge_verdict"]) == (4, 1), c)
     check("census: no rows is no crash", R.census([])["rows"] == 0)
+    # the biggest cause arrives after smaller ones, so first-seen order and a sorted list differ; a tie reads by name
+    order = ["zz small"] + ["cc tied"] * 2 + ["aa tied"] * 2 + ["bb biggest"] * 3
+    c = R.census([dict(row, why=w, cause=None) for w in order])
+    check("census: causes are sorted by count whatever order they arrived, a tie by name",
+          [(n, k) for n, k in c["causes"]] == [(3, "bb biggest"), (2, "aa tied"), (2, "cc tied"), (1, "zz small")], c["causes"])
+    many = [dict(row, item=i, why="w") for i in ["one"] * 2 + ["two"] * 4 + ["three"] * 3]
+    check("census: repeating items sorted by count whatever order they arrived",
+          R.census(many)["repeating_items"] == [[3, "two"], [2, "three"], [1, "one"]], R.census(many)["repeating_items"])
+
+
+def t_census_command():
+    """PROOF_RERUNS_TAME_UNMEASURED_REPEATS: the contract's own command, as a process, on a runs.jsonl fixture: it prints
+    the sorted causes from that file, honours --last, and a missing file is UNMEASURED, never "no rows"."""
+    def run(root, *args):
+        env = dict(os.environ, RELENTLESS_ROOT=root)
+        return subprocess.run([sys.executable, os.path.join(HERE, "relentless_live_round.py"), "census"] + list(args),
+                              env=env, capture_output=True, text=True, timeout=60)
+    base = {"item": "I", "criterion": "A1", "sha": "s", "outcome": "UNMEASURED"}
+    whys = ["not in the running load: M", "Type not found", "aaa first alpha", "Type not found", "aaa first alpha", "Type not found"]
+    with tempfile.TemporaryDirectory() as root:
+        os.makedirs(os.path.join(root, "live"))
+        with open(os.path.join(root, "live", "runs.jsonl"), "w", encoding="utf-8") as f:
+            for i, w in enumerate(whys):
+                f.write(json.dumps(dict(base, why=w, at="2026-11-03T00:00:0%dZ" % i)) + "\n")
+        p = run(root)
+        check("census command: exit 0 on a fixture", p.returncode == 0, p.stderr[-300:])
+        try:
+            got = json.loads(p.stdout)
+        except ValueError:
+            got = {}
+        check("census command: prints the sorted causes read from runs.jsonl", got.get("rows") == 6 and got.get("causes") ==
+              [[3, "Type not found"], [2, "aaa first alpha"], [1, "not in the running load: M"]], p.stdout[-400:])
+        p = run(root, "--last", "2")
+        try:
+            got = json.loads(p.stdout)
+        except ValueError:
+            got = {}
+        check("census command: --last takes the newest rows", p.returncode == 0 and got.get("rows") == 2
+              and got.get("from") == "2026-11-03T00:00:04Z" and got.get("to") == "2026-11-03T00:00:05Z", p.stdout[-400:])
+    with tempfile.TemporaryDirectory() as root:
+        p = run(root)
+        check("census command: no file is UNMEASURED with exit 2, and no numbers", p.returncode == 2
+              and "UNMEASURED" in p.stderr and not p.stdout.strip(), (p.returncode, p.stdout[-200:], p.stderr[-200:]))
 
 
 def main():
     for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never,
               t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed,
-              t_same_game_same_build_waits, t_census):
+              t_same_game_same_build_waits, t_census, t_census_command):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
