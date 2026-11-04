@@ -124,6 +124,39 @@ def main():
         ok, errs = run_cycle(d, repo, "run2")
         check("stage 0 done -> stage 1", ok and DS.load_state(d)["stage"] == 1, errs)
 
+        # ---- built / proven / scope: each field refused on its own, never folded into one word
+        def inv_errs(**kw):
+            return [e for e in DS.record_errors({"inventory": [inv(**kw)]}, repo.root) if e.startswith("inventory[")]
+        check("inventory: the baseline entry is clean (so each refusal below is its own field)", inv_errs() == [],
+              inv_errs())
+        for field, bad_v in (("impl", "built"), ("proof", "bogus"), ("scope", "?")):
+            got = inv_errs(**{field: bad_v})
+            check("inventory: %s %r is refused by name" % (field, bad_v),
+                  any(("%s %r is not one of" % (field, bad_v)) in e for e in got), got)
+        got = inv_errs(proof="current")
+        check("inventory: proof current with no proof_evidence is refused",
+              any("proof current needs proof_evidence" in e for e in got), got)
+        check("inventory: proof current WITH proof_evidence passes", inv_errs(proof="current", proof_evidence="x") == [],
+              inv_errs(proof="current", proof_evidence="x"))
+        got = inv_errs(impl_evidence=None)
+        check("inventory: present with no impl_evidence is refused",
+              any("present needs impl_evidence" in e for e in got), got)
+
+        # ---- the working record carries each entry's source ids and its impl/proof/scope
+        wd = os.path.join(tmp, "wr")
+        os.makedirs(wd)
+        put(wd, "record.json", {"inventory": [inv(id="probe", impl="unknown", proof="stale", scope="later",
+                                                  source=["src/Foo/validation.py", "OWNER:1001"])],
+                                "decisions": [{"id": "d9", "text": "dec", "source": ["log.md#L7"]}]})
+        wr = DS.working_record(wd)
+        line = [l for l in wr.splitlines() if l.startswith("- probe:")]
+        check("working record: the inventory line carries impl, proof and scope",
+              len(line) == 1 and "impl=unknown proof=stale scope=later" in line[0], wr)
+        check("working record: the inventory line carries its source ids",
+              len(line) == 1 and line[0].endswith("[src/Foo/validation.py,OWNER:1001]"), wr)
+        check("working record: a decision line carries its source id",
+              any(l.startswith("- d9:") and l.endswith("[log.md#L7]") for l in wr.splitlines()), wr)
+
         # ---- authority and provenance
         bad = dict(rec, root={"text": "climb out", "source": "CONDUCTOR:55", "speaker": "conductor"})
         put(d, "record.json", bad)
