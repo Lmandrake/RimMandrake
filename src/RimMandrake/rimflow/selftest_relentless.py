@@ -556,11 +556,13 @@ def full_pass(x, i, verdict="PASS"):
     ok(st["status"] == "checking", "finish reaches the checker")
     prompt = x.w.launches[-1][2]
     ok("SENTINEL_OF_THE_ATTEMPTS" not in prompt and "text of" in prompt, "the checker's brief holds no record of the attempts")
-    # a FAIL is the Marker's observed defect (the structured form): PRODUCT by itself (relentless_attrib.mechanical)
+    # a FAIL is withheld until it is attributed (a defect line is no PRODUCT by itself); the seat says PRODUCT here
     R.verdict(x.s, i, st["check"]["nonce"], verdict, "ran it", defects=["ran it"] if verdict == "FAIL" else None)
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
     x.tick()
+    if verdict == "FAIL" and (x.st(i).get("wait") or {}).get("kind") == "attribution":
+        blame_product(x, i)
 
 
 def weak_round(x, i, sha, word="WEAK"):
@@ -578,6 +580,8 @@ def weak_round(x, i, sha, word="WEAK"):
         x.w.up[st["check"]["run"]["unit"]] = False
         x.tick()
         x.tick()
+        if word == "FAIL" and (x.st(i).get("wait") or {}).get("kind") == "attribution":
+            blame_product(x, i)
 
 
 def t_proof_weak():
@@ -720,7 +724,8 @@ def t_done_path():
     x = Rig(n=1, share=1.0)
     full_pass(x, "I0", "FAIL")
     st = x.st("I0")
-    ok(st["failures"].get("blind_fail") == 1 and st["last_fail"]["detail"] == "ran it", "FAIL returns with its reasons")
+    ok(st["failures"].get("blind_fail") == 1 and st["last_fail"]["detail"].startswith("ran it"),
+       "FAIL returns with its reasons")
     x.run_one("I0")
     ok("ran it" in x.w.launches[-1][2], "the reasons reach the next worker")
     x.done()
@@ -4130,8 +4135,8 @@ def t_review_wrong_verdicts():
        "unknown publication while closing waits: no failure, no close attempt")
     x.w.is_pub = False
     x.tick()
-    ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [] and len(tries) == n_tries,
-       "a retry does not even try to close a sha that left origin")
+    ok(not x.st("I0")["failures"] and x.st("I0")["status"] in ("stopping", "held") and x.w.closes == []
+       and len(tries) == n_tries, "a retry does not even try to close a sha that left origin; no strike, held to re-land")
     x.done()
     # the pause that arrives while the clone is prepared stops the launch
     x = Rig(n=1, share=1.0)
@@ -4255,7 +4260,8 @@ def t_review_wrong_verdicts_two():
     x.w.is_pub = False
     x.w.ledger_close = lambda item, sha, reason, live=None: x.w.closes.append((item, sha))
     x.tick()
-    ok(x.w.closes == [] and x.st("I0")["failures"].get("live_broken") == 1, "the attempt after a crash re-asks publication")
+    ok(x.w.closes == [] and not x.st("I0")["failures"] and x.st("I0")["status"] in ("stopping", "held"),
+       "the attempt after a crash re-asks publication: gone from origin is held, never struck")
     x.done()
     # a pause that arrives while a checker's clone is made stops the launch
     x = Rig(n=1, share=1.0)

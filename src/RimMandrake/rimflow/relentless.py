@@ -307,6 +307,10 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
         st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now}
         if "CONTRACT" in ((attributed or {}).get("targets") or []):
             st["proof_only"]["binding"] = True      # the binding may live off the sha (the contract, a ledger criterion)
+            # every live row on this sha was read under the binding just found wrong: the repaired binding is judged
+            # fresh, never by the old REFUSED/FAIL (or PASS) rows (relentless_live_round.history keys rows by sha)
+            relentless_game.void_rows(store.root, st["item"], st["candidate"]["sha"],
+                                      "binding attributed CONTRACT: %s" % ((attributed or {}).get("evidence") or "")[:200], now)
     elif klass in ("blind_fail", PROOF_DEFECT):     # the work itself is in doubt again: the code may move
         st["proof_only"] = None
         for k in PROOF_ENDS:
@@ -1609,7 +1613,8 @@ class Effects(relentless_game.GameFx):
         priority = pkg("priority")
         return {"state": it.state, "lease": getattr(it, "lease", None), "needs": it.needs, "owner": it.owner,
                 "block_holds": priority.block_holds(w, it, int(time.time())), "block": priority.block_line(it),
-                "guard_owed": pkg("model").guard_owed(it), "closed_sha": getattr(it, "closed_sha", None)}
+                "guard_owed": pkg("model").guard_owed(it), "closed_sha": getattr(it, "closed_sha", None),
+                "event": it.history[-1] if getattr(it, "history", None) else None}     # a reclose is a new event
 
     # the other seat: read from its tree, never pulled, never written
     def seat_words(self):

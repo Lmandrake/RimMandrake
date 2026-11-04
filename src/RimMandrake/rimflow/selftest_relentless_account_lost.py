@@ -263,7 +263,9 @@ def t_checker_verdict_never_waits():
     R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", "broken", x.now, defects=["broken"])
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick(30)
-    ok(x.st("I0")["failures"].get("blind_fail") == 1, "a checker that gave its verdict is judged at once: the wait is for no word only")
+    w = x.st("I0").get("wait") or {}
+    ok(w.get("class") == "blind_fail" and w.get("kind") == "attribution",
+       "a checker that gave its verdict is judged at once (sent to attribution): the wait is for no word only: %s" % w)
     x.done()
 
 

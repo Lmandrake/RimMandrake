@@ -49,6 +49,7 @@ class World(SG.GW):
         SG.GW.__init__(self, 0)
         self.items = dict({i: "proposed" for i in items}, **{r: "doing" for r in repairs})
         self.blocks, self.closed, self.fixture_exits, self.fixture_runs = {}, {}, {}, []
+        self.led_events, self.during_fixture = {}, None
 
     def item_state(self, item):
         st = SG.GW.item_state(self, item)
@@ -56,7 +57,8 @@ class World(SG.GW):
             b = self.blocks.get(item)
             holds = bool(b) and not (b[0] == "item" and b[1] and
                                      all(self.items.get(x) in ("done", "dropped") for x in b[1]))
-            st.update(block_holds=holds, block=repr(b) if b else None, closed_sha=self.closed.get(item))
+            st.update(block_holds=holds, block=repr(b) if b else None, closed_sha=self.closed.get(item),
+                      event=self.led_events.get(item))
         return st
 
     def ledger_block(self, item, kind, ons, reason):
@@ -66,10 +68,17 @@ class World(SG.GW):
 
     def run_fixture(self, cmd, timeout=180):
         self.fixture_runs.append(cmd)
+        if self.during_fixture:
+            self.during_fixture()
         return self.fixture_exits.get(cmd, (None, "not run"))
 
     def close_repair(self, item, sha):
         self.items[item], self.closed[item] = "done", sha
+        self.led_events[item] = self.led_events.get(item, 0) + 1
+
+    def reopen(self, item):
+        self.items[item] = "doing"
+        self.led_events[item] = self.led_events.get(item, 0) + 1
 
 
 def rig(items, repairs=(), **rules):
@@ -163,9 +172,19 @@ def t_steve_site_checker():
     ok(st["status"] == "blocked" and kept(x, STEVE) and len(x.w.fixture_runs) == 2,
        "fixtures refuse the repair: it keeps waiting, and the refusal is not rerun on a tick: %d runs" % len(x.w.fixture_runs))
     ok(sum("fixtures refuse" in n for n in x.w.notes) == 1, "the refusal is said once on the ledger")
-    # a new close of the repair is a new evidence event: fixtures hold, the same candidate goes back to its checker
+    # reopened and closed again AT THE SAME SHA (a site repair lives off the repo) is a new evidence event; a bad fixture
+    # that could not run (127: not found) is no rejection
+    x.w.fixture_exits = {GOOD: (0, "D: 412G free"), BAD: (127, "probe.py: not found")}
+    x.w.reopen(BOX_FIX)
+    x.tick()
+    x.w.close_repair(BOX_FIX, "fix1")
+    x.tick()
+    ok(x.st(STEVE)["status"] == "blocked" and len(x.w.fixture_runs) == 4,
+       "the same-sha reclose reruns the fixtures; a bad fixture exiting 127 is not a rejection: %d runs"
+       % len(x.w.fixture_runs))
     x.w.fixture_exits = {GOOD: (0, "D: 412G free"), BAD: (2, "Q: no such drive")}
-    x.w.closed[BOX_FIX] = "fix2"
+    x.w.reopen(BOX_FIX)
+    x.w.close_repair(BOX_FIX, "fix1")
     x.tick()
     st = x.st(STEVE)
     ok(st["status"] in ("candidate", "checking") and kept(x, STEVE) and not st.get("wait"),
@@ -257,12 +276,18 @@ def t_predecessor_not_staffed():
 
 
 def t_product_and_failed_diagnosis():
-    """A structured defect is PRODUCT by itself; a diagnose consult that ends without attributing holds the item."""
+    """A structured defect is NOT PRODUCT by itself; the diagnosis that says PRODUCT earns the strike; a diagnose consult
+    that ends without attributing holds the item."""
     x = rig([TITANIC])
-    checked(x, TITANIC, "FAIL", "bodySize 1.0", defects=["A1: bodySize 1.0, owed 2.4"])
+    checked(x, TITANIC, "FAIL", "ssh denied", defects=["setup: ssh to the checker box denied"])
     st = x.st(TITANIC)
-    ok(st["failures"].get("blind_fail") == 1 and not st.get("wait") and st["attribution"]["targets"] == ["PRODUCT"],
-       "a Marker's structured defect is an observed violation: builder, with the strike")
+    ok(not st["failures"] and (st.get("wait") or {}).get("kind") == "attribution" and kept(x, TITANIC),
+       "a Marker's defect line carries no target or measurement validity: withheld, no strike: %s" % st["failures"])
+    route = operator(x, TITANIC, ["PRODUCT"], obligation="A1 bodySize 2.4", observed="bodySize 1.0 in the def dump",
+                     why_product="the dump was read from the loaded game", evidence="A1: bodySize 1.0, owed 2.4")
+    st = x.st(TITANIC)
+    ok(route == "builder" and st["failures"].get("blind_fail") == 1 and st["attribution"]["targets"] == ["PRODUCT"],
+       "the PRODUCT attribution earns the strike and a builder: %s" % route)
     x.run_one(TITANIC)
     ok("bodySize" in launches(x, TITANIC, "work")[-1][2], "the builder is told the defect")
     x.done()
@@ -305,8 +330,99 @@ def t_product_and_failed_diagnosis():
     x.done()
 
 
+def t_gpt_review_fences():
+    """The release is fenced: a parent linked while fixtures run is kept; a wait that moved is not released by the old
+    evidence; a dropped predecessor releases nothing; PRODUCT beside an unmet DEPENDENCY staffs nobody; a candidate
+    that left main earns no strike; a CONTRACT attribution voids the old rows on its sha."""
+    x = rig([LEAN, TITANIC], [HARNESS_FIX], max_workers=1)
+    game_failed(x, LEAN, "A2")
+    operator(x, LEAN, ["HARNESS"], repair=HARNESS_FIX, fixture_good=GOOD, fixture_bad=BAD)
+    game_failed(x, TITANIC, "A2")
+    x.w.fixture_exits = {GOOD: (0, "ok"), BAD: (1, "nothing measured")}
+    x.w.during_fixture = lambda: (x.w.__dict__.update(during_fixture=None),
+                                  operator(x, TITANIC, ["HARNESS"], repair=HARNESS_FIX, fixture_good=GOOD,
+                                           fixture_bad=BAD))
+    x.tick()
+    x.w.close_repair(HARNESS_FIX, "fix1")
+    x.tick()
+    inc = I.get(x.s, HARNESS_FIX)
+    ok(TITANIC in inc["items"], "a parent linked while the fixtures ran is not erased by the check's save: %s"
+       % sorted(inc["items"]))
+    x.done()
+    # the wait moves while the fixtures run: the old evidence releases nothing
+    x = rig([STEVE], [BOX_FIX])
+    checked(x, STEVE, "FAIL", "box cannot see D:")
+    operator(x, STEVE, ["SITE"], repair=BOX_FIX, fixture_good=GOOD, fixture_bad=BAD)
+    x.tick()
+
+    def move():
+        with x.s.lock():
+            st = x.s.load(STEVE)
+            st["wait"]["since"] += 1
+            x.s.save(st)
+    x.w.during_fixture = move
+    x.w.fixture_exits = {GOOD: (0, "ok"), BAD: (1, "no")}
+    x.w.close_repair(BOX_FIX, "fix1")
+    x.tick()
+    ok(x.st(STEVE)["status"] == "blocked" and x.st(STEVE).get("wait"),
+       "a wait that changed under the fixture run is not released by it")
+    x.done()
+    # PRODUCT beside a DEPENDENCY waits; a dropped predecessor releases nothing; INSTRUMENT+DEPENDENCY is refused
+    x = rig([REPAINT], [COMB, HARNESS_FIX])
+    checked(x, REPAINT, "FAIL", "the holds are missing")
+    try:
+        operator(x, REPAINT, ["HARNESS", "DEPENDENCY"], repair=HARNESS_FIX, on=COMB, fixture_good=GOOD, fixture_bad=BAD)
+        ok(False, "instrument and dependency in one attribution is refused")
+    except ValueError as e:
+        ok("one wait" in str(e), "instrument and dependency in one attribution is refused")
+    route = operator(x, REPAINT, ["PRODUCT", "DEPENDENCY"], on=COMB, obligation="o", observed="o", why_product="w")
+    works = len(launches(x, REPAINT, "work"))
+    for _ in range(3):
+        x.tick(3600)
+    st = x.st(REPAINT)
+    ok(route == "wait:" + COMB and st["status"] == "blocked" and len(launches(x, REPAINT, "work")) == works
+       and kept(x, REPAINT) and "PRODUCT" in st["attribution"]["targets"],
+       "PRODUCT with an unmet predecessor: no builder, no strike, the finding on record: %s" % route)
+    x.w.items[COMB] = "dropped"
+    x.tick()
+    x.tick()
+    ok(x.st(REPAINT)["status"] == "blocked" and sum("without closing" in n for n in x.w.notes) == 1,
+       "a dropped predecessor is no evidence: still waiting, said once")
+    x.done()
+    # an incident with no fixtures (a worker's snag opened it) releases no candidate; a snag may go on the close alone
+    x = rig([STEVE])
+    with x.s.lock():
+        I.link(x.s, BOX_FIX, STEVE, None, x.now, None, "snag", None, ["worker_snag"])
+    ok(not I.check(x.s, BOX_FIX, x.w.run_fixture, x.now, "e1", need_fixtures=True)[0]
+       and I.check(x.s, BOX_FIX, x.w.run_fixture, x.now, "e1", need_fixtures=False)[0] and not x.w.fixture_runs,
+       "no fixtures: a candidate is not released, a snag is; the two answers are cached apart")
+    x.done()
+    # a candidate that left origin/main: no strike, held for the seat
+    x = rig([STEVE])
+    checked(x, STEVE, "FAIL", "x")
+    with x.s.lock():
+        st = x.s.load(STEVE)
+        st.pop("wait", None)
+        st["hold"], st["status"] = None, "checking"
+        R.fail(x.s, st, "live_broken", "the candidate %s left origin/main" % SHA, x.r, x.now)
+        x.s.save(st)
+    st = x.st(STEVE)
+    ok(st["status"] in ("stopping", "held") and not st["failures"] and kept(x, STEVE),
+       "a candidate gone from main earns no strike and no builder: %s %s" % (st["status"], st["failures"]))
+    x.done()
+    # CONTRACT: the rows read under the wrong binding are voided
+    x = rig([LEAN])
+    game_failed(x, LEAN, "A2")
+    route = operator(x, LEAN, ["CONTRACT"], evidence="the A2 line greps a log the round never writes")
+    rows = [json.loads(ln) for ln in open(os.path.join(x.s.root, "live", "runs.jsonl"))]
+    ok(route == "proof" and rows[-1].get("void") and rows[-1]["item"] == LEAN and rows[-1]["sha"] == SHA,
+       "a CONTRACT attribution voids the rows on its sha: the repaired binding is judged fresh")
+    x.done()
+
+
 def main():
-    for t in (t_steve_site_checker, t_shared_harness_incident, t_predecessor_not_staffed, t_product_and_failed_diagnosis):
+    for t in (t_steve_site_checker, t_shared_harness_incident, t_predecessor_not_staffed, t_product_and_failed_diagnosis,
+              t_gpt_review_fences):
         t()
     if S.FAILS:
         print("FAIL: %d" % len(S.FAILS))

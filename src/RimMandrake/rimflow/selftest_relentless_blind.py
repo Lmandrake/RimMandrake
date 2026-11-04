@@ -196,6 +196,7 @@ def t_round2_box_never_wedges():
         ok(True, "R2-2: a hand-written UNMEASURED beside a defect raises nothing")
     except ValueError as e:
         ok(False, "R2-2: a hand-written UNMEASURED beside a defect raises nothing: %s" % e)
+    st = read_as_fail(x)
     ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"], "R2-2: and it acts as the FAIL read_as promises")
     x.done()
     x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
@@ -336,13 +337,23 @@ def t_steve_replay():
     x.done()
 
 
+def read_as_fail(x, item="I0"):
+    """A FAIL (not blindness) is withheld for its attribution (relentless_attrib); the seat says PRODUCT, so the strike
+    and the new generation follow. -> the state after."""
+    w = x.st(item).get("wait") or {}
+    ok(w.get("kind") == "attribution" and w.get("class") == "blind_fail", "read as a FAIL, withheld to attribute: %s" % w)
+    T.blame_product(x, item)
+    return x.st(item)
+
+
 def t_real_fail_after_blind():
     x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_recheck_s=60)
     was = to_check(x, "I0")
     speak(x, "I0", "FAIL", STEVE_G1)
     recheck(x, "I0")
-    # the Marker names the defect its run showed (--defect): an observed violation, PRODUCT, so the strike stands
-    st = speak(x, "I0", "FAIL", REAL["FOCUS_CAP g1"], defects=["the cap leaks on the real path"])
+    # the Marker names the defect its run showed (--defect): a FAIL, not blindness; attributed PRODUCT the strike stands
+    speak(x, "I0", "FAIL", REAL["FOCUS_CAP g1"], defects=["the cap leaks on the real path"])
+    st = read_as_fail(x)
     ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"],
        "a red proof after a blind one still fails: %s gen %s" % (st["failures"], st["gen"]))
     ok("blind" not in st and "recheck_at" not in st, "and ends the run of blind ones")
@@ -371,7 +382,7 @@ def t_structured_replay():
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
     x.tick()
-    st = x.st("I0")
+    st = read_as_fail(x)
     ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"], "F2: a defect beside blindness goes back as FAIL")
     x.done()
 

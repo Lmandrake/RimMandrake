@@ -20,8 +20,12 @@ went through five builders because the checker's box could not ssh. The supervis
         HARNESS / SITE / CHECKER   the instrument is broken        -> one incident per shared fault (relentless_incident),
                     the item waits on the repair item with its candidate, released only by evidence
         DEPENDENCY  an unmet predecessor                            -> waits on it, no staffing until it lands
-  - two endings attribute themselves (mechanical): a Marker FAIL with structured defects is an observed violation
-    (PRODUCT); a refused or bad live-proof line (game_contract, game_refused) is CONTRACT.
+  - two endings attribute themselves (mechanical): a refused or bad live-proof line (game_contract, game_refused) is
+    CONTRACT. A Marker's structured defects are NOT PRODUCT by themselves (a defect line carries no target and no
+    measurement validity: "SSH denied" is a defect line too); they go to the diagnostician like any other FAIL.
+  - a candidate that left origin/main (live_broken) is no product evidence either: held for the seat to re-land.
+  - a known unmet predecessor (DEPENDENCY) wins over PRODUCT: the item waits, no builder is staffed against a world
+    the predecessor has not built; the PRODUCT finding stays on the record and the same candidate is re-validated.
   - a diagnosis that cannot be had (no answer, no consult machinery) holds the item for the seat; it never falls back
     to a builder.
   - release (relentless_block.sweep -> release) is an evidence event: the repair's ledger block ends AND the incident's
@@ -51,10 +55,8 @@ def iso(t):
 
 
 def mechanical(klass, st):
-    """-> the target an ending attributes by itself, or None when it needs a diagnosis."""
-    if klass == "blind_fail":
-        import relentless_wall
-        return "PRODUCT" if relentless_wall.clean_list((st.get("check") or {}).get("defects")) else None
+    """-> the target an ending attributes by itself, or None when it needs a diagnosis. Never PRODUCT: a strike is
+    earned only by a diagnosis that names the obligation, the observation and why the instrument was sound."""
     if klass in MECH_CONTRACT:
         return "CONTRACT"
     return None
@@ -73,13 +75,11 @@ def gate(store, st, klass, detail, r, now, sup):
     if not sha:
         return None         # no candidate: a worker's ending, the old road
     if klass == "live_broken" and "left origin/main" in (detail or ""):
-        return None         # the candidate itself is gone from main: there is nothing to keep, it must land again
+        # the candidate is gone from main: no observed violation, nothing a builder should be struck for; the seat
+        # re-lands it (or files the work again), the record keeps the sha
+        withhold(store, st, klass, detail, r, now, sup, diagnose=False)
+        return "gated"
     m = mechanical(klass, st)
-    if m == "PRODUCT":
-        rec = record(["PRODUCT"], "the Marker observed: %s" % "; ".join(st["check"]["defects"])[:1500], now,
-                     "mechanical", sha, observed=(detail or "")[:600])
-        st["attribution"] = rec
-        return rec
     if m in PROOF_ROAD:
         rec = record([m], detail, now, "mechanical", sha)
         st["attribution"] = rec
@@ -90,7 +90,7 @@ def gate(store, st, klass, detail, r, now, sup):
     return "gated"
 
 
-def withhold(store, st, klass, detail, r, now, sup):
+def withhold(store, st, klass, detail, r, now, sup, diagnose=True):
     """Under the lock. The run (a checker, a live round, a staging) still settles through `stopping`, which lands here on
     `blocked` with the wait: no gen, no strike, no return, no approach; the candidate stays exactly as it was."""
     resume = "game" if st["status"] == sup.relentless_game.GAME else "candidate"
@@ -103,7 +103,9 @@ def withhold(store, st, klass, detail, r, now, sup):
                                "gated": WAIT_ATTRIB, "sha": st["candidate"]["sha"]})
     store.learn(st["item"], "- %s gen %d %s withheld: no strike until it is attributed: %s"
                 % (iso(now), st["gen"], klass, (detail or "")[:600]))
-    if not r.get("circling"):
+    if not diagnose:
+        no_diagnosis(st, "the candidate left origin/main: re-land it, then unhold to re-check the same sha", now, sup)
+    elif not r.get("circling"):
         no_diagnosis(st, "no consult machinery (rules.circling unset) to attribute it", now, sup)
     elif sup.help_pending(st):
         st["wait"]["help_after"] = True       # a circling consult is out: the diagnosis follows it (help_over)
@@ -168,8 +170,9 @@ def prompt(st, text, attempts, nonce, r):
         "must exit non-zero on\" --evidence \"the line showing the instrument, not the work, broke\"" % (rc, i, nonce),
         "  %s attribute --item %s --nonce %s --target DEPENDENCY --on <PREDECESSOR> --evidence \"what it waits for\""
         % (rc, i, nonce),
-        "Mixed? Repeat --target (PRODUCT with HARNESS goes to a builder and links the incident; the items' own evidence "
-        "for each part goes in --evidence).",
+        "Mixed? Repeat --target (PRODUCT with HARNESS goes to a builder and links the incident; PRODUCT with DEPENDENCY "
+        "waits on the predecessor first; the evidence for each part goes in --evidence). File the repair item in the "
+        "SUPERVISOR's ledger (`rimflow file` from this tree publishes nothing): an id it has never seen is refused.",
         "", "Ending: %s at %s" % (w["class"], w["sha"]), "Detail: %s" % w["detail"],
         "Contract: %s" % (st.get("contract") or {}), "", "--- endings on record ---"] + rows + ["", "--- item ---", text])
 
@@ -211,6 +214,9 @@ def validate(targets, a):
             raise ValueError("an instrument wait needs --fixture-good and --fixture-bad: the release check")
     if "DEPENDENCY" in ts and not ID_RX.match((a.get("on") or "").strip()):
         raise ValueError("DEPENDENCY needs --on <PREDECESSOR> (a filed id)")
+    if "DEPENDENCY" in ts and any(t in INSTRUMENTS for t in ts):
+        raise ValueError("one wait at a time: attribute the DEPENDENCY now; the instrument is diagnosed again when the "
+                         "re-validation after it runs")
     return ts
 
 
@@ -259,6 +265,8 @@ def _route(store, st, ts, a, rec, r, now, sup):
     import relentless_incident
     w = st["wait"]
     item = st["item"]
+    if "DEPENDENCY" in ts:      # a known unmet predecessor: never staffed, PRODUCT or not (the record keeps PRODUCT)
+        return _wait(st, ts, rec, WAIT_DEPENDENCY, a["on"].strip(), now)
     if any(t in INSTRUMENTS for t in ts):
         relentless_incident.link(store, a["repair"].strip(), item, w["sha"], now, a.get("component"), rec["evidence"],
                                  {"good": a.get("fixture_good"), "bad": a.get("fixture_bad")},
@@ -271,18 +279,20 @@ def _route(store, st, ts, a, rec, r, now, sup):
         if w.get("live"):
             st["live_iter"] = w["live"]
         return "builder"
-    if any(t in INSTRUMENTS for t in ts) or "DEPENDENCY" in ts:
-        inst = any(t in INSTRUMENTS for t in ts)
-        on = a["repair"].strip() if inst else a["on"].strip()
-        w.update(kind=WAIT_INSTRUMENT if inst else WAIT_DEPENDENCY, on=on, incident=on if inst else None,
-                 attributed_at=now)
-        st["block_pending"] = {"kind": "item", "on": [on], "class": w["kind"],
-                               "detail": "attributed %s at %s: %s" % ("+".join(ts), w["sha"][:12], rec["evidence"][:400])}
-        return "wait:" + on
+    if any(t in INSTRUMENTS for t in ts):
+        return _wait(st, ts, rec, WAIT_INSTRUMENT, a["repair"].strip(), now)
     st.pop("wait", None)        # PROOF / CONTRACT: the proof road on the same candidate, never the code
     sup.fail(store, st, PROOF_OWED, "%s | attributed %s: %s" % (w["detail"][:1200], "+".join(ts), rec["evidence"][:600]),
              r, now, attributed=rec)
     return "proof"
+
+
+def _wait(st, ts, rec, kind, on, now):
+    w = st["wait"]
+    w.update(kind=kind, on=on, incident=on if kind == WAIT_INSTRUMENT else None, attributed_at=now)
+    st["block_pending"] = {"kind": "item", "on": [on], "class": kind,
+                           "detail": "attributed %s at %s: %s" % ("+".join(ts), w["sha"][:12], rec["evidence"][:400])}
+    return "wait:" + on
 
 
 def snag_incident(store, st, ons, detail, now):
@@ -298,57 +308,64 @@ def snag_incident(store, st, ons, detail, now):
                   "sha": None, "resume": "queued", "on": rep, "incident": rep}
 
 
+def _same(cw, w):
+    """The exact wait this sweep read, not a later one on the same item (a fence across the unlocked fixture run)."""
+    return all(cw.get(k) == w.get(k) for k in ("kind", "on", "sha", "since", "attributed_at"))
+
+
+def _refuse(store, fx, item, w, event, now, why, note, acts):
+    if w.get("refused_event") != event:
+        with store.lock():
+            cur = store.load(item)
+            fresh = cur is not None and _same(cur.get("wait") or {}, w)
+            if fresh:
+                cur["wait"]["refused_event"] = event
+                store.save(cur)
+        if fresh:
+            store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why[:400]})
+            fx.ledger_note(item, note)
+    acts.append({"do": "incident_refused" if w.get("incident") else "dependency_refused", "item": item, "on": w["on"],
+                 "why": why[:200]})
+    return False
+
+
 def release(store, fx, st, now, acts):
-    """From relentless_block.sweep, a `blocked` item with a wait whose ledger block no longer holds. -> True when the
-    item moved. Evidence only: the repair's close, then its fixtures; no clock releases anything."""
+    """From relentless_block.sweep (not under the lock), a `blocked` item with a wait whose ledger block no longer
+    holds. -> True when the item moved. Evidence only: the repair or predecessor CLOSED (state done; dropped,
+    superseded or a bare unblock is no evidence), then for an incident its fixtures; no clock releases anything."""
     import relentless_incident
     item, w = st["item"], st.get("wait") or {}
     if w.get("kind") not in (WAIT_INSTRUMENT, WAIT_DEPENDENCY):
         return False        # attribution: the diagnostician or the seat moves it
     led_on = fx.item_state(w["on"]) or {}
-    # the evidence event is this close of the repair: a reopen and a new close is a new event, a tick is not
-    event = "%s:%s:%s" % (w["on"], led_on.get("state") or "?", led_on.get("closed_sha") or "-")
+    # the evidence event is this close: its last ledger event, so a reopen and a new close (even on the same sha) is a
+    # new event, and a tick is not
+    event = "%s:%s:%s:%s" % (w["on"], led_on.get("state") or "?", led_on.get("closed_sha") or "-",
+                             led_on.get("event") if led_on.get("event") is not None else "-")
+    if led_on.get("state") != "done":
+        return _refuse(store, fx, item, w, event, now,
+                       "%s %s is %s, not closed: %s keeps waiting" % ("repair" if w.get("incident") else "predecessor",
+                                                                    w["on"], led_on.get("state"), item),
+                       "relentless: %s waits on %s, which is %s without closing; the candidate keeps waiting: "
+                       "re-attribute it or file a new item" % (item, w["on"], led_on.get("state")), acts)
     if w.get("incident"):
-        if led_on.get("state") != "done":
-            # the repair ended without closing (dropped, superseded, or someone unblocked): no evidence the instrument
-            # works, so nothing is released; a person re-points the wait or files a new repair
-            if w.get("refused_event") != event:
-                with store.lock():
-                    cur = store.load(item)
-                    if (cur.get("wait") or {}).get("kind") == w["kind"]:
-                        cur["wait"]["refused_event"] = event
-                        store.save(cur)
-                store.journal({"at": iso(now), "do": "alarm", "item": item,
-                               "why": "repair %s is %s, not closed: the incident stays open" % (w["on"], led_on.get("state"))})
-                fx.ledger_note(item, "relentless: %s waits on the repair %s, which is %s without closing; the candidate "
-                                     "keeps waiting: re-attribute it or file a new repair" % (item, w["on"], led_on.get("state")))
-            acts.append({"do": "incident_refused", "item": item, "on": w["incident"], "why": "repair not closed"})
-            return False
-        ok, why = relentless_incident.check(store, w["incident"], fx.run_fixture, now, event)
+        ok, why = relentless_incident.check(store, w["incident"], fx.run_fixture, now, event,
+                                            need_fixtures=bool(w.get("sha")))
         if not ok:
-            if not w.get("refused_event") == event:
-                with store.lock():
-                    cur = store.load(item)
-                    if (cur.get("wait") or {}).get("kind") == w["kind"]:
-                        cur["wait"]["refused_event"] = event
-                        store.save(cur)
-                store.journal({"at": iso(now), "do": "alarm", "item": item, "why": "incident %s: %s" % (w["incident"], why)})
-                fx.ledger_note(item, "relentless: the repair %s ended but its fixtures refuse it, so %s keeps waiting "
-                                     "with its candidate: %s" % (w["incident"], item, why))
-            acts.append({"do": "incident_refused", "item": item, "on": w["incident"], "why": why[:200]})
-            return False
+            return _refuse(store, fx, item, w, event, now, "incident %s: %s" % (w["incident"], why),
+                           "relentless: the repair %s ended but its fixtures refuse it, so %s keeps waiting with its "
+                           "candidate: %s" % (w["incident"], item, why), acts)
     else:
-        why = "%s %s" % (w["on"], led_on.get("state") or "unblocked")
+        why = "%s done" % w["on"]
     with store.lock():
         cur = store.load(item)
-        cw = cur.get("wait") or {}
-        if cur["status"] != "blocked" or cw.get("kind") != w["kind"] or cur.get("block_pending"):
+        if cur is None or cur["status"] != "blocked" or not _same(cur.get("wait") or {}, w) or cur.get("block_pending"):
             return False
-        sha = cw["sha"]
+        sha = cur["wait"]["sha"]
         resume(store, cur, now, "released: %s" % why)
         store.save(cur)
-    if w.get("incident"):
-        relentless_incident.released(store, w["incident"], item, now)
+        if w.get("incident"):
+            relentless_incident.released(store, w["incident"], item, now)
     store.journal({"at": iso(now), "do": "released", "item": item, "on": w["on"], "sha": sha, "to": cur["status"]})
     acts.append({"do": "released", "item": item, "on": w["on"], "to": cur["status"]})
     return True
