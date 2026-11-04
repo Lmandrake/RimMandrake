@@ -5,7 +5,8 @@ An alarm site is a call with do= and kind=..., a dict with "do": "alarm" and "ki
 to `alarms`, any road straight onto the told ledger (incident.signal, a dict handed to alarm_signal or on_alarm, a told
 row with "metric" and "told_at"), or a point an ops_watch collector builds (a key given an M/U/E point, ranged or not:
 a target or ranges row added later needs its route to be there). A kind may be a literal, a concatenation, a % format, an f-string, an if-expression, a variable
-assigned in the function or module, or a parameter (read at the function's call sites in that module). A dynamic part
+assigned in the function or module, a sibling module's constant (`mod.NAME`), an `a or b`, or a parameter (read at
+the function's call sites in that module); a None branch of an if/or is no kind. A dynamic part
 inside a kind reads as "x", the same as a route's * sees it. A kind with no literal left in it is UNRESOLVED: a census
 that shrugs at a form is the blindness this replaced (selftest_incident fails on any unresolved site).
 Built names slipped past before: queues.<name>.* and relentless_attention_<key> (ALARM_CENSUS_EXTEND_BUILT_NAMES_SLIP_PAST).
@@ -114,6 +115,22 @@ def _name(node, tree, fns, seen):
     raise Unresolved(node.id)
 
 
+def _module_constant(node, tree):
+    """`mod.NAME`, where `import mod [as m]` names a sibling module whose top level assigns NAME (read through the
+    sibling reader census() gives of_source; none, or no such assignment, is Unresolved)."""
+    mods = [a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names
+            if (a.asname or a.name) == node.value.id]
+    src = getattr(tree, "sibling", None) and mods and tree.sibling(mods[0])
+    if not src:
+        raise Unresolved("Attribute")
+    mtree = ast.parse(src)
+    mfns = _functions(mtree)
+    got = [v for a in _assigned(mtree, node.attr) for v in values(a, mtree, mfns)]     # its own tree, its own seen
+    if not got:
+        raise Unresolved("Attribute")
+    return got
+
+
 def _part(node, tree, fns, seen):
     try:
         return values(node, tree, fns, seen)
@@ -130,7 +147,12 @@ def values(node, tree, fns, seen=frozenset()):
     if isinstance(node, ast.Constant):
         return [str(node.value)]
     if isinstance(node, ast.IfExp):
-        return values(node.body, tree, fns, seen) + values(node.orelse, tree, fns, seen)
+        return [v for b in (node.body, node.orelse) if not _lit(b, None) for v in values(b, tree, fns, seen)]
+    if isinstance(node, ast.BoolOp) and isinstance(node.op, ast.Or):
+        # `kind or "fallback"`: any operand can be the value; a None operand is no kind (an unpassed default)
+        return [v for b in node.values if not _lit(b, None) for v in values(b, tree, fns, seen)]
+    if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name):
+        return _module_constant(node, tree)
     if isinstance(node, ast.Name):
         return _name(node, tree, fns, seen)
     if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
@@ -233,9 +255,11 @@ def forwarded_literals(tree, fns):
     return [k for k in out if k.replace(WILD, "").strip(":")]
 
 
-def of_source(src, where="<source>"):
-    """-> (kinds, [unresolved "where:line what"])."""
+def of_source(src, where="<source>", sibling=None):
+    """-> (kinds, [unresolved "where:line what"]). `sibling(module name)` -> that module's source or None: how a
+    `mod.NAME` kind is read."""
     tree = ast.parse(src)
+    tree.sibling = sibling
     fns = _functions(tree)
     kinds, bad = set(), []
     for node in list(sites(tree)) + list(signal_sites(tree)):
@@ -324,6 +348,16 @@ def points_of_source(src, where="<source>"):
     return kinds, bad
 
 
+def _sibling_reader(d):
+    def read(mod):
+        p = os.path.join(d, mod + ".py")
+        if not os.path.isfile(p):
+            return None
+        with open(p, encoding="utf-8", errors="replace") as fh:
+            return fh.read()
+    return read
+
+
 def census(root):
     """Every non-selftest .py under `root`. -> (kinds, unresolved, files with a site)."""
     kinds, bad, files = set(), [], []
@@ -338,7 +372,7 @@ def census(root):
             if "alarm" not in src:
                 continue
             try:
-                k, b = of_source(src, os.path.relpath(p, root))
+                k, b = of_source(src, os.path.relpath(p, root), _sibling_reader(d))
                 if f in POINT_MODULES:
                     pk, pb = points_of_source(src, os.path.relpath(p, root))
                     k, b = k | pk, b + pb

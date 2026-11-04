@@ -516,6 +516,12 @@ def test_census_forms():
     for src, name in (('import incident as IN\ndef f(q):\n    IN.signal({}, q["kind"], "w", 1)\n', "a signal it cannot name"),
                       ('def f(x):\n    sig = getattr(x, "alarm_signal", None)\n    sig(g(x))\n', "a record it cannot name")):
         check("the census fails loudly on " + name, AC.of_source(src)[1], src)
+    src = ('import inc as I\ndef f(q, kind=None):\n    act(do="alarm", kind=kind or ("or:one" if q else "or:two"))\n'
+           'def g(q):\n    f(q, kind=I.K if q else None)\n')
+    k, bad = AC.of_source(src, sibling=lambda m: 'K = "mod:k"\n' if m == "inc" else None)
+    check("the census reads `a or b`, a sibling module's constant, and skips a None branch",
+          k == {"or:one", "or:two", "mod:k"} and not bad, (sorted(k), bad))
+    check("the census fails loudly on a module constant it cannot read", AC.of_source(src)[1], src)
     k, bad = AC.points_of_source(POINTS)
     want = {"queues.x.stalled_min", "queues.x.pending", "roles.x.share", "f.x", "c.one", "c.two", "a.one", "a.two", "a.three", "d.one"}
     check("the census reads every form a point name is built in", k == want and not bad, (sorted(k ^ want), bad))

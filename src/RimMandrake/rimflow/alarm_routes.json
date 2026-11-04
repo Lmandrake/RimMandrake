@@ -99,6 +99,8 @@
     {"match": "expedite_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_expedite sync or make_room raised; the tick journals it, the lane is lost for that tick"},
     {"match": "quarantine", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "game_harness", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_game staged an item twice and the build still is not running (deploy refused, drift); the program retries with backoff, but a repeat means the belt is stuck on a harness cause"},
+    {"match": "instrument_fixture_*", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_attrib: a repair's fixtures refuse it (instrument_fixture_refused) or cannot print FIXTURE_VERDICT (instrument_fixture_no_verdict), so the waiting item keeps its candidate; unrouted and unseen by the census until INCIDENTS_FIX_ONE_READER_ELEVEN_OPEN taught it `mod.NAME` and `a or b`"},
+    {"match": "dependency_refused", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "as instrument_fixture_*: the dependency an item waits on ended but its check refuses the release"},
     {"match": "bundle_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "remove_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "breaker_emergency", "route": "program"},
