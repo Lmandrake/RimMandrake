@@ -940,10 +940,15 @@ class Effects(relentless_game.GameFx):
     def shards_locked(self):
         """Every ledger shard in books held under the flock model.append takes, while git replaces them: an event lands
         before git checks the file (git then refuses, the event stays) or after (model.append finds its inode moved and
-        reopens the new file), never in between. Not re-entrant: a flock from a second open file blocks this process."""
+        reopens the new file), never in between; the directory lock keeps a new shard from being created meanwhile.
+        Not re-entrant: a flock from a second open file blocks this process."""
         fds = []
         try:
-            for p in sorted(glob.glob(os.path.join(self.books, LEDGER_DIR, "*.jsonl"))):
+            d = os.path.join(self.books, LEDGER_DIR)
+            if os.path.isdir(d):    # model.append holds this dir SHARED for each append: no shard is created mid-checkout
+                fds.append(os.open(d, os.O_RDONLY))
+                fcntl.flock(fds[-1], fcntl.LOCK_EX)
+            for p in sorted(glob.glob(os.path.join(d, "*.jsonl"))):
                 try:
                     fd = os.open(p, os.O_RDONLY)
                 except FileNotFoundError:
@@ -1035,12 +1040,48 @@ class Effects(relentless_game.GameFx):
                 return "books %s behind: %d lines of %s not landed" % (behind, len(lost), p)
         keep = self.store.p("books_dirt", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
         moved_out = {}      # untracked shards renamed into `keep`: a late event there is carried back after the reset
+        restored = {}       # tracked shards cut back to HEAD: {path: HEAD's bytes}, put back if the reset never lands
+        levelled = False
         try:
-            return self._level_rows(rows, read, keep, moved_out, behind, shuffled)
+            why = self._level_rows(rows, read, keep, moved_out, restored, behind, shuffled)
+            levelled = why is None
+            return why
         finally:
+            if not levelled:
+                self._unlevel(read, moved_out, restored)
             self._carry_late(read, moved_out)
 
-    def _level_rows(self, rows, read, keep, moved_out, behind, shuffled):
+    def _unlevel(self, read, moved_out, restored):
+        """A level that stopped part way (a shard moved, `reset --keep` refused, an error): the shards it cut back to HEAD
+        get their landed events again, so the books' ledger never reads short while the clone stays behind."""
+        for p, head in restored.items():
+            with open(os.path.join(self.books, p), "r+b") as f:
+                fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+                cur = f.read()
+                if not cur.startswith(head):    # the reset did run on it after all, or someone rewrote it: leave it
+                    self.store.journal({"at": iso(time.time()), "do": "books_unlevel_skipped", "path": p})
+                    continue
+                f.seek(0)
+                f.truncate()
+                f.write(read[p] + cur[len(head):])
+                f.flush()
+                os.fsync(f.fileno())
+        for p, kept in list(moved_out.items()):
+            src = os.path.join(self.books, p)
+            if not os.path.exists(src):
+                os.rename(kept, src)        # with whatever a late writer appended to it
+            else:                           # a writer made a new one meanwhile: the kept events go after its own
+                with open(kept, "rb") as f:
+                    back = f.read()
+                fd = os.open(src, os.O_WRONLY | os.O_APPEND)
+                try:
+                    fcntl.flock(fd, fcntl.LOCK_EX)
+                    os.write(fd, back)
+                finally:
+                    os.close(fd)
+            del moved_out[p]
+
+    def _level_rows(self, rows, read, keep, moved_out, restored, behind, shuffled):
         for state, p in rows:
             src = os.path.join(self.books, p)
             if p in read:   # a ledger shard: held under the flock model.append takes, so no event lands between check and restore
@@ -1056,6 +1097,7 @@ class Effects(relentless_game.GameFx):
                         moved_out[p] = os.path.join(keep, p)
                     else:
                         shutil.copy2(src, os.path.join(keep, p))
+                        restored[p] = head
                         f.seek(0)
                         f.truncate()
                         f.write(head)

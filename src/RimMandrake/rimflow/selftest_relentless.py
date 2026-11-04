@@ -1126,6 +1126,30 @@ def t_level_books_shard_under_lock():
     with fx.shards_locked():
         held = subprocess.run(probe).returncode
     ok(held == 1 and subprocess.run(probe).returncode == 0, "git's replacement of the shards runs under their flock: %s" % held)
+
+    # a level the reset refuses (origin moved a file left in place) puts the shard's landed events back
+    reg = R.BOOKS_LEFT_IN_PLACE[1]
+    put(up, reg, "one\n")
+    g(up, "add", "--", reg)
+    g(up, "commit", "-qm", "registry")
+    g(up, "push", "-q", "origin", "main")
+    g(books, "fetch", "-q", "origin")
+    put(books, new, "r\n")     # the carried "late" line above never landed
+    ok(fx.level_books() is None, "level before the refused case")
+    put(up, shard, "e\n", "a")
+    put(up, reg, "two\n")
+    g(up, "commit", "-qam", "e and registry")
+    g(up, "push", "-q", "origin", "main")
+    g(books, "fetch", "-q", "origin")
+    put(books, shard, "e\n", "a")
+    put(books, reg, "local\n")
+    before = read(books, shard)
+    try:
+        why = fx.level_books()
+    except RuntimeError as e:
+        why = str(e)
+    ok(why and read(books, shard) == before and read(books, reg) == "local\n",
+       "a refused reset leaves the shard as it was: %s %r" % (why, read(books, shard)))
     shutil.rmtree(d, ignore_errors=True)
 
 

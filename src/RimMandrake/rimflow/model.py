@@ -1318,6 +1318,31 @@ def append(ev, path=None):
             "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
             % (len(blob), PIPE_BUF, ev.get("id", "<ID>")))
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # see bridge_mirror_path
+    dlock = _dir_lock(os.path.dirname(path) or ".")
+    try:
+        return _append_locked(path, blob)
+    finally:
+        if dlock is not None:
+            os.close(dlock)
+
+
+def _dir_lock(d):
+    """A SHARED flock on the shard's directory, held for the whole append. relentless level_books takes it EXCLUSIVE
+    while git replaces the shards, so no writer creates or appends a shard mid-checkout. -> the fd, or None where the
+    filesystem has no directory flock (9p/drvfs): there the per-file lock below still serialises writers."""
+    try:
+        fd = os.open(d, os.O_RDONLY)
+    except OSError:
+        return None
+    try:
+        fcntl.flock(fd, fcntl.LOCK_SH)
+    except OSError:
+        os.close(fd)
+        return None
+    return fd
+
+
+def _append_locked(path, blob):
     for _ in range(5):
         fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
         # ⛔ DO NOT REMOVE THE LOCK "because O_APPEND is atomic". It is, on ext4 and
