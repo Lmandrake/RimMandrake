@@ -473,3 +473,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:34:55Z","tsn":1793824495404518356}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANON_MATERIALS_BUILD_1 A10 (L1), read-only proof","ts":"2026-11-04T20:35:01Z","tsn":1793824501502542636}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:35:08Z","tsn":1793824508078758019}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T20:52:35Z","tsn":1793825555999522733}
