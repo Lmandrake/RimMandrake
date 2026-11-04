@@ -108,9 +108,16 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 5174
 DEFAULT_TOKEN = ""
 
-DEFAULT_PLAYER_LOG = os.path.join(
-    os.path.expanduser("~"), "AppData", "LocalLow", "Ludeon Studios",
-    "RimWorld by Ludeon Studios", "Player.log")
+# RM_GAME_LOGDIR names this machine's Player.log folder (game_paths, GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE); when it
+# is set it is the ONLY place looked, so a stale log of another Windows user never hands out a dead token
+# (RIMBRIDGE_LOGDIR_FIX_ENV_VAR_IGNORED). Unset keeps the old default and the WSL fallback below.
+LOGDIR_FROM_ENV = bool(os.environ.get("RM_GAME_LOGDIR", "").strip())
+if LOGDIR_FROM_ENV:
+    from game_paths import PLAYER_LOG as DEFAULT_PLAYER_LOG  # noqa: E402
+else:
+    DEFAULT_PLAYER_LOG = os.path.join(
+        os.path.expanduser("~"), "AppData", "LocalLow", "Ludeon Studios",
+        "RimWorld by Ludeon Studios", "Player.log")
 
 # Under WSL, expanduser("~") is /home/<user>, so DEFAULT_PLAYER_LOG points at a
 # Linux path that will never exist and discovery silently finds nothing. The
@@ -365,7 +372,7 @@ def _args_sha(params):
 def _player_log_candidates():
     """Every place Player.log might be, best first."""
     yield DEFAULT_PLAYER_LOG
-    if WSL:
+    if WSL and not LOGDIR_FROM_ENV:
         import glob
         for base in sorted(glob.glob("/mnt/c/Users/*/AppData/LocalLow/"
                                      "Ludeon Studios/RimWorld by Ludeon Studios")):
