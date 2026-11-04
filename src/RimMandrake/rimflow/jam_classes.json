@@ -68,6 +68,15 @@
    "remedy": {"none": "Nothing to undo: since the owner's 2026-11-02 ruling the cap only raises attention and never stops a run (relentless.py, TOKEN_LIMITS_TAME_BARK_NO_BITE), so a stop by it is the class coming back"},
    "fixed": {"sha": "bbaccde0b0", "at": "2026-11-03T02:31:03Z", "item": "TOKEN_LIMITS_TAME_BARK_NO_BITE"},
    "examples": ["day_spend_limit"]
+  },
+  {
+   "id": "account_limit",
+   "plain": "The Claude account itself refused the run (a usage limit or login error), so no worker could do any work.",
+   "match": ["^the run ended on the account's own error: "],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the launch breaker the account errors open names the account as why nothing runs"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::account_lost", "what": "a run lost to the account costs the item no strike, no return and no change of approach; it is requeued at its place and the launch breaker waits for the account to answer"},
+   "fixed": null,
+   "examples": ["the run ended on the account's own error: rate_limit"]
   }
  ]
 }
