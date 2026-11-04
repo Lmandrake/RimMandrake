@@ -430,7 +430,7 @@ VERBS = {
     # `level` / `criterion` (step 2): a pass naming an OUTSTANDING criterion of a built
     # item drops it, built -> validated, and the last one -> done. ⚠️ A reader older than
     # step 2 refuses these two fields and collects the WHOLE run into `world.errors`
-    # (selftest_built_old_reader.py measures it); readers from step 2 on strip unknown
+    # readers from step 2 on strip unknown
     # fields instead (`replay`, UnknownFieldError).
     "verify":    {"who": "owner", "req": ("result", "config"),
                   "opt": ("evidence", "sha", "level", "criterion", "afterClose")},
@@ -441,7 +441,7 @@ VERBS = {
     # them IN THIS SAME EVENT (review §2: never two separately forgettable writes).
     # Enters `built`, or `done` when nothing is owed. Any seat, like `close`.
     # ⚠️ A reader older than step 2 refuses the unknown verb into `world.errors`: the item
-    # keeps its previous state and needs there (selftest_built_old_reader.py).
+    # keeps its previous state and needs there.
     "implemented": {"who": "any", "req": ("sha",), "opt": ("ref", "criteria", "needs", "live")},
     "finding":   {"who": "any",   "req": ("from", "type", "severity", "name"), "opt": ()},
     # ⚠️ `spawn` carries no `id`. Its cause is `from` — a finding name, a run name, or
