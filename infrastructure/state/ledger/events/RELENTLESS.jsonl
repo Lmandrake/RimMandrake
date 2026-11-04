@@ -285,3 +285,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A2 (L2), read-only proof","ts":"2026-11-04T12:24:07Z","tsn":1793795047255403934}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:25:44Z","tsn":1793795144066889948}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-04T12:26:44Z","tsn":1793795204267640214}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:44:20Z","tsn":1793796260525921609}
