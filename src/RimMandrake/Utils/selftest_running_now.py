@@ -1210,6 +1210,16 @@ check("fuel: one point over the span cannot be told from the pace", R.fuel_burn(
 check("fuel: a strong 3 h rise uses 3 h, not the older calm", abs(R.fuel_burn([(NOW - 6 * 3600, 50, None), (NOW - 3 * 3600, 50, None), (NOW, 62, None)], 38.0, 10.0, NOW, None)["burn"] - 4) < 0.01)
 check("fuel: nothing left and nothing burning is EQUAL", R.fuel_burn([(NOW - 6 * 3600, 100, None), (NOW, 100, None)], 0.0, 10.0, NOW, None)["verdict"] == "EQUAL")
 check("fuel: nothing left and still burning is AHEAD", R.fuel_burn([(NOW - 3 * 3600, 94, None), (NOW, 100, None)], 0.0, 10.0, NOW, None)["verdict"] == "AHEAD")
+# "current" burn: an account burning 0.9 points/h for 100 h, then idle the last 30 h, is idle NOW. The window may reach back
+# at most 6 h (literal, not R.FUEL_FAR, so a widened constant goes red): BEHIND at 0 points/h, never AHEAD on days-old burn.
+idle = [(NOW - (130 - h) * 3600, min(h, 100) * 0.9, None) for h in range(131)]
+idle_got = R.fuel_burn(idle, 10.0, 20.0, NOW, None)
+check("fuel: an account idle 30 h after days of burning reads BEHIND at 0 points/h",
+      idle_got["verdict"] == "BEHIND" and idle_got["burn"] == 0)
+check("fuel: the current burn window spans 6 h or less, never days", 0 < idle_got["span"] <= 6 * 3600)
+# the same cap with readings 12 h apart: nothing inside 6 h but the newest, so there is no current rate to read
+check("fuel: readings only older than 6 h give no current rate",
+      R.guarded(R.fuel_burn, [(NOW - 24 * 3600, 10, None), (NOW - 12 * 3600, 40, None), (NOW, 70, None)], 30.0, 20.0, NOW, None)[1] is not None)
 
 
 def fuel_refuses(samples, measured=NOW, reset=None):
