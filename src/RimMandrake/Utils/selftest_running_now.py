@@ -998,6 +998,51 @@ check("wrap_name keeps every character and every line fits, on names, titles and
           for t in (LONG, "A", "A_", "_A_", "NO_UNDERSCORES" * 9, "x" * 90, "a title, in plain words / with-a-dash and more words than one line holds"[:70], "OPS_RED_OVERDUE_CHASE_AEUZ")
           for w, h in ((21, 2), (51, 2), (84, 6), (5, 2))))
 check("wrap_name breaks after an underscore when one fits", R.wrap_name("RUNNING_PAGE_BUILD_NAMES_ON_THE_BELT", 21, 2) == ["RUNNING_PAGE_BUILD_", "NAMES_ON_THE_BELT"])
+# ---- the sections' own rows, not only their headings: a receipt, the feed's three kinds, the live proofs line, today's bugs
+def content_env():
+    env, hist = fixture_env()
+    env.files[R.LEDGER_EVENTS + "/OWNER.jsonl"] = json.dumps({"event": "note", "ts": iso(NOW - 300), "id": "X_ITEM", "text": "a word from him"}) + "\n"
+    env.read_tail = lambda path, n: (env.read_text(path), False)
+    # one FAIL today and one two days back: BUGS FOUND counts the last 24 h only
+    env.files[R.LIVE_RUNS] += "".join(json.dumps(r) + "\n" for r in ({"at": iso(NOW - 40), "item": "B", "criterion": "B1", "outcome": "FAIL"},
+                                                                     {"at": iso(NOW - 2 * 86400 - 100), "item": "OLD", "criterion": "O1", "outcome": "FAIL"}))
+    return env, hist
+
+
+def content_problems():
+    bad = []
+    env, hist = content_env()
+    page = R.build(env, {}, hist)[0]
+    lines = page.splitlines()
+    fin = next((x for x in lines if "FINISHED TODAY, 1 ITEMS" in x), "")
+    if "✓ Did the thing." not in fin or "check PASS" not in fin:
+        bad.append("FINISHED TODAY does not show its receipt row")
+    ev = next((x for x in lines if "RECENT EVENTS" in x), "")
+    for row in ("<b>closed</b> A</div>", "<b>a Judge failed it</b> I2</div>", "<b>Steve job done</b> FlowWorks guard</div>", "<b>your note</b> X_ITEM: a word from him</div>"):
+        if row not in ev:
+            bad.append("RECENT EVENTS lacks the row %s" % row)
+    live = R.collect_archmagi_live(env, NOW, None, hist)
+    if live["proofs"] != [0] * (R.TREND_POINTS - 1) + [5]:
+        bad.append("live proofs buckets read %s, not five rows in the last bucket" % live["proofs"])
+    if live["bugs"] != 1:
+        bad.append("BUGS FOUND counts %s, not the one FAIL of the last 24 h" % live["bugs"])
+    try:
+        rs = readings_of(panels_of(page)["Relentless"])
+        ys = [float(p.split(",")[1]) for p in rs["TREND live proofs"][0].find(SVGNS + "polyline").get("points").split()]
+        if not (len(ys) == R.TREND_POINTS and ys[-1] < min(ys[:-1]) and len(set(ys[:-1])) == 1):
+            bad.append("the live proofs line does not rise at its last point: %s" % ys)
+        if "1" not in [w for _, w in readings_of(panels_of(page)["Archmagi"])["BUGS FOUND"][1]]:
+            bad.append("the Archmagi BUGS FOUND tile does not read 1")
+    except (KeyError, AttributeError, IndexError, ValueError) as e:
+        bad.append("a trend or tile could not be read: %r" % e)
+    return bad
+
+
+found = content_problems()
+for x in found:
+    print("  " + x)
+check("receipt row, feed rows of every kind, the live proofs line and today's bugs are on the page", not found)
+
 # ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
 SRC = open(R.__file__).read()
 QUIET = "(lambda *a, **k: None)("
@@ -1044,6 +1089,13 @@ MUTANTS = [
     ("the no-process line clips its title", 'L.extend(fence_wrap("! %d items hold a place with no process: %s" % (len(ghosts), title(ghosts[0])), "│  ", "│    "))', 'L.append("│  ! %d items hold a place with no process: %s" % (len(ghosts), clip(title(ghosts[0]), W - 45)))'),
     ("the oldest line clips its title", 'out += fence_wrap("%s %s: %s" % (k, ago(o[0]), title(o[1])), "  ", "      ")', 'out.append("  %s %s: %s" % (k, ago(o[0]), clip(title(o[1]), 40)))'),
     ("the page's places words are gone", "A place is one running Builder or Judge", "One running Builder or Judge"),
+    ("FINISHED TODAY drops its receipt rows", '"".join(row(r) for r in rows) or "Nothing yet today."', '"Nothing yet today."'),
+    ("RECENT EVENTS prints no rows", "for at, word, txt in rows[:18])", "for at, word, txt in rows[:0])"),
+    ("the pipeline's acts never reach the feed", "feed.append((at, FEED_WORD[w], x.get(\"item\") or \"\"))", "pass"),
+    ("the live proofs line stays flat", "proofs[b] += 1", "pass"),
+    ("BUGS FOUND counts every day", 'if k == 0 and d.get("outcome") == "FAIL":', 'if d.get("outcome") == "FAIL":'),
+    ("Steve's jobs never reach the feed", 'rows += [(at, "Steve job %s"', 'rows += [] and [(at, "Steve job %s"'),
+    ("his notes never reach the feed", 'rows += [(at, "your note", txt)', 'rows += [] and [(at, "your note", txt)'),
 ]
 survivors = []
 try:
@@ -1051,7 +1103,7 @@ try:
         check("mutant applies: " + name, old in SRC)
         exec(compile(SRC.replace(old, new, 1), R.__file__, "exec"), R.__dict__)
         try:
-            caught = page_problems()
+            caught = page_problems() + content_problems()
         except Exception as e:      # a panel that cannot parse is caught too
             caught = [repr(e)]
         if not caught:
@@ -1059,7 +1111,7 @@ try:
 finally:
     exec(compile(SRC, R.__file__, "exec"), R.__dict__)
 check("every mutant of the page goes red (%d mutants)%s" % (len(MUTANTS), ": survivors " + "; ".join(survivors) if survivors else ""), not survivors)
-check("the page's own source passes again after the mutants", not page_problems())
+check("the page's own source passes again after the mutants", not page_problems() and not content_problems())
 # --------------------------------------------------------------------------- the fuel gauge
 AU = R.account_usage_module()
 LATEST, SERIES = str(AU.DATA_DIR / "latest.json"), str(AU.DATA_DIR / "series.jsonl")
