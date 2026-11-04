@@ -1262,7 +1262,7 @@ def nonfault_cause(rec, windows):
     if retest.companion_stale(res):
         return "companion_stale"
     if retest.stale_load(res) == "repaired":
-        # STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: the game ran a list other than the one modcheck composed; the worker
+        # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the game ran a list other than the one modcheck composed; the worker
         # now restarts onto the composed list by itself, so the brake's canary is the proof. Once it restarted and the
         # load still did not fit ("unrepaired"), it is a fault: the steward's ladder and the repair item have it.
         return "stale_load"

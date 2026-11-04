@@ -167,7 +167,7 @@ ok(runner.load_gap(["a", "member"], {"a", "composed"}, exact=True, alias={"membe
    "load_gap: folded member satisfied by its composed mod")
 ok(runner.load_gap(["a"], None, exact=True) != [], "load_gap: unread running load is a gap")
 
-# 8. STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: the caller that owns the game asks run() to leave ModsConfig on the composed
+# 8. STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the caller that owns the game asks run() to leave ModsConfig on the composed
 #    list when it refuses stale_load, so a restart loads it; otherwise FULL is restored as always
 import contextlib, io  # noqa: E402,E401
 for keep_c, want_restore in ((False, 1), (True, 0)):

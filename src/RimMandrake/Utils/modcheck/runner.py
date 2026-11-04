@@ -1279,7 +1279,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
     finally:
         if not dry_run and not keep:
             if stale_load and stale_keep_composed():
-                # STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: the caller owns the game process and restarts it on the list
+                # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the caller owns the game process and restarts it on the list
                 # composed here, so leave ModsConfig on it; FULL comes back at the end of the run that follows.
                 print("STALE_LOAD: %s: ModsConfig left on the composed list; restart the game on it and run again"
                       % ",".join(stale_load), flush=True)

@@ -448,7 +448,7 @@ def out(obj, rc=0):
 # The run phase. `--drivers on` (TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS): the suite's external live drivers (FlowWorks
 # thirst_live.py, drawbridge_proof.py, validation_v2.py --live ...) run before the chains they feed, so a sweep or a
 # targeted job measures those rows instead of reading UNMEASURED (modcheck/drivers.py).
-# STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: this worker owns its game, so a modcheck run refused because the running load is
+# STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: this worker owns its game, so a modcheck run refused because the running load is
 # not the list it composed leaves ModsConfig on that list (MODCHECK_STALE_KEEP_COMPOSED) and the worker restarts onto it.
 RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
             "WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY:MODCHECK_STALE_KEEP_COMPOSED; "
@@ -915,7 +915,7 @@ class Attempt:
         return False
 
     def stale_load(self):
-        """STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART. load() starts the game on whatever ModsConfig holds - FULL, which the
+        """STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8. load() starts the game on whatever ModsConfig holds - FULL, which the
         previous modcheck run restored - and modcheck composes MINIMAL + the mod only afterwards, so the game never ran
         the composed list. Since MODCHECK_SESSION_FIX_STALE_LIST_ACCEPTED modcheck refuses that (UNMEASURED stale_load):
         J20261104T065335Z-9652fe and -0b08bb ended "modcheck exit 1 and no sheet JSON" and braked the lane.

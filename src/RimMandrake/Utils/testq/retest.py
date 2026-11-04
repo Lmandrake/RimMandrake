@@ -94,7 +94,7 @@ def companion_stale(res):
         and bool(COMPANION_STALE.search(str(res.get("note") or "")))
 
 
-# STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: modcheck refused because the running load was not the list it composed. The
+# STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: modcheck refused because the running load was not the list it composed. The
 # worker names it (harness_cause); a result from before that carries only the clipped tail of load_gap's reasons.
 STALE_LOAD = re.compile(r"the running load is not the composed list|loaded but not composed: |^stale_load\b")
 
