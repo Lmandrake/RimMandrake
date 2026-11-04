@@ -33,7 +33,7 @@ REC_DIR = os.path.join(ROOT, "infrastructure", "state", "code_review")
 
 def git(*args, inp=None):
     r = subprocess.run(["git", "-C", ROOT] + list(args), input=inp,
-                       capture_output=True, env=GIT_ENV)
+                       capture_output=True, env=GIT_ENV, timeout=120)
     if r.returncode != 0:
         sys.stderr.write("FAIL: git %s: %s" % (" ".join(args), r.stderr.decode(errors="replace")))
         sys.exit(2)
@@ -100,7 +100,8 @@ def main():
         paths.append(rel)
     afters = [git("rev-parse", "--verify", x + "^{commit}").decode().strip() for x in a.after]
     for x in afters:
-        if subprocess.run(["git", "-C", ROOT, "merge-base", "--is-ancestor", x, "HEAD"], env=GIT_ENV).returncode:
+        if subprocess.run(["git", "-C", ROOT, "merge-base", "--is-ancestor", x, "HEAD"], env=GIT_ENV,
+                          timeout=120).returncode:
             print("FAIL: --after %s is not in HEAD's history" % x[:10])
             return 2
     desc = descendants_of_all(afters)

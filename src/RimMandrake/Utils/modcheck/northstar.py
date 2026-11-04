@@ -323,7 +323,7 @@ DELEGATED_WHY = "delegated: new north-star bars"
 def _git(cwd, *args):
     import subprocess
     r = subprocess.run(("git",) + args, cwd=cwd, capture_output=True,
-                       text=True, encoding="utf-8", errors="replace")
+                       text=True, encoding="utf-8", errors="replace", timeout=120)
     return r.returncode, r.stdout
 
 

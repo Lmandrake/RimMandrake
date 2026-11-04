@@ -185,6 +185,18 @@ def unprotected_calls(fn, sources, body):
     return bad
 
 
+def orphan_safe_helper(src, body):
+    """A hook that hands __state to a same-file helper (RootFinalizer -> RootFinalizerCore, so the helper's early
+    returns cannot skip the hook's own tail) is orphan-safe when that helper's body reads __state orphan-safely."""
+    for c in calls_in(scrub(body)):
+        if "." in c or not re.search(re.escape(c) + r"\s*\(\s*__state\b", body):
+            continue
+        _, hb = method_text(src, c)
+        if hb is not None and ORPHAN.search(hb):
+            return True
+    return False
+
+
 def audit(sources, table_text):
     fails = []
     rows = read_table(table_text)
@@ -237,7 +249,7 @@ def audit(sources, table_text):
                     local = re.fullmatch(r"[a-z_]\w*", a) and re.search(r"\b" + a + r"\s*=\s*OnMain\(\)", sb)
                     if not (re.search(r"OnMain\(\)|MainThreadId|IsInMainThread", a) or local):
                         fails.append("%s.%s: thread gate handed %s, not a main-thread test" % (fn, h, a.strip()))
-            if "or" in rules and not ORPHAN.search(body):
+            if "or" in rules and not ORPHAN.search(body) and not orphan_safe_helper(src, body):
                 fails.append("%s.%s: no orphan-safe read of __state (skipped prefix / late install)" % (fn, h))
             if "vf" in rules and not re.match(r"static\s+void\b", sig):
                 fails.append("%s.%s: finalizer is not void (would swallow or replace the game's exception)" % (fn, h))
@@ -256,6 +268,8 @@ def audit(sources, table_text):
 
 
 MUTANTS = [
+    ("RootFinalizer stops handing __state to its orphan-safe helper", "JawaBenchTpsSampler.cs",
+     "RootFinalizerCore(__state, __exception);", "RootFinalizerCore(default(JawaBenchHookGuard.Scope), __exception);"),
     ("drop __runOriginal from TakeDamagePostfix", "JawaBenchSituationalTools.cs",
      ", DamageWorker.DamageResult __result, bool __runOriginal)", ", DamageWorker.DamageResult __result)"),
     ("strip the thread check from SplitPrefix", "JawaBenchSituationalTools.cs",

@@ -262,7 +262,13 @@ def main(argv=None):
     text = json.dumps(plan, indent=1, sort_keys=True) + "\n"
     if a.check:
         with open(PLAN, encoding="utf-8") as f:
-            same = f.read() == text
+            committed = json.load(f)
+        # the def dump's capture name is provenance, not an input: every refresh.py renames it while the gates read
+        # from it stay put (the gates are compared in full), so it alone is never drift
+        committed.get("inputs", {}).pop("mutator_capture", None)
+        rebuilt = json.loads(text)
+        rebuilt.get("inputs", {}).pop("mutator_capture", None)
+        same = committed == rebuilt
         print("PLAN CURRENT" if same else "PLAN DRIFT: rebuild with no --check and review the diff")
         return 0 if same else 1
     with open(PLAN, "w", encoding="utf-8") as f:

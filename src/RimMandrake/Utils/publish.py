@@ -367,7 +367,8 @@ def install_pairs(top, head, scratch, pairs):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import seat_sync
     def at_head(q):
-        r = subprocess.run(["git", "cat-file", "blob", "%s:%s" % (head, q)], cwd=top, capture_output=True)
+        r = subprocess.run(["git", "cat-file", "blob", "%s:%s" % (head, q)], cwd=top, capture_output=True,
+                           timeout=GIT_TIMEOUT_S)
         return r.stdout if r.returncode == 0 else None
     def read(path):
         return open(path, "rb").read() if os.path.isfile(path) and not os.path.islink(path) else None

@@ -8,7 +8,7 @@
               "env": {"RM_OPS_WATCH_DIR": "{state}/ops_watch"},
               "families": ["accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps",
                            "production", "v3", "tokentalk", "evidence", "companion", "arena", "relentless", "seats",
-                           "plan", "roles", "queues"],
+                           "plan", "roles", "queues", "wrapup"],
               "per_beat": 2, "critical": true, "max_ok_age_s": 900},
     "remember": {"every": 1, "limit_s": 8, "cleanup_s": 2,
                  "argv": ["{python}", "src/RimMandrake/Utils/ops_memory.py", "build", "--out", "{state}/memory"],
