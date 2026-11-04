@@ -165,6 +165,22 @@ _RUN_ID = uuid.uuid4().hex[:12]
 _ACTIVE = set()                       # cids in flight in THIS process
 
 
+def _settings_debt(tool, params, out):
+    """AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: every answered settings write goes on the wrap-up's debt register
+    (wrapup_debt.settings_write: a change owes, a write back to the original pays), so no caller has to remember to.
+    Never raises; a tool that is not a settings writer costs one tuple test."""
+    if tool not in _SETTING_TOOLS:
+        return
+    try:
+        import wrapup_debt
+        wrapup_debt.settings_write(tool, params, out)
+    except Exception:  # noqa: BLE001  the register never breaks a bridge call
+        pass
+
+
+_SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/debug_settings", "jawa/difficulty_tune")   # = wrapup_debt.SETTING_TOOLS
+
+
 class IndeterminateError(RuntimeError):
     """A previous mutating call's outcome is unknown; refusing further mutations until reconciled."""
 
@@ -960,6 +976,7 @@ class RimBridge:
                         "timeout": False, "transport": "ok"}, **_stall_fields(t0)))
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
+        _settings_debt(tool, params, out)
         return out
 
     def _set_call_timeout(self, seconds):

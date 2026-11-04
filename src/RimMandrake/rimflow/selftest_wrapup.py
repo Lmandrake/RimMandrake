@@ -16,7 +16,12 @@
   W10 the `unit` CLI end to end: exit 0 on any clone (it must never fail the unit) and one runs.jsonl line
   W11 a debt nobody's wrap-up names (a python.exe harness) stands once it is DEBT_AGE_S old
   W12 the producer: validation_v2's sset owes a forced setting, and restore_settings pays it once read back
+  W13-W15 stagers (scenelib, stage_review, SettingsTransaction) owe before they change the game, pay after the undo
+  W16 THE DOOR: a per-mod validation.py-style raw set through rimdrive.Session.call -> RimBridge.call (no owe() by the
+      caller) is owed with its undo, killed before restore it is filed; a write back to the original pays it from
+      another process; debug_settings and difficulty_tune likewise; a get, a no-op set, a failed set owe nothing
 """
+import glob
 import json
 import os
 import shutil
@@ -425,6 +430,96 @@ try:
     except HL.HelperUnverified:
         pass
     check(len(end_agent()) == 1, "W15 a restore with problems stays owed")
+
+    # W16 the bridge door: what the checker's probe found unowned (Sarlacc validation.py _set/_raw) is owed now
+    import rimbridge_client as RC
+    from rimdrive import session as RS
+
+    class Game16(object):
+        """The bridge's settings tools as the reply shapes in JawaBench*.cs: set -> valueBefore/valueAfter."""
+        def __init__(self):
+            self.mod, self.dbg, self.diff = {"enabled": "True"}, {"noAnimals": "False"}, {"threatScale": 1.0}
+            self.fail = False
+
+        def __call__(self, method, params=None):
+            if method != "tools/call":
+                raise RC.RimBridgeError("tools/list failed: not in this fake")
+            tool, a = params["name"], params.get("arguments") or {}
+            if tool == "jawa/mod_settings_field":
+                f = a.get("field")
+                if a.get("action") == "set":
+                    if self.fail:
+                        return {"success": False, "message": "coerce failed"}
+                    b = self.mod[f]
+                    self.mod[f] = a["value"]
+                    return {"success": True, "field": f, "valueBefore": b, "valueAfter": self.mod[f]}
+                return {"success": True, "field": f, "value": self.mod.get(f)}
+            if tool == "jawa/debug_settings" and a.get("action") == "set":
+                b = self.dbg[a["field"]]
+                self.dbg[a["field"]] = str(a["value"])
+                return {"success": True, "valueBefore": b, "valueAfter": self.dbg[a["field"]]}
+            if tool == "jawa/difficulty_tune":
+                b = dict(self.diff)
+                self.diff.update(a)
+                return {"success": True, "before": b, "after": dict(self.diff)}
+            return {"success": True}
+
+    g16 = Game16()
+
+    def door_session():
+        rb = RC.RimBridge(host="192.0.2.1", token="t")   # TEST-NET: never this machine's game, so the live driver
+        rb._request = g16                                 # lock (_driver_crossing reads it for loopback) is not read
+        rb.check_params = lambda tool, params: None
+        s = RS.Session.__new__(RS.Session)
+        s._rb, s.calls, s._log_reset_at = rb, 0, 1e18
+        return s
+
+    os.environ["RM_ROLE_UNIT"] = "validation-w16"
+    s16 = door_session()
+    SET = "RimMandrake.Sarlacc.SarlaccSettings"
+    # Sarlacc validation.py's _set: a get for the restore, then the raw set; the caller owes nothing itself
+    old16 = s16.call("jawa/mod_settings_field", typeName=SET, action="get", field="enabled").get("value")
+    check(end_agent() == [], "W16 a settings get owes nothing")
+    s16.call("jawa/mod_settings_field", typeName=SET, action="set", field="enabled", value="False")
+    s16.call("jawa/mod_settings_field", typeName=SET, action="set", field="enabled", value="False")
+    d = end_agent()                                                  # killed before _restore
+    check(len(d) == 1 and "SarlaccSettings.enabled=False (was True)" in d[0]["what"] and "value=True" in d[0]["why"],
+          "W16 a raw Session.call set killed before restore is filed once with its undo: %r"
+          % [(x["what"], x["why"]) for x in d])
+    s16.call("jawa/mod_settings_field", typeName=SET, action="set", field="enabled", value="False")
+    key16 = "mod_settings_field:%s.enabled" % SET
+    filed16 = [r for _, rec, rows in wrapup.standing(Fake()) for r in rows if r.get("keyed")]
+    check(len(filed16) == 1 and len(wrapup.debts_keyed(key16)) == 1, "W16 the filed door debt stands and stays keyed")
+    os.environ["RM_ROLE_UNIT"] = "restorer-w16"                      # another process puts it back
+    s16.call("jawa/mod_settings_field", typeName=SET, action="set", field="enabled", value=old16)
+    os.environ["RM_ROLE_UNIT"] = "validation-w16"
+    check(end_agent() == [] and wrapup.debts_keyed(key16) == [],
+          "W16 a write back to the original pays the debt, whoever writes it, and owes no reverse change")
+    check(not [r for _, rec, rows in wrapup.standing(Fake()) for r in rows if r.get("keyed")],
+          "W16 the paid door debt stops standing")
+    s16.call("jawa/mod_settings_field", typeName=SET, action="set", field="enabled", value="True")
+    g16.fail = True
+    s16.call("jawa/mod_settings_field", typeName=SET, action="set", field="enabled", value="False")
+    g16.fail = False
+    check(end_agent() == [], "W16 a no-op set and a refused set owe nothing")
+    s16.call("jawa/debug_settings", action="set", field="noAnimals", value=True)
+    s16.call("jawa/difficulty_tune", threatScale=0.0)
+    s16.call("jawa/difficulty_tune")                                 # a read: no setter given
+    d = end_agent()
+    check(sorted(x["what"].split("=")[0] for x in d) == ["setting: debug_settings:noAnimals",
+                                                         "setting: difficulty_tune:threatScale"],
+          "W16 debug_settings and difficulty_tune writes are owed per field: %r" % [x["what"] for x in d])
+    s16.call("jawa/debug_settings", action="set", field="noAnimals", value=True)
+    s16.call("jawa/difficulty_tune", threatScale=0.0)
+    s16.call("jawa/debug_settings", action="set", field="noAnimals", value=False)
+    s16.call("jawa/difficulty_tune", threatScale=1.0000001)
+    check(end_agent() == [], "W16 restored (bool case, float within tolerance) owes nothing")
+    s16.call("jawa/debug_settings", action="set", field="noAnimals", value=True)
+    end_agent()                                                      # filed, then a human resolves it
+    for f in glob.glob(os.path.join(wrapup.state_dir(), "open", "*stager*.json")):
+        wrapup._resolve(f, "W16 by hand")
+    check(wrapup.debts_keyed("debug_settings:noAnimals") == [], "W16 resolving the file forgets its door debts")
+    g16.dbg["noAnimals"] = "False"
     os.environ.pop("RM_ROLE_UNIT", None)
 finally:
     shutil.rmtree(TMP, ignore_errors=True)

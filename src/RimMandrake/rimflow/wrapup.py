@@ -122,12 +122,14 @@ def owner_key(env=None):
     return "pid:%d" % os.getpid()
 
 
-def owe(kind, what, undo=None, owner=None):
+def owe(kind, what, undo=None, owner=None, extra=None):
     """Record that this agent left the game changed (a setting forced, a scene staged) -> token for paid().
-    Best effort for the caller: a register that cannot be written prints and returns None, never raises."""
+    `extra` adds fields (the bridge door's `key` and `orig`). Best effort for the caller: a register that cannot be
+    written prints and returns None, never raises."""
     tok = "%s-%s" % (time.strftime("%Y%m%dT%H%M%S", time.gmtime()), uuid.uuid4().hex[:8])
-    body = {"token": tok, "kind": kind, "what": what, "undo": undo, "owner": owner or owner_key(), "at": _iso(_now()),
-            "cwd": os.getcwd()}
+    body = dict(extra or {})
+    body.update({"token": tok, "kind": kind, "what": what, "undo": undo, "owner": owner or owner_key(),
+                 "at": _iso(_now()), "cwd": os.getcwd()})
     try:
         _write_json(_p("debts", tok + ".json"), body)
     except OSError as e:
@@ -137,14 +139,27 @@ def owe(kind, what, undo=None, owner=None):
 
 
 def paid(token):
-    """The debt is undone. -> True when it was on the register."""
+    """The debt is undone. -> True when it was on the register (owed, or filed and keyed: see run())."""
     if not token:
         return False
-    try:
-        os.remove(_p("debts", safe_key(token) + ".json"))
-        return True
-    except OSError:
-        return False
+    hit = False
+    for where in (_p("debts"), _p("debts", "filed")):
+        try:
+            os.remove(os.path.join(where, safe_key(token) + ".json"))
+            hit = True
+        except OSError:
+            pass
+    return hit
+
+
+def debts_keyed(key):
+    """Open debts carrying this `key` (the bridge door's setting identity), whoever owes them."""
+    out = []
+    for f in sorted(glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json"))):
+        d = _read_json(f)
+        if d and d.get("key") == key:
+            out.append(d)
+    return out
 
 
 def debts_of(owner):
@@ -258,7 +273,7 @@ def census(world, ctx):
     for d in debts_of(ctx["owner"]):
         rows.append({"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")), "act": "filed",
                      "why": "still owed at the agent's end; undo: %s" % (d.get("undo") or "none recorded"),
-                     "token": d.get("token")})
+                     "token": d.get("token"), "keyed": bool(d.get("key"))})
     for c in ctx["clones"]:
         rows.append(check_clone(world, c, ctx.get("carried", False)))
     if ctx["kind"] == "session" and ctx.get("seat"):
@@ -295,7 +310,16 @@ def run(world, ctx):
             _write_json(_p("open", safe_key("%s-%s" % (ctx["kind"], ctx["key"])) + ".json"),
                         dict(rec, ctx={k: v for k, v in ctx.items() if k != "clones"}))
             for r in filed:                     # a filed debt moves off the register: the open file now holds it
-                if r.get("token"):
+                if r.get("token") and r.get("keyed"):
+                    # the bridge door's debt stays findable by key (debts/filed/), so a later write back to the
+                    # original pays it and the row stops standing; a restore must never owe the reverse change
+                    n = safe_key(r["token"]) + ".json"
+                    os.makedirs(_p("debts", "filed"), exist_ok=True)
+                    try:
+                        os.replace(_p("debts", n), _p("debts", "filed", n))
+                    except OSError:
+                        pass
+                elif r.get("token"):
                     paid(r["token"])
         _append(_p("runs.jsonl"), rec if not err else dict(rec, error=True))
     except OSError as e:
@@ -319,7 +343,9 @@ def row_standing(world, row, rec):
             return any(i == row["what"] for i, _ in world.doing_claims(rec.get("seat"), 0))
         except Exception:  # noqa: BLE001  unreadable: still standing (never clear on ignorance)
             return True
-    return True                                 # debt, wrapup error: until someone resolves it
+    if k == "debt" and row.get("keyed"):        # a door debt: until a write puts the setting back (paid())
+        return os.path.exists(_p("debts", "filed", safe_key(row.get("token")) + ".json"))
+    return True                                 # other debts, wrapup error: until someone resolves it
 
 
 def aged_debts(now=None):
@@ -374,6 +400,9 @@ def _resolve(path, why):
     rec = _read_json(path) or {}
     rec["resolved"] = {"at": _iso(_now()), "why": why}
     _write_json(_p("resolved", os.path.basename(path)), rec)
+    for r in rec.get("rows") or []:             # a resolved door debt leaves debts/filed/: the door forgets the key
+        if r.get("keyed") and r.get("token"):
+            paid(r["token"])
     os.remove(path)
 
 
