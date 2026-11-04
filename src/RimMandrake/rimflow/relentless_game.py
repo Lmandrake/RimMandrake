@@ -48,9 +48,9 @@ GAME = "game"
 READING_TTL_S = 30
 DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "stage_max_s": 3600, "stage_tries": 2,
             "prove_every_s": 900, "renew_s": 1200,
-            # a cold load's bound, sized to the list that loads (rimworld-load-round: 13 mods ~22 s, the full ~316 ~15-25
-            # min): base + per mod, from the live ModsConfig.xml; unread, the full list's
-            "load_base_s": 180, "load_per_mod_s": 6, "load_unknown_s": 2400,
+            # a cold load's bound is NOT set here: it is Utils/load_policy.json's process_to_bridge_deadline_s for the
+            # list that loads (BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY), and passing it restages only on stall
+            # evidence, never on the clock alone (load_bound, load_stall_evidence)
             # stage_tries stagings that leave no running build are a HARNESS failure, never the owner's: put down, and
             # staged again after harness_retry_s x the count, at most harness_retry_max_s
             "harness_retry_s": 1800, "harness_retry_max_s": 14400,
@@ -421,9 +421,32 @@ def live_mod_count():
     return len(got) if got else None
 
 
+def _load_policy():
+    utils = os.path.join(os.path.dirname(HERE), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import load_policy
+    return load_policy
+
+
 def load_bound(c, mods):
-    """Seconds a cold load of `mods` mods may take before it counts as failed."""
-    return int(c["load_base_s"] + c["load_per_mod_s"] * mods) if mods else int(c["load_unknown_s"])
+    """The ONE policy's supervisory deadline (seconds) for a cold load of `mods` mods; unread is the full list's. Past
+    it the ATTEMPT is over, but the game is restaged (restarted) only on stall evidence (load_stall_evidence)."""
+    return int(_load_policy().profile_for(mods)["process_to_bridge_deadline_s"])
+
+
+# belt_watchdog signals that are EVIDENCE of a stall (Not Responding, CPU idle, a frozen or looping Player.log, a
+# modal wedge, a dead process). Its "bridge" signal is NOT: past the warn threshold it fires on the clock alone.
+STALL_EVIDENCE_SIGNALS = ("game", "player_log", "modals")
+
+
+def stall_evidence(sigs):
+    """belt_watchdog Sig list -> 'name: detail' of the first evidence signal at STALLED or worse, else None."""
+    import belt_watchdog as bw
+    for s in sigs:
+        if s.name in STALL_EVIDENCE_SIGNALS and bw.RANK.get(s.level, 0) >= bw.RANK[bw.STALLED]:
+            return "%s %s: %s" % (s.level, s.name, s.detail)
+    return None
 
 
 def mod_gap_why(gap):
@@ -505,6 +528,16 @@ class GameFx(object):
                "evidence": m.get("evidence") or ""}
         self._game_read = (time.monotonic(), got)
         return dict(got)
+
+    def load_stall_evidence(self):
+        """-> 'LEVEL signal: detail' when belt_watchdog sees evidence of a stall in a loading game, else None. A probe
+        that fails is no evidence (None): the game keeps loading rather than being killed on a harness fault."""
+        _load_policy()
+        try:
+            import belt_watchdog
+            return stall_evidence(belt_watchdog.gather(bridge=False))
+        except Exception:  # noqa: BLE001  no reading is no evidence, never a kill
+            return None
 
     def bridge_reading(self):
         """-> {"holder", "purpose", "since"} of the bridge lock as the ledger reads now."""
@@ -972,8 +1005,17 @@ def step(store, fx, r, item, now, acts, sup):
                                               s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
                 acts.append({"do": "game_loading", "item": item, "why": why})
                 return
-            stale = [{"why": "the game still loads %ds after it started (bound %ds for %s mods)"
-                      % (age, bound, rd.get("mods") or "unread")}]
+            # BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY: the clock alone never restarts a loading game
+            ev = fx.load_stall_evidence()
+            msg = _load_policy().deadline_exceeded("cold load of %s mods" % (rd.get("mods") or "unread"), age, bound,
+                                                   alive=True)       # LOADING = the process runs
+            if not ev:
+                why = "%s; no stall evidence (belt_watchdog), so it is waited, not restaged" % msg
+                _save(store, item, lambda s: (s.update(put_down={"on": why[:300], "at": now}),
+                                              s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
+                acts.append({"do": "game_loading_past_deadline", "item": item, "why": why[:300]})
+                return
+            stale = [{"why": "%s; stall evidence: %s" % (msg, ev[:200])}]
         if stale and state == "UP" and rd.get("started"):
             # the running game cannot serve this item; before a reload, every other game item gets its try on it, and
             # this one waits (bounded) to ride the one reload with the rest

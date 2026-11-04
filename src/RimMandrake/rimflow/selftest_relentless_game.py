@@ -91,6 +91,7 @@ class GW(S.FakeWorld):
         state = {True: "UP", False: "DOWN"}.get(self.running, self.running)
         return {"state": state, "started": self.started, "mods": self.mods, "evidence": "fake %s" % state}
     def bridge_idle(self, p): return self.idle
+    def load_stall_evidence(self): return getattr(self, "stall", None)
     def bridge_reading(self): return dict(self.bridge_held or {"holder": None, "purpose": "", "since": None})
 
     def bridge_take(self, p):
@@ -629,9 +630,22 @@ def t_loading_is_waited_not_restaged():
     x.w.running = "LOADING"
     x.tick(0)
     st = x.st("I0")
+    ok(st["game"]["stages"] == 1 and x.w.events.count("take") == takes and "deadline exceeded" in st["put_down"]["on"]
+       and "ALIVE" in st["put_down"]["on"],
+       "past its deadline with NO stall evidence: waited, never restaged on the clock alone: %s" % st.get("put_down"))
+    x.w.stall = "STALLED player_log: Player.log silent 600 s"
+    x.tick(0)
+    st = x.st("I0")
     ok(st["game"]["stages"] == 2 and x.w.events.count("take") == takes + 1,
-       "past its bound the load failed: staged again: %s" % st["game"])
-    ok(G.load_bound(G.cfg(x.r), None) == G.cfg(x.r)["load_unknown_s"], "an unread list takes the full list's bound")
+       "past its deadline WITH stall evidence: staged again: %s" % st["game"])
+    ok(G.load_bound(G.cfg(x.r), None) == G.load_bound(G.cfg(x.r), 316), "an unread list takes the full list's bound")
+    import load_policy
+    ok(G.load_bound(G.cfg(x.r), 316) == load_policy.profile_for(316)["process_to_bridge_deadline_s"],
+       "the bound is load_policy.json's, not a number restated here")
+    import belt_watchdog as bw
+    ok(G.stall_evidence([bw.Sig("bridge", bw.STALLED, "not answering past warn", "")]) is None
+       and G.stall_evidence([bw.Sig("game", bw.WEDGED, "Not Responding 300 s", "")]),
+       "the watchdog's clock-only bridge signal is not stall evidence; Not Responding is")
     x.done()
 
 

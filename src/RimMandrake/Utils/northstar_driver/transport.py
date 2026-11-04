@@ -106,6 +106,12 @@ class TimedTransport(object):
         t0 = time.perf_counter()
         ids = []
         got = {}
+        # BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY: the batch has ONE absolute deadline (each call's timeout, summed:
+        # the bridge serialises them), so events arriving between replies cannot stretch it the way per-read timeouts did
+        import load_policy
+        if getattr(self.rb, "timeout", None) is not None:
+            self.rb._deadline = load_policy.Deadline(self.rb.timeout * len(calls))
+            self.rb._events_at_send = len(self.rb.events)
         try:
             for tool, params in calls:
                 rid = str(uuid.uuid4())
@@ -125,6 +131,8 @@ class TimedTransport(object):
                 self.rb.abandoned = set()
             self.rb.abandoned.update(r for r in ids if r not in got)
             raise
+        finally:
+            self.rb._deadline = None
         per = (time.perf_counter() - t0) * 1000.0 / max(1, len(calls))
         out = []
         for (tool, _), rid in zip(calls, ids):

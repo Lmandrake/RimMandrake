@@ -171,8 +171,9 @@ def _run(env, pol, kill_existing, log, r):
                 "with belt_watchdog; nothing is killed" % (el, pol["process_to_bridge_warn_s"]))
         if el > pol["process_to_bridge_deadline_s"]:
             r["first_exception"] = _first_exception(text)
-            return done("DEADLINE_ALIVE", "pid %s alive, no bridge token after %ds; attempt ended, process LEFT "
-                        "RUNNING - run belt_watchdog for evidence before any kill" % (proc["pid"], el))
+            return done("DEADLINE_ALIVE", "deadline exceeded: no bridge token after %ds (absolute limit %ds); game "
+                        "process ALIVE (pid %s); attempt ended, process LEFT RUNNING - run belt_watchdog for evidence "
+                        "before any kill" % (el, pol["process_to_bridge_deadline_s"], proc["pid"]))
         env.sleep(POLL_S)
     r["token_seen"] = token
     r["port"] = _port(text) or 5174

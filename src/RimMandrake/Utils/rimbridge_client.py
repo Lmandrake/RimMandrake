@@ -100,6 +100,8 @@ import sys
 import time
 import uuid
 
+import load_policy  # noqa: E402  (Utils/ is on sys.path above: the ONE deadline policy)
+
 __all__ = ["RimBridge", "RimBridgeError", "discover_from_log", "DEFAULT_PLAYER_LOG"]
 
 DEFAULT_HOST = "127.0.0.1"
@@ -605,41 +607,98 @@ class RimBridge:
 
     # -- framing -----------------------------------------------------------
 
+    # BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY: a request's limit is ONE absolute monotonic instant
+    # (load_policy.Deadline, set in _request); every blocking read gets only the time left, so an event flood or a
+    # byte trickle can no longer reset a per-read timeout and stretch a call forever (GPT N04). A timeout mid-frame
+    # KEEPS self.buf (parser state preserved, never re-parsed from mid-frame; the late reply is dropped as
+    # abandoned). A frame that cannot be parsed (bad/negative/oversize Content-Length, runaway header, bad JSON)
+    # CLOSES the connection: the stream position is unknowable, so the operation is indeterminate, never guessed.
+    MAX_HEADER_BYTES = 8192
+    MAX_FRAME_BYTES = 256 * 1024 * 1024
+
     def _send(self, envelope):
+        if self.sock is None:
+            raise RimBridgeError("bridge connection is closed (an earlier malformed frame or EOF); reconnect")
         body = json.dumps(envelope, separators=(",", ":")).encode("utf-8")
         head = ("Content-Length: %d\r\nContent-Type: application/json\r\n\r\n"
                 % len(body)).encode("ascii")
         self.sock.sendall(head + body)
 
+    def _malformed(self, why):
+        snippet = self.buf[:120]
+        self.close()
+        self.buf = b""
+        raise RimBridgeError("malformed bridge frame (%s): %r; connection closed, any call in flight is INDETERMINATE"
+                             % (why, snippet))
+
     def _recv_raw(self):
         """Read exactly one framed JSON message. Tolerates LF-only headers."""
-        while b"\r\n\r\n" not in self.buf and b"\n\n" not in self.buf:
+        while True:
+            i_crlf, i_lf = self.buf.find(b"\r\n\r\n"), self.buf.find(b"\n\n")
+            if i_crlf >= 0 or i_lf >= 0:
+                break
+            if len(self.buf) > self.MAX_HEADER_BYTES:
+                self._malformed("no header end within %d bytes" % self.MAX_HEADER_BYTES)
             self._fill()
-        sep = b"\r\n\r\n" if b"\r\n\r\n" in self.buf else b"\n\n"
-        head, _, rest = self.buf.partition(sep)
+        # the EARLIER separator ends this header: a later CRLF pair belongs to the body or the next frame
+        sep = b"\n\n" if i_crlf < 0 or (0 <= i_lf < i_crlf) else b"\r\n\r\n"
+        head = self.buf.partition(sep)[0]
         length = None
         for line in head.decode("ascii", "replace").splitlines():
             if line.lower().startswith("content-length:"):
-                length = int(line.split(":", 1)[1].strip())
+                raw = line.split(":", 1)[1].strip()
+                if not raw.isdigit():
+                    self._malformed("Content-Length %r" % raw)
+                length = int(raw)
         if length is None:
-            raise RimBridgeError("framed message had no Content-Length header: %r"
-                                 % head[:200])
-        self.buf = rest
-        while len(self.buf) < length:
+            self._malformed("no Content-Length header")
+        if length > self.MAX_FRAME_BYTES:
+            self._malformed("Content-Length %d over the %d cap" % (length, self.MAX_FRAME_BYTES))
+        start = len(head) + len(sep)          # self.buf is consumed only once the whole frame is here
+        while len(self.buf) < start + length:
             self._fill()
-        body, self.buf = self.buf[:length], self.buf[length:]
-        return json.loads(body.decode("utf-8"))
+        body, self.buf = self.buf[start:start + length], self.buf[start + length:]
+        try:
+            return json.loads(body.decode("utf-8"))
+        except ValueError as ex:
+            self._malformed("body is not UTF-8 JSON: %s" % ex)
 
     def _fill(self):
+        dl = getattr(self, "_deadline", None)
+        if dl is not None:
+            left = dl.remaining()
+            if left <= 0:
+                self._timed_out(dl)
+            self.sock.settimeout(left)
+        else:
+            self.sock.settimeout(self.timeout)
         try:
             chunk = self.sock.recv(65536)
         except socket.timeout as ex:
+            if dl is not None:
+                self._timed_out(dl, ex)
             raise RimBridgeError(
                 "timed out after %ss waiting for the bridge; RimWorld may be in a "
                 "long event or the call may be frame-bound" % self.timeout) from ex
         if not chunk:
+            self.close()
             raise RimBridgeError("bridge closed the connection")
         self.buf += chunk
+
+    def _timed_out(self, dl, cause=None):
+        """The absolute call deadline passed. The message starts 'timed out' (call() and _request key on it) and
+        states whether the game process is alive; nothing is killed."""
+        n_ev = len(self.events) - getattr(self, "_events_at_send", len(self.events))
+        msg = ("timed out: %s (%d event(s) arrived meanwhile; RimWorld may be in a long event or the call may be "
+               "frame-bound)" % (load_policy.deadline_exceeded("bridge request", dl.elapsed(), dl.limit_s,
+                                                                 alive=self._alive_probe()), n_ev))
+        raise RimBridgeError(msg) from cause
+
+    def _alive_probe(self):
+        """Game liveness for a deadline message. RIMBRIDGE_ALIVE_PROBE=off reads UNKNOWN without asking (tests)."""
+        if os.environ.get("RIMBRIDGE_ALIVE_PROBE") == "off":
+            return None
+        return load_policy.game_alive()
 
     def _recv_response(self, want_id):
         """Read until the response with our id arrives; park events aside."""
@@ -662,6 +721,9 @@ class RimBridge:
 
     def _request(self, method, params=None):
         rid = str(uuid.uuid4())
+        # fixed now; nothing arriving later moves it (timeout None = block, as socket.settimeout(None) always did)
+        self._deadline = load_policy.Deadline(self.timeout) if self.timeout is not None else None
+        self._events_at_send = len(self.events)
         self._send({
             "v": GABP_VERSION,
             "id": rid,
@@ -677,6 +739,8 @@ class RimBridge:
                     self.abandoned = set()
                 self.abandoned.add(rid)
             raise
+        finally:
+            self._deadline = None
         err = msg.get("error")
         if err:
             raise RimBridgeError("%s failed: %s" % (

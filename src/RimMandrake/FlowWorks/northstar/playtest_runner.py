@@ -2,7 +2,7 @@
 """playtest_runner.py - thin launcher for the FlowWorks in-game scenario runner (Approach A pilot).
 
     python.exe src/RimMandrake/FlowWorks/northstar/playtest_runner.py [--recipe pilot]
-        [--seed 1] [--tick-mode batch|speed] [--budget-ms 50] [--poll 2] [--timeout 1500] [--force]
+        [--seed 1] [--tick-mode batch|speed] [--budget-ms 50] [--poll 2] [--timeout <load_policy playtest_run_wall_s>] [--force]
 
 Run it from your SEAT CLONE (/home/mandrake/rm/bench or /foundry), never from the D:\\Luke\\dev\\RimMandrake
 mirror: the default --out-dir is <repo of this script>/Transient/flowworks_playtest, and a journal copied into the
@@ -183,6 +183,14 @@ def timing_table(recs, launcher=None):
 
 # ── bridge ───────────────────────────────────────────────────────────────
 
+def _policy():
+    """The ONE deadline policy (Utils/load_policy.json)."""
+    if UTILS not in sys.path:
+        sys.path.insert(0, UTILS)
+    import load_policy  # noqa: E402
+    return load_policy
+
+
 def _connect():
     sys.path.insert(0, UTILS)
     import rimbridge_client as rb  # noqa: E402
@@ -206,6 +214,7 @@ def _call(s, counter, tool, **p):
 def run_once(s, calls, a, recipe, resume=None):
     """Start one run, poll it to the end, collect, copy the journal. Returns (recs, c_sharp_verdict, path, wall)."""
     t0 = time.time()
+    m0 = time.monotonic()
     p = dict(recipe=recipe, seed=a.seed, tickMode=a.tick_mode, frameBudgetMs=a.budget_ms, force=a.force)
     if resume:
         p["resume"] = resume
@@ -226,8 +235,10 @@ def run_once(s, calls, a, recipe, resume=None):
         seen = len(recs)
         if stat.get("state") != "running":
             break
-        if time.time() - t0 > a.timeout:
-            print("LAUNCHER TIMEOUT after %.0f s; the run is still going in game (state %s)" % (time.time() - t0, stat.get("state")))
+        if time.monotonic() - m0 > a.timeout:      # absolute: polls answering do not extend it; nothing is killed
+            print("LAUNCHER TIMEOUT: %s; the run is still going in game (state %s)" % (
+                _policy().deadline_exceeded("playtest run %s" % run_id, time.monotonic() - m0, a.timeout, alive=True),
+                stat.get("state")))
             break
     col = _call(s, calls, "jawa/playtest_collect", runId=run_id)
     wall = time.time() - t0
@@ -257,7 +268,9 @@ def main(argv=None):
     ap.add_argument("--tick-mode", default="batch", choices=("batch", "speed"))
     ap.add_argument("--budget-ms", type=int, default=50)
     ap.add_argument("--poll", type=float, default=2.0)
-    ap.add_argument("--timeout", type=float, default=1500.0, help="launcher-side wall limit per run, seconds")
+    ap.add_argument("--timeout", type=float, default=float(_policy().load()["playtest_run_wall_s"]),
+                    help="launcher-side wall limit per run, seconds (load_policy.json playtest_run_wall_s); stops "
+                         "polling, never kills the run or the game")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--resume", default=None, help="runId of a save_reload run (with --recipe save_reload_b)")
     ap.add_argument("--no-resume", action="store_true", help="do not load the save and run save_reload_b")
