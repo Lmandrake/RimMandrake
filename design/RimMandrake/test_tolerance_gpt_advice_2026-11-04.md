@@ -328,6 +328,8 @@ Finally, broad unholds after “the harness is fixed” need replacement with in
 | Observed false closes | Independently audited closes violating their obligations, stratified by closure age |
 | Unknown validation debt | Number, age and business priority of items awaiting evidence or repair |
 
+Built (CLOSE_AUDIT_MEASURE_FALSE_CLOSES_HONESTLY): `src/RimMandrake/rimflow/delivery_metrics.py` reports these from the Relentless store, printing UNMEASURED with its reason where no record exists (attribution reversal and time to attribution have none until rank 1 lands). The audit record is `infrastructure/state/close_audits.jsonl`: each sample holds a `random` and a targeted `narrow_weak` population, audited and reported apart, by closure age.
+
 Use random closure audits for an overall estimate and targeted audits for high-risk changes; report those populations separately. Keep seeded misses separate from production escape rates. “No later complaint” is weak evidence of correctness.
 
 Instrument failures can be excluded from product-test accuracy denominators, but their time and cost must remain visible in delivery metrics. Otherwise the system can improve its reported accuracy by measuring less.
