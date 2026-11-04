@@ -3203,14 +3203,15 @@ def t_pool_real_git():
     git(c, "add", "b.txt")
     git(c, "commit", "-qm", "b")
     ok(fx.clone_wip(c)["kept"], "an unpushed commit is kept")
-    b = fx.remove_clone({"clone": c, "item": "I0"})
+    store.save(R.new_state("I3", 0, "t"))   # each bundling case its own item: bundle dirs are named by the second
+    b = fx.remove_clone({"clone": c, "item": "I3"})
     ok(os.path.exists(os.path.join(b or "", "commits.bundle")), "a dead clone's commits are in the bundle")
     git(d, "clone", "-q", o, c)
     git(c, "commit", "-qm", "detached", "--allow-empty")
     git(c, "checkout", "-q", "--detach")
     os.remove(os.path.join(c, ".git", "HEAD"))
     ok(fx.clone_wip(c)["kept"], "a clone git cannot read is kept")
-    ok(fx.remove_clone({"clone": c, "item": "I0"}) is None and os.path.isdir(c), "and a bundle that fails keeps the clone")
+    ok(fx.remove_clone({"clone": c, "item": "I3"}) is None and os.path.isdir(c), "and a bundle that fails keeps the clone")
     # what a plain diff and a plain bundle do not carry
     shutil.rmtree(c)
     git(d, "clone", "-q", o, c)
@@ -3232,7 +3233,8 @@ def t_pool_real_git():
     git(c, "add", "x.txt")
     git(c, "stash", "push", "-q", "-m", "newer", "x.txt")
     ok("keep.local" in fx.clone_wip(c)["real"], "an ignored file is WIP")
-    b = fx.remove_clone({"clone": c, "item": "I0"})
+    store.save(R.new_state("I4", 0, "t"))   # each bundling case its own item: bundle dirs are named by the second
+    b = fx.remove_clone({"clone": c, "item": "I4"})
     with open(os.path.join(b, "index.patch"), encoding="utf-8") as f:
         ok("+staged" in f.read(), "content only the index holds is in the bundle")
     u = os.path.join(d, "unb")
@@ -3242,7 +3244,7 @@ def t_pool_real_git():
     ok(sorted(shown) == ["s1\n", "s2\n"], "every stash is in the bundle, not just the newest: %s" % (shown,))
     git(d, "clone", "-q", o, c)
     put("keep.local", "upstream's\n")
-    ok(any("keep.local" in w for w in fx.restore_bundle("I0", b, c)), "a restore that meets a newer file says so")
+    ok(any("keep.local" in w for w in fx.restore_bundle("I4", b, c)), "a restore that meets a newer file says so")
     with open(os.path.join(c, "keep.local"), encoding="utf-8") as f:
         ok(f.read() == "upstream's\n", "and does not overwrite it")
     # POOL_UNLANDED_COMMITS_NEVER_RELEASE: a worker's trailing lesson/ledger commit must not pin its clone for good
@@ -3254,10 +3256,11 @@ def t_pool_real_git():
     git(c, "commit", "-qm", "lesson")
     w = fx.clone_wip(c)
     ok(not w["kept"] and w["carry"], "a state-only commit does not pin the clone: %s" % (w,))
-    b = fx.remove_clone({"clone": c, "item": "I0"})
+    store.save(R.new_state("I5", 0, "t"))   # each bundling case its own item: bundle dirs are named by the second
+    b = fx.remove_clone({"clone": c, "item": "I5"})
     ok(b and os.path.exists(os.path.join(b, "carry")) and not fx.clone_present(c), "released with the commit in the bundle")
     git(d, "clone", "-q", o, c)
-    ok(fx.restore_bundle("I0", b, c) == [], "the next clone re-applies it")
+    ok(fx.restore_bundle("I5", b, c) == [], "the next clone re-applies it")
     ok(os.path.exists(os.path.join(c, "infrastructure/state/lessons/l1.md")) and fx.clone_wip(c)["carry"], "the lesson came back as a commit")
     put("b2.txt", "real\n")
     git(c, "add", "b2.txt")
