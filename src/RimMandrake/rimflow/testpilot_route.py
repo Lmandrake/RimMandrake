@@ -18,7 +18,7 @@ A sitting ends with `rimflow note <ID> --text "TESTPILOT_SAT: ..."`. That restar
 given its fix and retest, and three fresh misses send the item back to a pilot. Items that never route: closed,
 blocked (something else is wrong), needs owner (his look, not a live debug), intent JUDGE (an art verdict: no live
 debugging answers it). Runs in NOT_A_TEST are not tests of the
-item: testq records lane pauses there.
+item: testq records lane pauses and item-less filler FAILs there.
 
 The Dispatcher reads the ROUTE line `rimflow next` prints (dispatcher.parse_peek), so the marker wording below is a
 contract with it and with selftest_testpilot_route.py.
@@ -29,7 +29,8 @@ import json
 STREAK = 3
 OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")      # model.OPEN_STATES (selftest pins them equal)
 LIVE_NEEDS = ("bridge", "game-up")
-NOT_A_TEST = ("steve-lane",)        # STEVE_LANE_MONITOR_PAUSE_FINDINGS: a lane pause, recorded as a failed run
+NOT_A_TEST = ("steve-lane",         # STEVE_LANE_MONITOR_PAUSE_FINDINGS: a lane pause, recorded as a failed run
+              "steve-filler", "archmagi-filler")   # STEVE_FILLER_MONITOR_FAIL_FINDINGS: item-less filler FAILs (ingest)
 SAT, WANTED = "TESTPILOT_SAT", "TESTPILOT_WANTED"
 ROUTE = "ROUTE rm-testpilot"
 HOSTS = ("stevedesktop", "archmagi")    # preference order: SteveDesktop's game is ours, Archmagi's list is his

@@ -15,6 +15,9 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        the verify, so it never reads as a feature's partial, and each distinct cause files ONE repair
                        item, HARNESS_REPAIR_CAUSE_<HEX> (--for FOUNDRY for FlowWorks, else BENCH, needs offline), or a
                        note on the open one. An INVALID job with no sheet does the same.
+  no item, a FAIL   -> FILL_ITEM (STEVE_FILLER_MONITOR_FAIL_FINDINGS, a standing host) is verified from the job's rows
+                       and gets one finding per FAIL row, so the filler's failures reach flow.untriaged_findings
+                       (TESTQ_FILLER_DIAGNOSE_FAILS_NOBODY_HEARD: 35 FAIL rows in 18 such jobs had been dropped).
   no item           -> nothing on the ledger, unless job.row_items (submit --row-item ROW_OR_CHAIN=ITEM) maps rows to
                        items or TESTQ_HOST_ITEM names a standing host: then each item is verified from ITS rows only.
 SteveDesktop's SIMD fault (fault_monitor.py) goes first, whatever the record says: a job that ran inside a fault window
@@ -132,6 +135,7 @@ def finding_name(mod, row, job_id, salt=False, chain=None):
 
 
 LANE_ITEM = os.environ.get("TESTQ_LANE_ITEM", "STEVE_LANE_MONITOR_PAUSE_FINDINGS")
+FILL_ITEM = os.environ.get("TESTQ_FILL_ITEM", "STEVE_FILLER_MONITOR_FAIL_FINDINGS")
 LANE_TWIST = {("INVALID", "CANARY"): "CANARY_RED", ("REFUSED", "SYNC"): "SYNC_REFUSED"}
 
 
@@ -233,10 +237,12 @@ def ingest_one(rec):
         err = repair(job, res, cause)
         if err:
             return {"error": err}
-    if not item and not job.get("row_items") and not os.environ.get("TESTQ_HOST_ITEM"):
-        return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
     # the standing host stands in only for a job with no item of its own (as in groups_of)
     host = None if item else os.environ.get("TESTQ_HOST_ITEM")
+    if not item and not job.get("row_items") and not host:
+        if not filler_fails(res):
+            return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
+        host = FILL_ITEM        # a FAIL nobody would hear: the filler's host records it (TESTQ_FILLER_DIAGNOSE_FAILS_NOBODY_HEARD)
     items = sorted({i for i in [item, host] + list((job.get("row_items") or {}).values()) if i})
     failed = []
     if lane:
@@ -255,15 +261,21 @@ def ingest_one(rec):
         return {"note": True}
     if failed:
         return {"error": "lane note refused on %s" % ",".join(sorted(set(failed)))}
-    return ingest_done(job, res, item)
+    return ingest_done(job, res, item, host)
 
 
-def groups_of(job, res):
+def filler_fails(res):
+    """True when a DONE record holds a FAIL row the harness did not stop (a harness fault files its repair instead)."""
+    return res["outcome"] == "DONE" and any(r.get("verdict") == "FAIL" for r in R.split_rows(res.get("rows") or [])[0])
+
+
+def groups_of(job, res, host=None):
     """-> {item: [rows]}: each row goes to the item its row id (else its chain) maps to in job["row_items"], else to the
-    job's item, else to TESTQ_HOST_ITEM (a standing host for item-less sweeps/filler; unset: such rows are dropped).
+    job's item, else to HOST (FILL_ITEM for an item-less job with a FAIL row), else to TESTQ_HOST_ITEM (a standing host
+    for item-less sweeps/filler; neither: such rows are dropped).
     A sheet's verdict is never recorded on an item whose rows it does not hold (TESTQ_INGEST_FIX_ONE_ITEM_MANY_ROWS)."""
     ri = job.get("row_items") or {}
-    default = job.get("item") or os.environ.get("TESTQ_HOST_ITEM") or None
+    default = job.get("item") or host or os.environ.get("TESTQ_HOST_ITEM") or None
     out = {}
     for row in res.get("rows") or []:
         it = ri.get(row.get("row")) or ri.get(row.get("chain")) or default
@@ -272,11 +284,11 @@ def groups_of(job, res):
     return out
 
 
-def ingest_done(job, res, item):
+def ingest_done(job, res, item, host=None):
     att = res["attempt"]
     kept, held, causes = R.split_rows(res.get("rows") or [])
-    groups = groups_of(job, dict(res, rows=kept))
-    held_on = sorted(i for i in groups_of(job, dict(res, rows=held)) if i not in groups)
+    groups = groups_of(job, dict(res, rows=kept), host)
+    held_on = sorted(i for i in groups_of(job, dict(res, rows=held), host) if i not in groups)
     if item and item not in groups and item not in held_on and not job.get("row_items"):
         groups[item] = []                      # unchanged: a job for an item with no rows still gets its verdict
     if not groups and not held_on:
@@ -306,7 +318,8 @@ def ingest_done(job, res, item):
 
 def ingest_group(job, res, item, gres, att):
     host = res.get("host") or "stevedesktop"         # the archmagi backfill runs the same worker (host "archmagi")
-    config = "%s-%s" % ("steve" if host == "stevedesktop" else host, job.get("profile", "targeted"))
+    config = "%s-%s" % ("steve" if host == "stevedesktop" else host,
+                        "filler" if item == FILL_ITEM else job.get("profile", "targeted"))   # testpilot_route.NOT_A_TEST
     run = recorded_run(item, att)
     if not run:
         rc, out = rimflow("verify", item, "--result", verdict(gres), "--config", config,

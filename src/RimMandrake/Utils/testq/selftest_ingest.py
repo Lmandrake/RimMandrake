@@ -4,7 +4,8 @@
 A temp queue holds hand-made done/ records; rimflow writes a temp ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS), and the
 git step is off (TESTQ_INGEST_PUSH=0). Proves: DONE with FAIL rows -> verify fail plus one finding per FAIL;
 all PASS -> pass; PASS + UNMEASURED -> partial; INVALID -> a note; a lane-pausing outcome (red canary) -> one
-finding item for BENCH even with no job item; no item -> nothing; an unknown item -> retried,
+finding item for BENCH even with no job item; no item with a FAIL row -> a fail verify on the standing filler host
+plus one finding per FAIL row (TESTQ_FILLER_DIAGNOSE_FAILS_NOBODY_HEARD); no item, no FAIL -> nothing; an unknown item -> retried,
 not marked, no crash; a second ingest writes nothing; an ingest that died before marking the record reuses its
 run and findings instead of writing them twice; an item filed late is verified on the retry; an item never filed is
 marked with its error after the last try; a non-DONE note refused for an item not filed yet is retried and lands
@@ -29,6 +30,7 @@ import schema as S  # noqa: E402
 FAILS = []
 ITEM = "SOME_ITEM_FIX_IT"
 LANE = "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+FILL = "STEVE_FILLER_MONITOR_FAIL_FINDINGS"
 LATE = "LATE_ITEM_FIX_AFTER"
 MANY_A, MANY_B = "MANY_ROWS_FIX_ALPHA", "MANY_ROWS_FIX_BETA"
 NOTE_LATE = "LATE_NOTE_FIX_AFTER"
@@ -464,7 +466,7 @@ def main():
         r = subprocess.run([sys.executable, CLI, "file", LANE, "--for", "BENCH", "--title", "t", "--seat", "BENCH"],
                            env=env, capture_output=True, text=True, timeout=120)
         check(r.returncode == 0, "the lane host item is filed in the temp ledger: %s" % r.stderr[-200:])
-        for it in (MANY_A, MANY_B):
+        for it in (MANY_A, MANY_B, FILL):
             subprocess.run([sys.executable, CLI, "file", it, "--for", "BENCH", "--title", "t", "--seat", "BENCH"],
                            env=env, capture_output=True, text=True, timeout=120)
         shard = os.path.join(tmp, "ledger", "events", "RUNNER.jsonl")
@@ -482,6 +484,7 @@ def main():
         recs = {"fail": done_rec(ITEM), "pass": done_rec(ITEM, rows=(("r1", "PASS"),)),
                 "partial": done_rec(ITEM, rows=(("r1", "PASS"), ("r4", "UNMEASURED"))),
                 "invalid": done_rec(ITEM, "INVALID", "HANG"), "noitem": done_rec(None),
+                "noitem_pass": done_rec(None, rows=(("r1", "PASS"), ("r4", "UNMEASURED"))),
                 "unknown": done_rec("NO_SUCH_ITEM_HERE"), "late": done_rec(LATE),
                 "canary": done_rec(None, "INVALID", "CANARY"),
                 # TESTQ_INGEST_FIX_ONE_ITEM_MANY_ROWS: one sheet, two items; ITEM's own row PASSes, MANY's rows FAIL
@@ -498,12 +501,12 @@ def main():
         mf = [e for e in evs if e["event"] == "finding" and e["from"].startswith(MANY_B + "/run-")]
         check(len(mf) == 1 and not [e for e in evs if e["event"] == "finding" and e["from"].startswith(MANY_A)],
               "the FAIL row's finding hangs off its own item's run")
-        verifies = [e for e in evs if e["event"] == "verify" and e.get("id") not in (LANE, MANY_A, MANY_B)]
+        verifies = [e for e in evs if e["event"] == "verify" and e.get("id") not in (LANE, MANY_A, MANY_B, FILL)]
         check(sorted(e["result"] for e in verifies) == ["fail", "partial", "pass"],
               "one verify per DONE job, results fail/pass/partial: %s" % [e["result"] for e in verifies])
         check(all(e["seat"] == "RUNNER" and e["config"] == "steve-targeted" and e["sha"] == "def5678" and
                   "Mock_1.html" in e["evidence"] for e in verifies), "verifies carry seat, config, sha and the sheet")
-        fnd = [e for e in evs if e["event"] == "finding" and e.get("id") != LANE and not e["from"].startswith("MANY_ROWS")]
+        fnd = [e for e in evs if e["event"] == "finding" and e.get("id") != LANE and not e["from"].startswith(("MANY_ROWS", FILL))]
         check(len(fnd) == 2 and all(e["from"].startswith(ITEM + "/run-") and e["type"] == "UNTRIAGED" for e in fnd),
               "one finding per FAIL row, from its run: %s" % [e["name"] for e in fnd])
         notes = [e for e in evs if e["event"] == "note"]
@@ -519,7 +522,15 @@ def main():
               "a red canary records one failed lane run on %s and one finding naming the pause, with no job item: %s"
               % (LANE, rec_of("canary").get("ingested")))
 
-        check("skipped" in rec_of("noitem")["ingested"], "no item -> skipped")
+        fv = [e for e in evs if e["event"] == "verify" and e.get("id") == FILL]
+        ff = [e for e in evs if e["event"] == "finding" and e["from"].startswith(FILL + "/run-")]
+        check(len(fv) == 1 and fv[0]["result"] == "fail" and fv[0]["config"] == "steve-filler" and recs["noitem"]["result"]["attempt"] in fv[0]["evidence"]
+              and len(ff) == 2 and all(e["type"] == "UNTRIAGED" for e in ff)
+              and rec_of("noitem")["ingested"].get("result") == "fail",
+              "an item-less job's FAIL rows are heard: one fail verify on %s and one finding per FAIL row: %s"
+              % (FILL, rec_of("noitem").get("ingested")))
+        check("skipped" in rec_of("noitem_pass")["ingested"],
+              "no item and no FAIL row -> skipped: %s" % rec_of("noitem_pass").get("ingested"))
         check(all("ingested" not in rec_of(k) and rec_of(k)["ingest_pending"]["tries"] == 1 for k in ("unknown", "late")),
               "an unknown item -> pending a retry, not marked: %s" % rec_of("unknown").get("ingest_pending"))
         n = len(evs)
