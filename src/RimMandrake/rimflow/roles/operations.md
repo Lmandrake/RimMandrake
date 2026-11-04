@@ -128,6 +128,18 @@ head says BLIND, the trend store did not answer: say so in your ack and work fro
 for the next scheduled run. An incident run that covers the next scheduled slot (due within `cover_window_s`) says so
 in its trigger instead and runs at the full run cap: it IS that run, so do the incidents first, then the whole check.
 
+**Episodes and your graded notes** (strategy §3, step 7; `src/RimMandrake/Utils/ops_episodes.py`). `memory.md` ends
+with two sections. *Episodes, 14 d*: what happened, one line per reading or incident cause with its repeat count; an
+OPEN line is never dropped, so read every one before calling anything new. *Your notes, graded*: your earlier
+forecasts, each held, missed or ungradable, beside what **assuming no change** would have scored and the open incidents
+your notes left out. Read it first: where you score no better than no change, stop forecasting that family and say
+so; where a note missed, check the reasoning that produced it before you repeat it in a plan. At the end of a run leave
+up to 10 notes (one `--run` tag per run, the readings you judged or planned around, a deadline you can stand behind):
+`python3 src/RimMandrake/Utils/ops_episodes.py note --run <UTC yyyymmddThhmmZ> --reading <key from memory.json>
+--cmp '<' --value <n> --deadline +12h [--mode before] [--incident <id>]`. `at` grades the reading at the deadline,
+`before` at any point until it. A key memory.json does not hold, or a blind one, is refused. Notes that only restate
+today score exactly what no change scores; name the open incidents too, or the page counts them as left out.
+
 ## The economy pass (daily)
 
 You are the AI that analyses token burn (owner, 2026-10-27): the Conductor may read every figure (owner, 2026-10-31), every other role is token-blind, and the Dispatcher

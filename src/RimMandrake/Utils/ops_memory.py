@@ -54,6 +54,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(1, str(Path(__file__).resolve().parent / "telemetry"))
 import ops_watch as ow  # noqa: E402
+import ops_episodes  # noqa: E402  (step 7: episodes and the judge's graded notes, on the same page)
 import analysis  # noqa: E402  (telemetry: compare_windows)
 import store  # noqa: E402  (telemetry: vm_export, the only way in)
 
@@ -286,6 +287,7 @@ def reading(key, samples, fam_rows, now, floors, targets):
     rows24 = [t for t in fam_rows if t >= now - 24 * HOUR]
     m24 = [t for t, _v in meas if t >= now - 24 * HOUR]
     out["coverage_24h"] = (len(m24) / float(len(rows24))) if rows24 else None
+    out["stale_s"] = stale_s        # ops_episodes grades a judge note's "fresh reading" by it
     if not meas:
         out.update(state="blind", why="never measured in %d d" % READ_DAYS)
         return out
@@ -486,6 +488,8 @@ def build(now=None, fams=None, rules=None, get=None):
             mem["readings"][k] = rd
             counts[rd["state"]] = counts.get(rd["state"], 0) + 1
         mem["families"][fam] = counts
+    # the raw samples, for grading the judge's notes in publish; never written (publish pops it)
+    mem["_samples"] = {k: s for ks in per_by.values() for k, s in ks.items()}
     return mem
 
 
@@ -534,7 +538,7 @@ def line(key, rd, now):
     return s
 
 
-def render(mem, generation, names=()):
+def render(mem, generation, names=(), extra=()):
     now = mem["written_at"]
     head = ["# Operations memory, generation %d" % generation,
             "written %s; read beside the digest, not instead of it. Exceptions only; every blind reading listed." %
@@ -566,6 +570,8 @@ def render(mem, generation, names=()):
     if cut:
         out.append("- (%d calmer lines cut; all in memory.json)" % cut)
     out += ["", "## Blind (%d)" % len(blind)] + ["- " + s for s in blind]
+    if extra:
+        out += [""] + list(extra)
     out += ["", "## Per family"]
     for fam, c in mem["families"].items():
         out.append("- %s: %s" % (fam, ", ".join("%d %s" % (n, s) for s, n in sorted(c.items())) or
@@ -589,7 +595,12 @@ def publish(mem, outdir=None, names=()):
         pass
     gen += 1
     mem["generation"] = gen
-    md = render(mem, gen, names)
+    samples = mem.pop("_samples", None) or {}
+    extra = ops_episodes.publish_extra(
+        mem, samples, d, mem["written_at"], lambda: ops_episodes.read_told(d),
+        stale_of=lambda k: float((mem["readings"].get(k) or {}).get("stale_s") or ops_episodes.STALE_FLOOR_S),
+        rate_fn=to_rates)
+    md = render(mem, gen, tuple(names) + tuple(mem.get("notes", {}).get("pending_readings", ())), extra)
     tmp = d / "memory.md.tmp"
     tmp.write_text(md, encoding="utf-8")
     os.replace(tmp, d / "memory.md")
