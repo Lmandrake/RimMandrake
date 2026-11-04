@@ -231,8 +231,9 @@ if os.environ.get("RM_SELFTEST_REPO_ROOT"):
 RIMLUA_PY = Path.home() / ".local/venvs/rimlua/bin/python"
 RIMLUA_FIX = ("python3 -m venv ~/.local/venvs/rimlua && "
               "~/.local/venvs/rimlua/bin/pip install lupa")
-SPRITE_REFERENCE = ("src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/"
-                    "Pyrinth/Pyrinth_a.png")
+# a hard-edged sprite: the semi-transparent case proves nothing against soft art (Pyrinth_a.png, redrawn with soft
+# alpha, failed it every night from 2026-11-04). The selftest's own no-argument default is the same file.
+SPRITE_REFERENCE = "src/RimMandrake/CrackedLands/Textures/Things/Item/RM_ZennaqFilament.png"
 
 # Selftests that cannot run as bare `python3 <file>` from the repo root: rel path (to the TESTED checkout) ->
 # argv builder(root) -> (argv, cwd), `root` being the checkout the test lives in (review AD1: an isolated checkout's
