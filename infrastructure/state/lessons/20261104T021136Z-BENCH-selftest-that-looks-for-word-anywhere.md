@@ -1,0 +1,2 @@
+A selftest that looks for a word anywhere on a page cannot see a panel: the text twin and the other machine's panel satisfy it, so a blind checker's mutants survive. Give each reading a named group in the output, parse the output per panel and per reading, census every digit outside a reading, and run the mutants in the test itself (exec the patched source into the module, then restore) so the pins prove they bite. Cost RUNNING_PAGE_FIX_REVIEW_LEFTOVERS four generations.
+home: skills/live-debugging-proof-harness
