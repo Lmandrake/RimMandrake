@@ -2278,13 +2278,14 @@ def make_room(store, fx, r, now, acts, reserve=0):
         n, cmax, " (%d kept for checks)" % reserve if reserve else "", held)
 
 
-def parked(store, fx, r, st, now):
-    """A queued item that cannot start now (its mod is held by another item, or its start was refused and is cooling)
-    keeps its order but holds no max_queued place: the line is topped up with items that can run."""
-    if now < st.get("start_again_at", 0):
+def parked(store, fx, r, st, now, states=None):
+    """A queued item that cannot start now (its mod is held by another item, its start was refused and is cooling, its
+    wait has not run out, or the consult its next brief needs is out) keeps its order but holds no max_queued place: the
+    line is topped up with items that can run. `states`, when the caller has them, saves a store read per queued item."""
+    if now < st.get("start_again_at", 0) or st.get("not_before", 0) > now or help_pending(st):
         return True
     if r.get("one_builder_per_mod") and hasattr(fx, "item_mods"):
-        held = mods_held(store, fx, st["item"])
+        held = mods_held(store, fx, st["item"], states)
         return any(m in held for m in fx.item_mods(st))
     return False
 
@@ -2300,22 +2301,22 @@ def enrol(store, fx, r, now):
     ours = {s["item"] for s in states}
     pool = len(order) + sum(1 for s in live if s["item"] not in order)
     target = math.ceil(share * pool)
-    queued = sum(1 for s in live if in_line(s) and not parked(store, fx, r, s, now))
+    in_turn = [s for s in live if in_line(s) and not parked(store, fx, r, s, now, live)]
+    queued = len(in_turn)
     want = target - len(live)
     if r.get("staffing"):       # the filler: a free place is reason enough, whatever the share says of the backlog
         want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in RUNS_A_PLACE) - queued)
     room = min(want, r["enrol_per_tick"], r["max_queued"] - queued)
     took = []
     one_per_mod = bool(r.get("one_builder_per_mod")) and hasattr(fx, "item_mods")
-    taken = set()       # mods held by a run, or by an item already waiting its turn in the line, or enrolled just now
-    if one_per_mod:
-        for x in live:
-            if x["status"] in HOLDS_A_PLACE or in_line(x):
-                taken |= set(fx.item_mods(x))
+    taken = set()       # mods held by a run, or by an item in the line able to start, or enrolled just now
+    if one_per_mod:     # an item parked on a wait shuts nobody out: lease() would start another of its mod meanwhile
+        for x in [s for s in live if s["status"] in HOLDS_A_PLACE] + in_turn:
+            taken |= set(fx.item_mods(x))
     plan = getattr(fx, "plan", None) or {}      # a listed item never waits for room: the list holds under 30 (DI3)
     first = getattr(fx, "first", None) or {}    # Operations' system items: order puts them first (pool_order)
     # a system item waits for neither the share nor content in the line, only for the per-tick and line caps
-    sys_room = min(r["enrol_per_tick"], r["max_queued"] - sum(1 for s in live if in_line(s) and s["item"] in first))
+    sys_room = min(r["enrol_per_tick"], r["max_queued"] - sum(1 for s in in_turn if s["item"] in first))
     paused = content_paused(fx, states, order, ours)
     for i in order:
         if i in first and i not in plan and room <= 0:
@@ -3182,9 +3183,10 @@ def reserve_foreign(store, fx, r, item, now, acts):
     return True
 
 
-def mods_held(store, fx, item):
+def mods_held(store, fx, item, states=None):
     """The mods some other item's worker or candidate holds: {mod: that item}. A candidate counts, its FAIL comes back."""
-    return {m: x["item"] for x in store.states() if x["status"] in HOLDS_A_PLACE and x["item"] != item
+    return {m: x["item"] for x in (store.states() if states is None else states)
+            if x["status"] in HOLDS_A_PLACE and x["item"] != item
             for m in fx.item_mods(x)}
 
 

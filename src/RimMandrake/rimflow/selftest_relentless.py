@@ -3107,6 +3107,61 @@ def t_enrol_skips_taken_mod():
     x.done()
 
 
+def _abyss_line(n=8, abyss=("I0", "I1", "I2", "I3"), **rules):
+    x = Rig(n=n, max_workers=4, staffing=None, **{"share": 1.0, **rules})
+    x.r["one_builder_per_mod"] = True
+    x.w.item_mods = lambda st: ["RimMandrake/Abyss"] if st["item"] in abyss else ["RimUtinni/" + st["item"]]
+    return x
+
+
+def t_line_full_of_one_mod_still_leases_another():
+    """The line is ALREADY full of one mod (enrolled by hand, or back from a stop), so walking past taken mods in enrol
+    cannot help: only parked items holding no max_queued place lets another mod in."""
+    x = _abyss_line(max_queued=3)
+    for i in ("I0", "I1", "I2", "I3"):
+        R.enrol_one(x.s, i, "seeded", x.now)
+    x.tick(60)
+    ok(x.st("I0")["status"] in R.HOLDS_A_PLACE, "one builder on the mod")
+    ok(all(x.st(i)["status"] == "queued" for i in ("I1", "I2", "I3")), "the other three wait their turn in the line")
+    for _ in range(4):
+        x.tick(60)
+    others = [i for i in ("I4", "I5", "I6", "I7") if x.st(i) is not None]
+    ok(others, "a different mod is enrolled past a full line of that mod: %s" % others)
+    ok(any(x.st(i)["status"] in R.HOLDS_A_PLACE for i in others), "and leased")
+    ok(all(x.st(i)["status"] == "queued" for i in ("I1", "I2", "I3")), "the same-mod line kept its places, unstarted")
+    x.done()
+
+
+def t_waiting_items_hold_no_line_place():
+    """Same clog, other cause: items sitting out a wait cannot start, and a wait on one item does not shut its mod."""
+    x = _abyss_line(abyss=("I0", "I1"), max_queued=2)
+    for i in ("I0", "I2"):
+        R.enrol_one(x.s, i, "seeded", x.now)
+        st = x.st(i)
+        st["not_before"] = x.now + 3600
+        x.s.save(st)
+    x.tick(60)
+    ok(x.st("I1") is not None and x.st("I1")["status"] in R.HOLDS_A_PLACE,
+       "the waiting I0 does not shut its mod to I1, which starts: %s" % (x.st("I1") or {}).get("status"))
+    ok(all(x.st(i)["status"] == "queued" for i in ("I0", "I2")), "the two waiting items did not start")
+    ok(any(x.st(i) is not None for i in ("I3", "I4", "I5", "I6", "I7")), "two waits filling max_queued clog nothing")
+    x.done()
+
+
+def t_parked_system_items_hold_no_sys_room():
+    """A system item behind a held mod holds no system place: another system item on another mod still enrols, even with
+    the share spent (room <= 0, so sys_room alone decides)."""
+    x = _abyss_line(abyss=("I0", "I1", "I2"), share=0.25, max_queued=2)
+    x.w.first = {"I0": 0, "I1": 1, "I2": 2, "I3": 3}
+    for i in ("I0", "I1", "I2"):
+        R.enrol_one(x.s, i, "seeded", x.now)
+    x.tick(60)
+    ok(x.st("I0")["status"] in R.HOLDS_A_PLACE, "the first system item builds")
+    x.tick(60)
+    ok(x.st("I3") is not None, "the system item on another mod enrols past its parked fellows")
+    x.done()
+
+
 def t_item_mods_real():
     import tempfile
     b = tempfile.mkdtemp()
@@ -3350,13 +3405,20 @@ def t_review_wrong_verdicts_two():
 
 
 def main():
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    picked, ran = set(sys.argv[1:]), 0      # no names: every test
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
               t_help_forced_once, t_help_own_call_spends_hits, t_help_reaches_brief, t_help_refused, t_help_lifecycle):
+        if picked and t.__name__ not in picked:
+            continue
+        ran += 1
         print("--", t.__name__)
         t()
+    if picked and ran != len(picked):     # a misspelt name must not read as a clean run
+        print("selftest_relentless: FAIL ran %d of the %d named" % (ran, len(picked)))
+        return 1
     print("selftest_relentless: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
