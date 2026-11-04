@@ -758,19 +758,21 @@ def help_answer(store, item, nonce, options, r, now=None):
         store.save(st)
 
 
-def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None):
+def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True):
     """defects / unreached: the Marker's structured findings (GPT review of 0135b04912). None = an old-format verdict, read
-    from its prose by relentless_wall.read_as; a list, even empty, is read by structure."""
+    from its prose by relentless_wall.read_as; a list, even empty, is read by structure. Both go through
+    relentless_wall.clean_list, the one normalisation. strict (the CLI, a checker reading the answer) refuses a contradictory
+    verdict; not strict (a verdict.json already on disk) records it and lets read_as read it - never a raise every tick."""
     now = time.time() if now is None else now
-    word = word.upper()
+    word = str(word or "").upper()
     if word not in relentless_wall.WORDS:
         raise ValueError("verdict is PASS, WEAK, FAIL or UNMEASURED")
+    defects, unreached = relentless_wall.clean_list(defects), relentless_wall.clean_list(unreached)
     if defects is not None or unreached is not None:
-        defects, unreached = list(defects or []), list(unreached or [])
-        if word == relentless_wall.UNMEASURED and not unreached:
-            raise ValueError("UNMEASURED needs at least one --unreached: name what you could not reach")
-        if word == relentless_wall.UNMEASURED and defects:
-            raise ValueError("a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines")
+        defects, unreached = defects or [], unreached or []
+        why = relentless_wall.refusal(word, defects, unreached) if strict else None
+        if why:
+            raise ValueError(why)
     with store.lock():
         st = store.load(item)
         chk = (st or {}).get("check") or {}
@@ -781,8 +783,7 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
         chk["verdict"] = word
         chk["reasons"] = (reasons or "")[:4000]
         if defects is not None:
-            chk["defects"] = [str(x)[:600] for x in defects][:20]
-            chk["unreached"] = [str(x)[:600] for x in unreached][:20]
+            chk["defects"], chk["unreached"] = defects, unreached
         chk["verdict_at"] = now
         store.save(st)
         store._append(store.p("shadow.jsonl"), json.dumps({      # shadow: recorded beside the verdict, read by nothing that acts
@@ -1019,16 +1020,18 @@ def run_bounded(name, adapter, timeout, cap=None):
                     break
         finally:
             sel.close()
-            if why:
-                try:
-                    os.killpg(p.pid, 9)
-                except OSError:
-                    p.kill()
             p.stdout.close()
-            try:
-                code = p.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                p.kill()
+            code = None
+            if not why:         # EOF: the leader is ending - but only inside what is left of the shared deadline
+                try:
+                    code = p.wait(timeout=max(0.0, end - time.time()))
+                except subprocess.TimeoutExpired:
+                    why = "timeout after %d s" % timeout
+            try:                # always: a helper the adapter left behind (its own stdio) dies with the group
+                os.killpg(p.pid, 9)
+            except OSError:
+                pass
+            if code is None:
                 code = p.wait()
     return {"cmd": shown, "exit": why or code, "out": bytes(kept[:cap]).decode("utf-8", "replace"), "at": at}
 
@@ -3280,14 +3283,27 @@ def step(store, fx, r, item, now, acts):
         box = None
         if relentless_wall.enforced(r):
             box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce)
+        gen0 = st["gen"]
         with store.lock():              # the whole identity is on disk before the unit exists, and before any offbox run:
             st = store.load(item)       # a supervisor killed mid-reading leaves a check that dies as a lost checker
-            st["status"] = "checking"
-            st["check_count"] = n
-            st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc}
+            if not st or st["status"] != "candidate" or st["gen"] != gen0 or (st.get("candidate") or {}).get("sha") != c["sha"]:
+                # compare-and-set: ticks are serialised by tick.lock, but should two ever prepare the same candidate,
+                # only the first installs its check; the other's clone and box go (GPT round 2)
+                race = True
+            else:
+                race = False
+                st["status"] = "checking"
+                st["check_count"] = n
+                st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc}
+                if box:
+                    st["check"]["box"] = box
+                store.save(st)
+        if race:
+            fx.remove_clone({"clone": clean})
             if box:
-                st["check"]["box"] = box
-            store.save(st)
+                relentless_wall.remove_box(box)
+            acts.append({"do": "check_race", "item": item})
+            return
         readings = offbox_readings(fx, st["contract"], r)
         if box and readings:        # what the box cannot reach, read outside it just now: raw output and exit, no worker words
             relentless_wall.write_offbox(box, readings)
@@ -3316,7 +3332,19 @@ def step(store, fx, r, item, now, acts):
         chk = st["check"]
         got = relentless_wall.read_verdict(chk["box"]) if chk.get("box") and not chk.get("expired") else None
         if got and chk.get("verdict") is None:      # the box is the walled Marker's way out: the nonce is the store's own
-            verdict(store, item, chk["nonce"], got["word"], got["reasons"], now, got.get("defects"), got.get("unreached"))
+            try:        # a file on disk is recorded, never refused (strict=False): read_as reads it
+                verdict(store, item, chk["nonce"], got["word"], got["reasons"], now, got.get("defects"), got.get("unreached"),
+                        strict=False)
+            except Fenced:
+                return
+            except (ValueError, TypeError, KeyError) as e:      # malformed past all that: a lost check, once - never a raise a tick
+                with store.lock():
+                    cur = store.load(item)
+                    if cur and cur["status"] == "checking" and cur["check"].get("nonce") == chk["nonce"]:
+                        cur["check"]["expired"] = True
+                        cur["check"]["malformed"] = str(e)[:300]
+                        store.save(cur)
+                acts.append({"do": "verdict_malformed", "item": item, "why": str(e)[:200]})
             chk = store.load(item)["check"]
         word = chk.get("verdict")
         if word is None and fx.alive(chk.get("run")) and now - chk["at"] < r["check_max_s"] + r["launch_grace_s"]:
@@ -4570,8 +4598,8 @@ def main(argv=None):
     p.add_argument("--nonce", required=True)
     p.add_argument("word")
     p.add_argument("reasons")
-    p.add_argument("--defect", action="append", default=[], help="one wrong thing your own run showed (repeatable); any makes it FAIL")
-    p.add_argument("--unreached", action="append", default=[], help="one piece of evidence you could not reach (repeatable)")
+    p.add_argument("--defect", action="append", default=None, help="one wrong thing your own run showed (repeatable); any makes it FAIL")
+    p.add_argument("--unreached", action="append", default=None, help="one piece of evidence you could not reach (repeatable)")
     p = sub.add_parser("enrol", help="carry one named item, ahead of the share's next picks")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)

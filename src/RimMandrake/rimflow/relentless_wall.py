@@ -37,7 +37,7 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "no work back: the box goes up for repair. A proof that runs and is red is FAIL; a clause you can reach is never UNMEASURED.",
     "Keep the two apart when you record the verdict: each wrong thing your own run showed goes in its own --defect (a wrong "
     "number, a red test, a crash, a clause not done), each piece of evidence you could not reach goes in its own --unreached. "
-    "Any --defect makes the verdict FAIL, whatever you could not reach; only --unreached and no --defect is UNMEASURED.",
+    "Any --defect makes the verdict FAIL, whatever you could not reach; --unreached and no --defect is UNMEASURED, never PASS.",
     "A gap must be in the item's own words: the mutant breaks something a clause of the item asks for. A mutant of an "
     "inner detail, or of an edge the item never named, is no gap, and every test has those.",
     "PASS: every clause of the item is done, you ran it, and you found no gap in the proof that you could show. "
@@ -68,7 +68,9 @@ pos = []
 while a:
     x = a.pop(0)
     if x in ("--defect", "--unreached") and a:
-        (defects if x == "--defect" else unreached).append(a.pop(0))
+        y = " ".join(a.pop(0).split())[:600]      # the reader's own normalisation (relentless_wall.clean_list): agree on it
+        if y:
+            (defects if x == "--defect" else unreached).append(y)
     else:
         pos.append(x)
 if len(pos) != 2 or pos[0].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
@@ -77,6 +79,8 @@ if pos[0].upper() == "UNMEASURED" and not unreached:
     sys.exit("UNMEASURED needs at least one --unreached: name what you could not reach")
 if pos[0].upper() == "UNMEASURED" and defects:
     sys.exit("a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines")
+if pos[0].upper() == "PASS" and (defects or unreached):
+    sys.exit("a PASS carries no --defect and no --unreached: evidence you could not reach is UNMEASURED, a defect is FAIL")
 with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
     json.dump({"word": pos[0].upper(), "reasons": pos[1], "defects": defects, "unreached": unreached, "at": time.time()}, f)
 os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
@@ -255,13 +259,32 @@ def marker_prompt(st, text, box):
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
 
 
-def _strs(v):
-    """-> a list of short strings, or None when the verdict file did not carry the field (an old-format verdict)."""
+def clean_list(v):
+    """THE one normalisation of a verdict's defects / unreached (script, CLI, box file, store all go through it): whitespace
+    collapsed, blank entries dropped, each <= 600 chars, at most 20. -> a list, or None when the field was not given at all
+    (an old-format verdict, read from its prose)."""
     if v is None:
         return None
-    if not isinstance(v, list):
-        return [str(v)[:600]]
-    return [str(x)[:600] for x in v if str(x).strip()][:20]
+    if not isinstance(v, (list, tuple)):
+        v = [v]
+    return [y for y in (" ".join(str(x).split())[:600] for x in v) if y][:20]
+
+
+_strs = clean_list
+
+
+def refusal(word, defects, unreached):
+    """-> why a structured verdict is refused at the door (the CLI and the verdict script say the same), or None. Only ever
+    used where a checker is there to read it: a verdict already on disk is never refused, read_as reads it."""
+    if defects is None and unreached is None:
+        return None
+    if word == UNMEASURED and not unreached:
+        return "UNMEASURED needs at least one --unreached: name what you could not reach"
+    if word == UNMEASURED and defects:
+        return "a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines"
+    if word == "PASS" and (defects or unreached):
+        return "a PASS carries no --defect and no --unreached: evidence you could not reach is UNMEASURED, a defect is FAIL"
+    return None
 
 
 def read_verdict(box):
@@ -277,8 +300,8 @@ def read_verdict(box):
         at = float(v.get("at") or time.time())
     except (TypeError, ValueError, OverflowError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
         at = time.time()
-    return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "defects": _strs(v.get("defects")),
-            "unreached": _strs(v.get("unreached")), "at": at}
+    return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "defects": clean_list(v.get("defects")),
+            "unreached": clean_list(v.get("unreached")), "at": at}
 
 
 def would_deny(inputs, prof):
@@ -359,13 +382,14 @@ def defect_said(reasons):
 
 def read_as(word, reasons, defects=None, unreached=None):
     """-> (word the supervisor acts on, the blind words or None). Structured (defects / unreached lists, the verdict script's
-    own fields): any observed defect is FAIL whatever the word; FAIL or UNMEASURED with only unreached evidence is UNMEASURED.
+    own fields): any observed defect is FAIL whatever the word; otherwise any unreached evidence is UNMEASURED - under PASS
+    too (GPT round 2: a PASS that names evidence it could not reach is not a close). WEAK keeps its word: it closes nothing.
     Old format (both None): the prose, biased to FAIL - a defect named anywhere keeps or makes it FAIL, even under UNMEASURED."""
     if defects is not None or unreached is not None:
-        defects, unreached = defects or [], unreached or []
+        defects, unreached = clean_list(defects) or [], clean_list(unreached) or []
         if defects:
             return "FAIL", None
-        if word in ("FAIL", UNMEASURED) and unreached:
+        if word in ("PASS", "FAIL", UNMEASURED) and unreached:
             return UNMEASURED, "; ".join(unreached)[:600]
         if word == UNMEASURED:      # the script refuses this; a hand-written file is read as prose
             return read_as(word, reasons)

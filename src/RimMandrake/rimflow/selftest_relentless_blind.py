@@ -16,6 +16,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -81,7 +82,11 @@ def t_classifier():
     ok(got[0] == W.UNMEASURED and "255" in got[1], "F3: structured unreached-only is UNMEASURED though its prose says red")
     ok(W.read_as("FAIL", GPT_RED_BLIND) == ("FAIL", None), "F3: the same prose, old format, stays FAIL (biased)")
     ok(W.read_as("FAIL", "a clause is not done", [], []) == ("FAIL", None), "structured FAIL with neither list is FAIL")
-    ok(W.read_as("PASS", "ran it", [], ["the live clause"]) == ("PASS", None), "a PASS with an unreached note stays PASS")
+    ok(W.read_as("PASS", "ran it", [], ["the live clause"])[0] == W.UNMEASURED,
+       "R2-1: a PASS naming evidence it could not reach is UNMEASURED, never a close")
+    ok(W.read_as("PASS", "ran it", ["8 != 7"], ["the live clause"])[0] == "FAIL", "R2-1: and with a defect beside it, FAIL")
+    ok(W.read_as("PASS", "ran it", [], []) == ("PASS", None), "a structured PASS with neither list is PASS")
+    ok(W.read_as("PASS", "ran it", None, [" ", "\t"]) == ("PASS", None), "R2-2: blank unreached entries are no entries")
 
 
 def t_verdict_script():
@@ -104,6 +109,146 @@ def t_verdict_script():
         json.dump({"word": "FAIL", "reasons": "old"}, f)
     got = W.read_verdict(d)
     ok(got["defects"] is None and got["unreached"] is None, "an old-format file reads as old format (None), not as empty lists")
+
+
+def t_round2_script_and_cli():
+    """GPT round 2 on e3c2fb9550: the script, the CLI and the reader agree on one normalisation (R2-2); PASS cannot carry
+    unreached evidence (R2-1); a CLI verdict with neither flag is old format, read from its prose (R2-3)."""
+    d = tempfile.mkdtemp(prefix="rl-verdict2-")
+    v = os.path.join(d, "verdict")
+    with open(v, "w", encoding="utf-8") as f:
+        f.write(W.VERDICT_SCRIPT)
+    run = lambda *a: subprocess.run([sys.executable, v, *a], capture_output=True, text=True, timeout=30)
+    ok(run("UNMEASURED", "CANNOT REACH: ssh", "--unreached", " ").returncode != 0 and not os.path.exists(
+        os.path.join(d, "verdict.json")), "R2-2: the script drops a blank --unreached as the reader does, then refuses")
+    ok(run("PASS", "offline checks passed", "--unreached", "Steve free space: ssh failed").returncode != 0,
+       "R2-1: the script refuses a PASS carrying --unreached")
+    ok(W.refusal("PASS", [], ["x"]) and W.refusal("UNMEASURED", [], []) and W.refusal("UNMEASURED", ["d"], ["u"])
+       and W.refusal("FAIL", ["d"], ["u"]) is None and W.refusal("PASS", None, None) is None, "the CLI refuses the same set")
+    for args in (("UNMEASURED", "x", "--unreached", "  a\n b  "), ("FAIL", "x", "--defect", "d", "--unreached", "u")):
+        ok(run(*args).returncode == 0, "accepted: %s" % (args,))
+        got = W.read_verdict(d)
+        clean = {k: W.clean_list(got[k]) for k in ("defects", "unreached")}
+        ok(clean == {k: got[k] for k in clean} and W.refusal(got["word"], got["defects"], got["unreached"]) is None,
+           "R2-2: what the script accepts, the reader reads unchanged and the CLI would accept: %s" % got)
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    was = to_check(x, "I0")
+    st = x.st("I0")
+    os.environ["RELENTLESS_ROOT"] = x.d
+    try:
+        ok(R.main(["verdict", "--item", "I0", "--nonce", st["check"]["nonce"], "FAIL",
+                   "ssh host timed out; no measurement"]) in (0, None), "the CLI takes an old-format FAIL")
+    finally:
+        os.environ.pop("RELENTLESS_ROOT", None)
+    chk = x.st("I0")["check"]
+    ok("defects" not in chk and "unreached" not in chk, "R2-3: no flag given stores no lists: old format, not structured empty")
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["gen"] == was["gen"] and (st.get("blind") or {}).get("n") == 1,
+       "R2-3: so its blindness prose is read and nothing goes back: %s" % st["status"])
+    x.done()
+
+
+def box_says(x, i, body):
+    """The walled path: a verdict.json in the check's box, read by the tick (hand-written, so the script's door is skipped)."""
+    box = tempfile.mkdtemp(prefix="rl-box-")
+    with open(os.path.join(box, "verdict.json"), "w", encoding="utf-8") as f:
+        json.dump(dict(body, at=x.now), f)
+    with x.s.lock():
+        cur = x.s.load(i)
+        cur["check"]["box"] = box
+        x.s.save(cur)
+    unit = cur["check"]["run"]["unit"]
+    x.w.up[unit] = False
+    acts = x.tick() + x.tick()
+    return x.st(i), acts
+
+
+def t_round2_box_never_wedges():
+    """R2-1 through the tick: a box PASS with unreached evidence does not close. R2-2: a file the reader accepts never
+    raises in the tick - UNMEASURED beside a defect is FAIL, a whitespace-only list is read from its prose, and anything
+    still malformed is a lost check, once."""
+    x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    was = to_check(x, "I0")
+    st, _ = box_says(x, "I0", {"word": "PASS", "reasons": "offline checks passed",
+                               "defects": [], "unreached": ["required Steve free-space measurement: ssh failed"]})
+    ok(st["status"] == "candidate" and (st.get("blind") or {}).get("n") == 1 and st["gen"] == was["gen"],
+       "R2-1: a box PASS with unreached evidence is UNMEASURED, not a close: %s" % st["status"])
+    st = recheck(x, "I0")
+    try:
+        st, _ = box_says(x, "I0", {"word": "UNMEASURED", "reasons": "CANNOT REACH: ssh", "defects": [], "unreached": [" "]})
+        ok(True, "R2-2: a whitespace-only --unreached in the box raises nothing in the tick")
+    except ValueError as e:
+        ok(False, "R2-2: a whitespace-only --unreached in the box raises nothing in the tick: %s" % e)
+    ok(st["gen"] == was["gen"] and st["blind"]["n"] == 2, "R2-2: and it is read from its prose: still blind, nothing back")
+    x.done()
+    x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    was = to_check(x, "I0")
+    try:
+        st, _ = box_says(x, "I0", {"word": "UNMEASURED", "reasons": "x", "defects": ["8 != 7"], "unreached": ["ssh"]})
+        ok(True, "R2-2: a hand-written UNMEASURED beside a defect raises nothing")
+    except ValueError as e:
+        ok(False, "R2-2: a hand-written UNMEASURED beside a defect raises nothing: %s" % e)
+    ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"], "R2-2: and it acts as the FAIL read_as promises")
+    x.done()
+    x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    was = to_check(x, "I0")
+    real = R.verdict
+
+    def broken(*a, **k):
+        raise ValueError("a verdict nobody foresaw")
+    R.verdict = broken
+    try:
+        st, acts = box_says(x, "I0", {"word": "PASS", "reasons": "x"})
+        more = x.tick() + x.tick()
+        ok(True, "R2-2: a verdict that still raises does not escape the tick")
+    except ValueError as e:
+        ok(False, "R2-2: a verdict that still raises does not escape the tick: %s" % e)
+        more = []
+    finally:
+        R.verdict = real
+    st = x.st("I0")
+    malformed = [a for a in acts + more if a.get("do") == "verdict_malformed"]
+    ok(len(malformed) == 1, "R2-2: it is said once, not every tick: %d" % len(malformed))
+    ok(st["status"] in ("candidate", "checking") and st.get("check_lost", 0) <= 1 and st["gen"] == was["gen"],
+       "R2-2: routed as one lost check, the candidate kept: %s lost=%s" % (st["status"], st.get("check_lost")))
+    x.done()
+
+
+def t_round2_race():
+    """R2-5: should two preparations of one candidate ever overlap (ticks are serialised by tick.lock), the second does
+    not install its check over the first: compare-and-set on status, gen and sha under store.lock."""
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "grep -q x y", live="once: test")
+    R.finish(x.s, "I0", st["gen"], "sha1", "evidence")
+    x.w.up[st["run"]["unit"]] = False
+    real = x.w.clean_checkout
+
+    def other_tick_won(st0, sha):
+        got = real(st0, sha)
+        with x.s.lock():
+            cur = x.s.load("I0")
+            if cur["status"] == "candidate":
+                cur["status"] = "checking"
+                cur["check"] = {"nonce": "first", "unit": "u-first", "at": x.now, "clone": "/c/first", "run": {"unit": "u-first"}}
+                x.s.save(cur)
+        return got
+    x.w.clean_checkout = other_tick_won
+    launches = len(x.w.launches)
+    acts = []
+    for _ in range(4):
+        acts += x.tick()
+        if any(a.get("do") == "check_race" for a in acts):
+            break
+    st = x.st("I0")
+    ok(any(a.get("do") == "check_race" for a in acts), "R2-5: the second preparation sees it lost the race")
+    ok(st["check"]["nonce"] == "first" and len(x.w.launches) == launches,
+       "R2-5: the first check stands and the second launched nothing: %s" % st["check"].get("nonce"))
+    x.done()
 
 
 def to_check(x, i, sha="sha1"):
@@ -291,6 +436,14 @@ def t_offbox_box_and_run():
     got = fx.run_offbox("t", {"what": "t", "argv": ["yes"]}, 30)
     ok(len(got["out"]) <= W.OFFBOX_OUT_MAX and "killed" in str(got["exit"]),
        "F4: an endless output is cut at the cap while read: %d bytes, %s" % (len(got["out"]), got["exit"]))
+    t0 = time.time()
+    got = fx.run_offbox("t", sh("exec >/dev/null 2>&1; sleep 20"), 1)
+    ok(time.time() - t0 < 5 and "timeout" in str(got["exit"]),
+       "R2-4: after EOF the wait keeps the shared deadline: %.1f s, %s" % (time.time() - t0, got["exit"]))
+    mark = os.path.join(tempfile.mkdtemp(prefix="rl-orphan-"), "alive")
+    got = fx.run_offbox("t", sh("(sleep 2; touch %s) >/dev/null 2>&1 & echo started" % mark), 30)
+    time.sleep(3)
+    ok(got["exit"] == 0 and not os.path.exists(mark), "R2-4: a helper the adapter left behind dies with its group")
     os.environ["RELENTLESS_ROOT"] = "/x"
     try:
         ok(fx.run_offbox("t", sh("echo ${RELENTLESS_ROOT:-none}"), 30)["out"].strip() == "none", "no store root in its env")
@@ -300,7 +453,8 @@ def t_offbox_box_and_run():
 
 def main():
     for t in (t_classifier, t_verdict_script, t_steve_replay, t_real_fail_after_blind, t_structured_replay, t_contract_offbox,
-              t_old_contract_text_never_runs, t_offbox_box_and_run):
+              t_old_contract_text_never_runs, t_offbox_box_and_run, t_round2_script_and_cli, t_round2_box_never_wedges,
+              t_round2_race):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
