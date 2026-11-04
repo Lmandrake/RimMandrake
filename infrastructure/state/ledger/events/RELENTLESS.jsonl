@@ -370,3 +370,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:09:46Z","tsn":1793804986036715747}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A12 (L2), read-only proof","ts":"2026-11-04T15:09:54Z","tsn":1793804994058622672}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:10:01Z","tsn":1793805001520425822}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-04T15:39:57Z","tsn":1793806797382757294}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:40:06Z","tsn":1793806806015787690}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T15:40:11Z","tsn":1793806811318203584}
