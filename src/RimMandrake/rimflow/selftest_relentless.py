@@ -1066,20 +1066,33 @@ def t_level_books_shard_under_lock():
     put(books, shard, "b\n", "a")      # the local event origin already holds: levelling may restore it
     fx = R.Effects.__new__(R.Effects)
     fx.books, fx.store = books, R.Store(os.path.join(d, "store"))
-    ready = os.path.join(d, "ready")
+    # the writer holds the lock from before the level starts and appends only once level_books has passed its unlocked
+    # checks and reached the lock (`go`, made by the flock call itself): deterministic, no timing assumed
+    ready, go = os.path.join(d, "ready"), os.path.join(d, "go")
     holder = subprocess.Popen([sys.executable, "-c", (
         "import fcntl, os, sys, time\n"
         "fd = os.open(sys.argv[1], os.O_WRONLY | os.O_APPEND)\n"
         "fcntl.flock(fd, fcntl.LOCK_EX)\n"
         "open(sys.argv[2], 'w').close()\n"
-        "time.sleep(1.0)\n"
+        "while not os.path.exists(sys.argv[3]):\n"
+        "    time.sleep(0.01)\n"
         "os.write(fd, b'c\\n')\n"
-        "fcntl.flock(fd, fcntl.LOCK_UN)\n"), os.path.join(books, shard), ready])
-    for _ in range(200):
+        "fcntl.flock(fd, fcntl.LOCK_UN)\n"), os.path.join(books, shard), ready, go])
+    for _ in range(1500):
         if os.path.exists(ready):
             break
         time.sleep(0.02)
-    why = fx.level_books()
+    real_flock = R.fcntl.flock
+
+    def flock_go(fd, op):
+        open(go, "w").close()
+        return real_flock(fd, op)
+    R.fcntl.flock = flock_go
+    try:
+        why = fx.level_books()
+    finally:
+        R.fcntl.flock = real_flock
+        open(go, "w").close()       # a level that never reached the lock still frees the writer
     holder.wait(timeout=30)
     ok(why and "moved while levelling" in why and read(books, shard) == "a\nb\nc\n",
        "an event appended under the lock refuses the level and survives: %s %r" % (why, read(books, shard)))
