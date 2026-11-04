@@ -8,6 +8,9 @@
 3. run_alarms fresh news: a note cut at 600 chars marks noted only the names it said; the rest are said next pass.
 4. metric_problem: an idle_if gate from another family is refused (per-family stamping can never read it).
 5. dead_targets: a wildcard target with no instance this pass (testing.red_* on a clean night) is not a dead rule.
+6. run_alarms: a new filing marks no name noted (it carries its title only): the next pass notes them all.
+7. found_filed recovery delivers the Conductor line the pass that died after filing may have owed.
+8. c_relentless: a reading.json stamped ahead of the clock counts as blind.
 
 Fixtures only: rules are built here, alarm state lives in a temp RM_OPS_WATCH_DIR, the filer and minter are fakes.
 
@@ -107,6 +110,50 @@ def main():
        "4: an idle_if gate from another family is refused", ow.metric_problem("fam.m", ms["fam.m"], ms))
     ok(ow.metric_problem("fam.m", dict(base, idle_if=["fam.gate"]), ms) is None, "4: a same-family gate is accepted")
     ok(not ow.ranges_problems(ow.load_rules()), "4: the shipped rules still pass", ow.ranges_problems(ow.load_rules()))
+
+    # 6. a fresh filing carries its title only: the names reach the item in the first note after it
+    sent.clear()
+    put({})
+    ow.run_alarms({"t.reds": M(2, news=["n1", "n2"])}, rules, NOW, set(), filer, open_ids=set())
+    filed = [a["name"] for a in (sent[-1] if sent else []) if not a.get("note_only")]
+    ok(len(filed) == 1, "6: a new crossing files", sent)
+    ow.run_alarms({"t.reds": M(2, news=["n1", "n2"])}, rules, NOW + 900, set(filed), filer, open_ids=set(filed))
+    notes = [a["text"] for a in (sent[-1] if len(sent) > 1 else []) if a.get("note_only")]
+    ok(notes and "n1" in notes[0] and "n2" in notes[0], "6: the next pass notes the names the filing did not say", notes)
+
+    # 7. found_filed recovery delivers a Conductor line the dead pass may have owed
+    clog = TMP / "conductor.md"
+    rules7 = {"alarms": {"clear_passes": 1}, "targets": [dict(rules["targets"][0], conductor_log=str(clog))]}
+    put({aid: {"state": "PENDING", "since": ow.iso(NOW), "tries": 1, "name": "OPS_T_RED_AB12",
+               "title": "Ops alarm T_RED: t.reds = 1", "conductor_log": str(clog), "noted": ["a"],
+               "told": {"v": 1, "class": None}}})
+    ow.run_alarms({"t.reds": M(1, news=["a"])}, rules7, NOW, {"OPS_T_RED_AB12"}, None, open_ids={"OPS_T_RED_AB12"})
+    said = clog.read_text() if clog.exists() else ""
+    ok("OPS_T_RED_AB12" in said and "ALARM" in said, "7: found_filed delivers the owed Conductor line", said)
+
+    # 8. reading.json dated ahead of the clock is blind, not fresh
+    root = TMP / "belt"
+    (root / "store" / "items").mkdir(parents=True)
+    (root / "live").mkdir()
+    (root / "live" / "runs.jsonl").write_text("")
+    at = ow.iso(NOW)
+    row = {"at": at, "t": NOW, "live": 3, "running": 3, "places": 3, "target": 3, "ready": 4, "minutes_under": 0,
+           "under": False, "why": None, "checks": {"waiting": 0, "running": 1, "oldest_wait_s": 0}}
+    for n, o in (("staffing.json", row), ("reading.json", {"at": ow.iso(NOW + 86400)}), ("breaker.json", {})):
+        (root / "store" / n).write_text(json.dumps(o))
+    (root / "store" / "staffing.jsonl").write_text(json.dumps(row) + "\n")
+    (root / "store" / "journal.jsonl").write_text(json.dumps({"at": at, "do": "lease"}) + "\n")
+    saved = os.environ.get("RELENTLESS_ROOT")
+    os.environ["RELENTLESS_ROOT"] = str(root)
+    try:
+        pts = ow.c_relentless(NOW, ow.load_rules(), {})
+    finally:
+        if saved is None:
+            os.environ.pop("RELENTLESS_ROOT", None)
+        else:
+            os.environ["RELENTLESS_ROOT"] = saved
+    cause = str((pts.get("relentless.blind") or {}).get("x", {}).get("cause"))
+    ok("reading.json is dated" in cause, "8: a reading.json stamped a day ahead counts as blind", cause)
 
     # 5. a wildcard target that matches nothing this pass (a quiet night) is not a dead rule
     def tg(key):

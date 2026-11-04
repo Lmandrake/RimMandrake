@@ -1902,6 +1902,8 @@ def c_relentless(now, rules, ctx):
     rd_t = epoch(rd.get("at")) if isinstance(rd, dict) else None
     if rd_t is None:
         bad.append("reading.json missing or torn in %s" % store)
+    elif rd_t > now + 300:      # a stamp ahead would read fresh until the clock caught up with it
+        bad.append("reading.json is dated %d s ahead of the clock" % (rd_t - now))
     elif now - rd_t > limit * 60:
         bad.append("reading.json frozen: last stamped %s" % iso(rd_t))
     try:
@@ -2830,6 +2832,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
     ts = target_state(points, rules)
     conf = alarm_conf(rules)
     todo = []
+    said_causes = set()     # this pass's Conductor lines, one per cause (conductor_line_owed)
     try:
         clear_passes = max(1, int(conf.get("clear_passes", 1)))
     except (TypeError, ValueError, OverflowError):     # a bad value reads as the safest: never an alarm cleared early, never a dead pass
@@ -2864,6 +2867,10 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                 # filed by a pass that died before saving its state: the ledger has it, never file it twice
                 cur.update(state="OPEN", item=cur["name"], error=None, filed=cur.get("filed") or iso(now))
                 log.append({"ts": iso(now), "event": "found_filed", "aid": aid, "item": cur["name"]})
+                # that pass may have died before its Conductor line too: the told ledger says whether it is still owed
+                if cur.get("conductor_log") and conductor_line_owed(aid.split(":", 1)[1], said_causes):
+                    tell_conductor(cur["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (
+                        iso(now), cur["name"], cur.get("title") or aid), aid, now, log, cur)
         if crossed is False and cur:
             # An unfiled PENDING clears here too, logged cleared_unfiled, on purpose: filing a condition that has gone
             # would send a seat after nothing. A filing outage with the condition standing keeps retrying.
@@ -2969,7 +2976,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
         if isinstance(said, str) and said:
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
         cur["title"] = title[:160]
-        cur["noted"] = fresh_news(cur, aid, points, rules)[1]
+        cur["noted"] = []       # a filing carries its title only: every name is said by the first note after it
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
                      "key": key, "reopen": bool(cur.get("reopen"))})
@@ -2982,7 +2989,6 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             cur = cur if isinstance(cur, dict) else state.setdefault(aid, {"state": "PENDING", "since": iso(now), "tries": 0})
             cur["error"] = why
             log.append({"ts": iso(now), "event": "step_failed", "aid": aid, "error": why})
-    said_causes = set()
     if todo and filer:
         atomic_json(p, state)   # the name is on disk before the spawn: a pass that dies mid-filing retries it, not a new one
     if todo:
