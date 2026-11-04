@@ -12,6 +12,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 OW, RU, HE, SF = "ops_watch.py", "ops_watch_rules.json", "ops_health.py", "testdata/ops_health_nightly_series.jsonl"
+PG = "testdata/ops_watch_at_1ff82747f3_parent.py.gz"
 COPIED = (OW, RU, HE, "selftest_ops_health.py")
 OLD_UNIT = "nightly reds not on the known-red list, and entries past their age"
 PH = 'M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))'
@@ -48,6 +49,20 @@ MUTANTS = [
     # the alarm
     (RU, '"tag": "SLI_DRIFT", "name": "OPS_SLI_DRIFT_DIAGNOSE"', '"tag": "SLI_DRIFT", "name": "OPS_SOMETHING_ELSE"', "rules: drift alarm name"),
     (RU, '{"key": "health.drifted_slis", "op": ">", "value": 0,', '{"key": "health.drifted_slis", "op": ">", "value": 9,', "rules: drift alarm line"),
+    # the production path: run() hands publish_health's points to run_alarms (blind check at 5b5ea883 named this one)
+    (OW, "        alarms = run_alarms(points, rules, now,", "        alarms = run_alarms({k: v for k, v in points.items() if k != \"health.drifted_slis\"}, rules, now,", "run(): drifted point filtered before run_alarms"),
+    (OW, "        points.update(publish_health(points, prev, ctx, rules, now))", "        pass", "run(): full pass skips publish_health"),
+    # ops_health.py: the drift and was reading, and the budget
+    (HE, 'if p.get("m") != "MEASURED" or p.get("unit") == sli["unit"]:', "if True:", "ops_health: a changed unit reads the number"),
+    (HE, 'for w in sli.get("was") or ():', "for w in ():", "ops_health: was ignored"),
+    (HE, 'if isinstance(q, dict) and q.get("unit") == w["unit"]:', "if isinstance(q, dict):", "ops_health: was takes any unit"),
+    (HE, '"spent": bad_h >= c["allowed_bad_h"]}', '"spent": bad_h >= 2 * c["allowed_bad_h"]}', "ops_health: budget spends late"),
+    (HE, 'drifted = sorted(k for k, v in b.items() if v.get("drifted"))', "drifted = []", "ops_health: verdict names no drift"),
+    (HE, 'out[s["name"]]["drifted"] = True', "pass", "ops_health: budget drops the drift mark"),
+    # the harness: a copy must import itself (rimflow/model.py puts the real Utils first), and the parent copy is the real blob
+    ("selftest_ops_health.py", "sys.path.insert(0, str(HERE))\nimport ops_watch as OW", "import ops_watch as OW", "harness: copy imports the real ops_watch"),
+    (PG, None, b"\n# a byte nobody wrote\n", "fixture: the committed parent copy edited"),
+    ("selftest_ops_health.py", 'PARENT_BLOB = "f61eb588', 'PARENT_BLOB = "061eb588', "pin: a wrong parent blob"),
 ]
 
 
@@ -63,6 +78,7 @@ def tree(root):
         elif e.name == "testdata":
             (u / "testdata").mkdir()
             shutil.copy2(HERE / SF, u / SF)
+            shutil.copy2(HERE / PG, u / PG)
         elif e.name != "__pycache__":
             (u / e.name).symlink_to(e)
     return u
@@ -85,6 +101,15 @@ try:
     for i, (f, old, new, name) in enumerate(MUTANTS):
         root = base / ("m%d" % i)
         u = tree(root)
+        if f == PG:     # a binary fixture: the mutant appends to the decompressed bytes
+            import gzip
+            (u / f).write_bytes(gzip.compress(gzip.decompress((u / f).read_bytes()) + new))
+            rc, out = run(root, u)
+            print(("PASS " if rc else "FAIL ") + "%s -> %s" % (name, "red" if rc else "STAYED GREEN"))
+            if not rc:
+                fails.append(name)
+            shutil.rmtree(root, ignore_errors=True)
+            continue
         text = (u / f).read_text(encoding="utf-8")
         if old not in text:
             fails.append("%s: stale, text gone from %s" % (name, f))

@@ -178,6 +178,7 @@ os.environ["RM_OPS_WATCH_DIR"] = str(d / "ow")
 sys.path.insert(0, str(HERE))
 import ops_watch as OW  # noqa: E402
 ok("ops_watch is the one beside this test (a mutant copy proves its own copy)", Path(OW.__file__).resolve().parent == HERE, OW.__file__)
+ok("ops_health is the one beside this test too", Path(H.__file__).resolve().parent == HERE, H.__file__)
 REAL_COLLECTORS = dict(OW.COLLECTORS)   # the shipped family table, before the stubs below
 for k in list(OW.COLLECTORS):
     OW.COLLECTORS[k] = (lambda now, rules, ctx: {})
@@ -249,6 +250,19 @@ if git.returncode:      # a wall with no object store: said, and not a pass; the
     print("UNMEASURED was: the parent of 1ff82747f3 is unreadable here: %s" % git.stderr.strip()[:120])
 else:
     ok("was: its unit is what c_testing wrote at the parent of the redefinition", 'M(len(v["news"]), "%s"' % was_["unit"] in git.stdout)
+# the same parent, readable with no object store: the committed blob of ops_watch.py at 1ff82747f3^, gzipped. Its git blob
+# hash is pinned here; where git can read the object, the pin must equal what git holds there, so the copy is that commit's.
+import gzip  # noqa: E402
+import hashlib  # noqa: E402
+PARENT_BLOB = "f61eb588b1f9d273cc3130913b085ea4d7170e75"
+pb = gzip.decompress((HERE / "testdata" / "ops_watch_at_1ff82747f3_parent.py.gz").read_bytes())
+ok("was: the committed parent copy is byte-for-byte the pinned blob", hashlib.sha1(b"blob %d\0" % len(pb) + pb).hexdigest() == PARENT_BLOB)
+ok("was: its unit is what c_testing wrote in that committed parent copy", 'M(len(v["news"]), "%s"' % was_["unit"] in pb.decode("utf-8"))
+gp = subprocess.run(["git", "-C", str(HERE.parents[2]), "rev-parse", "1ff82747f3^:src/RimMandrake/Utils/ops_watch.py"], capture_output=True, text=True, errors="replace")
+if gp.returncode:
+    print("UNMEASURED was: git cannot confirm the pinned blob here (the copy's own hash still holds): %s" % gp.stderr.strip()[:120])
+else:
+    ok("was: the pinned blob is what git holds at 1ff82747f3^", gp.stdout.strip() == PARENT_BLOB, gp.stdout.strip())
 
 # --- replay of that real series: history before the redefinition still counts, and the new point carries on
 newest = REAL[-1]["points"]
@@ -310,6 +324,36 @@ ok("ops_watch: a full pass publishes health.json and its points",
    (d / "ow" / "health.json").exists() and st["points"]["health.spent_slis"]["m"] == "MEASURED"
    and st["points"]["health.drifted_slis"]["m"] == "MEASURED"
    and st["points"]["health.state"]["v"] in ("healthy", "degraded"), st["points"].get("health.state"))
+
+# --- the production path: a full OW.run() whose collectors emit a drifted SLI reaches the alarm through run() itself, with
+# a recording filer; run_alarms is not called by hand here (blind check at 5b5ea883: a filter between publish_health and
+# run_alarms inside run() stayed green while only the hand-wired call above was pinned)
+def _fam_of(pts, fam):
+    return {k: v for k, v in pts.items() if k.split(".")[0] == fam}
+
+
+def full_run(pts, t):
+    for k in list(OW.COLLECTORS):
+        OW.COLLECTORS[k] = (lambda now, rules, ctx, _k=k: _fam_of(pts, _k))
+    (d / "ow" / "alarms.json").unlink(missing_ok=True)
+    got = []
+    OW.run(now=t, rules=dict(shipped, targets=drift_tg, ranges={}), filer=lambda todo, conf: got.extend(todo) or {})
+    return got, json.loads((d / "ow" / "status.json").read_text())
+
+
+drift_one = dict(emitted)
+drift_one["testing.nightly_unparked_reds"] = PT(84, "a unit nobody wrote")
+got_f, st = full_run(drift_one, NOW + 1800)
+ok("run(): a drifted SLI in the collectors' points reads health.drifted_slis MEASURED 1 in status.json",
+   st["points"]["health.drifted_slis"]["m"] == "MEASURED" and st["points"]["health.drifted_slis"]["v"] == 1
+   and st["points"]["health.drifted_slis"]["x"]["said"] == "nightly_reds", st["points"].get("health.drifted_slis"))
+ok("run(): health.json from that pass names the drift and reads the SLI UNMEASURED",
+   json.loads((d / "ow" / "health.json").read_text()).get("drifted") == ["nightly_reds"])
+ok("run(): the pass itself files the one fixed drift item through its filer",
+   [a["name"][:len("OPS_SLI_DRIFT_DIAGNOSE")] for a in got_f] == ["OPS_SLI_DRIFT_DIAGNOSE"], got_f)
+got_f, st = full_run(dict(emitted), NOW + 3600)
+ok("run(): the same pass with the right unit reads 0 drifted and files nothing",
+   st["points"]["health.drifted_slis"]["v"] == 0 and not got_f, (st["points"].get("health.drifted_slis"), got_f))
 
 # the hand order: named beats words both ways, a family takes its new members, a closed name holds no place
 hand = {"health": dict(RULES["health"], system_rank=["GARDEN_FIX_NOW", "NIGHT_RED_*", "OPS_B"], not_system=["SELFTEST_OF_A_MOD"])}
