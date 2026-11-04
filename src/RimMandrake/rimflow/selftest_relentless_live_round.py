@@ -314,6 +314,21 @@ def t_proofs_file():
                     bad.append("%s: %s" % (n, line[:60]))
     check("proofs: every real live_proofs file is .txt/.criteria (or a proof's .py/.json) and every line parses", names and all(
         n.endswith((".txt", ".criteria", ".py", ".json")) for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
+    # LIVE_PROOFS_STRAY_PRUNE_RED_SELFTEST: a proof's own .py/.json/.<kind>.txt may sit here, but every file is
+    # <ID>[_suffix].<ext> for an item the ledger knows; an orphan (typo'd id, item deleted) is a stray to prune.
+    ids = set()
+    books = os.path.dirname(real)
+    for sub in ("items", "items/closed"):
+        p = os.path.join(books, sub)
+        ids.update(f[:-3] for f in (os.listdir(p) if os.path.isdir(p) else []) if f.endswith(".md"))
+    ev = os.path.join(books, "ledger", "events")
+    for shard in (os.listdir(ev) if os.path.isdir(ev) else []):
+        with open(os.path.join(ev, shard), encoding="utf-8") as f:
+            ids.update(m.group(1) for m in re.finditer(r'"id": ?"([^"]+)"', f.read()))
+    stems = {n.split(".")[0] for n in names}
+    orphans = sorted(s for s in stems if not any(s == i or s.startswith(i + "_") for i in ids if s.startswith(i)))
+    check("proofs: every real live_proofs file names a ledger item (no orphan strays)",
+          len(ids) > 100 and stems and not orphans, "%d ids, orphans %s" % (len(ids), orphans[:5]))
 
 
 NEEDS = []
