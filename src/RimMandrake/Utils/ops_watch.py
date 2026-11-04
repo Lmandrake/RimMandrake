@@ -2624,16 +2624,41 @@ def worse_count(cur):
     return n if isinstance(n, int) and not isinstance(n, bool) else 0
 
 
-def tell_conductor(path, line, aid, now, log):
-    """One line on the Conductor log, when this rule owes one. A log that cannot be written costs the line, said in the log."""
+def tell_conductor(path, line, aid, now, log, cur=None):
+    """One line on the Conductor log, when this rule owes one. A log that cannot be written is said in the log and, given
+    the alarm's state `cur`, the line is kept owed on it (conductor_owed) for retry_conductor_lines to retry each pass:
+    the alarm is OPEN by then and signal_watch skips OPEN, so a dropped line would never reach the Conductor
+    (OPS_ALARM_FIX_LOG_LINE_NEVER_RETRIED). True when the line was written."""
     if not path:
-        return
+        return True
     try:
         conductor_guard().refuse_if_test(path)
         with open(path, "a", encoding="utf-8") as f:
             f.write("\n" + line)
+        return True
     except OSError as e:
         log.append({"ts": iso(now), "event": "conductor_log_failed", "aid": aid, "error": str(e)[:200]})
+        if isinstance(cur, dict):
+            owed = cur.get("conductor_owed")
+            owed = owed if isinstance(owed, list) else []
+            cur["conductor_owed"] = owed + [{"path": str(path), "line": line}]
+        return False
+
+
+def retry_conductor_lines(state, now, log):
+    """Retry every Conductor line still owed on an alarm; a delivered one is owed no more, a malformed one is dropped aloud."""
+    for aid, cur in state.items():
+        if not isinstance(cur, dict) or "conductor_owed" not in cur:
+            continue
+        owed = cur.pop("conductor_owed")
+        if not isinstance(owed, list):
+            log.append({"ts": iso(now), "event": "conductor_owed_unreadable", "aid": aid})
+            continue
+        for o in owed:
+            if not (isinstance(o, dict) and isinstance(o.get("path"), str) and isinstance(o.get("line"), str)):
+                log.append({"ts": iso(now), "event": "conductor_owed_unreadable", "aid": aid})
+            elif tell_conductor(o["path"], o["line"], aid, now, log, cur):
+                log.append({"ts": iso(now), "event": "conductor_log_retried", "aid": aid})
 
 
 def _tries(cur):
@@ -2713,6 +2738,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
         return {"_alarm_state": {"state": "UNREADABLE", "error": "%s exists but is not a readable JSON object: alarm "
                                  "filing held this pass" % p}}
     log = []
+    # before any step: a line owed from an earlier pass is retried even when this pass clears its alarm
+    retry_conductor_lines(state, now, log)
     ts = target_state(points, rules)
     conf = alarm_conf(rules)
     todo = []
@@ -2869,7 +2896,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                         cur.update(told=a["told"], worse_n=worse_count(cur) + 1)
                         log.append({"ts": iso(now), "event": "worse", "aid": a["aid"], "item": a["item"], "said": a["worse"]})
                         # not conductor_line_owed: an open incident of this cause holds that line, and telling past it is the point
-                        tell_conductor(a.get("conductor_log"), "- %s ops_watch WORSE %s: %s\n" % (iso(now), a["item"], a["worse"]), a["aid"], now, log)
+                        tell_conductor(a.get("conductor_log"), "- %s ops_watch WORSE %s: %s\n" % (iso(now), a["item"], a["worse"]), a["aid"], now, log, cur)
                 continue
             try:
                 cur = state[a["aid"]]
@@ -2887,7 +2914,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                                     "error": res["_raise"][a["name"]]})
                     # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
                     if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
-                        tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log)
+                        tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log, cur)
                 else:
                     cur["error"] = err
                     if filer:

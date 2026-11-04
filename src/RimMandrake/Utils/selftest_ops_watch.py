@@ -1814,6 +1814,30 @@ _st = OW.run_alarms({"steve.seats_absent_min": OW.M(20.0, "min", said="seat-serv
 _a = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
 check("seats: over the line a ledger item is filed, naming the seat", _a.get("state") == "OPEN" and "seat-server absent" in (_a.get("title") or ""), _a)
 check("seats: and the Conductor log has the line", _clog.exists() and _a.get("item", "?") in _clog.read_text() and "seat-server absent" in _clog.read_text())
+# OPS_ALARM_FIX_LOG_LINE_NEVER_RETRIED: the ledger filing succeeds but the Conductor log cannot be written. The alarm is
+# OPEN (signal_watch skips OPEN), so a later pass must retry the line once the log can be written again
+_cdir = TMP / "clog_missing_dir"
+_sh_rm = __import__("shutil").rmtree
+_sh_rm(_cdir, ignore_errors=True)
+_clog2 = _cdir / "conductor.md"
+for _t in _rows:
+    _t["conductor_log"] = str(_clog2)
+(OW.ops_dir() / "alarms.json").unlink(missing_ok=True)
+_pts = {"steve.seats_absent_min": OW.M(20.0, "min", said="seat-server absent")}
+_st = OW.run_alarms(_pts, _r, NOW, known, filer_ok)
+_a = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
+check("log retry: filed OPEN though the Conductor log could not be written", _a.get("state") == "OPEN" and not _clog2.exists(), _a)
+check("log retry: the line is kept owed on the alarm", bool(_a.get("conductor_owed")), _a)
+_cdir.mkdir(parents=True)
+_st = OW.run_alarms(_pts, _r, NOW + 300, known | {_a.get("item")}, filer_ok)
+_a2 = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
+check("log retry: a later pass delivers the line once the log is writable", _clog2.exists()
+      and (_a.get("item") or "?") in _clog2.read_text() and "seat-server absent" in _clog2.read_text(), _a2)
+check("log retry: and owes it no more", _a2.get("state") == "OPEN" and not _a2.get("conductor_owed"), _a2)
+_st = OW.run_alarms(_pts, _r, NOW + 600, known | {_a.get("item")}, filer_ok)
+check("log retry: delivered once, never twice", _clog2.exists() and _clog2.read_text().count("ops_watch ALARM") == 1)
+for _t in _rows:
+    _t["conductor_log"] = str(_clog)
 # SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS: a dead selftest scope is not a failed timer, a real failed unit still is
 _sj, _osu = OW.systemctl_json, OW.one_shot_units
 OW.systemctl_json = lambda *a: [{"unit": "rm-harness-11-3.scope"}, {"unit": "rm-arena-replay-x.service"}, {"unit": "rm-mirror.service"}] \
