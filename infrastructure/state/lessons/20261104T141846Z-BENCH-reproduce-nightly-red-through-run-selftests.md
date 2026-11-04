@@ -1,0 +1,1 @@
+Reproduce a nightly red through run_selftests.py --only <path>, never bare python3 <path>: the runner passes SPECIAL_INVOCATIONS arguments (the sprite selftest gets --reference Pyrinth_a.png), so a bare run can fail or pass for a different reason. 2026-11-04 the bare run said 'missing --reference' and the real red was the reference PNG redrawn with soft alpha.
