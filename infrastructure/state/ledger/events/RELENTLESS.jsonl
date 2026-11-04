@@ -170,3 +170,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:25:29Z","tsn":1793769929884500594}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T05:27:09Z","tsn":1793770029969854364}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:35:44Z","tsn":1793770544061992079}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A4 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T05:37:19Z","tsn":1793770639504972826}
