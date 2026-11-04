@@ -179,7 +179,7 @@ the game down (OS lock).
 
 ## Windows
 
-**BENCH** (with the owner, permanent bench; `BENCH.md`, `CONDUCTOR.md`) and **Relentless** (the autonomous builder, no window; `src/RimMandrake/rimflow/relentless.py`); every model choice, seat and subagent alike:
+**BENCH** (with the owner, permanent bench; `BENCH.md`, `CONDUCTOR.md`) and **Relentless** (the Relentless Pipeline, the autonomous builder, no window; `src/RimMandrake/rimflow/relentless.py`; its places hold Relentless-style Builder/Judge workers from MandrakeWorkflows, `rm-builder` and `rm-judge`, swappable while the pipeline keeps its design: owner, 2026-11-03); every model choice, seat and subagent alike:
 `Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
 is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.

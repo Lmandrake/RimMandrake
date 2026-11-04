@@ -2,7 +2,8 @@
 
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
 own window file: `infrastructure/agents/BENCH.md` (the Conductor, with the owner); the
-autonomous builder is Relentless (`src/RimMandrake/rimflow/relentless.py`). Game cycle:
+autonomous builder is the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`), whose places hold
+Relentless-style Builder/Judge workers from MandrakeWorkflows (`relentless/workers/`; owner 2026-11-03). Game cycle:
 `infrastructure/GAME_STATE_WORKFLOW.md`. **Models: the ladder lives in
 `infrastructure/agents/Agent_Policy.md` and nowhere else; never restate it.**
 

@@ -12,19 +12,20 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 His words (`V3_JUDGMENT_DATE_DECIDE_KEEP_OR_KILL`): *"I think we’re done with the arms. We will keep the data for analysis going forward. I’d like to start building relentless workers, followed by design agents that make designs plus acceptance criteria, and then operations systems that handle dispatch in an automated manner. All of that will be controlled by an overall conductor with occasional high level planning sessions that lay out orders for many days of dispatching at a time. That’s my current intention."*
 
-1. **Relentless workers**: the Relentless Agent in block 5.
+1. **Relentless workers**: the Relentless Pipeline and its Builder/Judge workers in block 5.
 2. **Design agents**: designs plus acceptance criteria, before a Relentless worker gets a mod.
 3. **Operations systems**: dispatch handled automatically.
 4. **The Conductor over all of it**: occasional high-level planning sessions that lay out orders for many days of dispatching.
 
 ---
 
-## From Sun 2026-11-01: the Relentless Agent (block 5)
+## From Sun 2026-11-01: the Relentless Pipeline (block 5)
 
 His words: *"Then get to work at max priority. This is VITAL, it's the core of reliable building and testing in the new
 system and reusable beyond RimMandrake. I'd like to officially call this the Relentless Agent."*
 
-1. **The Relentless Agent**: efficient memory between generations, loop-trap awareness, calling for blind review and for
+1. **The Relentless Pipeline and its Relentless-style Builder/Judge workers** (named apart by the owner 2026-11-03, so
+   workers can be swapped while the pipeline keeps its design): efficient memory between generations, loop-trap awareness, calling for blind review and for
    help, a Build and a Judge mode, written to be reusable with RimMandrake as its first target. Design:
    `design/RimMandrake/relentless_agent_design_2026-11-01.md`.
 

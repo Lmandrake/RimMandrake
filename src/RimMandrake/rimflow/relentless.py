@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""relentless: the item is the owner, workers are replaceable. RELENTLESS_OWNER_DESIGN_NEVER_LETS_GO.
+"""relentless: the Relentless Pipeline. The item is the owner, workers are replaceable. RELENTLESS_OWNER_DESIGN_NEVER_LETS_GO.
+
+Naming (owner, 2026-11-03, PIPELINE_RENAME_WORKERS_NOW_SWAPPABLE): this program is the Relentless Pipeline; each worker in
+its places is a Relentless-style Builder/Judge from MandrakeWorkflows (relentless/workers/BUILDER_JUDGE.md), run as the
+agents named by worker_agent and checker_agent in relentless_rules.json. Swapping workers leaves the pipeline's design.
 
 Design: design/RimMandrake/relentless_owner_design_2026-10-31.md. Limits: relentless_rules.json (data). A program, no AI.
 `tick` runs from rm-relentless.timer, out of the supervisor's own clone (<root>/books), which it fast-forwards itself,

@@ -1,8 +1,11 @@
 # The Relentless Agent: design (2026-11-01)
 
+Naming since 2026-11-03 (owner): the system is the **Relentless Pipeline**; each worker in its places is a
+**Relentless-style Builder/Judge** from MandrakeWorkflows. Below, "Relentless Agent" means the pair.
+
 Item: RELENTLESS_AGENT_DESIGN_NEVER_FORGETS_TWICE. Status: DESIGN, GPT review judged and applied by the
 Conductor (§14; verbatim review: `relentless_agent_gpt_review_2026-11-01.md`).
-Binding contract: `MandrakeWorkflows/relentless/agent/RELENTLESS_AGENT.md`. Extends `relentless_owner_design_2026-10-31.md`
+Binding contract: `MandrakeWorkflows/relentless/workers/BUILDER_JUDGE.md`. Extends `relentless_owner_design_2026-10-31.md`
 (live) and `operating_requirements_2026-11-01.md` RW1-5, TE2, TE4, RO3. Evidence for the claims here:
 `relentless_agent_research_2026-11-01.md`.
 

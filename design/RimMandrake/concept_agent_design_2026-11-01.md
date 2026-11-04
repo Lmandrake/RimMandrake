@@ -2,7 +2,7 @@
 
 Item: CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING. Status: DESIGN, GPT review judged and applied by the
 Conductor (§15; verbatim review: `concept_agent_gpt_review_2026-11-01.md`). Downstream contract:
-`relentless_agent_design_2026-11-01.md` §3-4 and `MandrakeWorkflows/relentless/agent/RELENTLESS_AGENT.md`.
+`relentless_agent_design_2026-11-01.md` §3-4 and `MandrakeWorkflows/relentless/workers/BUILDER_JUDGE.md`.
 
 Owner, 2026-11-01: *"It gets really detailed, dialectic, debating, and works out a thorough understanding of what the mod
 does and does not do. THEN it must not only convert this into an implementation plan, but a well defined set of
