@@ -9,10 +9,12 @@ as shipped.
 import configparser
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from types import SimpleNamespace
 
 os.environ["TZ"] = "America/Los_Angeles"
 import time  # noqa: E402
@@ -293,6 +295,78 @@ rc, so, calls, rd, _ = cli("blind", VERB, "", clone=False)
 check("the service's line, no clone: blind, exit 1, no start", rc == 1 and START not in calls and rd["state"] == "blind", (rc, so, calls, rd))
 rc, so, calls, rd, _ = cli("status", "status", FINISHED_NOV1 + KILLED_NOV2)
 check("the status verb decides but starts and writes nothing", rc == 0 and so.startswith("start: ") and START not in calls and rd is None, (rc, so, calls, rd))
+
+# ---- the promise itself, read by the check the supervisor and rm-deadman run: a pass in ANY state renews the reading (a healthy
+# `done` night is most of them), the shipped cadence renews it inside max_age, and an old or predating reading goes red.
+import live_line  # noqa: E402
+PROMISE = live_line.parse(promise[0])
+UNITS = {"s": 1, "sec": 1, "min": 60, "h": 3600}
+
+
+def span(text):
+    """A systemd time span as the shipped units spell it -> seconds; None for anything else, which fails the bound below."""
+    m = re.fullmatch(r"(\d+)(s|sec|min|h)", (text or "").strip())
+    return int(m.group(1)) * UNITS[m.group(2)] if m else None
+
+
+def bound(key, value):
+    n = span(value)
+    check("%s=%s leaves a reading inside max_age" % (key, value), n is not None and n + 3600 <= PROMISE["max_age_s"], (n, PROMISE))
+
+
+bound("OnBootSec", ct["Timer"].get("OnBootSec"))
+bound("OnUnitInactiveSec", ct["Timer"].get("OnUnitInactiveSec"))
+bound("TimeoutStartSec", cs["Service"].get("TimeoutStartSec"))
+check("the promise names this timer and holds the reading's age", PROMISE["unit"] == "rm-selftests-nightly-catchup.timer" and PROMISE["max_age_s"])
+
+
+def pass_ctl(state, on="enabled", rises=True):
+    """A systemctl for one pass: `start` raises the state only when `rises`."""
+    now = {"s": state}
+
+    def ctl(*a):
+        if a[0] == "start" and rises:
+            now["s"] = "activating"
+        return on if a[0] == "is-enabled" else now["s"] if a[0] == "is-active" else None
+    return ctl
+
+
+def sysd(cmd, **k):
+    return SimpleNamespace(stdout="enabled\n" if "is-enabled" in cmd else "active\n", returncode=0)
+
+
+NOV2_13Z, NOV3_0230 = AT("2026-11-02T13:00:00Z"), AT("2026-11-03T10:30:00Z")
+LOGS = TMP / "promise"
+LOGS.mkdir()
+(LOGS / "done.log").write_text(FINISHED_NOV1 + KILLED_NOV2 + RERUN_NOV2)
+(LOGS / "killed.log").write_text(FINISHED_NOV1 + KILLED_NOV2)
+(LOGS / "thrice.log").write_text(KILLED_NOV2.replace("11:21", "11:22") * 3)
+BLIND_LOG = TMP / "no" / "such" / "clone" / "Transient" / "selftests_nightly.log"
+CASES = (("done", "done.log", NOV2_13Z, {"state": "inactive"}), ("running", "killed.log", NOV2_13Z, {"state": "active"}),
+         ("disabled", "killed.log", NOV2_13Z, {"state": "inactive", "on": "disabled"}), ("gave_up", "thrice.log", NOV2_13Z, {"state": "failed"}),
+         ("quiet", "killed.log", NOV3_0230, {"state": "inactive"}), ("blind", None, NOV2_13Z, {"state": "inactive"}),
+         ("start", "killed.log", NOV2_13Z, {"state": "inactive"}), ("start_failed", "killed.log", NOV2_13Z, {"state": "inactive", "rises": False}))
+settle1 = NC.SETTLE_S
+NC.SETTLE_S = 0
+for want, name, when, how in CASES:
+    out = LOGS / want / "nightly_catchup.json"
+    log = LOGS / name if name else BLIND_LOG
+    line = "unit=%s reading=%s max_age=%ds" % (PROMISE["unit"], out, PROMISE["max_age_s"])
+    check("%s: a reading that was never written reads red" % want, "absent" in (live_line.check(line, runner=sysd) or ""))
+    first = NC.one_pass(when, True, ctl=pass_ctl(**how), log=log, out=out)
+    stale = time.time() - PROMISE["max_age_s"] - 600
+    os.utime(out, (stale, stale))
+    check("%s: an aged reading reads red" % want, "old" in (live_line.check(line, runner=sysd) or ""), live_line.check(line, runner=sysd))
+    NC.one_pass(when, False, ctl=pass_ctl(**how), log=log, out=out)
+    check("%s: a status look does not freshen it" % want, abs(out.stat().st_mtime - stale) < 2, out.stat().st_mtime)
+    before = time.time() - 1
+    second = NC.one_pass(when, True, ctl=pass_ctl(**how), log=log, out=out)
+    check("%s: both passes reach the state under test" % want, first["state"] == want == second["state"], (first, second))
+    check("%s: the same state again still renews the reading" % want, out.stat().st_mtime >= before, out.stat().st_mtime)
+    check("%s: the promise holds on a commit older than the pass" % want, live_line.check(line, not_before=before, runner=sysd) is None,
+          live_line.check(line, not_before=before, runner=sysd))
+    check("%s: and not on a commit newer than it" % want, "predates" in (live_line.check(line, not_before=time.time() + 60, runner=sysd) or ""))
+NC.SETTLE_S = settle1
 
 # ---- a real kill under real systemd: the states a SIGKILL and a shutdown's SIGTERM leave, the restart, the finish. The unit is
 # a throwaway stand-in for the sweep, with the sweep's section line and RESULT, so no 50-minute sweep is spent.
