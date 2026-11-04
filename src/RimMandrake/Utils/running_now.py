@@ -333,6 +333,12 @@ class Env:
         d["total_mods"] = len(fleet_mods.mod_folders())
         return d
 
+    def status_board(self):
+        """STATUS_BOARD.html from the fleet cache just written: STATUS_PAGES_BUILD_REPLACE_RIMPULSE."""
+        sys.path.insert(0, HERE)
+        import status_board
+        return status_board.write(out=os.path.join(OUT_DIR, "STATUS_BOARD.html"), cache=FLEET_CACHE)
+
     def mods_status(self):
         """`modcheck status`, which re-derives each mod against its code as it stands (the stored word goes stale)."""
         rc, out = self.run(["python3", os.path.join(HERE, "modcheck", "cli.py"), "status"], timeout=45)
@@ -2743,6 +2749,7 @@ def run(env=None, write=True):
         fleet, _ = guarded(env.read_json, FLEET_CACHE)
         if env.now() - ((fleet or {}).get("t") or 0) >= FLEET_EVERY:
             guarded(refresh_fleet, env)
+            guarded(lambda: env.status_board())     # the owner's board (status_board.py) follows each fleet refresh
         guarded(probe_steve, env)
     return 0, page
 

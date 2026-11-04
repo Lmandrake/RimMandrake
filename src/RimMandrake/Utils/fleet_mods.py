@@ -325,6 +325,97 @@ def waits_on(it, rs, evs=None):
     return ""
 
 
+HOLD_PLANS = {   # a Relentless tooling hold -> (who it waits on, what is planned); owner card 2026-11-03: every stuck line
+    # "says what is planned to unstick it and who it waits on"
+    "proof_weak": ("the Conductor", "its proof kept reading weak; the Conductor rewrites the proof so a blind checker "
+                                    "can rerun it, or drops the item"),
+    "strikes": ("the Conductor", "workers failed it several times running; the Conductor re-scopes or drops it"),
+    "game": ("the game", "it runs in the next live game round (the game takes one test at a time)"),
+}
+
+
+def first_sentence(text, cap=160):
+    """The first sentence of a free-text block reason, cut at a word, never mid-word."""
+    t = " ".join(str(text).split())
+    m = re.match(r"(.+?[.;!?])(\s|$)", t)
+    t = (m.group(1) if m else t).rstrip(".;: ")
+    return t if len(t) <= cap else t[:cap].rsplit(" ", 1)[0] + " …"
+
+
+SNAG_PREFIX = re.compile(r"^\s*(?:relentless\s+)?snag\s+[a-z_]+\s*:\s*", re.I)
+ITEM_ID = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
+SLUG = re.compile(r"\b[a-z]+(?:_[a-z]+)+\b(?![.(/])")
+
+
+def plain_reason(text, known=None):
+    """A free-text block reason without machine words: no 'snag <class>:' prefix, an item id becomes its title (or
+    'another item'), a snake_case slug becomes words. A file name (foo_bar.py) or a call (foo_bar()) is left alone."""
+    t = SNAG_PREFIX.sub("", text or "")
+    t = ITEM_ID.sub(lambda m: "'%s'" % display_title(known[m.group(0)].title or m.group(0)) if known and
+                    m.group(0) in known else "another item", t)
+    return SLUG.sub(lambda m: m.group(0).replace("_", " "), t)
+
+
+def block_who(reason):
+    """Who a free-text block reason waits on. Never 'you': only owner_queue.is_his says that (Needs you must match)."""
+    r = reason.lower()
+    if re.search(r"\b(live|quicktest|in[- ]game|game[- ]up|cold load)\b", r):
+        return "the game"
+    if re.search(r"\b(owner|card|ruling|deferred|parked)\b", r):
+        return "a past ruling of yours (parked on purpose, no question open)"
+    if re.search(r"\b(art|render|sprite|texture)s?\b", r):
+        return "art"
+    return "the Conductor"
+
+
+def stuck_of(it, rs, evs=None, known=None, asks=None):
+    """-> {"waits": who, "plan": what happens next} for an open item that is not moving, or None when it is moving.
+    'you' comes only from owner_queue.is_his, the same test as Needs you, so the page's count and its tags agree."""
+    if it is None or not it.open:
+        return None
+    rs = rs or {}
+    status = rs.get("status")
+    if owner_queue.is_his(it, rs, evs):
+        return {"waits": "you", "plan": "the Conductor brings you a question card (it is in Needs you)"}
+    h = owner_queue.tooling_hold(rs)
+    if h is not None:
+        who, plan = HOLD_PLANS.get(h.get("kind"), ("the Conductor", "the Conductor reads why Relentless stopped and "
+                                                                    "decides the next step"))
+        return {"waits": who, "plan": plan}
+    if getattr(it, "blocked", False):
+        kind, on = getattr(it, "blocked_kind", None), getattr(it, "blocked_on", None)
+        if on and known and on in known:
+            return {"waits": "another item", "plan": "starts again by itself once '%s' is done"
+                    % display_title(known[on].title or on)}
+        if kind == "live":
+            return {"waits": "the game", "plan": "it runs in the next live game round (the game takes one test at a time)"}
+        if kind == "judge":
+            return {"waits": "a judge agent", "plan": "a fresh agent that did not make it rules on it, then work resumes"}
+        if kind == "time":
+            until = getattr(it, "blocked_until", None)
+            return {"waits": "time", "plan": "resumes by itself" + (" after %s" % str(until)[:10] if until else
+                                                                     " when its wait is over")}
+        if owner_queue.answered(it, evs):
+            return {"waits": "the Conductor", "plan": "you answered it; the Conductor carries out your answer and lifts "
+                                                      "the block"}
+        reason = plain_reason(first_sentence(getattr(it, "blocked_reason", None) or ""), known)
+        return {"waits": block_who(reason) if kind != "external" else "something outside the project",
+                "plan": ("resumes when this clears: " + reason) if reason else
+                "resumes when its blocker clears; none is named, so the Conductor names one"}
+    if getattr(it, "held", False):
+        return {"waits": "a fix", "plan": "a blind check failed it; the next worker fixes what failed and it is checked again"}
+    if status == "game":
+        return {"waits": "the game", "plan": "it runs in the next live game round (the game takes one test at a time)"}
+    if status == "retired":
+        return {"waits": "the Conductor", "plan": "Relentless stopped trying; the Conductor rewrites or drops it"}
+    if status == "blocked":
+        return {"waits": "another item", "plan": "starts again by itself once the item it waits on is done"}
+    if status == "held":        # his kind of hold not yet on the ledger: never 'you' until is_his says so
+        return {"waits": "Relentless", "plan": "it is being handed to you; it joins Needs you once the hand-over is "
+                                               "on record"}
+    return None
+
+
 def proof_line(mod, mc, blind, now, days):
     """'Blind check PASS 2 Nov · modcheck not run in 7 days' — both instruments, each with its date."""
     parts = []
@@ -422,12 +513,18 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
                              if waits_you > 3 else [])
         if waits_game:
             waits.append("%s on the game" % n_words(waits_game, "item waits", "items wait"))
+        stuck = []      # every open item of the mod that is not moving: who it waits on, and what is planned
+        for i in cand:
+            st = stuck_of(known[i], rel.get(i), evs, known, asks)
+            if st:
+                stuck.append(dict(st, id=i, title=asks.get(i) if st["waits"] == "you" and asks.get(i)
+                                  else display_title(known[i].title or i)))
         tasks = []
         # this week's list: finished first (newest close first), then the open ones by their last commit
         for i in sorted(items, key=lambda i: (-(closed_at.get(i) or 0), -(item_last.get(i) or 0), i)):
             it = known[i]
             g, kind = task_mark(it, rel.get(i), verdicts.get(i))
-            t = {"mark": g, "kind": kind, "title": display_title(it.title or i),
+            t = {"id": i, "mark": g, "kind": kind, "title": display_title(it.title or i),
                  "date": day_label(closed_at.get(i) or item_last.get(i), now)}
             if kind == "done" and verdicts.get(i):
                 t["note"] = "check " + verdicts[i]
@@ -452,7 +549,7 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
                      "backlog": "Backlog: %d open · %d parked" % (open_n, len(parked_n)),
                      "counts": "%s · %d open · %d parked" % (meta, open_n, len(parked_n)),  # the pre-repair page reads this
                      "proof": "" if m in (INFRA, CROSS) else proof_line(m, mc, blind, now, days),
-                     "next": nxt, "waits": waits, "week": len(tasks),
+                     "next": nxt, "waits": waits, "stuck": stuck, "week": len(tasks),
                      "tasks": tasks[:TASKS_KEPT], "more": max(0, len(tasks) - TASKS_KEPT)})
     docs.sort(key=lambda d: (d["infra"] or d["cross"], -d["waits_you"], -d["closed"], -d["last_at"]))
     return docs
