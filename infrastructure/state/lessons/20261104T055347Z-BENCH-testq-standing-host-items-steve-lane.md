@@ -1,0 +1,1 @@
+testq standing host items (STEVE_LANE_MONITOR_PAUSE_FINDINGS, STEVE_FILLER_MONITOR_FAIL_FINDINGS) are ordinary 'ready' items with no standing marker: nothing stops a builder claiming and closing one, and a fail verify on a closed host reopens it. Their runs must use a config listed in testpilot_route.NOT_A_TEST or TestPilot routes them on a 3-fail streak.
