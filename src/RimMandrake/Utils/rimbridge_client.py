@@ -401,6 +401,8 @@ class RetiredToolError(RimBridgeError):
 # sets this to the epoch second of its subprocess timeout) gets no NEW mutating call that could still be in flight
 # then: a kill mid call strands an UNKNOWN-outcome marker that refuses every later mutation of the run.
 DEADLINE_ENV = "RIMBRIDGE_CALL_DEADLINE"
+DEADLINE_MARGIN_S = 10.0       # kept clear between a clamped call's own timeout and the kill
+DEADLINE_MIN_CALL_S = 30.0     # less room than this refuses the mutation (DeadlineError) instead of clamping it
 
 
 class DeadlineError(RimBridgeError):
@@ -797,6 +799,7 @@ class RimBridge:
                 print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
         mutating = not self.looks_read_only(tool, params)
         crossed = None
+        clamp = None
         if mutating:
             crossed = _driver_crossing(self.host)
             if crossed and not os.environ.get(CROSS_ENV):
@@ -804,10 +807,21 @@ class RimBridge:
                                       "to cross him on purpose set %s=<why>" % (tool, crossed, CROSS_ENV))
             left = _deadline_left()
             if left is not None and left < self.timeout + self.connect_timeout:
-                raise DeadlineError("refusing %s: %.0f s to %s (=%r), less than this call's %.0f s timeout + %.0f s "
-                                    "connect: a kill mid call would strand an UNKNOWN-outcome marker"
-                                    % (tool, max(left, 0), DEADLINE_ENV, os.environ.get(DEADLINE_ENV),
-                                       self.timeout, self.connect_timeout))
+                # TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD: the call's timeout is CLAMPED to the room left, and only a
+                # room under DEADLINE_MIN_CALL_S refuses. Refusing whenever the room was under the full timeout made
+                # a driver whose kill time is within one call timeout of its start (sprinkler_live: 600 s driver,
+                # 600 s calls) refuse its FIRST mutation on every testq run, and cost every driver its last ten
+                # minutes (thirst_live: the settings restore refused at 1195 s of 1800). A clamped call that does
+                # time out leaves the same INDETERMINATE marker the kill would have; one that answers, as most do in
+                # seconds, leaves none.
+                room = left - self.connect_timeout - DEADLINE_MARGIN_S
+                if room < DEADLINE_MIN_CALL_S:
+                    raise DeadlineError("refusing %s: %.0f s to %s (=%r), under the %.0f s minimum call room after "
+                                        "%.0f s connect + %.0f s margin: a kill mid call would strand an "
+                                        "UNKNOWN-outcome marker"
+                                        % (tool, max(left, 0), DEADLINE_ENV, os.environ.get(DEADLINE_ENV),
+                                           DEADLINE_MIN_CALL_S, self.connect_timeout, DEADLINE_MARGIN_S))
+                clamp = room
             pending = outstanding_indeterminate()
             if pending:
                 raise IndeterminateError(
@@ -833,7 +847,10 @@ class RimBridge:
         _ACTIVE.add(cid)
         t0 = time.time()
         self._session_calls += 1
+        full = self.timeout
         try:
+            if clamp is not None:
+                self._set_call_timeout(clamp)
             out = self._request("tools/call", {"name": tool, "arguments": params or {}})
         except RimBridgeError as ex:
             answered = " failed: " in str(ex)          # the server replied with an error: outcome known
@@ -870,6 +887,9 @@ class RimBridge:
                 except OSError:
                     pass
             raise
+        finally:
+            if clamp is not None:
+                self._set_call_timeout(full)
         ok_success = out.get("success") if isinstance(out, dict) else None
         _evidence(dict({"ev": "end", "cid": cid, "status": "ok", "ms": int((time.time() - t0) * 1000), "t": _ev_now(),
                         "success": ok_success, "outcome": "reply_fail" if ok_success is False else "ok",
@@ -877,6 +897,13 @@ class RimBridge:
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
         return out
+
+    def _set_call_timeout(self, seconds):
+        """This connection's per-read timeout: `self.timeout` and the open socket's (a deadline-clamped call sets it,
+        then puts the full timeout back)."""
+        self.timeout = seconds
+        if self.sock is not None:
+            self.sock.settimeout(seconds)
 
     def looks_read_only(self, tool, params=None):
         """Cheap heuristic only - a False here is a warning, a True is not a promise. A jawa/static_call is a read only

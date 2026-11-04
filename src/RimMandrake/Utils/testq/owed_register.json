@@ -1,0 +1,31 @@
+{
+ "_doc": "testq/unmeasured.py: why a chain that has NEVER measured a row in the testq store has not, and the item that owes the work. One entry per such chain, keyed MOD/chain; --check fails on a never-measured chain with no entry (unless held for the harness) and on an entry whose chain has since measured (delete it then).",
+ "FlowWorks/toggle_fall_damage": {
+  "reason": "no predicate written yet (extensions.py _owed): fallDamageEnabled: no fall staged, no injury read",
+  "item": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED"
+ },
+ "FlowWorks/toggle_liquid_corrosion": {
+  "reason": "no predicate written yet (extensions.py _owed): liquidCorrosionEnabled: no HP read on either side",
+  "item": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED"
+ },
+ "FlowWorks/toggle_liquid_drilling": {
+  "reason": "no predicate written yet (extensions.py _owed): liquidDrillingEnabled: no yield counted",
+  "item": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED"
+ },
+ "FlowWorks/toggle_liquid_ignition": {
+  "reason": "no predicate written yet (extensions.py _owed): liquidIgnitionEnabled: nothing reads the spread; ON and OFF indistinguishable",
+  "item": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED"
+ },
+ "FlowWorks/toggle_superdeep_shooting": {
+  "reason": "no predicate written yet (extensions.py _owed): superdeepShootingRuleEnabled: no target-legality read",
+  "item": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED"
+ },
+ "FlowWorks/toggle_typed_shores": {
+  "reason": "no predicate written yet (extensions.py _owed): typedLiquidShoresEnabled: map-generation toggle, needs two fresh maps",
+  "item": "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED"
+ },
+ "FlowWorks/toggle_river_steam_pyrelands": {
+  "reason": "the re-tiled RM_Pyrelands map carries no RiverSteamBiomeExtension: only mandrake.rut.patches adds it, and that mod is not on the FlowWorks test list",
+  "item": "RIVER_STEAM_WIRE_PYRELANDS_STEAMLESS_ON_TEST"
+ }
+}

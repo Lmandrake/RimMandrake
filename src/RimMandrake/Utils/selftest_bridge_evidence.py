@@ -160,6 +160,39 @@ def main():
     os.environ["RIMBRIDGE_CALL_DEADLINE"] = "%.3f" % (_t.time() + 600)
     bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
     good.append(case("a mutation with time to finish before the deadline runs", rows()[-1]["status"] == "ok"))
+    # TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD: a driver whose kill time is within one call timeout (sprinkler_live:
+    # 600 s driver, 600 s calls) refused its FIRST mutation on every testq run. The call now runs with its timeout
+    # clamped to the room left, and the full timeout comes back after.
+    os.environ["RIMBRIDGE_CALL_DEADLINE"] = "%.3f" % (_t.time() + 577)
+    seen = {}
+    bc = C.RimBridge(token="t", timeout=600.0)
+
+    def _req(method, params=None):
+        seen["timeout"] = bc.timeout
+        return {"success": True}
+    bc._request = _req
+    try:
+        bc.call("jawa/mod_settings_field", {"typeName": "X", "action": "set", "field": "f", "value": "1"}, check=False)
+        ran = rows()[-1]["status"] == "ok"
+    except C.DeadlineError as e:
+        ran = False
+        seen["refused"] = str(e)
+    good.append(case("577 s left of a 600 s call timeout: the mutation runs (clamped, not refused)", ran, seen))
+    good.append(case("its timeout during the call is the room left (under 577 - 5 connect - margin)",
+                     seen.get("timeout") is not None and 30 <= seen["timeout"] <= 577 - 5 - C.DEADLINE_MARGIN_S + 1,
+                     seen))
+    good.append(case("the full timeout is put back after the clamped call", bc.timeout == 600.0, bc.timeout))
+
+    def _boom(method, params=None):
+        raise C.RimBridgeError("bridge read timed out")
+    bc._request = _boom
+    try:
+        bc.call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
+    except C.RimBridgeError:
+        pass
+    good.append(case("the full timeout is put back after a clamped call that timed out", bc.timeout == 600.0, bc.timeout))
+    for x in C.outstanding_indeterminate():
+        C.reconcile_resolve(x["cid"], "not-applied", "selftest")
     # RIMBRIDGE_DEADLINE_FIX_NAN_FAILS_OPEN: a deadline that is SET but cannot be read is not "no deadline" -- the
     # process may still be killed at an unknown time, so a mutation fails closed ('nan' compared False and let it run).
     for bad in ("not-a-number", "nan", "", "-inf"):

@@ -10,7 +10,8 @@ retest what stood, and what it broke was never counted.
 A row is the HARNESS's when it says the run did not measure (CAUSES). Such a chain has no verdict, unless a row FAILED:
 a real FAIL stands whatever else broke. ingest records no verify for it and files one repair item per distinct cause;
 the filler holds its chains while that item is open. A row owed a live check, or a map without the feature, is a
-real GAP and so a verdict: nothing a rerun at the same code can change.
+real GAP and so a verdict: nothing a rerun at the same code can change. A reader row with no result from its driver
+("no <driver> result at the current mod hash") is the harness's: the driver, not the code, decides whether it reads.
 """
 import hashlib
 import re
@@ -20,7 +21,12 @@ CAUSES = (("canary", r"canary red"),
           ("surprise", r"\bsurprise: |a surprise ended this chain"),
           ("selftest_not_run", r"SelfTest did not run"),
           ("absent_from_sheet", r"absent from the sheet"),
-          ("run_aborted", r"\(run aborted"))
+          ("run_aborted", r"\(run aborted"),
+          # TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD: a reader row whose driver left no result. testq runs every driver
+          # (modcheck --drivers on), so no result means the driver failed, timed out or was skipped: 30 hose_live_rows
+          # (proof_hose's offline gate red) and 13 sprinkler/thirst rows (bridge DeadlineError) were held as GAPs at
+          # their code version and never re-run once the driver was repaired.
+          ("driver_undelivered", r"\bno [\w .*-]+ result at the current mod hash"))
 UPSTREAM = re.compile(r"upstream failed|an UNMEASURED component ended this chain")
 ORPHAN = "<no chain>"           # split_rows key: rows the sheet never reached carry no chain
 NOT_A_FAULT = ("BLOCKED_SELECTION",)        # the selection was refused: no run happened

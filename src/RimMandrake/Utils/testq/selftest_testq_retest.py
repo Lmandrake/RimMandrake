@@ -118,6 +118,16 @@ def main():
     check(R.split_rows([row("b", "r2", "UNMEASURED", "upstream failed -- this chain's state is meaningless")])[1] == [],
           "upstream failed alone is the suite's own verdict")
     check(R.split_rows([row("a", "r", "UNMEASURED", "x", "invalid")])[1] != [], "validity invalid is the harness's")
+    # TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD: a reader row its driver never delivered is the harness's, not a GAP
+    for det in ("UNMEASURED: no proof_hose result at the current mod hash: run `python.exe x/proof_hose.py --live`",
+                "ExpectationFailed: UNMEASURED: live check owed (SPRINKLER_X) -- no sprinkler_live.py result at the "
+                "current mod hash carries this row: run it",
+                "UNMEASURED: no drawbridge_result_*.json result at the current mod hash"):
+        kept, held, sigs = R.split_rows([row("h", "r1", "PASS"), row("h", "r2", "UNMEASURED", det)])
+        check(not kept and len(held) == 2 and sigs.get("h", "").startswith("driver_undelivered"),
+              "an undelivered driver row holds its chain: %s" % det[:50])
+    kept, held, sigs = R.split_rows([row("h", "r1", "UNMEASURED", "UNMEASURED: live check owed -- a look by eye")])
+    check(len(kept) == 1 and not held, "a live check owed with no driver named stays a GAP")
     # causes
     a = R.job_cause({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5 and no sheet JSON: tail 12:30"})
     b = R.job_cause({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5 and no sheet JSON: other"})
