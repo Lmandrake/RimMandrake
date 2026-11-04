@@ -1,10 +1,10 @@
-# Every 30 min — see rm-arteval-autojudge.service.
+# Every 2 h — see rm-arteval-autojudge.service.
 [Unit]
-Description=RimMandrake art-eval auto-judge, every 30 min
+Description=RimMandrake art-eval auto-judge, every 2 h
 
 [Timer]
 OnBootSec=20min
-OnUnitActiveSec=30min
+OnUnitActiveSec=2h
 AccuracySec=1min
 
 [Install]

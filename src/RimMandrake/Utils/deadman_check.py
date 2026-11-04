@@ -50,7 +50,6 @@ RETIRED = ("dropped", "superseded")
 MAX_PER_PASS = 10
 FOLD_AT = 2                 # a second outage means the first fix did not fold
 ARM_UNITS = {"ops_watch": "rm-ops-watch.timer", "dispatcher": "rm-dispatcher.timer"}
-TRIAL_ONLY = ("rm-replay-watch.timer", "rm-arena-anchor.timer")     # they end with the arena trial
 
 
 def ops_dir():
@@ -410,8 +409,6 @@ def generate_baseline(runner=subprocess.run):
                 "--no-legend"], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
     for row in sorted(r.stdout.splitlines()):
         unit = row.split()[0]
-        if unit in TRIAL_ONLY:
-            continue
         last = live_line._systemctl_show(unit, "LastTriggerUSec", runner)
         nxt = live_line._systemctl_show(unit, "NextElapseUSecRealtime", runner)
         gap = int(nxt) - int(last) if last.isdigit() and nxt.isdigit() else \

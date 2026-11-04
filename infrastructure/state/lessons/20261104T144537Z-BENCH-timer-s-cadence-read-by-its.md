@@ -1,0 +1,1 @@
+A timer's cadence is read by its consumers' staleness thresholds: before slowing a timer, grep for the age limit that watches its output (testq steward.py STALE_S=300 assumes a 60 s testq-tick; the 2026-11-03 audit's 5-min slow-down would have raised false STALE_HEARTBEAT incidents). Found by TIMERS_PRUNE_AUDIT_FINALLY_READ.

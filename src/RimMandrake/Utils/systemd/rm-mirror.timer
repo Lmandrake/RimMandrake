@@ -1,9 +1,9 @@
 [Unit]
-Description=RimMandrake mirror sync every 5 minutes (enabled by the drain, not before)
+Description=RimMandrake mirror sync every 15 minutes (enabled by the drain, not before)
 
 [Timer]
 OnBootSec=2min
-OnUnitInactiveSec=5min
+OnUnitInactiveSec=15min
 AccuracySec=30s
 
 [Install]

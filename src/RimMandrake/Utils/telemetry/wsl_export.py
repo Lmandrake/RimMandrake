@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WSL-side exporter (rm-telemetry-export.timer, every minute).
+"""WSL-side exporter (rm-telemetry-export.timer, every 5 minutes).
 
 telemetryd lives on Windows so it survives `wsl --shutdown` (design §5), and it must NOT read
 \\\\wsl.localhost\\... itself: touching that path starts the distro, which would undo an intentional

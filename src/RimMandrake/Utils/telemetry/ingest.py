@@ -537,7 +537,7 @@ def make_sources() -> list[Source]:
                rate="per action", producer="telemetry_emit.emit_change"),
         Source("wsl", lambda: [_j(c["inbox"], "wsl", "*.jsonl")], parse_wsl,
                desc="WSL-side exporter: memwatch, objstore, ledger, pulse metrics, selftests, WSL host",
-               rate="1 min", producer="wsl_export.py (rm-telemetry-export.timer)"),
+               rate="5 min", producer="wsl_export.py (rm-telemetry-export.timer)"),
         Source("ops_watch", lambda: [_j(c["ops_watch_series"], "*.jsonl")], parse_ops_watch,
                desc="ops_watch readings per family (rm_ops_reading / rm_ops_unmeasured / rm_ops_rows); "
                     "ops_memory.py reads its trends back from VM",

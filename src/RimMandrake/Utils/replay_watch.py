@@ -4,7 +4,7 @@
 Why: every arm stop on 2026-10-31 waited on a person noticing, and the replay runs overnight to the stop line. It lives
 outside Utils/arena/ on purpose: the harness is frozen, this only reads it.
 
-Each tick (rm-replay-watch.timer, every 3 min, from the dispatch clone) it reads, per arm: the unit
+Each tick (its timer, rm-replay-watch.timer, was uninstalled 2026-11-04 by TIMERS_PRUNE_AUDIT_FINALLY_READ; run `tick` by hand) it reads, per arm: the unit
 rm-arena-replay-<arm>.service, logs/<arm>.log, ctl/<arm>/runner.json, ctl/<arm>/STOP, launcher.log, the Dispatcher's
 login state. It writes one state per arm:
 

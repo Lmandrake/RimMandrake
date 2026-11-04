@@ -100,7 +100,7 @@
       "art"
     ],
     [
-      "rm-(ops-watch|deadman|memwatch|pulse|telemetry|scratch|codebase-health|replay-watch|account-usage|objstore)",
+      "rm-(ops-watch|deadman|memwatch|pulse|telemetry|scratch|codebase-health|account-usage|objstore)",
       "monitors",
       "monitor"
     ],
@@ -110,7 +110,7 @@
       "Hestia"
     ],
     [
-      "^(claude-account|account-plan|lodestar|rm-)",
+      "^(claude-account|lodestar|rm-)",
       "upkeep",
       "upkeep"
     ]

@@ -3,7 +3,7 @@
 
 Before this, nothing chained a finished regen render to its judge: Surrik s2r1 waited 4 days and the facing-audit r3
 renders 2 days, because each session that filed the renders ended before they landed. A timer
-(src/RimMandrake/Utils/systemd/rm-arteval-autojudge.timer) runs `auto_judge.py run` every 30 min:
+(src/RimMandrake/Utils/systemd/rm-arteval-autojudge.timer) runs `auto_judge.py run` every 2 h:
 
     auto_judge.py scan                 what is owed + the slot gate, no model call
     auto_judge.py run [--max-subjects 4] [--dry-run]
