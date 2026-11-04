@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """selftest_conductor_log_guard.py -- a test's fake alarm cannot reach the real Conductor log, by any writer
-(SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG). Nothing here touches the real log: the "real" path is a temp file, swapped into
-the guard's LIVE, so a broken guard fails this test instead of ringing the alarm it exists to stop."""
+(SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG). Nothing here writes the real log: the "real" path is a temp file, swapped into
+the guard's LIVE, so a broken guard fails this test instead of ringing the alarm it exists to stop. The last section READS
+the real log (conductor_log_receipt.py): the fake lines are gone, or, behind a checker's wall, the removal's receipt holds."""
 import json
 import os
 import subprocess
@@ -158,6 +159,60 @@ for label, w in WRITERS:
 rows = (TMP / "ops" / "alarms_log.jsonl").read_text(encoding="utf-8").splitlines()
 check("ops_watch: the refusal is on its alarm log, the alarm's filing untouched",
       any('"conductor_log_failed"' in r and "real Conductor log" in r for r in rows) and any('"filed"' in r for r in rows), rows[-4:])
+
+
+# ---- the removal: the receipt tool on planted logs, then on the real log, read only. The contract's own `! grep -q` goes
+# green on a log it could not read, so this is what fails when the log is dirty, lost or empty.
+import conductor_log_receipt as CR  # noqa: E402
+
+said = []
+FIX = "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red\n"
+REC = TMP / "receipt.json"
+CASE = TMP / "conductor"
+CASE.mkdir()
+PLANT, BACK = CASE / "log.md", TMP / "backup.md"
+BACK.write_text("# log\n\n" + FIX + "\n- real line\n\n" + FIX + "\n- last line\n", encoding="utf-8")
+PLANT.write_text("# log\n\n- real line\n\n- last line\n- written later\n", encoding="utf-8")
+check("record: writes when the log starts with the backup minus its fixtures",
+      CR.record(PLANT, BACK, REC, said.append) == CR.OK and json.loads(REC.read_text())["removed_count"] == 2, said)
+check("receipt tool: a clean visible log is clean", CR.check(PLANT, REC, said.append) == CR.OK, said)
+check("receipt tool: it read the log and says so", "VISIBLE" in said[-1] and "0 fixture lines" in said[-1], said[-1:])
+
+PLANT.write_text("# log\n\n- real line\n\n- something else went\n", encoding="utf-8")
+said.clear()
+check("record: refuses when more than the fixtures changed", CR.record(PLANT, BACK, TMP / "no.json", said.append) == CR.DIRTY, said)
+
+PLANT.write_text("# log\n" + FIX, encoding="utf-8")
+check("receipt tool: a fixture line in the log fails", CR.check(PLANT, REC, said.append) == CR.DIRTY)
+PLANT.write_text("# log\n- bare mention src/x/selftest_b.py\n", encoding="utf-8")
+check("receipt tool: any trace of the fixture path fails", CR.check(PLANT, REC, said.append) == CR.DIRTY)
+
+(CASE / CR.SIBLING).write_text("{}", encoding="utf-8")
+PLANT.write_text("  \n", encoding="utf-8")
+check("receipt tool: an empty log in a visible folder is LOST", CR.check(PLANT, REC, said.append) == CR.LOST)
+PLANT.unlink()
+check("receipt tool: an absent log in a visible folder is LOST", CR.check(PLANT, REC, said.append) == CR.LOST)
+
+(CASE / CR.SIBLING).unlink()
+said.clear()
+check("receipt tool: a masked folder rests on the receipt", CR.check(PLANT, REC, said.append) == CR.OK, said)
+check("receipt tool: a masked folder says the log was NOT read", any("NOT VISIBLE" in s and "NOT read" in s for s in said), said)
+for label, edit in (("count", lambda r: r.update(removed_count=9)), ("non-fixture line", lambda r: r["removed"].__setitem__(0, "- real line\n")),
+                    ("dropped line", lambda r: r["removed"].pop()), ("same hashes", lambda r: r.update(after_sha256=r["before_sha256"])),
+                    ("no shrink", lambda r: r.update(after_bytes=r["before_bytes"]))):
+    bad = json.loads(REC.read_text())
+    edit(bad)
+    TAMPERED = TMP / "tampered.json"
+    TAMPERED.write_text(json.dumps(bad), encoding="utf-8")
+    check("receipt tool: a masked folder with a bad receipt fails (%s)" % label, CR.check(PLANT, TAMPERED, said.append) == CR.DIRTY)
+check("receipt tool: a missing receipt fails", CR.check(PLANT, TMP / "absent.json", said.append) == CR.DIRTY)
+
+said.clear()
+code = CR.check(out=said.append)            # the REAL log where it can be seen, the committed receipt everywhere
+print("\n".join("  real log: " + s for s in said))
+check("the real log holds no fixture line, or is masked and the committed receipt holds", code == CR.OK, said)
+real = json.loads(CR.RECEIPT.read_text(encoding="utf-8"))
+check("committed receipt: the 18 lines gen 1 counted", real["removed_count"] == 18, real["removed_count"])
 
 print("conductor_log_guard: " + ("FAIL %d" % len(FAILS) if FAILS else "ok"))
 sys.exit(1 if FAILS else 0)

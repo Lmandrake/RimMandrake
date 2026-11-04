@@ -1,0 +1,29 @@
+{
+ "item": "SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG",
+ "removed_count": 18,
+ "removed_sha256": "872cb51252d4b0689be0207689d4b212ac256ad493ff25295cdf944cb9d139b8",
+ "before_sha256": "5e9ccdb4d5d3dfcb272226b23d6845cc1cd1d4623d5d6bff463255ce60d269fa",
+ "before_bytes": 125329,
+ "after_sha256": "07a70562941c10fec2cd14fbad38de41d59376390fcbc8416cabbabb1ad55740",
+ "after_bytes": 121207,
+ "removed": [
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_a.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_b.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n",
+  "- 2026-11-07T11:00:00Z ops_watch ALARM OPS_RED_OVERDUE_CHASE_AEUZ: Ops alarm NIGHTLY_RED_OVERDUE: src/x/selftest_b.py red since 2026-11-04T10:00:00Z, due 2026-11-07T10:00:00Z; src/x/selftest_c.py red since 2026-11-04T10:00:00Z,\n"
+ ]
+}

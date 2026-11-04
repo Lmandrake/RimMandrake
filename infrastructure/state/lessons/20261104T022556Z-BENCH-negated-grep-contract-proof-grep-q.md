@@ -1,0 +1,1 @@
+A negated grep in a contract proof ('! grep -q X file') goes green when the file is unreadable: grep exits 2, the negation exits 0. Behind the Marker's wall /mnt/d/ClaudeWork/rimmandrake is an empty mount, so such a clause proves nothing. Read the file in the selftest, tell masked from lost, and commit a receipt for the removal (Utils/conductor_log_receipt.py).
