@@ -30,3 +30,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:08:21Z","tsn":1793750901709531224}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS: deploy and restart for its live proofs","ts":"2026-11-04T00:18:17Z","tsn":1793751497122068934}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T00:38:09Z","tsn":1793752689011760738}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:47:13Z","tsn":1793753233251317019}
