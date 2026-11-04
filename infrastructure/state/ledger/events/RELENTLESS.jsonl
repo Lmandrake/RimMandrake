@@ -488,3 +488,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T21:48:09Z","tsn":1793828889049154192}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:48:17Z","tsn":1793828897101597886}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-04T21:48:22Z","tsn":1793828902068714684}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:56:11Z","tsn":1793829371701588581}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A5 (L2), read-only proof","ts":"2026-11-04T21:56:19Z","tsn":1793829379299298178}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:56:24Z","tsn":1793829385004656798}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A10 (L2), read-only proof","ts":"2026-11-04T21:56:32Z","tsn":1793829392386011495}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:56:41Z","tsn":1793829401227440780}
