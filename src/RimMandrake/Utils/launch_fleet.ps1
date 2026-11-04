@@ -52,6 +52,22 @@ USAGE
                              # sessions. Titled `<name> [test]`, e.g. `HESTIA [test]`.
     ... -CloseTest           # close every test tile; live seats are untouched,
                              # because the marker is what it matches on.
+    ... -Survey              # list every fleet window and whether it is live or
+                             # dead; changes nothing.
+
+OPEN ONLY WHAT IS MISSING (owner, 2026-11-04)
+=============================================
+"first close any old versions of its windows that are no longer active, preserve
+the ones that are, and restart only the missing items." A seat whose process ended
+drops its tile to a bare shell prompt (`mandrake@Archmagi ~dev %`, the profile's
+fallback shell) or, on a non-zero exit, to WT's `[process exited with code N]`,
+under the same pinned title, so a title alone cannot tell old from live. MEASURED
+2026-11-04: 11 fleet windows, 6 of them dead at a prompt. Each fleet window's
+visible terminal text is read through UI Automation: a window whose every terminal
+ends in either line is DEAD and closed; anything else, an unreadable window
+included, is LIVE and kept. A seat with a live window is not
+launched again. Retired titles (AGENT FOUNDRY) are swept the same way: closed only
+when dead.
 
 Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
@@ -61,7 +77,8 @@ param(
     [int]$TimeoutSec = 30,
     [int]$DelaySec = 0,
     [switch]$Test,
-    [switch]$CloseTest
+    [switch]$CloseTest,
+    [switch]$Survey
 )
 
 $ErrorActionPreference = 'Stop'
@@ -138,6 +155,29 @@ if ($CloseTest) {
     return
 }
 
+Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
+
+# 'dead' only when every terminal in the window ends, on screen, in a bare shell
+# prompt or WT's exit line; 'live' when any does not; 'unknown' when UI Automation
+# cannot read it. Only 'dead' is ever closed: an unread window is kept. The tab
+# header is a text element too (class TextBlock), so only TermControl is read.
+function Get-TermState([IntPtr]$h) {
+    try {
+        $el = [System.Windows.Automation.AutomationElement]::FromHandle($h)
+        $cond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ClassNameProperty, 'TermControl')
+        $terms = $el.FindAll([System.Windows.Automation.TreeScope]::Descendants, $cond)
+        if ($terms.Count -eq 0) { return 'unknown' }
+        foreach ($t in $terms) {
+            $tp = $t.GetCurrentPattern([System.Windows.Automation.TextPattern]::Pattern)
+            $s = (($tp.GetVisibleRanges() | ForEach-Object { $_.GetText(-1) }) -join "`n").TrimEnd()
+            $last = ($s -split "`n")[-1].Trim()
+            if ($last -notmatch '^\S+@\S+ .*[%$#]$' -and $last -notmatch '\[process exited with code') { return 'live' }
+        }
+        return 'dead'
+    } catch { return 'unknown' }
+}
+
 # SPI_GETWORKAREA — the screen minus the taskbar, in physical pixels.
 $work = New-Object Fleet+RECT
 [void][Fleet]::SystemParametersInfoW(0x0030, 0, [ref]$work, 0)
@@ -182,6 +222,23 @@ $titleFor = [ordered]@{
 
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
 
+# Sweep every fleet title, retired ones included, whatever -Seats names: a dead
+# window is dead. -Survey reports and stops; a real launch closes the dead.
+if (-not $Test) {
+    foreach ($name in $titleFor.Values) {
+        foreach ($h in [Fleet]::WindowsTitled($name)) {
+            $state = Get-TermState $h
+            if ($Survey) { "{0,-14} {1,-8} {2}" -f $name, $state, $h; continue }
+            if ($state -eq 'dead') {
+                [void][Fleet]::SendMessageW($h, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero)   # WM_CLOSE
+                "closed dead $name window $h"
+            }
+        }
+    }
+    if ($Survey) { return }
+    Start-Sleep -Milliseconds 500
+}
+
 foreach ($seat in $Seats) {
     # FOUNDRY is retired (owner, by card 2026-11-02); a stale caller (claude-account's
     # machine.json relaunch list) reopened it after an account switch on 2026-11-03.
@@ -194,9 +251,10 @@ foreach ($seat in $Seats) {
     $title = if ($Test) { "$($titleFor[$seat]) [test]" } else { $titleFor[$seat] }
     $r = $place[$seat]
 
-    # Any window already carrying this title is a seat that is ALREADY OPEN.
-    # Remember it, so the wait below cannot latch onto it and move the wrong one.
+    # Any window still carrying this title after the sweep is a seat that is
+    # ALREADY OPEN and live (or unreadable, so kept): leave it where it is.
     $before = [Fleet]::WindowsTitled($title)
+    if ($before.Count -gt 0 -and -not $Test) { "kept live $title"; continue }
 
     # `--title` pins the window title the same way the seat profile's tabTitle
     # does, so the wait-and-place path below is EXACTLY the one being tested.
