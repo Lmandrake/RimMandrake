@@ -54,28 +54,75 @@
  "decisions": [],
  "asks": [
   {
-   "id": "ask_irrigation",
-   "status": "draft",
+   "id": "ask_root",
+   "text": "Is the paragraph above FlowWorks? Correct any word, or say \"yes\". (the paragraph: record.json root_draft / turn_01.md)",
+   "decision": "The root text: what FlowWorks is and the smallest version he would still want; stage 1 cannot end without his approval of it.",
    "about": [
-    "inv_irrigation"
+    "inv_dig_depth",
+    "inv_flow_level",
+    "inv_stock",
+    "inv_fire",
+    "inv_slime"
    ],
+   "owner_cites": [
+    "OWNER:1793766819481702813"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793793891",
+   "status": "sent",
    "source": [
-    "design/validation_walks/RimMandrake/FlowWorks.md:101"
+    "design/concepts/FlowWorks/turn_01.md"
    ],
-   "text": "Picture a field beside a filled canal in a dry summer. Today only flood water that soaks into the ground waters plants (and only with Explosive Growth loaded). Is the canal itself meant to water the field beside it, and how far from the bank?"
+   "review": {
+    "by": "rm-judge ab76299400ce54ecc (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Answerable with yes; decides stage 1. Fixed on review: the open-the-canal line marked as agent reading; smallest version reworded so it cannot read as shrinking built plumbing."
+   }
   },
   {
    "id": "ask_defense_story",
-   "status": "draft",
+   "status": "sent",
    "about": [
     "inv_flow_level",
     "inv_stock",
     "inv_fire"
    ],
    "source": [
-    "design/RimMandrake/flowworks_mod_definition.md:69"
+    "design/RimMandrake/flowworks_mod_definition.md:69",
+    "design/validation_walks/RimMandrake/FlowWorks.md:77"
    ],
-   "text": "Walk me through the raid you want FlowWorks to win: where is the canal, what is in it, when do you open it, and what do the raiders do? I want the one scene that, if it fails, means FlowWorks failed you."
+   "text": "Picture the raid FlowWorks must win. My guess at the scene: a tar canal crosses the raiders' approach and stays empty until they are spotted. Then you open it, it fills, and you light it as they cross. Is that the scene? Or is it a canal that stays full all the time (water or slime), or something else?",
+   "decision": "Which defence scene is the core acceptance scene (opened at raid time vs always full; which liquid) that a checker stages first and the mod is judged on.",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793793891",
+   "review": {
+    "by": "rm-judge ab76299400ce54ecc (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "No ruling names the judged scene; the guess is the agent-written spec loop; his answer picks the raid a tester stages first."
+   }
+  },
+  {
+   "id": "ask_irrigation",
+   "status": "sent",
+   "about": [
+    "inv_irrigation"
+   ],
+   "source": [
+    "design/validation_walks/RimMandrake/FlowWorks.md:101",
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs:32",
+    "design/RimMandrake/flowworks_mod_definition.md:411"
+   ],
+   "text": "On 2026-09-16 you wrote that plants near a canal act *\"as though watered\"*, and ruling 36 said that effect stays, just not drawn. It is not built in FlowWorks yet (with default settings nothing in FlowWorks waters crops; CrackedLands has a version we can copy). How far from the bank should a full canal water crops: 1, 3 or 5 squares?",
+   "decision": "The reach of canal-side watering (squares from the bank); that it waters is settled by his 2026-09-16 words and ruling 36. Resolves c_irrigation.",
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793793891",
+   "review": {
+    "by": "rm-judge ab76299400ce54ecc (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Pass on the radius only: whether canals water crops is already answered (his 09-16 words, ruling 1, ruling 36). Reworded to ask only the reach."
+   }
   }
  ],
  "inventory": [
@@ -762,5 +809,15 @@
   "summary": "175 scenes across validation*.py and the northstar runners: 59 lack an asserted start (prepare_site asserts cleared+dry, wet/fire scenes do not re-read what they staged), 86 lack a discriminating control (64 none, 22 weak), 19 no restore and 96 partial (fresh throwaway maps left staged; settings poked and not restored, cf. FLOWWORKS_PROOF_POKES_RESTORE_PRIOR), hold decided by none. Worst: validation_hose.py run_live/run_relay/run_maze; live_session.py b6_flood (no flood-without-canal control); river_scenes_walk.py R2/R4/R5 repaint the shared river map with no restore.",
   "caveat": "165 of 175 rows machine-classified, 15 read by hand, 2 of 5 spot-checks misclassified: expect 10-20% wrong rows. Stage 3 re-reads each scene it files a build item for.",
   "source": "design/concepts/FlowWorks/script_audit.json"
+ },
+ "root_draft": {
+  "text": "FlowWorks lets you dig into the ground, and the liquids already on the map (water, tar, fuel, slime) flow into what you dug and settle at one level, drawn from a real supply that visibly shrinks and refills slowly. Its main job is defence: an empty canal slows raiders, a water canal makes them wade, a fuel canal can be set alight and burns for a long time, and a slime canal is nearly impossible to cross. Deciding when to open the canal is the player's call. Watering crops, the plumbing (pipes, pumps, tanks, hoses, bottles) and reshaping the land all use the same liquids and the same supply. What the mod is judged on first: digging, liquid flowing to one level, a supply that pays for every litre, and the four defensive canals (empty, water, burning, slime) working in a real raid; everything else built stays.",
+  "source": [
+   "design/concepts/FlowWorks/turn_01.md",
+   "design/RimMandrake/flowworks_mod_definition.md:52",
+   "design/validation_walks/RimMandrake/FlowWorks.md:77"
+  ],
+  "speaker": "agent",
+  "status": "draft, awaiting his approval via ask_root"
  }
 }
