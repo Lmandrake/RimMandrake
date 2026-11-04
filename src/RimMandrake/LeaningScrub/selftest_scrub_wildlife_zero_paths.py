@@ -187,6 +187,48 @@ ADDS = ("PatchOperationAdd", "PatchOperationAddModExtension")   # add a row / an
 GUARDS = ("PatchOperationConditional", "PatchOperationTest", "PatchOperationFindMod", "PatchOperationSequence")
 NATIVE_RX = re.compile(r"\b(?:%s)\b" % "|".join(re.escape(x) for x in spec.NATIVES))
 EQ_RX = re.compile(r"""defName\s*=\s*["']([^"']+)["']""")
+# The widen-only selector FaunaNorm_Law5_Tolerance.xml generates: ONE named def's band value, with a numeric comparison
+# that can only shrink what the selector reaches. Stripped before the scope tests; the value it writes is still judged.
+BAND_PRED_RX = re.compile(r'^(/?Defs/ThingDef\[defName="[^"]+"\]/statBases/(ComfyTemperature(?:Min|Max)))'
+                          r'\[number\(\.\)\s*[<>]\s*-?\d+(?:\.\d+)?\]$')
+
+
+def band_scope(xpath):
+    """The xpath with a widen-only numeric predicate removed; any other shape comes back unchanged."""
+    m = BAND_PRED_RX.match(xpath)
+    return m.group(1) if m else xpath
+
+
+def band_value_bad(val, xpath):
+    """What a band patch's <value> breaks: a value outside the seasonal range, or no value for the band it selects
+    (a Replace with an empty value deletes the band)."""
+    bad = []
+    for el in (val.iter() if val is not None else ()):
+        try:
+            v = float(el.text)
+        except (TypeError, ValueError):
+            continue
+        if (el.tag == "ComfyTemperatureMin" and not v < lo_t) or (el.tag == "ComfyTemperatureMax" and not v > hi_t):
+            bad.append("%s=%s" % (el.tag, v))
+    selected = re.search(r"ComfyTemperature(?:Min|Max)$", xpath)
+    if selected and val is not None and val.find(selected.group(0)) is None:
+        bad.append("no %s written" % selected.group(0))
+    return bad
+
+
+_B = '/Defs/ThingDef[defName="RM_Vurra"]/statBases/ComfyTemperatureMax'
+check("Z4 form strips widen-only", band_scope(_B + "[number(.) < 61.9]") == _B, band_scope(_B + "[number(.) < 61.9]"))
+for _x in (_B + "[number(.) < 61.9 or true()]", _B + "[. < 61.9]",
+           '/Defs/ThingDef[defName="RM_Vurra" or defName="RM_Chikka"]/statBases/ComfyTemperatureMax[number(.) < 61.9]',
+           '/Defs/ThingDef[defName="RM_Vurra"]/statBases[number(.) < 61.9]',
+           '/Defs/*[defName="RM_Vurra"]/statBases/ComfyTemperatureMax[number(.) < 61.9]'):
+    check("Z4 form keeps %s" % _x, band_scope(_x) == _x, band_scope(_x))
+_v = lambda body: ET.fromstring("<value>%s</value>" % body)
+check("Z4 value keeps a wide band", not band_value_bad(_v("<ComfyTemperatureMax>%s</ComfyTemperatureMax>" % (hi_t + 1)), _B))
+check("Z4 value red on a narrow band", band_value_bad(_v("<ComfyTemperatureMax>%s</ComfyTemperatureMax>" % (hi_t - 1)), _B))
+check("Z4 value red on no band", band_value_bad(_v(""), _B))
+check("Z4 value red on the other band", band_value_bad(_v("<ComfyTemperatureMin>-50</ComfyTemperatureMin>"), _B))
+
 patch_hits, patch_seen, comfy_ok = [], 0, 0
 for path in glob.glob(os.path.join(SRC, "**", "Patches", "**", "*.xml"), recursive=True):
     root = parse(path)
@@ -218,24 +260,18 @@ for path in glob.glob(os.path.join(SRC, "**", "Patches", "**", "*.xml"), recursi
             continue
         names = EQ_RX.findall(text)
         # Safe scope = exactly one defName equality and nothing that widens it (or, |, comparisons, functions).
-        risky = re.search(r"!=|\bor\b|\||[<>]|\(|\.\.|::|\w//|\]//", text.replace("text()", "").replace("[", " [")) \
+        scope = band_scope(text)
+        risky = re.search(r"!=|\bor\b|\||[<>]|\(|\.\.|::|\w//|\]//", scope.replace("text()", "").replace("[", " [")) \
             or len(names) != 1
-        if NATIVE_RX.search(text) and cls not in ADDS and not re.search(r"ComfyTemperature(?:Min|Max)$", text) and (
-                re.search(r"(?:statBases|race|\])$", text) or re.search(r"/statBases/?$|/race(?:/|$)", text)):
+        if NATIVE_RX.search(text) and cls not in ADDS and not re.search(r"ComfyTemperature(?:Min|Max)$", scope) and (
+                re.search(r"(?:statBases|race|\])$", scope) or re.search(r"/statBases/?$|/race(?:/|$)", scope)):
             patch_hits.append("%s: %s on a native's def/statBases/race %s" % (rel, cls, text))
             continue
         if comfy and NATIVE_RX.search(text) and not risky:
             # A band patch on ONE named native is safe when every value it writes keeps that band around the whole
             # seasonal range: each ComfyTemperatureMin < lo_t and each ComfyTemperatureMax > hi_t.
             val = op.find("value") if op is not None else None
-            bad = []
-            for el in (val.iter() if val is not None else ()):
-                try:
-                    v = float(el.text)
-                except (TypeError, ValueError):
-                    continue
-                if (el.tag == "ComfyTemperatureMin" and not v < lo_t) or (el.tag == "ComfyTemperatureMax" and not v > hi_t):
-                    bad.append("%s=%s" % (el.tag, v))
+            bad = band_value_bad(val, scope)
             if cls not in ADDS + ("PatchOperationReplace",) or val is None or bad:
                 patch_hits.append("%s: %s on %s narrows the band %s" % (rel, cls, text, bad or "(no value)"))
             comfy_ok += 1
@@ -254,7 +290,8 @@ check("Z4 patches", not patch_hits, patch_hits)
 # path under src/ -> (fingerprint, why it cannot touch RM_LeaningScrub). The fingerprint pins the REVIEWED behaviour:
 # sha256 of the WHOLE file (a guard a few lines below the match decides behaviour), except the WINDOWED files: big
 # multi-purpose bridge/dump sources where only the lines matching CODE_RX +- WINDOW are pinned. Any change turns Z5 red
-# until someone re-reads the file and records the new value (`--fingerprints` prints them). Reviewed 2026-11-02, this item.
+# until someone re-reads the file and records the new value (`--fingerprints` prints them). Reviewed 2026-11-02, this item; Warscar and
+# TheRot re-read 2026-11-03 (NIGHTLY_COP_FIX_RED_NZZZPC_NAFD: hospice settings and a label; their roster code untouched).
 # STATED LIMIT: a WINDOWED file's change outside its windows is not seen (GPT round 4); those four are bridge-tool and
 # dump sources that act only when a tool is called, and the live A1 census is the arbiter of a real map in any case.
 REVIEWED = {
@@ -271,10 +308,10 @@ REVIEWED = {
     "RimMandrake/RimDefDump/Source/DefDumper.cs": ("2e01cc23efd3d815", "reads rosters for the dump; writes none"),
     "RimMandrake/Scarlands/Source/Kernel/RM_TetchikGateKernel.cs": ("8fece90db54fd50a", "pure gate arithmetic, comment names the "
         "method"),
-    "RimMandrake/Scarlands/Source/RM_WarscarMod.cs": ("44ef14cf623d03cf", "RM_Warscar only, settings-off species"),
+    "RimMandrake/Scarlands/Source/RM_WarscarMod.cs": ("04432e3fd8a690cf", "RM_Warscar only, settings-off species"),
     "RimMandrake/Scarlands/Source/RM_WarscarPatches.cs": ("e6a09668741b753e", "CommonalityOfAnimalNow postfix returns at once unless "
         "def is RM_Tetchik"),
-    "RimMandrake/TheRot/Source/RM_TheRotMod.cs": ("043d95c7cc17c59f", "RM_TheRot only, removes RM_Hwelgrue"),
+    "RimMandrake/TheRot/Source/RM_TheRotMod.cs": ("b4be10c77fcee8f0", "RM_TheRot only, removes RM_Hwelgrue"),
     "RimMandrake/TheSump/Source/RM_KethrelStartup.cs": ("4ad9eba0dbfbf322", "RM_TheSump only, RM_Kethrel rows"),
     "RimMandrake/TileFeatures/Source/RM_TileFeatureApplier.cs": ("480a08ceb14ac4ec", "snapshots/restores TileMutatorDef factors; "
         "site maps have their centre's mutators stripped"),
