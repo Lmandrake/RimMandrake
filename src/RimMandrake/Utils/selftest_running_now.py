@@ -319,6 +319,10 @@ state["steve_jobs"]["J1.json"] = {"f": 5}     # the shape before this change: re
 sv = R.collect_steve(env, state, None)
 check("an unreadable result leaves the day's counts unknown, not short", sv["jobs_known"] is False)
 check("an unreadable result leaves Live Testing UNMEASURED, not short", sv["live"] is None)
+env_ns = Fake(dirs={done_dir: [], R.TESTQ + "/running": [], R.TESTQ + "/pending": []})
+sv = R.collect_steve(env_ns, {}, None)
+check("a dead steward keeps the queue readings and says why", sv["state"] is None and sv["running"] == 0 and "steward UNMEASURED" in sv["reason"] and sv["age"] is None)
+check("an unread history is UNMEASURED, a missing one is merely new", "UNMEASURED" in R.window_stats(R.read_history(Fake(fail=())) , NOW, 86400, "24 h")[0])
 check("unread item states are no count of waiting items", R.it_waiting(None) is None and "UNMEASURED items wait" in R.game_idle_text({"idle_pct": 1, "window_min": 1, "used_min": 0, "waiting": None}))
 
 check("verdict: above the usual with high being bad warns", R.versus(9, (1, 5)) == ("high, usual 1-5", R.WARN))
@@ -522,6 +526,7 @@ with tempfile.TemporaryDirectory() as d:
     down.clock = good_f.clock + 400
     R.refresh_fleet(down)
     saved = json.load(open(R.FLEET_CACHE))
+    check("a failed modcheck read clears the old count", "accepted" not in saved and saved["accepted_why"])
     check("a failed refresh keeps the last good reading and says why", saved["mods"] == [] and saved["why"] and saved["good_t"] == good_f.clock)
     check("failed run returns 1 and keeps the old page byte for byte", rc == 1 and open(R.OUT).read() == before)
     check("failed run records why", "table broke" in json.load(open(R.STATE)).get("last_error", ""))

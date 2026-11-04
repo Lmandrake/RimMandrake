@@ -622,7 +622,8 @@ def collect_game_idle(env, now, waiting):
     if oldest is None:
         raise Unmeasured("runs.jsonl has no rows")
     window = IDLE_WINDOW_MIN if not cut_off or oldest <= cut else max(1, int((now - oldest) // 60))
-    return {"window_min": window, "used_min": len(used), "idle_pct": round(100 * (window - len(used)) / window),
+    busy = min(len(used), window)       # the span can touch one more epoch minute than it is long
+    return {"window_min": window, "used_min": busy, "idle_pct": round(100 * (window - busy) / window),
             "waiting": waiting}
 
 
@@ -889,11 +890,13 @@ def probe_steve(env):
 
 def collect_steve(env, state, items=None):
     now = env.now()
-    sj = env.read_json(TESTQ + "/steward.json")
-    if not isinstance(sj.get("epoch"), (int, float)):
-        raise Unmeasured("steward.json has no epoch")
-    out = {"state": sj.get("state"), "fault": sj.get("fault"), "reason": sj.get("reason") or "", "age": now - sj["epoch"],
-           "incident": sj.get("incident") or None}
+    sj, why = guarded(env.read_json, TESTQ + "/steward.json")
+    if sj is not None and not isinstance(sj.get("epoch"), (int, float)):
+        sj, why = None, "steward.json has no epoch"
+    # a dead steward costs its own words: the queue, the results and the machine reading are other sources
+    out = {"state": None, "reason": "steward UNMEASURED: %s" % why, "age": None, "incident": None} if sj is None else {
+        "state": sj.get("state"), "fault": sj.get("fault"), "reason": sj.get("reason") or "", "age": now - sj["epoch"], "incident": sj.get("incident") or None}
+    sj = sj or {}
     if sj.get("since"):
         out["since"] = iso_epoch(sj["since"])
     for d in ("running", "pending"):
@@ -1537,7 +1540,7 @@ def steve_svg(p):
     fn = versus(fl or 0, sv.get("usual_failed")) if known else (None, DIM)
     tile_(318, y, 112, "FAILED 24 H", n(fl) if known else "?", (BAD if fl else DIM) if known else WARN, None, fn[0], fn[1])
     last = sv.get("last")
-    if last:
+    if last and known:     # an unread result could be the newest job
         word = last["o"] + ("/" + last["c"] if last["c"] else "")
         tile_(438, y, 240, "LAST JOB, %s AGO" % ago(now - last["f"]).upper(), clip("%s %s" % (last["p"], word), 26), GOOD if last["o"] == "DONE" else BAD, None, "normal: under 1 h while the lane runs", DIM)
     else:
@@ -1545,7 +1548,10 @@ def steve_svg(p):
     rn = versus(sv.get("rows_h") or 0, sv.get("usual_rows_h"), False) if known else (None, DIM)
     tile_(686, y, 110, "ROWS/HOUR 24 H", "%.0f" % sv["rows_h"] if known else "?", TEXT if known else WARN, None, rn[0], rn[1])
     age = sv["age"]
-    tile_(804, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT, None, "normal under 5 min", BAD if age > 300 else DIM)
+    if age is None:
+        tile_(804, y, 102, "STEWARD WROTE", "?", WARN)
+    else:
+        tile_(804, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT, None, "normal under 5 min", BAD if age > 300 else DIM)
     pa = "%s old" % ago(good_age) if good_age is not None else "never"
     tile_(914, y, 112, "MACHINE READING", pa, WARN if cache.get("why") or good_age is None or good_age > 900 else DIM, None, "normal under 15 min", DIM)
     live_row(s, 248, sv.get("live"), "Busy: share of 24 h with a finished job running. A job still running counts once it ends.", "Jobs here that named an item, had PASS rows, and that item closed in 24 h")
@@ -1588,8 +1594,9 @@ def steve_text(p):
     if not sv:
         return "STEVEDESKTOP  UNMEASURED (%s)" % p["steve_why"]
     g = cache.get("good") or {}
+    said = lambda v: "UNMEASURED" if v is None else v  # noqa: E731
     return "\n".join([
-        "STEVEDESKTOP  %s  jobs running %s, queued %s, done 24 h %s, failed 24 h %s" % (sv.get("state"), sv.get("running"), sv.get("pending"), sv.get("done") if sv.get("jobs_known") else "UNMEASURED", sv.get("failed") if sv.get("jobs_known") else "UNMEASURED"),
+        "STEVEDESKTOP  %s  jobs running %s, queued %s, done 24 h %s, failed 24 h %s" % (said(sv.get("state")), said(sv.get("running")), said(sv.get("pending")), sv.get("done") if sv.get("jobs_known") else "UNMEASURED", sv.get("failed") if sv.get("jobs_known") else "UNMEASURED"),
         "routes %s" % " ".join("%s:%s" % (k, "up" if v else "DOWN") for k, v in (cache.get("routes") or {}).items()),
         "load %s  ram %s  disk %s  gpu %s  game %s" % tuple(g.get(k, "UNMEASURED") for k in ("load", "ram", "disk", "gpu", "game")),
         live_text("live testing", sv.get("live")),
@@ -1890,6 +1897,7 @@ def refresh_fleet(env, save=True):
         out = old
     else:
         out = dict(got, t=now, good_t=now, why=None)
+    out.pop("accepted", None)       # an old count must not pass as "at today's code"
     raw, why_m = guarded(env.mods_status)
     if raw is not None:
         c, why_m = guarded(mods_status_counts, raw)
@@ -1931,11 +1939,17 @@ def timers_rows(timers, units, now):
     return rows
 
 
+class UnreadHistory(list):
+    """History that exists and could not be read: empty to the code that appends to it, UNMEASURED to the reader."""
+
+
 def read_history(env):
     try:
         text = env.read_text(HIST)
-    except OSError:
+    except FileNotFoundError:
         return []
+    except OSError:
+        return UnreadHistory()
     out = []
     for line in text.splitlines():
         try:
@@ -1959,6 +1973,8 @@ def append_history(env, hist, sample):
 
 
 def window_stats(hist, now, secs, label):
+    if isinstance(hist, UnreadHistory):
+        return "last %s: UNMEASURED (the history file could not be read)" % label, None
     rows = [r for r in hist if now - r["t"] <= secs]
     if not rows:
         return "last %s: no history yet" % label, None
