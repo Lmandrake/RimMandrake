@@ -319,3 +319,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM A1 (GREEN-FULL), read-only proof","ts":"2026-11-04T13:26:15Z","tsn":1793798775720406732}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:26:48Z","tsn":1793798808296472311}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T13:33:19Z","tsn":1793799199789008851}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:42:29Z","tsn":1793799749156208844}
