@@ -187,7 +187,8 @@ def unready_at(sha):
 
 def proof(now=None):
     """-> (ok, [lines]). The item's own bar: a filler job passed deploy FRESH (a canary proves the lane, not that the
-    filler reaches it), the lane left BRAKED, and the stager is alive. A later, unrelated brake (its tail newer than the
+    filler reaches it), the lane left BRAKED, and the stager is alive and current for origin/main's companion sources
+    (a stale local origin/main reads as not current: fetch first). A later, unrelated brake (its tail newer than the
     proving job) does not un-prove this fix."""
     now = time.time() if now is None else now
     lines, ok = [], True
@@ -196,6 +197,11 @@ def proof(now=None):
     good = st.get("state") == "staged" and age < PROOF_MAX_AGE_S
     ok &= good
     lines.append("%s stager: %s want %s, %.0f s old" % ("ok  " if good else "FAIL", st.get("state"), str(st.get("want"))[:12], age))
+    want = wanted()         # a stager that stopped following source changes stays `staged` and recent until PROOF_MAX_AGE_S
+    current = want is not None and st.get("want") == want
+    ok &= current
+    lines.append("%s stager current: origin/main's companion sources hash %s, the stager last saw %s" % (
+        "ok  " if current else "FAIL", str(want)[:12], str(st.get("want"))[:12]))
     since = S.parse_ts(FIXED_AT)
     best = None
     for rec in T.records("done"):

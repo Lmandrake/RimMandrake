@@ -6,3 +6,26 @@ ok   stager: staged want 1c4d3873ecae, 32 s old
 ok   job J20261103T235805Z-399647 (BENCH.filler) passed deploy with companion FRESH, outcome DONE
 ok   steve.state RUNNING: running J20261103T235805Z-399647
 PROOF PASS
+--- blind-check gaps G1-G3, proof-only gen 5: mutants of companion_stage.py against selftest_companion_stage.py (killed = selftest exit 1)
+KILLED   G1 no_compare_ok rc 1 | FAIL  proof: a staged, recent record for other sources: FAIL: ["FAIL stager current: origin/main's companion s
+KILLED   G1 current_true rc 1 | FAIL  proof: a staged, recent record for other sources: FAIL: []
+KILLED   G1 no_none_guard rc 1 | FAIL  proof: nothing hashed and no want on the record is not a match
+KILLED   G1 hash_or_none rc 1 | FAIL  proof: origin/main cannot be hashed: FAIL, never a pass by default: []
+KILLED   G2 no_fresh rc 1 | FAIL  proof: a filler job with companion STALE is not the proof: FAIL: []
+KILLED   G2 not_stale rc 1 | FAIL  proof: a filler job with companion MISSING is not the proof: FAIL: []
+KILLED   G3 no_since rc 1 | FAIL  proof: a filler job FRESH one second before FIXED_AT: FAIL: []
+KILLED   G3 since_early rc 1 | FAIL  proof: a filler job FRESH one second before FIXED_AT: FAIL: []
+KILLED   G3 since_late rc 1 | FAIL  proof: the same job one second after FIXED_AT: PASS, so those reds were the clause
+KILLED   old proof_any_requester rc 1 | FAIL  proof: a canary alone is not the filler reaching the lane: FAIL
+KILLED   old proof_ignores_brake rc 1 | FAIL  proof: the brake that began this still holds: FAIL: FAIL steve.state BRAKED: tail
+KILLED   old no_best rc 1 | FAIL  proof: no job passed deploy FRESH yet: FAIL
+KILLED   old good_off rc 1 | FAIL  proof: a stager gone silent: FAIL
+KILLED   tail_max rc 1 | FAIL  proof: a tail reaching back before the proving job is still this brake: FAIL
+KILLED   tail_nojobs rc 1 | FAIL  proof: a brake naming no jobs is still this brake: FAIL
+KILLED   tail_unreadable rc 1 | FAIL  proof: a tail with one unreadable job is still this brake: FAIL
+--- companion_stage.py proof on the live queue, 2026-11-04T00:2xZ
+ok   stager: staged want 1c4d3873ecae, 28 s old
+ok   stager current: origin/main's companion sources hash 1c4d3873ecae, the stager last saw 1c4d3873ecae
+ok   job J20261104T000523Z-7c7de5 (BENCH.filler) passed deploy with companion FRESH, outcome DONE
+ok   steve.state RUNNING: running J20261104T001205Z-c4d923
+PROOF PASS

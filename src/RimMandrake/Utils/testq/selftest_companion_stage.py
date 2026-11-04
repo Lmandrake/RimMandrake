@@ -235,6 +235,39 @@ def main():
     ok, _ = C.proof()
     check(not ok, "proof: no job passed deploy FRESH yet: FAIL")
     fin = "2030-01-01T00:00:00Z"
+
+    def filler_done(jid, finished, comp_state, where="top"):
+        rec = {"job": dict(S.make_job("Mock", {"chains": ["c1"]}, "guard", T.FILLER, sha_new), id=jid),
+               "result": {"outcome": "DONE", "deployed": {"companion": {"state": comp_state}}}}
+        if where == "top":
+            rec["finished"] = finished
+        elif where == "result":
+            rec["result"]["finished"] = finished
+        S.dump(rec, T.q("done", jid + ".json"))
+
+    def only_job_clause_red(msg):
+        """Everything else in the proof is green, so what is red is the job clause, not a neighbour."""
+        ok, lines = C.proof()
+        red = [x for x in lines if x.startswith("FAIL")]
+        check(not ok and len(red) == 1 and "no filler job" in red[0], "%s: %s" % (msg, red))
+
+    S.dump({"state": "RUNNING", "reason": "x", "jobs": []}, T.q("steward.json"))
+    # G2: the item's bar is companion FRESH, and a filler job that got no further than a stale companion is the incident
+    for comp_state in ("STALE", "MISSING", "UNSTAMPED", "UNMEASURED"):
+        filler_done("Jnotfresh", fin, comp_state)
+        only_job_clause_red("proof: a filler job with companion %s is not the proof: FAIL" % comp_state)
+    # G3: the contract's `after this fix`: a FRESH filler job before FIXED_AT proves nothing about the fix
+    filler_done("Jnotfresh", "2026-11-03T22:39:59Z", "FRESH")
+    only_job_clause_red("proof: a filler job FRESH one second before FIXED_AT: FAIL")
+    filler_done("Jnotfresh", "2026-11-03T09:30:58Z", "FRESH", where="result")
+    only_job_clause_red("proof: the same, its time in result.finished: FAIL")
+    filler_done("Jnotfresh", None, "FRESH", where="nowhere")
+    only_job_clause_red("proof: a FRESH filler job with no finish time at all: FAIL")
+    filler_done("Jnotfresh", "2026-11-03T22:40:01Z", "FRESH")
+    check(C.proof()[0], "proof: the same job one second after FIXED_AT: PASS, so those reds were the clause")
+    os.remove(T.q("done", "Jnotfresh.json"))
+    os.remove(T.q("steward.json"))
+
     j = S.make_job("Mock", {"chains": ["c1"]}, "guard", "Operations.canary", sha_new)
     j["id"] = "Jfresh"
     S.dump({"job": j, "finished": fin, "result": {"outcome": "DONE", "deployed": {"companion": {"state": "FRESH"}}}},
@@ -254,7 +287,38 @@ def main():
     S.dump({"job": j2, "finished": "2031-01-01T00:00:00Z", "result": {"outcome": "INVALID", "cause": "CANARY"}}, T.q("done", "Jnew.json"))
     S.dump({"state": "BRAKED", "reason": "later", "jobs": ["Jnew"]}, T.q("steward.json"))
     check(C.proof()[0], "proof: a later brake on newer jobs is a new incident")
+    for jobs, msg in ((["J0", "Jnew"], "a tail reaching back before the proving job"), ([], "a brake naming no jobs"),
+                      (["Jgone"], "a brake naming a job with no record"),
+                      (["Jgone", "Jnew"], "a tail with one unreadable job")):
+        S.dump({"state": "BRAKED", "reason": "tail", "jobs": jobs}, T.q("steward.json"))
+        check(not C.proof()[0], "proof: %s is still this brake: FAIL" % msg)
     S.dump({"state": "RUNNING", "reason": "x", "jobs": []}, T.q("steward.json"))
+
+    # G1: the contract's `current for origin/main's companion sources`
+    def only_current_clause_red(msg):
+        ok, lines = C.proof()
+        red = [x for x in lines if x.startswith("FAIL")]
+        check(not ok and len(red) == 1 and "stager current" in red[0], "%s: %s" % (msg, red))
+
+    check(C.proof()[0], "proof: green before the source commit")
+    live = T.read_json(state_file())
+    S.dump(dict(live, want="a" * 64), state_file())
+    check(T.companion_hold() is not None, "a record staged for other sources holds the filler")
+    only_current_clause_red("proof: a staged, recent record for other sources: FAIL")
+    S.dump(live, state_file())
+    commit(tool, "class F {}\n")
+    only_current_clause_red("proof: a companion source commit the stager has not seen: FAIL")
+    rec = C.run_pass()
+    check(rec["state"] == "staged" and rec["how"] == "built" and C.proof()[0], "proof: the next pass stages it: PASS: %s" % rec.get("how"))
+    head = git(repo, "rev-parse", "refs/remotes/origin/main")
+    live = T.read_json(state_file())
+    git(repo, "update-ref", "-d", "refs/remotes/origin/main")
+    only_current_clause_red("proof: origin/main cannot be hashed: FAIL, never a pass by default")
+    S.dump(dict(live, want=None), state_file())
+    check(not C.proof()[0], "proof: nothing hashed and no want on the record is not a match")
+    S.dump(live, state_file())
+    git(repo, "update-ref", "refs/remotes/origin/main", head)
+    check(C.proof()[0], "proof: origin/main back: PASS")
     check(not C.proof(time.time() + C.PROOF_MAX_AGE_S + 60)[0], "proof: a stager gone silent: FAIL")
     S.dump(dict(T.read_json(state_file()), state="failed"), state_file())
     check(not C.proof()[0], "proof: a failing stager: FAIL")
