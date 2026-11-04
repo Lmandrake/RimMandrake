@@ -2070,6 +2070,17 @@ try:
     check("wired: the pass writes that reading to status.json",
           _s.get(_bkey, {}).get("m") == "MEASURED" and 170 <= (_s.get(_bkey, {}).get("v") or 0) <= 190, _s.get(_bkey))
     check("wired: the pass raises the books-stale alarm on it", _BSTALE in _a, _a)
+    # a jammed clone while the belt keeps landing: several missing commits, old and fresh. The age is the OLDEST one;
+    # the newest (max of the stamps) would read ~1 min and never alarm on the item's own case.
+    (_d / "up" / "f").write_text("5"); _old6 = str(int(time.time()) - 6 * 3600) + " +0000"
+    _g(_d / "up", "commit", "-qam", "e", env={"GIT_COMMITTER_DATE": _old6, "GIT_AUTHOR_DATE": _old6})
+    (_d / "up" / "f").write_text("6"); _new1 = str(int(time.time()) - 60) + " +0000"
+    _g(_d / "up", "commit", "-qam", "g", env={"GIT_COMMITTER_DATE": _new1, "GIT_AUTHOR_DATE": _new1})
+    _g(_d / "up", "push", "-q", "origin", "main")
+    _p, _s, _a = _bpass()
+    check("wired: 3 missing commits aged 3 h, 6 h, 1 min read the oldest (~360 min), behind=3, and alarm",
+          _p[_bkey]["m"] == "MEASURED" and 350 <= _p[_bkey]["v"] <= 370 and _p[_bkey]["x"]["behind"] == 3
+          and _BSTALE in _a, (_p[_bkey], _a))
     _g(_bgit, "pull", "-q", "--ff-only", "origin", "main")
     _p, _s, _a = _bpass()
     check("wired: levelled again reads 0 and the alarm is gone", _p[_bkey]["v"] == 0.0 and _BSTALE not in _a, (_p[_bkey], _a))
