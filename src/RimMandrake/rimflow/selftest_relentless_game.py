@@ -1137,6 +1137,38 @@ def t_retiered_criteria_are_rerecorded():
     x.done()
 
 
+def t_retiered_rerecorded_every_phase():
+    """RELENTLESS_CRITERIA_SYNC_AFTER_RETIER: a worker cannot run `rimflow implemented` on an item relentless carries,
+    so a re-tiered criterion found in the prove phase (its preflight, or a REFUSED live row) is re-recorded by the
+    supervisor, never sent back as a worker's strike; a re-record that changed nothing is refused as before."""
+    retier = dict(CUT, why="I0 A2 is cut at 160 chars on the ledger and the item's criteria now say something else "
+                           "under that id (re-tiered): re-record them")
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    ok(x.st("I0")["game"]["phase"] == "prove" and len(x.w.impl) == 1, "implemented, on to prove")
+    x.w.pre = lambda lines: [retier] if len(x.w.impl) < 2 else []      # the .criteria file changed after implement
+    x.tick()
+    ok(len(x.w.impl) == 2 and x.w.proves == ["I0"] and x.st("I0")["status"] == "game",
+       "prove preflight: re-recorded, then the round runs (impl %d proves %s status %s)"
+       % (len(x.w.impl), x.w.proves, x.st("I0")["status"]))
+    # the run itself refused on the older text: re-recorded once, no worker strike, the next round decides
+    x.w.rows = [dict(retier, at="2099-01-01T00:00:00Z", item="I0", criterion="A2", sha=SHA, outcome="REFUSED",
+                     proof="python3 p.py")]
+    x.tick()
+    st = x.st("I0")
+    ok(len(x.w.impl) == 3 and st["status"] == "game" and not st.get("last_fail"),
+       "a REFUSED re-tiered row is re-recorded, not a strike (impl %d status %s)" % (len(x.w.impl), st["status"]))
+    x.tick()
+    ok(x.w.proves == ["I0", "I0"] and len(x.w.impl) == 3, "the same row once re-recorded: a new round, no re-record again")
+    x.w.rows = [dict(x.w.rows[0], at="2099-01-02T00:00:00Z")]
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] != "game" and st["last_fail"]["class"] == "game_refused" and len(x.w.impl) == 3,
+       "refused again after the re-record: back as before, not re-recorded for ever")
+    x.done()
+
+
 def t_stale_build_caught_before_a_slot():
     """LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT: a game file of the build changed in a later commit: no staging load and no
     prove round can run that sha, so it goes back to be rebuilt before either is spent."""
@@ -1368,7 +1400,7 @@ def main():
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
               t_stage_tries_a_newer_running_game_first,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses,
-              t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_stale_build_caught_before_a_slot,
+              t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_retiered_rerecorded_every_phase, t_stale_build_caught_before_a_slot,
               t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
               t_live_hold_lapses_when_its_game_is_gone,
               t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,

@@ -729,14 +729,30 @@ def _refuse(store, fx, sup, r, item, klass, why, fp, now, acts):
     return _back(store, fx, sup, r, item, klass, why, now, acts)
 
 
+RETIERED = "re-tiered"      # relentless_live.owed's word for a ledger criterion older than the .criteria line of its id
+
+
+def _rerecord(store, fx, item, sha, acts):
+    """The ledger holds an older criterion under an id the .criteria file now words otherwise (re-tiered,
+    GRAFFITI_NORTHSTAR_GREEN_FULL_1): record the manifest again from that file. Only the supervisor can (`rimflow
+    implemented` refuses a worker on an item relentless carries), so a worker sent back for it could change nothing.
+    -> None when recorded, else rimflow's refusal."""
+    again = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"),
+                              (store.load(item).get("contract") or {}).get("live"))
+    acts.append({"do": "game_rerecorded", "item": item, "why": (again or "ok")[:200]})
+    return again
+
+
 def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     """relentless_live.preflight before a game slot is spent (implement, before a staging load, before a proof round):
     -> True when the item was sent back or held. A stale build goes back to be rebuilt on the newer bytes; a refused
     clause goes back to have its criterion or proof line fixed (LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT,
     LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT)."""
     import relentless_live_round
-    bad = fx.game_preflight(item, lines, relentless_live_round.proof_lines(fx.proofs_at(item, sha),
-                                                                           relentless_live_round.SITE_LINE))
+    sites = relentless_live_round.proof_lines(fx.proofs_at(item, sha), relentless_live_round.SITE_LINE)
+    bad = fx.game_preflight(item, lines, sites)
+    if any(RETIERED in b["why"] for b in bad) and _rerecord(store, fx, item, sha, acts) is None:
+        bad = fx.game_preflight(item, lines, sites)
     if not bad:
         return False
     stale = [b for b in bad if b["kind"] == "stale"]
@@ -856,11 +872,6 @@ def step(store, fx, r, item, now, acts, sup):
                 "%s/%s.txt %s: %s" % (PROOFS_DIR, item, k, w) for k, w in bad), now, acts)
         finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
         owed_lines = {k: lines[k] for k in list(g["clauses"]) + finals if k in lines}
-        if recorded and any("re-tiered" in b["why"] for b in fx.game_preflight(item, owed_lines)):
-            # the ledger holds an older criterion under the id (GRAFFITI_NORTHSTAR_GREEN_FULL_1): record the manifest
-            # again from the .criteria file before anything is judged against it
-            again = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"), (st["contract"] or {}).get("live"))
-            acts.append({"do": "game_rerecorded", "item": item, "why": (again or "ok")[:200]})
         if _preflight(store, fx, sup, r, item, owed_lines, now, acts, sha):
             return
         _save(store, item, lambda s: s["game"].update(phase="prove", clauses=list(s["game"]["clauses"]) + finals))
@@ -902,6 +913,16 @@ def step(store, fx, r, item, now, acts, sup):
         if lane:
             return _hold(store, fx, item, "game phase: %s" % lane[0].get("why"), now, acts)
         refused = [v for v in rows.values() if v.get("outcome") == "REFUSED"]
+        at = [v.get("at") for v in refused]
+        if refused and all(RETIERED in (v.get("why") or "") for v in refused):
+            # the run read an older ledger criterion: the supervisor re-records it and the next round's row decides.
+            # Once per entry to the game lane (st["game"] is new each entry), so a re-record that changed nothing is
+            # refused as before instead of spending a round each time
+            if g.get("rerecorded_for") == at:
+                refused = []
+            elif not g.get("rerecorded_for") and _rerecord(store, fx, item, sha, acts) is None:
+                _save(store, item, lambda s: s["game"].update(rerecorded_for=at, proved_at=None))
+                g, refused = store.load(item)["game"], []
         if refused:
             v = refused[0]
             return _refuse(store, fx, sup, r, item, "game_refused", v.get("why") or "refused",
