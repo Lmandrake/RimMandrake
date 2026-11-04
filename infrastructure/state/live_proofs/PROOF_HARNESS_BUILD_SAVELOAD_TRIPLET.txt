@@ -1,0 +1,5 @@
+# One live run of validation_core.saveload_triplet on a GimmeSomeSlack save/load (a former FOUNDRY mod's proof): --live builds
+# the cord scene on a fresh quicktest map, then --triplet saves once and reads live/load/reload arms at one measured tick.
+# Exit 0 only when the TRIPLET row reads PASS (verdict IDENTICAL); SAVE_DROPS_STATE / LOAD_NONDETERMINISTIC / UNMEASURED exit 1.
+live-mods: GimmeSomeSlack
+live-proof A1: python.exe src/RimMandrake/GimmeSomeSlack/validation.py --live --fresh-map < /dev/null > /dev/null; python.exe src/RimMandrake/GimmeSomeSlack/validation.py --triplet < /dev/null

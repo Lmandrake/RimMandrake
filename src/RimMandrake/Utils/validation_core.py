@@ -801,6 +801,267 @@ def _wait_playing(B, budget_s=240, leave_s=30):
     return False, st
 
 
+# ---- saveload_triplet (PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET) ------------------------------------------------------------
+TRIPLET_IDENTICAL = "IDENTICAL"
+TRIPLET_SAVE_DROPS = "SAVE_DROPS_STATE"
+TRIPLET_LOAD_NONDET = "LOAD_NONDETERMINISTIC"
+TRIPLET_UNMEASURED = "UNMEASURED"
+TRIPLET_LOAD_SLACK = 3      # a real load lands at the saved tick + at most this many (Prefs.PauseOnLoad runs ONE DoSingleTick)
+TRIPLET_MIN_TICKS = 10      # > TRIPLET_LOAD_SLACK: a no-op load (still at arm A's target) can never pass for a fresh one
+
+
+def ticks_game(B):
+    """Find.TickManager.TicksGame through jawa/time_clock, or None when unreadable (never a guessed 0)."""
+    r = B.call("jawa/time_clock", _answer=True) or {}
+    v = r.get("ticksGame")
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return None
+
+
+def _flatten(x, pre=""):
+    """A read_state result -> {dotted.key: leaf}. Lists keep their order (index keys); a set-like reading should be sorted
+    by its reader. An empty dict or list is a leaf of its own ({} / []), so {"y": {}} never equals a reading without y.
+    Two paths that spell the same key ({"a.b": 1} beside {"a": {"b": 2}}) raise ValueError: the reading is ambiguous."""
+    out = {}
+
+    def put(k, v):
+        if k in out:
+            raise ValueError("saveload_triplet: two paths flatten to the key %r" % k)
+        out[k] = v
+
+    if isinstance(x, dict):
+        if not x:
+            put(pre, {})
+        for k in sorted(x, key=str):
+            part = _key_part(k)
+            for kk, vv in _flatten(x[k], "%s.%s" % (pre, part) if pre else part).items():
+                put(kk, vv)
+    elif isinstance(x, (list, tuple)):
+        if not x:
+            put(pre, [])
+        for i, v in enumerate(x):
+            for kk, vv in _flatten(v, "%s[%d]" % (pre, i)).items():
+                put(kk, vv)
+    else:
+        put(pre, x)
+    return out
+
+
+def _key_part(k):
+    """A dict key as one path component: a plain str as itself; a str holding . [ ] " , starting with <, or empty, JSON-quoted;
+    any other type
+    tagged with its type -- so {"a.b": 1} vs {"a": {"b": 1}}, {"x[0]": 1} vs {"x": [1]} and {1: v} vs {"1": v} never alias."""
+    if isinstance(k, str):
+        return json.dumps(k) if (not k or k[0] == "<" or any(c in k for c in '.[]"')) else k
+    return "<%s:%r>" % (type(k).__name__, k)
+
+
+def _check_tolerance(tolerance):
+    import math
+    for k, t in (tolerance or {}).items():
+        if isinstance(t, bool) or not isinstance(t, (int, float)) or not math.isfinite(t) or t < 0:
+            raise ValueError("saveload_triplet: tolerance[%r] = %r -- a tolerance is a finite number >= 0" % (k, t))
+
+
+def _nonfinite(flat):
+    import math
+    return sorted(k for k, v in flat.items() if isinstance(v, float) and not math.isfinite(v))
+
+
+def _tol_for(key, tolerance):
+    import fnmatch
+    if key in tolerance:
+        return tolerance[key]
+    for pat, tol in tolerance.items():
+        if fnmatch.fnmatchcase(key, pat):
+            return tol
+    return None
+
+
+_MISSING = object()
+
+
+def triplet_diff(a, b, tolerance=None):
+    """Field-level diff of two flattened readings: {key: [a, b]} for every key that differs. A number differs only beyond
+    its tolerance (exact key or fnmatch pattern in `tolerance`, absolute); a key on one side only differs (missing reads
+    as None in the pair, with the key listed)."""
+    tolerance = tolerance or {}
+    out = {}
+    for k in sorted(set(a) | set(b)):
+        va, vb = a.get(k, _MISSING), b.get(k, _MISSING)
+        if va is _MISSING or vb is _MISSING:
+            out[k] = [None if va is _MISSING else va, None if vb is _MISSING else vb]
+            continue
+        num = (isinstance(va, (int, float)) and isinstance(vb, (int, float))
+               and not isinstance(va, bool) and not isinstance(vb, bool))
+        tol = _tol_for(k, tolerance) if num else None
+        if num and tol is not None:
+            from fractions import Fraction      # exact: 2**53+1 vs float(2**53) must not subtract to 0.0
+            if abs(Fraction(va) - Fraction(vb)) > Fraction(tol):
+                out[k] = [va, vb]
+        elif va != vb or (not num and type(va) is not type(vb)):    # True vs 1, 1 vs "1": a different leaf
+            out[k] = [va, vb]
+    return out
+
+
+def saveload_triplet(B, read_state, ticks=60, tolerance=None, save_name=None, saves_stat=None, wait_saved=None,
+                     wait_playing=None):
+    """Separate "the save drops state" from "the load is nondeterministic" with three arms from ONE save.
+
+    Two lessons of 2026-11-01 (FOUNDRY) misread a one-save-one-load proof: (1) Game.LoadGame with Prefs.PauseOnLoad runs one
+    DoSingleTick after load, so a loaded arm read "right after the load" is a tick ahead of the live one; (2) a save
+    quantises some state (SurfaceLayer writes a tile's base temperature as ushort RoundToInt((t+300)*10)), so a never-saved
+    world differs from its own reload by ~0.03 C. And one load alone cannot say WHICH of the two is wrong.
+
+        save at T0 -> arm A: live, advance to T = T0 + ticks, read
+                   -> arm B: load, MEASURE TicksGame, advance to T, read
+                   -> arm C: load again, the same
+        B != C              LOAD_NONDETERMINISTIC (two loads of one file disagree: the save is not the only cause)
+        B == C, A != B, A != C  SAVE_DROPS_STATE  (both loads agree with each other, not with the live game: the save/load
+                                                   ROUND TRIP loses it -- the writer, or a deterministic loader; the .rws
+                                                   itself says which)
+        A == B == C         IDENTICAL
+        anything unread     UNMEASURED            (save not landed, load not Playing, arm not at T, read failed/empty)
+
+    read_state(B) -> a dict/list reading (flattened to dotted keys and compared field by field), or None when unreadable.
+    It must read only what a save should carry (no wall clock, no frame counter, no random per-load ids), be deterministic
+    over `ticks` on a live game, and NOT advance game time (the clock is checked after each read). tolerance = {key or fnmatch pattern: absolute tolerance} for KNOWN save
+    quantisation, e.g. {"*.temperature": 0.05} (finite, >= 0, else ValueError). Arms are aligned on the measured TicksGame, never on an assumed delta: the
+    loaded arms advance (T - their measured tick), so the PauseOnLoad tick is absorbed; ticks must be >= TRIPLET_MIN_TICKS.
+    A load counts only when the clock reads back at the saved tick (+ <= TRIPLET_LOAD_SLACK) after it; every arm must end
+    its read at the same tick; NaN/inf, an empty reading or two paths flattening to one key are UNMEASURED; IDENTICAL needs
+    AB, BC and AC all equal (a tolerance is not transitive), and a mixed AB/AC is UNMEASURED, never a verdict.
+
+    The save is a NEW file (a same-name file refuses); on return the game is in arm C (a load of that save). Keeper maps:
+    wrap the call in save_guard (rimworld/save_game has written the current slot). The seams saves_stat / wait_saved /
+    wait_playing default to this module's own (_saves_stat / _wait_saved / _wait_playing); the offline selftest passes fakes.
+
+    Returns {"verdict", "why", "save", "target", "arms": {"A"|"B"|"C": {"tick", "loadedAt", "readTick", "state"}}, "AB",
+    "BC", "AC"}
+    where AB/BC/AC are triplet_diff results."""
+    _check_tolerance(tolerance)
+    saves_stat = saves_stat or _saves_stat
+    wait_saved = wait_saved or _wait_saved
+    wait_playing = wait_playing or _wait_playing
+    if int(ticks) < TRIPLET_MIN_TICKS:
+        raise ValueError("saveload_triplet: ticks=%r < %d -- a real load lands up to TRIPLET_LOAD_SLACK ticks past the save, so "
+                         "it could not be told from a load that never ran (the clock left at arm A's target)" % (ticks, TRIPLET_MIN_TICKS))
+    name = save_name or "RM_triplet_%s" % time.strftime("%Y%m%d%H%M%S")
+    res = {"verdict": TRIPLET_UNMEASURED, "why": None, "save": name + ".rws", "target": None, "arms": {},
+           "AB": None, "BC": None, "AC": None, "tolerance": dict(tolerance or {})}
+
+    def unmeasured(why):
+        res["why"] = why
+        return res
+
+    def advance_to(target):
+        """Advance to `target` on the measured clock; -> the measured tick, or an error string."""
+        now = ticks_game(B)
+        if now is None:
+            return "TicksGame unreadable"
+        if now > target:
+            return "arm at tick %d is already past the target %d" % (now, target)
+        if target > now:
+            B.ticks(target - now)
+        end = ticks_game(B)
+        if end != target:
+            return "arm ended at tick %r, not the target %d (asked for %d ticks)" % (end, target, target - now)
+        return end
+
+    def read(arm):
+        try:
+            st = read_state(B)
+        except Exception as ex:  # noqa: BLE001 - a reader crash is an unread arm, never a verdict
+            return "arm %s: read_state raised %r" % (arm, ex)
+        if st is None:
+            return "arm %s: read_state returned None (unreadable)" % arm
+        if not st:
+            return "arm %s: read_state returned an empty reading (the instrument sees nothing)" % arm
+        try:
+            flat = _flatten(st)
+        except ValueError as ex:
+            return "arm %s: %s" % (arm, ex)
+        bad = _nonfinite(flat)
+        if bad:
+            return "arm %s: non-finite reading(s) %s (NaN/inf compare as equal under a tolerance)" % (arm, bad[:5])
+        res["arms"][arm]["state"] = flat
+        return None
+
+    before = saves_stat()
+    if name + ".rws" in before:
+        return unmeasured("%s.rws already exists: the triplet saves a NEW file only" % name)
+    t0 = ticks_game(B)
+    if t0 is None:
+        return unmeasured("TicksGame unreadable before the save")
+    target = t0 + int(ticks)
+    res["target"] = target
+    sv = B.call("rimworld/save_game", saveName=name) or {}
+    if sv.get("success") is False:
+        return unmeasured("rimworld/save_game refused: %s" % str(sv)[:300])
+    if not wait_saved(name):
+        return unmeasured("%s.rws was not written (or not stable) after rimworld/save_game" % name)
+    after = saves_stat()
+    changed = sorted(n for n in before if n in after and after[n] != before[n])
+    if name + ".rws" not in after or changed:
+        return unmeasured("the save did not land as a new file only: new=%s changed=%s"
+                          % (sorted(set(after) - set(before)), changed))
+    t_saved = ticks_game(B)
+    if t_saved != t0:
+        return unmeasured("the clock moved during the save (%r -> %r): arm A would not start at the saved tick" % (t0, t_saved))
+
+    for arm in ("A", "B", "C"):
+        res["arms"][arm] = {"tick": None, "loadedAt": None, "readTick": None, "state": None}
+        if arm != "A":
+            ld = B.call("rimworld/load_game", saveName=name) or {}
+            if ld.get("success") is not True:
+                return unmeasured("arm %s: rimworld/load_game did not answer success: %s" % (arm, str(ld)[:300]))
+            ok, waited = wait_playing(B)
+            if not ok:
+                return unmeasured("arm %s: the load never reached Playing with a map (%r)" % (arm, waited))
+            at = ticks_game(B)
+            res["arms"][arm]["loadedAt"] = at
+            # the evidence that THIS load happened: the clock is back at the save (+ PauseOnLoad's tick), not where arm A
+            # (or the previous arm) left it. A queued load that never ran keeps the old map Playing at the target tick.
+            if at is None or not (t0 <= at <= t0 + TRIPLET_LOAD_SLACK):
+                return unmeasured("arm %s: after the load the clock reads %r, not the saved tick %d (+<= %d): the load did "
+                                  "not take" % (arm, at, t0, TRIPLET_LOAD_SLACK))
+        got = advance_to(target)
+        if isinstance(got, str):
+            return unmeasured("arm %s: %s" % (arm, got))
+        res["arms"][arm]["tick"] = got
+        err = read(arm)
+        if err:
+            return unmeasured(err)
+        # the reading must be taken AT the target: a reader that advances the clock hides when it sampled (equal end ticks do
+        # not prove equal capture ticks), so any tick inside read_state is UNMEASURED
+        res["arms"][arm]["readTick"] = ticks_game(B)
+        if res["arms"][arm]["readTick"] != target:
+            return unmeasured("arm %s: the clock read %r after read_state, not the target %d -- read_state must not advance "
+                              "game time" % (arm, res["arms"][arm]["readTick"], target))
+
+    A, Bs, C = (res["arms"][k]["state"] for k in ("A", "B", "C"))
+    res["AB"] = triplet_diff(A, Bs, tolerance)
+    res["BC"] = triplet_diff(Bs, C, tolerance)
+    res["AC"] = triplet_diff(A, C, tolerance)
+    if res["BC"]:
+        res["verdict"] = TRIPLET_LOAD_NONDET
+        res["why"] = "two loads of one save disagree on %d field(s)" % len(res["BC"])
+    elif res["AB"] and res["AC"]:
+        res["verdict"] = TRIPLET_SAVE_DROPS
+        res["why"] = ("both loads agree with each other and differ from the live arm on %d field(s): the round trip loses it "
+                      "(the writer or a deterministic loader -- read the .rws to tell which)" % len(res["AB"]))
+    elif not res["AB"] and not res["AC"]:
+        res["verdict"] = TRIPLET_IDENTICAL
+        res["why"] = "live, load and reload agree at tick %d" % target
+    else:
+        # a tolerance is not transitive: B~C and one of A~B / A~C but not the other. No side can be blamed.
+        res["why"] = ("ambiguous under the tolerance: BC equal, AB %s, AC %s -- tighten or widen the tolerance"
+                      % ("equal" if not res["AB"] else "differs", "equal" if not res["AC"] else "differs"))
+    return res
+
+
 def reveal(B, rect, ticks=30):
     """Make a site DISCOVERED for every fog on the list, not only vanilla's: a colonist stands at its centre for `ticks`
     and goes back. 2026-10-10 (550-mod list): jawa/set_fog unfog did not stop "CanDesignateCell refused ...: Can't place in

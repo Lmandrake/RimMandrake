@@ -6,6 +6,7 @@ Design: design/RimMandrake/messy_conduit_design_2026-10-02.md (section 5 "First 
     python3    src/RimMandrake/GimmeSomeSlack/validation.py                 # offline tier, 0 ticks
     python.exe src/RimMandrake/GimmeSomeSlack/validation.py --live --fresh-map   # gimmesomeslack tier, bridge held
     python.exe src/RimMandrake/GimmeSomeSlack/validation.py --save-load NAME     # save a NEW file for --removal-check (after --live)
+    python.exe src/RimMandrake/GimmeSomeSlack/validation.py --triplet            # live/load/reload arms (after --live)
     python.exe src/RimMandrake/GimmeSomeSlack/validation.py --removal-check NAME # M9: a tier WITHOUT the mod (e.g. flowworks)
     python.exe src/RimMandrake/Utils/modcheck/cli.py run GimmeSomeSlack           # the same checks as a modcheck suite
 
@@ -1751,6 +1752,39 @@ def run_save_load(args):
     return res
 
 
+def run_triplet(args):
+    """--triplet (PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET): on whatever scene the current map holds (run after --live), one save and
+    three arms -- live, load, reload -- read at the same measured tick (validation_core.saveload_triplet). The reading is
+    _cord_set of a framed census; verdict IDENTICAL is PASS, SAVE_DROPS_STATE / LOAD_NONDETERMINISTIC are MOD FAILs that
+    say WHICH side lost the state, anything unread is UNMEASURED."""
+    B = Bridge()
+    rows = []
+    res = {"mod": MOD, "mode": "triplet", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    ca = _frame_poll_census(B)
+    if not ca.get("edgeHashes"):
+        row(rows, "TRIPLET_precondition", "UNMEASURED", "SITE", "no cords on the current map to compare: %s" % str(ca)[:200])
+        return res
+
+    def read(b):
+        # _frame_poll_census without its 2 ticks: the triplet reads AT its target tick (a ticking reader hides when it
+        # sampled); every arm has run >= 50 ticks since the save/load, so nets and hookups have long formed
+        b.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1] - 6, width=SITE[2], height=SITE[3] + 6, paddingCells=1)
+        time.sleep(1.0)
+        b.probe("poll")
+        c = b.probe("census")
+        return _cord_set(c) if c.get("success") and c.get("edgeHashes") else None
+
+    name = args.triplet_name or "RM_gss_triplet_%s" % time.strftime("%Y%m%d%H%M%S")
+    t = VC.saveload_triplet(B, read, ticks=args.triplet_ticks, save_name=name)
+    res["triplet"] = {k: t[k] for k in ("verdict", "why", "save", "target", "AB", "BC", "AC")}
+    res["triplet"]["ticks"] = {k: (v.get("loadedAt"), v.get("tick")) for k, v in t["arms"].items()}
+    status = {VC.TRIPLET_IDENTICAL: "PASS", VC.TRIPLET_SAVE_DROPS: "FAIL", VC.TRIPLET_LOAD_NONDET: "FAIL"}.get(t["verdict"],
+                                                                                                               "UNMEASURED")
+    row(rows, "TRIPLET_live_load_reload_identical", status, "MOD" if status == "FAIL" else "HARNESS",
+        {"verdict": t["verdict"], "why": t["why"], "save": t["save"], "AB": t["AB"], "BC": t["BC"]})
+    return res
+
+
 def _find_all(blob, needle):
     i = blob.find(needle)
     while i >= 0:
@@ -1975,6 +2009,10 @@ def main(argv=None):
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--out", default=None)
     ap.add_argument("--save-load", default=None, metavar="NAME", help="census, save as NAME (new), load, census, compare")
+    ap.add_argument("--triplet", action="store_true",
+                    help="after --live: save once, read live/load/reload arms at one tick (validation_core.saveload_triplet)")
+    ap.add_argument("--triplet-name", default=None, metavar="NAME", help="--triplet save name (default RM_gss_triplet_<stamp>)")
+    ap.add_argument("--triplet-ticks", type=int, default=60, help="--triplet: ticks from the save to the read (>= 2)")
     ap.add_argument("--removal-check", default=None, metavar="NAME", help="M9: load NAME on a tier WITHOUT the mod, read the log")
     ap.add_argument("--style-shots", action="store_true",
                     help="lane C: on the current map (after --live and validation_aerial --live) screenshot every style, same rects")
@@ -1987,8 +2025,8 @@ def main(argv=None):
         return 0
     if a.style_shots:
         return run_style_shots()
-    if a.save_load or a.removal_check:
-        res = run_save_load(a) if a.save_load else run_removal_check(a)
+    if a.save_load or a.removal_check or a.triplet:
+        res = run_triplet(a) if a.triplet else run_save_load(a) if a.save_load else run_removal_check(a)
         os.makedirs(os.path.join(HERE, "northstar"), exist_ok=True)
         out = a.out or os.path.join(HERE, "northstar", "validation_%s_%s.json" % (res["mode"], time.strftime("%Y%m%dT%H%M%S")))
         with open(out, "w", encoding="utf-8") as f:

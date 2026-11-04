@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map with a GSS cord scene, saveload_triplet saves once, loads twice, reads all three arms at one measured tick and returns IDENTICAL (validation.py --triplet exit 0)

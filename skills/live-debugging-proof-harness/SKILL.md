@@ -49,6 +49,7 @@ reuse `validation_core` rather than writing a third harness.
 2. blocks                      each one: re-calm the map -> clear huge plants -> prepare_site -> READ BACK -> act ->
                                wait on the precondition -> read state -> row
 3. save / load                 one save (stat-diff the Saves folder) + one load; census before == census after
+                               two causes to tell apart? validation_core.saveload_triplet (live/load/reload arms)
 4. Z log budget                tap.lost == 0 and the sentinel is alive, or the row is UNMEASURED
 5. result JSON                 mode "live" + certifiable; "partial" (--only) is refused by modcheck record
 ```
