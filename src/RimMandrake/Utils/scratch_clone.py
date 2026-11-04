@@ -431,11 +431,16 @@ def clone_in_use(c: Path) -> bool:
     return False
 
 
+def pool_state_files() -> list[str]:
+    """Every relentless item's state file: relentless.py Store writes store/items/<item>/state.json."""
+    return glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "items" / "*" / "state.json")))
+
+
 def owned_by_item(c: Path) -> bool:
     """A live relentless item (not done or retired) names this clone as its work, check or help clone. The belt owns it then:
     release_parked frees it when the item is put down, and a live game phase keeps it on purpose, so the idle hour does not
     make it stranded. POOL_STATE_COMMITS_PIN_CLONE_FOREVER: GRAVSHIP read stranded for hours while its item waited on the game."""
-    for f in glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "items" / "*" / "state.json"))):
+    for f in pool_state_files():
         try:
             st = json.loads(Path(f).read_text())
         except (OSError, ValueError):
@@ -605,7 +610,7 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
     if dest.parent != root:
         return None
     named = ""
-    for f in glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "items" / "*" / "state.json"))):
+    for f in pool_state_files():
         try:
             named += Path(f).read_text()
         except OSError:

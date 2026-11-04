@@ -2307,7 +2307,8 @@ def bundle_pointer(store, row, carry):
 def release_parked(store, fx, r, now, acts):
     """A parked item's idle clone goes back before scratch_clone's idle hour calls it stranded: FLYER_STABLE_BODY_GATE_1 and
     SEAT_MEMORY_STANDARD_FALLBACK_1 sat held on the owner with real WIP until disk.pool_breach fired, because only pool
-    pressure ever moved them. WIP travels in the bundle; commits stay, no fresh clone can restore them, and the alarm is right."""
+    pressure ever moved them. WIP and state-only commits travel in the bundle; other commits stay, no fresh clone can restore them. The item's clone is
+    the belt's while the item lives, so scratch_clone no longer alarms on it; once the item is done or retired it does."""
     for row in pool_rows(store, fx, r):
         # put down (held, blocked, waiting on the game): its clone goes back at once, it waits on something else
         wait_s = 0 if row["kind"] == "work" and row["status"] in PUT_DOWN else r["pool_parked_release_s"]

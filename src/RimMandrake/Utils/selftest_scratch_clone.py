@@ -214,6 +214,19 @@ def main() -> int:
         check(rd["stranded"] == [] and rd["breach"] == 0, f"a live item's clone is the belt's, not stranded: {rd['stranded']}")
         owner.write_text(json.dumps({"status": "done", "clone": str(pool / "p2")}))
         check(sc.pool_reading()["stranded"] == ["p2"], "a finished item owns nothing")
+        # the DEFAULT glob, which every other check here overrides, must find what relentless's own Store writes
+        sys.path.insert(0, str(HERE.parent / "rimflow"))
+        import relentless as R
+        check(str(sc.RM / "relentless") == R.DEFAULT_ROOT, f"the store's root is relentless's: {sc.RM} {R.DEFAULT_ROOT}")
+        real_rm, sc.RM = sc.RM, BASE / "rm"
+        del os.environ["RM_POOL_STATE_GLOB"]
+        store = R.Store(str(sc.RM / "relentless"))
+        st = R.new_state("I", 0, "t")
+        st["clone"] = str(pool / "p2")
+        store.save(st)
+        check(sc.pool_state_files() == [store.p("items", "I", "state.json")], f"the default glob sees a real state file: {sc.pool_state_files()}")
+        check(sc.owned_by_item(pool / "p2"), "and through it a real item owns its clone")
+        sc.RM = real_rm
         os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "nostate*.json")
         os.environ["RM_POOL_MAX_CLONES"] = "9"
         os.environ["RM_POOL_MAX_BYTES"] = "1"
