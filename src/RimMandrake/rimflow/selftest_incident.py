@@ -895,6 +895,103 @@ def test_chains_through_step():
     check("chain: the quiet row keeps the status time it read", x["revisit_status_t"] == T0 + rev * M, x)
 
 
+def test_each_field_of_a_reading():
+    """Blind check b63b949a: each field reading_moved compares has a row where ONLY that field changes, reached through
+    step(): the standing flag on a class-less key, the measured mark on a sane metric, the status time a launch stores."""
+    rev = IN.load_table()["policy"]["owner_revisit_min"]
+
+    def two(name, other):
+        """q-1 stands throughout, so the incident stays open; `other` is the metric whose one field a row changes."""
+        table, _, rows = at_his_rung("q-1")
+        rows = [dict(rows[0], metrics=dict(rows[0]["metrics"], **{"m.z": {"class": "distressed", "event": False}}),
+                     revisit_read={"m.q-1": [True, "distressed", 5, True, 0], "m.z": other})]
+        path = os.path.join(TMP, name + ".jsonl")
+        IN.append(rows, path)
+
+        def look(now, z, alarms=None):
+            res = IN.step(table, IN.read_rows(path), {"t": now, "points": {"m.q-1": {"m": "MEASURED", "v": 5, "class": "distressed"}, "m.z": z},
+                                                      "alarms": alarms or {}}, now)
+            IN.append(res["rows"], path)
+            return res, [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
+        return look, lambda: IN.next_due(table, IN.fold(IN.read_rows(path))[0]["q-1"])
+
+    def launched(name, res, ev):
+        check(name, [x["ev"] for x in ev] == ["revisited"] and [r["id"] for r in res["rings"] if r.get("revisit")] == ["q-1"]
+              and "m.z" in " ".join(ev[0]["news"]), res["rows"])
+
+    # the standing flag alone: a class-less key has no class to change, its value and measured mark stay
+    plain = {"m": "MEASURED", "v": 3}
+    look, due = two("standingon", [False, None, 3, True, 0])
+    res, ev = look(due(), plain)
+    check("chain: a class-less key with no alarm, unchanged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
+    res, ev = look(due(), plain, {"ops:m.z": {"state": "OPEN"}})
+    check("chain: only its standing flag differs", IN.revisit_reads({"metrics": {"m.z": {}}}, {"points": {"m.z": plain}}, {"m.z": {}}, [])["m.z"] == [True, None, 3, True, 0])
+    launched("chain: an alarm coming open on a class-less key launches, class, value and mark unchanged", res, ev)
+    look, due = two("standingoff", [True, None, 3, True, 0])
+    res, ev = look(due(), plain, {"ops:m.z": {"state": "OPEN"}})
+    check("chain: a class-less key with its alarm still open, unchanged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"], res["rows"])
+    res, ev = look(due(), plain)
+    launched("chain: that alarm clearing launches, class, value and mark unchanged", res, ev)
+
+    # the measured mark alone: a sane metric goes blind, standing no way, class and value as they were
+    sane = {"m": "MEASURED", "v": 3, "class": "sane"}
+    look, due = two("markoff", [False, "sane", 3, True, 0])
+    res, ev = look(due(), sane)
+    check("chain: a sane metric, unchanged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
+    res, ev = look(due(), dict(sane, m="UNMEASURED"))
+    launched("chain: a sane metric going UNMEASURED launches, standing, class and value unchanged", res, ev)
+    look, due = two("markon", [False, "sane", 3, False, 0])
+    res, ev = look(due(), dict(sane, m="UNMEASURED"))
+    check("chain: a sane class stuck UNMEASURED, unchanged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"], res["rows"])
+    res, ev = look(due(), sane)
+    launched("chain: and it being measured again launches", res, ev)
+
+    # the class alone, on a metric that stands neither time
+    look, due = two("classonly", [False, "sane", 3, True, 0])
+    res, ev = look(due(), dict(sane, **{"class": "idle"}))
+    launched("chain: sane to idle launches, standing, value and mark unchanged", res, ev)
+
+    # the status time a launch stores: quiet, launch, ack, then a floor of a clock that only aged since the LAUNCH
+    path, inc, look, due = chain("launchstatus", metric="r.under_min")
+    t = due()
+    res, evs = look(t, v=5 + rev)
+    check("chain: quiet first, so an older status time is on the row", evs == ["revisit_quiet"] and inc()["revisit_status_t"] == t, res["rows"])
+    t = due()
+    res, evs = look(t, v=10)
+    check("chain: then the clock resets and it launches", evs == ["revisited"] and res["rings"], res["rows"])
+    check("chain: the launch stores the status time it read", inc()["revisit_status_t"] == t and res["rows"][0]["revisit_status_t"] == t, res["rows"])
+    IN.ack("q-1", "OPERATIONS", "watching it re-age", path=path, now=t + M)
+    t2 = due()
+    res, evs = look(t2, v=10 + (t2 - t) // M)
+    check("chain: answered, then a floor of the clock only aging since the launch is quiet", evs == ["revisit_quiet"] and not res["rings"], res["rows"])
+    res, evs = look(due(), v=10)
+    check("chain: and a clock not aging after that launches", evs == ["revisited"], res["rows"])
+
+    # the shipped slack is what the slack rows mean: a status tick off the floor must not launch
+    table = IN.load_table()
+    slack = table["policy"]["revisit_clock_slack_min"]
+    check("quiet: the shipped table has a slack, a status is never read on the minute", slack >= 1, slack)
+    path, inc, look, due = chain("slackchain", metric="r.under_min")
+    res, evs = look(due(), v=5 + rev - 1)
+    check("quiet: a clock a minute short of the floor, on the shipped table, only aged", evs == ["revisit_quiet"], res["rows"])
+
+    # the pull-in look judges by status time too: a lagging status must not pull in a clock that only aged
+    table, rev, rows = at_his_rung("a-1", "b-1")
+    b_t = rows[1]["t"]
+    rows[1] = dict(rows[1], metrics={"r.b_min": {"class": "distressed", "event": False}}, revisit_status_t=b_t,
+                   revisit_read={"r.b_min": [True, "distressed", 5, True, 0]})
+    now = T0 + rev * M + M
+    st_t = now - 10 * M
+
+    def pulled(b):
+        res = IN.step(table, rows, {"t": st_t, "points": {"m.a-1": {"m": "MEASURED", "v": 6, "class": "distressed"},
+                                                          "r.b_min": {"m": "MEASURED", "v": b, "class": "distressed"}}, "alarms": {}}, now)
+        return [x["id"] for x in res["rows"] if x["ev"] == "revisited"]
+    aged = 5 + (st_t - b_t) // M
+    check("batch: under a lagging status, a clock that only aged by status time is not pulled in", pulled(aged) == ["a-1"], pulled(aged))
+    check("batch: and one that moved is", pulled(aged + 30) == ["a-1", "b-1"], pulled(aged + 30))
+
+
 def test_news_each_state_event():
     table, rev, rows = at_his_rung("q-1")
     now = T0 + rev * M
@@ -994,7 +1091,7 @@ if "--replay-batch" in sys.argv:
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
-          test_chains_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
+          test_chains_through_step, test_each_field_of_a_reading, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
