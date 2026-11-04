@@ -3034,3 +3034,6 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-04T17:54:12Z","tsn":1793814852873419131}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-04T18:03:04Z","tsn":1793815384535987810}
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"broken","detail":"EMERGENCY: the breaker opened 2 times on the same cause: rm-relentless-work-2f7d7ad7e9-g24 died at once with no usage","ts":"2026-11-04T19:37:13Z","tsn":1793821033674645440}
+{"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-04T19:48:09Z","tsn":1793821689749190302}
+{"seat":"RUNNER","event":"live","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/testq/tick.log is 7928 s old (max 7200)","ts":"2026-11-04T19:48:12Z","tsn":1793821692577475311}
+{"seat":"RUNNER","event":"raise","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-04T19:48:15Z","tsn":1793821695388141845}
