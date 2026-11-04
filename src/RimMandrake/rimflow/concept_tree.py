@@ -60,6 +60,10 @@ CONSTRAINT = re.compile(r"^\s*(at most|at least|under|over|no more than|<=?|>=?)
                         r"per [a-z]+|[a-z]+/[a-z]+)(?![A-Za-z0-9]).*\bon\s+\S+", re.I)
 WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat(s|ed|ing)?\b", "second order": r"\b(second|another|different|other|opposite|reverse|reversed)\s+order\b|\border\s+reversed\b|\breverse\s+the\s+order\b"}
 TOOL_ROOT = "tool"
+# a `red` that names no broken version (relentless_improvement_loop_2026-11-03.md: "a test that catches no nameable broken
+# version is decoration"): the whole field, lowercased and stripped of punctuation, is one of these. Always fullmatch.
+NO_RED = re.compile(r"(none|n ?a|nil|null|tbd|tba|todo|unknown|nothing|no(ne)? broken version|not applicable|"
+                    r"cannot name one|can ?not be named|unnameable|nameless|same|see above|ditto|\?+)")
 STOP = set("the a an of to in on and or it is at for by this that with how what does do not be are was you your his he "
            "me my i we as if".split())
 
@@ -277,6 +281,11 @@ def leaf_errors(x, kind, tiers, root_ids):
             e("a constraint reads `<limit> <unit> on <test machine>`, got: %s" % text[:60])
     elif text and not OBSERVER.search(text):
         e("experience names no observer: %s" % text[:60])
+    red = re.sub(r"[^a-z0-9? ]+", " ", txt(x.get("red")).lower()).strip()
+    if txt(x.get("red")) and (not red or NO_RED.fullmatch(re.sub(r"\s+", " ", red))):
+        e("red names no broken version (%r): a leaf that catches none is decoration, cut it" % txt(x.get("red"))[:40])
+    elif red and red == re.sub(r"[^a-z0-9? ]+", " ", txt(x.get("experience")).lower()).strip():
+        e("red repeats the experience: name the broken mod it catches, not the working one")
     if not lst(x.get("false_pass")) or not all(txt(w) for w in x["false_pass"]):
         e("false_pass must list named wrong worlds")
     tier = x.get("tier_proposed")
