@@ -212,6 +212,20 @@ def t_shard_appends_on_both_sides_land(a, b):
     assert sorted(show(a, SHARD).splitlines()) == ["from origin", "live append", "seed"] and sha2
 
 
+def t_replay_never_doubles_a_shard_line_origin_already_holds(a, b):
+    # LEDGER_UNION_DEDUPE_PUBLISH_DOUBLED_LINES: merge=union in the plumbing replay wrote a line again when origin had
+    # already landed it (another clone, the belt), so shards grew byte-identical twins on every publish.
+    seed_shard(a, b)
+    append(a, SHARD, "carried\nmine only\n")
+    sh(a, "commit", "-q", "-m", "mine", "--", SHARD)
+    peer_push(b, SHARD, "seed\npeer first\ncarried\nfrom origin\n")    # origin landed `carried` under other lines
+    sha = P_quiet_publish(a, [], None)
+    got = show(a, SHARD).splitlines()
+    assert sorted(got) == ["carried", "from origin", "mine only", "peer first", "seed"], got
+    assert got[:4] == ["seed", "peer first", "carried", "from origin"], got   # origin stays a prefix: append-only
+    assert sha and sorted(open(os.path.join(a, SHARD)).read().splitlines()) == sorted(got)
+
+
 def t_stale_shard_snapshot_in_index_lands(a, b):
     """A commit races appends: the index holds an older snapshot of the shard, every line of it still on disk."""
     seed_shard(a, b)

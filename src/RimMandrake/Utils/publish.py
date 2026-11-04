@@ -217,6 +217,7 @@ def rebase(top):
             rebuilt.update(dll_of(p) for p in paths)
             print("replay of %s: DLL conflict in %s; took origin's side, will rebuild from committed source"
                   % (c[:12], ", ".join(sorted(set(paths)))))
+        tree = dedupe_shards(top, tree, tip, c)
         if tree == out(top, "rev-parse", tip + "^{tree}"):
             continue                                     # nothing left of it: a DLL pair, or already on origin
         meta = out(top, "show", "-s", "--format=%an%x00%ae%x00%aI", c).split("\0")
@@ -287,6 +288,55 @@ def take_side(top, tree, tip, c, paths):
             else:
                 g("update-index", "--force-remove", "--", p)
         return g("write-tree").strip()
+    finally:
+        os.unlink(idx)
+
+
+def _blob(top, rev, path):
+    """`path` at `rev` as bytes, or None where it does not exist."""
+    r = subprocess.run(["git", "cat-file", "blob", "%s:%s" % (rev, path)], cwd=top, capture_output=True,
+                       env=git_env(), timeout=GIT_TIMEOUT_S)
+    return r.stdout if r.returncode == 0 else None
+
+
+def dedupe_shards(top, tree, tip, c):
+    """`tree` with each append-only (merge=union) shard `c` touched rebuilt as origin's bytes plus only the lines `c`
+    appended that origin does not already hold (LEDGER_UNION_DEDUPE_PUBLISH_DOUBLED_LINES). git's union keeps BOTH
+    sides of a hunk, so a line origin already landed under other lines (another clone, the belt) was written again
+    on every replay: 268 byte-identical twins in BENCH.jsonl. seat_sync.union_delta is the rule the clone's own move
+    uses; where it says these are not plain appends (None), merge-tree's result stands untouched."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import seat_sync
+    touched = out(top, "diff", "--name-only", "%s^" % c, c).splitlines()
+    shards = sorted(seat_sync.union_paths(seat_sync.Git(top), touched)) if touched else []
+    fixed = {}
+    for p in shards:
+        mine, base, theirs = _blob(top, c, p), _blob(top, c + "^", p), _blob(top, tip, p)
+        if mine is None or (base is None and theirs is None):
+            continue                                     # deleted, or new/renamed by c: not an append, merge-tree's
+        theirs, base = theirs or b"", base or b""
+        delta = seat_sync.union_delta(theirs, base, mine)
+        if delta is None:
+            continue
+        want = theirs + delta
+        if want != _blob(top, tree, p):
+            fixed[p] = want
+    if not fixed:
+        return tree
+    import tempfile
+    fd, idx = tempfile.mkstemp(prefix="publish-idx-", dir=out(top, "rev-parse", "--absolute-git-dir"))
+    os.close(fd)
+    env = git_env(GIT_INDEX_FILE=idx)
+    try:
+        def g(*a, inp=None):
+            return subprocess.run(["git", *a], cwd=top, env=env, input=inp, capture_output=True, check=True,
+                                  timeout=GIT_TIMEOUT_S).stdout
+        g("read-tree", tree)
+        for p, data in fixed.items():
+            blob = g("hash-object", "-w", "--stdin", inp=data).decode().strip()
+            mode = (out(top, "ls-tree", tree, "--", p).split() or ["100644"])[0]
+            g("update-index", "--add", "--cacheinfo", "%s,%s,%s" % (mode, blob, p))
+        return g("write-tree").decode().strip()
     finally:
         os.unlink(idx)
 
