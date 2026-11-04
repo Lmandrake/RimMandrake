@@ -301,6 +301,23 @@ ok(by(d, 2, "dispatch")["exit"] == 0, "budget: the deferred dispatch runs next b
 ok(by(d, 2, "sense")["exit"] == "deferred" and by(d, 3, "sense")["exit"] == 0,
    "budget: what that pushed out runs the beat after; nothing starves")
 
+# 11b. the reserve is held at run time: phases ahead of raise/ring (sense, remember) that would eat the
+# budget must leave raise and ring their room; remember is deferred, never raise or ring
+d = fresh("reserve")
+tq = table(budget=8, sense=("ignore_term", 30), remember=("ignore_term", 30))
+tq["phases"]["sense"].update(limit_s=4)
+tq["phases"]["remember"].update(limit_s=2)
+os.environ["KID_MARK"] = str(TMP / "reserve.mark")
+t0 = time.time()
+m.beat(d, tq)
+el = time.time() - t0
+ok(el <= 8 + 0.5, "reserve: beat took %.2f s of 8" % el)
+ok(all(by(d, 1, p) and by(d, 1, p)["exit"] == 0 for p in ("raise", "ring")),
+   "reserve: raise and ring exit 0 though sense and remember would eat the budget (%s)"
+   % [(p, (by(d, 1, p) or {}).get("exit")) for p in ("raise", "ring")])
+rm_ = by(d, 1, "remember")
+ok(rm_ and rm_["exit"] == "deferred", "reserve: remember is deferred to keep the reserve (%s)" % (rm_ or {}).get("exit"))
+
 # 12. operation ids: a crash between the act and its record is found by id, never done twice
 d = fresh("ops")
 st1, oid = m.op_begin(d, "ring", "INC-7:rung2")
