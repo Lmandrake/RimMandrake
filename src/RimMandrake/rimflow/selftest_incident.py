@@ -667,6 +667,16 @@ def _refuses():
     return False
 
 
+def test_spend_alarms_do_not_buy_runs():
+    # OPS_OVERSPEND_FIX_ALARM_FEEDS_ITS_METER: a spend alarm routed to an Operations incident buys more of the spend it reports
+    for role in ("Operations", "Conductor", "Arbiter"):
+        for kind in ("role:%s:overspend_day" % role, "role:%s:overbudget" % role):
+            r = IN.route_of(TABLE, kind)
+            check("%s routes program, the Conductor log only" % kind, r is not None and r.get("route") == "program", r)
+    r = IN.route_of(TABLE, "role:Operations:ops")
+    check("other role:* alarms still reach Operations", r is not None and r.get("route") == "role", r)
+
+
 def test_owner_rung_revisited():
     """OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS: at his rung an incident never sat forever. Unacked it is revisited
     owner_revisit_min after it reached him; acked with a short recover_by it still waits that floor; acked longer, it
@@ -1194,7 +1204,7 @@ def replay_batch():
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
-          test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes,
+          test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_chains_through_step, test_each_field_of_a_reading, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded):
