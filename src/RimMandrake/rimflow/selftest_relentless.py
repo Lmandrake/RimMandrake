@@ -2,6 +2,7 @@
 """relentless.py with planted faults: worker dies, same failure repeats, stale worker publishes, spend limit, restart
 returns to the top, share 0 and 1, plus crash recovery, a two-way lease race and live_line. No units, no ledger, no
 network: Effects is replaced by FakeWorld."""
+import atexit
 import glob
 import json
 import multiprocessing
@@ -117,7 +118,12 @@ class FakeWorld:
     def ledger_note(self, item, text): self.notes.append(text)
     def ledger_needs_owner(self, item, why): self.needs.append(item)
     def ledger_hold_to_seat(self, item, hold): self.seat_holds.append(item)
-    def ledger_needs(self, item, to, why): self.needs.append((item, to))
+    needs_fail = None
+    needs_back = "offline"
+    def ledger_needs(self, item, to, why):
+        self.needs.append((item, to))
+        return self.needs_fail
+    def needs_after_hold(self, item): return self.needs_back
     def clone_path(self, item, q=0): return "/c/%s.%d" % (item, q)
     def prepare(self, st):
         return "clone failed: POOL REFUSED: pool full" if self.refuse else None
@@ -3553,9 +3559,86 @@ def t_hold_routing():
     ok(fx.ledger_hold_to_seat("I", hold) == "ledger down", "a failure says so and the tick retries")
 
 
+def t_hold_lift_needs():
+    """RELENTLESS_GAME_FIX_HOLD_LIFT_FORGETS_GAME: a lifted hold restores the needs people gave the item, never a blanket
+    offline: a game item is in the pool for its needs, and a person's own routing stays where it is."""
+    class It:
+        def __init__(self, evs, needs="owner", state="doing", owed=()):
+            self.needs, self.state, self.owed, self.history = needs, state, owed, list(range(len(evs)))
+
+        def owed_levels(self):
+            return list(self.owed)
+
+    class W:
+        items = {}
+
+    class Fx(R.Effects):
+        def __init__(self, evs):
+            self.evs0, self._ledger = evs, None
+
+        def ledger_items(self):
+            return self.evs0, W()
+
+    def after(evs, **kw):
+        W.items = {"I": It(evs, **kw)}
+        return Fx(evs).needs_after_hold("I")
+
+    ours = {"event": "needs", "to": "owner", "why": R.SUPERVISOR_WHY}
+    bug = {"event": "needs", "to": "offline", "why": R.SUPERVISOR_WHY, "reason": "relentless: the owner lifted the hold"}
+    for want in ("bridge", "game-up", "deploy", "offline"):
+        ok(after([{"event": "file", "needs": want}, ours]) == want, "a filed %s comes back" % want)
+    ok(after([{"event": "file"}, ours]) == "offline", "a filing naming no needs is offline, as the model reads it")
+    ok(after([{"event": "spawn", "needs": "bridge"}, ours]) == "bridge", "a spawned item's needs comes back")
+    ok(after([{"event": "file"}, {"event": "needs", "to": "game-up", "why": "a person"}, ours]) == "game-up",
+       "a person's later needs beats the filing")
+    ok(after([{"event": "file", "needs": "deploy"}, ours, bug, ours]) == "deploy",
+       "the offline an older lift wrote is the supervisor's own, stepped over")
+    ok(after([{"event": "file", "needs": "deploy"}, ours], state="built", owed=["L2"]) == "bridge",
+       "a built item keeps its derived needs")
+    ok(after([{"event": "file", "needs": "bridge"}, ours], needs="game-up") is None, "moved off owner since: no write")
+    ok(after([{"event": "file", "needs": "bridge"}, {"event": "needs", "to": "owner", "why": "an L4 look"}]) is None,
+       "a person's needs=owner is not ours to move")
+    ok(after([{"event": "needs", "to": "owner", "why": "an L4 look"}, ours]) is None,
+       "routed to him over a person's needs=owner: it stays his")
+    W.items = {}
+    ok(Fx([]).needs_after_hold("I") is None, "an item the ledger has not heard of: no write")
+
+    x = Rig(n=1, share=1.0)
+    x.tick()
+
+    def lift(why="x"):
+        with x.s.lock():
+            st = x.s.load("I0")
+            st.update(status="held", hold={"kind": "owner_call", "why": why, "delivered": True})
+            x.s.save(st)
+        R.unhold(x.s, "I0", "go on")
+        ok(x.st("I0")["needs_back"] is True, "his hold lifted: the ledger is owed its needs")
+        del x.w.needs[:]
+
+    def step():
+        R.step(x.s, x.w, x.r, "I0", x.now, [])
+
+    lift()
+    x.w.needs_back = "bridge"
+    x.w.needs_fail = "ledger down"
+    step()
+    ok(x.w.needs == [("I0", "bridge")] and x.st("I0")["needs_back"] is True, "a failed write stays owed: %s" % x.w.needs)
+    x.w.needs_fail = None
+    step()
+    ok(x.w.needs[-1] == ("I0", "bridge") and x.st("I0")["needs_back"] is False, "the filed needs lands, never offline: %s" % x.w.needs)
+    lift()
+    x.w.needs_back = None
+    step()
+    ok(x.w.needs == [] and x.st("I0")["needs_back"] is False, "nothing ours to move: no write, and the item is free: %s" % x.w.needs)
+    x.done()
+
+
 def main():
     picked, ran = set(sys.argv[1:]), 0      # no names: every test
-    for t in (t_hold_routing, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
+    os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
+    atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
+    for t in (t_hold_routing, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

@@ -859,6 +859,19 @@ def close_why(out):
     return out[-400:]
 
 
+def filed_needs(it, evs):
+    """The needs people gave this item, the supervisor's own writes stepped over: a game item (bridge, game-up, deploy) is
+    in the pool for that reason, and a lift that wrote offline lost it. That older write is stepped over too."""
+    for i in reversed(getattr(it, "history", None) or []):
+        e = evs[i] if 0 <= i < len(evs) else {}
+        if e.get("event") == "needs":
+            if e.get("why") != SUPERVISOR_WHY:
+                return e.get("to")
+        elif e.get("event") in ("file", "spawn", "implemented") and e.get("needs"):
+            return e["needs"]
+    return "offline"       # model's default for a filing that names none
+
+
 class Effects(relentless_game.GameFx):
     """The real one. Every method here blocks, so none is called under the store lock."""
 
@@ -1300,12 +1313,11 @@ class Effects(relentless_game.GameFx):
         """A tooling hold goes to the seat, never to him. -> None, or why it did not land (the next tick retries).
         A hold an older supervisor routed to him has its needs put back, and only that: another needs=owner (an L4 look,
         a person's own routing) is not ours to move. A hold already delivered has been said once; only its needs moves."""
-        model = pkg("model")
         evs, w = self.ledger_items()
         it = w.items.get(item)
-        if it is not None and it.needs == "owner" and self._owner_routing_is_ours(it, evs):
-            back = model.needs_for_levels(it.owed_levels()) if it.state in ("built", "validated") else None
-            err = self.ledger_needs(item, back or "offline", "relentless: a tooling hold is the seat's, not the owner's")
+        back = self._needs_back(it, evs)
+        if back:
+            err = self.ledger_needs(item, back, "relentless: a tooling hold is the seat's, not the owner's")
             self._ledger = None
             if err:
                 return err
@@ -1317,6 +1329,22 @@ class Effects(relentless_game.GameFx):
             return err
         self.conductor_attention("%s: %s" % (item, text))    # a failure to tell stays out of the way: the note landed
         return None
+
+    def needs_after_hold(self, item):
+        """What a lifted hold writes back on the ledger, read fresh: the lift came from another process. None writes nothing."""
+        self._ledger = None
+        evs, w = self.ledger_items()
+        return self._needs_back(w.items.get(item), evs)
+
+    @classmethod
+    def _needs_back(cls, it, evs):
+        """The needs an item returns to from the supervisor's needs=owner. None when nothing is ours to move: it left owner
+        already, or a person sent it there. A built item owes its derived needs, any other its filed ones."""
+        if it is None or it.needs != "owner" or not cls._owner_routing_is_ours(it, evs):
+            return None
+        back = pkg("model").needs_for_levels(it.owed_levels()) if it.state in ("built", "validated") else None
+        back = back or filed_needs(it, evs)
+        return None if back == "owner" else back
 
     @staticmethod
     def _owner_routing_is_ours(it, evs):
@@ -2595,7 +2623,8 @@ def step(store, fx, r, item, now, acts):
     st = store.load(item)
     s = st["status"]
     if s == "queued" and st.get("needs_back"):      # his hold lifted: the ledger still says owner
-        if not fx.ledger_needs(item, "offline", "relentless: the owner lifted the hold"):
+        back = fx.needs_after_hold(item)
+        if not back or not fx.ledger_needs(item, back, "relentless: the owner lifted the hold"):
             with store.lock():
                 st = store.load(item)
                 st["needs_back"] = False
