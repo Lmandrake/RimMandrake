@@ -32,3 +32,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T00:38:09Z","tsn":1793752689011760738}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:47:13Z","tsn":1793753233251317019}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T00:53:26Z","tsn":1793753606713783268}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:56:30Z","tsn":1793753790450191266}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS A2 (L2), read-only proof","ts":"2026-11-04T00:56:43Z","tsn":1793753803638612323}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:57:03Z","tsn":1793753823083336835}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A1 (L2), read-only proof","ts":"2026-11-04T00:57:54Z","tsn":1793753874638760949}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:58:01Z","tsn":1793753881663680438}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A2 (L2), read-only proof","ts":"2026-11-04T00:58:09Z","tsn":1793753889454371439}
