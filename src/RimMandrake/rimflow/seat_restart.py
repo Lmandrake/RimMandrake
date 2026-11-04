@@ -2993,6 +2993,7 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
               "right after a goodbye restart, the owner's messages are in %s after byte %s." % (
                   rec.get("gen") or "(none)", gen, rec.get("tx_path") or "?", rec.get("tx_offset")))
         return
+    print(SAY_FIRST)
     me = me or {}
     mine = transcript_for(me, cfg) if me.get("sessionId") else None
     prior = [t for t in list(rec.get("prior_tx") or []) + [rec.get("woken_tx")] if t and t != mine]
@@ -3035,6 +3036,15 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
         print("UNMEASURED: %s could not be read to its end. Say so to him in one line; ask what he sent that window." % tx)
     _rewrite_own_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs),
                                    shown=[_msg_key(r) for r in msgs]), root)
+
+
+# B4 (design/RimMandrake/conductor_briefing_2026-10-28.md, CONDUCTOR_PROMPT_WIRE_SEND_IT_AGAIN_LINE): whether the RC
+# server writes a message he sends during the 10-90 s restart into the dead session is UNMEASURED, so a message typed
+# then may be lost where no wake read can find it. The goodbye kill stays on by his ruling and no owner inbox exists, so
+# this line, said to him first by every window a goodbye restart made, is the only mitigation. Printed before the read
+# so an unreadable transcript still says it; not by a window no restart made, nor for an aborted restart (no kill).
+SEND_IT_AGAIN = "If you wrote in the last few minutes and I do not answer it, send it again."
+SAY_FIRST = "\n== SAY FIRST: begin your first reply to him with this line, word for word:\n" + SEND_IT_AGAIN
 
 
 FORCED = ("backstop", "backstop_hard")          # size restarts: the size must stand until the kill
