@@ -15,7 +15,7 @@ operations.md says so). A role with `after_role` (Conductor -> Operations) launc
 scheduled run for the slot it follows (08:00 -> 07:30, 20:00 -> 19:30; never an alarm run or yesterday's late run)
 finished done and none is going (after_ready); a slot of that role its band skipped on purpose is passed over for
 its previous one within 24 h (Producer 09:00 in AMBER/RED -> Operations 19:30); it is decided after that role in each tick. Operations
-also runs once per OPEN ops_watch alarm crossing (`alarm_runs`): `alarms_seen` is pruned to the alarms open now, so
+also runs once per OPEN ops_watch alarm crossing, and once per worsening of one (<key>@worse<n>) (`alarm_runs`): `alarms_seen` is pruned to the alarms open now, so
 one that clears runs again when it re-crosses (review W, W1); alarms already open when the role is first enabled run
 once too (no baseline). One alarm run covers every open alarm not yet run, and alarm runs are at least
 `alarm_run_gap_s` (ALARM_RUN_GAP_S) apart; alarms are read only from a MEASURED reading whose alarms dict is readable
@@ -139,6 +139,7 @@ LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 # refuses, holds or shrinks a run; overspend_day / overbudget / role:<name>:ops raise the attention line instead. A role
 # that sets either key false is back on the strict gates (kept, and tested, for when he lifts this).
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800, "caps_advisory": True, "degraded_reading_ok": True}
+ALARM_WORSE_SEP = "@worse"             # an alarm re-raised for getting worse is a new key, so it earns a new run: <key>@worse<n>
 ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger item) in alarms_seen: "alarm:<aid>" (V2)
 ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
 OPS_STALE_S = 45 * 60
@@ -1273,8 +1274,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     rs.pop("alarm_gap_hold", None)
                     # an account alarm has no ledger item (it is Operations' alone, never on a seat queue: review V,
                     # V2): its run notes on the role's own ledger_item; mark() records every key the run covers
-                    item = fresh[0]
-                    due.append({"key": "alarm " + item, "slot": None, "first": False, "mode": "alarm",
+                    item = fresh[0].split(ALARM_WORSE_SEP)[0]
+                    due.append({"key": "alarm " + fresh[0], "slot": None, "first": False, "mode": "alarm",
                                 "cap": cfg.get("run_token_cap"), "seen": fresh,
                                 "item": role["ledger_item"] if item.startswith(ALARM_KEY_PREFIX) else item,
                                 "trigger": "ops_watch alarm " + ", ".join(fresh)})
@@ -1579,10 +1580,12 @@ def alarm_keys(alarms):
     for aid, a in (alarms or {}).items() if isinstance(alarms, dict) else ():
         if not isinstance(a, dict) or a.get("state") != "OPEN":
             continue
+        n = a.get("worse_n")
+        tail = "%s%d" % (ALARM_WORSE_SEP, n) if isinstance(n, int) and not isinstance(n, bool) and n > 0 else ""
         if a.get("item"):
-            out.add(a["item"])
+            out.add(a["item"] + tail)
         elif a.get("for") == "Operations":
-            out.add(ALARM_KEY_PREFIX + str(aid))
+            out.add(ALARM_KEY_PREFIX + str(aid) + tail)
     return out
 
 

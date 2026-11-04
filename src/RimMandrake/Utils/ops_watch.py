@@ -39,6 +39,8 @@ rimflow/dispatcher_schedule.json "measure"):
    FLAG    Andon rules from ops_watch_rules.json over MEASURED points: band (outside the 7-day mean +/- 3 sigma),
            run (n same-direction changes), silent (a series that stopped being MEASURED), target (a line crossed).
            Each flag names the series and the window. flags.json keeps when each flag first opened.
+   WORSE   an alarm still crossed re-raises when its severity rises or its value passes the target's stated `worse` step
+           ({"factor": 2} doubling, {"add": 50}), measured from the worst value told (ALARM_REPEAT_FIX_BREAK_ON_WORSE).
    ALARM   a target with alarm true files ONE rimflow item when its condition is NEW (alarms.json dedupes; it re-arms
            only after the condition clears; a failed filing stays PENDING and is retried next pass). Filed as RUNNER
            from the dispatch clone (its testq/ingest.py) under QHOME/ingest.lock. Only with --file-alarms.
@@ -111,6 +113,7 @@ def nonfinite_at(x, at="rules"):
 
 CLASSES = ("idle", "sane", "under", "distressed", "emergency")     # OP1's vocabulary; a metric fills the ones it can act on
 ALARMED = ("distressed", "emergency")
+SEVERITY = ("idle", "sane", "distressed", "emergency")      # the ranges classes, least to worst
 REPORT_ONLY = "roles."      # RO1: these metrics are read, never rung: only they may read under, and none may alarm
 
 
@@ -2339,6 +2342,16 @@ def _cmp(v, op, x):
     return {"<": v < x, "<=": v <= x, ">": v > x, ">=": v >= x}[op]
 
 
+def step_problem(step):
+    """-> what is wrong with a target's stated worsening step, or None: exactly one of {"factor": >1} or {"add": >0}."""
+    if not isinstance(step, dict) or len(step) != 1 or not {"factor", "add"} >= set(step):
+        return 'not one of {"factor": n} or {"add": n}'
+    k, v = next(iter(step.items()))
+    if not is_num(v) or not (1 if k == "factor" else 0) < v < 1e300:
+        return "%s must be a number above %d" % (k, 1 if k == "factor" else 0)
+    return None
+
+
 def target_problem(tg):
     """-> what is wrong with one rules["targets"] row, or None. A bad row costs only itself and is said aloud as a
     bad_target flag: an alarm id is `tag:key`, parsed back at the first colon, so a tag may hold no colon."""
@@ -2356,6 +2369,8 @@ def target_problem(tg):
     if tg.get("marks") is not None and not (isinstance(tg["marks"], list) and tg["marks"] and all(
             m in ("MEASURED", "ESTIMATE") for m in tg["marks"])):
         return "bad marks %r on %s" % (tg["marks"], tg["key"])
+    if tg.get("worse") is not None and step_problem(tg["worse"]):
+        return "bad worse %s on %s: %s" % (str(tg["worse"])[:40], tg["key"], step_problem(tg["worse"]))
     return None
 
 
@@ -2603,6 +2618,24 @@ def token_alarm_title(aid):
     return "Ops alarm for Operations: %s on %s; the reading is in digest.md" % (tag, key.split(".", 1)[0])
 
 
+def worse_count(cur):
+    """How many times this alarm has been re-raised for getting worse; a bad saved count restarts it."""
+    n = cur.get("worse_n", 0)
+    return n if isinstance(n, int) and not isinstance(n, bool) else 0
+
+
+def tell_conductor(path, line, aid, now, log):
+    """One line on the Conductor log, when this rule owes one. A log that cannot be written costs the line, said in the log."""
+    if not path:
+        return
+    try:
+        conductor_guard().refuse_if_test(path)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write("\n" + line)
+    except OSError as e:
+        log.append({"ts": iso(now), "event": "conductor_log_failed", "aid": aid, "error": str(e)[:200]})
+
+
 def _tries(cur):
     """A saved retry count, or 0 for one that cannot be counted from: never a raise after the filing succeeded."""
     n = cur.get("tries", 0)
@@ -2623,9 +2656,55 @@ def fresh_news(cur, aid, points, rules):
     return [n for n in names if n not in told], names
 
 
+def severity_of(p):
+    """A reading's severity: the class the ranges block stamped on it, else the class its collector judged (x.state)."""
+    for s in (p.get("class"), (p.get("x") or {}).get("state")):
+        if s in SEVERITY:
+            return s
+    return None
+
+
+def step_crossed(told, v, op, step):
+    """Has v moved a whole stated step past the value last told, the way this target's op calls worse? A factor cannot
+    step from zero or below (nothing doubles from there), so such a reading breaks nothing."""
+    if not step or not is_num(told) or not is_num(v):
+        return False
+    up = op in (">", ">=")
+    if "add" in step:
+        return v >= told + step["add"] if up else v <= told - step["add"]
+    return told > 0 and (v >= told * step["factor"] if up else v <= told / step["factor"])
+
+
+def worse_news(cur, aid, points, rules):
+    """A crossed alarm that has already told someone: (what got worse, what to remember once that is told), or None.
+    `told` is a ratchet, the worst reading told so far, so a value that wobbles back and returns says nothing twice. An
+    alarm filed before it was kept takes today's reading as its baseline: a deploy re-raises nothing."""
+    tag, key = aid.split(":", 1)
+    p = points[key]
+    v, sev = num(p), severity_of(p)
+    told = cur.get("told")
+    if not isinstance(told, dict):
+        cur["told"] = {"v": v, "class": sev}
+        return None
+    rows = [t for t in good_targets(rules) if t.get("alarm") and t["tag"] == tag and fnmatch.fnmatchcase(key, t["key"])]
+    tg = next((t for t in rows if v is not None and _cmp(v, t["op"], t["value"])), rows[0] if rows else {})
+    # a class never told (no class at the filing): a crossed alarm is at least distressed, so only emergency rises from it
+    was = told.get("class") if told.get("class") in SEVERITY else "distressed"
+    said, keep = [], dict(told)
+    if sev is not None and SEVERITY.index(sev) > SEVERITY.index(was):
+        said.append("severity %s -> %s" % (was, sev))
+        keep["class"] = sev
+    if step_crossed(told.get("v"), v, tg.get("op"), tg.get("worse")):
+        said.append("%s -> %s %s, the rule's step is %s" % (fmt(told.get("v")), fmt(v), p.get("unit") or "", json.dumps(tg["worse"])))
+        keep["v"] = v
+    return ("; ".join(said), keep, tg.get("conductor_log")) if said else None
+
+
 def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears. A target with note_field
-    also says what is new while it stays crossed: a note on its open item, or, the item closed (open_ids), a reopen."""
+    also says what is new while it stays crossed: a note on its open item, or, the item closed (open_ids), a reopen. So
+    does an alarm that got worse (ALARM_REPEAT_FIX_BREAK_ON_WORSE: its severity rose, or its value passed the target's
+    stated `worse` step), which also gives the Conductor a line and, through worse_n, Operations a fresh alarm run."""
     p = ops_dir() / "alarms.json"
     state = read_json(p) if p.exists() else {}
     if not isinstance(state, dict):
@@ -2697,14 +2776,26 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             if crossed:
                 cur["last_seen"] = iso(now)
             fresh, names = fresh_news(cur, aid, points, rules) if crossed else ([], [])
-            if not fresh:
+            worse = worse_news(cur, aid, points, rules) if crossed else None
+            if worse and is_token_key(aid.split(":", 1)[-1]):
+                # Operations' alone, no item to note: worse_n is what it sees, as a new alarm key. No value in the log line
+                cur.update(told=worse[1], worse_n=worse_count(cur) + 1)
+                log.append({"ts": iso(now), "event": "worse", "aid": aid})
+                return
+            if not fresh and not worse:
                 return
             if open_ids is None or cur.get("item") in open_ids:
-                todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid, "aid": aid, "noted": names,
-                             "text": "ops_watch: new at %s: %s" % (iso(now), "; ".join(fresh)[:600])})
+                lines = (["new at %s: %s" % (iso(now), "; ".join(fresh)[:600])] if fresh else []) + (
+                    ["WORSE at %s: %s" % (iso(now), worse[0])] if worse else [])
+                todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid, "aid": aid,
+                             "noted": names if fresh else None, "told": worse[1] if worse else None,
+                             "worse": worse[0] if worse else None, "conductor_log": worse[2] if worse else None,
+                             "text": "ops_watch: " + "; ".join(lines)})
                 return
+            if worse:
+                cur["worse_n"] = worse_count(cur) + 1
             cur.update(state="PENDING", item=None, name=cur.get("item"), reopen=True, tries=0)
-            log.append({"ts": iso(now), "event": "reopen_for_news", "aid": aid, "item": cur["name"]})
+            log.append({"ts": iso(now), "event": "reopen_for_news" if fresh else "reopen_for_worse", "aid": aid, "item": cur["name"]})
         if not crossed:
             if cur and cur.get("name") and cur.get("title"):
                 # PENDING, not crossed now (UNMEASURED, or clear but not for clear_passes yet): the crossing was
@@ -2720,6 +2811,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             cur = {"state": "PENDING", "since": iso(now), "tries": 0}
             state[aid] = cur
             log.append({"ts": iso(now), "event": "crossed", "aid": aid, "v": pt.get("v"), "m": pt.get("m")})
+        cur["told"] = {"v": num(pt), "class": severity_of(pt)}      # what this filing says; worse_news measures from it
         if is_token_key(key):
             # an account/runway/burn alarm is Operations' alone: never a ledger item (`rimflow queue` is read by the
             # token-blind roles), so nothing is filed; Operations' alarm runs read alarms.json and digest.md (V2)
@@ -2769,8 +2861,15 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             res = {a["name"]: "filing off (run without --file-alarms)" for a in todo}
         for a in todo:
             if a.get("note_only"):
-                if a.get("noted") and res.get(a["name"]) is None and isinstance(state.get(a.get("aid")), dict):
-                    state[a["aid"]]["noted"] = a["noted"]       # unsaid on a failed note: the next pass says it again
+                cur = state.get(a.get("aid"))
+                if res.get(a["name"]) is None and isinstance(cur, dict):    # unsaid on a failed note: the next pass says it again
+                    if a.get("noted"):
+                        cur["noted"] = a["noted"]
+                    if a.get("told"):
+                        cur.update(told=a["told"], worse_n=worse_count(cur) + 1)
+                        log.append({"ts": iso(now), "event": "worse", "aid": a["aid"], "item": a["item"], "said": a["worse"]})
+                        # not conductor_line_owed: an open incident of this cause holds that line, and telling past it is the point
+                        tell_conductor(a.get("conductor_log"), "- %s ops_watch WORSE %s: %s\n" % (iso(now), a["item"], a["worse"]), a["aid"], now, log)
                 continue
             try:
                 cur = state[a["aid"]]
@@ -2788,12 +2887,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                                     "error": res["_raise"][a["name"]]})
                     # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
                     if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
-                        try:
-                            conductor_guard().refuse_if_test(a["conductor_log"])
-                            with open(a["conductor_log"], "a", encoding="utf-8") as f:
-                                f.write("\n- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]))
-                        except OSError as e:
-                            log.append({"ts": iso(now), "event": "conductor_log_failed", "aid": a["aid"], "error": str(e)[:200]})
+                        tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log)
                 else:
                     cur["error"] = err
                     if filer:

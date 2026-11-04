@@ -64,6 +64,7 @@ Names no host or account.
 """
 import argparse
 import fcntl
+import fnmatch
 import glob
 import json
 import os
@@ -427,6 +428,35 @@ def incident_step(sch, st, obs, now, act):
         roles["ops"] = ops
 
 
+ALARM_SEVERITY = ("idle", "sane", "distressed", "emergency")     # as ops_watch's ranges classes, least to worst
+
+
+def alarm_worse(sch, st, a):
+    """ALARM_REPEAT_FIX_BREAK_ON_WORSE: why this repeat breaks the alarm_every_s limit, or None. It breaks when the
+    action's severity rose, or its impact passed the step the schedule states for its kind (alarm_worse rows, first
+    match wins) past what was last told. A kind told before it carried a metric takes today's as its baseline."""
+    kind = a["kind"]
+    told = (st.get("alarm_told") or {}).get(kind)
+    if not isinstance(told, dict):
+        if a.get("severity") is not None or a.get("impact") is not None:
+            st.setdefault("alarm_told", {})[kind] = {"severity": a.get("severity"), "impact": a.get("impact")}
+        return None
+    said = []
+    sev, was = a.get("severity"), told.get("severity")
+    if sev in ALARM_SEVERITY and was in ALARM_SEVERITY and ALARM_SEVERITY.index(sev) > ALARM_SEVERITY.index(was):
+        said.append("severity %s -> %s" % (was, sev))
+    rows = sch.get("alarm_worse") if isinstance(sch.get("alarm_worse"), list) else []
+    step = next((r for r in rows if isinstance(r, dict) and fnmatch.fnmatchcase(kind, str(r.get("match")))), None)
+    v, base = a.get("impact"), told.get("impact")
+    if step and isinstance(v, (int, float)) and isinstance(base, (int, float)):
+        factor, add = step.get("factor"), step.get("add")
+        if not (isinstance(factor, (int, float)) and factor > 1) and not (isinstance(add, (int, float)) and add > 0):
+            a["worse_bad"] = "alarm_worse row for %s states no step" % step.get("match")     # journalled: off, said aloud
+        elif (add and v >= base + add) or (factor and base > 0 and v >= base * factor):
+            said.append("impact %.4g -> %.4g, the stated step is %s" % (base, v, "x%g" % factor if factor else "+%g" % add))
+    return "; ".join(said) or None
+
+
 def signal_alarm(sch, st, kind, why, now):
     """An alarm that fired joins the incident ledger. One that cannot still went its own roads; the next tick says so."""
     try:
@@ -691,14 +721,14 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss["cooldown_until"] = ss["nh_until"] = now + wait
                     n = 0 if SR.bb_incident(st, seat) else rule["escalate_after"]   # one outage, one incident (OP3)
                     if n and streak >= n and ans:
-                        act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True,
+                        act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True, impact=streak,
                             ticket=rule.get("escalate_item") or sch.get("alarm_item"),
                             raise_first="%s is answering and takes no work." % seat,
                             why="%s is awake and answering, but %d rings in a row took no new work (peeked %s; last "
                                 "answer: %s). Conductor: look at the queue and the seat's orders, not its window" % (
                                     seat, streak, pend.get("ticket"), said))
                     elif n and streak >= n:
-                        act(do="alarm", kind="idle_full_queue:" + seat, seat=seat, note=True, conductor_log=True,
+                        act(do="alarm", kind="idle_full_queue:" + seat, seat=seat, note=True, conductor_log=True, impact=streak,
                             ticket=rule.get("escalate_item") or sch.get("alarm_item"),
                             why="%s is idle with work waiting: %d consecutive rings ended woke_no_handoff (last ring "
                                 "%s, peeked %s, and it wrote nothing to the ledger); the Dispatcher keeps re-ringing every <= %d s, but the seat is not "
@@ -755,7 +785,7 @@ def decide(sch, st, obs, now, apply, out=None):
             if now - ss["dead_since"] < sch["dead_after_s"]:
                 return
             if not cfg.get("recover_dead"):
-                act(do="alarm", kind="dead:" + seat, seat=seat, note=True, conductor_log=True,
+                act(do="alarm", kind="dead:" + seat, seat=seat, note=True, conductor_log=True, impact=now - ss["dead_since"],
                     raise_first="%s has no window." % seat, why="%s has had no session for %d s (recovery off)"
                     % (seat, now - ss["dead_since"]))
                 return
@@ -1074,7 +1104,7 @@ def long_helper_alarms(sch, obs, now, act):
         return
     for h in found:
         if float(h.get("age_s") or 0) > limit:
-            act(do="alarm", kind="long_helper:" + str(h["id"])[:12], note=True, conductor_log=True,
+            act(do="alarm", kind="long_helper:" + str(h["id"])[:12], note=True, conductor_log=True, impact=float(h["age_s"]),
                 ticket=cfg.get("item") or sch.get("alarm_item"),
                 raise_first="Conductor-window helper %s has run %.0f min (limit %.0f min)." % (
                     str(h["id"])[:12], h["age_s"] / 60, limit / 60),
@@ -1270,10 +1300,15 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             stamped = False
             if a["do"] == "alarm":
                 last = st["alarms"].get(a["kind"])
-                if last is not None and now - last < sch.get("alarm_every_s", 6 * 3600):
+                limited = last is not None and now - last < sch.get("alarm_every_s", 6 * 3600)
+                worse = alarm_worse(sch, st, a) if limited else None
+                if limited and not worse:
                     a["note"] = False
                     res = "repeat alarm (rate-limited)"
                 else:
+                    if worse:
+                        a["worse"] = worse
+                        a["why"] = "WORSE, inside the repeat window (%s): %s" % (worse, a.get("why"))
                     st["alarms"][a["kind"]] = now
                     stamped = True
             if a["do"] in SR.DOES:
@@ -1537,6 +1572,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     st["alarms"].pop(a["kind"], None) if last is None else st["alarms"].update({a["kind"]: last})
             if stamped and apply and a["kind"] in st["alarms"]:
                 signal_alarm(sch, st, a["kind"], a.get("why"), now)
+            if stamped and st["alarms"].get(a["kind"]) == now and (a.get("severity") is not None or a.get("impact") is not None):
+                st.setdefault("alarm_told", {})[a["kind"]] = {"severity": a.get("severity"), "impact": a.get("impact")}
             if a["do"] == "incident" and not a["rows"] and not a["rings"]:
                 continue        # the snapshot stamp of a quiet tick is not a journal line
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
