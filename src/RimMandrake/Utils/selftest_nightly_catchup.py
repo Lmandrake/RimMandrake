@@ -112,6 +112,27 @@ before = OUT.read_text()
 r = NC.one_pass(BOOT, False, ctl=c3, log=LOG, out=OUT)
 check("status starts nothing and writes nothing", r["state"] == "start" and not any(x[0] == "start" for x in c3.calls) and OUT.read_text() == before)
 
+NC.SETTLE_S = 0
+
+
+class LateCtl(Ctl):
+    """The queued start job shows only on the third read after --no-block returned."""
+    def __init__(self):
+        super().__init__(starts=False)
+        self.reads = 0
+
+    def __call__(self, *a):
+        if a[0] == "start":
+            self.go = True
+        if a[0] == "is-active" and getattr(self, "go", False):
+            self.reads += 1
+            if self.reads >= 3:
+                self.state = "activating"
+        return super().__call__(*a)
+
+
+r = NC.one_pass(BOOT, True, ctl=LateCtl(), log=LOG, out=TMP / "ops4" / "nightly_catchup.json")
+check("a start slow to show is not a failed start", r["state"] == "start", r)
 OUT2 = TMP / "ops2" / "nightly_catchup.json"
 c4 = Ctl(starts=False)
 r = NC.one_pass(BOOT, True, ctl=c4, log=LOG, out=OUT2)

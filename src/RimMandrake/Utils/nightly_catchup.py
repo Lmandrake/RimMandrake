@@ -39,6 +39,7 @@ import known_reds as KR  # noqa: E402
 SERVICE = "rm-selftests-nightly.service"
 TIMER = "rm-selftests-nightly.timer"
 QUIET_S = 3600    # one catch-up period: closer than this to the next fire, the fire does the work
+SETTLE_TRIES, SETTLE_S = 15, 1
 UP = {"active", "activating", "reloading", "deactivating"}
 DOWN = {"inactive", "failed"}
 ON = {"enabled", "enabled-runtime", "static", "linked", "linked-runtime", "alias", "indirect", "generated"}
@@ -147,7 +148,11 @@ def one_pass(now, act, ctl=systemctl, log=None, out=None):
         if go and act:
             r["started"] = started + 1     # counted even if the start fails: a start that cannot work stops at the cap
             ctl("start", "--no-block", SERVICE)
-            after = ctl("is-active", SERVICE)
+            for _ in range(SETTLE_TRIES):     # --no-block returns on the queued job, before the unit changes state
+                after = ctl("is-active", SERVICE)
+                if after in UP:
+                    break
+                time.sleep(SETTLE_S)
             if after not in UP:
                 r.update(state="start_failed", why="%s reads %s after the start" % (SERVICE, after))
     if act:
