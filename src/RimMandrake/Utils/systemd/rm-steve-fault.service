@@ -1,0 +1,14 @@
+# SteveDesktop SIMD fault monitor, STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS: reads the canary's watch log, times each onset,
+# pauses and drains the lane, reboots Steve, resumes on clean cycles. ingest.py does the quarantining. See testq/fault_monitor.py.
+# Runs from the dispatch clone, which testq-tick keeps current.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-steve-fault.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-steve-fault.timer
+[Unit]
+Description=RimMandrake SteveDesktop SIMD fault monitor
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/fault_monitor.py tick
+WorkingDirectory=/home/mandrake/rm/dispatch
+Nice=10
+TimeoutStartSec=600s

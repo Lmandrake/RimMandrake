@@ -1,0 +1,11 @@
+[Unit]
+Description=SteveDesktop SIMD fault monitor, every 2 minutes
+
+[Timer]
+OnActiveSec=1min
+OnUnitActiveSec=2min
+AccuracySec=10s
+Persistent=false
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,367 @@
+#!/usr/bin/env python3
+"""selftest_testq_fault_monitor.py - fault_monitor.py and its gate in ingest.py (STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS).
+
+No ssh, no game: the machine is replaced by a fake with a log, a boot and a worker. Proves: the onset is timed from the last
+clean cycle, a clean cycle after it closes nothing, only a new boot does; history backfills itself; a result in a window is
+quarantined, one with no clean cycle read since it finished is held, one after a clean cycle counts; the whole round
+onset -> pause -> drain -> one reboot -> two clean cycles -> resume; a fault back at once is STUCK, not a reboot loop; a
+foreign pause holds the reboot and a red canary inside the window does not; ingest writes no verdict from a window,
+notes what it already wrote and queues the item job again; `check` fails on what it says it fails on, and the formats
+the parser reads are the ones watch2.ps1 writes.
+"""
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import shutil
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+CLI = os.path.join(REPO, "src", "RimMandrake", "rimflow", "cli.py")
+sys.path.insert(0, HERE)
+import fault_monitor as FM  # noqa: E402
+
+T, S = FM.T, FM.S
+FAILS = []
+ITEM = "SOME_ITEM_FIX_IT"
+BOOT = "2026-11-03 19:59:21"
+BOOT_S = FM.epoch(BOOT)
+
+
+def check(ok, msg):
+    print(("ok    " if ok else "FAIL  ") + msg)
+    if not ok:
+        FAILS.append(msg)
+
+
+def start(boot=BOOT):
+    return "%sZ WATCH START boot=%sZ logical_cpus=18 cycle=300s per-cpu core check 4s each" % (FM.stamp(FM.epoch(boot) + 90).replace("T", " ").rstrip("Z"), boot)
+
+
+def cyc(minutes, bad=(), boot=BOOT):
+    t = FM.epoch(boot) + minutes * 60
+    return "%sZ CYCLE uptime_h=%.2f bad_cpus=[%s] n_ok=%d" % (FM.stamp(t).replace("T", " ").rstrip("Z"), minutes / 60.0, ",".join(map(str, bad)), 18 - len(bad))
+
+
+def at(minutes, boot=BOOT):
+    return FM.stamp(FM.epoch(boot) + minutes * 60)
+
+
+def analyse_checks():
+    a = FM.analyse([start(), cyc(5), cyc(10)])
+    check(not a["windows"] and a["open"] is None and a["clean_through"] == BOOT_S + 600 and a["clean_cycles"] == 2, "clean cycles: no window, clean through the last one")
+    a = FM.analyse([start(), cyc(5), cyc(170), cyc(175, [0]), cyc(180), cyc(185, [2, 8])])
+    w = a["open"]
+    check(w and w["start"] == at(170) and w["first_bad"] == at(175) and w["first_cpus"] == [0], "the onset runs from the last clean cycle to the first bad one")
+    check(w["end"] is None and w["clean_after"] == 1 and w["bad_cycles"] == 2 and a["clean_through"] is None, "a clean cycle after the onset closes nothing")
+    check(w["cpus"] == {"0": 1, "2": 1, "8": 1} and abs(w["onset_uptime_h"] - 175 / 60.0) < 0.01, "CPUs and uptime at onset are kept")
+    b2 = "2026-11-04 03:00:00"
+    a2 = FM.analyse([start(), cyc(175, [0]), start(b2), cyc(5, boot=b2)])
+    check(a2["windows"][0]["end"] == FM.stamp(FM.epoch(b2)) and a2["open"] is None and a2["clean_cycles"] == 1 and a2["clean_through"] == FM.epoch(b2) + 300, "a new boot closes the window, its clean cycle counts")
+    a3 = FM.analyse([start(), cyc(5, [3])])
+    check(a3["open"]["start"] == FM.stamp(BOOT_S), "bad at the first cycle: the window starts at the boot")
+    a4 = FM.analyse([start(), cyc(175, [0])], live_boot=FM.epoch(b2))
+    check(a4["open"] is None and a4["windows"][0]["end"] == FM.stamp(FM.epoch(b2)) and a4["clean_cycles"] == 0, "the machine's own newer boot closes it before any watch line")
+    a5 = FM.analyse([cyc(60), "junk line", start()])
+    check(a5["unparsed"] == 1 and a5["clean_cycles"] == 1, "a line not understood is counted; a cycle with no start line gets its boot from its uptime")
+    a7 = FM.analyse([cyc(60, [3])], live_boot=BOOT_S + 30)
+    check(a7["open"] is not None, "a machine boot within rounding of the inferred one is the same boot: the window stays open")
+    a6 = FM.analyse([start(), start(), cyc(5), start(), cyc(10)])
+    check(a6["clean_cycles"] == 2, "a restarted watcher on the same boot is the same boot")
+    with open(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1"), encoding="utf-8") as f:
+        ps1 = f.read()
+    check("CYCLE uptime_h=$up bad_cpus=[$($fails -join ',')]" in ps1 and "WATCH START boot=" in ps1 and "CONTROL inject_exit=$ia clean_exit=$ic" in ps1, "the formats parsed are the ones watch2.ps1 writes")
+    c = FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=1 clean_exit=0"])["control"]
+    check(c["ok"], "a control with an injected fault seen is ok")
+    check(not FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=0 clean_exit=0"])["control"]["ok"], "a control that misses it is not")
+
+
+def rec(started, finished, item=None, host="stevedesktop", ingested=None, jid=None):
+    job = S.make_job("Mock", {"rows": ["r1"]}, "fix", "BENCH", "abc1234", item=item)
+    if jid:
+        job["id"] = jid
+    res = {"schema": S.RESULT_SCHEMA, "job": job["id"], "attempt": job["id"] + ".a1", "outcome": "DONE", "cause": None, "host": host,
+           "rows": [{"chain": "c1", "row": "r1", "verdict": "PASS", "detail": ""}], "counts": {"PASS": 1}, "runner_sha": "def5678",
+           "started": started, "finished": finished, "artifacts": [{"path": "/x/Mock_1.json"}], "note": ""}
+    out = {"job": job, "result": res, "attempts": [res["attempt"]], "finished": finished}
+    if ingested:
+        out["ingested"] = ingested
+    return out
+
+
+def gate_checks():
+    a = FM.analyse([start(), cyc(170), cyc(175, [0]), start("2026-11-04 03:00:00")])
+    w, now = a["windows"], BOOT_S + 3600 * 8
+    st = {"clean_through_s": BOOT_S + 170 * 60}
+    check(FM.gate(rec(at(160), at(172)), w, st, now)[0] == "quarantine", "ending inside the window: quarantine")
+    check(FM.gate(rec(at(172), at(180)), w, st, now)[0] == "quarantine", "wholly inside: quarantine")
+    check(FM.gate(rec(at(160), at(170)), w, st, now)[0] == "count", "finished at the last clean cycle: it counts")
+    check(FM.gate(rec("2026-11-04T03:10:00Z", "2026-11-04T03:20:00Z"), w, {"clean_through_s": FM.epoch("2026-11-04 03:25:00")}, now)[0] == "count", "after the reboot, with a clean cycle since: counts")
+    r = rec("2026-11-04T03:10:00Z", "2026-11-04T03:20:00Z")
+    check(FM.gate(r, w, {"clean_through_s": FM.epoch("2026-11-04 03:15:00")}, FM.epoch("2026-11-04 03:21:00"))[0] == "hold", "no clean cycle since it finished: held")
+    v, why = FM.gate(r, w, {"clean_through_s": None}, FM.epoch("2026-11-04 03:20:00") + FM.HOLD_S)
+    check(v == "count" and "unguarded" in why, "a dead canary holds a result only so long, and says so")
+    check(FM.gate(rec(at(172), at(180), host="archmagi"), w, st, now)[0] == "count", "Archmagi's results are not this fault's")
+    check(FM.gate(rec(at(172), at(180)), w, None, now)[0] == "count", "no monitor on this queue: nothing changes")
+    openw = FM.analyse([start(), cyc(170), cyc(175, [0])])["windows"]
+    check(FM.gate(rec(at(300), at(310)), openw, {"clean_through_s": None}, now)[0] == "quarantine", "an open window runs on until the reboot")
+
+
+class Machine:
+    """The fake SteveDesktop."""
+
+    def __init__(self):
+        self.boot, self.lines, self.up = BOOT_S, [start()], True
+        self.busy, self.snaps, self.reboots = False, 0, 0
+
+    def install(self):
+        FM.steve_read = lambda: {"boot": self.boot, "cpus": 18, "rimworld": 1, "lines": list(self.lines)} if self.up else None
+        FM.worker_busy = lambda: self.busy
+        FM.snapshot = self._snap
+        FM.reboot = self._reboot
+
+    def _snap(self, w):
+        self.snaps += 1
+        return "/snap/%s.txt" % w["id"]
+
+    def _reboot(self, _why):
+        self.reboots += 1
+        return True, ""
+
+
+def quiet_tick(now):
+    with open(os.devnull, "w") as dn:
+        out, sys.stdout = sys.stdout, dn
+        try:
+            FM.tick(now)
+        finally:
+            sys.stdout = out
+    return T.read_json(T.q("fault_state.json"))
+
+
+def machine_checks(tmp):
+    saved = T.QHOME, FM.steve_read, FM.worker_busy, FM.snapshot, FM.reboot, FM.RETEST_STATE
+    FM.RETEST_STATE = os.path.join(tmp, "no_retest.json")
+
+    def fresh():
+        T.QHOME = tempfile.mkdtemp(dir=tmp)
+        m = Machine()
+        m.install()
+        return m
+
+    try:
+        m = fresh()
+        m.lines += [cyc(5), cyc(10)]
+        st = quiet_tick(BOOT_S + 11 * 60)
+        check(st["phase"] == "CLEAN" and not T.paused() and st["clean_through_s"] == BOOT_S + 600, "clean: lane alone, the reading says clean through")
+        m.lines += [cyc(175, [0])]
+        m.busy = True
+        st = quiet_tick(BOOT_S + 176 * 60)
+        check(st["phase"] == "DRAIN" and T.paused() and FM.MARK in T.paused()["reason"] and m.snaps == 1, "onset: cause snapshot, lane paused, draining")
+        windows = T.read_json(T.q("fault_windows.json"))
+        check(windows[0]["snapshot"] == "/snap/%s.txt" % windows[0]["id"], "the snapshot's path is on the window")
+        st = quiet_tick(BOOT_S + 178 * 60)
+        check(st["phase"] == "DRAIN" and m.reboots == 0 and m.snaps == 1, "a busy worker holds the reboot; no second snapshot")
+        m.busy = False
+        st = quiet_tick(BOOT_S + 180 * 60)
+        check(st["phase"] == "DRAIN" and m.reboots == 0, "one idle tick is not drained")
+        st = quiet_tick(BOOT_S + 182 * 60)
+        check(st["phase"] == "WAIT_BOOT" and m.reboots == 1, "two idle ticks: one reboot (the train's idle RimWorld holds nothing)")
+        m.up = False
+        st = quiet_tick(BOOT_S + 184 * 60)
+        check(st["phase"] == "WAIT_BOOT" and m.reboots == 1 and not st["reachable"], "down: waits, no second reboot")
+        b2 = "2026-11-03 23:05:00"
+        m.up, m.boot = True, FM.epoch(b2)
+        st = quiet_tick(FM.epoch(b2) + 120)
+        check(st["phase"] == "VERIFY" and T.paused() and st["open_window"] is None, "back: window closed, lane stays paused until it is shown clean")
+        m.up = False
+        st = quiet_tick(FM.epoch(b2) + 150)
+        check(st["open_window"] is None and T.read_json(T.q("fault_windows.json"))[0]["end"], "ssh lost before the next watch line: the closed window stays closed")
+        m.up = True
+        m.lines += [start(b2), cyc(5, boot=b2)]
+        st = quiet_tick(FM.epoch(b2) + 6 * 60)
+        check(st["phase"] == "VERIFY" and T.paused(), "one clean cycle is not enough")
+        m.lines += [cyc(10, boot=b2)]
+        st = quiet_tick(FM.epoch(b2) + 11 * 60)
+        check(st["phase"] == "CLEAN" and not T.paused() and not st.get("alarm"), "two clean cycles: lane resumed, clean")
+        windows = T.read_json(T.q("fault_windows.json"))
+        check(len(windows) == 1 and windows[0]["end"] == FM.stamp(FM.epoch(b2)) and windows[0]["snapshot"], "the window keeps its end and its snapshot")
+
+        m.lines += [cyc(15, [4], boot=b2)]
+        st = quiet_tick(FM.epoch(b2) + 16 * 60)
+        check(st["phase"] == "DRAIN" and len(T.read_json(T.q("fault_windows.json"))) == 2, "a second onset on the new boot is a new window")
+        quiet_tick(FM.epoch(b2) + 18 * 60)
+        st = quiet_tick(FM.epoch(b2) + 19 * 60)
+        check(st["phase"] == "STUCK" and m.reboots == 1 and st["alarm"].startswith("STUCK") and T.paused(), "back within minutes of a boot: STUCK, no reboot loop, lane stays paused")
+        st = quiet_tick(FM.epoch(b2) + 200 * 60)
+        check(st["phase"] == "STUCK" and m.reboots == 1, "STUCK is sticky")
+        b3 = "2026-11-04 05:00:00"
+        m.boot = FM.epoch(b3)
+        st = quiet_tick(FM.epoch(b3) + 60)
+        check(st["phase"] == "VERIFY" and not st.get("alarm"), "a new boot by any hand ends STUCK")
+
+        m = fresh()
+        m.lines += [cyc(170), cyc(175, [0])]
+        T.S.dump({"since": S.utcnow(), "job": None, "reason": "remote hardware tests", "until": None}, T.pause_path())
+        quiet_tick(BOOT_S + 176 * 60)
+        st = quiet_tick(BOOT_S + 178 * 60)
+        st = quiet_tick(BOOT_S + 180 * 60)
+        check(st["phase"] == "DRAIN" and m.reboots == 0 and "not ours" in st["why_held"], "a foreign pause holds the reboot")
+        os.remove(T.pause_path())
+        T.S.dump({"since": at(175), "job": "J1", "outcome": "INVALID", "cause": "CANARY", "reason": "red canary"}, T.pause_path())
+        quiet_tick(BOOT_S + 182 * 60)
+        st = quiet_tick(BOOT_S + 184 * 60)
+        check(st["phase"] == "WAIT_BOOT" and m.reboots == 1, "a red canary born in the window does not hold it")
+        b4 = "2026-11-03 23:30:00"
+        m.boot = FM.epoch(b4)
+        m.lines += [start(b4), cyc(5, boot=b4), cyc(10, boot=b4)]
+        st = quiet_tick(FM.epoch(b4) + 11 * 60)
+        st = quiet_tick(FM.epoch(b4) + 12 * 60)
+        check(st["phase"] == "CLEAN" and not T.paused(), "and that pause is lifted with ours")
+
+        m = fresh()
+        m.lines += [cyc(170), cyc(175, [0])]
+        with open(FM.RETEST_STATE, "w") as f:
+            json.dump({"state": "RUNNING"}, f)
+        st = quiet_tick(BOOT_S + 176 * 60)
+        check(st["phase"] == "PASSIVE" and not T.paused() and m.reboots == 0 and st["open_window"], "the CPU retest owns the machine: window yes, act no")
+        os.remove(FM.RETEST_STATE)
+        open(T.q("fault_monitor.stop"), "w").close()
+        st = quiet_tick(BOOT_S + 178 * 60)
+        check(st["phase"] == "PASSIVE" and not T.paused(), "the stop file too")
+        os.remove(T.q("fault_monitor.stop"))
+        b5 = "2026-11-03 23:50:00"
+        m.boot = FM.epoch(b5)
+        T.S.dump({"since": S.utcnow(), "job": None, "reason": FM.MARK + " x", "until": None}, T.pause_path())
+        m.lines += [start(b5), cyc(5, boot=b5), cyc(10, boot=b5)]
+        st = quiet_tick(FM.epoch(b5) + 11 * 60)
+        st = quiet_tick(FM.epoch(b5) + 12 * 60)
+        check(st["phase"] == "CLEAN" and not T.paused(), "back from PASSIVE with our pause on: recovery resumes, the pause is lifted")
+
+        m = fresh()
+        m.lines += [cyc(170), cyc(175, [0])]
+        now = BOOT_S + 176 * 60
+        st = T.read_json(T.q("fault_state.json")) or {}
+        T.S.dump(dict(st, phase="CLEAN", reboots=[now - 3600 * i for i in range(FM.MAX_REBOOTS_DAY)]), T.q("fault_state.json"))
+        quiet_tick(now)
+        quiet_tick(now + 60)
+        st = quiet_tick(now + 120)
+        check(st["phase"] == "STUCK" and m.reboots == 0 and "reboots" in st["stuck"], "the reboot cap is STUCK too")
+
+        m = fresh()
+        m.lines += [cyc(5)]
+        st = quiet_tick(BOOT_S + 60 * 60)
+        check("no canary cycle" in st.get("blind", ""), "reachable and no recent cycle: blind")
+        check(FM.check(now=BOOT_S + 60 * 60) == 1, "check fails on a blind canary")
+        m.lines += [cyc(58)]
+        quiet_tick(BOOT_S + 60 * 60)
+        check(FM.check(now=BOOT_S + 60 * 60) == 0, "check passes on a fresh clean reading")
+        check(FM.check(now=BOOT_S + 60 * 60 + FM.STALE_S + 60) == 1, "check fails on a stale reading")
+
+        m = fresh()
+        m.lines += [cyc(170), cyc(175, [0])]
+        quiet_tick(BOOT_S + 176 * 60)
+        os.makedirs(T.q("done"), exist_ok=True)
+        r = rec(at(172), at(174))
+        S.dump(r, T.q("done", r["job"]["id"] + ".json"))
+        check(FM.check(now=BOOT_S + 180 * 60) == 0, "check allows a record just finished, before ingest has moved it")
+        check(FM.check(now=BOOT_S + 190 * 60) == 1, "check fails on a done record left inside a window")
+        T.S.dump(dict(T.read_json(T.q("fault_state.json")), at=FM.stamp(BOOT_S + 190 * 60), unparsed=2, alarm=None), T.q("fault_state.json"))
+        os.remove(T.q("done", r["job"]["id"] + ".json"))
+        check(FM.check(now=BOOT_S + 190 * 60) == 1, "check fails when the parser stops reading the canary")
+    finally:
+        T.QHOME, FM.steve_read, FM.worker_busy, FM.snapshot, FM.reboot, FM.RETEST_STATE = saved
+
+
+def ingest_checks(tmp):
+    """The real ingest.py over a temp queue and ledger, with fault_windows/fault_state as the monitor writes them."""
+    queue, items = os.path.join(tmp, "iq"), os.path.join(tmp, "items")
+    led = os.path.join(tmp, "ledger", "events.jsonl")
+    for d in (os.path.join(queue, "done"), os.path.join(queue, "pending"), items, os.path.dirname(led)):
+        os.makedirs(d)
+    open(led, "w").close()
+    env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "CLAUDE_PROJECT_DIR")}
+    env.update(TESTQ_QUEUE=queue, RIMFLOW_LEDGER=led, RIMFLOW_ITEMS=items, TESTQ_INGEST_PUSH="0", TESTQ_FAULT_ITEM=ITEM)
+    r = subprocess.run([sys.executable, CLI, "file", ITEM, "--for", "BENCH", "--title", "t", "--seat", "BENCH"], env=env, capture_output=True, text=True, timeout=120)
+    check(r.returncode == 0, "the test item is filed: %s" % r.stderr[-200:])
+    shard = os.path.join(tmp, "ledger", "events", "RUNNER.jsonl")
+
+    def events(kind):
+        try:
+            return [e for e in map(json.loads, open(shard)) if e.get("event") == kind]
+        except OSError:
+            return []
+
+    def ingest():
+        p = subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=env, capture_output=True, text=True, timeout=300)
+        check(p.returncode == 0, "ingest ran: %s" % p.stderr[-300:])
+
+    def put(r):
+        S.dump(r, os.path.join(queue, "done", r["job"]["id"] + ".json"))
+        return r["job"]["id"]
+
+    a = FM.analyse([start(), cyc(170), cyc(175, [0])])
+    S.dump(a["windows"], os.path.join(queue, "fault_windows.json"))
+    S.dump({"phase": "DRAIN", "clean_through_s": None, "boot_iso": at(0), "at": S.utcnow()}, os.path.join(queue, "fault_state.json"))
+    now_iso = soon = S.utcnow()
+    inside = put(rec(at(172), at(174), item=ITEM))
+    was = put(rec(at(160), at(176), item=ITEM, ingested={"run": ITEM + "/run-1@x", "result": "pass", "at": at(177)}))
+    filler = put(rec(at(172), at(174)))
+    before = put(rec(at(100), at(120), item=ITEM))
+    ingest()
+    q = lambda j: os.path.exists(os.path.join(queue, "quarantined", j + ".json"))
+    d = lambda j: os.path.exists(os.path.join(queue, "done", j + ".json"))
+    check(q(inside) and not d(inside) and q(was) and not d(was) and q(filler) and not d(filler), "records from inside the window left done/ for quarantined/")
+    runs = events("verify")
+    check(not any(inside in json.dumps(e) for e in runs), "no verdict from inside the window")
+    notes = [e.get("text", "") for e in events("note")]
+    check(any(inside in n and "no verdict recorded" in n for n in notes), "an unjudged job: a note says so")
+    check(any(was in n and "must not be counted" in n and ITEM + "/run-1@x" in n for n in notes), "one judged before the fault was known: its verdict is named as not to count")
+    check(any("Steve fault window %s:" % a["windows"][0]["id"] in n for n in notes), "the onset itself is on the fault's item")
+    pend = [T.read_json(os.path.join(queue, "pending", f)) for f in os.listdir(os.path.join(queue, "pending"))]
+    check(len(pend) == 2 and all(p["item"] == ITEM for p in pend), "both item jobs are queued again, the filler is not (the fill finds its gap)")
+    check(d(before) and T.read_json(os.path.join(queue, "done", before + ".json")).get("ingested", {}).get("result") == "pass", "a job before the window is untouched by the quarantine")
+    n_notes = len(notes)
+    ingest()
+    check(len(events("note")) == n_notes, "a second pass writes nothing new")
+    # no window over it, but no clean cycle read since: held, then counted once one is
+    b2 = "2026-11-03 23:30:00"      # before any wall clock this test can run on: the held job's times are real
+    a2 = FM.analyse([start(), cyc(170), cyc(175, [0]), start(b2), cyc(5, boot=b2)])
+    S.dump(a2["windows"], os.path.join(queue, "fault_windows.json"))
+    S.dump({"phase": "CLEAN", "clean_through_s": a2["clean_through"], "boot_iso": b2, "at": now_iso}, os.path.join(queue, "fault_state.json"))
+    r = rec(FM.stamp(FM.epoch(soon) - 600), soon, item=ITEM)
+    held = put(r)
+    ingest()
+    check("ingested" not in T.read_json(os.path.join(queue, "done", held + ".json")), "held: no verdict until a clean cycle follows it")
+    S.dump({"phase": "CLEAN", "clean_through_s": FM.epoch(soon) + 1, "boot_iso": b2, "at": S.utcnow()}, os.path.join(queue, "fault_state.json"))
+    ingest()
+    check(T.read_json(os.path.join(queue, "done", held + ".json")).get("ingested", {}).get("result") == "pass", "and counted when one does")
+    # depth: a re-run of a re-run of a re-run stays out
+    saved = T.QHOME
+    T.QHOME = queue
+    try:
+        job = rec(soon, soon, item=ITEM)
+        S.dump({job["job"]["id"]: FM.RERUN_DEPTH}, T.q("fault_reruns.json"))
+        check(FM.rerun_job(job) is None, "a job re-queued often enough stays out")
+        old = rec(at(10), at(20), item=ITEM)
+        check(FM.rerun_job(old, now=FM.epoch(at(20)) + FM.RERUN_WITHIN_S + 60) is None, "an old result is quarantined but not re-queued")
+    finally:
+        T.QHOME = saved
+
+
+def main():
+    analyse_checks()
+    gate_checks()
+    tmp = tempfile.mkdtemp(prefix="rf_fault_")
+    try:
+        machine_checks(tmp)
+        ingest_checks(tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("FAILED %d" % len(FAILS) if FAILS else "PASS")
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

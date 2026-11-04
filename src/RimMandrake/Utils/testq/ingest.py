@@ -17,6 +17,9 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        note on the open one. An INVALID job with no sheet does the same.
   no item           -> nothing on the ledger, unless job.row_items (submit --row-item ROW_OR_CHAIN=ITEM) maps rows to
                        items or TESTQ_HOST_ITEM names a standing host: then each item is verified from ITS rows only.
+SteveDesktop's SIMD fault (fault_monitor.py) goes first, whatever the record says: a job that ran inside a fault window
+is quarantined (its record leaves done/, its items get a note, an item job is re-queued), even if it was ingested before the
+window was known; a job with no clean canary cycle read since it finished is held, not marked, and asked again next pass.
 A lane-pausing outcome (testq.PAUSE_ON: a red canary, a refused runner pull) is also, item or not, a failed run of
 the lane (verify STEVE_LANE_MONITOR_PAUSE_FINDINGS --config steve-lane) plus one finding from it,
 STEVE_LANE_<CANARY_RED|SYNC_REFUSED>_<JOBHEX6> (design section 6: pause the lane, file a finding).
@@ -40,6 +43,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import fault_monitor as FM  # noqa: E402
 import retest as R  # noqa: E402
 import testq as T  # noqa: E402
 
@@ -340,6 +344,40 @@ def ingest_group(job, res, item, gres, att):
     return {"run": run, "result": verdict(gres), "findings": found}
 
 
+def quarantine_one(rec, window):
+    """A result from inside a fault window: off done/, a note on each item it speaks for, an item job queued again."""
+    job, res, was = rec["job"], rec.get("result") or {}, rec.get("ingested") or {}
+    att = res.get("attempt") or job["id"]
+    items = sorted({i for i in [job.get("item")] + list((job.get("row_items") or {}).values())
+                    + list((was.get("groups") or {}).keys()) if i})
+    new = FM.rerun_job(rec)
+    said = "its verdict %s must not be counted" % was["run"] if was.get("run") else \
+        "its verdicts must not be counted" if was.get("groups") else "no verdict recorded"
+    needle = "testq %s quarantined:" % att
+    refused = []
+    for it in items:
+        if not note_once(it, needle, "%s ran inside Steve SIMD fault window %s (last clean %s, first bad %s); %s%s"
+                         % (needle, window["id"], window["start"], window["first_bad"], said,
+                            "; re-queued as %s" % new if new else "")):
+            refused.append(it)
+    FM.quarantine_move(rec, window, {"items": items, "rerun": new, "note_refused": refused, "was_ingested": bool(was)})
+    T.log("ingest %s -> quarantined in %s, rerun %s%s" % (job["id"], window["id"], new,
+                                                         ", note refused on %s" % refused if refused else ""))
+
+
+def fault_note(state):
+    """One ledger line for each onset and alarm, on the fault's own item: the record of when it came, boot by boot."""
+    host = os.environ.get("TESTQ_FAULT_ITEM", "STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO")
+    for w in FM.load()[0]:
+        needle = "Steve fault window %s:" % w["id"]
+        note_once(host, needle, "%s first bad %s at uptime %.2f h, CPUs %s, last clean %s; cause evidence %s"
+                  % (needle, w["first_bad"], w["onset_uptime_h"], w["first_cpus"], w["start"], w.get("snapshot")))
+    for kind, text in (("alarm", state.get("alarm")), ("BLIND", state.get("blind"))):
+        if text:
+            needle = "Steve fault monitor %s %s %s:" % (kind, state.get("boot_iso"), text.split()[0])
+            note_once(host, needle, "%s %s" % (needle, text))
+
+
 _HELD = []      # non-empty while this process holds the clone lock (main holds it across ingest + publish)
 
 
@@ -600,9 +638,21 @@ def _ingest_locked():
         if rebase_left(clear=push):
             return 0
         n = 0
+        windows, fstate = FM.load()
         for path in sorted(os.listdir(T.q("done"))):
             rec = T.read_json(T.q("done", path))
-            if not rec or "ingested" in rec or not path.endswith(".json"):
+            if not rec or not path.endswith(".json"):
+                continue
+            try:
+                verdict_of_gate, why = FM.gate(rec, windows, fstate)
+                if verdict_of_gate == "quarantine":
+                    quarantine_one(rec, why)
+                    n += 1
+                    continue
+            except Exception as ex:     # noqa: BLE001 - as below; an unjudged record waits, it is never counted
+                T.log("ingest %s: fault gate failed, held: %s: %s" % (rec.get("job", {}).get("id"), type(ex).__name__, ex))
+                continue
+            if "ingested" in rec or verdict_of_gate == "hold":
                 continue
             pend = rec.get("ingest_pending") or {}
             if pend and time.time() - pend.get("last", 0) < RETRY_S:
@@ -623,6 +673,8 @@ def _ingest_locked():
             T.S.dump(rec, T.q("done", path))
             T.log("ingest %s -> %s" % (rec["job"]["id"], json.dumps(out)[:300]))
             n += 1
+        if fstate:
+            fault_note(fstate)
         if push and (n or unpublished()):
             T.log("ingest git: %s" % publish(n))
     return 0

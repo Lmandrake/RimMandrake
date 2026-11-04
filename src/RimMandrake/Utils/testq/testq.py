@@ -40,6 +40,7 @@ The queue is plain files under TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrak
   done/<job>.json      {"job", "result", "attempts", "finished"}   - the last attempt's testq.result/1
   cancelled/<job>.json {"job", "reason", "at"}
   orphans/<attempt>.json  a worker result for a job this queue never sent (kept, acked)
+  quarantined/<job>.json  a done record from inside a Steve SIMD fault window: must not count (fault_monitor.py, ingest.py)
   ssh_state.json, train.json, tick.log, tick.lock
   paused.json          the lane is paused (design section 6): {since, job, attempt, outcome, cause, reason, note}
 

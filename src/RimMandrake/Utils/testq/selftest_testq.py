@@ -444,6 +444,7 @@ def main():
                    TESTQ_SKIP_PULL="1", TESTQ_NO_SYSTEMD="1", TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true",
                    TESTQ_CMD_DOWN="true", TESTQ_CMD_RUN="%s %s" % (sys.executable, os.path.join(tmp, "mock.py")),
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
+                   TESTQ_CMD_BRIDGE="true",     # never the real client: one real unknown marker on this machine failed every job here
                    RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"), RM_HOST="stevedesktop",
                    RM_GAME_USERDATA=tmp, MOCK_HOLD=os.path.join(tmp, "hold"))
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
