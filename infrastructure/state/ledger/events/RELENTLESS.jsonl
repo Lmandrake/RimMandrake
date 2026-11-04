@@ -65,3 +65,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T02:05:20Z","tsn":1793757920454759037}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:15:28Z","tsn":1793758528795022581}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-04T02:15:46Z","tsn":1793758546158366529}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:19:53Z","tsn":1793758793307469548}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-04T02:20:00Z","tsn":1793758800796705290}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:20:16Z","tsn":1793758816038604762}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A4 (L2), read-only proof","ts":"2026-11-04T02:20:23Z","tsn":1793758823513813882}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:20:29Z","tsn":1793758829005821212}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A5 (L2), read-only proof","ts":"2026-11-04T02:20:37Z","tsn":1793758837004494765}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:20:42Z","tsn":1793758842702635454}
