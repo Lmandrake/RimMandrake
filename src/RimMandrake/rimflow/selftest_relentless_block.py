@@ -303,15 +303,23 @@ def t_returned_run_not_restaffed():
     st = x.st("I0")
     x.w.items["I0"] = "doing"       # started by us, so eligible() and the pool have no say in what follows
     x.w.blocks["I0"] = ("other", [], "PARKED by owner card")
-    x.tick()
-    ok(x.st("I0")["status"] == "running", "a run blocked while it works is left to finish (the fix is about re-staffing)")
     n = len(x.w.launches)
-    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    # RELENTLESS_FIX_PARKED_RUN_WORKS_ON_ANYWAY: a block is "stop now", not "after this run lands"
+    ok((st["run"]["unit"], False) in x.w.stops, "a run blocked while it works is stopped")
+    ok(x.st("I0")["gen"] == st["gen"] + 1, "and fenced: its gen moved, so its finish is refused")
+    try:
+        R.beat(x.s, "I0", st["gen"], now=x.now)
+        ok(False, "a fenced worker's beat is refused")
+    except R.Fenced:
+        ok(True, "a fenced worker's beat is refused")
+    ok(not R.failed_approaches(x.s, "I0") and not x.st("I0")["failures"], "a block stop is no failed approach")
     x.tick()
     returned = x.st("I0")
     ok(all(lz[0] != "I0" for lz in x.w.launches[n:]), "the tick its run ends: a blocked doing item gets no new worker")
     ok(returned["status"] == "blocked", "the same tick it leaves the line (read %s)" % returned["status"])
     gen = returned["gen"]
+    ok(gen == st["gen"] + 1, "one gen for the stop, none for the block")
     for _ in range(4):
         x.tick(600)
     ok(all(lz[0] != "I0" for lz in x.w.launches[n:]) and x.st("I0")["gen"] == gen, "later ticks send no worker either")

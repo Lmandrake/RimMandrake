@@ -18,6 +18,8 @@ The moves, all here so relentless.py carries hooks only:
   - `leave_line`, from lease() too: the sweep runs before the tick's steps, so a run ending in a step comes back to
     `queued` after it looked, its item `doing` and out of eligible()'s reach (RELENTLESS_FIX_PARKED_ITEM_STILL_STAFFED:
     an item the owner's card parked was leased again five minutes later). lease() reads the block before any launch.
+  - `fence_run`, from the sweep: a RUNNING worker whose item becomes blocked is stopped and fenced, never left to
+    finish and land (RELENTLESS_FIX_PARKED_RUN_WORKS_ON_ANYWAY). The off switch (share 0) still lets runs finish.
   - the ledger is the only record of what it waits on: `rimflow show <ID>` prints it.
 """
 import re
@@ -91,6 +93,30 @@ def leave_line(store, item, led, now, acts, iso):
     return True
 
 
+def fence_run(store, fx, item, led, now, acts, iso):
+    """A worker whose item is blocked on the ledger while it works is stopped at once (RELENTLESS_FIX_PARKED_RUN_WORKS_
+    ON_ANYWAY: the owner's card parks an item to say "stop now", and a run left to finish may still land and be
+    checked). Fence first: gen moves, so the worker's next beat/finish is refused. No strike and no failed approach:
+    the block is not the item's fault. The run settles to `queued`, and leave_line (here or in lease()) parks it."""
+    with store.lock():
+        cur = store.load(item)
+        if cur["status"] != "running" or cur.get("reserving"):
+            return False
+        run = cur.get("run")
+        cur["gen"] += 1
+        cur["status"] = "stopping"
+        cur["stopping_since"] = now
+        cur["returned_at"] = now        # back at the top once the block ends
+        store.attempt(item, {"at": iso(now), "gen": cur["gen"] - 1, "end": "blocked_while_running",
+                             "detail": (led.get("block") or "ledger block")[:600]})
+        store.save(cur)
+    if run:
+        fx.stop(run, force=False)
+    store.journal({"at": iso(now), "do": "fenced_blocked", "item": item, "why": led.get("block") or "ledger block"})
+    acts.append({"do": "fenced_blocked", "item": item})
+    return True
+
+
 def sweep(store, fx, now, acts, iso):
     """Under the tick lock. Pending blocks go to the ledger; queued items blocked there leave the line; blocked items
     whose ledger block ended come back at the top."""
@@ -109,6 +135,11 @@ def sweep(store, fx, now, acts, iso):
                 store.save(cur)
             store.journal({"at": iso(now), "do": "blocked", "item": item, "kind": kind, "on": ons})
             acts.append({"do": "blocked", "item": item, "kind": kind, "on": ons})
+            continue
+        if s == "running" and not st.get("reserving"):
+            led = fx.item_state(item)
+            if ledger_holds(led):
+                fence_run(store, fx, item, led, now, acts, iso)
             continue
         if s not in ("queued", "blocked"):
             continue
