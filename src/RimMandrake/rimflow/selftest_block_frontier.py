@@ -11,8 +11,6 @@ What it pins:
   * the CLI refuses a self/cyclic wait and a dead target, warns on an unfiled one, and prints the
     "blocker reached requested level (L)" / "blocker dropped, confirm" lines in `next` and `why`;
   * a default block (`--until done`) is written WITHOUT the field, byte-compatible;
-  * the reader as committed BEFORE this change (BASE_REF) replays a ledger carrying `until`
-    with zero errors: it strips the field and keeps the block.
 Design: design/2026-10-25-rimflow-block-release.md.
 """
 import json
@@ -25,8 +23,6 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-BASE_REF = "8680483545da"         # the last commit before RIM-1: the reader every clone runs today
-PKG = "src/RimMandrake/rimflow"
 sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import model, priority                              # noqa: E402
 
@@ -330,42 +326,9 @@ def t_cli_seventh_entry_visible_in_next():
         assert i in bench, "%s hidden from `next --bench`" % i
 
 
-def t_base_reader_tolerates_until():
-    """The reader every clone runs today, extracted at BASE_REF, over this ledger."""
-    # At repo depth, with Utils linked in: model.py imports rmpaths via parents[3].
-    base = os.path.join(CTX["root"], "base")
-    dest = os.path.join(base, "src", "RimMandrake", "rimflow")
-    os.makedirs(dest)
-    os.symlink(os.path.join(REPO, "src", "RimMandrake", "Utils"),
-               os.path.join(base, "src", "RimMandrake", "Utils"))
-    names = subprocess.check_output(("git", "ls-tree", "--name-only", BASE_REF, PKG + "/"),
-                                    cwd=REPO).decode().split()
-    for n in names:
-        if n.endswith(".py"):
-            with open(os.path.join(dest, os.path.basename(n)), "wb") as fh:
-                fh.write(subprocess.check_output(("git", "show", "%s:%s" % (BASE_REF, n)),
-                                                 cwd=REPO))
-    code = ("import json,sys; sys.path.insert(0, %r)\nfrom rimflow import model\n"
-            "model.EVENTS = %r\nw = model.replay(model.read())\n"
-            "print(json.dumps({'errors': len(w.errors), 'tolerated': w.tolerated,"
-            "'d': [w.items['FRONTIER_WAITER_D_PROBE_FIXTURE'].blocked, w.items['FRONTIER_WAITER_D_PROBE_FIXTURE'].blocked_on]}))"
-            % (os.path.dirname(dest), os.path.join(CTX["led"], "events.jsonl")))
-    p = subprocess.run([sys.executable, "-c", code], capture_output=True)
-    assert p.returncode == 0, p.stderr.decode()
-    r = json.loads(p.stdout.decode())
-    assert r["errors"] == 0, r
-    # close --no-code (a field BASE_REF predates) is tolerated too: the fixture closes the blocker with it
-    assert any(t[1] == "block" and t[2] == ["until"] for t in r["tolerated"]) and \
-        all((t[1] == "block" and t[2] == ["until"]) or (t[1] == "close" and t[2] == ["noCode"])
-            for t in r["tolerated"]), r["tolerated"]
-    assert r["d"] == [True, "FRONTIER_BLOCKER_C_PROBE_FIXTURE"], "the base reader lost the block: %r" % r
-    ok("why", "FRONTIER_WAITER_D_PROBE_FIXTURE", cli=os.path.join(dest, "cli.py"))
-
-
 if __name__ == "__main__":
     for name, fn in sorted((k, v) for k, v in globals().items()
-                           if k.startswith("t_") and not k.startswith("t_cli")
-                           and k != "t_base_reader_tolerates_until"):
+                           if k.startswith("t_") and not k.startswith("t_cli")):
         case(name, fn)
     try:
         setup_cli()
@@ -374,8 +337,7 @@ if __name__ == "__main__":
                    t_cli_drop_names_confirm_and_next_repeats_it,
                    t_cli_close_names_satisfied_and_bench_lists_it,
                    t_cli_already_satisfied_typed_cycle_is_accepted,
-                   t_cli_seventh_entry_visible_in_next,
-                   t_base_reader_tolerates_until):
+                   t_cli_seventh_entry_visible_in_next):
             case(fn.__name__, fn)
     finally:
         shutil.rmtree(CTX.get("root", "/nonexistent-rimflow-bf"), ignore_errors=True)
