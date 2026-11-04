@@ -7,9 +7,10 @@
   goodbye  outranks hold
   auto     no file, a torn file, another window's file: today's rule
   words    only his whole message flips it, only in the Conductor window
-  badge    the status line shows it, only there
+  badge    the status line shows it, only there, through the command settings.json registers
   wake     every wake prints the old window's last reply, a first launch after a boot too (found from the transcripts,
-           through the command the wake prompt names); an aborted restart does not
+           through the command the wake prompt names); an aborted restart does not; both wake commands hold with no,
+           a stale and an aborted record
 """
 import contextlib
 import io
@@ -271,7 +272,21 @@ def test_status_line_shows_it():
     RM.write("BENCH", RM.HOLD, "another-window", ROOT)
     check("reset auto" in line("BENCH"), "another window's hold does not show here")
     check("reset " not in line("RUNNER"), "another seat has no switch to show")
+    # "visible in the window" means the command Claude Code runs, not the script above: run what settings.json registers
+    with open(os.path.join(REPO, ".claude", "settings.json")) as f:
+        reg = json.load(f).get("statusLine") or {}
+    check(reg.get("type") == "command" and reg.get("command"), "a status line command is registered in .claude/settings.json")
+
+    def registered(seat):
+        r = subprocess.run(reg.get("command") or "true", shell=True, input=json.dumps({"session_id": "sid-line", "model": {"id": "x"}}),
+                           capture_output=True, text=True, env=dict(os.environ, AGENT_SEAT=seat, CLAUDE_PROJECT_DIR=REPO), timeout=60)
+        return r.stdout
+    RM.write("BENCH", RM.HOLD, "sid-line", ROOT)
+    check("reset HOLD" in registered("BENCH"), "the registered status line shows hold")
+    RM.write("BENCH", RM.READY, "sid-line", ROOT)
+    check("reset READY" in registered("BENCH"), "the registered status line shows ready")
     os.remove(p)
+    check("reset auto" in registered("BENCH"), "the registered status line shows auto")
 
 
 def wake(rec, kind="conductor"):
@@ -426,6 +441,54 @@ def test_window_that_died_without_a_record():
         check(r.returncode == 0 and "LAST REPLY" not in r.stdout, "a seat without the Conductor's kind prints nothing")
     finally:
         SR.claude_home = old
+
+
+def test_both_wake_commands_with_every_record():
+    """The blind check's gaps at 5d471d50: 'seat_restart.py wake' (what a Dispatcher relaunch runs) and 'handoff.py --wake'
+    (what a first launch runs), as real subprocesses over real files in a fake Claude home, with no record, a stale record
+    and an aborted record. The newest dead window's reply shows each time, and the dictated one-liners it ended on do not."""
+    clone = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["seat_restart"]["seats"]["BENCH"].get("clone") \
+        or SR.config(SR._schedule())["BENCH"]["clone"]
+    home = tempfile.mkdtemp(prefix="cr-home-")
+    state = tempfile.mkdtemp(prefix="cr-state-")
+    os.makedirs(os.path.join(home, "sessions"))
+    env = dict(os.environ, CLAUDE_CONFIG_DIR=home, RM_DISPATCHER_STATE=state, AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    commands = {"seat_restart wake": [os.path.join(HERE, "seat_restart.py"), "wake", "--seat", "BENCH"],
+                "handoff --wake": [os.path.join(REPO, "src/RimMandrake/Utils/handoff.py"), "--wake"]}
+    old_home = SR.claude_home
+    SR.claude_home = lambda: home
+    rec_path = SR.killed_path("BENCH", state)
+    os.makedirs(os.path.dirname(rec_path), exist_ok=True)
+
+    def run_wake(argv):
+        r = subprocess.run([sys.executable] + argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=120)
+        check(r.returncode == 0, "the wake exits clean: %s (rc %s) %s" % (" ".join(argv[-2:]), r.returncode, r.stderr[-300:]))
+        return r.stdout + r.stderr
+    try:
+        older = "aaaaaaaa-older"
+        write_tx(home, clone, older, window_recs("CONDUCTOR", "cli", "AN OLDER WINDOW'S REPLY"), 7200)
+        write_tx(home, clone, "cccccccc-dead", window_recs("CONDUCTOR", "cli", "THE REPLY HE WAS READING") + [
+            {"type": "user", "entrypoint": "cli", "message": {"content": "hold"}}, dict(say(RM.said(RM.HOLD, {})), entrypoint="cli"),
+            {"type": "user", "entrypoint": "cli", "message": {"content": "goodbye"}},
+            dict(say("Fresh Conductor now; nothing you send is lost."), entrypoint="cli")], 600)
+        stale = {"tx_path": SR.transcript_path(clone, older), "session_id": older, "killed_at": T0}
+        records = {"no record": None, "a stale record": stale, "an aborted record": dict(stale, aborted="called off")}
+        for rec_name, rec in records.items():
+            if rec is None:
+                with contextlib.suppress(OSError):
+                    os.remove(rec_path)
+            else:
+                with open(rec_path, "w") as f:
+                    json.dump(rec, f)
+            for cmd_name, argv in commands.items():
+                out = run_wake(argv)
+                where = "%s with %s" % (cmd_name, rec_name)
+                check("THE REPLY HE WAS READING" in out and "word for word" in out, where + ": shows the newest dead window's reply")
+                check("AN OLDER WINDOW'S REPLY" not in out, where + ": not the older window's")
+                check("LAST REPLY: UNMEASURED" not in out, where + ": no false UNMEASURED")
+                check("Reset switch:" not in out and "Fresh Conductor now" not in out, where + ": no dictated one-liner in its place")
+    finally:
+        SR.claude_home = old_home
 
 
 def test_ready_gets_its_own_ticks():
