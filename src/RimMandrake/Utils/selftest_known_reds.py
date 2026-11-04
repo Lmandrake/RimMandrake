@@ -18,6 +18,7 @@ os.environ["RM_KNOWN_REDS"] = str(TMP / "known.json")
 (TMP / "Transient").mkdir()
 import known_reds as K  # noqa: E402
 import ops_watch as OW  # noqa: E402
+K.new_items_per_pass = lambda: 8  # the test's own cap: the live policy may be paused at 0 (owner 2026-11-04)
 
 FAILS = []
 A, B, C = "src/x/selftest_a.py", "src/x/selftest_b.py", "src/x/selftest_c.py"
