@@ -604,6 +604,11 @@ def collect_bridge(env):
     return last
 
 
+def silent_hold(b, now):
+    """Past HOLD_CAP with no write the bridge's own rule calls a hold stale and anyone may take it: say so, it may be nobody's."""
+    return ", silent %s" % ago(now - b["mt"]) if now - b["mt"] > HOLD_CAP else ""
+
+
 def short(item):
     """relentless.py names an item's units rm-relentless-<kind>-<short(item)>-g<gen>: same hash, so a unit finds its item."""
     return hashlib.sha1(item.encode()).hexdigest()[:10]
@@ -1797,7 +1802,7 @@ def status_strip(p):
     w = p["win"]
     chips.append(("game UNMEASURED", 1) if not w else (("game UP", 0) if w["game"] else ("game DOWN", -1)))
     b = p["bridge"]
-    chips.append(("bridge UNMEASURED", 1) if not b else (("bridge FREE", 0) if b["state"] == "FREE" else ("bridge HELD by %s" % (b["who"] or "?"), -1)))
+    chips.append(("bridge UNMEASURED", 1) if not b else (("bridge FREE", 0) if b["state"] == "FREE" else ("bridge HELD by %s%s" % (b["who"] or "?", silent_hold(b, p["now"])), -1)))
     it = p["items"]
     if not it or not p["places"]:
         chips.append(("Relentless UNMEASURED", 1))
@@ -2403,7 +2408,8 @@ def gather(env, state, hist=(), write=True):
     # who holds the live game: the bridge file first, then the game process
     b, w = p["bridge"], p["win"]
     if b and b["state"] == "HELD":
-        p["game_text"], p["game_colour"] = "held by %s" % clip(b["who"] or "?", 16), LIVE
+        silent = silent_hold(b, now)
+        p["game_text"], p["game_colour"] = "held by %s%s" % (clip(b["who"] or "?", 16), silent), WARN if silent else LIVE
     elif b:
         p["game_text"], p["game_colour"] = ("free, game up" if w and w["game"] else ("free, game down" if w else "free")), GOOD
     else:

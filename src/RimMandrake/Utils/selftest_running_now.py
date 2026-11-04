@@ -833,6 +833,12 @@ with tempfile.TemporaryDirectory() as d:
     R.STEVE_CACHE = real_cache
 check("Steve's CPU counts neither I/O wait as busy nor guest time twice", got == 10)
 
+hold = {BRIDGE: "HELD OPERATIONS since 2026-11-03T20:00:00Z\nfor a proof\n"}
+check("a live hold reads plainly", "bridge HELD by OPERATIONS" in before_svg(page_of(Fake(files=hold))) and "silent" not in before_svg(page_of(Fake(files=hold))))
+old_hold = Fake(files=hold)
+old_hold.mtime = lambda path: NOW - R.HOLD_CAP - 60
+check("a hold silent past the bridge's own limit says so, on the strip and the panel", "bridge HELD by OPERATIONS, silent" in before_svg(page_of(old_hold)) and "held by OPERATIONS, silent" in page_of(old_hold).split("</svg>")[0])
+
 # ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
 SRC = open(R.__file__).read()
 QUIET = "(lambda *a, **k: None)("
