@@ -6,14 +6,22 @@ Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concep
   write    <dir> --draft d.json [--dry-walk]   stamp hashes, check the shape, write tree.json (clears any signature)
   lint     <dir>                               Gate A: sheet + tree + floor. Exit 0 PASS, 1 REFUSED
   gate     <dir>                               lint plus: not a dry walk, root VALIDATED at its hash, Arbiter signature on
-                                               this tree hash, every waiver found in OWNER.jsonl
-  sign     <dir> --by Arbiter                  the coverage signature. Refuses a dry walk and a lint failure
+                                               this tree hash AND as the Arbiter's ledger event, every waiver in OWNER.jsonl
+  sign     <dir> --by Arbiter [--item ID]      the coverage signature: a `rimflow note` on the concept's item (stage.json
+                                               `item`, or --item) from inside an Arbiter role run, then the stamp in
+                                               tree.json. Refuses a dry walk, a lint failure, and any other writer
   askcheck <dir> "question"                    does this question re-raise a waiver? Exit 1 when it may; with no
                                                tree.json yet it prints HISTORY_NOT_CHECKED (exit 0), never "clear"
   hash     <dir>                               tree_hash
 
 Gate B, the Cold Reader exam, is not here: this program checks form, and a perfectly formed tree can be wrong. The
 Arbiter's signature comes after the exam (stage 5), or after `exam_waived` in his words.
+
+The coverage stamp in tree.json is a copy any writer can forge, so the gate also wants the ledger event
+(CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER): a `note` whose role_unit is an Arbiter role run (rm-role-arbiter-<n>) and
+whose text names this concept, tree hash and sheet hash. The ledger is append-only and committed, so a forged signature
+is an attributable line in git, not a silent edit; RM_ROLE_UNIT is still an environment variable, and a writer who sets
+it by hand forges this too.
 
 What a program cannot do, said plainly: "names an observer" is a word list, the pruning check proves a citation is
 present and not that it is good, and askcheck cannot catch a rewording, so a fresh reviewer reads the question log too.
@@ -31,6 +39,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 FLOOR_FILE = "concept_floor.json"
 OWNER_SHARD = "infrastructure/state/ledger/events/OWNER.jsonl"
+LEDGER_DIR = "infrastructure/state/ledger"
+ARBITER_UNIT = re.compile(r"rm-role-arbiter-[0-9]+")     # role_launch's unit name for an Arbiter run; always fullmatch
+SIGN_MARK = "coverage-signed"
 DRY_DIR = "_dry_walk"       # a dry walk lives only here, so nobody takes it for a real concept
 SCHEMA = 1
 
@@ -526,6 +537,61 @@ def sheet_hash(d):
         return None
 
 
+def concept_rel(d, repo):
+    return os.path.relpath(os.path.realpath(d), os.path.realpath(repo)).replace(os.sep, "/")
+
+
+def signature_text(d, repo, tree):
+    """The one line the Arbiter's ledger note says; the gate wants it byte for byte."""
+    return "%s concept=%s tree=%s sheet=%s" % (SIGN_MARK, concept_rel(d, repo), tree_hash(tree), sheet_hash(d) or "none")
+
+
+def ledger_files(repo):
+    """The files model.read() merges: the frozen events.jsonl and the per-seat shards (and rolled months) in events/.
+    Nothing else under the ledger dir counts, so a stray ledger/scratch.jsonl signs nothing (GPT review 2026-11-04)."""
+    root = os.path.join(repo, LEDGER_DIR)
+    shards = os.path.join(root, "events")
+    try:
+        names = sorted(n for n in os.listdir(shards) if n.endswith(".jsonl"))
+    except OSError:
+        names = []
+    return [os.path.join(root, "events.jsonl")] + [os.path.join(shards, n) for n in names]
+
+
+def ledger_signatures(repo):
+    """Every coverage-signed note on the ledger. A bad line spoils itself only."""
+    out = []
+    for p in ledger_files(repo):
+        try:
+            with open(p, encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    if SIGN_MARK not in line:
+                        continue
+                    try:
+                        ev = json.loads(line)
+                    except (ValueError, RecursionError):
+                        continue
+                    if isinstance(ev, dict) and ev.get("event") == "note" and \
+                            str(ev.get("text") or "").startswith(SIGN_MARK + " "):
+                        out.append(ev)
+        except OSError:
+            continue
+    return out
+
+
+def ledger_signature_problem(d, repo, tree):
+    """Why the ledger holds no Arbiter signature for this tree and sheet, or None."""
+    want, alls = signature_text(d, repo, tree), ledger_signatures(repo)
+    evs = [e for e in alls if str(e.get("text")) == want]
+    if not evs:
+        here = [e for e in alls if (" concept=%s " % concept_rel(d, repo)) in str(e.get("text"))]
+        return "the ledger signature is on another tree or sheet" if here else "no Arbiter signature on the ledger"
+    if not any(isinstance(e.get("role_unit"), str) and ARBITER_UNIT.fullmatch(e["role_unit"]) for e in evs):
+        return "the ledger signature was not written by an Arbiter role run (role_unit %s)" % (
+            ", ".join(sorted({str(e.get("role_unit")) for e in evs})))
+    return None
+
+
 def gate(d, repo=REPO, floor_file=None):
     """What Relentless asks. -> (refusals, flags). Lint plus what only a finished, signed, real tree has."""
     errs, fl = lint(d, repo, floor_file)
@@ -547,6 +613,10 @@ def gate(d, repo=REPO, floor_file=None):
         errs.append("the signature is on another tree hash")
     elif tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
         errs.append("the signature is on another sheet")
+    else:
+        why = ledger_signature_problem(d, repo, tree)
+        if why:
+            errs.append(why)
     ev = owner_events(repo)
     for w in [w for w in lst(tree.get("waived")) if isinstance(w, dict)]:
         why = his_words_problem(ev, w.get("ref"), w.get("scope"))
@@ -666,18 +736,53 @@ def put(d, tree):
     os.replace(tmp, os.path.join(d, "tree.json"))
 
 
-def sign(d, by, repo=REPO, at=None):
+def stage_item(d):
+    """The concept's ledger item, from designer_stage's stage.json, or None."""
+    try:
+        with open(os.path.join(d, "stage.json"), encoding="utf-8") as f:
+            st = json.load(f)
+    except (OSError, ValueError, RecursionError):
+        return None
+    it = st.get("item") if isinstance(st, dict) else None
+    return it if isinstance(it, str) and it.strip() else None
+
+
+def rimflow_note(repo, item, text):
+    """The ledger write, through rimflow (the only writer). -> error text or None."""
+    import subprocess
+    cli = os.path.join(repo, "src/RimMandrake/rimflow/cli.py")
+    try:
+        r = subprocess.run([sys.executable, cli, "note", item, "--text", text], cwd=repo, capture_output=True,
+                           text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "rimflow note failed: %s" % e
+    if r.returncode != 0:
+        return "rimflow note refused (exit %d): %s" % (r.returncode, (r.stderr or r.stdout).strip()[-300:])
+    return None
+
+
+def sign(d, by, repo=REPO, at=None, item=None, emit=None):
+    """The ledger event first, then the stamp: a failed ledger write leaves tree.json unsigned."""
     if by != "Arbiter":
         return ["only the Arbiter signs coverage"]
+    unit = os.environ.get("RM_ROLE_UNIT", "")
+    if not ARBITER_UNIT.fullmatch(unit):
+        return ["sign runs inside an Arbiter role run (RM_ROLE_UNIT rm-role-arbiter-<n>), not %r" % unit[:60]]
     errs, _fl = lint(d, repo)
     if errs:
         return errs
     tree = load(d)
     if tree.get("dry_walk") is True:
         return ["a dry walk is never signed"]
+    item = item or stage_item(d)
+    if not item:
+        return ["no item to sign on: stage.json names none and no --item was given"]
     import time
     tree["coverage"] = {"signed_by": "Arbiter", "at": at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                        "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d)}
+                        "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d), "ledger_item": item}
+    why = (emit or rimflow_note)(repo, item, signature_text(d, repo, tree))
+    if why:
+        return [why]
     put(d, tree)
     return []
 
@@ -713,6 +818,7 @@ def main(argv=None):
             p.add_argument("--dry-walk", action="store_true")
         if name == "sign":
             p.add_argument("--by", required=True)
+            p.add_argument("--item")
         if name == "askcheck":
             p.add_argument("question")
     a = ap.parse_args(argv)
@@ -731,7 +837,7 @@ def main(argv=None):
     if a.cmd == "gate":
         return report(*gate(a.dir), "gate")
     if a.cmd == "sign":
-        return report(sign(a.dir, a.by), [], "sign")
+        return report(sign(a.dir, a.by, item=a.item), [], "sign")
     try:
         tree = load(a.dir)
     except FileNotFoundError:

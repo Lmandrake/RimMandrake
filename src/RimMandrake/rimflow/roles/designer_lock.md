@@ -9,8 +9,10 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    and 4: `return` to stage 2 with the decision "root validation" rather than rewriting here.
 2. **The artifacts are frozen.** The tree, sheet, scenes and floor are those stage 3 wrote and stage 4 examined; the
    launcher refuses a done result here if any of them changed since.
-3. **The Arbiter signs coverage** against those hashes: `concept_tree.py sign <dir> --by Arbiter` (the signature does not
-   change the tree hash the launcher tracks).
+3. **The Arbiter signs coverage** against those hashes: `concept_tree.py sign <dir> --by Arbiter [--item ID]`, run
+   inside an Arbiter role run (it refuses any other writer). It writes a `rimflow note` on the concept's item (stage.json
+   `item`) naming the tree and sheet hashes, then the stamp in tree.json; the gate wants both, so commit the ledger shard
+   with tree.json (the signature does not change the tree hash the launcher tracks).
 4. **The gate**: `concept_tree.py gate <dir>` passes.
 5. **File the mod item**, `--kind mod`, with `## verify` citing `design/concepts/<Mod>/tree.json` and the accepted tree
    hash. A new mod under another kind escapes the gate. The Producer admits it. Relentless runs `gate` at the pool, at the

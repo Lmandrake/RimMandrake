@@ -59,7 +59,7 @@ copies it, so a second copy cannot drift.
  "root_ref": "design/validation_walks/<tier>/<Mod>.md#north-star",
  "root_state": "VALIDATED | DRAFT | none",
  "root_hash": "<the walk's validated-hash, or null>",
- "coverage": {"signed_by": "Arbiter", "at": "<iso>", "tree_hash": "<sha256>"},
+ "coverage": {"signed_by": "Arbiter", "at": "<iso>", "tree_hash": "<sha256>", "sheet_hash": "<sha256 | null>", "ledger_item": "<item the note is on>"},
  "floor": {"ref": "concept_floor.json", "hash": "<sha256>", "off": [{"line": "<floor id>", "words": "<his words>", "ref": "<ledger event>"}]},
  "exam_waived": null,
  "waived": [{"id": "w1", "scope": "<his words>", "date": "<iso>", "ref": "<ledger event>"}],
@@ -86,6 +86,8 @@ copies it, so a second copy cannot drift.
  }]
 }
 ```
+
+`coverage` is a copy: the signature of record is the Arbiter's ledger note (`coverage-signed concept=<dir> tree=<tree_hash> sheet=<sheet_hash>`, `role_unit` rm-role-arbiter-<n>), and `gate` refuses a stamp the ledger does not hold (CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER).
 
 `tree_hash` is the sha256 of the canonical JSON (sorted keys, no whitespace) of everything except `coverage`. `leaf_hash` is the same over one leaf. A leaf changing changes both, and a change bumps the version as Relentless §4 and Concept §10 say.
 

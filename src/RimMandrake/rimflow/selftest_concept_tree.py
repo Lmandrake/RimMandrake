@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """selftest_concept_tree.py - the door: a good tree passes, each way of being bad is refused for its own reason, and
-Relentless cannot hand a mod over without the gate. Runs in a temp dir; touches no real concept and no ledger."""
+Relentless cannot hand a mod over without the gate. Runs in a temp dir; touches no real concept and no ledger: `sign`'s
+rimflow note is replaced by fake_note, which appends to the temp repo's own shard."""
 import copy
 import json
 import re
@@ -107,7 +108,97 @@ def stage(tmp, dry=False):
         f.write(json.dumps({"tsn": 111, "ownerSaid": "Honestly dig sounds don't matter to me"}) + "\n")
     with open(os.path.join(d, "sheet.md"), "w", encoding="utf-8") as f:
         f.write(("DRY WALK\n" if dry else "") + SHEET)
+    with open(os.path.join(d, "stage.json"), "w", encoding="utf-8") as f:
+        json.dump({"schema": 1, "mod": "Foo", "item": "FOO_CONCEPT_ITEM"}, f)
     return repo, d
+
+
+ARB_UNIT = "rm-role-arbiter-1793559668"
+
+
+def fake_note(repo, item, text, unit=None):
+    """Stands in for `rimflow note`: one note line on the temp repo's BENCH shard, stamped as cli.py stamps it."""
+    p = os.path.join(repo, CT.LEDGER_DIR, "events", "BENCH.jsonl")
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    ev = {"seat": "BENCH", "event": "note", "id": item, "text": text, "tsn": 1793000000000000000}
+    u = os.environ.get("RM_ROLE_UNIT", "") if unit is None else unit
+    if u:
+        ev["role_unit"] = u
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(json.dumps(ev) + "\n")
+    return None
+
+
+def ledger_cases(repo, d):
+    """CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER: the stamp in tree.json is not enough; the Arbiter's note must be on
+    the ledger, on this tree and this sheet, from an Arbiter role run. Leaves the tree signed and the ledger matching."""
+    signed = CT.load(d)
+    shard = os.path.join(repo, CT.LEDGER_DIR, "events", "BENCH.jsonl")
+    with open(shard, encoding="utf-8") as f:
+        real = f.read()
+    check("sign wrote one coverage note naming tree, sheet and concept",
+          real.count(CT.SIGN_MARK) == 1 and CT.tree_hash(signed) in real and str(CT.sheet_hash(d)) in real
+          and "concept=design/concepts/Foo " in real, real)
+    check("the stamp names the ledger item", signed["coverage"].get("ledger_item") == "FOO_CONCEPT_ITEM", signed["coverage"])
+    os.remove(shard)
+    errs, _ = CT.gate(d, repo)
+    check("ledger: a forged stamp (no ledger event) is refused", errs == ["no Arbiter signature on the ledger"], errs)
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-relentless-work-abc-g1")
+    errs, _ = CT.gate(d, repo)
+    check("ledger: a note from a non-Arbiter run is refused", any("not written by an Arbiter" in e for e in errs), errs)
+    os.remove(shard)
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="")
+    errs, _ = CT.gate(d, repo)
+    check("ledger: a note with no role stamp is refused", any("not written by an Arbiter" in e for e in errs), errs)
+    os.remove(shard)
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-role-arbiter-12x")
+    check("ledger: a near-miss unit is not the Arbiter's", any("not written by an Arbiter" in e for e in CT.gate(d, repo)[0]))
+    os.remove(shard)
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed).replace("tree=", "tree=0"), unit=ARB_UNIT)
+    errs, _ = CT.gate(d, repo)
+    check("ledger: an Arbiter note on another tree hash is refused", errs == ["the ledger signature is on another tree or sheet"],
+          errs)
+    with open(shard, "a", encoding="utf-8") as f:
+        f.write("{not json " + CT.SIGN_MARK + "\n")
+        f.write(json.dumps({"event": "file", "text": CT.signature_text(d, repo, signed), "role_unit": ARB_UNIT}) + "\n")
+    check("ledger: a bad line and a non-note event sign nothing", CT.gate(d, repo)[0] != [])
+    with open(shard, "w", encoding="utf-8") as f:
+        f.write(real)
+    check("ledger restored: gate passes", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
+    rolled = os.path.join(repo, CT.LEDGER_DIR, "events", "2026-10.jsonl")
+    os.rename(shard, rolled)
+    check("ledger: a signature in a rolled month still counts", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
+    os.rename(rolled, shard)
+    stray = os.path.join(repo, CT.LEDGER_DIR, "scratch.jsonl")
+    os.rename(shard, stray)
+    check("ledger: a stray .jsonl outside events/ signs nothing", CT.gate(d, repo)[0] == ["no Arbiter signature on the ledger"],
+          CT.gate(d, repo)[0])
+    os.rename(stray, os.path.join(repo, CT.LEDGER_DIR, "events.jsonl"))
+    check("ledger: the frozen events.jsonl counts", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
+    os.rename(os.path.join(repo, CT.LEDGER_DIR, "events.jsonl"), shard)
+    # sign itself: refuses any writer but an Arbiter run, writes nothing when the ledger write fails
+    before = open(os.path.join(d, "tree.json"), "rb").read()
+    saved = os.environ.get("RM_ROLE_UNIT")
+    os.environ["RM_ROLE_UNIT"] = "rm-relentless-work-abc-g1"
+    check("sign: refused outside an Arbiter role run", any("Arbiter role run" in e for e in CT.sign(d, "Arbiter", repo)))
+    os.environ.pop("RM_ROLE_UNIT")
+    check("sign: refused with no role unit", any("Arbiter role run" in e for e in CT.sign(d, "Arbiter", repo)))
+    os.environ["RM_ROLE_UNIT"] = saved
+    got = CT.sign(d, "Arbiter", repo, emit=lambda r, i, t: "rimflow note refused (exit 1): boom")
+    check("sign: a failed ledger write is the refusal", got == ["rimflow note refused (exit 1): boom"], got)
+    check("sign: a failed ledger write leaves tree.json untouched", open(os.path.join(d, "tree.json"), "rb").read() == before)
+    sj = os.path.join(d, "stage.json")
+    os.rename(sj, sj + ".x")
+    check("sign: no item, no signature", any("no item" in e for e in CT.sign(d, "Arbiter", repo)))
+    seen = []
+    CT.sign(d, "Arbiter", repo, item="GIVEN_ITEM", emit=lambda r, i, t: seen.append(i))
+    check("sign: --item names the item when stage.json has none", seen == ["GIVEN_ITEM"], seen)
+    os.rename(sj + ".x", sj)
+    with open(shard, "w", encoding="utf-8") as f:
+        f.write(real)
+    with open(os.path.join(d, "tree.json"), "wb") as f:
+        f.write(before)
+    check("ledger cases leave the gate passing", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
 
 
 def validate_walk(repo):
@@ -123,6 +214,9 @@ def write_raw(d, tree):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="concept_tree_")
+    real_note, real_unit = CT.rimflow_note, os.environ.get("RM_ROLE_UNIT")
+    CT.rimflow_note = fake_note
+    os.environ["RM_ROLE_UNIT"] = ARB_UNIT
     try:
         repo, d = stage(tmp)
         validate_walk(repo)
@@ -145,6 +239,7 @@ def main():
         check("sign replaces tree.json whole (no temp left)", not os.path.exists(os.path.join(d, ".tree.json.tmp")))
         errs, _ = CT.gate(d, repo)
         check("positive: gate passes", not errs, errs)
+        ledger_cases(repo, d)
         text = "## verify\n\ndesign/concepts/Foo/tree.json\n"
         check("relentless: passing mod admitted", CT.relentless_refusal(repo, "X", "mod", text) is None)
         check("relentless: one good cite does not vouch for a bad one", "no tree.json" in (CT.relentless_refusal(
@@ -632,6 +727,11 @@ def main():
         check("role file exists where the row says", bool(inst) and os.path.isfile(
             os.path.join(HERE, "..", "..", "..", inst)), inst)
     finally:
+        CT.rimflow_note = real_note
+        if real_unit is None:
+            os.environ.pop("RM_ROLE_UNIT", None)
+        else:
+            os.environ["RM_ROLE_UNIT"] = real_unit
         shutil.rmtree(tmp, ignore_errors=True)
     print("selftest_concept_tree: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
