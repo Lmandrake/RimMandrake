@@ -16,6 +16,8 @@ TMP = Path(tempfile.mkdtemp(prefix="nightly_rerun_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 (TMP / "ops").mkdir()
 import ops_watch as OW  # noqa: E402
+import known_reds as K  # noqa: E402
+K.new_items_per_pass = lambda: 8  # the test's own cap: the live policy may be paused at 0 (owner 2026-11-04)
 
 FAILS = []
 
@@ -100,7 +102,6 @@ out7 = OW.red_groups({"detail_read": True, "groups": [grp("dead", "src/x/selftes
 check("a rerunner that dies files the group as before", out7.get("testing.red_dead", {}).get("v") == 1, out7)
 
 # ---- wiring: the pass's own path (nightly_news -> red_groups) uses RERUN_REDS
-import known_reds as K  # noqa: E402
 _saved_measure, _saved_rr = K.measure, OW.RERUN_REDS
 K.measure = lambda open_ids, now, with_cop=False: {"night": "2026-11-11T11:00:00Z", "news": [], "listed": [], "cured": [],
                                                     "reds": ["src/x/selftest_flaky.py"], "unlisted": ["src/x/selftest_flaky.py"],

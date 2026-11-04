@@ -120,8 +120,7 @@
    "signal": "lower if overdue reds are routinely fixed the day they alarm; raise never above known_red_max_age_days"
   },
   "selftest.red_new_items_per_pass": {
-   "value": 0,
-   "paused": "owner 2026-11-04: \"Please pause all the NIGHTLY_COP_FIX items so we can properly handle them.\" 0 files no new group items until NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING lands; then restore 8",
+   "value": 8,
    "unit": "new build-cop items filed per ops_watch pass",
    "why": "each new group costs a spawn and a raise (testq ingest, up to 120 s each) inside rm-ops-watch's 420 s TimeoutStartSec; 56 groups on the 2026-11-03 night file over 7 passes (under 2 h at 15 min), biggest group first",
    "provenance": "A",
