@@ -50,6 +50,10 @@ def main(retired_path=None):
     check(not [r for r in rows if "rm-pulse-health" in r["line"]], "a retired unit's promise is not swept (the instance)")
     check(not [r for r in rows if "rm-pulse-" in r["line"] or "im_back_hook" in r["line"]],
           "no RimPulse promise survives in the baseline")
+    # LIVE_RESTORE_RM_PULSE_BRIEF: the baseline line for rm-pulse-brief.timer (spawned by the sweep) is not swept
+    brief = DM.promises({}, baseline + ["unit=rm-pulse-brief.timer max_age=14h"], retired)
+    check(not [r for r in brief if "rm-pulse-brief" in r["line"]],
+          "a baseline promise for the retired rm-pulse-brief.timer is not swept (LIVE_RESTORE_RM_PULSE_BRIEF)")
     # the class, on fixtures: every kind of subject, from the baseline and from a settled item
     fx = DM.parse_retired(["unit=rm-gone.timer  # retired", "hook=gone_hook.py", "role=Gone"])
     lines = ["unit=rm-gone.timer max_age=2h", "unit=rm-here.timer max_age=2h", "hook=gone_hook.py", "role=Gone max_age=3d"]
