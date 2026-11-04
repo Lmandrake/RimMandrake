@@ -45,6 +45,7 @@ sys.path.insert(0, str(HERE.parent / "rimflow"))
 
 LIMITS = {"ops_watch": 50 * 60, "dispatcher": 15 * 60}
 BASELINE = HERE.parent / "rimflow" / "live_baseline.txt"
+RETIRED_FILE = HERE.parent / "rimflow" / "live_retired.txt"   # units, hooks, roles retired on purpose (OPS_TIMER_REPAIR_EC51)
 SETTLED = ("done", "built", "validated")
 RETIRED = ("dropped", "superseded")
 MAX_PER_PASS = 10
@@ -184,14 +185,41 @@ def load_baseline(path=None):
     return lines
 
 
+def subject(line):
+    """'unit=rm-foo.timer max_age=2h' -> 'unit=rm-foo.timer': what a promise is about, whatever it asks of it. Pure."""
+    return line.split()[0] if line else ""
+
+
+def parse_retired(raw_lines):
+    """-> {subject}: one bare `unit=`/`hook=`/`role=` per line ('#' comments). Anything else raises: a typo must not
+    leave a retired thing swept, nor retire a living one."""
+    out = set()
+    for raw in raw_lines:
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if not re.fullmatch(r"(unit|hook|role)=\S+", line):
+            raise ValueError("not a retired subject (want unit=|hook=|role=<name> alone): %r" % line)
+        out.add(line)
+    return out
+
+
+def load_retired(path=None):
+    p = Path(path or RETIRED_FILE)
+    return parse_retired(p.read_text(encoding="utf-8").splitlines()) if p.exists() else set()
+
+
 EXCUSED = "(excused)"   # paused on purpose: not broken, and no proof it recovered either
 
 
-def promises(items, baseline):
+def promises(items, baseline, retired=()):
     """-> [{"item", "line"}]: the baseline's, then every promise on the ledger. Pure. `once:` is the visible escape and
-    is ignored; an item being worked holds its own promise until it closes again; a retired item holds none."""
+    is ignored; an item being worked holds its own promise until it closes again; a retired item holds none, and
+    nor does any promise whose subject is in `retired` (a unit/hook/role removed on purpose)."""
     out = []
     for line in baseline:
+        if subject(line) in retired:
+            continue
         iid = item_id(line)
         it = items.get(iid)
         if not (it is not None and it.state in RETIRED):
@@ -199,7 +227,7 @@ def promises(items, baseline):
     seen = {r["item"] for r in out}        # a fixed id answers for its baseline line, whatever it closed with
     for iid, it in sorted(items.items()):
         line = getattr(it, "live", None)
-        if not line or line.startswith("once:") or it.state in RETIRED or iid in seen:
+        if not line or line.startswith("once:") or it.state in RETIRED or iid in seen or subject(line) in retired:
             continue
         if it.state in SETTLED or it.live_broken:
             out.append({"item": iid, "line": line})
@@ -237,7 +265,7 @@ def known_ids():
     return set(read_items())
 
 
-def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, pusher=None):
+def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, pusher=None, retired=()):
     """One pass: recheck every promise, reopen what died, put back what recovered. The ledger is the state, so a pass
     that could not file simply tries again. filer(todo, conf) -> {item: None|error}; None files nothing. pusher (see
     phone): a dead arm or a broken timer also rings the owner's phone, whatever the filer did. -> the report."""
@@ -246,7 +274,7 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
                   "unpublished": (_json(sweep_file()) or {}).get("unpublished")}
         OW_atomic(sweep_file(), report)
         return report
-    rows = [dict(p, why=checker(p["line"])) for p in promises(items, baseline)]
+    rows = [dict(p, why=checker(p["line"])) for p in promises(items, baseline, retired)]
     excused_n = sum(r["why"] == EXCUSED for r in rows)
     rows = [r for r in rows if r["why"] != EXCUSED]
     rows += [{"item": "LIVE_RESTORE_" + arm.upper(), "line": None, "why": why} for arm, why in sorted(arms.items())]
@@ -480,19 +508,20 @@ def main(argv=None):
     if a.cmd == "install":
         return install(a.apply, a.deploy)
     if a.cmd == "baseline":
-        lines = generate_baseline()
+        gone = load_retired()
+        lines = [x for x in generate_baseline() if subject(x) not in gone]
         fresh = {item_id(x) for x in lines}
-        lines += [x for x in load_baseline() if item_id(x) not in fresh]   # only a hand removes a promise
+        lines += [x for x in load_baseline() if item_id(x) not in fresh and subject(x) not in gone]   # only a hand removes a promise
         if a.write:
             BASELINE.write_text("# The running system's live promises (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING): "
                                 "deadman_check.py sweeps them.\n# A failed line files or reopens LIVE_RESTORE_<NAME>. "
-                                "Delete a line to retire its promise.\n" + "\n".join(lines) + "\n", encoding="utf-8")
+                                "To retire one, move it to live_retired.txt.\n" + "\n".join(lines) + "\n", encoding="utf-8")
         print("%d lines%s" % (len(lines), " written to %s" % BASELINE if a.write else ""))
         return 0
     import live_line
     report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
                    arm_faults(stamps(), time.time()), sees=live_line.can_see(),
-                   pusher=real_pusher() if a.file_alarms else None)
+                   pusher=real_pusher() if a.file_alarms else None, retired=load_retired())
     print("sweep: %s" % report["line"])
     for b_ in report["broken"]:
         print("  %s: %s" % (b_["item"], b_["why"]))

@@ -1,0 +1,10 @@
+# Live promises retired on purpose: deadman_check.py sweeps no promise (baseline line or closed item's `live`)
+# whose subject is listed here, so a deleted unit never reopens the fix that once ran it (OPS_TIMER_REPAIR_EC51).
+# One bare subject per line: unit=<name> | hook=<file> | role=<name>, then '# why'.
+unit=rm-pulse.service           # RimPulse retired, owner 2026-11-03 (5734f22602)
+unit=rm-pulse-brief.timer       # RimPulse retired, owner 2026-11-03 (5734f22602)
+unit=rm-pulse-digest.timer      # RimPulse retired, owner 2026-11-03 (5734f22602)
+unit=rm-pulse-health.timer      # RimPulse retired, owner 2026-11-03 (5734f22602)
+unit=rm-pulse-streams.timer     # RimPulse retired, owner 2026-11-03 (5734f22602); collector kept as rm-streams-collect
+unit=rm-pulse-update.timer      # RimPulse retired, owner 2026-11-03 (5734f22602); updater kept as rm-deploy-update
+hook=im_back_hook.py            # RimPulse retired, owner 2026-11-03 (5734f22602)
