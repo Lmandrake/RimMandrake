@@ -1,5 +1,5 @@
 {
-  "_doc": "The metronome's phase table, IN SHADOW (OPS_METRONOME_PROVE_IN_SHADOW; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §2, §8 step 5). Read by src/RimMandrake/Utils/metronome.py, validated by `metronome.py lint`. Phases run in the order sense, remember, raise, ring, dispatch, chores; a phase is due when beat % every == offset, when it is overdue, or when one of its wall-clock slots is due. budget_s bounds the whole beat; raise and ring (and any overdue phase) are reserved first. Shadow commands only read or write inside {state} (ops_watch's own store there, the Dispatcher's dry tick, restart_reconcile --no-file): nothing rings, raises or files. limit_s values are ESTIMATES (ops_watch: 73 s for all 20 families, so 2 per beat); measure them from beats.jsonl before cutover (step 6); first shadow beats, 2026-11-04: steve+testing 1.5 s, but accounts+codex and disk+timers each overran 15 s, so per-family timing decides the pairing before cutover. chores has no shadow command yet: its four timers stay the owners.",
+  "_doc": "The metronome's phase table (OPS_METRONOME_PROVE_IN_SHADOW, OPS_METRONOME_MIGRATE_CLOCKS_FENCED; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §2, §8 step 5). Read by src/RimMandrake/Utils/metronome.py, validated by `metronome.py lint`. Phases run in the order sense, remember, raise, ring, dispatch, chores; a phase is due when beat % every == offset, when it is overdue, or when one of its wall-clock slots is due. budget_s bounds the whole beat; raise and ring (and any overdue phase) are reserved first. A phase without owns is in shadow: its command only reads or writes inside {state} (ops_watch's own store there, the Dispatcher's dry tick). A phase with owns has replaced those old timers (disabled at cutover, one clock a day) and runs its real command carrying {gen}, its ownership generation (metronome.may_act). raise owns rm-restart-reconcile.timer since 2026-11-04: 500 of 500 shadow passes exited 0, max 1.2 s; the real pass reads transcripts and may file in process, so 12 s. limit_s values are ESTIMATES (ops_watch: 73 s for all 20 families, so 2 per beat); measure them from beats.jsonl before cutover (step 6); first shadow beats, 2026-11-04: steve+testing 1.5 s, but accounts+codex and disk+timers each overran 15 s, so per-family timing decides the pairing before cutover. chores has no shadow command yet: its four timers stay the owners.",
   "budget_s": 45,
   "env": {"PYTHONUNBUFFERED": "1"},
   "phases": {
@@ -13,8 +13,9 @@
     "remember": {"every": 1, "limit_s": 8, "cleanup_s": 2,
                  "argv": ["{python}", "src/RimMandrake/Utils/ops_memory.py", "build", "--out", "{state}/memory"],
                  "reads": {"sense": 900}},
-    "raise": {"every": 1, "limit_s": 8, "cleanup_s": 2,
-              "argv": ["{python}", "src/RimMandrake/Utils/restart_reconcile.py", "run", "--no-file"],
+    "raise": {"every": 1, "limit_s": 12, "cleanup_s": 2,
+              "owns": ["rm-restart-reconcile.timer"],
+              "argv": ["{python}", "src/RimMandrake/Utils/restart_reconcile.py", "run", "--metronome-gen", "{gen}"],
               "critical": true, "max_ok_age_s": 300},
     "ring": {"every": 1, "limit_s": 6, "cleanup_s": 2,
              "argv": ["{python}", "src/RimMandrake/rimflow/dispatcher.py", "status"],

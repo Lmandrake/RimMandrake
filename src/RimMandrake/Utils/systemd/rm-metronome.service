@@ -1,16 +1,17 @@
 # The Operations metronome (design/RimMandrake/operations_metronome_strategy_2026-11-02.md §2, §8 steps 5-6).
-# Today it beats IN SHADOW: every phase writes only inside its state dir
-# (D:\ClaudeWork\rimmandrake\metronome\shadow), so the old clocks stay the owners. Step 6
-# (OPS_METRONOME_MIGRATE_CLOCKS_FENCED) cuts them over one a day from beats.jsonl timings; rm-deadman stays outside.
+# A phase is in shadow (writes only inside D:\ClaudeWork\rimmandrake\metronome\shadow) until metronome_phases.json
+# gives it `owns`: then it runs the real command with its ownership generation and the old timer is disabled. Step 6
+# (OPS_METRONOME_MIGRATE_CLOCKS_FENCED) cuts one clock a day; raise owns rm-restart-reconcile since 2026-11-04.
+# rm-deadman stays outside.
 # Install:  cp src/RimMandrake/Utils/systemd/rm-metronome.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-metronome.timer
 [Unit]
-Description=RimMandrake Operations metronome (shadow beat)
+Description=RimMandrake Operations metronome (one beat)
 
 [Service]
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/dispatch
-ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/metronome.py beat --shadow
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/metronome.py beat
 Nice=10
 MemoryMax=1G
 # budget_s is 45 in metronome_phases.json; the process-group kills inside a beat end each phase before this.

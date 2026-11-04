@@ -160,7 +160,34 @@ for bad, why in ((table(budget=2), "reserve over budget"),
         ok(False, "a table with %s is refused" % why)
     except ValueError as e:
         ok(True, "a table with %s is refused (%s)" % (why, e))
-ok(m.beat(fresh("noshadow"), table(), shadow=False) == 2, "beat without --shadow is refused until cutover")
+# 1b. cutover (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): ownership lives in the table, fenced by generation
+ok(t["phases"]["raise"].get("owns") == ["rm-restart-reconcile.timer"]
+   and "--metronome-gen" in t["phases"]["raise"]["argv"] and "{gen}" in t["phases"]["raise"]["argv"]
+   and "--no-file" not in t["phases"]["raise"]["argv"],
+   "shipped table: raise owns rm-restart-reconcile.timer and runs the real pass with its generation")
+ok(m.owner_of("rm-restart-reconcile.timer") == "raise" and m.owner_of("rm-ops-watch.timer") is None,
+   "owner_of names the phase owning a cut-over timer, and none for a clock not cut over")
+for bad, why in (({"owns": "rm-x.timer"}, "owns not a list"),
+                 ({"owns": ["rm-x.service"]}, "owns naming a non-timer"),
+                 ({"owns": ["rm-x.timer"]}, "an owning phase without {gen}"),
+                 ({"owns": ["rm-x.timer"], "argv": ["{python}", "x.py", "--no-file", "{gen}"]}, "an owning dry run")):
+    try:
+        m.load_table(write_table(TMP / "bad.json", table(**{"raise": bad})))
+        ok(False, "a table with %s is refused" % why)
+    except ValueError as e:
+        ok(True, "a table with %s is refused (%s)" % (why, e))
+d = fresh("owned")
+to = table(**{"raise": {"owns": ["rm-x.timer"], "argv": ["{python}", str(KIDP), "ok", "{gen}"]}})
+ok(m.beat(d, to, shadow=False) == 0, "beat without --shadow runs (ownership is the table's)")
+ok(by(d, 1, "raise")["shadow"] is False and by(d, 1, "ring")["shadow"] is True,
+   "the beat line marks an owning phase not shadow, the others shadow")
+ok(m.may_act(d, "raise", 1)[0], "may_act: the live generation may act")
+m.beat(d, to)
+ok(not m.may_act(d, "raise", 1)[0] and "not the live" in m.may_act(d, "raise", 1)[1],
+   "may_act: a superseded generation may not act (a child of beat 1 still running in beat 2)")
+m.set_fence(d, "raise", 2)
+ok(not m.may_act(d, "raise", 2)[0] and "fenced" in m.may_act(d, "raise", 2)[1],
+   "may_act: a fenced (killed) live generation may not act")
 
 # 2. a clean beat: order, one line per phase, outputs carry the generation, health from useful work
 d = fresh("clean")

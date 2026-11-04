@@ -7,7 +7,9 @@ src/RimMandrake/Utils/systemd/ops_clocks.json; `RM_OPS_DEPLOY` overrides the dep
 
     ops_clocks.py check      exit 0 when every clock, as systemd has it loaded, runs only from the deploy, its trigger
                              exists, the deploy holds no local edits under src/, and every loaded rm-*/testq-*/
-                             timer-guard/account-plan unit is a clock or named in "outside"; else exit 1, one line each
+                             timer-guard/account-plan unit is a clock or named in "outside", and every old timer the
+                             metronome's phase table says a phase `owns` (cut over, OPS_METRONOME_MIGRATE_CLOCKS_FENCED)
+                             is neither enabled nor active (two owners); else exit 1, one line each
     ops_clocks.py deploy     print the deploy path (installers default their --deploy to it)
     ops_clocks.py snapshot   record the deploy's HEAD and `git status --porcelain -- src` in SNAPSHOT (commit it), for
                              a checker that cannot read the deploy: there `check` judges the pinned clause from that
@@ -173,6 +175,24 @@ def readable(dep):
     return os.access(dep, os.R_OK | os.X_OK)
 
 
+def owned_timers(table_path=None):
+    """{old timer: metronome phase} from the phase table's `owns`."""
+    t = json.loads(Path(table_path or HERE / "systemd" / "metronome_phases.json").read_text(encoding="utf-8"))
+    return {tm: name for name, p in t["phases"].items() for tm in (p.get("owns") or [])}
+
+
+def judge_owned(owned, state):
+    """Pure. owned {timer: phase}, state(timer) -> (is-enabled, is-active) text. A cut-over timer still enabled or
+    active is a second owner of its clock."""
+    probs = []
+    for tm, phase in sorted(owned.items()):
+        en, act = state(tm)
+        if en in ("enabled", "enabled-runtime") or act in ("active", "activating", "reloading"):
+            probs.append("%s: the metronome's %s phase owns it, but it is %s and %s (two owners): "
+                         "systemctl --user disable --now %s" % (tm, phase, en or "?", act or "?", tm))
+    return probs
+
+
 def check(conf, notes=None):
     dep = deploy(conf)
     probs = []
@@ -199,6 +219,8 @@ def check(conf, notes=None):
         en = _sc("is-enabled", trigger).stdout.strip()   # enabled or not is timers_guard's business, not ours
         if en in ("", "not-found"):
             probs.append("%s: trigger %s is not installed" % (name, trigger))
+    probs += judge_owned(owned_timers(), lambda tm: (_sc("is-enabled", tm).stdout.strip(),
+                                                     _sc("is-active", tm).stdout.strip()))
     probs += ["%s: loaded but not classified in %s (a clock, or outside with a reason)" % (u, CONF.name)
               for u in classify(loaded_units(), conf)]
     return probs

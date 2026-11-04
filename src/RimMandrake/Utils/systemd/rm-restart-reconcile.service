@@ -1,4 +1,6 @@
 # CK3: every goodbye or restart request ends in restart_verified or a told incident (restart_reconcile.py).
+# RETIRED 2026-11-04 (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): the metronome's raise phase runs the pass every beat;
+# this timer is disabled and a run of it acts nothing while metronome_phases.json gives raise `owns`.
 # Its own unit on purpose: nothing here runs through the Dispatcher tick that might have dropped the request.
 # Install:  cp src/RimMandrake/Utils/systemd/rm-restart-reconcile.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-restart-reconcile.timer

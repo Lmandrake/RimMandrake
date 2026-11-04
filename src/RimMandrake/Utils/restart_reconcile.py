@@ -29,7 +29,14 @@ item per seat for BENCH (OPS_ alarm items launch Operations), reopened on a repe
 ops_watch/restart_reconcile.json whatever it finds; deadman_check holds that file to its age. An unreadable journal or
 transcript is an incident on the pseudo-seat JOURNAL or TRANSCRIPT, never silence.
 
-    python3 src/RimMandrake/Utils/restart_reconcile.py run [--no-file]
+    python3 src/RimMandrake/Utils/restart_reconcile.py run [--no-file] [--metronome-gen G]
+
+Since OPS_METRONOME_MIGRATE_CLOCKS_FENCED the pass runs as the metronome's raise phase (metronome_phases.json, `owns`
+rm-restart-reconcile.timer), every beat, with --metronome-gen {gen}. Ownership fencing: with a generation the pass
+acts (tells, files, saves) only while metronome.may_act("raise", G) holds, checked at its start, before filing and
+before saving; without one, a run refuses while the table names an owner, so an old timer run already going when the
+cutover landed cannot write over the beat's. A beat (60 s) is shorter than restart_reconcile_pass_s, so every bound
+below still holds.
 """
 import argparse
 import fcntl
@@ -45,6 +52,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "rimflow"))
 import doorbell  # noqa: E402
 import goodbye_phrase as GP  # noqa: E402
+import metronome  # noqa: E402
 import ops_watch as OW  # noqa: E402
 import seat_restart as SR  # noqa: E402
 
@@ -54,6 +62,9 @@ KEYS = ("restart_reconcile_s", "restart_reconcile_held_s", "restart_reconcile_ho
         "restart_reconcile_slack_s", "restart_reconcile_lookback_s")
 JOURNAL_SEAT = "JOURNAL"
 TRANSCRIPT_SEAT = "TRANSCRIPT"
+OLD_TIMER = "rm-restart-reconcile.timer"
+PHASE = "raise"
+EXIT_FENCED = 3
 STUCK_PASSES = 3                 # a torn tail clears by the next pass; three in a row is a transcript we cannot read
 
 
@@ -341,7 +352,23 @@ def main(argv=None, filer=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("cmd", choices=["run"])
     ap.add_argument("--no-file", action="store_true", help="read and report; tell nobody, file nothing, save nothing")
+    ap.add_argument("--metronome-gen", type=int, help="the metronome's ownership generation (its raise phase)")
     a = ap.parse_args(argv)
+    if a.metronome_gen is None and not a.no_file:
+        owner = metronome.owner_of(OLD_TIMER)
+        if owner:
+            print("restart_reconcile: the metronome's %s phase owns this clock; a run without --metronome-gen acts "
+                  "nothing" % owner)
+            return 0
+    mdir = metronome.state_dir(os.environ.get("METRONOME_DIR"))
+
+    def still_owner(what):
+        if a.metronome_gen is None:
+            return True
+        ok, why = metronome.may_act(mdir, PHASE, a.metronome_gen)
+        if not ok:
+            print("restart_reconcile: fenced before %s: %s" % (what, why))
+        return ok
     d = OW.ops_dir()
     d.mkdir(parents=True, exist_ok=True)
     sp = d / "restart_reconcile_state.json"
@@ -361,7 +388,17 @@ def main(argv=None, filer=None):
             print(json.dumps(join(rows, read_journal(doorbell.state_dir())[0], time.time(), lim,
                                   saved.get("armed_at", time.time() - lim["restart_reconcile_lookback_s"])), indent=1))
             return 0
-        rep = run_pass(time.time(), doorbell.state_dir(), sch, saved, filer or OW.real_filer, d)
+        if not still_owner("the pass"):
+            return EXIT_FENCED
+        real = filer or OW.real_filer
+
+        def fenced_filer(todo, conf):
+            if not still_owner("filing"):
+                raise RuntimeError("fenced: the metronome generation moved on")
+            return real(todo, conf)
+        rep = run_pass(time.time(), doorbell.state_dir(), sch, saved, fenced_filer, d)
+        if not still_owner("saving"):
+            return EXIT_FENCED
         OW_atomic(sp, saved)
     print("restart_reconcile: " + rep["line"])
     return 0

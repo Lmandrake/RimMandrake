@@ -61,6 +61,17 @@ check(OC.judge(dropin, DEP) == [], "a drop-in that repoints the unit counts, the
 units = {"rm-ops-watch", "rm-relentless-work-abc-g1", "testq-tick", "rm-new-thing", "rm-account-handover-x"}
 check(OC.classify(units, conf) == ["rm-new-thing"], "an unclassified rm-* unit is named; globs in outside match")
 
+# --- cut-over clocks (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): the old timer a phase owns has no second life
+owned = OC.owned_timers()
+check(owned.get("rm-restart-reconcile.timer") == "raise", "the shipped table: raise owns rm-restart-reconcile.timer")
+check(all(conf["clocks"].get(t[:-len(".timer")]) == t for t in owned), "every owned timer is a known Operations clock")
+check(OC.judge_owned(owned, lambda t: ("disabled", "inactive")) == [], "an owned timer disabled and stopped is clean")
+two = OC.judge_owned({"rm-x.timer": "raise"}, lambda t: ("enabled", "inactive"))
+check(len(two) == 1 and "two owners" in two[0] and "disable --now rm-x.timer" in two[0],
+      "an owned timer still enabled is two owners, with the fix named")
+check(len(OC.judge_owned({"rm-x.timer": "raise"}, lambda t: ("disabled", "active"))) == 1,
+      "an owned timer disabled but still running is two owners")
+
 # --- shipped unit files and installer templates point at the deploy
 for name in conf["clocks"]:
     for d in (HERE / "systemd", HERE.parent / "rimflow" / "systemd"):
@@ -73,7 +84,7 @@ check(OC.judge(OW.UNIT.format(deploy=DEP), DEP) == [], "ops_watch's unit templat
 check(OC.judge(TG.UNIT.format(deploy=DEP), DEP) == [], "timers_guard's unit template is clean on the deploy")
 for mod in ("ops_watch", "timers_guard", "account_usage", "switching_plan"):
     src = (HERE / (mod + ".py")).read_text(encoding="utf-8")
-    check('__import__("ops_clocks").deploy()' in src and "RM_PULSE_DEPLOY" not in src,
+    check('"--deploy", default=__import__("ops_clocks").deploy()' in src,   # ops_watch READS pulse-deploy's age (DEPLOY_STALE); only the default is judged
           "%s install defaults --deploy to the Operations deploy" % mod)
 
 # --- the pinned clause: deploy_dirty and the snapshot a checker uses when it cannot read the deploy

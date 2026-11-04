@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""metronome: Operations' one beat, IN SHADOW (OPS_METRONOME_PROVE_IN_SHADOW; strategy §2 and §8 step 5,
-design/RimMandrake/operations_metronome_strategy_2026-11-02.md).
+"""metronome: Operations' one beat (OPS_METRONOME_PROVE_IN_SHADOW, OPS_METRONOME_MIGRATE_CLOCKS_FENCED; strategy §2
+and §8 steps 5-6, design/RimMandrake/operations_metronome_strategy_2026-11-02.md).
 
 One beat runs the phases of the table (src/RimMandrake/Utils/systemd/metronome_phases.json) in the fixed order
-sense, remember, raise, ring, dispatch, chores. Shadow means: the shipped table's commands only read, or write into
-the shadow state dir (ops_watch into its own store there, the Dispatcher's dry tick, restart_reconcile --no-file);
-nothing is rung, raised or filed, and no timer runs it yet. Cutover (step 6) is a later item; `beat` without
---shadow is refused.
+sense, remember, raise, ring, dispatch, chores. A phase is in SHADOW until the table gives it `owns`: its command
+only reads, or writes into the state dir (ops_watch into its own store there, the Dispatcher's dry tick). Cutover
+(step 6) moves one clock a day: the phase gets `owns` (the old timer, which is then disabled) and its real command,
+which carries `{gen}`, its OWNERSHIP GENERATION: the program acts only while `may_act(phase, gen)` holds (the live
+generation, not fenced), and a run of the old program with no generation refuses while `owner_of(timer)` names a
+phase. So neither a killed child nor a run of the old timer that was already going can write over the owner.
+`--shadow` on `beat` is accepted and changes nothing (the unit once passed it); ownership is the table's.
 
 The rules that make "a crash is just the next beat" true, each a case in selftest_metronome.py:
   total budget   the table's budget_s (45) bounds the beat, not only each phase. The limits (+ cleanup) of the
@@ -38,7 +41,7 @@ Every phase run, deferral, refusal and duplicate writes one line to beats.jsonl:
 and the hash of what it read.
 
 Usage:
-  metronome.py beat --shadow [--table P] [--dir D]
+  metronome.py beat [--table P] [--dir D]
   metronome.py health [--dir D] [--table P]                  0 = every critical phase did useful work in time
   metronome.py read --phase P [--max-age S] [--dir D]        a published output, or exit 1 and why not
   metronome.py publish --phase P --gen G --file F [--dir D]  (children) refused unless G is the live generation
@@ -148,6 +151,12 @@ def load_table(path=None):
         if p.get("families") is not None and (not p["families"] or not isinstance(p.get("per_beat"), int)
                                               or p["per_beat"] < 1):
             raise ValueError("%s: families needs a non-empty list and per_beat >= 1" % name)
+        if p.get("owns") is not None:
+            if not (isinstance(p["owns"], list) and p["owns"] and all(isinstance(x, str) and x.endswith(".timer")
+                                                                     for x in p["owns"])):
+                raise ValueError("%s: owns must be a non-empty list of the .timer units it replaced" % name)
+            if not p.get("argv") or not any("{gen}" in a for a in p["argv"]) or "--no-file" in p["argv"]:
+                raise ValueError("%s: an owning phase needs its real argv carrying {gen} (no --no-file)" % name)
         if p.get("critical") and not isinstance(p.get("max_ok_age_s"), (int, float)):
             raise ValueError("%s: a critical phase needs max_ok_age_s" % name)
     reserve = sum(ph[n]["limit_s"] + ph[n]["cleanup_s"] for n in RESERVED)
@@ -234,6 +243,30 @@ def publish(d, phase, gen, payload, observed_at):
                    {"phase": phase, "gen": gen, "observed_at": observed_at, "published": time.time(),
                     "payload": payload})
         return True, "published"
+
+
+def may_act(d, phase, gen):
+    """(ok, why): an owning phase's child acts only while its generation is the live one and not fenced."""
+    with Lock(d / "publish.lock"):
+        live = load_state(d).get("generation", 0)
+        if gen in fenced(d, phase):
+            return False, "generation %d of %s is fenced (killed)" % (gen, phase)
+        if gen != live:
+            return False, "generation %d of %s is not the live generation %d" % (gen, phase, live)
+        return True, "live"
+
+
+def owner_of(timer, table_path=None):
+    """The phase of the phase table that owns this old timer, or None. An unreadable table owns nothing, and says
+    so on stderr: the old timer is disabled at cutover, so this is the second fence, not the first."""
+    try:
+        t = read_json(table_path or TABLE)
+        for name, p in (t.get("phases") or {}).items():
+            if timer in (p.get("owns") or []):
+                return name
+    except Exception as e:  # noqa: BLE001
+        print("metronome: phase table unreadable (%s): no owner known" % e, file=sys.stderr)
+    return None
 
 
 def read_output(d, phase, max_age=None, now=None):
@@ -359,7 +392,7 @@ def run_phase(d, table, name, n, st, limit, slot, log):
     out = d / "out"
     out.mkdir(parents=True, exist_ok=True)
     start = time.time()
-    line = {"beat": n, "gen": n, "phase": name, "start": round(start, 3), "shadow": True}
+    line = {"beat": n, "gen": n, "phase": name, "start": round(start, 3), "shadow": not p.get("owns")}
     if slot:
         line["slot"] = slot
     # freshness: what this phase reads, and the oldest of it
@@ -398,7 +431,7 @@ def run_phase(d, table, name, n, st, limit, slot, log):
         env[k] = _expand(v, ctx)
     staged = out / ("%s.%d.staged" % (name, n))
     env.update(METRONOME_DIR=str(d), METRONOME_GEN=str(n), METRONOME_PHASE=name, METRONOME_OUT=str(staged),
-               METRONOME_SHADOW="1", METRONOME_OLDEST_READING=str(oldest[1]) if oldest else "")
+               METRONOME_SHADOW="0" if p.get("owns") else "1", METRONOME_OLDEST_READING=str(oldest[1]) if oldest else "")
     if slot:
         env["METRONOME_SLOT"] = slot
     logf = open(out / ("%s.log" % name), "w", encoding="utf-8")
@@ -450,10 +483,8 @@ def run_phase(d, table, name, n, st, limit, slot, log):
 
 
 def beat(d, table, shadow=True):
-    """One beat. Returns 0, or EXIT_DUPLICATE when another beat holds the lock."""
-    if not shadow:
-        print("metronome: only --shadow until cutover (strategy §8 step 6)", file=sys.stderr)
-        return 2
+    """One beat. Returns 0, or EXIT_DUPLICATE when another beat holds the lock. `shadow` is kept for old callers
+    and changes nothing: which phases act is the table's `owns`."""
     d.mkdir(parents=True, exist_ok=True)
     beats = d / "beats.jsonl"
 

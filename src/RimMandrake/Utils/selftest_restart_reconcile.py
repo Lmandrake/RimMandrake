@@ -246,9 +246,48 @@ cli = json.loads(json.dumps(SHIPPED))
 cli["seat_restart"]["seats"]["BENCH"]["seat_log"] = str(TMP / "cli_log.md")
 sf.write_text(json.dumps(cli), encoding="utf-8")
 os.environ["RM_RESTART_RECONCILE_SCHEDULE"] = str(sf)
+# ownership fencing (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): the shipped phase table gives this clock to the beat's raise
+import metronome  # noqa: E402
+MET = TMP / "metronome"
+MET.mkdir()
+os.environ["METRONOME_DIR"] = str(MET)
+(MET / "state.json").write_text(json.dumps({"beat": 7, "generation": 7}), encoding="utf-8")
+state_before = (sp / "restart_reconcile_state.json").read_text(encoding="utf-8")
 f = Filer()
-rc = RR.main(["run"], filer=f)
-check(rc == 0 and json.loads((sp / "restart_reconcile.json").read_text())["open"].get("BENCH") and f.todo, "cli: a run files and writes the deadman's reading")
+check(RR.main(["run"], filer=f) == 0 and not f.todo
+      and (sp / "restart_reconcile_state.json").read_text(encoding="utf-8") == state_before
+      and not (sp / "restart_reconcile.json").exists(),
+      "fence: an old-timer run (no generation) while the beat owns the clock acts nothing and saves nothing")
+check(RR.main(["run", "--metronome-gen", "6"], filer=f) == RR.EXIT_FENCED and not f.todo
+      and (sp / "restart_reconcile_state.json").read_text(encoding="utf-8") == state_before,
+      "fence: a superseded generation (a child of an older beat) refuses before telling or filing")
+metronome.set_fence(MET, "raise", 7)
+check(RR.main(["run", "--metronome-gen", "7"], filer=f) == RR.EXIT_FENCED and not f.todo,
+      "fence: a killed (fenced) generation refuses")
+(MET / "state.json").write_text(json.dumps({"beat": 8, "generation": 8}), encoding="utf-8")
+
+
+class MovesOn(Filer):
+    def __call__(self, todo, conf):          # a newer beat starts while this pass is filing
+        (MET / "state.json").write_text(json.dumps({"beat": 9, "generation": 9}), encoding="utf-8")
+        return Filer.__call__(self, todo, conf)
+
+
+mv = MovesOn()
+check(RR.main(["run", "--metronome-gen", "9"], filer=mv) == RR.EXIT_FENCED and not mv.todo,
+      "fence: a generation not yet live is not the owner")
+(MET / "state.json").write_text(json.dumps({"beat": 8, "generation": 8}), encoding="utf-8")
+rc = RR.main(["run", "--metronome-gen", "8"], filer=mv)
+check(rc == RR.EXIT_FENCED and mv.todo
+      and (sp / "restart_reconcile_state.json").read_text(encoding="utf-8") == state_before,
+      "fence: the generation moving on while filing stops the save (the next owner reopens the same fixed item)")
+(MET / "state.json").write_text(json.dumps({"beat": 10, "generation": 10}), encoding="utf-8")
+f = Filer()
+rc = RR.main(["run", "--metronome-gen", "10"], filer=f)
+check(rc == 0 and json.loads((sp / "restart_reconcile.json").read_text())["open"].get("BENCH") and f.todo,
+      "cli: the owning generation's run files and writes the deadman's reading")
+check(json.loads((sp / "restart_reconcile_state.json").read_text(encoding="utf-8"))["open"].get("BENCH"),
+      "cli: the owning generation's run saves its state")
 
 shutil.rmtree(TMP, ignore_errors=True)
 print("selftest_restart_reconcile: %s" % ("FAIL " + "; ".join(FAILS) if FAILS else "OK"))
