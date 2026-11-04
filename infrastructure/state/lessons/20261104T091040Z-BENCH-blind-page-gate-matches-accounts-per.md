@@ -1,0 +1,1 @@
+The blind page gate matches accounts per LINE, squashed across words: an item id ending in the start of an account name plus the next word (`..._TO_<name>` + ' note') refused the WHOLE delegated digest (2026-11-04). A per-token check passing proves nothing about the line; digest ids now go through blind._digest_id_ok (withheld, counted). Item OWNER_ASKS_MEASURE_AGE_IN_DIGEST.

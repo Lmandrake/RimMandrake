@@ -218,6 +218,27 @@ class DigestSource(_Closed):
     newest: Optional[Time] = None
 
 
+class OwnerAsk(_Closed):
+    """One open item on the OWNER seat at the page's cut (OWNER_ASKS_MEASURE_AGE_IN_DIGEST): its age since `file`, and
+    how many open items wait on it: `waiting` whose live block names it, `chain` whose chain of live blocks reaches it
+    (`waiting` included). Visibility only: no default is carried, so none can be shown or applied (D4(a))."""
+    id: ItemId
+    filed: Time
+    age_hours: Count
+    state: State
+    needs: Needs
+    blocked: bool
+    waiting: Count
+    chain: Count
+
+
+class OwnerAsks(_Closed):
+    state: SourceState                       # unmeasured: the ledger did not read, so no ask is shown or counted
+    asks: tuple[OwnerAsk, ...] = ()
+    withheld: Count = 0                      # an ask whose id is unknown or about accounts: counted, never named
+    malformed: Count = 0                     # an ask with no readable filing time or an unknown state/needs
+
+
 class DigestPage(_Closed):
     schema_: Literal["rimflow.blind-digest/1"] = Field(alias="schema")
     date: Date
@@ -225,6 +246,7 @@ class DigestPage(_Closed):
     cut: Time
     records: tuple[DigestRecord, ...]
     sources: tuple[DigestSource, ...]
+    owner_asks: OwnerAsks
 
 
 # raw fields a reader may hand the projection, per source (the allow-list: nothing else of a record is looked at)
@@ -380,8 +402,7 @@ def _record(src, raw, verbs, ids, resolved):
 
     iid = r.get("id") if src == "ledger" else r.get("item") if src == "verdict" else None
     if iid not in (None, ""):
-        if (ids is None or not isinstance(iid, str) or iid not in ids.known or iid in hidden
-                or C.item_id_problem(iid)):
+        if not _digest_id_ok(iid, ids):      # unknown, hidden, unsafe, or an account across its edge
             return None, True, 0
         f["item"] = iid
     if src == "ledger":
@@ -434,12 +455,37 @@ def _record(src, raw, verbs, ids, resolved):
     return {k: v for k, v in f.items() if v is not None}, False, dropped
 
 
-def project_digest(date, floor, cut, raw, status, ids=None, resolve=None):
+def project_owner_asks(asks, ids):
+    """asks: [{"id", "filed" (aware datetime or None), "age_hours", "state", "needs", "blocked", "waiting", "chain"}]
+    (delegated_digest.owner_asks), or None when the ledger did not read. -> the OwnerAsks data, oldest first. An id
+    outside the page identity is withheld and counted; an ask with no filing time or an unknown state/needs is
+    malformed and counted. Nothing but these closed fields is read."""
+    if asks is None:
+        return {"state": "unmeasured"}
+    out, held, bad = [], 0, 0
+    for a in asks:
+        if not _digest_id_ok(a.get("id"), ids):
+            held += 1
+            continue
+        f = a.get("filed")
+        if (not isinstance(f, dt.datetime) or f.tzinfo is None or a.get("state") not in State.__args__
+                or a.get("needs") not in Needs.__args__):
+            bad += 1
+            continue
+        out.append({"id": a["id"], "filed": f, "age_hours": int(a.get("age_hours") or 0), "state": a["state"],
+                    "needs": a["needs"], "blocked": bool(a.get("blocked")), "waiting": int(a.get("waiting") or 0),
+                    "chain": int(a.get("chain") or 0)})
+    out.sort(key=lambda d: (d["filed"], d["id"]))
+    return {"state": "measured", "asks": tuple(out), "withheld": held, "malformed": bad}
+
+
+def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=None):
     """THE way to make a DigestPage. raw: [{"source": <Source>, <RAW_FIELDS of it>...}] (readers extract these from
     the records); status: {source: {"state", "fault", "malformed", "all_time"?, "newest"?}}; ids: Identity, or None
     when the ledger could not be read (every record naming an item is then withheld: fail closed); resolve: the sha
-    resolver (blind_core.git_resolver), None = no sha is shown. Withheld records and dropped fields are counted per
-    source. Raises ValueError only on a programming error (a bad time or source)."""
+    resolver (blind_core.git_resolver), None = no sha is shown; asks: the open OWNER items (project_owner_asks; None =
+    UNMEASURED). Withheld records and dropped fields are counted per source. Raises ValueError only on a programming
+    error (a bad time or source)."""
     verbs = _verbs()
     ids = _identity(ids)
     per = {s: {"records": 0, "withheld": 0, "fields_withheld": 0} for s in SOURCES}
@@ -467,7 +513,7 @@ def project_digest(date, floor, cut, raw, status, ids=None, resolve=None):
                 d[k] = st[k]
         sources.append(d)
     return _issue(DigestPage, {"schema": SCHEMA, "date": date, "floor": floor, "cut": cut, "records": tuple(recs),
-                               "sources": tuple(sources)}, ids)
+                               "sources": tuple(sources), "owner_asks": project_owner_asks(asks, ids)}, ids)
 
 
 # -------------------------------------------------------------------------------------- queue / item ------
@@ -548,10 +594,29 @@ def _refused(v, shown=None):
     return int(v not in (None, "") and shown is None)
 
 
+def _account_edge(iid):
+    """Could `iid` and a neighbouring word on its line spell an account (the page gate matches accounts per LINE,
+    squashed)? True when the id's squashed end is a 4+ character start of an account key, or its start a 4+ character
+    end of one: `..._TO_<name>` + ` note` squashes to an account key, and the gate then refused the WHOLE digest
+    (OWNER_ASKS_MEASURE_AGE_IN_DIGEST, 2026-11-04). Such an id is withheld and counted, never shown. A registry
+    that does not read refuses the id (fail closed)."""
+    try:
+        q, keys = C.squash(iid), [k for k in C.account_keys() if len(k) > 4]
+    except Exception:  # noqa: BLE001 - RegistryUnavailable and the like: never show what cannot be checked
+        return True
+    return any(q.endswith(k[:n]) or q.startswith(k[-n:]) for k in keys for n in range(4, len(k)))
+
+
 def _id_ok(iid, ids):
     ids = _identity(ids)
     return (ids is not None and isinstance(iid, str) and iid in ids.known and iid not in ids.hidden
             and not C.item_id_problem(iid))
+
+
+def _digest_id_ok(iid, ids):
+    """The digest's id rule: _id_ok, and no account across the id's edge. Digest lines put free words beside an id
+    (`**ID** note by BENCH`), so the per-line gate can join them; queue rows are cells and keep _id_ok."""
+    return _id_ok(iid, ids) and not _account_edge(iid)
 
 
 def project_queue(seat, groups, ids, withheld=()):
@@ -761,6 +826,8 @@ only open Operations or other overturn owner page path policy program queue reac
 records refs resolves row rows s say seat see sha shown so some source sources state states summaries superseded
 text the this time times titles to To took unassigned under UNMEASURED UTC verb view window withheld without words
 you
+Open asks oldest age days hours since filed wait waiting direct live chain blocks reaches Visibility default applied
+recommended decide yes how many whose The This Withheld ask block cut items ledger of on one
 """.split())
 SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
               "leftover deletions")
@@ -834,6 +901,56 @@ def _rec_line(P, r):
     P.lit("\n")
 
 
+def _asks_section(P, oa):
+    """The open OWNER asks (OWNER_ASKS_MEASURE_AGE_IN_DIGEST, D4(a)): a snapshot at the cut, oldest first. Visibility
+    only: the page states that no default is applied or recommended."""
+    seat = "OWNER"
+    P.lit("## Open ")
+    P.enum(seat, Seat.__args__)
+    P.lit(" asks")
+    if oa.state != "measured":
+        P.lit(" UNMEASURED\n\nThe ledger could not be read: no ask is shown or counted. This is UNMEASURED, not "
+              "empty.\n\n")
+        return
+    P.lit(" ")
+    P.num(len(oa.asks), "owner_asks")
+    P.lit("\n\nEvery open item on the ")
+    P.enum(seat, Seat.__args__)
+    P.lit(" seat at the cut, oldest first: its age since filed, and how many open items wait on it (direct: a live "
+          "block names it; chain: a chain of live blocks reaches it, direct ones in). Visibility only: no default is "
+          "applied or recommended; you decide each one. Withheld: ")
+    P.num(oa.withheld, "withheld")
+    P.lit("; malformed: ")
+    P.num(oa.malformed, "malformed")
+    P.lit(".\n\n")
+    if not oa.asks:
+        P.lit("No open ")
+        P.enum(seat, Seat.__args__)
+        P.lit(" item.\n\n")
+        return
+    P.lit("| item | filed | age days | age hours | state | needs | BLOCKED | waiting direct | waiting chain |\n"
+          "|---|---|---|---|---|---|---|---|---|\n")
+    for a in oa.asks:
+        P.lit("| ")
+        P.item(a.id)
+        P.lit(" | ")
+        P.time(a.filed, "iso")
+        P.lit(" | ")
+        P.num(a.age_hours // 24, "age_days")
+        P.lit(" | ")
+        P.num(a.age_hours, "age_hours")
+        P.lit(" | ")
+        P.enum(a.state, State.__args__)
+        P.lit(" | ")
+        P.enum(a.needs, Needs.__args__)
+        P.lit(" | yes | " if a.blocked else " | no | ")
+        P.num(a.waiting, "waiting")
+        P.lit(" | ")
+        P.num(a.chain, "waiting_chain")
+        P.lit(" |\n")
+    P.lit("\n")
+
+
 def render_digest(page):
     """DigestPage -> markdown (a blind_core.Rendered: .handles maps each E<n> to its sha or path), written through
     the allowlist Page. Records grouped by class, newest first."""
@@ -903,6 +1020,7 @@ def render_digest(page):
         else:
             P.lit("-")
         P.lit(".\n\n")
+    _asks_section(P, page.owner_asks)
     groups = {}
     for r in page.records:
         groups.setdefault(r.cls, []).append(r)

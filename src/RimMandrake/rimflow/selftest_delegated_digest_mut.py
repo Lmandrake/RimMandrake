@@ -695,14 +695,14 @@ def test_run_main():
         rc, so = run_main(A(tmp, "--state", os.path.join(tmp, "f4.json"), out="miss"), {"ledger": D.ledger_read([led(1)])})
         check(json.load(open(os.path.join(tmp, "f4.json")))["digests"]["2026-10-27"]["sources"] == dict({s: "unmeasured" for s in D.SOURCES}, ledger="measured"),
               "run: a source absent from reads is recorded unmeasured")
-    # _load_ledger: any failure -> (None, None)
+    # _load_ledger: any failure -> (None, None, None)
     import rimflow.model as M
     realread = M.read
     try:
-        def boom():
+        def boom(*_a, **_k):
             raise OSError("ledger")
         M.read = boom
-        check(D._load_ledger() == (None, None), "_load_ledger: unreadable ledger -> (None, None)")
+        check(D._load_ledger() == (None, None, None), "_load_ledger: unreadable ledger -> (None, None, None)")
     finally:
         M.read = realread
     # main: argv handling and pre-launch

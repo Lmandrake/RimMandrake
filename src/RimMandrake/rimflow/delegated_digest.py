@@ -3,7 +3,9 @@
 
 No AI. Once a day, as the Conductor's pre-step (dispatcher_schedule.json `pre_launch`), this writes
 `Transient/delegated_digest_<YYYY-MM-DD>.md`: every delegated call not yet in a digest, grouped by class, newest
-first, with counts MEASURED from the records. The Conductor delivers it (conductor.md, scheduled check (d)); it never
+first, with counts MEASURED from the records; and every open OWNER-seat item at the cut, oldest first, with its age and
+how many open items wait on it, directly and through a chain of blocks (OWNER_ASKS_MEASURE_AGE_IN_DIGEST, D4(a):
+visibility only, no default is applied or recommended). The Conductor delivers it (conductor.md, scheduled check (d)); it never
 assembles one by hand. Items DELEGATED_DIGEST_FIX_NEVER_WRITTEN, DIGEST_BLIND_HARDEN_REASONS_SLIP_THROUGH.
 
 🔴 TOKEN-BLIND BY CONSTRUCTION (the page goes to the owner; the Conductor is not limited to it, owner 2026-10-31).
@@ -430,9 +432,45 @@ def reconcile(st, date, out):
     return changed
 
 
+# ------------------------------------------------------------------------------------------- owner asks -----
+def owner_asks(world, cut):
+    """Pure: the open items on the OWNER seat at `cut` (OWNER_ASKS_MEASURE_AGE_IN_DIGEST, D4(a) visibility only).
+    -> [{"id", "filed", "age_hours", "state", "needs", "blocked", "waiting", "chain"}]; None when the world did not
+    read. `waiting`: open items whose block still holds at `cut` (priority.block_holds: a predecessor wait that has
+    reached its level, or a passed date, waits on nothing) and names the item among its --on ids; `chain`: every open
+    item whose chain of such blocks reaches it, `waiting` included, each once (a wait cycle is counted, never looped).
+    Age is whole hours from the item's `file` event to `cut`; no default is computed, so none can be applied."""
+    if world is None:
+        return None
+    from rimflow import priority as PR
+    now = cut.timestamp()
+    rev = {}
+    for y in world.items.values():
+        if y.open and PR.block_holds(world, y, now):
+            for on in PR.block_ons(y):
+                if on != y.id:
+                    rev.setdefault(on, set()).add(y.id)
+    out = []
+    for it in world.items.values():
+        if not (it.open and it.owner == "OWNER"):
+            continue
+        seen, todo = set(), list(rev.get(it.id, ()))
+        while todo:
+            y = todo.pop()
+            if y in seen or y == it.id:
+                continue
+            seen.add(y)
+            todo.extend(rev.get(y, ()))
+        f = utc(it.created_at)
+        out.append({"id": it.id, "filed": f, "state": it.state, "needs": it.needs, "blocked": bool(it.blocked),
+                    "age_hours": max(0, int((cut - f).total_seconds() // 3600)) if f else 0,
+                    "waiting": len(rev.get(it.id, ())), "chain": len(seen)})
+    return out
+
+
 # -------------------------------------------------------------------------------------------------- build -----
-def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None):
-    """-> (page text, {source: [identities on the page]})."""
+def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None, asks=None):
+    """-> (page text, {source: [identities on the page]}). asks: owner_asks(); None = that section is UNMEASURED."""
     from contracts import blind as BL
     raw, seen, status = [], {}, {}
     for s in SOURCES:
@@ -448,22 +486,25 @@ def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=Non
                 continue
             seen[s].append(ident)
             raw.append(rec)
-    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve)
+    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve, asks)
     return BL.render_digest(page), seen
 
 
-def _load_ledger():
-    """-> (events, blind.Identity); (None, None) when the ledger or its identity does not read: the ledger source
-    is then UNMEASURED and every identity-bearing record is withheld (fail closed, never 'nothing hidden')."""
+def _load_ledger(path=None):
+    """-> (events, blind.Identity, World); (None, None, None) when the ledger or its identity does not read: the
+    ledger source and the OWNER asks are then UNMEASURED and every identity-bearing record is withheld (fail closed,
+    never 'nothing hidden'). path: one ledger file (--ledger, a fixture); None = the whole sharded ledger."""
     try:
         from rimflow import model
-        events = model.read()
+        if path is not None and not os.path.isfile(path):
+            raise OSError("no ledger file")          # a missing fixture is an unread ledger, never an empty one
+        events = model.read(path)
         world = model.replay(events)
         import blind_view as BV
         from contracts import blind as BL
-        return events, BL.Identity(frozenset(BV.known_ids(world)), frozenset(BV.hidden_ids(world)))
+        return events, BL.Identity(frozenset(BV.known_ids(world)), frozenset(BV.hidden_ids(world))), world
     except Exception:  # noqa: BLE001
-        return None, None
+        return None, None, None
 
 
 def _dest(a):
@@ -492,6 +533,8 @@ def run(a, sources=None):
     out = os.path.join(out_dir, "delegated_digest_%s.md" % date)
     if a.since and not a.dry_run:
         raise ValueError("--since moves the window by hand: only a --dry-run may take it")
+    if a.ledger and not a.dry_run:
+        raise ValueError("--ledger reads a fixture: only a --dry-run may take it")
     if refused:
         raise ValueError("a dry run never writes the production digest directory")
     for p in (SRC, HERE):
@@ -522,15 +565,20 @@ def run(a, sources=None):
     cut = utc(a.cut) if a.cut else dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     if cut is None:
         raise ValueError("--cut is not an ISO time")
+    world = None
+    if a.ledger and sources is not None:
+        raise ValueError("--ledger and injected sources are two ledgers")
     if sources is None:
-        events, ids = _load_ledger()
+        events, ids, world = _load_ledger(a.ledger)
         reads = gather(events)
         from contracts import blind_core as C
         resolve = C.git_resolver(ROOT)
     elif len(sources) == 2:                          # (reads, Identity): no resolver, so every sha is withheld
         (reads, ids), resolve = sources, None
-    else:
+    elif len(sources) == 3:
         reads, ids, resolve = sources
+    else:                                            # (reads, Identity, resolver, World)
+        reads, ids, resolve, world = sources
     states = {s: reads[s]["state"] if s in reads else "unmeasured" for s in SOURCES}
     if rebuild and not a.dry_run:
         lost = [s for s, was in (entry.get("sources") or {}).items()
@@ -538,7 +586,7 @@ def run(a, sources=None):
         if lost:
             raise RuntimeError("refusing to rebuild the %s digest: %s read before and is UNMEASURED now, so its "
                                "records would leave the page and its identities the state" % (date, ", ".join(lost)))
-    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve)
+    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve, owner_asks(world, cut))
     sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
     if not a.dry_run:
         st["digests"][date] = {"floor": iso(floor) if floor else None, "cut": iso(cut), "complete": False,
@@ -570,6 +618,7 @@ def parser():
     ap.add_argument("--date", help="digest date YYYY-MM-DD (default: today, local)")
     ap.add_argument("--since", help="dry run only: an ISO floor instead of the state's")
     ap.add_argument("--cut", help=argparse.SUPPRESS)          # selftest: a fixed upper bound
+    ap.add_argument("--ledger", help="dry run only: read this one ledger file (a fixture), not the sharded ledger")
     ap.add_argument("--out-dir", help="default Transient/ (a dry run: %s)" % DRY_DIR)
     ap.add_argument("--state", default=STATE)
     ap.add_argument("--errors", default=ERRORS, help=argparse.SUPPRESS)

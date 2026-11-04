@@ -164,6 +164,10 @@ a digest line: each newest-mark enactment, ✕ delete + ban, ban lifted, and red
 `art marks`; `art.py marks-digest` lists them), each bridge take, deploy and
 restart (§2.6, class `bridge idle`), each leftover deleted with its archive or bundle path (§2.2, class
 `leftovers`) — logged `--why "delegated: <class>"` so the digest finds it.
+The same page lists every open item on the OWNER seat at its cut, oldest first, with its age since filed and how many
+open items wait on it (direct: a live block names it; chain: a chain of live blocks reaches it) — visibility only, no
+default applied or recommended (D4(a), `OWNER_ASKS_MEASURE_AGE_IN_DIGEST`; revisit a default only after two weeks of
+age data).
 
 To overturn: he says so, in any words; the seat records his words with `--owner-said` on the item, undoes the
 call, and adds the reason to the brief (§4.6). Silence on a digest line is not his approval — it stays logged as
