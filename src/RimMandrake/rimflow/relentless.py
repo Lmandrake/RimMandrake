@@ -114,6 +114,23 @@ NOT_AN_APPROACH = ("worker_lost", "checker_lost")
 # expected, observed, mechanism, evidence per step, theories ruled out, one open follow-up item per cause) before
 # `finish` is taken; a CLASSIFY line is recorded as a label only (LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL).
 DIAGNOSE_ENDS = ("game_fail", "game_unmeasured", "game_proof_unmeasured", "checker_lost", "unmeasured")
+# TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY (owner 2026-11-04: "We may need Test Pilots to be able to be called in the
+# Pipeline too, not just Relentless. Though I'd want to know what Test Pilot did that we might teach Relentless' live
+# testing mode."): a REPEATED live failure is a pipeline step of its own. Before, a pilot sat only as a late rung of the
+# approach ladder (after a redesign); now rules.pilot_after_live_fails live endings since the last sitting make the next
+# worker an rm-testpilot sitting (st["pilot_step"]), whatever the approach. The sitting explains (relentless_explain), and
+# what pilots do that a builder does not is taught to every live worker in LIVE_MOVES.
+LIVE_ENDS = ("game_fail", "game_unmeasured", "game_proof_unmeasured")
+# the moves the 2026-11-04 LEANINGSCRUB pilot sitting reported under "What Relentless's live mode should learn" (ledger
+# note on TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY, 2026-11-04T13:14Z): every brief that touches the running game carries them
+LIVE_MOVES = (
+    "read the proof's LAST verdict line, not its exit code: NOT REPRODUCED is not a game failure",
+    "compare the failing rows across items before assuming a shared cause, and before assuming none",
+    "sort each failing row MOD / SITE / TOOL / HOST before rerunning anything",
+    "N misses of N on the right site means the criterion is wrong, not the mod: question the contract",
+    "read the item's history and every earlier pilot note (TESTPILOT_SAT) first",
+    "before taking the bridge, ask whether another run could change a decision; if not, do not run it",
+)
 CLASSIFY_RX = re.compile(r"^\s*CLASSIFY:\s*(MOD|SITE|HARNESS|CONTRACT)\b(?![|/])[\s:;,.\u2014-]*([^\s<|].{9,})", re.S)
 INSTRUMENT = "instrument"   # snag class: the site or the instrument is broken, not the work - a block on its repair item
 HISTORY_MAX = 10            # endings the brief lists, newest last       # a dead process or a silent checker tried nothing
@@ -285,17 +302,56 @@ def health_order(verdict, why, fallback):
             "fresh": bool(verdict), "why": said}
 
 
+def pilot_count(store, st, klass, detail, r, now):
+    """Under the lock. One more live ending; at rules.pilot_after_live_fails since the last sitting the next worker is an
+    rm-testpilot sitting (TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY). 0 or unset turns the step off."""
+    n = int(r.get("pilot_after_live_fails") or 0)
+    if st.get("pilot_step") or st["approach"] == "pilot":     # a pilot is owed or sitting: this ending is its to explain
+        st["live_since_pilot"] = 0
+        return
+    st["live_since_pilot"] = (st.get("live_since_pilot") or 0) + 1
+    if n <= 0 or st["live_since_pilot"] < n:
+        return
+    st["pilot_step"] = {"at": now, "after": st["live_since_pilot"], "class": klass, "detail": (detail or "")[:600]}
+    st["live_since_pilot"] = 0
+    store.journal({"at": iso(now), "do": "pilot_step", "item": st["item"], "after": st["pilot_step"]["after"], "class": klass})
+    store.learn(st["item"], "- %s %d live endings since the last pilot sitting (last %s): the next worker is a Test Pilot sitting (%s), to "
+                "explain them before any rebuild" % (iso(now), st["pilot_step"]["after"], klass, r.get("pilot_agent")))
+
+
+def piloting(st):
+    """Is the worker leased for this gen a Test Pilot? The ladder's pilot rung, or a pending/sitting pilot step."""
+    ps = st.get("pilot_step") or {}
+    return st["approach"] == "pilot" or (bool(ps) and ps.get("sat_gen") in (None, st["gen"]))
+
+
+def pilot_sat(st, klass):
+    """Under the lock, from fail() before gen moves: a pilot step's sitting has ended with this ending. A lost worker
+    sat nothing: the step stays pending for the next lease."""
+    ps = st.get("pilot_step")
+    if not ps or ps.get("sat_gen") is None:
+        return
+    if klass in NOT_AN_APPROACH:
+        ps.pop("sat_gen", None)
+        return
+    st.pop("pilot_step", None)
+    st["piloted"] = (st.get("piloted") or 0) + 1
+
+
 def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None):
     """Under the lock. Fence first: gen moves here, before anything is stopped. The item goes to the TOP.
     A validation ending (relentless_attrib.GATED) is blamed before anything is rebuilt: with no PRODUCT attribution it
     earns no strike, no gen and no builder; the candidate waits for a read-only diagnosis -> "gated"/"routed"."""
     klass = SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag"
+    if attributed is None and klass in LIVE_ENDS:      # counted once, at the reading: an attributed re-entry is the same one
+        pilot_count(store, st, klass, detail, r, now)
     if attributed is None and klass in relentless_attrib.GATED:
         attributed = relentless_attrib.gate(store, st, klass, detail, r, now, sys.modules[__name__])
         if attributed in ("gated", "routed"):
             store.save(st)
             return attributed
     st.pop("live_iter", None)       # a live iteration ends with its worker; the game phase sets a new one on its FAIL
+    pilot_sat(st, klass)
     st["gen"] += 1
     st["status"] = "stopping"
     st["stopping_since"] = now
@@ -695,6 +751,7 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
                "hash": hashlib.sha256(json.dumps(st["contract"], sort_keys=True).encode()).hexdigest()}
         store._write(store.receipt_path(item, gen), json.dumps(rec, indent=1, sort_keys=True))
+        pilot_sat(st, "finish")
         _take_receipt(store, st, rec, now)
 
 
@@ -2644,10 +2701,22 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
                         "code at hand is sound, the different approach is the contract: replace it with `contract --proof "
                         "... --why` so it measures the item from where the checker runs, prove it green, and finish; "
                         "redesign the code only if the new contract shows it does not hold.")
-    if st["approach"] == "pilot" and not st.get("proof_only"):
+    ps = st.get("pilot_step")
+    if piloting(st) and not st.get("proof_only"):
         head.append("PILOT: this needs eyes on the running thing. Run `python3 src/RimMandrake/rimflow/cli.py pilot %s`, "
                     "follow that brief yourself, and EXPLAIN what you saw (not only whether the test ran): `explain` with the "
                     "mechanism, evidence per step, theories ruled out and the follow-up item for its cause." % i)
+        if ps:
+            head.append("PILOT STEP: you were called as a pipeline step, not a late rung: %d live endings since the last pilot sitting (the last "
+                        "%s: %s) and no rebuild has explained them. Your job is the explanation, not another build: record "
+                        "it with `explain`, end the sitting with `python3 src/RimMandrake/rimflow/cli.py note %s --text "
+                        "\"TESTPILOT_SAT: <what you saw>\"`, and add a `learn` line headed TEACH: naming any move you made "
+                        "that a live builder's brief does not carry yet (below), so Relentless's live mode can learn it. Fix "
+                        "the code only when the explanation names the mod (MOD) and the fix is small; otherwise snag on the "
+                        "cause." % (ps["after"], ps["class"], ps.get("detail") or "", i))
+    if piloting(st) or st.get("live_iter") or st.get("diagnose_owed"):
+        head.append("LIVE MOVES (what the 2026-11-04 Test Pilot sitting did that live builders did not; do these before "
+                    "any rerun or rebuild): " + "; ".join("(%d) %s" % (n + 1, m) for n, m in enumerate(LIVE_MOVES)) + ".")
     if st.get("live_iter"):
         li = st["live_iter"]
         head.append("LIVE: the running game (started %s) holds your build %s, and the proof of %s exited FAIL on it: "
@@ -4287,7 +4356,8 @@ def lease(store, fx, r, now, acts):
         if not why:
             prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r, store.attempts(item),
                                    relentless_explain.open_causes(store, getattr(fx, "state_of", None)) if st.get("diagnose_owed") else None)
-            agent = r["pilot_agent"] if st["approach"] == "pilot" else r["worker_agent"]
+            pilot = piloting(st)
+            agent = r["pilot_agent"] if pilot else r["worker_agent"]
             why = fx.launch(st, st["run"], prompt, agent, st["clone"], r["run_max_s"],
                             {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         with store.lock():
@@ -4303,8 +4373,11 @@ def lease(store, fx, r, now, acts):
                     launch_failed(store, r, now, why)
                 acts.append({"do": "launch_fail", "item": item, "why": "pool full: " + why if POOL_REFUSED in why else why})
                 return
-            store.attempt(item, {"at": iso(now), "gen": cur["gen"], "start": cur["run"]["unit"],
-                                 "approach": cur["approach"]})
+            start = {"at": iso(now), "gen": cur["gen"], "start": cur["run"]["unit"], "approach": cur["approach"]}
+            if cur.get("pilot_step") and pilot:     # the sitting is this gen's: its ending (fail or finish) ends the step
+                cur["pilot_step"]["sat_gen"] = cur["gen"]
+                start["pilot_step"] = True
+            store.attempt(item, start)
             store.save(cur)
         launched += 1
         acts.append({"do": "lease", "item": item, "gen": st["gen"], "unit": st["run"]["unit"]})
