@@ -162,7 +162,7 @@ def stubbed_run():
     seen = {"record": [], "verify": [], "suite": []}
     names = ("swap_to_test_list", "restore_full", "compose_test_list", "find_mod_dir", "load_validation",
              "northstar_for", "visual_floor", "ensure_playing_map", "ensure_test_profile", "run_suite",
-             "write_sheet", "mod_dependency_ids", "composed_into", "mod_package_id")
+             "write_sheet", "mod_dependency_ids", "composed_into", "mod_package_id", "verify_loaded_list")
     real = {n: getattr(runner, n) for n in names}
     real_rec, real_sub, real_env = status.record_run, subprocess.run, os.environ.get("MODCHECK_SKIP_DEPLOY")
     env = {k: os.environ.pop(k) for k in ("RIMFLOW_SEAT", "AGENT_SEAT") if k in os.environ}
@@ -190,6 +190,7 @@ def stubbed_run():
     runner.northstar_for = lambda m: (None, None)
     runner.visual_floor = lambda s, ns: {"bar": [], "uncovered": [], "orphans": []}
     runner.ensure_playing_map = runner.ensure_test_profile = lambda *a, **k: None
+    runner.verify_loaded_list = lambda *a, **k: []      # the running load is the composed list: no bridge read
     runner.run_suite = fake_suite
     runner.write_sheet = lambda m, s: "/tmp/ToyMod_sheet.html"
     runner.mod_dependency_ids, runner.composed_into, runner.mod_package_id = (lambda d: []), (lambda m: None), (lambda d: "x.y")

@@ -42,13 +42,18 @@ NAMED_ROWS = ("capture_down_from_the_lip", "capture_down_off", "warden_served_fr
 MIN_ROWS = 60
 
 
-def derive(done_dir, last_file=None):
-    """The snapshot, from the records in done_dir between WINDOW_START and last_file (inclusive)."""
-    names = sorted(os.path.basename(p) for p in glob.glob(os.path.join(done_dir, "J*.json")))
+def derive(done_dir, last_file=None, moved=()):
+    """The snapshot, from the records in done_dir between WINDOW_START and last_file (inclusive). `moved`: folders a
+    done record is later moved into whole (the queue's quarantined/), still read so the window keeps its records."""
+    where = {}
+    for d in (done_dir,) + tuple(moved):
+        for p in glob.glob(os.path.join(d, "J*.json")):
+            where.setdefault(os.path.basename(p), p)
+    names = sorted(where)
     names = [n for n in names if n >= WINDOW_START and (last_file is None or n <= last_file)]
     jobs, probe, shas = [], [], {}
     for n in names:
-        path = os.path.join(done_dir, n)
+        path = where[n]
         with open(path, "rb") as fh:
             raw = fh.read()
         rec = json.loads(raw)
@@ -62,7 +67,7 @@ def derive(done_dir, last_file=None):
             jobs.append({"job": job, "host": (rec.get("result") or {}).get("host"), "rows": pit})
         if other:
             probe.append({"job": job, "rows": other})
-        if pit or other:
+        if (pit or other) and os.path.dirname(path) == done_dir:
             shas[job] = hashlib.sha256(raw).hexdigest()
     return {"item": "NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS", "window_start": WINDOW_START,
             "last_file": names[-1] if names else None, "files_scanned": len(names),
@@ -144,7 +149,12 @@ def main(argv):
           % (snap["files_scanned"], nrows, CHAIN, sum(len(p["rows"]) for p in snap["sanity_probe"]), len(bad)))
     done = os.path.join(QUEUE, "done")
     if os.path.isdir(done) and glob.glob(os.path.join(done, "J*.json")):
-        fresh = derive(done, snap["last_file"])
+        fresh = derive(done, snap["last_file"], moved=(os.path.join(QUEUE, "quarantined"),))
+        # quarantine rewrites a record as it moves it, so a moved record's bytes no longer hash as snapshotted:
+        # its rows are still compared above, its hash only while it sits in done/
+        snap = dict(snap, record_sha256={j: h for j, h in snap["record_sha256"].items()
+                                         if j in fresh["record_sha256"] or not os.path.exists(
+                                             os.path.join(QUEUE, "quarantined", j + ".json"))})
         if fresh != snap:
             diff = [k for k in sorted(set(fresh) | set(snap)) if fresh.get(k) != snap.get(k)]
             fails.append("snapshot differs from the records in %s on: %s" % (done, ", ".join(diff)))

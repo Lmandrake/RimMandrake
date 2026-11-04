@@ -295,7 +295,7 @@ def main():
         brief.plan_cli(["clear"], pf, pev)
     check("plan clear ends the trip", brief.read_plan(pf) is None)
 
-    # widget: a look row's packet_view comes from the same reader as the phone brief, and index.html draws it
+    # a look row's packet_view comes from the same reader as the phone brief (its widget retired with RimPulse, 2026-11-03)
     full = Path(tempfile.mkdtemp(prefix="pv_")) / "full.md"
     full.write_text("## Recommendation\nship it\n## Alternatives\nwait\n## Evidence\nshot.png\n## Doubts\nlight\n")
     part = Path(full.parent) / "part.md"
@@ -308,10 +308,6 @@ def main():
           pv["missing"] == ["alternatives", "evidence", "doubts"], pv)
     pv = brief.packet_view({"key": "hand:z"})
     check("widget packet_view: no packet source reads incomplete in full", len(pv["missing"]) == 4, pv)
-    html = (Path(__file__).resolve().parent / "widget" / "index.html").read_text(encoding="utf-8")
-    check("widget draws packet_view and the incomplete wording", "packetHTML(r)" in html and "packet incomplete: no" in html)
-    # packetHTML emits small.pk / small.inc: without rules for them the four parts ran inline into one long line
-    check("widget styles the packet lines it draws", "small.pk" in html and "small.inc" in html)
     psrc = (Path(__file__).resolve().parent / "pulse.py").read_text(encoding="utf-8")
     check("snapshot attaches packet_view to look rows via brief.packet_view", "brief.packet_view(r)" in psrc)
 

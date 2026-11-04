@@ -69,13 +69,18 @@ TARGETS = {
                                          R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "dispatcher": (R + "dispatcher.py", [R + "selftest_login_watch.py", R + "selftest_conductor_identity.py", R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py",
-                                         R + "selftest_role_launch.py", R + "selftest_seat_restart.py", R + "selftest_testpilot_route.py"]),
+                                         R + "selftest_role_launch.py", R + "selftest_seat_restart.py", R + "selftest_testpilot_route.py",
+                                         U + "selftest_alarm_repeat_worse.py", U + "selftest_conductor_log_guard.py", R + "selftest_designer_stage.py",
+                                         R + "selftest_dispatcher_blocked_top_cursor.py", R + "selftest_ops_notes_off_shared_table.py", R + "selftest_raise_ladder.py"]),
     "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py", U + "selftest_v3_vs_v2_mut.py"]),
-    "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py", R + "selftest_delegated_digest_mut.py", R + "selftest_relentless_expedite.py"]),
+    "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py", R + "selftest_delegated_digest_mut.py", R + "selftest_relentless_expedite.py",
+                                                     R + "selftest_delegated_digest_owner_asks.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
     "role_launch": (R + "role_launch.py", [R + "selftest_login_watch.py", R + "selftest_audit_prescreen_window.py", R + "selftest_conductor_identity.py", R + "selftest_role_tokens.py", R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py",
                                            R + "selftest_account_pick.py", R + "selftest_role_launch_props.py", R + "selftest_role_launch.py",
-                                           R + "selftest_role_launch_decide_mut.py", R + "selftest_relentless_wall.py"]),
+                                           R + "selftest_role_launch_decide_mut.py", R + "selftest_relentless_wall.py",
+                                           U + "selftest_alarm_repeat_worse.py", R + "selftest_designer_stage.py", R + "selftest_dispatcher_blocked_top_cursor.py",
+                                           R + "selftest_ops_notes_off_shared_table.py", R + "selftest_role_run_cost.py", R + "selftest_wrapup.py"]),
 }
 # Selftests that import a target module but are deliberately NOT in its list ({target: {relpath: why}}); audit_targets
 # reports every other importing selftest missing from TARGETS.

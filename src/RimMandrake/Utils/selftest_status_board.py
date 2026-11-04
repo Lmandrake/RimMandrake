@@ -70,8 +70,8 @@ for reason in ("PARKED by owner card", "deferred until after the world remake (q
     s = M.stuck_of(item("X", blocked=True, blocked_reason=reason), {}, [], known, {})
     check("free-text block naming the owner is never 'you' (%s)" % reason[:20], s["waits"] != "you")
 check("plain_reason: snag prefix gone, known id -> title, unknown id -> words, slug -> words, file kept",
-      M.plain_reason("relentless snag blocked_by_predecessor: wait for AB_ONE_XY and ZZ_TOP_ONE; see foo_bar.py",
-                     {"AB_ONE_XY": item("AB_ONE_XY", title="Build the first thing")}) ==
+      M.plain_reason("relentless snag blocked_by_predecessor: wait for XB_ONE_XY and ZZ_TOP_ONE; see foo_bar.py",
+                     {"XB_ONE_XY": item("XB_ONE_XY", title="Build the first thing")}) ==
       "wait for 'Build the first thing' and another item; see foo_bar.py")
 check("plain_reason: a bare slug becomes words", M.plain_reason("tmp mount is masked_now") == "tmp mount is masked now")
 check("block_who: a live wait is the game", M.block_who("needs a live quicktest pass") == "the game")
