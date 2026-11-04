@@ -118,3 +118,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:01:36Z","tsn":1793761296755236929}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCARLANDS_CHATRAK_LIVE_RERUN_1 A1 (L2), read-only proof","ts":"2026-11-04T03:01:54Z","tsn":1793761314440443013}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:01:59Z","tsn":1793761319972328313}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN A1 (L1), read-only proof","ts":"2026-11-04T03:04:23Z","tsn":1793761463523590093}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:04:29Z","tsn":1793761469138170400}
