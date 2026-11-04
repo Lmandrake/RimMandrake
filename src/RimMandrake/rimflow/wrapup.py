@@ -438,8 +438,9 @@ def main(argv=None):
     r.add_argument("--why", required=True)
     a = ap.parse_args(argv)
     if a.cmd == "unit":
-        rec = run(World(), unit_ctx(a.unit, a.seat, a.clone, a.holder, a.carried))
-        print("wrapup %s: %d row(s), %d filed" % (a.unit, len(rec["rows"]), rec["filed"]))
+        run(World(), unit_ctx(a.unit, a.seat, a.clone, a.holder, a.carried))
+        # silent: ExecStopPost inherits the unit's StandardOutput=file:, which reopens at offset 0 and overwrote the
+        # head of the run's result JSON (role:Operations:failed "no result file", 2026-11-04); the record is runs.jsonl
         return 0                                # ExecStopPost: never fail the unit
     if a.cmd == "owe":
         tok = owe(a.kind, a.what, a.undo, a.owner)
