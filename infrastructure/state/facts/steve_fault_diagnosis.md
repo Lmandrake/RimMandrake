@@ -20,6 +20,12 @@ state `D:\ClaudeWork\rimmandrake\testq\fault_state.json`). Raw evidence: `D:\Cla
   window the bad CPU wanders cycle to cycle, with clean cycles between, until the reboot.
 - So old microcode is ruled out as the sole cause, and "one dead core" does not fit.
 
+## What the fault does to jobs (MEASURED, one stack)
+
+A modcheck run that dies "exit 5, no sheet" is python.exe killed by an access violation in pure CPython code
+(`ast.parse`), inside a fault window: `J20261103T233438Z-aa0482` in `F20261103T195921Z`. Since the 10-31 reboot, 1 of
+42 in-window jobs crashed and 0 of 57 outside. Census: `infrastructure/state/evidence/MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET.md`.
+
 ## Hypothesis under test: vendor software holding CPU state
 
 A fault that persists until reboot and spans many cores fits a machine-wide setting that a reboot resets (MSRs,

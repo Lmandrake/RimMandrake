@@ -448,6 +448,41 @@ def harness_checks(env):
         ingest._REPAIRED.clear()
 
 
+def quarantine_repair_checks(env):
+    """MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET: a job quarantined into a fault window also notes the repair item its harness
+    fault filed (or was noted on), and no other attempt's repair item."""
+    import ingest
+    os.environ.update(env)
+    shard = ingest.shard_path()
+    att, other = "JQ1.a1", "JQ2.a1"
+    with open(shard, "a", encoding="utf-8") as f:
+        for e in ({"seat": "RUNNER", "event": "spawn", "name": "HARNESS_REPAIR_CAUSE_AAAA0001",
+                   "title": "harness fault, no verdict (testq %s, FlowWorks): access violation" % att},
+                  {"seat": "RUNNER", "event": "note", "id": "HARNESS_REPAIR_CAUSE_AAAA0002",
+                   "text": "seen again in testq %s: modcheck exit 5" % att},
+                  {"seat": "RUNNER", "event": "spawn", "name": "HARNESS_REPAIR_CAUSE_AAAA0003",
+                   "title": "harness fault, no verdict (testq %s, FlowWorks): x" % other}):
+            f.write(json.dumps(e) + "\n")
+    check(ingest.repairs_of(att) == ["HARNESS_REPAIR_CAUSE_AAAA0001", "HARNESS_REPAIR_CAUSE_AAAA0002"],
+          "repairs_of finds the repair spawned for and noted with this attempt only: %s" % ingest.repairs_of(att))
+    calls, moved = [], []
+    saved = ingest.note_once, ingest.FM.rerun_job, ingest.FM.quarantine_move
+    ingest.note_once = lambda it, needle, text: calls.append((it, text)) or True
+    ingest.FM.rerun_job = lambda rec: None
+    ingest.FM.quarantine_move = lambda rec, w, extra: moved.append(extra)
+    try:
+        rec = done_rec(ITEM, "INVALID", "HARNESS")
+        rec["result"]["attempt"] = att
+        ingest.quarantine_one(rec, {"id": "F1", "start": "s", "first_bad": "b"})
+        noted = sorted(c[0] for c in calls)
+        check(noted == sorted([ITEM, "HARNESS_REPAIR_CAUSE_AAAA0001", "HARNESS_REPAIR_CAUSE_AAAA0002"])
+              and all("host fault" in t for i, t in calls if i.startswith("HARNESS_REPAIR_")),
+              "quarantine notes the job's item and its repair items as a host fault: %s" % noted)
+        check(moved and "HARNESS_REPAIR_CAUSE_AAAA0001" in moved[0]["items"], "the quarantine record lists the repairs")
+    finally:
+        ingest.note_once, ingest.FM.rerun_job, ingest.FM.quarantine_move = saved
+
+
 def main():
     crash_checks()
     review_r1_checks()
@@ -562,7 +597,8 @@ def main():
         check("error" in u.get("ingested", {}) and "ingest_pending" not in u, "the last try marks it with the error")
         # a standing host (TESTQ_HOST_ITEM) hosts only item-less jobs: a job that names its own item is not noted there
         harness_checks(env)
-        hr = done_rec(ITEM, "INVALID", "HANG")
+        quarantine_repair_checks(env)
+        hr =done_rec(ITEM, "INVALID", "HANG")
         S.dump(hr, os.path.join(queue, "done", hr["job"]["id"] + ".json"))
         subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_HOST_ITEM=MANY_A),
                        capture_output=True, text=True, timeout=300)

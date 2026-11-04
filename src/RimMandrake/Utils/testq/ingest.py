@@ -357,12 +357,34 @@ def ingest_group(job, res, item, gres, att):
     return {"run": run, "result": verdict(gres), "findings": found}
 
 
+def repairs_of(att):
+    """-> the HARNESS_REPAIR_ items ATT's harness fault filed or noted (repair()), from the shard. A crash inside a fault
+    window is the host's, not the harness's: J20261103T233438Z-aa0482 died of an access violation in ast.parse inside
+    F20261103T195921Z and its repair item, never told, went on chasing it (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET)."""
+    names = set()
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            for line in f:
+                if att not in line or "HARNESS_REPAIR_" not in line:
+                    continue
+                e = json.loads(line)
+                if e.get("event") == "spawn" and att in str(e.get("title")):
+                    names.add(e.get("name"))
+                elif e.get("event") == "note" and "seen again in testq %s" % att in str(e.get("text")):
+                    names.add(e.get("id"))
+    except (OSError, ValueError):
+        pass
+    return sorted(n for n in names if n and n.startswith("HARNESS_REPAIR_"))
+
+
 def quarantine_one(rec, window):
-    """A result from inside a fault window: off done/, a note on each item it speaks for, an item job queued again."""
+    """A result from inside a fault window: off done/, a note on each item it speaks for and on each repair item its
+    harness fault filed, an item job queued again."""
     job, res, was = rec["job"], rec.get("result") or {}, rec.get("ingested") or {}
     att = res.get("attempt") or job["id"]
     items = sorted({i for i in [job.get("item")] + list((job.get("row_items") or {}).values())
                     + list((was.get("groups") or {}).keys()) if i})
+    repairs = repairs_of(att)
     new = FM.rerun_job(rec)
     said = "its verdict %s must not be counted" % was["run"] if was.get("run") else \
         "its verdicts must not be counted" if was.get("groups") else "no verdict recorded"
@@ -373,6 +395,12 @@ def quarantine_one(rec, window):
                          % (needle, window["id"], window["start"], window["first_bad"], said,
                             "; re-queued as %s" % new if new else "")):
             refused.append(it)
+    for it in repairs:
+        if not note_once(it, needle, "%s this sighting ran inside Steve SIMD fault window %s (last clean %s, first bad "
+                         "%s): a host fault, not evidence of a harness defect; drop this item if no sighting outside a "
+                         "window remains" % (needle, window["id"], window["start"], window["first_bad"])):
+            refused.append(it)
+    items = items + repairs
     FM.quarantine_move(rec, window, {"items": items, "rerun": new, "note_refused": refused, "was_ingested": bool(was)})
     T.log("ingest %s -> quarantined in %s, rerun %s%s" % (job["id"], window["id"], new,
                                                          ", note refused on %s" % refused if refused else ""))
