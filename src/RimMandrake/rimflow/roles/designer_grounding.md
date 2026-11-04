@@ -29,9 +29,25 @@ project keeps having already built it.
 Any count you cite about a def dump, save or log: skill `measuring-large-artifacts`, then
 `infrastructure/state/facts/instrument_traps.md`.
 
+## What we built comes first (owner, 2026-11-02)
+
+GSS sitting 1 asked him whether to keep poles, styles and save removal, all already built: *"Those were very strange
+questions given we already have these capabilities."* So the packet carries **What is already built**, which the launcher
+reads, not you: the mod's `src/` tree, every done ledger item whose id starts with the mod's subject (its folder in capitals,
+plus each `--alias` given at `init`, e.g. `GSS`), and each live proof (`infrastructure/state/live_proofs/<ID>.txt`) filed
+under them. It also lists done items that name the mod only in their title, for you to read. Stage 0 is refused until each
+required line is accounted for: an `inventory` entry that cites it (in `impl_evidence`, `proof_evidence` or `source`), or
+a `record.json` `built_reviewed` row `{"ref": "...", "covered_by": "<inventory id>"}` or `{"ref": "...",
+"not_a_capability": "<why>"}`. A ledger that cannot be read is UNMEASURED and refuses done (end `blocked`); it never means
+"nothing built". A built capability is clarified, never put up for keeping: an ask whose wording offers to keep, cut,
+drop or remove something is refused when it is about a `present` capability whose scope he has not opened, whatever its
+`offers_removal` flag says, and refused outright when it names no inventory entry. Ask him only on a real fork: a
+decision his words and the built code do not already settle.
+
 ## Ends
 
-Stage 0 is `done` when the inventory is in `record.json` and `failure_modes` names the three ways this mod could fail him.
+Stage 0 is `done` when the inventory is in `record.json`, accounts for everything in **What is already built**, and
+`failure_modes` names the three ways this mod could fail him.
 Asks you already see go into `record.json` `asks` with `status: draft`; they reach him only through stage 1-2.
 
 ## The first time an item names a mod (owner, 2026-11-03)

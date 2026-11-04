@@ -63,8 +63,8 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
 ```
 
 - **Built behaviour may be clarified, never put up for removal.** An ask about a `present` capability may ask what its
-  correct behaviour is or how to demonstrate it; `offers_removal: true` on it is refused unless its `scope` is
-  `opened_by_owner`. The ask cites his statements, the implementation evidence and the unresolved decision.
+  correct behaviour is or how to demonstrate it; `offers_removal: true` on it, or wording that offers to keep,
+  cut, drop or remove it (the flag unset or not), is refused unless its `scope` is `opened_by_owner`. The ask cites his statements, the implementation evidence and the unresolved decision.
 - **Search before asking.** Ask only when the answer changes core scope and cannot be established from his existing
   words. `concept_tree.py askcheck <dir> "<question>"` catches a repeated waiver, not a rewording; before a tree exists
   it prints `HISTORY_NOT_CHECKED`, which means you read `record.json` and `log.md` for repeats yourself.

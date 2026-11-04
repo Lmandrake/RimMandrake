@@ -19,6 +19,8 @@ import designer_stage as DS  # noqa: E402
 
 FAILS = []
 ITEM = "CONCEPT_FOO_ITEM"
+DONE = {"FOO_LADDER_BUILD_CLIMB": "Foo: ladder lets a pawn climb out", "BAR_UNRELATED_THING": "something else",
+        "TOOLING_FOOBARBAZ_STYLES": "FooBarBaz styles"}
 
 
 def check(name, ok, got=""):
@@ -90,7 +92,9 @@ def run_cycle(d, repo, run, outcome="done", tokens=1000, **kw):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="designer_stage_")
-    real_lint, real_gate = CT.lint, CT.gate
+    real_lint, real_gate, real_done = CT.lint, CT.gate, DS.done_items
+    # the test repo has no ledger to fold: the done items are this fixture (the real fold is probed at the end)
+    DS.done_items = lambda repo: dict(DONE)
     try:
         repo = Repo(tmp)
         d = os.path.join(tmp, "design/concepts/Foo")
@@ -119,7 +123,44 @@ def main():
         ok, errs = DS.close_run(d, "run1", 1000, repo=repo.root)
         check("stage 0: absent without search_scope and only two failure modes are refused",
               not ok and any("search_scope" in e for e in errs) and any("three ways" in e for e in errs), errs)
+        # ---- stage 0 accounts for what is built: src tree, done items under the mod's prefix, their live proofs
+        lp = os.path.join(tmp, DS.LIVE_PROOFS)
+        os.makedirs(lp)
+        for n in ("FOO_LADDER_BUILD_CLIMB.txt", "FOO_LADDER_BUILD_CLIMB.criteria", "BAR_UNRELATED_THING.txt"):
+            open(os.path.join(lp, n), "w").close()
+        refs, notes = DS.built_evidence(repo.root, "Foo")
+        check("built evidence: the src tree, the done item under FOO_ and its live proof, nothing unrelated",
+              refs == ["src/Foo", "ITEM:FOO_LADDER_BUILD_CLIMB",
+                       "infrastructure/state/live_proofs/FOO_LADDER_BUILD_CLIMB.txt"] and notes == [], (refs, notes))
+        check("built evidence: an alias adds its prefix (GSS for GimmeSomeSlack)",
+              DS.mod_prefixes("RimMandrake/GimmeSomeSlack", ["GSS"]) == ["GIMMESOMESLACK_", "GSS_"],
+              DS.mod_prefixes("RimMandrake/GimmeSomeSlack", ["GSS"]))
         rec = {"inventory": [inv()], "failure_modes": ["a", "b", "c"]}
+        put(d, "record.json", rec)
+        DS.open_run(d, "run2a", repo=repo.root)
+        result(d, "done")
+        ok, errs = DS.close_run(d, "run2a", 1000, repo=repo.root)
+        check("stage 0: a done item and its live proof the inventory never mentions are refused (ask what we built)",
+              not ok and any("not accounted for" in e and "ITEM:FOO_LADDER_BUILD_CLIMB" in e
+                             and "live_proofs/FOO_LADDER_BUILD_CLIMB.txt" in e and "src/Foo," not in e for e in errs),
+              errs)
+        text, _ = DS.open_run(d, "run2b", repo=repo.root)
+        check("packet: stage 0 lists what is built, and done items naming the mod only in their title",
+              "## What is already built" in text and "- ITEM:FOO_LADDER_BUILD_CLIMB" in text
+              and "TOOLING_FOOBARBAZ_STYLES" not in text.split("## What is already built")[1].split("Done items")[0],
+              text[-600:])
+        DS.done_items = lambda repo: None
+        result(d, "done")
+        ok, errs = DS.close_run(d, "run2b", 1000, repo=repo.root)
+        check("stage 0: an unreadable ledger is UNMEASURED and refuses done, never 'nothing built'",
+              not ok and any("UNMEASURED" in e for e in errs), errs)
+        DS.done_items = lambda repo: dict(DONE)
+        bad = dict(rec, built_reviewed=[{"ref": "ITEM:FOO_LADDER_BUILD_CLIMB", "covered_by": "no_such_entry"}])
+        check("stage 0: built_reviewed covered_by an id not in the inventory accounts for nothing",
+              DS.unaccounted(bad, refs) == refs[1:], DS.unaccounted(bad, refs))
+        rec = dict(rec, inventory=[inv(impl_evidence=["src/Foo/validation.py", "ITEM:FOO_LADDER_BUILD_CLIMB"])],
+                   built_reviewed=[{"ref": "infrastructure/state/live_proofs/FOO_LADDER_BUILD_CLIMB.txt",
+                                    "covered_by": "ladder"}])
         put(d, "record.json", rec)
         ok, errs = run_cycle(d, repo, "run2")
         check("stage 0 done -> stage 1", ok and DS.load_state(d)["stage"] == 1, errs)
@@ -185,6 +226,14 @@ def main():
         check("built-but-unproven: an ask offering to remove a present capability is refused",
               any("offers to remove" in e for e in DS.ask_errors(ask(offers_removal=True), rec)),
               DS.ask_errors(ask(offers_removal=True), rec))
+        for q in ("Do we still need the ladder?", "Should we keep the ladder or cut it?",
+                  "Is removing the ladder fine?"):
+            check("built: a keep/remove question about a built thing is refused without the flag: %r" % q,
+                  any("offers to remove" in e for e in DS.ask_errors(ask(text=q, offers_removal=False), rec)),
+                  DS.ask_errors(ask(text=q), rec))
+        check("built: keep/remove wording naming no inventory entry is refused",
+              any("without naming its inventory entry" in e for e in DS.ask_errors(
+                  ask(text="Should we keep save removal?", about=[], owner_cites=[root_src]), rec)), "")
         check("built-but-unproven: an ask on its correct behaviour, reviewed by another agent, passes",
               DS.ask_errors(ask(), rec) == [], DS.ask_errors(ask(), rec))
         opened = copy.deepcopy(rec)
@@ -441,8 +490,13 @@ def main():
         refusals_launcher(tmp, repo)
         # ---- the launcher wiring
         wiring(tmp, repo)
+        # ---- the real instrument can see: the live ledger folds to thousands of done items, FlowWorks among them
+        real = real_done(DS.REPO)
+        check("sanity probe: the real ledger's done items are readable (not None, not a round zero)",
+              real is not None and len(real) > 1000 and any(i.startswith("FLOWWORKS_") for i in real),
+              None if real is None else len(real))
     finally:
-        CT.lint, CT.gate = real_lint, real_gate
+        CT.lint, CT.gate, DS.done_items = real_lint, real_gate, real_done
         shutil.rmtree(tmp, ignore_errors=True)
     print("FAILED %d: %s" % (len(FAILS), FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0

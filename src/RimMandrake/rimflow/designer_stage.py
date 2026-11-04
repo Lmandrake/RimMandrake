@@ -17,7 +17,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   exam.json     the Stage 4 record, frozen against the tree and sheet hashes
   result.json   what a run says it did; only `close` (the launcher) reads it and advances
 
-  init     <dir> --mod M [--item ID] [--cap N] [--reserve N]   start a concept's state
+  init     <dir> --mod M [--item ID] [--alias GSS]... [--cap N] [--reserve N]   start a concept's state
   open     <dir> --run U [--run-cap N]     the launcher: refuse or return the stage packet (stdout) and reserve budget
   close    <dir> --run U [--tokens N]      the launcher: charge the run, validate result.json, advance or not
   charge   <dir> --tokens N --kind K --ref R   a helper, review or consult outside the run's own transcript
@@ -335,6 +335,124 @@ def lst(v):
     return v if isinstance(v, list) else ([v] if v else [])
 
 
+# ---------------------------------------------------------------- what is already built (stage 0 must account for it)
+
+LIVE_PROOFS = os.path.join("infrastructure", "state", "live_proofs")
+
+
+def done_items(repo):
+    """{item id: title} of the ledger's done items, or None when the ledger cannot be read (UNMEASURED, never 'none
+    built'). Only the real repo has a ledger model can fold; a test repo patches this function."""
+    if os.path.realpath(repo) != os.path.realpath(REPO):
+        return None
+    try:
+        import model  # noqa: E402  (rimflow's ledger fold, beside this file)
+        w = model.replay(model.read())
+    except Exception:  # an unreadable ledger is reported as UNMEASURED by the caller
+        return None
+    return {i: (getattr(it, "title", "") or "") for i, it in w.items.items() if it.state == "done"}
+
+
+def mod_prefixes(mod, aliases=()):
+    """Item-id subject prefixes that name the mod: its folder in capitals (alphanumerics only) and each alias."""
+    out = []
+    for n in [(mod or "").split("/")[-1]] + list(aliases or []):
+        n = re.sub(r"[^A-Za-z0-9]", "", n or "").upper()
+        if n and n + "_" not in out:
+            out.append(n + "_")
+    return out
+
+
+def built_evidence(repo, mod, aliases=()):
+    """-> (refs, notes). What stage 0 must account for before it is done: the mod's src/ tree, every done ledger item
+    whose id starts with the mod's subject prefix, and every live proof (infrastructure/state/live_proofs/<ID>.txt)
+    filed under that prefix or under one of those items. `notes` names what could not be read (UNMEASURED).
+    Bounded on purpose: an item merely mentioning the mod in its title is listed in the packet, not required."""
+    refs, notes = [], []
+    folder = (mod or "").split("/")[-1]
+    cands = [os.path.join("src", mod)] if "/" in (mod or "") else []
+    try:
+        cands += [os.path.join("src", t, folder) for t in sorted(os.listdir(os.path.join(repo, "src")))]
+    except OSError:
+        notes.append("src/ unreadable")
+    cands.append(os.path.join("src", folder))
+    for c in cands:
+        if folder and os.path.isdir(os.path.join(repo, c)) and c.replace(os.sep, "/") not in refs:
+            refs.append(c.replace(os.sep, "/"))
+    prefixes = tuple(mod_prefixes(mod, aliases))
+    done = done_items(repo)
+    if done is None:
+        notes.append("ledger UNMEASURED: done items not read")
+        done = {}
+    items = sorted(i for i in done if prefixes and i.upper().startswith(prefixes))
+    refs += ["ITEM:%s" % i for i in items]
+    try:
+        names = sorted(os.listdir(os.path.join(repo, LIVE_PROOFS)))
+    except OSError:
+        names = []
+    for n in names:
+        stem, ext = os.path.splitext(n)
+        if ext == ".txt" and (stem in items or (prefixes and stem.upper().startswith(prefixes))):
+            refs.append("%s/%s" % (LIVE_PROOFS.replace(os.sep, "/"), n))
+    return refs, notes
+
+
+def related_titles(repo, mod, aliases=(), cap=40):
+    """Done items naming the mod in their title but not by prefix: the packet lists them so stage 0 reads them."""
+    done = done_items(repo) or {}
+    prefixes = tuple(mod_prefixes(mod, aliases))
+    keys = [p[:-1].lower() for p in prefixes]
+    out = [(i, t) for i, t in sorted(done.items()) if not (prefixes and i.upper().startswith(prefixes))
+           and any(k in re.sub(r"[^a-z0-9]", "", t.lower()) for k in keys if len(k) > 4)]
+    return out[:cap], len(out)
+
+
+def unaccounted(rec, refs):
+    """refs stage 0 has not accounted for. A ref is accounted when an inventory entry mentions it (impl_evidence,
+    proof_evidence, source, anywhere in the entry), or record.json `built_reviewed` lists it with `covered_by` (an
+    inventory id) or `not_a_capability` (why)."""
+    inv = [e for e in (rec or {}).get("inventory") or [] if isinstance(e, dict)]
+    ids = {e.get("id") for e in inv}
+    seen = json.dumps(inv)
+    for r in (rec or {}).get("built_reviewed") or []:
+        if isinstance(r, dict) and CT.txt(r.get("ref")) and (
+                r.get("covered_by") in ids or CT.txt(r.get("not_a_capability"))):
+            seen += "\n" + json.dumps(r["ref"])
+    out = []
+    for ref in refs:
+        if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(ref.split(":", 1)[-1]), seen):
+            out.append(ref)
+    return out
+
+
+def built_section(repo, st):
+    refs, notes = built_evidence(repo, st.get("mod"), st.get("aliases"))
+    rel, n = related_titles(repo, st.get("mod"), st.get("aliases"))
+    out = ["", "## What is already built (designer_stage.py built_evidence)",
+           "Stage 0 is not done until record.json accounts for each line below: an inventory entry that cites it, or "
+           "`built_reviewed` [{\"ref\", \"covered_by\": <inventory id> | \"not_a_capability\": <why>}]. Never ask "
+           "him whether to keep any of it."]
+    out += ["- %s" % r for r in refs] or ["- (nothing found under the mod's src/ tree, prefix or live proofs)"]
+    out += ["UNMEASURED: %s" % x for x in notes]
+    if rel:
+        out += ["Done items naming the mod in their title (read; not required): %d%s" % (
+            n, "" if n <= len(rel) else ", first %d" % len(rel))]
+        out += ["- %s: %s" % (i, t) for i, t in rel]
+    return out
+
+
+# An ask that puts a thing up for keeping or removal, whatever its offers_removal flag says (owner 2026-11-02, GSS
+# sitting 1 asked whether to keep poles, styles and save removal: *"Those were very strange questions given we already
+# have these capabilities."*). A false hit is cheap: name the inventory entry, or ask about behaviour instead.
+KEEP_REMOVE = re.compile(r"\b(keep|kept|remove|removal|removing|drop|dropping|cut|delete|deleting|retire|scrap|"
+                         r"get rid of|do away with|still (want|need)|(do|should) (we|you|i) (need|want|have|bother)|"
+                         r"worth keeping|necessary)\b", re.I)
+
+
+def keep_or_remove(text):
+    return bool(CT.txt(text) and KEEP_REMOVE.search(text))
+
+
 def ask_errors(ask, rec):
     """An ask that may reach him. Cites the decision it settles and its evidence; never offers to remove or shrink a
     present capability unless he opened that scope; carries a structured review by someone other than its author."""
@@ -352,9 +470,13 @@ def ask_errors(ask, rec):
         e = inv.get(a)
         if e is None:
             errs.append("%s: about %s is not in the inventory" % (w, a))
-        elif ask.get("offers_removal") and e.get("impl") == "present" and e.get("scope") != "opened_by_owner":
+        elif (ask.get("offers_removal") or keep_or_remove(ask.get("text"))) and e.get("impl") == "present" \
+                and e.get("scope") != "opened_by_owner":
             errs.append("%s: offers to remove or shrink %s, which is built and whose scope he has not opened; ask what "
                         "correct behaviour is, or how to show it, instead" % (w, a))
+    if not about and keep_or_remove(ask.get("text")):
+        errs.append("%s: asks whether to keep or remove something without naming its inventory entry (about); "
+                    "find out first whether it is already built" % w)
     rv = ask.get("review")
     if not isinstance(rv, dict) or rv.get("verdict") not in ("pass", "struck"):
         errs.append("%s: no structured review result (verdict pass|struck)" % w)
@@ -569,6 +691,13 @@ def result_errors(res, d, st, repo=REPO):
     if stage == 0:
         if not (rec or {}).get("inventory"):
             errs.append("stage 0: no inventory")
+        refs, notes = built_evidence(repo, st.get("mod"), st.get("aliases"))
+        errs += ["stage 0: what is built could not be read (%s): not done until it can be (end blocked)" % x
+                 for x in notes]
+        miss = unaccounted(rec, refs)
+        if miss:
+            errs.append("stage 0: %d built thing(s) not accounted for in the inventory or built_reviewed: %s%s" % (
+                len(miss), ", ".join(miss[:15]), "" if len(miss) <= 15 else ", ..."))
         if len([x for x in lst((rec or {}).get("failure_modes")) if CT.txt(x)]) < 3:
             errs.append("stage 0: name the three ways this mod could fail him (failure_modes)")
     elif stage == 1:
@@ -612,13 +741,13 @@ def load_state(d):
     return st
 
 
-def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE):
+def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=()):
     if os.path.exists(state_path(d)):
         raise Refused("stage.json already exists in %s" % d)
     if not (0 < reserve < cap):
         raise Refused("reserve must be above 0 and below the cap")
     os.makedirs(d, exist_ok=True)
-    st = {"schema": 1, "mod": mod, "item": item, "stage": 0, "status": "ready",
+    st = {"schema": 1, "mod": mod, "item": item, "aliases": list(aliases or []), "stage": 0, "status": "ready",
           "budget": {"cap": cap, "reserve": reserve, "spent": 0, "charges": []},
           "running": None, "results": [], "recovery": [], "history": []}
     hist(st, "init", "stage 0, budget %d (reserve %d)" % (cap, reserve))
@@ -675,7 +804,7 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
     hist(st, "open", "run %s, stage %d, budget %d" % (run, st["stage"], budget))
     if commit:
         write_json(state_path(d), st)
-    return packet(d, st, hashes, budget, why, retries, manifest), budget
+    return packet(d, st, hashes, budget, why, retries, manifest, repo), budget
 
 
 def abort_run(d, run):
@@ -826,7 +955,7 @@ def working_record(d):
     return "\n".join(out) or "(empty: record.json has no entries yet)"
 
 
-def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST):
+def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=None):
     s = st["stage"]
     head = [
         "[designer_stage.py packet: concept %s, stage %d %s, run %s]" % (
@@ -848,6 +977,8 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST):
     if held:
         head.append("Held for his review: %s." % ", ".join("%s (until %s)" % (r["scene"], r.get("until")) for r in held))
     body = ["", "## Working record (record.json)", working_record(d)]
+    if s in (0,) + DIALOGUE:
+        body += built_section(REPO if repo is None else repo, st)
     for name, h in hashes.items():
         with open(os.path.join(os.path.dirname(manifest), name), encoding="utf-8") as f:
             body += ["", "=== %s (sha256 %s) ===" % (name, h[:12]), f.read()]
@@ -873,6 +1004,7 @@ def main(argv=None):
     x.add_argument("--item")
     x.add_argument("--cap", type=int, default=DEFAULT_CAP)
     x.add_argument("--reserve", type=int, default=DEFAULT_RESERVE)
+    x.add_argument("--alias", action="append", default=[], help="another item-id subject naming the mod (GSS)")
     for name in ("open", "close"):
         x = sub.add_parser(name)
         x.add_argument("dir")
@@ -902,7 +1034,7 @@ def main(argv=None):
         if a.cmd == "manifest":
             print(json.dumps({"stage_%d" % s: manifest_hashes(s) for s in STAGES}, indent=1))
         elif a.cmd == "init":
-            init(a.dir, a.mod, a.item, a.cap, a.reserve)
+            init(a.dir, a.mod, a.item, a.cap, a.reserve, a.alias)
             print("init %s: stage 0" % a.dir)
         elif a.cmd == "open":
             text, budget = open_run(a.dir, a.run, a.run_cap)

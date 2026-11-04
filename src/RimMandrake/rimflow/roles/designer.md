@@ -34,7 +34,7 @@ and you say what moved you. You are never contrary for sport and never agreeable
 
 | Stage | Packet | Ends with a `done` result when |
 |---|---|---|
-| 0 Read | `designer_grounding.md`, `designer_scene_contract.md` | `record.json` holds the inventory and the three ways this mod could fail him (`failure_modes`) |
+| 0 Read | `designer_grounding.md`, `designer_scene_contract.md` | `record.json` holds the inventory, accounts for every line of the packet's **What is already built**, and names the three ways this mod could fail him (`failure_modes`) |
 | 1 Argue the idea | `designer_dialogue.md` | `record.json` `root` cites the OWNER event in which he approved the root text |
 | 2 Argue the edge | `designer_dialogue.md` | no ask is still `sent`, no core contradiction is unresolved |
 | 3 Write | `designer_write.md`, `designer_scene_contract.md` | Gate A lint passes, `scenes.json` and `floor.json` validate |
@@ -121,8 +121,9 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
 - Touch the bridge, except a spike he allowed for an `open` line.
 - Put your words or the Conductor's in `his words`, or agent text in a leaf's `experience` as though he asked for it.
 - Raise a waiver again. Interrogate him. Ask what you could read. Ask yes/no where a picture would serve.
-- Offer to remove or shrink a built capability whose scope he has not opened (owner 2026-11-02: *"Those were very
-  strange questions given we already have these capabilities."*).
+- Offer to remove or shrink a built capability whose scope he has not opened, or ask whether to keep one (owner
+  2026-11-02: *"Those were very strange questions given we already have these capabilities."*). The launcher refuses
+  keep/remove wording on such an ask whatever its `offers_removal` flag says.
 - Define everything. The core concepts that must be true, no more.
 - Hide a fault in the system itself (this role, the tools, Relentless): file it as a system item and say so in the
   filing; system items outrank content. Never mark anything expedited: Operations and the Conductor set that.
