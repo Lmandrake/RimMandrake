@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import copy
 import sys
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -62,12 +63,20 @@ def main() -> int:
     expect_red("pixels differ", run(live, rulings, history))
     m.same_art = real_same_art
 
+    real_fixtures, pin = m.FIXTURES, CASE["alts"]["C"]["south"]
+    with tempfile.TemporaryDirectory() as tmp:
+        m.FIXTURES = Path(tmp)
+        expect_red("fixture missing", run(live, rulings, history))
+        (m.FIXTURES / f"{pin}.png").write_bytes((real_fixtures / f"{CASE['alts']['C']['north']}.png").read_bytes())
+        expect_red("fixture is another picture, so does not hash to its pin", run(live, rulings, history))
+    m.FIXTURES = real_fixtures
+
     scored = 0
     for case in m.CASES:
         for letter, shas in case["alts"].items():
             for facing, want in shas.items():
                 rel = f"{case['base']}V_{letter}_{facing}.png"
-                ruled = m.ruled_bytes(case["mod"], rel)
+                ruled = m.ruled_bytes(picture(case, letter, facing), want)
                 fault = m.same_art(ruled, picture(case, letter, facing))
                 if fault:
                     fails.append(f"{rel}: a real picture scored as a redraw: {fault}")
@@ -79,7 +88,7 @@ def main() -> int:
         print("FAIL:", f)
     if fails:
         return 1
-    print(f"selftest_flyer_variants_mutants: PASS (6 mutants red, {scored} other columns refused)")
+    print(f"selftest_flyer_variants_mutants: PASS (8 mutants red, {scored} other columns refused)")
     return 0
 
 

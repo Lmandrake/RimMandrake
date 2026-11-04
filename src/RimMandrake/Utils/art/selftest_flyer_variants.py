@@ -14,13 +14,14 @@ For each creature, from parsed XML, the PNGs on disk and the art ledger:
   * every alternate's facing has a ledger install tied to a ruling carrying his words.
 
 The pins stay what he ruled on. 8605d39e4b moved 13 of these pictures under that card; a rescale is the only thing that may.
+Those 13 originals are kept as fixtures named by pin (copied from 67a8bfeabf, the commit that installed every ruled column),
+so the pixel comparison needs no git history; a fixture missing or not hashing to its pin is a fault, never a skip.
 """
 from __future__ import annotations
 
 import hashlib
 import io
 import json
-import subprocess
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -30,7 +31,7 @@ from PIL import Image, ImageChops, ImageStat
 REPO = Path(__file__).resolve().parents[4]
 EVENTS = REPO / "infrastructure/state/art/events"
 ANIMAL = "Things/Pawn/Animal"
-RULED_COMMIT = "67a8bfeabf"  # the commit that installed every ruled column, byte-equal to the pins
+FIXTURES = Path(__file__).resolve().parent / "fixtures/flyer_variants_ruled"  # <pin>.png, the moved columns as he ruled on them
 RESCALE_CARD = "Rescale all ~345 (scripted rescale, body size untouched)"
 ALPHA_OUTLINE = 8  # faint halo pixels stretch a raw alpha bbox
 ALPHA_SOLID = 128
@@ -90,10 +91,17 @@ def same_art(ruled: bytes, now: bytes) -> str | None:
     return f"colours drift {drift:.1f}" if drift > MAX_RGB_DRIFT else None
 
 
-def ruled_bytes(mod: str, rel: str) -> bytes:
-    """The column as installed at RULED_COMMIT; raises if git cannot produce it, so a blind instrument is not a pass."""
-    return subprocess.run(["git", "-C", str(REPO), "show", f"{RULED_COMMIT}:{mod}/Textures/{rel}"],
-                          check=True, capture_output=True).stdout
+def ruled_bytes(on_disk: bytes, want_sha: str) -> bytes:
+    """The column he ruled on: the file itself if it never moved, else its fixture. Raises so a blind instrument is not a pass."""
+    if hashlib.sha256(on_disk).hexdigest().startswith(want_sha):
+        return on_disk
+    fixture = FIXTURES / f"{want_sha}.png"
+    if not fixture.is_file():
+        raise LookupError(f"fixture {fixture.name} is missing")
+    data = fixture.read_bytes()
+    if not hashlib.sha256(data).hexdigest().startswith(want_sha):
+        raise LookupError(f"fixture {fixture.name} does not hash to its pin")
+    return data
 
 
 def descent_fault(by_sha: dict, sha: str, want_sha: str, said: str, rulings: dict) -> str | None:
@@ -150,7 +158,10 @@ def check_case(c: dict, live: dict, rulings: dict, history: dict) -> list[str]:
                 continue
             fault = descent_fault(history.get(f"{c['mod']}/{rel}", {}), sha, want_sha, c["said"], rulings)
             if not fault and not sha.startswith(want_sha):
-                fault = same_art(ruled_bytes(c["mod"], rel), p.read_bytes())
+                try:
+                    fault = same_art(ruled_bytes(p.read_bytes(), want_sha), p.read_bytes())
+                except LookupError as e:
+                    fault = str(e)
             if fault:
                 bad.append(f"{c['kind']} {name} {facing}: {sha[:12]} is not the column he ruled on ({want_sha}): {fault}")
     return bad
