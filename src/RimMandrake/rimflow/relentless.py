@@ -39,6 +39,7 @@ import relentless_expedite  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_strikes  # noqa: E402
+import relentless_attrib  # noqa: E402
 import relentless_live  # noqa: E402
 import run_tmp  # noqa: E402
 
@@ -98,7 +99,7 @@ BOOKS_RUN_ARTEFACTS = ("src/RimMandrake/Utils/modcheck/test_site_saves.json",)
 # on them, so the engine ran old code (TICK_SPEED_FIX_GAME_IDLES_WAITING)
 BOOKS_LEFT_IN_PLACE = ("Transient/", "infrastructure/state/modcheck_status.json")
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
-PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged")     # one road: strengthen the proof, never redesign the code
+PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged", relentless_attrib.PROOF_OWED)     # one road: strengthen the proof, never redesign the code
 PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
 REJECT_ENDS = ("blind_fail", "proof_weak")
 SUPERVISOR_ENDS = PROOF_ENDS + ("blind_fail",)     # set by a checker verdict only; a worker's snag with one is refused
@@ -280,9 +281,16 @@ def health_order(verdict, why, fallback):
             "fresh": bool(verdict), "why": said}
 
 
-def fail(store, st, klass, detail, r, now, time_not_work=False):
-    """Under the lock. Fence first: gen moves here, before anything is stopped. The item goes to the TOP."""
+def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None):
+    """Under the lock. Fence first: gen moves here, before anything is stopped. The item goes to the TOP.
+    A validation ending (relentless_attrib.GATED) is blamed before anything is rebuilt: with no PRODUCT attribution it
+    earns no strike, no gen and no builder; the candidate waits for a read-only diagnosis -> "gated"/"routed"."""
     klass = SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag"
+    if attributed is None and klass in relentless_attrib.GATED:
+        attributed = relentless_attrib.gate(store, st, klass, detail, r, now, sys.modules[__name__])
+        if attributed in ("gated", "routed"):
+            store.save(st)
+            return attributed
     st.pop("live_iter", None)       # a live iteration ends with its worker; the game phase sets a new one on its FAIL
     st["gen"] += 1
     st["status"] = "stopping"
@@ -295,8 +303,10 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         st["total_at_change"] = (st.get("total_at_change") or 0) + 1
     st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
     limit = r["same_failure_limit"]
-    if klass == "proof_weak":
+    if klass in ("proof_weak", relentless_attrib.PROOF_OWED):
         st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now}
+        if "CONTRACT" in ((attributed or {}).get("targets") or []):
+            st["proof_only"]["binding"] = True      # the binding may live off the sha (the contract, a ledger criterion)
     elif klass in ("blind_fail", PROOF_DEFECT):     # the work itself is in doubt again: the code may move
         st["proof_only"] = None
         for k in PROOF_ENDS:
@@ -347,7 +357,7 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         why = relentless_breakers.same_signature_hold(store.attempts(st["item"]), klass, detail, r, st.get("sig_since", 0))
         if why:
             relentless_strikes.hold(st, why, "signature", now)
-    if klass in DIAGNOSE_ENDS:
+    if klass in DIAGNOSE_ENDS and not attributed:
         st["diagnose_owed"] = {"class": klass, "detail": (detail or "")[:600], "at": now, "gen": st["gen"]}
     if klass == "circling":     # under this lock, so no tick can lease the next worker ahead of the consult
         st["circling_hits"] = st.get("circling_hits", 0) + 1
@@ -391,7 +401,7 @@ def account_lost(store, st, lost, r, now):
     st.pop("live_iter", None)
     st["gen"] += 1
     st["run"] = None
-    st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") else "queued"
+    st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") or st.get("wait") else "queued"
     st["returned_at"] = st["returned_at"] or now
     store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": "account_lost", "detail": lost["why"][:600]})
     store.learn(st["item"], "- %s gen %d ended account_lost, no strike: %s" % (iso(now), st["gen"] - 1, lost["why"][:600]))
@@ -596,6 +606,8 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             st["status"] = "stopping"
             st["stopping_since"] = now
             st["block_pending"] = blk
+            if (klass or "").lower() == INSTRUMENT:     # one incident per shared fault; the item rejoins on its close
+                relentless_attrib.snag_incident(store, st, blk["on"], detail, now)
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "blocked", "detail": (detail or "")[:600],
                                  "kind": blk["kind"], "on": blk["on"], "class": klass})
             store.learn(item, "- %s gen %d blocked (%s%s): %s" % (iso(now), gen, blk["kind"], " on " + ", ".join(blk["on"])
@@ -737,6 +749,8 @@ def parse_options(options, r):
 def help_vendor(st, r):
     """Design section 7: round one the same model, from round `help_vendor_from_round` on a second vendor (the gpt_consult
     port). -> the agent name to launch. Unset in the rules: always round one's agent."""
+    if relentless_attrib.is_diagnose(st):     # an attribution, not a fresh idea: the read-only diagnostician
+        return r.get("diagnose_agent") or r["help_agent"]
     n = (r.get("circling") or {}).get("help_vendor_from_round")
     rnd = ((st or {}).get("help") or {}).get("round") or 1
     return VENDOR_AGENT if n and rnd >= n else r["help_agent"]
@@ -816,6 +830,8 @@ def help_answer(store, item, nonce, options, r, now=None):
         h = (st or {}).get("help") or {}
         if not h or h.get("status") != "running" or h.get("nonce") != nonce or h.get("expired") or h.get("answered_at"):
             raise Fenced("%s: no consult is waiting for that nonce" % item)
+        if relentless_attrib.is_diagnose(st):
+            raise Fenced("%s: this consult is a diagnosis: answer it with `relentless.py attribute`" % item)
         h["answered_at"] = now
         st["help_options"] = {"options": got, "at": now, "by_unit": h["run"]["unit"], "vendor": h.get("agent")}
         store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "answered", "options": len(got),
@@ -884,6 +900,8 @@ def proof_gate(fx, r, st, c):
     held = st.get("proof_only")
     if not held:
         return None, None
+    if c["sha"] == held["sha"] and held.get("binding"):
+        return None, None       # a CONTRACT repair: the same code is validated again against the repaired binding
     if c["sha"] == held["sha"]:
         return "proof_unchanged", "%s is the sha the proof was found weak at: no proof moved" % c["sha"]
     k = st["contract"] or {}
@@ -990,6 +1008,14 @@ def unhold(store, item, said, now=None, offbox=None):
         elif st["hold"].get("kind") == "start_refused":    # what refused is fixed, or its wait starts over
             st.pop("start_refusals", None)
             st.pop("start_again_at", None)
+        if st["hold"].get("kind") == relentless_attrib.WAIT_ATTRIB and (st.get("wait") or {}).get("sha"):
+            # a person lifted an unattributed failure: the SAME sha is validated again, never a new builder
+            st["hold"] = None
+            st["returned_at"] = now
+            relentless_attrib.resume(store, st, now, "unhold: %s" % said)
+            store.attempt(item, {"at": iso(now), "end": "unhold", "said": said, "to": st["status"]})
+            store.save(st)
+            return
         game_back = (st["hold"].get("kind") == "game" and (st.get("game") or {}).get("sha")
                      and not relentless_game.flyer_hold(st["hold"].get("why")))
         blind_back = st["hold"].get("kind") == "unmeasured" or (      # a WEAK the live rule now reads as PASS: recheck it
@@ -1583,7 +1609,7 @@ class Effects(relentless_game.GameFx):
         priority = pkg("priority")
         return {"state": it.state, "lease": getattr(it, "lease", None), "needs": it.needs, "owner": it.owner,
                 "block_holds": priority.block_holds(w, it, int(time.time())), "block": priority.block_line(it),
-                "guard_owed": pkg("model").guard_owed(it)}
+                "guard_owed": pkg("model").guard_owed(it), "closed_sha": getattr(it, "closed_sha", None)}
 
     # the other seat: read from its tree, never pulled, never written
     def seat_words(self):
@@ -1749,6 +1775,15 @@ class Effects(relentless_game.GameFx):
     def ledger_note(self, item, text):
         r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
+    def run_fixture(self, cmd, timeout=180):
+        """An incident's release fixture (relentless_incident.check), in the books tree. -> (exit, tail); exit None when it
+        could not run or ran out of time, which never reads as a pass."""
+        try:
+            p = subprocess.run(cmd, shell=True, cwd=self.books, capture_output=True, text=True, timeout=timeout)
+        except (OSError, subprocess.SubprocessError) as e:
+            return None, "%s: %s" % (type(e).__name__, e)
+        return p.returncode, ((p.stdout or "") + (p.stderr or ""))[-600:]
 
     def expedite_note(self, item, text):
         """One use of the lane on the ledger; the `delegated:` why is what puts it in the daily digest."""
@@ -2581,6 +2616,9 @@ def worker_prompt(st, text, learned, r, history=None):
                     "reuse the open repair item), then `snag --class %s --on <NAME> \"<the log line>\"`: the item waits "
                     "on the repair with no strike and comes back when it closes." % (st["diagnose_owed"]["class"], rc, i, g,
                                                                                      INSTRUMENT))
+    at = st.get("attribution") or {}
+    if at and at.get("at", 0) >= (st.get("last_fail") or {}).get("at", 0):
+        head.append(relentless_attrib.brief_line(at))
     if st.get("warrant_owed") and not st.get("proof_only"):
         head.append(relentless_breakers.BRIEF)
     rep_live = repeated_live(history)
@@ -3316,7 +3354,7 @@ def step(store, fx, r, item, now, acts):
             if st["status"] != "stopping":
                 return
             st["run"] = None
-            st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") else "queued"
+            st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") or st.get("wait") else "queued"
             store.save(st)
         acts.append({"do": "returned", "item": item, "to": st["status"]})
         return
@@ -3714,11 +3752,15 @@ def help_over(store, fx, item, word, now, acts):
         h["status"] = word
         keep = any(q.get("clone") == h.get("clone") and not q.get("reaped") for q in st["quarantined"])
         store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": word, "round": h.get("round"),
-                             "agent": h.get("agent")})
+                             "agent": h.get("agent"), **({"mode": h["mode"]} if h.get("mode") else {})})
+        relentless_attrib.help_over(store, st, word, now, sys.modules[__name__])   # a diagnosis owed never falls to a builder
         store.save(st)
     if h.get("clone") and not keep:
         fx.remove_clone({"clone": h["clone"], "item": item})
-    if word == "failed":
+    if word != "answered" and h.get("mode") == relentless_attrib.DIAGNOSE:
+        fx.ledger_note(item, "relentless: the diagnosis of a validation ending gave no attribution (%s); the candidate is "
+                             "held for the seat with no strike" % h.get("end", "no answer"))
+    elif word == "failed":
         fx.ledger_note(item, "relentless: a consult gave no options (%s); the item carries on without" % h.get("end", "no answer"))
     acts.append({"do": "help_" + word, "item": item})
 
@@ -3790,7 +3832,9 @@ def help_start(store, fx, r, item, now, acts):
         store.save(st)
     tried = failed_approaches(store, item)
     env = {"RELENTLESS_ROOT": store.root}
-    if agent == VENDOR_AGENT:
+    if h.get("mode") == relentless_attrib.DIAGNOSE:
+        prompt = relentless_attrib.prompt(st, fx.item_text(item), store.attempts(item), nonce, r)
+    elif agent == VENDOR_AGENT:
         env["RELENTLESS_HELP_NONCE"] = nonce
         prompt = help_prompt_vendor(st, fx.item_text(item), tried, r, store.attempts(item))
     else:
@@ -4782,6 +4826,16 @@ def main(argv=None):
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
     p.add_argument("--option", action="append", required=True, help="idea | the one observation that confirms or kills it")
+    p = sub.add_parser("attribute", help="the diagnosis of a validation ending (relentless_attrib): PRODUCT goes to a "
+                                         "builder, PROOF/CONTRACT to the proof road, HARNESS/SITE/CHECKER to an incident, "
+                                         "DEPENDENCY to its predecessor; the candidate is kept")
+    p.add_argument("--item", required=True)
+    p.add_argument("--nonce", help="the diagnostic consult's; without it, --seat (a person or the seat attributing a hold)")
+    p.add_argument("--seat", action="store_true", help="attribute as the seat, no consult nonce")
+    p.add_argument("--target", action="append", required=True, help="|".join(relentless_attrib.TARGETS) + " (repeatable)")
+    p.add_argument("--evidence", required=True)
+    for k in ("obligation", "observed", "why-product", "repair", "component", "fixture-good", "fixture-bad", "on"):
+        p.add_argument("--" + k)
     p = sub.add_parser("incident-release", help="an operator's repair of a capability incident, with its evidence")
     p.add_argument("--key", required=True)
     p.add_argument("--evidence", required=True)
@@ -4870,6 +4924,12 @@ def main(argv=None):
             return help_vendor_run(store, a.item, a.prompt_file, rules())
         elif a.cmd == "help-answer":
             help_answer(store, a.item, a.nonce, a.option, rules())
+        elif a.cmd == "attribute":
+            if bool(a.nonce) == bool(a.seat):
+                raise ValueError("give --nonce (the diagnostic consult) or --seat (a person), one of them")
+            print("relentless: %s -> %s" % (a.item, relentless_attrib.answer(
+                store, a.item, a.nonce, a.target, vars(a), rules(), time.time(), sys.modules[__name__],
+                known=ledger_has)))
         elif a.cmd == "incident-release":
             inc = relentless_breakers.release_by_hand(store, a.key, a.evidence, time.time())
             print("released %s (%d items back in line)" % (a.key, len(inc.get("items") or {})))

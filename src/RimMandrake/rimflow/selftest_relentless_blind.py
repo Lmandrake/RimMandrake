@@ -271,9 +271,9 @@ def to_check(x, i, sha="sha1"):
     raise AssertionError("never checked: %s" % x.st(i)["status"])
 
 
-def speak(x, i, word, reasons):
+def speak(x, i, word, reasons, defects=None):
     st = x.st(i)
-    R.verdict(x.s, i, st["check"]["nonce"], word, reasons)
+    R.verdict(x.s, i, st["check"]["nonce"], word, reasons, defects=defects)
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
     x.tick()
@@ -341,7 +341,8 @@ def t_real_fail_after_blind():
     was = to_check(x, "I0")
     speak(x, "I0", "FAIL", STEVE_G1)
     recheck(x, "I0")
-    st = speak(x, "I0", "FAIL", REAL["FOCUS_CAP g1"])
+    # the Marker names the defect its run showed (--defect): an observed violation, PRODUCT, so the strike stands
+    st = speak(x, "I0", "FAIL", REAL["FOCUS_CAP g1"], defects=["the cap leaks on the real path"])
     ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"],
        "a red proof after a blind one still fails: %s gen %s" % (st["failures"], st["gen"]))
     ok("blind" not in st and "recheck_at" not in st, "and ends the run of blind ones")

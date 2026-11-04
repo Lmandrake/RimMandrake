@@ -229,6 +229,10 @@ def t_fail_returns():
                  "log": "/l/A2.log"}]
     x.tick()
     st = x.st("I0")
+    ok(st["gen"] == 1 and not st["failures"].get("game_fail") and (st.get("wait") or {}).get("kind") == "attribution",
+       "an unattributed FAIL on the game earns no strike and no worker: %s" % st.get("wait"))
+    S.blame_product(x, "I0")
+    st = x.st("I0")
     ok(st["status"] in ("stopping", "queued", "running") and st["last_fail"]["class"] == "game_fail"
        and "/l/A2.log" in st["last_fail"]["detail"], "a FAIL on the game sends it back to a worker with the log")
     ok(any("game_fail" in n for n in x.w.notes), "and says so on the ledger")
@@ -241,7 +245,8 @@ def t_not_owed_returns():
     to_game(x, "I0")
     x.tick()
     st = x.st("I0")
-    ok(st["last_fail"] and st["last_fail"]["class"] == "game_contract", "a game clause owed at L0 is no game clause")
+    ok(st["last_fail"] and st["last_fail"]["class"] == "proof_owed" and "game_contract" in st["last_fail"]["detail"]
+       and st.get("proof_only"), "a game clause owed at L0 is no game clause: the proof road (CONTRACT), not the code")
     x.done()
 
 
@@ -252,7 +257,7 @@ def t_refused_proof_returns_offline():
     to_game(x, "I0")
     x.tick()
     st = x.st("I0")
-    ok(st["last_fail"] and st["last_fail"]["class"] == "game_contract" and "at run time" in st["last_fail"]["detail"]
+    ok(st["last_fail"] and st["last_fail"]["class"] == "proof_owed" and "at run time" in st["last_fail"]["detail"]
        and "A2" in st["last_fail"]["detail"], "a $-built live-proof line goes back to a worker before any live run")
     ok(not x.w.rows, "and writes no live run row")
     x.done()
@@ -892,6 +897,7 @@ def t_fail_on_a_running_game_is_worked_live():
     x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "FAIL",
                  "log": "/l/A2.log"}]
     x.tick()
+    S.blame_product(x, "I0")
     st = x.st("I0")
     li = st.get("live_iter") or {}
     ok(li.get("started") == x.w.started and li.get("clauses") == ["A2"] and li.get("sha") == SHA,
@@ -925,6 +931,7 @@ def live_iterating(x, i="I0"):
     x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": i, "criterion": "A2", "sha": SHA, "outcome": "FAIL",
                  "log": "/l/A2.log"}]
     x.tick()
+    S.blame_product(x, i)
     x.run_one(i)
     ok(x.st(i).get("live_iter") and x.st(i)["status"] == "running", "%s iterates live" % i)
 
@@ -1165,7 +1172,7 @@ def t_refusal_returns_once_then_holds():
     to_game(x, "I0")
     x.tick()
     st = x.st("I0")
-    ok(st["last_fail"] and st["last_fail"]["class"] == "game_contract" and "cut at 160" in st["last_fail"]["detail"],
+    ok(st["last_fail"] and st["last_fail"]["class"] == "proof_owed" and "cut at 160" in st["last_fail"]["detail"],
        "a cut criterion goes back at implement: %s" % st.get("last_fail"))
     ok(not x.w.proves and "take" not in x.w.events and not x.w.rows, "and spends no prove round, bridge or row")
     ok("fpA" in (st.get("refused_fps") or {}), "its fingerprint is kept")
@@ -1183,7 +1190,7 @@ def t_refusal_returns_once_then_holds():
     y.w.pre = [dict(CUT, fp="fpB")]      # the worker changed the criterion: the refusal is a new one
     to_game(y, "I0")
     y.tick()
-    ok(y.st("I0")["status"] != "held" and y.st("I0")["last_fail"]["class"] == "game_contract",
+    ok(y.st("I0")["status"] != "held" and y.st("I0")["last_fail"]["class"] == "proof_owed",
        "a changed text is a new refusal: back again, not held")
     y.w.pre = []
     to_game(y, "I0")
@@ -1235,7 +1242,8 @@ def t_retiered_rerecorded_every_phase():
     x.w.rows = [dict(x.w.rows[0], at="2099-01-02T00:00:00Z")]
     x.tick()
     st = x.st("I0")
-    ok(st["status"] != "game" and st["last_fail"]["class"] == "game_refused" and len(x.w.impl) == 3,
+    ok(st["status"] != "game" and st["last_fail"]["class"] == "proof_owed" and "game_refused" in st["last_fail"]["detail"]
+       and not st["failures"].get("game_refused") and len(x.w.impl) == 3,
        "refused again after the re-record: back as before, not re-recorded for ever")
     x.done()
 

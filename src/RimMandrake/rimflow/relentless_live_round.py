@@ -128,9 +128,15 @@ TERMINAL = ("PASS", "FAIL", "REFUSED")
 
 def history(rows):
     """runs.jsonl rows -> {(item, criterion, sha): the row that decides}: a terminal row (PASS, FAIL, REFUSED) stands for
-    its build whatever came after it; otherwise the newest row."""
+    its build whatever came after it; otherwise the newest row. A void row (relentless_attrib.resume: those rows were
+    read through an instrument since repaired) ends every earlier row of its item on its sha."""
     out = {}
     for row in rows:
+        if row.get("void") and row.get("item") and row.get("sha"):
+            for k in [k for k in out if k[0] == row["item"] and k[2] and (k[2] == row["sha"] or (
+                    len(k[2]) >= 7 and len(row["sha"]) >= 7 and (k[2].startswith(row["sha"]) or row["sha"].startswith(k[2]))))]:
+                del out[k]
+            continue
         if row.get("item") and row.get("criterion"):
             k = (row["item"], row["criterion"], row.get("sha"))
             last = out.get(k, {})

@@ -244,7 +244,9 @@ def t_checker_no_sign_strikes_after_the_wait():
     x = T.Rig(n=1, share=1.0, same_failure_limit=2, account_settle_s=240)
     was = to_check(x)
     for n, then in ((1, lambda st: st.get("check_lost") == 1 and st["status"] == "candidate"),
-                    (2, lambda st: st["failures"].get("checker_lost") == 1 and st["total_failures"] == was["total_failures"] + 1)):
+                    # the second is a validation ending with nobody to blame yet: it waits for its attribution, no strike
+                    (2, lambda st: (st.get("wait") or {}).get("class") == "checker_lost" and not st["failures"].get("checker_lost")
+                     and st["total_failures"] == was["total_failures"] and st["gen"] == was["gen"])):
         kill_checker(x)
         x.tick(30)
         x.tick(120)
@@ -258,7 +260,7 @@ def t_checker_no_sign_strikes_after_the_wait():
 def t_checker_verdict_never_waits():
     x = T.Rig(n=1, share=1.0, same_failure_limit=2, account_settle_s=240)
     st = to_check(x)
-    R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", "broken", x.now)
+    R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", "broken", x.now, defects=["broken"])
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick(30)
     ok(x.st("I0")["failures"].get("blind_fail") == 1, "a checker that gave its verdict is judged at once: the wait is for no word only")

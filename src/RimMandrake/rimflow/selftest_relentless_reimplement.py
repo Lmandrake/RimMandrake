@@ -192,6 +192,9 @@ def t_supervisor_cycle_on_the_real_ledger():
                      "log": "/l/A3.log"}]
         x.w.running = False                                  # no game left up: the next worker is offline
         x.tick()
+        ok((x.st("I0").get("wait") or {}).get("kind") == "attribution", "the FAIL waits for its attribution first")
+        S.blame_product(x, "I0")                             # the diagnosis: an observed violation
+        x.tick()
         st = x.st("I0")
         ok(st["status"] != "game" and (st.get("last_fail") or {}).get("class") == "game_fail",
            "the FAIL goes back to a worker: %s" % st.get("last_fail"))

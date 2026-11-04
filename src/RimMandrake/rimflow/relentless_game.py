@@ -292,6 +292,16 @@ def row_at(row):
         return 0
 
 
+def void_rows(root, item, sha, why, now):
+    """A void row in <root>/live/runs.jsonl: this item's earlier live rows on `sha` stop counting
+    (relentless_live_round.history, not_measuring), because they were read through an instrument since attributed broken
+    and repaired, or a person lifted its attribution hold (relentless_attrib.resume)."""
+    p = os.path.join(root, "live", "runs.jsonl")
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(json.dumps({"item": item, "sha": sha, "void": True, "at": now, "why": (why or "")[:300]}) + "\n")
+
+
 def outcomes(rows, item, sha, clauses):
     """runs.jsonl rows -> {clause: deciding row} on `sha` (relentless_live_round.history's rule)."""
     import relentless_live_round
@@ -312,6 +322,9 @@ def not_measuring(rows, item, sha, clauses, limit):
     `limit` times (OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: one build re-proved 4x, then reloaded, all UNMEASURED)."""
     out = {}
     for v in rows:
+        if v.get("void") and v.get("item") == item and same_sha(v.get("sha"), sha):
+            out = {}        # read through an instrument since repaired (relentless_attrib.resume): those duds are void
+            continue
         if (v.get("item") == item and v.get("criterion") in clauses and (v.get("sha") == sha or same_sha(v.get("sha"), sha))
                 and v.get("outcome") == "UNMEASURED" and RAN_DUD.search(v.get("why") or "")):
             n, _ = out.get(v["criterion"], (0, ""))
@@ -717,12 +730,15 @@ def _back(store, fx, sup, r, item, klass, why, now, acts, live=None):
         st = store.load(item)
         if st["status"] != GAME:
             return
-        sup.fail(store, st, klass, why, r, now)
-        if live:
+        gated = sup.fail(store, st, klass, why, r, now) == "gated"
+        if gated:       # unattributed (relentless_attrib): the candidate waits for its diagnosis, no worker yet
+            st["wait"]["live"] = live
+        elif live:
             st["live_iter"] = live
         store.save(st)
-    acts.append({"do": klass, "item": item, "why": why[:200]})
-    fx.ledger_note(item, "relentless game phase: %s: %s" % (klass, why))
+    acts.append({"do": klass, "item": item, "why": why[:200], **({"gated": True} if gated else {})})
+    fx.ledger_note(item, "relentless game phase: %s%s: %s" % (klass, " (withheld for attribution, no strike)" if gated
+                                                              else "", why))
 
 
 def _hold(store, fx, item, why, now, acts):

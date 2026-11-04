@@ -116,11 +116,18 @@ def sweep(store, fx, now, acts, iso):
         holds = ledger_holds(led)
         if s == "queued" and holds:
             leave_line(store, item, led, now, acts, iso)
+        elif s == "blocked" and st.get("wait") and (led or {}).get("state") not in LEDGER_DEAD:
+            # a candidate kept through an unattributed failure (relentless_attrib): only evidence moves it, and it
+            # resumes its own sha, never a new builder; a holding block or a pending attribution keeps it here
+            if not holds:
+                import relentless_attrib
+                relentless_attrib.release(store, fx, st, now, acts)
         elif s == "blocked" and not holds:
             with store.lock():
                 cur = store.load(item)
                 if cur["status"] != "blocked" or cur.get("block_pending"):
                     continue
+                cur.pop("wait", None)       # the item itself ended in the ledger: nothing left to resume
                 cur["status"] = "queued"
                 cur["returned_at"] = now        # back at the top of the returned items
                 cur["not_before"] = 0

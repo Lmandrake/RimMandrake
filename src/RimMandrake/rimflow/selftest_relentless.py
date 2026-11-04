@@ -535,6 +535,13 @@ def t_share():
     x.done()
 
 
+def blame_product(x, i, observed="the mod answered wrong"):
+    """The diagnosis of a withheld validation ending (relentless_attrib) says PRODUCT, as the seat: the builder road."""
+    return R.relentless_attrib.answer(x.s, i, None, ["PRODUCT"], {
+        "evidence": "the log line", "obligation": "the clause", "observed": observed,
+        "why_product": "the instrument measured the sibling clause fine"}, x.r, x.now, R)
+
+
 def full_pass(x, i, verdict="PASS"):
     x.run_one(i)
     st = x.st(i)
@@ -549,7 +556,8 @@ def full_pass(x, i, verdict="PASS"):
     ok(st["status"] == "checking", "finish reaches the checker")
     prompt = x.w.launches[-1][2]
     ok("SENTINEL_OF_THE_ATTEMPTS" not in prompt and "text of" in prompt, "the checker's brief holds no record of the attempts")
-    R.verdict(x.s, i, st["check"]["nonce"], verdict, "ran it")
+    # a FAIL is the Marker's observed defect (the structured form): PRODUCT by itself (relentless_attrib.mechanical)
+    R.verdict(x.s, i, st["check"]["nonce"], verdict, "ran it", defects=["ran it"] if verdict == "FAIL" else None)
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
     x.tick()
@@ -565,7 +573,8 @@ def weak_round(x, i, sha, word="WEAK"):
     x.tick()
     st = x.st(i)
     if st["status"] == "checking":
-        R.verdict(x.s, i, st["check"]["nonce"], word, "holds; mutant M stays green")
+        R.verdict(x.s, i, st["check"]["nonce"], word, "holds; mutant M stays green",
+                  defects=["mutant M stays green"] if word == "FAIL" else None)
         x.w.up[st["check"]["run"]["unit"]] = False
         x.tick()
         x.tick()
@@ -692,8 +701,10 @@ def t_done_path():
     x.w.close_fail = "close: I0 has not earned its close at sha1: owed still owes C1 L1"
     full_pass(x, "I0")
     st = x.st("I0")
-    ok(st["failures"].get("close_refused") == 1 and st["status"] != "closing" and x.w.closes == [],
-       "a close the gate refuses goes back to the top with its reason: no retry for ever")
+    ok(not st["failures"].get("close_refused") and st["status"] not in ("closing", "queued") and x.w.closes == []
+       and (st.get("wait") or {}).get("kind") == "attribution" and st["wait"]["sha"] == "sha1" and st["gen"] == 1,
+       "a close the gate refuses is no retry for ever and no strike: its sha waits for an attribution: %s %s"
+       % (st["status"], st.get("wait")))
     x.done()
     x = Rig(n=1, share=1.0)
     x.w.close_fail = "close: I0 is dropped"
@@ -716,8 +727,10 @@ def t_done_path():
     x = Rig(n=1, share=1.0)
     x.w.live_broken = "unit down"
     full_pass(x, "I0")
-    ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [] and x.st("I0")["status"] not in ("closing", "done"),
-       "a broken live line returns the item, it does not close")
+    st = x.st("I0")
+    ok(not st["failures"].get("live_broken") and (st.get("wait") or {}).get("kind") == "attribution"
+       and x.w.closes == [] and st["status"] not in ("closing", "done"),
+       "a broken live line holds the item for attribution, no strike, it does not close: %s" % st["status"])
     x.done()
     # an unpublished sha never reaches a checker
     x = Rig(n=1, share=1.0)

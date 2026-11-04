@@ -63,7 +63,8 @@ def build_and_fail(x, i, sha, klass, detail):
     R.finish(x.s, i, st["gen"], sha, "evidence")
     with x.s.lock():
         cur = x.s.load(i)
-        R.fail(x.s, cur, klass, detail, x.r, x.now)
+        # a validation ending reaches the builder only attributed PRODUCT (relentless_attrib): as a Marker's defect is
+        R.fail(x.s, cur, klass, detail, x.r, x.now, attributed={"targets": ["PRODUCT"], "evidence": detail, "at": x.now})
     stop(x, i)
 
 
