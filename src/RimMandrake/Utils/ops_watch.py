@@ -443,8 +443,30 @@ def c_accounts(now, rules, ctx):
             src = "ESTIMATE" if src == "MEASURED" else src
         left, h = a.get("week_pct_left"), a.get("hours_to_week_reset")
         k = "accounts.%s." % name
+        reset = epoch(a.get("week_resets_at"))
+        if (src in ("MEASURED", "ESTIMATE") and left is None and a.get("week_pct_used") is not None
+                and reset is not None and 0 <= now - reset < 168 * 3600):
+            # OPS_READING_FIX_SHUT_WINDOW_IS_FULL: the week reset AFTER the reading (read_now blanks a passed window's
+            # figure). A reset quota is a fresh week, not an unknown one: up to one poll of new burn is unread, so 100%
+            # left is an upper bound (ESTIMATE). It read UNMEASURED and raised role:<name>:ops on every launch inside
+            # the gap (2026-11-04 20:20Z, 21 min after the system account's reset).
+            h = round(168.0 - (now - reset) / 3600.0, 2)
+            why = "the weekly reset at %s passed after the reading: a fresh week, its burn not yet read" % a.get(
+                "week_resets_at")
+            out[k + "week_left_pct"] = E(100.0, why + " (an upper bound)", "% of the weekly quota left",
+                                         measured_at=a.get("measured_at"))
+            out[k + "hours_to_reset"] = E(h, why + "; one week after the passed reset", "h to the weekly reset")
+            out[k + "runway"] = E(10.0, why + "; nothing spent yet reads the cap", "x the time to reset")
+            if name in lent:
+                out[k + "loan_runway"] = loan_runway(name, {"left": 100.0, "used": 0.0, "h": h}, 0.0, why, "ESTIMATE",
+                                                     lent_rules, SA.lent_allowance, live, now)
+                out[k + "runway"]["judged_by"] = k + "loan_runway"
+            return
         if src not in ("MEASURED", "ESTIMATE") or left is None:
-            why = "account_usage: %s" % (a.get("why") or src)
+            # the record's own why can describe another field (a closed session window): name the week's own gap
+            why = "account_usage: %s" % (
+                (a.get("why") or src) if src not in ("MEASURED", "ESTIMATE") else
+                "a %s reading with no week figure left%s" % (src, " (record note: %s)" % a["why"] if a.get("why") else ""))
             for f in ("week_left_pct", "hours_to_reset", "runway") + (("loan_runway",) if name in lent else ()):
                 out[k + f] = U(why)
             return
