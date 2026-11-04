@@ -1,0 +1,54 @@
+{
+ "item": "TOOLS_PURGE_VALIDATOR_VET_UNREVIEWED",
+ "date": "2026-11-03",
+ "reviewer": "relentless:TOOLS_PURGE_VALIDATOR_VET_UNREVIEWED (seat BENCH, not the FOUNDRY builder)",
+ "scope": "Scoped (non-full-file) review of the 2026-10-24 changes: art purge --by-card/--per-ruling/--why (landed 2642975b72) and validate_sprite --drawsize rule-canvas scaling + artpiped drawsize pass-through (landed f875a680e5). art.py/artledger.py/artpiped.py are DIRTY as whole files from later items' edits; this record pins only the reviewed functions and call sites (sha256 of ast.get_source_segment) so it reads STALE the moment any of them changes. validate_sprite.py and both selftests got full-file BENCH marks (a7e591de78).",
+ "functions": [
+  {
+   "path": "src/RimMandrake/Utils/art/artledger.py",
+   "name": "purge_authority",
+   "sha256": "00da5c9c198c9c62bec9282337cfb68d3d12840f2af396a4d6e8ca00ae19ed6f"
+  },
+  {
+   "path": "src/RimMandrake/Utils/art/artledger.py",
+   "name": "purge",
+   "sha256": "5b256ae08ae0ced2e3f0c1898b03ec6e3724bb43890568a01b00d9737c7a6df8"
+  },
+  {
+   "path": "src/RimMandrake/Utils/art/art.py",
+   "name": "cmd_purge",
+   "sha256": "5a7ebe8dd8407a7fed926d15f210d10edab2c6b5e1400f6ac4c5a9b212c12165"
+  },
+  {
+   "path": "src/RimMandrake/Utils/artpipe/artpiped.py",
+   "name": "run_validator",
+   "sha256": "feb13dc1ef8bc3b9f9cf04a2c87573e4669203e70656c88868616b0c7e010ab9"
+  },
+  {
+   "path": "skills/generating-rimworld-sprites/scripts/validate_sprite.py",
+   "name": "rule_canvas_px",
+   "sha256": "20908ec2ef60631de6c27ee5258ca9c6b48d96ac47104e6979eac47493093d08"
+  }
+ ],
+ "lines": [
+  {
+   "path": "src/RimMandrake/Utils/artpipe/artpiped.py",
+   "text": "run_validator(validator_script, reference, out_png, drawsize=job.get(\"drawsize\"))"
+  },
+  {
+   "path": "src/RimMandrake/Utils/art/art.py",
+   "text": "p.add_argument(\"--per-ruling\", help=\"a standing ruling of his, cited by item id or ledger event\")"
+  },
+  {
+   "path": "src/RimMandrake/Utils/art/art.py",
+   "text": "p.add_argument(\"--why\", help=\"the agent's own reason (recorded; grants nothing)\")"
+  }
+ ],
+ "defects": [],
+ "notes": [
+  "artpiped passes job['drawsize'] only, not the legibility-backfill-resolved drawsize, so a job without drawsize keeps the strict canvas check (safe direction: stricter, not looser).",
+  "artledger.purge unlinks the store bytes before w.flush() writes the purge event; a crash between the two loses bytes with no event. Pre-existing ordering, not part of the reviewed change; filed as ART_PURGE_FIX_BYTES_GONE_BEFORE_RECEIPT.",
+  "purge_authority: whitespace-only --owner-said with no card/ruling refuses; --per-ruling with internal whitespace refuses (a reference, not a quote); --why alone refuses. Matches selftest_art_purge_authority."
+ ],
+ "verify": "python3 -c over this file: every functions[].sha256 equals sha256(ast.get_source_segment) of that top-level def, every lines[].text is in its file, defects empty"
+}
