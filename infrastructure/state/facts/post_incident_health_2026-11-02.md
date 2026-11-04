@@ -47,6 +47,7 @@ Not found: a FOUNDRY scratchpad `mutB` (no such path under `~/rm`); `scratch_clo
 ## Deleted
 
 - `~/walled`: all 36 review-gate boxes, 118 GB (no process had a cwd, mount or argv under it; `/proc/mounts` held none).
+- 2026-11-04 (`SCRATCH_CLONES_PRUNE_LANDED_DEAD_WEIGHT`): `scratch/BENCH/transfer` (the other four were already gone), `relentless-seeds/census` and `/verify` (regenerable seed sandboxes; `store/` and the `.out` files kept), `trial_pin_trio.retired-04cedfa595`. `/` 487 → 448 GB. `rm-scratch-reap` now finishes (`status=0/SUCCESS`, 3 runs on 11-04); its log's mirror-pack and seat-tmp complaints are `MIRROR_PACK_REPAIR_STILL_GRUMBLING`, `SEAT_TMP_PRUNE_TESTS_LEFT_LUGGAGE`.
 - `~/rm/retired-trees/incident-20261101/{COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE,STONE_BUILDSTATS_TUNE_GRANITE_GETS_RIVALS}` (7 GB). Kept: `README.md`, the `.patch`, `mirror_bad_objects/` (46 MB, not a clone). `*-git-*` untouched.
 
 ## Filed for BENCH
