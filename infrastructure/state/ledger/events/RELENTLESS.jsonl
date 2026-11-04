@@ -157,3 +157,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T04:48:47Z","tsn":1793767727140144020}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T04:57:47Z","tsn":1793768267035660446}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_RETURN_REMAINDER_1 A2 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T04:58:59Z","tsn":1793768339746310199}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:05:01Z","tsn":1793768701493712106}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_RETURN_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-04T05:05:09Z","tsn":1793768709609126620}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:05:15Z","tsn":1793768715531294508}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_RETURN_REMAINDER_1 A4 (L2), read-only proof","ts":"2026-11-04T05:05:23Z","tsn":1793768724002686259}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:05:29Z","tsn":1793768729910303159}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-04T05:05:37Z","tsn":1793768737791518891}
