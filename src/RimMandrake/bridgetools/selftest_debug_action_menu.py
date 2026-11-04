@@ -70,6 +70,27 @@ def main():
     check('GetField("vanishIfMouseDistant"' in tool_src and "DamVanishField.SetValue(fm, false)" in body, "leftover_menu_pinned")
     check("DebugActionType.Action" in body and "GetParameters().Length != 0" in body, "map_click_tools_refused_by_name")
 
+    # Semantics, not just presence (blind check at 52203cfa: an inverted filter and a guarded pick both stayed green).
+    # (a) 'lists the liquids': the menus read are exactly the ones the action ADDED - a snapshot taken before the
+    #     invoke, and a filter that keeps windows NOT in it. Inverting it reads no new menu at all.
+    snap = re.search(r"var\s+before\s*=\s*new\s+HashSet<Window>\(\s*Find\.WindowStack\.Windows\s*\)\s*;", body)
+    check(bool(snap) and snap.start() < inv, "before_snapshot_taken_before_invoke", snap and (snap.start(), inv))
+    newf = re.search(r"menus\s*=\s*Find\.WindowStack\.Windows\.OfType<FloatMenu>\(\)\s*\.Where\(\s*(\w+)\s*=>\s*!\s*before\.Contains\(\s*\1\s*\)\s*\)\s*\.ToList\(\)\s*;", body)
+    check(bool(newf) and newf.start() > inv, "menus_read_are_the_new_ones", "want menus = ...Where(w => !before.Contains(w)).ToList(); after the invoke")
+    check(len(re.findall(r"before\.Contains", body)) == 1, "one_before_filter_only", len(re.findall(r"before\.Contains", body)))
+    # (b) 'picking one fills every tank': the chosen option's action runs UNCONDITIONALLY once the pick is accepted -
+    #     the try block holds exactly the call, and nothing between the menu close and the call can skip it.
+    tryblk = re.search(r"try\s*\{\s*chosen\.action\(\)\s*;\s*\}", body)
+    check(bool(tryblk), "option_action_runs_unconditionally", "want exactly 'try { chosen.action(); }'")
+    rm_at = body.find("TryRemove(target, false)")
+    between = body[rm_at:tryblk.start()] if (tryblk and rm_at >= 0) else ""
+    between_code = re.sub(r"//[^\n]*", "", between)
+    check(rm_at >= 0 and tryblk is not None and re.fullmatch(r"TryRemove\(target, false\);\s*", between_code) is not None,
+          "nothing_between_close_and_pick", between_code.strip()[:120])
+    chosen_m = re.search(r"FloatMenuOption\s+chosen\s*=\s*opts\[\s*idx\s*\]\s*;", body)
+    check(bool(chosen_m) and chosen_m.start() < rm_at, "chosen_is_the_indexed_option")
+    check(re.search(r"\bif\s*\(\s*(false|!\s*true)\s*\)", body) is None and "#if" not in body, "no_dead_branch_in_tool_body")
+
     # the live proof: its action names are the real ones, its parser reads the real key text
     spec = importlib.util.spec_from_file_location("pdam", os.path.join(HERE, "prove_debug_action_menu.py"))
     pdam = importlib.util.module_from_spec(spec)
