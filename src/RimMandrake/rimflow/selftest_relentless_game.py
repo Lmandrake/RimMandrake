@@ -129,6 +129,8 @@ def to_game(x, i, game=GAME, word="PASS"):
     st = x.st(i)
     if not st.get("contract"):      # a returned item keeps its contract
         R.contract(x.s, i, st["gen"], "python3 selftest_x.py", game=game)
+    if st.get("warrant_owed"):    # a retry states its warrant (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT)
+        R.learn(x.s, i, st["gen"], "WARRANT: the mod now sets the comp | A3 still 0 means the binding, not the mod")
     R.finish(x.s, i, st["gen"], SHA, "evidence")
     x.w.up[st["run"]["unit"]] = False
     x.tick()

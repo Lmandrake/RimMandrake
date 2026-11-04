@@ -37,6 +37,7 @@ import relentless_wall  # noqa: E402
 import relentless_game  # noqa: E402
 import relentless_expedite  # noqa: E402
 import relentless_block  # noqa: E402
+import relentless_breakers  # noqa: E402
 import relentless_strikes  # noqa: E402
 import relentless_live  # noqa: E402
 import run_tmp  # noqa: E402
@@ -301,6 +302,7 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         for k in PROOF_ENDS:
             st["failures"].pop(k, None)
     if klass in PROOF_ENDS:
+        st.pop("warrant_owed", None)    # the checker's named gaps are the proof-only worker's warrant
         # WEAK is not good code, it is unproven code: the road is a stronger proof, not a redesign. Enough tries stop and say so, open
         st["total_at_change"] = (st.get("total_at_change") or 0) + 1
         n = sum(st["failures"].get(k, 0) for k in PROOF_ENDS)
@@ -331,9 +333,20 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         wanted = "pilot" if st.get("pilot_wanted") else "redesign"
         st["approach"] = ("redesign" if wall or st["approach"] == "pilot" else
                           "pilot" if st["approach"] == "redesign" else wanted)
-    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
-                               "approach_next": st["approach"]})
+    rec = {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600], "approach_next": st["approach"]}
+    if time_not_work:
+        rec["wait"] = True
+    store.attempt(st["item"], rec)
     store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
+    # loop breakers that redirect (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT): the next worker owes a retry warrant; one
+    # capability failing many items is one incident; the same signature on three builds suspends rebuilding
+    relentless_breakers.owe_warrant(st, klass, time_not_work)
+    if not time_not_work:
+        relentless_breakers.note(store, st["item"], klass, detail, r, now)
+    if not st.get("hold") and not time_not_work:
+        why = relentless_breakers.same_signature_hold(store.attempts(st["item"]), klass, detail, r, st.get("sig_since", 0))
+        if why:
+            relentless_strikes.hold(st, why, "signature", now)
     if klass in DIAGNOSE_ENDS:
         st["diagnose_owed"] = {"class": klass, "detail": (detail or "")[:600], "at": now, "gen": st["gen"]}
     if klass == "circling":     # under this lock, so no tick can lease the next worker ahead of the consult
@@ -464,10 +477,13 @@ def learn(store, item, gen, text, now=None):
         st["last_beat"] = time.time() if now is None else now
         m = CLASSIFY_RX.match(text or "")
         if m and st.get("diagnose_owed"):
-            st["diagnosed"] = {"class": m.group(1), "evidence": m.group(2)[:600], "gen": gen, "at": st["last_beat"],
+            st["diagnosed"] = {"class": m.group(1), "evidence": m.group(2)[:4000], "gen": gen, "at": st["last_beat"],
                                "of": st.pop("diagnose_owed")}
             store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "classified": m.group(1),
-                                 "evidence": m.group(2)[:300]})
+                                 "evidence": m.group(2)[:4000]})      # whole: the next role reads the attribution, not a cut
+        w = relentless_breakers.take_warrant(st, text, gen, st["last_beat"])
+        if w:
+            store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "warrant": w})
         store.learn(item, "- %s gen %d: %s" % (iso(st["last_beat"]), gen, text))
         store.save(st)
 
@@ -619,6 +635,9 @@ def finish(store, item, gen, sha, evidence, now=None):
             raise ValueError("the last ending (%s) was read off a live proof or a checker and nobody has classified it: "
                              "read its log, then `learn \"CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the log line that decides it>\"` "
                              "before finishing" % st["diagnose_owed"]["class"])
+        owed = relentless_breakers.warrant_refusal(st)
+        if owed:
+            raise ValueError(owed)
         if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
             raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
@@ -635,6 +654,7 @@ def _take_receipt(store, st, rec, now):
     st["status"] = "candidate"
     st["last_sha"] = rec["sha"]
     store.attempt(st["item"], {"at": iso(now), "gen": rec["gen"], "end": "finish", "sha": rec["sha"]})
+    relentless_breakers.probe_passed(store, st["item"], now)
     store.save(st)
 
 
@@ -965,6 +985,8 @@ def unhold(store, item, said, now=None, offbox=None):
         elif st["hold"].get("kind") == "strikes":      # his yes is a fresh count; another full ladder holds again
             st["failures"] = {}
             st["total_at_change"] = st["total_failures"]
+        elif st["hold"].get("kind") == "signature":    # his hypothesis is the change: the signature counts from here
+            st["sig_since"] = len(store.attempts(item))
         elif st["hold"].get("kind") == "start_refused":    # what refused is fixed, or its wait starts over
             st.pop("start_refusals", None)
             st.pop("start_again_at", None)
@@ -2433,13 +2455,13 @@ def ending_history(attempts):
         if a.get("end") == "finish":
             sha = a.get("sha")
             continue
-        if a.get("classified"):
-            out.append("gen %s classified it %s: %s" % (a.get("gen"), a["classified"], (a.get("evidence") or "")[:140]))
+        if a.get("classified") or a.get("warrant"):     # attributions whole (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT)
+            out += relentless_breakers.attributions_view([a])
             continue
         end = a.get("end")
         if not end or end in ("owner_call",):
             continue
-        first = ((a.get("detail") or a.get("said") or "").strip().splitlines() or [""])[0][:160]
+        first = " ".join((a.get("detail") or a.get("said") or "").split())
         out.append("gen %s ended %s%s%s: %s" % (a.get("gen"), end, " (%s)" % a["class"] if a.get("class") else "",
                                                " on code %s" % sha[:10] if sha else "", first))
     return out[-HISTORY_MAX:]
@@ -2559,6 +2581,8 @@ def worker_prompt(st, text, learned, r, history=None):
                     "reuse the open repair item), then `snag --class %s --on <NAME> \"<the log line>\"`: the item waits "
                     "on the repair with no strike and comes back when it closes." % (st["diagnose_owed"]["class"], rc, i, g,
                                                                                      INSTRUMENT))
+    if st.get("warrant_owed") and not st.get("proof_only"):
+        head.append(relentless_breakers.BRIEF)
     rep_live = repeated_live(history)
     if rep_live:
         head.append("SAME CLAUSE, NEW CODE, SAME FAIL: %s. Changing the code did not move it, which points at the site, "
@@ -2578,7 +2602,13 @@ def worker_prompt(st, text, learned, r, history=None):
     return "\n".join(head + ["", "--- item ---", text, "", "--- learned so far ---", learned[-8000:]])
 
 
-def help_prompt(st, text, tried, nonce, r):
+def attributions(tried):
+    """The classifications and warrants on record, whole: a fresh pair of eyes reads what was established, not a cut."""
+    rows = relentless_breakers.attributions_view(tried)
+    return ["", "--- attributions on record ---"] + ["  " + x for x in rows] if rows else []
+
+
+def help_prompt(st, text, tried, nonce, r, record=None):
     """Cold on purpose: the record of what ended and how, never learned.md, the story that drove the circling."""
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     most = r["circling"]["help_options_max"]
@@ -2592,10 +2622,10 @@ def help_prompt(st, text, tried, nonce, r):
         "Then run this once and stop:",
         "  %s help-answer --item %s --nonce %s --option \"idea | the one observation\" [--option ...]" % (rc, st["item"], nonce),
         "", "Why you were called: %s" % st["help"]["why"], "Contract: %s" % json.dumps(st["contract"]),
-        "", "--- failed approaches ---"] + rows + ["", "--- item ---", text])
+        "", "--- failed approaches ---"] + rows + attributions(record or tried) + ["", "--- item ---", text])
 
 
-def help_prompt_vendor(st, text, tried, r):
+def help_prompt_vendor(st, text, tried, r, record=None):
     """Round two's prompt, for a model that reads only this text: the same cold record, answered as OPTION lines."""
     most = r["circling"]["help_options_max"]
     rows = ["  gen %s ended %s: %s" % (a.get("gen"), a.get("end"), a.get("detail") or "") for a in tried[-12:]]
@@ -2606,7 +2636,7 @@ def help_prompt_vendor(st, text, tried, r):
         "observation that would confirm or kill it." % most,
         "Answer with those lines only, each exactly:", "  OPTION: <idea> | <the one observation>",
         "", "Why you were called: %s" % st["help"]["why"], "Contract: %s" % json.dumps(st["contract"]),
-        "", "--- failed approaches ---"] + rows + ["", "--- item ---", text])
+        "", "--- failed approaches ---"] + rows + attributions(record or tried) + ["", "--- item ---", text])
 
 
 def checker_prompt(st, text, nonce, readings=()):
@@ -3762,9 +3792,9 @@ def help_start(store, fx, r, item, now, acts):
     env = {"RELENTLESS_ROOT": store.root}
     if agent == VENDOR_AGENT:
         env["RELENTLESS_HELP_NONCE"] = nonce
-        prompt = help_prompt_vendor(st, fx.item_text(item), tried, r)
+        prompt = help_prompt_vendor(st, fx.item_text(item), tried, r, store.attempts(item))
     else:
-        prompt = help_prompt(st, fx.item_text(item), tried, nonce, r)
+        prompt = help_prompt(st, fx.item_text(item), tried, nonce, r, store.attempts(item))
     why = fx.launch(st, desc, prompt, agent, clean, r["circling"]["help_max_s"], env)
     if why:
         fx.remove_clone({"clone": clean, "item": item})
@@ -4001,7 +4031,12 @@ def lease(store, fx, r, now, acts):
     first = getattr(fx, "first", None) or {}
     paused = content_paused(fx, store.states())
     no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
+    incidents = relentless_breakers.load(store)
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
+        inc = relentless_breakers.waits(store, st["item"], incidents)
+        if inc:     # one capability incident, one probe: the rest wait for its evidence, not a tick
+            acts.append({"do": "incident_wait", "item": st["item"], "key": inc})
+            continue
         led = fx.item_state(st["item"])
         if relentless_block.ledger_holds(led):      # a run that ended this tick came back after the sweep looked
             relentless_block.leave_line(store, st["item"], led, now, acts, iso)
@@ -4654,6 +4689,10 @@ def tick(store=None, fx=None, r=None, now=None):
             breaker_emergency(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a torn cause record must not lose the tick's flush
             acts.append({"do": "error", "item": None, "why": "breaker_emergency %s: %s" % (type(e).__name__, e)})
+        try:
+            relentless_breakers.tell(store, fx, now, acts)
+        except Exception as e:  # noqa: BLE001
+            acts.append({"do": "error", "item": None, "why": "incident tell %s: %s" % (type(e).__name__, e)})
         at = phase("enrol_lease", at)
         if r.get("staffing"):
             try:
@@ -4743,6 +4782,9 @@ def main(argv=None):
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
     p.add_argument("--option", action="append", required=True, help="idea | the one observation that confirms or kills it")
+    p = sub.add_parser("incident-release", help="an operator's repair of a capability incident, with its evidence")
+    p.add_argument("--key", required=True)
+    p.add_argument("--evidence", required=True)
     sub.add_parser("wall", help="report only: what the Marker's wall would deny, from the checks' tool calls")
     p = sub.add_parser("trust")
     p.add_argument("--set", default="E1")
@@ -4828,6 +4870,9 @@ def main(argv=None):
             return help_vendor_run(store, a.item, a.prompt_file, rules())
         elif a.cmd == "help-answer":
             help_answer(store, a.item, a.nonce, a.option, rules())
+        elif a.cmd == "incident-release":
+            inc = relentless_breakers.release_by_hand(store, a.key, a.evidence, time.time())
+            print("released %s (%d items back in line)" % (a.key, len(inc.get("items") or {})))
         elif a.cmd == "enrol":
             if not ledger_has(a.item):
                 print("relentless: REFUSED: %s has never been filed" % a.item, file=sys.stderr)
