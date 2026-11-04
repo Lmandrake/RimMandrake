@@ -1846,13 +1846,53 @@ def fixture_dirs() -> list[Path]:
     return [p for p in found if p.is_dir() and not p.is_symlink()]
 
 
+_COMMITTED_SAVES: dict[int, set[str]] | None = None       # size -> blob shas of the .rws origin/main tracks
+
+
+def committed_saves() -> dict[int, set[str]]:
+    """The .rws blobs origin/main tracks in this repo (SCRATCH_REAP_SAVE_REPO overrides), by size. Unreadable -> {}:
+    every save is then work, as before."""
+    global _COMMITTED_SAVES
+    if _COMMITTED_SAVES is None:
+        repo = os.environ.get("SCRATCH_REAP_SAVE_REPO") or str(Path(__file__).resolve().parents[3])
+        _COMMITTED_SAVES = {}
+        try:
+            r = subprocess.run(["git", "-C", repo, "ls-tree", "-r", "-l", "origin/main"], capture_output=True,
+                               text=True, timeout=60)
+        except (OSError, subprocess.SubprocessError):
+            return _COMMITTED_SAVES
+        for line in r.stdout.splitlines() if r.returncode == 0 else []:
+            meta, _, path = line.partition("\t")
+            f = meta.split()
+            if path.endswith(".rws") and len(f) == 4 and f[1] == "blob" and f[3].isdigit():
+                _COMMITTED_SAVES.setdefault(int(f[3]), set()).add(f[2])
+    return _COMMITTED_SAVES
+
+
+def is_committed_save(p: Path) -> bool:
+    """A .rws whose bytes are a blob origin/main already tracks: a copy of a committed save, not work
+    (OPS_TMP_DRAIN_RESTORE_DEVU: git-less repo copies in /tmp held world/*.rws and were never reaped)."""
+    try:
+        size = os.lstat(p).st_size
+        shas = committed_saves().get(size)
+        if not shas or not stat.S_ISREG(os.lstat(p).st_mode):
+            return False
+        h = hashlib.sha1(b"blob %d\0" % size)
+        with open(p, "rb") as f:
+            for chunk in iter(lambda: f.read(1 << 20), b""):
+                h.update(chunk)
+        return h.hexdigest() in shas
+    except OSError:
+        return False
+
+
 def keeps_work(p: Path) -> bool:
     """A directory with a git repo (a .git, or a bare repo's HEAD+objects+refs) or a savegame anywhere inside is work,
-    not a fixture. A walk error says yes."""
+    not a fixture; a save that is a byte copy of one origin/main tracks is not. A walk error says yes."""
     bad = []
-    for _dp, dns, fns in os.walk(p, onerror=bad.append):
-        if ".git" in dns or ".git" in fns or any(f.endswith(".rws") for f in fns) \
-                or ("HEAD" in fns and "objects" in dns and "refs" in dns):
+    for dp, dns, fns in os.walk(p, onerror=bad.append):
+        if ".git" in dns or ".git" in fns or ("HEAD" in fns and "objects" in dns and "refs" in dns) \
+                or any(f.endswith(".rws") and not is_committed_save(Path(dp) / f) for f in fns):
             return True
     return bool(bad)
 
@@ -1949,7 +1989,7 @@ def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]
         if tree is not None and (tree.capped or tree.errors):
             out["held"] += 1
             continue
-        if (isdir and keeps_work(p)) or (stat.S_ISREG(st.st_mode) and name.endswith(".rws")):
+        if (isdir and keeps_work(p)) or (stat.S_ISREG(st.st_mode) and name.endswith(".rws") and not is_committed_save(p)):
             out["work"] += 1                            # a clone or a save: the clone judgment's, bundle first
             continue
         newest = tree.newest if tree else max(touched(st))
