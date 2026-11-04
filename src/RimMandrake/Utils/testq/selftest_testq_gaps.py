@@ -151,6 +151,44 @@ def t_item_owed():
           "linked chain that already PASSED at this identity is not re-run: %s %s" % (r["text"], r["row_items"]))
 
 
+def t_shared_chain_owner():
+    """TESTQ_FIX_ROW_ITEMS_FIRST_ALPHABETICAL: a chain several items link goes to the strongest, most specific link,
+    never the first item by name (CAUSEWAY_ took every shared FlowWorks verdict: 313 partials)."""
+    pr = {"item_chains": {"A_CAUSEWAY": ["dig", "silt", "gear", "steam", "found"], "P_POND": ["silt"],
+                          "W_WALL": ["dig", "silt", "gear", "steam"], "L_IND": ["dig", "gear", "found"],
+                          "R_STEAM": ["dig", "gear", "steam"]},
+          "link_kind": {"A_CAUSEWAY": dict.fromkeys(["dig", "silt", "gear", "steam", "found"], "chain"),
+                        "P_POND": {"silt": "source"}, "W_WALL": {"dig": "chain", "silt": "chain", "gear": "source",
+                                                                 "steam": "chain"},
+                        "L_IND": dict.fromkeys(["dig", "gear", "found"], "chain"),
+                        "R_STEAM": {"dig": "chain", "gear": "chain", "steam": "source"}}}
+    o = G.owner_of(pr)
+    check(o == {"dig": "L_IND", "found": "L_IND", "gear": "W_WALL", "silt": "P_POND", "steam": "R_STEAM"},
+          "shared chains: source link beats a text mention, then fewest links; the first item by name gets none: %s" % o)
+    o = G.owner_of({"item_chains": {"A_BROAD": ["x", "y"], "B_NARROW": ["x"]}})
+    check(o == {"x": "B_NARROW", "y": "A_BROAD"}, "no link_kind (older probe): the narrower item wins: %s" % o)
+    o = G.owner_of({"item_chains": {"B_ONE": ["x"], "A_ONE": ["x"]}})
+    check(o == {"x": "A_ONE"}, "a true tie falls to the id, deterministically: %s" % o)
+    world = (Model, [], World({"A_CAUSEWAY": Item("built", ["L2"]), "P_POND": Item("built", ["L1"])}))
+    r = rank([], None, n=5, world=world,
+             prober=lambda m, i, s: dict(pr, chains=["silt", "other"], offline=[], changed={},
+                                         item_chains={k: v for k, v in pr["item_chains"].items()
+                                                      if k in ("A_CAUSEWAY", "P_POND")}))
+    check(r["rank"] == "item_owed" and r["row_items"].get("silt") == "P_POND",
+          "rank records a shared chain against its owner, not the first item by name: %s" % r["row_items"])
+    # fix_landed: the FAILED chain's own item, not the run's first item by name
+    bad = rec(1, 20, [("alpha", "a1", "PASS"), ("gamma", "g1", "FAIL")], sha="s1")
+    bad["job"]["row_items"] = {"alpha": "A_FIRST_BY_NAME", "g1": "Z_GAMMA_OWNER"}
+    r = rank([bad], ["alpha", "gamma"], g=fake_git(logs={"s1": [("c0ffee5", "fix the `gamma` drain")]}))
+    check(r["pick"] == ["gamma"] and r["row_items"] == {"gamma": "Z_GAMMA_OWNER"},
+          "fix_landed records against the item the failing row was mapped to, not the run's first item: %s"
+          % r["row_items"])
+    bad["job"]["row_items"] = {"alpha": "A_FIRST_BY_NAME"}
+    r = rank([bad], ["alpha", "gamma"], g=fake_git(logs={"s1": [("c0ffee6", "fix the `gamma` drain")]}))
+    check(r["pick"] == ["gamma"] and r["row_items"] == {},
+          "a FAILED chain the run mapped to nobody is not handed to another chain's item: %s" % r["row_items"])
+
+
 def t_unmeasured_and_dry():
     recs = [rec(1, 20, [("alpha", "a1", "PASS"), ("beta_b", "b1", "UNMEASURED"), ("gamma", "g1", "NOT_RUN")])]
     r = rank(recs, ["alpha", "beta_b", "gamma", "delta"])
@@ -213,6 +251,8 @@ def t_real_probe():
     check(len(out["chains"]) > 10 and "drawbridges" in out["chains"] and "core_offline" in out["offline"],
           "gapprobe lists FlowWorks' chains (%d) and its offline ones" % len(out["chains"]))
     check("drawbridges" in out["item_chains"].get("X_T_PROBE", []), "an item text naming `drawbridges` links to it")
+    check((out.get("link_kind") or {}).get("X_T_PROBE", {}).get("drawbridges") == "chain",
+          "gapprobe says how the link was made (text names the chain): %s" % (out.get("link_kind") or {}).get("X_T_PROBE"))
     check("X_T_STRANGER" not in out["item_chains"],
           "an item whose text names a chain but not the mod does not link (TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL): %s"
           % out["item_chains"].get("X_T_STRANGER"))
@@ -292,7 +332,7 @@ def t_pilot_routed_skipped():
 
 
 def main():
-    for t in (t_pilot_routed_skipped, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed,
+    for t in (t_pilot_routed_skipped, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed, t_shared_chain_owner,
               t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan):
         try:
             t()

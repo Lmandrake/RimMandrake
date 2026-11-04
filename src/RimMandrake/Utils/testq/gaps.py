@@ -97,6 +97,10 @@ def valid_runs(mod, recs):
                 by.setdefault(r["chain"], []).append(r)
         chains = {c: v for c, v in ((c, chain_verdict(rows)) for c, rows in by.items()) if v[0]}
         items = sorted({i for i in [job.get("item")] + list((job.get("row_items") or {}).values()) if i})
+        ri = job.get("row_items") or {}
+        # the item each chain's rows were recorded against (ingest.groups_of): its row id, else its chain, else the job's
+        chain_items = {c: next((ri[r["row"]] for r in rows if r.get("row") in ri), None) or ri.get(c) or job.get("item")
+                       for c, rows in by.items()}
         sel = job.get("selector") or {}
         harness = {c: why for c, why in causes.items() if c != R.ORPHAN}
         if R.ORPHAN in causes:      # the run died: a chain it was asked for and never reached is the same fault
@@ -104,7 +108,8 @@ def valid_runs(mod, recs):
         died = causes.get(R.ORPHAN) if sel.get("full") else None    # its chains: every one, known to harness_last
         out.append({"t": S.parse_ts(rec.get("finished") or res.get("finished") or job["submitted"]),
                     "died": died, "reached": set(by), "id": job.get("id"), "sha": res.get("runner_sha") or job.get("source_sha"),
-                    "ident": identity_of(res), "items": items, "chains": chains,
+                    "ident": identity_of(res), "items": items, "chain_items": {c: i for c, i in chain_items.items() if i},
+                    "chains": chains,
                     "versions": res.get("chain_versions"), "partial": bool(sel.get("rows")), "harness": harness})
     out.sort(key=lambda r: (r["t"], r["id"] or ""))
     return out
@@ -355,6 +360,26 @@ def settled(mod, recs, world=None, g=None, prober=None, items=None):
             "items": items, "blind": blind, "fails": fails, "harness": last, "by_identity": by_identity}
 
 
+LINK_STRENGTH = {"source": 0, "chain": 1, "row": 2}
+
+
+def owner_of(pr):
+    """-> {chain: item id}: of the owed items linked to a chain (pr item_chains), the one its verdict is recorded
+    against. The strongest link wins (gapprobe link_kind: the chain's source names the item, then the item's text names
+    the chain, then only one of its rows), then the item linking the fewest chains (the most specific), then the id.
+    Never the first by name alone: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP named five shared FlowWorks chains in passing,
+    took every one of their verdicts and gathered 313 partials (TESTQ_FIX_ROW_ITEMS_FIRST_ALPHABETICAL).
+    A link with no kind (an older probe) counts as a chain-name link."""
+    ic, kind = pr.get("item_chains") or {}, pr.get("link_kind") or {}
+    best = {}
+    for iid, chains in ic.items():
+        for c in chains:
+            key = (LINK_STRENGTH.get((kind.get(iid) or {}).get(c), 1), len(set(chains)), iid)
+            if c not in best or key < best[c][0]:
+                best[c] = (key, iid)
+    return {c: best[c][1] for c in sorted(best)}
+
+
 def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=()):
     """-> {"rank", "purpose", "pick", "row_items", "dry", "held", "ident", "counts", "flaky", "blind", "text"}.
 
@@ -387,12 +412,13 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
         # A FAIL with no version on it is the one case a commit can reopen: only the version could have said "unchanged"
         if c not in names or c in held_now or (c in done and c not in s0["by_identity"]):
             continue
-        hit = None
+        hit = named_item = None
         msgs = commits_since(run["sha"], g)
         for h, msg in msgs or []:
             for nm in [c] + list(frows) + list(run["items"]):
                 if names_in(msg, nm):
                     hit = "commit %s names %s" % (h, nm)
+                    named_item = nm if nm in run["items"] else None
                     break
             if hit:
                 break
@@ -401,15 +427,18 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
         if hit:
             cand["fix_landed"].append(c)
             why[c] = hit
-            if run["items"]:
-                row_items[c] = run["items"][0]          # the verification is recorded against the item it was for
+            # the verification is recorded against the item the FAILED rows were for, never the run's first item by
+            # name (TESTQ_FIX_ROW_ITEMS_FIRST_ALPHABETICAL); a chain the run mapped to nobody goes to the item the
+            # fixing commit names, else stays unmapped
+            it = (run.get("chain_items") or {}).get(c) or named_item
+            if it:
+                row_items[c] = it
     # 2. built/validated items owing a live level, linked to a chain
-    for iid, chains in sorted((pr.get("item_chains") or {}).items()):
-        for c in chains:
-            if c in names and c not in cand["item_owed"] and fresh(c) and c not in dry:
-                row_items[c] = iid
-                cand["item_owed"].append(c)
-                why[c] = "%s owes a live level" % iid
+    for c, iid in owner_of(pr).items():
+        if c in names and fresh(c) and c not in dry:
+            row_items[c] = iid
+            cand["item_owed"].append(c)
+            why[c] = "%s owes a live level" % iid
     # 3. UNMEASURED/NOT_RUN rows at the current identity, at a version with no verdict yet, not DRY
     for c in names:
         if c not in dry and fresh(c) and st.get(c) and st[c]["at"] and st[c]["at"][1] == "GAP":

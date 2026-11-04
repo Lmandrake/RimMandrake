@@ -3,6 +3,9 @@
 stdin:  {"mod": MOD, "items": {item id: ledger text}, "since": [sha, ...]}
 stdout: {"chains": [every chain, suite order], "offline": [offline chains],
          "item_chains": {item id: [live chains it links to]},
+         "link_kind": {item id: {chain: "source" | "chain" | "row"}}: how each link was made (the chain's source
+                      names the item; the item's text names the chain; it names only one of its rows), strongest
+                      first. gaps.rank gives a chain several items link to the strongest (TESTQ_FIX_ROW_ITEMS_FIRST_ALPHABETICAL),
          "changed": {sha: [chains modcheck --changed suggests for sha..origin/main] or null},
          "versions": {chain: its code version now (gate.code_version; testq/retest.py), or null}}
 
@@ -40,18 +43,26 @@ def main():
         offline = set(getattr(suite, "offline_chains", ()) or ())
         by_chain, _ = targeting.catalogue(suite)
         srcs = {n: targeting._chain_source(fn) for n, fn in suite.chains}
-        links = {}
+        links, kinds = {}, {}
         for iid, text in (req.get("items") or {}).items():
             # TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL: a link by the item's TEXT naming a chain or row holds only when
             # the item also names this mod. Generic names (defs, defs_resolve, site, flora) are declared by many mods,
             # and GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND was linked to the defs chain of every biome. Measured
             # 2026-11-04: all 32 of FlowWorks' text links name it; the dropped ones were all other mods' items.
             named = names_mod(req["mod"], iid, text)
-            hit = [n for n in names if n not in offline and (
-                targeting._names_in(srcs[n], iid) or (named and (targeting._names_in(text, n)
-                or any(targeting._names_in(text, r) for r in by_chain.get(n, ())))))]
-            if hit:
-                links[iid] = hit
+            how = {}
+            for n in names:
+                if n in offline:
+                    continue
+                if targeting._names_in(srcs[n], iid):
+                    how[n] = "source"
+                elif named and targeting._names_in(text, n):
+                    how[n] = "chain"
+                elif named and any(targeting._names_in(text, r) for r in by_chain.get(n, ())):
+                    how[n] = "row"
+            if how:
+                links[iid] = [n for n in names if n in how]
+                kinds[iid] = how
         changed = {}
         for sha in req.get("since") or []:
             try:
@@ -63,8 +74,8 @@ def main():
             versions = gate.Gate(suite, req["mod"], mod_dir, gate.package_ids_for(req["mod"]), {}).versions()
         except Exception:  # noqa: BLE001 - no version is the identity rule, never a dead probe
             versions = {}
-    print(json.dumps({"chains": names, "offline": sorted(offline), "item_chains": links, "changed": changed,
-                      "versions": versions}))
+    print(json.dumps({"chains": names, "offline": sorted(offline), "item_chains": links, "link_kind": kinds,
+                      "changed": changed, "versions": versions}))
     return 0
 
 
