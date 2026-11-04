@@ -13,7 +13,7 @@ Pins, on the supervisor's transitions (FakeWorld from selftest_relentless), not 
     the others are not; an unaffected item still runs; the probe's candidate releases it and the others come back;
     `incident-release` needs evidence;
   * HISTORY: a classification and a warrant reach the next builder and the fresh pair of eyes whole (no cut at 140);
-    the blind checker's prompt carries none of it.
+    the blind checker's prompt carries none of it; and a CLASSIFY line `learn` takes is recorded whole (no cut at 300).
 The known-unmet-predecessor wait is relentless_block's, pinned by selftest_relentless_block.py.
 """
 import os
@@ -264,8 +264,38 @@ def t_history():
     x.done()
 
 
+def t_learn_classify():
+    """The classification reaches the record through `learn` itself, not a hand-written attempt: a CLASSIFY line far
+    over 300 characters is kept whole on `diagnosed`, on the attempt record, in ending_history and in both help prompts."""
+    x = rig()
+    x.run_one("I0")
+    contract(x, "I0")
+    with x.s.lock():
+        cur = x.s.load("I0")
+        R.fail(x.s, cur, "game_fail", "A2 FAIL on the running game (/l/a.log)", x.r, x.now)
+    stop(x, "I0")
+    x.run_one("I0")
+    st = x.st("I0")
+    ok(bool(st.get("diagnose_owed")), "a game_fail leaves the next worker owing a classification")
+    tail = "x" * 900 + " CLASSIFY-TAIL-PAST-300"
+    R.learn(x.s, "I0", st["gen"], "CLASSIFY: HARNESS the bridge returned map 0 while the probe read map 1: " + tail)
+    st = x.st("I0")
+    ok(not st.get("diagnose_owed") and (st.get("diagnosed") or {}).get("class") == "HARNESS",
+       "learn takes the CLASSIFY line and pays the debt")
+    ok("CLASSIFY-TAIL-PAST-300" in ((st.get("diagnosed") or {}).get("evidence") or ""), "diagnosed keeps the evidence whole")
+    att = x.s.attempts("I0")
+    ok(any("CLASSIFY-TAIL-PAST-300" in (a.get("evidence") or "") for a in att), "the attempt record keeps it whole")
+    ok(any("CLASSIFY-TAIL-PAST-300" in h for h in R.ending_history(att)), "the next builder reads it whole via learn")
+    st["help"] = {"why": "circling", "tries": 0}
+    r = dict(x.r, circling=dict(x.r.get("circling") or {}, help_options_max=3))
+    ok("CLASSIFY-TAIL-PAST-300" in R.help_prompt(st, "item text", att, "nonce", r, att),
+       "the fresh pair of eyes reads it whole via learn")
+    ok("CLASSIFY-TAIL-PAST-300" in R.help_prompt_vendor(st, "item text", att, r, att), "so does the second vendor")
+    x.done()
+
+
 def main():
-    for t in (t_warrant, t_signature, t_incident, t_history):
+    for t in (t_warrant, t_signature, t_incident, t_history, t_learn_classify):
         print("--", t.__name__)
         try:
             t()
