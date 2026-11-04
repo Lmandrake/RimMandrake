@@ -143,8 +143,12 @@ for row, pts in replay():
         passes.append((row["at"], OW.run(now=row["t"], rules=RULES, filer=filer)))
     if row["at"] >= "2026-11-01T13:00":
         break
-jam = [a for a in FILED if a["aid"] == "RELENTLESS_DISTRESS:relentless.distressed"]
+jam = [a for a in FILED if a["aid"] == "RELENTLESS_DISTRESS:relentless.distressed" and not a.get("note_only")]
 check("one outage, one filing", len(jam) == 1, FILED)
+# the jam crosses relentless.under_min's emergency line (120 min) hours in: that is a note on the same item, never a 2nd filing
+worse = [a for a in FILED if a["aid"] == "RELENTLESS_DISTRESS:relentless.distressed" and a.get("note_only")]
+check("the jam's emergency is a note on its own item", len(worse) == 1 and jam and worse[0]["item"] == jam[0]["name"]
+      and "distressed -> emergency" in worse[0]["worse"], worse)
 check("the filing names the cause", jam and "breaker open until" in jam[0]["title"], jam)
 check("the filing reaches the Conductor's log", (TMP / "conductor.md").exists() and "breaker open" in (TMP / "conductor.md").read_text())
 at = next((a for a, dg in passes if "RELENTLESS_DISTRESS:relentless.distressed" in dg["alarms"]), None)
