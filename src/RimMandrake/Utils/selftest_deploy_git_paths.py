@@ -4,10 +4,16 @@ DEPLOY_PLAN_FIX_GIT_QUOTED_PATHS    non-ASCII names must match (git -z, not quot
 DEPLOY_PLAN_FIX_READDED_FILE_PRUNE  deleted, re-added, then deleted ONLY in the worktree
                                     is uncommitted, not committed-stale
 DEPLOY_PLAN_FIX_DIR_CASE_RENAME     a case-only rename of a DIRECTORY converges on a
-                                    case-insensitive game folder
-Real functions / main() against throwaway git repos.
+                                    case-insensitive game folder, and on a case-insensitive
+                                    REPO checkout repo_deleted sees the old spelling as stale
+                                    (DEPLOY_SELFTEST_FIX_MUTANT_STILL_PASSES: that clause had
+                                    no case, so _gone_for_good reverted to os.path.exists
+                                    passed 7/7)
+Real functions / main() against throwaway git repos. The repo-checkout clause runs on
+a simulated case-blind os.path.exists everywhere, and on a real case-insensitive root
+too when one is reachable. --mutant swaps in the pre-fix _gone_for_good: it must FAIL.
 
-    python3 src/RimMandrake/Utils/selftest_deploy_git_paths.py
+    python3 src/RimMandrake/Utils/selftest_deploy_git_paths.py [--mutant]
 """
 import os
 import shutil
@@ -69,8 +75,68 @@ def dir_case(game_root):
         shutil.rmtree(gtmp, ignore_errors=True)
 
 
+def _case_blind_exists(root, real):
+    """os.path.exists as a case-insensitive checkout answers it, for paths under root."""
+    root = os.path.normcase(os.path.abspath(root))
+
+    def exists(path):
+        ap = os.path.abspath(path)
+        if not ap.startswith(root + os.sep):
+            return real(path)
+        cur = root
+        for part in ap[len(root) + 1:].split(os.sep):
+            try:
+                hit = [n for n in os.listdir(cur) if n.lower() == part.lower()]
+            except OSError:
+                return False
+            if not hit:
+                return False
+            cur = os.path.join(cur, hit[0])
+        return True
+    return exists
+
+
+def repo_case(repo_root, simulate):
+    """The repo ITSELF on a case-insensitive checkout: commit Textures/Foo -> foo (a
+    directory) and Textures/Cap.png -> cap.png (a file). repo_deleted must report both
+    old spellings as committed-stale. -> set returned by repo_deleted."""
+    tmp = tempfile.mkdtemp(prefix="deploygp-repo-", dir=repo_root)
+    try:
+        mod, _ = fixture(tmp)
+        repo = os.path.join(tmp, "repo")
+        write(os.path.join(mod, "Textures", "Foo", "a.png"), "old")
+        write(os.path.join(mod, "Textures", "Cap.png"), "old")
+        git(repo, "add", "."); git(repo, "commit", "-qm", "foo")
+        for a, b in ((("Textures", "Foo"), ("Textures", "foo")),
+                     (("Textures", "Cap.png"), ("Textures", "cap.png"))):
+            # two-step mv: a one-step case-only mv is refused on a case-insensitive fs
+            git(repo, "mv", os.path.join(mod, *a), os.path.join(mod, *a) + ".tmp")
+            git(repo, "mv", os.path.join(mod, *a) + ".tmp", os.path.join(mod, *b))
+        git(repo, "commit", "-qm", "case renames")
+        gone = ["Textures/Foo/a.png", "Textures/Cap.png"]
+        real = os.path.exists
+        if simulate:
+            os.path.exists = _case_blind_exists(mod, real)
+        try:
+            return D.repo_deleted(mod, gone)
+        finally:
+            os.path.exists = real
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _pre_fix_gone_for_good(src, g):
+    """The mutant: the code before DEPLOY_PLAN_FIX_DIR_CASE_RENAME (case-blind)."""
+    return not os.path.exists(os.path.join(src, g.replace("/", os.sep)))
+
+
 def main():
+    if "--mutant" in sys.argv[1:]:
+        D._gone_for_good = _pre_fix_gone_for_good
+        print("MUTANT _gone_for_good = os.path.exists (pre-fix); this run must FAIL")
     rd, wd, uni = quoted_and_readded()
+    want = {"Textures/Foo/a.png", "Textures/Cap.png"}
+    sim = {g.replace(os.sep, "/") for g in repo_case(tempfile.gettempdir(), True)}
     emitted, real_emit = [], D._emit_deploy           # review wave 87: a fixture --apply must not reach telemetry
     D._emit_deploy = lambda *a: emitted.append(a)
     try:
@@ -80,12 +146,15 @@ def main():
     ci = case_insensitive_root()
     if ci:
         rc5, dirs5, body5, plan5 = dir_case(ci)
+        real_ci = {g.replace(os.sep, "/") for g in repo_case(ci, False)}
     else:
         print("SKIP  directory case rename on a case-insensitive fs (none reachable)")
     cases = [
         ("non-ASCII committed delete is seen by repo_deleted", uni in rd),
         ("re-added then worktree-deleted file is NOT committed-stale", "Textures/Re.png" not in rd),
         ("... and is reported as a worktree delete", "Textures/Re.png" in wd),
+        ("repo on a case-insensitive checkout (simulated): committed dir and file case renames "
+         "are repo_deleted (got %s)" % sorted(sim), sim == want),
         ("dir case rename, case-sensitive fs: old dir gone, new deployed",
          rc4 == 0 and dirs4 == ["foo"] and body4 == "new"),
         ("... plan afterwards is in sync", "in sync" in plan4),
@@ -97,7 +166,9 @@ def main():
     if ci:
         cases += [("dir case rename, case-INSENSITIVE fs (%s): directory respelled, exit 0" % ci,
                    rc5 == 0 and dirs5 == ["foo"] and body5 == "new"),
-                  ("... plan afterwards is in sync", "in sync" in plan5)]
+                  ("... plan afterwards is in sync", "in sync" in plan5),
+                  ("repo itself on the case-INSENSITIVE fs (%s): dir and file case renames are "
+                   "repo_deleted (got %s)" % (ci, sorted(real_ci)), real_ci == want)]
     bad = 0
     for label, ok in cases:
         print("%-5s %s" % ("PASS" if ok else "FAIL", label))
