@@ -1153,7 +1153,8 @@ class Effects(relentless_game.GameFx):
             return None
         priority = pkg("priority")
         return {"state": it.state, "lease": getattr(it, "lease", None), "needs": it.needs, "owner": it.owner,
-                "block_holds": priority.block_holds(w, it, int(time.time())), "block": priority.block_line(it)}
+                "block_holds": priority.block_holds(w, it, int(time.time())), "block": priority.block_line(it),
+                "guard_owed": pkg("model").guard_owed(it)}
 
     # the other seat: read from its tree, never pulled, never written
     def seat_words(self):
@@ -1302,7 +1303,8 @@ class Effects(relentless_game.GameFx):
                 return (r.stderr or r.stdout)[-400:]
             self.marked.add((item, sha))
         r = self.rimflow("close", item, "--sha", sha, "--reason", reason, "--why", "relentless: blind check passed",
-                         *(("--live", live) if live else ()))     # the sweep keeps checking what the contract promised
+                         *(("--live", live) if live else ()),      # the sweep keeps checking what the contract promised
+                         timeout=300)       # a recurring item's guard test reruns inside the close (repeat_guard.TIMEOUT_S)
         if r.returncode == 0:
             return None
         if self.closed(item):
@@ -1948,6 +1950,8 @@ def worker_prompt(st, text, learned, r):
             "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
             "A contract with no live line may gain one from any worker: the same --proof plus --live and --why.",
+            "An item whose fix died before (`rimflow show` says OWES A GUARD) closes only with a class guard test shown failing on "
+            "the instance: `rimflow guard <ID> --test <selftest*.py>` before the fix lands, then commit the test and the ledger shard.",
             "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. If "
             "what stopped you is time, not work (a sample filling), say so: `snag --wait-hours N`. Only a "
             "true design/RimMandrake/delegation_policy.md section 2 call goes up: `snag --class owner_call --section "
@@ -2789,6 +2793,8 @@ def step(store, fx, r, item, now, acts):
                 why = "%s changes nothing" % c["sha"]
             elif (live_line.needs_line(paths) or item.startswith(ALARM_PREFIXES)) and not (st["contract"] or {}).get("live"):
                 why = "%s needs a live line in the contract: %s" % (c["sha"], (live_line.needs_line(paths) or ["alarm item"])[0])
+            elif (fx.item_state(item) or {}).get("guard_owed"):
+                why = "%s: this fix died before, so the close will refuse it: `rimflow guard %s --test <selftest*.py>` first" % (c["sha"], item)
         klass, proof_why = proof_gate(fx, r, st, c) if not why else (None, None)
         if klass:
             with store.lock():

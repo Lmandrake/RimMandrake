@@ -3225,7 +3225,10 @@ def publish_health(points, prev, ctx, rules, now):
         why = "health verdict not written: %s: %s" % (type(e).__name__, str(e)[:160])
         return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why)}
     x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"][:300]}
-    return {"health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
+    guardless = v.get("recurring_unguarded")
+    return {"health.recurring_unguarded": U("no ledger or alarm log this pass") if guardless is None else M(
+                len(guardless), "alarm kinds that came back with no class guard test", said=", ".join(r["kind"] for r in guardless[:5])),
+            "health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
             "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 
 

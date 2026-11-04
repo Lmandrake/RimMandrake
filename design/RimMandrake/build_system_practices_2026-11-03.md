@@ -150,7 +150,8 @@ What is missing:
 - `incident.py` (told-to-recovered records).
 - `alarm_census.py` (every alarm kind the source can raise).
 - `lessons.py`.
-- Built 2026-11-03 (`PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`): the SLIs, their lines and the 24 h-of-48 h budget are the `health` block of `src/RimMandrake/Utils/ops_watch_rules.json`; `src/RimMandrake/Utils/ops_health.py` publishes the one verdict (`health.json` beside ops_watch's `status.json`) that `relentless.py` obeys. A spent budget files `OPS_ERROR_BUDGET_DIAGNOSE`. The tokens-on-INFRA SLI has no instrument yet and reads UNMEASURED; a twice-seen fix (`live_repeats`) leads the system list marked as owing a class guard test, but no close gate enforces the guard yet.
+- Built 2026-11-03 (`PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`): the SLIs, their lines and the 24 h-of-48 h budget are the `health` block of `src/RimMandrake/Utils/ops_watch_rules.json`; `src/RimMandrake/Utils/ops_health.py` publishes the one verdict (`health.json` beside ops_watch's `status.json`) that `relentless.py` obeys. A spent budget files `OPS_ERROR_BUDGET_DIAGNOSE`. The tokens-on-INFRA SLI has no instrument yet and reads UNMEASURED; a twice-seen fix (`live_repeats`) leads the system list marked as owing a class guard test.
+- Built 2026-11-03 (`REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN`): `rimflow guard <ID> --test <selftest*.py>` runs the test, refuses a pass or a crash and records the red; `rimflow close` refuses a fix that died without one, `--no-code` included, and reruns the guard green (`src/RimMandrake/rimflow/repeat_guard.py`); `implemented` and a `verify` pass stop at built. His word on the close lifts it. `alarm_census.py recurring` lists every kind that came back with no guard, published as `recurring_unguarded` in `health.json`. A sweep's `live --result kept` returns an item to done with no close, so only the census sees those.
 
 **What to add.**
 

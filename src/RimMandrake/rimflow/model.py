@@ -494,6 +494,9 @@ VERBS = {
     # OUT OF `done` (the other is a `fail` verify on the closed work, `_earned_run`), because the record of the close stands in the log and the same id must count the repeat; `kept`
     # returns it. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
     "live":      {"who": ("RUNNER",), "req": ("result",), "opt": ("detail",)},
+    # `guard`: the class guard test a fix that died owes, shown failing on the instance by the cli (repeat_guard.py). State does
+    # not move. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
+    "guard":     {"who": "any",   "req": ("test", "testHash", "redExit"), "opt": ("redTail", "instance")},
     "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
     "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
@@ -1436,7 +1439,7 @@ VERB_RANK = {
     "block": 2, "unblock": 2, "wait": 2, "unwait": 2, "needs": 2, "retarget": 2,
     "reassign": 3, "reclaim": 3, "lease": 3.5,
     "claim": 4, "start": 5,
-    "note": 7, "reconcile": 7, "live": 7, "implemented": 7.5, "verify": 8,
+    "note": 7, "reconcile": 7, "live": 7, "guard": 7, "implemented": 7.5, "verify": 8,
     "close": 9, "drop": 9, "supersede": 9,
 }
 _BRIDGE_RANK = {"released": 0, "taken": 1}
@@ -1569,7 +1572,7 @@ class Item(object):
                  "blocked_lift_at", "wait_until", "wait_reason", "started_at",
                  "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
-                 "live", "live_broken", "live_repeats", "live_from",
+                 "live", "live_broken", "live_repeats", "live_from", "guard",
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
@@ -1593,6 +1596,7 @@ class Item(object):
         self.closed_sha = self.superseded_by = self.caused_by = None
         self.live = self.live_broken = self.live_from = None   # the promise, why it broke now, the state it broke from
         self.live_repeats = 0           # outages of this promise: the same id counts every return
+        self.guard = None               # the class guard test shown failing here: {test, testHash, redExit, outages, ts, ...}
         self.claim_ts = None            # ts of the claim that holds it (earliest wins)
         self.runs, self.findings, self.history = [], [], []
         # `reconcile` verdicts, in ledger order: [{ts, seat, verdict, shas, remaining}]
@@ -2078,6 +2082,34 @@ def _live_promise(ev, item):
     item.live_broken = item.live_from = None
 
 
+def guard_owed(item):
+    """A fix that already died (live_repeats) owes a class guard test, shown failing on the instance. A guard recorded before
+    the newest outage did not stop it, so that outage owes a new look (design idea 5)."""
+    n = getattr(item, "live_repeats", 0) or 0
+    g = getattr(item, "guard", None)
+    return n > 0 and (not g or (g.get("outages") or 0) < n)
+
+
+def guard_why(item):
+    return ("this fix died %d time(s) (live_repeats), so it closes only with a class guard test shown failing on the instance: "
+            "`rimflow guard %s --test <selftest*.py> [--instance \"<args>\"]` before the fix lands, then commit the test and the "
+            "ledger shard" % (item.live_repeats, item.id))
+
+
+def _owner_word(ev):
+    return any(ev.get(k) for k in ("ownerSaid", "byCard", "perRuling")) or ev.get("seat") == "OWNER"
+
+
+def _guard_holds(ev, item):
+    """Every way to done past a close (`implemented`, a `verify` pass) stops at built while a guard is owed."""
+    return str(ev["ts"]) >= GUARD_GATE_FROM and guard_owed(item) and not _owner_word(ev)
+
+
+def _apply_guard(ev, item):
+    item.guard = {k: ev[k] for k in ("test", "testHash", "redExit", "redTail", "instance", "ts") if k in ev}
+    item.guard["outages"] = item.live_repeats
+
+
 def _apply_live(ev, item):
     """The sweep's reading. `broken` opens the item, counting the outage once; `kept` puts it back."""
     if ev["result"] not in ("broken", "kept"):
@@ -2102,6 +2134,7 @@ def _apply_live(ev, item):
 # state in both directions; an earlier one replays exactly as it was written, so no old item changes under a reader.
 EARNED_FROM = "2026-11-01T17:30:00Z"
 DONE_GATE_FROM = "2026-11-01T18:35:00Z"     # the same, for `implemented`: from here on it reaches done only as `close` does
+GUARD_GATE_FROM = "2026-11-04T03:30:00Z"    # from here a fix that died reaches done only with a guard (`guard_owed`); earlier closes replay as written
 CLOSE_FOLD_FROM = "2026-11-01T19:15:00Z"    # from here the fold judges a `close` too: a clone's old cli cannot write a done
 ARBITER_CONFIG = "arbiter:"     # a verdict the launcher wrote: --config arbiter:<disposition>, role_launch.verdict_run
 ARBITER_SEAT = "RUNNER"         # the seat that writes it (dispatcher.ledger_verdict); no other seat's run is a verdict
@@ -2184,7 +2217,7 @@ def _earned_run(item, cid, level, run, ev):
         _criterion_passed(item, cid, level, run, ev)
     if item.held and not item.arbiter_fail and not item.outstanding:
         if run.result == "pass":
-            if str(ev["ts"]) < DONE_GATE_FROM or not run_refusals(item, run.sha or item.built_sha):
+            if (str(ev["ts"]) < DONE_GATE_FROM or not run_refusals(item, run.sha or item.built_sha)) and not _guard_holds(ev, item):
                 _finish(item, run.sha or item.built_sha)
         elif verdict:
             item.held = False       # a conditional pass lifts the FAIL; its conditions are met by hand, on a close
@@ -2211,7 +2244,8 @@ def close_refusals(item, sha, no_code=False, owner=False):
     fail      the newest deciding run is a fail
     verdict   an Arbiter FAIL stands: on this sha, or on an earlier one with no non-maker Arbiter pass since.
               No verdict at all blocks nothing (ruling D1(b), not option c).
-    `owner`: his word on the close lifts fail and verdict, which are judgements. Owed and unchecked are facts."""
+    guard     this fix already died once and no class guard test is shown failing on the instance (`guard_owed`), --no-code too
+    `owner`: his word on the close lifts fail, verdict and guard, which are judgements. Owed and unchecked are facts."""
     owed = [c for c in item.criteria if c["id"] in item.outstanding]
     out = []
     if owed:
@@ -2225,6 +2259,8 @@ def close_refusals(item, sha, no_code=False, owner=False):
         out.append(("verdict", "the Arbiter FAILED %s (%s)%s" % (
             str(f["sha"])[:12], f["run"], "" if same_sha(f["sha"], sha) else
             " and no non-maker Arbiter pass is recorded on a newer build")))
+    if not owner and guard_owed(item):
+        out.append(("guard", guard_why(item)))
     return out
 
 
@@ -2233,9 +2269,11 @@ def _fold_close_gate(ev, item):
 
     `cmd_close` refuses first; this is for the writer that lacks that code (KNOWN_RESULTS_BUILD_MEASURED_DEPENDENCIES,
     closed from a clone behind the gate). His word on the event lifts a fail, as on the cli; `unchecked` is a fact."""
+    if _guard_holds(ev, item):
+        raise TransitionError("%s: close at %s has not earned done: %s" % (item.id, str(ev["sha"])[:12], guard_why(item)))
     if str(ev["ts"]) < CLOSE_FOLD_FROM or ev.get("noCode"):
         return
-    said = any(ev.get(k) for k in ("ownerSaid", "byCard", "perRuling")) or ev.get("seat") == "OWNER"
+    said = _owner_word(ev)
     found = [why for k, why in run_refusals(item, ev["sha"]) if not (k == "fail" and said)]
     if found:
         raise TransitionError("%s: close at %s has not earned done: %s" % (item.id, str(ev["sha"])[:12], "; ".join(found)))
@@ -2254,7 +2292,8 @@ def _apply_implemented(ev, item):
     crit = [dict(c) for c in ev.get("criteria") or []]
     owed = [c["id"] for c in crit if c["level"] != "L0"]
     held = not owed and (bool(item.arbiter_fail)         # a new build still has to pass the Arbiter
-                         or (str(ev["ts"]) >= DONE_GATE_FROM and bool(run_refusals(item, ev["sha"]))))
+                         or (str(ev["ts"]) >= DONE_GATE_FROM and bool(run_refusals(item, ev["sha"])))
+                         or _guard_holds(ev, item))
     target = "built" if owed or held else "done"
     _transition(item, target)
     _live_promise(ev, item)
@@ -2310,10 +2349,10 @@ def _criterion_passed(item, cid, level, run, ev):
     if level_rank(level) > level_rank(item.level_reached or "L0"):
         item.level_reached = level
     if not item.outstanding:
-        if not item.arbiter_fail:
+        if not item.arbiter_fail and not _guard_holds(ev, item):
             _finish(item, ev.get("sha") or item.built_sha)
             return
-        item.held = True                # the verify-to-done gate: an Arbiter FAIL stands
+        item.held = True                # the verify-to-done gate: an Arbiter FAIL stands, or a guard is owed
     if level != "L0" and item.state == "built":
         _transition(item, "validated")
     # needs follows the cheapest level still owed, at every acceptance step
@@ -2441,6 +2480,8 @@ def _apply_item_verb(ev, index, item, seat, world):
             to("ready")
     elif verb == "live":
         _apply_live(ev, item)
+    elif verb == "guard":
+        _apply_guard(ev, item)
     elif verb == "close":
         _fold_close_gate(ev, item)
         to("done")

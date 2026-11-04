@@ -172,7 +172,8 @@ def gate():
     tree = os.path.join(repo, "src", "RimMandrake")
     shutil.copytree(HERE, os.path.join(tree, "rimflow"), ignore=shutil.ignore_patterns("__pycache__", "selftest*", "queue"))
     os.makedirs(os.path.join(tree, "Utils"))
-    shutil.copy(os.path.join(HERE, "..", "Utils", "rmpaths.py"), os.path.join(tree, "Utils"))
+    for f in ("rmpaths.py", "bridge_holder.py"):
+        shutil.copy(os.path.join(HERE, "..", "Utils", f), os.path.join(tree, "Utils"))
     env = {k: v for k, v in os.environ.items() if k not in ("AGENT_SEAT", "CLAUDE_SESSION_ID", "RIMFLOW_GITINDEX")}
     env.update(RIMFLOW_LEDGER=led, RIMFLOW_SEAT="BENCH", RIMFLOW_ITEMS=os.path.join(TMP, "items"), RIMFLOW_PROBE="no-reading",
                RIMFLOW_GITINDEX="off", HOME=os.path.join(TMP, "home"), RM_DATA_ROOT=os.path.join(TMP, "data"),
@@ -236,7 +237,8 @@ def gate():
     r = rf("show", "UNIT_FIX_BRAVO")
     check("BROKEN: hook gone" in r.stdout and "1 outage" in r.stdout, "show says so")
     json.dump({"hooks": {}}, open(hook, "w"))
-    r = rf("close", "UNIT_FIX_BRAVO", "--sha", unit)
+    # his word lifts the guard this outage owes (selftest_repeat_guard), never the promise
+    r = rf("close", "UNIT_FIX_BRAVO", "--sha", unit, "--owner-said", "close it")
     check(r.returncode and "does not hold" in r.stderr, "a re-close rechecks the promise the item already holds")
 
 

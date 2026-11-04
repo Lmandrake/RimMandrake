@@ -9,8 +9,15 @@ assigned in the function or module, or a parameter (read at the function's call 
 inside a kind reads as "x", the same as a route's * sees it. A kind with no literal left in it is UNRESOLVED: a census
 that shrugs at a form is the blindness this replaced (selftest_incident fails on any unresolved site).
 Built names slipped past before: queues.<name>.* and relentless_attention_<key> (ALARM_CENSUS_EXTEND_BUILT_NAMES_SLIP_PAST).
+
+recurring() is the census of what came back: an alarm kind crossed twice or more (ops_watch's alarms_log.jsonl), or an item
+whose fix died (live_repeats), with no class guard test on record (design idea 5, `rimflow guard`).
+
+    python3 src/RimMandrake/rimflow/alarm_census.py recurring     one line per recurring kind with no guard; exit 1 if any
 """
 import ast
+import fnmatch
+import json
 import os
 import re
 
@@ -341,3 +348,65 @@ def census(root):
             bad += b
             files += [p] if k or b else []
     return kinds, bad, files
+
+
+def recurring(log_rows, items, exempt=(), min_seen=2):
+    """-> [{kind, seen, items}] the recurring kinds no guard covers, most seen first. `log_rows`: alarms_log.jsonl's rows.
+    `items`: {id: item}. An alarm kind is guarded when any item filed for it holds a guard. `exempt`: fnmatch patterns of
+    kinds no test can guard (a spent account). A dropped or superseded item holds no promise."""
+    seen, filed = {}, {}
+    for r in log_rows:
+        aid = r.get("aid")
+        if not aid or any(fnmatch.fnmatch(aid, p) for p in exempt):
+            continue
+        seen[aid] = seen.get(aid, 0) + (r.get("event") == "crossed")
+        if r.get("item"):
+            filed.setdefault(aid, set()).add(r["item"])
+    out = []
+    claimed = set()
+    for aid, n in seen.items():
+        ids = filed.get(aid, set())
+        claimed |= ids
+        if n >= min_seen and not any(getattr(items.get(i), "guard", None) for i in ids):
+            out.append({"kind": aid, "seen": n, "items": sorted(ids)})
+    for iid, it in items.items():
+        n = getattr(it, "live_repeats", 0) or 0
+        g = getattr(it, "guard", None)
+        if n and (not g or (g.get("outages") or 0) < n) and getattr(it, "state", None) not in ("dropped", "superseded") and iid not in claimed:
+            out.append({"kind": "live:" + iid, "seen": n, "items": [iid]})
+    return sorted(out, key=lambda r: (-r["seen"], r["kind"]))
+
+
+def read_log(path):
+    """alarms_log.jsonl's rows; a torn line is skipped, a missing file raises (no log is no reading, never no recurrences)."""
+    rows = []
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for ln in f:
+            try:
+                rows.append(json.loads(ln))
+            except ValueError:
+                continue
+    return rows
+
+
+def main(argv):
+    import sys
+    if argv[:1] != ["recurring"]:
+        print(__doc__)
+        return 2
+    here = os.path.dirname(os.path.abspath(__file__))
+    sys.path[:0] = [here, os.path.join(os.path.dirname(here), "Utils")]
+    import model
+    import ops_health as H
+    with open(os.path.join(os.path.dirname(here), "Utils", "ops_watch_rules.json"), encoding="utf-8") as f:
+        c = H.conf(json.load(f))
+    rows = recurring(read_log(str(H.ops_dir() / "alarms_log.jsonl")), model.replay(model.read()).items, c["guard_exempt_kinds"])
+    for r in rows:
+        print("%-55s seen %3d  %s" % (r["kind"], r["seen"], ",".join(r["items"][:3])))
+    print("%d recurring kind(s) with no guard" % len(rows))
+    return 1 if rows else 0
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(main(sys.argv[1:]))

@@ -98,7 +98,8 @@ class FakeWorld:
     def item_state(self, item):
         st = self.items.get(item)
         return None if st is None else {"state": st, "lease": None, "needs": "offline",
-                                        "owner": self.owners.get(item, "BENCH")}
+                                        "owner": self.owners.get(item, "BENCH"),
+                                        "guard_owed": item in getattr(self, "guard_owed", ())}
 
     def item_text(self, item): return "text of " + item
     def ledger_start(self, item):
@@ -823,6 +824,17 @@ def t_crash_windows():
     R.finish(x.s, "OPS_X", st["gen"], "s", "e", now=x.now)
     x.tick()
     ok(x.st("OPS_X")["failures"].get("bad_candidate") == 1, "an alarm item with no live line is a bad candidate")
+    x.done()
+    # rimflow's close refuses a fix that died with no guard: the candidate gate catches that first too
+    x = Rig(n=1, share=1.0)
+    x.w.guard_owed = {"I0"}
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p")
+    R.finish(x.s, "I0", st["gen"], "s", "e", now=x.now)
+    x.tick()
+    ok(x.st("I0")["failures"].get("bad_candidate") == 1 and "rimflow guard I0" in x.st("I0")["last_fail"]["detail"],
+       "a fix that died, with no guard on record, is a bad candidate that says the way")
     x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)

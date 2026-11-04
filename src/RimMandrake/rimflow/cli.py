@@ -1508,6 +1508,10 @@ def cmd_show(args, seat):
     if it.live or it.live_repeats:
         print("live: %s  (%d outage(s)%s%s)" % (it.live or "from the baseline", it.live_repeats, ", NEEDS FOLD" if it.live_repeats >= 2 else "",
                                                  ", BROKEN: " + it.live_broken if it.live_broken else ""))
+        if model.guard_owed(it):
+            print("OWES A GUARD: " + model.guard_why(it))
+    if it.guard:
+        print("guard: %s, shown failing (exit %s) %s" % (it.guard["test"], it.guard["redExit"], it.guard.get("ts")))
     if it.superseded_by:
         print("superseded by %s" % it.superseded_by)
     if it.built_sha:
@@ -2234,6 +2238,40 @@ def _sha_refusals(iid, sha, excused):
     return []
 
 
+def _guard_refusals(it, sha):
+    """-> [("guard", why)]: the guard on record is the test shown red, committed at the close's sha, and it passes now."""
+    import repeat_guard as RG
+    test = it.guard["test"]
+    if RG.committed_hash(model.ROOT, sha, test) != it.guard["testHash"]:
+        return [("guard", "%s at %s is not the test shown failing (or is not committed there): show the new one red with `rimflow "
+                          "guard %s`" % (test, str(sha)[:12], it.id))]
+    rc, out = RG.run(model.ROOT, test)
+    return [("guard", "%s still fails (exit %d): %s" % (test, rc, out[-200:]))] if rc else []
+
+
+def cmd_guard(args, seat):
+    """Show a class guard test failing on this instance, and record it. The close then finds it, and reruns it green."""
+    import repeat_guard as RG
+    _, w = load()
+    test = args.test.replace("\\", "/")
+    why = RG.test_problem(model.ROOT, test)
+    if why:
+        die("guard: %s. Nothing recorded." % why)
+    if args.id not in w.items:
+        die("guard: no item %s." % args.id)
+    rc, out = RG.run(model.ROOT, test, args.instance or "")
+    why = RG.red_problem(rc, out)
+    if why:
+        die("guard: %s %s: %s. Nothing recorded." % (test, args.instance or "", why))
+    ev = {"seat": seat, "event": "guard", "id": args.id, "test": test, "testHash": RG.file_hash(model.ROOT, test), "redExit": rc,
+          "redTail": out[-300:]}
+    if args.instance:
+        ev["instance"] = args.instance
+    _emit(ev, w, quiet=True)
+    print("%s guard %s shown failing (exit %d). Commit the test and the ledger shard; the close reruns it green." % (args.id, test, rc))
+    return 0
+
+
 def _close_gate(args, it, sha, no_code):
     """DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED): RO3 and ruling D1(b). -> nothing, or `die` with every reason.
     The item's own half is `model.close_refusals`; what needs git is here."""
@@ -2241,6 +2279,8 @@ def _close_gate(args, it, sha, no_code):
     found = model.close_refusals(it, sha, no_code, owner=said)
     if not no_code:
         found += _sha_refusals(args.id, sha, said or model.AGENT_WHY)
+    if not said and not model.guard_owed(it) and it.live_repeats and it.guard:
+        found += _guard_refusals(it, sha)
     if found:
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
             "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
@@ -3935,6 +3975,11 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("--result", required=True, choices=("broken", "kept"))
     s.add_argument("--detail")
+    s = add("guard", "show a class guard test failing on this instance, and record it; a fix that died closes only with one",
+            cmd_guard)
+    s.add_argument("id")
+    s.add_argument("--test", required=True, help="repo-relative selftest*.py the nightly sweep runs; it must fail now, not crash")
+    s.add_argument("--instance", metavar="\"<args>\"", help="arguments that replay the instance, when the fix is already in")
     s = add("close", "close it against a commit (any seat; --reason if not yours)",
             cmd_close)
     s.add_argument("id")

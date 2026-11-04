@@ -19,10 +19,15 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
   BUDGET   per SLI, the hours it read bad in the last window_h, a gap between passes counted at most max_gap_h. Spent at
            allowed_bad_h ("When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers").
   STATE    degraded while any SLI's budget is spent, else healthy. Degraded pauses NEW content; running work continues.
-  RECUR    a system item whose fix died once already (live_repeats) leads the list, marked as owing a class guard test.
+  RECUR    a system item whose fix died once already (live_repeats) leads the list, marked as owing a class guard test until
+           `rimflow guard` records one (model.guard_owed; `rimflow close` refuses without it). recurring_unguarded: every alarm
+           kind that came back with no guard, open or closed (alarm_census.recurring).
   SYSTEM   open items that are about the system itself (Relentless, Operations, Conductor, Designer, Dispatcher, timers,
-           tests, tools), not game content: a word of its id from system_words, or an id prefix from system_prefixes,
-           and no game mod or content_words word in its id. Order: alarm items (system_prefixes) first, raised, then oldest.
+           tests, tools), not game content: a word of its SUBJECT from system_words, or an id prefix from system_prefixes,
+           and no game mod or content_words word in its id. The subject is the part before the intent word (a twist is a joke
+           about how it went, and names tools in passing); a system_words_lead word counts only as the subject's first word
+           (HOSE_NET_SELFTEST is a mod's test, SELFTEST_CLOCK is the suite's). Order: alarm items (system_prefixes) first,
+           raised, then oldest.
 
 Relentless never computes any of this: it calls read_verdict(); with no fresh verdict it asks system_ids() (this file,
 Operations' classifier) for the open system items and puts them first at once, and says so in its reading.
@@ -36,6 +41,7 @@ import sys
 import time
 from pathlib import Path
 
+RIMFLOW = str(Path(__file__).resolve().parent.parent / "rimflow")
 SCHEMA = "rm.ops_health/1"
 HOUR = 3600.0
 FILE = "health.json"
@@ -44,6 +50,8 @@ DEFAULTS = {
     "slis": [],
     "system_prefixes": ["OPS_"],
     "system_words": [],
+    "system_words_lead": [],
+    "guard_exempt_kinds": [],
     "content_kinds": ["mod", "art"],
     "content_words": [],
     "system_rank": [],      # Operations' hand order, best first; always system, wherever the words put it
@@ -174,6 +182,34 @@ def words_of(item_id, title):
     return set(w) | {a + b for a, b in zip(w, w[1:])}
 
 
+def subject_words(iid):
+    """The id's subject, lower case: what stands before the intent word (model.parse_name); a legacy id has no hinge, so all of
+    it but the trailing number."""
+    if RIMFLOW not in sys.path:
+        sys.path.insert(0, RIMFLOW)
+    import model
+    p = model.parse_name(iid)
+    return [w.lower() for w in (p[0] if p else re.sub(r"_\d+$", "", iid).split("_"))]
+
+
+def owes_guard(it):
+    n = getattr(it, "live_repeats", 0) or 0
+    g = getattr(it, "guard", None)
+    return n > 0 and (not g or (g.get("outages") or 0) < n)
+
+
+def unguarded(world, c):
+    """Recurring alarm kinds with no guard (alarm_census.recurring), or None when the alarm log cannot be read."""
+    if RIMFLOW not in sys.path:
+        sys.path.insert(0, RIMFLOW)
+    import alarm_census as AC
+    try:
+        rows = AC.read_log(str(ops_dir() / "alarms_log.jsonl"))
+    except OSError:
+        return None
+    return AC.recurring(rows, world.items, c["guard_exempt_kinds"])
+
+
 def rank_of(iid, c):
     """The item's place on Operations' hand order, or None. An entry ending in * is a family (new reds rank as they appear)."""
     for n, e in enumerate(c["system_rank"]):
@@ -194,7 +230,10 @@ def is_system(item, c, mods):
         return False
     if any(iid.startswith(p) for p in c["system_prefixes"]):
         return True
-    return bool(words & {w.lower() for w in c["system_words"]})
+    subject = subject_words(iid)
+    strong = {w.lower() for w in c["system_words"]}
+    lead = {w.lower() for w in c["system_words_lead"]}
+    return bool(subject) and (subject[0] in strong | lead or bool(words_of("_".join(subject), "") & (strong - lead)))
 
 
 def system_items(world, rules, root):
@@ -224,7 +263,7 @@ def verdict(points, history, world, rules, root, now):
     ids = [it.id for it in items] if items is not None else None
     # design idea 5: a twice-seen alarm closes only with a class fix, a guard test that fails on the whole class
     recurring = [{"id": it.id, "outages": it.live_repeats, "owes": "a guard test for the class, shown failing on this instance"}
-                 for it in items or () if getattr(it, "live_repeats", 0)]
+                 for it in items or () if owes_guard(it)]
     why = ("error budget spent: " + ", ".join("%s %sh bad of %sh" % (k, b[k]["bad_h"], c["allowed_bad_h"]) for k in spent)
            if spent else "every SLI inside its budget")
     if drifted:
@@ -234,7 +273,7 @@ def verdict(points, history, world, rules, root, now):
     if ids is None:
         why += "; no ledger this pass: system_items unknown"
     return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "budget": b, "spent": spent, "drifted": drifted,
-            "system_items": ids, "recurring": recurring, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
+            "system_items": ids, "recurring": recurring, "recurring_unguarded": unguarded(world, c) if world is not None else None, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
 
 
 def publish(points, history, world, rules, root, now, path=None):
