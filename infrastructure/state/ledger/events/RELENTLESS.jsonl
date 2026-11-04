@@ -140,3 +140,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:11:56Z","tsn":1793761916408781913}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T03:15:27Z","tsn":1793762127480107617}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1 (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T03:36:17Z","tsn":1793763377489003729}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:40:48Z","tsn":1793763648222885107}
