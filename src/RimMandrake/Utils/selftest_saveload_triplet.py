@@ -310,6 +310,34 @@ try:
 except Exception as ex:  # noqa: BLE001 - an import/wiring crash is a FAIL, never a skip
     ok(False, "GSS --triplet wiring ran", repr(ex))
 
+
+# 9. the live clause is readable whole and bound to the --triplet run. The ledger cuts a criterion at
+# model.CRITERION_TEXT_MAX; the supervisor refuses a live round on a cut criterion no prose extends ("cut at 160 chars on
+# the ledger and no prose holds the rest", 2026-11-04). Read A1 exactly as the live round does (relentless_live.Fx.prose +
+# whole_criterion over the ledger's own copy) and check the proof line it would run is the GSS --triplet run.
+ITEM = "PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET"
+try:
+    ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
+    import relentless_live as RL   # noqa: E402
+    fx = RL.Fx(books=ROOT)
+    item = fx.item(ITEM) or {}
+    a1 = [c for c in item.get("criteria") or [] if c.get("id") == "A1"]
+    ok(len(a1) == 1 and a1[0].get("level") == "L2", "ledger holds live criterion A1 at L2", a1)
+    whole = RL.whole_criterion(a1[0], fx.prose(ITEM)) if a1 else {"cut": True}
+    ok(not whole.get("cut") and not whole.get("retiered"), "A1 reads whole (ledger copy extended by prose/.criteria)",
+       whole)
+    text = whole.get("text") or ""
+    ok(all(w in text for w in ("saves once", "loads twice", "all three arms", "one measured tick", "IDENTICAL",
+                               "validation.py --triplet exit 0")),
+       "A1 whole text names the save-once/load-twice/three-arm IDENTICAL clause and its --triplet exit", text)
+    with open(os.path.join(ROOT, "infrastructure", "state", "live_proofs", ITEM + ".txt"), encoding="utf-8") as f:
+        a1_lines = [ln for ln in f.read().splitlines() if ln.startswith("live-proof A1:")]
+    ok(len(a1_lines) == 1 and a1_lines[0].rstrip().endswith("GimmeSomeSlack/validation.py --triplet < /dev/null"),
+       "live-proof A1 ends on the GSS --triplet run, whose exit is the verdict", a1_lines)
+except Exception as ex:  # noqa: BLE001 - an unreadable ledger or proof file is a FAIL, never a skip
+    ok(False, "live criterion A1 binding read", repr(ex))
+
 n = sum(RES)
 print("%d/%d" % (n, len(RES)))
 sys.exit(0 if n == len(RES) else 1)
