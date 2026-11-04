@@ -1,0 +1,1 @@
+A repair item that holds chains must have a cause that closes itself or an owner: FC103899 (a stale companion) sat 2 days holding 59 FlowWorks chains, so the fixed lane stayed EXHAUSTED, which read as 'nothing to test'. When the filler says exhausted, group gaps.settled()'s held chains by repair item before believing it.

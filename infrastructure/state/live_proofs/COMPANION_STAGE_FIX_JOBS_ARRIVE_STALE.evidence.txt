@@ -1,0 +1,8 @@
+Copied from the live queue, D:\ClaudeWork\rimmandrake\testq\done\, 2026-11-03. Live state is what the proof reads; this is for a reader without that drive.
+{"cause": "HARNESS", "chains": ["toggle_pit_exposure", "works", "all_off_still_digs", "pit_travel_fly_jump_float"], "companion_state": "FRESH", "counts": {}, "embedded": "1c4d3873ecae425611d8f187f561fa3a8018439f20b6b433e863cb5719a3aad8", "finished": "2026-11-03T23:48:19Z", "id": "J20261103T233438Z-aa0482", "outcome": "INVALID", "requested_by": "BENCH.filler", "source_sha": "3fec539f5d", "want": "1c4d3873ecae425611d8f187f561fa3a8018439f20b6b433e863cb5719a3aad8"}
+{"cause": null, "chains": ["taken_by_land", "toggle_bottle_loop"], "companion_state": "FRESH", "counts": {"PASS": 1, "UNMEASURED": 2}, "embedded": "1c4d3873ecae425611d8f187f561fa3a8018439f20b6b433e863cb5719a3aad8", "finished": "2026-11-04T00:04:01Z", "id": "J20261103T235805Z-399647", "outcome": "DONE", "requested_by": "BENCH.filler", "source_sha": "bddec54ee8", "want": "1c4d3873ecae425611d8f187f561fa3a8018439f20b6b433e863cb5719a3aad8"}
+--- companion_stage.py proof
+ok   stager: staged want 1c4d3873ecae, 32 s old
+ok   job J20261103T235805Z-399647 (BENCH.filler) passed deploy with companion FRESH, outcome DONE
+ok   steve.state RUNNING: running J20261103T235805Z-399647
+PROOF PASS
