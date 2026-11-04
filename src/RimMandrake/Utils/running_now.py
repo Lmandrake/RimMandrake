@@ -52,6 +52,7 @@ HIST = OUT_DIR + "/running_history.jsonl"
 STATE = OUT_DIR + "/running_state.json"
 STEVE_CACHE = OUT_DIR + "/running_steve.json"
 FLEET_CACHE = OUT_DIR + "/running_fleet.json"
+FLEET_STALE = 1800          # past this a last good reading stops being shown
 FLEET_EVERY = 300           # mods, receipts and the Needs you list cost about 5 s: refreshed after the page is on disk
 HOLD_CAP = 2700             # a bridge hold silent for 45 minutes is stale by the bridge's own rule: it stops counting as busy
 TREND_BUCKET = 7200         # the trend lines: two-hour points
@@ -273,7 +274,8 @@ class Env:
                         if d.get("event") == "bridge" and d.get("host") in (None, "archmagi"):
                             out.append((iso_epoch(d["ts"]), d.get("state")))
                     except (ValueError, KeyError, TypeError):
-                        continue    # another seat is writing this shard: the next minute reads it whole
+                        if line.endswith("\n"):      # only a last line still being written may be broken
+                            raise Unmeasured("a bridge record in %s is broken" % os.path.basename(p))
         if not out:
             raise Unmeasured("no bridge event in the ledger")
         return sorted(out)
@@ -1157,7 +1159,7 @@ def pipeline_svg(p):
     yy = 52
     tk = p["tokens"]
     full = full_days(tk, now) if tk else []
-    gauge(172, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN, "UTC day; last full day %s" % tokens(full[0]["spent"]) if full else None, yy=yy)
+    gauge(172, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN, "UTC day; %s/%s: %s" % (full[0]["day"][4:6], full[0]["day"][6:], tokens(full[0]["spent"])) if full else None, yy=yy)
     if full:
         pers = [r["per"] for r in full]
         gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "%s" % tokens(full[0]["per"]), TEXT, "%s/%s: %d closed; days seen %s-%s" % (full[0]["day"][4:6], full[0]["day"][6:], full[0]["closed"], tokens(min(pers)), tokens(max(pers))), yy=yy)
@@ -1741,8 +1743,12 @@ def box(*parts):
 
 
 def fleet_of(p):
+    """The cached slow half, or None. A failed refresh keeps the last reading for FLEET_STALE, then it reads UNMEASURED:
+    today's receipts and his Needs you list must not pass on yesterday's numbers."""
     f = p.get("fleet")
-    return f if isinstance(f, dict) and f.get("mods") is not None else None
+    if not isinstance(f, dict) or f.get("mods") is None or p["now"] - f.get("good_t", 0) > FLEET_STALE:
+        return None
+    return f
 
 
 def needs_html(p):
@@ -1823,7 +1829,7 @@ def mods_html(p):
         if m.get("more"):
             inner.append(SMALL % ("and %d more" % m["more"]))
         out.append("<div style='margin-top:10px'>%s</div><div style='margin:2px 0 0 16px'>%s</div>" % (" ".join(line), "".join(inner)))
-    return box(HEAD % ("PROGRESS BY MOD, %d TOUCHED IN 7 DAYS, ✓ JUDGE PASSED · ✗ FAILED · ● UNCHECKED · ○ OPEN · ⏸ PARKED" % len(f["mods"])), "".join(out))
+    return box(HEAD % ("PROGRESS BY MOD, %d MODS TOUCHED IN 7 DAYS, ✓ JUDGE PASSED · ✗ FAILED · ● UNCHECKED · ○ OPEN · ⏸ PARKED" % sum(1 for m in f["mods"] if not m.get("infra") and not m.get("cross"))), "".join(out))
 
 
 def phone_copy(p, chips):
@@ -2048,7 +2054,7 @@ def gather(env, state, hist=(), write=True):
         p["unmeasured"].append("tokens per item (%s)" % why)
     p["owner_notes"], _ = guarded(collect_owner_notes, env, now)
     p["fleet"], p["fleet_why"] = guarded(env.read_json, FLEET_CACHE)
-    if not write and p["fleet"] is None:       # --print on a machine with no cache yet still draws the whole page
+    if not write and not fleet_of(p):       # --print on a machine with no fresh cache still draws the whole page
         p["fleet"], p["fleet_why"] = guarded(refresh_fleet, env, False)
     fl = fleet_of(p)
     if not fl:

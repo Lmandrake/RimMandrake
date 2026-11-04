@@ -169,15 +169,25 @@ def ledger():
     return evs, model.replay(evs)
 
 
-def relentless_states():
+def relentless_states(strict=False):
+    """Every item's state. strict: an item whose state cannot be read raises (a short list would drop its hold and its
+    receipt, and read as true); otherwise it is skipped."""
     out = {}
-    for p in glob.glob(os.path.join(STORE, "items", "*", "state.json")):
+    root = os.path.join(STORE, "items")
+    for name in os.listdir(root) if strict else (os.path.basename(os.path.dirname(p)) for p in glob.glob(os.path.join(root, "*", "state.json"))):
+        p = os.path.join(root, name, "state.json")
         try:
             with open(p) as f:
                 s = json.load(f)
-        except (OSError, ValueError):
+        except FileNotFoundError:
+            if strict and os.path.isdir(os.path.join(root, name)):
+                raise
             continue
-        out[s.get("item") or os.path.basename(os.path.dirname(p))] = s
+        except (OSError, ValueError):
+            if strict:
+                raise
+            continue
+        out[s.get("item") or name] = s
     return out
 
 
@@ -471,7 +481,7 @@ def factory(now, store=STORE):
 def gather(now, days=DAYS, detached_done=()):
     log = parse_log(git_log(days))
     evs, world = ledger()
-    rel = relentless_states()
+    rel = relentless_states(strict=True)
     mc = load_json(MODCHECK, {})
     folders = mod_folders()
     by_item, item_mods = attribute(log, world.items, folders)[:2]
