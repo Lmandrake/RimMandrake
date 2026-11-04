@@ -72,6 +72,12 @@ RELENTLESS_STORE = "/home/mandrake/rm/relentless/store"
 LIVE_RUNS = "/home/mandrake/rm/relentless/live/runs.jsonl"
 RUNS_TAIL = 2 * 1024 * 1024
 IDLE_WINDOW_MIN = 180
+FUEL_TAIL = 512 * 1024      # series.jsonl gains about 470 bytes per account per 15-minute poll: this holds days
+FUEL_NEAR = 3 * 3600        # "current" burn is the last 3 h ...
+FUEL_FAR = 6 * 3600         # ... widened to 6 h when under FUEL_NEAR_RISE points rose, since /usage reports whole percents
+FUEL_NEAR_RISE = 3
+FUEL_MIN_SPAN = 3600        # under an hour of readings is no rate
+FUEL_EQUAL = 0.15           # EQUAL: within this share of the pace, or one point over the span, whichever is wider
 JOURNAL_TAIL = 6 * 1024 * 1024      # the journal grew 2.6 MB in 3 days: this tail holds far more than 24 h
 STEVE_SSH = "stevedesktop-wsl"
 STEVE_TS_PEER = "stevedesktop"
@@ -195,6 +201,9 @@ class Env:
 
     def mtime(self, path):
         return os.stat(path).st_mtime
+
+    def account_names(self):
+        return list(account_usage_module().registry())
 
     def listdir(self, path):
         return os.listdir(path)
@@ -1844,6 +1853,189 @@ def mods_html(p):
     return box(HEAD % ("PROGRESS BY MOD, %d MODS TOUCHED IN 7 DAYS, ✓ JUDGE PASSED · ✗ FAILED · ● UNCHECKED · ○ OPEN · ⏸ PARKED" % sum(1 for m in f["mods"] if not m.get("infra") and not m.get("cross"))), "".join(out))
 
 
+# --------------------------------------------------------------------------- the three accounts' weekly fuel
+def account_usage_module():
+    """Imported late so that a broken account_usage.py costs this panel, not the page."""
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
+    import account_usage
+    return account_usage
+
+
+def fuel_series(text, truncated, au):
+    """account -> [(epoch, pct used, reset epoch)], oldest first, MEASURED points only: an ESTIMATE only repeats an old figure."""
+    lines = text.splitlines()
+    out = {}
+    for line in lines[1:] if truncated else lines:
+        try:
+            r = json.loads(line)
+            t, pct = au.epoch(r["measured_at"]), r["week_pct_used"]
+            if r["source"] == "MEASURED" and t is not None and isinstance(pct, (int, float)) and not isinstance(pct, bool):
+                out.setdefault(r["account"], []).append((t, pct, au.epoch(r.get("week_resets_at"))))
+        except (ValueError, KeyError, TypeError, AttributeError):
+            continue        # a torn or foreign line says nothing about the rate
+    for rows in out.values():
+        rows.sort(key=lambda x: x[0])
+    return out
+
+
+def fuel_burn(samples, left, hours, measured, reset):
+    """The burn rate against the spend left -> {burn, pace, span, verdict, ...}, or raises Unmeasured with the reason.
+
+    burn: points per hour across the current window. pace: the points per hour that would use exactly what is left by the
+    reset. AHEAD = burning faster than what is left can last; BEHIND = slower, so some goes unused; EQUAL = inside
+    FUEL_EQUAL of the pace or inside the error of two whole-percent readings, which cannot be told apart."""
+    if not samples:
+        raise Unmeasured("no measured readings in the series")
+    last = samples[-1]
+    if measured is not None and measured - last[0] > account_usage_module().STALE_AFTER:
+        raise Unmeasured("the series stopped %s before the reading" % ago(measured - last[0]))
+    if last[2] is not None and reset is not None and abs(last[2] - reset) > 3600:
+        raise Unmeasured("the series' newest reading is from another week")
+    chain = [last]
+    for s in reversed(samples[:-1]):
+        if last[0] - s[0] > FUEL_FAR or s[1] > chain[-1][1] or (s[2] is not None and last[2] is not None and abs(s[2] - last[2]) > 3600):
+            break       # too old, or a reset lies between them: usage only rises inside one week
+        chain.append(s)
+    near = [s for s in chain if last[0] - s[0] <= FUEL_NEAR][-1]
+    start = near if last[1] - near[1] >= FUEL_NEAR_RISE and last[0] - near[0] >= FUEL_MIN_SPAN else chain[-1]
+    span = last[0] - start[0]
+    if span < FUEL_MIN_SPAN:
+        raise Unmeasured("only %s of readings this week" % ago(span))
+    hrs = span / 3600
+    burn, pace = (last[1] - start[1]) / hrs, left / hours
+    gap = burn - pace
+    verdict = "EQUAL" if abs(gap) <= max(FUEL_EQUAL * pace, 1 / hrs) else ("AHEAD" if gap > 0 else "BEHIND")
+    out = {"burn": burn, "pace": pace, "span": span, "verdict": verdict}
+    if verdict == "AHEAD":
+        out["out_in"] = left / burn
+        out["early"] = hours - left / burn
+    elif verdict == "BEHIND":
+        out["unused"] = left - burn * hours
+    return out
+
+
+def fuel_row(name, d, series, series_why, now, au):
+    """One account's reading. why set = UNMEASURED, every figure withheld; burn_why set = the week figures stand, the rate does not."""
+    row = {"name": name, "why": None, "burn_why": None}
+    if d is None:
+        row["why"] = "no reading on file"
+        return row
+    left, hours, reset = d.get("week_pct_left"), d.get("hours_to_week_reset"), au.epoch(d.get("week_resets_at"))
+    age = d.get("age_min")
+    if d.get("source") not in ("MEASURED", "ESTIMATE"):
+        row["why"] = clip(str(d.get("why") or "no measurement"), 80)
+    elif d.get("stale"):
+        row["why"] = "last poll %s ago" % ago(d["poll_age_min"] * 60)
+    elif age is None or age * 60 > au.STALE_AFTER or age < -5:
+        row["why"] = "no measurement time" if age is None else ("last measured %s ago" % ago(age * 60) if age > 0 else "measured in the future")
+    elif not isinstance(left, (int, float)) or not 0 <= left <= 100:
+        row["why"] = "no week figure in the reading" if left is None else "week figure out of range"
+    elif reset is None or hours is None or reset <= now:
+        row["why"] = "no week reset time, or the reset has passed"
+    if row["why"]:
+        return row
+    exact = (reset - now) / 3600        # the 2-decimal hours_to_week_reset rounds to 0 in the last minute
+    row.update(left=left, hours=exact, reset=reset, estimate=d["source"] == "ESTIMATE", age=age)
+    if series_why:
+        row["burn_why"] = "the series is unreadable (%s)" % clip(series_why, 60)
+        return row
+    got, why = guarded(fuel_burn, series.get(name) or [], left, exact, au.epoch(d.get("measured_at")), reset)
+    if why:
+        row["burn_why"] = why
+    else:
+        row.update(got)
+    return row
+
+
+def collect_fuel(env, now):
+    """Every account's week from account_usage.py's own files. The registry says who should be here, so a missing account shows."""
+    au = account_usage_module()
+    lat = env.read_json(str(au.DATA_DIR / "latest.json"))
+    recs = lat.get("accounts") if isinstance(lat, dict) else None
+    if not isinstance(recs, dict):
+        raise Unmeasured("latest.json holds no accounts")
+    names, _ = guarded(env.account_names)
+    names = list(names or []) + sorted(n for n in recs if n not in (names or []))
+    if not names:
+        raise Unmeasured("no account in the registry or latest.json")
+    tail, series_why = guarded(env.read_tail, str(au.DATA_DIR / "series.jsonl"), FUEL_TAIL)
+    series = fuel_series(tail[0], tail[1], au) if tail else {}
+    rows = []
+    for name in names:
+        d, why = (None, None) if name not in recs else guarded(au.derive_record, recs[name], now)
+        row, row_why = guarded(fuel_row, name, d, series, series_why, now, au) if not why else (None, why)
+        rows.append(row or {"name": name, "why": "unreadable reading (%s)" % clip(row_why, 60), "burn_why": None})
+    return rows
+
+
+FUEL_COLOUR = {"AHEAD": BAD, "EQUAL": GOOD, "BEHIND": LIVE}
+
+
+def rate(x):
+    return "%.2f points/h" % x
+
+
+def fuel_left(r):
+    """What is left, in the same words on the page and the phone."""
+    return "%s%g%% left" % ("at most " if r["estimate"] else "", r["left"])
+
+
+def fuel_verdict_words(r):
+    """(verdict word, the rest of the sentence); the verdict is the word he reads, the rest is why."""
+    head = "burning %s over %s; %s would last to the reset" % (rate(r["burn"]), ago(r["span"]), rate(r["pace"]))
+    if r["verdict"] == "AHEAD":
+        return "AHEAD", "%s: runs out in %s, %s before the reset" % (head, ago(r["out_in"] * 3600), ago(r["early"] * 3600))
+    if r["verdict"] == "BEHIND":
+        return "BEHIND", "%s: about %.0f%% unused at the reset" % (head, r["unused"])
+    return "EQUAL", "%s: lasts to about the reset" % head
+
+
+def fuel_html(p):
+    rows = p["fuel"]
+    if not rows:
+        return box(HEAD % "ACCOUNTS, THIS WEEK", '<b style="color:%s">UNMEASURED</b> ' % WARN, hesc(clip(p.get("fuel_why") or "not read", 120)))
+    out = []
+    for r in rows:
+        name = '<span style="display:inline-block;width:64px;font-weight:700">%s</span>' % hesc(r["name"])
+        if r["why"]:
+            out.append('<div>%s<b style="color:%s">UNMEASURED</b> %s</div>' % (name, WARN, SMALL % hesc(r["why"])))
+            continue
+        share = max(0.0, min(100.0, float(r["left"])))
+        bar = '<span style="display:inline-block;width:100px;height:8px;background:%s;border-radius:2px;margin-right:8px"><span style="display:block;width:%dpx;height:8px;background:%s;border-radius:2px"></span></span>' % (EDGE, round(share), TEXT)
+        figures = '<b style="font-size:15px">%s</b>, resets in <b>%s</b>' % (hesc(fuel_left(r)), ago(r["hours"] * 3600))
+        if r["estimate"]:
+            figures += " " + SMALL % ("estimate, measured %s ago" % ago(r["age"] * 60))
+        if r["burn_why"]:
+            burn = '<b style="color:%s">burn UNMEASURED</b> %s' % (WARN, SMALL % hesc(r["burn_why"]))
+        else:
+            word, rest = fuel_verdict_words(r)
+            burn = '<b style="color:%s;font-size:15px">%s</b> %s' % (FUEL_COLOUR[word], word, SMALL % hesc(rest))
+        out.append('<div style="margin-top:4px">%s%s%s</div><div style="margin-left:64px">%s</div>' % (name, bar, figures, burn))
+    return box(HEAD % "ACCOUNTS, THIS WEEK", "".join(out))
+
+
+def fuel_phone(p):
+    rows = p["fuel"]
+    if not rows:
+        return ["ACCOUNTS UNMEASURED: %s" % clip(p.get("fuel_why") or "not read", 70)]
+    out = ["ACCOUNTS, THIS WEEK"]
+    for r in rows:
+        if r["why"]:
+            out.append("%s UNMEASURED: %s" % (r["name"], clip(r["why"], 60)))
+            continue
+        line = "%s %s, resets in %s: " % (r["name"], fuel_left(r), ago(r["hours"] * 3600))
+        if r["burn_why"]:
+            out.append(line + "burn UNMEASURED")
+        elif r["verdict"] == "AHEAD":
+            out.append(line + "AHEAD, out %s before reset" % ago(r["early"] * 3600))
+        elif r["verdict"] == "BEHIND":
+            out.append(line + "BEHIND, %.0f%% unused at reset" % r["unused"])
+        else:
+            out.append(line + "EQUAL")
+    return out
+
+
 def phone_copy(p, chips):
     """The same reading in a few plain lines (owner 2026-11-04): no model, no SVG; the Conductor sends it when he asks for status."""
     now, it, thr, f = p["now"], p["items"], p["throughput"], fleet_of(p)
@@ -1852,7 +2044,7 @@ def phone_copy(p, chips):
         out.append("TOKEN PAUSE ON: " + PAUSE_WORDS)
     elif p["pause"] is None:
         out.append("TOKEN PAUSE UNMEASURED")
-    out += [" · ".join(t for t, _ in chips), ""]
+    out += [" · ".join(t for t, _ in chips), ""] + fuel_phone(p) + [""]
     if f:
         n = f["needs"]
         out.append("NEEDS YOU %d" % n["count"])
@@ -2089,6 +2281,12 @@ def gather(env, state, hist=(), write=True):
     p["tokens"], why = (None, "no throughput") if not p["throughput"] else guarded(collect_tokens, env, now, p["throughput"])
     if why:
         p["unmeasured"].append("tokens per item (%s)" % why)
+    p["fuel"], p["fuel_why"] = guarded(collect_fuel, env, now)
+    if p["fuel_why"]:
+        p["unmeasured"].append("account fuel (%s)" % p["fuel_why"])
+    for r in p["fuel"] or []:
+        if r["why"] or r["burn_why"]:
+            p["unmeasured"].append("account %s %s(%s)" % (r["name"], "burn " if not r["why"] else "", r["why"] or r["burn_why"]))
     p["owner_notes"], _ = guarded(collect_owner_notes, env, now)
     p["fleet"], p["fleet_why"] = guarded(env.read_json, FLEET_CACHE)
     if not write and not fleet_of(p):       # --print on a machine with no fresh cache still draws the whole page
@@ -2164,7 +2362,11 @@ def build(env, state, hist, write=True):
         return out
 
     # how many Judges may run above the ceiling comes from relentless.py admission(): a check takes extra=1
-    S = [panel("Needs you", needs_html), "",
+    S = [panel("Accounts", fuel_html),
+         how_to_read("Each account's week: % left and time to its reset, from account_usage.py. The word compares the burn rate of the last 3 to 6 hours with the rate that would use exactly what is left by the reset. "
+                     "AHEAD: burning faster than what is left can last, so it runs out early. EQUAL: about right, within 15% or within what whole-percent readings can tell apart. BEHIND: burning slower, so some goes unused. "
+                     "A reading older than 45 minutes, or one that cannot be read, says UNMEASURED."), "",
+         panel("Needs you", needs_html), "",
          panel("Relentless Pipeline", pipeline_svg),
          how_to_read("Items move left to right; each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
                      "A place is one running Builder or Judge, or one being stopped; 8 is the ceiling for starting a Builder. A Judge may start one place above it, because "

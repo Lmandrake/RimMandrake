@@ -519,21 +519,24 @@ def read_now(now: float | None = None) -> dict:
     the figures come from; stale when the poll itself is older than 45 min (the timer stopped)."""
     now = now or time.time()
     lat = read_latest() or {}
-    out = {"schema": SCHEMA, "updated": lat.get("updated"), "accounts": {}}
-    for name, r in (lat.get("accounts") or {}).items():
-        d = dict(r)
-        polled = now - (epoch(r.get("ts")) or 0)
-        d["poll_age_min"] = round(polled / 60, 1)
-        d["stale"] = polled > STALE_AFTER
-        basis = epoch(r.get("measured_at"))
-        d["age_min"] = None if basis is None else round((now - basis) / 60, 1)
-        for k in ("session", "week"):
-            used, rs = r.get(f"{k}_pct_used"), epoch(r.get(f"{k}_resets_at"))
-            reset_passed = rs is not None and rs <= now
-            d[f"{k}_pct_left"] = None if used is None or reset_passed else round(100 - used, 1)
-            d[f"hours_to_{k}_reset"] = None if rs is None or reset_passed else round((rs - now) / 3600, 2)
-        out["accounts"][name] = d
-    return out
+    return {"schema": SCHEMA, "updated": lat.get("updated"),
+            "accounts": {name: derive_record(r, now) for name, r in (lat.get("accounts") or {}).items()}}
+
+
+def derive_record(r: dict, now: float) -> dict:
+    """One latest.json record plus the derived fields read_now documents. Pure: running_now.py calls it on the file it read."""
+    d = dict(r)
+    polled = now - (epoch(r.get("ts")) or 0)
+    d["poll_age_min"] = round(polled / 60, 1)
+    d["stale"] = polled > STALE_AFTER
+    basis = epoch(r.get("measured_at"))
+    d["age_min"] = None if basis is None else round((now - basis) / 60, 1)
+    for k in ("session", "week"):
+        used, rs = r.get(f"{k}_pct_used"), epoch(r.get(f"{k}_resets_at"))
+        reset_passed = rs is not None and rs <= now
+        d[f"{k}_pct_left"] = None if used is None or reset_passed else round(100 - used, 1)
+        d[f"hours_to_{k}_reset"] = None if rs is None or reset_passed else round((rs - now) / 3600, 2)
+    return d
 
 
 # ------------------------------------------------------------------ timer

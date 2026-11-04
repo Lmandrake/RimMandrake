@@ -7,6 +7,8 @@ a place held with no process is called out; idle under a brake is the first, red
 count a verdict once; the page is on disk before ssh is tried and a dead ssh changes nothing but the route dots; the
 write is atomic, a failed build keeps the old page and the next good page carries a STALE banner; no blank line sits
 inside the details block (Typora would end the block there and spill the rest).
+The fuel gauge: every account's week left and time to reset with AHEAD/EQUAL/BEHIND against the spend left; a stale or
+unreadable reading, or a burn with no honest rate, says UNMEASURED.
 """
 import json
 import os
@@ -50,6 +52,7 @@ class Fake(R.Env):
         self.bridge, self.fleet, self.mods = None, None, None
         self.calls = []
         self.out = None
+        self.names = []
 
     def now(self):
         return self.clock
@@ -107,6 +110,10 @@ class Fake(R.Env):
 
     def read_tail(self, path, n):
         return self.read_text(path), False
+
+    def account_names(self):
+        return self.names
+
 
     def mtime(self, path):
         if path in self.files:
@@ -393,7 +400,7 @@ page, sample, phone = R.build(full, {}, [])
 for word in ("How to read", "Relentless-style Builder or Judge", "NEEDS YOU, 2", "RECENT EVENTS", "FINISHED TODAY, 1", "PROGRESS BY MOD, 1 MODS", "ARCHMAGI", "STEVEDESKTOP", "LIVE TESTING, LAST 24 H",
              "TRENDS, 48 H", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED", "1 of 10", "GAME UNMEASURED", "game idle", "live proofs", "oldest", "normal", "FALSIFIED EXPECTATIONS", "9 of 8", "Judge's FAIL", "<title>"):
     check("the page shows: " + word, word in page)
-check("the page has a how-to-read line for each of its panels", page.count("How to read:") == 6)
+check("the page has a how-to-read line for each of its panels", page.count("How to read:") == 7)
 check("CLOSED PER HOUR is gone, the 24 h histogram stays", "CLOSED PER HOUR" not in page and "LAST 24 H, EVENTS" in page)
 check("the old names are gone", "blind checker" not in page.lower() and "checkers" not in page and "workers " not in page.split("<details>")[0].replace("workers can", ""))
 check("Needs you folds a topic into one row and escapes it", page.count("Look at the bridge") == 1 and "DRAW, 2 items" in page and "&lt;Other&gt; line" in page and "<Other>" not in page)
@@ -589,6 +596,137 @@ check("the real Env reads the rules file", R.collect_pause(R.Env()) is True)
 os.unlink(tmp.name)
 check("the real Env on a missing rules file is unread, not off", R.guarded(R.collect_pause, R.Env())[0] is None)
 R.RULES_FILE = real_rules
+
+# --------------------------------------------------------------------------- the fuel gauge
+AU = R.account_usage_module()
+LATEST, SERIES = str(AU.DATA_DIR / "latest.json"), str(AU.DATA_DIR / "series.jsonl")
+
+
+def fuel_rec(name, used, hours_to_reset=20.0, age_h=0.1, source="MEASURED", poll_h=None):
+    return {"account": name, "source": source, "ts": AU.iso(NOW - (age_h if poll_h is None else poll_h) * 3600), "measured_at": AU.iso(NOW - age_h * 3600),
+            "week_pct_used": used, "week_resets_at": AU.iso(NOW + hours_to_reset * 3600), "why": "fixture"}
+
+
+def fuel_points(name, pairs, hours_to_reset=20.0, source="MEASURED"):
+    """pairs: (hours ago, percent used)."""
+    return [fuel_rec(name, used, hours_to_reset, age, source) for age, used in pairs]
+
+
+def fuel_env(latest, series, names=("alpha", "beta", "gamma")):
+    env = Fake(ps="", units=[], timers=[], files={LATEST: latest, SERIES: "\n".join(json.dumps(r) for r in series)})
+    env.names = list(names)
+    return env
+
+
+def fuel_rows(env):
+    return {r["name"]: r for r in R.collect_fuel(env, NOW)}
+
+
+GOOD_LATEST = {"accounts": {"alpha": fuel_rec("alpha", 95), "beta": fuel_rec("beta", 59), "gamma": fuel_rec("gamma", 90)}}
+GOOD_SERIES = (fuel_points("alpha", [(3.1, 87), (2, 90), (1, 93), (0.1, 95)])            # 8 points in 3 h with 5 left over 20 h
+               + fuel_points("beta", [(5.9, 57), (3, 58), (0.1, 59)])                    # 2 points in 6 h with 41 left over 20 h
+               + fuel_points("gamma", [(3.1, 88.5), (0.1, 90)]))
+rows = fuel_rows(fuel_env(GOOD_LATEST, GOOD_SERIES))
+check("fuel: every account's week left and hours to reset", rows["alpha"]["left"] == 5 and rows["beta"]["left"] == 41 and abs(rows["alpha"]["hours"] - 20) < 0.01)
+check("fuel: a burn faster than what is left reads AHEAD", rows["alpha"]["verdict"] == "AHEAD" and abs(rows["alpha"]["burn"] - 8 / 3) < 0.01 and abs(rows["alpha"]["pace"] - 0.25) < 0.01)
+check("fuel: AHEAD says when it runs out", abs(rows["alpha"]["out_in"] - 5 / (8 / 3)) < 0.01 and abs(rows["alpha"]["early"] - (20 - 5 / (8 / 3))) < 0.01)
+check("fuel: a burn slower than what is left reads BEHIND", rows["beta"]["verdict"] == "BEHIND" and 30 < rows["beta"]["unused"] < 41)
+
+# EQUAL: 12 points in 6 h is 2 points/h; 40 left over 20 h is exactly 2.
+eq = {"accounts": {"alpha": fuel_rec("alpha", 60)}}
+rows = fuel_rows(fuel_env(eq, fuel_points("alpha", [(6.1, 48), (3, 54), (0.1, 60)])))
+check("fuel: a burn at the pace reads EQUAL", rows["alpha"]["verdict"] == "EQUAL" and rows["alpha"]["why"] is None)
+check("fuel: the registry says who should be here, a missing account says UNMEASURED", rows["beta"]["why"] == "no reading on file" and rows["gamma"]["why"] == "no reading on file")
+# the 15% band edges, sweeping the burn past the pace with a span big enough that the whole-percent error is narrower
+for burn, want in ((2.29, "EQUAL"), (1.71, "EQUAL"), (2.5, "AHEAD"), (1.5, "BEHIND")):
+    samples = [(NOW - 6 * 3600, 20.0, None), (NOW, 20.0 + burn * 6, None)]
+    got = R.fuel_burn(samples, 40.0, 20.0, NOW, None)
+    check("fuel: at 2 points/h pace, burn %s reads %s" % (burn, want), got["verdict"] == want)
+# a flat account with little left over a long way is BEHIND at the 6 h grain, though 3 h cannot tell
+flat = R.fuel_burn([(NOW - 5.9 * 3600, 95, None), (NOW - 3 * 3600, 95, None), (NOW, 95, None)], 5.0, 18.0, NOW, None)
+check("fuel: a flat account widens to 6 h and reads BEHIND", flat["verdict"] == "BEHIND" and flat["span"] > 5 * 3600)
+check("fuel: one point over the span cannot be told from the pace", R.fuel_burn([(NOW - 3 * 3600, 90, None), (NOW, 91, None)], 9.0, 30.0, NOW, None)["verdict"] == "EQUAL")
+check("fuel: a strong 3 h rise uses 3 h, not the older calm", abs(R.fuel_burn([(NOW - 6 * 3600, 50, None), (NOW - 3 * 3600, 50, None), (NOW, 62, None)], 38.0, 10.0, NOW, None)["burn"] - 4) < 0.01)
+check("fuel: nothing left and nothing burning is EQUAL", R.fuel_burn([(NOW - 6 * 3600, 100, None), (NOW, 100, None)], 0.0, 10.0, NOW, None)["verdict"] == "EQUAL")
+check("fuel: nothing left and still burning is AHEAD", R.fuel_burn([(NOW - 3 * 3600, 94, None), (NOW, 100, None)], 0.0, 10.0, NOW, None)["verdict"] == "AHEAD")
+
+
+def fuel_refuses(samples, measured=NOW, reset=None):
+    return R.guarded(R.fuel_burn, samples, 40.0, 20.0, measured, reset)[1]
+
+
+check("fuel: no series points is no rate", fuel_refuses([]) is not None)
+check("fuel: under an hour of readings is no rate", "of readings" in fuel_refuses([(NOW - 1800, 50, None), (NOW, 52, None)]))
+check("fuel: a reset between readings cuts the rate there", "of readings" in fuel_refuses([(NOW - 5 * 3600, 90, None), (NOW - 600, 1, None), (NOW, 2, None)]))
+check("fuel: a reset time an hour off cuts the rate there", "of readings" in fuel_refuses([(NOW - 5 * 3600, 1, NOW - 86400), (NOW - 600, 1, NOW + 86400), (NOW, 2, NOW + 86400)]))
+check("fuel: a one-minute jitter in the reset time does not", fuel_refuses([(NOW - 5 * 3600, 1, NOW + 86400 - 60), (NOW, 2, NOW + 86400)]) is None)
+check("fuel: a series that stopped before the reading is no rate", "stopped" in fuel_refuses([(NOW - 5 * 3600, 1, None), (NOW - 2 * 3600, 2, None)]))
+check("fuel: a series from another week is no rate", "another week" in fuel_refuses([(NOW - 5 * 3600, 1, NOW - 3600 * 9), (NOW, 2, NOW - 3600 * 9)], reset=NOW + 3600 * 20))
+
+# ESTIMATE points never make a rate: they repeat an old figure with a new time
+mixed = fuel_points("alpha", [(5, 40)]) + fuel_points("alpha", [(4, 40), (3, 40), (0.2, 40)], source="ESTIMATE") + fuel_points("alpha", [(0.1, 50)])
+got = R.fuel_series("\n".join(json.dumps(r) for r in mixed), False, AU)["alpha"]
+check("fuel: the series keeps MEASURED points only", len(got) == 2 and got[0][1] == 40 and got[1][1] == 50)
+torn = 'XX torn", "week_pct_used": 99}\n' + json.dumps(fuel_rec("alpha", 7)) + "\nnot json\n[1]\n" + json.dumps(dict(fuel_rec("alpha", True), account="alpha"))
+check("fuel: torn, foreign and non-numeric lines are skipped", [x[1] for x in R.fuel_series(torn, True, AU)["alpha"]] == [7])
+check("fuel: a truncated tail drops its first line", R.fuel_series(json.dumps(fuel_rec("alpha", 7)) + "\n" + json.dumps(fuel_rec("alpha", 8)), True, AU)["alpha"][0][1] == 8)
+
+# every way a reading can be stale or unreadable says UNMEASURED and withholds the figures
+BURN = fuel_points("alpha", [(5, 40), (0.1, 41)])
+for label, rec in (("measured over 45 min ago", fuel_rec("alpha", 41, age_h=1, poll_h=0.1)),
+                   ("polled over 45 min ago", fuel_rec("alpha", 41, age_h=0.1, poll_h=1)),
+                   ("source UNMEASURED", dict(fuel_rec("alpha", None), source="UNMEASURED", why="no reading yet")),
+                   ("an ESTIMATE too old", fuel_rec("alpha", 41, age_h=2, poll_h=0.1, source="ESTIMATE")),
+                   ("no week figure", fuel_rec("alpha", None)),
+                   ("no measurement time", dict(fuel_rec("alpha", 41), measured_at=None)),
+                   ("measured in the future", fuel_rec("alpha", 41, age_h=-1, poll_h=0.1)),
+                   ("week figure past 100", fuel_rec("alpha", 120)),
+                   ("reset passed", fuel_rec("alpha", 41, hours_to_reset=-1)),
+                   ("no reset time", dict(fuel_rec("alpha", 41), week_resets_at=None)),
+                   ("a garbled percentage", dict(fuel_rec("alpha", 41), week_pct_used="lots")),
+                   ("not even a record", ["junk"])):
+    env = fuel_env({"accounts": {"alpha": rec, "beta": fuel_rec("beta", 59), "gamma": fuel_rec("gamma", 90)}}, BURN)
+    rows = fuel_rows(env)
+    page, phone = built(env)
+    panel_ = page[page.index("ACCOUNTS, THIS WEEK"):page.index("NEEDS YOU") if "NEEDS YOU" in page else None]
+    alpha = panel_[panel_.index("alpha"):panel_.index("beta")]
+    check("fuel: %s says UNMEASURED with no figures" % label, rows["alpha"]["why"] and "left" not in rows["alpha"] and "UNMEASURED" in alpha and "% left" not in alpha and "resets in" not in alpha)
+    check("fuel: %s says UNMEASURED on the phone" % label, any(x.startswith("alpha UNMEASURED: ") for x in phone.splitlines()))
+    check("fuel: %s leaves the other accounts' figures" % label, any(x.startswith("beta 41% left") for x in phone.splitlines()))
+
+rows = fuel_rows(fuel_env({"accounts": {"alpha": fuel_rec("alpha", 41, age_h=0.5, source="ESTIMATE")}}, fuel_points("alpha", [(6, 40), (0.5, 41)])))
+check("fuel: a young ESTIMATE is shown, and marked", rows["alpha"]["estimate"] and R.fuel_left(rows["alpha"]) == "at most 59% left" and rows["alpha"]["verdict"])
+
+# the whole panel
+for label, env in (("latest.json missing", fuel_env(None, [])), ("latest.json not an object", fuel_env([1], [])), ("no accounts key", fuel_env({"updated": "x"}, []))):
+    if label == "latest.json missing":
+        env.files.pop(LATEST)
+    page, phone = built(env)
+    check("fuel: %s: the panel says UNMEASURED" % label, 'ACCOUNTS, THIS WEEK</div><b style="color:%s">UNMEASURED' % R.WARN in page and "account fuel (" in page)
+    check("fuel: %s: the phone says UNMEASURED" % label, any(x.startswith("ACCOUNTS UNMEASURED") for x in phone.splitlines()))
+env = fuel_env(GOOD_LATEST, [])
+env.files.pop(SERIES)
+page, phone = built(env)
+rows = fuel_rows(env)
+check("fuel: an unreadable series keeps the week figures and says burn UNMEASURED", rows["alpha"]["left"] == 5 and "unreadable" in rows["alpha"]["burn_why"] and "burn UNMEASURED" in page and "AHEAD" not in page[:page.index("How to read")])
+check("fuel: the same on the phone", any(x.startswith("alpha 5% left") and x.endswith("burn UNMEASURED") for x in phone.splitlines()))
+
+# the page and the phone, all three readings at once, first thing on the page
+three = {"accounts": {"alpha": fuel_rec("alpha", 95), "beta": fuel_rec("beta", 59), "gamma": fuel_rec("gamma", 60)}}
+series = GOOD_SERIES[:7] + fuel_points("gamma", [(6.1, 48), (3, 54), (0.1, 60)])
+page, phone = built(fuel_env(three, series))
+head = page[page.index("ACCOUNTS, THIS WEEK"):page.index("How to read")]
+check("fuel: the panel is above Needs you", page.index("ACCOUNTS, THIS WEEK") < page.index("NEEDS YOU"))
+check("fuel: the panel holds all three accounts with figures and words", all(w in head for w in ("alpha", "beta", "gamma", "5% left", "41% left", "40% left", "resets in", "AHEAD", "EQUAL", "BEHIND", "runs out in", "unused at the reset", "lasts to about the reset")))
+check("fuel: the how-to-read explains the three words", all(w in page for w in ("AHEAD: burning faster", "EQUAL: about right", "BEHIND: burning slower")))
+check("fuel: no blank line inside the panel (Typora would end the block)", "\n\n" not in head)
+lines = phone.splitlines()
+check("fuel: the phone leads with the three accounts", lines.index("ACCOUNTS, THIS WEEK") < lines.index("RELENTLESS PIPELINE") and any(x.startswith("alpha 5% left, resets in") and "AHEAD, out " in x for x in lines) and any(x.startswith("beta 41% left") and "BEHIND, " in x for x in lines) and any(x.startswith("gamma 40% left") and x.endswith("EQUAL") for x in lines))
+check("fuel: the phone copy is plain text", not any("<" in x for x in lines[lines.index("ACCOUNTS, THIS WEEK"):lines.index("ACCOUNTS, THIS WEEK") + 4]))
+broken = fuel_env(three, series)
+real_mod, R.account_usage_module = R.account_usage_module, lambda: 1 / 0
+check("fuel: a broken account_usage.py costs the panel, not the page", "UNMEASURED" in built(broken)[0] and "account fuel (" in built(broken)[0])
+R.account_usage_module = real_mod
 
 print("\n%d failed" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)
