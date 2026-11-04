@@ -825,8 +825,13 @@ def collect_tokens(env, now, thr):
     rows = []
     for k in range(0, 8):
         day = time.strftime("%Y%m%d", time.gmtime(now - k * 86400))
-        got, _ = guarded(env.read_json, "%s/spend-%s.json" % (RELENTLESS_STORE, day))
-        if got and isinstance(got.get("spent"), (int, float)) and thr["closed_day"][day]:
+        if not thr["closed_day"][day]:
+            continue
+        try:
+            got = env.read_json("%s/spend-%s.json" % (RELENTLESS_STORE, day))
+        except FileNotFoundError:       # before the spend files began; an unreadable one fails the reading instead
+            continue
+        if isinstance(got.get("spent"), (int, float)):
             rows.append({"day": day, "spent": got["spent"], "closed": thr["closed_day"][day], "per": got["spent"] / thr["closed_day"][day]})
     if not rows:
         raise Unmeasured("no spend file with a closed item beside it")
