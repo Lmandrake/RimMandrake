@@ -211,3 +211,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T08:03:06Z","tsn":1793779386410556370}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T08:13:48Z","tsn":1793780028685956846}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T08:27:47Z","tsn":1793780867727913504}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T08:34:34Z","tsn":1793781274635028634}
