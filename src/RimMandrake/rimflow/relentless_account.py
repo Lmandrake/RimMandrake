@@ -120,5 +120,72 @@ def loss(run, clone, since, log=None, box=None):
     if why:
         return {"kind": "change_over", "why": why}
     paths = box_transcripts(box, start) if box else circling.transcript_paths(clone, start) if clone else []
-    err = transcript_error(paths) or result_error(run.get("out"))
-    return {"kind": "account_error", "why": "the run ended on the account's own error: %s" % err} if err else None
+    err = transcript_error(paths)
+    point = resume_point(paths) if err else None
+    if not err:
+        err = result_error(run.get("out"))
+        point = result_point(run.get("out")) if err else None
+    if not err:
+        return None
+    out = {"kind": "account_error", "why": "%s: %s" % (ACCOUNT_MARK, err)}
+    if point:
+        out["session"] = point      # it did real work before the cut: resumed, not started over
+    return out
+
+
+# RELENTLESS_RESUME_BUILD_ACCOUNT_LOST_RUNS: a run the account cut after real work is resumed (`claude -p --resume`), so
+# its context is not thrown away; one that died before any is a plain requeue, as there is nothing to resume.
+ACCOUNT_MARK = "the run ended on the account's own error"
+SESSION_RX = re.compile(r"^[0-9a-fA-F-]{8,64}$")
+
+
+def _worked(rec):
+    """An assistant turn that is not the error itself and wrote something: real usage."""
+    m = rec.get("message") if isinstance(rec.get("message"), dict) else {}
+    u = m.get("usage") if isinstance(m.get("usage"), dict) else {}
+    out = u.get("output_tokens")
+    return rec.get("type") == "assistant" and not rec.get("isApiErrorMessage") and type(out) is int and out > 0
+
+
+def resume_point(paths):
+    """-> the session id of the newest of `paths` (the transcript that ended on the error), when it holds real work."""
+    try:
+        newest = max(paths, key=os.path.getmtime)
+    except (OSError, ValueError):
+        return None
+    sid = os.path.splitext(os.path.basename(newest))[0]
+    if not SESSION_RX.match(sid):
+        return None
+    try:
+        with open(newest, encoding="utf-8", errors="replace") as f:
+            for ln in f:
+                if '"usage"' not in ln:
+                    continue
+                try:
+                    rec = json.loads(ln)
+                except ValueError:
+                    continue
+                if isinstance(rec, dict) and not rec.get("isSidechain") and _worked(rec):
+                    return sid
+    except OSError:
+        return None
+    return None
+
+
+def result_point(out):
+    """-> the session id of an error result object that still records real output, else None."""
+    try:
+        with open(out, encoding="utf-8", errors="replace") as f:
+            rec = json.load(f)
+    except (OSError, TypeError, ValueError):
+        return None
+    if not isinstance(rec, dict):
+        return None
+    sid, u = rec.get("session_id"), rec.get("usage") if isinstance(rec.get("usage"), dict) else {}
+    n = u.get("output_tokens")
+    return sid if isinstance(sid, str) and SESSION_RX.match(sid) and type(n) is int and n > 0 else None
+
+
+def breaker_on_account(br):
+    """True when an open launch breaker was opened by the account's own error (account_lost's launch_failed)."""
+    return ACCOUNT_MARK in str((br or {}).get("why") or "")

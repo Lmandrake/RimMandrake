@@ -471,11 +471,35 @@ def account_lost(store, st, lost, r, now):
     st["run"] = None
     st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") or st.get("wait") else "queued"
     st["returned_at"] = st["returned_at"] or now
-    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": "account_lost", "detail": lost["why"][:600]})
-    store.learn(st["item"], "- %s gen %d ended account_lost, no strike: %s" % (iso(now), st["gen"] - 1, lost["why"][:600]))
+    if lost.get("session"):     # it did real work: the next launch resumes that session instead of starting over
+        st["resume"] = {"session": lost["session"], "gen": st["gen"], "at": now}
+    else:
+        st.pop("resume", None)
+    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": "account_lost", "detail": lost["why"][:600],
+                               **({"session": lost["session"]} if lost.get("session") else {})})
+    store.learn(st["item"], "- %s gen %d ended account_lost, no strike%s: %s" % (
+        iso(now), st["gen"] - 1, ", its session is resumed" if lost.get("session") else "", lost["why"][:600]))
     store.save(st)
     if lost["kind"] == "account_error":
         launch_failed(store, r, now, lost["why"])
+
+
+RESUME_WORDS = "Tokens are back; continue where you were."
+
+
+def tree_present(path):
+    """The tree a resumed checker or consult goes back into is still there (the selftest plants this)."""
+    return os.path.isdir(path)
+
+
+def resume_prompt(st, kind):
+    """The message a resumed session gets (claude -p --resume). A worker's lease moved on when the account cut it: the
+    gen it remembers is fenced, so it is told the new one."""
+    if kind == "work":
+        return ("%s The account cut your run, not your work: no strike was charged. Your lease is now generation %d of "
+                "%s: use --gen %d in every relentless.py call from here on; the old generation is fenced."
+                % (RESUME_WORDS, st["gen"], st["item"], st["gen"]))
+    return RESUME_WORDS
 
 
 def day_key(now):
@@ -1144,6 +1168,29 @@ def unhold(store, item, said, now=None, offbox=None):
         st["spent_grace"] = st["spent"]         # his yes buys another full limit from here
         st["needs_back"] = was_his      # a tooling hold never set needs=owner, and a built item keeps its derived needs
         store.attempt(item, {"at": iso(now), "end": "unhold", "said": said})
+        store.save(st)
+
+
+def rediagnose(store, item, said, now=None):
+    """An `attribution` hold whose diagnostic consult failed (no room, the account, no answer): run the consult again.
+    `unhold` re-validates the same sha, which can only say again what it said; this asks the diagnostician once more.
+    The candidate and its wait stay exactly as they were (RELENTLESS_RESUME_BUILD_ACCOUNT_LOST_RUNS)."""
+    now = time.time() if now is None else now
+    with store.lock():
+        st = store.load(item)
+        if not st or st["status"] != "held" or (st.get("hold") or {}).get("kind") != relentless_attrib.WAIT_ATTRIB:
+            raise ValueError("%s is not held for an attribution" % item)
+        w = st.get("wait") or {}
+        if w.get("kind") != relentless_attrib.WAIT_ATTRIB or not w.get("sha"):
+            raise ValueError("%s has no attribution wait to diagnose: unhold it instead" % item)
+        if not rules().get("circling"):
+            raise ValueError("no consult machinery (rules.circling unset)")
+        if help_pending(st):
+            raise ValueError("%s already has a consult out" % item)
+        st["hold"] = None
+        st["status"] = "blocked"
+        relentless_attrib.want(store, st, now)
+        store.attempt(item, {"at": iso(now), "end": "rediagnose", "said": said, "sha": w["sha"]})
         store.save(st)
 
 
@@ -2437,7 +2484,7 @@ class Effects(relentless_game.GameFx):
             env += ["--setenv", "%s=%s" % (k, v)]
         argv = argv[:at] + list(wall) + env + argv[at:]
         o = argv.index("--output-format")
-        argv[o:o] = ["--agent", agent]
+        argv[o:o] = ["--agent", agent] + (["--resume", run["resume"]] if run.get("resume") else [])
         r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
 
@@ -3792,6 +3839,9 @@ def step(store, fx, r, item, now, acts):
 
     if s == "checking":
         chk = st["check"]
+        if chk.get("resume"):
+            check_resume(store, fx, r, item, now, acts)
+            return
         got = relentless_wall.read_verdict(chk["box"]) if chk.get("box") and not chk.get("expired") else None
         if got and chk.get("verdict") is None:      # the box is the walled Marker's way out: the nonce is the store's own
             try:        # a file on disk is recorded, never refused (strict=False): read_as reads it
@@ -3829,6 +3879,17 @@ def step(store, fx, r, item, now, acts):
                 if st["status"] != "checking":
                     return
                 word = st["check"].get("verdict")
+                if word is None and lost and lost.get("session"):
+                    # it read the evidence before the cut: the same checker, clone, box and nonce resume once the breaker
+                    # closes (check_resume), its context kept (RELENTLESS_RESUME_BUILD_ACCOUNT_LOST_RUNS)
+                    st["check"]["resume"] = {"session": lost["session"], "at": now}
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"][:600],
+                                         "session": lost["session"]})
+                    store.save(st)
+                    if lost["kind"] == "account_error":
+                        launch_failed(store, r, now, lost["why"])
+                    acts.append({"do": "account_lost", "item": item, "kind": lost["kind"], "resume": "check"})
+                    return
                 if word is None and lost:       # the account's doing, not the checker's: same candidate, a new checker, no count
                     drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
                     st["status"] = "candidate"
@@ -3986,6 +4047,58 @@ def step(store, fx, r, item, now, acts):
         finished(store, fx, item, c, now, acts, attempt=True)
 
 
+def check_resume(store, fx, r, item, now, acts):
+    """A checker the account cut after real work: once a place and the breaker allow, `claude -p --resume` its session in
+    the same clone and box with the same nonce, so what it read is not read again. A tree that is gone, or a launch that
+    fails, falls back to the old road: the candidate waits for a fresh checker, no count."""
+    st = store.load(item)
+    chk = st["check"]
+    active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
+    hold = admission(store, fx, r, now, active, extra=1)    # it holds a place already: never starved behind new work
+    if hold:
+        acts.append({"do": "check_waits", "item": item, "why": "resume: " + hold})
+        return
+    box = chk.get("box")
+    cwd = os.path.join(box, "tree") if box else chk.get("clone")
+    why = None if cwd and tree_present(cwd) else "its tree is gone"
+    n = (st.get("check_count") or 0) + 1
+    unit = unit_name("check", item, st["gen"]) + "-c%d" % n
+    desc = run_desc(store, r, unit, now)
+    desc["resume"] = chk["resume"]["session"]
+    if not why:
+        with store.lock():
+            st = store.load(item)
+            if st["status"] != "checking" or (st.get("check") or {}).get("nonce") != chk["nonce"]:
+                return
+            st["check_count"] = n
+            st["check"].update(unit=unit, run=desc, at=now, expired=False)
+            st["check"]["resumed"] = st["check"].pop("resume")["session"]
+            st["check"].pop("lost_seen", None)
+            store.save(st)
+        if box:
+            why = fx.launch(st, desc, resume_prompt(st, "check"), r["checker_agent"], cwd, r["check_max_s"],
+                            relentless_wall.unit_env(relentless_wall.profile(r), box),
+                            relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
+        else:
+            why = fx.launch(st, desc, resume_prompt(st, "check"), r["checker_agent"], cwd, r["check_max_s"],
+                            {"RELENTLESS_ROOT": store.root})
+        if not why:
+            store.attempt(item, {"at": iso(now), "gen": st["gen"], "check": unit, "resumed": desc["resume"]})
+            acts.append({"do": "check_resumed", "item": item, "unit": unit})
+            return
+        launch_failed(store, r, now, why)
+    with store.lock():
+        st = store.load(item)
+        if st["status"] != "checking" or (st.get("check") or {}).get("nonce") != chk["nonce"]:
+            return
+        gone = {"check": dict(st["check"]), "quarantined": list(st["quarantined"])}
+        st["status"] = "candidate"
+        st["check"] = None
+        store.save(st)
+    remove_check_clone(fx, gone)      # its box is an ended check's now: the reaper takes it, as on every other road
+    acts.append({"do": "check_resume_dropped", "item": item, "why": why[:200]})
+
+
 def help_over(store, fx, item, word, now, acts):
     """One consult done with, however. Under no lock on entry; removes its clone unless a quarantined run still sits in it."""
     with store.lock():
@@ -4028,6 +4141,16 @@ def help_start(store, fx, r, item, now, acts):
     st = store.load(item)
     h = st["help"]
     if now - h["at"] >= r["circling"]["help_wait_s"]:
+        br = load_breaker(store)
+        if br.get("until", 0) > now and relentless_account.breaker_on_account(br):
+            # no room because the account is out, not because the consult failed: the wait starts over
+            with store.lock():
+                cur = store.load(item)
+                cur["help"]["at"] = now
+                store.save(cur)
+            store.journal({"at": iso(now), "do": "help_account_wait", "item": item, "why": (br.get("why") or "")[:200]})
+            acts.append({"do": "help_waits", "item": item, "why": "account: " + (br.get("why") or "")[:160]})
+            return
         h_end = "no room in %d s" % (now - h["at"])
         with store.lock():
             cur = store.load(item)
@@ -4043,6 +4166,17 @@ def help_start(store, fx, r, item, now, acts):
     hold = hold or make_room(store, fx, r, now, acts)
     if hold:
         acts.append({"do": "help_waits", "item": item, "why": hold})
+        return
+    res = h.get("resume")
+    if res and not (h.get("clone") and tree_present(h["clone"]) and h.get("nonce")):
+        with store.lock():      # its tree is gone: a fresh consult, as before resuming existed
+            cur = store.load(item)
+            cur["help"].pop("resume", None)
+            cur["help"].update(nonce=None, clone=None)
+            store.save(cur)
+        res = None
+    if res:
+        help_resume(store, fx, r, item, now, acts)
         return
     acts.append({"do": "clone_try", "by": "check"})
     sha = fx.head()
@@ -4090,6 +4224,54 @@ def help_start(store, fx, r, item, now, acts):
     acts.append({"do": "help_started", "item": item, "unit": desc["unit"]})
 
 
+def help_resume(store, fx, r, item, now, acts):
+    """help_start's road for a consult the account cut after real work: its clone, nonce and agent, `claude -p --resume`."""
+    with store.lock():
+        st = store.load(item)
+        h = st["help"]
+        n = (st.get("help_count") or 0) + 1
+        desc = run_desc(store, r, unit_name("help", item, st["gen"]) + "-h%d" % n, now)
+        desc["resume"] = h.pop("resume")["session"]
+        st["help_count"] = n
+        h.update(status="running", run=desc, started_at=now, tries=h["tries"] + 1, expired=False, resumed=desc["resume"])
+        store.save(st)
+    env = {"RELENTLESS_ROOT": store.root}
+    why = fx.launch(st, desc, resume_prompt(st, "help"), h["agent"], h["clone"], r["circling"]["help_max_s"], env)
+    if why:
+        fx.remove_clone({"clone": h["clone"], "item": item})
+        launch_failed(store, r, now, why)
+        help_retry(store, fx, item, why, r, now, acts)
+        return
+    store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "resumed", "session": desc["resume"],
+                         "agent": h["agent"], **({"mode": h["mode"]} if h.get("mode") else {})})
+    acts.append({"do": "help_resumed", "item": item, "unit": desc["unit"]})
+
+
+def help_account_lost(store, fx, r, item, lost, now, acts):
+    """A consult the account cut: no try charged, its wait starts over. With real work done its clone and nonce stay for
+    help_resume; with none it is simply wanted again."""
+    with store.lock():
+        st = store.load(item)
+        h = st["help"]
+        keep = bool(lost.get("session")) and h.get("agent") != VENDOR_AGENT
+        drop = None if keep else h.get("clone")
+        h["tries"] = max(0, h["tries"] - 1)
+        h.update(status="wanted", run=None, at=now, expired=False)
+        if keep:
+            h["resume"] = {"session": lost["session"], "at": now}
+        else:
+            h.pop("resume", None)
+            h.update(nonce=None, clone=None)
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "account_lost", "detail": lost["why"][:600],
+                             **({"session": lost["session"]} if keep else {})})
+        store.save(st)
+    if drop and not any(q.get("clone") == drop for q in st["quarantined"]):
+        fx.remove_clone({"clone": drop, "item": item})
+    if lost["kind"] == "account_error":
+        launch_failed(store, r, now, lost["why"])
+    acts.append({"do": "account_lost", "item": item, "kind": lost["kind"], "resume": "help" if keep else None})
+
+
 def help_step(store, fx, r, item, now, acts):
     """One item's consult, beside its run and independent of it. Pure lifecycle: the worker's status only ends it."""
     st = store.load(item)
@@ -4129,6 +4311,10 @@ def help_step(store, fx, r, item, now, acts):
     elif gone:
         help_over(store, fx, item, "dropped", now, acts)
     else:
+        lost = fx.account_loss(h.get("run"), h.get("clone"), h["started_at"]) if h.get("agent") != VENDOR_AGENT else None
+        if lost:
+            help_account_lost(store, fx, r, item, lost, now, acts)
+            return
         with store.lock():      # the next try is a new consult: its nonce must not read as expired
             cur = store.load(item)
             cur["help"]["expired"] = False
@@ -4434,6 +4620,9 @@ def lease(store, fx, r, now, acts):
             st["last_beat"] = None
             st["base"] = st.get("base") or fx.head()
             st["run"] = run_desc(store, r, unit_name("work", item, st["gen"]), now)
+            res = st.pop("resume", None)
+            if res and res.get("gen") == st["gen"] - 1 and not piloting(st):     # nothing ran between the cut and now
+                st["run"]["resume"] = res["session"]
             store.save(st)
         acts.append({"do": "clone_try", "by": "work"})
         why = fx.prepare(st)
@@ -4445,8 +4634,9 @@ def lease(store, fx, r, now, acts):
             elif fx.paused():       # the pause may have come while the clone was prepared
                 why = POOL_REFUSED + ": paused while the clone was prepared"
         if not why:
-            prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r, store.attempts(item),
-                                   relentless_explain.open_causes(store, getattr(fx, "state_of", None)) if st.get("diagnose_owed") else None)
+            prompt = resume_prompt(st, "work") if st["run"].get("resume") else worker_prompt(
+                st, fx.item_text(item), store.learned(item), r, store.attempts(item),
+                relentless_explain.open_causes(store, getattr(fx, "state_of", None)) if st.get("diagnose_owed") else None)
             pilot = piloting(st)
             agent = r["pilot_agent"] if pilot else r["worker_agent"]
             why = fx.launch(st, st["run"], prompt, agent, st["clone"], r["run_max_s"],
@@ -4465,6 +4655,8 @@ def lease(store, fx, r, now, acts):
                 acts.append({"do": "launch_fail", "item": item, "why": "pool full: " + why if POOL_REFUSED in why else why})
                 return
             start = {"at": iso(now), "gen": cur["gen"], "start": cur["run"]["unit"], "approach": cur["approach"]}
+            if cur["run"].get("resume"):
+                start["resumed"] = cur["run"]["resume"]
             if cur.get("pilot_step") and pilot:     # the sitting is this gen's: its ending (fail or finish) ends the step
                 cur["pilot_step"]["sat_gen"] = cur["gen"]
                 start["pilot_step"] = True
@@ -5132,6 +5324,12 @@ def main(argv=None):
     p = sub.add_parser("reenrol", help="put a retired item, or a done one the ledger reopened, back in line; journals why")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
+    p = sub.add_parser("rediagnose", help="an attribution hold whose diagnostic consult failed: run the consult again "
+                       "(unhold only re-checks the same sha)")
+    p.add_argument("item")
+    p.add_argument("--owner-said")
+    p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
+    p.add_argument("--why")
     p = sub.add_parser("unhold")
     p.add_argument("item")
     p.add_argument("--owner-said")
@@ -5250,6 +5448,12 @@ def main(argv=None):
             print(json.dumps(shadow_tally(store), indent=1))
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons, defects=a.defect, unreached=a.unreached)
+        elif a.cmd == "rediagnose":
+            said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
+            if not said:
+                raise ValueError("rediagnose needs --owner-said or " + _conductor_authority().ROUTE)
+            rediagnose(store, a.item, said)
+            print("%s: a diagnostic consult is wanted again" % a.item)
         elif a.cmd == "unhold":
             said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
             if not said:
