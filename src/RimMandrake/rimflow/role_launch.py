@@ -19,7 +19,11 @@ also runs once per OPEN ops_watch alarm crossing, and once per worsening of one 
 one that clears runs again when it re-crosses (review W, W1); alarms already open when the role is first enabled run
 once too (no baseline). One alarm run covers every open alarm not yet run, and alarm runs are at least
 `alarm_run_gap_s` (ALARM_RUN_GAP_S) apart; alarms are read only from a MEASURED reading whose alarms dict is readable
-(a blind tick prunes nothing and runs no alarm). One run per role at a time.
+(a blind tick prunes nothing and runs no alarm). An OPEN alarm whose reading is already back under the line
+(clear_seen >= 1) buys no alarm run until it re-breaches (recovering_keys). A run of a mode in `model_by_mode` gets
+that model (Operations' alarm runs: sonnet), the message of an alarm run carries its alarm rows and
+`scope_by_mode[mode]`, and `launch_args` adds narrowing claude flags (LAUNCH_ARGS_OK) -- OPS_ROLE_SHRINK_RUN_COST.
+One run per role at a time.
 
 Weekdays (item DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS): a slot may name its days, "Wed 09:00" or
 "Mon,Thu 10:00" (parse_slot; an unreadable slot is an alarm and the role does not run). `weekly_plan_weekday` makes
@@ -140,6 +144,11 @@ LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 # that sets either key false is back on the strict gates (kept, and tested, for when he lifts this).
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800, "caps_advisory": True, "degraded_reading_ok": True}
 ALARM_WORSE_SEP = "@worse"             # an alarm re-raised for getting worse is a new key, so it earns a new run: <key>@worse<n>
+# extra claude flags a schedule entry may add (`launch_args`): only ones that narrow what a run loads. A role run
+# that uses no MCP tool drops every MCP server's tools and instructions (OPS_ROLE_SHRINK_RUN_COST: 56,333 -> 48,098
+# tokens of start context, re-read every turn); no flag that touches permissions, settings or auth.
+LAUNCH_ARGS_OK = frozenset(("--strict-mcp-config", "--disable-slash-commands", "--exclude-dynamic-system-prompt-sections"))
+MODELS_OK = ("opus", "sonnet")         # model_by_mode: Sonnet is the floor (Agent_Policy; Haiku banned 2026-10-31)
 ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger item) in alarms_seen: "alarm:<aid>" (V2)
 ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
 OPS_STALE_S = 45 * 60
@@ -318,6 +327,15 @@ def validate_role(role):
     for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap", "incident_token_cap"):
         if role.get(k) is not None and not (_num(role[k]) and role[k] >= 0):
             raise ValueError("%s %r is not a number >= 0" % (k, role[k]))
+    la = role.get("launch_args", [])
+    if not (isinstance(la, list) and all(isinstance(x, str) and x in LAUNCH_ARGS_OK for x in la)):
+        raise ValueError("launch_args %r: each must be one of %s" % (la, ", ".join(sorted(LAUNCH_ARGS_OK))))
+    mbm = role.get("model_by_mode", {})
+    if not (isinstance(mbm, dict) and all(isinstance(v, str) and v in MODELS_OK for v in mbm.values())):
+        raise ValueError("model_by_mode %r: each model must be one of %s" % (mbm, ", ".join(MODELS_OK)))
+    sbm = role.get("scope_by_mode", {})
+    if not (isinstance(sbm, dict) and all(isinstance(v, str) for v in sbm.values())):
+        raise ValueError("scope_by_mode %r is not a mapping of mode to text" % (sbm,))
     if "caps_advisory" in role and not isinstance(role["caps_advisory"], bool):
         raise ValueError("caps_advisory %r is not true or false" % (role["caps_advisory"],))
     for k in ("slot_late_s", "run_max_s"):
@@ -714,7 +732,7 @@ def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
                     "never starve it." % (name, daily))
 
 
-def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit):
+def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None):
     """The launch message. Every role but those whose schedule entry says `token_aware: true` (Operations; the
     Conductor, owner 2026-10-31) is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
     and no order to watch one (review T, F1). Nothing stops a run at its budget mid-run: the real bounds are
@@ -723,6 +741,12 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
              "You are the RimFlow %s role, run headless by the Dispatcher. Read %s and do what it says for this "
              "trigger, then stop." % (role["name"], role["instructions"]),
              "Trigger: %s %s." % (mode, trigger)]
+    if mode == "alarm" and rows:
+        # the alarm rows and the instructions that apply, so the run does not spend turns finding them
+        # (OPS_ROLE_SHRINK_RUN_COST; `scope_by_mode` is schedule data)
+        lines += ["The alarms this run covers (ops_watch status.json, at launch):"] + list(rows)
+    if role.get("scope_by_mode", {}).get(mode):
+        lines.append(role["scope_by_mode"][mode])
     if role.get("token_aware") is True:
         lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
                       band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
@@ -1251,6 +1275,18 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 if rs.get("slot_alarms"):       # cleared mid-run: its re-crossing is news to the run that held it
                     rs["slot_alarms"]["keys"] = [k for k in rs["slot_alarms"]["keys"] if k in open_items]
                 fresh = [k for k in open_items if k not in rs["alarms_seen"]]
+                # back under the line, clearing (OPS_ROLE_SHRINK_RUN_COST): no paid run for a reading that recovered;
+                # left unseen, so a re-breach (clear_seen back to 0) is due at once and a clear prunes it
+                rec = sorted(recovering_keys((reading_cache["s"] or {}).get("alarms")) & set(fresh))
+                if rec:
+                    fresh = [k for k in fresh if k not in rec]
+                    if rs.get("alarm_recover_hold") != rec:      # journal each recovering set once
+                        act(do="role_hold", role=name, why="%s alarm run for %s waits: its reading is already back "
+                            "under the line (ops_watch clear_seen >= 1); it clears after its clear passes, a "
+                            "re-breach makes it due" % (name, ", ".join(rec)))
+                    rs["alarm_recover_hold"] = rec
+                else:
+                    rs.pop("alarm_recover_hold", None)
                 # daily limits, held as data in the schedule (review X, X1): at most alarm_runs_per_alarm_per_day runs
                 # for one alarm key and alarm_runs_per_day alarm runs in all, so a flapping alarm cannot make a paid
                 # run every cycle. Absent = no limit. Limited keys stay unseen: they wait for tomorrow (or clearing).
@@ -1288,6 +1324,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     item = fresh[0].split(ALARM_WORSE_SEP)[0]
                     due.append({"key": "alarm " + fresh[0], "slot": None, "first": False, "mode": "alarm",
                                 "cap": cfg.get("run_token_cap"), "seen": fresh,
+                                "rows": alarm_rows((reading_cache["s"] or {}).get("alarms"), fresh),
                                 "item": role["ledger_item"] if item.startswith(ALARM_KEY_PREFIX) else item,
                                 "trigger": "ops_watch alarm " + ", ".join(fresh)})
         if cfg.get("event_runs") and not req:
@@ -1498,7 +1535,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         rs.pop("account_hold", None)
         unit = "rm-role-%s-%d" % (name.lower(), int(now))
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
-        message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit)
+        message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit,
+                         rows=job.get("rows"))
         tick_launch[name] = unit
         # what the launch consumes, so execute can give it back if the launch does not happen (review U, N6)
         rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
@@ -1537,7 +1575,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
             slot=job["key"], band=bname, seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
-                name, job["trigger"], bname, budget, job["cap"] or 0, factor, spent, unit, role["model"],
+                name, job["trigger"], bname, budget, job["cap"] or 0, factor, spent, unit, mode_model(cfg, job["mode"]),
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
@@ -1600,19 +1638,52 @@ def unlaunch(rs, unit):
     return True
 
 
-def alarm_keys(alarms):
-    """Pure. ops_watch alarms.json -> the keys of its OPEN alarms: the ledger item filed for it, or, for an alarm
-    filed for Operations alone (no ledger item: review V, V2), ALARM_KEY_PREFIX + its alarm id."""
-    out = set()
+def _open_alarms(alarms):
+    """Pure. -> [(key, aid, row)] for every OPEN alarm with a key (alarm_keys' rule)."""
+    out = []
     for aid, a in (alarms or {}).items() if isinstance(alarms, dict) else ():
         if not isinstance(a, dict) or a.get("state") != "OPEN":
             continue
         n = a.get("worse_n")
         tail = "%s%d" % (ALARM_WORSE_SEP, n) if isinstance(n, int) and not isinstance(n, bool) and n > 0 else ""
         if a.get("item"):
-            out.add(a["item"] + tail)
+            out.append((a["item"] + tail, aid, a))
         elif a.get("for") == "Operations":
-            out.add(ALARM_KEY_PREFIX + str(aid) + tail)
+            out.append((ALARM_KEY_PREFIX + str(aid) + tail, aid, a))
+    return out
+
+
+def alarm_keys(alarms):
+    """Pure. ops_watch alarms.json -> the keys of its OPEN alarms: the ledger item filed for it, or, for an alarm
+    filed for Operations alone (no ledger item: review V, V2), ALARM_KEY_PREFIX + its alarm id."""
+    return {k for k, _aid, _a in _open_alarms(alarms)}
+
+
+def recovering_keys(alarms):
+    """Pure. -> the keys of OPEN alarms whose latest reading is already back under the line (ops_watch's clear
+    hysteresis: clear_seen >= 1, it clears after clear_passes such readings; a reading over the line resets it to 0).
+    OPS_ROLE_SHRINK_RUN_COST: run 1793686300 (486k weighted) paid for queues.artpipe.stalled_min in exactly this window.
+    Such a key buys no alarm run while it recovers; it is not marked seen, so a re-breach makes it due again."""
+    out = set()
+    for k, _aid, a in _open_alarms(alarms):
+        n = a.get("clear_seen")
+        if isinstance(n, int) and not isinstance(n, bool) and n >= 1:
+            out.add(k)
+    return out
+
+
+def alarm_rows(alarms, keys):
+    """Pure. -> one line per alarm key in `keys` (aid, title, since, last reading), in key order, so an alarm run
+    starts from the rows instead of spending turns finding them in status.json (OPS_ROLE_SHRINK_RUN_COST)."""
+    by = {k: (aid, a) for k, aid, a in _open_alarms(alarms)}
+    out = []
+    for k in keys:
+        if k not in by:
+            continue
+        aid, a = by[k]
+        told = a.get("told") if isinstance(a.get("told"), dict) else {}
+        out.append("- %s = %s: %s (since %s, reading %s)" % (k, aid, str(a.get("title") or "")[:200],
+                                                              a.get("since"), told.get("v")))
     return out
 
 
@@ -1745,9 +1816,19 @@ def refuse_now(rs, how, now, job=None):
         rs["run_now_last"] = dict(req, outcome="refused: " + how, decided=now)
 
 
+def mode_model(role, mode):
+    """The model alias a run of `mode` gets: the schedule's `model_by_mode[mode]`, else its `model`
+    (OPS_ROLE_SHRINK_RUN_COST: Operations triages alarms on sonnet, owner e7069d65ba "cheaper triage model")."""
+    return (role.get("model_by_mode") or {}).get(mode) or role["model"]
+
+
 def launch_role(role, a):
-    """The schedule entry execute launches for action `a`: the entry itself, or for a run-now, a copy that is enabled
-    for this one launch and runs the request's pre-steps when it named claims."""
+    """The schedule entry execute launches for action `a`: the entry itself, or a copy carrying the model for this
+    run's mode (mode_model); for a run-now, a copy that is enabled for this one launch and runs the request's
+    pre-steps when it named claims."""
+    model = mode_model(role, a.get("mode"))
+    if model != role["model"]:
+        role = dict(role, model=model)
     if not a.get("run_now"):
         return role
     out = dict(role, enabled=True)
@@ -1923,7 +2004,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
-        + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"] \
+        + list(role.get("launch_args") or []) + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--session-id", session] if session else [])     # its transcript, found when no result is (transcript_usage)
     pre = role.get("pre_launch")
     if pre:

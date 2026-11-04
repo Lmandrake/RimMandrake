@@ -1,0 +1,1 @@
+selftest_run_tmp.py 'once the users exit their dirs go next sweep' FAILs under run_selftests' 6-worker parallel load (44-test batch, 2026-11-04) and PASSes alone twice: a timing-sensitive check, not a regression; rerun it alone before blaming a change.
