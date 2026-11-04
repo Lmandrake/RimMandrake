@@ -95,6 +95,26 @@ def test_tick_pending_reads_the_conductor_queue():
     check(p is not None and not any("queued prompt" in h for h in p), "Q3 control: an empty queue (%s)" % p)
 
 
+def test_tick_goodbye_kills_despite_the_queued_wait():
+    """Q4 the tick, not only the kill: a goodbye (source=request) with the wait still queued is not held by it."""
+    _build()
+    pend = SR.default_obs(T.bsched(), lambda *a, **k: [])["pending"]
+    p = pend("BENCH", T.bsess())
+    check(p is not None and any("queued prompt" in h for h in p), "Q4 control: the real pending read sees the "
+          "queued wait (%s)" % p)
+    sch, late = T.bsched(), T.T0 + 605
+    st = T.fresh()
+    o = T.obs(sessions=[T.bsess()], request=T.breq())
+    o["seat_restart"]["pending"] = pend
+    T.run(sch, st, o, T.T0 + 1)
+    o = T.obs(sessions=[T.bsess()])
+    o["seat_restart"]["pending"] = pend
+    a = T.run(sch, st, o, late)
+    held = [x for x in a if x["do"] == "restart_hold" and "queued prompt" in (x.get("why") or "")]
+    check(not held and "restart_kill" in T.dos(a), "Q4 a goodbye at the tick is not held by the queued wait and is "
+          "killed (%s)" % [(x["do"], x.get("why")) for x in a])
+
+
 def main():
     SR.UNFILED = lambda t: None
     for name, fn in sorted(globals().items()):
