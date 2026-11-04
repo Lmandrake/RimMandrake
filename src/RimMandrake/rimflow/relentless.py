@@ -928,7 +928,9 @@ def unhold(store, item, said, now=None, offbox=None):
             st.pop("start_again_at", None)
         game_back = (st["hold"].get("kind") == "game" and (st.get("game") or {}).get("sha")
                      and not relentless_game.flyer_hold(st["hold"].get("why")))
-        blind_back = st["hold"].get("kind") == "unmeasured"
+        blind_back = st["hold"].get("kind") == "unmeasured" or (      # a WEAK the live rule now reads as PASS: recheck it
+            st["hold"].get("kind") == "proof_weak" and (st.get("last_fail") or {}).get("class") == "proof_weak"
+            and relentless_wall.acted_weak("WEAK", (st.get("last_fail") or {}).get("detail")) == "PASS")
         was_his = hold_is_his(st["hold"])
         st["hold"] = None
         st["returned_at"] = now
