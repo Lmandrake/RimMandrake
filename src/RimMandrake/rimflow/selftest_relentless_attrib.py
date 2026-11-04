@@ -123,6 +123,8 @@ def kept(x, item, gen=1):
 
 def operator(x, item, targets, **a):
     a.setdefault("evidence", "the deciding log line")
+    for k, v in R.relentless_explain.sample().items():     # every attribution carries its explanation
+        a.setdefault(k, v)
     return A.answer(x.s, item, None, targets, a, x.r, x.now, R, known=lambda i: i in x.w.items)
 
 
@@ -327,12 +329,13 @@ def t_product_and_failed_diagnosis():
     for _ in range(3):
         x.tick()
     nonce = x.st(STEVE)["help"]["nonce"]
-    route = A.answer(x.s, STEVE, nonce, ["PROOF"], {"evidence": "proof reads Player-prev.log"}, x.r, x.now, R)
+    route = A.answer(x.s, STEVE, nonce, ["PROOF"], dict(R.relentless_explain.sample(), evidence="proof reads Player-prev.log"),
+                     x.r, x.now, R)
     st = x.st(STEVE)
     ok(route == "proof" and st["last_fail"]["class"] == A.PROOF_OWED and (st.get("proof_only") or {}).get("sha") == SHA
        and not st["failures"].get("blind_fail"), "PROOF: the proof road, code frozen at the sha, no strike: %s" % route)
     try:
-        A.answer(x.s, STEVE, nonce, ["PRODUCT"], {"evidence": "x", "obligation": "o", "observed": "o",
+        A.answer(x.s, STEVE, nonce, ["PRODUCT"], {**R.relentless_explain.sample(), "evidence": "x", "obligation": "o",
                                                   "why_product": "w"}, x.r, x.now, R)
         ok(False, "a nonce answers once")
     except R.Fenced:
@@ -397,7 +400,7 @@ def t_gpt_review_fences():
         ok(False, "instrument and dependency in one attribution is refused")
     except ValueError as e:
         ok("one wait" in str(e), "instrument and dependency in one attribution is refused")
-    route = operator(x, REPAINT, ["PRODUCT", "DEPENDENCY"], on=COMB, obligation="o", observed="o", why_product="w")
+    route = operator(x, REPAINT, ["PRODUCT", "DEPENDENCY"], on=COMB, obligation="o", why_product="w")
     works = len(launches(x, REPAINT, "work"))
     for _ in range(3):
         x.tick(3600)

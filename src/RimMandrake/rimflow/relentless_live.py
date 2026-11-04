@@ -460,7 +460,7 @@ def could_not_ask(path):
     An observed violation is never erased (GPT test-tolerance advice 2026-11-04): a `FAIL MOD` row keeps the FAIL whatever
     else the run tripped over; any other FAIL row or verdict, anywhere in the whole log (never only the last verdict line,
     never an 8 KB tail), keeps it over a later UNMEASURED, a crash or a None read. Those still reach the worker as a
-    FAIL, and the worker must classify them before any rebuild (relentless.DIAGNOSE_ENDS)."""
+    FAIL, and the worker must explain them before any rebuild (relentless.DIAGNOSE_ENDS)."""
     lines = tail_lines(path)
     if any(MOD_ROW.match(x) for x in lines):
         return None             # an observed violation is never erased, whatever else the run tripped over
@@ -472,7 +472,7 @@ def could_not_ask(path):
         if marker_hit(EXIT1_UNLOADED, line):
             return "reload", line[:200]
     if any(observed_fail(x) for x in lines):
-        return None             # a FAIL the proof reached, mixed rows or not: the worker classifies it
+        return None             # a FAIL the proof reached, mixed rows or not: the worker explains it
     verdicts = [(i, m.group(1)) for i, m in ((i, VERDICT_LINE.match(x)) for i, x in enumerate(lines)) if m]
     at = verdicts[-1][0] if verdicts else -1
     tb = max((i for i, x in enumerate(lines) if x.startswith("Traceback (most recent call last)")), default=-1)

@@ -280,9 +280,13 @@ def t_learn_classify():
     tail = "x" * 900 + " CLASSIFY-TAIL-PAST-300"
     R.learn(x.s, "I0", st["gen"], "CLASSIFY: HARNESS the bridge returned map 0 while the probe read map 1: " + tail)
     st = x.st("I0")
+    ok(bool(st.get("diagnose_owed")), "a CLASSIFY label is recorded but does not pay the debt (LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL)")
+    R.explain(x.s, "I0", st["gen"], "HARNESS", dict(R.relentless_explain.sample(), cause="BRIDGE_MAP_FIX_X",
+                                                    mechanism="MECH-WHOLE " + tail), now=x.now)
+    st = x.st("I0")
     ok(not st.get("diagnose_owed") and (st.get("diagnosed") or {}).get("class") == "HARNESS",
-       "learn takes the CLASSIFY line and pays the debt")
-    ok("CLASSIFY-TAIL-PAST-300" in ((st.get("diagnosed") or {}).get("evidence") or ""), "diagnosed keeps the evidence whole")
+       "the explanation pays the debt")
+    ok("CLASSIFY-TAIL-PAST-300" in ((st.get("diagnosed") or {}).get("evidence") or ""), "diagnosed keeps the mechanism whole")
     att = x.s.attempts("I0")
     ok(any("CLASSIFY-TAIL-PAST-300" in (a.get("evidence") or "") for a in att), "the attempt record keeps it whole")
     ok(any("CLASSIFY-TAIL-PAST-300" in h for h in R.ending_history(att)), "the next builder reads it whole via learn")

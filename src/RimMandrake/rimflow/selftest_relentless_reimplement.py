@@ -151,7 +151,7 @@ def to_game(x, i, sha):
     if not st.get("contract"):
         R.contract(x.s, i, st["gen"], "python3 selftest_x.py", game={"clauses": ["A2", "A3"], "why": "defs load"})
     if st.get("diagnose_owed"):     # a live ending is classified before a finish (LIVE_WORKERS_DIAGNOSE_BEFORE_THEY_REBUILD)
-        R.learn(x.s, i, st["gen"], "CLASSIFY: MOD - the proof asked and A3 read 0 where 1 is wanted")
+        R.explain(x.s, i, st["gen"], "MOD", dict(R.relentless_explain.sample(), cause=i))     # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL
     if st.get("warrant_owed"):    # a retry states its warrant (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT)
         R.learn(x.s, i, st["gen"], "WARRANT: the mod now sets the comp | A3 still 0 means the binding, not the mod")
     R.finish(x.s, i, st["gen"], sha, "evidence")

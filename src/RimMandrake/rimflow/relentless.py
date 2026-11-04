@@ -41,6 +41,7 @@ import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
 import relentless_attrib  # noqa: E402
+import relentless_explain  # noqa: E402
 import relentless_live  # noqa: E402
 import run_tmp  # noqa: E402
 
@@ -109,7 +110,9 @@ NOT_AN_APPROACH = ("worker_lost", "checker_lost")
 # game check recognizing what's going wrong?"): an ending read off a live proof or a checker is a reading the supervisor took
 # from an exit code and a regex. No agent had read its log before the next worker was told the mod FAILED and to work it, so
 # generations changed code against a broken site or instrument (live churn triage 2026-11-04: of 30 game_fail items, 5
-# HARNESS and 6 SITE). After one of these the next worker owes a written classification before `finish` is taken.
+# HARNESS and 6 SITE). After one of these the next worker owes a written explanation (`explain`, relentless_explain:
+# expected, observed, mechanism, evidence per step, theories ruled out, one open follow-up item per cause) before
+# `finish` is taken; a CLASSIFY line is recorded as a label only (LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL).
 DIAGNOSE_ENDS = ("game_fail", "game_unmeasured", "game_proof_unmeasured", "checker_lost", "unmeasured")
 CLASSIFY_RX = re.compile(r"^\s*CLASSIFY:\s*(MOD|SITE|HARNESS|CONTRACT)\b(?![|/])[\s:;,.\u2014-]*([^\s<|].{9,})", re.S)
 INSTRUMENT = "instrument"   # snag class: the site or the instrument is broken, not the work - a block on its repair item
@@ -491,9 +494,7 @@ def learn(store, item, gen, text, now=None):
         _fence(st, item, gen, stage_ok=True)
         st["last_beat"] = time.time() if now is None else now
         m = CLASSIFY_RX.match(text or "")
-        if m and st.get("diagnose_owed"):
-            st["diagnosed"] = {"class": m.group(1), "evidence": m.group(2)[:4000], "gen": gen, "at": st["last_beat"],
-                               "of": st.pop("diagnose_owed")}
+        if m and st.get("diagnose_owed"):     # a label, recorded whole; only `explain` pays the debt
             store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "classified": m.group(1),
                                  "evidence": m.group(2)[:4000]})      # whole: the next role reads the attribution, not a cut
         w = relentless_breakers.take_warrant(st, text, gen, st["last_beat"])
@@ -501,6 +502,37 @@ def learn(store, item, gen, text, now=None):
             store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "warrant": w})
         store.learn(item, "- %s gen %d: %s" % (iso(st["last_beat"]), gen, text))
         store.save(st)
+
+
+def explain(store, item, gen, klass, a, now=None, state_of=None, note=None):
+    """A worker's written explanation of the last ending (relentless_explain): what the proof expected, what the game
+    did, the mechanism, evidence per step, theories ruled out, and the one open follow-up item for its cause. It pays
+    the debt a DIAGNOSE ending leaves (diagnose_owed); a CLASSIFY label does not. `state_of(id)` -> ledger state (the
+    cause must be filed and open); `note(id, text)` puts the explanation on the cause item's ledger history."""
+    klass = (klass or "").strip().upper()
+    if klass not in relentless_explain.CLASSES:
+        raise ValueError("--class must be one of %s" % "|".join(relentless_explain.CLASSES))
+    rec = relentless_explain.validate(a, [klass], item, a.get("cause"))
+    relentless_explain.check_cause(rec["cause"], state_of)
+    now = time.time() if now is None else now
+    with store.lock():
+        st = store.load(item)
+        _fence(st, item, gen, stage_ok=True)
+        st["last_beat"] = now
+        owed = st.pop("diagnose_owed", None)
+        ending = (owed or st.get("last_fail") or {}).get("class")
+        if owed:
+            st["diagnosed"] = {"class": klass, "evidence": rec["mechanism"][:4000], "gen": gen, "at": now, "of": owed,
+                               "cause": rec["cause"]}
+        new = relentless_explain.keep(store, item, gen, rec, ending, (st.get("candidate") or {}).get("sha"),
+                                      "worker gen %d" % gen, now)
+        store.save(st)
+    if note:
+        note(item, "relentless: %s explained (%s): %s | follow-up: %s" % (ending or "the last ending", klass,
+                                                                          rec["mechanism"][:600], rec["cause"]))
+        if new and rec["cause"] != item:
+            note(rec["cause"], relentless_explain.note_text(item, dict(rec, ending=ending)))
+    return rec["cause"]
 
 
 def reload_needed(store, item, gen, text, now=None):
@@ -603,7 +635,9 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
                                  "\"<the log line showing the site or instrument, not the work, is broken>\"`")
             if wait_hours:
                 raise ValueError("--class instrument waits on its repair item (--on), never on a clock: drop --wait-hours")
-            st.pop("diagnose_owed", None)       # the snag is the classification: SITE or HARNESS, with its evidence
+            if st.get("diagnose_owed"):     # the explanation names the cause; the snag waits on it
+                raise ValueError("explain the ending first (its --cause is the repair item this snag waits --on): "
+                                 + relentless_explain.ask("relentless.py", item, gen))
             blocker = "item"
         blk = None if wait_hours else relentless_block.from_snag(klass, detail, r, on, blocker)
         if blk:     # a blocker, not a failed approach: out of the line until the ledger block ends (relentless_block)
@@ -650,9 +684,9 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
         if not st["contract"]:
             raise ValueError("no contract: set it with `contract` before finishing")
         if st.get("diagnose_owed"):
-            raise ValueError("the last ending (%s) was read off a live proof or a checker and nobody has classified it: "
-                             "read its log, then `learn \"CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the log line that decides it>\"` "
-                             "before finishing" % st["diagnose_owed"]["class"])
+            raise ValueError("the last ending (%s) was read off a live proof or a checker and nobody has explained it: "
+                             "read its log, then %s before finishing (a CLASSIFY label is not an explanation)"
+                             % (st["diagnose_owed"]["class"], relentless_explain.ask("relentless.py", item, gen)))
         owed = relentless_breakers.warrant_refusal(st) or relentless_incident.owed_by(store, item, root or os.getcwd())
         if owed:
             raise ValueError(owed)
@@ -1493,6 +1527,11 @@ class Effects(relentless_game.GameFx):
             evs = model.read()
             self._ledger = (evs, model.replay(evs))
         return self._ledger
+
+    def state_of(self, item):
+        """An item's ledger state (None: never filed), from this tick's one replay: the cause book drops closed causes."""
+        it = self.ledger_items()[1].items.get(item)
+        return it.state if it else None
 
     def pool_order(self, r):
         """Open items in the pool, best first: Operations' system items (health()), the priority list, then Test Pilot
@@ -2502,6 +2541,10 @@ def ending_history(attempts):
         if a.get("end") == "finish":
             sha = a.get("sha")
             continue
+        if a.get("explained"):      # the explanation's mechanism whole, and the item that carries its follow-up
+            out.append("gen %s explained it %s: %s (follow-up: %s)" % (a.get("gen"), a["explained"], a.get("mechanism") or "",
+                                                                     a.get("cause")))
+            continue
         if a.get("classified") or a.get("warrant"):     # attributions whole (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT)
             out += relentless_breakers.attributions_view([a])
             continue
@@ -2528,7 +2571,7 @@ def repeated_live(attempts):
     return {c: v for c, v in seen.items() if len(v) >= 2}
 
 
-def worker_prompt(st, text, learned, r, history=None):
+def worker_prompt(st, text, learned, r, history=None, causes=None):
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     head = ["You carry one item until it is proven. You are one worker in a line: others came before you and another "
@@ -2595,11 +2638,12 @@ def worker_prompt(st, text, learned, r, history=None):
                         "redesign the code only if the new contract shows it does not hold.")
     if st["approach"] == "pilot" and not st.get("proof_only"):
         head.append("PILOT: this needs eyes on the running thing. Run `python3 src/RimMandrake/rimflow/cli.py pilot %s`, "
-                    "follow that brief yourself, and report what you saw with `learn`." % i)
+                    "follow that brief yourself, and EXPLAIN what you saw (not only whether the test ran): `explain` with the "
+                    "mechanism, evidence per step, theories ruled out and the follow-up item for its cause." % i)
     if st.get("live_iter"):
         li = st["live_iter"]
         head.append("LIVE: the running game (started %s) holds your build %s, and the proof of %s exited FAIL on it: "
-                    "a reading, not yet a verdict on the mod (classify it first, below). Work it THERE as far "
+                    "a reading, not yet a verdict on the mod (explain it first, below). Work it THERE as far "
                     "as it goes before any rebuild (owner 2026-11-02, to save game loads): take the bridge with `python3 "
                     "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"relentless live iteration %s\"`, renew "
                     "it while you work, release it (`bridge release --mine`) when you step away (with the bridge not held for "
@@ -2618,16 +2662,20 @@ def worker_prompt(st, text, learned, r, history=None):
         head.append("Last ending: %s: %s" % (st["last_fail"]["class"], st["last_fail"]["detail"]))
     if st.get("diagnose_owed"):
         head.append("DIAGNOSE FIRST: the last ending (%s) is the supervisor's reading of an exit code, not a diagnosis; no "
-                    "agent has read its log. Before you edit any code, read that log (`live-debugging-proof-harness`) and "
-                    "record `%s learn --item %s --gen %d \"CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the one log line that "
-                    "decides it>\"`; `finish` is refused until you do. MOD (the proof asked and the mod's answer missed): "
-                    "fix the mod. CONTRACT (the set proof cannot measure the item): `snag --class contract_wrong` and the "
-                    "next worker replaces it. HARNESS in this item's own proof script: fix the proof, not the code. SITE or "
-                    "HARNESS outside it (the bridge, the box, a shared tool, the staged world or load, a wrong tier or "
-                    "stale deploy): that is not your work - `rimflow namecheck`, `rimflow file <NAME> --for BENCH` (or "
-                    "reuse the open repair item), then `snag --class %s --on <NAME> \"<the log line>\"`: the item waits "
-                    "on the repair with no strike and comes back when it closes." % (st["diagnose_owed"]["class"], rc, i, g,
-                                                                                     INSTRUMENT))
+                    "agent has read its log. Your first job is to EXPLAIN it, not to rerun it (owner 2026-11-04: \"it needs "
+                    "to write a coherent explanation of failures, not just indicate them\"). Before you edit any code, read "
+                    "that log (`live-debugging-proof-harness`) and record %s; `finish` is refused until you do, and a "
+                    "CLASSIFY label does not count. MOD (the proof asked and the mod's answer missed): fix the mod. CONTRACT "
+                    "(the set proof cannot measure the item): `snag --class contract_wrong` and the next worker replaces "
+                    "it. HARNESS in this item's own proof script: fix the proof, not the code. SITE or HARNESS outside it "
+                    "(the bridge, the box, a shared tool, the staged world or load, a wrong tier or stale deploy): that is "
+                    "not your work - explain it with the repair item as --cause, then `snag --class %s --on <that item> "
+                    "\"<the log line>\"`: the item waits on the repair with no strike and comes back when it closes."
+                    % (st["diagnose_owed"]["class"], relentless_explain.ask(rc, i, g), INSTRUMENT))
+        if causes:
+            head.append("Cause book: the open follow-up items other failures were explained by (join one when it is "
+                        "the same cause):")
+            head += causes
     at = st.get("attribution") or {}
     if at and at.get("at", 0) >= (st.get("last_fail") or {}).get("at", 0):
         head.append(relentless_attrib.brief_line(at))
@@ -2636,7 +2684,7 @@ def worker_prompt(st, text, learned, r, history=None):
     rep_live = repeated_live(history)
     if rep_live:
         head.append("SAME CLAUSE, NEW CODE, SAME FAIL: %s. Changing the code did not move it, which points at the site, "
-                    "the instrument or the contract as much as at the mod. No code edit before the classification above "
+                    "the instrument or the contract as much as at the mod. No code edit before the explanation above "
                     "names the line that rules them out." % "; ".join(
                         "%s read FAIL on %d builds (%s)" % (c, len(v), ", ".join(x[:10] for x in v)) for c, v in rep_live.items()))
     hist = ending_history(history)
@@ -3152,6 +3200,21 @@ def ledger_has(item):
         return any(e.get("id") == item for e in pkg("model").read())
     except Exception:  # noqa: BLE001
         return True
+
+
+def ledger_state(item):
+    """The caller's own ledger: an item's state, None when it was never filed. Unreadable: "?" (no refusal on a blind read)."""
+    try:
+        if _LEDGER_WORLD[0] is None:        # one replay per process: `causes` asks once per cause
+            model = pkg("model")
+            _LEDGER_WORLD[0] = model.replay(model.read())
+        it = _LEDGER_WORLD[0].items.get(item)
+    except Exception:  # noqa: BLE001
+        return "?"
+    return it.state if it else None
+
+
+_LEDGER_WORLD = [None]
 
 
 def concept_refused(repo, item, kind):
@@ -4213,7 +4276,8 @@ def lease(store, fx, r, now, acts):
             elif fx.paused():       # the pause may have come while the clone was prepared
                 why = POOL_REFUSED + ": paused while the clone was prepared"
         if not why:
-            prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r, store.attempts(item))
+            prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r, store.attempts(item),
+                                   relentless_explain.open_causes(store, getattr(fx, "state_of", None)) if st.get("diagnose_owed") else None)
             agent = r["pilot_agent"] if st["approach"] == "pilot" else r["worker_agent"]
             why = fx.launch(st, st["run"], prompt, agent, st["clone"], r["run_max_s"],
                             {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
@@ -4819,6 +4883,18 @@ def main(argv=None):
         if name == "finish":
             p.add_argument("--sha", required=True)
             p.add_argument("--evidence", required=True)
+    p = sub.add_parser("explain", help="the written explanation of the last ending (relentless_explain): expected, observed, "
+                                       "mechanism, evidence per step, theories ruled out, and the open follow-up item")
+    p.add_argument("--item", required=True)
+    p.add_argument("--gen", required=True, type=int)
+    p.add_argument("--class", dest="klass", required=True, help="|".join(relentless_explain.CLASSES))
+    p.add_argument("--expected", required=True, help="what the proof expected to read")
+    p.add_argument("--observed", required=True, help="what the game or the checker actually did")
+    p.add_argument("--mechanism", required=True, help="how the one led to the other")
+    p.add_argument("--step", action="append", required=True, help="claim :: the evidence that shows it (repeatable)")
+    p.add_argument("--ruled-out", action="append", required=True, help="theory :: the reading that kills it (repeatable)")
+    p.add_argument("--cause", required=True, help="the OPEN follow-up item for this cause (this item for MOD/CONTRACT)")
+    p = sub.add_parser("causes", help="the cause book: open follow-up items failures were explained by, and their items")
     p = sub.add_parser("game-ready", help="the staging worker: the game runs the build; the supervisor reruns the proofs")
     p.add_argument("--item", required=True)
     p.add_argument("--gen", required=True, type=int)
@@ -4846,8 +4922,11 @@ def main(argv=None):
     p.add_argument("--seat", action="store_true", help="attribute as the seat, no consult nonce")
     p.add_argument("--target", action="append", required=True, help="|".join(relentless_attrib.TARGETS) + " (repeatable)")
     p.add_argument("--evidence", required=True)
-    for k in ("obligation", "observed", "why-product", "repair", "component", "fixture-good", "fixture-bad", "on"):
+    for k in ("obligation", "observed", "why-product", "repair", "component", "fixture-good", "fixture-bad", "on",
+              "expected", "mechanism"):
         p.add_argument("--" + k)
+    p.add_argument("--step", action="append", help="claim :: the evidence that shows it (repeatable; at least one)")
+    p.add_argument("--ruled-out", action="append", help="theory :: the reading that kills it (repeatable; at least one)")
     p = sub.add_parser("incidents", help="ONE book of open incidents: capability (incidents.json) and instrument "
                                          "(instrument_incidents.json), the same fault in both as one row")
     p.add_argument("--json", action="store_true")
@@ -4919,6 +4998,12 @@ def main(argv=None):
                 return 1
         elif a.cmd == "beat":
             beat(store, a.item, a.gen)
+        elif a.cmd == "explain":
+            fx = Effects(rules(), store)
+            print("relentless: %s explained; follow-up %s" % (a.item, explain(
+                store, a.item, a.gen, a.klass, vars(a), state_of=ledger_state, note=fx.ledger_note)))
+        elif a.cmd == "causes":
+            print("\n".join(relentless_explain.open_causes(store, ledger_state, limit=200)) or "no open causes on the book")
         elif a.cmd == "learn":
             learn(store, a.item, a.gen, a.text)
         elif a.cmd == "contract":
@@ -4947,7 +5032,8 @@ def main(argv=None):
             store.on_alarm = fx.alarm_signal
             print("relentless: %s -> %s" % (a.item, relentless_attrib.answer(
                 store, a.item, a.nonce, a.target, vars(a), rules(), time.time(), sys.modules[__name__],
-                known=ledger_has, root=fx.books if os.path.isdir(fx.books) else None, note=fx.ledger_note)))
+                known=ledger_has, root=fx.books if os.path.isdir(fx.books) else None, note=fx.ledger_note,
+                state_of=ledger_state)))
         elif a.cmd == "incidents":
             import relentless_incident
             rows = relentless_incident.book(store, everything=a.all)

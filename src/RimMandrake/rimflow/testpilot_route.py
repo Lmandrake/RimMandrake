@@ -121,7 +121,15 @@ def brief(verdict, host):
     else:
         lines.append("Archmagi: back up ModsConfig.xml before any list change and restore it with the game down at the "
                      "end. Take with --idle-ok; his OWNER hold still refuses, and then you pick the other host.")
+    # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL (owner 2026-11-04): "Make sure the Test Pilot's job is to EXPLAIN the
+    # failure, not just try to execute a test. ... Then there needs to be follow-up work to address them."
     lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i,
-              "End: write the sitting into the mod's functional script, then "
-              "rimflow note %s --text \"%s: <sha>, cause, false theories\", then release the bridge." % (i, SAT)]
+              "Your job is to EXPLAIN the failure, not just to run the test: what the proof expected, what the game did, "
+              "the mechanism linking them, the evidence for each step, and the theories you ruled out and why.",
+              "Each cause you explain gets ONE open follow-up item: this item when the fault is its own, else reuse the "
+              "open item for that cause (`python3 src/RimMandrake/rimflow/relentless.py causes`) or `rimflow namecheck` "
+              "then `rimflow file <NAME> --for BENCH` (a closed one is never reopened: file a new one --caused-by it).",
+              "End: write the sitting into the mod's functional script, then rimflow note %s --text \"%s: <sha> | "
+              "expected: ... | observed: ... | mechanism: ... | evidence: <one per step> | ruled out: <theory: why> | "
+              "follow-up: <ITEM>\", then release the bridge." % (i, SAT)]
     return "\n".join(lines)

@@ -72,8 +72,15 @@ def held(root):
     return x
 
 
+def fxn(notes):
+    """The fixture-verdict notes: an attribution also notes its explanation on the item and its cause."""
+    return [n for n in notes if "FIXTURE_VERDICT" in n[1]]
+
+
 def answer(x, root, notes, **a):
     a.setdefault("evidence", "the deciding log line")
+    for k, v in R.relentless_explain.sample().items():     # every attribution carries its explanation
+        a.setdefault(k, v)
     return A.answer(x.s, STEVE, None, ["SITE", "CHECKER"], dict(a, repair=BOX_FIX), x.r, x.now, R,
                     known=lambda i: i in x.w.items, root=root, note=lambda i, t: notes.append((i, t)))
 
@@ -87,14 +94,14 @@ def t_attribution(root):
     except ValueError as e:
         ok("FIXTURE_VERDICT" in str(e) and "can never" in str(e),
            "a fixture pair that can never print the verdict is refused at attribution: %s" % str(e)[:160])
-    ok(I.get(x.s, BOX_FIX) is None and x.st(STEVE)["status"] == "held" and not notes,
+    ok(I.get(x.s, BOX_FIX) is None and x.st(STEVE)["status"] == "held" and not fxn(notes),
        "the refusal opens no incident and leaves the item held for a better attribution")
     route = answer(x, root, notes, fixture_good="python3 probe.py --mounted D:", fixture_bad="python3 probe.py --mounted Q:")
     ok(route == "wait:" + BOX_FIX, "a fixture whose script does not exist yet is linked (the repair writes it): %s" % route)
     got = alarms(x, I.NO_VERDICT)
     ok(len(got) == 1 and got[0].get("item") == BOX_FIX and got[0].get("parent") == STEVE,
        "and flagged once: an alarm of kind %s on the repair, for Operations: %s" % (I.NO_VERDICT, got))
-    ok(len(notes) == 1 and notes[0][0] == BOX_FIX and "FIXTURE_VERDICT" in notes[0][1] and STEVE in notes[0][1],
+    ok(len(fxn(notes)) == 1 and fxn(notes)[0][0] == BOX_FIX and STEVE in fxn(notes)[0][1],
        "and a note on the REPAIR item says its close owes the line: %s" % notes)
     return x
 
@@ -156,7 +163,7 @@ def t_effective_pair(root):
                {"good": "python3 speaks.py", "bad": "python3 speaks.py --bad"}, ["SITE"])
     notes = []
     route = answer(x, root, notes, fixture_good="true", fixture_bad="exit 1")
-    ok(route == "wait:" + BOX_FIX and not alarms(x, I.NO_VERDICT) and not notes,
+    ok(route == "wait:" + BOX_FIX and not alarms(x, I.NO_VERDICT) and not fxn(notes),
        "an open incident's speaking fixtures stand: the ignored pair is neither refused nor flagged: %s %s" % (route, notes))
 
 
@@ -195,18 +202,23 @@ def t_attribute_cli(root):
     with open(rules_p, "w", encoding="utf-8") as f:
         json.dump(dict(x.r, ops_watch_dir=d), f)
     saved_env = {k: os.environ.get(k) for k in ("RM_OPS_WATCH_DIR", "RELENTLESS_ROOT", "RELENTLESS_RULES")}
-    saved = (R.ledger_has, R.Effects.ledger_note, os.getcwd())
+    saved = (R.ledger_has, R.Effects.ledger_note, os.getcwd(), R.ledger_state)
     notes = []
     os.environ.update(RM_OPS_WATCH_DIR=d, RELENTLESS_ROOT=x.s.root, RELENTLESS_RULES=rules_p)
     R.ledger_has = lambda i: True
+    R.ledger_state = lambda i: "open"
     R.Effects.ledger_note = lambda self, i, t: notes.append((i, t))
     os.chdir(d)
     try:
         R.main(["attribute", "--item", STEVE, "--seat", "--target", "SITE", "--target", "CHECKER",
                 "--evidence", "the deciding log line", "--repair", BOX_FIX,
+                "--expected", "A2 reads 40G free on D:", "--observed", "df on the checker box lists no D: at all",
+                "--mechanism", "the checker box does not mount D:, so df measured C: and the clause read the wrong disk",
+                "--step", "D: is absent :: df -h on the box lists C: only", "--ruled-out", "the disk is full :: C: shows 40G free, not D:",
+                
                 "--fixture-good", "python3 probe.py --mounted D:", "--fixture-bad", "python3 probe.py --mounted Q:"])
     finally:
-        R.ledger_has, R.Effects.ledger_note = saved[0], saved[1]
+        R.ledger_has, R.Effects.ledger_note, R.ledger_state = saved[0], saved[1], saved[3]
         os.chdir(saved[2])
         for k, v in saved_env.items():
             if v is None:

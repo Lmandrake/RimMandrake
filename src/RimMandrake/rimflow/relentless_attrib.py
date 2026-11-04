@@ -149,6 +149,7 @@ def help_over(store, st, word, now, sup):
 
 
 def prompt(st, text, attempts, nonce, r):
+    import relentless_explain
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     w, i = st["wait"], st["item"]
     rows = ["  %s gen %s ended %s%s: %s" % (a.get("at"), a.get("gen"), a.get("end"), " (withheld)" if a.get("gated") else "",
@@ -161,6 +162,15 @@ def prompt(st, text, attempts, nonce, r):
         "BENCH`), or reusing the open one that already names this fault." % w["sha"],
         "Broken tests are expected; an inability to measure is not broken work, and a false close is worse than a wait. "
         "Attribute to PRODUCT only when the work itself was observed violating an obligation it was checked against.",
+        "Your job is to EXPLAIN the failure, not to rerun it (owner 2026-11-04: \"it needs to write a coherent "
+        "explanation of failures, not just indicate them. Then there needs to be follow-up work to address them\"). "
+        "Every form below also takes the explanation, kept on the item and noted on its follow-up item: --expected \"what "
+        "the proof expected to read\" --observed \"what the game or checker actually did\" --mechanism \"how the one "
+        "led to the other\" --step \"claim %s the log line, path or reading that shows it\" (repeat, one per step) "
+        "--ruled-out \"another theory %s the reading that kills it\" (repeat). The follow-up item is the --repair for an "
+        "instrument (reuse one from `%s causes` when it is the same cause; a closed one is never reopened: file a new one "
+        "`--caused-by` it), the --on for a dependency, this item for the rest."
+        % (relentless_explain.SEP, relentless_explain.SEP, rc),
         "Then run exactly one of these and stop:",
         "  %s attribute --item %s --nonce %s --target PRODUCT --obligation \"the clause\" --observed \"what the mod did, "
         "from the log\" --why-product \"why the instrument is sound here\" --evidence \"the log line\"" % (rc, i, nonce),
@@ -184,13 +194,14 @@ def brief_line(at):
     ts = at.get("targets") or []
     if "PRODUCT" in ts:
         return ("ATTRIBUTED PRODUCT (%s): the work was observed violating an obligation; fix the product, not the proof. "
-                "Obligation: %s. Observed: %s. Evidence: %s%s" % (at.get("by"), at.get("obligation") or "-",
-                                                                   at.get("observed") or "-", at.get("evidence", "")[:600],
+                "Obligation: %s. Observed: %s. Mechanism: %s. Evidence: %s%s" % (at.get("by"), at.get("obligation") or "-",
+                                                                   at.get("observed") or "-", at.get("mechanism") or "-",
+                                                                   at.get("evidence", "")[:600],
                 "" if ts == ["PRODUCT"] else ". The %s part is tracked on %s; do not work round it"
                 % ("/".join(t for t in ts if t != "PRODUCT"), at.get("repair") or at.get("on") or "its repair item")))
     return ("ATTRIBUTED %s (%s): the code at %s was not shown broken; repair the proof or its binding so it can show the "
-            "obligation, and leave the code as it is. Evidence: %s" % ("+".join(ts), at.get("by"), (at.get("sha") or "")[:12],
-                                                                       at.get("evidence", "")[:600]))
+            "obligation, and leave the code as it is. Mechanism: %s. Evidence: %s"
+            % ("+".join(ts), at.get("by"), (at.get("sha") or "")[:12], at.get("mechanism") or "-", at.get("evidence", "")[:600]))
 
 
 def validate(targets, a):
@@ -222,14 +233,29 @@ def validate(targets, a):
     return ts
 
 
-def answer(store, item, nonce, targets, a, r, now, sup, known=None, root=None, note=None):
+def cause_of(item, ts, a):
+    """The follow-up item an attribution's cause is carried by: the repair item for an instrument, the predecessor for a
+    dependency, the item itself for PRODUCT/PROOF/CONTRACT (its next builder or proof worker)."""
+    if any(t in INSTRUMENTS for t in ts):
+        return (a.get("repair") or "").strip()
+    if "DEPENDENCY" in ts:
+        return (a.get("on") or "").strip()
+    return item
+
+
+def answer(store, item, nonce, targets, a, r, now, sup, known=None, root=None, note=None, state_of=None):
     """`relentless.py attribute`: the diagnostician's (nonce) or an operator's (nonce None, on an item that waits or is
     held for attribution) return. Recorded and routed under one lock. -> the route taken.
     `root`: the tree the fixtures run in (the books clone), for the verdict lint; `note(item, text)`: a ledger note,
     called after the lock. A fixture pair that can never print FIXTURE_VERDICT is refused here; one whose script does
     not print it yet is linked and flagged (REPAIR_FIXTURES_ENFORCE_VERDICT_AT_FILING)."""
     import relentless_incident
+    import relentless_explain
     ts = validate(targets, a)
+    # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL: a target and a line are a label; the attribution carries the explanation
+    expl = relentless_explain.validate(a, ts, item, cause_of(item, ts, a))
+    if expl["cause"] != item:
+        relentless_explain.check_cause(expl["cause"], state_of)
     lint_state, lint_whys = relentless_incident.LINT_OK, []
     if any(t in INSTRUMENTS for t in ts) and "PRODUCT" not in ts:
         # the pair that will judge the release: link() keeps an open incident's first fixtures, never this answer's
@@ -268,13 +294,20 @@ def answer(store, item, nonce, targets, a, r, now, sup, known=None, root=None, n
             st["status"] = "blocked"
         rec = record(ts, a.get("evidence"), now, by, w["sha"], obligation=a.get("obligation"), observed=a.get("observed"),
                      why_product=a.get("why_product"), repair=a.get("repair"), on=a.get("on"),
-                     component=a.get("component"), ending=w["class"])
+                     component=a.get("component"), ending=w["class"], mechanism=expl["mechanism"],
+                     expected=expl["expected"], cause=expl["cause"])
         st["attribution"] = rec
         store.attempt(item, {"at": iso(now), "gen": st["gen"], "attributed": ts, "by": by, "ending": w["class"],
                              "sha": w["sha"], "evidence": rec["evidence"][:600]})
+        new = relentless_explain.keep(store, item, st["gen"], expl, w["class"], w["sha"], by, now)
         route = _route(store, st, ts, a, rec, r, now, sup)
         store.journal({"at": iso(now), "do": "attributed", "item": item, "targets": ts, "route": route})
         store.save(st)
+    if note:
+        note(item, "relentless: %s at %s explained (%s): %s | follow-up: %s" % (rec["ending"], rec["sha"][:12], "+".join(ts),
+                                                                             expl["mechanism"][:600], expl["cause"]))
+        if new and expl["cause"] != item:
+            note(expl["cause"], relentless_explain.note_text(item, dict(expl, ending=rec["ending"])))
     if lint_whys and route.startswith("wait:"):
         flag_no_verdict(store, a["repair"].strip(), item, " | ".join(lint_whys), now, note)
     return route

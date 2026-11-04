@@ -341,7 +341,8 @@ def t_live_ending_is_diagnosed_first():
         x.w.up[unit] = False
         x.run_one("I0")
     brief = x.w.launches[-1][2]
-    ok("DIAGNOSE FIRST" in brief and "CLASSIFY: MOD|SITE|HARNESS|CONTRACT" in brief, "diagnose: the brief asks for it first")
+    ok("DIAGNOSE FIRST" in brief and "explain --item I0" in brief and "--mechanism" in brief and "--ruled-out" in brief,
+       "diagnose: the brief asks for the explanation first")
     ok("FAILED on it" not in brief, "diagnose: no brief asserts the mod failed")
     ok("SAME CLAUSE, NEW CODE, SAME FAIL: A1 read FAIL on 2 builds" in brief, "diagnose: a clause red on two builds is named")
     head = brief.split("--- item ---")[0]
@@ -353,14 +354,22 @@ def t_live_ending_is_diagnosed_first():
         R.finish(x.s, "I0", st["gen"], "c" * 40, "e")
     except ValueError as e:
         refused = str(e)
-    ok(refused and "CLASSIFY" in refused, "diagnose: finish is refused before the classification")
+    ok(refused and "explain --item I0" in refused, "diagnose: finish is refused before the explanation")
     R.learn(x.s, "I0", st["gen"], "CLASSIFY: MOD")
     ok(x.st("I0").get("diagnose_owed"), "diagnose: a class with no evidence line does not count")
     R.learn(x.s, "I0", st["gen"], "CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the one log line that decides it>")
     ok(x.st("I0").get("diagnose_owed"), "diagnose: the brief's template pasted back does not count")
     R.learn(x.s, "I0", st["gen"], "CLASSIFY: SITE - prepare_site read back a roof in the rect: roofed=12")
+    ok(x.st("I0").get("diagnose_owed"), "diagnose: a CLASSIFY label is not an explanation (LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL)")
+    refused = None
+    try:
+        R.snag(x.s, "I0", st["gen"], "instrument", "the bridge is wedged", x.r, now=x.now, on=["BRIDGE_REPAIR_X_Y"])
+    except ValueError as e:
+        refused = str(e)
+    ok(refused and "explain" in refused, "instrument: refused before the ending is explained")
+    R.explain(x.s, "I0", st["gen"], "SITE", dict(R.relentless_explain.sample(), cause="BRIDGE_REPAIR_X_Y"), now=x.now)
     st = x.st("I0")
-    ok(not st.get("diagnose_owed") and st["diagnosed"]["class"] == "SITE", "diagnose: the CLASSIFY line settles it")
+    ok(not st.get("diagnose_owed") and st["diagnosed"]["class"] == "SITE", "diagnose: the explanation settles it")
     refused = None
     try:
         R.snag(x.s, "I0", st["gen"], "instrument", "the bridge is wedged", x.r, now=x.now)
@@ -537,7 +546,7 @@ def t_share():
 
 def blame_product(x, i, observed="the mod answered wrong"):
     """The diagnosis of a withheld validation ending (relentless_attrib) says PRODUCT, as the seat: the builder road."""
-    return R.relentless_attrib.answer(x.s, i, None, ["PRODUCT"], {
+    return R.relentless_attrib.answer(x.s, i, None, ["PRODUCT"], {**R.relentless_explain.sample(),
         "evidence": "the log line", "obligation": "the clause", "observed": observed,
         "why_product": "the instrument measured the sibling clause fine"}, x.r, x.now, R)
 
