@@ -205,13 +205,17 @@ def t_blind():
 
 def t_real_probe():
     """The instrument can see: one real gapprobe.py run against this checkout's FlowWorks validation."""
-    out = G.probe(MOD, {"X_T_PROBE": "walk the `drawbridges` chain"}, [])
+    out = G.probe(MOD, {"X_T_PROBE": "walk FlowWorks' `drawbridges` chain",
+                        "X_T_STRANGER": "a Stillsand item that names `drawbridges` and defs_resolve"}, [])
     if out.get("blind"):
         check(False, "gapprobe on FlowWorks is blind in a full checkout: %s" % out["blind"])
         return
     check(len(out["chains"]) > 10 and "drawbridges" in out["chains"] and "core_offline" in out["offline"],
           "gapprobe lists FlowWorks' chains (%d) and its offline ones" % len(out["chains"]))
     check("drawbridges" in out["item_chains"].get("X_T_PROBE", []), "an item text naming `drawbridges` links to it")
+    check("X_T_STRANGER" not in out["item_chains"],
+          "an item whose text names a chain but not the mod does not link (TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL): %s"
+          % out["item_chains"].get("X_T_STRANGER"))
 
 
 def t_fill_plan():

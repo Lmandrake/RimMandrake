@@ -740,7 +740,7 @@ def main():
         rc, o = tq("fill", "Mock")
         check(o.startswith("brake"), "two non-DONE filler jobs in a row brake the filler: %s" % o)
         unit = open(TESTQ).read()
-        check("testq.py fill" in unit and "TESTQ_FILL_MODS" in unit, "the tick unit runs the filler")
+        check("testq.py fill" in unit and "coverage.py wired" in unit, "the tick unit runs the filler over the wired mods")
         check("ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py" in unit,
               "a failing ingest does not skip the fill line after it (ExecStart=-)")
 

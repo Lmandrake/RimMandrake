@@ -126,7 +126,8 @@ def iso(epoch):
 
 
 def mods_default():
-    return os.environ.get("TESTQ_FILL_MODS", "FlowWorks").split()
+    import coverage     # the filler's own list: TESTQ_FILL_MODS, else wired_mods.json (TESTQ_MODS_WIRE_BEYOND_FLOWWORKS)
+    return coverage.fill_mods()
 
 
 # ---------------------------------------------------------------- what state the lane is in

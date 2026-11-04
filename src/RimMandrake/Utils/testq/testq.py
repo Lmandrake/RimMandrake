@@ -16,7 +16,8 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      re-tried after 3 days) (requested_by BENCH.filler, prio 20). Brakes:
                                      QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 8 h; a job
                                      backstop TESTQ_FILL_CAP, 200), a paused lane, two non-DONE fillers running;
-                                     every tick runs it for each of TESTQ_FILL_MODS (FlowWorks)
+                                     every tick runs it for each mod `coverage.py wired` names (wired_mods.json;
+                                     TESTQ_FILL_MODS overrides)
   testq.py maintenance --reason R --since T [--until T]  record a maintenance reboot or known hardware outage, after the
                                      fact too: a job killed inside it is not a lane fault (nonfault_cause, brake_release.py)
   testq.py pause --reason R [--hours H]  pause the lane by hand; with --hours it is intentional until then (the
@@ -31,7 +32,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      findings_fold.py run (the no-AI findings sorter; its exit 2 fails the unit).
                                      The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow,contracts},
                                      infrastructure/state, AND src/RimMandrake/Utils/modcheck plus each filled mod's
-                                     source (src/RimMandrake/FlowWorks): without them preview, bad_selection and the
+                                     source (every wired mod's folder): without them preview, bad_selection and the
                                      filler's gap order (gaps.py) are blind and say so ("blind: ...").
 
 The queue is plain files under TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrake/testq):
@@ -1484,7 +1485,7 @@ WorkingDirectory={clone}
 {git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/companion_stage.py run
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
-ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
+ExecStart=-/bin/bash -c 'for m in $(/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/coverage.py wired); do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/findings_fold.py run

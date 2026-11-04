@@ -7,7 +7,7 @@ stdout: {"chains": [every chain, suite order], "offline": [offline chains],
          "versions": {chain: its code version now (gate.code_version; testq/retest.py), or null}}
 
 Offline (the declaration probe, no game). The item links mirror modcheck targeting.resolve(--item): the chain's
-source names the item, or the item's text names the chain or one of its rows. They are computed here in one pass,
+source names the item, or the item's text names the chain or one of its rows AND names the mod (names_mod). They are computed here in one pass,
 because resolve() re-walks the whole catalogue per item (hundreds of items per fill).
 """
 import json
@@ -18,6 +18,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MC = os.path.abspath(os.path.join(HERE, "..", "modcheck"))
 if MC not in sys.path:
     sys.path.insert(0, MC)
+
+
+def names_mod(mod, iid, text):
+    """True when an item names MOD: its folder name anywhere in the text (case-blind), or in the id, underscores
+    ignored (FLOW_WORKS_X and FLOWWORKS_X both name FlowWorks)."""
+    return mod.lower() in (text or "").lower() or mod.upper() in (iid or "").replace("_", "")
 
 
 def main():
@@ -36,9 +42,14 @@ def main():
         srcs = {n: targeting._chain_source(fn) for n, fn in suite.chains}
         links = {}
         for iid, text in (req.get("items") or {}).items():
+            # TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL: a link by the item's TEXT naming a chain or row holds only when
+            # the item also names this mod. Generic names (defs, defs_resolve, site, flora) are declared by many mods,
+            # and GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND was linked to the defs chain of every biome. Measured
+            # 2026-11-04: all 32 of FlowWorks' text links name it; the dropped ones were all other mods' items.
+            named = names_mod(req["mod"], iid, text)
             hit = [n for n in names if n not in offline and (
-                targeting._names_in(srcs[n], iid) or targeting._names_in(text, n)
-                or any(targeting._names_in(text, r) for r in by_chain.get(n, ())))]
+                targeting._names_in(srcs[n], iid) or (named and (targeting._names_in(text, n)
+                or any(targeting._names_in(text, r) for r in by_chain.get(n, ())))))]
             if hit:
                 links[iid] = hit
         changed = {}

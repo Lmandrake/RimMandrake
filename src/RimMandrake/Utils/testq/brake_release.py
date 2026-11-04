@@ -136,7 +136,8 @@ def decide(now, mods):
 def release_pass(now=None, mods=None):
     now = time.time() if now is None else now
     prev = T.read_json(T.q(STATE)) or {}
-    rec = decide(now, mods or os.environ.get("TESTQ_FILL_MODS", "FlowWorks").split())
+    import coverage     # the filler's own list (wired_mods.json; TESTQ_FILL_MODS overrides)
+    rec = decide(now, mods or coverage.fill_mods())
     rec.setdefault("canary", prev.get("canary"))
     rec.update(ts=S.utcnow(), epoch=now)
     S.dump(rec, T.q(STATE))

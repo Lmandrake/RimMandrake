@@ -1,0 +1,12 @@
+{
+ "about": "The mods testq's filler walks, in fill order (coverage.py; TESTQ_MODS_WIRE_BEYOND_FLOWWORKS). Wire the next one from `coverage.py rank` (selectable mods by open bridge items naming them); `coverage.py check` fails if any wired mod's probe stops reading selectable. TESTQ_FILL_MODS, when set, overrides this file.",
+ "mods": ["FlowWorks", "Stillsand", "Contagion", "TerminalBiomes", "FeverWood", "EnvironmentalHazards"],
+ "wired": {
+  "FlowWorks": "2026-10-25, the original filler mod",
+  "Stillsand": "2026-11-04, rank 1 beyond FlowWorks: 26 open bridge items",
+  "Contagion": "2026-11-04, rank 2: 17 open bridge items; 2 DONE jobs on SteveDesktop already",
+  "TerminalBiomes": "2026-11-04, rank 4: 13 open bridge items (rank 3 LeaningScrub skipped: its closure needs sarg.alphaanimals and mlie.starwarsanimalcollection, absent from MINIMAL)",
+  "FeverWood": "2026-11-04, rank 5: 12 open bridge items",
+  "EnvironmentalHazards": "2026-11-04, rank 6: 11 open bridge items"
+ }
+}
