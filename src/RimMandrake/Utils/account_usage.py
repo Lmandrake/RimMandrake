@@ -589,7 +589,8 @@ def main(argv=None) -> int:
     p = sub.add_parser("now")
     p.add_argument("--json", action="store_true")
     p = sub.add_parser("install")
-    p.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
+    p.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
+                   help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "poll":
         recs = poll()

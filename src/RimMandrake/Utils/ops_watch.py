@@ -3447,7 +3447,7 @@ def backfill_production(now=None, rules=None):
 # =================================================================================================== install
 UNIT = """# rm-ops-watch: ops_watch.py, the Dispatcher's deterministic measurement arm for Operations
 # (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE; listed in src/RimMandrake/rimflow/dispatcher_schedule.json "measure").
-# Runs from the pulse-deploy checkout (rm-deploy-update fast-forwards it), like rm-streams-collect. No AI.
+# Runs from the one Operations deploy (src/RimMandrake/Utils/systemd/ops_clocks.json). No AI.
 [Unit]
 Description=Ops watch (accounts, Codex, Steve lane, disk, timers, KPIs; Andon flags; alarms)
 
@@ -3505,7 +3505,8 @@ def main(argv=None):
     ln.add_argument("--rules", help="the rules file, default the shipped one")
     i = sub.add_parser("install")
     i.add_argument("--apply", action="store_true")
-    i.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
+    i.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
+                   help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "run":
         try:

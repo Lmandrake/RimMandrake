@@ -3,6 +3,8 @@
 
 Owner 2026-11-03: "at 1% please changeover to steven. He has authorized using another 20% of his account." A systemd
 user timer runs `check`, one per change-over; a later link in a chain idles until its FROM is live.
+Arm that timer with the script from the Operations deploy (/home/mandrake/rm/dispatch, systemd/ops_clocks.json), never
+a seat clone, whose code moves under it.
 
     account_handover.py check --from lukas --to system --at 1 [--dry-run]
 

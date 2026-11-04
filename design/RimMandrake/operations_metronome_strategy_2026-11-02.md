@@ -196,7 +196,7 @@ ESTIMATE, in helper days. Each step ends with a planted fault caught on the real
 
 | # | Step | Days |
 |---|---|---|
-| 0 | One pinned deploy of the Operations code for every Operations clock, instead of six clones | 0.5 |
+| 0 | One pinned deploy of the Operations code for every Operations clock, instead of six clones. Built 2026-11-03: the deploy is the dispatch clone; clocks and the units left outside are listed in `src/RimMandrake/Utils/systemd/ops_clocks.json`, checked by `ops_clocks.py check` | 0.5 |
 | 1 | **Memory, beside the digest.** `ops_memory.py`: typed bands, trend, state, time to limit, blind rules, exception page, atomic generation. Run by hand and after each ops_watch pass; nothing decides from it | 0.5 |
 | 2 | Ladder fixes: relapse counted only after a recovery; second relapse files a structural item; no 17-hour hole (an incident run never takes the evening slot's place before noon); incident runs read the memory page at a smaller budget | 1 |
 | 3 | Register of lives, read only: wanted state, endings and causes from the Dispatcher journal, memwatch and Relentless logs | 1 |

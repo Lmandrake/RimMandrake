@@ -242,7 +242,8 @@ def main(argv=None):
     r.add_argument("--file-alarms", action="store_true")
     i = sub.add_parser("install")
     i.add_argument("--apply", action="store_true")
-    i.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
+    i.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
+                   help="the one Operations deploy (systemd/ops_clocks.json)")
     pp = sub.add_parser("pause")
     pp.add_argument("--hours", type=float, required=True)
     pp.add_argument("--all", action="store_true")

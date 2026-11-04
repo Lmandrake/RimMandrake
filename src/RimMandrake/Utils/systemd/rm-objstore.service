@@ -10,8 +10,9 @@
 Description=RimMandrake shared object store sampler
 
 [Service]
+# Code from the one Operations deploy (src/RimMandrake/Utils/systemd/ops_clocks.json; ops_clocks.py check)
 Type=oneshot
-ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/scratch_clone.py sample
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/scratch_clone.py sample
 Nice=10
 IOSchedulingClass=idle
 MemoryMax=1G

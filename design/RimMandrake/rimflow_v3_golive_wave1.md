@@ -42,13 +42,10 @@ Paths: repo clone `/home/mandrake/rm/bench`; Dispatcher state `/mnt/d/ClaudeWork
    Check: `git -C /home/mandrake/rm/dispatch log -1 --format=%h` equals `git -C /home/mandrake/rm/bench ls-remote origin main | cut -c1-10`
    (compare 10 characters), and `git -C /home/mandrake/rm/dispatch status -sb | head -1` ends without `behind`.
    Today: both `44155dc383`.
-4. **pulse-deploy clone current** (ops_watch and deadman run from it). It updates itself: `rm-pulse-update.timer`
-   (every 5 min) runs `pulse.py update --restart`, a fast-forward to origin/main. Check:
-   `git -C /mnt/d/ClaudeWork/rimmandrake/pulse-deploy log -1 --format=%h` equals the ls-remote sha above; if it is behind, either wait
-   5 min and recheck, or confirm the missing commits touch none of the six files in step 2
-   (`git diff --name-only <deploy sha> origin/main`). Today it was 2 commits behind (`32ca578faa` vs `44155dc383`), the gap touched only
-   arbiter.md and its selftest, so not blocking; recheck on the day.
-   Last update log: `journalctl --user -u rm-pulse-update -n 3 --no-pager`.
+4. **The Operations deploy is clean and current.** Every Operations clock runs from one deploy, the dispatch clone
+   (`src/RimMandrake/Utils/systemd/ops_clocks.json`; OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY). Check:
+   `python3 src/RimMandrake/Utils/ops_clocks.py check` exits 0, and `git -C /home/mandrake/rm/dispatch log -1 --format=%h`
+   equals the ls-remote sha above (or is behind by commits touching none of the six files in step 2).
 5. **The three arms healthy.**
    - `python3 src/RimMandrake/Utils/deadman_check.py run` (no `--file-alarms`: read only). Proves: prints `deadman: all arms alive`
      (covers ops_watch stamp < 50 min and dispatcher stamp < 15 min).

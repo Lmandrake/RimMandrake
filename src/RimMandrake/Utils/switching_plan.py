@@ -781,7 +781,8 @@ def main(argv=None) -> int:
     p = sub.add_parser("status")
     p.add_argument("--rate", type=float, default=None, help="burn %%/h for the week ahead (default: the pool's pace)")
     p = sub.add_parser("install")
-    p.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
+    p.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
+                   help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "check":
         return check(dry=a.dry_run)
