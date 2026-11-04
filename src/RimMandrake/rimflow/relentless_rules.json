@@ -26,10 +26,30 @@
   "first_touch_hold": true,
   "_same_failure_limit": "RELENTLESS_STRIKES_HARDEN_CHANGE_TACK (owner 2026-11-02, fix 4 of relentless_vs_foundry_2026-11-02.md): two returns of one class (blind_fail, proof_weak, a snag class) change the approach; after max_approach_changes changes the next trigger holds the item for the Conductor with a summary (relentless_strikes.py). item_spend_limit is the per-item token cap, held the same way.",
   "same_failure_limit": 2,
-  "_unmeasured": "CHECKER_SANDBOX_FIX_BLIND_TO_STEVE (owner 2026-11-04: an inability to measure is reported up for fix and repair, never a FAIL): a Marker's UNMEASURED, or a FAIL whose reasons only say the box could not reach its evidence (relentless_wall.read_as), sends no work back and changes no approach. The candidate is checked again after unmeasured_recheck_s; unmeasured_limit in a row on one sha holds it (kind unmeasured, the seat's, Conductor attention) until the box or the contract's offbox reading is repaired. offbox_max_s bounds each off-box command the supervisor runs outside the wall at check launch.",
+  "_unmeasured": "CHECKER_SANDBOX_FIX_BLIND_TO_STEVE (owner 2026-11-04: an inability to measure is reported up for fix and repair, never a FAIL): a Marker's UNMEASURED, or a FAIL whose reasons only say the box could not reach its evidence (relentless_wall.read_as), sends no work back and changes no approach. The candidate is checked again after unmeasured_recheck_s; unmeasured_limit in a row on one sha holds it (kind unmeasured, the seat's, Conductor attention) until the box or the contract's offbox reading is repaired. offbox_max_s bounds all of a check's off-box readings together (one deadline); offbox_adapters are the only things that run.",
   "unmeasured_limit": 2,
   "unmeasured_recheck_s": 1800,
   "offbox_max_s": 120,
+  "offbox_adapters": {
+      "_doc": "Supervisor-owned off-box readings (GPT review of 0135b04912: no worker-authored command crosses the Marker's wall). A contract or unhold --offbox names one of these; the supervisor runs its argv with no shell, from an empty folder, with output capped at relentless_wall.OFFBOX_OUT_MAX bytes and all of a check's readings sharing offbox_max_s. `script` is the plain text of an -EncodedCommand, for review: they must match (selftest_relentless_blind).",
+      "steve_c_free": {
+          "what": "SteveDesktop C: free and size bytes, read now (Get-PSDrive C over ssh): one line '<UTC> free_bytes=N size_bytes=N'",
+          "script": "$ProgressPreference = \"SilentlyContinue\"; $d = Get-PSDrive C; \"{0} free_bytes={1} size_bytes={2}\" -f (Get-Date).ToUniversalTime().ToString(\"yyyy-MM-ddTHH:mm:ssZ\"), $d.Free, ($d.Free + $d.Used)",
+          "argv": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=20",
+              "stevedesktop",
+              "powershell",
+              "-NoProfile",
+              "-NonInteractive",
+              "-EncodedCommand",
+              "JABQAHIAbwBnAHIAZQBzAHMAUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAiAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAIgA7ACAAJABkACAAPQAgAEcAZQB0AC0AUABTAEQAcgBpAHYAZQAgAEMAOwAgACIAewAwAH0AIABmAHIAZQBlAF8AYgB5AHQAZQBzAD0AewAxAH0AIABzAGkAegBlAF8AYgB5AHQAZQBzAD0AewAyAH0AIgAgAC0AZgAgACgARwBlAHQALQBEAGEAdABlACkALgBUAG8AVQBuAGkAdgBlAHIAcwBhAGwAVABpAG0AZQAoACkALgBUAG8AUwB0AHIAaQBuAGcAKAAiAHkAeQB5AHkALQBNAE0ALQBkAGQAVABIAEgAOgBtAG0AOgBzAHMAWgAiACkALAAgACQAZAAuAEYAcgBlAGUALAAgACgAJABkAC4ARgByAGUAZQAgACsAIAAkAGQALgBVAHMAZQBkACkA"
+          ]
+      }
+  },
   "max_approach_changes": 2,
   "_snag_again_wait_h": "The same snag class again waits this many hours per earlier one, capped by MAX_WAIT_HOURS: nothing changes for a worker to find.",
   "snag_again_wait_h": 1,

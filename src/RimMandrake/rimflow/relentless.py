@@ -337,7 +337,7 @@ def unmeasured(store, st, said, blind, r, now):
     limit = r.get("unmeasured_limit", 2)
     if n >= limit:
         relentless_strikes.hold(st, "the checker could not reach the evidence on %d checks running of %s, so the box needs "
-                                "repair, not the work: %s. Fix the box, or unhold --offbox CMD with a command that reads it from outside; "
+                                "repair, not the work: %s. Fix the box, or unhold --offbox NAME with a supervisor adapter (relentless_rules.json offbox_adapters) that reads it from outside; "
                                 "either way unhold checks this sha again" % (n, sha, (blind or reasons)[:300]), "unmeasured", now)
         st["status"] = "held"
         st.pop("recheck_at", None)
@@ -468,12 +468,10 @@ def reload_needed(store, item, gen, text, now=None):
 def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, offbox=None):
     """Set by the first worker before it edits; only a redesign may change it, and says why. One exception: any worker
     may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
-    workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it. `offbox`: commands the
-    supervisor runs outside the Marker's wall at check time (relentless_wall.offbox_cmds); adding them with the proof
+    workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it. `offbox`: adapter names
+    (relentless_rules.json offbox_adapters) the supervisor runs outside the Marker's wall at check time; adding them with the proof
     unchanged also widens, since the Marker still judges whether each one measures its clause."""
-    offbox = [x for x in (offbox or []) if x and x.strip()]
-    if len(offbox) > relentless_wall.OFFBOX_MAX:
-        raise ValueError("at most %d --offbox commands" % relentless_wall.OFFBOX_MAX)
+    offbox = relentless_wall.check_offbox_names(offbox, rules())    # names of supervisor adapters only: no worker shell
     import live_line
     if live:
         live_line.parse(live)
@@ -760,11 +758,19 @@ def help_answer(store, item, nonce, options, r, now=None):
         store.save(st)
 
 
-def verdict(store, item, nonce, word, reasons, now=None):
+def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None):
+    """defects / unreached: the Marker's structured findings (GPT review of 0135b04912). None = an old-format verdict, read
+    from its prose by relentless_wall.read_as; a list, even empty, is read by structure."""
     now = time.time() if now is None else now
     word = word.upper()
     if word not in relentless_wall.WORDS:
         raise ValueError("verdict is PASS, WEAK, FAIL or UNMEASURED")
+    if defects is not None or unreached is not None:
+        defects, unreached = list(defects or []), list(unreached or [])
+        if word == relentless_wall.UNMEASURED and not unreached:
+            raise ValueError("UNMEASURED needs at least one --unreached: name what you could not reach")
+        if word == relentless_wall.UNMEASURED and defects:
+            raise ValueError("a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines")
     with store.lock():
         st = store.load(item)
         chk = (st or {}).get("check") or {}
@@ -774,6 +780,9 @@ def verdict(store, item, nonce, word, reasons, now=None):
             raise Fenced("%s: this check has already given its verdict" % item)
         chk["verdict"] = word
         chk["reasons"] = (reasons or "")[:4000]
+        if defects is not None:
+            chk["defects"] = [str(x)[:600] for x in defects][:20]
+            chk["unreached"] = [str(x)[:600] for x in unreached][:20]
         chk["verdict_at"] = now
         store.save(st)
         store._append(store.p("shadow.jsonl"), json.dumps({      # shadow: recorded beside the verdict, read by nothing that acts
@@ -889,8 +898,9 @@ def _conductor_authority():
 
 
 def unhold(store, item, said, now=None, offbox=None):
-    """`offbox`: the repair of an unmeasured hold from outside: commands the supervisor will run beyond the Marker's wall,
-    added to the contract (the item has no worker to add them)."""
+    """`offbox`: the repair of an unmeasured hold from outside: supervisor adapter names (never commands) to run beyond the
+    Marker's wall, added to the contract (the item has no worker to add them). A free-text entry left by an older contract
+    is dropped here: it would be refused at run time anyway."""
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
@@ -899,9 +909,8 @@ def unhold(store, item, said, now=None, offbox=None):
         if offbox:
             if not st.get("contract"):
                 raise ValueError("%s has no contract to add --offbox to" % item)
-            cmds = relentless_wall.offbox_cmds(st["contract"]) + [x for x in offbox if x and x.strip()]
-            if len(cmds) > relentless_wall.OFFBOX_MAX:
-                raise ValueError("at most %d offbox commands" % relentless_wall.OFFBOX_MAX)
+            have = [x for x in relentless_wall.offbox_cmds(st["contract"]) if x in relentless_wall.adapters(rules())]
+            cmds = relentless_wall.check_offbox_names(have + [x for x in offbox if x not in have], rules())
             st["contract"]["offbox"] = cmds
             store.attempt(item, {"at": iso(now), "contract": st["contract"], "said": said})
         if st["hold"].get("kind") == "proof_weak":
@@ -972,6 +981,74 @@ def filed_needs(it, evs):
         elif e.get("event") in ("file", "spawn", "implemented") and e.get("needs"):
             return e["needs"]
     return "offline"       # model's default for a filing that names none
+
+
+def run_bounded(name, adapter, timeout, cap=None):
+    """Run an offbox adapter's argv with its output bounded in memory and time. -> {cmd, exit, out, at}."""
+    import selectors
+    import tempfile
+    cap = cap or relentless_wall.OFFBOX_OUT_MAX
+    at = time.time()
+    shown = "%s: %s" % (name, adapter.get("what") or " ".join(adapter.get("argv") or []))
+    env = {k: v for k, v in os.environ.items() if k != "RELENTLESS_ROOT"}
+    env["PATH"] = windows_path(env.get("PATH", ""))
+    kept, why = bytearray(), None
+    with tempfile.TemporaryDirectory(prefix="offbox-") as cwd:
+        try:
+            p = subprocess.Popen(adapter["argv"], cwd=cwd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, start_new_session=True)
+        except (OSError, KeyError, TypeError) as e:
+            return {"cmd": shown, "exit": "could not start: %s" % e, "out": "", "at": at}
+        sel = selectors.DefaultSelector()
+        sel.register(p.stdout, selectors.EVENT_READ)
+        end = at + max(1, timeout)
+        try:
+            while True:
+                left = end - time.time()
+                if left <= 0:
+                    why = "timeout after %d s" % timeout
+                    break
+                if not sel.select(min(left, 1.0)):
+                    continue
+                chunk = os.read(p.stdout.fileno(), 65536)
+                if not chunk:
+                    break
+                kept += chunk[:cap + 1 - len(kept)]
+                if len(kept) > cap:
+                    why = "output over %d bytes, killed" % cap
+                    break
+        finally:
+            sel.close()
+            if why:
+                try:
+                    os.killpg(p.pid, 9)
+                except OSError:
+                    p.kill()
+            p.stdout.close()
+            try:
+                code = p.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                code = p.wait()
+    return {"cmd": shown, "exit": why or code, "out": bytes(kept[:cap]).decode("utf-8", "replace"), "at": at}
+
+
+def offbox_readings(fx, contract, r):
+    """Every reading a check's contract names, sharing one deadline (offbox_max_s). A name that is not a supervisor adapter
+    (an older free-text contract) is refused, never run."""
+    known = relentless_wall.adapters(r)
+    end = time.time() + r.get("offbox_max_s", 120)
+    out = []
+    for name in relentless_wall.offbox_cmds(contract)[:relentless_wall.OFFBOX_MAX]:
+        left = int(end - time.time())
+        if name not in known:
+            out.append({"cmd": str(name)[:200], "exit": "refused: not a supervisor offbox adapter, not run", "out": "",
+                        "at": time.time()})
+        elif left <= 0:
+            out.append({"cmd": name, "exit": "not run: the check's offbox time was spent", "out": "", "at": time.time()})
+        else:
+            out.append(fx.run_offbox(name, known[name], left))
+    return out
 
 
 class Effects(relentless_game.GameFx):
@@ -1987,21 +2064,12 @@ class Effects(relentless_game.GameFx):
         got = glob.glob(os.path.join(self.base, "clones", "check-%s-c*" % st["item"]))
         return [d for d in got if d not in keep]
 
-    def run_offbox(self, cmd, cwd, timeout):
-        """One contract `offbox` command, run by the supervisor outside the Marker's wall (CHECKER_SANDBOX_FIX_BLIND_TO_STEVE):
-        the reading of what the box cannot reach (another machine, D:\\ClaudeWork). No store root in its env. -> {cmd, exit, out, at}."""
-        at = time.time()
-        env = {k: v for k, v in os.environ.items() if k != "RELENTLESS_ROOT"}
-        env["PATH"] = windows_path(env.get("PATH", ""))
-        try:
-            p = subprocess.run(cmd, shell=True, cwd=cwd, env=env, capture_output=True, text=True, errors="replace",
-                               timeout=timeout, stdin=subprocess.DEVNULL)
-            return {"cmd": cmd, "exit": p.returncode, "out": (p.stdout or "") + (p.stderr or ""), "at": at}
-        except subprocess.TimeoutExpired as e:
-            out = e.stdout.decode("utf-8", "replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
-            return {"cmd": cmd, "exit": "timeout after %d s" % timeout, "out": out, "at": at}
-        except OSError as e:
-            return {"cmd": cmd, "exit": "could not start: %s" % e, "out": "", "at": at}
+    def run_offbox(self, name, adapter, timeout):
+        """One supervisor offbox adapter, run outside the Marker's wall (CHECKER_SANDBOX_FIX_BLIND_TO_STEVE): the reading of
+        what the box cannot reach. GPT review of 0135b04912: argv from the rules (no shell, no worker text), from an empty
+        folder (not the candidate tree), no store root in its env, and output read as it comes with at most OFFBOX_OUT_MAX
+        bytes kept - the process is killed past the cap or the timeout. -> {cmd, exit, out, at}."""
+        return run_bounded(name, adapter, timeout)
 
     def clean_checkout(self, st, sha):
         """A clean tree at exactly `sha`, for the checker. Tracked files only: no worker scratch leaks in."""
@@ -2268,7 +2336,7 @@ def worker_prompt(st, text, learned, r):
             "  %s beat --item %s --gen %d" % (rc, i, g),
             "  %s learn --item %s --gen %d \"what you found, what failed, what to try next\"" % (rc, i, g),
             "  %s contract --item %s --gen %d --proof \"the command or look that proves it\" "
-            "[--live \"<live line>\"] [--game A2,B3 --game-why \"...\" [--no-offline \"...\"]] [--offbox \"cmd\"] [--why ...]" % (rc, i, g),
+            "[--live \"<live line>\"] [--game A2,B3 --game-why \"...\" [--no-offline \"...\"]] [--offbox ADAPTER] [--why ...]" % (rc, i, g),
             "  %s snag --item %s --gen %d --class <slug> \"what stopped you\"" % (rc, i, g),
             "  %s finish --item %s --gen %d --sha <published sha> --evidence \"<paths and results>\"" % (rc, i, g),
             "  %s help --item %s --gen %d \"what you need a fresh eye on\"" % (rc, i, g),
@@ -2279,9 +2347,10 @@ def worker_prompt(st, text, learned, r):
             "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
             "The checker runs walled: no ssh or other machine, D:\\ClaudeWork and /mnt/d/ClaudeWork/rimmandrake read empty, no "
-            "Windows program. When the proof's truth lives there, add --offbox with a command that reads it (e.g. "
-            "`ssh host 'df -B1 C:'`): the supervisor runs it outside the wall at check time and hands the checker its raw "
-            "output. A checker that still cannot reach the evidence says UNMEASURED, which sends nothing back to you.",
+            "Windows program. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
+            "relentless_rules.json offbox_adapters (%s): the supervisor runs it outside the wall at check time and hands the "
+            "checker its raw output. You cannot pass a command; a reading no adapter makes is a snag. A checker that still "
+            "cannot reach the evidence says UNMEASURED, which sends nothing back to you." % (", ".join(sorted(relentless_wall.adapters(rules()))) or "none yet"),
             "A contract with no live line may gain one from any worker: the same --proof plus --live and --why.",
             "An item whose fix died before (`rimflow show` says OWES A GUARD) closes only with a class guard test shown failing on "
             "the instance: `rimflow guard <ID> --test <selftest*.py>` before the fix lands, then commit the test and the ledger shard.",
@@ -2390,9 +2459,11 @@ def checker_prompt(st, text, nonce, readings=()):
         "  %s verdict --item %s --nonce %s PASS \"what you ran and saw\"" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s WEAK \"the runs you made and what each showed, then each gap and the mutant or "
         "probe that shows it, so the next worker can pin it\"" % (rc, i, nonce),
-        "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\"" % (rc, i, nonce),
+        "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"one wrong "
+        "thing\" [--defect ...] [--unreached \"what you also could not reach\"]" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s UNMEASURED \"%s what, and the command that showed it; then what you did "
-        "check\"" % (rc, i, nonce, relentless_wall.REACH_TAG),
+        "check\" --unreached \"one thing out of reach, and the command that showed it\" [--unreached ...]"
+        % (rc, i, nonce, relentless_wall.REACH_TAG),
         *relentless_game.checker_lines(st["contract"]),
         *["Off-box reading %d (the supervisor ran it just now; judge whether it measures its clause): $ %s -> exit %s\n%s"
           % (n, x["cmd"], x["exit"], (x["out"] or "")[-4000:]) for n, x in enumerate(readings, 1)],
@@ -3203,18 +3274,17 @@ def step(store, fx, r, item, now, acts):
         box = None
         if relentless_wall.enforced(r):
             box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce)
-        cmds = relentless_wall.offbox_cmds(st["contract"])[:relentless_wall.OFFBOX_MAX]
-        readings = [fx.run_offbox(x, clean, r.get("offbox_max_s", 120)) for x in cmds]
-        if box and readings:        # what the box cannot reach, read outside it just now: raw output and exit, no worker words
-            relentless_wall.write_offbox(box, readings)
-        with store.lock():              # the whole identity is on disk before the unit exists
-            st = store.load(item)
+        with store.lock():              # the whole identity is on disk before the unit exists, and before any offbox run:
+            st = store.load(item)       # a supervisor killed mid-reading leaves a check that dies as a lost checker
             st["status"] = "checking"
             st["check_count"] = n
             st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc}
             if box:
                 st["check"]["box"] = box
             store.save(st)
+        readings = offbox_readings(fx, st["contract"], r)
+        if box and readings:        # what the box cannot reach, read outside it just now: raw output and exit, no worker words
+            relentless_wall.write_offbox(box, readings)
         if box:
             why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
                                                 + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
@@ -3238,7 +3308,7 @@ def step(store, fx, r, item, now, acts):
         chk = st["check"]
         got = relentless_wall.read_verdict(chk["box"]) if chk.get("box") and not chk.get("expired") else None
         if got and chk.get("verdict") is None:      # the box is the walled Marker's way out: the nonce is the store's own
-            verdict(store, item, chk["nonce"], got["word"], got["reasons"], now)
+            verdict(store, item, chk["nonce"], got["word"], got["reasons"], now, got.get("defects"), got.get("unreached"))
             chk = store.load(item)["check"]
         word = chk.get("verdict")
         if word is None and fx.alive(chk.get("run")) and now - chk["at"] < r["check_max_s"] + r["launch_grace_s"]:
@@ -3285,7 +3355,8 @@ def step(store, fx, r, item, now, acts):
                     store.save(st)
                 acts.append({"do": "checker_lost", "item": item})
                 return
-            acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"))
+            acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"), st["check"].get("defects"),
+                                                   st["check"].get("unreached"))
             if acted == relentless_wall.UNMEASURED:     # the box could not reach the evidence: no work goes back
                 gone = {"check": dict(st["check"]), "quarantined": st["quarantined"]}
                 said = unmeasured(store, st, word, blind, r, now)
@@ -3296,7 +3367,7 @@ def step(store, fx, r, item, now, acts):
                     st.pop("blind", None)
                     st.pop("recheck_at", None)
                     store.save(st)          # a real verdict ends the run of blind ones
-                if word == "FAIL":
+                if acted == "FAIL":     # an observed defect is a FAIL whatever word it came under
                     fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
                     acts.append({"do": "blind_fail", "item": item})
                     return
@@ -4442,8 +4513,9 @@ def main(argv=None):
             p.add_argument("--game", help="criterion ids only the running game can show, e.g. A2,B3 (relentless_game)")
             p.add_argument("--game-why", help="why only the running game can show them")
             p.add_argument("--no-offline", help="why no offline proof is possible at all")
-            p.add_argument("--offbox", action="append", help="a shell command the supervisor runs outside the Marker's wall "
-                           "at check time, its raw output and exit handed in: for evidence the box cannot reach (repeatable)")
+            p.add_argument("--offbox", action="append", help="an adapter NAME from relentless_rules.json offbox_adapters, which "
+                           "the supervisor runs outside the Marker's wall at check time, its raw output and exit handed in: "
+                           "for evidence the box cannot reach (repeatable). Never a command")
             p.add_argument("--why")
         if name == "snag":
             p.add_argument("--class", dest="klass", required=True)
@@ -4483,6 +4555,8 @@ def main(argv=None):
     p.add_argument("--nonce", required=True)
     p.add_argument("word")
     p.add_argument("reasons")
+    p.add_argument("--defect", action="append", default=[], help="one wrong thing your own run showed (repeatable); any makes it FAIL")
+    p.add_argument("--unreached", action="append", default=[], help="one piece of evidence you could not reach (repeatable)")
     p = sub.add_parser("enrol", help="carry one named item, ahead of the share's next picks")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
@@ -4501,8 +4575,8 @@ def main(argv=None):
     p.add_argument("--owner-said")
     p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
     p.add_argument("--why")
-    p.add_argument("--offbox", action="append", help="an unmeasured hold's repair: a command the supervisor runs outside the "
-                   "Marker's wall at check time, added to the contract (repeatable)")
+    p.add_argument("--offbox", action="append", help="an unmeasured hold's repair: an adapter NAME from relentless_rules.json "
+                   "offbox_adapters, run by the supervisor outside the Marker's wall at check time, added to the contract (repeatable)")
     a = ap.parse_args(argv)
     store = Store()
     try:
@@ -4588,7 +4662,7 @@ def main(argv=None):
         elif a.cmd == "shadow":
             print(json.dumps(shadow_tally(store), indent=1))
         elif a.cmd == "verdict":
-            verdict(store, a.item, a.nonce, a.word, a.reasons)
+            verdict(store, a.item, a.nonce, a.word, a.reasons, defects=a.defect, unreached=a.unreached)
         elif a.cmd == "unhold":
             said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
             if not said:

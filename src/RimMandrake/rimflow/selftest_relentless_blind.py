@@ -4,9 +4,16 @@ STEVE_DISK_MEASURE_ONLY_FORTY_GIGS_LEFT was done at gen 1; the walled Marker cou
 /mnt/d/ClaudeWork, said FAIL, and the item looped to gen 9. Rows: the classifier on reasons Markers really wrote
 (store attempts, 2026-11-01..04), the STEVE shape replayed through the real tick on selftest_relentless's rig (no gen,
 no return, no approach change; a re-check; the same blindness twice holds for repair, routed to the seat, not to him;
-unhold re-checks the same sha), and the off-box reading the supervisor hands in."""
+unhold re-checks the same sha), and the off-box reading the supervisor hands in.
+GPT review of 0135b04912, one row group each: F1 no worker-authored command crosses the wall (adapter names only, run
+from an empty folder); F2 a named defect is never hidden by blindness; F3 a structured unreached-only verdict is
+UNMEASURED even when its prose says "red"; F4 offbox output is bounded while it is read; F5 the check's identity is on
+disk before any offbox reading runs."""
+import base64
+import json
 import os
 import stat
+import subprocess
 import sys
 import tempfile
 
@@ -45,6 +52,12 @@ def ok(cond, name):
         FAILS.append(name)
 
 
+GPT_HIDDEN = "ssh host timed out; the parser drops the last row (expected 8, got 7)"
+GPT_RED_UNMEASURED = "proof is red; 2 FAIL in selftest_x"
+GPT_RED_BLIND = "proof is red: ssh exits 255, so the reading never ran; no measurement"
+ADAPTER = "steve_c_free"
+
+
 def t_classifier():
     for name, text in (("STEVE g1", STEVE_G1), ("STEVE g7", STEVE_G7), ("SELFTEST_ALARM g3", ALARM_G3)):
         word, blind = W.read_as("FAIL", text)
@@ -56,6 +69,41 @@ def t_classifier():
     ok(W.read_as("PASS", STEVE_G1) == ("PASS", None), "a PASS is never re-read")
     ok(W.UNMEASURED in W.WORDS and "UNMEASURED" in W.VERDICT_SCRIPT, "the box's verdict script takes the word")
     ok(any("UNMEASURED" in line and "not a FAIL" in line for line in W.RULE), "the rule says inability is no FAIL")
+    # F2: old-format prose is biased to FAIL when a defect is named
+    ok(W.read_as("FAIL", GPT_HIDDEN) == ("FAIL", None), "F2: an ssh timeout beside 'expected 8, got 7' stays FAIL")
+    ok(W.read_as("UNMEASURED", GPT_RED_UNMEASURED) == ("FAIL", None), "F2: an UNMEASURED naming a red proof is FAIL")
+    # structured: the defect list decides, the prose does not
+    ok(W.read_as("FAIL", GPT_HIDDEN, ["expected 8 rows, got 7"], ["ssh host timed out"]) == ("FAIL", None),
+       "F2: structured, any --defect is FAIL whatever it could not reach")
+    ok(W.read_as("UNMEASURED", "x", ["a red test"], ["ssh"])[0] == "FAIL", "F2: structured UNMEASURED with a defect is FAIL")
+    ok(W.read_as("PASS", "x", ["a wrong number"], [])[0] == "FAIL", "F2: an observed defect under PASS is FAIL")
+    got = W.read_as("FAIL", GPT_RED_BLIND, [], ["ssh stevedesktop exits 255"])
+    ok(got[0] == W.UNMEASURED and "255" in got[1], "F3: structured unreached-only is UNMEASURED though its prose says red")
+    ok(W.read_as("FAIL", GPT_RED_BLIND) == ("FAIL", None), "F3: the same prose, old format, stays FAIL (biased)")
+    ok(W.read_as("FAIL", "a clause is not done", [], []) == ("FAIL", None), "structured FAIL with neither list is FAIL")
+    ok(W.read_as("PASS", "ran it", [], ["the live clause"]) == ("PASS", None), "a PASS with an unreached note stays PASS")
+
+
+def t_verdict_script():
+    """F2/F3: the box's own script records the two lists apart and refuses an UNMEASURED that cannot say what."""
+    d = tempfile.mkdtemp(prefix="rl-verdict-")
+    v = os.path.join(d, "verdict")
+    with open(v, "w", encoding="utf-8") as f:
+        f.write(W.VERDICT_SCRIPT)
+    run = lambda *a: subprocess.run([sys.executable, v, *a], capture_output=True, text=True, timeout=30)
+    ok(run("UNMEASURED", "CANNOT REACH: ssh").returncode != 0, "F3: UNMEASURED with no --unreached is refused")
+    ok(run("UNMEASURED", "x", "--unreached", "ssh", "--defect", "8 != 7").returncode != 0,
+       "F2: UNMEASURED with a --defect is refused: say FAIL")
+    ok(not os.path.exists(os.path.join(d, "verdict.json")), "a refused verdict writes nothing")
+    ok(run("FAIL", GPT_HIDDEN, "--defect", "expected 8, got 7", "--unreached", "ssh host timed out").returncode == 0,
+       "a FAIL with both lists is recorded")
+    got = W.read_verdict(d)
+    ok(got["defects"] == ["expected 8, got 7"] and got["unreached"] == ["ssh host timed out"], "read_verdict returns both lists")
+    ok(W.read_as(got["word"], got["reasons"], got["defects"], got["unreached"])[0] == "FAIL", "F2: and it acts as FAIL")
+    with open(os.path.join(d, "verdict.json"), "w", encoding="utf-8") as f:
+        json.dump({"word": "FAIL", "reasons": "old"}, f)
+    got = W.read_verdict(d)
+    ok(got["defects"] is None and got["unreached"] is None, "an old-format file reads as old format (None), not as empty lists")
 
 
 def to_check(x, i, sha="sha1"):
@@ -113,14 +161,26 @@ def t_steve_replay():
     ok(st["gen"] == was["gen"] and st["approach"] == "build", "still no gen and no approach change")
     x.tick()
     ok("I0" in x.w.seat_holds, "the held branch reports it up to the seat queue and the Conductor")
-    x.w.run_offbox = lambda cmd, cwd, timeout: {"cmd": cmd, "exit": 0, "out": "free_bytes=68354924544", "at": x.now}
-    R.unhold(x.s, "I0", "Conductor: fix the class", now=x.now, offbox=["ssh stevedesktop 'df -B1 C:'"])
+    seen = []
+
+    def fake(name, adapter, timeout):     # F5: the check's identity is on disk before any reading runs
+        cur = x.st("I0")
+        seen.append((cur["status"], bool((cur.get("check") or {}).get("nonce"))))
+        return {"cmd": "%s: %s" % (name, adapter["what"]), "exit": 0, "out": "free_bytes=68354924544", "at": x.now}
+    x.w.run_offbox = fake
+    try:
+        R.unhold(x.s, "I0", "Conductor: fix the class", now=x.now, offbox=["ssh stevedesktop 'df -B1 C:'"])
+        ok(False, "F1: unhold refuses a command in --offbox")
+    except ValueError as e:
+        ok("adapter name" in str(e), "F1: unhold refuses a command in --offbox: %s" % str(e)[:80])
+    R.unhold(x.s, "I0", "Conductor: fix the class", now=x.now, offbox=[ADAPTER])
     st = x.st("I0")
     ok(st["status"] == "candidate" and st["blind"] is None, "unhold re-checks the candidate, no worker sent")
-    ok(st["contract"]["offbox"] == ["ssh stevedesktop 'df -B1 C:'"], "unhold --offbox adds the reading to the contract")
+    ok(st["contract"]["offbox"] == [ADAPTER], "unhold --offbox adds the adapter name to the contract")
     st = recheck(x, "I0")
-    ok("free_bytes=68354924544" in x.w.launches[-1][2] and "df -B1 C:" in x.w.launches[-1][2],
-       "the checker gets the supervisor's raw reading and its command")
+    ok(seen == [("checking", True)], "F5: the reading ran after the check was saved as checking: %s" % seen)
+    ok("free_bytes=68354924544" in x.w.launches[-1][2] and ADAPTER in x.w.launches[-1][2],
+       "the checker gets the supervisor's raw reading and the adapter's name")
     st = speak(x, "I0", "PASS", "the reading shows 68 GB free")
     ok(st["status"] in ("closing", "done") and "blind" not in st, "a PASS on the reading closes: %s" % st["status"])
     x.done()
@@ -138,20 +198,72 @@ def t_real_fail_after_blind():
     x.done()
 
 
+def t_structured_replay():
+    """F2/F3 through the real tick: the lists decide, not the prose."""
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    was = to_check(x, "I0")
+    st = x.st("I0")
+    R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", GPT_RED_BLIND, defects=[], unreached=["ssh stevedesktop exits 255"])
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "candidate" and st["gen"] == was["gen"] and st["blind"]["n"] == 1,
+       "F3: a structured unreached-only FAIL sends nothing back: %s" % st["status"])
+    st = recheck(x, "I0")
+    try:
+        R.verdict(x.s, "I0", st["check"]["nonce"], "UNMEASURED", "x", defects=["8 != 7"], unreached=["ssh"])
+        ok(False, "F2: the verdict verb refuses UNMEASURED with a defect")
+    except ValueError:
+        ok(True, "F2: the verdict verb refuses UNMEASURED with a defect")
+    R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", GPT_HIDDEN, defects=["expected 8, got 7"], unreached=["ssh host timed out"])
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"], "F2: a defect beside blindness goes back as FAIL")
+    x.done()
+
+
 def t_contract_offbox():
     x = T.Rig(n=1, share=1.0)
     x.run_one("I0")
     g = x.st("I0")["gen"]
     R.contract(x.s, "I0", g, "proof", live="once: t")
-    R.contract(x.s, "I0", g, "proof", why="read the disk from outside", offbox=["ssh h 'df'"])
-    ok(x.st("I0")["contract"]["offbox"] == ["ssh h 'df'"] and x.st("I0")["contract"]["live"] == "once: t",
-       "any worker may add offbox with the proof unchanged; the live line stays")
+    for bad in (["ssh h 'df'"], ["cat ~/.claude/projects/x.jsonl"], ["steve_c_free; cat /etc/passwd"], ["no_such_adapter"]):
+        try:
+            R.contract(x.s, "I0", g, "proof", why="read the disk from outside", offbox=bad)
+            ok(False, "F1: a worker cannot author an offbox command: %s" % bad)
+        except ValueError:
+            ok(True, "F1: a worker cannot author an offbox command: %s" % bad)
+    ok(not x.st("I0")["contract"].get("offbox"), "F1: and nothing was stored")
+    R.contract(x.s, "I0", g, "proof", why="read the disk from outside", offbox=[ADAPTER])
+    ok(x.st("I0")["contract"]["offbox"] == [ADAPTER] and x.st("I0")["contract"]["live"] == "once: t",
+       "any worker may name an adapter with the proof unchanged; the live line stays")
     try:
-        R.contract(x.s, "I0", g, "proof", why="x", offbox=["a"] * (W.OFFBOX_MAX + 1))
-        ok(False, "too many offbox commands are refused")
+        R.contract(x.s, "I0", g, "proof", why="x", offbox=[ADAPTER] * (W.OFFBOX_MAX + 1))
+        ok(False, "too many offbox adapters are refused")
     except ValueError:
-        ok(True, "too many offbox commands are refused")
+        ok(True, "too many offbox adapters are refused")
     x.done()
+
+
+def t_old_contract_text_never_runs():
+    """F1: a free-text entry from a contract written before adapters is refused at run time, not run."""
+    calls = []
+
+    class Fx:
+        def run_offbox(self, name, adapter, timeout):
+            calls.append(name)
+            return {"cmd": name, "exit": 0, "out": "x", "at": 0}
+    r = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    got = R.offbox_readings(Fx(), {"offbox": ["cat ~/.claude/x", ADAPTER]}, r)
+    ok(calls == [ADAPTER] and "refused" in str(got[0]["exit"]), "F1: only the adapter ran; the text was refused: %s" % calls)
+    got = R.offbox_readings(Fx(), {"offbox": [ADAPTER, ADAPTER]}, dict(r, offbox_max_s=0))
+    ok(all("spent" in str(g["exit"]) for g in got), "F5: all of a check's readings share one deadline")
+    a = W.adapters(r)[ADAPTER]
+    ok(base64.b64decode(a["argv"][-1]).decode("utf-16-le") == a["script"], "the adapter's encoded command is its script")
+    ok("ssh" == a["argv"][0] and not any(";" in x or "|" in x for x in a["argv"][:-1]), "argv, no shell")
 
 
 def t_offbox_box_and_run():
@@ -161,24 +273,34 @@ def t_offbox_box_and_run():
     body = open(f, encoding="utf-8").read()
     ok(body.startswith("$ df -B1\n") and "exit=0" in body and "68354924544" in body, "the box gets command, exit, output")
     ok(not os.stat(f).st_mode & (stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH), "the reading is read only")
-    st = {"item": "I0", "candidate": {"sha": "s", "evidence": "e"}, "contract": {"proof": "p", "offbox": ["df -B1"]}}
+    st = {"item": "I0", "candidate": {"sha": "s", "evidence": "e"}, "contract": {"proof": "p", "offbox": [ADAPTER]}}
     p = W.marker_prompt(st, "T", d)
-    ok("%s/offbox/" % d in p and "UNMEASURED, not FAIL" in p, "the Marker is told where the readings are")
+    ok("%s/offbox/" % d in p and "--unreached, not a --defect" in p, "the Marker is told where the readings are")
+    ok("--defect" in p and "--unreached" in p, "F2/F3: the walled Marker is told to keep defects and unreached apart")
+    ok("--defect" in R.checker_prompt(st, "T", "n0"), "F2/F3: and so is the unwalled one")
     ok("Off-box readings" not in W.marker_prompt(dict(st, contract={"proof": "p"}), "T", d), "no offbox, no words about it")
     fx = R.Effects.__new__(R.Effects)
-    got = fx.run_offbox("echo hi; exit 3", d, 30)
+    sh = lambda code: {"what": "t", "argv": ["sh", "-c", code]}
+    got = fx.run_offbox("t", sh("echo hi; exit 3"), 30)
     ok(got["exit"] == 3 and "hi" in got["out"], "run_offbox keeps a red exit and its output: %s" % got)
-    got = fx.run_offbox("sleep 5", d, 1)
+    got = fx.run_offbox("t", sh("sleep 5"), 1)
     ok("timeout" in str(got["exit"]), "a hung reading is a timeout, not a hang of the tick")
+    got = fx.run_offbox("t", sh("pwd; ls -A | wc -l"), 30)
+    lines = got["out"].split()
+    ok("offbox-" in lines[0] and lines[1] == "0", "F1: it runs from an empty folder, not the candidate tree: %s" % lines)
+    got = fx.run_offbox("t", {"what": "t", "argv": ["yes"]}, 30)
+    ok(len(got["out"]) <= W.OFFBOX_OUT_MAX and "killed" in str(got["exit"]),
+       "F4: an endless output is cut at the cap while read: %d bytes, %s" % (len(got["out"]), got["exit"]))
     os.environ["RELENTLESS_ROOT"] = "/x"
     try:
-        ok(fx.run_offbox("echo ${RELENTLESS_ROOT:-none}", d, 30)["out"].strip() == "none", "no store root in its env")
+        ok(fx.run_offbox("t", sh("echo ${RELENTLESS_ROOT:-none}"), 30)["out"].strip() == "none", "no store root in its env")
     finally:
         os.environ.pop("RELENTLESS_ROOT", None)
 
 
 def main():
-    for t in (t_classifier, t_steve_replay, t_real_fail_after_blind, t_contract_offbox, t_offbox_box_and_run):
+    for t in (t_classifier, t_verdict_script, t_steve_replay, t_real_fail_after_blind, t_structured_replay, t_contract_offbox,
+              t_old_contract_text_never_runs, t_offbox_box_and_run):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

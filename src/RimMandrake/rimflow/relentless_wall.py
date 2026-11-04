@@ -35,6 +35,9 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "here), the live game, a Windows program that cannot start here - say UNMEASURED and begin the reasons with "
     "'CANNOT REACH:', naming each thing and the command that showed you cannot reach it, then what you did check. It sends "
     "no work back: the box goes up for repair. A proof that runs and is red is FAIL; a clause you can reach is never UNMEASURED.",
+    "Keep the two apart when you record the verdict: each wrong thing your own run showed goes in its own --defect (a wrong "
+    "number, a red test, a crash, a clause not done), each piece of evidence you could not reach goes in its own --unreached. "
+    "Any --defect makes the verdict FAIL, whatever you could not reach; only --unreached and no --defect is UNMEASURED.",
     "A gap must be in the item's own words: the mutant breaks something a clause of the item asks for. A mutant of an "
     "inner detail, or of an edge the item never named, is no gap, and every test has those.",
     "PASS: every clause of the item is done, you ran it, and you found no gap in the proof that you could show. "
@@ -58,10 +61,24 @@ def narrow_word(word, reasons):
 VERDICT_SCRIPT = '''#!/usr/bin/env python3
 import json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
-if len(sys.argv) != 3 or sys.argv[1].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
-    sys.exit('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw"')
+USAGE = ('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw" [--defect "a wrong thing your run showed"]... '
+         '[--unreached "evidence you could not reach, and the command that showed it"]...')
+a, defects, unreached = sys.argv[1:], [], []
+pos = []
+while a:
+    x = a.pop(0)
+    if x in ("--defect", "--unreached") and a:
+        (defects if x == "--defect" else unreached).append(a.pop(0))
+    else:
+        pos.append(x)
+if len(pos) != 2 or pos[0].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
+    sys.exit(USAGE)
+if pos[0].upper() == "UNMEASURED" and not unreached:
+    sys.exit("UNMEASURED needs at least one --unreached: name what you could not reach")
+if pos[0].upper() == "UNMEASURED" and defects:
+    sys.exit("a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines")
 with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
-    json.dump({"word": sys.argv[1].upper(), "reasons": sys.argv[2], "at": time.time()}, f)
+    json.dump({"word": pos[0].upper(), "reasons": pos[1], "defects": defects, "unreached": unreached, "at": time.time()}, f)
 os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
 print("recorded")
 '''
@@ -229,15 +246,27 @@ def marker_prompt(st, text, box):
         "  python3 %s PASS \"what you ran and saw\"" % qv,
         "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
         "shows it, so the next worker can pin it\"" % qv,
-        "  python3 %s FAIL \"what is wrong, so the next worker can fix it\"" % qv,
-        "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\"" % qv,
+        "  python3 %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"one wrong thing\" [--defect ...] "
+        "[--unreached \"what you also could not reach\"]" % qv,
+        "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\" "
+        "--unreached \"one thing out of reach, and the command that showed it\" [--unreached ...]" % qv,
         *offbox_lines(st["contract"], box),
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
 
 
+def _strs(v):
+    """-> a list of short strings, or None when the verdict file did not carry the field (an old-format verdict)."""
+    if v is None:
+        return None
+    if not isinstance(v, list):
+        return [str(v)[:600]]
+    return [str(x)[:600] for x in v if str(x).strip()][:20]
+
+
 def read_verdict(box):
-    """-> {word, reasons, at}, or None. The box is the Marker's to write: only well-formed words pass."""
+    """-> {word, reasons, defects, unreached, at}, or None. The box is the Marker's to write: only well-formed words pass.
+    defects / unreached are None when the file did not carry them (written before the structured verdict)."""
     try:
         v = json.loads(Path(box, "verdict.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -248,7 +277,8 @@ def read_verdict(box):
         at = float(v.get("at") or time.time())
     except (TypeError, ValueError, OverflowError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
         at = time.time()
-    return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "at": at}
+    return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "defects": _strs(v.get("defects")),
+            "unreached": _strs(v.get("unreached")), "at": at}
 
 
 def would_deny(inputs, prof):
@@ -301,9 +331,13 @@ _REACH = [re.compile(x, re.I) for x in (
 _HIDDEN_ABSENT = re.compile(r"(%s)[^.;]{0,120}?%s|%s[^.;]{0,80}?(%s)" % (
     "|".join(re.escape(h) for h in HIDDEN), _ABSENT, _ABSENT, "|".join(re.escape(h) for h in HIDDEN)), re.I)
 # what a Marker writes when its own run showed the work wrong: then the FAIL stands, blind parts or not
+# GPT review of 0135b04912: old-format prose is read biased to FAIL - a named defect beats any blindness beside it.
 _DEFECT = re.compile(r"cause is in (this|the) commit|\bis false\b|\bleaks?\b|\bproof is red\b|\bnot done\b|"
                      r"\b\d+ FAIL(ED|ING|S)?\b|\bFAIL with \d|\b(stays?|leaves \S+( \S+)?) (green|OK)\b|\bclause \d+ is missing|"
-                     r"\bdoes not (do|fix|hold)\b|\bwrong\b|\bregress", re.I)
+                     r"\bdoes not (do|fix|hold)\b|\bwrong\b|\bregress|"
+                     r"\bexpected\b[^.;]{0,40}?\b(got|but (was|is|found|saw)|found|saw|actual)\b|\bdrops?\b|\bdropped\b|"
+                     r"\bcrash(es|ed)?\b|\btraceback\b|\b(raises|raised)\b|\bassert(ion)?(Error)?\b|\bbug\b|\boff[- ]by[- ]one\b|"
+                     r"\bmismatch|\bbroken\b|\bincorrect\b|\bmiscount|\bdoes not match\b|\bnot equal\b", re.I)
 
 
 def blind_reason(reasons):
@@ -323,9 +357,22 @@ def defect_said(reasons):
     return bool(_DEFECT.search(reasons or ""))
 
 
-def read_as(word, reasons):
-    """-> (word the supervisor acts on, the blind words or None). A FAIL that only says the box is blind is UNMEASURED."""
+def read_as(word, reasons, defects=None, unreached=None):
+    """-> (word the supervisor acts on, the blind words or None). Structured (defects / unreached lists, the verdict script's
+    own fields): any observed defect is FAIL whatever the word; FAIL or UNMEASURED with only unreached evidence is UNMEASURED.
+    Old format (both None): the prose, biased to FAIL - a defect named anywhere keeps or makes it FAIL, even under UNMEASURED."""
+    if defects is not None or unreached is not None:
+        defects, unreached = defects or [], unreached or []
+        if defects:
+            return "FAIL", None
+        if word in ("FAIL", UNMEASURED) and unreached:
+            return UNMEASURED, "; ".join(unreached)[:600]
+        if word == UNMEASURED:      # the script refuses this; a hand-written file is read as prose
+            return read_as(word, reasons)
+        return word, None
     if word == UNMEASURED:
+        if defect_said(reasons):
+            return "FAIL", None
         return UNMEASURED, blind_reason(reasons) or (reasons or "")[:200]
     if word == "FAIL":
         b = blind_reason(reasons)
@@ -334,13 +381,39 @@ def read_as(word, reasons):
     return word, None
 
 
-# ---- off-box measurements: a contract's `offbox` commands, run by the supervisor outside the wall at check launch, raw
-# output and exit written read-only into the box, so the Marker judges a fresh measurement, never a number a worker typed.
+# ---- off-box measurements: a contract's `offbox` ADAPTER NAMES. Each name is a fixed command in relentless_rules.json
+# "offbox_adapters", which the supervisor runs outside the wall at check launch; raw output and exit go read only into the
+# box, so the Marker judges a fresh measurement, never a number a worker typed. GPT review of 0135b04912: a worker-authored
+# command ran with the supervisor's reach and could carry transcripts or store files into the box - so a worker (or unhold)
+# may only NAME an adapter; what runs is supervisor-owned code, run as argv (no shell) from an empty folder.
 OFFBOX_MAX = 4
 OFFBOX_OUT_MAX = 20000
+_NAME = re.compile(r"^[a-z][a-z0-9_]{1,40}$")
+
+
+def adapters(rules):
+    """-> {name: {what, argv}} from the rules' offbox_adapters; keys starting _ are notes."""
+    got = (rules or {}).get("offbox_adapters") or {}
+    return {k: v for k, v in got.items() if not k.startswith("_") and isinstance(v, dict) and isinstance(v.get("argv"), list)
+            and v["argv"] and all(isinstance(x, str) for x in v["argv"])}
+
+
+def check_offbox_names(names, rules):
+    """-> the names, cleaned. Raises ValueError for anything that is not a known adapter name: no shell crosses the wall."""
+    names = [x.strip() for x in (names or []) if x and x.strip()]
+    known = adapters(rules)
+    bad = [x for x in names if not _NAME.match(x) or x not in known]
+    if bad:
+        raise ValueError("--offbox takes an adapter name from relentless_rules.json offbox_adapters (%s), never a command: "
+                         "%s. A new reading is a new adapter, added by a reviewed change to the rules"
+                         % (", ".join(sorted(known)) or "none defined", ", ".join(repr(x[:80]) for x in bad)))
+    if len(names) > OFFBOX_MAX:
+        raise ValueError("at most %d offbox adapters" % OFFBOX_MAX)
+    return names
 
 
 def offbox_cmds(contract):
+    """-> the contract's offbox adapter names (an old contract may hold free text: it is refused at run time, never run)."""
     got = (contract or {}).get("offbox") or []
     return [got] if isinstance(got, str) else list(got)
 
@@ -362,11 +435,11 @@ def offbox_lines(contract, box):
     cmds = offbox_cmds(contract)
     if not cmds:
         return []
-    return ["", "Off-box readings: the supervisor ran the contract's offbox command(s) outside your box just before you "
+    return ["", "Off-box readings: the supervisor ran the contract's offbox adapter(s) %s outside your box just before you "
             "started, and wrote each command, its exit and its raw output to %s/offbox/<n>.txt (read only). They are fresh "
             "measurements, not the worker's words: judge them as the reading of what your box cannot reach, and judge "
-            "whether each command really measures what its clause asks. A reading that is missing or failed to run is "
-            "UNMEASURED, not FAIL." % box]
+            "whether each one really measures what its clause asks. A reading that is missing or failed to run is "
+            "--unreached, not a --defect." % (", ".join(cmds), box)]
 
 
 PROBE = r'''
