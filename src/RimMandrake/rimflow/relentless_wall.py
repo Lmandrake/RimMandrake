@@ -238,6 +238,39 @@ def remove_box(box):
     shutil.rmtree(box, ignore_errors=True)
 
 
+# What a blind checker reads of the work: the obligations and the paths, never the worker's account of them. A finish's
+# evidence ("I rejected A and B because ...; 3 passed") and a contract's `why`, `by_gen` and game `why` are reasoning and
+# history (CHECKER_PROMPT_FIX_WORKER_REASONING_LEAK). `no_offline` stays: it is a claim the checker is told to test.
+BLIND_CONTRACT = ("proof", "live", "offbox")
+PATH_RX = re.compile(r"(?:[A-Za-z]:\\|/|~/)?(?:[\w.~-]+[/\\])+[\w.-]+")
+
+
+def blind_contract(contract):
+    c = contract or {}
+    out = {k: c[k] for k in BLIND_CONTRACT if c.get(k)}
+    g = c.get("game") or {}
+    if g:
+        out["game"] = {k: g[k] for k in ("clauses", "no_offline") if g.get(k)}
+    return out
+
+
+def evidence_paths(evidence, cap=20):
+    """The path-shaped words of a finish's evidence, in order, once each; the prose around them is dropped."""
+    seen = []
+    for m in PATH_RX.finditer(evidence or ""):
+        w = m.group(0).rstrip(".,;:)")
+        if w not in seen:
+            seen.append(w)
+    return seen[:cap]
+
+
+def blind_lines(st):
+    paths = evidence_paths(st["candidate"].get("evidence"))
+    return ["", "Contract: %s" % json.dumps(blind_contract(st["contract"])),
+            "Paths the worker named (its account of them is withheld: judge by your own runs): %s"
+            % (", ".join(paths) or "none")]
+
+
 def marker_prompt(st, text, box):
     """The checker's words, its way to the change and its way to a verdict being the box's."""
     c = st["candidate"]
@@ -255,7 +288,7 @@ def marker_prompt(st, text, box):
         "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\" "
         "--unreached \"one thing out of reach, and the command that showed it\" [--unreached ...]" % qv,
         *offbox_lines(st["contract"], box),
-        "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
+        *blind_lines(st),
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
 
 

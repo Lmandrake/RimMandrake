@@ -2703,7 +2703,7 @@ def checker_prompt(st, text, nonce, readings=()):
         *relentless_game.checker_lines(st["contract"]),
         *["Off-box reading %d (the supervisor ran it just now; judge whether it measures its clause): $ %s -> exit %s\n%s"
           % (n, x["cmd"], x["exit"], (x["out"] or "")[-4000:]) for n, x in enumerate(readings, 1)],
-        "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
+        *relentless_wall.blind_lines(st),
         "See the change with: git show %s" % c["sha"], "", "--- item ---", text])
 
 

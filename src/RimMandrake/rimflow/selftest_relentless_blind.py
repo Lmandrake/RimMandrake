@@ -468,10 +468,25 @@ def t_offbox_box_and_run():
         os.environ.pop("RELENTLESS_ROOT", None)
 
 
+def t_blind_prompt_withholds_reasoning():
+    """CHECKER_PROMPT_FIX_WORKER_REASONING_LEAK: the checker gets the obligations and the paths, never the worker's account."""
+    told = "I rejected approaches A and B because the third attempt establishes it"
+    st = {"item": "I0", "candidate": {"sha": "s", "evidence": "%s; see src/x/y.py and /mnt/d/Q/out.txt, 3 passed." % told},
+          "contract": {"proof": "python3 t.py", "live": "once: L", "by_gen": 7, "why": "redesign because WHYTEXT",
+                       "offbox": [ADAPTER], "game": {"clauses": ["A2"], "why": "GAMEWHY", "no_offline": "NOOFF"}}}
+    d = tempfile.mkdtemp(prefix="rl-blindp-")
+    for name, p in (("checker", R.checker_prompt(st, "T", "n0")), ("marker", W.marker_prompt(st, "T", d))):
+        for leak in (told, "3 passed", "WHYTEXT", "GAMEWHY", "by_gen"):
+            ok(leak not in p, "%s prompt withholds %r" % (name, leak))
+        for need in ("python3 t.py", "once: L", ADAPTER, "A2", "NOOFF", "src/x/y.py", "/mnt/d/Q/out.txt"):
+            ok(need in p, "%s prompt still carries %r" % (name, need))
+    ok(W.evidence_paths("nothing here, done.") == [], "evidence with no path names none")
+
+
 def main():
     for t in (t_classifier, t_verdict_script, t_steve_replay, t_real_fail_after_blind, t_structured_replay, t_contract_offbox,
               t_old_contract_text_never_runs, t_offbox_box_and_run, t_round2_script_and_cli, t_round2_box_never_wedges,
-              t_round2_race):
+              t_round2_race, t_blind_prompt_withholds_reasoning):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
