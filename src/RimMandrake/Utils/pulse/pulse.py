@@ -551,6 +551,66 @@ UPDATE_SKIP_MAX_AGE_S = 3600
 UPDATE_STAMP = "pulse_update_last_good"
 
 
+def _git_err(p) -> str:
+    """The end of git's complaint, without its progress lines: the 2026-11-03 rc 128 kept only
+    'Updating files: 14% (1/7)…', and the reason was cut off (PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN)."""
+    lines = [ln for ln in (p.stderr or p.stdout or "").replace("\r", "\n").splitlines()
+             if ln.strip() and not ln.startswith(("Updating files:", "Checking out files:"))]
+    return " | ".join(lines)[-300:]
+
+
+def _clean_landed_dirt(git) -> bool:
+    """A pull that dies mid-checkout leaves origin/main's blobs in the tree with HEAD unmoved, and every
+    later --ff-only then refuses them as local changes (2026-11-03 12:38Z: rc 128 after 'Updating files
+    7/7'; no writer had walked in, PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN). When EVERY dirty path already
+    equals origin/main (same blob, or absent from both), put those paths back to HEAD so the retry can
+    fast-forward. Any path that differs is someone's real edit: leave it all and let the pull fail loud.
+    True only when something was cleaned."""
+    s = git("status", "--porcelain=v1", "-z", "--untracked-files=all")
+    if s.returncode != 0 or not s.stdout:
+        return False
+    entries, recs = [], s.stdout.split("\0")
+    i = 0
+    while i < len(recs):
+        rec = recs[i]
+        i += 1
+        if len(rec) < 4:
+            continue
+        code, path = rec[:2], rec[3:]
+        if code[0] in "RC":          # a rename carries its source as the next record: a real edit
+            return False
+        entries.append((code, path))
+    if not entries:
+        return False
+    tracked, untracked = [], []
+    for code, path in entries:
+        want = git("rev-parse", "-q", "--verify", f"origin/main:{path}").stdout.strip()
+        if code == "??":
+            if not want:
+                continue             # junk origin does not have (a __pycache__): it blocks no pull
+            have = git("hash-object", "--", path).stdout.strip()
+            if have != want:
+                return False
+            untracked.append(path)
+        elif code[0] != " " or code[1] not in "MD":
+            return False             # staged, conflicted or type-changed: not a half-done checkout
+        else:
+            have = git("hash-object", "--", path).stdout.strip() if code[1] == "M" else ""
+            if have != want:
+                return False
+            tracked.append(path)
+    if not (tracked or untracked):
+        return False
+    if tracked and git("restore", "--source=HEAD", "--worktree", "--", *tracked).returncode != 0:
+        return False
+    root = Path(git("rev-parse", "--show-toplevel").stdout.strip())
+    for path in untracked:
+        (root / path).unlink(missing_ok=True)
+    print(f"pulse update: put back {len(tracked) + len(untracked)} path(s) already on origin/main "
+          f"(a half-done fast-forward): {', '.join((tracked + untracked)[:5])}", flush=True)
+    return True
+
+
 def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_age: float = UPDATE_SKIP_MAX_AGE_S) -> dict:
     """Fast-forward the deploy checkout to origin/main. Refuses a seat clone: pulling there would move
     another agent's working tree under it (RIMPULSE_DEPLOY_FIX_RUNS_THE_BENCH_CLONE).
@@ -577,8 +637,10 @@ def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_ag
             if s.returncode != 0:
                 raise RuntimeError(f"git sparse-checkout set: rc {s.returncode}: {(s.stderr or s.stdout).strip()[:200]}")
         p = git("pull", "--ff-only", "-q", "origin", "main")
+        if p.returncode != 0 and _clean_landed_dirt(git):
+            p = git("pull", "--ff-only", "-q", "origin", "main")
         if p.returncode != 0:
-            raise RuntimeError(f"git pull --ff-only: rc {p.returncode}: {(p.stderr or p.stdout).strip()[:200]}")
+            raise RuntimeError(f"git pull --ff-only: rc {p.returncode}: {_git_err(p)}")
         new = git("rev-parse", "HEAD").stdout.strip()
     except subprocess.TimeoutExpired as e:
         try:

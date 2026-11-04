@@ -820,6 +820,34 @@ with tempfile.TemporaryDirectory() as d:
         check("a pull that fails (not a timeout) still fails the unit", raises(lambda: pl.update_code(deploy)))
     finally:
         os.environ["PATH"] = path
+    # PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN: a pull that died mid-checkout left origin's blobs in the tree, HEAD unmoved
+    (origin / "f").write_text("3"); (origin / "g").write_text("new"); (origin / "h").write_text("gone")
+    _g(origin, "add", "g", "h"); _g(origin, "commit", "-qam", "three")
+    pl.update_code(deploy)
+    (origin / "f").write_text("4"); _g(origin, "rm", "-q", "h"); (origin / "k").write_text("k")
+    _g(origin, "add", "k"); _g(origin, "commit", "-qam", "four")
+    _g(deploy, "fetch", "-q", "origin")
+    (deploy / "f").write_text("4"); (deploy / "h").unlink(); (deploy / "k").write_text("k")   # git's half of "four"
+    (deploy / "junk.pyc").write_text("x")                                                    # untracked, not on origin
+    before = _g(deploy, "rev-parse", "HEAD")
+    landed = pl.update_code(deploy)
+    check("a half-done fast-forward (every dirty path = its origin/main blob) cleans itself and lands",
+          landed.get("changed") is True and _g(deploy, "rev-parse", "HEAD") == _g(origin, "rev-parse", "HEAD")
+          and _g(deploy, "status", "--porcelain", "--untracked-files=no") == "" and (deploy / "junk.pyc").exists(),
+          (before, landed))
+    (origin / "f").write_text("5"); _g(origin, "commit", "-qam", "five")
+    _g(deploy, "fetch", "-q", "origin")
+    (deploy / "f").write_text("someone's edit")
+    check("a dirty path that is NOT origin's blob is a real edit: the pull still fails loud and the edit stays",
+          raises(lambda: pl.update_code(deploy)) and (deploy / "f").read_text() == "someone's edit")
+    (deploy / "f").write_text("5"); (deploy / "g").write_text("stray")
+    check("one real edit among landed blobs blocks the whole clean (nothing is put back)",
+          raises(lambda: pl.update_code(deploy)) and (deploy / "f").read_text() == "5"
+          and (deploy / "g").read_text() == "stray")
+    _p128 = _sp.CompletedProcess([], 128, "", "Updating files:  14% (1/7)\rUpdating files: 100% (7/7)\n"
+                                 "fatal: Unable to create '/x/.git/index.lock': File exists.\n")
+    check("the failure names git's reason, not its progress lines", "index.lock" in pl._git_err(_p128)
+          and "Updating files" not in pl._git_err(_p128), pl._git_err(_p128))
     orig_uc = pl.update_code
     pl.update_code = lambda: {"skipped": True, "age": 5.0}
     try:
