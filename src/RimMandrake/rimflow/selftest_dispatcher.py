@@ -3755,6 +3755,38 @@ def test_schedule_names_no_retired_seat():
         check(not back, "no retired seat in the schedule's %s (back: %s)" % (where, back))
 
 
+def test_retired_seat_dead_since_raises_nothing():
+    """FOUNDRY_SEAT_RETIRE_ALARM_STILL_MOURNING, runtime half: a tick on the SHIPPED seats, with a state still holding
+    FOUNDRY's dead_since from before the retirement and no FOUNDRY window, emits no act for FOUNDRY (no dead:, wake,
+    ring or recover). Control: the same tick with FOUNDRY put back in seats does raise dead:FOUNDRY, so the
+    instrument can see the alarm it is asserting absent."""
+    raw = shipped_schedule()
+    raw["roles"] = []
+    raw["no_handoff"] = dict(raw.get("no_handoff") or {}, conductor_log=os.path.join(TMP, "conductor_log.md"))
+
+    def tick(seats):
+        r = dict(raw, seats=seats)
+        path = os.path.join(TMP, "sched_retired.json")
+        with open(path, "w") as f:
+            json.dump(r, f)
+        sch = D.load_schedule(path)
+        t0 = 5000000.0
+        st = {"seats": {"FOUNDRY": {"session_id": "sid-old", "dead_since": t0 - 57091}},
+              "wakes": [], "recovers": [], "alarms": {}}
+        live = [sess("AGENT BENCH", "busy", "b")]
+        acts = D.decide(sch, st, obs(sessions=live), t0, False)
+        acts += D.decide(sch, st, obs(sessions=live), t0 + sch["dead_after_s"] + 1, False)
+        return [a for a in acts if a.get("seat") == "FOUNDRY" or "FOUNDRY" in str(a.get("kind", ""))]
+
+    shipped = raw.get("seats") or {}
+    check(not tick(shipped), "shipped seats + stale FOUNDRY dead_since: no FOUNDRY act")
+    back = dict(shipped, FOUNDRY={"enabled": True, "wake": True, "recover_dead": False,
+                                  "session_name": "AGENT FOUNDRY", "clone": os.path.join(TMP, "clone")})
+    got = tick(back)
+    check([a for a in got if a.get("kind") == "dead:FOUNDRY"],
+          "control: FOUNDRY put back in seats raises dead:FOUNDRY (%s)" % [a.get("kind") or a["do"] for a in got])
+
+
 def main():
     strict_roles()
     for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
@@ -3774,7 +3806,9 @@ def main():
               test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
               test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_unring_gives_back_a_backoff_and_bad_roles_are_skipped, test_golive_m7_dst_yesterday, test_review_night_n1,
-              test_schedule_names_no_retired_seat):
+              test_schedule_names_no_retired_seat, test_retired_seat_dead_since_raises_nothing):
+        if ONLY and t.__name__ not in ONLY:
+            continue
         try:
             t()
         except Exception as e:  # noqa: BLE001
@@ -3789,5 +3823,12 @@ def main():
     return 1 if FAILS else 0
 
 
+ONLY = set()
+
 if __name__ == "__main__":
+    if "--only" in sys.argv:    # --only a,b: run just those tests (a blind checker runs a guard alone)
+        ONLY = set(sys.argv[sys.argv.index("--only") + 1].split(","))
+        unknown = sorted(n for n in ONLY if not callable(globals().get(n)))
+        if unknown:                 # a misspelt name would otherwise run nothing and report 0 failures
+            sys.exit("--only: no such test: %s" % ", ".join(unknown))
     sys.exit(main())
