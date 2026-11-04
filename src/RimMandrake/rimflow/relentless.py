@@ -817,6 +817,9 @@ def unhold(store, item, said, now=None):
         elif st["hold"].get("kind") == "strikes":      # his yes is a fresh count; another full ladder holds again
             st["failures"] = {}
             st["total_at_change"] = st["total_failures"]
+        elif st["hold"].get("kind") == "start_refused":    # what refused is fixed, or its wait starts over
+            st.pop("start_refusals", None)
+            st.pop("start_again_at", None)
         game_back = (st["hold"].get("kind") == "game" and (st.get("game") or {}).get("sha")
                      and relentless_game.FLYER not in (st["hold"].get("why") or ""))
         was_his = hold_is_his(st["hold"])
@@ -837,6 +840,17 @@ def unhold(store, item, said, now=None):
 
 
 # ---------------------------------------------------------------- what the world does (the selftest plants these)
+
+def refusal_words(r, cap=300):
+    """A ledger refusal, its reason kept. The gate's reason is its FIRST line and the rest is advice, so a tail cut kept only
+    the advice: 53 refused starts of EGROWTH_SWELL_DECIDE_FLIP_OR_GROAN read as a wrong prose file when its first line said
+    "BENCH may not `start` it, it belongs to OWNER". A traceback ends in its reason, so the tail stays beside the head."""
+    out = (r.stderr or r.stdout or "").strip()
+    if len(out) <= cap:
+        return out
+    head = out.splitlines()[0][:cap // 2]
+    return "%s ... %s" % (head, out[-(cap - len(head) - 5):])
+
 
 def close_why(out):
     """The gate's reasons are at the top, but the caller finds a refusal by its words: keep them in the cut."""
@@ -1237,7 +1251,7 @@ class Effects(relentless_game.GameFx):
 
     def ledger_start(self, item):
         r = self.rimflow("start", item, "--why", "relentless supervisor takes the item")
-        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+        return None if r.returncode == 0 else refusal_words(r)
 
     def ledger_reclaim(self, item):
         r = self.rimflow("reclaim", item, "--why", "relentless supervisor: excluded in the rules, back to the pool")
@@ -3313,11 +3327,17 @@ def lease(store, fx, r, now, acts):
                     cur["start_again_at"] = now + r["breaker_cool_s"]
                     cur["start_refusals"] = cur.get("start_refusals", 0) + 1
                     cur["start_refused_why"] = str(why)[:300]
+                    # the same refusal again is a retry loop (53 of them on one item): held and told, never retired, which
+                    # would drop work he ordered in silence. Unhold, once what refuses is fixed, gives a fresh count.
+                    put_down = cur["status"] == "queued" and cur["start_refusals"] >= r.get("start_refused_put_down", 3)
+                    if put_down:
+                        relentless_strikes.hold(cur, "start refused %d times: %s" % (cur["start_refusals"], str(why)[:200]),
+                                                "start_refused", now)
+                        cur["status"] = "held"
                     store.save(cur)
                 acts.append({"do": "start_refused", "item": item, "why": why})
-                if cur["start_refusals"] >= r.get("start_refused_put_down", 3) and not reserved:
-                    give_back(store, item, "start refused %d times, put down: %s" % (cur["start_refusals"], str(why)[:200]))
-                    acts.append({"do": "give_back", "item": item})
+                if put_down:
+                    acts.append({"do": "start_refused_held", "item": item})
                 continue
         with store.lock():
             st = store.load(item)
@@ -3327,6 +3347,7 @@ def lease(store, fx, r, now, acts):
             st["gen"] += 1
             st["attempts"] += 1
             st["ledger_started"] = True
+            st.pop("start_refusals", None)      # the count is of refusals in a row
             if not st["clone"]:
                 q = len(st["quarantined"])
                 st["clone"] = fx.clone_path(item, q)
