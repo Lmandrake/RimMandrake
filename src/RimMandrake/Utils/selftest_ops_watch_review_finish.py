@@ -8,7 +8,7 @@
 3. run_alarms fresh news: a note cut at 600 chars marks noted only the names it said; the rest are said next pass.
 4. metric_problem: an idle_if gate from another family is refused (per-family stamping can never read it).
 5. dead_targets: a wildcard target with no instance this pass (testing.red_* on a clean night) is not a dead rule.
-6. run_alarms: a new filing marks no name noted (it carries its title only): the next pass notes them all.
+6. run_alarms: a new filing marks noted only the names its title shows: the next pass notes the rest (6b: a cut title).
 7. found_filed recovery delivers the Conductor line the pass that died after filing may have owed.
 8. c_relentless: a reading.json stamped ahead of the clock counts as blind.
 
@@ -120,6 +120,23 @@ def main():
     ow.run_alarms({"t.reds": M(2, news=["n1", "n2"])}, rules, NOW + 900, set(filed), filer, open_ids=set(filed))
     notes = [a["text"] for a in (sent[-1] if len(sent) > 1 else []) if a.get("note_only")]
     ok(notes and "n1" in notes[0] and "n2" in notes[0], "6: the next pass notes the names the filing did not say", notes)
+
+    # 6b. a title that shows names marks those told (RED_COP_BUILD_NO_ORPHAN_REDS): only a name its cut dropped is noted
+    sent.clear()
+    put({})
+    rt = {"alarms": {"clear_passes": 1},
+          "targets": [dict(rules["targets"][0], title_field="said")]}
+    long_ = "z" * 200
+    pt = M(3, said="n1 and n2 " + long_, news=["n1 (x)", "n2 (x)", "n3 (x)"], titled={"n1 (x)": "n1", "n2 (x)": "n2", "n3 (x)": "n3"})
+    ow.run_alarms({"t.reds": pt}, rt, NOW, set(), filer, open_ids=set())
+    filed = [a["name"] for a in (sent[-1] if sent else []) if not a.get("note_only")]
+    ok(len(filed) == 1, "6b: a new crossing files", sent)
+    ow.run_alarms({"t.reds": pt}, rt, NOW + 900, set(filed), filer, open_ids=set(filed))
+    notes = [a["text"] for a in (sent[-1] if len(sent) > 1 else []) if a.get("note_only")]
+    ok(len(notes) == 1 and "n3" in notes[0] and "n1" not in notes[0] and "n2" not in notes[0],
+       "6b: the next pass notes only the name the title did not show", notes)
+    ow.run_alarms({"t.reds": pt}, rt, NOW + 1800, set(filed), filer, open_ids=set(filed))
+    ok(len(sent) == 2, "6b: the pass after says nothing more", sent[2:])
 
     # 7. found_filed recovery delivers a Conductor line the dead pass may have owed
     clog = TMP / "conductor.md"

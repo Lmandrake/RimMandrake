@@ -1013,7 +1013,8 @@ def red_groups(c, night, state=None):
                 continue
             fresh += 1
         out[g["key"]] = M(len(g["tests"]), "nightly reds with one first error line, no entry parking them", night=night,
-                          said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"])
+                          said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"],
+                          titled={"%s (due %s)" % (t, g["due"]): Path(t).name for t in g["tests"][:30]})
     live = {g["key"] for g in c["groups"]}
     for k in sorted(held - live):
         out[k] = M(0, "nightly reds with one first error line, no entry parking them", night=night, said="green or parked")
@@ -2913,6 +2914,18 @@ def fresh_news(cur, aid, points, rules):
     return [n for n in names if n not in told], names
 
 
+def titled_names(title, pt, tg):
+    """The note_field names a filing's title already shows: each name, or the short form its collector gave in x.titled
+    ({name: text}), found in the title as cut. Those count as told; a name the cut dropped is said by the first note."""
+    x = (pt or {}).get("x") or {}
+    names = x.get(tg.get("note_field")) if tg.get("note_field") else None
+    short = x.get("titled") if isinstance(x.get("titled"), dict) else {}
+    if not isinstance(names, list):
+        return []
+    return [n for n in names if isinstance(n, str) and (n in title or (isinstance(short.get(n), str) and short[n]
+                                                                        and short[n] in title))]
+
+
 def severity_of(p):
     """A reading's severity: the class the ranges block stamped on it, else the class its collector judged (x.state)."""
     for s in (p.get("class"), (p.get("x") or {}).get("state")):
@@ -3127,7 +3140,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
         if owners:      # the owner is named in the title, so the alarm item is never one more unclaimed item
             title = "%s; owner: Relentless, %s expedited by Operations" % (title, ", ".join(owners))
         cur["title"] = title[:160] if not owners else title[:300]
-        cur["noted"] = []       # a filing carries its title only: every name is said by the first note after it
+        cur["noted"] = titled_names(cur["title"], pt, tg)   # what the title shows is told; a name it cut, the first note says
         cur["expedite"] = owners
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
