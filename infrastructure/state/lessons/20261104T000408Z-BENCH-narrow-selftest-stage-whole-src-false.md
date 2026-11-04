@@ -1,0 +1,1 @@
+A narrow selftest stage (whole_src=False) can pass only because a reused stage still holds files from earlier whole-tree builds: rsync --delete prunes only inside the dirs it transfers. Prove any narrowing on an empty WINBUILD_ROOT (a new dir on /mnt/d), and list every FindUp target in extra_dirs.
