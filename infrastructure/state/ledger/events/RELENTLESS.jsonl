@@ -493,3 +493,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:56:24Z","tsn":1793829385004656798}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A10 (L2), read-only proof","ts":"2026-11-04T21:56:32Z","tsn":1793829392386011495}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:56:41Z","tsn":1793829401227440780}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T22:01:03Z","tsn":1793829663081002024}
