@@ -240,3 +240,13 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:28:57Z","tsn":1793784537054061468}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T09:30:38Z","tsn":1793784638012369287}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:48:11Z","tsn":1793785691273189871}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T09:49:15Z","tsn":1793785755191130789}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:49:23Z","tsn":1793785763500490269}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-04T09:52:37Z","tsn":1793785957756550511}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:52:45Z","tsn":1793785965791542016}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-04T09:52:55Z","tsn":1793785975387279284}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:53:04Z","tsn":1793785984153270506}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MIASMA_WARDEN_MOTHER_ART_1 L2 (L2), read-only proof","ts":"2026-11-04T09:53:11Z","tsn":1793785991232891794}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:53:16Z","tsn":1793785996878798422}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STARWARS_JUNK_RESKIN_1 A2 (L1), read-only proof","ts":"2026-11-04T09:53:24Z","tsn":1793786004342164398}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:53:30Z","tsn":1793786010397606916}
