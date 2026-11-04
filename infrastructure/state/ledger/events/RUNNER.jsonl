@@ -3059,3 +3059,4 @@
 {"seat":"RUNNER","event":"live","id":"BENCH_WIRE_BACKSTOP_STILL_ON_GOODBYE","result":"kept","detail":"sweep: running again","ts":"2026-11-04T21:03:04Z","tsn":1793826184594471453}
 {"seat":"RUNNER","event":"live","id":"HANDOFF_FIX_RESTART_TWENTY_SECONDS","result":"kept","detail":"sweep: running again","ts":"2026-11-04T21:03:07Z","tsn":1793826187507620296}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-04T21:03:10Z","tsn":1793826190268659327}
+{"seat":"RUNNER","event":"note","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","text":"ops_watch: cleared at 2026-11-04T21:22:00Z (wrapup.debris_standing now 0)","ts":"2026-11-04T21:23:11Z","tsn":1793827391852396235}
