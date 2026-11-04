@@ -156,11 +156,35 @@ def test_silent_reader():
     log = open(r.log).read()
     check("the Conductor rung writes its log and asks a quick run", "INCIDENT" in log and (r.asked("Conductor") or r.runs), log)
     r.tick(T0 + 60 * M, relentless__under_min=100)
-    check("distressed: fresh Operations run at 60", r.inc()[0]["rung"] == 2, r.inc())
+    check("Operations-read: no fresh Operations rung at 60, the Conductor holds it (same role not asked twice)",
+          r.inc()[0]["rung"] == 1 and not [e for e in r.evs("escalated") if e.get("rung") == 2], r.evs("escalated"))
     r.tick(T0 + 239 * M, relentless__under_min=100)
-    check("distressed stays from him until 4 h", r.inc()[0]["rung"] == 2 and not r.snap()["owner"], r.snap())
+    check("distressed stays from him until 4 h", r.inc()[0]["rung"] == 1 and not r.snap()["owner"], r.snap())
     r.tick(T0 + 240 * M, relentless__under_min=100)
-    check("distressed reaches him at 4 h", r.inc()[0]["rung"] == 3 and len(r.snap()["owner"]) == 1, r.snap())
+    check("distressed reaches him at 4 h, straight from the Conductor", r.inc()[0]["rung"] == 3 and len(r.snap()["owner"]) == 1
+          and [e["rung"] for e in r.evs("escalated")] == [1, 3], (r.snap(), r.evs("escalated")))
+
+
+def test_chain_dedupe():
+    """INCIDENT_CHAIN_DEDUPE_OPERATIONS_RUNG: the policy rung "Operations:fresh" asked an Operations-read route's role a
+    second time; next after the reader is the Conductor, then him, at the ladder's own minutes."""
+    t = IN.load_table()
+    inc = lambda reader, rung, cls="distressed": {"id": "x", "reader": reader, "rung": rung, "rung_t": T0, "told_t": T0,
+                                                  "ack_min": 30, "class": cls, "metrics": {"m": {}}}
+    check("chain: an Operations reader goes Operations, Conductor, him",
+          [IN.next_rung(t, inc("Operations", 0)), IN.next_rung(t, inc("Operations", 1))] == [1, IN.OWNER_RUNG])
+    check("chain: a Conductor reader skips the Conductor rung, keeps the fresh Operations one",
+          [IN.next_rung(t, inc("Conductor", 0)), IN.next_rung(t, inc("Conductor", 2))] == [2, IN.OWNER_RUNG])
+    check("chain: a seat reader keeps every rung", [IN.next_rung(t, inc("BENCH", k)) for k in (0, 1, 2)] == [1, 2, 3])
+    lad = t["policy"]["ladder"]
+    check("the skip moves him no earlier: Operations reader at the Conductor rung is due at the owner minute",
+          IN.next_due(t, inc("Operations", 1)) == T0 + lad["distressed"][1] * 60
+          and IN.next_due(t, inc("Operations", 1, "emergency")) == T0 + lad["emergency"][1] * 60)
+    check("a Conductor reader at rung 0 waits at least its ack minute", IN.next_due(t, inc("Conductor", 0)) == T0 + max(30, lad["distressed"][0]) * 60)
+    ring = IN.ring_of(t, inc("Operations", 1), T0)
+    check("the Conductor rung of an Operations route is the last agent: it is asked for his line",
+          ring["reader"] == "Conductor" and ring["how"] == "quick_run" and "incident-line" in ring["text"], ring)
+    check("a rung with an agent still above it is not asked for his line", "incident-line" not in IN.ring_of(t, inc("BENCH", 1), T0)["text"])
 
 
 def test_emergency_all_dead():
@@ -1209,7 +1233,7 @@ def replay_batch():
 
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
-for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
+for t in (test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_chains_through_step, test_each_field_of_a_reading, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,

@@ -11,7 +11,7 @@ The Dispatcher tick runs step() in decide (pure) and execute() in its execute pa
   * an ACK is `rimflow ack <id> --plan` or the reader's action on the named item. It gives ownership and sets recover_by.
     A ring, a read or a consumed doorbell writes no ack row and cannot make one.
   * past the rung's ack time, or past recover_by acked or not, the incident moves up the chain: the route's reader,
-    Conductor, a fresh Operations run, him. The last agent writes his line (`rimflow incident-line`); with none, the
+    Conductor, a fresh Operations run, him; a rung asking the reader's own role again is skipped (next_rung). The last agent writes his line (`rimflow incident-line`); with none, the
     fixed template goes out marked unread, his accepted exception. A rung does not move while the readings are sane.
   * it closes only on reading: every metric seen sane for sustain_min (event_quiet_min for a signal).
   * at his rung it is never left to sit: past recover_by (acked) or owner_revisit_min after it reached him or was last
@@ -143,8 +143,26 @@ def chain_of(table, inc):
     return [inc["reader"]] + table["policy"]["chain"]
 
 
+def role_of(reader):
+    """The role a chain entry asks: a fresh Operations run is still Operations."""
+    return str(reader).split(":", 1)[0]
+
+
+def next_rung(table, inc, rung=None):
+    """The rung an escalation moves to. A policy rung asking the route's reader's own role again is skipped
+    (INCIDENT_CHAIN_DEDUPE_OPERATIONS_RUNG: an Operations-read route went Operations, Conductor, fresh Operations, him;
+    the fresh run asked the same role twice), so its next rung is the Conductor and then him. His rung is never skipped."""
+    rung = inc["rung"] if rung is None else rung
+    chain = chain_of(table, inc)
+    r = rung + 1
+    while r < OWNER_RUNG and role_of(chain[r]) == role_of(chain[0]):
+        r += 1
+    return r
+
+
 def next_due(table, inc):
-    """Epoch of the next move up the chain, or None at the top."""
+    """Epoch of the next move up the chain, or None at the top. The time is the TARGET rung's: a skipped rung moves
+    nothing earlier, so he is reached at the ladder's own minute."""
     rung = inc["rung"]
     pol = table["policy"]
     if rung >= OWNER_RUNG:                  # his rung: revisited, never climbed; an ack lengthens the wait, never shortens it
@@ -154,7 +172,10 @@ def next_due(table, inc):
         return max(floor, inc["recover_by_t"]) if inc.get("acked_t") else floor
     if inc.get("acked_t"):
         return inc["recover_by_t"]
-    at = inc["ack_min"] if rung == 0 else pol["ladder"][inc["class"]][rung - 1]
+    to = next_rung(table, inc)
+    at = inc["ack_min"] if to == 1 else pol["ladder"][inc["class"]][to - 2]
+    if rung == 0:
+        at = max(at, inc["ack_min"])
     return max(inc["told_t"] + at * 60, inc["rung_t"] + (pol["min_step_min"] * 60 if rung else 0))
 
 
@@ -164,7 +185,7 @@ def ring_of(table, inc, now, rung=None):
     head = "INCIDENT %s (%s, rung %d, %s): %s" % (inc["id"], inc["class"], rung, reader, ", ".join(sorted(inc["metrics"])))
     how = {"Operations": "alarm_run", "Conductor": "quick_run", "Operations:fresh": "fresh_run", "owner": "owner"}.get(reader)
     why = head + ". rimflow incidents; rimflow ack %s --plan \"<next>\"." % inc["id"]
-    if reader == "Operations:fresh":
+    if reader != "owner" and rung < OWNER_RUNG and next_rung(table, inc, rung) == OWNER_RUNG:   # the last agent before him
         why += " This incident reaches him next: write his line, rimflow incident-line %s \"<line>\"." % inc["id"]
     return {"id": inc["id"], "how": how or "doorbell", "reader": reader, "seat": None if how else reader, "text": why}
 
@@ -373,7 +394,7 @@ def step(table, rows, status, now, cursor=0, events=None):
                      quiet_revisits=inc.get("quiet_revisits", 0) + 1, news=None,
                      why="readings and plan unchanged since %s: re-armed, no run" % iso(inc["revisit_t"]))
         elif due is not None and now >= due and not inc.get("sane_since"):
-            r = inc["rung"] + 1
+            r = next_rung(table, inc)
             f = dict(rung=r, rung_t=now, acked_t=None, ack_by=None, plan=None, recover_by=None, recover_by_t=None)
             was = bool(inc.get("acked_t"))
             inc.update(f)
