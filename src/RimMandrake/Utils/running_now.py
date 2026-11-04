@@ -294,13 +294,14 @@ class Env:
                     try:
                         d = json.loads(line)
                         if d.get("event") == "bridge" and d.get("host") in (None, "archmagi"):
-                            out.append((iso_epoch(d["ts"]), d.get("state")))
+                            out.append((iso_epoch(d["ts"]), d.get("tsn") or 0, d.get("state")))
                     except (ValueError, KeyError, TypeError):
                         if line.endswith("\n"):      # only a last line still being written may be broken
                             raise Unmeasured("a bridge record in %s is broken" % os.path.basename(p))
         if not out:
             raise Unmeasured("no bridge event in the ledger")
-        return sorted(out)
+        # two events in one second keep their real order by the ledger's tsn, never alphabetically by state
+        return [(at, state) for at, _, state in sorted(out, key=lambda e: e[:2])]
 
     def conductor_helpers(self, pid):
         """How many in-process helpers the Conductor window has alive, by the reader the restart path trusts."""
@@ -2242,7 +2243,7 @@ def timers_rows(timers, units, now):
         name = t.get("unit", "").replace(".timer", "")
         last, nxt = t.get("last") or 0, t.get("next") or 0
         last_s = ago(now - last / 1e6) + " ago" if last else "never"
-        nxt_s = "in " + ago(nxt / 1e6 - now) if nxt else "running now"
+        nxt_s = "in " + ago(nxt / 1e6 - now) if nxt else "no next run"
         rows.append("%-24s %10s %12s  %s" % (clip(name, 24), last_s, nxt_s, clip(desc.get(t.get("unit"), ""), 34)))
     return rows
 

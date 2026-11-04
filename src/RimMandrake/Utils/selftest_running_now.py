@@ -839,6 +839,16 @@ old_hold = Fake(files=hold)
 old_hold.mtime = lambda path: NOW - R.HOLD_CAP - 60
 check("a hold silent past the bridge's own limit says so, on the strip and the panel", "bridge HELD by OPERATIONS, silent" in before_svg(page_of(old_hold)) and "held by OPERATIONS, silent" in page_of(old_hold).split("</svg>")[0])
 
+check("a timer with no next run does not claim to be running", "no next run" in R.timers_rows([{"unit": "rm-x.timer", "last": 0, "next": 0}], [], NOW)[0] and "running now" not in R.timers_rows([{"unit": "rm-x.timer"}], [], NOW)[0])
+with tempfile.TemporaryDirectory() as d:
+    real_events, R.LEDGER_EVENTS = R.LEDGER_EVENTS, d
+    with open(d + "/A.jsonl", "w") as f:
+        for state, tsn in (("released", 5), ("taken", 6)):
+            f.write(json.dumps({"event": "bridge", "ts": iso(NOW), "tsn": tsn, "state": state}) + "\n")
+    tied = R.Env().bridge_events()
+    R.LEDGER_EVENTS = real_events
+check("a release and a take in one second keep their order", [s for _, s in tied] == ["released", "taken"])
+
 # ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
 SRC = open(R.__file__).read()
 QUIET = "(lambda *a, **k: None)("
