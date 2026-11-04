@@ -172,3 +172,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:35:44Z","tsn":1793770544061992079}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A4 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T05:37:19Z","tsn":1793770639504972826}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:44:03Z","tsn":1793771043765163472}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CRACKEDLANDS_THREE_HEIGHT_FLORA_1 A1 (L2), read-only proof","ts":"2026-11-04T05:44:20Z","tsn":1793771060612611732}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:44:46Z","tsn":1793771086762842198}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FORGE_SKY_PASTURES_1 A1 (L2), read-only proof","ts":"2026-11-04T05:45:03Z","tsn":1793771103118040843}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:48:55Z","tsn":1793771335401857268}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FORGE_SKY_PASTURES_1 A2 (L1), read-only proof","ts":"2026-11-04T05:49:02Z","tsn":1793771342762766469}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:49:08Z","tsn":1793771348888050311}
