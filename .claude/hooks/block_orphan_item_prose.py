@@ -80,7 +80,10 @@ def orphans(root, base, head):
     if not stems:
         return []                        # the common push: never pays for a ledger replay
     model, glob_live = rimflow_modules(root)
-    state = model.replay(model.canonical_order(ledger_at(root, head)))
+    events = ledger_at(root, head)
+    if hasattr(model, "from_disk"):      # fold CONDUCTOR/RELENTLESS back to BENCH as model.read() does, or an item
+        events = [model.from_disk(e) for e in events]   # filed `for` RELENTLESS replays as no row at all
+    state = model.replay(model.canonical_order(events))
     return [(stem, why) for stem, why in ((s, glob_live.verdict(s, state)) for s in stems) if why]
 
 
