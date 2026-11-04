@@ -410,6 +410,36 @@ def b(x):
         acts.append({"do": "alarm", "kind": "%s:%s" % (kind, x)})
     alarm("param", "w")
     alarms.append({"kind": "appended:one", "why": "w"})
+def c(fx, key):
+    import incident as IN
+    sig = getattr(fx, "alarm_signal", None)
+    sig({"kind": "attention_" + key, "why": "w"})
+    fx.alarm_signal({"kind": "direct:one"})
+    IN.signal({}, "signalled:one", "w", 1)
+    fx.told({"metric": "told.row", "told_at": 1})
+    signal_alarm({}, {}, "forwarded:one", "w", 1)
+    signal_alarm({}, {}, a["kind"], "w", 1)
+def c2():
+    c(None, "spend:%s" % who)
+"""
+
+POINTS = """
+KEYS = ("a.one", "a.two")
+MORE = KEYS + ("a.three",)
+def c_q(rules):
+    out, pts = {}, {}
+    for q in rules:
+        k = "queues.%s." % q["name"]
+        out[k + "stalled_min"] = M(1, "min")
+        out[k + "pending"] = U("blind") if q else M(1)
+    key, m = "roles.%s.share" % q, {}
+    pts[key] = M(1)
+    out["f.%s" % q] = E(1)
+    out.update({k: U("w") for k in ("c.one", "c.two")})
+    for k in MORE:
+        pts[k] = U("w")
+    keep = {"plain": 1}
+    return {"d.one": M(1), **{k: U("w") for k in KEYS}}
 """
 
 
@@ -421,13 +451,25 @@ def source_kinds():
 def test_census_forms():
     k, bad = AC.of_source(FORMS)
     want = {"lit:one", "dead:x", "role:x:cap", "r:x:x", "fs:x:z", "var:one", "var:two", "module_k:v", "dict:one",
-            "var:one:tail", "var:two:tail", "param:x", "appended:one"}
+            "var:one:tail", "var:two:tail", "param:x", "appended:one", "attention_spend:x", "direct:one", "signalled:one",
+            "told.row", "forwarded:one"}
     check("the census reads every form a kind is written in", k == want and not bad, (sorted(k ^ want), bad))
     for src, name in (('def f(a):\n    act(do="alarm", kind=a["kind"])\n', "a subscript"),
                       ('def f(k):\n    act(do="alarm", kind=k)\n', "a parameter nobody passes"),
                       ('def f(q):\n    act(do="alarm", kind=g(q))\n', "a call"),
                       ('def f(a):\n    act(do="alarm", kind="%s" % a)\n', "a format with no literal")):
         check("the census fails loudly on " + name, AC.of_source(src)[1], src)
+    for src, name in (('import incident as IN\ndef f(q):\n    IN.signal({}, q["kind"], "w", 1)\n', "a signal it cannot name"),
+                      ('def f(x):\n    sig = getattr(x, "alarm_signal", None)\n    sig(g(x))\n', "a record it cannot name")):
+        check("the census fails loudly on " + name, AC.of_source(src)[1], src)
+    k, bad = AC.points_of_source(POINTS)
+    want = {"queues.x.stalled_min", "queues.x.pending", "roles.x.share", "f.x", "c.one", "c.two", "a.one", "a.two", "a.three", "d.one"}
+    check("the census reads every form a point name is built in", k == want and not bad, (sorted(k ^ want), bad))
+    for src, name in (('def f(a):\n    out[a["k"]] = M(1)\n', "a point key from a record"),
+                      ('def f(a):\n    out["%s" % a] = M(1)\n', "a point key with no literal")):
+        check("the census fails loudly on " + name, AC.points_of_source(src)[1], src)
+    k, _ = AC.of_source('def other():\n    k = "not:this"\ndef f(k):\n    act(do="alarm", kind=k)\n')
+    check("another function's local is not a name's value", "not:this" not in k, k)
 
 
 def test_alarms_reach_ledger():
@@ -483,11 +525,19 @@ def test_routes():
     found, unread, files = source_kinds()
     check("no alarm site in the tree is unreadable by the census", not unread, unread)
     named = {"publish:index_lock", "publish:stuck", "budget:failed", "dry:live_runs_unsupervised", "breaker_emergency", "jam",
-             "understaffed", "books_stale", "step_raised", "lease_raised", "quarantine", "dead:x", "stalled:x:x"}
+             "understaffed", "books_stale", "step_raised", "lease_raised", "quarantine", "dead:x", "stalled:x:x",
+             "relentless_attention_day_spend_limit", "relentless_attention_item_spend_limit:x", "queues.x.stalled_min",
+             "queues.x.pending", "queues.blind", "relentless.breaker_same_cause", "selftest_false_hit", "testing.red_x"}
     check("the census sees the variable and dict forms, relentless and replay_watch", named <= found, sorted(named - found))
     check("the census walked every module that raises one", {os.path.basename(f) for f in files} >= {
         "dispatcher.py", "relentless.py", "helper_budget.py", "role_launch.py", "signal_watch.py", "login_watch.py",
         "seat_restart.py", "replay_watch.py"}, files)
+    qd = os.path.join(TMP, "census_queue")
+    os.makedirs(qd, exist_ok=True)
+    built = set(OW.c_queues(T0, {"queues": [{"name": "censusprobe", "pending": qd, "active": qd}]}, {}))
+    families = [k.replace(".x.", ".*.") for k in found]
+    check("the census's queue family is what the collector really builds",
+          built and all(any(fnmatch.fnmatchcase(k, q) for q in families) for k in built), sorted(built))
     literal = set()
     for f in files:
         literal |= {m for m in re.findall(r'kind="([a-z_]+:[a-z_:]+)"', open(f, encoding="utf-8").read())
@@ -496,7 +546,8 @@ def test_routes():
     kinds = found | {t["key"].replace("*", "x") for t in RULES["targets"] if t.get("alarm")} | set(OW.ranges_of(RULES))
     missing = [k for k in sorted(kinds) if IN.route_of(TABLE, k) is None]
     check("every alarm kind is in the routing table", not missing, missing)
-    for kind in ("dead:x", "publish:stuck", "budget:failed", "jam"):
+    for kind in ("dead:x", "publish:stuck", "budget:failed", "jam", "relentless_attention_item_spend_limit:x",
+                 "relentless_attention_day_spend_limit", "queues.x.stalled_min", "queues.x.pending", "process.x"):
         t2 = dict(TABLE, routes=[x for x in TABLE["routes"] if not fnmatch.fnmatchcase(kind, x["match"])])
         check("%s dropped from the table is seen missing" % kind, kind in [k for k in sorted(kinds) if IN.route_of(t2, k) is None])
     bad = [x for x in TABLE["routes"] if x["route"] == "role" and x["reader"] not in TABLE["readers"]]
