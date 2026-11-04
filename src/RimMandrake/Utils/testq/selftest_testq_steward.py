@@ -508,6 +508,19 @@ def main():
         ls = W.lane_state(base, ["Mock"])
         check(ls["state"] == "UNREACHABLE" and ls["fault_at"] == S.parse_ts(W.iso(base + 7200)),
               "ssh down inside an intentional pause: a fault only when the pause ends")
+        # STEVE_STEWARD_FIX_PLANNED_OUTAGE_CRIED_WOLF: a manual pause with no until covers its 60 min; an auto pause,
+        # an expired pause or a torn one covers nothing
+        S.dump({"since": W.iso(base - 600), "until": None, "reason": "BIOS visit"}, T.q("paused.json"))
+        ls = W.lane_state(base, ["Mock"])
+        check(ls["state"] == "UNREACHABLE" and ls["fault_at"] == S.parse_ts(W.iso(base - 600)) + W.MANUAL_PAUSE_S,
+              "ssh down inside a manual pause with no until: a fault only at since + 60 min: %s" % ls)
+        S.dump({"since": W.iso(base - 600), "until": W.iso(base + 7200), "outcome": "INVALID", "job": "J1",
+                "reason": "auto"}, T.q("paused.json"))
+        check(W.lane_state(base, ["Mock"])["fault_at"] == 0, "ssh down under an auto pause: a fault at once")
+        S.dump({"since": W.iso(base - 7200), "until": W.iso(base - 60), "reason": "done"}, T.q("paused.json"))
+        check(W.lane_state(base, ["Mock"])["fault_at"] == 0, "ssh down after the pause expired: a fault at once")
+        S.dump({"since": "yesterday", "reason": "torn"}, T.q("paused.json"))
+        check(W.lane_state(base, ["Mock"])["fault_at"] == 0, "ssh down under a torn pause: a fault at once")
         # ------------------------------------------------ quiet states
         reset()
         ls = W.lane_state(base, ["Mock"])

@@ -144,12 +144,20 @@ def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
 def lane_state(now, mods=None):
     ss = T.read_json(path("ssh_state.json")) or {}
     if ss.get("down_since"):
-        # an intentional pause with an expiry (an owner's hardware work) covers the box going dark until it ends
+        # a live manual pause (an owner's hardware work) outranks the box going dark until the pause expires: its
+        # `until`, or for a pause with none the 60 min after which the PAUSED state below would escalate it anyway
+        # (STEVE_STEWARD_FIX_PLANNED_OUTAGE_CRIED_WOLF). An auto pause (it names an outcome) covers nothing.
         pz = T.paused() or {}
-        held = S.parse_ts(pz["until"]) if pz.get("until") and not pz.get("outcome") else None
+        held = None
+        if pz and not pz.get("outcome"):
+            try:
+                held = (S.parse_ts(pz["until"]) if pz.get("until") else
+                        S.parse_ts(pz["since"]) + MANUAL_PAUSE_S if pz.get("since") else None)
+            except (TypeError, ValueError):     # a torn pause covers nothing: the outage is a fault
+                held = None
         return _st("UNREACHABLE", "ssh to SteveDesktop down since %s: %s%s" % (
             ss["down_since"], (ss.get("last_error") or "")[:120],
-            "; inside the pause until %s" % pz["until"] if held and held > now else ""),
+            "; inside the pause until %s" % iso(held) if held and held > now else ""),
             held if held and held > now else 0)
     if os.path.exists(path("quarantine.json")):
         qz = T.read_json(path("quarantine.json")) or {}
