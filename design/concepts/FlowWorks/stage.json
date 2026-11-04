@@ -9,10 +9,31 @@
     "ref": "script_audit",
     "stage": 0,
     "tokens": 113904
+   },
+   {
+    "at": "2026-11-04T12:04:56Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793793342",
+    "stage": 0,
+    "tokens": 92624
+   },
+   {
+    "at": "2026-11-04T12:07:46Z",
+    "kind": "review",
+    "ref": "ab76299400ce54ecc",
+    "stage": 1,
+    "tokens": 41812
+   },
+   {
+    "at": "2026-11-04T12:09:39Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793793891",
+    "stage": 1,
+    "tokens": 396596
    }
   ],
   "reserve": 50000,
-  "spent": 113904
+  "spent": 644936
  },
  "history": [
   {
@@ -26,37 +47,77 @@
    "stage": 0,
    "what": "open",
    "why": "run rm-role-designer-1793793342, stage 0, budget 450000"
+  },
+  {
+   "at": "2026-11-04T12:04:57Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1793793342: stage 0 done"
+  },
+  {
+   "at": "2026-11-04T12:05:13Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1793793891, stage 1, budget 243472"
+  },
+  {
+   "at": "2026-11-04T12:09:39Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1793793891: stage 1 waiting_owner"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/FlowWorks",
  "recovery": [],
- "results": [],
- "running": {
-  "at": "2026-11-04T11:55:59Z",
-  "inputs": {
-   "exam": null,
-   "floor": null,
-   "owner": "2e75412d761a144d24ccee6abcb3c6e4b310748b1a79bc1f4b15b326e9bf4ad1",
-   "root": null,
-   "scenes": null,
-   "sheet": null,
-   "tree": null
+ "results": [
+  {
+   "at": "2026-11-04T12:04:57Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "66ff37dbd7ac28e780a0e7829755cc07bacff2ca6e54480c1bc7b2f489c5b84b",
+    "designer_grounding.md": "c207121b0d1bf63d17841dde6904a760fc5e26518c3abcb080e72399ed84d2e6",
+    "designer_scene_contract.md": "f18f957919dee3760365bebdf9d44313d0d8336546b9463c424aa9b52649392b"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793793342",
+   "stage": 0,
+   "summary": "Stage 0 read: 25 capabilities inventoried with impl/proof/scope apart (all live proof stale at the current hash), every built line accounted for (13 as not-a-capability harness/hygiene items), three failure modes named, three contradictions (irrigation owed?, stale spec table, VALIDATED-but-unproven) and two draft asks for stage 1. Proof-script scene audit: design/concepts/FlowWorks/script_audit.json."
   },
-  "manifest": {
-   "designer.md": "66ff37dbd7ac28e780a0e7829755cc07bacff2ca6e54480c1bc7b2f489c5b84b",
-   "designer_grounding.md": "c207121b0d1bf63d17841dde6904a760fc5e26518c3abcb080e72399ed84d2e6",
-   "designer_scene_contract.md": "f18f957919dee3760365bebdf9d44313d0d8336546b9463c424aa9b52649392b"
-  },
-  "owner_uncited": [
-   "1793766819481702813",
-   "1793793310786156340"
-  ],
-  "reserved": 450000,
-  "run": "rm-role-designer-1793793342",
-  "stage": 0
- },
+  {
+   "at": "2026-11-04T12:09:39Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "66ff37dbd7ac28e780a0e7829755cc07bacff2ca6e54480c1bc7b2f489c5b84b",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793793891",
+   "stage": 1,
+   "summary": "Turn 1 sent (design/concepts/FlowWorks/turn_01.md): a root paragraph for his approval (defence spine, stock that pays, four defensive canals judged first, everything built stays), plus the raid scene FlowWorks is judged on and the reach of canal-side watering. Three asks reviewed by a fresh Opus judge; all pass, irrigation narrowed to the reach."
+  }
+ ],
+ "running": null,
  "schema": 1,
- "stage": 0,
- "status": "ready"
+ "stage": 1,
+ "status": "waiting_owner",
+ "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
