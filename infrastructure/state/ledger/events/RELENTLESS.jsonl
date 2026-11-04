@@ -106,3 +106,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:40:10Z","tsn":1793760010429593863}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T02:40:57Z","tsn":1793760057009844545}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:55:42Z","tsn":1793760942314009118}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T02:56:34Z","tsn":1793760994075218226}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:58:31Z","tsn":1793761111619590890}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A2 (L2), read-only proof","ts":"2026-11-04T02:58:41Z","tsn":1793761121569945354}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:00:36Z","tsn":1793761236705762583}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A3 (L2), read-only proof","ts":"2026-11-04T03:00:46Z","tsn":1793761246917216306}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:00:56Z","tsn":1793761256611558081}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A4 (L2), read-only proof","ts":"2026-11-04T03:01:07Z","tsn":1793761267209639904}
