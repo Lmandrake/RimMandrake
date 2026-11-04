@@ -2,8 +2,11 @@
 
 Item `STEVE_DISK_MEASURE_ONLY_FORTY_GIGS_LEFT`. Measured over ssh 2026-11-03 20:00-20:15 Steve local
 (2026-11-04 04:00-04:15Z). C: free: **39.4 GB before, 68.4 GB after** (decimal GB, as the 999 GB size; PowerShell's `1GB` is GiB: 36.7 → 63.7 GiB). Raw scans and scripts:
-`D:\ClaudeWork\rimmandrake\steve_diag\disk_fill\` (`scan.tsv` whole C: to depth 4, `scan2.tsv` AppData and
+`D:\ClaudeWork\rimmandrake\steve_diag\disk_fill\` on Archmagi (copied from Steve's `C:\SteveDesktop\diag\disk_fill\`) (`scan.tsv` whole C: to depth 4, `scan2.tsv` AppData and
 Downloads deeper; sizes are file bytes in decimal GB, reparse points not followed).
+
+Free-space reading after the work (`c_free_reading.ps1` over ssh, raw in `c_free_reading.txt` beside the scans):
+`2026-11-04T04:30:06Z free_bytes=68354924544 size_bytes=999559708672`
 
 ## What fills C:
 
