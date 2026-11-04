@@ -8,6 +8,8 @@ testq-tick stays at 60 s (its slow-down was "while the steward is BRAKED", and i
 stays its own timer (the audit's keep-list names it, and steward.py's STALE_S of 300 s assumes a 60 s tick).
 
 Repo half: always. Live half: only where `systemctl --user` answers; elsewhere one UNMEASURED line, not a failure.
+`--replay UNIT:Prop=Value` (repeatable) answers that property in place of systemd, so a past broken state replays
+(the guard of LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE: `--replay rm-arteval-autojudge.timer:UnitFileState=disabled`).
 """
 import json
 import re
@@ -25,6 +27,14 @@ SLOWED = {  # unit -> (repo file, timer key, value systemd reports)
     "rm-arteval-autojudge": (HERE / "systemd/rm-arteval-autojudge.timer", "OnUnitActiveSec=2h", "OnUnitActiveUSec=2h"),
 }
 KEPT_ACTIVE = ("testq-tick", "testq-steward-watch")
+REPLAY = {}  # (unit, prop) -> value, from --replay
+_args = sys.argv[1:]
+while _args:
+    _a = _args.pop(0)
+    _m = re.match(r"([\w.@-]+):(\w+)=(\S*)$", _args.pop(0) if _a == "--replay" and _args else "")
+    if _a != "--replay" or not _m:
+        sys.exit("usage: selftest_timer_prune.py [--replay UNIT:Prop=Value]...  (bad argument near %r)" % _a)
+    REPLAY[(_m.group(1), _m.group(2))] = _m.group(3)
 
 
 def check(cond, what, detail=""):
@@ -71,6 +81,8 @@ check(re.search(r"^STALE_S = 300\b", (HERE / "testq/steward.py").read_text(encod
 
 # --- live: only where the user manager answers
 def show(unit, prop):
+    if (unit, prop) in REPLAY:
+        return REPLAY[(unit, prop)]
     try:
         r = subprocess.run(["systemctl", "--user", "show", "-p", prop, "--value", unit], capture_output=True, text=True,
                            timeout=30, stdin=subprocess.DEVNULL)
