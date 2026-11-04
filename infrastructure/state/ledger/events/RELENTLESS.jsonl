@@ -353,3 +353,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A6 (L2), read-only proof","ts":"2026-11-04T14:41:35Z","tsn":1793803295165918348}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:41:44Z","tsn":1793803304926523421}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T14:43:32Z","tsn":1793803412276375422}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:50:57Z","tsn":1793803857975407420}
