@@ -411,3 +411,12 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:54:38Z","tsn":1793811278044833605}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-04T17:14:23Z","tsn":1793812463341815539}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:16:52Z","tsn":1793812612205822927}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A1 (L1), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T17:17:01Z","tsn":1793812621453061064}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:17:07Z","tsn":1793812627269588112}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A2 (L1), read-only proof","ts":"2026-11-04T17:17:14Z","tsn":1793812634931187279}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:17:20Z","tsn":1793812640702061875}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A1 (L2), read-only proof","ts":"2026-11-04T17:17:32Z","tsn":1793812652277051641}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:18:02Z","tsn":1793812682824995642}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A2 (L2), read-only proof","ts":"2026-11-04T17:18:15Z","tsn":1793812695292558851}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:18:46Z","tsn":1793812726120466095}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A3 (L2), read-only proof","ts":"2026-11-04T17:18:57Z","tsn":1793812737736086522}
