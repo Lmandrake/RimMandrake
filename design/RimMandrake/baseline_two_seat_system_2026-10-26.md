@@ -24,7 +24,7 @@ talks with the owner and does live work; FOUNDRY works the queue by itself.
 
 | piece | what it does | implemented by |
 |---|---|---|
-| BENCH desk | the window the owner talks to; live debugging, bridge, FlowWorks and GSS (all of it), acceptance looks | `infrastructure/agents/BENCH.md`, clone `/home/mandrake/rm/bench` |
+| BENCH desk | the window the owner talks to; live debugging, bridge, FlowWorks and GSS (all of it), acceptance looks | `infrastructure/agents/CONDUCTOR.md` (the workshop file, folded in 2026-11-04), clone `/home/mandrake/rm/bench` |
 | FOUNDRY window | autonomous queue worker, no owner present | `infrastructure/agents/FOUNDRY.md`, clone `/home/mandrake/rm/foundry` |
 | two clones, one remote | each seat edits only its own clone; `./publish` pushes; mirror read-only on the Windows side | `~/rm/{bench,foundry,mirror.git,store.git}`, `publish`, `rm-mirror.timer` |
 | rimflow sharded ledger | append-only events per seat (`BENCH/FOUNDRY/OWNER/RUNNER.jsonl`), queue and item files derived from it; verbs file/claim/start/close/verify/implemented/block/needs | `src/RimMandrake/rimflow/` (`cli.py`, `model.py`), `infrastructure/state/ledger/events/` |

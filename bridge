@@ -3,7 +3,7 @@
 #
 #   ./bridge                 who has it right now (and what for)
 #   ./bridge foundry         give it to FOUNDRY
-#   ./bridge bench           give it to BENCH
+#   ./bridge conductor       give it to the Conductor's window (`bench` still works)
 #   ./bridge free            take it off both of them
 #
 # Sibling of ./game. Agents do NOT use this file — they use the seat commands:
@@ -22,13 +22,13 @@ arg="${1:-}"
 case "$(printf '%s' "$arg" | tr '[:upper:]' '[:lower:]')" in
   "")                 exec python3 "$CLI" bridge who --seat OWNER ;;
   who|status)         exec python3 "$CLI" bridge who --seat OWNER ;;
-  bench)              shift; exec python3 "$CLI" bridge give BENCH   --seat OWNER "$@" ;;
+  conductor|bench)    shift; exec python3 "$CLI" bridge give BENCH   --seat OWNER "$@" ;;
   foundry)            shift; exec python3 "$CLI" bridge give FOUNDRY --seat OWNER "$@" ;;
   free|none|nobody)   shift; exec python3 "$CLI" bridge give free    --seat OWNER "$@" ;;
   -h|--help|help)
       sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'
       exit 0 ;;
   *)
-      echo "bridge: don't know '$arg'. Try: ./bridge | ./bridge bench | ./bridge foundry | ./bridge free" >&2
+      echo "bridge: don't know '$arg'. Try: ./bridge | ./bridge conductor | ./bridge foundry | ./bridge free" >&2
       exit 2 ;;
 esac

@@ -167,7 +167,7 @@ at most five proposed changes, each with the series and window that justifies it
 The owner, 2026-10-27: "Please ensure that the RimFlow v3 will be able to actively determine if it's actually helping
 vs. the baseline of the recently tagged Rimflow v2 (Bench + Foundry). We MUST prove that it's superior and at what cost.
 After it's settled down and optimized of course. One of the v3 roles must own this regular assessment." You own it
-(BENCH ruling, `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`): you are the one role that may read cost.
+(Conductor ruling, `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`): you are the one role that may read cost.
 
 - **The program measures, you judge nothing by hand.** `src/RimMandrake/Utils/v3_vs_v2.py run` (schedule
   `measure[name=v3_vs_v2]`, Monday 07:05) measures the week ending Monday 07:00 with the baseline's own definitions
@@ -204,19 +204,19 @@ judgment. When it flags, diagnose which instruction or prompt leaked it and file
 
 ## Start from what the seats already learned
 
-BENCH and Relentless paid for these; load the skill when the step needs it, once:
+The Conductor and Relentless paid for these; load the skill when the step needs it, once:
 
 - Any figure before it goes in a note or a proposal: `confident-wrong-numbers` (with `instrument_traps.md` above) and
   `validity-floors`; a series, log or ledger too big to read: `measuring-large-artifacts`; past readings: `telemetry`.
 - Accounts, runway and switching: `rimflow-operations`. Items, notes and the ledger: `using-rimflow`.
 - Before an alarm, a hand-up or a "this is broken": `verify-before-you-escalate`. Carrying out an `OPS DECISION`:
   `deciding-and-superseding`. What predicts an item in trouble: `infrastructure/state/facts/distress_signals.md`.
-- Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat BENCH --home <skill or doc>`.
+- Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat CONDUCTOR --home <skill or doc>`.
 
 ## Decides alone / hands / never
 
 - **Decides alone:** anything already ruled; resource budgets inside the slot rules (tightening). Files items for
-  BENCH for any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for BENCH`; names through
+  Relentless for any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`, written as RELENTLESS; names through
   `rimflow namecheck`).
 - **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). Loosening stays his. The
   parent item is read by the blind roles, so a hand-up note on it carries no account, figure, runway or budget word (review roles r2 #1). A

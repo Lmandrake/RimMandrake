@@ -12,7 +12,7 @@ informative. package all that up and deeply design about it, then propose three 
 - one Windows screenshot of the widget: `D:\ClaudeWork\rimmandrake\pulse_redesign\widget_crop.png`
 - the 17:30 scheduled digest: `D:\ClaudeWork\rimmandrake\dashboard\digests\digest_2026-10-23_1730_scheduled.md`
 - sources `src/RimMandrake/Utils/pulse/pulse_core.py`, `pulse.py`, `widget/index.html`, `systemd/`
-- `design/RimMandrake/delegation_policy.md` §2 and §5; `infrastructure/agents/BENCH.md`, `FOUNDRY.md`
+- `design/RimMandrake/delegation_policy.md` §2 and §5; `infrastructure/agents/CONDUCTOR.md` (the workshop file folded in), `FOUNDRY.md`
 
 **A ruling this document runs into.** On 2026-10-22 you answered the card *"RimPulse surface: what should it
 become?"* with **"Keep widget, fix defects only"**, recorded as *"No beacon, inbox or phone push"*

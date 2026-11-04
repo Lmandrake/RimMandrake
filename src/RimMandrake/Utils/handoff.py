@@ -166,6 +166,20 @@ def seat_from_ready(out):
     return m.group(2) or {"CONDUCTOR": "BENCH"}.get(m.group(1), m.group(1))
 
 
+def _seat_keys(ev):
+    """Fold the on-disk names CONDUCTOR/RELENTLESS back to the seat key BENCH, exactly as `rimflow.model.from_disk`
+    (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP step 2); a `bridge` event's RELENTLESS is the distinct holder."""
+    if not isinstance(ev, dict):
+        return ev
+    verb = ev.get("event")
+    fields = ("seat",) + {"file": ("for",), "spawn": ("for",), "reassign": ("to",)}.get(verb, ())
+    for f in fields:
+        v = ev.get(f)
+        if v == "CONDUCTOR" or (v == "RELENTLESS" and not (f == "seat" and verb == "bridge")):
+            ev[f] = "BENCH"
+    return ev
+
+
 def events():
     """-> every ledger event, ordered by `ts`.
 
@@ -192,7 +206,7 @@ def events():
                 line = line.strip()
                 if line:
                     try:
-                        out.append(json.loads(line))
+                        out.append(_seat_keys(json.loads(line)))
                     except ValueError:
                         pass
     # Stable sort, so each file's own append order survives a same-second tie.

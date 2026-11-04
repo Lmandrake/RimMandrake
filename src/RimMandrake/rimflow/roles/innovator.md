@@ -112,7 +112,7 @@ a trial whose harm cannot be seen is stopped), or (c) the kill date has passed. 
 appended `experiments.jsonl` line (`reverted` / `revert-failed`, with the reading that triggered it); a
 `revert-failed` stops all trials and alarms. A trial you start must name its check interval (at most 24 hours) and a
 kill date that falls on a Tue or Fri, so your own run that day judges it before the watchdog's backstop fires.
-When a trial starts you also file a BENCH ticket `<innovation id>` revert holding the revert recipe, filed blocked
+When a trial starts you also file a Relentless ticket `<innovation id>` revert holding the revert recipe, filed blocked
 with the note "not before <kill date>, and only while experiments.jsonl says this trial is running"; you drop it if
 the trial is adopted or reverted. It is the human-readable fallback if the watchdog itself is down, never the
 expiry mechanism.

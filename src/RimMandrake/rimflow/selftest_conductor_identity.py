@@ -11,10 +11,10 @@ and every matcher also accepts the pre-rename "AGENT BENCH" (dispatcher_schedule
 Covered, all on files and in memory (nothing launched, nothing written):
   identity    infrastructure/agents/CONDUCTOR.md exists and states the v3 role: absorbs Bench, quick vs session
               mode, helpers in session only, the single voice to him, the goals file, numbers never from memory
-  pointer     BENCH.md points at CONDUCTOR.md in its first lines (belt and braces: the hook now injects CONDUCTOR.md)
-  ready       `rimflow seat ready` as BENCH says "CONDUCTOR is ready [seat BENCH]", --seat CONDUCTOR writes seat BENCH,
+  folded      the workshop identity file (agents/BENCH.md) is gone, folded into CONDUCTOR.md (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP)
+  ready       `rimflow seat ready` as BENCH says "CONDUCTOR is ready [seat BENCH]", both write seat CONDUCTOR on disk (key BENCH),
               and handoff.py reads the seat KEY back out of either form (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE)
-  injection   the SessionStart hook injects CONDUCTOR.md FIRST for a BENCH role, BENCH.md after; titles say CONDUCTOR
+  injection   the SessionStart hook injects CONDUCTOR.md, once, for a BENCH role; titles say CONDUCTOR
   tile        the WT tile is named CONDUCTOR (profile + tabTitle + launch_fleet.ps1), --name/--remote-control CONDUCTOR
   wake        the BENCH tile's first prompt reads CONDUCTOR.md, still runs handoff --wake + seat ready, is shell-safe
   report      a headless quick check has one place to report: conductor.md names the Conductor log
@@ -61,7 +61,7 @@ def test_identity():
     t = read(CONDUCTOR)
     check(bool(t), "CONDUCTOR.md exists")
     low = " ".join(t.lower().split())             # prose wraps: match across line breaks
-    for needle, what in (("you absorb bench", "absorbs Bench"),
+    for needle, what in (("you absorb the old workshop seat", "absorbs the old workshop seat"),
                          ("quick mode", "quick mode"),
                          ("session mode", "session mode"),
                          ("runs no helper", "helpers in session mode only"),
@@ -74,8 +74,7 @@ def test_identity():
 
 
 def test_pointer():
-    head = "\n".join(read(BENCH).splitlines()[:6])
-    check("infrastructure/agents/CONDUCTOR.md" in head, "BENCH.md points at CONDUCTOR.md in its first lines")
+    check(not os.path.exists(BENCH), "BENCH.md is gone, folded into CONDUCTOR.md")
 
 
 def test_wake():
@@ -149,10 +148,11 @@ def _ready(seat):
 def test_ready():
     rc, out, seats = _ready("BENCH")
     check(rc == 0 and out.startswith("CONDUCTOR is ready [seat BENCH]"), "seat ready as BENCH says Conductor: %r" % out[:60])
-    check(seats == ["BENCH"], "seat ready as BENCH writes seat BENCH (the key), got %r" % seats)
+    # step 2 of SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP: the in-memory key stays BENCH, a new event on disk says CONDUCTOR
+    check(seats == ["CONDUCTOR"], "seat ready as BENCH writes seat CONDUCTOR on disk, got %r" % seats)
     rc, out, seats = _ready("CONDUCTOR")
-    check(rc == 0 and out.startswith("CONDUCTOR is ready [seat BENCH]") and seats == ["BENCH"],
-          "CONDUCTOR is accepted as an alias and written as seat BENCH (%r, %r)" % (out[:40], seats))
+    check(rc == 0 and out.startswith("CONDUCTOR is ready [seat BENCH]") and seats == ["CONDUCTOR"],
+          "CONDUCTOR is accepted and written as seat CONDUCTOR (%r, %r)" % (out[:40], seats))
     rc, out, _ = _ready("FOUNDRY")
     check(rc == 0 and out.startswith("FOUNDRY is ready") and "[seat" not in out, "FOUNDRY's line is unchanged")
     import handoff as H
@@ -175,9 +175,8 @@ def test_injection():
     try:
         H = _hook()
         body = H.read_identity("AGENT BENCH", "sid") or ""
-        cond, bench = read(CONDUCTOR).strip(), read(BENCH).strip()
-        check(body.startswith(cond), "the hook injects CONDUCTOR.md FIRST for a BENCH role")
-        check(bench and bench in body and body.index(bench) > len(cond) - 1, "BENCH.md follows as the session rules")
+        cond = read(CONDUCTOR).strip()
+        check(body == cond, "the hook injects CONDUCTOR.md, once and alone, for a BENCH role")
         check(len(body) <= 2 * H.MAX_IDENTITY_BYTES, "the combined identity stays bounded")
         f = H.read_identity("AGENT FOUNDRY", "sid") or ""
         check(f == read(os.path.join(ROOT, "infrastructure", "agents", "FOUNDRY.md")).strip(),

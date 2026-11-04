@@ -2,7 +2,7 @@
 
 ## What we run
 - **Product:** a RimWorld 1.6 total-conversion family of mods (C#/Harmony + XML defs + art), loosely specified game
-  design held by one owner (Lukas), who decides by question cards and phone art reviews. (`CLAUDE.md`, `infrastructure/agents/BENCH.md`)
+  design held by one owner (Lukas), who decides by question cards and phone art reviews. (`CLAUDE.md`, `infrastructure/agents/CONDUCTOR.md`)
 - **Two Claude Code seats** in separate ext4 clones: **BENCH** (Opus, sits with the owner, orchestrates helpers) and
   **FOUNDRY** (Sonnet, autonomous queue: `rimflow next --seat FOUNDRY`, 45-min leases). Helpers are Claude Code
   subagents (cap 3-5 the owner sets per day). Worktrees are OFF by owner ruling (2026-10-02); helpers share one clone.

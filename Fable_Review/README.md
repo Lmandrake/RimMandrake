@@ -3,7 +3,7 @@
 > ⭐ **ADOPTED the same day, with the owner's amendments:** the windows are named
 > **BENCH** and **FOUNDRY** (not Pair/Factory); doc budgets retired entirely;
 > stale-drop confirmed as the default; CLAUDE.md rewritten in the same pass. The
-> live rules are `infrastructure/agents/CHARTER.md`, `BENCH.md`, `FOUNDRY.md` —
+> live rules are `infrastructure/agents/CHARTER.md`, `CONDUCTOR.md` —
 > the `rewrites/` drafts here are the historical proposal, superseded by those.
 
 A full-project review of the four-seat multi-agent collaboration, performed by Fable 5

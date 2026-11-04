@@ -593,7 +593,10 @@ def _bridge_events():
     by the first append, so a case that asserts "nothing was written" has no file to
     read. Raising there made a passing assertion look like a broken test.
     """
-    return [e for e in _ledger_events() if e.get("event") == "bridge"]
+    # A Conductor-window event is written as seat CONDUCTOR and read back as the key BENCH
+    # (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP step 2); compare in keys, as the reader does.
+    return [dict(e, seat="BENCH") if e.get("seat") == "CONDUCTOR" else e
+            for e in _ledger_events() if e.get("event") == "bridge"]
 
 
 def _mirror_holder():

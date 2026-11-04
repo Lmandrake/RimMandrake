@@ -61,6 +61,9 @@ import sys
 import time
 import uuid
 
+# `--seat CONDUCTOR` names the Conductor's window, whose config key is BENCH (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP).
+SEAT_ALIAS = {"CONDUCTOR": "BENCH"}
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
@@ -2715,6 +2718,7 @@ def publish_shard(seat, clone=None):
 
 def cmd_request(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
+    seat = SEAT_ALIAS.get(seat, seat)
     if not seat:
         print("seat_restart: no seat (--seat or AGENT_SEAT)")
         return 2
@@ -2966,6 +2970,7 @@ def _wake_last_reply(rec, cfg=None, me=None):
 def cmd_last_reply(args):
     """The re-show alone, for a wake no restart made: handoff.py --wake runs it, so the tile's first launch shows it too."""
     seat = (args.seat or doorbell.seat_name() or "").upper()
+    seat = SEAT_ALIAS.get(seat, seat)
     cfg = config(_schedule()).get(seat) or {}
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
@@ -3177,6 +3182,7 @@ def _wake_receipts(seat, cfg, rec):
 
 def cmd_wake(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
+    seat = SEAT_ALIAS.get(seat, seat)
     cfg = config(_schedule()).get(seat) or {}
     p = seat_log_path(seat, cfg)
     print("== seat log tail: %s" % p)
@@ -3224,6 +3230,7 @@ def cmd_wake(args):
 
 def cmd_intile(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
+    seat = SEAT_ALIAS.get(seat, seat)
     sch = _schedule()
     start = time.time()
     orphan_end = start + config(sch).get(seat, DEFAULTS)["orphan_wait_s"]
@@ -3373,6 +3380,7 @@ def set_mode(seat, mode, session_id, by="", root=None):
 
 def cmd_mode(args):
     seat = (args.seat or doorbell.seat_name() or "BENCH").upper()
+    seat = SEAT_ALIAS.get(seat, seat)
     cfg = config(_schedule()).get(seat) or {}
     pid = doorbell.claude_ancestor()
     sid = args.session or ((session_file(pid) or {}).get("sessionId") if pid else None)

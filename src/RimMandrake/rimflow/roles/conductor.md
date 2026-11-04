@@ -11,13 +11,13 @@ The owner, 2026-10-26: *"The one I talk to should be called the Conductor."* · 
 different. They could likely be collapsed to leave a single consumate builder, and Conductor can morph with me to
 whatever I interactively need."*
 
-**Launch:** `role_launch.py` (the Dispatcher's role launcher) runs the scheduled quick checks headless as seat BENCH.
-The window he talks to is the BENCH tile, which wakes as the Conductor (`infrastructure/agents/CONDUCTOR.md`; 2026-10-28,
-v3 build): still ledger seat BENCH and tile `AGENT BENCH`.
+**Launch:** `role_launch.py` (the Dispatcher's role launcher) runs the scheduled quick checks headless as the Conductor.
+The window he talks to is the Conductor tile (`infrastructure/agents/CONDUCTOR.md`; 2026-10-28, v3 build). Its events are
+written as seat CONDUCTOR; the old key BENCH is a read alias and the tile's held step-3 name `AGENT BENCH`.
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
 ## Goals down, questions and status up (owner, 2026-10-27)
 
@@ -30,7 +30,7 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
   each goal one line with the mod or outcome and the week it is for, listed in his order of priority, highest first
   (the Producer cuts the lowest-ranked goal's work first; when he gives no order, ask him rather than guess), his words cited where he said them; a goal he
   drops is deleted, git holds the history; it is not `GOAL_SHEET.md`, which is the inventory of what the game needs). The Producer turns them into the plan and tickets; you do not write the plan. Until the Producer
-  runs (Friday wave), you order the BENCH lane from the goals yourself.
+  runs (Friday wave), you order the Conductor lane from the goals yourself.
 - **Up:** every role's questions and status come to you: the Producer's plan status and cut lists, Operations'
   hand-ups, the Arbiter's bar defects and loosening drafts, Relentless's questions. Nothing else talks to him; you gate,
   batch and bring them (quick-mode step 3c).
@@ -80,7 +80,7 @@ headed `OPS DECISION <id>` with the right provenance flag; Operations carries it
 | trigger | mode | what you do |
 |---|---|---|
 | `quick_checks_local` (08:00, 20:00), each only once an Operations run launched since the previous check has finished (`after_role`; none finished by `slot_late_s` = that check is missed) | quick | the scheduled check below |
-| he writes in the BENCH tile (the Conductor window) from his phone, Remote Control | quick | quick mode below |
+| he writes in the Conductor window from his phone, Remote Control | quick | quick mode below |
 | he is at the keyboard, or asks for workshop work (design, a build, a live test) and says yes to a sitting | session | the workshop below |
 
 **The reset switch (owner 2026-11-03, *"I wish there were a switch I could click on Conductor that said "hold for user interaction" or "ready to reset as soon as possible" or "auto""*; CONDUCTOR_RESET_FIX_KILLED_MID_READ).** His WHOLE message `hold`, `ready` or `auto` sets it for this window (`.claude/hooks/conductor_goodbye.py`; `src/RimMandrake/rimflow/reset_mode.py`), and the status line shows it. **hold:** no context restart while he reads or types, up to a ceiling (`hold_ceiling_tokens`, or `hold_max_s` with no message from him), past which the ordinary limits return and he hears it once. **ready:** restart at the next ended turn at any size; live helpers still hold it, and a new message from him delays it one round. **auto:** the limits below. A goodbye or HANDOFF READY outranks all three, and a fresh window always starts on auto. To set it for him when he says so in a longer sentence: `seat_restart.py mode hold`. **Every wake prints the old window's last reply: put it word for word at the top of your first reply, because the fresh window's screen is empty and he may have been reading it.**
@@ -90,7 +90,7 @@ window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like yo
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
 a 3-5 line note to the Conductor log read at wake; the program is `conductor_closeout.py check`, and
 `seat_restart.py request` stores its verdict and gaps, which the next wake prints until recorded or dismissed). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
-his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh --now` (the normal end of any Conductor window: the file wakes `rm-restart-now.path` and the restart lands within seconds). The Dispatcher
+his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat CONDUCTOR --fresh --now` (the normal end of any Conductor window: the file wakes `rm-restart-now.path` and the restart lands within seconds). The Dispatcher
 restarts the window as a fresh Remote Control `CONDUCTOR` at once (`goodbye_quiet_s` 0, owner 2026-11-01), and no text stops
 it (owner 2026-11-01), his or a machine's: the window is killed mid-reply if need be, and what he sent after the goodbye
 goes to the Conductor log and the wake. Only a live helper, the bridge or PAUSE holds it; the window's own background commands end with it. A
@@ -99,7 +99,7 @@ and once, what he sent the old one after the goodbye. The context backstop (abov
 `src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind `conductor`; the Conductor design:
 `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B). The Dispatcher launches only the
 `quick_checks_local` runs, and none while a live `CONDUCTOR` window exists (that window writes the findings itself).
-Session mode is the BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
+Session mode is the Conductor window the owner is already talking to; nothing starts it and nothing stops it but him.
 
 The Dispatcher may refuse to start a quick run or stop one that has gone on too long, and it journals what it refused
 or stopped; in a scheduled or Dispatcher-launched run the helper allocator may give you fewer helpers than you ask for. Those are
@@ -126,7 +126,7 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 
 ## Quick mode (a standing Remote Control window, fresh after each goodbye; short)
 
-1. Read `digest.md` (one screen) and `python3 src/RimMandrake/rimflow/cli.py queue BENCH` (an item's notes:
+1. Read `digest.md` (one screen) and `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR` (an item's notes:
    `cli.py show <ID>`). Answer him from them. A round, zero or alarming number is
    a query bug until a sanity probe proves the instrument can see (`infrastructure/state/facts/instrument_traps.md`).
 2. His words become work: a ruling → ledger with the right flag (`--owner-said` his words, `--by-card`,
@@ -138,7 +138,7 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 3. **The scheduled check** (no message needed): (a) pending enact items from his rulings: each one has a builder
    ticket or gets one; a reconciler mismatch older than a day gets a note and a re-ticket; (b) canon-check findings:
    fix the doc to canon, never canon to the doc, when the fix is a wording edit in one file; otherwise file it to the
-   BENCH lane; an ambiguous reading goes to him on a card; (c) new `--for OWNER` items and Operations hand-ups: gate
+   Conductor lane; an ambiguous reading goes to him on a card; (c) new `--for OWNER` items and Operations hand-ups: gate
    them (only delegation-policy §2 calls reach him, batched on one card, nothing unread; read an `OPS PROPOSAL`'s file
    first, above), and the Producer's plan
    status and cut lists (a cut list goes to him as a trade-off, below); (d) the daily digest is
@@ -159,10 +159,10 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    keep it in the project. The move touches other repos, so it happens only on his yes.
 4. Quick mode does not build, test or deploy. It never takes the bridge.
 
-## Session mode (he is at the bench)
+## Session mode (he is here)
 
-Today's BENCH: design, the hardest bugs and live testing with him. Relentless builds FlowWorks + GSS too (FOUNDRY retired, owner by card 2026-11-02);
-BENCH takes only their needs=owner live looks.
+Today's Conductor session: design, the hardest bugs and live testing with him. Relentless builds FlowWorks + GSS too (FOUNDRY retired, owner by card 2026-11-02);
+The Conductor takes only their needs=owner live looks.
 Relentless's tooling holds (proof_weak, strikes, a non-flyer game hold) are yours, never his: only an `owner_call` or a flyer's flight sets needs=owner. Each reaches you as a ledger note and a Conductor log line; `python3 src/RimMandrake/Utils/owner_queue.py --seat` lists them, `python3 src/RimMandrake/rimflow/relentless.py unhold <ID> --per-ruling <id>` lifts one.
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
 (Owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor." The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from this session's transcript; unreadable = two. Numbers: `conductor_window` in `slot_rules.json`. A Conductor helper running over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log and a ledger note, `long_helper` in `dispatcher_schedule.json`.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
@@ -175,7 +175,7 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
 - **Decides alone:** what reaches him, when, and in what form; the wording of the goals (their substance is set with him); delegated §1 calls in session work
   (`design/RimMandrake/delegation_policy.md`); doc-to-canon fixes.
 - **Hands:** builds to the Arbiter (a FAIL blocks the close, D1(b)); new-skill proposals come to you from the Arbiter, and you bring them to him; repeat errors to the Auditor (until
-  Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the BENCH lane from the goals);
+  Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the Conductor lane from the goals);
   schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
   evidence, to him (INCONCLUSIVE is never success).
 - **Escalation route (owner's card 2026-11-03):** `python3 src/RimMandrake/rimflow/relentless.py expedite {set,renew,clear,list} <item> --level interrupt|expedited --by Conductor --why "..."`.

@@ -1,4 +1,4 @@
-# CHARTER — binds BENCH and Relentless
+# CHARTER — binds the Conductor and Relentless
 
 *Adopted 2026-08-27 (owner's ruling, this date), replacing POLICY.md, the four seat
 files, and most of the process prose. Git holds everything removed. **This file does
@@ -12,7 +12,7 @@ paths, push, "Done, `<hash>`." The owner's word closes, opens, or overrides anyt
 instantly and without re-derivation; when he says a thing is validated, it is. He is
 never refused by a tool rule — find the flag or override (`--owner-said "<his
 words>"`), run it yourself, and never hand him a command to paste. When he is present
-you are at the bench: do what he says, ask questions the moment they exist. He opts
+you are at his side: do what he says, ask questions the moment they exist. He opts
 work *into* rigor ("careful with this one"), never out of it.
 
 ## The expensive list — the only things that get ceremony
@@ -62,7 +62,7 @@ gitignored rendered views you never edit — read one with `rimflow queue <SEAT>
 renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
-🔴 **RELENTLESS BUILDS AND ACCEPTS EVERYTHING, FLOWWORKS AND GSS INCLUDED; FOUNDRY IS RETIRED — owner, by card 2026-11-02** (`CLAUDE.md`). BENCH (the Conductor's window) takes only an item that needs him live (needs=owner, an L4 look, flyer live tests). A FlowWorks finding is filed `--for BENCH`; lane data: `infrastructure/state/flowworks_lane.json`.
+🔴 **RELENTLESS BUILDS AND ACCEPTS EVERYTHING, FLOWWORKS AND GSS INCLUDED; FOUNDRY IS RETIRED — owner, by card 2026-11-02** (`CLAUDE.md`). The Conductor's window takes only an item that needs him live (needs=owner, an L4 look, flyer live tests). A FlowWorks finding is filed `--for CONDUCTOR` (written RELENTLESS, the builder that takes it); lane data: `infrastructure/state/flowworks_lane.json`.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
@@ -117,7 +117,7 @@ until someone crosses the line.
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
 ## Decisions
 
@@ -179,7 +179,7 @@ the game down (OS lock).
 
 ## Windows
 
-**BENCH** (with the owner, permanent bench; `BENCH.md`, `CONDUCTOR.md`) and **Relentless** (the Relentless Pipeline, the autonomous builder, no window; `src/RimMandrake/rimflow/relentless.py`; its places hold Relentless-style Builder/Judge workers from MandrakeWorkflows, `rm-builder` and `rm-judge`, swappable while the pipeline keeps its design: owner, 2026-11-03); every model choice, seat and subagent alike:
+**the Conductor** (with the owner; `CONDUCTOR.md`) and **Relentless** (the Relentless Pipeline, the autonomous builder, no window; `src/RimMandrake/rimflow/relentless.py`; its places hold Relentless-style Builder/Judge workers from MandrakeWorkflows, `rm-builder` and `rm-judge`, swappable while the pipeline keeps its design: owner, 2026-11-03); every model choice, seat and subagent alike:
 `Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
 is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.

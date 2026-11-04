@@ -315,6 +315,20 @@ def my_seat(root, sid=None):
     return None
 
 
+def _seat_keys(ev):
+    """Fold the on-disk names CONDUCTOR/RELENTLESS back to the seat key BENCH, exactly as `rimflow.model.from_disk`
+    (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP step 2); a `bridge` event's RELENTLESS is the distinct holder."""
+    if not isinstance(ev, dict):
+        return ev
+    verb = ev.get("event")
+    fields = ("seat",) + {"file": ("for",), "spawn": ("for",), "reassign": ("to",)}.get(verb, ())
+    for f in fields:
+        v = ev.get(f)
+        if v == "CONDUCTOR" or (v == "RELENTLESS" and not (f == "seat" and verb == "bridge")):
+            ev[f] = "BENCH"
+    return ev
+
+
 def _ledger_events(root):
     """-> every ledger event, `ts`-ordered, across the frozen head and every shard.
 
@@ -342,7 +356,7 @@ def _ledger_events(root):
             for line in fh:
                 line = line.strip()
                 if line:
-                    evs.append(json.loads(line))     # ValueError -> torn, see docstring
+                    evs.append(_seat_keys(json.loads(line)))     # ValueError -> torn, see docstring
     if not opened:
         raise OSError("no ledger file could be read under %s" % os.path.dirname(paths[0]))
     # Stable sort: each file's own append order survives a same-second tie, and the

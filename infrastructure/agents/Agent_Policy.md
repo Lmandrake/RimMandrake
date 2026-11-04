@@ -1,6 +1,6 @@
 # Agent_Policy — which model does which work
 
-**Binds BENCH (the Conductor) and Relentless.** Read with `CHARTER.md`. This is the ONLY file that
+**Binds the Conductor and Relentless.** Read with `CHARTER.md`. This is the ONLY file that
 says which model does what *for this repo's seats*; every other doc in RimMandrake
 points here. The routing axis is measured, not argued.
 
@@ -26,7 +26,7 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 
 `fable` is the name that genuinely 400s (the harness expands it to a literal id).
 
-BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
+The Conductor runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
 conclusion. Relentless's workers (Sonnet 5.5) classify each item by the
 rule below and hand Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
@@ -58,7 +58,7 @@ loud, and dangerous exactly where it is silent.
 
 | | Alias | For |
 |---|---|---|
-| **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from BENCH. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **BENCH's window**, the orchestrator |
+| **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from the Conductor. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **the Conductor's window**, the orchestrator |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 
 Fable is not on the ladder (owner, 2026-09-29). Pass `opus` or `sonnet`; read the environment

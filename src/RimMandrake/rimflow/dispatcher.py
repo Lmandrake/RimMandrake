@@ -283,7 +283,9 @@ def seat_events_since(clone, seat, since_iso, on_skip=None):
                     on_skip({"seat": seat, "id": r.value.get("id"), "ts": repr(r.value.get("ts"))[:80]})
                 continue
             ev = r.value
-            if ev.get("seat") == seat and CC.ledger_ts(ev) > since_iso:   # strictly after the ring's second
+            # BENCH's shard holds lines written as CONDUCTOR/RELENTLESS (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP)
+            if (ev.get("seat") == seat or (seat == "BENCH" and ev.get("seat") in ("CONDUCTOR", "RELENTLESS"))) \
+                    and CC.ledger_ts(ev) > since_iso:   # strictly after the ring's second
                 out.append(ev)
     except FileNotFoundError:   # any other read error raises into the seat's guard: an unreadable shard is not a silent seat
         pass

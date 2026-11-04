@@ -193,7 +193,7 @@ if [ -n "$SID" ]; then
     printf '%s\n' "$TITLE" > "${ROLE_DIR}/${SID}"
     echo "conversation: recorded"
     if [ "$ROLE" = "BENCH" ]; then
-        echo "identity    : infrastructure/agents/CONDUCTOR.md (then BENCH.md), injected by the hook"
+        echo "identity    : infrastructure/agents/CONDUCTOR.md, injected by the hook"
     else
         echo "identity    : infrastructure/agents/${ROLE}.md, injected by the hook"
     fi

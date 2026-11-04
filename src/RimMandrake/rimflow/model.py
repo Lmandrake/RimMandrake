@@ -220,6 +220,55 @@ def display(seat):
 def canonical(seat):
     """-> the ledger seat key for a typed name ("CONDUCTOR" -> "BENCH"); any other name is itself."""
     return SEAT_ALIAS.get(seat, seat)
+
+
+# 🔑 BENCH IS A READ ALIAS, NO LONGER WRITTEN (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP, owner 2026-11-03: "1+2
+# yes, 3 hold for later ... Let's not break ourselves for name correctness."). In memory the shared key stays "BENCH",
+# so every permission check, owner compare and route below is untouched. On DISK a new event names who wrote it: the
+# Conductor's window as CONDUCTOR, a Relentless worker (bridge_holder.ENV says RELENTLESS) as RELENTLESS; an item filed
+# or reassigned to the shared queue is `for`/`to` RELENTLESS, the builder that takes it. Reading folds all three back to
+# BENCH, exactly as FOUNDRY's old lines still replay; a `bridge` line keeps RELENTLESS, the distinct holder. The shard
+# file stays events/BENCH.jsonl: a path, and the folder/path rename is the step he held.
+WRITE_NAMES = ("CONDUCTOR", "RELENTLESS")
+_SEAT_FIELDS = {"file": ("for",), "spawn": ("for",), "reassign": ("to",)}
+
+
+def write_name(seat, env=None):
+    """-> the name an event from `seat` is written under: BENCH -> RELENTLESS in a Relentless process, else CONDUCTOR."""
+    if seat != "BENCH":
+        return seat
+    return RELENTLESS_HOLDER if bridge_holder.identity(seat, env) == RELENTLESS_HOLDER else "CONDUCTOR"
+
+
+def read_name(name, verb=None):
+    """-> the in-memory seat key for a name read from disk: CONDUCTOR and RELENTLESS are BENCH, except a `bridge`
+    event's RELENTLESS, which is the holder Relentless takes the bridge as."""
+    if name == "CONDUCTOR" or (name == RELENTLESS_HOLDER and verb != "bridge"):
+        return "BENCH"
+    return name
+
+
+def to_disk(ev, env=None):
+    """Rename BENCH in `ev` to the names written on disk (in place). -> ev."""
+    if ev.get("seat") == "BENCH":
+        ev["seat"] = write_name("BENCH", env)
+    for f in _SEAT_FIELDS.get(ev.get("event"), ()):
+        if ev.get(f) == "BENCH":
+            ev[f] = RELENTLESS_HOLDER
+    return ev
+
+
+def from_disk(ev):
+    """Fold the written names in `ev` back to the shared key (in place). -> ev."""
+    if not isinstance(ev, dict):
+        return ev
+    verb = ev.get("event")
+    if "seat" in ev:
+        ev["seat"] = read_name(ev["seat"], verb)
+    for f in _SEAT_FIELDS.get(verb, ()):
+        if f in ev:
+            ev[f] = read_name(ev[f])
+    return ev
 RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise", "live")
 DISPATCHER_VERBS = ("note",)
 # 🔑 `spawn` and `raise` joined 2026-10-26 for the no-LLM SteveDesktop steward
@@ -1310,6 +1359,7 @@ def append(ev, path=None):
     # is one of SEATS, and therefore that it is a safe, bounded filename. A seat
     # resolved before validation could carry a path separator.
     path = path or shard_path(ev["seat"])
+    ev = to_disk(dict(ev))      # validated as BENCH, written as CONDUCTOR/RELENTLESS (see WRITE_NAMES)
     line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
     blob = line.encode("utf-8")
     if len(blob) >= PIPE_BUF:
@@ -1528,7 +1578,7 @@ def _read_one(path):
         if not line:
             continue
         try:
-            out.append(json.loads(line))
+            out.append(from_disk(json.loads(line)))
         except ValueError as e:
             # The shared lock above rules out a write caught mid-flight for
             # every OTHER writer in this module, but it cannot see one that
@@ -1545,7 +1595,7 @@ def _read_one(path):
                     retried = retry[i].strip()
                     if retried:
                         try:
-                            out.append(json.loads(retried))
+                            out.append(from_disk(json.loads(retried)))
                             continue
                         except ValueError:
                             pass

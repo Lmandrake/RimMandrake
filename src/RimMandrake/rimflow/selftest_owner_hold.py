@@ -140,7 +140,8 @@ class World:
             with open(self.shared, "w") as f:
                 json.dump(shared, f)
         self.env = {k: v for k, v in os.environ.items()
-                    if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY")}
+                    if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY",
+                                 "RIMFLOW_BRIDGE_SEAT")}   # a Conductor window's takes, even when a Relentless worker runs this
         self.env.update(RIMFLOW_LEDGER=self.led, RIMFLOW_ITEMS=os.path.join(self.tmp, "items"),
                         RIMFLOW_SHARED_BRIDGE=self.shared, RIMFLOW_SEAT="BENCH",
                         RIMFLOW_OWNER_CHAT_DIRS=self.chat,
@@ -165,6 +166,8 @@ class World:
                 if fn.endswith(".jsonl") and root != self.chat:
                     with open(os.path.join(root, fn)) as f:
                         out += [json.loads(ln) for ln in f if ln.strip().startswith("{")]
+        # on disk a Conductor event says CONDUCTOR; compare in seat keys, as the reader does (model.read_name)
+        out = [dict(e, seat=model.read_name(e["seat"], e.get("event"))) if e.get("seat") else e for e in out]
         return [e for e in out if e.get("seat") != "OWNER" or e.get("ts") != OWNER_HOLD["ts"]]
 
     def close(self):

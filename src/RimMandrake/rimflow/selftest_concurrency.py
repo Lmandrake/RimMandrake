@@ -109,7 +109,7 @@ def sharded(where, writers, each):
                 except ValueError:
                     torn.append((n, ln, line[:80]))
                     continue
-                seats.add(ev.get("seat"))
+                seats.add(model.read_name(ev.get("seat"), ev.get("event")))   # disk name -> seat key
                 seen.add(ev["id"])
             per[n] = (len(lines), seats)
 

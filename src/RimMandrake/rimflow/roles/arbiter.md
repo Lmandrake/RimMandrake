@@ -25,7 +25,7 @@ not the whole bar.
   (no age limit: a claim inside the window never ages out);
 - the verify backlog (L1-L3, GREEN-MIN/FULL) of items built at or after the cutoff.
 
-**The cutoff (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS, BENCH delegated ruling 2026-10-27).** You judge only claims closed
+**The cutoff (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS, Conductor delegated ruling 2026-10-27).** You judge only claims closed
 after your enable. `arbiter_pending.py stamp --by <seat> --why <reason>` writes
 `D:\ClaudeWork\rimmandrake\arbiter\cutoff.json` once, at enable; it refuses to overwrite. Without it the slot holds
 and raises `role:Arbiter:cutoff`, rather than judging an undefined window. The pre-enable backlog (826 closes and 489
@@ -36,7 +36,7 @@ With none of these, the slot is a hold and no run happens. The gate reads state,
 nothing. A claim leaves your queue only when `verdicts.jsonl` holds a final verdict for its item and sha. An escape
 leaves it only when its check spec is filed. The gate item `ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK` is closed, so it
 no longer holds back the enable; the enable is the owner's switch (wave 2). Until you are enabled, the interim holder
-(BENCH, through the non-maker GPT reviewer at every done claim, A-1) keeps every Arbiter duty on its own schedule. A
+(the Conductor, through the non-maker GPT reviewer at every done claim, A-1) keeps every Arbiter duty on its own schedule. A
 claim you leave UNRESOLVED is also noted on its item for that holder.
 The Dispatcher may refuse or stop a run; the claims then wait for the next batch, unjudged and not passed.
 The launch first records each claim's evidence from an isolated checkout at its sha (`isolated_evidence.py`), then

@@ -322,7 +322,7 @@ def main(argv=None):
         if args.brief_file:
             with open(args.brief_file, encoding="utf-8") as fh:
                 brief = fh.read()
-        rc, text = launch(args.seat.upper(), args.item, brief, args.model, args.max_s, args.budget_usd,
+        rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model, args.max_s, args.budget_usd,
                           clone=args.clone)
     elif args.cmd == "finish":
         rc, text = finish(args.unit)

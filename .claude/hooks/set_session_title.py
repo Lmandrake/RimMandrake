@@ -142,10 +142,15 @@ def agents_path(root, seat):
     raised, and two seats booted not knowing who they were. Both locations are
     tried so the next move cannot repeat it.
     """
-    for parts in (("infrastructure", "agents"), ("agents",)):
-        cand = os.path.join(root, *parts, seat + ".md")
-        if os.path.isfile(cand):
-            return cand
+    for name in (seat, PRIMARY_IDENTITY.get(seat)):
+        if not name:
+            continue
+        for parts in (("infrastructure", "agents"), ("agents",)):
+            cand = os.path.join(root, *parts, name + ".md")
+            if os.path.isfile(cand):
+                return cand
+    # BENCH.md was folded into CONDUCTOR.md (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP, owner 2026-11-03): a seat
+    # whose own file is gone resolves to its primary identity, so AGENT_SEAT=BENCH still validates and boots.
     return None
 
 
@@ -296,7 +301,7 @@ def read_identity(title, sid):
     # seat key — role file, ledger, AGENT_SEAT — stays BENCH; only what the session reads changes.
     primary_name = PRIMARY_IDENTITY.get(seat)
     primary_path = agents_path(root, primary_name) if primary_name else None
-    primary = _read_capped(primary_path) if primary_path else None
+    primary = _read_capped(primary_path) if primary_path and primary_path != path else None
     if primary:
         body = (primary + "\n\n---\n\n## Session-mode rules (infrastructure/agents/%s.md, seat key %s)\n\n"
                 % (seat, seat) + body)

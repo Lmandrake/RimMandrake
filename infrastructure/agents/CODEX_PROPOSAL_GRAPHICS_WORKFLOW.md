@@ -84,7 +84,7 @@ is a durable graphics worker that can:
 - expose usage and reset information without inventing an image count;
 - support safe parallelism across independent asset families.
 
-Nothing in this workflow authorizes BENCH, FOUNDRY, RimFlow, or another agent
+Nothing in this workflow authorizes the Conductor, Relentless, RimFlow, or another agent
 queue. The Codex art worker processes only explicitly named graphics job IDs.
 It must not scan for work, pull automatic items, or modify unrelated project
 files.

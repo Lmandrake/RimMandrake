@@ -257,8 +257,8 @@ def read_ledger(clones: list[Path] = CLONES) -> list[dict]:
     window mid-append must not blank the widget."""
     model, out = _model(), []
     for f in ledger_files(clones):
-        out.extend(read_jsonl_tail(f, 1 << 40, strict=True, allow_missing=False))
-    return model.canonical_order(out)
+        out.extend(model.from_disk(e) for e in read_jsonl_tail(f, 1 << 40, strict=True, allow_missing=False))
+    return model.canonical_order(out)     # from_disk: CONDUCTOR/RELENTLESS on disk are seat BENCH (model.WRITE_NAMES)
 
 
 def ledger_files(clones: list[Path] = CLONES) -> list[Path]:

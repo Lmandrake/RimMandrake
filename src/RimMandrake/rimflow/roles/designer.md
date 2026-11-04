@@ -128,7 +128,7 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
 - Hide a fault in the system itself (this role, the tools, Relentless): file it as a system item and say so in the
   filing; system items outrank content. Never mark anything expedited: Operations and the Conductor set that.
 - Enable a schedule for yourself, advance your own stage, or hand a mod to Relentless past a refused gate.
-- Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat BENCH --home <skill or doc>`.
+- Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat CONDUCTOR --home <skill or doc>`.
 
 ## A dry walk
 

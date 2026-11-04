@@ -1,7 +1,7 @@
 # RimWorld 1.6 — Jawa scavenger clan on a desert world
 
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
-own window file: `infrastructure/agents/BENCH.md` (the Conductor, with the owner); the
+own window file: `infrastructure/agents/CONDUCTOR.md` (the Conductor, with the owner); the
 autonomous builder is the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`), whose places hold
 Relentless-style Builder/Judge workers from MandrakeWorkflows (`relentless/workers/`; owner 2026-11-03). Game cycle:
 `infrastructure/GAME_STATE_WORKFLOW.md`. **Models: the ladder lives in
@@ -62,7 +62,7 @@ Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
 ## 🔴 Relentless builds and accepts everything, FlowWorks and GSS included; FOUNDRY is retired — owner, by card 2026-11-02
 
-*"What should happen to FOUNDRY?"* → **Retire it.** One builder: Relentless builds, proves (its game_prove lane, `relentless_live_round.py`, is the acceptance sweep for every mod) and closes; the Conductor (seat BENCH) talks with him and keeps only items that need him live (needs=owner, an L4 look, flyer live tests). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to BENCH (`RETIRED_SEATS` in `cli.py`), and the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`) names BENCH. Supersedes the 2026-10-28 FOUNDRY-owns-FlowWorks ruling.
+*"What should happen to FOUNDRY?"* → **Retire it.** One builder: Relentless builds, proves (its game_prove lane, `relentless_live_round.py`, is the acceptance sweep for every mod) and closes; the Conductor talks with him and keeps only items that need him live (needs=owner, an L4 look, flyer live tests). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor/Relentless shared key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`). Supersedes the 2026-10-28 FOUNDRY-owns-FlowWorks ruling.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
@@ -131,7 +131,7 @@ search API. Authority: `biome_mod_architecture.md` §7 Q11a; detail in `biome_ru
   that matches nothing logs nothing. Detail: `skills/rimworld-modding/references/project-engine-facts.md`.
 - 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** (expensive list). When a new
   game won't start, read the **FIRST** exception in `Player.log`, not the loudest. More
-  (600 s subagent watchdog, mid-session hooks, card gates, `handoff.py` and two BENCH
+  (600 s subagent watchdog, mid-session hooks, card gates, `handoff.py` and two Conductor
   windows): `infrastructure/state/facts/tool_traps.md`.
 - **A gate cited by NAME outlives the item it names — check the item's state** (owner: *"That
   file may be VERY old… do not accept stale info."*).
@@ -255,7 +255,7 @@ at. He gets the survivors plus one line of what was caught. Sheet tools refuse w
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (Relentless, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Relentless, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
@@ -288,7 +288,7 @@ Check a file is still reachable before spending a review on it. Procedure:
 
 ```
 src/                    mods, defs, C#, art            Relentless builds and accepts, FlowWorks and GSS included
-design/                 campaign specs (Utinni)        the owner's, via BENCH
+design/                 campaign specs (Utinni)        the owner's, via the Conductor
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
   items/<ID>.md         LIVE item prose only — this glob is the live set
@@ -329,7 +329,7 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
 ./game --why "<your reason>" down|loading|up        🔴 a REBOOT is yours to call, no asking
                                                      (owner 2026-09-02) — bridge free first
-./bridge [bench|foundry|free]                       his override; bare ./bridge says who has it
+./bridge [conductor|foundry|free]                   his override; bare ./bridge says who has it
 rimflow …                                           the ledger: file/claim/close/drop/verify
 rimflow pilot [<ID>]                                Test Pilot: 3 non-pass runs in a row or live-only defect → spawn rm-testpilot
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
@@ -350,8 +350,8 @@ Never ask him to go to a machine and do something if you can Tailscale there rig
 One window drives the live game at a time. Who holds it is `infrastructure/state/BRIDGE`,
 written only by `rimflow bridge who | take --for "<what for>" | release` (release the moment
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
-taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge bench|foundry|free`.
-Relentless owns its items as BENCH but holds the bridge as **RELENTLESS** (`model.bridge_identity`, env `RIMFLOW_BRIDGE_SEAT`), so a hold by the Conductor's window is never "ours" to it, or the reverse. RELENTLESS is a holder, not a seat: only `bridge` events carry it.
+taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge conductor|foundry|free`.
+Relentless shares its items' owner key with the Conductor but holds the bridge as **RELENTLESS** (`model.bridge_identity`, env `RIMFLOW_BRIDGE_SEAT`), so a hold by the Conductor's window is never "ours" to it, or the reverse. RELENTLESS is a holder, not a seat: only `bridge` events carry it.
 🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
 it"*): takeable only 45 min after his last deliberate interaction (a ledger event, `./bridge` or `./game` by his own
 hands, his chat prompt or card answer to any seat), `--force` included; an unmeasured signal refuses

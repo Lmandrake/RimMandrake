@@ -31,7 +31,7 @@ def check(ok, what):
 
 
 FILES = ["CLAUDE.md", "design/RimMandrake/standing_rulings.md", "design/RimMandrake/delegation_policy.md",
-         "infrastructure/agents/CHARTER.md", "infrastructure/agents/BENCH.md", "infrastructure/agents/CONDUCTOR.md"]  # FOUNDRY.md: seat retired (BENCH takes its work), no longer carries role prose
+         "infrastructure/agents/CHARTER.md", "infrastructure/agents/CONDUCTOR.md"]  # FOUNDRY.md: seat retired; BENCH.md folded into CONDUCTOR.md
 
 FILES += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "src/RimMandrake/rimflow/roles").glob("*.md"))
 FILES += sorted(str(p.relative_to(ROOT)) for p in (ROOT / ".claude/agents").glob("rm-*.md"))

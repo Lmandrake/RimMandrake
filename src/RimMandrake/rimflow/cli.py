@@ -384,7 +384,7 @@ def cmd_queue(args, seat):
     """
     if getattr(args, "acceptance", False):
         return _print_acceptance(args, seat)
-    which = (args.which or seat or "").upper()
+    which = model.canonical((args.which or seat or "").upper())     # `queue CONDUCTOR` reads BENCH's view
     try:
         from . import render as _render
     except ImportError:
@@ -1244,7 +1244,7 @@ def _print_acceptance(args, seat):
         from . import render as _render
     except ImportError:
         from rimflow import render as _render
-    which = (getattr(args, "which", None) or seat or "").upper() or None
+    which = model.canonical((getattr(args, "which", None) or seat or "").upper()) or None
     sys.stdout.write(_render.acceptance_view(w, which, args.target))
     return 0
 
@@ -1738,6 +1738,7 @@ RETIRED_SEATS = {"FOUNDRY": "BENCH"}
 
 
 def _unretire(name):
+    name = model.read_name(name)        # CONDUCTOR / RELENTLESS are typed for the shared key BENCH (model.WRITE_NAMES)
     to = RETIRED_SEATS.get(name)
     if to is None:
         return name

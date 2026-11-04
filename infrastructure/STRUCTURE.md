@@ -182,7 +182,7 @@ Payloads are gitignored; **the teardown is the work product.**
 | `infrastructure/README.md` | The tier rule, and the rules-vs-state line. |
 | `infrastructure/STRUCTURE.md` | This file. |
 | `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4); POLICY.md is a supersession stub. |
-| `infrastructure/agents/<WINDOW>.md` | One charter per window: `BENCH.md`, `FOUNDRY.md`. The four seat files are stubs. |
+| `infrastructure/agents/<WINDOW>.md` | One charter per window: `CONDUCTOR.md` (the workshop file was folded into it 2026-11-04). The retired seat files are stubs. |
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
 | `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`. Never current state. |
 | `infrastructure/output/` | Reports **still being read** — audits, options papers, plans. Evidence, never doctrine. |

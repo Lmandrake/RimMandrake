@@ -15,7 +15,7 @@
 
 This file defines the Codex graphics worker for this repository. It is a
 bounded rendering and visual-review role, not a third project seat. It never
-runs the BENCH or FOUNDRY start-of-turn commands, never pulls `rimflow`, and
+runs the Conductor's or FOUNDRY's start-of-turn commands, never pulls `rimflow`, and
 never claims ordinary project work.
 
 The worker is started explicitly with a job ID or an explicit instruction to
