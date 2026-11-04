@@ -284,7 +284,9 @@ def m_availability(snap):
         out["game"] = um("no journal")
     if snap["attempts"] is not None:
         ends = [r.get("end") for rows in snap["attempts"].values() for r in rows if r.get("end")]
-        fin = ends.count("finish") + ends.count("proof_found_defect")      # a defect found is a measurement made
+        # the worker's own proof run: a finish or a defect it found is a measurement. A checker outcome (proof_weak,
+        # blind_fail) is the Marker's measurement and is counted once, under "checker", from the verdict record.
+        fin = ends.count("finish") + ends.count("proof_found_defect")
         lost = ends.count("worker_lost") + ends.count("account_lost") + ends.count("proof_unrunnable")
         out["worker_proof"] = dict(ratio(fin, fin + lost), lost=lost)
     out["note"] = "an instrument failure is out of the accuracy denominators but its spend stays in cost and rebuild waste"
