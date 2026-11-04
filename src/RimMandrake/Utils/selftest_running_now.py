@@ -13,6 +13,7 @@ unreadable reading, or a burn with no honest rate, says UNMEASURED.
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import tempfile
@@ -990,6 +991,140 @@ broken = fuel_env(three, series)
 real_mod, R.account_usage_module = R.account_usage_module, lambda: 1 / 0
 check("fuel: a broken account_usage.py costs the panel, not the page", "UNMEASURED" in built(broken)[0] and "account fuel (" in built(broken)[0])
 R.account_usage_module = real_mod
+
+# The real doors. Fake above overrides account_names and the file reads, so nothing above reaches the real Env; a blind
+# check deleted Env.account_names and every check stayed green while the real page lost its gauge. Here a child process
+# (the folders are read when account_usage is imported) uses the real Env, registry, account_usage.write() and CLI; only
+# the two folders are fixtures, and the child refuses to run if they are not.
+HERE = os.path.dirname(os.path.abspath(__file__))
+REAL_SEED = r'''
+import json, os, sys, time
+sys.path.insert(0, sys.argv[1])
+import account_usage as AU
+root, scene = sys.argv[2], sys.argv[3]
+assert str(AU.DATA_DIR).startswith(root) and str(AU.ACCOUNTS_DIR).startswith(root), "fixture folders not in force"
+now = time.time()
+def rec(name, used, age_h=0.1):
+    t = now - age_h * 3600
+    return AU.record(name, t, "MEASURED", "fixture", "fixture", {"week_pct_used": used, "week_resets_at": AU.iso(now + 20 * 3600)}, AU.iso(t))
+HISTORY = {"alpha": [(3.1, 87), (2, 90), (1, 93)], "beta": [(5.9, 57), (3, 58)], "gamma": [(6.1, 48), (3, 54)]}
+LAST = {"alpha": 95, "beta": 59, "gamma": 60}
+if scene == "absent":
+    del HISTORY["gamma"], LAST["gamma"]
+for name, points in HISTORY.items():
+    for age, used in points:
+        AU.write({name: rec(name, used, age)}, now - age * 3600)
+latest = {name: rec(name, used) for name, used in LAST.items()}
+if scene == "stale":
+    latest["beta"] = rec("beta", 59, 72)
+AU.write(latest, now)
+if scene == "noseries":
+    os.remove(AU.DATA_DIR / "series.jsonl")
+if scene == "nolatest":
+    os.remove(AU.DATA_DIR / "latest.json")
+'''
+REAL_INSPECT = r'''
+import json, sys, time
+sys.path.insert(0, sys.argv[1])
+import running_now as R
+env = R.Env()
+print(json.dumps({"names": env.account_names(), "rows": R.collect_fuel(env, time.time())}))
+'''
+REAL_WRITE = r'''
+import os, sys
+sys.path.insert(0, sys.argv[1])
+import running_now as R
+out = sys.argv[2]
+R.OUT_DIR, R.OUT, R.PHONE_OUT, R.STATE = out, out + "/RUNNING_NOW.md", out + "/RUNNING_NOW_PHONE.md", out + "/state.json"
+real_write = R.Env.write_atomic
+def inside(self, path, text):
+    assert path.startswith(out), "a fixture run tried to write " + path
+    return real_write(self, path, text)
+R.Env.write_atomic = inside
+R.append_history = R.refresh_fleet = R.probe_steve = lambda *a, **k: None
+sys.exit(R.run(write=True)[0])
+'''
+
+
+def real_scene(scene, accounts="# a comment line\nalpha a@fixture\nbeta b@fixture\ngamma g@fixture\n"):
+    """Seed one scene through the real writer; returns (env for children, tempdir object, its path)."""
+    tmp = tempfile.TemporaryDirectory()
+    os.makedirs(tmp.name + "/accounts")
+    with open(tmp.name + "/accounts/accounts.tsv", "w") as f:
+        f.write(accounts)
+    child = dict(os.environ, RM_ACCOUNTS_DIR=tmp.name + "/accounts", RM_ACCOUNT_USAGE_DIR=tmp.name + "/usage")
+    seeded = subprocess.run([sys.executable, "-c", REAL_SEED, HERE, tmp.name, scene], env=child, capture_output=True, text=True, timeout=60)
+    check("fuel real: %s: the real writer seeded the fixture" % scene, seeded.returncode == 0)
+    return child, tmp
+
+
+def real_cli(child, *flags):
+    got = subprocess.run([sys.executable, os.path.join(HERE, "running_now.py")] + list(flags), env=child, capture_output=True, text=True, timeout=120)
+    return got.returncode, got.stdout
+
+
+def accounts_block(phone):
+    lines = phone.splitlines()
+    return lines[lines.index("ACCOUNTS, THIS WEEK") + 1:lines.index("ACCOUNTS, THIS WEEK") + 4] if "ACCOUNTS, THIS WEEK" in lines else []
+
+
+def phone_row(block, name):
+    return next((x for x in block if x.startswith(name + " ")), "")
+
+
+# every account healthy: the real registry names all three, and the real CLI gives the three readings
+child, tmp = real_scene("three")
+got = subprocess.run([sys.executable, "-c", REAL_INSPECT, HERE], env=child, capture_output=True, text=True, timeout=60)
+seen = json.loads(got.stdout) if got.returncode == 0 else {"names": None, "rows": []}
+check("fuel real: Env.account_names reads accounts.tsv, comment skipped, in file order", seen["names"] == ["alpha", "beta", "gamma"])
+check("fuel real: collect_fuel on the real Env reads all three with a verdict", {r["name"]: r.get("verdict") for r in seen["rows"]} == {"alpha": "AHEAD", "beta": "BEHIND", "gamma": "EQUAL"})
+rc, phone = real_cli(child, "--phone")
+block = accounts_block(phone)
+check("fuel real: --phone exits 0 with three rows", rc == 0 and len(block) == 3)
+check("fuel real: --phone alpha: % left, reset, AHEAD", re.match(r"alpha 5% left, resets in \d+(\.\d+)? h: AHEAD, out ", phone_row(block, "alpha")) is not None)
+check("fuel real: --phone beta: % left, reset, BEHIND", re.match(r"beta 41% left, resets in \d+(\.\d+)? h: BEHIND, ", phone_row(block, "beta")) is not None)
+check("fuel real: --phone gamma: % left, reset, EQUAL", re.match(r"gamma 40% left, resets in \d+(\.\d+)? h: EQUAL", phone_row(block, "gamma")) is not None)
+rc, page = real_cli(child, "--print")
+head = page[page.index("ACCOUNTS, THIS WEEK"):page.index("How to read")] if "ACCOUNTS, THIS WEEK" in page and "How to read" in page else ""
+check("fuel real: --print panel holds the three accounts with figures and words", rc == 0 and all(w in head for w in ("alpha", "beta", "gamma", "5% left", "41% left", "40% left", "resets in", "AHEAD", "EQUAL", "BEHIND")))
+out = tmp.name + "/out"
+os.makedirs(out)
+wrote = subprocess.run([sys.executable, "-c", REAL_WRITE, HERE, out], env=child, capture_output=True, text=True, timeout=120)
+disk = {}
+for leaf in ("RUNNING_NOW.md", "RUNNING_NOW_PHONE.md"):
+    if os.path.exists(out + "/" + leaf):
+        with open(out + "/" + leaf) as f:
+            disk[leaf] = f.read()
+check("fuel real: a real write puts the three readings in RUNNING_NOW.md", wrote.returncode == 0 and all(w in disk.get("RUNNING_NOW.md", "") for w in ("41% left", "AHEAD", "EQUAL", "BEHIND")))
+check("fuel real: a real write puts the three rows in RUNNING_NOW_PHONE.md", len(accounts_block(disk.get("RUNNING_NOW_PHONE.md", ""))) == 3)
+tmp.cleanup()
+
+# an account in the registry with no reading must show as UNMEASURED, not vanish
+child, tmp = real_scene("absent")
+got = subprocess.run([sys.executable, "-c", REAL_INSPECT, HERE], env=child, capture_output=True, text=True, timeout=60)
+seen = json.loads(got.stdout) if got.returncode == 0 else {"rows": []}
+gamma = [r for r in seen["rows"] if r["name"] == "gamma"]
+check("fuel real: collect_fuel: registry account absent from latest.json is UNMEASURED", len(seen["rows"]) == 3 and len(gamma) == 1 and gamma[0]["why"] == "no reading on file")
+rc, phone = real_cli(child, "--phone")
+block = accounts_block(phone)
+check("fuel real: --phone keeps the absent account's UNMEASURED row", rc == 0 and phone_row(block, "gamma") == "gamma UNMEASURED: no reading on file" and "AHEAD" in phone_row(block, "alpha"))
+tmp.cleanup()
+
+# a stale reading, a lost series and a lost latest.json, through the real file doors
+child, tmp = real_scene("stale")
+rc, phone = real_cli(child, "--phone")
+block = accounts_block(phone)
+check("fuel real: a 3-day-old reading says UNMEASURED, figures withheld", phone_row(block, "beta").startswith("beta UNMEASURED: last poll") and "%" not in phone_row(block, "beta") and "AHEAD" in phone_row(block, "alpha"))
+tmp.cleanup()
+child, tmp = real_scene("noseries")
+rc, phone = real_cli(child, "--phone")
+block = accounts_block(phone)
+check("fuel real: a missing series.jsonl keeps the figures and says burn UNMEASURED", len(block) == 3 and phone_row(block, "beta").startswith("beta 41% left") and all(x.endswith("burn UNMEASURED") for x in block))
+tmp.cleanup()
+child, tmp = real_scene("nolatest")
+rc, phone = real_cli(child, "--phone")
+check("fuel real: a missing latest.json says ACCOUNTS UNMEASURED", rc == 0 and any(x.startswith("ACCOUNTS UNMEASURED") for x in phone.splitlines()) and "ACCOUNTS, THIS WEEK" not in phone)
+tmp.cleanup()
 
 print("\n%d failed" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)
