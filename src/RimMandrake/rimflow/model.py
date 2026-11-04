@@ -1318,13 +1318,28 @@ def append(ev, path=None):
             "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
             % (len(blob), PIPE_BUF, ev.get("id", "<ID>")))
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # see bridge_mirror_path
-    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
-    try:
+    for _ in range(5):
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
         # ⛔ DO NOT REMOVE THE LOCK "because O_APPEND is atomic". It is, on ext4 and
         # tmpfs. This repo is on 9p, where it is not, and without this lock five of
         # every six events are lost — measured, not theorised. See the module
         # docstring for the numbers and `selftest_concurrency.py` to re-run them.
         fcntl.flock(fd, fcntl.LOCK_EX)
+        # The file we locked must still be the one at `path`: relentless level_books renames
+        # an untracked shard away under this lock, and an event written to the moved inode
+        # never reaches the ledger. Moved: reopen the path and lock again.
+        try:
+            here = os.stat(path)
+        except FileNotFoundError:
+            here = None
+        st = os.fstat(fd)
+        if here is not None and (here.st_dev, here.st_ino) == (st.st_dev, st.st_ino):
+            break
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        os.close(fd)
+    else:
+        raise LedgerError("%s kept moving under its lock: event not written" % path)
+    try:
         try:
             offset = os.lseek(fd, 0, os.SEEK_END)
             written = os.write(fd, blob)

@@ -80,6 +80,44 @@ def t_append_returns_growing_offset():
         "the offset must be where the line STARTS")
 
 
+def t_append_follows_a_shard_moved_under_its_lock():
+    """A writer that opened the shard before relentless level_books renamed it away (under this same flock) must write
+    to the file now at the path, never the moved inode, which no longer reaches the ledger."""
+    import fcntl
+    import threading
+    import time
+    p = os.path.join(TMP, "moved.jsonl")
+    with open(p, "w") as f:
+        f.write("")
+    gone = p + ".kept"
+    holder = os.open(p, os.O_RDWR)
+    fcntl.flock(holder, fcntl.LOCK_EX)
+    real_open, opened = os.open, threading.Event()
+
+    def spy_open(path, *a, **kw):
+        fd = real_open(path, *a, **kw)
+        if path == p:
+            opened.set()
+        return fd
+    model.os.open = spy_open
+    try:
+        t = threading.Thread(target=lambda: model.append(filed("MOVED_UNDER_LOCK_1"), p))
+        t.start()
+        assert opened.wait(10), "the writer never opened the shard"
+        time.sleep(0.2)                 # let it block on the flock, holding the old inode
+        os.rename(p, gone)
+        with open(p, "w") as f:
+            f.write("")
+        fcntl.flock(holder, fcntl.LOCK_UN)
+        t.join(10)
+        assert not t.is_alive(), "the writer hung"
+    finally:
+        model.os.open = real_open
+        os.close(holder)
+    assert "MOVED_UNDER_LOCK_1" in open(p).read(), "the event did not reach the file now at the path"
+    assert open(gone).read() == "", "the event went to the moved inode"
+
+
 def t_caused_by_must_be_a_name_not_a_number():
     """🔑 Line indices do not survive the monthly roll; names do."""
     refuses(lambda: model.validate(ev(seat="BUILD", event="note", id="A_B_1",
