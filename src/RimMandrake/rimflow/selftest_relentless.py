@@ -493,6 +493,28 @@ def t_spend():
     x.tick()
     ok(len([j for j in journal(x) if j.get("do") == "attention"]) == 1, "spend limit: attention once, not per tick")
     ok(not any(st["status"] == "held" for st in x.s.states()), "spend limit: holds nothing")
+    # a standing crossing re-told every 6 h kept its Operations incident open forever (SPEND_INCIDENT_FIX_BARKS_TILL_DONE)
+    z = Rig(n=1, share=1.0)
+    z.tick()
+    lim = RULES["item_spend_limit"]
+
+    def told(spent, hours):
+        with z.s.lock():
+            st = z.s.load("I0")
+            st["status"], st["spent"] = "queued", spent
+            z.s.save(st)
+        z.now += hours * 3600
+        acts = []
+        R.spend_holds(z.s, z.w, RULES, z.now, acts)
+        return [a for a in acts if a["do"] == "spend_attention"]
+    ok(not told(lim - 1, 0), "spend limit: below it, nothing told")
+    ok(len(told(lim + 5, 0)) == 1, "spend limit: the crossing is told")
+    ok(not told(lim + 9, 7) and not told(lim + 9, 7) and not told(2 * lim - 1, 13),
+       "spend limit: a standing crossing is not re-told on a timer, however long it stands")
+    ok(len(told(2 * lim, 0)) == 1 and not told(2 * lim + 1, 7), "spend limit: told once more at twice the limit")
+    ok(len(told(4 * lim, 0)) == 1, "spend limit: and at each doubling after")
+    ok([R.spend_level(v, 1000) for v in (999, 1000, 1999, 2000, 4000, 8100)] == [None, 0, 0, 1, 2, 3],
+       "spend_level: one step per doubling")
     # unmeasured run charged at the reserve
     y = Rig(n=1, share=1.0)
     y.run_one("I0")

@@ -2931,22 +2931,41 @@ def admission(store, fx, r, now, active, extra=0):
 ATTENTION_EVERY_S = 6 * 3600     # one line per crossing kind per 6 h: a standing crossing does not flood the log
 
 
-def attention(store, fx, key, text, now):
+def spend_level(spent, limit):
+    """Which doubling of `limit` `spent` has reached: 0 at the crossing, 1 at twice it, 2 at four times... None below it."""
+    if limit <= 0 or spent < limit:
+        return None
+    n = 0
+    while spent >= limit * 2 ** (n + 1):
+        n += 1
+    return n
+
+
+def attention(store, fx, key, text, now, level=None):
     """A spend number over its advisory threshold. Owner 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE): "Please make
     token limits advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention
     from another agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for
     evidence-based reasons." So this journals, writes one line to the Conductor log and the told ledger (Operations),
     each key at most once in ATTENTION_EVERY_S, and never holds, refuses or stops anything. A failure to tell stays on
-    the journal."""
+    the journal.
+    `level` (a [limit, doubling] pair) tells once per crossing instead of once per ATTENTION_EVERY_S: a standing
+    per-item crossing re-told every 6 h kept its Operations incident (event_quiet_min 420) open for as long as the
+    item stayed on the belt (SPEND_INCIDENT_FIX_BARKS_TILL_DONE). It tells again only at a higher doubling or a new limit."""
     path = store.p("attention.json")
     try:
         with open(path, encoding="utf-8") as f:
             said = json.load(f)
     except (OSError, ValueError):
         said = {}
-    if now - said.get(key, -1e18) < ATTENTION_EVERY_S:
-        return False
-    said[key] = now
+    if level is None:
+        if now - said.get(key, -1e18) < ATTENTION_EVERY_S:
+            return False
+        said[key] = now
+    else:
+        was = said.get("level:" + key)
+        if isinstance(was, list) and len(was) == 2 and was[0] == level[0] and was[1] >= level[1]:
+            return False
+        said["level:" + key] = list(level)
     store._write(path, json.dumps(said, sort_keys=True))
     fails = []
     line = getattr(fx, "conductor_attention", None)
@@ -4145,7 +4164,8 @@ def retire(store, fx, states, now, acts, r=None):
 
 def spend_holds(store, fx, r, now, acts):
     """An item over item_spend_limit calls attention and keeps running: advisory since owner 2026-11-02 ("Nothing gets
-    killed or stopped for that"; TOKEN_LIMITS_TAME_BARK_NO_BITE). One attention per item per ATTENTION_EVERY_S."""
+    killed or stopped for that"; TOKEN_LIMITS_TAME_BARK_NO_BITE). One attention per item per crossing: at the limit, then
+    at each doubling of it (SPEND_INCIDENT_FIX_BARKS_TILL_DONE), never again on a timer."""
     for st in store.states():
         limit = r["item_spend_limit"] + (st.get("spent_grace") or 0)
         owed = sum(1 for q in st["quarantined"] if not q.get("reaped")) * r["run_reserve"]   # charged when reaped
@@ -4154,7 +4174,7 @@ def spend_holds(store, fx, r, now, acts):
                          "%s spent %d weighted tokens, over the advisory item_spend_limit %d by %d; nothing stopped. "
                          "Look: relentless.py show %s, its spend.jsonl rows" % (st["item"], st["spent"] + owed, limit,
                                                                               st["spent"] + owed - limit, st["item"]),
-                         now):
+                         now, level=(limit, spend_level(st["spent"] + owed, limit))):
                 acts.append({"do": "spend_attention", "item": st["item"], "spent": st["spent"] + owed, "limit": limit})
 
 
