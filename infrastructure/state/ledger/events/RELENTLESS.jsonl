@@ -439,3 +439,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:07:40Z","tsn":1793815660411936210}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T18:13:19Z","tsn":1793815999398767898}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:15:48Z","tsn":1793816148676756510}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T18:42:16Z","tsn":1793817736572408380}
