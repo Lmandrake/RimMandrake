@@ -13,6 +13,8 @@
 //   X bytes:ageDays:session:pinned:active ... cap -> retention plan (indices to delete, in order)
 //   U                                         -> the C# unit group (Units*.cs): "U name ok|FAIL why",
 //                                                "J name <json>" production-composed lines, "U-count n"
+//   L                                         -> the real watchdog Loop writes a stall dump: "U StallDumpWatchdogLoop ..."
+//                                                (its thread never ends, so L is the last line)
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -94,6 +96,9 @@ namespace JawaBench.BridgeTools
                         break;
                     case "U":
                         Units.Run();
+                        break;
+                    case "L":   // the real watchdog thread; never ends, so it runs last (UnitsStallLoop.cs)
+                        Units.RunWatchdogLoop();
                         break;
                     default:
                         Console.WriteLine("? " + line);

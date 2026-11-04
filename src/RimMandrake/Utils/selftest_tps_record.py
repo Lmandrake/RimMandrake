@@ -247,7 +247,7 @@ def cs_input(tr):
     rows += ["R %d %d" % v for v in R_VECTORS]
     rows += ["N %d %s %d %d" % v for v in N_VECTORS]
     rows += ["X " + " ".join("%d:%s:%s:%d:%d" % i for i in items) + " %d" % cap for items, cap in X_VECTORS]
-    rows += ["U"]
+    rows += ["U", "L"]   # L: the real watchdog Loop writes the stall dump (BRIDGE_STALL_DIAGNOSTIC_1); never ends, so last
     return "\n".join(rows) + "\n"
 
 
@@ -663,7 +663,7 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
             "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
-            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing",
+            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing", "StallDumpWatchdogLoop",
             "CompTimingOneOffSpikeIsNamedNotDrowned", "CompTimingStallAfterLoadCarriesSinceLoad", "CompTimingArmedAtMenuFirstGameIsALoad",
             "CompTimingSpikeCapKeepsLargest", "CompTimingRollsUpByOwner", "CompTimingStageMaxNamesItsOwnComponent"]
 
