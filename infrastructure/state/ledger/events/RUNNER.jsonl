@@ -2795,3 +2795,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-04T11:18:07Z","tsn":1793791087519697981}
 {"seat":"RUNNER","event":"live","id":"TOKEN_LIMITS_TAME_BARK_NO_BITE","result":"kept","detail":"sweep: running again","ts":"2026-11-04T11:18:12Z","tsn":1793791092846496070}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_29F6","reason":"steward: lane unowned 30 min (PAUSED)","ts":"2026-11-04T11:19:57Z","tsn":1793791197139152855}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_BOOKS_UNSTICK_WGYL","result":"broken","detail":"Ops alarm RELENTLESS_BOOKS_STALE: relentless.books_behind_min = 38.7 min (MEASURED), line > 30","ts":"2026-11-04T11:23:46Z","tsn":1793791426873833605}
+{"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_BOOKS_UNSTICK_WGYL","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-04T11:23:49Z","tsn":1793791429687209243}
