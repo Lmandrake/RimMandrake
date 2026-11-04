@@ -90,5 +90,75 @@ namespace JawaBench.BridgeTools
             g.ResetForTest();
             Check(g.Coverage == "ok" && g.Depth == 0 && g.Faults == 0, "reset");
         }
+
+        // ---- BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY: the depth-free Admit/Commit pair the event recorder's damage,
+        // kill and lineage hooks use (JawaBenchSituationalTools.cs), one unit per fault in GPT bridge review s7 row 11.
+
+        private static void T_RecorderForeignThreadRejectedBeforeState()
+        {
+            var g = new G("recorder.damage", allowNesting: true);
+            Check(!g.Admit(onMainThread: false, out var s) && s.Rejected && !s.Valid, "off-thread call rejected with a rejected scope");
+            Check(g.Entered == 0 && g.ForeignRejected == 1, "rejection touches only its counter: entered " + g.Entered);
+            Check(!g.Commit(s, ranOriginal: true) && g.OrphanExits == 0, "the rejected postfix records nothing and is silent");
+            Check(g.Coverage == "degraded" && g.CoverageFields().Contains("\"foreignRejected\":1"), "visible: " + g.CoverageFields());
+        }
+
+        private static void T_RecorderReentrantCallsStandAlone()
+        {
+            var g = new G("recorder.damage", allowNesting: true);
+            Check(g.Admit(true, out var outer), "outer admitted");
+            outer.I0 = 40;                                     // e.g. the outer stack count
+            Check(g.Admit(true, out var inner), "a nested call (damage inside damage) is admitted, not rejected");
+            inner.I0 = 3;
+            Check(g.Commit(inner, true) && inner.I0 == 3, "inner commits with its own state");
+            Check(g.Commit(outer, true) && outer.I0 == 40, "outer state survives the nested call");
+            Check(g.Depth == 0 && g.NestedRejected == 0 && g.Coverage == "ok", "depth-free: nothing to unbalance: " + g.CoverageFields());
+        }
+
+        private static void T_RecorderSkippedOriginalRecordsNothing()
+        {
+            var g = new G("recorder.destroy", allowNesting: true);
+            Check(g.Admit(true, out var s), "admitted");
+            Check(!g.Commit(s, ranOriginal: false), "another mod skipped the original: the postfix must not record");
+            Check(g.OriginalSkipped == 1 && g.Coverage == "degraded", "the skip is counted and visible: " + g.CoverageFields());
+        }
+
+        private static void T_RecorderSkippedPrefixIsOrphanNotZero()
+        {
+            var g = new G("recorder.ingest", allowNesting: true);
+            var never = default(G.Scope);                     // what Harmony hands a postfix whose prefix never ran
+            Check(never.I0 == 0, "harness premise: an unwritten __state reads stack count 0");
+            Check(!g.Commit(never, ranOriginal: true), "late install / skipped prefix: never committed as stack 0");
+            Check(g.OrphanExits == 1 && g.Coverage == "degraded", "the orphan is counted and visible: " + g.CoverageFields());
+        }
+
+        private static void T_RecorderGameExceptionCountedNotSwallowed()
+        {
+            // A void finalizer cannot swallow: it observes __exception and the caller still sees the throw. Mirror the
+            // recorder's Threw(g, __exception) and check the exception object reaches the caller unchanged.
+            var g = new G("recorder.split", allowNesting: true);
+            var boom = new InvalidOperationException("original threw");
+            Exception seen = null;
+            try
+            {
+                try { throw boom; }
+                finally { g.NoteThrew(); }                    // the finalizer's effect; it returns nothing
+            }
+            catch (Exception e) { seen = e; }
+            Check(ReferenceEquals(seen, boom), "the game's exception reaches the caller unchanged");
+            Check(g.OriginalThrew == 1 && g.Coverage == "degraded", "the throw is counted and visible: " + g.CoverageFields());
+        }
+
+        private static void T_RecorderOwnFaultCountedRecorderStaysOn()
+        {
+            var g = new G("recorder.kill", allowNesting: true);
+            g.Admit(true, out var s);
+            g.Note("kill", new NullReferenceException("odd modded pawn"));
+            Check(!g.Disabled && g.Faults == 1 && g.LastFault.Contains("kill") && g.LastFault.Contains("odd modded pawn"), "Note counts and names: " + g.LastFault);
+            Check(g.Coverage == "degraded", "a noted fault is coverage failure, never ok: " + g.Coverage);
+            Check(g.Admit(true, out var s2) && s2.Valid, "the recorder stays on after a noted fault");
+            g.Fault("kill", new Exception("x"));
+            Check(g.Coverage == "disabled" && !g.Admit(true, out _), "Fault() still disables");
+        }
     }
 }

@@ -84,6 +84,42 @@ namespace JawaBench.BridgeTools
             return true;
         }
 
+        /// <summary>Depth-free admission (BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY) for a recorder whose per-call state
+        /// rides __state alone (the event recorder: damage, kill, lineage). Same order as TryEnter - disabled, then
+        /// THREAD - but no depth is kept, so nesting (damage inside damage, a destroy inside a split) is admitted and
+        /// each invocation stands on its own Scope. A foreign thread is rejected before any recorder state is read.</summary>
+        internal bool Admit(bool onMainThread, out Scope s)
+        {
+            s = default(Scope);
+            if (Disabled) { s.Rejected = true; return false; }
+            if (!onMainThread) { Interlocked.Increment(ref ForeignRejected); s.Rejected = true; return false; }
+            Entered++;
+            s.Valid = true;
+            return true;
+        }
+
+        /// <summary>The postfix half of an Admit pair: true only when this invocation's own prefix admitted it AND the
+        /// original ran. A Scope the prefix never wrote (late install, an earlier prefix threw) is an orphan, counted;
+        /// a rejected one is silent; a skipped original is counted and records nothing.</summary>
+        internal bool Commit(Scope s, bool ranOriginal)
+        {
+            if (!s.Valid)
+            {
+                if (!s.Rejected) OrphanExits++;
+                return false;
+            }
+            if (!ranOriginal) { Interlocked.Increment(ref OriginalSkipped); return false; }
+            return true;
+        }
+
+        /// <summary>Our own body failed but the recorder stays on: counted and named, coverage reads degraded.
+        /// For recorders where one odd modded Thing must not blind the whole log; Fault() is the disabling form.</summary>
+        internal void Note(string where, Exception e)
+        {
+            Interlocked.Increment(ref Faults);
+            try { LastFault = where + ": " + (e == null ? "?" : e.GetType().Name + ": " + e.Message); } catch { }
+        }
+
         internal void NoteOriginal(bool ran) { if (!ran) Interlocked.Increment(ref OriginalSkipped); }
         internal void NoteThrew() { Interlocked.Increment(ref OriginalThrew); }
 
@@ -95,14 +131,14 @@ namespace JawaBench.BridgeTools
             Disabled = true;
         }
 
-        /// <summary>ok | degraded (something was not measured: a rejection, an orphan, a skipped original) |
-        /// disabled (a fault). A writer/recorder fault is coverage failure, never silence.</summary>
+        /// <summary>ok | degraded (something was not measured: a rejection, an orphan, a skipped original, a Note()d
+        /// fault) | disabled (a Fault(), which always disables). A writer/recorder fault is coverage failure, never silence.</summary>
         internal string Coverage
         {
             get
             {
-                if (Disabled || Faults > 0) return "disabled";
-                if (ForeignRejected + NestedRejected + OrphanExits + Unbalanced + OriginalSkipped + OriginalThrew > 0) return "degraded";
+                if (Disabled) return "disabled";
+                if (Faults + ForeignRejected + NestedRejected + OrphanExits + Unbalanced + OriginalSkipped + OriginalThrew > 0) return "degraded";
                 return "ok";
             }
         }

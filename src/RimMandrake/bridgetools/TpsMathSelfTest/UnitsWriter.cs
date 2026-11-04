@@ -151,5 +151,41 @@ namespace JawaBench.BridgeTools
             W.Drain(15000);
             W.ResetForTest();
         }
+
+        // BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY ("writer fault does not block the main thread"): with the disk STUCK
+        // inside an append and then FAILING, every Enqueue (the main thread's only contact) returns at once.
+        private static void T_WriterFaultNeverBlocksEnqueue()
+        {
+            string d = PrepWriter();
+            var gate = new ManualResetEventSlim(false);
+            int calls = 0;
+            W.AppendImpl = (p, b, n) =>
+            {
+                if (Interlocked.Increment(ref calls) == 1) { gate.Wait(20000); throw new IOException("injected: stuck then failed"); }
+                RealAppend(p, b, n);
+            };
+            W.Start(d, "abcdef0123", 4242);
+            W.Enqueue("sample", "\"first\":1");
+            var waited = System.Diagnostics.Stopwatch.StartNew();
+            while (Volatile.Read(ref calls) == 0 && waited.ElapsedMilliseconds < 10000) Thread.Sleep(10);
+            Check(Volatile.Read(ref calls) == 1, "the writer is inside the stuck append");
+            long worst = 0;
+            for (int i = 0; i < 200; i++)
+            {
+                var t = System.Diagnostics.Stopwatch.StartNew();
+                W.Enqueue("sample", "\"i\":" + i);
+                worst = Math.Max(worst, t.ElapsedMilliseconds);
+            }
+            Check(worst < 50, "Enqueue never waits on the stuck disk: worst " + worst + " ms");
+            gate.Set();
+            waited.Restart();
+            while (!W.HealthFields().Contains("\"werr\":1") && waited.ElapsedMilliseconds < 10000) Thread.Sleep(20);
+            Check(W.HealthFields().Contains("\"werr\":1"), "the writer fault is visible in health: " + W.HealthFields());
+            var t2 = System.Diagnostics.Stopwatch.StartNew();
+            W.Enqueue("error", "\"where\":\"after-fault\"");
+            Check(t2.ElapsedMilliseconds < 50, "Enqueue after the fault is still immediate: " + t2.ElapsedMilliseconds + " ms");
+            W.Drain(15000);
+            W.ResetForTest();
+        }
     }
 }

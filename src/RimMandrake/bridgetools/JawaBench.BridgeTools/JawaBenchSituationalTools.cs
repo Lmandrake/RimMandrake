@@ -163,17 +163,17 @@ namespace JawaBench.BridgeTools
                 catch (Exception e) { InstallErrors.Add("Harmony ctor: " + e.GetType().Name + ": " + e.Message); return; }
 
                 DamageInstalled = TryPatch(harmony, typeof(Thing), "TakeDamage", new[] { typeof(DamageInfo) },
-                    null, nameof(TakeDamagePostfix));
+                    null, nameof(TakeDamagePostfix), nameof(TakeDamageFin));
                 KillInstalled = TryPatch(harmony, typeof(Pawn), "Kill", new[] { typeof(DamageInfo?), typeof(Hediff) },
-                    null, nameof(KillPostfix));
+                    null, nameof(KillPostfix), nameof(KillFin));
                 bool a = TryPatch(harmony, typeof(Thing), "TryAbsorbStack", new[] { typeof(Thing), typeof(bool) },
-                    nameof(AbsorbPrefix), nameof(AbsorbPostfix));
+                    nameof(AbsorbPrefix), nameof(AbsorbPostfix), nameof(AbsorbFin));
                 bool s = TryPatch(harmony, typeof(Thing), "SplitOff", new[] { typeof(int) },
-                    nameof(SplitPrefix), nameof(SplitPostfix));
+                    nameof(SplitPrefix), nameof(SplitPostfix), nameof(SplitFin));
                 bool i = TryPatch(harmony, typeof(Thing), "Ingested", new[] { typeof(Pawn), typeof(float) },
-                    nameof(IngestPrefix), nameof(IngestPostfix));
+                    nameof(IngestPrefix), nameof(IngestPostfix), nameof(IngestFin));
                 bool d = TryPatch(harmony, typeof(Thing), "Destroy", new[] { typeof(DestroyMode) },
-                    nameof(DestroyPrefix), null);
+                    nameof(DestroyPrefix), nameof(DestroyPostfix), nameof(DestroyFin));
                 LineageInstalled = a && s && i && d;
                 try
                 {
@@ -185,7 +185,7 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        private static bool TryPatch(Harmony h, Type t, string name, Type[] args, string prefix, string postfix)
+        private static bool TryPatch(Harmony h, Type t, string name, Type[] args, string prefix, string postfix, string finalizer)
         {
             try
             {
@@ -194,7 +194,8 @@ namespace JawaBench.BridgeTools
                 var self = typeof(JawaBenchEventRecorder);
                 h.Patch(m,
                     prefix: prefix == null ? null : new HarmonyMethod(self.GetMethod(prefix, BindingFlags.Static | BindingFlags.NonPublic)),
-                    postfix: postfix == null ? null : new HarmonyMethod(self.GetMethod(postfix, BindingFlags.Static | BindingFlags.NonPublic)));
+                    postfix: postfix == null ? null : new HarmonyMethod(self.GetMethod(postfix, BindingFlags.Static | BindingFlags.NonPublic)),
+                    finalizer: finalizer == null ? null : new HarmonyMethod(self.GetMethod(finalizer, BindingFlags.Static | BindingFlags.NonPublic)));
                 return true;
             }
             catch (Exception e)
@@ -204,10 +205,70 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        private static void NoteError(Exception e)
+        private static void NoteError(JawaBenchHookGuard g, string where, Exception e)
         {
-            RecordErrors++;
-            LastRecordError = e.GetType().Name + ": " + e.Message;
+            Interlocked.Increment(ref RecordErrors);
+            try { LastRecordError = where + ": " + e.GetType().Name + ": " + e.Message; } catch { }
+            g.Note(where, e);
+        }
+
+        // ---------------------------------------------------------------- hook discipline
+        // BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY (GPT bridge review s1.2, s7 row 11). One production JawaBenchHookGuard
+        // per hook, depth-free (Admit/Commit): every invocation's state rides its own __state, so nesting (damage inside
+        // damage, a destroy inside a split) is safe by construction.
+        //   * off-thread : rejected BEFORE any recorder state (the rings are unlocked, main-thread only), counted.
+        //   * skipped original : every postfix takes bool __runOriginal and records NOTHING when another mod skipped the
+        //     original; counted. A postfix is never proof the original ran.
+        //   * skipped prefix / late install : a pair's postfix whose prefix never wrote __state sees default(Scope)
+        //     (Valid false, Rejected false) - an orphan, counted, never read as stack count 0.
+        //   * game exception : void finalizers count it (originalThrew) and let it propagate unchanged; postfixes do
+        //     not run on a throw, and Destroy records only from its postfix, so a failed original leaves no event.
+        //   * our fault : try/catch -> Note (counted, named, coverage degraded); the game call is never affected.
+        //   * coverage : every read carries hookCoverage[] and coverage = worst of ok | degraded | disabled.
+        internal static readonly JawaBenchHookGuard GDamage = new JawaBenchHookGuard("recorder.damage", allowNesting: true);
+        internal static readonly JawaBenchHookGuard GKill = new JawaBenchHookGuard("recorder.kill", allowNesting: true);
+        internal static readonly JawaBenchHookGuard GAbsorb = new JawaBenchHookGuard("recorder.absorb", allowNesting: true);
+        internal static readonly JawaBenchHookGuard GSplit = new JawaBenchHookGuard("recorder.split", allowNesting: true);
+        internal static readonly JawaBenchHookGuard GIngest = new JawaBenchHookGuard("recorder.ingest", allowNesting: true);
+        internal static readonly JawaBenchHookGuard GDestroy = new JawaBenchHookGuard("recorder.destroy", allowNesting: true);
+        private static readonly JawaBenchHookGuard[] Guards = { GDamage, GKill, GAbsorb, GSplit, GIngest, GDestroy };
+
+        private static bool OnMain() { try { return UnityData.IsInMainThread; } catch { return false; } }
+
+        private static void Threw(JawaBenchHookGuard g, Exception e) { try { if (e != null) g.NoteThrew(); } catch { } }
+
+        /// <summary>Worst coverage across the recorder's hooks: ok | degraded | disabled.</summary>
+        internal static string Coverage()
+        {
+            string worst = "ok";
+            foreach (var g in Guards)
+            {
+                string c = g.Coverage;
+                if (c == "disabled") return c;
+                if (c == "degraded") worst = c;
+            }
+            return worst;
+        }
+
+        /// <summary>A bounded, immutable copy (strings and numbers only) for a reply; main thread.</summary>
+        internal static List<object> HookCoverage()
+        {
+            var rows = new List<object>(Guards.Length);
+            foreach (var g in Guards)
+                rows.Add(new
+                {
+                    hook = g.Name, coverage = g.Coverage, entered = g.Entered,
+                    foreignRejected = Interlocked.Read(ref g.ForeignRejected), orphanExits = g.OrphanExits,
+                    originalSkipped = Interlocked.Read(ref g.OriginalSkipped), originalThrew = Interlocked.Read(ref g.OriginalThrew),
+                    faults = Interlocked.Read(ref g.Faults), lastFault = g.LastFault
+                });
+            return rows;
+        }
+
+        internal struct LineageState
+        {
+            internal JawaBenchHookGuard.Scope S;
+            internal JawaLineageEvent E;      // Destroy: built in the prefix (place/holder still readable), committed after
         }
 
         private static int Tick() { try { return Find.TickManager != null ? Find.TickManager.TicksGame : -1; } catch { return -1; } }
@@ -269,8 +330,9 @@ namespace JawaBench.BridgeTools
             catch { return null; }
         }
 
-        private static void TakeDamagePostfix(Thing __instance, DamageInfo dinfo, DamageWorker.DamageResult __result)
+        private static void TakeDamagePostfix(Thing __instance, DamageInfo dinfo, DamageWorker.DamageResult __result, bool __runOriginal)
         {
+            if (!GDamage.Admit(OnMain(), out var sc) || !GDamage.Commit(sc, __runOriginal)) return;
             try
             {
                 if (__instance == null || __instance.def == null) return;
@@ -304,11 +366,14 @@ namespace JawaBench.BridgeTools
                 Place(__instance, out e.mapUniqueId, out e.x, out e.z);
                 e.seq = Damage.Add(e);
             }
-            catch (Exception ex) { NoteError(ex); }
+            catch (Exception ex) { NoteError(GDamage, "damage", ex); }
         }
 
-        private static void KillPostfix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit)
+        private static void TakeDamageFin(Exception __exception) => Threw(GDamage, __exception);
+
+        private static void KillPostfix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, bool __runOriginal)
         {
+            if (!GKill.Admit(OnMain(), out var sc) || !GKill.Commit(sc, __runOriginal)) return;
             try
             {
                 if (__instance == null || !__instance.Dead) return;   // Kill can early-out; record only real deaths
@@ -332,14 +397,24 @@ namespace JawaBench.BridgeTools
                 Place(__instance, out e.mapUniqueId, out e.x, out e.z);
                 e.seq = Damage.Add(e);
             }
-            catch (Exception ex) { NoteError(ex); }
-            // test-state monitor tombstone (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO): only real deaths, only while armed
-            if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit);
+            catch (Exception ex) { NoteError(GKill, "kill", ex); }
+            // test-state monitor tombstone (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO): only real deaths, only while armed.
+            // Contained here too: a throw out of a postfix would surface as Pawn.Kill's own exception.
+            try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit); }
+            catch (Exception ex) { NoteError(GKill, "kill-vitals", ex); }
         }
+
+        private static void KillFin(Exception __exception) => Threw(GKill, __exception);
 
         // ---------------------------------------------------------------- lineage
 
         private static void AddLineage(string kind, Thing t, Thing other, int count, string destroyMode)
+        {
+            var e = BuildLineage(kind, t, other, count, destroyMode);
+            e.seq = Lineage.Add(e);
+        }
+
+        private static JawaLineageEvent BuildLineage(string kind, Thing t, Thing other, int count, string destroyMode)
         {
             var e = new JawaLineageEvent
             {
@@ -351,74 +426,102 @@ namespace JawaBench.BridgeTools
                 holder = DescribeHolder(t.ParentHolder), destroyMode = destroyMode
             };
             Place(t, out e.mapUniqueId, out e.x, out e.z);
-            e.seq = Lineage.Add(e);
+            return e;
         }
 
-        private static void AbsorbPrefix(Thing other, out int __state)
+        private static void AbsorbPrefix(Thing other, out JawaBenchHookGuard.Scope __state)
         {
-            __state = -1;
-            try { if (other != null) __state = other.stackCount; } catch (Exception ex) { NoteError(ex); }
+            if (!GAbsorb.Admit(OnMain(), out __state)) return;
+            try { __state.I0 = other != null ? other.stackCount : -1; }
+            catch (Exception ex) { __state = Faulted(); NoteError(GAbsorb, "absorb-pre", ex); }
         }
 
         // Recorded from the ABSORBED thing's point of view: thingId = the stack that lost count,
         // otherId = the stack that took it. A full absorb is followed by a destroy event.
-        private static void AbsorbPostfix(Thing __instance, Thing other, int __state)
+        private static void AbsorbPostfix(Thing __instance, Thing other, JawaBenchHookGuard.Scope __state, bool __runOriginal)
         {
+            if (!GAbsorb.Commit(__state, __runOriginal)) return;
             try
             {
-                if (other == null || __instance == null || __state < 0 || !IsItem(other)) return;
-                int taken = __state - other.stackCount;
+                if (other == null || __instance == null || __state.I0 < 0 || !IsItem(other)) return;
+                int taken = __state.I0 - other.stackCount;
                 if (taken <= 0) return;
                 AddLineage("absorb", other, __instance, taken, null);
             }
-            catch (Exception ex) { NoteError(ex); }
+            catch (Exception ex) { NoteError(GAbsorb, "absorb", ex); }
         }
 
-        private static void SplitPrefix(Thing __instance, out int __state)
+        private static void AbsorbFin(Exception __exception) => Threw(GAbsorb, __exception);
+
+        private static void SplitPrefix(Thing __instance, out JawaBenchHookGuard.Scope __state)
         {
-            __state = -1;
-            try { if (__instance != null) __state = __instance.stackCount; } catch (Exception ex) { NoteError(ex); }
+            if (!GSplit.Admit(OnMain(), out __state)) return;
+            try { __state.I0 = __instance != null ? __instance.stackCount : -1; }
+            catch (Exception ex) { __state = Faulted(); NoteError(GSplit, "split-pre", ex); }
         }
 
         // split  : thingId = source stack, otherId = the NEW thing carrying `count`.
         // detach : the whole stack left its holder/map (count >= stackCount); same id continues.
-        private static void SplitPostfix(Thing __instance, int count, Thing __result, int __state)
+        private static void SplitPostfix(Thing __instance, int count, Thing __result, JawaBenchHookGuard.Scope __state, bool __runOriginal)
         {
+            if (!GSplit.Commit(__state, __runOriginal)) return;
             try
             {
                 if (__instance == null || __result == null || !IsItem(__instance)) return;
-                if (ReferenceEquals(__result, __instance)) AddLineage("detach", __instance, null, __state, null);
+                if (ReferenceEquals(__result, __instance)) AddLineage("detach", __instance, null, __state.I0, null);
                 else AddLineage("split", __instance, __result, count, null);
             }
-            catch (Exception ex) { NoteError(ex); }
+            catch (Exception ex) { NoteError(GSplit, "split", ex); }
         }
 
-        private static void IngestPrefix(Thing __instance, out int __state)
+        private static void SplitFin(Exception __exception) => Threw(GSplit, __exception);
+
+        private static void IngestPrefix(Thing __instance, out JawaBenchHookGuard.Scope __state)
         {
-            __state = -1;
-            try { if (__instance != null) __state = __instance.stackCount; } catch (Exception ex) { NoteError(ex); }
+            if (!GIngest.Admit(OnMain(), out __state)) return;
+            try { __state.I0 = __instance != null ? __instance.stackCount : -1; }
+            catch (Exception ex) { __state = Faulted(); NoteError(GIngest, "ingest-pre", ex); }
         }
 
-        private static void IngestPostfix(Thing __instance, Pawn ingester, int __state)
+        private static void IngestPostfix(Thing __instance, Pawn ingester, JawaBenchHookGuard.Scope __state, bool __runOriginal)
         {
+            if (!GIngest.Commit(__state, __runOriginal)) return;
             try
             {
                 if (__instance == null || !IsItem(__instance)) return;
-                int eaten = __state >= 0 ? __state - __instance.stackCount : 0;
+                int eaten = __state.I0 >= 0 ? __state.I0 - __instance.stackCount : 0;
                 AddLineage("ingest", __instance, ingester, eaten, null);
             }
-            catch (Exception ex) { NoteError(ex); }
+            catch (Exception ex) { NoteError(GIngest, "ingest", ex); }
         }
 
-        private static void DestroyPrefix(Thing __instance, DestroyMode mode)
+        private static void IngestFin(Exception __exception) => Threw(GIngest, __exception);
+
+        // The event is BUILT in the prefix (holder and position are gone once destroyed) and COMMITTED by the postfix
+        // only when the original ran and the thing really is destroyed: a skipped or throwing Destroy leaves no event.
+        private static void DestroyPrefix(Thing __instance, DestroyMode mode, out LineageState __state)
         {
+            __state = default(LineageState);
+            if (!GDestroy.Admit(OnMain(), out __state.S)) return;
             try
             {
                 if (__instance == null || __instance.Destroyed || !IsItem(__instance)) return;
-                AddLineage("destroy", __instance, null, __instance.stackCount, mode.ToString());
+                __state.E = BuildLineage("destroy", __instance, null, __instance.stackCount, mode.ToString());
             }
-            catch (Exception ex) { NoteError(ex); }
+            catch (Exception ex) { __state.S = Faulted(); NoteError(GDestroy, "destroy-pre", ex); }
         }
+
+        private static void DestroyPostfix(Thing __instance, LineageState __state, bool __runOriginal)
+        {
+            if (!GDestroy.Commit(__state.S, __runOriginal) || __state.E == null) return;
+            try { if (__instance != null && __instance.Destroyed) __state.E.seq = Lineage.Add(__state.E); }
+            catch (Exception ex) { NoteError(GDestroy, "destroy", ex); }
+        }
+
+        private static void DestroyFin(Exception __exception) => Threw(GDestroy, __exception);
+
+        /// <summary>A prefix that faulted: its postfix must stay silent (the fault is already counted), not be an orphan.</summary>
+        private static JawaBenchHookGuard.Scope Faulted() { var f = default(JawaBenchHookGuard.Scope); f.Rejected = true; return f; }
     }
 
     public sealed partial class JawaBenchTerrainTools
@@ -952,7 +1055,8 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, action, installed{damage, kill}, installErrors[], recorderInstalledUtc, capacity, " +
                 "totalRecorded, overwritten, oldestRetainedSeq, oldestRetainedTick, completeSinceSeq, " +
-                "recordErrors, lastRecordError, matchedCount, returned, truncated, nextSeq, events[] (seq, " +
+                "recordErrors, lastRecordError, coverage (ok|degraded|disabled: worst recorder hook), hookCoverage[] (hook, " +
+                "coverage, entered, foreignRejected, orphanExits, originalSkipped, originalThrew, faults, lastFault), matchedCount, returned, truncated, nextSeq, events[] (seq, " +
                 "tick, kind, victimId, victimDef, victimIsPawn, victimFaction, victimColonist, " +
                 "victimDeadAfter, damageDef, amount, totalDealt, deflected, instigatorId, instigatorDef, " +
                 "instigatorFaction, weapon, hitPart, culpritHediff, hediffsAdded, mapUniqueId, x, z), ticksGame.")]
@@ -1024,6 +1128,8 @@ namespace JawaBench.BridgeTools
                     completeSinceSeq = sinceSeq + 1 >= oldestSeq,
                     recordErrors = JawaBenchEventRecorder.RecordErrors,
                     lastRecordError = JawaBenchEventRecorder.LastRecordError,
+                    coverage = JawaBenchEventRecorder.Coverage(),
+                    hookCoverage = JawaBenchEventRecorder.HookCoverage(),
                     matchedCount = hits.Count,
                     returned = ret.Count,
                     truncated = trunc,
@@ -1074,7 +1180,7 @@ namespace JawaBench.BridgeTools
                 "concluding anything. An item id vanishing is not quantity vanishing - follow absorb " +
                 "and split to the surviving stack.",
             ResultDescription =
-                "success, lineageInstalled, installErrors[], recorderInstalledUtc, journalTotal, journalOverwritten, " +
+                "success, lineageInstalled, installErrors[], recorderInstalledUtc, journalTotal, journalOverwritten, recordErrors, lastRecordError, coverage, hookCoverage[], " +
                 "results[] (id, found, def, label, stackCount, spawned, destroyed, mapUniqueId, x, z, holderChain[], " +
                 "carriedBy, forbidden, rotStage, rotProgress, fate, events[] (seq, tick, kind, thingId, def, otherId, " +
                 "otherDef, count, stackAfter, holder, destroyMode, mapUniqueId, x, z)), ticksGame.")]
@@ -1167,6 +1273,10 @@ namespace JawaBench.BridgeTools
                     recorderInstalledUtc = JawaBenchEventRecorder.InstalledUtc.ToString("o"),
                     journalTotal = JawaBenchEventRecorder.Lineage.Total,
                     journalOverwritten = JawaBenchEventRecorder.Lineage.Overwritten,
+                    recordErrors = JawaBenchEventRecorder.RecordErrors,
+                    lastRecordError = JawaBenchEventRecorder.LastRecordError,
+                    coverage = JawaBenchEventRecorder.Coverage(),
+                    hookCoverage = JawaBenchEventRecorder.HookCoverage(),
                     results,
                     ticksGame = TicksGameSafe()
                 };

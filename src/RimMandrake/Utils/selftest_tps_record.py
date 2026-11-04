@@ -663,7 +663,7 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
             "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
-            "GuardOriginalSkippedAndThrewCounted", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing", "StallDumpWatchdogLoop",
+            "GuardOriginalSkippedAndThrewCounted", "RecorderForeignThreadRejectedBeforeState", "RecorderReentrantCallsStandAlone", "RecorderSkippedOriginalRecordsNothing", "RecorderSkippedPrefixIsOrphanNotZero", "RecorderGameExceptionCountedNotSwallowed", "RecorderOwnFaultCountedRecorderStaysOn", "WriterFaultNeverBlocksEnqueue", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing", "StallDumpWatchdogLoop",
             "CompTimingOneOffSpikeIsNamedNotDrowned", "CompTimingStallAfterLoadCarriesSinceLoad", "CompTimingArmedAtMenuFirstGameIsALoad",
             "CompTimingSpikeCapKeepsLargest", "CompTimingRollsUpByOwner", "CompTimingStageMaxNamesItsOwnComponent"]
 

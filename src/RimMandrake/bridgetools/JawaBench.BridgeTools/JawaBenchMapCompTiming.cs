@@ -41,26 +41,44 @@ namespace JawaBench.BridgeTools
         // current map's are counted, the rest are tallied here so a multi-map save does not inflate the rows.
         internal static Map Target;
         internal static long OtherMap;
+        // BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY: a finalizer whose prefix never ran (late install mid-call, an earlier
+        // prefix threw) sees default __state 0 - counted here, never read as a start stamp (it used to decrement Depth
+        // and add a duration measured from timestamp 0). Our own fault is counted and named, never thrown.
+        internal static long Orphans, Faults;
+        internal static string LastFault;
+        static void Fault(string where, Exception e) { Interlocked.Increment(ref Faults); try { LastFault = where + ": " + e.GetType().Name + ": " + e.Message; } catch { } }
+        internal static string Coverage => Faults > 0 || Orphans > 0 || Foreign > 0 ? "degraded" : "ok";
 
-        // __state: -1 not counted (disarmed / foreign thread), -2 nested (depth taken, not timed), >= 0 start stamp.
+        // __state: -1 not counted (disarmed / foreign thread / our fault), -2 nested (depth taken, not timed),
+        // 0 the prefix never ran (orphan), > 0 start stamp (Stopwatch timestamps are positive).
         internal static void Pre(out long __state)
         {
-            if (!Armed) { __state = -1; return; }
-            if (Thread.CurrentThread.ManagedThreadId != MainThreadId) { Foreign++; __state = -1; return; }
-            Depth++;
-            __state = Depth == 1 ? Stopwatch.GetTimestamp() : -2;
+            __state = -1;
+            if (!Armed) return;
+            if (Thread.CurrentThread.ManagedThreadId != MainThreadId) { Interlocked.Increment(ref Foreign); return; }
+            try
+            {
+                Depth++;
+                __state = Depth == 1 ? Stopwatch.GetTimestamp() : -2;
+            }
+            catch (Exception e) { Fault("pre", e); }
         }
 
         internal static void Fin(MapComponent __instance, long __state)
         {
             if (__state == -1) return;
-            Depth--;
-            if (__state < 0 || __instance == null) return;
-            if (__instance.map != Target) { OtherMap++; return; }
-            long d = Stopwatch.GetTimestamp() - __state;
-            Type t = __instance.GetType();
-            if (!Acc.TryGetValue(t, out var a)) { a = new long[3]; Acc[t] = a; }
-            a[0]++; a[1] += d; if (d > a[2]) a[2] = d;
+            if (__state == 0) { Interlocked.Increment(ref Orphans); return; }
+            try
+            {
+                if (Depth > 0) Depth--;
+                if (__state < 0 || __instance == null) return;
+                if (__instance.map != Target) { OtherMap++; return; }
+                long d = Stopwatch.GetTimestamp() - __state;
+                Type t = __instance.GetType();
+                if (!Acc.TryGetValue(t, out var a)) { a = new long[3]; Acc[t] = a; }
+                a[0]++; a[1] += d; if (d > a[2]) a[2] = d;
+            }
+            catch (Exception e) { Fault("fin", e); }
         }
     }
 
@@ -77,7 +95,7 @@ namespace JawaBench.BridgeTools
                 "so it is a lead, not a verdict.",
             ResultDescription =
                 "success, ticksElapsed, realSeconds, patchedMethods, patchFailures[], sumMs, sumMsPerTick, " +
-                "foreignThreadCalls, otherMapCalls (instances on other maps, not counted), components[] of {type, assembly, packageId, calls, totalMs, msPerTick, maxMs}.")]
+                "foreignThreadCalls, otherMapCalls (instances on other maps, not counted), orphanExits, hookFaults, lastHookFault, coverage (ok|degraded), components[] of {type, assembly, packageId, calls, totalMs, msPerTick, maxMs}.")]
         public static async Task<object> MapCompTiming(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -108,6 +126,9 @@ namespace JawaBench.BridgeTools
                     JawaBenchMapCompTimer.Acc.Clear();
                     JawaBenchMapCompTimer.Depth = 0;
                     JawaBenchMapCompTimer.Foreign = 0;
+                    JawaBenchMapCompTimer.Orphans = 0;
+                    JawaBenchMapCompTimer.Faults = 0;
+                    JawaBenchMapCompTimer.LastFault = null;
                     JawaBenchMapCompTimer.OtherMap = 0;
                     JawaBenchMapCompTimer.Target = Find.CurrentMap;
                     JawaBenchMapCompTimer.MainThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -190,6 +211,10 @@ namespace JawaBench.BridgeTools
                         sumMsPerTick = Math.Round(sum / elapsed, 2),
                         foreignThreadCalls = JawaBenchMapCompTimer.Foreign,
                         otherMapCalls = JawaBenchMapCompTimer.OtherMap,
+                        orphanExits = JawaBenchMapCompTimer.Orphans,
+                        hookFaults = JawaBenchMapCompTimer.Faults,
+                        lastHookFault = JawaBenchMapCompTimer.LastFault,
+                        coverage = JawaBenchMapCompTimer.Coverage,
                         componentsTimed = rows.Count,
                         recordRows = persisted,
                         components = rows.Take(Math.Max(1, top)).ToList(),

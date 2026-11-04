@@ -280,7 +280,7 @@ namespace JawaBench.BridgeTools
                 t.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
         }
 
-        private static void PlaytestRootPostfix() => PlaytestFrame();
+        private static void PlaytestRootPostfix() { try { PlaytestFrame(); } catch { } }   // never break Root_Play.Update
 
         private static int pLastFrame = -1;
 

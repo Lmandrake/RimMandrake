@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -78,6 +79,9 @@ namespace JawaBench.BridgeTools
         private static object _gameKey;
         internal static int Epoch;
         internal static long Samples, RowsWritten, RowsDropped, Faults, TickHookCalls;
+        // BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY: DoSingleTick skipped by another mod's prefix, or a postfix whose prefix
+        // never ran (late install), is counted and never processed as a tick (an int __state of 0 used to read as tick 0).
+        internal static long TickSkipped, TickOrphans;
         internal static string LastFault;
         internal static int LastSampleTick = -1;
         private static GameObject _driverGo;
@@ -231,28 +235,32 @@ namespace JawaBench.BridgeTools
             Latch1(t);
         }
 
-        private static void TickPre(TickManager __instance, out int __state)
+        private static void TickPre(TickManager __instance, out JawaBenchHookGuard.Scope __state)
         {
-            __state = int.MinValue;
+            __state = default(JawaBenchHookGuard.Scope);
+            __state.Rejected = true;                      // not counted unless the body below admits it
             if (!Armed) return;
             try
             {
-                if (!GameReady()) return;                 // __state stays MinValue: a tick of an unloaded game is not counted
+                if (!GameReady()) return;                 // a tick of an unloaded game is not counted
                 EnsureEpoch(Mono);
-                __state = __instance.TicksGame;
-                if (On(V.ChClock)) Latch1(Clock.BeforeTick(__state, Mono));
+                __state.I0 = __instance.TicksGame;
+                __state.Valid = true; __state.Rejected = false;
+                if (On(V.ChClock)) Latch1(Clock.BeforeTick(__state.I0, Mono));
             }
             catch (Exception e) { Fault("tick-pre", e); }
         }
 
-        private static void TickPost(TickManager __instance, int __state)
+        private static void TickPost(TickManager __instance, JawaBenchHookGuard.Scope __state, bool __runOriginal)
         {
-            if (!Armed || __state == int.MinValue) return;
+            if (!__state.Valid) { if (!__state.Rejected) Interlocked.Increment(ref TickOrphans); return; }
+            if (!__runOriginal) { Interlocked.Increment(ref TickSkipped); return; }
+            if (!Armed) return;
             try
             {
                 TickHookCalls++;
                 long t0 = Stopwatch.GetTimestamp();
-                if (On(V.ChClock)) Latch1(Clock.AfterTick(__state, __instance.TicksGame, Mono));
+                if (On(V.ChClock)) Latch1(Clock.AfterTick(__state.I0, __instance.TicksGame, Mono));
                 else Clock.Processed++;
                 Meters[V.ChClock].Add(Stopwatch.GetTimestamp() - t0);
                 if (++_ticksSinceSample >= V.SampleEveryTicks) Sample("t60");

@@ -147,8 +147,9 @@ namespace JawaBench.BridgeTools
             return n;
         }
 
-        private static void SavePostfix(string fileName)
+        private static void SavePostfix(string fileName, bool __runOriginal)
         {
+            if (!__runOriginal) return;   // another mod skipped the save: no sidecar for a save that was not written
             try { WriteSidecar(fileName, Find.CurrentMap); }
             catch (Exception e) { SidecarError = "write " + fileName + ": " + e.GetType().Name + ": " + e.Message; }
         }
@@ -156,9 +157,13 @@ namespace JawaBench.BridgeTools
         private static void LoadPrefix(string saveFileName)
         {
             // the old game's labels go with it: map uniqueIDs restart per save (a fresh map 0 would inherit them)
-            Labels.Clear();
-            PendingSave = saveFileName;
-            _mapAtLoad = Find.CurrentMap;
+            try
+            {
+                Labels.Clear();
+                PendingSave = saveFileName;
+                _mapAtLoad = Find.CurrentMap;
+            }
+            catch (Exception e) { SidecarError = "load " + saveFileName + ": " + e.GetType().Name + ": " + e.Message; }
         }
 
         private static void TryPendingSidecar()

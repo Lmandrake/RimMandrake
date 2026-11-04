@@ -134,7 +134,7 @@ namespace JawaBench.BridgeTools
                 populated = game && VT.Populated(), epoch = VT.Epoch,
                 channels = VT.ChannelStatus(), hooks = VT.HookStatus, hookDetail = VT.HookDetail, driver = VT.DriverStatus,
                 rows = new { written = VT.RowsWritten, dropped = VT.RowsDropped, writerRunning = JawaBenchTpsWriter.Running },
-                faults = VT.Faults, lastFault = VT.LastFault, tickHookCalls = VT.TickHookCalls,
+                faults = VT.Faults, lastFault = VT.LastFault, tickHookCalls = VT.TickHookCalls, tickSkipped = VT.TickSkipped, tickOrphans = VT.TickOrphans,
                 advance = AdvanceJson(SA.Cur), ticksGame = TicksGameSafe(), paused = game && Find.TickManager.Paused,
             };
         }

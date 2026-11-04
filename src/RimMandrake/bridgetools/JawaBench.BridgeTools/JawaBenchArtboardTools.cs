@@ -74,7 +74,7 @@ namespace JawaBench.BridgeTools
 
         private static void ViewRectPostfix(ref CellRect __result)
         {
-            if (Armed) __result = __result.Encapsulate(Rect);
+            try { if (Armed) __result = __result.Encapsulate(Rect); } catch { }   // never break the view rect
         }
     }
 

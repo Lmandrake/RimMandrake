@@ -51,6 +51,11 @@ namespace JawaBench.BridgeTools
         internal static int StageDepth;         // a component re-entering the stage is nested, not a second stage call
         internal static long Foreign;           // Interlocked: worker threads write it
         internal static long StageCalls, StageTotal;
+        // BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY: our own fault inside a hook is counted and named, never thrown into
+        // the game's GameComponentTick; the report carries it and coverage reads degraded.
+        internal static long Faults;
+        internal static string LastFault;
+        static void Fault(string where, Exception e) { Interlocked.Increment(ref Faults); try { LastFault = where + ": " + e.GetType().Name + ": " + e.Message; } catch { } }
         internal static long ArmedAtStamp;
         internal static int ArmedAtTick = -1;
         internal static int PatchedMethods;
@@ -65,40 +70,56 @@ namespace JawaBench.BridgeTools
         internal static void StagePre(out long __state)
         {
             __state = 0;
-            if (!Running() || !OnMain()) return;
-            if (++StageDepth > 1) { __state = Nested; return; }
-            Core.NoteTick(Current.Game, Tick());
-            Core.StageBegin();
-            __state = Stopwatch.GetTimestamp();
+            try
+            {
+                if (!Running() || !OnMain()) return;
+                if (++StageDepth > 1) { __state = Nested; return; }
+                Core.NoteTick(Current.Game, Tick());
+                Core.StageBegin();
+                __state = Stopwatch.GetTimestamp();
+            }
+            catch (Exception e) { Fault("stage-pre", e); }
         }
 
         internal static void StageFin(ref long __state)
         {
             long s = __state; __state = 0;
             if (s == 0) return;
-            if (StageDepth > 0) StageDepth--;
-            if (s < 0 || Core == null) return;
-            long d = Stopwatch.GetTimestamp() - s;
-            StageCalls++; StageTotal += d;
-            Core.StageEnd(d, Tick());
+            try
+            {
+                if (StageDepth > 0) StageDepth--;
+                if (s < 0 || Core == null) return;
+                long d = Stopwatch.GetTimestamp() - s;
+                StageCalls++; StageTotal += d;
+                Core.StageEnd(d, Tick());
+            }
+            catch (Exception e) { Fault("stage-fin", e); }
         }
 
         internal static void Pre(out long __state)
         {
             __state = 0;
-            if (!Running()) return;
-            if (!OnMain()) { Interlocked.Increment(ref Foreign); return; }
-            Depth++;
-            __state = Depth == 1 ? Stopwatch.GetTimestamp() : Nested;
+            try
+            {
+                if (!Running()) return;
+                if (!OnMain()) { Interlocked.Increment(ref Foreign); return; }
+                Depth++;
+                __state = Depth == 1 ? Stopwatch.GetTimestamp() : Nested;
+            }
+            catch (Exception e) { Fault("pre", e); }
         }
 
         internal static void Fin(GameComponent __instance, ref long __state)
         {
             long s = __state; __state = 0;
             if (s == 0) return;
-            if (Depth > 0) Depth--;
-            if (s < 0 || __instance == null || Core == null) return;
-            Core.Add(__instance.GetType(), Stopwatch.GetTimestamp() - s, Tick());
+            try
+            {
+                if (Depth > 0) Depth--;
+                if (s < 0 || __instance == null || Core == null) return;
+                Core.Add(__instance.GetType(), Stopwatch.GetTimestamp() - s, Tick());
+            }
+            catch (Exception e) { Fault("fin", e); }
         }
 
         /// <summary>Main thread. Removes our timers; null on success (or when none are installed), else the error.
@@ -123,7 +144,7 @@ namespace JawaBench.BridgeTools
             double toTicks = Stopwatch.Frequency / 1000.0;
             Core = new JawaBenchCompTimingCore<Type>((long)Math.Round(Math.Max(0, spikeMs) * toTicks), spikeCap);
             Core.Arm(Current.Game);
-            Depth = 0; StageDepth = 0; Interlocked.Exchange(ref Foreign, 0); StageCalls = 0; StageTotal = 0;
+            Depth = 0; StageDepth = 0; Interlocked.Exchange(ref Foreign, 0); Interlocked.Exchange(ref Faults, 0); LastFault = null; StageCalls = 0; StageTotal = 0;
             PatchedMethods = 0; PatchFailures.Clear();
             MainThreadId = Thread.CurrentThread.ManagedThreadId;
             var methods = new HashSet<MethodInfo>();
@@ -230,6 +251,8 @@ namespace JawaBench.BridgeTools
                 patchedMethods = PatchedMethods,
                 patchFailures = PatchFailures.ToList(),
                 foreignThreadCalls = Interlocked.Read(ref Foreign),
+                hookFaults = Interlocked.Read(ref Faults),
+                lastHookFault = LastFault,
                 stageCalls = StageCalls,
                 stageMs = Math.Round(stage, 1),
                 stageMaxMs = Math.Round(core.StageMax * f, 2),
@@ -269,7 +292,7 @@ namespace JawaBench.BridgeTools
                 "(CPU, GC, blocking): a lead, not a verdict.",
             ResultDescription =
                 "success, mode, session, armed, live, uninstallError, secondsArmed, secondsLeft, armedAtTick, ticksObserved, " +
-                "loadsSeen, patchedMethods, patchFailures[], foreignThreadCalls, stageCalls, stageMs, stageMaxMs, " +
+                "loadsSeen, patchedMethods, patchFailures[], foreignThreadCalls, hookFaults, lastHookFault, stageCalls, stageMs, stageMaxMs, " +
                 "stageMaxAtTick, stageMaxLoad, stageMaxSinceLoad, stageMaxTopType, stageMaxTopPackageId, stageMaxTopMs, " +
                 "componentSumMs, coverage, spikeMs, spikesSeen, spikes[] of {type, packageId, ms, tick, ticksSinceLoad, load}, " +
                 "componentsTimed, components[] of {type, assembly, packageId, calls, totalMs, msPerTick, maxMs, maxAtTick}, " +
