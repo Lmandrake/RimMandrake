@@ -16,6 +16,9 @@ A role with `caps_advisory: true`, against the same state that holds or refuses 
   A6 the schedule validates the flag and the real Operations entry carries it.
   A7 since owner 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE) every role is advisory by DEFAULT: "unflagged" above
      means `caps_advisory: false` set explicitly (the strict gates, kept for when he lifts the ruling).
+  A8 OPS_NIGHT_GAP_FILL_COVERED_SLOT: an incident run-now hours before the evening slot (11-01: 14:16 vs 19:30)
+     launches WITHOUT marking that slot covered, and the slot still launches at 19:30; one within cover_window_s
+     still covers it.
 Pure: fake observers (selftest_dispatcher helpers)."""
 import json
 import os
@@ -163,6 +166,29 @@ def main():
     check(len(launched(acts)) == 1 and len(od) == 1 and od[0].get("conductor_log") and "LAUNCHED anyway" in od[0]["why"],
           "A7 unflagged past its daily cap: launched, one attention alarm to the Conductor log (%r)"
           % [(a.get("do"), a.get("kind")) for a in acts])
+    # A8
+    for hhmm, covers in (("14:16", False), ("18:00", True)):
+        t = SD.at_local(hhmm)
+        op = SD.operations()
+        rs = spent_rs(t, 0)
+        rs["done"][RL.slot_key(t, "07:30")] = "launch"
+        rs["run_now"] = RL.run_now_request({"roles": [op]}, {"role": "Operations", "by": "DISPATCHER",
+                                                             "why": "INCIDENT plan-1", "mode": "run"}, t - 30)
+        rs["run_now"]["covers_slot"] = True
+        acts, st = drive(op, t, rs)
+        mark = st["roles"]["Operations"]["done"].get(RL.slot_key(t, "19:30"))
+        check(len(launched(acts)) == 1 and (str(mark).startswith("covered by") if covers else mark is None),
+              "A8 an incident run at %s %s the 19:30 slot (mark %r)" % (hhmm, "covers" if covers else "leaves", mark))
+        if not covers:
+            rs2 = st["roles"]["Operations"]
+            rs2.pop("pending_launch", None)
+            for r in rs2.get("runs") or []:
+                r["state"] = "done"
+            t2 = SD.at_local("19:30")
+            acts2, _ = drive(op, t2, rs2)
+            check(any(str(a.get("slot", "")).endswith(" 19:30") for a in launched(acts2)),
+                  "A8 after a 14:16 incident run the 19:30 slot still launches (%r)"
+                  % [(a.get("do"), a.get("slot"), a.get("why")) for a in acts2])
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

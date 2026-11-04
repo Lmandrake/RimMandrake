@@ -306,6 +306,8 @@ def validate_role(role):
     if "claim_window_days" in role:
         raise ValueError("claim_window_days is retired: the Arbiter's queue is the work after its cutoff stamp, with no "
                          "age limit (ARBITER_FIX_CLAIMS_AGE_OUT_UNJUDGED); remove the key")
+    if "cover_window_s" in role and not (_num(role["cover_window_s"]) and role["cover_window_s"] >= 0):
+        raise ValueError("cover_window_s %r is not a number >= 0" % (role["cover_window_s"],))
     if "pre_launch_max_s" in role and not (_num(role["pre_launch_max_s"]) and role["pre_launch_max_s"] > 0):
         raise ValueError("pre_launch_max_s %r is not a number > 0" % (role["pre_launch_max_s"],))
     per_day = role.get("event_runs_per_day", 1)
@@ -1429,9 +1431,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
             # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
             # a slot this band will block never runs, so it reserves nothing (review V, V6)
-            # an incident run (covers_slot) IS the next scheduled run: it reads the same open incidents first, so it
-            # takes that slot's share instead of asking the daily cap for a second one (INCIDENTS_FIX_ONE_READER)
-            cover = covered_slot(rs, today, now) if (job.get("manual") or {}).get("covers_slot") else None
+            # an incident run (covers_slot) IS the next scheduled run when that slot is due within cover_window_s: it
+            # reads the same open incidents first, so it takes that slot's share instead of asking the daily cap for a
+            # second one (INCIDENTS_FIX_ONE_READER); a slot further off keeps its run and its reserve
+            # (OPS_NIGHT_GAP_FILL_COVERED_SLOT)
+            cover = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (job.get("manual") or {}).get("covers_slot") else None
             reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run", "weekly") else 1.0))
                           for i, (hh, m, c) in enumerate(today if role.get("enabled") else [])
                           if hh != cover
@@ -1482,7 +1486,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                 "alarm_day": json.loads(json.dumps(rs.get("alarm_day"))),
                                 "events_seen": rs.get("events_seen"), "alarm_last_run": rs.get("alarm_last_run")}
         if job.get("manual"):
-            cover = covered_slot(rs, today, now) if (job["manual"] or {}).get("covers_slot") else None
+            cover = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (job["manual"] or {}).get(
+                "covers_slot") else None
             if cover is not None:
                 ck = slot_key(now, cover)
                 rs["pending_launch"]["covered"] = [ck, rs["done"].get(ck), ck in rs["done"]]
@@ -1683,12 +1688,17 @@ def run_now_job(cfg, req, now):
             "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": pre}
 
 
-def covered_slot(rs, today, now):
+COVER_WINDOW_S = 7200
+
+
+def covered_slot(rs, today, now, window_s=COVER_WINDOW_S):
     """Pure. The slot (as the schedule writes it) an incident run covers: today's first scheduled run still to come,
-    not past its late window; None when none is left."""
+    and only when it is due within `window_s` (role key cover_window_s); None otherwise. A slot further off keeps its
+    run and its share of the daily cap: on 11-01 a 14:16 incident run covered the 19:30 slot and nothing judged for
+    ~17 h (OPS_NIGHT_GAP_FILL_COVERED_SLOT)."""
     for hh, m, c in today:
         if c and slot_key(now, hh) not in rs.get("done", {}) and slot_epoch(now, hh) > now:
-            return hh
+            return hh if slot_epoch(now, hh) - now <= window_s else None
     return None
 
 

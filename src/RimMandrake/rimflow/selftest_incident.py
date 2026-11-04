@@ -314,8 +314,15 @@ def test_batched_run_held_and_covers_slot():
     today = [("07:30", "economy", 1), ("19:30", "run", 1)]
     now = time.mktime(time.strptime("2026-11-01 14:00", "%Y-%m-%d %H:%M"))
     check("an incident run covers today's next slot still to come, not one already done",
-          RL.covered_slot({"done": {}}, today, now) == "19:30"
-          and RL.covered_slot({"done": {RL.slot_key(now, "19:30"): "done"}}, today, now) is None)
+          RL.covered_slot({"done": {}}, today, now, 86400) == "19:30"
+          and RL.covered_slot({"done": {RL.slot_key(now, "19:30"): "done"}}, today, now, 86400) is None)
+    # OPS_NIGHT_GAP_FILL_COVERED_SLOT: 11-01, a 14:16 incident run covered 19:30 and nothing judged for ~17 h
+    t1416 = time.mktime(time.strptime("2026-11-01 14:16", "%Y-%m-%d %H:%M"))
+    check("an incident run hours before the evening slot does not take its place (the 11-01 night gap)",
+          RL.covered_slot({"done": {}}, today, t1416) is None, RL.covered_slot({"done": {}}, today, t1416))
+    t1800 = time.mktime(time.strptime("2026-11-01 18:00", "%Y-%m-%d %H:%M"))
+    check("an incident run within the cover window still covers the slot it stands in for",
+          RL.covered_slot({"done": {}}, today, t1800) == "19:30")
 
 
 def test_relapse():

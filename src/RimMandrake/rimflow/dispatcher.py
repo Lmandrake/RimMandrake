@@ -467,8 +467,8 @@ def signal_alarm(sch, st, kind, why, now):
 
 def incident_run(sch, st, role, mode, why, now, ids=None):
     """One run the chain asks for, inside the shared per-hour budget. -> what happened. `ids`: the incidents this run
-    answers; an Operations run for them covers the next scheduled slot (role_launch.covered_slot), so the daily cap
-    is asked for one run, not two, and a refusal on it is read back by denied_runs."""
+    answers; an Operations run for them covers the next scheduled slot when it is due soon (role_launch.covered_slot,
+    cover_window_s), so the daily cap is asked for one run, not two, and a refusal on it is read back by denied_runs."""
     ist = st.setdefault("incident", {})
     runs = [t for t in ist.get("runs") or [] if now - t < 3600]
     limit = IN.load_table()["policy"]["runs_per_hour"]
