@@ -8,13 +8,16 @@ Measured before this (relentless_vs_foundry_2026-11-02.md): 8 items had 3 or 4 g
 cause for 16.0M tokens; STONE_BUILDSTATS_TUNE_GRANITE_GETS_RIVALS was restaffed three times to read that its
 predecessor was still open, because a worker's `snag --class blocked_by_predecessor` only went back in line.
 
-Three moves, all here so relentless.py carries hooks only:
+The moves, all here so relentless.py carries hooks only:
   - `from_snag`: a worker's snag of a blocker class (or naming --on / --blocker) becomes a pending structured block;
     the worker is fenced and the item does not go back in line.
   - `sweep`, every tick: a pending block is written to the ledger (`rimflow block --kind ... --on ...`) and the item
     waits as `blocked`, out of the line and the count. A queued item whose LEDGER block holds (someone else blocked
     it) moves there too. When the ledger block stops holding (priority.block_holds: the predecessor reached its level,
     the date passed, or someone unblocked) it is back in line at the top, unprompted.
+  - `leave_line`, from lease() too: the sweep runs before the tick's steps, so a run ending in a step comes back to
+    `queued` after it looked, its item `doing` and out of eligible()'s reach (RELENTLESS_FIX_PARKED_ITEM_STILL_STAFFED:
+    an item the owner's card parked was leased again five minutes later). lease() reads the block before any launch.
   - the ledger is the only record of what it waits on: `rimflow show <ID>` prints it.
 """
 import re
@@ -69,6 +72,25 @@ def resolve(pending, item, item_state):
     return kind, ons, reason[:600]
 
 
+def ledger_holds(led):
+    """`led` is fx.item_state's row: True while its ledger block holds on an item still open."""
+    return bool(led and led.get("state") not in LEDGER_DEAD and led.get("block_holds"))
+
+
+def leave_line(store, item, led, now, acts, iso):
+    """A queued item blocked on the ledger waits as `blocked`. -> True when it moved."""
+    with store.lock():
+        cur = store.load(item)
+        if cur["status"] != "queued":
+            return False
+        cur["status"] = "blocked"
+        cur["blocked_at"] = now
+        store.save(cur)
+    store.journal({"at": iso(now), "do": "blocked", "item": item, "why": led.get("block") or "ledger block"})
+    acts.append({"do": "blocked", "item": item, "why": "ledger"})
+    return True
+
+
 def sweep(store, fx, now, acts, iso):
     """Under the tick lock. Pending blocks go to the ledger; queued items blocked there leave the line; blocked items
     whose ledger block ended come back at the top."""
@@ -91,17 +113,9 @@ def sweep(store, fx, now, acts, iso):
         if s not in ("queued", "blocked"):
             continue
         led = fx.item_state(item)
-        holds = bool(led and led.get("state") not in LEDGER_DEAD and led.get("block_holds"))
+        holds = ledger_holds(led)
         if s == "queued" and holds:
-            with store.lock():
-                cur = store.load(item)
-                if cur["status"] != "queued":
-                    continue
-                cur["status"] = "blocked"
-                cur["blocked_at"] = now
-                store.save(cur)
-            store.journal({"at": iso(now), "do": "blocked", "item": item, "why": led.get("block") or "ledger block"})
-            acts.append({"do": "blocked", "item": item, "why": "ledger"})
+            leave_line(store, item, led, now, acts, iso)
         elif s == "blocked" and not holds:
             with store.lock():
                 cur = store.load(item)

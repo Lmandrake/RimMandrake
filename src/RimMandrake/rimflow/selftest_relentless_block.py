@@ -290,6 +290,48 @@ def t_ledger_block_leaves_line():
     x.done()
 
 
+def t_returned_run_not_restaffed():
+    """RELENTLESS_FIX_PARKED_ITEM_STILL_STAFFED: the owner's card blocked CLOSE_GATE_ENFORCE_DONE_IS_EARNED at 23:32Z, and
+    gen 19 was leased about 23:37Z. The tick's sweep runs before the steps, so a run ending in this tick's step comes
+    back to `queued` after the sweep looked; only lease() is left to see the block."""
+    x = rig(n=1)
+    x.run_one("I0")
+    st = x.st("I0")
+    x.w.items["I0"] = "doing"       # started by us, so eligible() and the pool have no say in what follows
+    x.w.blocks["I0"] = ("other", [], "PARKED by owner card")
+    x.tick()
+    ok(x.st("I0")["status"] == "running", "a run blocked while it works is left to finish (the fix is about re-staffing)")
+    n = len(x.w.launches)
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    returned = x.st("I0")
+    ok(all(lz[0] != "I0" for lz in x.w.launches[n:]), "the tick its run ends: a blocked doing item gets no new worker")
+    ok(returned["status"] == "blocked", "the same tick it leaves the line (read %s)" % returned["status"])
+    gen = returned["gen"]
+    for _ in range(4):
+        x.tick(600)
+    ok(all(lz[0] != "I0" for lz in x.w.launches[n:]) and x.st("I0")["gen"] == gen, "later ticks send no worker either")
+    del x.w.blocks["I0"]
+    x.tick()
+    ok(x.st("I0")["status"] in ("queued", "running"), "unblocked on the ledger: back in line")
+    x.tick(600)
+    ok(any(lz[0] == "I0" for lz in x.w.launches[n:]), "and it is staffed again")
+    x.done()
+    # a block that no longer holds stops nothing: a finished predecessor, the case sweep lifts
+    x = rig(n=2)
+    x.run_one("I0")
+    st = x.st("I0")
+    x.w.items["I0"] = "doing"
+    x.w.items["I1"] = "done"
+    x.w.blocks["I0"] = ("item", ["I1"], "predecessor")
+    n = len(x.w.launches)
+    x.w.up[st["run"]["unit"]] = False
+    for _ in range(4):
+        x.tick(600)
+    ok(any(lz[0] == "I0" for lz in x.w.launches[n:]), "a block released by its own rule does not keep the item out")
+    x.done()
+
+
 # ---------------------------------------------------------------- strikes and the token cap (shipped rules)
 
 def shipped(**over):
@@ -342,7 +384,7 @@ def t_strikes():
 
 def main():
     for t in (t_fields_and_schema, t_holds_and_lifts, t_relentless_eligible, t_cli, t_snag_blocks,
-              t_ledger_block_leaves_line, t_strikes):
+              t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes):
         print("--", t.__name__)
         try:
             t()

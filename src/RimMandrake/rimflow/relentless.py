@@ -3242,6 +3242,10 @@ def lease(store, fx, r, now, acts):
     first = getattr(fx, "first", None) or {}
     paused = content_paused(fx, store.states())
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
+        led = fx.item_state(st["item"])
+        if relentless_block.ledger_holds(led):      # a run that ended this tick came back after the sweep looked
+            relentless_block.leave_line(store, st["item"], led, now, acts, iso)
+            continue
         if owner_hold(r, st["item"], first, st):
             continue
         if paused and not st.get("expedite") and st["item"] not in first and st["item"] not in (getattr(fx, "plan", None) or {}):
