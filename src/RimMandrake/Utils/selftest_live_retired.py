@@ -36,6 +36,7 @@ class It:
 
 
 INSTANCE = "unit=rm-pulse-health.timer max_age=10m"
+DIGEST = "unit=rm-pulse-digest.timer max_age=35h"
 
 
 def main(retired_path=None):
@@ -54,6 +55,9 @@ def main(retired_path=None):
     brief = DM.promises({}, baseline + ["unit=rm-pulse-brief.timer max_age=14h"], retired)
     check(not [r for r in brief if "rm-pulse-brief" in r["line"]],
           "a baseline promise for the retired rm-pulse-brief.timer is not swept (LIVE_RESTORE_RM_PULSE_BRIEF)")
+    # LIVE_RESTORE_RM_PULSE_DIGEST: the baseline line 2a1e978b75 wrote for the digest timer, deleted with RimPulse
+    rows = DM.promises({}, [DIGEST], retired)
+    check(not rows, "the retired digest timer's old baseline line is not swept (LIVE_RESTORE_RM_PULSE_DIGEST)")
     # the class, on fixtures: every kind of subject, from the baseline and from a settled item
     fx = DM.parse_retired(["unit=rm-gone.timer  # retired", "hook=gone_hook.py", "role=Gone"])
     lines = ["unit=rm-gone.timer max_age=2h", "unit=rm-here.timer max_age=2h", "hook=gone_hook.py", "role=Gone max_age=3d"]
