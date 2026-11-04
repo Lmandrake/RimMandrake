@@ -274,3 +274,12 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:01:57Z","tsn":1793793717796708084}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T12:02:53Z","tsn":1793793773142040632}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:10:26Z","tsn":1793794226210537219}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T12:13:20Z","tsn":1793794400305881107}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:13:29Z","tsn":1793794409894173127}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A4 (L2), read-only proof","ts":"2026-11-04T12:13:35Z","tsn":1793794415601137501}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:21:20Z","tsn":1793794880217932459}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CRACKEDLANDS_THREE_HEIGHT_FLORA_1 A1 (L2), read-only proof","ts":"2026-11-04T12:21:27Z","tsn":1793794887858160542}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:21:38Z","tsn":1793794898402446074}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A1 (L2), read-only proof","ts":"2026-11-04T12:22:21Z","tsn":1793794941210031842}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:24:00Z","tsn":1793795040016338722}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A2 (L2), read-only proof","ts":"2026-11-04T12:24:07Z","tsn":1793795047255403934}
