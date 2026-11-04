@@ -127,7 +127,7 @@ class Fake(R.Env):
         return {}
 
     def steve_probe(self):
-        self.calls.append(("ssh", os.path.exists(R.OUT)))
+        self.calls.append(("ssh", os.path.exists(R.OUT) and "updated_epoch=%d" % int(self.clock) in open(R.OUT).read()))
         if "ssh" in self.fail:
             raise R.Unmeasured("ssh exited 255: no route")
         return "up=100.0\nload=0.5\ncores=18\nstat=cpu 10 0 10 80 0 0 0 0 0 0\nram=1000 64000\ndisk=900 1000\ngame=0\n"
@@ -219,7 +219,7 @@ check("the strip raises it", "NOT RECOGNISED" in before_svg(page))
 env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"}, {"item": "SOME_ITEM_NO_PROCESS", "status": "checking"}])
 ghosts = R.ghost_places(R.gather(env, {}))
 check("an item holding a place with no unit is a ghost", [(g if isinstance(g, str) else g.get("item")) for g in ghosts] == ["SOME_ITEM_NO_PROCESS"])
-check("ghosts are unknown, not none, when the tree is unread", not R.ghost_places(R.gather(Fake(fail=("ps",), items=[{"item": ITEM, "status": "checking"}]), {})))
+check("ghosts are unknown, not none, when the tree is unread", R.ghost_places(R.gather(Fake(fail=("ps",), items=[{"item": ITEM, "status": "checking"}]), {})) is None)
 check("the strip says so", "1 place with no process" in before_svg(page_of(env)))
 
 # 6. a Dispatcher far behind leads the strip
