@@ -558,11 +558,40 @@ def t_nested_evidence_stays_on_outer():
        [e["call"] for e in outer.evidence])
 
 
+def t_item_text_utf8_under_cp1252():
+    """MODCHECK_FIX_ITEMTEXT_CP1252_CRASH: under python.exe the locale codec is cp1252; rimflow's UTF-8 output holds
+    byte 0x9d (the tail of a right double quote), undefined in cp1252. item_text must decode it as UTF-8."""
+    class FakeRunner:
+        ROOT = HERE
+        RIMFLOW_CLI = "unused"
+
+        @staticmethod
+        def py_cmd(script, *args):
+            return [sys.executable, "-c",
+                    "import sys; sys.stdout.buffer.write('ITEM_X \u201dquoted\u201d \u2014 chain_a\\n'.encode('utf-8'))"]
+    real_run = subprocess.run
+
+    def windows_run(*a, **k):       # python.exe: text mode with no encoding given decodes with cp1252
+        if (k.get("text") or k.get("universal_newlines")) and not k.get("encoding"):
+            k["encoding"] = "cp1252"
+        return real_run(*a, **k)
+    ok(b"\x9d" in "\u201d".encode("utf-8"), "instance: the UTF-8 right double quote carries byte 0x9d")
+    subprocess.run = windows_run
+    try:
+        text = targeting.item_text("ITEM_X", runner_mod=FakeRunner)
+    except Exception as ex:          # noqa: BLE001 - the crash itself is the failure being tested
+        text = "%s: %s" % (type(ex).__name__, ex)
+    finally:
+        subprocess.run = real_run
+    ok(text == "ITEM_X \u201dquoted\u201d \u2014 chain_a\n",
+       "item_text decodes rimflow output as UTF-8 under a cp1252 default (byte 0x9d does not crash it)", repr(text))
+
+
 def main():
     for t in (t_resolve, t_targeted_suite_keeps_site_hold, t_emit_verify_seat, t_run_records_without_seat,
               t_run_targeted, t_cli_refusals, t_scope_and_preview, t_incomplete_catalogue_refused,
               t_offline_chains_out_of_live, t_stop_after_runtime, t_hold_contract_every_run, t_cli_preview,
-              t_nested_evidence_stays_on_outer):
+              t_nested_evidence_stays_on_outer, t_item_text_utf8_under_cp1252):
         try:
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others

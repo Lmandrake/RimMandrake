@@ -28,6 +28,7 @@ bland map, then Log reset, weather lock, unroof and gas clear -- runs before eve
 (situational or not), exactly as in a full run (MODCHECK_HOLD_FIX_SITUATIONAL_ONLY_ROOF).
 """
 import inspect
+import os
 import re
 import subprocess
 
@@ -86,11 +87,16 @@ def item_text(item_id, runner_mod=None):
     item does not exist."""
     import runner as _R  # noqa: E402
     r = (runner_mod or _R)
-    proc = subprocess.run(r.py_cmd(r.RIMFLOW_CLI, "show", item_id), cwd=r.ROOT, capture_output=True, text=True)
-    if proc.returncode != 0 or not proc.stdout.strip():
+    # rimflow writes UTF-8 (it runs as POSIX python3, via wsl.exe under python.exe); decoding with the locale codec
+    # (cp1252 under python.exe) killed the reader thread on byte 0x9d and left stdout None (MODCHECK_FIX_ITEMTEXT_CP1252_CRASH)
+    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
+    proc = subprocess.run(r.py_cmd(r.RIMFLOW_CLI, "show", item_id), cwd=r.ROOT, capture_output=True, text=True,
+                          encoding="utf-8", errors="replace", env=env)
+    out, err = proc.stdout or "", proc.stderr or ""
+    if proc.returncode != 0 or not out.strip():
         raise TargetError("--item %s: rimflow show could not read that item (%s)"
-                          % (item_id, (proc.stdout + proc.stderr).strip()[-200:]))
-    return proc.stdout
+                          % (item_id, (out + err).strip()[-200:]))
+    return out
 
 
 def resolve(suite, chains=(), rows=(), item=None, text=None):
@@ -266,10 +272,12 @@ def changed_files(mod_dir, rev_range="WORKTREE", root=None):
     rel_mod = os.path.relpath(os.path.abspath(mod_dir), root).replace(os.sep, "/")
 
     def git(*a):
-        p = subprocess.run(["git"] + list(a), cwd=root, capture_output=True, text=True)
+        # git emits diffs in the files' bytes (UTF-8 here), never the locale codec: cp1252 dies on 0x9d as item_text did
+        p = subprocess.run(["git"] + list(a), cwd=root, capture_output=True, text=True, encoding="utf-8",
+                           errors="replace")
         if p.returncode != 0:
-            raise TargetError("--changed: git %s failed: %s" % (" ".join(a), (p.stderr or p.stdout).strip()[-200:]))
-        return p.stdout
+            raise TargetError("--changed: git %s failed: %s" % (" ".join(a), (p.stderr or p.stdout or "").strip()[-200:]))
+        return p.stdout or ""
 
     specs = [["HEAD"]] + ([] if rev_range in (None, "", "WORKTREE") else [[rev_range]])
     names = {}
