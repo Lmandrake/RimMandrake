@@ -523,3 +523,11 @@ are already being worked non system work can be selected. Keeps system work at m
 wait pointlessly."* So a system item always takes the next free place; work already running is never stopped for it;
 when every open, buildable system item is already being worked, a free place takes content. With no verdict, Relentless
 applies this at once, treating every open system item as first (no grace period), and says so in its reading.
+
+## Wrap-up is a script, never a request — owner, 2026-11-03
+
+🔑 *"asking an agent to do something will NEVER assure it gets done, so there will be debris that piles up if it leaves a trace. That's bitten us many times, and writing even more urgently "no really, please check" does nothing. We need a deterministic check that ALWAYS happens after the agent finishes to ensure that any wrap-up occurs. Period."* A wrap-up that matters is a scripted step or a check that runs after the agent, never an instruction to it. Mechanism: item `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`. Designer and debug-process wording: `design/RimMandrake/debug_process.md` ("Test disturbances").
+
+## Every mod's test script matures at first touch — owner, 2026-11-03
+
+🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.

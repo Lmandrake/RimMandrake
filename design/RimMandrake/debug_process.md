@@ -103,6 +103,10 @@ Functional checks belong in the suite.
    becomes true.
 5. **Selftest offline first.** Run it under `--mock` and it must exit clean before it
    costs a bridge minute. A run recorded through `modcheck` is the record (§1 DONE (b)).
+6. **Site prep.** Every scene starts from a cleared, dry, known site (`prepare_site` /
+   `ProofResetRect`, a dryness check), so water, plants and clutter cannot decide the result.
+7. **Control.** Every scene has a case that must fail: the same act without the thing (held
+   without ladder, off-switch, wrong material). A scene with no control is not a test.
 
 **The `*ArtOverride` family is gone.** All 60 standalone art-override mods were folded into
 the mods that own their creatures (ART_OVERRIDE_FOLD_ALL_1, 2026-10-09): the art sits at a path
@@ -329,10 +333,15 @@ working).
 - **Corrected anomaly, no damage to the test → the row may still PASS.** Damage to the test itself (fire in the test area, a needed colonist hurt or dead, the sample gone) → the row is **restarted**, never scored FAIL.
 - **Every threat that appears during a test is logged AND gets a test-environment item** whose job is to stop that interference next time.
 - **Long runs of game time** (owner, same sitting): *"long runs are possible but risky: they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when possible unless it's a clear win for time efficiency compared to an alternative."*
+- **Staging is put back by a script step, never by an agent remembering** (owner, 2026-11-03; item `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`). Whatever a scene forces (event chances, spawns, cleared plants, drafted pawns) is restored by a teardown step in the script, and a run that ends early still runs it.
 - **Support colonists** may be protected (can't die, can't starve) **only in tests labelled as not about health, needs, damage or death** (by card).
 - **Two suites:** isolated mechanism tests on quiet maps, plus a separate integration suite; all five DLCs loaded in both (by card).
 
 Basis: pass 7 (pass 7, 2026-10-13: a test colony starved during long tick advances) and GPT's review `design/RimMandrake/test_control/test_control_review_gpt_20261013.md`. Build: `TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`.
+
+## Owner-look scenes come from the proof scripts
+
+A scene the owner will watch is staged by the mod's own proof script (its site prep, its control case), not by hand. If the script lacks the scene, add it to the script first. A hand-staged look is labelled as hand-staged, with each cheat named. (Evidence, Conductor 2026-11-03: the scripts `climb_proof.py` and `extensions.py` encode the dry plot and the held-without-ladder control; hand staging gave a flooded pit and a ladder in a climbable pit.)
 
 ## Long-duration properties: compress, decompose, infer — owner, 2026-10-13
 

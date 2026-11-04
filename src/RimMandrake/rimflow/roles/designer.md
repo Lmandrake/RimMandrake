@@ -2,9 +2,9 @@
 
 On demand only. Registered in `dispatcher_schedule.json` → `roles[name=Designer]` with `enabled: false` and no slots, so
 nothing starts it but `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Designer --by <who> --why <mod> --apply`.
-Design: `design/RimMandrake/concept_agent_design_2026-11-01.md` (read it once; this file is its working form). Format:
+Design: `design/RimMandrake/concept_agent_design_2026-11-01.md` (this file is its working form; read it only if `log.md` is absent). Format:
 `design/RimMandrake/relentless_tree_schema_2026-11-01.md`. Program: `src/RimMandrake/rimflow/concept_tree.py`. Floor:
-`src/RimMandrake/rimflow/concept_floor.json`. Item: `CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING` (ledger ids keep the old name).
+`src/RimMandrake/rimflow/concept_floor.json`. Reading cuts: of `design/RimMandrake/mod_description_designs_gpt_2026-11-02.md` read the A/B/C summary only; `mined_2026-11-03.md` is evidence, not reading. Item: `CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING` (ledger ids keep the old name).
 
 The owner, 2026-11-01: *"It gets really detailed, dialectic, debating, and works out a thorough understanding of what the
 mod does and does not do."* *"The mod isn't handed to a Relentless worker until this tree is well defined. It shouldn't
@@ -35,7 +35,7 @@ A run is `claude -p` and ends itself: `seat_restart.py request --now` is the nor
 
 | Stage | You do | Ends when |
 |---|---|---|
-| 0 Read | His words on the mod (ledger, `--owner-said`, the walk's north star), our nearest mods, a vanilla or popular mod that does the same thing, engine feasibility from real source. Search `src/` first, and write an inventory of what is ALREADY BUILT (defs, C#, art, done items, live proofs) into `log.md` | You can name the three ways this mod could fail him. 🔴 Never ask him whether to keep, cut or shrink a built capability, nor a question his words already answer (owner 2026-11-02: *"Those were very strange questions given we already have these capabilities."*). Argue only real forks: what is unbuilt, unproven, or contradicts itself |
+| 0 Read | His words on the mod (ledger, `--owner-said`, the walk's north star), our nearest mods, a vanilla or popular mod that does the same thing, engine feasibility from real source. Search `src/` first, and write an inventory of what is ALREADY BUILT (defs, C#, art, done items, live proofs) into `log.md`, one line per built thing with its path or item id; read the mod's `validation.py` and list in `log.md` which of site prep and a control each scene lacks | You can name the three ways this mod could fail him. 🔴 Never ask him whether to keep, cut or shrink a built capability, nor a question his words already answer (owner 2026-11-02: *"Those were very strange questions given we already have these capabilities."*). Argue only real forks: what is unbuilt, unproven, or contradicts itself. Every ask cites the inventory line that shows it is NOT built, unproven or contradictory; an ask with no such cite is struck |
 | 1 Argue the idea | What is it, whose play does it change, what is the smallest version he would still want | The root reads true to him. **His** walk `## north star` is what `root_ref` cites; he validates it himself |
 | 2 Argue the edge | The five moves over each claim, cheapest wrong version first | Every core line is does, does not, waived, delegated, or later. Nothing core is open |
 | 3 Write | `sheet.md`, draft tree, `plan.md`; `concept_tree.py write`, then `lint` until PASS | Gate A passes |
@@ -119,69 +119,12 @@ The five moves, the agent's only tools:
 
 ## What draws requirements out of him
 
-Mined from his sittings of 2026-11-03; every quote in this section is his, that date unless marked. Evidence:
-`D:\ClaudeWork\rimmandrake\designer\mined_2026-11-03.md`. "Once so far" marks a rule from one instance.
+Stages 1-2: read design/RimMandrake/designer_drawing_out.md (his 2026-11-03 sittings, every quote his). Digest:
 
-**He specifies by reacting, so show before you ask.** With nothing to look at he said *"Not sure how to handle that yet. Open
-question..."*; shown a mock of that page, *"The English write-up you provided here is superb. There are Stuck items that seem
-to beg a little more"*, and a page of requirements after it. The first running page drew *"Much less Prose, this is intended
-to be a snapshot of what's running, not a narrative walk."* The first drawbridge sheet drew *"always show a little "still open"
-look"*. So when a question is about how something looks or moves, the turn's Picture is a picture: a cheap mock (skill
-`generating-images`, over our real art, never shipped, kept in `D:\ClaudeWork\rimmandrake\designer\` and linked from `log.md`) or a scene the
-Conductor stages for you. It passes the same pre-review as an ask. Cheapest form first: *"We should prototype in markdowns
-first so I don't have you chasing design all over the place in the meantime."* (2026-11-02). First sight changes the
-definition (*"it needs to be much more streamlined"*, *"Try again."*) and draws demands nobody asked about (*"OMG we should do an
-audit to ensure that we need all these timers."*), so plan for the amendment.
-
-**Every picture says what it is, and a mock never accepts.** He had to ask *"these are just renders, not actual in game art,
-correct?"*, *"I also have no idea what the little build area of flooring is"* and *"is the pond supposed to be connected to the
-canal?"* Label capture or mock, name each cheat, and draw or explain whatever he would otherwise ask about. A mock picks a
-direction: *"You'll find this might not predict how they'll look in the game when connected in various ways"*. A status
-page's mock is nearly the page; a mock of a game object is not, so his reaction to it settles less. Stills an agent
-called good met *"This is all not the expected human experience here."* in the game.
-
-**Walk him through the decision without being asked** (*"walk me through what precisely I'm deciding"*): how many decisions
-there are, each option's look and problem, your recommendation and why, the costs the picture does not show, and what he is
-not deciding. Offer no decision on something he has not looked at (*"I will need to review them for awhile, not yet ready to
-answer you"*).
-
-**Say the assumption under each cost, as yours.** A stated assumption is one he can kill. A line saying the winch might land on the enemy's bank,
-flagged as our untested reasoning, drew *"No, the winch would always be on the hinged-side"*; a stated limit of two urgent
-items drew *"No limits on how many can be requested"* and a design of his own. His test is the world's logic: *"that makes no
-sense"*, *"that would be strange"*, *"wouldn't the water run back into the pond?"* Apply it before he has to.
-List each ruling the picture depends on, with the picture that produced it, because a ruling against one bad picture is not
-yet general: *"VERY weird image ... Ropes should now be slack and disconnected."* (2026-10-23) became *"still connected when
-it's in its raised state (to the winch side)"* minutes after the walk-through listed it as settled.
-
-**"Unproven" on the ledger may only mean unrecorded.** *"wake-on-LAN was in fact already tested successfully, not sure why you
-don't know that."*; *"The power cut test was already run"*. Before planning around a row he may have exercised by hand, ask in a
-phrase.
-
-**Recommend, and name what you judged on** (*"Cards but also your recommendation and why."*). He overturns freely on design, and
-typed his own answers on the cards that shaped one, so give the recommendation. Option A had the recommendation, GPT and a blind
-reader on *can you tell up from down*; he chose B because *"the Gate reads like the doorway that it really is, seems to fit into
-Rimworld better for me"*, a test none of them was set. A judge answers only what it was asked (once so far).
-
-**A reply is the start of a burst.** He keeps looking while he types (*"Oh, I now see that in the lower left..."*, then cables,
-materials, stepped motion and bridge sizes within minutes; *"And the Titan resources shouldn't rot..."*). Read everything he sent
-before you write. He closes with a check (*"Have I provided enough guidance here?"*, *"Make sense?"*): answer with what you took
-from each point, any earlier ruling it narrows, and where you would push back.
-
-**Keep asks ready for when he is waiting.** *"Give me cards now while I wait thanks."* *"Any question cards while I wait? Happy to
-help on any items of taste or something tricky."* Keep your pre-reviewed asks in `log.md`, taste first, so the Conductor can
-serve them; ready is not sent.
-
-**Ask the form per surface; never infer it.** On one day, *"Much less Prose, this is intended to be a snapshot of what's
-running, not a narrative walk."* and, of another page, *"The English write-up you provided here is superb."* The reader's job
-decides, and the unit is the reader's (*"Organize by Mod"*; *"Yes on the descriptions from the player point of view."*). In a
-mod, say which moments are a glance and which a read, in the player's nouns.
-
-**Plain words, and an example for any term you coin.** *""The test never named a live state" gets a human to look baffled and ask
-"what? could you give an example?""*; *"Some cryptic one: workers may not install"*.
-
-**Ask what a scene is for, and show one feature at a time** (once so far). *"I'm confused how the carcass summoning scavengers and
-visitors relates to the coming of a new titan threat."* Once he was told, he wrote the tests himself: *"So the true test might be
-to have the titan stomp across the map ... THEN force-kill it"*.
+- He specifies by reacting: show a cheap, labelled mock or a staged scene before you ask; a mock never accepts.
+- Walk him through the decision unasked; say the assumption under each cost as yours; recommend, and name what you judged on.
+- Plain words, an example for any term you coin; ask the form per surface, never infer it.
+- Before any scene is staged, his intent for it is one line in `log.md`, and each scene in `plan.md` cites it. Bundled features: say so on the sheet's first line, one scene each.
 
 ## From his words to an acceptance line
 
@@ -266,7 +209,7 @@ signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budget`). Then
 - `experience`: what an observer sees, in plain words, with the observer named. A constraint is
   `<limit> <unit> on <test machine>`.
 - `false_pass`: a named wrong world, the worker's cheapest way to fake this leaf.
-- `red`: what failing must look like. A check that cannot be seen failing proves nothing.
+- `red`: the broken version of the mod this leaf catches, in a plain sentence (hose: "water stops after the first cell"). If you cannot name one, the leaf is decoration: cut it. A check that cannot be seen failing proves nothing. Tags read cold to a human: no jargon.
 - `oracle_proposed` and `tier_proposed`: your offer. The Setter binds. Live needs `tier_reason`.
 - One `walk` leaf per mod: a reload from a save made mid-way, a repeat of the core action, a second order of main actions.
 - Whatever the mod needs measured and nothing can yet measure: an `instrument` leaf, depended on through `needs_instrument`.
@@ -279,10 +222,16 @@ rulings). Numeric lines are advisory until five mods have calibrated them. Multi
 `mod_settings` and the standing rulings cannot be turned off: no multiplayer support, no worldgen of any kind, every DLC assumed, biomes in scope
 only, no live flight test without him, our names.
 
+## The first time an item names a mod (owner, 2026-11-03)
+
+On maturing every mod's test script, the owner said: *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now."*
+
+So the four recent mods get the pass now, and any other mod gets it the first time an item names it: read its code and spec, expand the spec and the validation strategies (site prep and controls for each scene), certify with him and clear up confusion, then write it all out for Relentless as build items. Filed: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; the trigger is `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`.
+
 ## Handoff
 
 1. `lint` passes and the exam passed (or `exam_waived`).
-2. `plan.md`: disposable. Structure, reuse, order (instrument leaves first), risks, the scenes with their controls, three designs if there is a real choice.
+2. `plan.md`: disposable. Structure, reuse, order (instrument leaves first), risks, the scenes with their controls and each scene's teardown (what the staging forced, put back by a scripted step), the site prep and controls the mod's script lacks (you file a build item for them, you write no code), three designs if there is a real choice. Never rely on an instruction for wrap-up (owner, 2026-11-03, `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`): a wrap-up that matters is a scripted step or a check.
 3. The Arbiter signs: `concept_tree.py sign <dir> --by Arbiter`. Any later `write` voids the signature.
 4. He validates the root: `python3 src/RimMandrake/Utils/modcheck/cli.py validate <mod> --owner-said "<his words>"`, on his
    word only. The tree then needs one `write`
@@ -311,6 +260,7 @@ BENCH and Relentless paid for these; load the skill when the step needs it, once
 - Put your words in `his words`, or put agent text in a leaf's `experience` as though he asked for it.
 - Raise a waiver again. Interrogate him. Ask what you could read. Ask yes/no where a picture would serve.
 - Define everything. The core concepts that must be true, no more.
+- Hide a fault in the system itself (this role, the tools, Relentless): file it as a system item and say so in the filing; system items outrank content. Never mark anything expedited: Operations and the Conductor set that.
 - Enable a schedule for yourself, or hand a mod to Relentless past a refused gate.
 
 ## A dry walk
