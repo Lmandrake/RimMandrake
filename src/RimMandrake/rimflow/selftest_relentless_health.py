@@ -185,5 +185,30 @@ ok(not fx.degraded and "stale" in fx._health["why"] and "at once" in fx._health[
 shutil.rmtree(d, ignore_errors=True)
 shutil.rmtree(vd, ignore_errors=True)
 
+# --- the tick says what it obeyed: a stale or missing verdict is REPORTED (owner note 2026-11-03: "Relentless keeps
+# ordinary order and reports it"); the real tick() over selftest_relentless's FakeWorld, one tick each
+import selftest_relentless as SR  # noqa: E402
+
+
+def tick_health(health):
+    x = SR.Rig()
+    try:
+        x.w._health = health
+        return [a for a in x.tick() if a.get("do") == "health"]
+    finally:
+        x.done()
+
+
+for label, verdict, why in (("stale", None, "health verdict stale: as_of x"), ("missing", None, "no health verdict at p")):
+    got = tick_health(R.health_order(verdict, why, lambda: ["I1", "I2"]))
+    ok(len(got) == 1 and got[0]["fresh"] is False and got[0]["degraded"] is False and got[0]["first"] == 2
+       and got[0]["why"].startswith(why) and "every open system item first, at once" in got[0]["why"],
+       "tick: a %s verdict is reported as a do=health act, not fresh, every system item first" % label, got)
+got = tick_health(R.health_order({"state": "degraded", "system_items": ["S1"], "why": "spent"}, "fresh: degraded",
+                                 lambda: []))
+ok(len(got) == 1 and got[0]["fresh"] is True and got[0]["degraded"] is True and "spent" in got[0]["why"],
+   "tick: a fresh degraded verdict is reported as obeyed", got)
+ok(tick_health(None) == [], "tick: no health read -> no health act invented")
+
 print("selftest_relentless_health: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)
