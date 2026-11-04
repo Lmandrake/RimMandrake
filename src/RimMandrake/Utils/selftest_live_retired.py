@@ -52,10 +52,12 @@ def main():
     # the class, on fixtures: every kind of subject, from the baseline and from a settled item
     fx = DM.parse_retired(["unit=rm-gone.timer  # retired", "hook=gone_hook.py", "role=Gone"])
     lines = ["unit=rm-gone.timer max_age=2h", "unit=rm-here.timer max_age=2h", "hook=gone_hook.py", "role=Gone max_age=3d"]
-    got = DM.promises({"X": It(live="unit=rm-gone.timer reading=/x max_age=6h"), "Y": It(live="unit=rm-here.timer max_age=1h")},
+    got = DM.promises({"X": It(live="reading=/x unit=rm-gone.timer max_age=6h"), "Y": It(live="unit=rm-here.timer max_age=1h")},
                       lines, fx)
     check(sorted(r["line"] for r in got) == ["unit=rm-here.timer max_age=1h", "unit=rm-here.timer max_age=2h"],
           "unit, hook and role retirements all hold, from the baseline and from an item; the living stay swept")
+    check(DM.subject("max_age=2h unit=rm-gone.timer") == "unit=rm-gone.timer" and DM.subject("once: why") == "",
+          "the subject is found in any field order; `once:` has none")
     check(DM.promises({"Y": It(live="unit=rm-here.timer max_age=1h")}, [], ()) != [], "no retired list sweeps as before")
     # the two files never disagree: a line is either promised or retired
     both = {DM.subject(l) for l in baseline} & retired

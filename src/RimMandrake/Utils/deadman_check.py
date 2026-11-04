@@ -186,8 +186,9 @@ def load_baseline(path=None):
 
 
 def subject(line):
-    """'unit=rm-foo.timer max_age=2h' -> 'unit=rm-foo.timer': what a promise is about, whatever it asks of it. Pure."""
-    return line.split()[0] if line else ""
+    """'max_age=2h unit=rm-foo.timer' -> 'unit=rm-foo.timer': what a promise is about, whatever it asks of it and in
+    whatever field order live_line accepts. '' when it names none (`once:`). Pure."""
+    return next((t for t in (line or "").split() if t.startswith(("unit=", "hook=", "role="))), "")
 
 
 def parse_retired(raw_lines):
