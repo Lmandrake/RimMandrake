@@ -112,6 +112,24 @@ before = OUT.read_text()
 r = NC.one_pass(BOOT, False, ctl=c3, log=LOG, out=OUT)
 check("status starts nothing and writes nothing", r["state"] == "start" and not any(x[0] == "start" for x in c3.calls) and OUT.read_text() == before)
 
+
+
+class EndsNowCtl(Ctl):
+    """The sweep writes its RESULT and exits just as the pass asks whether it is up."""
+    def __call__(self, *a):
+        if a[0] == "is-active" and self.log is not None:
+            self.log.write_text(FINISHED_NOV1 + KILLED_NOV2 + RERUN_NOV2)
+            self.log = None
+        return super().__call__(*a)
+
+
+LOG5 = TMP / "bench5" / "Transient" / "selftests_nightly.log"
+LOG5.parent.mkdir(parents=True)
+LOG5.write_text(FINISHED_NOV1 + KILLED_NOV2)
+c5 = EndsNowCtl()
+c5.log = LOG5
+r = NC.one_pass(AT("2026-11-02T18:00:00Z"), True, ctl=c5, log=LOG5, out=TMP / "ops5" / "nightly_catchup.json")
+check("a sweep ending during the pass is not run twice", r["state"] == "done" and not any(x[0] == "start" for x in c5.calls), r)
 NC.SETTLE_S = 0
 
 

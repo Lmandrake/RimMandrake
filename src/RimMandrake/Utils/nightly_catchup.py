@@ -138,7 +138,8 @@ def one_pass(now, act, ctl=systemctl, log=None, out=None):
     log, out = log or KR.log_path(), out or reading_path()
     night = KR.stamp(night_start(now, hour)[0])
     started = read_started(out, night)
-    text, state, on = read_log(log), ctl("is-active", SERVICE), ctl("is-enabled", TIMER)
+    state, on = ctl("is-active", SERVICE), ctl("is-enabled", TIMER)
+    text = read_log(log)     # after the state: a sweep that ended between the two reads has its RESULT in this text
     r = {"at": KR.stamp(now), "night": night, "started": started, "log": str(log)}
     if text is None or state not in UP | DOWN or on not in ON | OFF:
         r.update(state="blind", why="log readable=%s, is-active=%s, is-enabled=%s" % (text is not None, state, on))
