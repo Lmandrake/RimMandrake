@@ -13,7 +13,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TESTS = ["t_line_full_of_one_mod_still_leases_another", "t_parked_items_hold_no_place", "t_enrol_skips_taken_mod",
          "t_waiting_items_hold_no_line_place", "t_parked_system_items_hold_no_sys_room",
          "t_plain_queued_items_hold_their_places", "t_consulting_item_holds_no_line_place",
-         "t_refused_start_holds_no_line_place", "t_incident_line_fills_every_place", "t_enrol_reads_store_once_per_line"]
+         "t_refused_start_holds_no_line_place", "t_incident_line_fills_every_place", "t_enrol_reads_store_once_per_line",
+         "t_staffed_incident_line_fills_every_place"]
 
 COND = 'if now < st.get("start_again_at", 0) or st.get("not_before", 0) > now or help_pending(st):'
 IN_TURN = "in_turn = [s for s in live if in_line(s) and not parked(store, fx, r, s, now, live)]"
@@ -25,13 +26,19 @@ TAKEN_ALL = 'for x in [s for s in live if s["status"] in HOLDS_A_PLACE] + [s for
 HELD_ANY = "        return any(m in held for m in fx.item_mods(st))\n"
 SKIP = "            if mods & taken:\n"
 MODS_HELD_READ = "(store.states() if states is None else states)"
+FILLER = 'store) - sum(1 for s in live if s["status"] in RUNS_A_PLACE) - queued)'
 
 # name, [(text, replacement), ...], the tests that must go red
 MUTANTS = [
     ("the count holds parked items again", [(QUEUED, "    queued = sum(1 for s in live if in_line(s))\n")],
-     ["t_line_full_of_one_mod_still_leases_another", "t_incident_line_fills_every_place"]),
+     ["t_line_full_of_one_mod_still_leases_another", "t_incident_line_fills_every_place",
+      "t_staffed_incident_line_fills_every_place"]),
     ("a mod-blocked item is not parked", [(HELD_ANY, "        return False\n")],
-     ["t_line_full_of_one_mod_still_leases_another", "t_incident_line_fills_every_place"]),
+     ["t_line_full_of_one_mod_still_leases_another", "t_incident_line_fills_every_place",
+      "t_staffed_incident_line_fills_every_place"]),
+    ("the staffing filler counts parked items as the line (the live rule shape)",
+     [(FILLER, FILLER.replace("- queued)", "- sum(1 for s in live if in_line(s)))"))],
+     ["t_staffed_incident_line_fills_every_place"]),
     ("everything is parked: max_queued means nothing", [(COND, "if True:")],
      ["t_plain_queued_items_hold_their_places"]),
     ("sys_room counts parked system items (the item's words, in the system lane)", [(SYS, SYS_OLD)],
