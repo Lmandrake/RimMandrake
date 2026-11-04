@@ -13,7 +13,6 @@ What it pins:
   * a default block (`--until done`) is written WITHOUT the field, byte-compatible;
 Design: design/2026-10-25-rimflow-block-release.md.
 """
-import json
 import os
 import shutil
 import subprocess
@@ -202,7 +201,7 @@ def t_read_time_diagnostics_flag_merged_cycles_and_unfiled():
 # ---- CLI ------------------------------------------------------------------
 def env(seat="FOUNDRY"):
     e = {k: v for k, v in os.environ.items()
-         if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+         if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RM_ROLE_UNIT")}  # a role launch would stamp role_unit
     e["RIMFLOW_LEDGER"] = os.path.join(CTX["led"], "events.jsonl")
     e["RIMFLOW_ITEMS"] = os.path.join(CTX["led"], "items")
     e["RIMFLOW_PROBE"] = "no-reading"
