@@ -88,9 +88,13 @@ else:
     for unit, (_p, _k, live) in SLOWED.items():
         tm = show(unit + ".timer", "TimersMonotonic") or ""
         check(live in tm, "live: %s.timer loaded with %s" % (unit, live), tm[:120])
-    for unit in ("rm-mirror", "rm-telemetry-export") + KEPT_ACTIVE:
+    # A slowed timer is reinstalled, so it must come back ENABLED and ACTIVE: rm-arteval-autojudge came back with its
+    # new file but disabled, twice (LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE).
+    for unit in tuple(SLOWED) + KEPT_ACTIVE:
         st = show(unit + ".timer", "ActiveState")
         check(st == "active", "live: %s.timer active" % unit, st)
+        en = show(unit + ".timer", "UnitFileState")
+        check(en == "enabled", "live: %s.timer enabled" % unit, en)
 
 print("selftest_timer_prune: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)
