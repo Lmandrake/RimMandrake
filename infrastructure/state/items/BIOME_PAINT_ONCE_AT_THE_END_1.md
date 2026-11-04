@@ -66,9 +66,17 @@ RimMandrake mod with its own BiomeDef and Mod Settings, before any painting is a
 The planet is painted exactly once, from a settled set of biome mods — and no item in the
 queue is blocked on a tile count before then.
 
+## parked items
+
+An item this list parks carries a `parked: <ID>` line at the start of a line in its addition below. Relentless reads
+those lines (`relentless_rules.json` `pool_parked_lists`, `relentless.parked_ids`) and never staffs the item, nor this
+one, until this item closes. Add the line with the addition.
+
 ## Paint list addition 2026-10-09 (decision taken by question card)
 
 `WARSCAR_PILGRIM_CAMP_SITES_1` (pilgrim camp SitePartDefs at authored tiles along the Ashfall Road) is done at the final world painting, not before.
+
+parked: WARSCAR_PILGRIM_CAMP_SITES_1
 
 ## Paint list addition 2026-10-20 (from `WORLD_PHYSICS_AUDIT_LOCKED_SUN_TEMPS_RINGS`)
 

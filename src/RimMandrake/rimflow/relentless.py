@@ -1970,6 +1970,42 @@ def foreign_ok(it, r):
             and not re.search(cfg.get("foreign_exclude") or "(?!)", "%s %s" % (it.id, it.title or ""), re.I))
 
 
+PARKED_LINE = re.compile(r"^parked:\s*`?([A-Z][A-Z0-9_]*[A-Z0-9])`?", re.M)
+_parked_cache = {}
+
+
+def parked_ids(r, root=None):
+    """Items an owner ruling parked on a list (the paint list, BIOME_PAINT_ONCE_AT_THE_END_1: "done at the final world
+    painting, not before"), by data: each file in r["pool_parked_lists"] is an item's prose, repo-relative; the item
+    itself and every `parked: ID` line in it are parked. Once that item closes its prose moves to items/closed/ and
+    its list is released. A listed file found in neither place is a typo in the rules and raises: a list that
+    silently reads empty would staff what he parked (RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED)."""
+    root = root or os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+    out = set()
+    for rel in r.get("pool_parked_lists") or []:
+        path = os.path.join(root, rel)
+        closed = os.path.join(os.path.dirname(path), "closed", os.path.basename(path))
+        try:
+            mt = os.stat(path).st_mtime_ns
+        except FileNotFoundError:
+            if os.path.exists(closed):
+                continue
+            raise
+        hit = _parked_cache.get(path)
+        if not hit or hit[0] != mt:
+            with open(path, encoding="utf-8") as f:
+                hit = _parked_cache[path] = (mt, frozenset(PARKED_LINE.findall(f.read())))
+        out.add(os.path.splitext(os.path.basename(path))[0])
+        out |= hit[1]
+    return out
+
+
+def pool_excluded(item, r):
+    """Out of the line by data: pool_ids_exclude, or parked on a list (parked_ids). The pool, fill and retire ask this
+    one question, so a parked item that comes back from a snag is handed back, never relaunched at the top."""
+    return item in r.get("pool_ids_exclude", []) or item in parked_ids(r)
+
+
 def eligible(it, r, world=None, now=None):
     """`world` given: a block counts only while it HOLDS (priority.block_holds: a finished predecessor or a passed
     date releases it); without one, any block keeps the item out."""
@@ -1980,7 +2016,7 @@ def eligible(it, r, world=None, now=None):
     return (it.owner in r["pool_seats"] and it.state in ("proposed", "ready") and not blocked
             and it.needs != "owner" and (it.needs in r["pool_needs"] or it.needs in relentless_game.pool_needs(r))
             and getattr(it, "kind", None) not in r.get("pool_kinds_exclude", [])
-            and it.id not in r.get("pool_ids_exclude", []) and not getattr(it, "lease", None)
+            and not pool_excluded(it.id, r) and not getattr(it, "lease", None)
             and (it.owner != foreign_seat(r) or foreign_ok(it, r)))
 
 
@@ -2636,8 +2672,8 @@ def expedite_refusal(item, st, r):
     """Why this item can never take the lane, or None."""
     if not ledger_has(item):
         return "%s has never been filed" % item
-    if item in r.get("pool_ids_exclude", []):
-        return "%s is on pool_ids_exclude: the line retires it on sight; take it off the list first" % item
+    if pool_excluded(item, r):
+        return "%s is on pool_ids_exclude or a parked list: the line retires it on sight; take it off first" % item
     if st is not None and st["status"] == "done":
         return "%s is done in the store" % item
     filed = [e.get("kind") for e in pkg("model").read() if e.get("id") == item and e.get("event") == "file"]
@@ -3288,7 +3324,7 @@ def retire(store, fx, states, now, acts, r=None):
                 cur = store.load(st["item"])
                 cur["awaiting_ledger"] = False
                 store.save(cur)
-        if r and st["status"] == "queued" and st["item"] in r.get("pool_ids_exclude", []):
+        if r and st["status"] == "queued" and pool_excluded(st["item"], r):
             # started means the ledger says doing with no one on it: hand it back or it reads as worked on for good.
             # Back first: `retired` is never looked at again, so a refused hand-back must come round next tick.
             ours = st["ledger_started"] and led and led["state"] == "doing" and led.get("owner") == r.get("seat")
@@ -3462,7 +3498,7 @@ def lease(store, fx, r, now, acts):
             continue
         if st.get("needs_back"):       # the ledger still says owner: the next step() clears it first
             continue
-        if item in r.get("pool_ids_exclude", []):   # back from a stop this tick: retire() takes it on the next
+        if pool_excluded(item, r):   # back from a stop (a snag) this tick: retire() takes it on the next
             continue
         if now < st.get("start_again_at", 0):
             continue

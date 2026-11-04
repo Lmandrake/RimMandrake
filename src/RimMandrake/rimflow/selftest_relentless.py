@@ -1716,6 +1716,58 @@ def t_foreign_eligible():
     ok(R.eligible(it("HOSE_X_FIX", owner="BENCH"), r), "the exclusions are FOUNDRY's alone")
 
 
+def t_parked_list():
+    """RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED: the filler staffed WARSCAR_PILGRIM_CAMP_SITES_1, which the owner's card
+    parked on the paint list; it looked proposed+offline and foreign_ok had no parked test."""
+    d = tempfile.mkdtemp(prefix="rlt-park-")
+    items = os.path.join(d, "items")
+    os.makedirs(os.path.join(items, "closed"))
+    lst = os.path.join(items, "PAINT_LIST_X.md")
+    with open(lst, "w", encoding="utf-8") as f:
+        f.write("# PAINT_LIST_X\n\n## addition\n\nparked: `X_PARKED_FIX`\nparked: Y_PARKED_FIX\n"
+                "Prose that says it is parked: Z_FREE_FIX does not park it.\n")
+    r = dict(RULES, pool_seats=["BENCH", "FOUNDRY"], staffing=dict(STAFF), pool_ids_exclude=[], pool_parked_lists=[lst])
+
+    def it(id, owner="FOUNDRY"):
+        return types.SimpleNamespace(id=id, owner=owner, state="proposed", kind="task", title="a title", blocked=False,
+                                     needs="offline", lease=None, target="v1")
+    ok(R.parked_ids(r) == {"PAINT_LIST_X", "X_PARKED_FIX", "Y_PARKED_FIX"}, "parked lines and the list item: %s" % R.parked_ids(r))
+    ok(not R.eligible(it("X_PARKED_FIX"), r), "a parked proposed+offline item of the other seat is not eligible")
+    ok(not R.eligible(it("Y_PARKED_FIX", owner="BENCH"), r), "nor one of our own seat")
+    ok(not R.eligible(it("PAINT_LIST_X", owner="BENCH"), r), "nor the list item itself")
+    ok(R.eligible(it("Z_FREE_FIX"), r), "a mid-line 'parked:' in prose parks nothing")
+    ok(R.pool_excluded("X_PARKED_FIX", r), "pool_excluded says so")
+    with open(lst, "a", encoding="utf-8") as f:
+        f.write("parked: Z_FREE_FIX\n")
+    os.utime(lst, ns=(1, 2))
+    ok(not R.eligible(it("Z_FREE_FIX"), r), "a line added to the list parks at once (no stale cache)")
+    os.rename(lst, os.path.join(items, "closed", "PAINT_LIST_X.md"))
+    ok(R.parked_ids(r) == set() and R.eligible(it("X_PARKED_FIX"), r), "the list item closed: its list is released")
+    try:
+        R.parked_ids(dict(r, pool_parked_lists=[os.path.join(items, "NO_SUCH_LIST.md")]))
+        ok(False, "a listed file found nowhere must raise")
+    except FileNotFoundError:
+        ok(True, "a listed file found nowhere raises, never reads as empty")
+    live = R.parked_ids(R.rules(os.path.join(R.HERE, "relentless_rules.json")))
+    ok({"BIOME_PAINT_ONCE_AT_THE_END_1", "WARSCAR_PILGRIM_CAMP_SITES_1"} <= live, "the live rules park the paint list: %s" % sorted(live))
+    # a snag on a parked item: never relaunched at the top, handed back to the ledger, out of the line
+    with open(lst + ".2", "w", encoding="utf-8") as f:
+        f.write("parked: I0\n")
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "gate_not_met", "done at the final painting", x.r, now=x.now)
+    x.w.up[st["run"]["unit"]] = False
+    x.r["pool_parked_lists"] = [lst + ".2"]
+    launched = len(x.w.launches)
+    x.tick(600)
+    x.tick(600)
+    x.tick(600)
+    ok(len(x.w.launches) == launched, "a parked item back from a snag is not relaunched")
+    ok(x.st("I0")["status"] == "retired" and x.w.items["I0"] == "ready", "it leaves the line and the ledger gets it back")
+    x.done()
+
+
 def t_foreign_tree():
     d = tempfile.mkdtemp(prefix="rlt-")
     tree, books = os.path.join(d, "foundry"), os.path.join(d, "books")
@@ -4149,7 +4201,7 @@ def main():
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
     for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
-              t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
+              t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
               t_help_forced_once, t_help_own_call_spends_hits, t_help_reaches_brief, t_help_refused, t_help_lifecycle):
