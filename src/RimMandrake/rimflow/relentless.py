@@ -473,7 +473,8 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
     may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
     workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it. `offbox`: adapter names
     (relentless_rules.json offbox_adapters) the supervisor runs outside the Marker's wall at check time; adding them with the proof
-    unchanged also widens, since the Marker still judges whether each one measures its clause."""
+    unchanged also widens, since the Marker still judges whether each one measures its clause. Outside a redesign the offbox
+    adapters and game clauses already set are kept: a change names more, never fewer."""
     offbox = relentless_wall.check_offbox_names(offbox, rules())    # names of supervisor adapters only: no worker shell
     import live_line
     if live:
@@ -493,14 +494,18 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
                              "add a missing --live with the same --proof)")
         if st["contract"] and not why:
             raise ValueError("changing the contract needs --why")
-        if widens and not live:
-            live = st["contract"].get("live")
-        if widens and not offbox:
-            offbox = st["contract"].get("offbox")
         if st["contract"] and st["approach"] != "redesign":  # a widening or a proof-only change asks more, never less:
-            live = live or st["contract"].get("live")       # an obligation it leaves out is the one already set
-            game = game or st["contract"].get("game")
-            offbox = offbox or st["contract"].get("offbox")
+            live = live or st["contract"].get("live")       # an obligation it leaves out is the one already set, and
+            old_game = st["contract"].get("game")           # naming fewer adapters or game clauses drops none (GPT
+            if old_game and game:                           # pass 10): the sets are merged, never replaced
+                game = dict(old_game, **game)
+                game["clauses"] = sorted(set(old_game.get("clauses") or []) | set(game.get("clauses") or []))
+            game = game or old_game
+            had = list(st["contract"].get("offbox") or [])
+            offbox = had + [x for x in (offbox or []) if x not in had]
+            if len(offbox) > relentless_wall.OFFBOX_MAX:
+                raise ValueError("at most %d offbox adapters (the contract already names %s)"
+                                 % (relentless_wall.OFFBOX_MAX, ", ".join(had)))
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
         if game:
             st["contract"]["game"] = game

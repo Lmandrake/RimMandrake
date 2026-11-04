@@ -14,6 +14,8 @@
    unlocked restore left open, SHARD_LEVEL_FIX_APPEND_LOST_MIDRESTORE) is kept: compare and restore run under the
    shard's flock, and the writers (code_review_status, artledger) take that flock and follow a replaced inode; the
    level also holds their directories EXCLUSIVE (writers take them SHARED) across restore and reset, clean shards too.
+6. contract(): a widening (a live line added with the proof unchanged) or a proof-only change keeps every offbox adapter
+   and game clause already set: naming fewer drops none of them (GPT pass 10).
 
 Runs on selftest_relentless's FakeWorld; no ledger, clone or unit is touched.
 
@@ -286,6 +288,29 @@ def t_level_holds_append_dirs():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def t_contract_widen_keeps_obligations():
+    x = SR.Rig(n=1, share=1.0)
+    x.run_one("I0")
+    g = x.st("I0")["gen"]
+    both = ["steve_c_free", "steve_wsl_pydantic"]
+    SR.R.contract(x.s, "I0", g, "proof", offbox=list(both))
+    SR.R.contract(x.s, "I0", g, "proof", live="once: t", why="add the live line", offbox=["steve_c_free"])
+    c = x.st("I0")["contract"]
+    ok(c.get("live") == "once: t" and sorted(c.get("offbox") or []) == both,
+       "a live-line widening that names one adapter keeps both: %r" % (c.get("offbox"),))
+    st = x.st("I0")
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["contract"]["game"] = {"clauses": ["A1", "B2"], "why": "only the game"}
+        st["proof_only"] = {"sha": "abc", "at": 0}
+        x.s.save(st)
+    SR.R.contract(x.s, "I0", g, "proof2", why="proof-only fix", game={"clauses": ["A1"], "why": "only the game"})
+    c = x.st("I0")["contract"]
+    ok(c.get("game", {}).get("clauses") == ["A1", "B2"] and sorted(c.get("offbox") or []) == both,
+       "a proof-only change naming fewer game clauses keeps them all: %r" % (c.get("game"),))
+    x.done()
+
+
 if __name__ == "__main__":
     try:
         t_pool_full_lets_a_cloned_item_run()
@@ -295,6 +320,7 @@ if __name__ == "__main__":
         t_shuffled_shard_append_mid_restore_kept()
         t_writers_take_the_shard_lock()
         t_level_holds_append_dirs()
+        t_contract_widen_keeps_obligations()
     except Exception as e:      # noqa: BLE001  a crash is a FAIL with its reason
         import traceback
         traceback.print_exc()
