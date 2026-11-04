@@ -54,6 +54,9 @@ DISPATCH = [
     # role runs: one finished, one failed with nothing spent, one stopped over its limit
     {"at": "2026-11-03T07:00:00Z", "do": "role_launch", "role": "Operations", "unit": "rm-role-operations-1"},
     {"at": "2026-11-03T07:05:00Z", "do": "role_done", "role": "Operations", "unit": "rm-role-operations-1", "blind": {"outcome": "completed"}, "why": "done: 300000 weighted tokens, success"},
+    # a run of a role the schedule has disabled: its row says the schedule wants that role stopped
+    {"at": "2026-11-03T07:06:00Z", "do": "role_launch", "role": "Auditor", "unit": "rm-role-auditor-off"},
+    {"at": "2026-11-03T07:09:00Z", "do": "role_done", "role": "Auditor", "unit": "rm-role-auditor-off", "blind": {"outcome": "completed"}, "why": "done: 1000 weighted tokens, success"},
     {"at": "2026-11-03T07:10:00Z", "do": "role_done", "role": "Producer", "unit": "rm-role-producer-2", "blind": {"outcome": "failed"}, "why": "Producer event run rm-role-producer-2 failed: 0 weighted tokens of a 800000 budget (raw 0), model ?, success"},
     {"at": "2026-11-03T07:20:00Z", "do": "role_stop", "role": "Auditor", "unit": "rm-role-auditor-3", "why": "Auditor run rm-role-auditor-3 still unit inactive but scope x active after 2900 s (run_max_s 2700): stop #1"},
     # a timer repaired twice, its alarm naming the first failure (already counted); another with only an alarm
@@ -123,6 +126,11 @@ DISPATCH = [
     {"at": "2026-11-03T07:23:00Z", "do": "role_done", "role": "Auditor", "unit": "rm-role-auditor-3", "blind": {"outcome": "failed"}, "why": "Auditor run rm-role-auditor-3 failed: 9000 weighted tokens"},
     # a restart after --now cannot make an earlier crash planned
     {"at": "2026-11-03T12:30:00Z", "do": "restart_kill", "seat": "BENCH", "result": "killed pid 3 (SIGTERM)"},
+    # a crash two days back: counted in the window, not in the last 24 h
+    {"at": "2026-11-01T10:05:00Z", "do": "alarm", "kind": "helper_lost:iiii9999", "why": "window iiii9999 of BENCH ended 2026-11-01T10:00:00Z (the transcript just stops: a quit or a crash): 0 helper(s) died mid-work, 0 report(s) unread, 0 background command(s) with no reader."},
+    # a restart 10 s after --now would plan this window (it ends within the skew): only the --now cut keeps it a crash
+    {"at": "2026-11-03T12:00:10Z", "do": "restart_kill", "seat": "BENCH", "result": "killed pid 5 (SIGTERM)"},
+    {"at": "2026-11-03T11:59:55Z", "do": "alarm", "kind": "helper_lost:hhhh8888", "why": "window hhhh8888 of BENCH ended 2026-11-03T11:59:50Z (the transcript just stops: a quit or a crash): 0 helper(s) died mid-work, 0 report(s) unread, 0 background command(s) with no reader."},
     {"at": "2026-11-03T11:59:00Z", "do": "alarm", "kind": "helper_lost:eeee5555", "why": "window eeee5555 of BENCH ended 2026-11-03T11:58:00Z (the transcript just stops: a quit or a crash): 0 helper(s) died mid-work, 0 report(s) unread, 0 background command(s) with no reader."},
     {"at": "2026-11-03T07:22:00Z", "do": "role_stop", "role": "Auditor", "unit": "rm-role-auditor-3", "why": "Auditor run rm-role-auditor-3 still unit inactive but scope x active after 3020 s (run_max_s 2700): stop #2"},
     # a fresh alarm reporting an old death, and a record from the future: neither counted
@@ -162,6 +170,8 @@ MEMWATCH = [
     {"ts": "2026-10-05T01:00:00-0700", "kind": "oom_kill", "cgroup": "claude-seats.slice/claude-seat-BENCH-rm-role-operations-7777.scope", "delta": 1},
     # from the future: not counted
     {"ts": "2026-11-05T01:10:00-0800", "kind": "oom_kill", "cgroup": "rm-harness.slice", "delta": 1},
+    # memwatch also writes oom_group_kill (memory.oom.group): a death of memory like any other kill
+    {"ts": "2026-11-03T02:40:00-0800", "kind": "oom_group_kill", "cgroup": "user.slice/rm-groupkill.service", "delta": 1},
 ]
 
 ATTEMPTS = {
@@ -278,6 +288,10 @@ def main():
     a = deaths_of(reg, "role:rm-role-auditor-3")
     ok(len(a) == 1 and a[0]["ending"] == "time_limit" and a[0].get("ran_s") == 2900, "stopped_role_run_dies_once", a)
     ok(thing(reg, "role:rm-role-operations-1")["role_wanted"] == "done", "role_wanted_from_schedule")
+    aoff = thing(reg, "role:rm-role-auditor-off")
+    ok(aoff is not None and aoff.get("role_wanted") == "stopped", "disabled_role_run_role_wanted_stopped", aoff)
+    ok(ol.role_wanted({"roles": [{"name": "Operations", "enabled": True}, {"name": "Auditor", "enabled": False}]})
+       == {"Operations": "done", "Auditor": "stopped"}, "role_wanted_enabled_done_disabled_stopped")
     old = thing(reg, "role:rm-role-operations-old")
     ok(old is not None and old.get("open"), "role_run_open_since_before_window_has_row", old)
     ok(thing(reg, "role:rm-role-operations-gone") is None, "role_run_ended_before_window_absent")
@@ -327,6 +341,8 @@ def main():
     lg = thing(reg, rid("worker", "I_LONG", 1))
     ok(lg is not None and lg.get("open"), "life_open_since_before_window_has_row", lg)
     ok(len(deaths_of(reg, "window:BENCH:eeee5555")) == 1, "future_restart_does_not_plan_earlier_crash")
+    ok(len(deaths_of(reg, "window:BENCH:hhhh8888")) == 1 and not any(p["thing"] == "window:BENCH:hhhh8888"
+       for p in reg["planned"]), "restart_after_now_within_skew_does_not_plan_crash")
     ok(thing(reg, rid("worker", ITEM_LOST, 1))["started"] == "2026-11-03T09:00:00Z", "life_start_from_attempts")
     # wanted state per thing: a Relentless life (worker or checker, dead, finished or open) is meant to run to done
     for tid, label in ((rid("worker", ITEM_LOST, 1), "lost"), (rid("checker", ITEM_ACC, 3), "checker"),
@@ -336,8 +352,11 @@ def main():
         ok(row is not None and row["wanted"] == "done", "relentless_life_wanted_done_" + label, row)
 
     # memwatch
-    oom = [d for d in reg["deaths"] if d["ending"] == "out_of_memory"]   # 12 + rm-alarmoom (its kill and its alarm: one)
-    ok(len(oom) == 13, "oom_counted_once_at_the_leaf", [d["thing"] for d in oom])
+    oom = [d for d in reg["deaths"] if d["ending"] == "out_of_memory"]   # 12 + rm-alarmoom (its kill and its alarm: one) + rm-groupkill
+    ok(len(oom) == 14, "oom_counted_once_at_the_leaf", [d["thing"] for d in oom])
+    gk = deaths_of(reg, "unit:rm-groupkill.service")
+    ok(len(gk) == 1 and gk[0]["ending"] == "out_of_memory" and gk[0]["at"] == "2026-11-03T10:40:00Z",
+       "oom_group_kill_is_an_out_of_memory_death", gk)
     box = deaths_of(reg, "cgroup:box.slice")
     ok(len(box) == 1 and box[0]["count"] == 1, "parent_keeps_unexplained_kills", box)
     ok(deaths_of(reg, "unit:a.scope/claude-code-bash") and deaths_of(reg, "unit:b.scope/claude-code-bash"),
@@ -361,6 +380,10 @@ def main():
     ok(r["cause_unknown_share"] is not None and 0 < r["cause_unknown_share"] < 1, "unknown_share_is_a_reading")
     ok(any("torn" in b for b in reg["blind"]), "torn_line_said_not_fatal")
     ok(thing(reg, "seat:FOUNDRY")["deaths_24h"] == 2, "deaths_24h_per_thing")
+    old_w = thing(reg, "window:BENCH:iiii9999")
+    ok(len(deaths_of(reg, "window:BENCH:iiii9999")) == 1 and old_w is not None and old_w["deaths_24h"] == 0
+       and old_w["deaths"] == 1, "death_older_than_24h_not_in_deaths_24h", old_w)
+    ok(r["deaths_24h"] == r["deaths"] - 1, "readings_deaths_24h_leaves_out_the_old_death", (r["deaths_24h"], r["deaths"]))
     reg3 = ol.build(NOW, 14, disp, mem, rel, os.path.join(root, "nope.json"))
     rows = [t for t in reg3["things"] if t["kind"] in ("seat", "window")]
     ok(rows and all(t["wanted"] == "UNMEASURED" for t in rows) and any("schedule" in b for b in reg3["blind"]),
@@ -383,6 +406,12 @@ def main():
         f.write("# another generation\n")
     code, msg = ol.check(out, NOW + 60, 120)
     ok(code == 1 and "generation" in msg, "check_refuses_mixed_generation", msg)
+    t_, pid_ = reg["generation"].split("-")
+    other = dict(reg, generation="%d-%s" % (int(t_) + 1, pid_))     # not a substring of the real id
+    with open(os.path.join(out, "lives.md"), "w") as f:
+        f.write(ol.render_md(other))
+    code, msg = ol.check(out, NOW + 60, 120)
+    ok(code == 1 and "generation" in msg, "check_refuses_md_of_another_generation_id", msg)
     ok(not [n for n in os.listdir(out) if n.startswith(".")], "no_temp_files_left")
     md = ol.render_md(reg)
     ok("seat:FOUNDRY" in md and "Cause unknown" in md, "md_lists_dead_things")
