@@ -2083,6 +2083,31 @@ def rl_churn(store, now, cfg):
     return pts
 
 
+def rl_jams(store, now):
+    """JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS: the belt's journaled jams read against rimflow/jam_classes.json.
+    relentless.jam_unnamed counts jams no class names, relentless.jam_repeat jams of a class after its fixed.at; both
+    targets alarm. A registry or journal that cannot be read makes both UNMEASURED (and relentless.blind counts it)."""
+    try:
+        root = str(HERE.parent)
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        import importlib
+        jc = importlib.import_module("rimflow.jam_classes")
+        reg = jc.load()
+        c = jc.census(reg, store / "journal.jsonl", now)
+    except (OSError, ValueError, KeyError, TypeError, ImportError) as e:
+        c = {"error": "jam registry unreadable: %s" % e}
+    if "error" in c:
+        why = "jams unreadable: %s" % c["error"]
+        return {"relentless.jam_unnamed": U(why, "jams"), "relentless.jam_repeat": U(why, "jams")}
+    un, rep = c["unnamed"], c["repeats"]
+    return {"relentless.jam_unnamed": M(len(un), "jams", first=(un[0]["why"][:200] if un else "none"),
+                                        window_days=c["window_days"]),
+            "relentless.jam_repeat": M(len(rep), "jams", first=("%s: %s" % (rep[0]["cls"], rep[0]["why"][:180]) if rep
+                                                                 else "none"), classes=sorted({r["cls"] for r in rep}),
+                                       window_days=c["window_days"])}
+
+
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
@@ -2211,6 +2236,10 @@ def c_relentless(now, rules, ctx):
         pts[k] = p
         if p.get("m") == "UNMEASURED" and "unreadable" in str(p.get("why")) and p["why"] not in bad:
             bad.append(p["why"])      # an unreadable store or spend file is blind; no spend yet is only idle
+    for k, p in rl_jams(store, now).items():
+        pts[k] = p
+        if p.get("m") == "UNMEASURED" and p["why"] not in bad:
+            bad.append(p["why"])        # an unread journal or registry hides every jam class: blind, never quiet
     pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
     return pts
 

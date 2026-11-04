@@ -1,0 +1,73 @@
+{
+ "_doc": "JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS (design/RimMandrake/relentless_improvement_loop_2026-11-03.md, owner 2026-11-03: \"absolutely, fix the class should be the rule.\"). Every Relentless jam is fixed as a CLASS: one row here with a plain name a cold reader understands, the Operations detector that sees it (an ops_watch_rules.json target), and an automatic remedy (a function that exists) or the reason none is safe. jam_classes.py lint holds every row to that; ops_watch reads the belt's journal through jam_classes.census every pass: relentless.jam_unnamed counts jams no class here matches (name the class), relentless.jam_repeat counts jams of a class after its fix (the fix did not hold: fix the class again, then move fixed.at). A jam is a journal alarm of a kind in `kinds`; its reason is the alarm's why with the breaker prefix removed. `examples` are reasons the belt really journaled; lint requires each to match its own class and no other.",
+ "kinds": ["jam", "books_stale", "breaker_emergency"],
+ "window_days": 14,
+ "meta_targets": ["OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND", "OPS_JAM_CLASS_FIX_AGAIN"],
+ "classes": [
+  {
+   "id": "pool_full",
+   "plain": "The clone pool was full and no clone could be given back, so no new worker could start.",
+   "match": ["^pool (full|at)\\b"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the staffing reading names the pool hold as the cause of nothing live"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::make_room", "what": "each tick gives back idle and put-down clones before a lease; a held, blocked or game-waiting item's clone goes back with all its commits"},
+   "fixed": {"sha": "7684d1bcbe", "at": "2026-11-04T02:58:41Z", "item": "POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG"},
+   "examples": ["pool full: 16 clones, cap 16, nothing to release: BIOME_FLORAFAUNA_ART_REVIEW_1 (live), CLIFF_SHOT_FIX_DEPENDS_ON_SHOOTER_END (live)",
+                "pool at 71 GB, cap 70 GB (the revert line)"]
+  },
+  {
+   "id": "books_dirty",
+   "plain": "The belt's own copy of the code had stray edited files in it, so it stopped taking new code.",
+   "match": ["dirty outside the ledger", "behind: staged:", "own commits outside the ledger"],
+   "detector": {"target": "OPS_RELENTLESS_BOOKS_UNSTICK", "how": "relentless.books_behind_min: minutes the books clone has stood behind origin"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::level_books", "what": "levels the books past reordered ledger shards, run artefacts and the paths BOOKS_LEFT_IN_PLACE names; a new stray path is the class coming back"},
+   "fixed": {"sha": "b010c5b289", "at": "2026-11-03T21:26:33Z", "item": "BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT"},
+   "examples": ["books 2 behind: dirty outside the ledger: infrastructure/state/modcheck_status.json, Transient/northstar/ArtFold_20261103T121727Z.json"]
+  },
+  {
+   "id": "origin_refused",
+   "plain": "GitHub refused this machine's key, so no code could be fetched or pushed.",
+   "match": ["Permission denied \\(publickey\\)", "Could not read from remote repository"],
+   "detector": {"target": "OPS_RELENTLESS_BOOKS_UNSTICK", "how": "relentless.books_behind_min reads UNMEASURED and relentless.blind counts it; the breaker it opens shows in relentless.distressed"},
+   "remedy": {"none": "The key and GitHub are outside the belt: a GitHub outage reads as this same denial (lesson 2026-11-04), so the only safe act is the retry the breaker already makes; replacing a key is the owner's"},
+   "fixed": null,
+   "examples": ["books cannot fetch: git@github.com: Permission denied (publickey).\nfatal: Could not read from remote repository.",
+                "clone failed: scratch_clone: FAILED: git fetch -q origin: git@github.com: Permission denied (publickey)."]
+  },
+  {
+   "id": "clone_missing_commit",
+   "plain": "A fresh clone did not have a just-published commit, so checking it out failed.",
+   "match": ["unable to read tree", "reference is not a tree", "bad object"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the breaker this failure opens holds the belt under target"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::_detached_clone", "what": "a checkout whose sha or tree is absent fetches that sha from origin once before failing; pool reuse honours --fetch (scratch_clone.pool_reuse)"},
+   "fixed": {"sha": "6ab91a442b", "at": "2026-11-02T15:18:23Z", "item": "OPS_RELENTLESS_UNSTICK_XARX"},
+   "examples": ["checkout 567b22fad99acbaaa9ef388b1699e474d3b420f4: fatal: unable to read tree (567b22fad99acbaaa9ef388b1699e474d3b420f4)"]
+  },
+  {
+   "id": "help_folder_left",
+   "plain": "A second-opinion helper's folder from an earlier try was still there, so a new one could not be made.",
+   "match": ["help clone failed: .*already exists"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the breaker this failure opens holds the belt under target"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::help_path", "what": "a consult takes the first help-ITEM-cN folder name nobody holds; the leftover is the reaper's, never deleted here"},
+   "fixed": {"item": "JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS", "at": "2026-11-04T15:00:00Z"},
+   "examples": ["help clone failed: scratch_clone: FAILED: /home/mandrake/rm/relentless/clones/help-ROLE_TOKENS_REPAIR_DESIGNER_ARTIST_CAPS-c1 already exists"]
+  },
+  {
+   "id": "bundle_too_long",
+   "plain": "Carrying a clone's work home failed because the file list was too long for one command.",
+   "match": ["Argument list too long"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the breaker this failure opens holds the belt under target"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::bundle_clone", "what": "the bundle leaves pool noise out by prefix and never lists every path on one command line"},
+   "fixed": {"sha": "a558ca513f", "at": "2026-11-04T12:42:06Z"},
+   "examples": ["clone lacks src/RimMandrake/Utils/claude_bounded.sh and its bundle failed: [Errno 7] Argument list too long: 'git'"]
+  },
+  {
+   "id": "spend_cap",
+   "plain": "The day's spending limit stopped new workers from starting.",
+   "match": ["^day_spend_limit"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the staffing reading names the cap as why nothing runs"},
+   "remedy": {"none": "Nothing to undo: since the owner's 2026-11-02 ruling the cap only raises attention and never stops a run (relentless.py, TOKEN_LIMITS_TAME_BARK_NO_BITE), so a stop by it is the class coming back"},
+   "fixed": {"sha": "bbaccde0b0", "at": "2026-11-03T02:31:03Z", "item": "TOKEN_LIMITS_TAME_BARK_NO_BITE"},
+   "examples": ["day_spend_limit"]
+  }
+ ]
+}

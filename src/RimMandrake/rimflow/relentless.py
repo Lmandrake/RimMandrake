@@ -2357,7 +2357,15 @@ class Effects(relentless_game.GameFx):
         return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr[-200:]))
 
     def help_path(self, st):
-        return os.path.join(self.base, "clones", "help-%s-c%d" % (st["item"], (st.get("help_count") or 0) + 1))
+        """The first help-ITEM-cN folder nobody holds, from help_count + 1. A failed removal leaves the last try's folder
+        behind, and a consult refused on it opened the breaker (jam class help_folder_left, 2026-11-04): skip it, never
+        delete it here (the reaper owns leftovers)."""
+        n = (st.get("help_count") or 0) + 1
+        path = lambda k: os.path.join(self.base, "clones", "help-%s-c%d" % (st["item"], k))
+        for k in range(n, n + 50):
+            if not os.path.lexists(path(k)):
+                return path(k)
+        return path(n)      # fifty leftovers: let the clone refuse by name, so the jam is seen, not hidden
 
     def help_checkout(self, st, sha):
         """The consult's clean tree. Not the item's clone: its uncommitted work is the story being withheld."""
