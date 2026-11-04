@@ -1473,14 +1473,16 @@ def t_retire():
 
 
 def _race(a):
-    d, q = a
+    d, q, k = a
     s = R.Store(d)
-    for _ in range(40):
+    n = 0
+    for i in range(40):
         try:
-            R.beat(s, "I0", 1)
+            R.beat(s, "I0", 1, now=k * 1000 + i + 1)
+            n += 1
         except R.Fenced:
             pass
-    q.put(1)
+    q.put(n)
 
 
 def t_concurrency():
@@ -1490,10 +1492,25 @@ def t_concurrency():
     s.save(st)
     m = multiprocessing.Manager()
     q = m.Queue()
-    ps = [multiprocessing.Process(target=_race, args=((d, q),)) for _ in range(4)]
+    ps = [multiprocessing.Process(target=_race, args=((d, q, k),)) for k in range(4)]
     [p.start() for p in ps]
-    [p.join() for p in ps]
-    ok(all(p.exitcode == 0 for p in ps) and s.load("I0")["gen"] == 1, "four beating processes do not tear the state")
+    [p.join(120) for p in ps]
+    for p in ps:        # a hung child is killed, or the exit handler would join it forever after the FAIL
+        if p.is_alive():
+            p.terminate()
+            p.join(10)
+    import queue
+    beats = 0       # every beat must land (a swallowed Fenced would pass a bare exit check); a crashed child never hangs it
+    for p in ps:
+        try:
+            beats += q.get(timeout=5) if p.exitcode == 0 else 0
+        except queue.Empty:
+            pass
+    last = s.load("I0")
+    ok(all(p.exitcode == 0 for p in ps) and beats == 160 and last["gen"] == 1
+       and last["last_beat"] in {k * 1000 + 40 for k in range(4)},
+       "four beating processes do not tear the state: %d beats, last %r" % (beats, last.get("last_beat")))
+    m.shutdown()
     # two ticks: the second is refused by tick.lock
     import fcntl
     with open(s.p("tick.lock"), "w") as lk:
@@ -2605,8 +2622,9 @@ def t_pool_jam():
     # a check that ended leaves its clone; one running keeps it
     x = staffed(n=1)
     parked(x, "C0", "queued", None, check={"clone": "/c/check-C0-c1", "run": {"charged": 5}}, not_before=x.now + 10**6)
-    parked(x, "C1", "checking", None, check={"clone": "/c/check-C1-c1", "run": {"charged": None}, "at": x.now, "nonce": "n", "unit": "u"})
+    parked(x, "C1", "checking", None, check={"clone": "/c/check-C1-c1", "run": {"charged": None, "unit": "u"}, "at": x.now, "nonce": "n"})
     x.w.up["u"] = True
+    ok(x.w.alive(x.st("C1")["check"]["run"]), "fixture: C1's checker is alive")
     x.w.pool = {"/c/check-C0-c1": {}, "/c/check-C1-c1": {}}
     R.reclaim_dead(x.s, x.w, x.r, x.now, [])
     ok(list(x.w.pool) == ["/c/check-C1-c1"], "a dead check clone goes, a running one stays")
@@ -4045,8 +4063,11 @@ def t_review_wrong_verdicts():
     st = x.st("I0")
     ok(st["status"] == "candidate" and not st["failures"], "published()=None waits: no bad_candidate")
     x.w.is_pub = True
-    x.tick()
-    ok(x.st("I0")["status"] in ("checking", "candidate"), "and proceeds once origin answers")
+    n = len(x.w.launches)
+    for _ in range(3):
+        x.tick()
+    ok(x.st("I0")["status"] == "checking" and len(x.w.launches) > n,
+       "and proceeds to a checker once origin answers: %s" % x.st("I0")["status"])
     x.done()
     # a close retry asks again whether the sha is still on origin
     x = Rig(n=1, share=1.0)
