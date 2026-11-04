@@ -181,6 +181,40 @@ def _settings_debt(tool, params, out):
 _SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/debug_settings", "jawa/difficulty_tune")   # = wrapup_debt.SETTING_TOOLS
 
 
+LOAD_READY_TOOL = "rimworld/load_game_ready"
+LOAD_READY_WAIT_ENV = "RIMBRIDGE_LOAD_READY_WAIT_S"
+LOAD_READY_WAIT_S = 180.0     # live r8: the stuck state lasted >3 min; a healthy load reads Playing within seconds of the reply
+LOAD_READY_POLL_S = 3.0
+
+
+def _reply_dict(out):
+    """-> (the reply as a dict, True when it came wrapped as MCP content[0].text JSON). Unparseable -> (out, False)."""
+    if isinstance(out, dict) and out.get("content"):
+        try:
+            return json.loads(out["content"][0]["text"]), True
+        except Exception:  # noqa: BLE001
+            return out, False
+    return out, False
+
+
+def _rewrap(out, d, wrapped):
+    if not wrapped:
+        return d
+    w = dict(out)
+    w["content"] = [dict(out["content"][0], text=json.dumps(d))] + list(out["content"][1:])
+    return w
+
+
+def _program_state(gi):
+    """programState from a get_game_info / get_ui_state reply: nested under `state` (get_game_info) or top-level."""
+    if not isinstance(gi, dict):
+        return None
+    st = gi.get("state")
+    if isinstance(st, dict) and st.get("programState"):
+        return st.get("programState")
+    return gi.get("programState")
+
+
 class IndeterminateError(RuntimeError):
     """A previous mutating call's outcome is unknown; refusing further mutations until reconciled."""
 
@@ -977,7 +1011,54 @@ class RimBridge:
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
         _settings_debt(tool, params, out)
+        if tool == LOAD_READY_TOOL:
+            out = self._settle_load_ready(params, out)
         return out
+
+    def _settle_load_ready(self, params, out, sleep=time.sleep, clock=time.time):
+        """BRIDGE_LOAD_FIX_READY_WHILE_INITIALIZING (live r8, 2026-10-26): the first load_game_ready after a cold launch
+        answered success / game_loaded while programState stayed MapInitializing for minutes (a SmashTools
+        DetachedMapComponentCache duplicate key thrown in Map.FinalizeLoading), so every later tick was refused. A success
+        reply is therefore held until get_game_info reads programState Playing; one that never gets there within
+        LOAD_READY_WAIT_S (env RIMBRIDGE_LOAD_READY_WAIT_S, capped by the call deadline) comes back success False with
+        `stuckProgramState`. An explicit readiness other than "playable" (e.g. "mapData", asked for mid-load on purpose) is
+        passed through untouched, as is a failure reply."""
+        readiness = (params or {}).get("readiness")
+        if readiness not in (None, "", "playable"):
+            return out
+        d, wrapped = _reply_dict(out)
+        if not isinstance(d, dict) or d.get("success") is not True:
+            return out
+        try:
+            budget = float(os.environ.get(LOAD_READY_WAIT_ENV) or LOAD_READY_WAIT_S)
+        except ValueError:
+            budget = LOAD_READY_WAIT_S
+        left = _deadline_left()
+        if left is not None:
+            budget = max(0.0, min(budget, left - self.connect_timeout - DEADLINE_MARGIN_S))
+        t0 = clock()
+        st, err = None, None
+        while True:
+            try:
+                gi, _ = _reply_dict(self.call("rimworld/get_game_info", check=False))
+                st = _program_state(gi)
+                err = None
+            except RimBridgeError as ex:          # a main thread busy finishing the load may not answer: keep waiting
+                st, err = None, str(ex)[:200]
+            if st == "Playing":
+                d["programStateAfter"] = "Playing"
+                d["settledSeconds"] = round(clock() - t0, 1)
+                return _rewrap(out, d, wrapped)
+            if clock() - t0 >= budget:
+                break
+            sleep(LOAD_READY_POLL_S)
+        d["loadReplySuccess"] = True
+        d["success"] = False
+        d["stuckProgramState"] = st
+        d["error"] = ("load_game_ready answered success but programState stayed %s for %.0f s (not Playing; %s). Read the "
+                      "FIRST exception in Player.log; go_to_main_menu and load again cleared it in live r8 "
+                      "(BRIDGE_LOAD_FIX_READY_WHILE_INITIALIZING)" % (st, clock() - t0, err or "get_game_info answered"))
+        return _rewrap(out, d, wrapped)
 
     def _set_call_timeout(self, seconds):
         """This connection's per-read timeout: `self.timeout` and the open socket's (a deadline-clamped call sets it,
