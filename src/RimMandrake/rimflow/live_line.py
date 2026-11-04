@@ -119,6 +119,28 @@ def _hook(name, settings):
     return "hook %s is not wired in %s" % (name, ", ".join(paths))
 
 
+METRONOME_TIMER = "rm-metronome.timer"
+PHASES = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils", "systemd",
+                                       "metronome_phases.json"))
+
+
+def metronome_owner(unit, phases=None):
+    """-> the metronome phase that owns this old timer (metronome_phases.json `owns`), or None. At cutover the old
+    timer is disabled on purpose (OPS_RESTART_UNSTICK_FOUNDRY_HDDT), so a promise on it is judged as the metronome.
+    An unreadable table owns nothing: the old timer is judged as written."""
+    if not unit.endswith(".timer"):
+        return None
+    try:
+        with open(phases or PHASES, encoding="utf-8") as f:
+            table = json.load(f)
+        for name, ph in (table.get("phases") or {}).items():
+            if unit in (ph.get("owns") or []):
+                return name
+    except (OSError, ValueError, AttributeError, TypeError):
+        pass
+    return None
+
+
 def _timer_last(unit, runner):
     """-> epoch of the timer's last firing | None."""
     got = _systemctl_show(unit, "LastTriggerUSec", runner)
@@ -147,9 +169,9 @@ def _role_last(role, state_path=None):
         return None
 
 
-def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, state_path=None):
+def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, state_path=None, phases=None):
     """-> None when the line holds, else why not. `settings` is one settings.json to look in, instead of the two
-    defaults."""
+    defaults. A timer a metronome phase owns (`phases`, default the real table) is judged as rm-metronome.timer."""
     try:
         p = parse(line)
     except ValueError as e:
@@ -166,10 +188,14 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         if now - t > p["max_age_s"]:
             return "role %s last launched %d s ago (max %d)" % (p["role"], now - t, p["max_age_s"])
         return "role %s's last launch predates the commit it should prove" % p["role"] if t < not_before else None
+    unit, owner = p["unit"], metronome_owner(p["unit"], phases)
+    if owner:          # disabled on purpose at cutover; the metronome runs its work now
+        unit = METRONOME_TIMER
     for verb, want in (("is-enabled", "enabled"), ("is-active", "active")):
-        got = _systemctl(verb, p["unit"], runner)
+        got = _systemctl(verb, unit, runner)
         if got != want:
-            return "%s: %s says %r, wanted %r" % (p["unit"], verb, got, want)
+            via = " (its phase %s owns %s)" % (owner, p["unit"]) if owner else ""
+            return "%s: %s says %r, wanted %r%s" % (unit, verb, got, want, via)
     if p["max_age_s"] is None:   # a .path unit: enabled and armed is the promise; it fires only when asked
         return None
     if p["reading"]:
@@ -179,10 +205,10 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
             return "reading %s is absent" % p["reading"]
         name = "reading %s" % p["reading"]
     else:
-        mt = _timer_last(p["unit"], runner)
+        mt = _timer_last(unit, runner)
         if mt is None:
-            return "%s has no last firing" % p["unit"]
-        name = "last firing of %s" % p["unit"]
+            return "%s has no last firing" % unit
+        name = "last firing of %s" % unit
     if mt - now > 300:
         return "%s is dated %d s in the future" % (name, mt - now)
     if now - mt > p["max_age_s"]:
