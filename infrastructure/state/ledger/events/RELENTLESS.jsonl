@@ -443,3 +443,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:44:39Z","tsn":1793817879888398172}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T18:50:05Z","tsn":1793818205567598909}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:52:35Z","tsn":1793818355711288094}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T18:52:45Z","tsn":1793818365439506162}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:52:53Z","tsn":1793818373827172518}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A1 (L2), read-only proof","ts":"2026-11-04T18:54:01Z","tsn":1793818441678175431}
