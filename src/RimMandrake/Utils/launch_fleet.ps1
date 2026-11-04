@@ -54,6 +54,10 @@ USAGE
                              # because the marker is what it matches on.
     ... -Survey              # list every fleet window and whether it is live or
                              # dead; changes nothing.
+    ... -Fresh               # the caller has just stopped every Claude process
+                             # (claude-account use, seat_restart's fallback): close
+                             # every window of the -Seats named, read or not, and
+                             # launch them all. machine.json's relaunch passes it.
 
 OPEN ONLY WHAT IS MISSING (owner, 2026-11-04)
 =============================================
@@ -69,6 +73,12 @@ included, is LIVE and kept. A seat with a live window is not
 launched again. Retired titles (AGENT FOUNDRY) are swept the same way: closed only
 when dead.
 
+A caller that has just stopped the seats passes -Fresh instead: reading the screen
+the instant after a kill can still show the old session (or nothing readable), and
+a window kept by mistake there is a seat never relaunched. -Fresh closes every
+window of the seats it launches (only those: the Artist console survives a switch)
+and opens each anew.
+
 Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
@@ -78,7 +88,8 @@ param(
     [int]$DelaySec = 0,
     [switch]$Test,
     [switch]$CloseTest,
-    [switch]$Survey
+    [switch]$Survey,
+    [switch]$Fresh
 )
 
 $ErrorActionPreference = 'Stop'
@@ -225,18 +236,27 @@ $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
 # Sweep every fleet title, retired ones included, whatever -Seats names: a dead
 # window is dead. -Survey reports and stops; a real launch closes the dead.
 if (-not $Test) {
+    $freshTitles = if ($Fresh) { @($Seats | Where-Object { $titleFor.Contains($_) } | ForEach-Object { $titleFor[$_] }) } else { @() }
+    $closed = @()
     foreach ($name in $titleFor.Values) {
         foreach ($h in [Fleet]::WindowsTitled($name)) {
-            $state = Get-TermState $h
+            $state = if ($freshTitles -contains $name) { 'stopped' } else { Get-TermState $h }
             if ($Survey) { "{0,-14} {1,-8} {2}" -f $name, $state, $h; continue }
-            if ($state -eq 'dead') {
+            if ($state -eq 'dead' -or $state -eq 'stopped') {
                 [void][Fleet]::SendMessageW($h, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero)   # WM_CLOSE
-                "closed dead $name window $h"
+                $closed += $h
+                "closed $state $name window $h"
             }
         }
     }
     if ($Survey) { return }
-    Start-Sleep -Milliseconds 500
+    # A closed window lingers a moment; until it is gone it would read as "already open" below.
+    $deadline = (Get-Date).AddSeconds(10)
+    while ($closed.Count -and (Get-Date) -lt $deadline) {
+        $still = @($titleFor.Values | ForEach-Object { [Fleet]::WindowsTitled($_) } | Where-Object { $closed -contains $_ })
+        if (-not $still.Count) { break }
+        Start-Sleep -Milliseconds 200
+    }
 }
 
 foreach ($seat in $Seats) {
@@ -254,7 +274,7 @@ foreach ($seat in $Seats) {
     # Any window still carrying this title after the sweep is a seat that is
     # ALREADY OPEN and live (or unreadable, so kept): leave it where it is.
     $before = [Fleet]::WindowsTitled($title)
-    if ($before.Count -gt 0 -and -not $Test) { "kept live $title"; continue }
+    if ($before.Count -gt 0 -and -not $Test -and -not $Fresh) { "kept live $title"; continue }
 
     # `--title` pins the window title the same way the seat profile's tabTitle
     # does, so the wait-and-place path below is EXACTLY the one being tested.
