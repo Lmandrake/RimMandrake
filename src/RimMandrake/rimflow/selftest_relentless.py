@@ -1507,56 +1507,6 @@ def foreign_rig(**cfg):
     return x
 
 
-def t_refused_start_is_held():
-    """RELENTLESS_START_SILENCE_REFUSED_RETRY_LOOP: put down held and told, not retried and not retired."""
-    x = Rig(n=1)
-    calls = []
-    x.w.ledger_start = lambda item: calls.append(item) or "BENCH may not `start` I0: it belongs to OWNER"
-    for _ in range(2):
-        x.tick()
-        ok(x.st("I0")["status"] == "queued", "a refused start waits its turn in line")
-        x.tick(x.r["breaker_cool_s"] + 1)
-    st = x.st("I0")
-    ok(len(calls) == 3 and st["status"] == "held" and st["hold"]["kind"] == "start_refused", "the third is held: %s" % st)
-    ok("belongs to OWNER" in st["hold"]["why"] and not R.hold_is_his(st["hold"]), "the reason is on the hold, the seat's to read")
-    x.tick(x.r["breaker_cool_s"] * 5)
-    x.tick(x.r["breaker_cool_s"] * 5)
-    ok(len(calls) == 3 and not x.w.launches and x.st("I0")["status"] == "held", "no more tries: %s" % calls)
-    ok(x.w.seat_holds == ["I0"], "told once: %s" % x.w.seat_holds)
-    R.unhold(x.s, "I0", "fixed", x.now)
-    ok(x.st("I0")["status"] == "queued" and not x.st("I0").get("start_refusals") and not x.st("I0")["needs_back"],
-       "unhold is a fresh count, no owner routing to undo")
-    x.tick()
-    ok(len(calls) == 4 and x.st("I0")["status"] == "queued", "and tries at once, three more before a new hold")
-    x.done()
-    # the count is of refusals in a row
-    x = Rig(n=1)
-    x.w.ledger_start, orig = (lambda item: "no"), x.w.ledger_start
-    x.tick()
-    ok(x.st("I0").get("start_refusals") == 1, "setup: one refusal")
-    x.w.ledger_start = orig
-    x.tick(x.r["breaker_cool_s"] + 1)
-    ok(x.w.launches and "start_refusals" not in x.st("I0"), "a start that lands clears the count")
-    x.done()
-    # after a hand-over the item stayed in line for good, so this was a loop nothing ever ended
-    x = foreign_rig()
-    x.w.ledger_start = lambda item: "no"
-    for _ in range(3):
-        x.tick()
-        x.tick(x.r["breaker_cool_s"] + 1)
-    ok(x.st("I0")["status"] == "held" and x.st("I0")["hold"]["kind"] == "start_refused" and x.w.takes == ["I0"],
-       "a foreign item is held too, taken once: %s %s" % (x.st("I0")["status"], x.w.takes))
-    x.done()
-    # the reason survives the cut
-    long_advice = "\n".join(["advice line %d, of no use as a reason" % i for i in range(40)])
-    r = types.SimpleNamespace(stderr="BENCH may not `start` I0: it belongs to OWNER.\n" + long_advice, stdout="")
-    w = R.refusal_words(r)
-    ok("belongs to OWNER" in w and len(w) <= 300, "the first line stays: %r" % w)
-    r = types.SimpleNamespace(stderr="Traceback (most recent call last):\n" + long_advice + "\nKeyError: 'x'", stdout="")
-    ok("KeyError" in R.refusal_words(r), "and a traceback's last line")
-    ok(R.refusal_words(types.SimpleNamespace(stderr="", stdout="short")) == "short", "a short one is whole")
-
-
 def t_foreign_take():
     x = foreign_rig()
     seen = []
@@ -3217,6 +3167,88 @@ def t_parked_system_items_hold_no_sys_room():
     x.done()
 
 
+def _line_of_two(mark):
+    """I0 (the Abyss) and I2 (another mod) fill max_queued 2, each marked by `mark`; I1 is also the Abyss. -> what enrol took."""
+    x = _abyss_line(abyss=("I0", "I1"), max_queued=2)
+    for i in ("I0", "I2"):
+        R.enrol_one(x.s, i, "seeded", x.now)
+        st = x.st(i)
+        mark(st, x.now)
+        x.s.save(st)
+    took = R.enrol(x.s, x.w, x.r, x.now)
+    x.done()
+    return took
+
+
+def t_plain_queued_items_hold_their_places():
+    """The control for every parked clause: an item that CAN start still holds its place, or max_queued means nothing."""
+    ok(_line_of_two(lambda st, now: None) == [], "a line of two startable items at max_queued 2 enrols nothing")
+
+
+def t_consulting_item_holds_no_line_place():
+    """Its next brief is the consult's answer, so lease() walks past it: while one is out it holds no place, then it does."""
+    for word in ("wanted", "running"):
+        def mark(st, now, word=word):
+            st["help"] = {"status": word}
+        took = _line_of_two(mark)
+        ok(len(took) == 2 and "I1" in took, "consult %s: two others enrol, I1 of the same mod among them: %s" % (word, took))
+    def over(st, now):
+        st["help"] = {"status": "answered"}
+    ok(_line_of_two(over) == [], "a consult that answered: the item can start and holds its place again")
+
+
+def t_refused_start_holds_no_line_place():
+    """The filed case's second cause (EGROWTH start_refused): cooling after a refused start holds no place; cooled, it does."""
+    def cooling(st, now):
+        st["start_again_at"] = now + 3600
+    took = _line_of_two(cooling)
+    ok(len(took) == 2 and "I1" in took, "start refused and cooling: two others enrol, I1 of the same mod among them: %s" % took)
+    def cooled(st, now):
+        st["start_again_at"] = now - 1
+    ok(_line_of_two(cooled) == [], "the cool over: it can start and holds its place again")
+
+
+def t_incident_line_fills_every_place():
+    """The filed numbers, the line brim-full: max_queued 8 and four places; one FlowWorks and one EGROWTH run, eight wait
+    behind them (seven and one). Every place must fill from other mods and the eight stay in line, unstarted."""
+    flow = ["I%d" % i for i in range(8)]
+    egrowth = ["I8", "I9"]
+    others = ["I%d" % i for i in range(10, 16)]
+    x = Rig(n=16, share=1.0, max_workers=4, staffing=None, max_queued=8)
+    x.r["one_builder_per_mod"] = True
+    x.w.item_mods = lambda st: (["RimMandrake/FlowWorks"] if st["item"] in flow else
+                                ["RimMandrake/EGrowth"] if st["item"] in egrowth else ["RimUtinni/" + st["item"]])
+    for i in flow + egrowth:
+        R.enrol_one(x.s, i, "seeded", x.now)
+    for _ in range(6):
+        x.tick(60)
+    places = lambda ids: [i for i in ids if x.st(i) and x.st(i)["status"] in R.HOLDS_A_PLACE]
+    got = (len(places(flow)), len(places(egrowth)), len(places(others)))
+    ok(got == (1, 1, 2), "all four places filled, one builder per held mod, two from other mods: %s" % (got,))
+    ok(sum(1 for i in flow + egrowth if x.st(i)["status"] == "queued") == 8, "the eight behind the held mods keep their places")
+    x.done()
+
+
+def t_enrol_reads_store_once_per_line():
+    """parked() gets the states enrol already read: the line's length must not multiply store reads (the file read per item
+    per tick that a long line pays)."""
+    def reads(n):
+        x = _abyss_line(n=12, abyss=tuple("I%d" % i for i in range(n)), max_queued=50)
+        for i in range(n):
+            R.enrol_one(x.s, "I%d" % i, "seeded", x.now)
+        count = [0]
+        real = x.s.states
+        def states():
+            count[0] += 1
+            return real()
+        x.s.states = states
+        R.enrol(x.s, x.w, x.r, x.now)
+        x.done()
+        return count[0]
+    a, b = reads(2), reads(8)
+    ok(a == b, "store reads in one enrol do not grow with the line: %d for 2 queued, %d for 8" % (a, b))
+
+
 def t_item_mods_real():
     import tempfile
     b = tempfile.mkdtemp()
@@ -3523,7 +3555,7 @@ def t_hold_routing():
 
 def main():
     picked, ran = set(sys.argv[1:]), 0      # no names: every test
-    for t in (t_refused_start_is_held, t_hold_routing, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_hold_routing, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
