@@ -1996,7 +1996,10 @@ def rl_churn(store, now, cfg):
       RETURNED TOKENS: every run in the spend-YYYYMMDD.json files (marker rm-relentless-{work|check}-<sha1(item)[:10]>-g<gen>)
       whose (item, gen) ended in a failed attempt; a run is placed in time by its gen's start row. A run the instrument
       cannot place (unknown marker or no start row) is `unmapped`: over churn_max_unmapped_pct of the window it reads
-      UNMEASURED, and no spend in the window is UNMEASURED too (an idle lane is not a clean one)."""
+      UNMEASURED, and no spend in the window is UNMEASURED too (an idle lane is not a clean one).
+      x.by_end (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV): the returned spend per ending class of the gen's last failed row
+      and lane (work|check), largest first, each "<end>/<lane> <pct of total>%": the 2026-11-04 alarm was diagnosed by
+      hand from the store; this reads the shared cause (account_lost/work, unmeasured/check ...) off the point itself."""
     win_h, toks_h = float(cfg.get("churn_window_h", 12)), float(cfg.get("tokens_window_h", 24))
     n_ret, n_same = int(cfg.get("churn_returns", 3)), int(cfg.get("churn_same_class", 2))
     ok_ends = set(cfg.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked"))
@@ -2007,7 +2010,7 @@ def rl_churn(store, now, cfg):
         why = "items unreadable: %s" % str(e)[:120]
         return churn_blind(why)
     import hashlib
-    by_hash, failed, started, churn, classes, torn = {}, set(), {}, [], {}, 0
+    by_hash, failed, started, churn, classes, torn = {}, {}, {}, [], {}, 0
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
@@ -2025,7 +2028,7 @@ def rl_churn(store, now, cfg):
                     if r.get("start"):
                         started[(n, r["gen"])] = t
                     elif r.get("end") and r["end"] not in ok_ends and "kind" not in r:
-                        failed.add((n, r["gen"]))
+                        failed[(n, r["gen"])] = str(r["end"])     # the gen's last failed ending names its cause
                         fails.append((t or 0, str(r["end"])))
         except OSError:
             pass        # an item never started has no attempts file
@@ -2048,6 +2051,7 @@ def rl_churn(store, now, cfg):
                                        last_fail=cause, torn_states=torn,
                                        spent=sum(-s for s, _ in churn))}
     tot = ret = unmapped = 0
+    by_end = {}
     rx = re.compile(r"rm-relentless-(?:work|check)-([0-9a-f]{10})-g(\d+)")
     day0 = time.strftime("%Y%m%d", time.gmtime(tlo))
     files = sorted(p for p in glob.glob(str(store / "spend-*.json")) if Path(p).name[6:14] >= day0)
@@ -2070,7 +2074,10 @@ def rl_churn(store, now, cfg):
             if not tlo <= t <= now + 300:
                 continue
             tot += tk
-            ret += tk if key in failed else 0
+            if key in failed:
+                ret += tk
+                k = "%s/%s" % (failed[key], m.split("-")[2])
+                by_end[k] = by_end.get(k, 0) + tk
     if tot <= 0:
         why = "no placed spend in the last %gh (%d spend files)" % (toks_h, len(files))
         pts.update(churn_blind(why, tokens_only=True))
@@ -2080,7 +2087,8 @@ def rl_churn(store, now, cfg):
         why = "%.0f%% of the window's spend files has no item or gen start the instrument can place" % share
         pts.update(churn_blind(why, tokens_only=True))
         return pts
-    x = {"total": tot, "returned": ret, "unmapped": unmapped, "window_h": toks_h}
+    x = {"total": tot, "returned": ret, "unmapped": unmapped, "window_h": toks_h,
+         "by_end": ["%s %.1f%%" % (k, 100.0 * v / tot) for k, v in sorted(by_end.items(), key=lambda kv: (-kv[1], kv[0]))[:6]]}
     pts["relentless.returned_tokens_day"] = M(round(ret * 24.0 / toks_h), CHURN_UNITS[1], **x)
     pts["relentless.returned_tokens_pct"] = M(round(100.0 * ret / tot, 1), CHURN_UNITS[2], **x)
     return pts

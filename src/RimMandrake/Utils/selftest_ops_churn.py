@@ -6,7 +6,8 @@ and no reading said so. Each check fails on the code before the change:
 
 1. rl_churn counts an item in churn by returns OR a repeated failure class, only with a failure inside the window; a
    blocked row or a finish is not a failure.
-2. rl_churn's returned tokens: spend runs whose (item, gen) failed, placed in time by the gen's start row.
+2. rl_churn's returned tokens: spend runs whose (item, gen) failed, placed in time by the gen's start row. x.by_end splits
+   that spend by the gen's failed ending and lane, so an alarm reads its shared cause off the point.
 3. rl_churn is UNMEASURED (never 0) with no spend, with too much spend it cannot place, and with no items dir.
 4. rules: a "returned" or "blind_fail" journal act is not progress; churn SLIs are incident SLIs whose units match.
 5. ops_health.incident names the incident SLIs reading bad, and verdict carries it.
@@ -100,6 +101,9 @@ def main():
     ok(pct.get("m") == "MEASURED" and pct["v"] == 40.0 and pct["x"]["returned"] == 400 and pct["x"]["total"] == 1000,
        "2: returned share = failed-gen runs over placed runs (400 of 1000)", pct)
     ok(p["relentless.returned_tokens_day"].get("v") == 400, "2: returned tokens per 24 h", p["relentless.returned_tokens_day"])
+    ok(pct["x"].get("by_end") == ["harness/work 30.0%", "evidence/check 10.0%"],
+       "2: by_end names the returned spend per ending class and lane, largest first (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV)",
+       pct["x"].get("by_end"))
     # 3
     s = store_fixture(TMP / "s2", unmapped=5000)
     p = OW.rl_churn(s, NOW, CFG)
