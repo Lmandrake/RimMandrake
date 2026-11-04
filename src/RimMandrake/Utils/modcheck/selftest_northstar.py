@@ -161,6 +161,158 @@ def test_validate_persists_the_owner_words():
            "the words sit outside the hash: re-recording does not change it")
         ok(text.count("validated-by:") == 1, "one line")
 
+
+def _git(cwd, *args):
+    import subprocess
+    subprocess.run(("git", "-c", "user.name=t", "-c", "user.email=t@t", "-c",
+                    "commit.gpgsign=false") + args, cwd=cwd, check=True,
+                   capture_output=True)
+
+
+def test_delegated_route_binds_new_bars_only():
+    print("--- validate --delegated binds additions only (MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS) ---")
+    import contextlib
+    import io
+    import json
+
+    import cli
+
+    VALID = "state: " + northstar.VALIDATED
+    base = ("# Del\n\n## north star\nstate: DRAFT\nvalidated-hash:\n\n"
+            "### the experience\nIt should feel like a hole.\n\n"
+            "### must show\n- [ ] `a_bar` -- a dark hole at play zoom\n"
+            "- [ ] `b_bar` (change) -- the occupant sinks\n\n"
+            "### cannot show\n- [ ] `no_float` -- a pawn floating over it\n\n"
+            "## after\n- x\n")
+    with tempfile.TemporaryDirectory() as tmp:
+        _git(tmp, "init", "-q", "-b", "main")
+        d = os.path.join(tmp, "design", "validation_walks", "RimMandrake")
+        os.makedirs(d)
+        vd = os.path.join(tmp, "infrastructure", "state", "delegated", "2026-11-04")
+        os.makedirs(vd)
+        for name, verdict in (("pass.json", "PASS"), ("no.json", "NO")):
+            with open(os.path.join(vd, name), "w") as fh:
+                json.dump({"verdict": verdict}, fh)
+        with open(os.path.join(tmp, "stray.json"), "w") as fh:
+            json.dump({"verdict": "PASS"}, fh)
+        p = os.path.join(d, "Del.md")
+        good = "infrastructure/state/delegated/2026-11-04/pass.json"
+
+        def write(text):
+            with open(p, "w", encoding="utf-8") as fh:
+                fh.write(text)
+
+        def run(verdict=good):
+            real_f, real_root = northstar.find_walk, runner.ROOT
+            northstar.find_walk = lambda root, mod: p
+            runner.ROOT = tmp
+            buf = io.StringIO()
+            try:
+                with contextlib.redirect_stdout(buf):
+                    rc = cli._validate("Del", None, delegated=True, judge_verdict=verdict)
+            finally:
+                northstar.find_walk, runner.ROOT = real_f, real_root
+            return rc, buf.getvalue()
+
+        def commit():
+            _git(tmp, "add", "design")
+            _git(tmp, "commit", "-q", "-m", "v")
+
+        write(base)
+        commit()
+        ok(run(None)[0] == 2, "no --judge-verdict: refused")
+        ok(run("infrastructure/state/delegated/2026-11-04/no.json")[0] == 2,
+           "a NO verdict: refused")
+        ok(run("stray.json")[0] == 2, "a verdict outside infrastructure/state/delegated/: refused")
+        ok(run("infrastructure/state/delegated/2026-11-04/absent.json")[0] == 2,
+           "a missing verdict file: refused")
+        ok(northstar.parse(p)["state"] == northstar.DRAFT, "refusals wrote nothing")
+
+        rc, out = run()
+        text = open(p, encoding="utf-8").read()
+        ok(rc == 0 and northstar.parse(p)["state"] == northstar.VALIDATED,
+           "first validation of an all-new section binds")
+        ok("validated-by: delegated: new north-star bars; judge verdict %s" % good in text,
+           "validated-by names the class and the judge verdict path")
+        commit()
+        validated = open(p, encoding="utf-8").read()
+
+        added = validated.replace(
+            "### cannot show\n",
+            "- [ ] `c_bar` -- a new third bar\n\n### cannot show\n").replace(
+            "## after", "- [ ] `no_glow` -- a glowing rim\n\n## after")
+        write(added)
+        ok(northstar.parse(p)["state"] == northstar.DRAFT, "an addition reverts to DRAFT by hash")
+        rc, out = run()
+        ok(rc == 0 and northstar.parse(p)["state"] == northstar.VALIDATED,
+           "added must-show and cannot-show lines bind (uncommitted edit, baseline from git)")
+        ok("additions only vs" in open(p, encoding="utf-8").read(),
+           "validated-by says it was checked against an earlier validated version")
+        commit()
+        validated2 = open(p, encoding="utf-8").read()
+
+        loosen = {
+            "removed": validated2.replace("- [ ] `c_bar` -- a new third bar\n", ""),
+            "merged": validated2.replace("- [ ] `b_bar` (change) -- the occupant sinks\n", "").replace(
+                "a dark hole at play zoom", "a dark hole at play zoom and the occupant sinks"),
+            "relaxed prose": validated2.replace("a dark hole at play zoom", "a hole at some zoom"),
+            "relaxed kind": validated2.replace("`b_bar` (change)", "`b_bar`"),
+            "cannot moved to must": validated2.replace(
+                "### cannot show\n- [ ] `no_float` -- a pawn floating over it\n",
+                "- [ ] `no_float` -- a pawn floating over it\n### cannot show\n"),
+            "cannot removed": validated2.replace("- [ ] `no_glow` -- a glowing rim\n", ""),
+            "vision prose deleted": validated2.replace("It should feel like a hole.\n", ""),
+            "continuation appended": validated2.replace(
+                "a dark hole at play zoom\n", "a dark hole at play zoom\n  or not, if hard\n"),
+        }
+        for label, text in loosen.items():
+            ok(text != validated2, "fixture really changes: %s" % label)
+            write(text)
+            rc, out = run()
+            ok(rc == 2 and "REFUSED" in out and northstar.parse(p)["state"] == northstar.DRAFT,
+               "loosening refused, nothing written: %s" % label)
+
+        # Stripping the headers does not escape the baseline: history still has it.
+        lines = []
+        for line in validated2.replace("- [ ] `c_bar` -- a new third bar\n", "").split("\n"):
+            low = line.lower()
+            if low.startswith("validated-by:"):
+                continue
+            if low.startswith("validated-hash:"):
+                line = "validated-hash:"
+            if line == VALID:
+                line = "state: DRAFT"
+            lines.append(line)
+        write("\n".join(lines))
+        rc, out = run()
+        ok(rc == 2 and "removed or merged" in out,
+           "headers stripped: the removal is still caught against git history")
+
+        write(validated2)
+        rc, out = run()
+        ok(rc == 0, "re-validating an unchanged validated section succeeds")
+
+        # A recorded hash no history version carries (a walk never committed
+        # validated): the baseline is unprovable.
+        p = os.path.join(d, "Fresh.md")
+        lines = []
+        for line in validated2.split("\n"):
+            if line.lower().startswith("validated-hash:"):
+                line = "validated-hash: " + "f" * 64
+            if line == VALID:
+                line = "state: DRAFT"
+            lines.append(line)
+        write("\n".join(lines))
+        rc, out = run()
+        ok(rc == 2 and "unprovable" in out, "an unmatched recorded hash: refused as unprovable")
+
+        buf = io.StringIO()
+        with contextlib.redirect_stderr(buf), contextlib.redirect_stdout(io.StringIO()):
+            rc = cli.main(["validate", "Del", "--delegated", "--owner-said", "yes these"])
+        ok(rc == 2 and "REFUSED" in buf.getvalue(),
+           "--delegated with --owner-said is refused (one authority per act)")
+
+
 # ------------------------------------------------------ the validation gate
 def test_validation_and_tamper_reversion():
     print("--- validating records a hash; ANY later edit reverts to DRAFT ---")
@@ -568,6 +720,7 @@ def main():
               test_missing_section_is_todays_behaviour,
               test_zero_bar_section_cannot_be_validated,
               test_validate_persists_the_owner_words,
+              test_delegated_route_binds_new_bars_only,
               test_validation_and_tamper_reversion,
               test_declared_validated_without_hash_is_draft,
               test_whitespace_reflow_does_not_invalidate,

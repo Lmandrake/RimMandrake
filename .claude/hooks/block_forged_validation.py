@@ -99,7 +99,7 @@ def offence(tool, tool_input):
                     % REGISTRY)
         if "validation_walks" in cmd and BASH_WRITE.search(cmd) and BASH_FORGED.search(cmd):
             return ("this writes `state: VALIDATED` or a `validated-hash:` value into a "
-                    "validation walk by hand. Only the owner validates a checklist")
+                    "validation walk by hand. Only the validate verb binds a checklist")
         return None
 
     if tool not in EDIT_TOOLS:
@@ -117,7 +117,7 @@ def offence(tool, tool_input):
         text = _new_text(tool, tool_input)
         if FORGED_STATE.search(text):
             return ("this writes `state: VALIDATED` into a validation walk by "
-                    "hand. Only the owner validates a checklist")
+                    "hand. Only the validate verb binds a checklist")
         if FORGED_HASH.search(text):
             return ("this writes a `validated-hash:` value by hand. That hash "
                     "is what makes his validation un-rewritable; setting it "
@@ -143,12 +143,15 @@ def main():
             "permissionDecision": "deny",
             "permissionDecisionReason": (
                 "Blocked: %s.\n\n"
-                "A DRAFT checklist cannot green a mod, and the only route from "
-                "DRAFT to VALIDATED is his word:\n\n"
+                "A DRAFT checklist cannot green a mod. The routes from DRAFT "
+                "to VALIDATED are his word (or the Conductor's, --per-ruling):\n\n"
                 "    %s\n\n"
-                "That verb prints every line about to bind and writes nothing "
-                "without --owner-said. Run it with no --owner-said to read the "
-                "bar to him first.\n\n"
+                "or, for NEW bars only (owner 2026-10-26, delegation_policy.md "
+                "§2.1), `validate <mod> --delegated --judge-verdict <json>`, "
+                "which refuses any loosening against the last validated "
+                "section.\n\n"
+                "The verb prints every line about to bind and writes nothing "
+                "without an authority. Run it bare to read the bar first.\n\n"
                 "Drafting is not blocked: `state: DRAFT` with a blank "
                 "`validated-hash:` is the correct agent-written form, and "
                 "distilling must-show lines from his recorded words is the "

@@ -7,6 +7,7 @@
     python3     src/RimMandrake/Utils/modcheck/cli.py rename-key <old> <new> --why "..."
     python3     src/RimMandrake/Utils/modcheck/cli.py forget-key <key> --why "..."
     python3     src/RimMandrake/Utils/modcheck/cli.py validate <mod> [--owner-said "..."]
+    python3     src/RimMandrake/Utils/modcheck/cli.py validate <mod> --delegated --judge-verdict <json>
     python3     src/RimMandrake/Utils/modcheck/cli.py review <mod> --owner-said "..."
     python3     src/RimMandrake/Utils/modcheck/cli.py record <mod> --result <json> [--tier T]
 
@@ -33,7 +34,11 @@ agent-drafted `## north star` checklist into a binding bar, `review` records
 that he has read a run's sheet with his own eyes -- required once, before a
 mod's first GREEN. Both take his verbatim `--owner-said` and neither re-derives
 his judgement; `validate` with no `--owner-said` prints the bar and writes
-nothing, so the lines can be read to him first.
+nothing, so the lines can be read to him first. `validate --delegated
+--judge-verdict <json>` binds NEW bars without his words (owner 2026-10-26,
+delegation_policy.md §2.1) and refuses any loosening against the section's last
+validated version in git history; the walk's `validated-by:` then names the
+class and the judge's verdict file.
 """
 import argparse
 import os
@@ -147,6 +152,13 @@ def main(argv=None):
     p_val.add_argument("--per-ruling", help="with --why: a Conductor instruction "
                        "(conductor_authority.RULING). Stands in for --owner-said")
     p_val.add_argument("--why", help="the Conductor's text; alone it grants nothing")
+    p_val.add_argument("--delegated", action="store_true",
+                       help="bind NEW bars without his words (owner 2026-10-26, "
+                            "delegation_policy.md §2.1): refused if the section "
+                            "loosens its last validated version; needs --judge-verdict")
+    p_val.add_argument("--judge-verdict",
+                       help="with --delegated: the judge's verdict JSON under "
+                            "infrastructure/state/delegated/ (top-level verdict PASS)")
 
     p_rev = sub.add_parser("review", help="record that the owner reviewed a "
                                           "mod's sheet -- once, before its first GREEN")
@@ -313,6 +325,14 @@ def main(argv=None):
 
     if args.cmd == "validate":
         import conductor_authority as CA
+        if args.delegated or args.judge_verdict:
+            if args.owner_said or args.by_card or args.per_ruling:
+                print("REFUSED: --delegated is the route WITHOUT his authority; "
+                      "do not combine it with --owner-said, --by-card or --per-ruling",
+                      file=sys.stderr)
+                return 2
+            return _validate(args.mod, None, delegated=True,
+                             judge_verdict=args.judge_verdict)
         return _validate(args.mod, ("BY CARD: " + args.by_card if args.by_card and not args.owner_said else None)
                          or CA.words(args.owner_said, args.per_ruling, args.why))
 
@@ -454,7 +474,36 @@ def _verdict_line(result):
     return "RED" + ("  (%s)" % "; ".join(failed) if failed else "")
 
 
-def _validate(mod, owner_said):
+DELEGATED_VERDICTS = ("PASS", "KEEP", "APPROVE", "YES")
+
+
+def _judge_verdict_ok(root, path):
+    """(relpath, None) when PATH is a committed-style judge verdict that passes,
+    else (None, why). delegation_policy.md §3: verdicts live under
+    infrastructure/state/delegated/<date>/ and are cited by path."""
+    import json
+    if not path:
+        return None, "--delegated needs --judge-verdict <path to the judge's verdict JSON>"
+    full = path if os.path.isabs(path) else os.path.join(root, path)
+    full = os.path.realpath(full)
+    base = os.path.realpath(os.path.join(root, "infrastructure", "state", "delegated"))
+    if not full.startswith(base + os.sep):
+        return None, "judge verdict must live under infrastructure/state/delegated/ (got %s)" % path
+    if not os.path.isfile(full):
+        return None, "judge verdict file not found: %s" % path
+    try:
+        with open(full, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except ValueError as e:
+        return None, "judge verdict is not JSON (%s): %s" % (e, path)
+    verdict = str(data.get("verdict", "")).strip().upper() if isinstance(data, dict) else ""
+    if verdict not in DELEGATED_VERDICTS:
+        return None, ("judge verdict is %r, not one of %s: %s"
+                      % (verdict or "missing", "/".join(DELEGATED_VERDICTS), path))
+    return os.path.relpath(full, os.path.realpath(root)).replace(os.sep, "/"), None
+
+
+def _validate(mod, owner_said, delegated=False, judge_verdict=None):
     """Print the must-show lines about to BIND, then record his validation.
 
     Refuses to bless silently, exactly as `code_review_status.py mark-clean`
@@ -507,6 +556,34 @@ def _validate(mod, owner_said):
     for req_id in ns["cannot_show"]:
         print("  cannot  %-32s %s" % (req_id, ns["cannot_show_text"][req_id]))
 
+    if delegated:
+        rel, why = _judge_verdict_ok(runner.ROOT, judge_verdict)
+        if not rel:
+            print("\nREFUSED: %s" % why)
+            return 2
+        try:
+            base, where = northstar.validated_baseline(walk)
+        except ValueError as e:
+            print("\nREFUSED: %s" % e)
+            return 2
+        with open(walk, encoding="utf-8") as fh:
+            now = northstar._section_lines(fh.read())
+        loose = northstar.loosenings(base, now)
+        if loose:
+            print("\nREFUSED: the delegated route binds NEW bars only; against the "
+                  "last validated section (%s) this loosens:" % where)
+            for row in loose:
+                print("  - %s" % row)
+            print("Loosening a bar (remove, merge, relax) stays his "
+                  "(delegation_policy.md §2.1): use --owner-said.")
+            return 2
+        owner_said = "%s; judge verdict %s%s" % (
+            northstar.DELEGATED_WHY, rel,
+            "" if base is None else "; additions only vs %s" % where[:12])
+        print("\ndelegated: %s" % ("no earlier validated section -- every bar is new"
+                                    if base is None else
+                                    "additions only vs the validated section at %s" % where[:12]))
+
     if not owner_said:
         print("\n%d must-show + %d cannot-show lines would bind %s."
               % (len(ns["must_show"]), len(ns["cannot_show"]), mod))
@@ -516,7 +593,12 @@ def _validate(mod, owner_said):
         return 1
 
     written = northstar.record_validation(walk, owner_said)
-    print("\nVALIDATED at %s\n  owner said: %s" % (written[:12], owner_said))
+    print("\nVALIDATED at %s\n  %s: %s" % (written[:12], "authority" if delegated else "owner said",
+                                            owner_said))
+    if delegated:
+        print("  Record it: rimflow note <ITEM> --why \"%s\" --text \"<mod> bound; %s\"; "
+              "commit body line 'Delegated: new north-star bars — <mod>'."
+              % (northstar.DELEGATED_WHY, judge_verdict))
     print("  %d must-show + %d cannot-show lines now bind %s."
           % (len(ns["must_show"]), len(ns["cannot_show"]), mod))
     print("  Any later edit to the section reverts it to DRAFT by hash "

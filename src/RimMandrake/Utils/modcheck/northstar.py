@@ -308,3 +308,134 @@ def record_validation(path, owner_said=None):
     with open(path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(out) + ("\n" if text.endswith("\n") else ""))
     return new_hash
+
+
+# ------------------------------------------------- delegated NEW bars only
+# Owner, 2026-10-26 (delegation_policy.md §2.1): "Both autonomy questions are
+# yes, it has authorization for autonomy." NEW north-star bars are the
+# Arbiter's to add; loosening a bar (remove, merge, relax) stays his. The
+# delegated route therefore binds a section only when, against the last
+# VALIDATED version of the same section, every change is an ADDITION
+# (MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS).
+DELEGATED_WHY = "delegated: new north-star bars"
+
+
+def _git(cwd, *args):
+    import subprocess
+    r = subprocess.run(("git",) + args, cwd=cwd, capture_output=True,
+                       text=True, encoding="utf-8", errors="replace")
+    return r.returncode, r.stdout
+
+
+def validated_baseline(path):
+    """The last VALIDATED `## north star` section this walk ever carried.
+
+    Returns (lines, where): `lines` is that section (list of str) and `where`
+    names its source ("working tree" or a commit sha). Returns (None, None)
+    when no version of the file -- on disk or in git history -- was ever
+    effectively VALIDATED: the section is all new. Raises ValueError when the
+    file names a `validated-hash:` that no version matches (the baseline is
+    unprovable, so nothing may be called an addition) or git cannot be read.
+
+    Git history is the store on purpose: a later agent that strips the
+    `state:`/`validated-hash:` headers before re-validating is still compared
+    against the version he (or a delegate) last bound.
+    """
+    with open(path, "r", encoding="utf-8") as fh:
+        current = fh.read()
+    if parse(path)["state"] == VALIDATED:
+        return _section_lines(current), "working tree"
+
+    d = os.path.dirname(os.path.abspath(path))
+    rc, top = _git(d, "rev-parse", "--show-toplevel")
+    if rc != 0:
+        raise ValueError("%s is not in a git checkout; the last validated "
+                         "section cannot be read" % path)
+    top = top.strip()
+    rel = os.path.relpath(os.path.realpath(os.path.abspath(path)),
+                          os.path.realpath(top)).replace(os.sep, "/")
+    # --follow crosses renames; --name-only gives the path AT each commit.
+    rc, log = _git(top, "log", "--follow", "--name-only", "--format=@%H",
+                   "--", rel)
+    if rc != 0:
+        raise ValueError("git log failed for %s" % rel)
+    versions, sha = [], None
+    for line in log.splitlines():
+        if line.startswith("@"):
+            sha = line[1:].strip()
+        elif line.strip() and sha:
+            versions.append((sha, line.strip()))
+            sha = None
+    recorded = ""
+    for line in _section_lines(current):
+        if line.strip().lower().startswith("validated-hash:"):
+            recorded = line.split(":", 1)[1].strip()
+    for sha, at in versions:
+        rc, old = _git(top, "show", "%s:%s" % (sha, at))
+        if rc != 0:
+            continue
+        lines = _section_lines(old)
+        if not lines:
+            continue
+        declared, rec = DRAFT, ""
+        for line in lines:
+            low = line.strip().lower()
+            if low.startswith("state:"):
+                declared = line.split(":", 1)[1].strip().upper()
+            elif low.startswith("validated-hash:"):
+                rec = line.split(":", 1)[1].strip()
+        if declared == VALIDATED and rec and rec == content_hash(lines):
+            return lines, sha
+    if recorded:
+        raise ValueError("the walk records validated-hash %s but no version in "
+                         "git history carries that validated section; the "
+                         "baseline is unprovable" % recorded[:12])
+    return None, None
+
+
+def _norm(s):
+    return " ".join(str(s).split())
+
+
+def loosenings(old_lines, new_lines):
+    """Every way NEW_LINES loosens OLD_LINES (both a section's lines). Empty
+    list = the change is additions only.
+
+    Refused: a removed id (a merge drops one), an id moved between `must show`
+    and `cannot show`, an id whose prose or `(change)`/`(state)` kind changed
+    (a relaxed line -- no attempt is made to tell a tightening rewording from a
+    loosening one), and any other old line (vision prose included) that is no
+    longer present, in order, in the new section.
+    """
+    if old_lines is None:
+        return []
+    om, omt, oc, oct_, ok_ = _checklists(old_lines)
+    nm, nmt, nc, nct, nk = _checklists(new_lines)
+    out = []
+    for pol, ids, txt, new_ids, new_txt, other in (
+            (MUST, om, omt, nm, nmt, nc), (CANNOT, oc, oct_, nc, nct, nm)):
+        for i in ids:
+            if i not in new_ids:
+                out.append("`%s` (%s show) %s" % (
+                    i, pol, "moved to the other checklist" if i in other
+                    else "removed or merged"))
+                continue
+            if _norm(txt[i]) != _norm(new_txt[i]):
+                out.append("`%s` (%s show) reworded: was %r, now %r"
+                           % (i, pol, _norm(txt[i]), _norm(new_txt[i])))
+            if ok_.get(i) != nk.get(i):
+                out.append("`%s` kind changed %s -> %s" % (i, ok_.get(i), nk.get(i)))
+    old_c = _canonical(old_lines).decode("utf-8").split("\n")
+    new_c = _canonical(new_lines).decode("utf-8").split("\n")
+    j = 0
+    for line in old_c:
+        if not line.strip():
+            continue
+        k = j
+        while k < len(new_c) and new_c[k] != line:
+            k += 1
+        if k >= len(new_c):
+            out.append("line gone, changed or reordered: %r" % line.strip())
+            continue
+        j = k + 1
+    return out
