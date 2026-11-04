@@ -1805,46 +1805,29 @@ def t_foreign_eligible():
 def t_parked_list():
     """RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED: the filler staffed WARSCAR_PILGRIM_CAMP_SITES_1, which the owner's card
     parked on the paint list; it looked proposed+offline and foreign_ok had no parked test."""
-    d = tempfile.mkdtemp(prefix="rlt-park-")
-    items = os.path.join(d, "items")
-    os.makedirs(os.path.join(items, "closed"))
-    lst = os.path.join(items, "PAINT_LIST_X.md")
-    with open(lst, "w", encoding="utf-8") as f:
-        f.write("# PAINT_LIST_X\n\n## addition\n\nparked: `X_PARKED_FIX`\nparked: Y_PARKED_FIX\n"
-                "Prose that says it is parked: Z_FREE_FIX does not park it.\n")
-    r = dict(RULES, pool_seats=["BENCH", "FOUNDRY"], staffing=dict(STAFF), pool_ids_exclude=[], pool_parked_lists=[lst])
+    r = dict(RULES, pool_seats=["BENCH", "FOUNDRY"], staffing=dict(STAFF), pool_ids_exclude=[],
+             pool_parked_lists={"PAINT_LIST_X": ["X_PARKED_FIX", "Y_PARKED_FIX"], "_note": ["NOT_A_LIST"]})
 
     def it(id, owner="FOUNDRY"):
         return types.SimpleNamespace(id=id, owner=owner, state="proposed", kind="task", title="a title", blocked=False,
                                      needs="offline", lease=None, target="v1")
-    ok(R.parked_ids(r) == {"PAINT_LIST_X", "X_PARKED_FIX", "Y_PARKED_FIX"}, "parked lines and the list item: %s" % R.parked_ids(r))
+    ok(R.parked_ids(r) == {"PAINT_LIST_X", "X_PARKED_FIX", "Y_PARKED_FIX"}, "parked ids and the list item: %s" % R.parked_ids(r))
     ok(not R.eligible(it("X_PARKED_FIX"), r), "a parked proposed+offline item of the other seat is not eligible")
     ok(not R.eligible(it("Y_PARKED_FIX", owner="BENCH"), r), "nor one of our own seat")
     ok(not R.eligible(it("PAINT_LIST_X", owner="BENCH"), r), "nor the list item itself")
-    ok(R.eligible(it("Z_FREE_FIX"), r), "a mid-line 'parked:' in prose parks nothing")
+    ok(R.eligible(it("Z_FREE_FIX"), r), "an id on no list stays eligible")
     ok(R.pool_excluded("X_PARKED_FIX", r), "pool_excluded says so")
-    with open(lst, "a", encoding="utf-8") as f:
-        f.write("parked: Z_FREE_FIX\n")
-    os.utime(lst, ns=(1, 2))
-    ok(not R.eligible(it("Z_FREE_FIX"), r), "a line added to the list parks at once (no stale cache)")
-    os.rename(lst, os.path.join(items, "closed", "PAINT_LIST_X.md"))
-    ok(R.parked_ids(r) == set() and R.eligible(it("X_PARKED_FIX"), r), "the list item closed: its list is released")
-    try:
-        R.parked_ids(dict(r, pool_parked_lists=[os.path.join(items, "NO_SUCH_LIST.md")]))
-        ok(False, "a listed file found nowhere must raise")
-    except FileNotFoundError:
-        ok(True, "a listed file found nowhere raises, never reads as empty")
+    ok(R.parked_ids(dict(r, pool_parked_lists=None)) == set() and R.eligible(it("X_PARKED_FIX"), dict(r, pool_parked_lists={})),
+       "no lists: nothing parked")
     live = R.parked_ids(R.rules(os.path.join(R.HERE, "relentless_rules.json")))
     ok({"BIOME_PAINT_ONCE_AT_THE_END_1", "WARSCAR_PILGRIM_CAMP_SITES_1"} <= live, "the live rules park the paint list: %s" % sorted(live))
     # a snag on a parked item: never relaunched at the top, handed back to the ledger, out of the line
-    with open(lst + ".2", "w", encoding="utf-8") as f:
-        f.write("parked: I0\n")
     x = Rig(n=1, share=1.0)
     x.run_one("I0")
     st = x.st("I0")
     R.snag(x.s, "I0", st["gen"], "gate_not_met", "done at the final painting", x.r, now=x.now)
     x.w.up[st["run"]["unit"]] = False
-    x.r["pool_parked_lists"] = [lst + ".2"]
+    x.r["pool_parked_lists"] = {"PAINT_LIST_Y": ["I0"]}
     launched = len(x.w.launches)
     x.tick(600)
     x.tick(600)

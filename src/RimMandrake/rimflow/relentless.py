@@ -2029,33 +2029,18 @@ def foreign_ok(it, r):
             and not re.search(cfg.get("foreign_exclude") or "(?!)", "%s %s" % (it.id, it.title or ""), re.I))
 
 
-PARKED_LINE = re.compile(r"^parked:\s*`?([A-Z][A-Z0-9_]*[A-Z0-9])`?", re.M)
-_parked_cache = {}
-
-
-def parked_ids(r, root=None):
+def parked_ids(r):
     """Items an owner ruling parked on a list (the paint list, BIOME_PAINT_ONCE_AT_THE_END_1: "done at the final world
-    painting, not before"), by data: each file in r["pool_parked_lists"] is an item's prose, repo-relative; the item
-    itself and every `parked: ID` line in it are parked. Once that item closes its prose moves to items/closed/ and
-    its list is released. A listed file found in neither place is a typo in the rules and raises: a list that
-    silently reads empty would staff what he parked (RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED)."""
-    root = root or os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+    painting, not before"), by data: r["pool_parked_lists"] maps a list item to the ids it parks; the list item and each id
+    are out of the line. Held in the rules, not read from item prose: the blind checker's tree has no items/, and a
+    supervisor tick must never hinge on a prose file (RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED). The list is released
+    by deleting its key when the list item closes."""
     out = set()
-    for rel in r.get("pool_parked_lists") or []:
-        path = os.path.join(root, rel)
-        closed = os.path.join(os.path.dirname(path), "closed", os.path.basename(path))
-        try:
-            mt = os.stat(path).st_mtime_ns
-        except FileNotFoundError:
-            if os.path.exists(closed):
-                continue
-            raise
-        hit = _parked_cache.get(path)
-        if not hit or hit[0] != mt:
-            with open(path, encoding="utf-8") as f:
-                hit = _parked_cache[path] = (mt, frozenset(PARKED_LINE.findall(f.read())))
-        out.add(os.path.splitext(os.path.basename(path))[0])
-        out |= hit[1]
+    for lst, ids in (r.get("pool_parked_lists") or {}).items():
+        if lst.startswith("_"):
+            continue
+        out.add(lst)
+        out.update(ids)
     return out
 
 

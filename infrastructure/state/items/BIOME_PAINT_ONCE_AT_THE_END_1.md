@@ -68,15 +68,13 @@ queue is blocked on a tile count before then.
 
 ## parked items
 
-An item this list parks carries a `parked: <ID>` line at the start of a line in its addition below. Relentless reads
-those lines (`relentless_rules.json` `pool_parked_lists`, `relentless.parked_ids`) and never staffs the item, nor this
-one, until this item closes. Add the line with the addition.
+Relentless never staffs an item this list parks, nor this one: the ids live in
+`src/RimMandrake/rimflow/relentless_rules.json` `pool_parked_lists` (`relentless.parked_ids`). Add the id there with the
+addition below; delete the key when this item closes.
 
 ## Paint list addition 2026-10-09 (decision taken by question card)
 
 `WARSCAR_PILGRIM_CAMP_SITES_1` (pilgrim camp SitePartDefs at authored tiles along the Ashfall Road) is done at the final world painting, not before.
-
-parked: WARSCAR_PILGRIM_CAMP_SITES_1
 
 ## Paint list addition 2026-10-20 (from `WORLD_PHYSICS_AUDIT_LOCKED_SUN_TEMPS_RINGS`)
 
