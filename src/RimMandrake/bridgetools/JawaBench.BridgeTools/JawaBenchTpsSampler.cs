@@ -487,6 +487,17 @@ namespace JawaBench.BridgeTools
         /// game's exception propagates unchanged). The frame-end bookkeeping runs only for a normal return.</summary>
         private static void RootFinalizer(JawaBenchHookGuard.Scope __state, Exception __exception)
         {
+            // JAWABENCH_TPSARCHIVE_FIX_SKIPPED_AFTER_FAULT: the deferred startup work is pumped on EVERY main-thread frame,
+            // after the scope closed - including a frame whose Root.Update threw, a sampler that faulted (RuntimeError) and
+            // a Root guard that disabled itself (__state not Valid). The early returns live in RootFinalizerCore, so they
+            // leave only that method; a return inside a try here would have left this one and skipped the pump, losing
+            // the crashed session's Player-prev.log to the next launch's overwrite.
+            RootFinalizerCore(__state, __exception);
+            PumpIdleSafe();
+        }
+
+        private static void RootFinalizerCore(JawaBenchHookGuard.Scope __state, Exception __exception)
+        {
             try
             {
                 if (!__state.Valid) { GRoot.Exit(__state); return; }
@@ -503,11 +514,6 @@ namespace JawaBench.BridgeTools
                 JawaBenchTpsTier.Frame(now);
             }
             catch (Exception e) { GRoot.Fault("root-finalizer", e); Fail("root-finalizer", e); }
-            // JAWABENCH_TPSARCHIVE_FIX_SKIPPED_AFTER_FAULT: the deferred startup work is pumped on EVERY main-thread frame,
-            // after the scope closed - including a frame whose Root.Update threw, a sampler that faulted (RuntimeError) and
-            // a Root guard that disabled itself (__state not Valid). Inside the try above, any of those returned first and
-            // the crashed session's Player-prev.log was lost to the next launch's overwrite.
-            PumpIdleSafe();
         }
 
         // MUST 15: long-event and save scopes open in a prefix and close in a void FINALIZER, which runs whether
