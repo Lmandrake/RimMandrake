@@ -12,7 +12,8 @@
   temperatureRange, favorability) are carried over unchanged from the source.
 
   Bespin's two weathers were intentionally dropped: "Good" favorability, no combat penalty, purely cosmetic,
-  and off-theme for a desert/volcanic world.
+  and off-theme for a desert world. The red fog pair was deleted 2026-11-04: no biome attached it
+  once its donor was retired, and RM_RedFog (mandrake.rm.theforge) is the owned red fog.
 -->
 <Defs>
 
@@ -130,106 +131,6 @@
       <sky>(0.35,0.40,0.45)</sky>
       <shadow>(0.92,0.92,0.92)</shadow>
       <overlay>(0.4,0.32,0.2)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsNightMid>
-  </WeatherDef>
-
-  <!-- ===== Red fog: accuracy 0.5. Uses vanilla fog overlay in the original too. Volcanic/exotic tint. ===== -->
-  <WeatherDef>
-    <defName>RSW_SW_RedFog</defName>
-    <label>red fog</label>
-    <description>A thick red haze that reduces the accuracy of ranged weapons.</description>
-    <windSpeedFactor>0.5</windSpeedFactor>
-    <accuracyMultiplier>0.5</accuracyMultiplier>
-    <favorability>Neutral</favorability>
-    <perceivePriority>1</perceivePriority>
-    <ambientSounds>
-      <li>Ambient_Wind_Fog</li>
-    </ambientSounds>
-    <overlayClasses>
-      <li>WeatherOverlay_Fog</li>
-    </overlayClasses>
-    <commonalityRainfallFactor>
-      <points>
-        <li>(0, 0)</li>
-        <li>(1300, 1)</li>
-      </points>
-    </commonalityRainfallFactor>
-    <skyColorsDay>
-      <sky>(0.8,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.7,0.7,0.7)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsDay>
-    <skyColorsDusk>
-      <sky>(1,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.6,0.6,0.6)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsDusk>
-    <skyColorsNightEdge>
-      <sky>(0.35,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.5,0.5,0.5)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsNightEdge>
-    <skyColorsNightMid>
-      <sky>(0.35,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.5,0.5,0.5)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsNightMid>
-  </WeatherDef>
-
-  <!-- ===== Red foggy rain: accuracy 0.5 AND move speed 0.9. Vanilla fog+rain overlays. ===== -->
-  <WeatherDef>
-    <defName>RSW_SW_RedFoggyRain</defName>
-    <label>red foggy rain</label>
-    <description>Red haze mixed with rain. Reduces both ranged accuracy and movement speed.</description>
-    <temperatureRange>0~999</temperatureRange>
-    <windSpeedFactor>1.5</windSpeedFactor>
-    <favorability>Neutral</favorability>
-    <perceivePriority>1</perceivePriority>
-    <weatherThought>SoakingWet</weatherThought>
-    <accuracyMultiplier>0.5</accuracyMultiplier>
-    <rainRate>1</rainRate>
-    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
-    <ambientSounds>
-      <li>Ambient_Wind_Fog</li>
-      <li>Ambient_Rain</li>
-    </ambientSounds>
-    <overlayClasses>
-      <li>WeatherOverlay_Fog</li>
-      <li>WeatherOverlay_Rain</li>
-    </overlayClasses>
-    <commonalityRainfallFactor>
-      <points>
-        <li>(0, 0)</li>
-        <li>(1300, 1)</li>
-      </points>
-    </commonalityRainfallFactor>
-    <skyColorsDay>
-      <sky>(0.8,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.7,0.7,0.7)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsDay>
-    <skyColorsDusk>
-      <sky>(1,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.6,0.6,0.6)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsDusk>
-    <skyColorsNightEdge>
-      <sky>(0.35,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.5,0.5,0.5)</overlay>
-      <saturation>0.9</saturation>
-    </skyColorsNightEdge>
-    <skyColorsNightMid>
-      <sky>(0.35,0,0)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.5,0.5,0.5)</overlay>
       <saturation>0.9</saturation>
     </skyColorsNightMid>
   </WeatherDef>

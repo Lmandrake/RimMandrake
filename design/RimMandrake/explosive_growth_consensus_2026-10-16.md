@@ -221,7 +221,7 @@ settled-wet); and the cost.
 
 | source | detection | stays watered after it stops | fresh or sustaining | cost | today |
 |---|---|---|---|---|---|
-| **Rain (water rain only)** | map scalar: an allow-list of water weathers (`Rain`, `FoggyRain`, `RainyThunderstorm`, `TorrentialRain`, `RSW_SW_RedFoggyRain`, `RUT_BoilingRain`?) × cell unroofed. No per-cell storage: the map keeps `lastWaterRainTick` | 12 h (PROPOSED) | **fresh** for every unroofed cell of the map that was dry ≥ dry-reset days | one map check per pass; the plant postfix tests "unroofed" (one grid read) | never (`<soakWeathers />`) |
+| **Rain (water rain only)** | map scalar: an allow-list of water weathers (`Rain`, `FoggyRain`, `RainyThunderstorm`, `TorrentialRain`, `RUT_BoilingRain`?) × cell unroofed. No per-cell storage: the map keeps `lastWaterRainTick` | 12 h (PROPOSED) | **fresh** for every unroofed cell of the map that was dry ≥ dry-reset days | one map check per pass; the plant postfix tests "unroofed" (one grid read) | never (`<soakWeathers />`) |
 | **Non-water rain** | the same allow-list excludes it | — | never | — | — |
 | **Snowmelt** | a slice of `snowGrid` per pass; depth falling while above 0 °C | 12 h | fresh | a 1/8-map slice per 250 ticks, like irrigation | not built |
 | **Players pouring water** | event-driven: the hose Outflow spill (`src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidSpill.cs:14-21`, MEASURED: a water spill on dry ground today makes filth only) calls the soak at the spill cell; a future "water plants" job calls it per cell | 1 day | fresh | zero polling | not built; no "water a plant" job exists (MEASURED: the bottle work-givers are fill, wash, empty-into-tank and fill-from-tank, `Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml:19-70`) |
@@ -632,7 +632,7 @@ refuels it?**
 | A1 | All alien flora is dry-adapted unless named; "generally" in S1 allows exceptions | sets the default class for ~all our plants | his review of the class list (Δ2) |
 | A2 | "x10 speed" is vanilla-relative and not on top of another multiplier | the stack (D3/D4) is removed on this reading | his words *"they grow x10 speed"* carry no base |
 | A3 | "Reduced growth factor in permanently wet areas" names ruling 6 (×10 jungles, no bursting) reduced relative to the stack, or a lower number for settled ground | C1 | ask |
-| A4 | `RM_ContagionBloom` rain is not plain water; `RUT_BoilingRain`/`RM_BoilingRain` and `RSW_SW_RedFoggyRain` are water | the rain allow-list | the weathers' own sheets |
+| A4 | `RM_ContagionBloom` rain is not plain water; `RUT_BoilingRain`/`RM_BoilingRain` are water | the rain allow-list | the weathers' own sheets |
 | A5 | The 2026-09-10 "No brake" pump ruling is about water→food conversion, which the model keeps (watered fields grow ×10, then ×4) | Δ4 removes endless re-arming | deep dive G4 reasoning |
 | A6 | With the campaign, vanilla biomes follow the same rule (dry = ×0.25 for dry-adapted only; vanilla plants per C4) | campaign deserts stall too | C4 answer |
 | A7 | Plants grow 55% of the day (deep dive §1, Plant.cs:281) | every calendar-day figure here | MEASURED in source |

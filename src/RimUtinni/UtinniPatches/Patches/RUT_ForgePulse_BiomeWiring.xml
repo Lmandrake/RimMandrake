@@ -21,8 +21,8 @@
   RUT_TheForge.xml carries no <biomeMapConditions> node at all today (only
   wildAnimals/baseWeatherCommonalities/terrainsByFertility/diseases), so
   this adds the whole element rather than appending an <li> to an existing
-  one. RUT_TheForge.xml's own baseWeatherCommonalities (AB_VolcanicAsh/
-  AB_VolcanicAshRain/RSW_SW_RedFog/Clear) is left untouched by this patch:
+  one. RUT_TheForge.xml's own baseWeatherCommonalities (RM_VolcanicAsh/
+  RM_VolcanicAshRain/RM_RedFog/Clear) is left untouched by this patch:
   once this condition registers, GameCondition.ForcedWeather() overrides
   natural weather selection unconditionally for as long as the condition
   runs (permanent, per BiomeConditionMapComponent), so those commonality

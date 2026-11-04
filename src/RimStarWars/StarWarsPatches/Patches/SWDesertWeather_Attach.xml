@@ -55,8 +55,6 @@
   ===========================================================================
     Sandstorm + Dry sandstorm  to hot/arid biomes   (Tatooine: brown-outs that
                                                      gut ranged accuracy)
-    Red fog + Red foggy rain   to volcanic biomes   (Mustafar: haze that spoils
-                                                     shooting)
   Commonalities are deliberately modest so vanilla weather still dominates.
   These are occasional hazards, not the everyday sky. Compare Core's Desert,
   where Clear is 18 and everything else is single digits.
@@ -70,7 +68,9 @@
     Core            : Desert, ExtremeDesert, AridShrubland
                       (Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml)
     (More Vanilla Biomes' ZBiome_DesertOasis/ZBiome_Badlands and Advanced Biomes'
-    Volcano were targets until both donors were retired 2026-11-01.)
+    Volcano were targets until both donors were retired 2026-11-01; Volcano was
+    the only home of the red fog weathers, so those defs were deleted with it.
+    RM_RedFog in mandrake.rm.theforge is the red fog that ships.)
   ============================================================================
 -->
 <Patch>
@@ -111,10 +111,5 @@
       </value>
     </match>
   </Operation>
-
-
-
-  <!-- ================= VOLCANIC / EXOTIC to RED FOG ================= -->
-
 
 </Patch>

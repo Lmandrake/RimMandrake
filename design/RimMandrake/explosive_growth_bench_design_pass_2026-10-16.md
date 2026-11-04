@@ -331,7 +331,7 @@ claims "rain hardly matters in our dry biomes".
    §4.2: `RG_Drizzle` (0.5), `AB_ReddishRain`, `AB_ForsakenRainyNight` (+ `_Alternate`), `AB_AcidRainWeather`,
    `BloodRain`, `VEE_PsychicRain`, `VEE_FertileRains`, `ToxRain` (MEASURED, dump: 31 weathers with `rainRate` > 0).
    PROPOSED: water = `Rain`, `RainyThunderstorm`, `FoggyRain`, `TorrentialRain`, `RG_Drizzle`, `VEE_FertileRains`,
-   `RSW_SW_RedFoggyRain`, plus snow when warm. Not water: acid, blood, psychic, tox, sheen, slime, boiling, black, and
+   plus snow when warm. Not water: acid, blood, psychic, tox, sheen, slime, boiling, black, and
    Contagion bloom (A4/T2).
 4. **The rain stays a map scalar.** The consensus is right that rain must not write per cell (§9 here, perf).
 

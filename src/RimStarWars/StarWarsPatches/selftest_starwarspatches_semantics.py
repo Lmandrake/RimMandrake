@@ -56,7 +56,7 @@ def main():
     check("shipped patches: no finding", base == [] or not dump_is_real, base)
     nested = sum(1 for _f, r in roots for e in r.iter() if e.tag in ("match", "nomatch") and e.get("Class", "").startswith("PatchOperation"))
     check("sanity: nested <match>/<nomatch> operations exist and are walked (the weather attaches live there)", nested > 20, nested)
-    check("sanity: >= 100 operations parsed, 4 pack weathers", sum(1 for _f, r in roots for e in r.iter() if e.get("Class", "").startswith("PatchOperation")) >= 100 and len(pack.get("WeatherDef", ())) == 4)
+    check("sanity: >= 100 operations parsed, 2 pack weathers", sum(1 for _f, r in roots for e in r.iter() if e.get("Class", "").startswith("PatchOperation")) >= 100 and len(pack.get("WeatherDef", ())) == 2)
 
     def brk(tag, fn, must, roots_in=None, pack_in=None):
         r = copy.deepcopy(roots_in if roots_in is not None else roots)
@@ -76,12 +76,12 @@ def main():
     brk("attach names a nonexistent weather", lambda r, p: ET.SubElement(first_weather_value(r), "RSW_SW_NoSuch").__setattr__("text", "5"), "attaches weather")
     brk("attach at commonality 0", lambda r, p: first_weather_value(r)[0].__setattr__("text", "0"), "never rolls")
 
-    def unattach_redfog(r, p):
+    def unattach_dry(r, p):
         for el in file(r, "SWDesertWeather_Attach.xml").iter("value"):
             for c in list(el):
-                if c.tag == "RSW_SW_RedFog":
+                if c.tag == "RSW_SW_DrySandstorm":
                     el.remove(c)
-    brk("a pack weather is never attached", unattach_redfog, "dead content")
+    brk("a pack weather is never attached", unattach_dry, "dead content")
 
     def mayrequire_op(r, p):
         for el in file(r, "SWDesertWeather_Attach.xml").iter("Operation"):

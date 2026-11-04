@@ -2,14 +2,14 @@
 <!--
   RM_RedFog.xml                          THEFORGE_RM_MOD_BUILD_1
 
-  The frozen twin's baseWeatherCommonalities carries RSW_SW_RedFog
-  (src/RimStarWars/StarWarsPatches/Defs/WeatherDefs/SWDesertWeather.xml,
-  MayRequire="mandrake.rsw.swbestiary") at commonality 8 - a Star Wars-tagged
+  The frozen twin's baseWeatherCommonalities carried RSW_SW_RedFog
+  (MayRequire="mandrake.rsw.swbestiary", deleted 2026-11-04 once no biome
+  attached it) at commonality 8 - a Star Wars-tagged
   weather entry that cannot ride a RM_-tier def (§7 Q11). Owner ruling,
   2026-09-24, typed into a question-card note: "Just make our own version and
   drop the SW label. RedFog has nothing to do with Star Wars.... it came from
   Alpha Biomes, and we're making our own version. Period." Fields copied
-  byte-identical from RSW_SW_RedFog's own (that def is itself a Star Wars
+  byte-identical from RSW_SW_RedFog's own (that def was itself a Star Wars
   Biomes Addon port with no Star-Wars-specific mechanic — plain accuracy/
   wind/sky-color fields) - only the defName, label and this header change.
   No MayRequire, no SW/RSW name anywhere on it, native in this mod's own

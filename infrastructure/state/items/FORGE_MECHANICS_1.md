@@ -338,8 +338,8 @@ contingency:
   this pass): a bare `<li>` baked into the BiomeDef would be a dangling
   cross-reference the moment `mandrake.rm.environmentalhazards` is absent.
   `RUT_TheForge.xml` itself is **not edited** — its own
-  `baseWeatherCommonalities` (AB_VolcanicAsh/AB_VolcanicAshRain/
-  RSW_SW_RedFog/Clear) is left as-is; once `RUT_ForgePulse` registers,
+  `baseWeatherCommonalities` (RM_VolcanicAsh/RM_VolcanicAshRain/
+  RM_RedFog/Clear) is left as-is; once `RUT_ForgePulse` registers,
   `ForcedWeather()` overrides natural selection unconditionally for as
   long as the (permanent) condition runs, so those entries go
   structurally unreachable rather than wrong — re-tuning that table is
