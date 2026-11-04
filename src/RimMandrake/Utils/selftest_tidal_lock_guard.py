@@ -11,6 +11,8 @@ No game, no bridge. Checks:
   1b. the truth table is RUN: selftest_sun_heat.py builds and runs the C# SelfTest, and its tidal lock preset guard
      case must print PASS. A build that broke, a crash or no such line is a FAIL; a run the machine stopped before the
      table (no dotnet, rsync ENOMEM, WSL could not launch the exe, the inner cap) is UNMEASURED. Neither is ever a pass.
+  1c. that routing is run, not assumed: kernel() and main() of a private copy of this file meet a stubbed subprocess.run,
+     and source mutants of the copy (the unmeasured block deleted, the cap, stderr, exit code, summary) must each go red.
   2. harvest_log.py's `tidallock` check fires on a MOVING SUN line and on nothing else.
   3. tidal_lock_readback.py parses and judges the guard's line (locked, restored, unlocked, absent).
   4. the remake runbook's S13/G12 name the dev start save of record (canon.yml planet.start_savegame), and the
@@ -22,10 +24,13 @@ No game, no bridge. Checks:
      three workshop packageIds A1 reads, and the proof line runs the readback with --expect-restored. Without these the
      round ran A1 20 times on a game with no Alien Worlds and no save loaded and measured nothing (2026-11-03).
 """
+import contextlib
+import io
 import os
 import re
 import subprocess
 import sys
+import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -76,6 +81,7 @@ BUILD_BROKE = re.compile(r"\berror (CS|MSB)\d+|Build FAILED")
 # interop retry that succeeded earlier cannot hide a real crash after it.
 ENV_MARKS = ("env/build failure", "UtilAcceptVsock", UNMEASURED_PHRASE)
 UNMEASURED_KERNEL = []
+KERNEL_WHAT = "C# SelfTest RAN the PresetToRestore truth table and it passed"
 
 
 def kernel_verdict(out, timed_out=False):
@@ -127,7 +133,7 @@ def kernel():
     except subprocess.TimeoutExpired:
         out, timed_out = "", True
     verdict = kernel_verdict(out, timed_out)
-    what = "C# SelfTest RAN the PresetToRestore truth table and it passed"
+    what = KERNEL_WHAT
     if verdict == "unmeasured":
         UNMEASURED_KERNEL.append(what)
         print("%s: the machine stopped the C# SelfTest before its table; tail: %r" % (UNMEASURED_PHRASE, out.strip()[-400:]))
@@ -370,6 +376,7 @@ def main():
     wiring()
     reflected_names()
     kernel_verdicts()
+    kernel_routing()
     kernel()
     harvest()
     readback()
@@ -377,6 +384,120 @@ def main():
     live_proofs()
     print("%s: %d failed" % ("FAIL" if FAILS else "UNMEASURED" if UNMEASURED_KERNEL else "PASS", len(FAILS)))
     return 1 if FAILS else 0
+
+
+def _routed(source, stub):
+    """Run main() of a private copy of this file with subprocess.run stubbed and every other step off, so the answer is
+    what kernel() and main() themselves route, and this run's own FAILS and UNMEASURED_KERNEL stay untouched."""
+    ns = {"__name__": "tidal_guard_copy", "__file__": os.path.abspath(__file__)}
+    exec(compile(source, "tidal_guard_copy", "exec"), ns)
+    ns["subprocess"] = types.SimpleNamespace(run=stub, TimeoutExpired=subprocess.TimeoutExpired)
+    for step in ("wiring", "reflected_names", "kernel_verdicts", "kernel_routing", "harvest", "readback", "runbook", "live_proofs"):
+        ns[step] = lambda: None
+    shown = io.StringIO()
+    with contextlib.redirect_stdout(shown):
+        rc = ns["main"]()
+    return ns, shown.getvalue(), rc
+
+
+def _route_problems(source, stdout, stderr, cap, want):
+    """Why the copy from `source` routed this stubbed C# run wrongly; empty when it answered `want`."""
+    calls = []
+
+    def stub(cmd, **kw):
+        calls.append((cmd, kw))
+        if cap:
+            raise subprocess.TimeoutExpired(cmd, kw.get("timeout"))
+        return types.SimpleNamespace(stdout=stdout, stderr=stderr, returncode=0)
+
+    try:
+        ns, shown, rc = _routed(source, stub)
+    except Exception as e:  # noqa: BLE001 - an escaped TimeoutExpired or a broken copy is a wrong answer, not a crash
+        return ["raised %r" % e]
+    lines = shown.splitlines()
+    problems = []
+
+    def need(ok, why):
+        if not ok:
+            problems.append(why)
+    need(len(calls) == 1, "kernel() launched %d times" % len(calls))
+    if calls:
+        cmd, kw = calls[0]
+        need(cmd[-1].endswith("selftest_sun_heat.py"), "kernel() ran %r" % cmd[-1])
+        need(kw.get("capture_output") and kw.get("text") and kw.get("timeout"), "kernel() run is not captured and capped")
+    fail_line, pass_line = "FAIL  " + KERNEL_WHAT, "PASS  " + KERNEL_WHAT
+    stated = {"unmeasured": ([], [KERNEL_WHAT], "UNMEASURED: 0 failed", 0),
+              "pass": ([], [], "PASS: 0 failed", 0),
+              "fail": ([KERNEL_WHAT], [], "FAIL: 1 failed", 1)}[want]
+    need(ns["FAILS"] == stated[0], "FAILS is %r" % ns["FAILS"])
+    need(ns["UNMEASURED_KERNEL"] == stated[1], "UNMEASURED_KERNEL is %r" % ns["UNMEASURED_KERNEL"])
+    need(lines[-1:] == [stated[2]], "summary is %r" % lines[-1:])
+    need(rc == stated[3], "exit %r" % rc)
+    need((UNMEASURED_PHRASE in shown) == (want == "unmeasured"), "phrase printed: %s" % (UNMEASURED_PHRASE in shown))
+    need(lines.count(pass_line) == (1 if want == "pass" else 0), "C# PASS line x%d" % lines.count(pass_line))
+    need(lines.count(fail_line) == (1 if want == "fail" else 0), "C# FAIL line x%d" % lines.count(fail_line))
+    return problems
+
+
+def kernel_routing():
+    """kernel_verdict() is pure, so kernel_verdicts() cannot see kernel() ignore its answer: drive kernel() and main()
+    themselves. Without its unmeasured block the night's alarm line returns while a healthy machine stays green."""
+    ok = "PASS  %s\n" % KERNEL_CASE
+    bad = "FAIL  %s\n" % KERNEL_CASE
+    env = "staged build of X failed (rc=23) - env/build failure, not a selftest verdict\n"
+    vsock = "<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110\n"
+    routes = (
+        ("the night's rsync ENOMEM", "rsync failed (23)\n", env, False, "unmeasured"),
+        ("WSL never launched the exe", "Build succeeded.\n", vsock, False, "unmeasured"),
+        ("no toolchain", "", "dotnet.exe not found; %s\n" % UNMEASURED_PHRASE, False, "unmeasured"),
+        ("the inner cap fired", "", "", True, "unmeasured"),
+        ("the case printed PASS", ok, "", False, "pass"),
+        ("a recovered interop retry", ok, vsock, False, "pass"),
+        ("the case printed FAIL", bad, "", False, "fail"),
+        ("a compile error wearing the env line", "x.cs(1,1): error CS1002: ; expected\n", env, False, "fail"),
+        ("a crash with no table", "", "Unhandled exception. Boom\n", False, "fail"),
+        ("the case is gone", "Build succeeded.\nPASS  other case\n", "", False, "fail"))
+    source = read(os.path.abspath(__file__))
+    before = len(FAILS)
+
+    def wrong(text):
+        return [name for name, out, err, cap, want in routes if _route_problems(text, out, err, cap, want)]
+    for name, out, err, cap, want in routes:
+        problems = _route_problems(source, out, err, cap, want)
+        check(not problems, "kernel routing %s: %s%s" % (want, name, " -> " + "; ".join(problems) if problems else ""))
+    verdict_line = 'check(verdict == "pass", what)'
+    summary = '"FAIL" if FAILS else "UNMEASURED" if UNMEASURED_KERNEL else "PASS"'
+    block = ('    if verdict == "unmeasured":\n        UNMEASURED_KERNEL.append(what)\n'
+             '        print("%s: the machine stopped the C# SelfTest before its table; tail: %r" '
+             '% (UNMEASURED_PHRASE, out.strip()[-400:]))\n        return\n')
+    mutants = (
+        ("kernel()'s unmeasured block deleted (the checker's mutant)", block, ""),
+        ("the cap reads as no reason given", 'out, timed_out = "", True', 'out, timed_out = "", False'),
+        ("kernel() does not catch the cap", "except subprocess.TimeoutExpired:", "except ZeroDivisionError:"),
+        ("stderr is dropped", 'out = res.stdout + "\\n" + res.stderr', "out = res.stdout"),
+        ("unmeasured is not recorded", "        UNMEASURED_KERNEL.append(what)\n", ""),
+        ("the runner's phrase is not printed", "% (UNMEASURED_PHRASE, out.strip()[-400:])", '% ("stopped", out.strip()[-400:])'),
+        ("a failing table passes", verdict_line, "check(True, what)"),
+        ("a passing table fails", verdict_line, "check(False, what)"),
+        ("kernel() runs another script", 'os.path.join(HERE, "selftest_sun_heat.py")', 'os.path.join(HERE, "selftest_other.py")'),
+        ("kernel() has no cap", "capture_output=True, text=True, timeout=480", "capture_output=True, text=True"),
+        ("main() skips kernel()", "    kernel()\n    harvest()", "    harvest()"),
+        ("a failure exits 0", "return 1 if FAILS else 0", "return 0"),
+        ("unmeasured exits 1", "return 1 if FAILS else 0", "return 1 if FAILS or UNMEASURED_KERNEL else 0"),
+        ("the summary calls unmeasured a pass", summary, '"FAIL" if FAILS else "PASS"'),
+        ("the summary calls unmeasured a fail", summary, '"FAIL" if FAILS or UNMEASURED_KERNEL else "PASS"'))
+    for name, old, new in mutants:
+        # The first occurrence only, and it must sit above this function: the table holds the same strings.
+        real = source.find(old) != -1 and source.find(old) < source.find("def _routed(")
+        caught = wrong(source.replace(old, new, 1)) if real else []
+        check(bool(caught), "kernel routing mutant caught: %s" % name)
+    # The strings the verdict waits for are written by other files; a reworded one would re-arm the alarm.
+    marks = (('UNMEASURED_PHRASE = "%s"' % UNMEASURED_PHRASE, "run_selftests.py", "the runner's unmeasured phrase"),
+             ("env/build failure", "selftest_winstage.py", "the stage's env line"),
+             ('INTEROP_LAUNCH_FAILED = "UtilAcceptVsock"', "winbuild.py", "WSL's launch mark"))
+    for mark, where, what in marks:
+        check(mark in read(HERE, where), "kernel routing: %s still reads as ENV_MARKS expects, in %s" % (what, where))
+    check(len(FAILS) == before, "kernel routing pinned: every stubbed run and every mutant answered as it must")
 
 
 if __name__ == "__main__":
