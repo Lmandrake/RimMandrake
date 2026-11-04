@@ -6,7 +6,7 @@ SEAT_MEMORY_CLONES_DRIVES_1, design/RimMandrake/memory_clones_drives_2026-10-08.
 Owner, 2026-10-08: "try it out, but let's wire it to keep data on its operation so we can judge
 if it was a good idea later."
 
-    scratch_clone.py clone <purpose> [--name N] [--checkout | --sparse P ...] [--fetch] [--dissociate]
+    scratch_clone.py clone <purpose> [--name N] [--sparse P ... | --checkout | --no-checkout] [--fetch] [--dissociate]
     scratch_clone.py init        create the store (hard-links the mirror's packs: ~0 bytes, instant)
     scratch_clone.py refresh     fetch the mirror's origin/main into the store
     scratch_clone.py sample      periodic record (rm-objstore.timer): store size, borrowers, fsck, df
@@ -34,6 +34,15 @@ Telemetry lives outside git in ~/.local/state/rm-objstore/ (XDG_STATE_HOME honou
 
 Env overrides (the selftest uses them): RM_OBJSTORE, RM_OBJSTORE_SEED, RM_SCRATCH_ROOT,
 RM_OBJSTORE_STATE, RM_OBJSTORE_SCAN (os.pathsep-separated glob patterns), RM_SEAT.
+
+What a clone checks out (SCRATCH_CLONES_SHRINK_SPARSE_NOT_FULL; measured 2026-10-26: 65 BENCH scratch clones held
+240 GB, because history is shared but every helper checked out the whole ~3.9 GB tree):
+  default        cone-sparse: the root files plus BASE_CONE (the tooling every helper needs to run selftests, rimflow
+                 and ./publish, ~200 MB), plus any --sparse PATH the task needs. `git sparse-checkout add <dir>` widens
+                 it later; a commit outside the cone is fine, git keeps the rest of the tree as it is on HEAD.
+  --checkout     the whole tree. For Relentless pool clones (bounded by the pool cap) and work that truly reads
+                 everything (a full build, a repo-wide sweep); say why in the purpose.
+  --no-checkout  no working tree at all (read-only git inspection).
 """
 from __future__ import annotations
 
@@ -66,6 +75,8 @@ STORE_CONFIG = {
     "objstore.role": "shared object store; borrowers via alternates; never prune (scratch_clone.py)",
 }
 SEATS = ("bench", "foundry")
+# The default cone (see the module docstring). Root files are always in a cone checkout.
+BASE_CONE = (".claude", "infrastructure", "skills", "src/RimMandrake/Utils", "src/RimMandrake/rimflow")
 
 
 def store_path() -> Path:
@@ -226,13 +237,29 @@ def refresh(lock: bool = True) -> dict:
 
 # ---------------------------------------------------------------- clone
 
+def cone_for(checkout: bool, sparse: list[str], no_checkout: bool) -> tuple[str, list[str]]:
+    """-> (mode, cone dirs). Sparse is the default: BASE_CONE plus whatever --sparse names."""
+    if checkout and (sparse or no_checkout) or (sparse and no_checkout):
+        raise ValueError("pick one of --sparse, --checkout, --no-checkout")
+    if checkout:
+        return "checkout", []
+    if no_checkout:
+        return "no-checkout", []
+    cone = list(BASE_CONE)
+    for p in sparse:
+        p = p.strip("/")
+        if p and p not in cone:
+            cone.append(p)
+    return "sparse", cone
+
+
 def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fetch: bool,
-          dissociate: bool) -> int:
+          dissociate: bool, no_checkout: bool = False) -> int:
     s = seat()
     name = name or f"{purpose.replace(' ', '-')[:40]}-{time.strftime('%Y%m%d-%H%M%S')}"
     dest = scratch_root() / s / name
-    mode = "sparse" if sparse else ("checkout" if checkout else "no-checkout")
-    rec = {"ts": now_iso(), "seat": s, "purpose": purpose, "path": str(dest), "mode": mode,
+    mode, cone = cone_for(checkout, sparse, no_checkout)
+    rec = {"ts": now_iso(), "seat": s, "purpose": purpose, "path": str(dest), "mode": mode, "cone": cone,
            "dissociate": dissociate, "fetch": fetch, "ok": False, "error": None}
     t0 = time.time()
     try:
@@ -270,9 +297,9 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
             git("update-ref", "refs/heads/main", "refs/remotes/origin/main", cwd=dest)
             rec["fetch_s"] = round(time.time() - t2, 2)
         t3 = time.time()
-        if sparse:
-            git("sparse-checkout", "set", "--cone", *sparse, cwd=dest)
-        if sparse or checkout:
+        if mode == "sparse":
+            git("sparse-checkout", "set", "--cone", *cone, cwd=dest)
+        if mode != "no-checkout":
             git("read-tree", "-mu", "HEAD", cwd=dest)
         rec["checkout_s"] = round(time.time() - t3, 2)
         alt = dest / ".git" / "objects" / "info" / "alternates"
@@ -892,15 +919,18 @@ def main(argv=None) -> int:
     c.add_argument("purpose", help="what it is for — recorded")
     c.add_argument("--name")
     g = c.add_mutually_exclusive_group()
-    g.add_argument("--checkout", action="store_true", help="full working tree (~6 GB)")
-    g.add_argument("--sparse", nargs="+", default=[], metavar="PATH", help="cone sparse checkout")
+    g.add_argument("--sparse", nargs="+", default=[], metavar="PATH",
+                   help="dirs the task needs, added to the default cone (%s)" % ", ".join(BASE_CONE))
+    g.add_argument("--checkout", action="store_true",
+                   help="whole working tree (~4 GB): pool clones and repo-wide work only")
+    g.add_argument("--no-checkout", action="store_true", help="no working tree (git inspection only)")
     c.add_argument("--fetch", action="store_true", help="also fetch origin (GitHub) after cloning")
     c.add_argument("--dissociate", action="store_true", help="durable clone: no alternates (hard-linked packs)")
     for n in ("init", "refresh", "sample", "baseline", "report", "pool"):
         sub.add_parser(n)
     a = ap.parse_args(argv)
     if a.cmd == "clone":
-        return clone(a.purpose, a.name, a.checkout, a.sparse, a.fetch, a.dissociate)
+        return clone(a.purpose, a.name, a.checkout, a.sparse, a.fetch, a.dissociate, a.no_checkout)
     if a.cmd == "report":
         print(report())
         return 0

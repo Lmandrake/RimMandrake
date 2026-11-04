@@ -44,8 +44,9 @@ upstream's. Otherwise it prints `REFUSED: <why>` and changes nothing. `./sync --
 | `.git/index.lock` exists | a helper's git call holds it for a second: wait and retry, never delete a fresh lock |
 
 Never `git stash`, `--autostash`, `reset --hard`, `checkout -- <path>` on files you did not write, `push --force`, or
-worktrees. A scratch clone costs 7-14 GB: only via `scratch_clone.py`, and before deleting one check unpushed commits
-AND untracked files.
+worktrees. A scratch clone is made only via `scratch_clone.py`, sparse by default (~200 MB of tooling dirs; name the
+dirs the task needs with `--sparse <dir>...`; `--checkout`, the whole ~4 GB, only for repo-wide work), and
+before deleting one check unpushed commits AND untracked files.
 
 ## Traps
 

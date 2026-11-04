@@ -253,7 +253,9 @@ full-size original as the reference asset.
 **Worktrees are OFF** (owner, 2026-10-02): never pass `isolation: "worktree"` — `block_worktrees.py` refuses it.
 A writing helper edits in the window's own clone and the window commits its paths with `./publish`; run
 writing helpers one at a time when their paths could overlap. Brief: `reset --hard`, `checkout --` and
-`stash` are forbidden; a conflict is reported back, never cleared.
+`stash` are forbidden; a conflict is reported back, never cleared. A helper that needs its OWN clone gets
+`python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>" --fetch --sparse <the dirs it will touch>`,
+never `--checkout` (the whole ~4 GB tree; 65 such clones held 240 GB on 2026-10-26).
 
 ## Limits that actually exist
 

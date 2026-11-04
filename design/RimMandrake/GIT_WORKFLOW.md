@@ -13,7 +13,7 @@ Rationale and measurements: `git_workflow_plan_2026-10-01.md` (plan) and the dat
 | `D:\ClaudeWork\rimmandrake\artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
 | `D:\ClaudeWork\rimmandrake\build\`, `D:\ClaudeWork\rimmandrake\scratch\codex\` | build staging and codex.exe staging (drive-local scratch) |
 | `/home/mandrake/rm/store.git` | the shared object store: bare, fetched from `mirror.git`, never pruned. Throwaway clones borrow from it, never from a seat clone |
-| `/home/mandrake/rm/scratch/<SEAT>/` | throwaway ext4 clones, made only with `python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>"` (never `/tmp`: tmpfs). Trial with telemetry: `design/RimMandrake/objstore_trial_2026-10-08.md` |
+| `/home/mandrake/rm/scratch/<SEAT>/` | throwaway ext4 clones, made only with `python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>" [--sparse <dirs the task needs>]` (never `/tmp`: tmpfs). The default is a cone-sparse tree (root files, `.claude`, `infrastructure`, `skills`, `src/RimMandrake/Utils`, `src/RimMandrake/rimflow`, ~200 MB), not the whole ~4 GB; `--checkout` only for repo-wide work, say why in the purpose. Trial with telemetry: `design/RimMandrake/objstore_trial_2026-10-08.md` |
 
 A session in the `D:\` mirror cannot commit: `./publish` refuses under `/mnt/`, and the
 `block_shared_tree_merge.py` hook refuses whole-tree git there.
