@@ -981,9 +981,7 @@ class Effects(relentless_game.GameFx):
         if staged:      # the index is nobody's projection, and the checks below read the working tree
             return "books %s behind: staged: %s" % (behind, ", ".join(staged[:5]))
         shuffled = self.shuffled_shards(rows)
-        if shuffled:
-            self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
-        alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED) and p not in shuffled and p not in BOOKS_RUN_ARTEFACTS]
+        alien =[p for _s, p in rows if not p.startswith(BOOKS_DERIVED) and p not in shuffled and p not in BOOKS_RUN_ARTEFACTS]
         if alien:
             return "books %s behind: dirty outside the ledger: %s" % (behind, ", ".join(alien[:5]))
         changed = self.git_ok(self.books, "diff", "--name-only", "origin/main...HEAD").split()
@@ -1015,6 +1013,8 @@ class Effects(relentless_game.GameFx):
                     f.write(subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout)
         self.git(self.books, "update-index", "-q", "--refresh")   # same bytes, new stat: reset --keep reads that as dirt
         self.git_ok(self.books, "reset", "--keep", "origin/main")
+        if shuffled:    # only now: a level that refuses above restored nothing
+            self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
         return None
 
     def flush(self):

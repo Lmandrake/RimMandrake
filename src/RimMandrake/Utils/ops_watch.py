@@ -1717,15 +1717,28 @@ def rl_verdict(rec, points, ms):
     return worst
 
 
+BOOKS_FETCH_BLIND_S = 1800      # the belt lands commits every few minutes; the books_behind target's own 30 min line
+
+
 def rl_books_behind(books, now):
     """-> (minutes the books clone has been behind origin/main, commits behind), or (None, why). The age is the oldest
-    commit it lacks: a clone that jams (BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT) runs stale code with every other reading sane."""
+    commit it lacks: a clone that jams (BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT) runs stale code with every other reading sane.
+    A refused fetch leaves the old ref, and a level clone on an old ref reads 0 behind however far origin has gone: one
+    refusal is a blip, but a refused fetch with the ref unmoved for BOOKS_FETCH_BLIND_S is no reading."""
     def git(*a, t=60):
         return subprocess.run(["git", "-C", str(books), *a], capture_output=True, text=True, timeout=t)
     try:
         if not (Path(books) / ".git").exists():
             return None, "no books clone at %s" % books
-        git("fetch", "--quiet", "origin", t=30)        # a refused fetch leaves the old ref: the age then only grows
+        got = git("fetch", "--quiet", "origin", t=30)
+        if got.returncode:
+            try:        # the ref's reflog, not FETCH_HEAD: a refused fetch rewrites FETCH_HEAD, so its stamp is always new
+                age = now - (Path(books) / ".git" / "logs" / "refs" / "remotes" / "origin" / "main").stat().st_mtime
+            except OSError:
+                age = None
+            if age is None or age > BOOKS_FETCH_BLIND_S:
+                return None, "books clone fetch refused, origin/main %s: %s" % (
+                    "has no reflog" if age is None else "unmoved for %d min" % (age // 60), got.stderr[-120:])
         r = git("log", "--format=%ct", "HEAD..origin/main")
     except (OSError, subprocess.SubprocessError) as e:
         return None, "books clone unreadable: %s" % str(e)[:120]

@@ -1918,6 +1918,23 @@ _g(_d / "up", "commit", "-qam", "b", env={"GIT_COMMITTER_DATE": _old, "GIT_AUTHO
 _m, _n = OW.rl_books_behind(_d / "books", time.time())
 check("books behind: age of the oldest missing commit, count", _n == 1 and 170 <= _m <= 190, (_m, _n))
 check("books absent: unmeasured, not zero", OW.rl_books_behind(_d / "nope", time.time())[0] is None)
+# a refused fetch: a level clone on an old ref must not read 0 behind for long
+_g(_d, "clone", "-q", "o.git", "cut")
+(_d / "up" / "f").write_text("3"); _g(_d / "up", "commit", "-qam", "c"); _g(_d / "up", "push", "-q", "origin", "main")
+_g(_d / "cut", "pull", "-q", "--ff-only", "origin", "main")
+_g(_d / "cut", "remote", "set-url", "origin", str(_d / "gone.git"))
+_fh = _d / "cut" / ".git" / "logs" / "refs" / "remotes" / "origin" / "main"
+check("instrument: the ref's first move starts its reflog", _fh.is_file(), _fh)
+check("one refused fetch on a recently moved ref: still a reading", OW.rl_books_behind(_d / "cut", time.time()) == (0.0, 0))
+os.utime(_fh, (time.time() - 2 * 3600,) * 2); _st = _fh.stat().st_mtime
+_m, _w = OW.rl_books_behind(_d / "cut", time.time())
+check("refused, ref unmoved 2 h: unmeasured, never 0 behind", _m is None and "unmoved for 120 min" in str(_w), (_m, _w))
+check("instrument: a refused fetch leaves the reflog's stamp alone", _fh.stat().st_mtime == _st)
+_g(_d / "cut", "remote", "set-url", "origin", str(_d / "o.git"))
+check("a fetch that works reads again, however old the ref", OW.rl_books_behind(_d / "cut", time.time())[0] is not None)
+_g(_d / "cut", "remote", "set-url", "origin", str(_d / "gone.git"))
+_fh.unlink()
+check("refused with no reflog: unmeasured", OW.rl_books_behind(_d / "cut", time.time())[0] is None)
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.books_behind_min"]
 check("the books-stale target alarms", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["value"] <= 60, _tg)
 # live measured share (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING): PASS+FAIL of the recent live runs, too few is UNMEASURED

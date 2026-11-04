@@ -2464,6 +2464,34 @@ def t_books_frozen():
     why = fx.sync()
     ok(why is None, "a set-equal reorder of a code_review shard levels: %s" % why)
     ok(git(b, "rev-parse", "HEAD") == git(up, "rev-parse", "HEAD"), "shard reorder: level with origin")
+    # that push never touched the shard, so the fast-forward alone took it. Origin moving the shard is the case that
+    # jammed: the fast-forward refuses and only shuffled_shards lets the level through
+    def restored():
+        if not os.path.exists(store.p("journal.jsonl")):
+            return 0
+        with open(store.p("journal.jsonl"), encoding="utf-8") as f:
+            return sum('"books_reorder_restored"' in x for x in f)
+    ok(restored() == 0, "a fast-forward restored nothing and journals nothing")
+    put(up, RV, "a\nb\nc\nd0\n")
+    git(up, "commit", "-qam", "up-shard-moved")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why is None, "a reordered shard origin also moved levels: %s" % why)
+    ok(git(b, "rev-parse", "HEAD") == git(up, "rev-parse", "HEAD"), "moved shard: level with origin")
+    with open(os.path.join(b, RV), encoding="utf-8") as f:
+        ok(f.read() == "a\nb\nc\nd0\n", "and the shard holds origin's bytes")
+    ok(restored() == 1, "the journal says the shard was restored once it was")
+    put(b, RV, "d0\nc\na\nb\n")
+    put(b, "code.py", "a hand edit\n")
+    put(up, RV, "a\nb\nc\n")
+    git(up, "commit", "-qam", "up-refused")
+    git(up, "push", "-q", "origin", "main")
+    why = str(fx.sync())
+    ok("code.py" in why, "other dirt beside the reorder still refuses: %s" % why)
+    ok(restored() == 1, "and a refused level journals no restore")
+    put(b, "code.py", "v2b\n")
+    ok(fx.sync() is None, "level again once the other dirt has gone")
+    ok(restored() == 2, "and that level journals its restore")
     put(b, RV, "c\na\nb\nextra\n")
     put(up, "code.py", "v2c\n")
     put(up, RV, "a\nb\nc\nd\n")
