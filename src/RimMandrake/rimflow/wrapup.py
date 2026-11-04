@@ -23,8 +23,10 @@ WHAT IT CENSUSES (one row each; act = cleaned | filed | carried | covered | ok |
             undo. `owner_key()` names the agent: the unit, else the Claude session, else the process.
   clone     uncommitted, untracked or unpushed work in the clones the agent ran in. A Relentless worker's clone is
             carried (the next worker of that item continues it; the supervisor and the pool alarm own it after);
+            so is a SEAT clone (SEAT_CLONES_DEFAULT, env RM_WRAPUP_SEAT_CLONES): every window of the seat shares it;
             anyone else's is filed.
-  claims    (session) items this window's seat claimed or started during the session that are still `doing`.
+  claims    (session) items this window's seat claimed or started during the session that are still `doing`, less
+            those the Relentless supervisor started (it shares the seat key; it carries them).
   tmp       (unit) the run's own TMPDIR: covered by run_tmp.sweep (each Relentless tick); a unit is still stopping when
             ExecStopPost runs, so run_tmp refuses to drop it here.
 
@@ -59,6 +61,12 @@ STANDING = ("filed",)
 
 
 DEFAULT_DIR_WINDOWS = "D:\\ClaudeWork\\rimmandrake\\wrapup"     # a python.exe harness (validation_v2 --live) owes too
+# WRAPUP_SEAT_CLONE_SILENCE_FALSE_ROWS: two debris classes no ending agent owns (40 false rows, 2026-11-04):
+#  - a SEAT clone is shared by every window of its seat and lives on; its dirt is the seat's work in flight, carried;
+#  - an item the Relentless supervisor started (relentless.py ledger_start writes this why, under the BENCH key it
+#    shares with the Conductor) is carried by the supervisor, whichever window's session happened to span it.
+SEAT_CLONES_DEFAULT = "/home/mandrake/rm/bench" + os.pathsep + "/home/mandrake/rm/foundry"     # = mirror.SEAT_CLONES
+RELENTLESS_START_WHY = "relentless supervisor takes the item"                                # = relentless.ledger_start
 DEBT_AGE_S = 6 * 3600       # a debt older than this stands whoever owes it: an owner no wrap-up can name still shows
 
 
@@ -208,23 +216,46 @@ class World(object):
         import model  # noqa: E402  (lazy: the unit path must not pay for the ledger)
         evs = model.read()
         w = model.replay(evs)
-        out = {}
-        for e in evs:
-            if e.get("seat") != seat or e.get("event") not in ("claim", "start") or not e.get("id"):
-                continue
-            ts = e.get("ts") or ""
-            if ts >= _iso(since):
-                out[e["id"]] = ts
-        return sorted((i, t) for i, t in out.items() if getattr(w.items.get(i), "state", None) == "doing")
+        return claims_of(evs, {i: getattr(it, "state", None) for i, it in w.items.items()}, seat, since)
 
     def exists(self, path):
         return os.path.isdir(path)
 
 
+def claims_of(evs, states, seat, since):
+    """-> [(item, ts)] claimed or started by `seat` at or after `since`, still doing, and not the Relentless
+    supervisor's: an item whose latest claim/start is the supervisor's start is carried by the supervisor."""
+    out, last = {}, {}
+    for e in evs:
+        if e.get("event") not in ("claim", "start") or not e.get("id"):
+            continue
+        last[e["id"]] = e
+        if e.get("seat") != seat:
+            continue
+        ts = e.get("ts") or ""
+        if ts >= _iso(since):
+            out[e["id"]] = ts
+    return sorted((i, t) for i, t in out.items()
+                  if states.get(i) == "doing" and (last[i].get("why") or "") != RELENTLESS_START_WHY)
+
+
 # ---------------------------------------------------------------- the census
 
+def seat_clones(env=None):
+    env = os.environ if env is None else env
+    raw = env.get("RM_WRAPUP_SEAT_CLONES", SEAT_CLONES_DEFAULT)
+    return [os.path.realpath(x) for x in raw.split(os.pathsep) if x]
+
+
+def is_seat_clone(clone, env=None):
+    return bool(clone) and os.path.realpath(clone) in seat_clones(env)
+
+
 def check_clone(world, clone, carried):
-    """One row for a clone: dirty / untracked / unpushed work, or ok."""
+    """One row for a clone: dirty / untracked / unpushed work, or ok. A seat clone is always carried."""
+    if is_seat_clone(clone):
+        return {"kind": "clone", "what": clone, "act": "carried",
+                "why": "the shared seat clone: its state is the seat's work in flight, not this agent's debris"}
     if not world.exists(clone):
         return {"kind": "clone", "what": clone, "act": "ok", "why": "gone"}
     rc, top = world.git(clone, "rev-parse", "--show-toplevel")

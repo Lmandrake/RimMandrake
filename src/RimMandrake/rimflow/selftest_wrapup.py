@@ -20,6 +20,9 @@
   W16 THE DOOR: a per-mod validation.py-style raw set through rimdrive.Session.call -> RimBridge.call (no owe() by the
       caller) is owed with its undo, killed before restore it is filed; a write back to the original pays it from
       another process; debug_settings and difficulty_tune likewise; a get, a no-op set, a failed set owe nothing
+  W17 WRAPUP_SEAT_CLONE_SILENCE_FALSE_ROWS: a seat clone (dirty, shared by every window of its seat) is carried, and
+      an already-filed seat-clone row stops standing so sweep clears it; a claim whose latest start is the Relentless
+      supervisor's (relentless.py ledger_start's why, checked against its source) is not the session's
 """
 import glob
 import json
@@ -521,6 +524,39 @@ try:
     check(wrapup.debts_keyed("debug_settings:noAnimals") == [], "W16 resolving the file forgets its door debts")
     g16.dbg["noAnimals"] = "False"
     os.environ.pop("RM_ROLE_UNIT", None)
+    # W17 the shared seat clone and the Relentless supervisor's starts are carried, never filed
+    seat = make_clone("w17seat")
+    with open(os.path.join(seat, "wip.txt"), "w") as f:
+        f.write("another window's work\n")
+    os.environ["RM_WRAPUP_SEAT_CLONES"] = os.pathsep.join(["/nonexistent/other", seat])
+    check(wrapup.check_clone(wrapup.World(), seat, False)["act"] == "carried", "W17 a dirty seat clone is carried")
+    rec17 = wrapup.run(Fake(), ctx("session", clones=[seat], key="w17", owner="session:w17"))
+    check(rec17["filed"] == 0, "W17 a session ending in a seat clone files nothing: %r" % rec17["rows"])
+    del os.environ["RM_WRAPUP_SEAT_CLONES"]
+    check(wrapup.check_clone(wrapup.World(), seat, False)["act"] == "filed", "W17 the same clone off the list is filed")
+    wrapup.run(Fake(), ctx("session", clones=[seat], key="w17b", owner="session:w17b"))
+    w17f = os.path.join(wrapup.state_dir(), "open", "session-w17b.json")
+    check(os.path.isfile(w17f), "W17 the pre-fix row exists (filed while off the list)")
+    os.environ["RM_WRAPUP_SEAT_CLONES"] = seat
+    wrapup.sweep(Fake())
+    check(not os.path.isfile(w17f), "W17 a filed seat-clone row stops standing and sweep resolves it")
+    del os.environ["RM_WRAPUP_SEAT_CLONES"]
+    check(wrapup.is_seat_clone("/home/mandrake/rm/bench") and wrapup.is_seat_clone("/home/mandrake/rm/foundry/"),
+          "W17 the default seat clones are bench and foundry")
+    W = wrapup.RELENTLESS_START_WHY
+    evs = [{"seat": "BENCH", "event": "start", "id": "SUP", "why": W, "ts": "2026-11-04T01:00:00Z"},
+           {"seat": "BENCH", "event": "claim", "id": "MINE", "why": "x", "ts": "2026-11-04T01:00:00Z"},
+           {"seat": "BENCH", "event": "start", "id": "THEN", "why": W, "ts": "2026-11-04T01:00:00Z"},
+           {"seat": "BENCH", "event": "start", "id": "THEN", "why": "a window took it over", "ts": "2026-11-04T02:00:00Z"},
+           {"seat": "BENCH", "event": "claim", "id": "OLD", "why": "x", "ts": "2020-01-01T00:00:00Z"},
+           {"seat": "BENCH", "event": "claim", "id": "DONE", "why": "x", "ts": "2026-11-04T01:00:00Z"}]
+    states = {"SUP": "doing", "MINE": "doing", "THEN": "doing", "OLD": "doing", "DONE": "done"}
+    since = 1793750400      # 2026-11-04T00:00:00Z
+    got = [i for i, _ in wrapup.claims_of(evs, states, "BENCH", since)]
+    check(got == ["MINE", "THEN"], "W17 the supervisor's start is carried; a window's own claim is filed: %r" % got)
+    with open(os.path.join(HERE, "relentless.py")) as f:
+        rsrc = f.read()
+    check('"start", item, "--why", "%s"' % W in rsrc, "W17 relentless.ledger_start still writes RELENTLESS_START_WHY")
 finally:
     shutil.rmtree(TMP, ignore_errors=True)
 
