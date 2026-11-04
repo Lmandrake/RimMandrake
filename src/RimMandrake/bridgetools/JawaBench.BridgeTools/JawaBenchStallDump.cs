@@ -17,7 +17,7 @@
 //   * mainStack   - an attempt at the main thread's managed stack. MEASURED 2026-11-03 (ilspycmd on the game's
 //                   mscorlib.dll): Unity's Mono throws NotImplementedException from StackTrace(Thread, bool) for any
 //                   thread but the caller, so this records that error, honestly, until a runtime can do it;
-//   * threads     - top native threads by CPU with the main thread flagged, and mainCpuDeltaS since the previous
+//   * threads     - top native threads (Toolhelp32 snapshot + GetThreadTimes) by CPU with the main thread flagged, and mainCpuDeltaS since the previous
 //                   dump: a main thread that burned ~RepeatSeconds of CPU was SPINNING; ~0 means it was WAITING.
 // ⛔ Like the watchdog: no Verse, no UnityEngine (compiled into the offline harness). Never throws.
 
@@ -193,32 +193,74 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        // Native thread list. MEASURED 2026-11-04 (live A1 threadCount 0; ilspycmd on the game's System.dll): Unity
+        // Mono's Process.Threads is new ProcessThread[n] - an array of NULL entries - so it can never name a thread or
+        // its CPU in game. Toolhelp32 + GetThreadTimes is what the game's runtime can actually answer.
+        [StructLayout(LayoutKind.Sequential)]
+        private struct THREADENTRY32
+        {
+            public uint dwSize, cntUsage, th32ThreadID, th32OwnerProcessID;
+            public int tpBasePri, tpDeltaPri;
+            public uint dwFlags;
+        }
+        private const uint TH32CS_SNAPTHREAD = 0x4, THREAD_QUERY_LIMITED_INFORMATION = 0x0800;
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr CreateToolhelp32Snapshot(uint flags, uint pid);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool Thread32First(IntPtr snap, ref THREADENTRY32 e);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool Thread32Next(IntPtr snap, ref THREADENTRY32 e);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr OpenThread(uint access, bool inherit, uint tid);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool GetThreadTimes(IntPtr h, out long creation, out long exit, out long kernel, out long user);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool CloseHandle(IntPtr h);
+        [DllImport("kernel32.dll")] private static extern uint GetCurrentProcessId();
+
+        /// <summary>This process's native threads: (tid, kernel+user CPU seconds or NaN when unreadable).</summary>
+        private static List<KeyValuePair<uint, double>> NativeThreads()
+        {
+            var list = new List<KeyValuePair<uint, double>>();
+            uint pid = GetCurrentProcessId();
+            IntPtr snap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+            if (snap == IntPtr.Zero || snap == new IntPtr(-1))
+                throw new InvalidOperationException("CreateToolhelp32Snapshot failed, Win32 error " + Marshal.GetLastWin32Error());
+            try
+            {
+                var e = new THREADENTRY32 { dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32)) };
+                for (bool ok = Thread32First(snap, ref e); ok; ok = Thread32Next(snap, ref e))
+                {
+                    if (e.th32OwnerProcessID != pid) continue;
+                    double cpu = double.NaN;
+                    IntPtr h = OpenThread(THREAD_QUERY_LIMITED_INFORMATION, false, e.th32ThreadID);
+                    if (h != IntPtr.Zero)
+                    {
+                        try { if (GetThreadTimes(h, out _, out _, out long k, out long u)) cpu = (k + u) / 1e7; }
+                        finally { CloseHandle(h); }
+                    }
+                    list.Add(new KeyValuePair<uint, double>(e.th32ThreadID, cpu));
+                    e.dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32));
+                }
+            }
+            finally { CloseHandle(snap); }
+            return list;
+        }
+
         internal static string ThreadsFields()
         {
             try
             {
                 var rows = new List<KeyValuePair<double, string>>();
                 double mainCpu = double.NaN;
-                foreach (ProcessThread pt in Process.GetCurrentProcess().Threads)
+                foreach (var t in NativeThreads())
                 {
-                    try
-                    {
-                        double cpu = pt.TotalProcessorTime.TotalSeconds;
-                        bool main = pt.Id == MainNativeTid;
-                        if (main) mainCpu = cpu;
-                        string wait = "";
-                        try { if (pt.ThreadState == System.Diagnostics.ThreadState.Wait) wait = pt.WaitReason.ToString(); } catch { }
-                        rows.Add(new KeyValuePair<double, string>(main ? double.MaxValue : cpu,
-                            "{\"id\":" + pt.Id + ",\"cpuS\":" + M.F(cpu, 2) + ",\"state\":" + M.Json(pt.ThreadState.ToString()) +
-                            ",\"waitReason\":" + M.Json(wait) + ",\"main\":" + (main ? "true" : "false") + "}"));
-                    }
-                    catch { }
-                    finally { pt.Dispose(); }
+                    double cpu = t.Value;
+                    bool main = MainNativeTid >= 0 && t.Key == (uint)MainNativeTid;
+                    if (main) mainCpu = cpu;
+                    rows.Add(new KeyValuePair<double, string>(main ? double.MaxValue : (double.IsNaN(cpu) ? -1.0 : cpu),
+                        "{\"id\":" + t.Key + ",\"cpuS\":" + (double.IsNaN(cpu) ? "null" : M.F(cpu, 2)) +
+                        ",\"main\":" + (main ? "true" : "false") + "}"));
                 }
                 double delta = double.IsNaN(mainCpu) || double.IsNaN(_prevMainCpu) ? double.NaN : mainCpu - _prevMainCpu;
                 if (!double.IsNaN(mainCpu)) _prevMainCpu = mainCpu;
                 var top = rows.OrderByDescending(r => r.Key).Take(TopThreads).Select(r => r.Value);
-                return "\"mainNativeTid\":" + MainNativeTid + ",\"mainCpuS\":" + (double.IsNaN(mainCpu) ? "null" : M.F(mainCpu, 2)) +
+                return "\"mainNativeTid\":" + MainNativeTid + ",\"threadSource\":\"toolhelp32\",\"mainCpuS\":" +
+                       (double.IsNaN(mainCpu) ? "null" : M.F(mainCpu, 2)) +
                        ",\"mainCpuDeltaS\":" + (double.IsNaN(delta) ? "null" : M.F(delta, 2)) +
                        ",\"threadCount\":" + rows.Count + ",\"threads\":[" + string.Join(",", top) + "]";
             }
