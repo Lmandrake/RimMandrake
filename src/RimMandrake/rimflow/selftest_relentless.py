@@ -20,7 +20,7 @@ import relentless as R  # noqa: E402
 RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, only_system_and_live=False, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9,
              staffing=None, circling=None, walls=None,   # the machinery test runs with no wall; the wall has its own selftest
-             same_failure_limit=3, max_approach_changes=None)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
+             same_failure_limit=3, max_approach_changes=None, account_settle_s=0)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
 STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"],
              launch_per_tick=2, work_launch_per_tick=2, check_backlog_max=2)  # mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
 FAILS = []
@@ -192,6 +192,7 @@ class FakeWorld:
             self.up[run["unit"]] = False
     def tokens(self, run): return self.tok
     def activity(self, st): return 0
+    def account_loss(self, run, clone, since): return getattr(self, "account_sign", None)
     def mem_gb(self):
         v, self.mem_once = getattr(self, "mem_once", None), None
         return self.mem if v is None else v

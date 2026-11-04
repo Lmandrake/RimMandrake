@@ -28,6 +28,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
 import conductor_log_guard  # noqa: E402
+import relentless_account  # noqa: E402
 import relentless_disk  # noqa: E402
 import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
@@ -315,6 +316,22 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         st["circling_hits"] = st.get("circling_hits", 0) + 1
         force_help(store, st, r, now)
     store.save(st)
+
+
+def account_lost(store, st, lost, r, now):
+    """Under the lock. The account ended this run, not the item (relentless_account.py): no strike, no return, no change of
+    approach; its clone and its place stay. What it spent was spent and stays charged. An empty account also counts on the
+    launch breaker, so a belt on it stops launching; a change-over is over by the time this runs."""
+    st.pop("live_iter", None)
+    st["gen"] += 1
+    st["run"] = None
+    st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") else "queued"
+    st["returned_at"] = st["returned_at"] or now
+    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": "account_lost", "detail": lost["why"][:600]})
+    store.learn(st["item"], "- %s gen %d ended account_lost, no strike: %s" % (iso(now), st["gen"] - 1, lost["why"][:600]))
+    store.save(st)
+    if lost["kind"] == "account_error":
+        launch_failed(store, r, now, lost["why"])
 
 
 def day_key(now):
@@ -1778,6 +1795,10 @@ class Effects(relentless_game.GameFx):
     def drop_run_tmp(self, run):
         return run_tmp.drop((run or {}).get("unit"))
 
+    def account_loss(self, run, clone, since):
+        """-> {"kind", "why"} when the account, not the item, ended this dead run; else None."""
+        return relentless_account.loss(run, clone, since)
+
     def alive(self, run):
         """Unit, scope, or a marked process: any one of them means the run is not over."""
         if not run:
@@ -2717,6 +2738,7 @@ def step(store, fx, r, item, now, acts):
             return
         if not settle(store, fx, r, item, "run", st["started_at"], now, acts):
             return
+        lost = fx.account_loss(run, st.get("clone"), st["started_at"])     # file reads: outside the lock
         with store.lock():
             st = store.load(item)
             if st["status"] != "running":
@@ -2736,6 +2758,15 @@ def step(store, fx, r, item, now, acts):
                 store.save(st)
                 launch_failed(store, r, now, "%s died at once with no usage" % (run or {}).get("unit"))
                 acts.append({"do": "launch_fail", "item": item})
+                return
+            if lost:
+                account_lost(store, st, lost, r, now)
+                acts.append({"do": "account_lost", "item": item, "kind": lost["kind"]})
+                return
+            # a change-over logs its event only once the fleet is back up, minutes after the kill: judge after it could have
+            seen = st["run"].setdefault("lost_seen", now)
+            if now - seen < r.get("account_settle_s", 0):
+                store.save(st)
                 return
             launch_ok(store)
             fail(store, st, "worker_lost", "unit %s ended with no receipt" % (run or {}).get("unit"), r, now)
@@ -2855,12 +2886,22 @@ def step(store, fx, r, item, now, acts):
         since = chk.get("verdict_at") or chk["at"] + r["check_max_s"] + r["launch_grace_s"]
         if not settle(store, fx, r, item, "check", min(since, now), now, acts):
             return
+        lost = fx.account_loss(chk.get("run"), chk.get("clone"), chk["at"]) if word is None else None
         c = st["candidate"]
         with store.lock():
             st = store.load(item)
             if st["status"] != "checking":
                 return
             word = st["check"].get("verdict")
+            if word is None and lost:       # the account's doing, not the checker's: same candidate, a new checker, no count
+                st["status"] = "candidate"
+                st["check"] = None
+                store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"][:600]})
+                store.save(st)
+                if lost["kind"] == "account_error":
+                    launch_failed(store, r, now, lost["why"])
+                acts.append({"do": "account_lost", "item": item, "kind": lost["kind"]})
+                return
             if word is None:
                 n = st.get("check_lost", 0) + 1
                 st["check_lost"] = n

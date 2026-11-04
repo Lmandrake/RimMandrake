@@ -32,6 +32,8 @@
   "check_max_s": 1800,
   "stale_s": 1500,
   "launch_grace_s": 240,
+  "_account_settle_s": "A run dead with no receipt and no sign of the account waits this long before it is a worker_lost strike: `claude-account use` logs its event only after the fleet is back up (stop 21 s, verify 90 s; RELENTLESS_STRIKES_FIX_EMPTY_ACCOUNT_BLAMED).",
+  "account_settle_s": 240,
   "stop_force_s": 180,
   "stop_quarantine_s": 600,
   "_spend_limits": "ADVISORY (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: \"Please make token limits advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based reasons.\"). item_spend_limit and day_spend_limit are thresholds: crossing one journals an attention act and writes one line to the Conductor log and the told ledger (relentless.attention, each kind once per 6 h). Nothing is held, refused or stopped by them; run_reserve is the per-run estimate they add.",
