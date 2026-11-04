@@ -343,6 +343,9 @@ def main() -> int:
         sys.path.insert(0, str(HERE.parent / "rimflow"))
         import relentless as R
         check(str(sc.RM / "relentless") == R.DEFAULT_ROOT, f"the store's root is relentless's: {sc.RM} {R.DEFAULT_ROOT}")
+        # the two copies of "what a trailing commit may touch" must stay one list, or a clone relentless parks reads stranded here
+        check(sc.POOL_STATE == R.POOL_STATE, f"scratch_clone's POOL_STATE is relentless's: {sc.POOL_STATE} {R.POOL_STATE}")
+        check(sc.POOL_NOISE == R.POOL_NOISE, f"scratch_clone's POOL_NOISE is relentless's: {sc.POOL_NOISE} {R.POOL_NOISE}")
         real_rm, sc.RM = sc.RM, BASE / "rm"
         del os.environ["RM_POOL_STATE_GLOB"]
         store = R.Store(str(sc.RM / "relentless"))
