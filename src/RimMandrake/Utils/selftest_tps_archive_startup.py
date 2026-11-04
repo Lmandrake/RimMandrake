@@ -122,6 +122,26 @@ def main():
           "PumpIdleSafe must derive busy from LongEventHandler and call PumpArchive")
     check(len(re.findall(r"\bPumpIdleSafe\s*\(\s*\)\s*;", st)) >= 1,
           "PumpIdleSafe() must be called (per-frame finalizer)")
+    # JAWABENCH_TPSARCHIVE_FIX_SKIPPED_AFTER_FAULT: the pump sits at RootFinalizer's TOP level, after its try/catch,
+    # so the __exception / RuntimeError / !__state.Valid early returns inside the try cannot skip the archive.
+    rf = body(st, r"void\s+RootFinalizer\s*\([^)]*\)")
+    check(rf is not None, "RootFinalizer(...) not found")
+    if rf:
+        top = []   # (depth, offset) of each PumpIdleSafe(); call; depth 1 = the method's own block
+        depth = 0
+        for j, c in enumerate(rf):
+            if c == "{":
+                depth += 1
+            elif c == "}":
+                depth -= 1
+            elif rf.startswith("PumpIdleSafe", j) and re.match(r"PumpIdleSafe\s*\(\s*\)\s*;", rf[j:]):
+                top.append(depth)
+        check(1 in top, "RootFinalizer must call PumpIdleSafe() at its top level, outside the try (found depths %r): "
+                        "an early return on a fault would skip the Player-prev archive" % top)
+        last_try = max([m.start() for m in re.finditer(r"\btry\b", rf)] or [-1])
+        last_pump = rf.rfind("PumpIdleSafe")
+        check(last_pump > rf.rfind("catch"), "PumpIdleSafe() must follow RootFinalizer's catch, not precede it")
+        check(last_try < last_pump, "no try may open after the PumpIdleSafe() call in RootFinalizer")
 
     # 5. Port of PumpArchive, swept: the archive never fires during or < idle s after a long event
     def simulate(frames, dt, idle_s):
