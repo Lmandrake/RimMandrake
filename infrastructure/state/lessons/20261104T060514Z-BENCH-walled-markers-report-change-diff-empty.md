@@ -1,0 +1,1 @@
+Walled Markers report 'change.diff is empty' when the candidate sha's own diff is empty because the work landed in an earlier commit (STEVE_DISK_MEASURE_ONLY_FORTY_GIGS_LEFT, TIRED_SWIMMER reasons): the box diff is sha^..sha, not base..sha, so a Marker can read finished work as no work. Seen in reasons only; not yet fixed (found during CHECKER_SANDBOX_FIX_BLIND_TO_STEVE).

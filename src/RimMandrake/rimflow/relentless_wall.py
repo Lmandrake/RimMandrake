@@ -20,20 +20,27 @@ import time
 from pathlib import Path
 
 HOME = str(Path.home())
-WORDS = ("PASS", "WEAK", "FAIL")
+WORDS = ("PASS", "WEAK", "FAIL", "UNMEASURED")
+UNMEASURED = "UNMEASURED"   # CHECKER_SANDBOX_FIX_BLIND_TO_STEVE: the box could not reach the evidence; no work goes back
+REACH_TAG = "CANNOT REACH:"
 RULE = (   # both Marker prompts: the unwalled and the walled one must never differ in what the words mean
     "Decide one thing: did this commit do what the item says, proven by running it? Run the proof yourself. Judge "
     "the contract against the item's words: a contract that is easier than the item is a FAIL. A proof that "
-    "cannot run is a FAIL. Do not fix anything, do not push, do not touch the ledger.",
+    "cannot run because of the commit is a FAIL. Do not fix anything, do not push, do not touch the ledger.",
     "One case is not a FAIL: the work holds and only the proof is short. If you think a clause is unproven or the "
     "contract skipped it, run that clause yourself against the code. Your run shows the clause is done: that is WEAK. "
-    "Your run shows it is not done, or you cannot show it either way: that is FAIL.",
+    "Your run shows it is not done, or you can reach all it needs and still cannot show it either way: that is FAIL.",
+    "Being unable to measure is not a FAIL. If the work may be done but what would show it is out of your box's reach - "
+    "another machine (ssh, Tailscale), a path this box hides (D:\\ClaudeWork, /mnt/d/ClaudeWork/rimmandrake come up empty "
+    "here), the live game, a Windows program that cannot start here - say UNMEASURED and begin the reasons with "
+    "'CANNOT REACH:', naming each thing and the command that showed you cannot reach it, then what you did check. It sends "
+    "no work back: the box goes up for repair. A proof that runs and is red is FAIL; a clause you can reach is never UNMEASURED.",
     "A gap must be in the item's own words: the mutant breaks something a clause of the item asks for. A mutant of an "
     "inner detail, or of an edge the item never named, is no gap, and every test has those.",
     "PASS: every clause of the item is done, you ran it, and you found no gap in the proof that you could show. "
     "WEAK: every clause is done, shown by your own runs, and you can show a gap: a mutant that stays green, or a "
     "clause the proof never reaches. A weak proof is not a pass: the item stays open and the next worker strengthens "
-    "the proof without touching the code. FAIL: a clause is not done, or the proof is red or cannot run. A gap you "
+    "the proof without touching the code. FAIL: a clause is not done, or the proof is red, or cannot run for a reason in the commit. A gap you "
     "only suspect and did not show is no gap. Look for a clause that is missing before you look for a thin test.",
     "If you say WEAK, begin the reasons with GAP:DIFF when a gap you showed is a part of this commit's own change "
     "that you put back as it was before the commit while the proof stayed green, and that part does what a clause "
@@ -51,8 +58,8 @@ def narrow_word(word, reasons):
 VERDICT_SCRIPT = '''#!/usr/bin/env python3
 import json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
-if len(sys.argv) != 3 or sys.argv[1].upper() not in ("PASS", "WEAK", "FAIL"):
-    sys.exit('usage: verdict PASS|WEAK|FAIL "what you ran and saw"')
+if len(sys.argv) != 3 or sys.argv[1].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
+    sys.exit('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw"')
 with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
     json.dump({"word": sys.argv[1].upper(), "reasons": sys.argv[2], "at": time.time()}, f)
 os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
@@ -223,6 +230,8 @@ def marker_prompt(st, text, box):
         "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
         "shows it, so the next worker can pin it\"" % qv,
         "  python3 %s FAIL \"what is wrong, so the next worker can fix it\"" % qv,
+        "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\"" % qv,
+        *offbox_lines(st["contract"], box),
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
 
@@ -267,6 +276,97 @@ def audit(store, rules, sessions_of, inputs_of):
         if inputs is not None:
             out.append({"item": st["item"], "unit": chk.get("unit"), "would_deny": would_deny(inputs, prof)})
     return out
+
+
+# ---- blindness (CHECKER_SANDBOX_FIX_BLIND_TO_STEVE). Owner 2026-11-04: "the checker was unable to measure something, and
+# interpreted that as a wrong value rather than an inability that should have been reported up for fix and repair".
+# STEVE_DISK_MEASURE_ONLY_FORTY_GIGS_LEFT was done at gen 1 (ssh-verified) and went to gen 9 on FAILs that said "ssh
+# fails in this sandbox" and "/mnt/d/ClaudeWork/rimmandrake is an empty directory here". A FAIL that only says the box is
+# blind is read as UNMEASURED: it sends no work back. Measured on the store's 142 FAIL reasons (selftest_relentless_blind).
+HIDDEN = ("/mnt/d/ClaudeWork", "D:\\ClaudeWork", "D:/ClaudeWork", "/home/mandrake/rm/", "/home/mandrake/dev/", "~/dev/")
+_ABSENT = (r"\b(empty|absent|missing|not there|does not exist|doesn't exist|no such file|not found|FileNotFoundError|"
+           r"not visible|unreadable|cannot be read|could not be read|not reachable|unreachable|masked|mask\b|tmpfs|UNC path|"
+           r"Invalid argument|NOT VISIBLE)\b")
+_REACH = [re.compile(x, re.I) for x in (
+    r"\b(could|can)\s?not\s+(be\s+)?(reach|see|read|run|start|open|ssh|measure|be run|be shown)\w*[^.;]{0,60}?"
+    r"\b(here|sandbox|box|checker|walled)\b",
+    r"\b(sandbox|this box|walled|checker'?s? (env|view|box|sandbox))\b[^.;]{0,60}?(cannot|can't|could not|not visible|"
+    r"not reachable|empty|masks?\b|tmpfs|blocked|fails?\b|failed)",
+    r"\bnot (reachable|visible) (from|in) (this|the|my) (sandbox|box|checker)",
+    r"\bssh\s+\S+[^.;]{0,40}?(fail|exit(s|ed)? 255|permission denied|bad owner|could not resolve|timed out)",
+    r"\benvironment (block|problem|fault|failure)\b|\benv only\b|\bnot a code defect\b",
+    r"\b(is|are) empty here\b|\bempty (tmpfs|mask|directory)\b",
+    r"\b(can't|cannot|could not|unable to) reach\b",
+)]
+_HIDDEN_ABSENT = re.compile(r"(%s)[^.;]{0,120}?%s|%s[^.;]{0,80}?(%s)" % (
+    "|".join(re.escape(h) for h in HIDDEN), _ABSENT, _ABSENT, "|".join(re.escape(h) for h in HIDDEN)), re.I)
+# what a Marker writes when its own run showed the work wrong: then the FAIL stands, blind parts or not
+_DEFECT = re.compile(r"cause is in (this|the) commit|\bis false\b|\bleaks?\b|\bproof is red\b|\bnot done\b|"
+                     r"\b\d+ FAIL(ED|ING|S)?\b|\bFAIL with \d|\b(stays?|leaves \S+( \S+)?) (green|OK)\b|\bclause \d+ is missing|"
+                     r"\bdoes not (do|fix|hold)\b|\bwrong\b|\bregress", re.I)
+
+
+def blind_reason(reasons):
+    """-> the words that say the checker could not reach its evidence, or None. Pure: a reading of the reasons."""
+    text = reasons or ""
+    if text.lstrip().upper().startswith(REACH_TAG):
+        return text.lstrip()[:200]
+    for rx in _REACH + [_HIDDEN_ABSENT]:
+        m = rx.search(text)
+        if m:
+            return text[max(0, m.start() - 40):m.end() + 40].strip()
+    return None
+
+
+def defect_said(reasons):
+    """True when the reasons say the checker's own run showed the work wrong: a real FAIL, whatever else it could not see."""
+    return bool(_DEFECT.search(reasons or ""))
+
+
+def read_as(word, reasons):
+    """-> (word the supervisor acts on, the blind words or None). A FAIL that only says the box is blind is UNMEASURED."""
+    if word == UNMEASURED:
+        return UNMEASURED, blind_reason(reasons) or (reasons or "")[:200]
+    if word == "FAIL":
+        b = blind_reason(reasons)
+        if b and not defect_said(reasons):
+            return UNMEASURED, b
+    return word, None
+
+
+# ---- off-box measurements: a contract's `offbox` commands, run by the supervisor outside the wall at check launch, raw
+# output and exit written read-only into the box, so the Marker judges a fresh measurement, never a number a worker typed.
+OFFBOX_MAX = 4
+OFFBOX_OUT_MAX = 20000
+
+
+def offbox_cmds(contract):
+    got = (contract or {}).get("offbox") or []
+    return [got] if isinstance(got, str) else list(got)
+
+
+def write_offbox(box, results):
+    """results: [{cmd, exit, out, at}]. -> the folder. Each file is read only: the Marker reads a measurement, never edits it."""
+    d = Path(box, "offbox")
+    d.mkdir(exist_ok=True)
+    for n, r in enumerate(results, 1):
+        f = d / ("%d.txt" % n)
+        f.write_text("$ %s\nmeasured_at=%s exit=%s\n%s\n" % (r["cmd"], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(r["at"])),
+                                                         r["exit"], (r["out"] or "")[-OFFBOX_OUT_MAX:]), encoding="utf-8")
+        os.chmod(f, 0o444)
+    return str(d)
+
+
+def offbox_lines(contract, box):
+    """The Marker's words about the supervisor's off-box readings, when the contract declares any."""
+    cmds = offbox_cmds(contract)
+    if not cmds:
+        return []
+    return ["", "Off-box readings: the supervisor ran the contract's offbox command(s) outside your box just before you "
+            "started, and wrote each command, its exit and its raw output to %s/offbox/<n>.txt (read only). They are fresh "
+            "measurements, not the worker's words: judge them as the reading of what your box cannot reach, and judge "
+            "whether each command really measures what its clause asks. A reading that is missing or failed to run is "
+            "UNMEASURED, not FAIL." % box]
 
 
 PROBE = r'''
