@@ -8,7 +8,8 @@
   auto     no file, a torn file, another window's file: today's rule
   words    only his whole message flips it, only in the Conductor window
   badge    the status line shows it, only there
-  wake     every wake prints the old window's last reply; an aborted restart does not
+  wake     every wake prints the old window's last reply, a first launch after a boot too (found from the transcripts,
+           through the command the wake prompt names); an aborted restart does not
 """
 import contextlib
 import io
@@ -25,6 +26,7 @@ from selftest_seat_restart import D, SR, T0, check, dos, obs, run, sess  # noqa:
 import reset_mode as RM  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 ROOT = os.environ["RM_DISPATCHER_STATE"]
 SOFT, HARD, CEIL = 110_000, 200_000, 400_000
 os.environ["SEAT_RESTART_NO_TICK"] = "1"
@@ -307,7 +309,7 @@ def test_wake_reshows_the_last_reply():
     out = wake({"tx_path": p2, "killed_at": T0})
     check(REPLY in out and "Reset switch" not in out and "Fresh Conductor" not in out, "dictated one-liners are passed over")
     check(wake({"tx_path": path, "aborted": "x"}) == "", "an aborted restart killed nothing: the old screen still stands")
-    check(wake({}) == "", "no record: a fleet launch, nothing to show")
+    check("UNMEASURED" in wake({}), "no record and no window to look in: said, never silent")
     check("UNMEASURED" in wake({"session_id": "old", "killed_at": T0}), "no transcript named: said, never silent")
     check("UNMEASURED" in wake({"tx_path": "/no/such/file", "killed_at": T0}), "an unreadable transcript: said, never silent")
     # through the real cmd_wake, on the path that answers no replay: every wake, not only an unanswered one
@@ -329,6 +331,143 @@ def test_wake_reshows_the_last_reply():
     finally:
         SR._schedule, SR.answered, SR.config = old_s, old_ans, cfg_old
         os.remove(p)
+
+
+def write_tx(cfg_home, clone, sid, records, age_s=0):
+    p = SR.transcript_path(clone, sid)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "w") as f:
+        for r in records:
+            f.write(json.dumps(r) + "\n")
+    t = T0 + 100000 - age_s
+    os.utime(p, (t, t))
+    return p
+
+
+def window_recs(title, entry, *replies):
+    out = [{"type": "custom-title", "customTitle": title}]
+    for r in replies:
+        out += [{"type": "user", "entrypoint": entry, "message": {"content": "q"}}, dict(say(r), entrypoint=entry)]
+    return out
+
+
+def proc_start(pid):
+    with open("/proc/%d/stat" % pid) as f:
+        return f.read().rsplit(")", 1)[1].split()[19]
+
+
+def test_window_that_died_without_a_record():
+    """The checker's case: the first launch after a boot, crash or account switch. Real files in a fake Claude home, driven
+    through the very command the Conductor's first-launch wake prompt names, in a real subprocess."""
+    import install_wt_seat_profiles as W
+    prompt = W.WAKE_PROMPT["BENCH"]
+    check("src/RimMandrake/Utils/handoff.py --wake" in prompt, "the first-launch wake prompt runs handoff.py --wake")
+    check("BENCH" in W.OWN_WAKE, "and that is the Conductor tile's first launch")
+    clone = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["seat_restart"]["seats"]["BENCH"].get("clone") \
+        or SR.config(SR._schedule())["BENCH"]["clone"]
+    home = tempfile.mkdtemp(prefix="cr-home-")
+    state = tempfile.mkdtemp(prefix="cr-state-")
+    os.makedirs(os.path.join(home, "sessions"))
+    env = dict(os.environ, CLAUDE_CONFIG_DIR=home, RM_DISPATCHER_STATE=state, AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    sid = "cccccccc-dead"
+    old = SR.claude_home
+    SR.claude_home = lambda: home
+    try:
+        def run_wake():
+            r = subprocess.run([sys.executable, os.path.join(REPO, "src/RimMandrake/Utils/handoff.py"), "--wake"], cwd=REPO,
+                               env=env, capture_output=True, text=True, timeout=120)
+            return r.stdout + r.stderr
+        check("LAST REPLY: UNMEASURED" in run_wake(), "nothing to read (an empty Claude home): said, never silent")
+        write_tx(home, clone, "aaaaaaaa-older", window_recs("CONDUCTOR", "cli", "an older window's reply"), 7200)
+        dead = write_tx(home, clone, sid, window_recs("CONDUCTOR", "cli", "first", "THE REPLY HE WAS READING"), 600)
+        write_tx(home, clone, "dddddddd-ops", window_recs("CONDUCTOR", "sdk-cli", "a role launch talks to itself"), 60)
+        write_tx(home, clone, "eeeeeeee-other", window_recs("AGENT BENCH", "cli", "a window with another name"), 50)
+        out = run_wake()
+        check("THE REPLY HE WAS READING" in out and "word for word" in out,
+              "the first-launch wake shows the last reply of the window that died")
+        check("older window" not in out and "role launch" not in out and "another name" not in out,
+              "and only that one: not an older window, a role launch of the same name, or another title")
+        check(out.lstrip().startswith("== the old window's LAST REPLY"), "it comes before the handoff text")
+        # a stale record of an older restart must not outrank the window that actually died
+        os.makedirs(os.path.dirname(SR.killed_path("BENCH", state)), exist_ok=True)
+        with open(SR.killed_path("BENCH", state), "w") as f:
+            json.dump({"tx_path": SR.transcript_path(clone, "aaaaaaaa-older"), "session_id": "aaaaaaaa-older", "killed_at": T0}, f)
+        out = run_wake()
+        check("THE REPLY HE WAS READING" in out and "an older window" not in out, "a stale killed record loses to the newer dead window")
+        # a record of the restart that killed this very window: same reply, and it names the restart
+        with open(SR.killed_path("BENCH", state), "w") as f:
+            json.dump({"tx_path": dead, "session_id": sid, "killed_at": T0}, f)
+        out = run_wake()
+        check("THE REPLY HE WAS READING" in out and "restarted at" in out, "the record of this very restart is honoured")
+        os.remove(SR.killed_path("BENCH", state))
+        # a window alive right now is not dead: its screen still stands (this test's own process plays it)
+        me = os.getpid()
+        live_file = os.path.join(home, "sessions", "%d.json" % me)
+        with open(live_file, "w") as f:
+            json.dump({"pid": me, "sessionId": sid, "procStart": proc_start(me)}, f)
+        out = run_wake()
+        check("THE REPLY HE WAS READING" not in out and "an older window's reply" in out,
+              "a live window is passed over: the newest DEAD one shows")
+        # the boot case: the pid now belongs to something else, so the file's start tick no longer matches
+        with open(live_file, "w") as f:
+            json.dump({"pid": me, "sessionId": sid, "procStart": "1"}, f)
+        check("THE REPLY HE WAS READING" in run_wake(), "a pid reused after a boot does not make a dead window read alive")
+        with open(live_file, "w") as f:
+            json.dump({"pid": me, "sessionId": sid, "startedAt": 1000}, f)
+        check("THE REPLY HE WAS READING" in run_wake(), "nor does an older session file with no start tick")
+        os.remove(live_file)
+        # a window that died having said nothing: the one before it, what was last on any screen
+        write_tx(home, clone, "ffffffff-mute", window_recs("CONDUCTOR", "cli") + [
+            {"type": "user", "entrypoint": "cli", "message": {"content": "wake"}}], 5)
+        check("THE REPLY HE WAS READING" in run_wake(), "a window that never spoke is passed over")
+        # other seats print nothing
+        r = subprocess.run([sys.executable, os.path.join(HERE, "seat_restart.py"), "last-reply", "--seat", "RUNNER"], cwd=REPO,
+                           env=env, capture_output=True, text=True, timeout=60)
+        check(r.returncode == 0 and "LAST REPLY" not in r.stdout, "a seat without the Conductor's kind prints nothing")
+    finally:
+        SR.claude_home = old
+
+
+def test_ready_gets_its_own_ticks():
+    kicks, old = [], SR._tick_soon
+    SR._tick_soon = lambda *d: kicks.append(d)
+    try:
+        for mode in (RM.HOLD, RM.AUTO):
+            SR.set_mode("FOUNDRY", mode, "sid-t", root=ROOT, by="t")
+        check(not kicks, "hold and auto need no tick")
+        SR.set_mode("FOUNDRY", RM.READY, "sid-t", root=ROOT, by="t")
+        check(len(kicks) == 1 and kicks[0] and min(kicks[0]) <= 20,
+              "ready gets its own ticks, or it waits out the 120 s timer (%s)" % kicks)
+    finally:
+        SR._tick_soon = old
+        os.remove(RM.path("FOUNDRY", ROOT))
+
+
+def test_soft_backstop_under_hold():
+    """The 110k line, not only the 200k one: pending stands down, and the kill's recheck refuses."""
+    st, s = fresh(), sch()
+    quiet = dict(human_at=NOW - 20000, ended_at=NOW - 2000)
+    a = go(s, st, window(SOFT + 1, **quiet), NOW)
+    rs = st["seat_restart"]["FOUNDRY"]
+    check(rs["state"] == "pending" and rs.get("source") == "backstop", "the soft line goes pending in auto (%s, %s)" % (rs, dos(a)))
+    a = go(s, st, window(SOFT + 1, RM.HOLD, **quiet), NOW + 60)
+    check(st["seat_restart"]["FOUNDRY"]["state"] == "cancelled" and "restart_cancel" in dos(a) and not fires(a),
+          "hold stands a pending SOFT restart down (%s)" % dos(a))
+    tx = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
+    tx.close()
+    sid = "sid-soft"
+    rs = {"source": "backstop", "ts": T0, "session_id": sid, "cancel_after": T0}
+    RM.write("FOUNDRY", RM.HOLD, sid, ROOT)
+    kw = dict(paused=lambda: None, work=lambda *a: [], pending=lambda *a: [], shard=lambda *a: None)
+    old_tp, old_ff = SR.transcript_for, SR.final_fence
+    SR.transcript_for = lambda *a: tx.name
+    SR.final_fence = lambda *a, **k: []
+    try:
+        check(any("reset switch says hold" in h for h in SR.recheck_at_kill("FOUNDRY", s, rs, {"sessionId": sid, "pid": 1, "cwd": "/x"}, **kw)),
+              "the kill's recheck refuses a SOFT restart too")
+    finally:
+        SR.transcript_for, SR.final_fence = old_tp, old_ff
+        os.remove(RM.path("FOUNDRY", ROOT))
 
 
 def test_live_schedule():

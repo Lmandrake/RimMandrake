@@ -109,7 +109,7 @@ stays open. A full handoff is written only when a keyboard sitting ends. When a 
 ## Start of turn
 
 ```
-python3 src/RimMandrake/Utils/handoff.py --wake        # FIRST turn after a reboot only
+python3 src/RimMandrake/Utils/handoff.py --wake        # FIRST turn of a fresh window only; opens with the dead window's last reply
 python3 src/RimMandrake/rimflow/cli.py seat ready
 tail -n 40 /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
 python3 src/RimMandrake/rimflow/cli.py queue BENCH

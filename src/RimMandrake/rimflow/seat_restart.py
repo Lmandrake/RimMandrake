@@ -2834,22 +2834,123 @@ def cmd_request(args):
     return 0
 
 
-def _wake_last_reply(rec):
+def window_alive(sf, now=None):
+    """Is this session file's window still running? Pid-alone lies exactly when it matters: after a boot the low pids are
+    reused and a dead Conductor reads alive, so its reply would be skipped for an older one. procStart (the kernel's start
+    tick, /proc/<pid>/stat field 22) ties the file to that one process; a file without it must postdate this boot."""
+    try:
+        pid = int(sf.get("pid"))
+        with open("/proc/%d/stat" % pid) as f:
+            start = f.read().rsplit(")", 1)[1].split()[19]
+    except (OSError, TypeError, ValueError, IndexError):
+        return False
+    if sf.get("procStart") is not None:
+        return str(sf["procStart"]) == start
+    import helper_receipts as HR
+    btime = HR.boot_time()
+    return bool(btime and (sf.get("startedAt") or 0) / 1000 >= btime)
+
+
+LAST_WINDOW_SCAN = 60          # newest transcripts of the clone looked at: role launches outnumber windows ~2:1 (14 measured)
+TITLE_TAIL = 2 << 20           # a window repeats its title every turn, so its tail holds one
+
+
+def is_window_of(path, name):
+    """Is this transcript an interactive window called `name`? MEASURED 2026-11-03 on 14 transcripts of the Conductor's
+    clone: role launches (Operations, Designer, one-shot helpers) inherit customTitle CONDUCTOR there too; only
+    entrypoint cli tells a window he looks at from a program talking to itself."""
+    try:
+        with open(path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - TITLE_TAIL))
+            raw = f.read().decode("utf-8", "replace")
+    except OSError:
+        return False
+    title, entry = None, None
+    for line in raw.splitlines():
+        if '"customTitle"' not in line and '"entrypoint"' not in line:
+            continue
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue
+        title = r.get("customTitle") or title
+        entry = r.get("entrypoint") or entry
+    return title == name and entry == "cli"
+
+
+REPLY_SKIP = ("Reset switch:", "Fresh Conductor now")  # dictated one-liners: the reply he was reading is the one before
+
+
+def last_dead_window(cfg, me=None):
+    """-> (transcript path, its last reply), the newest dead window of this seat that said anything; (None, "") if there is
+    none. Found from the transcripts, not the killed record, which only a Dispatcher restart writes: a boot, a crash and
+    an account switch leave it naming an older window. Raises OSError when the instrument cannot see."""
+    home = claude_home()
+    pdir = os.path.dirname(transcript_path(cfg.get("clone") or REPO, "x"))
+    live = {me} if me else set()
+    for n in os.listdir(os.path.join(home, "sessions")):
+        sf = _read_json(os.path.join(home, "sessions", n)) if n.endswith(".json") else None
+        if sf and sf.get("sessionId") and window_alive(sf):
+            live.add(sf["sessionId"])
+    names = [n for n in os.listdir(pdir) if n.endswith(".jsonl") and n[:-6] not in live]
+    paths = sorted((os.path.join(pdir, n) for n in names), key=os.path.getmtime, reverse=True)
+    for path in paths[:LAST_WINDOW_SCAN]:
+        if is_window_of(path, cfg.get("session_name")):
+            text = last_assistant_text(path, tail_bytes=8 << 20, skip=REPLY_SKIP)
+            if text.strip():
+                return path, text
+    return None, ""
+
+
+def _mtime(path):
+    try:
+        return os.path.getmtime(path or "")
+    except OSError:
+        return -1
+
+
+def _wake_last_reply(rec, cfg=None, me=None):
     """Every wake shows what the old window last said, whatever killed it (owner 2026-11-03: "I was reading your results
-    to me when you reset!"). The fresh window's screen is empty, so it must put the text back in front of him itself."""
-    if not rec or rec.get("aborted"):
-        return                           # the old window was never killed: its screen is still there
-    path = rec.get("tx_path")
-    # the switch's and the goodbye's one-liners were dictated to the window: the reply he was reading is the one before
-    text = last_assistant_text(path, tail_bytes=8 << 20, skip=("Reset switch:", "Fresh Conductor now")) if path else ""
-    print("\n== the old window's LAST REPLY (window %s, restarted at %s). He may have been reading it when it died:" % (
-        rec.get("session_id"), _iso(rec.get("killed_at") or 0)))
+    to me when you reset!"). The fresh window's screen is empty, so it must put the text back in front of him itself. With
+    cfg it looks for the window that actually died, so a record left by an older restart cannot show a stale reply."""
+    rec = rec or {}
+    path, text, problem = None, "", None
+    if cfg:
+        try:
+            path, text = last_dead_window(cfg, me)
+        except OSError as e:
+            problem = "the transcripts of %s are unreadable (%s)" % (cfg.get("clone"), type(e).__name__)
+    if rec and not rec.get("aborted") and (not path or _mtime(rec.get("tx_path")) >= _mtime(path)):
+        path = rec.get("tx_path")
+        text = last_assistant_text(path, tail_bytes=8 << 20, skip=REPLY_SKIP) if path else ""
+        print("\n== the old window's LAST REPLY (window %s, restarted at %s). He may have been reading it when it died:" % (
+            rec.get("session_id"), _iso(rec.get("killed_at") or 0)))
+    elif path:
+        print("\n== the old window's LAST REPLY (window %s, last written %s; no restart recorded it: a boot, crash or account "
+              "switch). He may have been reading it when it died:" % (os.path.basename(path)[:-6], _iso(_mtime(path))))
+    elif rec.get("aborted") and not problem:
+        return                       # that restart was called off and no dead window is in sight: the old screen still stands
+    else:
+        print("\n== the old window's LAST REPLY: UNMEASURED: %s. Say so to him in one line."
+              % (problem or "no dead window of this seat that said anything was found"))
+        return
     if not text.strip():
         print("UNMEASURED: no reply could be read from %s. Say so to him in one line." % (path or "(no transcript named)"))
         return
     print("<<<\n%s\n>>>" % text.strip())
     print("Copy it whole and word for word to the very top of your first reply, under the line \"Last reply from the old "
           "window:\", and only then answer or report. Do not summarize it.")
+
+
+def cmd_last_reply(args):
+    """The re-show alone, for a wake no restart made: handoff.py --wake runs it, so the tile's first launch shows it too."""
+    seat = (args.seat or doorbell.seat_name() or "").upper()
+    cfg = config(_schedule()).get(seat) or {}
+    if cfg.get("kind") == "conductor":
+        pid = doorbell.claude_ancestor()
+        _wake_last_reply(_read_json(killed_path(seat)) or {}, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
+    return 0
 
 
 def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
@@ -3070,7 +3171,7 @@ def cmd_wake(args):
     _wake_receipts(seat, cfg, rec)
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
-        _wake_last_reply(rec)
+        _wake_last_reply(rec, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
         _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)
         return 0
     print("\n== handoff pointers (handoff.py --wake)")
@@ -3283,6 +3384,8 @@ def main(argv=None):
     w.add_argument("--seat")
     w.add_argument("--lines", type=int, default=40)
     w.add_argument("--gen", help="the restart generation the relaunch prompt carries (binds the wake to that restart)")
+    lr = sub.add_parser("last-reply", help="re-show the dead Conductor window's last reply (handoff.py --wake runs it)")
+    lr.add_argument("--seat")
     i = sub.add_parser("intile", help="seat_loop.sh: relaunch here if a restart just killed this seat (exit 3: no)")
     i.add_argument("--seat")
     sub.add_parser("status")
@@ -3299,7 +3402,7 @@ def main(argv=None):
         import helper_checkpoint as HC
         return HC.main(argv[1:])
     args = ap.parse_args(argv)
-    return {"request": cmd_request, "wake": cmd_wake, "intile": cmd_intile, "status": cmd_status, "mode": cmd_mode,
+    return {"request": cmd_request, "wake": cmd_wake, "last-reply": cmd_last_reply, "intile": cmd_intile, "status": cmd_status, "mode": cmd_mode,
             "now-run": cmd_now_run}[args.cmd](args)
 
 

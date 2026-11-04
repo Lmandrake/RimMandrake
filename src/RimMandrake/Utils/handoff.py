@@ -448,11 +448,29 @@ def todo_scan(path):
     return bad
 
 
+def show_last_reply():
+    """The Conductor's fresh window puts the dead window's last reply back on his empty screen. Here, because every wake
+    prompt runs this command, including the one frozen into the Windows Terminal profile, and no other seat prints
+    anything (seat_restart.py last-reply, CONDUCTOR_RESET_FIX_KILLED_MID_READ)."""
+    try:
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "src", "RimMandrake", "rimflow", "seat_restart.py"),
+                            "last-reply", "--seat", seat()], cwd=ROOT, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        print("\n== the old window's LAST REPLY: UNMEASURED (%r). Say so to him in one line." % e)
+        return
+    if r.returncode:
+        print("\n== the old window's LAST REPLY: UNMEASURED (exit %d: %s). Say so to him in one line."
+              % (r.returncode, (r.stderr or "").strip()[-300:]))
+    elif r.stdout.strip():
+        print(r.stdout.rstrip() + "\n")
+
+
 def wake():
     """The READ side of the ritual: print this seat's latest committed handoff
     with each pointer's CURRENT ledger state. Consumption audit 2026-09-17:
     46 of 76 pointers were never consumed — a handoff nobody is obliged to
     read is write-only by construction. Run on the first turn after a reboot."""
+    show_last_reply()
     prev_name, _ = previous_handoff()
     if not prev_name:
         print("no committed handoff for %s — nothing to wake from" % seat())
