@@ -401,13 +401,14 @@ def _run_request(sch, ctx, extra, unpub):
 
 
 def test_docs_name_now_once():
-    docs = {"Conductor": "src/RimMandrake/rimflow/roles/conductor.md",
-            "Designer": "src/RimMandrake/rimflow/roles/designer.md",
-            "Operations": "src/RimMandrake/rimflow/roles/operations.md"}
-    for label, rel in docs.items():
+    # Conductor names it twice since b483dac198: its close-out, and the HANDOFF READY Stop hook's request.
+    docs = {"Conductor": ("src/RimMandrake/rimflow/roles/conductor.md", 2),
+            "Designer": ("src/RimMandrake/rimflow/roles/designer.md", 1),
+            "Operations": ("src/RimMandrake/rimflow/roles/operations.md", 1)}
+    for label, (rel, want) in docs.items():
         with open(os.path.join(REPO, rel), encoding="utf-8") as f:
             n = f.read().count("--now")
-        check(n == 1, "%s (%s) names --now exactly once (%d)" % (label, rel, n))
+        check(n == want, "%s (%s) names --now exactly %d time(s) (%d)" % (label, rel, want, n))
 
 
 def main():

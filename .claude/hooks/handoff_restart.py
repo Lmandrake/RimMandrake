@@ -20,7 +20,7 @@ owner 2026-11-03: "I would like you to make it so that the Conductor window rebo
 present and the handoff is reached"): rm-restart-now.path ticks the Dispatcher back to back, so the kill follows the
 turn end by seconds, not by the 120 s timer. The words, not the owner's presence, are the trigger. With helpers alive the
 request is deferred; when the last ends, kick_now restarts the watcher's hold. His goodbye is unchanged (conductor_goodbye.py).
-A seat not on restarts passes.
+A seat not on restarts passes. A crash in it is a refusal too (crashed), never a silent turn end.
 """
 import json
 import os
@@ -126,8 +126,22 @@ def main():
     import seat_restart as SR
     seat = doorbell.seat_name()
     if seat:
-        on_stop(hook, seat.upper(), SR)
+        try:
+            on_stop(hook, seat.upper(), SR)
+        except Exception as e:  # noqa: BLE001 - settings.json runs this `2>/dev/null || true`: a crash is silent there
+            crashed(SR, seat.upper(), hook, e)
     return 0
+
+
+def crashed(SR, seat, hook, e, out=None):
+    """A crash would leave no restart and no trace. It is a refusal instead, so the window is told and the Dispatcher
+    alarms (restart:<SEAT>:handoff_refused) — only on a turn that said the words: any other turn stays silent."""
+    try:
+        text = hook.get("last_assistant_message") or SR.last_assistant_text(hook.get("transcript_path"))
+        if SR.says_handoff_ready(text) or SR.handoff_drain(seat, hook.get("session_id")):
+            refuse(SR, seat, hook.get("session_id"), "the handoff hook crashed: %s: %s" % (type(e).__name__, e), out)
+    except Exception:  # noqa: BLE001 - nothing more can be said
+        pass
 
 
 if __name__ == "__main__":

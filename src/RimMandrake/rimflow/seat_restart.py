@@ -878,6 +878,8 @@ def last_assistant_text(path, tail_bytes=1 << 20, skip=()):
             r = json.loads(line)
         except ValueError:
             continue
+        if not isinstance(r, dict):      # a stray scalar line must not crash the Stop hook that reads this
+            continue
         if r.get("type") == "assistant" and not r.get("isSidechain") and not r.get("isApiErrorMessage"):
             c = (r.get("message") or {}).get("content")
             t = c if isinstance(c, str) else "\n".join(b.get("text") or "" for b in c or [] if isinstance(b, dict))
@@ -892,10 +894,11 @@ def handoff_drain(seat, session_id, root=None, now=None):
     if not seat or not session_id:
         return False
     try:
-        if seat not in config(_schedule()):
-            return False                    # a seat taken off restarts is not served: a stale record must not hold its window
+        cfg = config(_schedule()).get(seat)
     except Exception:  # noqa: BLE001 - readers fail open
         return False
+    if not cfg:
+        return False                        # a seat taken off restarts is not served: a stale record must not hold its window
     root = root or doorbell.state_dir()
     now = time.time() if now is None else now
     rs = ((_read_json(os.path.join(root, "state.json")) or {}).get("seat_restart") or {}).get(seat) or {}
@@ -903,7 +906,7 @@ def handoff_drain(seat, session_id, root=None, now=None):
         return True
     req = _read_json(request_path(seat, root)) or {}
     return bool(req.get("handoff") and req.get("session_id") == session_id and req.get("ts") is not None
-                and req["ts"] != rs.get("req_ts") and 0 <= now - req["ts"] < DEFAULTS["request_max_age_s"])
+                and req["ts"] != rs.get("req_ts") and 0 <= now - req["ts"] < cfg["request_max_age_s"])
 
 
 def note_item(ticket):
@@ -2576,9 +2579,10 @@ def drain_of(seat, session_id, root=None, now=None):
     if not seat or not session_id:
         return None
     try:
-        if seat not in config(_schedule()):
-            return None
+        cfg = config(_schedule()).get(seat)
     except Exception:  # noqa: BLE001 - readers fail open
+        return None
+    if not cfg:
         return None
     root = root or doorbell.state_dir()
     now = time.time() if now is None else now
@@ -2587,7 +2591,7 @@ def drain_of(seat, session_id, root=None, now=None):
         return rs.get("reason") or "restart pending (%s)" % rs.get("source")
     req = _read_json(request_path(seat, root)) or {}
     if (req.get("session_id") == session_id and req.get("ts") is not None and req["ts"] != rs.get("req_ts")
-            and 0 <= now - req["ts"] < DEFAULTS["request_max_age_s"]):
+            and 0 <= now - req["ts"] < cfg["request_max_age_s"]):
         return req.get("reason") or "restart requested"
     return None
 

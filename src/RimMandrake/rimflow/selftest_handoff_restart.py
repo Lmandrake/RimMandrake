@@ -462,9 +462,8 @@ def test_conductor_now():
     w.helpers = []
     SR.kick_now(SEAT, root=w.state)
     st = json.load(open(SR.now_stamp_path(SEAT)))
-    check(st.get("kick_at") and SR.now_owed(st, D.load_state(w.state), time.time(), 240, seats={SEAT}) == "pending"
-          or SR.now_owed(st, D.load_state(w.state), time.time(), 240, seats={SEAT}) is not None,
-          "kick_now rewrites the stamp")
+    check(bool(st.get("kick_at")) and SR.now_owed(st, D.load_state(w.state), time.time(), 240, seats={SEAT}) is not None,
+          "kick_now rewrites the stamp with kick_at, and it is owed")
     w.at(1)
     check(w.killed(), "the last helper ended: killed on the next tick")
     w.close()
@@ -522,6 +521,19 @@ def test_hook():
     f.unpub = None
     did, calls, blk = hook_case(f, text="helper notice read")
     check(did == "kicked" and f.kicked == 1 and calls == ["check"], "published: ticks kicked at this turn's end")
+
+    f = Fake()                               # a crash in on_stop is a refusal on a turn that said it, silence otherwise
+    out = io.StringIO()
+    H.crashed(f, SEAT, {"session_id": "s9", "last_assistant_message": "x\nHANDOFF READY"}, RuntimeError("boom"), out)
+    blk = json.loads(out.getvalue())
+    check(blk["decision"] == "block" and "crashed" in blk["reason"] and f._read_json(f.refused_path(SEAT))["n"] == 1,
+          "a hook crash on the handoff turn blocks and leaves the refusal file")
+    out = io.StringIO()
+    H.crashed(Fake(), SEAT, {"session_id": "s9", "last_assistant_message": "ok"}, RuntimeError("boom"), out)
+    check(out.getvalue() == "", "NEGATIVE: a crash on an ordinary turn says nothing")
+    with tempfile.NamedTemporaryFile("w", suffix=".jsonl", dir=IB.TMP, delete=False) as t:
+        t.write('7\n"s"\n' + json.dumps({"type": "assistant", "message": {"content": "HANDOFF READY"}}) + '\n[1]\n')
+    check(SR.last_assistant_text(t.name) == "HANDOFF READY", "a scalar or list line in the tail is skipped, not a crash")
 
     w = start("refused_alarm")               # the Dispatcher's side: the same file, the real tick
     win = w.windows[0]
