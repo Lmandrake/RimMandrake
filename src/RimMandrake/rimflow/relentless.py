@@ -1593,7 +1593,9 @@ class Effects(relentless_game.GameFx):
         if key not in memo:
             _, w = self.ledger_items()
             it = w.items.get(item)
-            words = [x.lower() for x in re.split(r"[^A-Za-z0-9]+", "%s %s" % (item, getattr(it, "title", "") or "")) if x]
+            # an ALL-CAPS token in the title cites another item (LEANINGSCRUB_STALL_SHARED_MOVE_1), not a mod this one touches
+            title = re.sub(r"\b[A-Z][A-Z0-9_]{3,}\b", " ", getattr(it, "title", "") or "")
+            words = [x.lower() for x in re.split(r"[^A-Za-z0-9]+", "%s %s" % (item, title)) if x]
             names = set(words) | {a + b for a, b in zip(words, words[1:])}
             try:
                 with open(os.path.join(self.books, "infrastructure", "state", "items", item + ".md"), encoding="utf-8") as f:
