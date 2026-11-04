@@ -158,10 +158,19 @@ def ledger_cases(repo, d):
     errs, _ = CT.gate(d, repo)
     check("ledger: an Arbiter note on another tree hash is refused", errs == ["the ledger signature is on another tree or sheet"],
           errs)
+    os.remove(shard)
+    sig = CT.signature_text(d, repo, signed)
+    fake_note(repo, "FOO_CONCEPT_ITEM", re.sub(r"sheet=\S+", "sheet=" + "0" * 64, sig), unit=ARB_UNIT)
+    errs, _ = CT.gate(d, repo)
+    check("ledger: an Arbiter note on this tree but another sheet is refused",
+          errs == ["the ledger signature is on another tree or sheet"], errs)
+    os.remove(shard)
     with open(shard, "a", encoding="utf-8") as f:
-        f.write("{not json " + CT.SIGN_MARK + "\n")
-        f.write(json.dumps({"event": "file", "text": CT.signature_text(d, repo, signed), "role_unit": ARB_UNIT}) + "\n")
-    check("ledger: a bad line and a non-note event sign nothing", CT.gate(d, repo)[0] != [])
+        f.write("{not json " + sig + "\n")
+        f.write(json.dumps({"seat": "BENCH", "event": "file", "id": "FOO_CONCEPT_ITEM", "text": sig,
+                            "role_unit": ARB_UNIT, "tsn": 1}) + "\n")
+    errs, _ = CT.gate(d, repo)
+    check("ledger: a bad line and a non-note event sign nothing", errs == ["no Arbiter signature on the ledger"], errs)
     with open(shard, "w", encoding="utf-8") as f:
         f.write(real)
     check("ledger restored: gate passes", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
