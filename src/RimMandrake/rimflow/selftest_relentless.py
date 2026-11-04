@@ -2277,6 +2277,14 @@ def t_pool_jam():
     x.w.pool = {"/c/H0": {"kept": True}, "/c/L0": {"busy": True}}
     x.w.pool_max = 2
     ok("H0 (commits)" in str(R.make_room(x.s, x.w, x.r, x.now, [])) and "/c/H0" in x.w.pool, "commits stay, and the hold says so")
+    wip_was = dict(x.w.pool["/c/H0"])       # H0 is held: the same commits, carryable, give the place back
+    x.w.pool["/c/H0"].update(carry_real=True)
+    ok(R.make_room(x.s, x.w, x.r, x.now, []) is None and "/c/H0" not in x.w.pool and x.st("H0").get("bundle") == "/bundle//c/H0",
+       "a put-down item's carryable commits give room, with a bundle on its record: %s" % x.st("H0").get("bundle"))
+    x.w.pool["/c/H0"] = wip_was
+    held_again = x.st("H0")
+    held_again.pop("bundle", None)
+    x.s.save(held_again)
     parked(x, "D0", "retired", "/c/D0")
     x.w.pool["/c/D0"] = {"kept": True}
     x.tick()
@@ -2640,7 +2648,7 @@ def t_books_frozen():
 
 def t_put_down_real_commit_end_to_end():
     """POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG, through the real release_parked, Effects, Store and git: a blocked item's commit
-    leaves the pool in its bundle and comes back whole; a queued item's, or one a cherry-pick cannot carry, stays."""
+    leaves the pool in its bundle and comes back whole; a queued item's stays. t_put_down_every_shape: the rest of what a clone can hold."""
     d = tempfile.mkdtemp(prefix="rlcarry-")
     store = R.Store(d)
     r = dict(RULES, pool_parked_release_s=0, warm_clones=0)
@@ -2690,12 +2698,175 @@ def t_put_down_real_commit_end_to_end():
     ok(release() == [] and fx.clone_present(c) and store.load("QUE").get("bundle") is None, "a queued item's real commit stays in its clone")
     store.save(dict(store.load("QUE"), status="retired", clone=None))
     shutil.rmtree(c)
-    # blocked with a stash beside the commit: a cherry-pick cannot carry it, so it stays
-    c = clone_with_commit("STA", "blocked")
-    with open(os.path.join(c, "real.cs"), "w", encoding="utf-8") as f:
-        f.write("stashed\n")
-    git(c, "stash", "push", "-q", "-m", "s", "real.cs")
-    ok(release() == [] and fx.clone_present(c) and store.load("STA").get("bundle") is None, "a blocked item's stash keeps its clone")
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_put_down_every_shape():
+    """Every commit a blocked item holds leaves the pool and is back, or it is named and alarmed: a merge, a commit beside a stash, a
+    stash alone, a side branch, a tag, a clashing branch name, a conflict; and the clone that truly cannot go stays."""
+    d = tempfile.mkdtemp(prefix="rlshape-")
+    store = R.Store(d)
+    alarms = []
+    store.on_alarm = alarms.append
+    r = dict(RULES, pool_parked_release_s=0, warm_clones=0)
+    fx = R.Effects(r, store)
+    def git(c, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True, capture_output=True, text=True).stdout
+    def put(c, name, text):
+        with open(os.path.join(c, name), "w", encoding="utf-8") as f:
+            f.write(text)
+    def commit(c, name, text, msg="w"):
+        put(c, name, text)
+        git(c, "add", name)
+        git(c, "commit", "-qm", msg)
+    o = os.path.join(d, "o.git")
+    os.makedirs(os.path.join(d, "clones"))
+    git(d, "init", "-q", "--bare", o, "-b", "main")
+    def clone(item, status="blocked"):
+        c = os.path.join(d, "clones", item)
+        git(d, "clone", "-q", o, c)
+        commit(c, item + ".txt", "base\nline\n", "base")
+        git(c, "push", "-q", "origin", "HEAD")
+        st = R.new_state(item, 0, "t")
+        st.update(clone=c, status=status)
+        store.save(st)
+        return c
+    def out_and_back(item, c):
+        """release_parked takes it, and the next clone gets it back. -> (fresh clone, bad)"""
+        R.release_parked(store, fx, r, R.time.time(), [])
+        b = store.load(item).get("bundle")
+        ok(not fx.clone_present(c) and b and os.path.exists(os.path.join(b, "carry")), "%s: the blocked clone is released, bundle on the record: %s" % (item, b))
+        git(d, "clone", "-q", o, c)
+        return c, fx.restore_bundle(item, b, c)
+    def text(c, name):
+        return open(os.path.join(c, name), encoding="utf-8").read()
+    def gone(item, c):
+        shutil.rmtree(c)
+        store.save(dict(store.load(item), status="retired", clone=None))
+    def unlanded(c):
+        return int(git(c, "rev-list", "--count", "HEAD", "--not", "--remotes").strip())
+
+    # a merge, with a resolution only the merge commit holds
+    c = clone("MRG")
+    trunk = git(c, "rev-parse", "--abbrev-ref", "HEAD").strip()
+    git(c, "checkout", "-qb", "side")
+    commit(c, "MRG.txt", "side\nline\n", "side")
+    commit(c, "side.cs", "side\n", "side file")
+    git(c, "checkout", "-q", trunk)
+    commit(c, "MRG.txt", "main\nline\n", "main")
+    subprocess.run(["git", "merge", "-q", "side"], cwd=c, capture_output=True)
+    put(c, "MRG.txt", "resolved\nline\n")
+    git(c, "add", "MRG.txt")
+    git(c, "commit", "-qm", "merge")
+    w = fx.clone_wip(c)
+    ok(w["kept"] and w["carry_real"], "a merge is carried: %s" % (w,))
+    c, bad = out_and_back("MRG", c)
+    ok(bad == [], "a merge restores: %s" % (bad,))
+    ok(text(c, "MRG.txt") == "resolved\nline\n" and text(c, "side.cs") == "side\n", "with the merge's resolution and the side's file")
+    ok(unlanded(c) == 2 and fx.clone_wip(c)["kept"], "as unlanded commits along the first parents: %d" % unlanded(c))
+    ok("2 unlanded commit(s) came back by cherry-pick: land them or drop them" in store.learned("MRG"), "the next worker reads it: %r" % store.learned("MRG"))
+    gone("MRG", c)
+
+    # a real commit beside a stash
+    c = clone("STA")
+    commit(c, "real.cs", "real\n")
+    put(c, "real.cs", "stashed\n")
+    git(c, "stash", "push", "-q", "-m", "keep me", "real.cs")
+    ok(fx.clone_wip(c)["carry_real"], "a commit beside a stash is carried")
+    c, bad = out_and_back("STA", c)
+    ok(bad == [] and text(c, "real.cs") == "real\n" and unlanded(c) == 1, "the commit is back: %s" % (bad,))
+    ok("keep me" in git(c, "stash", "list"), "the stash is back on the list, by name")
+    git(c, "stash", "pop", "-q")
+    ok(text(c, "real.cs") == "stashed\n", "and pops to what it held")
+    ok("1 stash(es) back" in store.learned("STA"), "the next worker is told of the stash")
+    gone("STA", c)
+
+    # stashes alone, no commit: in order
+    c = clone("SOL")
+    put(c, "SOL.txt", "older\nline\n")
+    git(c, "stash", "push", "-q", "-m", "older")
+    put(c, "SOL.txt", "newer\nline\n")
+    git(c, "stash", "push", "-q", "-m", "newer")
+    ok(fx.clone_wip(c)["carry_real"], "a stash alone is carried")
+    c, bad = out_and_back("SOL", c)
+    ok(bad == [] and unlanded(c) == 0, "two stashes restore with no commit: %s" % (bad,))
+    subj = git(c, "stash", "list", "--format=%gs").splitlines()
+    ok(len(subj) == 2 and "newer" in subj[0] and "older" in subj[1], "newest still on top: %s" % (subj,))
+    gone("SOL", c)
+
+    # a real commit on HEAD and another on a side branch and a tag
+    c = clone("OTH")
+    commit(c, "real.cs", "real\n")
+    trunk = git(c, "rev-parse", "--abbrev-ref", "HEAD").strip()
+    git(c, "checkout", "-qb", "other", "HEAD~1")
+    commit(c, "oth.cs", "other\n")
+    git(c, "checkout", "-q", trunk)
+    git(c, "checkout", "-q", "--detach", "HEAD~1")
+    commit(c, "tagged.cs", "tagged\n")
+    git(c, "tag", "keep-this")
+    git(c, "checkout", "-q", trunk)
+    c, bad = out_and_back("OTH", c)
+    ok(bad == [] and text(c, "real.cs") == "real\n", "HEAD's commit is back: %s" % (bad,))
+    ok(git(c, "show", "other:oth.cs") == "other\n", "the side branch's commit is back on its branch")
+    ok(git(c, "show", "keep-this:tagged.cs") == "tagged\n", "the tag's commit is back on its tag")
+    ok(not git(c, "for-each-ref", "refs/rm-carried"), "no working ref left behind")
+    said = store.learned("OTH")
+    ok("refs/heads/other" in said and "refs/tags/keep-this" in said, "and the next worker is told: %r" % said)
+    ok(set(git(c, "rev-list", "--branches", "--tags", "--not", "--remotes").split()) and fx.clone_wip(c)["kept"], "still reads as unlanded work")
+    gone("OTH", c)
+
+    # HEAD left on a branch: main's own unpushed commit may not overwrite the fresh main
+    c = clone("NAM")
+    commit(c, "m.cs", "main's\n")
+    git(c, "checkout", "-qb", "fix", "HEAD~1")
+    commit(c, "f.cs", "fix\n")
+    c, bad = out_and_back("NAM", c)
+    ok(bad == [] and text(c, "f.cs") == "fix\n", "HEAD's line comes back: %s" % (bad,))
+    ok(git(c, "show", "carried/main:m.cs") == "main's\n", "the clashing branch comes back under carried/")
+    gone("NAM", c)
+
+    # already landed under another hash: skipped, and what follows it still comes
+    c = clone("RED")
+    commit(c, "red.cs", "red\n")
+    commit(c, "after.cs", "after\n")
+    u = os.path.join(d, "up")
+    git(d, "clone", "-q", o, u)
+    commit(u, "red.cs", "red\n", "landed elsewhere")
+    git(u, "push", "-q", "origin", "HEAD")
+    c, bad = out_and_back("RED", c)
+    ok(bad == [] and text(c, "after.cs") == "after\n" and unlanded(c) == 1, "a commit origin already holds is skipped, the next one comes: %s" % (bad,))
+    ok("1 already on origin" in store.learned("RED"), "and that is said: %r" % store.learned("RED"))
+    gone("RED", c)
+    shutil.rmtree(u)
+
+    # a conflict: not silent, not lost
+    c = clone("CON")
+    commit(c, "CON.txt", "mine\nline\n")
+    u = os.path.join(d, "up")
+    git(d, "clone", "-q", o, u)
+    commit(u, "CON.txt", "theirs\nline\n", "upstream")
+    git(u, "push", "-q", "origin", "HEAD")
+    sha = git(c, "rev-parse", "HEAD").strip()
+    b_alarms = len(alarms)
+    c, bad = out_and_back("CON", c)
+    ok(any("did not re-apply" in x for x in bad), "a conflict is named: %s" % (bad,))
+    ok(text(c, "CON.txt") == "theirs\nline\n" and not git(c, "status", "--porcelain"), "the next clone is left clean")
+    said = store.learned("CON")
+    ok("did not all come back" in said and "/bundles/" in said, "the next worker is told where it is: %r" % said)
+    ok([x["kind"] for x in alarms[b_alarms:]] == ["restore_incomplete"], "and it is an alarm: %s" % (alarms[b_alarms:],))
+    bundle = [x for x in alarms if x["kind"] == "restore_incomplete"][-1]["bundle"]
+    git(u, "fetch", "-q", os.path.join(bundle, "commits.bundle"), "HEAD")
+    ok(git(u, "rev-parse", "FETCH_HEAD").strip() == sha, "the commit is in that bundle")
+    gone("CON", c)
+    shutil.rmtree(u)
+
+    # the one clone that cannot go: unreadable. It stays; scratch_clone's alarm covers it (selftest_scratch_clone)
+    c = clone("BAD")
+    os.remove(os.path.join(c, ".git", "HEAD"))
+    w = fx.clone_wip(c)
+    ok(w["kept"] and not w["carry_real"], "an unreadable clone is not carried: %s" % (w,))
+    R.release_parked(store, fx, r, R.time.time(), [])
+    ok(fx.clone_present(c) and store.load("BAD").get("bundle") is None, "and stays")
     shutil.rmtree(d, ignore_errors=True)
 
 
@@ -2815,19 +2986,6 @@ def t_pool_real_git():
     ok(fx.restore_bundle("I1", b, c) == [], "the next clone re-applies the real commit")
     ok(os.path.exists(os.path.join(c, "b2.txt")) and fx.clone_wip(c)["carry_real"], "the real work came back as a commit, still unlanded")
     ok("came back by cherry-pick: land them or drop them" in store.learned("I1"), "the next worker is told to land what came back: %r" % store.learned("I1"))
-    put("b2.txt", "stashed\n")
-    git(c, "stash", "push", "-q", "-m", "s", "b2.txt")
-    w = fx.clone_wip(c)
-    ok(w["kept"] and not w["carry_real"], "a stash beside the commit cannot be cherry-picked back: it stays: %s" % (w,))
-    git(c, "stash", "drop", "-q")
-    git(c, "checkout", "-q", "-b", "side", "HEAD~1")
-    put("side.txt", "side\n")
-    git(c, "add", "side.txt")
-    git(c, "commit", "-qm", "side")
-    git(c, "checkout", "-q", "-")
-    git(c, "merge", "-q", "--no-edit", "side")
-    w = fx.clone_wip(c)
-    ok(w["kept"] and not w["carry_real"], "a merge cannot be cherry-picked back: it stays: %s" % (w,))
     # the item says lesson OR LEDGER: a ledger-only commit takes the same road out and back
     led = "infrastructure/state/ledger/events/BENCH.jsonl"
     shutil.rmtree(c)
@@ -3990,7 +4148,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

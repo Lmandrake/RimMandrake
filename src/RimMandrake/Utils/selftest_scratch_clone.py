@@ -319,10 +319,15 @@ def main() -> int:
         check(sc.clone_unpushed(led_c) == ["commits"], f"a commit holding real work beside a ledger line is stranded: {sc.clone_unpushed(led_c)}")
         owner = BASE / "owner" / "items" / "I" / "state.json"
         owner.parent.mkdir(parents=True)
-        owner.write_text(json.dumps({"status": "game", "clone": str(pool / "p2")}))
         os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "owner" / "items" / "*" / "state.json")
-        rd = sc.pool_reading()
-        check(rd["stranded"] == [] and rd["breach"] == 0, f"a live item's clone is the belt's, not stranded: {rd['stranded']}")
+        for live in ({"status": "game", "game": {"phase": "proving"}}, {"status": "queued"}, {"status": "running"}):
+            owner.write_text(json.dumps({**live, "clone": str(pool / "p2")}))
+            rd = sc.pool_reading()
+            check(rd["stranded"] == [] and rd["breach"] == 0, f"a live item's clone is the belt's, not stranded ({live}): {rd['stranded']}")
+        # POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG: release_parked carries all a put-down item holds, so one still here is the alarm
+        for down in ({"status": "blocked"}, {"status": "held"}, {"status": "game"}, {"status": "game", "game": {"phase": "waiting"}}):
+            owner.write_text(json.dumps({**down, "clone": str(pool / "p2")}))
+            check(not sc.owned_by_item(pool / "p2") and sc.pool_reading()["stranded"] == ["p2"], f"a put-down item's clone still holding work is stranded ({down})")
         owner.write_text(json.dumps({"status": "done", "clone": str(pool / "p2")}))
         check(sc.pool_reading()["stranded"] == ["p2"], "a finished item owns nothing")
         # the DEFAULT glob, which every other check here overrides, must find what relentless's own Store writes
@@ -338,6 +343,29 @@ def main() -> int:
         check(sc.pool_state_files() == [store.p("items", "I", "state.json")], f"the default glob sees a real state file: {sc.pool_state_files()}")
         check(sc.owned_by_item(pool / "p2"), "and through it a real item owns its clone")
         sc.RM = real_rm
+        # a pool root this process may not look at is not an empty pool (POOL_READING_FIX_LOCKED_READS_EMPTY)
+        os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "nostate*.json")
+        wall = BASE / "wall"
+        (wall / "clones").mkdir(parents=True)
+        walled_root, os.environ["RM_POOL_ROOT"] = os.environ["RM_POOL_ROOT"], str(wall / "clones")
+        sc.pool_reading()
+        last = (sc.state_dir() / "pool.json").read_text()
+        os.chmod(wall, 0)
+        try:
+            blocked = False
+            try:
+                sc.pool_reading()
+            except sc.PoolUnreadable:
+                blocked = True
+            check(blocked, "a denied pool root raises PoolUnreadable, it does not read count=0")
+            check((sc.state_dir() / "pool.json").read_text() == last, "and writes no reading over the last good one")
+            rc, said = quiet(sc.main, ["pool"])
+            check(rc == 3 and '"unreadable"' in said and '"last_reading"' in said, f"pool says unreadable and shows the last reading: {rc} {said[:200]}")
+        finally:
+            os.chmod(wall, 0o755)
+        os.environ["RM_POOL_ROOT"] = str(BASE / "no" / "such" / "root")
+        check(sc.pool_reading()["count"] == 0, "a missing root is still measured empty")
+        os.environ["RM_POOL_ROOT"] = walled_root
         os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "nostate*.json")
         os.environ["RM_POOL_MAX_CLONES"] = "9"
         os.environ["RM_POOL_MAX_BYTES"] = "1"

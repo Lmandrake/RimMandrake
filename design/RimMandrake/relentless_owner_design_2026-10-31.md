@@ -327,7 +327,7 @@ charged as a launch failure, so the breaker backed off for hours. The cap is 16 
   checks no longer running, bundling first (§4). A live clone is never touched.
 - **A place is kept for checks.** `pool_check_reserve` (1): a builder may not take the last clone; a check may.
 - **Pool-full releases, in order.** `make_room`: dead, then parked with nothing at risk (candidate, held, queued), then
-  parked with WIP, whose bundle the item's next clone restores, so "same clone" in §1 means same work. A put-down item's commits go in the bundle too and come back by cherry-pick; a merge or a stash stays.
+  parked with WIP, whose bundle the item's next clone restores, so "same clone" in §1 means same work. A put-down item's commits and stashes go in the bundle too and come back whole: along HEAD's first parents by cherry-pick (a merge as one commit), other branches and tags as refs, stashes on the stash list; what will not re-apply is named and alarmed, and a clone that cannot go at all is scratch_clone's alarm after the idle hour.
 - **Pool-full is a wait.** POOL REFUSED is not `launch_failed`: no breaker, no failure on the item.
 - **A jam alarms.** Under target with nothing live, or pool-full, for `jam_alarm_s` (300): one RAISE FIRST line in the Conductor
   log naming the cause and who holds the pool. An open breaker's reading carries its cause.

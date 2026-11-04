@@ -273,7 +273,7 @@ and keep file writes and commits in separate Bash calls (hooks refuse a compound
 clones is approved** for writers above 4 (owner, 2026-10-31: "I trust you, but please monitor them carefully. They seem to
 propagate prolifically."). Cap 16 clones and 70 GB (owner by card 2026-11-02, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB", up from 10 / 40), refused at creation by `scratch_clone.py` (an idle pushed clone is
 reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired, owner 2026-11-03; status is `D:\ClaudeWork\rimmandrake\conductor\RUNNING_NOW.md`); one alarm, `disk.pool_breach`; any helper clone with unlanded work
-(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names, a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
+(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names and has not put down (a held, blocked or game-waiting item's clone goes back at once with every commit and stash it holds, so one still standing is the alarm), a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
 ## Code isn't clean until a review says so

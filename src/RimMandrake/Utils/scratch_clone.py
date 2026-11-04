@@ -478,15 +478,18 @@ def pool_state_files() -> list[str]:
 
 
 def owned_by_item(c: Path) -> bool:
-    """A live relentless item (not done or retired) names this clone as its work, check or help clone. The belt owns it then:
-    release_parked frees it when the item is put down, and a live game phase keeps it on purpose, so the idle hour does not
-    make it stranded. POOL_STATE_COMMITS_PIN_CLONE_FOREVER: GRAVSHIP read stranded for hours while its item waited on the game."""
+    """A live relentless item names this clone as its work, check or help clone and is not put down. The belt owns it then, and a
+    live game phase keeps it on purpose, so the idle hour does not make it stranded (POOL_STATE_COMMITS_PIN_CLONE_FOREVER). A held,
+    blocked or game-waiting item's clone is released at once with all it holds, so one still standing here idle for the hour is
+    work release_parked could not carry, and that is the alarm (POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG)."""
     for f in pool_state_files():
         try:
             st = json.loads(Path(f).read_text())
         except (OSError, ValueError):
             continue
-        if not isinstance(st, dict) or st.get("status") in ("done", "retired"):
+        if not isinstance(st, dict) or st.get("status") in ("done", "retired", "held", "blocked"):
+            continue
+        if st.get("status") == "game" and (st.get("game") or {}).get("phase") not in ("staging", "proving"):
             continue
         for h in (st, st.get("check"), st.get("help")):
             if isinstance(h, dict) and h.get("clone") and os.path.abspath(h["clone"]) == str(c):
@@ -523,9 +526,19 @@ def level_origin_ref(c: Path, refreshed: list) -> bool:
         return False
 
 
+class PoolUnreadable(OSError):
+    """The pool root exists and this process may not look (a walled unit). ops_watch turns it into its 9999 alarm."""
+
+
 def pool_reading() -> dict:
     """Live: count, bytes, oldest clone, and every clone with unpushed work. Written to pool.json for RimPulse."""
     root, (cmax, bmax) = pool_root(), pool_cap()
+    try:
+        os.listdir(root)     # is_dir() is False on a denied parent too: a blind look is not an empty pool, and writes no reading
+    except FileNotFoundError:
+        pass
+    except OSError as e:
+        raise PoolUnreadable(f"{root}: {e.strerror}") from e
     rows = []
     refreshed: list = []
     now = time.time()
@@ -867,7 +880,15 @@ def main(argv=None) -> int:
         print(report())
         return 0
     if a.cmd == "pool":
-        r = pool_reading()
+        try:
+            r = pool_reading()
+        except PoolUnreadable as e:     # say so, and show the last reading made from outside the wall, with its age
+            try:
+                last = json.loads((state_dir() / "pool.json").read_text())
+            except (OSError, ValueError):
+                last = None
+            print(json.dumps({"unreadable": str(e), "last_reading": last}))
+            return 3
         s = scratch_stranded()
         print(json.dumps({**{k: v for k, v in r.items() if k != "clones"}, "scratch_stranded": s["stranded"]}))
         return 1 if r["breach"] or s["stranded"] else 0

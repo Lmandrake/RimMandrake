@@ -1473,8 +1473,9 @@ class Effects(relentless_game.GameFx):
 
     def clone_wip(self, c):
         """-> {"kept": commits or a stash no remote has, "real": changed paths a worker meant}. An unreadable clone is
-        kept: nothing about it is known. "carry_real": commits with real work that a bundle can carry back by cherry-pick
-        (no merge, no stash), which a put-down item's clone must not sit on (POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG)."""
+        kept: nothing about it is known. "carry_real": commits or a stash that a bundle can carry back (restore_commits takes
+        merges, side branches and stashes too), which a put-down item's clone must not sit on (POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG).
+        Only an unreadable clone is kept and not carried; scratch_clone alarms on that one."""
         try:
             shas = self.git_ok(c, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes").split()
             # POOL_UNLANDED_COMMITS_NEVER_RELEASE (2026-11-03): a worker's last commit is often a lesson or ledger record made after
@@ -1488,7 +1489,7 @@ class Effects(relentless_game.GameFx):
                     state = False
             stashed = self.git_ok(c, "stash", "list").strip() != ""
             kept = (bool(shas) and not state) or stashed
-            return {"kept": kept, "carry": bool(shas) and state, "carry_real": bool(shas) and not state and not merge and not stashed,
+            return {"kept": kept, "carry": bool(shas) and state, "carry_real": kept,
                     "real": [p for p in self.changed_paths(c) + self.ignored_paths(c) if not p.startswith(POOL_NOISE)]}
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError):
             return {"kept": True, "carry": False, "carry_real": False, "real": []}
@@ -1521,8 +1522,10 @@ class Effects(relentless_game.GameFx):
             raise RuntimeError("ignored files over %d bytes: read them before this clone goes" % POOL_IGNORED_MAX)
         home = self.store.p("items", item) if os.path.isdir(self.store.p("items", item)) else self.store.p("orphans")
         stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-        out = os.path.join(home, "bundles", "%s-%s" % (stamp, os.path.basename(c)))
-        os.makedirs(out, exist_ok=True)
+        out, n = os.path.join(home, "bundles", "%s-%s" % (stamp, os.path.basename(c))), 1
+        while os.path.exists(out):      # named by the second: never let an earlier bundle's files answer for this one
+            out, n = os.path.join(home, "bundles", "%s-%s-%d" % (stamp, os.path.basename(c), n)), n + 1
+        os.makedirs(out)
         real = [":(top)" + p for p in paths if not p.startswith(POOL_NOISE)]
         untracked = self.git_ok(c, "ls-files", "-z", "--others", "--exclude-standard").split("\0")
         untracked = [p for p in untracked if p]
@@ -1542,8 +1545,7 @@ class Effects(relentless_game.GameFx):
                                input="\0".join(want).encode(), check=True, timeout=300)
         for i, sha in enumerate(stash):   # refs/stash names only the newest; the rest live in a reflog no bundle carries
             self.git_ok(c, "update-ref", "refs/rm-stash/%d" % i, sha)
-        carried = self.clone_wip(c) if commits else {}
-        if carried.get("carry") or carried.get("carry_real"):
+        if commits or stash:
             open(os.path.join(out, "carry"), "w").close()
         if commits or stash:
             r = self.git(c, "bundle", "create", os.path.join(out, "commits.bundle"), "HEAD", "--all", "--not", "--remotes")
@@ -1556,19 +1558,10 @@ class Effects(relentless_game.GameFx):
         bad = []
         cb = os.path.join(bundle, "commits.bundle")
         if os.path.exists(os.path.join(bundle, "carry")) and os.path.exists(cb):     # carried commits come back as commits
-            r = self.git(c, "fetch", "-q", cb, "HEAD", timeout=300)
-            shas = self.git(c, "rev-list", "--reverse", "FETCH_HEAD", "--not", "--remotes", timeout=300).stdout.split() if not r.returncode else []
-            for sha in shas:
-                r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=relentless@localhost", "cherry-pick", "--allow-empty", sha, timeout=300)
-                if r.returncode:
-                    self.git(c, "cherry-pick", "--abort", timeout=60)
-                    bad.append("commit %s did not re-apply: %s" % (sha[:10], r.stderr[-120:]))
-                    break
-            if r.returncode and not shas:
-                bad.append("commits.bundle: %s" % r.stderr[-200:])
-            if shas and not bad:
-                self.store.learn(item, "\n%s relentless: your clone went back while the item was put down; %d unlanded commit(s) "
-                                 "came back by cherry-pick: land them or drop them\n" % (iso(time.time()), len(shas)))
+            bad.extend(self.restore_commits(item, bundle, cb, c))
+            if bad:
+                self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "restore_incomplete", "item": item,
+                                    "bundle": bundle, "why": "; ".join(bad)[:300]})
         patch = os.path.join(bundle, "real.patch")
         if os.path.exists(patch) and os.path.getsize(patch):
             r = self.git(c, "apply", "--3way", "--whitespace=nowarn", patch, timeout=300)
@@ -1593,6 +1586,71 @@ class Effects(relentless_game.GameFx):
         if bad:
             self.store.learn(item, "\n%s relentless: your clone was evicted from a full pool and its WIP did not all "
                              "come back; it is in %s (%s)\n" % (iso(time.time()), bundle, "; ".join(bad)))
+        return bad
+
+    def restore_commits(self, item, bundle, cb, c):
+        """Every commit and stash in the bundle comes back or is named. -> what did not. HEAD's line by cherry-pick along its
+        first parents (a merge as one commit, -m 1, so a resolution made in the merge is kept); a branch or tag HEAD does not
+        reach as that ref; each stash onto the stash list, oldest first so the order holds."""
+        listed = self.git(c, "bundle", "list-heads", cb, timeout=300)
+        heads = [ln.split(None, 1) for ln in listed.stdout.splitlines() if " " in ln]
+        if listed.returncode or not heads:
+            return ["commits.bundle: %s" % (listed.stderr[-200:] or "no refs in it")]
+        temp = ["refs/rm-carried/%d" % i for i in range(len(heads))]
+        r = self.git(c, "fetch", "-q", "--no-tags", cb, *("+%s:%s" % (h[1], t) for h, t in zip(heads, temp)), timeout=300)
+        if r.returncode:
+            return ["commits.bundle: %s" % r.stderr[-200:]]
+        bad, picked, landed, side, stashes = [], 0, 0, [], []
+        tip = next((sha for sha, ref in heads if ref == "HEAD"), None)
+        shas = self.git(c, "rev-list", "--reverse", "--first-parent", tip, "--not", "--remotes", timeout=300).stdout.split() if tip else []
+        for sha in shas:
+            merge = len(self.git(c, "rev-list", "--parents", "-n1", sha, timeout=60).stdout.split()) > 2
+            r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=relentless@localhost", "cherry-pick", "--allow-empty",
+                         *(("-m", "1") if merge else ()), sha, timeout=300)
+            if not r.returncode:
+                picked += 1
+                continue
+            started = self.git(c, "rev-parse", "-q", "--verify", "CHERRY_PICK_HEAD", timeout=60).returncode == 0
+            if started and self.git(c, "diff", "--quiet", "HEAD", timeout=60).returncode == 0:   # origin already holds it
+                self.git(c, "cherry-pick", "--skip", timeout=60)
+                landed += 1
+                continue
+            self.git(c, "cherry-pick", "--abort", timeout=60)
+            bad.append("commit %s did not re-apply: %s" % (sha[:10], r.stderr[-120:]))
+            break
+        for sha, ref in heads:
+            if not ref.startswith(("refs/heads/", "refs/tags/")):
+                continue
+            if tip and self.git(c, "merge-base", "--is-ancestor", sha, tip, timeout=60).returncode == 0:
+                continue        # on HEAD's line: it came back above
+            area, name = ("refs/heads/", ref[11:]) if ref.startswith("refs/heads/") else ("refs/tags/", ref[10:])
+            want = ref if self.git(c, "rev-parse", "-q", "--verify", ref, timeout=60).returncode else "%scarried/%s" % (area, name)
+            r = self.git(c, "update-ref", want, sha, timeout=60)
+            if r.returncode:
+                bad.append("%s did not come back: %s" % (ref, r.stderr[-120:]))
+            else:
+                side.append(want)
+        for sha, ref in sorted((h for h in heads if h[1].startswith("refs/rm-stash/")), key=lambda h: -int(h[1].rsplit("/", 1)[1])):
+            subject = self.git(c, "log", "-1", "--format=%s", sha, timeout=60).stdout.strip()
+            r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=relentless@localhost", "stash", "store", "-m", subject, sha, timeout=60)
+            if r.returncode:
+                bad.append("stash %s did not come back: %s" % (sha[:10], r.stderr[-120:]))
+            else:
+                stashes.append(sha)
+        for t in temp:
+            self.git(c, "update-ref", "-d", t, timeout=60)
+        said = []
+        if picked:
+            said.append("%d unlanded commit(s) came back by cherry-pick: land them or drop them" % picked)
+        if landed:
+            said.append("%d already on origin, skipped" % landed)
+        if side:
+            said.append("off HEAD's line, unlanded: %s" % ", ".join(side))
+        if stashes:
+            said.append("%d stash(es) back on git stash list" % len(stashes))
+        if said:
+            self.store.learn(item, "\n%s relentless: your clone went back while the item was put down; %s (bundle: %s)\n" % (
+                iso(time.time()), "; ".join(said), bundle))
         return bad
 
     def remove_clone(self, st, before=None):
@@ -2340,9 +2398,9 @@ def bundle_pointer(store, row, carry):
 def release_parked(store, fx, r, now, acts):
     """A parked item's idle clone goes back before scratch_clone's idle hour calls it stranded: FLYER_STABLE_BODY_GATE_1 and
     SEAT_MEMORY_STANDARD_FALLBACK_1 sat held on the owner with real WIP until disk.pool_breach fired, because only pool
-    pressure ever moved them. WIP and state-only commits travel in the bundle. So do a put-down item's real commits: scratch_clone does not alarm on a
-    live item's clone, so a blocked item would otherwise hold a pool place with work nobody sees (POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG). What a
-    cherry-pick cannot carry (a merge, a stash) stays. The item's clone is the belt's while the item lives; once the item is done or retired scratch_clone alarms."""
+    pressure ever moved them. WIP and state-only commits travel in the bundle. So does everything else a put-down item holds, merges, side branches and stashes
+    included (POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG). What cannot go (an unreadable clone, a bundle that failed) stays, and past the idle hour
+    scratch_clone alarms on it: a live item's clone is excused only while the item is not put down. A queued item's commits stay: its next worker lands them."""
     for row in pool_rows(store, fx, r):
         # put down (held, blocked, waiting on the game): its clone goes back at once, it waits on something else
         wait_s = 0 if row["kind"] == "work" and row["status"] in PUT_DOWN else r["pool_parked_release_s"]
@@ -2357,7 +2415,7 @@ def release_parked(store, fx, r, now, acts):
 
 def make_room(store, fx, r, now, acts, reserve=0):
     """Room for one more clone, or the hold that names who has the pool. Parked clones go first with nothing of theirs
-    at risk, then those whose WIP a bundle carries; commits and stashes stay, and a live clone is never touched.
+    at risk, then those whose WIP a bundle carries, a put-down item's commits and stashes included; a queued item's stay, and a live clone is never touched.
     `reserve`: places a builder may not take, so a finished item can always get its check."""
     n, size, cmax, bmax = fx.pool_load()
     reserve = min(reserve, cmax - 1)   # a pool of one still has to take a builder
@@ -2371,10 +2429,10 @@ def make_room(store, fx, r, now, acts, reserve=0):
             row["hold"] = "live"
             continue
         wip = fx.clone_wip(row["clone"])
-        if wip["kept"] and row["rank"]:
+        if wip["kept"] and row["rank"] and not (row["status"] in PUT_DOWN and wip.get("carry_real")):
             row["hold"] = "commits"
             continue
-        parked.append((row["rank"], bool(wip["real"] or wip.get("carry")), order.get(row["status"], 0), row, wip))
+        parked.append((row["rank"], bool(wip["real"] or wip.get("carry") or wip.get("carry_real")), order.get(row["status"], 0), row, wip))
     for rank, real, _o, row, wip in sorted(parked, key=lambda p: p[:3]):
         gone, _b = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""),
                          bundle_pointer(store, row, real and row["kind"] == "work" and rank))
