@@ -10,12 +10,14 @@ Codex call is touched: every effect is injected.
 """
 from __future__ import annotations
 
+import errno
 import json
 import os
 import sys
 import tempfile
 import time
 from pathlib import Path
+from types import SimpleNamespace
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -157,6 +159,38 @@ def main() -> int:
     check("parse_filed reads submit's summary", IF.parse_filed(
         "x\n13 job(s) filed, 0 duplicate(s) refused, 0 row(s) refused\n") == 13)
     check("parse_filed: no summary line reads 0", IF.parse_filed("nothing to file (queue at cap)\n") == 0)
+
+    # drvfs ENOMEM is waited out; any other failure stands (rm-artpipe-idle-fill failed the unit on it twice, 2026-11-03)
+    def runs(*results):
+        seq, calls = list(results), []
+        def once():
+            calls.append(1)
+            rc, err = seq.pop(0)
+            return SimpleNamespace(returncode=rc, stdout="", stderr=err)
+        return once, calls
+    enomem = (1, "OSError: [Errno 12] Cannot allocate memory: '/mnt/d/x/pending'")
+    naps = []
+    once, calls = runs(enomem, (0, ""))
+    check("submit ENOMEM runs again and the pass stands",
+          IF.riding_enomem(once, naps.append).returncode == 0 and len(calls) == 2 and naps == [15], str(naps))
+    once, calls = runs(enomem, enomem, enomem)
+    check("submit ENOMEM that never passes still fails",
+          IF.riding_enomem(once, lambda s: None).returncode == 1 and len(calls) == 3, str(calls))
+    once, calls = runs((1, "KeyError: 'x'"))
+    check("another submit failure is not retried",
+          IF.riding_enomem(once, lambda s: None).returncode == 1 and len(calls) == 1, str(calls))
+    with tempfile.TemporaryDirectory() as t:
+        st, real, hits = state(Path(t), pending=2), Path.iterdir, []
+        def flaky(self):
+            hits.append(1)
+            if len(hits) == 1:
+                raise OSError(errno.ENOMEM, "Cannot allocate memory", str(self))
+            return real(self)
+        Path.iterdir = flaky
+        try:
+            check("depth waits out ENOMEM", IF.depth(st, lambda s: None) == 2, str(hits))
+        finally:
+            Path.iterdir = real
 
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0

@@ -31,6 +31,7 @@ installs it: Opus/GPT judging (art_eval) and installs stay where they were.
 from __future__ import annotations
 
 import argparse
+import errno
 import fcntl
 import json
 import os
@@ -49,12 +50,30 @@ ART_TOOLS = REPO / "src/RimMandrake/Utils/art"
 LIST_DIR = "_idle_fill"
 STATUS = "status/idle_fill.json"
 BUILD_BACKOFF_H = 2
+ENOMEM_WAIT_S = (15, 30)   # a drvfs read needs an order-7 kernel block; fragmentation refuses it with RAM free, for a moment
 FILED_RE = re.compile(r"^(\d+) job\(s\) filed\b", re.M)
 
 
-def depth(root: Path) -> int:
-    return sum(1 for st in ("pending", "active") for f in (root / st).iterdir()
-               if f.name.endswith(".json") and not f.name.endswith(".manifest.json"))
+def depth(root: Path, sleep=time.sleep) -> int:
+    for wait in (*ENOMEM_WAIT_S, None):
+        try:
+            return sum(1 for st in ("pending", "active") for f in (root / st).iterdir()
+                       if f.name.endswith(".json") and not f.name.endswith(".manifest.json"))
+        except OSError as e:
+            if e.errno != errno.ENOMEM or wait is None:
+                raise
+            sleep(wait)
+
+
+def riding_enomem(once, sleep=time.sleep) -> subprocess.CompletedProcess:
+    """Run a command again when it died of drvfs ENOMEM (twice on 2026-11-03, each failing the unit); any other failure stands."""
+    r = once()
+    for wait in ENOMEM_WAIT_S:
+        if r.returncode == 0 or "Cannot allocate memory" not in r.stdout + r.stderr:
+            break
+        sleep(wait)
+        r = once()
+    return r
 
 
 def newest_list(root: Path) -> Path | None:
@@ -107,7 +126,7 @@ def real_submit(root: Path):
         with (root / "logs" / f"idle_fill_{time.strftime('%Y%m%d')}.log").open("a") as log:
             log.write(f"\n=== {time.strftime('%Y-%m-%dT%H:%M:%S%z')} submit\n")
             cmd = [sys.executable, ART_TOOLS / "donor_regen_jobs.py", "submit", "--jobs", *jobs, "--cap", str(cap)]
-            r = _run(cmd + (["--dry-run"] if dry else []), root, log, 1200)
+            r = riding_enomem(lambda: _run(cmd + (["--dry-run"] if dry else []), root, log, 1200))
         out = r.stdout + r.stderr
         return {"rc": r.returncode, "filed": parse_filed(out), "tail": out.strip().splitlines()[-3:]}
     return submit
