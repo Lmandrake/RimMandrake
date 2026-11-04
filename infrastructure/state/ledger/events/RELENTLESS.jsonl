@@ -82,3 +82,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:22:00Z","tsn":1793758920735814673}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STARWARS_JUNK_RESKIN_1 A2 (L1), read-only proof","ts":"2026-11-04T02:22:22Z","tsn":1793758942396976187}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:22:28Z","tsn":1793758948701039276}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A1 (L2), read-only proof","ts":"2026-11-04T02:22:48Z","tsn":1793758968821621860}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:22:56Z","tsn":1793758976405129361}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A2 (L2), read-only proof","ts":"2026-11-04T02:23:05Z","tsn":1793758985463056511}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:23:12Z","tsn":1793758992272467346}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A3 (L2), read-only proof","ts":"2026-11-04T02:23:20Z","tsn":1793759000530163764}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:23:28Z","tsn":1793759008198639964}
