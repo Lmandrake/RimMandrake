@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 720   (the full ~1000-case run took 302 s on 2026-10-25, staging and build included; 240 s timed out)
+# selftest-timeout: 1200   (the full run took 302 s on 2026-10-25, 405 s alone under load 10 on 2026-11-03, and 720 s was not enough in the 11-03 nightly)
 """Wrapper for the C# selftest of the FlowWorks source stock model (§5).
 
 `selftest_*.py` is the established convention for fast, offline, pre-commit
