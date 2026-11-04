@@ -1,0 +1,19 @@
+[Unit]
+Description=RimMandrake artpipe daemon (queue state in D:\ClaudeWork\rimmandrake\artpipe; git_migration_phase5_artpipe_2026-10-02.md)
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/mandrake/rm/bench
+Environment=ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe
+Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
+Environment=PYTHONUNBUFFERED=1
+# Same login PATH the WT tile had (codex.exe / gemini via /mnt/c interop).
+ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/artpiped.py'
+KillSignal=SIGINT
+TimeoutStopSec=15min
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target

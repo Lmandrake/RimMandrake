@@ -1,0 +1,10 @@
+[Unit]
+Description=RimMandrake: sync D:\Luke\dev\RimMandrake mirror to origin/main (git_workflow_plan_2026-10-01.md §2.3)
+
+[Service]
+Type=oneshot
+# Non-blocking lock: if an on-demand `./mirror sync` is running, this run skips.
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/mirror.py sync --timer
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=30min
