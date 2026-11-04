@@ -185,3 +185,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: UNPROVEN_LIVE_LEGS_TRIAGE_1 A4 (L2), read-only proof","ts":"2026-11-04T06:13:04Z","tsn":1793772784404877213}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T06:15:36Z","tsn":1793772936418100375}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T06:18:20Z","tsn":1793773100604926817}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T06:30:04Z","tsn":1793773804764605089}
