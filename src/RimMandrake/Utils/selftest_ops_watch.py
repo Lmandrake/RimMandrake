@@ -2052,5 +2052,34 @@ check("live measured: an unreadable file says so (c_relentless counts it blind)"
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.live_measured_pct"]
 check("the live-measured target alarms below a floor", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == "<"
       and 10 <= _tg[0]["value"] <= 50, _tg)
+# deploy_update_age: rm-deploy-update's last good pull on pulse-deploy (PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT)
+import tempfile as _tf2
+_dp = Path(_tf2.mkdtemp(prefix="dep_")); (_dp / ".git").mkdir(); _ds = _dp / ".git" / "pulse_update_last_good"
+_now = time.time()
+check("deploy: no checkout is UNMEASURED, not zero", OW.deploy_update_age(_now, _dp / "nope")[0] is None)
+_m, _w = OW.deploy_update_age(_now, _dp)
+check("deploy: a checkout with no stamp reads as never updated (alarms)", _m is not None and _m > 1000 and "absent" in _w, (_m, _w))
+_ds.touch(); os.utime(_ds, (_now - 5 * 60,) * 2)
+check("deploy: a stamp 5 min old reads ~5", 4.9 <= (OW.deploy_update_age(_now, _dp)[0] or -1) <= 5.1, OW.deploy_update_age(_now, _dp))
+os.utime(_ds, (_now - 26 * 3600,) * 2)
+_tg = [t for t in OW.load_rules()["targets"] if t["key"] == "timers.deploy_update_age_min"]
+check("the deploy-stale target alarms, under two hours", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == ">"
+      and 30 <= _tg[0]["value"] <= 120, _tg)
+_dsaved = {k: os.environ.get(k) for k in ("RM_PULSE_DEPLOY", "RM_OPS_WATCH_DIR")}
+os.environ["RM_PULSE_DEPLOY"] = str(_dp); os.environ["RM_OPS_WATCH_DIR"] = str(_dp / "ops")
+try:
+    check("wired: the registered timers collector is c_timers", OW.COLLECTORS["timers"] is OW.c_timers)
+    _dpt = OW.c_timers(_now, OW.load_rules(), {}).get("timers.deploy_update_age_min") or {}
+    check("wired: c_timers reads the stuck stamp MEASURED ~1560 min", _dpt.get("m") == "MEASURED"
+          and 1550 <= _dpt.get("v", 0) <= 1570, _dpt)
+    _dg = OW.run(now=_now, rules=OW.load_rules(), filer=lambda todo, conf: {x["name"]: None for x in todo}, families=["timers"])
+    check("wired: the pass raises DEPLOY_STALE on a stuck checkout",
+          "DEPLOY_STALE:timers.deploy_update_age_min" in _dg["alarms"], _dg["alarms"])
+finally:
+    for _k, _v in _dsaved.items():
+        if _v is None:
+            os.environ.pop(_k, None)
+        else:
+            os.environ[_k] = _v
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

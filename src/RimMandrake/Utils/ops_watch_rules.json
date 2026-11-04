@@ -594,6 +594,8 @@
   {"key": "companion.grant_visible", "op": "<", "value": 1, "alarm": true, "tag": "GRANT_UNSEEN", "name": "OPS_GRANT_PROBE", "marks": ["MEASURED"],
    "title_field": "why",
    "why": "COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME (blind review 2026-10-29 #1): the grant folder cannot be seen (C: unmounted, JawaBench moved, permissions) or the reader fails. Then grant_hours_left is UNMEASURED and its alarm holds silent, while rimflow next already withholds all bridge/game-up work: fail closed means someone is told"},
+  {"key": "timers.deploy_update_age_min", "op": ">", "value": 90, "alarm": true, "worse": {"factor": 2}, "tag": "DEPLOY_STALE", "name": "OPS_DEPLOY_UPDATE_UNSTICK", "marks": ["MEASURED"],
+   "why": "PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT: rm-deploy-update fast-forwards pulse-deploy every 10 min and stamps .git/pulse_update_last_good only on a good pull; stuck 2026-11-01 on a dirty tree, the units it feeds ran old code and nothing alarmed. 90 min is nine missed passes (a drvfs timeout skip may lean on a stamp up to 60 min old)"},
   {"key": "timers.overdue_timers", "op": ">", "value": 0, "alarm": false, "tag": "TIMER_OVERDUE",
    "why": "a timer whose next elapse is in the past (missed), a flag only"},
   {"key": "testing.nothing_h_7d", "op": ">", "value": 18, "alarm": false, "tag": "TEST_HOURS_WASTED", "marks": ["MEASURED", "ESTIMATE"],

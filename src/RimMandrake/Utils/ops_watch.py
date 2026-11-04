@@ -1198,8 +1198,31 @@ def one_shot_units(names):
     return signal_watch.one_shots(names, timers)
 
 
+PULSE_DEPLOY = "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"   # rm-deploy-update's checkout (env RM_PULSE_DEPLOY overrides)
+
+
+def deploy_update_age(now, root=None):
+    """-> (minutes since rm-deploy-update last fast-forwarded the pulse-deploy checkout, why) or (None, why).
+    pulse.update_code touches .git/pulse_update_last_good only on a good pull, so a pull refused for a dirty tree or a
+    stale ref lock ages it while the unit may read anything (PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT: stuck 2026-11-01 to
+    11-02, the units it feeds ran old code, nothing alarmed). No checkout: UNMEASURED; a checkout with no stamp has
+    never had a good pass on record, which is the alarm, not a blank."""
+    root = Path(root or os.environ.get("RM_PULSE_DEPLOY") or PULSE_DEPLOY)
+    if not (root / ".git").is_dir():
+        return None, "no deploy checkout at %s" % root
+    try:
+        return round(max(now - (root / ".git" / "pulse_update_last_good").stat().st_mtime, 0) / 60.0, 1), "stamp"
+    except FileNotFoundError:
+        return 99999.0, "no good update pass on record (%s/.git/pulse_update_last_good absent)" % root
+    except OSError as e:
+        return None, "stamp unreadable: %s" % str(e)[:120]
+
+
 def c_timers(now, rules, ctx):
     out = {}
+    age, why = deploy_update_age(now)
+    out["timers.deploy_update_age_min"] = (U(why, "min") if age is None
+                                           else M(age, "min since the deploy checkout last fast-forwarded", why=why))
     try:                # two sources: neither one's failure takes the other's reading
         failed = systemctl_json("list-units", "--failed", "--all")
         names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
