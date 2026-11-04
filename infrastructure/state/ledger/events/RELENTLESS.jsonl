@@ -265,3 +265,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_RETURN_REMAINDER_1 A4 (L2), read-only proof","ts":"2026-11-04T11:33:10Z","tsn":1793791990079397574}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T11:33:15Z","tsn":1793791995728876366}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-04T11:33:23Z","tsn":1793792003192439352}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T11:41:33Z","tsn":1793792493802047089}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A2 (L2), read-only proof","ts":"2026-11-04T11:41:41Z","tsn":1793792501060298400}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T11:48:00Z","tsn":1793792880455049677}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A3 (L2), read-only proof","ts":"2026-11-04T11:48:12Z","tsn":1793792892059031340}
