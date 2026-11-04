@@ -164,6 +164,50 @@ def main():
                        "fault, Root.Update exception or invalid scope would lose the Player-prev archive; move the try "
                        "into a helper and call PumpIdleSafe() after it" % (len(bad), bad))
 
+    # 6. Every use of _pendingArchive is on a whitelist (blind-check mutant M1, gen 3: taking the parked action back
+    #    out in ArchivePrevLog and invoking it started the archive at bridge-registration and passed clause 1).
+    #    Allowed: the declaration; ONE park statement in ArchivePrevLog whose result is discarded and whose lambda is
+    #    inline (so no alias can run it); in PumpIdleSafe a null test and a discarded drop-to-null; in PumpArchive ONE
+    #    take-to-a-local after the idle gate. Anything else (a take, read, alias or invoke elsewhere) FAILS.
+    spans = {}
+    for name, rx in (("ArchivePrevLog", r"void\s+ArchivePrevLog\s*\(\s*\)"),
+                     ("PumpIdleSafe", r"void\s+PumpIdleSafe\s*\(\s*\)"),
+                     ("PumpArchive", r"void\s+PumpArchive\s*\(\s*double\s+now\s*,\s*bool\s+busy\s*\)")):
+        mm = re.search(rx, st)
+        if mm:
+            b0 = st.index("{", mm.end())
+            spans[name] = (b0, b0 + len(body(st[b0:], r"")))
+    allowed = {
+        None: [r"(private\s+)?static\s+Action\s+_pendingArchive"],
+        "ArchivePrevLog": [r"Interlocked\.Exchange\(ref _pendingArchive, \(\) => W\.ArchiveLog\([^;()]*\)\)"],
+        "PumpIdleSafe": [r"if \(Volatile\.Read\(ref _pendingArchive\) == null && Volatile\.Read\(ref _pendingManifest\) == null\) return",
+                         r"Interlocked\.Exchange\(ref _pendingArchive, null\)"],
+        "PumpArchive": [r"var a = Interlocked\.Exchange\(ref _pendingArchive, null\)"],
+    }
+    seen = {k: 0 for k in allowed}
+    for occ in re.finditer(r"\b_pendingArchive\b", st):
+        o = occ.start()
+        where = next((n for n, (a0, a1) in spans.items() if a0 <= o < a1), None)
+        s0 = max(st.rfind(c, 0, o) for c in ";{}") + 1
+        s1 = st.find(";", o)
+        stmt = re.sub(r"\s+", " ", st[s0:s1]).strip()
+        stmt = re.sub(r"\( ", "(", re.sub(r" \)", ")", stmt))
+        ok = any(re.fullmatch(rx, stmt) for rx in allowed[where])
+        check(ok, "_pendingArchive used outside its contract in %s: %r (only ArchivePrevLog parks it, only "
+                  "PumpArchive takes it after the idle gate)" % (where or "class scope", stmt))
+        if ok:
+            seen[where] += 1
+    check(seen["ArchivePrevLog"] == 1, "ArchivePrevLog must park _pendingArchive exactly once (found %d)" % seen["ArchivePrevLog"])
+    check(seen["PumpArchive"] == 1, "PumpArchive must take _pendingArchive exactly once (found %d)" % seen["PumpArchive"])
+    if "PumpArchive" in spans and pa:
+        # the taken local is invoked only in PumpArchive, after the gate
+        check(re.search(r"if \(a != null\) a\(\);", pa) is not None, "PumpArchive must invoke the taken archive")
+    if apl:
+        # no delegate invocation of any local in ArchivePrevLog (a0(), x.Invoke(), ?.Invoke())
+        calls = [c for c in re.findall(r"\b([A-Za-z_]\w*)\s*(?:\?\.\s*Invoke|\.\s*Invoke)?\s*\(\s*\)", apl)
+                 if c not in ("WarmHash",)]
+        check(not calls, "ArchivePrevLog must invoke nothing parameterless but W.WarmHash() (found %r)" % calls)
+
     # 5. Port of PumpArchive, swept: the archive never fires during or < idle s after a long event
     def simulate(frames, dt, idle_s):
         idle_since, fired_at, last_busy = -1.0, None, None
