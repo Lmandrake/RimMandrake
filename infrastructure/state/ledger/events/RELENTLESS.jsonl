@@ -334,3 +334,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:11:02Z","tsn":1793801462176603450}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BRONZIUM_DROP_1 B3 (L1), read-only proof","ts":"2026-11-04T14:13:05Z","tsn":1793801585019055682}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:13:16Z","tsn":1793801596585496347}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET A1 (L2), read-only proof","ts":"2026-11-04T14:15:14Z","tsn":1793801714355569698}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:15:25Z","tsn":1793801725489031742}
