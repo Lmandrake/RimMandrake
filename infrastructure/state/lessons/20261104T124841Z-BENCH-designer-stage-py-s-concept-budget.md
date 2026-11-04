@@ -1,0 +1,1 @@
+designer_stage.py's concept budget (BUDGET_EXHAUSTED) was a hard stop the 2026-11-02 'token limits advisory everywhere' ruling missed; it stalled the FlowWorks pass after the owner answered. Made advisory 6c1ab7571a. When a ruling says 'everywhere', grep every Refused/refuse on budget|cap|token, not just role_launch.
