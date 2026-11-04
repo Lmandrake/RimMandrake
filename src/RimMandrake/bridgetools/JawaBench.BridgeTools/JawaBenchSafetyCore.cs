@@ -91,7 +91,7 @@ namespace JawaBench.BridgeTools
         /// available. Adding to this list is a decision about the owner's play, not a convenience.</summary>
         internal static readonly Dictionary<string, string> CampaignDenied = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            ["jawa/static_call"] = FDebugInvoke, ["jawa/debug_actions"] = FDebugInvoke, ["jawa/debug_action_yielders"] = FDebugInvoke,
+            ["jawa/static_call"] = FDebugInvoke, ["jawa/debug_actions"] = FDebugInvoke, ["jawa/debug_action_menu"] = FDebugInvoke, ["jawa/debug_action_yielders"] = FDebugInvoke,
             ["jawa/debug_settings"] = FDebugInvoke, ["jawa/hot_reload_defs"] = FDebugInvoke, ["jawa/stat_cache_bust"] = FDebugInvoke,
             ["jawa/tps_test_block"] = FTestOnly, ["jawa/tps_test_attribution"] = FTestOnly,
             ["jawa/playtest_start"] = FTestOnly, ["jawa/playtest_collect"] = FTestOnly, ["jawa/playtest_status"] = FTestOnly,
@@ -119,7 +119,7 @@ namespace JawaBench.BridgeTools
         /// <summary>Tripwire for the unit test: what the owner ruled OFF in campaign.</summary>
         internal static readonly string[] MustBeOffInCampaign =
         {
-            "jawa/static_call", "jawa/debug_actions", "jawa/hot_reload_defs", "jawa/wild_spawner_block", "jawa/tps_test_block",
+            "jawa/static_call", "jawa/debug_actions", "jawa/debug_action_menu", "jawa/hot_reload_defs", "jawa/wild_spawner_block", "jawa/tps_test_block",
             "jawa/tps_test_attribution", "jawa/forecast_incidents", "jawa/type_visibility", "jawa/startup_types",
         };
 

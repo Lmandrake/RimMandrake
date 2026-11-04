@@ -1,0 +1,4 @@
+# A quicktest map on a list holding FlowWorks (mandrake.rm.flowworks) with the companion built at or after this item; all five DLC.
+# The companion (RimWorld\BridgeTools\JawaBench) must be built at or after this item: python3 src/RimMandrake/bridgetools/build.py --gm --apply with the game closed. Without it the proof reads NO VERDICT (exit 2), never a pass.
+live-mods: FlowWorks
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_debug_action_menu.py < /dev/null

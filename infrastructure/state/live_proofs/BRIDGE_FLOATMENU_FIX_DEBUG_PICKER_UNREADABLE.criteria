@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map with three RM_LiquidTank placed and emptied, jawa/debug_action_menu on 'Tanks: fill ALL on map to max (pick liquid)' lists >= 2 liquid options (first '(default)'), and picking the second fills every RM_LiquidTank to capacity with that liquid (inspect reads 'Holding: <label> (N / N)')
