@@ -185,6 +185,44 @@ def t_kindless_alarm(root):
             os.environ["RM_OPS_WATCH_DIR"] = old
 
 
+def t_attribute_cli(root):
+    """The `attribute` command itself (R.main), not a hand-wired store: its flag must reach Operations' told ledger.
+    Only the world is faked: the ledger lookup and the rimflow note (no books clone here); the store, the rules file and
+    RM_OPS_WATCH_DIR are real paths the command reads."""
+    x = held(root)
+    d = tempfile.mkdtemp(dir=root)
+    rules_p = os.path.join(d, "rules.json")
+    with open(rules_p, "w", encoding="utf-8") as f:
+        json.dump(dict(x.r, ops_watch_dir=d), f)
+    saved_env = {k: os.environ.get(k) for k in ("RM_OPS_WATCH_DIR", "RELENTLESS_ROOT", "RELENTLESS_RULES")}
+    saved = (R.ledger_has, R.Effects.ledger_note, os.getcwd())
+    notes = []
+    os.environ.update(RM_OPS_WATCH_DIR=d, RELENTLESS_ROOT=x.s.root, RELENTLESS_RULES=rules_p)
+    R.ledger_has = lambda i: True
+    R.Effects.ledger_note = lambda self, i, t: notes.append((i, t))
+    os.chdir(d)
+    try:
+        R.main(["attribute", "--item", STEVE, "--seat", "--target", "SITE", "--target", "CHECKER",
+                "--evidence", "the deciding log line", "--repair", BOX_FIX,
+                "--fixture-good", "python3 probe.py --mounted D:", "--fixture-bad", "python3 probe.py --mounted Q:"])
+    finally:
+        R.ledger_has, R.Effects.ledger_note = saved[0], saved[1]
+        os.chdir(saved[2])
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    ok(I.get(x.s, BOX_FIX) is not None and len(alarms(x, I.NO_VERDICT)) == 1,
+       "the attribute command links the pending pair and journals one %s alarm" % I.NO_VERDICT)
+    p = os.path.join(d, "told.jsonl")
+    rows = [json.loads(ln) for ln in open(p)] if os.path.exists(p) else []
+    ok(any(r.get("kind") == I.NO_VERDICT for r in rows),
+       "the attribute command routes the no-verdict flag to Operations' told ledger: %s" % [r.get("kind") for r in rows])
+    ok(any(i == BOX_FIX and "FIXTURE_VERDICT" in t for i, t in notes),
+       "and its ledger note goes to the repair item: %s" % notes)
+
+
 def main():
     root = tempfile.mkdtemp(prefix="fixture_lint_")
     t_lint(root)
@@ -193,6 +231,7 @@ def main():
     t_release_no_verdict(root)
     t_effective_pair(root)
     t_kindless_alarm(root)
+    t_attribute_cli(root)
     if S.FAILS:
         print("FAIL: %d" % len(S.FAILS))
         for f in S.FAILS:
