@@ -44,6 +44,8 @@ from html import escape as hesc
 from xml.sax.saxutils import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+RULES_FILE = os.path.join(HERE, "..", "rimflow", "relentless_rules.json")     # committed: this tree's copy, level with main
+PAUSE_WORDS = "Relentless starts no new content work. System items, expedited items, live-failure fixes, checks of finished builds and the game phase go on."
 AGENT = "/mnt/d/ClaudeWork/rimmandrake"
 OUT_DIR = AGENT + "/conductor"
 OUT = OUT_DIR + "/RUNNING_NOW.md"
@@ -177,6 +179,9 @@ class Env:
     def read_json(self, path):
         with open(path) as f:
             return json.load(f)
+
+    def relentless_rules(self):
+        return self.read_json(RULES_FILE)
 
     def read_text(self, path):
         with open(path, errors="replace") as f:
@@ -1842,7 +1847,12 @@ def mods_html(p):
 def phone_copy(p, chips):
     """The same reading in a few plain lines (owner 2026-11-04): no model, no SVG; the Conductor sends it when he asks for status."""
     now, it, thr, f = p["now"], p["items"], p["throughput"], fleet_of(p)
-    out = ["RimMandrake %s" % time.strftime("%H:%M %Z", time.localtime(now)), " · ".join(t for t, _ in chips), ""]
+    out = ["RimMandrake %s" % time.strftime("%H:%M %Z", time.localtime(now))]
+    if p["pause"]:
+        out.append("TOKEN PAUSE ON: " + PAUSE_WORDS)
+    elif p["pause"] is None:
+        out.append("TOKEN PAUSE UNMEASURED")
+    out += [" · ".join(t for t, _ in chips), ""]
     if f:
         n = f["needs"]
         out.append("NEEDS YOU %d" % n["count"])
@@ -1998,6 +2008,23 @@ def window_stats(hist, now, secs, label):
 
 
 # --------------------------------------------------------------------------- the page
+def collect_pause(env):
+    """The owner's token pause: True, False, or Unmeasured. Truth as relentless.owner_hold reads it: a missing key is off."""
+    rules = env.relentless_rules()
+    if not isinstance(rules, dict):
+        raise Unmeasured("relentless rules are not an object")
+    return bool(rules.get("only_system_and_live"))
+
+
+def pause_banner(p):
+    """Top of the page while the pause is on; one line saying so when it cannot be read; nothing while it is off."""
+    if p["pause"]:
+        return ['<div style="max-width:1040px;background:%s;color:#14171c;border-radius:6px;padding:6px 12px;font-weight:600"><b>TOKEN PAUSE ON</b>, by the owner: %s</div>' % (WARN, hesc(PAUSE_WORDS)), ""]
+    if p["pause"] is None:
+        return ["**Token pause UNMEASURED**: the Relentless rules file could not be read, so this page cannot say whether it is on.", ""]
+    return []
+
+
 def gather(env, state, hist=(), write=True):
     now = env.now()
     fam = env.families()
@@ -2036,6 +2063,9 @@ def gather(env, state, hist=(), write=True):
     staffing, why = guarded(collect_staffing, env)
     if why:
         p["unmeasured"].append("Relentless staffing (%s)" % why)
+    p["pause"], why = guarded(collect_pause, env)
+    if why:
+        p["unmeasured"].append("token pause (%s)" % why)
     p["places"] = (staffing or {}).get("target")   # "places" in that file is what this tick allowed; target is the 8 he asks about
     p["checks"] = (staffing or {}).get("checks")
     sp = (staffing or {}).get("spent_today")
@@ -2120,6 +2150,7 @@ def build(env, state, hist, write=True):
     p["roots"] = roots
 
     head = [strip + ' <span style="color:#98a1af;font-size:85%%;white-space:nowrap">at %s, new every minute</span>' % time.strftime("%H:%M:%S %Z", time.localtime(now)), ""]
+    head += pause_banner(p)
     ok_t, fail = state.get("ok_t"), state.get("fail_since")
     if fail or (ok_t and now - ok_t > STALE_AFTER):
         head += ["> **STALE since %s**%s" % (stamp(ok_t or fail), (": last failed refresh said " + state["last_error"]) if state.get("last_error") else ""), ""]

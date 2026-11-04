@@ -557,5 +557,38 @@ check("the page shows the game's idle share", "idle 99% of 180 min" in page and 
 page = page_of(Fake(items=[{"item": ITEM, "status": "game"}]))
 check("an unreadable runs file says idle UNMEASURED", "idle UNMEASURED" in page and "GAME idle UNMEASURED" in page and "game idle share" in before_svg(page))
 
+# the owner's token pause (rules only_system_and_live): a banner above everything while on, nothing while off, never a guess
+def pause_env(rules):
+    env = Fake(ps=PS)
+    if rules is not None:
+        env.files[R.RULES_FILE] = rules
+    return env
+
+
+def built(env):
+    page, _, phone = R.build(env, {}, [])
+    return page, phone
+
+
+page, phone = built(pause_env({"only_system_and_live": True}))
+check("pause on: the banner is on the page, above the panels", "TOKEN PAUSE ON" in before_svg(page) and page.index("TOKEN PAUSE ON") < page.index("<svg"))
+check("pause on: the phone copy leads with it", phone.splitlines()[1].startswith("TOKEN PAUSE ON") and "<" not in phone.splitlines()[1])
+check("pause on: the page does not call it unmeasured", "oken pause UNMEASURED" not in page and "token pause (" not in page)
+for label, rules in (("off", {"only_system_and_live": False}), ("missing key", {"enabled": True})):
+    page, phone = built(pause_env(rules))
+    check("pause %s: no banner on the page or the phone" % label, "TOKEN PAUSE" not in page and "oken pause" not in page and "TOKEN PAUSE" not in phone)
+for label, env in (("unreadable", pause_env(None)), ("not an object", pause_env([1]))):
+    page, phone = built(env)
+    check("pause %s: the page says UNMEASURED, not on and not off" % label, "**Token pause UNMEASURED**" in before_svg(page) and "token pause (" in page and "TOKEN PAUSE ON" not in page)
+    check("pause %s: the phone copy says UNMEASURED" % label, "TOKEN PAUSE UNMEASURED" in phone and "TOKEN PAUSE ON" not in phone)
+check("the real rules path is the file relentless.py reads", os.path.realpath(R.RULES_FILE) == os.path.realpath(os.path.join(R.HERE, "..", "rimflow", "relentless_rules.json")) and os.path.isfile(R.RULES_FILE))
+with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tmp:
+    json.dump({"only_system_and_live": True}, tmp)
+real_rules, R.RULES_FILE = R.RULES_FILE, tmp.name
+check("the real Env reads the rules file", R.collect_pause(R.Env()) is True)
+os.unlink(tmp.name)
+check("the real Env on a missing rules file is unread, not off", R.guarded(R.collect_pause, R.Env())[0] is None)
+R.RULES_FILE = real_rules
+
 print("\n%d failed" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)
