@@ -192,3 +192,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T06:48:34Z","tsn":1793774914014389578}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T06:56:15Z","tsn":1793775375475036452}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T07:05:40Z","tsn":1793775940562379374}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BRIDGE_STALL_DIAGNOSTIC_1 A1 (L1), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T07:09:18Z","tsn":1793776158798115646}
