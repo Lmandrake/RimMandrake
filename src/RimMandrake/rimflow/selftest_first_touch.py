@@ -58,6 +58,41 @@ def main():
     check("an unfiled item (no state) is held", FT.hold(
         REPO, "NEW", ["RimMandrake/Pyrelands"], so, mapping, no_tree)[0] is not None)
 
+    # the default tree check (no `tree` argument): the real first_touch.tree_gates, reading
+    # design/concepts/<Folder>/tree.json in a fixture repo and asking concept_tree.gate about THAT folder
+    import tempfile
+    import concept_tree as CT
+    real_gate = CT.gate
+    with tempfile.TemporaryDirectory() as fake:
+        asked = []
+        try:
+            CT.gate = lambda d, repo=None, floor_file=None: (asked.append(os.path.realpath(d)), ([], []))[1]
+            check("no tree.json holds, even with a gate that would pass",
+                  FT.hold(fake, "X_FIX", ["RimMandrake/Pyrelands"], so, mapping)[0] is not None)
+            check("and the gate is not asked about a missing tree", asked == [], asked)
+            tdir = os.path.join(fake, "design", "concepts", "Pyrelands")
+            os.makedirs(tdir)
+            with open(os.path.join(tdir, "tree.json"), "w", encoding="utf-8") as f:
+                f.write("{}")
+            check("a tree.json whose gate passes releases (default tree check)",
+                  FT.hold(fake, "X_FIX", ["RimMandrake/Pyrelands"], so, mapping) == (None, []))
+            check("the gate was asked about the mod's own concepts folder", asked == [os.path.realpath(tdir)], asked)
+            check("another mod's tree does not release this one",
+                  FT.hold(fake, "X_FIX", ["RimMandrake/Bones"], so, mapping)[0] is not None)
+            CT.gate = lambda d, repo=None, floor_file=None: (["no Arbiter coverage signature"], [])
+            check("a tree.json whose gate refuses holds",
+                  FT.hold(fake, "X_FIX", ["RimMandrake/Pyrelands"], so, mapping)[0] is not None)
+
+            def boom(d, repo=None, floor_file=None):
+                raise ValueError("unreadable")
+            CT.gate = boom
+            check("a gate that throws holds (fails shut)",
+                  FT.hold(fake, "X_FIX", ["RimMandrake/Pyrelands"], so, mapping)[0] is not None)
+        finally:
+            CT.gate = real_gate
+        check("the real gate on an empty tree.json holds",
+              FT.hold(fake, "X_FIX", ["RimMandrake/Pyrelands"], so, mapping)[0] is not None)
+
     # the committed map: the four recent mods, Baroque Biomes by its compose members
     real = FT.pass_map(REPO, FT.load_passes())
     check("GSS maps to its filed pass", real.get("RimMandrake/GimmeSomeSlack") == "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS")
