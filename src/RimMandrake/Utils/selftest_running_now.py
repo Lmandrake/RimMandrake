@@ -533,6 +533,21 @@ with tempfile.TemporaryDirectory() as d:
     order.fleet_gather = lambda now: seen_page.append("updated_epoch=%d" % int(order.clock) in open(R.OUT).read()) or None
     R.run(order)
     check("the page is on disk before the slow half is refreshed", seen_page == [True])
+    # STATUS_PAGES_BUILD_REPLACE_RIMPULSE: the owner's board is rebuilt after each fleet refresh, and only then
+    for label, age, want in (("stale", R.FLEET_EVERY + 1, ["refresh", "board"]), ("fresh", 10, [])):
+        steps = []
+        bd = Fake(ps=PS, files={R.FLEET_CACHE: {"t": NOW + 5000 - age}})
+        bd.clock = NOW + 5000
+        bd.fleet_gather = lambda now, s=steps: s.append("refresh") or None
+        bd.status_board = lambda s=steps: s.append("board")
+        R.run(bd)
+        check("a %s fleet cache: run(write=True) %s" % (label, "refreshes the fleet, then rebuilds the status board" if want else "leaves the status board alone"), steps == want)
+    real_bd = Fake(ps=PS)
+    real_bd.fleet, real_bd.mods = {"mods": [], "receipts": [], "needs": {"count": 0, "topics": []}, "total_mods": 5}, "A  GREEN x\n"
+    real_bd.clock = NOW + 6000
+    R.run(real_bd)
+    check("a stale fleet cache: the real Env.status_board writes STATUS_BOARD.html beside the page",
+          os.path.exists(d + "/STATUS_BOARD.html") and "<html" in open(d + "/STATUS_BOARD.html").read().lower())
     good_f = Fake(ps=PS)
     good_f.fleet, good_f.mods = {"mods": [], "receipts": [], "needs": {"count": 0, "topics": []}, "total_mods": 5}, "A  GREEN x\nB RED y\n"
     good_f.clock = NOW + 2 * R.PROBE_EVERY + 300
