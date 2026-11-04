@@ -1,0 +1,1 @@
+Archmagi /tmp (tmpfs 18G) measured 100% full 2026-11-03 21:00Z: git init in /tmp failed 'Out of diskspace'. Seat processes use TMPDIR=~/.seat-tmp/<SEAT>, so tests passed, but anything writing /tmp directly fails; scratch under D:\ClaudeWork instead and find who fills /tmp (Operations).
