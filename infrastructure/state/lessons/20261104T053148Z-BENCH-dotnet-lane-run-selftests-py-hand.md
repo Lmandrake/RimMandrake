@@ -1,0 +1,1 @@
+DOTNET_LANE in run_selftests.py is a hand list (15+3 names) but ~120 tracked selftests mention dotnet.exe/winbuild/stage_build (grep 2026-11-03); any that really build C# beside the lane can CRASH [timeout] under nightly contention while passing alone in seconds (coldstorage 4 s solo, 240 s timeout at night). Before calling a nightly timeout flaky, check lane membership.
