@@ -107,7 +107,6 @@ def t_slow_step_named():
     finally:
         R.step = keep
     tick = [r for r in rows_of(x.s) if r.get("do") == "tick"]
-    # acts may be empty on this rig: a tick with nothing to say writes no row, so make sure one was written
     ok(tick and tick[-1]["slow_steps"][0] == {"item": "G1", "s": 260.0} and len(tick[-1]["slow_steps"]) == 1,
        "the 260 s step is named and the 1 s one is not: %s" % (tick and tick[-1]["slow_steps"]))
     x.done()
@@ -243,7 +242,7 @@ def t_rule_back_at_ten():
 
 
 def main():
-    for fn in (t_write_time, t_slow_step_named, t_gap_reads_a_gate_plan, t_gate_plan, t_game_reading_shared):
+    for fn in (t_write_time, t_slow_step_named, t_gap_reads_a_gate_plan, t_gate_plan, t_game_reading_shared, t_rule_back_at_ten):
         fn()
     print("selftest_relentless_tick_stamp: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0

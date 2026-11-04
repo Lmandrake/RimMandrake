@@ -185,8 +185,8 @@
   },
   "relentless.tick_age_s": {
    "owner": "Operations",
-   "max_age_min": 25,
-   "why": "The stamp inside staffing.json and reading.json is the tick's START time but is written at the tick's END (2026-11-03: files written 14:10:21Z carrying 13:55:04Z), so the stamp ages through one whole tick, the 2 min timer pause and the next whole tick. Ticks ran 1-2 min on 2026-11-02 but 3-7 min by 2026-11-03 with single ticks of 9, 11 and 15 min (journal), so 10 alarmed on a live belt (OPS_RELENTLESS_READING_RESTORE_IUUR). 25 covers a 15 min tick plus a normal one; RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS owns the slow ticks and the stamp, and this goes back toward 10 when ticks shrink.",
+   "max_age_min": 10,
+   "why": "staffing.json and reading.json carry their write time, so the age is one tick plus the 2 min timer pause. A deploy plan inside the tick had grown ticks to 3-8 min with outliers to the unit's 20 min kill; since its mod gap reads --gate (35 s, not 260 s) ticks run 1-3 min (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS), and tick_game_budget_s 240 plus gate_plan_max_s 180 stays inside 8 min. Past 10 the tick is slow or dead: its journal row's phases and slow_steps name the step.",
    "classes": {
     "sane": {
      "at_least": 0

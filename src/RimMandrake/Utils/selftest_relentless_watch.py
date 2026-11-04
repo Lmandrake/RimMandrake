@@ -233,7 +233,7 @@ def frozen(offset):
     add("journal.jsonl", {"at": OW.iso(T0 - 60), "do": "lease"})
     tick(sane_row(T0))
     out = []
-    for i in range(3):          # tick_age_s is 25 min (ops_watch_rules, d94e9da898): the alarm lands on the third 15-min pass
+    for i in range(3):          # tick_age_s is 10 min (ops_watch_rules): the alarm lands by the second 15-min pass
         now = T0 + offset + i * 900
         put("reading.json", {"at": OW.iso(now)})
         os.utime(STORE / "staffing.json", (now, now))       # a touched file is not a fresh reading
