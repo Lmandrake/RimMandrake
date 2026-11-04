@@ -338,3 +338,18 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:15:25Z","tsn":1793801725489031742}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T14:20:07Z","tsn":1793802007250528130}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:30:17Z","tsn":1793802617271150689}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T14:39:50Z","tsn":1793803190382142582}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:39:59Z","tsn":1793803199804470301}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A1 (L2), read-only proof","ts":"2026-11-04T14:40:05Z","tsn":1793803205562622069}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:40:13Z","tsn":1793803213889245943}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A2 (L2), read-only proof","ts":"2026-11-04T14:40:22Z","tsn":1793803222106721031}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:40:32Z","tsn":1793803232325555450}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A3 (L2), read-only proof","ts":"2026-11-04T14:40:40Z","tsn":1793803240529180742}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:40:49Z","tsn":1793803249829840128}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A4 (L2), read-only proof","ts":"2026-11-04T14:40:57Z","tsn":1793803257258167728}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:41:07Z","tsn":1793803267179657763}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A5 (L2), read-only proof","ts":"2026-11-04T14:41:16Z","tsn":1793803276366161087}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:41:26Z","tsn":1793803286550523434}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAP_AWARENESS_PROVE_ON_A_QUIET_MAP A6 (L2), read-only proof","ts":"2026-11-04T14:41:35Z","tsn":1793803295165918348}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:41:44Z","tsn":1793803304926523421}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T14:43:32Z","tsn":1793803412276375422}
