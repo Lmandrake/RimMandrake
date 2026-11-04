@@ -396,3 +396,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GAMECOMP_STALL_HUNT_SEVEN_SECONDS A2 (L2), read-only proof","ts":"2026-11-04T16:15:13Z","tsn":1793808913532911081}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:25:19Z","tsn":1793809519917560154}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T16:26:14Z","tsn":1793809574800914165}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:28:31Z","tsn":1793809711359547283}
