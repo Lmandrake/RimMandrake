@@ -401,3 +401,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:39:16Z","tsn":1793810356567118130}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T16:41:58Z","tsn":1793810518011262818}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:42:07Z","tsn":1793810527017415466}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_NORTHSTAR_GREEN_FULL_1 A2 (L2), read-only proof","ts":"2026-11-04T16:44:24Z","tsn":1793810664487658929}
