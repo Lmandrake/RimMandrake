@@ -1,0 +1,1 @@
+A1 L1: after one cold start of a companion built from this sha, the newest TPS session's manifest (session_<id>.json) is written >= 10 s after its session row, no Crash_* folder is newer than the session start, the record holds no install/manifest/idle-pump error row, and Player-prev.log's content is kept in JawaBench/tps/logs

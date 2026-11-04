@@ -121,8 +121,9 @@ namespace JawaBench.BridgeTools
 
         /// <summary>Start a deferred writer thread (no-op if Start never ran or the thread already runs). First writes
         /// everything queued so far ON THE CALLING THREAD with the same code the thread runs (RunOnce, WriteBatch,
-        /// Reconcile, the append), and JIT-compiles Loop there, so the writer thread starts on compiled code while the
-        /// installing thread goes on patching. Never throws.</summary>
+        /// Reconcile, the append), so the writer thread starts on compiled callees while the installing thread goes on
+        /// patching. Only Loop's own small body still compiles on the new thread: PrepareMethod is a no-op on Unity's Mono
+        /// (only running code compiles), and Loop cannot run here without blocking. Never throws.</summary>
         internal static void Go()
         {
             lock (Q) { if (!_started || _thread != null) return; }

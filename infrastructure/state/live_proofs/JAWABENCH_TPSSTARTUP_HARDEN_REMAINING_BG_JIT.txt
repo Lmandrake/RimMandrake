@@ -1,0 +1,4 @@
+# One COLD START (game process launched fresh, reaching the main menu or a quicktest map) on the smallest list; all five DLC. No mod tree is owed.
+# The companion (RimWorld\BridgeTools\JawaBench) must be built from this item's sha: python3 src/RimMandrake/bridgetools/build.py --gm --apply with the game closed, THEN launch. Clause 1 of the proof reads the DLL's embedded source hash and fails on a stale one.
+# Wait >= 15 s after the main menu before running it: the manifest is written after 10 s of idle frames.
+live-proof A1: python3 src/RimMandrake/bridgetools/prove_tps_startup_no_bg_jit.py --rev HEAD < /dev/null

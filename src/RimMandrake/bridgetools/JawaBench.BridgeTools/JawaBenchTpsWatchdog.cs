@@ -138,7 +138,8 @@ namespace JawaBench.BridgeTools
         /// <summary>JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT: the watchdog starts at bridge-registration, while the
         /// installing (main) thread goes on Harmony-patching, and a background thread JIT-compiling at that moment is the
         /// 2026-10-26 archive crash's hazard class. So everything Loop runs is compiled HERE first: two real heartbeat
-        /// writes (the first publishes by Move, the second by Replace), the silence row's context, and Loop itself.
+        /// writes (the first publishes by Move, the second by Replace), the silence row's context and the stall dump; Loop's
+        /// own small body still compiles on the thread (PrepareMethod is a no-op on Unity's Mono).
         /// The watchdog is not deferred - startup is exactly when a silent main thread must be seen. Never throws.</summary>
         private static void WarmOnCaller()
         {
