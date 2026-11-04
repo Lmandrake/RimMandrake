@@ -1,0 +1,43 @@
+a8d0b0c044f4b6025cad885e4065e323d7723ec4be965fa49710a8ce612c88c6  scan.tsv
+4b7fea68e61d61c65f09968c914f3109c38aec6c80f8fc9f22d066213ff8f2e9  scan2.tsv
+# top 40 dirs by BYTES of scan.tsv (depth<=4, reparse points skipped)
+364980168551	C:\
+206495216831	C:\Users
+205603505131	C:\Users\sjlewis
+195061513017	C:\Users\sjlewis\AppData
+135460834332	C:\Users\sjlewis\AppData\Local
+56012099702	C:\Users\sjlewis\AppData\LocalLow
+44913428477	C:\Program Files
+37114649293	C:\Program Files (x86)
+37081296877	C:\Windows
+25268848571	C:\Program Files\WindowsApps
+24168436964	C:\ProgramData
+15659564243	C:\Program Files (x86)\Steam
+13757765112	C:\Program Files (x86)\Steam\steamapps
+13750603301	C:\Program Files (x86)\Steam\steamapps\common
+12081203452	C:\Windows\WinSxS
+9892912420	C:\Users\sjlewis\Downloads
+8867567729	C:\Windows\System32
+8114874639	C:\Windows\Installer
+7060846666	C:\ProgramData\Backblaze
+7060846666	C:\ProgramData\Backblaze\bzdata
+6860369641	C:\ProgramData\Microsoft Studios
+6860369641	C:\ProgramData\Microsoft Studios\Minecraft Education Edition
+6685954903	C:\ProgramData\Backblaze\bzdata\bzbackup
+6059918602	C:\Program Files (x86)\StarCraft
+5790880116	C:\Program Files (x86)\StarCraft\Data
+5787890220	C:\Program Files (x86)\StarCraft\Data\data
+5640831157	C:\ProgramData\Microsoft Studios\Minecraft Education Edition\updates
+5226194734	C:\Program Files (x86)\Microsoft
+4667393093	C:\Program Files\Microsoft Office
+4655911818	C:\Program Files\Microsoft Office\root
+3588578983	C:\Users\sjlewis\AppData\Roaming
+3182563848	C:\Falcon
+3180860409	C:\Windows\System32\DriverStore
+3178900191	C:\Windows\System32\DriverStore\FileRepository
+3163913822	C:\Recovery
+3163904563	C:\Recovery\Customizations
+3151357467	C:\Falcon\Drivers
+3083734346	C:\ProgramData\Microsoft
+2706312287	C:\Program Files\Microsoft Office\root\Office16
+2028602945	C:\ProgramData\Corsair

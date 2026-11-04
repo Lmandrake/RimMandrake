@@ -8,6 +8,13 @@ Downloads deeper; sizes are file bytes in decimal GB, reparse points not followe
 Free-space reading after the work (`c_free_reading.ps1` over ssh, raw in `c_free_reading.txt` beside the scans):
 `2026-11-04T04:30:06Z free_bytes=68354924544 size_bytes=999559708672`
 
+Raw evidence committed beside this report, in `infrastructure/state/facts/steve_c_drive_fill_2026-11-03/`
+(verbatim Steve output, CLIXML noise and CRs stripped): `c_free_reading_0430Z.txt`, `del_swaps.out`
+(the deletions), `compact.log` (diskpart), `state_after_0545Z.txt` (re-read 2026-11-04T05:45Z by
+`state_after.ps1`: C: free, the swap dirs left in Temp, ext4.vhdx size), `scan_top40.tsv` (sha256 of
+the full scans plus their 40 biggest dirs), and the scripts that made them.
+`python3 infrastructure/stevedesktop/check_c_drive_fill.py` cross-checks them against this report.
+
 ## What fills C:
 
 960 GB used. The non-OneDrive tree walks to 365 GB; the rest is `C:\Users\sjlewis\OneDrive` (607 GB = 565 GiB, a
@@ -43,4 +50,4 @@ Inside the WSL distro (40 GiB used, `df -h`; these are `du -h` GiB): `/home/mand
    at 20:13.
 
 Nothing of Steve's was touched. A vhdx regrows as WSL writes; compact it the same way when C: gets tight again
-(steps in `D:\ClaudeWork\rimmandrake\steve_diag\disk_fill\compact_task.ps1` and `phaseA.ps1`).
+(steps in `compact_task.ps1` and `phaseA.ps1` in the raw folder above).

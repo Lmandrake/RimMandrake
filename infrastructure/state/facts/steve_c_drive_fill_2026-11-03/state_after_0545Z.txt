@@ -1,0 +1,3 @@
+2026-11-04T05:45:11Z free_bytes=68328001536 size_bytes=999559708672
+swapdir D910E71E-F8FE-4036-AD87-D676E86ACB88 bytes=37748736
+ext4vhdx C:\Users\sjlewis\AppData\Local\wsl\{353db0b6-87af-4664-8d81-cf3ae8581661}\ext4.vhdx bytes=58480132096
