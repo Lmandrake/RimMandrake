@@ -53,3 +53,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_TAR_FIRE_NETWORK_1 A1 (L2), read-only proof","ts":"2026-11-04T01:56:39Z","tsn":1793757399062135586}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:56:44Z","tsn":1793757404593518828}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAPPRETICK_DIAGNOSE_FULL_LIST_STALL L1 (GREEN-FULL), read-only proof","ts":"2026-11-04T01:56:56Z","tsn":1793757416301764534}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:58:40Z","tsn":1793757520708608039}
