@@ -54,3 +54,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:56:44Z","tsn":1793757404593518828}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MAPPRETICK_DIAGNOSE_FULL_LIST_STALL L1 (GREEN-FULL), read-only proof","ts":"2026-11-04T01:56:56Z","tsn":1793757416301764534}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:58:40Z","tsn":1793757520708608039}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: QUICKTEST_POLICY_NRE_FULLLIST_1 A1 (GREEN-FULL), read-only proof","ts":"2026-11-04T01:58:53Z","tsn":1793757533004977452}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:59:00Z","tsn":1793757540333583501}
