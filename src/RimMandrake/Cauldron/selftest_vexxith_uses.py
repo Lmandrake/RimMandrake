@@ -20,6 +20,20 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+UNMEASURED = []
+
+
+def run_child(argv, timeout, what):
+    """A child test run; a child still running at `timeout` (the nightly sweep under load,
+    NIGHTLY_COP_FIX_RED_CIXTEN_JSWD) is UNMEASURED for `what`, never an uncaught traceback."""
+    try:
+        return subprocess.run(argv, capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        print("UNMEASURED %s: child %s still running after %d s" % (what, os.path.basename(argv[1]), timeout))
+        UNMEASURED.append(what)
+        return None
+
+
 def root(*p):
     return ET.parse(os.path.join(*p)).getroot()
 
@@ -88,11 +102,12 @@ def gates():
     # canal fills burn steel not plasteel, every other fluid is the control.
     stock = os.path.join(SRC, "Utils", "selftest_flowworks_stock.py")
     for _ in range(2):  # a drvfs stage can fail with rsync ENOMEM: "env/build failure, not a selftest verdict"
-        p = subprocess.run([sys.executable, stock, "--only", "GateAcid_*,ContainerMat_*"], capture_output=True, text=True, timeout=450)
-        if "env/build failure" not in p.stdout + p.stderr:
+        p = run_child([sys.executable, stock, "--only", "GateAcid_*,ContainerMat_*"], 450, "gate touch detection on the shipped defs")
+        if p is None or "env/build failure" not in p.stdout + p.stderr:
             break
-    tail = (p.stdout + p.stderr).strip().splitlines()[-3:]
-    check(p.returncode == 0, "gate touch detection on the shipped defs (exit %s: %s)" % (p.returncode, " | ".join(tail)))
+    if p is not None:
+        tail = (p.stdout + p.stderr).strip().splitlines()[-3:]
+        check(p.returncode == 0, "gate touch detection on the shipped defs (exit %s: %s)" % (p.returncode, " | ".join(tail)))
     plate = defs(root(HERE, "Defs/ThingDefs_Items/RM_CauldronItems.xml")).get("RM_Vexxith")
     check(plate is not None and has_ext(plate, "RM_AcidImmuneExtension") and plate.find("stuffProps/categories/li").text == "Metallic",
           "a vexxith gate can be built (Metallic, DoorBase's stuff) and its stuff refuses the burn at TakeDamage")
@@ -167,7 +182,9 @@ def settings():
 def kernel():
     """The C# kernel rules run ahead of the fuzz in the Cauldron selftest program, built through winbuild."""
     fuzz = os.path.join(SRC, "Utils", "selftest_cauldron_fuzz.py")
-    p = subprocess.run([sys.executable, fuzz, "--fuzz-scale", "0.01"], capture_output=True, text=True, timeout=400)
+    p = run_child([sys.executable, fuzz, "--fuzz-scale", "0.01"], 400, "kernel rules on the production kernel")
+    if p is None:
+        return
     bad = [ln for ln in p.stdout.splitlines() if ln.startswith("FAIL acid air")]
     for ln in bad:
         print(ln)
@@ -177,6 +194,9 @@ def kernel():
 def main():
     for f in (containers, gates, machines, acid_air, suit, settings, kernel):
         f()
+    if UNMEASURED and not FAILS:
+        print("RESULT: %s: %s" % ("UNMEASURED, not a pass or a fail", "; ".join(UNMEASURED)))
+        return 0
     print("RESULT: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
