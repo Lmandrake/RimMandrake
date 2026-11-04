@@ -11,7 +11,13 @@ validation.py. This proves, without the game:
   5. `compose_test_list` compares packageIds case-blind, so MINIMAL's `Neronix17.OuterRim.Core` is not added twice;
   6. live-proof A2 ("VFEFactory + VE Framework, no other VE mod") needs both and names every installed Vanilla
      Expanded packageId but those two as a --without, and live_def_check.condition reads UNMEASURED on a running
-     load that holds any one of them.
+     load that holds any one of them;
+  7. every part the A1 and A2 clauses name is on its live-proof line, joined by `&&` so each must hold: A1 needs
+     Armoury's closure, `--without` ModularWeapons2 (a running MW2 reads UNMEASURED), `--has` GS_Gaffi and
+     kotorsound_GonkDroid (both Armoury's own defs), `--absent` SetIngredients and RecipeDefGenerator, and its
+     env_verify_check; A2 `--has` both AutomatedSmelter states (WreckedMachines' own defs), `--absent`
+     SetIngredients, RecipeDefGenerator and GenerateAutoProcesses (an NRE naming each reads FAIL), and its
+     env_verify_check.
 
     python3 src/RimMandrake/Utils/modcheck/selftest_modcheck_donor_envs.py
 """
@@ -30,6 +36,7 @@ sys.path.insert(0, UTILS)
 import modset_builder  # noqa: E402
 import runner  # noqa: E402
 import live_def_check  # noqa: E402
+import live_log_check  # noqa: E402
 
 FAILS = []
 
@@ -162,10 +169,91 @@ def t_a2_excludes_ve_siblings():
     else:
         check("A2: each VE sibling in the running load makes the clause UNMEASURED (%d)" % len(without), bool(without))
 
+# What each clause names, per tool on its line. A missing part turns the selftest red (gen 7's checker found four
+# parts that could be deleted with the selftest still green).
+CLAUSE_PARTS = {
+    "A1": {"mod": "Armoury", "pid": "mandrake.rsw.armoury",
+           "needs": ("mandrake.rsw.armoury", "ebsg.framework", "adaptive.storage.framework"),
+           "without": ("kaitorisenkou.modularweapons2",),
+           "has": ("ThingDef/GS_Gaffi", "SoundDef/kotorsound_GonkDroid"),
+           "absent": ("SetIngredients", "RecipeDefGenerator")},
+    "A2": {"mod": "WreckedMachines", "pid": "mandrake.rm.wreckedmachines",
+           "needs": ("mandrake.rm.wreckedmachines",) + VE_KEEP,
+           "without": (),
+           "has": ("ThingDef/RM_WM_AutomatedSmelter_Kludged", "ThingDef/RM_WM_AutomatedSmelter_Repaired"),
+           "absent": ("SetIngredients", "RecipeDefGenerator", "GenerateAutoProcesses")},
+}
+
+
+def live_line(clause, path=LIVE):
+    """-> {script basename: [words after it]} of the clause's live-proof line, or None; and the raw command."""
+    with open(os.path.join(ROOT, path), encoding="utf-8") as f:
+        line = [ln for ln in f if ln.startswith("live-proof %s:" % clause)]
+    if len(line) != 1:
+        return None, None
+    cmd = line[0].split(":", 1)[1].strip()
+    parts = {}
+    for seg in cmd.split("&&"):
+        words = shlex.split(seg)
+        if len(words) >= 2 and words[0] == "python3":
+            parts[os.path.basename(words[1])] = words[2:]
+    return parts, cmd
+
+
+def opt(words, flag):
+    return [words[i + 1] for i, w in enumerate(words[:-1]) if w == flag]
+
+
+def t_clause_parts_on_lines():
+    for clause, want in sorted(CLAUSE_PARTS.items()):
+        parts, cmd = live_line(clause)
+        check("%s: exactly one live-proof line" % clause, parts is not None)
+        if parts is None:
+            continue
+        check("%s: every step is joined by && (no ||, ;, | or &)" % clause,
+              not re.search(r"\|\||;|(?<!&)&(?!&)|(?<!\|)\|(?!\|)", cmd), cmd[:120])
+        ddc, llc = parts.get("live_def_check.py"), parts.get("live_log_check.py")
+        check("%s: runs live_def_check, live_log_check and env_verify_check" % clause,
+              ddc is not None and llc is not None and "env_verify_check.py" in parts, sorted(parts))
+        if ddc is None or llc is None or "env_verify_check.py" not in parts:
+            continue
+        needs = [p.lower() for p in opt(ddc, "--needs")]
+        without = [p.lower() for p in opt(ddc, "--without")]
+        has, absent = opt(ddc, "--has"), opt(llc, "--absent")
+        for p in want["needs"]:
+            check("%s: --needs %s" % (clause, p), p in needs, needs)
+        for p in want["without"]:
+            check("%s: --without %s" % (clause, p), p in without, without)
+        for k in want["has"]:
+            check("%s: --has %s" % (clause, k), k in has, has)
+        for t in want["absent"]:
+            check("%s: live_log_check --absent %s" % (clause, t), t in absent, absent)
+        check("%s: env_verify_check reads %s" % (clause, want["mod"]),
+              parts["env_verify_check.py"] == [want["mod"]], parts["env_verify_check.py"])
+        # the witnesses are the mod's own defs, so an unresolved one is a FAIL, never an unowned shrug
+        owners = live_def_check.def_owners(list(want["has"]))
+        for k in want["has"]:
+            check("%s: %s is %s's own def" % (clause, k, want["mod"]), want["pid"] in (owners.get(k) or ()),
+                  owners.get(k))
+        # the instruments the parts feed: a forbidden mod running reads UNMEASURED; an NRE naming a token reads FAIL
+        base = set(needs) | {"ludeon.rimworld", "brrainz.harmony"}
+        st, _ = live_def_check.condition(needs, without, base, {})
+        check("%s: condition met on its own closure" % clause, st is None, st)
+        for p in want["without"]:
+            st, _ = live_def_check.condition(needs, without, base | {p}, {})
+            check("%s: a running %s makes the clause UNMEASURED" % (clause, p), st == live_def_check.UNMEASURED, st)
+        for t in want["absent"]:
+            log = ("Bridge token: x\nException in %s: System.NullReferenceException: Object reference not set\n"
+                   "  at Verse.Foo.Bar () [0x00000]\n" % t)
+            code, _ = live_log_check.judge(log, absent)
+            check("%s: an exception naming %s reads FAIL" % (clause, t), code == live_log_check.FAIL, code)
+        code, _ = live_log_check.judge("Bridge token: x\nall quiet\n", absent)
+        check("%s: a clean log reads PASS" % clause, code == live_log_check.PASS, code)
+
 
 if __name__ == "__main__":
     for t in (t_env_files_and_tiers, t_armoury_donors_out, t_closure_on_installed, t_compose_case_blind,
-              t_a2_excludes_ve_siblings):
+              t_a2_excludes_ve_siblings, t_clause_parts_on_lines):
         t()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     sys.exit(1 if FAILS else 0)
