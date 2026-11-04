@@ -587,8 +587,29 @@ def denied_runs(sch, st, root, now, do_conductor):
     return "; ".join(said)
 
 
-def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
-    """The writes of one incident pass. Rows first: a ring the ledger does not hold would ring again."""
+def ledger_structural(r, run=subprocess.run):
+    """A tamed incident's structural item (incident.structural_ring), as RUNNER (DISPATCHER only notes; the testq
+    ingest publishes the RUNNER shard): spawn it, or note it when the name already stands (a later taming of the same
+    cause), then the acks as a note, then raise it so relentless takes it first. -> (ok, output)."""
+    cli = os.path.join(HERE, "cli.py")
+    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
+
+    def rf(*args):
+        p = run([sys.executable, cli, *args, "--seat", "RUNNER"], cwd=REPO, env=env, capture_output=True, text=True,
+                timeout=120, stdin=subprocess.DEVNULL)
+        return p.returncode == 0, ((p.stdout or "") + (p.stderr or "")).strip()[-300:]
+    ok, out = rf("spawn", "--from", r["from"], "--for", "BENCH", "--needs", "offline", "--kind", "bug", "--name", r["item"],
+                 "--title", r["title"], "--why", "incident ladder (deterministic, no AI): %s tamed" % r["id"])
+    ok2, out2 = rf("note", r["item"], "--text", r["text"])
+    if not (ok or ok2):
+        return False, "spawn: %s; note: %s" % (out, out2)
+    rf("raise", r["item"], "--reason", "a tamed incident's fix keeps dying: structural work before another read")
+    return True, "filed" if ok else "noted (already filed)"
+
+
+def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None):
+    """The writes of one incident pass. Rows first: a ring the ledger does not hold would ring again. do_file: the
+    structural-item filer, None while the tick holds no ingest.lock (the ring comes back next pass)."""
     ist = st.setdefault("incident", {})
     IN.append(a["rows"]) if a["rows"] else None
     ist["cursor"] = a["cursor"]     # the rows it read: a signal landing behind ours is still ahead of it
@@ -613,6 +634,15 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
                 ist["held"].append(r)           # a held run is asked again, never dropped
         elif r["how"] == "denied_hand":
             said.append(conductor_hand(sch, st, r["ids"], r["text"], now))
+            continue
+        elif r["how"] == "structural":
+            if do_file is None:
+                said.append("%s: structural %s waits for the ingest lock" % (r["id"], r["item"]))
+                continue
+            ok, out = do_file(dict(r, **{"from": IN.load_table()["policy"].get("structural_from")}))
+            if ok:
+                IN.append([{"ev": "structural_filed", "id": r["id"], "at": iso(now), "t": now, "structural_filed": r["item"]}])
+            said.append("%s: structural %s %s" % (r["id"], r["item"], out if ok else "FAILED: " + out))
             continue
         elif r["how"] == "fresh_run":
             fresh.append(r)                     # every fresh-run ring of this pass is ONE Operations run
@@ -1463,7 +1493,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 res = "%s; %s" % (res, do_conductor(sch, a, now))
                     elif a["do"] == "incident":
                         try:
-                            res = incident_execute(a, sch, st, root, now, fx.get("incident_ring", lambda rt, s, rid, m: ring(rt, s, rid, m)), do_conductor)
+                            res = incident_execute(a, sch, st, root, now, fx.get("incident_ring", lambda rt, s, rid, m: ring(rt, s, rid, m)), do_conductor,
+                                                   fx.get("incident_file", ledger_structural) if ledger_ok and time.time() < deadline else None)
                         except Exception as e:  # noqa: BLE001 - said by the next tick; the deadman reads incidents.json's age
                             st["incident_failed"] = res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])
                     elif a["do"] == "unit_repair":

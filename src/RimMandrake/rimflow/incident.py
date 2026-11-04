@@ -21,6 +21,12 @@ The Dispatcher tick runs step() in decide (pure) and execute() in its execute pa
     A revisit is rung only when there is news (revisit_news); with none it is re-armed with no run and a revisit_quiet
     row says so, for at most revisit_quiet_max_min. One run takes every revisit due inside revisit_batch_min
     (INCIDENT_REVISIT_TAME_SAME_NEWS_HOURLY: 9 of 15 Operations runs in a day re-read incidents that had not moved).
+  * a RELAPSE is a fix that died: an incident that recovered and CLOSED, then came back (a `reopened` row). Joining an
+    open incident, a dip back to bad before it closed (`relapsing`) and an ack are not. The tame_relapses-th relapse of a
+    cause inside tame_window_h TAMES it (INCIDENT_RELAPSE_TAME_STOP_FULL_READS; strategy 2026-11-02 section 4): it buys
+    no more full Operations reads (no alarm-run key, no fresh_run ring; a `withheld` row says each one), and one
+    structural item is filed quoting its acks (a `structural` ring until a `structural_filed` row). It stays open and
+    climbs its ladder: the Conductor's quick run and his line still come.
 incidents.json is the snapshot stamped every tick: pulse reads its `owner` rows, the deadman reads its age.
 """
 import fnmatch
@@ -40,6 +46,7 @@ OWNER_RUNG = 3
 CLOCK_UNIT_S = {"min": 60, "h": 3600, "s": 1}         # a metric ending _<unit> reads "how long", unless NOT_CLOCK says it is a rate or a peak
 NOT_CLOCK = re.compile(r"(_per_h|_max_s)$")
 NEWS_EVS = ("joined", "sane", "relapsing", "reopened", "escalated")
+FULL_READS = ("alarm_run", "fresh_run")      # a whole Operations run (~450k, plan-20261101164253): what a tamed incident stops buying
 
 
 def iso(t):
@@ -267,6 +274,35 @@ def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None, status_t=N
     return news
 
 
+def relapse_rows(rows, ids, now, window_h):
+    """The relapses of these incident ids inside the window: `reopened` rows, nothing else (joins, dips, acks are not)."""
+    return [r for r in rows if r.get("ev") == "reopened" and r.get("id") in ids and r.get("t", 0) > now - window_h * 3600]
+
+
+def ack_quotes(rows, ids, n=6):
+    """The acks of these incidents, newest last: who, when, the plan. What a structural item must quote."""
+    acks = [r for r in rows if r.get("ev") == "acked" and r.get("id") in ids and r.get("plan")]
+    return ["%s by %s: %s" % (r.get("at"), r.get("ack_by"), str(r["plan"])[:200]) for r in acks[-n:]]
+
+
+def structural_name(cause):
+    """The one structural item of a cause: SUBJECT_INTENT_TWIST, at most 44 characters (rimflow namecheck)."""
+    subj = re.sub(r"[^A-Z0-9]+", "_", str(cause).upper()).strip("_")[:21].strip("_") or "UNROUTED"
+    return "RELAPSE_%s_FIX_DIED_TWICE" % subj
+
+
+def structural_ring(inc):
+    acks = inc.get("acks") or []
+    title = "Incident %s relapsed %d times in %d h: each ack's fix died; make the fix structural" % (
+        inc["id"], inc.get("relapses", 0), inc.get("tame_window_h", 24))
+    text = ("Incident %s (cause %s) recovered, closed and came back %d times inside %d h, so it buys no more full "
+            "Operations reads; it stays open on its ladder. The acks whose fixes died: %s" % (
+                inc["id"], inc["cause"], inc.get("relapses", 0), inc.get("tame_window_h", 24),
+                " | ".join(acks) if acks else "none recorded (no run acked it)"))
+    return {"id": inc["id"], "how": "structural", "reader": None, "seat": None, "item": inc["structural"],
+            "title": title[:200], "text": text[:1800]}
+
+
 def template(inc):
     return "RimMandrake %s since %s: %s. No agent could read this; fixed template." % (
         inc["class"], iso(inc["told_t"]), ", ".join(sorted(inc["metrics"])))
@@ -292,12 +328,19 @@ def step(table, rows, status, now, cursor=0, events=None):
         inc.update(f)
         out.append(dict(f, ev=ev, id=inc["id"], at=iso(now), t=now))
 
+    def ring(inc, r):
+        if inc.get("tamed") and r["how"] in FULL_READS:     # its ladder still moves; only the full read is not bought
+            emit("withheld", inc, withheld=r["how"], why="tamed after %d relapses: no full read; structural item %s" % (
+                inc.get("relapses", 0), inc.get("structural")))
+        else:
+            rings.append(r)
+
     def revisit(inc, reads, news):
         was = inc.get("plan")
         emit("revisited", inc, rung_t=now, acked_t=None, ack_by=None, plan=None, last_plan=was, recover_by=None,
              recover_by_t=None, revisits=inc.get("revisits", 0) + 1, revisit_t=now, revisit_seen_t=now, revisit_read=reads,
              revisit_status_t=status_t, revisit_plan=None, auto_ack=False, quiet_revisits=0, news=news)
-        rings.append(revisit_ring(inc, was, news))
+        ring(inc, revisit_ring(inc, was, news))
 
     looked = set()
     status_t = status.get("t") if isinstance(status, dict) else None
@@ -349,13 +392,20 @@ def step(table, rows, status, now, cursor=0, events=None):
         if g["reader"] == "owner":
             fields.update(rung=OWNER_RUNG)
         if inc and now - (inc.get("closed_t") or 0) <= pol["relapse_h"] * 3600:
-            emit("reopened", inc, reopens=inc.get("reopens", 0) + 1, **fields)
+            ids = {x["id"] for x in incs.values() if x.get("cause") == cause}
+            win = pol.get("tame_window_h", 24)
+            n = len(relapse_rows(rows, ids, now, win)) + 1          # + this one
+            tame = n >= pol.get("tame_relapses", 2)
+            emit("reopened", inc, reopens=inc.get("reopens", 0) + 1, tamed=tame, **fields)
+            if tame:
+                emit("tamed", inc, relapses=n, tame_window_h=win, tamed_t=now, structural=structural_name(cause),
+                     structural_filed=None, acks=ack_quotes(rows, ids))
         else:
             inc = {"id": "%s-%s" % (cause, time.strftime("%Y%m%d%H%M%S", time.gmtime(now))), "cause": cause}
             incs[inc["id"]] = inc
             by_cause[cause] = inc
             emit("opened", inc, cause=cause, reopens=0, **fields)
-        rings.append(ring_of(table, inc, now))
+        ring(inc, ring_of(table, inc, now))
 
     for inc in sorted(incs.values(), key=lambda x: x["id"]):
         if inc["state"] != "open":
@@ -400,10 +450,11 @@ def step(table, rows, status, now, cursor=0, events=None):
             inc.update(f)
             d = next_due(table, inc)
             emit("escalated", inc, was_acked=was, ack_due=iso(d) if d else None, ack_due_t=d, **f)
-            rings.append(ring_of(table, inc, now, r))
+            ring(inc, ring_of(table, inc, now, r))
     if any(r["how"] == "fresh_run" for r in rings):      # a run is going: it takes every revisit about to fall due
         for inc in sorted(incs.values(), key=lambda x: x["id"]):
-            if inc["state"] != "open" or inc["rung"] < OWNER_RUNG or inc["id"] in looked or inc.get("sane_since"):
+            if (inc["state"] != "open" or inc["rung"] < OWNER_RUNG or inc["id"] in looked or inc.get("sane_since")
+                    or inc.get("tamed")):            # a tamed one is not pulled into a run it may not buy
                 continue
             due = next_due(table, inc)
             if due is None or due - now > pol.get("revisit_batch_min", 0) * 60:
@@ -413,13 +464,16 @@ def step(table, rows, status, now, cursor=0, events=None):
             if news:                                     # with none it waits for its own time and is re-armed then
                 revisit(inc, reads, news)
     live = [x for x in incs.values() if x["state"] == "open"]
+    for x in sorted(live, key=lambda a: a["id"]):          # filed once: retried every pass until a structural_filed row
+        if x.get("tamed") and x.get("structural") and not x.get("structural_filed"):
+            rings.append(structural_ring(x))
     keys = sorted("incident:%s#%d" % (x["id"], x.get("reopens", 0)) for x in live
-                  if x["rung"] == 0 and x["reader"] == "Operations")
+                  if x["rung"] == 0 and x["reader"] == "Operations" and not x.get("tamed"))
     owner = [dict(id=x["id"], line=x.get("line") or template(x), unread=not x.get("line"), since=x["told_t"],
                   **{"class": x["class"]}) for x in live if x["rung"] >= OWNER_RUNG]
     snap = {"t": now, "at": iso(now), "fresh": fresh, "open": sorted(
         ({k: x.get(k) for k in ("id", "class", "cause", "rung", "reader", "told_at", "ack_due", "recover_by", "ack_by", "plan",
-                                "revisits", "quiet_revisits")}
+                                "revisits", "quiet_revisits", "tamed", "structural")}
          for x in live), key=lambda a: a["id"]), "owner": sorted(owner, key=lambda a: a["id"])}
     return {"rows": out, "rings": rings, "keys": keys, "cursor": len(rows), "snapshot": snap}
 

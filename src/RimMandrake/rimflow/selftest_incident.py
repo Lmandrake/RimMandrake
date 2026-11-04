@@ -1210,6 +1210,105 @@ def runs_through_step(ts):
     return runs
 
 
+class _Lock:
+    def close(self):
+        pass
+
+
+def test_relapse_tamed():
+    """INCIDENT_RELAPSE_TAME_STOP_FULL_READS on the real path (ops_watch.run, dispatcher.tick --apply). The 2026-11-01
+    plan incident's shape first: opened, acked, recovered and closed, reopened, acked, sane, then bad again BEFORE it
+    closed -- one relapse and a join, so nothing is tamed. Then it closes and comes back: the second relapse in 24 h buys
+    no full Operations read, files one structural item quoting both acks, and still climbs its ladder."""
+    import model
+    r = Rig("tamed")
+    filed = []
+    r.sch["publish"] = True                      # the tick takes ingest.lock only to publish: the filer runs under it
+    r.fx = {"lock": _Lock, "incident_file": lambda x: (filed.append(x), (True, "filed"))[1]}
+    plans = ["drop done entries from the priority list", "drop done entries again, the list refilled"]
+    r.tick(T0, relentless__under_min=40)
+    i = r.inc()[0]["id"]
+    IN.ack(i, "OPERATIONS", plans[0], now=T0 + 5 * M)
+    for m in (10, 40, 71):
+        r.tick(T0 + m * M, relentless__under_min=0)
+    check("tame: the plan incident closed on its readings", r.inc()[0]["state"] == "closed", r.inc())
+    r.tick(T0 + 2 * H, relentless__under_min=40)
+    IN.ack(i, "OPERATIONS", plans[1], now=T0 + 2 * H + 5 * M)
+    r.tick(T0 + 2 * H + 10 * M, relentless__under_min=0)
+    r.tick(T0 + 2 * H + 15 * M, relentless__under_min=50)       # 15:38 on 11-01: bad again before it closed
+    x = r.inc()[0]
+    check("tame: closed-then-back is one relapse; acks and a dip before closing are none (plan-20261101164253)",
+          len(r.evs("reopened")) == 1 and len(r.evs("relapsing")) + len(r.evs("joined")) == 1 and len(r.evs("acked")) == 2
+          and not x.get("tamed") and not r.evs("tamed") and not r.evs("withheld") and not filed, ([e["ev"] for e in r.rows()], x))
+    r.tick(T0 + 2 * H + 30 * M, relentless__under_min=0)
+    r.tick(T0 + 3 * H + 31 * M, relentless__under_min=0)
+    check("tame: closed again", r.inc()[0]["state"] == "closed", r.inc())
+    before = IN.read_rows()
+    runs0, ask0 = len(r.alarm_runs()), (r.asked("Operations") or {}).get("ids") or []
+    t2 = T0 + 4 * H
+    r.tick(t2, relentless__under_min=40)
+    st2 = json.load(open(r.sch["ops_status"]))
+    ctrl = json.loads(json.dumps(TABLE))
+    ctrl["policy"]["tame_relapses"] = 3
+    c = IN.step(ctrl, before, st2, t2)
+    check("tame control: at three, the same pass makes its alarm-run key and rings the full read (the check can fail)",
+          any(i in k for k in c["keys"]) and any(g["id"] == i and g["how"] in IN.FULL_READS for g in c["rings"])
+          and not any(g["how"] == "structural" for g in c["rings"]), (c["keys"], c["rings"]))
+    x = r.inc()[0]
+    tm = r.evs("tamed")
+    check("tame: the second relapse in 24 h tames it, and it stays open", x["state"] == "open" and x.get("tamed")
+          and len(tm) == 1 and tm[0]["relapses"] == 2, (x, tm))
+    p = IN.step(TABLE, before, st2, t2)
+    check("tame: that pass makes no alarm-run key and rings no full read, a withheld row says so",
+          not any(i in k for k in p["keys"]) and not any(g["how"] in IN.FULL_READS and g["id"] == i for g in p["rings"])
+          and [w["withheld"] for w in r.evs("withheld")] == ["alarm_run"], (p["keys"], p["rings"], r.evs("withheld")))
+    check("tame: no Operations run was bought", len(r.alarm_runs()) == runs0
+          and (i not in ((r.asked("Operations") or {}).get("ids") or []) or i in ask0), (r.alarm_runs()[runs0:], r.asked("Operations")))
+    name = x.get("structural")
+    check("tame: one structural item filed, a valid new name, quoting both acks", len(filed) == 1 and filed[0]["item"] == name
+          and not model.mint_problems(name, set()) and all(q in filed[0]["text"] for q in plans)
+          and filed[0]["from"] == TABLE["policy"]["structural_from"] and x.get("structural_filed") == name, (filed, name, x))
+    for m in range(15, 9 * 60, 15):
+        r.tick(t2 + m * M, relentless__under_min=40)
+    x = r.inc()[0]
+    hows = [w["withheld"] for w in r.evs("withheld")]
+    check("tame: filed once however many passes", len(filed) == 1, filed)
+    check("tame: it still climbs its ladder to his rung, open, the Conductor rung rung and the fresh read withheld",
+          x["state"] == "open" and x["rung"] >= IN.OWNER_RUNG and any(o["id"] == i for o in r.snap()["owner"])
+          and "fresh_run" in hows and any(e.get("ev") == "escalated" and e.get("rung") == 1 for e in r.evs("escalated"))
+          and i not in ((r.asked("Operations") or {}).get("ids") or []), (x, hows, r.asked("Operations")))
+    w = [o for o in r.snap()["open"] if o["id"] == i]
+    check("tame: the snapshot says it is tamed and names its item", w and w[0]["tamed"] and w[0]["structural"] == name, w)
+
+
+def test_tamed_filer_waits_and_retries():
+    """The structural ring outlives a pass with no ingest lock, and a failed filing: it is filed once, when it can be."""
+    r = Rig("tame_retry")
+    rows = [{"ev": "opened", "id": "c-1", "at": IN.iso(T0), "t": T0, "state": "open", "cause": "c", "rung": 1, "rung_t": T0,
+             "told_t": T0, "told_at": IN.iso(T0), "class": "distressed", "metrics": {}, "items": [], "reader": "Operations",
+             "ack_min": 30, "tamed": True, "structural": IN.structural_name("c"), "relapses": 2, "acks": ["a by B: p"]}]
+    IN.append(rows)
+    st = {}
+    calls = []
+
+    def go(now, do_file):
+        res = IN.step(TABLE, IN.read_rows(), {"t": now, "points": {}, "alarms": {}}, now)
+        return [g for g in res["rings"] if g["how"] == "structural"], D.incident_execute(
+            dict(res), r.sch, st, "/nonexistent", now, lambda *a: None, lambda *a: None, do_file)
+    g, said = go(T0 + M, None)
+    check("tame retry: no lock, the ring waits and nothing is written", len(g) == 1 and "waits" in said
+          and not [x for x in IN.read_rows() if x.get("ev") == "structural_filed"], said)
+    g, said = go(T0 + 2 * M, lambda x: (calls.append(x), (False, "refused"))[1])
+    check("tame retry: a failed filing writes no filed row", "FAILED" in said
+          and not [x for x in IN.read_rows() if x.get("ev") == "structural_filed"], said)
+    g, said = go(T0 + 3 * M, lambda x: (calls.append(x), (True, "filed"))[1])
+    g2, _ = go(T0 + 4 * M, lambda x: (calls.append(x), (True, "filed"))[1])
+    check("tame retry: filed on the pass it can be, then never again", len(g) == 1 and not g2 and len(calls) == 2, (calls, g2))
+    names = {IN.structural_name(c) for c in ("work_belt", "ops_watch.blind", "x" * 60, "")}
+    check("tame: every structural name a cause can make passes namecheck", all(
+        not __import__("model").mint_problems(n, set()) for n in names), names)
+
+
 def test_replay_recorded():
     n = runs_through_step(RECORDED_REVISITS)
     check("replay: the 27 recorded revisits are 12 runs through step()", n == 12, n)
@@ -1237,7 +1336,7 @@ for t in (test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_a
           test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_chains_through_step, test_each_field_of_a_reading, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
-          test_incidents_verb_says_the_news, test_replay_recorded):
+          test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)
