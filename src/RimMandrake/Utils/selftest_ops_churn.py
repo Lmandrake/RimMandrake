@@ -148,6 +148,11 @@ def main():
     ok(name.startswith("OPS_CHURN_DIAGNOSE_RETURNED_WORK_") and not first.get("reopen")
        and "churn_items 55" in first.get("title", "") and first.get("conductor_log"),
        "6: the first bad pass files one fixed-id incident, routed to the Conductor too", first)
+    sys.path.insert(0, str(Path(OW.__file__).resolve().parent.parent / "rimflow"))
+    import incident as IN
+    rt = IN.route_of(IN.load_table(), "health.incident_slis") or {}
+    ok(rt.get("cause") not in (None, "work_belt") and rt.get("reader") == "Operations",
+       "6: its own cause, so an old open work_belt incident cannot swallow its Conductor line", rt)
     (TMP / "ops" / "alarms.json").unlink()
     sent.clear()
     OW.run_alarms({"health.incident_slis": pt}, r6, NOW + 7200, {name}, filer)

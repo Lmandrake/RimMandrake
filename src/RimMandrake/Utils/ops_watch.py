@@ -1851,6 +1851,14 @@ CHURN_UNITS = ("items returned in the churn window with >= churn_returns returns
 CHURN_KEYS = ("relentless.churn_items", "relentless.returned_tokens_day", "relentless.returned_tokens_pct")
 
 
+def churn_blind(why, tokens_only=False):
+    """The churn points read UNMEASURED, keys written out so the alarm census can read each one."""
+    pts = {"relentless.returned_tokens_day": U(why, CHURN_UNITS[1]), "relentless.returned_tokens_pct": U(why, CHURN_UNITS[2])}
+    if not tokens_only:
+        pts["relentless.churn_items"] = U(why, CHURN_UNITS[0])
+    return pts
+
+
 def rl_churn(store, now, cfg):
     """-> {churn point key: point}. OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: on 2026-11-04 47 items had been returned 3+
     times (one at gen 20) on broken tests and unreachable evidence read as broken work, ~157M weighted tokens, and no reading
@@ -1870,7 +1878,7 @@ def rl_churn(store, now, cfg):
         names = sorted(os.listdir(store / "items"))
     except OSError as e:
         why = "items unreadable: %s" % str(e)[:120]
-        return {k: U(why, u) for k, u in zip(CHURN_KEYS, CHURN_UNITS)}
+        return churn_blind(why)
     import hashlib
     by_hash, failed, started, churn, classes, torn = {}, set(), {}, [], {}, 0
     for n in names:
@@ -1921,7 +1929,7 @@ def rl_churn(store, now, cfg):
         runs = sp.get("runs") if isinstance(sp, dict) else None
         if not isinstance(runs, dict):
             why = "spend file unreadable: %s" % p
-            pts.update({k: U(why, u) for k, u in zip(CHURN_KEYS[1:], CHURN_UNITS[1:])})
+            pts.update(churn_blind(why, tokens_only=True))
             return pts
         for m, tk in runs.items():
             if not is_num(tk):
@@ -1938,12 +1946,12 @@ def rl_churn(store, now, cfg):
             ret += tk if key in failed else 0
     if tot <= 0:
         why = "no placed spend in the last %gh (%d spend files)" % (toks_h, len(files))
-        pts.update({k: U(why, u) for k, u in zip(CHURN_KEYS[1:], CHURN_UNITS[1:])})
+        pts.update(churn_blind(why, tokens_only=True))
         return pts
     share = 100.0 * unmapped / (tot + unmapped)
     if share > float(cfg.get("churn_max_unmapped_pct", 20)):
         why = "%.0f%% of the window's spend files has no item or gen start the instrument can place" % share
-        pts.update({k: U(why, u) for k, u in zip(CHURN_KEYS[1:], CHURN_UNITS[1:])})
+        pts.update(churn_blind(why, tokens_only=True))
         return pts
     x = {"total": tot, "returned": ret, "unmapped": unmapped, "window_h": toks_h}
     pts["relentless.returned_tokens_day"] = M(round(ret * 24.0 / toks_h), CHURN_UNITS[1], **x)
