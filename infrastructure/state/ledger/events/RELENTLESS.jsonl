@@ -479,3 +479,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:07:45Z","tsn":1793826465093098377}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE L1 (L2), read-only proof","ts":"2026-11-04T21:08:33Z","tsn":1793826513433886826}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T21:08:39Z","tsn":1793826519925071044}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T21:13:44Z","tsn":1793826824880024326}
