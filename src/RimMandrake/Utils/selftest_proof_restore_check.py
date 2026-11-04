@@ -523,23 +523,35 @@ def verbs_problems(text):
 
 
 # A waiver is only audited where the row above reads its restore: a new one in these files must be audited too, not
-# copied. path -> the code each waiver must sit directly above.
-WAIVERS = {CROWN: [r"if not setting\(f, v\):"],
-           STALL: [r'action="set", field="leanScentEnabled", value=str\(scent\)'],
-           LEAN: [r"RM_LeaningScrubSettings\.leanFireEnabled = leanOn;"],
-           LUMINOUS: [r"LuminousPigmentSettings\.familyEnabled = arr;"],
-           VERBS: [r"ToggleOff\(\(\) => PropertySettings\.%s," % n for n in
-                   ("salvageClaimFeeEnabled", "walkableCommerceEnabled", "pickpocketEnabled", "bribeEnabled")]}
+# copied. path -> the WHOLE line (stripped) each waiver must sit directly above, in order. Whole-line equality, not a
+# search: a second write tacked onto the audited line (blind check 3a033c99: `leanFireEnabled = leanOn;
+# leanScentEnabled = leanOn;` stayed green) is code the waiver never audited. The waiver itself must be a comment-only
+# line, so it cannot ride on the end of another write either.
+_VERB = ('string off = ToggleOff(() => PropertySettings.{0}, v => PropertySettings.{0} = v, map, actor, {1});')
+WAIVERS = {CROWN: ["if not setting(f, v):"],
+           STALL: ['r = call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="leanScentEnabled", '
+                   'value=str(scent))'],
+           LEAN: ["RM_LeaningScrubSettings.leanFireEnabled = leanOn;"],
+           LUMINOUS: ["LuminousPigmentSettings.familyEnabled = arr;"],
+           VERBS: [_VERB.format(*a) for a in
+                   (("salvageClaimFeeEnabled", 'gun, "Pay salvage claim fee"'),
+                    ("walkableCommerceEnabled", 'ware, "Buy " + ware.LabelShort + " ("'),
+                    ("pickpocketEnabled", 'mark, "Pickpocket "'),
+                    ("bribeEnabled", 'drinker, "Buy " + drinker.LabelShort + " a round"'))]}
 
 
 def waiver_problems(path, text):
     lines = text.split("\n")
     at = [i for i, ln in enumerate(lines) if prc.WAIVER in ln]
     want = WAIVERS[path]
+    name = os.path.basename(path)
     if len(at) != len(want):
-        return ["%s: %d waivers, %d audited" % (os.path.basename(path), len(at), len(want))]
-    return ["%s line %d: the waiver is not on %s" % (os.path.basename(path), i + 1, rx)
-            for i, rx in zip(at, want) if not (i + 1 < len(lines) and re.search(rx, lines[i + 1]))]
+        return ["%s: %d waivers, %d audited" % (name, len(at), len(want))]
+    out = ["%s line %d: the waiver shares its line with code" % (name, i + 1)
+           for i in at if not re.match(r"\s*(#|//)", lines[i])]
+    out += ["%s line %d: the line under the waiver is not exactly %r" % (name, i + 2, w)
+            for i, w in zip(at, want) if not (i + 1 < len(lines) and lines[i + 1].strip() == w)]
+    return out
 
 
 TEXT = dict((p, read(p)) for p in (CROWN, STALL, LEAN, LUMINOUS, VERBS))
@@ -619,6 +631,21 @@ for path, anchor in ((LEAN, "            List<Thing> bed = new List<Thing>();\n"
         anchor + "            // restore-check: ok copied\n")
 check("a waiver moved off its write is caught",
       bool(waiver_problems(LEAN, TEXT[LEAN].replace("RM_LeaningScrubSettings.leanFireEnabled = leanOn;", "Other();"))))
+
+LEAN_WAIVED = "            RM_LeaningScrubSettings.leanFireEnabled = leanOn;\n"
+red("the blind check's same-line second write under the Lean waiver", lambda t: waiver_problems(LEAN, t), LEAN,
+    LEAN_WAIVED, LEAN_WAIVED.rstrip("\n") + " RM_LeaningScrubSettings.leanScentEnabled = leanOn;\n")
+red("a call tacked onto the Luminous waived write", lambda t: waiver_problems(LUMINOUS, t), LUMINOUS,
+    "LuminousPigmentSettings.familyEnabled = arr;\n", "LuminousPigmentSettings.familyEnabled = arr; Leak();\n")
+red("a second write tacked onto a Verbs waived ToggleOff", lambda t: waiver_problems(VERBS, t), VERBS,
+    '"Pickpocket ");\n', '"Pickpocket "); PropertySettings.bribeEnabled = true;\n')
+red("a second statement tacked onto the crown waived line", lambda t: waiver_problems(CROWN, t), CROWN,
+    "            if not setting(f, v):\n", "            if not setting(f, v) or setting(\"crownMobEnabled\", True):\n")
+red("a second statement tacked onto the stall waived write", lambda t: waiver_problems(STALL, t), STALL,
+    "value=str(scent))\n", "value=str(scent)); setting_leak()\n")
+red("the Lean waiver riding on the end of a write", lambda t: waiver_problems(LEAN, t), LEAN,
+    "            // restore-check: ok only ProofFire",
+    "            RM_LeaningScrubSettings.leanScentEnabled = leanOn; // restore-check: ok only ProofFire")
 
 print("selftest_proof_restore_check: %s (%d failure(s))" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)
