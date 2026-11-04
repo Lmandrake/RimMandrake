@@ -224,6 +224,38 @@ def judge(case, got):
     return bad
 
 
+# ---- validator controls: a proof is trusted only on known-good AND known-bad worlds ----
+
+PASS_CODE = 0
+
+
+def controls(proof, worlds):
+    """proof: world -> exit code (0 PASS, 1 FAIL, 2 UNMEASURED). worlds: [(name, world, wanted code)]. -> [exposures]:
+    each world where the proof's code differs from the wanted one, or where it crashed. Empty = the proof passed its
+    controls. A forced PASS, a stale reading, a skipped row only show on a known-BAD world: see controls_refusal."""
+    out = []
+    for name, w, want in worlds:
+        try:
+            got = proof(w)
+        except Exception as e:      # noqa: BLE001  a crashing proof is exposed, never a pass
+            out.append("%s: the proof crashed (%s)" % (name, type(e).__name__))
+            continue
+        if got != want:
+            out.append("%s: the proof said %r, the control wants %r" % (name, got, want))
+    return out
+
+
+def controls_refusal(worlds):
+    """-> why a control set cannot validate a proof, or None. It needs a known-good world (a PASS wanted) and a known-bad
+    one (anything else wanted): good worlds alone pass a proof that forces PASS."""
+    wants = {w[2] for w in worlds}
+    if PASS_CODE not in wants:
+        return "no known-good world: a proof that always fails would pass these controls"
+    if not wants - {PASS_CODE}:
+        return "no known-bad world: a proof that forces PASS would pass these controls"
+    return None
+
+
 def gaps(bank):
     out = {}
     for c in bank["cases"]:
