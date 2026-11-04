@@ -14,7 +14,13 @@
  "diff": "--- a/skills/using-rimflow/SKILL.md\n+++ b/skills/using-rimflow/SKILL.md\n@@ -25,7 +25,8 @@\n \n ## Verbs\n \n-Every verb takes the global flags `--seat`, `--target`, `--mode`,\n+Every verb takes the per-verb (not global) flags, written AFTER the verb\n+(`cli.py bridge take --seat BENCH`; `cli.py --seat BENCH bridge take` is refused): `--seat`, `--target`, `--mode`,\n `--owner-said`. Syntax below is exact, from `--help` \u2014 check `--help` again\n before relying on flags not listed here; the CLI has more verbs\n (`block`/`unblock`/`finding`/`spawn`/`needs`/`retarget`/`reassign`/`reclaim`/\n",
  "verdict": "infrastructure/state/delegated/2026-11-02/agent_improve_using-rimflow.json",
  "recheck": "No new lesson or tool failure shows --seat or another per-verb flag placed before the verb.",
- "recheck_result": null,
- "rechecks": [],
+ "recheck_result": "pass",
+ "rechecks": [
+  {
+   "day": "2026-11-03",
+   "result": "pass",
+   "by": "curator"
+  }
+ ],
  "generalization": []
 }
