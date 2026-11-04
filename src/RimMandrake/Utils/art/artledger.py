@@ -298,10 +298,51 @@ class Writer:
             return
         p = shard_path()
         p.parent.mkdir(parents=True, exist_ok=True)
-        with open(p, "a", encoding="utf-8") as fh:
-            for ev in self.buf:
-                fh.write(json.dumps(ev, sort_keys=True, separators=(",", ":")) + "\n")
+        body = "".join(json.dumps(ev, sort_keys=True, separators=(",", ":")) + "\n" for ev in self.buf)
+        dlock = _dir_lock(os.path.dirname(p))
+        try:
+            with os.fdopen(_open_shard_locked(p), "w", encoding="utf-8") as fh:   # closing drops the flock
+                fh.write(body)
+        finally:
+            if dlock is not None:
+                os.close(dlock)
         self.buf.clear()
+
+
+def _dir_lock(d):
+    """A SHARED flock on the shard's directory for the whole append: relentless level_books holds it EXCLUSIVE while git
+    replaces the shards, so no line lands on a file mid-checkout. -> the fd, or None where the filesystem has no
+    directory flock (the per-file lock still serialises writers)."""
+    import fcntl
+    try:
+        fd = os.open(d, os.O_RDONLY)
+    except OSError:
+        return None
+    try:
+        fcntl.flock(fd, fcntl.LOCK_SH)
+    except OSError:
+        os.close(fd)
+        return None
+    return fd
+
+
+def _open_shard_locked(p):
+    """-> an O_APPEND fd on `p` holding its flock, on the inode now at `p`. relentless level_books takes this flock
+    while it compares a reordered shard and puts HEAD's order back, and while git replaces it: an append waits instead
+    of landing in between and being cut away; if the file was replaced meanwhile, this reopens the new one."""
+    import fcntl
+    for _ in range(5):
+        fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            here = os.stat(p)
+        except FileNotFoundError:
+            here = None
+        st = os.fstat(fd)
+        if here is not None and (here.st_dev, here.st_ino) == (st.st_dev, st.st_ino):
+            return fd
+        os.close(fd)
+    raise OSError("%s kept moving under its lock: events not written" % p)
 
 
 def append(ev: dict) -> dict:

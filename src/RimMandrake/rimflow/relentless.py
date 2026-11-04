@@ -87,6 +87,9 @@ POOL_IGNORED_MAX = 2 * 10**9
 LEDGER_DIR = "infrastructure/state/ledger/events/"
 ITEMS_DIR = "infrastructure/state/items/"
 BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
+# append-only shards outside the ledger whose writers (code_review_status, artledger) hold the directory flock SHARED per
+# append: level_books holds it EXCLUSIVE while it restores and git replaces them, as model.append does for the ledger
+APPEND_ONLY_DIRS = ("infrastructure/state/code_review/", "infrastructure/state/art/events/")
 # a live site build run from the books clone rewrites its registry there; the save is on disk, the file is a run artefact
 BOOKS_RUN_ARTEFACTS = ("src/RimMandrake/Utils/modcheck/test_site_saves.json",)
 # a proof run from the books clone also writes these. Not ours to restore (the registry is status.py's output) and not in
@@ -1101,15 +1104,17 @@ class Effects(relentless_game.GameFx):
             return "books cannot level: %s" % str(e)[:300]
 
     @contextlib.contextmanager
-    def shards_locked(self):
+    def shards_locked(self, extra=()):
         """Every ledger shard in books held under the flock model.append takes, while git replaces them: an event lands
         before git checks the file (git then refuses, the event stays) or after (model.append finds its inode moved and
         reopens the new file), never in between; the directory lock keeps a new shard from being created meanwhile.
+        `extra`: books-relative shards outside the ledger held the same way (their writers flock and re-check the inode).
         Not re-entrant: a flock from a second open file blocks this process."""
         fds = []
         with self.ledger_dir_locked():
             try:
-                for p in sorted(glob.glob(os.path.join(self.books, LEDGER_DIR, "*.jsonl"))):
+                for p in sorted(glob.glob(os.path.join(self.books, LEDGER_DIR, "*.jsonl"))) + \
+                        [os.path.join(self.books, x) for x in extra]:
                     try:
                         fd = os.open(p, os.O_RDONLY)
                     except FileNotFoundError:
@@ -1259,13 +1264,51 @@ class Effects(relentless_game.GameFx):
                         os.close(fd)
                 del moved_out[p]
 
+    @contextlib.contextmanager
+    def append_dirs_locked(self):
+        """APPEND_ONLY_DIRS held EXCLUSIVE: no code_review or art line is appended, to a shard reordered or clean, while
+        level_books compares, restores and lets git replace them (a writer that locked the old inode would follow git's
+        new one into the middle of its checkout). The lock is on the directory's inode, so a reset that removed and
+        recreated the directory would escape it: only an origin that deletes every file in one does that (each holds
+        tracked shards and a tracked subfolder), the same footing the ledger dir stands on. Not re-entrant."""
+        fds = []
+        try:
+            for d in APPEND_ONLY_DIRS:
+                d = os.path.join(self.books, d)
+                if os.path.isdir(d):
+                    fds.append(os.open(d, os.O_RDONLY))
+                    fcntl.flock(fds[-1], fcntl.LOCK_EX)
+            yield
+        finally:
+            for fd in fds:
+                os.close(fd)
+
     def _level_rows(self, rows, read, keep, moved_out, restored, behind, shuffled):
+        with self.append_dirs_locked():
+            return self._level_rows_locked(rows, read, keep, moved_out, restored, behind, shuffled)
+
+    def _level_rows_locked(self, rows, read, keep, moved_out, restored, behind, shuffled):
         for p, seen in shuffled.items():    # an append since shuffled_shards looked is a real line: refuse before any write
             with open(os.path.join(self.books, p), "rb") as f:
                 if f.read() != seen:
                     return "books %s behind: %s moved while levelling" % (behind, p)
         for state, p in rows:
             src = os.path.join(self.books, p)
+            if p in shuffled:   # compare and restore under the flock its writers take (code_review_status, artledger)
+                head = subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True,
+                                      timeout=60).stdout
+                with open(src, "r+b") as f:
+                    fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+                    if f.read() != shuffled[p]:     # a line landed after the look: a real line, keep it and refuse
+                        return "books %s behind: %s moved while levelling" % (behind, p)
+                    os.makedirs(os.path.dirname(os.path.join(keep, p)), exist_ok=True)
+                    shutil.copy2(src, os.path.join(keep, p))
+                    f.seek(0)       # same lines as HEAD in another order: nothing to put back if the level stops
+                    f.truncate()
+                    f.write(head)
+                    f.flush()
+                    os.fsync(f.fileno())
+                continue
             if p in read:   # a ledger shard: held under the flock model.append takes, so no event lands between check and restore
                 head = b"" if state == "??" else \
                     subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout
@@ -1296,7 +1339,7 @@ class Effects(relentless_game.GameFx):
                 with open(src, "wb") as f:
                     f.write(subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout)
         self.git(self.books, "update-index", "-q", "--refresh")   # same bytes, new stat: reset --keep reads that as dirt
-        with self.shards_locked():
+        with self.shards_locked(extra=sorted(shuffled)):    # no append to a restored shard while git replaces it
             self.git_ok(self.books, "reset", "--keep", "origin/main")
         if shuffled:    # only now: a level that refuses above restored nothing
             self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})

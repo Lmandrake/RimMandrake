@@ -286,12 +286,52 @@ def append_records(recs, shard=None):
     os.makedirs(REC_DIR, exist_ok=True)
     fp = os.path.join(REC_DIR, (shard or _seat()) + ".jsonl")
     body = "".join(json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n" for r in recs)
-    fd = os.open(fp, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    dlock = _dir_lock(os.path.dirname(fp))
     try:
-        os.write(fd, body.encode("utf-8"))
-        os.fsync(fd)
+        fd = _open_shard_locked(fp)
+        try:
+            os.write(fd, body.encode("utf-8"))
+            os.fsync(fd)
+        finally:
+            os.close(fd)       # closing drops the flock
     finally:
+        if dlock is not None:
+            os.close(dlock)
+
+
+def _dir_lock(d):
+    """A SHARED flock on the shard's directory for the whole append: relentless level_books holds it EXCLUSIVE while git
+    replaces the shards, so no line lands on a file mid-checkout. -> the fd, or None where the filesystem has no
+    directory flock (the per-file lock still serialises writers)."""
+    import fcntl
+    try:
+        fd = os.open(d, os.O_RDONLY)
+    except OSError:
+        return None
+    try:
+        fcntl.flock(fd, fcntl.LOCK_SH)
+    except OSError:
         os.close(fd)
+        return None
+    return fd
+
+
+def _open_shard_locked(fp):
+    """-> an O_APPEND fd on `fp` holding its flock, on the inode now at `fp`. relentless level_books takes this flock
+    while it compares a reordered shard and puts HEAD's order back, and while git replaces it: an append waits instead
+    of landing in between and being cut away; if the file was replaced meanwhile, this reopens the new one."""
+    for _ in range(5):
+        fd = os.open(fp, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            here = os.stat(fp)
+        except FileNotFoundError:
+            here = None
+        st = os.fstat(fd)
+        if here is not None and (here.st_dev, here.st_ino) == (st.st_dev, st.st_ino):
+            return fd
+        os.close(fd)
+    raise OSError("%s kept moving under its lock: records not written" % fp)
 
 
 def save(data):
