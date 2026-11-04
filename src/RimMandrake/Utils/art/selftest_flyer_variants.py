@@ -10,7 +10,8 @@ For each creature, from parsed XML, the PNGs on disk and the art ledger:
   * alternateGraphicChance gives every picture the same share;
   * every facing is byte-equal to the column he ruled on, or (alternates only) is that column after the roster rescale
     he ordered by card (RESCALE_CARD): the ledger's prev chain from the file reaches the pinned sha, every step on the
-    way is under that card, and the pixels are still his column's, moved or evenly scaled (same_art);
+    way is under that card, and the pixels are still his column's, moved or evenly scaled (same_art: outline shape, overall
+    colour, each part's colour, and which way round it faces);
   * every alternate's facing has a ledger install tied to a ruling carrying his words.
 
 The pins stay what he ruled on. 8605d39e4b moved 13 of these pictures under that card; a rescale is the only thing that may.
@@ -26,7 +27,7 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageStat
+from PIL import Image, ImageChops, ImageOps, ImageStat
 
 REPO = Path(__file__).resolve().parents[4]
 EVENTS = REPO / "infrastructure/state/art/events"
@@ -37,6 +38,9 @@ ALPHA_OUTLINE = 8  # faint halo pixels stretch a raw alpha bbox
 ALPHA_SOLID = 128
 MAX_ASPECT_DRIFT = 0.02  # a rescale keeps the outline's shape: bbox w and h scale alike
 MAX_RGB_DRIFT = 15.0  # mean per-channel, opaque pixels. Measured: his rescaled columns at most 10.5, a different column at least 38.9
+MAX_TILE_DRIFT = 11.0  # worst tile's mean colour shift, one channel. Measured: his rescaled columns at most 8.9, a recolour or part repaint at least 12
+TILES = 8  # the outline is cut into TILES x TILES; a whole-picture mean hides a shift that resampling noise would not make
+TILE_MIN_SOLID = 0.25  # tiles mostly background say nothing
 
 CASES = [
     {"kind": "RM_FleetFlier", "mod": "src/RimMandrake/TheForge", "defs": "Defs/ThingDefs_Races/RM_FleetFlier.xml",
@@ -72,23 +76,56 @@ def ledger() -> tuple[dict, dict, dict]:
     return live, rulings, history
 
 
+def outline(im: Image.Image) -> tuple[int, int, int, int] | None:
+    return im.getchannel("A").point(lambda v: 255 if v > ALPHA_OUTLINE else 0).getbbox()
+
+
+def colour_shift(a: Image.Image, b: Image.Image) -> tuple[float, float] | None:
+    """(mean per-channel difference, worst tile's mean colour shift) over the pixels opaque in both; None if there are none."""
+    solid = ImageChops.multiply(*(x.getchannel("A").point(lambda v: 255 if v >= ALPHA_SOLID else 0) for x in (a, b)))
+    if not solid.getbbox():
+        return None
+    rgb_a, rgb_b = a.convert("RGB"), b.convert("RGB")
+    w, h = b.size
+    worst = 0.0
+    for i in range(TILES):
+        for j in range(TILES):
+            box = (i * w // TILES, j * h // TILES, (i + 1) * w // TILES, (j + 1) * h // TILES)
+            mask = solid.crop(box)
+            if mask.getbbox() and ImageStat.Stat(mask).mean[0] >= 255 * TILE_MIN_SOLID:
+                means = zip(ImageStat.Stat(rgb_a.crop(box), mask).mean, ImageStat.Stat(rgb_b.crop(box), mask).mean)
+                worst = max(worst, max(abs(x - y) for x, y in means))
+    return sum(ImageStat.Stat(ImageChops.difference(rgb_a, rgb_b), solid).mean) / 3, worst
+
+
+def mirrored_closer(ruled: Image.Image, now: Image.Image, drift: float) -> bool:
+    """A near-symmetric creature flipped passes on colour alone; a flip of it is then nearer to `now` than it is."""
+    flipped = ImageOps.mirror(ruled)
+    shift = colour_shift(flipped.crop(outline(flipped)).resize(now.size, Image.LANCZOS), now)
+    return bool(shift) and shift[0] < drift
+
+
 def same_art(ruled: bytes, now: bytes) -> str | None:
     """None if `now` is `ruled` moved or evenly scaled; else what differs. Compares the alpha bboxes, resampled to match."""
     a, b = (Image.open(io.BytesIO(x)).convert("RGBA") for x in (ruled, now))
-    box_a, box_b = (x.getchannel("A").point(lambda v: 255 if v > ALPHA_OUTLINE else 0).getbbox() for x in (a, b))
+    box_a, box_b = outline(a), outline(b)
     if not box_a or not box_b:
         return "an empty picture"
     wa, ha, wb, hb = box_a[2] - box_a[0], box_a[3] - box_a[1], box_b[2] - box_b[0], box_b[3] - box_b[1]
     if abs(wb / wa - hb / ha) > MAX_ASPECT_DRIFT:
         return f"outline {wa}x{ha} became {wb}x{hb}"
-    a = a.crop(box_a).resize((wb, hb), Image.LANCZOS)
     b = b.crop(box_b)
-    solid = ImageChops.multiply(*(x.getchannel("A").point(lambda v: 255 if v >= ALPHA_SOLID else 0) for x in (a, b)))
-    if not solid.getbbox():
+    a = a.crop(box_a)
+    fitted = a.resize((wb, hb), Image.LANCZOS)
+    shift = colour_shift(fitted, b)
+    if not shift:
         return "no opaque pixel in common"
-    diff = ImageChops.difference(a.convert("RGB"), b.convert("RGB"))
-    drift = sum(ImageStat.Stat(diff, solid).mean) / 3
-    return f"colours drift {drift:.1f}" if drift > MAX_RGB_DRIFT else None
+    drift, tile = shift
+    if drift > MAX_RGB_DRIFT:
+        return f"colours drift {drift:.1f}"
+    if tile > MAX_TILE_DRIFT:
+        return f"one part's colour moved {tile:.1f}"
+    return "it is the column mirrored" if mirrored_closer(a, b, drift) else None
 
 
 def ruled_bytes(on_disk: bytes, want_sha: str) -> bytes:

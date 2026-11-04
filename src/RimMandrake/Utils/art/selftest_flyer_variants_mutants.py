@@ -3,7 +3,8 @@
 
 It accepts a rescaled picture on ledger lineage plus a pixel comparison; each mutant breaks one link on real data, and
 same_art is scored on real pictures: every rescale must pass, every other column of the same creature must fail, and
-every moved picture recoloured, greyed, mirrored or part-painted must fail too, which also pins its drift bar.
+every moved picture recoloured, greyed, mirrored, part-painted or speckled must fail too. Each bar is then moved in memory:
+loosened, the alterations it alone stops must get through; tightened, a real rescale must be refused. So every bar is pinned.
 """
 from __future__ import annotations
 
@@ -57,14 +58,79 @@ def paint_top(im: Image.Image) -> Image.Image:
     return out
 
 
+def paint_patch(im: Image.Image) -> Image.Image:
+    """Magenta over one TILES-th square of the outline's middle: the smallest repaint the tiles promise to see."""
+    out = im.copy()
+    x0, y0, x1, y1 = out.getchannel("A").point(lambda v: 255 if v > m.ALPHA_OUTLINE else 0).getbbox()
+    w, h = (x1 - x0) // m.TILES + 1, (y1 - y0) // m.TILES + 1
+    cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
+    px = out.load()
+    for y in range(cy - h // 2, cy + h // 2 + 1):
+        for x in range(cx - w // 2, cx + w // 2 + 1):
+            if px[x, y][3] >= m.ALPHA_SOLID:
+                px[x, y] = (255, 0, 255, px[x, y][3])
+    return out
+
+
+def speckle(im: Image.Image) -> Image.Image:
+    """A +-30 checkerboard: every tile's mean stays put, so only the whole-picture pixel drift can see it."""
+    out = im.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            d = 30 if (x + y) % 2 else -30
+            r, g, b, a = px[x, y]
+            px[x, y] = (max(0, min(255, r + d)), max(0, min(255, g + d)), max(0, min(255, b + d)), a)
+    return out
+
+
 ALTERATIONS = {"recolour +-14": recolour(14), "recolour +-20": recolour(20), "greyscale": greyscale,
-               "horizontal mirror": ImageOps.mirror, "magenta paint over the top 30%": paint_top}
+               "horizontal mirror": ImageOps.mirror, "magenta paint over the top 30%": paint_top,
+               "magenta patch of one tile": paint_patch, "checkerboard speckle +-30": speckle}
 
 
 def altered(now: bytes, alter) -> bytes:
     out = io.BytesIO()
     alter(Image.open(io.BytesIO(now)).convert("RGBA")).save(out, "PNG")
     return out.getvalue()
+
+
+def sweep() -> tuple[int, list[str]]:
+    """Every moved picture is the only kind that reaches same_art, so each must refuse each alteration."""
+    swept, fails = 0, []
+    for case in m.CASES:
+        for letter, shas in case["alts"].items():
+            for facing, want in shas.items():
+                now = picture(case, letter, facing)
+                if hashlib.sha256(now).hexdigest().startswith(want):
+                    continue
+                swept += 1
+                ruled = m.ruled_bytes(now, want)
+                for label, alter in ALTERATIONS.items():
+                    changed = altered(now, alter)
+                    if Image.open(io.BytesIO(changed)).tobytes() == Image.open(io.BytesIO(now)).convert("RGBA").tobytes():
+                        fails.append(f"{case['kind']} {letter} {facing}: the alteration {label} changed nothing, instrument blind")
+                    elif m.same_art(ruled, changed) is None:
+                        fails.append(f"{case['kind']} {letter} {facing}: real same_art accepted {label}")
+    return swept, fails
+
+
+def score_columns() -> tuple[int, list[str]]:
+    """Every real picture, moved or not, is its own column; every other column of the creature is not."""
+    scored, fails = 0, []
+    for case in m.CASES:
+        for letter, shas in case["alts"].items():
+            for facing, want in shas.items():
+                rel = f"{case['base']}V_{letter}_{facing}.png"
+                ruled = m.ruled_bytes(picture(case, letter, facing), want)
+                fault = m.same_art(ruled, picture(case, letter, facing))
+                if fault:
+                    fails.append(f"{rel}: a real picture scored as a redraw: {fault}")
+                for other in case["alts"]:
+                    scored += other != letter
+                    if other != letter and not m.same_art(ruled, picture(case, other, facing)):
+                        fails.append(f"{rel}: column {other} scored as the same art")
+    return scored, fails
 
 
 def main() -> int:
@@ -120,43 +186,43 @@ def main() -> int:
     finally:
         m.same_art = real_same_art
 
-    # Every moved picture is the only kind that reaches same_art, so each must refuse each alteration. Empty is blind, not a pass.
-    swept = 0
-    for case in m.CASES:
-        for letter, shas in case["alts"].items():
-            for facing, want in shas.items():
-                now = picture(case, letter, facing)
-                if hashlib.sha256(now).hexdigest().startswith(want):
-                    continue
-                swept += 1
-                ruled = m.ruled_bytes(now, want)
-                for label, alter in ALTERATIONS.items():
-                    if altered(now, alter) == now:
-                        fails.append(f"{case['kind']} {letter} {facing}: the alteration {label} changed nothing, instrument blind")
-                    elif m.same_art(ruled, altered(now, alter)) is None:
-                        fails.append(f"{case['kind']} {letter} {facing}: real same_art accepted {label}")
+    swept, sweep_fails = sweep()
+    fails += sweep_fails
     if not swept:
         fails.append("no moved picture to sweep, instrument blind")
+    scored, score_fails = score_columns()
+    fails += score_fails
 
-    scored = 0
-    for case in m.CASES:
-        for letter, shas in case["alts"].items():
-            for facing, want in shas.items():
-                rel = f"{case['base']}V_{letter}_{facing}.png"
-                ruled = m.ruled_bytes(picture(case, letter, facing), want)
-                fault = m.same_art(ruled, picture(case, letter, facing))
-                if fault:
-                    fails.append(f"{rel}: a real picture scored as a redraw: {fault}")
-                for other in case["alts"]:
-                    scored += other != letter
-                    if other != letter and not m.same_art(ruled, picture(case, other, facing)):
-                        fails.append(f"{rel}: column {other} scored as the same art")
+    # Loosened, a bar must let through what it alone stops; tightened, it must refuse his real rescales.
+    pins = 0
+    for name, value, label, wanted in (("MAX_RGB_DRIFT", 38.0, "accepted checkerboard speckle", sweep),
+                                       ("MAX_TILE_DRIFT", 38.0, "accepted recolour +-14", sweep),
+                                       ("MAX_RGB_DRIFT", 8.0, "scored as a redraw", score_columns),
+                                       ("MAX_TILE_DRIFT", 7.0, "scored as a redraw", score_columns)):
+        real = getattr(m, name)
+        setattr(m, name, value)
+        try:
+            rows = wanted()[1]
+        finally:
+            setattr(m, name, real)
+        pins += 1
+        if not any(label in r for r in rows):
+            fails.append(f"{name} moved to {value} changed nothing ({label} expected): the bar is unpinned")
+    real_mirrored, m.mirrored_closer = m.mirrored_closer, lambda ruled, now, drift: False
+    try:
+        rows = sweep()[1]
+    finally:
+        m.mirrored_closer = real_mirrored
+    pins += 1
+    if not any("accepted horizontal mirror" in r for r in rows):
+        fails.append("the mirror test off changed nothing: it is unpinned")
+
     for f in fails:
         print("FAIL:", f)
     if fails:
         return 1
     print(f"selftest_flyer_variants_mutants: PASS ({8 + len(ALTERATIONS)} mutants red, {swept} moved pictures refused "
-          f"{len(ALTERATIONS)} alterations each, {scored} other columns refused)")
+          f"{len(ALTERATIONS)} alterations each, {scored} other columns refused, {pins} bar moves seen)")
     return 0
 
 
