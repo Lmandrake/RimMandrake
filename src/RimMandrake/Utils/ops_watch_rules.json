@@ -474,7 +474,7 @@
   "default_h": 2,
   "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1, "seats.*": 1},
   "keys": ["*"],
-  "skip": ["*._collector", "roles.*"]
+  "skip": ["*._collector", "roles.*", "tokentalk.BENCH.share", "tokentalk.commits.BENCH.share", "tokentalk.role.conductor.share"]
  },
  "targets": [
  {
