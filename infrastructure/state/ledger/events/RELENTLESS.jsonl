@@ -252,3 +252,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:53:30Z","tsn":1793786010397606916}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T09:57:18Z","tsn":1793786238039715637}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T10:18:20Z","tsn":1793787500298980553}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T10:28:25Z","tsn":1793788105454371511}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T10:28:34Z","tsn":1793788114647064873}
