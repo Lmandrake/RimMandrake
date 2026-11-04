@@ -362,6 +362,19 @@ def cmd_start(retry):
                 res.update(outcome="REFUSED", cause="SYNC", note="runner pull failed: " + msg[-300:])
                 publish_result(d, res)
                 return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SYNC"})
+            # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the contract was loaded BEFORE this pull, while spawn copies the
+            # worker and schema from disk AFTER it; a landing that adds a result field then had the new worker write
+            # it and the old contract refuse it (the 07:33Z canary). The outer copy carries the pulled contract.
+            before = list(_MODELS)
+            _MODELS.clear()
+            try:
+                contract_models()
+            except ContractMissing as e:
+                _MODELS[:] = before     # the refusal itself is checked by the contract that did load
+                res = base_result(job["id"], aid, git("rev-parse", "HEAD")[1])
+                res.update(outcome="REFUSED", cause="SYNC", note="the pulled contract does not load: %s" % str(e)[-300:])
+                publish_result(d, res)
+                return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SYNC"})
         head = git("rev-parse", "HEAD")[1]
         if git("merge-base", "--is-ancestor", job["source_sha"], "HEAD")[0] != 0:
             res = base_result(job["id"], aid, head)
