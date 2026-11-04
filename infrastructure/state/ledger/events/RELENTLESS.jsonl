@@ -501,3 +501,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:31:51Z","tsn":1793831511265777803}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-04T22:54:02Z","tsn":1793832842486365582}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:54:16Z","tsn":1793832856317076524}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GENERATOR_MODS_PROVE_INERT_AFTER_CREATION A2 (L1), read-only proof","ts":"2026-11-04T23:24:36Z","tsn":1793834676444212814}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T23:24:42Z","tsn":1793834682539084571}
