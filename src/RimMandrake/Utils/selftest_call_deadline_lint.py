@@ -103,6 +103,21 @@ with tempfile.TemporaryDirectory() as td:
     lines = sorted(r.split(" ")[0] for r in reds)
     check(lines == ["c.ps1:2", "c.ps1:4", "r.py:2", "r.py:3", "r.py:5", "s.sh:1"], "robocopy reds %s" % lines)
     check(any("Popen" in r for r in reds), "Popen robocopy names the fix")
+    # the caps themselves (/R:<=5, /W:<=30), pinned at the boundary in every file kind
+    open(os.path.join(td, "cap.py"), "w").write(
+        'import subprocess\n'
+        'subprocess.run(["robocopy.exe", "a", "b", "/R:6", "/W:5"], timeout=60)\n'
+        'subprocess.run(["robocopy.exe", "a", "b", "/R:2", "/W:31"], timeout=60)\n'
+        'subprocess.run(["robocopy.exe", "a", "b", "/R:5", "/W:30"], timeout=60)\n')
+    open(os.path.join(td, "cap.ps1"), "w").write(
+        "robocopy a b /R:6 /W:5\nrobocopy a b /R:2 /W:31\nrobocopy a b /R:5 /W:30\n")
+    open(os.path.join(td, "cap.sh"), "w").write(
+        "timeout 60 robocopy a b /R:6 /W:5\ntimeout 60 robocopy a b /R:2 /W:31\n"
+        "timeout 60 robocopy a b /R:5 /W:30\n")
+    creds = L.scan_robocopy(td, ["cap.py", "cap.ps1", "cap.sh"])
+    clines = sorted(r.split(" ")[0] for r in creds)
+    check(clines == ["cap.ps1:1", "cap.ps1:2", "cap.py:2", "cap.py:3", "cap.sh:1", "cap.sh:2"],
+          "robocopy caps: /R:6 and /W:31 red, /R:5 /W:30 green: %s" % clines)
 
 # 3. The repo itself.
 total, opened, _u = L.scan_deadlines()

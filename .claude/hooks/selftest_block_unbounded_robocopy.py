@@ -23,11 +23,15 @@ REFUSE = [
     "cd /tmp && cmd.exe /c robocopy a b /E",
     "powershell.exe -NoProfile -Command \"robocopy a b /MIR\"",
     "ls; FOO=1 robocopy.exe a b /R:2 /W:5",
+    "timeout 60 robocopy a b /R:6 /W:5",                                        # one retry over the /R:5 cap
+    "timeout 60 robocopy a b /R:2 /W:31",                                       # one second over the /W:30 cap
+    "timeout 60 robocopy a b /R:50 /W:300",
 ]
 ALLOW = [
     "timeout 600 robocopy.exe a b /E /R:2 /W:5",
     "timeout -k 10 1800 robocopy.exe E:\\ D:\\x /E /R:0 /W:0",
     "timeout 30m cmd.exe /c robocopy a b /R:3 /W:10",
+    "timeout 60 robocopy a b /R:5 /W:30",                                       # exactly at both caps
     "grep -n robocopy infrastructure/state/lessons/*.md",
     "echo robocopy is dangerous",
     "git log --grep robocopy",
