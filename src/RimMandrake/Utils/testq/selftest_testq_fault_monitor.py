@@ -7,7 +7,9 @@ quarantined, one with no clean cycle read since it finished is held, one after a
 onset -> pause -> drain -> one reboot -> two clean cycles -> resume; a fault back at once is STUCK, not a reboot loop; a
 foreign pause holds the reboot and a red canary inside the window does not; ingest writes no verdict from a window,
 notes what it already wrote and queues the item job again; `check` fails on what it says it fails on, and the formats
-the parser reads are the ones watch2.ps1 writes.
+the parser reads are the ones watch2.ps1 writes. Heat (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER): the sampler's line on a
+CYCLE parses, a window says how hot the boot ran before its onset, a pre-sampler line is no reading (not cool), a
+heat=UNMEASURED cycle fails check, and stevetemp.cs prints the format HEAT_RE reads.
 """
 import json
 import os
@@ -76,6 +78,60 @@ def analyse_checks():
     c = FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=1 clean_exit=0"])["control"]
     check(c["ok"], "a control with an injected fault seen is ok")
     check(not FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=0 clean_exit=0"])["control"]["ok"], "a control that misses it is not")
+
+
+def hcyc(minutes, core, bad=(), pkg=None, boot=BOOT):
+    pkg = core - 3 if pkg is None else pkg
+    return cyc(minutes, bad, boot) + " exits=[] pkg_c=%d/%d core_max_c=%d hot_core=4 cores_max_c=[%d,%d] samples=150 vcore_v=1.298" % (
+        pkg - 10, pkg, core, core - 5, core)
+
+
+def heat_checks(tmp):
+    h = FM.heat_of(hcyc(5, 71))
+    check(h == {"pkg0": 58, "pkg": 68, "core": 71, "hot": 4, "cores": [66, 71], "vcore": 1.298}, "the sampler's line on a CYCLE parses")
+    check("vcore" not in FM.heat_of(hcyc(5, 71).replace(" vcore_v=1.298", "")), "vcore is optional: a board that does not report it still gives heat")
+    check(FM.heat_of(cyc(5) + " exits=[] heat=UNMEASURED(pawnio_not_installed)") == {"unmeasured": "pawnio_not_installed"},
+          "heat=UNMEASURED parses with its reason")
+    check(FM.heat_of(cyc(5)) is None, "a line from before the sampler carries no reading")
+    a = FM.analyse([start(), cyc(5), hcyc(60, 60), hcyc(110, 70), hcyc(150, 84), hcyc(170, 88), hcyc(175, 91, [0]), hcyc(180, 60)])
+    w = a["windows"][0]["heat"]
+    check(w["at_onset"] == 91 and w["last_clean"] == 88 and w["pre_max"] == 88 and w["boot_max_before"] == 88,
+          "a window says the hottest core at onset, at the last clean cycle, in the hour before and over the boot")
+    check(w["cycles_measured_before"] == 4 and w["cycles_before"] == 5 and w["pre_mean"] == 86.0,
+          "the pre-sampler cycle is not averaged in as cool; the hour before is the hour before")
+    check("91 C" in FM.heat_line(w) and "hour before: max 88 C" in FM.heat_line(w), "report's heat line carries the numbers")
+    old = FM.analyse([start(), cyc(170), cyc(175, [0])])["windows"][0]["heat"]
+    check(FM.heat_line(old).startswith("UNMEASURED") and FM.heat_line(None).startswith("UNMEASURED"),
+          "a window with no reading says UNMEASURED, never a temperature")
+    b2 = "2026-11-04 03:00:00"
+    a2 = FM.analyse([start(), hcyc(170, 80), hcyc(175, 92, [0]), start(b2), hcyc(5, 50, boot=b2), hcyc(10, 54, boot=b2)])
+    b = a2["boots"]
+    check(len(b) == 2 and b[0]["onset_uptime_h"] == round(175 / 60.0, 2) and b[0]["core_max"] == 92
+          and b[1]["onset_uptime_h"] is None and b[1]["core_max"] == 54 and b[1]["vcore_max"] == 1.298 and b[1]["core_median"] == 54 and b[1]["measured"] == 2,
+          "one heat row per boot: how hot it ran and when (or whether) it faulted, for the open-case comparison")
+    check(a2["last_heat"]["core"] == 54, "the newest cycle's reading is kept for check")
+    saved = T.QHOME
+    T.QHOME = tempfile.mkdtemp(dir=tmp)
+    try:
+        T.ensure_dirs()
+        st = {"at": FM.stamp(BOOT_S), "phase": "CLEAN", "last_heat": {"unmeasured": "sampler_hung"}}
+        T.S.dump(st, T.q("fault_state.json"))
+        check(FM.check(now=BOOT_S + 60) == 1, "check fails when the newest cycle says heat=UNMEASURED")
+        T.S.dump(dict(st, last_heat=None), T.q("fault_state.json"))
+        check(FM.check(now=BOOT_S + 60) == 0, "a cycle with no heat field (pre-sampler) does not fail check")
+        T.S.dump(a2["boots"], T.q("fault_heat.json"))
+        check(FM.heat() == 0, "the heat table prints from fault_heat.json")
+    finally:
+        T.QHOME = saved
+    with open(os.path.join(HERE, "..", "steve_cpu_retest", "stevetemp.cs"), encoding="utf-8") as f:
+        cs = f.read()
+    check('"pkg_c={0:0}/{1:0} core_max_c={2:0} hot_core={3} cores_max_c=[{4}] samples={5}"' in cs and '" vcore_v={0:0.000}"' in cs
+          and 'StartsWith("CPU Core #"' in cs
+          and '"heat=UNMEASURED(' in cs, "stevetemp.cs prints the format HEAT_RE reads")
+    with open(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1"), encoding="utf-8") as f:
+        ps1 = f.read()
+    check("exits=[$($rcs -join ',')] $heat\"" in ps1 and "$heat='heat=UNMEASURED(no_sampler)'" in ps1,
+          "watch2.ps1 ends every CYCLE with the sampler's line or heat=UNMEASURED")
 
 
 def rec(started, finished, item=None, host="stevedesktop", ingested=None, jid=None):
@@ -358,6 +414,7 @@ def main():
     try:
         machine_checks(tmp)
         ingest_checks(tmp)
+        heat_checks(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("FAILED %d" % len(FAILS) if FAILS else "PASS")

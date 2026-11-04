@@ -23,6 +23,12 @@ CPU, one CYCLE line in C:\\SteveDesktop\\diag\\logs\\watch.log. This module is t
               A pause by someone else holds the reboot; an auto pause born inside the window (a red canary) does not.
   report      the onset table: boot, uptime at onset, CPUs, jobs under it; check: the reading is honest (exit 0/1).
   deploy-watch  copy watch2.ps1 to Steve and restart its task.
+  heat        (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER) one row per boot: CPU temperature over the boot and at the onset,
+              so a fault window says whether heat climbed before it, and an open-case boot can be set against closed ones.
+              Each CYCLE line ends with the sampler's reading (HEAT_RE) or heat=UNMEASURED(<why>); lines from before the
+              sampler carry neither and count as no reading, not as cool.
+  deploy-heat put PawnIO (the signed driver LibreHardwareMonitor reads the Intel sensors through) and LibreHardwareMonitor
+              on Steve, build stevetemp.exe there from steve_cpu_retest/stevetemp.cs, run it once, print its line.
 
 Files in QHOME: fault_state.json (the reading), fault_windows.json (what gate reads), fault_watch.log (the mirror),
 fault_snapshots/<window>.txt (cause evidence), quarantined/<job>.json (results that must not count, kept).
@@ -66,6 +72,21 @@ _TS = r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)Z"
 CYCLE_RE = re.compile("^" + _TS + r" CYCLE uptime_h=([\d.]+) bad_cpus=\[([\d,\s]*)\]")
 START_RE = re.compile("^" + _TS + r" WATCH START boot=" + _TS)
 CONTROL_RE = re.compile("^" + _TS + r" CONTROL inject_exit=(-?\d+) clean_exit=(-?\d+)")
+HEAT_RE = re.compile(r" pkg_c=(\d+)/(\d+) core_max_c=(\d+) hot_core=(-?\d+) cores_max_c=\[([\d,]*)\]")
+VCORE_RE = re.compile(r" vcore_v=([\d.]+)")
+HEAT_UNM_RE = re.compile(r" heat=UNMEASURED\(([^)]*)\)")
+HEAT_PRE_S = 3600                   # "did heat climb before the onset": the hottest cycle this long before the first bad one
+
+# What deploy-heat installs, pinned by digest (the GitHub release assets' own sha256, read 2026-11-04).
+HEAT_HOME = os.environ.get("STEVE_HEAT_HOME", "/mnt/d/ClaudeWork/rimmandrake/steve_diag/heat")
+HEAT_ASSETS = {
+    "LibreHardwareMonitor.zip": ("https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/releases/download/v0.9.6/"
+                                 "LibreHardwareMonitor.zip",
+                                 "086d9f1b5a99e643edc2cfaaac16051685b551e4c5ac0b32a57c58c0e529c001"),
+    "PawnIO_setup.exe": ("https://github.com/namazso/PawnIO.Setup/releases/download/2.2.0/PawnIO_setup.exe",
+                         "1f519a22e47187f70a1379a48ca604981c4fcf694f4e65b734aaa74a9fba3032"),
+}
+STEVE_HEAT_DIR = r"C:\SteveDesktop\diag\heat"
 
 
 def epoch(ts):
@@ -87,14 +108,17 @@ def analyse(lines, live_boot=None):
     wins, boot, unparsed, control = [], None, 0, None
     last_clean = last_cycle = open_w = None
     clean_cycles = 0
+    boots, heat = [], []        # heat: this boot's [(t, uptime_h, reading or None, bad)]
 
     def new_boot(t):
-        nonlocal boot, last_clean, open_w, clean_cycles
+        nonlocal boot, last_clean, open_w, clean_cycles, heat
         if boot is not None and t <= boot:
             return
         if open_w:
             open_w["end"] = stamp(t)
-        boot, last_clean, open_w, clean_cycles = t, None, None, 0
+        if boot is not None:
+            boots.append(heat_boot(boot, heat))
+        boot, last_clean, open_w, clean_cycles, heat = t, None, None, 0, []
 
     for line in lines:
         m = START_RE.match(line)
@@ -115,6 +139,7 @@ def analyse(lines, live_boot=None):
             new_boot(int(t - up * 3600))
         last_cycle = t
         cpus = [int(c) for c in m.group(3).replace(" ", "").split(",") if c]
+        heat.append((t, up, heat_of(line), bool(cpus)))
         if not cpus:
             clean_cycles += 1
             last_clean = t
@@ -126,6 +151,7 @@ def analyse(lines, live_boot=None):
                       "start": stamp(last_clean if last_clean is not None else boot), "first_bad": stamp(t),
                       "onset_uptime_h": up, "first_cpus": cpus, "bad_cycles": 0, "clean_after": 0, "cpus": {},
                       "end": None}
+            open_w["heat"] = heat_window(heat)
             wins.append(open_w)
         open_w["bad_cycles"] += 1
         open_w["last_bad"] = stamp(t)
@@ -133,8 +159,59 @@ def analyse(lines, live_boot=None):
             open_w["cpus"][str(c)] = open_w["cpus"].get(str(c), 0) + 1
     if live_boot is not None and (boot is None or live_boot > boot + 600):     # an inferred boot rounds: not a reboot
         new_boot(int(live_boot))
+    if boot is not None:
+        boots.append(heat_boot(boot, heat))
     return {"windows": wins, "boot": boot, "last_cycle": last_cycle, "open": open_w, "clean_cycles": clean_cycles,
-            "clean_through": last_clean if not open_w else None, "unparsed": unparsed, "control": control}
+            "clean_through": last_clean if not open_w else None, "unparsed": unparsed, "control": control,
+            "boots": boots, "last_heat": heat[-1][2] if heat else None}
+
+
+def heat_of(line):
+    """A CYCLE line -> {pkg0, pkg, core, hot, cores} (degrees C, the cycle's maxima; pkg0 the package at its start),
+    {"unmeasured": why}, or None when the line carries no heat at all (written before the sampler existed)."""
+    m = HEAT_RE.search(line)
+    if m:
+        v = VCORE_RE.search(line)
+        return dict({"pkg0": int(m.group(1)), "pkg": int(m.group(2)), "core": int(m.group(3)), "hot": int(m.group(4)),
+                     "cores": [int(c) for c in m.group(5).split(",") if c]}, **({"vcore": float(v.group(1))} if v else {}))
+    m = HEAT_UNM_RE.search(line)
+    return {"unmeasured": m.group(1)} if m else None
+
+
+def _measured(rows):
+    return [r for r in rows if r[2] and "core" in r[2]]
+
+
+def heat_window(rows):
+    """This boot's cycles up to and including the first bad one -> what heat did before the onset."""
+    t_bad, _, at, _ = rows[-1]
+    meas = _measured(rows[:-1])
+    pre = [r for r in meas if t_bad - r[0] <= HEAT_PRE_S]
+    last = meas[-1] if meas else None
+    return {"at_onset": at.get("core") if at else None, "at_onset_pkg": at.get("pkg") if at else None,
+            "at_onset_vcore": at.get("vcore") if at else None,
+            "at_onset_unmeasured": at.get("unmeasured") if at else "no reading",
+            "last_clean": last[2]["core"] if last else None,
+            "pre_max": max(r[2]["core"] for r in pre) if pre else None,
+            "pre_mean": round(sum(r[2]["core"] for r in pre) / float(len(pre)), 1) if pre else None,
+            "boot_max_before": max(r[2]["core"] for r in meas) if meas else None,
+            "boot_mean_before": round(sum(r[2]["core"] for r in meas) / float(len(meas)), 1) if meas else None,
+            "cycles_measured_before": len(meas), "cycles_before": len(rows) - 1}
+
+
+def heat_boot(boot, rows):
+    """One boot's cycles -> its heat row: how hot it ran, and whether and when it faulted."""
+    meas = _measured(rows)
+    cores = sorted(r[2]["core"] for r in meas)
+    bad = [r for r in rows if r[3]]
+    return {"boot": stamp(boot), "cycles": len(rows), "measured": len(meas),
+            "unmeasured": sum(1 for r in rows if r[2] and "unmeasured" in r[2]),
+            "core_max": cores[-1] if cores else None, "core_median": cores[len(cores) // 2] if cores else None,
+            "core_p90": cores[min(len(cores) - 1, int(len(cores) * 0.9))] if cores else None,
+            "pkg_max": max(r[2]["pkg"] for r in meas) if meas else None,
+            "vcore_max": max([r[2]["vcore"] for r in meas if "vcore" in r[2]] or [None]) if meas else None,
+            "uptime_h": rows[-1][1] if rows else 0.0,
+            "onset_uptime_h": bad[0][1] if bad else None}
 
 
 def job_span(rec):
@@ -448,7 +525,8 @@ def tick(now=None):
                   boot_iso=stamp(a["boot"]) if a["boot"] else None, last_cycle=stamp(a["last_cycle"]) if a["last_cycle"] else None,
                   clean_through=stamp(a["clean_through"]) if a["clean_through"] else None,
                   clean_through_s=a["clean_through"], open_window=a["open"]["id"] if a["open"] else None,
-                  windows=len(a["windows"]), unparsed=a["unparsed"], control=a["control"])
+                  windows=len(a["windows"]), unparsed=a["unparsed"], control=a["control"], last_heat=a["last_heat"])
+        write_json("fault_heat.json", a["boots"])
         write_json("fault_windows.json", a["windows"])      # before the state: gate never reads a state ahead of its windows
         write_json("fault_state.json", st)
         print(json.dumps({k: st.get(k) for k in ("phase", "open_window", "last_cycle", "clean_through", "alarm", "blind")}))
@@ -485,8 +563,44 @@ def report(_a=None):
         jobs = jobs_in(w)
         under = [j for j in jobs if j[3] != "quarantined"]
         print("    %d jobs inside (%d not yet quarantined): %s" % (len(jobs), len(under), ", ".join(sorted({str(j[1]) for j in jobs}))))
+        print("    heat: " + heat_line(w.get("heat")))
         if w.get("snapshot"):
             print("    cause evidence: %s" % w["snapshot"])
+    return 0
+
+
+def _c(v):
+    return "-" if v is None else "%s C" % v
+
+
+def heat_line(h):
+    """A window's heat dict -> one line a person can judge "did it climb" from."""
+    if not h:
+        return "UNMEASURED (window older than the heat reading)"
+    if not h["cycles_measured_before"] and h["at_onset"] is None:
+        return "UNMEASURED (no cycle of this boot carried a temperature: %s)" % (h["at_onset_unmeasured"] or "pre-sampler")
+    return ("hottest core at onset %s (package %s, vcore max %s V); last clean cycle %s; hour before: max %s, mean %s; boot before onset: "
+            "max %s, mean %s over %d/%d measured cycles" % (
+                _c(h["at_onset"]), _c(h["at_onset_pkg"]), h.get("at_onset_vcore") or "-", _c(h["last_clean"]), _c(h["pre_max"]), _c(h["pre_mean"]),
+                _c(h["boot_max_before"]), _c(h["boot_mean_before"]), h["cycles_measured_before"], h["cycles_before"]))
+
+
+def heat(_a=None):
+    """One row per boot from the mirrored watch log: an open-case boot is judged against the closed ones here."""
+    path = T.q("fault_heat.json")
+    boots = T.read_json(path)
+    if boots is None:
+        print("UNMEASURED: no %s (the monitor has not ticked since the heat reading landed)" % path)
+        return 1
+    print("%-21s %6s %8s %8s %6s %6s %6s %6s %6s %9s" % ("boot", "cycles", "measured", "uptime_h", "core50", "core90",
+                                                         "coremax", "pkgmax", "vcore", "onset_h"))
+    for b in boots:
+        print("%-21s %6d %8d %8.2f %6s %6s %6s %6s %6s %9s" % (
+            b["boot"], b["cycles"], b["measured"], b["uptime_h"], b["core_median"] or "-", b["core_p90"] or "-",
+            b["core_max"] or "-", b["pkg_max"] or "-", b.get("vcore_max") or "-",
+            "%.2f" % b["onset_uptime_h"] if b["onset_uptime_h"] is not None else "clean"))
+    print("core50/core90/coremax: the hottest core per cycle (max over the cycle's 500 ms samples), median/p90/max over the "
+          "boot's measured cycles; clean = no bad cycle on that boot (yet, for the live one)")
     return 0
 
 
@@ -507,6 +621,9 @@ def check(_a=None, now=None):
         bad.append("canary blind: %s" % st["blind"])
     if st.get("alarm"):
         bad.append("alarm: %s" % st["alarm"])
+    lh = st.get("last_heat") or {}
+    if lh.get("unmeasured"):        # a cycle with no heat field at all predates the sampler: not a failure
+        bad.append("heat blind: the newest cycle says heat=UNMEASURED(%s)" % lh["unmeasured"])
     nleft = 0
     for rec in T.records("done"):
         span = job_span(rec)
@@ -517,9 +634,10 @@ def check(_a=None, now=None):
         bad.append("%d done records inside a fault window are not quarantined" % nleft)
     for line in bad:
         print("FAIL " + line)
-    print("%s phase=%s reading_age=%ds windows=%d open=%s quarantined=%d last_cycle=%s" % (
+    print("%s phase=%s reading_age=%ds windows=%d open=%s quarantined=%d last_cycle=%s heat=%s" % (
         "BAD" if bad else "OK", st.get("phase"), age, len(windows), st.get("open_window"),
-        len(os.listdir(T.q("quarantined"))) if os.path.isdir(T.q("quarantined")) else 0, st.get("last_cycle")))
+        len(os.listdir(T.q("quarantined"))) if os.path.isdir(T.q("quarantined")) else 0, st.get("last_cycle"),
+        ("core_max %s C" % lh["core"]) if lh.get("core") is not None else (lh.get("unmeasured") or "none")))
     return 1 if bad else 0
 
 
@@ -537,11 +655,66 @@ Get-ScheduledTask -TaskName 'SteveDiag Fault Watch'|%%{'TASK '+$_.State}""" % (W
     return 0 if rc == 0 else 1
 
 
+def heat_fetch():
+    """The pinned installers in HEAT_HOME, downloaded once and digest-checked every time -> {name: path}."""
+    import hashlib
+    import urllib.request
+    os.makedirs(HEAT_HOME, exist_ok=True)
+    out = {}
+    for name, (url, digest) in HEAT_ASSETS.items():
+        path = os.path.join(HEAT_HOME, name)
+        if not os.path.exists(path):
+            with urllib.request.urlopen(url, timeout=120) as r, open(path + ".part", "wb") as f:
+                f.write(r.read())
+            os.replace(path + ".part", path)
+        with open(path, "rb") as f:
+            got = hashlib.sha256(f.read()).hexdigest()
+        if got != digest:
+            raise SystemExit("FAIL %s sha256 %s, pinned %s: delete it and rerun, or re-pin from the release page" % (path, got, digest))
+        out[name] = path
+    return out
+
+
+def scp_to(local, remote_dir):
+    r = subprocess.run(["scp", "-q", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", local,
+                        "%s:%s/" % (STEVE_WIN, remote_dir.replace("\\", "/"))], capture_output=True, text=True, timeout=300)
+    if r.returncode:
+        raise SystemExit("FAIL scp %s: %s" % (local, r.stderr.strip()[-300:]))
+
+
+DEPLOY_HEAT_PS = r"""$h='@DIR@'; $ErrorActionPreference='Stop'
+if(-not (Get-Service PawnIO -EA 0)){ $p=Start-Process "$h\PawnIO_setup.exe" -ArgumentList '-install','-silent' -Wait -PassThru; 'PAWNIO_SETUP exit '+$p.ExitCode }
+'PAWNIO '+((Get-Service PawnIO -EA 0).Status)
+Expand-Archive -Force "$h\LibreHardwareMonitor.zip" "$h"
+Copy-Item -Force "$h\LibreHardwareMonitor.exe.config" "$h\stevetemp.exe.config"; $ErrorActionPreference='Continue'
+$csc="$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+$o=& $csc /nologo /optimize /target:exe "/out:$h\stevetemp.exe" "/reference:$h\LibreHardwareMonitorLib.dll" "$h\stevetemp.cs" 2>&1
+'CSC exit '+$LASTEXITCODE; $o|Select -Last 5
+'SAMPLE '+(& "$h\stevetemp.exe" 3 500 | Select -Last 1)
+"""
+
+
+def deploy_heat(_a=None):
+    """PawnIO + LibreHardwareMonitor + stevetemp.exe onto Steve, then one 3 s sample. Exit 0 only on a numeric reading."""
+    files = heat_fetch()
+    rc, out = ps("New-Item -ItemType Directory -Force '%s' | Out-Null; 'MKDIR ok'" % STEVE_HEAT_DIR)
+    if rc != 0:
+        print("FAIL Steve unreachable or mkdir refused (%s): %s" % (rc, out.strip()[-200:]))
+        return 1
+    for path in list(files.values()) + [os.path.join(HERE, "..", "steve_cpu_retest", "stevetemp.cs")]:
+        scp_to(os.path.abspath(path), STEVE_HEAT_DIR)
+    rc, out = ps(DEPLOY_HEAT_PS.replace("@DIR@", STEVE_HEAT_DIR), timeout=300)
+    print(out.strip()[-1500:])
+    sample = [li for li in out.splitlines() if li.startswith("SAMPLE ")]
+    return 0 if rc == 0 and sample and HEAT_RE.search(sample[-1]) else 1
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch"))
+    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch", "heat", "deploy-heat"))
     a = ap.parse_args()
-    return {"tick": tick, "report": report, "check": check, "deploy-watch": deploy_watch}[a.cmd]() or 0
+    return {"tick": tick, "report": report, "check": check, "deploy-watch": deploy_watch, "heat": heat,
+            "deploy-heat": deploy_heat}[a.cmd]() or 0
 
 
 if __name__ == "__main__":
