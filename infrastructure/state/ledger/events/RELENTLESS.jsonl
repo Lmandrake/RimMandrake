@@ -101,3 +101,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A3 (L2), read-only proof","ts":"2026-11-04T02:36:27Z","tsn":1793759787123854714}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:37:06Z","tsn":1793759826603976591}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A1 (L2), read-only proof","ts":"2026-11-04T02:37:50Z","tsn":1793759870501520305}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:38:07Z","tsn":1793759887742443932}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A2 (L2), read-only proof","ts":"2026-11-04T02:38:16Z","tsn":1793759896706583863}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:40:10Z","tsn":1793760010429593863}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T02:40:57Z","tsn":1793760057009844545}
