@@ -46,28 +46,42 @@
   "RM_Selvix": {
    "decision": "installed",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture is byte-identical to the git-tracked src texture at HEAD on every path it was installed to",
    "variants": [
     {
      "sha": "5ea32dacab809a37bf3fb31e2da3728dee84d296b3148f13537a627eb9f390de",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Selvix/RM_Selvix.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Selvix/RM_Selvix.png",
+       "sha_at_head": "5ea32dacab809a37bf3fb31e2da3728dee84d296b3148f13537a627eb9f390de"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep 601e1c7e8dedae00e857 via cauldron_sheet_2026-10-04.decisions.json"
   },
   "RM_Vhaulk_v3_east": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk_east.png",
+       "sha_at_head": "7b38d4d92ecb4f3a34a3265ee8baa5c6ef0d37497de74a6595f0ad4420914cb0",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
@@ -76,13 +90,19 @@
   "RM_Yammeth_south": {
    "decision": "installed",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture is byte-identical to the git-tracked src texture at HEAD on every path it was installed to",
    "variants": [
     {
      "sha": "03555f27c0d22372d6d6a5c71848fbdda268df938961b61838d5f96a57be108c",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_south.png",
+       "sha_at_head": "03555f27c0d22372d6d6a5c71848fbdda268df938961b61838d5f96a57be108c"
+      }
      ]
     }
    ]
@@ -101,65 +121,98 @@
    "owner_kept": "owner keep 35b77486176e5923bd34 via blue_desert_sheet_2026-10-04.decisions.json"
   },
   "bluedesert_Thunderbeast_v2_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert_south.png",
+       "sha_at_head": "9eda932e9145eef7076e61295b18ab12752de5c68adbcdb28943af71878cc95e",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     },
     {
      "sha": "b3e08d85a3db0739d1ac5e6c97fcd82b09e1e7a957482129761a54d5dd7412c3",
      "in_art_store": true,
-     "repo_at_audit": []
+     "repo_at_audit": [],
+     "repo_at_head": []
     }
    ],
    "owner_kept": "owner keep 3f988c94383a5b9075c9 via blue_desert_sheet_2026-10-04.decisions.json"
   },
   "bluedesert_Vrisk_v2_east": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_east.png",
+       "sha_at_head": "d35a8e9cc0a92051f6120597b3cc4b5efaf84ba60e40af5ba1e34031a52f4cd9",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep fdb8d0bd67957f9b2915 via blue_desert_sheet_2026-10-04.decisions.json"
   },
   "bluedesert_Vrisk_v2_north": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_north.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_north.png",
+       "sha_at_head": "f388f05f06a44a5708f6e07a89802be08152d14fe22c1452871c760672d13644",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep fdb8d0bd67957f9b2915 via blue_desert_sheet_2026-10-04.decisions.json"
   },
   "bluedesert_Vrisk_v2_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_south.png",
+       "sha_at_head": "d8fbcac7c9cc98c7b78bdb6aac559c8c56b4d344b97514b0628c7ae937eebf63",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
@@ -195,39 +248,55 @@
    "variants": []
   },
   "longshade_rsw_bantha_v1_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "95075596f9498905c714cf75c4752cdaf087486ca6653487afef43e98c244535",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaR_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaR_south.png",
+       "sha_at_head": "389116b7b92586f95163cdd6fa9ea5c254a607db7909f17c1465366158a642cb",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep 5e6bfbce7ee2bc6d2b7d via leaningscrub_sheet_2026-10-05.decisions.json"
   },
   "longshade_rsw_bantha_v3_north": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaV_H_north.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaV_H_north.png",
+       "sha_at_head": "90b1e2061e1dbbea878823bf4b89deb956285cfc3cd989ed41d2f2e858ea428c",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep d9149da2fbe1e3d59e33 via leaningscrub_sheet_2026-10-05.decisions.json"
   },
   "longshade_rsw_ronto_v1_east": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098",
@@ -235,12 +304,25 @@
      "repo_at_audit": [
       "src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Ronto/RontoPack_east.png",
       "src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Ronto/Ronto_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Ronto/RontoPack_east.png",
+       "sha_at_head": "dd745f7a86b0b552afb8d8d588b63f86cc5226cc9d3c53102432ba22f863b17c",
+       "refit_commit": "1adec52c7b25e268471311c33e6669befaf0123c",
+       "refit_subject": "PACK_OVERLAYS_BUILD_SHARED_SADDLEBAGS: real saddlebags on every adult pack animal, fitted per body"
+      },
+      {
+       "path": "src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Ronto/Ronto_east.png",
+       "sha_at_head": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+      }
      ]
     },
     {
      "sha": "46f2157a1fe6d8c1fe4c1a94e2dfff4f4c1db40e5e2f89e6cf43e470695e627f",
      "in_art_store": true,
-     "repo_at_audit": []
+     "repo_at_audit": [],
+     "repo_at_head": []
     }
    ],
    "owner_kept": "owner keep 1967265ae1b7c7e8eda6 via leaningscrub_sheet_2026-10-05.decisions.json"
@@ -248,13 +330,19 @@
   "ls_regen_JOE_Landopus_swim_v1_east": {
    "decision": "installed",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture is byte-identical to the git-tracked src texture at HEAD on every path it was installed to",
    "variants": [
     {
      "sha": "9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/landopus/landopus_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/landopus/landopus_east.png",
+       "sha_at_head": "9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17"
+      }
      ]
     }
    ],
@@ -287,7 +375,7 @@
   "ls_regen_RM_Dakkra_rest_v1_east": {
    "decision": "installed",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture is byte-identical to the git-tracked src texture at HEAD on every path it was installed to",
    "variants": [
     {
      "sha": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089",
@@ -295,21 +383,39 @@
      "repo_at_audit": [
       "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_east.png",
       "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_east.png",
+       "sha_at_head": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089"
+      },
+      {
+       "path": "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_east.png",
+       "sha_at_head": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep edbbd5c78a40a747057f via desert_sheet_2026-10-04.decisions.json"
   },
   "ls_regen_RM_Gennok_v1_east": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "f93e3535210b155743d1efac07a745e674520d171d5495de4c5058ba9d3cc3ce",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Gennok/RM_Gennok_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Gennok/RM_Gennok_east.png",
+       "sha_at_head": "c4f4fba9f4b4952a74f4aaec9e9b2e143f2b6cb614a4e206e9df64762b7eaa04",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
@@ -329,74 +435,114 @@
    "owner_kept": "owner keep 20e360d4d2f8987bacde via desert_sheet_2026-10-04.decisions.json"
   },
   "ls_regen_RM_Gennok_v1_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "93a961fd0ef1b65983cba59d4b63d89ef24335e422cfd6615355f4003d88e7d0",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Gennok/RM_Gennok_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Gennok/RM_Gennok_south.png",
+       "sha_at_head": "9b5f1fdd092d28697ad5ff17a8a62c95ec26bc3778e331c0299c91760bcfe878",
+       "refit_commit": "5a2a082175a39d36059031e1dc9fef2c89d99ac9",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: install 380 facing rescale/reseat fixes via art install"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep 20e360d4d2f8987bacde via desert_sheet_2026-10-04.decisions.json"
   },
   "ls_regen_RM_Gloomcast_v1_east": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "760af72482f7515f8f622f893dc9762397f7f84447ccf1a4b5417c0bbf22d7ae",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/LongShade/Textures/swanimals/Gloomcast/Gloomcast_east.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/LongShade/Textures/swanimals/Gloomcast/Gloomcast_east.png",
+       "sha_at_head": "daacdb6da11f42c6f9c9c0a5b1aa2084f496b366eeccb5de29bee35fbdb727d5",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep a396d38575bf22ba0888 via desert_sheet_2026-10-04.decisions.json"
   },
   "ls_regen_RM_Gloomcast_v1_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "37c4321e6fd55a4154b9a6b9372b21833fbd107997f0f78f9bc5e0a2ea1b17ee",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/LongShade/Textures/swanimals/Gloomcast/Gloomcast_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/LongShade/Textures/swanimals/Gloomcast/Gloomcast_south.png",
+       "sha_at_head": "b21b5d7436cc43350c2cf95517d97627c9e2fc3296f7777f12e1ddffc2b2deba",
+       "refit_commit": "5a2a082175a39d36059031e1dc9fef2c89d99ac9",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: install 380 facing rescale/reseat fixes via art install"
+      }
      ]
     }
    ],
    "owner_kept": "owner keep a396d38575bf22ba0888 via desert_sheet_2026-10-04.decisions.json"
   },
   "rot_illoth_b_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Illoth/Illoth_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Illoth/Illoth_south.png",
+       "sha_at_head": "5d8f2bf2f1a9199d0184f29cbf0c83daa0b290c7c2c2fce49eeca2083d285c77",
+       "refit_commit": "5a2a082175a39d36059031e1dc9fef2c89d99ac9",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: install 380 facing rescale/reseat fixes via art install"
+      }
      ]
     }
    ]
   },
   "rot_thozzik_b_south": {
-   "decision": "installed",
+   "decision": "installed_then_refit",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture was installed (byte-identical to the src texture at the audit commit), then a later commit refit the same slot (facing rescale/reseat or pack overlay); the slot holds the refit art, so nothing is owed",
    "variants": [
     {
      "sha": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik_south.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik_south.png",
+       "sha_at_head": "b8eaff85da4369f8a822a5658e3f11ad0249c4de02258a5e285391b01e645ad2",
+       "refit_commit": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+       "refit_subject": "ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL: joint feet-row seat + 475 facing fixes; lint FLAG 268 -> 66"
+      }
      ]
     }
    ],
@@ -418,13 +564,19 @@
   "rut_greentideant_carapacewall_atlas": {
    "decision": "installed",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture is byte-identical to the git-tracked src texture at HEAD on every path it was installed to",
    "variants": [
     {
      "sha": "f85bf85da059b3ae136d39b484f0145b0ee5b7041d19318213c6bef211f3780e",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/Greentide/Textures/Things/Building/Linked/RM_GreentideAntCarapaceWall_Atlas.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/Greentide/Textures/Things/Building/Linked/RM_GreentideAntCarapaceWall_Atlas.png",
+       "sha_at_head": "f85bf85da059b3ae136d39b484f0145b0ee5b7041d19318213c6bef211f3780e"
+      }
      ]
     }
    ],
@@ -433,17 +585,24 @@
   "rut_greentideant_carapacewall_menuicon": {
    "decision": "installed",
    "action": "none",
-   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "why": "the job's picture is byte-identical to the git-tracked src texture at HEAD on every path it was installed to",
    "variants": [
     {
      "sha": "7a088696cf311e9c9172ddab94e101f846b6fa6508b934508df7efabd1b3d703",
      "in_art_store": true,
      "repo_at_audit": [
       "src/RimMandrake/Greentide/Textures/Things/Building/Linked/RM_GreentideAntCarapaceWall_MenuIcon.png"
+     ],
+     "repo_at_head": [
+      {
+       "path": "src/RimMandrake/Greentide/Textures/Things/Building/Linked/RM_GreentideAntCarapaceWall_MenuIcon.png",
+       "sha_at_head": "7a088696cf311e9c9172ddab94e101f846b6fa6508b934508df7efabd1b3d703"
+      }
      ]
     }
    ],
    "legacy_root_png": "only copy outside the art store was the pre-migration root; bytes equal an art-store sha, so no copy needed"
   }
- }
+ },
+ "head_checked": "64e953e516f53c6c7c6c4467989b91c841f0c1cf"
 }
