@@ -1,0 +1,1 @@
+relentless journal() alarms must carry a 'kind': Effects.alarm_signal keyed on rec['kind'] and its own except-handler re-read it, so a kindless alarm (relentless_attrib._refuse) raised KeyError out of store.journal() whenever on_alarm was set. Fixed 477e99c217 (kind defaulted, _refuse names one).
