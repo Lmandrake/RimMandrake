@@ -1937,6 +1937,78 @@ _fh.unlink()
 check("refused with no reflog: unmeasured", OW.rl_books_behind(_d / "cut", time.time())[0] is None)
 _tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.books_behind_min"]
 check("the books-stale target alarms", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["value"] <= 60, _tg)
+# ...and wired: the same clone, through the registered collector and a whole pass, on an otherwise sane belt. Reading
+# rl_books_behind alone stays green if c_relentless drops its answer, or keeps a refused fetch out of relentless.blind.
+_rr = Path(_tf.mkdtemp(prefix="bb_belt_"))
+(_rr / "store" / "items").mkdir(parents=True); (_rr / "live").mkdir(); (_rr / "live" / "runs.jsonl").write_text("")
+_g(_d, "clone", "-q", "o.git", str(_rr / "books"))
+_br = OW.load_rules()
+for _t in _br["targets"]:       # never the real Conductor log
+    if _t.get("conductor_log"):
+        _t["conductor_log"] = str(_rr / "conductor.md")
+_bsaved = {k: os.environ.get(k) for k in ("RELENTLESS_ROOT", "RM_OPS_WATCH_DIR")}
+_bcoll, _bpasses = OW.COLLECTORS["relentless"], []
+def _bpass():
+    """One sane tick on the belt, then (collector's points, whole pass's status points, the pass's alarms), each pass
+    in a new ops directory: an alarm already standing from an earlier stage cannot answer for this one."""
+    _now = time.time(); _at = OW.iso(_now)
+    _row = {"at": _at, "t": _now, "live": 3, "running": 3, "places": 3, "target": 3, "ready": 400, "minutes_under": 0,
+            "under": False, "why": None, "checks": {"waiting": 0, "running": 1, "oldest_wait_s": 0}}
+    for _n, _o in (("staffing.json", _row), ("reading.json", {"at": _at}), ("breaker.json", {})):
+        (_rr / "store" / _n).write_text(json.dumps(_o))
+    (_rr / "store" / "staffing.jsonl").write_text(json.dumps(_row) + "\n")
+    (_rr / "store" / "journal.jsonl").write_text(json.dumps({"at": _at, "do": "lease"}) + "\n")
+    _bpasses.append(1)
+    os.environ["RM_OPS_WATCH_DIR"] = str(_rr / ("ops%d" % len(_bpasses)))
+    _pts = _bcoll(_now, _br, {})
+    _dg = OW.run(now=_now, rules=_br, filer=lambda todo, conf: {a["name"]: None for a in todo}, families=["relentless"])
+    return _pts, OW.read_json(OW.ops_dir() / "status.json")["points"], _dg["alarms"]
+_BSTALE, _BBLIND = "RELENTLESS_BOOKS_STALE:relentless.books_behind_min", "RELENTLESS_BLIND:relentless.blind"
+_bkey, _bbl = "relentless.books_behind_min", "relentless.blind"
+_bgit = _rr / "books"
+os.environ["RELENTLESS_ROOT"] = str(_rr)
+try:
+    check("wired: the registered relentless collector is c_relentless", _bcoll is OW.c_relentless, _bcoll)
+    _p, _s, _a = _bpass()
+    check("wired: a level clone reads MEASURED 0, nothing blind, no alarm",
+          _p[_bkey]["m"] == "MEASURED" and _p[_bkey]["v"] == 0.0 and _p[_bkey]["x"]["behind"] == 0
+          and _p[_bbl]["v"] == 0 and _BSTALE not in _a and _BBLIND not in _a, (_p[_bkey], _p[_bbl], _a))
+    (_d / "up" / "f").write_text("4"); _old = str(int(time.time()) - 3 * 3600) + " +0000"
+    _g(_d / "up", "commit", "-qam", "d", env={"GIT_COMMITTER_DATE": _old, "GIT_AUTHOR_DATE": _old}); _g(_d / "up", "push", "-q", "origin", "main")
+    _p, _s, _a = _bpass()
+    check("wired: a clone 1 commit behind reads MEASURED ~180 min, behind=1",
+          _p[_bkey]["m"] == "MEASURED" and 170 <= _p[_bkey]["v"] <= 190 and _p[_bkey]["x"]["behind"] == 1 and _p[_bbl]["v"] == 0,
+          (_p[_bkey], _p[_bbl]))
+    check("wired: the pass writes that reading to status.json",
+          _s.get(_bkey, {}).get("m") == "MEASURED" and 170 <= (_s.get(_bkey, {}).get("v") or 0) <= 190, _s.get(_bkey))
+    check("wired: the pass raises the books-stale alarm on it", _BSTALE in _a, _a)
+    _g(_bgit, "pull", "-q", "--ff-only", "origin", "main")
+    _p, _s, _a = _bpass()
+    check("wired: levelled again reads 0 and the alarm is gone", _p[_bkey]["v"] == 0.0 and _BSTALE not in _a, (_p[_bkey], _a))
+    _g(_bgit, "remote", "set-url", "origin", str(_d / "gone.git"))
+    _p, _s, _a = _bpass()
+    check("wired: one refused fetch on a recently moved ref is still a reading, not blind",
+          _p[_bkey]["m"] == "MEASURED" and _p[_bbl]["v"] == 0, (_p[_bkey], _p[_bbl]))
+    _rl = _bgit / ".git" / "logs" / "refs" / "remotes" / "origin" / "main"
+    os.utime(_rl, (time.time() - 2 * 3600,) * 2)
+    _p, _s, _a = _bpass()
+    check("wired: refused with the ref unmoved 2 h is UNMEASURED, saying so",
+          _p[_bkey]["m"] == "UNMEASURED" and "unmoved for 120 min" in str(_p[_bkey].get("why")), _p[_bkey])
+    check("wired: that refusal raises relentless.blind by exactly one and names it",
+          _p[_bbl]["v"] == 1 and "fetch refused" in str(_p[_bbl]["x"].get("cause")), _p[_bbl])
+    check("wired: the pass keeps it UNMEASURED in status.json", _s.get(_bkey, {}).get("m") == "UNMEASURED", _s.get(_bkey))
+    check("wired: the pass raises the blind alarm, and no stale alarm on a number it never read",
+          _BBLIND in _a and _BSTALE not in _a, _a)
+    shutil.rmtree(_bgit)
+    _p, _s, _a = _bpass()
+    check("wired: no books clone is UNMEASURED and blind", _p[_bkey]["m"] == "UNMEASURED" and _p[_bbl]["v"] == 1
+          and "no books clone" in str(_p[_bbl]["x"].get("cause")) and _BBLIND in _a, (_p[_bkey], _p[_bbl], _a))
+finally:
+    for _k, _v in _bsaved.items():
+        if _v is None:
+            os.environ.pop(_k, None)
+        else:
+            os.environ[_k] = _v
 # live measured share (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING): PASS+FAIL of the recent live runs, too few is UNMEASURED
 _lv = Path(_tf.mkdtemp(prefix="lm_")); _now = 1_800_000_000
 def _runs(outs, age_s=60):
