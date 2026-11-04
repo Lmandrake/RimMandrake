@@ -151,3 +151,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1 (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T04:07:47Z","tsn":1793765267028417623}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T04:13:33Z","tsn":1793765613841698856}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_RETURN_REMAINDER_1 A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T04:20:42Z","tsn":1793766042727976176}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T04:26:39Z","tsn":1793766399182537923}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-04T04:29:14Z","tsn":1793766554039186734}
