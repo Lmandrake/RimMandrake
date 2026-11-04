@@ -204,7 +204,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - After `max_retries`+1 attempts (2+1): an `undelivered` alarm and a cooldown.
 - **Dead seat.** No sign of life for `dead_after_s` 600 (`sched:10`) means dead.
   - `recover_dead` is false for both seats (`sched:22,24`) and `golive.recover_dead` is `[]` (`sched:30`), so a dead seat raises an **alarm only** [LIVE].
-  - `recover_verify_s` is 300 and `recovers_per_seat_day` is 3, but neither is used while recovery is off [OFF].
+  - `recover_verify_s` is 300; raises climb `raise_ladder.py`'s ladder (life note, 2/8 min backoff, stop at life 4 in 24 h or 7 deaths in 7 days, login/quota gated per model), which replaced the flat `recovers_per_seat_day` cap. Neither acts while recovery is off [OFF].
 - **Wake.** All of these must hold:
   - The seat has been idle ≥ `stall_after_s` 240 (`sched:5`).
   - The seat has `wake: true`. Only FOUNDRY does (`sched:22`); BENCH is `wake: false` (`sched:24`).
@@ -213,7 +213,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - The caps allow it.
   - The account gate passes.
 - **Caps** [LIVE, `sched:20`]:
-  - `wakes_per_seat_hour` 12, `wakes_per_seat_day` 96, `wakes_per_day` 120, `recovers_per_seat_day` 3.
+  - `wakes_per_seat_hour` 12, `wakes_per_seat_day` 96, `wakes_per_day` 120.
   - BENCH raised these on 2026-10-29 from 6/48/80, per the `_why` (item `FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE`).
   - The code defaults, used when a key is absent, are 3/30/80/3 (`disp:99`).
 - **Alarms** [LIVE]:
@@ -725,8 +725,7 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | RUN_NOW_TTL_S | 3600 | rl:116-165 | code | |
 | SCOPE_GRACE_S / SCOPE_STOP_S | 600 / 30 | rl:116-165 | code | |
 | wakes_per_seat_hour / _seat_day / _per_day | 12 / 96 / 120 | sched:20 | BENCH changed them 10-29 | `FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE`; were 6/48/80 |
-| recovers_per_seat_day | 3 | sched:20 | owner (P4 L-1) | unused |
-| code cap defaults | 3/30/80/3 | disp:99 | code | |
+| code cap defaults | 3/30/80 | disp:99 | code | |
 | RM_DOORBELL_MAX_WAIT_S / POLL_S | 23 h / 3 s | doorbell hook | env | |
 | backstop_ctx_tokens / backstop_idle_s / grace_s (FOUNDRY) | 110000 / 1800 / 20 | sched:35 | owner (P4 L-1) | |
 | seat_restart defaults | see §2.4 table | seat_restart.py DEFAULTS | code | |

@@ -703,7 +703,14 @@ def test_decide_recover():
     al = one(acts, "alarm")
     check(len(al) == 1 and al[0]["kind"] == "recover:FOUNDRY" and al[0]["note"] is True and al[0]["seat"] == "FOUNDRY"
           and al[0]["why"] == "recover of FOUNDRY did not bring a session back in 300 s: " + "o" * 160
-          and "recover" not in ss and ss["cooldown_until"] == NOW + 3600, "recover timed out at recover_verify_s (%r)" % [a["why"][-20:] for a in al])
+          and "recover" not in ss and "cooldown_until" not in ss, "recover timed out at recover_verify_s (%r)" % [a["why"][-20:] for a in al])
+    st2 = fresh()
+    st2["seats"]["FOUNDRY"] = {"recover": {"at": NOW - 300, "session_id": "sid-OLD", "out": ""}, "dead_since": NOW - 700}
+    st2["lives"] = {"FOUNDRY": {"deaths": [], "raises": [{"id": "FOUNDRY-life2-1", "at": NOW - 300, "life": 2}]}}
+    dec(st2, sessions=[T.sess(), bench])
+    dd = st2["lives"]["FOUNDRY"]["deaths"]
+    check(len(dd) == 1 and dd[0]["ending"] == "raise_failed" and dd[0]["raise_id"] == "FOUNDRY-life2-1" and dd[0]["at"] == NOW,
+          "a raise that never came back is a raise_failed death charged to that raise (%r)" % dd)
     acts, ss = rv_case("sid-1", [bench], 10)
     check(not acts_of(acts, "recovered", "alarm") and "recover" in ss, "recover pending and the seat still dead: waits")
     # dead window
@@ -734,12 +741,14 @@ def test_decide_recover():
           "dead with recovery on but no session id ever seen: alarm")
     acts, st = dead(600, st_extra={"session_id": "sid-1"}, apply=True)
     r = one(acts, "recover")
-    check(len(r) == 1 and r[0]["message"] == "[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
-          "`python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY` and continue.", "recover message is exactly the resume text")
+    check(len(r) == 1 and r[0]["message"] == "[RimFlow Dispatcher] Your window was found dead and resumed in the background. "
+          "Life 2 today. Life 1 ended window_gone at %s (cause unknown). Its progress file: none written. Run "
+          "`python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY` and continue." % D.iso(NOW - 600),
+          "recover message is the resume text with the life note (%r)" % r[:1])
     ss = st["seats"]["FOUNDRY"]
     check(len(r) == 1 and r[0]["session_id"] == "sid-1" and r[0]["seat"] == "FOUNDRY" and r[0]["account"] is None
           and "cli.py next --seat FOUNDRY" in r[0]["message"] and "owner present" not in r[0]["message"], "dead: recover decided (%r)" % [x for x in r][:1])
-    check(st["recovers"] == [{"seat": "FOUNDRY", "at": NOW}] and ss["recover"] == {"at": NOW, "session_id": "sid-1"}
+    check(st["recovers"] == [{"seat": "FOUNDRY", "at": NOW}] and ss["recover"] == {"at": NOW, "session_id": "sid-1", "raise_id": "FOUNDRY-life2-%d" % int(NOW)}
           and "cooldown_until" not in ss, "apply: recover recorded, awaiting verification")
     acts, st = dead(600, st_extra={"session_id": "sid-1"}, apply=False)
     ss = st["seats"]["FOUNDRY"]
@@ -748,14 +757,26 @@ def test_decide_recover():
     m = one(acts, "recover")[0]["message"]
     check(m.startswith("[RimFlow Dispatcher] Your window") and m.endswith("`python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY` and continue.")
           and "owner" not in m.lower(), "recover message carries no owner-presence line (owner 2026-10-30)")
-    # the daily recover cap: 3 in the last day, others and older ones do not count
-    mk = lambda seat, age: {"seat": seat, "at": NOW - age}  # noqa: E731
-    acts, st = dead(600, st_extra={"session_id": "s"}, rec=[mk("FOUNDRY", 10), mk("FOUNDRY", 86399), mk("OTHER", 5), mk("FOUNDRY", 86400)])
-    check(one(acts, "recover") and not one(acts, "alarm"), "recover cap: 2 in the day (one other seat, one exactly 86400 s old) -> allowed")
-    acts, st = dead(600, st_extra={"session_id": "s"}, rec=[mk("FOUNDRY", 10), mk("FOUNDRY", 86399), mk("FOUNDRY", 5)])
+    # the raise ladder (raise_ladder.py) replaced the daily recover cap: life 4 in 24 h stops, other seats do not count
+    dl = lambda age, ending="window_gone": {"at": NOW - age, "ending": ending, "cause": "unknown", "model": None, "raise_id": None}  # noqa: E731
+    lives = lambda *ds: {"lives": {"FOUNDRY": {"deaths": list(ds), "raises": []}, "OTHER": {"deaths": [dl(5)] * 5, "raises": []}}}  # noqa: E731
+    def dead_l(st_lives, **kw):
+        sch = sched()
+        st = fresh()
+        st.update(st_lives)
+        st["seats"]["FOUNDRY"] = {"dead_since": NOW - 600, "session_id": "s"}
+        acts, st, _ = dec(st, sessions=[bench], sch=sch, **kw)
+        return acts, st
+    acts, st = dead_l(lives(dl(5000), dl(86400)))
+    check(one(acts, "recover") and one(acts, "recover")[0]["life"] == 3 and not one(acts, "alarm"),
+          "ladder: one death in the day (one exactly 86400 s old) + this one -> life 3 raised")
+    acts, st = dead_l(lives(dl(5000), dl(9000)))
     al = one(acts, "alarm")
-    check(not one(acts, "recover") and len(al) == 1 and al[0]["kind"] == "cap:recover:FOUNDRY" and al[0]["seat"] == "FOUNDRY"
-          and al[0]["why"] == "cap: 3 recovers/day for FOUNDRY", "recover cap: 3 in the day -> alarm (%r)" % al[:1])
+    check(not one(acts, "recover") and len(al) == 1 and al[0]["kind"] == "ladder:FOUNDRY" and "life 4 in 24 h" in al[0]["why"]
+          and "raise_ladder.py reset --seat FOUNDRY" in al[0]["why"], "ladder: life 4 in 24 h -> stop alarm, no raise (%r)" % al[:1])
+    acts, st = dead_l(lives(dl(100000), dl(200000), dl(300000), dl(400000), dl(500000), dl(550000)))
+    al = one(acts, "alarm")
+    check(not one(acts, "recover") and al and "7 deaths in 7 days" in al[0]["why"], "ladder: 7 deaths in 7 days, spread out -> stop")
     # prune: entries a full day old are dropped, 86399 s kept
     st = fresh()
     st["wakes"] = [{"seat": "A", "at": NOW - 86400}, {"seat": "A", "at": NOW - 86399}]

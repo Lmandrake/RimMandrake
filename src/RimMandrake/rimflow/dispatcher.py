@@ -31,8 +31,10 @@ It never calls the bridge, `./game` or a deploy itself. The owner's presence at 
 changing. It's causing so many problems and I don't need it."): no idle probe, no hold, no "owner present" line; a
 ticket that needs the game is rung like any other, and the bridge lock (`rimflow bridge take`) decides who drives.
 
-Caps/budgets (schedule "caps"): wakes per seat per hour and per day, wakes per day overall, recoveries per seat per
-day, a cooldown after a give-up, and a PAUSE file (state/PAUSE) that stops everything. §3's roles are listed in the
+Caps/budgets (schedule "caps"): wakes per seat per hour and per day, wakes per day overall, a cooldown after a
+give-up, raises of a dead window on raise_ladder.py's ladder (life note, 2/8 min backoff, stop at life 4 in 24 h or 7
+deaths in 7 days, login/quota gated per model; it replaced the flat recovers_per_seat_day cap), and a PAUSE file
+(state/PAUSE) that stops everything. §3's roles are listed in the
 schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (daily or
 weekday-qualified, "Wed 09:00") and on ledger events (a done claim gates the Arbiter's batches; a failed plan step or
 a replan request launches the Producer), each as its own transient systemd unit, so the run outlives this oneshot
@@ -88,6 +90,7 @@ import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import seat_restart as SR  # noqa: E402
 import login_watch as LW  # noqa: E402
+import raise_ladder as RLD  # noqa: E402
 import signal_watch as SW  # noqa: E402
 import incident as IN  # noqa: E402
 import account_pick as AP  # noqa: E402
@@ -105,7 +108,11 @@ DEFAULTS = {"tick_s": 120, "stall_after_s": 240, "verify_s": 300, "handoff_s": 6
             "ledger_notes": True, "publish": True, "tick_budget_s": 420}
 # tick_budget_s: rm-dispatcher.service is a oneshot with TimeoutStartSec=600; past this budget a tick writes no more
 # ledger notes and kills its publish, so systemd never SIGTERMs it mid-tick (review round R, A).
-CAP_DEFAULTS = {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80, "recovers_per_seat_day": 3}
+CAP_DEFAULTS = {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80}
+# Raises of a dead window are bounded by raise_ladder.py (OPS_RAISE_REWIRE_WITH_DEATH_LADDER), not a per-day cap.
+RAISE_OBS_NONE = {"ending": lambda seat, sess, cfg: ("window_gone", "unknown"), "progress": lambda seat, cfg: None,
+                  "mem": lambda: (None, "no memory reading"), "model_ok": None, "resets": lambda: {},
+                  "old_alive": lambda pid: False}
 # The seat windows' own launch line (src/RimMandrake/Utils/install_wt_seat_profiles.py LAUNCH: `claude_bounded.sh
 # --dangerously-skip-permissions --name '<label>' --model <m> --remote-control '<label>'`, AGENT_SEAT exported, cwd =
 # the clone), plus `--bg --resume <id>`. Through claude_bounded.sh, never bare claude: the wrapper puts the session in
@@ -722,6 +729,21 @@ def decide(sch, st, obs, now, apply, out=None):
         except Exception as e:  # noqa: BLE001
             act(do="alarm", kind="restart:decide", note=True,
                 why="seat restart NOT decided: %s: %s" % (type(e).__name__, str(e)[:200]))
+    lr = RLD.rule(sch)
+    ro = dict(RAISE_OBS_NONE, **(obs.get("raise") or {}))
+    try:
+        fixes = ro["resets"]() or {}
+    except Exception:  # noqa: BLE001 - an unreadable reset folder resets nothing
+        fixes = {}
+
+    def ladder_tend(seat, ss):
+        """A named fix newer than the last clears the seat's ladder; 6 h of healthy running clears the 24 h count."""
+        rec = (st.get("lives") or {}).get(seat)
+        if fixes.get(seat) and RLD.apply_fix(RLD.register(st, seat), fixes[seat]):
+            act(do="ladder_reset", seat=seat, note=True, why="%s's raise ladder reset by named fix %s" % (seat, fixes[seat]["fix"]))
+        elif rec and RLD.healthy(rec, ss.get("alive_since"), now, lr):
+            act(do="ladder_reset", seat=seat, why="%s's 24 h raise count reset: %s" % (seat, rec["day_reset_why"]))
+
     def one_seat(seat, cfg):
         enabled = cfg.get("enabled", True)
         if not enabled and not (st["seats"].get(seat) or {}).get("ring"):
@@ -732,6 +754,12 @@ def decide(sch, st, obs, now, apply, out=None):
         sess = find_session(agents["sessions"], cfg)
         if sess:     # learned before any early return (pending ring, cooldown, restart, recover): a later recover
             ss["session_id"] = sess.get("sessionId") or ss.get("session_id")   # resumes the CURRENT session (night review N1)
+            ss["last_sess"] = {k: sess[k] for k in ("pid", "sessionId", "cwd") if sess.get(k)}   # read at its death
+            ss.setdefault("alive_since", now)
+            ss.pop("death_logged", None)
+        else:
+            ss.pop("alive_since", None)
+        ladder_tend(seat, ss)
         status = (sess or {}).get("status") or (sess or {}).get("state")
         waiting = busy_waiting(sch, obs, seat, sess, status, now) if enabled and cfg.get("wake", True) else None
         if waiting:
@@ -834,7 +862,9 @@ def decide(sch, st, obs, now, apply, out=None):
                     why="recover of %s did not bring a session back in %d s: %s" % (seat, sch["recover_verify_s"],
                                                                                     rv.get("out", "")[:160]))
                 ss.pop("recover")
-                ss["cooldown_until"] = now + sch["cooldown_s"]
+                # the raise never brought it back: a death on the register, charged to that raise; the ladder decides
+                # the next one (no flat cooldown: the ladder's backoff is the wait)
+                RLD.record_death(RLD.register(st, seat), now, "raise_failed", "unknown", cfg.get("model") or "sonnet", lr)
             return
         peeked = None
         if ss.get("cooldown_until", 0) > now:
@@ -855,6 +885,11 @@ def decide(sch, st, obs, now, apply, out=None):
             ss.setdefault("dead_since", now)
             if now - ss["dead_since"] < sch["dead_after_s"]:
                 return
+            rec = RLD.register(st, seat)
+            if not ss.get("death_logged"):    # one line per death on the register, whether or not raises are on
+                ending, cause = ro["ending"](seat, ss.get("last_sess"), cfg)
+                RLD.record_death(rec, ss["dead_since"], ending, cause, cfg.get("model") or "sonnet", lr)   # the register; the
+                ss["death_logged"] = True     # raise (or the stop alarm) quotes it, so no extra journal line per death
             if not cfg.get("recover_dead"):
                 act(do="alarm", kind="dead:" + seat, seat=seat, note=True, conductor_log=True, impact=now - ss["dead_since"],
                     raise_first="%s has no window." % seat, why="%s has had no session for %d s (recovery off)"
@@ -864,21 +899,36 @@ def decide(sch, st, obs, now, apply, out=None):
                 act(do="alarm", kind="dead:" + seat, seat=seat, note=True, conductor_log=True,
                     raise_first="%s has no window." % seat, why="%s is dead and no session id was ever seen" % seat)
                 return
-            day = [r for r in st["recovers"] if r["seat"] == seat and now - r["at"] < 86400]
-            if len(day) >= sch["caps"]["recovers_per_seat_day"]:
-                act(do="alarm", kind="cap:recover:" + seat, seat=seat, note=True, conductor_log=True,
-                    raise_first="%s is dead and out of recoveries." % seat, why="cap: %d recovers/day for %s" % (sch["caps"]["recovers_per_seat_day"], seat))
+            v = RLD.decide(rec, now, lr, model_ok=ro.get("model_ok"),
+                           old_alive=ro["old_alive"]((ss.get("last_sess") or {}).get("pid")), mem=ro["mem"]())
+            if v["verdict"] == "stop":
+                act(do="alarm", kind="ladder:" + seat, seat=seat, note=True, conductor_log=True, impact=v["life"] - 1,
+                    ticket=sch.get("alarm_item"), raise_first="%s is dead and its raise ladder stopped." % seat,
+                    why="%s: no more raises (%s). Fix the cause, then `python3 src/RimMandrake/rimflow/raise_ladder.py "
+                        "reset --seat %s --fix <ITEM>`" % (seat, v["why"], seat))
                 return
-            msg = ("[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
-                   "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % seat)
+            if v["verdict"] == "gated" and v.get("new"):
+                act(do="alarm", kind="raise_gate:" + seat, seat=seat, note=True, conductor_log=True,
+                    raise_first="%s died on its login or quota and waits for the account check." % seat, why=v["why"])
+            if v["verdict"] != "raise":
+                if ss.get("ladder_said") != v["why"]:     # once per reason, not once a tick
+                    act(do="hold", seat=seat, why="raise %s: %s" % (v["verdict"], v["why"]))
+                    ss["ladder_said"] = v["why"]
+                return
             go, pk = gate("recover")
             if not go:
                 act(do="hold", seat=seat, why="recover held for the account switch: %s" % pk["why"])
                 return
-            act(do="recover", seat=seat, session_id=ss["session_id"], message=msg, account=pk.get("account"))
+            ss.pop("ladder_said", None)
+            note = RLD.life_note(seat, v["life"], v["last"], ro["progress"](seat, cfg))
+            msg = ("[RimFlow Dispatcher] Your window was found dead and resumed in the background. %s Run "
+                   "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % (note, seat))
+            rid = RLD.record_raise(rec, seat, now, v["life"])
+            act(do="recover", seat=seat, session_id=ss["session_id"], message=msg, account=pk.get("account"),
+                raise_id=rid, life=v["life"])
             st["recovers"].append({"seat": seat, "at": now})
             if apply:
-                ss["recover"] = {"at": now, "session_id": ss["session_id"]}
+                ss["recover"] = {"at": now, "session_id": ss["session_id"], "raise_id": rid}
             else:
                 ss["cooldown_until"] = now + sch["cooldown_s"]   # dry: say it once per cooldown, not every tick
             return
@@ -956,6 +1006,8 @@ def decide(sch, st, obs, now, apply, out=None):
     # prune the cap windows
     st["wakes"] = [w for w in st["wakes"] if now - w["at"] < 86400]
     st["recovers"] = [r for r in st["recovers"] if now - r["at"] < 86400]
+    for rec in (st.get("lives") or {}).values():
+        RLD.prune(rec, now, lr)
     return actions
 
 
@@ -1704,6 +1756,8 @@ def unrecover(st, a, now):
     if (ss.get("recover") or {}).get("at") == now:
         ss.pop("recover")
     st["recovers"] = [r for r in st["recovers"] if not (r["seat"] == a["seat"] and r["at"] == now)]
+    if (st.get("lives") or {}).get(a["seat"]):
+        RLD.unraise(st["lives"][a["seat"]], now)
 
 
 def unreleased(st, acts, now):
@@ -1883,6 +1937,7 @@ def default_obs(sch, root, st=None):
         "roles": role_obs(sch),
         "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
         "login": login_obs(sch),
+        "raise": dict(RLD.default_obs(sch, root), old_alive=pid_alive),
         "signals": signal_obs(sch),
         "incident": incident_obs(sch),
     }

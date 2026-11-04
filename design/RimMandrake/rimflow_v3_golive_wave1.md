@@ -96,7 +96,7 @@ Open hardening items from the review (read before go-live, not blockers per the 
 
 Flag facts: `dispatcher.py tick --apply` ("really ring/recover/record"); no flag means dry. Recover is off by the schedule key
 `seats.<SEAT>.recover_dead` (both seats `false` today; `dispatcher.py` line ~392 skips recovery unless it is true). There is no CLI flag for it, so
-"keep it off" = do not touch that key; also optional belt: `caps.recovers_per_seat_day` to 0. Reason (ledger 06:02:16Z):
+"keep it off" = do not touch that key (when on, raises climb `raise_ladder.py`'s ladder; the old `caps.recovers_per_seat_day` cap is gone). Reason (ledger 06:02:16Z):
 `DISPATCHER_RECOVERY_PROVE_BG_SURVIVES` must pass first. BENCH is `wake:false` in the schedule: only FOUNDRY is woken.
 
 10. **Confirm before flipping:** `python3 -c "import json;s=json.load(open('/home/mandrake/rm/dispatch/src/RimMandrake/rimflow/dispatcher_schedule.json'));print({k:(v['wake'],v['recover_dead']) for k,v in s['seats'].items()}, [(r['name'],r['enabled']) for r in s['roles']])"`
