@@ -2676,13 +2676,14 @@ def build(env, state, hist, write=True):
          how_to_read("Each account's week: % left and time to its reset, from account_usage.py. The word compares the burn rate of the last 3 to 6 hours with the rate that would use exactly what is left by the reset. "
                      "AHEAD: burning faster than what is left can last, so it runs out early. EQUAL: about right, within 15% or within what whole-percent readings can tell apart. BEHIND: burning slower, so some goes unused. "
                      "A reading older than 45 minutes, or one that cannot be read, says UNMEASURED."), "",
-         panel("Needs you", needs_html), "",
          panel("Relentless Pipeline", pipeline_svg),
          how_to_read("Items move left to right; a card names its items whole, longest there first (hover a name for its plain words), and a stage too long for its card names them in a band below; queued shows the next few in the tick's order, done the latest few, each with a count of the rest. each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
                      "A place is one running Builder or Judge, or one being stopped; 8 is the ceiling for starting a Builder. A Judge may start one place above it, because "
                      "a cap never stops finishing work, and stopping runs still count, so 9 of 8 is normal and brief. The left bars count events, not items, and each says if it is usual for 24 h. "
                      "GAME UNMEASURED is game-phase events only; every proof row, measured or not, is in Live Testing below. Trends each have their own zero line. "
                      "Idle under LIVE GAME is minutes no proof ran in the last 3 h; the game idle trend is time nobody held the bridge, so a load counts as busy in the trend only."), "",
+         # below the pipeline (owner 2026-11-04: the pipeline sat "after all those waiting for me notifications. That's dumb.")
+         panel("Needs you", needs_html), "",
          panel("Archmagi", archmagi_svg),
          how_to_read("This machine and its live game. Each number has its verdict underneath; Busy means somebody held the bridge. A proof row that says UNMEASURED or REFUSED ran or was turned away and learned nothing."), "",
          panel("SteveDesktop", steve_svg),
