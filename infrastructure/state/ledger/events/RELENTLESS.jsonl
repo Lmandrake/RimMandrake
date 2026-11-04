@@ -122,3 +122,16 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:04:29Z","tsn":1793761469138170400}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS A1 (L1), read-only proof","ts":"2026-11-04T03:05:10Z","tsn":1793761510703454511}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:05:16Z","tsn":1793761516139410984}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1 A1 (L2), read-only proof","ts":"2026-11-04T03:05:40Z","tsn":1793761540605912222}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:07:49Z","tsn":1793761669833581474}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG A1 (L1), read-only proof","ts":"2026-11-04T03:08:39Z","tsn":1793761719687367730}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:08:49Z","tsn":1793761729962047955}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A1 (L2), read-only proof","ts":"2026-11-04T03:09:25Z","tsn":1793761765541680450}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:09:31Z","tsn":1793761771552721726}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A2 (L2), read-only proof","ts":"2026-11-04T03:09:44Z","tsn":1793761784256844517}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:09:50Z","tsn":1793761790167763594}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A3 (L2), read-only proof","ts":"2026-11-04T03:10:03Z","tsn":1793761803370337848}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:10:10Z","tsn":1793761810471952952}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A4 (L2), read-only proof","ts":"2026-11-04T03:10:25Z","tsn":1793761825116500207}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:10:31Z","tsn":1793761831442256056}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A5 (L2), read-only proof","ts":"2026-11-04T03:10:44Z","tsn":1793761844501778808}
