@@ -1291,7 +1291,7 @@ def t_stage_plans_once_for_the_batch():
             self.plans.append(args)
             return 0, ""
     g = LR.batch_gap(F(), [("a", ""), ("b", "live-mods: UtinniPatches\n"), ("c", "")])
-    ok(F.plans == ["--mod FlowWorks --mod Graffiti --mod UtinniPatches"] and g["mods"] == ["FlowWorks", "Graffiti", "UtinniPatches"],
+    ok(F.plans == ["--mod FlowWorks --mod Graffiti --mod UtinniPatches --gate"] and g["mods"] == ["FlowWorks", "Graffiti", "UtinniPatches"],
        "one plan over the union: %s %s" % (F.plans, g))
     F.plans = []
     g = LR.batch_gap(F(), [("bad", ""), ("b", "")])
@@ -1359,6 +1359,7 @@ def t_mod_gap_pure():
 
 
 def main():
+    picked, ran = set(sys.argv[1:]), 0      # no names: every test
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
@@ -1371,9 +1372,16 @@ def main():
               t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
               t_live_hold_lapses_when_its_game_is_gone,
               t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,
-              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_mod_gap_pure):
+              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_mod_gap_pure,
+              t_stage_plans_once_for_the_batch, t_bridge_refused_costs_no_plan):
+        if picked and t.__name__ not in picked:
+            continue
+        ran += 1
         print("--", t.__name__)
         t()
+    if picked and ran != len(picked):     # a misspelt or unlisted name must not read as a clean run
+        print("selftest_relentless_game: FAIL ran %d of the %d named" % (ran, len(picked)))
+        return 1
     print("selftest_relentless_game: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
