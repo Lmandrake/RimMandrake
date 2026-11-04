@@ -420,3 +420,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A2 (L2), read-only proof","ts":"2026-11-04T17:18:15Z","tsn":1793812695292558851}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:18:46Z","tsn":1793812726120466095}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A3 (L2), read-only proof","ts":"2026-11-04T17:18:57Z","tsn":1793812737736086522}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:20:30Z","tsn":1793812830586025696}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A4 (L2), read-only proof","ts":"2026-11-04T17:20:41Z","tsn":1793812841994209786}
