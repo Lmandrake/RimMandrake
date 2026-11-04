@@ -2288,7 +2288,9 @@ def t_pool_jam():
                               ("P2", "held", {"kept": True, "real": ["a.cs"]}), ("P3", "held", {"busy": True}),
                               ("P4", "queued", {}), ("P5", "held", {}), ("P6", "queued", {"idle": 60}),
                               ("P7", "blocked", {"idle": 5, "real": ["b.cs"]}),
-                              ("P8", "blocked", {"kept": True, "carry_real": True}), ("P9", "queued", {"idle": 60, "kept": True, "carry_real": True}),
+                              ("P8", "blocked", {"kept": True, "carry_real": True}),
+                              # idle past the release wait, so the put-down gate itself is what keeps it, not the wait
+                              ("P9", "queued", {"idle": x.r["pool_parked_release_s"] + 60, "kept": True, "carry_real": True}),
                               ("PA", "held", {"carry": True})):
         parked(x, name, status, "/c/" + name)
         x.w.pool["/c/" + name] = wip
@@ -2621,6 +2623,67 @@ def t_books_frozen():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def t_put_down_real_commit_end_to_end():
+    """POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG, through the real release_parked, Effects, Store and git: a blocked item's commit
+    leaves the pool in its bundle and comes back whole; a queued item's, or one a cherry-pick cannot carry, stays."""
+    d = tempfile.mkdtemp(prefix="rlcarry-")
+    store = R.Store(d)
+    r = dict(RULES, pool_parked_release_s=0, warm_clones=0)
+    fx = R.Effects(r, store)
+    def git(c, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True, capture_output=True, text=True).stdout
+    o = os.path.join(d, "o.git")
+    os.makedirs(os.path.join(d, "clones"))
+    git(d, "init", "-q", "--bare", o)
+    def clone_with_commit(item, status):
+        c = os.path.join(d, "clones", item)
+        git(d, "clone", "-q", o, c)
+        with open(os.path.join(c, item + ".txt"), "w", encoding="utf-8") as f:
+            f.write("base\n")
+        git(c, "add", item + ".txt")
+        git(c, "commit", "-qm", "base")
+        git(c, "push", "-q", "origin", "HEAD")
+        with open(os.path.join(c, "real.cs"), "w", encoding="utf-8") as f:
+            f.write("real work\n")
+        git(c, "add", "real.cs")
+        git(c, "commit", "-qm", "real work")
+        st = R.new_state(item, 0, "t")
+        st.update(clone=c, status=status)
+        store.save(st)
+        return c
+    def release():
+        acts = []
+        R.release_parked(store, fx, r, R.time.time(), acts)
+        return acts
+    # blocked, one real commit: the clone frees, the commit is on the record
+    c = clone_with_commit("BLK", "blocked")
+    ok(not os.path.exists(store.p("items", "BLK", "bundles")), "no earlier bundle can answer for this one")
+    acts = release()
+    b = store.load("BLK").get("bundle")
+    ok(not fx.clone_present(c) and [x["do"] for x in acts] == ["clone_released"], "a blocked item's real commit frees its clone: %s" % (acts,))
+    ok(b and os.path.exists(os.path.join(b, "carry")) and os.path.exists(os.path.join(b, "commits.bundle")), "and is carried, on the item's record: %s" % (b,))
+    # the next clone gets it back as an unlanded commit, and the next worker is told
+    git(d, "clone", "-q", o, c)
+    ok(fx.restore_bundle("BLK", b, c) == [], "the bundle restores")
+    ok(os.path.exists(os.path.join(c, "real.cs")), "real.cs came back")
+    ok(git(c, "rev-list", "--count", "HEAD", "--not", "--remotes").strip() == "1", "as one unlanded commit, not as loose files")
+    ok("1 unlanded commit(s) came back by cherry-pick: land them or drop them" in store.learned("BLK"), "the next worker reads it: %r" % store.learned("BLK"))
+    shutil.rmtree(c)
+    store.save(dict(store.load("BLK"), clone=None))
+    # queued: not put down, so past the wait its commit still stays in the clone
+    c = clone_with_commit("QUE", "queued")
+    ok(release() == [] and fx.clone_present(c) and store.load("QUE").get("bundle") is None, "a queued item's real commit stays in its clone")
+    store.save(dict(store.load("QUE"), status="retired", clone=None))
+    shutil.rmtree(c)
+    # blocked with a stash beside the commit: a cherry-pick cannot carry it, so it stays
+    c = clone_with_commit("STA", "blocked")
+    with open(os.path.join(c, "real.cs"), "w", encoding="utf-8") as f:
+        f.write("stashed\n")
+    git(c, "stash", "push", "-q", "-m", "s", "real.cs")
+    ok(release() == [] and fx.clone_present(c) and store.load("STA").get("bundle") is None, "a blocked item's stash keeps its clone")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_pool_real_git():
     """Effects' bundle and restore against real git: what is unpushed survives the clone's removal."""
     d = tempfile.mkdtemp(prefix="rlpool-")
@@ -2728,11 +2791,15 @@ def t_pool_real_git():
     w = fx.clone_wip(c)
     ok(w["kept"] and w["carry_real"], "a commit with real work pins it unless put down, when a bundle can carry it: %s" % (w,))
     # POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG: a blocked item's real commit leaves the pool and comes back whole
-    b = fx.remove_clone({"clone": c, "item": "I0"})
+    # a fresh item name: bundle dirs are named by the second and the clone, so I0's earlier state-only bundle would answer for this one
+    store.save(R.new_state("I1", 0, "t"))
+    ok(not os.path.exists(store.p("items", "I1", "bundles")), "no earlier bundle of this item can answer for this one")
+    b = fx.remove_clone({"clone": c, "item": "I1"})
     ok(b and os.path.exists(os.path.join(b, "carry")) and not fx.clone_present(c), "a real commit is released in the bundle")
     git(d, "clone", "-q", o, c)
-    ok(fx.restore_bundle("I0", b, c) == [], "the next clone re-applies the real commit")
+    ok(fx.restore_bundle("I1", b, c) == [], "the next clone re-applies the real commit")
     ok(os.path.exists(os.path.join(c, "b2.txt")) and fx.clone_wip(c)["carry_real"], "the real work came back as a commit, still unlanded")
+    ok("came back by cherry-pick: land them or drop them" in store.learned("I1"), "the next worker is told to land what came back: %r" % store.learned("I1"))
     put("b2.txt", "stashed\n")
     git(c, "stash", "push", "-q", "-m", "s", "b2.txt")
     w = fx.clone_wip(c)
@@ -3895,7 +3962,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
