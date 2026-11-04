@@ -165,6 +165,13 @@ def t_shared_chain_owner():
     o = G.owner_of(pr)
     check(o == {"dig": "L_IND", "found": "L_IND", "gear": "W_WALL", "silt": "P_POND", "steam": "R_STEAM"},
           "shared chains: source link beats a text mention, then fewest links; the first item by name gets none: %s" % o)
+    o = G.owner_of({"item_chains": {"A_ROW": ["x"], "B_CHAIN": ["x", "y"]},
+                    "link_kind": {"A_ROW": {"x": "row"}, "B_CHAIN": {"x": "chain", "y": "chain"}}})
+    check(o == {"x": "B_CHAIN", "y": "B_CHAIN"},
+          "text naming the chain beats text naming only a row, even from the broader item: %s" % o)
+    o = G.owner_of({"item_chains": {"A_ROW": ["x"], "B_SRC": ["x", "y", "z"]},
+                    "link_kind": {"A_ROW": {"x": "row"}, "B_SRC": {"x": "source", "y": "row", "z": "row"}}})
+    check(o == {"x": "B_SRC", "y": "B_SRC", "z": "B_SRC"}, "a source link beats a row link: %s" % o)
     o = G.owner_of({"item_chains": {"A_BROAD": ["x", "y"], "B_NARROW": ["x"]}})
     check(o == {"x": "B_NARROW", "y": "A_BROAD"}, "no link_kind (older probe): the narrower item wins: %s" % o)
     o = G.owner_of({"item_chains": {"B_ONE": ["x"], "A_ONE": ["x"]}})
@@ -244,7 +251,8 @@ def t_blind():
 def t_real_probe():
     """The instrument can see: one real gapprobe.py run against this checkout's FlowWorks validation."""
     out = G.probe(MOD, {"X_T_PROBE": "walk FlowWorks' `drawbridges` chain",
-                        "X_T_STRANGER": "a Stillsand item that names `drawbridges` and defs_resolve"}, [])
+                        "X_T_STRANGER": "a Stillsand item that names `drawbridges` and defs_resolve",
+                        "X_T_ROWONLY": "FlowWorks: the `Drawbridge_Cables_call_sites` row fails"}, [])
     if out.get("blind"):
         check(False, "gapprobe on FlowWorks is blind in a full checkout: %s" % out["blind"])
         return
@@ -253,6 +261,9 @@ def t_real_probe():
     check("drawbridges" in out["item_chains"].get("X_T_PROBE", []), "an item text naming `drawbridges` links to it")
     check((out.get("link_kind") or {}).get("X_T_PROBE", {}).get("drawbridges") == "chain",
           "gapprobe says how the link was made (text names the chain): %s" % (out.get("link_kind") or {}).get("X_T_PROBE"))
+    check((out.get("link_kind") or {}).get("X_T_ROWONLY") == {"drawbridges": "row"},
+          "an item naming only one of a chain's rows links to it as a row: %s"
+          % (out.get("link_kind") or {}).get("X_T_ROWONLY"))
     check("X_T_STRANGER" not in out["item_chains"],
           "an item whose text names a chain but not the mod does not link (TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL): %s"
           % out["item_chains"].get("X_T_STRANGER"))
