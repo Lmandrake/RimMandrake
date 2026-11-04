@@ -1,0 +1,2 @@
+A fixture's exit code is not a measurement: python3 /missing.py exits 2, which reads as a measured FAIL. relentless_incident now requires the instrument's own FIXTURE_VERDICT: PASS|FAIL line as well as the exit. And a ledger item's history[-1] is not a close receipt (every note moves it, which reran the fixtures every sweep); use Item.done_index.
+home: design/RimMandrake/test_tolerance_gpt_advice_2026-11-04.md
