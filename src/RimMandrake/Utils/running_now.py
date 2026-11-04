@@ -923,8 +923,8 @@ def probe_steve(env):
         d["cpu_pct"] = None
         st = [int(x) for x in d.get("stat", "").split()[1:] if x.isdigit()]
         prev = cache.get("stat")
-        if st and prev and sum(st) > sum(prev):
-            d["cpu_pct"] = round(100 * (1 - (st[3] - prev[3]) / (sum(st) - sum(prev))))
+        if st and prev and len(st) >= 8 and len(prev) >= 8 and sum(st[:8]) > sum(prev[:8]):     # guest time is inside user time; I/O wait is not busy
+            d["cpu_pct"] = round(100 * (1 - (st[3] + st[4] - prev[3] - prev[4]) / (sum(st[:8]) - sum(prev[:8]))))
         cache["stat"] = st
         cache["good"] = d
         cache["good_t"] = now

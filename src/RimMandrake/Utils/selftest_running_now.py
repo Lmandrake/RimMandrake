@@ -815,6 +815,24 @@ late = Fake(ps=PS, files={R.FLEET_CACHE: dict(FLEET, t=midnight - 60, good_t=mid
 late.clock = midnight + 60
 check("receipts from before midnight are not FINISHED TODAY", "FINISHED TODAY, 1" not in R.build(late, {}, [])[0])
 
+class CpuProbe(Fake):
+    stats = ["cpu 100 0 0 0 0 0 0 0 0 0", "cpu 110 0 0 0 90 0 0 0 10 0"]
+
+    def steve_probe(self):
+        return "up=1\nstat=%s\n" % self.stats.pop(0)
+
+
+with tempfile.TemporaryDirectory() as d:
+    real_cache, R.STEVE_CACHE = R.STEVE_CACHE, d + "/s.json"
+    cpu_env = CpuProbe()
+    R.probe_steve(cpu_env)
+    cpu_env.clock += R.PROBE_EVERY + 1
+    R.probe_steve(cpu_env)
+    with open(R.STEVE_CACHE) as f:
+        got = json.load(f)["good"]["cpu_pct"]
+    R.STEVE_CACHE = real_cache
+check("Steve's CPU counts neither I/O wait as busy nor guest time twice", got == 10)
+
 # ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
 SRC = open(R.__file__).read()
 QUIET = "(lambda *a, **k: None)("
