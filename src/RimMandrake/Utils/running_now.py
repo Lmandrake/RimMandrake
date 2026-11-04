@@ -15,6 +15,12 @@ bridge. A source it cannot read prints UNMEASURED, never 0. The page is written 
     python3 running_now.py            write the page (atomic), append a history sample, refresh the Steve cache if old
     python3 running_now.py --check    print the page's age; exit 1 when older than 3 minutes
     python3 running_now.py --print    build the page to stdout, write nothing, no ssh
+    python3 running_now.py --phone    the phone-sized plain copy to stdout, write nothing, no ssh
+
+The owner retired Fleet Watch for this page (2026-11-03: "Let's put as much into a static, zero token page as we can."):
+progress by mod, receipts and Needs you come from fleet_mods.py and owner_queue.py every FLEET_EVERY seconds, cached in
+running_fleet.json and refreshed after the page is written. Every number carries a verdict with a rough normal range, and
+every panel a how-to-read line (owner 2026-11-04: "The Markdown should do both", a status and a working model of the system).
 
 Family rules live in running_now_families.json beside this file. The page is viewed in Typora, which renders inline SVG
 (screenshot proof in the item's note); every SVG panel has a plain text twin in the collapsed section at the bottom.
@@ -28,20 +34,29 @@ import io
 import json
 import os
 import re
+import shutil
 import socket
 import statistics
 import subprocess
 import sys
 import time
+from html import escape as hesc
 from xml.sax.saxutils import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 AGENT = "/mnt/d/ClaudeWork/rimmandrake"
 OUT_DIR = AGENT + "/conductor"
 OUT = OUT_DIR + "/RUNNING_NOW.md"
+PHONE_OUT = OUT_DIR + "/RUNNING_NOW_PHONE.md"
 HIST = OUT_DIR + "/running_history.jsonl"
 STATE = OUT_DIR + "/running_state.json"
 STEVE_CACHE = OUT_DIR + "/running_steve.json"
+FLEET_CACHE = OUT_DIR + "/running_fleet.json"
+FLEET_EVERY = 300           # mods, receipts and the Needs you list cost about 5 s: refreshed after the page is on disk
+HOLD_CAP = 2700             # a bridge hold silent for 45 minutes is stale by the bridge's own rule: it stops counting as busy
+TREND_BUCKET = 7200         # the trend lines: two-hour points
+TREND_POINTS = 24           # over 48 hours
+USUAL_DAYS = 6              # "usual" for a 24 h count: the six 24 h windows before this one
 TESTQ = AGENT + "/testq"
 HIST_CAP = 10200            # one sample a minute: about 7 days and a bit
 TASKLIST_EVERY = 180        # a tasklist.exe call is ~0.6 s wall: cache it
@@ -74,10 +89,17 @@ timeout 5 /usr/lib/wsl/lib/nvidia-smi --query-gpu=name,utilization.gpu,memory.us
 RUNS_A_PLACE = ("running", "checking", "stopping", "retiring")
 BELT = ("queued", "running", "candidate", "checking", "closing", "done")
 SIDE = ("game", "held", "blocked", "stopping", "retiring", "retired")
-BELT_WORD = {"queued": "waits for a place", "running": "worker builds", "candidate": "waits for a check",
-             "checking": "blind checker", "closing": "being landed", "done": "closed"}
+BELT_WORD = {"queued": "waits for a place", "running": "Builder at work", "candidate": "waits for a Judge",
+             "checking": "Judge at work", "closing": "being landed", "done": "closed"}
 SIDE_WORD = {"game": "needs the live game", "held": "held for a person", "blocked": "waits on another item",
              "stopping": "being stopped", "retiring": "being retired", "retired": "dropped for good"}
+# A rough normal for how many items sit in each stage: (top of normal, words). Read off the stages on 2026-11-03; only a
+# count above the top is called out. Done and retired only grow, so no count of theirs is ever high.
+STAGE_NORMAL = {"queued": (400, "100-400"), "running": (9, "3-9"), "candidate": (6, "0-6"), "checking": (9, "0-9"), "closing": (40, "0-40"),
+                "done": (None, "only grows"), "game": (40, "0-40"), "held": (40, "0-40"), "blocked": (70, "0-70"), "stopping": (3, "0-3"),
+                "retiring": (3, "0-3"), "retired": (None, "only grows")}
+FEED_WORD = {"done": "closed", "blind_fail": "a Judge failed it", "game_fail": "live proof failed", "held_delivered": "held for a person",
+             "retired": "dropped", "jam_alarm": "jam alarm", "game_staged": "game staged for it"}
 
 BG, CARD, EDGE, TEXT, DIM, FAINT = "#14171c", "#1f242c", "#3a4250", "#e8eaee", "#98a1af", "#5d6675"
 GOOD, WARN, BAD, LIVE, BAR = "#4cc38a", "#f0b429", "#ef5350", "#5aa9e6", "#7d8796"
@@ -222,6 +244,67 @@ class Env:
     def port_open(self, host, port=22):
         with socket.create_connection((host, port), timeout=1.5):
             return True
+
+    def local_stats(self):
+        """This machine, read the way the Steve probe reads that one: uptime s, load, cores, RAM used/total MB, free GB."""
+        with open("/proc/uptime") as f:
+            up = float(f.read().split()[0])
+        with open("/proc/loadavg") as f:
+            load = float(f.read().split()[0])
+        mem = {}
+        with open("/proc/meminfo") as f:
+            for line in f:
+                k, v = line.split(":", 1)
+                mem[k] = int(v.split()[0]) // 1024
+        free = lambda path: shutil.disk_usage(path).free // 2**30  # noqa: E731
+        return {"up": up, "load": load, "cores": os.cpu_count(), "ram": (mem["MemTotal"] - mem["MemAvailable"], mem["MemTotal"]),
+                "disk": free("/"), "disk_d": free("/mnt/d")}
+
+    def bridge_events(self):
+        """(epoch, state) of this machine's bridge events, oldest first, from every ledger shard."""
+        out = []
+        for p in glob.glob(LEDGER_EVENTS + "/*.jsonl"):
+            with open(p, errors="replace") as f:
+                for line in f:
+                    if '"bridge"' not in line:
+                        continue
+                    try:
+                        d = json.loads(line)
+                        if d.get("event") == "bridge" and d.get("host") in (None, "archmagi"):
+                            out.append((iso_epoch(d["ts"]), d.get("state")))
+                    except (ValueError, KeyError):
+                        continue    # another seat is writing this shard: the next minute reads it whole
+        if not out:
+            raise Unmeasured("no bridge event in the ledger")
+        return sorted(out)
+
+    def conductor_helpers(self, pid):
+        """How many in-process helpers the Conductor window has alive, by the reader the restart path trusts."""
+        rf = os.path.join(HERE, "..", "rimflow")
+        sys.path[:0] = [rf, HERE]
+        import seat_restart     # late: only this line of the page needs it
+        sf = seat_restart.session_file(pid) or {}
+        if not sf.get("cwd") or not sf.get("sessionId"):
+            raise Unmeasured("no session file for pid %s" % pid)
+        hs = seat_restart.helpers_of(seat_restart.transcript_path(sf["cwd"], sf["sessionId"]), time.time())
+        if hs is None:
+            raise Unmeasured("helpers_of could not read the transcript")
+        return sum(1 for h in hs if h.get("alive"))
+
+    def fleet_gather(self, now):
+        """The slow half: progress by mod, today's receipts, Needs you. Lives in fleet_mods.py and owner_queue.py."""
+        sys.path.insert(0, HERE)
+        import fleet_mods
+        d = fleet_mods.gather(int(now))
+        d["total_mods"] = len(fleet_mods.mod_folders())
+        return d
+
+    def mods_status(self):
+        """`modcheck status`, which re-derives each mod against its code as it stands (the stored word goes stale)."""
+        rc, out = self.run(["python3", os.path.join(HERE, "modcheck", "cli.py"), "status"], timeout=45)
+        if rc != 0:
+            raise Unmeasured("modcheck status exited %d" % rc)
+        return out
 
     def families(self):
         return self.read_json(os.path.join(HERE, "running_now_families.json"))
@@ -389,12 +472,15 @@ def build_tree(env, table, rows):
         r = by_pid[pid]
         hit = own_hit(pid)
         res = None
-        if hit and hit[3].group(0) and hit[2] != "selftest":
+        if hit and hit[3].group(0) and hit[2] not in ("selftest", "window"):
             res = hit
         else:
             parent = r["ppid"]
             if parent in by_pid and parent > 1 and parent not in seen:
                 res = owner(parent, seen + (pid,))
+            # a claude-seat-<name>-<number> scope is a window of its own unless a run that owns its agents started it
+            if hit and hit[2] == "window" and (res is None or res[2] not in ("worker", "role", "helper")):
+                res = hit
             if res is None and hit:
                 res = hit
         memo[pid] = res
@@ -426,6 +512,7 @@ def build_tree(env, table, rows):
         g["age"] = max(r["age"] for r in g["procs"])
         main = min(agents, key=lambda r: r["pid"]) if agents else None
         g["model"] = g["name"] = g["cwd"] = ""
+        g["main_pid"] = main["pid"] if main else None
         if main:
             mm = re.search(r"--model\s+(\S+)", main["args"])
             g["model"] = mm.group(1) if mm else ""
@@ -568,10 +655,14 @@ def collect_tick(env, state):
 def collect_throughput(env, now):
     """Last 24 h, from Relentless's own records: the blind-check verdict file and the tick journal's acts."""
     cut = now - 86400
-    t = collections.Counter()
-    closed_by_hour = [0] * 24
-    recent_done = []
+    days = [collections.Counter() for _ in range(USUAL_DAYS + 1)]     # days[0] is the 24 h on the page, the rest its baseline
+    t = days[0]
+    start = now - TREND_POINTS * TREND_BUCKET
+    trend = {"closed": [0] * TREND_POINTS, "blind_fail": [0] * TREND_POINTS}
+    closed_day = collections.Counter()
+    recent_done, feed = [], []
     seen = set()
+    first_verdict = None
     text = env.read_text(RELENTLESS_STORE + "/shadow.jsonl")
     lines = text.splitlines()
     for i, line in enumerate(lines):
@@ -585,9 +676,12 @@ def collect_throughput(env, now):
                 continue
             raise Unmeasured("shadow.jsonl line %d is broken" % (i + 1))
         # one row per shadow rule, so a verdict can have several: its nonce makes it one verdict
-        if isinstance(d.get("at"), (int, float)) and d["at"] >= cut and d.get("nonce") not in seen:
-            seen.add(d.get("nonce"))
-            t[d.get("word")] += 1
+        if isinstance(d.get("at"), (int, float)) and d.get("nonce") not in seen:
+            first_verdict = d["at"] if first_verdict is None else min(first_verdict, d["at"])
+            k = int((now - d["at"]) // 86400)
+            if 0 <= k <= USUAL_DAYS:
+                seen.add(d.get("nonce"))
+                days[k][d.get("word")] += 1
     text, cut_off = env.read_tail(RELENTLESS_STORE + "/journal.jsonl", JOURNAL_TAIL)
     lines = text.splitlines()
     first = None
@@ -605,19 +699,126 @@ def collect_throughput(env, now):
                 continue
             raise Unmeasured("journal.jsonl tail line %d is broken" % (i + 1))
         first = at if first is None else min(first, at)
-        if at < cut:
-            continue
+        k = int((now - at) // 86400)
+        b = int((at - start) // TREND_BUCKET)
         for x in d.get("acts") or []:
             w = x.get("do")
-            t[w] += 1
+            if 0 <= k <= USUAL_DAYS:
+                days[k][w] += 1
             if w == "done":
-                closed_by_hour[min(23, int((at - cut) // 3600))] += 1
+                closed_day[time.strftime("%Y%m%d", time.gmtime(at))] += 1
+            if 0 <= b < TREND_POINTS and w in ("done", "blind_fail"):
+                trend["closed" if w == "done" else "blind_fail"][b] += 1
+            if at >= cut and w == "done":
                 recent_done.append((at, x.get("item") or ""))
+            if at >= start and w in FEED_WORD:
+                feed.append((at, FEED_WORD[w], x.get("item") or ""))
     recent_done.sort(reverse=True)
-    return {"pass": t["PASS"], "weak": t["WEAK"], "fail": t["FAIL"] + t["game_fail"],
-            "unmeasured": t["game_unmeasured"] + t["game_proof_unmeasured"], "refused": t["game_refused"] + t["start_refused"] + t["close_refused"],
-            "closed": t["done"], "blind_fail": t["FAIL"], "put_back": t["returned"], "by_hour": closed_by_hour, "recent": recent_done[:3],
-            "short": bool(cut_off and first is not None and first > cut)}
+    feed.sort(reverse=True)
+
+    def fold(c):
+        return {"closed": c["done"], "pass": c["PASS"], "weak": c["WEAK"], "fail": c["FAIL"] + c["game_fail"],
+                "unmeasured": c["game_unmeasured"] + c["game_proof_unmeasured"], "refused": c["game_refused"] + c["start_refused"] + c["close_refused"]}
+
+    # a window counts toward "usual" only when the record behind that count reaches back past its start
+    out = fold(t)
+    from_journal = first if first is not None else now
+    from_verdicts = first_verdict if first_verdict is not None else now
+    reach = {"closed": from_journal, "unmeasured": from_journal, "refused": from_journal, "pass": from_verdicts, "weak": from_verdicts,
+             "fail": max(from_journal, from_verdicts)}
+    usual = {}
+    for key, since in reach.items():
+        vals = [fold(days[k])[key] for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= since]
+        if vals:
+            usual[key] = (min(vals), max(vals))
+    out.update({"blind_fail": t["FAIL"], "put_back": t["returned"], "recent": recent_done[:3], "trend": trend, "feed": feed[:30], "closed_day": closed_day,
+                "usual": usual,
+                "short": bool(cut_off and first is not None and first > cut)})
+    return out
+
+
+def merged(rows):
+    """Sorted (start, end) intervals -> the same with overlaps joined."""
+    out = []
+    for a, b in sorted(rows):
+        if out and a <= out[-1][1]:
+            out[-1] = (out[-1][0], max(out[-1][1], b))
+        else:
+            out.append((a, b))
+    return out
+
+
+def share_of(intervals, t0, t1):
+    """The fraction of [t0, t1] the merged intervals cover."""
+    return sum(max(0, min(b, t1) - max(a, t0)) for a, b in intervals) / max(t1 - t0, 1)
+
+
+def bridge_intervals(events, now):
+    """Ledger (epoch, state) -> merged spans somebody held the bridge. Each event only speaks for HOLD_CAP after it."""
+    out, held, last = [], False, None
+    for at, state in events:
+        if held:
+            out.append((last, min(at, last + HOLD_CAP)))
+        held, last = state != "released", at
+    if held:
+        out.append((last, min(now, last + HOLD_CAP)))
+    return merged(out)
+
+
+def collect_archmagi_live(env, now, items, hist):
+    """Last 24 h of live testing here: proof rows by result, what they closed and found, and how busy the game was."""
+    text = env.read_text(LIVE_RUNS)
+    lines = text.splitlines()
+    days = [collections.Counter() for _ in range(USUAL_DAYS + 1)]
+    start = now - TREND_POINTS * TREND_BUCKET
+    proofs = [0] * TREND_POINTS
+    bugs, passed = set(), set()
+    first = None
+    for i, line in enumerate(lines):
+        try:
+            d = json.loads(line)
+            at = iso_epoch(d["at"])
+        except (ValueError, KeyError, TypeError):
+            if i == len(lines) - 1 and not text.endswith("\n"):
+                continue
+            raise Unmeasured("runs.jsonl line %d is broken" % (i + 1))
+        first = at if first is None else min(first, at)
+        k = int((now - at) // 86400)
+        if 0 <= k <= USUAL_DAYS:
+            days[k][d.get("outcome")] += 1
+        if d.get("outcome") == "PASS":
+            passed.add(d.get("item"))
+        if k == 0 and d.get("outcome") == "FAIL":
+            bugs.add((d.get("item"), d.get("criterion")))
+        b = int((at - start) // TREND_BUCKET)
+        if 0 <= b < TREND_POINTS:
+            proofs[b] += 1
+    if first is None:
+        raise Unmeasured("runs.jsonl holds no rows")
+    whole = [sum(days[k].values()) for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= first]
+    out = {"rows": days[0], "bugs": len(bugs), "usual_rows": (min(whole), max(whole)) if whole else None, "proofs": proofs, "closed": None}
+    if items:
+        out["closed"] = sum(1 for s in items["by_status"]["done"] if now - (s.get("done_at") or 0) <= 86400 and s.get("item") in passed)
+    spans, why = guarded(lambda: bridge_intervals(env.bridge_events(), now))
+    out["busy"] = share_of(spans, now - 86400, now) if spans is not None else None
+    out["idle_trend"] = None if spans is None else [1 - share_of(spans, start + j * TREND_BUCKET, start + (j + 1) * TREND_BUCKET) for j in range(TREND_POINTS)]
+    out["busy_why"] = why
+    day = [r for r in hist if now - r["t"] <= 86400 and "game" in (r.get("f") or {})]
+    out["game_up"] = sum(1 for r in day if r["f"]["game"]) / len(day) if day else None
+    return out
+
+
+def collect_tokens(env, now, thr):
+    """Tokens per item closed (a trial): Relentless's own spend files over its own closes, per UTC day."""
+    rows = []
+    for k in range(0, 8):
+        day = time.strftime("%Y%m%d", time.gmtime(now - k * 86400))
+        got, _ = guarded(env.read_json, "%s/spend-%s.json" % (RELENTLESS_STORE, day))
+        if got and isinstance(got.get("spent"), (int, float)) and thr["closed_day"][day]:
+            rows.append({"day": day, "spent": got["spent"], "closed": thr["closed_day"][day], "per": got["spent"] / thr["closed_day"][day]})
+    if not rows:
+        raise Unmeasured("no spend file with a closed item beside it")
+    return rows
 
 
 def titles_for(env, state, items):
@@ -679,7 +880,7 @@ def probe_steve(env):
     return cache
 
 
-def collect_steve(env, state):
+def collect_steve(env, state, items=None):
     now = env.now()
     sj = env.read_json(TESTQ + "/steward.json")
     if not isinstance(sj.get("epoch"), (int, float)):
@@ -694,12 +895,12 @@ def collect_steve(env, state):
     out["jobs_known"] = False
     names, why = guarded(env.listdir, TESTQ + "/done")
     if names is not None:
-        # the name dates the job's birth, not its finish: a week back catches one that sat queued (results are memoised)
-        days = {time.strftime("J%Y%m%d", time.gmtime(now - k * 86400)) for k in range(8)}
-        keep = {n for n in names if n[:9] in days and n.endswith(".json")}
+        # every result, read once: a job's name dates its birth, and one born a fortnight ago may finish this minute.
+        # A job finished over 8 days ago keeps only its finish time, so a later minute need not read it again.
+        keep = {n for n in names if n.endswith(".json")}
         memo = state.setdefault("steve_jobs", {})
         for n in list(memo):
-            if n not in keep:
+            if n not in keep or memo[n].get("v") != 2:
                 del memo[n]
         unread = 0
         for n in keep - set(memo):
@@ -709,16 +910,40 @@ def collect_steve(env, state):
                 unread += 1
                 continue
             r = j.get("result") or {}
-            fin = r.get("finished") or j.get("finished")
-            memo[n] = {"f": iso_epoch(fin) if fin else 0, "o": r.get("outcome") or "?", "c": r.get("cause") or "",
-                       "r": len(r.get("rows") or []), "p": (j.get("job") or {}).get("purpose") or ""}
-        day = [v for v in memo.values() if now - v["f"] <= 86400]
+            job = j.get("job") or {}
+            fin, begun = r.get("finished") or j.get("finished"), r.get("started")
+            cnt = r.get("counts") if isinstance(r.get("counts"), dict) else {}
+            memo[n] = {"v": 2, "f": iso_epoch(fin) if fin else 0, "s": iso_epoch(begun) if begun else 0, "o": r.get("outcome") or "?", "c": r.get("cause") or "",
+                       "r": len(r.get("rows") or []), "p": job.get("purpose") or "", "m": job.get("mod") or "", "i": job.get("item") or "",
+                       "k": {k: v for k, v in cnt.items() if isinstance(v, int)},
+                       "b": sorted({"%s/%s" % (x.get("chain"), x.get("row")) for x in (r.get("rows") or []) if isinstance(x, dict) and x.get("verdict") == "FAIL"})}
+        for n, v in memo.items():
+            if v["f"] and now - v["f"] > 8 * 86400:
+                memo[n] = {"v": 2, "f": v["f"]}
+        jobs = [v for v in memo.values() if "o" in v]
+        day = [v for v in jobs if now - v["f"] <= 86400]
         out["jobs_known"] = not unread
         out["done"] = sum(1 for v in day if v["o"] == "DONE")
         out["failed"] = sum(1 for v in day if v["o"] != "DONE")
         out["rows_h"] = sum(v["r"] for v in day) / 24.0
-        last = max(memo.values(), key=lambda v: v["f"]) if memo else None
-        out["last"] = last
+        out["last"] = max(jobs, key=lambda v: v["f"]) if jobs else None
+        earliest = min((v["f"] for v in memo.values() if v["f"]), default=now)
+        win = [[v for v in jobs if k <= (now - v["f"]) / 86400 < k + 1] for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= earliest]
+
+        def span(fn):
+            vals = [fn(w) for w in win]
+            return (min(vals), max(vals)) if vals else None
+
+        out["usual_done"] = span(lambda w: sum(1 for v in w if v["o"] == "DONE"))
+        out["usual_failed"] = span(lambda w: sum(1 for v in w if v["o"] != "DONE"))
+        out["usual_rows_h"] = span(lambda w: sum(v["r"] for v in w) / 24.0)
+        spans = merged([(v["s"], v["f"]) for v in jobs if v["s"] and v["f"] > v["s"]])
+        rows = collections.Counter()
+        for v in day:
+            rows.update(v["k"])
+        done_items = {s.get("item") for s in (items["by_status"]["done"] if items else []) if now - (s.get("done_at") or 0) <= 86400}
+        out["live"] = {"busy": share_of(spans, now - 86400, now), "rows": rows, "closed": len({v["i"] for v in day if v["i"] and v["i"] in done_items and v["k"].get("PASS")}) if items else None,
+                       "bugs": len({"%s %s" % (v["m"], b) for v in day for b in v["b"]}), "jobs": [(v["f"], v["o"], v["p"], v["m"]) for v in sorted(day, key=lambda v: -v["f"])[:6]]}
     return out
 
 
@@ -743,6 +968,15 @@ class Svg:
     def poly(self, pts, fill=EDGE):
         self.parts.append('<polygon points="%s" fill="%s"/>' % (" ".join("%.1f,%.1f" % p for p in pts), fill))
 
+    def polyline(self, pts, stroke=LIVE, sw=1.6):
+        self.parts.append('<polyline points="%s" fill="none" stroke="%s" stroke-width="%s" stroke-linejoin="round"/>' % (" ".join("%.1f,%.1f" % q for q in pts), stroke, sw))
+
+    def hover_open(self, words):
+        self.parts.append("<g><title>%s</title>" % escape(words))
+
+    def hover_close(self):
+        self.parts.append("</g>")
+
     def arrow_r(self, x1, x2, y, stroke=EDGE):
         self.line(x1, y, x2 - 6, y, stroke)
         self.poly([(x2, y), (x2 - 8, y - 5), (x2 - 8, y + 5)], stroke)
@@ -758,6 +992,72 @@ class Svg:
                 % (self.w, self.h, escape(self.label, {'"': "&quot;"}), self.w, self.w, self.h, BG, "".join(self.parts)))
 
 
+# --------------------------------------------------------------------------- what a number means
+def versus(n, usual, high_is_bad=True):
+    """A 24 h count against the same count in the six windows before it -> (note, colour)."""
+    if usual is None:
+        return "no baseline yet", DIM
+    fmt = "%d-%d" if all(float(x).is_integer() for x in usual) else "%.0f-%.0f"
+    rng = fmt % usual
+    if n > usual[1]:
+        return "high, usual %s" % rng, WARN if high_is_bad else GOOD
+    if n < usual[0]:
+        return "low, usual %s" % rng, GOOD if high_is_bad else WARN
+    return "normal, usual %s" % rng, DIM
+
+
+def against(n, top, words):
+    """A reading against a rough fixed top -> (note, colour)."""
+    return ("high, normal %s" % words, WARN) if n > top else ("ok, normal %s" % words, DIM)
+
+
+def tile(s, x, y, w, label, val, colour=TEXT, bar=None, note=None, note_colour=DIM, hover=None):
+    """One number with its verdict under it. A hover line is free: where the viewer shows it, it adds the why."""
+    if hover:
+        s.hover_open(hover)
+    s.rect(x, y, w, 62, CARD, None, 5)
+    s.text(x + 8, y + 14, label, 9.5, DIM, "700")
+    missing = val == "?"
+    # the mono face is 0.6 em wide: a long value shrinks to stay inside its tile
+    s.text(x + 8, y + 33, "UNMEASURED" if missing else val, 11 if missing else min(15, round((w - 16) / (len(str(val)) * 0.6), 1)), colour, "700", font=MONO)
+    if bar is not None:
+        s.rect(x + 8, y + 38, w - 16, 3, EDGE, None, 1)
+        s.rect(x + 8, y + 38, (w - 16) * min(bar, 1), 3, WARN if bar >= 0.9 else LIVE, None, 1)
+    if note:
+        s.text(x + 8, y + 53, clip(note, int((w - 12) / 4.7)), 9, note_colour)
+    if hover:
+        s.hover_close()
+
+
+def live_row(s, y, d, busy_means, closed_means):
+    """The Live Testing tiles, the same five on each machine, so the two read side by side."""
+    s.text(18, y - 6, "LIVE TESTING, LAST 24 H", 10.5, DIM, "700")
+    if d is None:
+        s.text(190, y - 6, "UNMEASURED", 10.5, WARN, "700")
+        return
+    busy = d.get("busy")
+    if busy is None:
+        tile(s, 14, y, 200, "BUSY / IDLE", "?", WARN)
+    else:
+        note, col = ("idle most of the day" if busy < 0.15 else "ok, normal busy 20-90%"), (WARN if busy < 0.15 else DIM)
+        tile(s, 14, y, 200, "BUSY / IDLE", "%d%% / %d%%" % (round(busy * 100), 100 - round(busy * 100)), TEXT, busy, note, col, busy_means)
+    r = d.get("rows") or {}
+    total = sum(r.values())
+    measured = r.get("PASS", 0) + r.get("FAIL", 0)
+    words = " ".join("%s %d" % (k, r.get(k, 0)) for k in ("PASS", "FAIL", "UNMEASURED", "REFUSED") if r.get(k) or k in ("PASS", "FAIL"))
+    if total:
+        low = measured / total < 0.3
+        note = "%d of %d measured%s" % (measured, total, ", most said nothing; normal over 30%" if low else "; normal over 30%")
+        tile(s, 222, y, 338, "PROOF ROWS BY RESULT", words, TEXT, measured / total, note, WARN if low else DIM, "PASS and FAIL measured something; UNMEASURED and REFUSED ran or were turned away without an answer")
+    else:
+        tile(s, 222, y, 338, "PROOF ROWS BY RESULT", "none", DIM, None, "no live proof ran in 24 h")
+    c = d.get("closed")
+    tile(s, 568, y, 150, "CLOSED BY LIVE PROOF", "?" if c is None else "%d items" % c, TEXT if c is not None else WARN, None, "closed with a PASS here", DIM, closed_means)
+    b = d.get("bugs")
+    tile(s, 726, y, 130, "BUGS FOUND", "%d" % b, BAD if b else TEXT, None, *against(b, 20, "0-20"), "Distinct clauses with a FAIL in 24 h. Some will turn out to be the harness, not the mod.")
+    tile(s, 864, y, 162, "FALSIFIED EXPECTATIONS", "not recorded", DIM, None, "nothing records these yet", DIM, "A player expectation a live test proved false. No program writes this down yet.")
+
+
 # --------------------------------------------------------------------------- the Relentless panel
 def item_line(st, now, title, n):
     since = st.get("started_at")
@@ -768,13 +1068,43 @@ def item_line(st, now, title, n):
     return head + clip(title(st.get("item") or ""), n - len(head))
 
 
+def stage_since(st):
+    """When an item entered the stage it is in, by the field each stage writes; None when the stage has no clock."""
+    def field(d, k):
+        v = d.get(k) if isinstance(d, dict) else None
+        return float(v) if isinstance(v, (int, float)) else None
+    status = st.get("status")
+    chk, cand = st.get("check"), st.get("candidate")
+    return {"queued": field(st, "returned_at") or field(st, "enrolled_at"), "running": field(st, "started_at"), "candidate": field(cand, "at"),
+            "checking": field(chk, "at"), "closing": field(st, "tomb_since") or field(chk, "verdict_at") or field(cand, "at"),
+            "game": field(st.get("game"), "entered_at"), "held": field(st.get("hold"), "at"), "blocked": field(st, "blocked_at"),
+            "stopping": field(st, "stopping_since"), "retiring": field(st, "stopping_since")}.get(status)
+
+
+def oldest_in(it, name, now):
+    """-> (age seconds, item) of the stage's oldest item, or None."""
+    rows = [(now - t, x.get("item") or "") for x in it["by_status"][name] for t in [stage_since(x)] if t]
+    return max(rows) if rows else None
+
+
+def trend_rows(p):
+    """The four lines the owner chose: label, two-hour points, colour, how to print a point. A line it cannot read is None."""
+    thr, live = p["throughput"], p["live_here"]
+    tr = thr["trend"] if thr else {}
+    count = lambda v: "%d" % v  # noqa: E731
+    return [("closed", tr.get("closed"), GOOD, count), ("Judge fails", tr.get("blind_fail"), BAD, count),
+            ("live proofs", live["proofs"] if live else None, LIVE, count),
+            ("game idle", live.get("idle_trend") if live else None, WARN, lambda v: "%d%%" % round(v * 100))]
+
+
 def pipeline_svg(p):
     """The instrument panel. Numbers are the primary layer; items secondary; arrows context."""
     now, it, thr, title = p["now"], p["items"], p["throughput"], p["title"]
-    W, H = 1040, 512
-    s = Svg(W, H, "Relentless pipeline: stage counts, places, tick, breaker, last 24 hours")
+    W, H = 1040, 584
+    s = Svg(W, H, "Relentless Pipeline: stage counts, places, tick, breaker, trends, last 24 hours")
     # ---- header gauges
-    s.text(18, 34, "RELENTLESS", 22, TEXT, "700")
+    s.text(18, 34, "RELENTLESS", 20, TEXT, "700")
+    s.text(18, 58, "PIPELINE", 20, TEXT, "700")
     places, live = p["places"], it["live"] if it else None
     x = 172
     s.text(x, 20, "PLACES", 10, DIM, "600")
@@ -783,33 +1113,53 @@ def pipeline_svg(p):
             s.rect(x + i * 17, 26, 14, 12, LIVE if i < live else "none", LIVE if i < live else FAINT, 2)
         x2 = x + max(places, live) * 17 + 4
         s.text(x2, 37, "%d / %d" % (live, places), 15, TEXT, "700", font=MONO)
+        under = live < places - 2
+        s.text(x, 50, "under, normal %d-%d" % (places - 2, places + 1) if under else "ok, normal %d-%d" % (places - 2, places + 1), 9, WARN if under else DIM)
     else:
-        x2 = x
         s.text(x, 37, "UNMEASURED", 13, WARN, "700")
     tick, gx = p["tick"], 390
 
-    def gauge(xx, label, value, colour=TEXT):
-        s.text(xx, 20, label, 10, DIM, "600")
-        s.text(xx, 37, value, 13, colour, "700", font=MONO)
+    def gauge(xx, label, value, colour=TEXT, note=None, note_colour=DIM, yy=0):
+        s.text(xx, 20 + yy, label, 10, DIM, "600")
+        s.text(xx, 37 + yy, value, 13, colour, "700", font=MONO)
+        if note:
+            s.text(xx, 50 + yy, note, 9, note_colour)
 
     if tick:
+        limit = tick["limit_s"]
+        note = "normal under %s" % ago(limit * 0.8) if limit else "no limit read"
         if tick["running"]:
-            over = tick["limit_s"] and tick["for_s"] > tick["limit_s"] * 0.8
-            val = "running %s" % ago(tick["for_s"]) + (" of %s" % ago(tick["limit_s"]) if tick["limit_s"] else "")
-            gauge(gx, "TICK", val, WARN if over else TEXT)
+            over = limit and tick["for_s"] > limit * 0.8
+            val = "running %s" % ago(tick["for_s"]) + (" of %s" % ago(limit) if limit else "")
+            gauge(gx, "TICK", val, WARN if over else TEXT, ("near the limit, " if over else "ok, ") + note, WARN if over else DIM)
         else:
-            gauge(gx, "TICK", "%s ago, took %s" % (ago(tick["ended_s"]), ago(tick["last_s"]) if tick["last_s"] else "UNMEASURED"), BAD if tick["result"] not in ("success", "") else TEXT)
+            gauge(gx, "TICK", "%s ago, took %s" % (ago(tick["ended_s"]), ago(tick["last_s"]) if tick["last_s"] else "UNMEASURED"), BAD if tick["result"] not in ("success", "") else TEXT,
+                  ("last run failed; " if tick["result"] not in ("success", "") else "ok, ") + note)
     else:
         gauge(gx, "TICK", "UNMEASURED", WARN)
     br = breaker_word(p)
-    gauge(600, "BREAKER", br, WARN if br == "UNMEASURED" else (GOOD if br == "clear" else BAD))
-    gauge(700, "LIVE GAME", p["game_text"], p["game_colour"])
+    gauge(600, "BREAKER", br, WARN if br == "UNMEASURED" else (GOOD if br == "clear" else BAD), "normal clear")
     gi = p.get("game_idle")
-    s.text(700, 52, "idle %d%% of %d min" % (gi["idle_pct"], gi["window_min"]) if gi else "idle UNMEASURED", 11,
-           WARN if not gi or (gi["idle_pct"] >= 50 and gi["waiting"]) else DIM, "600", font=MONO)
-    gauge(900, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN)
+    idle_note = "idle %d%% of %d min, %d wait; normal under 50%%" % (gi["idle_pct"], gi["window_min"], gi["waiting"]) if gi else "idle UNMEASURED"
+    gauge(700, "LIVE GAME", p["game_text"], p["game_colour"], idle_note, WARN if not gi or (gi["idle_pct"] >= 50 and gi["waiting"]) else DIM)
+    # second row: what the pipeline costs and what it is for
+    yy = 52
+    tk = p["tokens"]
+    gauge(172, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN, "UTC day; yesterday %s" % tokens(tk[1]["spent"]) if tk and len(tk) > 1 else None, yy=yy)
+    if tk:
+        full = tk[1:] or tk
+        pers = [r["per"] for r in full]
+        gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "%s" % tokens(full[0]["per"]), TEXT, "%s/%s: %d closed; days seen %s-%s" % (full[0]["day"][4:6], full[0]["day"][6:], full[0]["closed"], tokens(min(pers)), tokens(max(pers))), yy=yy)
+    else:
+        gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "UNMEASURED", WARN, yy=yy)
+    ac = p["accepted"]
+    if ac:
+        gauge(600, "MODS ACCEPTED, GOAL IS ALL", "%d of %d" % (ac["green"], ac["total"]), WARN if ac["green"] * 2 < ac["total"] else TEXT,
+              "GREEN at today's code; %d green at older code, %d red, %d draft, %d never run" % (ac["stale"], ac["red"], ac["draft"], ac["never"]), yy=yy)
+    else:
+        gauge(600, "MODS ACCEPTED, GOAL IS ALL", "UNMEASURED", WARN, yy=yy)
     # ---- the belt
-    cw, gap, x0, y0, ch = 152, 20, 16, 86, 150
+    cw, gap, x0, y0, ch = 152, 20, 16, 138, 170
     cx = {}
     for i, name in enumerate(BELT):
         x = x0 + i * (cw + gap)
@@ -817,12 +1167,17 @@ def pipeline_svg(p):
         n = it["counts"][name] if it else None
         hot = name in ("running", "checking") and n
         s.rect(x, y0, cw, ch, CARD, LIVE if hot else (GOOD if name == "done" else EDGE), 7, 2 if hot else 1)
+        top, words = STAGE_NORMAL[name]
         s.text(x + 10, y0 + 19, name.upper(), 11, DIM, "700")
-        s.text(x + 10, y0 + 54, "UNMEASURED" if n is None else n, 13 if n is None else 34, WARN if n is None else (TEXT if n else FAINT), "700", font=MONO)
+        s.text(x + 10, y0 + 54, "UNMEASURED" if n is None else n, 13 if n is None else 34, WARN if n is None or (top and n > top) else (TEXT if n else FAINT), "700", font=MONO)
         word = BELT_WORD[name]
         if name == "done" and thr and thr["recent"]:
             word = "closed, last %s ago" % ago(now - thr["recent"][0][0])
         s.text(x + 10, y0 + 70, word, 10.5, DIM)
+        s.text(x + 10, y0 + 83, ("high, " if n is not None and top and n > top else "") + "normal " + words, 9, WARN if n is not None and top and n > top else FAINT)
+        old = oldest_in(it, name, now) if it else None
+        if old:
+            s.text(x + 10, y0 + 96, "oldest %s" % ago(old[0]), 9.5, TEXT, "600")
         lines = []
         if it and name in ("running", "checking", "candidate", "closing"):
             rows = sorted(it["by_status"][name], key=lambda v: v.get("started_at") or 0)
@@ -836,22 +1191,22 @@ def pipeline_svg(p):
             ret = sum(1 for v in it["by_status"]["queued"] if v.get("returns"))
             lines = ["%d failed a check before" % ret] + (["%d expedited" % exp] if exp else [])
             if thr:
-                lines.append("%d stopped, put back 24 h" % thr["put_back"])
+                lines.append("%d put back in 24 h" % thr["put_back"])
         for j, ln in enumerate(lines):
-            s.text(x + 10, y0 + 88 + j * 15, ln, 10.5, TEXT if name != "queued" else DIM, font=MONO)
+            s.text(x + 10, y0 + 112 + j * 14, ln, 10.5, TEXT if name != "queued" else DIM, font=MONO)
         if i < len(BELT) - 1:
             s.arrow_r(x + cw + 1, x + cw + gap - 1, y0 + 40, BAR)
     # FAIL loop: checking back to queued, along the top of the belt
-    ly = 66
+    ly = 120
     qx, kx = cx["queued"] + cw / 2, cx["checking"] + cw / 2
     s.line(kx, y0, kx, ly, BAD, 1.5)
     s.line(kx, ly, qx, ly, BAD, 1.5)
     s.arrow_d(qx, ly, y0, BAD)
-    label = "blind check FAIL goes back to the queue: %s in 24 h" % (thr["blind_fail"] if thr else "UNMEASURED")
+    label = "a Judge's FAIL goes back to the queue: %s in 24 h" % (thr["blind_fail"] if thr else "UNMEASURED")
     s.rect(qx + 96, ly - 9, len(label) * 5.9 + 16, 18, BG, None, 0)
     s.text(qx + 104, ly + 4, label, 11, BAD, "600")
     # ---- side branches off RUNNING
-    ry, sy, sh = y0 + ch + 18, y0 + ch + 34, 58
+    ry, sy, sh = y0 + ch + 18, y0 + ch + 34, 70
     runx = cx["running"] + cw / 2
     s.line(runx, y0 + ch, runx, ry, FAINT, 1.5, "4 3")
     s.line(cx["queued"] + cw / 2, ry, cx["closing"] + cw + 20 + cw / 2, ry, FAINT, 1.5, "4 3")
@@ -864,36 +1219,50 @@ def pipeline_svg(p):
         s.rect(x, sy, cw, sh, CARD, EDGE, 6)
         s.text(x + 10, sy + 16, name.upper(), 10.5, DIM, "700")
         s.text(x + cw - 10, sy + 26, "UNMEASURED" if n is None else n, 11 if n is None else 24, WARN if n is None else (TEXT if n else FAINT), "700", "end", MONO)
-        s.text(x + 10, sy + 46, SIDE_WORD[name], 10, DIM)
+        s.text(x + 10, sy + 42, SIDE_WORD[name], 10, DIM)
+        top, words = STAGE_NORMAL[name]
+        high = n is not None and top and n > top
+        old = oldest_in(it, name, now) if it else None
+        s.text(x + 10, sy + 58, ("oldest %s, " % ago(old[0]) if old else "") + ("high, " if high else "") + "normal " + words, 9, WARN if high else FAINT)
     # ---- throughput: common zero baseline, direct labels
     ty = sy + sh + 18
     s.line(16, ty - 8, W - 16, ty - 8, EDGE, 1)
-    s.text(18, ty + 8, "LAST 24 H, EVENTS", 10.5, DIM, "700")
+    s.text(18, ty + 8, "LAST 24 H, EVENTS (SEVERAL PER ITEM)", 10.5, DIM, "700")
     if thr:
-        rows = [("CLOSED", thr["closed"], GOOD), ("PASS", thr["pass"], GOOD), ("WEAK", thr["weak"], WARN), ("FAIL", thr["fail"], BAD),
-                ("UNMEASURED", thr["unmeasured"], WARN), ("REFUSED", thr["refused"], BAR)]
-        top = max(max(r[1] for r in rows), 1)
-        for j, (lab, n, col) in enumerate(rows):
+        rows = [("CLOSED", "closed", GOOD, False), ("PASS", "pass", GOOD, False), ("WEAK", "weak", WARN, True), ("FAIL", "fail", BAD, True),
+                ("GAME UNMEASURED", "unmeasured", WARN, True), ("REFUSED", "refused", BAR, True)]
+        top = max(max(thr[r[1]] for r in rows), 1)
+        for j, (lab, key, col, bad) in enumerate(rows):
             yy = ty + 18 + j * 19
-            s.text(100, yy + 11, lab, 11, DIM, anchor="end", weight="600")
-            s.rect(108, yy + 1, 12 + 340, 13, CARD, None, 2)
-            s.rect(108, yy + 1, max(340 * n / top, 2 if n else 0), 13, col, None, 2)
-            s.text(460, yy + 12, n, 12, TEXT, "700", font=MONO)
-        # closures per hour, zero-based columns
-        bx, bw, by, bh = 540, 480, ty + 22, 92
-        top_h = max(max(thr["by_hour"]), 1)
-        s.text(bx, ty + 8, "CLOSED PER HOUR", 10.5, DIM, "700")
-        s.text(bx + bw, ty + 8, "tallest hour %d" % top_h, 10.5, DIM, anchor="end")
-        for j, n in enumerate(thr["by_hour"]):
-            hh = bh * n / top_h
-            s.rect(bx + j * 20, by + bh - hh, 16, max(hh, 1), GOOD if n else EDGE, None, 1)
-        s.line(bx, by + bh + 1, bx + bw, by + bh + 1, EDGE, 1)
-        s.text(bx, by + bh + 14, "24 h ago", 10, DIM)
-        s.text(bx + bw, by + bh + 14, "now", 10, DIM, anchor="end")
-        if thr["short"]:
-            s.text(bx + bw / 2, by + bh + 14, "journal tail covers less than 24 h", 10, WARN, anchor="middle")
+            n = thr[key]
+            note, ncol = versus(n, thr["usual"].get(key), bad)
+            s.text(112, yy + 11, lab, 10.5, DIM, anchor="end", weight="600")
+            s.rect(118, yy + 1, 190, 13, CARD, None, 2)
+            s.rect(118, yy + 1, max(190 * n / top, 2 if n else 0), 13, col, None, 2)
+            s.text(314, yy + 12, n, 12, TEXT, "700", font=MONO)
+            s.text(350, yy + 11, note, 9, ncol)
     else:
         s.text(120, ty + 40, "UNMEASURED: %s" % clip(p["throughput_why"], 100), 13, WARN, "700")
+    # trends: each line on its own zero baseline, since a count and a share cannot share an axis
+    bx, lx, rx, rh = 486, 556, 900, 28
+    s.text(bx, ty + 8, "TRENDS, 48 H, TWO-HOUR POINTS", 10.5, DIM, "700")
+    for j, (lab, vals, col, show) in enumerate(trend_rows(p)):
+        yy = ty + 18 + j * rh
+        s.text(bx, yy + 17, lab, 10.5, DIM, weight="600")
+        s.line(lx, yy + rh - 4, rx, yy + rh - 4, EDGE, 1)
+        if vals is None:
+            s.text(lx + 4, yy + 17, "UNMEASURED", 10, WARN, "700")
+            continue
+        top = max(max(vals), 1 if lab != "game idle" else 1.0)
+        n = len(vals) - 1
+        s.polyline([(lx + (rx - lx) * i / n, yy + rh - 4 - (rh - 8) * v / top) for i, v in enumerate(vals)], col)
+        s.text(rx + 8, yy + 17, "now " + show(vals[-1]), 10.5, TEXT, "700", font=MONO)
+        s.text(1024, yy + 17, "top " + show(top if lab != "game idle" else max(vals)), 9, DIM, anchor="end")
+    yy = ty + 18 + 4 * rh
+    s.text(lx, yy + 9, "48 h ago", 9, DIM)
+    s.text(rx, yy + 9, "now", 9, DIM, anchor="end")
+    if thr and thr["short"]:
+        s.text((lx + rx) / 2, yy + 9, "journal tail covers less than 24 h", 9, WARN, anchor="middle")
     return s.out()
 
 
@@ -901,7 +1270,7 @@ def pipeline_text(p):
     """The same panel as a monospace rail: the fallback twin, and what a raw text reader sees."""
     it, thr = p["items"], p["throughput"]
     if not it:
-        return "RELENTLESS  stages UNMEASURED"
+        return "RELENTLESS PIPELINE  stages UNMEASURED"
     c = it["counts"]
     top = max([c[k] for k in BELT + SIDE] + [1])
 
@@ -911,7 +1280,7 @@ def pipeline_text(p):
 
     side = {"running": "──▶ game %d, held %d, blocked %d" % (c["game"], c["held"], c["blocked"]),
             "closing": "    stopping %d, retiring %d ──▶ retired %d" % (c["stopping"], c["retiring"], c["retired"])}
-    out = ["RELENTLESS  places %d/%s  breaker %s" % (it["live"], p["places"] if p["places"] else "UNMEASURED",
+    out = ["RELENTLESS PIPELINE  places %d/%s  breaker %s" % (it["live"], p["places"] if p["places"] else "UNMEASURED",
                                                      breaker_word(p))]
     for i, name in enumerate(BELT):
         ln = rail(name)
@@ -919,11 +1288,16 @@ def pipeline_text(p):
             ln = "%-44s%s" % (ln, side[name])
         out.append(ln)
         if i < len(BELT) - 1:
-            out.append("  │" + ("  FAIL returns to queued: %s in 24 h" % thr["blind_fail"] if name == "checking" and thr else ""))
+            out.append("  │" + ("  a Judge's FAIL returns to queued: %s in 24 h" % thr["blind_fail"] if name == "checking" and thr else ""))
     gi = p.get("game_idle")
     out.append(game_idle_text(gi) if gi else "GAME idle UNMEASURED (%s)" % p.get("game_idle_why"))
     if thr:
-        out.append("24 h: closed %d, PASS %d, WEAK %d, FAIL %d, UNMEASURED %d, REFUSED %d" % (thr["closed"], thr["pass"], thr["weak"], thr["fail"], thr["unmeasured"], thr["refused"]))
+        out.append("24 h: closed %d, PASS %d, WEAK %d, FAIL %d, game-phase UNMEASURED %d, REFUSED %d" % (thr["closed"], thr["pass"], thr["weak"], thr["fail"], thr["unmeasured"], thr["refused"]))
+    title = p["title"]
+    olds = [(k, oldest_in(it, k, p["now"])) for k in BELT + SIDE]
+    out.append("oldest: " + "; ".join("%s %s (%s)" % (k, ago(o[0]), clip(title(o[1]), 40)) for k, o in olds if o))
+    for lab, vals, _, show in trend_rows(p):
+        out.append("trend %-12s %s" % (lab, " ".join(show(v) for v in vals) if vals else "UNMEASURED"))
     return "\n".join(out)
 
 
@@ -984,16 +1358,17 @@ def tree_lines(p):
     n_work = sum(1 for x in workers if x["kind"] == "work")
     n_chk = sum(1 for x in workers if x["kind"] == "check")
     n_other = len(workers) - n_work - n_chk      # the game stage and help runs are neither
-    L.append("├┄ RELENTLESS  workers %d, checkers %d%s, places %s of %s  [%d proc]" % (n_work, n_chk, ", other %d" % n_other if n_other else "", it["live"] if it else "UNMEASURED", p["places"] or "UNMEASURED", n_procs(rel_all)))
+    held = "%d/%d" % (it["live"], p["places"]) if it and p["places"] else "UNMEASURED"
+    L.append("├┄ RELENTLESS PIPELINE  Builders %d, Judges %d%s, places %s  [%d proc]" % (n_work, n_chk, ", other %d" % n_other if n_other else "", held, n_procs(rel_all)))
     L.append("│  ├─ supervisor tick: " + (kinds_text(sum((x["procs"] for x in sup), []), by_pid) or "not mid-run") + "  [%d proc]" % n_procs(sup))
     for i, w in enumerate(workers):
         branch = "└─" if i == len(workers) - 1 else "├─"
         st = it["by_short"].get(w["id"].split("-")[0]) if it else None
         name = title(st["item"]) if st else "item UNMEASURED"
         right = "%6s %-4s %5s" % (ago(w["age"]), w["model"][:4], tokens(st.get("spent")) if st else "UNMEASURED")
-        leaf("│  %s %-5s " % (branch, w["kind"] or "?"), name, right, w["procs"])
+        leaf("│  %s %-5s " % (branch, {"work": "build", "check": "judge"}.get(w["kind"], w["kind"] or "?")), name, right, w["procs"])
     if not workers:
-        L.append("│  └─ no worker or checker process running")
+        L.append("│  └─ no Builder or Judge process running")
     ghosts = ghost_places(p)
     if ghosts:
         L.append("│  ! %d items hold a place with no process: %s" % (len(ghosts), clip(title(ghosts[0]), W - 45)))
@@ -1001,7 +1376,9 @@ def tree_lines(p):
     for i, x in enumerate(roles):
         name = x["id"].rsplit("-", 1)[0].capitalize() if x["id"] else x["unit"]
         leaf("│  %s " % ("└─" if i == len(roles) - 1 else "├─"), name, "%6s %-4s" % (ago(x["age"]), x["model"][:4]), x["procs"])
-    L.append("└─ CONDUCTOR WINDOW  %s, %d helpers  [%d proc]" % (ago(cond[0]["age"]) if cond else "not running", len(helpers), n_procs(cond) + n_procs(helpers)))
+    inproc = p.get("cond_helpers")
+    inside = ", %s in-process" % ("UNMEASURED" if inproc is None else inproc) if cond else ""
+    L.append("└─ CONDUCTOR WINDOW  %s, helpers %d detached%s  [%d proc]" % (ago(cond[0]["age"]) if cond else "not running", len(helpers), inside, n_procs(cond) + n_procs(helpers)))
     if cond:
         leaf("   ├─ " if helpers else "   └─ ", "the window", "", sum((x["procs"] for x in cond), []))
     for i, x in enumerate(helpers):
@@ -1070,8 +1447,8 @@ def steve_headline(sv):
 
 def steve_svg(p):
     sv, cache, now = p["steve"], p["steve_cache"] or {}, p["now"]
-    W, H = 1040, 212
-    s = Svg(W, H, "SteveDesktop: state, machine stats and test jobs")
+    W, H = 1040, 332
+    s = Svg(W, H, "SteveDesktop: state, machine stats, test jobs and live testing")
     if not sv:
         s.text(18, 40, "STEVEDESKTOP  UNMEASURED: %s" % clip(p["steve_why"], 90), 16, WARN, "700")
         return s.out()
@@ -1091,19 +1468,14 @@ def steve_svg(p):
     good = cache.get("good") or {}
     good_age = now - cache["good_t"] if cache.get("good_t") else None
 
-    def tile(x, y, w, label, val, colour=TEXT, bar=None):
-        s.rect(x, y, w, 50, CARD, None, 5)
-        s.text(x + 8, y + 14, label, 9.5, DIM, "700")
-        missing = val == "?"
-        s.text(x + 8, y + 36, "UNMEASURED" if missing else val, 11 if missing else 15, colour, "700", font=MONO)
-        if bar is not None:
-            s.rect(x + 8, y + 42, w - 16, 3, EDGE, None, 1)
-            s.rect(x + 8, y + 42, (w - 16) * min(bar, 1), 3, WARN if bar >= 0.9 else LIVE, None, 1)
+    def tile_(x, y, w, label, val, colour=TEXT, bar=None, note=None, note_colour=DIM, hover=None):
+        tile(s, x, y, w, label, val, colour, bar, note, note_colour, hover)
 
     # ---- machine row
     y = 84
     routes = cache.get("routes") or {}
-    s.rect(14, y, 148, 50, CARD, None, 5)
+    s.rect(14, y, 148, 62, CARD, None, 5)
+    s.text(22, y + 53, "normal: all green", 9, DIM)
     s.text(22, y + 14, "ROUTES", 9.5, DIM, "700")
     for i, (k, lab) in enumerate((("tailscale", "tail"), ("lan", "LAN"), ("wsl", "wsl"))):
         v = routes.get(k)
@@ -1116,47 +1488,90 @@ def steve_svg(p):
 
     up = num("up")
     up = up if re.fullmatch(r"\d+(\.\d+)?", up) else ""
-    tile(cols[0][0], y, cols[0][1], "UPTIME", ago(float(up)).replace(" ", "") if up else "?", TEXT if up else WARN)
+    upv = float(up) if up else None
+    tile_(cols[0][0], y, cols[0][1], "UPTIME", ago(upv).replace(" ", "") if up else "?", TEXT if up else WARN, None, *(("just restarted", WARN) if upv is not None and upv < 900 else ("normal: hours+", DIM)))
     load, cores = num("load"), num("cores")
-    tile(cols[1][0], y, cols[1][1], "LOAD/%s" % (cores or "CORES?"), load or "?", TEXT if load else WARN)
+    lnote = against(float(load), float(cores), "0-%s" % cores) if load and cores else (None, DIM)
+    tile_(cols[1][0], y, cols[1][1], "LOAD/%s" % (cores or "CORES?"), load or "?", TEXT if load else WARN, None, lnote[0], lnote[1], "Processes wanting a CPU core. Below the core count means nothing is waiting.")
     ram = num("ram").split()
     if len(ram) == 2 and all(x.isdigit() for x in ram):
-        tile(cols[2][0], y, cols[2][1], "WSL RAM USED", "%.1f/%.0f GB" % (int(ram[0]) / 1024, int(ram[1]) / 1024), TEXT, int(ram[0]) / max(int(ram[1]), 1))
+        frac = int(ram[0]) / max(int(ram[1]), 1)
+        tile_(cols[2][0], y, cols[2][1], "WSL RAM USED", "%.1f/%.0f GB" % (int(ram[0]) / 1024, int(ram[1]) / 1024), TEXT, frac, *against(frac * 100, 85, "under 85%"))
     else:
-        tile(cols[2][0], y, cols[2][1], "WSL RAM USED", "?", WARN)
+        tile_(cols[2][0], y, cols[2][1], "WSL RAM USED", "?", WARN)
     cpu = good.get("cpu_pct")
-    tile(cols[3][0], y, cols[3][1], "CPU", "%d%%" % cpu if cpu is not None else "?", TEXT if cpu is not None else WARN, cpu / 100 if cpu is not None else None)
+    tile_(cols[3][0], y, cols[3][1], "CPU", "%d%%" % cpu if cpu is not None else "?", TEXT if cpu is not None else WARN, cpu / 100 if cpu is not None else None, "normal 0-90%", DIM)
     disk = num("disk").split()
-    tile(cols[4][0], y, cols[4][1], "DISK FREE", "%s GB" % disk[0] if disk else "?", TEXT if disk else WARN)
+    if disk:
+        tile_(cols[4][0], y, cols[4][1], "DISK FREE", "%s GB" % disk[0], TEXT, None, *(("low, normal over 100 GB", WARN) if int(disk[0]) < 100 else ("ok, normal over 100 GB", DIM)))
+    else:
+        tile_(cols[4][0], y, cols[4][1], "DISK FREE", "?", WARN)
     gpu = [x.strip() for x in num("gpu").split(",")]
     if len(gpu) == 4 and all(x.isdigit() for x in gpu[1:]):     # "[N/A]" on some cards
-        tile(cols[5][0], y, cols[5][1], "GPU " + re.sub(r"NVIDIA |GeForce ", "", gpu[0]), "%s%%  %.1f/%.0f GB" % (gpu[1], int(gpu[2]) / 1024, int(gpu[3]) / 1024), TEXT, int(gpu[1]) / 100)
+        tile_(cols[5][0], y, cols[5][1], "GPU " + re.sub(r"NVIDIA |GeForce ", "", gpu[0]), "%s%%  %.1f/%.0f GB" % (gpu[1], int(gpu[2]) / 1024, int(gpu[3]) / 1024), TEXT, int(gpu[1]) / 100, "normal 0-60% with the game up", DIM)
     else:
-        tile(cols[5][0], y, cols[5][1], "GPU", "?", WARN)
+        tile_(cols[5][0], y, cols[5][1], "GPU", "?", WARN)
     gm = num("game")
-    tile(cols[6][0], y, cols[6][1], "GAME", ("up" if gm != "0" else "down") if gm else "?", (LIVE if gm != "0" else DIM) if gm else WARN)
+    run_v, q_v = sv.get("running"), sv.get("pending")
+    wasted = gm == "0" and bool(q_v or run_v)
+    tile_(cols[6][0], y, cols[6][1], "GAME", ("up" if gm != "0" else "down") if gm else "?", (LIVE if gm != "0" else DIM) if gm else WARN, None, "down, jobs wait" if wasted else "normal: up", WARN if wasted else DIM)
 
     # ---- jobs row
-    y = 142
+    y = 154
     known = sv.get("jobs_known")
     n = lambda v: "?" if v is None else str(v)  # noqa: E731
-    run_v, q_v = sv.get("running"), sv.get("pending")
-    tile(14, y, 84, "RUNNING", n(run_v), BAD if idle else (LIVE if run_v else DIM))
-    tile(106, y, 84, "QUEUED", n(q_v), WARN if q_v and not run_v else TEXT)
-    tile(198, y, 92, "DONE 24 H", n(sv.get("done")) if known else "?", TEXT if known else WARN)
+    tile_(14, y, 84, "RUNNING", n(run_v), BAD if idle else (LIVE if run_v else DIM), None, "normal 1", WARN if run_v == 0 else DIM)
+    qn = against(q_v, 20, "0-20") if q_v is not None else (None, DIM)
+    tile_(106, y, 84, "QUEUED", n(q_v), WARN if q_v and not run_v else TEXT, None, qn[0], qn[1])
+    dn = versus(sv.get("done") or 0, sv.get("usual_done"), False) if known else (None, DIM)
+    tile_(198, y, 112, "DONE 24 H", n(sv.get("done")) if known else "?", TEXT if known else WARN, None, dn[0], dn[1])
     fl = sv.get("failed")
-    tile(298, y, 92, "FAILED 24 H", n(fl) if known else "?", (BAD if fl else DIM) if known else WARN)
+    fn = versus(fl or 0, sv.get("usual_failed")) if known else (None, DIM)
+    tile_(318, y, 112, "FAILED 24 H", n(fl) if known else "?", (BAD if fl else DIM) if known else WARN, None, fn[0], fn[1])
     last = sv.get("last")
     if last:
         word = last["o"] + ("/" + last["c"] if last["c"] else "")
-        tile(398, y, 268, "LAST JOB, %s AGO" % ago(now - last["f"]).upper(), clip("%s %s" % (last["p"], word), 30), GOOD if last["o"] == "DONE" else BAD)
+        tile_(438, y, 240, "LAST JOB, %s AGO" % ago(now - last["f"]).upper(), clip("%s %s" % (last["p"], word), 26), GOOD if last["o"] == "DONE" else BAD, None, "normal: under 1 h while the lane runs", DIM)
     else:
-        tile(398, y, 268, "LAST JOB", "none in 2 days" if known else "?", WARN)
-    tile(674, y, 110, "ROWS/HOUR 24 H", "%.0f" % sv["rows_h"] if known else "?", TEXT if known else WARN)
+        tile_(438, y, 240, "LAST JOB", "none in 8 days" if known else "?", WARN)
+    rn = versus(sv.get("rows_h") or 0, sv.get("usual_rows_h"), False) if known else (None, DIM)
+    tile_(686, y, 110, "ROWS/HOUR 24 H", "%.0f" % sv["rows_h"] if known else "?", TEXT if known else WARN, None, rn[0], rn[1])
     age = sv["age"]
-    tile(792, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT)
+    tile_(804, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT, None, "normal under 5 min", BAD if age > 300 else DIM)
     pa = "%s old" % ago(good_age) if good_age is not None else "never"
-    tile(902, y, 124, "MACHINE READING", pa, WARN if cache.get("why") or good_age is None or good_age > 900 else DIM)
+    tile_(914, y, 112, "MACHINE READING", pa, WARN if cache.get("why") or good_age is None or good_age > 900 else DIM, None, "normal under 15 min", DIM)
+    live_row(s, 248, sv.get("live"), "Busy: share of 24 h with a finished job running. A job still running counts once it ends.", "Jobs here that named an item, had PASS rows, and that item closed in 24 h")
+    return s.out()
+
+
+def game_gb(mem):
+    """tasklist's "1,291,932 K" -> "1.2 GB"; anything else as it came."""
+    digits = re.sub(r"\D", "", mem or "")
+    return "%.1f GB" % (int(digits) / 1048576) if digits else "memory not read"
+
+
+def archmagi_svg(p):
+    """This machine, drawn as SteveDesktop is, so the two panels read alike."""
+    W, H = 1040, 202
+    s = Svg(W, H, "Archmagi: game, machine stats and live testing")
+    s.text(18, 28, "ARCHMAGI", 18, TEXT, "700")
+    s.text(130, 28, p["game_text"], 14, p["game_colour"], "700", font=MONO)
+    d = p["local"]
+    y = 44
+    if d:
+        tile(s, 14, y, 110, "UPTIME", ago(d["up"]).replace(" ", ""), TEXT, None, *(("just restarted", WARN) if d["up"] < 900 else ("normal: hours+", DIM)))
+        tile(s, 132, y, 110, "LOAD/%d" % d["cores"], "%.1f" % d["load"], TEXT, None, *against(d["load"], d["cores"] * 1.5, "0-%d" % (d["cores"] * 1.5)), "Processes wanting a CPU core. This machine runs fine a little above its core count.")
+        frac = d["ram"][0] / max(d["ram"][1], 1)
+        tile(s, 250, y, 170, "WSL RAM USED", "%.1f/%.0f GB" % (d["ram"][0] / 1024, d["ram"][1] / 1024), TEXT, frac, *against(frac * 100, 85, "under 85%"))
+        tile(s, 428, y, 130, "EXT4 FREE", "%d GB" % d["disk"], TEXT, None, *(("low, normal over 100 GB", WARN) if d["disk"] < 100 else ("ok, over 100 GB", DIM)))
+        tile(s, 566, y, 130, "D: FREE", "%d GB" % d["disk_d"], TEXT, None, *(("low, normal over 100 GB", WARN) if d["disk_d"] < 100 else ("ok, over 100 GB", DIM)))
+    else:
+        s.text(18, y + 30, "machine stats UNMEASURED: %s" % clip(p["local_why"], 90), 12, WARN, "700")
+    w, live = p["win"], p["live_here"]
+    gu = live.get("game_up") if live else None
+    tile(s, 704, y, 322, "GAME THIS 24 H", "?" if not w else ("up, %s" % game_gb(w["game_mem"]) if w["game"] else "down"), TEXT if w else WARN, gu,
+         None if gu is None else "up %d%% of the minutes sampled; normal 60-100%%" % round(gu * 100), DIM)
+    live_row(s, 130, live, "Busy: share of 24 h somebody held the bridge, from the ledger's bridge events (a hold silent for 45 min stops counting).", "Items closed in 24 h with a PASS proof row here")
     return s.out()
 
 
@@ -1169,7 +1584,17 @@ def steve_text(p):
         "STEVEDESKTOP  %s  jobs running %s, queued %s, done 24 h %s, failed 24 h %s" % (sv.get("state"), sv.get("running"), sv.get("pending"), sv.get("done") if sv.get("jobs_known") else "UNMEASURED", sv.get("failed") if sv.get("jobs_known") else "UNMEASURED"),
         "routes %s" % " ".join("%s:%s" % (k, "up" if v else "DOWN") for k, v in (cache.get("routes") or {}).items()),
         "load %s  ram %s  disk %s  gpu %s  game %s" % tuple(g.get(k, "UNMEASURED") for k in ("load", "ram", "disk", "gpu", "game")),
+        live_text("live testing", sv.get("live")),
     ])
+
+
+def live_text(name, d):
+    if not d:
+        return "%s UNMEASURED" % name
+    busy = "UNMEASURED" if d.get("busy") is None else "%d%%" % round(d["busy"] * 100)
+    r = d.get("rows") or {}
+    return "%s 24 h: busy %s; proof rows %s; closed by a live proof %s; bugs found %s; falsified expectations not recorded" % (
+        name, busy, " ".join("%s %d" % kv for kv in sorted(r.items())) or "none", "UNMEASURED" if d.get("closed") is None else d["closed"], d.get("bugs"))
 
 
 # --------------------------------------------------------------------------- chains: fixed text, checked against code
@@ -1187,7 +1612,7 @@ def chains(p):
         ("WHO STARTS WHAT", [
             [("You", "the owner"), ("Conductor window", "a person's window"), ("Helpers", c("helper") + ", one task each")],
             [("rm-dispatcher.timer", "every 2 min, no AI"), ("Dispatcher", "caps, tickets, restarts seats"), ("Role runs", c("role") + ", read a role, stop")],
-            [("rm-relentless.timer", "every 2 min, own timer"), ("Supervisor", "no AI"), ("Workers", c("work") + ", private clones"), ("Blind checkers", c("check") + ", never saw the work")],
+            [("rm-relentless.timer", "every 2 min, own timer"), ("Supervisor", "no AI"), ("Builders", c("work") + ", private clones"), ("Judges", c("check") + ", never saw the work")],
             [("rm-artpiped", "art daemon"), ("codex_image.py", "one per render"), ("codex.exe", ("%d now on Windows" % p["win"]["codex"]) if p["win"] else "UNMEASURED")],
         ]),
         ("AN ALARM'S ROUTE", [
@@ -1195,7 +1620,7 @@ def chains(p):
              ("Conductor", "next rung"), ("Fresh Operations", "next rung"), ("You", "last rung")],
         ]),
         ("AN ITEM'S LIFE", [
-            [("Ledger item", "filed"), ("Queued", "enrolled"), ("Worker", "own clone"), ("Candidate", "a commit"), ("Blind check", "PASS or FAIL"), ("Closing", "landed"), ("Done", "deadman rechecks")],
+            [("Ledger item", "filed"), ("Queued", "enrolled"), ("Builder", "own clone"), ("Candidate", "a commit"), ("Judge", "PASS or FAIL"), ("Closing", "landed"), ("Done", "deadman rechecks")],
         ]),
         ("STEVE LANE", [
             [("testq-tick.timer", "every 60 s"), ("pending/", "job file, fill plan"), ("SteveDesktop", "over ssh, running/"), ("done/", "result file"), ("Steward", "2 not DONE = brake"), ("ingest", "rimflow verify")],
@@ -1282,6 +1707,208 @@ def status_strip(p):
     return " ".join(chip(t, sv_) for t, sv_ in chips), chips
 
 
+# --------------------------------------------------------------------------- the zero-token sections that replaced Fleet Watch
+BOX = '<div style="background:%s;color:%s;border-radius:10px;padding:10px 16px;max-width:1040px;box-sizing:border-box;font-family:%s;font-size:13px;line-height:1.5">' % (BG, TEXT, SANS.replace("'", ""))
+HEAD = '<div style="color:%s;font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:4px">%%s</div>' % DIM
+SMALL = '<span style="color:%s;font-size:11px">%%s</span>' % DIM
+MARK_COLOUR = {"pass": GOOD, "fail": BAD, "done": WARN, "park": DIM, "open": LIVE}
+# No <details> in these sections: in Typora a click on one marks the document modified (measured 2026-11-03), and a page
+# with unsaved edits asks to save on close and is no longer simply replaced by the next minute's write.
+
+
+def how_to_read(text):
+    """One line under a panel. Plain words, on one line, because the page is read by a person learning the system."""
+    return '<div style="max-width:1040px;color:%s;font-size:12px;margin:3px 2px 12px 2px"><b>How to read:</b> %s</div>' % (DIM, hesc(text))
+
+
+def box(*parts):
+    return BOX + "".join(parts) + "</div>"
+
+
+def fleet_of(p):
+    f = p.get("fleet")
+    return f if isinstance(f, dict) and f.get("mods") is not None else None
+
+
+def needs_html(p):
+    f = fleet_of(p)
+    if not f:
+        return box(HEAD % "NEEDS YOU", '<b style="color:%s">UNMEASURED</b> ' % WARN, hesc(clip(p.get("fleet_why") or "not read yet", 120)))
+    n = f["needs"]
+    rows = []
+    for t in n.get("topics") or []:
+        more = "".join("<div style='margin-left:18px;color:%s;font-size:12px'>also: %s</div>" % (DIM, hesc(clip(o, 120))) for o in t["others"])
+        rows.append("<div>• %s %s%s</div>" % (hesc(clip(t["q"], 130)), SMALL % hesc(t["items"][0] if len(t["items"]) == 1 else "%s, %d items" % (t["topic"], len(t["items"]))), more))
+    ans = n.get("answered") or []
+    tail = ""
+    if ans:
+        tail = '<div style="color:%s;font-size:12px;margin-top:6px">%d more you already answered; the next move is ours: %s</div>' % (DIM, len(ans), hesc(", ".join(a["item"] for a in ans)))
+    return box(HEAD % ("NEEDS YOU, %d" % n["count"]), "".join(rows) or "Nothing waits on you.", tail)
+
+
+def events_html(p):
+    """A static feed as of this refresh: the pipeline's acts, the Steve lane's finished jobs and the owner's notes."""
+    now = p["now"]
+    rows = event_rows(p)
+    if not rows:
+        return box(HEAD % "RECENT EVENTS", '<b style="color:%s">UNMEASURED</b>' % WARN)
+    body = "".join('<div><span style="color:%s;font-family:%s">%s</span> <b>%s</b> %s</div>' % (DIM, MONO.replace("'", ""), time.strftime("%H:%M", time.localtime(at)), hesc(word), hesc(clip(txt, 110)))
+                   for at, word, txt in rows[:18])
+    return box(HEAD % ("RECENT EVENTS, AS OF THIS REFRESH, THE LAST %s" % ago(now - rows[min(17, len(rows) - 1)][0]).upper()), body)
+
+
+def event_rows(p):
+    """(epoch, what, about), newest first."""
+    title = p["title"]
+    thr, sv = p["throughput"], p["steve"]
+    rows = []
+    if thr:
+        rows += [(at, word, title(item)) for at, word, item in thr["feed"]]
+    if sv and sv.get("live"):
+        rows += [(at, "Steve job %s" % o.lower(), " ".join(x for x in (m, pur) if x)) for at, o, pur, m in sv["live"]["jobs"]]
+    rows += [(at, "your note", txt) for at, txt in p.get("owner_notes") or []]
+    rows.sort(key=lambda r: -r[0])
+    return rows
+
+
+def receipts_html(p):
+    f = fleet_of(p)
+    if not f:
+        return box(HEAD % "FINISHED TODAY", '<b style="color:%s">UNMEASURED</b>' % WARN)
+    rows = f.get("receipts") or []
+
+    def row(r):
+        rc = r.get("receipt") or {}
+        words = rc.get("outcome") or clip(r.get("title") or r["item"], 100)
+        bits = [x for x in (r.get("where"), "check " + rc["check"] if rc.get("check") else "unchecked", "%d commits" % rc["commits"] if rc.get("commits") else "",
+                            tokens(rc["tokens"]) if rc.get("tokens") else "") if x]
+        return "<div>%s %s %s</div>" % (r.get("glyph") or "●", hesc(clip(words, 120)), SMALL % hesc(" · ".join(bits)))
+
+    return box(HEAD % ("FINISHED TODAY, %d ITEMS" % len(rows)), "".join(row(r) for r in rows) or "Nothing yet today.")
+
+
+def mods_html(p):
+    f = fleet_of(p)
+    if not f:
+        return box(HEAD % "PROGRESS BY MOD", '<b style="color:%s">UNMEASURED</b>' % WARN)
+
+    def task(t):
+        note = " · ".join(x for x in (t.get("date"), t.get("note")) if x)
+        return '<div><span style="color:%s">%s</span> %s %s</div>' % (MARK_COLOUR.get(t.get("kind"), DIM), t.get("mark") or "", hesc(clip(t.get("title") or "", 120)), SMALL % hesc(note) if note else "")
+
+    out = []
+    for m in f["mods"]:
+        line = ["<b>%s</b>" % hesc(m["name"]), SMALL % hesc(" · ".join(x for x in (m.get("meta"), m.get("backlog")) if x))]
+        inner = []
+        for k in ("proof", "next"):
+            if m.get(k):
+                inner.append('<div style="color:%s;font-size:12px">%s%s</div>' % (DIM, "Next: " if k == "next" else "", hesc(clip(m[k], 130))))
+        inner += ['<div style="color:%s;font-size:12px">%s</div>' % (WARN, hesc(clip(w, 130))) for w in m.get("waits") or []]
+        inner += [task(t) for t in m.get("tasks") or []]
+        if m.get("more"):
+            inner.append(SMALL % ("and %d more" % m["more"]))
+        out.append("<div style='margin-top:10px'>%s</div><div style='margin:2px 0 0 16px'>%s</div>" % (" ".join(line), "".join(inner)))
+    return box(HEAD % ("PROGRESS BY MOD, %d TOUCHED IN 7 DAYS, ✓ JUDGE PASSED · ✗ FAILED · ● UNCHECKED · ○ OPEN · ⏸ PARKED" % len(f["mods"])), "".join(out))
+
+
+def phone_copy(p, chips):
+    """The same reading in a few plain lines (owner 2026-11-04): no model, no SVG; the Conductor sends it when he asks for status."""
+    now, it, thr, f = p["now"], p["items"], p["throughput"], fleet_of(p)
+    out = ["RimMandrake %s" % time.strftime("%H:%M %Z", time.localtime(now)), " · ".join(t for t, _ in chips), ""]
+    if f:
+        n = f["needs"]
+        out.append("NEEDS YOU %d" % n["count"])
+        out += ["- " + clip(t["q"], 70) for t in (n.get("topics") or [])[:5]]
+        if len(n.get("topics") or []) > 5:
+            out.append("- and %d more" % (len(n["topics"]) - 5))
+    else:
+        out.append("NEEDS YOU UNMEASURED")
+    out += ["", "RELENTLESS PIPELINE"]
+    if it:
+        c = it["counts"]
+        out.append("places %d of %s; breaker %s" % (it["live"], p["places"] or "UNMEASURED", breaker_word(p)))
+        out.append("queued %d, building %d, waiting a Judge %d, judging %d, landing %d" % (c["queued"], c["running"], c["candidate"], c["checking"], c["closing"]))
+        out.append("set aside: game %d, held %d, blocked %d" % (c["game"], c["held"], c["blocked"]))
+    else:
+        out.append("stages UNMEASURED")
+    if thr:
+        out.append("24 h: closed %d (%s), Judge fails %d" % (thr["closed"], versus(thr["closed"], thr["usual"].get("closed"), False)[0], thr["blind_fail"]))
+    if p["tokens"]:
+        out.append("tokens per item closed (trial): %s" % tokens((p["tokens"][1:] or p["tokens"])[0]["per"]))
+    if p["accepted"]:
+        out.append("mods accepted: %d of %d" % (p["accepted"]["green"], p["accepted"]["total"]))
+    out += ["", "LIVE TESTING, 24 H"]
+
+    def machine(name, d):
+        if not d:
+            return "%s UNMEASURED" % name
+        busy = "UNMEASURED" if d.get("busy") is None else "%d%%" % round(d["busy"] * 100)
+        r = d.get("rows") or {}
+        return "%s: busy %s; PASS %d, FAIL %d, no answer %d; bugs %s" % (name, busy, r.get("PASS", 0), r.get("FAIL", 0), r.get("UNMEASURED", 0) + r.get("REFUSED", 0), d.get("bugs"))
+
+    sv = p["steve"]
+    out += [machine("Archmagi", p["live_here"]), machine("SteveDesktop", sv.get("live") if sv else None)]
+    if sv:
+        out.append("SteveDesktop %s" % (sv.get("state") or "UNMEASURED"))
+    rows = event_rows(p)
+    if rows:
+        out += ["", "LATEST"] + ["%s %s: %s" % (time.strftime("%H:%M", time.localtime(at)), word, clip(txt, 60)) for at, word, txt in rows[:6]]
+    return "\n".join(out) + "\n"
+
+
+def mods_status_counts(text):
+    """`modcheck status` lines -> counts by state. Its first word after the name is the state (a word stored in the file goes stale)."""
+    c = collections.Counter()
+    for line in text.splitlines():
+        m = re.match(r"\S+\s+(GREEN|STALE|RED|DRAFT-CHECKLIST|NEVER)\b", line)
+        if m:
+            c[m.group(1)] += 1
+    if not c:
+        raise Unmeasured("modcheck status printed no mod line")
+    return c
+
+
+def refresh_fleet(env, save=True):
+    """The slow half of the page, cached in FLEET_CACHE. A failed read keeps the last good one with its reason."""
+    now = env.now()
+    got, why = guarded(env.fleet_gather, now)
+    try:
+        old = env.read_json(FLEET_CACHE)
+    except Exception:       # noqa: BLE001 - first run or torn cache
+        old = {}
+    if got is None:
+        old.update({"t": now, "why": why})
+        out = old
+    else:
+        out = dict(got, t=now, good_t=now, why=None)
+    raw, why_m = guarded(env.mods_status)
+    if raw is not None:
+        c, why_m = guarded(mods_status_counts, raw)
+        if c is not None:
+            total = out.get("total_mods") or sum(c.values())
+            out["accepted"] = {"green": c["GREEN"], "stale": c["STALE"], "red": c["RED"], "draft": c["DRAFT-CHECKLIST"], "never": max(total - sum(c.values()) + c["NEVER"], 0), "total": total}
+    out["accepted_why"] = why_m
+    if save:
+        env.write_atomic(FLEET_CACHE, json.dumps(out, ensure_ascii=False))
+    return out
+
+
+def collect_owner_notes(env, now):
+    """His own recent words, from the tail of the ledger's OWNER shard (its older half is not this page's business)."""
+    text, cut = env.read_tail(LEDGER_EVENTS + "/OWNER.jsonl", 512 * 1024)
+    out = []
+    for line in text.splitlines():
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        if d.get("event") == "note" and d.get("text"):
+            at = iso_epoch(d["ts"]) if isinstance(d.get("ts"), str) else None
+            if at and now - at <= 172800:
+                out.append((at, "%s: %s" % (d.get("id") or "", d["text"])))
+    return out[-12:]
+
+
 # --------------------------------------------------------------------------- timers and history (last, collapsed)
 def timers_rows(timers, units, now):
     desc = {u["unit"]: u.get("description", "") for u in units or []}
@@ -1333,7 +1960,7 @@ def window_stats(hist, now, secs, label):
 
 
 # --------------------------------------------------------------------------- the page
-def gather(env, state):
+def gather(env, state, hist=(), write=True):
     now = env.now()
     fam = env.families()
     table = Table(fam)
@@ -1384,7 +2011,34 @@ def gather(env, state):
     p["throughput"], p["throughput_why"] = guarded(collect_throughput, env, now)
     if p["throughput_why"]:
         p["unmeasured"].append("24 h throughput (%s)" % p["throughput_why"])
-    p["steve"], p["steve_why"] = guarded(collect_steve, env, state)
+    p["steve"], p["steve_why"] = guarded(collect_steve, env, state, p["items"])
+    p["local"], p["local_why"] = guarded(env.local_stats)
+    p["live_here"], why = guarded(collect_archmagi_live, env, now, p["items"], hist)
+    if why:
+        p["unmeasured"].append("live proof rows (%s)" % why)
+    elif p["live_here"]["busy_why"]:
+        p["unmeasured"].append("bridge history (%s)" % p["live_here"]["busy_why"])
+    p["tokens"], why = (None, "no throughput") if not p["throughput"] else guarded(collect_tokens, env, now, p["throughput"])
+    if why:
+        p["unmeasured"].append("tokens per item (%s)" % why)
+    p["owner_notes"], _ = guarded(collect_owner_notes, env, now)
+    p["fleet"], p["fleet_why"] = guarded(env.read_json, FLEET_CACHE)
+    if not write and p["fleet"] is None:       # --print on a machine with no cache yet still draws the whole page
+        p["fleet"], p["fleet_why"] = guarded(refresh_fleet, env, False)
+    fl = fleet_of(p)
+    if not fl:
+        p["unmeasured"].append("mods, receipts and Needs you (%s)" % (p["fleet_why"] or "not read yet"))
+    elif fl.get("why"):
+        p["unmeasured"].append("mods, receipts and Needs you are %s old (%s)" % (ago(now - fl.get("good_t", 0)), clip(fl["why"], 80)))
+    p["accepted"] = (p["fleet"] or {}).get("accepted")
+    if not p["accepted"]:
+        p["unmeasured"].append("mods accepted (%s)" % ((p["fleet"] or {}).get("accepted_why") or "not read yet"))
+    conductors = [x for x in p["tree"]["groups"].values() if is_conductor(x)] if p["tree"] else []
+    p["cond_helpers"] = None
+    if conductors and conductors[0].get("main_pid"):
+        p["cond_helpers"], why = guarded(env.conductor_helpers, conductors[0]["main_pid"])
+        if why:
+            p["unmeasured"].append("Conductor's in-process helpers (%s)" % why)
     p["steve_cache"], _ = guarded(env.read_json, STEVE_CACHE)
 
     # who holds the live game: the bridge file first, then the game process
@@ -1408,12 +2062,18 @@ def gather(env, state):
             want.update(s.get("item") for s in it["by_status"][k])
     if p["throughput"]:
         want.update(i for _, i in p["throughput"]["recent"])
+        want.update(i for _, _, i in p["throughput"]["feed"])
+    if it:
+        for k in BELT + SIDE:
+            old = oldest_in(it, k, now)
+            if old:
+                want.add(old[1])
     p["title"] = titles_for(env, state, want)
     return p
 
 
-def build(env, state, hist):
-    p = gather(env, state)
+def build(env, state, hist, write=True):
+    p = gather(env, state, hist, write)
     now = p["now"]
     strip, chips = status_strip(p)
     tree, roots = tree_lines(p)
@@ -1432,7 +2092,24 @@ def build(env, state, hist):
             return "**%s: UNMEASURED**" % name
         return out
 
-    S = [panel("Relentless", pipeline_svg), "", panel("SteveDesktop", steve_svg), "", "```", "\n".join(tree), "```", "", panel("chains", chains_svg), ""]
+    # how many Judges may run above the ceiling comes from relentless.py admission(): a check takes extra=1
+    S = [panel("Needs you", needs_html), "",
+         panel("Relentless Pipeline", pipeline_svg),
+         how_to_read("Items move left to right; each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
+                     "A place is one running Builder or Judge, or one being stopped; 8 is the ceiling for starting a Builder. A Judge may start one place above it, because "
+                     "a cap never stops finishing work, and stopping runs still count, so 9 of 8 is normal and brief. The left bars count events, not items, and each says if it is usual for 24 h. "
+                     "GAME UNMEASURED is game-phase events only; every proof row, measured or not, is in Live Testing below. Trends each have their own zero line."), "",
+         panel("Archmagi", archmagi_svg),
+         how_to_read("This machine and its live game. Each number has its verdict underneath; Busy means somebody held the bridge. A proof row that says UNMEASURED or REFUSED ran or was turned away and learned nothing."), "",
+         panel("SteveDesktop", steve_svg),
+         how_to_read("The second machine, which only runs test jobs from its queue. The bar under a number shows how full it is; Busy means a job was running. Two jobs in a row not DONE brake the lane, which then reads red here."), "",
+         "```", "\n".join(tree), "```",
+         how_to_read("Every process has one owner, read down from Dispatch: [n proc] counts a branch, and each line ends with what the processes are. "
+                     "Under the Conductor, detached helpers are services and in-process helpers run inside the window with no process of their own."), "",
+         panel("chains", chains_svg),
+         how_to_read("Fixed routes, read from the code; only the live counts change. Follow an arrow to see who starts what, and where an item or alarm goes next."), "",
+         panel("Recent events", events_html), "", panel("Finished today", receipts_html), "", panel("Progress by mod", mods_html),
+         how_to_read("One block per mod worked on in the last week: what is next, what waits on you or the game, and one line per task that touched it. Refreshed every 5 minutes. Leave the page unclicked: a click inside a block marks it edited in Typora, and it may then stop refreshing."), ""]
     if p["unmeasured"]:
         head += ["**UNMEASURED this minute:** " + "; ".join(p["unmeasured"]), ""]
 
@@ -1442,7 +2119,7 @@ def build(env, state, hist):
         tim = "timers UNMEASURED (%s)" % p["timers_why"]
     else:
         tim = "\n".join(["%d timers installed" % len(p["timers"]), "%-24s %10s %12s  %s" % ("timer", "last ran", "next run", "what")] + timers_rows(p["timers"], p["units"], now))
-    text = "\n".join(["-- the panels as plain text --", pipeline_text(p), "-- SteveDesktop --", steve_text(p), "-- chains --", chains_text(p),
+    text = "\n".join(["-- the panels as plain text --", pipeline_text(p), "-- Archmagi --", live_text("live testing", p["live_here"]), "-- SteveDesktop --", steve_text(p), "-- chains --", chains_text(p),
                       "-- history --"] + hist_lines + ["-- timers --", tim])
     # no blank line anywhere inside: a blank line would end Typora's HTML block and spill the rest as text
     S += ["<details><summary>Plain text panels, timers, history</summary>",
@@ -1460,7 +2137,8 @@ def build(env, state, hist):
     if p["win"]:
         f["game"], f["codex"] = p["win"]["game"], p["win"]["codex"]
     sample = {"v": 2, "t": int(now), "n": n, "f": f}
-    return page, sample
+    phone, why = guarded(phone_copy, p, chips)
+    return page, sample, phone if phone is not None else "phone copy UNMEASURED: %s\n" % why
 
 
 def run(env=None, write=True):
@@ -1473,7 +2151,7 @@ def run(env=None, write=True):
         state = {}
     hist = read_history(env)
     try:
-        page, sample = build(env, state, hist)
+        page, sample, phone = build(env, state, hist, write)
     except Exception as e:      # noqa: BLE001 - leave the old page, remember why, fail loudly
         state["last_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
         state["fail_since"] = state.get("fail_since") or env.now()
@@ -1483,13 +2161,17 @@ def run(env=None, write=True):
         return 1, ""
     if write:
         env.write_atomic(OUT, page)
+        env.write_atomic(PHONE_OUT, phone)
         if isinstance(sample["n"], int):
             append_history(env, hist, sample)
         state["ok_t"] = env.now()
         state.pop("fail_since", None)
         state.pop("last_error", None)
         env.write_atomic(STATE, json.dumps(state))
-        # last on purpose: the page is already on disk, so ssh can never hold it back
+        # last on purpose: the page is already on disk, so neither ssh nor a ledger replay can ever hold it back
+        fleet, _ = guarded(env.read_json, FLEET_CACHE)
+        if env.now() - ((fleet or {}).get("t") or 0) >= FLEET_EVERY:
+            guarded(refresh_fleet, env)
         guarded(probe_steve, env)
     return 0, page
 
@@ -1507,6 +2189,14 @@ def check():
 if __name__ == "__main__":
     if "--check" in sys.argv:
         sys.exit(check())
+    if "--phone" in sys.argv:
+        env_ = Env()
+        try:
+            state_ = env_.read_json(STATE)
+        except Exception:       # noqa: BLE001 - first run or torn state
+            state_ = {}
+        print(build(env_, state_, read_history(env_), False)[2], end="")
+        sys.exit(0)
     rc, page = run(write="--print" not in sys.argv)
     if "--print" in sys.argv:
         print(page)

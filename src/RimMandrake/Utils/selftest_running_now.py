@@ -47,6 +47,7 @@ class Fake(R.Env):
         self.ps_text, self.units, self.timers, self.files, self.cg, self.fail = ps, units, timers, files or {}, cg or {}, fail
         self.items, self.dirs = items, dirs or {}
         self.clock = NOW
+        self.bridge, self.fleet, self.mods = None, None, None
         self.calls = []
         self.out = None
 
@@ -137,6 +138,28 @@ class Fake(R.Env):
     def port_open(self, host, port=22):
         return "ssh" not in self.fail
 
+    # the doors this page added: shut unless a test opens one, so a selftest never reads this machine
+    def local_stats(self):
+        raise R.Unmeasured("no machine in a selftest")
+
+    def bridge_events(self):
+        if self.bridge is None:
+            raise R.Unmeasured("no ledger in a selftest")
+        return self.bridge
+
+    def conductor_helpers(self, pid):
+        raise R.Unmeasured("no transcript in a selftest")
+
+    def fleet_gather(self, now):
+        if self.fleet is None:
+            raise R.Unmeasured("no ledger in a selftest")
+        return self.fleet
+
+    def mods_status(self):
+        if self.mods is None:
+            raise R.Unmeasured("no modcheck in a selftest")
+        return self.mods
+
 
 def page_of(env, state=None, hist=None):
     return R.build(env, state if state is not None else {}, hist or [])[0]
@@ -183,7 +206,7 @@ check("a Conductor sitting outside the clones is counted once", R.tree_lines(far
 # 3. a worker finds its item by the unit's hash, and shows it in plain words with its children
 check("worker row carries the item's plain words", "Graffiti v1 live proof 1" in text and "item UNMEASURED" not in text)
 check("worker row sums its child processes", re.search(r"claude 1 .*= 3", text) is not None)
-check("heading counts a work unit as a worker", "workers 1, checkers 0" in text)
+check("heading counts a work unit as a Builder", "Builders 1, Judges 0" in text)
 
 # 4. unmatched process shown with its pid; matched one not
 page = page_of(Fake(ps=PS))
@@ -252,6 +275,131 @@ R.steve_svg = real_svg
 check("a panel that cannot draw costs that panel, not the page", "SteveDesktop: UNMEASURED" in page and "SteveDesktop panel" in before_svg(page) and "RELENTLESS" in page)
 
 # 8d. a state file that cannot be read is an UNMEASURED Relentless, not a short count
+def collections_d(**kw):
+    return R.collections.defaultdict(list, kw)
+
+
+# ---- RUNNING_PAGE_FIX_REVIEW_LEFTOVERS: the review's leftovers
+SEAT_CG = "0::/user.slice/user-1000.slice/user@1000.service/claude.slice/claude-seats.slice/claude-seat-BENCH-777.scope\n"
+HELP_SVC = "0::/user.slice/user-1000.slice/user@1000.service/app.slice/rm-detached-bench-draw-up-1793747127.service\n"
+HELP_SCOPE = "0::/user.slice/user-1000.slice/user@1000.service/claude.slice/claude-seats.slice/claude-seat-BENCH-rm-detached-bench-draw-up-1793747127.scope\n"
+under_run = ("  100  1  900  1.0 systemd /lib/systemd/systemd --user\n"
+             " 6000 100  500  1.0 bash bash -c launch\n"
+             " 6001 6000 500 20.0 claude claude -p --model opus --name ROLE\n")
+tree = R.build_tree(Fake(cg={6000: WORKER_CG, 6001: SEAT_CG}), R.Table(R.Env().families()), R.parse_ps(under_run))
+groups = list(tree["groups"].values())
+check("a numbered seat scope under a live Builder is that Builder, not a window", [g["label"] for g in groups if g["family"] != "upkeep" and g["procs"][0]["pid"] >= 6000] == ["worker"]
+      and not [g for g in groups if g["label"] == "window"])
+tree = R.build_tree(Fake(cg={6000: "0::/init.scope\n", 6001: SEAT_CG}), R.Table(R.Env().families()), R.parse_ps(under_run))
+check("a numbered seat scope under nothing that owns agents stays a window", len([g for g in tree["groups"].values() if g["label"] == "window"]) == 1)
+tree = R.build_tree(Fake(cg={6000: HELP_SVC, 6001: HELP_SCOPE}), R.Table(R.Env().families()), R.parse_ps(under_run))
+check("a detached helper's service and its scope are one helper", len([g for g in tree["groups"].values() if g["family"] == "helpers"]) == 1)
+tree = R.build_tree(Fake(cg={6000: HELP_SVC, 6001: SEAT_CG}), R.Table(R.Env().families()), R.parse_ps(under_run))
+check("a numbered scope under a detached helper is that helper", len([g for g in tree["groups"].values() if g["family"] == "helpers"]) == 1 and not [g for g in tree["groups"].values() if g["label"] == "window"])
+
+iso = lambda t: R.time.strftime("%Y-%m-%dT%H:%M:%SZ", R.time.gmtime(t))  # noqa: E731
+done_dir = R.TESTQ + "/done"
+OLD_JOB = "J%sT000000Z-aaaaaa.json" % R.time.strftime("%Y%m%d", R.time.gmtime(NOW - 10 * 86400))
+job_files = {done_dir + "/" + OLD_JOB: {"job": {"purpose": "guard", "mod": "FlowWorks", "item": "X_ITEM"},
+                                        "result": {"outcome": "DONE", "started": iso(NOW - 700), "finished": iso(NOW - 100), "rows": [{"chain": "c", "row": "r", "verdict": "FAIL"}, {"chain": "c", "row": "s", "verdict": "PASS"}], "counts": {"PASS": 1, "FAIL": 1}}},
+             done_dir + "/J1.json": {"job": {"purpose": "old"}, "result": {"outcome": "DONE", "started": iso(NOW - 20 * 86400 - 60), "finished": iso(NOW - 20 * 86400), "rows": []}},
+             STEWARD: {"state": "RUNNING", "epoch": NOW - 10}}
+env = Fake(files=job_files, dirs={done_dir: [OLD_JOB, "J1.json"], R.TESTQ + "/running": [], R.TESTQ + "/pending": []})
+state = {}
+sv = R.collect_steve(env, state, {"by_status": {"done": [{"item": "X_ITEM", "done_at": NOW - 50}]}})
+check("a job born 10 days ago and finished now counts in the 24 h", sv["jobs_known"] and sv["done"] == 1 and sv["failed"] == 0)
+check("Steve's Live Testing reads that job", sv["live"]["rows"] == {"PASS": 1, "FAIL": 1} and sv["live"]["bugs"] == 1 and sv["live"]["closed"] == 1)
+check("Steve's busy share is its job's minutes over 24 h", abs(sv["live"]["busy"] - 600 / 86400) < 1e-6)
+check("a job finished long ago keeps only its finish time", set(state["steve_jobs"]["J1.json"]) == {"v", "f"})
+env.files = {STEWARD: job_files[STEWARD]}
+sv = R.collect_steve(env, state, None)
+check("a result already read is not read again", sv["jobs_known"] and sv["done"] == 1)
+state["steve_jobs"].pop(OLD_JOB)
+state["steve_jobs"]["J1.json"] = {"f": 5}     # the shape before this change: read again, not trusted
+sv = R.collect_steve(env, state, None)
+check("an unreadable result leaves the day's counts unknown, not short", sv["jobs_known"] is False)
+
+check("verdict: above the usual with high being bad warns", R.versus(9, (1, 5)) == ("high, usual 1-5", R.WARN))
+check("verdict: below the usual with low being bad warns", R.versus(0, (1, 5), False) == ("low, usual 1-5", R.WARN))
+check("verdict: inside the usual", R.versus(3, (1, 5))[0] == "normal, usual 1-5")
+check("verdict: no history says so, it never guesses", R.versus(3, None)[0] == "no baseline yet")
+check("verdict: a reading over its fixed top is called high", R.against(90, 85, "under 85%") == ("high, normal under 85%", R.WARN))
+
+spans = R.bridge_intervals([(1000, "taken"), (1100, "released"), (2000, "taken")], 2000 + 5 * R.HOLD_CAP)
+check("a bridge hold ends at its release", spans[0] == (1000, 1100))
+check("a hold never released stops counting at the stale limit", spans[1] == (2000, 2000 + R.HOLD_CAP))
+check("a share is clipped to its window", R.share_of([(0, 100)], 50, 150) == 0.5)
+check("overlapping spans are one span", R.merged([(5, 8), (0, 6), (20, 21)]) == [(0, 8), (20, 21)])
+
+ROWS = "\n".join(json.dumps(r) for r in [{"at": iso(NOW - 50), "item": "A", "criterion": "A1", "outcome": "PASS"}, {"at": iso(NOW - 60), "item": "B", "criterion": "A1", "outcome": "FAIL"},
+                                         {"at": iso(NOW - 70), "item": "B", "criterion": "A1", "outcome": "FAIL"}, {"at": iso(NOW - 80), "item": "C", "criterion": "A2", "outcome": "UNMEASURED"},
+                                         {"at": iso(NOW - 2 * 86400), "item": "D", "criterion": "A1", "outcome": "REFUSED"}]) + "\n"
+env = Fake(files={R.LIVE_RUNS: ROWS})
+env.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
+items = {"by_status": {"done": [{"item": "A", "done_at": NOW - 10}, {"item": "E", "done_at": NOW - 10}, {"item": "A2", "done_at": NOW - 90000}]}}
+hist = [{"t": NOW - 60, "n": 1, "f": {"game": 1}}, {"t": NOW - 120, "n": 1, "f": {"game": 0}}]
+lv = R.collect_archmagi_live(env, NOW, items, hist)
+check("proof rows by result count the 24 h only", lv["rows"] == {"PASS": 1, "FAIL": 2, "UNMEASURED": 1})
+check("a clause failing twice is one bug", lv["bugs"] == 1)
+check("closed by a live proof needs both the close and a PASS", lv["closed"] == 1)
+check("Archmagi's busy share is bridge time over 24 h", abs(lv["busy"] - 1800 / 86400) < 1e-6)
+check("game idle share is one minus held, per two-hour point", abs(lv["idle_trend"][-1] - (1 - 1800 / 7200)) < 1e-6 and len(lv["idle_trend"]) == R.TREND_POINTS)
+check("game up share comes from the page's own samples", lv["game_up"] == 0.5)
+broken = Fake(files={R.LIVE_RUNS: "{bad\n" + ROWS})
+check("a broken runs.jsonl line is UNMEASURED, never a short count", R.guarded(R.collect_archmagi_live, broken, NOW, items, [])[1] is not None)
+env.bridge = None
+lv2 = R.collect_archmagi_live(env, NOW, items, hist)
+check("no ledger: busy is UNMEASURED, not 0", lv2["busy"] is None and lv2["idle_trend"] is None)
+
+st = {"status": "held", "hold": {"at": NOW - 100}}
+check("oldest in a stage reads the field that stage writes", R.stage_since(st) == NOW - 100 and R.stage_since({"status": "game", "game": {"entered_at": 5}}) == 5)
+check("a stage with no clock has no age", R.stage_since({"status": "done"}) is None)
+check("oldest finds the stage's oldest item", R.oldest_in({"by_status": collections_d(queued=[{"item": "Y", "status": "queued", "enrolled_at": NOW - 9}, {"item": "Z", "status": "queued", "enrolled_at": NOW - 90}])}, "queued", NOW) == (90.0, "Z"))
+check("mods accepted reads the state after the name", R.mods_status_counts("Abyss   STALE   x\nB   RED (last)  y\nC  GREEN  z\nnoise\n") == {"STALE": 1, "RED": 1, "GREEN": 1})
+check("mods accepted with no line is UNMEASURED", R.guarded(R.mods_status_counts, "nothing\n")[1] is not None)
+
+jd = json.dumps({"at": iso(NOW - 3600), "acts": [{"do": "done", "item": "I1"}, {"do": "blind_fail", "item": "I2"}]}) + "\n" + json.dumps({"at": iso(NOW - 90000), "acts": [{"do": "done", "item": "I3"}]}) + "\n"
+env = Fake(files={SHADOW: "", JOURNAL: jd})
+thr = R.collect_throughput(env, NOW)
+check("the trend lines count the journal's closes and Judge fails", sum(thr["trend"]["closed"]) == 2 and sum(thr["trend"]["blind_fail"]) == 1)
+check("a usual range needs a whole window the record reaches past", thr["usual"].get("closed") is None)
+jd2 = jd + json.dumps({"at": iso(NOW - 5 * 86400), "acts": []}) + "\n"
+thr = R.collect_throughput(Fake(files={SHADOW: "", JOURNAL: jd2}), NOW)
+check("a usual range is the windows before this one", thr["usual"]["closed"] == (0, 1))
+env.files.update({R.RELENTLESS_STORE + "/spend-%s.json" % R.time.strftime("%Y%m%d", R.time.gmtime(NOW)): {"spent": 8000000}})
+day = R.time.strftime("%Y%m%d", R.time.gmtime(NOW))
+tk = R.collect_tokens(env, NOW, {"closed_day": {day: 2, **{}}, } if False else {"closed_day": R.collections.Counter({day: 2})})
+check("tokens per item closed is the day's spend over its closes", tk[0]["per"] == 4000000)
+
+# the whole page, every section, on a full fixture
+FLEET = {"needs": {"count": 2, "lines": [], "topics": [{"topic": "DRAW", "items": ["DRAW_A", "DRAW_B"], "q": "Look at the bridge", "others": ["<Other> line"]}, {"topic": "K", "items": ["K_X"], "q": "Keep it?", "others": []}],
+                   "answered": [{"item": "ANS_ITEM", "q": "old"}]},
+         "receipts": [{"item": "R1", "glyph": "✓", "title": "t", "where": "FlowWorks", "receipt": {"check": "PASS", "outcome": "Did the thing.", "commits": 2, "tokens": 5000}}],
+         "mods": [{"name": "FlowWorks", "meta": "1 done", "backlog": "Backlog: 1 open", "proof": "Blind check PASS", "next": "Next thing", "waits": ["waits on you: x"],
+                   "tasks": [{"mark": "✓", "kind": "pass", "title": "A task <b>", "date": "1 Nov"}], "more": 3}],
+         "total_mods": 10, "t": NOW, "good_t": NOW,
+         "accepted": {"green": 1, "stale": 2, "red": 3, "draft": 1, "never": 3, "total": 10}}
+ITEMS = [{"item": ITEM, "status": "running", "started_at": NOW - 60}, {"item": "Q1", "status": "queued", "enrolled_at": NOW - 7200}]
+full = Fake(ps=PS, cg=WORKER, items=ITEMS, files={R.FLEET_CACHE: FLEET, STEWARD: {"state": "RUNNING", "epoch": NOW}, R.LIVE_RUNS: ROWS, SHADOW: "", JOURNAL: jd})
+full.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
+page, sample, phone = R.build(full, {}, [])
+for word in ("How to read", "Relentless-style Builder or Judge", "NEEDS YOU, 2", "RECENT EVENTS", "FINISHED TODAY, 1", "PROGRESS BY MOD, 1", "ARCHMAGI", "STEVEDESKTOP", "LIVE TESTING, LAST 24 H",
+             "TRENDS, 48 H", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED", "1 of 10", "GAME UNMEASURED", "game idle", "live proofs", "oldest", "normal", "FALSIFIED EXPECTATIONS", "9 of 8", "Judge's FAIL", "<title>"):
+    check("the page shows: " + word, word in page)
+check("the page has a how-to-read line for each of its panels", page.count("How to read:") == 6)
+check("CLOSED PER HOUR is gone, the 24 h histogram stays", "CLOSED PER HOUR" not in page and "LAST 24 H, EVENTS" in page)
+check("the old names are gone", "blind checker" not in page.lower() and "checkers" not in page and "workers " not in page.split("<details>")[0].replace("workers can", ""))
+check("Needs you folds a topic into one row and escapes it", page.count("Look at the bridge") == 1 and "DRAW, 2 items" in page and "&lt;Other&gt; line" in page and "<Other>" not in page)
+check("an answered item leaves the list and says so", "1 more you already answered" in page and "ANS_ITEM" in page)
+check("a task title is escaped and sits on one line", "A task &lt;b&gt;" in page)
+check("no blank line inside an html section", all(not re.search(r"\n\s*\n", x) for x in re.findall(r"<div style=.*?</div>", page)))
+check("every svg stays one block", all("\n" not in x for x in re.findall(r"<svg.*?</svg>", page, re.S)))
+check("the phone copy is short and plain", len(phone) < 2500 and "<" not in phone and "NEEDS YOU 2" in phone and "Archmagi: busy" in phone and "SteveDesktop" in phone)
+bare = Fake(ps=PS)
+page = R.build(bare, {}, [])[0]
+check("no fleet cache: those sections read UNMEASURED", "mods, receipts and Needs you" in page.split("<div><svg")[0] and "NEEDS YOU" in page)
+check("no modcheck: mods accepted reads UNMEASURED, never 0", "mods accepted (" in page.split("<div><svg")[0])
+
 with tempfile.TemporaryDirectory() as d:
     real_store, R.RELENTLESS_STORE = R.RELENTLESS_STORE, d
     os.makedirs(d + "/items/a")
@@ -305,6 +453,7 @@ check("empty history says no history yet", "no history yet" in R.window_stats([]
 # 11. writes, in a private directory
 with tempfile.TemporaryDirectory() as d:
     R.OUT_DIR, R.OUT, R.HIST, R.STATE, R.STEVE_CACHE = d, d + "/RUNNING_NOW.md", d + "/h.jsonl", d + "/s.json", d + "/steve.json"
+    R.PHONE_OUT, R.FLEET_CACHE = d + "/RUNNING_NOW_PHONE.md", d + "/fleet.json"
     env = Fake(ps=PS)
     rc, _ = R.run(env)
     first = open(R.OUT).read()
@@ -358,6 +507,19 @@ with tempfile.TemporaryDirectory() as d:
     bad.families = lambda: (_ for _ in ()).throw(ValueError("table broke"))
     bad.clock = NOW + 2 * R.PROBE_EVERY + 400
     rc, _ = R.run(bad)
+    check("the phone copy is written beside the page", os.path.exists(R.PHONE_OUT))
+    check("the page is on disk before the slow half is refreshed", json.load(open(R.FLEET_CACHE)).get("why") and not json.load(open(R.FLEET_CACHE)).get("mods"))
+    good_f = Fake(ps=PS)
+    good_f.fleet, good_f.mods = {"mods": [], "receipts": [], "needs": {"count": 0, "topics": []}, "total_mods": 5}, "A  GREEN x\nB RED y\n"
+    good_f.clock = NOW + 2 * R.PROBE_EVERY + 300
+    R.refresh_fleet(good_f)
+    saved = json.load(open(R.FLEET_CACHE))
+    check("a fleet refresh caches the sections and the mods accepted", saved["accepted"] == {"green": 1, "stale": 0, "red": 1, "draft": 0, "never": 3, "total": 5} and saved["why"] is None)
+    down = Fake(ps=PS)
+    down.clock = good_f.clock + 400
+    R.refresh_fleet(down)
+    saved = json.load(open(R.FLEET_CACHE))
+    check("a failed refresh keeps the last good reading and says why", saved["mods"] == [] and saved["why"] and saved["good_t"] == good_f.clock)
     check("failed run returns 1 and keeps the old page byte for byte", rc == 1 and open(R.OUT).read() == before)
     check("failed run records why", "table broke" in json.load(open(R.STATE)).get("last_error", ""))
     good = Fake(ps=PS)

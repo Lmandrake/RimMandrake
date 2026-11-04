@@ -304,11 +304,11 @@ def parked(it, rs):
         (rs or {}).get("status") in PARKED_REL
 
 
-def waits_on(it, rs):
+def waits_on(it, rs, evs=None):
     """'you' / 'the game' / '' for an open item."""
     if it is None:
         return ""
-    if owner_queue.is_his(it, rs):  # the same test as the board's Needs you (FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT)
+    if owner_queue.is_his(it, rs, evs):  # the same test as the board's Needs you (FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT)
         return "you"
     if (rs or {}).get("status") == "game" or getattr(it, "blocked_kind", None) == "live":
         return "the game"
@@ -393,11 +393,11 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
                                                else 9, {"doing": 0, "built": 1, "validated": 1, "ready": 2}.get(known[i].state, 3),
                                                -(item_last.get(i) or 0), i))
         for i in cand:  # next = the first open item nobody is waiting on
-            if not parked(known[i], rel.get(i)) and not waits_on(known[i], rel.get(i)):
+            if not parked(known[i], rel.get(i)) and not waits_on(known[i], rel.get(i), evs):
                 nxt = display_title(known[i].title or i)
                 break
         for i in cand:
-            w = waits_on(known[i], rel.get(i))
+            w = waits_on(known[i], rel.get(i), evs)
             if w == "you":
                 waits_you += 1
                 waits.append("waits on you: %s" % (asks.get(i) or display_title(known[i].title or i)))
@@ -481,7 +481,7 @@ def gather(now, days=DAYS, detached_done=()):
         r.setdefault("title", (it.title if it else "") or r["item"])
         r["where"], r["infra"] = where(r["item"], item_mods, cross, folders)
     return {"factory": factory(now), "receipts": rec, "mods": mods(now, log, world, evs, rel, mc, folders, days),
-            "needs": owner_queue.needs_you(world.items, rel)}
+            "needs": owner_queue.needs_you(world.items, rel, evs=evs)}
 
 
 def where(item, item_mods, cross, folders):

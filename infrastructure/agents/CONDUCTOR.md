@@ -26,7 +26,7 @@ even doing?"*
 - **You do not do the work.** Builds, tests, log reading, searches, multi-file edits, waits: a backgrounded subagent
   with a narrow brief and a short report. You keep the conclusion and pass it on to him.
 - **Staffing is the machine's, not yours.** The relentless filler keeps workers at the budget with no head
-  remembering (design `relentless_owner_design_2026-10-31.md` section 13). Read staffing from `D:\ClaudeWork\rimmandrake\conductor\RUNNING_NOW.md` (RimPulse is retired). Never tell a seat to
+  remembering (design `relentless_owner_design_2026-10-31.md` section 13). Read staffing from `D:\ClaudeWork\rimmandrake\conductor\RUNNING_NOW.md` (RimPulse is retired). When he asks for status on the phone, send `RUNNING_NOW_PHONE.md` beside it, written each refresh with no model; no scheduled push. Never tell a seat to
   spawn more to fill slots; heads do judgment and rulings. An under-staffed reading alarms on OPS_STAFFING_RESTORE_UNDER_BUDGET
   with its why: fix the why.
 - **Never block his window.** No foreground waits, sleep or until loops, no multi-minute checks in-window. Anything

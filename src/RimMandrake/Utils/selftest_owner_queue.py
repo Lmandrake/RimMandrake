@@ -70,7 +70,7 @@ check("question file wins", {x["item"]: x["q"] for x in n["lines"]}["D_OWNER_CAL
 check("title is the fallback", {x["item"]: x["q"] for x in n["lines"]}["A_PLAIN_OWNER"] == "Plain owner ask")
 check("text leads with the count", n["text"].startswith("%d things: " % len(his)))
 none = Q.needs_you({"I": it("offline")}, {}, {})
-check("nothing his -> empty text, count 0", none == {"count": 0, "lines": [], "text": ""})
+check("nothing his -> empty text, count 0", (none["count"], none["lines"], none["text"], none["topics"], none["answered"]) == (0, [], "", [], []))
 check("misrouted lists tooling holds", [k for k, _ in Q.misrouted(items, rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
 
 with tempfile.TemporaryDirectory() as d:
@@ -167,6 +167,23 @@ rc = M.receipts(2000000000, {}, RZ, W, [], [{"item": "Z", "status": "Done", "sta
 check("a newer detached run beats an older Relentless one", len(rc) == 1 and rc[0]["finished_at"] == 1999999500)
 rc = M.receipts(2000000000, {}, RZ, W, [], [{"item": "Z", "status": "Done", "started": 1999997000, "finished_at": 1999999500}])
 check("an older run finishing later does not", len(rc) == 1 and rc[0].get("relentless"))
+
+# RUNNING_PAGE_FIX_REVIEW_LEFTOVERS: an answered item leaves the list; a later routing gives it back
+evs = [{"event": "file", "needs": "owner", "seat": "OWNER"}, {"event": "note", "seat": "BENCH", "text": "t"}, {"event": "note", "seat": "OWNER", "text": "RULED"},
+       {"event": "needs", "to": "owner", "seat": "BENCH"}]
+def hist(*idx):
+    x = it("owner")
+    x.history = list(idx)
+    return x
+check("no note from him: not answered", not Q.answered(hist(0, 1), evs))
+check("his note after the routing: answered", Q.answered(hist(0, 2), evs))
+check("routed again after his note: his again", not Q.answered(hist(0, 2, 3), evs))
+check("no events given: stays on the list", not Q.answered(hist(0, 2), None))
+check("is_his honours answered only with events", Q.is_his(hist(0, 2), None) and not Q.is_his(hist(0, 2), None, evs))
+items2 = {"DRAW_A": hist(0), "DRAW_B": hist(0), "DRAW_C": hist(0, 2), "K_X": hist(0)}
+n = Q.needs_you(items2, {}, {"DRAW_A": "Look?", "DRAW_B": "Press?"}, evs)
+check("answered items are named, not counted", n["count"] == 3 and [a["item"] for a in n["answered"]] == ["DRAW_C"])
+check("a shared leading word folds to one row", [t["topic"] for t in n["topics"]] == ["DRAW", "K"] and n["topics"][0]["items"] == ["DRAW_A", "DRAW_B"] and n["topics"][0]["others"] == ["Press?"])
 
 print("RESULT %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)
