@@ -290,6 +290,75 @@ def test_dispatcher_breaks_on_worse():
     ok("rate-limited" in str(a[0]["result"]), "a schedule field of the wrong shape costs no tick")
 
 
+# Every target key that states a step today. Dropping one goes red; a new row with a step may be added freely.
+STATED_STEPS = {
+    "accounts.*.loan_runway", "accounts.*.runway", "arena.push_refused_24h", "codex.runway", "companion.grant_hours_left",
+    "disk.c_free_gb", "disk.d_free_gb", "disk.pool_breach", "disk.root_free_gb", "disk.scratch_ok_age_h", "disk.tmp_free_gb",
+    "disk.tmp_used_pct", "flow.untriaged_findings", "health.drifted_slis", "health.spent_slis", "queues.artpipe.stalled_min",
+    "queues.testq.stalled_min", "relentless.books_behind_min", "relentless.game_hold_idle_min",
+    "relentless.live_measured_pct", "steve.incident_unclaimed_min", "steve.invalid_streak", "steve.seats_absent_min",
+    "steve.unowned_stall_min", "timers.failed_units", "tps.health_breaches"}
+
+
+def test_every_stated_step_stays():
+    keys = {t["key"] for t in RULES["targets"] if t.get("alarm") and t.get("worse")}
+    lost = sorted(STATED_STEPS - keys)
+    ok(not lost, "every rule that states a step still states it (lost: %s)" % lost)
+
+
+def test_real_emitters_break_on_worse():
+    """dead, seat_declined and idle_full_queue: the real decide emits the impact, the real schedule's row and 6 h decide."""
+    import selftest_dispatcher as SD
+    real = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text())
+    base = dict(ledger_notes=True, alarm_item="X_Y", publish=False, incident={"enabled": False},
+                alarm_every_s=real["alarm_every_s"], alarm_worse=real["alarm_worse"])
+    root = str(TMP / "emit")
+    os.makedirs(root, exist_ok=True)
+    # dead: the impact is how long the seat has been dead
+    s = SD.sched(no_handoff={"conductor_log": str(TMP / "e_log.md")})
+    s["seats"]["FOUNDRY"]["recover_dead"] = False
+    s.update(base)
+    st, notes, gone = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}, [], []
+    D.decide(s, st, SD.obs(), 1000.0, True)
+    D.decide(s, st, SD.obs(sessions=gone), 1100.0, True)
+    da, res = s["dead_after_s"], []
+    for t in (1100.0 + da, 1100.0 + da + 300, 1100.0 + 2 * da + 60):
+        a = [x for x in D.decide(s, st, SD.obs(sessions=gone), t, True) if x["do"] == "alarm" and x["kind"] == "dead:FOUNDRY"]
+        ok(len(a) == 1 and isinstance(a[0].get("impact"), (int, float)) and a[0]["impact"] > 0,
+           "dead at %+.0f s carries its impact %r" % (t - 1100.0 - da, a and a[0].get("impact")))
+        n = len(notes)
+        D.execute(a, s, st, root, True, t, dfx(notes))
+        res.append(len(notes) - n)
+    ok(res == [1, 0, 1] and "WORSE" in notes[-1], "dead: raised, limited, then raised WORSE inside the 6 h (%r)" % res)
+    # the two ring alarms: the impact is the ring streak
+    for ev, kind in (({"event": "note", "id": "PEEKED", "text": "held"}, "seat_declined"), (None, "idle_full_queue")):
+        s = SD.sched(caps=D.load_schedule()["caps"],
+                     no_handoff={"rering_s": [300, 900, 1800], "escalate_after": 3, "conductor_log": str(TMP / "e_log.md")})
+        s.update(base)
+        st, notes, imp = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}, [], []
+        o = SD.obs(consumed={"consumed_at": 1.0}, events=[dict(ev, ts="2999-01-01T00:00:00Z")] if ev else [])
+        now = 1000.0
+        while now < 1000.0 + 5.9 * H:
+            a = [x for x in D.decide(s, st, o, now, True) if x["do"] == "alarm" and x["kind"].startswith(kind + ":")]
+            if a:
+                imp += [x.get("impact") for x in a]
+                D.execute(a, s, st, root, True, now, dfx(notes))
+            now += s["tick_s"]
+        ok(imp and all(isinstance(i, (int, float)) for i in imp) and imp[-1] > imp[0],
+           "%s carries a rising ring streak (%s..%s)" % (kind, imp and imp[0], imp and imp[-1]))
+        ok(len(notes) >= 2 and any("WORSE" in x for x in notes[1:]), "%s is raised WORSE inside the 6 h (%d notes)" % (kind, len(notes)))
+
+    # a row stating an add, not a factor: short of +10 limited, at +10 raised
+    sch, st, notes = dsch(alarm_worse=[{"match": "k:*", "add": 10}]), {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}, []
+    one = lambda v: [{"do": "alarm", "kind": "k:1", "why": "w", "note": True, "impact": v}]
+    D.execute(one(5.0), sch, st, root, True, NOW, dfx(notes))
+    a = one(14.0)
+    D.execute(a, sch, st, root, True, NOW + 60, dfx(notes))
+    ok("rate-limited" in str(a[0]["result"]) and len(notes) == 1, "an add step: +9 is short of +10")
+    D.execute(one(15.0), sch, st, root, True, NOW + 120, dfx(notes))
+    ok(len(notes) == 2 and "+10" in notes[-1], "an add step: +10 is raised WORSE, naming the step")
+
+
 def test_operations_gets_a_fresh_run():
     """Through the real decide_roles: a worse alarm is a fresh key, and its run names the plain ledger item."""
     import selftest_dispatcher as SD
@@ -316,7 +385,8 @@ def test_operations_gets_a_fresh_run():
 def main():
     for t in (test_step_on_a_rising_alarm, test_downward_step, test_severity_needs_no_step, test_ranges_class_is_read,
               test_failed_delivery_retries, test_closed_item_reopens, test_deploy_re_raises_nothing,
-              test_token_alarm_stays_operations, test_rule_rows, test_dispatcher_breaks_on_worse,
+              test_token_alarm_stays_operations, test_rule_rows, test_every_stated_step_stays, test_dispatcher_breaks_on_worse,
+              test_real_emitters_break_on_worse,
               test_operations_gets_a_fresh_run):
         p = OW.ops_dir() / "alarms.json"
         if p.exists():
