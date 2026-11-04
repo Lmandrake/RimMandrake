@@ -312,6 +312,15 @@ def main() -> int:
         sh("git", "-C", str(led_c), "commit", "-q", "-m", "ledger tail")
         check(sc.clone_unpushed(led_c) == [], f"a ledger-only commit is not stranded work: {sc.clone_unpushed(led_c)}")
         check(sc.clone_unpushed(led_c, strict=True) == ["commits"], "and reuse (strict) never drops it")
+        # SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF cause 2: a one-line clean-mark (code_review shard) commit held through a game wait
+        cr_c = BASE / "review_only"
+        sh("git", "clone", "-q", str(work), str(cr_c))
+        (cr_c / "infrastructure/state/code_review").mkdir(parents=True, exist_ok=True)
+        (cr_c / "infrastructure/state/code_review/BENCH.jsonl").write_text('{"clean":"x.py"}\n')
+        sh("git", "-C", str(cr_c), "add", "infrastructure/state/code_review/BENCH.jsonl")
+        sh("git", "-C", str(cr_c), "commit", "-q", "-m", "mark clean")
+        check(sc.clone_unpushed(cr_c) == [], f"a clean-mark-only commit is not stranded work: {sc.clone_unpushed(cr_c)}")
+        check(sc.clone_unpushed(cr_c, strict=True) == ["commits"], "and reuse (strict) never drops a clean mark")
         (led_c / "infrastructure/state/ledger/events/BENCH.jsonl").write_text('{"tail":"after the landing"}\n{"tail":"and more"}\n')
         (led_c / "mixed_real.txt").write_text("real work\n")
         sh("git", "-C", str(led_c), "add", "infrastructure/state/ledger/events/BENCH.jsonl", "mixed_real.txt")
@@ -388,7 +397,7 @@ def main() -> int:
         def idle(c: Path):
             age(c, 7200)
             for f in c.rglob("*"):
-                if ".git" not in f.parts and f.is_file():
+                if ".git" not in f.parts and (f.is_file() or f.is_dir()):     # an untracked dir's own mtime is its age
                     t0 = f.stat().st_mtime - 7200
                     os.utime(f, (t0, t0))
 
@@ -415,12 +424,31 @@ def main() -> int:
         sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
         sr._MIRROR_TIPS = None
         sh("git", "-C", str(cw), "update-ref", "refs/remotes/origin/main", "HEAD")
-        for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten"):
+        # SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF cause 1: a helper's shard whose every line main holds, judged against the MIRROR
+        # (each clone's own origin/main is left at plant time, before the lines landed: the stale ref of a --shared clone)
+        led = "infrastructure/state/ledger/events/BENCH.jsonl"
+        for n in ("shardlanded", "shardnew", "shardgone"):
+            plant(n)
+        (work / led).parent.mkdir(parents=True, exist_ok=True)
+        (work / led).write_text('{"a":1}\n{"b":2}\n{"c":3}\n')
+        sh("git", "-C", str(work), "add", led)
+        sh("git", "-C", str(work), "commit", "-q", "-m", "shard lines land")
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        sr._MIRROR_TIPS = None
+        for n, text in (("shardlanded", '{"a":1}\n{"c":3}\n'), ("shardnew", '{"a":1}\n{"never":"landed"}\n')):
+            (scr / n / led).parent.mkdir(parents=True, exist_ok=True)
+            (scr / n / led).write_text(text)
+        (scr / "shardgone" / "infrastructure/state/code_review").mkdir(parents=True)
+        (scr / "shardgone" / "infrastructure/state/code_review/BENCH.jsonl").write_text('{"main":"has no such file"}\n')
+        check(not sc.noise_on_mirror(scr / "shardlanded", "a.txt", sr.mirror_tips()[0]), "a non-noise path is never excused")
+        for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten", "shardlanded", "shardnew", "shardgone"):
             idle(scr / n)
         ss = sc.scratch_stranded()
         rows = {Path(r["path"]).name: r for r in ss["rows"]}
         names = {Path(p).name for p in ss["stranded"]}
-        check(names == {"unpushed", "dirty", "held"}, f"exactly the unlanded idle clones are stranded: {sorted(names)}")
+        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone"}, f"exactly the unlanded idle clones are stranded: {sorted(names)}")
+        check("shardlanded" not in rows, f"a shard whose lines main holds is not work, stale origin ref or not: {rows.get('shardlanded')}")
+        check(rows.get("shardnew", {}).get("holds") == ["1 dirty file(s)"], f"a shard line main lacks is held: {rows.get('shardnew')}")
         check("1 commit(s) on no remote" in rows.get("unpushed", {}).get("holds", []), f"the commit is named: {rows.get('unpushed')}")
         check("fresh" in rows and not rows["fresh"]["stranded"], "work edited a minute ago is held but not stranded yet")
         check("pushed" not in names and "built" not in names and "rewritten" not in names, "pushed, built and rewritten stay silent")

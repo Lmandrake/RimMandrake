@@ -337,7 +337,12 @@ def blob_at(c: Path, rev: str, path: str) -> bytes | None:
 def content_on_origin(c: Path, path: str, mine: bytes) -> bool:
     """origin/main already holds this content: the same bytes, or (a ledger, appended to) every line of it already a line
     of origin's copy. Any doubt is not covered."""
-    theirs = blob_at(c, "origin/main", path)
+    return holds_content(path, mine, blob_at(c, "origin/main", path))
+
+
+def holds_content(path: str, mine: bytes, theirs: bytes | None) -> bool:
+    """theirs (origin's copy, None = it has none) already holds mine: the same bytes, or a noise ledger every line of which
+    is already one of theirs."""
     return theirs is not None and (mine == theirs or (path.endswith(".jsonl") and path.startswith(POOL_NOISE) and
                                                       set(mine.splitlines()) <= set(theirs.splitlines())))
 
@@ -634,6 +639,9 @@ def clone_unlanded(c: Path) -> tuple[list[str], float]:
             i += x[0] in "RC"                # -z: the old name is the next field
             if not sr.disposable(x[3:]) and not x.endswith((".dll", ".dll.srchash")):      # a build writes those again
                 paths.append(x[3:])
+    # SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF: a helper's ledger/review shard whose every line main already holds is not work.
+    # Judged against the mirror's main, never the clone's own origin/main (a --shared clone's ref is days stale).
+    paths = [p for p in paths if not noise_on_mirror(c, p, tips[0])]
     newest = 0.0
     for p in paths:
         try:
@@ -643,6 +651,23 @@ def clone_unlanded(c: Path) -> tuple[list[str], float]:
     if paths:
         out.append(f"{len(paths)} dirty file(s)")
     return out, newest
+
+
+def noise_on_mirror(c: Path, path: str, tip: str) -> bool:
+    """A dirty POOL_NOISE file whose content the mirror's main (tip) already holds. A deletion, an unreadable file or blob,
+    or any doubt is not covered."""
+    if not path.startswith(POOL_NOISE):
+        return False
+    import scratch_reap as sr
+    try:
+        f = c / path
+        if f.is_symlink() or not f.is_file():
+            return False
+        r = sr.git(c, "cat-file", "blob", f"{tip}:{path}")
+        theirs = r.stdout.encode("utf-8", "surrogateescape") if r.returncode == 0 else None
+        return holds_content(path, f.read_bytes(), theirs)
+    except (OSError, subprocess.SubprocessError):
+        return False
 
 
 def scratch_stranded() -> dict:
