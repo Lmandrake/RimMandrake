@@ -159,6 +159,13 @@ check("cop: a crash's cause is its last exception line", K.first_error("CRASH", 
     == "OSError: [Errno 28] No space left on device: 'a.xml'")
 check("cop: a fail's cause is its first error-like line, past rc and ok rows",
       K.first_error("FAIL", ["rc 1", "ok    fine thing", "FAIL the count is 3"]) == "FAIL the count is 3")
+_lost = ("FAIL          1.0s  src/x/selftest_a.py\n             rc 1\n             staging a -> b\n             Build succeeded.\n"
+         "             \n             0 Error(s)\n             <3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110\n"
+         "PASS          1.0s  src/x/selftest_b.py\n")
+_lostd = K.details(_lost)["src/x/selftest_a.py"]
+check("cop: a blank inside a test's detail does not end it, and a clean build summary names no cause (the night's lost WSL launch)",
+      K.first_error(*_lostd).endswith("accept4 failed 110"), _lostd)
+check("cop: the next row still ends the detail", len(_lostd[1]) == 5, _lostd)
 n1 = K.normalise("OSError: [Errno 28] No space left on device: 'a.xml' -> 'b.xml'", A)
 n2 = K.normalise("FAIL s4_scratch crashed: OSError: [Errno 28] No space left on device", B)
 check("cop: one OS error on different files reads the same", n1 == n2 == "OSError: [Errno] No space left on device", (n1, n2))

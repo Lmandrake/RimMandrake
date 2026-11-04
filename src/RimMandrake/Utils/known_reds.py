@@ -153,7 +153,7 @@ def uncovered(v):
 #            red is in testing.nightly_reds_overdue, one fixed alarm (OPS_RED_OVERDUE_CHASE_*), owned or not.
 ROW = re.compile(r"^(PASS|FAIL|CRASH|SKIP\w*|FLAKY\w*|UNMEASURED)\s+[\d.]+s\s+(\S+)\s*$")
 EXC = re.compile(r"^[\w.]*(Error|Exception|Exit|Interrupt|Warning)\b:?")
-SKIP_LINE = re.compile(r"^(rc -?\d+|Traceback \(most recent call last\):|File \".*|[~^\s]+|ok\b.*|PASS\b.*|RESULT:.*)$")
+SKIP_LINE = re.compile(r"^(rc -?\d+|Traceback \(most recent call last\):|File \".*|[~^\s]+|ok\b.*|PASS\b.*|RESULT:.*|0 Error\(s\))$")
 ERRORISH = re.compile(r"FAIL|Error|error|failed|Exception|timeout|refused|not found|missing", re.I)
 GENERIC_MIN = 16           # a normalised line shorter than this ("AssertionError") names no cause: its test stands alone
 
@@ -164,15 +164,18 @@ def last_path():
 
 def details(text):
     """The night's full output -> {test: (status, [detail lines])}. The sorted listing after the progress rows has one
-    `STATUS  N.Ns  path` row per test and its indented detail under it; a later row for a test wins."""
+    `STATUS  N.Ns  path` row per test and its indented detail under it; a later row for a test wins. A whitespace-only
+    indented line is a blank inside the detail, not its end: stopping there hid every cause printed after a dotnet build's
+    summary (NIGHTLY_COP_FIX_RED_LUENJV_OOHG, a lost WSL launch titled "staging ...")."""
     out, cur = {}, None
     for ln in text.splitlines():
         m = ROW.match(ln)
         if m:
             cur = [m.group(1), []]
             out[m.group(2)] = cur
-        elif cur is not None and ln[:1] in (" ", "\t") and ln.strip():
-            cur[1].append(ln.strip())
+        elif cur is not None and ln[:1] in (" ", "\t"):
+            if ln.strip():
+                cur[1].append(ln.strip())
         else:
             cur = None
     return {t: (s, d) for t, (s, d) in out.items()}
