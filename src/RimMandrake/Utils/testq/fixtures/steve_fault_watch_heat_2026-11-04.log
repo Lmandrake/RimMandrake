@@ -1,0 +1,15 @@
+2026-11-04 03:08:02Z CYCLE uptime_h=0.38 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:13:02Z CYCLE uptime_h=0.46 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:18:02Z CYCLE uptime_h=0.55 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:23:02Z CYCLE uptime_h=0.63 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:28:02Z CYCLE uptime_h=0.71 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:33:02Z CYCLE uptime_h=0.8 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:38:02Z CYCLE uptime_h=0.88 bad_cpus=[] n_ok=18 exits=[]
+2026-11-04 03:43:02Z CYCLE uptime_h=0.96 bad_cpus=[2] n_ok=17 exits=[1]
+2026-11-04 03:44:36Z WATCH START boot=2026-11-04 02:45:13Z logical_cpus=18 cycle=300s per-cpu core check 4s each (scheduled task, survives reboot)
+2026-11-04 03:44:42Z CONTROL inject_exit=1 clean_exit=0
+2026-11-04 03:45:56Z CYCLE uptime_h=1.01 bad_cpus=[2] n_ok=17 exits=[1] pkg_c=62/66 core_max_c=67 hot_core=7 cores_max_c=[63,65,64,65,66,66,67,63,66] samples=105 vcore_v=1.301
+2026-11-04 03:50:57Z CYCLE uptime_h=1.1 bad_cpus=[2] n_ok=17 exits=[1] pkg_c=57/62 core_max_c=62 hot_core=9 cores_max_c=[59,61,60,58,58,58,61,59,62] samples=108 vcore_v=1.320
+2026-11-04 03:58:48Z WATCH START boot=2026-11-04 03:57:22Z logical_cpus=18 cycle=300s per-cpu core check 4s each (scheduled task, survives reboot)
+2026-11-04 03:58:56Z CONTROL inject_exit=1 clean_exit=0
+2026-11-04 04:00:11Z CYCLE uptime_h=0.05 bad_cpus=[] n_ok=18 exits=[] pkg_c=63/65 core_max_c=65 hot_core=5 cores_max_c=[63,63,64,63,65,61,65,61,62] samples=71 vcore_v=1.298

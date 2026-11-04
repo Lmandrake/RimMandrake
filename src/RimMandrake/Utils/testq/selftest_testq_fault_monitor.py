@@ -152,6 +152,38 @@ def heat_checks(tmp):
         ps1 = f.read()
     check("exits=[$($rcs -join ',')] $heat\"" in ps1 and "$heat='heat=UNMEASURED(no_sampler)'" in ps1,
           "watch2.ps1 ends every CYCLE with the sampler's line or heat=UNMEASURED")
+    live_fixture_checks()
+
+
+# Verbatim lines 360-374 of SteveDesktop's fault_watch.log (mirror D:\ClaudeWork\rimmandrake\testq\fault_watch.log),
+# copied 2026-11-04 after deploy-heat (PawnIO + LibreHardwareMonitor stevetemp.exe): the live evidence, committed so a
+# checker without the D: mirror or ssh can see the machine really logs core temperatures each cycle.
+LIVE_FIXTURE = os.path.join(HERE, "fixtures", "steve_fault_watch_heat_2026-11-04.log")
+
+
+def live_fixture_checks():
+    with open(LIVE_FIXTURE, encoding="utf-8") as f:
+        lines = f.read().splitlines()
+    cycles = [ln for ln in lines if " CYCLE " in ln]
+    heated = [(ln, FM.heat_of(ln)) for ln in cycles if FM.heat_of(ln)]
+    check(len(cycles) >= 10 and all(h is None for h in map(FM.heat_of, cycles[:8])),
+          "live fixture: the cycles before deploy-heat carry no reading")
+    check(len(heated) >= 3 and all("core" in h and 20 <= h["core"] <= 105 and 20 <= h["pkg"] <= 105
+                                   and len(h["cores"]) >= 8 and max(h["cores"]) == h["core"] for _, h in heated),
+          "live fixture: every CYCLE after deploy-heat on SteveDesktop carries numeric package and per-core temperatures")
+    check([ln[:20] for ln, _ in heated] == ["2026-11-04 03:45:56Z", "2026-11-04 03:50:57Z", "2026-11-04 04:00:11Z"]
+          and heated[0][1]["core"] == 67 and heated[0][1]["hot"] == 7 and heated[0][1]["vcore"] == 1.301,
+          "live fixture: the first heated cycle is CPU 2 faulting at a 67 C hottest core (core 7), vcore 1.301 V")
+    a = FM.analyse(lines)
+    check(a["last_heat"] and a["last_heat"]["core"] == 65 and a["unparsed"] == 0,
+          "live fixture: analyse keeps the newest real reading for check, and parses every line")
+    b = a["boots"]
+    check(len(b) == 2 and b[0]["core_max"] == 67 and b[0]["measured"] == 2 and b[0]["onset_uptime_h"] == 0.96
+          and b[1]["core_max"] == 65 and b[1]["onset_uptime_h"] is None,
+          "live fixture: one heat row per real boot (the faulting boot ran to 67 C, the fresh boot clean at 65 C)")
+    w = a["windows"][0]["heat"]
+    check(w["at_onset"] is None and w["cycles_measured_before"] == 0 and FM.heat_line(w).startswith("UNMEASURED"),
+          "live fixture: the 03:43 fault began before the sampler, so its window says UNMEASURED, never a guess")
 
 
 def rec(started, finished, item=None, host="stevedesktop", ingested=None, jid=None):
