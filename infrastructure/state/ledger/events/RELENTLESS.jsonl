@@ -497,3 +497,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:05:45Z","tsn":1793829945219039615}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T22:11:38Z","tsn":1793830298037389669}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:16:25Z","tsn":1793830585914324339}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GAMECOMP_STALL_HUNT_SEVEN_SECONDS A2 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T22:21:45Z","tsn":1793830905821677729}
