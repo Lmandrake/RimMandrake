@@ -50,7 +50,7 @@ def main():
 
         def run(*args):
             return subprocess.run([sys.executable, os.path.join(root, "src/RimMandrake/Utils/code_review_since.py")]
-                                  + list(args), capture_output=True, text=True)
+                                  + list(args), capture_output=True, text=True, cwd=root)
 
         g("init", "-q", "-b", "main")
         os.makedirs(os.path.join(root, "src/RimMandrake/Utils"))
@@ -78,6 +78,49 @@ def main():
         check(r.returncode == 0, "untouched file passes on its unchanged reviewed bytes")
         r = run("--after", fix, "a.py", "b.py")
         check(r.returncode == 1, "one failing path fails the run")
+        r = run("--after", fix, os.path.join(root, "b.py"))
+        check(r.returncode == 0, "an absolute path finds the repo-relative mark")
+        # a merge that leaves c.py unchanged is still a candidate commit
+        g("checkout", "-q", "-b", "x", fix)
+        write("e.py", "e\n")
+        xa = commit("x branch")
+        g("checkout", "-q", "main")
+        write("f.py", "f\n")
+        ma = commit("main branch")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "merge", "-q", "--no-edit", "-m", "merge", "x")
+        r = run("--after", xa, "--after", ma, "c.py")
+        check(r.returncode == 0, "a merge leaving the file unchanged still proves its reviewed bytes")
+        shutil.move(os.path.join(root, "infrastructure/state/code_review"), os.path.join(root, "cr_away"))
+        r = run("--after", fix, "b.py")
+        check(r.returncode == 1 and "Traceback" not in r.stderr, "no ledger dir reads as no marks, no crash")
+        shutil.move(os.path.join(root, "cr_away"), os.path.join(root, "infrastructure/state/code_review"))
+        # "<query> missing" must not read as a hit: a path whose name ends " blob"
+        write("g.py blob", "g\n")
+        commit("odd name")
+        r = run("--after", "HEAD", "g.py blob")
+        check(r.returncode == 1, "an unmarked path whose name ends ' blob' fails")
+        r = run("--after", "HEAD", "nosuch.py blob")
+        check(r.returncode == 1, "a missing path is no blob, so FAIL")
+        r = run("--after", "HEAD", "a\nb.py")
+        check(r.returncode == 2, "a path with a newline is refused")
+        with open(os.path.join(root, "infrastructure/state/code_review/T.jsonl"), "a") as f:
+            f.write(json.dumps({"path": "g.py blob", "verdict": "clean", "reviewer": "alice",
+                                "sha256": hashlib.sha256(b"g\n").hexdigest()}) + "\n")
+        r = run("--after", "HEAD", "g.py blob")
+        check(r.returncode == 0 and "Traceback" not in r.stderr, "a string reviewer field does not crash a pass")
+        commit("marks")
+        with open(os.path.join(root, "infrastructure/state/code_review/T.jsonl"), "a") as f:
+            f.write('null\n[]\n{"verdict": "clean", "path": ["b.py"], "sha256": "x"}\n')
+        r = run("--after", fix, "b.py")
+        check(r.returncode == 0 and "Traceback" not in r.stderr, "odd-shaped JSON records are skipped, no crash")
+        # a replacement ref must not swap in reviewed bytes for b.py's unreviewed b3
+        ba = g("rev-parse", "HEAD:b.py")
+        bold = g("rev-parse", fix + ":b.py")
+        g("replace", ba, bold)
+        r = run("--after", "HEAD", "b.py")
+        check(r.returncode == 1, "a git replace ref cannot fake the reviewed bytes")
+        g("replace", "-d", ba)
+        commit("junk records")
         g("checkout", "-q", "-b", "side", fix + "~1")
         write("d.py", "x\n")
         side = commit("side")

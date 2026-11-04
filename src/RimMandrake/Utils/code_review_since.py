@@ -12,25 +12,28 @@ that question instead, from history:
     carries the sha256 of the path's bytes at a commit C in HEAD's history
     that has every --after commit as an ancestor (C may be an --after itself).
 
-Candidate commits are the ones that touched the path (full history, merges
-included) plus every --after and HEAD, all filtered to "descends from every
---after". Exit 0 when every path passes, 1 when any fails, 2 on a usage or
+Every such commit is checked (one batched `git cat-file` per path; distinct
+blobs hashed once), so no history simplification can hide a reviewed state. Exit 0 when every path passes, 1 when any fails, 2 on a usage or
 git error. Read-only.
 """
 import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+HEX = re.compile(r"[0-9a-f]{40}|[0-9a-f]{64}")
+# replacement refs would let `cat-file` hand back other bytes than the tree holds
+GIT_ENV = dict(os.environ, GIT_NO_REPLACE_OBJECTS="1")
 REC_DIR = os.path.join(ROOT, "infrastructure", "state", "code_review")
 
 
 def git(*args, inp=None):
     r = subprocess.run(["git", "-C", ROOT] + list(args), input=inp,
-                       capture_output=True)
+                       capture_output=True, env=GIT_ENV)
     if r.returncode != 0:
         sys.stderr.write("FAIL: git %s: %s" % (" ".join(args), r.stderr.decode(errors="replace")))
         sys.exit(2)
@@ -40,7 +43,11 @@ def git(*args, inp=None):
 def clean_marks():
     """{(path, sha256): [record, ...]} for every clean mark in every shard."""
     out = {}
-    for n in sorted(os.listdir(REC_DIR)):
+    try:
+        names = sorted(os.listdir(REC_DIR))
+    except FileNotFoundError:
+        return out  # no ledger yet: nothing is clean
+    for n in names:
         if not n.endswith(".jsonl"):
             continue
         with open(os.path.join(REC_DIR, n), encoding="utf-8") as f:
@@ -52,7 +59,10 @@ def clean_marks():
                     rec = json.loads(line)
                 except ValueError:
                     continue
-                if rec.get("verdict") == "clean" and rec.get("sha256") and rec.get("path"):
+                if not isinstance(rec, dict):
+                    continue
+                if (rec.get("verdict") == "clean" and isinstance(rec.get("sha256"), str)
+                        and isinstance(rec.get("path"), str)):
                     out.setdefault((rec["path"], rec["sha256"]), []).append(rec)
     return out
 
@@ -69,23 +79,28 @@ def descendants_of_all(afters):
     return common
 
 
-def blob_sha256(commit, path):
-    r = subprocess.run(["git", "-C", ROOT, "show", "%s:%s" % (commit, path)],
-                       capture_output=True)
-    if r.returncode != 0:
-        return None  # path absent at that commit
-    return hashlib.sha256(r.stdout).hexdigest()
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--after", action="append", required=True,
                     help="a commit the review must postdate (repeatable)")
     ap.add_argument("paths", nargs="+")
     a = ap.parse_args()
+    paths = []
+    for p in a.paths:  # ledger keys are repo-relative, '/'-separated
+        try:
+            rel = os.path.relpath(os.path.abspath(p), ROOT).replace(os.sep, "/")
+        except ValueError:  # another Windows drive
+            rel = ".."
+        if "\n" in p or "\r" in p:
+            print("FAIL: a path with a line break cannot go through git's line protocol: %r" % p)
+            return 2
+        if rel == ".." or rel.startswith("../"):
+            print("FAIL: %s is outside the repository" % p)
+            return 2
+        paths.append(rel)
     afters = [git("rev-parse", "--verify", x + "^{commit}").decode().strip() for x in a.after]
     for x in afters:
-        if subprocess.run(["git", "-C", ROOT, "merge-base", "--is-ancestor", x, "HEAD"]).returncode:
+        if subprocess.run(["git", "-C", ROOT, "merge-base", "--is-ancestor", x, "HEAD"], env=GIT_ENV).returncode:
             print("FAIL: --after %s is not in HEAD's history" % x[:10])
             return 2
     desc = descendants_of_all(afters)
@@ -94,31 +109,32 @@ def main():
         return 2
     marks = clean_marks()
     bad = 0
-    for path in a.paths:
-        touched = git("rev-list", "--full-history", "HEAD", "--", path).decode().split()
-        # a merge TREESAME to its side parent drops out of `touched`; the
-        # afters and HEAD cover the content such a merge brought in
-        head = git("rev-parse", "HEAD").decode().strip()
-        cands = [c for c in touched if c in desc] + [x for x in afters if x in desc] + [head]
+    for path in paths:
+        # every descendant's blob for this path, one batched call; distinct
+        # blobs only (the same bytes sit at most of these commits)
+        spec = "".join("%s:%s\n" % (c, path) for c in sorted(desc)).encode()
+        blobs = {}  # blob id -> one commit holding it ("<id> missing" lines skip)
+        for c, line in zip(sorted(desc), git("cat-file", "--batch-check=%(objectname) %(objecttype)", inp=spec).decode().splitlines()):
+            f = line.split(" ")
+            # a hit is exactly "<hex id> blob"; a miss echoes the query, then "missing"
+            if len(f) == 2 and f[1] == "blob" and HEX.fullmatch(f[0]):
+                blobs.setdefault(f[0], c)
         hit = None
-        seen = set()
-        for c in cands:
-            h = blob_sha256(c, path)
-            if h is None or h in seen:
-                continue
-            seen.add(h)
+        for blob, c in blobs.items():
+            h = hashlib.sha256(git("cat-file", "blob", blob)).hexdigest()
             recs = marks.get((path, h))
             if recs:
                 hit = (c, recs[-1])
                 break
         if hit:
             c, rec = hit
-            who = (rec.get("reviewer") or {}).get("job") or (rec.get("reviewer") or {}).get("kind") or "?"
+            rv = rec.get("reviewer") if isinstance(rec.get("reviewer"), dict) else {}
+            who = rv.get("job") or rv.get("kind") or "?"
             print("PASS  %s  (content at %s, clean mark %s by %s)" % (path, c[:10], rec.get("ts", "?"), who))
         else:
             bad += 1
-            print("FAIL  %s  (no clean mark on its content at any of %d commit(s) after the --after set)"
-                  % (path, len(seen)))
+            print("FAIL  %s  (no clean mark on any of its %d distinct version(s) after the --after set)"
+                  % (path, len(blobs)))
     return 1 if bad else 0
 
 
