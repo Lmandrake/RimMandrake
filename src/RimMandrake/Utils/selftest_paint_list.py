@@ -18,7 +18,7 @@ member is infrastructure/state/modlists/PAINT.reasons.json. Checks:
   6. no member is a packageId folded into the composed mandrake.rm.biomes.
 Probes (the instrument can see), each required to raise its own failure message: an injected unexplained member, a
 reason row for a non-member, a bad need value, a dropped ludeon id, a retired (not-on-LATEST) WORLD member, a dropped
-dependency, a synthetic v1.6-only About dependency left out of the list, and a stale defref edge. Offline: reads src/, the committed modlists and mod_facts.jsonl only.
+dependency, a synthetic v1.6-only About dependency left out of the list, a stale defref edge, and a stale class_ref edge. Offline: reads src/, the committed modlists and mod_facts.jsonl only.
 
     python3 src/RimMandrake/Utils/selftest_paint_list.py
 """
@@ -216,6 +216,12 @@ def main():
     stale = dict(reasons)
     stale[dref] = dict(reasons[dref], **{"def": "RM_ProbeNoSuchDef_ZZ"})
     probes.append(("stale defref %s" % dref, check(members, stale, latest, w), "%s: STALE edge" % dref))
+    # a dep row resting on the class_ref record alone must go stale when that record does
+    cref = next(p for p, r in reasons.items() if r.get("kind") == "dep" and p in members
+                and p not in hard_deps(r["of"], w) and class_edge(p, r["of"], w))
+    facts = dict(w[2], **{cref: dict(w[2][cref], dependants_detail=[])})
+    probes.append(("stale class_ref edge %s" % cref, check(members, reasons, latest, (w[0], w[1], facts, w[3])),
+                   "%s: STALE edge" % cref))
     for name, res, want in probes:
         ok = any(want in b for b in res)
         print("%s  probe %s -> %d failure(s), wanted %r" % ("PASS" if ok else "FAIL", name, len(res), want))

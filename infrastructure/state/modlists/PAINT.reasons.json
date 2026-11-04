@@ -83,12 +83,6 @@
    "def": "GU_RedWood",
    "why": "mandrake.rm.biomes's Defs name GU_RedWood unguarded"
   },
-  "biomesteam.coreframework": {
-   "need": "CLOSURE",
-   "kind": "class_ref",
-   "of": "mandrake.rm.biomes",
-   "why": "BiomesCore.* classes named by our Defs (TheRot RM_RotSporeKit_*, LanternDeeps); first listed as a dep of zylle.morevanillabiomes, retired 2026-11-01"
-  },
   "det.keshig": {
    "need": "CLOSURE",
    "kind": "defref",
