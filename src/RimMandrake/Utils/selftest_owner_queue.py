@@ -83,7 +83,7 @@ def run_main(*flags):
     saved = sys.argv, M.ledger, M.relentless_states
     cli_items = dict(items, M_STRIKES=it("owner"))
     cli_rel = dict(rel, M_STRIKES=held("strikes", "3 strikes"))
-    sys.argv, M.ledger, M.relentless_states = ["owner_queue.py"] + list(flags), (lambda: ([], NS(items=cli_items))), (lambda: cli_rel)
+    sys.argv, M.ledger, M.relentless_states = ["owner_queue.py"] + list(flags), (lambda: ([], NS(items=cli_items))), (lambda **_: cli_rel)
     out = io.StringIO()
     try:
         with contextlib.redirect_stdout(out):

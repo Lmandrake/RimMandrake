@@ -3661,6 +3661,10 @@ def t_hold_routing():
     fx = Fx(his, It("owner", "doing", [0]))
     fx.ledger_hold_to_seat("I", hold)
     ok(not any(c[0] == "needs" for c in fx.calls), "a person's needs=owner is not ours to move: %s" % fx.calls)
+    # filed_needs alone keeps a person's `needs --to owner`; this is the case only _owner_routing_is_ours can tell
+    fx = Fx(ours + [{"event": "block", "kind": "owner"}], It("owner", "doing", [0, 1]))
+    fx.ledger_hold_to_seat("I", hold)
+    ok(not any(c[0] == "needs" for c in fx.calls), "blocked on him after our old routing: the block is his, not ours to move: %s" % fx.calls)
     fx = Fx([], It("bridge", "built", [], ["L2"]))
     fx.ledger_hold_to_seat("I", hold)
     ok(not any(c[0] == "needs" for c in fx.calls), "a hold writes no needs on an item not routed to him: %s" % fx.calls)
