@@ -27,8 +27,17 @@ re-runs on its repair), or has a reason in owed_register.json naming its owed wo
 is printed beside it, never hidden. A register entry whose chain has since measured is STALE: --check warns (delete the
 entry), it does not fail, since a chain starting to measure is the point.
 
-Read-only: reads QHOME/done (env TESTQ_QUEUE, default as testq.py) and owed_register.json beside this file.
+THE CENSUS'S TWELVE: the 2026-10-27 census (testing_sim/census.json, testq.chains_never_measured) named 12 chains that had
+never measured. owed_register.json `_census_never_measured` lists them; --check fails unless each one has, in the store
+judged, measured a row since, or is HARNESS-held, or has a register reason, or is noted there as no chain at all ("?"
+was the census's bucket for chainless rows: modcheck plan rows absent from the sheet, NOT_RUN, never UNMEASURED).
+
+SOURCE: the live store QHOME/done (env TESTQ_QUEUE, default as testq.py). Where it holds no job file (a clean export,
+another machine) the committed snapshot fixtures/testq_unmeasured_snapshot.jsonl.gz is judged instead, and the output
+says so on its first line. `--freeze` rewrites that snapshot from the live store; `--snapshot PATH` judges one by name.
+Read-only otherwise (owed_register.json beside this file).
 """
+import gzip
 import argparse
 import collections
 import glob
@@ -44,6 +53,7 @@ import retest as R  # noqa: E402
 
 QHOME = os.environ.get("TESTQ_QUEUE", "/mnt/d/ClaudeWork/rimmandrake/testq")
 REGISTER = os.path.join(HERE, "owed_register.json")
+SNAPSHOT = os.path.join(HERE, "fixtures", "testq_unmeasured_snapshot.jsonl.gz")
 TARGET = 0.15
 CLASSES = ("HARNESS", "UPSTREAM", "LOOK", "NOT_ON_MAP", "PREDICATE_OWED", "SITE")
 _LOOK = re.compile(r"live check owed|look owed")
@@ -83,6 +93,55 @@ def load(qhome):
         out.append((res.get("finished") or j.get("finished") or "", (j.get("job") or {}).get("mod") or "?", res,
                     os.path.basename(f)))
     out.sort(key=lambda t: t[0])
+    return out
+
+
+def live_files(qhome):
+    return glob.glob(os.path.join(qhome, "done", "*.json"))
+
+
+def freeze(jobs, path):
+    """Write jobs (load()'s tuples) as one JSON line each, gzipped; mtime 0 so an unchanged store freezes identically."""
+    with open(path, "wb") as raw, gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as gz:
+        for fin, mod, res, name in jobs:
+            line = {"finished": fin, "mod": mod, "name": name,
+                    "result": {"outcome": res.get("outcome"), "finished": res.get("finished"),
+                               "rows": res.get("rows") or []}}
+            gz.write((json.dumps(line, sort_keys=True) + "\n").encode("utf-8"))
+
+
+def load_snapshot(path):
+    """-> load()'s tuples from a --freeze file."""
+    out = []
+    with gzip.open(path, "rt", encoding="utf-8") as fh:
+        for ln in fh:
+            if ln.strip():
+                j = json.loads(ln)
+                out.append((j["finished"], j["mod"], j["result"], j["name"]))
+    out.sort(key=lambda t: t[0])
+    return out
+
+
+def census(st, register, ever):
+    """-> one entry per chain of the register's `_census_never_measured`: what became of it in the store judged."""
+    out = []
+    held = st["held_chains"]
+    for key, note in sorted((register.get("_census_never_measured") or {}).items()):
+        if key.startswith("_"):
+            continue
+        mod_ch = tuple(key.split("/", 1))
+        reg = register.get(key)
+        if note.get("not_a_chain"):
+            fate, ok = "not a chain: " + note["not_a_chain"], True
+        elif ever.get(mod_ch, 0) > 0:
+            fate, ok = "measured since: %d PASS/FAIL rows in the store" % ever[mod_ch], True
+        elif held.get(key):
+            fate, ok = "held: " + held[key], True
+        elif reg and reg.get("reason"):
+            fate, ok = "owed: %s (%s)" % (reg["reason"], reg.get("item")), True
+        else:
+            fate, ok = "NO MEASUREMENT AND NO REASON", False
+        out.append({"chain": key, "fate": fate, "ok": ok})
     return out
 
 
@@ -138,7 +197,7 @@ def status(jobs, register=None, target=TARGET):
     stale = sorted(k for k in register if not k.startswith("_") and ever.get(tuple(k.split("/", 1)), 0) > 0)
     unknown = sorted(k for k in register if not k.startswith("_") and tuple(k.split("/", 1)) not in ever)
     vshare = verdict_unm / verdict_rows if verdict_rows else None
-    return {
+    st = {
         "chains": len(newest), "rows": total, "verdicts": dict(verdicts),
         "raw_share": round(verdicts.get("UNMEASURED", 0) / total, 4) if total else None,
         "verdict_rows": verdict_rows, "verdict_unmeasured": verdict_unm, "held_rows": held_rows,
@@ -146,6 +205,8 @@ def status(jobs, register=None, target=TARGET):
         "classes": {c: classes.get(c, 0) for c in CLASSES}, "held_chains": held_chains,
         "never_measured": never, "register_stale": stale, "register_unknown": unknown, "rows_unmeasured": listing,
     }
+    st["census"] = census(st, register, ever)
+    return st
 
 
 def problems(st):
@@ -159,6 +220,9 @@ def problems(st):
     for n in st["never_measured"]:
         if not n["ok"]:
             out.append("never measured, not held, no register reason: %s" % n["chain"])
+    for c in st["census"]:
+        if not c["ok"]:
+            out.append("census never-measured chain %s: %s" % (c["chain"], c["fate"]))
     return out
 
 
@@ -176,10 +240,31 @@ def main(argv=None):
     ap.add_argument("--rows", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--json", default=None)
+    ap.add_argument("--snapshot", default=None, help="judge this --freeze file instead of the live store")
+    ap.add_argument("--freeze", nargs="?", const=SNAPSHOT, default=None,
+                    help="write the live store's DONE jobs to this snapshot (default the committed one) and stop")
     a = ap.parse_args(argv)
     with open(a.register, encoding="utf-8") as fh:
         register = json.load(fh)
-    st = status(load(a.qhome), register)
+    if a.freeze:
+        jobs = load(a.qhome)
+        if not jobs:
+            print("FREEZE REFUSED: no DONE job in %s/done (a snapshot of nothing would pass nothing)" % a.qhome)
+            return 1
+        freeze(jobs, a.freeze)
+        print("froze %d DONE jobs (newest %s) from %s into %s" % (len(jobs), jobs[-1][0], a.qhome, a.freeze))
+        return 0
+    if a.snapshot:
+        src, jobs = "snapshot " + a.snapshot, load_snapshot(a.snapshot)
+    elif live_files(a.qhome):
+        src, jobs = "live store " + a.qhome, load(a.qhome)
+    elif os.path.exists(SNAPSHOT):
+        src, jobs = "snapshot %s (live store %s holds no job file here)" % (SNAPSHOT, a.qhome), load_snapshot(SNAPSHOT)
+    else:
+        src, jobs = "live store %s (absent, and no snapshot)" % a.qhome, []
+    st = status(jobs, register)
+    newest = jobs[-1][0] if jobs else "-"
+    print("source: %s; %d DONE jobs, newest finished %s" % (src, len(jobs), newest))
     if a.json:
         with open(a.json, "w", encoding="utf-8") as fh:
             json.dump(st, fh, indent=1, sort_keys=True)
@@ -195,6 +280,9 @@ def main(argv=None):
         why = ("held: " + n["held"][:80]) if n["held"] else ("owed: " + n["register"]["reason"][:80]
                                                               if n["register"] else "NO REASON")
         print("    %-4s %-44s %s" % ("ok" if n["ok"] else "BAD", n["chain"], why))
+    print("  the 2026-10-27 census's never-measured chains: %d" % len(st["census"]))
+    for c in st["census"]:
+        print("    %-4s %-44s %s" % ("ok" if c["ok"] else "BAD", c["chain"], c["fate"][:90]))
     if a.rows:
         for r in st["rows_unmeasured"]:
             print("  %-14s %s/%s %s | %s" % (r["class"], r["mod"], r["chain"], r["row"], r["detail"][:150]))

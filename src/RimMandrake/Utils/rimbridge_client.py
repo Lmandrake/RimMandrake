@@ -806,7 +806,7 @@ class RimBridge:
                 raise DriverHeldError("refusing %s: %s. Wait for `rimflow bridge who` to read free, or take the bridge; "
                                       "to cross him on purpose set %s=<why>" % (tool, crossed, CROSS_ENV))
             left = _deadline_left()
-            if left is not None and left < self.timeout + self.connect_timeout:
+            if left is not None and left < self.timeout + self.connect_timeout + DEADLINE_MARGIN_S:
                 # TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD: the call's timeout is CLAMPED to the room left, and only a
                 # room under DEADLINE_MIN_CALL_S refuses. Refusing whenever the room was under the full timeout made
                 # a driver whose kill time is within one call timeout of its start (sprinkler_live: 600 s driver,

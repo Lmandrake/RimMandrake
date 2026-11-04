@@ -27,5 +27,22 @@
  "FlowWorks/toggle_river_steam_pyrelands": {
   "reason": "the re-tiled RM_Pyrelands map carries no RiverSteamBiomeExtension: only mandrake.rut.patches adds it, and that mod is not on the FlowWorks test list",
   "item": "RIVER_STEAM_WIRE_PYRELANDS_STEAMLESS_ON_TEST"
+ },
+ "_census_never_measured": {
+  "_doc": "the 12 chains the 2026-10-27 census (D:\\\\ClaudeWork\\\\rimmandrake\\\\testing_sim\\\\census.json, testq.chains_never_measured) named never-measured; unmeasured.py --check prints each one's fate and fails on any without one",
+  "FlowWorks/?": {
+   "not_a_chain": "the census's bucket for rows with no chain: 516 NOT_RUN rows 'in modcheck's preview plan, absent from the sheet' (retest.ORPHAN), none UNMEASURED"
+  },
+  "FlowWorks/canal_overflow": {},
+  "FlowWorks/droid_dig": {},
+  "FlowWorks/hose_live_rows": {},
+  "FlowWorks/swept": {},
+  "FlowWorks/toggle_fall_damage": {},
+  "FlowWorks/toggle_liquid_corrosion": {},
+  "FlowWorks/toggle_liquid_drilling": {},
+  "FlowWorks/toggle_liquid_ignition": {},
+  "FlowWorks/toggle_river_steam_pyrelands": {},
+  "FlowWorks/toggle_superdeep_shooting": {},
+  "FlowWorks/toggle_typed_shores": {}
  }
 }

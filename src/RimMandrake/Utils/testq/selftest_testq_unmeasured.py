@@ -95,12 +95,51 @@ def main():
         check(any("M/e" in b for b in U.problems(st3)), "an entry with an empty reason does not count")
         rc = U.main(["--qhome", d, "--register", os.path.join(HERE, "owed_register.json"), "--check"])
         check(rc == 1, "main --check exits 1 on this store (share over 15%%): %s" % rc)
+        creg = dict(reg, _census_never_measured={"M/a": {}, "M/e": {}, "M/q": {}, "M/?": {"not_a_chain": "plan rows"},
+                                                 "_doc": "x"})
+        cen = {c["chain"]: c for c in U.status(U.load(d), creg, target=0.6)["census"]}
+        check(set(cen) == {"M/a", "M/e", "M/q", "M/?"}, "one census entry per listed chain, _doc skipped: %s" % sorted(cen))
+        check(cen["M/a"]["ok"] and cen["M/a"]["fate"].startswith("measured since")
+              and cen["M/e"]["ok"] and cen["M/e"]["fate"].startswith("owed")
+              and cen["M/?"]["ok"] and cen["M/?"]["fate"].startswith("not a chain"),
+              "census fates: measured since / owed / not a chain: %s" % cen)
+        st4 = U.status(U.load(d), creg, target=0.6)
+        check(not cen["M/q"]["ok"] and any("census" in b and "M/q" in b for b in U.problems(st4)),
+              "a census chain with no measurement and no reason fails --check: %s" % U.problems(st4))
+        snap = os.path.join(d, "snap.jsonl.gz")
+        U.freeze(U.load(d), snap)
+        a_st, b_st = U.status(U.load(d), reg, target=0.6), U.status(U.load_snapshot(snap), reg, target=0.6)
+        check(a_st == b_st, "a frozen snapshot judges exactly as the live store it froze")
+        snap2 = os.path.join(d, "snap2.jsonl.gz")
+        U.freeze(U.load(d), snap2)
+        with open(snap, "rb") as f1, open(snap2, "rb") as f2:
+            check(f1.read() == f2.read(), "freezing an unchanged store is byte-identical")
+        empty_q = os.path.join(d, "emptyq")
+        os.makedirs(os.path.join(empty_q, "done"))
+        check(U.main(["--qhome", empty_q, "--register", os.path.join(HERE, "owed_register.json"), "--freeze",
+                      os.path.join(d, "never.gz")]) == 1 and not os.path.exists(os.path.join(d, "never.gz")),
+              "--freeze refuses an empty store and writes nothing")
+        saved = U.SNAPSHOT
+        U.SNAPSHOT = snap
+        try:
+            rc2 = U.main(["--qhome", empty_q, "--register", os.path.join(HERE, "owed_register.json"), "--check"])
+            U.SNAPSHOT = os.path.join(d, "absent.gz")
+            rc3 = U.main(["--qhome", empty_q, "--register", os.path.join(HERE, "owed_register.json"), "--check"])
+        finally:
+            U.SNAPSHOT = saved
+        check(rc2 == 1, "an empty live store falls back to the snapshot (this one over target, so exit 1): %s" % rc2)
+        check(rc3 == 1, "no live store and no snapshot: --check fails (no rows read): %s" % rc3)
+        check(U.main(["--snapshot", snap, "--register", os.path.join(HERE, "owed_register.json"), "--check"]) == 1,
+              "--snapshot judges the named file")
     finally:
         shutil.rmtree(d, ignore_errors=True)
     with open(os.path.join(HERE, "owed_register.json"), encoding="utf-8") as fh:
         real = json.load(fh)
     check(all(k.startswith("_") or (v.get("reason") and v.get("item")) for k, v in real.items()),
           "every entry of the real register names a reason and an item")
+    cn = real.get("_census_never_measured") or {}
+    check(len([k for k in cn if not k.startswith("_")]) == 12,
+          "the real register lists the census's 12 never-measured chains: %d" % len([k for k in cn if not k.startswith("_")]))
     if FAILS:
         print("%d FAILED" % len(FAILS))
         return 1
