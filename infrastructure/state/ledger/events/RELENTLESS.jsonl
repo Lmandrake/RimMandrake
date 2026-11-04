@@ -92,3 +92,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:31:01Z","tsn":1793759461920298201}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-04T02:31:13Z","tsn":1793759473753162624}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:31:25Z","tsn":1793759485957059038}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-04T02:31:38Z","tsn":1793759498456224554}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:31:49Z","tsn":1793759509745268989}
