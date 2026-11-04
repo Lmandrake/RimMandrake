@@ -2157,4 +2157,15 @@ finally:
         else:
             os.environ[_k] = _v
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
+# a wildcard alarm with subject_field names its item by the reading's subject, not a random key (owner 2026-11-04)
+_tg = {"name": "NIGHTLY_COP_FIX", "key": "testing.red_*", "subject_field": "subject", "subject_prefix": "SELFTEST_FIX"}
+_sj = OW.red_subject(["src/RimMandrake/Utils/arena/selftest_arena_judge.py"])
+_nm = OW.alarm_prefix(_tg, "NIGHTLY_RED", "testing.red_abcdef", {}, "a", {"x": {"subject": _sj}})
+check("red group: the item is named by its first test", _sj == "ARENA_JUDGE" and _nm.startswith("SELFTEST_FIX_ARENA_JUDGE_"), _nm)
+check("red group: a clash falls back to the key's tail",
+      OW.alarm_prefix(_tg, "NIGHTLY_RED", "testing.red_zzzzzz", {"a": {"name": _nm}}, "b", {"x": {"subject": _sj}}) != _nm, "")
+check("red group: a bare selftest.py takes its folder's name",
+      OW.red_subject(["skills/generating-rimworld-sprites/scripts/selftest.py"]) == "GENERATING_RIMWORLD_SPRITES", "")
+
+
 sys.exit(1 if FAILS else 0)

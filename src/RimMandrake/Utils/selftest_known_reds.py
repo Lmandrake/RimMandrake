@@ -200,12 +200,12 @@ known = set(OPEN)
 st = run(NOW, known, OPEN)
 f = filed()
 check("BUILD COP: two new reds with one cause file ONE item, its title naming the cause, the tests and the deadline",
-      len(f) == 1 and f[0]["name"].startswith("NIGHTLY_COP_FIX_RED_") and "No space left" in f[0]["title"]
+      len(f) == 1 and f[0]["name"].startswith("SELFTEST_FIX_B_") and "No space left" in f[0]["title"]
       and "due 2026-11-07" in f[0]["title"] and "selftest_b.py" in f[0]["title"] and "selftest_c.py" in f[0]["title"], f)
 check("BUILD COP: a listed red files nothing", not any("selftest_a.py" in a["title"] for a in f), f)
 import pulse_core as PC  # noqa: E402  (ops_watch put pulse/ on the path)
 check("BUILD COP: the minted name passes the ledger's name rules", f and not PC._model().mint_problems(f[0]["name"], set()), f)
-item = f[0]["name"]
+item, item_key = f[0]["name"], f[0]["key"]
 check("BUILD COP: the real filer raises every item it files (first in relentless pool_order)",
       'ing.rimflow("raise", a["name"]' in Path(OW.__file__).read_text(encoding="utf-8"))
 known |= {item}
@@ -236,7 +236,7 @@ check("BUILD COP: the overdue alarm owes the Conductor a line", over and over[0]
 K.save([entry(), entry(test=B), entry(test=C)])
 pts = OW.nightly_news(LATE, {"open_ids": OPEN})
 check("BUILD COP: parking every red ends the deadline and the groups", pts["testing.nightly_reds_overdue"]["v"] == 0
-      and (pts.get(item.replace("NIGHTLY_COP_FIX_RED_", "testing.red_")[:-5].lower()) or {}).get("v") == 0, pts)
+      and (pts.get(item_key) or {}).get("v") == 0, pts)
 
 # a cured group reads 0 and clears; the cap spreads a flood over passes
 reset()
@@ -343,7 +343,7 @@ try:
         if c[0] == "spawn":
             spawned[c[c.index("--name") + 1]] = c[c.index("--title") + 1]
     raised = [c[1] for c in seen if c[0] == "raise"]
-    cop = {n: t for n, t in spawned.items() if n.startswith("NIGHTLY_COP_FIX_RED_")}
+    cop = {n: t for n, t in spawned.items() if n.startswith(("NIGHTLY_COP_FIX_RED_", "SELFTEST_FIX_"))}
     late = {n: t for n, t in spawned.items() if n.startswith("OPS_RED_OVERDUE_CHASE_")}
     check("WIRE: a pass exits 0", rc == 0, rc)
     check("WIRE: the pass reads the nightly (the testing collector and the flow ledger reach known_reds)", cop, seen)

@@ -376,7 +376,7 @@ def main(argv=None):
             print("build cop: %d unparked red(s) in %d group(s)%s, %d overdue" % (
                 sum(len(g["tests"]) for g in c["groups"]), len(c["groups"]),
                 "" if c["detail_read"] else " (the night's output is unread: each red stands alone)", len(c["overdue"])))
-            for g in c["groups"]:     # item NIGHTLY_COP_FIX_RED_<KEY>_* carries group testing.red_<key>
+            for g in c["groups"]:     # item SELFTEST_FIX_<FIRST TEST>_* carries group testing.red_<key> (alarms.json pairs them)
                 print("  %s  due %s  %s" % (g["key"], g["due"], g["sig"]))
                 for t in g["tests"]:
                     print("      " + t)

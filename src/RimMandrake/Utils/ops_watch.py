@@ -991,6 +991,19 @@ def nightly_news(now, ctx):
     return out
 
 
+def red_subject(tests):
+    """A group's item name words, from its first test's file: selftest_arena_judge.py -> ARENA_JUDGE; a bare
+    selftest.py takes its folder's name (skills/generating-rimworld-sprites/scripts/selftest.py -> GENERATING_...)."""
+    if not tests:
+        return None
+    path = Path(sorted(tests)[0])
+    stem = re.sub(r"^selftest_?|_?selftest$", "", path.stem)
+    if not stem:
+        stem = next((d for d in reversed(path.parent.parts) if d.lower() not in ("scripts", "selftest", "utils", "src")), "")
+    words = [w for w in re.sub(r"[^A-Za-z0-9]+", "_", stem).upper().split("_") if w][:4]
+    return "_".join(words) if words and words[0][0].isalpha() else None
+
+
 def red_groups(c, night, state=None):
     """BUILD COP (known_reds.py): one testing.red_<id> reading per root-cause group of the night's unparked reds, for
     the wildcard alarm NIGHTLY_COP_FIX (one raised item per group). An absent key holds its alarm, so a group gone from
@@ -1013,7 +1026,7 @@ def red_groups(c, night, state=None):
                 continue
             fresh += 1
         out[g["key"]] = M(len(g["tests"]), "nightly reds with one first error line, no entry parking them", night=night,
-                          said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"],
+                          subject=red_subject(g["tests"]), said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"],
                           titled={"%s (due %s)" % (t, g["due"]): Path(t).name for t in g["tests"][:30]})
     live = {g["key"] for g in c["groups"]}
     for k in sorted(held - live):
@@ -2739,11 +2752,18 @@ def alarm_twist(base):
     return "".join(chr(65 + (n // 26 ** i) % 26) for i in range(4))
 
 
-def alarm_prefix(tg, tag, key, state, aid):
+def alarm_prefix(tg, tag, key, state, aid, pt=None):
     """One fixed name per alarm. A rule's own name serves a rule with one key; a wildcard key, an unnamed rule, or a
-    name another alarm already holds gets the tag or the key's tail so two alarms never share an item."""
+    name another alarm already holds gets the tag or the key's tail so two alarms never share an item. A wildcard
+    rule with `subject_field` names its item by what the reading says it is about (owner 2026-11-04: random group
+    keys like NIGHTLY_COP_FIX_RED_CIXTEN_JSWD told him nothing), the key's tail only on a clash."""
     base = tg.get("name") or "OPS_ALARM_DIAGNOSE_" + re.sub(r"\W+", "_", tag).upper()
     held = {a.get("name") for k, a in state.items() if k != aid and isinstance(a, dict)}
+    subject = ((pt or {}).get("x") or {}).get(tg.get("subject_field") or "") if "*" in tg.get("key", "") else None
+    if isinstance(subject, str) and re.fullmatch(r"[A-Z][A-Z0-9_]*", subject):
+        base = "%s_%s" % (tg.get("subject_prefix") or "OPS_FIX", subject)
+        if "%s_%s" % (base, alarm_twist(base)) not in held:
+            return "%s_%s" % (base, alarm_twist(base))
     if "*" in tg.get("key", "") or "%s_%s" % (base, alarm_twist(base)) in held:     # held names carry their twist
         base = "%s_%s" % (base, re.sub(r"\W+", "_", key.split(".", 1)[-1]).upper())
     return "%s_%s" % (base, alarm_twist(base))
@@ -3131,7 +3151,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a["name"] for a in state.values() if isinstance(a, dict) and isinstance(a.get("name"), str)}
             try:
-                cur["name"] = mint_name(tag, taken, alarm_prefix(tg, tag, key, state, aid))
+                cur["name"] = mint_name(tag, taken, alarm_prefix(tg, tag, key, state, aid, pt))
                 # the name is already on the ledger: a repeat of an alarm that filed before. It reopens that item.
                 cur["reopen"] = cur["name"] in known_ids
             except Exception as e:  # noqa: BLE001  one unnameable alarm stays PENDING and counted (signal_watch tells); the pass goes on
