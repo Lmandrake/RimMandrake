@@ -44,8 +44,7 @@ def acted(acts):
 
 def norm(x):
     j = json.dumps(x, sort_keys=True, default=str)
-    j = re.sub(r"selftest_run_[a-z0-9_]+/", "", j)    # the runner may put the test in its own per-run tmp dir
-    j = re.sub(r"selftest_dispatcher_[a-z0-9_]{8}", "selftest_dispatcher_TMP", j)
+    j = j.replace(SD.TMP, "<TMP>")    # paths compare relative to the test's own tmp dir, whatever TMPDIR is
     return json.loads(j)
 
 
@@ -2288,11 +2287,11 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                        'empty ledger)',
                                        'roles': {'Producer': {'done': {}, 'runs': []}}}],
  'decide_off_switch_and_window': {'no off_file: asked with empty path': [''],
-                                  'off path': ['/home/mandrake/.seat-tmp/BENCH/selftest_dispatcher_TMP/CONDUCTOR_OFF'],
+                                  'off path': ['<TMP>/CONDUCTOR_OFF'],
                                   'off reason': {'acts': [{'do': 'role_hold',
                                                            'role': 'Conductor',
                                                            'why': 'Conductor slot 08:00 local skipped: off switch '
-                                                                  '/home/mandrake/.seat-tmp/BENCH/selftest_dispatcher_TMP/CONDUCTOR_OFF '
+                                                                  '<TMP>/CONDUCTOR_OFF '
                                                                   '(owner: stop)'}],
                                                  'ledger_blind': None,
                                                  'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'off'},
@@ -2337,7 +2336,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                'role': 'Conductor',
                                                                'why': 'Conductor slot 08:00 local skipped: off '
                                                                       'switch '
-                                                                      '/home/mandrake/.seat-tmp/BENCH/selftest_dispatcher_TMP/CONDUCTOR_OFF '
+                                                                      '<TMP>/CONDUCTOR_OFF '
                                                                       '(no reason given)'}],
                                                      'ledger_blind': None,
                                                      'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'off'},
@@ -2467,7 +2466,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                              'role': 'Producer',
                                                              'why': 'Producer ledger event: block on A at '
                                                                     '2026-10-28T12:46:00Z skipped: off switch '
-                                                                    '/home/mandrake/.seat-tmp/BENCH/selftest_dispatcher_TMP/PRODUCER_OFF '
+                                                                    '<TMP>/PRODUCER_OFF '
                                                                     '(owner: stop)'}],
                                                    'ledger_blind': None,
                                                    'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed'},
