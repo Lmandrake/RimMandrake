@@ -1,0 +1,449 @@
+{
+ "item": "ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG",
+ "audit_commit": "2348af74911065e2ee2e2ff5c61fe476856f4154",
+ "gate_fix_commit": "ea0c29ec6688e06cf74ab848d980b184884ba77d",
+ "not_lost": {
+  "cauldronsoilrich_breathes_a": "its _artsrc PNG exists; KEEP_DONE pruned by twins --apply 2026-10-26"
+ },
+ "source": "D:\\ClaudeWork\\rimmandrake\\review_w94_twins\\twins_cls_w101.json, twins_kept_w101.txt, twins_gate_w101.txt",
+ "jobs": {
+  "RM_Dredgel_east": {
+   "decision": "purged",
+   "action": "none",
+   "why": "owner purged both shas (thesump_sheet_2026-10-05.decisions.json); followed by thesump_Dredgel_v2; picture unrecoverable and not wanted; twins leaves it AMBIGUOUS on purpose",
+   "variants": [
+    {
+     "sha": "3be22d91574e6efde69f0159560d756a1ce771e752007689e3ec79b506f196ac",
+     "in_art_store": false,
+     "repo_at_audit": []
+    }
+   ]
+  },
+  "RM_Dredgel_north": {
+   "decision": "purged",
+   "action": "none",
+   "why": "owner purged both shas (thesump_sheet_2026-10-05.decisions.json); followed by thesump_Dredgel_v2; picture unrecoverable and not wanted; twins leaves it AMBIGUOUS on purpose",
+   "variants": [
+    {
+     "sha": "0a947d573ebed8b6335ac3aa6695cd93fc995a0c7b2bb693fe85d07db3fb4f76",
+     "in_art_store": false,
+     "repo_at_audit": []
+    }
+   ]
+  },
+  "RM_Hwelgrue_north": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": [
+    {
+     "sha": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ]
+  },
+  "RM_Selvix": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "5ea32dacab809a37bf3fb31e2da3728dee84d296b3148f13537a627eb9f390de",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Selvix/RM_Selvix.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep 601e1c7e8dedae00e857 via cauldron_sheet_2026-10-04.decisions.json"
+  },
+  "RM_Vhaulk_v3_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk_east.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep d9bb8d2434ed7331d4cf via blue_desert_sheet_2026-10-04.decisions.json"
+  },
+  "RM_Yammeth_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "03555f27c0d22372d6d6a5c71848fbdda268df938961b61838d5f96a57be108c",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_south.png"
+     ]
+    }
+   ]
+  },
+  "bluedesert_Dovvik_v2_north": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": [
+    {
+     "sha": "fb814f932cccf41c9a0f51991a1be25422848e89cd600e40af769632914793e0",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ],
+   "owner_kept": "owner keep 35b77486176e5923bd34 via blue_desert_sheet_2026-10-04.decisions.json"
+  },
+  "bluedesert_Thunderbeast_v2_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert_south.png"
+     ]
+    },
+    {
+     "sha": "b3e08d85a3db0739d1ac5e6c97fcd82b09e1e7a957482129761a54d5dd7412c3",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ],
+   "owner_kept": "owner keep 3f988c94383a5b9075c9 via blue_desert_sheet_2026-10-04.decisions.json"
+  },
+  "bluedesert_Vrisk_v2_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_east.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep fdb8d0bd67957f9b2915 via blue_desert_sheet_2026-10-04.decisions.json"
+  },
+  "bluedesert_Vrisk_v2_north": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_north.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep fdb8d0bd67957f9b2915 via blue_desert_sheet_2026-10-04.decisions.json"
+  },
+  "bluedesert_Vrisk_v2_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_south.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep fdb8d0bd67957f9b2915 via blue_desert_sheet_2026-10-04.decisions.json"
+  },
+  "desert_gap_Destroyer_v1_south": {
+   "decision": "requeue",
+   "action": "requeued as desert_gap_Destroyer_v2_east/_north/_south",
+   "why": "slot holds donor art; regen gate fixed by ea0c29ec66, then fill_queue queued v2 (v1 id already used in done/); v2 rendered and validated pass 2026-11-02",
+   "variants": [
+    {
+     "sha": "ef84340faa88954652cbcb8a6e0ec18c4995ad9b523c477baf9a60272b16ceba",
+     "in_art_store": true,
+     "repo_at_audit": []
+    },
+    {
+     "sha": "0e55b96521516d7f95fc4163ca758226a9a90d380dcf4075827af8104d711e63",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ]
+  },
+  "desertportb_greaterkraytdragon_south": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": []
+  },
+  "desertportb_pikobis_south": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": []
+  },
+  "longshade_rsw_bantha_v1_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "95075596f9498905c714cf75c4752cdaf087486ca6653487afef43e98c244535",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaR_south.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep 5e6bfbce7ee2bc6d2b7d via leaningscrub_sheet_2026-10-05.decisions.json"
+  },
+  "longshade_rsw_bantha_v3_north": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaV_H_north.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep d9149da2fbe1e3d59e33 via leaningscrub_sheet_2026-10-05.decisions.json"
+  },
+  "longshade_rsw_ronto_v1_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Ronto/RontoPack_east.png",
+      "src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Ronto/Ronto_east.png"
+     ]
+    },
+    {
+     "sha": "46f2157a1fe6d8c1fe4c1a94e2dfff4f4c1db40e5e2f89e6cf43e470695e627f",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ],
+   "owner_kept": "owner keep 1967265ae1b7c7e8eda6 via leaningscrub_sheet_2026-10-05.decisions.json"
+  },
+  "ls_regen_JOE_Landopus_swim_v1_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/landopus/landopus_east.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep f68b24cb7c2bb6d86b63 via desert_sheet_2026-10-04.decisions.json"
+  },
+  "ls_regen_JOE_Landopus_v1_east": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": [
+    {
+     "sha": "941bc4f7025e66cc4b483d0155cc09e09eecc41d4c0d343a896d68bd938005b7",
+     "in_art_store": false,
+     "repo_at_audit": []
+    }
+   ]
+  },
+  "ls_regen_RM_Dakkra_down_v1_east": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": [
+    {
+     "sha": "20df6497bbad7e2af4dc48ad61871cfc9a49180f9904cefa630ca73f51ea14c8",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ]
+  },
+  "ls_regen_RM_Dakkra_rest_v1_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_east.png",
+      "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_east.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep edbbd5c78a40a747057f via desert_sheet_2026-10-04.decisions.json"
+  },
+  "ls_regen_RM_Gennok_v1_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "f93e3535210b155743d1efac07a745e674520d171d5495de4c5058ba9d3cc3ce",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Gennok/RM_Gennok_east.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep 20e360d4d2f8987bacde via desert_sheet_2026-10-04.decisions.json"
+  },
+  "ls_regen_RM_Gennok_v1_north": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": [
+    {
+     "sha": "d349110ae418ab24c77866e0dccab92cd0cff3c109a0f00624d1e2dce69fda63",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ],
+   "owner_kept": "owner keep 20e360d4d2f8987bacde via desert_sheet_2026-10-04.decisions.json"
+  },
+  "ls_regen_RM_Gennok_v1_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "93a961fd0ef1b65983cba59d4b63d89ef24335e422cfd6615355f4003d88e7d0",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Gennok/RM_Gennok_south.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep 20e360d4d2f8987bacde via desert_sheet_2026-10-04.decisions.json"
+  },
+  "ls_regen_RM_Gloomcast_v1_east": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "760af72482f7515f8f622f893dc9762397f7f84447ccf1a4b5417c0bbf22d7ae",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/LongShade/Textures/swanimals/Gloomcast/Gloomcast_east.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep a396d38575bf22ba0888 via desert_sheet_2026-10-04.decisions.json"
+  },
+  "ls_regen_RM_Gloomcast_v1_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "37c4321e6fd55a4154b9a6b9372b21833fbd107997f0f78f9bc5e0a2ea1b17ee",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/LongShade/Textures/swanimals/Gloomcast/Gloomcast_south.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep a396d38575bf22ba0888 via desert_sheet_2026-10-04.decisions.json"
+  },
+  "rot_illoth_b_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Illoth/Illoth_south.png"
+     ]
+    }
+   ]
+  },
+  "rot_thozzik_b_south": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik_south.png"
+     ]
+    }
+   ],
+   "owner_kept": "owner keep 38f26898123dd4f028a6 via therot_sheet_2026-10-05.decisions.json"
+  },
+  "rsw_blurrg_v2_north": {
+   "decision": "superseded",
+   "action": "none",
+   "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+   "variants": [
+    {
+     "sha": "e6cf149dd2cb4fd2949618602c280e4c9774466c884a71a3806291034726ce0d",
+     "in_art_store": true,
+     "repo_at_audit": []
+    }
+   ],
+   "legacy_root_png": "only copy outside the art store was the pre-migration root; bytes equal an art-store sha, so no copy needed"
+  },
+  "rut_greentideant_carapacewall_atlas": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "f85bf85da059b3ae136d39b484f0145b0ee5b7041d19318213c6bef211f3780e",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/Greentide/Textures/Things/Building/Linked/RM_GreentideAntCarapaceWall_Atlas.png"
+     ]
+    }
+   ],
+   "legacy_root_png": "only copy outside the art store was the pre-migration root; bytes equal an art-store sha, so no copy needed"
+  },
+  "rut_greentideant_carapacewall_menuicon": {
+   "decision": "installed",
+   "action": "none",
+   "why": "the job's picture is byte-identical to a git-tracked src texture at the audit commit",
+   "variants": [
+    {
+     "sha": "7a088696cf311e9c9172ddab94e101f846b6fa6508b934508df7efabd1b3d703",
+     "in_art_store": true,
+     "repo_at_audit": [
+      "src/RimMandrake/Greentide/Textures/Things/Building/Linked/RM_GreentideAntCarapaceWall_MenuIcon.png"
+     ]
+    }
+   ],
+   "legacy_root_png": "only copy outside the art store was the pre-migration root; bytes equal an art-store sha, so no copy needed"
+  }
+ }
+}
