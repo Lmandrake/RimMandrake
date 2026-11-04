@@ -228,6 +228,8 @@ On maturing every mod's test script, the owner said: *"We do (2) but only for th
 
 So the four recent mods get the pass now, and any other mod gets it the first time an item names it: read its code and spec, expand the spec and the validation strategies (site prep and controls for each scene), certify with him and clear up confusion, then write it all out for Relentless as build items. Filed: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; the trigger is `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`.
 
+How the trigger works (`src/RimMandrake/rimflow/first_touch.py`): Relentless gives no worker to an unstarted item that names a mod (its id, title or a `src/` path) while that mod has no pass on record, and files the pass once, `needs=owner`, as `<FOLDER>_DESIGN_FIRST_TOUCH` (the four above, and every Baroque Biomes compose member, map to their filed items in `src/RimMandrake/rimflow/designer_passes.json`). A pass is on record when its item closes `done`, or when `design/concepts/<Folder>/tree.json` passes `gate`. So closing the pass item `done` is what releases the held work: close it only after the build items are filed. `python3 src/RimMandrake/rimflow/first_touch.py status [<Tier/Folder>...]` reads which mods are on record. The hold is the rule `first_touch_hold` in `relentless_rules.json`.
+
 ## Handoff
 
 1. `lint` passes and the exam passed (or `exam_waived`).

@@ -1224,6 +1224,7 @@ class Effects(relentless_game.GameFx):
         pool.sort(key=lambda i: (plist.position(i, orders), i.id not in bounce, model.raise_key(i), not i.this_deployment,
                                  priority._row_key(i), i.created_at or "", i.id))
         pool = [i for i in pool if i.kind != "mod" or not self.concept_refusal(i.id)]   # no tree, no worker
+        pool = [i for i in pool if not self.first_touch_hold(i.id)]     # a mod's first touch waits for the Designer
         h = self.health()       # the system's own items before content: first pick, never preemption (stable sort)
         self.first, self.degraded = h["first"], h["degraded"]
         pool.sort(key=lambda i: (i.id not in self.first, self.first.get(i.id, 0)))
@@ -1247,10 +1248,46 @@ class Effects(relentless_game.GameFx):
         return self._health
 
     def concept_refusal(self, item):
-        """Why this item may not reach a worker, or None: a mod needs a well-defined tree (concept_tree.gate)."""
+        """Why this item may not reach a worker, or None: a mod needs a well-defined tree (concept_tree.gate), and a mod's
+        first touch needs a Designer pass on record (first_touch_hold)."""
         _, w = self.ledger_items()
         it = w.items.get(item)
-        return concept_refused(self.books, item, getattr(it, "kind", None))
+        return concept_refused(self.books, item, getattr(it, "kind", None)) or self.first_touch_hold(item)
+
+    def first_touch_hold(self, item):
+        """Why this item waits for a Designer pass (first_touch.hold), or None. A pass never filed is filed here, once
+        per mod per tick, needs=owner: the Designer's sitting with him is where it is done."""
+        if not self.r.get("first_touch_hold"):
+            return None
+        ft = pkg("first_touch")
+        memo = self.__dict__.setdefault("_first_touch", {})
+        if item in memo:
+            return memo[item]
+        _, w = self.ledger_items()
+        if "_ft_map" not in self.__dict__:
+            try:
+                self._ft_map = ft.pass_map(self.books, ft.load_passes(os.path.join(self.books, "src", "RimMandrake",
+                                                                                   "rimflow", "designer_passes.json")))
+            except (OSError, ValueError):
+                self._ft_map = {}
+
+        def state_of(i):
+            x = w.items.get(i)
+            return getattr(x, "state", None) if x else None
+        why, owed = ft.hold(self.books, item, self.item_mods({"item": item, "last_sha": None}), state_of, self._ft_map)
+        filed = self.__dict__.setdefault("_ft_filed", set())
+        for mod, pid in owed:
+            if pid in filed:
+                continue
+            filed.add(pid)
+            r = self.rimflow("file", pid, "--for", self.r["seat"], "--kind", "task", "--needs", "owner",
+                             "--title", ft.pass_title(mod), "--why",
+                             "relentless: first touch of %s by %s; the owner 2026-11-03: the first time an item names a mod, "
+                             "it gets a deep Designer pass" % (mod, item))
+            if r.returncode != 0:
+                why += " [filing %s failed: %s]" % (pid, (r.stderr or r.stdout)[-200:])
+        memo[item] = why
+        return why
 
     def mod_names(self):
         """{lowercase folder: tier/folder} of every game mod in the books: a folder with an About.xml."""

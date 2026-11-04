@@ -1,0 +1,11 @@
+{
+  "_doc": "first_touch.py: the Designer pass items filed by hand, by mod. The owner, 2026-11-03: \"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar.\" Any other mod's pass is <FOLDER>_DESIGN_FIRST_TOUCH, filed by Relentless at its first touch. `compose` maps every member of a composed mod to one pass.",
+  "mods": {
+    "RimMandrake/GimmeSomeSlack": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
+    "RimMandrake/FlowWorks": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
+    "RimMandrake/SolarMirrors": "SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS"
+  },
+  "compose": {
+    "src/RimMandrake/Biomes.compose.json": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS"
+  }
+}

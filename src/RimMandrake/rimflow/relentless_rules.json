@@ -22,6 +22,8 @@
   "step_back_mem_gb": 8,
   "_one_builder_per_mod": "Two workers on one game mod collide; several on different mods is the point. Mods come from the item, relentless.py item_mods.",
   "one_builder_per_mod": true,
+  "_first_touch_hold": "FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST (owner 2026-11-03: \"the first time an item names a mod, it gets a deep Designer pass ... then writes it all out for Relentless\"): an unstarted item naming a mod with no Designer pass on record gets no worker; the pass item is filed once, needs=owner (first_touch.py, designer_passes.json). false switches the hold off.",
+  "first_touch_hold": true,
   "_same_failure_limit": "RELENTLESS_STRIKES_HARDEN_CHANGE_TACK (owner 2026-11-02, fix 4 of relentless_vs_foundry_2026-11-02.md): two returns of one class (blind_fail, proof_weak, a snag class) change the approach; after max_approach_changes changes the next trigger holds the item for the Conductor with a summary (relentless_strikes.py). item_spend_limit is the per-item token cap, held the same way.",
   "same_failure_limit": 2,
   "max_approach_changes": 2,
