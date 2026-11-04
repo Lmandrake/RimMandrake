@@ -164,7 +164,10 @@ def metric_problem(key, m, metrics):
         lists = [c.get("in") for c in specs if "otherwise" not in c]
         if len(rest) != 1 or not all(isinstance(x, list) and x and all(isinstance(t, str) for t in x) for x in lists):
             return "%s: text classes are in-lists and exactly one otherwise" % key
-    for g in m.get("idle_if") or []:
+    gates = m.get("idle_if") or []
+    if not isinstance(gates, list) or not all(isinstance(g, str) for g in gates):
+        return "%s: idle_if is a list of metric names" % key     # refused here, so load_rules keeps the last good copy
+    for g in gates:
         gate = metrics.get(g)
         if not isinstance(gate, dict) or "idle" not in (gate.get("classes") or {}) or gate.get("idle_if"):
             return "%s: idle_if %s must name a metric that fills idle and has no idle_if of its own" % (key, g)
@@ -177,8 +180,9 @@ def ranges_problems(rules):
     if not isinstance(r, dict):
         return ["no ranges block"]
     ms = ranges_of(rules)
+    ro = [k for k in ms if k.startswith(REPORT_ONLY)] + [REPORT_ONLY + "x.y"]   # every real report-only key, and one unborn
     gating = sorted(str(t.get("key")) for t in rules.get("targets") or [] if isinstance(t, dict)
-                    and (str(t.get("key")).startswith(REPORT_ONLY) or fnmatch.fnmatchcase(REPORT_ONLY + "x.y", str(t.get("key")))))
+                    and (str(t.get("key")).startswith(REPORT_ONLY) or any(fnmatch.fnmatchcase(k, str(t.get("key"))) for k in ro)))
     if gating:
         return ["a target on a report-only metric (RO1): %s" % ", ".join(gating)]
     return [p for p in (metric_problem(k, ms[k], ms) for k in sorted(ms)) if p] or ([] if ms else ["the ranges block is empty"])
@@ -1407,11 +1411,18 @@ def game_health(now):
 
 def c_tps(now, rules, ctx):
     health = game_health(now)
-    r = subprocess.run([sys.executable, str(HERE / "tps_record.py"), "--json"], capture_output=True, text=True, timeout=90)
-    if r.returncode != 0:
-        raise RuntimeError("tps_record.py exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
-    s = (json.loads(r.stdout) or {}).get("summary") or {}
-    out = dict(health)
+    out = dict(health)      # a recorder that fails must not take the game-health readings, measured apart, down with it
+    try:
+        r = subprocess.run([sys.executable, str(HERE / "tps_record.py"), "--json"], capture_output=True, text=True, timeout=90)
+        if r.returncode != 0:
+            raise RuntimeError("tps_record.py exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+        s = (json.loads(r.stdout) or {}).get("summary") or {}
+        if not isinstance(s, dict):
+            raise ValueError("tps_record gave a summary that is not an object")
+    except (OSError, subprocess.SubprocessError, RuntimeError, ValueError, AttributeError) as e:
+        why = "tps_record failed: %s: %s" % (type(e).__name__, str(e)[:200])
+        out.update({k: U(why) for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")})
+        return out
     if s.get("coverage") != "FRESH":
         why = "no fresh TPS session (coverage %s): the game is not running or the recorder is off" % s.get("coverage")
         out.update({k: U(why) for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")})
@@ -2112,12 +2123,13 @@ def st_paused(rows, now, limit):
 
 def st_idle_since(rows, seat, ss, now):
     """-> (epoch the seat's idle run began, rings in it), or None when the journal does not hold the rings state.json
-    says are open. `ss` is that seat's state.json entry, already known to be open.
+    says are open, or False when the seat has no ring out and its current idle began after every ring in the run (it
+    worked since; no ring yet in this idle). `ss` is that seat's state.json entry, already known to be open.
     Each ring row carries the seat's idle_since, which the Dispatcher restarts at a ring and drops the tick it sees the
     seat busy. So a ring whose idle_since is no later than the ring before it continues that idle; a later one means
     the seat worked in between (2026-10-31: no ring from 05:43 joins the 14:18 one, whose idle began 14:14:17). A
     verified hand-off ends the run. Reading from the end of the record, never from nh_streak, which a busy spell keeps."""
-    rings = []
+    rings, ids = [], set()
     for r in reversed(rows):
         t = epoch(r.get("at"))
         if r.get("seat") != seat or t is None or t > now:
@@ -2130,9 +2142,13 @@ def st_idle_since(rows, seat, ss, now):
             if rings and rings[-1][1] > t + 1:
                 break
             rings.append((t, since))
+            ids.add(r.get("ring_id"))
     want = (ss.get("ring") or {}).get("ring_id") if isinstance(ss.get("ring"), dict) else None
-    if not rings or (want and not any(r.get("ring_id") == want for r in rows)):
+    if not rings or (want and want not in ids):     # the open ring must be in THIS run, read at `now`, not any row
         return None
+    cur = ss.get("idle_since")
+    if not ss.get("ring") and is_num(cur) and finite(cur) and cur > rings[0][0] + 1:
+        return False    # idle again after a busy spell (nh_streak outlives it), no ring yet: not idle WITH work
     return rings[-1][1], len(rings)
 
 
@@ -2181,6 +2197,8 @@ def c_seats(now, rules, ctx):
             if not (ss.get("ring") or (ss.get("nh_streak") and ss.get("idle_since"))):
                 continue            # no ring out, and no idle seat left with an unanswered one
             found = st_idle_since(rows, seat, ss, now)
+            if found is False:
+                continue
             if found is None:
                 rung = (ss.get("ring") or {}).get("rung_at") if isinstance(ss.get("ring"), dict) else None
                 if is_num(rung) and finite(rung) and abs(now - rung) < cfg["journal_grace_s"]:
@@ -2217,13 +2235,19 @@ QUEUE_STALL_MIN = 20.0
 
 
 def _mtimes(d, pattern, skip_worker_msg=False):
-    """mtimes of the files still there: one moved between the glob and the stat (a claim or a finish) is skipped."""
+    """mtimes of the files still there: one moved between the listing and the stat (a claim or a finish) is skipped.
+    A directory that is absent holds nothing; one that cannot be listed raises, so the queue reads UNMEASURED, never
+    a calm 0 (Path.glob swallows a PermissionError into an empty listing)."""
+    try:
+        names = os.listdir(d)
+    except FileNotFoundError:
+        return []
     ts = []
-    for f in Path(d).glob(pattern):
-        if skip_worker_msg and f.name.endswith(".worker_last_message.json"):
+    for name in names:
+        if not fnmatch.fnmatchcase(name, pattern) or (skip_worker_msg and name.endswith(".worker_last_message.json")):
             continue
         try:
-            ts.append(f.stat().st_mtime)
+            ts.append(os.stat(os.path.join(d, name)).st_mtime)
         except FileNotFoundError:
             pass
     return ts
@@ -2259,7 +2283,7 @@ def c_queues(now, rules, ctx):
             if not pend.is_dir() or not act.is_dir():
                 raise OSError('queue dir missing: %s' % (pend if not pend.is_dir() else act))
             plist = _mtimes(pend, "*.json")  # a job claimed between the glob and the stat is movement, not blindness
-            alist = [f for f in act.glob("*.json") if not f.name.endswith(".worker_last_message.json")]
+            alist = _mtimes(act, "*.json", skip_worker_msg=True)
             marks = [newest_mtime(d) for d in [act] + [Path(x) for x in q.get("progress", [])]]
             marks = [m for m in marks if m is not None]
             if q.get("paused_file") and Path(q["paused_file"]).exists():
@@ -2557,7 +2581,7 @@ def alarm_prefix(tg, tag, key, state, aid):
     name another alarm already holds gets the tag or the key's tail so two alarms never share an item."""
     base = tg.get("name") or "OPS_ALARM_DIAGNOSE_" + re.sub(r"\W+", "_", tag).upper()
     held = {a.get("name") for k, a in state.items() if k != aid and isinstance(a, dict)}
-    if "*" in tg.get("key", "") or base in held:
+    if "*" in tg.get("key", "") or "%s_%s" % (base, alarm_twist(base)) in held:     # held names carry their twist
         base = "%s_%s" % (base, re.sub(r"\W+", "_", key.split(".", 1)[-1]).upper())
     return "%s_%s" % (base, alarm_twist(base))
 
@@ -2810,6 +2834,9 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                     todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid,
                                  "text": "ops_watch: cleared at %s (%s now %s)" % (
                                      iso(now), key, (points.get(key) or {}).get("v"))})
+                if cur.get("conductor_owed"):   # a raise line never delivered is stale now; dropped aloud, not silently
+                    log.append({"ts": iso(now), "event": "conductor_owed_dropped", "aid": aid,
+                                "lines": len(cur["conductor_owed"]) if isinstance(cur["conductor_owed"], list) else None})
                 state.pop(aid, None)
                 return
         if crossed and cur:
@@ -2850,7 +2877,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             if cur and cur.get("name") and cur.get("title"):
                 # PENDING, not crossed now (UNMEASURED, or clear but not for clear_passes yet): the crossing was
                 # real, so keep retrying the filing under the name and title it got when it crossed
-                todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen"))})
+                todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen")),
+                             "conductor_log": cur.get("conductor_log"), "key": aid.split(":", 1)[1]})
             return
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
@@ -2887,6 +2915,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
         cur["title"] = title[:160]
         cur["noted"] = fresh_news(cur, aid, points, rules)[1]
+        cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
                      "key": key, "reopen": bool(cur.get("reopen"))})
     for aid in sorted(set(ts) | set(state)):

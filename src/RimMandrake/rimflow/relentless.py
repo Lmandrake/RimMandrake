@@ -97,6 +97,7 @@ GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim",
 PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged")     # one road: strengthen the proof, never redesign the code
 PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
 REJECT_ENDS = ("blind_fail", "proof_weak")
+SUPERVISOR_ENDS = PROOF_ENDS + ("blind_fail",)     # set by a checker verdict only; a worker's snag with one is refused
 NOT_AN_APPROACH = ("worker_lost", "checker_lost")       # a dead process or a silent checker tried nothing
 
 
@@ -277,6 +278,8 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
     st["returns"] += 1
     st["failures"][klass] = st["failures"].get(klass, 0) + 1
     st["total_failures"] += 1
+    if time_not_work:   # a wait is no failed approach: it counts toward its own class's wait, never the unchanged tally
+        st["total_at_change"] = (st.get("total_at_change") or 0) + 1
     st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
     limit = r["same_failure_limit"]
     if klass == "proof_weak":
@@ -455,6 +458,9 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None):
             raise ValueError("changing the contract needs --why")
         if widens and not live:
             live = st["contract"].get("live")
+        if st["contract"] and st["approach"] != "redesign":  # a widening or a proof-only change asks more, never less:
+            live = live or st["contract"].get("live")       # an obligation it leaves out is the one already set
+            game = game or st["contract"].get("game")
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
         if game:
             st["contract"]["game"] = game
@@ -469,6 +475,8 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
     a worker costs a million tokens to read that nothing has changed, and CLOSE_GATE_ENFORCE_DONE_IS_EARNED paid three."""
     if wait_hours is not None and (not math.isfinite(wait_hours) or wait_hours < 0):
         raise ValueError("--wait-hours must be a finite, non-negative number: %r" % (wait_hours,))
+    if SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] in SUPERVISOR_ENDS:
+        raise ValueError("--class %s is the supervisor's verdict, not a worker's snag: name what stopped you" % klass)
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
@@ -3204,6 +3212,16 @@ def step(store, fx, r, item, now, acts):
             acts.append({"do": "close_refused", "item": item, "why": why})
             return
         if why:
+            led = fx.item_state(item)
+            if led is not None and led["state"] in ("dropped", "superseded"):  # his drop while closing: no close will land
+                with store.lock():
+                    cur = store.load(item)
+                    cur["gen"] += 1
+                    cur["status"] = "retiring"
+                    cur["stopping_since"] = now
+                    store.save(cur)
+                acts.append({"do": "retire", "item": item, "why": "ledger says %s while closing" % led["state"]})
+                return
             acts.append({"do": "close_retry", "item": item, "why": why})
             return
         if st.get("foreign"):

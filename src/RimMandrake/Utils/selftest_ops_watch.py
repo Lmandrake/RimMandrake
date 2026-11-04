@@ -1744,6 +1744,58 @@ check("tps: text from the recorder is UNMEASURED in all three readings",
 _t = _tps(0.9, 2, 1.5)
 check("tps: numbers still read MEASURED",
       all(_t[k].get("m") == "MEASURED" for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")), _t)
+_gh = OW.game_health
+OW.game_health = lambda now: {"game.health_probe": OW.M(1, "probe")}
+OW.subprocess.run = lambda *a, **k: types.SimpleNamespace(returncode=2, stdout="", stderr="boom")
+try:
+    _t = OW.c_tps(NOW, RULES, {})
+finally:
+    OW.subprocess.run, OW.game_health = _run, _gh
+check("tps: a failed recorder keeps the game-health readings and reads its own three UNMEASURED",
+      _t.get("game.health_probe", {}).get("m") == "MEASURED"
+      and all(_t[k].get("m") == "UNMEASURED" for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")), _t)
+_qd = TMP / "q_unlistable"
+_qd.mkdir(exist_ok=True)
+(_qd / "a.json").write_text("{}", encoding="utf-8")
+(_qd / "b.txt").write_text("", encoding="utf-8")
+check("queues: _mtimes lists by pattern, and an absent dir holds nothing",
+      len(OW._mtimes(_qd, "*.json")) == 1 and OW._mtimes(TMP / "q_absent", "*.json") == [])
+_ld = OW.os.listdir
+def _denied(d):
+    raise PermissionError(13, "Permission denied", str(d))
+OW.os.listdir = _denied
+try:
+    OW._mtimes(_qd, "*.json")
+    check("queues: a dir that cannot be listed raises, never a calm empty", False)
+except PermissionError:
+    check("queues: a dir that cannot be listed raises, never a calm empty", True)
+finally:
+    OW.os.listdir = _ld
+_rows = [{"seat": "S", "do": "ring", "at": OW.iso(NOW - 600), "ring_id": "r1", "idle_since": NOW - 700},
+         {"seat": "S", "do": "ring", "at": OW.iso(NOW + 60), "ring_id": "r2", "idle_since": NOW + 50}]
+check("seats: the open ring must be in the run read at now, not a row from after it",
+      OW.st_idle_since(_rows, "S", {"ring": {"ring_id": "r2"}}, NOW) is None
+      and OW.st_idle_since(_rows, "S", {"ring": {"ring_id": "r1"}}, NOW) == (NOW - 700, 1))
+check("seats: idle again after work, no ring yet, is not idle with work (nh_streak outlives the busy spell)",
+      OW.st_idle_since(_rows, "S", {"nh_streak": 2, "idle_since": NOW - 60}, NOW) is False
+      and OW.st_idle_since(_rows, "S", {"nh_streak": 2, "idle_since": NOW - 700}, NOW) == (NOW - 700, 1))
+_rr = copy.deepcopy(RULES)
+_rok = [k for k in OW.ranges_of(_rr) if k.startswith(OW.REPORT_ONLY)]
+if _rok:
+    _rr.setdefault("targets", []).append({"key": "*." + _rok[0].rsplit(".", 1)[-1], "op": ">", "value": 1, "alarm": True})
+check("ranges: a wildcard target that reaches a real report-only metric is refused (RO1)",
+      bool(_rok) and any("RO1" in x for x in OW.ranges_problems(_rr)), (_rok, OW.ranges_problems(_rr)))
+for _bad in (True, [[]]):
+    _rr = copy.deepcopy(RULES)
+    _k0 = sorted(OW.ranges_of(_rr))[0]
+    OW.ranges_of(_rr)[_k0]["idle_if"] = _bad
+    check("ranges: idle_if %r is a refused shape, not a crash" % (_bad,),
+          any("idle_if" in x for x in OW.ranges_problems(_rr)), OW.ranges_problems(_rr))
+_tw = {"name": "OPS_ALARM_DIAGNOSE_SAME", "key": "a.b"}
+_held = OW.alarm_prefix(_tw, "T1", "a.b", {}, "T1:a.b")
+check("alarm: two exact-key rules with one name get two names",
+      OW.alarm_prefix(_tw, "T2", "a.c", {"T1:a.b": {"name": _held}}, "T2:a.c") != _held
+      and OW.alarm_prefix(_tw, "T1", "a.b", {"T1:a.b": {"name": _held}}, "T1:a.b") == _held, _held)
 sys.path.insert(0, str(Path(OW.__file__).parent / "testq"))
 import schema as _schema  # noqa: E402
 check("steve: the outcome words are the schema's", tuple(OW.OUTCOMES) == tuple(_schema.OUTCOMES), _schema.OUTCOMES)
@@ -1836,6 +1888,18 @@ check("log retry: a later pass delivers the line once the log is writable", _clo
 check("log retry: and owes it no more", _a2.get("state") == "OPEN" and not _a2.get("conductor_owed"), _a2)
 _st = OW.run_alarms(_pts, _r, NOW + 600, known | {_a.get("item")}, filer_ok)
 check("log retry: delivered once, never twice", _clog2.exists() and _clog2.read_text().count("ops_watch ALARM") == 1)
+_clog3 = TMP / "conductor_retry_filing.md"
+_clog3.unlink(missing_ok=True)
+for _t in _rows:
+    _t["conductor_log"] = str(_clog3)
+(OW.ops_dir() / "alarms.json").unlink(missing_ok=True)
+_st = OW.run_alarms(_pts, _r, NOW, known, filer_bad)
+_a3 = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
+_st = OW.run_alarms({"steve.seats_absent_min": OW.U("probe down", "min")}, _r, NOW + 300, known, filer_ok)
+_a4 = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
+check("log retry: a filing that lands on a later UNMEASURED pass still tells the Conductor",
+      _a3.get("state") == "PENDING" and _a4.get("state") == "OPEN" and _clog3.exists()
+      and "ops_watch ALARM" in _clog3.read_text(), (_a3, _a4))
 for _t in _rows:
     _t["conductor_log"] = str(_clog)
 # SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS: a dead selftest scope is not a failed timer, a real failed unit still is
@@ -1931,7 +1995,7 @@ import subprocess as _sp, tempfile as _tf
 _d = Path(_tf.mkdtemp(prefix="bb_"))
 def _g(c, *a, env=None):
     _sp.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True, capture_output=True,
-            env=dict(os.environ, **(env or {})))
+            env=dict(_GITENV, **(env or {})))     # no user config or hooks on fixture commits
 _g(_d, "init", "-q", "--bare", "-b", "main", "o.git")
 _g(_d, "clone", "-q", "o.git", "up"); _g(_d / "up", "checkout", "-q", "-b", "main")
 (_d / "up" / "f").write_text("1"); _g(_d / "up", "add", "f"); _g(_d / "up", "commit", "-qm", "a"); _g(_d / "up", "push", "-q", "origin", "main")

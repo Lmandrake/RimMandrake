@@ -601,6 +601,17 @@ def t_done_path():
        "a close the gate refuses goes back to the top with its reason: no retry for ever")
     x.done()
     x = Rig(n=1, share=1.0)
+    x.w.close_fail = "close: I0 is dropped"
+    _lc = x.w.ledger_close
+    def _drop_then_close(item, sha, reason, live=None):
+        x.w.items[item] = "dropped"
+        return _lc(item, sha, reason, live)
+    x.w.ledger_close = _drop_then_close
+    full_pass(x, "I0")
+    ok(x.st("I0")["status"] in ("retiring", "retired") and x.w.closes == [],
+       "an item dropped while closing is retired, not retried for ever: %s" % x.st("I0")["status"])
+    x.done()
+    x = Rig(n=1, share=1.0)
     full_pass(x, "I0", "FAIL")
     st = x.st("I0")
     ok(st["failures"].get("blind_fail") == 1 and st["last_fail"]["detail"] == "ran it", "FAIL returns with its reasons")
@@ -3610,8 +3621,32 @@ def t_live_line_widens():
         ok(False, "the widening says why")
     except ValueError:
         pass
+    with R.Store.lock(x.s):
+        st = x.st("I0")
+        st["contract"]["game"] = {"clauses": ["A2"], "why": "defs load"}
+        x.s.save(st)
     R.contract(x.s, "I0", g, "p", "once: x", "the hook needs it", now=x.now)
     ok(x.st("I0")["contract"]["live"] == "once: x", "any worker adds a missing live line, proof unchanged")
+    ok(x.st("I0")["contract"].get("game") == {"clauses": ["A2"], "why": "defs load"},
+       "adding a live line keeps the game clauses already set")
+    with R.Store.lock(x.s):
+        st = x.st("I0")
+        st["proof_only"] = {"sha": "S", "at": x.now}
+        x.s.save(st)
+    R.contract(x.s, "I0", g, "p2", None, "a stronger proof", now=x.now)
+    ok(x.st("I0")["contract"]["proof"] == "p2" and x.st("I0")["contract"]["live"] == "once: x"
+       and x.st("I0")["contract"].get("game") == {"clauses": ["A2"], "why": "defs load"},
+       "a proof-only change keeps the live line and game clauses it left out")
+    with R.Store.lock(x.s):
+        st = x.st("I0")
+        st["proof_only"] = None
+        x.s.save(st)
+    for k in ("proof_weak", "Proof-Rework", "proof_unchanged", "blind_fail"):
+        try:
+            R.snag(x.s, "I0", g, k, "x", x.r, now=x.now)
+            ok(False, "a worker may not snag with the supervisor's verdict %s" % k)
+        except ValueError:
+            ok(x.st("I0")["gen"] == g, "a refused %s snag leaves the item untouched" % k)
     try:
         R.contract(x.s, "I0", g, "p", "once: y", "w", now=x.now)
         ok(False, "a live line once set is frozen")
@@ -3629,6 +3664,8 @@ def t_time_is_no_failed_approach():
         got = x.st("I0")
         ok(got["approach"] == "build", "a time wait is no failed approach (%d)" % i)
         ok(got["not_before"] == x.now + max(0.5, i) * 3600, "the same class waits longer each time (%d)" % i)
+        ok(got["total_failures"] - (got.get("total_at_change") or 0) == 0,
+           "a time wait adds nothing to the unchanged-returns tally (%d)" % i)
         x.tick(max(0.5, i) * 3600 + 1)
         x.tick(240)
     x = Rig(n=1, share=1.0, snag_again_wait_h=1)
