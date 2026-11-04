@@ -1,0 +1,40 @@
+{
+ "item": "FOUNDRY_CLONE_UNITS_MIGRATE_TO_BENCH",
+ "audited_utc": "2026-11-04T04:39:45Z",
+ "clone": "/home/mandrake/rm/foundry",
+ "foundry_head": "95f7eaf9a98927fd05f11be4c2a6ac0fd3e19851",
+ "ahead_of_origin_main": 0,
+ "note": "Every dirty or untracked path in the retired foundry clone, with the exact lines it adds. Each line is on origin/main; the clone is left as is (retired, not ours to touch). The proof checks each line against the committed shard.",
+ "dirty": [
+  {
+   "path": "infrastructure/state/ledger/events/BENCH.jsonl",
+   "status": "modified",
+   "disposition": "BENCH: pure reorder of 3 lines already on main",
+   "added_lines": [
+    "{\"seat\":\"BENCH\",\"event\":\"verify\",\"id\":\"WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT\",\"result\":\"pass\",\"config\":\"selftest_relentless_disk+wall GREEN; live supervisor reaped box 26fe8189 in 6 min\",\"evidence\":\"/mnt/d/ClaudeWork/rimmandrake/evidence/walled/WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT.txt\",\"sha\":\"52b1f26e7d83\",\"level\":\"L1\",\"ts\":\"2026-11-02T16:48:12Z\",\"tsn\":1793638092714173430}",
+    "{\"seat\":\"BENCH\",\"event\":\"close\",\"id\":\"WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT\",\"sha\":\"52b1f26e7d83\",\"reason\":\"not a leak: reap_boxes held every finished box tree 44 min (check_max_s+grace+600); 12 trees = that window at ~16 checks/h. Fix frees a box with a verdict or a moved-on record after 120 s. Live: box 26fe81893fb7 made 08:41:04 PST, tree reaped 16:46:50Z by the running supervisor. Freed 10 trees by hand (~36 GB); the old reaper took the other 2 at 16:40Z.\",\"live\":\"unit=rm-relentless.timer reading=/home/mandrake/rm/relentless/store/journal.jsonl max_age=30m\",\"ts\":\"2026-11-02T16:48:18Z\",\"tsn\":1793638098826160911}",
+    "{\"seat\":\"BENCH\",\"event\":\"file\",\"id\":\"SELFTEST_DECIDE_MUT_REPAIR_RUNNER_TMP_PATH\",\"title\":\"selftest_role_launch_decide_mut.py: decide_off_switch_and_window + decide_off_switch_on_event_run_is_not_spent FAIL under run_selftests.py only (golden wants ~/.seat-tmp/BENCH/selftest_dispatcher_TMP/CONDUCTOR_OFF, runner gives .../selftest_run_<rand>/selftest_dispatcher_TMP/...); PASS standalone (exit 0). Golden bakes the TMP path; compare relative to TMP. Evidence D:\\\\ClaudeWork\\\\rimmandrake\\\\ops_diag\\\\st_all.txt\",\"kind\":\"bug\",\"target\":\"v1\",\"needs\":\"offline\",\"for\":\"BENCH\",\"why\":\"seen while running dispatcher selftests for OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS; not caused by that change\",\"ts\":\"2026-11-02T16:52:12Z\",\"tsn\":1793638332498902183}"
+   ]
+  },
+  {
+   "path": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+   "status": "modified",
+   "disposition": "FOUNDRY: seat-ready event tsn 1793760871672357403, rescued by ledger_sync.py --seat FOUNDRY --apply (5a2479f5)",
+   "added_lines": [
+    "{\"seat\":\"FOUNDRY\",\"event\":\"seat\",\"state\":\"ready\",\"ts\":\"2026-11-04T02:54:31Z\",\"tsn\":1793760871672357403}"
+   ]
+  },
+  {
+   "path": "conversations/2026-11-02-1635-3ddcac7b.md",
+   "status": "untracked",
+   "disposition": "identical blob on origin/main",
+   "sha256": "e939774aa0604f472b9ae08a608f7527333f02d63e426d7cfff2d492de52af13"
+  },
+  {
+   "path": "conversations/2026-11-04-0254-ed38b20a.md",
+   "status": "untracked",
+   "disposition": "identical blob on origin/main",
+   "sha256": "96d3a7566647e665919cf48e731d6eaba6cf1c1ac234831aa423d36c521d22b7"
+  }
+ ]
+}
