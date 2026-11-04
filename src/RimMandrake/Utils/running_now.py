@@ -91,14 +91,14 @@ BELT = ("queued", "running", "candidate", "checking", "closing", "done")
 SIDE = ("game", "held", "blocked", "stopping", "retiring", "retired")
 BELT_WORD = {"queued": "waits for a place", "running": "Builder at work", "candidate": "waits for a Judge",
              "checking": "Judge at work", "closing": "being landed", "done": "closed"}
-SIDE_WORD = {"game": "needs the live game", "held": "held for a person", "blocked": "waits on another item",
+SIDE_WORD = {"game": "needs the live game", "held": "held for the seat or the owner", "blocked": "waits on another item",
              "stopping": "being stopped", "retiring": "being retired", "retired": "dropped for good"}
 # A rough normal for how many items sit in each stage: (top of normal, words). Read off the stages on 2026-11-03; only a
 # count above the top is called out. Done and retired only grow, so no count of theirs is ever high.
 STAGE_NORMAL = {"queued": (400, "100-400"), "running": (9, "3-9"), "candidate": (6, "0-6"), "checking": (9, "0-9"), "closing": (40, "0-40"),
                 "done": (None, "only grows"), "game": (40, "0-40"), "held": (40, "0-40"), "blocked": (70, "0-70"), "stopping": (3, "0-3"),
                 "retiring": (3, "0-3"), "retired": (None, "only grows")}
-FEED_WORD = {"done": "closed", "blind_fail": "a Judge failed it", "game_fail": "live proof failed", "held_delivered": "held for a person",
+FEED_WORD = {"done": "closed", "blind_fail": "a Judge failed it", "game_fail": "live proof failed", "held_delivered": "held for the seat or the owner",
              "retired": "dropped", "jam_alarm": "jam alarm", "game_staged": "game staged for it"}
 
 BG, CARD, EDGE, TEXT, DIM, FAINT = "#14171c", "#1f242c", "#3a4250", "#e8eaee", "#98a1af", "#5d6675"

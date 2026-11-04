@@ -57,6 +57,8 @@ HOLDS_A_PLACE = ("running", "checking", "candidate", "stopping", "retiring")    
 RUNS_A_PLACE = ("running", "checking", "stopping", "retiring")
 # Parked the moment they wait: their clone goes back at once, its WIP in the bundle (release_parked)
 PUT_DOWN = ("held", "blocked", relentless_game.GAME)
+SUPERVISOR_WHY = "relentless supervisor"    # ledger_needs' provenance; ledger_hold_to_seat reads it back
+SEAT_QUEUE = "seat"     # a tooling hold's reader: the Conductor, by owner_queue.py --seat; never needs=owner
 ENDED = ("done", "retired")
 SHARD = "infrastructure/state/ledger/events/%s.jsonl"
 BRIDGE_HOLDER = "RELENTLESS"    # model.RELENTLESS_HOLDER: items are the seat's, a bridge hold is Relentless's own
@@ -817,6 +819,7 @@ def unhold(store, item, said, now=None):
             st["total_at_change"] = st["total_failures"]
         game_back = (st["hold"].get("kind") == "game" and (st.get("game") or {}).get("sha")
                      and relentless_game.FLYER not in (st["hold"].get("why") or ""))
+        was_his = hold_is_his(st["hold"])
         st["hold"] = None
         st["returned_at"] = now
         if game_back:       # a game hold back to its game phase, not a new worker: the offline proof stands on its sha
@@ -828,7 +831,7 @@ def unhold(store, item, said, now=None):
             return
         st["status"] = "queued"
         st["spent_grace"] = st["spent"]         # his yes buys another full limit from here
-        st["needs_back"] = True
+        st["needs_back"] = was_his      # a tooling hold never set needs=owner, and a built item keeps its derived needs
         store.attempt(item, {"at": iso(now), "end": "unhold", "said": said})
         store.save(st)
 
@@ -1279,6 +1282,39 @@ class Effects(relentless_game.GameFx):
     def ledger_needs_owner(self, item, why):
         return self.ledger_needs(item, "owner", why)
 
+    def ledger_hold_to_seat(self, item, hold):
+        """A tooling hold goes to the seat, never to him. -> None, or why it did not land (the next tick retries).
+        A hold an older supervisor routed to him has its needs put back, and only that: another needs=owner (an L4 look,
+        a person's own routing) is not ours to move. A hold already delivered has been said once; only its needs moves."""
+        model = pkg("model")
+        evs, w = self.ledger_items()
+        it = w.items.get(item)
+        if it is not None and it.needs == "owner" and self._owner_routing_is_ours(it, evs):
+            back = model.needs_for_levels(it.owed_levels()) if it.state in ("built", "validated") else None
+            err = self.ledger_needs(item, back or "offline", "relentless: a tooling hold is the seat's, not the owner's")
+            self._ledger = None
+            if err:
+                return err
+        if hold.get("delivered"):
+            return None
+        text = "Relentless hold (%s), the seat's to read: %s" % (hold.get("kind"), hold["why"])
+        err = self.ledger_note(item, text)
+        if err:
+            return err
+        self.conductor_attention("%s: %s" % (item, text))    # a failure to tell stays out of the way: the note landed
+        return None
+
+    @staticmethod
+    def _owner_routing_is_ours(it, evs):
+        """True when the event that last sent the item to him was this supervisor's."""
+        for i in reversed(getattr(it, "history", None) or []):
+            e = evs[i] if 0 <= i < len(evs) else {}
+            if e.get("event") == "needs" and e.get("to") == "owner":
+                return e.get("why") == SUPERVISOR_WHY
+            if e.get("event") in ("file", "block") and "owner" in (e.get("needs"), e.get("kind")):
+                return False
+        return False
+
     def ledger_block(self, item, kind, ons, reason):
         a = ["block", item, "--kind", kind, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: a worker's snag names a blocker"]
         for on in ons:
@@ -1288,7 +1324,7 @@ class Effects(relentless_game.GameFx):
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_needs(self, item, to, why):
-        r = self.rimflow("needs", item, "--to", to, "--reason", why[:NOTE_MAX], "--why", "relentless supervisor")
+        r = self.rimflow("needs", item, "--to", to, "--reason", why[:NOTE_MAX], "--why", SUPERVISOR_WHY)
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     # the clones
@@ -2544,7 +2580,7 @@ def step(store, fx, r, item, now, acts):
     """One item, one transition. Crash anywhere and the next tick resumes from the persisted status."""
     st = store.load(item)
     s = st["status"]
-    if s == "queued" and st.get("needs_back"):
+    if s == "queued" and st.get("needs_back"):      # his hold lifted: the ledger still says owner
         if not fx.ledger_needs(item, "offline", "relentless: the owner lifted the hold"):
             with store.lock():
                 st = store.load(item)
@@ -2568,13 +2604,13 @@ def step(store, fx, r, item, now, acts):
 
     if s == "held":
         h = st["hold"]
-        if not h.get("delivered") and not fx.ledger_needs_owner(item, h["why"]):
-            with store.lock():
-                st = store.load(item)
-                if st["hold"]:
-                    st["hold"]["delivered"] = True
-                    store.save(st)
-            acts.append({"do": "held_delivered", "item": item})
+        if hold_is_his(h):
+            if not h.get("delivered") and not fx.ledger_needs_owner(item, h["why"]):
+                _hold_routed(store, item, None)
+                acts.append({"do": "held_delivered", "item": item})
+        elif h.get("routed") != SEAT_QUEUE and not fx.ledger_hold_to_seat(item, h):
+            _hold_routed(store, item, SEAT_QUEUE)
+            acts.append({"do": "held_delivered", "item": item, "to": SEAT_QUEUE})
         return
 
     if s == "stopping":
@@ -3352,12 +3388,30 @@ def reading(store, r, now, acts, clock=None):
     return rec
 
 
+def hold_is_his(h):
+    """Only he can lift this hold: a delegation_policy section 2 call, or a flyer's flight (section 2.6). Every other hold
+    (proof_weak, strikes, game, ...) is a tooling outcome, the seat's to read (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS)."""
+    h = h or {}
+    return h.get("kind") == "owner_call" or (h.get("kind") == "game" and relentless_game.FLYER in (h.get("why") or ""))
+
+
+def _hold_routed(store, item, to):
+    with store.lock():
+        st = store.load(item)
+        if st["hold"]:
+            st["hold"]["delivered"] = True
+            if to:
+                st["hold"]["routed"] = to
+            store.save(st)
+
+
 def put_down_on(st):
     """What a put-down item waits for, in words."""
     if st["status"] == "candidate":
         return "its check"
     if st["status"] == "held":
-        return "owner: %s" % ((st.get("hold") or {}).get("why") or "")[:160]
+        return "%s: %s" % ("owner" if hold_is_his(st.get("hold")) else SEAT_QUEUE,
+                           ((st.get("hold") or {}).get("why") or "")[:160])
     if st["status"] == "blocked":
         b = st.get("block_pending") or {}
         return "ledger block%s" % (": %s" % (b.get("detail") or "")[:160] if b else "")

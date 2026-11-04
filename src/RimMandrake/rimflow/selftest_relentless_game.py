@@ -420,6 +420,8 @@ def t_gate():
     st["game"]["offline_green"]["sha"] = "s2"
     ok("A2" in (G.gate(st, "t", "", fl, None) or ""), "a clause with no proof line gets no lease")
     ok("flyer" in (G.gate(st, "the flying lizard", PROOF, fl, None) or ""), "a flyer gets no lease")
+    ok(G.gate(st, "Gravship flying down to the floor and back up", PROOF, fl, None) is None, "a gravship is no flyer")
+    ok("flyer" in (G.gate(st, "Mynock flying around the gravship", PROOF, fl, None) or ""), "a creature on a gravship is")
     ok("one live user" in (G.gate(st, "t", PROOF, fl, "I9") or ""), "another item in a game phase: no lease")
 
 

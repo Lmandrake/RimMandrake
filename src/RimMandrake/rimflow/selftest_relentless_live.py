@@ -652,6 +652,20 @@ def t_flyer_words():
         check("flyer %r" % s, L.refused_proof(lr, s, "", "") is not None)
     for s in ("Flynn's butterfly net", "inflight", "a fireflies glow", "conflict"):
         check("not flyer %r" % s, L.refused_proof(lr, s, "", "") is None, s)
+    # a vehicle's flight is no flyer's (SEABED_DESCENT_ASCENT_1), and every doubt stays refused
+    title = "Gravship flies from a sea tile down to its RM_SeabedLayer floor and back up (seabed Phase 2)"
+    for s, text, proof in ((title, "after that flight lands", "python3 x.py"), ("The shuttle takes off", "", ""),
+                           ("Shuttle test", "it takes off and lands", "")):
+        check("vehicle %r" % s, L.refused_proof(lr, s, text, proof) is None, s)
+    for s, text, proof in (("Mynock flies around the gravship", "", ""),        # the creature is the subject
+                           ("Bird flies past a ship", "", ""),
+                           ("Gravship carries a flyer", "", ""),                # a creature word in the title
+                           (title, "the flyer lands", ""),                      # ... in a criterion
+                           (title, "", "read Pawn_FlightTracker"),              # ... in the proof
+                           (title, "its wings fold", ""),
+                           ("Relationship flight test", "", ""),                # "ship" as a word, not inside one
+                           ("Flight test", "the ship lands", "")):              # a vehicle only outside the title
+        check("still a flyer %r %r" % (s, text), L.refused_proof(lr, s, text, proof) is not None, s)
 
 
 def t_def_check_judge():

@@ -39,6 +39,7 @@ class FakeWorld:
         self.closes = []
         self.notes = []
         self.needs = []
+        self.seat_holds = []
         self.tok = 0
         self.lfail = None
         self.close_fail = None
@@ -115,6 +116,7 @@ class FakeWorld:
         self.items[item] = "ready"
     def ledger_note(self, item, text): self.notes.append(text)
     def ledger_needs_owner(self, item, why): self.needs.append(item)
+    def ledger_hold_to_seat(self, item, hold): self.seat_holds.append(item)
     def ledger_needs(self, item, to, why): self.needs.append((item, to))
     def clone_path(self, item, q=0): return "/c/%s.%d" % (item, q)
     def prepare(self, st):
@@ -497,7 +499,10 @@ def t_proof_weak():
     ok(st["hold"]["kind"] == "proof_weak" and st["approach"] == "build" and x.w.closes == [], "no redesign of good code, however long the proof takes")
     x.tick()
     x.tick()
-    ok(x.st("I0")["status"] == "held" and "I0" in x.w.needs, "the stop reaches the ledger")
+    ok(x.st("I0")["status"] == "held" and x.w.seat_holds == ["I0"] and "I0" not in x.w.needs,
+       "the stop reaches the seat, never needs=owner: %s %s" % (x.w.seat_holds, x.w.needs))
+    x.tick()
+    ok(x.w.seat_holds == ["I0"], "said once")
     R.unhold(x.s, "I0", "go on")
     st = x.st("I0")
     ok(st["proof_only"] and not any(st["failures"].get(k) for k in R.PROOF_ENDS), "unhold buys the proof fresh tries, still proof only")
@@ -3404,9 +3409,71 @@ def t_review_wrong_verdicts_two():
     x.done()
 
 
+def t_hold_routing():
+    """RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS: only owner_call and a flyer's flight are his; a legacy supervisor-set
+    needs=owner goes back, a person's does not."""
+    flyer = "game phase: flyer: a flyer's flight is never live-tested without the owner present"
+    for h, his in (({"kind": "owner_call", "why": "x"}, True), ({"kind": "game", "why": flyer}, True),
+                   ({"kind": "proof_weak", "why": "x"}, False), ({"kind": "strikes", "why": "x"}, False),
+                   ({"kind": "spend", "why": "x"}, False), ({"kind": "game", "why": "game phase: refused again"}, False),
+                   ({"kind": "proof_weak", "why": "a flyer: in the words"}, False), (None, False)):
+        ok(R.hold_is_his(h) is his, "hold_is_his %s -> %s" % (h, his))
+    ok(R.put_down_on({"status": "held", "hold": {"kind": "strikes", "why": "w"}}) == "seat: w", "put down on the seat")
+    ok(R.put_down_on({"status": "held", "hold": {"kind": "owner_call", "why": "w"}}) == "owner: w", "put down on him")
+
+    class It:
+        def __init__(self, needs, state, history, owed=()):
+            self.needs, self.state, self.history, self.owed = needs, state, history, owed
+
+        def owed_levels(self):
+            return list(self.owed)
+
+    class W:
+        items = {}
+
+    class Fx(R.Effects):
+        def __init__(self, evs, it):
+            self.evs0, self.calls, self.fail = evs, [], None
+            W.items = {"I": it}
+
+        def ledger_items(self):
+            return self.evs0, W()
+
+        def ledger_needs(self, item, to, why):
+            self.calls.append(("needs", to))
+            return self.fail
+
+        def ledger_note(self, item, text):
+            self.calls.append(("note", text))
+            return self.fail
+
+        def conductor_attention(self, text):
+            self.calls.append(("told", text))
+
+    ours = [{"event": "needs", "to": "owner", "why": R.SUPERVISOR_WHY}]
+    his = [{"event": "needs", "to": "owner", "why": "an L4 look"}]
+    hold = {"kind": "proof_weak", "why": "weak", "delivered": False}
+    fx = Fx(ours, It("owner", "doing", [0]))
+    ok(fx.ledger_hold_to_seat("I", hold) is None, "a fresh hold lands")
+    ok(fx.calls[0] == ("needs", "offline") and [c[0] for c in fx.calls[1:]] == ["note", "told"],
+       "the supervisor's own routing goes back, then the seat is told: %s" % fx.calls)
+    fx = Fx(ours, It("owner", "built", [0], ["L2"]))
+    fx.ledger_hold_to_seat("I", dict(hold, delivered=True))
+    ok(fx.calls == [("needs", "bridge")], "a delivered legacy hold: a built item's needs comes back derived, said once: %s" % fx.calls)
+    fx = Fx(his, It("owner", "doing", [0]))
+    fx.ledger_hold_to_seat("I", hold)
+    ok(not any(c[0] == "needs" for c in fx.calls), "a person's needs=owner is not ours to move: %s" % fx.calls)
+    fx = Fx([], It("bridge", "built", [], ["L2"]))
+    fx.ledger_hold_to_seat("I", hold)
+    ok(not any(c[0] == "needs" for c in fx.calls), "a hold writes no needs on an item not routed to him: %s" % fx.calls)
+    fx = Fx(ours, It("owner", "doing", [0]))
+    fx.fail = "ledger down"
+    ok(fx.ledger_hold_to_seat("I", hold) == "ledger down", "a failure says so and the tick retries")
+
+
 def main():
     picked, ran = set(sys.argv[1:]), 0      # no names: every test
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_hold_routing, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

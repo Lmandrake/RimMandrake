@@ -321,7 +321,7 @@ def t_strikes():
     ok("gen " in st["hold"]["why"] and "blind_fail_like" in st["hold"]["why"], "the hold carries a summary: %s"
        % st["hold"]["why"][:120])
     x.tick()
-    ok(x.w.needs and x.w.needs[-1] == "I0", "the hold goes up (needs owner, the Conductor reads it)")
+    ok(x.w.seat_holds == ["I0"] and not x.w.needs, "a strikes hold goes to the seat, not to needs=owner")
     R.unhold(x.s, "I0", "go on")
     ok(not x.st("I0")["failures"], "unhold of a strikes hold starts a fresh count")
     x.done()

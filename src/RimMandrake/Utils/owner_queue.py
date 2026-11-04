@@ -8,7 +8,8 @@ they cannot disagree, and the header carries the plain question he must answer f
 An open item is his when the ledger routes it to him (needs=owner, or blocked with kind owner) AND, if Relentless
 holds it, the hold is one only he can lift: an `owner_call` (a delegation_policy §2 line) or a `game` hold for a
 flyer's flight (§2.6). Every other Relentless hold (proof_weak, spend, strikes, ...) is a tooling outcome — a harness
-failure is never his — even though Relentless marks the item needs=owner (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS).
+failure is never his. Relentless routes those to the seat, not the ledger's needs=owner (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS);
+they are the seat queue, read with --seat. Reading the hold here as well keeps a needs=owner another writer set from counting.
 
 The list only names what he has not yet answered (RUNNING_PAGE_FIX_REVIEW_LEFTOVERS): an item leaves it when his own note
 landed after the ledger last routed it to him, because his turn is over and the next move is ours. A later `needs owner`
@@ -20,6 +21,7 @@ line there shows its ledger title.
 
     python3 src/RimMandrake/Utils/owner_queue.py            # the list, one line each
     python3 src/RimMandrake/Utils/owner_queue.py --misrouted  # routed to him but not his
+    python3 src/RimMandrake/Utils/owner_queue.py --seat       # Relentless's tooling holds: the seat's to read and lift
 """
 import argparse
 import json
@@ -116,14 +118,25 @@ def misrouted(items, rel):
             if routed(it) and tooling_hold(rel.get(iid)) is not None]
 
 
+def seat_queue(rel):
+    """[(item, hold kind, why)] every tooling hold, whatever the ledger says: the seat's queue. Lift: relentless.py unhold."""
+    return [(iid, tooling_hold(rs).get("kind"), tooling_hold(rs).get("why") or "") for iid, rs in sorted(rel.items())
+            if tooling_hold(rs) is not None]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--misrouted", action="store_true")
+    ap.add_argument("--seat", action="store_true")
     a = ap.parse_args()
     sys.path.insert(0, HERE)
     import fleet_mods
     evs, world = fleet_mods.ledger()
     rel = fleet_mods.relentless_states()
+    if a.seat:
+        for iid, kind, why in seat_queue(rel):
+            print("%s\t%s\t%s" % (iid, kind, why[:200]))
+        return 0
     if a.misrouted:
         for iid, kind in misrouted(world.items, rel):
             print("%s\t%s" % (iid, kind))

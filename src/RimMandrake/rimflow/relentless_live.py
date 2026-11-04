@@ -78,6 +78,11 @@ TESTABLE = ("built", "validated")
 PASS, FAIL = 0, 1
 DEFAULTS = {
     "flyer_re": r"\b(fly|flies|flying|flyers?|flight|wings?|airborne|takes? off|take-off)\b",
+    # A vehicle's flight is no flyer's (SEABED_DESCENT_ASCENT_1, "Gravship flies..."; flyer_word). The creature words never
+    # excuse: the standing ruling is about Pawn_FlightTracker creatures, and a doubt stays refused.
+    "vehicle_re": r"\b(grav-?ships?|star-?ships?|space-?ships?|ships?|shuttles?|transport pods?|drop pods?)\b",
+    "creature_re": r"\b(flyers?|fliers?|wings?|creatures?|animals?|birds?|insects?|bats?|mynocks?)\b"
+                   r"|MaxFlightTime|FlightTracker|flyingAnimation",
     "forbid_re": r"modlist_swap|modcheck\s+run|deploy_custom_mods\.py\b.*--apply|(^|[\s/])game\s+(UP|DOWN|DEPLOYING|LOADING)\b"
                  r"|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
     "proof_max_s": 600,
@@ -206,12 +211,35 @@ def owed(item, criterion):
     return level, crit[criterion].get("text") or ""
 
 
-def refused_proof(lr, title, text, proof):
-    """-> why this run may not happen on the live game, or None."""
-    for what, s in (("title", title), ("criterion", text), ("proof", proof)):
+def vehicle_item(lr, title, *texts):
+    """True when the item is about a vehicle's flight: its title's subject is the vehicle (named before any flight word, so
+    "Mynock flies around the gravship" is not one) and no text of the item names a creature. Pure."""
+    t = title or ""
+    v = re.search(lr["vehicle_re"], t, re.I)
+    if not v:
+        return False
+    f = re.search(lr["flyer_re"], t, re.I)
+    if f and f.start() < v.start():
+        return False
+    return not any(re.search(lr["creature_re"], s or "", re.I) for s in (t,) + texts)
+
+
+def flyer_word(lr, title, *texts):
+    """-> (which text, the flight word) when the item names a flyer's flight, or None. texts: (what, text) pairs. Pure."""
+    if vehicle_item(lr, title, *[s for _, s in texts]):
+        return None
+    for what, s in (("title", title),) + texts:
         m = re.search(lr["flyer_re"], s or "", re.I)
         if m:
-            return "flyer: the %s names %r; a flyer's flight is never live-tested (standing ruling)" % (what, m.group(0))
+            return what, m.group(0)
+    return None
+
+
+def refused_proof(lr, title, text, proof):
+    """-> why this run may not happen on the live game, or None."""
+    hit = flyer_word(lr, title, ("criterion", text), ("proof", proof))
+    if hit:
+        return "flyer: the %s names %r; a flyer's flight is never live-tested (standing ruling)" % hit
     m = re.search(r"\$|`|\\\n|\beval\b|\{[^}]*,[^}]*\}", proof or "")     # expansion: bash builds the command at run time
     if m:
         return "the proof text builds its command at run time (%r): a gate cannot read what bash will run" % m.group(0)

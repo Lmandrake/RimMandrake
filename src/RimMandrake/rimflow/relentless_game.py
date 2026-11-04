@@ -161,8 +161,9 @@ def gate(st, title, proofs_text, flyer_re, other):
     lacking = [c for c in k.get("clauses") or [] if c not in lines]
     if lacking:
         return "no live-proof line for %s" % ", ".join(lacking)
-    words = " ".join([title or ""] + [lines[c] for c in k.get("clauses") or []])
-    if re.search(flyer_re, words, re.I):
+    import relentless_live
+    lr = dict(relentless_live.DEFAULTS, flyer_re=flyer_re)
+    if relentless_live.flyer_word(lr, title, *[("proof", lines[c]) for c in k.get("clauses") or []]):
         return "flyer: a flyer's flight is never live-tested without the owner present"
     return None
 

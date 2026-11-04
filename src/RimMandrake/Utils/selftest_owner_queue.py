@@ -71,6 +71,7 @@ check("title is the fallback", {x["item"]: x["q"] for x in n["lines"]}["A_PLAIN_
 check("text leads with the count", n["text"].startswith("%d things: " % len(his)))
 none = Q.needs_you({"I": it("offline")}, {}, {})
 check("nothing his -> empty text, count 0", (none["count"], none["lines"], none["text"], none["topics"], none["answered"]) == (0, [], "", [], []))
+check("the seat queue is every tooling hold", [k for k, _, _ in Q.seat_queue(rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
 check("misrouted lists tooling holds", [k for k, _ in Q.misrouted(items, rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
 
 with tempfile.TemporaryDirectory() as d:
