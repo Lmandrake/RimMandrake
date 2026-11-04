@@ -213,15 +213,17 @@ EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome,
      "UNMEASURED", "the proof exited 1: it did not measure"),
     ("NOT REPRODUCED: neither animal moved >= 6 cells in 300 ticks; the job is not named", "UNMEASURED",
      "the proof exited 1: it did not measure"),
-    ("context: privateMB=None unityReservedMB=None upS=None\nFAIL: missing ['privateMB', 'upS']", "UNMEASURED",
-     "the proof exited 1: it did not measure"),
+    # the proof's own FAIL beside a None read elsewhere: the None may be the defect, so the FAIL stands for the worker
+    # to classify (LIVE_ROWS_FIX_STOP_GUESSING_LOGS: it was erased as a dud)
+    ("context: privateMB=None unityReservedMB=None upS=None\nFAIL: missing ['privateMB', 'upS']", "FAIL", "proof exit 1"),
     ("site None net None handler-gone False", "UNMEASURED", "the proof exited 1: it did not measure"),
     ("Traceback (most recent call last):\n  File \"p.py\", line 9\nKeyError: 'mapSize'", "UNMEASURED",
      "the proof exited 1: it did not measure: the proof crashed: KeyError"),
     ("<3>WSL (1999522 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110", "UNMEASURED", L.HARNESS),
     ("FAIL GimmeSomeSlack is not loaded in the running game (probe type unreadable): No loaded type 'X' found",
      "UNMEASURED", L.RELOAD),
-    ("loomma_sunstruck_open_vs_roofed: 0 matching rows (want exactly 1)", "UNMEASURED", "the proof exited 1: it did not"),
+    ("loomma_sunstruck_open_vs_roofed: 0 matching rows (want exactly 1)", "UNMEASURED",
+     "the proof exited 1: it did not measure: UNKNOWN: a None or zero-row read"),
     # a FAIL line that reports a None or a missing thing is an observed violation and is never erased (the None may be the
     # defect): it reaches the worker as FAIL, who must classify it first (GPT test-tolerance advice 2026-11-04)
     ("0 nightside land tiles in world_tiles.csv\nFAIL A2: no candidate tile on this world", "FAIL", "proof exit 1"),
@@ -230,7 +232,9 @@ EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome,
     ("T1 FAIL: top_tinder.tinder_leaves_fuel -> None (out /mnt/d/x.json)", "FAIL", "proof exit 1"),
     ("FAIL: no component genome.inject_starts_gestation in /mnt/d/x", "FAIL", "proof exit 1"),
     ("FAIL: setting round-trip read None; expected enabled\nVERDICT FAIL", "FAIL", "proof exit 1"),
-    ("Traceback (most recent call last):\nAssertionError: read None; expected enabled", "FAIL", "proof exit 1"),
+    # an uncaught AssertionError is the proof's own setup as often as the product: UNKNOWN, no strike (GPT 2026-11-04)
+    ("Traceback (most recent call last):\nAssertionError: read None; expected enabled", "UNMEASURED",
+     "the proof exited 1: it did not measure: the proof crashed: AssertionError (UNKNOWN"),
     # a marker the line negates is no fault, and a FAIL MOD row stands beside any harness text (GPT review 2026-11-03)
     ("deploy check: stale deploy=False\nA1 FAIL MOD missing required texture\nVERDICT FAIL", "FAIL", "proof exit 1"),
     ("PASS: no ConnectionRefusedError in game log\nVERDICT FAIL", "FAIL", "proof exit 1"),
@@ -249,8 +253,18 @@ EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome,
      "(read None)\nVERDICT: FAIL (6 rows, 6 wanted)", "FAIL", "proof exit 1"),
     ("FAIL stall_01.json does not flag the main thread among 0 threads\nprove_bridge_stall_dump: FAIL (77 s)", "FAIL",
      "proof exit 1"),
-    ("Traceback (most recent call last):\n  File \"p.py\", line 9\nAssertionError: 3 null textures", "FAIL",
+    ("Traceback (most recent call last):\n  File \"p.py\", line 9\nAssertionError: 3 null textures", "UNMEASURED",
+     "the proof exited 1: it did not measure: the proof crashed: AssertionError"),
+    # LIVE_ROWS_FIX_STOP_GUESSING_LOGS: the last verdict line does not adjudicate mixed rows, a crash after an observed
+    # FAIL does not erase it, and the decisive row may sit far above the end (an 8 KB tail dropped it)
+    ("A1 FAIL: no RM_Chittik spawned\nA2 UNMEASURED: no save\nVERDICT UNMEASURED", "FAIL", "proof exit 1"),
+    ("A1 FAIL: no RM_Chittik spawned\nTraceback (most recent call last):\nKeyError: 'mapSize'", "FAIL", "proof exit 1"),
+    ("A1 FAIL: no RM_Chittik spawned\n" + "detail line of a long proof\n" * 600 + "VERDICT UNMEASURED", "FAIL",
      "proof exit 1"),
+    ("A1 FAIL MOD texture missing\n" + "detail line of a long proof\n" * 600 + "ConnectionResetError: reset",
+     "FAIL", "proof exit 1"),
+    ("Traceback (most recent call last):\n  File \"p.py\", line 9\nValueError: bad literal", "UNMEASURED",
+     "the proof exited 1: it did not measure: the proof crashed: ValueError (UNKNOWN"),
     ("FAIL: bill RM_MineShaft_Vacstone exists, but an earlier rock already covers ChunkVacstone\nVERDICT FAIL", "FAIL",
      "proof exit 1"),
 ]
@@ -282,6 +296,77 @@ def t_exit1_that_could_not_ask_is_no_fail():
     row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000)
     check("exit 1: a WSL traceback reruns under python.exe", row["outcome"] == "FAIL" and row.get("rerun")
           == "python.exe probe.py", row)
+
+
+class ProtoFx(ScriptFx):
+    """ScriptFx whose log text may name {run}: the run id the supervisor gives the proof (live_observe.run_id_of)."""
+    def run_proof(self, proof, log, timeout):
+        self.calls.append(("proof", proof))
+        code, text = next((v for k, v in self.codes.items() if proof.startswith(k)), (0, ""))
+        with open(log, "w") as f:
+            f.write("$ %s\n%s\n" % (proof, text.replace("{run}", L.live_observe.run_id_of(log))))
+        return code
+
+
+def obs(result, stage="result", run="{run}", clause="A2", **kw):
+    row = dict(kw, run=run, clause=clause, result=result, stage=stage)
+    row.setdefault("expected", ">= 1")
+    row.setdefault("observed", 1)
+    return "RMOBS " + json.dumps(row)
+
+
+def t_rmobs_rows_decide_the_run():
+    """LIVE_ROWS_FIX_STOP_GUESSING_LOGS: a proof that writes RMOBS rows is judged by them, not by its exit code or a
+    verdict-shaped line: a valid VIOLATED is a FAIL even under exit 0 and a later PASS line; a stale run id, a malformed
+    row, an observed None without absence, a stop before stage result are UNMEASURED (no verify, no strike); an
+    UNREACHED at transport is the harness's; SATISFIED and exit 0 is a PASS; no rows at all falls back to the regexes."""
+    cases = [   # (exit, log, outcome, why head, verified, harness)
+        (0, obs("VIOLATED", "evaluation", expected=">= 1 RM_Chittik", observed=0, absence=True) + "\nVERDICT PASS",
+         "FAIL", "A2 VIOLATED at evaluation", True, False),
+        (1, obs("SATISFIED", "observation") + "\nRMOBS {not json\n" + obs("VIOLATED", "evaluation", observed=0,
+                                                                          absence=True), "FAIL", "A2 VIOLATED", True,
+         False),
+        (0, obs("SATISFIED"), "PASS", "A2 SATISFIED", True, False),
+        (1, obs("SATISFIED"), "UNMEASURED", "the proof exited 1: it did not measure: INVALID", False, False),
+        (0, obs("SATISFIED", run="ROT_X-A2-20270114T080000Z"), "UNMEASURED",
+         "the proof exited 0: it did not measure: INVALID", False, False),
+        (0, obs("SATISFIED") + "\nRMOBS [1, 2", "UNMEASURED", "the proof exited 0: it did not measure: INVALID", False,
+         False),
+        (1, obs("VIOLATED", "evaluation", observed=None), "UNMEASURED",
+         "the proof exited 1: it did not measure: UNKNOWN", False, False),
+        (0, obs("SATISFIED", "observation"), "UNMEASURED", "the proof exited 0: it did not measure: UNKNOWN", False,
+         False),
+        (2, obs("UNREACHED", "transport", note="bridge refused the connection"), "UNMEASURED", L.HARNESS, False, True),
+        (2, obs("UNREACHED", "setup", note="no map"), "UNMEASURED", "the proof exited 2: it did not measure: UNREACHED",
+         False, False),
+        (0, obs("SATISFIED", clause="A3"), "UNMEASURED", "the proof exited 0: it did not measure: UNKNOWN", False, False),
+        (1, "A1 FAIL: no RM_Chittik spawned", "FAIL", "proof exit 1", True, False),
+    ]
+    import relentless_game as G
+    for code, text, outcome, head, verified, harness in cases:
+        root = tempfile.mkdtemp(prefix="rl_live_")
+        fx = ProtoFx({"python.exe ": (code, text)})
+        row = L.run(fx, root, "ROT_X", "A2", "python.exe probe.py", "--compose biomes", {}, now=1_800_000_000)
+        v = any(c[:2] == ("rimflow", "verify") for c in fx.calls)
+        ok = (row["outcome"] == outcome and row["why"].startswith(head) and v == verified
+              and bool(row.get("harness")) == harness
+              and (outcome == "UNMEASURED" or row["verdict"] == outcome))
+        if outcome == "UNMEASURED" and not harness:
+            ok = ok and bool(G.RAN_DUD.search(row["why"]))
+        if "RMOBS" in text:
+            ok = ok and "observe" in row
+        check("rmobs: exit %d %s -> %s" % (code, text.splitlines()[0][:60], outcome), ok, row)
+    seen = {}
+
+    class EnvFx(ProtoFx):
+        pass
+    fx = L.Fx.__new__(L.Fx)
+    fx.books = tempfile.mkdtemp(prefix="rl_env_")
+    log = os.path.join(fx.books, "ROT_X-A2-20270115T080000Z.log")
+    fx.run_proof("echo \"$%s\"" % L.live_observe.RUN_ENV, log, 30)
+    seen["env"] = open(log).read()
+    check("rmobs: the real run_proof hands the proof its run id", "ROT_X-A2-20270115T080000Z" in seen["env"].split(
+        "\n", 1)[1], seen)
 
 
 def t_same_cause_becomes_one_reload_request():
@@ -1005,7 +1090,7 @@ def t_composed_mod_reads_its_parent_about():
 
 
 def main():
-    for t in (t_exit1_that_could_not_ask_is_no_fail, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_exit1_that_could_not_ask_is_no_fail, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,

@@ -124,7 +124,7 @@ BROKEN_CALL = re.compile(
     r"|\b(?:ModuleNotFoundError|ImportError|SyntaxError|NameError):")
 # A last line that names no reason: the reason is on a line above it
 NO_REASON = re.compile(r"^(?:\$ .*|(?:(?:VERDICT|LIVE|RESULT)\s*:?\s*)?UNMEASURED\.?)$")
-LOG_TAIL = 8000     # the bytes of a proof's log the two readers above look at
+# The readers above read the WHOLE log (live_observe.whole): an 8 KB tail dropped decisive rows above it (GPT 2026-11-04)
 UNDEPLOYED = ("not deployed", "not in the running load")    # retried on another game only (relentless_live_round.due)
 SITE_CMD = re.compile(r"^python\.exe src/RimMandrake/Utils/live_site\.py(?: --[a-z][a-z-]*(?: [A-Za-z0-9_.\-]+)?)+$")
 # rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game
@@ -163,7 +163,6 @@ NEGATED_AFTER = re.compile(r"^\s*[=:]\s*(?:False|0|no|none)\b", re.I)
 # The exception that ends a traceback: the first unindented line after it names its class (StopIteration and KeyboardInterrupt
 # end in neither Error nor Exception)
 TB_END = re.compile(r"^(?:[A-Za-z_]\w*\.)*([A-Za-z_]\w*)(?::|$)")
-EXIT1_LOOK = 25     # READ_NOTHING reads only the last lines: a None far above the verdict is some row's detail
 SRC_MOD = re.compile(r"^src/(Rim[A-Za-z]+)/([^/]+)/(.+)$", re.S)     # src/<tier>/<Mod>/<path in the mod>
 DRIFT = re.compile(r"^\s{2,6}([~+\-H])\s+(\S.*?)(?:\s{2,}\(.*\))?\s*$")
 SECTION = re.compile(r"^(\S+)\s+(mandrake\.\S+)(.*)$")      # deploy_custom_mods prints one per mod, drift or not
@@ -198,6 +197,7 @@ def iso(t):
 
 sys.path.insert(0, HERE)
 import model                                   # noqa: E402  the ledger's own cap and criterion line, not a copy
+import live_observe                            # noqa: E402  the RMOBS measurement protocol; the regexes are its fallback
 
 CUT_AT = model.CRITERION_TEXT_MAX
 CRIT_LINE = model.CRITERION_LINE_RE
@@ -424,8 +424,8 @@ def last_line(path):
 
 
 def tail_lines(path):
-    """The non-blank lines of the end of a log."""
-    return [x.strip() for x in read_text(path)[-LOG_TAIL:].splitlines() if x.strip()]
+    """The non-blank lines of a log: all of them (live_observe.whole cuts only past its LOG_MAX)."""
+    return [x.strip() for x in live_observe.whole(read_text(path))[0].splitlines() if x.strip()]
 
 
 def exit_reason(path):
@@ -447,15 +447,20 @@ def broken_call(path):
 
 
 def could_not_ask(path):
-    """A proof that exited 1 -> (kind, line) when its log shows it could not ask, else None (a real FAIL).
+    """A proof that exited 1 and wrote no RMOBS rows -> (kind, line) when its log shows it could not ask, else None (a
+    real FAIL). The regex reading is the migration aid of live_observe's protocol (LIVE_ROWS_FIX_STOP_GUESSING_LOGS).
     kind "harness": the box or instrument failed (EXIT1_HARNESS) - never the mod's, never the worker's;
-    kind "reload": the running load is the wrong one for it (EXIT1_RELOAD);
-    kind "dud": the proof measured nothing - its own last verdict line says UNMEASURED or NOT REPRODUCED, it crashed
-    (a traceback ending in anything but an AssertionError that no verdict line follows), or it read None / found nothing
-    to measure on a line that is not itself a FAIL verdict or a failed assert.
+    kind "reload": the running load is the wrong one for it (EXIT1_RELOAD, EXIT1_UNLOADED): a failed prerequisite, so
+    the rows measured on it are no evidence;
+    kind "dud": the proof measured nothing by its own word - every verdict line it wrote says UNMEASURED or NOT
+    REPRODUCED;
+    kind "unknown": the log cannot say whether it measured - an uncaught exception (an AssertionError is the proof's own
+    setup as often as the product, and any other exception may be the product's), or a None / zero-row read that may be
+    the defect itself or a blind instrument.
     An observed violation is never erased (GPT test-tolerance advice 2026-11-04): a `FAIL MOD` row keeps the FAIL whatever
-    else the run tripped over, and so does a FAIL line that reports a None (the None may be the defect). Uncertain cases
-    still reach the worker as a FAIL, and the worker must classify them before any rebuild (relentless.DIAGNOSE_ENDS)."""
+    else the run tripped over; any other FAIL row or verdict, anywhere in the whole log (never only the last verdict line,
+    never an 8 KB tail), keeps it over a later UNMEASURED, a crash or a None read. Those still reach the worker as a
+    FAIL, and the worker must classify them before any rebuild (relentless.DIAGNOSE_ENDS)."""
     lines = tail_lines(path)
     if any(MOD_ROW.match(x) for x in lines):
         return None             # an observed violation is never erased, whatever else the run tripped over
@@ -466,26 +471,24 @@ def could_not_ask(path):
     for line in reversed(lines):
         if marker_hit(EXIT1_UNLOADED, line):
             return "reload", line[:200]
-    last_verdict, at = None, -1
-    for i in range(len(lines) - 1, -1, -1):
-        m = VERDICT_LINE.match(lines[i].strip())
-        if m:
-            last_verdict, at = m.group(1), i
-            break
-    if last_verdict in ("UNMEASURED", "NOT REPRODUCED"):
-        return "dud", lines[at].strip()[:200]
+    if any(observed_fail(x) for x in lines):
+        return None             # a FAIL the proof reached, mixed rows or not: the worker classifies it
+    verdicts = [(i, m.group(1)) for i, m in ((i, VERDICT_LINE.match(x)) for i, x in enumerate(lines)) if m]
+    at = verdicts[-1][0] if verdicts else -1
     tb = max((i for i, x in enumerate(lines) if x.startswith("Traceback (most recent call last)")), default=-1)
     if tb > at:
         ends = [m.group(1) for m in (TB_END.match(x) for x in lines[tb + 1:]
                                      if x and not x[0].isspace() and not x.startswith(("Traceback", "During handling")))
                 if m]
-        if ends and ends[-1] != "AssertionError":
-            return "dud", ("the proof crashed: %s" % ends[-1])[:200]
-    for line in reversed(lines[-EXIT1_LOOK:]):
-        if observed_fail(line):
-            continue
+        if ends:
+            return "unknown", ("the proof crashed: %s (UNKNOWN: an exception names neither the product nor the "
+                               "instrument)" % ends[-1])[:200]
+    if verdicts and all(v in ("UNMEASURED", "NOT REPRODUCED") for _, v in verdicts):
+        return "dud", lines[at].strip()[:200]
+    for line in reversed(lines):
         if read_nothing(line):
-            return "dud", line[:200]
+            return "unknown", ("UNKNOWN: a None or zero-row read (a measured absence or a blind instrument; RMOBS "
+                               "absence says which): %s" % line)[:200]
     return None
 
 
@@ -502,10 +505,11 @@ def marker_hit(rx, line):
 
 
 def observed_fail(line):
-    """The proof's own FAIL verdict or a failed assert: an observed violation. A None on that line is what the proof
-    saw (a setting that read None where `enabled` is wanted may be the defect), so it is never read as a dud."""
+    """The proof's own FAIL verdict or row: an observed violation. A failed assert is not one (GPT 2026-11-04: proofs
+    assert their own setup). A None on that line is what the proof saw (a setting that read None where `enabled` is
+    wanted may be the defect), so it is never read as a dud."""
     v = VERDICT_LINE.match(line.strip())
-    return bool(v and v.group(1) == "FAIL") or bool(FAIL_ROW.match(line)) or line.lstrip().startswith("AssertionError")
+    return bool(v and v.group(1) == "FAIL") or bool(FAIL_ROW.match(line))
 
 
 def read_nothing(line):
@@ -866,7 +870,8 @@ class Fx(object):
             f.flush()
             p = subprocess.Popen(proof, shell=True, cwd=self.books, stdout=f, stderr=subprocess.STDOUT,
                                  stdin=subprocess.DEVNULL, executable="/bin/bash", start_new_session=True,
-                                 env=model.bridge_holder.process_env())
+                                 env=dict(model.bridge_holder.process_env(),
+                                          **{live_observe.RUN_ENV: live_observe.run_id_of(log)}))
             try:
                 return p.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
@@ -897,7 +902,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
 
     def done(outcome, why, **kw):
         row.update(kw, outcome=outcome, why=why)
-        row["verdict"] = ("INFRA" if "proof_exit" not in row else "PASS" if row["proof_exit"] == PASS else "FAIL")
+        row["verdict"] = ("INFRA" if "proof_exit" not in row else "FAIL" if row.get("observe", {}).get("status") ==
+                          "VIOLATED" else "PASS" if row["proof_exit"] == PASS else "FAIL")
         if outcome == "UNMEASURED" and "game" not in row and why.startswith(UNDEPLOYED):
             row["game"] = game_iso(fx)      # relentless_live_round.due retries an undeployed build on another game only
         with open(os.path.join(root, "live", "runs.jsonl"), "a", encoding="utf-8") as f:
@@ -1016,13 +1022,35 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
         if not row["released"]:
             return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
-    unable = could_not_ask(log) if code == FAIL and not crashed else None
-    said = None
-    if unable:      # LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL: an exit 1 that could not ask is no FAIL and no verify
+    reading = live_observe.read_log(log, live_observe.run_id_of(log), criterion) if log and not crashed and (
+        "proof_exit" in row) else None
+    said, unable = None, None
+    if reading is not None and reading.status != live_observe.NONE:
+        # the proof said what it measured (RMOBS): its rows decide, never its exit code or a verdict-shaped line
+        row["observe"] = reading.summary()
+        ended = "timed out" if code is None else "exited %d" % code
+        if reading.status == "VIOLATED":
+            code = FAIL         # a valid violation stands over an exit 0, a later PASS line or a malformed row
+        elif reading.status == "SATISFIED" and code == PASS:
+            pass
+        else:
+            st = reading.status if reading.status != "SATISFIED" else live_observe.INVALID
+            why = reading.why if reading.status != "SATISFIED" else "every row SATISFIED but the proof %s" % ended
+            if st == "UNREACHED" and reading.stage in live_observe.HARNESS_STAGES:
+                unable = ("harness", "%s: %s" % (st, why))
+                said = "%s: the proof %s and could not ask: %s: %s" % (HARNESS, ended, st, why)
+            else:
+                unable = ("dud" if st == "UNREACHED" else "unknown", "%s: %s" % (st, why))
+                said = "the proof %s: it did not measure: %s: %s" % (ended, st, why)
+    elif code == FAIL and not crashed:
+        unable = could_not_ask(log)
+    if unable:
         row["unable"] = unable[0]
+    if unable and said is None:      # LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL: an exit 1 that could not ask is no FAIL and no verify
         said = {"harness": "%s: the proof exited 1 and could not ask: %%s" % HARNESS,
                 "reload": "%s: the proof exited 1 on a load it cannot judge: %%s" % RELOAD,
-                "dud": "the proof exited 1: it did not measure: %s"}[unable[0]] % unable[1]
+                "dud": "the proof exited 1: it did not measure: %s",
+                "unknown": "the proof exited 1: it did not measure: %s"}[unable[0]] % unable[1]
     if code not in (PASS, FAIL) or unable:
         why = crashed or said or (asked_reload(log) if code is not None else None) or "the proof %s" % (
             "timed out" if code is None else "exited %d: it did not measure: %s" % (code, exit_reason(log)))
@@ -1077,7 +1105,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if v.returncode != 0:
         return done("UNMEASURED", "the verdict %s did not land: %s" % (result.upper(), (v.stderr or v.stdout)[-300:]),
                     log=log)
-    return done("PASS" if code == PASS else "FAIL", "proof exit %d" % code, log=log)
+    return done("PASS" if code == PASS else "FAIL", reading.why if row.get("observe") else "proof exit %d" % code,
+                log=log)
 
 
 def main(argv=None):
