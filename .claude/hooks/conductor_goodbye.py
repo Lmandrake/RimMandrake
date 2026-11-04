@@ -15,6 +15,9 @@ seat_restart.seats.BENCH.goodbye_phrases. "goodbye to the old pipe system" and "
 Conductor window fires: AGENT_SEAT BENCH and a session name the BENCH seat answers to (CONDUCTOR if the schedule is
 unreadable). A window whose session file cannot be read gets one diagnostic line, never the close-out.
 
+His whole message can also be the reset switch (src/RimMandrake/rimflow/reset_mode.py: hold / ready / auto,
+CONDUCTOR_RESET_FIX_KILLED_MID_READ): the same identity gate, then the switch is written by this hook, not left to the window.
+
 Prints nothing on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
 It only prints: the restart itself is requested by the window and acted on by the Dispatcher, which holds it while
 helpers are alive, he is typing, or the window is mid-reply.
@@ -39,6 +42,11 @@ except Exception:  # noqa: BLE001 - unloadable rule: the hook stays silent (main
 
 def norm(text):
     return GP.norm(text)
+
+
+def RESET_WORDS(prompt):
+    import reset_mode
+    return reset_mode.mode_of_words(GP.norm(prompt))
 
 
 def _bench_restart(sch):
@@ -125,6 +133,19 @@ def message(sch, ok_why=""):
     return CLOSE_OUT.format(why=ok_why or "-", restart=step4, tail=tail)
 
 
+def set_reset_mode(mode, session_id, sch):
+    """His whole message flipped the switch. -> what the window is told, so he hears it in his own window (phone too)."""
+    import seat_restart as SR
+    try:
+        SR.set_mode(SEAT, mode, session_id, by="his whole message")
+    except (OSError, ValueError) as e:
+        return ("RESET SWITCH (conductor_goodbye.py): his message asked for %s but it could not be set (%s). Tell him that in "
+                "one line and end the turn." % (mode, e))
+    cfg = SR.config(sch).get(SEAT) or {}
+    return ("RESET SWITCH (conductor_goodbye.py): his whole message set this window's reset switch. It is done. Reply to him "
+            "in ONE line, exactly: \"%s\" Then end the turn. Do not start new work." % SR.RM.said(mode, cfg))
+
+
 def _load_schedule():
     try:
         with open(SCHEDULE, encoding="utf-8") as f:
@@ -159,11 +180,18 @@ def main():
         return 0
     sch = _load_schedule()
     phr = phrases(sch) or GP.phrases({})
-    if not is_goodbye(prompt, phr):
+    bye = is_goodbye(prompt, phr)
+    mode = None if bye else RESET_WORDS(prompt)
+    if not bye and not mode:
         return 0
     sf = _session_file()
     ok, why = is_conductor(os.environ, sf, sch)
+    if ok and mode:
+        print(set_reset_mode(mode, data.get("session_id") or (sf or {}).get("sessionId"), sch))
+        return 0
     if not ok:
+        if mode:
+            return 0
         if sf is None:
             print("GOODBYE seen (conductor_goodbye.py) but this window's identity is UNMEASURED (its session file "
                   "cannot be read): do NOT close out or restart. Tell him in one line that this window could not "

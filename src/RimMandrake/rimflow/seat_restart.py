@@ -15,6 +15,8 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              <dispatcher state>/restart/<SEAT>.request.json.
              Refused while any helper of the window is alive. Backstop: the Dispatcher also starts one for a window that
              is idle, has no live helper, and whose context (last usage in its transcript) is past a threshold.
+             A Conductor's reset switch (reset_mode.py) overrides these lines: hold stands them down up to its ceiling,
+             ready restarts at the next ended turn at any size. Only a goodbye or a handoff outranks hold.
              Busy windows (backstop_busy): past backstop_ctx_tokens the seat is told once through its
              doorbell (restart_tell); past backstop_hard_tokens a restart goes pending whatever the window does, killed
              at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor.
@@ -67,6 +69,7 @@ for _p in (HERE, os.path.dirname(HERE), UTILS):
         sys.path.insert(0, _p)
 import session_match as SM  # noqa: E402
 import doorbell  # noqa: E402
+import reset_mode as RM  # noqa: E402
 from rmpaths import rm_str  # noqa: E402
 
 DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm_s": 900, "intile_wait_s": 30,
@@ -79,7 +82,9 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600,
             # RESTART_NOW_BUILD_WINDOW_SAYS_READY: `request --now` vouches for its boundary, so a short ended-turn
             # check stands in for grace + quiet_s; now_hold_s bounds how long rm-restart-now ticks before the timer
-            "now_quiet_s": 3, "now_hold_s": 240}
+            "now_quiet_s": 3, "now_hold_s": 240,
+            # CONDUCTOR_RESET_FIX_KILLED_MID_READ: the ceiling of `hold` (_hold_stands)
+            "hold_ceiling_tokens": 400_000, "hold_max_s": 14400}
 HELPER_STALE_FLOOR_S = 1200
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
@@ -858,8 +863,9 @@ def says_handoff_ready(text):
                             or any(re.match(r"HANDOFF READY\s*[\u2014\u2013:(-]", x) for x in lines))
 
 
-def last_assistant_text(path, tail_bytes=1 << 20):
-    """-> the final assistant message's text from the transcript's tail, or "" (unreadable or none yet)."""
+def last_assistant_text(path, tail_bytes=1 << 20, skip=()):
+    """-> the final assistant message's text from the transcript's tail, or "" (unreadable or none yet). skip: openings
+    of messages to pass over."""
     try:
         with open(path, "rb") as f:
             f.seek(0, 2)
@@ -872,10 +878,10 @@ def last_assistant_text(path, tail_bytes=1 << 20):
             r = json.loads(line)
         except ValueError:
             continue
-        if r.get("type") == "assistant" and not r.get("isSidechain"):
+        if r.get("type") == "assistant" and not r.get("isSidechain") and not r.get("isApiErrorMessage"):
             c = (r.get("message") or {}).get("content")
             t = c if isinstance(c, str) else "\n".join(b.get("text") or "" for b in c or [] if isinstance(b, dict))
-            if t.strip():
+            if t.strip() and not t.strip().startswith(skip):
                 return t
     return ""
 
@@ -985,6 +991,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         "registered": registered_start,
         "clones": seat_clones,
         "refused": lambda seat: _read_json(refused_path(seat)),
+        "mode": lambda seat, s: read_mode(seat, s.get("sessionId")),
         "pending": lambda seat, s: (background_holds(s.get("pid")) if cfgs[seat].get("kind") == "conductor" else
                                     pending_holds(seat, s.get("pid"), transcript_for(s, cfgs[seat]))),
     }
@@ -1332,6 +1339,65 @@ def _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act):
     return rs
 
 
+def read_mode(seat, session_id, root=None):
+    return RM.read(seat, session_id, root or doorbell.state_dir())
+
+
+def _mode(seat, cfg, ro, cur):
+    """-> this window's reset switch, a Conductor's only; every other window, and a tick that cannot read it, is auto."""
+    if cfg.get("kind") != "conductor" or not cur or not callable(ro.get("mode")):
+        return {"mode": RM.AUTO, "at": None}
+    return ro["mode"](seat, cur) or {"mode": RM.AUTO, "at": None}
+
+
+def hold_past_ceiling(cfg, size, mode_at, last_human_at, now):
+    """-> why `hold` no longer holds, or None. The owner's note 2026-11-03: "no context-backstop restart while he is reading
+    or typing, up to a safety ceiling". Size, because the window pays for every token on every call; and hold_max_s with
+    nothing from him since the later of the switch and his last message, because a hold he forgot is not him reading.
+    No reading of his last message counts from the switch alone."""
+    if size is not None and size >= cfg["hold_ceiling_tokens"]:
+        return "context %d tokens >= hold_ceiling_tokens %d" % (size, cfg["hold_ceiling_tokens"])
+    since = max(mode_at or 0, last_human_at or 0)
+    if since and now - since >= cfg["hold_max_s"]:
+        return "%d s since he last said anything or set hold, >= hold_max_s %d" % (now - since, cfg["hold_max_s"])
+    return None
+
+
+def _hold_stands(seat, cfg, st, ro, cur, tx, now, act):
+    """Is a context restart of this window forbidden right now? Past the ceiling it is not, and he hears once why."""
+    m = _mode(seat, cfg, ro, cur)
+    if m["mode"] != RM.HOLD:
+        return False
+    lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
+    why = hold_past_ceiling(cfg, (tx or {}).get("ctx_tokens"), m.get("at"), lh[0] if lh else None, now)
+    if why is None:
+        return True
+    sc = _context_memo(st, seat, cur)
+    if not sc.get("hold_yield_said"):
+        sc["hold_yield_said"] = now
+        act(do="alarm", kind="restart:%s:hold_ceiling" % seat, seat=seat, note=True, conductor_log=True,
+            raise_first="%s's reset hold reached its safety ceiling." % seat,
+            why="%s's reset hold reached its safety ceiling, and the ordinary limits apply again: %s" % (seat, why))
+    return False
+
+
+def _ready_pending(seat, cfg, R, ro, cur, tx, now, act):
+    """His `ready`: a restart goes pending at once, whatever the size, and _pending kills at the next ended turn with the
+    --now quiet. It is NOT a goodbye: his input cancels it (the next tick re-arms while the switch still says ready), and
+    live helpers, the bridge and PAUSE hold it. -> the record, or None while the window cannot be bound."""
+    born = _born(ro, cur)
+    lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
+    if born is None or ro["start"](cur.get("pid")) != born or lh is None:
+        return None
+    rs = R[seat] = {"source": READY, "ts": now, "session_id": cur.get("sessionId"), "pid": cur.get("pid"), "start": born,
+                    "ticket": None, "ctx_tokens": (tx or {}).get("ctx_tokens"), "now": True, "busy": 0,
+                    "reason": "he set the reset switch to ready", "cooldown_s": cfg["cooldown_s"], "state": "pending",
+                    "cancel_after": lh[0] or (tx or {}).get("last_user_at") or now, "tx_offset": lh[3] or 0,
+                    "tx_path": transcript_for(cur, cfg)}
+    act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
+    return rs
+
+
 def _join_request(seat, cfg, rs, ro, now, act):
     """A forced restart is pending and the seat's own request has come: it joins, and is consumed, so source says request
     from here on (on a Conductor that makes it a goodbye: _goodbye, nothing cancels or waits). The fields a goodbye
@@ -1414,10 +1480,16 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 return _cancel(new, seat, spin, now, act)
             new["state"] = "pending"
             rs = new
+        elif cur and _mode(seat, cfg, ro, cur)["mode"] == RM.READY and (state != "failed" or rs.get("cooldown_until", 0) <= now):
+            rs = _ready_pending(seat, cfg, R, ro, cur, ro["tx"](seat, cur), now, act)
+            if rs is None:
+                return
         elif (cfg.get("backstop") and cur and rs.get("cooldown_until", 0) <= now
               and (cur.get("status") == "idle" or _busy_on(cfg))):
             tx = ro["tx"](seat, cur)
             if not tx or tx.get("ctx_tokens") is None or tx["ctx_tokens"] < cfg["backstop_ctx_tokens"]:
+                return
+            if _hold_stands(seat, cfg, st, ro, cur, tx, now, act):
                 return
             if _busy_on(cfg):
                 _tell_once(seat, cfg, st, ro, cur, tx, now, apply, act)
@@ -1746,6 +1818,10 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if cfg.get("kind") == "conductor" and rs.get("source") in FORCED:
         _join_request(seat, cfg, rs, ro, now, act)   # before anything that cancels: his goodbye must not wait a tick
     tx = ro["tx"](seat, cur)
+    if rs.get("source") in FORCED and _hold_stands(seat, cfg, st, ro, cur, tx, now, act):
+        return _cancel(rs, seat, "he set the reset switch to hold: this context restart stands down", now, act)
+    if rs.get("source") == READY and _mode(seat, cfg, ro, cur)["mode"] != RM.READY:
+        return _cancel(rs, seat, "he took the reset switch off ready", now, act)
     after = rs.get("cancel_after", rs["ts"])
     goodbye = _goodbye(cfg, rs)
     if not goodbye and tx and tx.get("last_user_at") and tx["last_user_at"] > after:
@@ -1792,7 +1868,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         rs["work_from"] = max([rs.get("work_from", rs["ts"])] + [int(h.get("last_at") or 0) + 1 for h in hs])
     work = ro["work"](seat, rs.get("work_from", rs["ts"])) if ro.get("work") else None
     nw = None if deferred and (live or hs is None) else new_work(work, rs.get("ticket"), drain=deferred)
-    if nw and not sized and not goodbye:  # forced: taking work is exactly what a busy window does, and the limit stands
+    if nw and not sized and rs.get("source") != READY and not goodbye:  # forced: taking work is exactly what a busy window does, and the limit stands
         return _cancel(rs, seat, _work_why(nw), now, act)
     if not goodbye and not instant and now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
@@ -1812,7 +1888,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     # the refusal the deferral skipped, and the lines any window appends after its request: every source but a size
     # restart (bring-back and a goodbye never passed a refusal at all) holds until the shard is on origin (GPT review
     # 2026-11-01 #5); a size restart's lines stay in the clone for the next window there
-    if rs.get("source") not in FORCED and hs is not None and not live and callable(ro.get("shard")):
+    if rs.get("source") not in UNCLOSED and hs is not None and not live and callable(ro.get("shard")):
         unpub = ro["shard"](seat)
         if unpub:
             holds.append("ledger shard unpublished: %s" % unpub)
@@ -2294,10 +2370,19 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     # the publication check first: its git calls can take minutes, and an input queued meanwhile must still meet the
     # transcript, queue and fence reads below (GPT round 3)
     unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat) \
-        if rs.get("source") not in FORCED else None
+        if rs.get("source") not in UNCLOSED else None
     path = transcript_for(sf, cfg)
     tx = tx_summary(path or "")
     holds = []
+    # the switch can flip between the verdict and the kill. Its read at the kill: he said hold, so no size restart goes.
+    if cfg.get("kind") == "conductor":
+        m = read_mode(seat, sf.get("sessionId"))
+        if rs.get("source") in FORCED and m["mode"] == RM.HOLD:
+            lh = last_human(path or "")
+            if hold_past_ceiling(cfg, (tx or {}).get("ctx_tokens"), m.get("at"), lh[0] if lh else None, time.time()) is None:
+                holds.append("the reset switch says hold")
+        elif rs.get("source") == READY and m["mode"] != RM.READY:
+            holds.append("the reset switch is no longer ready")
     goodbye = _goodbye(cfg, rs)
     qk = "now_quiet_s" if rs.get("now") is True else "quiet_s"
     if goodbye:
@@ -2337,7 +2422,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         holds.append("ledger shard UNMEASURED")
     else:
         nw = new_work(evs, rs.get("ticket"), drain=rs.get("deferred") is True)
-        if nw and rs.get("source") not in FORCED and not goodbye:
+        if nw and rs.get("source") not in UNCLOSED and not goodbye:
             holds.append(_work_why(nw))
     if unpub:                            # an append (a helper's last, a goodbye's note) can land between verdict and kill
         holds.append("ledger shard unpublished: %s" % unpub)
@@ -2749,6 +2834,24 @@ def cmd_request(args):
     return 0
 
 
+def _wake_last_reply(rec):
+    """Every wake shows what the old window last said, whatever killed it (owner 2026-11-03: "I was reading your results
+    to me when you reset!"). The fresh window's screen is empty, so it must put the text back in front of him itself."""
+    if not rec or rec.get("aborted"):
+        return                           # the old window was never killed: its screen is still there
+    path = rec.get("tx_path")
+    # the switch's and the goodbye's one-liners were dictated to the window: the reply he was reading is the one before
+    text = last_assistant_text(path, tail_bytes=8 << 20, skip=("Reset switch:", "Fresh Conductor now")) if path else ""
+    print("\n== the old window's LAST REPLY (window %s, restarted at %s). He may have been reading it when it died:" % (
+        rec.get("session_id"), _iso(rec.get("killed_at") or 0)))
+    if not text.strip():
+        print("UNMEASURED: no reply could be read from %s. Say so to him in one line." % (path or "(no transcript named)"))
+        return
+    print("<<<\n%s\n>>>" % text.strip())
+    print("Copy it whole and word for word to the very top of your first reply, under the line \"Last reply from the old "
+          "window:\", and only then answer or report. Do not summarize it.")
+
+
 def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
     """The Conductor's wake read after a goodbye restart: EVERY message he sent the old window after his goodbye, read
     in full from the killed record's byte cursor in the transcript the record names (review 1 P1-5; review 2 P1-4).
@@ -2818,7 +2921,9 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
 
 
 FORCED = ("backstop", "backstop_hard")          # size restarts: the size must stand until the kill
-NO_CLOSEOUT = FORCED + ("bringback",)           # the window did not close itself out, so its open work is read out of it
+READY = "ready"                                 # his reset switch: as a size restart, nobody closed the window out
+UNCLOSED = FORCED + (READY,)                    # no refusal on new work or an unpublished shard: the next window has them
+NO_CLOSEOUT = UNCLOSED + ("bringback",)         # the window did not close itself out, so its open work is read out of it
 
 
 def _tx_tail(path, tail_bytes=8 << 20):
@@ -2965,6 +3070,7 @@ def cmd_wake(args):
     _wake_receipts(seat, cfg, rec)
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
+        _wake_last_reply(rec)
         _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)
         return 0
     print("\n== handoff pointers (handoff.py --wake)")
@@ -3126,6 +3232,33 @@ def _now_run(args):
         time.sleep(1 if any(w in ("untaken", "replaced", "pending", "claimed") for w in owed.values()) else 5)
 
 
+def set_mode(seat, mode, session_id, by="", root=None):
+    """Flip the switch; `ready` gets its own ticks, or it waits out the 120 s timer. -> the path."""
+    p = RM.write(seat, mode, session_id, root or doorbell.state_dir(), by=by)
+    if mode == RM.READY:
+        _tick_soon(10, 20, 35, 60, 90)
+    return p
+
+
+def cmd_mode(args):
+    seat = (args.seat or doorbell.seat_name() or "BENCH").upper()
+    cfg = config(_schedule()).get(seat) or {}
+    pid = doorbell.claude_ancestor()
+    sid = args.session or ((session_file(pid) or {}).get("sessionId") if pid else None)
+    if cfg.get("kind") != "conductor":
+        print("REFUSED: %s has no reset switch; only the Conductor window does." % seat)
+        return 2
+    if not sid:
+        print("REFUSED: which window? This shell is not inside one; pass --session.")
+        return 2
+    if args.mode:
+        set_mode(seat, args.mode, sid, by="seat_restart.py mode")
+        print(RM.said(args.mode, cfg))
+        return 0
+    print(read_mode(seat, sid)["mode"])
+    return 0
+
+
 def cmd_status(args):
     st = _read_json(os.path.join(doorbell.state_dir(), "state.json")) or {}
     print(json.dumps({"config": config(_schedule()), "state": st.get("seat_restart") or {}}, indent=1, default=str))
@@ -3153,6 +3286,10 @@ def main(argv=None):
     i = sub.add_parser("intile", help="seat_loop.sh: relaunch here if a restart just killed this seat (exit 3: no)")
     i.add_argument("--seat")
     sub.add_parser("status")
+    m = sub.add_parser("mode", help="read or set the Conductor window's reset switch (reset_mode.py)")
+    m.add_argument("mode", nargs="?", choices=RM.MODES)
+    m.add_argument("--seat")
+    m.add_argument("--session", help="the window's session id (default: the window this shell runs in)")
     n = sub.add_parser("now-run", help="rm-restart-now.service: tick while a --now stamp is owed")
     n.add_argument("--dry", action="store_true", help="print what is owed, tick nothing")
     sub.add_parser("checkpoint", add_help=False, help="a draining window orders its helpers to checkpoint "
@@ -3162,7 +3299,7 @@ def main(argv=None):
         import helper_checkpoint as HC
         return HC.main(argv[1:])
     args = ap.parse_args(argv)
-    return {"request": cmd_request, "wake": cmd_wake, "intile": cmd_intile, "status": cmd_status,
+    return {"request": cmd_request, "wake": cmd_wake, "intile": cmd_intile, "status": cmd_status, "mode": cmd_mode,
             "now-run": cmd_now_run}[args.cmd](args)
 
 

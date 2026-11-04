@@ -154,6 +154,23 @@ def human(n):
     return "%.0fk" % (n / 1000.0) if n < 1_000_000 else "%.2fM" % (n / 1_000_000.0)
 
 
+def reset_badge(seat, session_id, used, env=os.environ):
+    """The Conductor's reset switch, always on show in its own window (CONDUCTOR_RESET_FIX_KILLED_MID_READ). Only that
+    window has one; "" for every other. The ceiling shown is the size one, the only one a status line can read cheaply."""
+    if seat != "BENCH":
+        return ""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    import doorbell
+    import reset_mode as RM
+    mode = RM.read(seat, session_id, doorbell.state_dir())["mode"]
+    past = False
+    if mode == RM.HOLD and used is not None:
+        with open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "dispatcher_schedule.json"), encoding="utf-8") as f:
+            c = json.load(f)["seat_restart"]["seats"]["BENCH"]
+        past = used >= c.get("hold_ceiling_tokens", float("inf"))
+    return RM.badge(mode, past)
+
+
 def main():
     if "--selftest" in sys.argv:
         p = sys.argv[sys.argv.index("--selftest") + 1]
@@ -219,6 +236,9 @@ def main():
         if item:
             parts.append("\033[36m▶ %s\033[0m\033[2m%s\033[0m" % (
                 item[0], " · " + item[1] if item[1] else ""))
+    badge = reset_badge(seat, ev.get("session_id"), used)
+    if badge:
+        parts.append(badge)
     cost = (ev.get("cost") or {}).get("total_cost_usd")
     if isinstance(cost, (int, float)) and cost > 0:
         parts.append("\033[2m$%.2f\033[0m" % cost)
