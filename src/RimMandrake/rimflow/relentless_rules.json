@@ -149,6 +149,8 @@
     "tick_gap_max_s": 600,
     "foreign_seat": "FOUNDRY",
     "foreign_tree": "/home/mandrake/rm/foundry",
+    "_foreign_retired": "FOUNDRY retired (owner card 2026-11-02): no close waits for its tree to hear it, and its tree's lines are not read as unpublished words (FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS).",
+    "foreign_retired": true,
     "settle_s": 15,
     "tomb_max_s": 172800,
     "foreign_kinds_exclude": ["art", "design", "decision", "decide", "card", "review", "finding", "trial", "goal", "epic"],

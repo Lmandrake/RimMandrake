@@ -23,7 +23,8 @@ RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=Tru
              staffing=None, circling=None, walls=None,   # the machinery test runs with no wall; the wall has its own selftest
              same_failure_limit=3, max_approach_changes=None, account_settle_s=0)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
 STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"],
-             launch_per_tick=2, work_launch_per_tick=2, check_backlog_max=2)  # mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
+             launch_per_tick=2, work_launch_per_tick=2, check_backlog_max=2,
+             foreign_retired=False)  # the tree-reading machinery, live; the shipped FOUNDRY retirement: t_foreign_retired. Mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
 FAILS = []
 
 
@@ -1976,6 +1977,31 @@ def t_foreign_tomb():
     x.tick()
     x.tick(200)
     ok(x.st("I0")["status"] == "done", "a tree that never hears ends at tomb_max_s")
+    x.done()
+
+
+def t_foreign_retired():
+    """FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS: a retired seat's tree never hears; nothing waits on it."""
+    shipped = R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"]
+    ok(shipped["foreign_seat"] == "FOUNDRY" and shipped["foreign_retired"] is True, "the shipped rules retire FOUNDRY")
+    ok(R.Effects.seat_words(type("F", (), {"r": {"staffing": dict(shipped, foreign_tree="/nonexistent")}})()) == set(),
+       "a retired seat's tree, even gone, holds no word")
+    x = foreign_rig(foreign_retired=True)
+    x.tick(1)
+    full_pass(x, "I0")
+    x.tick()
+    st = x.st("I0")
+    ok(x.w.closes == [("I0", "sha1")] and st["status"] == "done" and not st.get("tomb_since"),
+       "a retired seat's item closes straight to done: %s" % st["status"])
+    x.done()
+    x = foreign_rig()
+    x.tick(1)
+    full_pass(x, "I0")
+    x.tick()
+    ok(x.st("I0")["status"] == "closing" and x.st("I0").get("tomb_since"), "setup: a tombstone stands")
+    x.r["staffing"]["foreign_retired"] = True
+    x.tick()
+    ok(x.st("I0")["status"] == "done" and len(x.w.closes) == 1, "the seat retires: a standing tombstone ends next tick")
     x.done()
 
 
@@ -4531,7 +4557,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

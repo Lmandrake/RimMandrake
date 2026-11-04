@@ -1667,6 +1667,8 @@ class Effects(relentless_game.GameFx):
         read or a line is torn: then none of its items may be taken."""
         cfg = self.r.get("staffing") or {}
         out = set()
+        if foreign_retired(self.r):     # no window writes that tree: nothing unpublished, and a gone tree blocks nothing
+            return out
         try:
             for seat in (cfg["foreign_seat"], "OWNER"):
                 rel = SHARD % seat
@@ -2481,6 +2483,12 @@ def clone_item(c):
 
 def foreign_seat(r):
     return (r.get("staffing") or {}).get("foreign_seat")
+
+
+def foreign_retired(r):
+    """The other seat has no window any more (FOUNDRY, owner card 2026-11-02): its tree will never hear a close and holds
+    no unpublished word, so nothing waits on it (FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS: 36 closes held up to 48 h)."""
+    return bool((r.get("staffing") or {}).get("foreign_retired"))
 
 
 def foreign_ok(it, r):
@@ -3762,7 +3770,8 @@ def step(store, fx, r, item, now, acts):
         c = st["candidate"]
         if st.get("tomb_since"):
             # closed on the ledger; `closing` stays the guard's word until the other seat's stale tree shows it gone
-            if fx.seat_heard(item, iso(st["started_at"])) or now - st["tomb_since"] >= r["staffing"]["tomb_max_s"]:
+            if (foreign_retired(r) or fx.seat_heard(item, iso(st["started_at"]))
+                    or now - st["tomb_since"] >= r["staffing"]["tomb_max_s"]):
                 finished(store, fx, item, c, now, acts)
             return
         retry = st.get("close_retry")
@@ -3806,7 +3815,7 @@ def step(store, fx, r, item, now, acts):
                 return
             acts.append({"do": "close_retry", "item": item, "why": why})
             return
-        if st.get("foreign"):
+        if st.get("foreign") and not foreign_retired(r):
             with store.lock():
                 st = store.load(item)
                 st["tomb_since"] = now
