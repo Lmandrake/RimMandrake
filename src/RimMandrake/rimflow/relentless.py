@@ -3242,7 +3242,9 @@ def enrol(store, fx, r, now):
     if share <= 0:
         return []
     order, _ = fx.pool_order(r)
-    ours = {s["item"] for s in states}
+    # `done` is ours only while the ledger agrees: an item in the pool again was reopened there (a deadman `live --result
+    # broken`, a fixed-id OPS_ alarm, a failed verify of the closed work) and takes a new life below, or it never returns
+    ours = {s["item"] for s in states if s["status"] != "done"}
     pool = len(order) + sum(1 for s in live if s["item"] not in order)
     target = math.ceil(share * pool)
     in_turn = [s for s in live if in_line(s) and not parked(store, fx, r, s, now, live)]
@@ -3280,14 +3282,22 @@ def enrol(store, fx, r, now):
                 continue
             taken |= mods
         with store.lock():
-            if store.load(i) is None:
+            cur = store.load(i)
+            if cur is None:
                 st = new_state(i, now, "share %.2f of %d" % (share, pool))
                 st["pilot_wanted"] = i in getattr(fx, "bounce", ())
                 store.save(st)
                 store.journal({"at": iso(now), "do": "enrol", "item": i})
-                took.append(i)
-                room -= 1
-                sys_room -= i in first
+            elif cur["status"] == "done":
+                try:
+                    reenrol(store, i, "reopened on the ledger after done", now, locked=True)
+                except ValueError:      # an unsettled run of the old life: the next tick asks again
+                    continue
+            else:
+                continue
+            took.append(i)
+            room -= 1
+            sys_room -= i in first
     return took
 
 
@@ -3381,16 +3391,17 @@ def enrol_one(store, item, why, now):
         return st
 
 
-def reenrol(store, item, why, now):
+def reenrol(store, item, why, now, locked=False):
     """Back in line after `retired`, which is otherwise for good: a named verb, journalled, for a retirement that was
-    wrong. A fresh start with the old spend: `gen` moves on, so a run of the old life stays fenced, and `check_count`
+    wrong; or after `done`, when the ledger reopened the item (enrol() calls it on sight; the cli refuses a done item the
+    ledger still holds closed, which retire() would only end again). A fresh start with the old spend: `gen` moves on, so a run of the old life stays fenced, and `check_count`
     stays, so a new checker never lands in the path a quarantined one may still be running in; `help_count` likewise."""
     if not (why or "").strip():
         raise ValueError("reenrol: --why is required")
-    with store.lock():
+    with (contextlib.nullcontext() if locked else store.lock()):
         old = store.load(item)
-        if not old or old["status"] != "retired":
-            raise ValueError("%s is %s, only a retired item can be re-enrolled" % (
+        if not old or old["status"] not in ENDED:
+            raise ValueError("%s is %s, only a retired or done item can be re-enrolled" % (
                 item, old["status"] if old else "not enrolled"))
         live = [k for k in ("run", "check", "help") if (run_of(old, k) or {}).get("charged", 0) is None]
         if live:    # the new state would forget what they cost and could never stop them
@@ -3424,7 +3435,7 @@ def expedite_cli(a, store, now, r, env=None):
         if a.verb == "set":
             if st is None:
                 st = enrol_one(store, a.item, "expedite %s by %s: %s" % (a.level, a.by, a.why), now)
-            elif st["status"] == "retired":
+            elif st["status"] in ENDED:
                 st = reenrol(store, a.item, "expedite %s by %s: %s" % (a.level, a.by, a.why), now)
     except ValueError as ex:
         print("relentless: REFUSED: %s" % ex, file=sys.stderr)
@@ -3434,14 +3445,22 @@ def expedite_cli(a, store, now, r, env=None):
     return 0
 
 
+def done_still_closed(st, led_state):
+    """-> why a store-done item may not come back, or None: only a ledger that reopened it (proposed/ready) brings it
+    back; anything else would be ended again by retire(). Pure."""
+    if st is None or st["status"] != "done" or led_state in ("proposed", "ready"):
+        return None
+    return "%s is done in the store and the ledger says %s: only a reopened item comes back" % (st["item"], led_state)
+
+
 def expedite_refusal(item, st, r):
     """Why this item can never take the lane, or None."""
     if not ledger_has(item):
         return "%s has never been filed" % item
     if pool_excluded(item, r):
         return "%s is on pool_ids_exclude or a parked list: the line retires it on sight; take it off first" % item
-    if st is not None and st["status"] == "done":
-        return "%s is done in the store" % item
+    if done_still_closed(st, ledger_state(item)):
+        return "%s is done in the store and not reopened on the ledger" % item
     filed = [e.get("kind") for e in pkg("model").read() if e.get("id") == item and e.get("event") == "file"]
     return concept_refused(pkg("concept_tree").REPO, item, filed[-1] if filed else None)
 
@@ -4555,7 +4574,7 @@ def staffing(store, fx, r, now, acts, clock=None):
     live = sum(1 for x in states if x["status"] in ("running", "checking"))
     target = worker_cap(fx, r, 0, store)
     order, _ = fx.pool_order(r)
-    ours = {x["item"] for x in states}
+    ours = {x["item"] for x in states if x["status"] != "done"}     # a reopened done item is ready work, as in enrol()
     first = getattr(fx, "first", None) or {}
     # the owner's token pause (owner_hold) stops content on purpose: it is not ready, so it reads as no under-staffing
     queued = sum(1 for x in states if in_line(x) and not owner_hold(r, x["item"], first, x))
@@ -5110,7 +5129,7 @@ def main(argv=None):
                    "safety or a panicked owner; may stop running work. expedited: the next available place")
     p.add_argument("--by", choices=relentless_expedite.SETTERS)
     p.add_argument("--why")
-    p = sub.add_parser("reenrol", help="put a retired item back in line; journals why")
+    p = sub.add_parser("reenrol", help="put a retired item, or a done one the ledger reopened, back in line; journals why")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
     p = sub.add_parser("unhold")
@@ -5209,6 +5228,9 @@ def main(argv=None):
         elif a.cmd == "expedite":
             return expedite_cli(a, Store(), time.time(), rules())
         elif a.cmd == "reenrol":
+            why = done_still_closed(Store().load(a.item), ledger_state(a.item))
+            if why:
+                raise ValueError(why)
             st = reenrol(Store(), a.item, a.why, time.time())
             print("%s %s gen %d" % (a.item, st["status"], st["gen"]))
         elif a.cmd == "wall":

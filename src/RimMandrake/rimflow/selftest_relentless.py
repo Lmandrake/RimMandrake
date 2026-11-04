@@ -2771,6 +2771,34 @@ def t_unpublished_enrol_waits():
         ok(True, "only a retired item")
 
 
+def t_reopened_done_reenrols():
+    """RELENTLESS_REOPEN_FIX_DONE_MEANS_FOREVER: a ledger item Relentless finished and the ledger later reopened (deadman
+    `live --result broken`, a fixed-id OPS_ alarm) comes back into the line as a new life; one still closed stays out."""
+    x = Rig(n=2, max_queued=8, enrol_per_tick=4)
+    for i in ("I0", "I1"):
+        st = R.new_state(i, x.now, "seeded")
+        st.update(status="done", done_at=x.now, gen=2, spent=500, check_count=3)
+        x.s.save(st)
+        x.w.items[i] = "done"
+    ok(R.enrol(x.s, x.w, x.r, x.now) == [], "closed on the ledger: a done item stays done")
+    x.w.items["I0"] = "ready"       # the deadman's `live --result broken` takes done back to ready
+    took = R.enrol(x.s, x.w, x.r, x.now + 1)
+    ok(took == ["I0"], "the reopened item is enrolled again: %s" % took)
+    st = x.st("I0")
+    ok(st["status"] == "queued" and st["gen"] == 3, "as a new life, gen moved on: %s gen %s" % (st["status"], st["gen"]))
+    ok(st["spent"] == 500 and st["check_count"] == 3, "with its old spend and check count")
+    ok(not st["ledger_started"], "and it starts the ledger item again like any fresh enrolment")
+    ok(x.st("I1")["status"] == "done", "the item still closed stays done")
+    ok(any(j.get("do") == "reenrol" and j.get("item") == "I0" for j in map(json.loads, open(x.s.p("journal.jsonl"), encoding="utf-8"))),
+       "journalled as a reenrol")
+    ok(R.enrol(x.s, x.w, x.r, x.now + 2) == [], "and once in line it is not taken twice")
+    ok(R.done_still_closed(x.st("I1"), "done") and not R.done_still_closed(x.st("I1"), "ready"),
+       "the cli refuses a done item the ledger holds closed, and takes a reopened one")
+    st = R.reenrol(x.s, "I1", "reopened by hand", x.now + 3)
+    ok(st["status"] == "queued" and st["gen"] == 3, "reenrol takes a done item")
+    x.done()
+
+
 def t_flush_lands_prose_moves():
     """A close in the books moves the prose; the ledger line lands, so the move must too, or items/ keeps a done item."""
     d = tempfile.mkdtemp(prefix="rlprose-")
@@ -4595,7 +4623,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
+    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_reopened_done_reenrols, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
