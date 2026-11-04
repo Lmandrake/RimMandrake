@@ -4,7 +4,7 @@ DRAFT: a fresh GPT review (`D:\ClaudeWork\rimmandrake\mod_def_lessons\gpt_review
 this to the owner until it is.
 
 The Designer reads this first. It sets out what Gimme Some Slack (GSS), FlowWorks and Pyrelands taught us about the
-eight elements of a well-defined mod (`src/RimMandrake/rimflow/roles/designer.md:47`). It then gives the principles
+eight elements of a well-defined mod (`src/RimMandrake/rimflow/roles/designer_dialogue.md`, "What a well-defined mod has"). It then gives the principles
 we already hold, why acceptance criteria failed or worked, and a worked set of key-moment stories for each mod.
 
 The owner asked for this on 2026-11-02: *"Examining Gimme some slack, flowworks, and pyrelands might be beneficial as

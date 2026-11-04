@@ -1,0 +1,10 @@
+{
+ "_doc": "The Designer's stage packets: designer_stage.py injects exactly these files (paths relative to this folder) into a run at that stage and records their sha256 in the concept's stage.json. design/RimMandrake/designer_v4/gpt_review_2026-11-03.md §3; item DESIGNER_STAGES_REBUILD_LAUNCHER_HOLDS_LEASH.",
+ "stage_0": ["designer.md", "designer_grounding.md", "designer_scene_contract.md"],
+ "stage_1": ["designer.md", "designer_dialogue.md"],
+ "stage_2": ["designer.md", "designer_dialogue.md"],
+ "stage_3": ["designer.md", "designer_write.md", "designer_scene_contract.md"],
+ "stage_4": ["designer.md", "designer_exam.md"],
+ "stage_5": ["designer.md", "designer_lock.md"],
+ "on_request": ["designer_examples.md"]
+}

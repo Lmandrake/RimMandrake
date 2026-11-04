@@ -1552,6 +1552,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         else:
                             # the run is recorded BEFORE systemd-run: a raise after the unit started (a timeout, a
                             # failed MainPID query) must not leave a launched role untracked (review round Q 4)
+                            if a.get("concept"):
+                                # the stage machine opens the run now (decide only previewed it): the packet hashes
+                                # and the budget reservation are written before the run exists, so a refusal here is
+                                # a launch that never happened (the except below gives the slot back)
+                                fx.get("stage_open", RL.stage_open)(a["concept"], a["unit"], a["budget"], commit=True)
                             out_p, err_p = RL.run_paths(root, a["unit"])
                             runs = st.setdefault("roles", {}).setdefault(a["role"], {}).setdefault("runs", [])
                             # the scope and the marker are known before systemd-run and persisted with the run:
@@ -1561,7 +1566,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                        unit=a["unit"], at=now, day=RL.day_of(now),
                                        mode=a["mode"], budget=a["budget"], slot=a["slot"], band=a["band"],
                                        item=a["ticket"], seat=seat,
-                                       run_max_s=a.get("run_max_s"), state="running", tokens=None)
+                                       run_max_s=a.get("run_max_s"), state="running", tokens=None,
+                                       **({"concept": a["concept"]} if a.get("concept") else {}))
                             runs.append(run)
                             started.append(run)
                             do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A
@@ -1596,6 +1602,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     # or event is given back so the next tick retries it; a raise leaves the run
                                     # tracked (it may have started) and keeps the mark, so it is not launched twice.
                                     back = run not in runs and RL.unlaunch(rs, a["unit"])
+                                    if run not in runs and a.get("concept"):
+                                        try:     # never launched: the stage's open run is dropped, uncharged
+                                            fx.get("stage_abort", RL.stage_abort)(a["concept"], a["unit"])
+                                        except Exception:  # noqa: BLE001 - the next open charges it instead
+                                            pass
                                     actions.append(dict(
                                         do="alarm", kind="role:%s:launch_failed" % a["role"], at=iso(now), note=True,
                                         ticket=a.get("ticket"), role=a["role"],

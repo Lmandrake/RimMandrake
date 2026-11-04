@@ -531,7 +531,13 @@ def main():
         check("cli write: a draft that does not parse is reported, exit 1", CT.main(["write", d, "--draft", dj]) == 1)
         empty = os.path.join(tmp, "empty_concept")
         os.makedirs(empty)
-        check("cli askcheck: no tree.json yet (Stage 1) is clear, not a crash", CT.main(["askcheck", empty, "dig sounds?"]) == 0)
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = CT.main(["askcheck", empty, "dig sounds?"])
+        check("cli askcheck: no tree.json yet (Stage 1) says HISTORY_NOT_CHECKED, never clear, not a crash",
+              rc == 0 and buf.getvalue().startswith("HISTORY_NOT_CHECKED"), (rc, buf.getvalue()))
         check("cli hash: no tree.json is exit 1, not a crash", CT.main(["hash", empty]) == 1)
         with open(os.path.join(tmp, "outside.md"), "w", encoding="utf-8") as f:
             f.write(WALK)

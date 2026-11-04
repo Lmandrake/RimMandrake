@@ -8,7 +8,8 @@ Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concep
   gate     <dir>                               lint plus: not a dry walk, root VALIDATED at its hash, Arbiter signature on
                                                this tree hash, every waiver found in OWNER.jsonl
   sign     <dir> --by Arbiter                  the coverage signature. Refuses a dry walk and a lint failure
-  askcheck <dir> "question"                    does this question re-raise a waiver? Exit 1 when it may
+  askcheck <dir> "question"                    does this question re-raise a waiver? Exit 1 when it may; with no
+                                               tree.json yet it prints HISTORY_NOT_CHECKED (exit 0), never "clear"
   hash     <dir>                               tree_hash
 
 Gate B, the Cold Reader exam, is not here: this program checks form, and a perfectly formed tree can be wrong. The
@@ -746,7 +747,11 @@ def main(argv=None):
             return report(["no tree.json in %s" % a.dir], [], "hash")
         print(tree_hash(tree))
         return 0
-    hits = askcheck(tree or {}, a.question)
+    if tree is None:
+        # no tree, no waivers: nothing was checked, which is not the same as clear (GPT review 2026-11-03 §2.3)
+        print("HISTORY_NOT_CHECKED: no tree.json yet; read log.md and record.json for a repeat yourself")
+        return 0
+    hits = askcheck(tree, a.question)
     print("MAY RE-RAISE %s" % ", ".join(hits) if hits else "clear")
     return 1 if hits else 0
 

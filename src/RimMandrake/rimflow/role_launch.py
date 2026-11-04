@@ -890,6 +890,18 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
         finish_slot_alarms(rs, run)
+        if run.get("concept"):
+            # the stage machine charges the task budget and judges result.json; a closing message advances nothing
+            try:
+                ok, errs = (obs.get("stage_close") or stage_close)(run["concept"], run["unit"], tok)
+                act(do="alarm" if not ok else "role_stage", kind="role:%s:stage_rejected" % name,
+                    ticket=run.get("item"), note=True,
+                    why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
+                                                 else "stage result REJECTED: " + "; ".join(errs[:4])))
+            except Exception as e:  # noqa: BLE001 - said, never lost: the next open charges its reservation
+                act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
+                    why="%s run %s on %s: designer_stage close failed: %s" % (name, run["unit"], run["concept"],
+                                                                         str(e)[:300]))
         daily = cfg.get("daily_token_cap")
         if cfg.get("caps_advisory") is True and daily is not None and spent_today(rs, now) > daily:
             overspend_day(name, rs, run.get("item") or cfg.get("ledger_item"), daily, spent_today(rs, now), 0, now,
@@ -1534,9 +1546,23 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             return
         rs.pop("account_hold", None)
         unit = "rm-role-%s-%d" % (name.lower(), int(now))
+        concept = (job.get("manual") or {}).get("concept")
+        packet = None
+        if concept:
+            # a stage-machine role (the Designer): the launcher, not the model, picks the instructions, holds the
+            # task budget and refuses a run the state does not allow (designer_stage.py; GPT review 2026-11-03 §2-3)
+            try:
+                packet, budget = (obs.get("stage_open") or stage_open)(concept, unit, budget)
+            except Exception as e:  # noqa: BLE001 - designer_stage.Refused, or an unreadable state: said, not run
+                refuse_now(rs, "stage machine: %s" % e, now, job)
+                act(do="alarm", kind="role:%s:stage_refused" % name, ticket=job["item"], note=True,
+                    why="%s run-now on %s REFUSED by designer_stage: %s" % (name, concept, str(e)[:300]))
+                return
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
         message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit,
                          rows=job.get("rows"))
+        if packet:
+            message += "\n\n" + packet
         tick_launch[name] = unit
         # what the launch consumes, so execute can give it back if the launch does not happen (review U, N6)
         rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
@@ -1580,8 +1606,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
             blind=blind(name, "launched", job["mode"], unit),
-            message=message, **({"run_now": job["manual"], "pre_launch": job.get("pre_launch")} if job.get("manual")
-                                else {}))
+            message=message, **dict({"run_now": job["manual"], "pre_launch": job.get("pre_launch")} if job.get("manual")
+                                     else {}, **({"concept": concept} if concept else {})))
         tick_launch.pop(name, None)
         busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
 
@@ -1751,12 +1777,21 @@ def run_now_request(sch, a, now):
     if claims and role["name"] not in CLAIM_PRE_ROLES:
         raise ValueError("claims name what to judge: a %s request only, not %s" % ("/".join(CLAIM_PRE_ROLES),
                                                                                   role["name"]))
+    concept = str(a.get("concept") or "").strip() or None
+    if cfg.get("stage_machine") == "designer_stage":
+        if not concept:
+            raise ValueError("--concept: %s runs one concept's recorded stage (design/concepts/<Mod>)" % role["name"])
+        if not os.path.isfile(os.path.join(concept_dir(cfg, concept), "stage.json")):
+            raise ValueError("--concept %s has no stage.json (designer_stage.py init it first)" % concept)
+        concept = concept_dir(cfg, concept)
+    elif concept:
+        raise ValueError("--concept is for a stage-machine role, not %s" % role["name"])
     days = a.get("days")
     days = 7 if days is None else days
     if not (_num(days) and 0 < days <= 60):
         raise ValueError("days %r: the claims' close window must be > 0 and <= 60" % (days,))
-    return {"at": now, "by": by, "why": why, "mode": mode, "claims": claims, "trial": bool(a.get("trial")),
-            "days": days}
+    return dict({"at": now, "by": by, "why": why, "mode": mode, "claims": claims, "trial": bool(a.get("trial")),
+                 "days": days}, **({"concept": concept} if concept else {}))
 
 
 def run_now_job(cfg, req, now):
@@ -1814,6 +1849,29 @@ def refuse_now(rs, how, now, job=None):
     req = rs.pop("run_now", None)
     if req is not None:
         rs["run_now_last"] = dict(req, outcome="refused: " + how, decided=now)
+
+
+def concept_dir(cfg, concept):
+    """A run-now's concept folder, resolved against the role's own clone (where the Designer writes it)."""
+    return concept if os.path.isabs(concept) else os.path.join(cfg.get("clone") or os.path.dirname(os.path.dirname(_SRC)), concept)
+
+
+def stage_open(concept, unit, budget, commit=False):
+    """designer_stage.open_run: (packet, run budget) or raises. decide previews (commit False, nothing written);
+    execute commits just before systemd-run (DESIGNER_STAGES_REBUILD_LAUNCHER_HOLDS_LEASH)."""
+    import designer_stage as DS
+    return DS.open_run(concept, unit, budget or None, commit=commit)
+
+
+def stage_close(concept, unit, tokens):
+    """designer_stage.close_run: the run's charge, then its result.json validated -> (accepted, reasons)."""
+    import designer_stage as DS
+    return DS.close_run(concept, unit, tokens)
+
+
+def stage_abort(concept, unit):
+    import designer_stage as DS
+    return DS.abort_run(concept, unit)
 
 
 def mode_model(role, mode):
@@ -2252,6 +2310,7 @@ def main(argv=None):
     r.add_argument("--claim", action="append", default=[], help="ITEM@SHA (Arbiter only): judge exactly these")
     r.add_argument("--trial", action="store_true", help="verdicts to the trial record, apart from the real one")
     r.add_argument("--days", type=float, default=7, help="the named claims closed within this many days")
+    r.add_argument("--concept", help="design/concepts/<Mod> (a stage-machine role, the Designer: required)")
     r.add_argument("--covers-slot", action="store_true", help="this run IS the role's next scheduled run today (its slot is marked covered, the daily cap is asked for one run)")
     r.add_argument("--cancel", action="store_true")
     r.add_argument("--apply", action="store_true")
@@ -2276,7 +2335,8 @@ def main(argv=None):
         try:
             sch = D.load_schedule(a.schedule)
             req = run_now_request(sch, {"role": a.role, "by": a.by, "why": a.why, "mode": a.mode,
-                                        "claims": a.claim, "trial": a.trial, "days": a.days}, now)
+                                        "claims": a.claim, "trial": a.trial, "days": a.days,
+                                        "concept": a.concept}, now)
             if a.covers_slot:
                 req["covers_slot"] = True
         except (OSError, ValueError) as e:
