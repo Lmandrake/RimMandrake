@@ -314,6 +314,8 @@ def main():
         l2.pop("log")
         check("every floor line needs a status", any("floor[log]" in x for x in DS.floor_errors({"lines": l2}, tree, floor)),
               "")
+        refusals_scene_floor(repo, tree, good, flood, inter, expl, lines, floor)
+        refusals_record_result(tmp, repo, tree)
         put(d, "scenes.json", {"scenes": [good, flood]})
         put(d, "floor.json", {"lines": lines})
         ok, errs = run_cycle(d, repo, "run12")
@@ -349,6 +351,7 @@ def main():
               errs)
         exam["scenarios"] = scen
         put(d, "exam.json", exam)
+        refusals_exam(tmp, d, repo, exam)
 
         # ---- late owner correction during examination
         DS.open_run(d, "run16", repo=repo.root)
@@ -368,6 +371,8 @@ def main():
         rec["decisions"] = [{"id": "d_steel", "text": "steel ladders only", "source": steel, "speaker": "owner"}]
         put(d, "record.json", rec)
         ok, errs = run_cycle(d, repo, "run17b")
+        check("stage 2 done clears the must_cite list it was reopened with", ok and "must_cite" not in DS.load_state(d),
+              DS.load_state(d).get("must_cite"))
         ok2, _ = run_cycle(d, repo, "run18")       # stage 3 again
         check("after the correction the stages rerun in order (2, 3)", ok and ok2 and DS.load_state(d)["stage"] == 4,
               errs)
@@ -433,6 +438,7 @@ def main():
         r = refused(DS.charge, d3, 10, "lunch", "x")
         check("an unknown charge kind is refused", r is not None, r)
 
+        refusals_launcher(tmp, repo)
         # ---- the launcher wiring
         wiring(tmp, repo)
     finally:
@@ -440,6 +446,268 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
     print("FAILED %d: %s" % (len(FAILS), FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
+
+
+# ---- one refusal per branch: each mutates ONE field of a clean baseline and names the refusal it must draw
+def refuses(name, errs, needle):
+    check(name, any(needle in e for e in errs), errs)
+
+
+def refusals_scene_floor(repo, tree, good, flood, inter, expl, lines, floor):
+    base = [good, flood]
+    check("refusal table: the scene baseline is clean", DS.scene_errors({"scenes": base}, tree, repo.root) == [],
+          DS.scene_errors({"scenes": base}, tree, repo.root))
+
+    def sc(*scenes):
+        return DS.scene_errors({"scenes": list(scenes)}, tree, repo.root)
+    refuses("scenes: no scenes list is refused", DS.scene_errors(None, tree, repo.root), "no scenes list")
+    refuses("scenes: a scene with no id is refused", sc(dict(good, id=""), flood), "not an object with an id")
+    refuses("scenes: an unknown kind is refused", sc(dict(good, kind="demo"), flood), "kind 'demo' is not one of")
+    refuses("scenes: an unknown staged_by is refused", sc(dict(good, staged_by="robot"), flood),
+            "staged_by 'robot' is not one of")
+    refuses("scenes: an exploration scene with no question is refused",
+            sc(good, flood, dict(expl, question="")), "names the question it explores")
+    for k in ("action", "expect", "restore"):
+        refuses("scenes: an acceptance scene with no %s is refused" % k, sc(dict(good, **{k: ""}), flood), "no %s" % k)
+    refuses("scenes: no asserted starting conditions is refused", sc(dict(good, start=[]), flood),
+            "no asserted starting conditions")
+    refuses("scenes: an unknown hold is refused", sc(dict(good, hold="later"), flood), "hold 'later' is not one of")
+    refuses("scenes: an acceptance scene with no requirement is refused", sc(dict(good, requirement=[]), flood),
+            "no requirement")
+    refuses("scenes: an interaction scene joining one feature is refused",
+            sc(good, flood, dict(inter, features=["climb_out"])), "joins two or more")
+    refuses("scenes: a requirement that is not a tree leaf is refused",
+            sc(good, flood, dict(good, id="ghost", requirement=["no_such_leaf"])), "no_such_leaf is not a leaf")
+    for ep in ("src/Foo/validation.py", None, "src/Foo/validation.py::"):
+        refuses("scenes: an entry point %r that names no function is refused" % (ep,),
+                sc(dict(good, entry_point=ep), flood), "not in the proof script")
+    refuses("scenes: an off-offline experience leaf with no acceptance scene is refused", sc(good),
+            "leaf flood_ok")
+
+    check("refusal table: the floor baseline is clean", DS.floor_errors({"lines": lines}, tree, floor) == [],
+          DS.floor_errors({"lines": lines}, tree, floor))
+
+    def fl(lines_, tree_=tree, owner_ev=None):
+        return DS.floor_errors({"lines": lines_}, tree_, floor, owner_ev=owner_ev)
+    refuses("floor: no lines object is refused", DS.floor_errors(None, tree, floor), "no lines object")
+    refuses("floor: a key that is not a floor line is refused", fl(dict(lines, bogus_line={"status": "applicable"})),
+            "bogus_line is not a floor line")
+    refuses("floor: an unknown status is refused", fl(dict(lines, art={"status": "maybe"})), "status 'maybe' is not one of")
+    refuses("floor: an unknown evidence_mode on a numeric line is refused",
+            fl(dict(lines, memory={"status": "applicable", "evidence_mode": "guessed"})), "evidence_mode 'guessed'")
+    said = repo.said("the art line is off for this mod", item="TABLE_ITEM")
+    t_off = dict(tree, floor={"off": [{"line": "art", "ref": said, "words": "the art line is off"}]})
+    refuses("floor: a floor.off line the floor still calls applicable is refused", fl(dict(lines, art={"status": "applicable"}), t_off),
+            "floor.off names it but floor.json says applicable")
+    ev = CT.owner_events(repo.root)
+    dis = dict(lines, art={"status": "disabled"})
+    check("floor: disabled with floor.off carrying his words on that event passes", fl(dis, t_off, ev) == [],
+          fl(dis, t_off, ev))
+    t_bad = dict(tree, floor={"off": [{"line": "art", "ref": said, "words": "skip the art entirely"}]})
+    refuses("floor: disabled with floor.off words he never said is refused", fl(dis, t_bad, ev),
+            "not his words on that event")
+
+
+def refusals_exam(tmp, d, repo, exam):
+    st = DS.load_state(d)
+
+    def ex(**kw):
+        e = copy.deepcopy(exam)
+        e.update(kw)
+        return DS.exam_errors(e, d, st, repo.root)
+    check("refusal table: the exam baseline is clean", ex() == [], ex())
+    refuses("exam: no exam.json and no waiver is refused", DS.exam_errors(None, d, st, repo.root), "no exam.json")
+    s9 = exam["scenarios"][:9]
+    refuses("exam: fewer than ten scenarios is refused", ex(scenarios=s9, scenarios_hash=CT.sha(s9)), "fewer than 10")
+    s_bad = [dict(exam["scenarios"][0], expect_source="")] + exam["scenarios"][1:]
+    refuses("exam: a scenario with no expect_source is refused", ex(scenarios=s_bad, scenarios_hash=CT.sha(s_bad)),
+            "needs expect and expect_source")
+    refuses("exam: a total that is not the scenario count is refused", ex(score={"right": 11, "total": 11}),
+            "score needs right and total")
+    refuses("exam: an accept where the core rejects is refused", ex(accept_where_reject_core=1), "must be 0")
+    refuses("exam: an examiner who is the author is refused", ex(examiner="designer"), "examiner is not the tree's author")
+    refuses("exam: an unaccounted challenger miss is refused", ex(challenger_misses=[{"id": "m1"}]), "accounted for")
+    dw = os.path.join(tmp, "waived")
+    os.makedirs(dw)
+    put(dw, "tree.json", {"subject": "W", "exam_waived": {"ref": "OWNER:1", "words": "skip the exam"}})
+    check("exam: a tree with exam_waived needs no exam.json (the gate checks his words)",
+          DS.exam_errors(None, dw, st, repo.root) == [], DS.exam_errors(None, dw, st, repo.root))
+
+
+def refusals_record_result(tmp, repo, tree):
+    src = repo.said("the rope ladder lets a pawn climb out", item="TABLE_ITEM")
+    ev = CT.owner_events(repo.root)
+    root = {"text": "climb out", "source": src, "speaker": "owner", "words": "the rope ladder lets a pawn climb out"}
+    base = {"root": root, "inventory": [inv()], "decisions": [{"id": "d1", "text": "x", "source": "log.md#L1"}]}
+    check("refusal table: the record baseline is clean", DS.record_errors(base, repo.root, ev) == [],
+          DS.record_errors(base, repo.root, ev))
+
+    def rc(**kw):
+        r = copy.deepcopy(base)
+        r.update(kw)
+        return DS.record_errors(r, repo.root, ev)
+    refuses("record: no record is refused", DS.record_errors(None, repo.root), "record.json is missing")
+    check("record: a section that is not a list is refused, and nothing inside it is read",
+          rc(decisions={"d1": "x"}) == ["record.decisions is not a list"], rc(decisions={"d1": "x"}))
+    refuses("record: an entry with no id is refused", rc(decisions=[{"text": "x", "source": "log.md#L1"}]),
+            "not an object with an id")
+    refuses("record: a duplicate id is refused",
+            rc(decisions=[{"id": "d1", "source": "log.md#L1"}, {"id": "d1", "source": "log.md#L2"}]), "duplicate id")
+    refuses("record: an entry with no source is refused", rc(decisions=[{"id": "d1", "text": "x"}]), "no source")
+    refuses("record: a source of no known shape is refused", rc(decisions=[{"id": "d1", "source": "said so!"}]),
+            "is not OWNER:<tsn>")
+    refuses("record: an unknown speaker is refused",
+            rc(decisions=[{"id": "d1", "source": "log.md#L1", "speaker": "robot"}]), "speaker 'robot' is not one of")
+    refuses("record: an agent's text stored as a quotation is refused",
+            rc(decisions=[{"id": "d1", "source": "log.md#L1", "speaker": "agent", "quote": True}]),
+            "a quotation is his words only")
+    refuses("record: a root with no text is refused", rc(root={"text": "", "source": src, "speaker": "owner"}),
+            "root: needs text")
+    refuses("record: a root whose words are not on its owner event is refused",
+            rc(root=dict(root, words="the steel ladder is optional")), "not his words on that event")
+    refuses("record: scope opened_by_owner with no OWNER scope_source is refused",
+            rc(inventory=[inv(scope="opened_by_owner")]), "opened_by_owner needs scope_source")
+
+    def ak(**kw):
+        return DS.ask_errors(ask(**kw), base)
+    check("refusal table: the ask baseline is clean", ak() == [], ak())
+    refuses("ask: no text is refused", ak(text=""), "no text")
+    refuses("ask: no decision is refused by name", ak(decision=""), "names no unresolved decision")
+    refuses("ask: citing neither inventory nor his words is refused", ak(about=[]), "cites neither")
+    refuses("ask: about an entry not in the inventory is refused", ak(about=["ghost"]), "ghost is not in the inventory")
+    refuses("ask: a struck review does not go to him", ak(review={"by": "fresh-reviewer", "verdict": "struck"}),
+            "struck by review")
+
+    # result validation, one outcome rule at a time, against a held-open run
+    dr = os.path.join(tmp, "design/concepts/Res")
+    os.makedirs(dr)
+
+    put(dr, "tree.json", tree)
+
+    def rs(at, outcome, rec=base, **kw):
+        put(dr, "record.json", rec)
+        st = {"stage": at, "running": {"run": "r1"}, "item": "RES_ITEM", "must_cite": []}
+        return DS.result_errors(dict({"run": "r1", "stage": at, "outcome": outcome}, **kw), dr, st, repo.root)
+    refuses("result: a result for another stage is refused", rs(2, "done", stage=1),
+            "result is for stage 1")
+    refuses("result: a result naming another run is refused", rs(1, "done", run="r0"), "not the open run")
+    refuses("result: an unknown outcome is refused", rs(1, "finished"), "outcome 'finished' is not one of")
+    refuses("blocked: a block naming no dependency is refused", rs(3, "blocked"), "blocked names no dependency")
+    check("blocked: a block naming its dependency is accepted", rs(3, "blocked", on="FOO_ITEM") == [],
+          rs(3, "blocked", on="FOO_ITEM"))
+    refuses("return: to a later stage is refused", rs(3, "return", to=4, decision="x"), "an earlier stage")
+    refuses("return: to no stage is refused", rs(3, "return", decision="x"), "an earlier stage")
+    refuses("return: an owner question returning past stage 2 is refused",
+            rs(3, "return", to=0, decision="x", question="Wood?"), "returns to stage 2, not 0")
+    check("return: an earlier stage with a named decision is accepted", rs(3, "return", to=2, decision="x") == [],
+          rs(3, "return", to=2, decision="x"))
+    refuses("waiting_owner: with no ask sent is refused", rs(2, "waiting_owner"), "with no ask in status sent")
+    refuses("done: stage 0 with no inventory is refused", rs(0, "done", rec=dict(base, inventory=[],
+                                                                                failure_modes=["a", "b", "c"])),
+            "stage 0: no inventory")
+    refuses("done: stage 1 with no root is refused", rs(1, "done", rec={"inventory": [inv()]}), "stage 1: no root")
+    check("done: stage 1 with his root is accepted", rs(1, "done") == [], rs(1, "done"))
+    refuses("done: stage 2 with an unresolved core contradiction is refused",
+            rs(2, "done", rec=dict(base, contradictions=[{"id": "c1", "source": "log.md#L2", "core": True}])),
+            "core contradiction c1 is unresolved")
+    refuses("done: stage 3 with no scenes.json is refused", rs(3, "done"), "scenes.json is missing")
+    refuses("done: stage 3 with no floor.json is refused", rs(3, "done"), "floor.json is missing")
+
+
+def refusals_launcher(tmp, repo):
+    """The launcher's own verbs, one guard at a time: blocked, abort, retries, manifest, charges, journal, record."""
+    # blocked: the state holds, open refuses, unblock releases
+    dB = os.path.join(tmp, "design/concepts/Blk")
+    DS.init(dB, "Blk", "BLK_ITEM", cap=100000, reserve=20000)
+    ok, errs = run_cycle(repo=repo, d=dB, run="b1", outcome="blocked", on="FOO_DEPENDENCY")
+    st = DS.load_state(dB)
+    check("blocked: the result is accepted, the state is blocked on the named dependency, the stage holds",
+          ok and st["status"] == "blocked" and st["blocked_on"] == "FOO_DEPENDENCY" and st["stage"] == 0
+          and st["results"][-1].get("on") == "FOO_DEPENDENCY", (ok, errs, st["status"]))
+    r = refused(DS.open_run, dB, "b2", repo=repo.root)
+    check("blocked: the next run is refused while the block stands", r and "BLOCKED on FOO_DEPENDENCY" in r, r)
+    check("blocked: the refused open is written to the concept's history",
+          (DS.load_state(dB)["history"][-1]["what"], DS.load_state(dB)["history"][-1]["why"][:10]) == ("refused", "BLOCKED on"),
+          DS.load_state(dB)["history"][-1])
+    DS.unblock(dB, "FOO_DEPENDENCY landed")
+    check("blocked: unblock releases it", DS.load_state(dB)["status"] == "ready"
+          and refused(DS.open_run, dB, "b3", repo=repo.root) is None, DS.load_state(dB)["status"])
+    r = refused(DS.unblock, dB, "again")
+    check("unblock on a concept that is not blocked is refused", r and "not blocked" in r, r)
+    # abort: only the open run, nothing charged
+    spent = DS.load_state(dB)["budget"]["spent"]
+    check("abort: another run's id drops nothing", DS.abort_run(dB, "b9") is False
+          and DS.load_state(dB)["running"]["run"] == "b3", DS.load_state(dB)["running"])
+    check("abort: the open run is dropped and nothing is charged", DS.abort_run(dB, "b3") is True
+          and DS.load_state(dB)["running"] is None and DS.load_state(dB)["budget"]["spent"] == spent, "")
+    # close: only the open run; a rejected result is moved aside; retries reach the packet
+    DS.open_run(dB, "b4", repo=repo.root)
+    r = refused(DS.close_run, dB, "b5", 10, repo=repo.root)
+    check("close: a run that is not the open run is refused", r and "not the open run" in r, r)
+    result(dB, "finished")
+    ok, _ = DS.close_run(dB, "b4", 10, repo=repo.root)
+    check("close: a rejected result.json is moved aside, never left to be read as the next run's",
+          not ok and not os.path.exists(os.path.join(dB, "result.json"))
+          and os.path.exists(os.path.join(dB, "result.b4.rejected.json")), os.listdir(dB))
+    text, _ = DS.open_run(dB, "b6", repo=repo.root)
+    check("packet: a stage with rejected runs says so", "rejected or unclosed run(s)" in text, text[:400])
+    DS.abort_run(dB, "b6")
+    # waiting_owner: his reply turns the state back to ready at open
+    st = DS.load_state(dB)
+    st["status"], st["waiting_owner_feed"] = "waiting_owner", "a feed from before his reply"
+    DS.write_json(DS.state_path(dB), st)
+    DS.open_run(dB, "b7", repo=repo.root)
+    check("waiting_owner: once he moved, the opened run leaves the state ready", DS.load_state(dB)["status"] == "ready",
+          DS.load_state(dB)["status"])
+    DS.abort_run(dB, "b7")
+    # charges and init
+    r = refused(DS.charge, dB, -5, "helper", "x")
+    check("a negative charge is refused", r and "whole number" in r, r)
+    r = refused(DS.charge, dB, 2.5, "helper", "x")
+    check("a fractional charge is refused", r and "whole number" in r, r)
+    r = refused(DS.init, dB, "Blk", "BLK_ITEM")
+    check("init over an existing stage.json is refused", r and "already exists" in r, r)
+    for cap, res_ in ((100, 0), (100, 100), (100, 150)):
+        r = refused(DS.init, os.path.join(tmp, "design/concepts/Cap%d_%d" % (cap, res_)), "C", "C_ITEM",
+                    cap=cap, reserve=res_)
+        check("init: reserve %d against cap %d is refused" % (res_, cap), r and "reserve" in r, r)
+    # manifest: every stage named, every file present
+    md = os.path.join(tmp, "manifest")
+    os.makedirs(md)
+    put(md, "core.md", "core")
+    mp = os.path.join(md, "m.json")
+    with open(mp, "w") as f:
+        json.dump({"stage_%d" % s: ["core.md"] for s in range(5)}, f)
+    r = refused(DS.load_manifest, mp)
+    check("manifest: one with no packet list for stage 5 is refused", r and "every stage" in r, r)
+    with open(mp, "w") as f:
+        json.dump(dict({"stage_%d" % s: ["core.md"] for s in range(6)}, stage_2=["core.md", "gone.md"]), f)
+    r = refused(DS.manifest_hashes, 2, mp)
+    check("manifest: a packet file that is missing is refused, never supplied short", r and "gone.md" in r, r)
+    check("manifest: a present packet hashes", DS.manifest_hashes(0, mp) == {"core.md": DS.sha_file(
+        os.path.join(md, "core.md"))}, DS.manifest_hashes(0, mp))
+    # scene journal
+    r = refused(DS.scene_end, dB, "never_begun")
+    check("scene-end on a scene with no open recovery is refused", r and "no open recovery" in r, r)
+    DS.scene_begin(dB, "s1", "restore sand from snapshot S2")
+    DS.scene_end(dB, "s1", held=True, until="Friday's review")
+    text, _ = DS.open_run(dB, "b8", repo=repo.root)
+    check("a held scene's packet line carries until when", "s1 (until Friday's review)" in text, "")
+    DS.abort_run(dB, "b8")
+    # owner_uncited: no item means unmeasured, not 'nothing uncited'
+    check("owner_uncited with no item is None (unmeasured), not []", DS.owner_uncited(repo.root, None) is None, "")
+    # working record: root, empty, asks status, failure modes
+    wd = os.path.join(tmp, "wr2")
+    os.makedirs(wd)
+    put(wd, "record.json", {})
+    check("working record: an empty record says so", "(empty" in DS.working_record(wd), DS.working_record(wd))
+    put(wd, "record.json", {"root": {"text": "climb out", "source": "OWNER:1001"},
+                            "asks": [{"id": "a7", "text": "q?", "status": "sent", "source": "log.md#L2"}],
+                            "failure_modes": ["fm-one", "fm-two"]})
+    wr = DS.working_record(wd)
+    check("working record: the root line carries its source", "root: climb out [OWNER:1001]" in wr, wr)
+    check("working record: an ask line carries its status", "- a7: q? status=sent [log.md#L2]" in wr, wr)
+    check("working record: the failure modes are listed", "failure_modes: fm-one | fm-two" in wr, wr)
 
 
 def wiring(tmp, repo):
@@ -462,6 +730,15 @@ def wiring(tmp, repo):
     except ValueError as e:
         got = str(e)
     check("run-now: a concept with no stage.json is refused", got and "stage.json" in got, got)
+    other = next(r for r in sch["roles"] if isinstance(r, dict) and r.get("name") and not r.get("stage_machine")
+                 and r.get("run_token_cap"))
+    try:
+        RL.run_now_request({"roles": [dict(other, clone=tmp)]}, {"role": other["name"], "by": "BENCH", "why": "w",
+                                                               "concept": "design/concepts/Wire"}, 1.0)
+        got = None
+    except ValueError as e:
+        got = str(e)
+    check("run-now: --concept on a role with no stage machine is refused", got and "stage-machine role" in got, got)
     d = os.path.join(tmp, "design/concepts/Wire")
     DS.init(d, "Wire", "WIRE_ITEM", cap=100000, reserve=10000)
     req = RL.run_now_request(s2, {"role": row["name"], "by": "BENCH", "why": "w", "concept": "design/concepts/Wire"}, 1.0)
@@ -485,10 +762,57 @@ def wiring(tmp, repo):
     check("decide: the Designer's launch message carries the stage packet and the concept",
           len(la) == 1 and "designer_stage.py packet" in la[0]["message"] and la[0].get("concept") == d,
           [(a.get("do"), a.get("why")) for a in acts])
+    # execute: the stage's run is committed BEFORE systemd-run, under the launched unit; a launch systemd-run
+    # refuses drops that open run uncharged
+    import dispatcher as D
+    xroot = os.path.join(tmp, "exec")
+    os.makedirs(xroot)
+    seen = []
+
+    def fake_launch(ok):
+        def f(r, unit, msg, root_, claude):
+            seen.append((unit, (DS.load_state(d).get("running") or {}).get("run")))
+            return (True, "ok", {}) if ok else (False, "systemd-run said no", None)
+        return f
+    fx = {"off": lambda p: None, "paused": lambda: None, "note": lambda i, t: (True, ""), "publish": lambda n: None}
+    st.setdefault("alarms", {})
+    D.execute(la, s2, st, xroot, True, now, dict(fx, role_launch=fake_launch(True)))
+    check("execute: the stage's run is open in stage.json under the launched unit before systemd-run runs",
+          len(seen) == 1 and seen[0][0] == la[0]["unit"] and seen[0][1] == la[0]["unit"]
+          and DS.load_state(d)["running"]["run"] == la[0]["unit"], (seen, [a.get("result") for a in la]))
+    DS.abort_run(d, la[0]["unit"])
+    spent = DS.load_state(d)["budget"]["spent"]
+    st = {"roles": {row["name"]: {"run_now": dict(req, at=now - 5)}}}
+    acts = []
+    RL.decide_roles(s2, st, robs, now, lambda **kw: acts.append(kw), set(), None)
+    la2 = [a for a in acts if a.get("do") == "role_launch"]
+    seen.clear()
+    st.setdefault("alarms", {})
+    D.execute(la2, s2, st, xroot, True, now, dict(fx, role_launch=fake_launch(False)))
+    check("execute: a launch systemd-run refuses drops the stage's open run, uncharged",
+          len(seen) == 1 and seen[0][1] == la2[0]["unit"] and DS.load_state(d)["running"] is None
+          and DS.load_state(d)["budget"]["spent"] == spent, (seen, DS.load_state(d)["running"]))
+    # decide: the role's own run cap reaches the stage machine (min of it and what the task budget leaves)
+    rowc = dict(row, run_token_cap=40000)
+    dc = os.path.join(tmp, "design/concepts/Capped")
+    DS.init(dc, "Capped", "CAP_ITEM", cap=100000, reserve=10000)
+    reqc = RL.run_now_request({"roles": [rowc]}, {"role": row["name"], "by": "BENCH", "why": "w",
+                                                  "concept": "design/concepts/Capped"}, 1.0)
+    stc = {"roles": {row["name"]: {"run_now": dict(reqc, at=now - 5)}}}
+    acts = []
+    RL.decide_roles({"roles": [rowc]}, stc, robs, now, lambda **kw: acts.append(kw), set(), None)
+    lac = [a for a in acts if a.get("do") == "role_launch"]
+    check("decide: a role cap under the task budget's remainder is the run's budget, and the packet says so",
+          len(lac) == 1 and lac[0]["budget"] == 40000 and "this run 40000 weighted tokens" in lac[0]["message"],
+          [(a.get("do"), a.get("budget"), a.get("why")) for a in acts])
     DS.charge(d, 95000, "consult", "gpt")
     st = {"roles": {row["name"]: {"run_now": dict(req, at=now - 5)}}}
     acts = []
     RL.decide_roles(s2, st, robs, now, lambda **kw: acts.append(kw), set(), None)
+    check("decide: the refused run-now stops there: no launch, no unit, and deciding it raises nothing",
+          not [a for a in acts if a.get("do") == "role_launch" or a.get("unit")]
+          and not [a for a in acts if a.get("kind") == "role:%s:schedule" % row["name"]],
+          [(a.get("do"), a.get("unit"), a.get("kind")) for a in acts])
     check("decide: an exhausted budget refuses the run-now with an alarm, no launch",
           not [a for a in acts if a.get("do") == "role_launch"]
           and any(a.get("kind") == "role:%s:stage_refused" % row["name"] for a in acts)
