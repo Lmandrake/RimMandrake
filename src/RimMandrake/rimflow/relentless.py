@@ -3200,9 +3200,13 @@ def make_room(store, fx, r, now, acts, reserve=0):
 
 def parked(store, fx, r, st, now, states=None):
     """A queued item that cannot start now (its mod is held by another item, its start was refused and is cooling, its
-    wait has not run out, or the consult its next brief needs is out) keeps its order but holds no max_queued place: the
-    line is topped up with items that can run. `states`, when the caller has them, saves a store read per queued item."""
+    wait has not run out, the consult its next brief needs is out, or the Designer's gate refuses it: a mod's first touch
+    with no pass on record, or no well-defined tree) keeps its order but holds no max_queued place: the line is topped up
+    with items that can run. 2026-11-04 22:25Z: 19 refused system items filled max_queued 8, so nothing enrolled and
+    nothing leased (places_live 0). `states`, when the caller has them, saves a store read per queued item."""
     if now < st.get("start_again_at", 0) or st.get("not_before", 0) > now or help_pending(st):
+        return True
+    if getattr(fx, "concept_refusal", lambda _item: None)(st["item"]):     # lease() walks past it the same way
         return True
     if r.get("one_builder_per_mod") and hasattr(fx, "item_mods"):
         held = mods_held(store, fx, st["item"], states)

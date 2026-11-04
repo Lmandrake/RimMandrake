@@ -4018,6 +4018,22 @@ def t_refused_start_holds_no_line_place():
     ok(_line_of_two(cooled) == [], "the cool over: it can start and holds its place again")
 
 
+def t_gate_refused_items_hold_no_line_place():
+    """2026-11-04 22:25Z: 19 queued system items the Designer's gate refused (first touch, pass proposed) filled max_queued
+    8; lease() walks past a refused item, so the line held places nothing could start and places_live sat at 0."""
+    def run(refused):
+        x = _abyss_line(abyss=(), max_queued=2)
+        x.w.concept_refusal = lambda i: "no Designer pass on record" if i in refused else None
+        for i in ("I0", "I2"):
+            R.enrol_one(x.s, i, "seeded", x.now)
+        took = R.enrol(x.s, x.w, x.r, x.now)
+        x.done()
+        return took
+    took = run({"I0", "I2"})
+    ok(len(took) == 2 and not {"I0", "I2"} & set(took), "both in line refused: two others enrol: %s" % took)
+    ok(run(set()) == [], "the control: unrefused, the two hold their places and nothing enrols")
+
+
 def t_incident_line_fills_every_place():
     """The filed numbers, the line brim-full: max_queued 8 and four places; one FlowWorks and one EGROWTH run, eight wait
     behind them (seven and one). Every place must fill from other mods and the eight stay in line, unstarted."""
@@ -4579,7 +4595,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
+    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
