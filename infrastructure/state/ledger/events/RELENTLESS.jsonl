@@ -436,3 +436,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A5 (L2), read-only proof","ts":"2026-11-04T17:57:42Z","tsn":1793815062617878202}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:05:19Z","tsn":1793815519140680008}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T18:06:57Z","tsn":1793815617385437842}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:07:40Z","tsn":1793815660411936210}
