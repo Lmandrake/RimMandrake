@@ -381,3 +381,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A5 (L2), read-only proof","ts":"2026-11-04T15:46:03Z","tsn":1793807163114323748}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:46:09Z","tsn":1793807169072886994}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T15:47:16Z","tsn":1793807236336926006}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T15:47:55Z","tsn":1793807275947939116}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:49:42Z","tsn":1793807382015519841}
