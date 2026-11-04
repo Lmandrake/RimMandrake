@@ -134,7 +134,7 @@ def cli_env(d):
     e.update(RIMFLOW_LEDGER=os.path.join(d, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(d, "items"),
              RIMFLOW_PROBE="no-reading", RIMFLOW_SCHEDULE=os.path.join(d, "no_schedule.json"), RIMFLOW_DRIVER_LOCK="",
              RIMFLOW_SHARED_BRIDGE="", RIMFLOW_BRIDGE_LOCK=os.path.join(d, "bridge.lock"), RM_HOST="archmagi",
-             RIMFLOW_SEAT="BUILD")
+             RIMFLOW_SEAT="BUILD", RIMFLOW_GIT_CWD=d)
     return e
 
 
@@ -148,6 +148,10 @@ def t_cli():
     d = tempfile.mkdtemp(prefix="rf-block-", dir=os.path.join(REPO, ".")) if os.access(REPO, os.W_OK) else tempfile.mkdtemp()
     try:
         os.makedirs(os.path.join(d, "items"))
+        # `close --no-code` stamps HEAD: the fixture's own repo, so an export with no history (a checker's box) can run this
+        for g in (["init", "-q"], ["-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-q", "--allow-empty", "-m", "fixture"]):
+            subprocess.run(["git"] + g, cwd=d, check=True, capture_output=True, timeout=60,
+                           env={k: v for k, v in os.environ.items() if not k.startswith("GIT_")})
         for i in ("WAITER_PROBE_FIXTURE", "PRED_PROBE_FIXTURE", "PRED_TWO_PROBE_FIXTURE"):
             rc, out = cli(d, "file", i, "--for", "BUILD", "--title", "t")
             assert rc == 0, out

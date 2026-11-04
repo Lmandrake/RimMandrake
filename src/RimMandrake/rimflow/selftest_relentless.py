@@ -3645,7 +3645,10 @@ def t_hold_routing():
         def conductor_attention(self, text):
             self.calls.append(("told", text))
 
-    ours = [{"event": "needs", "to": "owner", "why": R.SUPERVISOR_WHY}]
+    # The words on the legacy events already in the ledger, spelt out: a fixture built from R.SUPERVISOR_WHY moves with
+    # the constant and would stay green while no real legacy hold is restored (blind check, gap 2).
+    ok(R.SUPERVISOR_WHY == "relentless supervisor", "the provenance is still what the legacy events say")
+    ours = [{"event": "needs", "to": "owner", "why": "relentless supervisor"}]
     his = [{"event": "needs", "to": "owner", "why": "an L4 look"}]
     hold = {"kind": "proof_weak", "why": "weak", "delivered": False}
     fx = Fx(ours, It("owner", "doing", [0]))
@@ -3664,6 +3667,86 @@ def t_hold_routing():
     fx = Fx(ours, It("owner", "doing", [0]))
     fx.fail = "ledger down"
     ok(fx.ledger_hold_to_seat("I", hold) == "ledger down", "a failure says so and the tick retries")
+
+    # The two readers of a hold cannot disagree: Fleet Watch's owner_queue and this supervisor's routing.
+    sys.path.insert(0, os.path.join(os.path.dirname(R.HERE), "Utils"))
+    import owner_queue as Q
+    for h in ({"kind": "owner_call", "why": "x"}, {"kind": "game", "why": flyer}, {"kind": "proof_weak", "why": "x"},
+              {"kind": "strikes", "why": "x"}, {"kind": "spend", "why": "x"}, {"kind": "game", "why": "game phase: refused again"},
+              {"kind": "proof_weak", "why": "a flyer: in the words"}):
+        ok((Q.tooling_hold({"status": "held", "hold": h}) is None) is R.hold_is_his(h), "owner_queue agrees on %s" % h)
+
+
+def t_hold_routing_real_ledger():
+    """The same road with nothing faked but the Conductor's log: the real rimflow CLI on a temp ledger, the event it really
+    writes read back, and the real legacy events in this tree's ledger (blind check, gap 2 and its untested mutant)."""
+    model = R.pkg("model")
+    real = [e for e in model.read() if e.get("event") == "needs" and e.get("to") == "owner" and e.get("why") == "relentless supervisor"]
+    ok(real, "real: the ledger holds legacy supervisor-set needs=owner events in this exact shape")
+    it = types.SimpleNamespace(history=[0])
+    ok(real and R.Effects._owner_routing_is_ours(it, real[:1]), "real: a real legacy event reads as this supervisor's own routing")
+
+    d = tempfile.mkdtemp(prefix="rlhold-")
+    os.makedirs(os.path.join(d, "items"))
+    env = dict(RIMFLOW_LEDGER=os.path.join(d, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(d, "items"), RIMFLOW_PROBE="no-reading",
+               RIMFLOW_SCHEDULE=os.path.join(d, "no_schedule.json"), RIMFLOW_DRIVER_LOCK="", RIMFLOW_SHARED_BRIDGE="",
+               RIMFLOW_BRIDGE_LOCK=os.path.join(d, "bridge.lock"), RM_HOST="archmagi")
+    saved, saved_events = {k: os.environ.get(k) for k in env}, model.EVENTS
+    os.environ.update(env)
+    model.EVENTS = env["RIMFLOW_LEDGER"]    # the reader in this process took its path at import; the CLI takes the env
+    try:
+        fx = R.Effects(dict(RULES), R.Store(os.path.join(d, "store")))
+        fx.books = os.path.abspath(os.path.join(R.HERE, "..", "..", ".."))    # this tree's cli; the env above points it at d
+        told = []
+        fx.conductor_attention = told.append
+
+        def needs_of(item):
+            fx._ledger = None
+            return fx.ledger_items()[1].items[item].needs
+
+        def events(item, kind):
+            fx._ledger = None
+            return [e for e in fx.ledger_items()[0] if e.get("id") == item and e.get("event") == kind]
+
+        for i in ("LEGACY_PROBE_FIXTURE", "PERSON_PROBE_FIXTURE", "CALL_PROBE_FIXTURE", "PLAIN_PROBE_FIXTURE"):
+            r = fx.rimflow("file", i, "--for", "BENCH", "--title", "t")
+            ok(r.returncode == 0, "cli: filed %s: %s" % (i, r.stderr[-200:]))
+        hold = {"kind": "proof_weak", "why": "weak", "delivered": False}
+
+        ok(fx.ledger_needs_owner("LEGACY_PROBE_FIXTURE", "an old hold") is None, "cli: the old supervisor's road still writes")
+        e = events("LEGACY_PROBE_FIXTURE", "needs")
+        ok(e and e[-1].get("to") == "owner" and e[-1].get("why") == "relentless supervisor",
+           "cli: ledger_needs writes the provenance the restore reads back: %s" % e[-1:])
+        ok(needs_of("LEGACY_PROBE_FIXTURE") == "owner", "cli: routed to him before the hold")
+        fx._ledger = None
+        ok(fx.ledger_hold_to_seat("LEGACY_PROBE_FIXTURE", hold) is None, "cli: the legacy hold lands")
+        ok(needs_of("LEGACY_PROBE_FIXTURE") == "offline", "cli: a legacy supervisor-set needs=owner is restored")
+        ok(len(events("LEGACY_PROBE_FIXTURE", "note")) == 1 and len(told) == 1, "cli: a note and one Conductor line: %s" % told)
+
+        r = fx.rimflow("needs", "PERSON_PROBE_FIXTURE", "--to", "owner", "--reason", "r", "--why", "an L4 look")
+        ok(r.returncode == 0, "cli: a person's routing: %s" % r.stderr[-200:])
+        fx._ledger = None
+        ok(fx.ledger_hold_to_seat("PERSON_PROBE_FIXTURE", dict(hold, kind="strikes")) is None, "cli: a strikes hold lands")
+        ok(needs_of("PERSON_PROBE_FIXTURE") == "owner", "cli: a person's needs=owner stays")
+        ok(len(events("PERSON_PROBE_FIXTURE", "note")) == 1 and len(told) == 2, "cli: still noted and told")
+
+        fx._ledger = None
+        ok(fx.ledger_hold_to_seat("PLAIN_PROBE_FIXTURE", dict(hold, kind="game", why="game phase: refused again")) is None,
+           "cli: a non-flyer game hold lands")
+        ok(needs_of("PLAIN_PROBE_FIXTURE") == "offline" and not events("PLAIN_PROBE_FIXTURE", "needs"),
+           "cli: a tooling hold writes no needs event at all")
+        ok(len(events("PLAIN_PROBE_FIXTURE", "note")) == 1 and len(told) == 3, "cli: and is noted and told")
+
+        ok(fx.ledger_needs_owner("CALL_PROBE_FIXTURE", "section 2") is None and needs_of("CALL_PROBE_FIXTURE") == "owner",
+           "cli: owner_call's road still routes to him")
+    finally:
+        model.EVENTS = saved_events
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(d, ignore_errors=True)
 
 
 def t_hold_lift_needs():
@@ -3745,7 +3828,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

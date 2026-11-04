@@ -6,6 +6,8 @@ Covers: which routings count as his (Relentless tooling holds do not; owner_call
 question line (questions file wins, title fallback), fleet_mods.waits_on agreeing with is_his on every case, and
 fleet_refresh.plan carrying board/needs and waking a write when only the needs changed.
 """
+import contextlib
+import io
 import json
 import os
 import sys
@@ -73,6 +75,36 @@ none = Q.needs_you({"I": it("offline")}, {}, {})
 check("nothing his -> empty text, count 0", (none["count"], none["lines"], none["text"], none["topics"], none["answered"]) == (0, [], "", [], []))
 check("the seat queue is every tooling hold", [k for k, _, _ in Q.seat_queue(rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
 check("misrouted lists tooling holds", [k for k, _ in Q.misrouted(items, rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
+
+
+
+def run_main(*flags):
+    """owner_queue's own main(), the flag parsing and printing included, on the fixture store: -> (exit code, lines)."""
+    saved = sys.argv, M.ledger, M.relentless_states
+    cli_items = dict(items, M_STRIKES=it("owner"))
+    cli_rel = dict(rel, M_STRIKES=held("strikes", "3 strikes"))
+    sys.argv, M.ledger, M.relentless_states = ["owner_queue.py"] + list(flags), (lambda: ([], NS(items=cli_items))), (lambda: cli_rel)
+    out = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(out):
+            rc = Q.main()
+    finally:
+        sys.argv, M.ledger, M.relentless_states = saved
+    return rc, out.getvalue().splitlines()
+
+
+# RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS: --seat is the road the tooling holds go down, so the flag itself is pinned (blind
+# check, gap 1: `if a.seat:` -> `if False:` stayed green while seat_queue() alone was called).
+rc, rows = run_main("--seat")
+check("--seat prints the tooling holds, proof_weak, strikes and a non-flyer game hold, and nothing else",
+      rc == 0 and rows == ["B_PROOF_WEAK\tproof_weak\t2 returns and the proof still reads weak", "C_SPEND\tspend\titem spend limit",
+                           "F_GAMESTAGE\tgame\tgame phase: stage failed twice", "M_STRIKES\tstrikes\t3 strikes"])
+check("--seat omits owner_call and a flyer's flight", not [r for r in rows if r.startswith(("D_OWNER_CALL", "E_FLYER"))])
+rc, rows = run_main()
+check("no flag is his list, with no tooling hold on it",
+      rc == 0 and rows[0] == "%d truly his" % len(his) and {r.split("\t")[0] for r in rows[1:len(his) + 1]} == his)
+rc, rows = run_main("--misrouted")
+check("--misrouted stays its own answer", rc == 0 and rows == ["B_PROOF_WEAK\tproof_weak", "C_SPEND\tspend", "F_GAMESTAGE\tgame", "M_STRIKES\tstrikes"])
 
 with tempfile.TemporaryDirectory() as d:
     p = os.path.join(d, "q.json")
