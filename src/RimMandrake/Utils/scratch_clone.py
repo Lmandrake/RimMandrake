@@ -328,21 +328,27 @@ def clone_bytes(c: Path) -> int:
 POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
 
 
+def blob_at(c: Path, rev: str, path: str) -> bytes | None:
+    """The file's bytes at rev; None when it has none there."""
+    r = subprocess.run(["git", "cat-file", "blob", f"{rev}:{path}"], cwd=c, capture_output=True, timeout=60)
+    return r.stdout if r.returncode == 0 else None
+
+
+def content_on_origin(c: Path, path: str, mine: bytes) -> bool:
+    """origin/main already holds this content: the same bytes, or (a ledger, appended to) every line of it already a line
+    of origin's copy. Any doubt is not covered."""
+    theirs = blob_at(c, "origin/main", path)
+    return theirs is not None and (mine == theirs or (path.endswith(".jsonl") and path.startswith(POOL_NOISE) and
+                                                      set(mine.splitlines()) <= set(theirs.splitlines())))
+
+
 def noise_on_origin(c: Path, path: str) -> bool:
-    """A dirty noise file whose content origin/main already holds: the same bytes, or (a ledger, appended to) every
-    line of it already a line of origin's copy. Anything else, or any doubt, is not covered."""
+    """A dirty noise file whose content origin/main already holds. Anything else, or any doubt, is not covered."""
     if not path.startswith(POOL_NOISE):
         return False
     f = c / path
     try:
-        if not f.is_file():
-            return False
-        blob = subprocess.run(["git", "cat-file", "blob", "origin/main:" + path], cwd=c, capture_output=True, timeout=60)
-        if blob.returncode != 0:
-            return False
-        mine = f.read_bytes()
-        return mine == blob.stdout or (path.endswith(".jsonl") and
-                                       set(mine.splitlines()) <= set(blob.stdout.splitlines()))
+        return f.is_file() and content_on_origin(c, path, f.read_bytes())
     except (OSError, subprocess.SubprocessError):
         return False
 
@@ -397,15 +403,50 @@ def commit_is_state(c: Path, sha: str) -> bool:
     return bool(files) and all(f.startswith(POOL_NOISE + POOL_STATE) for f in files)
 
 
+def cherry_on_origin(c: Path) -> set[str]:
+    """Local commits whose patch origin/main already holds under another hash (`git cherry` marks them '-'). A merge is
+    never listed, so it stays at risk. No readable origin/main: nothing is covered."""
+    out = set()
+    for ref in git("for-each-ref", "--format=%(refname)", "refs/heads", "refs/tags", cwd=c, timeout=60).split():
+        r = subprocess.run(["git", "cherry", "refs/remotes/origin/main", ref], cwd=c, capture_output=True, text=True, timeout=300)
+        if r.returncode == 0:
+            out.update(ln[2:] for ln in r.stdout.splitlines() if ln.startswith("- "))
+    return out
+
+
+def commit_content_on_origin(c: Path, sha: str) -> bool:
+    """Every path this single-parent commit changed already reads the same on origin/main: the rebase that re-resolved a
+    ledger line changes the patch id, not the content. A deletion or an empty commit proves nothing and is not covered."""
+    if len(git("rev-list", "--parents", "-n1", sha, cwd=c, timeout=60).split()) > 2:
+        return False
+    files = [f for f in git("diff-tree", "--no-commit-id", "--name-only", "-z", "-r", "--root", sha, cwd=c, timeout=60).split("\0") if f]
+    for f in files:
+        mine = blob_at(c, sha, f)
+        if mine is None or not content_on_origin(c, f, mine):
+            return False
+    return bool(files)
+
+
+def commits_at_risk(c: Path, shas: list[str], strict: bool) -> bool:
+    """Any of these local commits whose content is nowhere else. A commit origin/main holds under another hash loses nothing
+    even to a reuse's reset (POOL_STRANDED_FIX_LANDED_COMMITS_STILL_HOWL: breach 3 of 2026-11-03 was all such); a state commit
+    origin lacks is only excused from the alarm, since the belt's eviction bundle carries it and a reuse would not."""
+    rest = [x for x in shas if strict or not commit_is_state(c, x)]
+    if not rest:
+        return False
+    cherry = cherry_on_origin(c)
+    return any(x not in cherry and not commit_content_on_origin(c, x) for x in rest)
+
+
 def clone_unpushed(c: Path, strict: bool = False) -> list[str]:
-    """What this clone holds that no remote ref does: commits, a stash, dirty or untracked files. Empty = nothing at risk.
-    Fails closed: a clone git cannot read reports itself unreadable."""
+    """What this clone holds that no remote ref does and origin/main does not hold under another hash: commits, a stash,
+    dirty or untracked files. Empty = nothing at risk. Fails closed: a clone git cannot read reports itself unreadable."""
     out = []
     try:
         shas = git("rev-list", "--branches", "--tags", "--not", "--remotes", cwd=c, timeout=120).split()
         # a worker's trailing lesson/ledger commit is carried by relentless's eviction bundle (POOL_STATE_COMMITS_PIN_CLONE_FOREVER):
         # it must not read as stranded work, or the alarm fires on a clone the belt can already release
-        if any(strict or not commit_is_state(c, x) for x in shas):
+        if commits_at_risk(c, shas, strict):
             out.append("commits")
         if git("stash", "list", cwd=c, timeout=60):
             out.append("stash")
@@ -463,10 +504,30 @@ def clone_idle_s(c: Path) -> float:
     return time.time() - newest if newest else 0.0
 
 
+def level_origin_ref(c: Path, refreshed: list) -> bool:
+    """Bring an idle clone's origin/main up to the store's, so a verdict is not against a ref a day old; the store is refreshed
+    once per reading, from the mirror (rm-mirror.timer, minutes behind GitHub against an hour's idle). No FETCH_HEAD: it is
+    one of clone_idle_s's clocks, and a reading that wrote it would keep every clone it looks at from ever going idle.
+    False = the ref stayed as it was; the verdict then errs toward stranded."""
+    try:
+        if not refreshed:
+            refreshed.append(True)
+            refresh()
+    except Exception:
+        pass     # a stale store still levels a staler clone
+    try:
+        git("fetch", "-q", "--no-write-fetch-head", "--no-auto-maintenance", "--no-tags", str(store_path()),
+            f"+{STORE_REF}:refs/remotes/origin/main", cwd=c, timeout=120)
+        return True
+    except Exception:
+        return False
+
+
 def pool_reading() -> dict:
     """Live: count, bytes, oldest clone, and every clone with unpushed work. Written to pool.json for RimPulse."""
     root, (cmax, bmax) = pool_root(), pool_cap()
     rows = []
+    refreshed: list = []
     now = time.time()
     for c in sorted(root.glob("*")) if root.is_dir() else []:
         if not (c / ".git").exists():
@@ -478,6 +539,9 @@ def pool_reading() -> dict:
         risk = clone_unpushed(c)
         # unpushed work in a clone someone is working in is the job; unpushed work nobody touches for an hour is stranded
         stranded = bool(risk) and clone_idle_s(c) >= POOL_IDLE_S and not clone_in_use(c) and not owned_by_item(c)
+        if stranded and level_origin_ref(c, refreshed):     # only a clone about to alarm is worth the fetch, and it is idle
+            risk = clone_unpushed(c)
+            stranded = bool(risk)
         rows.append({"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
                      "unpushed": risk, "stranded": stranded})
     tot = sum(r["bytes"] for r in rows)

@@ -206,6 +206,103 @@ def main() -> int:
         sh("git", "-C", str(pool / "p6"), "commit", "-q", "-m", "lesson")
         check(sc.clone_unpushed(pool / "p6") == [] and sc.clone_unpushed(pool / "p6", strict=True) == ["commits"],
               "a state-only commit is not stranded work, but reuse (strict) never drops it")
+        # POOL_STRANDED_FIX_LANDED_COMMITS_STILL_HOWL: origin holding a commit's content under another hash strands nothing
+        hw = BASE / "howl"
+        hw.mkdir()
+        saved_root = os.environ["RM_POOL_ROOT"]
+        os.environ["RM_POOL_ROOT"] = str(hw)
+        sh("git", "clone", "-q", str(BASE / "mirror.git"), str(hw / "h1"))
+        h1 = hw / "h1"
+        sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "checkout", "-q", "-B", "main", "refs/remotes/origin/main")
+
+        def local(c, name, text, msg):
+            (c / name).parent.mkdir(parents=True, exist_ok=True)
+            (c / name).write_text(text)
+            sh("git", "-C", str(c), "add", name)
+            sh("git", "-C", str(c), "commit", "-q", "-m", msg)
+        aged = lambda c: age(c, 7300)
+        # 1. a real commit origin has not got is stranded, and a stale ref is levelled for nothing
+        local(h1, "real.txt", "real\n", "real")
+        aged(h1)
+        check(sc.clone_unpushed(h1) == ["commits"], "a real commit is at risk")
+        idle0 = sc.clone_idle_s(h1)
+        check(sc.pool_reading()["stranded"] == ["h1"], "and stranded when idle")
+        check(sc.clone_idle_s(h1) >= idle0 - 60 and sc.clone_idle_s(h1) >= sc.POOL_IDLE_S,
+              "the reading's fetch does not restart the idle clock it reads")
+        # 2. the same patch lands under another hash: only the fetch shows it, and then git cherry covers it
+        local(work, "real.txt", "real\n", "real, landed by another hand")
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        check(sc.clone_unpushed(h1) == ["commits"], "against the stale ref it still reads at risk")
+        rd = sc.pool_reading()
+        check(rd["stranded"] == [] and rd["breach"] == 0, f"the reading fetches first, and a cherry-covered commit strands nothing: {rd['stranded']}")
+        check(sc.clone_unpushed(h1) == [] and sc.clone_unpushed(h1, strict=True) == [], "a reuse's reset loses nothing either")
+        # 2b. origin edited the file again since: the content differs now, only the patch id still shows it landed
+        (h1 / "again.txt").write_text("first\n")
+        sh("git", "-C", str(h1), "add", "again.txt")
+        sh("git", "-C", str(h1), "commit", "-q", "-m", "again, here")
+        local(work, "again.txt", "first\n", "again, landed")
+        local(work, "again.txt", "first\nsecond\n", "again, edited on")
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")
+        check(sc.clone_unpushed(h1) == [], "a landed patch origin has since edited on is covered by git cherry")
+        # 3. mixed real + ledger whose patch id differs (origin's ledger grew around it): covered by content, line by line
+        led = "infrastructure/state/ledger/events/H.jsonl"
+        sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "checkout", "-q", "-B", "main", "refs/remotes/origin/main")
+        local(h1, led, '{"h":1}\n{"h":2}\n', "ledger only, under another hash")
+        (h1 / "mix.txt").write_text("mixed\n")
+        sh("git", "-C", str(h1), "add", "mix.txt")
+        sh("git", "-C", str(h1), "commit", "-q", "--amend", "-m", "mixed real and ledger")
+        check(sc.clone_unpushed(h1) == ["commits"], "a mixed commit origin lacks is at risk")
+        (work / "mix.txt").write_text("mixed\n")
+        sh("git", "-C", str(work), "add", "mix.txt")
+        (work / led).parent.mkdir(parents=True, exist_ok=True)
+        (work / led).write_text('{"h":0}\n{"h":1}\n{"h":2}\n{"h":3}\n')
+        sh("git", "-C", str(work), "add", led)
+        sh("git", "-C", str(work), "commit", "-q", "-m", "landed with more ledger")
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")
+        check("-" not in sh("git", "-C", str(h1), "cherry", "refs/remotes/origin/main", "main")[:1], "fixture: git cherry alone does not cover this one")
+        check(sc.clone_unpushed(h1) == [] and sc.clone_unpushed(h1, strict=True) == [], "every path on origin, ledger by line: covered")
+        # 4. what must still howl: a ledger line origin lacks, a real line beside covered ones, a deletion, an empty commit, a stack
+        (h1 / led).write_text('{"h":1}\n{"h":2}\n{"h":9}\n')
+        sh("git", "-C", str(h1), "add", led)
+        sh("git", "-C", str(h1), "commit", "-q", "--amend", "-m", "mixed, with a line origin lacks")
+        check(sc.clone_unpushed(h1, strict=True) == ["commits"], "one ledger line origin lacks keeps a mixed commit at risk")
+        sh("git", "-C", str(h1), "reset", "-q", "--hard", "refs/remotes/origin/main")
+        (h1 / "mix2.txt").write_text("not landed\n")
+        (h1 / led).write_text('{"h":1}\n')
+        sh("git", "-C", str(h1), "add", "mix2.txt", led)
+        sh("git", "-C", str(h1), "commit", "-q", "-m", "a covered ledger line beside a real file")
+        check(sc.clone_unpushed(h1) == ["commits"], "a real file origin lacks keeps a mixed commit at risk")
+        sh("git", "-C", str(h1), "reset", "-q", "--hard", "refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "rm", "-q", "mix.txt")
+        sh("git", "-C", str(h1), "commit", "-q", "-m", "a deletion")
+        check(sc.clone_unpushed(h1) == ["commits"], "a deletion proves nothing")
+        sh("git", "-C", str(h1), "reset", "-q", "--hard", "refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "commit", "-q", "--allow-empty", "-m", "empty")
+        check(sc.clone_unpushed(h1) == ["commits"], "an empty commit proves nothing")
+        sh("git", "-C", str(h1), "reset", "-q", "--hard", "refs/remotes/origin/main")
+        local(h1, "real.txt", "real again\n", "unlanded edit")
+        sh("git", "-C", str(h1), "revert", "--no-edit", "HEAD")
+        check(sc.clone_unpushed(h1) == ["commits"], "a stack with one uncovered commit is at risk")
+        sh("git", "-C", str(h1), "reset", "-q", "--hard", "refs/remotes/origin/main")
+        # 5. a lesson commit origin holds is reusable too; one it lacks stays strict-only, as p6 above proves
+        local(h1, "infrastructure/state/lessons/h.md", "lesson\n", "lesson here")
+        check(sc.clone_unpushed(h1, strict=True) == ["commits"], "a lesson origin lacks: reuse still refuses")
+        local(work, "infrastructure/state/lessons/h.md", "lesson\n", "lesson landed")
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")
+        check(sc.clone_unpushed(h1, strict=True) == [], "a lesson origin holds: reuse may reset")
+        # 6. a store that cannot be read leaves the verdict as it was: stranded, not silently clean
+        local(h1, "real3.txt", "x\n", "real 3")
+        aged(h1)
+        store = os.environ["RM_OBJSTORE"]
+        os.environ["RM_OBJSTORE"] = str(BASE / "no-such-store.git")
+        check(sc.pool_reading()["stranded"] == ["h1"], "no store to fetch from: still stranded")
+        os.environ["RM_OBJSTORE"] = store
+        os.environ["RM_POOL_ROOT"] = saved_root
         owner = BASE / "owner" / "items" / "I" / "state.json"
         owner.parent.mkdir(parents=True)
         owner.write_text(json.dumps({"status": "game", "clone": str(pool / "p2")}))
