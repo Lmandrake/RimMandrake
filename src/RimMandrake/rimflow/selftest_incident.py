@@ -185,6 +185,28 @@ def test_chain_dedupe():
     check("the Conductor rung of an Operations route is the last agent: it is asked for his line",
           ring["reader"] == "Conductor" and ring["how"] == "quick_run" and "incident-line" in ring["text"], ring)
     check("a rung with an agent still above it is not asked for his line", "incident-line" not in IN.ring_of(t, inc("BENCH", 1), T0)["text"])
+    # gen 5: the cases the first test could not see go red on their mutant
+    slow = dict(inc("Conductor", 0), ack_min=lad["distressed"][0] + 30)
+    check("a Conductor reader whose ack minute is past the ladder's still waits its ack minute (skip moves nothing earlier)",
+          IN.next_due(t, slow) == T0 + slow["ack_min"] * 60, IN.next_due(t, slow))
+    check("a seat reader keeps the ladder's own minutes on every rung",
+          [IN.next_due(t, dict(inc("BENCH", k), rung_t=T0 - 3600)) for k in (0, 1, 2)]
+          == [T0 + 30 * 60, T0 + lad["distressed"][0] * 60, T0 + lad["distressed"][1] * 60])
+    check("the fresh Operations rung of a seat route is the last agent and is asked for his line",
+          "incident-line" in IN.ring_of(t, inc("BENCH", 2), T0)["text"]
+          and "incident-line" not in IN.ring_of(t, inc("Operations", 0), T0)["text"])
+    r = Rig("dedupe_emergency")                       # Operations-read, emergency, every agent silent, through step()
+    r.tick(T0, relentless__under_min=150)
+    check("an emergency Operations-read incident opens with Operations as reader", r.inc()[0]["reader"] == "Operations", r.inc())
+    for m in (30, 45, 59):
+        r.tick(T0 + m * M, relentless__under_min=150)
+    check("emergency: Conductor at its ack minute, no fresh Operations rung, not him before 60",
+          r.inc()[0]["rung"] == 1 and not r.snap()["owner"] and [e["rung"] for e in r.evs("escalated")] == [1],
+          (r.inc(), r.evs("escalated")))
+    check("emergency: the Conductor rung asked for his line", r.asked("Conductor") or r.runs, r.runs)
+    r.tick(T0 + 60 * M, relentless__under_min=150)
+    check("emergency: him at 60, straight from the Conductor", r.inc()[0]["rung"] == IN.OWNER_RUNG and len(r.snap()["owner"]) == 1
+          and [e["rung"] for e in r.evs("escalated")] == [1, IN.OWNER_RUNG], (r.snap(), r.evs("escalated")))
 
 
 def test_emergency_all_dead():
