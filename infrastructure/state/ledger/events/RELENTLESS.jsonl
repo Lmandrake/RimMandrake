@@ -322,3 +322,13 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:42:29Z","tsn":1793799749156208844}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T13:52:20Z","tsn":1793800340207164758}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:04:18Z","tsn":1793801058593080274}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A2 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T14:07:02Z","tsn":1793801222339711668}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:08:36Z","tsn":1793801316287413592}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-04T14:08:46Z","tsn":1793801326386092736}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:08:53Z","tsn":1793801333529202508}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CREEP_WEB_HARVEST_LIVE_1 A4 (L2), read-only proof","ts":"2026-11-04T14:09:02Z","tsn":1793801342401937946}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:10:22Z","tsn":1793801422843740064}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CREEP_WEB_HARVEST_LIVE_1 A5 (L1), read-only proof","ts":"2026-11-04T14:10:31Z","tsn":1793801431662405163}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:10:38Z","tsn":1793801438030171317}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANON_MATERIALS_BUILD_1 A10 (L1), read-only proof","ts":"2026-11-04T14:10:46Z","tsn":1793801446576695420}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:11:02Z","tsn":1793801462176603450}
