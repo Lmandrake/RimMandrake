@@ -1844,6 +1844,112 @@ def rl_live_measured(live_dir, now, cfg):
                                                   "cause": "; ".join("%dx %s" % (v, k) for k, v in top) or "none"}
 
 
+CHURN_UNITS = ("items returned in the churn window with >= churn_returns returns or one failure class repeated",
+               "weighted tokens per 24 h on attempts that were returned",
+               "% of weighted tokens over tokens_window_h on attempts that were returned")
+CHURN_KEYS = ("relentless.churn_items", "relentless.returned_tokens_day", "relentless.returned_tokens_pct")
+
+
+def rl_churn(store, now, cfg):
+    """-> {churn point key: point}. OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: on 2026-11-04 47 items had been returned 3+
+    times (one at gen 20) on broken tests and unreachable evidence read as broken work, ~157M weighted tokens, and no reading
+    said so: a return counted as the belt moving. Read from the store only, no AI:
+      a FAILED ATTEMPT is an attempts.jsonl row with a gen and an `end` that is not in churn_not_fail_ends (the class is its
+      signature); an item is IN CHURN when it has a failed attempt inside churn_window_h and either state.json returns >=
+      churn_returns or one class failed it churn_same_class times or more.
+      RETURNED TOKENS: every run in the spend-YYYYMMDD.json files (marker rm-relentless-{work|check}-<sha1(item)[:10]>-g<gen>)
+      whose (item, gen) ended in a failed attempt; a run is placed in time by its gen's start row. A run the instrument
+      cannot place (unknown marker or no start row) is `unmapped`: over churn_max_unmapped_pct of the window it reads
+      UNMEASURED, and no spend in the window is UNMEASURED too (an idle lane is not a clean one)."""
+    win_h, toks_h = float(cfg.get("churn_window_h", 12)), float(cfg.get("tokens_window_h", 24))
+    n_ret, n_same = int(cfg.get("churn_returns", 3)), int(cfg.get("churn_same_class", 2))
+    ok_ends = set(cfg.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked"))
+    lo, tlo = now - win_h * HOUR, now - toks_h * HOUR
+    try:
+        names = sorted(os.listdir(store / "items"))
+    except OSError as e:
+        why = "items unreadable: %s" % str(e)[:120]
+        return {k: U(why, u) for k, u in zip(CHURN_KEYS, CHURN_UNITS)}
+    import hashlib
+    by_hash, failed, started, churn, classes, torn = {}, set(), {}, [], {}, 0
+    for n in names:
+        by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
+        st = read_json(store / "items" / n / "state.json")
+        fails = []
+        try:
+            with open(store / "items" / n / "attempts.jsonl", encoding="utf-8") as f:
+                for ln in f:
+                    try:
+                        r = json.loads(ln)
+                    except ValueError:
+                        continue
+                    if not isinstance(r, dict) or not isinstance(r.get("gen"), int):
+                        continue
+                    t = epoch(r.get("at"))
+                    if r.get("start"):
+                        started[(n, r["gen"])] = t
+                    elif r.get("end") and r["end"] not in ok_ends and "kind" not in r:
+                        failed.add((n, r["gen"]))
+                        fails.append((t or 0, str(r["end"])))
+        except OSError:
+            pass        # an item never started has no attempts file
+        if not isinstance(st, dict):
+            torn += 1
+            continue
+        if not any(lo <= t <= now + 300 for t, _ in fails):
+            continue
+        same = {}
+        for _, c in fails:
+            same[c] = same.get(c, 0) + 1
+        rets = st.get("returns") if is_num(st.get("returns")) else 0
+        if rets >= n_ret or max(same.values()) >= n_same:
+            churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))
+            last = fails[-1][1]
+            classes[last] = classes.get(last, 0) + 1
+    churn.sort()
+    cause = ", ".join("%d %s" % (v, k) for k, v in sorted(classes.items(), key=lambda kv: -kv[1])[:4]) or "none"
+    pts = {"relentless.churn_items": M(len(churn), CHURN_UNITS[0], first=[n for _, n in churn[:5]], window_h=win_h,
+                                       last_fail=cause, torn_states=torn,
+                                       spent=sum(-s for s, _ in churn))}
+    tot = ret = unmapped = 0
+    rx = re.compile(r"rm-relentless-(?:work|check)-([0-9a-f]{10})-g(\d+)")
+    day0 = time.strftime("%Y%m%d", time.gmtime(tlo))
+    files = sorted(p for p in glob.glob(str(store / "spend-*.json")) if Path(p).name[6:14] >= day0)
+    for p in files:
+        sp = read_json(p)
+        runs = sp.get("runs") if isinstance(sp, dict) else None
+        if not isinstance(runs, dict):
+            why = "spend file unreadable: %s" % p
+            pts.update({k: U(why, u) for k, u in zip(CHURN_KEYS[1:], CHURN_UNITS[1:])})
+            return pts
+        for m, tk in runs.items():
+            if not is_num(tk):
+                continue
+            g = rx.match(m)
+            key = (by_hash.get(g.group(1)), int(g.group(2))) if g else None
+            t = started.get(key) if key else None
+            if t is None:
+                unmapped += tk     # its day file is in the window; when in it, unknown: counted against the reading
+                continue
+            if not tlo <= t <= now + 300:
+                continue
+            tot += tk
+            ret += tk if key in failed else 0
+    if tot <= 0:
+        why = "no placed spend in the last %gh (%d spend files)" % (toks_h, len(files))
+        pts.update({k: U(why, u) for k, u in zip(CHURN_KEYS[1:], CHURN_UNITS[1:])})
+        return pts
+    share = 100.0 * unmapped / (tot + unmapped)
+    if share > float(cfg.get("churn_max_unmapped_pct", 20)):
+        why = "%.0f%% of the window's spend files has no item or gen start the instrument can place" % share
+        pts.update({k: U(why, u) for k, u in zip(CHURN_KEYS[1:], CHURN_UNITS[1:])})
+        return pts
+    x = {"total": tot, "returned": ret, "unmapped": unmapped, "window_h": toks_h}
+    pts["relentless.returned_tokens_day"] = M(round(ret * 24.0 / toks_h), CHURN_UNITS[1], **x)
+    pts["relentless.returned_tokens_pct"] = M(round(100.0 * ret / tot, 1), CHURN_UNITS[2], **x)
+    return pts
+
+
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
@@ -1968,6 +2074,10 @@ def c_relentless(now, rules, ctx):
     pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
     if pct is None and "unreadable" in str(got):     # too few runs is idle, not blind; an unreadable file is blind
         bad.append(str(got))
+    for k, p in rl_churn(store, now, cfg).items():
+        pts[k] = p
+        if p.get("m") == "UNMEASURED" and "unreadable" in str(p.get("why")) and p["why"] not in bad:
+            bad.append(p["why"])      # an unreadable store or spend file is blind; no spend yet is only idle
     pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
     return pts
 
@@ -2459,6 +2569,8 @@ def target_problem(tg):
         return "bad marks %r on %s" % (tg["marks"], tg["key"])
     if tg.get("worse") is not None and step_problem(tg["worse"]):
         return "bad worse %s on %s: %s" % (str(tg["worse"])[:40], tg["key"], step_problem(tg["worse"]))
+    if tg.get("expedite_field") is not None and not (isinstance(tg["expedite_field"], str) and tg["expedite_field"]):
+        return "bad expedite_field %r on %s" % (tg["expedite_field"], tg["key"])
     return None
 
 
@@ -2648,6 +2760,34 @@ def alarm_receiver_problem(conf):
 RAISE_REASON = "alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)"
 
 
+def expedite_of(tg, pt):
+    """The fixer items an alarm hands to Relentless: the ids its point names in the target's `expedite_field` (OPS_CHURN_
+    MEASURE_RETURNS_ARE_NOT_PROGRESS: STEVE_INCIDENT_UNCLAIMED came back 12 times as OPS_STEVE_UNSTICK_UNCLAIMED_*, each
+    time one more item nobody claimed, while the steward's own STEVE_LANE_UNSTICK_* item sat unclaimed under it)."""
+    f = (tg or {}).get("expedite_field")
+    ids = ((pt or {}).get("x") or {}).get(f) if f else None
+    ids = [ids] if isinstance(ids, str) else ids
+    return [i for i in ids or [] if isinstance(i, str) and re.fullmatch(r"[A-Z][A-Z0-9_]+", i)][:3]
+
+
+def expedite_owner(ids, conf, why):
+    """-> {id: None | refusal}. `relentless.py expedite set <id> --level expedited --by Operations` from the filing clone,
+    the escalation route the owner gave Operations (card 2026-11-03). Its own process, without a Relentless worker's
+    environment (relentless_expedite.WORKER_ENV refuses those). A refusal costs that id only and is said, never raised."""
+    out = {}
+    env = {k: v for k, v in os.environ.items()
+           if k not in ("RELENTLESS_GEN", "RELENTLESS_HELP_NONCE", "RELENTLESS_ROOT", "RELENTLESS_SUPERVISOR")}
+    for i in ids:
+        try:
+            r = subprocess.run([sys.executable, str(Path(conf["clone"]) / "src/RimMandrake/rimflow/relentless.py"),
+                                "expedite", "set", i, "--level", "expedited", "--by", "Operations", "--why", why[:300]],
+                               capture_output=True, text=True, timeout=120, env=env)
+            out[i] = None if r.returncode == 0 else ("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+        except (OSError, subprocess.SubprocessError, KeyError) as e:
+            out[i] = "%s: %s" % (type(e).__name__, str(e)[:200])
+    return out
+
+
 def real_filer(todo, conf):
     """todo: [{"name", "title"}] -> {name: None | error}, plus "_publish". Spawns as RUNNER from the dispatch clone
     under QHOME/ingest.lock and publishes its RUNNER shard (testq ingest.py does both). Nothing is filed for a
@@ -2683,6 +2823,9 @@ def real_filer(todo, conf):
                     rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                           "--name", a["name"], "--title", a["title"],
                                           "--why", "ops_watch alarm (deterministic, no AI): " + a["aid"])
+                if rc == 0 and a.get("expedite"):
+                    res.setdefault("_expedite", {}).update(expedite_owner(a["expedite"], conf, "ops_watch alarm %s: "
+                                                                          "nobody claimed it, Operations hands it to Relentless" % a.get("aid")))
                 if rc == 0 and not a.get("note_only"):
                     rrc, rout = ing.rimflow("raise", a["name"], "--reason", RAISE_REASON)
                     if rrc != 0:    # filed but not first: the alarm stands (a retry would re-spawn), the miss is logged
@@ -2926,7 +3069,11 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                 lines = (["new at %s: %s%s" % (iso(now), "; ".join(map(str, shown))[:600],
                                                " (+%d more next pass)" % len(left) if left else "")] if fresh else []) + (
                     ["WORSE at %s: %s" % (iso(now), worse[0])] if worse else [])
+                key = aid.split(":", 1)[1]
+                tg = next((t for t in good_targets(rules) if t.get("alarm") and t["tag"] == aid.split(":", 1)[0]
+                           and fnmatch.fnmatchcase(key, t["key"])), {})
                 todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid, "aid": aid,
+                             "expedite": expedite_of(tg, points.get(key)) if worse else [],
                              "noted": names if fresh else None, "told": worse[1] if worse else None,
                              "worse": worse[0] if worse else None, "conductor_log": worse[2] if worse else None,
                              "text": "ops_watch: " + "; ".join(lines)})
@@ -2940,7 +3087,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                 # PENDING, not crossed now (UNMEASURED, or clear but not for clear_passes yet): the crossing was
                 # real, so keep retrying the filing under the name and title it got when it crossed
                 todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen")),
-                             "conductor_log": cur.get("conductor_log"), "key": aid.split(":", 1)[1]})
+                             "conductor_log": cur.get("conductor_log"), "key": aid.split(":", 1)[1],
+                             "expedite": cur.get("expedite") or []})
             return
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
@@ -2975,11 +3123,15 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
         said = said[0] if isinstance(said, list) and said else said
         if isinstance(said, str) and said:
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
-        cur["title"] = title[:160]
+        owners = expedite_of(tg, pt)
+        if owners:      # the owner is named in the title, so the alarm item is never one more unclaimed item
+            title = "%s; owner: Relentless, %s expedited by Operations" % (title, ", ".join(owners))
+        cur["title"] = title[:160] if not owners else title[:300]
         cur["noted"] = []       # a filing carries its title only: every name is said by the first note after it
+        cur["expedite"] = owners
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
-                     "key": key, "reopen": bool(cur.get("reopen"))})
+                     "key": key, "reopen": bool(cur.get("reopen")), "expedite": owners})
     for aid in sorted(set(ts) | set(state)):
         try:
             one(aid)
@@ -3380,11 +3532,19 @@ def publish_health(points, prev, ctx, rules, now):
         v = ops_health.publish(points, prev, world, rules, str(data_clone()), now)
     except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
         why = "health verdict not written: %s: %s" % (type(e).__name__, str(e)[:160])
-        return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why)}
+        return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why),
+                "health.incident_slis": U(why)}
     x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"][:300]}
     guardless = v.get("recurring_unguarded")
+    inc = v.get("incident") or {}
+    if inc.get("bad") or (inc.get("slis") and len(inc.get("unmeasured") or ()) < len(inc["slis"])):
+        inc_pt = M(len(inc["bad"]), "incident SLIs reading bad now", cause=inc["cause"][:300],
+                   unmeasured=inc.get("unmeasured") or [])
+    else:       # nothing to judge: no incident SLI, or none of them could see this pass
+        inc_pt = U("no incident SLI measured this pass: %s" % (", ".join(inc.get("unmeasured") or ()) or "none configured"))
     return {"health.recurring_unguarded": U("no ledger or alarm log this pass") if guardless is None else M(
                 len(guardless), "alarm kinds that came back with no class guard test", said=", ".join(r["kind"] for r in guardless[:5])),
+            "health.incident_slis": inc_pt,
             "health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
             "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 

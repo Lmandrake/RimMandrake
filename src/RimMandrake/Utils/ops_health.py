@@ -19,6 +19,9 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
   BUDGET   per SLI, the hours it read bad in the last window_h, a gap between passes counted at most max_gap_h. Spent at
            allowed_bad_h ("When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers").
   STATE    degraded while any SLI's budget is spent, else healthy. Degraded pauses NEW content; running work continues.
+  INCIDENT an SLI with `incident: true` (infra_share, churn_items, returned_tokens_pct) is listed in `incident.bad` the pass it
+           reads bad, budget or no budget: ops_watch turns that into ONE fixed alarm item (health.incident_slis,
+           OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: 47 items churned a night while infra_share sat bad 7.75 h of its 24).
   RECUR    a system item whose fix died once already (live_repeats) leads the list, marked as owing a class guard test until
            `rimflow guard` records one (model.guard_owed; `rimflow close` refuses without it). recurring_unguarded: every alarm
            kind that came back with no guard, open or closed (alarm_census.recurring).
@@ -109,6 +112,8 @@ def sli_problems(c):
                 or not s.get("unit") or not isinstance(s.get("was") or [], list) or not all(
                     isinstance(w, dict) and w.get("key") and w.get("unit") for w in s.get("was") or []):
             out.append("health sli needs name, key, unit, op in %s, a numeric x and was [{key, unit}]: %r" % (sorted(OPS), s))
+        elif not isinstance(s.get("incident", False), bool):
+            out.append("health sli %s: incident must be true or false" % s["name"])
     for k in ("max_age_min", "window_h", "allowed_bad_h", "max_gap_h"):
         if not is_num(c.get(k)) or c[k] <= 0:
             out.append("health.%s must be a positive number" % k)
@@ -252,6 +257,14 @@ def system_ids(world, rules, root):
     return [it.id for it in system_items(world, rules, root)]
 
 
+def incident(b, c):
+    """-> {bad: [sli], cause, unmeasured: [sli]} over the incident SLIs, from this pass's budget readings."""
+    names = [s["name"] for s in c.get("slis") or [] if isinstance(s, dict) and s.get("incident") is True]
+    bad = [n for n in names if (b.get(n) or {}).get("now") == "bad"]
+    return {"slis": names, "bad": bad, "unmeasured": [n for n in names if (b.get(n) or {}).get("now") not in ("bad", "ok")],
+            "cause": "; ".join("%s %s (line %s)" % (n, b[n].get("v"), b[n].get("line")) for n in bad) or "none"}
+
+
 def verdict(points, history, world, rules, root, now):
     c = conf(rules)
     probs = sli_problems(c)
@@ -273,7 +286,7 @@ def verdict(points, history, world, rules, root, now):
     if ids is None:
         why += "; no ledger this pass: system_items unknown"
     return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "budget": b, "spent": spent, "drifted": drifted,
-            "system_items": ids, "recurring": recurring, "recurring_unguarded": unguarded(world, c) if world is not None else None, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
+            "system_items": ids, "recurring": recurring, "incident": incident(b, c), "recurring_unguarded": unguarded(world, c) if world is not None else None, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
 
 
 def publish(points, history, world, rules, root, now, path=None):

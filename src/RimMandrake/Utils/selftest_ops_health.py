@@ -8,6 +8,7 @@ import os
 import sys
 import tempfile
 import types
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -172,7 +173,11 @@ ok("shipped: a drifted SLI is an alarm with one fixed item name",
 
 # --- ops_watch writes the verdict on a full pass and never on a limited one
 os.environ["RM_OPS_WATCH_DIR"] = str(d / "ow")
+# rimflow/model.py (pulled in by ops_health.subject_words) puts the REAL clone's Utils first on sys.path; in the mutant copy
+# that imported the unmutated ops_watch and every ops_watch mutant stayed green. HERE first again, then import.
+sys.path.insert(0, str(HERE))
 import ops_watch as OW  # noqa: E402
+ok("ops_watch is the one beside this test (a mutant copy proves its own copy)", Path(OW.__file__).resolve().parent == HERE, OW.__file__)
 REAL_COLLECTORS = dict(OW.COLLECTORS)   # the shipped family table, before the stubs below
 for k in list(OW.COLLECTORS):
     OW.COLLECTORS[k] = (lambda now, rules, ctx: {})
@@ -203,6 +208,14 @@ os.environ.update(RM_POOL_ROOT=str(fx / "pool"), RM_OBJSTORE_STATE=str(fx / "sta
                   RELENTLESS_ROOT=str(fx / "belt"))
 (fx / "belt" / "live").mkdir(parents=True)
 (fx / "belt" / "store").mkdir()
+# the churn SLIs (OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS) read items/ and spend-*.json: one item returned 3 times
+_it = fx / "belt" / "store" / "items" / "FX_ITEM"
+_it.mkdir(parents=True)
+(_it / "state.json").write_text(json.dumps({"returns": 3, "gen": 2, "spent": 100}))
+_mk = "rm-relentless-work-%s-g1" % __import__("hashlib").sha1(b"FX_ITEM").hexdigest()[:10]
+(_it / "attempts.jsonl").write_text(json.dumps({"gen": 1, "at": OW.iso(NOW - 3600), "start": _mk}) + "\n"
+                                    + json.dumps({"gen": 1, "at": OW.iso(NOW - 3000), "end": "harness"}) + "\n")
+(fx / "belt" / "store" / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": {_mk: 100}}))
 (fx / "belt" / "live" / "runs.jsonl").write_text("".join(
     json.dumps({"at": OW.iso(NOW - 60 * i), "outcome": "PASS" if i % 2 else "INFRA", "why": "fixture"}) + "\n" for i in range(20)))
 KR.measure = lambda *a, **k: {"night": "n", "news": [], "reds": ["t%d" % i for i in range(84)], "listed": [],
@@ -273,8 +286,8 @@ def _no_verdict(*a, **k):
 H.publish = _no_verdict
 hf = OW.publish_health(emitted, {}, {}, ow_rules, NOW)
 H.publish = real_publish
-ok("publish_health: a failed verdict reads all three UNMEASURED, said",
-   sorted(hf) == ["health.drifted_slis", "health.spent_slis", "health.state"]
+ok("publish_health: a failed verdict reads all four UNMEASURED, said",
+   sorted(hf) == ["health.drifted_slis", "health.incident_slis", "health.spent_slis", "health.state"]
    and all(p["m"] == "UNMEASURED" and "health verdict not written" in p["why"] and "disk full" in p["why"] for p in hf.values()), hf)
 # and the point reaches the alarm with its one fixed name
 drift_tg = [t for t in shipped["targets"] if t.get("key") == "health.drifted_slis"]

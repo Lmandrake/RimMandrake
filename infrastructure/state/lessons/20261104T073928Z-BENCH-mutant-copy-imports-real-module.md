@@ -1,0 +1,2 @@
+selftest_ops_health_mutants was RED at HEAD with every ops_watch mutant STAYING GREEN: ops_health.subject_words imports rimflow/model.py, which puts the REAL clone's Utils (resolved __file__) first on sys.path, so the mutant copy's selftest imported the unmutated ops_watch. A mutation test must assert the module it imports is the copy beside it. Fixed in selftest_ops_health.py (re-insert HERE, check OW.__file__).
+home: src/RimMandrake/Utils/selftest_ops_health_mutants.py
