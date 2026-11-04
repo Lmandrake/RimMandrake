@@ -8,6 +8,7 @@ src/RimMandrake/rimflow/live_retired.txt; deadman_check.promises() then sweeps n
 Fixtures plus the two real files; no ledger or systemd touched.
 
     python3 src/RimMandrake/Utils/selftest_live_retired.py
+    python3 src/RimMandrake/Utils/selftest_live_retired.py --retired /dev/null   # replays the instance: no list, red
 """
 import os
 import sys
@@ -37,11 +38,11 @@ class It:
 INSTANCE = "unit=rm-pulse-health.timer max_age=10m"
 
 
-def main():
+def main(retired_path=None):
     if not hasattr(DM, "load_retired"):
         check(False, "deadman_check has no retired-promises list: a deleted unit's promise is swept for ever")
         return
-    retired = DM.load_retired()
+    retired = DM.load_retired(retired_path)
     baseline = DM.load_baseline()
     # the instance: the item closed on rm-pulse-health, the unit retired with RimPulse, the sweep reopened it
     items = {"OPS_TIMER_REPAIR_EC51": It(live=INSTANCE, live_broken="is-enabled says 'not-found'")}
@@ -70,6 +71,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    a = sys.argv[1:]
+    main(a[a.index("--retired") + 1] if "--retired" in a else None)
     print("FAIL %d" % len(FAILS) if FAILS else "ALL OK")
     sys.exit(1 if FAILS else 0)
