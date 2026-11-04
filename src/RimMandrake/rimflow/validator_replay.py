@@ -95,9 +95,7 @@ def _live_row(case, root, rules=None):
 
 def _game_route(row):
     """The row as the supervisor's game phase reads it: an item in its prove phase on SHA, the row lands, one tick."""
-    import relentless as R
     import selftest_relentless_game as SG
-    sink = []
     x = SG.rig(1)
     try:
         SG.to_game(x, "I0")
@@ -118,7 +116,6 @@ def _game_route(row):
                 "candidate_kept": not moved and (st.get("candidate") or {}).get("sha", cand) == cand,
                 "closes": st["status"] in ("done", "closing")}
     finally:
-        sink.append(R)
         x.done()
 
 

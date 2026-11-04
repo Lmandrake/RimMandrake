@@ -38,6 +38,9 @@ no line is counted as `no proof` in `eligible` and waits for one.
 
 A round, in order:
   1. no running game -> one rounds.jsonl row and nothing else (no bridge, no plan);
+  1b. the canaries (relentless_canary.py), run here in the service's own process and cached by environment fingerprint:
+     interop, the game's identity, our bridge identity, a bridge round trip, the load's identity, a known observation and
+     a wrong expectation rejected. Sick -> one rounds.jsonl row "stopped: canary <name>: ..." and no proof spends a slot;
   2. candidates: built/validated, built sha, an owed criterion at a live level with a live-proof line, of any owner and
      any mod (FlowWorks and Gimme Some Slack included: FOUNDRY retired 2026-11-02, owner by card, and its acceptance
      sweeps became this lane);
@@ -280,6 +283,11 @@ class RoundFx(L.Fx):
         L.Fx.__init__(self, *a, **kw)
         self._plans = {}
 
+    def canary(self, root, r, now):
+        """The live harness's canaries, cached by environment fingerprint (relentless_canary.gate) -> None or why not."""
+        import relentless_canary
+        return relentless_canary.gate(relentless_canary.ShellFx(self), root, r, now)
+
     def items(self):
         import model
         out = []
@@ -355,6 +363,10 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
     started = fx.game_started()
     if started is None:
         return done("no running game")
+    sick = fx.canary(root, r, now) if hasattr(fx, "canary") else None     # in THIS process: the service's own context
+    if sick:
+        summary["canary"] = sick
+        return done("stopped: %s" % sick[:300])
     todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
     folded, ran, cap = None, 0, max_items or lr["round_max"]
