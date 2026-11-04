@@ -32,6 +32,7 @@
   "offbox_max_s": 120,
   "offbox_adapters": {
       "_doc": "Supervisor-owned off-box readings (GPT review of 0135b04912: no worker-authored command crosses the Marker's wall). A contract or unhold --offbox names one of these; the supervisor runs its argv with no shell, from an empty folder, with output capped at relentless_wall.OFFBOX_OUT_MAX bytes and all of a check's readings sharing offbox_max_s. `script` is the plain text of an -EncodedCommand, for review: they must match (selftest_relentless_blind).",
+      "steve_wsl_pydantic": {"what": "SteveDesktop WSL testq worker deps, read now: one line pydantic=X pydantic_core=Y from ~/rm/pydeps (pip --target of src/RimMandrake/contracts/requirements.lock); an ImportError means not installed", "argv": ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", "mandrake@stevedesktop-wsl", "PYTHONPATH=$HOME/rm/pydeps python3 -c 'print(\"pydantic=%s pydantic_core=%s\" % (__import__(\"pydantic\").VERSION, __import__(\"pydantic_core\").__version__))'"]},
       "steve_c_free": {
           "what": "SteveDesktop C: free and size bytes, read now (Get-PSDrive C over ssh): one line '<UTC> free_bytes=N size_bytes=N'",
           "script": "$ProgressPreference = \"SilentlyContinue\"; $d = Get-PSDrive C; \"{0} free_bytes={1} size_bytes={2}\" -f (Get-Date).ToUniversalTime().ToString(\"yyyy-MM-ddTHH:mm:ssZ\"), $d.Free, ($d.Free + $d.Used)",
