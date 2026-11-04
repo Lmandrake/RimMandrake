@@ -13,6 +13,7 @@ _s.stdout.reconfigure(encoding="utf-8", errors="replace")
 import json, os, sys, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 import rimbridge_client as rb
+import wrapup_debt   # owe/paid: what a scene leaves in the game is on the wrap-up's register until undone
 
 _c = None
 def rbc():
@@ -60,11 +61,14 @@ import contextlib
 def setting(typeName, **kv):
     """Set mod-settings fields for the body (raw, no ApplySettings) and always restore them."""
     old = {f: call("jawa/mod_settings_field", typeName=typeName, action="get", field=f).get("value") for f in kv}
+    tok = wrapup_debt.owe("setting", "scenelib.setting %s %s" % (typeName, ", ".join("%s=%s" % i for i in sorted(kv.items()))),
+                          "jawa/mod_settings_field set %s" % ", ".join("%s=%s" % i for i in sorted(old.items())))
     try:
         for f, v in kv.items(): need(call("jawa/mod_settings_field", typeName=typeName, action="set", field=f, value=str(v)), "set " + f)
         yield
     finally:
-        for f, v in old.items(): call("jawa/mod_settings_field", typeName=typeName, action="set", field=f, value=str(v))
+        back = [ok(call("jawa/mod_settings_field", typeName=typeName, action="set", field=f, value=str(v))) for f, v in old.items()]
+        if all(back): wrapup_debt.paid(tok)   # a restore that failed stays owed: the wrap-up files it
 
 def rect(x, z, w, h): return "%d,%d,%d,%d" % (x, z, w, h)
 def cell(x, z): return "%d,%d" % (x, z)
@@ -122,7 +126,12 @@ class Scene:
     def __init__(self, name, x=100, z=100, w=9, h=9):
         self.name, self.x, self.z, self.w, self.h = name, x, z, w, h
         self.pawns = []
-    def __enter__(self): quiet(); self.clear(); return self
+        self.debt = None
+    def __enter__(self):
+        # owed from before the first change until teardown's clear reads back ok; a kill or crash leaves it filed
+        self.debt = wrapup_debt.owe("scene", "scenelib Scene %r at %s" % (self.name, self.rect),
+                                    "jawa/clear_area rect=%s dryRun=False" % self.rect)
+        quiet(); self.clear(); return self
     def __exit__(self, *a): self.teardown()
     def abs(self, dx, dz): return self.x + dx, self.z + dz
     @property
@@ -234,4 +243,8 @@ class Scene:
             if t.get("isPawn") or t.get("kind") == "Pawn": self.kill(t.get("id"))
         return call("jawa/clear_area", rect=self.rect, dryRun=False)
     def teardown(self):
-        self.clear()
+        r = self.clear()
+        left = self.things()
+        if ok(r) and isinstance(left, dict) and not left.get("things"):   # read back empty, not success:true
+            wrapup_debt.paid(self.debt); self.debt = None
+        return r

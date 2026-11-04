@@ -279,6 +279,8 @@ OWNER_ONLY = {
     "src/RimMandrake/Utils/rimflow_metrics.py": "counts provenance, authorizes nothing",
     "src/RimMandrake/Utils/agent_improve.py": "reads his words from the ledger, authorizes nothing",
     "src/RimMandrake/rimflow/conductor_closeout.py": "reads his words from the ledger, authorizes nothing",
+    "src/RimMandrake/rimflow/wrapup.py": "never releases his OWNER bridge hold at an agent's end (owner by card "
+                                         "2026-10-30); authorizes nothing",
     "src/RimMandrake/Utils/art/backfill.py": "reads a decisions doc's provenance, authorizes nothing",
     "src/RimMandrake/Utils/modcheck/northstar.py": "record_validation only persists the words its caller (modcheck/cli, "
                                                    "via CA.words) already gated",

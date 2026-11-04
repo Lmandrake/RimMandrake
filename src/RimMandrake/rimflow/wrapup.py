@@ -47,6 +47,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 import uuid
 
@@ -62,7 +63,13 @@ DEBT_AGE_S = 6 * 3600       # a debt older than this stands whoever owes it: an 
 
 
 def state_dir():
-    return os.environ.get("RM_WRAPUP_DIR") or (DEFAULT_DIR_WINDOWS if os.name == "nt" else DEFAULT_DIR)
+    if os.environ.get("RM_WRAPUP_DIR"):
+        return os.environ["RM_WRAPUP_DIR"]
+    if os.environ.get("RM_UNDER_SELFTEST"):
+        # a selftest drives the stagers against fakes: its debts (some left on purpose by a failing-restore case)
+        # go to its own TMPDIR, never the live register the alarm reads
+        return os.path.join(tempfile.gettempdir(), "rm_wrapup_selftest")
+    return DEFAULT_DIR_WINDOWS if os.name == "nt" else DEFAULT_DIR
 
 
 def _p(*parts):

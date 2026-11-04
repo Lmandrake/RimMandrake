@@ -287,6 +287,145 @@ try:
     bad = L.restore_settings()
     owed = [d for d in wrapup.debts_of(wrapup.owner_key()) if fld in d.get("what", "")]
     check(bad == [] and owed == [], "W12 restore_settings pays it (bad=%r, owed=%d)" % (bad, len(owed)))
+
+    # W13-W15: every live stager owes before it changes the game and pays only after its undo reads back. A stager
+    # killed before its teardown (simulated: entered, never exited) leaves the debt, and the wrap-up files it.
+    os.environ["RM_ROLE_UNIT"] = "stager-w13"
+
+    def end_agent():
+        """The agent ends: the unit wrap-up's census -> its debt rows."""
+        return kinds(wrapup.run(Fake(), ctx(owner=wrapup.owner_key(), key="stager"))["rows"], "debt")
+
+    # W13 scenes/scenelib: Scene and setting()
+    from scenes import scenelib as SL
+
+    class B13(object):
+        def __init__(self):
+            self.things, self.settings, self.fail_set = [], {"f": "1"}, False
+
+        def __call__(self, tool, **q):
+            if tool == "jawa/mod_settings_field":
+                if q["action"] == "get":
+                    return {"success": True, "value": self.settings.get(q["field"])}
+                if self.fail_set:
+                    return {"success": False}
+                self.settings[q["field"]] = q["value"]
+                return {"success": True}
+            if tool == "jawa/clear_area":
+                self.things = []
+                return {"success": True}
+            if tool == "jawa/list_things":
+                return {"success": True, "things": list(self.things)}
+            return {"success": True}
+
+    b13 = B13()
+    SL.call = b13
+    with SL.Scene("w13_clean", x=5, z=5, w=3, h=3):
+        b13.things = [{"id": "Thing_1", "kind": "Building"}]
+    check(end_agent() == [], "W13 a Scene torn down (read back empty) owes nothing")
+    sc = SL.Scene("w13_killed", x=5, z=5, w=3, h=3).__enter__()
+    b13.things = [{"id": "Thing_2", "kind": "Building"}]          # staged, then the agent dies: no __exit__
+    d = end_agent()
+    check(len(d) == 1 and "w13_killed" in d[0]["what"] and "clear_area rect=5,5,3,3" in d[0]["why"],
+          "W13 a Scene left without teardown is filed with its undo: %r" % [x["what"] for x in d])
+    sc2 = SL.Scene("w13_left", x=1, z=1, w=1, h=1).__enter__()
+    b13.things = [{"id": "Thing_4"}]
+    real_clear = SL.Scene.clear
+    SL.Scene.clear = lambda self: {"success": True}                 # success:true, but the rect is not empty
+    sc2.teardown()
+    SL.Scene.clear = real_clear
+    d = end_agent()
+    check(len(d) == 1 and "w13_left" in d[0]["what"], "W13 success:true with things still standing stays owed")
+    cm = SL.setting("RimMandrake.X", f="0")
+    cm.__enter__()                                                  # forced, then killed before the finally
+    check(b13.settings["f"] == "0", "W13 setting() forced the field")
+    d = end_agent()
+    check(len(d) == 1 and "RimMandrake.X f=0" in d[0]["what"] and "f=1" in d[0]["why"],
+          "W13 a forced setting never restored is filed with its old value: %r" % [x["what"] for x in d])
+    b13.settings["f"] = "1"                                         # what the killed run left, put back by hand
+    with SL.setting("RimMandrake.X", f="0"):
+        pass
+    check(end_agent() == [] and b13.settings["f"] == "1", "W13 a setting() restored owes nothing")
+    try:
+        with SL.setting("RimMandrake.X", f="0"):
+            b13.fail_set = True                                     # the restore call fails
+    finally:
+        b13.fail_set = False
+    check(len(end_agent()) == 1, "W13 a setting() whose restore failed stays owed")
+    del sc
+
+    # W14 stage_review: a stage that dies half-way is owed; a finished one is the deliverable and owes nothing
+    import stage_review as SR
+    SR.connect = lambda: object()
+    SR.ensure_map = lambda rb, m: {"mapId": m}
+    SR.pause = lambda rb: True
+    SR.clear = lambda rb, kinds_, rect: {"cleared": 0}
+
+    def die(*a, **k):
+        raise RuntimeError("bridge dropped mid-spawn")
+    SR.spawn_roster = die
+    argv = sys.argv
+    sys.argv = ["stage_review.py", "--map", "7", "--clear", "chunks", "--spawn", "Gizka:2"]
+    try:
+        SR.main()
+        check(False, "W14 the crash propagated")
+    except RuntimeError:
+        pass
+    d = end_agent()
+    check(len(d) == 1 and "stage_review map 7" in d[0]["what"] and "spawn Gizka:2" in d[0]["what"],
+          "W14 a stage that crashed half-way is filed: %r" % [x["what"] for x in d])
+    SR.spawn_roster = lambda rb, roster, at, spread, terr, layout: [("Gizka", 1, 1, True)]
+    rc = SR.main()
+    check(rc == 0 and end_agent() == [], "W14 a stage that finished owes nothing (rc=%r)" % rc)
+    sys.argv = ["stage_review.py", "--map", "7", "--frame", "1,1,2,2"]
+    check(SR.stage_debt(SR.argparse.Namespace(kill_hostiles=False, clear="", spawn="", face=None, daylight=False,
+                                              weather=None, two_pass=None, map=7)) is None,
+          "W14 a reframe-and-shoot run changes nothing and owes nothing")
+    sys.argv = argv
+
+    # W15 modcheck/helpers.SettingsTransaction (site_calm and every quiet_world profile)
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck"))
+    import helpers as HL
+
+    class S15(object):
+        def __init__(self):
+            self.debug, self.diff = {"godMode": False}, {"threatScale": 1.0, "allowBigThreats": True}
+
+        def call(self, tool, **q):
+            if tool == "jawa/debug_settings":
+                if q.get("action") == "set":
+                    self.debug[q["field"]] = q["value"]
+                    return {"success": True}
+                return {"success": True, "fields": [{"name": k, "value": v} for k, v in self.debug.items()]}
+            if tool == "jawa/difficulty_tune":
+                before = dict(self.diff)
+                for k, v in q.items():
+                    self.diff[k] = v
+                return {"success": True, "before": before, "after": dict(self.diff)}
+            return {"success": True}
+
+    s15 = S15()
+    tx = HL.SettingsTransaction(s15).__enter__()
+    check(end_agent() == [], "W15 an entered transaction that changed nothing owes nothing")
+    tx.set_debug("godMode", True)
+    tx.set_difficulty(threatScale=0.0)
+    d = end_agent()                                                  # killed before restore()
+    check(len(d) == 1 and "godMode=True" in d[0]["what"], "W15 a transaction killed before restore is filed: %r"
+          % [x["what"] for x in d])
+    s15 = S15()                                                      # a fresh game: the killed run's values gone
+    with HL.SettingsTransaction(s15) as tx2:
+        tx2.set_debug("godMode", True)
+        tx2.set_difficulty(threatScale=0.0)
+    check(end_agent() == [] and s15.debug["godMode"] is False and s15.diff["threatScale"] == 1.0,
+          "W15 a transaction restored owes nothing")
+    tx3 = HL.SettingsTransaction(s15).__enter__()
+    tx3.on_restore("wild spawner", lambda: False)                  # a cleanup that is not undone
+    try:
+        tx3.restore()
+    except HL.HelperUnverified:
+        pass
+    check(len(end_agent()) == 1, "W15 a restore with problems stays owed")
+    os.environ.pop("RM_ROLE_UNIT", None)
 finally:
     shutil.rmtree(TMP, ignore_errors=True)
 

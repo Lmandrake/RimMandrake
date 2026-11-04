@@ -20,7 +20,13 @@ and corrected by section 11 (shapes MEASURED live 2026-10-01). Rules every helpe
 `session` is any object with `call(tool, **params) -> dict` (a rimdrive Session, or
 `rimdrive.fake.FakeWorld` in the selftest).
 """
+import os
+import sys
+
 import clockgate
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # Utils: wrapup_debt
+import wrapup_debt  # noqa: E402  forced settings stay on the wrap-up's register until restored
 
 # MEASURED 2026-10-01: injuries that a restore may remove. Anything else (implants, addictions,
 # immunity, pregnancy, genes) is never touched.
@@ -110,6 +116,14 @@ class SettingsTransaction(object):
         # (label, fn) run at restore, newest first: things a profile ARMED that are not debug/difficulty values
         # (the wild-spawner block). A cleanup that fails is a restore problem, reported like one.
         self.cleanups = []
+        self.debt = None
+
+    def _owe(self, what):
+        # owed from the first change until restore() reads every value back: a kill between them leaves it filed
+        if self.debt is None:
+            self.debt = wrapup_debt.owe("setting", "SettingsTransaction forced %s" % what,
+                                        "set it back to its pre-run value (debug_settings / difficulty_tune; "
+                                        "difficulty was %r)" % (self.pre_difficulty,))
 
     def __enter__(self):
         self.pre_debug = read_settings(self.session)
@@ -121,6 +135,7 @@ class SettingsTransaction(object):
     def set_debug(self, field, value):
         if field not in self.pre_debug:
             raise HelperUnverified("debug field %r not present in debug_settings list" % field)
+        self._owe("debug %s=%r" % (field, value))
         self.touched_debug.append(field)
         r = self.session.call("jawa/debug_settings", action="set", field=field, value=value)
         now = read_settings(self.session).get(field)
@@ -132,6 +147,7 @@ class SettingsTransaction(object):
         for k in kw:
             if k not in self.pre_difficulty:
                 raise HelperUnverified("difficulty key %r not readable" % k)
+        self._owe("difficulty %r" % (kw,))
         self.touched_difficulty.extend(kw)
         r = self.session.call("jawa/difficulty_tune", **kw)
         after = r.get("after") or {}
@@ -140,6 +156,7 @@ class SettingsTransaction(object):
                 raise HelperUnverified("difficulty_tune %s: asked %r, read back %r" % (k, v, after.get(k)))
 
     def on_restore(self, label, fn):
+        self._owe(label)
         self.cleanups.append((label, fn))
 
     def restore(self):
@@ -166,6 +183,8 @@ class SettingsTransaction(object):
         self.restored = True
         if problems:
             raise HelperUnverified("; ".join(problems))
+        wrapup_debt.paid(self.debt)
+        self.debt = None
 
     def __exit__(self, et, ev, tb):
         self.restore()

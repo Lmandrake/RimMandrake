@@ -47,6 +47,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint
 from game_paths import LOCALLOW
+import wrapup_debt   # a stage that dies half-done is on the wrap-up's register (AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED)
 
 SCREENSHOT_DIR = os.path.join(LOCALLOW, "Screenshots")
 
@@ -356,6 +357,18 @@ def parse_roster(s):
     return out
 
 
+def stage_debt(args):
+    """Owe the stage before the first change -> token, or None when the run changes nothing (reframe and shoot only)."""
+    acts = [n for n, on in (("kill-hostiles", args.kill_hostiles), ("clear " + args.clear, args.clear),
+                            ("spawn " + args.spawn, args.spawn), ("face " + str(args.face), args.face),
+                            ("daylight", args.daylight), ("weather locked " + str(args.weather), args.weather),
+                            ("weather locked " + str(args.two_pass), args.two_pass)) if on]
+    if not acts:
+        return None
+    return wrapup_debt.owe("scene", "stage_review map %s: %s" % (args.map, "; ".join(acts)),
+                           "the staged map is disposable: drop it or reload; unlock weather with jawa/weather_set")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Clean-stage a live map for review.")
     ap.add_argument("--map", type=int, default=None, help="Map.uniqueID to make current")
@@ -387,6 +400,7 @@ def main():
     shot_path = None
     spawn_failed = False
     rb = connect()
+    debt = stage_debt(args)
     mi = ensure_map(rb, args.map)
     print("map:", mi.get("mapId"), mi.get("mapBiome"), "tile", mi.get("tile"))
     print("paused:", pause(rb))
@@ -428,6 +442,10 @@ def main():
         print("save:", sv)
         if not sv.get("verified"):
             rc = 1
+    if rc == 0:
+        # the staged scene IS the deliverable a human is meant to see, so a run that finished it owes nothing; a run
+        # that died or failed half-way leaves a half-staged map (and any locked weather) on the register
+        wrapup_debt.paid(debt)
     return rc
 
 
