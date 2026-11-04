@@ -1,0 +1,28 @@
+{
+  "_doc": "The metronome's phase table, IN SHADOW (OPS_METRONOME_PROVE_IN_SHADOW; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §2, §8 step 5). Read by src/RimMandrake/Utils/metronome.py, validated by `metronome.py lint`. Phases run in the order sense, remember, raise, ring, dispatch, chores; a phase is due when beat % every == offset, when it is overdue, or when one of its wall-clock slots is due. budget_s bounds the whole beat; raise and ring (and any overdue phase) are reserved first. Shadow commands only read or write inside {state} (ops_watch's own store there, the Dispatcher's dry tick, restart_reconcile --no-file): nothing rings, raises or files. limit_s values are ESTIMATES (ops_watch: 73 s for all 20 families, so 2 per beat); measure them from beats.jsonl before cutover (step 6); first shadow beats, 2026-11-04: steve+testing 1.5 s, but accounts+codex and disk+timers each overran 15 s, so per-family timing decides the pairing before cutover. chores has no shadow command yet: its four timers stay the owners.",
+  "budget_s": 45,
+  "env": {"PYTHONUNBUFFERED": "1"},
+  "phases": {
+    "sense": {"every": 1, "limit_s": 15, "cleanup_s": 2,
+              "argv": ["{python}", "src/RimMandrake/Utils/ops_watch.py", "run", "{families}"],
+              "env": {"RM_OPS_WATCH_DIR": "{state}/ops_watch"},
+              "families": ["accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps",
+                           "production", "v3", "tokentalk", "evidence", "companion", "arena", "relentless", "seats",
+                           "plan", "roles", "queues"],
+              "per_beat": 2, "critical": true, "max_ok_age_s": 900},
+    "remember": {"every": 1, "limit_s": 8, "cleanup_s": 2,
+                 "argv": ["{python}", "src/RimMandrake/Utils/ops_memory.py", "build", "--out", "{state}/memory"],
+                 "reads": {"sense": 900}},
+    "raise": {"every": 1, "limit_s": 8, "cleanup_s": 2,
+              "argv": ["{python}", "src/RimMandrake/Utils/restart_reconcile.py", "run", "--no-file"],
+              "critical": true, "max_ok_age_s": 300},
+    "ring": {"every": 1, "limit_s": 6, "cleanup_s": 2,
+             "argv": ["{python}", "src/RimMandrake/rimflow/dispatcher.py", "status"],
+             "critical": true, "max_ok_age_s": 300},
+    "dispatch": {"every": 2, "offset": 0, "limit_s": 20, "cleanup_s": 3,
+                 "argv": ["{python}", "src/RimMandrake/rimflow/dispatcher.py", "tick", "--json"],
+                 "critical": true, "max_ok_age_s": 600},
+    "chores": {"every": 5, "limit_s": 10, "cleanup_s": 2, "argv": null,
+               "why_no_command": "scratch pressure, account plan and usage keep their own timers until cutover"}
+  }
+}
