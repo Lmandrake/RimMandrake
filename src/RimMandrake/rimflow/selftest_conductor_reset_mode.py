@@ -400,7 +400,8 @@ def test_window_that_died_without_a_record():
         out = run_wake()
         check("THE REPLY HE WAS READING" in out and "word for word" in out,
               "the first-launch wake shows the last reply of the window that died")
-        check("older window" not in out and "role launch" not in out and "another name" not in out,
+        shown = out.split(">>>", 1)[0]    # the reply block only: the real handoff text after it may say anything
+        check("older window" not in shown and "role launch" not in shown and "another name" not in shown,
               "and only that one: not an older window, a role launch of the same name, or another title")
         check(out.lstrip().startswith("== the old window's LAST REPLY"), "it comes before the handoff text")
         # a stale record of an older restart must not outrank the window that actually died

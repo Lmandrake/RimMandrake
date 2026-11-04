@@ -149,8 +149,8 @@ def main():
         write(os.path.join(mod, "Defs", "Keep.xml"), "<Defs><!-- edited --></Defs>\n")
         real_compare, calls = D.compare, []
 
-        def compare_then_vanish(src, dst):
-            r = real_compare(src, dst)
+        def compare_then_vanish(src, dst, *a, **k):      # compare grew `only=` (the targeted compare)
+            r = real_compare(src, dst, *a, **k)
             if not calls:
                 calls.append(1)
                 os.remove(os.path.join(src, "Defs", "Keep.xml"))

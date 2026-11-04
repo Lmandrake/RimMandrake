@@ -51,7 +51,7 @@ WIRED = [
     ("RimMandrake/DivingInteraction", ("RM_SeaFloorTerrain", "RM_ProbeGalleryOutlet"), 50),
     ("RimMandrake/RimProperty", ("RM_AnimalSteal",), 5),
     ("RimMandrake/Pyrinth", ("DV_PyrinthHeater", "DV_Mote_PyrinthSpark"), 12),
-    ("RimStarWars/StarWarsPatches", ("Heron_ResearchTab", "ProjectHeron_Swdoors"), 30),
+    ("RimStarWars/StarWarsPatches", ("Heron_ResearchTab", "ProjectHeron_Swdoors"), 25),
 ]
 
 

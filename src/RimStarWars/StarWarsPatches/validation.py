@@ -505,4 +505,4 @@ def patch_semantics_static(t):
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # Heron research, pawnkinds, weathers). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402
-shipped_defs.add_chain(suite, __file__, sanity=('Heron_ResearchTab', 'ProjectHeron_Swdoors'), min_count=30)
+shipped_defs.add_chain(suite, __file__, sanity=('Heron_ResearchTab', 'ProjectHeron_Swdoors'), min_count=25)  # 29 since the red fog weathers went (61c7fa8bd9)
