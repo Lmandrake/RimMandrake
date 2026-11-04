@@ -8,6 +8,9 @@ judgment, which never sees a dir with no .git, and the 18 GB tmpfs alarmed TMP_F
 blob origin/main already tracks is not work; an untracked save beside it still is.
 
 Every path is a temp root named through SCRATCH_REAP_TMP / SCRATCH_REAP_SAVE_REPO; the real /tmp is never written.
+
+Instance replay (`rimflow guard --instance`): `--rev REV` judges with scratch_reap.py as committed at REV (the code the
+timer ran), and each `--dir PATH` is a real directory that must not read as work, judged against this repo's origin/main.
 """
 import os
 import subprocess
@@ -17,6 +20,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+HERE = Path(__file__).resolve().parents[3]
 FAILS = []
 IDLE = 3
 
@@ -31,7 +35,29 @@ def git(repo, *a):
     return subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True, check=True).stdout.strip()
 
 
-def main():
+def load_reaper(rev, td):
+    """scratch_reap as committed at `rev` (None: this tree's)."""
+    if rev:
+        old = td / "rev"
+        old.mkdir()
+        src = subprocess.run(["git", "-C", str(HERE), "show", "%s:src/RimMandrake/Utils/scratch_reap.py" % rev],
+                             capture_output=True, check=True).stdout
+        (old / "scratch_reap.py").write_bytes(src)
+        sys.path.insert(0, str(old))
+    import scratch_reap
+    return scratch_reap
+
+
+def main(argv):
+    rev, dirs = None, []
+    while argv:
+        a = argv.pop(0)
+        if a == "--rev":
+            rev = argv.pop(0)
+        elif a == "--dir":
+            dirs.append(Path(argv.pop(0)))
+        else:
+            raise SystemExit("usage: [--rev REV] [--dir PATH]...")
     td = Path(tempfile.mkdtemp(prefix="selftest_scratch_reap_tmp_cs_"))
     roots, tmp, repo = td / "roots", td / "tmp", td / "repo"
     for d in (roots, tmp, repo / "world"):
@@ -65,7 +91,7 @@ def main():
         (tmp / "W.rws").write_text(committed)                          # a loose copy of the committed save
         time.sleep(IDLE + 0.5)
 
-        import scratch_reap as s
+        s = load_reaper(rev, td)
         ctx = s.Ctx(time.time())
         out, rows = s.sweep_tmp(ctx, False, 0)
         picked = {os.path.relpath(r["path"], tmp) for r in rows}
@@ -77,6 +103,11 @@ def main():
         s._COMMITTED_SAVES = None
         out, rows = s.sweep_tmp(s.Ctx(time.time()), False, 0)
         ok(not rows and out["work"] == 5, "with no readable origin/main every save is work, as before (work=%s, rows=%s)" % (out["work"], len(rows)))
+
+        os.environ["SCRATCH_REAP_SAVE_REPO"] = str(HERE)               # the real instance: this repo's origin/main
+        s._COMMITTED_SAVES = None
+        for d in dirs:
+            ok(d.is_dir() and not s.keeps_work(d), "instance %s is idle scratch, not work" % d)
     finally:
         subprocess.run(["rm", "-rf", str(td)])
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
@@ -84,4 +115,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))
