@@ -387,3 +387,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:53:08Z","tsn":1793807588587545899}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T15:55:40Z","tsn":1793807740706775243}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T15:58:36Z","tsn":1793807916200374911}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A3 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T16:14:06Z","tsn":1793808846413289998}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:14:20Z","tsn":1793808860242304719}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MIASMA_WARDEN_MOTHER_ART_1 L2 (L2), read-only proof","ts":"2026-11-04T16:14:28Z","tsn":1793808868599243502}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:14:35Z","tsn":1793808875568749254}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GAMECOMP_STALL_HUNT_SEVEN_SECONDS A1 (L1), read-only proof","ts":"2026-11-04T16:14:44Z","tsn":1793808884026980279}
