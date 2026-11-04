@@ -1,0 +1,23 @@
+$ python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null
+    TierReport(RM_TestTitanT2,RM_TestTitanT3,RM_TestTitanT2Control,RM_TestTitanT2Heavy,RM_TestTitanT2HeavyControl,Elephant) -> RM_TestTitanT2 tier=T2 adultTier=T2 bodySize=8.0 wakeComp=True | RM_TestTitanT3 tier=T3 adultTier=T3 bodySize=20.0 wakeComp=True | RM_TestTitanT2Control tier=None adultTier=None bodySize=8.0 wakeComp=False | RM_TestTitanT2Heavy tier=T2 adultTier=T2 bodySize=12.0 wakeComp=True | RM_TestTitanT2HeavyControl tier=None adultTier=None bodySize=12.0 wakeComp=False | Elephant tier=T1 adultTier=T1 bodySize
+  t2_t3_tiers                                PASS       MOD     RM_TestTitanT2 tier=T2 adultTier=T2 bodySize=8.0 wakeComp=True | RM_TestTitanT3 tier=T3 adultTier=T3 bodySize=20.0 wakeComp=True | RM_TestTitanT2Control tier=None adultTier=None bodySize=8.0 wakeComp=False | RM_TestTitanT2Heavy tier=T2 adultTier=T2 bodySize=12.0 wakeComp=True | RM_TestTitanT2HeavyCo
+    RoofWallProbe(RM_TestTitanT2|125,125) -> RM_TestTitanT2 tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+    RoofWallProbe(RM_TestTitanT2Control|125,125) -> RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+  t2_holes_thin_roofs_and_crushes_walls      FAIL       MOD     T2 roofAfter=none wall 195->195; control roofAfter=RoofConstructed wall 195->195
+    ThickRoofCostProbe(RM_TestTitanT2|125,125) -> RM_TestTitanT2 tier=T2 costOpen=15.5 costThick=2000.0
+    ThickRoofCostProbe(RM_TestTitanT2Control|125,125) -> RM_TestTitanT2Control tier=None costOpen=15.5 costThick=15.5
+  thick_roof_route_excluded                  PASS       MOD     T2 open=15.5 thick=2000.0; control open=15.5 thick=15.5
+    ButcherYieldReport(RM_TestTitanT2Heavy) -> RM_TestTitanT2Heavy tier=T2 n=6 meat=8231 leather=2352 factor=0.8165
+    ButcherYieldReport(RM_TestTitanT2HeavyControl) -> RM_TestTitanT2HeavyControl tier=None n=6 meat=10080 leather=2880 factor=1.0000
+  butcher_yield_curve_reduces_t1_t2_yield    PASS       MOD     T2 meat=8231 control meat=10080 factor=0.8165 (control factor 1.0000) expected 8230.3 +- 6
+    SiteReport() -> sites=1 | RM_TitanicCorpseSite54472 at 140,140 meat=71981 eaten=80 scav=0 camp=2 C[Tribal_Warrior fac=Deep Desert Tribes hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RUT_Jawa_DeepDesert_Grunt fac=Deep Desert Tribes hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True]
+    KillTitanAt(RM_TestTitanT3|125,125) -> killed RM_TestTitanT3169688 tier=T3 bodySize=20.0 corpse=Corpse_RM_TestTitanT3169689
+    SiteReport() -> sites=1 | RM_TitanicCorpseSite54472 at 140,140 meat=71981 eaten=80 scav=0 camp=2 C[Tribal_Warrior fac=Deep Desert Tribes hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RUT_Jawa_DeepDesert_Grunt fac=Deep Desert Tribes hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True]
+    KillTitanAt(RM_TestTitanT2|137,125) -> killed RM_TestTitanT2170504 tier=T2 bodySize=8.0 corpse=Corpse_RM_TestTitanT2170505
+    SiteReport() -> sites=1 | RM_TitanicCorpseSite54472 at 140,140 meat=71981 eaten=80 scav=0 camp=2 C[Tribal_Warrior fac=Deep Desert Tribes hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RUT_Jawa_DeepDesert_Grunt fac=Deep Desert Tribes hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True]
+  t3_corpse_becomes_a_harvest_site           FAIL       MOD     sites before=1 after T3 kill=1 after T2 kill=1; killed RM_TestTitanT3169688 tier=T3 bodySize=20.0 corpse=Corpse_RM_TestTitanT3169689; killed RM_TestTitanT2170504 tier=T2 bodySize=8.0 corpse=Corpse_RM_TestTitanT2170505
+rows -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\books\Transient\modcheck\titan_test_races_a2_20261103T134833_five.json
+VERDICT: PASS (5 rows)
+  large_pawns_footprint_bridge               UNMEASURED SITE    LargePawns.Settings.size2Min unreadable (is neku.largepawns on the list?): No loaded type 'LargePawns.Settings' found - mod not active, or the name is wrong (pass Type.FullName exactly).
+rows -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\books\Transient\modcheck\titan_test_races_a2_20261103T134833.json (five-row runner exit 0)
+VERDICT: FAIL (6 rows, 6 wanted)

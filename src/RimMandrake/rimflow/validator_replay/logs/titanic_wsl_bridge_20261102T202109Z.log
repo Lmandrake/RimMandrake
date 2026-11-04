@@ -1,0 +1,67 @@
+$ python3 src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/Utils/rimbridge_client.py", line 492, in connect
+    self.sock = socket.create_connection((self.host, self.port),
+                ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+                                         timeout=self.connect_timeout)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/socket.py", line 870, in create_connection
+    raise exceptions[0]
+  File "/usr/lib/python3.14/socket.py", line 855, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/HugeThings/northstar/titan_test_races_live.py", line 263, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/HugeThings/northstar/titan_test_races_live.py", line 225, in main
+    with RimBridge(host, port, token, timeout=180.0) as rb:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/Utils/rimbridge_client.py", line 535, in __enter__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/Utils/rimbridge_client.py", line 500, in connect
+    raise RimBridgeError(
+    ...<7 lines>...
+           " ".join(sys.argv) or "<your script>")) from ex
+rimbridge_client.RimBridgeError: cannot reach the bridge from WSL, and no amount of retrying will fix it.
+  RimBridge binds Windows loopback; WSL2 is NAT-mode, so 127.0.0.1:5174 has no route from here.
+  This says NOTHING about whether RimWorld is running.
+  Re-run under Windows Python:  python.exe /home/mandrake/rm/relentless/books/src/RimMandrake/HugeThings/northstar/titan_test_races_live.py --out /home/mandrake/rm/relentless/books/Transient/modcheck/titan_test_races_a2_20261102T122114_five.json
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/Utils/rimbridge_client.py", line 492, in connect
+    self.sock = socket.create_connection((self.host, self.port),
+                ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+                                         timeout=self.connect_timeout)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/socket.py", line 870, in create_connection
+    raise exceptions[0]
+  File "/usr/lib/python3.14/socket.py", line 855, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py", line 162, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py", line 143, in main
+    with RimBridge(host, port, token, timeout=180.0) as rb:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/Utils/rimbridge_client.py", line 535, in __enter__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/home/mandrake/rm/relentless/books/src/RimMandrake/Utils/rimbridge_client.py", line 500, in connect
+    raise RimBridgeError(
+    ...<7 lines>...
+           " ".join(sys.argv) or "<your script>")) from ex
+rimbridge_client.RimBridgeError: cannot reach the bridge from WSL, and no amount of retrying will fix it.
+  RimBridge binds Windows loopback; WSL2 is NAT-mode, so 127.0.0.1:5174 has no route from here.
+  This says NOTHING about whether RimWorld is running.
+  Re-run under Windows Python:  python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py

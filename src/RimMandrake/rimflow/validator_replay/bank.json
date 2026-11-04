@@ -1,0 +1,383 @@
+{
+ "cases": [
+  {
+   "id": "GOOD_IMPL_VALID_SETUP",
+   "layer": "live",
+   "row": "Good implementation, valid setup -> SATISFIED",
+   "exit": 0,
+   "text": "PASS ThingDef/RM_X from mandrake.rm.x carries CompProperties_Y",
+   "expect": {
+    "outcome": "PASS",
+    "verdict": "PASS",
+    "verified": true,
+    "gen_bump": false,
+    "closes": true
+   }
+  },
+  {
+   "id": "KNOWN_VIOLATION",
+   "layer": "live",
+   "row": "Known requirement violation, valid setup -> VIOLATED",
+   "exit": 1,
+   "text": "FAIL ThingDef/RM_X from mandrake.rm.x lacks CompProperties_Y",
+   "expect": {
+    "outcome": "FAIL",
+    "verdict": "FAIL",
+    "verified": true,
+    "gen_bump": true,
+    "route": "game_fail",
+    "closes": false
+   }
+  },
+  {
+   "id": "BRIDGE_REFUSED_UNDER_PYTHON_EXE",
+   "layer": "live",
+   "row": "Bridge disconnect -> UNREACHED, no product strike",
+   "exit": 1,
+   "text": "Traceback (most recent call last):\n  File \"probe.py\", line 9, in <module>\n    rb.connect()\nConnectionRefusedError: [Errno 111] Connection refused",
+   "expect": {
+    "outcome": "UNMEASURED",
+    "harness": true,
+    "verified": false,
+    "gen_bump": false,
+    "candidate_kept": true,
+    "closes": false
+   }
+  },
+  {
+   "id": "TITANIC_WSL_BRIDGE_TRACEBACK",
+   "layer": "live",
+   "row": "Bridge disconnect (real: TITANIC gen 3, 2026-11-02)",
+   "exit": 1,
+   "proof": "python3 src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py",
+   "log": "titanic_wsl_bridge_20261102T202109Z.log",
+   "also": [
+    [
+     "python.exe ",
+     1,
+     "Traceback (most recent call last):\n  File \"test_titan_footprint_live.py\", line 143, in main\nConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it"
+    ]
+   ],
+   "expect": {
+    "outcome": "UNMEASURED",
+    "harness": true,
+    "verified": false,
+    "gen_bump": false,
+    "candidate_kept": true,
+    "closes": false
+   }
+  },
+  {
+   "id": "STALE_BUILD",
+   "layer": "live",
+   "row": "Stale result from another SHA -> INVALID, cannot close",
+   "exit": 0,
+   "text": "PASS ThingDef/RM_X",
+   "fx": {
+    "later": [
+     [
+      "src/RimMandrake/TheRot/Defs/Fauna/RM_Chittik.xml",
+      "abc1234"
+     ]
+    ]
+   },
+   "expect": {
+    "outcome": "UNMEASURED",
+    "verdict": "INFRA",
+    "verified": false,
+    "closes": false,
+    "route": "game_stale_build"
+   }
+  },
+  {
+   "id": "COMPONENT_ABSENT",
+   "layer": "live",
+   "row": "Required component genuinely absent -> valid observed violation",
+   "exit": 1,
+   "text": "FAIL ThingDef/RM_X: does not resolve in the live game though mandrake.rm.x is loaded",
+   "expect": {
+    "outcome": "FAIL",
+    "verified": true,
+    "gen_bump": true,
+    "route": "game_fail",
+    "closes": false
+   }
+  },
+  {
+   "id": "TITANIC_MIXED",
+   "layer": "live",
+   "row": "One valid defect plus another unreachable clause (real: TITANIC gen 9)",
+   "exit": 1,
+   "proof": "python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py",
+   "log": "titanic_mixed_20261103T214715Z.log",
+   "expect": {
+    "outcome": "FAIL",
+    "verified": true,
+    "gen_bump": true,
+    "route": "game_fail",
+    "closes": false
+   },
+   "owed": [
+    {
+     "prop": "unresolved_kept",
+     "want": true,
+     "today": false,
+     "by": "LIVE_ROWS_FIX_STOP_GUESSING_LOGS",
+     "note": "the UNMEASURED SITE row (LargePawns.Settings unloaded) is lost beside the FAIL MOD row: a structured per-clause row would carry it (the bank reads row['unresolved']; rename here if LIVE_ROWS names it otherwise)"
+    }
+   ]
+  },
+  {
+   "id": "ABORT_BEFORE_OBSERVATION",
+   "layer": "live",
+   "row": "Proof aborts before observation -> INVALID/UNKNOWN",
+   "exit": 1,
+   "text": "Traceback (most recent call last):\n  File \"probe.py\", line 4, in <module>\n    rows = reply['rows']\nKeyError: 'rows'",
+   "expect": {
+    "outcome": "UNMEASURED",
+    "verified": false,
+    "gen_bump": false,
+    "candidate_kept": true,
+    "closes": false
+   }
+  },
+  {
+   "id": "PASS_TEXT_WITH_STRUCTURED_FAILURE",
+   "layer": "live",
+   "row": "PASS text alongside structured failure -> failure blocks",
+   "exit": 0,
+   "text": "  t3_corpse_becomes_a_harvest_site           FAIL       MOD     sites before=1 after=1\nVERDICT: PASS (5 rows)",
+   "expect": {
+    "verdict": "PASS"
+   },
+   "owed": [
+    {
+     "prop": "closes",
+     "want": false,
+     "today": true,
+     "by": "LIVE_ROWS_FIX_STOP_GUESSING_LOGS",
+     "note": "exit 0 with a `FAIL MOD` row and a later `VERDICT: PASS` line is a verify PASS and a close today: a false close"
+    },
+    {
+     "prop": "outcome",
+     "want": "FAIL",
+     "today": "PASS",
+     "by": "LIVE_ROWS_FIX_STOP_GUESSING_LOGS",
+     "note": "the observed violation must stay blocking whatever the exit code and last verdict line"
+    }
+   ]
+  },
+  {
+   "id": "MISSING_RESULT_ROWS",
+   "layer": "live",
+   "row": "Unexpectedly missing result rows -> incomplete, cannot close",
+   "exit": 0,
+   "text": "  t2_t3_tiers PASS MOD ok\nVERDICT: PASS (5 rows, 6 wanted)",
+   "expect": {},
+   "owed": [
+    {
+     "prop": "closes",
+     "want": false,
+     "today": true,
+     "by": "LIVE_ROWS_FIX_STOP_GUESSING_LOGS",
+     "note": "`PASS (5 rows, 6 wanted)` with exit 0 closes today: incomplete evidence must not close"
+    },
+    {
+     "prop": "outcome",
+     "want": "UNMEASURED",
+     "today": "PASS",
+     "by": "LIVE_ROWS_FIX_STOP_GUESSING_LOGS",
+     "note": "a missing row is incomplete evidence, not a pass"
+    }
+   ]
+  },
+  {
+   "id": "LEANINGSCRUB_NOT_REPRODUCED",
+   "layer": "live",
+   "row": "NOT_REPRODUCED is no attribution (real: LEANINGSCRUB gen 13)",
+   "exit": 1,
+   "proof": "python.exe src/RimMandrake/LeaningScrub/repro_stall_move.py",
+   "log": "leaningscrub_not_reproduced_20261102T205226Z.log",
+   "expect": {
+    "verified": false,
+    "gen_bump": false,
+    "candidate_kept": true,
+    "closes": false
+   },
+   "owed": [
+    {
+     "prop": "outcome",
+     "want": "NOT REPRODUCED",
+     "today": "UNMEASURED",
+     "by": "LIVE_ROWS_FIX_STOP_GUESSING_LOGS",
+     "note": "a healthy run without the symptom is NOT_REPRODUCED, its own outcome, not a dud proof (it ran and observed); today it counts toward the dud cap and returns to a worker as a proof defect"
+    }
+   ]
+  },
+  {
+   "id": "STEVE_SANDBOX_DENIAL",
+   "layer": "check",
+   "row": "Sandbox denial -> UNREACHED, no product strike (real: STEVE_DISK gen 1)",
+   "verdicts": [
+    {
+     "word": "FAIL",
+     "reasons": "Doc clauses hold. The live clause (C: free >=55GB) could not be run from the box: ssh stevedesktop: Bad owner or permissions on /etc/ssh/ssh_config.d"
+    }
+   ],
+   "expect": {
+    "acted": "UNMEASURED",
+    "gen_bump": false,
+    "candidate_kept": true,
+    "route": "candidate",
+    "closes": false
+   }
+  },
+  {
+   "id": "STEVE_SANDBOX_DENIAL_TWICE",
+   "layer": "check",
+   "row": "The same blindness twice -> held for repair of the box, candidate kept",
+   "verdicts": [
+    {
+     "word": "UNMEASURED",
+     "reasons": "x",
+     "unreached": [
+      "ssh stevedesktop: Bad owner or permissions"
+     ]
+    },
+    {
+     "word": "UNMEASURED",
+     "reasons": "x",
+     "unreached": [
+      "ssh stevedesktop: Bad owner or permissions"
+     ]
+    }
+   ],
+   "expect": {
+    "acted": "UNMEASURED",
+    "gen_bump": false,
+    "route": "held",
+    "closes": false,
+    "rewoken": true
+   },
+   "unhold": true
+  },
+  {
+   "id": "STEVE_PROOF_GREPS_TYPED_NUMBER",
+   "layer": "check",
+   "row": "Proof omits its measurement (real: STEVE_DISK gen 7): a proof defect, not a product one",
+   "verdicts": [
+    {
+     "word": "FAIL",
+     "reasons": "Ran the contract proof: exit 0. But the proof only greps a number the worker typed into its own report; no run of it measures anything.",
+     "defects": [
+      "the proof only greps a number the worker typed: it measures nothing"
+     ]
+    }
+   ],
+   "expect": {
+    "acted": "FAIL",
+    "closes": false
+   },
+   "owed": [
+    {
+     "prop": "gen_bump",
+     "want": false,
+     "today": true,
+     "by": "REWORK_GATE_BUILD_BLAME_BEFORE_REBUILD",
+     "note": "a defect of the PROOF (it measures nothing) authorizes proof repair, not a new product generation"
+    },
+    {
+     "prop": "candidate_kept",
+     "want": true,
+     "today": false,
+     "by": "REWORK_GATE_BUILD_BLAME_BEFORE_REBUILD",
+     "note": "the candidate sha is preserved while attribution is pending"
+    }
+   ]
+  },
+  {
+   "id": "CHECK_DEFECT_PLUS_UNREACHED",
+   "layer": "check",
+   "row": "One valid defect plus another unreachable clause (checker)",
+   "verdicts": [
+    {
+     "word": "FAIL",
+     "reasons": "A1 red; A2 unreachable",
+     "defects": [
+      "A1: the report lacks its section"
+     ],
+     "unreached": [
+      "A2: ssh stevedesktop refused"
+     ]
+    }
+   ],
+   "expect": {
+    "acted": "FAIL",
+    "gen_bump": true,
+    "route": "blind_fail",
+    "closes": false
+   },
+   "owed": [
+    {
+     "prop": "unresolved_kept",
+     "want": true,
+     "today": false,
+     "by": "REWORK_GATE_BUILD_BLAME_BEFORE_REBUILD",
+     "note": "the unreached clause must stay on record beside the defect; today only the defect's prose reaches the next worker"
+    }
+   ]
+  },
+  {
+   "id": "CHECK_PASS_WITH_UNREACHED",
+   "layer": "check",
+   "row": "PASS that names evidence it could not reach -> not a close",
+   "verdicts": [
+    {
+     "word": "PASS",
+     "reasons": "A1 ok",
+     "defects": [],
+     "unreached": [
+      "A2: /mnt/d reads empty"
+     ]
+    }
+   ],
+   "expect": {
+    "acted": "UNMEASURED",
+    "gen_bump": false,
+    "candidate_kept": true,
+    "closes": false
+   }
+  },
+  {
+   "id": "CHECK_GOOD",
+   "layer": "check",
+   "row": "Good implementation, valid setup (checker) -> close",
+   "verdicts": [
+    {
+     "word": "PASS",
+     "reasons": "ran it: exit 0",
+     "defects": [],
+     "unreached": []
+    }
+   ],
+   "expect": {
+    "acted": "PASS",
+    "gen_bump": false,
+    "closes": true
+   }
+  }
+ ],
+ "unbuilt": [
+  {
+   "by": "INSTRUMENT_INCIDENT_BUILD_NO_STRIKES",
+   "want": "a shared instrument fault (the STEVE ssh sandbox denial, the TITANIC PATH bug) opens ONE incident, its waiting items are not restaffed, and the repaired incident wakes exactly the waiting candidates",
+   "why_unmeasured": "no incident record exists in the supervisor yet: no instrument can read it; the nearest today is `held` kind unmeasured + unhold (STEVE_SANDBOX_DENIAL_TWICE)"
+  },
+  {
+   "by": "REWORK_GATE_BUILD_BLAME_BEFORE_REBUILD",
+   "want": "an unresolved validation creates diagnostic work with PRODUCT/PROOF/HARNESS/SITE/CONTRACT/CHECKER/DEPENDENCY attribution before any builder lease",
+   "why_unmeasured": "no attribution record exists yet"
+  }
+ ],
+ "doc": "Replay bank (validator_replay.py). Each case: a recorded world, the layer it is handed to, what it must do (expect), and what the spec wants that today's supervisor does not yet do (owed, by item). Sources: <RELENTLESS_ROOT>/live logs copied to logs/ and the item histories in D:\\ClaudeWork\\rimmandrake\\conductor\\test_tolerance_consult\\item_histories.txt (2026-11-04)."
+}
