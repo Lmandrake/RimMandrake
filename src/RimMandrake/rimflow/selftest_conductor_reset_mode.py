@@ -544,6 +544,184 @@ def test_live_schedule():
           "the live tick reads the switch: without this hold is a test-only feature")
 
 
+# --- the blind check at 7065bf11 left mutants green; gen 26 swept 48 and pins each one inside a clause -------------------
+
+def test_ready_fires_whatever_the_window_took_or_left_unpublished():
+    """ready fires at the next ended turn: new work taken and an unpublished shard do not hold it (the next window has them),
+    in decide() and in the kill's own recheck. The same two holds DO stand a goodbye down, so the control is real."""
+    claim = {"seat": "FOUNDRY", "event": "claim", "id": "NEW_TICKET_1", "ts": SR._iso(NOW + 1)}
+    st, s = fresh(), sch()
+    o = window(5_000, RM.READY, ended_at=NOW - 4, work=[claim])
+    o["seat_restart"]["shard"] = lambda seat: "1 line unpublished"
+    a = go(s, st, o)
+    check(fires(a) and st["seat_restart"]["FOUNDRY"]["source"] == "ready",
+          "ready with new work and an unpublished shard: killed at the ended turn (%s)" % dos(a))
+    st = fresh()
+    a = go(s, st, window(HARD + 1, RM.AUTO, work=[claim]), NOW)
+    a = go(s, st, window(HARD + 1, RM.AUTO, work=[claim]), NOW + 60)
+    check(fires(a), "control: a size restart also ignores new work (%s)" % dos(a))
+    tx = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
+    tx.close()
+    sid = "sid-ready-recheck"
+    rs = {"source": "ready", "ts": T0, "session_id": sid, "cancel_after": T0, "now": True}
+    sf = {"sessionId": sid, "pid": 1, "cwd": "/x"}
+    RM.write("FOUNDRY", RM.READY, sid, ROOT)
+    kw = dict(paused=lambda: None, work=lambda *a: [claim], pending=lambda *a: [], shard=lambda *a: "1 line unpublished")
+    old_tp, old_ff = SR.transcript_for, SR.final_fence
+    SR.transcript_for = lambda *a: tx.name
+    SR.final_fence = lambda *a, **k: []
+    try:
+        h = SR.recheck_at_kill("FOUNDRY", s, rs, sf, **kw)
+        check(not any("unpublished" in x or "NEW_TICKET_1" in x for x in h), "ready at the kill: no work or shard hold (%s)" % h)
+        h = SR.recheck_at_kill("FOUNDRY", sch(kind="doorbell"), dict(rs, source="request"), sf, **kw)
+        check(any("unpublished" in x for x in h) and any("NEW_TICKET_1" in x for x in h),
+              "control: an ordinary seat's request at the kill IS held by both (%s)" % h)
+    finally:
+        SR.transcript_for, SR.final_fence = old_tp, old_ff
+        os.remove(RM.path("FOUNDRY", ROOT))
+
+
+def test_ready_is_bound_to_its_window_and_never_loops():
+    s = sch()
+    for label, patch in (("the pid is now another process", {"start": lambda pid: 99}),
+                         ("no reading of his last message", {"last_human": lambda seat, c: None})):
+        st = fresh()
+        o = window(5_000, RM.READY, ended_at=NOW - 4)
+        o["seat_restart"].update(patch)
+        a = go(s, st, o)
+        check(not {"restart_request", "restart_kill"} & set(dos(a)), "ready, %s: nothing armed (%s)" % (label, dos(a)))
+    # a ready restart that failed waits out its cooldown: no kill loop on a window that cannot be restarted
+    st = fresh()
+    st["seat_restart"]["FOUNDRY"] = {"state": "failed", "source": "ready", "ts": NOW - 100, "ended_at": NOW - 10,
+                                     "cooldown_until": NOW + 600, "why": "x"}
+    a = go(s, st, window(5_000, RM.READY, ended_at=NOW - 4))
+    check(not {"restart_request", "restart_kill"} & set(dos(a)), "ready after a failure: held in cooldown (%s)" % dos(a))
+    a = go(s, st, window(5_000, RM.READY, ended_at=NOW + 596), NOW + 601)
+    check("restart_request" in dos(a), "and armed again once the cooldown is over (%s)" % dos(a))
+    # his message the window shows after the one the round was armed from cancels it: the cancel window opens at his
+    # last message, not at the tick
+    st = fresh()
+    o = window(5_000, RM.READY, ended_at=NOW - 4, helpers=[{"id": "h1", "alive": True, "desc": "x", "last_at": NOW}])
+    o["seat_restart"]["tx"] = lambda seat, c: {"ctx_tokens": 5_000, "last_kind": "assistant_end", "last_at": NOW - 4,
+                                               "last_user_at": NOW - 10}
+    a = go(s, st, o)
+    check(st["seat_restart"]["FOUNDRY"].get("cancel_after") == NOW - 300, "the round's cancel window opens at his last message")
+    check(st["seat_restart"]["FOUNDRY"]["state"] == "cancelled" and not fires(a),
+          "a message after that one cancels the round (%s, %s)" % (st["seat_restart"]["FOUNDRY"].get("state"), dos(a)))
+
+
+def test_ceiling_at_the_kill():
+    """Past the safety ceiling hold yields at the kill's recheck too, by size and by time; under it, it holds."""
+    s = sch()
+    tx = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
+    tx.close()
+    sid = "sid-ceil"
+    rs = {"source": "backstop_hard", "hard": True, "ts": T0, "session_id": sid, "cancel_after": T0}
+    sf = {"sessionId": sid, "pid": 1, "cwd": "/x"}
+    kw = dict(paused=lambda: None, work=lambda *a: [], pending=lambda *a: [], shard=lambda *a: None)
+    saved = SR.transcript_for, SR.final_fence, SR.tx_summary, SR.last_human
+    SR.transcript_for = lambda *a: tx.name
+    SR.final_fence = lambda *a, **k: []
+    import time as _t
+    try:
+        for size, mode_age, human_age, holds_, label in ((HARD + 1, 60, 60, True, "under the ceiling"),
+                                                         (CEIL, 60, 60, False, "at the token ceiling"),
+                                                         (HARD + 1, 20000, 20000, False, "4 h with no word since the switch")):
+            SR.tx_summary = lambda *a, size=size, **k: {"ctx_tokens": size, "last_kind": "assistant_end", "last_at": _t.time() - 100,
+                                                         "last_user_at": None}
+            SR.last_human = lambda *a, ha=human_age: (_t.time() - ha, None, None, 0)
+            RM.write("FOUNDRY", RM.HOLD, sid, ROOT, now=_t.time() - mode_age)
+            h = SR.recheck_at_kill("FOUNDRY", s, rs, sf, **kw)
+            check(any("reset switch says hold" in x for x in h) == holds_, "hold at the kill, %s: %s (%s)" % (
+                label, "holds" if holds_ else "yields", h))
+    finally:
+        SR.transcript_for, SR.final_fence, SR.tx_summary, SR.last_human = saved
+        os.remove(RM.path("FOUNDRY", ROOT))
+
+
+def test_only_the_conductor_can_flip_by_command():
+    state = tempfile.mkdtemp(prefix="cr-mode-")
+    home = tempfile.mkdtemp(prefix="cr-home-")
+    env = dict(os.environ, RM_DISPATCHER_STATE=state, CLAUDE_CONFIG_DIR=home)
+
+    def mode(*argv):
+        return subprocess.run([sys.executable, os.path.join(HERE, "seat_restart.py"), "mode"] + list(argv), cwd=REPO, env=env,
+                              capture_output=True, text=True, timeout=60)
+    r = mode("hold", "--seat", "RUNNER", "--session", "sid-x")
+    check(r.returncode == 2 and "REFUSED" in r.stdout and not os.path.exists(RM.path("RUNNER", state)),
+          "another seat has no switch to set (%s %s)" % (r.returncode, r.stdout.strip()))
+    r = mode("hold", "--seat", "BENCH")
+    check(r.returncode == 2 and "which window" in r.stdout and not os.path.exists(RM.path("BENCH", state)),
+          "no window named: refused, never a file for no window (%s %s)" % (r.returncode, r.stdout.strip()))
+    r = mode("hold", "--seat", "BENCH", "--session", "sid-x")
+    check(r.returncode == 0 and RM.read("BENCH", "sid-x", state)["mode"] == RM.HOLD, "control: the Conductor's window is set")
+
+
+def test_only_the_switch_words():
+    for said_ in ("ok", "okay", "yes", "go", "thanks", "sure", "stop", "wait", "reset", "no", "continue"):
+        check(RM.mode_of_words(said_) is None, "%r is an ordinary reply, not the switch" % said_)
+    # a goodbye outranks the switch in the hook: a message that is both closes out and sets nothing
+    with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
+        sch_ = json.load(f)
+    sch_["seat_restart"]["seats"]["BENCH"]["goodbye_phrases"] = list(sch_["seat_restart"]["seats"]["BENCH"].get("goodbye_phrases") or []) + ["hold"]
+    tmp = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False)
+    json.dump(sch_, tmp)
+    tmp.close()
+    p = RM.path("BENCH", ROOT)
+    with contextlib.suppress(OSError):
+        os.remove(p)
+    out = hook("hold", {"CONDUCTOR_GOODBYE_SCHEDULE": tmp.name})
+    check(not os.path.exists(p) and "RESET SWITCH" not in out and out.strip(),
+          "a message that is a goodbye and a switch word is the goodbye (%r)" % out[:120])
+
+
+def test_status_line_says_past_the_ceiling():
+    sl = os.path.join(REPO, "src", "RimMandrake", "Utils", "statusline.py")
+    with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
+        ceil = json.load(f)["seat_restart"]["seats"]["BENCH"]["hold_ceiling_tokens"]
+
+    def line(used):
+        ev = {"session_id": "sid-line", "model": {"id": "x"},
+              "context_window": {"context_window_size": 1_000_000, "used_percentage": 100.0 * used / 1_000_000}}
+        return subprocess.run([sys.executable, sl], input=json.dumps(ev), capture_output=True, text=True,
+                              env=dict(os.environ, AGENT_SEAT="BENCH"), timeout=60).stdout
+    RM.write("BENCH", RM.HOLD, "sid-line", ROOT)
+    try:
+        check("reset HOLD past its ceiling" in line(ceil + 1000), "hold past the token ceiling: the badge says so")
+        check("reset HOLD" in line(ceil - 1000) and "past its ceiling" not in line(ceil - 1000), "under it: plain HOLD")
+        check("past its ceiling" in RM.badge(RM.HOLD, True) and "past" not in RM.badge(RM.HOLD, False), "badge() carries it")
+    finally:
+        os.remove(RM.path("BENCH", ROOT))
+
+
+def test_the_waking_window_is_never_the_dead_one():
+    """last_dead_window passes over the window doing the waking even when no session file says it is alive."""
+    home = tempfile.mkdtemp(prefix="cr-home-")
+    os.makedirs(os.path.join(home, "sessions"))
+    clone = tempfile.mkdtemp(prefix="cr-clone-")
+    old = SR.claude_home
+    SR.claude_home = lambda: home
+    try:
+        write_tx(home, clone, "aaaaaaaa-dead", window_recs("CONDUCTOR", "cli", "THE DEAD WINDOW'S REPLY"), 600)
+        write_tx(home, clone, "bbbbbbbb-me", window_recs("CONDUCTOR", "cli", "THE WAKING WINDOW'S OWN WORDS"), 5)
+        cfg = {"clone": clone, "session_name": "CONDUCTOR"}
+        check("WAKING" in SR.last_dead_window(cfg)[1], "control: with no 'me' the newest transcript is taken")
+        check("DEAD WINDOW" in SR.last_dead_window(cfg, "bbbbbbbb-me")[1], "with 'me' named, the waking window is passed over")
+    finally:
+        SR.claude_home = old
+
+
+def test_handoff_says_when_the_reshow_crashed():
+    """handoff.py --wake runs seat_restart.py last-reply; a crash there is said, never a silent empty block."""
+    d = tempfile.mkdtemp(prefix="cr-site-")
+    with open(os.path.join(d, "sitecustomize.py"), "w") as f:
+        f.write("import os, sys\nif sys.argv and sys.argv[0].endswith('seat_restart.py'):\n    sys.stderr.write('boom')\n    sys.stderr.flush()\n    os._exit(5)\n")
+    env = dict(os.environ, PYTHONPATH=d + os.pathsep + os.environ.get("PYTHONPATH", ""), AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    r = subprocess.run([sys.executable, os.path.join(REPO, "src/RimMandrake/Utils/handoff.py"), "--wake"], cwd=REPO, env=env,
+                       capture_output=True, text=True, timeout=120)
+    check("LAST REPLY: UNMEASURED (exit 5" in r.stdout, "a crashed re-show is said as UNMEASURED with its exit (%s)" % r.stdout[:200])
+
+
 def main():
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):
