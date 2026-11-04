@@ -94,6 +94,24 @@ def companion_stale(res):
         and bool(COMPANION_STALE.search(str(res.get("note") or "")))
 
 
+# STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: modcheck refused because the running load was not the list it composed. The
+# worker names it (harness_cause); a result from before that carries only the clipped tail of load_gap's reasons.
+STALE_LOAD = re.compile(r"the running load is not the composed list|loaded but not composed: |^stale_load\b")
+
+
+def stale_load(res):
+    """-> "repaired" when the result predates the worker's restart onto the composed list (no harness_cause: the
+    worker that wrote it could not restart, the current one does), "unrepaired" when the current worker recorded the
+    cause and still ended INVALID (it restarted and the load did not fit, or modcheck had restored FULL so no restart
+    could help: both repeat, so neither may release a brake), else None."""
+    res = res or {}
+    if res.get("outcome") != "INVALID" or res.get("cause") != "HARNESS":
+        return None
+    if res.get("harness_cause") != "stale_load" and not STALE_LOAD.search(str(res.get("note") or "")):
+        return None
+    return "unrepaired" if res.get("harness_cause") == "stale_load" or res.get("stale_load_bounced") else "repaired"
+
+
 def job_cause(res):
     """-> the cause signature of a job that ended with no sheet to read, or None (DONE, a refusal, a paused lane, a
     stale companion: as a cause it filed a repair item that held every chain the job named, 59 of them, until someone
@@ -101,6 +119,9 @@ def job_cause(res):
     if (res or {}).get("outcome") != "INVALID" or res.get("cause") in NOT_A_FAULT + LANE_CAUSES or companion_stale(res):
         return None
     note = str(res.get("note") or "")
+    if stale_load(res):         # its own repair item, not the catch-all "modcheck exit 1, no sheet" (4E52E202)
+        return "HARNESS: stale_load, the running load is not the composed list%s" % (
+            ", which the worker could not restart away" if stale_load(res) == "unrepaired" else "")
     m = re.match(r"modcheck exit (\S+) and no sheet JSON", note)
     if m:
         err = re.search(r"\b[A-Z]\w*Error\b", note)

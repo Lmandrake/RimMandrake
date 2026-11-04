@@ -1251,7 +1251,7 @@ def companion_unready(job):
 
 def nonfault_cause(rec, windows):
     """-> the recorded non-fault cause of a finished job that was not DONE ("cancel", "maintenance", "machine_down",
-    "companion_stale"), or None: it counts as a fault. A killed job is excused only by a recorded window overlapping its
+    "companion_stale", "stale_load"), or None: it counts as a fault. A killed job is excused only by a recorded window overlapping its
     span, admission to finish (a done record older than `sent` has only its last attempt's stamps). A job the worker
     refused for a companion not built from its sources is a cause the stager (companion_stage.py) fixes by itself, and
     brake_release holds its canary until it has."""
@@ -1261,6 +1261,11 @@ def nonfault_cause(rec, windows):
     import retest
     if retest.companion_stale(res):
         return "companion_stale"
+    if retest.stale_load(res) == "repaired":
+        # STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: the game ran a list other than the one modcheck composed; the worker
+        # now restarts onto the composed list by itself, so the brake's canary is the proof. Once it restarted and the
+        # load still did not fit ("unrepaired"), it is a fault: the steward's ladder and the repair item have it.
+        return "stale_load"
     if not machine_killed(res):
         return None
     try:

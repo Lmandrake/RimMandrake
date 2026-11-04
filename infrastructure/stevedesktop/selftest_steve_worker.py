@@ -74,6 +74,14 @@ if mode == "crash":
 if mode == "no_game":
     print('{"status": "no_game", "message": "No game is currently loaded", "state": {"programState": "Entry"}}')
     print("hasCurrentGame: False mapCount: None -> NOT READY"); sys.exit(1)
+stale_mark = os.path.join(os.environ["TESTQ_HOME"], "mock_stale_once")
+if mode in ("stale", "stale-nokeep") or (mode == "stale-once" and not os.path.exists(stale_mark)):
+    open(stale_mark, "w").close()
+    print("[modcheck] Mock HARNESS UNMEASURED: the running load is not the composed list (restart the game on it): "
+          "not loaded: rw.mod.simplestairs; loaded but not composed: adaptive.storage.framework")
+    if mode != "stale-nokeep":
+        print("STALE_LOAD: Mock: ModsConfig left on the composed list; restart the game on it and run again")
+    sys.exit(1)
 if mode == "fatal":
     print("Windows fatal exception: access violation\n\nThread 0x1: File gate.py line 9 in hash\n" + "x" * 800)
     print("[modcheck] long tail " * 40); sys.exit(5)
@@ -188,6 +196,33 @@ def main():
         rc, o = w(["start"], j, MOCK_MODE="hang", TESTQ_RUN_TIMEOUT_S="2")
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HANG", "hang twice -> INVALID/HANG")
+
+        # 3a. STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the game came up on FULL, modcheck refused the stale load and
+        # left ModsConfig on its composed list; the worker restarts the game onto it once and runs again
+        sdowns = os.path.join(tmp, "stale_downs")
+        rc, o = w(["start"], job(), MOCK_MODE="stale-once", TESTQ_CMD_DOWN="echo down >> %s" % sdowns)
+        res = wait_result(o.get("attempt", "x"))
+        adir = os.path.join(home, "attempts", o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and res.get("retries") == 1 and res.get("harness_cause") == "stale_load"
+              and "simplestairs" in (res.get("stale_load_bounced") or ""),
+              "a stale load -> one restart onto the composed list -> DONE, the cause recorded: %s %s"
+              % (res.get("outcome"), res.get("note")))
+        check(os.path.exists(sdowns) and len(open(sdowns).readlines()) == 1
+              and os.path.exists(os.path.join(adir, "modcheck.stale_load.log")),
+              "the restart stopped the game once and kept the refused run's log")
+        rc, o = w(["start"], job(), MOCK_MODE="stale", TESTQ_CMD_DOWN="echo down >> %s" % (sdowns + "_2"))
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS"
+              and res.get("harness_cause") == "stale_load"
+              and (res.get("note") or "").startswith("stale_load (after a restart"),
+              "stale again after the restart -> INVALID/HARNESS, cause stale_load, unrepaired: %s" % res.get("note"))
+        check(len(open(sdowns + "_2").readlines()) == 1, "only one restart is spent on a stale load")
+        rc, o = w(["start"], job(), MOCK_MODE="stale-nokeep", TESTQ_CMD_DOWN="echo down >> %s" % (sdowns + "_3"))
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("harness_cause") == "stale_load"
+              and not os.path.exists(sdowns + "_3") and "not left on the composed list" in (res.get("note") or ""),
+              "a stale load with the list restored -> INVALID at once, no restart that cannot help: %s"
+              % res.get("note"))
 
         # 3b. a killed game: its lost-reply bridge marker is moot once load starts a fresh game, and only then
         bridge = os.path.join(tmp, "mock_bridge.py")

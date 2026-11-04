@@ -332,6 +332,8 @@ def json_schema():
             "moot_markers": names_free, "bounced_for_markers": names_free,
             "bounced_unresponsive": {"type": "string"}, "recycled_kept_game": {"type": "string"},
             "kept_game_maps": {"type": "integer"},
+            # STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: a known harness condition, named for machines (retest.job_cause)
+            "harness_cause": {"type": "string"}, "stale_load_bounced": {"type": "string"},
         },
         "description": "a non-DONE outcome needs a cause; attempt is <job>.a<n>",
     }

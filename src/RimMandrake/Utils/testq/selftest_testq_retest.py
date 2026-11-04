@@ -138,6 +138,19 @@ def main():
     check(R.job_cause({"outcome": "INVALID", "cause": "BLOCKED_SELECTION", "note": "n"}) is None, "a refused selection is no fault")
     check(R.job_cause({"outcome": "INVALID", "cause": "CANARY", "note": "n"}) is None, "a paused lane has its own finding")
     check(R.job_cause({"outcome": "DONE"}) is None, "DONE has no job cause")
+    # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: a stale load has its own signature, not the no-sheet catch-all
+    old = {"outcome": "INVALID", "cause": "HARNESS",
+           "note": "modcheck exit 1 and no sheet JSON: implestairs; loaded but not composed: adaptive.storage.framework"}
+    new = {"outcome": "INVALID", "cause": "HARNESS", "harness_cause": "stale_load",
+           "note": "stale_load (ModsConfig not left on the composed list, so a restart cannot help): x"}
+    again = dict(new, stale_load_bounced="not loaded: rw.mod.simplestairs")
+    check(R.stale_load(old) == "repaired" and R.stale_load(new) == R.stale_load(again) == "unrepaired",
+          "a stale load from before the worker could restart is repaired; one the worker saw and could not fix is not")
+    check(R.job_cause(old) != R.job_cause(again) and "stale_load" in R.job_cause(old) + R.job_cause(new)
+          and R.job_cause(old) != a, "a stale load is its own cause, apart from the exit-1 no-sheet one: %s" % R.job_cause(old))
+    check(R.stale_load({"outcome": "DONE", "harness_cause": "stale_load", "stale_load_bounced": "x"}) is None
+          and R.stale_load({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5"}) is None,
+          "a DONE run after the restart, or another harness death, is no stale load")
     stale = {"outcome": "INVALID", "cause": "DEPLOY", "note": "companion STALE JawaBench.BridgeTools.dll not built from this job's sources"}
     check(R.companion_stale(stale) and R.job_cause(stale) is None, "a stale companion files no repair and holds no chain")
     other = {"outcome": "INVALID", "cause": "DEPLOY", "note": "sync refused"}

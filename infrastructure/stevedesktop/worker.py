@@ -144,6 +144,10 @@ HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
 PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not mistaken for a wedged one
+# modcheck's refusal when the running load is not the list it composed (runner.verify_loaded_list), and its line saying
+# it left ModsConfig on the composed list for a restart (runner.stale_keep_composed)
+STALE_LOAD_RE = re.compile(r"HARNESS UNMEASURED: the running load is not the composed list[^:]*: (.+)$", re.M)
+STALE_KEPT_RE = re.compile(r"^STALE_LOAD: ", re.M)
 NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer when the game has no current game
 GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException")   # a game that loads but cannot make a world (10-31)
 # STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
@@ -444,7 +448,10 @@ def out(obj, rc=0):
 # The run phase. `--drivers on` (TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS): the suite's external live drivers (FlowWorks
 # thirst_live.py, drawbridge_proof.py, validation_v2.py --live ...) run before the chains they feed, so a sweep or a
 # targeted job measures those rows instead of reading UNMEASURED (modcheck/drivers.py).
-RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY; "
+# STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: this worker owns its game, so a modcheck run refused because the running load is
+# not the list it composed leaves ModsConfig on that list (MODCHECK_STALE_KEEP_COMPOSED) and the worker restarts onto it.
+RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
+            "WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY:MODCHECK_STALE_KEEP_COMPOSED; "
             # -X faulthandler: 0xC0000005 reaches WSL as "exit 5" with no output (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET)
             "python.exe -X faulthandler src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
 
@@ -873,6 +880,9 @@ class Attempt:
             rc, tail = self.sh(cmd, log_name="modcheck.log", timeout=timeout)
             if rc is not None:
                 self.res["modcheck_exit"] = rc
+                stale = self.stale_load()
+                if stale is not None:
+                    return stale
                 ok = self.read_sheet(tail)
                 gone = self.game_gone()
                 if gone:
@@ -903,6 +913,48 @@ class Attempt:
                 return False
             self.phase = "run"
         return False
+
+    def stale_load(self):
+        """STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART. load() starts the game on whatever ModsConfig holds - FULL, which the
+        previous modcheck run restored - and modcheck composes MINIMAL + the mod only afterwards, so the game never ran
+        the composed list. Since MODCHECK_SESSION_FIX_STALE_LIST_ACCEPTED modcheck refuses that (UNMEASURED stale_load):
+        J20261104T065335Z-9652fe and -0b08bb ended "modcheck exit 1 and no sheet JSON" and braked the lane.
+        -> None when modcheck did not refuse a stale load; else the run's result. The repair is automatic and once only:
+        modcheck left ModsConfig on the composed list (STALE_LOAD line), so restart the game onto it and run again. A
+        second refusal, or one modcheck did not leave the list for, ends INVALID/HARNESS with harness_cause stale_load
+        (machine-readable: testq.nonfault_cause excuses only the unrepaired kind, retest.job_cause names it)."""
+        path = os.path.join(self.d, "modcheck.log")
+        text = read_text(path) or ""
+        m = STALE_LOAD_RE.search(text)
+        if not m:
+            return None
+        why = m.group(1).strip()
+        self.res["harness_cause"] = "stale_load"
+        if self.res.get("stale_load_bounced") or not STALE_KEPT_RE.search(text):
+            again = "after a restart onto the composed list" if self.res.get("stale_load_bounced") else \
+                "ModsConfig not left on the composed list, so a restart cannot help"
+            return self.fail("INVALID", "HARNESS", "stale_load (%s): the running load is not the composed list: %s"
+                             % (again, why[:240]))
+        self.res["stale_load_bounced"] = why[:300]
+        try:
+            os.replace(path, os.path.join(self.d, "modcheck.stale_load.log"))
+        except OSError as e:
+            self.say("stale_load: could not set modcheck.log aside (%s)" % e)
+        self.say("stale_load: the game was not running the composed list (%s): restarting it onto that list"
+                 % why[:200])
+        self.res["retries"] += 1
+        self.phase = "restart"
+        self.beat()
+        rc_down, tail_down = self.sh(self.cmd_down(), timeout=300)
+        if rc_down != 0:
+            return self.fail("REFUSED" if refused_line(tail_down) else "INVALID", "HARNESS",
+                             "stale_load: game down for the restart onto the composed list failed: %s"
+                             % (refused_line(tail_down) or (tail_down or "")[-200:]))
+        if not self.load():
+            return False
+        self.phase = "run"
+        self.beat()
+        return self.run_modcheck()
 
     def keep_game_log(self):
         """OPS_STEVE_DIAGNOSE_INVALID_MBTX: the next cold start overwrites Player.log, and a second one its -prev copy,

@@ -1101,6 +1101,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
 
     results = {}
     keep = keep_modlist()
+    stale_load = []             # mods refused because the running load is not the composed list
     try:
         # Inside the try: swap_to_test_list can fail AFTER modlist_swap has applied MINIMAL (e.g. its compose
         # read-back), and that must still restore FULL (MODCHECK_SWAP_FIX_OUTSIDE_TRY).
@@ -1186,6 +1187,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             if stale:
                 why = "UNMEASURED: the running load is not the composed list (restart the game on it): %s" % "; ".join(stale)
                 print("[modcheck] %s HARNESS %s" % (mod_folder, why), file=sys.stderr, flush=True)
+                stale_load.append(mod_folder)
                 results[mod_folder] = {"chains": [], "all_green": False, "findings": [], "refused": why,
                                        "unmeasured": "stale_load", "walk": walk}
                 if sel:
@@ -1276,8 +1278,22 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 raise verify_err
     finally:
         if not dry_run and not keep:
-            restore_full()
+            if stale_load and stale_keep_composed():
+                # STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: the caller owns the game process and restarts it on the list
+                # composed here, so leave ModsConfig on it; FULL comes back at the end of the run that follows.
+                print("STALE_LOAD: %s: ModsConfig left on the composed list; restart the game on it and run again"
+                      % ",".join(stale_load), flush=True)
+            else:
+                restore_full()
     return results
+
+
+def stale_keep_composed():
+    """MODCHECK_STALE_KEEP_COMPOSED=1 (set by the SteveDesktop testq worker, which owns its game): a run refused because
+    the running load is not the composed list (stale_load) does NOT restore FULL, so the caller can restart the game
+    on the composed list and run again. Without it the worker restarted onto FULL, the list every Steve job had been
+    loading before modcheck composed its own (J20261104T065335Z-9652fe, -0b08bb)."""
+    return os.environ.get("MODCHECK_STALE_KEEP_COMPOSED") == "1"
 
 
 def write_sheet(mod, summary):

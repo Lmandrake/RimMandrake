@@ -58,7 +58,7 @@ class ReachedSuite(Exception):
     pass
 
 
-def attempt(running, config_ids, keep=False):
+def attempt(running, config_ids, keep=False, keep_composed=False, restores=None):
     """run() with one toy mod, a ModsConfig holding config_ids and a game whose running load is `running`.
     -> (results or None, reached_suite, record_run calls, bridge calls, sheets written)."""
     cfg = write_config(config_ids)
@@ -78,7 +78,8 @@ def attempt(running, config_ids, keep=False):
     def reached():
         raise ReachedSuite()
 
-    stubs = dict(swap_to_test_list=lambda *a, **k: None, restore_full=lambda *a, **k: None,
+    stubs = dict(swap_to_test_list=lambda *a, **k: None,
+                 restore_full=lambda *a, **k: (restores if restores is not None else []).append(1),
                  compose_test_list=lambda *a, **k: [], find_mod_dir=lambda m: "/nonexistent/" + m,
                  composed_into=lambda m: None, mod_dependency_ids=lambda d: ["toy.dep"],
                  mod_package_id=lambda d: TOY, closure_ids=lambda m, f: [],
@@ -87,11 +88,15 @@ def attempt(running, config_ids, keep=False):
                  ensure_playing_map=lambda *a, **k: "playing", ensure_test_profile=reached,
                  write_sheet=lambda m, s: sheets.append((m, s)) or "/tmp/sheet.html")
     real = {n: getattr(runner, n) for n in stubs}
-    env_saved = {k: os.environ.get(k) for k in ("MODCHECK_KEEP_MODLIST", "MODCHECK_SKIP_DEPLOY")}
+    env_saved = {k: os.environ.get(k) for k in ("MODCHECK_KEEP_MODLIST", "MODCHECK_SKIP_DEPLOY",
+                                                "MODCHECK_STALE_KEEP_COMPOSED")}
     os.environ["MODCHECK_SKIP_DEPLOY"] = "1"
     os.environ.pop("MODCHECK_KEEP_MODLIST", None)
     if keep:
         os.environ["MODCHECK_KEEP_MODLIST"] = "1"
+    os.environ.pop("MODCHECK_STALE_KEEP_COMPOSED", None)
+    if keep_composed:
+        os.environ["MODCHECK_STALE_KEEP_COMPOSED"] = "1"
     for n, f in stubs.items():
         setattr(runner, n, f)
     res, hit = None, False
@@ -161,6 +166,22 @@ ok(not hit and "not loaded: %s" % TOY in res["ToyMod"].get("refused", ""),
 ok(runner.load_gap(["a", "member"], {"a", "composed"}, exact=True, alias={"member": "composed"}) == [],
    "load_gap: folded member satisfied by its composed mod")
 ok(runner.load_gap(["a"], None, exact=True) != [], "load_gap: unread running load is a gap")
+
+# 8. STEVE_LANE_FIX_STALE_LOAD_AUTO_RESTART: the caller that owns the game asks run() to leave ModsConfig on the composed
+#    list when it refuses stale_load, so a restart loads it; otherwise FULL is restored as always
+import contextlib, io  # noqa: E402,E401
+for keep_c, want_restore in ((False, 1), (True, 0)):
+    restores, buf = [], io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        attempt(FULL, composed, keep_composed=keep_c, restores=restores)
+    ok(len(restores) == want_restore, "stale load, MODCHECK_STALE_KEEP_COMPOSED=%d: restore_full called %d time(s)"
+       % (keep_c, want_restore), restores)
+    ok(("STALE_LOAD: ToyMod:" in buf.getvalue()) == keep_c,
+       "stale load, keep composed=%d: the STALE_LOAD line %s" % (keep_c, "printed" if keep_c else "absent"),
+       buf.getvalue())
+restores = []
+attempt(list(composed), composed, keep_composed=True, restores=restores)
+ok(restores == [1], "load fits, keep composed set: FULL still restored (only a stale refusal keeps the list)", restores)
 
 print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
 sys.exit(1 if FAILS else 0)

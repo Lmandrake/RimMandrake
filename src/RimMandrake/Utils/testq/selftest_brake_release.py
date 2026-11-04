@@ -123,6 +123,11 @@ def main():
           "admitted in the window, the record finished after it: its span overlaps")
     for oc in (("INVALID", "DEPLOY"), ("REFUSED", "SYNC"), ("INVALID", "CANARY"), ("INVALID", "HARNESS")):
         check(T.nonfault_cause(rec(oc[0], oc[1], day + 500), wins) is None, "%s/%s inside a window is still the lane's fault" % oc)
+    sl = rec("INVALID", "HARNESS", day + 5000)
+    sl["result"]["note"] = "modcheck exit 1 and no sheet JSON: implestairs; loaded but not composed: a.b"
+    check(T.nonfault_cause(sl, []) == "stale_load", "a stale load the worker now restarts away is a known cause")
+    sl["result"]["stale_load_bounced"] = "not loaded: a.b"
+    check(T.nonfault_cause(sl, []) is None, "a stale load that outlived the restart is the lane's fault")
     check(T.nonfault_cause(rec("INTERRUPTED", "CRASH", day + 500, finished="garbage"), wins) is None,
           "an unreadable stamp excuses nothing")
     with open(T.q("lane_windows.jsonl"), "w") as f:
