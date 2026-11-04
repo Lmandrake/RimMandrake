@@ -337,3 +337,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET A1 (L2), read-only proof","ts":"2026-11-04T14:15:14Z","tsn":1793801714355569698}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:15:25Z","tsn":1793801725489031742}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T14:20:07Z","tsn":1793802007250528130}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T14:30:17Z","tsn":1793802617271150689}
