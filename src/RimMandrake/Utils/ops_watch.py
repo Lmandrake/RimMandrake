@@ -938,7 +938,21 @@ def c_testing(now, rules, ctx):
         out["testing.nothing_h_7d"] = U("a part is UNMEASURED: " + "; ".join(p.get("why", "") for p in parts
                                                                               if p["m"] != "MEASURED"))
     out.update(nightly_news(now, ctx))
+    out.update(nightly_catchup_reading())
     return out
+
+
+def nightly_catchup_reading():
+    """nightly_catchup.py's verdict: 1 when a night stopped being retried, so what the nightly feeds is reading an old night.
+    Its age is deadman_check's; a reading that cannot be read holds the alarm."""
+    p = ops_dir() / "nightly_catchup.json"
+    try:
+        r = json.loads(p.read_text(encoding="utf-8"))
+        st = r["state"]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return {"testing.nightly_gave_up": U("%s: %s" % (type(e).__name__, str(e)[:160]))}
+    return {"testing.nightly_gave_up": M(1 if st in ("gave_up", "start_failed") else 0, "nights the sweep stopped being retried",
+                                         night=r.get("night"), said=r.get("why", ""))}
 
 
 def nightly_news(now, ctx):

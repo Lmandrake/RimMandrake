@@ -1,0 +1,10 @@
+[Unit]
+Description=RimMandrake nightly sweep catch-up, after boot and hourly
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=1h
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

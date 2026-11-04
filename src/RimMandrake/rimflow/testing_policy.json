@@ -77,6 +77,13 @@
    "provenance": "C",
    "signal": "owner only"
   },
+  "selftest.nightly_catchup_attempts": {
+   "value": 3,
+   "unit": "sweeps tried per night, the scheduled one included, before nightly_catchup.py alarms instead",
+   "why": "NIGHTLY_SWEEP_HARDEN_DIED_AT_SIXTY: a killed sweep re-runs on its own, but one that keeps dying must not be restarted for ever",
+   "provenance": "A",
+   "signal": "raise if a night gives up on restarts alone; lower if repeated tries hurt the machine"
+  },
   "selftest.per_test_timeout_s": {
    "value": 240,
    "unit": "seconds (a `# selftest-timeout: N` tag overrides per file)",

@@ -1,0 +1,14 @@
+# A nightly sweep that did not finish runs again (nightly_catchup.py). Persistent= on the nightly timer cannot do this:
+# it sees a fire that was missed, not a run that was killed. Starts the sweep's own unit, so the log and the rest are one path.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-selftests-nightly-catchup.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-selftests-nightly-catchup.timer
+[Unit]
+Description=RimMandrake nightly sweep catch-up (re-run a sweep that did not finish)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/nightly_catchup.py run
+Nice=10
+MemoryMax=256M
+TimeoutStartSec=180s
