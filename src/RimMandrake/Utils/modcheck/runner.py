@@ -1043,9 +1043,11 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
 
     results = {}
     keep = keep_modlist()
-    if not dry_run and not keep:
-        swap_to_test_list()
     try:
+        # Inside the try: swap_to_test_list can fail AFTER modlist_swap has applied MINIMAL (e.g. its compose
+        # read-back), and that must still restore FULL (MODCHECK_SWAP_FIX_OUTSIDE_TRY).
+        if not dry_run and not keep:
+            swap_to_test_list()
         if not dry_run:
             # Deploy each mod, THEN compose its packageId into the live
             # list: ModsConfig names the next load only, and RimWorld
