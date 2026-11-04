@@ -48,7 +48,7 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "If you say WEAK, begin the reasons with GAP:DIFF when a gap you showed is a part of this commit's own change "
     "that you put back as it was before the commit while the proof stayed green, and that part does what a clause "
     "asks; begin with GAP:OTHER when every gap you showed is something else, such as a mutant you wrote yourself.")
-SHADOW = "narrow_weak_1"   # RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE: what the narrower WEAK would have said, recorded only
+SHADOW = "narrow_weak_1"   # RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE: the narrower WEAK, recorded per verdict; LIVE since 2026-11-03 (acted_weak)
 
 
 def narrow_word(word, reasons):
@@ -383,7 +383,7 @@ def defect_said(reasons):
 def read_as(word, reasons, defects=None, unreached=None):
     """-> (word the supervisor acts on, the blind words or None). Structured (defects / unreached lists, the verdict script's
     own fields): any observed defect is FAIL whatever the word; otherwise any unreached evidence is UNMEASURED - under PASS
-    too (GPT round 2: a PASS that names evidence it could not reach is not a close). WEAK keeps its word: it closes nothing.
+    too (GPT round 2: a PASS that names evidence it could not reach is not a close). A WEAK is read by acted_weak: only GAP:DIFF holds.
     Old format (both None): the prose, biased to FAIL - a defect named anywhere keeps or makes it FAIL, even under UNMEASURED."""
     if defects is not None or unreached is not None:
         defects, unreached = clean_list(defects) or [], clean_list(unreached) or []
@@ -393,7 +393,7 @@ def read_as(word, reasons, defects=None, unreached=None):
             return UNMEASURED, "; ".join(unreached)[:600]
         if word == UNMEASURED:      # the script refuses this; a hand-written file is read as prose
             return read_as(word, reasons)
-        return word, None
+        return acted_weak(word, reasons), None
     if word == UNMEASURED:
         if defect_said(reasons):
             return "FAIL", None
@@ -402,7 +402,15 @@ def read_as(word, reasons, defects=None, unreached=None):
         b = blind_reason(reasons)
         if b and not defect_said(reasons):
             return UNMEASURED, b
-    return word, None
+    return acted_weak(word, reasons), None
+
+
+def acted_weak(word, reasons):
+    """The narrower WEAK is the live rule (owner by card 2026-11-03, "Narrow it now": 172 of 207 shadowed WEAKs were
+    PASS under it). A WEAK holds only on GAP:DIFF, a hunk of this commit's own change put back with the proof still
+    green; GAP:OTHER (a mutant the checker wrote elsewhere) is a PASS; an untagged WEAK stays WEAK, never guessed."""
+    n = narrow_word(word, reasons)
+    return "WEAK" if n == "UNTAGGED" else n
 
 
 # ---- off-box measurements: a contract's `offbox` ADAPTER NAMES. Each name is a fixed command in relentless_rules.json

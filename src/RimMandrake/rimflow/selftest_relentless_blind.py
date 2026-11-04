@@ -68,6 +68,11 @@ def t_classifier():
     ok(W.read_as("UNMEASURED", "CANNOT REACH: ssh stevedesktop exit 255")[0] == W.UNMEASURED, "the word itself stands")
     ok(W.read_as("WEAK", STEVE_G1) == ("WEAK", None), "only FAIL is re-read: a WEAK is the Marker's call on the proof")
     ok(W.read_as("PASS", STEVE_G1) == ("PASS", None), "a PASS is never re-read")
+    # the narrower WEAK is live (owner by card 2026-11-03, "Narrow it now")
+    ok(W.read_as("WEAK", "GAP:OTHER. my own mutant of the parser stays green") == ("PASS", None), "GAP:OTHER is a PASS")
+    ok(W.read_as("WEAK", "GAP:DIFF. reverting the commit's guard stays green") == ("WEAK", None), "GAP:DIFF holds")
+    ok(W.read_as("WEAK", "GAP:OTHER", [], []) == ("PASS", None), "GAP:OTHER is a PASS, structured too")
+    ok(W.read_as("WEAK", "GAP:OTHER", ["row 7 is dropped"], []) == ("FAIL", None), "a defect still beats a GAP:OTHER")
     ok(W.UNMEASURED in W.WORDS and "UNMEASURED" in W.VERDICT_SCRIPT, "the box's verdict script takes the word")
     ok(any("UNMEASURED" in line and "not a FAIL" in line for line in W.RULE), "the rule says inability is no FAIL")
     # F2: old-format prose is biased to FAIL when a defect is named
