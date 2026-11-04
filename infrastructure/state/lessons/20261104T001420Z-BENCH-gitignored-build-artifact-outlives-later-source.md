@@ -1,0 +1,1 @@
+A gitignored build artifact outlives later source edits; a selftest comparing it with source must first prove it is a build of those sources (companion_identity.verdict), else report UNMEASURED: a stale JawaBench DLL read as three lost tools (NIGHTLY_COP_FIX_RED_INLFTF_XEWJ).

@@ -33,6 +33,13 @@ guaranteed to exist in every checkout or CI box. When it is missing this
 SKIPS (exit 2) rather than failing the whole suite; run
 `python.exe src/RimMandrake/bridgetools/build.py --gm` first to produce one.
 
+A built DLL is gitignored and outlives every later source edit, so it must be a
+build OF THESE SOURCES before the comparison means anything. The DLL embeds the
+hash of the sources it was compiled from (companion_identity.py); a different or
+absent hash is UNMEASURED, because "absent from DLL" would only say the tree moved
+after the last build (NIGHTLY_COP_FIX_RED_INLFTF_XEWJ: a Nov 1 DLL against three
+tools added Nov 3 read as FAIL). selftest_tool_metadata_stale.py pins all of this.
+
     python3 src/RimMandrake/bridgetools/selftest_tool_metadata.py
 """
 import glob
@@ -42,7 +49,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import build            # noqa: E402  (GM_TOOLS, ARTIFACT_DIR, DLL_NAME)
+import build            # noqa: E402  (GM_TOOLS, ARTIFACT_DIR, DLL_NAME, REPO_ROOT)
+import companion_identity  # noqa: E402
 import tool_metadata     # noqa: E402
 
 SOURCE_DIR = os.path.join(HERE, "JawaBench.BridgeTools")
@@ -105,7 +113,8 @@ def gm_gated_names_from_source(source_dir):
     return gated
 
 
-def main():
+def main(dll_path=DLL_PATH, want_hash=None, read_dll=tool_metadata.tool_names_from_dll):
+    """`want_hash` and `read_dll` exist for selftest_tool_metadata_stale.py's fixtures."""
     if not os.path.isdir(SOURCE_DIR):
         print("FAIL - source dir not found: %s" % SOURCE_DIR)
         return 1
@@ -118,7 +127,7 @@ def main():
               "the regex or the source path is broken, not the roster")
         return 1
 
-    if not os.path.exists(DLL_PATH):
+    if not os.path.exists(dll_path):
         # DETERMINISM_ASSESSMENT.md SS11a (item 4): a missing companion DLL is a
         # Windows-toolchain absence, not a failure of this test -- `run_selftests.py`
         # only reads that distinction from the exact phrase below (never from the exit
@@ -130,10 +139,21 @@ def main():
               "  run: python.exe %s --gm\n"
               "  needs the user-local Windows-side .NET SDK (see CLAUDE.md's C# "
               "build toolchain note); UNMEASURED, not a pass or a fail"
-              % (DLL_PATH, os.path.join(HERE, "build.py")), file=sys.stderr)
+              % (dll_path, os.path.join(HERE, "build.py")), file=sys.stderr)
         return 2
 
-    dll_set = tool_metadata.tool_names_from_dll(DLL_PATH)
+    if want_hash is None:
+        want_hash = companion_identity.srchash_worktree(build.REPO_ROOT)
+    fresh = companion_identity.verdict(dll_path, build.REPO_ROOT, None, want=want_hash or "")
+    if not want_hash or fresh["state"] != "FRESH":
+        print("SKIP - the local build is not a build of these sources: %s\n"
+              "  run: python.exe %s --gm\n"
+              "  comparing it would only report how far the tree moved since it was built; "
+              "UNMEASURED, not a pass or a fail"
+              % (companion_identity.describe(fresh), os.path.join(HERE, "build.py")), file=sys.stderr)
+        return 2
+
+    dll_set = read_dll(dll_path)
     if not dll_set:
         print("FAIL - metadata read found zero tools in a real DLL -- "
               "the reader is broken, not the roster")
