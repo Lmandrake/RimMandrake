@@ -4006,6 +4006,14 @@ def t_review_wrong_verdicts_two():
     st = {"item": "I", "proof_only": {"sha": "A"}, "contract": {"proof": "python selftest_engine.py"}}
     k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
     ok(k == "proof_rework", "engine.py is not named by 'selftest_engine.py'")
+    # proof scripts by this project's own names are proof, not rework (six items held on them, 2026-11-04)
+    for pf in ("src/M/prove_x.py", "src/M/x_live_proof.py", "src/M/stage_proof_site.py", "src/M/validation.py",
+               "src/M/Source/SelfTest/XChecks.cs"):
+        FxC.changed = lambda self, b, s, i, pf=pf: [pf]
+        k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
+        ok(k is None, "%s is a proof path" % pf)
+    FxC.changed = lambda self, b, s, i: ["src/M/Source/XComp.cs"]
+    ok(R.proof_gate(FxC(), RULES, st, {"sha": "B"})[0] == "proof_rework", "mod code beside a SelfTest dir is still rework")
     # yesterday's damaged record, or a day record of the wrong shape, blocks spending
     x = Rig(n=1, share=1.0)
     with open(x.s.p("spend-%s.json" % R.day_key(x.now - 86400)), "w") as f:

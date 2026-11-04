@@ -15,7 +15,7 @@
   "_pool_parked_lists": "A list item the owner parked work on -> the ids it parks; the list item and every id are out of the line (relentless.parked_ids, asked by eligible, fill, retire and expedite). The paint list: his card 2026-10-09, WARSCAR_PILGRIM_CAMP_SITES_1 'done at the final world painting, not before'. Whoever adds an item to a paint list adds its id here; when the list item closes, delete its key. RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED: the filler staffed WARSCAR_PILGRIM_CAMP_SITES_1 off it.",
   "pool_parked_lists": {"BIOME_PAINT_ONCE_AT_THE_END_1": ["WARSCAR_PILGRIM_CAMP_SITES_1"]},
   "_proof_paths": "What a proof-only worker may land after a WEAK, as regexes on repo paths; a path the contract names counts too. Anything else is code and is refused without spending a Marker.",
-  "proof_paths": ["(^|/)selftest_[^/]*$", "(^|/)test_[^/]*$", "(^|/)tests?/", "(^|/)testdata/", "^infrastructure/state/", "^conversations/"],
+  "proof_paths": ["(^|/)selftest_[^/]*$", "(^|/)test_[^/]*$", "(^|/)tests?/", "(^|/)testdata/", "^infrastructure/state/", "^conversations/", "(^|/)prove_[^/]*\\.py$", "(^|/)[^/]*_proof[^/]*\\.py$", "(^|/)stage_proof_[^/]*\\.py$", "(^|/)validation[^/]*\\.py$", "(^|/)SelfTest/"],
   "enrol_per_tick": 2,
   "max_queued": 8,
   "max_workers": 8,
