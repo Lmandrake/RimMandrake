@@ -138,3 +138,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:10:50Z","tsn":1793761850957522075}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS A1 (L2), read-only proof","ts":"2026-11-04T03:11:50Z","tsn":1793761910381265319}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:11:56Z","tsn":1793761916408781913}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T03:15:27Z","tsn":1793762127480107617}
