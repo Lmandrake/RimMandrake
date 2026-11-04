@@ -992,7 +992,8 @@ def default_obs(sch, events_since, now_fn=time.time):
         "clones": seat_clones,
         "refused": lambda seat: _read_json(refused_path(seat)),
         "mode": lambda seat, s: read_mode(seat, s.get("sessionId")),
-        "pending": lambda seat, s: (background_holds(s.get("pid")) if cfgs[seat].get("kind") == "conductor" else
+        "pending": lambda seat, s: (conductor_holds(s.get("pid"), transcript_for(s, cfgs[seat]))
+                                    if cfgs[seat].get("kind") == "conductor" else
                                     pending_holds(seat, s.get("pid"), transcript_for(s, cfgs[seat]))),
     }
 
@@ -2239,9 +2240,12 @@ def execute(a, sch, st, apply, now, fx=None):
 
 
 def _log_after_goodbye(seat, cfg, rs):
-    """Whatever he sent after his goodbye, into the Conductor log the next window reads. The wake replays it too."""
+    """Whatever he sent after his goodbye, into the Conductor log the next window reads. The wake replays it too.
+    His prompts still in the queue count: one queued in the goodbye's own running turn sits before the cursor
+    (CONDUCTOR_GOODBYE_FIX_QUEUED_WAIT_SKIPPED)."""
     try:
-        msgs = human_since_offset(rs.get("tx_path"), rs.get("tx_offset")) or []
+        path = rs.get("tx_path")
+        msgs = (human_since_offset(path, rs.get("tx_offset")) or []) + (undelivered(path) if path else [])
         note = "\n".join("- " + " ".join(_text(r).split()) for r in msgs)
         append_seat_log(seat, "AFTER GOODBYE", note, cfg=cfg)
     except Exception:  # noqa: BLE001 - the window is already dead; the wake still reads these from the transcript
@@ -2321,19 +2325,31 @@ def _cmdline(pid, proc="/proc"):
     return "`%s`" % " ".join(body.split())[:120]
 
 
+def queue_holds(path):
+    """-> ["a queued prompt was never delivered"] while an input waits in the window's queue, [] when none, a hold when
+    unreadable. Read from byte 0, never from a cursor: a wait queued in the same running turn as the goodbye sits BEFORE
+    the cursor that binds past the goodbye's delivery (CONDUCTOR_GOODBYE_FIX_QUEUED_WAIT_SKIPPED)."""
+    if not path:
+        return []
+    try:
+        return ["a queued prompt was never delivered"] if queue_depth(path) else []
+    except (OSError, Malformed):
+        return ["queued prompts UNMEASURED"]
+
+
+def conductor_holds(pid, path):
+    """-> holds for a Conductor window on any restart but a goodbye (a goodbye waits for neither: _goodbye): a
+    background command still running, an input queued and not yet taken. No doorbell inbox: it has none."""
+    return background_holds(pid) + queue_holds(path)
+
+
 def pending_holds(seat, pid, path, root=None):
     """-> holds for a doorbell seat's window: a message waiting in its inbox, an input queued and not yet taken,
     a background command still running. [] = none; each unreadable reading is itself a hold."""
     holds = []
     if os.path.exists(doorbell.inbox_path(seat, root)):
         holds.append("a doorbell message waits in the inbox")
-    if path:
-        try:
-            if queue_depth(path):
-                holds.append("a queued prompt was never delivered")
-        except (OSError, Malformed):
-            holds.append("queued prompts UNMEASURED")
-    return holds + background_holds(pid)
+    return holds + queue_holds(path) + background_holds(pid)
 
 
 def final_fence(seat, sch, rs, sf, path=None, now=None):
@@ -2404,7 +2420,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         elif rs.get("source") in FORCED and size < _size_line(cfg, rs):
             holds.append("context fell to %d tokens" % size)
     if not goodbye:
-        holds += pending(seat, sf.get("pid"), path) if cfg.get("kind") != "conductor" else background_holds(sf.get("pid"))
+        holds += pending(seat, sf.get("pid"), path) if cfg.get("kind") != "conductor" else conductor_holds(sf.get("pid"), path)
     holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path)
     hs = helpers_of(path, time.time(), cfg.get("helper_stale_s"))
     if hs is None:
