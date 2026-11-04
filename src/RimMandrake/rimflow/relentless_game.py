@@ -299,7 +299,7 @@ def void_rows(root, item, sha, why, now):
     p = os.path.join(root, "live", "runs.jsonl")
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "a", encoding="utf-8") as f:
-        f.write(json.dumps({"item": item, "sha": sha, "void": True, "at": now, "why": (why or "")[:300]}) + "\n")
+        f.write(json.dumps({"item": item, "sha": sha, "void": True, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "why": (why or "")[:300]}) + "\n")
 
 
 def outcomes(rows, item, sha, clauses):

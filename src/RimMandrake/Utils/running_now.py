@@ -388,6 +388,11 @@ def iso_epoch(t):
     return calendar.timegm(time.strptime(t, "%Y-%m-%dT%H:%M:%SZ"))
 
 
+def run_at(t):
+    """A live/runs.jsonl `at`: void rows before 2026-11-04 carried epoch seconds."""
+    return t if isinstance(t, (int, float)) else iso_epoch(t)
+
+
 def tokens(n):
     if not n:
         return "0"
@@ -688,7 +693,7 @@ def collect_game_idle(env, now, waiting):
     for i, line in enumerate(lines):
         try:
             d = json.loads(line)
-            at = iso_epoch(d["at"])
+            at = run_at(d["at"])
         except (ValueError, KeyError, TypeError):
             if (i == 0 and cut_off) or (i == len(lines) - 1 and not text.endswith("\n")):
                 continue
@@ -869,11 +874,13 @@ def collect_archmagi_live(env, now, items, hist):
     for i, line in enumerate(lines):
         try:
             d = json.loads(line)
-            at = iso_epoch(d["at"])
+            at = run_at(d["at"])
         except (ValueError, KeyError, TypeError):
             if i == len(lines) - 1 and not text.endswith("\n"):
                 continue
             raise Unmeasured("runs.jsonl line %d is broken" % (i + 1))
+        if d.get("void"):     # a void row ends earlier rows (relentless_game.void_rows); it is not a run
+            continue
         first = at if first is None else min(first, at)
         k = int((now - at) // 86400)
         if 0 <= k <= USUAL_DAYS:
