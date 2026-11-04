@@ -326,16 +326,20 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> bool | None:
     if ts is None or not cid:
         return False
     ev = r.get("ev")
-    if ev == "start":
-        E.con.execute("INSERT OR IGNORE INTO bridge_calls(cid,ts,tool,mutating,script,seat,run,client) "
-                      "VALUES(?,?,?,?,?,?,?,?)",
+    if ev == "start":   # an end that arrived first parked a row with ts NULL: the start fills it, never twice
+        E.con.execute("INSERT INTO bridge_calls(cid,ts,tool,mutating,script,seat,run,client) VALUES(?,?,?,?,?,?,?,?) "
+                      "ON CONFLICT(cid) DO UPDATE SET ts=excluded.ts, tool=excluded.tool, mutating=excluded.mutating, "
+                      "script=excluded.script, seat=excluded.seat, run=excluded.run, client=excluded.client "
+                      "WHERE bridge_calls.ts IS NULL",
                       (cid, ts, r.get("tool"), 1 if r.get("mutating") else 0, r.get("script"), r.get("seat"),
                        r.get("run"), r.get("client")))
-    elif ev == "end":
-        E.con.execute("UPDATE bridge_calls SET ts_end=?, ms=?, status=?, success=? WHERE cid=?",
-                      (ts, r.get("ms"), r.get("status"), _succ(r.get("success")), cid))
+    elif ev == "end":   # an end with no start yet (files drain oldest first, so only a lost start) parks its row
+        E.con.execute("INSERT INTO bridge_calls(cid,ts_end,ms,status,success) VALUES(?,?,?,?,?) "
+                      "ON CONFLICT(cid) DO UPDATE SET ts_end=excluded.ts_end, ms=excluded.ms, status=excluded.status, "
+                      "success=excluded.success",
+                      (cid, ts, r.get("ms"), r.get("status"), _succ(r.get("success"))))
         row = E.con.execute("SELECT tool FROM bridge_calls WHERE cid=?", (cid,)).fetchone()
-        tool = row[0] if row else "?"
+        tool = (row[0] if row else None) or "?"     # a parked end has no tool yet
         b = (int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool)
         a = _BRIDGE_OPEN.setdefault(b, [0, 0.0, 0.0, 0])
         ms = _num(r.get("ms"))
@@ -481,8 +485,9 @@ class Source:
     """A parser returns False when it refuses a row (wrong shape, no usable time): the row then never reads as fresh.
     Any other return (None) means it took the row."""
 
-    def __init__(self, name, pattern_fn, parser, fast=False, archive=True, desc="", rate="", producer=""):
-        self.name, self.pattern_fn, self.parser = name, pattern_fn, parser
+    def __init__(self, name, pattern_fn, parser, fast=False, archive=True, desc="", rate="", producer="",
+                 ordered=False):
+        self.name, self.pattern_fn, self.parser, self.ordered = name, pattern_fn, parser, ordered
         self.fast, self.archive, self.desc, self.rate, self.producer = fast, archive, desc, rate, producer
 
     def files(self) -> list[str]:
@@ -506,7 +511,7 @@ def make_sources() -> list[Source]:
         Source("health", lambda: [_j(jb, "health", "observer_*.jsonl")], parse_health,
                desc="health_observer.py: game CPU/main thread/memory, sys memory, log growth",
                rate="5 s game up, 30 s idle", producer="health_observer.py"),
-        Source("bridge", lambda: [c["bridge_calls"], c["bridge_calls"] + ".1"], parse_bridge, fast=True,
+        Source("bridge", lambda: [c["bridge_calls"], c["bridge_calls"] + ".1"], parse_bridge, fast=True, ordered=True,
                desc="rimbridge_client per-call evidence; per-call rows -> SQLite, 10 s aggregates -> VM",
                rate="per bridge call", producer="rimbridge_client.py _evidence"),
         Source("artpipe", lambda: [_j(c["artpipe"], "throughput.jsonl"), _j(c["artpipe"], "registry.jsonl")],
@@ -567,7 +572,8 @@ class Tailer:
                         continue
                     f.seek(off)
                     chunk = f.read(min(MAX_READ, st.st_size - off))
-                    backlog = backlog or st.st_size - off > MAX_READ
+                    partial = st.st_size - off > MAX_READ
+                    backlog = backlog or partial
             except FileNotFoundError:
                 continue
             except OSError as e:
@@ -611,6 +617,8 @@ class Tailer:
             self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done) VALUES(?,?,?,?,?,?,?)",
                              (src.name, key, path, off + len(chunk), st.st_size, st.st_mtime,
                               max(done, off + len(chunk))))
+            if partial and src.ordered:     # an older file still has a backlog: newer files wait for the next pass,
+                break                       # or a call's end (live file) lands before its start (the .1 tail)
         if src.name == "bridge" and not backlog:    # a pass with nothing new: the calls stopped, close what the
             flush_bridge_buckets(E, now=time.time() if n == 0 else None)    # clock left. A backlog flushes once drained
         stt["rows"] += n

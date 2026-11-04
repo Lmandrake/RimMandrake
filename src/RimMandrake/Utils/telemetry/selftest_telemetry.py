@@ -11,6 +11,9 @@ Lessons written into this script (debug_process.md: a check for each, plus the f
     mis-files the row (an incident read as kind "stall"). The ingest keeps the first.            [kind]
   * bridge_calls rotates by rename (.jsonl -> .1). Cursors keyed by path re-read the renamed file;
     keyed by inode they follow it.                                                              [rotate]
+  * A .1 backlog bigger than MAX_READ, read in the same pass as the live file, delivered a call's end before
+    its start (bucket tool '?', then an unfinished call). Ordered sources stop at a partial file; an end
+    that still comes first parks its row and the late start fills it.                              [order]
   * A paused window has tps 0 and tickMs 0: those are "did not tick", not zero speed. Not emitted. [paused]
   * FALSE THEORY: "Grafana windows come from the browser". They came from DETACHED_PROCESS: a detached
     parent has no console, so each gpx_* plugin child opened its own visible console. --live checks
@@ -228,6 +231,38 @@ def main(argv) -> int:
               u == {"u1": None, "u2": None} and not _ing.bridge_failed(None, "ok") and _ing.bridge_failed(None, "error")
               and _ing.bridge_failed(0, "ok") and not _ing.bridge_failed(1, "ok"), u)
 
+        # [order] a rotated .1 holding a backlog past MAX_READ: the starts sit in .1's unread tail, the ends in the live
+        # file. Reading the live file in the same pass delivered each end first (tool '?', then an unfinished call).
+        # The old .1 stays open until the new live file exists: ext4 would hand the freed inode to the new file and it
+        # would inherit the dead file's cursor (a fixture artifact; NTFS file ids carry a reuse sequence number).
+        with open(bc + ".1", "rb"):
+            os.replace(bc, bc + ".1")
+            w(bc + ".1", [{"ev": "start", "cid": f"o{i}", "tool": "jawa/o", "t": iso(tb + 80),
+                                "script": "s" * 250} for i in range(10)])    # fat starts: the ends would outrun them
+            time.sleep(0.02)
+            w(bc, [{"ev": "end", "cid": f"o{i}", "ms": 2, "success": True, "t": iso(tb + 81)} for i in range(10)])
+        mr0, ingest.MAX_READ = ingest.MAX_READ, 400
+        try:
+            for _ in range(30):     # one ~330-byte start per 400-byte read: 10 starts need 10 passes
+                T.pass_source(S["bridge"])
+        finally:
+            ingest.MAX_READ = mr0
+        ingest.flush_bridge_buckets(ingest.Emit(con, sink, latest), force=True)
+        sink.flush()
+        oc = con.execute("SELECT COUNT(*) FROM bridge_calls WHERE cid LIKE 'o%' AND tool='jawa/o' AND ts IS NOT NULL "
+                         "AND ms IS NOT NULL").fetchone()[0]
+        qn = [x for x in vm.of("rm_bridge_calls") if x["metric"]["tool"] == "?"]
+        check("[order] a .1 backlog past MAX_READ drains before the live file: no call ends before it starts",
+              oc == 10 and not qn, (oc, qn))
+        # an end that still arrives first (no start yet) is parked in the row; its start fills tool and ts, never lost
+        w(bc, [{"ev": "end", "cid": "p1", "ms": 4, "success": True, "t": iso(tb + 90)}])
+        T.pass_source(S["bridge"])
+        w(bc, [{"ev": "start", "cid": "p1", "tool": "jawa/p", "t": iso(tb + 89)}])
+        T.pass_source(S["bridge"])
+        p1 = con.execute("SELECT ts, ts_end, tool, ms FROM bridge_calls WHERE cid='p1'").fetchone()
+        check("[order] an end before its start keeps the end; the late start fills tool and ts",
+              p1 is not None and tuple(p1) == (float(tb + 89), float(tb + 90), "jawa/p", 4.0), p1 and tuple(p1))
+
         # changes inbox + emit helper
         import telemetry_emit
         ok = telemetry_emit.emit_change("deploy", "HugeThings", sha="abc123", detail={"mods": {"HugeThings": 3}})
@@ -266,7 +301,7 @@ def main(argv) -> int:
         raws = {os.path.basename(os.path.dirname(p)) for p in __import__("glob").glob(os.path.join(c["raw"], "*", "*.gz"))}
         check("raw gzip copy per source", {"tps", "bridge", "changes", "wsl"} <= raws, raws)
         with gzip.open(__import__("glob").glob(os.path.join(c["raw"], "bridge", "*.gz"))[0], "rt") as f:
-            check("raw bridge copy holds every line", sum(1 for _ in f) == 22)   # 12 + late 2 + u 4 + h 4
+            check("raw bridge copy holds every line", sum(1 for _ in f) == 44)   # 12 + late 2 + u 4 + h 4 + order 22
 
         # VM spool
         vm.down = True
