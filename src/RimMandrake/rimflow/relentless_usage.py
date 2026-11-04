@@ -46,8 +46,10 @@ def _ts(s):
         return None
 
 
-def _files(d, since):
+def _files(d, since, subagents_only=False):
     for root, _dirs, names in os.walk(d):        # session files and their subagents/ files
+        if subagents_only and os.path.basename(root) != "subagents":
+            continue
         for n in names:
             if n.endswith(".jsonl"):
                 p = os.path.join(root, n)
@@ -58,13 +60,17 @@ def _files(d, since):
                     pass
 
 
-def transcript_result(clone, since, until=None):
+def transcript_result(clone, since, until=None, session=None, subagents_only=False):
     """-> a result-shaped {"usage": ...} summed over the assistant messages written in `clone`'s transcripts at or
-    after `since` (one message counted once by its id, at its largest output), or None when there are none."""
+    after `since` (one message counted once by its id, at its largest output), or None when there are none.
+    subagents_only: only the subagents/ transcripts, of `session` when it is known, else of every session there."""
     if not clone:
         return None
     best = {}
-    for p in _files(project_dir(clone), since):
+    d = project_dir(clone)
+    if subagents_only and session:
+        d = os.path.join(d, re.sub(r"[^A-Za-z0-9-]", "", str(session)) or "-")
+    for p in _files(d, since, subagents_only):
         try:
             with open(p, encoding="utf-8", errors="replace") as f:
                 for line in f:
@@ -105,13 +111,24 @@ def transcript_result(clone, since, until=None):
     return {"usage": tot}
 
 
+def subagent_tokens(RL, run, res):
+    """RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER: the result object's usage is the main session's; a worker's
+    subagents spend in their own transcripts (<project>/<session>/subagents/*.jsonl). -> their weighted tokens, 0 when
+    there are none. Without a session id every subagents/ transcript written in the clone since the run began counts:
+    a charge errs dear, never cheap."""
+    sid = res.get("session_id") if isinstance(res, dict) else None
+    tr = transcript_result(clone_of(run), run.get("at") or 0, session=sid, subagents_only=True)
+    return int(RL.run_tokens(tr) or 0) if tr else 0
+
+
 def measure(RL, run):
     """-> (weighted tokens or 0, basis). 0 means unmeasurable: the caller charges the reserve and the basis says
     "estimated"."""
     res = RL.read_result({"out": run.get("out"), "err": run.get("err")})
     tok = RL.run_tokens(res) if res else None
     if tok:
-        return int(tok), "result"
+        sub = subagent_tokens(RL, run, res)
+        return (int(tok) + sub, "result+subagents") if sub else (int(tok), "result")
     tr = transcript_result(clone_of(run), run.get("at") or 0)
     tok = RL.run_tokens(tr) if tr else None
     if tok:

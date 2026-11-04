@@ -2648,6 +2648,26 @@ def repeated_live(attempts):
     return {c: v for c, v in seen.items() if len(v) >= 2}
 
 
+def subagent_cap(st, r):
+    """RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER: how many subagents one builder run may start (rules
+    worker_subagent_cap; a pilot sitting, whose agent has no Agent tool, none; an unset or bad rule, none). Their
+    tokens are charged with the run's (relentless_usage.subagent_tokens)."""
+    if piloting(st):
+        return 0
+    n = r.get("worker_subagent_cap", 0)
+    return max(0, min(n, 3)) if type(n) is int else 0
+
+
+def subagent_rule(st, r):
+    n = subagent_cap(st, r)
+    if not n:
+        return "no subagents"
+    return ("at most %s subagent%s in this run (the Agent tool; model sonnet or opus, never haiku; a narrow brief and a "
+            "short report each; never one that commits, pushes or calls relentless.py; a subagent blocks you, so keep each "
+            "under ~8 minutes and beat before and after; every token they spend is charged to this item)"
+            % ({1: "one", 2: "two", 3: "three"}[n], "" if n == 1 else "s"))
+
+
 def worker_prompt(st, text, learned, r, history=None, causes=None):
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
@@ -2689,8 +2709,8 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
             "game (writing a file is not deploying it); `live-debugging-proof-harness` and `rimbridge` for a live proof; "
             "`measuring-large-artifacts` and infrastructure/state/facts/instrument_traps.md before you trust a count. "
             "Owner preferences no skill holds yet: %s (an index; read only the entries your item touches)." % MEMORY_INDEX,
-            "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
-            "bulk output to files. The /home/mandrake/rm/foundry clone (FOUNDRY retired 2026-11-02) and src/RimMandrake/Utils/arena/ are not yours to touch."]
+            "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, %s, "
+            "bulk output to files. The /home/mandrake/rm/foundry clone (FOUNDRY retired 2026-11-02) and src/RimMandrake/Utils/arena/ are not yours to touch." % subagent_rule(st, r)]
     if relentless_game.cfg(r)["enabled"]:
         head += relentless_game.BRIEF
     if st.get("proof_only"):

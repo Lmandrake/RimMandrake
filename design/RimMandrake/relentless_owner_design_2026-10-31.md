@@ -198,8 +198,9 @@ reads an item's mods from its id, its title, src paths in its prose and its comm
 item holds keeps its place while the next one starts. A candidate holds its mod until checked, since a FAIL comes back.
 Before this rule the store shows four mods worked by two workers at once, about 1.9 hours (RimUtinni/UtinniPatches,
 TerminalBiomes, EnvironmentalHazards, Rites). Utils and rimflow are shared tooling, not mods, and ./publish refuses a
-real conflict there. Workers have no subagents today: a worker's token count reads its own result only, so a subagent's
-spend would go uncounted (RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER).
+real conflict there. A builder run may start up to three subagents (rules `worker_subagent_cap`, said in its brief; a
+pilot sitting none); their transcripts are charged with the run (`relentless_usage.subagent_tokens`;
+RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER).
 
 ## 10. How it replaces CLOSED_LOOP_PROVE_EDIT_RUN_LOOK_AGAIN
 

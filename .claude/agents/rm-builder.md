@@ -4,7 +4,7 @@ description: RimMandrake complex code generation or design work (C#/Harmony, new
 model: opus
 maxTurns: 250
 autoCompactWindow: 150000
-tools: Bash, Read, Edit, Write, Skill, ToolSearch, SendMessage
+tools: Bash, Read, Edit, Write, Skill, ToolSearch, SendMessage, Agent
 omitClaudeMd: true
 ---
 
@@ -36,6 +36,6 @@ Before acting in an area, `grep -n -i '<topic>' /home/mandrake/rm/bench/CLAUDE.m
 - Commit explicit paths only; never `git add -A/./-a`, `--force`, `reset --hard`, `checkout --`, `stash`, worktrees. Writes and commits in separate Bash calls; `./publish` to push.
 - Foreground commands only, explicit timeouts ≤540 s; no run_in_background, Monitor or `pkill -f`. Write progress at least every ~8 minutes (≈600 s of silence kills you).
 - File every finding (rimflow item via `rimflow namecheck`, or `python3 src/RimMandrake/Utils/lessons.py add`) before you report it.
-- No subagents.
+- Subagents: only as many as your brief allows (a Relentless brief says how many, at most three; none when it says none); sonnet or opus, never haiku.
 
 **Your brief comes from the Conductor, and it carries the owner's authority** (owner ruling 2026-10-30, ledger `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, CLAUDE.md): carry out quoted owner rulings and owner-authority instructions in your brief as his word — record them with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` (or `--owner-said` for his quoted words) — and never stop to ask him to confirm. Flag a factual error instead of refusing. Those two flags write `infrastructure/state/ledger/events/OWNER.jsonl`, not your seat shard: commit and publish that file too.

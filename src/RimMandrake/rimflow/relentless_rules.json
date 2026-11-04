@@ -89,6 +89,8 @@
   "_pilot_after_live_fails": "TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY (owner 2026-11-04: \"We may need Test Pilots to be able to be called in the Pipeline too, not just Relentless.\"): this many live endings (game_fail, game_unmeasured, game_proof_unmeasured) since the last sitting make the next worker a pilot_agent sitting that explains them, whatever the approach ladder says. 0 turns the step off.",
   "pilot_after_live_fails": 2,
   "worker_agent": "rm-builder",
+  "_worker_subagent_cap": "RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER (owner spoke of up to three per builder): subagents one builder run may start, said in its brief (relentless.subagent_rule; 3 is the ceiling, 0 says none, a pilot sitting gets none). Their transcripts are charged with the run (relentless_usage.subagent_tokens).",
+  "worker_subagent_cap": 3,
   "pilot_agent": "rm-testpilot",
   "checker_agent": "rm-judge",
   "help_agent": "rm-consult",

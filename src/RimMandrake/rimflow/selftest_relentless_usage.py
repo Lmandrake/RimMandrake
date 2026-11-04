@@ -71,7 +71,7 @@ def main():
     want = RL.run_tokens(tr)
     tok, basis = U.measure(RL, run)
     check("a killed run (no result) is charged its transcript, not the flat reserve", (tok, basis) == (want, "transcript") and 0 < tok < 100000, (tok, basis))
-    Path(out).write_text(json.dumps({"usage": {"input_tokens": 1, "cache_creation_input_tokens": 0,
+    Path(out).write_text(json.dumps({"session_id": "a", "usage": {"input_tokens": 1, "cache_creation_input_tokens": 0,
                                                 "cache_read_input_tokens": 0, "output_tokens": 1}}))
     check("a result object wins", U.measure(RL, run) == (6, "result"), U.measure(RL, run))
     os.unlink(out)
