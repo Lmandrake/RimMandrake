@@ -1,0 +1,1 @@
+A gate that takes his words must take the Conductor's route; a hand-listed selftest missed model._who_refusal, relentless.guard and queue_lint's OWNER-item lockout. selftest_conductor_authority now censuses every function testing owner_said/--owner-said and every file comparing to OWNER (AST); new ones fail unless routed or on OWNER_ONLY with a reason.

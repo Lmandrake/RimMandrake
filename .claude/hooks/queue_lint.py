@@ -456,6 +456,7 @@ def main():
             iid = os.path.basename(fp)[:-3]
             holder = owners(root).get(iid) if seat else None
             if (holder and seat and holder != seat and seat != "OWNER"
+                    and not (holder == "OWNER" and seat == "BENCH")      # the Conductor moves his items (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)
                     and owners(root, "unclaimed_filers").get(iid) != seat
                     and iid not in owners(root, "owner_unlocked")):
                 bits = [b for b in iid.split("_") if not b.isdigit()][:2]
@@ -504,7 +505,7 @@ def main():
         for p in mine:
             iid = os.path.basename(p)[:-3]
             holder = own.get(iid)
-            if holder and holder != seat and seat != "OWNER":
+            if holder and holder != seat and seat != "OWNER" and not (holder == "OWNER" and seat == "BENCH"):  # CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM
                 if may_finish.get(iid) == seat:
                     continue             # you filed it and nobody has claimed it yet
                 if iid in owners(root, "owner_unlocked"):

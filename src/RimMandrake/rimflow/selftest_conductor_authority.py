@@ -252,5 +252,108 @@ check(RL.guard("close", "I0", ["--per-ruling", CA.RULING], env={}, store=_leased
       "relentless guard refuses the ruling without the Conductor's text")
 check(RL.guard("close", "I0", ["--why", "done"], env={}, store=_leased) is not None,
       "relentless guard refuses a bare reason")
+
+# The function-level census. The parser census above sees only argparse flags; the two gates that escaped (a refusal of
+# BENCH on an item owned by OWNER; relentless.guard reading argv for --owner-said) sat in plain functions. So: every
+# function, in every tracked tool, that CONDITIONS on his words (owner_said / ownerSaid / "--owner-said" in an argv
+# test) must also mention the Conductor's route (per_ruling, perRuling, --per-ruling, conductor_authority, CA.) in the
+# same function; every file that COMPARES a seat or an item owner to "OWNER" must mention it somewhere in the file.
+# OWNER_ONLY is the only way out: file -> the ruling that keeps it his, and why.
+ROUTE_WORDS = re.compile(r"per.?ruling|conductor_authority|CONDUCTOR_AUTHORITY|\bCA\.|_conductor_carried|\bcarried\(")
+SAID_NAMES = ("owner_said", "ownerSaid")
+OWNER_ONLY = {
+    "src/RimMandrake/rimflow/cli.py": "bridge give / the OWNER bridge hold 45-min rule (owner by card 2026-10-30), `played` "
+                                      "rung (PROJECT_MATURITY_DASHBOARD_1); any ruling already resolves seat OWNER at _resolve",
+    "src/RimMandrake/rimflow/driver_lock.py": "OWNER bridge hold 45-min rule (owner by card 2026-10-30)",
+    "src/RimMandrake/rimflow/host_guard.py": "OWNER bridge hold 45-min rule (owner by card 2026-10-30)",
+    "src/RimMandrake/rimflow/arbiter_tiers.py": "reads who closed (attribution), authorizes nothing",
+    "src/RimMandrake/rimflow/owner_interaction.py": "measures HIS activity clock, authorizes nothing",
+    "src/RimMandrake/rimflow/incident.py": "routes a needs=owner alarm to the OWNER seat, authorizes nothing",
+    "src/RimMandrake/Utils/broadcast.py": "OWNER ONLY broadcast skill: announce to every window is his",
+    "src/RimMandrake/Utils/mod_completion.py": "reads ledger history for evidence, authorizes nothing",
+    "src/RimMandrake/Utils/owner_queue.py": "reads his notes, authorizes nothing",
+    "src/RimMandrake/Utils/pulse/pulse_core.py": "display of whose event it was, authorizes nothing",
+    "src/RimMandrake/Utils/pulse/mission_page.py": "display of what waits on him, authorizes nothing",
+    "src/RimMandrake/Utils/artpipe/fill_queue.py": "verifies a recorded card ruling of his (evidence), authorizes nothing new",
+    "src/RimMandrake/Utils/rimflow_metrics.py": "counts provenance, authorizes nothing",
+    "src/RimMandrake/Utils/agent_improve.py": "reads his words from the ledger, authorizes nothing",
+    "src/RimMandrake/rimflow/conductor_closeout.py": "reads his words from the ledger, authorizes nothing",
+    "src/RimMandrake/Utils/art/backfill.py": "reads a decisions doc's provenance, authorizes nothing",
+    "src/RimMandrake/Utils/modcheck/northstar.py": "record_validation only persists the words its caller (modcheck/cli, "
+                                                   "via CA.words) already gated",
+    "design/RimStarWars/canon_references/gpt_review/check_review_complete.py": "compares a review row's disposition "
+                                                                              "'OWNER' (a work verdict), not a seat",
+}
+
+
+def _is_owner_str(n):
+    return isinstance(n, ast.Constant) and n.value == "OWNER"
+
+
+def function_gaps(src):
+    """-> (said_gaps, owner_lines): said_gaps are function names that test his words with no route in their text;
+    owner_lines are line numbers of OWNER comparisons (a file-level finding, resolved by the caller)."""
+    tree = ast.parse(src)
+    said, owner = [], []
+    for f in ast.walk(tree):
+        if not isinstance(f, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        seg = ast.get_source_segment(src, f) or ""
+        tests = []
+        for n in ast.walk(f):
+            if isinstance(n, (ast.If, ast.IfExp, ast.Assert, ast.While)):
+                tests.append(n.test)
+            elif isinstance(n, ast.BoolOp):
+                tests.extend(n.values)
+            elif isinstance(n, ast.UnaryOp) and isinstance(n.op, ast.Not):
+                tests.append(n.operand)
+        hit = False
+        for t in tests:
+            for x in ast.walk(t):
+                if isinstance(x, ast.Name) and x.id in SAID_NAMES:
+                    hit = True
+                if isinstance(x, ast.Attribute) and x.attr in SAID_NAMES:
+                    hit = True
+                if isinstance(x, ast.Constant) and isinstance(x.value, str) and x.value.startswith("--owner-said"):
+                    hit = True
+        if hit and not ROUTE_WORDS.search(seg):
+            said.append(f.name)
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Compare) and (_is_owner_str(n.left) or any(_is_owner_str(c) for c in n.comparators)):
+            owner.append(n.lineno)
+    return said, owner
+
+
+check(function_gaps('def g(owner_said):\n    if not owner_said:\n        return 1\n')[0] == ["g"],
+      "the function census catches a gate on his words with no route")
+check(not function_gaps('def g(owner_said, per_ruling):\n    if not owner_said:\n        return 1\n')[0],
+      "the function census passes a gate that names the route")
+check(function_gaps('def g(seat):\n    return seat == "OWNER"\n')[1] == [2], "the function census sees an OWNER comparison")
+check(function_gaps('def g(argv):\n    if any(a == "--owner-said" for a in argv):\n        return 1\n')[0] == ["g"],
+      "the function census sees an argv test for --owner-said")
+
+fn_gaps = 0
+owner_files = set()
+for rel in tracked:
+    if "selftest" in rel or "/test_" in rel or not (ROOT / rel).exists():
+        continue
+    try:
+        src = (ROOT / rel).read_text(encoding="utf-8")
+        said, owner = function_gaps(src)
+    except (SyntaxError, UnicodeDecodeError, ValueError):
+        continue
+    if said and rel not in OWNER_ONLY and rel not in EXEMPT:
+        fn_gaps += 1
+        check(False, "%s: function(s) gate on his words with no Conductor route: %s" % (rel, ", ".join(said)))
+    if owner:
+        owner_files.add(rel)
+        if rel not in OWNER_ONLY and not ROUTE_WORDS.search(src) and rel not in EXEMPT:
+            fn_gaps += 1
+            check(False, "%s: compares to \"OWNER\" (lines %s) in a file with no Conductor route and no OWNER_ONLY entry"
+                  % (rel, ",".join(map(str, owner))))
+check(len(owner_files) > 10, "the function census saw OWNER comparisons (%d files)" % len(owner_files))
+check(fn_gaps == 0, "every function gate on his words or OWNER carries the Conductor route or is OWNER_ONLY with a ruling")
+for rel, why in OWNER_ONLY.items():
+    check((ROOT / rel).exists() and len(why) > 20, "owner-only file exists with its reason: %s" % rel)
 print("%d failure(s)" % len(fails))
 sys.exit(1 if fails else 0)
