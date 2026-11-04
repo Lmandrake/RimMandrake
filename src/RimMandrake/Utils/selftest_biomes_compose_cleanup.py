@@ -12,7 +12,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 _priv = tempfile.mkdtemp(prefix="st_biomes_compose_cleanup_")
 atexit.register(shutil.rmtree, _priv, True)
-tempfile.tempdir = os.environ["TMPDIR"] = _priv
+tempfile.tempdir = os.environ["TMPDIR"] = os.environ["RM_COMPOSE_TMP"] = _priv
 
 import biomes_compose as BC  # noqa: E402
 import deploy_custom_mods as D  # noqa: E402

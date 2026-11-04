@@ -49,6 +49,29 @@ import xml.etree.ElementTree as ET
 MANIFEST_REL = os.path.join("RimMandrake", "Biomes.compose.json")
 TIER_DIR = "RimMandrake"
 
+# Compose and MayRequire-rewrite scratch is a whole mod tree (textures included, GBs with Greentide). /tmp on WSL is an
+# 18 GB tmpfs that agent scratch fills: on 2026-11-03T17:28Z four live proofs died with ENOSPC in this mkdtemp
+# (TMPFS_SCRATCH_PRUNE_FIFTH_LESSON_SAME_DISK). So the scratch goes on the ext4 disk the sources live on, inside
+# ~/.seat-tmp (a scratch_reap root, aged out by claude-seat-tmp.conf), never on a tmpfs. D: (drvfs) is ~24x slower
+# for many small files (MEASURED, rimflow/isolated_evidence.py), so not there. Env RM_COMPOSE_TMP overrides.
+_TMPFS_ROOTS = ("/tmp", "/dev/shm", "/run")
+
+
+def _on_tmpfs(d):
+    r = os.path.realpath(d)
+    return any(r == t or r.startswith(t + "/") for t in _TMPFS_ROOTS)
+
+
+def scratch_dir():
+    """Parent dir for compose scratch: RM_COMPOSE_TMP, else TMPDIR's dir when it is off tmpfs (a run_tmp run dir),
+    else ~/.seat-tmp/compose. Created 0700 on demand."""
+    d = os.environ.get("RM_COMPOSE_TMP")
+    if not d:
+        t = tempfile.gettempdir()
+        d = t if not _on_tmpfs(t) else os.path.join(os.path.expanduser("~"), ".seat-tmp", "compose")
+    os.makedirs(d, mode=0o700, exist_ok=True)
+    return d
+
 
 class ComposeError(Exception):
     pass
@@ -277,7 +300,7 @@ def stage_rewritten(src_dir, mapping, log=print, names=None):
                 bad[p] = (new, nh)
     if not bad:
         return None
-    tmp = tempfile.mkdtemp(prefix="mrfix_")
+    tmp = tempfile.mkdtemp(prefix="mrfix_", dir=scratch_dir())
     root = os.path.join(tmp, os.path.basename(os.path.normpath(src_dir)))
     try:
         for dp, dn, fn in os.walk(src_dir):
@@ -455,7 +478,7 @@ def build(src_root, tree_fn, holds, log=print):
             shell_files.append(p + ".srchash")
 
     # --- write
-    tmp = tempfile.mkdtemp(prefix="compose_%s_" % target)
+    tmp = tempfile.mkdtemp(prefix="compose_%s_" % target, dir=scratch_dir())
     try:
         out = os.path.join(tmp, target)
         os.makedirs(out)
