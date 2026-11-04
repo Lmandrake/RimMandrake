@@ -499,3 +499,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:16:25Z","tsn":1793830585914324339}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GAMECOMP_STALL_HUNT_SEVEN_SECONDS A2 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T22:21:45Z","tsn":1793830905821677729}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:31:51Z","tsn":1793831511265777803}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-04T22:54:02Z","tsn":1793832842486365582}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T22:54:16Z","tsn":1793832856317076524}
