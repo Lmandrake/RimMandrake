@@ -404,7 +404,8 @@ check("each html section is one block, one line", len(sections) >= 8 and all(x.r
 check("every svg stays one block", all("\n" not in x for x in re.findall(r"<svg.*?</svg>", page, re.S)))
 check("the phone copy is short and plain", len(phone) < 2500 and "<" not in phone and "NEEDS YOU 2" in phone and "Archmagi: busy" in phone and "SteveDesktop" in phone)
 frozen = dict(FLEET, t=NOW - R.FLEET_STALE - 1)
-check("a mods count from a refresh long past reads UNMEASURED", "mods accepted (" in R.build(Fake(ps=PS, files={R.FLEET_CACHE: frozen}), {}, [])[0].split("<div><svg")[0])
+frozen_page = R.build(Fake(ps=PS, files={R.FLEET_CACHE: frozen}), {}, [])[0]
+check("a mods count from a refresh long past reads UNMEASURED", "mods accepted (" in frozen_page.split("<div><svg")[0] and "1 of 10" not in frozen_page)
 old_f = Fake(ps=PS, files={R.FLEET_CACHE: dict(FLEET, good_t=NOW - R.FLEET_STALE - 1, why="ledger broke")})
 check("a fleet reading past its limit reads UNMEASURED, it never passes as today's", "FINISHED TODAY, 1" not in R.build(old_f, {}, [])[0])
 young = dict(FLEET, good_t=NOW - 400, why="ledger broke")
