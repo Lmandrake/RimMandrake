@@ -1,0 +1,1 @@
+A selftest fixture that copies the live dispatcher_schedule.json inherits helper_budget.enabled and scans the machine's real transcripts every tick (1.3 s a tick in selftest_idle_bringback, 289 s to 2 s when popped); set it off in the fixture. Also, a contract proof using run_selftests --no-cache must carry --because or the runner exits 2.
