@@ -267,7 +267,9 @@ def authority_errors(e, where, owner_ev):
         errs.append("%s: a quotation is his words only; %s text is never quoted as his" % (where, sp))
     if e.get("kind") in OWNER_ONLY:
         if sp != "owner" or not owner_src:
-            errs.append("%s: %s is owner-only (his words on an OWNER event), not %s" % (where, e["kind"], sp))
+            errs.append("%s: %s is owner-only (his words on an OWNER event), not %s; a Conductor instruction "
+                        "(per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM) carries decisions, but this is a "
+                        "quotation" % (where, e["kind"], sp))
         elif owner_ev is not None and e.get("words"):
             why = CT.his_words_problem(owner_ev, owner_src[0], e["words"])
             if why:
