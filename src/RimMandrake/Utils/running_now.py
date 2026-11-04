@@ -297,7 +297,9 @@ class Env:
         """The slow half: progress by mod, today's receipts, Needs you. Lives in fleet_mods.py and owner_queue.py."""
         sys.path.insert(0, HERE)
         import fleet_mods
-        d = fleet_mods.gather(int(now))
+        import fleet_watch
+        hours = int((now - fleet_mods.local_midnight(now)) / 3600) + 1     # back to local midnight: "finished today"
+        d = fleet_mods.gather(int(now), detached_done=[r for r in fleet_watch.rows(hours) if r["status"] != "Building"])
         d["total_mods"] = len(fleet_mods.mod_folders())
         return d
 

@@ -132,7 +132,7 @@ def main():
     sys.path.insert(0, HERE)
     import fleet_mods
     evs, world = fleet_mods.ledger()
-    rel = fleet_mods.relentless_states()
+    rel = fleet_mods.relentless_states(strict=True)     # a state it cannot read must fail, not drop that item's hold
     if a.seat:
         for iid, kind, why in seat_queue(rel):
             print("%s\t%s\t%s" % (iid, kind, why[:200]))
