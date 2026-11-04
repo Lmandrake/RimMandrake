@@ -183,6 +183,9 @@ $titleFor = [ordered]@{
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
 
 foreach ($seat in $Seats) {
+    # FOUNDRY is retired (owner, by card 2026-11-02); a stale caller (claude-account's
+    # machine.json relaunch list) reopened it after an account switch on 2026-11-03.
+    if ($seat -eq 'FOUNDRY') { Write-Warning "FOUNDRY is retired; not launched"; continue }
     if (-not $place.Contains($seat)) { Write-Warning "no placement for $seat"; continue }
     # The ` [test]` suffix is not cosmetic: without it a test window is titled
     # exactly like a LIVE seat, and closing the test fleet would close a running
