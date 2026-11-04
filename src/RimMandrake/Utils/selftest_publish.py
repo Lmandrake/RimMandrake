@@ -538,6 +538,10 @@ def t_glob_named_path_commits_only_itself(a, b):
     assert names == ["a[b].txt", "f*"], names
     assert "ab.txt" not in sh(a, "ls-tree", "-r", "--name-only", "origin/main").split("\n")
     assert "DIRTY 1" not in show(a, "f.txt")
+    staged = sh(a, "diff", "--cached", "--name-only")
+    assert staged == "", "a glob name staged other paths: %r" % staged
+    assert sh(a, "status", "--porcelain", "--", ":(literal)ab.txt") == "?? ab.txt", "the peer's ab.txt was touched"
+    assert "DIRTY 1" in open(os.path.join(a, "f.txt")).read(), "the peer's dirty f.txt was lost"
 
 
 def t_hooks_keep_their_own_glob_pathspecs(a, b):
