@@ -930,10 +930,30 @@ class Effects(relentless_game.GameFx):
             why = self.ignored_collision()
             if why:
                 return why
-            self.git(self.books, "merge", "--ff-only", "--quiet", "origin/main")
+            with self.shards_locked():
+                self.git(self.books, "merge", "--ff-only", "--quiet", "origin/main")
             return self.level_books()
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
             return "books cannot level: %s" % str(e)[:300]
+
+    @contextlib.contextmanager
+    def shards_locked(self):
+        """Every ledger shard in books held under the flock model.append takes, while git replaces them: an event lands
+        before git checks the file (git then refuses, the event stays) or after (model.append finds its inode moved and
+        reopens the new file), never in between. Not re-entrant: a flock from a second open file blocks this process."""
+        fds = []
+        try:
+            for p in sorted(glob.glob(os.path.join(self.books, LEDGER_DIR, "*.jsonl"))):
+                try:
+                    fd = os.open(p, os.O_RDONLY)
+                except FileNotFoundError:
+                    continue
+                fds.append(fd)
+                fcntl.flock(fd, fcntl.LOCK_EX)
+            yield
+        finally:
+            for fd in fds:
+                os.close(fd)
 
     def ignored_collision(self):
         """-> why, when origin newly tracks a path the clone holds as an IGNORED file with other bytes. Neither a merge
@@ -1052,7 +1072,8 @@ class Effects(relentless_game.GameFx):
                 with open(src, "wb") as f:
                     f.write(subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout)
         self.git(self.books, "update-index", "-q", "--refresh")   # same bytes, new stat: reset --keep reads that as dirt
-        self.git_ok(self.books, "reset", "--keep", "origin/main")
+        with self.shards_locked():
+            self.git_ok(self.books, "reset", "--keep", "origin/main")
         if shuffled:    # only now: a level that refuses above restored nothing
             self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
         return None

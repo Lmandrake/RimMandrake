@@ -1107,6 +1107,12 @@ def t_level_books_shard_under_lock():
     ok(read(books, new) == "r\nlate\n", "a late event on the renamed inode is carried back: %r" % read(books, new))
     fx._carry_late({new: b"r\nlate\n"}, {new: kept[0]})
     ok(read(books, new) == "r\nlate\n", "and nothing new carries nothing")
+    probe = [sys.executable, "-c", "import fcntl, os, sys\nfd = os.open(sys.argv[1], os.O_RDONLY)\n"
+             "try:\n    fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)\nexcept OSError:\n    sys.exit(1)",
+             os.path.join(books, shard)]
+    with fx.shards_locked():
+        held = subprocess.run(probe).returncode
+    ok(held == 1 and subprocess.run(probe).returncode == 0, "git's replacement of the shards runs under their flock: %s" % held)
     shutil.rmtree(d, ignore_errors=True)
 
 
