@@ -88,3 +88,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:23:12Z","tsn":1793758992272467346}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A3 (L2), read-only proof","ts":"2026-11-04T02:23:20Z","tsn":1793759000530163764}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:23:28Z","tsn":1793759008198639964}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T02:26:49Z","tsn":1793759209212848570}
