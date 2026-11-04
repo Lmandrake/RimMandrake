@@ -638,7 +638,7 @@ def status_of(now, **vals):
 
 def test_revisits_batched():
     """INCIDENT_REVISIT_TAME_SAME_NEWS_HOURLY (1): revisits falling due minutes apart are one Operations run, and the
-    incidents stay in step after it. An unexpired ack is not cut short; a revisit outside the window waits."""
+    incidents stay in step after it. Due inside the window is the only test, an ack's recover_by included."""
     table, rev, rows = at_his_rung("a-1", "b-1")
     now = T0 + rev * M + M
     moved = status_of(now, a_1=6, b_1=6)         # both have news; a-1 is due now, b-1 in 3 min
@@ -660,7 +660,11 @@ def test_revisits_batched():
           [x["id"] for x in res2["rows"] if x["ev"] == "revisited"] == ["a-1"], res2["rows"])
     acked = [rows[0], dict(rows[1], acked_t=now - M, recover_by_t=now + 10 * M)]
     res3 = IN.step(table, acked, moved, now)
-    check("batch: an unexpired ack is not cut short by another incident's run",
+    check("batch: an ack running out inside the window goes out with the run",
+          [x["id"] for x in res3["rows"] if x["ev"] == "revisited"] == ["a-1", "b-1"], res3["rows"])
+    long_ack = [rows[0], dict(rows[1], acked_t=now - M, recover_by_t=now + (table["policy"]["revisit_batch_min"] + 5) * M)]
+    res3 = IN.step(table, long_ack, moved, now)
+    check("batch: an ack running past the window is not cut short by another incident's run",
           [x["id"] for x in res3["rows"] if x["ev"] == "revisited"] == ["a-1"], res3["rows"])
     res4 = IN.step(table, rows, status_of(now, a_1=6, b_1=5), now)
     check("batch: an incident with no news is not pulled in; it waits and is re-armed at its own time",
@@ -725,10 +729,36 @@ def test_revisit_quiet():
     res, ev = run([clock], {"t": now, "points": {"r.under_min": dict(pt, v=340)}, "alarms": {}})
     check("quiet: a clock rising is only time passing", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
     fires("a clock that went back", [clock], {"t": now, "points": {"r.under_min": dict(pt, v=40)}, "alarms": {}}, says="r.under_min")
+    fires("a clock that re-aged, risen less than the time elapsed", [clock], {"t": now, "points": {"r.under_min": dict(pt, v=110)}, "alarms": {}}, says="r.under_min")
+    fires("a clock risen more than the time elapsed", [clock], {"t": now, "points": {"r.under_min": dict(pt, v=500)}, "alarms": {}}, says="r.under_min")
+    slack = IN.load_table()["policy"]["revisit_clock_slack_min"]
+    res, ev = run([clock], {"t": now, "points": {"r.under_min": dict(pt, v=340 - slack)}, "alarms": {}})
+    check("quiet: a clock within the slack only aged", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
+    fires("a clock just outside the slack", [clock], {"t": now, "points": {"r.under_min": dict(pt, v=340 - slack - 1)}, "alarms": {}}, says="r.under_min")
+    for unit, per, name in ((3600, "h", "r.age_h"), (1, "s", "r.tick_s")):
+        c = dict(rows[0], metrics={name: {"class": "distressed", "event": False}}, revisit_read={name: [True, "distressed", 7, True, 0]},
+                 revisit_seen_t=now - 7200)
+        res, ev = run([c], {"t": now, "points": {name: dict(pt, v=7 + 7200 / unit)}, "alarms": {}})
+        check("quiet: a clock in %s ages in %s" % (per, per), [x["ev"] for x in ev] == ["revisit_quiet"], ev)
+    # both readings' own times decide: a status 10 min older than the pass that read it is no reset
+    lag = dict(clock, revisit_status_t=now - rev * M)
+    res, ev = run([lag], {"t": now - 10 * M, "points": {"r.under_min": dict(pt, v=330)}, "alarms": {}})
+    check("quiet: elapsed is status time, not pass time", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
+    fires("a clock that kept time by the pass but not by its status", [lag], {"t": now - 10 * M, "points": {"r.under_min": dict(pt, v=340)}, "alarms": {}}, says="r.under_min")
+    # a suffix alone makes no clock: a peak and a rate that happen to rise by the time elapsed are plain values
+    for name, v0, v1 in (("r.stall_max_s", 30, 30 + rev * 60), ("r.growth_mb_per_h", 50, 54)):
+        plain = dict(rows[0], metrics={name: {"class": "distressed", "event": False}}, revisit_read={name: [True, "distressed", v0, True, 0]})
+        fires("%s moving by exactly the time elapsed" % name, [plain], {"t": now, "points": {name: dict(pt, v=v1)}, "alarms": {}}, says=name)
+    check("quiet: units", [IN.clock_unit_s(x) for x in ("a.b_min", "a.b_h", "a.b_s", "a.b_age", "a.b_per_h", "a.b_max_s", "a.b_24h")] == [60, 3600, 1, None, None, None, None])
+    text = dict(rows[0], metrics={"m.w": {"class": "distressed", "event": False}}, revisit_read={"m.w": [True, "distressed", "down", True, 0]})
+    fires("a text value changing", [text], {"t": now, "points": {"m.w": dict(pt, v="up")}, "alarms": {}}, says="m.w")
     sane = dict(rows[0], metrics=dict(rows[0]["metrics"], **{"m.z": {"class": "distressed", "event": False}}),
                 revisit_read=dict(rows[0]["revisit_read"], **{"m.z": [False, "sane", 3, True, 0]}))
     res, ev = run([sane], {"t": now, "points": {"m.q-1": pt, "m.z": {"m": "MEASURED", "v": 4, "class": "sane"}}, "alarms": {}})
-    check("quiet: a value moving with no alarm on it either time is not news", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
+    check("quiet: a value moving with no alarm on it either time still launches", [x["ev"] for x in ev] == ["revisited"]
+          and "m.z" in " ".join(ev[0]["news"]), ev)
+    res, ev = run([sane], {"t": now, "points": {"m.q-1": pt, "m.z": {"m": "MEASURED", "v": 3, "class": "sane"}}, "alarms": {}})
+    check("quiet: and the same value, sane, stays quiet", [x["ev"] for x in ev] == ["revisit_quiet"], ev)
 
 
 def test_quiet_on_the_real_path():
@@ -833,11 +863,36 @@ def test_chains_through_step():
 
     # the baseline moves with each quiet look: a clock going back from the LAST look is news
     path, inc, look, due = chain("clockchain", metric="r.under_min")
-    res, evs = look(due(), v=340)
-    check("chain: a clock rising is quiet", evs == ["revisit_quiet"], res["rows"])
+    res, evs = look(due(), v=245)
+    check("chain: a clock rising by the floor is quiet", evs == ["revisit_quiet"], res["rows"])
     res, evs = look(due(), v=200)
     check("chain: a clock back from the last quiet look launches, though above the old baseline", evs == ["revisited"]
           and "r.under_min" in " ".join(res["rows"][0]["news"]), res["rows"])
+
+    # blind check 60dac938: the real routes, two standing clocks; progress_age 60 to 70 over a floor means it reset and re-aged
+    table = IN.load_table()
+    rev = table["policy"]["owner_revisit_min"]
+    def belt(age, under, name, t0=T0):
+        path = os.path.join(TMP, name + ".jsonl")
+        ms = {"relentless.progress_age_min": {"class": "distressed", "event": False}, "relentless.under_min": {"class": "distressed", "event": False}}
+        IN.append([{"ev": "opened", "id": "work_belt-1", "at": IN.iso(t0), "t": t0, "state": "open", "rung": IN.OWNER_RUNG, "rung_t": t0, "told_t": t0 - 9 * H,
+                    "told_at": IN.iso(t0 - 9 * H), "cause": "work_belt", "class": "distressed", "metrics": ms, "items": [], "reader": "Operations", "ack_min": 30,
+                    "acked_t": t0 + M, "recover_by_t": t0 + H, "recover_by": IN.iso(t0 + H), "ack_by": "OPERATIONS", "plan": "waiting on the fix", "revisit_t": t0,
+                    "revisit_seen_t": t0, "revisit_status_t": t0, "revisits": 1, "revisit_read": {"relentless.progress_age_min": [True, "distressed", 60, True, 0],
+                                                                                                 "relentless.under_min": [True, "distressed", 100, True, 0]}}], path)
+        now = t0 + rev * M
+        pts = {"relentless.progress_age_min": {"m": "MEASURED", "v": age, "class": "distressed"}, "relentless.under_min": {"m": "MEASURED", "v": under, "class": "distressed"}}
+        return IN.step(table, IN.read_rows(path), {"t": now, "points": pts, "alarms": {}}, now)
+    res = belt(70, 100 + rev, "beltreset")
+    ev = [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
+    check("chain: real routes, a standing clock that reset and re-aged launches though it reads higher, its pair only aged",
+          [x["ev"] for x in ev] == ["revisited"] and [r["id"] for r in res["rings"] if r.get("revisit")] == ["work_belt-1"]
+          and "relentless.progress_age_min" in " ".join(ev[0]["news"]) and "relentless.under_min" not in " ".join(ev[0]["news"]), res["rows"])
+    res = belt(60 + rev, 100 + rev, "beltaged")
+    ev = [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
+    check("chain: real routes, both clocks only aged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
+    x = IN.fold(IN.read_rows(os.path.join(TMP, "beltaged.jsonl")) + res["rows"])[0]["work_belt-1"]
+    check("chain: the quiet row keeps the status time it read", x["revisit_status_t"] == T0 + rev * M, x)
 
 
 def test_news_each_state_event():
