@@ -1,0 +1,1 @@
+selftest_relentless.py t_breaker_di2 'the roads that landed are not repeated while told retries' / 'told lands once it can' FAILed once in a 5-test parallel run_selftests sweep and passed on rerun alone (2026-11-04, INCIDENT_STORES_UNIFY_TWO_BOOKS_ONE_FAULT): a flake, likely RM_OPS_WATCH_DIR/env or timing; rerun before blaming a diff
