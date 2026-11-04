@@ -143,7 +143,7 @@ class FakeWorld:
     def clone_present(self, c): return c in self.pool
     def clone_busy(self, c): return self.pool[c].get("busy", False)
     def clone_idle_s(self, c): return self.pool[c].get("idle", 7200)
-    def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "carry_real": self.pool[c].get("carry_real", False), "real": self.pool[c].get("real", [])}
+    def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "carry": self.pool[c].get("carry", False), "carry_real": self.pool[c].get("carry_real", False), "real": self.pool[c].get("real", [])}
     def remove_clone(self, st, before=None):
         if st.get("clone") not in self.pool:
             return None
@@ -2122,9 +2122,12 @@ def t_put_down_frees_places():
     parked(x, "G1", "game", "/c/G1", game={"phase": "staging", "sha": "s"})
     x.w.pool["/c/G0"] = {"idle": 5, "real": ["a.cs"]}
     x.w.pool["/c/G1"] = {"idle": 5}
+    parked(x, "G2", "game", "/c/G2", game={"phase": "prove", "sha": "s"})      # the item's own case: parked on the game behind a trailing lesson
+    x.w.pool["/c/G2"] = {"idle": 5, "carry": True}
     R.release_parked(x.s, x.w, x.r, x.now, [])
     ok(sorted(x.w.pool) == ["/c/G1"], "a waiting game item's clone goes; a staging one's stays: %s" % sorted(x.w.pool))
     ok(x.st("G0").get("bundle") == "/bundle//c/G0", "and its WIP goes with a bundle")
+    ok(x.st("G2").get("bundle") == "/bundle//c/G2", "and its state-only commit goes with a bundle")
     x.done()
 
 
@@ -2265,13 +2268,28 @@ def t_pool_jam():
     ok("/c/D0" not in x.w.pool, "a dead item's commits are bundled and released")
     x.done()
 
+    # POOL_FIX_STATE_COMMITS_PIN_CLONES: make_room treats a carry-only clone as holding something: after the empty one, and with a bundle
+    x = staffed(n=1)
+    x.w.pool = {"/c/L%d" % i: {"busy": True} for i in range(8)}
+    for name, wip in (("C0", {"carry": True}), ("C1", {})):
+        parked(x, name, "held", "/c/" + name)
+        x.w.pool["/c/" + name] = wip
+    ok(R.make_room(x.s, x.w, x.r, x.now, []) is None and "/c/C0" in x.w.pool and "/c/C1" not in x.w.pool,
+       "a clone with state commits to carry goes after one with nothing at risk: %s" % sorted(x.w.pool))
+    ok(x.st("C1").get("bundle") is None, "nothing to carry, nothing recorded")
+    x.w.pool_max = 9
+    ok(R.make_room(x.s, x.w, x.r, x.now, []) is None and "/c/C0" not in x.w.pool and x.st("C0").get("bundle") == "/bundle//c/C0",
+       "a state-only commit goes with a bundle the next clone restores: %s" % x.st("C0").get("bundle"))
+    x.done()
+
     # a parked item's idle clone goes back before the idle hour reads it stranded, whatever the pool's load
     x = staffed(n=1)
     for name, status, wip in (("P0", "held", {"real": ["a.cs"]}), ("P1", "held", {"idle": 60, "real": ["a.cs"]}),
                               ("P2", "held", {"kept": True, "real": ["a.cs"]}), ("P3", "held", {"busy": True}),
                               ("P4", "queued", {}), ("P5", "held", {}), ("P6", "queued", {"idle": 60}),
                               ("P7", "blocked", {"idle": 5, "real": ["b.cs"]}),
-                              ("P8", "blocked", {"kept": True, "carry_real": True}), ("P9", "queued", {"idle": 60, "kept": True, "carry_real": True})):
+                              ("P8", "blocked", {"kept": True, "carry_real": True}), ("P9", "queued", {"idle": 60, "kept": True, "carry_real": True}),
+                              ("PA", "held", {"carry": True})):
         parked(x, name, status, "/c/" + name)
         x.w.pool["/c/" + name] = wip
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
@@ -2283,6 +2301,7 @@ def t_pool_jam():
     ok(x.st("P8").get("bundle") == "/bundle//c/P8", "a blocked item's real commits go with a bundle: nothing strands")
     ok(x.st("P7").get("bundle") == "/bundle//c/P7", "a blocked item's WIP goes with a bundle")
     ok(x.st("P0").get("bundle") == "/bundle//c/P0", "WIP goes with a bundle the next clone restores")
+    ok(x.st("PA").get("bundle") == "/bundle//c/PA", "a state-only commit goes with a bundle, or the next clone silently loses it")
     ok(x.st("P5").get("bundle") is None and x.st("P4").get("bundle") is None, "nothing to carry, nothing recorded")
     x.done()
 
@@ -2727,6 +2746,28 @@ def t_pool_real_git():
     git(c, "merge", "-q", "--no-edit", "side")
     w = fx.clone_wip(c)
     ok(w["kept"] and not w["carry_real"], "a merge cannot be cherry-picked back: it stays: %s" % (w,))
+    # the item says lesson OR LEDGER: a ledger-only commit takes the same road out and back
+    led = "infrastructure/state/ledger/events/BENCH.jsonl"
+    shutil.rmtree(c)
+    git(d, "clone", "-q", o, c)
+    os.makedirs(os.path.join(c, os.path.dirname(led)), exist_ok=True)
+    put(led, '{"tail":"after the landing"}\n')
+    git(c, "add", led)
+    git(c, "commit", "-qm", "ledger tail")
+    w = fx.clone_wip(c)
+    ok(not w["kept"] and w["carry"], "a ledger-only commit does not pin the clone: %s" % (w,))
+    b = fx.remove_clone({"clone": c, "item": "I0"})
+    ok(b and os.path.exists(os.path.join(b, "carry")) and not fx.clone_present(c), "released with the ledger commit in the bundle")
+    git(d, "clone", "-q", o, c)
+    ok(fx.restore_bundle("I0", b, c) == [], "the next clone re-applies the ledger commit")
+    ok(os.path.exists(os.path.join(c, led)) and fx.clone_wip(c)["carry"], "the ledger line came back as a commit")
+    # one commit holding a ledger line AND real work is real work
+    put(led, '{"tail":"after the landing"}\n{"tail":"and more"}\n')
+    put("b3.txt", "real\n")
+    git(c, "add", led, "b3.txt")
+    git(c, "commit", "-qm", "ledger and real work")
+    w = fx.clone_wip(c)
+    ok(w["kept"] and not w["carry"], "a ledger line beside real work in one commit still pins it: %s" % (w,))
     ok(R.clone_item("/x/check-AB_C-1-c12") == "AB_C-1" and R.clone_item("/x/AB.q2") == "AB", "clone names read back")
     shutil.rmtree(d, ignore_errors=True)
 

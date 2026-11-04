@@ -303,6 +303,20 @@ def main() -> int:
         check(sc.pool_reading()["stranded"] == ["h1"], "no store to fetch from: still stranded")
         os.environ["RM_OBJSTORE"] = store
         os.environ["RM_POOL_ROOT"] = saved_root
+        # the item says lesson OR LEDGER: each kind alone, in its own clone, and one commit that also holds real work
+        led_c = BASE / "ledger_only"
+        sh("git", "clone", "-q", str(work), str(led_c))
+        (led_c / "infrastructure/state/ledger/events").mkdir(parents=True, exist_ok=True)
+        (led_c / "infrastructure/state/ledger/events/BENCH.jsonl").write_text('{"tail":"after the landing"}\n')
+        sh("git", "-C", str(led_c), "add", "infrastructure/state/ledger/events/BENCH.jsonl")
+        sh("git", "-C", str(led_c), "commit", "-q", "-m", "ledger tail")
+        check(sc.clone_unpushed(led_c) == [], f"a ledger-only commit is not stranded work: {sc.clone_unpushed(led_c)}")
+        check(sc.clone_unpushed(led_c, strict=True) == ["commits"], "and reuse (strict) never drops it")
+        (led_c / "infrastructure/state/ledger/events/BENCH.jsonl").write_text('{"tail":"after the landing"}\n{"tail":"and more"}\n')
+        (led_c / "mixed_real.txt").write_text("real work\n")
+        sh("git", "-C", str(led_c), "add", "infrastructure/state/ledger/events/BENCH.jsonl", "mixed_real.txt")
+        sh("git", "-C", str(led_c), "commit", "-q", "-m", "ledger and real work")
+        check(sc.clone_unpushed(led_c) == ["commits"], f"a commit holding real work beside a ledger line is stranded: {sc.clone_unpushed(led_c)}")
         owner = BASE / "owner" / "items" / "I" / "state.json"
         owner.parent.mkdir(parents=True)
         owner.write_text(json.dumps({"status": "game", "clone": str(pool / "p2")}))
