@@ -2,11 +2,14 @@
 """selftest_nightly_catchup: NIGHTLY_SWEEP_HARDEN_DIED_AT_SIXTY. A sweep killed mid-run runs again on its own.
 
 testdata below is the real log's section shape from 2026-11-02: the 03:21 PST sweep killed with nothing under its line, then
-the hand restart at 09:07 that finished. Runs the real pass with a fake systemctl only; the unit files are read as shipped.
+the hand restart at 09:07 that finished. Runs the real pass with a fake systemctl, the script as the shipped ExecStart runs it,
+and a real kill of a throwaway stand-in unit under the user's systemd (no bus is a FAIL, not a skip); the unit files are read
+as shipped.
 """
 import configparser
 import json
 import os
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -206,6 +209,142 @@ check("the service runs this tool", "nightly_catchup.py run" in cp["Service"]["E
 check("the promise is on the baseline", any(ln.startswith("unit=rm-selftests-nightly-catchup.timer reading=") for ln in
                                             (HERE.parent / "rimflow" / "live_baseline.txt").read_text().splitlines()))
 check("the sweep's section line is the one this reads", '=== %%s nightly' in (HERE / "systemd" / "rm-selftests-nightly.service").read_text())
+
+
+def unit(name):
+    p = configparser.ConfigParser(strict=False, interpolation=None)
+    p.optionxform = str
+    p.read(HERE / "systemd" / name)
+    return p
+
+
+# ---- the install: a timer with no [Install] target cannot be enabled, so a fresh install would run no pass at any boot
+ct, cs = unit("rm-selftests-nightly-catchup.timer"), unit("rm-selftests-nightly-catchup.service")
+check("the catch-up timer installs into timers.target", ct.has_section("Install") and ct["Install"].get("WantedBy") == "timers.target")
+check("the catch-up timer fires its own service", ct["Timer"].get("Unit", "rm-selftests-nightly-catchup.service") == "rm-selftests-nightly-catchup.service")
+check("the service is a one-shot pass", cs["Service"].get("Type") == "oneshot")
+check("the pass's own names are shipped units", (HERE / "systemd" / NC.SERVICE).is_file() and (HERE / "systemd" / NC.TIMER).is_file(), (NC.SERVICE, NC.TIMER))
+import testing_policy as TP  # noqa: E402
+cal = unit(NC.TIMER)["Timer"].get("OnCalendar", "")
+check("the night this reads starts when the nightly timer fires", cal.endswith(" %02d:00:00" % int(TP.param("selftest.nightly_full_hour_local"))), cal)
+check("the sweep prints the line 'finished' is read from, last of all",
+      'print("RESULT: "' in (HERE / "run_selftests.py").read_text(encoding="utf-8") and "tail -40" in unit(NC.SERVICE)["Service"]["ExecStart"])
+
+# ---- the production defaults, with nothing in the environment: where the sweep writes and where the promise reads
+saved = {k: os.environ.pop(k, None) for k in ("RM_STREAMS_BENCH", "RM_OPS_WATCH_DIR")}
+sweep = unit(NC.SERVICE)["Service"]
+check("the pass reads the log the sweep writes", KR.log_path() == Path(sweep["WorkingDirectory"]) / "Transient" / "selftests_nightly.log"
+      and "LOG=Transient/selftests_nightly.log" in sweep["ExecStart"], KR.log_path())
+promise = [ln for ln in (HERE.parent / "rimflow" / "live_baseline.txt").read_text().splitlines() if ln.startswith("unit=rm-selftests-nightly-catchup.timer ")]
+check("the pass writes the reading the promise holds", promise and "reading=%s " % NC.reading_path() in promise[0], (NC.reading_path(), promise))
+for k, v in saved.items():
+    if v is not None:
+        os.environ[k] = v
+
+# ---- the entry point the timer uses: the shipped ExecStart line, through __main__, default log and reading, a stub systemctl.
+# Only the clock is pinned, so 02:00 to 03:00 (`quiet`) cannot change the answer; every test above hands one_pass its paths.
+argv = cs["Service"]["ExecStart"].split()
+ROOT = HERE.parents[2]
+check("ExecStart names this tool by its path in the clone it runs in", argv[1].startswith(cs["Service"]["WorkingDirectory"] + "/")
+      and (ROOT / os.path.relpath(argv[1], cs["Service"]["WorkingDirectory"])).resolve() == Path(NC.__file__).resolve(), argv)
+CLOCK = "import runpy,sys,time;t=float(sys.argv[1]);time.time=lambda:t;sys.argv=sys.argv[2:];runpy.run_path(sys.argv[0],run_name='__main__')"
+STUB2 = """#!/bin/sh
+echo "$*" >>"$STUB_DIR/calls"
+case "$2" in
+is-active) if [ -f "$STUB_DIR/up" ]; then echo activating; else echo inactive; exit 3; fi;;
+is-enabled) echo enabled;;
+start) : >"$STUB_DIR/up";;
+esac
+"""
+
+
+def cli(tag, verb, log_text, now=BOOT, up=False, clone=True):
+    """The script as the service runs it -> (exit, stdout, stub's calls, reading or None, the log's path)."""
+    d = TMP / "cli" / tag
+    (d / "bin").mkdir(parents=True)
+    (d / "bin" / "systemctl").write_text(STUB2)
+    (d / "bin" / "systemctl").chmod(0o755)
+    if up:
+        (d / "up").write_text("")
+    log = d / "bench" / "Transient" / "selftests_nightly.log"
+    if clone:
+        log.parent.mkdir(parents=True)
+        log.write_text(log_text)
+    env = dict(os.environ, PATH=str(d / "bin") + os.pathsep + os.environ["PATH"], STUB_DIR=str(d),
+               RM_STREAMS_BENCH=str(d / "bench"), RM_OPS_WATCH_DIR=str(d / "ops"), PYTHONDONTWRITEBYTECODE="1")
+    p = subprocess.run([sys.executable, "-c", CLOCK, str(now), str(NC.__file__), verb], env=env, capture_output=True, text=True, timeout=120)
+    calls = (d / "calls").read_text().splitlines() if (d / "calls").exists() else []
+    rd = d / "ops" / "nightly_catchup.json"
+    return p.returncode, p.stdout + p.stderr, calls, (json.loads(rd.read_text()) if rd.exists() else None), log
+
+
+START = "--user start --no-block rm-selftests-nightly.service"
+VERB = argv[2]
+check("the service's verb is run", argv[2:] == ["run"], argv)
+rc, so, calls, rd, lg = cli("killed", VERB, FINISHED_NOV1 + KILLED_NOV2)
+check("the service's own line re-runs the killed sweep", rc == 0 and START in calls, (rc, so, calls))
+check("that pass read the sweep's log from the default path", rd and rd["log"] == str(lg) and rd["state"] == "start" and rd["started"] == 1, rd)
+check("and says so on stdout, which is the journal", so.startswith("start: "), so)
+rc, so, calls, rd, _ = cli("done", VERB, FINISHED_NOV1 + KILLED_NOV2 + RERUN_NOV2, now=AT("2026-11-02T18:00:00Z"))
+check("the default path's content decides: a finished night starts nothing", rc == 0 and START not in calls and rd["state"] == "done", (rc, so, calls, rd))
+rc, so, calls, rd, _ = cli("up", VERB, FINISHED_NOV1 + KILLED_NOV2, up=True)
+check("the service's line leaves a running sweep alone", rc == 0 and START not in calls and rd["state"] == "running", (rc, so, calls, rd))
+rc, so, calls, rd, _ = cli("blind", VERB, "", clone=False)
+check("the service's line, no clone: blind, exit 1, no start", rc == 1 and START not in calls and rd["state"] == "blind", (rc, so, calls, rd))
+rc, so, calls, rd, _ = cli("status", "status", FINISHED_NOV1 + KILLED_NOV2)
+check("the status verb decides but starts and writes nothing", rc == 0 and so.startswith("start: ") and START not in calls and rd is None, (rc, so, calls, rd))
+
+# ---- a real kill under real systemd: the states a SIGKILL and a shutdown's SIGTERM leave, the restart, the finish. The unit is
+# a throwaway stand-in for the sweep, with the sweep's section line and RESULT, so no 50-minute sweep is spent.
+REAL = TMP / "real" / "Transient" / "selftests_nightly.log"
+REAL.parent.mkdir(parents=True)
+BODY = ("printf '\\n=== 2026-11-02T17:04:00Z nightly\\n' >>\"$L\"; if [ -e \"$F\" ]; then sleep 3; echo 'RESULT: GREEN' >>\"$L\"; "
+        "else : >\"$F\"; sleep 300; echo 'RESULT: GREEN' >>\"$L\"; fi")
+
+
+def real_ctl(*a):
+    return "enabled" if a[0] == "is-enabled" else NC.systemctl(*a)
+
+
+def wait_state(u, want, tries=60):
+    for _ in range(tries):
+        s = NC.systemctl("is-active", u)
+        if s in want:
+            return s
+        time.sleep(0.25)
+    return s
+
+
+check("systemd answers: the rest of this block is real", NC.systemctl("is-system-running") is not None)
+service0, settle0 = NC.SERVICE, NC.SETTLE_S
+for sig, left in (("SIGKILL", {"failed"}), ("SIGTERM", NC.DOWN)):
+    u = "rm-selftest-nc-%d-%s.service" % (os.getpid(), sig.lower())
+    REAL.write_text(FINISHED_NOV1)
+    flag = TMP / ("real_flag_" + sig)
+    ok = subprocess.run(["systemd-run", "--user", "--unit=" + u, "--no-block", "--property=Type=oneshot", "--setenv=L=%s" % REAL,
+                         "--setenv=F=%s" % flag, "/bin/sh", "-c", BODY], capture_output=True, timeout=60).returncode == 0
+    check("%s: the stand-in starts" % sig, ok and wait_state(u, NC.UP) in NC.UP)
+    try:
+        for _ in range(40):
+            if flag.exists():
+                break
+            time.sleep(0.25)
+        subprocess.run(["systemctl", "--user", "kill", "--signal=" + sig, u], capture_output=True, timeout=60)
+        s = wait_state(u, left)
+        check("%s leaves %s, a section and no RESULT" % (sig, s), s in left and "RESULT" not in REAL.read_text().split("17:04:00Z")[-1], (s, REAL.read_text()))
+        NC.SERVICE, NC.SETTLE_S = u, 1
+        o = TMP / ("real_" + sig) / "nightly_catchup.json"
+        r = NC.one_pass(BOOT, True, ctl=real_ctl, log=REAL, out=o)
+        check("%s: the pass restarts it, try 2 of 3" % sig, r["state"] == "start" and "try 2 of 3" in r["why"] and r["started"] == 1, r)
+        r = NC.one_pass(BOOT, True, ctl=real_ctl, log=REAL, out=o)
+        check("%s: the next pass sees it running" % sig, r["state"] == "running" and r["started"] == 1, r)
+        wait_state(u, NC.DOWN)
+        r = NC.one_pass(BOOT, True, ctl=real_ctl, log=REAL, out=o)
+        check("%s: and once it finishes, done, one start" % sig, r["state"] == "done" and r["started"] == 1, r)
+    finally:
+        NC.SERVICE, NC.SETTLE_S = service0, settle0
+        subprocess.run(["systemctl", "--user", "stop", u], capture_output=True, timeout=60)
+        subprocess.run(["systemctl", "--user", "reset-failed", u], capture_output=True, timeout=60)
 
 print("selftest_nightly_catchup: %s" % ("FAIL: " + "; ".join(FAILS) if FAILS else "PASS"))
 sys.exit(1 if FAILS else 0)
