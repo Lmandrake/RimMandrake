@@ -19,3 +19,12 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A1 (L1), read-only proof","ts":"2026-11-04T00:06:04Z","tsn":1793750764976404233}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:06:41Z","tsn":1793750801785137283}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A2 (L2), read-only proof","ts":"2026-11-04T00:06:52Z","tsn":1793750812112058477}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:07:00Z","tsn":1793750820196672993}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-04T00:07:11Z","tsn":1793750831429597177}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:07:18Z","tsn":1793750838185818421}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A4 (L2), read-only proof","ts":"2026-11-04T00:07:33Z","tsn":1793750853592130791}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:07:42Z","tsn":1793750862152165093}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A5 (L2), read-only proof","ts":"2026-11-04T00:07:53Z","tsn":1793750873572556377}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:08:02Z","tsn":1793750882507029126}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A6 (L2), read-only proof","ts":"2026-11-04T00:08:13Z","tsn":1793750893765952378}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T00:08:21Z","tsn":1793750901709531224}
