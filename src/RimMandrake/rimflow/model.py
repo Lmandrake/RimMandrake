@@ -1833,6 +1833,13 @@ def _who_refusal(ev, item):
             # a typo, and letting the OWNER override it would file events against
             # nothing. Raised, not returned, so `_may` never offers it to him.
             raise PermissionError_("`%s` names an item that does not exist" % verb)
+        if item.owner == "OWNER" and seat == "BENCH":
+            # \ud83d\udd34 An item under his name is the Conductor's to move \u2014 owner, 2026-11-03: *"That is bizarre that a
+            # ticket lands under my name therefore you can't verify it. ... You should be able to verify it."*
+            # A relayed --owner-said claim stamps the item OWNER, which then locked BENCH out of verifying the
+            # sitting it ran with him (DESIGNER_LESSONS_ABSORB_JOINT_SESSION_DAY). The Conductor carries his
+            # authority (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM), so his items never refuse it.
+            return None
         if item.owner and item.owner != seat:
             # \u26a0\ufe0f Narrow, and the message must SAY it is narrow. Owner's ruling
             # 2026-09-19: correctness outranks seat ownership, and a cross-seat edit to

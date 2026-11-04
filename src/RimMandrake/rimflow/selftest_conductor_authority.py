@@ -235,5 +235,14 @@ check("--per-ruling" in run(ROOT / "src/RimMandrake/rimflow/relentless.py", "unh
 
 check("CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM" in (ROOT / "src/RimMandrake/rimflow/model.py").read_text(encoding="utf-8"),
       "the seat refusal names the Conductor's route")
+
+# An item under his name never refuses the Conductor (owner, 2026-11-03); another seat's item still refuses it.
+sys.path.insert(0, str(ROOT / "src/RimMandrake/rimflow"))
+import model as M  # noqa: E402
+_it = lambda owner: types.SimpleNamespace(id="I0", owner=owner, state="doing")  # noqa: E731
+for verb in ("verify", "claim", "start"):
+    ev = {"event": verb, "seat": "BENCH", "id": "I0"}
+    check(M._who_refusal(ev, _it("OWNER")) is None, "BENCH may `%s` an item owned by OWNER" % verb)
+    check(M._who_refusal(ev, _it("DESIGNER")) is not None, "BENCH still may not `%s` another seat's item" % verb)
 print("%d failure(s)" % len(fails))
 sys.exit(1 if fails else 0)
