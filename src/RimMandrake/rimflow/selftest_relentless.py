@@ -3802,13 +3802,26 @@ def t_hold_routing():
     fx.fail = "ledger down"
     ok(fx.ledger_hold_to_seat("I", hold) == "ledger down", "a failure says so and the tick retries")
 
-    # The two readers of a hold cannot disagree: Fleet Watch's owner_queue and this supervisor's routing.
+    # The two readers of a hold cannot disagree: Fleet Watch's owner_queue and this supervisor's routing. Both sides of the
+    # word trap are pinned on real wrapped text (blind check: a bare "flyer" in a why made a hold that was nobody's).
     sys.path.insert(0, os.path.join(os.path.dirname(R.HERE), "Utils"))
     import owner_queue as Q
+    import relentless_live as L
+    site = L.refused_site("python.exe src/RimMandrake/bridgetools/prove_venomvine_flyer.py")
+    ok(site and "flyer" in site, "a real refusal names a flyer path: %s" % site)
+    again = "game phase: refused again unchanged after a return (cut, first x): "
+    free = [again + site, again + "proof selftest_flyer_body.py changed since the build",
+            again + "proof selftest_flyer: changed since the build",
+            "game phase: modlist_swap.py --enable RM_Flyer refused: flyer: in no tier", "game phase: Flyer pack missing"]
+    for w in free:
+        ok(not R.hold_is_his({"kind": "game", "why": w}), "free text naming a flyer is no flyer hold: %s" % w)
+        ok(Q.tooling_hold({"status": "held", "hold": {"kind": "game", "why": w}}), "and it is on the seat's list: %s" % w)
     for h in ({"kind": "owner_call", "why": "x"}, {"kind": "game", "why": flyer}, {"kind": "proof_weak", "why": "x"},
               {"kind": "strikes", "why": "x"}, {"kind": "spend", "why": "x"}, {"kind": "game", "why": "game phase: refused again"},
-              {"kind": "proof_weak", "why": "a flyer: in the words"}):
+              {"kind": "proof_weak", "why": "a flyer: in the words"}, {"kind": "owner_call", "why": "flyer"},
+              {"kind": "proof_weak", "why": "game phase: flyer: not a game hold"}):
         ok((Q.tooling_hold({"status": "held", "hold": h}) is None) is R.hold_is_his(h), "owner_queue agrees on %s" % h)
+    ok(not hasattr(Q, "FLYER"), "owner_queue holds no second copy of the flyer test")
 
 
 def t_hold_routing_real_ledger():

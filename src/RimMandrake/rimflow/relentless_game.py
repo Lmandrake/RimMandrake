@@ -699,6 +699,14 @@ def _hold(store, fx, item, why, now, acts):
 
 
 FLYER = "flyer:"
+
+
+def flyer_hold(why):
+    """This game hold's words say a flyer's flight, the one game hold only he can lift. Anchored where _hold writes the
+    reason: the rest of a why is free text (proof paths, mod names, file names), and "flyer" in it says nothing."""
+    return (why or "").startswith("game phase: " + FLYER)
+
+
 REFUSED_KEEP = 20       # fingerprints kept per item: enough for every clause of an item and its stale builds
 
 

@@ -43,6 +43,7 @@ items = {
     "D_OWNER_CALL": it("owner", title="Owner call"),
     "E_FLYER": it("owner"),
     "F_GAMESTAGE": it("owner"),
+    "N_FLYER_WORD": it("owner"),
     "G_BLOCKED_OWNER": it("offline", blocked=True, kind="owner", title="Blocked on him"),
     "H_CLOSED": it("owner", open_=False),
     "I_OFFLINE": it("offline"),
@@ -56,6 +57,7 @@ rel = {
     "D_OWNER_CALL": held("owner_call", "delegation_policy section 2"),
     "E_FLYER": held("game", "game phase: flyer: a flyer's flight is never live-tested without the owner present"),
     "F_GAMESTAGE": held("game", "game phase: stage failed twice"),
+    "N_FLYER_WORD": held("game", "game phase: refused again unchanged: proof selftest_flyer_body.py changed since the build"),
     "K_HOLD_STR": {"status": "held", "hold": "owner"},
     "L_RELEASED": {"status": "queued", "hold": {"kind": "proof_weak"}},
 }
@@ -73,8 +75,8 @@ check("title is the fallback", {x["item"]: x["q"] for x in n["lines"]}["A_PLAIN_
 check("text leads with the count", n["text"].startswith("%d things: " % len(his)))
 none = Q.needs_you({"I": it("offline")}, {}, {})
 check("nothing his -> empty text, count 0", (none["count"], none["lines"], none["text"], none["topics"], none["answered"]) == (0, [], "", [], []))
-check("the seat queue is every tooling hold", [k for k, _, _ in Q.seat_queue(rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
-check("misrouted lists tooling holds", [k for k, _ in Q.misrouted(items, rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE"])
+check("the seat queue is every tooling hold", [k for k, _, _ in Q.seat_queue(rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE", "N_FLYER_WORD"])
+check("misrouted lists tooling holds", [k for k, _ in Q.misrouted(items, rel)] == ["B_PROOF_WEAK", "C_SPEND", "F_GAMESTAGE", "N_FLYER_WORD"])
 
 
 
@@ -98,13 +100,14 @@ def run_main(*flags):
 rc, rows = run_main("--seat")
 check("--seat prints the tooling holds, proof_weak, strikes and a non-flyer game hold, and nothing else",
       rc == 0 and rows == ["B_PROOF_WEAK\tproof_weak\t2 returns and the proof still reads weak", "C_SPEND\tspend\titem spend limit",
-                           "F_GAMESTAGE\tgame\tgame phase: stage failed twice", "M_STRIKES\tstrikes\t3 strikes"])
+                           "F_GAMESTAGE\tgame\tgame phase: stage failed twice", "M_STRIKES\tstrikes\t3 strikes",
+                           "N_FLYER_WORD\tgame\tgame phase: refused again unchanged: proof selftest_flyer_body.py changed since the build"])
 check("--seat omits owner_call and a flyer's flight", not [r for r in rows if r.startswith(("D_OWNER_CALL", "E_FLYER"))])
 rc, rows = run_main()
 check("no flag is his list, with no tooling hold on it",
       rc == 0 and rows[0] == "%d truly his" % len(his) and {r.split("\t")[0] for r in rows[1:len(his) + 1]} == his)
 rc, rows = run_main("--misrouted")
-check("--misrouted stays its own answer", rc == 0 and rows == ["B_PROOF_WEAK\tproof_weak", "C_SPEND\tspend", "F_GAMESTAGE\tgame", "M_STRIKES\tstrikes"])
+check("--misrouted stays its own answer", rc == 0 and rows == ["B_PROOF_WEAK\tproof_weak", "C_SPEND\tspend", "F_GAMESTAGE\tgame", "M_STRIKES\tstrikes", "N_FLYER_WORD\tgame"])
 
 with tempfile.TemporaryDirectory() as d:
     p = os.path.join(d, "q.json")

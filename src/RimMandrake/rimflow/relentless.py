@@ -822,7 +822,7 @@ def unhold(store, item, said, now=None):
             st.pop("start_refusals", None)
             st.pop("start_again_at", None)
         game_back = (st["hold"].get("kind") == "game" and (st.get("game") or {}).get("sha")
-                     and relentless_game.FLYER not in (st["hold"].get("why") or ""))
+                     and not relentless_game.flyer_hold(st["hold"].get("why")))
         was_his = hold_is_his(st["hold"])
         st["hold"] = None
         st["returned_at"] = now
@@ -3457,7 +3457,7 @@ def hold_is_his(h):
     """Only he can lift this hold: a delegation_policy section 2 call, or a flyer's flight (section 2.6). Every other hold
     (proof_weak, strikes, game, ...) is a tooling outcome, the seat's to read (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS)."""
     h = h or {}
-    return h.get("kind") == "owner_call" or (h.get("kind") == "game" and relentless_game.FLYER in (h.get("why") or ""))
+    return h.get("kind") == "owner_call" or (h.get("kind") == "game" and relentless_game.flyer_hold(h.get("why")))
 
 
 def _hold_routed(store, item, to):

@@ -29,10 +29,11 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+import relentless_game  # noqa: E402  the supervisor's own test of a flyer hold: two copies of it disagreed
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 QUESTIONS = os.path.join(REPO, "infrastructure", "state", "owner_questions.json")
 HIS_HOLDS = ("owner_call",)
-FLYER = "flyer"  # relentless_game.FLYER's hold words name a flyer's flight; read, not imported (that module is busy)
 
 
 def hold_of(rs):
@@ -52,7 +53,7 @@ def tooling_hold(rs):
     h = hold_of(rs)
     if h is None or (rs or {}).get("status") != "held":
         return None
-    if h.get("kind") in HIS_HOLDS or (h.get("kind") == "game" and FLYER in (h.get("why") or "").lower()):
+    if h.get("kind") in HIS_HOLDS or (h.get("kind") == "game" and relentless_game.flyer_hold(h.get("why"))):
         return None
     return h
 

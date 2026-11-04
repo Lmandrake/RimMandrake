@@ -480,6 +480,7 @@ def t_flyer_put_down():
     st = x.st("I0")
     ok(st["status"] == "held" and "flyer" in st["hold"]["why"] and st["put_down"]["on"].startswith("game phase: flyer"),
        "a flyer is put down on the owner, not left waiting: %s %s" % (st["status"], st.get("hold")))
+    ok(G.flyer_hold(st["hold"]["why"]) and R.hold_is_his(st["hold"]), "the words the writer really uses read as his: %s" % st["hold"]["why"])
     ok("I0" in x.w.needs and "take" not in x.w.events, "the ledger asks him; the bridge was never taken")
     ok(st["clone"] not in x.w.pool and st.get("bundle"), "its clone went back with its WIP bundled")
     for _ in range(3):
@@ -689,6 +690,14 @@ def t_unhold_game_hold_returns_to_game():
     st = x.st("I0")
     ok(st["status"] == "game" and st["game"]["phase"] == "prove" and st["game"]["stages"] == 0 and not st["hold"],
        "back to its game phase: %s %s" % (st["status"], st["game"]))
+    with x.s.lock():
+        st = x.st("I0")
+        st["status"] = "held"
+        st["hold"] = {"why": "game phase: refused again: proof selftest_flyer: changed since the build", "kind": "game",
+                      "delivered": True, "at": x.now}
+        x.s.save(st)
+    R.unhold(x.s, "I0", "per ruling")
+    ok(x.st("I0")["status"] == "game", "the word flyer in a proof's name is a plain game hold, back to its game phase")
     with x.s.lock():
         st = x.st("I0")
         st["status"] = "held"
