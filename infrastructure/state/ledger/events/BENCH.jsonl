@@ -13821,3 +13821,4 @@
 {"seat":"BENCH","event":"start","id":"STEVE_LANE_MONITOR_PAUSE_FINDINGS","why":"relentless supervisor takes the item","ts":"2026-11-04T02:08:28Z","tsn":1793758108979502010}
 {"seat":"BENCH","event":"start","id":"STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS","why":"relentless supervisor takes the item","ts":"2026-11-04T02:08:36Z","tsn":1793758116518232347}
 {"seat":"BENCH","event":"start","id":"SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG","why":"relentless supervisor takes the item","ts":"2026-11-04T02:09:15Z","tsn":1793758155146083124}
+{"seat":"BENCH","event":"reclaim","id":"STEVE_LANE_MONITOR_PAUSE_FINDINGS","why":"relentless supervisor: excluded in the rules, back to the pool","ts":"2026-11-04T02:14:52Z","tsn":1793758492808652151}
