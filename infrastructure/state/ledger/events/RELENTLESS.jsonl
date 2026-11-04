@@ -410,3 +410,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GENERATOR_MODS_PROVE_INERT_AFTER_CREATION A2 (L1), read-only proof","ts":"2026-11-04T16:54:31Z","tsn":1793811271401803370}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T16:54:38Z","tsn":1793811278044833605}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-04T17:14:23Z","tsn":1793812463341815539}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:16:52Z","tsn":1793812612205822927}
