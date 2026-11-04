@@ -91,6 +91,28 @@ import level_water  # noqa: E402  (the exact-level reference, WATER_LEVEL_BUILD_
 import gravel_stage  # noqa: E402  (V2_FILLIN_SCENE_STAGE_FILL_MATERIAL: fill costs spoil, so the fill-in scenes need gravel on the ground)
 import shovel_stage  # noqa: E402  (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the E7/E8 job pawns carry one)
 
+
+def _wrapup():
+    """rimflow/wrapup.py, the agent's deterministic wrap-up (AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED), or None."""
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                                        "rimflow"))
+        import wrapup
+        return wrapup
+    except Exception:  # noqa: BLE001  the register is best effort: a proof never fails on it
+        return None
+
+
+def _wrapup_owe(kind, what, undo):
+    w = _wrapup()
+    return w.owe(kind, what, undo) if w else None
+
+
+def _wrapup_paid(token):
+    w = _wrapup()
+    if w and token:
+        w.paid(token)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(HERE)                       # src/RimMandrake/FlowWorks
 SRC = os.path.join(MOD, "Source")
@@ -1906,6 +1928,7 @@ class Live(object):
         self.ids = {}               # body name -> live body id
         self.jobcells = set()
         self.touched = set()        # (typeName, field) the run changed -> restored in finally
+        self.debts = {}             # (typeName, field) -> wrapup.py debt token: what a crash before the restore leaves
         self.gmism = {}             # phase -> {scene: mismatches} for G_every_cell_vs_oracle
 
     # ------------------------------------------------------------------ bookkeeping
@@ -1975,11 +1998,15 @@ class Live(object):
 
     def sset(self, typ, f, v):
         self.touched.add((typ, f))
+        if not self.mock and (typ, f) not in self.debts:   # the agent's wrap-up files it if the restore never runs
+            self.debts[(typ, f)] = _wrapup_owe("setting", "%s.%s forced by validation_v2" % (typ, f),
+                                               "set %s.%s back to its shipped default" % (typ, f))
         r = self.B.call("jawa/mod_settings_field", typeName=typ, action="set", field=f, value=str(v))
         if not r.get("success") or not _settings_equal(self.sget(typ, f), v):
             raise Abort("settings set %s=%s not read back: %r" % (f, v, r))
 
     def restore_settings(self):
+        """Every field the run set goes back to its shipped default; a field read back as restored pays its debt."""
         bad = []
         for typ, f in sorted(self.touched):
             want = _SETTINGS.get(typ, {}).get(f)
@@ -1990,6 +2017,8 @@ class Live(object):
                 self.B.call("jawa/mod_settings_field", typeName=typ, action="set", field=f, value=str(want))
                 if not _settings_equal(self.sget(typ, f), want):
                     bad.append(f)
+                else:
+                    _wrapup_paid(self.debts.pop((typ, f), None))
             except Exception as ex:                 # noqa: BLE001
                 bad.append("%s (%s)" % (f, ex))
         return bad

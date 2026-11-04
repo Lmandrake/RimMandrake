@@ -127,11 +127,15 @@ def launch_argv(rec, msg, claude):
     bound = int(rec["max_s"]) + GRACE_S
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     finish = "/usr/bin/python3 %s finish --unit %s" % (shlex.quote(os.path.abspath(__file__)), unit)
+    wrapup = "-+/usr/bin/python3 %s unit --unit %s --seat %s --clone %s" % (
+        shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")), shlex.quote(unit),
+        shlex.quote(seat), shlex.quote(clone))
     cmd = [bounded, "-p", msg, "--model", rec["model"], "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + rec["out"], "-p", "StandardError=file:" + rec["err"],
             "-p", "ExecStopPost=" + finish,
+            "-p", "ExecStopPost=" + wrapup,     # the census of what it left (wrapup.py), after finish recorded it
             "--working-directory", clone,
             "--setenv", "AGENT_SEAT=" + seat, "--setenv", "RIMFLOW_SEAT=" + seat,
             *(sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(rec["tmp"]).items()), []) if rec.get("tmp") else []),

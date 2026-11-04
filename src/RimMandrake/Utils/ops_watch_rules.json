@@ -470,6 +470,21 @@
   "skip": ["*._collector", "roles.*"]
  },
  "targets": [
+ {
+  "key": "wrapup.debris_standing",
+  "op": ">",
+  "value": 0,
+  "alarm": true,
+  "worse": {
+   "factor": 2
+  },
+  "tag": "WRAPUP_DEBRIS",
+  "name": "OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP",
+  "marks": [
+   "MEASURED"
+  ],
+  "why": "AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: an agent ended and left debris its wrap-up could not clean (a dirty or unpushed clone, a bridge hold, a forced setting or staged scene, a claim still doing); `python3 src/RimMandrake/rimflow/wrapup.py list` names each, `sweep` clears what is gone, `resolve` the rest"
+ },
   {
    "key": "queues.artpipe.stalled_min",
    "op": ">",

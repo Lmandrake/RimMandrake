@@ -2031,7 +2031,21 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             # run is ended even if no tick ever supervises it again (timer off, dry-run root, unreadable state)
             "--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound,
             "-p", "RuntimeMaxSec=%d" % bound, "-p", "TimeoutStopSec=%d" % SCOPE_STOP_S,
+            "-p", "ExecStopPost=" + wrapup_argv(role, unit),
             "--setenv", "PATH=" + path] + tmp_setenv(tmpdir) + ["--"] + cmd
+
+
+def wrapup_argv(role, unit):
+    """The run's deterministic wrap-up (wrapup.py; AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED): systemd runs it however the
+    unit ends. The launcher's own copy, not the run's clone (that one may be gone by then). A Relentless worker's clone is
+    carried to the item's next worker, so its work in progress is not debris. "-+": "+" runs it outside the unit's sandbox
+    (a walled run's InaccessiblePaths hide the launcher's checkout and the state dir), "-" so it can never fail the unit
+    (measured 2026-11-04 on a transient user unit: the main command was denied the path, the "+" post read it, exit 3 ignored)."""
+    tool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")
+    words = ["/usr/bin/python3", tool, "unit", "--unit", unit, "--seat", role["seat"], "--clone", role["clone"]]
+    if role.get("name") == "relentless":
+        words.append("--carried")
+    return "-+" + " ".join(shlex.quote(w) for w in words)
 
 
 def tmp_setenv(tmpdir):

@@ -83,7 +83,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues")
+            "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues", "wrapup")
 
 
 def ops_dir() -> Path:
@@ -2309,13 +2309,46 @@ def c_queues(now, rules, ctx):
     return out
 
 
+def c_wrapup(now, rules, ctx):
+    """AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: what agents left at their end that is STILL there (rimflow/wrapup.py
+    re-measures every filed row), and how many wrap-ups ran in 24 h: a wrap-up that never runs reads 0 there, so a 0
+    standing is believed only beside a live record count. No state dir: UNMEASURED, never 0."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    out = {}
+    try:
+        import wrapup
+        d = wrapup.state_dir()
+        if not os.path.isdir(d):
+            raise OSError("no wrap-up state dir %s" % d)
+        rows = [(os.path.basename(f), r) for f, _, rs in wrapup.standing() for r in rs]
+        out["wrapup.debris_standing"] = M(len(rows), "filed wrap-up rows still standing",
+                                          first=["%s %s %s" % (f[:-5], r.get("kind"), r.get("what")) for f, r in rows[:6]])
+        n, cut = 0, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - DAY))
+        try:
+            with open(os.path.join(d, "runs.jsonl"), encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        n += str(json.loads(line).get("at") or "") >= cut
+                    except (ValueError, AttributeError):
+                        continue
+        except FileNotFoundError:
+            pass
+        out["wrapup.records_24h"] = M(n, "wrap-ups recorded in 24 h")
+    except Exception as e:  # noqa: BLE001
+        out["wrapup.debris_standing"] = U("%s: %s" % (type(e).__name__, str(e)[:160]))
+        out["wrapup.records_24h"] = U("%s: %s" % (type(e).__name__, str(e)[:160]))
+    return out
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
               "arena": c_arena, "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles,
-              "queues": c_queues}
+              "queues": c_queues, "wrapup": c_wrapup}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues")
+         "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues", "wrapup")
 
 
 # ==================================================================================================== storage

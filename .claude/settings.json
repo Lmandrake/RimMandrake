@@ -281,6 +281,28 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 120,
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/wrapup_hook.py\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 120,
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/wrapup_hook.py\" 2>/dev/null || true"
+          }
+        ]
+      }
     ]
   },
   "crossSessionInbound": "accept",
