@@ -77,5 +77,31 @@ with tempfile.TemporaryDirectory() as tmp:
         rc = oa.main(["--kern", empty])
     ok(rc == 2 and "UNMEASURED" in err.getvalue(), "no kill line is UNMEASURED, exit 2, never a clean zero")
 
+# HARNESS_MEMORY_MEASURE_WHO_HIT_TWELVE_GIG: a slice kill names the unit inside the slice that held the victim.
+ARENA = "rm.slice/rm-harness.slice/rm-arena-replay-v3.service"
+blk = kill_block("2026-10-31T08:53:14", "rm.slice/rm-harness.slice", 12582912, 12 * GB, 28 << 20, pid=21345)
+blk[5] = blk[5].replace("task_memcg=" + U + "rm.slice/rm-harness.slice,", "task_memcg=" + U + ARENA + ",")
+ka = oa.parse(blk)[0]
+ok(len(ka) == 1 and ka[0]["class"] == "SLICE", "a victim in a child unit is still a SLICE kill")
+ok(oa.blamed_unit(ka[0]) == "rm-arena-replay-v3.service", "the slice kill blames its child unit: %s" % oa.blamed_unit(ka[0]))
+ok("unit rm-arena-replay-v3.service" in oa.report(ka)[0], "the report line names the unit")
+ok(oa.blamed_unit(kills[0]) is None and "  unit " not in rep[0], "a victim in the limiting cgroup itself names no unit")
+ok(oa.blamed_unit({"memcg": U + "rm.slice/rm-harness", "task_memcg": U + "rm.slice/rm-harness.slice/x.service"}) is None,
+   "a sibling sharing a name prefix is not a child")
+
+# The cross-boot trap: journalctl -k implies the current boot and silently drops --since's earlier boots.
+kc = oa.journal_cmd("kernel", since="2026-10-30", until="2026-11-02")
+ok("-k" not in kc and "--dmesg" not in kc and "_TRANSPORT=kernel" in kc, "a kernel window never reads through -k: %s" % kc)
+ok("-b" not in kc and kc[-4:] == ["--since", "2026-10-30", "--until", "2026-11-02"], "a window spans boots")
+ok(oa.journal_cmd("kernel")[-1] == "-b" and oa.journal_cmd("user", boot="-2")[-2:] == ["-b", "-2"], "no window: one boot, this one by default")
+ok("--user" in oa.journal_cmd("user", since="x") and "_TRANSPORT=kernel" not in oa.journal_cmd("user"), "the user half reads the user journal")
+calls = []
+real = oa.journal
+oa.journal = lambda kind, since=None, until=None, boot=None: calls.append((kind, since, until, boot)) or []
+with contextlib.redirect_stderr(io.StringIO()):
+    oa.main(["--since", "2026-10-30", "--until", "2026-11-02", "--boot=-2"])
+oa.journal = real
+ok(calls == [("kernel", "2026-10-30", "2026-11-02", "-2"), ("user", "2026-10-30", "2026-11-02", "-2")], "main passes the window to both halves: %s" % calls)
+
 print("%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

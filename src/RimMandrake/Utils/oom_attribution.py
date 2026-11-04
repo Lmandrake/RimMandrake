@@ -6,7 +6,8 @@ short test's scope is gone before the next one-minute sample. That reads as the 
 kernel line names the cgroup whose limit really fired (oom_memcg=). This tool reads those lines.
 
   oom_attribution.py                    read the kernel and user journals of this boot
-  oom_attribution.py --since 2026-11-03 same, from a date
+  oom_attribution.py --since 2026-10-30 --until 2026-11-02   a window, across boots
+  oom_attribution.py --boot -2          one earlier boot (journalctl --list-boots)
   oom_attribution.py --extract OUT      also write the lines it used to OUT (journals decay; an extract does not)
   oom_attribution.py --kern FILE        classify a saved extract
 
@@ -18,6 +19,11 @@ Classes, by the cgroup that hit its limit:
   seat_other       a seat scope's own cap
   SLICE            a slice's own limit: rm-harness.slice or claude-seats.slice (the budget question)
   HOST             no memcg constraint: the whole VM ran out
+
+The kernel half of a window is read by `_TRANSPORT=kernel`, never `-k`: `journalctl -k` implies the current boot
+and drops --since's earlier boots without a word (10-30..11-01 read 0 kills that way; 17 were there).
+A kill whose victim sat in a child of the cgroup that hit its limit is reported with that child, the unit to
+blame: "in rm-harness.slice  unit rm-arena-replay-v3.service" (HARNESS_MEMORY_MEASURE_WHO_HIT_TWELVE_GIG).
 
 Exit: 0 classified; 2 no kill line was found, which means UNMEASURED and never "no kills".
 """
@@ -74,6 +80,7 @@ def parse(lines):
         if m:
             kills.append({"at": ln[:19], "constraint": m.group("constraint"), "memcg": m.group("memcg"),
                           "task": m.group("task"), "pid": int(m.group("pid")),
+                          "task_memcg": m.group("task_memcg"),
                           "usage_kb": limit[0] if limit else None, "limit_kb": limit[1] if limit else None,
                           "anon": stat.get("anon", 0), "shmem": stat.get("shmem", 0)})
             limit, stat = None, {}
@@ -91,9 +98,30 @@ def keep_line(ln):
     return any(x in ln for x in KEEP) or bool(STAT_RE.search(ln)) or ("Started rm-harness-" in ln and "bomb.py" in ln)
 
 
-def journal(args, since):
-    cmd = ["journalctl", "--no-pager", "-o", "short-iso"] + args + (["--since", since] if since else ["-b"])
-    return subprocess.run(cmd, capture_output=True, text=True, errors="replace", timeout=120).stdout.splitlines()
+def journal_cmd(kind, since=None, until=None, boot=None):
+    """Pure. kind: 'kernel' or 'user'. A window (since/until) spans boots; with neither, one boot (default this one)."""
+    cmd = ["journalctl", "--no-pager", "-o", "short-iso"]
+    cmd += ["_TRANSPORT=kernel"] if kind == "kernel" else ["--user"]
+    if since or until:
+        cmd += (["--since", since] if since else []) + (["--until", until] if until else [])
+        if boot is not None:
+            cmd += ["-b", str(boot)]
+    else:
+        cmd += ["-b", str(boot)] if boot is not None else ["-b"]
+    return cmd
+
+
+def journal(kind, since=None, until=None, boot=None):
+    cmd = journal_cmd(kind, since, until, boot)
+    return subprocess.run(cmd, capture_output=True, text=True, errors="replace", timeout=300).stdout.splitlines()
+
+
+def blamed_unit(kill):
+    """Pure. The child of the limiting cgroup that held the victim (its unit), or None when the victim sat in it."""
+    memcg, task = (kill.get("memcg") or "").rstrip("/"), (kill.get("task_memcg") or "").rstrip("/")
+    if not memcg or not task.startswith(memcg + "/"):
+        return None
+    return task[len(memcg) + 1:].split("/", 1)[0]
 
 
 def report(kills):
@@ -102,8 +130,10 @@ def report(kills):
     for k in kills:
         seat = SEAT_RE.search(k["memcg"] or "")
         where = seat.group(1).replace("claude-seat-BENCH-", "") if seat else (k["memcg"] or "(whole host)").rsplit("/", 1)[-1]
-        out.append("%s  %-16s limit=%s MB  anon=%d MB shmem=%d MB  killed %s  in %s" % (
-            k["at"], k["class"], (k["limit_kb"] or 0) // 1024, k["anon"] >> 20, k["shmem"] >> 20, k["task"], where))
+        line = "%s  %-16s limit=%s MB  anon=%d MB shmem=%d MB  killed %s  in %s" % (
+            k["at"], k["class"], (k["limit_kb"] or 0) // 1024, k["anon"] >> 20, k["shmem"] >> 20, k["task"], where)
+        unit = blamed_unit(k)
+        out.append(line + ("  unit " + unit if unit else ""))
     n = collections.Counter(k["class"] for k in kills)
     out.append("kills: %d  " % len(kills) + "  ".join("%s=%d" % kv for kv in sorted(n.items())))
     out.append("slice-limit kills: %d  whole-host kills: %d" % (n["SLICE"], n["HOST"]))
@@ -113,14 +143,16 @@ def report(kills):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--kern", help="classify this saved extract instead of the journals")
-    ap.add_argument("--since", help="journal start (default: this boot)")
+    ap.add_argument("--since", help="window start; with --until, spans boots (default: this boot)")
+    ap.add_argument("--until", help="window end")
+    ap.add_argument("--boot", help="one boot by journalctl offset or id, e.g. -2")
     ap.add_argument("--extract", help="write the lines used to this file")
     a = ap.parse_args(argv)
     if a.kern:
         with open(a.kern, errors="replace") as f:
             lines = f.read().splitlines()
     else:
-        lines = journal(["-k"], a.since) + journal(["--user"], a.since)
+        lines = journal("kernel", a.since, a.until, a.boot) + journal("user", a.since, a.until, a.boot)
     if a.extract:
         with open(a.extract, "w") as f:
             f.writelines(ln + "\n" for ln in lines if keep_line(ln))
