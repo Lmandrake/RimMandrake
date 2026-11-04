@@ -82,33 +82,64 @@ def main():
         never = {n["chain"]: n for n in st["never_measured"]}
         check(set(never) == {"M/e", "M/f"}, "e and f never measured (g measured a PASS): %s" % sorted(never))
         bad = U.problems(st)
-        check(any("M/e" in b for b in bad) and any("verdict share" in b for b in bad),
-              "--check fails on an unregistered never-measured chain and a share over target: %s" % bad)
+        check(any("M/e" in b for b in bad) and any("raw UNMEASURED share" in b for b in bad),
+              "--check fails on an unregistered never-measured chain and a raw share over target: %s" % bad)
+        check(any("not accounted for: M/c" in b for b in bad) and any("not accounted for: M/g" in b for b in bad),
+              "--check fails on an UNMEASURED chain no register entry owns, HARNESS-held ones included: %s" % bad)
+        IDS = {"X", "Y", "Z", "W"}
+        owed = {"M/c": {"reason": "look owed", "item": "W"}, "M/g": {"reason": "driver", "item": "W"},
+                "M/h": {"reason": "no site", "item": "W"}, "_doc": "x"}
         reg = {"M/e": {"reason": "no predicate", "item": "X"}, "M/f": {"reason": "no river", "item": "Y"},
-               "M/a": {"reason": "old", "item": "Z"}, "M/nope": {"reason": "?", "item": "Z"}, "_doc": "x"}
-        st2 = U.status(U.load(d), reg, target=0.6)
+               "M/a": {"reason": "old", "item": "Z"}, "M/nope": {"reason": "?", "item": "Z"}, "_doc": "x",
+               "_unmeasured": owed}
+        acc = {a["chain"]: a for a in U.status(U.load(d), reg, target=0.6, ids=IDS)["accounted"]}
+        check(set(acc) == {"M/c", "M/e", "M/f", "M/g", "M/h"} and all(a["ok"] for a in acc.values())
+              and acc["M/c"]["rows"] == 2, "five UNMEASURED chains, each owned (top level or _unmeasured): %s" % acc)
+        bad_item = dict(reg, _unmeasured=dict(owed, **{"M/h": {"reason": "no site", "item": "NOT_FILED"}}))
+        check(any("M/h" in b and "NOT_FILED" in b for b in U.problems(U.status(U.load(d), bad_item, target=0.6, ids=IDS))),
+              "an entry naming an item the ledger does not hold does not count")
+        saved_ledger, U.LEDGER = U.LEDGER, os.path.join(d, "noledger")
+        try:
+            blind = U.problems(U.status(U.load(d), reg, target=0.6))
+        finally:
+            U.LEDGER = saved_ledger
+        check(any("ledger unreadable" in b for b in blind), "an unreadable ledger accounts for nothing (--check fails)")
+        held_d = os.path.join(d, "held")
+        os.makedirs(os.path.join(held_d, "done"))
+        job(held_d, "H1", "2026-11-02T00:00:00Z", [row("m", "m1", "PASS"), row("m", "m2", "PASS"), row("m", "m3", "PASS"),
+                                                   row("g", "g2", "UNMEASURED", DRIVER)])
+        hs = U.status(U.load(held_d), {"_unmeasured": {"M/g": {"reason": "driver", "item": "W"}}}, ids=IDS)
+        check(hs["verdict_share"] == 0 and abs(hs["raw_share"] - 0.25) < 1e-3
+              and any("raw UNMEASURED share" in b for b in U.problems(hs)),
+              "the RAW share is the condition: held rows count; a verdict share of 0 does not pass: %s" % U.problems(hs))
+        st2 = U.status(U.load(d), reg, target=0.6, ids=IDS)
         check(not U.problems(st2), "registered with a reason and under target: --check passes: %s" % U.problems(st2))
         w = U.warnings(st2)
         check(any("M/a" in x and "STALE" in x for x in w) and any("M/nope" in x for x in w) and len(w) == 2,
               "a stale or unknown entry warns, never fails: %s" % w)
-        st3 = U.status(U.load(d), {"M/e": {"reason": "", "item": "X"}, "M/f": reg["M/f"]}, target=0.6)
+        w2 = U.warnings(U.status(U.load(d), dict(reg, _unmeasured=dict(owed, **{"M/b": {"reason": "r", "item": "W"}})),
+                                 target=0.6, ids=IDS))
+        check(any("M/b" in x and "STALE" in x for x in w2), "an _unmeasured entry whose chain measures now warns: %s" % w2)
+        st3 = U.status(U.load(d), {"M/e": {"reason": "", "item": "X"}, "M/f": reg["M/f"], "_unmeasured": owed},
+                       target=0.6, ids=IDS)
         check(any("M/e" in b for b in U.problems(st3)), "an entry with an empty reason does not count")
         rc = U.main(["--qhome", d, "--register", os.path.join(HERE, "owed_register.json"), "--check"])
         check(rc == 1, "main --check exits 1 on this store (share over 15%%): %s" % rc)
         creg = dict(reg, _census_never_measured={"M/a": {}, "M/e": {}, "M/q": {}, "M/?": {"not_a_chain": "plan rows"},
                                                  "_doc": "x"})
-        cen = {c["chain"]: c for c in U.status(U.load(d), creg, target=0.6)["census"]}
+        cen = {c["chain"]: c for c in U.status(U.load(d), creg, target=0.6, ids=IDS)["census"]}
         check(set(cen) == {"M/a", "M/e", "M/q", "M/?"}, "one census entry per listed chain, _doc skipped: %s" % sorted(cen))
         check(cen["M/a"]["ok"] and cen["M/a"]["fate"].startswith("measured since")
               and cen["M/e"]["ok"] and cen["M/e"]["fate"].startswith("owed")
               and cen["M/?"]["ok"] and cen["M/?"]["fate"].startswith("not a chain"),
               "census fates: measured since / owed / not a chain: %s" % cen)
-        st4 = U.status(U.load(d), creg, target=0.6)
+        st4 = U.status(U.load(d), creg, target=0.6, ids=IDS)
         check(not cen["M/q"]["ok"] and any("census" in b and "M/q" in b for b in U.problems(st4)),
               "a census chain with no measurement and no reason fails --check: %s" % U.problems(st4))
         snap = os.path.join(d, "snap.jsonl.gz")
         U.freeze(U.load(d), snap)
-        a_st, b_st = U.status(U.load(d), reg, target=0.6), U.status(U.load_snapshot(snap), reg, target=0.6)
+        a_st = U.status(U.load(d), reg, target=0.6, ids=IDS)
+        b_st = U.status(U.load_snapshot(snap), reg, target=0.6, ids=IDS)
         check(a_st == b_st, "a frozen snapshot judges exactly as the live store it froze")
         snap2 = os.path.join(d, "snap2.jsonl.gz")
         U.freeze(U.load(d), snap2)
@@ -137,6 +168,15 @@ def main():
         real = json.load(fh)
     check(all(k.startswith("_") or (v.get("reason") and v.get("item")) for k, v in real.items()),
           "every entry of the real register names a reason and an item")
+    um = real.get("_unmeasured") or {}
+    check(um and all(k.startswith("_") or (v.get("reason") and v.get("item")) for k, v in um.items()),
+          "every _unmeasured entry of the real register names a reason and an item")
+    known = U.ledger_ids()
+    check(known is not None and all(k.startswith("_") or v.get("item") in known
+                                    for k, v in list(um.items()) + list(real.items()) if isinstance(v, dict)),
+          "every item the real register names is in the ledger: %s"
+          % sorted(v.get("item") for k, v in list(um.items()) + list(real.items())
+                   if not k.startswith("_") and isinstance(v, dict) and v.get("item") not in (known or ())))
     cn = real.get("_census_never_measured") or {}
     check(len([k for k in cn if not k.startswith("_")]) == 12,
           "the real register lists the census's 12 never-measured chains: %d" % len([k for k in cn if not k.startswith("_")]))

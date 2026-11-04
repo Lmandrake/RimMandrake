@@ -20,12 +20,17 @@ are all NOT_RUN did not run it). Every UNMEASURED row there gets one class:
   PREDICATE_OWED   the chain has no predicate for this row yet (`owed, no predicate yet`)
   SITE             anything else the chain itself declared UNMEASURED (no legal site, an instrument read nothing)
 
-THE DONE-CONDITION (--check), from the item's own note: the VERDICT share -- UNMEASURED rows that hold a verdict at
-their code version, over all rows that do (HARNESS-held rows are no verdict, retest.py) -- is under TARGET (15%); and
-every chain that NEVER measured a row in the whole store either measures in its newest run, or is HARNESS-held (it
-re-runs on its repair), or has a reason in owed_register.json naming its owed work. The raw share (every newest row)
-is printed beside it, never hidden. A register entry whose chain has since measured is STALE: --check warns (delete the
-entry), it does not fail, since a chain starting to measure is the point.
+THE DONE-CONDITION (--check), from the item's own note ("UNMEASURED share of testq rows falls below a stated target"):
+  1. the RAW share -- UNMEASURED rows over EVERY newest row, HARNESS-held rows included (a held row was neither measured
+     nor retired) -- is under TARGET (15%). The verdict share (held rows dropped from both sides) is printed beside it
+     for diagnosis only; it is not the condition.
+  2. every chain with an UNMEASURED newest row is ACCOUNTED FOR: an owed_register.json entry (top level for a chain
+     that never measured, `_unmeasured` for the rest) giving a reason and an `item` id that exists in the ledger
+     (infrastructure/state/ledger/events/*.jsonl). A class with no filed owner is how a third of testq stayed dark.
+  3. every chain that NEVER measured a row in the whole store either measures in its newest run, or is HARNESS-held, or
+     has a top-level register reason.
+A register entry whose chain has since measured (top level) or holds no UNMEASURED row now (`_unmeasured`) is STALE:
+--check warns (delete the entry), it does not fail, since a chain starting to measure is the point.
 
 THE CENSUS'S TWELVE: the 2026-10-27 census (testing_sim/census.json, testq.chains_never_measured) named 12 chains that had
 never measured. owed_register.json `_census_never_measured` lists them; --check fails unless each one has, in the store
@@ -55,6 +60,7 @@ QHOME = os.environ.get("TESTQ_QUEUE", "/mnt/d/ClaudeWork/rimmandrake/testq")
 REGISTER = os.path.join(HERE, "owed_register.json")
 SNAPSHOT = os.path.join(HERE, "fixtures", "testq_unmeasured_snapshot.jsonl.gz")
 TARGET = 0.15
+LEDGER = os.path.normpath(os.path.join(HERE, "..", "..", "..", "..", "infrastructure", "state", "ledger", "events"))
 CLASSES = ("HARNESS", "UPSTREAM", "LOOK", "NOT_ON_MAP", "PREDICATE_OWED", "SITE")
 _LOOK = re.compile(r"live check owed|look owed")
 _UPSTREAM = re.compile(r"an UNMEASURED component ended this chain|upstream failed")
@@ -122,6 +128,52 @@ def load_snapshot(path):
     return out
 
 
+def ledger_ids(path=None):
+    """-> the set of item ids in the ledger shards, or None when no shard is readable (an unreadable ledger accounts
+    for nothing: --check fails, never passes, on it)."""
+    ids, seen = set(), False
+    for f in glob.glob(os.path.join(path or LEDGER, "*.jsonl")):
+        try:
+            with open(f, encoding="utf-8") as fh:
+                seen = True
+                for ln in fh:
+                    try:
+                        i = json.loads(ln).get("id")
+                    except ValueError:
+                        continue
+                    if i:
+                        ids.add(i)
+        except OSError:
+            continue
+    return ids if seen else None
+
+
+def accounting(st, register, ids):
+    """-> one entry per (mod/chain) holding an UNMEASURED newest row: its rows, class, register entry, and ok."""
+    owed = register.get("_unmeasured") or {}
+    per = collections.OrderedDict()
+    for r in st["rows_unmeasured"]:
+        k = "%s/%s" % (r["mod"], r["chain"])
+        e = per.setdefault(k, {"chain": k, "rows": 0, "class": r["class"]})
+        e["rows"] += 1
+    out = []
+    for k, e in per.items():
+        reg = register.get(k) if not k.startswith("_") else None
+        reg = reg or owed.get(k)
+        item = (reg or {}).get("item")
+        if not reg or not reg.get("reason") or not item:
+            e.update(ok=False, why="no register entry with a reason and an item")
+        elif ids is None:
+            e.update(ok=False, why="ledger unreadable: item %s unverified" % item)
+        elif item not in ids:
+            e.update(ok=False, why="register names item %s, which the ledger does not hold" % item)
+        else:
+            e.update(ok=True, why="owed: %s (%s)" % (reg["reason"], item))
+        out.append(e)
+    stale = sorted(k for k in owed if not k.startswith("_") and k not in per)
+    return out, stale
+
+
 def census(st, register, ever):
     """-> one entry per chain of the register's `_census_never_measured`: what became of it in the store judged."""
     out = []
@@ -145,7 +197,7 @@ def census(st, register, ever):
     return out
 
 
-def status(jobs, register=None, target=TARGET):
+def status(jobs, register=None, target=TARGET, ids=None):
     register = register or {}
     newest = {}                                     # (mod, chain) -> (finished, job file, rows)
     ever = collections.Counter()                    # (mod, chain) -> PASS+FAIL rows over the whole store
@@ -206,6 +258,7 @@ def status(jobs, register=None, target=TARGET):
         "never_measured": never, "register_stale": stale, "register_unknown": unknown, "rows_unmeasured": listing,
     }
     st["census"] = census(st, register, ever)
+    st["accounted"], st["unmeasured_stale"] = accounting(st, register, ledger_ids() if ids is None else ids)
     return st
 
 
@@ -215,8 +268,13 @@ def problems(st):
     if not st["rows"]:
         out.append("no rows read: the store is empty or unreadable (an instrument that sees nothing passes nothing)")
         return out
-    if st["verdict_share"] is None or st["verdict_share"] >= st["target"]:
-        out.append("verdict share %s is not under the %.0f%% target" % (st["verdict_share"], 100 * st["target"]))
+    if st["raw_share"] is None or st["raw_share"] >= st["target"]:
+        out.append("raw UNMEASURED share %s (%d of %d newest rows, held included) is not under the %.0f%% target"
+                   % (st["raw_share"], st["verdicts"].get("UNMEASURED", 0), st["rows"], 100 * st["target"]))
+    for a in st["accounted"]:
+        if not a["ok"]:
+            out.append("UNMEASURED chain not accounted for: %s (%d %s rows): %s" % (a["chain"], a["rows"], a["class"],
+                                                                                 a["why"]))
     for n in st["never_measured"]:
         if not n["ok"]:
             out.append("never measured, not held, no register reason: %s" % n["chain"])
@@ -230,7 +288,9 @@ def warnings(st):
     """Register hygiene: printed by --check, never failing it (a chain that starts measuring is good news, and a blind
     rerun days later must not read it as a regression)."""
     return (["register entry %s is STALE: the chain has measured; delete the entry" % k for k in st["register_stale"]]
-            + ["register entry %s names no chain in the store" % k for k in st["register_unknown"]])
+            + ["register entry %s names no chain in the store" % k for k in st["register_unknown"]]
+            + ["_unmeasured entry %s is STALE: the chain holds no UNMEASURED row now; delete the entry" % k
+               for k in st["unmeasured_stale"]])
 
 
 def main(argv=None):
@@ -269,9 +329,10 @@ def main(argv=None):
         with open(a.json, "w", encoding="utf-8") as fh:
             json.dump(st, fh, indent=1, sort_keys=True)
     print("testq status: %d chains, %d rows %s" % (st["chains"], st["rows"], st["verdicts"]))
-    print("  raw UNMEASURED share %s (every newest row); verdict share %s = %d of %d verdict rows (target < %.0f%%); "
-          "%d rows held for the harness" % (st["raw_share"], st["verdict_share"], st["verdict_unmeasured"],
-                                            st["verdict_rows"], 100 * st["target"], st["held_rows"]))
+    print("  raw UNMEASURED share %s = %d of %d newest rows, held included (target < %.0f%%, the condition); verdict "
+          "share %s = %d of %d verdict rows (diagnosis only); %d rows held for the harness"
+          % (st["raw_share"], st["verdicts"].get("UNMEASURED", 0), st["rows"], 100 * st["target"], st["verdict_share"],
+             st["verdict_unmeasured"], st["verdict_rows"], st["held_rows"]))
     print("  UNMEASURED by class: %s" % st["classes"])
     for k, v in sorted(st["held_chains"].items()):
         print("  held  %-44s %s" % (k, v[:110]))
@@ -283,6 +344,10 @@ def main(argv=None):
     print("  the 2026-10-27 census's never-measured chains: %d" % len(st["census"]))
     for c in st["census"]:
         print("    %-4s %-44s %s" % ("ok" if c["ok"] else "BAD", c["chain"], c["fate"][:90]))
+    print("  UNMEASURED chains and who owes each: %d (%d not accounted for)"
+          % (len(st["accounted"]), sum(1 for x in st["accounted"] if not x["ok"])))
+    for x in st["accounted"]:
+        print("    %-4s %-44s %2d %-14s %s" % ("ok" if x["ok"] else "BAD", x["chain"], x["rows"], x["class"], x["why"][:80]))
     if a.rows:
         for r in st["rows_unmeasured"]:
             print("  %-14s %s/%s %s | %s" % (r["class"], r["mod"], r["chain"], r["row"], r["detail"][:150]))

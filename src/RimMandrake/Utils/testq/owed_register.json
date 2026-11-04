@@ -44,5 +44,160 @@
   "FlowWorks/toggle_river_steam_pyrelands": {},
   "FlowWorks/toggle_superdeep_shooting": {},
   "FlowWorks/toggle_typed_shores": {}
+ },
+ "_unmeasured": {
+  "_doc": "unmeasured.py --check: every (mod/chain) holding an UNMEASURED row in its newest run, not already a top-level (never-measured) entry, names its reason and the ledger item that owes the work; an entry whose chain holds no UNMEASURED row now is STALE (warned)",
+  "Contagion/burn_forced": {
+   "reason": "pawn would not walk: order_pawn moved 0/1 to (113,70) in 203 ticks, left drafted; repulsor row stops on it",
+   "item": "CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK"
+  },
+  "FlowWorks/bottle_revert": {
+   "reason": "HARNESS-held: safe_advance surprise (GameEnded colony loss) ends the chain",
+   "item": "TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS"
+  },
+  "FlowWorks/canal_overflow": {
+   "reason": "sheet_overflow SITE: crop-drown and lowered-cap rows read UNMEASURED [SITE] from the overflow proof",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED"
+  },
+  "FlowWorks/container_styles": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): container looks per tech style",
+   "item": "LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS"
+  },
+  "FlowWorks/core_live_rows": {
+   "reason": "E7a fill-in job never done in 2100 ticks: the scene stages no fill material",
+   "item": "V2_FILLIN_SCENE_STAGE_FILL_MATERIAL"
+  },
+  "FlowWorks/deep_water_swims": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): a swimmer drawn at the surface",
+   "item": "DEEP_WATER_BUILD_SWIM_OR_SINK"
+  },
+  "FlowWorks/dig_fill_shovel_hours": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): dig labour and raider fill fetch",
+   "item": "DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK"
+  },
+  "FlowWorks/dig_finds": {
+   "reason": "HARNESS-held: safe_advance surprise stop on a scratch (ToxicBuildup)",
+   "item": "TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS"
+  },
+  "FlowWorks/fire_rain": {
+   "reason": "upstream row rain_douses_open_fire FAILs on a 30 s bridge timeout, so this row reads 'upstream failed'",
+   "item": "FIRE_RAIN_DIAGNOSE_BRIDGE_NAPS_MID_DOUSE"
+  },
+  "FlowWorks/flow_door_facing": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): sluice and grate drawn across each canal",
+   "item": "SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR"
+  },
+  "FlowWorks/flow_map_controls": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): flow source and sink move liquid, survive reload",
+   "item": "FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS"
+  },
+  "FlowWorks/flow_map_controls_six": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): the map-control family each does its job",
+   "item": "FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES"
+  },
+  "FlowWorks/fuel_moat_astrofuel": {
+   "reason": "RimUtinni Empire Pursuit is not on the FlowWorks test list",
+   "item": "FUEL_MOAT_WIRE_EMPIRE_PURSUIT_NOT_INVITED"
+  },
+  "FlowWorks/hose_live_rows": {
+   "reason": "HARNESS-held: proof_hose_live's offline gate (csharp_selftest) reads red on the runner, so the driver refuses",
+   "item": "PROOF_HOSE_FIX_GATE_RED_ON_STEVE"
+  },
+  "FlowWorks/ice_dig_crushed_ice": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): ice cut yields crushed ice, melter melts it",
+   "item": "ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN"
+  },
+  "FlowWorks/ladder_hung_on_wall": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): ladders drawn against their wall",
+   "item": "PIT_LADDER_REDRAW_HUNG_ON_THE_WALL"
+  },
+  "FlowWorks/ladder_rails_raise_lower": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): raise/lower a wall ladder in a pit",
+   "item": "FLOWWORKS_LADDER_RAISE_LOWER_1"
+  },
+  "FlowWorks/liquid_heat": {
+   "reason": "HARNESS-held: safe_advance surprise stop on a scratch (Bruise)",
+   "item": "TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS"
+  },
+  "FlowWorks/machinery_found_works": {
+   "reason": "predicates owed: two map-generation toggles need fresh shore maps; pipeAdaptersEnabled needs VE PipeSystem",
+   "item": "WORKS_RUINS_BUILD_PREDICATE_TWO_FRESH_MAPS"
+  },
+  "FlowWorks/pipe_looks": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): tank style switch in place",
+   "item": "TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH"
+  },
+  "FlowWorks/pipes_meet_centre": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): pipes and hoses run to the centre of what they meet",
+   "item": "PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE"
+  },
+  "FlowWorks/pit_access_gear_ladders": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): portable ladder leans against its wall",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS"
+  },
+  "FlowWorks/placer": {
+   "reason": "no legal sluice site (shallow moving river beside solid bank) on the sweep's map",
+   "item": "RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE"
+  },
+  "FlowWorks/plot_B_fill_tiers": {
+   "reason": "no bridge tool sets a fill under one notch",
+   "item": "FILL_TIER_BUILD_HALF_NOTCH_SETTER_MISSING"
+  },
+  "FlowWorks/plot_C2_tar_and_fluids": {
+   "reason": "HARNESS-held: safe_advance surprise stop on a scratch (ToxicBuildup)",
+   "item": "TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS"
+  },
+  "FlowWorks/pump_ports_one_per_side": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): one port per side",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE"
+  },
+  "FlowWorks/sprinklers": {
+   "reason": "HARNESS-held: sprinkler_live delivered no result (the bridge deadline refusal, clamped by this item in rimbridge_client)",
+   "item": "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED"
+  },
+  "FlowWorks/suspension_bridges_and_covers": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): a deck hung between anchors",
+   "item": "SUSPENSION_ART_RESKIN_HE_SEES_FIRST"
+  },
+  "FlowWorks/swept": {
+   "reason": "HARNESS-held: safe_advance surprise stop on a scratch (Bruise)",
+   "item": "TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS"
+  },
+  "FlowWorks/thirst": {
+   "reason": "the bar needs three mod lists (no DBH / Lite+Thirst / Lite alone); one list per run",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+  },
+  "FlowWorks/toggle_fill_in_displacement": {
+   "reason": "the fill-in never happened, so nothing was displaced: same unstaged fill material",
+   "item": "V2_FILLIN_SCENE_STAGE_FILL_MATERIAL"
+  },
+  "FlowWorks/toggle_ladder_required": {
+   "reason": "predicate owed: the placed ladder's effect is never read",
+   "item": "TOGGLE_LADDER_FIX_REQUIRED_PAWN_ESCAPES_PIT"
+  },
+  "FlowWorks/toggle_river_steam": {
+   "reason": "not on this map: the toggle half needs a Pyrelands river map the sweep has no driver for",
+   "item": "RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE"
+  },
+  "FlowWorks/trench_cover_and_raiders": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): raiders take cover only where a way out exists",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT"
+  },
+  "FlowWorks/wall_scaling_gear": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): geared colonist crosses a wall",
+   "item": "WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS"
+  },
+  "FlowWorks/water_ladder_silt": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): 0.5 m silt vs 1 m blue",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD"
+  },
+  "FlowWorks/water_level_surface": {
+   "reason": "instrument read no still-water squares; the level-surface solver it reads is owed",
+   "item": "WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES"
+  },
+  "FlowWorks/works": {
+   "reason": "look owed by eye (testq cannot judge it; the live look lane owes it): joined weir art at ordinary zoom, an owner joint look",
+   "item": "INSITU_ART_JUDGE_SAVES_KEPT_WARM"
+  }
  }
 }
