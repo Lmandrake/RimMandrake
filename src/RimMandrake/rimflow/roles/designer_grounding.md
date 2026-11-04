@@ -41,9 +41,19 @@ first time an item names a mod, it gets a deep Designer pass to read out its cod
 strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we
 go, getting better and better at it incrementally rather than pretending we know what we're doing right now."*
 
-A mod's first pass is exactly a stage 0 with no `stage.json` yet: `designer_stage.py init` creates its persisted record,
-which is the per-mod "has had its pass" record. Filed: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
+The four recent mods get the pass now, and any other mod gets it the first time an item names it: read its code and
+spec, expand the spec and the validation strategies (site prep and controls for each scene), certify with him and clear
+up confusion, then write it all out for Relentless as build items. Filed: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
 `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
 `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; the trigger is `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`.
+
+How the trigger works (`src/RimMandrake/rimflow/first_touch.py`): Relentless gives no worker to an unstarted item that
+names a mod (its id, title or a `src/` path) while that mod has no pass on record, and files the pass once,
+`needs=owner`, as `<FOLDER>_DESIGN_FIRST_TOUCH` (the four above, and every Baroque Biomes compose member, map to their
+filed items in `src/RimMandrake/rimflow/designer_passes.json`). A pass is on record when its item closes `done`, or when
+`design/concepts/<Folder>/tree.json` passes `gate`. So closing the pass item `done` is what releases the held work: close
+it only after the build items are filed. `python3 src/RimMandrake/rimflow/first_touch.py status [<Tier/Folder>...]` reads
+which mods are on record. The hold is the rule `first_touch_hold` in `relentless_rules.json`. A pass's concept folder
+starts its stage state with `designer_stage.py init`.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.
