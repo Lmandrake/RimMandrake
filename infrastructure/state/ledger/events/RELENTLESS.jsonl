@@ -188,3 +188,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T06:30:04Z","tsn":1793773804764605089}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BRIDGE_STALL_DIAGNOSTIC_1 A1 (L1), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T06:34:37Z","tsn":1793774077350477475}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T06:36:00Z","tsn":1793774160520737612}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T06:39:17Z","tsn":1793774357982823373}
