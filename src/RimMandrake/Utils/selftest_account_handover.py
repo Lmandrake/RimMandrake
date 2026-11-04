@@ -11,11 +11,18 @@ CASES = [
     ("lukas", M(None, "ESTIMATE"), 2, "switch", "blind after near the line counts as past it"),
     ("lukas", None, 2, "switch", "no row after near the line counts as past it"),
     ("lukas", None, None, "wait", "never read waits"),
-    ("system", M(1), 1, "done", "already moved: nothing to do"),
+    ("system", M(1), 1, "idle", "not live: nothing to do, and no marker, so a later link stays armed"),
 ]
 bad = 0
 for live, row, good, want, name in CASES:
     got = H.decide(live, row, good, "lukas", 1)[0]
+    if got != want:
+        bad += 1
+    print("%s %s" % ("ok  " if got == want else "FAIL", name))
+for row, good, want, name in [(M(21), 21, "switch", "steven at his authorized floor switches"),
+                              (M(22), 22, "wait", "steven above his floor waits"),
+                              (None, 22, "switch", "steven blind within a point of his floor counts as past it")]:
+    got = H.decide("steven", row, good, "steven", 21)[0]
     if got != want:
         bad += 1
     print("%s %s" % ("ok  " if got == want else "FAIL", name))
