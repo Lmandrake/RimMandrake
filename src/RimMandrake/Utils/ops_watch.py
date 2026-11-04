@@ -2916,7 +2916,14 @@ def alarm_prefix(tg, tag, key, state, aid, pt=None):
         if "%s_%s" % (base, alarm_twist(base)) not in held:
             return "%s_%s" % (base, alarm_twist(base))
     if "*" in tg.get("key", "") or "%s_%s" % (base, alarm_twist(base)) in held:     # held names carry their twist
-        base = "%s_%s" % (base, re.sub(r"\W+", "_", key.split(".", 1)[-1]).upper())
+        long_base = "%s_%s" % (base, re.sub(r"\W+", "_", key.split(".", 1)[-1]).upper())
+        name = "%s_%s" % (long_base, alarm_twist(long_base))
+        import pulse_core as pc
+        if not pc._model().mint_problems(name, set()):
+            return name
+        # the key's tail made it too long or too many words for the namecheck, and mint_name would fail on it 20
+        # times (OPS_FILER_FIX_ALARM_NAME_FAILS_GRAMMAR): the rule's own base, with a twist the key makes its own
+        return "%s_%s" % (base, alarm_twist(base + "|" + key))
     return "%s_%s" % (base, alarm_twist(base))
 
 
@@ -2968,6 +2975,22 @@ def expedite_owner(ids, conf, why):
     return out
 
 
+def already_filed(out, name):
+    """Did rimflow refuse a spawn only because `name` is already an item? (_mint_or_die's 'NAME already exists')"""
+    return isinstance(out, str) and ("%s already exists" % name) in out
+
+
+def refusal_text(out, cap=300):
+    """A refusal kept for alarms.json: its head names the reason (rimflow prints the problem first and its help text
+    after), its tail ends a traceback, so a long one keeps both. Keeping only the tail once hid 'already exists' behind
+    the naming help (OPS_FILER_FIX_ALARM_NAME_FAILS_GRAMMAR)."""
+    out = (out or "").strip()
+    if len(out) <= cap:
+        return out
+    half = (cap - 5) // 2
+    return out[:half] + " ... " + out[-half:]
+
+
 def real_filer(todo, conf):
     """todo: [{"name", "title"}] -> {name: None | error}, plus "_publish". Spawns as RUNNER from the dispatch clone
     under QHOME/ingest.lock and publishes its RUNNER shard (testq ingest.py does both). Nothing is filed for a
@@ -3003,6 +3026,12 @@ def real_filer(todo, conf):
                     rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                           "--name", a["name"], "--title", a["title"],
                                           "--why", "ops_watch alarm (deterministic, no AI): " + a["aid"])
+                    if rc != 0 and already_filed(out, a["name"]):
+                        # the filing clone's ledger holds it: an earlier pass filed it and this tree's ledger read lags
+                        # (OPS_FILER_FIX_ALARM_NAME_FAILS_GRAMMAR). Filed, not failed; it was raised when it was filed
+                        res[a["name"]] = None
+                        res.setdefault("_already", []).append(a["name"])
+                        continue
                 if rc == 0 and a.get("expedite"):
                     res.setdefault("_expedite", {}).update(expedite_owner(a["expedite"], conf, "ops_watch alarm %s: "
                                                                           "nobody claimed it, Operations hands it to Relentless" % a.get("aid")))
@@ -3012,10 +3041,10 @@ def real_filer(todo, conf):
                         res.setdefault("_raise", {})[a["name"]] = rout[-300:]
             except (ValueError, OSError) as e:
                 rc, out = 1, "%s: %s" % (type(e).__name__, e)
-            res[a["name"]] = None if rc == 0 else out[-300:]
+            res[a["name"]] = None if rc == 0 else refusal_text(out)
             n += rc == 0
         res["_publish"] = ing.publish(n, message="ledger: ops_watch alarm(s) %s" % ", ".join(
-            a["name"] for a in todo if res.get(a["name"]) is None)) if n else "nothing to publish"
+            a["name"] for a in todo if res.get(a["name"]) is None and a["name"] not in res.get("_already", []))) if n else "nothing to publish"
     return res
 
 
@@ -3364,8 +3393,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                     cur.update(state="OPEN", item=a["name"], error=None, filed=iso(now))
                     # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
                     # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
-                    log.append({"ts": iso(now), "event": "filed", "aid": a["aid"], "item": a["name"],
-                                "publish": res.get("_publish")})
+                    log.append({"ts": iso(now), "event": "found_filed" if a["name"] in (res.get("_already") or []) else "filed",
+                                "aid": a["aid"], "item": a["name"], "publish": res.get("_publish")})
                     if (res.get("_raise") or {}).get(a["name"]):
                         log.append({"ts": iso(now), "event": "raise_failed", "aid": a["aid"], "item": a["name"],
                                     "error": res["_raise"][a["name"]]})
