@@ -2806,7 +2806,8 @@ def t_put_down_every_shape():
     commit(c, "side.cs", "side\n", "side file")
     git(c, "checkout", "-q", trunk)
     commit(c, "MRG.txt", "main\nline\n", "main")
-    subprocess.run(["git", "merge", "-q", "side"], cwd=c, capture_output=True)
+    subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "merge", "-q", "side"], cwd=c, capture_output=True)   # conflicts: exit 1 is expected
+    ok(os.path.exists(os.path.join(c, ".git", "MERGE_HEAD")), "the merge stopped on its conflict, not on setup")
     put(c, "MRG.txt", "resolved\nline\n")
     git(c, "add", "MRG.txt")
     git(c, "commit", "-qm", "merge")
