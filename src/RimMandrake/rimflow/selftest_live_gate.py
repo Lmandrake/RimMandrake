@@ -71,6 +71,20 @@ def lines():
     check("old" in L.check(v, now=NOW + 7200, runner=sysd()), "a stale reading is broken")
     check("future" in L.check(v, now=NOW - 7200, runner=sysd()), "a reading dated ahead proves nothing")
     check("absent" in L.check("unit=rm-a.timer reading=/no/such max_age=1h", now=NOW, runner=sysd()), "an absent reading is broken")
+    # a Windows-native reading (D:\\...) is read under the drive's mount, not stat'ed as a relative name
+    os.makedirs(os.path.join(TMP, "mnt", "d", "w"))
+    w = os.path.join(TMP, "mnt", "d", "w", "memory.json")
+    open(w, "w").close()
+    os.utime(w, (NOW, NOW))
+    root, L.MOUNT_ROOT = L.MOUNT_ROOT, os.path.join(TMP, "mnt")
+    try:
+        check(L.check("unit=rm-a.timer reading=D:\\w\\memory.json max_age=1h", now=NOW + 60, runner=sysd()) is None,
+              "a D:\\ reading resolves under the mount")
+        check("absent" in L.check("unit=rm-a.timer reading=D:\\w\\nope.json max_age=1h", now=NOW, runner=sysd()),
+              "a D:\\ reading that is not there is still absent")
+    finally:
+        L.MOUNT_ROOT = root
+    check(L.local_path("/mnt/d/x") == "/mnt/d/x" and L.local_path("C:/a/b") == "/mnt/c/a/b", "local_path leaves POSIX alone")
 
     # hooks
     d = os.path.join(TMP, "proj", ".claude")

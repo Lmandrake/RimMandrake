@@ -21,6 +21,18 @@ from datetime import datetime
 
 AGE_RX = re.compile(r"^(\d+)([smhd])$")
 AGE_S = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+# a reading may be written the owner's way (D:\\ClaudeWork\\...); from WSL that string names no file, so check() reads it
+# under the drive's mount. OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH: a live memory.json read "absent" for three gens.
+DRIVE_RX = re.compile(r"^([A-Za-z]):[\\/](.*)$")
+MOUNT_ROOT = "/mnt"
+
+
+def local_path(path):
+    """-> `path` as this machine can open it: X:\\a\\b becomes <MOUNT_ROOT>/x/a/b; anything else is returned as is."""
+    m = DRIVE_RX.match(path or "")
+    if not m:
+        return path
+    return "%s/%s/%s" % (MOUNT_ROOT, m.group(1).lower(), m.group(2).replace("\\", "/"))
 # a change to one of these does nothing until something runs it, so its close must say what runs it
 NEEDS_LIVE_RX = re.compile(r"(^|/)(\.claude/hooks/|.*systemd/.*\.(service|timer)$|dispatcher_schedule\.json$|"
                            r"ops_watch_rules\.json$)")
@@ -162,7 +174,7 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         return None
     if p["reading"]:
         try:
-            mt = os.path.getmtime(p["reading"])
+            mt = os.path.getmtime(local_path(p["reading"]))
         except OSError:
             return "reading %s is absent" % p["reading"]
         name = "reading %s" % p["reading"]
