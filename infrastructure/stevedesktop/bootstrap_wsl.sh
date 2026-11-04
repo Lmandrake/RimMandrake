@@ -145,9 +145,16 @@ if [ $(( $(date +%s) - last_apt )) -gt 604800 ]; then
     apt-get -y -q autoremove >/dev/null; apt-get clean
 fi
 sudo -u $U -H bash -lc '~/.local/bin/claude update'; claude_rc=$?
+# The testq worker checks every result with contracts.models (pydantic, pinned). WSL python is PEP 668 managed, so the
+# lock goes into ~/rm/pydeps (worker.py TESTQ_PYDEPS); reinstalled when the lock moves or the import breaks (a python
+# minor upgrade by apt orphans pydantic-core's binary).
+L=src/RimMandrake/contracts/requirements.lock
+sudo -u $U -H bash -c "cd $RUNNER || exit 1; [ -f $L ] || exit 0; PYTHONPATH=~/rm/pydeps python3 -c 'import pydantic' 2>/dev/null \
+    && cmp -s $L ~/rm/pydeps/.requirements.lock || { python3 -m pip install -q --disable-pip-version-check --upgrade \
+    --target ~/rm/pydeps -r $L && cp $L ~/rm/pydeps/.requirements.lock; }"; pydeps_rc=$?
 df_root=$(df -P / | awk 'NR==2{print $4}')
-printf '{"utc":"%s","git_pull":"%s","apt_upgrade":"%s","claude_update":"%s","root_free_kb":%s}\n' \
-    "$(date -u +%FT%TZ)" "$git_rc" "$apt_rc" "$claude_rc" "$df_root" > $ST/last_selfupgrade.json
+printf '{"utc":"%s","git_pull":"%s","apt_upgrade":"%s","claude_update":"%s","pydeps":"%s","root_free_kb":%s}\n' \
+    "$(date -u +%FT%TZ)" "$git_rc" "$apt_rc" "$claude_rc" "$pydeps_rc" "$df_root" > $ST/last_selfupgrade.json
 cat $ST/last_selfupgrade.json
 EOF
     chmod 755 /opt/stevedesktop/selfupgrade.sh

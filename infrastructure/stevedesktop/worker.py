@@ -62,6 +62,7 @@ import argparse
 import fcntl
 import glob
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -88,6 +89,49 @@ sys.path.append(os.path.join(RUNNER, "src", "RimMandrake", "bridgetools"))
 if os.environ.get("TESTQ_REPO") and os.path.exists(os.path.join(HERE, "companion_identity.py")):
     sys.path.insert(0, HERE)
 import companion_identity as CI  # noqa: E402
+
+# TESTQ_WORKER_MIGRATE_PYDANTIC_CONTRACT: a result is published only when contracts.models.TestqResult (pydantic v2,
+# pinned by src/RimMandrake/contracts/requirements.lock) accepts it. WSL python is PEP 668 managed, so the lock is
+# installed with `pip install --target` into TESTQ_PYDEPS; spawn copies models.py beside the outer worker, so a job
+# pinned to an older sha is checked by this contract, not its own.
+PYDEPS = os.path.expanduser(os.environ.get("TESTQ_PYDEPS") or "~/rm/pydeps")
+MODELS_SRC = os.path.join(RUNNER, "src", "RimMandrake", "contracts", "models.py")
+OUTER_MODELS = "contracts_models.py"
+INSTALL_HINT = "python3 -m pip install --target %s -r src/RimMandrake/contracts/requirements.lock" % PYDEPS
+_MODELS = []
+
+
+class ContractMissing(RuntimeError):
+    """contracts.models cannot load here (pydantic absent or broken): nothing may be admitted or published."""
+
+
+def contract_models():
+    """contracts.models, loaded once by path (the outer copy when running as one). Raises ContractMissing."""
+    if _MODELS:
+        return _MODELS[0]
+    outer = os.path.join(HERE, OUTER_MODELS)
+    path = outer if os.environ.get("TESTQ_REPO") and os.path.exists(outer) else MODELS_SRC
+    if os.path.isdir(PYDEPS) and PYDEPS not in sys.path:
+        sys.path.insert(0, PYDEPS)
+    try:
+        with open(path, "rb") as f:
+            text = f.read()     # spawn writes THESE bytes: by then the clone may be pinned to an older models.py
+        spec = importlib.util.spec_from_file_location("contracts_models", path)
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules["contracts_models"] = mod
+        spec.loader.exec_module(mod)
+    except (ImportError, OSError, SyntaxError) as e:
+        sys.modules.pop("contracts_models", None)
+        raise ContractMissing("contracts.models (%s) does not load: %s: %s; install it: %s"
+                              % (path, type(e).__name__, e, INSTALL_HINT)) from None
+    _MODELS.extend((mod, text))
+    return mod
+
+
+def contract_errors(res):
+    """-> [] when TestqResult accepts `res`, else its 'loc: msg' lines. Raises ContractMissing."""
+    m = contract_models()
+    return m.errors(m.TestqResult, res)
 
 HOME = os.environ.get("TESTQ_HOME", "/mnt/d/RimTest/testq")
 HEARTBEAT_S = 15
@@ -252,7 +296,18 @@ def base_result(job_id, aid, runner_sha):
 def publish_result(d, res):
     res["finished"] = res.get("finished") or S.utcnow()
     res["counts"] = S.count_verdicts(res["rows"])
-    S.validate_result(res)
+    errs = contract_errors(res)
+    if errs:    # never publish what the contract refuses, and never crash here (finalize_dead calls this again)
+        S.dump(res, os.path.join(d, "result.refused.json"))
+        bad = res
+        res = base_result(bad.get("job"), bad.get("attempt"), bad.get("runner_sha"))
+        res.update(outcome="INVALID", cause="HARNESS", started=bad.get("started") or res["started"],
+                   finished=S.utcnow(), note=("the worker's result broke contracts.models.TestqResult (kept as "
+                                               "result.refused.json): " + "; ".join(errs))[:3000])
+        res["counts"] = S.count_verdicts(res["rows"])
+        errs = contract_errors(res)
+        if errs:
+            raise S.SchemaError("even the INVALID/HARNESS stand-in breaks TestqResult: " + "; ".join(errs))
     S.dump(res, os.path.join(d, "result.json"))
     S.dump(res, p("outbox", res["attempt"] + ".json"))
 
@@ -261,6 +316,10 @@ def publish_result(d, res):
 
 def cmd_start(retry):
     job = S.validate_job(json.load(sys.stdin))
+    try:        # admit nothing whose result could not be checked: the job stays pending and the error is logged
+        contract_models()
+    except ContractMissing as e:
+        return out({"error": str(e), "state": "contract_missing"}, 1)
     ensure_dirs()
     with open(p("start.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
@@ -351,6 +410,9 @@ def spawn(aid, d):
     os.makedirs(outer, exist_ok=True)
     for src in (os.path.abspath(__file__), S.__file__, CI.__file__):
         shutil.copy2(src, os.path.join(outer, os.path.basename(src)))
+    contract_models()           # loaded by cmd_start before the pin; a no-op then
+    with open(os.path.join(outer, OUTER_MODELS), "wb") as f:
+        f.write(_MODELS[1])
     os.environ["TESTQ_REPO"] = RUNNER
     argv = [sys.executable, os.path.join(outer, "worker.py"), "_run", aid]
     keep = [k for k in os.environ if k != "TESTQ_UNIT" and k.startswith(("RM_", "TESTQ_", "STEVE_", "RIMFLOW_"))
