@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import relentless as R  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, share=0.5, max_workers=2,
+RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, only_system_and_live=False, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, staffing=None, one_builder_per_mod=False)
 
 
@@ -67,6 +67,15 @@ h = R.health_order(None, "no health verdict at p", boom)
 ok(h["first"] == {} and "ordinary order" in h["why"] and "rules gone" in h["why"], "health: no classifier -> ordinary order, said", h)
 h = R.health_order({"state": "degraded", "system_items": None, "why": "no ledger"}, "fresh: degraded", lambda: ["S3"])
 ok(h["first"] == {"S3": 0} and h["degraded"], "health: a verdict with no item list keeps its state, asks the classifier", h)
+
+# --- the owner's token pause: system, expedited and live iteration go on, content waits, and off means off
+on = {"only_system_and_live": True}
+ok(R.owner_hold(on, "C1", {"S1": 0}), "owner hold: content waits")
+ok(R.owner_hold(on, "C1", {"S1": 0}, {"item": "C1"}), "owner hold: queued content waits")
+ok(not R.owner_hold(on, "S1", {"S1": 0}), "owner hold: a system item goes")
+ok(not R.owner_hold(on, "C1", {}, {"expedite": {"level": "expedited"}}), "owner hold: an expedited item goes")
+ok(not R.owner_hold(on, "C1", {}, {"live_iter": {"round": 1}}), "owner hold: a live iteration goes")
+ok(not R.owner_hold({}, "C1", {"S1": 0}), "owner hold: off stops nothing")
 
 # --- content_paused
 fx = Fx([], {"S1": 0}, degraded=True)

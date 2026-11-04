@@ -2327,6 +2327,8 @@ def enrol(store, fx, r, now):
             continue
         if paused and i not in first and i not in plan:
             break
+        if owner_hold(r, i, first):
+            continue
         if one_per_mod:     # a candidate whose mod is already taken would only park: walk on to work that can start
             mods = set(fx.item_mods({"item": i, "last_sha": None}))
             if mods & taken:
@@ -2342,6 +2344,14 @@ def enrol(store, fx, r, now):
                 room -= 1
                 sys_room -= i in first
     return took
+
+
+def owner_hold(r, item, first, st=None):
+    """The owner's token pause (rules `only_system_and_live`): no new work on an item unless it is system (`first`),
+    expedited, or iterating on a live failure. Running work, checks of finished builds and the game phase go on. Pure."""
+    if not r.get("only_system_and_live") or item in (first or {}):
+        return False
+    return not (st and (st.get("expedite") or st.get("live_iter")))
 
 
 def content_paused(fx, states, order=None, ours=None):
@@ -3194,6 +3204,8 @@ def lease(store, fx, r, now, acts):
     first = getattr(fx, "first", None) or {}
     paused = content_paused(fx, store.states())
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
+        if owner_hold(r, st["item"], first, st):
+            continue
         if paused and not st.get("expedite") and st["item"] not in first and st["item"] not in (getattr(fx, "plan", None) or {}):
             # degraded: content waits, what runs finishes; the priority list is his word and still goes
             acts.append({"do": "wait", "why": "health degraded: content paused while system items wait"})
