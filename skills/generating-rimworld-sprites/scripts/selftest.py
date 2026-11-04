@@ -26,6 +26,10 @@ sys.path.insert(0, str(HERE.parents[1] / "generating-images" / "scripts"))
 import pnglib  # noqa: E402
 
 VALIDATOR = HERE / "validate_sprite.py"
+# (a hard-edged item sprite: one with soft alpha already, like a furred pawn, defeats the
+# semi-transparent case, which only proves anything against a crisp reference)
+DEFAULT_REFERENCE = (HERE.parents[2] / "src" / "RimMandrake" / "CrackedLands" / "Textures" / "Things"
+                     / "Item" / "RM_ZennaqFilament.png")
 
 
 # --- fixture builders --------------------------------------------------------
@@ -179,7 +183,8 @@ CYLINDER_CASES = [
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--reference", required=True)
+    # The nightly sweep runs this with no arguments: default to a shipped sprite of ours.
+    ap.add_argument("--reference", default=str(DEFAULT_REFERENCE))
     ap.add_argument("--keep", help="write fixtures here instead of a temp dir")
     args = ap.parse_args()
 
