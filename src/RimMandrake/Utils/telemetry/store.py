@@ -200,6 +200,15 @@ class VMSink:
             self.last_error = None
 
 
+# A systemd --user unit's PATH holds no Windows directory, so shutil.which alone misses curl.exe there (rm-ops-watch's
+# ExecStartPost read VM as refused, every generation blind, 2026-11-03); the System32 copy is Windows' own.
+WIN_CURL = "/mnt/c/Windows/System32/curl.exe"
+
+
+def win_curl() -> str | None:
+    return shutil.which("curl.exe") or (WIN_CURL if os.access(WIN_CURL, os.X_OK) else None)
+
+
 def _get(url: str, timeout: float) -> bytes:
     """GET url. WSL cannot reach the Windows-side VM on 127.0.0.1 (NAT), so from WSL a refused or unreachable local
     address is retried once through Windows' own curl.exe, which can; any other failure is raised as is."""
@@ -210,10 +219,11 @@ def _get(url: str, timeout: float) -> bytes:
         raise
     except (urllib.error.URLError, OSError) as e:
         host = urllib.parse.urlsplit(url).hostname
-        if IS_WIN or host not in ("127.0.0.1", "localhost") or not shutil.which("curl.exe"):
+        curl = None if IS_WIN or host not in ("127.0.0.1", "localhost") else win_curl()
+        if not curl:
             raise
         try:
-            r = subprocess.run(["curl.exe", "-sS", "-f", "-m", str(int(timeout) + 1), url],
+            r = subprocess.run([curl, "-sS", "-f", "-m", str(int(timeout) + 1), url],
                                capture_output=True, timeout=timeout + 15)
         except (OSError, subprocess.SubprocessError) as e2:
             raise OSError(f"{e}; via curl.exe: {e2}") from e2

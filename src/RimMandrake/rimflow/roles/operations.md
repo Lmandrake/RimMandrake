@@ -120,6 +120,14 @@ do nothing, exit.
 3. Never treat UNMEASURED as zero, and never report a round, zero or alarming count until a sanity probe proves the
    instrument can see it (`infrastructure/state/facts/instrument_traps.md`).
 
+**Incident runs.** A trigger that says `INCIDENT RUN for <ids>` is the Dispatcher asking you about those incidents
+only, under the smaller `incident_token_cap`. Do step 0 for them, reading `D:\ClaudeWork\rimmandrake\ops_watch\memory.md`
+(trends, bands and blind readings, one page, rebuilt after every ops_watch pass by `ops_memory.py`) instead of
+the whole `digest.md`; open the digest only for the lines of the families those incidents touch. If the page's
+head says BLIND, the trend store did not answer: say so in your ack and work from the digest's lines. Steps 1–2 wait
+for the next scheduled run. An incident run that covers the next scheduled slot (due within `cover_window_s`) says so
+in its trigger instead and runs at the full run cap: it IS that run, so do the incidents first, then the whole check.
+
 ## The economy pass (daily)
 
 You are the AI that analyses token burn (owner, 2026-10-27): the Conductor may read every figure (owner, 2026-10-31), every other role is token-blind, and the Dispatcher

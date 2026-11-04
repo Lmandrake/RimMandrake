@@ -419,7 +419,61 @@ def test_append_verdicts_and_execute():
     check(len(al) == 1 and "disk gone" in al[0]["why"], "a failed append is alarmed %r" % acts)
 
 
-TESTS = (test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
+def test_incident_run_cap_and_page():
+    """An Operations incident run (covers_slot) runs under incident_token_cap and is told to read memory.md and its
+    incidents (OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH); any other run-now keeps its mode's cap and no such line."""
+    cfg = dict(RL.ROLE_DEFAULTS, name="Operations", run_token_cap=450000, incident_token_cap=200000,
+               ledger_item="X")
+    inc = RL.run_now_job(cfg, {"by": "DISPATCHER", "why": "w", "mode": "run", "covers_slot": True,
+                                "ids": ["plan-1", "disk-2"]}, 1793600000.0)
+    check(inc["cap"] == 200000, "incident run cap is incident_token_cap: %r" % inc["cap"])
+    check("INCIDENT RUN for plan-1, disk-2" in inc["trigger"] and "memory.md" in inc["trigger"],
+          "incident trigger names its ids and the memory page: %r" % inc["trigger"])
+    plain = RL.run_now_job(cfg, {"by": "BENCH", "why": "w", "mode": "run"}, 1793600000.0)
+    check(plain["cap"] == 450000 and "INCIDENT RUN" not in plain["trigger"],
+          "a plain run-now keeps run_token_cap: %r" % ((plain["cap"], plain["trigger"]),))
+    no = dict(cfg)
+    no.pop("incident_token_cap")
+    old = RL.run_now_job(no, {"by": "DISPATCHER", "why": "w", "mode": "run", "covers_slot": True}, 1793600000.0)
+    check(old["cap"] == 450000, "no incident_token_cap: the run cap stands: %r" % old["cap"])
+    check(raises(lambda: RL.validate_role(dict(cfg, incident_token_cap=-1)), "incident_token_cap"),
+          "a negative incident_token_cap is refused")
+    check(inc["incident"] == {"cap": 450000, "trigger": plain["trigger"].replace("BENCH", "DISPATCHER")},
+          "the incident job keeps the full cap and trigger for a covered slot: %r" % (inc["incident"],))
+
+
+def test_after_ready_covered_slot():
+    """A slot an incident run covered ("covered by <run key>") is satisfied by that run finishing done; failed or
+    missing, its dependent waits and says why (review g2 of role_launch.py)."""
+    T = 1793600000.0
+    op = dict(RL.ROLE_DEFAULTS, name="Operations", enabled=True, runs_local=["07:30", "19:30"], run_token_cap=1)
+    c = dict(RL.ROLE_DEFAULTS, name="Conductor", after_role="Operations")
+    job = {"slot": "08:00", "key": RL.slot_key(T, "08:00")}
+    keys = RL.after_slots(op, job, T)
+    rk = "2026-11-03 run-now 2026-11-03T15:00:00Z"
+    done = {k: "band RED" for k in keys[1:]}
+    done[keys[0]] = "covered by " + rk
+    ok = RL.after_ready(c, {"Operations": {"runs": [{"slot": rk, "state": "done", "mode": "run"}], "done": done}},
+                        set(), job, T, op)
+    bad = RL.after_ready(c, {"Operations": {"runs": [{"slot": rk, "state": "failed", "mode": "run"}], "done": done}},
+                         set(), job, T, op)
+    gone = RL.after_ready(c, {"Operations": {"runs": [], "done": done}}, set(), job, T, op)
+    check(ok is None, "a covered slot whose covering run is done is ready: %r" % ok)
+    check(bad and "ended failed" in bad, "a covering run that failed holds the dependent: %r" % bad)
+    check(gone and "not on record" in gone, "a covering run not on record holds the dependent: %r" % gone)
+
+
+def test_ops_reading_points_not_mapping():
+    try:
+        r = RL.ops_reading({"at": "2026-11-03T00:00:00Z", "points": [1, 2]}, "lukas",
+                           RL.utc_epoch("2026-11-03T00:01:00Z"))
+    except (TypeError, AttributeError):
+        r = None
+    check(r is not None and r.get("state") == "UNMEASURED" and "mapping" in r.get("why", ""),
+          "a status.json whose points is a list reads UNMEASURED, not a crash: %r" % (r,))
+
+
+TESTS = (test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
          test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_model_id, test_ops_reading,
          test_band, test_validate_role, test_arbiter_argv_carries_schema, test_arbiter_valid_batch_appended,
          test_arbiter_invalid_verdict_refused_siblings_land, test_arbiter_missing_structured_output_alarms,

@@ -242,6 +242,8 @@ def ops_reading(status, account, now, stale_s=OPS_STALE_S):
     if not account:
         return {"state": "UNMEASURED", "why": "the account this machine runs on is not resolved (registry/live email)"}
     pts = status.get("points") or {}
+    if not isinstance(pts, dict):
+        return {"state": "UNMEASURED", "why": "ops_watch status.json 'points' is not a mapping"}
     out = {"state": "MEASURED", "account": account, "at": status.get("at")}
     for key, name in (("runway", "runway"), ("week_left_pct", "week_left")):
         p = pts.get("accounts.%s.%s" % (account, key)) or {}
@@ -313,7 +315,7 @@ def validate_role(role):
     per_day = role.get("event_runs_per_day", 1)
     if not isinstance(per_day, int) or isinstance(per_day, bool) or per_day < 0:
         raise ValueError("event_runs_per_day %r is not a whole number >= 0" % (per_day,))
-    for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap"):
+    for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap", "incident_token_cap"):
         if role.get(k) is not None and not (_num(role[k]) and role[k] >= 0):
             raise ValueError("%s %r is not a number >= 0" % (k, role[k]))
     if "caps_advisory" in role and not isinstance(role["caps_advisory"], bool):
@@ -1107,6 +1109,13 @@ def after_ready(cfg, rst, busy, job, now, after_cfg=None):
         if mine:
             return "the %s %s run ended %s" % (after, key, mine[-1].get("state"))
         how = (ars.get("done") or {}).get(key)
+        if how and str(how).startswith("covered by "):
+            # an incident run took this slot's place (covered_slot): its own run stands in for the slot's
+            cov = [r for r in ars.get("runs") or [] if r.get("slot") == str(how)[len("covered by "):]]
+            if any(r.get("state") == "done" for r in cov):
+                return None
+            return "the %s %s slot was covered by a run that %s" % (
+                after, key, ("ended " + str(cov[-1].get("state"))) if cov else "is not on record")
         if how and str(how).startswith("band "):
             skipped.append(key)
             continue
@@ -1392,6 +1401,16 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: %s" % (name, job["trigger"], r["why"]))
             return
+        cv = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (
+            job.get("manual") or {}).get("covers_slot") else None
+        if cv is not None:
+            # it covers the next scheduled slot, so it IS that run: that slot's own mode and cap (07:30 is the economy
+            # pass), the incidents first, then the slot's full check; never the memory page alone (review g2r2).
+            # Resolved before the band, which then judges the slot's mode (g2r3)
+            cm, cc = next((m, c) for hh, m, c in today if hh == cv)
+            job = dict(job, mode=cm, cap=cc, trigger=(job.get("incident") or {}).get("trigger", job["trigger"]) +
+                       "; INCIDENT RUN that also covers the %s slot (%s): do the incidents first, then that slot's full "
+                       "check" % (cv, cm))
         bname, b = band(cfg, r)
         allowed = b.get("slots", "all")
         advisory = cfg.get("caps_advisory") is True
@@ -1477,7 +1496,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         rs.pop("account_hold", None)
         unit = "rm-role-%s-%d" % (name.lower(), int(now))
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
-        message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"], factor, spent, unit)
+        message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit)
         tick_launch[name] = unit
         # what the launch consumes, so execute can give it back if the launch does not happen (review U, N6)
         rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
@@ -1496,7 +1515,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["run_now_last"] = dict(rs.pop("run_now"), outcome="launched", unit=unit, decided=now)
         rs.pop("event_skip", None)
         mark(rs, job, "launch")
-        if job.get("slot") and role.get("alarm_runs") and reading()["state"] == "MEASURED":
+        if (job.get("slot") or cv is not None) and role.get("alarm_runs") and reading()["state"] == "MEASURED":
+            # (a run covering a slot diagnoses that slot's alarms too: unmarked, they would buy another run, g2r3)
             # finish_slot_alarms: what this scheduled run diagnoses, marked when it finishes done
             keys = alarm_reading((reading_cache["s"] or {}).get("alarms"))
             if keys:
@@ -1515,7 +1535,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
             slot=job["key"], band=bname, seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
-                name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"],
+                name, job["trigger"], bname, budget, job["cap"] or 0, factor, spent, unit, role["model"],
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
@@ -1683,9 +1703,20 @@ def run_now_job(cfg, req, now):
         trigger += "; judge exactly these claims: " + ", ".join("%s@%s" % (i, sh) for i, sh in claims)
     if trial:
         trigger += "; TRIAL: the verdicts are recorded in %s, apart from the real record" % TRIAL_VERDICTS
+    cap = run_now_cap(cfg, req.get("mode"))
+    incident = None
+    if req.get("covers_slot") and cfg.get("incident_token_cap") is not None:
+        # an incident run reads the memory page and its incidents, not the whole digest, at a smaller budget
+        # (design/RimMandrake/operations_metronome_strategy_2026-11-02.md §5, §8 step 2; OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH).
+        # One that covers a scheduled slot IS that run: decide_roles gives it back the full cap and trigger (incident)
+        incident = {"cap": cap, "trigger": trigger}
+        cap = cfg["incident_token_cap"]
+        trigger += ("; INCIDENT RUN for %s: read memory.md (beside digest.md) and these incidents, not the whole "
+                    "digest (your instructions, Incident runs)" % (", ".join(map(str, req.get("ids") or [])) or
+                                                                    "the open incidents"))
     return {"key": "%s run-now%s %s" % (day_of(now), " trial" if trial else "", iso(req.get("at") or now)),
-            "slot": None, "first": False, "mode": req.get("mode") or "run", "cap": run_now_cap(cfg, req.get("mode")),
-            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": pre}
+            "slot": None, "first": False, "mode": req.get("mode") or "run", "cap": cap,
+            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": pre, "incident": incident}
 
 
 COVER_WINDOW_S = 7200

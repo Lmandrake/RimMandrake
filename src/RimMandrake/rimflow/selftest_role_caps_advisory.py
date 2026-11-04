@@ -22,6 +22,9 @@ A role with `caps_advisory: true`, against the same state that holds or refuses 
   A9 OPS_NIGHT_GAP_FILL_COVERED_SLOT, the reserve half, under strict caps (caps_advisory false): with 200000 of a
      300000 day spent, an incident run-now at 14:16 is REFUSED because the uncovered 19:30 slot keeps its 60000
      reserve; at 18:00 (19:30 within cover_window_s) it covers the slot, keeps no reserve for it, and launches.
+  A10 OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH: an incident run alone launches at incident_token_cap on the memory page;
+     one covering a slot launches at that slot's cap with the full check.
+  A11 an incident run covering the 07:30 slot IS the economy pass (its mode and economy cap).
 Pure: fake observers (selftest_dispatcher helpers)."""
 import json
 import os
@@ -172,7 +175,7 @@ def main():
     # A8
     for hhmm, covers in (("14:16", False), ("18:00", True)):
         t = SD.at_local(hhmm)
-        op = SD.operations()
+        op = SD.operations(incident_token_cap=123000)
         rs = spent_rs(t, 0)
         rs["done"][RL.slot_key(t, "07:30")] = "launch"
         rs["run_now"] = RL.run_now_request({"roles": [op]}, {"role": "Operations", "by": "DISPATCHER",
@@ -182,6 +185,14 @@ def main():
         mark = st["roles"]["Operations"]["done"].get(RL.slot_key(t, "19:30"))
         check(len(launched(acts)) == 1 and (str(mark).startswith("covered by") if covers else mark is None),
               "A8 an incident run at %s %s the 19:30 slot (mark %r)" % (hhmm, "covers" if covers else "leaves", mark))
+        # A10 (OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH): alone it runs on the memory page at incident_token_cap; covering
+        # the slot it IS the scheduled run, at the run cap with the full check
+        la = launched(acts)
+        want = op["run_token_cap"] if covers else 123000
+        check(la and la[0].get("budget") == want and (("full check" in la[0]["message"]) if covers
+                                                      else ("INCIDENT RUN for" in la[0]["message"])),
+              "A10 an incident run at %s launches with budget %r and the %s trigger (%r)" % (
+                  hhmm, want, "full" if covers else "memory-page", [(a.get("budget"), a.get("why")) for a in la]))
         if not covers:
             rs2 = st["roles"]["Operations"]
             rs2.pop("pending_launch", None)
@@ -211,6 +222,21 @@ def main():
             check(not launched(acts) and str(last.get("outcome", "")).startswith("refused")
                   and any("+ 60000 kept for the day's scheduled runs" in w for w in why),
                   "A9 strict: a 14:16 incident run is refused; the 19:30 slot keeps its 60000 reserve (%r)" % why)
+    # A11 (review g2r2): an incident run covering the 07:30 slot IS the economy pass: its mode and economy cap, not a
+    # plain run that would mark the day's economy pass done without one
+    t = SD.at_local("06:30")
+    op = SD.operations(incident_token_cap=123000)
+    rs = spent_rs(t, 0)
+    rs["run_now"] = RL.run_now_request({"roles": [op]}, {"role": "Operations", "by": "DISPATCHER",
+                                                         "why": "INCIDENT disk-1", "mode": "run"}, t - 30)
+    rs["run_now"]["covers_slot"] = True
+    acts, st = drive(op, t, rs)
+    la = launched(acts)
+    check(la and la[0].get("mode") == "economy" and la[0].get("budget") == op["economy_token_cap"]
+          and "covers the 07:30 slot (economy)" in la[0]["message"]
+          and str(st["roles"]["Operations"]["done"].get(RL.slot_key(t, "07:30"))).startswith("covered by"),
+          "A11 an incident run at 06:30 runs as the 07:30 economy pass (%r)" % [
+              (a.get("mode"), a.get("budget"), a.get("why")) for a in la])
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

@@ -519,8 +519,28 @@ def main(argv) -> int:
             subprocess.run = lambda a, **k: calls.append(a) or _Done(0, body)
             ex = store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
             check("[vm read] WSL: a refused local VM is read through curl.exe; export sorts, clips to [start,end], "
-                  "drops nulls and +-Inf/NaN", calls and calls[0][0] == "curl.exe" and "-f" in calls[0]
+                  "drops nulls and +-Inf/NaN", calls and calls[0][0] == "/x/curl.exe" and "-f" in calls[0]
                   and ex == [({"__name__": "rm_x"}, [1.0, 3.0], [1.0, 3.0])], (calls, ex))
+            # a systemd --user unit's PATH has no Windows dir: which() misses curl.exe, System32's copy is used
+            calls.clear()
+            shutil.which = lambda n: None
+            saved_wc = store.WIN_CURL
+            store.WIN_CURL = sys.executable           # any executable stands in for System32's curl.exe
+            try:
+                store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
+                fell = calls and calls[0][0] == sys.executable
+                store.WIN_CURL = "/nonexistent/curl.exe"
+                calls.clear()
+                try:
+                    store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
+                    gone = None
+                except urllib.error.URLError as e:
+                    gone = str(e)
+            finally:
+                store.WIN_CURL = saved_wc
+                shutil.which = lambda n: "/x/curl.exe" if n == "curl.exe" else None
+            check("[vm read] curl.exe off PATH (a systemd unit) is found at System32; absent there too, the refusal "
+                  "is raised", fell and gone and not calls, (calls, gone))
             subprocess.run = lambda a, **k: _Done(22, b"", b"HTTP 400")
             try:
                 store.vm_export(["rm_x"], 1.0, 5.0, url="http://127.0.0.1:8428")
