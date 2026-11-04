@@ -148,3 +148,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_TAR_FIRE_NETWORK_1 A3 (L2), read-only proof","ts":"2026-11-04T03:45:22Z","tsn":1793763922586743487}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:45:28Z","tsn":1793763928017675857}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-04T03:48:05Z","tsn":1793764085694774479}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1 (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T04:07:47Z","tsn":1793765267028417623}
