@@ -7,6 +7,7 @@ live criterion it owes gets relentless_live.run(), several per sitting (RA_S09_L
     python3 src/RimMandrake/rimflow/relentless_live_round.py census [--last 300]   # runs.jsonl sorted by cause
 
 The supervisor (relentless.py tick, live_tick) starts `round` detached, at most one at a time, every live.round_every_s.
+A round's end wakes the supervisor's game pass (wake_supervisor), so the next proof starts now and not at the next tick.
 
 WHERE A PROOF COMES FROM: a line in infrastructure/state/live_proofs/<ID>.txt, one per criterion:
 
@@ -47,6 +48,7 @@ import fcntl
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 
@@ -380,6 +382,19 @@ def census(rows):
     return out
 
 
+def wake_supervisor(root, spawn=subprocess.Popen):
+    """The round is over and the game is free: mark it, and start `relentless.py game-next`. The mark is what a running tick
+    takes between its steps. Never the round's failure: a wake that does not happen costs the wait for the next tick."""
+    try:
+        os.makedirs(os.path.join(root, "store"), exist_ok=True)
+        with open(os.path.join(root, "store", "game_wake"), "w", encoding="utf-8") as f:
+            f.write(L.iso(time.time()))
+        spawn(["python3", os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless.py"), "game-next"],
+              env=dict(os.environ, RELENTLESS_ROOT=root), stdin=subprocess.DEVNULL, start_new_session=True)
+    except (OSError, ValueError) as e:
+        print("wake_supervisor: %s" % e)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -413,7 +428,8 @@ def main(argv=None):
         except BlockingIOError:
             print("a round is running")
             return 0
-        print(json.dumps(run_round(fx, root, r, max_items=a.max, only=a.item), indent=1, sort_keys=True))
+        print(json.dumps(run_round(fx, root, r, max_items=a.max, only=a.item), indent=1, sort_keys=True), flush=True)
+    wake_supervisor(root)       # outside round.lock: the proof it starts takes that lock
     return 0
 
 

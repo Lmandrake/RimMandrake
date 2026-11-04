@@ -3592,6 +3592,91 @@ def over_budget(r, spent):
     return bool(budget) and spent >= budget
 
 
+GAME_WAKE = "game_wake"             # a round ended: relentless_live_round.wake_supervisor writes it, a game pass takes it
+GAME_NEXT_ON = "game_next.on"       # game_next holds tick.lock: a tick waits for it instead of losing its turn
+GAME_NEXT_WAIT_S = 1200             # the unit's own kill: past it the next tick serves the wake
+TICK_WAITS_GAME_NEXT_S = 180
+
+
+def wake_taken(store):
+    """-> True once per wake. Whoever takes it owes the game pass."""
+    try:
+        os.remove(store.p(GAME_WAKE))
+        return True
+    except FileNotFoundError:
+        return False
+
+
+def game_pass(store, fx, r, now, acts):
+    """The game items' steps and nothing else, ended rounds first, until one holds the game again: what a round's end
+    needs, so the next proof starts now and not at the next tick (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS; the Conductor
+    measured a proof row in 16 of 180 minutes with 35 items waiting). The caller holds tick.lock."""
+    wall = getattr(fx, "wall", time.monotonic)
+    began = wall()
+
+    def rank(s):
+        g = s.get("game") or {}
+        return (g.get("phase") != "proving", not s.get("expedite"), g.get("entered_at") or 0, s["item"])
+
+    for s in sorted((x for x in store.states() if x["status"] == relentless_game.GAME), key=rank):
+        if (s.get("game") or {}).get("phase") != "proving":     # every ended round is read before anyone starts
+            if relentless_game.other_active(store.states(), None) or over_budget(r, wall() - began):
+                break
+        try:
+            step(store, fx, r, s["item"], now, acts)
+        except Exception as e:  # noqa: BLE001  one bad item never stops the others; the next tick resumes it
+            acts.append({"do": "error", "item": s["item"], "why": "%s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": s["item"], "why": str(e)[:300]})
+
+
+def game_next(store=None, fx=None, r=None, now=None):
+    """A round's own process calls this at its end. One holder of tick.lock at a time: under a running tick it waits, and
+    that tick takes the wake between its steps; a wake the tick missed is served the moment the tick lets go. A wake with
+    no spawn behind it (a killed round) is served by the next tick. It writes no reading: the tick's age stays the tick's."""
+    r = r or rules()
+    store = store or Store()
+    if not r.get("enabled"):
+        return [{"do": "disabled"}]
+    with open(store.p("tick.lock"), "w") as lk:
+        give_up = time.time() + GAME_NEXT_WAIT_S
+        while True:
+            try:
+                fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if not os.path.exists(store.p(GAME_WAKE)):
+                    return [{"do": "skip", "why": "the running tick took the wake"}]
+                if time.time() >= give_up:
+                    return [{"do": "skip", "why": "tick.lock busy for %d s: the next tick serves it" % GAME_NEXT_WAIT_S}]
+                time.sleep(2)
+        if not wake_taken(store):
+            return [{"do": "skip", "why": "no wake"}]
+        if fx is None:
+            os.environ["PATH"] = windows_path(os.environ.get("PATH", ""))
+            fx = Effects(r, store)
+            store.on_alarm = fx.alarm_signal
+        now = time.time() if now is None else now
+        why = relentless_integrity.due(store, fx, r, now)
+        if why:     # only the tick may run the gate
+            return [{"do": "skip", "why": "integrity gate due: %s" % why}]
+        wall = getattr(fx, "wall", time.monotonic)
+        whole, acts = wall(), []
+        with open(store.p(GAME_NEXT_ON), "w"):
+            pass
+        try:
+            game_pass(store, fx, r, now, acts)
+        finally:
+            try:
+                os.remove(store.p(GAME_NEXT_ON))
+            except OSError:
+                pass
+        why = fx.flush()        # what the steps wrote to the ledger; the next tick retries a failure
+        if why:
+            acts.append({"do": "flush_retry", "why": why})
+        store.journal({"at": iso(now), "do": "game_next", "wall_s": int(wall() - whole), "acts": acts})
+        return acts
+
+
 def tick(store=None, fx=None, r=None, now=None):
     r = r or rules()
     store = store or Store()
@@ -3604,10 +3689,15 @@ def tick(store=None, fx=None, r=None, now=None):
 
     os.makedirs(store.dir, exist_ok=True)
     with open(store.p("tick.lock"), "w") as lk:
-        try:
-            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            return [{"do": "skip", "why": "a tick is running"}]
+        waits = time.time() + r.get("tick_waits_game_next_s", TICK_WAITS_GAME_NEXT_S)
+        while True:
+            try:
+                fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:     # a game pass is short; losing the turn to it costs the belt two more minutes
+                if not os.path.exists(store.p(GAME_NEXT_ON)) or time.time() >= waits:
+                    return [{"do": "skip", "why": "a tick is running"}]
+                time.sleep(2)
         if fx is None:
             # the unit's PATH has no Windows tools: every game read from the tick (tasklist, netstat, powershell) and
             # every rimflow it runs measured "no game" while one ran (RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD)
@@ -3629,8 +3719,19 @@ def tick(store=None, fx=None, r=None, now=None):
         whole = wall()
         phases, slow = {}, []
 
+        def serve_wake():
+            """A round ended while this tick runs: the next proof does not wait for the rest of the tick."""
+            if not wake_taken(store):
+                return
+            acts.append({"do": "game_wake"})
+            try:
+                game_pass(store, fx, r, clock(), acts)
+            except Exception as e:  # noqa: BLE001  the next tick steps every game item anyway
+                acts.append({"do": "error", "item": None, "why": "game_pass %s: %s" % (type(e).__name__, e)})
+
         def phase(name, since):
             """Seconds this phase took, into the tick's journal row: the next slow tick names its own step."""
+            serve_wake()
             at = wall()
             phases[name] = round(at - since, 1)
             return at
@@ -3665,6 +3766,7 @@ def tick(store=None, fx=None, r=None, now=None):
                                    "why": str(e)[:300]})
                 if wall() - one >= SLOW_STEP_S:
                     slow.append({"item": item, "s": round(wall() - one, 1)})
+                serve_wake()
         if skipped:
             acts.append({"do": "tick_budget", "skipped": skipped, "after_s": int(wall() - began)})
         at = phase("steps", began)
@@ -3751,6 +3853,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("tick")
+    sub.add_parser("game-next")
     sub.add_parser("reading")
     sub.add_parser("stats")
     sub.add_parser("fence-hook")
@@ -3828,15 +3931,15 @@ def main(argv=None):
     a = ap.parse_args(argv)
     store = Store()
     try:
-        if a.cmd == "tick":
+        if a.cmd in ("tick", "game-next"):
             own = None
             try:        # the tick's own children (git, rimflow, gh) write their temp files here, not in /tmp
-                own = run_tmp.pid_name("tick")
+                own = run_tmp.pid_name(a.cmd)
                 os.environ.update(run_tmp.env(run_tmp.prepare(own)))
             except OSError:
                 own = None
             try:
-                print(json.dumps(tick(store)))
+                print(json.dumps(tick(store) if a.cmd == "tick" else game_next(store)))
             finally:
                 if own:
                     try:

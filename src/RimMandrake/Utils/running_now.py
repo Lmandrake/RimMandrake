@@ -51,6 +51,9 @@ FENCE_WIDTH = 84            # Typora wraps a code fence at about 87 columns in a
 BRIDGE_FILES = ["/home/mandrake/rm/dispatch/infrastructure/state/BRIDGE", "/home/mandrake/rm/bench/infrastructure/state/BRIDGE"]
 LEDGER_EVENTS = "/home/mandrake/rm/dispatch/infrastructure/state/ledger/events"
 RELENTLESS_STORE = "/home/mandrake/rm/relentless/store"
+LIVE_RUNS = "/home/mandrake/rm/relentless/live/runs.jsonl"
+RUNS_TAIL = 2 * 1024 * 1024
+IDLE_WINDOW_MIN = 180
 JOURNAL_TAIL = 6 * 1024 * 1024      # the journal grew 2.6 MB in 3 days: this tail holds far more than 24 h
 STEVE_SSH = "stevedesktop-wsl"
 STEVE_TS_PEER = "stevedesktop"
@@ -510,6 +513,41 @@ def collect_staffing(env):
     return s
 
 
+def collect_game_idle(env, now, waiting):
+    """The Conductor's reading (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS): the share of the last IDLE_WINDOW_MIN minutes in
+    which no proof held the live game, from live/runs.jsonl. A row with a log held the game. Deploy and load time write no
+    rows, so the share is a ceiling on idle. A tail that does not reach back the whole window shortens it, and says so."""
+    text, cut_off = env.read_tail(LIVE_RUNS, RUNS_TAIL)
+    lines = text.splitlines()
+    cut = now - IDLE_WINDOW_MIN * 60
+    used, oldest = set(), None
+    for i, line in enumerate(lines):
+        try:
+            d = json.loads(line)
+            at = iso_epoch(d["at"])
+        except (ValueError, KeyError, TypeError):
+            if (i == 0 and cut_off) or (i == len(lines) - 1 and not text.endswith("\n")):
+                continue
+            raise Unmeasured("runs.jsonl tail line %d is broken" % (i + 1))
+        oldest = at if oldest is None else min(oldest, at)
+        if cut <= at <= now and d.get("log"):
+            used.add(int(at // 60))
+    if oldest is None:
+        raise Unmeasured("runs.jsonl has no rows")
+    window = IDLE_WINDOW_MIN if not cut_off or oldest <= cut else max(1, int((now - oldest) // 60))
+    return {"window_min": window, "used_min": len(used), "idle_pct": round(100 * (window - len(used)) / window),
+            "waiting": waiting}
+
+
+def it_waiting(it):
+    return it["counts"]["game"] if it else 0
+
+
+def game_idle_text(g):
+    return ("GAME idle %d%% of the last %d min: a proof held it in %d, %d items wait (ceiling: deploy and load write no rows)"
+            % (g["idle_pct"], g["window_min"], g["used_min"], g["waiting"]))
+
+
 def collect_tick(env, state):
     d = env.tick_show()
     limit = re.match(r"(\d+)min", d.get("TimeoutStartUSec", ""))
@@ -766,6 +804,9 @@ def pipeline_svg(p):
     br = breaker_word(p)
     gauge(600, "BREAKER", br, WARN if br == "UNMEASURED" else (GOOD if br == "clear" else BAD))
     gauge(700, "LIVE GAME", p["game_text"], p["game_colour"])
+    gi = p.get("game_idle")
+    s.text(700, 52, "idle %d%% of %d min" % (gi["idle_pct"], gi["window_min"]) if gi else "idle UNMEASURED", 11,
+           WARN if not gi or (gi["idle_pct"] >= 50 and gi["waiting"]) else DIM, "600", font=MONO)
     gauge(900, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN)
     # ---- the belt
     cw, gap, x0, y0, ch = 152, 20, 16, 86, 150
@@ -879,6 +920,8 @@ def pipeline_text(p):
         out.append(ln)
         if i < len(BELT) - 1:
             out.append("  │" + ("  FAIL returns to queued: %s in 24 h" % thr["blind_fail"] if name == "checking" and thr else ""))
+    gi = p.get("game_idle")
+    out.append(game_idle_text(gi) if gi else "GAME idle UNMEASURED (%s)" % p.get("game_idle_why"))
     if thr:
         out.append("24 h: closed %d, PASS %d, WEAK %d, FAIL %d, UNMEASURED %d, REFUSED %d" % (thr["closed"], thr["pass"], thr["weak"], thr["fail"], thr["unmeasured"], thr["refused"]))
     return "\n".join(out)
@@ -1352,6 +1395,10 @@ def gather(env, state):
         p["game_text"], p["game_colour"] = ("free, game up" if w and w["game"] else ("free, game down" if w else "free")), GOOD
     else:
         p["game_text"], p["game_colour"] = "UNMEASURED", WARN
+
+    p["game_idle"], p["game_idle_why"] = guarded(collect_game_idle, env, now, it_waiting(p["items"]))
+    if p["game_idle_why"]:
+        p["unmeasured"].append("game idle share (%s)" % p["game_idle_why"])
 
     # plain words: only for names the page shows
     want = set()

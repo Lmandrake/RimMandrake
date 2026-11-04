@@ -1661,7 +1661,7 @@ def rl_last_progress(store, cfg, now):
     acts = set(cfg.get("progress_acts") or [])
     newest = None
     for d in tail_json_lines(store / "journal.jsonl"):
-        for a in (d.get("acts") if d.get("do") == "tick" else [d]) or []:
+        for a in (d.get("acts") if d.get("do") in ("tick", "game_next") else [d]) or []:
             t = epoch(d.get("at"))
             if isinstance(a, dict) and a.get("do") in acts and t is not None and t <= now:
                 newest = max(newest or t, t)

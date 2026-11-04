@@ -35,3 +35,19 @@ different arguments each cost the full time, which is how ticks reached the unit
 The first three ticks on the new code had `wall_s` of 61, 173 and 135. The last of these included two `game_mod_gap` acts.
 The same day's ticks before the change ran 3-8 min. Three ticks are a small sample, and none of the three is known to have
 run a plan with new arguments on a busy mount, so `phases` and `slow_steps` are the thing to read if the alarm returns.
+
+## The next proof at a round's end, and the idle share (the Conductor's note, 2026-11-03)
+
+*"Done means the game gets its next proof as soon as a round ends, not at the next tick; show the idle share on RUNNING_NOW."*
+A shorter tick did not meet this: a finished round still waited out the tick and the 2 min pause.
+
+- A round's last act is `relentless_live_round.wake_supervisor`: it writes `store/game_wake` and starts
+  `relentless.py game-next`. `game_pass` steps only the game items, ended rounds first, and stops when one holds the game.
+- `tick.lock` stays the one lock, so a pass never runs beside a tick. A running tick takes the wake after each item's step
+  and at each phase boundary, so the wait is the step in hand. The long one left is `lease`, which can make clones.
+- `game-next` waits on a running tick and leaves if the tick took the wake. A tick behind a pass waits up to 180 s for it
+  rather than lose its turn. A killed round wakes nobody, and the next tick steps every game item as before.
+- `game-next` skips while the integrity gate is due, writes no reading, and flushes the ledger itself.
+- A staging worker's `ready` does not wake the pass. That first proof after a load still waits for the next tick.
+- `RUNNING_NOW` shows `idle N% of 180 min` under LIVE GAME, with a text twin, read from `live/runs.jsonl`. A minute counts as
+  used when a row with a log falls in it. Deploy and load time write no rows, so the share is a ceiling on idle.
