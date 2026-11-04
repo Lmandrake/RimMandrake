@@ -613,7 +613,8 @@ EXPECTED = {
     "SteveDesktop": {"STATE", "ROUTES", "UPTIME", "LOAD", "WSL RAM USED", "CPU", "DISK FREE", "GPU", "GAME", "RUNNING", "QUEUED", "DONE 24 H", "FAILED 24 H", "LAST JOB", "ROWS/HOUR 24 H",
                      "STEWARD WROTE", "MACHINE READING"} | LIVE_TILES,
 }
-NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"}       # the page says plainly that nothing records it, so there is nothing to judge
+NAME_BANDS = {"NAMES " + x.upper() for x in ("running", "candidate", "checking", "closing")}
+NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"} | NAME_BANDS      # nothing records the first, and a band holds names: nothing to judge in either
 # a digit outside any reading is a naked number, unless it only names a window or a stage of the axis
 FRAME = re.compile(r"^(48 h ago|LIVE TESTING, LAST 24 H|LAST 24 H, EVENTS \(SEVERAL PER ITEM\)|TRENDS, 48 H, TWO-HOUR POINTS)$")
 SVGNS = "{http://www.w3.org/2000/svg}"
@@ -660,7 +661,8 @@ def panel_problems(page, cards_have_oldest=True):
         for label in sorted(want - set(rs)):
             bad.append("%s: no reading %s" % (name, label))
         for label in sorted(set(rs) - want):
-            bad.append("%s: a reading nobody pinned: %s" % (name, label))
+            if not (name == "Relentless" and label in NAME_BANDS):     # a band exists only while its stage overflows its card
+                bad.append("%s: a reading nobody pinned: %s" % (name, label))
         inside = {id(t) for g, _ in rs.values() for t in g.iter(SVGNS + "text")}
         for t in root.iter(SVGNS + "text"):
             words = "".join(t.itertext())
@@ -743,6 +745,7 @@ def fixture_env(extreme=False):
              R.STEVE_CACHE: {"good_t": NOW - (2000 if extreme else 30), "routes": {"tailscale": True, "lan": not extreme, "wsl": True},
                              "good": {"up": "100" if extreme else "20000", "load": "99.9" if extreme else "0.5", "cores": "18", "ram": "63000 64000" if extreme else "1000 64000", "disk": "50 1000" if extreme else "900 1000",
                                       "gpu": "NVIDIA GeForce RTX 2080 Ti, %s, 4400, 11264" % ("99" if extreme else "27"), "game": "0" if extreme else "1", "cpu_pct": 99 if extreme else 3}}}
+    files[R.RELENTLESS_STORE + "/queue_next.json"] = {"t": NOW - 30, "free": ["QUEUED_0"], "waiting": []}
     files.update({STAFFING: {"t": NOW - 5, "target": 8, "places": 8, "spent_today": 950e6 if extreme else 30e6}, BREAKER: {"until": NOW - 60}, BRIDGE: "FREE since 2026-11-03T20:00:00Z\n"})
     for k in range(0, 5):
         files[R.RELENTLESS_STORE + "/spend-%s.json" % day(k)] = {"spent": (900e6 if extreme and k == 0 else 50e6 * (k + 1))}
@@ -760,8 +763,149 @@ def fixture_env(extreme=False):
     return env, [{"t": NOW - 60, "n": 1, "f": {"game": 0 if extreme else 1}}, {"t": NOW - 120, "n": 1, "f": {"game": 1 if not extreme else 0}}]
 
 
-def page_problems():
+LONG = "RUNNING_PAGE_BUILD_NAMES_ON_THE_BELT_AND_THEN_SOME"      # longer than any real name (44 measured 2026-11-03)
+TWIN = LONG[:-1] + "X"                                           # the two differ only at the end: a clip makes them one
+
+
+def names_env(running=6, closing=30, queued=7, done=9, next_order=None):
+    """Real-length names on every stage; closing holds enough to overflow its card and running does not."""
+    env, hist = fixture_env()
+    items = [dict(x) for x in env.items if x["status"] not in ("running", "closing", "candidate", "checking", "queued")]
+    def add(stage, name, **kw):
+        items.append(dict({"item": name, "status": stage}, **kw))
+    add("running", LONG, started_at=NOW - 3000)
+    add("running", TWIN, started_at=NOW - 60)
+    for i in range(running - 2):
+        add("running", "%s_%d" % (LONG, i), started_at=NOW - 100 - i)
+    add("candidate", "CANDIDATE_" + LONG, candidate={"at": NOW - 70})
+    add("checking", "CHECKING_" + LONG, check={"at": NOW - 80})
+    for i in range(closing):
+        add("closing", "CLOSING_%d_%s" % (i, LONG), tomb_since=NOW - 90 - i)
+    order = next_order or ["QUEUED_%d_%s" % (i, LONG) for i in range(queued)]
+    for name in reversed(order):        # enrolled in reverse: an alphabetical or file-order list cannot pass by luck
+        add("queued", name, enrolled_at=NOW - 500)
+    for i in range(done):
+        add("done", "DONE_%d" % i)
+    env.items = items
+    env.files[R.RELENTLESS_STORE + "/queue_next.json"] = {"t": NOW - 30, "free": order[:2], "waiting": order[2:]}
+    env.files[JOURNAL] = "\n".join(json.dumps({"at": iso(NOW - 60 * k), "acts": [{"do": "done", "item": "CLOSED_%d_%s" % (k, LONG)}]}) for k in range(1, 7)) + "\n"
+    return env, hist
+
+
+def joined(texts):
+    """The characters of a reading, line breaks gone: a name wrapped in full is still in here whole."""
+    return "".join(w.replace(" ", "") for _, w in texts)
+
+
+def names_problems():
+    """The owner's ask, sentence by sentence, on real-length names: which items, at which stage, whole, in a layout that still holds."""
     bad = []
+    env, hist = names_env()
+    page = R.build(env, {}, hist)[0]
+    root = panels_of(page)["Relentless"]
+    rs = readings_of(root)
+    body = lambda label: joined(rs[label][1]) if label in rs else ""  # noqa: E731
+    for stage, names in (("RUNNING", [LONG, TWIN] + ["%s_%d" % (LONG, i) for i in range(4)]), ("CANDIDATE", ["CANDIDATE_" + LONG]), ("CHECKING", ["CHECKING_" + LONG])):
+        for n in names:
+            if n not in body(stage):
+                bad.append("%s does not name %s whole" % (stage, n))
+    if "NAMES CLOSING" not in rs:
+        bad.append("thirty closing names have no band")
+    for i in range(30):
+        if "CLOSING_%d_%s" % (i, LONG) not in body("NAMES CLOSING"):
+            bad.append("the closing band misses name %d" % i)
+    if "all30namedbelow" not in body("CLOSING"):
+        bad.append("the closing card does not point at its band")
+    if "…" in "".join(w for k in rs for _, w in rs[k][1] if k.split(" ")[-1] in ("QUEUED", "RUNNING", "CANDIDATE", "CHECKING", "CLOSING", "DONE")):
+        bad.append("a belt name ends in an ellipsis")
+    q = body("QUEUED")
+    at = [q.find("QUEUED_%d_%s" % (i, LONG)) for i in range(R.NEXT_SHOWN)]
+    if -1 in at or at != sorted(at):
+        bad.append("queued does not show the next few, in the tick's order: %s" % at)
+    if "QUEUED_%d_%s" % (R.NEXT_SHOWN, LONG) in q or "+3more" not in q:
+        bad.append("queued does not stop at the next few with a count of the rest")
+    if "nextinline:" not in q or "notfreetostart:" not in q:
+        bad.append("queued does not say which names may start")
+    d = body("DONE")
+    if not all("CLOSED_%d_%s" % (k, LONG) in d for k in (1, 2, 3)) or "CLOSED_4_" in d or "+%dearlier" % (10 - 3) not in d:
+        bad.append("done does not show the latest few with a count of the rest: %s" % d[:120])
+    # the layout holds: every line inside its card or band, every card level, nothing past the bottom
+    cards = {}
+    for label, (g, _) in rs.items():
+        if label.lower() in R.BELT:
+            x = min(float(t.get("x")) for t in g.iter(SVGNS + "text"))
+            cards[label] = x - 10
+    bottoms = {}
+    rects = [r for r in root.iter(SVGNS + "rect") if r.get("width") == "152.0"]
+    for label, x in cards.items():
+        box = next((r for r in rects if float(r.get("x")) == x), None)
+        bottoms[label] = float(box.get("y")) + float(box.get("height")) if box is not None else None
+        for t in rs[label][0].iter(SVGNS + "text"):
+            w = "".join(t.itertext())
+            if t.get("font-family") != R.MONO or t.get("font-size") != "10.5":
+                continue
+            if float(t.get("x")) + len(w) * R.MONO_CHAR > x + 152:
+                bad.append("%s: line past the card's right edge: %s" % (label, w))
+            if box is None or float(t.get("y")) + 3 > bottoms[label]:
+                bad.append("%s: line below the card's bottom: %s" % (label, w))
+    if len(set(bottoms.values())) != 1:
+        bad.append("the belt cards are not level: %s" % bottoms)
+    side = float(next(t.get("y") for t in rs["GAME"][0].iter(SVGNS + "text")))
+    if bottoms and side <= max(v or 0 for v in bottoms.values()):
+        bad.append("the set-aside row runs under the belt")
+    ys = [(float(t.get("y")), "".join(t.itertext())) for t in root.iter(SVGNS + "text")]
+    if max(ys)[0] > float(root.get("viewBox").split()[3]):
+        bad.append("the panel is shorter than what it draws: %s" % (max(ys),))
+    band_ys = [float(t.get("y")) for t in rs["NAMES CLOSING"][0].iter(SVGNS + "text")] if "NAMES CLOSING" in rs else []
+    trend_y = float(next(t.get("y") for t in rs["BAR CLOSED"][0].iter(SVGNS + "text"))) if "BAR CLOSED" in rs else 0
+    if band_ys and not (side < min(band_ys) and max(band_ys) < trend_y):
+        bad.append("the band overlaps the rows around it")
+    # the plain-text twin and the process tree carry the same words in full
+    chunk = page.split("-- the panels as plain text --")[-1].split("-- Archmagi --")[0]
+    flat = re.sub(r"[\s│]", "", chunk)
+    if not all(n in flat for n in (LONG, TWIN, "CLOSING_29_" + LONG, "QUEUED_0_" + LONG, "CLOSED_1_" + LONG)):
+        bad.append("the plain-text twin does not name them whole")
+    if any(len(ln) > R.FENCE_WIDTH for ln in chunk.splitlines() if "CLOSING_" in ln or "QUEUED_" in ln or "oldest" in ln):
+        bad.append("a plain-text name line is wider than the fence")
+    # the tree's build row and the oldest line give the whole title, the row's columns still whole and inside the fence
+    words = "A build row's plain words run far past the room the counts leave, and the owner wants to read all of them to the very last word"
+    env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running", "started_at": NOW - 60}, {"item": "GHOST_OF_A_PLACE", "status": "checking", "check": {"at": NOW - 9}}])
+    env.ledger_titles = lambda wanted: {i: words + " " + i for i in wanted}
+    tp = R.gather(env, {})
+    tree = R.tree_lines(tp)[0]
+    flat = " ".join(re.sub(r"^[│ ├└─┄]*", "", x) for x in tree)
+    row = next((x for x in tree if " build " in x and "= " in x), "")
+    rest = tree[tree.index(row) + 1:] if row else []
+    told = re.sub(r"\s+", " ", " ".join([re.sub(r"\s{2,}.*$", "", row.split("build", 1)[1])] + [x.strip("│ ") for x in rest[:6]])).strip()
+    if (words + " " + ITEM) not in told:
+        bad.append("the tree's build row does not give the whole title: %s" % told[:160])
+    if "…" in row or not re.search(r"= \d+$", row):
+        bad.append("the tree's build row lost its columns or still clips: %s" % row)
+    if max(len(x) for x in tree) > 84:
+        bad.append("a wrapped tree line outgrows the fence")
+    if words not in re.sub(r"\s+", " ", re.sub(r"[│]", "", "\n".join(x for x in tree if not x.startswith("TOTAL")))) or "GHOST_OF_A_PLACE" not in "".join(x.strip("│ ") for x in tree):
+        bad.append("the no-process line does not give the whole title")
+    twin = re.sub(r"\s+", "", R.pipeline_text(tp)).split("oldest:")[-1]    # a wrap may fall inside a name: compare without the breaks
+    if re.sub(r"\s+", "", words + ITEM) not in twin:
+        bad.append("the oldest line clips its title")
+    # an old or missing order says so; it never passes off some other order as the next few
+    for note, change in (("old", {"t": NOW - R.QUEUE_NEXT_MAX_AGE - 60, "free": ["QUEUED_0_" + LONG], "waiting": []}), ("torn", {"free": []})):
+        env, hist = names_env()
+        env.files[R.RELENTLESS_STORE + "/queue_next.json"] = change
+        p2 = R.build(env, {}, hist)[0]
+        q2 = joined(readings_of(panels_of(p2)["Relentless"])["QUEUED"][1])
+        if "nextinlineUNMEASURED" not in q2 or "QUEUED_0_" in q2:
+            bad.append("%s queue_next.json does not read UNMEASURED: %s" % (note, q2[:80]))
+    # an item the tick named that has since moved on is no longer next
+    env, hist = names_env()
+    env.files[R.RELENTLESS_STORE + "/queue_next.json"]["free"] = ["GONE_ALREADY"] + env.files[R.RELENTLESS_STORE + "/queue_next.json"]["free"]
+    if "GONE_ALREADY" in joined(readings_of(panels_of(R.build(env, {}, hist)[0])["Relentless"])["QUEUED"][1]):
+        bad.append("queued lists a name that left the queue")
+    return bad
+
+
+def page_problems():
+    bad = names_problems()
     for extreme in (False, True):
         env, hist = fixture_env(extreme)
         bad += ["%s: %s" % ("extreme" if extreme else "normal", x) for x in panel_problems(R.build(env, {}, hist)[0])]
@@ -849,6 +993,11 @@ with tempfile.TemporaryDirectory() as d:
     R.LEDGER_EVENTS = real_events
 check("a release and a take in one second keep their order", [s for _, s in tied] == ["released", "taken"])
 
+check("wrap_name keeps every character and every line fits, on names, titles and a run wider than the line",
+      all("".join(R.wrap_name(t, w, h)).replace(" ", "") == t.replace(" ", "") and all(len(x) <= w for x in R.wrap_name(t, w, h)) and all(len(x) <= w - h for x in R.wrap_name(t, w, h)[1:])
+          for t in (LONG, "A", "A_", "_A_", "NO_UNDERSCORES" * 9, "x" * 90, "a title, in plain words / with-a-dash and more words than one line holds"[:70], "OPS_RED_OVERDUE_CHASE_AEUZ")
+          for w, h in ((21, 2), (51, 2), (84, 6), (5, 2))))
+check("wrap_name breaks after an underscore when one fits", R.wrap_name("RUNNING_PAGE_BUILD_NAMES_ON_THE_BELT", 21, 2) == ["RUNNING_PAGE_BUILD_", "NAMES_ON_THE_BELT"])
 # ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
 SRC = open(R.__file__).read()
 QUIET = "(lambda *a, **k: None)("
@@ -878,6 +1027,22 @@ MUTANTS = [
     ("a tile too narrow clips its verdict", 'tile_(102, y, 96, "QUEUED",', 'tile_(102, y, 60, "QUEUED",'),
     ("Steve's how-to-read is gone", 'how_to_read("The second machine', '(lambda t: "")("The second machine'),
     ("a number outside any reading", 's.reading_open("FAIL LOOP")', 's.reading_open("FAIL LOOP"); s.text(0, 0, "42", 12)'),
+    ("a card clips its names again", 'for j, ln in enumerate(wrap_name(e[1] + e[2], CARD_CHARS, 2)):', 'for j, ln in enumerate([clip(e[1] + e[2], CARD_CHARS)]):'),
+    ("the band clips its names", 'for j, ln in enumerate(wrap_name(e[1] + e[2], BAND_CHARS, 2)):', 'for j, ln in enumerate([clip(e[1] + e[2], BAND_CHARS)]):'),
+    ("the cards stop growing", "ch = max([170] + [112 + entries_height(card_entries(lists, k)) + 6 for k in BELT])", "ch = 170"),
+    ("the panel forgets its added height", "W, H = 1040, 610 + (ch - 170) + sum(b[2] + 8 for b in bands)", "W, H = 1040, 610"),
+    ("the throughput rows ignore the band", "ty = by + 6 if bands else sy + sh + 18", "ty = sy + sh + 18"),
+    ("closing keeps its long list in the card", 'return [k for k in BELT if sum(1 for e in lists[k] if e[0] == "name") > NAMES_IN_CARD]', "return []"),
+    ("queued ignores the tick's order", 'free = [i for i in qn["free"] if i in here][:NEXT_SHOWN]', 'free = sorted(here)[:NEXT_SHOWN]'),
+    ("queued lists a name that moved on", 'free = [i for i in qn["free"] if i in here][:NEXT_SHOWN]', 'free = qn["free"][:NEXT_SHOWN]'),
+    ("queued loses the count of the rest", 'out["queued"].append(("note", "+ %d more" % (len(waiting) - len(free) - len(held))))', "pass"),
+    ("done lists everything it knows", "recent = thr[\"recent\"][:LATEST_SHOWN]", "recent = thr[\"recent\"][:1]"),
+    ("done loses the count of the rest", 'out["done"].append(("note", "+ %d earlier" % rest))', "pass"),
+    ("an old order still reads as the next few", 'if now - q["t"] > QUEUE_NEXT_MAX_AGE:', "if False:"),
+    ("the text twin loses the names", "for e in lists[name]:   # whole names, as on the cards", "for e in []:"),
+    ("a build row clips its title again", 'cont="│  %s" % (" " if branch == "└─" else "│") + " " * 8)', "cont=None)"),
+    ("the no-process line clips its title", 'L.extend(fence_wrap("! %d items hold a place with no process: %s" % (len(ghosts), title(ghosts[0])), "│  ", "│    "))', 'L.append("│  ! %d items hold a place with no process: %s" % (len(ghosts), clip(title(ghosts[0]), W - 45)))'),
+    ("the oldest line clips its title", 'out += fence_wrap("%s %s: %s" % (k, ago(o[0]), title(o[1])), "  ", "      ")', 'out.append("  %s %s: %s" % (k, ago(o[0]), clip(title(o[1]), 40)))'),
     ("the page's places words are gone", "A place is one running Builder or Judge", "One running Builder or Judge"),
 ]
 survivors = []

@@ -92,6 +92,28 @@ def store():
     return d, R.Store(d)
 
 
+# --- the reading RUNNING_NOW lists as "next": the same order and the same stops as lease
+def queue_next(fx, r, states):
+    d, s = store()
+    for st in states:
+        s.save(st)
+    R.write_queue_next(s, fx, r, 100.0, shown=3)
+    with open(s.p("queue_next.json"), encoding="utf-8") as f:
+        got = json.load(f)
+    shutil.rmtree(d, ignore_errors=True)
+    return got
+
+
+got = queue_next(Fx([], {"S1": 0}, plan={"P_LIST": 0}), RULES, [q("C_FRESH"), q("C_LATER", enrolled_at=9.0), q("C_BACK", returned_at=5.0), q("P_LIST"), q("S1"), q("S_RUN", status="running")])
+ok(got["t"] == 100.0 and got["free"] == ["S1", "P_LIST", "C_BACK"] and got["waiting"] == [], "queue_next: the line's own order, cut to `shown`, running work not in it", got)
+got = queue_next(Fx([]), RULES, [q("C_LATER", not_before=500.0), q("C_NOW")])
+ok(got["free"] == ["C_NOW"] and got["waiting"] == ["C_LATER"], "queue_next: an item whose own clock is ahead is not free to start", got)
+got = queue_next(Fx([], {"S1": 0}, degraded=True), RULES, [q("C_A"), q("S1")])
+ok(got["free"] == ["S1"] and got["waiting"] == ["C_A"], "queue_next: a degraded verdict stops content, not the system item", got)
+got = queue_next(Fx([], {"S1": 0}), dict(RULES, only_system_and_live=True), [q("C_A"), q("C_EXP", expedite={"level": "normal"}), q("S1")])
+ok(got["free"][-1] == "S1" and "C_EXP" in got["free"] and got["waiting"] == ["C_A"], "queue_next: the token pause stops content; system and expedited go", got)
+
+
 # --- enrol: a system item waits for no share
 d, s = store()
 for i in ("C_A", "C_B"):

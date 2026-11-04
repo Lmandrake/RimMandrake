@@ -241,6 +241,8 @@ def t_worker_dies():
     x.w.tok = 500
     x.w.up[u] = False
     x.tick()
+    with open(x.s.p("queue_next.json"), encoding="utf-8") as f:
+        ok(json.load(f)["t"] == x.now, "the tick writes the line's next names for RUNNING_NOW")
     st = x.st("I0")
     ok(st["gen"] > g, "worker dies: fenced at once")
     x.run_one("I0")

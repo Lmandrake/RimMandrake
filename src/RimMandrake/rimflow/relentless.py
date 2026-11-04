@@ -2469,6 +2469,22 @@ def owner_hold(r, item, first, st=None):
     return not (st and (st.get("expedite") or st.get("live_iter")))
 
 
+def write_queue_next(store, fx, r, now, shown=8):
+    """The next names in the line, for RUNNING_NOW: the order needs this tick's plan and Operations' verdict, so the page
+    reads it here instead of recomputing it. `free` may start at the next room; `waiting` are next but stopped by the token
+    pause, a degraded verdict or their own not_before (the same tests lease applies). A reading: nothing acts on it."""
+    states = store.states()
+    plan, first = getattr(fx, "plan", None) or {}, getattr(fx, "first", None) or {}
+    paused = content_paused(fx, states)
+    free, waiting = [], []
+    for st in queue_order(states, plan, first):
+        i = st["item"]
+        stopped = owner_hold(r, i, first, st) or st.get("not_before", 0) > now or (
+            paused and not st.get("expedite") and i not in first and i not in plan)
+        (waiting if stopped else free).append(i)
+    store._write(store.p("queue_next.json"), json.dumps({"t": now, "free": free[:shown], "waiting": waiting[:shown]}, indent=1))
+
+
 def content_paused(fx, states, order=None, ours=None):
     """True while Operations' verdict reads degraded and a system item still waits for a place: in the line, or in the
     pool not yet enrolled. When every system item is already being worked, content may start (owner card 2026-11-03)."""
@@ -3972,6 +3988,10 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001
             acts.append({"do": "error", "item": None, "why": "expedite interrupt %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)[:300]})
+        try:        # after enrol, which sets this tick's plan; a broken reading costs the page its list, never the tick
+            write_queue_next(store, fx, r, now)
+        except Exception as e:  # noqa: BLE001
+            acts.append({"do": "error", "item": None, "why": "queue_next %s: %s" % (type(e).__name__, e)})
         try:
             launch_proved(store, now)
             lease(store, fx, r, now, acts)

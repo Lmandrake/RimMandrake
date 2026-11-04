@@ -111,6 +111,13 @@ STAGE_NORMAL = {"queued": (400, "100-400"), "running": (9, "3-9"), "candidate": 
 STAGE_OLD = {"queued": (2 * 86400, "<2d"), "running": (3 * 3600, "<3h"), "candidate": (3600, "<1h"), "checking": (3600, "<1h"), "closing": (86400, "<1d"),
              "game": (2 * 86400, "<2d"), "held": (7 * 86400, "<7d"), "blocked": (7 * 86400, "<7d"), "stopping": (900, "<15m"), "retiring": (900, "<15m")}
 LAST_CLOSE = (3 * 3600, "<3h")
+# The belt's name lists. Running and checking top out at 9 (STAGE_NORMAL): more than that in a card would push the panel
+# down by a screen, so that stage (closing, most days) lists its names whole in a band of its own under the set-aside row.
+NAMES_IN_CARD = 9
+NEXT_SHOWN, LATEST_SHOWN = 4, 3     # queued and done are too long to list whole: the next few, the latest few, a count of the rest
+QUEUE_NEXT_MAX_AGE = 1800           # the tick runs every 2 min and is allowed 20: older than this and the order is old news
+NAME_LINE, NAME_GAP = 13, 3         # a name's lines sit close, with a gap before the next name
+CARD_CHARS, BAND_CHARS, BAND_COLS, MONO_CHAR = 21, 51, 3, 6.3     # MONO_CHAR: px per character of the mono face at 10.5
 # A rough normal for a number with no measured baseline yet, read off the records on 2026-11-03. A measured range replaces it as the record grows.
 ROUGH = {"pass": (100, 300), "weak": (50, 200), "fail": (30, 120), "unmeasured": (0, 20), "refused": (10, 60), "closed": (50, 100), "blind_fail": (20, 80), "put_back": (100, 400),
          "tokens_day": (100e6, 400e6), "tokens_per": (1e6, 6e6), "steve_done": (5, 150), "steve_failed": (0, 15), "steve_rows_h": (1, 130),
@@ -386,6 +393,28 @@ def clip(s, n):
     return s if len(s) <= n else s[:max(n - 1, 1)].rstrip() + "…"
 
 
+def wrap_name(s, width, hang=0):
+    """Lines of at most `width` holding ALL of s, breaking after a _ - / or space so a name stays readable; only a run
+    longer than a line is cut. Lines after the first get `width - hang`: the caller indents them by `hang`."""
+    s = re.sub(r"\s+", " ", str(s)).strip()
+    lines, cur = [], ""
+    for tok in re.findall(r"[^_\-/ ]*[_\-/ ]+|[^_\-/ ]+$", s):
+        while True:
+            room = width if not lines else max(width - hang, 1)
+            if len((cur + tok).rstrip()) <= room:
+                cur += tok
+                break
+            if cur:
+                lines.append(cur.rstrip())
+                cur = ""
+                continue
+            lines.append(tok[:room])    # one run wider than the line: the only place a word is cut
+            tok = tok[room:]
+    if cur.strip():
+        lines.append(cur.rstrip())
+    return lines or [""]
+
+
 def humanise(item):
     return re.sub(r"_+", " ", item).strip().capitalize()
 
@@ -623,6 +652,16 @@ def collect_items(env):
         by_status[s.get("status")].append(s)
     return {"counts": counts, "by_status": by_status, "by_short": {short(s["item"]): s for s in states if s.get("item")},
             "live": sum(counts[k] for k in RUNS_A_PLACE)}
+
+
+def collect_queue_next(env, now):
+    """The order the tick computed (relentless.write_queue_next): the page cannot recompute it, it needs the ledger's plan."""
+    q = env.read_json(RELENTLESS_STORE + "/queue_next.json")
+    if not isinstance(q.get("t"), (int, float)) or not isinstance(q.get("free"), list) or not isinstance(q.get("waiting"), list):
+        raise Unmeasured("queue_next.json is not the tick's shape")
+    if now - q["t"] > QUEUE_NEXT_MAX_AGE:
+        raise Unmeasured("queue_next.json is %s old" % ago(now - q["t"]))
+    return q
 
 
 def collect_staffing(env):
@@ -1036,6 +1075,10 @@ class Svg:
         """One reading: a named group, so a panel's readings can be told apart. A hover line is free, it adds the why where the viewer shows it."""
         self.parts.append('<g data-reading="%s">' % escape(str(label), {'"': "&quot;"}) + ("<title>%s</title>" % escape(hover) if hover else ""))
 
+    def hover_open(self, hover):
+        """A hover line over a few text lines, with no reading of its own: the name's plain words stay a mouse-over away."""
+        self.parts.append("<g><title>%s</title>" % escape(str(hover)))
+
     def reading_close(self):
         self.parts.append("</g>")
 
@@ -1144,15 +1187,6 @@ def live_row(s, y, d, busy_means, closed_means, closed_rough):
 
 
 # --------------------------------------------------------------------------- the Relentless panel
-def item_line(st, now, title, n):
-    since = st.get("started_at")
-    chk = st.get("check") if isinstance(st.get("check"), dict) else {}
-    if st.get("status") == "checking" and isinstance(chk.get("at"), (int, float)):
-        since = chk["at"]
-    head = ago(now - since).replace(" ", "") + " " if isinstance(since, (int, float)) else ""
-    return head + clip(title(st.get("item") or ""), n - len(head))
-
-
 def stage_since(st):
     """When an item entered the stage it is in, by the field each stage writes; None when the stage has no clock."""
     def field(d, k):
@@ -1172,6 +1206,81 @@ def oldest_in(it, name, now):
     return max(rows) if rows else None
 
 
+def age_head(t, now):
+    return ago(now - t).replace(" ", "") + " " if t else ""
+
+
+def stage_lists(p):
+    """What each belt card lists: {stage: [("note", words) | ("name", age, item), ...]}. A name is never shortened here or later."""
+    now, it, thr = p["now"], p["items"], p["throughput"]
+    out = {k: [] for k in BELT}
+    if it:
+        for k in ("running", "candidate", "checking", "closing"):
+            rows = sorted(it["by_status"][k], key=lambda v: (stage_since(v) or now, v.get("item") or ""))
+            out[k] = [("name", age_head(stage_since(r), now), r.get("item") or "") for r in rows]
+        waiting = it["by_status"]["queued"]
+        exp = sum(1 for v in waiting if v.get("expedite"))
+        ret = sum(1 for v in waiting if v.get("returns"))
+        out["queued"] = [("note", "%d failed a check before" % ret)] + ([("note", "%d expedited" % exp)] if exp else [])
+        qn = p.get("queue_next")
+        if qn is None:
+            out["queued"].append(("note", "next in line UNMEASURED"))
+        elif waiting:
+            here = {v.get("item") for v in waiting}
+            free = [i for i in qn["free"] if i in here][:NEXT_SHOWN]
+            held = [i for i in qn["waiting"] if i in here][:NEXT_SHOWN - len(free)]
+            if free:
+                out["queued"] += [("note", "next in line:")] + [("name", "", i) for i in free]
+            if held:
+                out["queued"] += [("note", "not free to start:")] + [("name", "", i) for i in held]
+            if len(waiting) > len(free) + len(held):
+                out["queued"].append(("note", "+ %d more" % (len(waiting) - len(free) - len(held))))
+    if thr:
+        recent = thr["recent"][:LATEST_SHOWN]
+        out["done"] = [("name", age_head(at, now), i) for at, i in recent]
+        rest = it["counts"]["done"] - len(recent) if it else 0
+        if rest > 0:
+            out["done"].append(("note", "+ %d earlier" % rest))
+    elif it and it["counts"]["done"]:
+        out["done"] = [("note", "latest UNMEASURED")]
+    return out
+
+
+def banded(lists):
+    """The stages whose names are too many for a card; they get a band of their own, in belt order."""
+    return [k for k in BELT if sum(1 for e in lists[k] if e[0] == "name") > NAMES_IN_CARD]
+
+
+def card_entries(lists, name):
+    if name in banded(lists):
+        return [("note", "all %d named below" % len(lists[name]))]
+    return lists[name]
+
+
+def entries_height(entries):
+    """Pixels the card needs for its list, the same sums the drawing does."""
+    h = 0
+    for e in entries:
+        h += NAME_LINE * len(wrap_name(e[1] if e[0] == "note" else e[1] + e[2], CARD_CHARS, 2)) + NAME_GAP
+    return h
+
+
+def band_columns(rows):
+    """-> (columns of rows, height). Rows run down the columns, oldest first, the columns as level as whole names allow."""
+    total = sum(len(wrap_name(e[1] + e[2], BAND_CHARS, 2)) for e in rows)
+    each, cols, cur, used = -(-total // BAND_COLS), [], [], 0
+    for e in rows:
+        n = len(wrap_name(e[1] + e[2], BAND_CHARS, 2))
+        if cur and used + n > each and len(cols) < BAND_COLS - 1:
+            cols.append(cur)
+            cur, used = [], 0
+        cur.append(e)
+        used += n
+    cols.append(cur)
+    tallest = max(sum(len(wrap_name(e[1] + e[2], BAND_CHARS, 2)) for e in c) for c in cols)
+    return cols, 24 + tallest * NAME_LINE
+
+
 def trend_rows(p):
     """The four lines the owner chose: label, two-hour points, colour, how to print a point. A line it cannot read is None."""
     thr, live = p["throughput"], p["live_here"]
@@ -1186,7 +1295,11 @@ def trend_rows(p):
 def pipeline_svg(p):
     """The instrument panel. Numbers are the primary layer; items secondary; arrows context."""
     now, it, thr, title = p["now"], p["items"], p["throughput"], p["title"]
-    W, H = 1040, 610
+    lists = stage_lists(p)
+    # the cards grow to the longest list, and every band adds its own height: all the layout below hangs off these two
+    ch = max([170] + [112 + entries_height(card_entries(lists, k)) + 6 for k in BELT])
+    bands = [(k, *band_columns(lists[k])) for k in banded(lists)]
+    W, H = 1040, 610 + (ch - 170) + sum(b[2] + 8 for b in bands)
     s = Svg(W, H, "Relentless Pipeline: stage counts, places, tick, breaker, trends, last 24 hours")
     # ---- header gauges
     s.text(18, 34, "RELENTLESS", 20, TEXT, "700")
@@ -1261,7 +1374,7 @@ def pipeline_svg(p):
     else:
         gauge(600, "MODS ACCEPTED, GOAL IS ALL", "UNMEASURED", WARN, yy=yy)
     # ---- the belt
-    cw, gap, x0, y0, ch = 152, 20, 16, 138, 170
+    cw, gap, x0, y0 = 152, 20, 16, 138
     cx = {}
     for i, name in enumerate(BELT):
         x = x0 + i * (cw + gap)
@@ -1283,21 +1396,19 @@ def pipeline_svg(p):
         elif name == "done" and thr and thr["recent"]:
             note_, col_ = age_note("last", now - thr["recent"][0][0], LAST_CLOSE)
             s.text(x + 10, y0 + 96, note_, 9, col_)
-        lines = []
-        if it and name in ("running", "checking", "candidate", "closing"):
-            rows = sorted(it["by_status"][name], key=lambda v: v.get("started_at") or 0)
-            lines = [item_line(r, now, title, 25) for r in rows[:4]]
-            if len(rows) > 4:
-                lines[-1] = "+ %d more" % (len(rows) - 3)
-        elif name == "done" and thr:
-            lines = [clip(title(i), 25) for _, i in thr["recent"]]
-        elif name == "queued" and it:
-            # shares of the card's own count, which carries the verdict; the 24 h put-backs are a bar below
-            exp = sum(1 for v in it["by_status"]["queued"] if v.get("expedite"))
-            ret = sum(1 for v in it["by_status"]["queued"] if v.get("returns"))
-            lines = ["%d failed a check before" % ret] + (["%d expedited" % exp] if exp else [])
-        for j, ln in enumerate(lines):
-            s.text(x + 10, y0 + 112 + j * 14, ln, 10.5, TEXT if name != "queued" else DIM, font=MONO)
+        yy = y0 + 112
+        for e in card_entries(lists, name):
+            if e[0] == "note":
+                for ln in wrap_name(e[1], CARD_CHARS, 2):
+                    s.text(x + 10, yy, ln, 10.5, DIM, font=MONO)
+                    yy += NAME_LINE
+            else:
+                s.hover_open(title(e[2]))
+                for j, ln in enumerate(wrap_name(e[1] + e[2], CARD_CHARS, 2)):
+                    s.text(x + 10 + (2 * MONO_CHAR if j else 0), yy, ln, 10.5, TEXT, font=MONO)
+                    yy += NAME_LINE
+                s.reading_close()
+            yy += NAME_GAP
         s.reading_close()
         if i < len(BELT) - 1:
             s.arrow_r(x + cw + 1, x + cw + gap - 1, y0 + 40, BAR)
@@ -1336,8 +1447,24 @@ def pipeline_svg(p):
             note_, col_ = age_note("oldest", old[0], STAGE_OLD[name])
             s.text(x + 10, sy + 72, note_, 9, col_)
         s.reading_close()
+    # ---- a stage too long for its card names everything here, whole, on a single line where it fits
+    by = sy + sh + 12
+    for name, cols, band_h in bands:
+        s.rect(x0, by, W - 2 * x0, band_h, CARD, EDGE, 6)
+        s.reading_open("NAMES " + name.upper())
+        s.text(x0 + 10, by + 15, "%s: ALL %d, LONGEST THERE FIRST" % (name.upper(), len(lists[name])), 10.5, DIM, "700")
+        for c, col in enumerate(cols):
+            cx_, yy = x0 + 10 + c * (W - 2 * x0 - 20) / BAND_COLS, by + 30
+            for e in col:
+                s.hover_open(title(e[2]))
+                for j, ln in enumerate(wrap_name(e[1] + e[2], BAND_CHARS, 2)):
+                    s.text(cx_ + (2 * MONO_CHAR if j else 0), yy, ln, 10.5, TEXT, font=MONO)
+                    yy += NAME_LINE
+                s.reading_close()
+        s.reading_close()
+        by += band_h + 8
     # ---- throughput: common zero baseline, direct labels
-    ty = sy + sh + 18
+    ty = by + 6 if bands else sy + sh + 18
     s.line(16, ty - 8, W - 16, ty - 8, EDGE, 1)
     s.text(18, ty + 8, "LAST 24 H, EVENTS (SEVERAL PER ITEM)", 10.5, DIM, "700")
     if thr:
@@ -1385,6 +1512,13 @@ def pipeline_svg(p):
     return s.out()
 
 
+def fence_wrap(words, first, rest):
+    """Whole words at the fence's width: the first line starts `first`, the others `rest`."""
+    hang = len(rest) - len(first)
+    lines = wrap_name(words, FENCE_WIDTH - len(first), hang)
+    return [(rest if j else first) + ln for j, ln in enumerate(lines)]
+
+
 def pipeline_text(p):
     """The same panel as a monospace rail: the fallback twin, and what a raw text reader sees."""
     it, thr = p["items"], p["throughput"]
@@ -1401,11 +1535,14 @@ def pipeline_text(p):
             "closing": "    stopping %d, retiring %d ──▶ retired %d" % (c["stopping"], c["retiring"], c["retired"])}
     out = ["RELENTLESS PIPELINE  places %d/%s  breaker %s" % (it["live"], p["places"] if p["places"] else "UNMEASURED",
                                                      breaker_word(p))]
+    lists = stage_lists(p)
     for i, name in enumerate(BELT):
         ln = rail(name)
         if name in side:
             ln = "%-44s%s" % (ln, side[name])
         out.append(ln)
+        for e in lists[name]:   # whole names, as on the cards
+            out += fence_wrap(e[1] if e[0] == "note" else e[1] + e[2], "  │   ", "  │     ")
         if i < len(BELT) - 1:
             out.append("  │" + ("  a Judge's FAIL returns to queued: %s in 24 h" % thr["blind_fail"] if name == "checking" and thr else ""))
     gi = p.get("game_idle")
@@ -1414,7 +1551,10 @@ def pipeline_text(p):
         out.append("24 h: closed %d, PASS %d, WEAK %d, FAIL %d, game-phase UNMEASURED %d, REFUSED %d" % (thr["closed"], thr["pass"], thr["weak"], thr["fail"], thr["unmeasured"], thr["refused"]))
     title = p["title"]
     olds = [(k, oldest_in(it, k, p["now"])) for k in BELT + SIDE]
-    out.append("oldest: " + "; ".join("%s %s (%s)" % (k, ago(o[0]), clip(title(o[1]), 40)) for k, o in olds if o))
+    out.append("oldest:")
+    for k, o in olds:
+        if o:
+            out += fence_wrap("%s %s: %s" % (k, ago(o[0]), title(o[1])), "  ", "      ")
     for lab, vals, _, show, _ in trend_rows(p):
         out.append("trend %-12s %s" % (lab, " ".join(show(v) for v in vals) if vals else "UNMEASURED"))
     return "\n".join(out)
@@ -1455,11 +1595,18 @@ def tree_lines(p):
         tail = "[%d proc]" % count
         L.append("%s %s %s" % (text, "·" * max(1, W - len(text) - len(tail) - 2), tail))
 
-    def leaf(prefix, name, right, procs):
-        # name stretches: the counts column stays whole, the name takes the clip
+    def leaf(prefix, name, right, procs, cont=None):
+        # name stretches: the counts column stays whole; with `cont` the name wraps under itself in full, without it takes the clip
         counts = kinds_text(procs, by_pid) + " = %d" % len(procs)
-        room = W - len(prefix) - len(counts) - len(right) - 3
-        L.append("%s%-*s %s  %s" % (prefix, max(room, 12), clip(name, max(room, 12)), right, counts))
+        room = max(W - len(prefix) - len(counts) - len(right) - 3, 12)
+        if cont is None:
+            L.append("%s%-*s %s  %s" % (prefix, room, clip(name, room), right, counts))
+            return
+        first = wrap_name(name, room)[0]
+        L.append("%s%-*s %s  %s" % (prefix, room, first, right, counts))
+        left = re.sub(r"\s+", " ", str(name)).strip()[len(first):].strip()
+        if left:
+            L.extend(cont + ln for ln in wrap_name(left, W - len(cont)))
 
     # ---- Dispatch and what hangs off it
     disp = [x for x in fam("dispatcher")]
@@ -1485,12 +1632,13 @@ def tree_lines(p):
         st = it["by_short"].get(w["id"].split("-")[0]) if it else None
         name = title(st["item"]) if st else "item UNMEASURED"
         right = "%6s %-4s %5s" % (ago(w["age"]), w["model"][:4], tokens(st.get("spent")) if st else "UNMEASURED")
-        leaf("│  %s %-5s " % (branch, {"work": "build", "check": "judge"}.get(w["kind"], w["kind"] or "?")), name, right, w["procs"])
+        leaf("│  %s %-5s " % (branch, {"work": "build", "check": "judge"}.get(w["kind"], w["kind"] or "?")), name, right, w["procs"],
+             cont="│  %s" % (" " if branch == "└─" else "│") + " " * 8)
     if not workers:
         L.append("│  └─ no Builder or Judge process running")
     ghosts = ghost_places(p)
     if ghosts:
-        L.append("│  ! %d items hold a place with no process: %s" % (len(ghosts), clip(title(ghosts[0]), W - 45)))
+        L.extend(fence_wrap("! %d items hold a place with no process: %s" % (len(ghosts), title(ghosts[0])), "│  ", "│    "))
     L.append("├─ ROLE RUNS  %d running  [%d proc]" % (len(roles), n_procs(roles)))
     for i, x in enumerate(roles):
         name = x["id"].rsplit("-", 1)[0].capitalize() if x["id"] else x["unit"]
@@ -2346,6 +2494,9 @@ def gather(env, state, hist=(), write=True):
     p["items"], why = guarded(collect_items, env)
     if why:
         p["unmeasured"].append("Relentless items (%s)" % why)
+    p["queue_next"], why = guarded(collect_queue_next, env, now)
+    if why:
+        p["unmeasured"].append("Relentless next in line (%s)" % why)
     staffing, why = guarded(collect_staffing, env)
     if why:
         p["unmeasured"].append("Relentless staffing (%s)" % why)
@@ -2426,6 +2577,8 @@ def gather(env, state, hist=(), write=True):
     if it:
         for k in ("running", "checking", "candidate", "closing"):
             want.update(s.get("item") for s in it["by_status"][k])
+    if p["queue_next"]:
+        want.update(p["queue_next"]["free"][:NEXT_SHOWN] + p["queue_next"]["waiting"][:NEXT_SHOWN])
     if p["throughput"]:
         want.update(i for _, i in p["throughput"]["recent"])
         want.update(i for _, _, i in p["throughput"]["feed"])
@@ -2466,7 +2619,7 @@ def build(env, state, hist, write=True):
                      "A reading older than 45 minutes, or one that cannot be read, says UNMEASURED."), "",
          panel("Needs you", needs_html), "",
          panel("Relentless Pipeline", pipeline_svg),
-         how_to_read("Items move left to right; each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
+         how_to_read("Items move left to right; a card names its items whole, longest there first (hover a name for its plain words), and a stage too long for its card names them in a band below; queued shows the next few in the tick's order, done the latest few, each with a count of the rest. each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
                      "A place is one running Builder or Judge, or one being stopped; 8 is the ceiling for starting a Builder. A Judge may start one place above it, because "
                      "a cap never stops finishing work, and stopping runs still count, so 9 of 8 is normal and brief. The left bars count events, not items, and each says if it is usual for 24 h. "
                      "GAME UNMEASURED is game-phase events only; every proof row, measured or not, is in Live Testing below. Trends each have their own zero line. "
