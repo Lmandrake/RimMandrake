@@ -468,3 +468,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-04T20:07:29Z","tsn":1793822849362157303}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:20:52Z","tsn":1793823652911553909}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T20:27:51Z","tsn":1793824071554927060}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T20:33:43Z","tsn":1793824423354575163}
