@@ -242,6 +242,11 @@ def main():
     h = deaths_of(reg, "helpers:BENCH:aaaa1111")
     ok(len(h) == 1 and h[0].get("count") == 3, "helpers_mid_work_die_with_window_largest_count", h)
     ok(len(deaths_of(reg, "window:BENCH:aaaa1111")) == 1, "repeated_receipt_one_window_death")
+    hr = thing(reg, "helpers:BENCH:aaaa1111")
+    ok(hr is not None and hr["wanted"] == "running" and hr["kind"] == "helper", "helpers_wanted_running", hr)
+    ok(thing(reg, "role:rm-role-producer-2")["wanted"] == "done", "role_run_wanted_done")
+    bad = [(t["id"], t["wanted"]) for t in reg["things"] if t["wanted"] not in ("running", "stopped", "done")]
+    ok(not bad, "every_thing_wanted_on_the_fixed_list", bad[:5])
     sv = deaths_of(reg, "unit:rm-ops-watch.service")
     ok(len(sv) == 2 and sv[0]["ending"] == "out_of_memory" and sv[0].get("folded") == 2 and sv[1]["ending"] == "unit_failed",
        "service_oom_absorbs_one_repair_only", sv)
@@ -323,6 +328,12 @@ def main():
     ok(lg is not None and lg.get("open"), "life_open_since_before_window_has_row", lg)
     ok(len(deaths_of(reg, "window:BENCH:eeee5555")) == 1, "future_restart_does_not_plan_earlier_crash")
     ok(thing(reg, rid("worker", ITEM_LOST, 1))["started"] == "2026-11-03T09:00:00Z", "life_start_from_attempts")
+    # wanted state per thing: a Relentless life (worker or checker, dead, finished or open) is meant to run to done
+    for tid, label in ((rid("worker", ITEM_LOST, 1), "lost"), (rid("checker", ITEM_ACC, 3), "checker"),
+                       (rid("worker", ITEM_FULL, 3), "full"), (rid("worker", ITEM_DONE, 1), "finished"),
+                       (rid("worker", "H_OPEN", 4), "open"), (rid("worker", "I_LONG", 1), "long_open")):
+        row = thing(reg, tid)
+        ok(row is not None and row["wanted"] == "done", "relentless_life_wanted_done_" + label, row)
 
     # memwatch
     oom = [d for d in reg["deaths"] if d["ending"] == "out_of_memory"]   # 12 + rm-alarmoom (its kill and its alarm: one)
