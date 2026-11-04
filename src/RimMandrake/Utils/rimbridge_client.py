@@ -170,6 +170,10 @@ EVIDENCE_LOG = (os.environ["RIMBRIDGE_EVIDENCE_LOG"] if "RIMBRIDGE_EVIDENCE_LOG"
 EVIDENCE_MAX_BYTES = 20 * 1024 * 1024
 _RUN_ID = uuid.uuid4().hex[:12]
 _ACTIVE = set()                       # cids in flight in THIS process
+# BRIDGE_CLIENT_HARDEN_FOUR_ROUGH_EDGES: cid -> marker record of a mutation whose outcome went UNKNOWN in THIS process
+# but whose INDETERMINATE marker could not be written. The disk marker still reads "in-flight" under a live pid, which
+# outstanding_indeterminate() skips, so without this set a live process could retry it. Fails closed until reconciled.
+_UNRESOLVED = {}
 
 
 def _settings_debt(tool, params, out):
@@ -316,7 +320,35 @@ def _inflight_clear(cid):
             time.sleep(0.05 * (i + 1))
 
 
-def _pid_alive(pid):
+def _proc_start(pid):
+    """A process's creation identity (Windows creation FILETIME; Linux /proc starttime ticks), or None when this OS
+    or process cannot say. With the pid it names ONE process: a reused pid has another start."""
+    try:
+        pid = int(pid)
+        if os.name == "nt":
+            import ctypes
+            k = ctypes.windll.kernel32
+            h = k.OpenProcess(0x1000, False, pid)                           # PROCESS_QUERY_LIMITED_INFORMATION
+            if not h:
+                return None
+            try:
+                t = [ctypes.c_ulonglong() for _ in range(4)]               # creation, exit, kernel, user FILETIMEs
+                if not k.GetProcessTimes(h, *[ctypes.byref(x) for x in t]):
+                    return None
+                return int(t[0].value)
+            finally:
+                k.CloseHandle(h)
+        with open("/proc/%d/stat" % pid, encoding="ascii", errors="replace") as fh:
+            stat = fh.read()
+        return int(stat.rsplit(")", 1)[1].split()[19])                     # field 22, after comm's last ')'
+    except (OSError, ValueError, IndexError, AttributeError):
+        return None
+
+
+def _pid_alive(pid, start=None):
+    """Is the process that wrote a marker still running? `start` is its recorded _proc_start: a live pid whose start
+    differs is a REUSED pid, and the writer is gone (BRIDGE_CLIENT_HARDEN_FOUR_ROUGH_EDGES). An unreadable start on a
+    live pid keeps the pid-only answer (alive): a sibling's genuine in-flight call must not read as orphaned."""
     if os.name == "nt":
         import ctypes
         h = ctypes.windll.kernel32.OpenProcess(0x1000, False, int(pid))   # PROCESS_QUERY_LIMITED_INFORMATION
@@ -325,12 +357,17 @@ def _pid_alive(pid):
         code = ctypes.c_ulong()
         ctypes.windll.kernel32.GetExitCodeProcess(h, ctypes.byref(code))
         ctypes.windll.kernel32.CloseHandle(h)
-        return code.value == 259                                          # STILL_ACTIVE
-    try:
-        os.kill(int(pid), 0)
+        if code.value != 259:                                             # STILL_ACTIVE
+            return False
+    else:
+        try:
+            os.kill(int(pid), 0)
+        except (OSError, ValueError):
+            return False
+    if start is None:
         return True
-    except (OSError, ValueError):
-        return False
+    now = _proc_start(pid)
+    return now is None or now == start
 
 
 def outstanding_indeterminate():
@@ -338,10 +375,11 @@ def outstanding_indeterminate():
     out = []
     if not EVIDENCE_LOG:
         return out
+    seen = set()
     try:
         names = sorted(os.listdir(_inflight_dir()))
     except OSError:
-        return out
+        names = []
     for n in names:
         if not n.endswith(".json"):
             continue
@@ -352,10 +390,27 @@ def outstanding_indeterminate():
             rec = {"cid": n[:-5], "status": "UNREADABLE marker"}
         if rec.get("cid") in _ACTIVE:
             continue
-        if rec.get("status") == "INDETERMINATE" or rec.get("status") == "UNREADABLE marker" \
-                or (rec.get("os") in (None, os.name) and not _pid_alive(rec.get("pid") or 0)):
+        if rec.get("cid") in _UNRESOLVED or rec.get("status") == "INDETERMINATE" \
+                or rec.get("status") == "UNREADABLE marker" \
+                or (rec.get("os") in (None, os.name)
+                    and not _pid_alive(rec.get("pid") or 0, rec.get("pid_start"))):
             out.append(rec)
+            seen.add(rec.get("cid"))
+    # a marker this process failed to mark INDETERMINATE counts even if its file is gone or unreadable
+    out.extend(r for c, r in sorted(_UNRESOLVED.items()) if c not in seen)
     return out
+
+
+def _mark_indeterminate(start, error):
+    """Mark a mutation's outcome UNKNOWN on disk; when that write fails, remember it in this process (_UNRESOLVED) so
+    a retry here is still refused (the disk marker reads "in-flight" under our live pid, which nothing else blocks)."""
+    rec = dict(start, status="INDETERMINATE", error=error)
+    try:
+        _inflight_write(rec)
+    except OSError as ex:
+        _UNRESOLVED[start["cid"]] = dict(rec, marker_write_failed=str(ex)[:200])
+        print("[rimbridge_client] INDETERMINATE marker for %s NOT written (%s): refusing mutations in this process "
+              "until reconciled" % (start["cid"], ex), file=sys.stderr)
 
 
 def reconcile_resolve(cid, verdict, note):
@@ -363,6 +418,7 @@ def reconcile_resolve(cid, verdict, note):
     _evidence({"ev": "reconciled", "cid": cid, "as": verdict, "note": note, "t": _ev_now(), "pid": os.getpid()},
               required=True)
     _inflight_clear(cid)
+    _UNRESOLVED.pop(cid, None)
 
 
 def _args_sha(params):
@@ -953,6 +1009,7 @@ class RimBridge:
         cid = uuid.uuid4().hex[:16]
         start = {"ev": "start", "cid": cid, "run": _RUN_ID, "t": _ev_now(), "tool": tool,
                  "args_sha256": _args_sha(params), "mutating": mutating, "pid": os.getpid(), "os": os.name,
+                 "pid_start": _proc_start(os.getpid()),
                  "seat": os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT"),
                  "script": os.path.basename(sys.argv[0]) if sys.argv else "", "client": self.client_name,
                  "endpoint": "%s:%s" % (self.host, self.port)}
@@ -983,10 +1040,7 @@ class RimBridge:
                             "error": str(ex)[:300], "t": _ev_now(), "outcome": outcome, "timeout": timed_out,
                             "transport": "ok" if answered else outcome}, **_stall_fields(t0)))
             if mutating and status == "INDETERMINATE":
-                try:
-                    _inflight_write(dict(start, status="INDETERMINATE", error=str(ex)[:300]))
-                except OSError:
-                    pass
+                _mark_indeterminate(start, str(ex)[:300])
             else:
                 _inflight_clear(cid)
             _ACTIVE.discard(cid)
@@ -1003,10 +1057,7 @@ class RimBridge:
             except Exception:  # noqa: BLE001 - evidence is best effort here; the original exception must propagate
                 pass
             if mutating:
-                try:
-                    _inflight_write(dict(start, status="INDETERMINATE", error=why))
-                except OSError:
-                    pass
+                _mark_indeterminate(start, why)
             raise
         finally:
             if clamp is not None:
@@ -1132,7 +1183,7 @@ def _main(argv=None):
         print("no bridge token found (CLI, env GABP_TOKEN, or Player.log)", file=sys.stderr)
         return 2
 
-    if args.call and not args.list_tools:
+    if args.call:          # --list-tools beside --call is no way round the acknowledgment (BRIDGE_CLIENT_HARDEN_FOUR_ROUGH_EDGES)
         probe = RimBridge(host, port, token, timeout=args.timeout)
         try:
             params = json.loads(args.params)
