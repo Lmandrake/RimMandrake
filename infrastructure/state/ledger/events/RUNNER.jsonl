@@ -2794,3 +2794,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-04T11:18:04Z","tsn":1793791084746364432}
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-04T11:18:07Z","tsn":1793791087519697981}
 {"seat":"RUNNER","event":"live","id":"TOKEN_LIMITS_TAME_BARK_NO_BITE","result":"kept","detail":"sweep: running again","ts":"2026-11-04T11:18:12Z","tsn":1793791092846496070}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_29F6","reason":"steward: lane unowned 30 min (PAUSED)","ts":"2026-11-04T11:19:57Z","tsn":1793791197139152855}
