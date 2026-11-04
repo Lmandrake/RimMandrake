@@ -1,0 +1,10 @@
+[Unit]
+Description=RimMandrake Operations metronome, one beat a minute
+
+[Timer]
+OnBootSec=4min
+OnUnitInactiveSec=60s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

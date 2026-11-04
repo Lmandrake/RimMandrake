@@ -14,7 +14,8 @@
     "rm-scratch-reap": "rm-scratch-reap.timer",
     "rm-running": "rm-running.timer",
     "rm-memwatch": "rm-memwatch.timer",
-    "rm-objstore": "rm-objstore.timer"
+    "rm-objstore": "rm-objstore.timer",
+    "rm-metronome": "rm-metronome.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: its own belt (strategy §2 'Stay outside')",
@@ -41,6 +42,7 @@
     "rm-fleetwatch": "fleet refresh, not an Operations clock",
     "rm-mirror": "the D: mirror export, not an Operations clock",
     "rm-harness": "slice",
-    "rm-restart-now-*": "transient restart runs"
+    "rm-restart-now-*": "transient restart runs",
+    "rm-role-*": "transient role runs (rm-role-<role>-<ts>: Conductor, Operations, ...), launched by systemd-run; ops_watch reads their result files"
   }
 }
