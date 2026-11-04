@@ -3301,7 +3301,7 @@ def step(store, fx, r, item, now, acts):
                     acts.append({"do": "blind_fail", "item": item})
                     return
             weak = None
-            if word == "WEAK":
+            if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
                 reasons = st["check"].get("reasons")
                 fail(store, st, "proof_weak", reasons, r, now)
                 weak = "blind check at %s: WEAK, the proof has holes and the work is unproven; item stays open: %s" % (c["sha"], reasons or "")
@@ -3731,6 +3731,7 @@ def lease(store, fx, r, now, acts):
             return
     first = getattr(fx, "first", None) or {}
     paused = content_paused(fx, store.states())
+    no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
         led = fx.item_state(st["item"])
         if relentless_block.ledger_holds(led):      # a run that ended this tick came back after the sweep looked
@@ -3761,7 +3762,14 @@ def lease(store, fx, r, now, acts):
         active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
         why = admission(store, fx, r, now, active)
         if not why and not fx.clone_present(st["clone"] or fx.clone_path(st["item"], len(st["quarantined"]))):
-            why = make_room(store, fx, r, now, acts, r.get("pool_check_reserve", 0))
+            # no room for a NEW clone holds only the items that need one: one further down whose clone is still there
+            # (its kept commits are what would free the pool) may start. Said once a tick.
+            if not no_room:
+                no_room = make_room(store, fx, r, now, acts, r.get("pool_check_reserve", 0))
+                if no_room:
+                    acts.append({"do": "wait", "why": no_room})
+            if no_room:
+                continue
         if why:
             acts.append({"do": "wait", "why": why})
             return
@@ -3970,8 +3978,10 @@ def staffing(store, fx, r, now, acts, clock=None):
     target = worker_cap(fx, r, 0, store)
     order, _ = fx.pool_order(r)
     ours = {x["item"] for x in states}
-    queued = sum(1 for x in states if in_line(x))
-    ready = queued + sum(1 for i in order if i not in ours)
+    first = getattr(fx, "first", None) or {}
+    # the owner's token pause (owner_hold) stops content on purpose: it is not ready, so it reads as no under-staffing
+    queued = sum(1 for x in states if in_line(x) and not owner_hold(r, x["item"], first, x))
+    ready = queued + sum(1 for i in order if i not in ours and not owner_hold(r, i, first))
     stepped = 0 < target < room
     why = stuck = None
     if float(r["share"]) <= 0:
