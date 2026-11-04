@@ -255,3 +255,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T10:28:25Z","tsn":1793788105454371511}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T10:28:34Z","tsn":1793788114647064873}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_RETURN_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T10:31:17Z","tsn":1793788277075373183}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T10:37:13Z","tsn":1793788633972136980}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-04T10:39:23Z","tsn":1793788763543027994}
