@@ -136,9 +136,58 @@ def main():
     check("the rule off releases", fx.first_touch_hold("A_FIX") is None)
     rules = R.rules()
     check("the shipped rules hold", rules.get("first_touch_hold") is True, rules.get("first_touch_hold"))
+    behaviour(R)
 
     print("selftest_first_touch: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
+
+
+def behaviour(R):
+    """Run the real pool_order and concept_refusal (the lease) with a held item: it must leave the pool and be refused.
+    Only their non-first-touch collaborators are stubbed; first_touch_hold and first_touch.hold run for real."""
+    def effects(rule_on):
+        fx = R.Effects.__new__(R.Effects)
+        fx.books, fx.r = REPO, {"seat": "BENCH", "first_touch_hold": rule_on}
+        world = types.SimpleNamespace(items={
+            k: types.SimpleNamespace(id=k, state="proposed", kind="bug", title="", target="v1", owner="BENCH",
+                                     this_deployment=False, created_at="2026-11-0%d" % n)
+            for n, k in enumerate(("HELD_FIX", "FREE_FIX"), 1)})
+        fx._ledger = ([], world)
+        fx.item_mods = lambda st: ["RimMandrake/Oracle"] if st["item"] == "HELD_FIX" else []
+        fx.rimflow = lambda *a, **k: types.SimpleNamespace(returncode=0, stdout="", stderr="")
+        fx.seat_words = lambda: None
+        fx._health = {"first": {}, "degraded": False}
+        return fx
+
+    plist = types.SimpleNamespace(order_map=lambda e: {}, load=lambda b: {"entries": []}, position=lambda i, o: 10 ** 6,
+                                  MAX_ENTRIES=100)
+    stubs = {"priority": types.SimpleNamespace(_row_key=lambda i: 0),
+             "testpilot_route": types.SimpleNamespace(routed=lambda w, e: []),
+             "model": types.SimpleNamespace(raise_key=lambda i: 0), "priority_list": plist}
+    saved = (R.pkg, R.eligible, R.foreign_seat, R.concept_refused)
+    real_pkg = R.pkg
+    R.pkg = lambda name: stubs[name] if name in stubs else real_pkg(name)
+    R.eligible = lambda it, r, w=None, now=None: True
+    R.foreign_seat = lambda r: "NOBODY"
+    R.concept_refused = lambda repo, item, kind: None
+    try:
+        fx = effects(True)
+        held = fx.first_touch_hold("HELD_FIX")
+        check("probe: the real hold holds HELD_FIX and frees FREE_FIX", bool(held) and fx.first_touch_hold("FREE_FIX") is None,
+              (held, fx.first_touch_hold("FREE_FIX")))
+        fx = effects(True)
+        ids, _ = fx.pool_order(fx.r)
+        check("pool_order leaves the held item out of the pool", ids == ["FREE_FIX"], ids)
+        fx = effects(True)
+        got = fx.concept_refusal("HELD_FIX")
+        check("the lease (concept_refusal) refuses the held item", bool(got) and "ORACLE" in got.upper(), got)
+        check("the lease lets the free item through", fx.concept_refusal("FREE_FIX") is None, fx.concept_refusal("FREE_FIX"))
+        fx = effects(False)      # control: the same world with the rule off reaches both, so the pool can see
+        ids, _ = fx.pool_order(fx.r)
+        check("control: rule off, pool_order offers both", sorted(ids) == ["FREE_FIX", "HELD_FIX"], ids)
+        check("control: rule off, the lease refuses nothing", fx.concept_refusal("HELD_FIX") is None)
+    finally:
+        R.pkg, R.eligible, R.foreign_seat, R.concept_refused = saved
 
 
 if __name__ == "__main__":
