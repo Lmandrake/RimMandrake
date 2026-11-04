@@ -209,7 +209,9 @@ class Rig:
         self.d = tempfile.mkdtemp(prefix="rl-")
         self.s = R.Store(self.d)
         self.w = FakeWorld(n)
-        self.r = dict(RULES, **{"snag_again_wait_h": 0, **rules})
+        # pool_parked_lists names repo prose (infrastructure/state/items/...); a fixture must not read the real tree,
+        # which a blind export lacks (OPS_RELENTLESS_BOOKS_UNSTICK_WGYL). Tests of parked lists set their own.
+        self.r = dict(RULES, **{"snag_again_wait_h": 0, "pool_parked_lists": [], **rules})
         self.now = 1000000.0
 
     def tick(self, dt=120):
