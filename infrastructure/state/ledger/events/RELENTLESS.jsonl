@@ -116,3 +116,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:01:16Z","tsn":1793761276583181622}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A5 (L2), read-only proof","ts":"2026-11-04T03:01:27Z","tsn":1793761287762373204}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:01:36Z","tsn":1793761296755236929}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCARLANDS_CHATRAK_LIVE_RERUN_1 A1 (L2), read-only proof","ts":"2026-11-04T03:01:54Z","tsn":1793761314440443013}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T03:01:59Z","tsn":1793761319972328313}
