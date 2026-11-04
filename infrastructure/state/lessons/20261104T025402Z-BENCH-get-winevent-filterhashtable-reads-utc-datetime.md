@@ -1,0 +1,1 @@
+Get-WinEvent -FilterHashtable reads a UTC DateTime's digits as local time: a StartTime hours ago in UTC asks a west-of-Greenwich machine for the future and every query returns 'no events' with no error. Pass local time, and print a probe count beside any empty event section (found on SteveDesktop 2026-11-04, testq/fault_monitor.py).
