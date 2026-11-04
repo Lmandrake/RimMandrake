@@ -143,7 +143,7 @@ class FakeWorld:
     def clone_present(self, c): return c in self.pool
     def clone_busy(self, c): return self.pool[c].get("busy", False)
     def clone_idle_s(self, c): return self.pool[c].get("idle", 7200)
-    def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "real": self.pool[c].get("real", [])}
+    def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "carry_real": self.pool[c].get("carry_real", False), "real": self.pool[c].get("real", [])}
     def remove_clone(self, st, before=None):
         if st.get("clone") not in self.pool:
             return None
@@ -2270,15 +2270,17 @@ def t_pool_jam():
     for name, status, wip in (("P0", "held", {"real": ["a.cs"]}), ("P1", "held", {"idle": 60, "real": ["a.cs"]}),
                               ("P2", "held", {"kept": True, "real": ["a.cs"]}), ("P3", "held", {"busy": True}),
                               ("P4", "queued", {}), ("P5", "held", {}), ("P6", "queued", {"idle": 60}),
-                              ("P7", "blocked", {"idle": 5, "real": ["b.cs"]})):
+                              ("P7", "blocked", {"idle": 5, "real": ["b.cs"]}),
+                              ("P8", "blocked", {"kept": True, "carry_real": True}), ("P9", "queued", {"idle": 60, "kept": True, "carry_real": True})):
         parked(x, name, status, "/c/" + name)
         x.w.pool["/c/" + name] = wip
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
     import scratch_clone
     ok(x.r["pool_parked_release_s"] < scratch_clone.POOL_IDLE_S, "released before the alarm's idle hour, not after it")
     R.release_parked(x.s, x.w, x.r, x.now, [])
-    ok(sorted(x.w.pool) == ["/c/P2", "/c/P3", "/c/P6"],
-       "put down (held, blocked): its clone goes at once; a fresh queued one, commits and busy stay: %s" % sorted(x.w.pool))
+    ok(sorted(x.w.pool) == ["/c/P2", "/c/P3", "/c/P6", "/c/P9"],
+       "put down (held, blocked): its clone goes at once, carryable commits too; a fresh queued one, uncarryable commits, a queued item's commits and busy stay: %s" % sorted(x.w.pool))
+    ok(x.st("P8").get("bundle") == "/bundle//c/P8", "a blocked item's real commits go with a bundle: nothing strands")
     ok(x.st("P7").get("bundle") == "/bundle//c/P7", "a blocked item's WIP goes with a bundle")
     ok(x.st("P0").get("bundle") == "/bundle//c/P0", "WIP goes with a bundle the next clone restores")
     ok(x.st("P5").get("bundle") is None and x.st("P4").get("bundle") is None, "nothing to carry, nothing recorded")
@@ -2704,7 +2706,27 @@ def t_pool_real_git():
     put("b2.txt", "real\n")
     git(c, "add", "b2.txt")
     git(c, "commit", "-qm", "real work")
-    ok(fx.clone_wip(c)["kept"], "a commit with real work still pins it")
+    w = fx.clone_wip(c)
+    ok(w["kept"] and w["carry_real"], "a commit with real work pins it unless put down, when a bundle can carry it: %s" % (w,))
+    # POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG: a blocked item's real commit leaves the pool and comes back whole
+    b = fx.remove_clone({"clone": c, "item": "I0"})
+    ok(b and os.path.exists(os.path.join(b, "carry")) and not fx.clone_present(c), "a real commit is released in the bundle")
+    git(d, "clone", "-q", o, c)
+    ok(fx.restore_bundle("I0", b, c) == [], "the next clone re-applies the real commit")
+    ok(os.path.exists(os.path.join(c, "b2.txt")) and fx.clone_wip(c)["carry_real"], "the real work came back as a commit, still unlanded")
+    put("b2.txt", "stashed\n")
+    git(c, "stash", "push", "-q", "-m", "s", "b2.txt")
+    w = fx.clone_wip(c)
+    ok(w["kept"] and not w["carry_real"], "a stash beside the commit cannot be cherry-picked back: it stays: %s" % (w,))
+    git(c, "stash", "drop", "-q")
+    git(c, "checkout", "-q", "-b", "side", "HEAD~1")
+    put("side.txt", "side\n")
+    git(c, "add", "side.txt")
+    git(c, "commit", "-qm", "side")
+    git(c, "checkout", "-q", "-")
+    git(c, "merge", "-q", "--no-edit", "side")
+    w = fx.clone_wip(c)
+    ok(w["kept"] and not w["carry_real"], "a merge cannot be cherry-picked back: it stays: %s" % (w,))
     ok(R.clone_item("/x/check-AB_C-1-c12") == "AB_C-1" and R.clone_item("/x/AB.q2") == "AB", "clone names read back")
     shutil.rmtree(d, ignore_errors=True)
 
