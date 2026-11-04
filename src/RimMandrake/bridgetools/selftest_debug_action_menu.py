@@ -91,6 +91,26 @@ def main():
     check(bool(chosen_m) and chosen_m.start() < rm_at, "chosen_is_the_indexed_option")
     check(re.search(r"\bif\s*\(\s*(false|!\s*true)\s*\)", body) is None and "#if" not in body, "no_dead_branch_in_tool_body")
 
+    # (c) blind check at 188954a3: four mutants stayed green - a misnamed options field, blanked labels, a null pick
+    #     target, and 'idx < 1'. Pin each to the real thing.
+    #     The options are read from FloatMenu's real field 'options' (RimWorld 1.6 Verse.FloatMenu: List<FloatMenuOption>
+    #     options), through ONE FieldInfo used for both the listing and the pick.
+    check(re.search(r'DamFloatMenuOptions\s*=\s*typeof\(FloatMenu\)\.GetField\(\s*"options"\s*,', tool_src) is not None,
+          "options_field_is_the_real_one", 'want DamFloatMenuOptions = typeof(FloatMenu).GetField("options", ...')
+    opt_reads = re.findall(r"DamFloatMenuOptions\?\.GetValue\(\s*(\w+)\s*\)\s*as\s+List<FloatMenuOption>", body)
+    check(opt_reads == ["fm", "target"], "options_read_for_listing_and_pick", opt_reads)
+    #     Each listed label and each label the pick matches against is the option's own Label.
+    check(re.search(r"label\s*=\s*o\?\.Label\s*\?\?\s*\"\"\s*,", body) is not None, "listed_label_is_option_Label")
+    check(re.search(r"DamChoose\(\s*opts\.Select\(\s*o\s*=>\s*o\?\.Label\s*\?\?\s*\"\"\s*\)\.ToList\(\)\s*,\s*pick\s*,\s*pickIndex\s*,",
+                    body) is not None, "pick_matches_option_Label")
+    #     The pick target is the newest menu the action added (menus holds only the added ones, see (a)).
+    tgt = re.findall(r"FloatMenu\s+target\s*=\s*([^;]+);", body)
+    check(tgt == ["menus.LastOrDefault()"], "pick_target_is_newest_added_menu", tgt)
+    check(re.search(r"\btarget\s*=(?!=)", body.replace("FloatMenu target =", "")) is None, "pick_target_never_reassigned")
+    #     Every index DamChoose returns (0 included) is accepted; only the -1 refusal is refused.
+    check(re.search(r"if\s*\(\s*idx\s*<\s*0\s*\)\s*pickRefusal\s*=\s*why\s*;", body) is not None
+          and len(re.findall(r"\bidx\s*[<>]=?\s*\d", body)) == 1, "index_zero_is_pickable", re.findall(r"\bidx\s*[<>]=?\s*\d", body))
+
     # the live proof: its action names are the real ones, its parser reads the real key text
     spec = importlib.util.spec_from_file_location("pdam", os.path.join(HERE, "prove_debug_action_menu.py"))
     pdam = importlib.util.module_from_spec(spec)
