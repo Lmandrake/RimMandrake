@@ -44,4 +44,27 @@ callers off is evidence for it.
 
 ## Result
 
-PENDING (the A/B is running).
+**FALSIFIED (MEASURED 2026-11-04).** Three fault windows opened with the callers off
+(`python3 src/RimMandrake/Utils/testq/fault_monitor.py report`):
+
+| window | boot | onset | first bad | CPUs | hottest core at onset |
+|---|---|---|---|---|---|
+| F20261104T024513Z | 02:45:13Z (A/B began mid-boot) | 0.96 h | 03:43:02Z | 2 | UNMEASURED |
+| F20261104T035722Z | 03:57:22Z, callers off from boot | 4.46 h | 08:25:14Z | 16 | 61 °C, vcore max 1.302 V |
+| F20261104T083546Z | 08:35:46Z, callers off from boot | 0.88 h | 09:28:37Z | 16 | 56 °C, vcore max 1.315 V |
+
+The first window opened on the boot where the A/B started, so state set before 03:40Z could explain it. The other two
+opened on clean boots with the callers off. A read at 2026-11-04T10:00Z (boot 09:38:00Z) showed every caller still
+Disabled and stopped, `cpuz154` and `CorsairLLAccess` not loaded, and no SCM start event for them since the disable
+(`D:\ClaudeWork\rimmandrake\steve_diag\driver_ab\verify_g3.out`). Onsets with the callers off (4.46 h, 0.88 h) fall
+inside the baseline range. **Software that calls these vendor drivers is not the cause.**
+
+Not excluded: the System-start drivers `AsIO2`, `GLCKIO2`, `ene` and `MsIo64` stayed loaded, with no known caller
+running. `iCUE.exe`, the user-mode app, kept running, but it reaches hardware only through the disabled services.
+Heat at onset is ordinary (56–61 °C), so thermal runaway is not the trigger. **Hardware is the lead: the CPU or the
+board/VRM.** Next discriminators: run at stock settings with XMP/MCE (multicore enhancement) off and a small negative
+ratio or a fixed vcore, or swap the CPU.
+
+Reverted 2026-11-04T10:00:58Z: original start modes restored, services running again
+(`D:\ClaudeWork\rimmandrake\steve_diag\driver_ab\revert_g3b.out`). 🔴 `C:\SteveDesktop\diag\driver_ab_revert.ps1`
+does nothing on Windows PowerShell 5 (the JSON array arrives as one object). Use `driver_ab\revert2.ps1` instead.
