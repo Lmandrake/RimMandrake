@@ -226,3 +226,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:09:37Z","tsn":1793783377017919344}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MODCHECK_DONOR_ENVIRONMENTS_1 A2 (L1), read-only proof","ts":"2026-11-04T09:09:50Z","tsn":1793783390457203729}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T09:09:58Z","tsn":1793783398306095774}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T09:12:47Z","tsn":1793783567155301834}
