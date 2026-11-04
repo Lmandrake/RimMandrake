@@ -211,8 +211,10 @@ EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome,
      "FAIL: rock X should have bill Y, it does not resolve\nVERDICT FAIL", "UNMEASURED", L.RELOAD),
     ("picked None MoveSpeed tries [3.496, 3.68]\nRESULT SUMP/A1 UNMEASURED no 13 ticks/cell colonist in 6 spawns",
      "UNMEASURED", "the proof exited 1: it did not measure"),
-    ("NOT REPRODUCED: neither animal moved >= 6 cells in 300 ticks; the job is not named", "UNMEASURED",
-     "the proof exited 1: it did not measure"),
+    # a defect-repro miss is an answer, not a dud (RELENTLESS_DIAGNOSE_REPRO_MISS_AS_GAME_FAIL; selftest_repro_miss)
+    ("NOT REPRODUCED: neither animal moved >= 6 cells in 300 ticks; the job is not named", "UNMEASURED", L.REPRO_MISS),
+    ("NOT SHARED: the two net moves (-5, -4) and (-3, 5) differ by more than 4 cells; the job is not named\n"
+     "record: D:/ClaudeWork/rimmandrake/X/repro_stall_move.json", "UNMEASURED", L.REPRO_MISS),
     # the proof's own FAIL beside a None read elsewhere: the None may be the defect, so the FAIL stands for the worker
     # to classify (LIVE_ROWS_FIX_STOP_GUESSING_LOGS: it was erased as a dud)
     ("context: privateMB=None unityReservedMB=None upS=None\nFAIL: missing ['privateMB', 'upS']", "FAIL", "proof exit 1"),

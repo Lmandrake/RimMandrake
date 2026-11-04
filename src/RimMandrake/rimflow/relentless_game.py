@@ -61,6 +61,9 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             "final_batch_min": 4, "final_wait_s": 8 * 3600,
             # a clause whose proof ran and measured nothing this many times on one build goes back to a worker
             "unmeasured_back": 2,
+            # RELENTLESS_DIAGNOSE_REPRO_MISS_AS_GAME_FAIL: a defect-repro proof that ran on its site and missed this many
+            # times on one build holds the item as not reproduced (no builder: no code change makes a defect appear)
+            "repro_miss_limit": 2,
             # RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: a live-iterating worker that has not held the bridge for its item this
             # long is working offline, not on the game; its hold lapses so the next item may prove (ATMOSBASE held the
             # game 47 min, bridge free, ten items waiting, 2026-11-03)
@@ -330,6 +333,35 @@ def not_measuring(rows, item, sha, clauses, limit):
             n, _ = out.get(v["criterion"], (0, ""))
             out[v["criterion"]] = (n + 1, with_log(v))
     return {k: v for k, v in out.items() if limit and v[0] >= limit}
+
+
+def repro_misses(rows, item, sha, clauses, since=0):
+    """-> {clause: (misses, [their verdict lines, oldest first])}: rows where the clause's defect-repro proof ran on `sha`
+    (its site prepared, so the site was the one it asked for) and said it did not reproduce (relentless_live.REPRO_MISS),
+    written after `since` (the last not-reproduced hold: a person who lifts it buys fresh tries). A void row resets."""
+    import relentless_live
+    out = {}
+    for v in rows:
+        if v.get("void") and v.get("item") == item and same_sha(v.get("sha"), sha):
+            out = {}
+            continue
+        if (v.get("item") == item and v.get("criterion") in clauses and (v.get("sha") == sha or same_sha(v.get("sha"), sha))
+                and v.get("outcome") == "UNMEASURED" and v.get("miss")
+                and (v.get("why") or "").startswith(relentless_live.REPRO_MISS) and row_at(v) > since):
+            n, ws = out.get(v["criterion"], (0, []))
+            out[v["criterion"]] = (n + 1, ws + [with_log(v)])
+    return out
+
+
+def fail_detail(k, v):
+    """One game_fail clause -> "<k> FAIL on the running game (<log>): <the proof's last verdict line>". The row carries
+    the line (relentless_live.run, verdict_line); an older row has it read back from its log."""
+    import relentless_live
+    line = v.get("verdict_line")
+    if line is None and v.get("log"):
+        line = relentless_live.last_verdict(v["log"])
+    line = (line or "").replace(";", ",")     # relentless_breakers.LIVE_FAIL_RX splits clauses on ";"
+    return "%s FAIL on the running game (%s)%s" % (k, v.get("log") or v.get("why"), ": " + line if line else "")
 
 
 def staged_idle(fx, g, c, now):
@@ -750,6 +782,29 @@ def _hold(store, fx, item, why, now, acts):
     acts.append({"do": "game_held", "item": item, "why": why[:200]})
 
 
+NOT_REPRODUCED = "not reproduced"
+
+
+def _not_reproduced(store, fx, item, missed, now, acts):
+    """repro_miss_limit misses on one build: a game hold (unhold returns it to the prove phase, with fresh tries), the
+    attempt ending `not_reproduced`, and last_fail carrying every miss's verdict line, never only a log path."""
+    detail = "; ".join("%s: %d repro misses on its site: %s" % (k, n, " | ".join(ws))
+                       for k, (n, ws) in sorted(missed.items()))[:2000]
+    why = "game phase: %s: %s" % (NOT_REPRODUCED, detail)
+
+    def f(st):
+        st["status"] = "held"
+        st["hold"] = {"why": why[:900], "kind": "game", "delivered": False, "at": now}
+        st["put_down"] = {"on": why[:200], "at": now}
+        st["last_fail"] = {"class": "not_reproduced", "detail": detail, "at": now}
+        st["game"]["missed_at"] = now
+    _save(store, item, f)
+    store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": store.load(item)["gen"],
+                         "end": "not_reproduced", "detail": detail[:600]})
+    acts.append({"do": "game_not_reproduced", "item": item, "why": detail[:200]})
+    fx.ledger_note(item, ("relentless game phase: held, %s: %s" % (NOT_REPRODUCED, detail))[:400])
+
+
 FLYER = "flyer:"
 
 
@@ -947,9 +1002,8 @@ def step(store, fx, r, item, now, acts, sup):
             rd = fx.game_reading()      # still up on the build that failed: the next worker works it live, no reload
             live = ({"started": rd.get("started"), "at": now, "sha": sha, "clauses": [k for k, _ in fails]}
                     if rd.get("state") == "UP" and rd.get("started") else None)
-            return _back(store, fx, sup, r, item, "game_fail", "; ".join(
-                "%s FAIL on the running game (%s)" % (k, v.get("log") or v.get("why")) for k, v in fails), now, acts,
-                live=live)
+            return _back(store, fx, sup, r, item, "game_fail", "; ".join(fail_detail(k, v) for k, v in fails), now,
+                         acts, live=live)
         if len(rows) == len(g["clauses"]) and all(v.get("outcome") == "PASS" for v in rows.values()):
             return      # the last verify moves the ledger to done; the next tick finishes it
         rd0 = fx.game_reading()
@@ -996,6 +1050,10 @@ def step(store, fx, r, item, now, acts, sup):
                                                                 sorted(x.get("criterion") or "?" for x in dead[1:])))
                                                             if dead[1:] else ""),
                            fx.refusal_print(item, v.get("criterion"), v.get("why"), v.get("proof")), now, acts)
+        missed = {k: m for k, m in repro_misses(fx.game_rows(), item, built, g["clauses"], g.get("missed_at") or 0).items()
+                  if m[0] >= c["repro_miss_limit"]}
+        if missed:  # the defect did not appear where its repro asked: a person reads it, no builder is sent
+            return _not_reproduced(store, fx, item, missed, now, acts)
         dud = not_measuring(fx.game_rows(), item, built, g["clauses"], c["unmeasured_back"])
         if dud:     # the proof ran and said it measured nothing, again: a proof defect, no reload fixes it
             return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(

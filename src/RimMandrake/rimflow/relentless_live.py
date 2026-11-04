@@ -144,7 +144,14 @@ EXIT1_RELOAD = re.compile(r"^(?:WRONG_TIER|WRONG_LIST)\b|stale deploy|redeployed
 # UNMEASURED SITE row "No loaded type 'LargePawns.Settings'" sat beside two real MOD FAILs)
 EXIT1_UNLOADED = re.compile(r"No loaded type '|is not loaded in the running game|intended ids absent from the next load")
 # A verdict-shaped line: the LAST one says what the proof itself concluded
-VERDICT_LINE = re.compile(r"^(?:(?:VERDICT|LIVE)\s*:?\s*|RESULT\s+\S+\s+|[\w./-]+:\s+)?(PASS|FAIL|UNMEASURED|NOT REPRODUCED)\b")
+VERDICT_LINE = re.compile(r"^(?:(?:VERDICT|LIVE)\s*:?\s*|RESULT\s+\S+\s+|[\w./-]+:\s+)?(PASS|FAIL|UNMEASURED|NOT REPRODUCED|NOT SHARED)\b")
+# RELENTLESS_DIAGNOSE_REPRO_MISS_AS_GAME_FAIL: a defect-repro proof that ran on its site and did not see the defect says so
+# in its own verdict (LEANINGSCRUB_STALL_SHARED_MOVE_1's repro_stall_move.py: "NOT REPRODUCED: neither animal moved",
+# "NOT SHARED: the two net moves differ"). That is an answer, not a dud and never the mod's FAIL: 20 attempts and 4 live
+# misses were booked game_fail or game_unmeasured and sent to new builders. Its why starts REPRO_MISS; relentless_game
+# holds the item as not reproduced after repro_miss_limit of them on one build.
+REPRO_MISS_VERDICTS = ("NOT REPRODUCED", "NOT SHARED")
+REPRO_MISS = "repro miss"
 # The instrument read nothing: `x=None`, `read None`, `site None` (HEALTH_CHECK, ACC_BIOMES, WEEPINGSTONES), or there was
 # nothing on the map or world to measure (HORRORS: "no candidate tile on this world"), or the driver handed back nothing
 # (EGROWTH "-> None" / "wrote no", ASHKARR "returned no fields", WASTELAND "no component", STILLSAND "0 matching rows")
@@ -438,6 +445,20 @@ def exit_reason(path):
     return lines[-1][:200] if lines else ""
 
 
+def last_verdict(path):
+    """-> the proof log's last verdict-shaped line (VERDICT_LINE, or a `T1 FAIL ...` row), else its exit reason, cut to
+    200; "" when the log cannot be read. A game_fail's detail carries it beside the log path
+    (RELENTLESS_DIAGNOSE_REPRO_MISS_AS_GAME_FAIL: across 9 items the bare "A1 FAIL on the running game (<log>)" hid 9
+    different causes)."""
+    if not path:
+        return ""
+    lines = tail_lines(path)
+    for line in reversed(lines):
+        if VERDICT_LINE.match(line) or FAIL_ROW.match(line):
+            return line[:200]
+    return exit_reason(path)
+
+
 def broken_call(path):
     """-> the log line showing the proof's own call is wrong (BROKEN_CALL), or None."""
     for line in reversed(tail_lines(path)):
@@ -452,8 +473,9 @@ def could_not_ask(path):
     kind "harness": the box or instrument failed (EXIT1_HARNESS) - never the mod's, never the worker's;
     kind "reload": the running load is the wrong one for it (EXIT1_RELOAD, EXIT1_UNLOADED): a failed prerequisite, so
     the rows measured on it are no evidence;
-    kind "dud": the proof measured nothing by its own word - every verdict line it wrote says UNMEASURED or NOT
-    REPRODUCED;
+    kind "miss": a defect-repro proof ran and did not reproduce the defect - its last verdict line is a REPRO_MISS_VERDICTS
+    one (NOT REPRODUCED, NOT SHARED) and none says FAIL: an answer, never the mod's FAIL and never a dud;
+    kind "dud": the proof measured nothing by its own word - every verdict line it wrote says UNMEASURED;
     kind "unknown": the log cannot say whether it measured - an uncaught exception (an AssertionError is the proof's own
     setup as often as the product, and any other exception may be the product's), or a None / zero-row read that may be
     the defect itself or a blind instrument.
@@ -483,7 +505,9 @@ def could_not_ask(path):
         if ends:
             return "unknown", ("the proof crashed: %s (UNKNOWN: an exception names neither the product nor the "
                                "instrument)" % ends[-1])[:200]
-    if verdicts and all(v in ("UNMEASURED", "NOT REPRODUCED") for _, v in verdicts):
+    if verdicts and verdicts[-1][1] in REPRO_MISS_VERDICTS:
+        return "miss", lines[at].strip()[:200]
+    if verdicts and all(v == "UNMEASURED" for _, v in verdicts):
         return "dud", lines[at].strip()[:200]
     for line in reversed(lines):
         if read_nothing(line):
@@ -1050,7 +1074,16 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         said = {"harness": "%s: the proof exited 1 and could not ask: %%s" % HARNESS,
                 "reload": "%s: the proof exited 1 on a load it cannot judge: %%s" % RELOAD,
                 "dud": "the proof exited 1: it did not measure: %s",
-                "unknown": "the proof exited 1: it did not measure: %s"}[unable[0]] % unable[1]
+                "unknown": "the proof exited 1: it did not measure: %s",
+            "miss": "%s"}[unable[0]] % unable[1]
+    if unable and unable[0] == "miss" and not crashed:
+        # an answer from the site the proof asked for: no verify (the defect neither held nor failed), no reload, no
+        # defect. The round may run it again; relentless_game holds the item after repro_miss_limit of these
+        why = "%s: the defect-repro proof ran on its site and did not reproduce the defect: %s" % (REPRO_MISS, unable[1])
+        game = iso(started) if started else game_iso(fx)
+        note = fx.rimflow("note", item_id, "--text", ("relentless live %s %s %s (%s)" % (criterion, level, why, log))[:400],
+                          "--why", "relentless live tier: a repro miss, no verdict recorded")
+        return done("UNMEASURED", why, log=log, game=game, miss=True, noted=note.returncode == 0)
     if code not in (PASS, FAIL) or unable:
         why = crashed or said or (asked_reload(log) if code is not None else None) or "the proof %s" % (
             "timed out" if code is None else "exited %d: it did not measure: %s" % (code, exit_reason(log)))
@@ -1106,7 +1139,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         return done("UNMEASURED", "the verdict %s did not land: %s" % (result.upper(), (v.stderr or v.stdout)[-300:]),
                     log=log)
     return done("PASS" if code == PASS else "FAIL", reading.why if row.get("observe") else "proof exit %d" % code,
-                log=log)
+                log=log, **({"verdict_line": last_verdict(log)} if code == FAIL else {}))
 
 
 def main(argv=None):
