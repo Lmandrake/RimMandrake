@@ -21,6 +21,16 @@ A source the record does not carry is UNMEASURED with its reason, never 0. The r
 game_health_thresholds.json it crossed; ops_watch's tps family reads the newest row and rings OPS_GAME_HEALTH_DEBUG
 (a debug item) while it has any.
 
+Each breach also carries an `attribution` (row["attribution"][key], plain sentences read from the same record), so an
+alarm says what the session was doing when the limit fell (OPS_GAME_HEALTH_DEBUG_PXQI, 2026-11-04: an Operations dig
+and a builder dig each re-derived these from raw rows): memory breaches name the largest map the session generated and
+the growth AFTER the last map change (a bigger map is scale, growth on a fixed map set is a leak); an error-count
+breach names the biggest scan-to-scan jump and the save loaded inside it (a save's dead def names log "Could not load
+reference"; no mod change fixes that), and how many were already queued at the first read (the cold load); the lower
+bound says whether the queue was already full at the first read (load messages evicted) and the largest scan-to-scan
+rise of Verse.Log's message count (>= the queue size proves an eviction between two scans). Attribution never
+removes or softens a breach. `explain [--session ID]` re-reads a session from disk and prints it.
+
     python3 src/RimMandrake/Utils/game_health_check.py record [--dry-run] [--json]   append new finished sessions
     python3 src/RimMandrake/Utils/game_health_check.py report [--last N] [--curve]   sessions over time (+ newest curve)
     python3 src/RimMandrake/Utils/game_health_check.py latest --json                 the newest recorded row (ops_watch)
@@ -257,8 +267,111 @@ def summarize(sess, rows, bad, rules, now=None, superseded=False):
     row["curves"] = curves
     row["curveAxis"] = "minutes since first game load; mem [min, median MB, max MB]; ratio [min, median ratio, median tps]"
     row["breaches"] = breaches(m, rules)
+    logrow = (kinds.get("log") or [{}])[-1]
+    if logrow.get("archived"):
+        row["playerLog"] = logrow["archived"]
+    row["attribution"] = attribute(row["breaches"], kinds, ctx, t0, m, row.get("playerLog"))
     row["unmeasured"] = sorted(k for k, v in m.items() if not is_m(v))
     return row
+
+
+QUEUE_MAX = 1000      # Verse.LogMessageQueue.maxMessages (decompiled 1.6, JawaBenchSessionHealth.cs header)
+REF_CELLS = 250 * 250  # the default map size, the unit the attribution states map area in
+
+
+def _cells(r):
+    tot, big = 0, None
+    for mp in r.get("maps") or []:
+        try:
+            w, h = (int(x) for x in str(mp.get("size", "")).split("x"))
+        except ValueError:
+            continue
+        tot += w * h
+        if big is None or w * h > big[0]:
+            big = (w * h, "%s %s" % (mp.get("size"), mp.get("biome")), mp.get("things"))
+    return tot, big
+
+
+def _hm(t):
+    return time.strftime("%H:%MZ", time.gmtime(t))
+
+
+def attribute(brs, kinds, ctx, t0, m, player_log=None):
+    """{breach key: [sentence, ...]} from the record itself; empty when nothing breached. Read-only, no verdict."""
+    out = {}
+    keys = {b["key"] for b in brs}
+    if not keys:
+        return out
+    tl = [(r["_t"],) + _cells(r) for r in ctx if r.get("maps")]
+    mapset = []
+    if tl:
+        top = max(tl, key=lambda x: x[1])
+        if top[2]:
+            mapset.append("largest map set %.1fx a 250x250 map (biggest %s, %s things) from %s" % (
+                top[1] / float(REF_CELLS), top[2][1], top[2][2], _hm(top[0])))
+        changes = [tl[0]] + [b for a, b in zip(tl, tl[1:]) if b[1] != a[1]]
+        if len(changes) > 1:
+            mapset.append("map set changed %d times: %s" % (len(changes) - 1, ", ".join(
+                "%s %.1fx" % (_hm(c[0]), c[1] / float(REF_CELLS)) for c in changes[1:][:8])))
+    else:
+        mapset.append("no context row lists maps: map size UNMEASURED")
+    saves = ["%s %s" % (_hm(g["_t"]), g.get("save") or "(new game)") for g in kinds.get("game") or []]
+    mapset.append("games loaded: %s" % (", ".join(saves[:8]) or "none"))
+    for k in keys:             # every breach gets the session's context; the specific ones below add their own
+        out[k] = list(mapset)
+    if any(k.startswith("mem.") for k in keys):
+        mem = [(r["_t"], num(r.get("heapMB")), num(r.get("privateMB"))) for r in ctx]
+        s = list(mapset)
+        if tl:
+            last = changes[-1][0]
+            for i, name in ((1, "managed"), (2, "private")):
+                pts = [(t, x[i]) for x in mem for t in (x[0],) if t >= last and x[i] is not None and x[i] > 0]
+                if len(pts) >= 3 and pts[-1][0] - pts[0][0] >= 1800:
+                    s.append("%s growth after the last map change (%s, %.0f min): %.1f MB/h" % (
+                        name, _hm(last), (pts[-1][0] - pts[0][0]) / 60.0, theil_sen(pts) * 3600.0))
+                else:
+                    s.append("%s growth after the last map change: UNMEASURED (under 30 min on that map set)" % name)
+        for k in sorted(x for x in keys if x.startswith("mem.")):
+            out[k] = s
+    le = [r for r in ctx if num(r.get("logErr")) is not None]
+    if "log.errors" in keys and le:
+        s = out["log.errors"] + ["%d errors already counted at the first queue read (%s, after the cold load)" % (
+            int(le[0]["logErr"]), _hm(le[0]["_t"]))]
+        jumps = sorted(((int(b["logErr"]) - int(a["logErr"]), a, b) for a, b in zip(le, le[1:])),
+                       key=lambda x: -x[0])
+        if jumps and jumps[0][0] > 0:
+            d, a, b = jumps[0]
+            loads = [g for g in kinds.get("game") or [] if a["_t"] <= g["_t"] <= b["_t"]]
+            tail = ""
+            if loads:
+                sv = loads[-1].get("save")
+                tail = (" while loading save %s (a save's dead def names log 'Could not load reference'; no mod change "
+                        "fixes that)" % sv) if sv else " while a new game started (no save named)"
+            s.append("biggest jump +%d between %s and %s%s" % (d, _hm(a["_t"]), _hm(b["_t"]), tail))
+        if player_log:
+            s.append("full log archived at shutdown: %s" % player_log)
+        out["log.errors"] = s
+    if "log.errors_lower_bound" in keys and le:
+        s = out["log.errors_lower_bound"]
+        if le[0].get("logErrLowerBound") is True:
+            s.append("the first queue read (%s) already found the %d-entry queue full: messages from the cold load "
+                     "were evicted before any scan; the flag is sticky, so later evictions cannot be told from it" % (
+                         _hm(le[0]["_t"]), QUEUE_MAX))
+        else:
+            fl = next((r for r in le if r.get("logErrLowerBound") is True), None)
+            if fl:
+                s.append("the flag first rose at %s, after the first read" % _hm(fl["_t"]))
+        mc = [(r["_t"], num(r.get("logMsgs"))) for r in ctx if num(r.get("logMsgs")) is not None]
+        rises = [(b[1] - a[1], b[0]) for a, b in zip(mc, mc[1:]) if b[1] >= a[1]]   # a drop is a count reset
+        if rises:
+            big = max(rises)
+            s.append("largest scan-to-scan rise of Verse.Log's message count: %d at %s (%s)" % (
+                int(big[0]), _hm(big[1]), "an eviction between two scans" if big[0] >= QUEUE_MAX else
+                "under the queue size: no scan interval proves an eviction"))
+        else:
+            s.append("no two context rows carry logMsgs: scan-to-scan eviction UNMEASURED")
+        out["log.errors_lower_bound"] = s
+    return out
 
 
 OPS = {">": lambda a, b: a > b, ">=": lambda a, b: a >= b, "<": lambda a, b: a < b, "==": lambda a, b: a == b}
@@ -370,6 +483,9 @@ def main(argv=None):
     b.add_argument("--curve", action="store_true")
     c = sub.add_parser("latest")
     c.add_argument("--json", action="store_true")
+    e = sub.add_parser("explain")
+    e.add_argument("--session")
+    e.add_argument("--dir")
     d = sub.add_parser("fields")
     d.add_argument("--session")
     d.add_argument("--dir")
@@ -398,6 +514,23 @@ def main(argv=None):
             print("\nnewest session %s, %s" % (r["session"][:8], r["curveAxis"]))
             for k, v in sorted(r["curves"].items()):
                 print("  %-10s %s" % (k, " ".join("%s:%s" % (p[0], p[1]) for p in v)))
+        return 0
+    if args.cmd == "explain":
+        sess = sessions_on_disk(args.dir or os.environ.get("RM_GAME_HEALTH_TPS_DIR") or T.record_dir())
+        h = sorted(read_history(), key=lambda r: str(r.get("start")))
+        sid = args.session or (h[-1]["session"] if h else None)
+        sid = next((s for s in sess if sid and s.startswith(sid)), None)
+        if not sid:
+            print("FAIL: session %s not on disk" % (args.session or "(newest recorded)"))
+            return 1
+        rows, bad = read_session(sess[sid])
+        r = summarize(sid, rows, bad, load_rules(), superseded=True)
+        print("session %s %s mods=%s breaches=%s" % (sid[:8], r["start"], r.get("mods"),
+                                                    ",".join(b["key"] for b in r["breaches"]) or "-"))
+        for k, v in sorted(r["attribution"].items()):
+            print("  %s" % k)
+            for x in v:
+                print("    - %s" % x)
         return 0
     if args.cmd == "fields":
         sess = sessions_on_disk(args.dir or T.record_dir())

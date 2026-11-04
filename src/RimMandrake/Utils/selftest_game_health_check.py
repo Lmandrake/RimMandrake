@@ -217,6 +217,47 @@ with tempfile.TemporaryDirectory() as tmp:
     s3 = G.summarize("f" * 32, [dict(r, _t=T0 + i) for i, r in enumerate(noload)], 0, RULES, now=NOW)
     check("breach: a session that never reached the menu is not loadable",
           [b["key"] for b in s3["breaches"]] == ["load.reached_menu"], s3["breaches"])
+    # attribution (OPS_GAME_HEALTH_DEBUG_PXQI): session e50b27df's shape, replayed. A bench run that loads a stale
+    # save (+391 errors in one scan) and generates ever bigger maps (heap in steps, flat after) crosses the limits;
+    # each breach must say so from the record, and attribution must never remove a breach.
+    rp = session_rows(sid="9" * 32, heap0=3000, heap_rate_h=0, errs_per_min=0, minutes=180, ratio1=1.0)
+    ci = 0
+    for r in rp:
+        if r["kind"] == "context":
+            ci += 1
+            big = ci > 90
+            r["maps"] = [{"id": 5 if big else 0, "size": "924x924" if big else "250x250", "biome": "RM_Big" if big
+                          else "RUT_Small", "pawns": 9, "things": 359876 if big else 3112}]
+            r["heapMB"] = 9600.0 + (ci % 3) * 50 if big else 3600.0
+            r["privateMB"] = 26000.0 if big else 18000.0
+            r["logErr"] = 127 + (391 if ci > 40 else 0)
+            r["logErrLowerBound"] = True
+            r["logMsgs"] = 300 + ci * 2
+    c40 = [r for r in rp if r["kind"] == "context"][39]
+    rp.append(dict(c40, seq=99999, kind="game", game=2, save="BENCH_STALE_SAVE", mono=c40["mono"] + 30,
+                   utc=utc(T0 + c40["mono"] + 30)))
+    rp.append({"seq": 100000, "v": 2, "utc": utc(T0 + rp[-2]["mono"] + 1), "mono": rp[-2]["mono"] + 1,
+               "session": "9" * 32, "kind": "log", "archived": "C:/x/Player_9.log"})
+    s9 = G.summarize("9" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in rp], 0, RULES, now=NOW)
+    a9, k9 = s9["attribution"], {b["key"] for b in s9["breaches"]}
+    check("attribution: replay still breaches heap peak, private peak, errors and the lower bound",
+          {"mem.managed_peak_mb", "mem.private_peak_mb", "log.errors", "log.errors_lower_bound"} <= k9, sorted(k9))
+    check("attribution: every breach carries one", set(a9) == k9, (sorted(a9), sorted(k9)))
+    mem = " | ".join(a9.get("mem.managed_peak_mb", []))
+    check("attribution: heap names the largest map and its scale", "924x924 RM_Big" in mem and "13.7x" in mem, mem)
+    check("attribution: heap growth on the last map set is measured and small (scale, not leak)",
+          "managed growth after the last map change" in mem and "UNMEASURED" not in mem.split("managed growth")[1]
+          .split("|")[0], mem)
+    er = " | ".join(a9.get("log.errors", []))
+    check("attribution: the error jump names the save loaded inside it",
+          "+391" in er and "BENCH_STALE_SAVE" in er and "127 errors already counted" in er and "Player_9.log" in er, er)
+    lb = " | ".join(a9.get("log.errors_lower_bound", []))
+    check("attribution: lower bound says the first read was already full, and no scan interval proves eviction",
+          "first queue read" in lb and "under the queue size" in lb, lb)
+    clean = session_rows(sid="8" * 32, heap_rate_h=0, errs_per_min=0, ratio1=1.0)
+    s8 = G.summarize("8" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in clean], 0, RULES, now=NOW)
+    check("attribution: a session with no breach attributes nothing", s8["breaches"] == [] and s8["attribution"] == {},
+          (s8["breaches"], s8["attribution"]))
     # fields verb (the live proof)
     old = G.T.record_dir
     G.T.record_dir = lambda: rec2

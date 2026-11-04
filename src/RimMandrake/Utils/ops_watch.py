@@ -1526,7 +1526,10 @@ def game_health(now):
     out = {"tps.health_breaches": M(len(br), "limits crossed by the newest full-list session", session=row.get("session"),
                                     keys=br, said="; ".join("%s=%s (limit %s %s)" % (b.get("key"), b.get("value"),
                                                                                      b.get("op"), b.get("limit"))
-                                                            for b in row["breaches"])[:400] or None),
+                                                            for b in row["breaches"])[:400] or None,
+                                    # what the session was doing when each limit fell (game_health_check.py attribute)
+                                    attribution={k: "; ".join(v)[:600] for k, v in (row.get("attribution") or {}).items()
+                                                 if isinstance(v, list)} or None),
            "tps.health_age_h": M(round((now - end) / 3600.0, 1), "h since the newest full-list session ended")
            if end is not None else U("newest row has no readable end time")}
     try:
