@@ -72,3 +72,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:20:29Z","tsn":1793758829005821212}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A5 (L2), read-only proof","ts":"2026-11-04T02:20:37Z","tsn":1793758837004494765}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:20:42Z","tsn":1793758842702635454}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-04T02:20:55Z","tsn":1793758855570144383}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:21:02Z","tsn":1793758862234350253}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-04T02:21:10Z","tsn":1793758870653625455}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T02:21:17Z","tsn":1793758877739371463}
