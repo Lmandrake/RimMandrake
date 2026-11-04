@@ -19,6 +19,9 @@ A role with `caps_advisory: true`, against the same state that holds or refuses 
   A8 OPS_NIGHT_GAP_FILL_COVERED_SLOT: an incident run-now hours before the evening slot (11-01: 14:16 vs 19:30)
      launches WITHOUT marking that slot covered, and the slot still launches at 19:30; one within cover_window_s
      still covers it.
+  A9 OPS_NIGHT_GAP_FILL_COVERED_SLOT, the reserve half, under strict caps (caps_advisory false): with 200000 of a
+     300000 day spent, an incident run-now at 14:16 is REFUSED because the uncovered 19:30 slot keeps its 60000
+     reserve; at 18:00 (19:30 within cover_window_s) it covers the slot, keeps no reserve for it, and launches.
 Pure: fake observers (selftest_dispatcher helpers)."""
 import json
 import os
@@ -189,6 +192,25 @@ def main():
             check(any(str(a.get("slot", "")).endswith(" 19:30") for a in launched(acts2)),
                   "A8 after a 14:16 incident run the 19:30 slot still launches (%r)"
                   % [(a.get("do"), a.get("slot"), a.get("why")) for a in acts2])
+    # A9
+    for hhmm, fits in (("14:16", False), ("18:00", True)):
+        t = SD.at_local(hhmm)
+        op = SD.operations(caps_advisory=False)
+        rs = spent_rs(t, 200000)
+        rs["done"][RL.slot_key(t, "07:30")] = "launch"
+        rs["run_now"] = RL.run_now_request({"roles": [op]}, {"role": "Operations", "by": "DISPATCHER",
+                                                             "why": "INCIDENT plan-1", "mode": "run"}, t - 30)
+        rs["run_now"]["covers_slot"] = True
+        acts, st = drive(op, t, rs)
+        last = st["roles"]["Operations"].get("run_now_last") or {}
+        why = [a.get("why", "") for a in acts if a.get("do") != "role_launch"]
+        if fits:
+            check(len(launched(acts)) == 1 and last.get("outcome") == "launched",
+                  "A9 strict: an 18:00 incident run covers 19:30, keeps no reserve for it, and launches (%r)" % why)
+        else:
+            check(not launched(acts) and str(last.get("outcome", "")).startswith("refused")
+                  and any("+ 60000 kept for the day's scheduled runs" in w for w in why),
+                  "A9 strict: a 14:16 incident run is refused; the 19:30 slot keeps its 60000 reserve (%r)" % why)
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 
