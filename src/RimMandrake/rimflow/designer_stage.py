@@ -761,7 +761,7 @@ def remaining(st):
 
 
 def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
-    """-> (packet text, this run's budget). Refuses (Refused) when the budget would eat the reserve, a scene's
+    """-> (packet text, this run's budget). Refuses (Refused) when a scene's
     recovery is open, the concept is locked, or it waits on him or a dependency. commit=False is the launcher's
     preview (its decide step): the same checks and packet, nothing written."""
     st = load_state(d)
@@ -784,16 +784,16 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
             raise Refused("RECOVERY_PENDING: scene(s) %s changed persistent state and never restored; restore them "
                           "(scene-end) before any further work" % ", ".join(r["scene"] for r in opn))
         left = remaining(st) - st["budget"]["reserve"]
-        if left <= 0:
-            raise Refused("BUDGET_EXHAUSTED: %d of %d spent, %d reserved for checkpointing; the stage stays %d, "
-                          "incomplete. Budget exhaustion never waives a gate" % (
-                              st["budget"]["spent"], st["budget"]["cap"], st["budget"]["reserve"], st["stage"]))
     except Refused as e:
         if commit:
             if st.get("status") not in ("locked",):
                 hist(st, "refused", str(e))
             write_json(state_path(d), st)
         raise
+    if left <= 0:   # advisory, never a stop (owner 2026-11-04: "These budgets make no sense. All they do is stop work")
+        left = st["budget"]["cap"] - st["budget"]["reserve"]
+        hist(st, "over_budget", "%d of %d spent; run %s goes on with %d (advisory)" % (
+            st["budget"]["spent"], st["budget"]["cap"], run, min(left, run_cap) if run_cap else left))
     budget = min(left, run_cap) if run_cap else left
     hashes = manifest_hashes(st["stage"], manifest)
     retries = sum(1 for h in st.get("history") or [] if h["what"] == "retry" and h.get("stage") == st["stage"])

@@ -471,9 +471,9 @@ def main():
         r = refused(DS.open_run, d2, "r2", repo=repo.root)
         st = DS.load_state(d2)
         check("an unclosed run is charged its whole reservation at the next open (a retry, conservative)",
-              st["budget"]["spent"] == 80000 and st["running"] is None, st["budget"])
-        check("exhausted budget: refused, stage unchanged, the refusal says no gate is waived",
-              r and "BUDGET_EXHAUSTED" in r and "never waives a gate" in r and st["stage"] == 0, r)
+              st["budget"]["spent"] == 80000 and st["running"]["run"] == "r2", st["budget"])
+        check("exhausted budget is advisory: the run opens, stage unchanged, history says over_budget",
+              r is None and st["stage"] == 0 and any(h["what"] == "over_budget" for h in st["history"]), r)
         dU = os.path.join(tmp, "design/concepts/Unm")
         DS.init(dU, "Unm", "UNM_ITEM", cap=100000, reserve=20000)
         DS.open_run(dU, "u1", run_cap=30000, repo=repo.root)
@@ -863,11 +863,19 @@ def wiring(tmp, repo):
     st = {"roles": {row["name"]: {"run_now": dict(req, at=now - 5)}}}
     acts = []
     RL.decide_roles(s2, st, robs, now, lambda **kw: acts.append(kw), set(), None)
+    check("decide: an exhausted budget is advisory: the run-now still launches (owner 2026-11-04)",
+          [a for a in acts if a.get("do") == "role_launch"], [(a.get("do"), a.get("why")) for a in acts])
+    sb = DS.load_state(d)
+    sb["status"], sb["blocked_on"], sb["running"] = "blocked", "X", None
+    DS.write_json(DS.state_path(d), sb)
+    st = {"roles": {row["name"]: {"run_now": dict(req, at=now - 5)}}}
+    acts = []
+    RL.decide_roles(s2, st, robs, now, lambda **kw: acts.append(kw), set(), None)
     check("decide: the refused run-now stops there: no launch, no unit, and deciding it raises nothing",
           not [a for a in acts if a.get("do") == "role_launch" or a.get("unit")]
           and not [a for a in acts if a.get("kind") == "role:%s:schedule" % row["name"]],
           [(a.get("do"), a.get("unit"), a.get("kind")) for a in acts])
-    check("decide: an exhausted budget refuses the run-now with an alarm, no launch",
+    check("decide: a blocked concept refuses the run-now with an alarm, no launch",
           not [a for a in acts if a.get("do") == "role_launch"]
           and any(a.get("kind") == "role:%s:stage_refused" % row["name"] for a in acts)
           and "refused" in str(st["roles"][row["name"]].get("run_now_last", {}).get("outcome")),
