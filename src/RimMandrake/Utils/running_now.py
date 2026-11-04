@@ -272,7 +272,7 @@ class Env:
                         d = json.loads(line)
                         if d.get("event") == "bridge" and d.get("host") in (None, "archmagi"):
                             out.append((iso_epoch(d["ts"]), d.get("state")))
-                    except (ValueError, KeyError):
+                    except (ValueError, KeyError, TypeError):
                         continue    # another seat is writing this shard: the next minute reads it whole
         if not out:
             raise Unmeasured("no bridge event in the ledger")
@@ -627,12 +627,13 @@ def collect_game_idle(env, now, waiting):
 
 
 def it_waiting(it):
-    return it["counts"]["game"] if it else 0
+    """None when the item states were not read: an unread stage is not an empty one."""
+    return it["counts"]["game"] if it else None
 
 
 def game_idle_text(g):
-    return ("GAME idle %d%% of the last %d min: a proof held it in %d, %d items wait (ceiling: deploy and load write no rows)"
-            % (g["idle_pct"], g["window_min"], g["used_min"], g["waiting"]))
+    return ("GAME idle %d%% of the last %d min: a proof held it in %d, %s items wait (ceiling: deploy and load write no rows)"
+            % (g["idle_pct"], g["window_min"], g["used_min"], "UNMEASURED" if g["waiting"] is None else g["waiting"]))
 
 
 def collect_tick(env, state):
@@ -733,7 +734,7 @@ def collect_throughput(env, now):
             usual[key] = (min(vals), max(vals))
     out.update({"blind_fail": t["FAIL"], "put_back": t["returned"], "recent": recent_done[:3], "trend": trend, "feed": feed[:30], "closed_day": closed_day,
                 "usual": usual,
-                "short": bool(cut_off and first is not None and first > cut)})
+                "short": bool(cut_off and first is not None and first > start)})
     return out
 
 
@@ -806,6 +807,12 @@ def collect_archmagi_live(env, now, items, hist):
     day = [r for r in hist if now - r["t"] <= 86400 and "game" in (r.get("f") or {})]
     out["game_up"] = sum(1 for r in day if r["f"]["game"]) / len(day) if day else None
     return out
+
+
+def full_days(rows, now):
+    """collect_tokens rows without today: a day still running would flatter the number."""
+    today = time.strftime("%Y%m%d", time.gmtime(now))
+    return [r for r in rows if r["day"] != today]
 
 
 def collect_tokens(env, now, thr):
@@ -942,7 +949,8 @@ def collect_steve(env, state, items=None):
         for v in day:
             rows.update(v["k"])
         done_items = {s.get("item") for s in (items["by_status"]["done"] if items else []) if now - (s.get("done_at") or 0) <= 86400}
-        out["live"] = {"busy": share_of(spans, now - 86400, now), "rows": rows, "closed": len({v["i"] for v in day if v["i"] and v["i"] in done_items and v["k"].get("PASS")}) if items else None,
+        # an unreadable result would make these short: the panel says UNMEASURED instead
+        out["live"] = None if unread else {"busy": share_of(spans, now - 86400, now), "rows": rows, "closed": len({v["i"] for v in day if v["i"] and v["i"] in done_items and v["k"].get("PASS")}) if items else None,
                        "bugs": len({"%s %s" % (v["m"], b) for v in day for b in v["b"]}), "jobs": [(v["f"], v["o"], v["p"], v["m"]) for v in sorted(day, key=lambda v: -v["f"])[:6]]}
     return out
 
@@ -1140,14 +1148,14 @@ def pipeline_svg(p):
     br = breaker_word(p)
     gauge(600, "BREAKER", br, WARN if br == "UNMEASURED" else (GOOD if br == "clear" else BAD), "normal clear")
     gi = p.get("game_idle")
-    idle_note = "idle %d%% of %d min, %d wait; normal under 50%%" % (gi["idle_pct"], gi["window_min"], gi["waiting"]) if gi else "idle UNMEASURED"
+    idle_note = "idle %d%% of %d min, %s wait; normal under 50%%" % (gi["idle_pct"], gi["window_min"], "UNMEASURED" if gi["waiting"] is None else gi["waiting"]) if gi else "idle UNMEASURED"
     gauge(700, "LIVE GAME", p["game_text"], p["game_colour"], idle_note, WARN if not gi or (gi["idle_pct"] >= 50 and gi["waiting"]) else DIM)
     # second row: what the pipeline costs and what it is for
     yy = 52
     tk = p["tokens"]
-    gauge(172, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN, "UTC day; yesterday %s" % tokens(tk[1]["spent"]) if tk and len(tk) > 1 else None, yy=yy)
-    if tk:
-        full = tk[1:] or tk
+    full = full_days(tk, now) if tk else []
+    gauge(172, "TOKENS TODAY", p["spent"] or "UNMEASURED", TEXT if p["spent"] else WARN, "UTC day; last full day %s" % tokens(full[0]["spent"]) if full else None, yy=yy)
+    if full:
         pers = [r["per"] for r in full]
         gauge(390, "TOKENS PER ITEM CLOSED (TRIAL)", "%s" % tokens(full[0]["per"]), TEXT, "%s/%s: %d closed; days seen %s-%s" % (full[0]["day"][4:6], full[0]["day"][6:], full[0]["closed"], tokens(min(pers)), tokens(max(pers))), yy=yy)
     else:
@@ -1262,7 +1270,7 @@ def pipeline_svg(p):
     s.text(lx, yy + 9, "48 h ago", 9, DIM)
     s.text(rx, yy + 9, "now", 9, DIM, anchor="end")
     if thr and thr["short"]:
-        s.text((lx + rx) / 2, yy + 9, "journal tail covers less than 24 h", 9, WARN, anchor="middle")
+        s.text((lx + rx) / 2, yy + 9, "journal tail covers less than 48 h", 9, WARN, anchor="middle")
     return s.out()
 
 
@@ -1833,8 +1841,9 @@ def phone_copy(p, chips):
         out.append("stages UNMEASURED")
     if thr:
         out.append("24 h: closed %d (%s), Judge fails %d" % (thr["closed"], versus(thr["closed"], thr["usual"].get("closed"), False)[0], thr["blind_fail"]))
-    if p["tokens"]:
-        out.append("tokens per item closed (trial): %s" % tokens((p["tokens"][1:] or p["tokens"])[0]["per"]))
+    done_days = full_days(p["tokens"], now) if p["tokens"] else []
+    if done_days:
+        out.append("tokens per item closed (trial): %s" % tokens(done_days[0]["per"]))
     if p["accepted"]:
         out.append("mods accepted: %d of %d" % (p["accepted"]["green"], p["accepted"]["total"]))
     out += ["", "LIVE TESTING, 24 H"]
@@ -2098,7 +2107,8 @@ def build(env, state, hist, write=True):
          how_to_read("Items move left to right; each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
                      "A place is one running Builder or Judge, or one being stopped; 8 is the ceiling for starting a Builder. A Judge may start one place above it, because "
                      "a cap never stops finishing work, and stopping runs still count, so 9 of 8 is normal and brief. The left bars count events, not items, and each says if it is usual for 24 h. "
-                     "GAME UNMEASURED is game-phase events only; every proof row, measured or not, is in Live Testing below. Trends each have their own zero line."), "",
+                     "GAME UNMEASURED is game-phase events only; every proof row, measured or not, is in Live Testing below. Trends each have their own zero line. "
+                     "Idle under LIVE GAME is minutes no proof ran in the last 3 h; the game idle trend is time nobody held the bridge, so a load counts as busy in the trend only."), "",
          panel("Archmagi", archmagi_svg),
          how_to_read("This machine and its live game. Each number has its verdict underneath; Busy means somebody held the bridge. A proof row that says UNMEASURED or REFUSED ran or was turned away and learned nothing."), "",
          panel("SteveDesktop", steve_svg),

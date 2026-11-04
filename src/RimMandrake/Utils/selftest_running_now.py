@@ -318,6 +318,8 @@ state["steve_jobs"].pop(OLD_JOB)
 state["steve_jobs"]["J1.json"] = {"f": 5}     # the shape before this change: read again, not trusted
 sv = R.collect_steve(env, state, None)
 check("an unreadable result leaves the day's counts unknown, not short", sv["jobs_known"] is False)
+check("an unreadable result leaves Live Testing UNMEASURED, not short", sv["live"] is None)
+check("unread item states are no count of waiting items", R.it_waiting(None) is None and "UNMEASURED items wait" in R.game_idle_text({"idle_pct": 1, "window_min": 1, "used_min": 0, "waiting": None}))
 
 check("verdict: above the usual with high being bad warns", R.versus(9, (1, 5)) == ("high, usual 1-5", R.WARN))
 check("verdict: below the usual with low being bad warns", R.versus(0, (1, 5), False) == ("low, usual 1-5", R.WARN))
@@ -370,6 +372,7 @@ env.files.update({R.RELENTLESS_STORE + "/spend-%s.json" % R.time.strftime("%Y%m%
 day = R.time.strftime("%Y%m%d", R.time.gmtime(NOW))
 tk = R.collect_tokens(env, NOW, {"closed_day": {day: 2, **{}}, } if False else {"closed_day": R.collections.Counter({day: 2})})
 check("tokens per item closed is the day's spend over its closes", tk[0]["per"] == 4000000)
+check("a day still running is no full day", R.full_days(tk, NOW) == [])
 
 # the whole page, every section, on a full fixture
 FLEET = {"needs": {"count": 2, "lines": [], "topics": [{"topic": "DRAW", "items": ["DRAW_A", "DRAW_B"], "q": "Look at the bridge", "others": ["<Other> line"]}, {"topic": "K", "items": ["K_X"], "q": "Keep it?", "others": []}],
