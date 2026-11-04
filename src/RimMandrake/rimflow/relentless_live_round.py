@@ -19,6 +19,15 @@ which the game phase restages) on any other (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_
 
     live-mods: Graffiti, SacredGraffiti
 
+An item whose whole job is a deploy commits no mod file, so no commit says what to deploy, and a worker may not --apply
+(live.forbid_re). It names the trees it owes the game, which also makes them live-mods:
+
+    live-deploy: Armoury, StarWarsPatches
+    live-proof A1: python3 src/RimMandrake/rimflow/relentless_live_round.py deployed --item <ID>
+
+A drifting tree reads UNMEASURED "not deployed", so the game phase stages and its staging worker applies them; `deployed
+--lint` is the offline proof (RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY).
+
 A criterion at level GREEN-FULL is the FINAL verification on the whole full list: it runs only when that tier is up.
 
 Not the item's prose: the Marker's box leaves infrastructure/state/items out (walls.marker.tree_exclude), so a proof kept
@@ -89,17 +98,26 @@ def proof_lines(prose, pattern=PROOF_LINE):
     return out
 
 
-LIVE_MODS = re.compile(r"^\s*(?:[-*]\s+)?`?live-mods\s*:\s*(?P<mods>[^`]*)`?\s*$")
+LIVE_MODS = re.compile(r"^\s*(?:[-*]\s+)?`?live-(?:mods|deploy)\s*:\s*(?P<mods>[^`]*)`?\s*$")
+LIVE_DEPLOY = re.compile(r"^\s*(?:[-*]\s+)?`?live-deploy\s*:\s*(?P<mods>[^`]*)`?\s*$")
 
 
-def live_mods(text):
-    """A live_proofs file -> the mod folders its `live-mods:` lines name (every line, in order, no repeats)."""
+def live_mods(text, pattern=LIVE_MODS):
+    """A live_proofs file -> the mod folders its `live-mods:` and `live-deploy:` lines name (every line, in order, no
+    repeats): what the running game must load. pattern=LIVE_DEPLOY: only what it must also hold whole."""
     out = []
     for line in (text or "").splitlines():
-        m = LIVE_MODS.match(line)
+        m = pattern.match(line)
         if m:
-            out += [x for x in re.split(r"[\s,]+", m.group("mods")) if x and x not in out]
+            for x in re.split(r"[\s,]+", m.group("mods")):
+                if x and x not in out:
+                    out.append(x)
     return out
+
+
+def live_deploy(text):
+    """A live_proofs file -> the mod folders whose whole tree the build owes the game folder (`live-deploy:`)."""
+    return live_mods(text, LIVE_DEPLOY)
 
 
 TERMINAL = ("PASS", "FAIL", "REFUSED")
@@ -290,6 +308,12 @@ class RoundFx(L.Fx):
         import deploy_custom_mods
         return deploy_custom_mods.folded()
 
+    def has_mod(self, mod):
+        """A mod folder the repo ships, by the deploy tool's own discovery (a folded mod counts: `--compose` plans it)."""
+        sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+        import deploy_custom_mods
+        return mod in deploy_custom_mods.folded() or mod in deploy_custom_mods.mod_dirs()
+
     def mods_of(self, sha):
         return sorted({m for m, _ in L.game_files(self.touched(sha), self.shippable)})
 
@@ -346,12 +370,34 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
             folded = fx.folded()
         ran += 1
         text = fx.proofs(item_id)
-        row = run(fx, root, item_id, cid, proof, deploy_args(mods, folded), r, now=time.time(),
-                  needs=live_mods(text), site=proof_lines(text, SITE_LINE).get(cid))
+        trees = live_deploy(text)
+        row = run(fx, root, item_id, cid, proof, deploy_args(list(mods) + trees, folded), r, now=time.time(),
+                  needs=live_mods(text), site=proof_lines(text, SITE_LINE).get(cid), trees=trees)
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if row["outcome"] == "UNMEASURED" and any(row.get("why", "").startswith(s) for s in STOP):
             return done("stopped: %s" % row["why"][:200])
     return done("done")
+
+
+def deployed(fx, item_id, text, lint=False):
+    """`deployed --item`: the proof of a deploy item -> (exit, line). 0 every `live-deploy:` tree is what the game folder
+    holds; 1 one is not; 2 it could not measure (no such line, or a plan that did not read). lint reads no game folder, for
+    the blind offline check: the line names mods the repo has, and the file has a proof line that runs this."""
+    trees = live_deploy(text)
+    if not trees:
+        return 2, "%s/%s.txt has no live-deploy line" % (PROOFS_DIR, item_id)
+    if lint:
+        lost = [m for m in trees if not fx.has_mod(m)]
+        if lost:
+            return 1, "no such mod in the repo: %s" % ", ".join(lost)
+        if not [c for c in proof_lines(text).values() if "relentless_live_round.py deployed" in c]:
+            return 1, "no live-proof line runs `relentless_live_round.py deployed`"
+        return 0, "OK %s names %s" % (item_id, ", ".join(trees))
+    rc, plan = fx.deploy_plan(deploy_args(trees, fx.folded()), L.live_rules({})["plan_max_s"])
+    why = L.deploy_gap([], rc, plan, trees)
+    if why:
+        return (2 if why.startswith("the deploy plan") else 1), why
+    return 0, "OK the game folder holds %s" % ", ".join(trees)
 
 
 def census(rows):
@@ -402,6 +448,9 @@ def main(argv=None):
     p = sub.add_parser("round", help="one sitting: run every due criterion that has a proof, up to --max")
     p.add_argument("--max", type=int, default=None)
     p.add_argument("--item", help="this item only, no unmeasured wait: the supervisor's game phase")
+    p = sub.add_parser("deployed", help="the proof of a deploy item: exit 0 its live-deploy trees are in the game folder")
+    p.add_argument("--item", required=True)
+    p.add_argument("--lint", action="store_true", help="offline: the line names real mods and a proof line runs this")
     p = sub.add_parser("census", help="runs.jsonl sorted by cause: what the rows spent, what repeated")
     p.add_argument("--last", type=int, default=300, help="the newest N rows")
     a = ap.parse_args(argv)
@@ -416,6 +465,10 @@ def main(argv=None):
         print(json.dumps(census(read_rows(path)[-a.last:]), indent=1, sort_keys=True))
         return 0
     fx = RoundFx(seat=r.get("seat") or "BENCH")
+    if a.cmd == "deployed":
+        code, line = deployed(fx, a.item, fx.proofs(a.item), a.lint)
+        print(line)
+        return code
     if a.cmd == "eligible":
         started = fx.game_started()     # the round's own view: what this game already said stays skipped
         todo, counts = plan(fx, root, r, time.time(), game=L.iso(started) if started else None)

@@ -62,6 +62,11 @@ class GW(S.FakeWorld):
     def proofs_at(self, item, sha, ext=".txt"):
         return self.proofs.get((item, ext), PROOF if ext == ".txt" else "")
 
+    def game_trees(self, builds):
+        import relentless_live_round as R
+        got = sorted({m for i, s in builds for m in R.live_deploy(self.proofs_at(i, s))})
+        return (got, R.deploy_args(got, {})) if got else None
+
     def game_mod_gap(self, item, sha, running=True):
         self.gap_calls.append((item, sha, running))
         g = dict(self.gap.get(item) or {"mods": ["RM_X"]})

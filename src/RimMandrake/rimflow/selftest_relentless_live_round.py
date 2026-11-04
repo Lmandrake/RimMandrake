@@ -125,7 +125,7 @@ class FakeFx(object):
 def fake_run(outcomes):
     calls = []
 
-    def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=(), site=None):
+    def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=(), site=None, trees=()):
         calls.append((item_id, cid, deploy))
         NEEDS.append((item_id, tuple(needs)))
         SITES.append((item_id, cid, site))

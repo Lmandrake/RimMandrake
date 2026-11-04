@@ -488,8 +488,11 @@ def plan_sections(text):
     return covered, drift, off
 
 
-def deploy_gap(files, plan_rc, plan_text):
-    """-> why the built commit's game files are not what the game folder holds, or None."""
+def deploy_gap(files, plan_rc, plan_text, trees=()):
+    """-> why the built commit's game files are not what the game folder holds, or None.
+    trees: mod folders whose WHOLE tree the build owes the game (a `live-deploy:` line: RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY,
+    a deploy item commits no mod file). Any file the deploy would write counts, not only .xml and .dll; a `-` line does not
+    (--apply leaves a file the repo lacks alone without --prune, so no staging could ever clear it) nor an H (held on purpose)."""
     # a plan exits 1 when ANY mod drifts; that plan is still read, the drift that matters is this commit's files
     drift_only = plan_rc == 1 and plan_text.rstrip().endswith("Drift found. Re-run with --apply to deploy.")
     if plan_rc != 0 and not drift_only:
@@ -499,7 +502,7 @@ def deploy_gap(files, plan_rc, plan_text):
     covered, drift, off = plan_sections(plan_text)
     if off:
         return "the plan says %s" % "; ".join("%s: %s" % kv for kv in sorted(off.items()))
-    missing = sorted({mod for mod, _ in files} - covered)
+    missing = sorted(({mod for mod, _ in files} | set(trees)) - covered)
     if missing:
         return "the deploy plan does not cover %s: name it in --deploy" % ", ".join(missing)
     for mod, rel in files:
@@ -513,6 +516,11 @@ def deploy_gap(files, plan_rc, plan_text):
                                                               or ("/%s/" % mod) in entry):
                 return "%s has %s drift in the game folder (%s %s): the build is not what the game holds" % (
                     mod, "held" if flag == "H" else "out-of-date", section, entry)
+    for mod in sorted(set(trees)):
+        for section, flag, entry in drift:
+            if flag in "~+" and (section == mod or entry.startswith(mod + "/") or ("/%s/" % mod) in entry):
+                return "%s has drift in the game folder (%s %s): the live-deploy tree is not what the game holds" % (
+                    mod, section, entry)
     return None
 
 
@@ -765,12 +773,15 @@ class Fx(object):
                     pass
 
 
-def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None):
+def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=()):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
     needs: mod folders the proof declares (live_proofs `live-mods:`) beyond the ones the built commit changed; with
     those, each one's About.xml modDependencies must be in the RUNNING load, or the row is UNMEASURED (restage), never
     run. A FINAL (GREEN-FULL) criterion also needs the full-list tier up: else UNMEASURED FINAL_WAIT, never run.
-    site: the item's `live-site` command for this criterion (refused_site), run with the bridge held before the proof."""
+    site: the item's `live-site` command for this criterion (refused_site), run with the bridge held before the proof.
+    trees: mod folders of a `live-deploy:` line: a drifting tree is UNMEASURED "not deployed" (the game phase stages, whose
+    worker applies it), never a run; `deploy` must cover them. It says what the folder holds, not when: unlike `files`, no
+    per-file stamp proves the running game started after that deploy; the staging's restart is what loads it."""
     now = time.time() if now is None else now
     lr = live_rules(r)
     row = {"at": iso(now), "item": item_id, "criterion": criterion, "proof": proof, "deploy": deploy}
@@ -812,11 +823,12 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         return done("UNMEASURED", "cannot read the built commit: %s" % e)
     if why:
         return done("UNMEASURED", why)
-    if files:
+    if files or trees:
         rc, plan = fx.deploy_plan(deploy or "", lr["plan_max_s"])
-        why = deploy_gap(files, rc, plan)
+        why = deploy_gap(files, rc, plan, trees)
         if why:     # a plan that failed or timed out is the harness's: it may pass in a minute, so no game stamp
             return done("UNMEASURED", "not deployed: %s" % why, **({"game": None} if rc != 0 else {}))
+    if files:
         stamps = [fx.mtime(mod, rel) for mod, rel in files]
         if None in stamps:
             lost = [("%s/%s" % f) for f, t in zip(files, stamps) if t is None]

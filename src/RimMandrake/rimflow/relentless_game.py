@@ -92,6 +92,11 @@ BRIEF = [
     "quicktest map). The supervisor leases the bridge, deploys and restarts only when your offline proof is green on the "
     "same sha, then reruns the live proofs blind. Never a flyer's flight; never fullscreen or focus the game; the minimal "
     "mod list (all five DLC) when it is enough.",
+    "An item that IS a deploy (nothing to change, only trees to put in the game folder): you never --apply and need no "
+    "game. Commit that .txt with `live-deploy: ModA, ModB` and `live-proof A1: python3 "
+    "src/RimMandrake/rimflow/relentless_live_round.py deployed --item <ID>`, the .criteria line `A1 L1: the game folder "
+    "holds these trees`, and `contract --proof \"python3 src/RimMandrake/rimflow/relentless_live_round.py deployed --item "
+    "<ID> --lint\" --game A1 --game-why ...`, then `finish` on that commit. The staging worker applies them.",
 ]
 
 
@@ -351,7 +356,8 @@ def blocked_here(rows, clauses, sha, started, now):
     return out
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=()):
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None):
+    """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None."""
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     en = "python3 src/RimMandrake/Utils/modlist_swap.py --enable %s --apply" % " ".join(enable)
@@ -362,6 +368,10 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=()):
         "1. Deploy: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <Mod>` for each mod that %s changed (plan "
         "first, read it, then --apply), and for each mod a `live-mods:` line in the proofs below names (a build that "
         "changed only a proof still needs its mod's tree deployed). Load `rimworld-deploy` first." % sha,
+        ("   DEPLOY ITEM: the supervisor owes the game these trees whole though no commit changed them: %s. You are the one "
+         "allowed to write them: `python3 src/RimMandrake/Utils/deploy_custom_mods.py %s` (the plan), read it, then the same "
+         "with --apply, with the game DOWN when a DLL differs." % (", ".join(trees[0]), trees[1])) if trees else
+        "   DEPLOY ITEM: none; deploy only the mods named above.",
         ("2. FINAL VERIFICATION: the game must start after the deploy on the owner's WHOLE FULL list "
          "(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml; `rimworld-load-round`: modlist_swap.py restores it), "
          "never a smaller tier: this one load verifies every item's GREEN-FULL clauses at once. Stamp each change with "
@@ -536,6 +546,12 @@ class GameFx(object):
         """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
         import relentless_live_round
         return relentless_live_round.batch_gap(self._round_fx(), [(s, self.proofs_at(i, s)) for i, s in builds])
+
+    def game_trees(self, builds):
+        """Every `live-deploy:` mod of [(item, sha)] riding one load -> (folders, deploy_custom_mods.py args), or None."""
+        import relentless_live_round as R
+        got = sorted({m for i, s in builds for m in R.live_deploy(self.proofs_at(i, s))})
+        return (got, R.deploy_args(got, self._round_fx().folded())) if got else None
 
     def _round_fx(self):
         """One per Effects, so per tick: the same plan is read once a tick. modlist_enable forgets it, the plan reads
@@ -1044,7 +1060,9 @@ def step(store, fx, r, item, now, acts, sup):
             fx.bridge_release()
             return
         st["_proofs_text"] = fx.proofs_at(item, sha)
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps)), r["pilot_agent"], st["clone"], c["stage_max_s"],
+        trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
+                                                 if (o.get("game") or {}).get("sha")])
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
