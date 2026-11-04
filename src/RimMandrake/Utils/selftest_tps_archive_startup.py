@@ -142,6 +142,27 @@ def main():
         last_pump = rf.rfind("PumpIdleSafe")
         check(last_pump > rf.rfind("catch"), "PumpIdleSafe() must follow RootFinalizer's catch, not precede it")
         check(last_try < last_pump, "no try may open after the PumpIdleSafe() call in RootFinalizer")
+        # Every path must REACH the pump. A `return` inside a plain try/catch leaves the METHOD, not just the try, so
+        # "after the catch" is not enough: the pump must sit in a `finally` whose try opens before every return/throw,
+        # or no return/throw may precede it at all (blind-check mutant B, gen 3).
+        exits = [m.start() for m in re.finditer(r"\b(return|throw)\b", rf) if m.start() < last_pump]
+        fin = None   # the finally block holding the last pump, if any
+        for m in re.finditer(r"\bfinally\s*\{", rf):
+            blk = body(rf[m.start():], r"finally")
+            if blk and m.start() < last_pump < m.start() + len(blk) + (m.end() - m.start()):
+                fin = m.start()
+        if fin is not None:
+            dep = [0] * (len(rf) + 1)   # brace depth at each offset, so the finally pairs with ITS try, not an inner one
+            for j, c in enumerate(rf):
+                dep[j + 1] = dep[j] + (c == "{") - (c == "}")
+            guard_try = max([t.start() for t in re.finditer(r"\btry\b", rf)
+                             if t.start() < fin and dep[t.start()] == dep[fin]] or [-1])
+            bad = [e for e in exits if e < guard_try or e > fin]
+        else:
+            bad = exits
+        check(not bad, "RootFinalizer has %d return/throw on a path that skips PumpIdleSafe() (offsets %r): a sampler "
+                       "fault, Root.Update exception or invalid scope would lose the Player-prev archive; move the try "
+                       "into a helper and call PumpIdleSafe() after it" % (len(bad), bad))
 
     # 5. Port of PumpArchive, swept: the archive never fires during or < idle s after a long event
     def simulate(frames, dt, idle_s):
