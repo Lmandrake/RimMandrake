@@ -3028,3 +3028,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-04T16:33:04Z","tsn":1793809984728020629}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"broken","detail":"Ops alarm RELENTLESS_DISTRESS: under 124 min: 5 of 8 places, 93 ready: health degraded: content paused while system items wait -- relentless.distressed = 1 1 wh","ts":"2026-11-04T16:39:10Z","tsn":1793810350942076578}
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-04T16:39:13Z","tsn":1793810353872464375}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-04T16:48:04Z","tsn":1793810884817421499}
