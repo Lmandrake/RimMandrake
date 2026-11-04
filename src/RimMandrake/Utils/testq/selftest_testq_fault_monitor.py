@@ -72,6 +72,7 @@ def analyse_checks():
     with open(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1"), encoding="utf-8") as f:
         ps1 = f.read()
     check("CYCLE uptime_h=$up bad_cpus=[$($fails -join ',')]" in ps1 and "WATCH START boot=" in ps1 and "CONTROL inject_exit=$ia clean_exit=$ic" in ps1, "the formats parsed are the ones watch2.ps1 writes")
+    check("ToUniversalTime().AddMinutes" not in FM.SNAPSHOT_PS and "probe:" in FM.SNAPSHOT_PS, "the snapshot asks the event log in local time, and says the log can be seen")
     c = FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=1 clean_exit=0"])["control"]
     check(c["ok"], "a control with an injected fault seen is ok")
     check(not FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=0 clean_exit=0"])["control"]["ok"], "a control that misses it is not")

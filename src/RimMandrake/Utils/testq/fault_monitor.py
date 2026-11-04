@@ -248,7 +248,9 @@ if(Test-Path '%s'){Get-Content '%s' -Tail 600}""" % (WATCH_LOG, WATCH_LOG))
     return None
 
 
-SNAPSHOT_PS = r"""$since=[datetime]::Parse('@SINCE@').ToUniversalTime().AddMinutes(-15)
+# StartTime must be LOCAL: Get-WinEvent reads a UTC DateTime's digits as local, so a window hours ago asks for the future
+# and every section comes back empty (measured 2026-11-04). The probe line is what makes an empty section mean empty.
+SNAPSHOT_PS = r"""$since=[datetime]::Parse('@SINCE@').AddMinutes(-15)
 '== when'; (Get-Date).ToUniversalTime().ToString('s')+'Z'
 $o=Get-CimInstance Win32_OperatingSystem; 'boot '+$o.LastBootUpTime.ToUniversalTime().ToString('s')+'Z'
 '== firmware'; $b=Get-CimInstance Win32_BIOS; 'BIOS '+$b.SMBIOSBIOSVersion+' '+$b.ReleaseDate
@@ -257,7 +259,7 @@ $c=Get-ItemProperty 'HKLM:\HARDWARE\DESCRIPTION\System\CentralProcessor\0'; $u=$
 '== thermal'; try{Get-CimInstance -Namespace root/wmi MSAcpi_ThermalZoneTemperature -EA Stop|%{$_.InstanceName+' '+[math]::Round($_.CurrentTemperature/10-273.15,1)}}catch{'UNMEASURED '+$_.Exception.Message}
 '== top processes by cpu seconds'; Get-Process|Sort-Object CPU -Descending|Select -First 20|%{'{0,-28} cpu={1,10:n0} ws={2,6:n0}MB start={3}' -f $_.Name,$_.CPU,($_.WorkingSet64/1MB),$_.StartTime}
 '== running drivers, not Microsoft'; Get-CimInstance Win32_SystemDriver -Filter "State='Running'"|?{$_.PathName -and (Get-Item ($_.PathName -replace '^\\\?\?\\','' -replace '^\\SystemRoot','C:\Windows' -replace '^system32','C:\Windows\system32') -EA 0).VersionInfo.CompanyName -notmatch 'Microsoft'}|%{$_.Name+' '+$_.PathName}
-'== system events since 15 min before the window'; Get-WinEvent -FilterHashtable @{LogName='System';StartTime=$since;Level=1,2,3} -EA 0|Select -First 60|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.ProviderName+' '+$_.Id+' '+(($_.Message -split "`n")[0])}
+'== system events since 15 min before the window ('+$since.ToString('s')+' local; probe: '+@(Get-WinEvent -FilterHashtable @{LogName='System';StartTime=(Get-Date).AddHours(-24)} -MaxEvents 200 -EA 0).Count+' events of any level in the last 24 h, capped 200)'; Get-WinEvent -FilterHashtable @{LogName='System';StartTime=$since;Level=1,2,3} -EA 0|Select -First 60|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.ProviderName+' '+$_.Id+' '+(($_.Message -split "`n")[0])}
 '== application crashes in it'; Get-WinEvent -FilterHashtable @{LogName='Application';StartTime=$since;Id=1000,1001,1026} -EA 0|Select -First 40|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.Id+' '+(($_.Message -split "`n")[0])}
 '== power and sleep'; Get-WinEvent -FilterHashtable @{LogName='System';StartTime=$since;ProviderName='Microsoft-Windows-Kernel-Power','Microsoft-Windows-Power-Troubleshooter','Microsoft-Windows-WHEA-Logger'} -EA 0|Select -First 30|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.ProviderName+' '+$_.Id}
 '== the canary, last cycles'; Get-Content '@LOG@' -Tail 8
