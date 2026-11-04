@@ -434,3 +434,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A2 (L2), read-only proof","ts":"2026-11-04T17:49:19Z","tsn":1793814559459934065}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T17:57:31Z","tsn":1793815051287168896}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A5 (L2), read-only proof","ts":"2026-11-04T17:57:42Z","tsn":1793815062617878202}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T18:05:19Z","tsn":1793815519140680008}
