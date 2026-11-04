@@ -244,6 +244,19 @@ def main() -> int:
         rc, out = run(seat, "--superseded", sha)
         check(rc == 0 and "unpublished" not in Path(seat, shard).read_text() and "named superseded" in out, "a named commit goes: " + out[-120:])
         check(git(seat, "branch", "--list", "backup/*") != "", "the backup branch keeps it")
+
+        # PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET: a chmod-only local commit changes no blob; it is NOT already upstream
+        run(seat, "--superseded", sha) if rc else None
+        peer_push(peer, {"x.txt": "x\n"}, "x")
+        run(seat)
+        os.chmod(Path(seat, "x.txt"), 0o755)
+        git(seat, "commit", "-q", "-m", "chmod only", "--", "x.txt")
+        peer_push(peer, {"y.txt": "y\n"}, "unrelated upstream")
+        before = git(seat, "rev-parse", "HEAD")
+        rc, out = run(seat)
+        check(rc == 1 and "NOT on origin/main" in out and "x.txt" in out, "a mode-only local commit is refused: " + out[-160:])
+        check(git(seat, "rev-parse", "HEAD") == before and os.stat(Path(seat, "x.txt")).st_mode & 0o100,
+              "the mode-only commit and the mode stay")
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 

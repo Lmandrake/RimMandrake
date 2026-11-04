@@ -1,0 +1,1 @@
+GIT_LITERAL_PATHSPECS=1 in the env of a git call that runs hooks (commit, push) leaks into the hooks: a hook's own glob pathspec (game_art.py: git ls-files -- '*.html') then matches nothing and the guard silently passes. Use ':(literal)' path prefixes on hook-running calls instead (publish.py, PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET).

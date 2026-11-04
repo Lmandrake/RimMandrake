@@ -15,7 +15,7 @@ differ between HEAD and origin/main, and REFUSES (changing nothing) rather than 
 Before it runs, every precondition is checked and the whole plan is refused if one fails:
   * on branch main, no rebase/merge/cherry-pick in progress;
   * every local commit (origin/main..HEAD) is already upstream: patch-equivalent per `git cherry`, or
-    content-equivalent (every path it touches has the same bytes at HEAD and origin/main);
+    content-equivalent (every path it touches has the same bytes AND mode at HEAD and origin/main);
   * every dirty tracked path that upstream also changes either holds upstream's bytes already (it is then
     staged, so --keep accepts it) or merges cleanly with upstream (reset_merging: a peer's live hunks and ledger
     appends stay in the working tree, on top of upstream's); only a real overlap is named and the sync refused;
@@ -79,11 +79,17 @@ class Git:
 
     def blobs(self, rev: str, paths: list[str]) -> dict[str, str]:
         """path -> blob sha at rev (absent paths omitted)."""
+        return {p: e.split()[1] for p, e in self.entries(rev, paths).items()}
+
+    def entries(self, rev: str, paths: list[str]) -> dict[str, str]:
+        """path -> "mode blob" at rev (absent paths omitted). A commit's content is its modes too: a chmod-only commit
+        changes no blob, and judging it by blobs alone called it landed and dropped the mode (Codex, 2026-11-01)."""
         out: dict[str, str] = {}
         for i in range(0, len(paths), 500):
             for rec in self.lines("ls-tree", "-r", "-z", rev, "--", *paths[i:i + 500]):
                 meta, p = rec.split("\t", 1)
-                out[p] = meta.split()[2]
+                mode, _, sha = meta.split()
+                out[p] = f"{mode} {sha}"
         return out
 
     def shard_upstream(self, head: str, up: str, path: str) -> bool:
@@ -363,6 +369,7 @@ def _carry(g: Git, it: dict, park: Path) -> None:
                 ours += chunk
             delta = union_delta(ours, base, theirs)
             if delta is not None:
+                it["carried"] = (ours, delta)           # what _uncarry takes back out if the move then fails
                 view = memoryview(delta)
                 while view:
                     view = view[os.write(fd, view):]
@@ -385,6 +392,7 @@ def _carry(g: Git, it: dict, park: Path) -> None:
         _exchange(tmp, full)
         if tmp.read_bytes() == cur:
             it["displaced"] = (tmp, cur)                # read again before the park goes: see reset_merging
+            it["carried"] = (cur, merged)
             return
         _exchange(tmp, full)                            # a save landed in the gap: it goes back, and we merge again
         if tmp.read_bytes() != merged:                  # and a second one landed: tmp holds it, the park keeps it
@@ -393,9 +401,61 @@ def _carry(g: Git, it: dict, park: Path) -> None:
     raise DirtyConflict([p])
 
 
+def _uncarry(g: Git, it: dict, park: Path) -> bool:
+    """Take upstream's change back out of one carried file after the move failed, so the clone does not read as
+    holding a peer's edit that is really upstream's (Codex, 2026-11-01). Only when nothing has written the file since
+    the carry; a later write wins and the file is reported (False) instead. Shards: under the append lock, the carried
+    delta is cut out and any later appends kept, inode unchanged. Others: compare-and-swap back to the bytes before."""
+    if "carried" not in it:
+        return True
+    full = os.path.join(g.repo, it["path"])
+    if it["union"]:
+        before, delta = it["carried"]
+        fd = os.open(full, os.O_RDWR)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            now = b""
+            while chunk := os.read(fd, 1 << 20):
+                now += chunk
+            if not now.startswith(before + delta):
+                return False
+            later = now[len(before) + len(delta):]
+            os.ftruncate(fd, len(before))
+            os.lseek(fd, len(before), os.SEEK_SET)
+            view = memoryview(later)
+            while view:
+                view = view[os.write(fd, view):]
+        finally:
+            os.close(fd)
+        del it["carried"]
+        return True
+    before, merged = it["carried"]
+    if _read_wt(g, it["path"]) != merged:
+        return False
+    tmp = park / f"undo-{hashlib.sha1(it['path'].encode()).hexdigest()}.tmp"
+    tmp.write_bytes(before)
+    shutil.copymode(full, tmp)
+    _exchange(tmp, full)
+    if tmp.read_bytes() != merged:                      # a save landed in the gap: it goes back, the file is reported
+        _exchange(tmp, full)
+        return False
+    tmp.unlink()
+    del it["carried"]
+    return True
+
+
+def _undo_carries(g: Git, items: list[dict], park: Path) -> str:
+    """_uncarry every carried item; the note for the refusal says what could not be taken back out."""
+    kept = [it["path"] for it in reversed(items) if not _uncarry(g, it, park)]
+    if not kept:
+        return f"upstream's change was taken back out of the working tree (originals in {park})"
+    return (f"upstream's change could NOT be taken back out of {', '.join(kept)} (written since the carry): those "
+            f"files hold the peer's bytes plus upstream's; originals in {park}")
+
+
 def reset_merging(g: Git, head: str, target: str, keep: list[str] | None = None) -> str:
     """reset_keep that carries live dirty files across the move instead of refusing on them (see the block above).
-    Raises DirtyConflict, with nothing changed, only on a real overlap. Each dirty file's bytes are parked under
+    Raises DirtyConflict, with every carry already made taken back out, only on a real overlap. Each dirty file's bytes are parked under
     .git/rm-dirty-parked/ first and stay there if anything fails after the first write."""
     if keep is None:
         keep = untracked_upstream(g, head, target)
@@ -413,20 +473,33 @@ def reset_merging(g: Git, head: str, target: str, keep: list[str] | None = None)
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(os.path.join(g.repo, it["path"]), dst)
     park.mkdir(parents=True, exist_ok=True)
-    for it in items:
-        _carry(g, it, park)
-    if g.run("rev-parse", "HEAD").strip() != head:
-        raise Refused(f"HEAD moved under the merge of {len(items)} dirty file(s); not resetting. Their merged bytes are "
-                      f"in the working tree, originals in {park}. Nothing was lost; re-run.")
-    g.run("update-index", "-z", "--index-info",
-          inp="".join(f"{it['mode']} {it['blob']}\t{it['path']}\0" for it in items))
+    # A refusal from here on must leave the working tree as it found it: a carried file left holding upstream's change
+    # with the branch unmoved reads as a peer's edit (Codex, 2026-11-01). A CRASH still leaves the carry in place,
+    # which is safe: the next run merges to the same result.
     try:
-        note = reset_keep(g, head, target, keep)
+        for it in items:
+            _carry(g, it, park)
+        if g.run("rev-parse", "HEAD").strip() != head:
+            raise Refused(f"HEAD moved under the merge of {len(items)} dirty file(s); not resetting. Nothing was lost; "
+                          f"re-run.")
+        g.run("update-index", "-z", "--index-info",
+              inp="".join(f"{it['mode']} {it['blob']}\t{it['path']}\0" for it in items))
+        try:
+            note = reset_keep(g, head, target, keep)
+        except Refused:
+            if g.run("rev-parse", "HEAD").strip() != target:   # the branch did not move: the old index goes back
+                back = "".join((f"{it['index'].split()[0]} {it['index'].split()[1]}\t{it['path']}\0" if it["index"]
+                                else f"0 {'0' * 40}\t{it['path']}\0") for it in items)
+                g.run("update-index", "-z", "--index-info", inp=back)
+            raise
     except Refused as e:
-        back = "".join((f"{it['index'].split()[0]} {it['index'].split()[1]}\t{it['path']}\0" if it["index"]
-                        else f"0 {'0' * 40}\t{it['path']}\0") for it in items)
-        g.run("update-index", "-z", "--index-info", inp=back)
-        raise Refused(f"{e} (the {len(items)} carried file(s) already hold upstream's change, originals in {park})")
+        if g.run("rev-parse", "HEAD").strip() == target:   # it moved after all (a displaced commit): carries are right
+            raise
+        undo = _undo_carries(g, items, park)
+        if isinstance(e, DirtyConflict):
+            e.args = (f"{e.args[0]}; {undo}",)
+            raise
+        raise Refused(f"{e} ({undo})") from e
     # An editor that held the old file open writes to the displaced inode, not the path: keep that, like any late save.
     late = [i["path"] for i in items if "displaced" in i and i["displaced"][0].read_bytes() != i["displaced"][1]]
     if not late:
@@ -474,7 +547,7 @@ def plan(g: Git, superseded: tuple = ()) -> dict:
         parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]
         touched = (g.lines("diff", "--name-only", "-z", "--no-renames", parents[0], c) if len(parents) > 1
                    else g.lines("diff-tree", "--no-commit-id", "--name-only", "-r", "-z", "--root", c))
-        a, b = g.blobs(head, touched), g.blobs(up, touched)
+        a, b = g.entries(head, touched), g.entries(up, touched)
         if all(a.get(t) == b.get(t) for t in touched):
             p["local"].append((subj, "content-equivalent"))
             continue

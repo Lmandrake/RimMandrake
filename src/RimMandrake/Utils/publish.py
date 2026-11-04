@@ -60,9 +60,25 @@ class Stranded(Refuse):
         self.tip = tip
 
 
+HOOKED = ("commit", "push")                              # git calls that run this repo's hooks
+
+
+def git_env(**extra):
+    """os.environ plus GIT_LITERAL_PATHSPECS=1: every path publish hands git is a real repo path, never a pattern, so
+    `./publish a[b].txt` must not also commit `ab.txt` (Codex, 2026-11-01; seat_sync has done this since 2026-10-26).
+    🔴 Never for a call that runs hooks: they inherit the env, and a hook's own glob (game_art.py's `-- '*.html'`)
+    would then match nothing and pass. commit() spells its paths `:(literal)` instead."""
+    return dict(os.environ, GIT_LITERAL_PATHSPECS="1", **extra)
+
+
+def literal(paths):
+    return [":(literal)" + p for p in paths]
+
+
 def run(top, *args, check=True):
+    env = None if args[:1] and args[0] in HOOKED else git_env()
     for i in range(12):                                  # a plain-git peer may hold .git/index.lock for a moment
-        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True, timeout=GIT_TIMEOUT_S)
+        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True, timeout=GIT_TIMEOUT_S, env=env)
         if not (r.returncode and "index.lock" in r.stderr and i < 11):
             break
         time.sleep(0.25 * (i + 1))
@@ -144,7 +160,7 @@ def commit(top, paths, msg):
     if not run(top, "diff", "--cached", "--quiet", "--", *paths, check=False).returncode:
         return None
     for i in range(12):
-        r = subprocess.run(["git", "commit", "-q", "-F", "-", "--", *paths], cwd=top,
+        r = subprocess.run(["git", "commit", "-q", "-F", "-", "--", *literal(paths)], cwd=top,
                            input=msg, capture_output=True, text=True)
         if not (r.returncode and "index.lock" in r.stderr and i < 11):
             break
@@ -204,7 +220,7 @@ def rebase(top):
         if tree == out(top, "rev-parse", tip + "^{tree}"):
             continue                                     # nothing left of it: a DLL pair, or already on origin
         meta = out(top, "show", "-s", "--format=%an%x00%ae%x00%aI", c).split("\0")
-        env = dict(os.environ, GIT_AUTHOR_NAME=meta[0], GIT_AUTHOR_EMAIL=meta[1], GIT_AUTHOR_DATE=meta[2])
+        env = git_env(GIT_AUTHOR_NAME=meta[0], GIT_AUTHOR_EMAIL=meta[1], GIT_AUTHOR_DATE=meta[2])
         body = out(top, "show", "-s", "--format=%B", c) + "\n"
         tip = subprocess.run(["git", "commit-tree", tree, "-p", tip, "-F", "-"], cwd=top, input=body, env=env,
                              capture_output=True, text=True, check=True).stdout.strip()
@@ -258,7 +274,7 @@ def take_side(top, tree, tip, c, paths):
     import tempfile
     fd, idx = tempfile.mkstemp(prefix="publish-idx-", dir=out(top, "rev-parse", "--absolute-git-dir"))
     os.close(fd)
-    env = dict(os.environ, GIT_INDEX_FILE=idx)
+    env = git_env(GIT_INDEX_FILE=idx)
     try:
         def g(*a):
             return subprocess.run(["git", *a], cwd=top, env=env, capture_output=True, text=True, check=True).stdout
@@ -333,9 +349,7 @@ def rebuild_dlls(top, dlls):
                 for q in (d, d + ".srchash"):
                     if not os.path.exists(os.path.join(scratch, q)):
                         raise Refuse("rebuild of %s wrote no %s" % (proj, q))
-        for q in pairs:                                  # whole-file replace, never a partial write
-            shutil.copyfile(os.path.join(scratch, q), os.path.join(top, q) + ".publish-tmp")
-            os.replace(os.path.join(top, q) + ".publish-tmp", os.path.join(top, q))
+        install_pairs(top, head, scratch, pairs)
     finally:
         shutil.rmtree(scratch, ignore_errors=True)
     sha = commit(top, pairs, "Rebuild %s from committed source at landing\n\nBuilt by ./publish in a src-only "
@@ -343,6 +357,59 @@ def rebuild_dlls(top, dlls):
     if sha:
         print("committed rebuilt %s as %s" % (", ".join(dlls), sha[:12]))
     return sha
+
+
+def install_pairs(top, head, scratch, pairs):
+    """Put the rebuilt files into the worktree only where each still holds HEAD's bytes. The build takes minutes and the
+    dirty check ran before it, so a peer's save in between was overwritten by a blind replace (Codex, 2026-11-01). Each
+    file goes in by atomic swap (seat_sync._exchange) and the displaced bytes are checked: anything but HEAD's goes
+    straight back, every file already swapped is swapped back too, and the landing refuses naming the path."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import seat_sync
+    def at_head(q):
+        r = subprocess.run(["git", "cat-file", "blob", "%s:%s" % (head, q)], cwd=top, capture_output=True)
+        return r.stdout if r.returncode == 0 else None
+    def read(path):
+        return open(path, "rb").read() if os.path.isfile(path) and not os.path.islink(path) else None
+    done = []                                            # (worktree path, tmp holding HEAD's bytes, new bytes)
+    try:
+        for q in pairs:
+            dst, tmp, want = os.path.join(top, q), os.path.join(top, q) + ".publish-tmp", at_head(q)
+            new = open(os.path.join(scratch, q), "rb").read()
+            if read(dst) != want:
+                raise Refuse("%s changed in the worktree while the DLL rebuilt (a save that is not mine to overwrite); "
+                             "left as it is, nothing installed. Your commit is intact on HEAD." % q)
+            with open(tmp, "wb") as f:
+                f.write(new)
+            if want is None:                             # absent at HEAD and still absent: link never clobbers
+                try:
+                    os.link(tmp, dst)
+                except FileExistsError:
+                    raise Refuse("%s appeared in the worktree while the DLL rebuilt; left as it is." % q)
+                finally:
+                    os.unlink(tmp)
+                done.append((dst, None, new))
+                continue
+            seat_sync._exchange(tmp, dst)
+            if read(tmp) != want:                        # a save landed between the compare and the swap
+                seat_sync._exchange(tmp, dst)
+                os.unlink(tmp)
+                raise Refuse("%s changed in the worktree while the DLL rebuilt (a save that is not mine to "
+                             "overwrite); left as it is, nothing installed. Your commit is intact on HEAD." % q)
+            done.append((dst, tmp, new))
+    except BaseException:
+        for dst, tmp, new in reversed(done):             # put HEAD's bytes back, unless someone wrote since
+            if read(dst) != new:
+                continue
+            if tmp is None:
+                os.unlink(dst)
+            else:
+                seat_sync._exchange(tmp, dst)
+        raise
+    finally:
+        for _, tmp, _ in done:
+            if tmp and os.path.lexists(tmp):
+                os.unlink(tmp)
 
 
 def guard_dlls(err):

@@ -493,10 +493,68 @@ def t_reset_refused_restores_index_and_keeps_original(a, b):
     parked = [os.path.join(r, n) for r, _, ns in os.walk(os.path.join(gd, "rm-dirty-parked")) for n in ns]
     assert parked and open(parked[0]).read() == dirty, parked
     assert sh(a, "diff", "--cached", "--name-only") == ""        # index matches HEAD again
-    assert "PEER 9" in open(os.path.join(a, "f.txt")).read() and "ORIGIN 2" in open(os.path.join(a, "f.txt")).read()
+    # PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET: upstream's hunk is taken back out, so it never reads as the peer's edit
+    assert open(os.path.join(a, "f.txt")).read() == dirty, open(os.path.join(a, "f.txt")).read()
+    assert "taken back out" in why, why
     sha = P_quiet_publish(a, [], None)                           # the re-run merges to the same result
     assert sha == sh(a, "rev-parse", "HEAD") == sh(a, "rev-parse", "origin/main")
     assert open(os.path.join(a, "f.txt")).read() == LINES.replace("line 2", "ORIGIN 2").replace("line 9", "PEER 9")
+
+
+def t_refused_reset_takes_shard_carry_back_out_keeping_later_appends(a, b):
+    """PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET: a refused move cuts upstream's lines out of a shard; an append made after
+    the carry stays, and the inode never changes."""
+    import seat_sync
+    seed_shard(a, b)
+    shard = SHARD
+    peer_push(b, shard, open(os.path.join(b, shard)).read() + '{"up": 1}\n')
+    append(a, shard, '{"mine": 1}\n')
+    before = open(os.path.join(a, shard)).read()
+    ino = os.stat(os.path.join(a, shard)).st_ino
+    write(a, "h.txt", "mine\n")
+    real = seat_sync.reset_keep
+    def boom(*args, **kw):
+        append(a, shard, '{"later": 1}\n')
+        raise seat_sync.Refused("planted refusal")
+    seat_sync.reset_keep = boom
+    try:
+        why = refused(P.publish, a, ["h.txt"], "mine")
+    finally:
+        seat_sync.reset_keep = real
+    assert why and "taken back out" in why, why
+    got = open(os.path.join(a, shard)).read()
+    assert got == before + '{"later": 1}\n', got
+    assert os.stat(os.path.join(a, shard)).st_ino == ino
+
+
+def t_glob_named_path_commits_only_itself(a, b):
+    """PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET: `a[b].txt` is a path, not a pattern that also matches `ab.txt`."""
+    write(a, "a[b].txt", "mine\n")
+    write(a, "ab.txt", "a peer's untracked file\n")
+    write(a, "f.txt", LINES.replace("line 1\n", "DIRTY 1\n"))
+    write(a, "f*", "star\n")
+    quiet(P.publish, a, ["a[b].txt", "f*"], "glob names")
+    names = sorted(sh(a, "show", "--name-only", "--format=", "HEAD").split("\n"))
+    assert names == ["a[b].txt", "f*"], names
+    assert "ab.txt" not in sh(a, "ls-tree", "-r", "--name-only", "origin/main").split("\n")
+    assert "DIRTY 1" not in show(a, "f.txt")
+
+
+def t_hooks_keep_their_own_glob_pathspecs(a, b):
+    """Literal pathspecs are publish's, never its hooks': a pre-commit/pre-push glob must still match (game_art.py
+    globs `*.html`), or the guard silently sees nothing and passes."""
+    hooks = os.path.join(os.path.dirname(a), "hooks")
+    for h in ("pre-commit", "pre-push"):
+        write(hooks, h, "#!/bin/sh\ntest -n \"$(git ls-files -- '*.txt')\" || { echo GLOB_BLIND >&2; exit 1; }\n")
+        os.chmod(os.path.join(hooks, h), 0o755)
+    sh(a, "config", "core.hooksPath", hooks)
+    write(a, "h.txt", "mine\n")
+    P.MAX_TRIES, old_tries = 1, P.MAX_TRIES
+    try:
+        sha = P_quiet_publish(a, ["h.txt"], "mine")
+    finally:
+        P.MAX_TRIES = old_tries
+    assert sha == sh(a, "rev-parse", "origin/main")
 
 
 def t_crash_between_carry_and_move_loses_nothing(a, b):
@@ -728,6 +786,33 @@ def t_stamp_guard_rebuild_never_overwrites_dirty_dll(a, b):
     assert why and "uncommitted edits" in why and DLL in why, why
     assert open(os.path.join(a, DLL)).read() == "SOMEONE'S UNCOMMITTED LOCAL BUILD"
     assert not calls, calls
+
+
+def t_dll_rebuild_never_overwrites_a_save_made_during_the_build(a, b):
+    """PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET: the dirty check runs before a build of minutes; a save to the DLL pair
+    landing during it is kept, nothing is installed over it, and the landing refuses naming the path."""
+    seed_mod(a, b)
+    hooks = os.path.join(os.path.dirname(a), "hooks")
+    write(hooks, "pre-push", HOOK)
+    os.chmod(os.path.join(hooks, "pre-push"), 0o755)
+    sh(a, "config", "core.hooksPath", hooks)
+    write(a, MOD + "/Source/B.cs", "class B { int changed; }\n")
+    calls = []
+    inner = mock_winbuild(calls)
+    def wb(scratch, csproj):
+        write(a, DLL + ".srchash", "A PEER'S SAVE DURING THE BUILD\n")
+        return inner(scratch, csproj)
+    real, P.winbuild = getattr(P, "winbuild", None), wb
+    P.MAX_TRIES, old_tries = 2, P.MAX_TRIES
+    dll_before = open(os.path.join(a, DLL)).read()
+    try:
+        why = refused(P.publish, a, [MOD + "/Source/B.cs"], "source only")
+    finally:
+        P.winbuild, P.MAX_TRIES = real, old_tries
+    assert calls and why and "while the DLL rebuilt" in why and DLL + ".srchash" in why, why
+    assert open(os.path.join(a, DLL + ".srchash")).read() == "A PEER'S SAVE DURING THE BUILD\n"
+    assert open(os.path.join(a, DLL)).read() == dll_before            # the DLL swapped first went back
+    assert not [n for n in os.listdir(os.path.join(a, MOD, "Assemblies")) if n.endswith(".publish-tmp")]
 
 
 PUBLISH_PY = os.environ.get("PUBLISH_PY", os.path.join(os.path.dirname(os.path.abspath(__file__)), "publish.py"))
