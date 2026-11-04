@@ -25,6 +25,15 @@ so lint() reads each command before it is trusted: at attribution a pair that na
 one whose named script does not print it YET is linked and flagged to Operations (alarm kind NO_VERDICT, a note on the
 repair item: its close owes the line); `finish` on the repair item refuses while the lint still fails; a release run
 that printed no verdict alarms the same kind. The lint is a static read, never the release gate: check() still runs.
+
+ONE BOOK (INCIDENT_STORES_UNIFY_TWO_BOOKS_ONE_FAULT). relentless_breakers keeps the other half of the story in
+incidents.json: a capability signature that failed three items, opened with no diagnosis. One broken harness can be open
+in both, so the two are LINKED wherever they share an item: the instrument incident lists the signatures it explains
+(`capability`), the capability incident names its `repair`, whichever opened second makes the link (link() here,
+relentless_breakers.note() there). The repair's release is the evidence for both: when the last parent leaves after
+fixtures that RAN and held, every linked capability incident still open is released with it (a release on the repair's
+close alone, no fixtures, proves nothing about the instrument and leaves the probe to decide). book() is the one read:
+`relentless.py incidents` prints a linked pair (or a pair sharing items, linked or not) as ONE row.
 """
 import json
 import os
@@ -79,6 +88,7 @@ def link(store, repair, item, sha, now, component=None, repro=None, fixtures=Non
     inc["targets"] = sorted(set(inc.get("targets") or []) | set(targets or ()))
     # a mixed diagnosis (PRODUCT too) sends the item to its builder: it is recorded as affected, not as waiting
     inc["items"][item] = {"sha": sha, "since": now, "released_at": None if waits else now, "waits": bool(waits)}
+    _link_capabilities(store, inc, [item], now)
     save(store, incs)
     return inc
 
@@ -172,6 +182,22 @@ def no_verdict_at(store, repair, event):
     snag parent's cached no-run row on the same event does not hide it)."""
     return any(c.get("event") == event and c.get("no_verdict") for c in (get(store, repair) or {}).get("checks") or [])
 
+def _link_capabilities(store, inc, items, now):
+    """Under the lock: every open capability incident holding one of `items` is the same fault as `inc`: name the
+    repair on it, the signature on `inc`. Saves the capability store; the caller saves `inc`."""
+    import relentless_breakers as B
+    caps = B.load(store)
+    hit = [k for k, c in caps.items() if c.get("open") and set(items) & set(c.get("items") or {})]
+    if not hit:
+        return []
+    for k in hit:
+        if not caps[k].get("repair"):       # the first diagnosis that explains it stands
+            caps[k]["repair"] = inc["repair"]
+            store.journal({"at": B._iso(now), "do": "incident_linked", "key": k, "repair": inc["repair"]})
+    inc["capability"] = sorted(set(inc.get("capability") or []) | set(hit))
+    B.save(store, caps)
+    return hit
+
 
 def needs_fixtures(inc):
     return bool(inc and (inc.get("fixtures") or {}).get("good") and (inc.get("fixtures") or {}).get("bad"))
@@ -209,6 +235,7 @@ def check(store, repair, run, now, event, need_fixtures=True):
         if inc is None:
             return False, "no incident for %s" % repair
         fx = dict(inc.get("fixtures") or {})
+        born = inc.get("opened_at")
         key = [event, fx.get("good"), fx.get("bad"), bool(need_fixtures)]
         hit = _cached(inc, key)
     if hit:
@@ -235,6 +262,10 @@ def check(store, repair, run, now, event, need_fixtures=True):
         hit = _cached(inc, key)
         if hit:
             return hit                          # another sweep recorded this event first: one result per event
+        if inc.get("status") == RELEASED:       # a newer event released every parent meanwhile: this run is moot
+            return False, "the incident %s was released while these fixtures ran" % repair
+        if inc.get("opened_at") != born:
+            return False, "the incident %s was released and reopened while its fixtures ran: the next sweep runs them" % repair
         if dict(inc.get("fixtures") or {}) != fx:
             return False, "the fixtures changed while they ran: the next sweep runs the new ones"
         inc.setdefault("checks", []).append({"key": key, "event": event, "at": now, "ok": ok, "why": why[:800],
@@ -256,4 +287,84 @@ def released(store, repair, item, now):
     inc["items"][item]["released_at"] = now
     if all(v.get("released_at") for v in inc["items"].values()):
         inc["status"], inc["released_at"] = RELEASED, now
+        _release_capabilities(store, inc, now)
     save(store, incs)
+
+
+def _release_capabilities(store, inc, now):
+    """Under the lock: the repair's release is the evidence for the linked capability incidents too, but only when its
+    last check ran the fixtures and they held; a release on the close alone leaves the capability's probe to decide."""
+    import relentless_breakers as B
+    last = (inc.get("checks") or [None])[-1]
+    if not (last and last.get("ok") and last.get("good") is not None):
+        return []
+    caps = B.load(store)
+    done = []
+    for k in inc.get("capability") or []:
+        # the link is the capability incident's own `repair`: a signature that was released and reopened later for other
+        # items is a new incident this repair never explained, so it is not released on this evidence
+        if (caps.get(k) or {}).get("open") and caps[k].get("repair") == inc["repair"]:
+            B.release(store, caps, k, "the repair %s closed and its fixtures held (%s)" % (inc["repair"], last["why"][:200]),
+                      now)
+            done.append(k)
+    if done:
+        B.save(store, caps)
+    return done
+
+
+def book(store, everything=False):
+    """The one read of both stores. -> rows, oldest first: {book, repair, status, component, capability, items, probe,
+    opened, why}. `book` is "instrument" (a diagnosed fault and its repair item), "capability" (a signature on three
+    items, undiagnosed) or "instrument+capability" (the same fault in both: linked, or sharing an item). Released
+    instrument incidents and closed capability counters are left out unless `everything`."""
+    import relentless_breakers as B
+    incs, caps = load(store), B.load(store)
+    live = {k: c for k, c in caps.items() if c.get("open") or everything}
+    order = [(r, inc) for r, inc in sorted(incs.items(), key=lambda kv: (kv[1].get("opened_at") or 0, kv[0]))
+             if everything or inc.get("status") != RELEASED]
+    held = {r: {i for i, v in (inc.get("items") or {}).items() if everything or not v.get("released_at")}
+            for r, inc in order}
+    # each capability incident sits in ONE row: its own repair's when that is shown, else the oldest sharing an item;
+    # any other instrument incident sharing it lists it under `shares`
+    owner = {}
+    for k, c in live.items():
+        near = [r for r, _ in order if held[r] & set(c.get("items") or {})]
+        owner[k] = c.get("repair") if c.get("repair") in held else (near[0] if near else None)
+    used, rows = set(), []
+    for repair, inc in order:
+        mine = held[repair]
+        sigs = sorted(k for k in live if owner[k] == repair)
+        shares = sorted(k for k, c in live.items() if owner[k] not in (None, repair) and mine & set(c.get("items") or {}))
+        used |= set(sigs)
+        items = set(mine)
+        for k in sigs:
+            items |= set(live[k].get("items") or {})
+        rows.append({"book": "instrument+capability" if sigs else "instrument", "repair": repair,
+                     "status": inc.get("status"), "component": inc.get("component"), "capability": sigs,
+                     "items": sorted(items), "probe": [live[k].get("probe") for k in sigs if live[k].get("probe")],
+                     "opened": inc.get("opened_at"), "shares": shares,
+                     "why": ((inc.get("repro") or [{}])[-1].get("evidence") or "")[:300]})
+    for k, c in sorted(live.items(), key=lambda kv: (kv[1].get("opened") or kv[1].get("last") or 0, kv[0])):
+        if k in used:
+            continue
+        rows.append({"book": "capability", "repair": c.get("repair"), "status": "open" if c.get("open") else "counting",
+                     "component": None, "capability": [k], "items": sorted(c.get("items") or {}),
+                     "probe": [c["probe"]] if c.get("probe") else [], "opened": c.get("opened"), "shares": [],
+                     "why": (c.get("why") or "")[:300]})
+    return rows
+
+
+def book_text(rows):
+    if not rows:
+        return "incidents: none open (both books: %s, %s)" % ("incidents.json", FILE)
+    out = ["incidents: %d open, one row per fault" % len(rows)]
+    for x in rows:
+        out.append("  %-21s %-9s repair=%s items=%s%s%s" % (
+            x["book"], x["status"], x["repair"] or "-", ",".join(x["items"]) or "-",
+            (" probe=" + ",".join(x["probe"])) if x["probe"] else "",
+            (" sig=" + " | ".join(s[:60] for s in x["capability"])) if x["capability"] else ""))
+        if x.get("shares"):
+            out.append("      shares items with: %s (shown in its repair's row)" % " | ".join(s[:60] for s in x["shares"]))
+        if x.get("component"):
+            out.append("      component: %s" % x["component"][:160])
+    return "\n".join(out)

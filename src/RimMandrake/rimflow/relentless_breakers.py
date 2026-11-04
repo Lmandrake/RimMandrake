@@ -15,7 +15,8 @@ The moves, all here so relentless.py carries hooks only:
     starts the count over from that point.
   - ONE INCIDENT PER CAPABILITY. A capability failure (the instrument, the box, the bridge, the checker could not
     measure; `capability_classes` and CAPABILITY_RX) with the same signature on `incident_items` (3) different items
-    inside `incident_window_s` opens ONE incident in incidents.json. Its first item is the probe; every other affected
+    inside `incident_window_s` opens ONE incident in incidents.json (linked to relentless_incident's instrument_incidents.json
+    when they share an item: one fault, one row in `relentless.py incidents`). Its first item is the probe; every other affected
     item, and any later item failing on it, waits out of the line (lease skips it). It is told once (tell). It is released
     by evidence, never a tick: the probe's next ending is a candidate or a different signature (a lost process or a wait
     says nothing either way), or an operator runs
@@ -173,9 +174,31 @@ def note(store, item, klass, detail, r, now):
             store.journal({"at": _iso(now), "do": "incident_open", "key": sig, "items": sorted(inc["items"]),
                            "probe": first})
             opened = sig
+        if inc["open"]:     # opened now, or a later item joined it: either may share an item with a diagnosed fault
+            _link_instrument(store, sig, inc, now)
     if changed:
         save(store, d)
     return opened
+
+
+def _link_instrument(store, sig, inc, now):
+    """Under the lock: an instrument incident (relentless_incident, a diagnosed fault with a repair item) already holding
+    one of these items is the same fault. Link both ways: one fault, one book (INCIDENT_STORES_UNIFY_TWO_BOOKS_ONE_FAULT)."""
+    import relentless_incident as RI
+    incs = RI.load(store)
+    hit = sorted(k for k, v in incs.items() if v.get("status") != RI.RELEASED
+                 and set(inc["items"]) & {i for i, w in (v.get("items") or {}).items() if not w.get("released_at")})
+    if not hit:
+        return None
+    fresh = [k for k in hit if sig not in (incs[k].get("capability") or [])]
+    for k in fresh:
+        incs[k]["capability"] = sorted(set(incs[k].get("capability") or []) | {sig})
+    if fresh:
+        RI.save(store, incs)
+    if not inc.get("repair"):       # the first diagnosis that explains it stands
+        inc["repair"] = hit[0]
+        store.journal({"at": _iso(now), "do": "incident_linked", "key": sig, "repair": hit[0]})
+    return inc["repair"]
 
 
 def probe_passed(store, item, now):
@@ -248,17 +271,20 @@ def tell(store, fx, now, acts):
         text = ("INCIDENT: %d items failed on one capability (%s); they wait behind one probe (%s) and come back when it "
                 "passes or `relentless.py incident-release --key '%s' --evidence ...`. Last: %s"
                 % (len(inc["items"]), key, inc.get("probe"), key, (inc.get("why") or "")[:300]))
+        if inc.get("repair"):
+            text += (" | the same fault is diagnosed: repair item %s; its close with fixtures that hold releases this "
+                     "too; one book: `relentless.py incidents`" % inc["repair"])
         fail = fx.conductor_alarm(text)
         if fail:
             acts.append({"do": "alarm_retry", "why": "incident: %s" % fail})
             continue
-        said.append(key)
+        said.append((key, inc.get("opened")))
         acts.append({"do": "incident_told", "key": key})
     if said:
         with store.lock():      # fail() may have written the file meanwhile: mark on a fresh read
             d = load(store)
-            for key in said:
-                if key in d:
+            for key, born in said:
+                if key in d and d[key].get("opened") == born:     # released and reopened meanwhile: a new incident, untold
                     d[key]["told"] = True
             save(store, d)
 

@@ -4845,6 +4845,10 @@ def main(argv=None):
     p.add_argument("--evidence", required=True)
     for k in ("obligation", "observed", "why-product", "repair", "component", "fixture-good", "fixture-bad", "on"):
         p.add_argument("--" + k)
+    p = sub.add_parser("incidents", help="ONE book of open incidents: capability (incidents.json) and instrument "
+                                         "(instrument_incidents.json), the same fault in both as one row")
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--all", action="store_true", help="released and still-counting ones too")
     p = sub.add_parser("incident-release", help="an operator's repair of a capability incident, with its evidence")
     p.add_argument("--key", required=True)
     p.add_argument("--evidence", required=True)
@@ -4941,6 +4945,10 @@ def main(argv=None):
             print("relentless: %s -> %s" % (a.item, relentless_attrib.answer(
                 store, a.item, a.nonce, a.target, vars(a), rules(), time.time(), sys.modules[__name__],
                 known=ledger_has, root=fx.books if os.path.isdir(fx.books) else None, note=fx.ledger_note)))
+        elif a.cmd == "incidents":
+            import relentless_incident
+            rows = relentless_incident.book(store, everything=a.all)
+            print(json.dumps(rows, indent=1) if a.json else relentless_incident.book_text(rows))
         elif a.cmd == "incident-release":
             inc = relentless_breakers.release_by_hand(store, a.key, a.evidence, time.time())
             print("released %s (%d items back in line)" % (a.key, len(inc.get("items") or {})))
