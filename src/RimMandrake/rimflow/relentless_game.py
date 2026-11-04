@@ -438,6 +438,8 @@ def load_bound(c, mods):
 # belt_watchdog signals that are EVIDENCE of a stall (Not Responding, CPU idle, a frozen or looping Player.log, a
 # modal wedge, a dead process). Its "bridge" signal is NOT: past the warn threshold it fires on the clock alone.
 STALL_EVIDENCE_SIGNALS = ("game", "player_log", "modals")
+# load_stall_evidence's answer when belt_watchdog itself cannot read: a broken instrument, not "no evidence"
+STALL_BLIND = "BLIND stall probe: "
 
 
 def stall_evidence(sigs):
@@ -530,14 +532,15 @@ class GameFx(object):
         return dict(got)
 
     def load_stall_evidence(self):
-        """-> 'LEVEL signal: detail' when belt_watchdog sees evidence of a stall in a loading game, else None. A probe
-        that fails is no evidence (None): the game keeps loading rather than being killed on a harness fault."""
-        _load_policy()
+        """-> 'LEVEL signal: detail' when belt_watchdog sees evidence of a stall in a loading game, None when it sees
+        none, STALL_BLIND + why when the probe itself fails. A blind probe is never 'no evidence' and never a kill: the
+        caller ends the attempt as a harness failure and leaves the game loading (LOAD_WAIT_FIX_BLIND_PROBE_WAITS_FOREVER)."""
         try:
+            _load_policy()
             import belt_watchdog
             return stall_evidence(belt_watchdog.gather(bridge=False))
-        except Exception:  # noqa: BLE001  no reading is no evidence, never a kill
-            return None
+        except Exception as e:  # noqa: BLE001  reported up as blind, never read as no evidence
+            return "%s%s: %s" % (STALL_BLIND, type(e).__name__, str(e)[:200])
 
     def bridge_reading(self):
         """-> {"holder", "purpose", "since"} of the bridge lock as the ledger reads now."""
@@ -809,6 +812,7 @@ def _harness(store, fx, r, item, why, now, acts):
         wait = int(min(c["harness_retry_s"] * n, c["harness_retry_max_s"]))
         out.update(n=n, wait=wait)
         gg.update(phase="stage", stages=0, harness=n, retry_at=now + wait, harness_why=why[:300])
+        gg.pop("spare_load", None)      # only the blind-probe deadline spares a load; it sets it after this
         s["put_down"] = {"on": ("harness #%d, staged again in %ds: %s" % (n, wait, why))[:200], "at": now}
     if _save(store, item, f) is None:
         return
@@ -1009,6 +1013,13 @@ def step(store, fx, r, item, now, acts, sup):
             ev = fx.load_stall_evidence()
             msg = _load_policy().deadline_exceeded("cold load of %s mods" % (rd.get("mods") or "unread"), age, bound,
                                                    alive=True)       # LOADING = the process runs
+            if ev and ev.startswith(STALL_BLIND):
+                # a probe that cannot see would wait this load for ever: the deadline ends the ATTEMPT (a counted
+                # harness failure and an alarm), and the game, which may still be loading, is left running
+                _harness(store, fx, r, item, "%s; the stall probe is blind (%s), so the attempt ends and the game is "
+                         "left loading" % (msg, ev[len(STALL_BLIND):][:200]), now, acts)
+                _save(store, item, lambda s: s["game"].update(spare_load={"started": rd.get("started")}))
+                return
             if not ev:
                 why = "%s; no stall evidence (belt_watchdog), so it is waited, not restaged" % msg
                 _save(store, item, lambda s: (s.update(put_down={"on": why[:300], "at": now}),
@@ -1016,6 +1027,8 @@ def step(store, fx, r, item, now, acts, sup):
                 acts.append({"do": "game_loading_past_deadline", "item": item, "why": why[:300]})
                 return
             stale = [{"why": "%s; stall evidence: %s" % (msg, ev[:200])}]
+            if g.get("spare_load") is not None:     # evidence, not the clock: this load is restaged after all
+                _save(store, item, lambda s: s["game"].pop("spare_load", None))
         if stale and state == "UP" and rd.get("started"):
             # the running game cannot serve this item; before a reload, every other game item gets its try on it, and
             # this one waits (bounded) to ride the one reload with the rest
@@ -1077,6 +1090,16 @@ def step(store, fx, r, item, now, acts, sup):
         if (g.get("retry_at") or 0) > now:
             return      # put down on a harness failure until its retry: it holds no place, the bridge is free
         rd = fx.game_reading()
+        spare = g.get("spare_load")
+        if spare is not None and rd.get("state") == "LOADING" and (spare.get("started") is None
+                                                                   or spare.get("started") == rd.get("started")):
+            # the attempt ended on a blind stall probe, not on evidence: the clock alone never restarts that load, so
+            # the prove phase reads it again (and ends the attempt again, counted, while the probe stays blind)
+            _save(store, item, lambda s: s["game"].update(phase="prove"))
+            acts.append({"do": "game_spare_load", "item": item, "started": rd.get("started")})
+            return
+        if spare is not None:
+            _save(store, item, lambda s: s["game"].pop("spare_load", None))
         if rd.get("state") == "UP" and rd.get("started"):
             # another item's load may already run this build (owner 2026-11-02, "To save game loads"): an item that has
             # no row from the running game tries it before it stages a load of its own (BIOME_TIER_CLEANUP_1 read DOWN

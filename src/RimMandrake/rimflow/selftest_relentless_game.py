@@ -649,6 +649,61 @@ def t_loading_is_waited_not_restaged():
     x.done()
 
 
+def t_blind_stall_probe_ends_attempt():
+    """LOAD_WAIT_FIX_BLIND_PROBE_WAITS_FOREVER: a load past its deadline whose stall probe cannot read is not 'no
+    evidence' waited for ever: the attempt ends as a counted harness failure, the still-loading game is never restarted
+    on the clock, and a probe that sees again decides as before."""
+    import belt_watchdog as bw
+    real = bw.gather
+
+    def boom(**kw):
+        raise OSError("probe broken")
+    bw.gather = boom
+    try:
+        ev = G.GameFx.load_stall_evidence(None)
+    finally:
+        bw.gather = real
+    ok(ev and ev.startswith(G.STALL_BLIND) and "probe broken" in ev,
+       "the real probe reports a raising gather() as BLIND, never None: %r" % ev)
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = False
+    x.tick()
+    staged_then_ended(x)
+    x.w.running, x.w.started, x.w.mods = "LOADING", x.now, 316
+    takes = x.w.events.count("take")
+    x.tick()
+    x.w.stall = G.STALL_BLIND + "OSError: probe broken"
+    x.now = x.w.started + G.load_bound(G.cfg(x.r), 316) + 1
+    x.tick(0)
+    st = x.st("I0")
+    ok(st["game"].get("harness") == 1 and st["game"]["phase"] == "stage" and st["game"]["retry_at"] > x.now
+       and st["put_down"]["on"].startswith("harness #1") and "blind" in st["put_down"]["on"]
+       and x.w.events.count("take") == takes,
+       "past its deadline, a blind probe ends the attempt as a counted harness failure, no restart: %s" % st)
+    ok(any("harness failure" in n and "blind" in n for n in x.w.notes), "the ledger note reports the blind probe up")
+    ok(any(j.get("kind") == "game_harness" for j in map(json.loads, open(x.s.p("journal.jsonl")))),
+       "an alarm is journaled")
+    x.now = st["game"]["retry_at"] + 1
+    x.tick(0)
+    st = x.st("I0")
+    ok(x.w.events.count("take") == takes and st["game"]["phase"] == "prove",
+       "at the retry the still-loading game is read again, not restaged: %s" % st["game"])
+    x.tick(0)
+    st = x.st("I0")
+    ok(x.w.events.count("take") == takes and st["game"]["harness"] == 2 and st["game"].get("spare_load"),
+       "still blind past the deadline: the attempt ends again, counted, the game still spared: %s" % st["game"])
+    x.now = st["game"]["retry_at"] + 1
+    x.w.stall = "STALLED player_log: Player.log silent 600 s"
+    x.tick(0)       # the retry reads the spared load again (prove) ...
+    x.tick(0)       # ... where the probe, seeing again, finds evidence
+    st = x.st("I0")
+    ok(x.w.events.count("take") == takes + 1 and "spare_load" not in st["game"],
+       "a probe that sees again and finds stall evidence restages the load: %s" % st["game"])
+    x.done()
+
+
 def t_failed_staging_is_harness_not_owner():
     """stage_tries stagings with no build running: put down as OUR failure and retried, never held on the owner."""
     x = rig(1)
@@ -1408,7 +1463,7 @@ def main():
     picked, ran = set(sys.argv[1:]), 0      # no names: every test
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
-              t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged,
+              t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
