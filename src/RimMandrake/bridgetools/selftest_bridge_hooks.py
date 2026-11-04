@@ -10,7 +10,10 @@
    method the file hands Harmony by name (nameof/GetMethod "...Pre/Post/Fin/Prefix/Postfix/Finalizer") is on the row.
 2. RULES per hook, read from its source body: c contained (try/catch, or an expression body calling one helper that
    is), ro `bool __runOriginal` in the signature, th a thread check, or an orphan-safe state read, vf a void
-   finalizer, gate a deliberate fail-closed refusal (no rule checked). Every row's proof file exists; a `::T_X*`
+   finalizer, gate a deliberate fail-closed refusal (no rule checked). Tightened (blind check, gen 3): c also refuses
+   any call left OUTSIDE every try unless it is a guard (Admit/Commit/OnMain/Interlocked), a same-file contained helper
+   or a cross-file helper that calls nothing; ro also needs __runOriginal READ and handed to every Commit(; th also needs
+   every Admit(/TryEnter( handed a real main-thread test (OnMain()), not a constant. Every row's proof file exists; a `::T_X*`
    proof names at least one unit that exists.
 3. The instrument can see: MUTANTS rewrite the real source text in memory (drop __runOriginal, strip a try, make a
    finalizer return a value, add an unlisted patch site) and each must turn the audit red.
@@ -105,6 +108,83 @@ def contained(src, body, depth=0):
     return False
 
 
+GUARD_CALLS = {"Admit", "Commit", "OnMain", "TryEnter", "Interlocked.Increment", "Interlocked.Decrement",
+               "Interlocked.Add", "Interlocked.Exchange", "Interlocked.CompareExchange", "Stopwatch.GetTimestamp"}
+KEYWORDS = {"if", "while", "for", "foreach", "switch", "catch", "return", "nameof", "typeof", "using", "lock", "sizeof",
+            "default", "when"}
+
+
+def scrub(code):
+    """Comments and string literals blanked, so a word in prose is never read as a call."""
+    code = re.sub(r"//[^\n]*", "", code)
+    code = re.sub(r"/\*.*?\*/", "", code, flags=re.S)
+    return re.sub(r'@?"(?:\\.|[^"\\])*"', '""', code)
+
+
+def _brace_end(s, j):
+    d = 0
+    for k in range(j, len(s)):
+        if s[k] == "{":
+            d += 1
+        elif s[k] == "}":
+            d -= 1
+            if d == 0:
+                return k
+    return len(s) - 1
+
+
+def outside_try(body):
+    """The body with every try { } and its catch/finally blocks cut out: what runs unprotected."""
+    out, i = [], 0
+    while True:
+        m = re.compile(r"\btry\s*\{").search(body, i)
+        if not m:
+            out.append(body[i:])
+            return "".join(out)
+        out.append(body[i:m.start()])
+        k = _brace_end(body, m.end() - 1) + 1
+        while True:
+            m2 = re.compile(r"\s*(?:catch\b\s*(?:\([^)]*\))?\s*(?:when\s*\([^)]*\)\s*)?|finally\s*)\{").match(body, k)
+            if not m2:
+                break
+            k = _brace_end(body, m2.end() - 1) + 1
+        i = k
+
+
+def calls_in(code):
+    """Called names, qualified as written (`G.Admit`, `JawaBenchVitals.OnKill`, `Begin`)."""
+    return [c for c in re.findall(r"(?<![\w.])([A-Za-z_][\w.]*)\s*\(", code) if c.split(".")[-1] not in KEYWORDS]
+
+
+def is_guard(call):
+    return call in GUARD_CALLS or call.split(".")[-1] in ("Admit", "Commit", "OnMain", "TryEnter")
+
+
+def unprotected_calls(fn, sources, body):
+    """Calls a hook makes outside any try that are not proven harmless. A same-file helper is harmless when its own
+    body is contained or calls only guards; a helper in another file only when its whole body calls nothing (a throw
+    from anywhere else would surface as the patched game method's own exception)."""
+    bad = []
+    for c in calls_in(outside_try(scrub(body))):
+        if is_guard(c):
+            continue
+        parts = c.split(".")
+        if len(parts) == 1:
+            _, hb = method_text(sources[fn], c)
+            if hb is not None and (contained(sources[fn], hb) or all(is_guard(x) for x in calls_in(scrub(hb)))):
+                continue
+        elif len(parts) == 2 and parts[0] not in ("this", "base"):
+            hb = None
+            for other in sources.values():
+                if re.search(r"\bclass\s+" + re.escape(parts[0]) + r"\b", other):
+                    _, hb = method_text(other, parts[1])
+                    break
+            if hb is not None and not calls_in(scrub(hb)) and not re.search(r"\bnew\b|\[", hb):
+                continue
+        bad.append(c)
+    return bad
+
+
 def audit(sources, table_text):
     fails = []
     rows = read_table(table_text)
@@ -137,10 +217,26 @@ def audit(sources, table_text):
                 continue
             if "c" in rules and not contained(src, body):
                 fails.append("%s.%s: body not contained (no try/catch)" % (fn, h))
+            if "c" in rules:
+                for c in unprotected_calls(fn, sources, body):
+                    fails.append("%s.%s: call %s( runs outside any try (its throw replaces the game's result)" % (fn, h, c))
+            sb = scrub(body)
             if "ro" in rules and not re.search(r"\bbool\s+__runOriginal\b", sig):
                 fails.append("%s.%s: postfix lacks bool __runOriginal (records a skipped original)" % (fn, h))
+            if "ro" in rules and not re.search(r"\b__runOriginal\b", sb):
+                fails.append("%s.%s: __runOriginal is taken but never read (a skipped original is recorded)" % (fn, h))
+            if "ro" in rules:
+                for a in re.findall(r"\bCommit\(\s*[^,()]+,\s*([^)]*)\)", sb):
+                    if a.strip() != "__runOriginal":
+                        fails.append("%s.%s: Commit( is handed %s, not __runOriginal" % (fn, h, a.strip()))
             if "th" in rules and not THREAD.search(body):
                 fails.append("%s.%s: no thread check before recorder state" % (fn, h))
+            if "th" in rules:
+                for a in re.findall(r"\b(?:Admit|TryEnter)\(\s*([^,]*),", sb):
+                    a = a.strip()
+                    local = re.fullmatch(r"[a-z_]\w*", a) and re.search(r"\b" + a + r"\s*=\s*OnMain\(\)", sb)
+                    if not (re.search(r"OnMain\(\)|MainThreadId|IsInMainThread", a) or local):
+                        fails.append("%s.%s: thread gate handed %s, not a main-thread test" % (fn, h, a.strip()))
             if "or" in rules and not ORPHAN.search(body):
                 fails.append("%s.%s: no orphan-safe read of __state (skipped prefix / late install)" % (fn, h))
             if "vf" in rules and not re.match(r"static\s+void\b", sig):
@@ -171,6 +267,20 @@ MUTANTS = [
      "private static Exception DestroyFin(Exception __exception) => null;"),
     ("uncontained GameCompTimer.Fin", "JawaBenchGameCompTiming.cs",
      'catch (Exception e) { Fault("fin", e); }', ""),
+    ("KillPostfix calls Vitals.OnKill bare (outside a try)", "JawaBenchSituationalTools.cs",
+     "try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit); }\n"
+     "            catch (Exception ex) { NoteError(GKill, \"kill-vitals\", ex); }",
+     "if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit);"),
+    ("TakeDamagePostfix commits true, ignoring __runOriginal", "JawaBenchSituationalTools.cs",
+     "GDamage.Commit(sc, __runOriginal)", "GDamage.Commit(sc, true)"),
+    ("AbsorbPostfix commits true, ignoring __runOriginal", "JawaBenchSituationalTools.cs",
+     "GAbsorb.Commit(__state, __runOriginal)", "GAbsorb.Commit(__state, true)"),
+    ("TakeDamagePostfix admits true, not OnMain()", "JawaBenchSituationalTools.cs",
+     "GDamage.Admit(OnMain(), out var sc)", "GDamage.Admit(true, out var sc)"),
+    ("SplitPrefix admits true, not OnMain()", "JawaBenchSituationalTools.cs",
+     "GSplit.Admit(OnMain(), out __state)", "GSplit.Admit(true, out __state)"),
+    ("Sampler RootPrefix gates on a constant, not its OnMain() local", "JawaBenchTpsSampler.cs",
+     "GRoot.TryEnter(main, out __state)", "GRoot.TryEnter(true, out __state)"),
     ("an unlisted patch site", "JawaBenchHudLease.cs", "internal static void Install()",
      "static void Extra(Harmony h){ h.Patch(null); }\n        internal static void Install()"),
 ]
