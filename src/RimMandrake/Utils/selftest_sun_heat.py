@@ -16,8 +16,8 @@ dotnet.exe and converts the project path to a D-drive-style path first.
 from __future__ import annotations
 
 import os
-import subprocess
 from selftest_winstage import windows_project_path
+from winbuild import run_interop
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -63,11 +63,7 @@ def main():
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
     win_csproj = windows_project_path(CSPROJ)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    print(result.stdout, end="")
-    if result.stderr.strip():
-        print(result.stderr, end="", file=sys.stderr)
-    sys.exit(result.returncode)
+    sys.exit(run_interop(cmd))
 
 
 if __name__ == "__main__":

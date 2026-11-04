@@ -9,7 +9,8 @@ No game, no bridge. Checks:
      REAL RM_TidalLockPresetKernel.cs and sweeps its truth table), the setting
      tidalLockPresetGuard defaults on, is saved, and has a checkbox; the guard writes the line the readers parse.
   1b. the truth table is RUN: selftest_sun_heat.py builds and runs the C# SelfTest, and its tidal lock preset guard
-     case must print PASS (no dotnet, no build, or no such line is a FAIL here, never a pass).
+     case must print PASS. A build that broke, a crash or no such line is a FAIL; a run the machine stopped before the
+     table (no dotnet, rsync ENOMEM, WSL could not launch the exe, the inner cap) is UNMEASURED. Neither is ever a pass.
   2. harvest_log.py's `tidallock` check fires on a MOVING SUN line and on nothing else.
   3. tidal_lock_readback.py parses and judges the guard's line (locked, restored, unlocked, absent).
   4. the remake runbook's S13/G12 name the dev start save of record (canon.yml planet.start_savegame), and the
@@ -69,21 +70,74 @@ def wiring():
 KERNEL_CASE = "tidal lock preset guard: restores only a locked save with no preset on Worldbuilder"
 
 
+UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"   # run_selftests.py's own phrase
+BUILD_BROKE = re.compile(r"\berror (CS|MSB)\d+|Build FAILED")
+# What the machine says when the exe never got to run. Read only on the LAST line (stderr follows stdout there), so an
+# interop retry that succeeded earlier cannot hide a real crash after it.
+ENV_MARKS = ("env/build failure", "UtilAcceptVsock", UNMEASURED_PHRASE)
+UNMEASURED_KERNEL = []
+
+
+def kernel_verdict(out, timed_out=False):
+    """stdout+stderr of selftest_sun_heat.py -> "pass" | "fail" | "unmeasured"."""
+    lines = out.splitlines()
+    passed = [l for l in lines if l.startswith("PASS ") and KERNEL_CASE in l]
+    failed = [l for l in lines if l.startswith("FAIL ") and KERNEL_CASE in l]
+    if failed or len(passed) > 1:
+        return "fail"
+    if passed:
+        return "pass"
+    if BUILD_BROKE.search(out):
+        return "fail"
+    last = out.strip().splitlines()[-1] if out.strip() else ""
+    return "unmeasured" if timed_out or any(m in last for m in ENV_MARKS) else "fail"
+
+
+def kernel_verdicts():
+    """The cases that decide whether a night's red is the code or the machine."""
+    ok = "PASS  %s\n" % KERNEL_CASE
+    env = "staged build of X failed (rc=23) - env/build failure, not a selftest verdict"
+    vsock = "<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110"
+    for want, out, timed, what in (
+            ("pass", ok, False, "the case printed PASS"),
+            ("pass", vsock + "\nretry\n" + ok, False, "an interop retry that recovered is still the case's PASS"),
+            ("fail", "FAIL  %s\n" % KERNEL_CASE, False, "the case printed FAIL"),
+            ("fail", ok + ok, False, "the case printed twice"),
+            ("fail", ok + "FAIL  %s\n" % KERNEL_CASE, False, "a PASS beside a FAIL"),
+            ("fail", "Build succeeded.\nPASS  other case\n", False, "the table ran and the case is gone"),
+            ("fail", "", False, "no output at all, no reason given"),
+            ("fail", "x.cs(1,1): error CS1002: ; expected\n" + env, False, "a compile error wearing the env line"),
+            ("fail", vsock + "\nretry\nUnhandled exception. Boom", False, "a crash after a recovered interop retry"),
+            ("unmeasured", "rsync failed (23)\n" + env, False, "rsync ENOMEM in the stage (the night of 2026-11-03)"),
+            ("unmeasured", "Build succeeded.\n" + vsock, False, "WSL never launched the exe"),
+            ("unmeasured", "dotnet.exe not found; " + UNMEASURED_PHRASE, False, "no toolchain"),
+            ("unmeasured", "", True, "the inner cap fired")):
+        check(kernel_verdict(out, timed) == want, "kernel verdict %s: %s" % (want, what))
+    sun = read(HERE, "selftest_sun_heat.py")
+    check("run_interop(cmd" in sun, "selftest_sun_heat.py launches dotnet run through winbuild.run_interop (retries WSL's launch)")
+
+
 def kernel():
     """Build and run the C# SelfTest (it compiles the real RM_TidalLockPresetKernel.cs) and require its sweep to pass."""
+    timed_out = False
     try:
         res = subprocess.run([sys.executable, os.path.join(HERE, "selftest_sun_heat.py")],
                              capture_output=True, text=True, timeout=480)
         out = res.stdout + "\n" + res.stderr
     except subprocess.TimeoutExpired:
-        out = ""
-    passed = [l for l in out.splitlines() if l.startswith("PASS ") and KERNEL_CASE in l]
-    failed = [l for l in out.splitlines() if l.startswith("FAIL ") and KERNEL_CASE in l]
-    for l in failed:
-        print("      " + l[:400])
-    check(len(passed) == 1 and not failed, "C# SelfTest RAN the PresetToRestore truth table and it passed")
-    if not passed and not failed:
-        print("      (no tidal lock case in the C# SelfTest output; tail: %r)" % out.strip()[-400:])
+        out, timed_out = "", True
+    verdict = kernel_verdict(out, timed_out)
+    what = "C# SelfTest RAN the PresetToRestore truth table and it passed"
+    if verdict == "unmeasured":
+        UNMEASURED_KERNEL.append(what)
+        print("%s: the machine stopped the C# SelfTest before its table; tail: %r" % (UNMEASURED_PHRASE, out.strip()[-400:]))
+        return
+    for l in out.splitlines():
+        if l.startswith("FAIL ") and KERNEL_CASE in l:
+            print("      " + l[:400])
+    check(verdict == "pass", what)
+    if verdict != "pass":
+        print("      (no passing tidal lock case in the C# SelfTest output; tail: %r)" % out.strip()[-400:])
 
 
 LOCKED_OK = ("[RM CreatureBehaviors] planet lock at load: saved=TidallyLocked preset=(none) backend=Worldbuilder "
@@ -315,12 +369,13 @@ def reflected_names():
 def main():
     wiring()
     reflected_names()
+    kernel_verdicts()
     kernel()
     harvest()
     readback()
     runbook()
     live_proofs()
-    print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
+    print("%s: %d failed" % ("FAIL" if FAILS else "UNMEASURED" if UNMEASURED_KERNEL else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
 
