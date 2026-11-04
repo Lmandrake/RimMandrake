@@ -20,6 +20,22 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 WORKER = os.path.join(HERE, "worker.py")
 RUNNER = os.path.abspath(os.path.join(HERE, "..", ".."))
+SRC_TREE = RUNNER  # the real tree: mod folders for the deploy route stay read from here
+# The worker runs at a git sha (rev-parse HEAD, source_sha checkouts). A bare export (a blind checker's tree) has no
+# git: commit the trees the worker reads into a throwaway repo and run against that copy instead of crashing.
+if subprocess.run(["git", "-C", RUNNER, "rev-parse", "--verify", "HEAD"], capture_output=True).returncode != 0:
+    _copy = tempfile.mkdtemp(prefix="steve_worker_git_")
+    for _rel in ("infrastructure/stevedesktop", "src/RimMandrake/bridgetools", "src/RimMandrake/Utils",
+                 "src/RimMandrake/contracts", "src/RimMandrake/rimflow"):
+        if os.path.isdir(os.path.join(RUNNER, _rel)):
+            shutil.copytree(os.path.join(RUNNER, _rel), os.path.join(_copy, _rel),
+                            ignore=shutil.ignore_patterns("__pycache__", ".git"))
+    _g = ["git", "-C", _copy, "-c", "user.name=selftest", "-c", "user.email=selftest@invalid"]
+    for _a in (["init", "-q", "-b", "main"], ["add", "-A"], ["commit", "-q", "-m", "bare-export snapshot"]):
+        subprocess.run(_g + _a, check=True, capture_output=True)
+    print("no git checkout at %s: running against a committed snapshot %s" % (RUNNER, _copy))
+    RUNNER, HERE = _copy, os.path.join(_copy, "infrastructure", "stevedesktop")
+    WORKER = os.path.join(HERE, "worker.py")
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "Utils", "testq"))
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "bridgetools"))
 import schema as S  # noqa: E402
@@ -564,11 +580,11 @@ def main():
         # 13. TESTQ_FIX_COMPOSE_ROUTE_MOD_WITH: the real deploy route (TESTQ_CMD_DEPLOY mocks it everywhere above).
         # The flags deploy_flags builds from the REAL src tree must get past deploy_custom_mods.py's own argument
         # checks; `--mod FlowWorks --compose biomes` died there as argparse exit 2 on two booked Steve slots.
-        deploy_py = os.path.join(RUNNER, "src", "RimMandrake", "Utils", "deploy_custom_mods.py")
+        deploy_py = os.path.join(SRC_TREE, "src", "RimMandrake", "Utils", "deploy_custom_mods.py")
         probe = ("import runpy,sys; sys.argv=[%r]+sys.argv[1:]; g=runpy.run_path(%r, run_name='dcm');"
                  "g['first_existing'].__globals__['first_existing']=lambda *a: sys.exit('PARSE_OK');"
                  "sys.exit(g['main']())") % (deploy_py, deploy_py)
-        src = os.path.join(RUNNER, "src")
+        src = os.path.join(SRC_TREE, "src")
         for names, want in ((["FlowWorks", "RimMandrake.Biomes"], [("--compose", "biomes"), ("--with", "FlowWorks")]),
                             (["FlowWorks", "Pyrelands", "UtinniPatches"],
                              [("--compose", "biomes"), ("--with", "FlowWorks"), ("--with", "UtinniPatches")]),
@@ -577,7 +593,7 @@ def main():
             check(flags == want, "deploy route for %s: %s" % (names, flags))
             argv = [a for fv in flags for a in fv]
             r = subprocess.run([sys.executable, "-c", probe] + argv, capture_output=True, text=True, timeout=120,
-                               cwd=RUNNER)
+                               cwd=SRC_TREE)
             check("PARSE_OK" in r.stderr and r.returncode == 1,
                   "deploy_custom_mods.py accepts %s: rc %s %s" % (" ".join(argv), r.returncode, r.stderr[-300:]))
 
