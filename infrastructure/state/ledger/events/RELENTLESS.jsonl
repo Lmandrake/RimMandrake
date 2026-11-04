@@ -199,3 +199,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A2 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T07:33:08Z","tsn":1793777588134151474}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T07:43:14Z","tsn":1793778194393268424}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-04T07:43:22Z","tsn":1793778202659016712}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T07:53:29Z","tsn":1793778809403905655}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-04T07:53:43Z","tsn":1793778823821572225}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T07:53:54Z","tsn":1793778834382740730}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT A1 (L1), read-only proof","ts":"2026-11-04T07:54:00Z","tsn":1793778840279258780}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T07:54:07Z","tsn":1793778847777131892}
