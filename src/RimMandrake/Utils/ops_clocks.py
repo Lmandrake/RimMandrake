@@ -11,8 +11,10 @@ src/RimMandrake/Utils/systemd/ops_clocks.json; `RM_OPS_DEPLOY` overrides the dep
     ops_clocks.py deploy     print the deploy path (installers default their --deploy to it)
     ops_clocks.py snapshot   record the deploy's HEAD and `git status --porcelain -- src` in SNAPSHOT (commit it), for
                              a checker that cannot read the deploy: there `check` judges the pinned clause from that
-                             reading (younger than SNAPSHOT_MAX_H hours, HEAD an ancestor of the checker's HEAD,
-                             no local edit) and says so on its last line; everything systemd shows is still read live
+                             reading (younger than SNAPSHOT_MAX_H hours, HEAD on the deploy's origin/main as measured
+                             when it was taken, no local edit) and says so on a NOTE line; everything systemd shows is
+                             still read live. The checker's own git is a second witness only where it holds the
+                             commit: a checkout without that history (a blind export) cannot disprove it, and says so.
 """
 import fnmatch
 import json
@@ -124,6 +126,8 @@ def take_snapshot(dep, out=None):
         raise SystemExit("git status in the deploy failed: %s" % st.stderr.strip()[:200])
     snap = {"deploy": str(dep).rstrip("/"), "head": _git(dep, "rev-parse", "HEAD").stdout.strip(),
             "src_tree": _git(dep, "rev-parse", "HEAD:src").stdout.strip(),
+            # provenance measured HERE, where the history is: no commit of the deploy's own that origin/main lacks
+            "head_on_origin": _git(dep, "merge-base", "--is-ancestor", "HEAD", "origin/main").returncode == 0,
             "porcelain_src": st.stdout.splitlines(), "uid": os.getuid(), "taken": int(time.time()),
             "taken_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     p = Path(out) if out else snapshot_path()
@@ -132,8 +136,14 @@ def take_snapshot(dep, out=None):
     return snap
 
 
-def judge_snapshot(snap, dep, now=None, repo=REPO):
-    """Pure but for one `git merge-base --is-ancestor`: problems with a recorded reading of an unreadable deploy."""
+def has_commit(repo, sha):
+    """True only when `repo` is a git checkout holding commit `sha`; a history-less export answers False."""
+    return _git(repo, "cat-file", "-e", sha + "^{commit}").returncode == 0
+
+
+def judge_snapshot(snap, dep, now=None, repo=REPO, notes=None):
+    """Problems with a recorded reading of an unreadable deploy. Provenance is the recorded `head_on_origin`; the
+    checker's git confirms it only where it holds the commit (held but not an ancestor = a problem), else a note."""
     now = time.time() if now is None else now
     probs = []
     if snap.get("deploy", "").rstrip("/") != str(dep).rstrip("/"):
@@ -143,8 +153,18 @@ def judge_snapshot(snap, dep, now=None, repo=REPO):
         probs.append("snapshot is %.1f h old (limit %d h): rerun `ops_clocks.py snapshot` where the deploy is readable"
                      % (age_h, SNAPSHOT_MAX_H))
     head = snap.get("head", "")
-    if not re.fullmatch(r"[0-9a-f]{40}", head) or _git(repo, "merge-base", "--is-ancestor", head, "HEAD").returncode:
-        probs.append("snapshot HEAD %r is not an ancestor of this checkout's HEAD" % head)
+    if not re.fullmatch(r"[0-9a-f]{40}", head):
+        probs.append("snapshot HEAD %r is not a commit id" % head)
+    else:
+        if snap.get("head_on_origin") is not True:
+            probs.append("snapshot HEAD %s was not on the deploy's origin/main when taken (local commits in the deploy)"
+                         % head[:10])
+        if has_commit(repo, head):
+            if _git(repo, "merge-base", "--is-ancestor", head, "HEAD").returncode:
+                probs.append("snapshot HEAD %s is not an ancestor of this checkout's HEAD" % head[:10])
+        elif notes is not None:
+            notes.append("this checkout holds no commit %s (no git history here): ancestry not re-measured, relying on"
+                         " the snapshot's recorded head_on_origin" % head[:10])
     probs += ["local edit in the deploy (snapshot): %s" % ln for ln in snap.get("porcelain_src", ["?"])]
     return probs
 
@@ -162,7 +182,7 @@ def check(conf, notes=None):
             snap = json.loads(sp.read_text(encoding="utf-8"))
         except (OSError, ValueError) as e:
             return ["deploy %s is unreadable here and its snapshot %s cannot be read (%s)" % (dep, sp, e)]
-        probs += judge_snapshot(snap, dep)
+        probs += judge_snapshot(snap, dep, notes=notes)
         if notes is not None:
             notes.append("deploy unreadable here: pinned clause judged from snapshot %s taken %s by uid %s at %s"
                          % (sp.name, snap.get("taken_utc"), snap.get("uid"), str(snap.get("head", ""))[:10]))

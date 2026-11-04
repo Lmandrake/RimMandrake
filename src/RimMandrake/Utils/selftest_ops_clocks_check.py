@@ -97,6 +97,7 @@ with tempfile.TemporaryDirectory() as tmp:
     git(rep, "add", "src", "notes.txt")
     git(rep, "commit", "-q", "-m", "c1")
     head = git(rep, "rev-parse", "HEAD")
+    git(rep, "update-ref", "refs/remotes/origin/main", "HEAD")   # c1 is published
     check(OC.deploy_dirty(str(rep)) == [], "deploy_dirty: a clean deploy has no local edit")
     (rep / "notes.txt").write_text("changed\n")
     check(OC.deploy_dirty(str(rep)) == [], "deploy_dirty: an edit outside src/ is not the pinned code")
@@ -109,8 +110,9 @@ with tempfile.TemporaryDirectory() as tmp:
           "deploy_dirty: a deploy git cannot read is a problem, not clean")
     snapf = Path(tmp) / "snap.json"
     s_dirty = OC.take_snapshot(str(rep), snapf)
-    check(len(s_dirty["porcelain_src"]) == 2 and json.loads(snapf.read_text())["head"] == head,
-          "take_snapshot records HEAD and the src/ porcelain")
+    check(len(s_dirty["porcelain_src"]) == 2 and json.loads(snapf.read_text())["head"] == head
+          and s_dirty["head_on_origin"] is True,
+          "take_snapshot records HEAD, that it is on origin/main, and the src/ porcelain")
     git(rep, "checkout", "-q", "--", "src")
     (rep / "src/RimMandrake/new.py").unlink()
     snap = OC.take_snapshot(str(rep), snapf)
@@ -122,10 +124,33 @@ with tempfile.TemporaryDirectory() as tmp:
           "judge_snapshot: a stale snapshot fails")
     check(any("not the deploy" in p for p in OC.judge_snapshot(snap, "/elsewhere", now, repo=rep)),
           "judge_snapshot: a snapshot of another path fails")
-    check(any("not an ancestor" in p for p in OC.judge_snapshot(dict(snap, head="0" * 40), str(rep), now, repo=rep)),
-          "judge_snapshot: a HEAD the checker's history lacks fails")
-    check(any("not an ancestor" in p for p in OC.judge_snapshot(dict(snap, head="abc"), str(rep), now, repo=rep)),
+    check(any("not a commit id" in p for p in OC.judge_snapshot(dict(snap, head="abc"), str(rep), now, repo=rep)),
           "judge_snapshot: a malformed HEAD fails")
+    # a blind export: no git history at all. The recorded provenance carries it, and the note says so
+    export = Path(tmp) / "export"
+    export.mkdir()
+    nb = []
+    check(OC.judge_snapshot(snap, str(rep), now, repo=export, notes=nb) == [] and nb and "no git history" in nb[0],
+          "judge_snapshot: a checkout with no history passes a clean on-origin snapshot and notes the gap (%s)" % nb)
+    check(any("not on the deploy's origin/main" in p
+              for p in OC.judge_snapshot(dict(snap, head_on_origin=False), str(rep), now, repo=export)),
+          "judge_snapshot: a HEAD recorded as off origin/main fails even with no history here")
+    check(any("not on the deploy's origin/main" in p
+              for p in OC.judge_snapshot({k: v for k, v in snap.items() if k != "head_on_origin"}, str(rep), now,
+                                         repo=export)),
+          "judge_snapshot: a snapshot without head_on_origin is not taken as published")
+    # the deploy commits locally: the taker records it off origin, and a checker holding the commit disproves it too
+    (rep / "src/RimMandrake/a.py").write_text("x = 3\n")
+    git(rep, "commit", "-q", "-am", "local")
+    s_local = OC.take_snapshot(str(rep), snapf)
+    check(s_local["head_on_origin"] is False and s_local["porcelain_src"] == [],
+          "take_snapshot: a local commit in the deploy is recorded as off origin/main")
+    other = Path(tmp) / "checker"
+    git(tmp, "clone", "-q", str(rep), str(other))
+    git(other, "checkout", "-q", "--detach", head)
+    check(any("not an ancestor" in p for p in OC.judge_snapshot(dict(s_local, head_on_origin=True), str(rep), now,
+                                                                repo=other)),
+          "judge_snapshot: a checker that holds the commit but not as an ancestor fails it")
     check(any("local edit" in p for p in OC.judge_snapshot({k: v for k, v in snap.items() if k != "porcelain_src"},
                                                            str(rep), now, repo=rep)),
           "judge_snapshot: a snapshot with no porcelain field is not taken as clean")
@@ -146,8 +171,8 @@ with tempfile.TemporaryDirectory() as tmp:
             os.environ["RM_OPS_SNAPSHOT"] = str(snapf)
             notes = []
             r = OC.check(empty, notes)
-            check(any("not an ancestor" in p for p in r) and notes and "judged from snapshot" in notes[0],
-                  "check: an unreadable deploy is judged from the snapshot, and says so")
+            check(r == [] and any("judged from snapshot" in n for n in notes),
+                  "check: an unreadable deploy is judged from the snapshot, and says so (%s %s)" % (r, notes))
     finally:
         os.chmod(lock, 0o700)
         os.environ.pop("RM_OPS_DEPLOY", None)
@@ -155,8 +180,8 @@ with tempfile.TemporaryDirectory() as tmp:
 
 # the committed snapshot is a reading of the real deploy
 real = json.loads(OC.SNAPSHOT.read_text(encoding="utf-8"))
-check(real["deploy"] == DEP and set(real) >= {"head", "porcelain_src", "taken", "uid"},
-      "the committed snapshot is of the dispatch deploy and carries head, porcelain, time and uid")
+check(real["deploy"] == DEP and set(real) >= {"head", "head_on_origin", "porcelain_src", "taken", "uid"},
+      "the committed snapshot is of the dispatch deploy and carries head, head_on_origin, porcelain, time and uid")
 
 print("%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

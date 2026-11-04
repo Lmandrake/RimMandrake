@@ -1,9 +1,10 @@
 {
  "deploy": "/home/mandrake/rm/dispatch",
- "head": "44b1ec87f1807d61c5796f74a43c04bc05965174",
- "src_tree": "01c678ee1c71cc7d98bd91b975a0b3c3e9f5f8d0",
+ "head": "23373141ffbb60567092f1a5d1e13a42aa8a1d41",
+ "src_tree": "68876562549e2e3e2aa470ff1d1e8dadbf79d749",
+ "head_on_origin": true,
  "porcelain_src": [],
  "uid": 1000,
- "taken": 1793763366,
- "taken_utc": "2026-11-04T03:36:06Z"
+ "taken": 1793764292,
+ "taken_utc": "2026-11-04T03:51:32Z"
 }
