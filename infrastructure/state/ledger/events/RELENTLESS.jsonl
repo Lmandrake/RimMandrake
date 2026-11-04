@@ -179,3 +179,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FORGE_SKY_PASTURES_1 A2 (L1), read-only proof","ts":"2026-11-04T05:49:02Z","tsn":1793771342762766469}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T05:49:08Z","tsn":1793771348888050311}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-04T05:55:15Z","tsn":1793771715819105773}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T06:03:16Z","tsn":1793772196680080632}
