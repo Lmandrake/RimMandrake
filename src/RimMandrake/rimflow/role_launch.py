@@ -1419,7 +1419,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # system crash because we couldn't afford to watch." No band, budget or daily cap refuses, delays, skips
             # or shrinks this role's run; overspend raises an immediate alarm instead (overspend_alarm)
             allowed = "all"
-        if slot_blocked(allowed, job, cfg, now):
+        # a covering run is judged as the slot it covers (its slot and first-ness), not as a slotless run-now (g2r4)
+        if slot_blocked(allowed, dict(job, slot=cv, first=[hh for hh, _, _ in today].index(cv) == 0)
+                        if cv is not None else job, cfg, now):
             sk = skip_event(rs, job, "band " + bname)
             if sk is None:
                 mark(rs, job, "band " + bname)
@@ -1663,7 +1665,7 @@ def run_now_request(sch, a, now):
         raise ValueError("--why: say why this run is asked for")
     cfg = dict(ROLE_DEFAULTS, **role)
     mode = a.get("mode") or ("quick" if "quick_token_cap" in cfg else "run")
-    if mode not in RUN_NOW_MODES or not run_now_cap(cfg, mode):
+    if mode not in RUN_NOW_MODES or run_now_cap(cfg, mode) is None:    # 0 is a cap; the launch applies it (g2r4)
         raise ValueError("mode %r: a run-now runs one of %s that %s has a token cap for" % (
             mode, "/".join(RUN_NOW_MODES), role["name"]))
     claims = []
