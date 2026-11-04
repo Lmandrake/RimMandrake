@@ -1,0 +1,2 @@
+A live game ending is a reading, not a diagnosis. Workers handed 'A1 FAILED on the running game' rebuilt correct mods for many rounds, because the brief stated the reading as a verdict and never asked them to read the log. The brief now says 'exited FAIL', lists the ending history, names a clause that stayed red across different code, and refuses finish until the worker writes CLASSIFY: MOD|SITE|HARNESS|CONTRACT with evidence. An outside fault is parked with snag --class instrument --on <repair item>, which costs no strike.
+home: src/RimMandrake/rimflow/relentless.py

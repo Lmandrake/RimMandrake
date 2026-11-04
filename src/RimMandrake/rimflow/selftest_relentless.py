@@ -290,6 +290,101 @@ def t_same_failure():
     x.done(), y.done()
 
 
+def t_contract_wall_redesigns_at_once():
+    """CONTRACT_WALL_REPLACE_NEXT_GEN: a worker that finds the set contract wrong (a contract_* snag) cannot replace it on a
+    build attempt; the next one is the redesign that may, at once, not after same_failure_limit returns of one slug."""
+    x = Rig(n=1, share=1.0)
+    x.tick()
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "run the test")
+    expect_raise = None
+    try:
+        R.contract(x.s, "I0", st["gen"], "a better test", why="w")
+    except ValueError as e:
+        expect_raise = str(e)
+    ok(expect_raise and "only a redesign" in expect_raise, "contract wall: a build attempt may not replace it")
+    R.snag(x.s, "I0", st["gen"], "contract_unrunnable", "the contract cannot run where the checker runs", x.r, now=x.now)
+    x.w.up[st["run"]["unit"]] = False
+    st = x.st("I0")
+    ok(st["approach"] == "redesign" and st["approach_changes"] == 1, "contract wall: one return is the redesign")
+    x.run_one("I0")
+    ok("CONTRACT WALL" in x.w.launches[-1][2], "contract wall: the next brief says replace the contract")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "a better test", why="the old one cannot run in the wall")
+    ok(x.st("I0")["contract"]["proof"] == "a better test", "contract wall: the redesign replaces it")
+    y = Rig(n=1, share=1.0)
+    y.tick()
+    y.run_one("I0")
+    st = y.st("I0")
+    R.snag(y.s, "I0", st["gen"], "contract_unrunnable", "x", y.r, now=y.now)
+    ok(y.st("I0")["approach"] == "build", "contract wall: no contract set, no approach change")
+    x.done(), y.done()
+
+
+def t_live_ending_is_diagnosed_first():
+    """LIVE_WORKERS_DIAGNOSE_BEFORE_THEY_REBUILD: a live or checker ending is a reading, not a diagnosis. The next brief says
+    so and lists the endings on record; a clause that read FAIL on two builds is named; `finish` waits for a written
+    CLASSIFY line; a site or instrument fault is an `instrument` snag that blocks on its repair item with no strike."""
+    x = Rig(n=1, share=1.0)
+    x.tick()
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "run the test")
+    for n, sha in enumerate(("a" * 40, "b" * 40)):
+        st = x.st("I0")
+        x.s.attempt("I0", {"at": "t", "gen": st["gen"], "end": "finish", "sha": sha})
+        unit = st["run"]["unit"]
+        with x.s.lock():
+            st = x.s.load("I0")
+            R.fail(x.s, st, "game_fail", "A1 FAIL on the running game (/x/a1_%d.log)" % n, x.r, x.now)
+        x.w.up[unit] = False
+        x.run_one("I0")
+    brief = x.w.launches[-1][2]
+    ok("DIAGNOSE FIRST" in brief and "CLASSIFY: MOD|SITE|HARNESS|CONTRACT" in brief, "diagnose: the brief asks for it first")
+    ok("FAILED on it" not in brief, "diagnose: no brief asserts the mod failed")
+    ok("SAME CLAUSE, NEW CODE, SAME FAIL: A1 read FAIL on 2 builds" in brief, "diagnose: a clause red on two builds is named")
+    head = brief.split("--- item ---")[0]
+    ok("Endings on record" in head and head.count("ended game_fail") == 2 and "on code aaaaaaaaaa" in head,
+       "diagnose: every ending on record is in the brief, with the code it stood on")
+    st = x.st("I0")
+    refused = None
+    try:
+        R.finish(x.s, "I0", st["gen"], "c" * 40, "e")
+    except ValueError as e:
+        refused = str(e)
+    ok(refused and "CLASSIFY" in refused, "diagnose: finish is refused before the classification")
+    R.learn(x.s, "I0", st["gen"], "CLASSIFY: MOD")
+    ok(x.st("I0").get("diagnose_owed"), "diagnose: a class with no evidence line does not count")
+    R.learn(x.s, "I0", st["gen"], "CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the one log line that decides it>")
+    ok(x.st("I0").get("diagnose_owed"), "diagnose: the brief's template pasted back does not count")
+    R.learn(x.s, "I0", st["gen"], "CLASSIFY: SITE - prepare_site read back a roof in the rect: roofed=12")
+    st = x.st("I0")
+    ok(not st.get("diagnose_owed") and st["diagnosed"]["class"] == "SITE", "diagnose: the CLASSIFY line settles it")
+    refused = None
+    try:
+        R.snag(x.s, "I0", st["gen"], "instrument", "the bridge is wedged", x.r, now=x.now)
+    except ValueError as e:
+        refused = str(e)
+    ok(refused and "rimflow file" in refused, "instrument: refused without the repair item it waits on")
+    refused = None
+    try:
+        R.snag(x.s, "I0", st["gen"], "instrument", "the bridge is wedged", x.r, now=x.now, wait_hours=2,
+               on=["BRIDGE_REPAIR_X_Y"])
+    except ValueError as e:
+        refused = str(e)
+    ok(refused and "wait-hours" in refused, "instrument: a clock wait is refused, it would skip the repair block")
+    before = (dict(st["failures"]), st["approach"], st["total_failures"])
+    R.snag(x.s, "I0", st["gen"], "instrument", "IndeterminateError: refusing pause_game", x.r, now=x.now,
+           on=["BRIDGE_REPAIR_X_Y"])
+    st = x.st("I0")
+    ok(st["status"] == "stopping" and st["block_pending"]["kind"] == "item" and st["block_pending"]["on"] == ["BRIDGE_REPAIR_X_Y"]
+       and (dict(st["failures"]), st["approach"], st["total_failures"]) == before,
+       "instrument: a block on the repair, no strike and no approach change")
+    ok(any(a.get("class") == "instrument" for a in x.s.attempts("I0")), "instrument: the record names the class")
+    x.done()
+
+
 def expect_fence(fn, what):
     try:
         fn()
@@ -4352,7 +4447,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

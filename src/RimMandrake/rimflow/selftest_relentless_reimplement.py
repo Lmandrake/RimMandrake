@@ -150,6 +150,8 @@ def to_game(x, i, sha):
     st = x.st(i)
     if not st.get("contract"):
         R.contract(x.s, i, st["gen"], "python3 selftest_x.py", game={"clauses": ["A2", "A3"], "why": "defs load"})
+    if st.get("diagnose_owed"):     # a live ending is classified before a finish (LIVE_WORKERS_DIAGNOSE_BEFORE_THEY_REBUILD)
+        R.learn(x.s, i, st["gen"], "CLASSIFY: MOD - the proof asked and A3 read 0 where 1 is wanted")
     R.finish(x.s, i, st["gen"], sha, "evidence")
     x.w.up[st["run"]["unit"]] = False
     x.tick()

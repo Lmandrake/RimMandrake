@@ -129,6 +129,41 @@ UNDEPLOYED = ("not deployed", "not in the running load")    # retried on another
 SITE_CMD = re.compile(r"^python\.exe src/RimMandrake/Utils/live_site\.py(?: --[a-z][a-z-]*(?: [A-Za-z0-9_.\-]+)?)+$")
 # rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game
 WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python")
+# LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL (owner 2026-11-03: "the checker was unable to measure something, and interpreted
+# that as a wrong value rather than an inability that should have been reported up"). Exit 1 is a FAIL only when the
+# proof asked and the answer missed the bar. A Python traceback also exits 1, and so did proofs that printed their own
+# UNMEASURED; 14 items churned on such rows read as game_fail strikes. could_not_ask() reads the log's tail; every
+# pattern is from a real FAIL row of 2026-11-02..04 (relentless/live/*.log).
+# The box or the instrument failed: no proof or mod change helps (relentless_game._harness: alarm, restage later, no strike)
+EXIT1_HARNESS = re.compile(
+    r"cannot reach the bridge from WSL|IndeterminateError|No space left on device|\[Errno 28\]|Wsl/Service/"
+    r"|object has no attribute 'sendall'|UtilAcceptVsock|BrokenPipeError|ConnectionResetError|ConnectionRefusedError|ConnectionAbortedError")
+# The running load is not the one the proof needs (wrong tier, a stale DLL): RELOAD, so the game phase restages
+EXIT1_RELOAD = re.compile(r"^(?:WRONG_TIER|WRONG_LIST)\b|stale deploy|redeployed after launch")
+# The same, as one row of a proof that may also have charged the mod: read only when no `FAIL MOD` row did (TITANIC's
+# UNMEASURED SITE row "No loaded type 'LargePawns.Settings'" sat beside two real MOD FAILs)
+EXIT1_UNLOADED = re.compile(r"No loaded type '|is not loaded in the running game|intended ids absent from the next load")
+# A verdict-shaped line: the LAST one says what the proof itself concluded
+VERDICT_LINE = re.compile(r"^(?:(?:VERDICT|LIVE)\s*:?\s*|RESULT\s+\S+\s+|[\w./-]+:\s+)?(PASS|FAIL|UNMEASURED|NOT REPRODUCED)\b")
+# The instrument read nothing: `x=None`, `read None`, `site None` (HEALTH_CHECK, ACC_BIOMES, WEEPINGSTONES), or there was
+# nothing on the map or world to measure (HORRORS: "no candidate tile on this world"), or the driver handed back nothing
+# (EGROWTH "-> None" / "wrote no", ASHKARR "returned no fields", WASTELAND "no component", STILLSAND "0 matching rows")
+READ_NOTHING = re.compile(r"(?:\bread\s+|[=:]\s*|->\s*|^\w+\s+)None\b|\bno (?:candidate|sample|results?|run JSON|component)\b"
+                          r"|\bwrote no\b|\breturned no fields\b|\b0 matching rows\b")
+KV_VALUE = re.compile(r"\b\w+=([^\s,;)]+)")
+KV_NONE = re.compile(r"\b\w+=None\b")    # a `k=None` among real `k=v` reads is one empty field of an answer, not no answer
+# A row the proof itself charged to the mod: `A2 FAIL MOD ...` (a row id, then the status and class), never prose that
+# merely mentions the words ("Only FAIL MOD rows count" is no row)
+MOD_ROW = re.compile(r"^\s*\[?(?=[\w./-]*[\d_])[\w./-]+\]?:?\s+FAIL\s+MOD\b")    # the id holds a digit or _
+FAIL_ROW = re.compile(r"^\s*\[?(?=[\w./-]*[\d_])[\w./-]+\]?:?\s+FAIL\b")     # `T1 FAIL: ...`, a row the proof failed
+# A harness or reload marker the line itself negates or passes: "no ConnectionRefusedError", "stale deploy=False",
+# "PASS: ... not a stale deploy" report its absence
+NEGATED = re.compile(r"\b(?:no|not|without|never)\s+(?:[\w-]+\s+)?$")     # lower case: "NOT READY: IndeterminateError" is a refusal
+NEGATED_AFTER = re.compile(r"^\s*[=:]\s*(?:False|0|no|none)\b", re.I)
+# The exception that ends a traceback: the first unindented line after it names its class (StopIteration and KeyboardInterrupt
+# end in neither Error nor Exception)
+TB_END = re.compile(r"^(?:[A-Za-z_]\w*\.)*([A-Za-z_]\w*)(?::|$)")
+EXIT1_LOOK = 25     # READ_NOTHING reads only the last lines: a None far above the verdict is some row's detail
 SRC_MOD = re.compile(r"^src/(Rim[A-Za-z]+)/([^/]+)/(.+)$", re.S)     # src/<tier>/<Mod>/<path in the mod>
 DRIFT = re.compile(r"^\s{2,6}([~+\-H])\s+(\S.*?)(?:\s{2,}\(.*\))?\s*$")
 SECTION = re.compile(r"^(\S+)\s+(mandrake\.\S+)(.*)$")      # deploy_custom_mods prints one per mod, drift or not
@@ -409,6 +444,79 @@ def broken_call(path):
         if BROKEN_CALL.search(line):
             return line[:200]
     return None
+
+
+def could_not_ask(path):
+    """A proof that exited 1 -> (kind, line) when its log shows it could not ask, else None (a real FAIL).
+    kind "harness": the box or instrument failed (EXIT1_HARNESS) - never the mod's, never the worker's;
+    kind "reload": the running load is the wrong one for it (EXIT1_RELOAD);
+    kind "dud": the proof measured nothing - its own last verdict line says UNMEASURED or NOT REPRODUCED, it crashed
+    (a traceback ending in anything but an AssertionError that no verdict line follows), or it read None / found nothing
+    to measure on a line that is not itself a FAIL verdict or a failed assert.
+    An observed violation is never erased (GPT test-tolerance advice 2026-11-04): a `FAIL MOD` row keeps the FAIL whatever
+    else the run tripped over, and so does a FAIL line that reports a None (the None may be the defect). Uncertain cases
+    still reach the worker as a FAIL, and the worker must classify them before any rebuild (relentless.DIAGNOSE_ENDS)."""
+    lines = tail_lines(path)
+    if any(MOD_ROW.match(x) for x in lines):
+        return None             # an observed violation is never erased, whatever else the run tripped over
+    for kind, rx in (("harness", EXIT1_HARNESS), ("reload", EXIT1_RELOAD)):
+        for line in reversed(lines):
+            if marker_hit(rx, line):
+                return kind, line[:200]
+    for line in reversed(lines):
+        if marker_hit(EXIT1_UNLOADED, line):
+            return "reload", line[:200]
+    last_verdict, at = None, -1
+    for i in range(len(lines) - 1, -1, -1):
+        m = VERDICT_LINE.match(lines[i].strip())
+        if m:
+            last_verdict, at = m.group(1), i
+            break
+    if last_verdict in ("UNMEASURED", "NOT REPRODUCED"):
+        return "dud", lines[at].strip()[:200]
+    tb = max((i for i, x in enumerate(lines) if x.startswith("Traceback (most recent call last)")), default=-1)
+    if tb > at:
+        ends = [m.group(1) for m in (TB_END.match(x) for x in lines[tb + 1:]
+                                     if x and not x[0].isspace() and not x.startswith(("Traceback", "During handling")))
+                if m]
+        if ends and ends[-1] != "AssertionError":
+            return "dud", ("the proof crashed: %s" % ends[-1])[:200]
+    for line in reversed(lines[-EXIT1_LOOK:]):
+        if observed_fail(line):
+            continue
+        if read_nothing(line):
+            return "dud", line[:200]
+    return None
+
+
+def marker_hit(rx, line):
+    """rx names a harness or reload fault on this line, and the line does not report its absence: a PASS line, or the
+    marker after "no"/"not" or before "=False", says the fault did NOT happen (GPT review 2026-11-03)."""
+    m = rx.search(line)
+    if not m:
+        return False
+    v = VERDICT_LINE.match(line.strip())
+    if v and v.group(1) == "PASS":
+        return False
+    return not (NEGATED.search(line[:m.start()]) or NEGATED_AFTER.match(line[m.end():]))
+
+
+def observed_fail(line):
+    """The proof's own FAIL verdict or a failed assert: an observed violation. A None on that line is what the proof
+    saw (a setting that read None where `enabled` is wanted may be the defect), so it is never read as a dud."""
+    v = VERDICT_LINE.match(line.strip())
+    return bool(v and v.group(1) == "FAIL") or bool(FAIL_ROW.match(line)) or line.lstrip().startswith("AssertionError")
+
+
+def read_nothing(line):
+    """READ_NOTHING on one line, except a `k=None` beside real `k=v` values: the instrument answered and one field is
+    empty (BRIDGE_STALL_DIAGNOSTIC_1: `phaseStack=['update'] silentS=60.5 ... tickList=None` is the tool's own answer,
+    and its FAIL is the mod's)."""
+    if not READ_NOTHING.search(line):
+        return False
+    if any(v != "None" for v in KV_VALUE.findall(line)):
+        return bool(READ_NOTHING.search(KV_NONE.sub("", line)))
+    return True
 
 
 def asked_reload(path):
@@ -889,7 +997,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 row["proof_exit"] = None        # the proof starts: from here every outcome is the mod's (verdict)
                 code = fx.run_proof(proof, log, lr["proof_max_s"])
                 row["proof_exit"] = code
-                again = wsl_rerun(proof, read_text(log)) if code not in (PASS, FAIL) else None
+                again = wsl_rerun(proof, read_text(log)) if code != PASS else None     # a WSL traceback exits 1
                 if again:
                     os.replace(log, log[:-len(".log")] + "-wsl.log")
                     row["rerun"] = again
@@ -908,8 +1016,15 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
         if not row["released"]:
             return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
-    if code not in (PASS, FAIL):
-        why = crashed or (asked_reload(log) if code is not None else None) or "the proof %s" % (
+    unable = could_not_ask(log) if code == FAIL and not crashed else None
+    said = None
+    if unable:      # LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL: an exit 1 that could not ask is no FAIL and no verify
+        row["unable"] = unable[0]
+        said = {"harness": "%s: the proof exited 1 and could not ask: %%s" % HARNESS,
+                "reload": "%s: the proof exited 1 on a load it cannot judge: %%s" % RELOAD,
+                "dud": "the proof exited 1: it did not measure: %s"}[unable[0]] % unable[1]
+    if code not in (PASS, FAIL) or unable:
+        why = crashed or said or (asked_reload(log) if code is not None else None) or "the proof %s" % (
             "timed out" if code is None else "exited %d: it did not measure: %s" % (code, exit_reason(log)))
         if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
             # its game: relentless_live_round.due runs it again only on another game (one row per game, not per round)
@@ -925,13 +1040,15 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         broken = broken_call(log) if ran else None
         earlier = seen_on_other_build(rows, item_id, criterion, sha, key, proof) if ran else None
         games = infra_games(rows, item_id, criterion, sha, game) if "proof_exit" not in row and "health" in row else 0
-        if games >= lr["infra_games"]:      # retried on healthy games and still INFRA: the harness's (relentless_game._harness), no strike
+        box = bool(unable) and unable[0] == "harness"
+        if games >= lr["infra_games"] or box:   # INFRA on healthy games, or a box fault: relentless_game._harness, no strike
             row["harness"] = True
             if any(x.get("harness") for x in rows if (x.get("item"), x.get("criterion"), x.get("sha"))
                    == (item_id, criterion, sha)):
                 return done("UNMEASURED", why, log=log)
-            why = "%s: INFRA on %d games for this build, so no game can judge it until the harness is fixed: %s" % (
-                HARNESS, games, why)
+            if not box:
+                why = "%s: INFRA on %d games for this build, so no game can judge it until the harness is fixed: %s" % (
+                    HARNESS, games, why)
         elif broken or before or earlier:   # no further load or rerun of this build can say anything else
             row["defect"] = True
             if n > 1:

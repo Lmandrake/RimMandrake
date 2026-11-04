@@ -101,7 +101,16 @@ PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged")     # one road: s
 PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
 REJECT_ENDS = ("blind_fail", "proof_weak")
 SUPERVISOR_ENDS = PROOF_ENDS + ("blind_fail",)     # set by a checker verdict only; a worker's snag with one is refused
-NOT_AN_APPROACH = ("worker_lost", "checker_lost")       # a dead process or a silent checker tried nothing
+NOT_AN_APPROACH = ("worker_lost", "checker_lost")
+# LIVE_WORKERS_DIAGNOSE_BEFORE_THEY_REBUILD (owner 2026-11-04: "Why aren't the agents that encounter difficulties in the live
+# game check recognizing what's going wrong?"): an ending read off a live proof or a checker is a reading the supervisor took
+# from an exit code and a regex. No agent had read its log before the next worker was told the mod FAILED and to work it, so
+# generations changed code against a broken site or instrument (live churn triage 2026-11-04: of 30 game_fail items, 5
+# HARNESS and 6 SITE). After one of these the next worker owes a written classification before `finish` is taken.
+DIAGNOSE_ENDS = ("game_fail", "game_unmeasured", "game_proof_unmeasured", "checker_lost", "unmeasured")
+CLASSIFY_RX = re.compile(r"^\s*CLASSIFY:\s*(MOD|SITE|HARNESS|CONTRACT)\b(?![|/])[\s:;,.\u2014-]*([^\s<|].{9,})", re.S)
+INSTRUMENT = "instrument"   # snag class: the site or the instrument is broken, not the work - a block on its repair item
+HISTORY_MAX = 10            # endings the brief lists, newest last       # a dead process or a silent checker tried nothing
 
 
 def pkg(name):
@@ -304,20 +313,29 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         return
     # rotating slugs cannot dodge this: enough returns with no new sha also change the approach
     unchanged = st["total_failures"] - (st.get("total_at_change") or 0) >= r.get("unchanged_returns_limit", limit * 3)
-    if ((st["failures"][klass] >= limit and not time_not_work) or unchanged) and relentless_strikes.out_of_tacks(st, r):
+    # CONTRACT_WALL_REPLACE_NEXT_GEN: a worker that found the SET contract itself wrong (a contract_* snag) cannot replace
+    # it on a build attempt (contract(): only a redesign or a proof-only worker may). Waiting for same_failure_limit returns
+    # of one slug cost TESTQ_WORKER_MIGRATE_PYDANTIC_CONTRACT, DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO and
+    # GUBBRA_GOURD_FIX_WONT_SELECT two or three wasted builds each, and their workers' rotating slugs dodged the count:
+    # the next attempt is the redesign at once, the one road that may change the contract (never pilot: it may not)
+    wall = klass.startswith("contract") and bool(st.get("contract")) and st["approach"] != "redesign"
+    if (((st["failures"][klass] >= limit and not time_not_work) or unchanged or wall)
+            and relentless_strikes.out_of_tacks(st, r)):
         # the ladder has been climbed: a person decides the next tack (RELENTLESS_STRIKES_HARDEN_CHANGE_TACK)
         relentless_strikes.hold(st, "%d strikes of %s after %d approach changes: split it, redesign it, or drop it"
                                 % (st["failures"][klass], klass, st["approach_changes"]), "strikes", now)
-    elif (st["failures"][klass] >= limit and not time_not_work) or unchanged:
+    elif (st["failures"][klass] >= limit and not time_not_work) or unchanged or wall:
         st["failures"][klass] = 0
         st["total_at_change"] = st["total_failures"]
         st["approach_changes"] += 1
         wanted = "pilot" if st.get("pilot_wanted") else "redesign"
-        st["approach"] = ("redesign" if st["approach"] == "pilot" else
+        st["approach"] = ("redesign" if wall or st["approach"] == "pilot" else
                           "pilot" if st["approach"] == "redesign" else wanted)
     store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
                                "approach_next": st["approach"]})
     store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
+    if klass in DIAGNOSE_ENDS:
+        st["diagnose_owed"] = {"class": klass, "detail": (detail or "")[:600], "at": now, "gen": st["gen"]}
     if klass == "circling":     # under this lock, so no tick can lease the next worker ahead of the consult
         st["circling_hits"] = st.get("circling_hits", 0) + 1
         force_help(store, st, r, now)
@@ -444,6 +462,12 @@ def learn(store, item, gen, text, now=None):
         st = store.load(item)
         _fence(st, item, gen, stage_ok=True)
         st["last_beat"] = time.time() if now is None else now
+        m = CLASSIFY_RX.match(text or "")
+        if m and st.get("diagnose_owed"):
+            st["diagnosed"] = {"class": m.group(1), "evidence": m.group(2)[:600], "gen": gen, "at": st["last_beat"],
+                               "of": st.pop("diagnose_owed")}
+            store.attempt(item, {"at": iso(st["last_beat"]), "gen": gen, "classified": m.group(1),
+                                 "evidence": m.group(2)[:300]})
         store.learn(item, "- %s gen %d: %s" % (iso(st["last_beat"]), gen, text))
         store.save(st)
 
@@ -541,6 +565,15 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "owner_call", "detail": st["hold"]["why"]})
             store.save(st)
             return
+        if (klass or "").lower() == INSTRUMENT:
+            if not on or not (detail or "").strip():
+                raise ValueError("--class instrument takes the repair item and the evidence: `rimflow namecheck`, `rimflow "
+                                 "file <NAME> --for BENCH` (or reuse the open one), then `snag --class instrument --on <NAME> "
+                                 "\"<the log line showing the site or instrument, not the work, is broken>\"`")
+            if wait_hours:
+                raise ValueError("--class instrument waits on its repair item (--on), never on a clock: drop --wait-hours")
+            st.pop("diagnose_owed", None)       # the snag is the classification: SITE or HARNESS, with its evidence
+            blocker = "item"
         blk = None if wait_hours else relentless_block.from_snag(klass, detail, r, on, blocker)
         if blk:     # a blocker, not a failed approach: out of the line until the ledger block ends (relentless_block)
             st["gen"] += 1
@@ -548,7 +581,7 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             st["stopping_since"] = now
             st["block_pending"] = blk
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "blocked", "detail": (detail or "")[:600],
-                                 "kind": blk["kind"], "on": blk["on"]})
+                                 "kind": blk["kind"], "on": blk["on"], "class": klass})
             store.learn(item, "- %s gen %d blocked (%s%s): %s" % (iso(now), gen, blk["kind"], " on " + ", ".join(blk["on"])
                                                                   if blk["on"] else "", (detail or "")[:600]))
             store.save(st)
@@ -582,6 +615,10 @@ def finish(store, item, gen, sha, evidence, now=None):
         _fence(st, item, gen)
         if not st["contract"]:
             raise ValueError("no contract: set it with `contract` before finishing")
+        if st.get("diagnose_owed"):
+            raise ValueError("the last ending (%s) was read off a live proof or a checker and nobody has classified it: "
+                             "read its log, then `learn \"CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the log line that decides it>\"` "
+                             "before finishing" % st["diagnose_owed"]["class"])
         if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
             raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
@@ -2384,7 +2421,45 @@ def eligible(it, r, world=None, now=None):
 
 # ---------------------------------------------------------------- prompts
 
-def worker_prompt(st, text, learned, r):
+LIVE_FAIL_RX = re.compile(r"(?:^|;\s*)(\S+) FAIL on the running game")
+
+
+def ending_history(attempts):
+    """-> the endings on record, one short line each, oldest first: what each generation ended with and the code it
+    stood on (its finish sha), and any classification a worker wrote. Generation ten of an item had seen one line of
+    generation nine's ending, never that one through nine all changed code against the same broken instrument."""
+    out, sha = [], None
+    for a in attempts or []:
+        if a.get("end") == "finish":
+            sha = a.get("sha")
+            continue
+        if a.get("classified"):
+            out.append("gen %s classified it %s: %s" % (a.get("gen"), a["classified"], (a.get("evidence") or "")[:140]))
+            continue
+        end = a.get("end")
+        if not end or end in ("owner_call",):
+            continue
+        first = ((a.get("detail") or a.get("said") or "").strip().splitlines() or [""])[0][:160]
+        out.append("gen %s ended %s%s%s: %s" % (a.get("gen"), end, " (%s)" % a["class"] if a.get("class") else "",
+                                               " on code %s" % sha[:10] if sha else "", first))
+    return out[-HISTORY_MAX:]
+
+
+def repeated_live(attempts):
+    """-> {clause: [the shas it read FAIL on]} for each live clause that read FAIL on two or more different builds: the
+    code changed between and the clause did not move, which is as likely the instrument as the work."""
+    seen, sha = {}, None
+    for a in attempts or []:
+        if a.get("end") == "finish":
+            sha = a.get("sha")
+        elif a.get("end") == "game_fail":
+            for c in LIVE_FAIL_RX.findall(a.get("detail") or ""):
+                if sha and sha not in seen.setdefault(c, []):
+                    seen[c].append(sha)
+    return {c: v for c, v in seen.items() if len(v) >= 2}
+
+
+def worker_prompt(st, text, learned, r, history=None):
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     head = ["You carry one item until it is proven. You are one worker in a line: others came before you and another "
@@ -2444,12 +2519,18 @@ def worker_prompt(st, text, learned, r):
                     "A different approach may be: deliver the item's own substance standalone; split it (file the parts "
                     "--for BENCH, then `snag --class blocked_by_predecessor --on <first part>`); or, if no approach is "
                     "left, `snag --class owner_call --section \"<the call>\"`. Retrying the same road is not one.")
+        if ((st.get("last_fail") or {}).get("class") or "").startswith("contract"):
+            head.append("CONTRACT WALL: the last worker found the set contract itself wrong (its ending is below). If the "
+                        "code at hand is sound, the different approach is the contract: replace it with `contract --proof "
+                        "... --why` so it measures the item from where the checker runs, prove it green, and finish; "
+                        "redesign the code only if the new contract shows it does not hold.")
     if st["approach"] == "pilot" and not st.get("proof_only"):
         head.append("PILOT: this needs eyes on the running thing. Run `python3 src/RimMandrake/rimflow/cli.py pilot %s`, "
                     "follow that brief yourself, and report what you saw with `learn`." % i)
     if st.get("live_iter"):
         li = st["live_iter"]
-        head.append("LIVE: the running game (started %s) holds your build %s, and %s FAILED on it. Work it THERE as far "
+        head.append("LIVE: the running game (started %s) holds your build %s, and the proof of %s exited FAIL on it: "
+                    "a reading, not yet a verdict on the mod (classify it first, below). Work it THERE as far "
                     "as it goes before any rebuild (owner 2026-11-02, to save game loads): take the bridge with `python3 "
                     "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"relentless live iteration %s\"`, renew "
                     "it while you work, release it (`bridge release --mine`) when you step away (with the bridge not held for "
@@ -2466,6 +2547,28 @@ def worker_prompt(st, text, learned, r):
         head.append("Contract so far: %s" % json.dumps(st["contract"]))
     if st["last_fail"]:
         head.append("Last ending: %s: %s" % (st["last_fail"]["class"], st["last_fail"]["detail"]))
+    if st.get("diagnose_owed"):
+        head.append("DIAGNOSE FIRST: the last ending (%s) is the supervisor's reading of an exit code, not a diagnosis; no "
+                    "agent has read its log. Before you edit any code, read that log (`live-debugging-proof-harness`) and "
+                    "record `%s learn --item %s --gen %d \"CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the one log line that "
+                    "decides it>\"`; `finish` is refused until you do. MOD (the proof asked and the mod's answer missed): "
+                    "fix the mod. CONTRACT (the set proof cannot measure the item): `snag --class contract_wrong` and the "
+                    "next worker replaces it. HARNESS in this item's own proof script: fix the proof, not the code. SITE or "
+                    "HARNESS outside it (the bridge, the box, a shared tool, the staged world or load, a wrong tier or "
+                    "stale deploy): that is not your work - `rimflow namecheck`, `rimflow file <NAME> --for BENCH` (or "
+                    "reuse the open repair item), then `snag --class %s --on <NAME> \"<the log line>\"`: the item waits "
+                    "on the repair with no strike and comes back when it closes." % (st["diagnose_owed"]["class"], rc, i, g,
+                                                                                     INSTRUMENT))
+    rep_live = repeated_live(history)
+    if rep_live:
+        head.append("SAME CLAUSE, NEW CODE, SAME FAIL: %s. Changing the code did not move it, which points at the site, "
+                    "the instrument or the contract as much as at the mod. No code edit before the classification above "
+                    "names the line that rules them out." % "; ".join(
+                        "%s read FAIL on %d builds (%s)" % (c, len(v), ", ".join(x[:10] for x in v)) for c, v in rep_live.items()))
+    hist = ending_history(history)
+    if len(hist) > 1:
+        head.append("Endings on record (oldest first):")
+        head += ["  " + x for x in hist]
     if st.get("help_options"):
         head.append("FRESH EYES: an agent with no history%s read the failed approaches and offers these hypotheses. Pick "
                     % (" (a second vendor)" if st["help_options"].get("vendor") == VENDOR_AGENT else "") +
@@ -4019,7 +4122,7 @@ def lease(store, fx, r, now, acts):
             elif fx.paused():       # the pause may have come while the clone was prepared
                 why = POOL_REFUSED + ": paused while the clone was prepared"
         if not why:
-            prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r)
+            prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r, store.attempts(item))
             agent = r["pilot_agent"] if st["approach"] == "pilot" else r["worker_agent"]
             why = fx.launch(st, st["run"], prompt, agent, st["clone"], r["run_max_s"],
                             {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})

@@ -196,6 +196,94 @@ def t_wsl_proof_reruns_under_windows_python():
     check("wsl: another exit 2 is not rerun", len([c for c in fx.calls if c[0] == "proof"]) == 1, fx.calls)
 
 
+EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome, the why's head) LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL
+    ("dump s.json: phaseStack=['update'] silentS=60.5 mainStack=NotImplementedException: x tickList=None\n"
+     "FAIL s.json does not flag the main thread among 0 threads\nprove_bridge_stall_dump: FAIL (77 s)", "FAIL", "proof exit 1"),
+    ("Traceback (most recent call last):\n  File \"x.py\", line 3\n    raise IndeterminateError(\n"
+     "rimbridge_client.IndeterminateError: refusing rimworld/pause_game: 1 earlier mutating call(s) have an UNKNOWN outcome",
+     "UNMEASURED", L.HARNESS),
+    ("OSError: [Errno 28] No space left on device: '/home/x.png' -> '/tmp/com'\nFAIL GelatinousSlime", "UNMEASURED", L.HARNESS),
+    ("Error code: Wsl/Service/0x8007274c\nFAIL RustCathedral", "UNMEASURED", L.HARNESS),
+    ("Traceback (most recent call last):\nAttributeError: 'NoneType' object has no attribute 'sendall'", "UNMEASURED",
+     L.HARNESS),
+    ("WRONG_TIER missing tier mods ['mandrake.rut.patches']; 14 running mods", "UNMEASURED", L.RELOAD),
+    ("FAIL: the loaded JawaArmoury MVID ac71 is not the committed build's a016 (stale deploy, or redeployed after launch)\n"
+     "FAIL: rock X should have bill Y, it does not resolve\nVERDICT FAIL", "UNMEASURED", L.RELOAD),
+    ("picked None MoveSpeed tries [3.496, 3.68]\nRESULT SUMP/A1 UNMEASURED no 13 ticks/cell colonist in 6 spawns",
+     "UNMEASURED", "the proof exited 1: it did not measure"),
+    ("NOT REPRODUCED: neither animal moved >= 6 cells in 300 ticks; the job is not named", "UNMEASURED",
+     "the proof exited 1: it did not measure"),
+    ("context: privateMB=None unityReservedMB=None upS=None\nFAIL: missing ['privateMB', 'upS']", "UNMEASURED",
+     "the proof exited 1: it did not measure"),
+    ("site None net None handler-gone False", "UNMEASURED", "the proof exited 1: it did not measure"),
+    ("Traceback (most recent call last):\n  File \"p.py\", line 9\nKeyError: 'mapSize'", "UNMEASURED",
+     "the proof exited 1: it did not measure: the proof crashed: KeyError"),
+    ("<3>WSL (1999522 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110", "UNMEASURED", L.HARNESS),
+    ("FAIL GimmeSomeSlack is not loaded in the running game (probe type unreadable): No loaded type 'X' found",
+     "UNMEASURED", L.RELOAD),
+    ("loomma_sunstruck_open_vs_roofed: 0 matching rows (want exactly 1)", "UNMEASURED", "the proof exited 1: it did not"),
+    # a FAIL line that reports a None or a missing thing is an observed violation and is never erased (the None may be the
+    # defect): it reaches the worker as FAIL, who must classify it first (GPT test-tolerance advice 2026-11-04)
+    ("0 nightside land tiles in world_tiles.csv\nFAIL A2: no candidate tile on this world", "FAIL", "proof exit 1"),
+    ("  RM_Setti_round_trips: FAIL -- ExpectationFailed: X.crossBiomeBiomeList did not restore to '' (read None)",
+     "FAIL", "proof exit 1"),
+    ("T1 FAIL: top_tinder.tinder_leaves_fuel -> None (out /mnt/d/x.json)", "FAIL", "proof exit 1"),
+    ("FAIL: no component genome.inject_starts_gestation in /mnt/d/x", "FAIL", "proof exit 1"),
+    ("FAIL: setting round-trip read None; expected enabled\nVERDICT FAIL", "FAIL", "proof exit 1"),
+    ("Traceback (most recent call last):\nAssertionError: read None; expected enabled", "FAIL", "proof exit 1"),
+    # a marker the line negates is no fault, and a FAIL MOD row stands beside any harness text (GPT review 2026-11-03)
+    ("deploy check: stale deploy=False\nA1 FAIL MOD missing required texture\nVERDICT FAIL", "FAIL", "proof exit 1"),
+    ("PASS: no ConnectionRefusedError in game log\nVERDICT FAIL", "FAIL", "proof exit 1"),
+    ("NOT READY: IndeterminateError: refusing jawa/time_clock: 1 earlier mutating call(s) have an UNKNOWN outcome",
+     "UNMEASURED", L.HARNESS),
+    # prose naming FAIL MOD is no row; a traceback ending in StopIteration is a crash; an indented verdict still counts
+    ("Only FAIL MOD rows count against the mod\nTraceback (most recent call last):\nKeyError: mapSize\nVERDICT UNMEASURED",
+     "UNMEASURED", "the proof exited 1: it did not measure"),
+    ("Traceback (most recent call last):\n  File \"p.py\", line 8\n    c = next(iter(cs))\nStopIteration", "UNMEASURED",
+     "the proof exited 1: it did not measure: the proof crashed: StopIteration"),
+    ("  VERDICT UNMEASURED: setup unavailable", "UNMEASURED", "the proof exited 1: it did not measure"),
+    # real FAILs stand: a mod verdict the proof reached, a FAIL MOD row beside an UNMEASURED SITE one, an assert
+    ("VERDICT PASS\nFAIL line 250 names RUT_Horror: Config error in RUT_HorrorProwler: weaponMoney is set\nVERDICT FAIL",
+     "FAIL", "proof exit 1"),
+    ("  t3_corpse_becomes_a_harvest_site  FAIL  MOD  sites before=1 after=1\n  large_pawns  UNMEASURED SITE  unreadable "
+     "(read None)\nVERDICT: FAIL (6 rows, 6 wanted)", "FAIL", "proof exit 1"),
+    ("FAIL stall_01.json does not flag the main thread among 0 threads\nprove_bridge_stall_dump: FAIL (77 s)", "FAIL",
+     "proof exit 1"),
+    ("Traceback (most recent call last):\n  File \"p.py\", line 9\nAssertionError: 3 null textures", "FAIL",
+     "proof exit 1"),
+    ("FAIL: bill RM_MineShaft_Vacstone exists, but an earlier rock already covers ChunkVacstone\nVERDICT FAIL", "FAIL",
+     "proof exit 1"),
+]
+
+
+def t_exit1_that_could_not_ask_is_no_fail():
+    """LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL (owner 2026-11-03): 14 items went back to workers as game_fail on exit-1 rows
+    whose proof never asked: a traceback, a full /tmp, the wrong tier, a stale DLL, its own UNMEASURED, a None read.
+    Each is UNMEASURED and never a verify; a box fault is the harness's (no strike), a wrong load a reload, the rest a
+    proof that measured nothing (relentless_game.RAN_DUD). A FAIL the proof reached stays a FAIL."""
+    import relentless_game as G
+    for text, outcome, head in EXIT1_CASES:
+        root = tempfile.mkdtemp(prefix="rl_live_")
+        fx = ScriptFx({"python.exe ": (1, text)})
+        row = L.run(fx, root, "ROT_X", "A2", "python.exe probe.py", "--compose biomes", {}, now=1_800_000_000)
+        verified = any(c[:2] == ("rimflow", "verify") for c in fx.calls)
+        ok = row["outcome"] == outcome and row["why"].startswith(head) and verified == (outcome == "FAIL")
+        if outcome == "UNMEASURED":
+            ok = ok and bool(row.get("harness")) == (head == L.HARNESS)
+            if head.startswith("the proof exited 1"):
+                ok = ok and bool(G.RAN_DUD.search(row["why"]))
+            if head == L.RELOAD:
+                ok = ok and any(row["why"].startswith(w) for w in G.RESTAGE)
+        check("exit 1: %s -> %s" % (text.splitlines()[-1][:50], outcome), ok, row)
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    fx = ScriptFx({"python3 ": (1, "Traceback (most recent call last):\nrimbridge_client.RimBridgeError: cannot reach the "
+                                  "bridge from WSL, and no amount of retrying will fix it."),
+                   "python.exe ": (1, "FAIL: 3 null textures")})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000)
+    check("exit 1: a WSL traceback reruns under python.exe", row["outcome"] == "FAIL" and row.get("rerun")
+          == "python.exe probe.py", row)
+
+
 def t_same_cause_becomes_one_reload_request():
     """TIDAL_LOCK and HORIZON were noted UNMEASURED every 17 minutes on one game: the third same-cause row is a reload
     request said once, the second and the later ones are rows without a ledger note, and another game starts over."""
@@ -917,7 +1005,7 @@ def t_composed_mod_reads_its_parent_about():
 
 
 def main():
-    for t in (t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_exit1_that_could_not_ask_is_no_fail, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
