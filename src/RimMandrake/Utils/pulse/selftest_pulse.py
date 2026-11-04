@@ -844,6 +844,13 @@ with tempfile.TemporaryDirectory() as d:
     check("one real edit among landed blobs blocks the whole clean (nothing is put back)",
           raises(lambda: pl.update_code(deploy)) and (deploy / "f").read_text() == "5"
           and (deploy / "g").read_text() == "stray")
+    (deploy / "g").write_text("new")                       # g back to HEAD; f still equals origin's blob
+    (origin / "m").write_text("m"); _g(origin, "add", "m"); _g(origin, "commit", "-qm", "six")
+    _g(deploy, "fetch", "-q", "origin")
+    (deploy / "m").write_text("REAL")                      # untracked, on origin/main, but NOT its blob
+    check("an untracked path origin/main has with other content is a real edit: the pull fails loud and it stays",
+          raises(lambda: pl.update_code(deploy)) and (deploy / "m").read_text() == "REAL"
+          and (deploy / "f").read_text() == "5")
     _p128 = _sp.CompletedProcess([], 128, "", "Updating files:  14% (1/7)\rUpdating files: 100% (7/7)\n"
                                  "fatal: Unable to create '/x/.git/index.lock': File exists.\n")
     check("the failure names git's reason, not its progress lines", "index.lock" in pl._git_err(_p128)
