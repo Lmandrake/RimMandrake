@@ -121,6 +121,26 @@ def heat_checks(tmp):
         check(FM.check(now=BOOT_S + 60) == 0, "a cycle with no heat field (pre-sampler) does not fail check")
         T.S.dump(a2["boots"], T.q("fault_heat.json"))
         check(FM.heat() == 0, "the heat table prints from fault_heat.json")
+        # report() itself prints each window's heat line (the blind check's mutant deleted that print and stayed green).
+        hot = dict(a["windows"][0], id="W_HOT")
+        cold = dict(FM.analyse([start(), cyc(170), cyc(175, [0])])["windows"][0], id="W_COLD")
+        T.S.dump([hot, cold], T.q("fault_windows.json"))
+        T.S.dump(dict(st, phase="CLEAN"), T.q("fault_state.json"))
+        import io
+        import contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = FM.report()
+        lines = buf.getvalue().splitlines()
+        heat_rows = [ln.strip() for ln in lines if ln.strip().startswith("heat: ")]
+        check(rc == 0 and len(heat_rows) == 2 and "hottest core at onset 91 C" in heat_rows[0]
+              and "last clean cycle 88 C" in heat_rows[0] and heat_rows[1].startswith("heat: UNMEASURED"),
+              "report prints every window's heat line: the onset temperature for a heated window, UNMEASURED for an old one")
+        hot_i = next((i for i, ln in enumerate(lines) if ln.startswith("W_HOT")), None)
+        cold_i = next((i for i, ln in enumerate(lines) if ln.startswith("W_COLD")), None)
+        check(hot_i is not None and cold_i is not None
+              and any("91 C" in ln for ln in lines[hot_i:cold_i]) and not any("91 C" in ln for ln in lines[cold_i:]),
+              "the heat line sits under its own window, not another's")
     finally:
         T.QHOME = saved
     with open(os.path.join(HERE, "..", "steve_cpu_retest", "stevetemp.cs"), encoding="utf-8") as f:
