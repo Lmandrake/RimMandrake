@@ -1715,8 +1715,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             elif out:
                 st.setdefault("publish_fail_since", now)
             stuck = now - st.get("publish_fail_since", now) >= sch.get("publish_stuck_s", 1800)
-            if out and ("index.lock" in out or stuck):    # a stuck lock silently stops all publishing (review S, F3)
-                key = "publish:index_lock" if "index.lock" in out else "publish:stuck"
+            # a young lock (ingest.py says "under N s: another git may be running") is traffic the next tick retries,
+            # not a jam; one that persists trips publish_stuck_s (PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC)
+            jam = "index.lock" in (out or "") and "another git may be running" not in out
+            if out and (jam or stuck):    # a stuck lock silently stops all publishing (review S, F3)
+                key = "publish:index_lock" if jam else "publish:stuck"
                 if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
                     st["alarms"][key] = now
                     signal_alarm(sch, st, key, "ledger publish: " + out[:240], now)

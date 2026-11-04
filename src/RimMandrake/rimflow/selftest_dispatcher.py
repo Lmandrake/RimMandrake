@@ -807,6 +807,34 @@ def test_review_s():
     check(len(noted) == 1 and "index.lock" in noted[0], "a stuck index.lock raises one rate-limited alarm: %r" % noted)
 
 
+
+def test_publish_young_lock_is_traffic():
+    """PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC: a 0 s-old index.lock the next tick clears raises nothing; a lock
+    >= 300 s old raises publish:index_lock; a young lock that keeps failing past publish_stuck_s raises publish:stuck."""
+    class _Lk:
+        def close(self):
+            pass
+    root = os.path.join(TMP, "younglock")
+    young = "publish stopped: index.lock present (0 s old, under 300 s: another git may be running)"
+    old = "publish stopped: index.lock is 400 s old and git process(es) 1234 hold the clone"
+
+    def run(outs, times, stuck_s=1800):
+        st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+        noted = []
+        it = iter(outs)
+        fx = {"note": lambda i, t: noted.append(t) or (True, ""), "lock": lambda: _Lk(), "publish": lambda n: next(it)}
+        for t in times:
+            D.execute([], sched(publish=True, publish_stuck_s=stuck_s), st, root, True, t, fx)
+        return st, noted
+    st, noted = run([young, "pushed"], (10.0, 140.0))
+    check(not noted and not any(k.startswith("publish:") for k in st["alarms"]),
+          "a young index.lock the next tick clears is traffic, no alarm: %r %r" % (noted, st["alarms"]))
+    st, noted = run([old], (10.0,))
+    check(len(noted) == 1 and "publish:index_lock" in st["alarms"], "an old index.lock alarms: %r" % noted)
+    st, noted = run([young, young, young], (10.0, 900.0, 1900.0))
+    check(len(noted) == 1 and "publish:stuck" in st["alarms"] and "publish:index_lock" not in st["alarms"],
+          "a young lock persisting past publish_stuck_s alarms as stuck: %r %r" % (noted, st["alarms"]))
+
 def test_seat_rule():
     base = [{"seat": "BENCH", "event": "file", "id": "SOME_ITEM_DO_IT", "title": "t", "kind": "task", "for": "FOUNDRY",
              "ts": "2026-10-26T00:00:00Z"}]
@@ -3731,7 +3759,7 @@ def main():
     strict_roles()
     for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
-              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_publish_young_lock_is_traffic, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_schedule_keeps_no_unread_helper_keys, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
