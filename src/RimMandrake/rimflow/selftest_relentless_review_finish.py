@@ -6,6 +6,10 @@
    has its own clone: that one starts (its kept commits are what would free room), and the pool wait is said once.
 2. staffing(): content stopped by the owner's token pause (only_system_and_live) is not ready work, so the pause reads
    as no under-staffing and raises no staffing or jam alarm.
+3. step(): a checker clone a retry lets go (its launch failed, the account change-over killed it) is removed, not left
+   in the pool as an orphan it protects for an hour.
+4. level_books: a set-equal reordered shard (code_review, art) that gains a line after shuffled_shards looked refuses
+   the level instead of being overwritten with HEAD.
 
 Runs on selftest_relentless's FakeWorld; no ledger, clone or unit is touched.
 
@@ -64,10 +68,83 @@ def t_owner_pause_is_not_under_staffing():
     x.done()
 
 
+def to_check(x, i):
+    """Run `i` to its finish, so the next ticks start its check."""
+    x.run_one(i)
+    st = x.st(i)
+    if not st["contract"]:
+        SR.R.contract(x.s, i, st["gen"], "proof", live="once: test")
+    SR.R.finish(x.s, i, st["gen"], "sha1", "evidence")
+    x.w.up[st["run"]["unit"]] = False
+
+
+def checker_clones(x):
+    return sorted(c for c in x.w.pool if "/check-" in c)
+
+
+def t_checker_clone_let_go():
+    # a checker that never launched: its clone goes at once, not an hour later as a fresh orphan
+    x = SR.Rig(n=1, share=1.0)
+    x.w.pool = {"/c/other": {"busy": True}}
+    to_check(x, "I0")
+    x.w.lfail = "launch refused"
+    x.tick(), x.tick()
+    ok(x.st("I0")["status"] == "candidate" and x.st("I0")["check"] is None, "fixture: the check launch failed")
+    ok(checker_clones(x) == [], "a checker clone whose launch failed is removed: %s" % checker_clones(x))
+    x.done()
+    # a checker the account change-over killed: a new checker comes, the old clone does not stay behind
+    x = SR.Rig(n=1, share=1.0)
+    x.w.pool = {"/c/other": {"busy": True}}
+    to_check(x, "I0")
+    x.tick(), x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "checking", "fixture: the check runs")
+    x.w.account_sign = {"kind": "account_switch", "why": "change-over killed it"}
+    x.w.up[st["check"]["run"]["unit"]] = False
+    for _ in range(4):
+        x.tick()
+        if x.st("I0")["status"] != "checking":
+            break
+    ok(st["check"]["clone"] not in x.w.pool, "an account-lost checker's clone is removed: %s" % checker_clones(x))
+    x.done()
+
+
+def t_shuffled_shard_append_refused():
+    import subprocess
+    import tempfile
+    d = tempfile.mkdtemp(prefix="rl-shuffle-")
+    g = lambda *a: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=d, check=True,
+                                  capture_output=True, text=True)
+    p = "infrastructure/state/code_review/B.jsonl"
+    os.makedirs(os.path.join(d, os.path.dirname(p)))
+    g("init", "-q", "-b", "main")
+    with open(os.path.join(d, p), "w") as f:
+        f.write("a\nb\nc\n")
+    g("add", p)
+    g("commit", "-qm", "s")
+    with open(os.path.join(d, p), "w") as f:
+        f.write("c\na\nb\n")
+    fx = SR.R.Effects.__new__(SR.R.Effects)
+    fx.books = d
+    got = fx.shuffled_shards([(" M", p)])
+    ok(dict(got) == {p: b"c\na\nb\n"}, "shuffled_shards keeps the bytes it compared: %r" % (got,))
+    with open(os.path.join(d, p), "a") as f:     # a writer appends after the look
+        f.write("d\n")
+    why = fx._level_rows([(" M", p)], {}, os.path.join(d, "keep"), {}, {}, 3, got)
+    with open(os.path.join(d, p)) as f:
+        now = f.read()
+    ok(why and "moved while levelling" in why and now.endswith("d\n"),
+       "a line appended after the look refuses the level and is kept: %r %r" % (why, now))
+    import shutil
+    shutil.rmtree(d, ignore_errors=True)
+
+
 if __name__ == "__main__":
     try:
         t_pool_full_lets_a_cloned_item_run()
         t_owner_pause_is_not_under_staffing()
+        t_checker_clone_let_go()
+        t_shuffled_shard_append_refused()
     except Exception as e:      # noqa: BLE001  a crash is a FAIL with its reason
         import traceback
         traceback.print_exc()

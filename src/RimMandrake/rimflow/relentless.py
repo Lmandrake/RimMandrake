@@ -1168,20 +1168,22 @@ class Effects(relentless_game.GameFx):
     def shuffled_shards(self, rows):
         """-> the tracked *.jsonl outside the ledger dir whose lines are HEAD's lines in another order. Landing replays
         the append-only shards (code_review, art) with merge=union, which reorders them; nothing is lost, so it is no
-        dirt. Set-equal multisets only: one added, dropped or changed line keeps the file alien."""
-        out = set()
+        dirt. Set-equal multisets only: one added, dropped or changed line keeps the file alien. -> {path: the bytes
+        compared}, so the restore can see a line appended after this look."""
+        out = {}
         for st, p in rows:
             if not p.endswith(".jsonl") or p.startswith(BOOKS_DERIVED) or st.strip() != "M":
                 continue
             try:
                 with open(os.path.join(self.books, p), "rb") as f:
-                    here = f.read().splitlines()
+                    raw = f.read()
+                here = raw.splitlines()
                 there = subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True,
                                        check=True, timeout=60).stdout.splitlines()
             except (OSError, subprocess.SubprocessError):
                 continue
             if sorted(here) == sorted(there):
-                out.add(p)
+                out[p] = raw
         return out
 
     def level_books(self):
@@ -1255,6 +1257,10 @@ class Effects(relentless_game.GameFx):
                 del moved_out[p]
 
     def _level_rows(self, rows, read, keep, moved_out, restored, behind, shuffled):
+        for p, seen in shuffled.items():    # an append since shuffled_shards looked is a real line: refuse before any write
+            with open(os.path.join(self.books, p), "rb") as f:
+                if f.read() != seen:
+                    return "books %s behind: %s moved while levelling" % (behind, p)
         for state, p in rows:
             src = os.path.join(self.books, p)
             if p in read:   # a ledger shard: held under the flock model.append takes, so no event lands between check and restore
@@ -3301,6 +3307,8 @@ def step(store, fx, r, item, now, acts):
                 st["check"] = None
                 launch_failed(store, r, now, why)
             store.save(st)
+        if why:     # nothing ran in it: let it go now, or the pool holds it an hour as a fresh orphan
+            remove_check_clone(fx, {"check": {"clone": clean}, "quarantined": st["quarantined"]})
         acts.append({"do": "check_started" if not why else "check_launch_failed", "item": item})
         return
 
@@ -3324,59 +3332,66 @@ def step(store, fx, r, item, now, acts):
             return
         lost = fx.account_loss(chk.get("run"), chk.get("clone"), chk["at"], chk.get("box")) if word is None else None
         c = st["candidate"]
-        with store.lock():
-            st = store.load(item)
-            if st["status"] != "checking":
-                return
-            word = st["check"].get("verdict")
-            if word is None and lost:       # the account's doing, not the checker's: same candidate, a new checker, no count
-                st["status"] = "candidate"
-                st["check"] = None
-                store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"][:600]})
-                store.save(st)
-                if lost["kind"] == "account_error":
-                    launch_failed(store, r, now, lost["why"])
-                acts.append({"do": "account_lost", "item": item, "kind": lost["kind"]})
-                return
-            if word is None:
-                # as for a worker: a change-over logs its event minutes after the kill, so judge after it could have
-                seen = st["check"].setdefault("lost_seen", now)
-                if now - seen < r.get("account_settle_s", 0):
-                    store.save(st)
+        drop = []      # a checker clone a retry lets go: removed out of the lock, or it sits an hour as an orphan
+        try:
+            with store.lock():
+                st = store.load(item)
+                if st["status"] != "checking":
                     return
-                n = st.get("check_lost", 0) + 1
-                st["check_lost"] = n
-                if n >= r["same_failure_limit"]:
-                    st["check_lost"] = 0
-                    fail(store, st, "checker_lost", "%d checkers gave no verdict" % n, r, now)
-                else:
+                word = st["check"].get("verdict")
+                if word is None and lost:       # the account's doing, not the checker's: same candidate, a new checker, no count
+                    drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
                     st["status"] = "candidate"
                     st["check"] = None
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "account_lost", "detail": lost["why"][:600]})
                     store.save(st)
-                acts.append({"do": "checker_lost", "item": item})
-                return
-            acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"), st["check"].get("defects"),
-                                                   st["check"].get("unreached"))
-            if acted == relentless_wall.UNMEASURED:     # the box could not reach the evidence: no work goes back
-                gone = {"check": dict(st["check"]), "quarantined": st["quarantined"]}
-                said = unmeasured(store, st, word, blind, r, now)
-                acts.append({"do": "unmeasured", "item": item, "said": word, "held": st["status"] == "held"})
-            else:
-                said = None
-                if "blind" in st or "recheck_at" in st:
-                    st.pop("blind", None)
-                    st.pop("recheck_at", None)
-                    store.save(st)          # a real verdict ends the run of blind ones
-                if acted == "FAIL":     # an observed defect is a FAIL whatever word it came under
-                    fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
-                    acts.append({"do": "blind_fail", "item": item})
+                    if lost["kind"] == "account_error":
+                        launch_failed(store, r, now, lost["why"])
+                    acts.append({"do": "account_lost", "item": item, "kind": lost["kind"]})
                     return
-            weak = None
-            if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
-                reasons = st["check"].get("reasons")
-                fail(store, st, "proof_weak", reasons, r, now)
-                weak = "blind check at %s: WEAK, the proof has holes and the work is unproven; item stays open: %s" % (c["sha"], reasons or "")
-                acts.append({"do": "proof_weak", "item": item})
+                if word is None:
+                    # as for a worker: a change-over logs its event minutes after the kill, so judge after it could have
+                    seen = st["check"].setdefault("lost_seen", now)
+                    if now - seen < r.get("account_settle_s", 0):
+                        store.save(st)
+                        return
+                    n = st.get("check_lost", 0) + 1
+                    st["check_lost"] = n
+                    if n >= r["same_failure_limit"]:
+                        st["check_lost"] = 0
+                        fail(store, st, "checker_lost", "%d checkers gave no verdict" % n, r, now)
+                    else:
+                        drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
+                        st["status"] = "candidate"
+                        st["check"] = None
+                        store.save(st)
+                    acts.append({"do": "checker_lost", "item": item})
+                    return
+                acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"), st["check"].get("defects"),
+                                                       st["check"].get("unreached"))
+                if acted == relentless_wall.UNMEASURED:     # the box could not reach the evidence: no work goes back
+                    gone = {"check": dict(st["check"]), "quarantined": st["quarantined"]}
+                    said = unmeasured(store, st, word, blind, r, now)
+                    acts.append({"do": "unmeasured", "item": item, "said": word, "held": st["status"] == "held"})
+                else:
+                    said = None
+                    if "blind" in st or "recheck_at" in st:
+                        st.pop("blind", None)
+                        st.pop("recheck_at", None)
+                        store.save(st)          # a real verdict ends the run of blind ones
+                    if acted == "FAIL":     # an observed defect is a FAIL whatever word it came under
+                        fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
+                        acts.append({"do": "blind_fail", "item": item})
+                        return
+                weak = None
+                if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
+                    reasons = st["check"].get("reasons")
+                    fail(store, st, "proof_weak", reasons, r, now)
+                    weak = "blind check at %s: WEAK, the proof has holes and the work is unproven; item stays open: %s" % (c["sha"], reasons or "")
+                    acts.append({"do": "proof_weak", "item": item})
+        finally:
+            for d in drop:
+                remove_check_clone(fx, d)
         if said:            # the ledger's own write and the clone's removal, out of the store's lock
             remove_check_clone(fx, gone)
             fx.ledger_note(item, said)
