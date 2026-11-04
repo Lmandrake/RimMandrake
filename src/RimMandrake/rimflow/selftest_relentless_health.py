@@ -85,6 +85,12 @@ ok(not R.content_paused(fx, [q("S1", status="running")], ["S1"], {"S1"}),
 ok(R.content_paused(fx, [], ["S1"], set()), "paused: degraded and a system item not yet enrolled")
 ok(not R.content_paused(Fx([], {"S1": 0}), [q("S1")]), "paused: healthy never pauses")
 ok(not R.content_paused(Fx([], {}, degraded=True), [q("C1")]), "paused: degraded with no system item at all does not idle")
+nogo = lambda i: "no Designer pass" if i == "S1" else None     # noqa: E731
+ok(not R.content_paused(fx, [q("S1")], refused=nogo),
+   "paused: a system item the concept gate refuses holds no content (OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY)")
+ok(not R.content_paused(fx, [], ["S1"], set(), refused=nogo), "paused: a refused system item not yet enrolled holds none either")
+ok(R.content_paused(Fx([], {"S1": 0, "S2": 1}, degraded=True), [q("S1"), q("S2")], refused=nogo),
+   "paused: one startable system item still waiting keeps the pause")
 
 
 def store():
@@ -154,6 +160,20 @@ ok(s.load("C_RUN")["status"] == "running", "lease: running content is never stop
 acts = []
 R.lease(s, Fx([], {"S_Q": 0}, degraded=False), dict(RULES, share=1.0), 100.0, acts)
 ok(not any("health" in a.get("why", "") for a in acts), "lease: healthy never waits on health", acts)
+shutil.rmtree(d, ignore_errors=True)
+
+# 21:06Z 2026-11-04: degraded, every waiting system item concept-refused, nothing live -> content paused and the belt jammed
+d, s = store()
+s.save(R.new_state("S_NO", 1.0, ""))
+s.save(dict(R.new_state("C_Q", 1.0, ""), enrolled_at=0.5))
+fx = Fx([], {"S_NO": 0}, degraded=True)
+asked = []
+fx.concept_refusal = lambda i: (asked.append(i), "no Designer pass on record" if i == "S_NO" else None)[1]
+acts = []
+R.lease(s, fx, dict(RULES, share=1.0), 100.0, acts)
+ok(not any(str(a.get("why", "")).startswith("health degraded") for a in acts),
+   "lease: degraded, the only waiting system item is concept-refused -> content is not paused", acts)
+ok(asked.count("S_NO") == 1, "lease: the pause asks the concept gate once, shared with the loop (unpublished here)", asked)
 shutil.rmtree(d, ignore_errors=True)
 
 # --- the real Effects: reads the file, reorders the real pool

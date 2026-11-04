@@ -3295,15 +3295,30 @@ def write_queue_next(store, fx, r, now, shown=8):
     store._write(store.p("queue_next.json"), json.dumps({"t": now, "free": free[:shown], "waiting": waiting[:shown]}, indent=1))
 
 
-def content_paused(fx, states, order=None, ours=None):
+def content_paused(fx, states, order=None, ours=None, refused=None):
     """True while Operations' verdict reads degraded and a system item still waits for a place: in the line, or in the
-    pool not yet enrolled. When every system item is already being worked, content may start (owner card 2026-11-03)."""
+    pool not yet enrolled. When every system item is already being worked, content may start (owner card 2026-11-03).
+    `refused(item)` -> a reason marks a system item the concept gate keeps from any worker: it waits on a Designer pass,
+    not a place, so it holds no content back (21:06Z 2026-11-04: twenty refused items paused content with nothing live)."""
     first = getattr(fx, "first", None) or {}
     if not getattr(fx, "degraded", False) or not first:
         return False
-    if any(s["status"] == "queued" and s["item"] in first for s in states):
-        return True
-    return any(i in first and i not in (ours or ()) for i in (order or ()))
+    waits = [s["item"] for s in states if s["status"] == "queued" and s["item"] in first]
+    waits += [i for i in (order or ()) if i in first and i not in (ours or ())]
+    return any(not (refused and refused(i)) for i in waits)
+
+
+def refusal_memo(fx):
+    """fx.concept_refusal, asked once per item per call site: the content pause and the lease loop share the answer."""
+    ask, seen = getattr(fx, "concept_refusal", None), {}
+    if ask is None:
+        return lambda _item: None
+
+    def refused(item):
+        if item not in seen:
+            seen[item] = ask(item)
+        return seen[item]
+    return refused
 
 
 def ledger_has(item):
@@ -4262,7 +4277,8 @@ def lease(store, fx, r, now, acts):
             acts.append({"do": "wait", "why": "check_backlog"})
             return
     first = getattr(fx, "first", None) or {}
-    paused = content_paused(fx, store.states())
+    refused = refusal_memo(fx)
+    paused = content_paused(fx, store.states(), refused=refused)
     no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
     incidents = relentless_breakers.load(store)
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
@@ -4311,7 +4327,7 @@ def lease(store, fx, r, now, acts):
             acts.append({"do": "wait", "why": why})
             return
         item = st["item"]
-        refusal = getattr(fx, "concept_refusal", lambda _item: None)(item)
+        refusal = refused(item)
         if refusal:     # enrolled by hand, or its tree went stale in the line: it keeps its place, no worker starts
             acts.append({"do": "concept_refused", "item": item, "why": refusal})
             continue

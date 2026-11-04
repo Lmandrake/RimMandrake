@@ -77,6 +77,24 @@
    "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::account_lost", "what": "a run lost to the account costs the item no strike, no return and no change of approach; it is requeued at its place and the launch breaker waits for the account to answer"},
    "fixed": null,
    "examples": ["the run ended on the account's own error: rate_limit"]
+  },
+  {
+   "id": "launch_died_unpaid",
+   "plain": "A worker died the moment it started without spending anything, usually the account refusing it before any work.",
+   "match": [" died at once with no usage$"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the launch breaker these deaths open holds the belt under target and names the dead unit"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::step", "what": "a run dead inside launch_grace_s with no tokens and no beat goes back to the line at its place with no strike, and charges the launch breaker, which waits before the next start"},
+   "fixed": null,
+   "examples": ["rm-relentless-work-2f7d7ad7e9-g24 died at once with no usage"]
+  },
+  {
+   "id": "content_paused_idle",
+   "plain": "Degraded health paused content for system items that could not start, so nothing ran at all.",
+   "match": ["^health degraded: content paused while system items wait"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: nothing live while work waits reads distressed, its cause the health pause"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::content_paused", "what": "a system item the concept gate refuses (it waits on a Designer pass, not a place) no longer keeps content paused; a repeat means another kind of unstartable system item holds the pause"},
+   "fixed": {"item": "OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY", "at": "2026-11-04T22:47:00Z"},
+   "examples": ["health degraded: content paused while system items wait"]
   }
  ]
 }

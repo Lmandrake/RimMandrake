@@ -44,6 +44,10 @@ REAL = [
      "clones/help-ROLE_TOKENS_REPAIR_DESIGNER_ARTIST_CAPS-c1 already exists", "help_folder_left"),
     ("clone lacks src/RimMandrake/Utils/claude_bounded.sh and its bundle failed: [Errno 7] Argument list too long: 'git'",
      "bundle_too_long"),
+    ("the run ended on the account's own error: rate_limit", "account_limit"),
+    ("breaker open until 2026-11-04T20:06:50Z: rm-relentless-work-2f7d7ad7e9-g24 died at once with no usage",
+     "launch_died_unpaid"),
+    ("health degraded: content paused while system items wait", "content_paused_idle"),
 ]
 
 
