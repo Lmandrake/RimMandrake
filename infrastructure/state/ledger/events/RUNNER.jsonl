@@ -3012,3 +3012,4 @@
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_B4F8","reason":"steward: lane unowned 30 min (BRAKED)","ts":"2026-11-04T15:15:00Z","tsn":1793805300120339760}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-04T15:18:05Z","tsn":1793805485081108462}
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-04T15:18:08Z","tsn":1793805488146710693}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_B4F8","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261104T152525Z.log","ts":"2026-11-04T15:25:48Z","tsn":1793805948097534050}
