@@ -531,3 +531,14 @@ applies this at once, treating every open system item as first (no grace period)
 ## Every mod's test script matures at first touch — owner, 2026-11-03
 
 🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
+
+## Broken tests are expected; an inability to measure is reported up, never read as broken work — owner, 2026-11-03
+
+*"The checker was unable to measure something, and interpreted that as a wrong value rather than an inability that should
+have been "reported up" for fix and repair."* · *"This is horrible. We must be tolerant to broken testing and acceptance
+tests. This will be very common and expected. ... make our system more rigorously capable in terms of debugging test,
+validation, and acceptance tests at the same time as testing code. ... Pretending that lower productivity and cyclic loops
+is rigorous checking is self denial."* The proof, harness, site, sandbox and contract are suspects alongside the code;
+a failure is attributed before any rework, and an instrument fault becomes repair work while the item waits without a
+strike. A false close is still worse than a wait. Design input: GPT consult at
+`D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
