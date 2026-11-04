@@ -7,6 +7,11 @@ blocks past JawaBenchStallDump.DumpSeconds, then checks, read-only:
     among the listed native threads;
   * this client's evidence `end` row for that call names the same file in stall_dumps.
 Exit 0 when both hold, 1 when either does not, 2 when the proof could not run (no bridge, tool absent).
+
+SITE first (gen13, 2026-11-04): the game's BridgeTools\\JawaBench\\JawaBench.BridgeTools.dll must be built from THIS
+checkout's companion sources (companion_identity FRESH) and be older than the running game's Player.log, else the run
+proves an old DLL: the e26a661423 fix read FAIL twice on the d62e3e51 DLL because nothing deployed the companion.
+Such a run exits 1 with a `SITE:` line before any block, never a mod verdict.
 """
 import json
 import os
@@ -18,9 +23,31 @@ sys.path.insert(0, str(_RM_ROOT / "src" / "RimMandrake" / "Utils"))
 import rimbridge_client as rb  # noqa: E402
 
 BLOCK_S = 75.0
+_BT = _RM_ROOT / "src" / "RimMandrake" / "bridgetools"
+DLL = os.environ.get("RM_COMPANION_DLL") or (
+    r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll")
+
+
+def site_check(dll=DLL, repo_root=str(_RM_ROOT), log=None):
+    """-> None when the game can be running this checkout's companion, else the SITE reason (one line)."""
+    sys.path.insert(0, str(_BT))
+    import companion_identity as ci
+    v = ci.verdict(dll, repo_root, None, want=ci.srchash_worktree(repo_root))
+    if v["state"] != "FRESH":
+        return "deployed companion is not this checkout's build: " + ci.describe(v)
+    log = log or rb.DEFAULT_PLAYER_LOG
+    if os.path.isfile(log) and os.path.getmtime(dll) > os.stat(log).st_ctime:
+        return "deployed companion %s was written after the running game opened %s: not loaded until a restart" % (
+            dll, log)
+    return None
 
 
 def main():
+    why = site_check()
+    if why:
+        print("SITE: " + why)
+        print("prove_bridge_stall_dump: FAIL (site, not the mod)")
+        return 1
     d = rb._stall_dir()
     if not d or not os.path.isdir(d):
         print("UNMEASURED: no stall record dir %r" % d)
