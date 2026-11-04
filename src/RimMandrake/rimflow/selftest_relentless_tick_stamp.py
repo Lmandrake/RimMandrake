@@ -11,6 +11,7 @@ import fcntl
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -321,6 +322,148 @@ def t_round_end_inside_a_tick():
     x.done()
 
 
+def round_over(x, first):
+    """The round's real last act, with its process start left out: the state a round's end leaves."""
+    x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": first, "criterion": "A2", "sha": GT.SHA, "outcome": "PASS"}]
+    x.w.palive = set()
+    LR.wake_supervisor(x.s.root, spawn=lambda *a, **k: None)
+
+
+def t_round_end_during_a_step():
+    """The round ends while an unrelated item steps: the proof starts before the NEXT item's step. A0 and A1 sort ahead of
+    the game items and do nothing, so only the tick's between-steps wake can start it in time; an ordinary step cannot."""
+    x, first, other = two_on_game()
+    T.parked(x, "A0", "held")
+    T.parked(x, "A1", "held")
+    keep, seen = R.step, {}
+
+    def spy(store, fx, r, item, now, acts):
+        if item == "A0":
+            seen["A0"] = list(fx.proves)
+            round_over(x, first)
+        elif item == "A1":
+            seen["A1"] = list(fx.proves), os.path.exists(store.p(R.GAME_WAKE))
+        else:
+            keep(store, fx, r, item, now, acts)
+    R.step = spy
+    try:
+        acts = x.tick()
+    finally:
+        R.step = keep
+    ok(seen.get("A0") == [first], "the round still ran when A0's step began: %s" % seen)
+    ok(seen.get("A1") == ([first, other], False), "the next proof started before A1's step, and took the wake: %s" % seen)
+    dos = [a.get("do") for a in acts]
+    ok("game_wake" in dos and "game_prove" in dos and dos.index("game_wake") < dos.index("game_prove"),
+       "the wake, not an ordinary step, started it: %s" % dos)
+    x.done()
+
+
+def t_round_end_in_the_prelude():
+    """The round ends before the tick's first step: the proof starts before that step, at the prelude's end."""
+    x, first, other = two_on_game()
+    T.parked(x, "A0", "held")
+    real_sync, keep, seen = x.w.sync, R.step, {}
+
+    def round_ends():
+        round_over(x, first)
+        return real_sync()
+    x.w.sync = round_ends
+
+    def spy(store, fx, r, item, now, acts):
+        if item == "A0":
+            seen["A0"] = list(fx.proves)
+        else:
+            keep(store, fx, r, item, now, acts)
+    R.step = spy
+    try:
+        x.tick()
+    finally:
+        R.step = keep
+    ok(seen.get("A0") == [first, other], "the proof started before the tick's first step: %s" % seen)
+    x.done()
+
+
+def t_round_end_at_each_phase():
+    """A round ending after the steps has no ordinary step left to start the proof: each phase boundary takes the wake, and
+    the proof runs before the next phase's first act. (plant it in this function, read the game in that one)."""
+    for plant, read in (("spend_holds", "enrol"), ("lease", "live_tick"), ("live_tick", "reading")):
+        x, first, other = two_on_game()
+        keep_plant, keep_read, seen = getattr(R, plant), getattr(R, read), {}
+
+        def planted(*a, keep=keep_plant, **k):
+            got = keep(*a, **k)
+            round_over(x, first)
+            return got
+
+        def reader(*a, keep=keep_read, **k):
+            seen.setdefault("proves", list(x.w.proves))
+            return keep(*a, **k)
+        setattr(R, plant, planted)
+        setattr(R, read, reader)
+        try:
+            x.tick()
+        finally:
+            setattr(R, plant, keep_plant)
+            setattr(R, read, keep_read)
+        ok(seen.get("proves") == [first, other], "a round ending in %s has its next proof before %s: %s" % (plant, read, seen))
+        x.done()
+
+
+def t_pass_waits_out_the_tick():
+    """A tick holds tick.lock and misses the wake: game-next waits for the lock and serves it, it does not leave it stranded
+    until the next tick. Then the wall: past its wait the pass leaves the wake for the next tick to find."""
+    x, first, other = two_on_game()
+    round_over(x, first)
+    lk = open(x.s.p("tick.lock"), "w")
+    fcntl.flock(lk, fcntl.LOCK_EX)
+    threading.Timer(0.5, lambda: fcntl.flock(lk, fcntl.LOCK_UN)).start()
+    began = real_time.monotonic()
+    acts = R.game_next(x.s, x.w, x.r, x.now + 5)
+    waited = real_time.monotonic() - began
+    lk.close()
+    ok(waited >= 0.4, "the pass waited for the lock: %.1f s" % waited)
+    ok(x.w.proves == [first, other], "the held lock's wake still got its proof: %s %s" % (x.w.proves, acts))
+    ok(any(a.get("do") == "game_prove" and a["item"] == other for a in acts), "the pass started it: %s" % acts)
+    ok(not os.path.exists(x.s.p(R.GAME_WAKE)), "and took the wake")
+    x.done()
+
+    x, first, other = two_on_game()
+    round_over(x, first)
+    lk = open(x.s.p("tick.lock"), "w")
+    fcntl.flock(lk, fcntl.LOCK_EX)
+    keep = R.GAME_NEXT_WAIT_S
+    R.GAME_NEXT_WAIT_S = 0
+    try:
+        acts = R.game_next(x.s, x.w, x.r, x.now + 5)
+    finally:
+        R.GAME_NEXT_WAIT_S = keep
+    ok("tick.lock busy" in acts[0]["why"] and x.w.proves == [first], "past its wait the pass gives up, starting nobody: %s" % acts)
+    ok(os.path.exists(x.s.p(R.GAME_WAKE)), "the wake stays for the next tick")
+    fcntl.flock(lk, fcntl.LOCK_UN)
+    lk.close()
+    dos = [a.get("do") for a in x.tick()]
+    ok("game_wake" in dos and x.w.proves == [first, other], "and the next tick serves it: %s %s" % (dos, x.w.proves))
+    x.done()
+
+
+def t_slow_step_named_in_the_note():
+    """The contract's 'the slow step named in design note': it exists, names the deploy plan, and its own samples say so."""
+    repo = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+    path = os.path.join(repo, "design", "RimMandrake", "relentless_tick_slow_step_2026-11-03.md")
+    ok(os.path.exists(path), "the design note exists: %s" % path)
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        note = f.read()
+    ok("**The slow step was one deploy plan inside the tick.**" in note, "the note names the slow step")
+    rows = [(int(n), name) for name, n in re.findall(r"^\| (.+?) \| (\d+)(?: \(\d+%\))? \|$", note, re.M)]
+    total = re.search(r"gave (\d+) samples", note)
+    ok(total and rows and max(rows)[1].startswith("`deploy_custom_mods.py --compose")
+       and max(rows)[0] * 2 > int(total.group(1)), "the note's samples put the plan over half the tick: %s of %s" % (rows, total and total.group(1)))
+    ok("`relentless_live_round._plan_into`" in note and callable(getattr(LR, "_plan_into", None)),
+       "the caller it names is the real one")
+
+
 def t_pass_stops_at_the_holder():
     """The round still runs (a second wake, a general round's end): the pass starts nobody."""
     x, first, _other = two_on_game()
@@ -437,7 +580,9 @@ def RN_iso(t):
 
 def main():
     for fn in (t_write_time, t_slow_step_named, t_gap_reads_a_gate_plan, t_gate_plan, t_game_reading_shared, t_rule_back_at_ten,
-               t_round_end_starts_next, t_round_end_inside_a_tick, t_pass_stops_at_the_holder, t_lock_is_shared_with_the_tick,
+               t_round_end_starts_next, t_round_end_inside_a_tick, t_round_end_during_a_step, t_round_end_in_the_prelude,
+               t_round_end_at_each_phase, t_pass_waits_out_the_tick, t_slow_step_named_in_the_note,
+               t_pass_stops_at_the_holder, t_lock_is_shared_with_the_tick,
                t_unclean_gate_stays_the_ticks, t_round_wires_the_wake, t_game_next_is_a_command, t_idle_share):
         fn()
     print("selftest_relentless_tick_stamp: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
