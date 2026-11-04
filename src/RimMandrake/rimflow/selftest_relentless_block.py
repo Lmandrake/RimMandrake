@@ -189,7 +189,7 @@ class BlockWorld(SR.FakeWorld):
         self.blocks = {}        # item -> (kind, ons, reason)
         self.block_fail = None
 
-    def item_state(self, item):
+    def item_state(self, item, fresh=False):
         st = super().item_state(item)
         if st is not None:
             b = self.blocks.get(item)

@@ -10,17 +10,19 @@ Now the fault is ONE incident, keyed by its repair item:
   repro       the evidence that shows it is the instrument, not the work
   items       {item: {sha, since, released_at}}: every parent waiting on it, each with the candidate it keeps
   repair      the ledger item that repairs it (the parents' ledger block points there)
-  fixtures    {good, bad}: a command the instrument must PASS (exit 0) and one it must FAIL (a non-zero exit it chose:
-              a timeout, 126/127 or a signal is a fixture that could not run) before any candidate is released; both
+  fixtures    {good, bad}: a command the instrument must PASS (exit 0 and a `FIXTURE_VERDICT: PASS` line) and one it must
+              FAIL (a non-zero exit it chose and `FIXTURE_VERDICT: FAIL`: a timeout, 126/127, a signal or no verdict is a
+              fixture that could not measure) before any candidate is released; both
               run by the supervisor, never by a worker. No fixtures, no candidate released.
   checks      each fixture run: when, exits, tails
 
 Release is an evidence event, never a clock: the repair item's ledger block stops holding (it closed) AND the fixtures
 pass. A fixture that refuses keeps every parent waiting and is journaled as an alarm; nothing retries it on a timer.
-Pure store logic here; relentless_attrib calls it under the store lock.
+Store logic here; check() takes the store lock itself, link() and released() run under the caller's.
 """
 import json
 import os
+import re
 
 FILE = "instrument_incidents.json"     # relentless_breakers owns incidents.json (capability signatures)
 OPEN, RELEASED, REFUSED = "open", "released", "fixture_refused"
@@ -84,6 +86,14 @@ def ran(code):
     return isinstance(code, int) and 0 <= code < 126
 
 
+def verdict(tail):
+    """The instrument's own word, the last `FIXTURE_VERDICT: PASS|FAIL` line of the output; None when it printed none.
+    An exit alone cannot tell a measured FAIL from a setup that died (`python3 /missing.py` exits 2), so a fixture that
+    gives no verdict measured nothing and releases nothing."""
+    words = re.findall(r"^\s*FIXTURE_VERDICT:\s*(PASS|FAIL)\s*$", tail or "", re.M)
+    return words[-1] if words else None
+
+
 def _cached(inc, key):
     done = [c for c in inc.get("checks") or [] if c.get("key") == key]
     return (done[-1]["ok"], done[-1]["why"]) if done else None
@@ -114,11 +124,12 @@ def check(store, repair, run, now, event, need_fixtures=True):
                "attribute it again with --fixture-good and --fixture-bad")
     else:
         good, bad = run(fx["good"]), run(fx["bad"])
-        ok = good[0] == 0 and ran(bad[0]) and bad[0] != 0
-        why = ("fixtures hold: good exit 0, bad exit %s" % bad[0] if ok else
-               "fixtures refuse the repair: good exit %s (wants 0): %s | bad exit %s (wants a non-zero exit it chose, "
-               "not a timeout, 126/127 or a signal): %s"
-               % (good[0], (good[1] or "")[-200:], bad[0], (bad[1] or "")[-200:]))
+        ok = (good[0] == 0 and verdict(good[1]) == "PASS" and
+              ran(bad[0]) and bad[0] != 0 and verdict(bad[1]) == "FAIL")
+        why = ("fixtures hold: good exit 0 PASS, bad exit %s FAIL" % bad[0] if ok else
+               "fixtures refuse the repair: good exit %s verdict %s (wants 0 PASS): %s | bad exit %s verdict %s (wants a "
+               "non-zero exit it chose, not a timeout, 126/127 or a signal, and FAIL): %s"
+               % (good[0], verdict(good[1]), (good[1] or "")[-200:], bad[0], verdict(bad[1]), (bad[1] or "")[-200:]))
     with store.lock():
         incs = load(store)
         inc = incs.get(repair)

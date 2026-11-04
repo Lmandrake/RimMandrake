@@ -96,7 +96,7 @@ class FakeWorld:
         return [i for i in sorted(self.items) if self.items[i] in ("proposed", "ready")
                 and i not in getattr(self, "taken", ())], None
 
-    def item_state(self, item):
+    def item_state(self, item, fresh=False):
         st = self.items.get(item)
         return None if st is None else {"state": st, "lease": None, "needs": "offline",
                                         "owner": self.owners.get(item, "BENCH"),

@@ -161,6 +161,18 @@ def _closed_world():
     return evs
 
 
+def t_done_index_is_the_close_receipt():
+    """INSTRUMENT_INCIDENT_BUILD_NO_STRIKES: relentless keys a repair's release on the event that made it done; a note
+    after the close must not move it (that reran the fixtures on every sweep)."""
+    evs = _closed_world()
+    w = model.replay(evs, strict=True)
+    assert w.items["CLOSED_ITEM_HERE_1"].done_index == 2, w.items["CLOSED_ITEM_HERE_1"].done_index
+    w = model.replay(evs + [ev(seat="BUILD", event="note", id="CLOSED_ITEM_HERE_1", text="x")], strict=True)
+    assert w.items["CLOSED_ITEM_HERE_1"].done_index == 2, "a note moved the close receipt"
+    w = model.replay(evs[:2], strict=True)
+    assert w.items["CLOSED_ITEM_HERE_1"].done_index is None, "an open item has no close receipt"
+
+
 def t_close_then_ready_refused():
     evs = _closed_world() + [ev(seat="BUILD", event="claim", id="CLOSED_ITEM_HERE_1")]
     refuses(lambda: model.replay(evs, strict=True), "cannot be reopened",

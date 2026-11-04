@@ -51,7 +51,7 @@ class World(SG.GW):
         self.blocks, self.closed, self.fixture_exits, self.fixture_runs = {}, {}, {}, []
         self.led_events, self.during_fixture = {}, None
 
-    def item_state(self, item):
+    def item_state(self, item, fresh=False):
         st = SG.GW.item_state(self, item)
         if st is not None:
             b = self.blocks.get(item)
@@ -174,7 +174,7 @@ def t_steve_site_checker():
     ok(sum("fixtures refuse" in n for n in x.w.notes) == 1, "the refusal is said once on the ledger")
     # reopened and closed again AT THE SAME SHA (a site repair lives off the repo) is a new evidence event; a bad fixture
     # that could not run (127: not found) is no rejection
-    x.w.fixture_exits = {GOOD: (0, "D: 412G free"), BAD: (127, "probe.py: not found")}
+    x.w.fixture_exits = {GOOD: (0, "D: 412G free\nFIXTURE_VERDICT: PASS"), BAD: (127, "probe.py: not found")}
     x.w.reopen(BOX_FIX)
     x.tick()
     x.w.close_repair(BOX_FIX, "fix1")
@@ -182,7 +182,14 @@ def t_steve_site_checker():
     ok(x.st(STEVE)["status"] == "blocked" and len(x.w.fixture_runs) == 4,
        "the same-sha reclose reruns the fixtures; a bad fixture exiting 127 is not a rejection: %d runs"
        % len(x.w.fixture_runs))
-    x.w.fixture_exits = {GOOD: (0, "D: 412G free"), BAD: (2, "Q: no such drive")}
+    # a bad fixture that died in its setup (exit 2, no verdict: `python3 /missing.py`) measured nothing
+    x.w.fixture_exits = {GOOD: (0, "D: 412G free\nFIXTURE_VERDICT: PASS"), BAD: (2, "python3: can't open file 'probe.py'")}
+    x.w.reopen(BOX_FIX)
+    x.w.close_repair(BOX_FIX, "fix1")
+    x.tick()
+    ok(x.st(STEVE)["status"] == "blocked" and len(x.w.fixture_runs) == 6,
+       "a bad fixture that exits 2 with no FIXTURE_VERDICT is no rejection: still waiting")
+    x.w.fixture_exits = {GOOD: (0, "D: 412G free\nFIXTURE_VERDICT: PASS"), BAD: (2, "Q: no such drive\nFIXTURE_VERDICT: FAIL")}
     x.w.reopen(BOX_FIX)
     x.w.close_repair(BOX_FIX, "fix1")
     x.tick()
@@ -244,7 +251,7 @@ def t_shared_harness_incident():
     ok(len(launches(x, TITANIC, "work")) >= 2, "TITANIC's builder ran")
     voided = len([1 for ln in open(os.path.join(x.s.root, "live", "runs.jsonl"))
                   if '"void"' in ln]) if os.path.exists(os.path.join(x.s.root, "live", "runs.jsonl")) else 0
-    x.w.fixture_exits = {GOOD: (0, "ok"), BAD: (1, "nothing measured")}
+    x.w.fixture_exits = {GOOD: (0, "ok\nFIXTURE_VERDICT: PASS"), BAD: (1, "nothing measured\nFIXTURE_VERDICT: FAIL")}
     x.w.close_repair(HARNESS_FIX, "fix9")
     x.tick()
     st = x.st(LEAN)
@@ -338,7 +345,7 @@ def t_gpt_review_fences():
     game_failed(x, LEAN, "A2")
     operator(x, LEAN, ["HARNESS"], repair=HARNESS_FIX, fixture_good=GOOD, fixture_bad=BAD)
     game_failed(x, TITANIC, "A2")
-    x.w.fixture_exits = {GOOD: (0, "ok"), BAD: (1, "nothing measured")}
+    x.w.fixture_exits = {GOOD: (0, "ok\nFIXTURE_VERDICT: PASS"), BAD: (1, "nothing measured\nFIXTURE_VERDICT: FAIL")}
     x.w.during_fixture = lambda: (x.w.__dict__.update(during_fixture=None),
                                   operator(x, TITANIC, ["HARNESS"], repair=HARNESS_FIX, fixture_good=GOOD,
                                            fixture_bad=BAD))
@@ -361,11 +368,23 @@ def t_gpt_review_fences():
             st["wait"]["since"] += 1
             x.s.save(st)
     x.w.during_fixture = move
-    x.w.fixture_exits = {GOOD: (0, "ok"), BAD: (1, "no")}
+    x.w.fixture_exits = {GOOD: (0, "ok\nFIXTURE_VERDICT: PASS"), BAD: (1, "no\nFIXTURE_VERDICT: FAIL")}
     x.w.close_repair(BOX_FIX, "fix1")
     x.tick()
     ok(x.st(STEVE)["status"] == "blocked" and x.st(STEVE).get("wait"),
        "a wait that changed under the fixture run is not released by it")
+    x.done()
+    # the repair is reopened while its fixtures run, the wait untouched: the close they judged no longer stands
+    x = rig([STEVE], [BOX_FIX])
+    checked(x, STEVE, "FAIL", "box cannot see D:")
+    operator(x, STEVE, ["SITE"], repair=BOX_FIX, fixture_good=GOOD, fixture_bad=BAD)
+    x.tick()
+    x.w.during_fixture = lambda: (x.w.__dict__.update(during_fixture=None), x.w.reopen(BOX_FIX))
+    x.w.fixture_exits = {GOOD: (0, "ok\nFIXTURE_VERDICT: PASS"), BAD: (1, "no\nFIXTURE_VERDICT: FAIL")}
+    x.w.close_repair(BOX_FIX, "fix1")
+    x.tick()
+    ok(x.st(STEVE)["status"] == "blocked" and x.st(STEVE).get("wait"),
+       "a repair reopened under the fixture run releases nothing on its old close")
     x.done()
     # PRODUCT beside a DEPENDENCY waits; a dropped predecessor releases nothing; INSTRUMENT+DEPENDENCY is refused
     x = rig([REPAINT], [COMB, HARNESS_FIX])

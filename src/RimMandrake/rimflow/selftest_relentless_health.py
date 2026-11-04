@@ -34,7 +34,7 @@ class Fx:
     def pool_order(self, r):
         return list(self.order), None
 
-    def item_state(self, item):
+    def item_state(self, item, fresh=False):
         return None         # unpublished: lease walks past it without starting anything
 
 

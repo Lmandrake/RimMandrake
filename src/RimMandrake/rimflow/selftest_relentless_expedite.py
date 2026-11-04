@@ -48,7 +48,7 @@ class Fx:
         self.notes.append((item, text))
         return None
 
-    def item_state(self, item):
+    def item_state(self, item, fresh=False):
         return None
 
 

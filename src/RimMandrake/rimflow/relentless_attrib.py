@@ -166,8 +166,9 @@ def prompt(st, text, attempts, nonce, r):
         "  %s attribute --item %s --nonce %s --target PROOF|CONTRACT --evidence \"why the proof or its binding cannot show "
         "the clause\"   (a proof-only repair on the same sha, never code)" % (rc, i, nonce),
         "  %s attribute --item %s --nonce %s --target HARNESS|SITE|CHECKER --repair <REPAIR_ITEM> --component \"the "
-        "tool/site and its version\" --fixture-good \"a command the repaired instrument exits 0 on\" --fixture-bad \"one it "
-        "must exit non-zero on\" --evidence \"the line showing the instrument, not the work, broke\"" % (rc, i, nonce),
+        "tool/site and its version\" --fixture-good \"a command on which the repaired instrument measures and prints "
+        "FIXTURE_VERDICT: PASS, exit 0\" --fixture-bad \"one on which it measures and prints FIXTURE_VERDICT: FAIL, exit "
+        "non-zero (a fixture that dies in setup prints no verdict and releases nothing)\" --evidence \"the line showing the instrument, not the work, broke\"" % (rc, i, nonce),
         "  %s attribute --item %s --nonce %s --target DEPENDENCY --on <PREDECESSOR> --evidence \"what it waits for\""
         % (rc, i, nonce),
         "Mixed? Repeat --target (PRODUCT with HARNESS goes to a builder and links the incident; PRODUCT with DEPENDENCY "
@@ -357,6 +358,12 @@ def release(store, fx, st, now, acts):
                            "candidate: %s" % (w["incident"], item, why), acts)
     else:
         why = "%s done" % w["on"]
+    # the fixtures took time: the close they judged must still be the close that stands (a reopen meanwhile, even one
+    # that leaves this wait untouched, voids them)
+    now_on = fx.item_state(w["on"], fresh=True) or {}
+    if (now_on.get("state"), now_on.get("closed_sha"), now_on.get("event")) != \
+            (led_on.get("state"), led_on.get("closed_sha"), led_on.get("event")):
+        return False
     with store.lock():
         cur = store.load(item)
         if cur is None or cur["status"] != "blocked" or not _same(cur.get("wait") or {}, w) or cur.get("block_pending"):

@@ -1617,7 +1617,7 @@ class Item(object):
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
-                 "arbiter_fail", "arbiter_pass", "held")
+                 "arbiter_fail", "arbiter_pass", "held", "done_index")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1634,6 +1634,8 @@ class Item(object):
         self.this_deployment = False
         self.created_at = None
         self.closed_sha = self.superseded_by = self.caused_by = None
+        self.done_index = None          # the ledger index of the event that last made it done: a close's receipt, which
+                                        # a later note does not move and a reopen-and-reclose does
         self.live = self.live_broken = self.live_from = None   # the promise, why it broke now, the state it broke from
         self.live_repeats = 0           # outages of this promise: the same id counts every return
         self.guard = None               # the class guard test shown failing here: {test, testHash, redExit, outages, ts, ...}
@@ -2688,7 +2690,12 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     if verb in ITEMLESS:
         _apply_itemless(ev, seat, world)
         return
+    was = item.state
     _apply_item_verb(ev, index, item, seat, world)
+    if item.state != "done":
+        item.done_index = None
+    elif was != "done":
+        item.done_index = index
 
 
 # 🔴 A CACHE, BECAUSE ON THIS FILESYSTEM AN open() IS 0.8 ms.

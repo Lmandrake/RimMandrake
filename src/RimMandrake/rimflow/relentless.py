@@ -1605,8 +1605,9 @@ class Effects(relentless_game.GameFx):
             memo[key] = sorted(known[n] for n in names if n in known)
         return memo[key]
 
-    def item_state(self, item):
-        _, w = self.ledger_items()
+    def item_state(self, item, fresh=False):
+        """`fresh`: replay the ledger now instead of this tick's cached view (a fence after a long fixture run)."""
+        _, w = (None, pkg("model").replay(pkg("model").read())) if fresh else self.ledger_items()
         it = w.items.get(item)
         if it is None:
             return None
@@ -1614,7 +1615,7 @@ class Effects(relentless_game.GameFx):
         return {"state": it.state, "lease": getattr(it, "lease", None), "needs": it.needs, "owner": it.owner,
                 "block_holds": priority.block_holds(w, it, int(time.time())), "block": priority.block_line(it),
                 "guard_owed": pkg("model").guard_owed(it), "closed_sha": getattr(it, "closed_sha", None),
-                "event": it.history[-1] if getattr(it, "history", None) else None}     # a reclose is a new event
+                "event": getattr(it, "done_index", None)}   # the close's receipt: a reclose moves it, a note does not
 
     # the other seat: read from its tree, never pulled, never written
     def seat_words(self):
