@@ -312,6 +312,8 @@ def parse_health(r: dict, E: Emit, ref: str) -> bool | None:
 
 
 _BRIDGE_OPEN: dict = {}   # (bucket_ts, tool) -> [count, ms_sum, ms_max, errors]
+_BRIDGE_PARKED: dict = {}  # cid -> (end_ts, ms, failed): an end whose start has not landed yet; its late start
+#                           buckets it under the real tool, or its bucket's flush files it under tool '?'
 BRIDGE_BUCKET = 10
 
 
@@ -333,25 +335,34 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> bool | None:
                       "WHERE bridge_calls.ts IS NULL",
                       (cid, ts, r.get("tool"), 1 if r.get("mutating") else 0, r.get("script"), r.get("seat"),
                        r.get("run"), r.get("client")))
+        parked = _BRIDGE_PARKED.pop(cid, None)
+        if parked is not None:
+            _bridge_bucket(parked[0], r.get("tool") or "?", parked[1], parked[2])
     elif ev == "end":   # an end with no start yet (files drain oldest first, so only a lost start) parks its row
         E.con.execute("INSERT INTO bridge_calls(cid,ts_end,ms,status,success) VALUES(?,?,?,?,?) "
                       "ON CONFLICT(cid) DO UPDATE SET ts_end=excluded.ts_end, ms=excluded.ms, status=excluded.status, "
                       "success=excluded.success",
                       (cid, ts, r.get("ms"), r.get("status"), _succ(r.get("success"))))
-        row = E.con.execute("SELECT tool FROM bridge_calls WHERE cid=?", (cid,)).fetchone()
-        tool = (row[0] if row else None) or "?"     # a parked end has no tool yet
-        b = (int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool)
-        a = _BRIDGE_OPEN.setdefault(b, [0, 0.0, 0.0, 0])
+        row = E.con.execute("SELECT tool, ts FROM bridge_calls WHERE cid=?", (cid,)).fetchone()
         ms = _num(r.get("ms"))
         if ms is None or not math.isfinite(ms):     # one NaN/inf duration must not poison the bucket's sum and max
             ms = 0.0
-        a[0] += 1
-        a[1] += ms
-        a[2] = max(a[2], ms)
-        a[3] += 1 if bridge_failed(_succ(r.get("success")), r.get("status")) else 0
+        failed = bridge_failed(_succ(r.get("success")), r.get("status"))
+        if row is not None and row[1] is not None:
+            _bridge_bucket(ts, row[0] or "?", ms, failed)
+        else:
+            _BRIDGE_PARKED[cid] = (ts, ms, failed)
         E.latest["bridge_last"] = ts
     elif ev == "reconciled":
         E.con.execute("UPDATE bridge_calls SET status=? WHERE cid=?", (f"reconciled:{r.get('as')}", cid))
+
+
+def _bridge_bucket(ts: float, tool: str, ms: float, failed: bool) -> None:
+    a = _BRIDGE_OPEN.setdefault((int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool), [0, 0.0, 0.0, 0])
+    a[0] += 1
+    a[1] += ms
+    a[2] = max(a[2], ms)
+    a[3] += 1 if failed else 0
 
 
 def flush_bridge_buckets(E: Emit, force: bool = False, now: float | None = None) -> None:
@@ -360,6 +371,10 @@ def flush_bridge_buckets(E: Emit, force: bool = False, now: float | None = None)
     horizon = (E.latest.get("bridge_last") or 0) - 2 * BRIDGE_BUCKET
     if now is not None:
         horizon = max(horizon, now - 3 * BRIDGE_BUCKET)
+    for cid, (ts, ms, failed) in list(_BRIDGE_PARKED.items()):  # a start that never came by its bucket's close
+        if force or int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET <= horizon:
+            del _BRIDGE_PARKED[cid]
+            _bridge_bucket(ts, "?", ms, failed)
     for (bts, tool) in sorted(list(_BRIDGE_OPEN)):
         if not force and bts > horizon:
             continue

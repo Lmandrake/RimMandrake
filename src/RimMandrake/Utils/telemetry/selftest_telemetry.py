@@ -262,6 +262,13 @@ def main(argv) -> int:
         p1 = con.execute("SELECT ts, ts_end, tool, ms FROM bridge_calls WHERE cid='p1'").fetchone()
         check("[order] an end before its start keeps the end; the late start fills tool and ts",
               p1 is not None and tuple(p1) == (float(tb + 89), float(tb + 90), "jawa/p", 4.0), p1 and tuple(p1))
+        w(bc, [{"ev": "end", "cid": "p2", "ms": 6, "success": True, "t": iso(tb + 91)}])     # its start is lost
+        T.pass_source(S["bridge"])
+        ingest.flush_bridge_buckets(ingest.Emit(con, sink, latest), force=True)
+        sink.flush()
+        pv = {x["metric"]["tool"]: x["values"] for x in vm.of("rm_bridge_calls") if x["metric"]["tool"] in ("jawa/p", "?")}
+        check("[order] a parked end is counted under its late start's tool; one whose start never comes under '?'",
+              pv == {"jawa/p": [1.0], "?": [1.0]} and not ingest._BRIDGE_PARKED, pv)
 
         # changes inbox + emit helper
         import telemetry_emit
@@ -301,7 +308,7 @@ def main(argv) -> int:
         raws = {os.path.basename(os.path.dirname(p)) for p in __import__("glob").glob(os.path.join(c["raw"], "*", "*.gz"))}
         check("raw gzip copy per source", {"tps", "bridge", "changes", "wsl"} <= raws, raws)
         with gzip.open(__import__("glob").glob(os.path.join(c["raw"], "bridge", "*.gz"))[0], "rt") as f:
-            check("raw bridge copy holds every line", sum(1 for _ in f) == 44)   # 12 + late 2 + u 4 + h 4 + order 22
+            check("raw bridge copy holds every line", sum(1 for _ in f) == 45)   # 12 + late 2 + u 4 + h 4 + order 23
 
         # VM spool
         vm.down = True
