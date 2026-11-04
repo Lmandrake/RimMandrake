@@ -1801,7 +1801,7 @@ def receipts_html(p):
     def row(r):
         rc = r.get("receipt") or {}
         words = rc.get("outcome") or clip(r.get("title") or r["item"], 100)
-        bits = [x for x in (r.get("where"), "check " + rc["check"] if rc.get("check") else "unchecked", "%d commits" % rc["commits"] if rc.get("commits") else "",
+        bits = [x for x in (r.get("where"), "check " + rc["check"] if rc.get("check") else "unchecked", "%d commits this week" % rc["commits"] if rc.get("commits") else "",
                             tokens(rc["tokens"]) if rc.get("tokens") else "") if x]
         return "<div>%s %s %s</div>" % (r.get("glyph") or "●", hesc(clip(words, 120)), SMALL % hesc(" · ".join(bits)))
 
@@ -2062,6 +2062,8 @@ def gather(env, state, hist=(), write=True):
     elif fl.get("why"):
         p["unmeasured"].append("mods, receipts and Needs you are %s old (%s)" % (ago(now - fl.get("good_t", 0)), clip(fl["why"], 80)))
     p["accepted"] = (p["fleet"] or {}).get("accepted")
+    if p["accepted"] and now - (p["fleet"].get("t") or 0) > FLEET_STALE:      # refreshes stopped: no longer "at today's code"
+        p["accepted"] = None
     if not p["accepted"]:
         p["unmeasured"].append("mods accepted (%s)" % ((p["fleet"] or {}).get("accepted_why") or "not read yet"))
     conductors = [x for x in p["tree"]["groups"].values() if is_conductor(x)] if p["tree"] else []

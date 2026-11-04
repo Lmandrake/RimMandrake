@@ -482,7 +482,8 @@ def gather(now, days=DAYS, detached_done=()):
     log = parse_log(git_log(days))
     evs, world = ledger()
     rel = relentless_states(strict=True)
-    mc = load_json(MODCHECK, {})
+    with open(MODCHECK) as f:      # unread, every mod would claim "modcheck not run": let the reading fail instead
+        mc = json.load(f)
     folders = mod_folders()
     by_item, item_mods = attribute(log, world.items, folders)[:2]
     cross = split_cross(item_mods)
