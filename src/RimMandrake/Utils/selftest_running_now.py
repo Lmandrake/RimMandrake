@@ -1152,6 +1152,37 @@ eq = {"accounts": {"alpha": fuel_rec("alpha", 60)}}
 rows = fuel_rows(fuel_env(eq, fuel_points("alpha", [(6.1, 48), (3, 54), (0.1, 60)])))
 check("fuel: a burn at the pace reads EQUAL", rows["alpha"]["verdict"] == "EQUAL" and rows["alpha"]["why"] is None)
 check("fuel: the registry says who should be here, a missing account says UNMEASURED", rows["beta"]["why"] == "no reading on file" and rows["gamma"]["why"] == "no reading on file")
+# ---- who is in use now (RUNNING_PAGE_BUILD_WHOSE_TANK_IS_THIS)
+class LiveEnv(Fake):
+    def __init__(self, out=None, exc=None, **kw):
+        super().__init__(**kw)
+        self.status, self.exc = out, exc
+
+    def run(self, argv, timeout=20):
+        if self.exc:
+            raise self.exc
+        return 0, self.status
+
+
+LIVE_JSON = json.dumps({"ok": True, "live": "beta", "live_email": "secret.person@example.com", "interrupted_switch": False})
+def live_page(**kw):
+    env = LiveEnv(ps="", files={LATEST: GOOD_LATEST, SERIES: "\n".join(json.dumps(r) for r in GOOD_SERIES)}, **kw)
+    env.names = ["alpha", "beta", "gamma"]
+    pg, _, ph = R.build(env, {}, [])
+    return pg, ph
+pg, ph = live_page(out=LIVE_JSON)
+check("live: the headline names the account in use", "IN USE NOW: beta" in pg and "IN USE NOW: beta" in ph)
+check("live: only the in-use account's row is marked", pg.count(">IN USE<") == 1 and "> beta" in ph and "> alpha" not in ph and "> gamma" not in ph)
+check("live: the email never reaches the page or the phone copy", "secret.person" not in pg and "secret.person" not in ph)
+pg, ph = live_page(out="", exc=R.Unmeasured("claude-account not found"))
+check("live: a failed claude-account reads UNMEASURED and marks no row", "IN USE NOW: UNMEASURED (claude-account not found)" in pg and ">IN USE<" not in pg and "IN USE NOW: UNMEASURED" in ph)
+pg, ph = live_page(out=json.dumps({"ok": False, "live": "beta"}))
+check("live: not ok never guesses an account", "IN USE NOW: UNMEASURED" in pg and ">IN USE<" not in pg)
+pg, ph = live_page(out=json.dumps({"ok": True, "live": "beta", "interrupted_switch": True}))
+check("live: an interrupted switch is said", "SWITCH INTERRUPTED" in pg and "SWITCH INTERRUPTED" in ph)
+import subprocess as _sp
+pg, ph = live_page(out="", exc=_sp.TimeoutExpired("claude-account", 10))
+check("live: a timeout reads UNMEASURED", "timed out" in pg)
 # the 15% band edges, sweeping the burn past the pace with a span big enough that the whole-percent error is narrower
 for burn, want in ((2.29, "EQUAL"), (1.71, "EQUAL"), (2.5, "AHEAD"), (1.5, "BEHIND")):
     samples = [(NOW - 6 * 3600, 20.0, None), (NOW, 20.0 + burn * 6, None)]
@@ -1217,7 +1248,7 @@ for label, env in (("latest.json missing", fuel_env(None, [])), ("latest.json no
     if label == "latest.json missing":
         env.files.pop(LATEST)
     page, phone = built(env)
-    check("fuel: %s: the panel says UNMEASURED" % label, 'ACCOUNTS, THIS WEEK</div><b style="color:%s">UNMEASURED' % R.WARN in page and "account fuel (" in page)
+    check("fuel: %s: the panel says UNMEASURED" % label, re.search(r'ACCOUNTS, THIS WEEK</div><div[^>]*>[^<]*</div><b style="color:%s">UNMEASURED' % R.WARN, page) is not None and "account fuel (" in page)
     check("fuel: %s: the phone says UNMEASURED" % label, any(x.startswith("ACCOUNTS UNMEASURED") for x in phone.splitlines()))
 env = fuel_env(GOOD_LATEST, [])
 env.files.pop(SERIES)

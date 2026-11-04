@@ -2211,6 +2211,46 @@ def collect_fuel(env, now):
     return rows
 
 
+CLAUDE_ACCOUNT = "/home/mandrake/.local/bin/claude-account"
+
+
+def collect_inuse(env):
+    """Which account this machine uses RIGHT NOW, from `claude-account --json status` only (never from the fuel readings).
+    -> {"live": name, "interrupted": bool}; raises Unmeasured with the reason. The email is dropped here, it never reaches the page."""
+    try:
+        rc, out = env.run([CLAUDE_ACCOUNT, "--json", "status"], timeout=10)
+    except subprocess.TimeoutExpired:
+        raise Unmeasured("claude-account timed out after 10 s")
+    except FileNotFoundError:
+        raise Unmeasured("claude-account not found")
+    try:
+        d = json.loads(out)
+    except ValueError:
+        raise Unmeasured("claude-account exited %s with no JSON" % rc)
+    if rc != 0 or not isinstance(d, dict) or not d.get("ok"):
+        raise Unmeasured("claude-account reports not ok")
+    if not d.get("live"):
+        raise Unmeasured("claude-account names no live account")
+    return {"live": str(d["live"]), "interrupted": bool(d.get("interrupted_switch"))}
+
+
+def inuse_text(p):
+    """The one headline line, same words on the page and the phone."""
+    lv = p.get("live")
+    if not lv:
+        return "IN USE NOW: UNMEASURED (%s)" % clip(p.get("live_why") or "not read", 90)
+    return "IN USE NOW: %s%s" % (lv["live"], "  (ACCOUNT SWITCH INTERRUPTED)" if lv["interrupted"] else "")
+
+
+def inuse_html(p):
+    bad = not p.get("live") or p["live"]["interrupted"]
+    return '<div style="font-size:20px;font-weight:800;color:%s;margin-bottom:6px">%s</div>' % (WARN if bad else GOOD, hesc(inuse_text(p)))
+
+
+def is_inuse(p, name):
+    return bool(p.get("live")) and p["live"]["live"] == name
+
+
 FUEL_COLOUR = {"AHEAD": BAD, "EQUAL": GOOD, "BEHIND": LIVE}
 
 
@@ -2236,10 +2276,12 @@ def fuel_verdict_words(r):
 def fuel_html(p):
     rows = p["fuel"]
     if not rows:
-        return box(HEAD % "ACCOUNTS, THIS WEEK", '<b style="color:%s">UNMEASURED</b> ' % WARN, hesc(clip(p.get("fuel_why") or "not read", 120)))
-    out = []
+        return box(HEAD % "ACCOUNTS, THIS WEEK", inuse_html(p) + '<b style="color:%s">UNMEASURED</b> ' % WARN, hesc(clip(p.get("fuel_why") or "not read", 120)))
+    out = [inuse_html(p)]
     for r in rows:
         name = '<span style="display:inline-block;width:64px;font-weight:700">%s</span>' % hesc(r["name"])
+        if is_inuse(p, r["name"]):
+            name = '<span style="color:%s">&#9654; </span>' % GOOD + name + '<span style="background:%s;color:#fff;font-size:11px;font-weight:700;padding:1px 5px;border-radius:3px;margin-right:6px">IN USE</span>' % GOOD
         if r["why"]:
             out.append('<div>%s<b style="color:%s">UNMEASURED</b> %s</div>' % (name, WARN, SMALL % hesc(r["why"])))
             continue
@@ -2260,13 +2302,14 @@ def fuel_html(p):
 def fuel_phone(p):
     rows = p["fuel"]
     if not rows:
-        return ["ACCOUNTS UNMEASURED: %s" % clip(p.get("fuel_why") or "not read", 70)]
-    out = ["ACCOUNTS, THIS WEEK"]
+        return [inuse_text(p), "ACCOUNTS UNMEASURED: %s" % clip(p.get("fuel_why") or "not read", 70)]
+    out = [inuse_text(p), "ACCOUNTS, THIS WEEK"]
     for r in rows:
+        mark = "> " if is_inuse(p, r["name"]) else ""
         if r["why"]:
-            out.append("%s UNMEASURED: %s" % (r["name"], clip(r["why"], 60)))
+            out.append("%s%s UNMEASURED: %s" % (mark, r["name"], clip(r["why"], 60)))
             continue
-        line = "%s %s, resets in %s: " % (r["name"], fuel_left(r), ago(r["hours"] * 3600))
+        line = "%s%s %s, resets in %s: " % (mark, r["name"], fuel_left(r), ago(r["hours"] * 3600))
         if r["burn_why"]:
             out.append(line + "burn UNMEASURED")
         elif r["verdict"] == "AHEAD":
@@ -2529,6 +2572,9 @@ def gather(env, state, hist=(), write=True):
     p["tokens"], why = (None, "no throughput") if not p["throughput"] else guarded(collect_tokens, env, now, p["throughput"])
     if why:
         p["unmeasured"].append("tokens per item (%s)" % why)
+    p["live"], p["live_why"] = guarded(collect_inuse, env)
+    if p["live_why"]:
+        p["unmeasured"].append("account in use (%s)" % p["live_why"])
     p["fuel"], p["fuel_why"] = guarded(collect_fuel, env, now)
     if p["fuel_why"]:
         p["unmeasured"].append("account fuel (%s)" % p["fuel_why"])
