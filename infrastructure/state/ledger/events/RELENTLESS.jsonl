@@ -302,3 +302,17 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T12:50:03Z","tsn":1793796603696963494}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM: deploy and restart for its live proofs","ts":"2026-11-04T12:57:06Z","tsn":1793797026735383390}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:21:29Z","tsn":1793798489245608844}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T13:23:11Z","tsn":1793798591476894069}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:23:22Z","tsn":1793798602520982076}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MODCHECK_DONOR_ENVIRONMENTS_1 A1 (L1), read-only proof","ts":"2026-11-04T13:23:31Z","tsn":1793798611107710146}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:23:40Z","tsn":1793798620131801140}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A7 (L2), read-only proof","ts":"2026-11-04T13:23:51Z","tsn":1793798631308730399}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:23:57Z","tsn":1793798637908601192}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A8 (L1), read-only proof","ts":"2026-11-04T13:24:11Z","tsn":1793798651096822033}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:24:17Z","tsn":1793798657824851453}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CREEP_WEB_HARVEST_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-04T13:24:26Z","tsn":1793798666074646557}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:24:32Z","tsn":1793798672571956343}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CREEP_WEB_HARVEST_LIVE_1 A2 (L2), read-only proof","ts":"2026-11-04T13:24:40Z","tsn":1793798680758451305}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:24:46Z","tsn":1793798686962043339}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CREEP_WEB_HARVEST_LIVE_1 A3 (L2), read-only proof","ts":"2026-11-04T13:24:55Z","tsn":1793798695539292364}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T13:25:05Z","tsn":1793798705506670760}
