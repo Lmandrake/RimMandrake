@@ -51,7 +51,60 @@
    "speaker": "owner"
   }
  ],
- "decisions": [],
+ "decisions": [
+  {
+   "id": "d_root",
+   "kind": "root",
+   "text": "Root approved as the Conductor's 'deadly earthworks' correction taken one step further; first-judged scene is the full moat sequence.",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793794915205594887"
+   ]
+  },
+  {
+   "id": "d_scene_moat",
+   "text": "First-judged scene: deep water moat under a raised drawbridge; raiders swim and tire (RM_SwimExhaustion, built); sluice gate drains it fast; raiders trapped in a deep pit they cannot escape, held as prisoners for a while (superdeep prison room, built); chemfuel pumped in from above; lit from above.",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793794915205594887",
+    "OWNER:1793794392567351532"
+   ]
+  },
+  {
+   "id": "d_scene_pittrap",
+   "text": "Second scene: raiders on a passage to the door; first two fall through a covered pit trap onto spikes; the rest cut saplings to build a makeshift ladder while defenders shoot them; driven off, leaving wounded prisoners already in a tidy prison.",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793794392567351532"
+   ]
+  },
+  {
+   "id": "d_scene_islands",
+   "text": "Third scene: long bridges island to island, a double drawbridge seals the port; raiders trapped on a bridge span when drawbridges rise; they destroy a winch, the drawbridge falls and they escape. The defence still counts as a success (his 'Not today' struck).",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793794392567351532",
+    "OWNER:1793794915205594887"
+   ]
+  },
+  {
+   "id": "d_wetting",
+   "text": "Ground two squares from a canal becomes 'wetted' by the same technique Stillsand is developing for spilled water on sand. Wetting is not flood water; flood water also wets what it passes. Wetted ground gives plants water; explosive growth uses the wetting up until reapplied, and plants also drink standing flood water above them, lowering it.",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793794389686592719",
+    "OWNER:1793794395377714796"
+   ]
+  },
+  {
+   "id": "d_budget_advisory",
+   "text": "Concept budgets are advisory, never a stop.",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793796507483890758"
+   ]
+  }
+ ],
  "asks": [
   {
    "id": "ask_root",
@@ -69,7 +122,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793793891",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "design/concepts/FlowWorks/turn_01.md"
    ],
@@ -77,11 +130,12 @@
     "by": "rm-judge ab76299400ce54ecc (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Answerable with yes; decides stage 1. Fixed on review: the open-the-canal line marked as agent reading; smallest version reworded so it cannot read as shrinking built plumbing."
-   }
+   },
+   "answer": "OWNER:1793794915205594887"
   },
   {
    "id": "ask_defense_story",
-   "status": "sent",
+   "status": "answered",
    "about": [
     "inv_flow_level",
     "inv_stock",
@@ -100,11 +154,12 @@
     "by": "rm-judge ab76299400ce54ecc (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "No ruling names the judged scene; the guess is the agent-written spec loop; his answer picks the raid a tester stages first."
-   }
+   },
+   "answer": "OWNER:1793794392567351532"
   },
   {
    "id": "ask_irrigation",
-   "status": "sent",
+   "status": "answered",
    "about": [
     "inv_irrigation"
    ],
@@ -122,7 +177,8 @@
     "by": "rm-judge ab76299400ce54ecc (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Pass on the radius only: whether canals water crops is already answered (his 09-16 words, ruling 1, ruling 36). Reworded to ask only the reach."
-   }
+   },
+   "answer": "OWNER:1793794389686592719"
   }
  ],
  "inventory": [
@@ -239,13 +295,15 @@
     "src/RimMandrake/FlowWorks/Source/Swale/RM_Swale.cs"
    ],
    "proof": "missing",
-   "scope": "open_question",
+   "scope": "opened_by_owner",
    "source": [
     "design/validation_walks/RimMandrake/FlowWorks.md",
     "design/RimMandrake/flowworks_mod_definition.md:118"
    ],
    "speaker": "agent",
-   "note": "What exists: overflow soak irrigates via Explosive Growth when loaded (sheetIrrigates), and the swale walks fertility. Canal-side watering itself: not found in a grep of Source for 'irrigat'; spec section 4 and 11 say UNBUILT here, solved in CrackedLands. See contradiction c_irrigation."
+   "note": "What exists: overflow soak irrigates via Explosive Growth when loaded (sheetIrrigates), and the swale walks fertility. Canal-side watering itself: not found in a grep of Source for 'irrigat'; spec section 4 and 11 say UNBUILT here, solved in CrackedLands. See contradiction c_irrigation.",
+   "scope_source": "OWNER:1793794389686592719",
+   "text": "Ground within two squares of a filled canal is wetted (Stillsand's spilled-water technique); plants there have water and use it up; plants also drink standing flood water"
   },
   {
    "id": "inv_liquid_roster",
@@ -719,10 +777,12 @@
    "source": [
     "design/validation_walks/RimMandrake/FlowWorks.md:101",
     "design/RimMandrake/flowworks_mod_definition.md:118",
-    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs:32"
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs:32",
+    "OWNER:1793794389686592719"
    ],
    "core": false,
-   "resolved": false
+   "resolved": true,
+   "resolution": "Owed: two-square wetting from a filled canal, shared with Stillsand's spilled-water technique (d_wetting)."
   },
   {
    "id": "c_spec_stale",
@@ -810,14 +870,14 @@
   "caveat": "165 of 175 rows machine-classified, 15 read by hand, 2 of 5 spot-checks misclassified: expect 10-20% wrong rows. Stage 3 re-reads each scene it files a build item for.",
   "source": "design/concepts/FlowWorks/script_audit.json"
  },
- "root_draft": {
-  "text": "FlowWorks lets you dig into the ground, and the liquids already on the map (water, tar, fuel, slime) flow into what you dug and settle at one level, drawn from a real supply that visibly shrinks and refills slowly. Its main job is defence: an empty canal slows raiders, a water canal makes them wade, a fuel canal can be set alight and burns for a long time, and a slime canal is nearly impossible to cross. Deciding when to open the canal is the player's call. Watering crops, the plumbing (pipes, pumps, tanks, hoses, bottles) and reshaping the land all use the same liquids and the same supply. What the mod is judged on first: digging, liquid flowing to one level, a supply that pays for every litre, and the four defensive canals (empty, water, burning, slime) working in a real raid; everything else built stays.",
+ "root": {
+  "text": "FlowWorks lets you dig into the ground, and the liquids already on the map (water, tar, fuel, slime) flow into what you dug and settle at one level, drawn from a real supply that visibly shrinks and refills slowly. Its main job is deadly earthworks: pits, moats, traps and drawbridges that you fill, drain and set alight at the moment you choose. Ground within two squares of a filled canal is wetted, so plants there have water. The plumbing (pipes, pumps, tanks, hoses, bottles) and reshaping the land use the same liquids and the same supply. The mod is judged first on one raid: raiders swim a deep water moat under a raised drawbridge and tire, a sluice gate drains it, they are held as prisoners in the pit for a while, then chemfuel is pumped in from above and lit.",
   "source": [
-   "design/concepts/FlowWorks/turn_01.md",
-   "design/RimMandrake/flowworks_mod_definition.md:52",
-   "design/validation_walks/RimMandrake/FlowWorks.md:77"
+   "OWNER:1793794915205594887",
+   "OWNER:1793794389686592719",
+   "design/concepts/FlowWorks/turn_01.md"
   ],
-  "speaker": "agent",
-  "status": "draft, awaiting his approval via ask_root"
+  "speaker": "owner",
+  "derivation": "turn_01 paragraph with its 'main job' and 'judged first' sentences replaced by the Conductor's correction (deadly earthworks; moat drain-and-burn first), which he approved and extended one step in OWNER:1793794915205594887 (swim and tire, drain, prisoner pit, chemfuel from above, lit, raised drawbridge on top); the watering sentence takes his ask_irrigation answer OWNER:1793794389686592719. Dig/flow/supply/plumbing sentences unchanged from what he read; he did not object to them. Stage 2 argues every line again."
  }
 }

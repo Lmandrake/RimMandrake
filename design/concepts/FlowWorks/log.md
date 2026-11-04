@@ -14,3 +14,12 @@
    1, 3 or 5 squares?
 
 Reviewed by rm-judge ab76299400ce54ecc: all three pass; ask_irrigation narrowed to the reach (whether it waters is settled by his 2026-09-16 words and ruling 36).
+
+## 2026-11-04 his answers to turn 1 (recorded on the ledger by BENCH)
+
+- **ask_irrigation** (OWNER:1793794389686592719): "1) Two squares away from the canal should become "wetted" using the same technique the Stillsand is already developing for spilled water on the sand. This isn't the same as flood water: flood water is above and beyond wetting, though of course it also wets what it passes over. Wetted ground means the plants have access to water. If they explosively grow, they will use up the wetted ground until it is reapplied. They will also take in more water than that if it's available, reducing any flooded water level above them."
+- **ask_defense_story** (OWNER:1793794392567351532): three raid scenes (moat drain and burn; covered pit trap onto spikes with a makeshift-ladder rescue under arrows; island bridges with a double drawbridge, winch destroyed, raiders escape). Full text on the ledger event.
+- **ask_root** (OWNER:1793794915205594887), answering the Conductor's suggested correction ("deadly earthworks: pits, moats, traps and drawbridges that you fill, drain and set alight at the moment you choose"): "Sorry, strike the "not today" comment. It was meant that the raiders get away this time, but the defense was successful. Ok, now for your suggested correction: even one more step: Filled water moat has raiders swimming across it (getting tired swimming in deep water), then water drains and they become Prisoners in a prisoner pit for awhile (prisoner mechanic), then chemfuel gets pumped in from above and the burning moat mechanic. All with a drawbridge on top that's raised."
+- Budget (OWNER:1793796507483890758): concept budgets are advisory.
+
+Run rm-role-designer-1793796539 wrote the root from these (record.json `root`, with its derivation). Stage 1 done.
