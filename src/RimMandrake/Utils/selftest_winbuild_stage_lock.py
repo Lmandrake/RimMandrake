@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Selftest for winbuild.stage_build's locks (review night): two builds of ONE stage never overlap from the rsync to the
 end of the build (one would rsync --delete under the other's compile), and two builds of DIFFERENT stages never copy
-back at the same time (a shared dependency's dll and .srchash would land as a mismatched pair). No dotnet, no rsync:
-the steps are stubbed and timed."""
+back at the same time (a shared dependency's dll and .srchash would land as a mismatched pair). No dotnet; the steps are
+stubbed and timed, except main_atmos_fresh_stage, whose rsync is real because what it staged is the point."""
+import importlib.util
 import os
+import re
 import sys
 import tempfile
 import threading
@@ -124,6 +126,136 @@ def main_clones_independent():
                 check(not free(fcntl.LOCK_SH), "a copy-back excludes a staging reader")
         finally:
             WB.LOCK_DIR, WB.ROOT = saved
+
+
+def main_clones_never_queue():
+    """Two real processes through the real stage_build, each its own clone: B gets on with its work while A sits inside
+    the step that used to hold a machine-wide lock. main_clones_independent only reads the helper's return value and
+    would stay green if stage_build stopped using it (blind check, NIGHTLY_COP_FIX_RED_HMGHDI_RQAA). The same harness
+    with ONE clone must queue: that control proves the harness can see a queue at all."""
+    with tempfile.TemporaryDirectory() as raw:
+        td = os.path.realpath(raw)
+
+        def seen(name):
+            return os.path.exists(os.path.join(td, "ev", name))
+
+        def mark(name):
+            open(os.path.join(td, "ev", name), "w").close()
+
+        def await_mark(name, seconds):
+            end = time.time() + seconds
+            while time.time() < end:
+                if seen(name):
+                    return True
+                time.sleep(0.01)
+            return seen(name)
+
+        def build(tag, clone, hold=None, until=None, seconds=0):
+            pid = os.fork()
+            if pid:
+                return pid
+            rc = 1
+            try:
+                os.dup2(os.open(os.devnull, os.O_WRONLY), 1)
+
+                def step(name):
+                    mark("%s.%s" % (tag, name))
+                    if name == hold and await_mark(until, seconds):
+                        mark("%s.%s.saw" % (tag, name))
+                WB.ROOT = os.path.join(td, clone)
+                WB.BUILD_ROOT, WB.LOCK_DIR = os.path.join(td, "build"), os.path.join(td, "locks")
+                WB.needed_dirs = lambda csproj, seen=None: {os.path.dirname(csproj)}
+                WB.win = lambda p: p
+                WB._ce_snapshot = lambda scope=None: None
+                WB.source_sha = lambda paths: ("0" * 40, False)
+                WB.built_outputs = lambda tree, since: []
+                WB.run_dotnet = lambda csproj_win, cwd, config, extra: 0
+                WB.rsync_stage = lambda rels, stage, cwd, excl=(): (step("rsync"),
+                                                                    types.SimpleNamespace(returncode=0, stdout=""))[1]
+                WB._copy_back = lambda outs, stage, record, staged_in=None: step("copy")
+                # a stage per build: the per-stage lock is another lock, on purpose shared by clones of one stage path
+                proj = os.path.join(WB.ROOT, "src", "RimMandrake", "Mod" + tag, "Source", "Mod%s.csproj" % tag)
+                rc = WB.stage_build(proj)[0]
+            finally:
+                os._exit(rc)
+
+        def run(name, clone_b, a_hold, b_step, seconds):
+            """-> did A, still inside a_hold, see B reach b_step?"""
+            for sub in ("ev", "locks"):
+                os.makedirs(os.path.join(td, sub), exist_ok=True)
+            for f in os.listdir(os.path.join(td, "ev")):
+                os.unlink(os.path.join(td, "ev", f))
+            a = build("A", "cloneA", a_hold, "B." + b_step, seconds)
+            entered = await_mark("A." + a_hold, 30)
+            b = build("B", clone_b)
+            rcs = [os.waitpid(p, 0)[1] for p in (a, b)]
+            check(entered and rcs == [0, 0], "%s: both builds ran" % name, (entered, rcs))
+            return seen("A.%s.saw" % a_hold)
+        # generous: a green run leaves the moment B arrives, only a real queue costs the whole wait
+        check(run("rsync past copy-back", "cloneB", "copy", "rsync", 15),
+              "clone B's rsync starts while clone A is inside copy-back")
+        check(run("copy-back past rsync", "cloneB", "rsync", "copy", 15),
+              "clone B's copy-back runs while clone A is inside its long rsync (the measured 100 s queue)")
+        check(run("copy-back past copy-back", "cloneB", "copy", "copy", 15),
+              "clone B's copy-back runs while clone A is inside copy-back")
+        check(not run("control: one clone", "cloneA", "copy", "rsync", 1.5),
+              "control: within ONE clone the same harness shows the rsync queued behind the copy-back")
+        check(run("control: one clone, readers", "cloneA", "rsync", "rsync", 15),
+              "control: within ONE clone two staging rsyncs share")
+
+
+def main_atmos_fresh_stage():
+    """The atmos kernel's real stage call and a real rsync onto an EMPTY root, dotnet stubbed: every file its C# selftest
+    finds by walking up is there. A reused stage keeps a file its stage list dropped (--delete prunes only inside the
+    listed dirs), so the kernel test alone goes green on any root that ever held it (blind check,
+    NIGHTLY_COP_FIX_RED_HMGHDI_RQAA, reverted extra_dirs: green reused, red empty)."""
+    here = os.path.join(WB.ROOT, "src", "RimMandrake", "AtmosphericBase")
+    # the reads come from the C# source, so a new FindUp is covered the day it is written
+    wanted = set()
+    src = os.path.join(here, "Source", "SelfTest")
+    for n in sorted(os.listdir(src)):
+        if n.endswith(".cs"):
+            with open(os.path.join(src, n), encoding="utf-8") as f:
+                for args in re.findall(r"FindUp\(\s*(?:System\.IO\.)?Path\.Combine\(([^)]*)\)", f.read()):
+                    parts = re.findall(r'"([^"]+)"', args)
+                    if parts and parts[0] == "src":
+                        wanted.add(os.path.join(*parts))
+    must = os.path.join("src", "RimUtinni", "UtinniPatches", "Defs", "AtmosphericBase", "RUT_NineSignatures.xml")
+    check(must in wanted, "the source scan sees the Nine signature read (the instrument can see)", sorted(wanted))
+    spec = importlib.util.spec_from_file_location("atmos_kernel_for_stage",
+                                                  os.path.join(here, "selftest_atmosphericbase_kernel.py"))
+    kernel = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(kernel)
+    with tempfile.TemporaryDirectory() as td:
+        names = ("BUILD_ROOT", "LOCK_DIR", "win", "_ce_snapshot", "run_dotnet", "built_outputs", "source_sha")
+        saved = {k: getattr(WB, k) for k in names}
+        real_run = kernel.subprocess.run
+
+        def run(cmd, *a, **k):      # the wiring test and `dotnet run`, both this interpreter by DOTNET below; rsync is real
+            if cmd[0] == sys.executable:
+                return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+            return real_run(cmd, *a, **k)
+        WB.BUILD_ROOT, WB.LOCK_DIR = os.path.join(td, "build"), os.path.join(td, "locks")
+        os.makedirs(WB.BUILD_ROOT)
+        WB.win = lambda p: p
+        WB._ce_snapshot = lambda scope=None: None
+        WB.run_dotnet = lambda csproj_win, cwd, config, extra: 0
+        WB.built_outputs = lambda tree, since: []
+        WB.source_sha = lambda paths: ("0" * 40, False)
+        kernel.DOTNET = (sys.executable,)
+        kernel.subprocess.run = run
+        try:
+            rc = kernel.main()
+        finally:
+            kernel.subprocess.run = real_run
+            for k, v in saved.items():
+                setattr(WB, k, v)
+        check(rc == 0, "the atmos kernel's stage call ran", rc)
+        stages = os.listdir(os.path.join(td, "build"))
+        check(len(stages) == 1, "one stage on the empty root", stages)
+        stage = os.path.join(td, "build", stages[0])
+        missing = [w for w in sorted(wanted) if not os.path.isfile(os.path.join(stage, w))]
+        check(not missing, "a fresh stage holds every file the atmos C# selftest reads", missing)
 
 
 def main_winstage_narrow():
@@ -265,6 +397,8 @@ if __name__ == "__main__":
     main_same_stage()
     main_no_revert()
     main_clones_independent()
+    main_clones_never_queue()
+    main_atmos_fresh_stage()
     main_winstage_narrow()
     main()
     sys.exit(1 if FAILS else 0)
