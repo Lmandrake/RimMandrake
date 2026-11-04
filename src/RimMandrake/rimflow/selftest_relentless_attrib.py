@@ -171,7 +171,10 @@ def t_steve_site_checker():
     st = x.st(STEVE)
     ok(st["status"] == "blocked" and kept(x, STEVE) and len(x.w.fixture_runs) == 2,
        "fixtures refuse the repair: it keeps waiting, and the refusal is not rerun on a tick: %d runs" % len(x.w.fixture_runs))
-    ok(sum("fixtures refuse" in n for n in x.w.notes) == 1, "the refusal is said once on the ledger")
+    ok(sum(n.startswith("relentless: the repair %s ended but its fixtures refuse" % BOX_FIX) for n in x.w.notes) == 1,
+       "the refusal is said once on the ledger")
+    ok(sum("printed no FIXTURE_VERDICT line" in n for n in x.w.notes) == 1,
+       "fixtures that printed no verdict line are said once on the repair item too")
     # reopened and closed again AT THE SAME SHA (a site repair lives off the repo) is a new evidence event; a bad fixture
     # that could not run (127: not found) is no rejection
     x.w.fixture_exits = {GOOD: (0, "D: 412G free\nFIXTURE_VERDICT: PASS"), BAD: (127, "probe.py: not found")}

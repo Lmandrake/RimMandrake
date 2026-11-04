@@ -33,6 +33,7 @@ went through five builders because the checker's box could not ssh. The supervis
     so nothing closes on the evidence that could not be read, and nothing is rebuilt that was never shown broken.
 Worker endings (snags, worker_lost, late, circling) and the proof road (PROOF_ENDS) are unchanged.
 """
+import os
 import re
 import time
 
@@ -221,10 +222,25 @@ def validate(targets, a):
     return ts
 
 
-def answer(store, item, nonce, targets, a, r, now, sup, known=None):
+def answer(store, item, nonce, targets, a, r, now, sup, known=None, root=None, note=None):
     """`relentless.py attribute`: the diagnostician's (nonce) or an operator's (nonce None, on an item that waits or is
-    held for attribution) return. Recorded and routed under one lock. -> the route taken."""
+    held for attribution) return. Recorded and routed under one lock. -> the route taken.
+    `root`: the tree the fixtures run in (the books clone), for the verdict lint; `note(item, text)`: a ledger note,
+    called after the lock. A fixture pair that can never print FIXTURE_VERDICT is refused here; one whose script does
+    not print it yet is linked and flagged (REPAIR_FIXTURES_ENFORCE_VERDICT_AT_FILING)."""
+    import relentless_incident
     ts = validate(targets, a)
+    lint_state, lint_whys = relentless_incident.LINT_OK, []
+    if any(t in INSTRUMENTS for t in ts) and "PRODUCT" not in ts:
+        # the pair that will judge the release: link() keeps an open incident's first fixtures, never this answer's
+        inc = relentless_incident.get(store, (a.get("repair") or "").strip())
+        fx = (inc["fixtures"] if inc and inc.get("status") != relentless_incident.RELEASED
+              and relentless_incident.needs_fixtures(inc) else
+              {"good": a.get("fixture_good"), "bad": a.get("fixture_bad")})
+        lint_state, lint_whys = relentless_incident.lint_pair(fx, root or os.getcwd())
+        if lint_state == relentless_incident.LINT_NEVER:
+            raise ValueError("an instrument wait is released only by fixtures that print FIXTURE_VERDICT: PASS|FAIL, "
+                             "and this pair cannot: %s" % " | ".join(lint_whys))
     if known is not None:       # a wait on an id the ledger lacks would fail its block write on every tick
         for k in ("repair", "on"):
             v = (a.get(k) or "").strip()
@@ -259,7 +275,21 @@ def answer(store, item, nonce, targets, a, r, now, sup, known=None):
         route = _route(store, st, ts, a, rec, r, now, sup)
         store.journal({"at": iso(now), "do": "attributed", "item": item, "targets": ts, "route": route})
         store.save(st)
+    if lint_whys and route.startswith("wait:"):
+        flag_no_verdict(store, a["repair"].strip(), item, " | ".join(lint_whys), now, note)
     return route
+
+
+def flag_no_verdict(store, repair, item, why, now, note=None):
+    """Not under the lock. The repair's fixtures do not print the verdict line: one alarm (Operations' told ledger reads
+    kind NO_VERDICT through store.on_alarm) and a note on the REPAIR item, so whoever closes it knows the close owes
+    the line or releases nothing."""
+    import relentless_incident
+    store.journal({"at": iso(now), "do": "alarm", "kind": relentless_incident.NO_VERDICT, "item": repair,
+                   "parent": item, "why": why[:400]})
+    if note:
+        note(repair, "relentless: %s waits on this repair, and its release fixtures do not print FIXTURE_VERDICT: "
+                     "PASS|FAIL, so closing this releases nothing until they do: %s" % (item, why))
 
 
 def _route(store, st, ts, a, rec, r, now, sup):
@@ -314,7 +344,7 @@ def _same(cw, w):
     return all(cw.get(k) == w.get(k) for k in ("kind", "on", "sha", "since", "attributed_at"))
 
 
-def _refuse(store, fx, item, w, event, now, why, note, acts):
+def _refuse(store, fx, item, w, event, now, why, note, acts, kind=None):
     if w.get("refused_event") != event:
         with store.lock():
             cur = store.load(item)
@@ -323,8 +353,12 @@ def _refuse(store, fx, item, w, event, now, why, note, acts):
                 cur["wait"]["refused_event"] = event
                 store.save(cur)
         if fresh:
-            store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why[:400]})
+            store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why[:400],
+                           "kind": kind or ("instrument_fixture_refused" if w.get("incident") else "dependency_refused")})
             fx.ledger_note(item, note)
+            if kind == "instrument_fixture_no_verdict":     # the repair's close owes the line: say so on the repair
+                fx.ledger_note(w["on"], "relentless: this repair closed but its release fixtures printed no "
+                                        "FIXTURE_VERDICT line, so %s keeps waiting: %s" % (item, why[:600]))
     acts.append({"do": "incident_refused" if w.get("incident") else "dependency_refused", "item": item, "on": w["on"],
                  "why": why[:200]})
     return False
@@ -355,7 +389,9 @@ def release(store, fx, st, now, acts):
         if not ok:
             return _refuse(store, fx, item, w, event, now, "incident %s: %s" % (w["incident"], why),
                            "relentless: the repair %s ended but its fixtures refuse it, so %s keeps waiting with its "
-                           "candidate: %s" % (w["incident"], item, why), acts)
+                           "candidate: %s" % (w["incident"], item, why), acts,
+                           kind=relentless_incident.NO_VERDICT if relentless_incident.no_verdict_at(
+                               store, w["incident"], event) else None)
     else:
         why = "%s done" % w["on"]
     # the fixtures took time: the close they judged must still be the close that stands (a reopen meanwhile, even one

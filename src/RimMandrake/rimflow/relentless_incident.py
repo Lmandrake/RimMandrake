@@ -19,10 +19,17 @@ Now the fault is ONE incident, keyed by its repair item:
 Release is an evidence event, never a clock: the repair item's ledger block stops holding (it closed) AND the fixtures
 pass. A fixture that refuses keeps every parent waiting and is journaled as an alarm; nothing retries it on a timer.
 Store logic here; check() takes the store lock itself, link() and released() run under the caller's.
+
+A fixture that cannot print the verdict line can never release its parents (REPAIR_FIXTURES_ENFORCE_VERDICT_AT_FILING),
+so lint() reads each command before it is trusted: at attribution a pair that names nothing able to print it is refused,
+one whose named script does not print it YET is linked and flagged to Operations (alarm kind NO_VERDICT, a note on the
+repair item: its close owes the line); `finish` on the repair item refuses while the lint still fails; a release run
+that printed no verdict alarms the same kind. The lint is a static read, never the release gate: check() still runs.
 """
 import json
 import os
 import re
+import shlex
 
 FILE = "instrument_incidents.json"     # relentless_breakers owns incidents.json (capability signatures)
 OPEN, RELEASED, REFUSED = "open", "released", "fixture_refused"
@@ -74,6 +81,96 @@ def link(store, repair, item, sha, now, component=None, repro=None, fixtures=Non
     inc["items"][item] = {"sha": sha, "since": now, "released_at": None if waits else now, "waits": bool(waits)}
     save(store, incs)
     return inc
+
+
+NO_VERDICT = "instrument_fixture_no_verdict"      # the alarm kind Operations' told ledger reads
+VERDICT_WORD = "FIXTURE_VERDICT"
+LINT_OK, LINT_PENDING, LINT_NEVER = "ok", "pending", "never"
+_SCRIPT_EXT = (".py", ".sh", ".bash", ".pl", ".js", ".ps1", ".rb")
+
+
+def _paths(cmd):
+    """The tokens of `cmd` that name a file: a path separator or a script extension (`--x=a/b.py` gives a/b.py)."""
+    try:
+        toks = shlex.split(cmd or "", posix=True)
+    except ValueError:
+        toks = (cmd or "").split()
+    out = []
+    for t in toks:
+        t = t.split("=", 1)[1] if t.startswith("-") and "=" in t else t
+        t = t.strip(";|&()<>")
+        if t and not t.startswith("-") and ("/" in t or t.lower().endswith(_SCRIPT_EXT)) and "://" not in t:
+            out.append(t)
+    return out
+
+
+def lint(cmd, root):
+    """A static read of one fixture command. -> (LINT_OK|LINT_PENDING|LINT_NEVER, why).
+    ok       the command text carries FIXTURE_VERDICT, or a file it names (under `root`, the tree it runs in) does
+    pending  it names a script that does not exist yet, or exists without the word: the repair owes the line
+    never    it names no file and its text has no verdict: nothing it runs can ever print the line"""
+    cmd = cmd or ""
+    if VERDICT_WORD in cmd:
+        return LINT_OK, "the command prints %s itself" % VERDICT_WORD
+    named = _paths(cmd)
+    if not named:
+        return LINT_NEVER, ("%r names no script and does not print %s: it can never give a verdict, so it can never "
+                            "release a parent" % (cmd[:200], VERDICT_WORD))
+    missing, silent = [], []
+    for n in named:
+        f = n if os.path.isabs(n) else os.path.join(root or ".", n)
+        if not os.path.isfile(f):
+            missing.append(n)
+            continue
+        try:
+            with open(f, encoding="utf-8", errors="replace") as h:
+                if VERDICT_WORD in h.read(2_000_000):
+                    return LINT_OK, "%s prints %s" % (n, VERDICT_WORD)
+        except OSError:
+            missing.append(n)
+            continue
+        silent.append(n)
+    return LINT_PENDING, ("%r does not print %s yet (%s): its repair must make it print `%s: PASS|FAIL` or its close "
+                          "releases nothing" % (cmd[:200], VERDICT_WORD, "; ".join(
+                              ["%s absent" % m for m in missing] + ["%s has no verdict line" % x for x in silent]),
+                              VERDICT_WORD))
+
+
+def lint_pair(fixtures, root):
+    """{good, bad} -> (worst state, [why per fixture that is not ok]); (LINT_OK, []) when both pass or none is given."""
+    worst, whys = LINT_OK, []
+    for k in ("good", "bad"):
+        v = (fixtures or {}).get(k)
+        if not v:
+            continue
+        state, why = lint(v, root)
+        if state != LINT_OK:
+            whys.append("%s: %s" % (k, why))
+            worst = LINT_NEVER if LINT_NEVER in (state, worst) else LINT_PENDING
+    return worst, whys
+
+
+def owed_by(store, item, root):
+    """`finish` on `item`: why the close must wait, when `item` repairs an incident that still has parents waiting and
+    whose fixtures do not print the verdict line in `root` (the worker's tree); None when nothing is owed."""
+    inc = get(store, item)
+    if not inc or inc.get("status") == RELEASED or not needs_fixtures(inc):
+        return None
+    if not any(v.get("waits", True) and not v.get("released_at") for v in (inc.get("items") or {}).values()):
+        return None
+    state, whys = lint_pair(inc["fixtures"], root)
+    if state == LINT_OK:
+        return None
+    return ("%s repairs an instrument incident whose release fixtures cannot give a verdict, so closing it would release "
+            "none of its waiting parents (%s): make them print `%s: PASS` (good, exit 0) and `%s: FAIL` (bad, a "
+            "non-zero exit), commit that, then finish. %s" % (item, ", ".join(sorted(inc["items"])), VERDICT_WORD,
+                                                             VERDICT_WORD, " | ".join(whys)))[:1500]
+
+
+def no_verdict_at(store, repair, event):
+    """True when a release run of `repair` for this evidence `event` had a fixture that printed no verdict line (a
+    snag parent's cached no-run row on the same event does not hide it)."""
+    return any(c.get("event") == event and c.get("no_verdict") for c in (get(store, repair) or {}).get("checks") or [])
 
 
 def needs_fixtures(inc):
@@ -141,7 +238,9 @@ def check(store, repair, run, now, event, need_fixtures=True):
         if dict(inc.get("fixtures") or {}) != fx:
             return False, "the fixtures changed while they ran: the next sweep runs the new ones"
         inc.setdefault("checks", []).append({"key": key, "event": event, "at": now, "ok": ok, "why": why[:800],
-                                             "good": good and good[0], "bad": bad and bad[0]})
+                                             "good": good and good[0], "bad": bad and bad[0],
+                                             "no_verdict": bool(good and bad and (verdict(good[1]) is None or
+                                                                                  verdict(bad[1]) is None))})
         inc["checks"] = inc["checks"][-20:]
         inc["status"] = OPEN if ok else REFUSED
         save(store, incs)

@@ -38,6 +38,7 @@ import relentless_game  # noqa: E402
 import relentless_expedite  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_breakers  # noqa: E402
+import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
 import relentless_attrib  # noqa: E402
 import relentless_live  # noqa: E402
@@ -639,8 +640,9 @@ def canonical_commit(name):
 REV_EXPR = re.compile(r"[\s/:~^@{}*?\[\\]|\.\.|^-")
 
 
-def finish(store, item, gen, sha, evidence, now=None):
-    """The durable receipt. The result never depends on a notification: the tick finds it here."""
+def finish(store, item, gen, sha, evidence, now=None, root=None):
+    """The durable receipt. The result never depends on a notification: the tick finds it here. `root`: the worker's
+    tree, where a repair item's incident fixtures are linted for the verdict line (relentless_incident.owed_by)."""
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
@@ -651,7 +653,7 @@ def finish(store, item, gen, sha, evidence, now=None):
             raise ValueError("the last ending (%s) was read off a live proof or a checker and nobody has classified it: "
                              "read its log, then `learn \"CLASSIFY: MOD|SITE|HARNESS|CONTRACT <the log line that decides it>\"` "
                              "before finishing" % st["diagnose_owed"]["class"])
-        owed = relentless_breakers.warrant_refusal(st)
+        owed = relentless_breakers.warrant_refusal(st) or relentless_incident.owed_by(store, item, root or os.getcwd())
         if owed:
             raise ValueError(owed)
         if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
@@ -2196,6 +2198,7 @@ class Effects(relentless_game.GameFx):
         """A journalled alarm joins the told ledger, each kind at most once in ALARM_TOLD_EVERY_S: step_raised can fire
         every tick. A failure stays on the journal and never stops the tick that alarmed."""
         import incident as IN
+        kind = rec.get("kind") or "relentless_alarm"    # an alarm with no kind once raised out of journal() itself
         path, now = self.store.p("alarm_told.json"), time.time()
         try:
             try:
@@ -2203,15 +2206,15 @@ class Effects(relentless_game.GameFx):
                     said = json.load(f)
             except (OSError, ValueError):
                 said = {}
-            if now - said.get(rec["kind"], -1e18) < ALARM_TOLD_EVERY_S:
+            if now - said.get(kind, -1e18) < ALARM_TOLD_EVERY_S:
                 return
             d = os.environ.get("RM_OPS_WATCH_DIR") or self.r["ops_watch_dir"]
-            if IN.signal({"incident": {"enabled": True}}, rec["kind"], rec.get("why"), now, os.path.join(d, "told.jsonl")):
-                said[rec["kind"]] = now
+            if IN.signal({"incident": {"enabled": True}}, kind, rec.get("why"), now, os.path.join(d, "told.jsonl")):
+                said[kind] = now
                 self.store._write(path, json.dumps(said))
         except Exception as e:  # noqa: BLE001
             self.store._append(self.store.p("journal.jsonl"), json.dumps({
-                "at": iso(now), "do": "told_failed", "kind": rec["kind"], "why": "%s: %s" % (type(e).__name__, str(e)[:200])}))
+                "at": iso(now), "do": "told_failed", "kind": kind, "why": "%s: %s" % (type(e).__name__, str(e)[:200])}))
 
     def check_path(self, st):
         """A new path per check: a quarantined checker may still be running in the last one."""
@@ -4933,9 +4936,11 @@ def main(argv=None):
         elif a.cmd == "attribute":
             if bool(a.nonce) == bool(a.seat):
                 raise ValueError("give --nonce (the diagnostic consult) or --seat (a person), one of them")
+            fx = Effects(rules(), store)
+            store.on_alarm = fx.alarm_signal
             print("relentless: %s -> %s" % (a.item, relentless_attrib.answer(
                 store, a.item, a.nonce, a.target, vars(a), rules(), time.time(), sys.modules[__name__],
-                known=ledger_has)))
+                known=ledger_has, root=fx.books if os.path.isdir(fx.books) else None, note=fx.ledger_note)))
         elif a.cmd == "incident-release":
             inc = relentless_breakers.release_by_hand(store, a.key, a.evidence, time.time())
             print("released %s (%d items back in line)" % (a.key, len(inc.get("items") or {})))
