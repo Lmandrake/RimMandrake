@@ -35,7 +35,7 @@ def body(s, job):
         import runner
         state = runner.ensure_playing_map()
         job.note("map", state)
-        job.check("a Playing map exists (or was started)", state in ("playing", "started"), state)
+        job.check("a Playing map exists (or was started)", state in ("playing", "started", "restarted"), state)
     missing = [t for t in REQUIRED_TOOLS + (() if dry else LIVE_ONLY_TOOLS) if not tool_present(s, t)]
     job.check("every tool the queue drives is in the live census", not missing, "missing: %s" % missing)
     c = call(s, "jawa/pawn_census", limit=5)

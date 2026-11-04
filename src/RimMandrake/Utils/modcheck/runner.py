@@ -71,7 +71,9 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _
                        _sleep=time.sleep):
     """If the bridge reports no Playing map, run the existing quicktest-world starter
     (`bridgetools/prove_quicktest_world.py`, exit 0 = Playing with a world) under THIS interpreter. The runner
-    used to assume a map already existed (MEASURED 2026-10-01). Returns "playing" | "started" | "dry-run".
+    used to assume a map already existed (MEASURED 2026-10-01). A Playing map with zero live colonists counts as no map:
+    main menu, then the starter (RUNNER_COLONY_REVIVE_NOBODY_HOME). Returns "playing" | "started" | "restarted" |
+    "dry-run".
     Raises RuntimeError when the bridge cannot be asked or the starter fails -- never guesses."""
     if dry_run:
         return "dry-run"
@@ -98,8 +100,23 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _
             print("[modcheck] ensure_playing_map: get_ui_state failed (%s: %s); the game may be loading, asking "
                   "again" % (type(e).__name__, e), file=sys.stderr, flush=True)
             _sleep(10)
+    restart = False
     if state == "Playing":
-        return "playing"
+        # RUNNER_COLONY_REVIVE_NOBODY_HOME: a Playing map with no live colonist is no usable map. It used to be reused
+        # forever, so the canary went red twice and paused the testq lane (2026-10-29 02:44-03:28, fixed by hand with
+        # rw_game.sh down). An unreadable roster is never read as empty: that map is left alone.
+        try:
+            live = _live_colonists(_client)
+        except Exception as e:  # noqa: BLE001
+            live = None
+            print("[modcheck] ensure_playing_map: roster unreadable (%s: %s); keeping the Playing map"
+                  % (type(e).__name__, e), file=sys.stderr, flush=True)
+        if live is None or live > 0:
+            return "playing"
+        print("[modcheck] ensure_playing_map: the Playing map has NO live colonist; going to the main menu and "
+              "starting a fresh quicktest before any canary", file=sys.stderr, flush=True)
+        _rb_call(_client, "rimworld/go_to_main_menu", {})
+        restart = True
     # Never start a map on top of a broken load: our own C# types missing => null thingClass => 'Error while generating map'.
     import launch_gate  # noqa: E402
     gate = _gate() if _gate else launch_gate.check_player_log()
@@ -109,8 +126,13 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _
                                                   capture_output=True, text=True))
     r = starter()
     if r.returncode != 0:
-        raise RuntimeError("quicktest world start FAILED (programState was %r): %s"
-                           % (state, (r.stdout + r.stderr).strip()[-500:]))
+        raise RuntimeError("quicktest world start FAILED (programState was %r%s): %s"
+                           % (state, ", no live colonist" if restart else "", (r.stdout + r.stderr).strip()[-500:]))
+    if restart:
+        live = _live_colonists(_client)
+        if live == 0:
+            raise RuntimeError("ensure_playing_map: a fresh quicktest still has no live colonist")
+        return "restarted"
     return "started"
 
 

@@ -558,6 +558,8 @@ def t_ensure_playing_map():
     class Slow:     # a game still loading: two timeouts, then it answers
         def __init__(self, fails): self.fails, self.n = fails, 0
         def call(self, tool, p):
+            if tool != "rimworld/get_ui_state":
+                return {}      # the roster read on a Playing map: unread, so the map is kept
             self.n += 1
             if self.n <= self.fails:
                 raise TimeoutError("timed out after 30.0s")
@@ -570,6 +572,41 @@ def t_ensure_playing_map():
         check("runner: a bridge that never answers still raises", False)
     except RuntimeError as e:
         check("runner: a bridge that never answers still raises", "cannot ask the bridge for programState" in str(e))
+
+    # RUNNER_COLONY_REVIVE_NOBODY_HOME: a Playing map with zero live colonists was reused forever (canary red twice,
+    # testq lane paused 2026-10-29). It is no usable map: main menu, then a fresh quicktest.
+    class Dead:
+        def __init__(self, live, after, ok=True):
+            self.live, self.after, self.ok, self.calls = live, after, ok, []
+        def call(self, tool, p):
+            self.calls.append(tool)
+            if tool == "rimworld/get_ui_state":
+                return {"programState": "Playing"}
+            if tool == "jawa/list_pawns":
+                return {"success": self.ok, "pawns": [{"isPlayer": True, "intelligence": "Humanlike", "dead": False}]
+                        * self.live + [{"isPlayer": True, "intelligence": "Humanlike", "dead": True}]}
+            return {"success": True}
+    R.returncode = 0
+    d = Dead(0, 3)
+    def start():
+        d.calls.append("starter"); d.live = d.after; return R()
+    check("runner: a Playing map with no live colonist (only a corpse) goes to the menu and restarts a quicktest",
+          runner.ensure_playing_map(_client=d, _starter=start, _gate=ok_gate) == "restarted"
+          and d.calls.index("rimworld/go_to_main_menu") < d.calls.index("starter"), d.calls)
+    d = Dead(2, 2)
+    check("runner: a Playing map with live colonists is left alone",
+          runner.ensure_playing_map(_client=d, _starter=lambda: (_ for _ in ()).throw(AssertionError("started")))
+          == "playing" and "rimworld/go_to_main_menu" not in d.calls, d.calls)
+    d = Dead(0, 0, ok=False)
+    check("runner: an unreadable roster on a Playing map is never read as empty",
+          runner.ensure_playing_map(_client=d, _starter=lambda: (_ for _ in ()).throw(AssertionError("started")))
+          == "playing" and "rimworld/go_to_main_menu" not in d.calls, d.calls)
+    d = Dead(0, 0)
+    try:
+        runner.ensure_playing_map(_client=d, _starter=lambda: R(), _gate=ok_gate)
+        check("runner: a fresh quicktest that still has no colonist raises", False)
+    except RuntimeError as e:
+        check("runner: a fresh quicktest that still has no colonist raises", "no live colonist" in str(e), e)
 
 
 def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
@@ -671,10 +708,12 @@ def t_compose_test_list_appends_once_and_reads_back():
     and FAILS LOUDLY if the read-back is missing an id -- it edits the
     owner's live ModsConfig, so it earns its own test against a temp file."""
     import tempfile
+    import zoom_guard   # compose_test_list adds a zoom mod to a list with none: the fixture holds one already
     xml = ("<ModsConfigData><activeMods>\n"
            "    <li>ludeon.rimworld</li>\n"
+           "    <li>%s</li>\n"
            "    <li>mandrake.rm.pits</li>\n"
-           "  </activeMods></ModsConfigData>")
+           "  </activeMods></ModsConfigData>" % zoom_guard.ZOOM)
     with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False,
                                      encoding="utf-8") as f:
         f.write(xml)
