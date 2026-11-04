@@ -127,6 +127,13 @@
    "provenance": "A",
    "signal": "raise if filing a night's groups takes past the morning; lower if ops_watch passes time out"
   },
+  "selftest.red_rerun_budget_s": {
+   "value": 120,
+   "unit": "seconds per ops_watch pass spent rerunning new nightly-red groups at origin/main before filing them",
+   "why": "NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: about half the nightly-red items worked by 2026-11-04 closed 'no code change, passes now', some at 4-5M tokens each; one plain rerun (no LLM) costs seconds. Inside rm-ops-watch's 420 s TimeoutStartSec beside the filings (red_new_items_per_pass); a group the budget cannot reach waits for the next pass, a rerun that overruns it files as before",
+   "provenance": "A",
+   "signal": "raise if new groups wait several passes for a rerun; lower if ops_watch passes time out"
+  },
   "selftest.red_first_for_bug_fixes": {
    "value": true,
    "unit": "bool",

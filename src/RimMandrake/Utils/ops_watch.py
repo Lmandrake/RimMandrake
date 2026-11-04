@@ -1004,15 +1004,116 @@ def red_subject(tests):
     return "_".join(words) if words and words[0][0].isalpha() else None
 
 
-def red_groups(c, night, state=None):
+def rerun_path() -> Path:
+    return ops_dir() / "nightly_rerun.json"
+
+
+def _git(root, *args, timeout=60):
+    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=timeout)
+    if r.returncode:
+        raise RuntimeError("git %s: rc %d %s" % (" ".join(args), r.returncode, (r.stderr or "").strip()[:120]))
+    return r.stdout.strip()
+
+
+def rerun_root() -> Path:
+    """The clone reruns happen in: the dispatch clone rm-ops-watch runs from and testq already pulls, never the
+    clone a hand-run ops_watch happens to sit in (a seat clone must not be pulled under its owner)."""
+    return Path(os.environ.get("RM_OPS_RERUN_ROOT", "/home/mandrake/rm/dispatch"))
+
+
+def rerun_at_main(tests, timeout, root=None):
+    """NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: one plain rerun (run_selftests --only, no LLM) of a red group's tests in
+    this checkout, brought to origin/main first by a fast-forward pull (as testq-tick/testq-sweep already do to the
+    dispatch clone ops_watch runs from; it trails origin/main by minutes). -> (verdict, said, sha): verdict green
+    (every test ran and passed), red, or unmeasured (could not rerun at origin/main: the group files as before)."""
+    root = Path(root) if root else rerun_root()
+    gone = [t for t in tests if not (root / t).is_file()]
+    if gone:
+        return "unmeasured", "not in this checkout: %s" % ", ".join(gone[:3]), None
+    try:
+        _git(root, "pull", "-q", "--ff-only", "origin", "main", timeout=90)
+        head, main = _git(root, "rev-parse", "HEAD"), _git(root, "rev-parse", "origin/main")
+    except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+        return "unmeasured", "git: %s" % str(e)[:160], None
+    if head != main:
+        return "unmeasured", "checkout at %s, origin/main at %s" % (head[:10], main[:10]), None
+    argv = [sys.executable, str(root / "src/RimMandrake/Utils/run_selftests.py"), "--only", *tests]
+    try:
+        r = subprocess.run(argv, cwd=str(root), capture_output=True, text=True, timeout=max(1, int(timeout)))
+    except subprocess.TimeoutExpired:
+        return "unmeasured", "rerun passed its %d s budget" % timeout, head
+    except OSError as e:
+        return "unmeasured", "rerun: %s" % e, head
+    out = r.stdout or ""
+    res = next((ln for ln in reversed(out.splitlines()) if ln.startswith("RESULT:")), "")
+    if not res:
+        return "unmeasured", "rerun printed no RESULT line (rc %d)" % r.returncode, head
+    if r.returncode == 0 and res.startswith("RESULT: GREEN") and "UNMEASURED (" not in out and "DROPPED:" not in out:
+        return "green", res[:160], head
+    if res.startswith("RESULT: GREEN"):
+        return "unmeasured", "green with tests that did not run their check", head
+    return "red", res[:160], head
+
+
+class RerunGate:
+    """Each new group of a night is rerun once (the verdict kept in nightly_rerun.json for that night), within the
+    pass's budget. verdict(g): green (files nothing), red / unmeasured (files as before), later (budget spent)."""
+
+    def __init__(self, night, run, budget, clock=time.monotonic):
+        self.night, self.run, self.clock = night, run, clock
+        self.end = clock() + budget
+        st = read_json(rerun_path()) if rerun_path().exists() else {}
+        self.st = st if isinstance(st, dict) and st.get("night") == night else {"night": night, "groups": {}}
+        self.dirty = False
+
+    def verdict(self, g):
+        hit = self.st["groups"].get(g["key"])
+        if hit and sorted(hit.get("tests", [])) == sorted(g["tests"]):
+            return hit["verdict"]
+        left = self.end - self.clock()
+        if left < 15:
+            return "later"
+        try:
+            v, said, sha = self.run(list(g["tests"]), int(left))
+        except Exception as e:  # noqa: BLE001  a broken rerun files the group as before
+            v, said, sha = "unmeasured", "%s: %s" % (type(e).__name__, str(e)[:160]), None
+        self.st["groups"][g["key"]] = {"verdict": v, "said": said, "sha": sha, "tests": list(g["tests"]),
+                                       "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+        self.dirty = True
+        return v
+
+    def green(self):
+        return sorted((k, e) for k, e in self.st["groups"].items() if e.get("verdict") == "green")
+
+    def save(self):
+        if self.dirty:
+            atomic_json(rerun_path(), self.st)
+
+
+def rerun_budget_s():
+    sys.path.insert(0, str(HERE.parent / "rimflow"))
+    import testing_policy as TP
+    return float(TP.param("selftest.red_rerun_budget_s"))
+
+
+# The rerunner red_groups uses when a caller passes none; a test swaps it for a fake (None turns the gate off).
+RERUN_REDS = rerun_at_main
+
+
+def red_groups(c, night, state=None, rerun="default"):
     """BUILD COP (known_reds.py): one testing.red_<id> reading per root-cause group of the night's unparked reds, for
     the wildcard alarm NIGHTLY_COP_FIX (one raised item per group). An absent key holds its alarm, so a group gone from
     a READ night reads 0 and clears; an unread night (the sweep is rewriting its output) emits no group and holds all.
     New groups come at most selftest.red_new_items_per_pass a pass (the unit's deadline bounds the spawns), biggest
-    first; the rest are absent, so held, and come next pass."""
+    first; the rest are absent, so held, and come next pass.
+    NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: before a new group files, its tests rerun once at origin/main (RerunGate);
+    a group green on that rerun is a flake or a launch drop and files nothing, counted in
+    testing.nightly_reds_rerun_green."""
     import known_reds
     if not c.get("detail_read"):
         return {}
+    run = RERUN_REDS if rerun == "default" else rerun
+    gate = RerunGate(night, run, rerun_budget_s()) if run else None
     if state is None:
         p = ops_dir() / "alarms.json"
         state = read_json(p) if p.exists() else {}
@@ -1024,6 +1125,8 @@ def red_groups(c, night, state=None):
         if g["key"] not in held:
             if fresh >= cap:
                 continue
+            if gate is not None and gate.verdict(g) in ("green", "later"):
+                continue
             fresh += 1
         out[g["key"]] = M(len(g["tests"]), "nightly reds with one first error line, no entry parking them", night=night,
                           subject=red_subject(g["tests"]), said=g["said"], news=["%s (due %s)" % (t, g["due"]) for t in g["tests"][:30]], due=g["due"],
@@ -1031,6 +1134,14 @@ def red_groups(c, night, state=None):
     live = {g["key"] for g in c["groups"]}
     for k in sorted(held - live):
         out[k] = M(0, "nightly reds with one first error line, no entry parking them", night=night, said="green or parked")
+    if gate is not None:
+        gate.save()
+        gr = gate.green()
+        out["testing.nightly_reds_rerun_green"] = M(
+            len(gr), "nightly red groups green on one rerun at origin/main: flaky or a launch drop, filed nothing",
+            night=night, said="; ".join("%s (%s)" % (", ".join(Path(t).name for t in e["tests"][:3]), (e.get("sha") or "")[:10])
+                                        for _, e in gr[:3]),
+            news=["%s at %s: %s" % (t, (e.get("sha") or "")[:10], e.get("said", "")) for _, e in gr for t in e["tests"]][:30])
     return out
 
 
