@@ -1998,7 +1998,7 @@ class Effects(relentless_game.GameFx):
         while os.path.exists(out):      # named by the second: never let an earlier bundle's files answer for this one
             out, n = os.path.join(home, "bundles", "%s-%s-%d" % (stamp, os.path.basename(c), n)), n + 1
         os.makedirs(out)
-        real = [":(top)" + p for p in paths if not p.startswith(POOL_NOISE)]
+        real = [p for p in paths if not p.startswith(POOL_NOISE)]
         untracked = self.git_ok(c, "ls-files", "-z", "--others", "--exclude-standard").split("\0")
         untracked = [p for p in untracked if p]
         with open(os.path.join(out, "HEAD"), "w", encoding="utf-8") as f:
@@ -2008,8 +2008,9 @@ class Effects(relentless_game.GameFx):
         with open(os.path.join(out, "index.patch"), "wb") as f:   # staged content the working file no longer shows
             subprocess.run(["git", "-C", c, "diff", "--binary", "--cached", "HEAD"], stdout=f, check=True, timeout=300)
         with open(os.path.join(out, "real.patch"), "wb") as f:
-            if real:
-                subprocess.run(["git", "-C", c, "diff", "--binary", "HEAD", "--"] + real, stdout=f, check=True, timeout=300)
+            if real:    # noise excluded by prefix, never the paths listed: thousands of them overflow argv (E2BIG)
+                subprocess.run(["git", "-C", c, "diff", "--binary", "HEAD", "--", ":(top)"]
+                               + [":(top,exclude)" + p for p in POOL_NOISE], stdout=f, check=True, timeout=300)
         for name, want in (("untracked.tar", untracked), ("ignored.tar", ignored),
                            ("real_untracked.tar", [p for p in untracked if not p.startswith(POOL_NOISE)])):
             if want:
