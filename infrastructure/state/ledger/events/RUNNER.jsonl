@@ -2948,3 +2948,4 @@
 {"seat":"RUNNER","event":"note","id":"NIGHTLY_COP_FIX_RED_ZKKLNV_SESD","text":"ops_watch: cleared at 2026-11-04T12:37:00Z (testing.red_zkklnv now 0)","ts":"2026-11-04T12:40:46Z","tsn":1793796046724656377}
 {"seat":"RUNNER","event":"note","id":"OPS_RELENTLESS_READING_RESTORE_IUUR","text":"ops_watch: cleared at 2026-11-04T12:37:00Z (relentless.blind now 0)","ts":"2026-11-04T12:40:49Z","tsn":1793796049666849802}
 {"seat":"RUNNER","event":"note","id":"OPS_FINDINGS_DIAGNOSE_XZLM","text":"ops_watch: cleared at 2026-11-04T12:37:00Z (flow.untriaged_findings now 0)","ts":"2026-11-04T12:40:52Z","tsn":1793796052463083401}
+{"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-04T12:48:08Z","tsn":1793796488161165849}
