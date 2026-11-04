@@ -180,6 +180,7 @@ check("no note from him: not answered", not Q.answered(hist(0, 1), evs))
 check("his note after the routing: answered", Q.answered(hist(0, 2), evs))
 check("routed again after his note: his again", not Q.answered(hist(0, 2, 3), evs))
 check("no events given: stays on the list", not Q.answered(hist(0, 2), None))
+check("no routing event on record: stays on the list", not Q.answered(hist(2), evs))
 check("is_his honours answered only with events", Q.is_his(hist(0, 2), None) and not Q.is_his(hist(0, 2), None, evs))
 items2 = {"DRAW_A": hist(0), "DRAW_B": hist(0), "DRAW_C": hist(0, 2), "K_X": hist(0)}
 n = Q.needs_you(items2, {}, {"DRAW_A": "Look?", "DRAW_B": "Press?"}, evs)

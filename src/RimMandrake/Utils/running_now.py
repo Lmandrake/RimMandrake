@@ -2144,7 +2144,7 @@ def build(env, state, hist, write=True):
     if p["timers"] is None:
         tim = "timers UNMEASURED (%s)" % p["timers_why"]
     else:
-        tim = "\n".join(["%d timers installed" % len(p["timers"]), "%-24s %10s %12s  %s" % ("timer", "last ran", "next run", "what")] + timers_rows(p["timers"], p["units"], now))
+        tim = "\n".join(["%d timers loaded" % len(p["timers"]), "%-24s %10s %12s  %s" % ("timer", "last ran", "next run", "what")] + timers_rows(p["timers"], p["units"], now))
     text = "\n".join(["-- the panels as plain text --", pipeline_text(p), "-- Archmagi --", live_text("live testing", p["live_here"]), "-- SteveDesktop --", steve_text(p), "-- chains --", chains_text(p),
                       "-- history --"] + hist_lines + ["-- timers --", tim])
     # no blank line anywhere inside: a blank line would end Typora's HTML block and spill the rest as text

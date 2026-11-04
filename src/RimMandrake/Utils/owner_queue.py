@@ -69,7 +69,7 @@ def answered(it, evs):
         elif ((e.get("event") == "needs" and e.get("to") == "owner") or (e.get("event") == "file" and e.get("needs") == "owner")
               or (e.get("event") == "block" and e.get("kind") == "owner")):
             return said
-    return said
+    return False        # no routing event on record: nothing says his turn came, so nothing says it ended
 
 
 def is_his(it, rs, evs=None):

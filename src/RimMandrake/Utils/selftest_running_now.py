@@ -244,7 +244,7 @@ dirs = {R.TESTQ + "/running": [], R.TESTQ + "/pending": []}
 page = page_of(Fake(files=files, dirs=dirs))
 head = before_svg(page)
 check("braked and idle reads as trouble in the strip", "Steve BRAKED + IDLE" in head)
-check("trouble comes first in the strip", head.index("Steve BRAKED") < head.index("Relentless") if "Relentless" in head else True)
+check("trouble comes first in the strip", "Relentless" in head and head.index("Steve BRAKED") < head.index("Relentless"))
 check("the Steve panel says it in words", "BRAKED AND IDLE" in page)
 check("an unreadable Steve job count is not 'idle'", not R.steve_headline({"state": "BRAKED", "running": None})[1])
 check("a working Steve under no brake is not idle", not R.steve_headline({"state": "OK", "running": 0})[1])
@@ -399,7 +399,8 @@ check("the old names are gone", "blind checker" not in page.lower() and "checker
 check("Needs you folds a topic into one row and escapes it", page.count("Look at the bridge") == 1 and "DRAW, 2 items" in page and "&lt;Other&gt; line" in page and "<Other>" not in page)
 check("an answered item leaves the list and says so", "1 more you already answered" in page and "ANS_ITEM" in page)
 check("a task title is escaped and sits on one line", "A task &lt;b&gt;" in page)
-check("no blank line inside an html section", all(not re.search(r"\n\s*\n", x) for x in re.findall(r"<div style=.*?</div>", page)))
+sections = re.findall(r"^<div style=.*$", page, re.M)
+check("each html section is one block, one line", len(sections) >= 8 and all(x.rstrip().endswith("</div>") for x in sections))
 check("every svg stays one block", all("\n" not in x for x in re.findall(r"<svg.*?</svg>", page, re.S)))
 check("the phone copy is short and plain", len(phone) < 2500 and "<" not in phone and "NEEDS YOU 2" in phone and "Archmagi: busy" in phone and "SteveDesktop" in phone)
 bare = Fake(ps=PS)
@@ -509,13 +510,13 @@ with tempfile.TemporaryDirectory() as d:
     cache = json.load(open(R.STEVE_CACHE))
     check("a returning ssh clears the failure", cache["routes"]["wsl"] is True and "why" not in cache)
 
-    before = open(R.OUT).read()
-    bad = Fake(ps=PS)
-    bad.families = lambda: (_ for _ in ()).throw(ValueError("table broke"))
-    bad.clock = NOW + 2 * R.PROBE_EVERY + 400
-    rc, _ = R.run(bad)
     check("the phone copy is written beside the page", os.path.exists(R.PHONE_OUT))
-    check("the page is on disk before the slow half is refreshed", json.load(open(R.FLEET_CACHE)).get("why") and not json.load(open(R.FLEET_CACHE)).get("mods"))
+    seen_page = []
+    order = Fake(ps=PS)
+    order.clock = NOW + 3600
+    order.fleet_gather = lambda now: seen_page.append("updated_epoch=%d" % int(order.clock) in open(R.OUT).read()) or None
+    R.run(order)
+    check("the page is on disk before the slow half is refreshed", seen_page == [True])
     good_f = Fake(ps=PS)
     good_f.fleet, good_f.mods = {"mods": [], "receipts": [], "needs": {"count": 0, "topics": []}, "total_mods": 5}, "A  GREEN x\nB RED y\n"
     good_f.clock = NOW + 2 * R.PROBE_EVERY + 300
@@ -528,6 +529,11 @@ with tempfile.TemporaryDirectory() as d:
     saved = json.load(open(R.FLEET_CACHE))
     check("a failed modcheck read clears the old count", "accepted" not in saved and saved["accepted_why"])
     check("a failed refresh keeps the last good reading and says why", saved["mods"] == [] and saved["why"] and saved["good_t"] == good_f.clock)
+    before = open(R.OUT).read()
+    bad = Fake(ps=PS)
+    bad.families = lambda: (_ for _ in ()).throw(ValueError("table broke"))
+    bad.clock = NOW + 2 * R.PROBE_EVERY + 400
+    rc, _ = R.run(bad)
     check("failed run returns 1 and keeps the old page byte for byte", rc == 1 and open(R.OUT).read() == before)
     check("failed run records why", "table broke" in json.load(open(R.STATE)).get("last_error", ""))
     good = Fake(ps=PS)

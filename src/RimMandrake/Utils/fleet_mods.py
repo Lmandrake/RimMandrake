@@ -388,6 +388,11 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
                 at = int(c.get("verdict_at") or c.get("at"))
                 if blind is None or at > blind[0]:
                     blind = (at, c["verdict"])
+            elif not c:         # a check only the ledger records dates from the item's close
+                v = ledger_verdict(known[i])
+                at = closed_at.get(i)
+                if v and at and at >= window and (blind is None or at > blind[0]):
+                    blind = (at, v)
         nxt, waits, waits_you, waits_game = "", [], 0, 0
         cand = sorted(open_all, key=lambda i: (NEXT_REL.index(rel[i]["status"]) if rel.get(i, {}).get("status") in NEXT_REL
                                                else 9, {"doing": 0, "built": 1, "validated": 1, "ready": 2}.get(known[i].state, 3),
