@@ -1848,7 +1848,9 @@ def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
     in relentless.blind, whose target alarms: nothing here can read sane on a source it did not see move, so with any
-    source blind the verdict is UNMEASURED unless what was seen already proves distress. Freshness is the stamp inside
+    source the verdict reads blind (staffing, reading, the staffing rows, breaker, journal) it is UNMEASURED unless what was
+    seen already proves distress; the books, game-hold and live-run probes are not its inputs, so they count in
+    relentless.blind (which alarms) without unseating it. Freshness is the stamp inside
     the file, never its mtime; relentless.progress_age_min catches a stamp that moves on a belt that does not."""
     cfg = rules.get("relentless")
     if not isinstance(cfg, dict):
@@ -3284,6 +3286,23 @@ def _obj(x):
     return x if isinstance(x, dict) else {}
 
 
+def dead_targets(rules, points):
+    """-> a bad_rule flag per target whose alarm cannot fire, read on a full pass. A literal key no reading carries (its
+    collector ran) is dead. A wildcard counts instances (testing.red_<group>): none this pass is a quiet night, not a
+    dead rule, so only a wildcard on a family no collector reports is."""
+    out = []
+    for t in good_targets(rules):
+        fam = t["key"].split(".")[0]
+        if any(c in t["key"] for c in "*?["):
+            if fam not in COLLECTORS and not any(k.split(".")[0] == fam for k in points):
+                out.append({"rule": "bad_rule", "key": "rules.target." + t["key"], "value": None, "window": "now",
+                            "detail": "target %s names a family no collector reports: its alarm cannot fire" % t["key"]})
+        elif fam + "._collector" not in points and not any(fnmatch.fnmatchcase(k, t["key"]) for k in points):
+            out.append({"rule": "bad_rule", "key": "rules.target." + t["key"], "value": None, "window": "now",
+                        "detail": "target %s matches no reading: its alarm cannot fire" % t["key"]})
+    return out
+
+
 def counts_as_measured(p):
     """A MEASURED point with a value. NaN is not one: no rule can read it, so it must not refresh a key's last reading."""
     return isinstance(p, dict) and p.get("m") == "MEASURED" and p.get("v") is not None and p.get("v") == p.get("v")
@@ -3429,11 +3448,7 @@ def run(now=None, rules=None, filer=None, families=None):
             if k.split(".")[0] + "._collector" not in points and k not in points:
                 flags.append({"rule": "bad_rule", "key": "rules.range." + k, "value": None, "window": "now",
                               "detail": "range %s matches no reading: it can report no class" % k})
-        for t in good_targets(rules):
-            fam = t["key"].split(".")[0]
-            if fam + "._collector" not in points and not any(fnmatch.fnmatchcase(k, t["key"]) for k in points):
-                flags.append({"rule": "bad_rule", "key": "rules.target." + t["key"], "value": None, "window": "now",
-                              "detail": "target %s matches no reading: its alarm cannot fire" % t["key"]})
+        flags += dead_targets(rules, points)
     if lm_bad:      # not overwritten: the flag repeats until someone repairs or removes it, and silence flags are at stake
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
                       "detail": "last_measured.json is unreadable: long-silent keys may read as not silent; repair or delete it"})

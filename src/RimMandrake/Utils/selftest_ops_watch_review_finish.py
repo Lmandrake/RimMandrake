@@ -7,6 +7,7 @@
 2. andon silent rule: a MEASURED state string ("RUNNING") is a reading, not silence.
 3. run_alarms fresh news: a note cut at 600 chars marks noted only the names it said; the rest are said next pass.
 4. metric_problem: an idle_if gate from another family is refused (per-family stamping can never read it).
+5. dead_targets: a wildcard target with no instance this pass (testing.red_* on a clean night) is not a dead rule.
 
 Fixtures only: rules are built here, alarm state lives in a temp RM_OPS_WATCH_DIR, the filer and minter are fakes.
 
@@ -106,6 +107,17 @@ def main():
        "4: an idle_if gate from another family is refused", ow.metric_problem("fam.m", ms["fam.m"], ms))
     ok(ow.metric_problem("fam.m", dict(base, idle_if=["fam.gate"]), ms) is None, "4: a same-family gate is accepted")
     ok(not ow.ranges_problems(ow.load_rules()), "4: the shipped rules still pass", ow.ranges_problems(ow.load_rules()))
+
+    # 5. a wildcard target that matches nothing this pass (a quiet night) is not a dead rule
+    def tg(key):
+        return {"key": key, "op": ">", "value": 0, "alarm": True, "tag": "T5", "name": "OPS_T5", "marks": ["MEASURED"]}
+    pts = {"testing.nightly_news": M(0)}
+    dead = lambda key: [f["key"] for f in ow.dead_targets({"targets": [tg(key)]}, pts)]
+    ok(dead("testing.red_*") == [], "5: a wildcard with no instance this pass raises no bad_rule", dead("testing.red_*"))
+    ok(dead("nofamily.red_*") == ["rules.target.nofamily.red_*"], "5: a wildcard on a family nobody reports is dead",
+       dead("nofamily.red_*"))
+    ok(dead("testing.absent") == ["rules.target.testing.absent"], "5: a literal key no reading carries is dead",
+       dead("testing.absent"))
 
 
 if __name__ == "__main__":
