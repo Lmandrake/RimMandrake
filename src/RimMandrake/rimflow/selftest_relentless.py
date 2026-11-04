@@ -1413,6 +1413,7 @@ def t_breaker_di2():
 
     # the pool's real refusal, from scratch_clone itself; and memory after a clone
     x, d, log, seen = breaker_rig(launch_breaker=1)
+    os.environ["RM_OPS_WATCH_DIR"] = d      # or "tells nobody" below reads an earlier fixture's directory
     real = R.Effects(x.r, x.s)
     real.books = os.path.dirname(os.path.dirname(os.path.dirname(R.HERE)))
     x.w.prepare = real.prepare
@@ -3769,11 +3770,11 @@ def t_live_line_widens():
             ok(False, "a worker may not snag with the supervisor's verdict %s" % k)
         except ValueError:
             ok(x.st("I0")["gen"] == g, "a refused %s snag leaves the item untouched" % k)
-    try:
-        R.contract(x.s, "I0", g, "p", "once: y", "w", now=x.now)
+    try:     # the current proof, only the live line changed: the refusal must be the live line's
+        R.contract(x.s, "I0", g, "p2", "once: y", "w", now=x.now)
         ok(False, "a live line once set is frozen")
     except ValueError:
-        pass
+        ok(x.st("I0")["contract"]["live"] == "once: x", "a live line once set is frozen")
 
 
 def t_time_is_no_failed_approach():
