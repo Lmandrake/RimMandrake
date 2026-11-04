@@ -14,6 +14,7 @@ an empty account could flip an innocent item's approach. Two signs clear it; nei
 Nothing here names an account. Unreadable sources read as no sign: the death strikes, as it did before this module.
 """
 import datetime
+import glob
 import json
 import os
 import re
@@ -97,7 +98,19 @@ def result_error(out):
     return text[:200] if RESULT_RX.search(text) else None
 
 
-def loss(run, clone, since, log=None):
+def box_transcripts(box, since):
+    """-> a walled run's transcripts: its ~/.claude/projects is bound from <box>/projects (relentless_wall.props)."""
+    out = []
+    for path in glob.glob(os.path.join(glob.escape(box), "projects", "*", "*.jsonl")):
+        try:
+            if os.path.getmtime(path) >= since:
+                out.append(path)
+        except OSError:
+            continue
+    return out
+
+
+def loss(run, clone, since, log=None, box=None):
     """-> {"kind", "why"} when the account ended this dead run, else None. Reads files only, and only for a dead run."""
     run = run or {}
     start = run.get("at") if run.get("at") is not None else since
@@ -106,6 +119,6 @@ def loss(run, clone, since, log=None):
     why = change_over(start, log)
     if why:
         return {"kind": "change_over", "why": why}
-    err = transcript_error(circling.transcript_paths(clone, start)) if clone else None
-    err = err or result_error(run.get("out"))
+    paths = box_transcripts(box, start) if box else circling.transcript_paths(clone, start) if clone else []
+    err = transcript_error(paths) or result_error(run.get("out"))
     return {"kind": "account_error", "why": "the run ended on the account's own error: %s" % err} if err else None

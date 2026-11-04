@@ -1797,9 +1797,9 @@ class Effects(relentless_game.GameFx):
     def drop_run_tmp(self, run):
         return run_tmp.drop((run or {}).get("unit"))
 
-    def account_loss(self, run, clone, since):
+    def account_loss(self, run, clone, since, box=None):
         """-> {"kind", "why"} when the account, not the item, ended this dead run; else None."""
-        return relentless_account.loss(run, clone, since)
+        return relentless_account.loss(run, clone, since, box=box)
 
     def alive(self, run):
         """Unit, scope, or a marked process: any one of them means the run is not over."""
@@ -2908,7 +2908,7 @@ def step(store, fx, r, item, now, acts):
         since = chk.get("verdict_at") or chk["at"] + r["check_max_s"] + r["launch_grace_s"]
         if not settle(store, fx, r, item, "check", min(since, now), now, acts):
             return
-        lost = fx.account_loss(chk.get("run"), chk.get("clone"), chk["at"]) if word is None else None
+        lost = fx.account_loss(chk.get("run"), chk.get("clone"), chk["at"], chk.get("box")) if word is None else None
         c = st["candidate"]
         with store.lock():
             st = store.load(item)
@@ -2925,6 +2925,11 @@ def step(store, fx, r, item, now, acts):
                 acts.append({"do": "account_lost", "item": item, "kind": lost["kind"]})
                 return
             if word is None:
+                # as for a worker: a change-over logs its event minutes after the kill, so judge after it could have
+                seen = st["check"].setdefault("lost_seen", now)
+                if now - seen < r.get("account_settle_s", 0):
+                    store.save(st)
+                    return
                 n = st.get("check_lost", 0) + 1
                 st["check_lost"] = n
                 if n >= r["same_failure_limit"]:

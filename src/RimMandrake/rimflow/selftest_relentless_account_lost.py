@@ -195,6 +195,114 @@ def t_checker_killed_counts_nothing():
     x.done()
 
 
+def real_signs(x, log):
+    """The rig's account sign replaced by the real reader on a log this test writes."""
+    x.w.account_loss = lambda run, clone, since, box=None: A.loss(run, clone, since, log, box)
+
+
+def kill_checker(x):
+    st = x.st("I0")
+    if st["status"] != "checking":
+        for _ in range(3):
+            x.tick()
+            if x.st("I0")["status"] == "checking":
+                break
+        st = x.st("I0")
+    ok(st["status"] == "checking", "a checker runs")
+    x.w.up[st["check"]["run"]["unit"]] = False
+    return st
+
+
+def t_checker_event_lands_after_it_is_found_dead():
+    """claude-account logs op=use once the fleet is back up (stop 21 s, verify 90 s): the tick that finds the checker dead
+    usually comes first. Limit 2, three change-overs in a row: the shipped order of events, on the real reader."""
+    d = tempfile.mkdtemp(prefix="rl-acct-")
+    log = os.path.join(d, "log.jsonl")
+    open(log, "w").close()
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2, account_settle_s=240)
+    real_signs(x, log)
+    was = to_check(x)
+    for n in range(3):
+        kill_checker(x)
+        for dt in (30, 90):
+            x.tick(dt)
+            st = x.st("I0")
+            ok(st["status"] == "checking" and not st.get("check_lost"), "round %d, +%d s: no event yet, it waits" % (n, dt))
+        with open(log, "a") as f:
+            f.write(json.dumps({"op": "use", "changed": True, "ts": R.iso(x.now)}) + "\n")
+        x.tick(30)
+        st = x.st("I0")
+        ok(x.s.attempts("I0")[-1]["end"] == "account_lost", "round %d: the late event clears it" % n)
+        ok(st["failures"] == was["failures"] and st["total_failures"] == was["total_failures"] and st["returns"] == was["returns"]
+           and st["gen"] == was["gen"] and not st.get("check_lost"), "round %d: nothing added, nothing carried over" % n)
+        ok(st["candidate"] and st["approach"] == was["approach"], "round %d: the candidate and the approach stand" % n)
+    x.done()
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_checker_no_sign_strikes_after_the_wait():
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2, account_settle_s=240)
+    was = to_check(x)
+    for n, then in ((1, lambda st: st.get("check_lost") == 1 and st["status"] == "candidate"),
+                    (2, lambda st: st["failures"].get("checker_lost") == 1 and st["total_failures"] == was["total_failures"] + 1)):
+        kill_checker(x)
+        x.tick(30)
+        x.tick(120)
+        st = x.st("I0")
+        ok(st.get("check_lost", 0) == n - 1 and not st["failures"].get("checker_lost"), "checker %d: inside the wait nothing is counted" % n)
+        x.tick(120)
+        ok(then(x.st("I0")), "checker %d: past account_settle_s with no sign it counts, each waiting its own" % n)
+    x.done()
+
+
+def t_checker_verdict_never_waits():
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2, account_settle_s=240)
+    st = to_check(x)
+    R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", "broken", x.now)
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick(30)
+    ok(x.st("I0")["failures"].get("blind_fail") == 1, "a checker that gave its verdict is judged at once: the wait is for no word only")
+    x.done()
+
+
+def t_walled_checker_transcript():
+    """A walled checker's ~/.claude/projects is its box's (relentless_wall.props), not the one its clean clone maps to."""
+    d = tempfile.mkdtemp(prefix="rl-acct-")
+    absent = os.path.join(d, "no-log")
+    box = os.path.join(d, "box")
+    home = os.path.join(box, "projects", "-box-tree")
+    os.makedirs(home)
+    err = {"type": "assistant", "isApiErrorMessage": True, "error": "rate_limit", "message": {"content": []}}
+    path = os.path.join(home, "s.jsonl")
+    with open(path, "w") as f:
+        f.write(json.dumps(err) + "\n")
+    shipped = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    prof = R.relentless_wall.profile(shipped, "marker")
+    ok(prof and any(a.startswith("BindPaths=%s:" % os.path.join(box, "projects")) for a in R.relentless_wall.props(prof, box)),
+       "the wall binds the very folder this sign reads")
+    os.utime(path, (2000, 2000))
+    run = {"at": 1000, "out": None}
+    ok(A.loss(run, "/nowhere/clean", 1000, absent) is None, "looking under the clean clone sees nothing: the reason for the box")
+    got = A.loss(run, "/nowhere/clean", 1000, absent, box)
+    ok(got and got["kind"] == "account_error" and "rate_limit" in got["why"], "the box's transcript speaks for a walled checker")
+    os.utime(path, (500, 500))
+    ok(A.loss(run, "/nowhere/clean", 1000, absent, box) is None, "a transcript older than the run says nothing")
+    x = T.Rig(n=1, share=1.0, same_failure_limit=2, account_settle_s=240)
+    real_signs(x, absent)
+    st = to_check(x)
+    with x.s.lock():
+        cur = x.s.load("I0")
+        cur["check"]["box"] = box
+        x.s.save(cur)
+    os.utime(path, (x.now + 5, x.now + 5))
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick(30)
+    ok(x.s.attempts("I0")[-1]["end"] == "account_lost", "the engine hands the checker's box to the reader")
+    ok(not x.st("I0").get("check_lost") and not x.st("I0")["failures"].get("checker_lost"), "so a walled checker on an empty account counts nothing")
+    x.done()
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_real_effects_reach_the_log():
     d = tempfile.mkdtemp(prefix="rl-acct-")
     log = os.path.join(d, "log.jsonl")
