@@ -41,3 +41,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:04:32Z","tsn":1793754272053545612}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging MAPPRETICK_DIAGNOSE_FULL_LIST_STALL: deploy and restart for its live proofs","ts":"2026-11-04T01:06:23Z","tsn":1793754383116300844}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging MAPPRETICK_DIAGNOSE_FULL_LIST_STALL (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T01:26:04Z","tsn":1793755564682728060}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T01:52:50Z","tsn":1793757170405164414}
