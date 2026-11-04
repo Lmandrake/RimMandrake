@@ -32,6 +32,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 TESTQ = os.path.join(HERE, "testq.py")
 PHASES = os.path.join(HERE, "archmagi_phases.py")
+FULL_IDS = ["ludeon.rimworld", "ludeon.rimworld.royalty", "brrainz.harmony", "mandrake.rm.mock", "mandrake.rm.other"]
+
+
+def write_list(full_xml, running_txt, running):
+    """The intended full list (a ModsConfig) and what the running game reports (one id a line)."""
+    with open(full_xml, "w", encoding="utf-8") as f:
+        f.write("<ModsConfigData><activeMods>%s</activeMods></ModsConfigData>\n"
+                % "".join("<li>%s</li>" % i for i in FULL_IDS))
+    with open(running_txt, "w", encoding="utf-8") as f:
+        f.write("".join(i + "\n" for i in running))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "bridgetools"))
 import companion_identity as CI  # noqa: E402
 
@@ -83,7 +93,9 @@ class Rig:
             RIMFLOW_LEDGER=p("ledger", "events.jsonl"), RM_HOST="archmagi", RM_GAME_USERDATA=self.tmp,
             TESTQ_ARCHMAGI="1", TESTQ_ARCHMAGI_RUNNER=REPO, TESTQ_ARCHMAGI_HOME=p("arch_home"),
             TESTQ_ARCHMAGI_MODS_DIR=p("mods"), TESTQ_ARCHMAGI_CMD_RUN=mock, TESTQ_ARCHMAGI_CMD_DEPLOY="true",
-            TESTQ_ARCHMAGI_PID="4242", TESTQ_BRIDGE_LOG=p("bridge_calls.jsonl"))
+            TESTQ_ARCHMAGI_PID="4242", TESTQ_BRIDGE_LOG=p("bridge_calls.jsonl"),
+            TESTQ_ARCHMAGI_FULL_LIST=p("full.xml"), TESTQ_ARCHMAGI_RUNNING=p("running.txt"))
+        write_list(p("full.xml"), p("running.txt"), FULL_IDS)
         # both lanes' deploy phase refuses a companion not built from the job's sources; the default place is the
         # Mods folder's sibling BridgeTools/JawaBench, so one fixture serves both workers (they share p("mods"))
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
@@ -398,8 +410,23 @@ def t_phases(r):
         p = subprocess.run([sys.executable, PHASES] + list(args), env=e, capture_output=True, text=True, timeout=120,
                            cwd=REPO)
         return p.returncode, p.stdout
-    rc, o = ph("load", TESTQ_ARCHMAGI_PID="777")
-    check(rc == 0 and "already running (pid 777)" in o, "phases load: a running game is used, never relaunched")
+    full, run = r.p("full.xml"), r.p("running.txt")
+    lst = dict(TESTQ_ARCHMAGI_FULL_LIST=full, TESTQ_ARCHMAGI_RUNNING=run)
+    write_list(full, run, FULL_IDS)
+    rc, o = ph("load", TESTQ_ARCHMAGI_PID="777", **lst)
+    check(rc == 0 and "already running (pid 777)" in o, "phases load: a running full-list game is used, never relaunched")
+    write_list(full, run, FULL_IDS[:2] + ["mandrake.rm.mock"])        # a minimal tier is up
+    rc, o = ph("load", TESTQ_ARCHMAGI_PID="777", **lst)
+    check(rc == 3 and o.startswith("REFUSED:") and "not the full list" in o,
+          "phases load: a running minimal tier -> REFUSED, a full-list job never runs on it: %s" % o.strip()[:160])
+    write_list(full, run, [FULL_IDS[0], FULL_IDS[2], FULL_IDS[1]] + FULL_IDS[3:])
+    rc, o = ph("load", TESTQ_ARCHMAGI_PID="777", **lst)
+    check(rc == 3 and o.startswith("REFUSED:"), "phases load: the full ids out of order -> REFUSED")
+    os.remove(run)
+    rc, o = ph("load", TESTQ_ARCHMAGI_PID="777", **lst)
+    check(rc == 3 and o.startswith("REFUSED:") and "cannot show" in o,
+          "phases load: the running list cannot be read -> REFUSED, never a match")
+    write_list(full, run, FULL_IDS)
     rc, o = ph("load", TESTQ_ARCHMAGI_PID="")
     check(rc == 3 and o.startswith("REFUSED:"), "phases load: no game -> REFUSED, never launches")
     rc, o = ph("down", TESTQ_ARCHMAGI_PID="777")
