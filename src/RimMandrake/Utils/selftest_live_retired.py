@@ -51,6 +51,10 @@ def main(retired_path=None):
     check(not [r for r in rows if "rm-pulse-health" in r["line"]], "a retired unit's promise is not swept (the instance)")
     check(not [r for r in rows if "rm-pulse-" in r["line"] or "im_back_hook" in r["line"]],
           "no RimPulse promise survives in the baseline")
+    # LIVE_RESTORE_RM_PULSE_HEALTH: spawned "from the baseline", so the baseline route must hold too, not only the item's
+    health = DM.promises({}, baseline + [INSTANCE], retired)
+    check(not [r for r in health if "rm-pulse-health" in r["line"]],
+          "a baseline promise for the retired rm-pulse-health.timer is not swept (LIVE_RESTORE_RM_PULSE_HEALTH)")
     # LIVE_RESTORE_RM_PULSE_BRIEF: the baseline line for rm-pulse-brief.timer (spawned by the sweep) is not swept
     brief = DM.promises({}, baseline + ["unit=rm-pulse-brief.timer max_age=14h"], retired)
     check(not [r for r in brief if "rm-pulse-brief" in r["line"]],
