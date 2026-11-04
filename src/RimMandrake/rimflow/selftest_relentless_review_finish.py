@@ -16,6 +16,10 @@
    level also holds their directories EXCLUSIVE (writers take them SHARED) across restore and reset, clean shards too.
 6. contract(): a widening (a live line added with the proof unchanged) or a proof-only change keeps every offbox adapter
    and game clause already set: naming fewer drops none of them (GPT pass 10).
+7. step(): a WEAK the live rule reads as PASS (GAP:OTHER) goes on to close; the stored word is not re-read raw, which
+   left the item checking on every tick (GPT pass 12).
+8. sync(): the fast-forward that replaces code_review/art shards runs under append_dirs_locked, as level_books' reset
+   does (GPT pass 12).
 
 Runs on selftest_relentless's FakeWorld; no ledger, clone or unit is touched.
 
@@ -311,6 +315,54 @@ def t_contract_widen_keeps_obligations():
     x.done()
 
 
+def t_weak_read_as_pass_closes():
+    x = SR.Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    SR.R.contract(x.s, "I0", st["gen"], "proof", live="once: test")
+    SR.R.finish(x.s, "I0", st["gen"], "sha1", "evidence")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "checking", "fixture: finish reaches the checker")
+    SR.R.verdict(x.s, "I0", st["check"]["nonce"], "WEAK", "GAP:OTHER a mutant I wrote in another file stays green")
+    x.w.up[st["check"]["run"]["unit"]] = False
+    for _ in range(4):
+        x.tick()
+    ok(x.st("I0")["status"] != "checking",
+       "a WEAK read as PASS leaves checking: %s" % x.st("I0")["status"])
+    x.done()
+
+
+def t_sync_ff_holds_append_dirs():
+    import contextlib
+    held = []
+    seen = []
+    fx = SR.R.Effects.__new__(SR.R.Effects)
+    fx.books = "/nowhere"
+
+    @contextlib.contextmanager
+    def dirs():
+        held.append(True)
+        try:
+            yield
+        finally:
+            held.pop()
+
+    def git(_d, *a, **k):
+        if a and a[0] == "merge":
+            seen.append(bool(held))
+        return type("G", (), {"returncode": 0, "stderr": "", "stdout": ""})()
+    fx.append_dirs_locked = dirs
+    fx.shards_locked = contextlib.nullcontext
+    fx.git = git
+    fx.ignored_collision = lambda: None
+    fx.level_books = lambda: None
+    why = fx.sync()
+    ok(why is None and seen == [True], "the fast-forward runs under the append-dir lock: %r %r" % (why, seen))
+
+
 if __name__ == "__main__":
     try:
         t_pool_full_lets_a_cloned_item_run()
@@ -321,6 +373,8 @@ if __name__ == "__main__":
         t_writers_take_the_shard_lock()
         t_level_holds_append_dirs()
         t_contract_widen_keeps_obligations()
+        t_weak_read_as_pass_closes()
+        t_sync_ff_holds_append_dirs()
     except Exception as e:      # noqa: BLE001  a crash is a FAIL with its reason
         import traceback
         traceback.print_exc()

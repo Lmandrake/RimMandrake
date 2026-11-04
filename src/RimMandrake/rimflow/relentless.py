@@ -1104,8 +1104,8 @@ class Effects(relentless_game.GameFx):
             why = self.ignored_collision()
             if why:
                 return why
-            with self.shards_locked():
-                self.git(self.books, "merge", "--ff-only", "--quiet", "origin/main")
+            with self.append_dirs_locked(), self.shards_locked():   # as level_books: no code_review/art append either
+                self.git(self.books, "merge", "--ff-only", "--quiet", "origin/main")    # while git replaces them
             return self.level_books()
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
             return "books cannot level: %s" % str(e)[:300]
@@ -3493,7 +3493,9 @@ def step(store, fx, r, item, now, acts):
                 fail(store, st, "live_broken", broken, r, now)
                 acts.append({"do": "live_broken", "item": item})
                 return
-            if (st["check"] or {}).get("verdict") != "PASS":
+            cur = st["check"] or {}     # read as above: a WEAK the live rule reads as PASS closes too (GPT pass 12)
+            if not cur.get("verdict") or relentless_wall.read_as(cur["verdict"], cur.get("reasons"), cur.get("defects"),
+                                                                 cur.get("unreached"))[0] != "PASS":
                 return          # the verdict moved while the live line was read: the next tick reads it again
             if relentless_game.owes(st, c["sha"]):     # green offline on this sha: the game clauses are next, not close
                 relentless_game.enter(store, st, c["sha"], now)
