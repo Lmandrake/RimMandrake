@@ -14779,3 +14779,5 @@
 {"seat":"RELENTLESS","event":"start","id":"OPS_TMP_DRAIN_RESTORE_DEVU","why":"relentless supervisor takes the item","ts":"2026-11-04T22:33:26Z","tsn":1793831606645584676}
 {"seat":"RELENTLESS","event":"start","id":"OPS_GAME_HEALTH_DEBUG_PXQI","why":"relentless supervisor takes the item","ts":"2026-11-04T22:33:33Z","tsn":1793831613472785495}
 {"seat":"CONDUCTOR","event":"verify","id":"RELENTLESS_LINE_FIX_REFUSED_HOLD_PLACES","result":"pass","config":"run_selftests --only selftest_relentless selftest_relentless_line_mutants selftest_relentless_health selftest_first_touch","evidence":"/mnt/d/ClaudeWork/rimmandrake/relentless_line_fix/selftests_20261104.txt","sha":"0e2f1b3ecb","level":"L0","ts":"2026-11-04T22:30:29Z","tsn":1793831429104710440}
+{"seat":"RELENTLESS","event":"start","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","why":"relentless supervisor takes the item","ts":"2026-11-04T22:36:04Z","tsn":1793831764642021443}
+{"seat":"RELENTLESS","event":"start","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","why":"relentless supervisor takes the item","ts":"2026-11-04T22:36:11Z","tsn":1793831771045062944}
