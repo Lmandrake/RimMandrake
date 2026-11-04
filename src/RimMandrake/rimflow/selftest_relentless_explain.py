@@ -134,6 +134,9 @@ def t_worker_explains():
 
     # a second item with the same cause joins it
     st1 = live_failed(x, "I1")
+    leased = [z for z in x.w.launches if z[0] == "I1"][-1][2]
+    ok(st1.get("diagnose_owed") and "Cause book" in leased and REPAIR in leased,
+       "the brief lease() actually launched for a second diagnosing item carries the cause book and I0's cause")
     notes1 = []
     R.explain(x.s, "I1", st1["gen"], "HARNESS", good(), now=x.now, state_of=state_of, note=lambda i, t: notes1.append((i, t)))
     R.explain(x.s, "I1", st1["gen"], "HARNESS", good(), now=x.now, state_of=state_of, note=lambda i, t: notes1.append((i, t)))
