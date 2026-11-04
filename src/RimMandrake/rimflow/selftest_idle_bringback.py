@@ -18,6 +18,7 @@ the bridge and PAUSE readings, and the launch of a fallback tile.
   work         work taken without a ring, an empty queue: no restart
   no doorbell  a window no ring can reach is brought back too
   off          the key unset: the machine does not exist
+  unpublished  shard lines not on origin hold the kill, as does a clone git cannot read; published, it lands
 """
 import json
 import os
@@ -59,6 +60,17 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+def git_clone(clone):
+    """A real git clone with the seat's shard published: a bring-back holds until the shard is on origin, and a clone git
+    cannot read holds it for good (unpublished_shard, UNMEASURED), so the shard check runs here as production code."""
+    rel = os.path.join("infrastructure", "state", "ledger", "events", SEAT + ".jsonl")
+    open(os.path.join(clone, rel), "w").close()
+    for argv in (["init", "-q", "-b", "main"], ["add", rel],
+                 ["-c", "user.name=selftest", "-c", "user.email=selftest@invalid", "commit", "-q", "--no-verify", "-m", "shard"],
+                 ["update-ref", "refs/remotes/origin/main", "HEAD"]):
+        subprocess.run(["git"] + argv, cwd=clone, check=True, capture_output=True, timeout=60)
+
+
 class World:
     def __init__(self, name, ignores=True, fallbacks=None):
         self.dir = os.path.join(TMP, name)
@@ -69,6 +81,7 @@ class World:
         for d in (self.state, os.path.join(self.claude, "sessions"), self.ops,
                   os.path.join(self.clone, "infrastructure", "state", "ledger", "events")):
             os.makedirs(d)
+        git_clone(self.clone)
         self.t0 = time.time() - 8 * 3600     # all of it in the past: the quiet checks read the wall clock
         self.now = self.t0
         self.windows = []
@@ -90,7 +103,7 @@ class World:
         s["seats"] = {SEAT: dict(s["seats"][SEAT], clone=self.clone)}
         s["seat_restart"]["seats"] = {SEAT: s["seat_restart"]["seats"][SEAT]}
         s["no_handoff"]["conductor_log"] = os.path.join(self.dir, "conductor_log.md")
-        for k in ("roles", "measure", "login_watch", "signal_watch", "long_helper", "golive"):
+        for k in ("roles", "measure", "login_watch", "signal_watch", "long_helper", "golive", "helper_budget"):
             s.pop(k, None)
         s.update(publish=False, ledger_notes=False, alarm_item=None)
         p = os.path.join(self.dir, "sched.json")
@@ -343,6 +356,29 @@ def test_off():
     w.close()
 
 
+def test_unpublished():
+    w = start("unpublished")
+    shard = os.path.join(w.clone, "infrastructure", "state", "ledger", "events", SEAT + ".jsonl")
+    with open(shard, "a") as f:
+        f.write(json.dumps({"event": "note", "id": "X", "seat": SEAT, "ts": w.iso(w.now)}) + "\n")
+    w.run(LIMIT + 6 * TICK)
+    holds = [a for a in w.acts if a.get("do") == "restart_hold"]
+    check(w.count("restart_request") == 1 and w.kills == [], "lines not on origin: requested, not killed (kills %d)" % len(w.kills))
+    check(holds and "has uncommitted lines" in holds[-1]["why"], "the hold names the shard: %s" % str(holds[-1:])[:200])
+    for argv in (["add", "--", shard], ["-c", "user.name=selftest", "-c", "user.email=selftest@invalid", "commit", "-q", "--no-verify", "-m", "note"],
+                 ["update-ref", "refs/remotes/origin/main", "HEAD"]):
+        subprocess.run(["git"] + argv, cwd=w.clone, check=True, capture_output=True, timeout=60)
+    w.run(4 * TICK)
+    check(len(w.kills) == 1, "published: the kill lands (kills %d)" % len(w.kills))
+    w.close()
+    w = start("no_git")
+    shutil.rmtree(os.path.join(w.clone, ".git"))
+    w.run(LIMIT + 6 * TICK)
+    holds = [a for a in w.acts if a.get("do") == "restart_hold"]
+    check(w.kills == [] and holds and "UNMEASURED" in holds[-1]["why"], "a clone git cannot read holds, never reads as published (kills %d)" % len(w.kills))
+    w.close()
+
+
 def test_first_prompt():
     argv = SR.relaunch_argv
     cfg = {"session_name": "X", "clone": "/c"}
@@ -378,7 +414,7 @@ def test_schedule():
 
 if __name__ == "__main__":
     try:
-        for t in (test_schedule, test_first_prompt, test_ignores, test_takes, test_human, test_overlap, test_work, test_no_doorbell, test_off):
+        for t in (test_schedule, test_first_prompt, test_ignores, test_takes, test_human, test_overlap, test_work, test_no_doorbell, test_off, test_unpublished):
             t()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
