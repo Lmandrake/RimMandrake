@@ -171,6 +171,10 @@ def metric_problem(key, m, metrics):
         gate = metrics.get(g)
         if not isinstance(gate, dict) or "idle" not in (gate.get("classes") or {}) or gate.get("idle_if"):
             return "%s: idle_if %s must name a metric that fills idle and has no idle_if of its own" % (key, g)
+        if g.split(".", 1)[0] != key.split(".", 1)[0]:
+            # stamp_ranges runs per family on that family's points alone: a gate from another family is never there,
+            # so the metric would never be classed (and a verdict built on its class would skip it)
+            return "%s: idle_if %s is another family's metric; a gate must share its family" % (key, g)
     return None
 
 
@@ -2473,7 +2477,8 @@ def andon(points, hist, last_measured, rules, now):
                                       "detail": "%s %d in a row: %.4g -> %.4g" % (
                                           "rising" if diffs[0] > 0 else "falling", n, tail[0], tail[-1])})
         def silent():
-            if not meas and matches(k, sl["keys"]) and not matches(k, sl["skip"]):
+            # silence is "no MEASURED reading", the same test last_measured keeps: a MEASURED state string is not silent
+            if not counts_as_measured(p) and matches(k, sl["keys"]) and not matches(k, sl["skip"]):
                 lm = last_measured.get(k)
                 lim = next((h for pat, h in sl["per_key"].items() if fnmatch.fnmatchcase(k, pat)), sl["default_h"])
                 if lm is not None and now - lm > lim * HOUR:
@@ -2816,9 +2821,14 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             cur.pop("name", None)
             log.append({"ts": iso(now), "event": "moved_to_operations", "aid": aid, "legacy_item": cur.get("legacy_item")})
         if cur and cur.get("state") == "PENDING" and cur.get("name") in known_ids and not cur.get("reopen"):
-            # filed by a pass that died before saving its state: the ledger has it, never file it twice
-            cur.update(state="OPEN", item=cur["name"], error=None, filed=cur.get("filed") or iso(now))
-            log.append({"ts": iso(now), "event": "found_filed", "aid": aid, "item": cur["name"]})
+            if open_ids is not None and cur["name"] not in open_ids:
+                # on the ledger but closed since: acknowledging it would tell nobody. Keep it PENDING as a reopen
+                cur["reopen"] = True
+                log.append({"ts": iso(now), "event": "found_closed", "aid": aid, "item": cur["name"]})
+            else:
+                # filed by a pass that died before saving its state: the ledger has it, never file it twice
+                cur.update(state="OPEN", item=cur["name"], error=None, filed=cur.get("filed") or iso(now))
+                log.append({"ts": iso(now), "event": "found_filed", "aid": aid, "item": cur["name"]})
         if crossed is False and cur:
             # An unfiled PENDING clears here too, logged cleared_unfiled, on purpose: filing a condition that has gone
             # would send a seat after nothing. A filing outage with the condition standing keeps retrying.
@@ -2862,7 +2872,17 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             if not fresh and not worse:
                 return
             if open_ids is None or cur.get("item") in open_ids:
-                lines = (["new at %s: %s" % (iso(now), "; ".join(fresh)[:600])] if fresh else []) + (
+                shown, used = [], 0     # whole names up to 600 chars; one that does not fit stays unnoted, said next pass
+                for n in fresh:
+                    add = len(str(n)) + (2 if shown else 0)
+                    if shown and used + add > 600:
+                        break
+                    shown.append(n)
+                    used += add
+                left = fresh[len(shown):]
+                names = [n for n in names if n not in left]
+                lines = (["new at %s: %s%s" % (iso(now), "; ".join(map(str, shown))[:600],
+                                               " (+%d more next pass)" % len(left) if left else "")] if fresh else []) + (
                     ["WORSE at %s: %s" % (iso(now), worse[0])] if worse else [])
                 todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid, "aid": aid,
                              "noted": names if fresh else None, "told": worse[1] if worse else None,
