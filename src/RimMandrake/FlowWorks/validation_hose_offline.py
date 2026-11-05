@@ -8,10 +8,14 @@
   HO8_no_visible_fire_hose (was O6's B20, hose files)  no player-visible 'fire hose' text in the moved hose files
   HO9_drawn_fittings_meet_ports (2026-10-22)         the *_Bare pieces the draw code really uses, every look: coupling face at
                                                        JoinerFace, bands at PieceBand / CouplingMax / NozzleMax / EndCapMax
+  HO10_reel_feed_off_pipe_is_pipe (2026-11-05)       HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE: a reel's link off a PIPE draws in the
+                                                       pipe's own straight tile, never hose cloth (C7 "one hose net, no pump" read
+                                                       hose / pipe / hose); the C7 under-reel strip stays on the pipe cell + reel
 
     python3 src/RimMandrake/FlowWorks/validation_hose_offline.py      # prints the three rows; exit 1 on any FAIL
 Each row carries its own can-fail (a planted magenta/seam strip; a planted missing fragment).
 """
+import math
 import os
 import re
 import sys
@@ -332,8 +336,141 @@ def ho9_drawn_fittings(rows):
         probs or "%d drawn pieces (4 looks x coupling/nozzle/cap) match JoinerFace/PieceBand/*Max; planted gauge coupling refused" % seen)
 
 
+# HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE (owner's walk 2026-10-22, C7 station "one hose net, no pump": "half hose half pipe";
+# Steam shot 20261022184620_1.jpg). RM_MapComponent_Hoses.DrawFeed laid hose CLOTH from the pipe cell's centre in under the
+# reel for every port kind, so a pipe joining two reels read hose+coupling / pipe / hose. A reel is not a pipe partner, so the
+# pipe draws no stub of its own: the feed must BE the pipe there. The C# twin (SelfTest HoseJointChecks.PipeFeeds) sweeps every
+# look x facing x side; this row is the dotnet-free half: the draw's branch, read from the source, and the C7 strip.
+BORE_HALF = 0.12   # LiquidJoinRule.BoreHalf, read below from the source
+
+
+def _method_body(text, signature):
+    """The text of one C# method from its signature to its closing brace at the same indent (8 spaces)."""
+    i = text.find(signature)
+    if i < 0:
+        return ""
+    j = text.find("\n        }\n", i)
+    return text[i:j if j > 0 else len(text)]
+
+
+def feed_branch_problems(draw_src, relay_src):
+    probs = []
+    body = _method_body(draw_src, "private void DrawFeed(CompHoseReel r, float y)")
+    if not body:
+        return ["DrawFeed not found in RM_MapComponent_Hoses.cs"]
+    if not re.search(r"bool pipe = HoseJoints\.FeedIsPipe\(r\.portKind\);", body):
+        probs.append("DrawFeed does not ask HoseJoints.FeedIsPipe(r.portKind)")
+    if not re.search(r"Material m = pipe \? [^;]*StraightMat\(r\.Port\(\), true\) : hm\.Flat\(1f\);", body):
+        probs.append("DrawFeed does not pick the pipe's straight tile for a pipe (cloth hm.Flat only in the non-pipe arm)")
+    if len(re.findall(r"hm\.Flat\(", body)) != 1:
+        probs.append("hose cloth (hm.Flat) is reachable outside the non-pipe arm")
+    if not re.search(r"mesh = pipe \? PipeStrip\(path, fy\) : Ribbon\(", body):
+        probs.append("DrawFeed does not build the pipe strip (PipeStrip) for a pipe")
+    if not re.search(r"if \(pipe\) Graphics\.DrawMesh\(feed,", body):
+        probs.append("the pipe strip is not drawn on its own (the hose depth pre-pass would print the atlas's wrong slice)")
+    if not re.search(r"internal static bool FeedIsPipe\(HosePortKind kind\) => kind == HosePortKind\.Pipe;", relay_src):
+        probs.append("HoseJoints.FeedIsPipe is not exactly 'a Pipe port'")
+    return probs
+
+
+def centre_stub(cx, cz, dx, dz, bx, bz, bw, bh):
+    """LiquidJoinRule.CentreStub, ported: from the shared edge's midpoint in front of the end to the footprint's centre."""
+    nx, nz = cx + dx, cz + dz
+    if not (bx <= nx < bx + bw and bz <= nz < bz + bh):
+        return None
+    ex, ez = cx + 0.5 + dx * 0.5, cz + 0.5 + dz * 0.5
+    mx, mz = bx + bw / 2.0, bz + bh / 2.0
+    kx, kz = (mx if dx != 0 else ex), (mz if dz != 0 else ez)
+    bend = abs(kx - mx) > 1e-9 or abs(kz - mz) > 1e-9
+    return [(ex, ez), (kx, kz), (mx, mz)] if bend else [(ex, ez), (mx, mz)]
+
+
+def strip_quads(path, half):
+    """LiquidJoinRule.StripQuads for straight segments: one quad per stretch between whole-tile cuts, its corners and U span."""
+    quads, s = [], 0.0
+    for (ax, az), (bx, bz) in zip(path, path[1:]):
+        ln = math.hypot(bx - ax, bz - az)
+        if ln < 1e-9:
+            continue
+        tx, tz = (bx - ax) / ln, (bz - az) / ln
+        fs = [0.0, 1.0]
+        w = math.floor(s) + 1
+        while w < s + ln - 1e-9:
+            fs.append((w - s) / ln)
+            w += 1
+        fs.sort()
+        for fa, fb in zip(fs, fs[1:]):
+            if fb - fa < 1e-9:
+                continue
+            pa = (ax + (bx - ax) * fa, az + (bz - az) * fa)
+            pb = (ax + (bx - ax) * fb, az + (bz - az) * fb)
+            corners = [(pa[0] + tz * half, pa[1] - tx * half), (pa[0] - tz * half, pa[1] + tx * half),
+                       (pb[0] - tz * half, pb[1] + tx * half), (pb[0] + tz * half, pb[1] - tx * half)]
+            quads.append((corners, (fb - fa) * ln))
+        s += ln
+    return quads
+
+
+def c7_strip_problems(feed=None):
+    """The C7 bathhouse pair (northstar/scenarios/c07_bathhouse_tower.py): reels placed at (11,22) and (11,15) facing west
+    (2x2 at x10-11), joined by RM_UniversalPipe on x=11. Each reel's link off its pipe neighbour, as the pipe strip draws it.
+    feed: the link polyline builder (contact cell, side, rect) -> points; the default is DrawFeed's under-reel path."""
+    probs, seen = [], 0
+    reels = [((10, 22, 2, 2), (11, 21), (0, -1)), ((10, 15, 2, 2), (11, 17), (0, 1))]
+    for rect, (cx, cz), (sx, sz) in reels:
+        bx, bz, bw, bh = rect
+        if feed is None:
+            stub = centre_stub(cx, cz, -sx, -sz, bx, bz, bw, bh)
+            path = [(cx + 0.5, cz + 0.5)] + (stub or [])
+        else:
+            path = feed((cx, cz), (sx, sz), rect)
+        quads = strip_quads(path, BORE_HALF)
+        ln = sum(math.hypot(b[0] - a[0], b[1] - a[1]) for a, b in zip(path, path[1:]))
+        if not quads:
+            probs.append("reel %s: no strip" % (rect,))
+            continue
+        seen += 1
+        if abs(sum(q[1] for q in quads) - ln) > 1e-6 or ln < 1.0:
+            probs.append("reel %s: strip %.3f long, link %.3f (must run from the pipe's centre to the reel's)" % (rect, sum(q[1] for q in quads), ln))
+        c0 = quads[0][0]
+        mid = ((c0[0][0] + c0[1][0]) / 2, (c0[0][1] + c0[1][1]) / 2)
+        if math.hypot(mid[0] - cx - 0.5, mid[1] - cz - 0.5) > 0.05:
+            probs.append("reel %s: strip starts off the pipe's centre (%.2f, %.2f)" % (rect, mid[0], mid[1]))
+        e = BORE_HALF + 1e-6
+        for corners, _ in quads:
+            for (x, z) in corners:
+                in_reel = bx - e <= x <= bx + bw + e and bz - e <= z <= bz + bh + e
+                in_pipe = cx - e <= x <= cx + 1 + e and cz - e <= z <= cz + 1 + e
+                if not (in_reel or in_pipe):
+                    probs.append("reel %s: strip corner (%.2f, %.2f) outside the pipe cell and the reel" % (rect, x, z))
+    return probs, seen
+
+
+def ho10_reel_feed_off_pipe(rows):
+    draw = open(os.path.join(SRC, "Hose", "RM_MapComponent_Hoses.cs"), encoding="utf-8").read()
+    relay = open(os.path.join(SRC, "Hose", "HoseRelay.cs"), encoding="utf-8").read()
+    rule = open(os.path.join(SRC, "Machinery", "LiquidJoinRule.cs"), encoding="utf-8").read()
+    probs = feed_branch_problems(draw, relay)
+    m = re.search(r"public const double BoreHalf = ([0-9.]+);", rule)
+    if not m or abs(float(m.group(1)) - BORE_HALF) > 1e-12:
+        probs.append("LiquidJoinRule.BoreHalf is not %.2f (port out of date)" % BORE_HALF)
+    gp, seen = c7_strip_problems()
+    probs += gp
+    # can-fails: the pre-fix DrawFeed (cloth for every port) and a strip cut to the old quarter-cell stub are both refused
+    pre = re.sub(r"bool pipe = HoseJoints\.FeedIsPipe\(r\.portKind\);", "", draw)
+    pre = re.sub(r"Material m = pipe \? [^;]*;", "Material m = hm.Flat(1f);", pre)
+    if not feed_branch_problems(pre, relay):
+        probs.append("HARNESS: the planted pre-fix DrawFeed (hose cloth for a pipe) was not refused")
+    short, _ = c7_strip_problems(lambda c, s, r: [(c[0] + 0.5, c[1] + 0.5), (c[0] + 0.5, c[1] + 0.5 - s[1] * 0.25)])
+    if not short:
+        probs.append("HARNESS: a quarter-cell stub (the old cloth stub's reach) was not refused")
+    row(rows, "HO10_reel_feed_off_pipe_is_pipe", "PASS" if not probs and seen == 2 else "FAIL", "MOD",
+        probs or "DrawFeed draws a pipe port's link in the pipe's straight tile (cloth only off tanks/pumps/machines); "
+                 "C7 pair: %d strips pipe-centre to reel-centre inside pipe cell + reel; planted pre-fix draw and short stub refused" % seen)
+
+
 OFFLINE_IDS = ["HO5_hose_art_sane", "HO6_hose_fittings", "HO7_hose_gpt_read_fixes", "HO8_no_visible_fire_hose",
-               "HO9_drawn_fittings_meet_ports"]
+               "HO9_drawn_fittings_meet_ports", "HO10_reel_feed_off_pipe_is_pipe"]
 
 
 def run_offline():
@@ -343,6 +480,7 @@ def run_offline():
     ho7_hose_gpt_read_fixes(rows)
     ho8_no_visible_fire_hose(rows)
     ho9_drawn_fittings(rows)
+    ho10_reel_feed_off_pipe(rows)
     return rows
 
 

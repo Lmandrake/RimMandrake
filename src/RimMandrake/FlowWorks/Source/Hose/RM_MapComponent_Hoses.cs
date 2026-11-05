@@ -1496,7 +1496,7 @@ namespace RimMandrake.FlowWorks.Hose
         private void DrawAll()
         {
             float y0 = (float)RimMandrake.Shared.Slack.DrawOrder.Alt(RimMandrake.Shared.Slack.DrawOrder.LayerHose) + RimMandrake.Shared.Slack.DrawOrder.HoseBaseLift;
-            lastWrapDraws = lastFeedDraws = lastReelEndHidden = lastRelayCouplings = 0;
+            lastWrapDraws = lastFeedDraws = lastFeedPipeDraws = lastReelEndHidden = lastRelayCouplings = 0;
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
             lastDepthDraws = 0;
             lastPortStubs = 0;
@@ -2170,7 +2170,7 @@ namespace RimMandrake.FlowWorks.Hose
             lastPortStubs++;
         }
 
-        public int lastWrapDraws, lastFeedDraws, lastReelEndHidden, lastRelayCouplings;
+        public int lastWrapDraws, lastFeedDraws, lastFeedPipeDraws, lastReelEndHidden, lastRelayCouplings;
 
         // ------------------------------------------------------------------ S4: live drawing (design section 6)
         /// <summary>State reads for the probe: how each reel's hose was drawn last frame (none / lay / carry / clip), its drawn
@@ -2557,6 +2557,7 @@ namespace RimMandrake.FlowWorks.Hose
             public V2 from, to;
             public int n;
             public float width, y;
+            public bool pipe;
             public Mesh mesh;
         }
 
@@ -2588,21 +2589,29 @@ namespace RimMandrake.FlowWorks.Hose
             List<V2> path = HoseJoints.ReelFeed(r.Rect, r.portSide, r.portContact, deployedArt, out bool onNozzle, out V2 face, out V2 axis);
             float vis = (float)HoseMath.VisibleWidth(0, RM_HoseSettings.plumpAmount);
             HoseLookMats hm = HoseMaterials.For(r);
-            Material m = hm.Flat(1f);
+            // HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE: a pipe's link is the pipe run on in its own straight tile, never hose cloth
+            bool pipe = HoseJoints.FeedIsPipe(r.portKind);
+            Material m = pipe ? RimMandrake.FlowWorks.Machinery.SectionLayer_RM_PipeCentreStubs.StraightMat(r.Port(), true) : hm.Flat(1f);
             if (m == null || path.Count < 2) return;
             V2 from = path[0], to = path[path.Count - 1];
-            float width = (float)HoseMath.MeshWidthFlat(vis), fy = y - 0.0008f;
+            float width = pipe ? 0f : (float)HoseMath.MeshWidthFlat(vis), fy = y - 0.0008f;
             feeds.TryGetValue(r, out FeedCache fc);
             if (fc == null || fc.mesh == null || fc.width != width || fc.y != fy || fc.from.X != from.X || fc.from.Z != from.Z
-                || fc.to.X != to.X || fc.to.Z != to.Z || fc.n != path.Count)
+                || fc.to.X != to.X || fc.to.Z != to.Z || fc.n != path.Count || fc.pipe != pipe)
             {
                 DropFeed(r);
-                fc = new FeedCache { from = from, to = to, n = path.Count, width = width, y = fy, mesh = Ribbon(Densify(path), width, fy, 0.37) };
+                fc = new FeedCache { from = from, to = to, n = path.Count, width = width, y = fy, pipe = pipe,
+                                     mesh = pipe ? PipeStrip(path, fy) : Ribbon(Densify(path), width, fy, 0.37) };
                 feeds[r] = fc;
                 FeedBuilds++;
             }
+            if (pipe) lastFeedPipeDraws++;
             Mesh feed = fc.mesh;
-            Solid(feed, Matrix4x4.identity, m);
+            if (feed == null) return;
+            // a pipe tile is an atlas slice (texture offset/scale): the hose depth pre-pass rebuilds a material from the whole
+            // texture, which would print the wrong slice, so the pipe strip draws alone, as the pipe's own section layer does
+            if (pipe) Graphics.DrawMesh(feed, Matrix4x4.identity, m, 0);
+            else Solid(feed, Matrix4x4.identity, m);
             if (onNozzle && hm.CouplingBare != null)
             {
                 Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
@@ -2610,6 +2619,37 @@ namespace RimMandrake.FlowWorks.Hose
                 Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, HoseJoints.NozzleFittingOnTop(r.Rect.Rot) ? NozzleTopY(y - 0.0006f) : y - 0.0006f, wrapTint, rec: r, role: "feed_nozzle");
             }
             lastFeedDraws++;
+        }
+
+        /// <summary>HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE: the feed path as a bent strip of the pipe's straight east-west tile, the
+        /// bore and rim convention of the risers (SectionLayer_RM_PipeCentreStubs.PrintStrip), in world space.</summary>
+        private static Mesh PipeStrip(List<V2> path, float y)
+        {
+            List<double[]> segs = HoseJoints.FeedSegments(path);
+            List<RimMandrake.FlowWorks.Machinery.LiquidJoinRule.StripQuad> quads =
+                RimMandrake.FlowWorks.Machinery.LiquidJoinRule.StripQuads(segs, RimMandrake.FlowWorks.Machinery.LiquidJoinRule.BoreHalf);
+            if (quads.Count == 0) return null;
+            float vr = 0.5f - (float)RimMandrake.FlowWorks.Machinery.LiquidJoinRule.BoreHalf, vl = 0.5f + (float)RimMandrake.FlowWorks.Machinery.LiquidJoinRule.BoreHalf;
+            if (RimMandrake.FlowWorks.Machinery.LiquidJoinRule.TravelsWest(segs)) { float sw = vr; vr = vl; vl = sw; }
+            var v = new List<Vector3>(quads.Count * 4);
+            var uv = new List<Vector2>(quads.Count * 4);
+            var tr = new List<int>(quads.Count * 6);
+            foreach (RimMandrake.FlowWorks.Machinery.LiquidJoinRule.StripQuad q in quads)
+            {
+                int k = v.Count;
+                v.Add(new Vector3((float)q.X0, y, (float)q.Z0)); uv.Add(new Vector2((float)q.U0, vr));
+                v.Add(new Vector3((float)q.X1, y, (float)q.Z1)); uv.Add(new Vector2((float)q.U0, vl));
+                v.Add(new Vector3((float)q.X2, y, (float)q.Z2)); uv.Add(new Vector2((float)q.U1, vl));
+                v.Add(new Vector3((float)q.X3, y, (float)q.Z3)); uv.Add(new Vector2((float)q.U1, vr));
+                tr.Add(k); tr.Add(k + 1); tr.Add(k + 2);
+                tr.Add(k); tr.Add(k + 2); tr.Add(k + 3);
+            }
+            var m = new Mesh { name = "RM_HoseFeedPipe" };
+            m.SetVertices(v);
+            m.SetUVs(0, uv);
+            m.SetTriangles(tr, 0);
+            m.RecalculateBounds();
+            return m;
         }
 
         /// <summary>A square feed path as the ribbon wants it: a few samples per leg so its corners stay sharp.</summary>

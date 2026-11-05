@@ -381,6 +381,21 @@ namespace RimMandrake.FlowWorks.Hose
             return r.Centre + r.FromArt(dx, dz);
         }
 
+        /// <summary>HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE (owner's walk 2026-10-22, C7 "one hose net, no pump": "half hose half
+        /// pipe"): the link off a PIPE is the pipe itself run on in under the reel, drawn in the pipe's own straight tile; hose
+        /// cloth laid over the pipe's cell made one run read hose, pipe, hose. Tanks, pumps and machines keep the cloth feed.</summary>
+        internal static bool FeedIsPipe(HosePortKind kind) => kind == HosePortKind.Pipe;
+
+        /// <summary>A feed polyline as straight path segments {0, x0, z0, x1, z1} for LiquidJoinRule.StripQuads.</summary>
+        internal static List<double[]> FeedSegments(List<V2> path)
+        {
+            var o = new List<double[]>();
+            if (path == null) return o;
+            for (int i = 0; i + 1 < path.Count; i++)
+                if (V2.Dist(path[i], path[i + 1]) > 1e-9) o.Add(new[] { 0, path[i].X, path[i].Z, path[i + 1].X, path[i + 1].Z });
+            return o;
+        }
+
         /// <summary>
         /// The link from a pipe, tank or pump beside a reel's body to the reel (RM_MapComponent_Hoses.DrawFeed).
         /// <paramref name="side"/> = unit step from the reel to <paramref name="contact"/> (the port's cell beside it). Returns

@@ -552,6 +552,66 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(oldRefused, "can-fail: the old behind-the-crank stub (ends 0.25 into the edge cell, coupling on the edge) is refused (" + oldWhy + ")");
         }
 
+        /// <summary>HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE: a reel's link off a PIPE draws as the pipe's own straight tile (no hose
+        /// cloth on the pipe's cell), and that strip follows the link: it starts on the pipe's centre line, runs the link's whole
+        /// length, and never leaves the pipe cell plus the reel by more than the bore.</summary>
+        private static void PipeFeeds()
+        {
+            Check(HoseJoints.FeedIsPipe(HosePortKind.Pipe) && !HoseJoints.FeedIsPipe(HosePortKind.Tank)
+                  && !HoseJoints.FeedIsPipe(HosePortKind.Machine) && !HoseJoints.FeedIsPipe(HosePortKind.Other),
+                "half hose half pipe: only a pipe port's link draws in pipe art; tanks, pumps and machines keep the hose feed");
+            int total = 0, ok = 0;
+            string first = null;
+            double bore = RimMandrake.FlowWorks.Machinery.LiquidJoinRule.BoreHalf;
+            foreach (string look in ReelIntakeGeometry.Looks)
+                for (int rot = 0; rot < 4; rot++)
+                    foreach (bool laid in new[] { false, true })
+                        foreach (Cell s in Sides)
+                        {
+                            var r = new HoseReelRect(10, 10, 2, 2) { Look = look, Rot = rot };
+                            foreach (Cell e in r.EdgeCells(s))
+                            {
+                                Cell contact = e + s;
+                                total++;
+                                List<V2> path = HoseJoints.ReelFeed(r, s, contact, laid, out bool onN, out V2 face, out V2 axis);
+                                List<double[]> segs = HoseJoints.FeedSegments(path);
+                                var quads = RimMandrake.FlowWorks.Machinery.LiquidJoinRule.StripQuads(segs, bore);
+                                double len = 0, stripLen = 0;
+                                for (int i = 1; i < path.Count; i++) len += V2.Dist(path[i - 1], path[i]);
+                                string why = null;
+                                foreach (var q in quads)
+                                {
+                                    stripLen += q.U1 - q.U0;
+                                    foreach (V2 c in new[] { new V2(q.X0, q.Z0), new V2(q.X1, q.Z1), new V2(q.X2, q.Z2), new V2(q.X3, q.Z3) })
+                                        if (!InRect(r, c, bore + HoseJoints.Tolerance) && !(c.X >= contact.X - 0.45 - bore && c.X <= contact.X + 1.45 + bore
+                                                                                             && c.Z >= contact.Z - 0.45 - bore && c.Z <= contact.Z + 1.45 + bore))
+                                            why = why ?? "strip corner (" + c.X.ToString("0.00") + "," + c.Z.ToString("0.00") + ") off the pipe cell and the reel";
+                                }
+                                if (quads.Count == 0) why = "no strip";
+                                else if (Math.Abs(stripLen - len) > 1e-6) why = "strip " + stripLen.ToString("0.000") + " long, link " + len.ToString("0.000");
+                                else
+                                {
+                                    var q0 = quads[0];
+                                    V2 mid = new V2((q0.X0 + q0.X1) / 2, (q0.Z0 + q0.Z1) / 2);
+                                    if (!HoseJoints.Meets(mid, contact.Centre, out double g)) why = "strip starts " + g.ToString("0.000") + " off the pipe's centre";
+                                }
+                                if (why == null) ok++;
+                                else if (first == null) first = look + " rot" + rot + (laid ? " laid" : " stored") + " side " + s.X + "," + s.Z + ": " + why;
+                            }
+                        }
+            Check(ok == total && total == 256,
+                "half hose half pipe: every look x facing x art x port side x edge cell, the pipe-art link is one strip from the pipe's centre "
+                + "along the whole link, inside the pipe cell and the reel (" + ok + "/" + total + (first != null ? "; first bad: " + first : "") + ")");
+            // can-fail: a strip cut short (the old cloth stub's quarter cell) is refused by the same length test
+            var rr = new HoseReelRect(10, 10, 2, 2) { Look = "Modern", Rot = 3 };
+            List<V2> p0 = HoseJoints.ReelFeed(rr, new Cell(0, -1), rr.EdgeCells(new Cell(0, -1))[0] + new Cell(0, -1), true, out _, out _, out _);
+            var shortQ = RimMandrake.FlowWorks.Machinery.LiquidJoinRule.StripQuads(HoseJoints.FeedSegments(new List<V2> { p0[0], p0[0] + (p0[1] - p0[0]) * 0.25 }), bore);
+            double sl = 0, pl = 0;
+            foreach (var q in shortQ) sl += q.U1 - q.U0;
+            for (int i = 1; i < p0.Count; i++) pl += V2.Dist(p0[i - 1], p0[i]);
+            Check(Math.Abs(sl - pl) > 1e-3, "can-fail: a pipe strip a quarter of the link long is refused (" + sl.ToString("0.000") + " of " + pl.ToString("0.000") + ")");
+        }
+
         private static void NozzleCouplings()
         {
             int total = 0, ok = 0;
@@ -668,6 +728,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         public static void Run()
         {
             Feeds();
+            PipeFeeds();
             NozzleCouplings();
             TankPorts();
             CollarBoxes();
