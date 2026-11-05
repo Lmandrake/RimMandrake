@@ -1,5 +1,6 @@
 # Game: RimProperty (mandrake.rm.property) deployed at the proof sha (DLL carries RM_SettlementVerbsProof), the minimal list with all five DLC, a quicktest colony map with at least one able free colonist, jawa/static_call enabled.
 # Each line runs RM_SettlementVerbsProof.RunOne(<verb>) via settlement_verbs_live_proof.py: self-cleaning (spawns its own target, gives and takes back silver), not read-only. Exit 0 PASS, 1 FAIL, 2 UNMEASURED.
+live-mods: RimProperty
 live-proof A1: python.exe src/RimMandrake/RimProperty/settlement_verbs_live_proof.py A1 < /dev/null
 live-proof A2: python.exe src/RimMandrake/RimProperty/settlement_verbs_live_proof.py A2 < /dev/null
 live-proof A3: python.exe src/RimMandrake/RimProperty/settlement_verbs_live_proof.py A3 < /dev/null

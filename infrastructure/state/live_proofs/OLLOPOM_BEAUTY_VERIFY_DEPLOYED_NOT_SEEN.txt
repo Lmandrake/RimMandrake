@@ -2,5 +2,5 @@
 # (it unroofs a 7x7 at map centre, spawns RSW_Ollopom + a Muffalo control, toggles perceivedBeautyEnabled and restores it),
 # then the reader exits 0 only if row ollopom_outdoors_adds_beauty_and_toggle_removes_it is exactly PASS with no FAIL row.
 # RSW_Ollopom's RM_PerceivedBeautyExtension is MayRequire="mandrake.rm.biomes" (CreatureBehaviors is composed there).
-live-mods: CreatureBehaviors, SWBestiary
+live-mods: RimMandrake.Biomes, SWBestiary
 live-proof A1: python.exe src/RimMandrake/Utils/modcheck/cli.py run CreatureBehaviors --chains perceived_beauty --gate off --purpose fix --item OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN --seat BENCH < /dev/null; python3 src/RimMandrake/CreatureBehaviors/perceived_beauty_live_proof.py --max-age-min 30
