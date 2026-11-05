@@ -134,6 +134,8 @@ PRESSURE_GB = 420.0         # ops_watch_rules' DISK_TWO_DAYS line
 TMP_IDLE_H = 6.0            # owner-authority brief 2026-11-03: a /tmp entry nothing inside was touched in 6 h may go
 TMP_PRESSURE_GB = 4.0       # /tmp tmpfs free below this (or TMP_PRESSURE_PCT used) starts a run now
 TMP_PRESSURE_PCT = 80.0
+TMP_PRESSURE_IDLE_H = 1.0   # under that pressure the idle line drops to this (OPS_TMP_DRAIN_RESTORE_JVCO: 6 h kept 4 GB of
+                            # 1-2 h idle mutation copies while /tmp hit 97.5 %); every hold (process, mount, clone) stands
 # Never ours to judge, by name: sockets and session dirs of the desktop, ssh, tmux, editors, snaps, the WSL plumbing,
 # credential caches, and the CLIs' own per-user trees (claude-<uid> holds live task output). Other users' entries are
 # skipped by uid before any name is read.
@@ -1937,8 +1939,19 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
     return out
 
 
+def tmp_low(t: dict | None) -> bool:
+    """A /tmp reading past the alarm's lines: under TMP_PRESSURE_GB free or over TMP_PRESSURE_PCT used."""
+    tline = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_GB", TMP_PRESSURE_GB))
+    tpct = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_PCT", TMP_PRESSURE_PCT))
+    return bool(t) and (t["free_gb"] < tline or (t["used_pct"] or 0) > tpct)
+
+
 def tmp_idle_s() -> float:
-    return float(os.environ.get("SCRATCH_REAP_TMP_IDLE_HOURS", TMP_IDLE_H)) * 3600
+    """The idle line: TMP_IDLE_H, or TMP_PRESSURE_IDLE_H (whichever is shorter) while /tmp reads low right now."""
+    idle = float(os.environ.get("SCRATCH_REAP_TMP_IDLE_HOURS", TMP_IDLE_H)) * 3600
+    if tmp_low(tmp_reading()):
+        idle = min(idle, float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_IDLE_HOURS", TMP_PRESSURE_IDLE_H)) * 3600)
+    return idle
 
 
 def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]:
@@ -2327,10 +2340,8 @@ def pressure_check() -> int:
     cool = float(os.environ.get("SCRATCH_REAP_COOLDOWN_MIN", COOLDOWN_MIN)) * 60
     free = free_gb()
     t = tmp_reading()
-    tline = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_GB", TMP_PRESSURE_GB))
-    tpct = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_PCT", TMP_PRESSURE_PCT))
-    tmp_low = bool(t) and (t["free_gb"] < tline or (t["used_pct"] or 0) > tpct)
-    if free >= line and not tmp_low:
+    low = tmp_low(t)
+    if free >= line and not low:
         print(f"pressure: {free} GB free, line {line}; /tmp {t}: nothing to do")
         return 0
     try:
@@ -2338,7 +2349,7 @@ def pressure_check() -> int:
     except (OSError, ValueError, AttributeError):
         last = 0
     rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "free_gb": free, "line_gb": line, "tmp": t,
-           "tmp_low": tmp_low}
+           "tmp_low": low}
     if time.time() - last < cool:
         print(f"pressure: {free} GB free, but a run ended within {cool / 60:.0f} min")
         return 0

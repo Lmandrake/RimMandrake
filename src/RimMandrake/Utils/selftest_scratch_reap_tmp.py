@@ -98,6 +98,30 @@ def main():
         fx = s.sweep_fixtures(later, False, 0)
         ok(fx["held"] >= 1 and fx["removed"] == 1, "a /tmp/selftest_ dir holding a repo is held; only the empty fixture would go (%s)" % fx)
 
+        # the pressure idle line (OPS_TMP_DRAIN_RESTORE_JVCO): an entry younger than the normal line goes only while
+        # /tmp reads low; the pressure lines are forced both ways so the real /tmp's fill decides nothing here
+        saved = {k: os.environ.get(k) for k in ("SCRATCH_REAP_TMP_IDLE_HOURS", "SCRATCH_REAP_TMP_PRESSURE_IDLE_HOURS",
+                                                 "SCRATCH_REAP_TMP_PRESSURE_PCT", "SCRATCH_REAP_TMP_PRESSURE_GB")}
+        os.environ.update(SCRATCH_REAP_TMP_IDLE_HOURS="1", SCRATCH_REAP_TMP_PRESSURE_IDLE_HOURS=str(IDLE / 3600))
+        try:
+            os.environ.update(SCRATCH_REAP_TMP_PRESSURE_PCT="101", SCRATCH_REAP_TMP_PRESSURE_GB="0")
+            calm = s.tmp_idle_s()
+            _, rc = s.sweep_tmp(s.Ctx(time.time()), False, 0)
+            os.environ.update(SCRATCH_REAP_TMP_PRESSURE_PCT="0")
+            tight = s.tmp_idle_s()
+            _, rp = s.sweep_tmp(s.Ctx(time.time()), False, 0)
+            ok(calm == 3600 and tight == IDLE, "under pressure the idle line drops to the pressure line (%s -> %s)" % (calm, tight))
+            pc, pp = {Path(r["path"]).name for r in rc}, {Path(r["path"]).name for r in rp}
+            ok("olddir" not in pc and "olddir" in pp and "used" not in pp and "clone" not in pp,
+               "a 15 s idle dir stays at the 1 h line and goes under pressure; held and work entries stay (%s / %s)" % (
+                   sorted(pc), sorted(pp)))
+        finally:
+            for k, v in saved.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
         # the post-rename look: a process that entered an entry after the judgment's /proc look is seen under the pin
         ctx = s.Ctx(time.time())
         pin = tmp / (".reaping-%d-racer" % os.getpid())
