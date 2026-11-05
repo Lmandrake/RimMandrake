@@ -644,6 +644,15 @@ def panels_of(page):
     return out
 
 
+def g_of(rs, label):
+    return rs[label][0]
+
+
+def texts_with(rs, label):
+    """A reading's texts as (size, words, element), so a caller can set apart the ones inside an item row."""
+    return [(t.get("font-size"), "".join(t.itertext()), t) for t in rs[label][0].iter(SVGNS + "text")]
+
+
 def readings_of(root):
     """-> {label: (element, [(size, text), ...])}; a repeated label keeps every copy apart by a trailing #."""
     out = {}
@@ -684,6 +693,8 @@ def panel_problems(page, cards_have_oldest=True):
             if id(t) not in inside and re.search(r"\d", words) and not FRAME.match(words):
                 bad.append("%s: naked number: %s" % (name, words))
         for label, (_, texts) in rs.items():
+            rowt = {id(t) for r in g_of(rs, label).iter(SVGNS + "g") if r.get("data-item") for t in r.iter(SVGNS + "text")}
+            texts = [(size, w) for size, w, t in texts_with(rs, label) if id(t) not in rowt]   # an item row is a name, not a note
             notes = [w for size, w in texts if (size == "9" or label in ("FAIL LOOP", "STATE")) and not w.startswith("top ")]
             for w in notes:
                 if label not in NOT_A_NUMBER and not judged(w):
@@ -1087,8 +1098,7 @@ MUTANTS = [
     ("a tile too narrow clips its verdict", 'tile_(102, y, 96, "QUEUED",', 'tile_(102, y, 60, "QUEUED",'),
     ("Steve's how-to-read is gone", 'how_to_read("The second machine', '(lambda t: "")("The second machine'),
     ("a number outside any reading", 's.reading_open("FAIL LOOP")', 's.reading_open("FAIL LOOP"); s.text(0, 0, "42", 12)'),
-    ("a card clips its names again", 'for j, ln in enumerate(wrap_name(e[1] + e[2], CARD_CHARS, 2)):', 'for j, ln in enumerate([clip(e[1] + e[2], CARD_CHARS)]):'),
-    ("the band clips its names", 'for j, ln in enumerate(wrap_name(e[1] + e[2], BAND_CHARS, 2)):', 'for j, ln in enumerate([clip(e[1] + e[2], BAND_CHARS)]):'),
+    ("a name row clips its names again", 'for j, ln in enumerate(wrap_name(e[1] + e[2], width, 2)):', 'for j, ln in enumerate([clip(e[1] + e[2], width)]):'),
     ("the cards stop growing", "ch = max([170] + [112 + entries_height(card_entries(lists, k)) + 6 for k in BELT])", "ch = 170"),
     ("the panel forgets its added height", "W, H = 1040, 610 + (ch - 170) + sum(b[2] + 8 for b in bands)", "W, H = 1040, 610"),
     ("the throughput rows ignore the band", "ty = by + 6 if bands else sy + sh + 18", "ty = sy + sh + 18"),
@@ -1099,7 +1109,7 @@ MUTANTS = [
     ("done lists everything it knows", "recent = thr[\"recent\"][:LATEST_SHOWN]", "recent = thr[\"recent\"][:1]"),
     ("done loses the count of the rest", 'out["done"].append(("note", "+ %d earlier" % rest))', "pass"),
     ("an old order still reads as the next few", 'if now - q["t"] > QUEUE_NEXT_MAX_AGE:', "if False:"),
-    ("the text twin loses the names", "for e in lists[name]:   # whole names, as on the cards", "for e in []:"),
+    ("the text twin loses the names", "for e in lists[name]:   # whole names, as on the cards, each with its band, passes and tokens", "for e in []:"),
     ("a build row clips its title again", 'cont="│  %s" % (" " if branch == "└─" else "│") + " " * 8)', "cont=None)"),
     ("the no-process line clips its title", 'L.extend(fence_wrap("! %d items hold a place with no process: %s" % (len(ghosts), title(ghosts[0])), "│  ", "│    "))', 'L.append("│  ! %d items hold a place with no process: %s" % (len(ghosts), clip(title(ghosts[0]), W - 45)))'),
     ("the oldest line clips its title", 'out += fence_wrap("%s %s: %s" % (k, ago(o[0]), title(o[1])), "  ", "      ")', 'out.append("  %s %s: %s" % (k, ago(o[0]), clip(title(o[1]), 40)))'),
@@ -1432,6 +1442,101 @@ child, tmp = real_scene("nolatest")
 rc, phone = real_cli(child, "--phone")
 check("fuel real: a missing latest.json says ACCOUNTS UNMEASURED", rc == 0 and any(x.startswith("ACCOUNTS UNMEASURED") for x in phone.splitlines()) and "ACCOUNTS, THIS WEEK" not in phone)
 tmp.cleanup()
+
+# --- item rows wear their bounces (RUNNING_PAGE_BUILD_ROWS_WEAR_THEIR_BOUNCES): bands, flash, phone emoji ---
+import ops_watch as OW  # noqa: E402
+BANDS = {"passes": [2, 3], "spent": [3000000, 6000000], "age_s": {"running": [10800, 28800]}, "stuck_silent_s": 3600}
+def run_st(**kw):
+    st = {"status": "running", "returns": 0, "spent": 100000, "started_at": NOW - 60, "last_beat": NOW - 30}
+    st.update(kw)
+    return st
+def row_svg(m):
+    sv = R.Svg(400, 60, "t")
+    R.item_row(sv, 20, 20, ("name", "1h ", "SOME_ITEM_NAME_HERE"), R.CARD_CHARS, lambda n: n, {"SOME_ITEM_NAME_HERE": m} if m else None)
+    return "".join(sv.parts)
+
+def rows_results():
+    """Every row check as (name, held); the mutants below must turn at least one False."""
+    out = []
+    ok = lambda name, cond: out.append((name, bool(cond)))  # noqa: E731
+    m = R.item_mark(run_st(), NOW, BANDS)
+    ok("rows: a first pass, small spend, fresh start is cool and does not flash", m["band"] == "cool" and m["passes"] == 1 and not m["flash"] and m["age"] == 60)
+    ok("rows: one return (pass 2) is warm, two returns (pass 3) is hot", R.item_mark(run_st(returns=1), NOW, BANDS)["band"] == "warm" and R.item_mark(run_st(returns=2), NOW, BANDS)["band"] == "hot")
+    ok("rows: tokens band at the rule's edges (just under warm cool, at warm warm, at hot hot)",
+          [R.item_mark(run_st(spent=v), NOW, BANDS)["band"] for v in (2999999, 3000000, 6000000)] == ["cool", "warm", "hot"])
+    ok("rows: time in place bands by the stage's own pair", [R.item_mark(run_st(started_at=NOW - a), NOW, BANDS)["band"] for a in (10799, 10800, 28800)] == ["cool", "warm", "hot"])
+    ok("rows: the worst of the three sets the band, and says which", R.item_mark(run_st(returns=1, spent=6000000), NOW, BANDS)["why"] == ["passes warm", "tokens hot"])
+    u = R.item_mark({"status": "running"}, NOW, BANDS)
+    ok("rows: an unread state is UNMEASURED, not cool-by-default zeros", u["passes"] is None and u["spent"] is None and u["age"] is None
+          and R.mark_words(u) == "passes UNMEASURED · tokens UNMEASURED · age UNMEASURED" and R.mark_words(None) == "passes, tokens UNMEASURED")
+    ok("rows: a row listed without an age (the queue) gets its time in place on the second line", R.mark_words(R.item_mark(run_st(started_at=NOW - 7200), NOW, BANDS), False).startswith(R.ago(7200).replace(" ", "") + " here") and " here" not in R.mark_words(R.item_mark(run_st(), NOW, BANDS)))
+    ok("rows: a check that could not read is written on the row", R.mark_words(R.item_mark(run_st(), NOW, BANDS, unread=["churn UNMEASURED (x)"])).endswith("churn UNMEASURED (x)"))
+    ok("rows: the second line names pass and tokens in human units", R.mark_words(R.item_mark(run_st(returns=3, spent=1500000), NOW, BANDS)).startswith("pass 4 · 1.5M tok"))
+    for kw, word in (({"circling": True}, "CIRCLING"), ({"churn": True}, "CHURN"), ({"ghost": True}, "NO PROCESS")):
+        f = R.item_mark(run_st(), NOW, BANDS, **kw)
+        ok("rows: %s flashes and forces hot on an otherwise cool row" % word, f["flash"] == [word] and f["band"] == "hot" and word in R.mark_words(f))
+    f = R.item_mark(run_st(last_beat=NOW - 3600), NOW, BANDS)
+    ok("rows: a running item silent for stuck_silent_s flashes SILENT; one beat short does not",
+          f["flash"] and f["flash"][0].startswith("SILENT") and not R.item_mark(run_st(last_beat=NOW - 3599), NOW, BANDS)["flash"])
+    ok("rows: a queued item never flashes SILENT (no beat is owed)", not R.item_mark(run_st(status="queued", last_beat=NOW - 99999), NOW, BANDS)["flash"])
+    d = R.item_mark(run_st(status="done", returns=5), NOW, BANDS, churn=True, circling=True, ghost=True)
+    ok("rows: a done item never flashes, keeps its passes band", d["flash"] == [] and d["band"] == "hot" and d["why"] == ["passes hot"])
+    ok("rows: no rule for a value gives it no level (a rules file without item_bands reads cool, never hot)", R.item_mark(run_st(returns=9, spent=9e9), NOW, {})["band"] == "cool")
+    # the flash rule reuses ops_watch's churn, not a second definition
+    CH = {"churn_window_h": 12, "churn_returns": 3, "churn_same_class": 2}
+    ok("rows: in_churn - two fails of one class in the window is churn", OW.in_churn({"returns": 1}, [(NOW - 60, "red"), (NOW - 120, "red")], NOW, CH))
+    ok("rows: in_churn - three returns of mixed classes is churn", OW.in_churn({"returns": 3}, [(NOW - 60, "a"), (NOW - 120, "b"), (NOW - 180, "c")], NOW, CH))
+    ok("rows: in_churn - old fails outside the window are not churn", not OW.in_churn({"returns": 5}, [(NOW - 13 * 3600, "red"), (NOW - 14 * 3600, "red")], NOW, CH))
+    ok("rows: in_churn - one fail, no repeats is not churn", not OW.in_churn({"returns": 1}, [(NOW - 60, "red")], NOW, CH))
+    ok("rows: attempt_failed reads an ended, non-ok row and skips starts and kinds",
+          OW.attempt_failed({"gen": 2, "end": "red", "at": "2026-11-04T10:00:00Z"}, {"done"})[1] == "red" and OW.attempt_failed({"gen": 2, "start": 1}, set()) is None
+          and OW.attempt_failed({"gen": 2, "end": "done"}, {"done"}) is None and OW.attempt_failed({"gen": 2, "end": "x", "kind": "k"}, set()) is None)
+    # SMIL only on flash rows, on the stripe and the metric line
+    calm, hot = row_svg(R.item_mark(run_st(), NOW, BANDS)), row_svg(R.item_mark(run_st(), NOW, BANDS, churn=True))
+    ok("rows: a calm row has no animation, a flash row animates twice (stripe and line)", "<animate" not in calm and hot.count("<animate") == 2 and hot.count(R.FLASH_SMIL) == 2)
+    ok("rows: the row's colour is its band (cool blue, hot red), and an unmarked row is faint", R.LIVE in calm and R.BAD in hot and R.FAINT in row_svg(None))
+    ok("rows: every row opens one balanced group per close", all(x.count("<g") == x.count("</g>") for x in (calm, hot, row_svg(None))))
+    ok("rows: the row is tagged as an item, so page checks keep it apart from instrument notes", 'data-item="SOME_ITEM_NAME_HERE"' in calm)
+    # the phone: one emoji per row, no HTML
+    saved = R.stage_lists
+    R.stage_lists = lambda p: {k: ([("name", "2h ", "ITEM_A"), ("name", "5h ", "ITEM_B")] if k == "running" else [("name", "1d ", "ITEM_C")] if k == "queued" else []) for k in R.BELT}
+    pp = {"items": {"x": 1}, "now": NOW, "marks": {"ITEM_A": R.item_mark(run_st(), NOW, BANDS), "ITEM_B": R.item_mark(run_st(), NOW, BANDS, churn=True), "ITEM_C": R.item_mark(run_st(status="queued", returns=1), NOW, BANDS)}}
+    ph = R.phone_rows(pp)
+    rows = [x for x in ph if x.startswith("- ")]
+    ok("rows: phone - one emoji per row: blue calm, siren cycler, amber bounce", [x.split()[1] for x in rows] == [R.BAND_EMOJI["cool"], R.FLASH_EMOJI, R.BAND_EMOJI["warm"]] or
+          sorted(x.split()[1] for x in rows) == sorted([R.BAND_EMOJI["cool"], R.FLASH_EMOJI, R.BAND_EMOJI["warm"]]))
+    ok("rows: phone - no HTML, the legend leads, a blank line closes the list", not any("<" in x for x in ph) and ph[1].startswith("ITEMS (") and ph[-1] == "")
+    pp["marks"], pp["marks_why"] = None, "no store"
+    ok("rows: phone - unread marks say UNMEASURED with the reason", R.phone_rows(pp)[1] == "ITEMS: passes, tokens and bands UNMEASURED (no store)")
+    R.stage_lists = saved
+    return out
+
+ROW_MUTANTS = [
+    ("a flash no longer forces hot", '"band": "hot" if flash else ("cool", "warm", "hot")[worst]', '"band": ("cool", "warm", "hot")[worst]'),
+    ("a done item flashes", 'if status not in ("done", "retired"):\n        if circling:', 'if True:\n        if circling:'),
+    ("passes count returns, not 1 + returns", "passes = int(rets) + 1 if", "passes = int(rets) if"),
+    ("a flash row does not animate", 's.parts.append("<g>" + FLASH_SMIL)', 's.parts.append("<g>")'),
+    ("the phone shows the band, never the siren", "em = FLASH_EMOJI if m and m[\"flash\"] else", "em = None or"),
+    ("an unread pass count prints as a number", 'w = ["pass %d" % m["passes"] if m["passes"] is not None else "passes UNMEASURED",', 'w = ["pass %d" % (m["passes"] or 0),'),
+    ("SILENT never fires", 'flash.append("SILENT %s"', 'flash.append and None and flash.append("SILENT %s"'),
+]
+for name, held in rows_results():
+    check(name, held)
+row_survivors = []
+try:
+    for name, old, new in ROW_MUTANTS:
+        check("row mutant applies: " + name, old in SRC)
+        exec(compile(SRC.replace(old, new, 1), R.__file__, "exec"), R.__dict__)
+        try:
+            caught = [n for n, held in rows_results() if not held]
+        except Exception as e:
+            caught = [repr(e)]
+        if not caught:
+            row_survivors.append(name)
+finally:
+    exec(compile(SRC, R.__file__, "exec"), R.__dict__)
+    R.stage_lists = R.__dict__["stage_lists"]
+check("every mutant of the item rows goes red (%d mutants)%s" % (len(ROW_MUTANTS), ": survivors " + "; ".join(row_survivors) if row_survivors else ""), not row_survivors)
 
 print("\n%d failed" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)

@@ -128,6 +128,16 @@ FEED_WORD = {"done": "closed", "blind_fail": "a Judge failed it", "game_fail": "
 BG, CARD, EDGE, TEXT, DIM, FAINT = "#14171c", "#1f242c", "#3a4250", "#e8eaee", "#98a1af", "#5d6675"
 GOOD, WARN, BAD, LIVE, BAR = "#4cc38a", "#f0b429", "#ef5350", "#5aa9e6", "#7d8796"
 MONO = "Consolas,'JetBrains Mono',monospace"
+# Row bands (RUNNING_PAGE_BUILD_ROWS_WEAR_THEIR_BOUNCES, owner 2026-11-05: "Cool colors indicate smooth processes, warm ...
+# a bounce or a somewhat long time or large token, hot ... multiple bounce-backs, very large token spends, or long processing
+# times ... flashing should be an "identified cycler" ... or a stuck process"). Thresholds: ops_watch_rules.json
+# relentless.item_bands, one file with the churn rule they reuse (ops_watch.in_churn) and ops_watch's per-item alarm.
+BANDS_FILE = os.path.join(HERE, "ops_watch_rules.json")
+BAND_COLOUR = {"cool": LIVE, "warm": WARN, "hot": BAD}
+BAND_EMOJI = {"cool": "\U0001f535", "warm": "\U0001f7e0", "hot": "\U0001f534"}
+FLASH_EMOJI = "\U0001f6a8"
+FLASH_SMIL = '<animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/>'
+
 SANS = "'Segoe UI',Helvetica,Arial,sans-serif"
 
 
@@ -1259,6 +1269,39 @@ def stage_lists(p):
     return out
 
 
+def row_lines(e, width):
+    """Lines one entry takes: a note its words; a name its words plus the passes-and-tokens line under it."""
+    return len(wrap_name(e[1], width, 2)) if e[0] == "note" else len(wrap_name(e[1] + e[2], width, 2)) + 1
+
+
+def item_row(s, x, yy, e, width, title, marks):
+    """One item row: the name, a band stripe down its left, and its passes and tokens under it in the band's colour.
+    A flashing row's stripe and second line pulse by SVG SMIL (the inline SVG's own animation, which Typora's Chromium
+    runs); its words name the reason in capitals, so a viewer that draws no animation still reads it."""
+    m = (marks or {}).get(e[2])
+    n = len(wrap_name(e[1] + e[2], width, 2))
+    col = BAND_COLOUR[m["band"]] if m else FAINT
+    more = (m["why"] + m["flash"] + m.get("unread", [])) if m else []
+    hover = title(e[2]) + ("; " + ", ".join(more) if more else "")
+    s.parts.append('<g data-item="%s"><title>%s</title>' % (escape(e[2]), escape(str(hover))))   # a name row, not an instrument note
+    flash = bool(m and m["flash"])
+    if flash:
+        s.parts.append("<g>" + FLASH_SMIL)
+    s.rect(x - 7, yy - 10, 3, NAME_LINE * (n + 1) - 2, col, None, 1)
+    if flash:
+        s.reading_close()
+    for j, ln in enumerate(wrap_name(e[1] + e[2], width, 2)):
+        s.text(x + (2 * MONO_CHAR if j else 0), yy, ln, 10.5, TEXT, font=MONO)
+        yy += NAME_LINE
+    if flash:
+        s.parts.append("<g>" + FLASH_SMIL)
+    s.text(x + 2 * MONO_CHAR, yy - 1, clip(mark_words(m, bool(e[1].strip())), int(width * 1.3)), 9, col, "700" if flash else None)
+    if flash:
+        s.reading_close()
+    s.reading_close()
+    return yy + NAME_LINE
+
+
 def banded(lists):
     """The stages whose names are too many for a card; they get a band of their own, in belt order."""
     return [k for k in BELT if sum(1 for e in lists[k] if e[0] == "name") > NAMES_IN_CARD]
@@ -1274,23 +1317,23 @@ def entries_height(entries):
     """Pixels the card needs for its list, the same sums the drawing does."""
     h = 0
     for e in entries:
-        h += NAME_LINE * len(wrap_name(e[1] if e[0] == "note" else e[1] + e[2], CARD_CHARS, 2)) + NAME_GAP
+        h += NAME_LINE * row_lines(e, CARD_CHARS) + NAME_GAP
     return h
 
 
 def band_columns(rows):
     """-> (columns of rows, height). Rows run down the columns, oldest first, the columns as level as whole names allow."""
-    total = sum(len(wrap_name(e[1] + e[2], BAND_CHARS, 2)) for e in rows)
+    total = sum(row_lines(e, BAND_CHARS) for e in rows)
     each, cols, cur, used = -(-total // BAND_COLS), [], [], 0
     for e in rows:
-        n = len(wrap_name(e[1] + e[2], BAND_CHARS, 2))
+        n = row_lines(e, BAND_CHARS)
         if cur and used + n > each and len(cols) < BAND_COLS - 1:
             cols.append(cur)
             cur, used = [], 0
         cur.append(e)
         used += n
     cols.append(cur)
-    tallest = max(sum(len(wrap_name(e[1] + e[2], BAND_CHARS, 2)) for e in c) for c in cols)
+    tallest = max(sum(row_lines(e, BAND_CHARS) for e in c) for c in cols)
     return cols, 24 + tallest * NAME_LINE
 
 
@@ -1308,6 +1351,7 @@ def trend_rows(p):
 def pipeline_svg(p):
     """The instrument panel. Numbers are the primary layer; items secondary; arrows context."""
     now, it, thr, title = p["now"], p["items"], p["throughput"], p["title"]
+    marks = p.get("marks")
     lists = stage_lists(p)
     # the cards grow to the longest list, and every band adds its own height: all the layout below hangs off these two
     ch = max([170] + [112 + entries_height(card_entries(lists, k)) + 6 for k in BELT])
@@ -1416,11 +1460,7 @@ def pipeline_svg(p):
                     s.text(x + 10, yy, ln, 10.5, DIM, font=MONO)
                     yy += NAME_LINE
             else:
-                s.hover_open(title(e[2]))
-                for j, ln in enumerate(wrap_name(e[1] + e[2], CARD_CHARS, 2)):
-                    s.text(x + 10 + (2 * MONO_CHAR if j else 0), yy, ln, 10.5, TEXT, font=MONO)
-                    yy += NAME_LINE
-                s.reading_close()
+                yy = item_row(s, x + 10, yy, e, CARD_CHARS, title, marks)
             yy += NAME_GAP
         s.reading_close()
         if i < len(BELT) - 1:
@@ -1469,11 +1509,7 @@ def pipeline_svg(p):
         for c, col in enumerate(cols):
             cx_, yy = x0 + 10 + c * (W - 2 * x0 - 20) / BAND_COLS, by + 30
             for e in col:
-                s.hover_open(title(e[2]))
-                for j, ln in enumerate(wrap_name(e[1] + e[2], BAND_CHARS, 2)):
-                    s.text(cx_ + (2 * MONO_CHAR if j else 0), yy, ln, 10.5, TEXT, font=MONO)
-                    yy += NAME_LINE
-                s.reading_close()
+                yy = item_row(s, cx_, yy, e, BAND_CHARS, title, marks)
         s.reading_close()
         by += band_h + 8
     # ---- throughput: common zero baseline, direct labels
@@ -1554,8 +1590,13 @@ def pipeline_text(p):
         if name in side:
             ln = "%-44s%s" % (ln, side[name])
         out.append(ln)
-        for e in lists[name]:   # whole names, as on the cards
-            out += fence_wrap(e[1] if e[0] == "note" else e[1] + e[2], "  │   ", "  │     ")
+        for e in lists[name]:   # whole names, as on the cards, each with its band, passes and tokens
+            if e[0] == "note":
+                out += fence_wrap(e[1], "  │   ", "  │     ")
+            else:
+                m = (p.get("marks") or {}).get(e[2])
+                out += fence_wrap(e[1] + e[2], "  │   ", "  │     ")
+                out += fence_wrap("%s: %s" % (("FLASH " + m["band"]) if m and m["flash"] else (m["band"] if m else "band UNMEASURED"), mark_words(m, bool(e[1].strip()))), "  │       ", "  │         ")
         if i < len(BELT) - 1:
             out.append("  │" + ("  a Judge's FAIL returns to queued: %s in 24 h" % thr["blind_fail"] if name == "checking" and thr else ""))
     gi = p.get("game_idle")
@@ -1589,6 +1630,114 @@ def ghost_places(p):
         return None
     alive = {x["id"].split("-")[0] for x in tree["groups"].values() if x["label"] == "worker"}
     return [s["item"] for k in ("running", "checking") for s in it["by_status"][k] if short(s["item"]) not in alive]
+
+
+def level(v, pair):
+    """0 cool, 1 warm, 2 hot: v against [warm at or over, hot at or over]; an unread value or rule is no level."""
+    if v is None or not pair:
+        return 0
+    return 2 if v >= pair[1] else (1 if v >= pair[0] else 0)
+
+
+def item_mark(st, now, bands, age=None, churn=False, circling=False, ghost=False, unread=()):
+    """One row's reading: time in place, passes (1 + returns), weighted tokens, its band and whether it flashes.
+    A value the state does not hold is None (the row prints UNMEASURED) and gives no level. Flash reasons are
+    an identified cycler (circling hit at this gen, or in churn by ops_watch.in_churn) or a stuck process (a running or
+    checking item with no unit process, or no beat for stuck_silent_s); a closed or retired item never flashes."""
+    status = st.get("status")
+    num = lambda v: v if isinstance(v, (int, float)) and not isinstance(v, bool) else None  # noqa: E731
+    rets, spent = num(st.get("returns")), num(st.get("spent"))
+    passes = int(rets) + 1 if rets is not None else None
+    if age is None and status not in ("done", "retired"):
+        t = stage_since(st)
+        age = now - t if t else None
+    lv = {"passes": level(passes, bands.get("passes")), "tokens": level(spent, bands.get("spent")),
+          "time in place": level(age, (bands.get("age_s") or {}).get(status)) if status not in ("done", "retired") else 0}
+    worst = max(lv.values())
+    why = ["%s %s" % (k, ("warm", "hot")[v - 1]) for k, v in lv.items() if v]
+    flash = []
+    if status not in ("done", "retired"):
+        if circling:
+            flash.append("CIRCLING")
+        if churn:
+            flash.append("CHURN")
+        if ghost:
+            flash.append("NO PROCESS")
+        beat = num(st.get("last_beat"))
+        quiet = bands.get("stuck_silent_s")
+        if status in ("running", "checking") and quiet and beat is not None and now - beat >= quiet:
+            flash.append("SILENT %s" % ago(now - beat).replace(" ", ""))
+    return {"status": status, "age": age, "passes": passes, "spent": spent, "band": "hot" if flash else ("cool", "warm", "hot")[worst],
+            "flash": flash, "why": why, "unread": list(unread)}
+
+
+def mark_words(m, age_shown=True):
+    """The row's second line: what was measured, UNMEASURED written out for what was not. A row whose name line
+    carries no age (the queue lists by order) gets its time in place here instead."""
+    if not m:
+        return "passes, tokens UNMEASURED"
+    w = ["pass %d" % m["passes"] if m["passes"] is not None else "passes UNMEASURED",
+         tokens(m["spent"]) + " tok" if m["spent"] is not None else "tokens UNMEASURED"]
+    if m["age"] is None and m["status"] not in ("done", "retired"):
+        w.append("age UNMEASURED")
+    elif not age_shown and m["age"] is not None:
+        w.insert(0, ago(m["age"]).replace(" ", "") + " here")     # first, so a narrow card never clips it
+    return " \u00b7 ".join(w + m["flash"] + m.get("unread", []))     # a check that could not read says so, never reads as calm
+
+
+def row_items(p):
+    """Every item the page names in a row: the belt lists (cards and bands) and the phone list share it."""
+    out = []
+    for k in BELT:
+        out += [e[2] for e in stage_lists(p)[k] if e[0] == "name" and e[2] not in out]
+    return out
+
+
+def collect_marks(env, p):
+    """-> {item: mark} for the rows. Thresholds and the churn rule come from ops_watch_rules.json (BANDS_FILE)."""
+    import ops_watch     # the one churn definition: rl_churn and this page share attempt_failed and in_churn
+    it, now = p["items"], p["now"]
+    if not it:
+        raise Unmeasured("no item states")
+    rl = env.read_json(BANDS_FILE).get("relentless") or {}
+    bands = rl.get("item_bands")
+    if not isinstance(bands, dict):
+        raise Unmeasured("ops_watch_rules.json has no relentless.item_bands")
+    ok_ends = set(rl.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked"))
+    states = {s.get("item"): s for v in it["by_status"].values() for s in v}
+    unread_all = []
+    try:
+        hits = {(h.get("item"), h.get("gen")) for h in (json.loads(x) for x in env.read_text(RELENTLESS_STORE + "/circling.jsonl").splitlines() if x.strip())}
+    except FileNotFoundError:
+        hits = set()
+    except (OSError, ValueError) as e:
+        hits, unread_all = set(), ["circling UNMEASURED (%s)" % str(e)[:60]]
+    ghosts = ghost_places(p)
+    if ghosts is None:
+        unread_all.append("process check UNMEASURED")
+    done_at = {i: at for at, i in (p["throughput"] or {}).get("recent", [])}
+    out = {}
+    for item in row_items(p):
+        st = states.get(item)
+        if not st:
+            continue
+        unread, fails = list(unread_all), []
+        try:
+            for ln in env.read_text("%s/items/%s/attempts.jsonl" % (RELENTLESS_STORE, item)).splitlines():
+                try:
+                    f = ops_watch.attempt_failed(json.loads(ln), ok_ends)
+                except ValueError:
+                    continue
+                if f:
+                    fails.append((f[0] or 0, f[1]))
+        except FileNotFoundError:
+            pass        # never started: no attempts
+        except OSError as e:
+            unread.append("churn UNMEASURED (%s)" % str(e)[:60])
+        age = now - done_at[item] if st.get("status") == "done" and item in done_at else None
+        out[item] = item_mark(st, now, bands, age, ops_watch.in_churn(st, fails, now, rl) if fails else False,
+                              (item, st.get("gen")) in hits, item in (ghosts or ()), unread)
+    return out
 
 
 def tree_lines(p):
@@ -2334,6 +2483,26 @@ def fuel_phone(p):
     return out
 
 
+def phone_rows(p):
+    """The belt's named items for the phone: one list line each, a band emoji first (no HTML there), then stage, time
+    in place, passes, tokens. FLASH_EMOJI marks a cycler or a stuck process, the rows the big page flashes."""
+    if not p["items"]:
+        return []
+    marks, now = p.get("marks"), p["now"]
+    if marks is None:
+        return ["", "ITEMS: passes, tokens and bands UNMEASURED (%s)" % p.get("marks_why")]
+    out = ["", "ITEMS (%s smooth, %s a bounce or long or large, %s worse, %s cycler or stuck)" % (BAND_EMOJI["cool"], BAND_EMOJI["warm"], BAND_EMOJI["hot"], FLASH_EMOJI)]
+    lists = stage_lists(p)
+    for k in BELT:
+        for e in lists[k]:
+            if e[0] != "name":
+                continue
+            m = marks.get(e[2])
+            em = FLASH_EMOJI if m and m["flash"] else (BAND_EMOJI[m["band"]] if m else "?")
+            out.append("- %s %s %s%s: %s" % (em, k, e[1], e[2], mark_words(m, bool(e[1].strip()))))
+    return out + [""]      # a blank line ends the list: the next line would join the last item
+
+
 def phone_copy(p, chips):
     """The same reading in a few plain lines (owner 2026-11-04): no model, no SVG; the Conductor sends it when he asks for status."""
     now, it, thr, f = p["now"], p["items"], p["throughput"], fleet_of(p)
@@ -2361,6 +2530,7 @@ def phone_copy(p, chips):
         out.append("stages UNMEASURED")
     if thr:
         out.append("24 h: closed %d (%s), Judge fails %d" % (thr["closed"], versus(thr["closed"], thr["usual"].get("closed"), False)[0], thr["blind_fail"]))
+    out += phone_rows(p)
     done_days = full_days(p["tokens"], now) if p["tokens"] else []
     if done_days:
         out.append("tokens per item closed (trial): %s" % tokens(done_days[0]["per"]))
@@ -2630,6 +2800,10 @@ def gather(env, state, hist=(), write=True):
     if p["game_idle_why"]:
         p["unmeasured"].append("game idle share (%s)" % p["game_idle_why"])
 
+    p["marks"], p["marks_why"] = guarded(collect_marks, env, p)
+    if p["marks_why"]:
+        p["unmeasured"].append("row passes, tokens and bands (%s)" % p["marks_why"])
+
     # plain words: only for names the page shows
     want = set()
     it = p["items"]
@@ -2678,6 +2852,9 @@ def build(env, state, hist, write=True):
                      "A reading older than 45 minutes, or one that cannot be read, says UNMEASURED."), "",
          panel("Relentless Pipeline", pipeline_svg),
          how_to_read("Items move left to right; a card names its items whole, longest there first (hover a name for its plain words), and a stage too long for its card names them in a band below; queued shows the next few in the tick's order, done the latest few, each with a count of the rest. each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
+                     "Under each name: passes through the pipeline (1 + times sent back) and weighted tokens spent so far; a number shown is measured, an unread one says UNMEASURED. "
+                     "The stripe and that line are coloured by the worst of time in place, passes and tokens: blue is smooth; amber is one bounce, a somewhat long time or a large spend; red is two or more bounces, a very large spend or a very long time "
+                     "(numbers in ops_watch_rules.json item_bands, initial guesses). A row that FLASHES, its reason in capitals, is an identified cycler (CIRCLING, CHURN) or a stuck process (NO PROCESS, SILENT). "
                      "A place is one running Builder or Judge, or one being stopped; 8 is the ceiling for starting a Builder. A Judge may start one place above it, because "
                      "a cap never stops finishing work, and stopping runs still count, so 9 of 8 is normal and brief. The left bars count events, not items, and each says if it is usual for 24 h. "
                      "GAME UNMEASURED is game-phase events only; every proof row, measured or not, is in Live Testing below. Trends each have their own zero line. "

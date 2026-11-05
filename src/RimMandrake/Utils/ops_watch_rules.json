@@ -30,6 +30,15 @@
   "churn_window_h": 12, "churn_returns": 3, "churn_same_class": 2, "tokens_window_h": 24, "churn_max_unmapped_pct": 20,
   "churn_not_fail_ends": ["finish", "done", "unhold", "blocked"],
   "_churn_doc": "ops_watch.rl_churn: an item is in churn when it failed an attempt (attempts.jsonl end not in churn_not_fail_ends; the class is the signature) in the last churn_window_h and has churn_returns returns or one class churn_same_class times; returned tokens are the spend-file runs whose (item, gen) failed, placed by the gen's start row",
+  "item_bands": {
+   "_why": "INITIAL GUESSES (RUNNING_PAGE_BUILD_ROWS_WEAR_THEIR_BOUNCES, owner 2026-11-05): RUNNING_NOW colours each item row cool/warm/hot by its worst value; shared with ops_watch's per-item churn alarm (CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER) so both read one set of numbers. Each pair is [warm at or over, hot at or over]. passes = 1 + state.json returns: 2 is one bounce, 3 is two. spent = state.json weighted tokens: warm at the advisory item_spend_limit (3M; closed items read p90 3.4M on 2026-11-04), hot at its first doubling (6M). age_s = time in the current stage: warm at the stage's normal top on the page (STAGE_OLD), hot at about 3x. A row FLASHES only for an identified cycler (a circling.py hit at the item's current gen, or in churn by the churn_* rule above) or a stuck process (running/checking with no unit process, or no beat for stuck_silent_s: a worker is told to beat every 20 minutes). Retune from what the page shows.",
+   "passes": [2, 3],
+   "spent": [3000000, 6000000],
+   "age_s": {"queued": [172800, 604800], "running": [10800, 28800], "candidate": [3600, 14400], "checking": [3600, 10800],
+             "closing": [86400, 259200], "game": [172800, 604800], "held": [604800, 1814400], "blocked": [604800, 1814400],
+             "stopping": [900, 3600], "retiring": [900, 3600]},
+   "stuck_silent_s": 3600
+  },
   "measured_runs": 40, "measured_window_h": 24, "measured_min_runs": 12,
   "_measured_doc": "relentless.live_measured_pct: PASS+FAIL share of the newest measured_runs live/runs.jsonl rows within measured_window_h; under measured_min_runs rows it is UNMEASURED (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)"
 ,

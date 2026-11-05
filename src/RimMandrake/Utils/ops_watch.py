@@ -2010,6 +2010,29 @@ def churn_blind(why, tokens_only=False):
     return pts
 
 
+def attempt_failed(r, ok_ends):
+    """One attempts.jsonl row -> (epoch or None, ending class) when it is a FAILED ATTEMPT (rl_churn's doc), else None."""
+    if not isinstance(r, dict) or not isinstance(r.get("gen"), int) or r.get("start"):
+        return None
+    if r.get("end") and r["end"] not in ok_ends and "kind" not in r:
+        return epoch(r.get("at")), str(r["end"])
+    return None
+
+
+def in_churn(st, fails, now, cfg):
+    """rl_churn's per-item rule, the one churn definition (RUNNING_NOW's row colours read it too): fails is
+    [(epoch, class)] of the item's failed attempts; in churn when one is inside churn_window_h and state.json returns >=
+    churn_returns or one class failed it churn_same_class times."""
+    lo = now - float(cfg.get("churn_window_h", 12)) * HOUR
+    if not any(lo <= (t or 0) <= now + 300 for t, _ in fails):
+        return False
+    same = {}
+    for _, c in fails:
+        same[c] = same.get(c, 0) + 1
+    rets = st.get("returns") if is_num(st.get("returns")) else 0
+    return rets >= int(cfg.get("churn_returns", 3)) or max(same.values()) >= int(cfg.get("churn_same_class", 2))
+
+
 def rl_churn(store, now, cfg):
     """-> {churn point key: point}. OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: on 2026-11-04 47 items had been returned 3+
     times (one at gen 20) on broken tests and unreachable evidence read as broken work, ~157M weighted tokens, and no reading
@@ -2025,9 +2048,8 @@ def rl_churn(store, now, cfg):
       and lane (work|check), largest first, each "<end>/<lane> <pct of total>%": the 2026-11-04 alarm was diagnosed by
       hand from the store; this reads the shared cause (account_lost/work, unmeasured/check ...) off the point itself."""
     win_h, toks_h = float(cfg.get("churn_window_h", 12)), float(cfg.get("tokens_window_h", 24))
-    n_ret, n_same = int(cfg.get("churn_returns", 3)), int(cfg.get("churn_same_class", 2))
     ok_ends = set(cfg.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked"))
-    lo, tlo = now - win_h * HOUR, now - toks_h * HOUR
+    tlo = now - toks_h * HOUR
     try:
         names = sorted(os.listdir(store / "items"))
     except OSError as e:
@@ -2048,24 +2070,18 @@ def rl_churn(store, now, cfg):
                         continue
                     if not isinstance(r, dict) or not isinstance(r.get("gen"), int):
                         continue
-                    t = epoch(r.get("at"))
                     if r.get("start"):
-                        started[(n, r["gen"])] = t
-                    elif r.get("end") and r["end"] not in ok_ends and "kind" not in r:
-                        failed[(n, r["gen"])] = str(r["end"])     # the gen's last failed ending names its cause
-                        fails.append((t or 0, str(r["end"])))
+                        started[(n, r["gen"])] = epoch(r.get("at"))
+                    elif attempt_failed(r, ok_ends):
+                        t, end = attempt_failed(r, ok_ends)
+                        failed[(n, r["gen"])] = end     # the gen's last failed ending names its cause
+                        fails.append((t or 0, end))
         except OSError:
             pass        # an item never started has no attempts file
         if not isinstance(st, dict):
             torn += 1
             continue
-        if not any(lo <= t <= now + 300 for t, _ in fails):
-            continue
-        same = {}
-        for _, c in fails:
-            same[c] = same.get(c, 0) + 1
-        rets = st.get("returns") if is_num(st.get("returns")) else 0
-        if rets >= n_ret or max(same.values()) >= n_same:
+        if in_churn(st, fails, now, cfg):
             churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))
             last = fails[-1][1]
             classes[last] = classes.get(last, 0) + 1
