@@ -675,3 +675,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A5 (L2), read-only proof","ts":"2026-11-05T14:32:31Z","tsn":1793889151991306197}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:32:47Z","tsn":1793889167632748961}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SOORRAK_INSTANT_JOB_LOOP_1 A1 (L2), read-only proof","ts":"2026-11-05T14:36:41Z","tsn":1793889401030016111}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:40:55Z","tsn":1793889655094512822}
