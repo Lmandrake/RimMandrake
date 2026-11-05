@@ -619,3 +619,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-05T12:12:41Z","tsn":1793880761001557786}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:17:56Z","tsn":1793881076493626977}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES A1 (L2), read-only proof","ts":"2026-11-05T12:30:57Z","tsn":1793881857073880497}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:33:22Z","tsn":1793882002533490835}
