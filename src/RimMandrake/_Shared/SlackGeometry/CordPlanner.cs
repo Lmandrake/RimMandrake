@@ -32,60 +32,172 @@ namespace RimMandrake.Shared.Slack
 
     internal static class CordPlanner
     {
+        // CORDPLANNER_ASTAR_SHRINK_TO_ZERO_ALLOC (hose/wire advisory 2026-10-28 §4 #4): both searches run on one per-thread scratch
+        // of flat arrays indexed by cell (z * Width + x), stamped per call so nothing is cleared, and an indexed binary heap
+        // ordered (f, g, cell) -- the same total order the SortedSet had, so every pop and every route is identical (GSS must
+        // be identical on load). Decrease-key sifts the cell's one heap entry in place, as the SortedSet's remove + add did.
+        // Only an endpoint may lie off the map: it takes one of two spare slots past the grid.
+        private sealed class Scratch
+        {
+            public int[] Stamp = new int[0], Came = new int[0], Pos = new int[0], Heap = new int[0];
+            public double[] G = new double[0], F = new double[0];
+            public int Cur, Count, W, N;
+            public Cell Start, Goal;
+            public bool Busy;
+
+            public void Begin(CordWorld w, Cell start, Cell goal)
+            {
+                W = w.Width; N = w.Width * w.Height; Start = start; Goal = goal;
+                int need = N + 2;
+                if (Stamp.Length < need)
+                {
+                    Stamp = new int[need]; Came = new int[need]; Pos = new int[need]; Heap = new int[need];
+                    G = new double[need]; F = new double[need]; Cur = 0;
+                }
+                if (++Cur == int.MaxValue) { Array.Clear(Stamp, 0, Stamp.Length); Cur = 1; }
+                Count = 0;
+            }
+
+            public int Index(Cell c, CordWorld w) =>
+                w.InBounds(c) ? c.Z * W + c.X : c == Start ? N : c == Goal ? N + 1 : -1;
+
+            public Cell CellOf(int i) => i < N ? new Cell(i % W, i / W) : i == N ? Start : Goal;
+
+            public bool Seen(int i) => Stamp[i] == Cur;
+
+            public void Visit(int i, double g, double f, int came)
+            {
+                if (Stamp[i] != Cur) { Stamp[i] = Cur; Pos[i] = -1; }
+                G[i] = g; F[i] = f; Came[i] = came;
+                if (Pos[i] < 0) { Pos[i] = Count; Heap[Count++] = i; }
+                Up(Pos[i]);
+            }
+
+            private bool Less(int a, int b)
+            {
+                int k = F[a].CompareTo(F[b]);
+                if (k != 0) return k < 0;
+                k = G[a].CompareTo(G[b]);
+                return k != 0 ? k < 0 : CellOf(a).CompareTo(CellOf(b)) < 0;
+            }
+
+            private void Up(int p)
+            {
+                int i = Heap[p];
+                while (p > 0)
+                {
+                    int parent = (p - 1) >> 1, j = Heap[parent];
+                    if (!Less(i, j)) break;
+                    Heap[p] = j; Pos[j] = p; p = parent;
+                }
+                Heap[p] = i; Pos[i] = p;
+            }
+
+            public int Pop()
+            {
+                int top = Heap[0];
+                Pos[top] = -1;
+                if (--Count > 0)
+                {
+                    int i = Heap[Count], p = 0;
+                    while (true)
+                    {
+                        int l = 2 * p + 1;
+                        if (l >= Count) break;
+                        int r = l + 1, m = r < Count && Less(Heap[r], Heap[l]) ? r : l;
+                        if (!Less(Heap[m], i)) break;
+                        Heap[p] = Heap[m]; Pos[Heap[p]] = p; p = m;
+                    }
+                    Heap[p] = i; Pos[i] = p;
+                }
+                return top;
+            }
+        }
+
+        [ThreadStatic] private static Scratch scratch;
+
+        private static double H(Cell c, Cell goal)
+        {
+            int dx = Math.Abs(c.X - goal.X), dz = Math.Abs(c.Z - goal.Z);
+            return Math.Max(dx, dz) + 0.414 * Math.Min(dx, dz);
+        }
+
+        /// <summary>The one search behind <see cref="AStar"/> and <see cref="AStarDive"/>. into is cleared and receives the
+        /// route start..goal; false = no route within maxExpand. Allocation-free once this thread's scratch fits the map and
+        /// into has the capacity (a re-entrant call, from a callback, takes a fresh scratch).</summary>
+        private static bool Search(CordWorld w, Cell start, Cell goal, bool dive, Func<Cell, bool> exempt, int maxExpand, List<Cell> into)
+        {
+            into.Clear();
+            if (start == goal) { into.Add(start); return true; }
+            Scratch s = scratch ?? (scratch = new Scratch());
+            if (s.Busy) s = new Scratch();
+            s.Busy = true;
+            try
+            {
+                s.Begin(w, start, goal);
+                int si = s.Index(start, w);
+                s.Visit(si, 0, H(start, goal), -1);
+                int expanded = 0;
+                while (s.Count > 0)
+                {
+                    int ci = s.Pop();
+                    Cell c = s.CellOf(ci);
+                    if (c == goal)
+                    {
+                        for (int i = ci; i >= 0; i = s.Came[i]) into.Add(s.CellOf(i));
+                        // by hand: on net472/Mono List<T>.Reverse() goes through the non-generic Array.Reverse, which boxes
+                        // every element of a non-primitive struct
+                        for (int lo = 0, hi = into.Count - 1; lo < hi; lo++, hi--) { Cell tmp = into[lo]; into[lo] = into[hi]; into[hi] = tmp; }
+                        return true;
+                    }
+                    if (++expanded > maxExpand) return false;
+                    double cg = s.G[ci];
+                    foreach (Cell d in Cell.Dirs8)
+                    {
+                        Cell q = c + d;
+                        bool diag = d.X != 0 && d.Z != 0;
+                        double step;
+                        if (!dive)
+                        {
+                            if (!Walk(w, q, start, goal)) continue;
+                            if (diag && !(Walk(w, new Cell(c.X + d.X, c.Z), start, goal) && Walk(w, new Cell(c.X, c.Z + d.Z), start, goal))) continue;
+                            if (!w.StepAllowed(c, q)) continue;
+                            step = cg + (diag ? 1.414 : 1.0) + w.ExtraCost(q);
+                        }
+                        else
+                        {
+                            if (!w.InBounds(q)) continue;
+                            if (diag && !(Open(w, c, start, goal, exempt) && Open(w, q, start, goal, exempt)
+                                          && Open(w, new Cell(c.X + d.X, c.Z), start, goal, exempt)
+                                          && Open(w, new Cell(c.X, c.Z + d.Z), start, goal, exempt))) continue;
+                            if (!w.StepAllowed(c, q)) continue;
+                            step = cg + (diag ? 1.414 : 1.0) + (Open(w, q, start, goal, exempt) ? w.ExtraCost(q) : DiveCost);
+                        }
+                        int qi = s.Index(q, w);
+                        if (!s.Seen(qi) || step < s.G[qi] - 1e-12) s.Visit(qi, step, step + H(q, goal), ci);
+                    }
+                }
+                return false;
+            }
+            finally { s.Busy = false; }
+        }
+
+        private static bool Walk(CordWorld w, Cell c, Cell start, Cell goal) => c == start || c == goal || w.IsWalkable(c);
+
+        private static bool Open(CordWorld w, Cell c, Cell start, Cell goal, Func<Cell, bool> exempt) =>
+            c == start || c == goal || w.IsWalkable(c) || (exempt != null && exempt(c));
+
         /// <summary>8-connected A* over walkable cells; no corner cutting past an unwalkable cell.
         /// Start and goal are always allowed (an endpoint may sit in a blocked cell's face).</summary>
         public static List<Cell> AStar(CordWorld w, Cell start, Cell goal, int maxExpand = 40000)
         {
-            if (start == goal) return new List<Cell> { start };
-            bool Ok(Cell c) => c == start || c == goal || w.IsWalkable(c);
-            double H(Cell c)
-            {
-                int dx = Math.Abs(c.X - goal.X), dz = Math.Abs(c.Z - goal.Z);
-                return Math.Max(dx, dz) + 0.414 * Math.Min(dx, dz);
-            }
-            var g = new Dictionary<Cell, double> { [start] = 0 };
-            var came = new Dictionary<Cell, Cell>();
-            var open = new SortedSet<(double f, double g, Cell c)>(Comparer<(double f, double g, Cell c)>.Create((a, b) =>
-            {
-                int k = a.f.CompareTo(b.f);
-                if (k != 0) return k;
-                k = a.g.CompareTo(b.g);
-                return k != 0 ? k : a.c.CompareTo(b.c);
-            }));
-            open.Add((H(start), 0, start));
-            int expanded = 0;
-            while (open.Count > 0)
-            {
-                var top = open.Min;
-                open.Remove(top);
-                Cell c = top.c;
-                if (c == goal)
-                {
-                    var path = new List<Cell> { c };
-                    while (came.TryGetValue(c, out Cell p)) { c = p; path.Add(c); }
-                    path.Reverse();
-                    return path;
-                }
-                if (top.g > g[c] + 1e-12) continue;
-                if (++expanded > maxExpand) return null;
-                foreach (Cell d in Cell.Dirs8)
-                {
-                    Cell q = c + d;
-                    if (!Ok(q)) continue;
-                    if (d.X != 0 && d.Z != 0 && !(Ok(new Cell(c.X + d.X, c.Z)) && Ok(new Cell(c.X, c.Z + d.Z)))) continue;
-                    if (!w.StepAllowed(c, q)) continue;   // phase 6: bands (no bands = always allowed)
-                    double ng = top.g + (d.X != 0 && d.Z != 0 ? 1.414 : 1.0) + w.ExtraCost(q);
-                    if (!g.TryGetValue(q, out double old) || ng < old - 1e-12)
-                    {
-                        if (g.TryGetValue(q, out double o2)) open.Remove((o2 + H(q), o2, q));
-                        g[q] = ng;
-                        came[q] = c;
-                        open.Add((ng + H(q), ng, q));
-                    }
-                }
-            }
-            return null;
+            var path = new List<Cell>();
+            return Search(w, start, goal, false, null, maxExpand, path) ? path : null;
         }
+
+        /// <summary><see cref="AStar"/> into a caller's list (cleared first): allocation-free once warm. False = no route.</summary>
+        public static bool AStarInto(CordWorld w, Cell start, Cell goal, List<Cell> into, int maxExpand = 40000) =>
+            Search(w, start, goal, false, null, maxExpand, into);
 
         /// <summary>Cost of one barrier cell in a dive route: a detour of up to this many cells over open floor is taken
         /// first, so a cord dives only where it must and through the thinnest barrier near its line.</summary>
@@ -96,57 +208,13 @@ namespace RimMandrake.Shared.Slack
         /// dive enters and leaves square through one face. exempt: the two ends' own footprints (never a dive).</summary>
         public static List<Cell> AStarDive(CordWorld w, Cell start, Cell goal, Func<Cell, bool> exempt, int maxExpand = 60000)
         {
-            if (start == goal) return new List<Cell> { start };
-            bool Open(Cell c) => c == start || c == goal || w.IsWalkable(c) || (exempt != null && exempt(c));
-            double H(Cell c)
-            {
-                int dx = Math.Abs(c.X - goal.X), dz = Math.Abs(c.Z - goal.Z);
-                return Math.Max(dx, dz) + 0.414 * Math.Min(dx, dz);
-            }
-            var g = new Dictionary<Cell, double> { [start] = 0 };
-            var came = new Dictionary<Cell, Cell>();
-            var open = new SortedSet<(double f, double g, Cell c)>(Comparer<(double f, double g, Cell c)>.Create((a, b) =>
-            {
-                int k = a.f.CompareTo(b.f);
-                if (k != 0) return k;
-                k = a.g.CompareTo(b.g);
-                return k != 0 ? k : a.c.CompareTo(b.c);
-            }));
-            open.Add((H(start), 0, start));
-            int expanded = 0;
-            while (open.Count > 0)
-            {
-                var top = open.Min;
-                open.Remove(top);
-                Cell c = top.c;
-                if (c == goal)
-                {
-                    var path = new List<Cell> { c };
-                    while (came.TryGetValue(c, out Cell p)) { c = p; path.Add(c); }
-                    path.Reverse();
-                    return path;
-                }
-                if (top.g > g[c] + 1e-12) continue;
-                if (++expanded > maxExpand) return null;
-                foreach (Cell d in Cell.Dirs8)
-                {
-                    Cell q = c + d;
-                    if (!w.InBounds(q)) continue;
-                    bool diag = d.X != 0 && d.Z != 0;
-                    if (diag && !(Open(c) && Open(q) && Open(new Cell(c.X + d.X, c.Z)) && Open(new Cell(c.X, c.Z + d.Z)))) continue;
-                    if (!w.StepAllowed(c, q)) continue;
-                    double ng = top.g + (diag ? 1.414 : 1.0) + (Open(q) ? w.ExtraCost(q) : DiveCost);
-                    if (!g.TryGetValue(q, out double old) || ng < old - 1e-12)
-                    {
-                        if (g.TryGetValue(q, out double o2)) open.Remove((o2 + H(q), o2, q));
-                        g[q] = ng;
-                        came[q] = c;
-                        open.Add((ng + H(q), ng, q));
-                    }
-                }
-            }
-            return null;
+            var path = new List<Cell>();
+            return Search(w, start, goal, true, exempt, maxExpand, path) ? path : null;
         }
+
+        /// <summary><see cref="AStarDive"/> into a caller's list (cleared first): allocation-free once warm. False = no route.</summary>
+        public static bool AStarDiveInto(CordWorld w, Cell start, Cell goal, Func<Cell, bool> exempt, List<Cell> into, int maxExpand = 60000) =>
+            Search(w, start, goal, true, exempt, maxExpand, into);
 
         /// <summary>The route the planner takes between two cells: the walkable A*, else (dive on) the dive A*. Null = unroutable.</summary>
         public static List<Cell> FindPath(CordWorld w, Cell start, Cell goal, bool dive, Func<Cell, bool> exempt)

@@ -43,6 +43,7 @@
     <Compile Include="PhantomSparkChecks.cs" />
     <Compile Include="LoopLassoChecks.cs" />
     <Compile Include="EndHeapBudgetChecks.cs" />
+    <Compile Include="AStarHeapChecks.cs" />
     <Compile Include="DoorLoopChecks.cs" />
     <Compile Include="CordSlideUnderChecks.cs" />
     <Compile Include="..\Core\WallMount.cs" />

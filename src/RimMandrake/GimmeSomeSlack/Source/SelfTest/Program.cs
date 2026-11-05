@@ -101,6 +101,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             RebuildTailChecks.Run();       // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS (live round 7): RebuildTailChecks.cs
             SnapshotPoolChecks.Run();      // GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10 (live round 9): SnapshotPoolChecks.cs
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
+            AStarHeapChecks.Run();         // CORDPLANNER_ASTAR_SHRINK_TO_ZERO_ALLOC: stamped arrays + indexed heap, identical routes: AStarHeapChecks.cs
             GptPreReleaseChecks.Run();     // GSS pre-release GPT consult 2026-10-15: GptPreReleaseChecks.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
