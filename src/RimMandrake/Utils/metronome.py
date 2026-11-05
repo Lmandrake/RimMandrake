@@ -121,6 +121,33 @@ class Lock:
 
 # ---------------------------------------------------------------- table
 
+FAMILY_SOURCES = {"ops_watch.FAMILIES": ("ops_watch.py", "FAMILIES")}
+
+
+def resolve_families(ref, here=None):
+    """A phase's `families` named by reference ("ops_watch.FAMILIES") -> that tuple as a list, read from the module's
+    source (no import). A hand-copied list drifted once: db682f0890 added `wrapup` to ops_watch and not here, and the
+    nightly went red (NIGHTLY_COP_FIX_RED_APGIHI_JAKI); a reference cannot drift. Raises ValueError naming the gap."""
+    import ast
+    if ref not in FAMILY_SOURCES:
+        raise ValueError("families reference %r unknown (known: %s)" % (ref, ", ".join(sorted(FAMILY_SOURCES))))
+    fname, var = FAMILY_SOURCES[ref]
+    try:
+        tree = ast.parse((Path(here or HERE) / fname).read_text(encoding="utf-8"))
+    except (OSError, SyntaxError) as e:
+        raise ValueError("families reference %r: cannot read %s (%s)" % (ref, fname, e))
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", None) == var:
+            try:
+                fams = list(ast.literal_eval(node.value))
+            except ValueError:
+                break
+            if fams and all(isinstance(f, str) for f in fams):
+                return fams
+            break
+    raise ValueError("families reference %r: %s holds no literal list of names %s" % (ref, fname, var))
+
+
 def load_table(path=None):
     """The phase table, validated; raises ValueError naming what is wrong."""
     t = read_json(path or TABLE)
@@ -132,6 +159,9 @@ def load_table(path=None):
     ph = t.get("phases")
     if not isinstance(ph, dict) or set(ph) != set(ORDER):
         raise ValueError("phases must be exactly %s" % ", ".join(ORDER))
+    for name in ORDER:
+        if isinstance(ph[name], dict) and isinstance(ph[name].get("families"), str):
+            ph[name]["families"] = resolve_families(ph[name]["families"])
     for name in ORDER:
         p = ph[name]
         every, off = p.get("every"), p.get("offset", 0)
