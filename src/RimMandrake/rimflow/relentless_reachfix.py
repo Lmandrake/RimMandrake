@@ -20,6 +20,11 @@ D:\\ClaudeWork\\rimmandrake\\conductor\\churn_diagnosis_2026-11-05.md). Now the 
                and only then, a ticket is filed (the class's `ticket`), and owner and waiters block on it; a closed ticket
                re-probes, and only a pass releases.
 
+A repair may also carry box GRANTS (relentless_wall.GRANTS, a reach_classes row's `grants`, or a Judge's --propose by
+name): git_history makes the Marker's next box with a read-only git history at the candidate, for proofs that run git
+inside the box (CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS gen 3: adapters alone left six Judges blind). A stored proposal
+gains the grants its blind text earns when it re-probes (refreshed()).
+
 A repair only ADDS read access: a path under reach_never, never_through or never_through_rx is refused before any probe,
 an adapter must already be a supervisor offbox adapter (no Judge-written argv ever runs), and nothing here touches the
 proof, the verdict logic or the product sha.
@@ -56,6 +61,17 @@ def classify(r, texts):
             "ticket": r.get("reach_other_ticket", "CHECKER_REACH_FIX_OTHER_STILL_DARK")}
 
 
+def grants_for(r, texts):
+    """-> the box grants (relentless_wall.GRANTS) of EVERY reach_classes row whose match finds the texts: a grant changes
+    how the box is made, so a /proc text that also says git gets the git history its in-box proof runs."""
+    blob = "\n".join(t for t in texts if t)
+    out = []
+    for c in classes(r):
+        if c.get("match") and re.search(c["match"], blob, re.I):
+            out += [g for g in c.get("grants") or [] if g in relentless_wall.GRANTS and g not in out]
+    return out
+
+
 def _paths_of(texts):
     out = []
     for t in texts:
@@ -88,20 +104,50 @@ def propose(r, cls, proposals, unreached, what, store_root=None):
     known = relentless_wall.adapters(r)
     said = [str(x).strip() for x in proposals or [] if str(x).strip()][:PROPOSE_MAX]
     ads = [x for x in said if x in known]
-    paths = _paths_of([x for x in said if x not in known])
+    grants = [x for x in said if x in relentless_wall.GRANTS and x not in known]
+    paths = _paths_of([x for x in said if x not in known and x not in grants])
     by = "judge" if said else "seed"
     if not said:
         ads = [x for x in cls.get("adapters") or [] if x in known]
         paths = _paths_of(list(unreached or []) + [what or ""]) if cls.get("paths") else []
+    # the classes' grants ride along with what the Judge said: it names what it lacks, not how the box is made
+    for g in list(cls.get("grants") or []) + grants_for(r, list(unreached or []) + [what or ""]):
+        if g in relentless_wall.GRANTS and g not in grants:
+            grants.append(g)
     bad = {}
     for p in list(paths):
         why = refused(p, r, store_root)
         if why:
             bad[p] = why
             paths.remove(p)
-    bad.update({x: "not a supervisor offbox adapter" for x in said if x not in known and not _paths_of([x])})
+    bad.update({x: "not a supervisor offbox adapter" for x in said if x not in known and x not in grants
+                and not _paths_of([x])})
     return {"adapters": ads[:relentless_wall.OFFBOX_MAX], "paths": paths[:relentless_wall.THROUGH_MAX], "refused": bad,
-            "by": by}
+            "by": by, "grants": grants}
+
+
+def grants(st):
+    """The box grants a passed repair makes the Marker's next box with (relentless_wall.make_box)."""
+    rp = st.get("reach") or {}
+    if rp.get("status") != "applied":
+        return []
+    return [g for g in (rp.get("proposal") or {}).get("grants") or [] if g in relentless_wall.GRANTS]
+
+
+def refreshed(r, st):
+    """-> the item's stored proposal with the grants its blind text earns under today's rules: a proposal stored before a
+    grant existed (the six items blind on git after gen 1's adapters) gains it when its ticket closes and it re-probes."""
+    rp = st.get("reach") or {}
+    prop = dict(rp.get("proposal") or {})
+    texts = [rp.get("still_blind"), (st.get("blind") or {}).get("what")]
+    row = [c for c in classes(r) if c["class"] == rp.get("class")]
+    add = list((row[0].get("grants") or []) if row else []) + grants_for(r, texts)
+    have = list(prop.get("grants") or [])
+    for g in add:
+        if g in relentless_wall.GRANTS and g not in have:
+            have.append(g)
+    prop["grants"] = have
+    return prop
 
 
 def reseed(r, name, prop):
@@ -201,8 +247,8 @@ def _apply(st, prop, name, now, how):
     if k is not None:
         have = relentless_wall.offbox_cmds(k)
         k["offbox"] = (have + [x for x in prop.get("adapters") or [] if x not in have])[:relentless_wall.OFFBOX_MAX]
-        k["reach_ok"] = ("reach repair %s (%s): adapters %s, read paths %s" % (
-            name, how, prop.get("adapters") or "-", prop.get("paths") or "-"))[:400]
+        k["reach_ok"] = ("reach repair %s (%s): adapters %s, read paths %s, box grants %s" % (
+            name, how, prop.get("adapters") or "-", prop.get("paths") or "-", prop.get("grants") or "-"))[:400]
         if not k["offbox"]:
             k.pop("offbox")
     st["reach"] = dict(st.get("reach") or {}, proposal=prop, status="applied", applied_at=now)
@@ -228,7 +274,7 @@ def sweep(store, fx, r, now, acts, iso):
             save(store, book)
             continue
         rp = st.get("reach") or {}
-        prop = rp.get("proposal") or {}
+        prop = refreshed(r, st)
         if status == "ticket":
             led = fx.item_state(ent["ticket"]) or {}
             event = "%s:%s:%s" % (led.get("state"), led.get("closed_sha"), led.get("event"))
@@ -240,7 +286,7 @@ def sweep(store, fx, r, now, acts, iso):
             file_ticket(store, fx, r, book, name, owner, ent.get("why"), now, acts, iso)
             continue
         why = None
-        if not prop.get("adapters") and not prop.get("paths"):
+        if not prop.get("adapters") and not prop.get("paths") and not prop.get("grants"):
             # nothing to probe: a closed ticket is the repair, and the one re-check is its probe (blind again -> ticket)
             good = status == "ticket"
             why = ("%s closed; nothing to probe from here, so the one re-check is the probe" % ent.get("ticket") if good
@@ -248,7 +294,8 @@ def sweep(store, fx, r, now, acts, iso):
                        " (refused: %s)" % prop.get("refused") if prop.get("refused") else ""))
         else:
             good, why = fx.reach_probe(r, prop.get("paths") or [], prop.get("adapters") or [],
-                                       {"sha": rp.get("sha") or "", "repo": fx.books}, store.root)
+                                       {"sha": rp.get("sha") or "", "repo": fx.books}, store.root,
+                                       grants=prop.get("grants") or [])
         if good:
             with store.lock():
                 cur = store.load(owner)

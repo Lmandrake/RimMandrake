@@ -162,6 +162,8 @@ def props(prof, box, extra=(), through_paths=()):
         out += ["-p", "ReadOnlyPaths=" + unit_path(p)]
     for p in through_paths:
         out += ["-p", "BindReadOnlyPaths=-" + p]
+    for src, dst in git_reads(box):     # a git-granted box (grant_git): the shared object stores at box paths, read only;
+        out += ["-p", "BindReadOnlyPaths=-%s:%s" % (src, dst)]      # '-': a store gone since is git's error, not a launch's
     for p in prof.get("write_through", ()):     # MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: the Windows build stage, bound
         out += ["-p", "BindPaths=-" + unit_path(p)]     # as the host's drvfs so dotnet.exe is handed D:\, not a UNC path
     return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME),
@@ -274,8 +276,9 @@ def excludes(prof):
     return [":(exclude)" + p for p in list(prof["tree_exclude"]) + list(prof.get("tree_from_parent", ()))]
 
 
-def make_box(prof, source, sha, nonce):
-    """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff against sha's parent, the verdict script."""
+def make_box(prof, source, sha, nonce, grants=()):
+    """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff against sha's parent, the verdict script.
+    `grants` (a passed reach repair's, relentless_reachfix.grants): GIT_GRANT adds a read-only git history at sha (grant_git)."""
     if any(c.isspace() for c in str(prof["box_root"]) + nonce):
         raise RuntimeError("box root with whitespace: systemd splits BindPaths on it")
     box = Path(os.path.abspath(Path(prof["box_root"], nonce)))      # git runs in the source: a relative path would move
@@ -310,7 +313,116 @@ def make_box(prof, source, sha, nonce):
     (box / "nonce").write_text(nonce, encoding="ascii")
     (box / "verdict").write_text(VERDICT_SCRIPT, encoding="utf-8")
     os.chmod(box / "verdict", 0o755)
+    if GIT_GRANT in (grants or ()):
+        try:
+            grant_git(box, source, sha)
+        except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
+            # a grant that cannot be made leaves the plain box (its prompt says no git history), never a crashed tick
+            shutil.rmtree(tree / ".git", ignore_errors=True)
+            (box / GIT_NOTE).unlink(missing_ok=True)
+            (box / "git_grant_failed").write_text(str(e)[-400:], encoding="utf-8")
     return str(box)
+
+
+# CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS gen 3: the git/gh/proc reach repairs gave adapters (a reading outside the box) and
+# the Judges stayed blind, because their IN-BOX proofs run git themselves: git rev-parse HEAD (testq_steward), git show
+# <rev>:path (scratch_reap's committed-saves guard), the objects of a fixed.sha (jam_classes), code commits (close_gate).
+# A passed git reach repair grants the box a history: tree/.git with HEAD detached at the candidate and no ref at all. Its
+# objects: the clean clone's own (a --shared clone holds tens of MB) COPIED in, and each object store it borrows from
+# (~/rm/store.git/objects) bound READ ONLY at a box path the alternates file names. The deny list is untouched: nothing
+# but those object stores becomes readable (a carve down to them opened every folder on the way; GPT-free opus review).
+# What it opens that the bare export does not: commit messages, and through `git show` the tree_exclude folders - the
+# prompt says those are workers' words. The wall stops accident, not a hostile Marker (module doc); refs to later commits
+# (origin/main, the supervisor's verdict commits) are never written, so --all walks the candidate's ancestry only.
+GIT_GRANT = "git_history"
+GRANTS = (GIT_GRANT,)
+GIT_NOTE = "gitobj.json"
+GIT_COPY_MAX = 2 << 30      # a borrower's own objects past this are no --shared check clone: no grant, the plain box
+
+
+def _object_chain(source):
+    """-> [(real path, borrows)] for source's object folder and every alternate it borrows from, transitively."""
+    top = subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"], cwd=source,
+                         capture_output=True, text=True, timeout=60, check=True).stdout.strip()
+    todo, out, seen = [os.path.join(top, "objects")], [], set()
+    while todo:
+        d = os.path.realpath(todo.pop(0))
+        if d in seen or not os.path.isdir(d):
+            continue
+        seen.add(d)
+        alts = []
+        try:
+            with open(os.path.join(d, "info", "alternates"), encoding="utf-8") as f:
+                alts = [ln.strip() for ln in f.read().splitlines() if ln.strip() and not ln.strip().startswith("#")]
+        except OSError:
+            pass
+        out.append((d, bool(alts)))
+        todo += [a if os.path.isabs(a) else os.path.join(d, a) for a in alts]
+    return out
+
+
+def _copy_objects(src, dst):
+    """A borrower's own objects (packs and loose), never its info/: its alternates name paths the box hides."""
+    total = 0
+    for dp, dn, fn in os.walk(src):
+        rel = os.path.relpath(dp, src)
+        if rel == "info" or rel.startswith("info" + os.sep):
+            dn[:] = []
+            continue
+        for n in fn:
+            total += os.path.getsize(os.path.join(dp, n))
+    if total > GIT_COPY_MAX:
+        raise RuntimeError("git grant: %s holds %d bytes of its own objects (cap %d)" % (src, total, GIT_COPY_MAX))
+    shutil.copytree(src, dst, ignore=lambda d, names: ["info"] if os.path.realpath(d) == os.path.realpath(src) else [],
+                    dirs_exist_ok=True)
+
+
+def grant_git(box, source, sha):
+    """tree/.git at sha: HEAD detached, no refs, the index read from sha, the shared stores bound read only (git_reads)."""
+    box = Path(box)
+    tree = box / "tree"
+    fmt = subprocess.run(["git", "rev-parse", "--show-object-format"], cwd=source, capture_output=True, text=True,
+                         timeout=60, check=True).stdout.strip() or "sha1"
+    subprocess.run(["git", "init", "-q", "--template=", "--object-format=" + fmt, str(tree)], capture_output=True,
+                   timeout=60, check=True)
+    gd = tree / ".git"
+    binds, host = [], []
+    for d, borrows in _object_chain(source):
+        if borrows:
+            _copy_objects(d, str(gd / "objects"))
+            continue
+        if not _SAFE.match(d):
+            raise RuntimeError("git grant: an object store systemd cannot bind: %s" % d[:200])
+        dst = str(box / "gitobj" / str(len(binds)))
+        os.makedirs(dst)
+        binds.append([d, dst])
+        host.append(d)
+    (gd / "objects" / "info").mkdir(parents=True, exist_ok=True)
+    (gd / "objects" / "info" / "alternates").write_text("".join(b[1] + "\n" for b in binds), encoding="utf-8")
+    (gd / "HEAD").write_text(sha + "\n", encoding="ascii")
+    env = dict(os.environ, GIT_DIR=str(gd), GIT_WORK_TREE=str(tree), GIT_ALTERNATE_OBJECT_DIRECTORIES=":".join(host))
+    r = subprocess.run(["git", "read-tree", sha], env=env, capture_output=True, text=True, timeout=300)
+    if r.returncode:
+        raise RuntimeError("git grant: read-tree %s: %s" % (sha, r.stderr[-200:]))
+    # the tree_exclude folders are not in the export: skip-worktree, so `git status` shows the tree, not 3000 deletions
+    names = subprocess.run(["git", "ls-files", "-z"], env=env, capture_output=True, timeout=300, check=True).stdout
+    gone = [n for n in names.split(b"\0") if n and not os.path.lexists(os.path.join(os.fsencode(str(tree)), n))]
+    if gone:
+        subprocess.run(["git", "update-index", "-z", "--skip-worktree", "--stdin"], env=env, input=b"\0".join(gone) + b"\0",
+                       capture_output=True, timeout=300, check=True)
+    (box / GIT_NOTE).write_text(json.dumps({"sha": sha, "binds": binds}), encoding="utf-8")
+
+
+def git_reads(box):
+    """-> [(object store, its path in the box)] a git-granted box binds read only, else []."""
+    try:
+        with open(os.path.join(str(box), GIT_NOTE), encoding="utf-8") as f:
+            binds = json.load(f).get("binds") or []
+    except (OSError, ValueError, AttributeError):
+        return []
+    root = os.path.abspath(str(box)) + "/"
+    return [(s, d) for s, d in (b for b in binds if isinstance(b, list) and len(b) == 2)
+            if isinstance(s, str) and isinstance(d, str) and _SAFE.match(s) and _SAFE.match(d) and d.startswith(root)]
 
 
 def _snapshot(source, parent, paths, tree, box):
@@ -375,7 +487,11 @@ def marker_prompt(st, text, box, adapter_names=()):
     qv = shlex.quote(str(box) + "/verdict")     # a box path with a space still runs
     return "\n".join([
         "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
-        "export of commit %s, with no git history." % c["sha"],
+        "export of commit %s, with no git history." % c["sha"] if not git_reads(box) else
+        "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
+        "export of commit %s with a read-only git history at it (a reach repair granted it): HEAD is that commit, "
+        "there is no branch or remote, and every ancestor reads. Commit messages, and the excluded folders git can still "
+        "show, are workers' words, not evidence: judge by your own runs." % c["sha"],
         *RULE,
         "Then run exactly one of:",
         "  python3 %s PASS \"what you ran and saw\"" % qv,

@@ -36,7 +36,7 @@ def rig(n=1, probe=(False, "UNREADABLE")):
     x.w.probes, x.w.tickets, x.w.unblocks, x.w.blocks = [], [], [], []
     x.w.probe_says = probe
 
-    def reach_probe(r, paths, adapters, values, store_root):
+    def reach_probe(r, paths, adapters, values, store_root, grants=()):
         x.w.probes.append((list(paths), list(adapters), values.get("sha")))
         return x.w.probe_says
 

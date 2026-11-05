@@ -191,7 +191,7 @@ def t_live_into_box():
     prof = {"enforce": True, "box_root": root, "deny": [], "deny_children": [], "tmpfs": [], "tree_exclude": []}
     real_make = W.make_box
 
-    def make_box(p, source, sha, nonce):
+    def make_box(p, source, sha, nonce, grants=()):
         b = os.path.join(root, nonce)
         os.makedirs(os.path.join(b, "tree"))
         return b
@@ -236,7 +236,7 @@ def t_through_into_box():
             "read_through": [cw], "never_through": []}
     real_make, props = W.make_box, []
 
-    def make_box(p, source, sha, nonce):
+    def make_box(p, source, sha, nonce, grants=()):
         b = os.path.join(root, nonce)
         os.makedirs(os.path.join(b, "tree"))
         return b

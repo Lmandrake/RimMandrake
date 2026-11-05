@@ -2600,12 +2600,18 @@ class Effects(relentless_game.GameFx):
         got = glob.glob(os.path.join(self.base, "clones", "check-%s-c*" % st["item"]))
         return [d for d in got if d not in keep]
 
-    def reach_probe(self, r, paths, adapter_names, values, store_root):
+    def reach_probe(self, r, paths, adapter_names, values, store_root, grants=()):
         """BLIND_JUDGE_BUILD_FIXES_OWN_EYES: is a Judge's proposed repair readable from inside its wall? Each path is read
         in a throwaway unit carrying the Marker's own systemd properties with the path bound as at a launch; each adapter
-        is run outside as at a check and must exit 0 with output. -> (True|False, what it saw). Mechanical, no model."""
+        is run outside as at a check and must exit 0 with output; a git_history grant is made from values["repo"] at
+        values["sha"] as at a launch and must read HEAD and the sha's commit inside the wall. -> (True|False, what it saw)."""
         import tempfile
         seen = []
+        if relentless_wall.GIT_GRANT in (grants or ()):
+            ok, what = self._probe_git(r, values, store_root)
+            seen.append(what)
+            if not ok:
+                return False, "; ".join(seen)
         if paths:
             prof = relentless_wall.profile(r)
             os.makedirs(prof["box_root"], exist_ok=True)
@@ -2634,6 +2640,36 @@ class Effects(relentless_game.GameFx):
                 if got["exit"] != 0 or not (got.get("out") or "").strip():
                     return False, "; ".join(seen)
         return bool(seen), "; ".join(seen) or "nothing to probe"
+
+    def _probe_git(self, r, values, store_root):
+        """The git_history grant (relentless_wall.grant_git), made in a throwaway box and read from inside the wall."""
+        import tempfile
+        prof = relentless_wall.profile(r)
+        sha, repo = values.get("sha") or "", values.get("repo") or self.books
+        if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", sha):
+            return False, "git_history: no candidate sha to probe at (%r)" % sha[:20]
+        os.makedirs(prof["box_root"], exist_ok=True)
+        box = tempfile.mkdtemp(prefix="reachprobe-", dir=prof["box_root"])
+        try:
+            for sub in ("projects", "tmp", "tree"):
+                os.makedirs(os.path.join(box, sub), exist_ok=True)
+            try:
+                relentless_wall.grant_git(box, repo, sha)
+            except (OSError, RuntimeError, subprocess.SubprocessError) as e:
+                return False, "git_history: the grant could not be made at %s: %s" % (sha[:10], str(e)[-200:])
+            body = 'h=$(git -C "$1" rev-parse HEAD) && git -C "$1" cat-file -e "$2^{commit}" && echo "HEAD $h"'
+            argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
+                    + relentless_wall.props(prof, box, [store_root])
+                    + ["--", "/bin/sh", "-c", body, "sh", os.path.join(box, "tree"), sha])
+            try:
+                p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            except (OSError, subprocess.SubprocessError) as e:
+                return False, "probe unit: %s: %s" % (type(e).__name__, e)
+            out = ((p.stdout or "") + (p.stderr or "")).strip()
+            good = p.returncode == 0 and ("HEAD " + sha) in out
+            return good, ("git_history exit %d: %s" % (p.returncode, out))[-400:]
+        finally:
+            shutil.rmtree(box, ignore_errors=True)
 
     def reach_ticket(self, item, text):
         """The fallback when a Judge's own reach repair failed its probe: filed once, a note while open, reopened by a new
@@ -4126,7 +4162,8 @@ def step(store, fx, r, item, now, acts):
         desc = run_desc(store, r, unit, now)
         box = None
         if relentless_wall.enforced(r):
-            box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce)
+            box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce,
+                                           grants=relentless_reachfix.grants(st))
         gen0 = st["gen"]
         thru = relentless_wall.through(relentless_wall.profile(r), [json.dumps(st.get("contract") or {}),
                                        c.get("evidence") or "", fx.item_text(item) or ""]) if box else []
