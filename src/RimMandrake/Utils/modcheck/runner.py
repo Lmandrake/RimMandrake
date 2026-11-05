@@ -1470,6 +1470,24 @@ def stale_keep_composed():
     return os.environ.get("MODCHECK_STALE_KEEP_COMPOSED") == "1"
 
 
+def finding_for_json(c):
+    """One summary.findings entry as data. The list holds suite.Component objects (file_findings reads c.name);
+    json.dumps(default=str) wrote them as '<suite.Component object at 0x...>' (MODCHECK_FINDINGS_FIX_WRITTEN_AS_REPR)."""
+    if isinstance(c, dict):
+        return {"name": c.get("name"), "verdict": c.get("verdict"), "detail": c.get("detail", "")}
+    return {"name": getattr(c, "name", str(c)), "verdict": getattr(c, "verdict", None),
+            "detail": getattr(c, "detail", "")}
+
+
+def summary_for_json(summary):
+    """`summary` with findings serialised as {name, verdict, detail}; the in-memory summary is left untouched."""
+    if not isinstance(summary, dict) or not summary.get("findings"):
+        return summary
+    out = dict(summary)
+    out["findings"] = [finding_for_json(c) for c in summary["findings"]]
+    return out
+
+
 def write_sheet(mod, summary):
     from report import render  # noqa: E402
     os.makedirs(SHEET_DIR, exist_ok=True)
@@ -1481,7 +1499,7 @@ def write_sheet(mod, summary):
     with open(path[:-5] + ".json", "wb") as f:
         import clockgate as _CG  # noqa: E402
         # every benign/resumed stop clockgate passed over (time + cause), so the run's BENIGN calls can be audited later
-        f.write(json.dumps({"mod": mod, "stamp": stamp, "summary": summary,
+        f.write(json.dumps({"mod": mod, "stamp": stamp, "summary": summary_for_json(summary),
                             "benign_stops": [dict(b) for b in _CG.BENIGN_STOPS]},
                            indent=1, default=str).encode("utf-8"))
     try:        # the known-good gate's history: one line per freshly run chain with a manifest (modcheck/gate.py)
