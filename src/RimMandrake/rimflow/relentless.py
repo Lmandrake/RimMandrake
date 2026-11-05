@@ -1166,6 +1166,51 @@ def _conductor_authority():
     return conductor_authority
 
 
+MANUAL_HOLD = "manual"      # a person's hold by `relentless.py hold`: the seat's own act, never routed back to it
+HOLD_FROM = ("queued", "blocked", "candidate", "running")
+HOLD_REFUSED = {"checking": "a check is running: hold it after its verdict",
+                "stopping": "its run is settling: hold it once it reads queued, held or blocked",
+                "closing": "it is closing: drop it on the ledger instead",
+                "retiring": "it is retiring: the ledger already ended it",
+                relentless_game.GAME: "it is in its game phase, holding the bridge lane: let the phase settle, then hold"}
+
+
+def hold(store, item, said, now=None):
+    """The Conductor's or Operations' hold (RELENTLESS_HOLD_BUILD_A_VERB_FOR_CONDUCTOR): out of the line, no worker, no
+    re-check, until `unhold`. A candidate keeps its candidate (sha, evidence, contract): unhold sends that same sha to its
+    check again, never a new builder. A running item is fenced (gen moves, so its worker's next report is refused); the
+    tick's `stopping` step stops the run and settles it to held. No strike, no failed approach: the hold is a person's, not the item's fault.
+    Delivered at once: the seat that held it needs no ledger note telling it so."""
+    now = time.time() if now is None else now
+    if not (said or "").strip():
+        raise ValueError("hold needs a why")
+    with store.lock():
+        st = store.load(item)
+        if not st:
+            raise ValueError("%s is not in the Relentless store" % item)
+        if st["status"] == "held":
+            raise ValueError("%s is held already (%s): %s" % (item, (st.get("hold") or {}).get("kind"),
+                                                              ((st.get("hold") or {}).get("why") or "")[:200]))
+        if st["status"] in HOLD_REFUSED:
+            raise ValueError("%s is %s: %s" % (item, st["status"], HOLD_REFUSED[st["status"]]))
+        if st["status"] not in HOLD_FROM:
+            raise ValueError("%s is %s, not open: nothing to hold" % (item, st["status"]))
+        was = st["status"]
+        back = "candidate" if was == "candidate" and (st.get("candidate") or {}).get("sha") else "queued"
+        st["hold"] = {"why": ("hold: %s" % said)[:900], "kind": MANUAL_HOLD, "delivered": True, "routed": SEAT_QUEUE,
+                      "at": now, "from": was, "back": back}
+        if was == "running":
+            st["gen"] += 1
+            st["status"] = "stopping"
+            st["stopping_since"] = now
+        else:
+            st["status"] = "held"
+        st.pop("recheck_at", None)
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "hold", "said": said, "from": was})
+        store.save(st)
+        return was
+
+
 def unhold(store, item, said, now=None, offbox=None):
     """`offbox`: the repair of an unmeasured hold from outside: supervisor adapter names (never commands) to run beyond the
     Marker's wall, added to the contract (the item has no worker to add them). A free-text entry left by an older contract
@@ -1193,6 +1238,15 @@ def unhold(store, item, said, now=None, offbox=None):
         elif st["hold"].get("kind") == "start_refused":    # what refused is fixed, or its wait starts over
             st.pop("start_refusals", None)
             st.pop("start_again_at", None)
+        if st["hold"].get("kind") == MANUAL_HOLD and st["hold"].get("back") == "candidate" \
+                and (st.get("candidate") or {}).get("sha"):
+            # a person's hold of a candidate lifts to the same candidate: its check runs, no worker is sent
+            st["hold"] = None
+            st["returned_at"] = now
+            st["status"] = "candidate"
+            store.attempt(item, {"at": iso(now), "end": "unhold", "said": said, "to": "candidate"})
+            store.save(st)
+            return
         if st["hold"].get("kind") == relentless_attrib.WAIT_ATTRIB and (st.get("wait") or {}).get("sha"):
             # a person lifted an unattributed failure: the SAME sha is validated again, never a new builder
             st["hold"] = None
@@ -5661,6 +5715,12 @@ def main(argv=None):
     p.add_argument("--owner-said")
     p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
     p.add_argument("--why")
+    p = sub.add_parser("hold", help="take an item out of the line until unhold: no worker, no re-check; a candidate "
+                       "keeps its sha and unhold checks it again; a running worker is fenced")
+    p.add_argument("item")
+    p.add_argument("--owner-said")
+    p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
+    p.add_argument("--why")
     p = sub.add_parser("unhold")
     p.add_argument("item")
     p.add_argument("--owner-said")
@@ -5785,6 +5845,13 @@ def main(argv=None):
                 raise ValueError("rediagnose needs --owner-said or " + _conductor_authority().ROUTE)
             rediagnose(store, a.item, said)
             print("%s: a diagnostic consult is wanted again" % a.item)
+        elif a.cmd == "hold":
+            said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
+            if not said:
+                raise ValueError("hold needs --owner-said or " + _conductor_authority().ROUTE)
+            was = hold(store, a.item, said)
+            print("%s: held (was %s)%s" % (a.item, was, "; its worker is fenced and settles to held"
+                                           if was == "running" else ""))
         elif a.cmd == "unhold":
             said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
             if not said:
