@@ -1,0 +1,60 @@
+{
+ "sheet": "modcheck_format_ratify_2026-11-05.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-05T11:06:25-0800",
+ "caught": "Pilot data is the 2026-09-13 10:24 run (the 09-12 23:11 run kept no JSON): wording fixed to say so; the appearance excerpt's lines are orphaned-id UNJUDGEABLE, row reworded.",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "whole_report": {
+   "fp": "416793172a6d35f0",
+   "verdict": "OK",
+   "note": "Pits_pilot_report.html rendered in headless Edge: H1 'Pits -- GREEN', tables pit_capture and uncover_disarms, 3 PASS rows; link resolves beside the sheet."
+  },
+  "overall_verdict": {
+   "fp": "ffc01056881aed4e",
+   "verdict": "OK",
+   "note": "Checked against report.render: GREEN/RED(state|appearance)/REFUSED/TARGETED wording matches the code; both example titles seen rendered."
+  },
+  "chain_tables": {
+   "fp": "fa44d1328484341f",
+   "verdict": "OK",
+   "note": "Seen rendered: one table per chain, five columns, PASS green / UNMEASURED amber."
+  },
+  "toggle_column": {
+   "fp": "e9109d79d97e4ea5",
+   "verdict": "OK",
+   "note": "Toggle names read from the fixture (falls_in trapTriggerEnabled, struggle_clock_ticks escapeEnabled, disarm blank)."
+  },
+  "evidence_raw": {
+   "fp": "34614792189c1061",
+   "verdict": "FLAG",
+   "note": "Seen rendered: the evidence column is a wall of raw python dicts. Pre-filled 'ratify as is' but marked contested so he decides; not a defect of the sheet."
+  },
+  "screenshots_as_paths": {
+   "fp": "6a5014d2cd4fc5a3",
+   "verdict": "FLAG",
+   "note": "The one pilot screenshot shows as a grey Windows path, no picture; contested for his call."
+  },
+  "appearance_lines": {
+   "fp": "ba78a36730a6368a",
+   "verdict": "FIXED",
+   "note": "FlowWorks_appearance_excerpt.html rendered: both lines are UNJUDGEABLE orphaned ids, not a clean pass; row text first implied a normal example, reworded to say what the lines actually show."
+  },
+  "json_twin": {
+   "fp": "ffbd5723be1f31d7",
+   "verdict": "OK",
+   "note": "Matches runner.write_sheet (html + json twin with summary and benign_stops)."
+  },
+  "transient_shelf_life": {
+   "fp": "c519231c6811a160",
+   "verdict": "OK",
+   "note": "True to report.py docstring and to how the 2026-09-12 sheet was lost; contested so he can ask for a keep-until-reviewed rule."
+  }
+ },
+ "dropped": []
+}

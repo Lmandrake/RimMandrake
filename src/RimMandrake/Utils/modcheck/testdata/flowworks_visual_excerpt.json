@@ -1,0 +1,188 @@
+{
+ "source": "Transient/modcheck/FlowWorks_20261025T134001Z.json (BENCH clone), one chain kept",
+ "chains": [
+  {
+   "name": "trench_cover_and_raiders",
+   "components": [
+    {
+     "name": "trench_cover_selftest_ran",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "trench_cover_live",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "ExpectationFailed: UNMEASURED: live check owed -- no trench_cover_proof.py result at the current mod hash and deployed DLL carries TRENCH_square_on_hit_falls, TRENCH_one_back_third: run `python.exe src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py` (the hit-chance report of a shot at a colonist in a 1 m trench falls by the trench block (HitReportFor with the setting on vs off), square-on and one back from the lip)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "trench_wall_cover_shown"
+     ],
+     "surprises": null,
+     "visual": [
+      {
+       "id": "trench_wall_cover_shown",
+       "polarity": "must",
+       "verdict": "UNJUDGEABLE",
+       "pass": false,
+       "why": "claimed id is not in the validated checklist -- orphaned `shows=` or a renamed id",
+       "image": ""
+      }
+     ]
+    },
+    {
+     "name": "trench_cage_live",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "ExpectationFailed: UNMEASURED: live check owed -- a raid on a map with a climbable trench and a sheer 4 m pocket beside it: every raider that takes cover in the dug ground stands on a square with a way out, none in the pocket; the TRENCH hit-report line reads cage=False for each (RM_TrenchCover.IsCageFor; TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT Q5)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "raiders_never_shelter_in_a_cage"
+     ],
+     "surprises": null,
+     "visual": [
+      {
+       "id": "raiders_never_shelter_in_a_cage",
+       "polarity": "must",
+       "verdict": "UNJUDGEABLE",
+       "pass": false,
+       "why": "claimed id is not in the validated checklist -- orphaned `shows=` or a renamed id",
+       "image": ""
+      }
+     ]
+    }
+   ],
+   "situational": null,
+   "modal_check": null,
+   "site_hold": {
+    "bland": true,
+    "problems": [],
+    "notes": [],
+    "steps": [
+     {
+      "name": "kill_hostiles",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {
+       "targeted": []
+      }
+     },
+     {
+      "name": "pause",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {}
+     },
+     {
+      "name": "quiet_world",
+      "acted": 3,
+      "verified": true,
+      "residue": [],
+      "evidence": {
+       "profile": "isolated",
+       "quests": "not touched",
+       "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+       ],
+       "storyteller": {
+        "cleared_count": 0,
+        "cleared": []
+       },
+       "logRaidInfo": "on",
+       "wildSpawner": "blocked (read back)",
+       "readBack": {
+        "enableStoryteller": false,
+        "enableRandomMentalStates": false,
+        "enableRandomDiseases": false,
+        "logRaidInfo": true,
+        "threatScale": 0.0,
+        "allowBigThreats": false
+       },
+       "incidentQueueAfterClear": 0
+      }
+     },
+     {
+      "name": "quiet_site_map",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {
+       "removed": [],
+       "threatsAfter": 0,
+       "lettersUnsentAfter": 0
+      }
+     },
+     {
+      "name": "kill_hostiles",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {
+       "targeted": []
+      }
+     },
+     {
+      "name": "kill_wildlife",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {
+       "route": "none-needed"
+      }
+     },
+     {
+      "name": "clear_strangers",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {
+       "targeted": []
+      }
+     },
+     {
+      "name": "extinguish",
+      "acted": 0,
+      "verified": true,
+      "residue": [],
+      "evidence": {}
+     },
+     {
+      "name": "restore_colonists",
+      "acted": 9,
+      "verified": true,
+      "residue": [],
+      "evidence": {}
+     }
+    ]
+   }
+  }
+ ],
+ "all_green": false,
+ "state_all_green": false,
+ "visual": true,
+ "visual_all_green": false,
+ "findings": []
+}

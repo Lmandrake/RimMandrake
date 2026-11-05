@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>modcheck: FlowWorks (one chain)</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#faf7f2;color:#2a231c;margin:2em}
+h1{color:#cf222e} table{border-collapse:collapse;width:100%;margin-bottom:2em}
+td,th{border:1px solid #ccc;padding:.4em .6em;text-align:left;vertical-align:top;font-size:.9em}
+th{background:#eee2d0} .shot{font-family:monospace;font-size:.8em;color:#666}
+.vis{font-size:.85em;margin-top:.3em}
+</style></head><body>
+<h1>FlowWorks (one chain) -- RED (state, appearance)</h1>
+<h2>trench_cover_and_raiders</h2><table><tr><th>component</th><th>toggle</th><th>verdict</th><th>detail</th><th>evidence</th></tr><tr><td>trench_cover_selftest_ran</td><td></td><td style="color:#1a7f37">PASS</td><td></td><td></td></tr><tr><td>trench_cover_live</td><td></td><td style="color:#9a6700">UNMEASURED</td><td>ExpectationFailed: UNMEASURED: live check owed -- no trench_cover_proof.py result at the current mod hash and deployed DLL carries TRENCH_square_on_hit_falls, TRENCH_one_back_third: run `python.exe src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py` (the hit-chance report of a shot at a colonist in a 1 m trench falls by the trench block (HitReportFor with the setting on vs off), square-on and one back from the lip)</td><td><div class="vis" style="color:#cf222e">must <b>trench_wall_cover_shown</b> UNJUDGEABLE — claimed id is not in the validated checklist -- orphaned `shows=` or a renamed id</div></td></tr><tr><td>trench_cage_live</td><td></td><td style="color:#9a6700">UNMEASURED</td><td>ExpectationFailed: UNMEASURED: live check owed -- a raid on a map with a climbable trench and a sheer 4 m pocket beside it: every raider that takes cover in the dug ground stands on a square with a way out, none in the pocket; the TRENCH hit-report line reads cage=False for each (RM_TrenchCover.IsCageFor; TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT Q5)</td><td><div class="vis" style="color:#cf222e">must <b>raiders_never_shelter_in_a_cage</b> UNJUDGEABLE — claimed id is not in the validated checklist -- orphaned `shows=` or a renamed id</div></td></tr></table>
+</body></html>

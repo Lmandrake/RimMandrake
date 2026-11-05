@@ -1,0 +1,56 @@
+{
+  "sheetId": "modcheck_format_ratify_2026-11-05",
+  "posture": "whitelist",
+  "decidedCount": 0,
+  "frozen": false,
+  "reviewStatus": {
+    "state": "prefill"
+  },
+  "decisions": {
+    "whole_report": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "overall_verdict": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "chain_tables": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "toggle_column": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "evidence_raw": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "screenshots_as_paths": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "appearance_lines": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "json_twin": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "transient_shelf_life": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}

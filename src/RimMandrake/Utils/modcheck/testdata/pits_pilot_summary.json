@@ -1,0 +1,805 @@
+{
+ "chains": [
+  {
+   "name": "pit_capture",
+   "components": [
+    {
+     "name": "falls_in",
+     "toggle": "trapTriggerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "walk_over Human49554 -> (125,125)",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (125,125) after 300 tick(s); 0 moved at all.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 125,
+         "z": 125
+        },
+        "targetId": null,
+        "targetLabel": null,
+        "targetDef": null,
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 300,
+        "ticksRequested": 300,
+        "timedOut": false,
+        "polls": 43,
+        "waitedSeconds": 4.3,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human49554",
+          "name": "Patel",
+          "kind": "Colonist",
+          "drafted": false,
+          "hasDrafter": false,
+          "requested": {
+           "x": 125,
+           "z": 125
+          },
+          "start": {
+           "x": 128,
+           "z": 125
+          },
+          "end": null,
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.0,
+          "distanceAfter": -1.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "pathDestination": null,
+          "curJob": null,
+          "downed": false,
+          "note": "Pawn is no longer spawned on this map."
+         }
+        ],
+        "ticksGame": 302,
+        "operation": {
+         "OperationId": "op_7153debee01947ab9f64f70990b2b7f4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/order-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:30.5902007+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:35.6080863+00:00",
+         "DurationMs": 5017,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\T: Force trigger scan now",
+        "node": {
+         "path": "Actions\\T: Force trigger scan now",
+         "parentPath": "Actions",
+         "label": "T: Force trigger scan now",
+         "category": "RMPits",
+         "actionType": "ToolMap",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+         },
+         "source": {
+          "name": "Force trigger scan now",
+          "category": "RMPits",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": {
+         "kind": "cell",
+         "cell": {
+          "x": 125,
+          "z": 125
+         },
+         "thingId": null,
+         "thing": null,
+         "thingTargetIsPositional": false
+        },
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 47,
+           "level": "info",
+           "message": "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare covered=False sprung=True",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-09-13T10:24:35.6231122+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_1b5ee2b3cba544c7960b7e6dd4911e7b",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:35.621109+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:35.6231122+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\T: Report pit state (RAW)",
+        "node": {
+         "path": "Actions\\T: Report pit state (RAW)",
+         "parentPath": "Actions",
+         "label": "T: Report pit state (RAW)",
+         "category": "RMPits",
+         "actionType": "ToolMap",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+         },
+         "source": {
+          "name": "Report pit state (RAW)",
+          "category": "RMPits",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": {
+         "kind": "cell",
+         "cell": {
+          "x": 125,
+          "z": 125
+         },
+         "thingId": null,
+         "thing": null,
+         "thingTargetIsPositional": false
+        },
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 48,
+           "level": "info",
+           "message": "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare49553 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=True occupants=1 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STANDING_COUNT=0 SUMMED_MASS=0.00 THRESHOLD=40.0 WOULD_SPRING=False\n  HELD Human id=Human49554 mass=60.75 bodySize=1.00 dead=False downed=False healthPct=0.940 escapeChance=0.710 pinnedSev=0.100 exposureSev=none drowningSev=none toxicSev=none stunned=False hediffs=[Bruise:4.50,RM_PinnedInPit:0.10]",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-09-13T10:24:35.6405015+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_4726cbcb30be4cdeac635d7cc439df72",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:35.6241127+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:35.6405015+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains(REPORT_PIT, sprung=True)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(REPORT_PIT, occupants=1)",
+       "result": true
+      },
+      {
+       "call": "expect_pawn_despawned(Human49554)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\falls_in_1789295075.png"
+     ],
+     "checkpoints": []
+    },
+    {
+     "name": "struggle_clock_ticks",
+     "toggle": "escapeEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\T: Force struggle interval",
+        "node": {
+         "path": "Actions\\T: Force struggle interval",
+         "parentPath": "Actions",
+         "label": "T: Force struggle interval",
+         "category": "RMPits",
+         "actionType": "ToolMap",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+         },
+         "source": {
+          "name": "Force struggle interval",
+          "category": "RMPits",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": {
+         "kind": "cell",
+         "cell": {
+          "x": 125,
+          "z": 125
+         },
+         "thingId": null,
+         "thing": null,
+         "thingTargetIsPositional": false
+        },
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 49,
+           "level": "info",
+           "message": "[RMPitsDebug] STRUGGLE RM_OpenPit_Bare occupantsBefore=1 occupantsAfter=1",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-09-13T10:24:36.1232772+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_2c27a28e0dab4717837bff8e960c58df",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:36.1102547+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:36.1232772+00:00",
+         "DurationMs": 13,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains(STRUGGLE, occupantsBefore=1)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  },
+  {
+   "name": "uncover_disarms",
+   "components": [
+    {
+     "name": "disarm",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\T: Uncover (disarm)",
+        "node": {
+         "path": "Actions\\T: Uncover (disarm)",
+         "parentPath": "Actions",
+         "label": "T: Uncover (disarm)",
+         "category": "RMPits",
+         "actionType": "ToolMap",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+         },
+         "source": {
+          "name": "Uncover (disarm)",
+          "category": "RMPits",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": {
+         "kind": "cell",
+         "cell": {
+          "x": 125,
+          "z": 125
+         },
+         "thingId": null,
+         "thing": null,
+         "thingTargetIsPositional": false
+        },
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 56,
+           "level": "info",
+           "message": "[RMPitsDebug] UNCOVER RM_OpenPit_Bare covered=False coverTier=None",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-09-13T10:24:36.580964+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_dbe9f52cd4d2498aa1e7cbcded4bedf1",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:36.5653449+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:36.580964+00:00",
+         "DurationMs": 15,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\T: Report pit state (RAW)",
+        "node": {
+         "path": "Actions\\T: Report pit state (RAW)",
+         "parentPath": "Actions",
+         "label": "T: Report pit state (RAW)",
+         "category": "RMPits",
+         "actionType": "ToolMap",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+         },
+         "source": {
+          "name": "Report pit state (RAW)",
+          "category": "RMPits",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": {
+         "kind": "cell",
+         "cell": {
+          "x": 125,
+          "z": 125
+         },
+         "thingId": null,
+         "thing": null,
+         "thingTargetIsPositional": false
+        },
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 57,
+           "level": "info",
+           "message": "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare49581 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=None triggerMassKg=340282300000000000000000000000000000000.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STANDING_COUNT=0 SUMMED_MASS=0.00 THRESHOLD=340282300000000000000000000000000000000.0 WOULD_SPRING=False",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-09-13T10:24:36.5990344+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_c8f7fe0a0444459fa758e4d128bfee94",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-09-13T10:24:36.5819645+00:00",
+         "CompletedAtUtc": "2026-09-13T10:24:36.5990344+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains(REPORT_PIT, covered=False)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": []
+    }
+   ]
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "modDir": "D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\Pits",
+ "wallSeconds": 8.2
+}
