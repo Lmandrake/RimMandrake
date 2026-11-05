@@ -51,10 +51,17 @@
     "ref": "a2dc4250bd4478b4a",
     "stage": 2,
     "tokens": 37995
+   },
+   {
+    "at": "2026-11-05T02:02:35Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793843896",
+    "stage": 2,
+    "tokens": 495722
    }
   ],
   "reserve": 50000,
-  "spent": 1195592
+  "spent": 1691314
  },
  "history": [
   {
@@ -134,6 +141,12 @@
    "stage": 2,
    "what": "open",
    "why": "run rm-role-designer-1793843896, stage 2, budget 450000"
+  },
+  {
+   "at": "2026-11-05T02:02:35Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793843896: stage 2 waiting_owner"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -212,30 +225,32 @@
    "run": "rm-role-designer-1793797195",
    "stage": 1,
    "summary": "Root approved (OWNER:1793794915205594887): FlowWorks' main job is deadly earthworks (pits, moats, traps, drawbridges filled, drained and lit on the player's timing); first-judged scene is the moat sequence (swim and tire, sluice drains, prisoner pit, chemfuel from above, lit, under a raised drawbridge). His pit-trap and island-bridge scenes and two-square canal wetting (Stillsand technique) recorded as decisions; c_irrigation resolved. Stage 2 edges to argue: whether trapped raiders become prisoners without a capture job, chemfuel pumped from above into a pit, the makeshift sapling ladder, winch destruction."
+  },
+  {
+   "at": "2026-11-05T02:02:35Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "77326d28bc7aa08e44a3b6cc6b6bf2882b64c3a2f307a4f343a3302919009ca8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793843896",
+   "stage": 2,
+   "summary": "Turn 2 sent (design/concepts/FlowWorks/turn_02.md): two edges of his raid scenes, both judge-passed. ask_prisoner_click: are pit-held raiders prisoners automatically, by one click, or by click plus bed, since no bed can stand in a full moat. ask_match: a new colonist order to toss a flame in from the rim, or are vanilla incendiaries enough. Struck ask_rescue_ladder (his words settle it; recorded as decision d_raider_fetch_fallen, owed). Winch-destroyed drawbridge crash, raiders attacking winches, ladder wood from felled trees and liquid ignition from any fire were found built. c_spec_stale and c_proof_stale resolved as not his decisions."
   }
  ],
- "running": {
-  "at": "2026-11-05T01:58:19Z",
-  "inputs": {
-   "exam": null,
-   "floor": null,
-   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
-   "scenes": null,
-   "sheet": null,
-   "tree": null
-  },
-  "manifest": {
-   "designer.md": "77326d28bc7aa08e44a3b6cc6b6bf2882b64c3a2f307a4f343a3302919009ca8",
-   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
-  },
-  "owner_uncited": [],
-  "reserved": 450000,
-  "run": "rm-role-designer-1793843896",
-  "stage": 2
- },
+ "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
