@@ -1133,7 +1133,7 @@ def test_role_real_schedule_caps_and_ops_bands():
     c, o = roles["Conductor"], roles["Operations"]
     check(c["quick_token_cap"] == 450000 and c["daily_token_cap"] == 1350000 and c["session_week_pct_cap"] is None,
           "schedule: Conductor caps 450,000 / 1,350,000, no session cap (owner 2026-11-04: all token limits rescinded)")
-    check(o["run_token_cap"] == 450000
+    check(o["run_token_cap"] == 600000
           and o["daily_token_cap"] >= o["economy_token_cap"] + o["run_token_cap"] * 2,
           "schedule: Operations daily cap fits economy + evening + one alarm run")
     for r, cap in ((c, c["quick_token_cap"]), (o, o["run_token_cap"])):
@@ -1144,7 +1144,9 @@ def test_role_real_schedule_caps_and_ops_bands():
     # The LIVE bands were neutralized (owner 2026-10-28: "Stop the whole account rated RED on runeway crap. Just do
     # the checkout."), so the rows below test the band MECHANISM on a frozen copy of the old Operations bands.
     # the band MECHANISM, on a role whose caps bind; Operations' own caps are advisory (owner 2026-11-02, below)
-    o_old = dict(o, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False)
+    # caps frozen too: the live ones were re-set from measurement (OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT)
+    o_old = dict(o, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, run_token_cap=450000,
+                 economy_token_cap=550000, daily_token_cap=4600000)
     check(o.get("caps_advisory") is True, "schedule: Operations caps are advisory (owner 2026-11-02, e7069d65ba)")
     for r in sch["roles"]:
         check(all(b.get("slots", "all") == "all" and float(b.get("quick_cap_x", 1.0)) >= 1.0

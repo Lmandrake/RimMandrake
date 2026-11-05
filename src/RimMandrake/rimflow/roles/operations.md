@@ -59,14 +59,15 @@ Each run is `claude -p` and ends itself; `seat_restart.py request --now` is for 
 
 Every cap and budget is in WEIGHTED tokens (input-equivalent, `role_launch.TOKEN_WEIGHTS`): input 1, cache write 1.25 (5m)
 or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the context was re-read. Values (schedule,
-2026-10-28, basis in its `_caps_why`): `run_token_cap` 450,000 (your first real run, an alarm run of 15 turns, weighed
-285,538; it counted 1,121,450 raw); `economy_token_cap` 550,000; `daily_token_cap` 4,600,000 (2026-11-02,
-OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS): the EXPECTED day, the 07:30 economy run, the 19:30 run, two alarm runs and
+2026-11-05, re-set from 57 measured runs, basis in its `_remeasured_why`, OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT):
+`run_token_cap` 600,000 (above the p90 of your full and alarm runs, 575k and 519k); `incident_token_cap` 400,000
+(above the measured incident max, 372k); `economy_token_cap` 700,000; `daily_token_cap` 4,900,000: the EXPECTED day, the 07:30 economy run, the 19:30 run, two alarm runs and
 six incident runs. Your caps are ADVISORY (`caps_advisory`, owner 2026-11-02: *"a token limit for operations must be
 advisory only. We can't have the system crash because we couldn't afford to watch. At the same time if it becomes
 expensive it requires immediate action for sure. But not starving it or failing to do maintenance."*): no band,
 budget, daily cap or daily alarm-run count refuses, delays, skips or shrinks your run. A run over its budget
-(`role:Operations:overbudget`) or a day past the expected total (`role:Operations:overspend_day`) raises an immediate
+(`role:Operations:overbudget`; `overbudget_repeat` once 3 or more runs and at least `role_launch.OVER_RATE` of your
+measured runs in 7 days overran) or a day past the expected total (`role:Operations:overspend_day`) raises an immediate
 alarm with a RAISE FIRST line in the Conductor log: the cost is fixed fast, and you keep your runs cheap. At
 1,650,000 as a hard cap it admitted four runs a day and refused every incident run after, each refusal sending its
 incidents to his rung. The run record keeps `raw_tokens` beside `tokens` for

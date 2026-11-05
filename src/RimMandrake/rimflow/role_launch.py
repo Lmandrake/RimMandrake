@@ -122,6 +122,10 @@ import run_tmp  # noqa: E402  (the run's own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS
 
 AUTH_BACKS_PER_DAY = 2
 OVER_REPEAT, OVER_WINDOW_S = 3, 7 * 86400
+# overbudget_repeat is a RATE (OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT): at least OVER_REPEAT overruns in the window
+# AND at least OVER_RATE of the role's measured finished runs there. Operations runs ~25 times a day, so a bare
+# "3 in 7 days" fired on any budget short of its maximum; a role whose budget sits near p90 overruns ~10%.
+OVER_RATE = 0.2
 AUTH_TEXT_MAX = 400     # an auth death's result IS the short API error; a long result merely quotes one
 AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expired|please run /login|"
                      r"authentication_failed", re.I)
@@ -718,6 +722,15 @@ def spent_today(rs, now):
     return tot
 
 
+def finished_in_window(rs, now):
+    """Pure. Measured finished runs in the overrun window: the fin_at stamps, or (state written before fin_at
+    existed) the finished runs still on record with tokens, whichever is more; never below 1."""
+    fin = len([t for t in rs.get("fin_at") or [] if now - t < OVER_WINDOW_S])
+    kept = len([r for r in rs.get("runs") or [] if r.get("state") != "running" and r.get("tokens") is not None
+                and now - r.get("at", 0) < OVER_WINDOW_S])
+    return max(fin, kept, 1)
+
+
 def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
     """An advisory-capped role (`caps_advisory`, Operations, owner 2026-11-02) is never refused for money; a day
     that passes its expected total (daily_token_cap) raises an IMMEDIATE alarm instead, once a day: a note on its
@@ -912,6 +925,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             act(do="role_stamp", role=name, unit=run["unit"], ticket=run.get("item"), path=FINISH_STAMP[name],
                 at=run["at"], why="%s run %s finished done: its window ends at its launch %s" % (
                     name, run["unit"], iso(run["at"])))
+        if tok is not None:      # every measured finish (an overrun counts failed ones too): the OVER_RATE denominator
+            rs["fin_at"] = [t for t in rs.get("fin_at") or [] if now - t < OVER_WINDOW_S] + [now]
         if tok is not None and tok > (run.get("budget") or 0):
             # advisory caps (owner 2026-11-02): the overrun is the alarm, at once, in the Conductor log too
             loud = {"conductor_log": True, "raise_first": "%s run %s went over its advisory budget: file an item "
@@ -923,10 +938,11 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             # role that keeps overrunning has a wrong budget, and only a person can reset that
             over = [t for t in rs.get("over_at") or [] if now - t < OVER_WINDOW_S] + [now]
             rs["over_at"] = over
-            if len(over) >= OVER_REPEAT:
+            if len(over) >= OVER_REPEAT and len(over) >= OVER_RATE * finished_in_window(rs, now):
                 act(do="alarm", kind="role:%s:overbudget_repeat" % name, ticket=run.get("item"), note=True,
                     conductor_log=True, blind=blind(name, "overbudget", run.get("mode"), run["unit"]),
-                    why="%s ran over budget %d times in 7 days: its budget or its scope is wrong" % (name, len(over)),
+                    why="%s ran over budget %d times in 7 days (of %d measured runs): its budget or its scope is "
+                    "wrong" % (name, len(over), finished_in_window(rs, now)),
                     raise_first="%s keeps overrunning: re-set its budget or narrow its scope." % name)
         if run["state"] == "failed":
             text = res.get("result") or run.get("err_tail") or ""

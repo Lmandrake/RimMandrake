@@ -2291,8 +2291,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                   'off reason': {'acts': [{'do': 'role_hold',
                                                            'role': 'Conductor',
                                                            'why': 'Conductor slot 08:00 local skipped: off switch '
-                                                                  '<TMP>/CONDUCTOR_OFF '
-                                                                  '(owner: stop)'}],
+                                                                  '<TMP>/CONDUCTOR_OFF (owner: stop)'}],
                                                  'ledger_blind': None,
                                                  'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'off'},
                                                                          'runs': []}}},
@@ -2335,9 +2334,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                   'off, no reason': {'acts': [{'do': 'role_hold',
                                                                'role': 'Conductor',
                                                                'why': 'Conductor slot 08:00 local skipped: off '
-                                                                      'switch '
-                                                                      '<TMP>/CONDUCTOR_OFF '
-                                                                      '(no reason given)'}],
+                                                                      'switch <TMP>/CONDUCTOR_OFF (no reason '
+                                                                      'given)'}],
                                                      'ledger_blind': None,
                                                      'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'off'},
                                                                              'runs': []}}},
@@ -2466,8 +2464,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                              'role': 'Producer',
                                                              'why': 'Producer ledger event: block on A at '
                                                                     '2026-10-28T12:46:00Z skipped: off switch '
-                                                                    '<TMP>/PRODUCER_OFF '
-                                                                    '(owner: stop)'}],
+                                                                    '<TMP>/PRODUCER_OFF (owner: stop)'}],
                                                    'ledger_blind': None,
                                                    'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed'},
                                                                           'event_cursor': 1793189460.0,
@@ -3747,8 +3744,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                'raise_first': 'Conductor keeps overrunning: re-set '
                                                                               'its budget or narrow its scope.',
                                                                'ticket': 'ROLES_ITEM_X',
-                                                               'why': 'Conductor ran over budget 3 times in 7 days: '
-                                                                      'its budget or its scope is wrong'}],
+                                                               'why': 'Conductor ran over budget 3 times in 7 days '
+                                                                      '(of 1 measured runs): its budget or its scope '
+                                                                      'is wrong'}],
                                                      'busy': [],
                                                      'runs': {'Conductor': [{'at': 1793174400.0,
                                                                              'budget': 0,
