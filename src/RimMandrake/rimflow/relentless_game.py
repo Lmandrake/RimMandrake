@@ -793,6 +793,29 @@ def _back(store, fx, sup, r, item, klass, why, now, acts, live=None):
                                                               else "", why))
 
 
+UNMEASURED_END = "game_unmeasured"
+
+
+def _unmeasured(store, fx, sup, r, item, why, now, acts):
+    """A proof that ran on the game and measured nothing (not_measuring, blocked_here) is a MEASUREMENT or ENVIRONMENT
+    cause, never a product defect (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN, plan step 5): it no longer goes `_back`
+    through fail(). The candidate is withheld for a read-only diagnosis (relentless_attrib.withhold: no gen, no strike, no
+    return, no builder) with the cause on its wait; only a diagnosis naming an observed PRODUCT violation sends a builder.
+    Before: GRAFFITI_NORTHSTAR_GREEN_FULL_1, GENERATOR_MODS_PROVE_INERT, ART_OVERRIDE_FAMILY_SCRIPT_1 went back to
+    builders 8-9 times for a game that never loaded their mods (catalog class d)."""
+    with store.lock():
+        st = store.load(item)
+        if st["status"] != GAME or not (st.get("candidate") or {}).get("sha"):
+            return
+        sup.pilot_count(store, st, UNMEASURED_END, why, r, now)     # a live non-pass run still counts toward a Test Pilot
+        sup.relentless_attrib.withhold(store, st, UNMEASURED_END, why, r, now, sup)
+        st["wait"]["cause"] = "measurement"
+        store.save(st)
+    acts.append({"do": UNMEASURED_END, "item": item, "why": why[:200], "gated": True, "cause": "measurement"})
+    fx.ledger_note(item, "relentless game phase: %s (measured nothing: withheld for diagnosis, no builder, no strike): %s"
+                   % (UNMEASURED_END, why))
+
+
 def _hold(store, fx, item, why, now, acts):
     def f(st):
         st["status"] = "held"
@@ -1079,13 +1102,13 @@ def step(store, fx, r, item, now, acts, sup):
         if missed:  # the defect did not appear where its repro asked: a person reads it, no builder is sent
             return _not_reproduced(store, fx, item, missed, now, acts)
         dud = not_measuring(fx.game_rows(), item, built, g["clauses"], c["unmeasured_back"])
-        if dud:     # the proof ran and said it measured nothing, again: a proof defect, no reload fixes it
-            return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
+        if dud:     # the proof ran and said it measured nothing, again: a measurement cause, never a builder's
+            return _unmeasured(store, fx, sup, r, item, "; ".join(
                 "%s: the proof ran %d times on this build and measured nothing %s" % (k, n, why[:400])
                 for k, (n, why) in sorted(dud.items())), now, acts)
         here = blocked_here(rows, g["clauses"], built, rd0.get("started"), now)
-        if here:    # nothing left this game can measure, and a proof ran and measured nothing: the worker's, at once
-            return _back(store, fx, sup, r, item, "game_unmeasured", "; ".join(
+        if here:    # nothing left this game can measure, and a proof ran and measured nothing: diagnosed at once
+            return _unmeasured(store, fx, sup, r, item, "; ".join(
                 "%s: the proof ran on this game and build and measured nothing; the same game and build can only say "
                 "it again: %s" % (k, why[:400]) for k, why in sorted(here.items())), now, acts)
         since = max(g.get("staged_at") or 0, g["entered_at"])

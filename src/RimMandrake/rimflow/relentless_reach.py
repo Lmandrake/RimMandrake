@@ -131,17 +131,25 @@ def refusal(found, adapter_names):
             "or --reach-ok \"why the box can still show it\"" % ("; ".join(found), ", ".join(sorted(adapter_names)) or "none yet"))
 
 
+HOLDS, DOES_NOT_HOLD, UNREAD = "holds", "does_not_hold", "unread"
+
+
 def live_reading(line, check=None, now=None):
-    """-> {line, holds, why, at}: the contract's live line checked here, by the supervisor, outside the wall."""
+    """-> {line, state, holds, why, at}: the contract's live line checked here, by the supervisor, outside the wall.
+    Three states (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN, plan step 5; GPT A4): HOLDS, DOES NOT HOLD (the check read
+    it and it failed), and COULD NOT READ (the reader itself raised: the supervisor's instrument failed, which says nothing
+    of the work). `holds` stays True only for HOLDS."""
     now = time.time() if now is None else now
     if check is None:
         import live_line
         check = live_line.check
     try:
         why = check(line, now=now)
+        state = HOLDS if why is None else DOES_NOT_HOLD
     except Exception as e:      # noqa: BLE001 - a broken reader is a reading that failed, never a dead tick
         why = "the supervisor's live check raised %s: %s" % (type(e).__name__, e)
-    return {"line": line, "holds": why is None, "why": why, "at": now}
+        state = UNREAD
+    return {"line": line, "state": state, "holds": state == HOLDS, "why": why, "at": now}
 
 
 def write_live(box, got):
@@ -149,7 +157,9 @@ def write_live(box, got):
     f = Path(box, "live.txt")
     f.write_text("live line: %s\nmeasured_at=%s outside the box by the supervisor\n%s\n" % (
         got["line"], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(got["at"])),
-        "HOLDS" if got["holds"] else "DOES NOT HOLD: %s" % got["why"]), encoding="utf-8")
+        "HOLDS" if got["holds"] else
+        "COULD NOT READ (the supervisor's reader failed; this says nothing of the work): %s" % got["why"]
+        if got.get("state") == UNREAD else "DOES NOT HOLD: %s" % got["why"]), encoding="utf-8")
     os.chmod(f, 0o444)
     return str(f)
 
@@ -162,7 +172,8 @@ def live_lines(contract, box):
     return ["", "Live line: the supervisor checked the contract's live line %r outside your box just before you started and "
             "wrote the result to %s/live.txt (read only). Its reading may sit on a path your box hides: do not try to reach it, "
             "and never call it --unreached; `rimflow close` checks the same line again and refuses a close on a line that "
-            "does not hold. Judge whether the line is the promise the item needs." % (live, box)]
+            "does not hold. Judge whether the line is the promise the item needs. COULD NOT READ means the supervisor's "
+            "own reader failed: it is no defect of the work and no --unreached of yours." % (live, box)]
 
 
 def fingerprint(rules, contract):

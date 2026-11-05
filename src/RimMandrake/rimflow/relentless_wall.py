@@ -38,6 +38,12 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "Keep the two apart when you record the verdict: each wrong thing your own run showed goes in its own --defect (a wrong "
     "number, a red test, a crash, a clause not done), each piece of evidence you could not reach goes in its own --unreached. "
     "Any --defect makes the verdict FAIL, whatever you could not reach; --unreached and no --defect is UNMEASURED, never PASS.",
+    "Begin every --defect with its cause (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN): 'product:' the commit's own change or "
+    "behaviour is wrong - name the changed file or the proof command that shows it, and add one --control saying how you "
+    "showed your instrument can see (it goes green on a known-good case, or catches a fault you put in); 'measurement:' "
+    "the proof, the contract or the test is what is wrong, not the work; 'environment:' the machine, the disk, the game "
+    "load, a remote host, the account; 'unknown:' you cannot tell which (an untagged defect is read as unknown). Only a product defect with a control goes back "
+    "to a builder; the others go to the proof, to Operations, or to a diagnosis, never to new code.",
     "A gap must be in the item's own words: the mutant breaks something a clause of the item asks for. A mutant of an "
     "inner detail, or of an edge the item never named, is no gap, and every test has those.",
     "PASS: every clause of the item is done, you ran it, and you found no gap in the proof that you could show. "
@@ -61,21 +67,28 @@ def narrow_word(word, reasons):
 VERDICT_SCRIPT = '''#!/usr/bin/env python3
 import json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
-USAGE = ('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw" [--defect "a wrong thing your run showed"]... '
+USAGE = ('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw" '
+         '[--defect "product|measurement|environment|unknown: a wrong thing your run showed"]... '
+         '[--control "how you showed your instrument can see"]... '
          '[--unreached "evidence you could not reach, and the command that showed it"]... '
          '[--propose ADAPTER_NAME|/read/path]...')
-a, defects, unreached, proposals = sys.argv[1:], [], [], []
+a, defects, unreached, proposals, controls = sys.argv[1:], [], [], [], []
 pos = []
 while a:
     x = a.pop(0)
-    if x in ("--defect", "--unreached", "--propose") and a:
+    if x in ("--defect", "--unreached", "--propose", "--control") and a:
         y = " ".join(a.pop(0).split())[:600]      # the reader's own normalisation (relentless_wall.clean_list): agree on it
         if y:
-            {"--defect": defects, "--unreached": unreached, "--propose": proposals}[x].append(y)
+            {"--defect": defects, "--unreached": unreached, "--propose": proposals, "--control": controls}[x].append(y)
     else:
         pos.append(x)
 if len(pos) != 2 or pos[0].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
     sys.exit(USAGE)
+if any(d.split(":", 1)[0].strip().lower() == "product" for d in defects) and not controls:
+    sys.exit("a product: defect needs a --control: how you showed your instrument can see (green on a known-good case, "
+             "or it catches a fault you put in); without one, say unknown:")
+if controls and not defects:
+    sys.exit("--control backs a product: defect only")
 if pos[0].upper() == "UNMEASURED" and not unreached:
     sys.exit("UNMEASURED needs at least one --unreached: name what you could not reach")
 if pos[0].upper() == "UNMEASURED" and defects:
@@ -86,7 +99,7 @@ if pos[0].upper() == "PASS" and (defects or unreached):
     sys.exit("a PASS carries no --defect and no --unreached: evidence you could not reach is UNMEASURED, a defect is FAIL")
 with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
     json.dump({"word": pos[0].upper(), "reasons": pos[1], "defects": defects, "unreached": unreached,
-               "proposals": proposals, "at": time.time()}, f)
+               "proposals": proposals, "controls": controls, "at": time.time()}, f)
 os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
 print("recorded")
 '''
@@ -497,8 +510,8 @@ def marker_prompt(st, text, box, adapter_names=()):
         "  python3 %s PASS \"what you ran and saw\"" % qv,
         "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
         "shows it, so the next worker can pin it\"" % qv,
-        "  python3 %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"one wrong thing\" [--defect ...] "
-        "[--unreached \"what you also could not reach\"]" % qv,
+        "  python3 %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"CAUSE: one wrong thing\" [--defect ...] "
+        "[--control \"how your instrument showed it can see\"] [--unreached \"what you also could not reach\"]" % qv,
         "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\" "
         "--unreached \"one thing out of reach, and the command that showed it\" [--unreached ...] "
         "[--propose NAME_OR_PATH ...]" % qv,
@@ -527,11 +540,16 @@ def clean_list(v):
 _strs = clean_list
 
 
-def refusal(word, defects, unreached):
+def refusal(word, defects, unreached, controls=None):
     """-> why a structured verdict is refused at the door (the CLI and the verdict script say the same), or None. Only ever
     used where a checker is there to read it: a verdict already on disk is never refused, read_as reads it."""
     if defects is None and unreached is None:
         return None
+    if any(parse_defect(d)[0] == "product" for d in defects or []) and not clean_list(controls):
+        return ("a product: defect needs a --control: how you showed your instrument can see (green on a known-good case, "
+                "or it catches a fault you put in); without one, say unknown:")
+    if clean_list(controls) and not defects:
+        return "--control backs a product: defect only"
     if word == UNMEASURED and not unreached:
         return "UNMEASURED needs at least one --unreached: name what you could not reach"
     if word == UNMEASURED and defects:
@@ -555,7 +573,121 @@ def read_verdict(box):
     except (TypeError, ValueError, OverflowError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
         at = time.time()
     return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "defects": clean_list(v.get("defects")),
-            "unreached": clean_list(v.get("unreached")), "proposals": clean_list(v.get("proposals")), "at": at}
+            "unreached": clean_list(v.get("unreached")), "proposals": clean_list(v.get("proposals")),
+            "controls": clean_list(v.get("controls")), "at": at}
+
+
+# ---- the cause of each defect (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN; plan design/RimMandrake/
+# relentless_recovery_plan_2026-11-05.md step 5, catalog class d: "judges unable to judge throwing things back to fix
+# without fixing the measurement"). Only a VALIDATED product defect goes back to a builder or earns a strike: the cause is
+# product, the defect cites the candidate's change (a path its diff touches) or behaviour (the contract's proof), and the
+# Marker says how its instrument passed a control. A measurement defect goes to the proof road on the same sha; an
+# environment defect opens an Operations alarm keyed on the dependency and waits for diagnosis; unknown - and anything
+# untagged, or a product claim that fails validation - waits for diagnosis, never a builder.
+CAUSES = ("product", "measurement", "environment", "unknown")
+PRODUCT, MEASUREMENT, ENVIRONMENT, UNKNOWN = CAUSES
+_TAG = re.compile(r"^\s*\[?\s*(product|measurement|environment|unknown)\s*\]?\s*:\s*", re.I)
+
+
+def tagged(line):
+    """-> the cause a defect line opens with, or None when it carries none."""
+    m = _TAG.match(line or "")
+    return m.group(1).lower() if m else None
+
+
+def parse_defect(line):
+    """-> (cause, text). An untagged line (an old verdict, a hand-written file) is unknown: never guessed product."""
+    m = _TAG.match(line or "")
+    if not m:
+        return UNKNOWN, (line or "").strip()
+    return m.group(1).lower(), line[m.end():].strip()
+
+
+# which dependency an environment defect names: the key Operations groups one incident under
+DEPENDENCIES = (
+    ("disk", re.compile(r"ENOSPC|no space left|disk (is )?full|out of (disk|space)|quota exceeded on|\bdf\b", re.I)),
+    ("account", re.compile(r"\b429\b|rate[- ]limit|usage limit|out of tokens|credit|overloaded|\b529\b", re.I)),
+    ("remote_host", re.compile(r"\bssh\b|tailscale|steve|host (is )?(down|unreachable)|connection (refused|reset|timed out)",
+                                re.I)),
+    ("game", re.compile(r"\bgame\b|bridge|mod list|modsconfig|not in the load|missing_mods|\bsave\b|player\.log|rimworld",
+                         re.I)),
+    ("network", re.compile(r"\bdns\b|network|unreachable|timed? ?out", re.I)),
+)
+
+
+def dependency(text):
+    """-> the dependency an environment defect's words name (disk, account, remote_host, game, network), else other."""
+    for key, rx in DEPENDENCIES:
+        if rx.search(text or ""):
+            return key
+    return "other"
+
+
+_PATH_RX = re.compile(r"^diff --git a/(\S+) b/(\S+)", re.M)
+
+
+def changed_paths(box):
+    """-> the paths the candidate's change.diff touches ([] when the box or its diff is gone)."""
+    try:
+        d = Path(box, "change.diff").read_text(encoding="utf-8", errors="replace")
+    except (OSError, TypeError):
+        return []
+    return sorted({p for m in _PATH_RX.finditer(d) for p in m.groups()})
+
+
+_STOP = {"python3", "python", "bash", "sh", "src", "rimmandrake", "rimflow", "utils", "only", "run", "selftests", "py",
+         "no", "cache", "the", "and", "with", "item", "run_selftests"}
+
+
+def _proof_tokens(proof):
+    """The proof's own identifiers a defect may cite as behaviour: script stems, test names (selftest_x), long words."""
+    out = set()
+    for w in re.findall(r"[A-Za-z_][A-Za-z0-9_.\-/]{3,}", proof or ""):
+        stem = w.rsplit("/", 1)[-1]
+        stem = stem[:-3] if stem.endswith(".py") else stem
+        if stem.lower() not in _STOP and ("_" in stem or "." in w or "/" in w):
+            out.add(stem.lower())
+    return out
+
+
+def cites(text, changed, proof):
+    """True when a defect's words point at the candidate: a path its diff touches (whole, or its file name), or one of the
+    contract proof's own identifiers (the behaviour the proof runs)."""
+    t = (text or "").lower()
+    for p in changed or []:
+        p = p.lower()
+        name = p.rsplit("/", 1)[-1]
+        if p in t or (len(name) >= 5 and re.search(r"(?<![\w.])%s(?![\w])" % re.escape(name), t)):
+            return True
+    return any(re.search(r"(?<![\w])%s(?![\w])" % re.escape(k), t) for k in _proof_tokens(proof))
+
+
+def causes(defects, controls=None, changed=(), proof=None):
+    """-> one row per defect: {cause (what the Marker said), text, valid (product only: a control and a citation),
+    acts (the cause the supervisor routes on: an unvalidated product is unknown)}."""
+    rows = []
+    has_control = bool(clean_list(controls))
+    for d in clean_list(defects) or []:
+        c, text = parse_defect(d)
+        row = {"cause": c, "text": text[:600]}
+        if c == PRODUCT:
+            row["valid"] = has_control and cites(text, changed, proof)
+            if not row["valid"]:
+                row["why_not"] = ("no --control showed the instrument can see" if not has_control else
+                                  "cites neither a path the candidate's diff touches nor the contract's proof")
+        row["acts"] = c if c != PRODUCT or row["valid"] else UNKNOWN
+        rows.append(row)
+    return rows
+
+
+def route(rows):
+    """-> the cause a FAIL verdict is routed on: a validated product defect anywhere goes to the builder; else any
+    unknown (an unvalidated product included) waits for diagnosis; else environment; else measurement. Empty -> unknown."""
+    acts = [r["acts"] for r in rows or []]
+    for c in (PRODUCT, UNKNOWN, ENVIRONMENT, MEASUREMENT):
+        if c in acts:
+            return c
+    return UNKNOWN
 
 
 def would_deny(inputs, prof):

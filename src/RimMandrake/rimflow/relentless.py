@@ -361,6 +361,11 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
     klass = SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag"
     if attributed is None and klass in LIVE_ENDS:      # counted once, at the reading: an attributed re-entry is the same one
         pilot_count(store, st, klass, detail, r, now)
+    if (attributed is not None and klass in relentless_attrib.GATED
+            and "PRODUCT" not in (attributed.get("targets") or [])):
+        # CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN: a validation ending returns or strikes only on a PRODUCT attribution;
+        # anything else handed in here is blamed afresh, never a builder by default
+        attributed = None
     if attributed is None and klass in relentless_attrib.GATED:
         attributed = relentless_attrib.gate(store, st, klass, detail, r, now, sys.modules[__name__])
         if attributed in ("gated", "routed"):
@@ -1033,7 +1038,54 @@ def help_answer(store, item, nonce, options, r, now=None):
         store.save(st)
 
 
-def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True, proposals=None):
+def cause_fail(store, st, r, now):
+    """Under the lock, the check being read: a structured FAIL routed on the causes of its defects
+    (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN; plan design/RimMandrake/relentless_recovery_plan_2026-11-05.md step 5).
+    PRODUCT (validated: a control and a citation of the candidate) -> the builder with its strike; MEASUREMENT -> the proof
+    road on the same sha, never the code; ENVIRONMENT -> an Operations alarm keyed on the dependency, and the candidate
+    waits for its diagnosis; UNKNOWN (an unvalidated product claim included) -> the diagnosis, never a builder.
+    -> the cause it was routed on."""
+    chk = st["check"] or {}
+    sha = st["candidate"]["sha"]
+    reasons = chk.get("reasons") or ""
+    changed = chk.get("changed")
+    if changed is None:
+        changed = relentless_wall.changed_paths(chk.get("box"))
+    rows = relentless_wall.causes(chk.get("defects"), chk.get("controls"), changed, (st.get("contract") or {}).get("proof"))
+    cause = relentless_wall.route(rows)
+    st["cause"] = {"route": cause, "rows": rows, "sha": sha, "at": now}
+    store.journal({"at": iso(now), "do": "cause_routed", "item": st["item"], "cause": cause, "sha": sha,
+                   "causes": [x["acts"] for x in rows]})
+    texts = "; ".join("%s: %s" % (x["cause"], x["text"]) for x in rows)[:1600]
+    store.learn(st["item"], "- %s gen %d checker FAIL routed %s (%s)" % (iso(now), st["gen"], cause, texts[:600]))
+    if cause == relentless_wall.PRODUCT:
+        good = [x for x in rows if x["acts"] == relentless_wall.PRODUCT]
+        rec = relentless_attrib.record(["PRODUCT"], texts, now, "checker verdict", sha, obligation=good[0]["text"][:600],
+                                       observed=reasons[:600],
+                                       why_product="control: %s" % "; ".join(chk.get("controls") or [])[:600])
+        st["attribution"] = rec
+        fail(store, st, "blind_fail", reasons, r, now, attributed=rec)
+    elif cause == relentless_wall.MEASUREMENT:
+        rec = relentless_attrib.record(["PROOF"], texts, now, "checker verdict", sha)
+        st["attribution"] = rec
+        fail(store, st, relentless_attrib.PROOF_OWED, "%s (checker: every defect is the measurement's: repair the proof or "
+             "its binding on the same sha, not the code)" % texts, r, now, attributed=rec)
+    elif cause == relentless_wall.ENVIRONMENT:
+        deps = sorted({relentless_wall.dependency(x["text"]) for x in rows if x["acts"] == relentless_wall.ENVIRONMENT})
+        for dep in deps:
+            store.journal({"at": iso(now), "do": "alarm", "kind": "environment_defect", "item": st["item"],
+                           "dependency": dep, "sha": sha, "why": texts[:400]})
+        relentless_attrib.withhold(store, st, "blind_fail", "environment (%s): %s" % (", ".join(deps), texts), r, now,
+                                   sys.modules[__name__])
+        st["wait"].update(cause=relentless_wall.ENVIRONMENT, dependency=deps)
+        store.save(st)
+    else:
+        fail(store, st, "blind_fail", reasons, r, now)      # relentless_attrib.gate: the diagnosis, never a builder
+    return cause
+
+
+def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True, proposals=None,
+            controls=None, changed=None):
     """defects / unreached: the Marker's structured findings (GPT review of 0135b04912). None = an old-format verdict, read
     from its prose by relentless_wall.read_as; a list, even empty, is read by structure. Both go through
     relentless_wall.clean_list, the one normalisation. strict (the CLI, a checker reading the answer) refuses a contradictory
@@ -1045,7 +1097,7 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
     defects, unreached = relentless_wall.clean_list(defects), relentless_wall.clean_list(unreached)
     if defects is not None or unreached is not None:
         defects, unreached = defects or [], unreached or []
-        why = relentless_wall.refusal(word, defects, unreached) if strict else None
+        why = relentless_wall.refusal(word, defects, unreached, controls) if strict else None
         if why:
             raise ValueError(why)
     with store.lock():
@@ -1059,6 +1111,9 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
         chk["reasons"] = (reasons or "")[:4000]
         if defects is not None:
             chk["defects"], chk["unreached"] = defects, unreached
+            chk["controls"] = relentless_wall.clean_list(controls) or []
+        if changed is not None:         # the candidate's diff paths, read from the box while it stands (cause validation)
+            chk["changed"] = list(changed)[:200]
         if word == "UNMEASURED" and relentless_wall.clean_list(proposals):     # the Judge's own reach repair
             chk["proposals"] = relentless_wall.clean_list(proposals)[:relentless_reachfix.PROPOSE_MAX]
         chk["verdict_at"] = now
@@ -3261,8 +3316,9 @@ def checker_prompt(st, text, nonce, readings=()):
         "  %s verdict --item %s --nonce %s PASS \"what you ran and saw\"" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s WEAK \"the runs you made and what each showed, then each gap and the mutant or "
         "probe that shows it, so the next worker can pin it\"" % (rc, i, nonce),
-        "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"one wrong "
-        "thing\" [--defect ...] [--unreached \"what you also could not reach\"]" % (rc, i, nonce),
+        "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"CAUSE: one "
+        "wrong thing\" [--defect ...] [--control \"how your instrument showed it can see\"] [--unreached \"what you "
+        "also could not reach\"]" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s UNMEASURED \"%s what, and the command that showed it; then what you did "
         "check\" --unreached \"one thing out of reach, and the command that showed it\" [--unreached ...]"
         % (rc, i, nonce, relentless_wall.REACH_TAG),
@@ -4265,7 +4321,8 @@ def step(store, fx, r, item, now, acts):
         if got and chk.get("verdict") is None:      # the box is the walled Marker's way out: the nonce is the store's own
             try:        # a file on disk is recorded, never refused (strict=False): read_as reads it
                 verdict(store, item, chk["nonce"], got["word"], got["reasons"], now, got.get("defects"), got.get("unreached"),
-                        strict=False, proposals=got.get("proposals"))
+                        strict=False, proposals=got.get("proposals"), controls=got.get("controls"),
+                        changed=relentless_wall.changed_paths(chk["box"]))
             except Fenced:
                 return
             except (ValueError, TypeError, KeyError) as e:      # malformed past all that: a lost check, once - never a raise a tick
@@ -4364,8 +4421,12 @@ def step(store, fx, r, item, now, acts):
                         st.pop("recheck_at", None)
                         store.save(st)          # a real verdict ends the run of blind ones
                     if acted == "FAIL":     # an observed defect is a FAIL whatever word it came under
-                        fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
-                        acts.append({"do": "blind_fail", "item": item})
+                        if st["check"].get("defects"):      # structured: routed on its causes, a builder only for PRODUCT
+                            routed = cause_fail(store, st, r, now)
+                            acts.append({"do": "blind_fail", "item": item, "cause": routed})
+                        else:       # old-format prose: blamed before rebuild (relentless_attrib.gate), as before
+                            fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
+                            acts.append({"do": "blind_fail", "item": item})
                         return
                 weak = None
                 if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
@@ -5770,6 +5831,8 @@ def main(argv=None):
     p.add_argument("reasons")
     p.add_argument("--defect", action="append", default=None, help="one wrong thing your own run showed (repeatable); any makes it FAIL")
     p.add_argument("--unreached", action="append", default=None, help="one piece of evidence you could not reach (repeatable)")
+    p.add_argument("--control", action="append", default=None,
+                   help="how your instrument showed it can see (repeatable); a product: defect needs one")
     p = sub.add_parser("enrol", help="carry one named item, ahead of the share's next picks")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
@@ -5912,7 +5975,7 @@ def main(argv=None):
         elif a.cmd == "shadow":
             print(json.dumps(shadow_tally(store), indent=1))
         elif a.cmd == "verdict":
-            verdict(store, a.item, a.nonce, a.word, a.reasons, defects=a.defect, unreached=a.unreached)
+            verdict(store, a.item, a.nonce, a.word, a.reasons, defects=a.defect, unreached=a.unreached, controls=a.control)
         elif a.cmd == "rediagnose":
             said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
             if not said:
