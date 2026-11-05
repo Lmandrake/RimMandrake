@@ -65,6 +65,15 @@ def def_type(tag):
     return "ThingDef" if base.startswith("ThingDef") else base
 
 
+# The ONE set of folders a deploy never ships (deploy_custom_mods.shippable() and
+# its tree walk import it from here). xml_files() must skip exactly these: an XML
+# under art_source/ or .vs/ is never deployed, so judging it as part of the game
+# copy raised false DUP/VANISHED refusals (DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH).
+# It lives here, not in deploy_custom_mods, because that module imports game_paths.
+DEPLOY_EXCLUDE_DIRS = frozenset({"Source", "__pycache__", ".git", "art_candidates",
+                                 "art_source", "_artsrc", "obj", "bin", ".vs"})
+
+
 def xml_files(root):
     """{rel: abspath} for every .xml under root (dangling links skipped)."""
     out = {}
@@ -73,7 +82,7 @@ def xml_files(root):
     # scandir: DirEntry.is_file() comes free from d_type and follows links, so a
     # dangling link is skipped with no per-file stat (the old os.path.exists was one
     # 1.7 ms /mnt/c stat per XML).
-    skip = ("Source", "__pycache__", ".git", "obj", "bin")
+    skip = DEPLOY_EXCLUDE_DIRS
     stack = [root]
     while stack:
         dp = stack.pop()

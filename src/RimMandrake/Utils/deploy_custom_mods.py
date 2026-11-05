@@ -146,8 +146,8 @@ def first_existing(paths, what):
     sys.exit("could not find %s; tried:\n  %s" % (what, "\n  ".join(paths)))
 
 
-EXCLUDE_DIRS = {"Source", "__pycache__", ".git", "art_candidates", "art_source",
-                "_artsrc", "obj", "bin", ".vs"}
+# Shared with deploy_def_guard.xml_files() so the guard judges exactly what ships.
+from deploy_def_guard import DEPLOY_EXCLUDE_DIRS as EXCLUDE_DIRS  # noqa: E402
 EXCLUDE_FILES = {".gitignore", ".DS_Store", "Thumbs.db"}
 # .md is excluded wholesale rather than just README.md: WreckedMachines carries
 # DESIGN.md, MACHINES.md and PLACEHOLDER.md files that are authoring notes, not
