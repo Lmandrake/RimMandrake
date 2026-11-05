@@ -3,7 +3,7 @@
   "GSS"
  ],
  "budget": {
-  "cap": 500000,
+  "cap": 4000000,
   "charges": [
    {
     "at": "2026-11-05T07:22:09Z",
@@ -32,10 +32,17 @@
     "ref": "run rm-role-designer-1793865328",
     "stage": 1,
     "tokens": 196284
+   },
+   {
+    "at": "2026-11-05T16:29:15Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793896010",
+    "stage": 1,
+    "tokens": 245910
    }
   ],
-  "reserve": 50000,
-  "spent": 1169688
+  "reserve": 60000,
+  "spent": 1415598
  },
  "history": [
   {
@@ -91,6 +98,24 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1793865328: stage 1 waiting_owner"
+  },
+  {
+   "at": "2026-11-05T16:26:59Z",
+   "stage": 1,
+   "what": "cap_reset",
+   "why": "legacy cap 500000 (reserve 50000) -> measured 4000000 (reserve 60000); 1169688 spent"
+  },
+  {
+   "at": "2026-11-05T16:26:59Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1793896010, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-05T16:29:15Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793896010: stage 1 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -152,11 +177,34 @@
    "run": "rm-role-designer-1793865328",
    "stage": 1,
    "summary": "ask_root (root paragraph, turn_01.md) is sent and reviewed; he went AFK 2026-11-05 07:28Z without answering. Ready for him in the morning: his yes or correction of turn_01.md ends stage 1. Previous rejection was turn_01.md missing from the validating checkout; it is now committed (64d1d02d5f)."
+  },
+  {
+   "at": "2026-11-05T16:29:15Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": null,
+    "sheet": "b7dd55e6646df716f5252676c46859687bb395d354bbd0dcc3758acce340bca1",
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793896010",
+   "stage": 1,
+   "summary": "Root revised to his 2026-11-05 card corrections (honest = connectivity, not precise conduit path; a pawn approaching to fix a sparking line is safe, incidental crossers on other jobs are shocked) and cited as OWNER:1793895896496551063. Shock scope opened by him; fixer exemption already built (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED). turn_02.md shows him the revised root for undo. Stage 2 next: a_junction_every."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
- "status": "waiting_owner",
+ "stage": 2,
+ "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }

@@ -1,7 +1,7 @@
 {
  "aliases": [],
  "budget": {
-  "cap": 500000,
+  "cap": 4000000,
   "charges": [
    {
     "at": "2026-11-05T07:41:43Z",
@@ -23,10 +23,17 @@
     "ref": "run rm-role-designer-1793866044",
     "stage": 1,
     "tokens": 408751
+   },
+   {
+    "at": "2026-11-05T16:36:37Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793896435",
+    "stage": 1,
+    "tokens": 287490
    }
   ],
-  "reserve": 50000,
-  "spent": 954011
+  "reserve": 60000,
+  "spent": 1241501
  },
  "history": [
   {
@@ -64,6 +71,24 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1793866044: stage 1 waiting_owner"
+  },
+  {
+   "at": "2026-11-05T16:34:18Z",
+   "stage": 1,
+   "what": "cap_reset",
+   "why": "legacy cap 500000 (reserve 50000) -> measured 4000000 (reserve 60000); 954011 spent"
+  },
+  {
+   "at": "2026-11-05T16:34:19Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1793896435, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-05T16:36:37Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793896435: stage 1 done"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -112,11 +137,32 @@
    "run": "rm-role-designer-1793866044",
    "stage": 1,
    "summary": "ask_root (root paragraph, turn_01.md: the Deep Tribes as fire harvesters per R14, rite party judged first) is reviewed and sent; his yes or correction ends stage 1. a_flagship struck on review (covered by the judged-first line); a_harvest_visit_at_the_fire and a_debt_visible kept ready for stage 2."
+  },
+  {
+   "at": "2026-11-05T16:36:37Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793896435",
+   "stage": 1,
+   "summary": "Root revised to his 2026-11-05 card corrections (no arson count, no animal blame, fruit defence warn-then-drive-off not a raid, overt attack brings raids back) and cited as OWNER:1793895903357725756. Two core contradictions for stage 2/Relentless: built arson count and raid to remove (c_arson_count_built), rite never attacks vs fruit defence (c_rite_never_attacks_vs_fruit_defence). a_debt_visible struck as answered; a_fruit_defence_reach drafted with a_harvest_visit_at_the_fire. turn_02.md shows him the revised root for undo."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
- "status": "waiting_owner",
+ "stage": 2,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
