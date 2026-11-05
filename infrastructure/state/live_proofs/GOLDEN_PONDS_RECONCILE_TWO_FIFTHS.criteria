@@ -1,0 +1,2 @@
+A1 L2: NS_FlowWorks_TrialSite_v2.rws and its sidecar exist (re-captured by prep_site, whose step 6 refuses a body capacity off the cells x ShallowBedLevels rule); same build as TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS A1
+A2 L2: preflight on a Work copy of NS_FlowWorks_TrialSite_v2 reads CLEAN, P-S2 PASS (live pond capacity equals the sidecar: D 50 / K 8 / S 32); same sitting as TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS A2
