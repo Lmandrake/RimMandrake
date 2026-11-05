@@ -48,6 +48,8 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
   15 a pick or ticked variant with ONE facing already live at another path (Fuzzrunner C east == the base east),
     purged or slotless installs NO facing while siblings would (ENACT_VARIANT_FACING_FIX_LIVE_SHA_SKIP); a facing
     live at the pick's own slot still lets the rest install.
+  17 a ticked variant whose letter names an alternate ALREADY SHIPPED with another picture (FanV_C_north live): every
+    facing moves to ONE free alternate <g>V_<letter>, never overwriting the live alternate; a free FanV_C ships as FanV_C.
   16 a live picture owner-kept by an ALIAS of the row (carriedFrom, RSW_X/RM_X, census tier_twin_same_stem) blocks his
     pick and his ✕ only when the keep is newer; a real other row, or a shared-texPath twin, still blocks.
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws; git history is replaced by a list.
@@ -56,6 +58,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -654,6 +657,7 @@ def main():
               f"22c ...and with an unreadable copy in the window, that is named ({r['conflicts']})")
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
+        shutil.rmtree(F["root"], ignore_errors=True)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
     return 1 if FAILS else 0
 
