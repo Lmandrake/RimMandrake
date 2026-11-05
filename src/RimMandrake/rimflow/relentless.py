@@ -595,6 +595,10 @@ def spent_today(store, now):
         return UNREADABLE_SPEND
 
 
+class SpendUnreadable(ValueError):
+    """charge() met a damaged day record: nothing was booked and nothing on the item moved."""
+
+
 def charge(store, st, tokens, now, r, unit, basis=None):
     """Under the lock. A run with no measured usage (no tokens, basis absent or "estimated") is charged the reserve,
     never less; a measured zero (basis "result", RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE) is charged 0. The day file
@@ -605,8 +609,13 @@ def charge(store, st, tokens, now, r, unit, basis=None):
     try:
         d = _day(store, now)
         new = unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]
-    except (OSError, ValueError, TypeError, KeyError, AttributeError):
-        new = False     # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as e:
+        # never replace a damaged day file with a partial history, and never raise st["spent"] past a run the day did
+        # not book: the item's step raises before it saves, keeps the run uncharged, and charges it on the first tick
+        # after the record is repaired (spent_today refuses all work meanwhile). Before, the item counted the run and
+        # the repaired day never did (Codex r4 part0 #1).
+        raise SpendUnreadable("spend record unreadable (%s: %s): run %s stays uncharged until it is repaired"
+                              % (type(e).__name__, e, unit)) from e
     if new:
         d["runs"][unit] = n
         d["spent"] += n
@@ -1428,7 +1437,11 @@ def proof_gate(fx, r, st, c):
         return None, None       # no WEAK, or one the live rule reads PASS: the Marker reads the sha afresh
     if c["sha"] == held["sha"] and held.get("binding"):
         return None, None       # a CONTRACT repair: the same code is validated again against the repaired binding
+    bare = lambda k: {x: y for x, y in (k or {}).items() if x not in ("by_gen", "why")}     # noqa: E731  bookkeeping
     if c["sha"] == held["sha"]:
+        if "contract" in held and bare(held["contract"]) != bare(st["contract"]):
+            return None, None   # a contract-only proof repair: the checker runs the changed proof on the same code, as it
+            # would on an empty commit carrying the same repair (Codex r4 part0 #2)
         return "proof_unchanged", "%s is the sha the proof was found weak at: no proof moved" % c["sha"]
     k = st["contract"] or {}
     named = set(re.split(r"[\s'\"=:,;()]+", " ".join([k.get("proof") or "", k.get("live") or ""]
@@ -1438,7 +1451,6 @@ def proof_gate(fx, r, st, c):
     # One the product already had is the code under test, and a proof-only worker may re-point the contract at any file
     # (Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #1). An unanswerable existence reads as existed: refused.
     moved = fx.changed(held["sha"], c["sha"], st["item"])
-    bare = lambda k: {x: y for x, y in (k or {}).items() if x not in ("by_gen", "why")}     # noqa: E731  bookkeeping
     if not moved and "contract" in held and bare(held["contract"]) == bare(st["contract"]) and not held.get("binding"):
         # an empty commit above the weak sha moved no proof and no contract (Codex #2): the same proof, read again
         return "proof_unchanged", "%s moves no file and the contract is the one found weak: no proof moved" % c["sha"]
@@ -3457,6 +3469,8 @@ def hand_check_lint(r, items):
             re.compile(rx)
         except re.error as e:
             out.append("hand_check.title_rx %r: %s" % (rx, e))
+        except TypeError as e:  # a non-string entry hand_check skips: named, never a crash of the lint (Codex r4 part2 #2)
+            out.append("hand_check.title_rx %r: not a pattern string (%s)" % (rx, e))
     return out
 
 
@@ -4010,7 +4024,10 @@ def launch_failed(store, r, now, why):
         br["until"] = now + min(r["breaker_cool_s"] * (2 ** n), r["breaker_cool_max_s"])
         if not was_open:            # a second failure of the same tick extends this open, it is not another one
             c = br.setdefault("opens", {}).setdefault(cause_key(why), {"n": 0})
-            c.update(n=c["n"] + 1, last=now, why=why[:300])
+            # each opening's time, so the emergency counts openings INSIDE the window, never the incident's total
+            # (0, 40 and 80 s with a 60 s window are two, not three: Codex r4 part2 #1)
+            ts = [t for t in c.get("ts") or [] if now - t < r["breaker_same_cause_window_s"]] + [now]
+            c.update(n=len(ts), ts=ts, last=now, why=why[:300])
     br["why"] = why[:300]
     br["at"] = now
     store._write(store.p("breaker.json"), json.dumps(br))
@@ -4046,6 +4063,11 @@ def breaker_emergency(store, fx, r, now, acts):
     changed = len(opens) != len(br.get("opens", {}))
     item = (r.get("staffing") or {}).get("alarm_item")
     for key, c in opens.items():
+        if "ts" in c:       # a record from before the opening times keeps its count
+            live = [t for t in c["ts"] if now - t < r["breaker_same_cause_window_s"]]
+            if live != c["ts"]:
+                c.update(ts=live, n=len(live))
+                changed = True
         if c["n"] < r["breaker_same_cause_opens"]:
             continue
         said = c.setdefault("said", [])
@@ -5567,15 +5589,28 @@ def clones_this_tick(acts, by=None):
     return sum(1 for a in acts if a.get("do") == "clone_try" and (by is None or a.get("by", "check") == by))
 
 
-def give_back(store, item, why, to="retired"):
+def give_back(store, item, why, to="retired", reserved=None):
     """`retired`: the other seat's after all, never ours. `queued`: the ledger already says ours, so it must stay in
-    the line: retired, nothing would ever pick it up again."""
+    the line: retired, nothing would ever pick it up again. `reserved`: the reserve_foreign token; the item moves only
+    while that very reservation still stands (running, the same `reserving`), so a hold or fence that landed meanwhile
+    is never overwritten (Codex r4 part4 #1). -> True when it moved."""
     with store.lock():
         cur = store.load(item)
-        cur.pop("reserving", None)
-        cur["status"] = to
-        store.save(cur)
-    store.journal({"at": iso(time.time()), "do": "give_back", "item": item, "why": why})
+        if reserved is not None and not still_reserved(cur, reserved):
+            moved = False
+        else:
+            cur.pop("reserving", None)
+            cur["status"] = to
+            store.save(cur)
+            moved = True
+    store.journal({"at": iso(time.time()), "do": "give_back" if moved else "give_back_fenced", "item": item,
+                   "why": why if moved else "%s; not given back: the reservation was overtaken (now %s)"
+                   % (why, (cur or {}).get("status"))})
+    return moved
+
+
+def still_reserved(cur, reserved):
+    return bool(cur) and cur["status"] == "running" and cur.get("reserving") == reserved
 
 
 def reserve_foreign(store, fx, r, item, now, acts):
@@ -5594,13 +5629,17 @@ def reserve_foreign(store, fx, r, item, now, acts):
         cur["foreign"] = True
         store.save(cur)
     fx.settle_wait(cfg["settle_s"])
+    with store.lock():      # a hold or fence that landed during the wait wins: nothing here moves the item after it
+        if not still_reserved(store.load(item), now):
+            acts.append({"do": "reservation_overtaken", "item": item})
+            return False
     words = fx.seat_words()
     theirs = (fx.item_state(item) or {}).get("owner") == foreign_seat(r)
     if words is None or item in words:
         why = "its tree is unreadable" if words is None else "its seat has an unpublished word on it"
         # a crash or a failed launch brings it back here already handed over: retired, it would strand as ours
         # and a word on it waits too: once published the ledger says what it was, and `retire` or the line acts on that
-        give_back(store, item, why, "retired" if theirs and words is not None else "queued")
+        give_back(store, item, why, "retired" if theirs and words is not None else "queued", reserved=now)
         acts.append({"do": "give_back", "item": item, "why": why})
         return False
     why = fx.ledger_take(item) if theirs else None
@@ -5609,7 +5648,7 @@ def reserve_foreign(store, fx, r, item, now, acts):
             cur = store.load(item)
             cur["take_fails"] = fails = cur.get("take_fails", 0) + 1
             store.save(cur)
-        give_back(store, item, why, "retired" if fails >= 3 else "queued")
+        give_back(store, item, why, "retired" if fails >= 3 else "queued", reserved=now)
         acts.append({"do": "give_back", "item": item, "why": why})
         return False
     return True
@@ -5757,7 +5796,7 @@ def _lease(store, fx, r, now, acts, seen):
             why = fx.ledger_start(item)
             if why:
                 if reserved:        # handed over, so it stays in line
-                    give_back(store, item, "start refused", "queued")
+                    give_back(store, item, "start refused", "queued", reserved=now)
                 with store.lock():  # a ledger refusal is this item's, not the launcher's: it waits, the belt does not
                     cur = store.load(item)
                     cur["start_again_at"] = now + r["breaker_cool_s"]

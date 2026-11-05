@@ -4308,7 +4308,13 @@ def t_review_wrong_verdicts():
     with open(x.s.p("spend-%s.json" % R.day_key(x.now)), "w") as f:
         f.write('{"spent": 5, "ru')
     ok(R.spent_today(x.s, x.now) >= R.UNREADABLE_SPEND, "a truncated day file blocks spending")
-    R.charge(x.s, {"spent": 0}, 7, x.now, RULES, "u1")
+    st0 = {"spent": 0}
+    try:
+        R.charge(x.s, st0, 7, x.now, RULES, "u1")
+        raised = False
+    except R.SpendUnreadable:
+        raised = True
+    ok(raised and st0["spent"] == 0, "a charge on a damaged day raises before the item counts it (Codex r4 part0 #1)")
     with open(x.s.p("spend-%s.json" % R.day_key(x.now))) as f:
         ok(f.read() == '{"spent": 5, "ru', "and is not overwritten by a partial history")
     x.done()

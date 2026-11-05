@@ -431,17 +431,24 @@ def fail_detail(k, v):
 
 
 def staged_idle(fx, g, c, now):
-    """-> why a live staging is over in all but name, or None: the game is UP, started after the staging began, and has
-    run stage_idle_s since. The staging's step then ends its run (settle) and releases the bridge, as at stage_max_s."""
+    """-> (why, up_seen): why a live staging is over in all but name, or None: the game is UP, started after the staging
+    began, and has been SEEN up stage_idle_s since. The staging's step then ends its run (settle) and releases the bridge,
+    as at stage_max_s. up_seen is {"started", "at"}: when this supervisor first read THIS process UP (the caller keeps it
+    on g). The clock runs from that reading, never from process start: a 25-minute full-list load is LOADING for 25
+    minutes, and measured from its start it read idle on its first UP reading (Codex r4 game0 #1)."""
     rd = fx.game_reading() or {}
     started = rd.get("started")
+    seen = g.get("up_seen")
     if rd.get("state") != "UP" or not started or started <= (g.get("staged_at") or 0):
-        return None
-    up = now - started
+        return None, seen
+    if not seen or seen.get("started") != started:     # a new process: its clock starts at this reading
+        seen = {"started": started, "at": now}
+    up = now - seen["at"]
     if up < c["stage_idle_s"]:
-        return None
-    return "the game it staged has been UP %ds (started %s, limit %ds): the load is done" % (
-        up, time.strftime("%H:%M:%SZ", time.gmtime(started)), c["stage_idle_s"])
+        return None, seen
+    return "the game it staged has been seen UP %ds (started %s, first seen UP %s, limit %ds): the load is done" % (
+        up, time.strftime("%H:%M:%SZ", time.gmtime(started)), time.strftime("%H:%M:%SZ", time.gmtime(seen["at"])),
+        c["stage_idle_s"]), seen
 
 
 def blocked_here(rows, clauses, sha, started, now):
@@ -744,6 +751,12 @@ class GameFx(object):
 
 # ---------------------------------------------------------------- holds that outlived their user
 
+def names_item(purpose, item):
+    """True when the bridge purpose names `item` as a whole id: `ART` is not in `staging CART` (Codex r4 game0 #2; a
+    substring match kept an idle ART's game hold alive on CART's bridge activity)."""
+    return bool(item) and re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(item), purpose or "") is not None
+
+
 def stale_holds(states, now, c, alive, bridge, reading):
     """-> [(item, kind, why)]: every game-phase holder other_active would count that no longer uses the game. Pure but
     for the callables: alive(pid) -> bool; bridge() -> bridge_reading(); reading() -> game_reading(), each asked only
@@ -772,7 +785,7 @@ def stale_holds(states, now, c, alive, bridge, reading):
                 continue
             if br is None:
                 br = bridge() or {}
-            if br.get("holder") and s["item"] in (br.get("purpose") or ""):
+            if br.get("holder") and names_item(br.get("purpose"), s["item"]):
                 out.append((s["item"], "seen", now))       # it drives the game now: the idle clock starts again
                 continue
             seen = li.get("bridge_seen") or li.get("at") or now
@@ -863,6 +876,43 @@ def _t(v):
     return v if isinstance(v, list) else [v, v]
 
 
+def _load_gate(store, fx, r, item, g, rd, now, acts):
+    """A LOADING game, from every road that could restage it (the prove phase's stale rows, and every entry to `stage`:
+    a final waiter's batch timer, a lane fix that stages now). -> (True, None): waited or ended the attempt, the tick
+    is over; (False, why): stall evidence says this load is dead and a restage may replace it. Before, a final waiter
+    whose batch timer ran out entered `stage` while the game read LOADING and restaged it with no bound or evidence
+    (Codex r4 game1 #1)."""
+    c = cfg(r)
+    bound = load_bound(c, rd.get("mods"))
+    age = int(now - (rd.get("started") or g.get("staged_at") or g["entered_at"]))   # never 0 for ever
+    if age < bound:
+        why = "the game is loading: %ds of a %ds bound (%s mods)" % (age, bound, rd.get("mods") or "unread")
+        _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
+                                      s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
+        acts.append({"do": "game_loading", "item": item, "why": why})
+        return True, None
+    # BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY: the clock alone never restarts a loading game
+    ev = fx.load_stall_evidence()
+    msg = _load_policy().deadline_exceeded("cold load of %s mods" % (rd.get("mods") or "unread"), age, bound,
+                                           alive=True)       # LOADING = the process runs
+    if ev and ev.startswith(STALL_BLIND):
+        # a probe that cannot see would wait this load for ever: the deadline ends the ATTEMPT (a counted
+        # harness failure and an alarm), and the game, which may still be loading, is left running
+        _harness(store, fx, r, item, "%s; the stall probe is blind (%s), so the attempt ends and the game is "
+                 "left loading" % (msg, ev[len(STALL_BLIND):][:200]), now, acts)
+        _save(store, item, lambda s: s["game"].update(spare_load={"started": rd.get("started")}))
+        return True, None
+    if not ev:
+        why = "%s; no stall evidence (belt_watchdog), so it is waited, not restaged" % msg
+        _save(store, item, lambda s: (s.update(put_down={"on": why[:300], "at": now}),
+                                      s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
+        acts.append({"do": "game_loading_past_deadline", "item": item, "why": why[:300]})
+        return True, None
+    if g.get("spare_load") is not None:     # evidence, not the clock: this load is restaged after all
+        _save(store, item, lambda s: s["game"].pop("spare_load", None))
+    return False, "%s; stall evidence: %s" % (msg, ev[:200])
+
+
 def _env(store, fx, r, item, rows, since, now, acts):
     """UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES (owner 2026-11-05: "fix class not instance"): a clause that measured
     nothing for an ENVIRONMENT reason (relentless_envcause.classify) never goes back to a builder or starts a generation.
@@ -888,10 +938,13 @@ def _env(store, fx, r, item, rows, since, now, acts):
                                                   or (v.get("why") or "").startswith(relentless_envcause.HARNESS[0]))
             envs.append(e)
     fresh = [e for e in envs if e.fix and e.fp not in tried]
-    if fresh:
-        return _env_fix(store, item, fresh, now, acts)
+    if fresh and _env_fix(store, item, fresh, now, acts):
+        return True
+    # a fix that rides the next staging (-> False) never ends the reading: a second, unfixable cause beside it still
+    # routes, or the item fell through to _refuse and went back to a builder (Codex r4 game1 #2)
     # the fix's time is the lane clock, a row's is its own: a re-read is a NEWER row after a staging that carried it
-    again = [e for e in envs if e.fix and staged >= _t(tried[e.fp])[0] and e["at"] > _t(tried[e.fp])[1]]
+    again = [e for e in envs if e.fix and e.fp in tried and staged >= _t(tried[e.fp])[0] and e["at"] > _t(tried[e.fp])[1]
+             and not st["game"].get("remedy")]      # a fix not yet run by a confirmed staging was never tried
     stuck = [e for e in envs if not e.fix and e["decided"]]
     if again or stuck:
         _env_route(store, fx, item, again + stuck, now, acts,
@@ -1276,34 +1329,10 @@ def step(store, fx, r, item, now, acts, sup):
             return _waits(store, fx, item, "harness: the game cannot be read from the supervisor: %s"
                           % (rd.get("evidence") or "no reading"), now, acts)
         if state == "LOADING":  # a cold load: wait it out, holding nothing, up to the bound of the list that loads
-            bound = load_bound(c, rd.get("mods"))
-            age = int(now - (rd.get("started") or g.get("staged_at") or g["entered_at"]))   # never 0 for ever
-            if age < bound:
-                why = "the game is loading: %ds of a %ds bound (%s mods)" % (age, bound, rd.get("mods") or "unread")
-                _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}),
-                                              s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
-                acts.append({"do": "game_loading", "item": item, "why": why})
+            held, why = _load_gate(store, fx, r, item, g, rd, now, acts)
+            if held:
                 return
-            # BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY: the clock alone never restarts a loading game
-            ev = fx.load_stall_evidence()
-            msg = _load_policy().deadline_exceeded("cold load of %s mods" % (rd.get("mods") or "unread"), age, bound,
-                                                   alive=True)       # LOADING = the process runs
-            if ev and ev.startswith(STALL_BLIND):
-                # a probe that cannot see would wait this load for ever: the deadline ends the ATTEMPT (a counted
-                # harness failure and an alarm), and the game, which may still be loading, is left running
-                _harness(store, fx, r, item, "%s; the stall probe is blind (%s), so the attempt ends and the game is "
-                         "left loading" % (msg, ev[len(STALL_BLIND):][:200]), now, acts)
-                _save(store, item, lambda s: s["game"].update(spare_load={"started": rd.get("started")}))
-                return
-            if not ev:
-                why = "%s; no stall evidence (belt_watchdog), so it is waited, not restaged" % msg
-                _save(store, item, lambda s: (s.update(put_down={"on": why[:300], "at": now}),
-                                              s["game"].update(loading={"started": rd.get("started"), "bound": bound})))
-                acts.append({"do": "game_loading_past_deadline", "item": item, "why": why[:300]})
-                return
-            stale = [{"why": "%s; stall evidence: %s" % (msg, ev[:200])}]
-            if g.get("spare_load") is not None:     # evidence, not the clock: this load is restaged after all
-                _save(store, item, lambda s: s["game"].pop("spare_load", None))
+            stale = [{"why": why}]
         if stale and state == "UP" and rd.get("started"):
             # the running game cannot serve this item; before a reload, every other game item gets its try on it, and
             # this one waits (bounded) to ride the one reload with the rest
@@ -1375,6 +1404,9 @@ def step(store, fx, r, item, now, acts, sup):
             return
         if spare is not None:
             _save(store, item, lambda s: s["game"].pop("spare_load", None))
+            g = store.load(item)["game"]
+        if rd.get("state") == "LOADING" and _load_gate(store, fx, r, item, g, rd, now, acts)[0]:
+            return      # every road into a staging meets the load bound and the stall evidence, not only the prove one
         if rd.get("state") == "UP" and rd.get("started"):
             # another item's load may already run this build (owner 2026-11-02, "To save game loads"): an item that has
             # no row from the running game tries it before it stages a load of its own (BIOME_TIER_CLEANUP_1 read DOWN
@@ -1426,9 +1458,13 @@ def step(store, fx, r, item, now, acts, sup):
         def f(s):
             s.pop("put_down", None)
             s["run"] = desc
-            s["game"].update(phase="staging", staged_at=now, taken_at=now, stages=s["game"]["stages"] + 1,
+            s["game"].update(phase="staging", staged_at=now, taken_at=now, up_seen=None, stages=s["game"]["stages"] + 1,
                              ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others])
-            s["game"].pop("remedy", None)        # once: this staging carries it
+            # this staging carries the remedy; it is spent only when the staging confirms game-ready (settle below),
+            # never at launch: a staging that died before running it would leave the fix unapplied and its next
+            # identical row read as "fixed once" (Codex r4 game1 #3)
+            if s["game"].get("remedy"):
+                s["game"]["remedy_carried"] = s["game"].pop("remedy")
         st = _save(store, item, f)
         if st is None:
             fx.bridge_release()
@@ -1440,18 +1476,21 @@ def step(store, fx, r, item, now, acts, sup):
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
-            _save(store, item, lambda s: s["game"].update(phase="stage", **({"remedy": g["remedy"]} if g.get("remedy") else {})))
+            _save(store, item, lambda s: (s["game"].update(phase="stage", **({"remedy": g["remedy"]} if g.get("remedy") else {})),
+                                          s["game"].pop("remedy_carried", None)))
             acts.append({"do": "game_stage_launch_failed", "item": item, "why": why[:200]})
             return
-        for o in others:        # once: this staging carries each rider's remedy too
+        for o in others:        # this staging carries each rider's remedy too, spent as the item's is
             if (o.get("game") or {}).get("remedy"):
-                _save(store, o["item"], lambda s: s["game"].pop("remedy", None))
+                _save(store, o["item"], lambda s: s["game"].__setitem__("remedy_carried", s["game"].pop("remedy")))
         acts.append({"do": "game_stage", "item": item, "unit": unit})
         return
 
     if g["phase"] == "staging":
         run = st.get("run")
-        done = staged_idle(fx, g, c, now) if fx.alive(run) and not g.get("ready") else None
+        done, seen = staged_idle(fx, g, c, now) if fx.alive(run) and not g.get("ready") else (None, g.get("up_seen"))
+        if seen != g.get("up_seen"):
+            _save(store, item, lambda s: s["game"].update(up_seen=seen))
         if done:
             acts.append({"do": "game_stage_idle", "item": item, "why": done})
         if fx.alive(run) and now - g["staged_at"] < c["stage_max_s"] and not g.get("ready") and not done:
@@ -1472,8 +1511,17 @@ def step(store, fx, r, item, now, acts, sup):
         st = _save(store, item, lambda s: s["game"].update(phase="prove", released=gave is None, full=None,
                                                           stop_since=None))
         rode = []
+        ran = bool(st and st["game"].get("ready")) and not (st and st["game"].get("snag"))
+
+        def spend(s):       # a remedy is spent only by a staging that confirmed game-ready; else it waits for the next
+            carried = s["game"].pop("remedy_carried", None)
+            if carried and not ran:
+                s["game"]["remedy"] = merged_remedy([s["game"].get("remedy"), carried])
+        if st:
+            st = _save(store, item, spend) or st
 
         def ride(s):
+            spend(s)
             if s["game"].get("phase") in ("prove", "stage", "final"):
                 s["game"].update(phase="prove", staged_at=now, waits_reload=None)
                 rode.append(s["item"])
