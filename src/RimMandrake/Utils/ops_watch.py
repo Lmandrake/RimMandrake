@@ -4618,10 +4618,58 @@ def steve_release():
 OLD_TIMER = "rm-ops-watch.timer"     # the clock the metronome's sense phase replaces (metronome_phases.json owns)
 SENSE_PHASE = "sense"
 EXIT_FENCED = 3
-COMPOSE_MAX_AGE_S = 1000.0   # a carried family reading older than this reads UNMEASURED (rules: compose_max_age_s):
-                             # ~1.5 rounds of the sense round robin (21 families, 2 a beat, 60 s beats)
+COMPOSE_MAX_AGE_S = 1000.0   # the FLOOR of the carry bound; compose_max_age_s() derives the real one from the round robin
+METRONOME_PHASES = HERE / "systemd" / "metronome_phases.json"
+METRONOME_TIMER = HERE / "systemd" / "rm-metronome.timer"
 COMPOSE_NEEDS_FLOW = ("testing",)   # collectors that read the flow collector's ctx (closes, open_ids): flow joins them
 COMPOSE_ALARM_FAMILY = "flow"  # a compose pass files alarms only when it measures this family (its ctx: the ledger ids)
+
+
+def compose_round_bound_s(phases=None, timer=None, n_families=None):
+    """-> (seconds, why): the longest a healthy family can wait between its own sense passes while the metronome's
+    round robin keeps turning, from the phase table and the timer, never a typed number. A pass whose families overrun
+    is followed by one retry beat per family (metronome fam_retry) before the round moves on, so the worst turn of
+    per_beat families costs 1 + per_beat beats; a beat starts the timer's OnUnitInactiveSec (+ AccuracySec) after the
+    last one ENDED, and a beat lasts at most budget_s. A typed 1000 s (~1.5 rounds at 60 s beats, no retries) was
+    under the measured round: plan read 18:38:14Z then 19:00:35Z (1341 s, 5 overruns in 16 beats), so plan.blind read
+    1 on a healthy source three times in a day (RELAPSE_PLAN_FIX_DIED_TWICE). A beat that defers sense outright is not
+    counted: that is a stalled phase, the metronome's own critical max_ok_age_s. (None, why) when either file does not read."""
+    try:
+        tab = json.loads(Path(phases or METRONOME_PHASES).read_text(encoding="utf-8"))
+        sense = tab["phases"][SENSE_PHASE]
+        per = int(sense["per_beat"])
+        budget = float(tab["budget_s"])
+        unit = {"ms": 0.001, "s": 1, "sec": 1, "min": 60, "m": 60, "h": 3600}
+        tmr = {}
+        for line in Path(timer or METRONOME_TIMER).read_text(encoding="utf-8").splitlines():
+            k, _, v = line.partition("=")
+            m = re.fullmatch(r"\s*(\d+(?:\.\d+)?)\s*(ms|sec|s|min|m|h)?\s*", v)
+            if m:
+                tmr[k.strip()] = float(m.group(1)) * unit[m.group(2) or "s"]
+        gap = tmr["OnUnitInactiveSec"] + tmr.get("AccuracySec", 0.0)
+        n = int(n_families if n_families is not None else len(FAMILIES))
+        if per < 1 or n < 1 or not (gap > 0 and budget > 0):
+            raise ValueError("per_beat %s, families %s, gap %s, budget %s" % (per, n, gap, budget))
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return None, "the round robin's bound does not read: %s: %s" % (type(e).__name__, str(e)[:160])
+    beats = math.ceil(n / per) * (1 + per)
+    return beats * (gap + budget), "%d beats (%d families, %d a beat, each turn overrun and retried) x %.0f s" % (
+        beats, n, per, gap + budget)
+
+
+def compose_max_age_s(rules):
+    """-> (seconds, sick flag or None): how old a carried family may be before it reads UNMEASURED, and so before its
+    .blind target alarms. Never under the round robin's worst round (compose_round_bound_s): a rule may raise it, not
+    lower it. A bound that does not read falls to COMPOSE_MAX_AGE_S, said aloud as a flag."""
+    try:
+        ruled = float(rules.get("compose_max_age_s", COMPOSE_MAX_AGE_S))
+    except (TypeError, ValueError):
+        ruled = COMPOSE_MAX_AGE_S
+    bound, why = compose_round_bound_s()
+    if bound is None:
+        return ruled, {"rule": "compose_bound", "key": "compose.max_age_s", "value": None, "window": "now",
+                       "detail": "carried families age out at %.0f s, maybe inside one round: %s" % (ruled, why)}
+    return max(ruled, bound), None
 
 
 class Fenced(RuntimeError):
@@ -4740,11 +4788,10 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
         points.update(pts)
-    try:
-        max_age = float(rules.get("compose_max_age_s", COMPOSE_MAX_AGE_S))
-    except (TypeError, ValueError):
-        max_age = COMPOSE_MAX_AGE_S
     if compose:
+        max_age, bound_flag = compose_max_age_s(rules)
+        if bound_flag:
+            sick.append(bound_flag)
         carried = {}
         for fam in ORDER:
             if fam in families:
