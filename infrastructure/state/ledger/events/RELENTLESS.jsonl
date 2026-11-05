@@ -687,3 +687,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORRORS_RAIDING_FACTION_1 A3 (L2), read-only proof","ts":"2026-11-05T14:48:00Z","tsn":1793890080131862362}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:48:17Z","tsn":1793890097379988649}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A2 (L2), read-only proof","ts":"2026-11-05T14:49:03Z","tsn":1793890143427145554}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:51:55Z","tsn":1793890315289033355}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL: deploy and restart for its live proofs","ts":"2026-11-05T14:57:06Z","tsn":1793890626862433109}
