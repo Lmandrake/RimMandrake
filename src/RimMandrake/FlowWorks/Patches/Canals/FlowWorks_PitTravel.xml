@@ -22,9 +22,9 @@
   </Operation>
   <!-- jumpers: creatures whose lore has them hop, bound or leap -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ThingDef[defName="RM_Huldu" or defName="RM_Sipper" or defName="RSW_Tooke" or defName="RSW_FrogDog" or defName="RSW_SandLeaper" or defName="RSW_CaveLemming"]</xpath>
+    <xpath>Defs/ThingDef[defName="RM_Huldu" or defName="RM_Sipper" or defName="RSW_Tooke" or defName="RSW_FrogDog" or defName="RSW_SandLeaper" or defName="RSW_CaveLemming" or defName="RSW_Clodhopper"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>Defs/ThingDef[defName="RM_Huldu" or defName="RM_Sipper" or defName="RSW_Tooke" or defName="RSW_FrogDog" or defName="RSW_SandLeaper" or defName="RSW_CaveLemming"]</xpath>
+      <xpath>Defs/ThingDef[defName="RM_Huldu" or defName="RM_Sipper" or defName="RSW_Tooke" or defName="RSW_FrogDog" or defName="RSW_SandLeaper" or defName="RSW_CaveLemming" or defName="RSW_Clodhopper"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.RM_PitTravelExtension">
           <jumps>true</jumps>
