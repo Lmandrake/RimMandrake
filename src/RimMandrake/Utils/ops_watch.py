@@ -2140,6 +2140,7 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
     hot_spent = (bands.get("spent") or [None, None])[1]
     ages = bands.get("age_s") if isinstance(bands.get("age_s"), dict) else {}
     stages = cfg.get("churn_item_stuck_stages") or ("game", "checking")
+    parked = set(cfg.get("churn_item_parked_statuses") or ("blocked", "held"))
     held = held_churn_items() if held == "read" else held
     if held is None:
         return {}           # alarms.json unreadable: every churn alarm holds, none files (run_alarms holds filing too)
@@ -2151,7 +2152,11 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
             torn.add(n)
             continue
         status = st.get("status") if isinstance(st.get("status"), str) else None
-        if status in ("done", "retired"):
+        if status in ("done", "retired") or status in parked:
+            # put down (blocked on a named wait, or held): no worker is sent and nothing spends, so a churn alarm only
+            # buys a diagnosis run of a cause the block already records (OPS_CHURN_DIAGNOSE_JAM_VPZP_ECXS: JAM_CLASS,
+            # blocked on CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS, read 'unmeasured failed it 4 times; spend rising');
+            # a held alarm on it reads 0 and clears, and it is read afresh once it is picked up again
             continue
         why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg)) else []
         spent = st.get("spent") if is_num(st.get("spent")) else 0

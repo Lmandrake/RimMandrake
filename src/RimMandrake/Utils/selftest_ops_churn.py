@@ -19,7 +19,7 @@ and no reading said so. Each check fails on the code before the change:
    rises with nothing landed, or that is stuck in game/checking; the same-class repeat is windowed to a failure inside
    the window (B7: old A,A + new B is not churn); a held item no longer churning reads 0, and UNMEASURED when only the
    unread spend could still name it; new ones are capped per pass; the wildcard rule mints one fixed OPS_ name per item
-   and run_alarms files it.
+   and run_alarms files it. A put-down item (blocked or held) gets none: nothing spends while it waits.
 
 Fixtures only: a temp store, a temp RM_OPS_WATCH_DIR, a fake relentless.py, fake filer.
 
@@ -273,6 +273,19 @@ def main():
        ci.get("PARKED_ITEM"))
     ok("PUT_DOWN_ITEM" not in ci, "8: a blocked item's window spend is flat, not 'spend rising'", ci.get("PUT_DOWN_ITEM"))
     ok(ci.get("OLDGEN_ITEM", {}).get("v") == 1, "8: a gen started before the window that still burns is rising spend", ci.get("OLDGEN_ITEM"))
+    # OPS_CHURN_DIAGNOSE_JAM_VPZP_ECXS: JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS, blocked on a reach ticket with 4
+    # 'unmeasured' inside the window and its spend hot, read bouncing + spend rising: a put-down item spends nothing
+    jam = {"returns": 0, "gen": 1, "spent": 11.1e6}
+    unm = [(t1 + i, "unmeasured") for i in range(4)]
+    pd = OW.churn_item_points({"PD_BLOCKED": (dict(jam, status="blocked", wait={"kind": "reach"}), unm, 9e6),
+                               "PD_HELD": (dict(jam, status="held"), unm, 9e6),
+                               "PD_LIVE": (dict(jam, status="candidate"), unm, 9e6)}, NOW, cfg8, True, set())
+    ok(set(pd) == {OW.CHURN_ITEM_PREFIX + "PD_LIVE"}, "8: a blocked or held item gets no churn reading", sorted(pd))
+    said = pd.get(OW.CHURN_ITEM_PREFIX + "PD_LIVE", {}).get("x", {}).get("said", "")
+    ok("bouncing: unmeasured failed it 4 times" in said and "spend rising" in said,
+       "8: the same item, picked up again, reads bouncing and spend rising", said)
+    pdh = OW.churn_item_points({"PD_BLOCKED": (dict(jam, status="blocked"), unm, 9e6)}, NOW, cfg8, True, {"PD_BLOCKED"})
+    ok(pdh.get(OW.CHURN_ITEM_PREFIX + "PD_BLOCKED", {}).get("v") == 0, "8: a held alarm on a put-down item reads 0 (clears)", pdh)
     p8b = OW.rl_churn(s8, NOW, dict(cfg8, churn_item_new_per_pass=1))
     ok(sorted(k for k in p8b if k.startswith(OW.CHURN_ITEM_PREFIX)) == [OW.CHURN_ITEM_PREFIX + "CALM_ITEM", OW.CHURN_ITEM_PREFIX + "OLDGEN_ITEM"],
        "8: new items are capped per pass, largest spend first; held ones always read", sorted(p8b))
