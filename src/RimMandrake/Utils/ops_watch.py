@@ -2208,6 +2208,7 @@ def rl_churn(store, now, cfg):
         return churn_blind(why)
     import hashlib
     by_hash, gen_end, started, churn, classes, torn, per = {}, {}, {}, [], {}, 0, {}
+    ended_at = {}       # (item, gen) -> epoch of its latest ending row: a gen ended before the window spent nothing in it
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
@@ -2225,6 +2226,8 @@ def rl_churn(store, now, cfg):
                         # a gen-less ending (`done` is written without one) belongs to the gen open when it was written
                         if cur is not None and r.get("end") and "kind" not in r:
                             gen_end[(n, cur)] = str(r["end"])
+                        if cur is not None and r.get("end"):
+                            ended_at[(n, cur)] = max(ended_at.get((n, cur)) or 0, epoch(r.get("at")) or 0)
                         continue
                     if r.get("start"):
                         started[(n, r["gen"])] = epoch(r.get("at"))
@@ -2232,6 +2235,9 @@ def rl_churn(store, now, cfg):
                         continue
                     if r.get("end") and "kind" not in r:
                         gen_end[(n, r["gen"])] = str(r["end"])
+                    if r.get("end"):
+                        k_ = (n, r["gen"])
+                        ended_at[k_] = max(ended_at.get(k_) or 0, epoch(r.get("at")) or 0)
                     if attempt_failed(r, ok_ends):
                         t, end = attempt_failed(r, ok_ends)
                         fails.append((t or 0, end))
@@ -2273,8 +2279,11 @@ def rl_churn(store, now, cfg):
             g = rx.match(m)
             key = (by_hash.get(g.group(1)), int(g.group(2))) if g else None
             t = started.get(key) if key else None
-            if key and key[0] in per:
-                per[key[0]][2] += tk     # the item's spend in the window's day files: a gen started earlier still burns
+            if key and key[0] in per and not (ended_at.get(key) and ended_at[key] < tlo and (t or 0) < tlo):
+                # the item's spend in the window's day files: a gen started earlier still burns, but one that also ENDED
+                # before the window spent nothing in it (OPS_CHURN_DIAGNOSE_BRIDGE_GRXX_AYXK: a day file reaches up to 48 h
+                # back, so BRIDGE_STALL_DIAGNOSTIC_1, blocked since 08:25Z the day before, read 1996k 'spend rising')
+                per[key[0]][2] += tk
             if t is None:
                 unmapped += tk     # its day file is in the window; when in it, unknown: counted against the reading
                 continue

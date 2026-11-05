@@ -243,7 +243,12 @@ def main():
         [{"gen": 6, "at": iso(t1), "start": marker("LANDED_ITEM", 6)}, {"gen": 6, "at": iso(t1 + 5), "end": "harness"},
          {"gen": 6, "at": iso(t1 + 6), "end": "harness"}])
     runs = {marker("SPEND_ITEM", 1): 400000, marker("BOUNCE_ITEM", 4): 1000, marker("LANDED_ITEM", 6): 5000,
-            marker("OLDGEN_ITEM", 1): 9000}
+            marker("OLDGEN_ITEM", 1): 9000, marker("PARKED_ITEM", 13): 365432}
+    # OPS_CHURN_DIAGNOSE_BRIDGE_GRXX_AYXK: BRIDGE_STALL_DIAGNOSTIC_1, blocked a day, its gen started AND ended before the
+    # window, but its run sits in a day file the window reaches: no spend in the window, so not 'spend rising'
+    st8("PARKED_ITEM", {"status": "blocked", "returns": 0, "gen": 13, "spent": 7.3e6},
+        [{"gen": 13, "at": iso(old), "start": marker("PARKED_ITEM", 13)},
+         {"gen": 13, "at": iso(old + 400), "end": "blocked", "kind": "item", "class": "blocked_by_predecessor"}])
     st8("OLDGEN_ITEM", {"status": "running", "returns": 0, "gen": 1, "spent": 8e6},
         [{"gen": 1, "at": iso(old), "start": marker("OLDGEN_ITEM", 1)}])
     (s8 / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": runs}))
@@ -259,6 +264,8 @@ def main():
        "8: a game item past its hot age band is stuck", ci.get("STUCK_ITEM"))
     ok(ci.get("CALM_ITEM", {}).get("v") == 0 and ci["CALM_ITEM"].get("m") == "MEASURED",
        "8: a held item no longer churning reads 0 (clears); high lifetime spend alone is not rising", ci.get("CALM_ITEM"))
+    ok("PARKED_ITEM" not in ci, "8: a gen that started and ended before the window is no spend in it (a parked item)",
+       ci.get("PARKED_ITEM"))
     ok(ci.get("OLDGEN_ITEM", {}).get("v") == 1, "8: a gen started before the window that still burns is rising spend", ci.get("OLDGEN_ITEM"))
     p8b = OW.rl_churn(s8, NOW, dict(cfg8, churn_item_new_per_pass=1))
     ok(sorted(k for k in p8b if k.startswith(OW.CHURN_ITEM_PREFIX)) == [OW.CHURN_ITEM_PREFIX + "CALM_ITEM", OW.CHURN_ITEM_PREFIX + "OLDGEN_ITEM"],
