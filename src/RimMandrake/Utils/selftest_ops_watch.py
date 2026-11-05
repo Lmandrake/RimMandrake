@@ -1956,11 +1956,11 @@ def _alarm(events, lines=()):
     """Fold these events, publish the table, read the alarm -> (reading, findings the table gives no outcome)."""
     _d = _tf.mkdtemp()
     _sr, _sp, _so = _M.read, _M.replay, os.environ.get("FINDINGS_FOLD_OUT")
-    _M.read, _M.replay = (lambda: events), (lambda ev: type("W", (), {"items": {}})())
+    _M.read, _M.replay = (lambda: events), (lambda ev, **k: type("W", (), {"items": {}})())
     os.environ["FINDINGS_FOLD_OUT"] = _d
     try:
         rules = _FF.load_rules()
-        t = _FF.fold(*_FF.read_ledger(rules), [], list(lines), rules, _RT % 9)
+        t = _FF.fold(*_FF.read_ledger(rules)[:3], [], list(lines), rules, _RT % 9)
         with open(os.path.join(_d, _FF.REPORT), "w", encoding="utf-8") as f:
             f.write(_FF.render_report(t))
         return OW.untriaged_reading(events), sorted(n for n, f in t["raw"].items() if not f["outcome"])

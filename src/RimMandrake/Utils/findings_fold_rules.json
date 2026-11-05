@@ -12,6 +12,9 @@
  "_contradiction_states_why": "design section 6: a failing row under an item marked done or validated is a contradiction and goes to the top of the next curation (the quarry item stood validated with 26 fails and 0 passes). Judged per item: the item's own latest PASS/FAIL of each row its done records map to it (ingest.groups_of)",
  "decisions_file": "infrastructure/state/findings/decisions.jsonl",
  "_decisions_file_why": "FOUNDRY's judgment per signature (work / merge / memory / route / retire / undo), appended by `findings_fold.py decide` and committed; a `rimflow spawn --from <finding>` is read from the ledger as a work decision with no line needed; an undo line on the signature takes back that, a ledger retype or an item of the name alike",
+ "cover_kinds": ["work", "merge", "route", "item"],
+ "cover_states": ["proposed", "ready", "doing"],
+ "_cover_why": "RELAPSE_FLOW_FIX_DIED_TWICE: a later finding of a signature whose latest decision handed it to an item (cover_kinds: the decision's --into, a spawn's or an item's name) has its outcome when that item stood in cover_states at the finding's own time (the ledger's state timeline), so every rerun of a standing failure does not re-fire flow.untriaged_findings after an ack routed it (AA5B4B repeated signature Se09b07 routed at 04:54Z, and the flow incident relapsed). It still counts in failed_since_decision. A failure seen once the item is built, validated or terminal is untriaged again: the fix died, or is claimed and contradicted. Never covering: the lane_item (a standing item that never closes), a retype (its event names the run's item, not the one that tracks it: route or merge instead), retire and memory (they judged it would not recur)",
  "memory_roots": ["skills/", "infrastructure/state/facts/", "src/", ".claude/"],
  "_memory_roots_why": "design section 3 and 9.3: memory lands where it is read (a skill, a fact file, a rule or check), never the lessons inbox",
  "normalise": [

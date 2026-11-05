@@ -530,9 +530,9 @@ def _rl(events):
     sys.path.insert(0, FF.RIMFLOW)
     import model as _m
     _sr, _sp = _m.read, _m.replay
-    _m.read, _m.replay = (lambda: events), (lambda ev: type("W", (), {"items": {}})())
+    _m.read, _m.replay = (lambda: events), (lambda ev, **k: type("W", (), {"items": {}})())
     try:
-        return FF.read_ledger(RULES)
+        return FF.read_ledger(RULES)[:3]
     finally:
         _m.read, _m.replay = _sr, _sp
 

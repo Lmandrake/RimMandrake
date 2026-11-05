@@ -34,7 +34,7 @@ def no_outcome(events, rules, drop=None):
     read = model.read
     model.read = lambda *a, **k: [e for e in read(*a, **k) if keep(e)]
     try:
-        t = ff.fold(*ff.read_ledger(rules), [], ff.read_decisions(ff.decisions_path(rules)), rules, ff.utcnow())
+        t = ff.fold(*ff.read_ledger(rules)[:3], [], ff.read_decisions(ff.decisions_path(rules)), rules, ff.utcnow())
     finally:
         model.read = read
     d = tempfile.mkdtemp(prefix="retype_outcome_")

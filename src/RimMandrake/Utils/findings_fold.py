@@ -63,7 +63,7 @@ WHY_RE = re.compile(r"^(?P<chain>[^/ ]*)/(?P<row>\S+) FAIL on (?P<host>\S+): (?P
 REPORT = "findings_fold.md"
 TABLE_FENCE, TABLE_END = "\n\n```json findings_fold table\n", "\n```\n"
 TABLE_KEYS = {"schema", "generated", "counts", "signatures", "contradictions", "raw"}
-SIG_ROW_KEYS = {"chain", "count", "decision", "failed_since_decision", "findings", "first_seen", "health", "items", "last_fail", "last_seen", "mod", "passes_since", "row", "row_latest", "status", "text"}    # every field fold() always writes on a row
+SIG_ROW_KEYS = {"chain", "count", "decision", "failed_since_decision", "findings", "first_seen", "health", "items", "last_fail", "last_seen", "mod", "passes_since", "row", "row_latest", "status", "text"}    # every field fold() always writes on a row (but covered_by: tables before it lack it)
 
 
 class Unmeasured(Exception):
@@ -80,9 +80,10 @@ def load_rules(path=None):
         with open(path, encoding="utf-8") as f:
             rules = json.load(f)
         for k in ("finding_types", "lane_item", "machine_health_patterns", "contradiction_states",
-                  "decisions_file", "normalise", "memory_roots"):
+                  "decisions_file", "normalise", "memory_roots", "cover_kinds", "cover_states"):
             rules[k]
-        for k in ("finding_types", "machine_health_patterns", "contradiction_states", "memory_roots"):
+        for k in ("finding_types", "machine_health_patterns", "contradiction_states", "memory_roots", "cover_kinds",
+                  "cover_states"):
             if not (isinstance(rules[k], list) and all(isinstance(x, str) for x in rules[k])):
                 raise ValueError("%s is not a list of strings" % k)
         if not all(isinstance(x, list) and len(x) == 2 and all(isinstance(y, str) for y in x) for x in rules["normalise"]):
@@ -191,7 +192,7 @@ def read_done(qdir):
 
 
 def read_ledger(rules):
-    """-> (findings by name, spawn events, item states). A folded finding missing a field, or a name reused with
+    """-> (findings by name, spawn events, item states, item state timelines {id: [(ts, state), ...]}). A folded finding missing a field, or a name reused with
     different content, is UNMEASURED (an exact duplicate line, as a git union merge can leave, is one finding)."""
     sys.path.insert(0, RIMFLOW)
     try:
@@ -199,7 +200,14 @@ def read_ledger(rules):
         if os.environ.get("RIMFLOW_LEDGER"):          # the selftest redirect, as ingest.recorded_run binds it
             model.EVENTS = os.environ["RIMFLOW_LEDGER"]
         events = model.read()
-        states = {i: it.state for i, it in model.replay(events).items.items()}
+        timeline = {}
+
+        def seen(ev, world, ok):                    # every state an item reached, and when (findings_fold cover)
+            for k in ("id", "name") if ok else ():  # a spawn names its new item in `name`, and carries no id
+                it = world.items.get(ev.get(k)) if isinstance(ev.get(k), str) else None
+                if it is not None and (not timeline.get(it.id) or timeline[it.id][-1][1] != it.state):
+                    timeline.setdefault(it.id, []).append((str(ev.get("ts") or ""), it.state))
+        states = {i: it.state for i, it in model.replay(events, observe=seen).items.items()}
     except Exception as e:  # noqa: BLE001 - every ledger failure is UNMEASURED
         raise Unmeasured("ledger unreadable: %s: %s" % (type(e).__name__, str(e)[:200]))
     finds, retyped = {}, {}
@@ -224,7 +232,7 @@ def read_ledger(rules):
     spawns += [{"as": "item", "from": n, "name": n, "seat": e.get("seat"), "ts": max(str(e.get("ts")), finds[n]["ts"]),
                 "why": "an item of that name"} for e in events if e.get("event") in ("file", "spawn")
                for n in {e.get("id"), e.get("name")} & set(finds)]
-    return finds, spawns, states
+    return finds, spawns, states, timeline
 
 
 def decisions_path(rules):
@@ -318,7 +326,26 @@ def latest_decision(sig, names, spawns, lines):
     return None if not last or last["as"] == "undo" else last
 
 
-def fold(finds, spawns, states, recs, decision_lines, rules, now):
+def state_at(timeline, states, item, at):
+    """The item's state when a failure at `at` was seen: its timeline's last state stamped no later than `at` (None
+    before it existed); with no timeline (a caller that has none), its state now."""
+    if timeline is None:
+        return states.get(item)
+    st = None
+    for ts, state in timeline.get(item, ()):        # ledger order; a shard's clock skew cannot end the walk early
+        if ts <= at:
+            st = state
+    return st
+
+
+def covering(d, rules):
+    """The item a decision hands its failure on to, whose open state covers later repeats, or None (see rules
+    _cover_why): never the lane item, a standing item that never closes."""
+    item = d.get("into") if d and d["as"] in rules["cover_kinds"] else None
+    return item if item and item != rules["lane_item"] else None
+
+
+def fold(finds, spawns, states, recs, decision_lines, rules, now, timeline=None):
     idx, runs = index_records(recs), row_runs(recs)
     raw = {}
     for name, ev in sorted(finds.items()):
@@ -357,8 +384,14 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now):
                 row_key(s["mod"], s["chain"], s["row"], dt, rules) == key and
                 not any(raw[n]["job"] == j for n in s["findings"]))
         s["status"] = "HEALTH" if s["health"] else "DECIDED" if d else "NEW"
+        # RELAPSE_FLOW_FIX_DIED_TWICE: a repeat of a failure already handed to an item that is still open is that item's
+        # evidence, not a new finding; terminal item, retire or memory -> a new failure needs judging again
+        # judged at each finding's own time: a repeat seen while the item stood open keeps its cover after it closes
+        cov = covering(d, rules)
+        s["covered_by"] = cov
         for n in s["findings"]:
-            raw[n]["outcome"] = bool(d) and raw[n]["at"] <= d["ts"]
+            raw[n]["outcome"] = bool(d) and (raw[n]["at"] <= d["ts"] or bool(cov) and
+                                             state_at(timeline, states, cov, raw[n]["at"]) in rules["cover_states"])
     contra = []
     for (mod, chain, row), tl in sorted(runs.items()):
         latest = {}
@@ -414,7 +447,8 @@ def render_md(t):
         out.append("")
     sect("NEW: FOUNDRY judges (work / merge / memory / route / retire)", lambda s: s["status"] == "NEW")
     sect("DECIDED, and failed again since", lambda s: s["status"] == "DECIDED" and s["failed_since_decision"],
-         lambda s: dec(s) + ", %d failure(s) since" % s["failed_since_decision"])
+         lambda s: dec(s) + ", %d failure(s) since%s" % (s["failed_since_decision"], "; repeats while %s stood open "
+                                                        "are covered" % s["covered_by"] if s.get("covered_by") else ""))
     sect("DECIDED", lambda s: s["status"] == "DECIDED" and not s["failed_since_decision"], dec)
     sect("HEALTH: for Operations (lane item)", lambda s: s["status"] == "HEALTH")
     return "\n".join(out)
@@ -533,7 +567,8 @@ def cmd_run(a):
         os.makedirs(od, exist_ok=True)
         path = os.path.join(od, REPORT)
         prev, text = read_prev(path)
-        t = fold(*read_ledger(rules), read_done(qd), read_decisions(decisions_path(rules)), rules, utcnow())
+        finds, spawns, states, timeline = read_ledger(rules)
+        t = fold(finds, spawns, states, read_done(qd), read_decisions(decisions_path(rules)), rules, utcnow(), timeline)
         if prev is not None and semantic(prev) == semantic(t) and text == render_report(prev):
             print("findings_fold: unchanged since %s: nothing written" % prev["generated"])
             return 0
@@ -558,7 +593,7 @@ def decide(a, seat, rules):
         return 2
     into = a.into
     if a.as_ in ("work", "merge"):
-        _, _, states = read_ledger(rules)
+        states = read_ledger(rules)[2]
         if into not in states:
             print("REFUSED: --into %r is not an item in the ledger (work: `rimflow spawn --from <finding>` first)" % into)
             return 2
