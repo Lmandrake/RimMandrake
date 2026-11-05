@@ -514,7 +514,7 @@ def deploy_args_for(mod_folder, root=None):
     return [a for n in ordinary for a in ("--mod", n)]
 
 
-def compose_test_list(package_ids, config_path=None):
+def compose_test_list(package_ids, config_path=None, zoom_installed=None):
     """Append `package_ids` (the mods under test) to the live ModsConfig's
     <activeMods>, after `modlist_swap.py --minimal --apply` has made MINIMAL
     live. Appending at the END is deliberate: our mods patch/extend the
@@ -542,7 +542,18 @@ def compose_test_list(package_ids, config_path=None):
     import zoom_guard
     sys.path.insert(0, _UTILS)
     if not zoom_guard.has_zoom(list(live) + add):
-        add.insert(0, zoom_guard.ZOOM)          # the guard for a list that arrives without any zoom mod
+        # STEVE_STALE_LOAD_DIAGNOSE_CAMERA_MOD_GONE: name the zoom mod only when its folder is on THIS host. RimWorld
+        # drops an id with no folder, so an unconditional add made the run's own list fail its load check (SteveDesktop
+        # job J20261104T074700Z-42d8eb, INVALID stale_load `not loaded: ray1203.simplecamerasetting`; the folder
+        # reached Steve's Mods two minutes later). The owner's zoom rule is for lists where he sits; a host without
+        # the mod still tests, and says so.
+        have = zoom_guard.zoom_installed() if zoom_installed is None else (
+            zoom_installed() if callable(zoom_installed) else zoom_installed)
+        if have:
+            add.insert(0, zoom_guard.ZOOM)      # the guard for a list that arrives without any zoom mod
+        else:
+            print("modcheck: %s is not installed on this host; composing without a zoom mod" % zoom_guard.ZOOM,
+                  flush=True)
     if add:
         lis = "".join("    <li>%s</li>\n" % p for p in add)
         xml = xml.replace("</activeMods>", lis + "  </activeMods>")
