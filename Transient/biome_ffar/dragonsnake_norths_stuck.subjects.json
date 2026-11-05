@@ -1,0 +1,83 @@
+{
+ "schema": 1,
+ "generated": "2026-11-04T19:42:36-0800",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_dragonsnake_norths_stuck"
+ ],
+ "biomes": {
+  "SUBJECTS_dragonsnake_norths_stuck": {
+   "label": "Dragonsnake A-D norths: stuck after 3 judge rounds \u2014 pick one",
+   "slug": "dragonsnake_norths_stuck",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Dragonsnake A-D norths: stuck after 3 judge rounds \u2014 pick one \u2014 game art",
+   "lead_html": "The live Dragonsnake A-D norths are top-down dorsal views, wrong for a north facing. Three art-eval rounds of rear-view redraws (r1, r2, r3 per variant) were all judged short of ACCEPT; round 3: A, B, D really bad, C weak only on size jump vs the south (the south's own scale defect, FACING_NORMVIEW_FIX_SHRINKS_SNAKES_TO_PEAS). Pick a north per variant lane; skipping keeps the live dorsal north. Swim norths stand on your 2026-10-18 pick.",
+   "rows": [
+    {
+     "key": "RSW_Dragonsnake",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "dragonsnake",
+     "defNames": [
+      "RSW_Dragonsnake"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "arteval_RSW_Dragonsnake__Dragonsnake_A_r1_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_A_r2_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_A_r3_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_B_r1_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_B_r2_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_B_r3_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_C_r1_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_C_r2_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_C_r3_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_D_r1_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_D_r2_n_north",
+      "arteval_RSW_Dragonsnake__Dragonsnake_D_r3_n_north"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/dragonsnake",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Dragonsnake"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Dragonsnake found"
+     }
+    }
+   ],
+   "hide_sets": [
+    "facings_redraw",
+    "jfo",
+    "regen_gt",
+    "history",
+    "Swim"
+   ],
+   "recommend": {
+    "arteval_RSW_Dragonsnake__Dragonsnake_A_r2_n": "closest colour match to A's south (olive with yellow-green dorsal stripe); r3 is a drabber brown",
+    "arteval_RSW_Dragonsnake__Dragonsnake_B_r3_n": "cleanest rear view, crest and fan tail match south/east",
+    "arteval_RSW_Dragonsnake__Dragonsnake_C_r3_n": "judge WEAK only on F_SIZE_JUMP (the south's scale defect); true rear view, glow spots match",
+    "arteval_RSW_Dragonsnake__Dragonsnake_D_r3_n": "cleanest rear view, red dorsal crest matches south"
+   }
+  }
+ }
+}

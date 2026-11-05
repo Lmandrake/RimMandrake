@@ -1,0 +1,20 @@
+{
+ "sheet": "dragonsnake_norths_stuck_sheet_2026-11-04.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-04T19:44:43-0800",
+ "caught": "first build showed no round 1-3 redraws (1957 artpipe renders were missing from the art ledger; backfilled) and stale 10-18 renders/swims filled the columns (hidden); every lane now holds only live + that variant's r1-r3 norths",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RSW_Dragonsnake": {
+   "fp": "0014b8062f042879",
+   "verdict": "FLAG",
+   "note": "Looked at all 4 lanes (live S/E/N + r1/r2/r3 N, contact sheet D:/ClaudeWork/rimmandrake/scratch/facings_redraw/gen3/look.png): every redraw renders, is the same creature and variant as its lane, and is a true rear view (live N is top-down dorsal). FLAG: stuck after 3 judge rounds (ESCALATE, audit_auto_20261103_1100), so his pick decides; r3 still shows a high camera angle; A r3 colour is drabber than A's south, hence A r2 recommended."
+  }
+ },
+ "dropped": []
+}

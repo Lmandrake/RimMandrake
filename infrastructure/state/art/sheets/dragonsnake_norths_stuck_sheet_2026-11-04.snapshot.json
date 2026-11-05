@@ -1,0 +1,159 @@
+{
+ "biome": "SUBJECTS_dragonsnake_norths_stuck",
+ "built": "2026-11-04T19:43:59-0800",
+ "census": "Transient/biome_ffar/dragonsnake_norths_stuck.subjects.json",
+ "census_git_head": null,
+ "droppedAllRuled": [],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 36 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {
+  "RSW_Dragonsnake": {
+   "brief": "a long finned mud-water serpent that drags prey under from the shallows",
+   "kind": "drafted",
+   "name": "sliskarr",
+   "source": "design/RimMandrake/noncanon_alternatives.json"
+  }
+ },
+ "rows": {
+  "RSW_Dragonsnake": {
+   "columns": {
+    "A": {
+     "east": "271697684f52f81e8dda9bb9b26973af6489f7d25815e7ef3339628023cc5dd3",
+     "north": "564943e7899c8957c11218f64487210cf673b7f10e21f642efe73b96eacb43cd",
+     "south": "1daf96a996f02175fce615e9db722410db84739fd00801efe3b707d384044ced"
+    },
+    "B": {
+     "north": "05a5176a24835b601428dc8aed12a3ab52e119deeee4f6dcc8439cff504fafb0"
+    },
+    "C": {
+     "north": "9fd7dc76bdf881f82a99385fca94371dab07a19ebe5a5715071fe07cc491f9a7"
+    },
+    "D": {
+     "north": "d100d57e79175e8c122631eae112ce30b2f6f2fd023ef6ac875148e0a9c05695"
+    },
+    "E": {
+     "east": "a21f59d2d8bfcfc26f2829ad2e26949026fe7843b75bcad914b242c5292fa7e7",
+     "north": "e659ed7f91fc277ee356394aa99505065fc5f7ab5e736d1dc4ea3d841bdd0492",
+     "south": "854efd3484e11b1d0c173a8e26e85fbb8bb5d70989c14bd6e1ab928e460681c3"
+    },
+    "F": {
+     "east": "ed7f44d52dcd00a4c026814549cfd62869d8e7506b7ba3cf310c774550b78afb",
+     "north": "7f30177e69f0968176db915923c59e8d8c869cfc28df81502f432b9c9004679a",
+     "south": "0759554a9756138f442e7057fc5f31f163793e80ac20badceab7998d25c40856"
+    },
+    "G": {
+     "north": "3f02ffbe0a75d1b883325561fe3b140f4c39162f778174ad0ad22845bd3b156e"
+    },
+    "H": {
+     "north": "61ad55ece0a92adf2c446081f22d845a446ff5eefc220b0021cbd793377ba8d8"
+    },
+    "I": {
+     "north": "3eab2c0c82b6968156dee018ffc59d57e51be82cca3b058e10be494bff02c943"
+    },
+    "J": {
+     "east": "e8857198d596348b24288e414f305d2af261fa48ed8e9fa246db65d3bfaab270",
+     "north": "96f8f5e92a354d861546eae012d7d582e784917474961d1c2980ef45569ea49c",
+     "south": "8698de28770708cdc4daea7c05797f323eebe3a96ef708a990bc338720b108c8"
+    },
+    "K": {
+     "north": "8b13a18bb8daaee5e4b3c722b09c6d872a383e5ea81dab9a993007e41f1f28f2"
+    },
+    "L": {
+     "north": "86a24a184c5b7baa5517439e6af2f9af5e3fb0343b4169453ac6f7e6d4a99c45"
+    },
+    "M": {
+     "north": "fba8b9b7eba2d07a4eff5128ecf0f450f8c8e92c58811c94af5c8f1221226f90"
+    },
+    "N": {
+     "east": "e04d3c7b178b97dc4f5aeb952f541e942740a811b7fd12faf290b5f0fc0787b3",
+     "north": "33f25992dab5a9aa95d9a5e2ac324fc2b7c17e10ad31c77f272115ff7e7d7a91",
+     "south": "b2b37e76533194f38b1da666979b60a763f90f0cf83ea5a2760742b69f6fe961"
+    },
+    "O": {
+     "north": "c16937b64c4d9ed833e735dcc4f6da90c1c5c2f89484c33b6494a6562ba96a35"
+    },
+    "P": {
+     "north": "583d864b78fd1163dc59e256bc63c3a8462034429f1a42df5f69163a6a29af4b"
+    },
+    "Q": {
+     "north": "c672e8050c33ff3e42e33afecb3866f18a3d2c452b0a4925fe9dfae65a479ebb"
+    },
+    "R": {
+     "east": "5dac3487db9f80c7cd5ac37702da531620320548f37b3f577e4125354c9b0881",
+     "north": "5c8235e4b8696b24b4b8c3685d6470d27006057e9ed594a088686fe9450eb095",
+     "south": "2475c7103728aa860effceb7fb30229d042aa721d9196e562bf5495a7470c48a"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "C": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "D": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "E": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_Swim",
+    "F": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "G": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "H": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "I": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "J": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "K": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "L": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "M": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "N": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "O": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "P": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "Q": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "R": "RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RSW_Dragonsnake__Dragonsnake_A_r3_n",
+    "C": "render arteval_RSW_Dragonsnake__Dragonsnake_A_r1_n",
+    "D": "render arteval_RSW_Dragonsnake__Dragonsnake_A_r2_n",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render arteval_RSW_Dragonsnake__Dragonsnake_B_r3_n",
+    "H": "render arteval_RSW_Dragonsnake__Dragonsnake_B_r1_n",
+    "I": "render arteval_RSW_Dragonsnake__Dragonsnake_B_r2_n",
+    "J": "IN GAME \u2014 SWBestiary",
+    "K": "render arteval_RSW_Dragonsnake__Dragonsnake_C_r3_n",
+    "L": "render arteval_RSW_Dragonsnake__Dragonsnake_C_r1_n",
+    "M": "render arteval_RSW_Dragonsnake__Dragonsnake_C_r2_n",
+    "N": "IN GAME \u2014 SWBestiary",
+    "O": "render arteval_RSW_Dragonsnake__Dragonsnake_D_r3_n",
+    "P": "render arteval_RSW_Dragonsnake__Dragonsnake_D_r1_n",
+    "Q": "render arteval_RSW_Dragonsnake__Dragonsnake_D_r2_n",
+    "R": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D"
+   ],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake"
+  }
+ },
+ "sheetId": "dragonsnake_norths_stuck_sheet_2026-11-04",
+ "snapshotId": "025acb826aedbf6c"
+}
