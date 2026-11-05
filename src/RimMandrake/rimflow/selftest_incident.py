@@ -1308,7 +1308,8 @@ def test_incidents_verb_says_the_news():
     table, rev, rows = at_his_rung("a-1")
     now = T0 + rev * M
     IN.append(rows + IN.step(table, rows, status_of(now, a_1=6), now)["rows"], IN.told_path())
-    env = dict(os.environ, RM_OPS_WATCH_DIR=os.environ["RM_OPS_WATCH_DIR"])
+    # seatless, as the nightly timer runs it: the verb only reads (NIGHTLY_COP_FIX_RED_HPZIOX_GMAU)
+    env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
     out = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "incidents"], env=env, capture_output=True, text=True, timeout=120)
     check("verb: rimflow incidents names a revisit's news", "news readings moved: m.a-1" in out.stdout, (out.stdout[-400:], out.stderr[-400:], r.root))
 

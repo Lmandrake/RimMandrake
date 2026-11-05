@@ -4207,7 +4207,7 @@ def build_parser():
     return p
 
 
-READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot")
+READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot", "incidents")
 
 
 # \u26d4 Bare assent is not an instruction. These are the words that mean "I agree
