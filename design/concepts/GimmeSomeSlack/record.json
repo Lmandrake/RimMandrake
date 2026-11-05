@@ -1,0 +1,580 @@
+{
+ "scope": [
+  {
+   "id": "s_poles_and_floor",
+   "text": "Both overhead poles and floor cords are wanted",
+   "speaker": "owner",
+   "source": "OWNER:1793590546413059482",
+   "quote": "Yes, I want both poles and floor coords."
+  },
+  {
+   "id": "s_electricity_only",
+   "text": "GSS is cables, conduits and electricity only; hoses are FlowWorks'",
+   "speaker": "owner",
+   "source": "OWNER:1791668361069985398",
+   "quote": "it allows GimmeSomeSlack to be entirely about cables and conduits and electricity."
+  },
+  {
+   "id": "s_experience",
+   "text": "Realistically sprawling over-length extension cables: messy, non-repeating, pile against walls, resist tight turns, gentle tangles and coils; strips/connectors at 3/4-way junctions",
+   "speaker": "owner",
+   "source": "OWNER:1793596860187785113",
+   "quote": "The experience should be to make the space filled with realistically sprawling, over length extension cables just like happens in real life."
+  },
+  {
+   "id": "s_connectivity",
+   "text": "Cords must explain the real power connections; the route may be circuitous; exact drawing need not survive reload or gravship flight",
+   "speaker": "owner",
+   "source": "OWNER:1793597165476278817",
+   "quote": "they should explain the connectivity if power between the actual conduits and devices and the visual appearance of the wires."
+  },
+  {
+   "id": "s_cost",
+   "text": "Large numbers of wires and connectors must not bring a problematic delay",
+   "speaker": "owner",
+   "source": "OWNER:1792999698321800383",
+   "quote": "find out if gimme some slack also has the same problemmatic delay with large numbers of wires and connectors."
+  },
+  {
+   "id": "s_theft",
+   "text": "Power theft, if caught, brings a steady goodwill drain",
+   "speaker": "owner",
+   "source": "OWNER:1791668362056240097",
+   "quote": "If caught, steady goodwill drain (like living too close to a settlement)"
+  },
+  {
+   "id": "s_pipe_pole_switch",
+   "text": "Pipe poles have their own switch",
+   "speaker": "owner",
+   "source": "OWNER:1792636779179768957",
+   "quote": "Their own switch."
+  },
+  {
+   "id": "s_no_plug_in_pipe_slot",
+   "text": "A cord never plugs into a pipe slot; favour diagonal approaches sliding underneath",
+   "speaker": "owner",
+   "source": "OWNER:1792764476096951152",
+   "quote": "It should favor diagonal approaches sliding underneath, to avoid confusion."
+  }
+ ],
+ "decisions": [
+  {
+   "id": "w1",
+   "kind": "waiver",
+   "speaker": "owner",
+   "source": "OWNER:1793590546413059482",
+   "words": "I don't much care about savegame continuity",
+   "scope": "a save made with GSS loading clean after the mod is removed",
+   "about": [
+    "uninstall_clean"
+   ]
+  },
+  {
+   "id": "d_styles_advisory",
+   "speaker": "owner",
+   "source": "OWNER:1793590546413059482",
+   "text": "Four styles are not reject-level but stay built",
+   "quote": "No, I would not reject it, but there's no reason not to do this."
+  },
+  {
+   "id": "d_restring_job",
+   "speaker": "owner",
+   "source": "OWNER:1792080489684076824",
+   "text": "Re-stringing a cut span is a colonist job (by card 2026-10-15)"
+  },
+  {
+   "id": "d_owner_walk_verified",
+   "speaker": "owner",
+   "source": "OWNER:1792128342129067198",
+   "text": "He walked the 31-station walk save RM_gss_walk_20261015b and verified it",
+   "quote": "GimmeSomeSlack all looks great! Verified."
+  }
+ ],
+ "asks": [
+  {
+   "id": "a_flagship",
+   "status": "draft",
+   "about": [
+    "cord_slack_lay",
+    "junction_strips",
+    "connectivity_truth",
+    "overhead_spans"
+   ],
+   "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+   "text": "Picture the one room you would show a friend to say 'this is Gimme Some Slack': a workshop floor of tangled extension cords piling into a power strip, or a yard where a sagging line crosses to a far mast and one wire lies sparking on the ground? Which is the mod's face (showcase 1)?"
+  },
+  {
+   "id": "a_junction_every",
+   "status": "draft",
+   "about": [
+    "junction_strips"
+   ],
+   "source": "OWNER:1793596860187785113",
+   "text": "At a 3- or 4-way conduit junction, must every cord that meets there visibly plug into the strip or connector, or is one strip per junction cluster (with cords merely arriving near it) enough? A labelled mock of both would show it."
+  }
+ ],
+ "inventory": [
+  {
+   "id": "invisible_conduit",
+   "what": "PowerConduit/WaterproofConduit draw fully transparent; vanilla HiddenConduit stays invisible and is never drawn as a cord; the power overlay keeps its connector lines",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/ConduitVisuals.cs",
+    "ITEM:GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md",
+    "OWNER:1793590546413059482"
+   ],
+   "scope_source": [
+    "OWNER:1793590546413059482"
+   ],
+   "note": "walk bars M1, M3, M6; B13 hidden-conduit hookup PASS live 2026-10-23. last full live proof_all 2026-10-29: 126 PASS, 0 FAIL, 1 UNMEASURED (ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING verify partial); code has moved since and the rows carry no scene-contract controls"
+  },
+  {
+   "id": "cord_slack_lay",
+   "what": "Floor cords between nodes lie in long slack loops, pile against walls, end at a wall's face (stub), never put a vertex on an unwalkable cell, and dive under a barrier with a plate each side when unroutable",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
+    "ITEM:GSS_CORD_LAY_FIX_HEAPS_IN_DOORWAYS",
+    "ITEM:GSS_HOSE_LAY_DIAGNOSE_FIFTEEN_NEW_REDS"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793596860187785113",
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md"
+   ],
+   "scope_source": [
+    "OWNER:1793596860187785113"
+   ],
+   "note": "walk bars M1c, M2b, M5; open: GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS, GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET. 'should not repeat patterns' has no instrument (see contradiction no_repeat_unmeasured). GSS_HOSE_LAY_DIAGNOSE's reds were cord maze/relay lay rows. last full live proof_all 2026-10-29: 126 PASS, 0 FAIL, 1 UNMEASURED (ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING verify partial); code has moved since and the rows carry no scene-contract controls"
+  },
+  {
+   "id": "junction_strips",
+   "what": "At conduit junctions the cords meet a power strip (Modern) or connector/tape/tin (other looks); dense blocks read as a tangle pile",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+   ],
+   "proof": "exercised_unrecorded",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793596860187785113",
+    "OWNER:1792128342129067198"
+   ],
+   "scope_source": [
+    "OWNER:1793596860187785113"
+   ],
+   "note": "DecalKind PowerStrip/JunctionTape/JunctionTin in CordBuilder.cs; he walked the tangle stations 2026-10-15 ('all looks great'). No row asserts a strip at EVERY 3/4-way junction with the other cords plugging into it (his 2026-11-02 words): contradiction junction_every_unknown. Open: GSS_JUNCTION_REDRAW_BODY_WIDER_THAN_CORD, GSS_STRIP_LED_FIX_MISSED_REPAINT"
+  },
+  {
+   "id": "connectivity_truth",
+   "what": "What is drawn explains the real power connections: no cord joins two PowerNets, no second phantom cable at a device, no plug into a pipe slot",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordSlideUnderChecks.cs",
+    "ITEM:CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793597165476278817",
+    "OWNER:1792158918005115465",
+    "OWNER:1792764476096951152"
+   ],
+   "scope_source": [
+    "OWNER:1793597165476278817"
+   ],
+   "note": "walk bar M2 (no cord across nets, also after the M8 break). Pipe-slot plug fixed and closed 2026-10-24. Phantom second cable (GSS_CORD_SILENCE_PHANTOM_SPARK) started 2026-10-16, never closed: contradiction phantom_unverified. last full live proof_all 2026-10-29: 126 PASS, 0 FAIL, 1 UNMEASURED (ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING verify partial); code has moved since and the rows carry no scene-contract controls"
+  },
+  {
+   "id": "break_ends_live_dead",
+   "what": "Destroying a conduit cell gives two terminal ends with no cord across the gap; the powered end reads live (sparking), the far end dead, and a source switched off reads dead within one 250-tick poll",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md"
+   ],
+   "scope_source": [
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md"
+   ],
+   "note": "walk bar M8 (M8_break_two_ends_live_dead, M8c_source_off_reads_dead_250); validated north star quotes 'Sparking if live, dead if not.' last full live proof_all 2026-10-29: 126 PASS, 0 FAIL, 1 UNMEASURED (ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING verify partial); code has moved since and the rows carry no scene-contract controls"
+  },
+  {
+   "id": "rebuild_cost",
+   "what": "Placing, cutting or digging near conduit re-plans only the touched edge, off the main thread in budgeted slices, so a large base shows no stall",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "ITEM:GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS",
+    "ITEM:GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET",
+    "ITEM:GSS_ASYNC_TEST_FIX_STALE_CORRIDOR_GAP",
+    "ITEM:GSS_DETERMINISM_FIX_IGNORES_STALE_PIECES",
+    "ITEM:GSS_FRAME_COST_MEASURE_RIPPLE_DEFAULTS_ON"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792999698321800383"
+   ],
+   "proof_evidence": [
+    "infrastructure/state/live_proofs/GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS.txt",
+    "infrastructure/state/live_proofs/GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET.txt"
+   ],
+   "scope_source": [
+    "OWNER:1792999698321800383"
+   ],
+   "note": "both slice items closed on the Relentless live tier (gss_slice_window_proof.py). The lone-rebuild 140 ms case (GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS) is still verify partial 2026-10-27: contradiction cost_partial. Walk bar M5 is local invalidation."
+  },
+  {
+   "id": "overhead_spans",
+   "what": "Masts, lamp masts and wall brackets carry sagging spans across gaps into one net; spans draw above pawns and buildings; out-of-range, hostile and non-anchor links are refused",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PlaceWorkers_Aerial.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+    "ITEM:GSS_AERIAL_HINTS_FIX_SMALL_FIBS"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793590546413059482"
+   ],
+   "scope_source": [
+    "OWNER:1793590546413059482"
+   ],
+   "note": "walk bar M10 (validation_aerial.py M13a-e, R1-R3, M14 with the M14_gap_control). last full live proof_all 2026-10-29: 126 PASS, 0 FAIL, 1 UNMEASURED (ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING verify partial); code has moved since and the rows carry no scene-contract controls"
+  },
+  {
+   "id": "downed_spans",
+   "what": "A killed mast or a cut span (explosion) leaves the wire lying on the ground, drawn below pawns, live end and dead end distinct",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
+    "ITEM:GSS_FALLEN_LINE_REDRAW_FLOATS_OVER_PAWNS"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793590546413059482",
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md"
+   ],
+   "scope_source": [
+    "OWNER:1793590546413059482"
+   ],
+   "note": "walk bar M10 (killed mast drops a live and a dead cord; explosion cuts a span). last full live proof_all 2026-10-29: 126 PASS, 0 FAIL, 1 UNMEASURED (ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING verify partial); code has moved since and the rows carry no scene-contract controls"
+  },
+  {
+   "id": "fallen_wire_shock",
+   "what": "A live fallen wire shocks pawns touching it and can ignite fuel puddles",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_FallenWireShock.xml",
+    "ITEM:GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR"
+   ],
+   "proof": "stale",
+   "scope": "not_opened",
+   "source": [
+    "ITEM:GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR"
+   ],
+   "note": "not in the north star. FALLEN_WIRE_SHOCK_1 verify partial 2026-10-12 (chemfuel half PASS). Open: GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT, _SHOCK_OUTLIVES_WIRE, _SHOCK_STILL_BITES."
+  },
+  {
+   "id": "wire_down_alert",
+   "what": "A 'Wire down' alert lists every player anchor with a cut or grounded wire, jumps to it, clears on re-string, and has its own toggle",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/Alert_WireDown.cs",
+    "ITEM:GSS_AERIAL_HINTS_FIX_SMALL_FIBS"
+   ],
+   "proof": "stale",
+   "scope": "not_opened",
+   "source": [
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md"
+   ],
+   "note": "walk bar M10b; WIRE_DOWN_ALERT_1 verify pass 2026-10-11."
+  },
+  {
+   "id": "restring_job",
+   "what": "A colonist job (RM_RestringSpan) re-strings a cut span",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialRestring.xml",
+    "ITEM:GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE",
+    "ITEM:GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792080489684076824"
+   ],
+   "scope_source": [
+    "OWNER:1792080489684076824"
+   ],
+   "note": "his card 2026-10-15: make re-stringing a colonist job. Open: GSS_RESTRING_FIX_STYLES_UNRECONCILED."
+  },
+  {
+   "id": "power_theft",
+   "what": "A power-tap clamp on a neighbour's line draws their power one way; if a pawn of theirs sees it, a steady goodwill drain; removing the clamp stops it; taps have their own toggle",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompPowerTap.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PowerTheftConsequences.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/TapLedger.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_PowerTheft.xml",
+    "ITEM:GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1791668362056240097"
+   ],
+   "scope_source": [
+    "OWNER:1791668362056240097"
+   ],
+   "note": "his own ask 2026-10-10. Rows M19, M19n_taps_off_control and the no-witness control in validation_aerial.py. Open: GSS_POWER_THEFT_FIX_WRONG_VICTIM, GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS."
+  },
+  {
+   "id": "four_styles",
+   "what": "Four looks (Scrapper/junkyard, Industrial/Star Wars, Modern multi-coloured extension cords, Futuristic cyberpunk) picked per build; one connected run draws one look; lamps follow their run",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_ConduitStyles.xml",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialStyles.xml",
+    "ITEM:GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED",
+    "ITEM:GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT",
+    "ITEM:GSS_LAMP_STYLE_FIX_OFF_STILL_STYLED"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793590546413059482",
+    "OWNER:1793596860187785113"
+   ],
+   "scope_source": [
+    "OWNER:1793590546413059482"
+   ],
+   "note": "advisory, not reject-level ('No, I would not reject it, but there's no reason not to do this'); each look judged against its stated purpose. Walk bar M13 (validation_style.py). Open: GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE, GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK."
+  },
+  {
+   "id": "mod_settings",
+   "what": "Master switch off restores vanilla conduit and lamp art without a restart; every Harmony patch belongs to a feature toggle; each toggle really switches its patch off",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "ITEM:GSS_TOGGLES_FIX_OFF_MEANS_OFF",
+    "ITEM:GSS_PATCHES_FIX_TWENTY_THREE_UNLABELLED",
+    "ITEM:GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "CLAUDE.md",
+    "design/validation_walks/RimMandrake/GimmeSomeSlack.md"
+   ],
+   "note": "standing rule: every mod ships superb Mod Settings. Walk bar M7. Four switches still partial (keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder): GSS_SWITCHES_PROVE_LAST_FOUR_STANDING."
+  },
+  {
+   "id": "pipe_pole_switch",
+   "what": "Pipe poles (FlowWorks) are governed by their own FlowWorks setting registered through AerialLineProfiles, not by the GSS power master",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792636779179768957"
+   ],
+   "scope_source": [
+    "OWNER:1792636779179768957"
+   ],
+   "note": "his words 2026-10-22 'Their own switch.' Open: GSS_MULTILINK_FIX_PIPE_POLE_RANGE, PIPE_POLE_REDRAW_NOT_A_POWER_POLE (FlowWorks art)."
+  },
+  {
+   "id": "gravship_connectivity",
+   "what": "After a gravship lands, its cords still explain the real connections (the exact drawing may change)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs",
+    "ITEM:GRAVSHIP_WIRES_SURVIVE_LAUNCH_1"
+   ],
+   "proof": "stale",
+   "scope": "approved",
+   "source": [
+    "OWNER:1793597165476278817"
+   ],
+   "scope_source": [
+    "OWNER:1793597165476278817"
+   ],
+   "note": "his 2026-11-02 words: precise drawing need not survive reloads or flights, only connectivity. Switch keepWiresOnGravship is the M20d row still owed (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED close note)."
+  },
+  {
+   "id": "game_statics_reset",
+   "what": "Per-game static state (tap registry, style picks, printed statics) is cleared between games, so nothing carries into a new game",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+    "ITEM:GSS_STATICS_FIX_OUTLIVE_THE_SAVE"
+   ],
+   "proof": "stale",
+   "scope": "not_opened",
+   "source": [
+    "ITEM:GSS_STATICS_FIX_OUTLIVE_THE_SAVE"
+   ]
+  },
+  {
+   "id": "uninstall_clean",
+   "what": "A save names no class of ours, so it loads after the mod is removed",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+    "ITEM:GSS_SESSION_RESET_REPAIR_SNEAKS_INTO_SAVES"
+   ],
+   "proof": "stale",
+   "scope": "out",
+   "source": [
+    "OWNER:1793590546413059482"
+   ],
+   "note": "waived w1 ('I don't much care about savegame continuity'). Built and stays; covered only by coverage_rest."
+  },
+  {
+   "id": "no_hose",
+   "what": "GSS draws no hose or pipe: hoses and reels live in FlowWorks",
+   "impl": "present",
+   "impl_evidence": [
+    "ITEM:GSS_WALK_HOSES_EXCISE_REELED_IN",
+    "ITEM:GIMMESOMESLACK_HOSE_BEND_TRACE_1"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1791668361069985398"
+   ],
+   "proof_evidence": [
+    "ITEM:GSS_WALK_HOSES_EXCISE_REELED_IN"
+   ],
+   "scope_source": [
+    "OWNER:1791668361069985398"
+   ],
+   "note": "the live walk save holds 0 RM_HoseReel (b805ca93d9). The hose min-bend trace (GIMMESOMESLACK_HOSE_BEND_TRACE_1) is pre-migration work, now FlowWorks'."
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "phantom_unverified",
+   "source": [
+    "OWNER:1792158918005115465",
+    "ITEM:GSS_CORD_SILENCE_PHANTOM_SPARK"
+   ],
+   "text": "His 2026-10-16 phantom second cable at a pump fed by adjacent conduit: item started 2026-10-16, never closed, no item file; connectivity_truth is core (2026-11-02) but this case has no row. Stage 3 files an acceptance scene with the adjacent-feed pump and a control."
+  },
+  {
+   "id": "junction_every_unknown",
+   "source": [
+    "OWNER:1793596860187785113",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+   ],
+   "text": "Strips/connectors are built as junction decals, but whether EVERY 3/4-way junction gets one with the other cords plugging into it is unmeasured (impl partly unknown)."
+  },
+  {
+   "id": "no_repeat_unmeasured",
+   "source": [
+    "OWNER:1793596860187785113"
+   ],
+   "text": "'It should not repeat patterns': no instrument measures repetition of cord shapes across edges; only his eye has judged it. Stage 3 needs a measurable stand-in or an L4-only leaf."
+  },
+  {
+   "id": "cost_partial",
+   "source": [
+    "ITEM:GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS",
+    "infrastructure/state/live_proofs/GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET.txt"
+   ],
+   "text": "Slice items closed live, but the lone-rebuild case is verify partial (2026-10-27) and maxSliceMs < 20 is still tracked there; rebuild_cost is not yet proven whole."
+  },
+  {
+   "id": "switches_partial",
+   "source": [
+    "ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING"
+   ],
+   "text": "Four settings (keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder) have no passing flip proof; gravship_connectivity rides on one of them."
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "ITEM:GIMMESOMESLACK_NORTHSTAR_VALIDATE_1",
+   "not_a_capability": "his L4 walk of the whole mod (2026-10-15/16); recorded as decision d_owner_walk_verified and as exercised evidence, not a capability"
+  },
+  {
+   "ref": "ITEM:GIMMESOMESLACK_RENAME_1",
+   "not_a_capability": "the MessyConduit -> Gimme Some Slack rename (packageId, namespaces, labels)"
+  },
+  {
+   "ref": "ITEM:GSS_INTO_FULL_LIST_1",
+   "not_a_capability": "adding the mod to his full campaign list: a deploy step"
+  },
+  {
+   "ref": "ITEM:GSS_PROBES_FIX_BLIND_SPOTS",
+   "not_a_capability": "proof-harness instruments (probe blind spots), audited under script_audit"
+  },
+  {
+   "ref": "ITEM:GSS_PROOF_DRIVERS_FIX_FALSE_PASS",
+   "not_a_capability": "proof-harness false PASS fixes, audited under script_audit"
+  },
+  {
+   "ref": "ITEM:GSS_PROOF_FIX_THREE_STALE_GATE_CHECKS",
+   "not_a_capability": "proof_all offline gate maintenance"
+  },
+  {
+   "ref": "ITEM:GSS_PROOF_ALL_RETRY_AFTER_THIRTY_FIXES",
+   "not_a_capability": "one proof_all re-run after the 10-06/10-09 fix waves"
+  },
+  {
+   "ref": "src/RimMandrake/GimmeSomeSlack",
+   "covered_by": "cord_slack_lay"
+  }
+ ],
+ "failure_modes": [
+  "Tidy: every row passes but the cords read as neat, taut or repeating lines, or vanilla conduit reskinned; junctions lack strips with cords plugging in. The look is the mod ('Everything is a too-long extension cord'), and only his eye has judged it so far.",
+  "Lying: the drawing says something false about the grid (a cord across two nets, a second phantom cable at a device, a plug into a pipe slot, a live end drawn dead). Conduit is invisible, so he reads the grid off the cords; a misleading drawing is worse than none. The 2026-10-16 phantom case is still unverified.",
+  "Cost: a large base with conduit everywhere stalls when a wire is placed, cut, dug or a mast falls; the slice items closed live but the lone-rebuild case is partial."
+ ],
+ "script_audit": {
+  "scripts": [
+   "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "src/RimMandrake/GimmeSomeSlack/validation_aerial.py",
+   "src/RimMandrake/GimmeSomeSlack/validation_style.py",
+   "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+  ],
+  "shape": "row-based checks (row(rows, name, PASS/FAIL, class)), not named scenes; no entry point per scene",
+  "start": "partial: SITE prep and teardown with OFF_SITE_RECTS, SAVE_precondition/TRIPLET_precondition; most rows do not assert their starting state (power on, walkability, net count)",
+  "control": "present only for M14_gap_control_without_fix, M19n_taps_off_control, the power-theft no-witness control, the unroutable-dive ring control and M12/lod setting restore; none for cord slack, wall faces, junction strips, live/dead ends (M8 has no 'never powered' control), connectivity truth (no planted cross-net or adjacent-feed phantom case) or style one-run",
+  "restore": "SITE teardown and per-row setting restore exist; no recorded snapshot per scene and no scene-begin/scene-end recovery",
+  "hold": "none: no row can stay up for his review; the walk save is staged separately (human_review.py, save_review_map.py)",
+  "to_file_at_stage_3": "named scene entry points with asserted starts, discriminating controls for the cord-look, junction, break-ends, connectivity-truth (adjacent-feed pump) and style scenes, and scene-begin/end recovery; item GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS"
+ }
+}

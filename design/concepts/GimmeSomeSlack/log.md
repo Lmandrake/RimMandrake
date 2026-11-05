@@ -196,3 +196,12 @@ grepped. Inputs: this log, sheet.md, the role file, the tree schema, the GPT doc
 - [ ] sheet.md updated
 - [ ] tree written, lint PASS
 - [ ] published
+
+## Sitting 3, 2026-11-05 (run rm-role-designer-1793862917, headless, stage machine v4). Stage 0 Read
+
+Trigger: owner 2026-11-05 via BENCH, "Please schedule gss and pyrelands designers to be ready tomorrow morning."
+Under the stage machine the earlier sittings' answers are carried into `record.json` (scope, decisions, waiver w1),
+not re-asked. Inventory: 19 capabilities accounting for all 32 built lines. Named contradictions: the 10-16 phantom
+cable is still unverified; every-junction strips and "no repeating patterns" have no instrument; the cost bar is
+partial; four switches unproven. Script audit (`record.json` `script_audit`): rows, not scenes; few controls; no
+per-scene recovery or hold. Draft asks for stage 2: the flagship showcase, and how cords meet a junction strip.
