@@ -1,0 +1,3 @@
+{"run": "rm-role-designer-1793867400", "stage": 5, "outcome": "blocked",
+ "on": "CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED",
+ "summary": "Lock blocked only on the Arbiter coverage signature: concept_tree.py gate refuses with 'no Arbiter coverage signature' alone (root validated, lint clean), the showcase set is accepted (moat 13, garden 7 new, pit_trap 3 new) and the exam passed at tree 572198fe / sheet 68f9946f. sign runs only inside an rm-role-arbiter-<n> run, and nothing launches an Arbiter run for a concept, so filed system item CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED. Artifacts untouched; no mod item filed (step 5 follows the signature)."}
