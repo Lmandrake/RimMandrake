@@ -525,6 +525,33 @@ def rect_str(r):
     return "%d,%d,%d,%d" % tuple(r)
 
 
+# GOLDEN_PONDS_RECONCILE_TWO_FIFTHS: what a painted body's capacity MUST be under the shipped rule, so a sidecar
+# captured under a dead unit rule (model 2: LegacyUnitsPerLevel = 5 a square) reads as a stale record, not as a
+# body-capacity regression. The C# rule (RM_LiquidStock.CapacityOf -> RM_Volume.BodyCapacity): sum over the footprint of
+# RM_Volume.BedLevels(impassable, pathCost) x the fluid's volumePerTile (pinned to 1). The terrain facts are vanilla
+# Core Defs/TerrainDefs/Terrain_Water.xml (WaterShallowBase pathCost 30; WaterDeepBase Impassable, pathCost 300).
+BODY_TERRAIN_BED = {"WaterShallow": (False, 30), "WaterDeep": (True, 300)}
+
+
+def _rm_volume_const(name):
+    import level_water   # northstar/ is on sys.path whenever site_spec is imported from it
+    v = level_water._volume_const(name, None)
+    if v is None:
+        raise RuntimeError("RM_Volume.cs has no readable const %s: the capacity rule cannot be predicted" % name)
+    return v
+
+
+def expected_capacity(body):
+    """Capacity (fill-units = notches) the shipped DLL gives a freshly classified painted body; None when limitless
+    (a limitless body has no budget to compare) or its terrain is not in BODY_TERRAIN_BED."""
+    if body.get("limitless") or body.get("terrain") not in BODY_TERRAIN_BED:
+        return None
+    impassable, path_cost = BODY_TERRAIN_BED[body["terrain"]]
+    deep = impassable or path_cost >= _rm_volume_const("DeepPathCostFloor")
+    per_cell = _rm_volume_const("LevelsPerSquare") if deep else _rm_volume_const("ShallowBedLevels")
+    return len(cells(body["rect"])) * per_cell
+
+
 # DORMANT plumbing: no plot sets "roofed" today (plot R's comment: a lone roofed cell collapses, rock roof included),
 # so TWIN_ROOF / SUPPORT_THING and the "supports" cells are never used; kept for a plot that roofs with a holder.
 TWIN_ROOF = "RoofConstructed"

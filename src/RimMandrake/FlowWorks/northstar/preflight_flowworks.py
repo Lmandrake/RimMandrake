@@ -581,10 +581,27 @@ def p_s1(s, P, sc):
                % len(sc["plots"]))
 
 
+def capacity_verdict(name, body, live, recorded):
+    """GOLDEN_PONDS_RECONCILE_TWO_FIFTHS: name WHY a body's capacity disagrees, against the shipped rule
+    (site_spec.expected_capacity). Live off the rule = a MOD regression in body capacity; live on the rule and the
+    sidecar off it = a STALE SIDECAR captured under another unit rule (re-capture with prep_site.py --rebuild).
+    Empty when nothing disagrees or the body has no predicted capacity."""
+    want = S.expected_capacity(body) if body else None
+    if want is None or live is None:
+        return []
+    if abs(float(live) - want) > 1e-3:
+        return ["%s MOD: live capacity %s, the shipped rule predicts %s" % (name, live, want)]
+    if recorded is None or abs(float(recorded) - want) > 1e-3:
+        return ["%s STALE SIDECAR: recorded capacity %s, live %s is the shipped rule (re-capture: prep_site.py "
+                "--rebuild)" % (name, recorded, live)]
+    return []
+
+
 def p_s2(s, P, sc):
     if "jawa/flowworks_body_report" not in s.tools:
         return row("P-S2", UNMEASURED, "needs jawa/flowworks_body_report (site_spec.NEEDED_TOOLS)")
     bad = []
+    layout = {b["name"]: b for p in S.PLOTS for b in p["bodies"]}
     for name, want in sc["bodies"].items():
         x, z = want["probe"]
         r = _ok(s.call("jawa/flowworks_body_report", x=x, z=z), "body_report")
@@ -595,6 +612,7 @@ def p_s2(s, P, sc):
         for k in ("id", "limitless", "cellCount", "capacity", "stock", "recededCount"):
             if got.get(k) != want["record"].get(k):
                 bad.append("%s %s=%s want %s" % (name, k, got.get(k), want["record"].get(k)))
+        bad.extend(capacity_verdict(name, layout.get(name), got.get("capacity"), want["record"].get("capacity")))
         if r.get("activeFluid") != want["activeFluid"]:
             bad.append("%s fluid %s want %s" % (name, r.get("activeFluid"), want["activeFluid"]))
     return row("P-S2", FAIL if bad else PASS, "; ".join(bad) or "%d bodies match" % len(sc["bodies"]))

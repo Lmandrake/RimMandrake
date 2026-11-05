@@ -193,6 +193,9 @@ def classify_bodies(s, plots, log):
             if rec.get("cellCount") != w * h:
                 raise Refused("6", "%s classified %s cells, painted %d -- it joined other water"
                               % (b["name"], rec.get("cellCount"), w * h))
+            mod = PF.capacity_verdict(b["name"], b, rec.get("capacity"), rec.get("capacity"))
+            if mod:   # GOLDEN_PONDS_RECONCILE_TWO_FIFTHS: a sidecar never records a capacity off the shipped rule
+                raise Refused("6", "; ".join(mod))
             out[b["name"]] = {"plot": p["id"], "probe": list(probe), "rect": list(b["rect"]),
                               "activeFluid": r.get("activeFluid"), "expect_limitless": b["limitless"],
                               "record": {k: rec.get(k) for k in ("id", "limitless", "cellCount", "capacity",
