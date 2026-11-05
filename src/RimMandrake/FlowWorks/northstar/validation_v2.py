@@ -4519,8 +4519,12 @@ class MockBridge(object):
         if "pulse_drops_twins" in self.faults:
             twins = set(SCENES["E2_east_A"]["cells"]) | set(SCENES["E2_east_B"]["cells"])
             cells = [c for c in cells if c not in twins]
-        snap = lambda p: dict(pulse=p, fill=[self.o.F.get(c, 0) for c in cells], depth=[self.o.D.get(c, 0) for c in cells],  # noqa: E731
-                              bodies=[self.body_rec(n) for n in self.o.bodies])
+        def snap(p):
+            d = dict(pulse=p, fill=[self.o.F.get(c, 0) for c in cells], depth=[self.o.D.get(c, 0) for c in cells],
+                     bodies=[self.body_rec(n) for n in self.o.bodies])
+            if getattr(self.o, "level_exact", False):    # the real bridge sends per-cell dL (FW_PROOF_TOOLS_HARDEN_READ_GAPS)
+                d["dl"] = [self.o.W.get(c, self.o.F.get(c, 0) * level_water.U) for c in cells]
+            return d
         pulses = [snap(0)]
         for p in range(1, count + 1):
             self.do_pulse()
