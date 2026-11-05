@@ -905,8 +905,11 @@ def result_errors(res, d, st, repo=REPO):
             tree = CT.load(d)
         except (FileNotFoundError, ValueError):
             tree = None
-        errs += ["showcases: %s" % e for e in showcase_check(read_json(os.path.join(d, "scenes.json")), rec, tree,
-                                                              owner_ev, repo)]
+        sc5 = read_json(os.path.join(d, "scenes.json"))
+        # the showcase set names scenes, so the scenes it leans on must still meet the contract at the lock (a scene
+        # added after stage 3 is checked here, not trusted by its id)
+        errs += ["scenes: %s" % e for e in scene_errors(sc5, tree, repo)]
+        errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, repo)]
     return errs
 
 

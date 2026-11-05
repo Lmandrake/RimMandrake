@@ -457,6 +457,18 @@ def main():
         ok, errs = run_cycle(d, repo, "run23b")
         check("stage 5: the lock is refused while an inventory capability is exercised by no showcase and no scene",
               not ok and any("exercised by no showcase and no scene: rope" in e for e in errs), errs)
+        sc_ok = DS.read_json(os.path.join(d, "scenes.json"))
+        # GPT review: the edit lands DURING the stage-5 run (after open_run's staleness check), so only the lock's
+        # own checks can catch it
+        DS.open_run(d, "run23c", repo=repo.root)
+        put(d, "scenes.json", dict(sc_ok, scenes=sc_ok["scenes"] + [{"id": "rope_check"}],
+                                   coverage_rest=list(sc_ok.get("coverage_rest") or []) + [
+                                       {"capability": "rope", "by": ["rope_check"], "why": "ordinary check"}]))
+        result(d, "done")
+        ok, errs = DS.close_run(d, "run23c", 1000, repo=repo.root)
+        check("stage 5: a bare scene added mid-run to cover a capability is refused (scene contract rechecked)",
+              not ok and any(e.startswith("scenes:") and "rope_check" in e for e in errs), errs)
+        put(d, "scenes.json", sc_ok)
         put(d, "record.json", rec)
         ok, errs = run_cycle(d, repo, "run24")
         st = DS.load_state(d)

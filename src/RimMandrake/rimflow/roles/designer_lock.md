@@ -14,7 +14,8 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    `item`) naming the tree and sheet hashes, then the stamp in tree.json; the gate wants both, so commit the ledger shard
    with tree.json (the signature does not change the tree hash the launcher tracks).
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase set:
-   the lock is refused while a record.json inventory capability is exercised by no showcase and no scene.
+   the lock is refused while a record.json inventory capability is exercised by no showcase and no scene, and the
+   scenes the set names are rechecked against the scene contract (a scene added since stage 3 is not trusted by id).
 5. **File the mod item**, `--kind mod`, with `## verify` citing `design/concepts/<Mod>/tree.json` and the accepted tree
    hash. A new mod under another kind escapes the gate. The Producer admits it. Relentless runs `gate` at the pool, at the
    lease, and at `enrol`. FlowWorks and GSS go to Relentless like every other mod. Every scene's missing entry point,
