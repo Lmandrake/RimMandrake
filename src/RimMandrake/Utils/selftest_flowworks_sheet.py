@@ -11,13 +11,13 @@ FlowWorks/Source/RM_SheetMath.cs, through the same staged dotnet.exe path as sel
 from __future__ import annotations
 
 import os
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 from selftest_flowworks_stock import CSPROJ, _find_dotnet, dotnet_lock  # noqa: E402
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
     from selftest_winstage import windows_project_path
     with dotnet_lock():     # the stage rsync inside the lock too (SELFTEST_FILTER_BUILD_SERIAL_DLL)
         cmd = [dotnet, "run", "--project", windows_project_path(CSPROJ), "-c", "Release", "--", "--sheet"]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = run_interop_captured(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)

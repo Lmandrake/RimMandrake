@@ -11,6 +11,7 @@ first (same staging root as winbuild.py).
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import fcntl
 import os
 import shutil
@@ -39,7 +40,7 @@ def main():
         shutil.copy2(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
     with open(os.path.join(tempfile.gettempdir(), "explosiveknockback_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
-        r = subprocess.run([dotnet, "run", "--project", win(os.path.join(STAGE, "SelfTest",
+        r = run_interop_captured([dotnet, "run", "--project", win(os.path.join(STAGE, "SelfTest",
                             "RimMandrakeExplosiveKnockback.SelfTest.csproj")), "-c", "Release"],
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)
     out = (r.stdout or "").replace("\r", "")

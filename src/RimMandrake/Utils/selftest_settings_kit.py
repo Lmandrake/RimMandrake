@@ -9,7 +9,6 @@ dotnet.exe cannot build from a \\\\wsl.localhost path, so the project is staged 
     python3 src/RimMandrake/Utils/selftest_settings_kit.py
 """
 import os
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +28,7 @@ def main():
     if rc:
         print("selftest build FAILED")
         sys.exit(rc)
-    r = subprocess.run([dotnet, "run", "--project", winbuild.staged_win(rec, CSPROJ), "-c", "Release", "--no-build"],
+    r = winbuild.run_interop_captured([dotnet, "run", "--project", winbuild.staged_win(rec, CSPROJ), "-c", "Release", "--no-build"],
                        capture_output=True, text=True)
     print(r.stdout, end="")
     if r.stderr.strip():

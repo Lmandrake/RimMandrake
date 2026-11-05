@@ -9,6 +9,7 @@ Also checks the wiring: FeverWood no longer ends sustainers itself and both side
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import os, shutil, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -41,7 +42,7 @@ def run(kernel_text):
     open(os.path.join(STAGE, "RM_SilenceReasons.cs"), "w", encoding="utf-8").write(kernel_text)
     open(os.path.join(STAGE, "P.cs"), "w", encoding="utf-8").write(PROG)
     open(os.path.join(STAGE, "T.csproj"), "w", encoding="utf-8").write(CSPROJ)
-    r = subprocess.run([DOTNET, "run"], cwd=STAGE, capture_output=True, text=True, timeout=300)
+    r = run_interop_captured([DOTNET, "run"], cwd=STAGE, capture_output=True, text=True, timeout=300)
     return r.returncode, r.stdout + r.stderr
 
 

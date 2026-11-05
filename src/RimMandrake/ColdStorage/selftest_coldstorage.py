@@ -10,7 +10,6 @@ on a unit reads, and every engine switch off giving vanilla rot at room temperat
 Utils/winbuild.stage_build and run with `dotnet run --no-build`. No dotnet.exe -> exit 2, UNMEASURED.
 """
 import os
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -781,7 +780,7 @@ def main():
     if rc:
         print("selftest build FAILED")
         return rc
-    r = subprocess.run([dotnet, "run", "--project", winbuild.staged_win(rec, CSPROJ), "-c", "Release", "--no-build"],
+    r = winbuild.run_interop_captured([dotnet, "run", "--project", winbuild.staged_win(rec, CSPROJ), "-c", "Release", "--no-build"],
                        capture_output=True, text=True)
     sys.stdout.write(r.stdout.replace("\r\n", "\n"))
     if r.stderr.strip():

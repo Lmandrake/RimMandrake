@@ -7,7 +7,6 @@ src/RimMandrake/Pyrelands/Source/FurnaceWarmthMath.cs). Same shape as selftest_s
 from __future__ import annotations
 
 import os
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -60,7 +59,7 @@ def main():
         print("selftest build FAILED")
         sys.exit(rc)
     cmd = [dotnet, "run", "--project", winbuild.staged_win(rec, CSPROJ), "-c", "Release", "--no-build"]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = winbuild.run_interop_captured(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)

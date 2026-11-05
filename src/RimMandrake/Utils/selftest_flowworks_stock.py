@@ -37,7 +37,7 @@ and run all sit inside dotnet_lock, so two wrappers in one seat never rsync a st
 from __future__ import annotations
 
 import os
-import subprocess
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -111,7 +111,7 @@ def main(argv=None):
         cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"] + (["--no-build"] if a.no_build else [])
         if a.only:
             cmd += ["--", "--only", a.only]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = run_interop_captured(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)

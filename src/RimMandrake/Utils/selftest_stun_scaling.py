@@ -24,8 +24,8 @@ finds dotnet.exe and converts the repo path to a D-drive-style path first.
 from __future__ import annotations
 
 import os
-import subprocess
 from selftest_winstage import windows_project_path
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -73,7 +73,7 @@ def main():
 
     win_csproj = windows_project_path(CSPROJ)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = run_interop_captured(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)

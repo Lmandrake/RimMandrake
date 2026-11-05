@@ -22,10 +22,10 @@ from __future__ import annotations
 
 import os
 import re
-import subprocess
 import sys
 
 from selftest_winstage import windows_project_path
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -219,7 +219,7 @@ def main():
     if dotnet is None:
         sys.exit("dotnet.exe not found at any of %r; UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
     win_csproj = windows_project_path(CSPROJ, whole_src=False)
-    result = subprocess.run([dotnet, "run", "--project", win_csproj, "-c", "Release"], capture_output=True, text=True)
+    result = run_interop_captured([dotnet, "run", "--project", win_csproj, "-c", "Release"], capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)

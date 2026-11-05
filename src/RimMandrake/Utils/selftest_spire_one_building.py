@@ -456,12 +456,11 @@ def find_dotnet():
 
 
 def run_project(dotnet, project):
-    # WSL interop can drop the launch of a Windows exe (seen 2026-11-02): nothing ran, so that alone may retry.
-    for _ in range(3):
-        out = subprocess.run([dotnet, "run", "--project", project, "-c", "Release"], capture_output=True, text=True)
-        if "UtilAcceptVsock" not in out.stderr or out.stdout.strip():
-            break
-    return out
+    # WSL interop can drop the launch of a Windows exe (seen 2026-11-02): winbuild retries that, and only that.
+    sys.path.insert(0, HERE)
+    import winbuild
+    return winbuild.run_interop_captured([dotnet, "run", "--project", project, "-c", "Release"],
+                                         capture_output=True, text=True)
 
 
 def kernel_run():

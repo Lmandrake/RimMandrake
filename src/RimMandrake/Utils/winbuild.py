@@ -194,17 +194,38 @@ def run_interop(cmd, cwd=None, timeout=900):
     NIGHTLY_COP_FIX_RED_BXSKPY_FGXD), so that says nothing about a build or a test: it goes again. stdout stays
     inherited, so output still streams; stderr is held to be read, and reaches the caller's stderr after each try. A
     real failure carrying the same line just fails again, with its own exit code."""
+    return _interop_tries(cmd, echo_stderr=True, cwd=cwd, timeout=timeout, stderr=subprocess.PIPE, text=True,
+                          errors="replace").returncode
+
+
+def run_interop_captured(cmd, **kwargs):
+    """subprocess.run(cmd, **kwargs) for a Windows exe whose output the caller reads (a selftest's `dotnet run`), with
+    run_interop's retry of a lost WSL launch -> the CompletedProcess of the last try. stderr is always captured (it
+    carries the launch-failure line); the caller gets it on the result exactly as subprocess.run would give it, and
+    the lost tries' stderr goes to this process's stderr (SELFTEST_RETRY_FIX_25_STILL_BARE)."""
+    if not kwargs.get("capture_output") and "stderr" not in kwargs:
+        kwargs["stderr"] = subprocess.PIPE
+    return _interop_tries(cmd, echo_stderr=False, **kwargs)
+
+
+def _interop_tries(cmd, echo_stderr, **kwargs):
     for attempt in range(INTEROP_TRIES):
-        r = subprocess.run(cmd, cwd=cwd, timeout=timeout, stderr=subprocess.PIPE, text=True, errors="replace")
-        sys.stderr.write(r.stderr or "")
-        sys.stderr.flush()
-        if not r.returncode or INTEROP_LAUNCH_FAILED not in (r.stderr or "") or attempt == INTEROP_TRIES - 1:
+        r = subprocess.run(cmd, **kwargs)
+        err = r.stderr or ""
+        if isinstance(err, bytes):
+            err = err.decode("utf-8", "replace")
+        if echo_stderr:
+            sys.stderr.write(err)
+            sys.stderr.flush()
+        if not r.returncode or INTEROP_LAUNCH_FAILED not in err or attempt == INTEROP_TRIES - 1:
             break
+        if not echo_stderr:
+            sys.stderr.write(err)
         wait = INTEROP_WAIT_S * (attempt + 1)
         print("WSL interop could not launch the exe; retry %d/%d in %d s" % (attempt + 1, INTEROP_TRIES - 1, wait),
               file=sys.stderr, flush=True)
         time.sleep(wait)
-    return r.returncode
+    return r
 
 
 def built_outputs(tree, since):

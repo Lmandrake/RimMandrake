@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import os
 import re
-import subprocess
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -208,7 +208,7 @@ def main():
     win_csproj = windows_project_path(CSPROJ)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
     with dotnet_lock():
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = run_interop_captured(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)

@@ -15,6 +15,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 CSPROJ = os.path.join(HERE, "Source", "SelfTest", "RimMandrakeAtmosphericBase.SelfTest.csproj")
 DOTNET = ("/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe")
 
@@ -38,7 +39,7 @@ def main():
     from selftest_winstage import windows_project_path
     signatures = os.path.normpath(os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Defs", "AtmosphericBase"))
     win = windows_project_path(CSPROJ, whole_src=False, extra_dirs=[HERE, signatures])
-    r = subprocess.run([dotnet, "run", "--project", win, "-c", "Release"], capture_output=True, text=True)
+    r = run_interop_captured([dotnet, "run", "--project", win, "-c", "Release"], capture_output=True, text=True)
     sys.stdout.write(r.stdout.replace("\r\n", "\n"))
     if r.stderr.strip():
         sys.stderr.write(r.stderr)

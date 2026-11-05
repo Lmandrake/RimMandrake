@@ -17,7 +17,7 @@ not 45 days after a refused claim. Two halves:
 """
 import os
 import re
-import subprocess
+from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import sys
 import xml.etree.ElementTree as ET
 
@@ -82,7 +82,7 @@ def kernel_checks():
         sys.exit("dotnet.exe not found (%r): kernel half UNMEASURED, not a pass" % DOTNET_CANDIDATES)
     from selftest_winstage import windows_project_path
     win = windows_project_path(SELFTEST)
-    r = subprocess.run([dotnet, "run", "--project", win, "-c", "Release"], capture_output=True, text=True)
+    r = run_interop_captured([dotnet, "run", "--project", win, "-c", "Release"], capture_output=True, text=True)
     print(r.stdout, end="")
     if r.returncode != 0:
         print(r.stderr, end="", file=sys.stderr)
