@@ -1931,6 +1931,22 @@ class Effects(relentless_game.GameFx):
                 return "books behind: ignored file %s differs from what origin now tracks there" % p
         return None
 
+    def drop_stray_untracked(self, rows):
+        """-> rows without the untracked files outside the books' derived dirs that origin/main does not track. A run
+        started from the books clone writes a new report beside its script (validation_triplet_*, rail_walk_result_*, ...);
+        a fast-forward cannot touch a path origin does not track, so each stays where it is. Naming them prefix by prefix
+        let the class come back with every new runner (OPS_JAM_CLASS_FIX_AGAIN_HJWN). An untracked file at a path origin
+        now tracks stays in the rows and refuses: the level would overwrite it."""
+        loose = [p for st, p in rows if st == "??" and not p.startswith(BOOKS_DERIVED)]
+        if not loose:
+            return rows
+        tracked = set()
+        for i in range(0, len(loose), 200):
+            tracked |= set(self.git_ok(self.books, "ls-tree", "-r", "-z", "--name-only", "origin/main", "--",
+                                       *loose[i:i + 200]).split("\0"))
+        loose = set(loose) - tracked
+        return [(st, p) for st, p in rows if not (st == "??" and p in loose)]
+
     def shuffled_shards(self, rows):
         """-> the tracked *.jsonl outside the ledger dir whose lines are HEAD's lines in another order. Landing replays
         the append-only shards (code_review, art) with merge=union, which reorders them; nothing is lost, so it is no
@@ -1960,6 +1976,7 @@ class Effects(relentless_game.GameFx):
         out = self.git_ok(self.books, "status", "--porcelain", "--no-renames", "-z", "--untracked-files=all")
         rows = [(x[:2], x[3:]) for x in out.split("\0") if x]
         rows = [(s, p) for s, p in rows if not p.startswith(BOOKS_LEFT_IN_PLACE)]
+        rows = self.drop_stray_untracked(rows)
         staged = self.git_ok(self.books, "diff", "--cached", "--name-only").split()
         if staged:      # the index is nobody's projection, and the checks below read the working tree
             return "books %s behind: staged: %s" % (behind, ", ".join(staged[:5]))
