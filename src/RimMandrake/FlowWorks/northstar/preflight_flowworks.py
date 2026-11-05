@@ -307,6 +307,8 @@ def contract_problems(P):
         out.append("FlowWorks DLL changed since prep")
     if S.defs_hash() != c.get("defs_hash"):
         out.append("FlowWorks Defs changed since prep")
+    if sc.get("tier") != S.TIER:
+        out.append("golden built on tier %s, the trial runs on %s" % (sc.get("tier"), S.TIER))
     if c.get("prep_version") != S.PREP_VERSION:
         out.append("prep version %s != %s" % (c.get("prep_version"), S.PREP_VERSION))
     snap = c.get("settings") or {}
@@ -666,11 +668,18 @@ def p_e3(s, P, sc, fix=False):
 AUTOSAVE_OFF_DAYS = 14.0
 
 
-def p_e4(s, P, sc):
+def p_e4(s, P, sc, fix=False):
     pw = _ok(s.call("jawa/list_pawns", limit=500), "list_pawns").get("pawns") or []
     bad = ["map pawns present: %s" % [p.get("id") for p in pw][:5]] if pw else []
     prefs = S.read_prefs(P.prefs) if P.prefs and os.path.isfile(P.prefs) else {}
     a = prefs.get("autosaveIntervalDays")
+    if fix and a is not None and float(a) < AUTOSAVE_OFF_DAYS:
+        # TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS: autosave IS a site gate (an autosave mid-trial saves the working map and
+        # stalls a measured step), so --fix sets it through jawa/prefs (which calls Prefs.Save()) and RE-READS Prefs.xml:
+        # the row passes on the file, never on the setter's word.
+        _ok(s.call("jawa/prefs", autosaveIntervalDays=AUTOSAVE_OFF_DAYS), "prefs(autosaveIntervalDays)")
+        prefs = S.read_prefs(P.prefs)
+        a = prefs.get("autosaveIntervalDays")
     if a is None:
         return row("P-E4", FAIL if bad else UNMEASURED, "; ".join(bad + ["autosave interval unreadable "
                                                                          "(Prefs.xml autosaveIntervalDays)"]))
@@ -747,8 +756,9 @@ def p_e8(s, P, sc):
         return row("P-E8", UNMEASURED, "Prefs.xml unreadable: %s" % P.prefs)
     got = S.read_prefs(P.prefs)
     want = sc.get("render_profile") or {}
-    bad = ["%s %s != %s" % (k, got.get(k), want.get(k)) for k in S.RENDER_KEYS if got.get(k) != want.get(k)]
-    return row("P-E8", FAIL if bad else PASS, "; ".join(bad) or "render profile == sidecar")
+    bad = ["%s %s != %s" % (k, got.get(k), want.get(k)) for k in S.GATE_RENDER_KEYS if got.get(k) != want.get(k)]
+    size = "window %sx%s (recorded, not gated)" % (got.get("screenWidth"), got.get("screenHeight"))
+    return row("P-E8", FAIL if bad else PASS, "; ".join(bad + [size]) if bad else "render profile == sidecar; " + size)
 
 
 def run_live(s, P, seat, fix=False, only=None):
@@ -758,7 +768,7 @@ def run_live(s, P, seat, fix=False, only=None):
     rows = [("P-L1", p_l1), ("P-L2", p_l2), ("P-B1", lambda s_, P_, sc_: p_b1(s_, P_, sc_, seat)),
             ("P-B2", p_b2), ("P-B3", p_b3), ("P-B4", p_b4), ("P-S1", p_s1), ("P-S2", p_s2), ("P-S3", p_s3),
             ("P-E1", lambda s_, P_, sc_: p_e1(s_, P_, sc_, fix)), ("P-E2", p_e2),
-            ("P-E3", lambda s_, P_, sc_: p_e3(s_, P_, sc_, fix)), ("P-E4", p_e4), ("P-E6", p_e6),
+            ("P-E3", lambda s_, P_, sc_: p_e3(s_, P_, sc_, fix)), ("P-E4", lambda s_, P_, sc_: p_e4(s_, P_, sc_, fix)), ("P-E6", p_e6),
             ("P-E7", p_e7), ("P-E8", p_e8), ("P-E5", p_e5)]
     out = []
     for rid, fn in rows:
@@ -793,7 +803,7 @@ def main(argv=None):
         p = sub.add_parser(name)
         p.add_argument("--seat", default="BENCH", choices=S.SEATS)
         p.add_argument("--only", nargs="*", help="row ids to run (default: every row)")
-        p.add_argument("--fix", action="store_true", help="pause / god-mode fixes, each re-read")
+        p.add_argument("--fix", action="store_true", help="pause / god-mode / autosave fixes, each re-read")
         p.add_argument("--allow-unmeasured", action="store_true")
         p.add_argument("--sidecar")
         p.add_argument("--backup-manifest")

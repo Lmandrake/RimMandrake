@@ -290,12 +290,12 @@ Nothing is "assumed fine".
   map size, seed if exposed) are recorded in the sidecar, not re-rolled. ⛔ This is ONE test map, not a
   seed sweep — the no-alternative-planets ruling is about the world, and nothing here varies it.
   Size ≥ 200×200 (MEASURED once: a quicktest map was 174×174 — record the real size).
-- **Golden save, never overwritten (GPT #2, #3):** `NS_FlowWorks_TrialSite_v1.rws` is the golden copy,
+- **Golden save, never overwritten (GPT #2, #3):** `NS_FlowWorks_TrialSite_v2.rws` (built on the 14-mod `fw_gss_sitting` list; `site_spec.GOLDEN_NAME`, `trial_site.py ensure`) is the golden copy,
   set read-only on disk. Each run copies it to `NS_FlowWorks_Work_<ts>.rws` and loads THAT; autosave is
-  off (Prefs.xml `autosaveIntervalDays`, asserted by P-E4 — there is no bridge setter;
-  `jawa/set_player_settings` is a per-pawn tool) and the working map is never saved.
+  off (Prefs.xml `autosaveIntervalDays` >= 14, asserted by P-E4; `preflight --fix` sets it through `jawa/prefs`
+  and re-reads the file) and the working map is never saved.
   Back up the Saves folder first and stat it after any save (the `save_game` wrong-slot trap). The
-  sidecar `NS_FlowWorks_TrialSite_v1.json` carries a **version contract**: sha256 of the save, game
+  sidecar `NS_FlowWorks_TrialSite_v2.json` carries a **version contract**: sha256 of the save, game
   build, FlowWorks DLL sha, defs hash, settings snapshot, prep-script version. Any mismatch ⇒ rebuild
   the golden save; never "it's probably fine".
 - **Per-cell manifest, not a blanket rule (GPT #1):** the sidecar lists, for every plot+buffer cell,

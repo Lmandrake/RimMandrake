@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build, classify and save the FlowWorks golden trial site + its sidecar (trial plan 3.4-3.8).
 
-Run ONCE per version contract by the seat holding the bridge, on the `flowworks` tier, from a
+Run ONCE per version contract by the seat holding the bridge, on the site_spec.TIER list (fw_gss_sitting), from a
 `rimworld/start_debug_game_ready` map (>= 200x200):
 
     python.exe src/RimMandrake/FlowWorks/northstar/prep_site.py --seat BENCH
@@ -21,7 +21,7 @@ What it does, each write checked for success, and the site state read back indep
      STOPS HERE if that tool is not registered (site_spec.NEEDED_TOOLS): a golden save
      with unclassified bodies is not an accepted baseline (plan 3.4, GPT #9-11);
   7. re-reads every plot+buffer cell against the manifest and every check cell's temperature;
-  8. saves NS_FlowWorks_TrialSite_v1 with a Saves-folder stat before/after (the wrong-slot trap),
+  8. saves site_spec.GOLDEN_NAME with a Saves-folder stat before/after (the wrong-slot trap),
      sets it read-only, and writes the sidecar (version contract + plots + bodies + per-cell
      manifest) beside it and to infrastructure/state/northstar/.
 Exit codes: 0 saved; 2 refused (named step); 3 a NEEDED tool is missing (nothing saved).
@@ -326,7 +326,7 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
     render = S.read_prefs(prefs) if prefs and os.path.isfile(prefs) else {}
     sidecar = {
         "item": "FLOWWORKS_NORTHSTAR_SITE_PREP_1", "save": os.path.basename(path),
-        "built": time.strftime("%Y-%m-%dT%H:%M:%S"), "seat": seat,
+        "built": time.strftime("%Y-%m-%dT%H:%M:%S"), "seat": seat, "tier": S.TIER,
         "contract": {"save_sha256": S.sha256_file(path), "game_build": game_build(player_log),
                      "flowworks_dll_sha256": S.sha256_file(os.path.join(S.MOD_DIR, S.DLL_REL)),
                      "flowworks_srchash_sha256": S.sha256_file(os.path.join(S.MOD_DIR, S.DLL_REL) + ".srchash"),

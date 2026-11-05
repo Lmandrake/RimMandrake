@@ -27,10 +27,13 @@ for _p in (UTILS, os.path.join(UTILS, "modcheck")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-PREP_VERSION = "2"                     # bump whenever prep_site.py's output changes
+PREP_VERSION = "3"                     # bump whenever prep_site.py's output changes (3: fw_gss_sitting, sidecar names its tier)
 PACKAGE_ID = "mandrake.rm.flowworks"
-TIER = "flowworks"
-GOLDEN_NAME = "NS_FlowWorks_TrialSite_v1"
+# TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS: the dry half runs on the 14-mod fw_gss_sitting list, so the golden site is built
+# and preflighted there. v1 (2026-10-05, 11-mod flowworks tier) is stale on it (tile, pond capacity, missing classes);
+# v2 is a new name, so building it moves no existing save. A save made on a list loads on that list.
+TIER = "fw_gss_sitting"
+GOLDEN_NAME = "NS_FlowWorks_TrialSite_v2"
 REPO_SIDECAR_DIR = os.path.join(ROOT, "infrastructure", "state", "northstar")
 DLL_REL = os.path.join("Assemblies", "RimMandrakeFlowWorks.dll")
 SEATS = ("BENCH", "FOUNDRY", "RELENTLESS")   # who `--seat` may name: RELENTLESS holds the bridge, it is no ledger seat
@@ -614,6 +617,10 @@ def read_prefs(prefs_path):
 
 
 RENDER_KEYS = ("screenWidth", "screenHeight", "fullscreen", "uiScale", "langFolderName", "textureCompression")
+# What P-E8 GATES on (TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS): the window size is recorded, never gated. It moves with the
+# owner's window (3467x1826 vs 2516x1252 on the same machine, 2026-10-23), the game is never fullscreened, and no row
+# measures screen pixels (P-E5 shoots a cell rect). Fullscreen, UI scale, language and texture compression still gate.
+GATE_RENDER_KEYS = tuple(k for k in RENDER_KEYS if k not in ("screenWidth", "screenHeight"))
 
 
 # --------------------------------------------------------------------- config backup / restore

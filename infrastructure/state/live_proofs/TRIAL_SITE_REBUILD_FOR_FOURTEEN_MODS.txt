@@ -1,0 +1,3 @@
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py gate < /dev/null && python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py ensure < /dev/null
+live-proof A2: python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py gate < /dev/null && python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py prove < /dev/null
+live-mods: FlowWorks, GimmeSomeSlack, RimMandrake.Biomes

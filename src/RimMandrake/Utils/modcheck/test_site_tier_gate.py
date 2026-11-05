@@ -36,12 +36,13 @@ def tier_want(tier):
     return [str(i).lower() for i in MB.TIERS[tier].get("want") or ()]
 
 
-def tier_gaps(running, site, tier_list=None, want=None):
+def tier_gaps(running, site, tier_list=None, want=None, tier=None):
     """running packageIds -> problems (empty = the game is the site's tier). tier_list/want default to the resolved
-    tier; the selftest passes its own."""
+    tier; the selftest passes its own. `tier` names the tier directly for a site that is not in T.SITES (the FlowWorks
+    golden trial site: FlowWorks/northstar/trial_site.py gate)."""
     from retired_mods import is_retired
     from biome_site import missing_dlc
-    tier = T.SITES[site].get("tier")
+    tier = tier or T.SITES[site].get("tier")
     if not tier:
         return ["site %s names no fixture tier" % site]
     run = [str(i).strip().lower() for i in running or () if str(i).strip()]
