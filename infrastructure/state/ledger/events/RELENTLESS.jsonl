@@ -800,3 +800,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES: deploy and restart for its live proofs","ts":"2026-11-05T22:45:42Z","tsn":1793918742881486527}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T23:03:30Z","tsn":1793919810985418948}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T23:28:35Z","tsn":1793921315705647266}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:39:47Z","tsn":1793921987789678668}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T23:41:41Z","tsn":1793922101382348248}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:41:51Z","tsn":1793922111795141457}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCARLANDS_CHATRAK_LIVE_RERUN_1 A1 (L2), read-only proof","ts":"2026-11-05T23:41:58Z","tsn":1793922118680195918}
