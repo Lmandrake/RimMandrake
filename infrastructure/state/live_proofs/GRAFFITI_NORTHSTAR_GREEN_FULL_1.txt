@@ -1,4 +1,5 @@
 # TIERS (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS, owner 2026-11-02: "small mod lists should always be the way to test until a final verification pass on the whole huge mod list"): A1 and A2 run on ANY game that holds Graffiti (Core + every DLC); stage the smallest list with Graffiti deployed. F1 and F2 are the GREEN-FULL final verification: Relentless runs them only on a full-list load it batches with other items' finals; on a small game they read UNMEASURED "final verification waits for the full list", never FAIL.
+# FRESH (Conductor mend 2026-11-05): A2 and F2 make ONE deliberate fresh quicktest themselves on the load live-mods: names (prove_quicktest_world.py leaves a Playing TEST game for the main menu, then starts; a colony past two in-game days is refused), never a rerun on whatever map is up. F2 runs only on a full-list load holding mandrake.rm.graffiti (FULL.LATEST carries it).
 live-mods: Graffiti
 live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py needs-mods --mod Graffiti < /dev/null
 live-proof A2: python3 src/RimMandrake/Graffiti/northstar_full.py --tier small < /dev/null

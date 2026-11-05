@@ -41,7 +41,8 @@ FRESH_START = {"success": True, "message": "RimWorld map data is available and i
                "state": dict(PLAYING, currentMapId="Map_0")}
 
 
-def _fake_rb(answers, log):
+def _fake_rb(answers, log, state):
+    """A stateful fake: go_to_main_menu puts the game at Entry; a start that answers success puts it back at Playing."""
     class RimBridge:
         def __init__(self, **kw):
             pass
@@ -51,7 +52,16 @@ def _fake_rb(answers, log):
 
         def call(self, tool, params):
             log.append(tool)
-            a = answers.get(tool, {"success": False, "message": "fake: no answer for %s" % tool})
+            if tool == "rimworld/get_ui_state":
+                a = dict(state)
+            elif tool == "rimworld/go_to_main_menu":
+                if state.get("menu_works", True):
+                    state.update(programState="Entry", hasCurrentGame=False)
+                a = {"success": True}
+            else:
+                a = answers.get(tool, {"success": False, "message": "fake: no answer for %s" % tool})
+                if tool == "rimworld/start_debug_game_ready" and a.get("success") is True:
+                    state.update(PLAYING)
             return {"content": [{"text": json.dumps(a)}]}
     m = types.ModuleType("rimbridge_client")
     m.RimBridge = RimBridge
@@ -59,13 +69,14 @@ def _fake_rb(answers, log):
     return m
 
 
-def run_script(start, map_count, ticks=1):
-    answers = {"rimworld/start_debug_game_ready": start, "rimworld/get_ui_state": PLAYING,
+def run_script(start, map_count, ticks=1, menu_works=True, at_menu=False):
+    answers = {"rimworld/start_debug_game_ready": start,
                "rimworld/get_game_info": {"status": "game_loaded", "ticksGame": ticks, "mapCount": map_count,
                                           "state": PLAYING}}
+    state = dict(PLAYING, menu_works=menu_works) if not at_menu else {"programState": "Entry", "hasCurrentGame": False}
     log, out = [], io.StringIO()
     saved_mod, saved_sleep = sys.modules.get("rimbridge_client"), __import__("time").sleep
-    sys.modules["rimbridge_client"] = _fake_rb(answers, log)
+    sys.modules["rimbridge_client"] = _fake_rb(answers, log, state)
     __import__("time").sleep = lambda s: None
     code = 0
     try:
@@ -98,6 +109,24 @@ def main():
     code, out, _ = run_script(FRESH_START, map_count=2)
     if code == 0:
         fails.append("S3 (start success but two maps loaded) exited 0: a leftover foreign map passes as fresh")
+    # S4: a staged test map (tick 1, Playing) is LEFT for the main menu before the start, so a proof staged on a map can be
+    # fresh at all (live 2026-11-04 16:44Z: A2 and F2 'NOT FRESH (start refused: A game is already loaded.)')
+    code, out, log = run_script(FRESH_START, map_count=1)
+    if "rimworld/go_to_main_menu" not in log or (log.index("rimworld/go_to_main_menu")
+                                                > log.index("rimworld/start_debug_game_ready")):
+        fails.append("S4 a Playing test game was not left for the main menu before the start: %s" % log)
+    # S5: a colony past two in-game days is never left: refused before any go_to_main_menu
+    code, out, log = run_script(FRESH_START, map_count=1, ticks=500000)
+    if code == 0 or "rimworld/go_to_main_menu" in log:
+        fails.append("S5 a game at tick 500000 (a colony) was left or passed: exit %s, calls %s" % (code, log))
+    # S6: the menu is never reached -> not fresh, no start
+    code, out, log = run_script(FRESH_START, map_count=1, menu_works=False)
+    if code == 0 or "rimworld/start_debug_game_ready" in log:
+        fails.append("S6 menu never reached yet exit %s, calls %s" % (code, log))
+    # S7: already at the main menu: start straight away, green
+    code, out, log = run_script(FRESH_START, map_count=1, at_menu=True)
+    if code != 0 or "rimworld/go_to_main_menu" in log:
+        fails.append("S7 at the menu: exit %s, calls %s" % (code, log))
     for f in fails:
         print("FAIL " + f)
     print("selftest_graffiti_fresh_quicktest: %s" % ("PASS" if not fails else "FAIL (%d)" % len(fails)))
