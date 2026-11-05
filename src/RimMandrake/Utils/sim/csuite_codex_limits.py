@@ -7,7 +7,7 @@ max primary/secondary used %, the distinct secondary reset times seen, and the u
 last reading before each secondary reset (idle quota thrown away at the reset).
 Dirs: ~/.codex/sessions and the Windows user's .codex/sessions (override: args).
 """
-import collections, datetime as dt, glob, json, math, os, sys
+import collections, datetime as dt, glob, json, math, os, sys, time
 
 DEFAULT_DIRS = [os.path.expanduser("~/.codex/sessions"), "/mnt/c/Users/Mandrake/.codex/sessions"]
 DIRS = (sys.argv[1:] if __name__ == "__main__" else []) or DEFAULT_DIRS   # argv only when run as a script, never an importer's
@@ -24,49 +24,131 @@ def _num(v):
     return f if math.isfinite(f) else None
 
 
-def readings(dirs=None, newer_than=None):
+def _parse(fh, recs):
+    """Append every rate_limits reading on the lines of `fh` to `recs`."""
+    for line in fh:
+        if '"rate_limits"' not in line:
+            continue
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue
+        pl = r.get("payload") if isinstance(r, dict) else None
+        rl = pl.get("rate_limits") if isinstance(pl, dict) else None
+        if not isinstance(rl, dict):
+            continue
+        p, s = rl.get("primary") or {}, rl.get("secondary") or {}
+        if not isinstance(p, dict) or not isinstance(s, dict):
+            continue
+        ts = r.get("timestamp")
+        up, sp = _num(p.get("used_percent")), _num(s.get("used_percent"))
+        if not ts or up is None:
+            continue
+        recs.append((ts, up, p.get("window_minutes"), p.get("resets_at"),
+                     sp, s.get("window_minutes"), s.get("resets_at"),
+                     rl.get("plan_type")))
+
+
+def _load_cache(path):
+    try:
+        with open(path, encoding="utf-8") as fh:
+            c = json.load(fh)
+        return c if isinstance(c, dict) and c.get("v") == CACHE_V and isinstance(c.get("files"), dict) else None
+    except (OSError, ValueError):
+        return None
+
+
+def _save_cache(path, files):
+    tmp = path + ".tmp"     # one fixed name: a writer killed mid-dump leaves one file, overwritten next time
+    try:
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump({"v": CACHE_V, "files": files}, fh, separators=(",", ":"))
+        os.replace(tmp, path)
+    except OSError:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+
+
+CACHE_V = 2
+CHECKPOINT_S = 4.0
+
+
+def _entry_ok(e):
+    """A cache entry this code wrote: anything else (a hand edit, an older layout) is read again from the file."""
+    return (isinstance(e, dict) and isinstance(e.get("mt"), int) and isinstance(e.get("sz"), int)
+            and isinstance(e.get("off"), int) and isinstance(e.get("head"), str)
+            and all(isinstance(e.get(k), list) and all(isinstance(r, list) for r in e[k]) for k in ("recs", "tail")))
+
+
+def _read_file(f, st, old):
+    """(records, entry) for rollout file `f` with stat `st`. `old` is its cache entry or None: an unchanged
+    file costs nothing, a grown one whose first 256 bytes are unchanged is read only past the last whole line
+    already parsed (rollouts are append-only); any other change is read again whole. A last line without its
+    newline is parsed as the plain read parses it, and kept apart ("tail"), so it is parsed again once it grows."""
+    old = old if _entry_ok(old) else None
+    if old and old["mt"] == st.st_mtime_ns and old["sz"] == st.st_size:
+        return [tuple(r) for r in old["recs"] + old["tail"]], old
+    recs, start = [], 0
+    try:
+        fh = open(f, "rb")
+    except OSError:
+        return None, None
+    with fh:
+        head = fh.read(256).hex()
+        if old and 0 < old["off"] <= st.st_size and old["sz"] < st.st_size and old["head"] == head:
+            recs, start = [tuple(r) for r in old["recs"]], old["off"]     # grown, same head: an append
+        fh.seek(start)
+        data = fh.read()
+    cut = data.rfind(b"\n") + 1
+    _parse(data[:cut].decode("utf-8", errors="replace").splitlines(), recs)
+    tail = []
+    _parse([data[cut:].decode("utf-8", errors="replace")] if cut < len(data) else [], tail)
+    return recs + tail, {"mt": st.st_mtime_ns, "sz": st.st_size, "off": start + cut, "head": head,
+                         "recs": recs, "tail": tail}
+
+
+def readings(dirs=None, newer_than=None, cache=None):
     """Every rate_limits reading in the rollout files under `dirs`, oldest first, plus the file count.
 
     Each reading is a tuple (ts, prim_used%, prim_window_min, prim_resets_at, sec_used%, sec_window_min,
     sec_resets_at, plan_type). `newer_than` (epoch s) skips files last modified before it, so a caller
-    that wants only the latest reading need not open the whole history (ops_watch.py does this)."""
+    that wants only the latest reading need not open the whole history (ops_watch.py does this).
+    `cache` (a JSON path) keeps each file's readings keyed by its mtime and size, so a repeat call reads
+    only what was appended since (ops_watch's sense beat: ~1 GB of rollouts took 22 s uncached)."""
     recs = []
     nfiles = 0
+    old = (_load_cache(cache) or {}).get("files", {}) if cache else {}
+    keep = {}
+    saved = time.monotonic()
     for d in (dirs or DIRS):
         for f in glob.glob(os.path.join(d, "**", "rollout-*.jsonl"), recursive=True):
-            if newer_than is not None:
-                try:
-                    if os.path.getmtime(f) < newer_than:
-                        continue
-                except OSError:
-                    continue
+            try:
+                st = os.stat(f)
+            except OSError:
+                continue
+            if newer_than is not None and st.st_mtime < newer_than:
+                continue
             nfiles += 1
+            if cache:
+                got, entry = _read_file(f, st, old.get(f))
+                if got is None:
+                    continue
+                keep[f] = entry
+                recs.extend(got)
+                if entry is not old.get(f) and time.monotonic() - saved > CHECKPOINT_S:
+                    _save_cache(cache, dict(old, **keep))     # a cold read killed at its limit still leaves its progress
+                    saved = time.monotonic()
+                continue
             try:
                 fh = open(f, encoding="utf-8", errors="replace")
             except OSError:
                 continue
             with fh:
-                for line in fh:
-                    if '"rate_limits"' not in line:
-                        continue
-                    try:
-                        r = json.loads(line)
-                    except ValueError:
-                        continue
-                    pl = r.get("payload") if isinstance(r, dict) else None
-                    rl = pl.get("rate_limits") if isinstance(pl, dict) else None
-                    if not isinstance(rl, dict):
-                        continue
-                    p, s = rl.get("primary") or {}, rl.get("secondary") or {}
-                    if not isinstance(p, dict) or not isinstance(s, dict):
-                        continue
-                    ts = r.get("timestamp")
-                    up, sp = _num(p.get("used_percent")), _num(s.get("used_percent"))
-                    if not ts or up is None:
-                        continue
-                    recs.append((ts, up, p.get("window_minutes"), p.get("resets_at"),
-                                 sp, s.get("window_minutes"), s.get("resets_at"),
-                                 rl.get("plan_type")))
+                _parse(fh, recs)
+    if cache:
+        _save_cache(cache, keep)
     recs.sort(key=lambda r: str(r[0]))  # timestamps only: a None field later in a tuple must not be compared
     return recs, nfiles
 

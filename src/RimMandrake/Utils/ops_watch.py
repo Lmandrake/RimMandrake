@@ -527,7 +527,8 @@ def c_codex(now, rules, ctx):
     if not dirs:
         return {k: U("no codex sessions directory (%s)" % os.pathsep.join(codex_dirs())) for k in
                 ("codex.week_used_pct", "codex.hours_to_reset", "codex.runway")}
-    recs, nfiles = CX.readings(dirs, newer_than=now - cr["lookback_days"] * DAY)
+    recs, nfiles = CX.readings(dirs, newer_than=now - cr["lookback_days"] * DAY,
+                              cache=str(ops_dir() / "codex_readings_cache.json"))
     week, bad = [], []      # bad: the time of each record that cannot be used; None when not even that reads
     for r in recs:      # (ts, p_used, p_win, p_reset, s_used, s_win, s_reset, plan)
         try:
@@ -2634,6 +2635,77 @@ def newest_mtime(d, pattern="*.json"):
     return max(ts) if ts else None
 
 
+PROGRESS_RESTAT = 4000        # names already seen that each pass stats again, in turn
+
+
+def newest_progress_mtime(d, cache, now, pattern="*.json", checkpoint=None):
+    """newest_mtime for a progress dir (done/, failed/), which gains files by a finish moving one in and grows to
+    tens of thousands on drvfs (artpipe/done 19k: 16 s of stat a run, over the metronome's 15 s sense limit). `cache`
+    (a dict, kept by the caller between runs) holds per dir the names already stat'd, their newest mtime and a rolling
+    cursor: a pass stats every name new since, plus the next PROGRESS_RESTAT names it has seen, so a file rewritten in
+    place under an old name is seen within len/PROGRESS_RESTAT passes. A vanished newest name costs one whole re-stat.
+    An absent dir holds nothing; one that cannot be listed raises (as _mtimes). `now` is unused: kept for callers."""
+    key = str(d)
+    try:
+        names = os.listdir(d)
+    except FileNotFoundError:
+        cache.pop(key, None)
+        return None
+    names = sorted(n for n in names if fnmatch.fnmatchcase(n, pattern) and not n.endswith(".worker_last_message.json"))
+    c = cache.get(key)
+    ok = (isinstance(c, dict) and isinstance(c.get("names"), list) and all(isinstance(n, str) for n in c["names"])
+          and isinstance(c.get("cur"), int) and (c.get("newest") is None or isinstance(c.get("newest"), (int, float)))
+          and (c.get("top") is None or isinstance(c.get("top"), str)))
+    if not ok or (c["top"] is not None and c["top"] not in set(names)):
+        c = {"names": [], "newest": None, "top": None, "cur": 0}
+    seen = set(c["names"])
+    old = [n for n in names if n in seen]
+    cur = c["cur"] % len(old) if old else 0
+    again = set(old[cur:cur + PROGRESS_RESTAT] + old[:max(0, cur + PROGRESS_RESTAT - len(old))])
+    newest, top = c["newest"], c["top"]
+    done = 0
+    for name in names:
+        if name in seen and name not in again:
+            continue
+        try:
+            t = os.stat(os.path.join(d, name)).st_mtime
+        except FileNotFoundError:
+            continue
+        seen.add(name)
+        if newest is None or t > newest:
+            newest, top = t, name
+        done += 1
+        if checkpoint and done % 2000 == 0:      # a cold pass killed at its limit still leaves its progress
+            cache[key] = {"names": sorted(seen), "newest": newest, "top": top, "cur": c["cur"]}
+            checkpoint()
+    keep = set(names)
+    cache[key] = {"names": names, "newest": newest if top in keep else None,
+                  "top": top if top in keep else None, "cur": (cur + PROGRESS_RESTAT) if old else 0}
+    return cache[key]["newest"]
+
+
+def _load_json_dict(p):
+    try:
+        with open(p, encoding="utf-8") as fh:
+            v = json.load(fh)
+        return v if isinstance(v, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_json(p, v):
+    tmp = str(p) + ".tmp"     # one fixed name: a writer killed mid-dump leaves one file, overwritten next time
+    try:
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump(v, fh, separators=(",", ":"))
+        os.replace(tmp, p)
+    except OSError:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+
+
 def oldest_mtime(d, pattern="*.json"):
     ts = _mtimes(d, pattern)
     return min(ts) if ts else None
@@ -2651,6 +2723,8 @@ def c_queues(now, rules, ctx):
     if not isinstance(qs, list) or not qs:
         return {"queues.blind": U("ops_watch_rules.json has no queues list")}
     blind = []
+    cpath = ops_dir() / "queue_progress_cache.json"
+    pcache = _load_json_dict(cpath)
     for q in qs:
         n = q.get("name", "?")
         k = "queues.%s." % n
@@ -2660,7 +2734,7 @@ def c_queues(now, rules, ctx):
                 raise OSError('queue dir missing: %s' % (pend if not pend.is_dir() else act))
             plist = _mtimes(pend, "*.json")  # a job claimed between the glob and the stat is movement, not blindness
             alist = _mtimes(act, "*.json", skip_worker_msg=True)
-            marks = [newest_mtime(d) for d in [act] + [Path(x) for x in q.get("progress", [])]]
+            marks = [newest_mtime(act)] + [newest_progress_mtime(Path(x), pcache, now, checkpoint=lambda: _save_json(cpath, pcache)) for x in q.get("progress", [])]
             marks = [m for m in marks if m is not None]
             if q.get("paused_file") and Path(q["paused_file"]).exists():
                 stalled = 0.0
@@ -2675,6 +2749,10 @@ def c_queues(now, rules, ctx):
         except (OSError, KeyError, ValueError) as e:
             blind.append(n)
             out[k + "stalled_min"] = U("%s: %s" % (type(e).__name__, str(e)[:150]), "min")
+    wanted = {str(Path(x)) for q in qs if isinstance(q, dict) for x in (q.get("progress") or [])}
+    for k_ in [k_ for k_ in pcache if k_ not in wanted]:      # a dir dropped from the rules leaves the cache
+        pcache.pop(k_)
+    _save_json(cpath, pcache)
     out["queues.blind"] = M(len(blind), "queues not seen", names=",".join(blind))
     return out
 
