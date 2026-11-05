@@ -737,16 +737,17 @@ class GameFx(object):
         text = self._mods_text(item, sha)
         index = relentless_names.default_index()
         chk = relentless_names.check(relentless_live_round.live_mods(text), index)
-        scripts = {}
-        for p in relentless_names.proof_scripts(text):
+        def read(p):
             try:
                 with open(os.path.join(self.books, p), encoding="utf-8", errors="replace") as f:
-                    scripts[p] = f.read()
+                    return f.read()
             except OSError:
-                pass
+                return ""
+        scripts = relentless_names.gather_scripts(text, read)
         try:
-            have = set(chk["mods"]) | set(relentless_live_round.item_mods(self._round_fx(), item, sha))
-            advice = relentless_names.advise(text, scripts, have, index)
+            build = set(relentless_live_round.item_mods(self._round_fx(), item, sha))
+            have = set(chk["mods"]) | set(relentless_names.check(sorted(build), index)["mods"])
+            advice = relentless_names.advise(text, scripts, have, index, named=chk["mods"], build=build)
         except (ValueError, OSError):
             advice = []
         return relentless_names.refusal(chk["refused"]), advice

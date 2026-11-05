@@ -221,9 +221,80 @@ def t_fixture_roundtrip():
     ok(back.as_json() == ix.as_json(), "an index survives the fixture's json")
 
 
+def t_typed_and_data():
+    ix = index()
+    # SETTLEMENT_VERBS_WAVE_1: the type's mod is the build's (derived), not named -> still advised
+    text = 'live-proof A1: x --json \'{"type":"RimMandrake.Property.RM_SettlementVerbsProof"}\'\n'
+    adv = N.advise(text, {}, {"RimProperty"}, ix, named=[])
+    ok([a["mod"] for a in adv] == ["RimProperty"], "a C# type the proof calls is advised until live-mods NAMES its mod", adv)
+    adv = N.advise("live-mods: RimProperty\n" + text, {}, {"RimProperty"}, ix, named=["RimProperty"])
+    ok(adv == [], "a named type mod is no advice", adv)
+    adv = N.advise("live-proof A1: python3 src/RimMandrake/Utils/q.py\n", {"src/RimMandrake/Utils/q.py": "x = 'KeelHoist'\n"},
+                   {"KeelHoist"}, ix, named=[])
+    ok(adv == [], "an untyped name the build already carries needs no naming", adv)
+    # ART_OVERRIDE_FAMILY_SCRIPT_1: the donors live only in a data file a sibling module reads
+    files = {"src/RimMandrake/Utils/live.py": "import fold_check as fc  # noqa\nimport os\n",
+             "src/RimMandrake/Utils/fold_check.py": 'MANIFEST = os.path.join(HERE, "fold_manifest.json")\n',
+             "src/RimMandrake/Utils/fold_manifest.json": '{"src": "src/RimMandrake/KeelHoist/Textures/a.png",\n'
+                                                         ' "donor": "donor:7f.alienworlds"}\n',
+             "src/RimMandrake/Utils/os.py": ""}
+    text = "live-proof A1: python.exe src/RimMandrake/Utils/live.py --live\n"
+    got = N.gather_scripts(text, lambda p: files.get(p, ""))
+    ok(sorted(got) == ["src/RimMandrake/Utils/fold_manifest.json", "src/RimMandrake/Utils/live.py"],
+       "gather_scripts: the script and the data its sibling module names; the module itself is not scanned", sorted(got))
+    mods = [a["mod"] for a in N.advise(text, got, set(), ix, named=[])]
+    ok("KeelHoist" in mods and "7f.alienworlds" in mods, "a mod named only in the read data file is advised", mods)
+    big = dict(files, **{"src/RimMandrake/Utils/fold_manifest.json": "x" * (N.MAX_DATA + 1)})
+    ok("src/RimMandrake/Utils/fold_manifest.json" not in N.gather_scripts(text, lambda p: big.get(p, "")),
+       "a data file over MAX_DATA is not read")
+
+    # WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR: a bare folder on a line that says it must be active
+    adv = N.advise("live-proof A1: python3 src/RimMandrake/Utils/z.py\n",
+                   {"src/RimMandrake/Utils/z.py": "# run with RimThemes + KeelHoist active\n# KeelHoist draws it\n"},
+                   set(), ix, named=[])
+    ok([(a["mod"], a["at"]) for a in adv] == [("KeelHoist", "src/RimMandrake/Utils/z.py:1")],
+       "a bare mod folder counts only on a line with a need cue", adv)
+    adv = N.advise("", {"x.py": "# KeelHoist must not be loaded\n"}, set(), ix, named=[])
+    ok(adv == [], "an absence line with a need word still gives nothing", adv)
+    # WARSCAR_HOSPICE_DESERTERS_1: a folded build source is noted with the composed mod the load holds
+    adv = N.advise("", {}, {"RimMandrake.Biomes"}, ix, named=[], build={"Stillsand"})
+    ok([(a["mod"], a["at"]) for a in adv] == [("RimMandrake.Biomes", "build: Stillsand")],
+       "a folded build source is noted with its composed mod", adv)
+    adv = N.advise("live-mods: RimMandrake.Biomes\n", {}, {"RimMandrake.Biomes"}, ix, named=["RimMandrake.Biomes"],
+                   build={"Stillsand"})
+    ok(adv == [], "no note once live-mods names the composed mod", adv)
+
+
+def t_replay_strict():
+    ix = index()
+    case = {"item": "R1X", "root": "R1", "text": "live-proof A1: true\n", "scripts": {}, "build_mods": [],
+            "added": ["neku.largepawns"]}
+    fx = {"index": ix.as_json(), "cases": [case], "passes": []}
+    code, rep = N.replay(fx)
+    ok(code == 1 and rep["R1_caught"] == "0/1", "an R1 item with no warning FAILS the replay (no unreachable escape)", rep)
+    warned = dict(case, text="# needs neku.largepawns\nlive-proof A1: true\n")
+    code, rep = N.replay(dict(fx, cases=[warned, case]))
+    ok(code == 1 and rep["R1_caught"] == "0/1", "an item is caught only when EVERY failed run of it is warned", rep)
+    other = dict(case, text="live-proof A1: python3 src/RimMandrake/KeelHoist/p.py\n")
+    code, rep = N.replay(dict(fx, cases=[other]))
+    ok(code == 1 and rep["R1_caught"] == "0/1", "advice naming only OTHER mods does not catch a case that owes one", rep)
+    named = dict(case, text="live-mods: mandrake.rsw.armoury\nlive-proof A1: python3 src/RimMandrake/Utils/q.py\n")
+    adv = N.advise(named["text"], {"src/RimMandrake/Utils/q.py": "x = 'Armoury'\n"}, {"mandrake.rsw.armoury"}, ix,
+                   named=["mandrake.rsw.armoury"])
+    ok(not any(a["mod"] == "Armoury" for a in adv), "a mod named by packageId is not advised again by folder", adv)
+    by_pid = dict(case, text="live-mods: mandrake.rsw.armoury\nlive-proof A1: true\n", added=["Armoury"])
+    code, rep = N.replay(dict(fx, cases=[by_pid]))
+    ok(rep["R1"]["R1X"]["cases"][0]["owed"] == [], "a mod named by packageId is not owed by its folder name", rep)
+    pid_adv = dict(case, text="# needs mandrake.rsw.armoury\nlive-proof A1: true\n", added=["Armoury"])
+    code, rep = N.replay(dict(fx, cases=[pid_adv]))
+    ok(code == 0 and rep["R1"]["R1X"]["hit"] == ["Armoury"], "advice by packageId hits an owed folder", rep)
+    code, rep = N.replay(dict(fx, cases=[warned]))
+    ok(code == 0 and rep["R1_caught"] == "1/1" and rep["R1_hit"] == "1/1", "a warned R1 run passes", rep)
+
+
 def main():
     for t in (t_resolve, t_blind_index, t_check_and_refusal, t_comment, t_advise, t_batch, t_preflight_names,
-              t_one_resolver, t_fixture_roundtrip):
+              t_one_resolver, t_fixture_roundtrip, t_typed_and_data, t_replay_strict):
         t()
     print('{"ok": %d, "fails": %d}' % (n_ok, len(fails)))
     return 1 if fails else 0
