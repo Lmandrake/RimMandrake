@@ -664,3 +664,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:19:19Z","tsn":1793888359868032801}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1 A1 (L2), read-only proof","ts":"2026-11-05T14:23:16Z","tsn":1793888596050826218}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:25:51Z","tsn":1793888751981734654}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A1 (L2), read-only proof","ts":"2026-11-05T14:27:06Z","tsn":1793888827000957610}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:29:14Z","tsn":1793888954455503766}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A2 (L2), read-only proof","ts":"2026-11-05T14:29:27Z","tsn":1793888967186441492}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:31:35Z","tsn":1793889095376159341}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A3 (L2), read-only proof","ts":"2026-11-05T14:31:47Z","tsn":1793889107707846993}
