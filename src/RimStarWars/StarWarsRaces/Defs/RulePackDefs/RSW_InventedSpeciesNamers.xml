@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- INVENTED, NOT CANON (TAUNG_NAMES_DESIGN_WITHOUT_CANON_POOL, 2026-11-05).
+       Wookieepedia Category:Taung (fetched 2026-10-26) holds only epithets and titles
+       ("Mandalore the Ultimate"), no personal names, so no canon pool exists. These word
+       lists are our own franchise-free coinages (biome_rulings.md Q11a: an invented name is
+       not IP), hosted here only because their one consumer is the canon Taung xenotype.
+       Sound: hard, guttural warrior-clan names. Every word was checked 2026-11-05 to have no
+       Wookieepedia article or redirect, so none is mistaken for a canon individual.
+       Word lists live under RimMandrakeSWNames/Invented/, never Canon/; never cite them as canon.
+       Hand-authored; gen_races_mod.py wires them through OWNER_NAMERS and does not rewrite this file. -->
+  <RulePackDef>
+    <defName>RSW_NamerTaungInvented</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameTaungInvented]</li>
+        <li>lastName-&gt;[LastNameTaungInvented]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameTaungInvented</keyword>
+          <path>RimMandrakeSWNames/Invented/Taung/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameTaungInvented</keyword>
+          <path>RimMandrakeSWNames/Invented/Taung/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+</Defs>

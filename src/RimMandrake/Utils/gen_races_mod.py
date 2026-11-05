@@ -1277,7 +1277,8 @@ NAMER_DROPPED = {
 # XENOTYPE_CANON_CORRECTION_1, 2026-10-26: species name-makers authored from the named
 # individuals of each Wookieepedia species category, hand-written in
 # Defs/RulePackDefs/RSW_CanonSpeciesNamers.xml (this script never rewrites that file).
-# Taung has none: its category holds only epithets ("Mandalore the Ultimate").
+# Taung's category holds only epithets ("Mandalore the Ultimate"), so its namer is INVENTED,
+# not canon: Defs/RulePackDefs/RSW_InventedSpeciesNamers.xml (TAUNG_NAMES_DESIGN_WITHOUT_CANON_POOL).
 # Overrides whatever nameMaker the build carried (Massassi had the shared Sith one); SithZ
 # (Zuguruk caste, no named canon individuals) takes the Sith namer its two sibling castes use.
 OWNER_NAMERS = {
@@ -1304,6 +1305,7 @@ OWNER_NAMERS = {
     "RSW_RimMandrakeRakata": "RSW_NamerRakata",
     "RSW_RimMandrakeSelkath": "RSW_NamerSelkath",
     "RSW_RimMandrakeTogorian": "RSW_NamerTogorian",
+    "RSW_RimMandrakeTaung": "RSW_NamerTaungInvented",
 }
 
 _SHIPPED_GENES = {}

@@ -1817,6 +1817,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>1.7999999523162842</combatPowerFactor>
+    <nameMaker>RSW_NamerTaungInvented</nameMaker>
     <genes>
       <li>RSW_FacialRidges_bumpy</li>
       <li>RSW_Brow_pointy</li>
