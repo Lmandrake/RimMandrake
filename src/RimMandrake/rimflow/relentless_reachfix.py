@@ -1,0 +1,328 @@
+#!/usr/bin/env python3
+"""relentless_reachfix.py - a blind Judge fixes its own eyes (BLIND_JUDGE_BUILD_FIXES_OWN_EYES, owner 2026-11-05).
+
+Owner: "The JUDGE is the one who can't measure something, so the JUDGE should fix it. His incentive is to be fair, so it's
+not reward hacking." and "It should only file a ticket if it is unable to make the fix itself."
+
+Before this, an UNMEASURED verdict set a 30-minute clock and the same sha was checked again; two blind checks held the item,
+and every unhold bought two more Markers (JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS: 11 checks, churn diagnosis
+D:\\ClaudeWork\\rimmandrake\\conductor\\churn_diagnosis_2026-11-05.md). Now the first blind verdict ends the checking:
+
+  on_blind()   under the lock, at the verdict. The gap is classed (relentless_rules.json reach_classes). The Judge's own
+               `verdict UNMEASURED ... --propose NAME|PATH` is the repair (else the class's seed adapters / the paths its
+               --unreached names). The first item blind on a class OWNS the repair; another item blind on a class whose
+               repair is open WAITS on it (blocked, a ledger dependency on the owner). No clock, no re-check.
+  sweep()      every tick, out of the lock. The owner's proposal is PROBED from inside the Judge's wall (Fx.reach_probe:
+               each path read in a unit with the Marker's systemd properties, each adapter run and read non-empty).
+               Pass: the supervisor applies it as its own overlay (contract.offbox += adapters, the paths bound read only
+               at the next launch, contract.reach_ok stamped so the box fingerprint moves) and the UNCHANGED sha is checked
+               once more; the waiters each probe their own proposal next. Fail, or blind again on the repaired sha: then,
+               and only then, a ticket is filed (the class's `ticket`), and owner and waiters block on it; a closed ticket
+               re-probes, and only a pass releases.
+
+A repair only ADDS read access: a path under reach_never, never_through or never_through_rx is refused before any probe,
+an adapter must already be a supervisor offbox adapter (no Judge-written argv ever runs), and nothing here touches the
+proof, the verdict logic or the product sha.
+"""
+from __future__ import annotations
+
+import json
+import os
+import re
+import time
+
+import relentless_wall
+
+BOOK = "reach_gaps.json"
+WAIT = "reach"          # st["wait"]["kind"]: relentless_attrib.release leaves it alone; this module moves it
+PROPOSE_MAX = 8
+
+
+def on(r):
+    return bool(r.get("reach_repair", True))
+
+
+def classes(r):
+    return [c for c in r.get("reach_classes") or [] if isinstance(c, dict) and c.get("class")]
+
+
+def classify(r, texts):
+    """-> the first reach_classes row whose `match` finds any of `texts`, else the catch-all `other` row."""
+    blob = "\n".join(t for t in texts if t)
+    for c in classes(r):
+        if c.get("match") and re.search(c["match"], blob, re.I):
+            return c
+    return {"class": "other", "adapters": [], "paths": True,
+            "ticket": r.get("reach_other_ticket", "CHECKER_REACH_FIX_OTHER_STILL_DARK")}
+
+
+def _paths_of(texts):
+    out = []
+    for t in texts:
+        for m in relentless_wall._THROUGH_WORD.finditer(t or ""):
+            p = os.path.normpath(relentless_wall._host(m.group(0)))
+            if p not in out and p != "/":
+                out.append(p)
+    return out
+
+
+def refused(p, r, store_root=None):
+    """-> why a read path may not be added, or None. Add-only stays add-only: the store, transcripts, memory, credentials
+    and the worker run folders stay dark whatever a Judge proposes."""
+    prof = relentless_wall.profile(r) or {}
+    p = os.path.normpath(relentless_wall._host(p))
+    if not relentless_wall._SAFE.match(p):
+        return "not a plain absolute path"
+    never = list(r.get("reach_never") or []) + list(prof.get("never_through") or []) + ([store_root] if store_root else [])
+    for n in never:
+        if p == n.rstrip("/") or p.startswith(n.rstrip("/") + "/") or n.startswith(p.rstrip("/") + "/"):
+            return "under %s, which no reach repair opens" % n
+    rx = prof.get("never_through_rx")
+    if rx and re.search(rx, p):
+        return "matches never_through_rx (a worker's progress, handoff or transcript)"
+    return None
+
+
+def propose(r, cls, proposals, unreached, what, store_root=None):
+    """-> {adapters, paths, refused, by}. The Judge's --propose lines first; none, and the class's seed."""
+    known = relentless_wall.adapters(r)
+    said = [str(x).strip() for x in proposals or [] if str(x).strip()][:PROPOSE_MAX]
+    ads = [x for x in said if x in known]
+    paths = _paths_of([x for x in said if x not in known])
+    by = "judge" if said else "seed"
+    if not said:
+        ads = [x for x in cls.get("adapters") or [] if x in known]
+        paths = _paths_of(list(unreached or []) + [what or ""]) if cls.get("paths") else []
+    bad = {}
+    for p in list(paths):
+        why = refused(p, r, store_root)
+        if why:
+            bad[p] = why
+            paths.remove(p)
+    bad.update({x: "not a supervisor offbox adapter" for x in said if x not in known and not _paths_of([x])})
+    return {"adapters": ads[:relentless_wall.OFFBOX_MAX], "paths": paths[:relentless_wall.THROUGH_MAX], "refused": bad,
+            "by": by}
+
+
+def load(store):
+    try:
+        with open(store.p(BOOK), encoding="utf-8") as f:
+            b = json.load(f)
+        return b if isinstance(b, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def save(store, book):
+    tmp = store.p(BOOK + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(book, f, indent=1, sort_keys=True)
+    os.replace(tmp, store.p(BOOK))
+
+
+def paths(st):
+    """The read paths a passed repair binds at the Marker's next launch (re-checked against the rules there)."""
+    rp = st.get("reach") or {}
+    return list((rp.get("proposal") or {}).get("paths") or []) if rp.get("status") == "applied" else []
+
+
+def _wait(st, kind_on, cls, now, detail, ledger_on=None):
+    st["status"] = "blocked"
+    st["blocked_at"] = now
+    st["wait"] = {"kind": WAIT, "on": kind_on, "class": cls, "attributed_at": now}
+    if ledger_on:
+        st["block_pending"] = {"kind": "item", "on": [ledger_on], "class": "reach", "detail": detail[:600]}
+
+
+def on_blind(store, st, r, now, said, blind):
+    """Under the lock, after unmeasured() counted the blindness. -> the ledger line. The item stops being checked."""
+    item, sha = st["item"], (st.get("candidate") or {}).get("sha")
+    chk = st.get("_blind_check") or {}
+    what = (st.get("blind") or {}).get("what") or blind or ""
+    prev = st.get("reach") or {}
+    book = load(store)
+    if prev.get("status") == "applied" and prev.get("sha") == sha:
+        # the probe passed and the Judge is still blind on the same sha: the repair did not give it its eyes
+        cls = prev["class"]
+        st["reach"] = dict(prev, status="failed", at=now, still_blind=what[:300])
+        ent = book.setdefault(cls, {})
+        ent.update(owner=item, status="failed", since=now, why="its repair passed the probe, yet the Judge is still blind: "
+                   + what[:250])
+        save(store, book)
+        _wait(st, item, cls, now, "", None)
+        return ("blind again at %s after its %s repair passed its probe: Relentless cannot fix this itself, so it files %s "
+                "and waits on it: %s" % (sha, cls, _ticket_of(r, cls), what[:300]))
+    cls = classify(r, [what] + list(chk.get("unreached") or []))
+    prop = propose(r, cls, chk.get("proposals"), chk.get("unreached"), what, store.root)
+    name = cls["class"]
+    ent = book.get(name) or {}
+    owner = ent.get("owner")
+    if owner and owner != item and ent.get("status") in ("probe", "ticket", "failed"):
+        st["reach"] = {"class": name, "proposal": prop, "sha": sha, "status": "waiting", "on": owner, "at": now}
+        _wait(st, owner, name, now, "the Judge could not reach the evidence (%s): it waits on %s, which owns the %s reach "
+              "repair" % (what[:300], owner, name), ledger_on=owner)
+        book.setdefault(name, ent).setdefault("waiters", [])
+        if item not in ent["waiters"]:
+            ent["waiters"].append(item)
+        save(store, book)
+        return ("blind check at %s: UNMEASURED (Marker said %s); no re-check. The %s gap's repair is %s's, so this item "
+                "waits on it: %s" % (sha, said, name, owner, what[:300]))
+    st["reach"] = {"class": name, "proposal": prop, "sha": sha, "status": "probe", "at": now}
+    book[name] = {"owner": item, "status": "probe", "since": now, "waiters": [w for w in ent.get("waiters") or []
+                                                                             if w != item]}
+    save(store, book)
+    _wait(st, item, name, now, "", None)
+    return ("blind check at %s: UNMEASURED (Marker said %s); no re-check. This item owns the %s reach repair (%s "
+            "proposal: adapters %s, read paths %s%s); it is probed from inside the Judge's wall, then the same sha is "
+            "checked once: %s" % (sha, said, name, prop["by"], prop["adapters"] or "-", prop["paths"] or "-",
+                                  "; refused %s" % prop["refused"] if prop["refused"] else "", what[:300]))
+
+
+def _ticket_of(r, name):
+    for c in classes(r):
+        if c["class"] == name and c.get("ticket"):
+            return c["ticket"]
+    return r.get("reach_other_ticket", "CHECKER_REACH_FIX_OTHER_STILL_DARK")
+
+
+def _apply(st, prop, name, now, how):
+    """Under the lock: the supervisor's own add-only overlay; the product sha and the proof stay as they are."""
+    k = st.get("contract")
+    if k is not None:
+        have = relentless_wall.offbox_cmds(k)
+        k["offbox"] = (have + [x for x in prop.get("adapters") or [] if x not in have])[:relentless_wall.OFFBOX_MAX]
+        k["reach_ok"] = ("reach repair %s (%s): adapters %s, read paths %s" % (
+            name, how, prop.get("adapters") or "-", prop.get("paths") or "-"))[:400]
+        if not k["offbox"]:
+            k.pop("offbox")
+    st["reach"] = dict(st.get("reach") or {}, proposal=prop, status="applied", applied_at=now)
+    st.pop("wait", None)
+    st.pop("block_pending", None)
+    st["blind"] = None
+    st.pop("recheck_at", None)
+    st["status"] = "candidate"
+
+
+def sweep(store, fx, r, now, acts, iso):
+    """Not under the lock. Probe each open repair; pass applies and re-checks once, fail files the ticket."""
+    if not on(r):
+        return
+    book = load(store)
+    for name, ent in sorted(book.items()):
+        owner, status = ent.get("owner"), ent.get("status")
+        if status not in ("probe", "ticket", "failed") or not owner:
+            continue
+        st = store.load(owner)
+        if not st or st["status"] != "blocked" or (st.get("wait") or {}).get("kind") != WAIT:
+            ent["status"] = "orphan"
+            save(store, book)
+            continue
+        rp = st.get("reach") or {}
+        prop = rp.get("proposal") or {}
+        if status == "ticket":
+            led = fx.item_state(ent["ticket"]) or {}
+            event = "%s:%s:%s" % (led.get("state"), led.get("closed_sha"), led.get("event"))
+            if led.get("state") != "done" or ent.get("probed_event") == event:
+                continue
+            ent["probed_event"] = event
+        if status == "failed":
+            file_ticket(store, fx, r, book, name, owner, ent.get("why"), now, acts, iso)
+            continue
+        why = None
+        if not prop.get("adapters") and not prop.get("paths"):
+            why = "the Judge proposed nothing Relentless may apply%s" % (
+                " (refused: %s)" % prop.get("refused") if prop.get("refused") else "")
+            good = False
+        else:
+            good, why = fx.reach_probe(r, prop.get("paths") or [], prop.get("adapters") or [],
+                                       {"sha": rp.get("sha") or "", "repo": fx.books}, store.root)
+        if good:
+            with store.lock():
+                cur = store.load(owner)
+                if cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                    continue
+                _apply(cur, prop, name, now, "probe passed: %s" % (why or "")[:200])
+                store.attempt(owner, {"at": iso(now), "gen": cur["gen"], "end": "reach_repaired", "class": name,
+                                      "detail": ("probe passed: %s" % why)[:600], "sha": rp.get("sha")})
+                store.save(cur)
+            if status == "ticket":
+                fx.ledger_unblock(owner, "reach repair %s: %s closed and the probe passes" % (name, ent["ticket"]))
+            waiters = list(ent.get("waiters") or [])
+            book[name] = dict(ent, status="ok", owner=None, waiters=[], ok_at=now, last_owner=owner)
+            save(store, book)
+            for w in waiters:
+                release_waiter(store, fx, w, name, now, iso)
+            store.journal({"at": iso(now), "do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
+            acts.append({"do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
+            continue
+        if status == "ticket":      # the ticket closed and the probe still fails: it keeps waiting, said once per close
+            fx.ledger_note(ent["ticket"], "relentless: %s closed, but the %s reach probe still fails, so %s and %d "
+                           "waiter(s) stay blocked: %s" % (ent["ticket"], name, owner, len(ent.get("waiters") or []), why))
+            save(store, book)
+            continue
+        file_ticket(store, fx, r, book, name, owner, why, now, acts, iso)
+
+
+def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
+    """The fallback, and only after the item's own repair failed its probe: one ticket per class; owner and waiters block
+    on it in the ledger."""
+    ent = book[name]
+    ticket = _ticket_of(r, name)
+    bad = fx.reach_ticket(ticket, "Relentless could not repair its own %s reach: the Judge's proposal for %s failed its "
+                          "probe from inside the wall (%s). Give the Marker a way to read it (an offbox adapter in "
+                          "relentless_rules.json or a read path the wall may bind); closing this re-probes and releases "
+                          "the waiting items." % (name, owner, (why or "")[:300]))
+    if bad:
+        acts.append({"do": "reach_ticket_failed", "item": owner, "why": bad})
+        return
+    ent.update(status="ticket", ticket=ticket, ticket_at=now, why=(why or "")[:300])
+    save(store, book)
+    for it in [owner] + list(ent.get("waiters") or []):
+        with store.lock():
+            cur = store.load(it)
+            if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                continue
+            cur["wait"]["on"] = ticket
+            cur["block_pending"] = {"kind": "item", "on": [ticket], "class": "reach",
+                                    "detail": "the Judge's %s reach repair failed its probe: %s" % (name, (why or "")[:300])}
+            if cur.get("reach"):
+                cur["reach"]["status"] = "ticket"
+            store.save(cur)
+    store.journal({"at": iso(now), "do": "reach_ticket", "item": owner, "class": name, "ticket": ticket})
+    acts.append({"do": "reach_ticket", "item": owner, "class": name, "ticket": ticket, "why": (why or "")[:200]})
+
+
+def release_waiter(store, fx, item, name, now, iso):
+    """The class's repair passed: the waiter probes its own proposal next (one cheap probe, no Marker), owning it."""
+    with store.lock():
+        cur = store.load(item)
+        if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+            return
+        book = load(store)
+        ent = book.get(name) or {}
+        if ent.get("status") in ("probe", "ticket", "failed") and ent.get("owner") not in (None, item):
+            return
+        cur["reach"] = dict(cur.get("reach") or {}, status="probe", at=now)
+        cur.pop("block_pending", None)
+        cur["wait"] = {"kind": WAIT, "on": item, "class": name, "attributed_at": now}
+        book[name] = dict(ent, owner=item, status="probe", since=now)
+        save(store, book)
+        store.attempt(item, {"at": iso(now), "gen": cur["gen"], "end": "reach_waiter_released", "class": name})
+        store.save(cur)
+    fx.ledger_unblock(item, "reach repair %s passed its probe; this item probes its own proposal" % name)
+
+
+def adopt(store, st, r, now):
+    """Under the lock: a held `unmeasured` item, or a blind candidate, from before this rule, moved to its reach repair.
+    -> the line, or None when it is not one."""
+    hold = st.get("hold") or {}
+    if not (st.get("candidate") or {}).get("sha") or not (
+            (st["status"] == "held" and hold.get("kind") == "unmeasured") or (st["status"] == "candidate" and st.get("blind"))):
+        return None
+    blind = st.get("blind") or {}
+    st["hold"] = None
+    st["_blind_check"] = {}
+    try:
+        return on_blind(store, st, r, now, blind.get("said") or "UNMEASURED", blind.get("what") or hold.get("why") or "")
+    finally:
+        st.pop("_blind_check", None)

@@ -283,7 +283,7 @@ def checked(x, i):
 
 
 def t_no_repaid_recheck():
-    x = T.Rig(n=1, share=1.0, unmeasured_limit=2, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, unmeasured_limit=2, unmeasured_recheck_s=1800)
     to_candidate(x, "I0", SEEN["relative selftest"])
     ok(checked(x, "I0"), "(4) the first check runs")
     st = blind_once(x, "I0")
@@ -297,7 +297,7 @@ def t_no_repaid_recheck():
     ok(st["status"] == "held" and st["hold"]["kind"] == "unmeasured" and not st["hold"].get("reach")
        and "unchanged" in st["hold"]["why"], "(4) held for repair at the recheck instead: %s" % st["status"])
     x.done()
-    x = T.Rig(n=1, share=1.0, unmeasured_limit=2, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, unmeasured_limit=2, unmeasured_recheck_s=1800)
     to_candidate(x, "I0", SEEN["relative selftest"])
     checked(x, "I0")
     blind_once(x, "I0")
@@ -309,7 +309,7 @@ def t_no_repaid_recheck():
         x.tick(120)
     ok(x.st("I0")["status"] == "checking" and len(x.w.launches) == n + 1, "(4) a repaired box is checked again")
     x.done()
-    x = T.Rig(n=1, share=1.0, unmeasured_limit=2, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, unmeasured_limit=2, unmeasured_recheck_s=1800)
     to_candidate(x, "I0", SEEN["relative selftest"])
     checked(x, "I0")
     st = x.st("I0")

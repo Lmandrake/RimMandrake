@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+"""A blind Judge fixes its own eyes (BLIND_JUDGE_BUILD_FIXES_OWN_EYES, owner 2026-11-05: "The JUDGE is the one who can't
+measure something, so the JUDGE should fix it"; "It should only file a ticket if it is unable to make the fix itself").
+JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS was checked 11 times on one sha: a blind verdict set a 30-minute clock, two holds,
+and every unhold bought two more Markers. Rows, through the real tick on selftest_relentless's rig:
+  (1) one blind check, then zero further checks: no clock, no recheck_at, the item leaves the candidates;
+  (2) the Judge's --propose is the repair, an adapter name or a read path; a path into the store is refused, never probed;
+  (3) dedupe: the second item blind on the same gap class waits on the first, a ledger dependency, and probes nothing;
+  (4) the probe gates release: a failing probe releases nobody, a closed ticket with a failing probe releases nobody,
+      only a passing probe applies the overlay and checks the SAME sha once;
+  (5) the ticket is the fallback only: a passing probe files none; a failed probe, or blind again after a passed one,
+      files exactly one.
+Each row fails on the code before this rule (relentless.unmeasured set recheck_at and kept the candidate)."""
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import relentless as R                  # noqa: E402
+import relentless_reachfix as RF        # noqa: E402
+import selftest_relentless as T         # noqa: E402
+import selftest_relentless_blind as B   # noqa: E402
+
+FAILS = []
+GIT_BLIND = "CANNOT REACH: the box has no .git, so git log origin/main shows nothing; the files themselves read fine"
+
+
+def ok(cond, name):
+    print(("ok   " if cond else "FAIL ") + name)
+    if not cond:
+        FAILS.append(name)
+
+
+def rig(n=1, probe=(False, "UNREADABLE")):
+    x = T.Rig(n=n, share=1.0, same_failure_limit=2, unmeasured_limit=2, unmeasured_recheck_s=1800)
+    x.w.books = "/books"
+    x.w.probes, x.w.tickets, x.w.unblocks, x.w.blocks = [], [], [], []
+    x.w.probe_says = probe
+
+    def reach_probe(r, paths, adapters, values, store_root):
+        x.w.probes.append((list(paths), list(adapters), values.get("sha")))
+        return x.w.probe_says
+
+    def reach_ticket(item, text):
+        x.w.tickets.append(item)
+        x.w.items.setdefault(item, "proposed")
+
+    def ledger_block(item, kind, ons, reason):
+        x.w.blocks.append((item, kind, list(ons)))
+
+    def ledger_unblock(item, reason):
+        x.w.unblocks.append(item)
+
+    def run_offbox(name, adapter, timeout):     # the applied adapter's reading at the re-check launch
+        return {"cmd": name, "exit": 0, "out": "commit sha1 on origin/main", "at": x.now}
+    x.w.run_offbox = run_offbox
+    x.w.reach_probe, x.w.reach_ticket, x.w.ledger_block, x.w.ledger_unblock = (reach_probe, reach_ticket, ledger_block,
+                                                                                ledger_unblock)
+    return x
+
+
+def blind(x, i, proposals=None, what=GIT_BLIND):
+    st = x.st(i)
+    R.verdict(x.s, i, st["check"]["nonce"], "UNMEASURED", what, unreached=[what], proposals=proposals)
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick()
+    return x.st(i)
+
+
+def checks(x, item="I0"):
+    """Check launches of the item under test; the filed ticket is a work item Relentless may carry, not a re-check."""
+    return [ln for ln in x.w.launches if ln[0] == item and "-check-" in str(ln[1])]
+
+
+def t_one_blind_no_more_checks():
+    x = rig()
+    B.to_check(x, "I0")
+    n0 = len(checks(x))
+    st = blind(x, "I0", proposals=["git_log_candidate"])
+    ok(st["status"] == "blocked" and "recheck_at" not in st, "(1) one blind check: blocked, no re-check clock: %s %s"
+       % (st["status"], st.get("recheck_at")))
+    ok((st.get("wait") or {}).get("kind") == RF.WAIT and st["candidate"]["sha"] == "sha1",
+       "(1) it waits on its own reach repair and keeps its candidate")
+    for _ in range(40):      # 80 minutes, past any old recheck clock
+        x.tick(120)
+    ok(len(checks(x)) == n0, "(1) zero further checks in 80 minutes while the repair fails: %d" % (len(checks(x)) - n0))
+    ok(sum(1 for a in x.s.attempts("I0") if a.get("end") == "unmeasured") == 1, "(1) one unmeasured attempt, no more")
+    rp = x.st("I0")["reach"]
+    ok(rp["class"] == "git" and rp["proposal"]["by"] == "judge" and rp["proposal"]["adapters"] == ["git_log_candidate"],
+       "(2) the Judge's --propose is the repair: %s" % rp["proposal"])
+    x.done()
+
+
+def t_refused_path():
+    x = rig()
+    B.to_check(x, "I0")
+    store_path = os.path.join(x.s.root, "items", "I0", "attempts.jsonl")
+    blind(x, "I0", proposals=[store_path, "/mnt/d/ClaudeWork/rimmandrake/q/x.json"],
+          what="CANNOT REACH /mnt/d/ClaudeWork/rimmandrake/q/x.json")
+    x.tick()
+    prop = x.st("I0")["reach"]["proposal"]
+    ok(prop["paths"] == ["/mnt/d/ClaudeWork/rimmandrake/q/x.json"] and store_path in prop["refused"],
+       "(2) a store path is refused, the scratch path kept: %s" % prop)
+    ok(all(store_path != p for ps, _, _ in x.w.probes for p in ps),
+       "(2) no refused path is ever probed: %s" % x.w.probes)
+    x.done()
+
+
+def t_dedupe_and_probe_gate():
+    x = rig(n=2)
+    B.to_check(x, "I0")
+    B.to_check(x, "I1")
+    blind(x, "I0")
+    st1 = blind(x, "I1")
+    x.tick()        # a pending block reaches the ledger on the next sweep
+    ok(st1["status"] == "blocked" and st1["wait"]["on"] == "I0", "(3) the second blind on git waits on the owner I0: %s"
+       % st1.get("wait"))
+    ok(("I1", "item", ["I0"]) in x.w.blocks, "(3) a ledger dependency on the owner: %s" % x.w.blocks)
+    book = RF.load(x.s)
+    ok(book["git"]["owner"] == "I0" and book["git"]["waiters"] == ["I1"], "(3) one repair per class: %s" % book["git"])
+    ok(all(v[2] == "sha1" for v in x.w.probes) and len({tuple(v[1]) for v in x.w.probes}) <= 1,
+       "(3) only the owner's proposal is probed")
+    ok(x.w.tickets == ["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"], "(5) the failed probe files the class ticket, once: %s"
+       % x.w.tickets)
+    for _ in range(5):
+        x.tick()
+    ok(x.st("I0")["status"] == "blocked" and x.st("I1")["status"] == "blocked", "(4) a failing probe releases nobody")
+    ok(x.w.tickets == ["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"], "(5) still one ticket after more ticks")
+    probes = len(x.w.probes)
+    x.w.items["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] = "done"
+    x.tick()
+    ok(len(x.w.probes) == probes + 1 and x.st("I0")["status"] == "blocked",
+       "(4) the ticket closed but the probe still fails: re-probed once, still blocked")
+    x.tick()
+    ok(len(x.w.probes) == probes + 1, "(4) the same close is probed once, not every tick")
+    n0 = len(checks(x))
+    x.w.probe_says = (True, "git_log_candidate exit 0, 900 chars")
+    x.w.items["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] = "proposed"
+    x.tick()
+    x.w.items["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] = "done"     # a new close event
+    x.s.save(dict(x.st("I0")))
+    book = RF.load(x.s)
+    book["git"]["probed_event"] = "stale"
+    RF.save(x.s, book)
+    for _ in range(6):
+        x.tick()
+    st = x.st("I0")
+    ok(st["candidate"]["sha"] == "sha1" and "git_log_candidate" in (st["contract"].get("offbox") or [])
+       and "reach repair git" in (st["contract"].get("reach_ok") or ""),
+       "(4) the passing probe applies the overlay, the product sha unchanged: %s" % st["contract"].get("offbox"))
+    ok(len(checks(x)) >= n0 + 1 and st["status"] == "checking", "(4) the same sha is checked once more: %s" % st["status"])
+    ok("I0" in x.w.unblocks and "I1" in x.w.unblocks, "(4) owner and waiter come off the ledger block: %s" % x.w.unblocks)
+    x.done()
+
+
+def t_ticket_only_on_failure():
+    x = rig(probe=(True, "git_log_candidate exit 0, 900 chars"))
+    B.to_check(x, "I0")
+    n0 = len(checks(x))
+    blind(x, "I0")
+    for _ in range(4):
+        if x.st("I0")["status"] == "checking":
+            break
+        x.tick()
+    st = x.st("I0")
+    ok(x.w.tickets == [], "(5) a passing probe files no ticket")
+    ok(st["status"] == "checking" and len(checks(x)) == n0 + 1 and st["candidate"]["sha"] == "sha1",
+       "(4) repaired: the unchanged sha checked exactly once more: %s" % st["status"])
+    st = blind(x, "I0")
+    for _ in range(3):
+        x.tick()
+    ok(x.w.tickets == ["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] and x.st("I0")["status"] == "blocked",
+       "(5) blind again after a passed repair: it cannot fix itself, one ticket: %s" % x.w.tickets)
+    for _ in range(20):
+        x.tick(120)
+    ok(len(checks(x)) == n0 + 1, "(1) and no third check")
+    x.done()
+
+
+def t_legacy_off():
+    x = rig()
+    x.r = dict(x.r, reach_repair=False)
+    B.to_check(x, "I0")
+    st = blind(x, "I0")
+    ok(st["status"] == "candidate" and st.get("recheck_at"), "reach_repair off keeps the old clock route (rules switch)")
+    x.done()
+
+
+def main():
+    for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure, t_legacy_off):
+        t()
+    print("%d failed" % len(FAILS) if FAILS else "all ok")
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

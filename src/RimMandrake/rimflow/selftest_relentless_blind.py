@@ -136,7 +136,7 @@ def t_round2_script_and_cli():
         clean = {k: W.clean_list(got[k]) for k in ("defects", "unreached")}
         ok(clean == {k: got[k] for k in clean} and W.refusal(got["word"], got["defects"], got["unreached"]) is None,
            "R2-2: what the script accepts, the reader reads unchanged and the CLI would accept: %s" % got)
-    x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
     was = to_check(x, "I0")
     st = x.st("I0")
     os.environ["RELENTLESS_ROOT"] = x.d
@@ -175,7 +175,7 @@ def t_round2_box_never_wedges():
     """R2-1 through the tick: a box PASS with unreached evidence does not close. R2-2: a file the reader accepts never
     raises in the tick - UNMEASURED beside a defect is FAIL, a whitespace-only list is read from its prose, and anything
     still malformed is a lost check, once."""
-    x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
     was = to_check(x, "I0")
     st, _ = box_says(x, "I0", {"word": "PASS", "reasons": "offline checks passed",
                                "defects": [], "unreached": ["required Steve free-space measurement: ssh failed"]})
@@ -189,7 +189,7 @@ def t_round2_box_never_wedges():
         ok(False, "R2-2: a whitespace-only --unreached in the box raises nothing in the tick: %s" % e)
     ok(st["gen"] == was["gen"] and st["blind"]["n"] == 2, "R2-2: and it is read from its prose: still blind, nothing back")
     x.done()
-    x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
     was = to_check(x, "I0")
     try:
         st, _ = box_says(x, "I0", {"word": "UNMEASURED", "reasons": "x", "defects": ["8 != 7"], "unreached": ["ssh"]})
@@ -199,7 +199,7 @@ def t_round2_box_never_wedges():
     st = read_as_fail(x)
     ok(st["failures"].get("blind_fail") == 1 and st["gen"] > was["gen"], "R2-2: and it acts as the FAIL read_as promises")
     x.done()
-    x = T.Rig(n=1, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=3, unmeasured_limit=3, unmeasured_recheck_s=1800)
     was = to_check(x, "I0")
     real = R.verdict
 
@@ -300,7 +300,7 @@ def recheck(x, i, repair=True):
 
 
 def t_steve_replay():
-    x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_limit=2, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2, unmeasured_limit=2, unmeasured_recheck_s=1800)
     was = to_check(x, "I0")
     launches = len(x.w.launches)
     st = speak(x, "I0", "FAIL", STEVE_G1)        # what the Marker said at gen 1
@@ -362,7 +362,7 @@ def read_as_fail(x, item="I0"):
 
 
 def t_real_fail_after_blind():
-    x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_recheck_s=60)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2, unmeasured_recheck_s=60)
     was = to_check(x, "I0")
     st = speak(x, "I0", "FAIL", STEVE_G1, repair=True)     # the recheck wait is shorter than speak's ticks
     recheck(x, "I0", repair=False)
@@ -377,7 +377,7 @@ def t_real_fail_after_blind():
 
 def t_structured_replay():
     """F2/F3 through the real tick: the lists decide, not the prose."""
-    x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
     was = to_check(x, "I0")
     st = x.st("I0")
     R.verdict(x.s, "I0", st["check"]["nonce"], "FAIL", GPT_RED_BLIND, defects=[], unreached=["ssh stevedesktop exits 255"])

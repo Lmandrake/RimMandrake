@@ -62,15 +62,16 @@ VERDICT_SCRIPT = '''#!/usr/bin/env python3
 import json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
 USAGE = ('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw" [--defect "a wrong thing your run showed"]... '
-         '[--unreached "evidence you could not reach, and the command that showed it"]...')
-a, defects, unreached = sys.argv[1:], [], []
+         '[--unreached "evidence you could not reach, and the command that showed it"]... '
+         '[--propose ADAPTER_NAME|/read/path]...')
+a, defects, unreached, proposals = sys.argv[1:], [], [], []
 pos = []
 while a:
     x = a.pop(0)
-    if x in ("--defect", "--unreached") and a:
+    if x in ("--defect", "--unreached", "--propose") and a:
         y = " ".join(a.pop(0).split())[:600]      # the reader's own normalisation (relentless_wall.clean_list): agree on it
         if y:
-            (defects if x == "--defect" else unreached).append(y)
+            {"--defect": defects, "--unreached": unreached, "--propose": proposals}[x].append(y)
     else:
         pos.append(x)
 if len(pos) != 2 or pos[0].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
@@ -79,10 +80,13 @@ if pos[0].upper() == "UNMEASURED" and not unreached:
     sys.exit("UNMEASURED needs at least one --unreached: name what you could not reach")
 if pos[0].upper() == "UNMEASURED" and defects:
     sys.exit("a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines")
+if proposals and pos[0].upper() != "UNMEASURED":
+    sys.exit("--propose is the reach repair of an UNMEASURED verdict only")
 if pos[0].upper() == "PASS" and (defects or unreached):
     sys.exit("a PASS carries no --defect and no --unreached: evidence you could not reach is UNMEASURED, a defect is FAIL")
 with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
-    json.dump({"word": pos[0].upper(), "reasons": pos[1], "defects": defects, "unreached": unreached, "at": time.time()}, f)
+    json.dump({"word": pos[0].upper(), "reasons": pos[1], "defects": defects, "unreached": unreached,
+               "proposals": proposals, "at": time.time()}, f)
 os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
 print("recorded")
 '''
@@ -358,7 +362,7 @@ def blind_lines(st):
             % (", ".join(paths) or "none")]
 
 
-def marker_prompt(st, text, box):
+def marker_prompt(st, text, box, adapter_names=()):
     """The checker's words, its way to the change and its way to a verdict being the box's."""
     c = st["candidate"]
     qv = shlex.quote(str(box) + "/verdict")     # a box path with a space still runs
@@ -373,7 +377,14 @@ def marker_prompt(st, text, box):
         "  python3 %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"one wrong thing\" [--defect ...] "
         "[--unreached \"what you also could not reach\"]" % qv,
         "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\" "
-        "--unreached \"one thing out of reach, and the command that showed it\" [--unreached ...]" % qv,
+        "--unreached \"one thing out of reach, and the command that showed it\" [--unreached ...] "
+        "[--propose NAME_OR_PATH ...]" % qv,
+        "If you say UNMEASURED, you own the repair of your own eyes: add one --propose per fix, either the name of a "
+        "supervisor offbox adapter that would read it from outside (%s) or an absolute path that, bound read only into "
+        "this box, would let you read it. Relentless probes your proposal from inside this wall, applies it as its own "
+        "change and checks this same commit once more; only if your proposal fails its probe is a ticket filed. A "
+        "proposal only adds read access: the store, transcripts, memory and credentials are never opened."
+        % (", ".join(sorted(adapter_names)) or "see relentless_rules.json offbox_adapters"),
         *offbox_lines(st["contract"], box),
         *blind_lines(st),
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
@@ -421,7 +432,7 @@ def read_verdict(box):
     except (TypeError, ValueError, OverflowError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
         at = time.time()
     return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "defects": clean_list(v.get("defects")),
-            "unreached": clean_list(v.get("unreached")), "at": at}
+            "unreached": clean_list(v.get("unreached")), "proposals": clean_list(v.get("proposals")), "at": at}
 
 
 def would_deny(inputs, prof):

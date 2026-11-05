@@ -39,6 +39,7 @@ import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
 import relentless_reach  # noqa: E402
+import relentless_reachfix  # noqa: E402
 import relentless_game  # noqa: E402
 import relentless_expedite  # noqa: E402
 import relentless_block  # noqa: E402
@@ -442,7 +443,8 @@ def unmeasured(store, st, said, blind, r, now):
     wait, and the same blindness twice running on one sha holds the item for repair of the box. Kind `unmeasured` is not his:
     the held branch routes it to the seat queue and the Conductor. -> the ledger line, written by the caller out of the lock."""
     sha = (st.get("candidate") or {}).get("sha")
-    reasons = (st["check"] or {}).get("reasons") or ""
+    chk = dict(st["check"] or {})
+    reasons = chk.get("reasons") or ""
     prev = st.get("blind") or {}
     n = prev.get("n", 0) + 1 if prev.get("sha") == sha else 1
     st["blind"] = {"n": n, "sha": sha, "at": now, "said": said, "what": (blind or reasons)[:600],
@@ -450,8 +452,19 @@ def unmeasured(store, st, said, blind, r, now):
     st["check"] = None
     store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "unmeasured", "said": said,
                                "detail": reasons[:600], "sha": sha})
+    if relentless_reachfix.on(r):
+        # BLIND_JUDGE_BUILD_FIXES_OWN_EYES: the first blind check ends the checking; the Judge's proposal is probed,
+        # applied by the supervisor and the same sha checked once (relentless_reachfix.py). No clock re-check.
+        st["_blind_check"] = chk
+        try:
+            said_line = relentless_reachfix.on_blind(store, st, r, now, said, blind)
+        finally:
+            st.pop("_blind_check", None)
+        store.save(st)
+        return said_line
     limit = r.get("unmeasured_limit", 2)
     if n >= limit:
+        # legacy route, rule reach_repair false only
         relentless_strikes.hold(st, "the checker could not reach the evidence on %d checks running of %s, so the box needs "
                                 "repair, not the work: %s. Fix the box, or unhold --offbox NAME with a supervisor adapter (relentless_rules.json offbox_adapters) that reads it from outside; "
                                 "either way unhold checks this sha again" % (n, sha, (blind or reasons)[:300]), "unmeasured", now)
@@ -1006,7 +1019,7 @@ def help_answer(store, item, nonce, options, r, now=None):
         store.save(st)
 
 
-def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True):
+def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True, proposals=None):
     """defects / unreached: the Marker's structured findings (GPT review of 0135b04912). None = an old-format verdict, read
     from its prose by relentless_wall.read_as; a list, even empty, is read by structure. Both go through
     relentless_wall.clean_list, the one normalisation. strict (the CLI, a checker reading the answer) refuses a contradictory
@@ -1032,6 +1045,8 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
         chk["reasons"] = (reasons or "")[:4000]
         if defects is not None:
             chk["defects"], chk["unreached"] = defects, unreached
+        if word == "UNMEASURED" and relentless_wall.clean_list(proposals):     # the Judge's own reach repair
+            chk["proposals"] = relentless_wall.clean_list(proposals)[:relentless_reachfix.PROPOSE_MAX]
         chk["verdict_at"] = now
         store.save(st)
         store._append(store.p("shadow.jsonl"), json.dumps({      # shadow: recorded beside the verdict, read by nothing that acts
@@ -2484,6 +2499,61 @@ class Effects(relentless_game.GameFx):
         keep = {q.get("clone") for q in st["quarantined"] if not q.get("reaped")}
         got = glob.glob(os.path.join(self.base, "clones", "check-%s-c*" % st["item"]))
         return [d for d in got if d not in keep]
+
+    def reach_probe(self, r, paths, adapter_names, values, store_root):
+        """BLIND_JUDGE_BUILD_FIXES_OWN_EYES: is a Judge's proposed repair readable from inside its wall? Each path is read
+        in a throwaway unit carrying the Marker's own systemd properties with the path bound as at a launch; each adapter
+        is run outside as at a check and must exit 0 with output. -> (True|False, what it saw). Mechanical, no model."""
+        import tempfile
+        seen = []
+        if paths:
+            prof = relentless_wall.profile(r)
+            os.makedirs(prof["box_root"], exist_ok=True)
+            box = tempfile.mkdtemp(prefix="reachprobe-", dir=prof["box_root"])
+            try:
+                os.makedirs(os.path.join(box, "projects"), exist_ok=True)
+                body = ('for p do if [ -d "$p" ]; then ls -- "$p" >/dev/null || { echo "UNREADABLE $p"; exit 3; }; '
+                        'elif [ -r "$p" ]; then head -c 1 -- "$p" >/dev/null || { echo "UNREADABLE $p"; exit 3; }; '
+                        'else echo "UNREADABLE $p"; exit 3; fi; echo "read $p"; done')
+                argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
+                        + relentless_wall.props(prof, box, [store_root], list(paths))
+                        + ["--", "/bin/sh", "-c", body, "sh", *paths])
+                try:
+                    p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                except (OSError, subprocess.SubprocessError) as e:
+                    return False, "probe unit: %s: %s" % (type(e).__name__, e)
+                seen.append(("paths exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip()))[-400:])
+                if p.returncode != 0:
+                    return False, "; ".join(seen)
+            finally:
+                shutil.rmtree(box, ignore_errors=True)
+        if adapter_names:
+            for got in offbox_readings(self, {"offbox": list(adapter_names)}, r, values):
+                seen.append("%s exit %s, %d chars" % (got["cmd"][:80], got["exit"], len(got.get("out") or "")))
+                if got["exit"] != 0 or not (got.get("out") or "").strip():
+                    return False, "; ".join(seen)
+        return bool(seen), "; ".join(seen) or "nothing to probe"
+
+    def reach_ticket(self, item, text):
+        """The fallback when a Judge's own reach repair failed its probe: filed once, a note while open, reopened by a new
+        live row once closed. -> None, or why it did not land (the next tick retries)."""
+        st = self.item_state(item)
+        if st is None:
+            r = self.rimflow("file", item, "--for", self.r["seat"], "--kind", "bug", "--needs", "offline",
+                             "--title", text[:200], "--why", "relentless supervisor: a blind Judge's reach repair failed its probe")
+        elif st["state"] in ("done", "built", "validated"):
+            r = self.rimflow("live", item, "--result", "broken", "--detail", text[:300], seat="RUNNER")
+        elif st["state"] in ("dropped", "superseded"):
+            return "%s is %s: nowhere for the reach ticket to land" % (item, st["state"])
+        else:
+            r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor: reach repair failed")
+        self._ledger = None
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
+    def ledger_unblock(self, item, reason):
+        r = self.rimflow("unblock", item, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: reach repair probe passed")
+        self._ledger = None
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def run_offbox(self, name, adapter, timeout):
         """One supervisor offbox adapter, run outside the Marker's wall (CHECKER_SANDBOX_FIX_BLIND_TO_STEVE): the reading of
@@ -3959,6 +4029,9 @@ def step(store, fx, r, item, now, acts):
         gen0 = st["gen"]
         thru = relentless_wall.through(relentless_wall.profile(r), [json.dumps(st.get("contract") or {}),
                                        c.get("evidence") or "", fx.item_text(item) or ""]) if box else []
+        if box:     # a passed reach repair's read paths (relentless_reachfix), re-read against the rules at every launch
+            thru = thru + [p for p in relentless_reachfix.paths(st) if p not in thru
+                           and not relentless_reachfix.refused(p, r, store.root)]
         with store.lock():              # the whole identity is on disk before the unit exists, and before any offbox run:
             st = store.load(item)       # a supervisor killed mid-reading leaves a check that dies as a lost checker
             if not st or st["status"] != "candidate" or st["gen"] != gen0 or (st.get("candidate") or {}).get("sha") != c["sha"]:
@@ -3987,7 +4060,7 @@ def step(store, fx, r, item, now, acts):
             relentless_reach.write_live(box, relentless_reach.live_reading(st["contract"]["live"],
                                                                            getattr(fx, "live_check", None), now))
         if box:
-            why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
+            why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box, relentless_wall.adapters(r))]
                                                 + relentless_wall.through_lines(thru)
                                                 + relentless_reach.live_lines(st["contract"], box)
                                                 + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
@@ -4018,7 +4091,7 @@ def step(store, fx, r, item, now, acts):
         if got and chk.get("verdict") is None:      # the box is the walled Marker's way out: the nonce is the store's own
             try:        # a file on disk is recorded, never refused (strict=False): read_as reads it
                 verdict(store, item, chk["nonce"], got["word"], got["reasons"], now, got.get("defects"), got.get("unreached"),
-                        strict=False)
+                        strict=False, proposals=got.get("proposals"))
             except Fenced:
                 return
             except (ValueError, TypeError, KeyError) as e:      # malformed past all that: a lost check, once - never a raise a tick
@@ -5296,6 +5369,7 @@ def tick(store=None, fx=None, r=None, now=None):
         books_alarm(store, fx, fx.sync(), now, acts, r)
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
+        relentless_reachfix.sweep(store, fx, r, now, acts, iso)     # a blind Judge's repair: probe, apply, or ticket
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
         run_tmp_sweep(store, fx, now, acts, "start")
