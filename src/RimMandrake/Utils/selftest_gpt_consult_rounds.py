@@ -38,6 +38,7 @@ def ok(name, got, want):
 GC.codex_image.CODEX_SCRATCH = Path(T) / "codex"
 GC.codex_image.find_codex_cli = lambda: "/bin/true"
 GC.codex_image.wsl_to_win = lambda p: str(p)
+GC.codex_advice.gate = lambda *a, **k: 0                 # the live Codex HOLD/EXHAUSTED advice is not under test
 _real_run = GC.subprocess.run
 ANSWER = {"text": "finding 1\n"}
 
