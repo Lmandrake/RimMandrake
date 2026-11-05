@@ -42,7 +42,8 @@ DOORS = "RimMandrake.FlowWorks.RM_FlowDoorRules"
 FILL = "RimMandrake.FlowWorks.RM_FluidIdentityProof"
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
-OUT = "/mnt/d/ClaudeWork/rimmandrake/scratch/sump_tar_fire_network/live"
+# The live proof runs under Windows python.exe (WSL cannot reach the bridge on Windows loopback); same folder either way.
+OUT = (("D:/" if os.name == "nt" else "/mnt/d/") + "ClaudeWork/rimmandrake/scratch/sump_tar_fire_network/live")
 TAR = "RM_Fluid_Tar"
 LEN, GATE, ARM_AT, ARM_LEN = 12, 6, 2, 4
 SETTINGS = {"canalFireEnabled": True, "rainDousesLiquidFireEnabled": False}
