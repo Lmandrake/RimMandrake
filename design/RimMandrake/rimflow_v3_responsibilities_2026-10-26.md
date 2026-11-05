@@ -155,7 +155,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 | # | metric | definition | measure | value |
 |---|---|---|---|---|
 | C1 | "already ruled" messages | his messages matching an "already ruled/told/answered" pattern, per 14 days | `D:\ClaudeWork\rimmandrake\baseline_2026-10-26\already_ruled.py` | MEASURED 7 (10-11..10-25); target 0 |
-| C2 | his answer turnaround | median days from `--for OWNER` filing to resolution | `rimflow_metrics.py` → `owner_wait_resolved.median_d` | MEASURED 1.59 d (n 61) |
+| C2 | his answer turnaround | median days from `--for OWNER` filing to resolution | `rimflow_metrics.py` → `owner_wait_resolved.median_d` (a close with needs still owner ends the wait, fixed 2026-11-05) | MEASURED 2026-11-05, 14 d: 0.54 d (n 302) |
 | C3 | digest kept | days with `Transient/delegated_digest_<date>.md` written ÷ days | `ls Transient/delegated_digest_*` | MEASURABLE, not yet taken |
 | C4 | answer corrections | share of Conductor answers with a number later corrected | — | UNMEASURED: no answer log with cited sources |
 

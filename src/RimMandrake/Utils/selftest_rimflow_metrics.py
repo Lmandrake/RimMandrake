@@ -81,8 +81,37 @@ def main():
     check("mod by title", rm.item_mod("ODD_THING_ONE", "Cauldron soup broken", mods), "Cauldron")
     check("unmapped stays None", rm.item_mod("ALPHA_FIX_ONE", "t", mods), None)
     check("percentile of empty is None (prints --)", rm.q([], 50), None)
+    owner_wait_resolutions()
     print("%d failed" % len(FAIL))
     return 1 if FAIL else 0
+
+
+def owner_wait_resolutions():
+    """OWNER_WAIT_RESOLVED_PROBE_ZERO_READING: a wait for him ends when `needs` leaves owner OR
+    the item closes with `needs` still owner. The real ledger closed 112 of 302 such waits in 14
+    days by a bare close (2026-11-05 probe); before the fix those were invisible to the metric."""
+    evs = model.canonical_order([
+        # by a needs change: owner 2h..5h -> 3h
+        file_("GAMMA_ASK_ANSWERED", 0),
+        v("BENCH", "needs", "GAMMA_ASK_ANSWERED", 2, to="owner"),
+        v("BENCH", "needs", "GAMMA_ASK_ANSWERED", 5, to="offline"),
+        # by a close with needs still owner: owner 1h..7h -> 6h
+        file_("DELTA_ASK_CLOSED", 0),
+        v("BENCH", "needs", "DELTA_ASK_CLOSED", 1, to="owner"),
+        v("OWNER", "close", "DELTA_ASK_CLOSED", 7, sha="abc1234"),
+        # by a drop with needs still owner: owner 3h..13h -> 10h
+        file_("EPSILON_ASK_DROPPED", 0),
+        v("BENCH", "needs", "EPSILON_ASK_DROPPED", 3, to="owner"),
+        v("OWNER", "drop", "EPSILON_ASK_DROPPED", 13, reason="not needed"),
+    ])
+    world, _ = rm.timelines(evs)
+    check("owner-wait fixture: no refusals", world.errors, [])
+    r = rm.compute(evs, now=NOW, window_days=30)
+    check("owner wait resolved n counts closes", r["owner_wait_resolved"]["n"], 3)
+    check("owner wait resolved max = 10h (drop)", r["owner_wait_resolved"]["max_d"], round(10 / 24.0, 2))
+    check("owner wait resolved median = 6h (close)", r["owner_wait_resolved"]["median_d"],
+          round(6 / 24.0, 2))
+    check("closed waits are not open", r["owner_wait_open"]["n"], 0)
 
 
 if __name__ == "__main__":

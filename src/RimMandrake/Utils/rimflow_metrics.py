@@ -234,10 +234,12 @@ def compute(events, now=None, window_days=14, mods=None, heat=None):
     r["wip"] = {s: dict(summary(v), over_7d=sum(1 for x in v if x > 7 * DAY))
                 for s, v in sorted(wip.items())}
 
-    # 6. owner wait
+    # 6. owner wait. A wait ends when `needs` leaves owner OR the item closes: a close with needs
+    # still owner is a resolution too, and counting only needs changes hid 112 of 302 resolutions
+    # in 14 days (probe 2026-11-05, OWNER_WAIT_RESOLVED_PROBE_ZERO_READING).
     cur_wait, done_wait = [], []
     for iid, rows in tl.items():
-        for a, b in spans(rows, lambda x: x[2] == "owner", now):
+        for a, b in spans(rows, lambda x: x[2] == "owner" and x[1] not in model.TERMINAL, now):
             if b is None:
                 if items[iid].open:
                     cur_wait.append(now - a)

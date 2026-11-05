@@ -143,7 +143,7 @@ getting old, a machine sitting idle) so resources can move before the work stall
 | measure | definition | instrument | today | target / alarm |
 |---|---|---|---|---|
 | **D1 Waiting on you** | open items with `needs=owner`: count, median age, count over 3 d, oldest | `rimflow_metrics.py` `owner_wait_open` | **48; median 3.2 d; 32 over 3 d; oldest 45 d** [M] | target: none over 3 d; alarm at 10 over 3 d |
-| D2 Answer latency | time from a card being asked to your answer, p50/p90 | `rimflow_metrics.py` `owner_wait_resolved` | reads 0 resolved in the last day: **suspect** (101 owner events landed that day; the instrument likely misses resolutions not made by a `needs` change). 10-25 plan's measurement, not re-measured: p50 2.2 h, p90 66 h [P] | p90 under 24 h when you are home |
+| D2 Answer latency | time from a card being asked to your answer, p50/p90 | `rimflow_metrics.py` `owner_wait_resolved` | probed 2026-11-05 (`OWNER_WAIT_RESOLVED_PROBE_ZERO_READING`): it missed every wait ended by a close or drop with `needs` still owner (112 of 302 in 14 d); fixed, now counts those. It measures time spent at `needs owner`, not card-to-answer latency: cards are not on the ledger, so card latency is UNMEASURED. 14 d after the fix: p50 0.54 d, p90 7.08 d (n 302) | p90 under 24 h when you are home |
 | D3 Design in flight | open v1 `design` items, and design closes per day | `model.replay()`; `rimflow_metrics.py` `lead_by_kind` | 29 open; 6 closed in 1 d, median lead 0.34 d [M] | alarm when more than 5 design items wait on D1 |
 | D4 Blocker fan-in | items held by one blocker | `rimflow_metrics.py` `blocked.top_blockers` | 97 blocked, median 23 d; top `SUNSHADE_MIGRATE_MOVE_NOT_CHANGE` holds 5 [M] | any blocker holding 5 or more that needs you is a card |
 
