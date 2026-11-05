@@ -1,0 +1,1 @@
+art.py install --file <dest>: copying the new PNG to its destination first makes install record only a keep ruling ('already-live-ruled', no live event), and art_guard then refuses the commit. Leave the old bytes in place and install by sha (art.py install <mod> <rel> <sha> --ruling <keep id>); a --why-only live event is also refused (reason 'agent-why' is not mechanical).
