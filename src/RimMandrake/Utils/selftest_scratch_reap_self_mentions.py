@@ -29,6 +29,8 @@ def ck(c, w):
 
 ck(not R.mention_blocks("BENCH.jsonl", line("REAPER_FIX_OWN_SELFTEST_LITTERS_FAKE_SAVES", recent), now), "recent note on a REAPER_ item does not pin")
 ck(not R.mention_blocks("BENCH.jsonl", line("OPS_SCRATCH_DIRT_MEASURE_AT_END_RVNI", recent), now), "recent note on an OPS_SCRATCH_ item does not pin")
+ck(not R.mention_blocks("BENCH.jsonl", json.dumps({"seat": "DISPATCHER", "id": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST", "ts": recent, "text": "dispatcher alarm : scratch cleaner, end of run: session_dirs 466"}), now), "the Dispatcher relay of the cleaner alarm does not pin")
+ck(R.mention_blocks("BENCH.jsonl", json.dumps({"seat": "DISPATCHER", "id": "X_Y_Z", "ts": recent, "text": "restart_verified"}), now), "another Dispatcher note still pins")
 ck(R.mention_blocks("BENCH.jsonl", line("CRACKEDLANDS_FULL_RENAME_1", recent), now), "recent note on another item pins")
 ck(not R.mention_blocks("BENCH.jsonl", line("CRACKEDLANDS_FULL_RENAME_1", old), now), "30-day-old note does not pin")
 ck(R.mention_blocks("BENCH.jsonl", "not json", now), "an undatable line holds")
