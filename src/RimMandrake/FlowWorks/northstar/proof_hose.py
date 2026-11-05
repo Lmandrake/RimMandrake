@@ -140,6 +140,30 @@ def declared_rows():
 
 
 # ============================================================================ the bridge
+
+def write_result(path, res):
+    """Write the result json via a per-call temp file and os.replace. python.exe on Windows over the
+    \\\\wsl.localhost 9p redirector refuses that rename onto an existing file (WinError 5, testq
+    J20261105T190844Z-41ec78: the run finished and its final write crashed, so no result existed and every
+    row read 'no proof_hose result'). When the rename is refused, write the same text in place: the
+    result is never lost to the transport, and the refusal is printed."""
+    text = json.dumps(res, indent=1, default=str)
+    tmp = "%s.%d.%d.tmp" % (path, os.getpid(), time.time_ns())
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(text)
+    try:
+        os.replace(tmp, path)
+        return "replaced"
+    except PermissionError as ex:
+        print("[proof_hose] rename onto %s refused (%s): writing it in place" % (path, ex), flush=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(text)
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        return "in_place"
+
 class PB(VH.H):
     """call / hp (the hose probe) / ticks / probe_of on one socket."""
 
@@ -640,10 +664,7 @@ class Proof(object):
             res["mode"] = "live" if not (self.args.only or getattr(self.args, "skip_offline", False)) else "partial"
             res["certifiable"] = res["mode"] == "live" and not res.get("aborted") and not res.get("run_raised") \
                 and not any(b.get("raised") for b in self.blocks.values())
-        tmp = path + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(res, f, indent=1, default=str)
-        os.replace(tmp, path)
+        write_result(path, res)
 
     def block(self, name, fn):
         if not self.want(name):

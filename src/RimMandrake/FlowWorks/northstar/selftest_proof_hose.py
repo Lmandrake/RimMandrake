@@ -300,6 +300,30 @@ def zoo_start_checks(Zoo):
               'call("jawa/destroy_bulk", filter="nonColonists"' not in src)
 
 
+def write_result_checks(PH):
+    """HARNESS_REPAIR_CAUSE_C1B99C19: python.exe over \\\\wsl.localhost refused os.replace onto the existing
+    result (WinError 5) and the final checkpoint crashed, so no result existed. The writer must land the result."""
+    import tempfile
+    d = tempfile.mkdtemp()
+    path = os.path.join(d, "proof_hose_X.json")
+    check("write_result: first write renames into place", PH.write_result(path, {"a": 1}) == "replaced"
+          and json.load(open(path))["a"] == 1)
+    real = PH.os.replace
+
+    def refuse(src, dst):
+        if os.path.exists(dst):
+            raise PermissionError(13, "[WinError 5] Access is denied", dst)
+        return real(src, dst)
+    PH.os.replace = refuse
+    try:
+        how = PH.write_result(path, {"a": 2, "final": True})
+    finally:
+        PH.os.replace = real
+    check("write_result: a refused rename onto the existing result writes it in place, no temp left",
+          how == "in_place" and json.load(open(path)) == {"a": 2, "final": True}
+          and os.listdir(d) == ["proof_hose_X.json"], (how, os.listdir(d)))
+
+
 def main():
     import proof_hose as PH
     dr = PH.declared_rows()
@@ -592,6 +616,7 @@ def main():
     reel_room_checks()
     check("_posix: a D: export path becomes /mnt/d (offline gate from python.exe), WSL paths unchanged",
           PH._posix("D:\\ClaudeWork\\x\\y.py") == "/mnt/d/ClaudeWork/x/y.py" and PH._posix("/a/b") == "/a/b")
+    write_result_checks(PH)
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 
