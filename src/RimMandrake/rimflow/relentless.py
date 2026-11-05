@@ -2561,7 +2561,8 @@ class Effects(relentless_game.GameFx):
         beside the item's bundles (a rename, same disk). -> (where it went, None); (None, None) when it held no file;
         (None, why) when it could not move, and the caller then keeps it."""
         try:
-            empty = not any(files for _, _, files in os.walk(c))
+            empty = not any(files or any(os.path.islink(os.path.join(dp, x)) for x in dirs)    # a symlinked dir
+                            for dp, dirs, files in os.walk(c))      # is a thing to keep too (os.walk lists it as a dir)
         except OSError as e:
             return None, "its tree could not be read: %s" % str(e)[:200]
         if empty:

@@ -76,6 +76,10 @@ def t_gitless_clone_is_kept():
         ok(len(kept) == 1 and open(kept[0]).read() == "only copy\n", "its untracked file is kept: %s" % kept)
         os.makedirs(os.path.join(c, "empty"))
         ok(fake.keep_gitless("I0", c) == (None, None), "a tree with no file has nothing to keep")
+        os.symlink(base, os.path.join(c, "empty", "assets"))
+        got, _ = fake.keep_gitless("I0", c)
+        ok(got and os.path.islink(os.path.join(got, "empty", "assets")), "a tree holding only a dir symlink is kept: %s" % got)
+        os.makedirs(c)
         with open(os.path.join(c, "x"), "w") as f:
             f.write("y")
         fake.store = types.SimpleNamespace(p=lambda *a: os.path.join("/proc/nonexistent_cx7", *a))

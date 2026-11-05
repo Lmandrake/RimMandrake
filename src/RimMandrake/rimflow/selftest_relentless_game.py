@@ -1337,6 +1337,15 @@ def t_owed_final_joins_the_clauses():
     g = y.st("I0")["game"]
     ok(g["phase"] == "prove" and g["clauses"] == ["A1", "F1"], "F1 joins the game clauses: %s" % g)
     y.done()
+    z = rig(1)
+    z.w.owed = {"A1": "L1", "B1": "L1"}
+    z.w.proofs[("I0", ".txt")] = FINAL_PROOF
+    to_game(z, "I0", game={"clauses": ["A1"], "why": "small"})
+    z.tick()
+    st = z.st("I0")
+    ok(st["last_fail"] and "game_contract" in st["last_fail"]["detail"] and "B1" in st["last_fail"]["detail"],
+       "an owed L1 the contract never named sends the item back too: %s" % st.get("last_fail"))
+    z.done()
 
 
 CUT = {"cid": "A2", "why": "I0 A2 is cut at 160 chars on the ledger and no prose holds the rest", "fp": "fpA",

@@ -116,7 +116,7 @@ Leaf size is an input: a leaf must fit one context. One that does not goes back 
 re-enters the queue. A declared dependency set can be wrong, so that is an optimisation, never the proof: **a root's GREEN reruns every leaf uncached at one sha.** Every root owns one **walk leaf**: the whole scenario on one sha, marked by a Marker, at the top of the
 §6a ladder. A walk is a chosen route, not a proof over histories, so it must include a reload from a save made mid-way, a repeat of the core action, and a second order of the main actions. No root reaches GREEN from leaf passes on different builds.
 
-**Close is checked at close.** Between a Marker's PASS and the close, other work can land. The close recomputes: if anything in the item's measured dependencies changed since the marked sha, the item returns to the gate.
+**Close is checked at close.** Between a Marker's PASS and the close, other work can land. The close recomputes: if anything in the item's measured dependencies changed since the marked sha, the item returns to the gate. Measured dependencies are the reads the marked run made (`suite_trace`), not the declared set above; a read that run never made can still be missed here, and is caught where every missed dependency is: the root's uncached GREEN at one sha. This check is the cheap early return, not the proof.
 
 **The finish line is versioned.** `contract.v<N>.json`, hash-locked, each clause with an id.
 
