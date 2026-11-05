@@ -39,6 +39,39 @@ INSTANCE = "unit=rm-pulse-health.timer max_age=10m"
 DIGEST = "unit=rm-pulse-digest.timer max_age=35h"
 
 
+def sweep_entry(retired_path=None):
+    """The real entry point: `deadman_check.py run` (what rm-deadman.timer runs) must hand the sweep the real retired
+    file, not just promises() when a test passes it. Drive main(["run"]) with the ledger, systemd and arms faked; record
+    what promises() returned inside the sweep and hand the sweep nothing to check (no systemctl is called)."""
+    import live_line
+    seen = []
+    real_promises = DM.promises
+
+    def recording(*a, **k):
+        seen.extend(real_promises(*a, **k))
+        return []
+    items = {"OPS_TIMER_REPAIR_EC51": It(live=INSTANCE, live_broken="is-enabled says 'not-found'"),
+             "LIVING_FIXTURE": It(live="unit=rm-living-fixture.timer max_age=1h")}
+    saved = (DM.promises, DM.read_items, DM.load_baseline, DM.stamps, DM.arm_faults, live_line.can_see, DM.RETIRED_FILE)
+    base = DM.load_baseline()
+    try:
+        DM.promises, DM.read_items = recording, (lambda: items)
+        DM.load_baseline = lambda path=None: base + [INSTANCE, "unit=rm-pulse-brief.timer max_age=14h"]
+        DM.stamps, DM.arm_faults = (lambda mode=None: {}), (lambda st, now, runner=None: {})
+        live_line.can_see = lambda *a, **k: True
+        if retired_path:
+            DM.RETIRED_FILE = Path(retired_path)
+        rc = DM.main(["run"])
+    finally:
+        (DM.promises, DM.read_items, DM.load_baseline, DM.stamps, DM.arm_faults, live_line.can_see,
+         DM.RETIRED_FILE) = saved
+    lines = [r["line"] for r in seen]
+    check(rc == 0 and "unit=rm-living-fixture.timer max_age=1h" in lines,
+          "`deadman_check.py run` reaches the sweep and still sweeps a living promise (rc=%s, %d rows)" % (rc, len(lines)))
+    check(not [l for l in lines if "rm-pulse-" in l],
+          "`deadman_check.py run` (the rm-deadman.timer entry point) sweeps no retired RimPulse promise, item or baseline")
+
+
 def main(retired_path=None):
     if not hasattr(DM, "load_retired"):
         check(False, "deadman_check has no retired-promises list: a deleted unit's promise is swept for ever")
@@ -91,6 +124,7 @@ def main(retired_path=None):
     # the two files never disagree: a line is either promised or retired
     both = {DM.subject(l) for l in baseline} & retired
     check(not both, "no subject is both promised in the baseline and retired (%s)" % sorted(both))
+    sweep_entry(retired_path)
     try:
         DM.parse_retired(["unit=rm-x.timer max_age=2h garbage"])
         check(False, "a retired line that does not parse is refused")
