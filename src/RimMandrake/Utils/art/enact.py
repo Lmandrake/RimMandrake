@@ -67,6 +67,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import string
 import subprocess
 import sys
 import time
@@ -540,6 +541,11 @@ def row_aliases(row: str, v: dict, srow: dict, census_rows: dict) -> set[str]:
         # unless carriedFrom / an ALIAS_TWIN already said so (ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF)
         if row.startswith(a) and other not in census_rows:
             out.add(other)
+    # a variant row RSW_X_<letter> (the old row name of one lettered variant, e.g. a 10-18 keep under
+    # RSW_Dragonsnake_B) is this row's own, for every name above, unless the census lists it as a row of its own
+    # (ENACT_KEEP_FIX_VARIANT_ROW_ALIASES)
+    for base in {row} | set(out):
+        out |= {f"{base}_{c}" for c in string.ascii_uppercase if f"{base}_{c}" not in census_rows}
     out.discard(row)
     return out
 
@@ -1945,7 +1951,8 @@ def marked_x(idx: L.Index) -> set:
 def keep_blocks_pick(k: dict, row: str, mine_at, via: str, aliases=()) -> bool:
     """Does owner keep K on the live picture stop his pick on ROW (made at MINE_AT, in decisions file VIA) installing?
       * a keep from ANOTHER row: yes;
-      * a keep on THIS row, or on one of its ALIASES (row_aliases: the row renamed, or RSW_X ported as RM_X), from
+      * a keep on THIS row, or on one of its ALIASES (row_aliases: the row renamed, RSW_X ported as RM_X, or a
+        variant row RSW_X_<letter>), from
         another decisions file: only when it is newer than his pick (bug 2026-10-24, leaningscrub_2 RM_TunnelSnake B /
         RM_Vurra B: keeps by RSW_TunnelSnake / RSW_Vurra from 2026-10-05 refused his newer pick for ever);
       * a row-less keep (`art install --owner-said`, e.g. the 2026-10-16 rescale card): only when it is newer than his

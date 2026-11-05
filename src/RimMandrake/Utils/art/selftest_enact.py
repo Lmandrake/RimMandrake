@@ -467,6 +467,21 @@ def main():
                                  "a.json"), "a newer keep on this row in another file blocks (ts honoured, not only at)")
         check(not E.keep_blocks_pick({**_old, "target": {"sha": "x", "row": "RSW_Manka"}, "via": "b.json"}, "RSW_Manka",
                                      _mine, "a.json"), "an older keep on this row in another file does not block")
+        # variant rows (ENACT_KEEP_FIX_VARIANT_ROW_ALIASES): his 10-18 keep under RSW_Dragonsnake_B (the variant's old
+        # row name) must not refuse his newer 11-05 pick on RSW_Dragonsnake
+        _al = E.row_aliases("RSW_Dragonsnake", {}, {}, {})
+        check("RSW_Dragonsnake_B" in _al and "RM_Dragonsnake_B" in _al, "a variant row RSW_X_<letter> is an alias of RSW_X")
+        _ds_mine = E.I.ts("2026-11-05T05:00:00Z")
+        _ds_old = {"ts": "2026-10-18T12:00:00Z", "target": {"sha": "x", "row": "RSW_Dragonsnake_B"}, "via": "old.json"}
+        check(not E.keep_blocks_pick(_ds_old, "RSW_Dragonsnake", _ds_mine, "new.json", _al),
+              "an older keep under the variant row does not block his newer pick")
+        check(E.keep_blocks_pick({**_ds_old, "ts": "2026-11-06T00:00:00Z"}, "RSW_Dragonsnake", _ds_mine, "new.json", _al),
+              "a newer keep under the variant row still blocks")
+        _al2 = E.row_aliases("RSW_Dragonsnake", {}, {}, {"RSW_Dragonsnake_B": {"key": "RSW_Dragonsnake_B"}})
+        check("RSW_Dragonsnake_B" not in _al2, "a variant name the census lists as its own row is a separate creature")
+        check(E.keep_blocks_pick(_ds_old, "RSW_Dragonsnake", _ds_mine, "new.json", _al2),
+              "a keep by a census-listed separate row still blocks")
+        check("RSW_Dragonsnake_BB" not in _al and "RSW_DragonsnakeB" not in _al, "only a single-letter suffix is a variant")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")
