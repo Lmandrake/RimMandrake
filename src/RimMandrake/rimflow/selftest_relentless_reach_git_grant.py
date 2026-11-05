@@ -19,6 +19,7 @@ objects of a fixed.sha), and an adapter's reading outside the box cannot make a 
 Rows 1-4 fail on the code before the grant (make_box had no grants and the gh row took the JAM text)."""
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -197,8 +198,17 @@ def test_sweep_and_probe(made):
     import relentless as R
     fx = R.Effects.__new__(R.Effects)
     fx.books = str(clone)
-    r = {"walls": {"marker": dict(prof(os.path.dirname(str(clone))), box_root=tempfile.mkdtemp(prefix="gprobe"))}}
+    broot = tempfile.mkdtemp(prefix="gprobe")      # beside root, not in it: root's children are denied
     sroot = tempfile.mkdtemp(prefix="gstore")      # a store root that exists: a missing denied path fails the unit
+    try:
+        probe_rows(fx, broot, sroot, clone, sha)
+    finally:
+        shutil.rmtree(broot, ignore_errors=True)
+        shutil.rmtree(sroot, ignore_errors=True)
+
+
+def probe_rows(fx, broot, sroot, clone, sha):
+    r = {"walls": {"marker": dict(prof(os.path.dirname(str(clone))), box_root=broot)}}
     good, why = fx.reach_probe(r, [], [], {"sha": sha, "repo": str(clone)}, sroot, grants=[GRANT])
     if "probe unit" in why or "Failed to" in why or "bus" in why.lower():
         skip_live("no user systemd here (%s)" % why[:120])
@@ -208,8 +218,22 @@ def test_sweep_and_probe(made):
     check("(5) a sha the history lacks fails its probe", not bad, why)
 
 
+def fixture_base():
+    """-> a temp dir for this test's fixtures that the probe unit can still see. props() binds the box's tmp over
+    UNIT_TMP (/tmp), so a fixture under /tmp - the nightly unit's TMPDIR - is gone inside the unit and the launch fails
+    "Failed to set up mount namespacing ... No such file" (exit 226; SELFTEST_FIX_RELENTLESS_REACH_GIT_GRANT_FWMI).
+    The wall's real roots (box_root /home/mandrake/walled, the clones) are never under /tmp."""
+    base = os.path.realpath(tempfile.gettempdir())
+    unit_tmp = os.path.realpath(W.UNIT_TMP)
+    if base == unit_tmp or base.startswith(unit_tmp.rstrip("/") + "/"):
+        base = os.path.join(os.path.expanduser("~"), ".cache", "rm-selftest-gitgrant")
+        os.makedirs(base, exist_ok=True)
+        tempfile.tempdir = base             # box_root and the store root of row 5 too
+    return base
+
+
 def main():
-    root = tempfile.mkdtemp(prefix="gitgrant")
+    root = tempfile.mkdtemp(prefix="gitgrant", dir=fixture_base())
     made = None
     for t in (lambda: test_box(root), lambda: test_reach(root), lambda: test_sweep_and_probe(made)):
         try:
@@ -219,6 +243,7 @@ def main():
             check("row ran", False, "%s: %s" % (type(e).__name__, e))
     if made:
         W.remove_box(made[0])
+    shutil.rmtree(root, ignore_errors=True)
     print("RESULT: %s" % ("GREEN" if not FAILS else "RED %d: %s" % (len(FAILS), ", ".join(FAILS))))
     return 1 if FAILS else 0
 
