@@ -470,6 +470,18 @@ def main():
               not ok and any(e.startswith("scenes:") and "rope_check" in e for e in errs), errs)
         put(d, "scenes.json", sc_ok)
         put(d, "record.json", rec)
+        # GPT review: a contract-valid edit to the showcase set during the lock run is still a change the exam never saw
+        DS.open_run(d, "run23d", repo=repo.root)
+        moved = copy.deepcopy(sc_ok)
+        moved["showcases"][0]["scenes"] = list(moved["showcases"][0]["scenes"]) + ["flood"]
+        put(d, "scenes.json", moved)
+        result(d, "done")
+        ok, errs = DS.close_run(d, "run23d", 1000, repo=repo.root)
+        check("stage 5: a valid showcase edit made during the lock run is refused (accepted inputs moved)",
+              not ok and any("changed during the lock run" in e for e in errs) and DS.load_state(d)["status"] != "locked",
+              errs)
+        put(d, "scenes.json", sc_ok)
+        put(d, "record.json", rec)
         ok, errs = run_cycle(d, repo, "run24")
         st = DS.load_state(d)
         check("stage 5 done with the gate passing -> locked", ok and st["status"] == "locked", errs)

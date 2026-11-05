@@ -1042,6 +1042,13 @@ def close_run(d, run, tokens=None, repo=REPO):
         if "owner" in DEPS[st["stage"]] and new:
             errs.append("an owner event arrived during the run and is not taken in (%s); stage %d reruns with it" % (
                 ", ".join("OWNER:" + t for t in sorted(new)), st["stage"]))
+        # the lock is final: an accepted stage's inputs (scenes.json and its showcase set, the tree, the record) edited
+        # during the stage-5 run would lock a concept the exam never saw. Refused; the next open reopens that stage.
+        if st["stage"] == 5:
+            s_from, moved = stale_stage(d, st, repo)
+            if s_from is not None:
+                errs.append("stage %d's accepted inputs changed during the lock run (%s): not locked; the next run "
+                            "reopens stage %d" % (s_from, ", ".join(moved), s_from))
     st["running"] = None
     if errs:
         st["results"].append({"stage": st["stage"], "outcome": "rejected", "run": run, "at": now_iso(),
