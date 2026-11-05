@@ -152,6 +152,18 @@ def t_each_host_brief_carries_its_own_take():
     assert "--host archmagi" in arch and "ModsConfig" in arch and R.SAT in arch, arch
 
 
+def t_brief_carries_the_exploration_pass():
+    # TEST_PILOT_WIDEN_PAST_THE_CHECKLIST (owner 2026-11-04): explore after the item, file surprises as checkable events
+    v = {"id": IT, "kind": "streak", "why": "3 non-pass runs in a row"}
+    for host in R.HOSTS:
+        b = R.brief(v, host)
+        assert b.index("Read first") < b.index(R.EXPLORE) < b.index("End:"), "the item first, then explore, then end"
+        for want in ("never a reload", "HARNESS / SITE is a full result", "Neighbour expectations", "swim",
+                     "EXPECTATION", "search src/", "~%d new items" % R.EXPLORE_MAX_FILED, "no flyer flight",
+                     "explored: <what> | filed: <ids>"):
+            assert want in b, "%s brief lacks %r" % (host, want)
+
+
 def t_dispatcher_reads_the_route_and_tells_the_seat():
     out = "%s   ready  row 1  needs bridge  target x\ntitle\n\n%s\n" % (
         IT, R.route_line({"id": IT, "why": "3 non-pass runs in a row"}))

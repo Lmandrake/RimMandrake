@@ -14,6 +14,9 @@ in a row. Whole item: N=0 .75, 1 .52, 2 .42, 3 .21, 4 .11, 5 or more about .05. 
 2 .40, 3 .06, 4 .07, 5 or more under .01. A third miss is the cliff: the retest stops being worth its run.
 CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP had 314 and stayed red; one sitting found the cause.
 
+Once the item is answered or blocked, a sitting explores the same loaded map like a player would (EXPLORATION PASS,
+TEST_PILOT_WIDEN_PAST_THE_CHECKLIST) and files what surprised it as checkable events.
+
 A sitting ends with `rimflow note <ID> --text "TESTPILOT_SAT: ..."`. That restarts the count, so a pilot's finding is
 given its fix and retest, and three fresh misses send the item back to a pilot. Items that never route: closed,
 blocked (something else is wrong), needs owner (his look, not a live debug), intent JUDGE (an art verdict: no live
@@ -35,6 +38,8 @@ SAT, WANTED = "TESTPILOT_SAT", "TESTPILOT_WANTED"
 ROUTE = "ROUTE rm-testpilot"
 HOSTS = ("stevedesktop", "archmagi")    # preference order: SteveDesktop's game is ours, Archmagi's list is his
 FREE_STATES = ("FREE", "STALE")
+EXPLORE = "EXPLORATION PASS"      # the brief's marker for the after-the-item pass (selftest pins it)
+EXPLORE_MAX_FILED = 5             # new items one sitting files from exploring; the rest wait in its PROGRESS file
 
 
 def streaks(runs):
@@ -128,8 +133,23 @@ def brief(verdict, host):
               "the mechanism linking them, the evidence for each step, and the theories you ruled out and why.",
               "Each cause you explain gets ONE open follow-up item: this item when the fault is its own, else reuse the "
               "open item for that cause (`python3 src/RimMandrake/rimflow/relentless.py causes`) or `rimflow namecheck` "
-              "then `rimflow file <NAME> --for BENCH` (a closed one is never reopened: file a new one --caused-by it).",
+              "then `rimflow file <NAME> --for BENCH` (a closed one is never reopened: file a new one --caused-by it)."]
+    # TEST_PILOT_WIDEN_PAST_THE_CHECKLIST (owner 2026-11-04): "capable of filing tickets about strange things beyond
+    # its specified checklist items ... and tries to "make something productive" come from a live test".
+    lines += ["Then go %s: with the item answered or blocked, explore the same loaded map for up to ~25%% of the "
+              "sitting, never a reload for it. Make something productive: if the checklist cannot be reached, diagnose "
+              "the test itself (HARNESS / SITE is a full result), narrow the cause, or write a guard; 'nothing learned' "
+              "is not an ending." % EXPLORE,
+              "Neighbour expectations: for each thing you test, list 2-3 things a player would also expect to still work "
+              "there (a water-filled pit: pawns swim in it, path around it, animals drink, fishing, save/load keeps it) "
+              "and check them cheaply by bridge state read.",
+              "Strange things beyond the checklist: search src/ and the items first, then file each as its own item, a "
+              "checkable event (design/RimMandrake/player_role_2026-10-31/03-merged.md): what the screen or state led "
+              "you to expect, what the game did, the bridge read proving it and that your call landed, class "
+              "MOD / SITE / HARNESS / EXPECTATION. At most ~%d new items; the rest go in your PROGRESS file. The hard "
+              "limits (no flyer flight, no fullscreen or focus, never force a bridge, burden of proof before a reload, "
+              "no worldgen, ModsConfig backup and restore) do not loosen for it." % EXPLORE_MAX_FILED,
               "End: write the sitting into the mod's functional script, then rimflow note %s --text \"%s: <sha> | "
               "expected: ... | observed: ... | mechanism: ... | evidence: <one per step> | ruled out: <theory: why> | "
-              "follow-up: <ITEM>\", then release the bridge." % (i, SAT)]
+              "follow-up: <ITEM> | explored: <what> | filed: <ids>\", then release the bridge." % (i, SAT)]
     return "\n".join(lines)
