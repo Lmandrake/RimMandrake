@@ -4098,3 +4098,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-05T20:02:50Z","tsn":1793908970582131402}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-05T20:02:53Z","tsn":1793908973504749125}
 {"seat":"RUNNER","event":"note","id":"OPS_RESTART_UNSTICK_BENCH_YCVY","text":"restart_reconcile: closed at 2026-11-05T20:02:59Z, the seat verified a restart or the request aged out","ts":"2026-11-05T20:03:01Z","tsn":1793908981705851648}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-05T20:03:09Z","tsn":1793908989309733106}
