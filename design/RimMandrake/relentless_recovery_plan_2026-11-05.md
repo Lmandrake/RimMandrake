@@ -143,7 +143,7 @@ items that would heal them. One red nightly class can stop every mod item, inclu
   measurement path.
 - Add an alarm: "runnable content paused > 6 h". It goes to the Conductor and names the system items that hold it.
 
-**NEEDS OWNER.** This changes his 2026-11-03 ruling ("Please work any machine fixing item right now... max priority";
+**RULED by card 2026-11-05 05:36Z: "Pause only what it touches"; built as DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE.** It refines his 2026-11-03 ruling ("Please work any machine fixing item right now... max priority";
 "System work immediately but existing non system work continues"). The second half of that ruling already says
 non-system work continues, which supports scoping, but the code reads the first half as "pause all content". The
 Conductor may rule this under CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM. Because it reverses the visible behaviour of a
