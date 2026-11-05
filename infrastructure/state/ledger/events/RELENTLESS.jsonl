@@ -525,3 +525,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:51:37Z","tsn":1793843497349604293}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T02:03:49Z","tsn":1793844229554131851}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:12:56Z","tsn":1793844776948506621}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T02:13:52Z","tsn":1793844832549036715}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:14:01Z","tsn":1793844841805462755}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE A1 (L2), read-only proof","ts":"2026-11-05T02:15:03Z","tsn":1793844904002598941}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:15:10Z","tsn":1793844910212843278}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP A1 (L2), read-only proof","ts":"2026-11-05T02:15:18Z","tsn":1793844918378165029}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:15:24Z","tsn":1793844924625503997}
