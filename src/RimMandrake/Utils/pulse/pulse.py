@@ -562,10 +562,14 @@ def _git_err(p) -> str:
 def _clean_landed_dirt(git) -> bool:
     """A pull that dies mid-checkout leaves origin/main's blobs in the tree with HEAD unmoved, and every
     later --ff-only then refuses them as local changes (2026-11-03 12:38Z: rc 128 after 'Updating files
-    7/7'; no writer had walked in, PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN). When EVERY dirty path already
-    equals origin/main (same blob, or absent from both), put those paths back to HEAD so the retry can
-    fast-forward. Any path that differs is someone's real edit: leave it all and let the pull fail loud.
-    True only when something was cleaned."""
+    7/7'; no writer had walked in, PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN). It can die after the index is
+    written too, leaving the paths STAGED, renames included, and the next fetch moves origin/main past the
+    commit it was checking out (2026-11-05 09:57Z: 13 staged paths, each a blob of some commit in
+    HEAD..origin/main, none the tip's; OPS_DEPLOY_UPDATE_UNSTICK_RDHQ). So a dirty path is landed when its
+    index AND worktree content equal that path in origin/main or in any commit of HEAD..origin/main (absent
+    counts). When EVERY dirty path is landed, put them back to HEAD so the retry can fast-forward. Any path
+    that is not is someone's real edit: leave it all and let the pull fail loud. True only when something
+    was cleaned."""
     s = git("status", "--porcelain=v1", "-z", "--untracked-files=all")
     if s.returncode != 0 or not s.stdout:
         return False
@@ -577,37 +581,60 @@ def _clean_landed_dirt(git) -> bool:
         if len(rec) < 4:
             continue
         code, path = rec[:2], rec[3:]
-        if code[0] in "RC":          # a rename carries its source as the next record: a real edit
-            return False
+        if code in ("DD", "AU", "UD", "UA", "DU", "AA", "UU"):
+            return False             # a merge conflict: not a half-done checkout
+        if code[0] in "RC":          # the source path is the next record
+            src = recs[i] if i < len(recs) else ""
+            i += 1
+            if code[0] == "C" or not src:
+                return False
+            entries.append(("D ", src))   # its source: staged as gone
         entries.append((code, path))
     if not entries:
         return False
-    tracked, untracked = [], []
-    for code, path in entries:
-        want = git("rev-parse", "-q", "--verify", f"origin/main:{path}").stdout.strip()
-        if code == "??":
-            if not want:
-                continue             # junk origin does not have (a __pycache__): it blocks no pull
-            have = git("hash-object", "--", path).stdout.strip()
-            if have != want:
-                return False
-            untracked.append(path)
-        elif code[0] != " " or code[1] not in "MD":
-            return False             # staged, conflicted or type-changed: not a half-done checkout
-        else:
-            have = git("hash-object", "--", path).stdout.strip() if code[1] == "M" else ""
-            if have != want:
-                return False
-            tracked.append(path)
-    if not (tracked or untracked):
+
+    def blob(rev, path):
+        return git("rev-parse", "-q", "--verify", f"{rev}:{path}").stdout.strip()
+
+    def landed(path, *haves):
+        """Every one of `haves` (blob or "" for absent) is this path's content on origin/main or at a
+        commit between HEAD and it."""
+        seen = {blob("origin/main", path)}
+        if set(haves) <= seen:
+            return True
+        for c in git("rev-list", "HEAD..origin/main", "--", path).stdout.split():
+            seen.add(blob(c, path))
+            if set(haves) <= seen:
+                return True
         return False
-    if tracked and git("restore", "--source=HEAD", "--worktree", "--", *tracked).returncode != 0:
-        return False
+
     root = Path(git("rev-parse", "--show-toplevel").stdout.strip())
-    for path in untracked:
-        (root / path).unlink(missing_ok=True)
-    print(f"pulse update: put back {len(tracked) + len(untracked)} path(s) already on origin/main "
-          f"(a half-done fast-forward): {', '.join((tracked + untracked)[:5])}", flush=True)
+    paths = []
+    for code, path in entries:
+        if code == "??" and not blob("origin/main", path) and not landed(path, git("hash-object", "--", path).stdout.strip()):
+            continue                 # junk origin does not have (a __pycache__): it blocks no pull
+        if code[0] in "MAR":
+            index = (git("ls-files", "-s", "--", path).stdout.split() or ["", ""])[1]
+        elif code[0] == "D":
+            index = ""
+        else:
+            index = None             # untracked, or only the worktree changed: the index is HEAD's
+        work = git("hash-object", "--", path).stdout.strip() if (root / path).is_file() else ""
+        if not landed(path, *[h for h in (index, work) if h is not None]):
+            return False
+        paths.append(path)
+    if not paths:
+        return False
+    in_head = [p for p in paths if blob("HEAD", p)]
+    not_head = [p for p in paths if p not in in_head]
+    if in_head and git("restore", "--source=HEAD", "--staged", "--worktree", "--", *in_head).returncode != 0:
+        return False
+    if not_head:
+        git("rm", "-q", "--cached", "--ignore-unmatch", "--", *not_head)
+        for path in not_head:
+            (root / path).unlink(missing_ok=True)
+    print(f"pulse update: put back {len(paths)} path(s) already on origin/main "
+          f"(a half-done fast-forward): {', '.join(paths[:5])}", flush=True)
     return True
 
 
