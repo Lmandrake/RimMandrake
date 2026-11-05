@@ -99,13 +99,18 @@ def companion_stale(res):
 STALE_LOAD = re.compile(r"the running load is not the composed list|loaded but not composed: |^stale_load\b")
 
 
+#: MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: a composed mod with no folder on the host. Its own cause, never stale_load:
+#: no restart loads it, and it repeats on every job until someone installs the mod there.
+NOT_INSTALLED = "mod_not_installed"
+
+
 def stale_load(res):
     """-> "repaired" when the result predates the worker's restart onto the composed list (no harness_cause: the
     worker that wrote it could not restart, the current one does), "unrepaired" when the current worker recorded the
     cause and still ended INVALID (it restarted and the load did not fit, or modcheck had restored FULL so no restart
     could help: both repeat, so neither may release a brake), else None."""
     res = res or {}
-    if res.get("outcome") != "INVALID" or res.get("cause") != "HARNESS":
+    if res.get("outcome") != "INVALID" or res.get("cause") != "HARNESS" or res.get("harness_cause") == NOT_INSTALLED:
         return None
     if res.get("harness_cause") != "stale_load" and not STALE_LOAD.search(str(res.get("note") or "")):
         return None
@@ -119,6 +124,8 @@ def job_cause(res):
     if (res or {}).get("outcome") != "INVALID" or res.get("cause") in NOT_A_FAULT + LANE_CAUSES or companion_stale(res):
         return None
     note = str(res.get("note") or "")
+    if res.get("harness_cause") == NOT_INSTALLED:
+        return "HARNESS: mod_not_installed, the composed list names a mod this host has not installed"
     if stale_load(res):         # its own repair item, not the catch-all "modcheck exit 1, no sheet" (4E52E202)
         return "HARNESS: stale_load, the running load is not the composed list%s" % (
             ", which the worker could not restart away" if stale_load(res) == "unrepaired" else "")

@@ -151,6 +151,13 @@ def main():
     check(R.stale_load({"outcome": "DONE", "harness_cause": "stale_load", "stale_load_bounced": "x"}) is None
           and R.stale_load({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5"}) is None,
           "a DONE run after the restart, or another harness death, is no stale load")
+    gone = {"outcome": "INVALID", "cause": "HARNESS", "harness_cause": "mod_not_installed",
+            "note": "mod_not_installed (install it on this host; no restart spent): no folder on this host holds "
+                    "ray1203.simplecamerasetting (install it; a restart cannot load it): loaded but not composed: x"}
+    check(R.stale_load(gone) is None and "mod_not_installed" in (R.job_cause(gone) or "")
+          and R.job_cause(gone) != R.job_cause(new),
+          "MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: a mod the host lacks is its own cause, never stale_load: %s"
+          % R.job_cause(gone))
     stale = {"outcome": "INVALID", "cause": "DEPLOY", "note": "companion STALE JawaBench.BridgeTools.dll not built from this job's sources"}
     check(R.companion_stale(stale) and R.job_cause(stale) is None, "a stale companion files no repair and holds no chain")
     other = {"outcome": "INVALID", "cause": "DEPLOY", "note": "sync refused"}

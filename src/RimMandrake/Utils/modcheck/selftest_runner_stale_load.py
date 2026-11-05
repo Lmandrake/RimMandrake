@@ -58,7 +58,17 @@ class ReachedSuite(Exception):
     pass
 
 
-def attempt(running, config_ids, keep=False, keep_composed=False, restores=None):
+def mods_root(ids):
+    """A temp install root holding one <folder>/About/About.xml per id."""
+    root = tempfile.mkdtemp(suffix="_Mods")
+    for i, p in enumerate(ids):
+        os.makedirs(os.path.join(root, "m%d" % i, "About"))
+        with open(os.path.join(root, "m%d" % i, "About", "About.xml"), "w", encoding="utf-8") as f:
+            f.write("<ModMetaData><name>m</name><packageId>%s</packageId></ModMetaData>" % p)
+    return root
+
+
+def attempt(running, config_ids, keep=False, keep_composed=False, restores=None, installed=None):
     """run() with one toy mod, a ModsConfig holding config_ids and a game whose running load is `running`.
     -> (results or None, reached_suite, record_run calls, bridge calls, sheets written)."""
     cfg = write_config(config_ids)
@@ -69,6 +79,8 @@ def attempt(running, config_ids, keep=False, keep_composed=False, restores=None)
     fake_rb.RimBridge = lambda **k: bridge
     fake_gp = types.ModuleType("game_paths")
     fake_gp.MODS_CONFIG = cfg
+    if installed is not None:
+        fake_gp.LOCAL_MODS = mods_root(installed)
     fake_status = types.ModuleType("status")
     fake_status.record_run = lambda *a, **k: recorded.append(a)
     mods_saved = {n: sys.modules.get(n) for n in ("rimbridge_client", "game_paths", "status")}
@@ -182,6 +194,41 @@ for keep_c, want_restore in ((False, 1), (True, 0)):
 restores = []
 attempt(list(composed), composed, keep_composed=True, restores=restores)
 ok(restores == [1], "load fits, keep composed set: FULL still restored (only a stale refusal keeps the list)", restores)
+
+# 9. MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD (Steve canary J20261104T074700Z-42d8eb): a composed id that is not running
+#    because no folder on the host holds it is mod_not_installed, not stale_load: ModsConfig is restored (no STALE_LOAD
+#    line, so the worker spends no restart) and the reason names the id
+CAM = "ray1203.simplecamerasetting"
+on_host = [p for p in MINIMAL if not p.startswith("ludeon.")] + [TOY]
+for keep_c in (False, True):
+    restores, buf, err = [], io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(err):
+        res, hit, rec, _, sheets = attempt(composed, composed + [CAM], keep_composed=keep_c, restores=restores,
+                                           installed=on_host)
+    r = (res or {}).get("ToyMod", {})
+    ok(not hit and r.get("unmeasured") == "mod_not_installed" and CAM in r.get("refused", ""),
+       "uninstalled composed mod (keep composed=%d): UNMEASURED mod_not_installed, names it" % keep_c, r)
+    ok(restores == [1] and "STALE_LOAD:" not in buf.getvalue(),
+       "uninstalled composed mod (keep composed=%d): FULL restored, no STALE_LOAD line" % keep_c, buf.getvalue())
+    ok(rec == [] and len(sheets) == 1, "uninstalled composed mod: no status entry, the UNMEASURED sheet is written")
+    import re  # noqa: E402
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(HERE)))),
+                            "infrastructure", "stevedesktop", "worker.py"), encoding="utf-8").read()
+    pat = re.search(r'NOT_INSTALLED_RE = re\.compile\(r"(.+?)", re\.M\)', src)
+    ok(pat and re.search(pat.group(1), err.getvalue(), re.M) and not re.search(
+        r"HARNESS UNMEASURED: the running load is not the composed list", err.getvalue()),
+       "the runner's log line is what the Steve worker reads as mod_not_installed (and not as stale_load)",
+       err.getvalue())
+# the same gap with the mod installed (just not yet loaded) stays stale_load: a restart can load it
+res, hit, _, _, _ = attempt(composed, composed + [CAM], installed=on_host + [CAM])
+ok(res["ToyMod"].get("unmeasured") == "stale_load", "installed but not loaded: still stale_load", res.get("ToyMod"))
+# an install root the instrument cannot see claims nothing: stale_load as before
+res, hit, _, _, _ = attempt(composed, composed + [CAM], installed=[])
+ok(res["ToyMod"].get("unmeasured") == "stale_load", "an empty install scan claims no mod uninstalled",
+   res.get("ToyMod"))
+ok(runner.not_installed(["a", "member", "ludeon.rimworld.odyssey"], {"composed"}, {"member": "composed"}) == ["a"],
+   "not_installed: a folded member is installed through its composed mod; Ludeon ids are always installed")
+ok(runner.not_installed(["a"], None) == [], "not_installed: an unmeasured install set names nothing")
 
 print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
 sys.exit(1 if FAILS else 0)

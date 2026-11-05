@@ -193,7 +193,7 @@ class TestqResult(Strict):
     bounced_unresponsive: str | None = None
     recycled_kept_game: str | None = None
     kept_game_maps: int | None = None
-    harness_cause: str | None = None        # a known harness condition by name (stale_load), retest.job_cause reads it
+    harness_cause: str | None = None        # a known harness condition by name (stale_load, mod_not_installed), retest.job_cause reads it
     stale_load_bounced: str | None = None   # the worker restarted the game onto the composed list once, for this reason
 
     @model_validator(mode="after")

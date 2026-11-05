@@ -170,7 +170,7 @@ def load_gap(want, running, exact, alias=None):
     return gap
 
 
-def verify_loaded_list(package_ids, keep, _client=None, _config_path=None):
+def verify_loaded_list(package_ids, keep, _client=None, _config_path=None, _roots=None):
     """MODCHECK_SESSION_FIX_STALE_LIST_ACCEPTED: ModsConfig names the NEXT load, so a game already Playing when run()
     composed its list may still be on the PREVIOUS one, and a chain run there certifies the wrong list. Read the
     RUNNING load (jawa/running_mods) and compare: composed (not keep) -> it must equal ModsConfig's activeMods, which
@@ -191,7 +191,65 @@ def verify_loaded_list(package_ids, keep, _client=None, _config_path=None):
         alias = live_def_check.aliases()
     except Exception as e:  # noqa: BLE001
         return ["jawa/running_mods raised (%s: %s)" % (type(e).__name__, e)]
-    return load_gap(want, running, exact=not keep, alias=alias)
+    gap = load_gap(want, running, exact=not keep, alias=alias)
+    if gap and running is not None:
+        held = {p.lower() for p in running}
+        absent = not_installed([p for p in want if p not in held and alias.get(p) not in held],
+                               installed_ids(_roots), alias)
+        if absent:
+            gap.insert(0, NOT_INSTALLED + ", ".join(absent))
+    return gap
+
+
+#: MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: the first reason verify_loaded_list gives when a composed id that the
+#: running load lacks has no folder on this host. RimWorld drops such an id at every load, so it is its own cause
+#: (mod_not_installed), never stale_load: a restart cannot load it (Steve canary J20261104T074700Z-42d8eb,
+#: ray1203.simplecamerasetting in MINIMAL but not installed, ended INVALID stale_load after a wasted restart).
+NOT_INSTALLED = "mod_not_installed: no folder on this host holds "
+
+
+def install_roots():
+    """The folders RimWorld reads mods from on this host: the game's Mods, the Steam workshop, the game's Data (Core
+    and the DLCs). -> [] when game_paths cannot name them."""
+    try:
+        import game_paths as _gp
+        return [r for r in (getattr(_gp, n, None) for n in ("LOCAL_MODS", "WORKSHOP", "GAME_DATA")) if r]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def installed_ids(roots=None):
+    """-> lower-case packageIds of every `<root>/<folder>/About/About.xml` under the install roots, or None when the
+    instrument cannot see (no root readable, or a scan that found no id at all: a blind scan must not call every
+    composed mod uninstalled)."""
+    import xml.etree.ElementTree as ET
+    roots = install_roots() if roots is None else roots
+    out, seen = set(), False
+    for root in roots:
+        try:
+            names = os.listdir(root)
+        except OSError:
+            continue
+        seen = True
+        for n in names:
+            about = os.path.join(root, n, "About", "About.xml")
+            try:
+                node = ET.parse(about).getroot().find("packageId")
+            except (OSError, ET.ParseError):
+                continue
+            if node is not None and (node.text or "").strip():
+                out.add(node.text.strip().lower())
+    return out if seen and out else None
+
+
+def not_installed(missing, installed, alias=None):
+    """Pure. -> the ids of `missing` (composed, not running) that no install root holds, itself or through its
+    composed mod (alias); [] when `installed` is None (unmeasured: the caller keeps the stale_load reading). Core
+    and DLC ids (`ludeon.*`) are always installed: every DLC is assumed."""
+    if installed is None:
+        return []
+    alias = alias or {}
+    return [p for p in missing if not p.startswith("ludeon.") and p not in installed and alias.get(p) not in installed]
 
 
 def _rb_call(client, tool, args):
@@ -1294,11 +1352,18 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             # a session already Playing may be on the PREVIOUS list (ModsConfig names the next load): never certify it
             stale = verify_loaded_list(package_ids, keep)
             if stale:
-                why = "UNMEASURED: the running load is not the composed list (restart the game on it): %s" % "; ".join(stale)
+                if stale[0].startswith(NOT_INSTALLED):
+                    # not stale_load: no restart loads a mod this host lacks, so ModsConfig is restored as always
+                    why = "UNMEASURED: %s (install it; a restart cannot load it): %s" % (stale[0], "; ".join(stale[1:]))
+                    cause = "mod_not_installed"
+                else:
+                    why = "UNMEASURED: the running load is not the composed list (restart the game on it): %s" % (
+                        "; ".join(stale))
+                    cause = "stale_load"
+                    stale_load.append(mod_folder)
                 print("[modcheck] %s HARNESS %s" % (mod_folder, why), file=sys.stderr, flush=True)
-                stale_load.append(mod_folder)
                 results[mod_folder] = {"chains": [], "all_green": False, "findings": [], "refused": why,
-                                       "unmeasured": "stale_load", "walk": walk}
+                                       "unmeasured": cause, "walk": walk}
                 if sel:
                     results[mod_folder]["targeted"] = dict(sel, of_chains=len(suite.chains))
                 try:

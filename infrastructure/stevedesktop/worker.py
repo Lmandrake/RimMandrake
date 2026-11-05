@@ -162,6 +162,8 @@ PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not m
 # it left ModsConfig on the composed list for a restart (runner.stale_keep_composed)
 STALE_LOAD_RE = re.compile(r"HARNESS UNMEASURED: the running load is not the composed list[^:]*: (.+)$", re.M)
 STALE_KEPT_RE = re.compile(r"^STALE_LOAD: ", re.M)
+# MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: modcheck names a composed mod with no folder on this host as its own cause
+NOT_INSTALLED_RE = re.compile(r"HARNESS UNMEASURED: mod_not_installed: (.+)$", re.M)
 NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer when the game has no current game
 GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException")   # a game that loads but cannot make a world (10-31)
 # STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
@@ -988,6 +990,13 @@ class Attempt:
         (machine-readable: testq.nonfault_cause excuses only the unrepaired kind, retest.job_cause names it)."""
         path = os.path.join(self.d, "modcheck.log")
         text = read_text(path) or ""
+        m = NOT_INSTALLED_RE.search(text)
+        if m:
+            # MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: RimWorld drops an id with no folder at every load, so no restart
+            # can help (J20261104T074700Z-42d8eb spent one on ray1203.simplecamerasetting): name it, spend nothing
+            self.res["harness_cause"] = "mod_not_installed"
+            return self.fail("INVALID", "HARNESS", "mod_not_installed (install it on this host; no restart spent): %s"
+                             % m.group(1).strip()[:240])
         m = STALE_LOAD_RE.search(text)
         if not m:
             return None

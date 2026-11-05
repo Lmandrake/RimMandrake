@@ -96,6 +96,10 @@ if mode in ("stale", "stale-nokeep") or (mode == "stale-once" and not os.path.ex
     if mode != "stale-nokeep":
         print("STALE_LOAD: Mock: ModsConfig left on the composed list; restart the game on it and run again")
     sys.exit(1)
+if mode == "uninstalled":      # MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: runner.run()'s line, verbatim in shape
+    print("[modcheck] Mock HARNESS UNMEASURED: mod_not_installed: no folder on this host holds "
+          "ray1203.simplecamerasetting (install it; a restart cannot load it): not loaded: ray1203.simplecamerasetting")
+    sys.exit(1)
 if mode == "fatal":
     print("Windows fatal exception: access violation\n\nThread 0x1: File gate.py line 9 in hash\n" + "x" * 800)
     print("[modcheck] long tail " * 40); sys.exit(5)
@@ -237,6 +241,18 @@ def main():
               and not os.path.exists(sdowns + "_3") and "not left on the composed list" in (res.get("note") or ""),
               "a stale load with the list restored -> INVALID at once, no restart that cannot help: %s"
               % res.get("note"))
+
+        # 3a'. MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD (J20261104T074700Z-42d8eb): a composed mod with no folder on the
+        # host is its own cause, and the worker spends no restart on it
+        rc, o = w(["start"], job(), MOCK_MODE="uninstalled", TESTQ_CMD_DOWN="echo down >> %s" % (sdowns + "_4"))
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS"
+              and res.get("harness_cause") == "mod_not_installed" and not res.get("stale_load_bounced")
+              and "simplecamerasetting" in (res.get("note") or ""),
+              "a composed mod not installed -> INVALID/HARNESS mod_not_installed, named: %s %s"
+              % (res.get("harness_cause"), res.get("note")))
+        check(not os.path.exists(sdowns + "_4") and res.get("retries") == 0,
+              "no restart is spent on a mod the host has not installed: retries=%s" % res.get("retries"))
 
         # 3b. a killed game: its lost-reply bridge marker is moot once load starts a fresh game, and only then
         bridge = os.path.join(tmp, "mock_bridge.py")
