@@ -18,7 +18,6 @@ Every OUTLINED icon must be accounted for, else it is OPEN:
   MASK        a `_m` colour mask (black/white by design, not an icon)
   DARK        a near-black material, not a rim: edge share - interior share <= 0.25
   ORPHAN      no texPath in any src/**/*.xml reads it (exact, its variant stem, or its folder); dead art
-  CLAIMED     another item's artpipe job (pending/active/failed: still in its hands) targets its texPath
   QUEUED      a job of this item for its stem waits in the artpipe pending/active dir (not done: --check fails)
 Every no-outline render of this item that is installed (sha = a `*_nooutline` column on that sheet) must read
 EDGE < 0.30 or pass the dark-material rule; else it is BAD.
@@ -108,9 +107,9 @@ def read_by(rel, tps):
 
 
 def queued_stems(state):
-    """(this item's waiting job stems, {texPath stem: other item} for other items' unfinished jobs)."""
-    mine, others = set(), {}
-    for d in ("pending", "active", "failed"):
+    """Stems of this item's waiting (pending/active) jobs. Another item's job, or a failed one, excuses nothing."""
+    mine = set()
+    for d in ("pending", "active"):
         for f in glob.glob(os.path.join(state, d, "*.json")):
             if f.endswith(".manifest.json"):
                 continue
@@ -121,13 +120,9 @@ def queued_stems(state):
             tp = j.get("target_texpath")
             if not tp:
                 continue
-            item = j.get("rimflow_item_id")
-            if item == "ICON_OUTLINE_REPAINT_1":
-                if d != "failed":
-                    mine.add(os.path.basename(tp).lower())
-            elif item:
-                others[os.path.basename(tp).lower()] = item
-    return mine, others
+            if j.get("rimflow_item_id") == "ICON_OUTLINE_REPAINT_1":
+                mine.add(os.path.basename(tp).lower())
+    return mine
 
 
 def artpipe_state():
@@ -153,7 +148,7 @@ def census(root=".", state=None):
                     nooutline[sha] = k
     idx = L.Index()
     tps = xml_texpaths(root)
-    queued, claimed = queued_stems(state) if state else (set(), {})
+    queued = queued_stems(state) if state else set()
     out = []
     for p in sorted(glob.glob(os.path.join(root, "src/**/Textures/Things/**/*.png"), recursive=True)):
         rel = os.path.relpath(p, root)
@@ -191,9 +186,6 @@ def census(root=".", state=None):
                 c = "DARK"
             elif not read_by(rel, tps):
                 c = "ORPHAN"
-            elif stem(rel).lower() in claimed or os.path.basename(rel)[:-4].lower() in claimed:
-                c = "CLAIMED"
-                rec["by"] = claimed.get(stem(rel).lower()) or claimed.get(os.path.basename(rel)[:-4].lower())
             elif stem(rel).lower() in queued or os.path.basename(rel)[:-4].lower() in queued:
                 c = "QUEUED"
             else:
@@ -223,6 +215,15 @@ def selftest():
     assert read_by("src/T/Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png", {"Things/Item/Resource/Pyrinth"})
     assert not read_by("src/T/Textures/Things/Item/Resource/RM_Saal/RM_Saal_a.png", {"Things/Item/Fish/RM_Saal"})
     assert row_for("src/P/Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png", keys) == "Pyrinth"
+    import tempfile
+    with tempfile.TemporaryDirectory() as t:           # only THIS item's pending/active jobs excuse an icon
+        for d, name, item in (("pending", "Mine", "ICON_OUTLINE_REPAINT_1"), ("active", "Act", "ICON_OUTLINE_REPAINT_1"),
+                              ("failed", "Dead", "ICON_OUTLINE_REPAINT_1"), ("pending", "Other", "SOME_OTHER_ITEM"),
+                              ("failed", "OtherDead", "SOME_OTHER_ITEM")):
+            os.makedirs(os.path.join(t, d), exist_ok=True)
+            json.dump({"target_texpath": "Things/Item/" + name, "rimflow_item_id": item},
+                      open(os.path.join(t, d, name + ".json"), "w"))
+        assert queued_stems(t) == {"mine", "act"}, queued_stems(t)
     print("selftest ok")
 
 
