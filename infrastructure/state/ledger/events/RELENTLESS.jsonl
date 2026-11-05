@@ -797,3 +797,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T22:37:23Z","tsn":1793918243917045945}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A4 (L2), read-only proof","ts":"2026-11-05T22:37:37Z","tsn":1793918257568629814}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T22:37:48Z","tsn":1793918268565300220}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES: deploy and restart for its live proofs","ts":"2026-11-05T22:45:42Z","tsn":1793918742881486527}
