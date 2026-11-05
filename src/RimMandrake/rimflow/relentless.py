@@ -1333,9 +1333,10 @@ def run_bounded(name, adapter, timeout, cap=None):
     return {"cmd": shown, "exit": why or code, "out": bytes(kept[:cap]).decode("utf-8", "replace"), "at": at}
 
 
-def offbox_readings(fx, contract, r):
+def offbox_readings(fx, contract, r, values=None):
     """Every reading a check's contract names, sharing one deadline (offbox_max_s). A name that is not a supervisor adapter
-    (an older free-text contract) is refused, never run."""
+    (an older free-text contract) is refused, never run. `values`: the supervisor's {sha}/{repo} for adapters that name them
+    (relentless_wall.fill_argv); an adapter whose slots cannot be filled is reported, never run half-filled."""
     known = relentless_wall.adapters(r)
     end = time.time() + r.get("offbox_max_s", 120)
     out = []
@@ -1347,7 +1348,12 @@ def offbox_readings(fx, contract, r):
         elif left <= 0:
             out.append({"cmd": name, "exit": "not run: the check's offbox time was spent", "out": "", "at": time.time()})
         else:
-            out.append(fx.run_offbox(name, known[name], left))
+            argv, why = relentless_wall.fill_argv(known[name]["argv"], values)
+            if why:
+                out.append({"cmd": "%s: %s" % (name, known[name].get("what") or ""), "exit": why, "out": "",
+                            "at": time.time()})
+            else:
+                out.append(fx.run_offbox(name, dict(known[name], argv=argv), left))
     return out
 
 
@@ -3972,7 +3978,7 @@ def step(store, fx, r, item, now, acts):
                 relentless_wall.remove_box(box)
             acts.append({"do": "check_race", "item": item})
             return
-        readings = offbox_readings(fx, st["contract"], r)
+        readings = offbox_readings(fx, st["contract"], r, {"sha": c["sha"], "repo": clean})
         if box and readings:        # what the box cannot reach, read outside it just now: raw output and exit, no worker words
             relentless_wall.write_offbox(box, readings)
         if box and (st["contract"] or {}).get("live"):     # the live line's reading, too: 33 of 60 CANNOT REACH were it

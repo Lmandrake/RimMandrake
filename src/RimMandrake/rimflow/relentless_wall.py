@@ -564,6 +564,29 @@ def check_offbox_names(names, rules):
     return names
 
 
+# An adapter's argv may name what the SUPERVISOR knows about this check, never worker text (CHECKER_REACH_BUILD_GIT_AND_GH_
+# ADAPTERS: 5 holds wanted git history the box has no .git for): {sha} the candidate commit, {repo} the check's clean clone
+# outside the wall (full history, checked out at {sha}). Each value is shape-checked before it fills a token.
+_SLOT = re.compile(r"\{([a-z_]+)\}")
+_SLOT_OK = {"sha": re.compile(r"^[0-9a-f]{40}$"), "repo": re.compile(r"^/[^\x00-\x1f{}]+$")}
+
+
+def fill_argv(argv, values):
+    """-> (argv with every {slot} filled, None) or (None, why it cannot run). A slot outside _SLOT_OK, a missing value or a
+    value of the wrong shape refuses the reading: nothing half-filled ever runs."""
+    out = []
+    for tok in argv:
+        for slot in _SLOT.findall(tok):
+            v = (values or {}).get(slot)
+            if slot not in _SLOT_OK:
+                return None, "refused: {%s} is not a supervisor value (%s)" % (slot, ", ".join(sorted(_SLOT_OK)))
+            if not isinstance(v, str) or not _SLOT_OK[slot].match(v):
+                return None, "not run: this check has no valid {%s}" % slot
+            tok = tok.replace("{%s}" % slot, v)
+        out.append(tok)
+    return out, None
+
+
 def offbox_cmds(contract):
     """-> the contract's offbox adapter names (an old contract may hold free text: it is refused at run time, never run)."""
     got = (contract or {}).get("offbox") or []
