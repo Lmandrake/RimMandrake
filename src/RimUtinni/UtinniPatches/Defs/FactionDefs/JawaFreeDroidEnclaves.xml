@@ -165,10 +165,11 @@
            TOGETHER; guarding one end leaves a dangling cross-reference every load.
            ⚠️ The consequence, stated rather than discovered: with Droid Depot
            absent these two group makers are EMPTY and the faction fields nobody.
-           That is already true of its Trader group below, which is entirely
-           MayRequire'd on the same package — so this is the file's existing
-           bargain, not a new one. It matters only on a reduced mod list; the
-           frozen v1 list has Droid Depot active. -->
+           Droid Depot is NOT on the shipped list (infrastructure/state/modlists/
+           ModsConfig.FULL.LATEST.xml, parsed 2026-11-05), so on it these two group
+           makers are empty. The Trader group below therefore uses our own Droidworks
+           kinds (mandrake.rsw.droidworks, on the list): PACK_ANIMALS_RESTORE_EMPTY_SADDLES
+           measured gen=False live with the Droid Depot trader, carriers or not. -->
       <li>
         <kindDef>Combat</kindDef>
         <options>
@@ -181,7 +182,7 @@
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <OuterRim_ProtocolDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_ProtocolDroid>
+          <RSW_DW_OuterRim_ProtocolDroid MayRequire="mandrake.rsw.droidworks">1</RSW_DW_OuterRim_ProtocolDroid>
         </traders>
         <!-- PACK_ANIMALS_RESTORE_EMPTY_SADDLES: PawnGroupKindWorker_Trader.CanGenerateFrom needs a carrier whose race the
              map biome allows, so a trader group with no carriers never generates on any home map. Same owned list as
@@ -201,7 +202,7 @@
           <RM_Vellak MayRequire="mandrake.rm.biomes">2</RM_Vellak>
         </carriers>
         <guards>
-          <OuterRim_KXSecurityDroid MayRequire="Neronix17.OuterRim.DroidDepot">4</OuterRim_KXSecurityDroid>
+          <RSW_DW_OuterRim_KXSecurityDroid MayRequire="mandrake.rsw.droidworks">4</RSW_DW_OuterRim_KXSecurityDroid>
         </guards>
       </li>
       <li>

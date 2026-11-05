@@ -8,6 +8,8 @@ races meet the allowedPackAnimals of each fixed biome (RM_LeaningScrub, RM_Weepi
 src builds them: the inline RM_ list plus the Utinni PackAnimals_RestoreSaddles.xml additions (the engine rule:
 PawnGroupKindWorker_Trader.CanGenerateFrom = carriers.Any(race in biome.allowedPackAnimals)). Also drives
 vanilla_beast_carriers.item_problems (the plain run's exit gate) on fixtures, so it goes red if that gate is loosened.
+Also pins that the Trader group's <traders> has a kind defined in src by a mod on the shipped list
+(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml) with no MayRequire off that list.
 """
 import os
 import sys
@@ -87,6 +89,63 @@ check("mutant: enclave <carriers> deleted -> red", enclave_problems([[] for _ in
 noscrub = dict(allowed, RM_LeaningScrub=[])
 check("mutant: RM_LeaningScrub list emptied -> red", enclave_problems(groups, noscrub, kr) != [])
 check("mutant: carrier kind cut from src -> red", enclave_problems([g + ["RM_BovineBeetle"] for g in groups], allowed, kr) != [])
+
+# ---- the Trader group's <traders> must resolve on the SHIPPED list (A5 live fail 2026-11-05: the sole trader was
+# MayRequire'd on Droid Depot, absent from the list, so the group had no trader and never generated, carriers or not).
+SHIPPED = os.path.join(SRC, "..", "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")
+
+
+def shipped_ids(path=SHIPPED):
+    return {(e.text or "").strip().lower() for e in ET.parse(path).getroot().find("activeMods")}
+
+
+def kind_package(kind, root=SRC):
+    """packageId (lowercased) of the src mod that defines PawnKindDef `kind`, or None."""
+    needle = "<defName>%s</defName>" % kind
+    for d, _, fs in os.walk(root):
+        for f in fs:
+            if f.endswith(".xml") and needle in open(os.path.join(d, f), encoding="utf-8", errors="ignore").read():
+                up = d
+                while len(up) > len(root):
+                    ab = os.path.join(up, "About", "About.xml")
+                    if os.path.exists(ab):
+                        return (ET.parse(ab).getroot().findtext("packageId") or "").strip().lower()
+                    up = os.path.dirname(up)
+    return None
+
+
+def trader_entries(path, faction):
+    """-> [[(trader kind, MayRequire or None)] per Trader group]."""
+    out = []
+    for fd in ET.parse(path).getroot().iter("FactionDef"):
+        if (fd.findtext("defName") or "").strip() != faction:
+            continue
+        for li in fd.findall("pawnGroupMakers/li"):
+            if (li.findtext("kindDef") or "").strip() == "Trader":
+                t = li.find("traders")
+                out.append([] if t is None else [(k.tag, k.get("MayRequire")) for k in t])
+    return out
+
+
+def trader_problems(tgroups, kr, ids, pkg=kind_package):
+    bad = []
+    for g in tgroups:
+        live = [k for k, mr in g if k in kr and (mr is None or mr.lower() in ids) and pkg(k) in ids]
+        if not live:
+            bad.append("a %s Trader group has no trader kind that resolves on the shipped list: %s" % (v.ENCLAVE, g))
+    return bad or ([] if tgroups else ["%s has no Trader group" % v.ENCLAVE])
+
+
+ids = shipped_ids()
+tg = trader_entries(ENCLAVE_XML, v.ENCLAVE)
+check("sanity: shipped list parses (%d ids, droidworks on it)" % len(ids), len(ids) > 200 and "mandrake.rsw.droidworks" in ids)
+tbad = trader_problems(tg, kr, ids)
+check("src: %s Trader <traders> resolve on the shipped list: %s" % (v.ENCLAVE, tbad or tg), not tbad)
+check("mutant: Droid Depot trader (the A5 fail) -> red",
+      trader_problems([[("OuterRim_ProtocolDroid", "Neronix17.OuterRim.DroidDepot")]], kr, ids) != [])
+check("mutant: owned trader gated on a mod off the list -> red",
+      trader_problems([[(k, "Neronix17.OuterRim.DroidDepot") for k, _ in g] for g in tg], kr, ids) != [])
+check("mutant: empty <traders> -> red", trader_problems([[] for _ in tg], kr, ids) != [])
 
 # ---- vanilla_beast_carriers.item_problems, the plain run's exit gate
 ok = {"can_trade": True}
