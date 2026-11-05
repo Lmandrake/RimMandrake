@@ -125,7 +125,9 @@ may not validate.
    confusion, then writes it all out for Relentless."* (owner, 2026-11-04 UTC, ledger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`;
    tool `src/RimMandrake/rimflow/first_touch.py`). The reading, the expanded spec and the build items are the
    Designer's; only the certification sitting with him is reserved. One item per mod (`<FOLDER>_DESIGN_FIRST_TOUCH`):
-   each sitting certifies a different spec, so no one ruling settles the family.
+   each sitting certifies a different spec, so no one ruling settles the family. System-class items (Operations' system set) are
+   exempt from the first-touch hold (owner card 2026-11-05, "Let all system work through"): repairs do not change what a mod is;
+   content items naming an uncertified mod are still held.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
 work waits on it. It never times out into a decision.

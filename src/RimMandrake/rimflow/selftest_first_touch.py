@@ -123,6 +123,7 @@ def main():
     fx._ledger = ([], types.SimpleNamespace(items={k: types.SimpleNamespace(state=v, kind="bug", title="")
                                                    for k, v in items.items()}))
     fx.item_mods = lambda st: ["RimMandrake/Oracle"]
+    fx._health = {"first": {}, "degraded": False}
     calls = []
     fx.rimflow = lambda *a, **k: (calls.append(a), types.SimpleNamespace(returncode=0, stdout="", stderr=""))[1]
     a, b, c = fx.first_touch_hold("A_FIX"), fx.first_touch_hold("B_FIX"), fx.first_touch_hold("C_FIX")
@@ -151,12 +152,12 @@ def behaviour(R):
         world = types.SimpleNamespace(items={
             k: types.SimpleNamespace(id=k, state="proposed", kind="bug", title="", target="v1", owner="BENCH",
                                      this_deployment=False, created_at="2026-11-0%d" % n)
-            for n, k in enumerate(("HELD_FIX", "FREE_FIX"), 1)})
+            for n, k in enumerate(("HELD_FIX", "FREE_FIX", "SYS_FIX"), 1)})
         fx._ledger = ([], world)
-        fx.item_mods = lambda st: ["RimMandrake/Oracle"] if st["item"] == "HELD_FIX" else []
+        fx.item_mods = lambda st: ["RimMandrake/Oracle"] if st["item"] in ("HELD_FIX", "SYS_FIX") else []
         fx.rimflow = lambda *a, **k: types.SimpleNamespace(returncode=0, stdout="", stderr="")
         fx.seat_words = lambda: None
-        fx._health = {"first": {}, "degraded": False}
+        fx._health = {"first": {"SYS_FIX": 0}, "degraded": True}   # SYS_FIX is a system item (Operations' classifier)
         return fx
 
     plist = types.SimpleNamespace(order_map=lambda e: {}, load=lambda b: {"entries": []}, position=lambda i, o: 10 ** 6,
@@ -177,14 +178,19 @@ def behaviour(R):
               (held, fx.first_touch_hold("FREE_FIX")))
         fx = effects(True)
         ids, _ = fx.pool_order(fx.r)
-        check("pool_order leaves the held item out of the pool", ids == ["FREE_FIX"], ids)
+        check("pool_order leaves the held content item out and places the system item",
+              sorted(ids) == ["FREE_FIX", "SYS_FIX"], ids)
+        fx = effects(True)
+        check("a system item naming an uncertified mod is not refused (owner card 2026-11-05)",
+              fx.concept_refusal("SYS_FIX") is None and fx.first_touch_hold("SYS_FIX") is None)
+        check("a content item naming the same mod is still refused", bool(fx.concept_refusal("HELD_FIX")))
         fx = effects(True)
         got = fx.concept_refusal("HELD_FIX")
         check("the lease (concept_refusal) refuses the held item", bool(got) and "ORACLE" in got.upper(), got)
         check("the lease lets the free item through", fx.concept_refusal("FREE_FIX") is None, fx.concept_refusal("FREE_FIX"))
         fx = effects(False)      # control: the same world with the rule off reaches both, so the pool can see
         ids, _ = fx.pool_order(fx.r)
-        check("control: rule off, pool_order offers both", sorted(ids) == ["FREE_FIX", "HELD_FIX"], ids)
+        check("control: rule off, pool_order offers both", sorted(ids) == ["FREE_FIX", "HELD_FIX", "SYS_FIX"], ids)
         check("control: rule off, the lease refuses nothing", fx.concept_refusal("HELD_FIX") is None)
     finally:
         R.pkg, R.eligible, R.foreign_seat, R.concept_refused = saved

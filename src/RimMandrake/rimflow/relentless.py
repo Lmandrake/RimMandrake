@@ -1761,6 +1761,8 @@ class Effects(relentless_game.GameFx):
         per mod per tick, needs=owner: the Designer's sitting with him is where it is done."""
         if not self.r.get("first_touch_hold"):
             return None
+        if item in (self.health().get("first") or {}):
+            return None      # owner card 2026-11-05: system work is not held behind the design gate (repairs do not change a mod)
         ft = pkg("first_touch")
         memo = self.__dict__.setdefault("_first_touch", {})
         if item in memo:

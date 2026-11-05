@@ -64,7 +64,7 @@ up confusion, then write it all out for Relentless as build items. Filed: `BAROQ
 `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; the trigger is `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`.
 
 How the trigger works (`src/RimMandrake/rimflow/first_touch.py`): Relentless gives no worker to an unstarted item that
-names a mod (its id, title or a `src/` path) while that mod has no pass on record, and files the pass once,
+names a mod (its id, title or a `src/` path) while that mod has no pass on record (system-class items, Operations' `first` set, are exempt: owner card 2026-11-05 "Let all system work through"; new mod features still wait), and files the pass once,
 `needs=owner`, as `<FOLDER>_DESIGN_FIRST_TOUCH` (the four above, and every Baroque Biomes compose member, map to their
 filed items in `src/RimMandrake/rimflow/designer_passes.json`). A pass is on record when its item closes `done`, or when
 `design/concepts/<Folder>/tree.json` passes `gate`. So closing the pass item `done` is what releases the held work: close

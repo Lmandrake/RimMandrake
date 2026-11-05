@@ -6,7 +6,7 @@ validation strategies, certifies it with the user/clarifies confusion, then writ
 
 Relentless asks `hold()` before an item reaches a worker (the pool and the lease). An item that names a mod (the mods
 `Effects.item_mods` finds: id, title, src/ paths in its prose) is held while any of those mods has no pass on record,
-and the pass it needs is owed: Relentless files it once, `needs=owner`, for the Designer's sitting with him.
+(system-class items are exempt, owner card 2026-11-05: Effects.first_touch_hold) and the pass it needs is owed: Relentless files it once, `needs=owner`, for the Designer's sitting with him.
 
 A mod's pass is ON RECORD when its pass item is closed `done`, or when `design/concepts/<Folder>/tree.json` passes
 `concept_tree.gate` (a certified tree is a deeper pass than this one asks for). Its pass item is the one named in
