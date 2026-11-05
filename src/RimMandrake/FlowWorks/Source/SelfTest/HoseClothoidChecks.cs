@@ -29,6 +29,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseClothoid.Result r = HoseClothoid.Solve(pr);
             string diag = $"{name}: feasible={r.Feasible} why={r.Why} it={r.Iterations} gap={r.EndErr:0.00000} head={r.HeadErr:0.00000}";
             if (!r.Feasible) throw new Exception(diag);
+            if (r.HeadErr >= HoseClothoid.EndTol) throw new Exception(diag + " Feasible with the end heading off by >= EndTol (HOSESNAP_FIX_HEADING_AND_RAMP_SCALE)");
             double len = Geo.Length(r.Pts);
             if (Math.Abs(len - pr.L) > 1e-3 * pr.L) throw new Exception(diag + $" length {len:0.0000} vs {pr.L:0.0000}");
             var s = pr.Theta0.HasValue ? HoseCurveMetrics.EndSpec.Fitting(pr.P0, Dir(pr.Theta0.Value), ruleStraight0, "start")
@@ -135,6 +136,56 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
                 finally { HoseMath.G2On = was; }
+            });
+        }
+        /// <summary>HOSESNAP_FIX_HEADING_AND_RAMP_SCALE: Snap (the stretch-and-turn that closes a near-taut gap) on hand-made
+        /// results. (1) Solve promises Feasible = every end equality within EndTol, but Snap accepted an end heading off by up to
+        /// SnapTurn (50x EndTol) and turned a fixed start heading with it. (2) Stretching by sc spaces nodes h*sc, so the ramp
+        /// bound becomes dk*sc; Snap compared against dk/sc, the unstretched bound. Can-fail: the pre-fix Snap returns true on the
+        /// turned straight and on the ramp profile at the unstretched bound.</summary>
+        internal static void RunSnap(Action<string, Action> Case)
+        {
+            Case("HoseClothoid snap: Feasible only with both end headings within EndTol, ramp bound stretched as dk*sc", () =>
+            {
+                const double h0 = 0.5, kmax = 1, L = 5;
+                int n = (int)(L / h0);
+                double[] H = new double[n], Dk = new double[n];
+                for (int i = 0; i < n; i++) { H[i] = h0; Dk[i] = 0.1; }
+                List<V2> Ray(double ang, double len) => Line(new V2(0, 0), Dir(ang) * len, 2 * n);
+                HoseClothoid.Result R(List<V2> pts, double[] k) => new HoseClothoid.Result { Pts = pts, Kappa = k, Theta0 = 0, Step = h0 };
+                var probs = new List<string>();
+
+                // (1) a straight drawn 0.005 rad off its chord and 0.2% short: the turn that lands its end turns both headings by
+                // 0.005 rad, 25x EndTol
+                double[] K0 = new double[n + 1];
+                var fit = new HoseClothoid.Problem { P0 = new V2(0, 0), Theta0 = 0, P1 = new V2(L, 0), Theta1 = 0, L = L, Kmax = kmax };
+                var r1 = R(Ray(0.005, L * 0.998), K0);
+                if (HoseClothoid.Snap(r1, fit, K0, H, kmax, Dk, 0) && r1.EndErr < HoseClothoid.EndTol)
+                    probs.Add($"fitted ends: Snap turned 0.005 rad and reported met (head {r1.HeadErr:0.00000}, start {Math.Abs(r1.Theta0):0.00000}, EndTol {HoseClothoid.EndTol})");
+                // the same turn with only the end fitted: the end heading still misses by the turn
+                var endOnly = new HoseClothoid.Problem { P0 = new V2(0, 0), P1 = new V2(L, 0), Theta1 = 0, L = L, Kmax = kmax };
+                var r1b = R(Ray(0.005, L * 0.998), K0);
+                if (HoseClothoid.Snap(r1b, endOnly, K0, H, kmax, Dk, 0))
+                    probs.Add($"end fitted: Snap reported met with the end heading off by {r1b.HeadErr:0.00000}");
+                // control: free headings, the same turn is a legal snap
+                var free = new HoseClothoid.Problem { P0 = new V2(0, 0), P1 = new V2(L, 0), L = L, Kmax = kmax };
+                var r1c = R(Ray(0.005, L * 0.998), K0);
+                if (!HoseClothoid.Snap(r1c, free, K0, H, kmax, Dk, 0)) probs.Add("free ends: Snap refused a 0.005 rad turn + 0.2% stretch");
+                // control: fitted ends, a pure stretch (no turn) is a legal snap
+                var r1d = R(Ray(0, L * 0.998), K0);
+                if (!HoseClothoid.Snap(r1d, fit, K0, H, kmax, Dk, 0)) probs.Add($"fitted ends: Snap refused a pure 0.2% stretch (head {r1d.HeadErr:0.00000})");
+
+                // (2) sc < 1 (drawn 0.8% long): a ramp exactly at the unstretched bound dk must be refused, since the stretched
+                // profile's ramp dK/sc exceeds dk*sc; a ramp at 0.98 dk*sc^2 must pass
+                double sc = 1 / 1.008;
+                double[] Zig(double step) { var k = new double[n + 1]; for (int i = 0; i <= n; i++) k[i] = i % 2 == 0 ? 0 : step; return k; }
+                double[] Kat = Zig(Dk[0]), Kin = Zig(0.98 * Dk[0] * sc * sc);
+                var r2 = R(Ray(0, L * 1.008), Kat);
+                if (HoseClothoid.Snap(r2, free, Kat, H, kmax, Dk, 0))
+                    probs.Add($"ramp: Snap accepted ramp {Dk[0] / sc:0.000000} on the stretched curve, bound dk*sc {Dk[0] * sc:0.000000}");
+                var r2b = R(Ray(0, L * 1.008), Kin);
+                if (!HoseClothoid.Snap(r2b, free, Kin, H, kmax, Dk, 0)) probs.Add("ramp: Snap refused a ramp inside the stretched bound");
+                if (probs.Count > 0) throw new Exception(string.Join("; ", probs));
             });
         }
     }

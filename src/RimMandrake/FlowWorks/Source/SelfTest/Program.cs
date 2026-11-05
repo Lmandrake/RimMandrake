@@ -2245,6 +2245,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseMateEndQueueChecks.Run(Case);  // live round 8: mate-end re-shape off the frame, rotating draw start, lay world reuse (HoseMateEndQueueChecks.cs)
             HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
             HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
+            HoseClothoidChecks.RunSnap(Case);  // HOSESNAP_FIX_HEADING_AND_RAMP_SCALE: Snap is Feasible only with headings met; ramp bound stretched dk*sc (HoseClothoidChecks.cs)
             HoseCurveChecks.Guard(Case);       // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 5: the G2 ruler over the hard stations holds its floor; owed rows only fail (HoseCurveChecks.cs)
             HoseLayoutChecks.Run(Case);        // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS steps 4-5: a hose is never drawn through its reel or fixture; too close to bend is refused (HoseLayoutChecks.cs)
             WorldMapDrawGuardChecks.Run(Case); // HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP: every drawing MapComponentUpdate skips the world view (WorldMapDrawGuardChecks.cs)

@@ -484,9 +484,12 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Closes a small end gap left by a near-taut length by the one similarity about the start that lands the end
         /// exactly: a uniform stretch (at most SnapFrac) and a turn (at most SnapTurn rad). A stretch or turn that small is
-        /// invisible (well under a pixel per cell and 0.6 degrees) and keeps every derivative continuous; curvature scales by
-        /// 1/stretch, so the bounds are re-checked on the scaled profile.</summary>
-        private static bool Snap(Result res, Problem pr, double[] K, double[] h, double kmax, double[] dk, double th1)
+        /// invisible (well under a pixel per cell and 0.6 degrees) and keeps every derivative continuous. Stretching by sc spaces
+        /// the nodes h*sc apart and scales curvature by 1/sc, so the bounds are re-checked on the scaled profile against the
+        /// stretched ramp bound dk*sc (HOSESNAP_FIX_HEADING_AND_RAMP_SCALE). The turn also turns both end headings, so a fixed
+        /// heading must still be met within EndTol after it, as Solve's Feasible promises: in practice a fitted start allows a
+        /// pure stretch only.</summary>
+        internal static bool Snap(Result res, Problem pr, double[] K, double[] h, double kmax, double[] dk, double th1)
         {
             List<V2> P = res.Pts;
             V2 a = P[P.Count - 1] - pr.P0, b = pr.P1 - pr.P0;
@@ -498,10 +501,11 @@ namespace RimMandrake.FlowWorks.Hose
             var Ks = new double[K.Length];
             for (int i = 0; i < K.Length; i++) Ks[i] = K[i] / sc;
             var dks = new double[dk.Length];
-            for (int i = 0; i < dk.Length; i++) dks[i] = dk[i] / sc;
+            for (int i = 0; i < dk.Length; i++) dks[i] = dk[i] * sc;
             if (!BoundsHold(Ks, kmax, dks, 1e-6)) return false;
             double head = pr.Theta1.HasValue ? Math.Abs(Sum(K, h) + res.Theta0 + phi - th1) : 0;
-            if (head > SnapTurn) return false;
+            if (head >= EndTol) return false;
+            if (pr.Theta0.HasValue && Math.Abs(Wrap(res.Theta0 + phi - pr.Theta0.Value)) >= EndTol) return false;
             for (int i = 0; i < P.Count; i++)
             {
                 V2 d = P[i] - pr.P0;
