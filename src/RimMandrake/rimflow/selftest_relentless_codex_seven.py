@@ -140,9 +140,87 @@ def t_cooling_system_item_pauses_nothing():
     ok(R.content_pause(fx, [dict(q, start_again_at=now - 1)], now=now) is not None, "a cooldown run out pauses again")
 
 
+def t_r3_review_rows():
+    """The r3 re-review (review/r3/rev_part*.txt), each row red without its fix."""
+    import calendar
+    import json
+    d = tempfile.mkdtemp()
+    try:
+        store = R.Store(d)
+        item = "I3"
+        os.makedirs(store.item_dir(item))
+        # p0.4: a torn last line (no newline) must not swallow the next record
+        p = os.path.join(store.item_dir(item), "attempts.jsonl")
+        with open(p, "w") as f:
+            f.write('{"end": "worker_lost"')
+        store.attempt(item, {"end": "kept"})
+        ok([a.get("end") for a in store.attempts(item)] == ["kept"], "p0.4 a record after a torn line survives")
+        # p0.2: an older proof_weak that reads PASS never speaks for a newer PROOF_OWED hold
+        os.remove(p)
+        pass_detail = "GAP:OTHER: the checker wrote a mutant in another file entirely"
+        ok(R.relentless_wall.acted_weak("WEAK", pass_detail) == "PASS", "p0.2 precondition: the detail reads PASS")
+        store.attempt(item, {"end": "proof_weak", "sha": "S", "detail": pass_detail})
+        st = {"item": item, "proof_only": {"sha": "S"}}
+        ok(R.weak_reads_pass(st, store), "p0.2 a lone legacy proof_weak reading PASS still reads PASS")
+        store.attempt(item, {"end": R.relentless_attrib.PROOF_OWED, "sha": "S", "detail": "repair the proof"})
+        ok(not R.weak_reads_pass(st, store), "p0.2 a newer PROOF_OWED at the sha is not read through the old WEAK")
+        # p0.1: a day file with a non-dict basis blocks spending; a failed write raises instead of reading low
+        now = time.time()
+        with open(store.p("spend-%s.json" % R.day_key(now)), "w") as f:
+            json.dump({"spent": 0, "runs": {}, "basis": []}, f)
+        ok(R.spent_today(store, now) == R.UNREADABLE_SPEND, "p0.1 a list basis is an unreadable day, not an empty one")
+        os.remove(store.p("spend-%s.json" % R.day_key(now)))
+
+        def boom(path, text):
+            raise OSError("disk full")
+        real = store._write
+        store._write = boom
+        raised = False
+        try:
+            R.charge(store, {"spent": 0}, 100, now, RULES, "u1", "stream")
+        except OSError:
+            raised = True
+        store._write = real
+        ok(raised, "p0.1 a charge that cannot be booked raises")
+        ok(R.charge(store, {"spent": 0}, 100, now, RULES, "u2", "stream") == 100 and R.spent_today(store, now) == 100,
+           "p0.1 a booked charge reads back")
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+    # p0.5: undecodable fixture output is replaced, not raised
+    rc, tail = R.run_fixture_cmd("%s -c 'import os; os.write(1, bytes([255]))'" % sys.executable, None, 30)
+    ok(rc == 0 and tail, "p0.5 undecodable output returns (exit %s)" % rc)
+    # p0.3: a re-submitted identical contract (new by_gen/why) on an empty commit is no proof
+    class Fx:
+        def changed(self, b, s, i): return []
+        def existed(self, sha, p): return False
+    k0 = {"proof": "python3 selftest_x.py", "live": None, "by_gen": 1, "why": "w"}
+    st = {"item": "I", "contract": dict(k0, by_gen=2, why="again"), "proof_only": {"sha": "A", "contract": dict(k0)}}
+    ok(R.proof_gate(Fx(), RULES, st, {"sha": "B"})[0] == "proof_unchanged", "p0.3 bookkeeping-only contract change")
+    # p2.1: a bad title pattern is skipped, never raised
+    it = types.SimpleNamespace(id="X", title="anything")
+    try:
+        got = R.hand_check(it, {"hand_check": {"title_rx": ["[", "any"]}})
+    except Exception as e:      # noqa: BLE001
+        got = e
+    ok(isinstance(got, str), "p2.1 a bad regex is skipped and the next one still matches: %r" % (got,))
+    # p3.3: ts_epoch is UTC whatever the local DST
+    old = os.environ.get("TZ")
+    os.environ["TZ"] = "America/Los_Angeles"
+    time.tzset()
+    try:
+        want = calendar.timegm((2026, 7, 1, 12, 0, 0, 0, 0, 0))
+        ok(R.ts_epoch("2026-07-01T12:00:00Z") == want, "p3.3 a summer ledger ts is read as UTC")
+    finally:
+        if old is None:
+            os.environ.pop("TZ", None)
+        else:
+            os.environ["TZ"] = old
+        time.tzset()
+
+
 def main():
     for t in (t_empty_commit_is_no_proof, t_gitless_clone_is_kept, t_merge_lists_what_it_brought,
-              t_deleted_shard_is_refused_by_name, t_cooling_system_item_pauses_nothing):
+              t_deleted_shard_is_refused_by_name, t_cooling_system_item_pauses_nothing, t_r3_review_rows):
         print("--", t.__name__)
         t()
     print("selftest_relentless_codex_seven: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

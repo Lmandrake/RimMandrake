@@ -15,6 +15,7 @@ stops such a process from completing, reporting or pushing by accident. It is no
 Exit codes for worker verbs: 0 done, 2 usage or refused, 3 FENCED (your lease is gone: stop now).
 """
 import argparse
+import calendar
 import contextlib
 import copy
 import fcntl
@@ -211,8 +212,13 @@ class Store:
             os.close(d)
 
     def _append(self, path, line):
-        with open(path, "a", encoding="utf-8") as f:
-            f.write(line.rstrip("\n") + "\n")
+        with open(path, "a+b") as f:
+            f.seek(0, os.SEEK_END)
+            head = b""
+            if f.tell():            # a torn last line (no newline) would glue this record onto it and lose both
+                f.seek(-1, os.SEEK_END)
+                head = b"" if f.read(1) == b"\n" else b"\n"
+            f.write(head + (line.rstrip("\n") + "\n").encode("utf-8"))
             f.flush()
             os.fsync(f.fileno())
 
@@ -569,7 +575,8 @@ def _day(store, now):
             d = json.load(f)
         num = lambda v: type(v) is int and v >= 0       # noqa: E731  (a bool is an int; a negative charge understates)
         if not isinstance(d, dict) or not isinstance(d.get("runs"), dict) or not num(d.get("spent")) or \
-                not all(num(v) for v in d["runs"].values()):
+                not all(num(v) for v in d["runs"].values()) or \
+                not isinstance(d.get("basis", {}), dict):
             raise ValueError("spend record has the wrong shape")
         return d
     except FileNotFoundError:
@@ -596,14 +603,16 @@ def charge(store, st, tokens, now, r, unit, basis=None):
     n = int(tokens) if measured else r["run_reserve"]
     try:
         d = _day(store, now)
-        if unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]:
-            d["runs"][unit] = n
-            d["spent"] += n
-            if basis and basis != "result":     # how a charge not read from the result object was reached
-                d.setdefault("basis", {})[unit] = basis if measured else "estimated"
-            store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
+        new = unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
-        pass        # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
+        new = False     # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
+    if new:
+        d["runs"][unit] = n
+        d["spent"] += n
+        if basis and basis != "result":     # how a charge not read from the result object was reached
+            d["basis"] = dict(d.get("basis") or {}, **{unit: basis if measured else "estimated"})
+        store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
+        # a failed write raises: a charge we could not book must not leave spent_today reading low (Codex r3)
     st["spent"] += n
     return n
 
@@ -613,7 +622,7 @@ def run_fixture_cmd(cmd, cwd, timeout):
     out: a backgrounded child never outlives it to keep writing the books tree (Codex, ..._TEN_MORE #2)."""
     try:
         p = subprocess.Popen(cmd, shell=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                             stdin=subprocess.DEVNULL, start_new_session=True)
+                             errors="replace", stdin=subprocess.DEVNULL, start_new_session=True)
     except (OSError, subprocess.SubprocessError) as e:
         return None, "%s: %s" % (type(e).__name__, e)
 
@@ -631,7 +640,8 @@ def run_fixture_cmd(cmd, cwd, timeout):
         except subprocess.SubprocessError:
             pass
         return None, "TimeoutExpired: %s" % e
-    kill_group()        # the shell is done; a child it left running is not part of the answer
+    finally:
+        kill_group()        # the shell is done; a child it left running is not part of the answer
     return p.returncode, ((out or "") + (err or ""))[-600:]
 
 
@@ -1245,9 +1255,9 @@ def weak_reads_pass(st, store=None):
     d = held.get("weak")
     if d is None and store is not None:
         for a in reversed(store.attempts(st["item"])):
-            if a.get("end") == "proof_weak" and a.get("sha") == held.get("sha"):
-                d = a.get("detail")
-                break
+            if a.get("end") in ("proof_weak", relentless_attrib.PROOF_OWED) and a.get("sha") == held.get("sha"):
+                d = a.get("detail") if a.get("end") == "proof_weak" else None     # the NEWEST hold-setting end
+                break       # an older proof_weak never speaks for a later PROOF_OWED (Codex r3)
     return d is not None and relentless_wall.acted_weak("WEAK", d) == "PASS"
 
 
@@ -1269,7 +1279,8 @@ def proof_gate(fx, r, st, c):
     # One the product already had is the code under test, and a proof-only worker may re-point the contract at any file
     # (Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #1). An unanswerable existence reads as existed: refused.
     moved = fx.changed(held["sha"], c["sha"], st["item"])
-    if not moved and "contract" in held and held["contract"] == st["contract"] and not held.get("binding"):
+    bare = lambda k: {x: y for x, y in (k or {}).items() if x not in ("by_gen", "why")}     # noqa: E731  bookkeeping
+    if not moved and "contract" in held and bare(held["contract"]) == bare(st["contract"]) and not held.get("binding"):
         # an empty commit above the weak sha moved no proof and no contract (Codex #2): the same proof, read again
         return "proof_unchanged", "%s moves no file and the contract is the one found weak: no proof moved" % c["sha"]
     rework = [p for p in moved
@@ -2503,8 +2514,9 @@ class Effects(relentless_game.GameFx):
             self.restore_bundle(st["item"], st["bundle"], c)
             with self.store.lock():
                 cur = self.store.load(st["item"])
-                cur.pop("bundle", None)
-                self.store.save(cur)
+                if cur is not None:     # SHOWINGS is a synthetic item with no store record (Codex r3)
+                    cur.pop("bundle", None)
+                    self.store.save(cur)
         # a worker must push to origin: a reused help-* consult clone kept pushurl=read-only-consult (help_checkout) and
         # its ./publish died (CLONE_REUSE_FIX_CONSULT_PUSHURL_LINGERS); scratch_clone.pool_reuse clears it, this whatever path
         self.git(c, "config", "--unset-all", "remote.origin.pushurl")
@@ -3257,7 +3269,11 @@ def hand_check(it, r):
         return why
     title = getattr(it, "title", None) or ""
     for rx in hc.get("title_rx") or ():
-        if re.search(rx, title):
+        try:
+            hit = re.search(rx, title)
+        except (re.error, TypeError):
+            continue        # a bad pattern is hand_check_lint's to report, never a crash of the tick (Codex r3)
+        if hit:
             return "its title reads as a hand check (%s)" % rx
     return None
 
@@ -4135,7 +4151,7 @@ PAUSED_WHY = "health degraded: content paused while system items wait"     # jam
 def ts_epoch(ts):
     """A ledger ts (2026-11-05T05:37:35Z) as epoch seconds, or None."""
     try:
-        return time.mktime(time.strptime(str(ts)[:19], "%Y-%m-%dT%H:%M:%S")) - time.timezone
+        return calendar.timegm(time.strptime(str(ts)[:19], "%Y-%m-%dT%H:%M:%S"))     # UTC; mktime applied local DST
     except (TypeError, ValueError):
         return None
 
@@ -4776,7 +4792,8 @@ def step(store, fx, r, item, now, acts):
             return
         lost = fx.account_loss(chk.get("run"), chk.get("clone"), chk["at"], chk.get("box")) if word is None else None
         # its own death, not our stop at check_max_s (a stopped run may leave a line on .err too)
-        died = fx.death_note(chk.get("run")) if word is None and not lost and now - chk["at"] < r["check_max_s"] else None
+        died = fx.death_note(chk.get("run")) if word is None and not lost and \
+            (chk.get("lost_seen") or now) - chk["at"] < r["check_max_s"] else None     # judged at first sighting (Codex r3)
         c = st["candidate"]
         drop = []      # a checker clone a retry lets go: removed out of the lock, or it sits an hour as an orphan
         told = []      # a quarantine's Conductor line, written out of the lock
@@ -5619,6 +5636,7 @@ def _lease(store, fx, r, now, acts, seen):
                 st["run"]["resume"] = res["session"]
             store.save(st)
         acts.append({"do": "clone_try", "by": "work"})
+        launched += 1       # the limit counts clones tried, as clones_this_tick does: a fence after prepare spent one (Codex r3)
         why = fx.prepare(st)
         if not why:
             gb = fx.mem_gb()
@@ -5665,7 +5683,6 @@ def _lease(store, fx, r, now, acts, seen):
                 start["pilot_step"] = True
             store.attempt(item, start)
             store.save(cur)
-        launched += 1
         acts.append({"do": "lease", "item": item, "gen": st["gen"], "unit": st["run"]["unit"]})
 
 
