@@ -5,8 +5,8 @@
 Every gate is proved able to go red before its green is believed: each of the seven gates gets the fault built to break
 it (ReplayTick.Fault) and must read RED on that gate, on a scenario where that fault has something to break. Then:
   - every scenario is green against the committed op-count baseline (Replay/baseline.txt) on the working tree;
-  - the 16,384-cell dirty capacity cliff is visible: 16,385 changed cells overflow once into a second whole rebuild,
-    16,384 do not (the instrument can see the cliff the advisory names);
+  - the old 16,384-cell dirty capacity cliff is gone (HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD): 16,383, 16,384 and
+    16,385 changed cells are each patched, every cell, with no second whole rebuild;
   - a trace written by `gen` and replayed through `--trace` gives the same fingerprint stream as the generated scenario
     (the RMREPLAY 1 file format round-trips, so a recorded trace replays the same way);
   - a blind gate never reads green: an unapplied event or a 0-tick trace turns the trace gate RED, --no-oracle reads skip.
@@ -80,13 +80,12 @@ def main():
         print(err[-3000:])
         return finish(root)
 
-    # 2. the dirty-capacity cliff is visible
-    over5, _ = work(os.path.join(d, "dirty16385.txt"), "Overflows")
-    whole5, _ = work(os.path.join(d, "dirty16385.txt"), "WholeRebuilds")
-    over4, _ = work(os.path.join(d, "dirty16384.txt"), "Overflows")
-    whole4, _ = work(os.path.join(d, "dirty16384.txt"), "WholeRebuilds")
-    check((over5, whole5) == (1, 2), "16,385 dirty cells overflow once into a second whole rebuild (overflows %s, rebuilds %s)" % (over5, whole5))
-    check((over4, whole4) == (0, 1), "16,384 dirty cells patch without overflow (overflows %s, rebuilds %s)" % (over4, whole4))
+    # 2. no dirty-capacity cliff: every changed cell is patched, the only whole rebuild is the first build
+    for n in (16383, 16384, 16385):
+        whole, _ = work(os.path.join(d, "dirty%d.txt" % n), "WholeRebuilds")
+        patched, _ = work(os.path.join(d, "dirty%d.txt" % n), "CellsPatched")
+        check(whole == 1 and patched is not None and patched >= n,
+              "%d dirty cells patch with no second whole rebuild (rebuilds %s, cells patched %s)" % (n, whole, patched))
     calls = re.search(r"warm HoseWorldPatch.Patch: (\d+) calls, (\d+) bytes", open(os.path.join(d, "rain.txt")).read())
     check(calls is not None and int(calls.group(1)) > 100, "the alloc gate saw warm patches in rain (%s)" % (calls and calls.group(0)))
 

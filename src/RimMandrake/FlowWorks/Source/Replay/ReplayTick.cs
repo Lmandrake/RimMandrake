@@ -155,8 +155,9 @@ namespace RimMandrake.FlowWorks.Replay
 
     internal sealed class ReplayTick
     {
-        // RM_MapComponent_Hoses.cs (HEAD 2026-10-28): LayWorldMaxAge = 60; dirty = new HoseWorldDirty(16384); recheck every 250 ticks
-        internal const int LayWorldMaxAge = 60, DirtyCapacity = 16384, RecheckTicks = 250;
+        // RM_MapComponent_Hoses.cs: LayWorldMaxAge = 60; a whole-map dirty list, PatchBatchCells patched per tick
+        // (HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD); recheck every 250 ticks
+        internal const int LayWorldMaxAge = 60, PatchBatchCells = HoseWorldPatch.TickBatchCells, RecheckTicks = 250;
         private static int runsInProcess;   // only the Nondet fault reads it
 
         private readonly Trace trace;
@@ -166,7 +167,7 @@ namespace RimMandrake.FlowWorks.Replay
         private readonly char[] cells;
         private readonly ReplayRule rule;
         private readonly CordWorld truth, oracleWorld;
-        private readonly HoseWorldDirty dirty = new HoseWorldDirty(DirtyCapacity);
+        private readonly HoseWorldDirty dirty = new HoseWorldDirty();
         // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN step 1: every live cell change bumps its chunk version; a recheck whose corridor
         // saw no change since its hash last matched skips the hash, except on its phased audit recheck (every AuditEvery-th)
         private readonly HoseCorridorVersions versions = new HoseCorridorVersions();
@@ -271,23 +272,23 @@ namespace RimMandrake.FlowWorks.Replay
             return BuildWorld();
         }
 
-        private void PatchWorld()
+        private void PatchWorld(int maxCells = int.MaxValue)
         {
             C.Begin(Sys.World);
             C.Add(Work.Patches);
-            C.Add(Work.CellsPatched, dirty.Count);
+            C.Add(Work.CellsPatched, Math.Min(dirty.Count, maxCells));
             bool skip = (fault & Fault.PatchSkip) != 0 && (patchCalls & 1) == 1;
             if (!skip)
             {
                 long b0 = GC.GetAllocatedBytesForCurrentThread();
-                HoseWorldPatch.Patch(world, dirty, rule);
+                HoseWorldPatch.Patch(world, dirty, rule, maxCells);
                 long db = GC.GetAllocatedBytesForCurrentThread() - b0;
                 if (patchCalls > 0) { C.PatchBytesWarm += db; C.PatchCallsWarm++; }
             }
+            else dirty.DropLast(Math.Min(dirty.Count, maxCells));   // the batch is dropped unpatched
             patchCalls++;
-            dirty.Clear();
             C.End();
-            if (oracle) CheckPatch();
+            if (oracle && dirty.Count == 0) CheckPatch();   // a part-patched world (a tick's batch) is not yet the map
         }
 
         /// <summary>RM_MapComponent_Hoses.BuildWorld: reuse the spare snapshot unless it was handed out this tick, fill it whole.</summary>
@@ -326,19 +327,15 @@ namespace RimMandrake.FlowWorks.Replay
             versions.Ensure(W, H);
             if ((fault & Fault.MissTouch) == 0) versions.Touch(x, z);
             if (world == null || worldVersion != mapVersion) return;
-            if (CordSig.CellSig(world, c) != CordSig.CellSig(truth, c) && !MarkDirty(x, z)) MapChanged();
+            if (CordSig.CellSig(world, c) != CordSig.CellSig(truth, c)) MarkDirty(x, z);
         }
 
-        /// <summary>RM_MapComponent_Hoses.MarkDirty: past the capacity the list is dropped and the caller bumps the map version.</summary>
-        private bool MarkDirty(int x, int z)
+        /// <summary>RM_MapComponent_Hoses.MarkDirty: the list holds the whole map, so a mark never fails.</summary>
+        private void MarkDirty(int x, int z)
         {
             C.Add(Work.CellsMarked);
             dirty.Ensure(W, H);
             dirty.Mark(x, z);
-            if (!dirty.Overflow) return true;
-            dirty.Clear();
-            C.Add(Work.Overflows);
-            return false;
         }
 
         private void CheckPatch()
@@ -362,6 +359,8 @@ namespace RimMandrake.FlowWorks.Replay
 
         private void HoseTick()
         {
+            // TickBody: a bounded batch of the dirty cells is patched ahead of any read
+            if (world != null && worldVersion == mapVersion && dirty.Count > 0) PatchWorld(PatchBatchCells);
             // TickBody: for each reel, if ((now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now)
             foreach (RReel r in reels)
                 if (r.Laid && (now + r.T.Id) % RecheckTicks == 0) Recheck(r);

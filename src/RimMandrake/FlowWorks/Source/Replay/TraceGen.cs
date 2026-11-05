@@ -5,8 +5,8 @@
 //   setup        a base going up: a wall run every 100 ticks, hoses wound in and laid again
 //   rain         a rain burst: 400 puddle cells flip per tick for 600 ticks, read every tick
 //   cold         a cold load: version bump and a settings flip at tick 0 (every hose lays at once)
-//   dirty16383 / dirty16384 / dirty16385   exactly N cells change at tick 300, then a read: the 16,384-cell dirty capacity
-//                cliff (HoseWorldDirty): only the 16,385th cell overflows into a whole rebuild
+//   dirty16383 / dirty16384 / dirty16385   exactly N cells change at tick 300, then a read: where the old 16,384-cell dirty
+//                list overflowed into a whole rebuild (HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD: none of the three rebuilds now)
 //   settings     a settings flip touching every hose at tick 1000
 //   aligned      reel ids all congruent mod 250, so all 200 rechecks land on one tick; half their far ends walled in (no
 //                route: the unbounded CheckReplan search, then a retract), half a tree on their corridor (replan, re-lay)

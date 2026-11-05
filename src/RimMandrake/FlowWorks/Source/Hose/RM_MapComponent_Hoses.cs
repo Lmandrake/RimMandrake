@@ -43,9 +43,12 @@ namespace RimMandrake.FlowWorks.Hose
         public static int WorldBuilds, LiveCorridorChecks;
         /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: snapshots brought up to date cell by cell (PatchWorld) instead of rebuilt, and
         /// the cells changed since the snapshot was built or patched (a building's footprint, a tree's square, a cell whose
-        /// per-cell event read differently); past its capacity the next read rebuilds whole.</summary>
+        /// per-cell event read differently). The list holds the whole map (HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD: rain
+        /// dirtied 12-15k cells a window and the old 16,384 cap overflowed into whole rebuilds); each tick patches at most
+        /// <see cref="PatchBatchCells"/> of it, and a read drains the rest.</summary>
         public static int WorldPatches;
-        private readonly HoseWorldDirty dirty = new HoseWorldDirty(16384);
+        private readonly HoseWorldDirty dirty = new HoseWorldDirty();
+        internal const int PatchBatchCells = HoseWorldPatch.TickBatchCells;
         private LiveRule liveRule;
 
         private sealed class Cached
@@ -238,14 +241,14 @@ namespace RimMandrake.FlowWorks.Hose
         /// counts as taken now (worldTick): TickRecheck's World(LayWorldMaxAge) after a blocker cut a corridor is then a patch,
         /// not a whole rebuild of an over-age snapshot. A new serial makes the lay pool copy it again.</summary>
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
-        private void PatchWorld(int now)
+        private void PatchWorld(int now, int maxCells = int.MaxValue)
         {
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             if (liveRule == null) liveRule = new LiveRule(this);
             liveRule.Begin();
-            if (dirty.Count > splitPatchMaxCells) splitPatchMaxCells = dirty.Count;
-            HoseWorldPatch.Patch(world, dirty, liveRule);
-            dirty.Clear();
+            int cells = Math.Min(dirty.Count, maxCells);
+            if (cells > splitPatchMaxCells) splitPatchMaxCells = cells;
+            HoseWorldPatch.Patch(world, dirty, liveRule, maxCells);
             WorldPatches++;
             splitPatches++;
             worldSerial++;
@@ -385,25 +388,21 @@ namespace RimMandrake.FlowWorks.Hose
         {
             CellRect r = b.OccupiedRect();
             Versions().TouchRect(r.minX, r.minZ, r.maxX, r.maxZ);
-            if (!MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ)) MapChanged();
+            MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ);
         }
         private void OnThing(Thing t)
         {
             if (!(t is Plant p) || p.def.plant == null || !p.def.plant.IsTree) return;
             Versions().Touch(t.Position.x, t.Position.z);
-            if (!MarkDirty(t.Position.x, t.Position.z, t.Position.x, t.Position.z)) MapChanged();
+            MarkDirty(t.Position.x, t.Position.z, t.Position.x, t.Position.z);
         }
-        /// <summary>Lists the rectangle's cells for PatchWorld; false (whole rebuild) past the list's capacity. With no current
-        /// snapshot nothing is listed: the next read rebuilds whole anyway.</summary>
-        private bool MarkDirty(int x0, int z0, int x1, int z1)
+        /// <summary>Lists the rectangle's cells for PatchWorld (the list holds every cell of the map, so it never overflows).
+        /// With no current snapshot nothing is listed: the next read rebuilds whole anyway.</summary>
+        private void MarkDirty(int x0, int z0, int x1, int z1)
         {
-            if (world == null || worldVersion != mapVersion) return true;
+            if (world == null || worldVersion != mapVersion) return;
             dirty.Ensure(world.Width, world.Height);
             dirty.MarkRect(x0, z0, x1, z1);
-            if (!dirty.Overflow) return true;
-            dirty.Clear();
-            splitOverflows++;
-            return false;
         }
         private void OnCell(IntVec3 c) => CellChanged(c);
 
@@ -419,7 +418,7 @@ namespace RimMandrake.FlowWorks.Hose
             for (int k = 0; k < cells.Count; k++)
             {
                 int i = cells[k];
-                if (!MarkDirty(i % w, i / w, i % w, i / w)) { MapChanged(); return; }
+                MarkDirty(i % w, i / w, i % w, i / w);
             }
         }
         private void OnFog(IntVec3 c, bool fogged) => CellChanged(c);
@@ -433,7 +432,7 @@ namespace RimMandrake.FlowWorks.Hose
             Versions().Touch(c.x, c.z);
             if (world == null || worldVersion != mapVersion) return;   // already rebuilding on the next read
             var cell = new Cell(c.x, c.z);
-            if (CordSig.CellSig(world, cell) != LiveCellSig(cell) && !MarkDirty(c.x, c.z, c.x, c.z)) MapChanged();
+            if (CordSig.CellSig(world, cell) != LiveCellSig(cell)) MarkDirty(c.x, c.z, c.x, c.z);
         }
         private void MapChanged() { mapVersion++; Versions().TouchAll(); }
 
@@ -1109,10 +1108,10 @@ namespace RimMandrake.FlowWorks.Hose
         private double splitOwnMaxMs, splitGcMaxMs;
         private long splitAllocBytes, splitAllocMax;
         /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: whole rebuilds (by cause: no snapshot, a folded global switch, a map event
-        /// past the dirty list or a fogged map, or age under LegacyFrame) and patches since the last reset.</summary>
+        /// on a fogged map, or age under LegacyFrame) and patches since the last reset.</summary>
         private int splitBuilds, splitPatches;
-        /// <summary>The "event" rebuilds' causes: a dirty list past capacity, a fogged map; and the most cells one patch rewrote.</summary>
-        private int splitOverflows, splitFogged, splitPatchMaxCells;
+        /// <summary>The "event" rebuilds' cause, a fogged map; and the most cells one patch (a tick's batch or a read's drain) rewrote.</summary>
+        private int splitFogged, splitPatchMaxCells;
         private readonly int[] buildWhy = new int[4];
         private static readonly string[] BuildWhyNames = { "none", "fold", "event", "age" };
         /// <summary>Longest BuildWorld, PatchWorld and TickRecheck since the reset (Stopwatch ticks), and per tick phase
@@ -1187,7 +1186,7 @@ namespace RimMandrake.FlowWorks.Hose
                     c.splitOwnMaxMs = c.splitGcMaxMs = 0;
                     c.splitAllocBytes = c.splitAllocMax = 0;
                     c.splitBuilds = c.splitPatches = 0;
-                    c.splitOverflows = c.splitFogged = c.splitPatchMaxCells = 0;
+                    c.splitFogged = c.splitPatchMaxCells = 0;
                     Array.Clear(c.buildWhy, 0, c.buildWhy.Length);
                     c.splitBuildMax = c.splitPatchMax = c.splitRecheckMax = 0;
                     Array.Clear(c.phaseGc, 0, c.phaseGc.Length);
@@ -1211,7 +1210,7 @@ namespace RimMandrake.FlowWorks.Hose
                     .Append(" builds=").Append(c.splitBuilds).Append(" patches=").Append(c.splitPatches)
                     .Append(" why=");
                 for (int k = 0; k < c.buildWhy.Length; k++) sb.Append(k == 0 ? "" : ",").Append(BuildWhyNames[k]).Append(':').Append(c.buildWhy[k]);
-                sb.Append(" overflow=").Append(c.splitOverflows).Append(" fogged=").Append(c.splitFogged).Append(" patchMaxCells=").Append(c.splitPatchMaxCells);
+                sb.Append(" fogged=").Append(c.splitFogged).Append(" patchMaxCells=").Append(c.splitPatchMaxCells);
                 sb                    .Append(" buildMaxMs=").Append(Ms(c.splitBuildMax).ToString("0.00")).Append(" patchMaxMs=").Append(Ms(c.splitPatchMax).ToString("0.00"))
                     .Append(" recheckMaxMs=").Append(Ms(c.splitRecheckMax).ToString("0.00")).Append(" phase=");
                 // per phase: longest single call ms / its ms in the worst own tick / collections landed in it
@@ -1291,6 +1290,9 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             int now = Find.TickManager.TicksGame;
+            // HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD: a bounded batch of the changed cells is patched every tick, so a
+            // deluge's thousands of cells are spread over ticks instead of all landing on the next read
+            if (world != null && worldVersion == mapVersion && dirty.Count > 0) PatchWorld(now, PatchBatchCells);
             HoseTuning t = RM_HoseSettings.Tuning();
             // review 2026-10-22: ghosts were pruned only by DrawGhosts (current map, hoses drawn), so a map nobody viewed kept
             // every auto reel-in's point list forever; the tick prunes them too (same rule as the draw)

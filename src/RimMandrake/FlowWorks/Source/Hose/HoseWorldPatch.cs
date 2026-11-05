@@ -18,22 +18,16 @@ namespace RimMandrake.FlowWorks.Hose
         bool Linked(Cell a, Cell b, int ba, int bb);
     }
 
-    /// <summary>The cells changed since the hose world was built: a stamp grid (each cell listed once) and a list, both reused.
-    /// Past <see cref="Capacity"/> cells it only says <see cref="Overflow"/> and the caller rebuilds whole.</summary>
+    /// <summary>The cells changed since the hose world was built: a stamp grid (each cell listed once) and a list, both reused
+    /// and both sized to the whole map (HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD, advisory 2026-10-28 section 4 #3: a
+    /// 16,384-cell list overflowed under rain into a whole rebuild of up to 188 ms). Every cell fits, so marking never fails;
+    /// <see cref="HoseWorldPatch.Patch"/> takes cells off the end in bounded batches.</summary>
     internal sealed class HoseWorldDirty
     {
-        public readonly int Capacity;
         private int[] stamp = new int[0];
-        private readonly int[] list;
+        private int[] list = new int[0];
         private int gen = 1, width, height;
         public int Count { get; private set; }
-        public bool Overflow { get; private set; }
-
-        public HoseWorldDirty(int capacity)
-        {
-            Capacity = capacity;
-            list = new int[capacity];
-        }
 
         /// <summary>Sized for a w x h world; a new size (a different map) starts empty.</summary>
         public void Ensure(int w, int h)
@@ -42,9 +36,9 @@ namespace RimMandrake.FlowWorks.Hose
             width = w;
             height = h;
             stamp = new int[w * h];
+            list = new int[w * h];
             gen = 1;
             Count = 0;
-            Overflow = false;
         }
 
         public void Mark(int x, int z)
@@ -52,7 +46,6 @@ namespace RimMandrake.FlowWorks.Hose
             if (x < 0 || z < 0 || x >= width || z >= height) return;
             int i = z * width + x;
             if (stamp[i] == gen) return;
-            if (Count == Capacity) { Overflow = true; return; }
             stamp[i] = gen;
             list[Count++] = i;
         }
@@ -67,25 +60,48 @@ namespace RimMandrake.FlowWorks.Hose
 
         public Cell At(int k) => new Cell(list[k] % width, list[k] / width);
 
+        /// <summary>Drops the last <paramref name="n"/> listed cells (a patched batch): unstamped, so a later change lists
+        /// them again (stamp 0 never equals gen, which starts at 1).</summary>
+        public void DropLast(int n)
+        {
+            for (int k = Count - n; k < Count; k++) stamp[list[k]] = 0;
+            Count -= n;
+        }
+
         public void Clear()
         {
             Count = 0;
-            Overflow = false;
             if (++gen == int.MaxValue) { Array.Clear(stamp, 0, stamp.Length); gen = 1; }
         }
     }
 
     internal static class HoseWorldPatch
     {
+        /// <summary>The most dirty cells one tick patches ahead of a read (RM_MapComponent_Hoses.TickBody's bounded batch; a
+        /// read drains the rest). A 400x400 map's every cell then spreads over 40 ticks.</summary>
+        internal const int TickBatchCells = 4096;
+
         /// <summary>Brings a world built by <see cref="Full"/> (or the game's BuildWorld) up to date after the cells in
         /// <paramref name="dirty"/> changed: each is cleared and rewritten, and every band link with an end in one is judged
         /// again (Apply's rule: a pair of differing bands is linked when either end, on a non-zero band, says Linked). Only
         /// the dirty cells' own state may have changed, and Linked must read only its pair. Allocates nothing once the link
         /// set has grown to its size.</summary>
-        public static void Patch(CordWorld w, HoseWorldDirty dirty, IHoseCellRule rule)
+        public static void Patch(CordWorld w, HoseWorldDirty dirty, IHoseCellRule rule) => Patch(w, dirty, rule, int.MaxValue);
+
+        /// <summary>One bounded batch: patches at most <paramref name="maxCells"/> of the listed cells (the last ones) and drops
+        /// them from the list. Batches drained to empty equal one whole <see cref="Patch(CordWorld, HoseWorldDirty, IHoseCellRule)"/>:
+        /// a link judged against a neighbour still listed (its state not yet rewritten) is judged again when that neighbour's
+        /// batch comes. Between batches the world is part-patched: a reader must drain the list first.</summary>
+        public static void Patch(CordWorld w, HoseWorldDirty dirty, IHoseCellRule rule, int maxCells)
         {
-            int n = dirty.Count;
-            for (int k = 0; k < n; k++)
+            int n = Math.Min(dirty.Count, Math.Max(0, maxCells)), k0 = dirty.Count - n;
+            PatchRange(w, dirty, rule, k0, dirty.Count);
+            dirty.DropLast(n);
+        }
+
+        private static void PatchRange(CordWorld w, HoseWorldDirty dirty, IHoseCellRule rule, int k0, int n)
+        {
+            for (int k = k0; k < n; k++)
             {
                 Cell c = dirty.At(k);
                 w.ClearCell(c);
@@ -93,7 +109,7 @@ namespace RimMandrake.FlowWorks.Hose
             }
             // bands off: the world was built with none (switching them is a whole rebuild) and none was written above
             if (!rule.BandsActive || !w.HasBands) return;
-            for (int k = 0; k < n; k++)
+            for (int k = k0; k < n; k++)
             {
                 Cell c = dirty.At(k);
                 int b = w.BandAt(c);

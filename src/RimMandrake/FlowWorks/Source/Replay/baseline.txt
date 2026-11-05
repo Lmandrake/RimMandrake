@@ -1,14 +1,12 @@
 # hose replay op-count ceilings: scenario.work.sum|max value (written by --write-baseline; deterministic)
 dry.CellsMarked.sum 270
 dry.CellsMarked.max 1
-dry.CellsPatched.sum 268
-dry.CellsPatched.max 3
-dry.Patches.sum 223
+dry.CellsPatched.sum 270
+dry.CellsPatched.max 1
+dry.Patches.sum 270
 dry.Patches.max 1
 dry.WholeRebuilds.sum 1
 dry.WholeRebuilds.max 1
-dry.Overflows.sum 0
-dry.Overflows.max 0
 dry.Rechecks.sum 7930
 dry.Rechecks.max 1
 dry.CorridorCells.sum 1795681
@@ -47,8 +45,6 @@ setup.Patches.sum 49
 setup.Patches.max 1
 setup.WholeRebuilds.sum 1
 setup.WholeRebuilds.max 1
-setup.Overflows.sum 0
-setup.Overflows.max 0
 setup.Rechecks.sum 3949
 setup.Rechecks.max 1
 setup.CorridorCells.sum 832202
@@ -87,8 +83,6 @@ rain.Patches.sum 600
 rain.Patches.max 1
 rain.WholeRebuilds.sum 1
 rain.WholeRebuilds.max 1
-rain.Overflows.sum 0
-rain.Overflows.max 0
 rain.Rechecks.sum 2388
 rain.Rechecks.max 1
 rain.CorridorCells.sum 1432491
@@ -127,8 +121,6 @@ cold.Patches.sum 0
 cold.Patches.max 0
 cold.WholeRebuilds.sum 1
 cold.WholeRebuilds.max 1
-cold.Overflows.sum 0
-cold.Overflows.max 0
 cold.Rechecks.sum 800
 cold.Rechecks.max 1
 cold.CorridorCells.sum 333545
@@ -167,8 +159,6 @@ dirty16383.Patches.sum 1
 dirty16383.Patches.max 1
 dirty16383.WholeRebuilds.sum 1
 dirty16383.WholeRebuilds.max 1
-dirty16383.Overflows.sum 0
-dirty16383.Overflows.max 0
 dirty16383.Rechecks.sum 480
 dirty16383.Rechecks.max 1
 dirty16383.CorridorCells.sum 606335
@@ -207,8 +197,6 @@ dirty16384.Patches.sum 1
 dirty16384.Patches.max 1
 dirty16384.WholeRebuilds.sum 1
 dirty16384.WholeRebuilds.max 1
-dirty16384.Overflows.sum 0
-dirty16384.Overflows.max 0
 dirty16384.Rechecks.sum 480
 dirty16384.Rechecks.max 1
 dirty16384.CorridorCells.sum 606335
@@ -241,14 +229,12 @@ dirty16384.CorridorSkips.sum 35
 dirty16384.CorridorSkips.max 1
 dirty16385.CellsMarked.sum 16385
 dirty16385.CellsMarked.max 16385
-dirty16385.CellsPatched.sum 0
-dirty16385.CellsPatched.max 0
-dirty16385.Patches.sum 0
-dirty16385.Patches.max 0
-dirty16385.WholeRebuilds.sum 2
+dirty16385.CellsPatched.sum 16385
+dirty16385.CellsPatched.max 16385
+dirty16385.Patches.sum 1
+dirty16385.Patches.max 1
+dirty16385.WholeRebuilds.sum 1
 dirty16385.WholeRebuilds.max 1
-dirty16385.Overflows.sum 1
-dirty16385.Overflows.max 1
 dirty16385.Rechecks.sum 480
 dirty16385.Rechecks.max 1
 dirty16385.CorridorCells.sum 606335
@@ -287,8 +273,6 @@ settings.Patches.sum 0
 settings.Patches.max 0
 settings.WholeRebuilds.sum 2
 settings.WholeRebuilds.max 1
-settings.Overflows.sum 0
-settings.Overflows.max 0
 settings.Rechecks.sum 1600
 settings.Rechecks.max 1
 settings.CorridorCells.sum 668225
@@ -327,8 +311,6 @@ aligned.Patches.sum 1
 aligned.Patches.max 1
 aligned.WholeRebuilds.sum 1
 aligned.WholeRebuilds.max 1
-aligned.Overflows.sum 0
-aligned.Overflows.max 0
 aligned.Rechecks.sum 594
 aligned.Rechecks.max 200
 aligned.CorridorCells.sum 567651
@@ -367,8 +349,6 @@ splitjoin.Patches.sum 298
 splitjoin.Patches.max 1
 splitjoin.WholeRebuilds.sum 1
 splitjoin.WholeRebuilds.max 1
-splitjoin.Overflows.sum 0
-splitjoin.Overflows.max 0
 splitjoin.Rechecks.sum 2375
 splitjoin.Rechecks.max 1
 splitjoin.CorridorCells.sum 1578296
