@@ -3920,7 +3920,14 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
             cur.pop("name", None)
             log.append({"ts": iso(now), "event": "moved_to_operations", "aid": aid, "legacy_item": cur.get("legacy_item")})
         if cur and cur.get("state") == "PENDING" and cur.get("name") in known_ids and not cur.get("reopen"):
-            if open_ids is not None and cur["name"] not in open_ids:
+            if open_ids is not None and cur["name"] not in open_ids and crossed \
+                    and stale_for_close(points.get(aid.split(":", 1)[1]), (closed_at or {}).get(cur["name"])):
+                # SELFTEST_FIX_LIVE_QUEUE_QBHV: closed since, but the only reading's night ran before that close, so it
+                # is no evidence the fix died. Acknowledged on its item; the OPEN route's same check lets the next night judge
+                cur.update(state="OPEN", item=cur["name"], error=None)
+                cur.pop("deferred_at", None)
+                log.append({"ts": iso(now), "event": "found_closed_stale_night", "aid": aid, "item": cur["name"]})
+            elif open_ids is not None and cur["name"] not in open_ids:
                 # on the ledger but closed since: acknowledging it would tell nobody. Keep it PENDING as a reopen
                 cur["reopen"] = True
                 log.append({"ts": iso(now), "event": "found_closed", "aid": aid, "item": cur["name"]})

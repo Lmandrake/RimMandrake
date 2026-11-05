@@ -22,6 +22,10 @@ compare_then_vanish stub, cured at 2026-11-04 14:04Z) closed 2026-11-04T22:19:34
 Seventh instance (NIGHTLY_COP_FIX_RED_WABGHY_BUUY): NIGHTLY_RED:testing.red_wabghy's item (selftest_shipped_defs, the
 StarWarsPatches def floor 30 over 29 real, cured at 40de8bea3d) closed 2026-11-04T22:19:37Z on a green rerun; reopened
 05:22Z (alarms_log "reopen_closed_still_crossed") on the same night.
+Eighth instance (SELFTEST_FIX_LIVE_QUEUE_QBHV), a second ROUTE: NIGHTLY_RED:testing.red_hnpuya's item closed
+2026-11-05T13:05:45Z on its fix; the dispatch clone's ledger read lacked the item, so its alarm went PENDING
+(open_without_item), then at 14:49:55Z "found_closed" re-armed it as a reopen with no stale_for_close check, and a light
+beat (file_held) filed it 16:26:25Z on the 2026-11-05T11:00Z night, which ran before the fix.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -187,6 +191,36 @@ def test_wabghy_instance():
                     "red_wabghy closed 22:19:37Z, read at 05:22Z on the 11:00Z night: no reopen (the seventh instance)")
 
 
+def test_found_closed_route():
+    """SELFTEST_FIX_LIVE_QUEUE_QBHV: a PENDING alarm (open_without_item) whose item the ledger shows closed is re-armed
+    only on a night after that close; on the stale night it stays acknowledged on its item."""
+    global AID, KEY
+    saved = AID, KEY
+    AID = "NIGHTLY_RED:testing.red_hnpuya"
+    KEY = AID.split(":", 1)[1]
+    try:
+        reset()
+        b = Bench(OW.epoch("2026-11-05T12:22:00Z") - 900)
+        item = filed_item(b, NIGHT2)
+        closed = {item: [OW.epoch("2026-11-05T13:05:45Z")]}
+        p = OW.ops_dir() / "alarms.json"
+        st = OW.read_json(p)
+        st[AID].update(state="PENDING", item=None, deferred_at="2026-11-05T14:12:49Z")    # after open_without_item
+        OW.atomic_json(p, st)
+        b.t = OW.epoch("2026-11-05T14:49:55Z") - 900
+        st = b.read(point(NIGHT2), set(), closed_at=closed)
+        cur = (st or {}).get(AID) or {}
+        ok(st is not None and not reopened(b, item) and not cur.get("reopen"),
+           "red_hnpuya closed 13:05:45Z, found closed at 14:49:55Z on the 11:00Z night: not re-armed (the eighth instance)")
+        ok(cur.get("state") == "OPEN" and cur.get("item") == item, "the stale found_closed alarm stays OPEN on its item")
+        held = OW.file_held(b.filer, RULES, b.t + 60) or {}
+        ok(not reopened(b, item) and not (held.get(AID) or {}).get("reopen"), "a light beat files nothing for it")
+        st = b.read(point("2026-11-06T11:00:00Z"), set(), closed_at=closed)
+        ok(st is not None and reopened(b, item), "the next night, still red after the close: reopened")
+    finally:
+        AID, KEY = saved
+
+
 def test_unchanged_without_a_night_or_close_times():
     reset()
     b = Bench(CLOSE - 7200)
@@ -202,7 +236,8 @@ def test_unchanged_without_a_night_or_close_times():
 
 if __name__ == "__main__":
     for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_pjljvq_instance, test_qhqxlr_instance,
-               test_uquvzz_instance, test_wabghy_instance, test_unchanged_without_a_night_or_close_times):
+               test_uquvzz_instance, test_wabghy_instance, test_found_closed_route,
+               test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     sys.exit(1 if FAILS else 0)
