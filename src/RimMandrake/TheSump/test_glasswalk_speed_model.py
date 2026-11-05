@@ -103,6 +103,8 @@ def walk_exact_fake(m):
                 if tool == "rimworld/step_game_ticks":
                     clock["t"] += kw["ticks"]
                     return {"ok": True}
+                if tool == "jawa/time_clock":
+                    return {"ticksGame": clock["t"]}
                 if tool == "jawa/ordered_job":
                     clock["start"] = clock["t"] if kw.get("targetAX", 0) > 5 else None
                     return {}
@@ -172,13 +174,16 @@ def gates_on_standard_pawn(path):
     return ok and wired and blind_ok and walk_ok, rows, wired and blind_ok and walk_ok
 
 
-def main_fake(m, move_speed, granite_tpc, glass_tpc, glow=0.5):
+def main_fake(m, move_speed, granite_tpc, glass_tpc, glow=0.5, drift=0, step_short=0, burst=0):
     """Drive the live proof's own main() end to end against a fake bridge: spawned colonist n reads MoveSpeed
     move_speed[n-1] (the last value repeats; a number means every spawn; a per-pawn LIST is that pawn's successive
     readings, the last repeating, so a pawn can drift after the picker read it); granite_tpc / glass_tpc may be a list,
     one ticks/cell per timed walk on that floor (the last repeating), so single walks can differ from their mean; on TileGranite it walks granite_tpc ticks/cell, on RM_Glasswalk glass_tpc.
     glow: the lane's groundGlow per jawa/glow_at read, a number (all 18 cells, every read) or a list of per-read values
-    (the last repeating), each a number or a per-cell list. Returns (exit, stdout)."""
+    (the last repeating), each a number or a per-cell list.
+    drift: game ticks that pass on EVERY bridge call (a game running free between calls, the 2026-11-04 live reading);
+    step_short: ticks a step_game_ticks call falls short of what it was asked (a truncated step);
+    burst: game ticks that run once, during the eastward Goto order (the pawn is already moving). Returns (exit, stdout)."""
     import contextlib
     import io
     clock = {"t": 0, "start": None, "x0": 1, "floor": None, "dropped": False, "tpc": None}
@@ -254,15 +259,19 @@ def main_fake(m, move_speed, granite_tpc, glass_tpc, glow=0.5):
 
         @staticmethod
         def call(tool, **kw):
+            clock["t"] += drift
             if tool == "rimworld/step_game_ticks":
-                clock["t"] += kw["ticks"]
+                clock["t"] += kw["ticks"] - step_short
                 return {"ok": True}
+            if tool == "jawa/time_clock":
+                return {"ticksGame": clock["t"]}
             if tool == "jawa/ordered_job":
                 if kw.get("targetAX", 0) > 5:
                     clock["x0"], clock["start"] = pos_x(), clock["t"]
                     k = walks[clock["floor"]] = walks[clock["floor"]] + 1
                     v = granite_tpc if clock["floor"] == "TileGranite" else glass_tpc
                     clock["tpc"] = v[min(k, len(v) - 1)] if isinstance(v, list) else v
+                    clock["t"] += burst
                 else:
                     clock["x0"], clock["start"] = 1, None
                 return {}
@@ -337,7 +346,25 @@ def main_end_to_end(path):
               [0.5, 0.5, 0.5, 0.0]),
              ("short glow read (17 of 18 cells): law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED",
               [[0.5] * 17]),
-             ("lit exactly at the 0.30 knee: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 0, "PASS", 0.30)]
+             ("lit exactly at the 0.30 knee: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 0, "PASS", 0.30),
+             # 2026-11-04 live: the game clock ran between bridge calls; counting requested ticks read 2 and 26 ticks
+             # per 12 cells and the proof said FAIL about the mod. An inexact clock is the instrument: UNMEASURED.
+             ("free-running clock (6 ticks pass on every bridge call): law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1,
+              "UNMEASURED", 0.5, 6),
+             ("free-running clock, 1 tick per call: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED", 0.5, 1),
+             ("truncated step (1 of 2 ticks advances): law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED",
+              0.5, 0, 1),
+             # GPT review gen11: a burst before the timer starts can carry the pawn past X0, so the crossing is missed
+             ("burst of 100 ticks during the Goto order, exact clock after: law readings", 4.6, 60 / 4.6, 60 / 4.6 + 3,
+              1, "UNMEASURED", 0.5, 0, 0, 100),
+             ("burst of 20 ticks (pawn still west of the span), exact clock after: law readings", 4.6, 60 / 4.6,
+              60 / 4.6 + 3, 0, "PASS", 0.5, 0, 0, 20),
+             # GPT review gen11 r2: speed moving between walks (both in band) makes a law world read delta 4.38
+             ("MoveSpeed drifts in band between walks [4.6 pick, 4.86, 4.37, 4.86, 4.37]: law per walk",
+              [[4.6, 4.86, 4.37, 4.86, 4.37]], 60 / 4.86, 60 / 4.37 + 3, 1, "UNMEASURED"),
+             # GPT review gen11 r3: MoveSpeed read only BEFORE each walk misses a change during the last one
+             ("MoveSpeed changes during the last walk (read 4.6 eight times, then 4.4): law readings",
+              [[4.6] * 8 + [4.4]], 60 / 4.6, 60 / 4.6 + 3, 1, "UNMEASURED")]
     rows, ok = [], True
     for label, ms, g, s, want, word, *gl in cases:
         code, text, dropped = main_fake(m, ms, g, s, *gl)

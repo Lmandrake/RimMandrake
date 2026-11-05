@@ -8,7 +8,8 @@ Builds a one-cell lane in a roofed room on a throwaway map, lit by TorchLamps (e
 walk, else UNMEASURED: in the dark Core's MoveSpeed StatPart_Glow slows every colonist x0.80), then walks one colonist (ordered Goto = Jog urgency, glasswalk
 slip OFF) over 12 cells of each floor, twice. The 2026-10-10 scene timed with scenelib.run(10), which plays at least
 200 ms at speed 4 (~80 ticks a sample) against 120-200 tick walks; this one advances rimworld/step_game_ticks STEP ticks at
-a time, so a crossing is placed within STEP ticks (per-cell error <= STEP/12).
+a time and times by the game's own ticksGame, so a crossing is placed within STEP ticks (per-cell error <= STEP/12);
+a step that does not advance ticksGame by exactly STEP (a free-running game, a truncated step) is UNMEASURED.
 
 A1 holds when the timed pawn IS a standard colonist (the item: "re-measure on a 13 ticks/cell pawn"):
   T = 60 / MoveSpeed within T_TOL of 13.04 (roofed, so no weather factor); any other pawn -> UNMEASURED, exit 1.
@@ -34,6 +35,7 @@ X0, X1 = 4, 16      # timed span: 12 cells, start/stop effects excluded
 STANDARD_T = 60.0 / 4.6
 T_TOL = 0.7         # ticks/cell: MoveSpeed 4.37..4.85 counts as "a 13 ticks/cell pawn"
 PICK_TRIES = 6
+SPEED_DRIFT = 0.05  # cells/s: the timed pawn's MoveSpeed must hold across walks (live 2026-11-04: 4.416 on every read)
 LAMPS = (2, 7, 12, 17)  # TorchLamps in the lane's north wall row: a roofed room is otherwise dark
 LIT = 0.30          # Core MoveSpeed StatPart_Glow: x0.80 at glow 0 rising to x1.00 at 0.30. Live 2026-11-03 the unlit
                     # room read "Multiplier for light 0%: x80%" (jawa/stat_explain) and every colonist was 3.5-3.7 c/s.
@@ -60,6 +62,17 @@ def move_speed(pid):
 
 def step(n):
     return S.need(S.call("rimworld/step_game_ticks", ticks=n, timeoutMs=60000), "step_game_ticks")
+
+
+def clock():
+    """The game's own ticksGame (jawa/time_clock), or None on a blind read. Live 2026-11-04 the proof counted the ticks it
+    REQUESTED while the game clock ran between bridge calls: walks read 2 and 26 ticks for 12 cells (T=13.6 needs ~163)."""
+    r = S.call("jawa/time_clock")
+    v = r.get("ticksGame") if isinstance(r, dict) else None
+    return v if isinstance(v, int) and not isinstance(v, bool) else None
+
+
+WHY = {"walk": None}    # why the last walk_exact returned None (printed by main)
 
 
 def in_band(ms):
@@ -109,6 +122,11 @@ def judge(g, s, speeds):
     if not all(in_band(v) for v in ms):
         return 1, ("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED pawn T=%.2f ticks/cell (MoveSpeed=%s) is not a "
                    "13 ticks/cell pawn (|T-%.2f|<=%.2f required)" % (T, speeds, STANDARD_T, T_TOL))
+    if max(ms) - min(ms) > SPEED_DRIFT:
+        # each walk is judged against ONE T: a pawn whose speed moved between walks (granite at T 12.35, glass at 13.73,
+        # both in band) would read a delta that is not the floor's (GPT review gen11)
+        return 1, ("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED pawn MoveSpeed drifted between walks %s (> %.2f)"
+                   % (speeds, SPEED_DRIFT))
     gm, sm = st.mean(g), st.mean(s)
     delta = sm - gm
     # Every sample, not only the means: an average can hide two wrong walks ([10, 16] means 13).
@@ -132,17 +150,41 @@ def walk_exact(sc, pid):
     step(20)
     S.call("jawa/kill_hostiles")
     S.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=sc.x + 18, targetAZ=sc.z + 1, waitTicks=1)
-    t, ta = 0, None
-    while t < 1200:
+    WHY["walk"] = None
+    t0 = clock()
+    if t0 is None:
+        WHY["walk"] = "blind ticksGame read before the walk"
+        return None
+    x = px(pid)
+    if clock() != t0 or x is None or x >= sc.x + X0:
+        # ticks that ran before t0 (a burst during the Goto order) may have carried the pawn into the span: the crossing
+        # of X0 would be missed and the walk undercounted
+        WHY["walk"] = "pawn not seen west of the span on a still clock at timing start (x=%s, ticksGame %s)" % (x, t0)
+        return None
+    prev, ta = t0, None
+    while prev - t0 < 1200:
         step(STEP)
-        t += STEP
+        now = clock()
+        # Exact or nothing: a step must advance the game's own clock by exactly STEP (a free-running game or a truncated
+        # step moves the pawn for ticks nobody counted), and the clock must not move while the position is read.
+        if now is None or now - prev != STEP:
+            WHY["walk"] = "clock not exact: step of %d advanced ticksGame %s -> %s (game running or step truncated)" % (
+                STEP, prev, now)
+            return None
         x = px(pid)
+        after = clock()
+        if after != now:
+            WHY["walk"] = "clock moved during the position read: ticksGame %s -> %s (game running)" % (now, after)
+            return None
         if x is None:
+            WHY["walk"] = "blind position read"
             return None     # a blind step could hide a crossing: the walk is unmeasured, never skipped
+        t, prev = now - t0, now
         if ta is None and x >= sc.x + X0:
             ta = t
         if ta is not None and x >= sc.x + X1:
             return t - ta
+    WHY["walk"] = "pawn did not cross the timed span in 1200 ticks"
     return None
 
 
@@ -184,8 +226,12 @@ def main():
                     ms = move_speed(pid)
                     speeds.append(ms)
                     w = walk_exact(sc, pid)
+                    speeds.append(move_speed(pid))  # after the walk too: a change during it reaches the drift gate
                     res[terr].append(w)
                     print(rep, terr, "ticks/12 cells =", w, "MoveSpeed =", ms, flush=True)
+                    if w is None:
+                        print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/A1 UNMEASURED walk %d %s: %s" % (rep, terr, WHY["walk"]))
+                        return 1
         g = [w / float(X1 - X0) for w in res["TileGranite"] if w]
         s = [w / float(X1 - X0) for w in res["RM_Glasswalk"] if w]
         verdict, line = judge(g, s, speeds)
