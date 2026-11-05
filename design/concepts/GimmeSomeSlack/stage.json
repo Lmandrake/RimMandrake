@@ -11,10 +11,17 @@
     "ref": "run rm-role-designer-1793862917",
     "stage": 0,
     "tokens": 653533
+   },
+   {
+    "at": "2026-11-05T07:52:39Z",
+    "kind": "review",
+    "ref": "rm-judge afe0c6f5be13477fd ask review",
+    "stage": 1,
+    "tokens": 33776
    }
   ],
   "reserve": 50000,
-  "spent": 653533
+  "spent": 687309
  },
  "history": [
   {
@@ -34,6 +41,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1793862917: stage 0 done"
+  },
+  {
+   "at": "2026-11-05T07:50:58Z",
+   "stage": 1,
+   "what": "over_budget",
+   "why": "653533 of 500000 spent; run rm-role-designer-1793865048 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-05T07:50:58Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1793865048, stage 1, budget 450000"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -65,7 +84,28 @@
    "summary": "GSS stage 0: 19 inventory entries (16 approved by his words, 3 not_opened, 1 out under waiver w1) account for all 32 built lines; 5 named contradictions (phantom cable unverified, every-junction strips unmeasured, no-repeat unmeasured, cost partial, four switches unproven); script audit: row-based scripts lack per-scene asserted starts, most controls, snapshot recovery and holds; two draft asks for stage 2 (flagship, junction plug-in). Failure modes: tidy, lying, cost."
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-05T07:50:58Z",
+  "inputs": {
+   "exam": null,
+   "floor": null,
+   "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+   "root": null,
+   "scenes": null,
+   "sheet": "b7dd55e6646df716f5252676c46859687bb395d354bbd0dcc3758acce340bca1",
+   "tree": null
+  },
+  "manifest": {
+   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+  },
+  "owner_uncited": [
+   "1793766796952956687"
+  ],
+  "reserved": 450000,
+  "run": "rm-role-designer-1793865048",
+  "stage": 1
+ },
  "schema": 1,
  "stage": 1,
  "status": "ready"

@@ -92,16 +92,33 @@
  ],
  "asks": [
   {
-   "id": "a_flagship",
-   "status": "draft",
+   "id": "ask_root",
+   "text": "Is the paragraph above Gimme Some Slack? Correct any word, or say \"yes\". (the paragraph: turn_01.md / record.json root_draft)",
+   "decision": "The root text: what GSS is and what it is judged on first; stage 1 cannot end without his approval of it.",
    "about": [
     "cord_slack_lay",
     "junction_strips",
     "connectivity_truth",
-    "overhead_spans"
+    "break_ends_live_dead",
+    "overhead_spans",
+    "rebuild_cost"
    ],
-   "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
-   "text": "Picture the one room you would show a friend to say 'this is Gimme Some Slack': a workshop floor of tangled extension cords piling into a power strip, or a yard where a sagging line crosses to a far mast and one wire lies sparking on the ground? Which is the mod's face (showcase 1)?"
+   "owner_cites": [
+    "OWNER:1793596860187785113",
+    "OWNER:1793597165476278817",
+    "OWNER:1793590546413059482"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793865048",
+   "status": "sent",
+   "source": [
+    "design/concepts/GimmeSomeSlack/turn_01.md"
+   ],
+   "review": {
+    "by": "rm-judge afe0c6f5be13477fd (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Answerable with yes; settles stage 1. Fixed on review: 'no frame time' overclaim -> his 'no problematic delay'; strips at every 3/4-way junction (his words); shock marked built-not-in-his-words; 'replaces invisible conduit' inverted; 'steady goodwill drain' his words."
+   }
   },
   {
    "id": "a_junction_every",
@@ -111,6 +128,24 @@
    ],
    "source": "OWNER:1793596860187785113",
    "text": "At a 3- or 4-way conduit junction, must every cord that meets there visibly plug into the strip or connector, or is one strip per junction cluster (with cords merely arriving near it) enough? A labelled mock of both would show it."
+  },
+  {
+   "id": "a_flagship",
+   "status": "struck",
+   "about": [
+    "cord_slack_lay",
+    "junction_strips",
+    "connectivity_truth",
+    "overhead_spans"
+   ],
+   "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+   "text": "Picture the one room you would show a friend to say 'this is Gimme Some Slack': a workshop floor of tangled extension cords piling into a power strip, or a yard where a sagging line crosses to a far mast and one wire lies sparking on the ground? Which is the mod's face (showcase 1)?",
+   "review": {
+    "by": "rm-judge afe0c6f5be13477fd (fresh Opus, not the author)",
+    "verdict": "struck",
+    "why": "His 11-02 words already answer it (both poles and floor; experience sentence is about the floor); would only reorder test scenes."
+   },
+   "decision": "Which scene is the mod's face (showcase 1)."
   }
  ],
  "inventory": [
@@ -576,5 +611,10 @@
   "restore": "SITE teardown and per-row setting restore exist; no recorded snapshot per scene and no scene-begin/scene-end recovery",
   "hold": "none: no row can stay up for his review; the walk save is staged separately (human_review.py, save_review_map.py)",
   "to_file_at_stage_3": "named scene entry points with asserted starts, discriminating controls for the cord-look, junction, break-ends, connectivity-truth (adjacent-feed pump) and style scenes, and scene-begin/end recovery; item GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS"
+ },
+ "root_draft": {
+  "text": "Gimme Some Slack hides the tidy conduit and draws in its place what a scavenger base really looks like: too-long extension cords sprawling across the floor in loose loops and coils, piling against walls, plugging into power strips (or connectors, in the other three looks) at every three- or four-way junction, and sagging overhead lines strung between masts. The mess is honest: every cord explains a real power connection, a cut line lies on the ground sparking where it is live and dead where it is not, and nothing is drawn that is not wired. Even a huge base with many wires and connectors shows no problematic delay. Around that look ride a few consequences, all built: a colonist re-strings a cut span, a clamp on a neighbour's line steals their power with a steady goodwill drain if caught, and (built, not yet in his words) a live fallen wire shocks whoever touches it. Judged first: one room of floor cords meeting at a strip, and one cut that leaves a sparking live end and a dead end, with the drawing true to the grid in both.",
+  "source": "design/concepts/GimmeSomeSlack/turn_01.md",
+  "speaker": "agent"
  }
 }

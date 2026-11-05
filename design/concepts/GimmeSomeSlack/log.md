@@ -205,3 +205,9 @@ not re-asked. Inventory: 19 capabilities accounting for all 32 built lines. Name
 cable is still unverified; every-junction strips and "no repeating patterns" have no instrument; the cost bar is
 partial; four switches unproven. Script audit (`record.json` `script_audit`): rows, not scenes; few controls; no
 per-scene recovery or hold. Draft asks for stage 2: the flagship showcase, and how cords meet a junction strip.
+
+## Sitting 4, 2026-11-05 (run rm-role-designer-1793865048). Stage 1 Argue the idea
+
+Turn: `turn_01.md` (root paragraph, attack: the honesty sentence makes a look mod a truth mod). Fresh-Opus review
+(rm-judge afe0c6f5be13477fd): ask_root pass after four wording fixes; ask_face (a_flagship) struck, already answered by
+his 11-02 words. Sent: ask_root. Ready, not sent: a_junction_every (stage 2).
