@@ -1511,6 +1511,15 @@ def t_rebuilt_assembly_carries_the_build():
     ok(x.w.impl[-1][1] == "sha2full" and x.w.led["I0"]["built_sha"] == "sha2full", "the ledger re-recorded on the carry")
     ok(x.w.carry_calls == [("I0", SHA)], "asked once, on the stale sha: %s" % x.w.carry_calls)
     ok(not G.gate(st, "t", PROOF, "(?!x)x", None), "the carried green passes the lease gate: %s" % G.gate(st, "t", PROOF, "(?!x)x", None))
+    # SUMP_TAR_FIRE_NETWORK_1: the carried sha (another item's commit) goes stale on ITS OWN sources; carry is asked
+    # again from the item's origin build, which still carries (to the newest rebuild)
+    x.w.pre = lambda lines: stale if x.w.led["I0"]["built_sha"] != "sha3full" else []
+    x.w.carry = lambda sha: ("sha3full", "only rebuilt assemblies changed") if sha == SHA else None
+    x.tick()
+    st = x.st("I0")
+    ok(not st.get("last_fail") and st["game"]["sha"] == "sha3full" and st["game"]["offline_green"]["carried_from"] == SHA
+       and st["game"]["carries"] == 2, "a second carry goes from the origin, not the carried sha: %s %s" % (st.get("last_fail"), st["game"]))
+    ok(x.w.carry_calls[-1] == ("I0", SHA), "asked on the origin: %s" % x.w.carry_calls)
     x.done()
     y = rig(1)
     to_game(y, "I0")

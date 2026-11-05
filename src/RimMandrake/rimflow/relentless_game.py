@@ -1107,12 +1107,18 @@ def _carry(store, fx, item, sha, now, acts):
     g = store.load(item).get("game") or {}
     if g.get("carries", 0) >= CARRY_MAX or not hasattr(fx, "game_carry"):
         return None
-    got = fx.game_carry(item, sha)
+    # carry again from the item's OWN build, never from a carried sha: that is another commit, judged on its own sources
+    # (SUMP_TAR_FIRE_NETWORK_1: carried 64cfba -> 890c85, GSS_END_HEAPS; CordLayer.cs changed after 890c85, so a carry
+    # computed from 890c85 refused and the item went back to a worker who could change nothing)
+    origin = (g.get("offline_green") or {}).get("carried_from") or sha
+    got = fx.game_carry(item, origin)
     if not got:
         return None
     new, why = got
+    if new.startswith(sha) or sha.startswith(new):
+        return None
     if fx.game_implement(item, new, fx.proofs_at(item, new, ".criteria"), (store.load(item).get("contract") or {}).get("live"),
-                         why="relentless: carried from %s, %s" % (sha[:12], why)[:300]) is not None:
+                         why="relentless: carried from %s, %s" % (origin[:12], why)[:300]) is not None:
         return None
 
     def mv(s):
