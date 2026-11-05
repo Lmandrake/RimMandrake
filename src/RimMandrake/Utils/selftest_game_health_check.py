@@ -254,6 +254,26 @@ with tempfile.TemporaryDirectory() as tmp:
     lb = " | ".join(a9.get("log.errors_lower_bound", []))
     check("attribution: lower bound says the first read was already full, and no scan interval proves eviction",
           "first queue read" in lb and "under the queue size" in lb, lb)
+    # explain verb (OPS_GAME_HEALTH_DEBUG_PXQI): re-reads a session from disk, so a row recorded before attribution
+    # existed (history rows are never re-summarized) is still explained; it must print every breach's attribution.
+    import contextlib
+    import io
+    rec9 = os.path.join(tmp, "tps9")
+    os.makedirs(rec9)
+    write_session(rec9, rp)
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc9 = G.main(["explain", "--dir", rec9, "--session", "9999"])
+    ex = buf.getvalue()
+    check("explain: exit 0 and every breach key printed with its attribution lines",
+          rc9 == 0 and all(("  %s\n" % k) in ex for k in k9) and ex.count("    - ") >= len(k9), (rc9, ex[-600:]))
+    check("explain: names the largest map, the stale save and the first-read lower bound",
+          "924x924 RM_Big" in ex and "BENCH_STALE_SAVE" in ex and "first queue read" in ex, ex[-600:])
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rcx = G.main(["explain", "--dir", rec9, "--session", "0123"])
+    check("explain: an unknown session is exit 1, not an empty PASS", rcx == 1 and "FAIL" in buf.getvalue(),
+          (rcx, buf.getvalue()))
     clean = session_rows(sid="8" * 32, heap_rate_h=0, errs_per_min=0, ratio1=1.0)
     s8 = G.summarize("8" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in clean], 0, RULES, now=NOW)
     check("attribution: a session with no breach attributes nothing", s8["breaches"] == [] and s8["attribution"] == {},
@@ -288,6 +308,23 @@ with tempfile.TemporaryDirectory() as tmp:
     hb = out.get("tps.health_breaches", {})
     check("ops_watch: tps.health_breaches is MEASURED 1 naming the key",
           hb.get("m") == "MEASURED" and hb.get("v") == 1 and "tps.ratio_decay_pct" in str(hb), hb)
+    ax = (hb.get("x") or {}).get("attribution") or {}
+    check("ops_watch: the alarm carries the newest row's attribution, one entry per breach key",
+          set(ax) == set((hb.get("x") or {}).get("keys") or ["?"]) and all(isinstance(v, str) and v for v in ax.values())
+          and ax == {k: "; ".join(v)[:600] for k, v in (a.get("attribution") or {}).items()}, (ax, a.get("attribution")))
+    # forwarding on the e50b27df replay: four breaches, four attributions reach tps.health_breaches
+    def fake9(cmd, **k):
+        verb = "latest" if "latest" in cmd else "record"
+        return types.SimpleNamespace(returncode=0, stdout=json.dumps(s9 if verb == "latest" else {}), stderr="")
+    OW.subprocess.run = fake9
+    try:
+        g9 = OW.game_health(NOW)
+    finally:
+        OW.subprocess.run = real
+    x9 = (g9.get("tps.health_breaches") or {}).get("x") or {}
+    check("ops_watch: replay alarm forwards an attribution for every breach (heap names the map, errors the save)",
+          set(x9.get("attribution") or {}) == k9 and "924x924 RM_Big" in x9["attribution"].get("mem.managed_peak_mb", "")
+          and "BENCH_STALE_SAVE" in x9["attribution"].get("log.errors", ""), x9)
     check("ops_watch: game off still reads the health check (5 rows: the torn line is not a session)", out.get("tps.ratio_median", {}).get("m") == "UNMEASURED"
           and out.get("tps.health_sessions", {}).get("v") == 5, out.get("tps.health_sessions"))
     tg = [t for t in OW.load_rules()["targets"] if t.get("key") == "tps.health_breaches"]
