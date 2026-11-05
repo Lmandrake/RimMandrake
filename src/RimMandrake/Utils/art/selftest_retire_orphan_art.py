@@ -6,6 +6,8 @@
     C# literal that builds the path from a folder prefix (`"Things/A/" + name`);
   * MOVE a true orphan: a byte-identical copy under the retired-trees root (RETIRED_TREES_DIR) and in the art
     store BEFORE the repo file goes, plus a `live` event with sha None — never a bare delete;
+  * refuse a picture shown on a review-sheet snapshot (SHEET), and refuse everything (UNMEASURED) when no
+    snapshot sha can be read at all;
   * change nothing on a dry run.
 Runs entirely in a temp tree (ART_SRC_ROOT / ART_LEDGER_DIR / ARTSTORE / RETIRED_TREES_DIR)."""
 from __future__ import annotations
@@ -42,7 +44,8 @@ def png(tag: str) -> bytes:
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="selftest_retire_orphan_"))
     os.environ.update(ART_SRC_ROOT=str(tmp / "src"), ART_LEDGER_DIR=str(tmp / "ledger"),
-                      ARTSTORE=str(tmp / "store"), RETIRED_TREES_DIR=str(tmp / "retired"), RIMFLOW_SEAT="SELFTEST")
+                      ARTSTORE=str(tmp / "store"), RETIRED_TREES_DIR=str(tmp / "retired"), RIMFLOW_SEAT="SELFTEST",
+                      ART_SHEETS_DIR=str(tmp / "sheets"))
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import artledger as A  # noqa: E402
     import retire_orphan_art as R  # noqa: E402
@@ -50,7 +53,7 @@ def main() -> int:
     mod = tmp / "src" / "RimX" / "ModA"
     tex = mod / "Textures" / "Things" / "A"
     files = {k: w(tex / f"{k}.png", png(k)) for k in
-             ("orphan", "kept", "named", "staged", "version", "dyn_x")}
+             ("orphan", "kept", "named", "staged", "version", "dyn_x", "onsheet")}
     files["face_north"] = w(tex / "Face" / "Face_north.png", png("face"))
     files["face_northm"] = w(tex / "Face" / "Face_northm.png", png("facem"))
     files["face_m"] = w(tex / "Face" / "Face_m.png", png("facem1"))
@@ -69,11 +72,25 @@ def main() -> int:
     w(tmp / "ledger" / "events" / "OWNER.jsonl",
       json.dumps({**A.owner_keep_ruling(kept_sha, owner_said="keep this one"), "ts": "2026-10-26T00:00:00"}) + "\n")
 
+    sheet_sha = hashlib.sha256(files["onsheet"].read_bytes()).hexdigest()
+
     def run(*args):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = R.main(["--item", "SELFTEST_ITEM", *args])
         return rc, buf.getvalue()
+
+    # no readable sheet snapshot: the sheet check is blind, so nothing is cleared
+    rc, out = run("--apply", str(files["dryrun"]))
+    check(rc != 0 and "UNMEASURED" in out and files["dryrun"].is_file(),
+          "no review-sheet snapshot readable: UNMEASURED, nothing retired")
+    w(tmp / "sheets" / "s_2026-10-01.snapshot.json",
+      json.dumps({"rows": {"R": {"columns": {"A": {"south": sheet_sha}}}}}))
+
+    # a picture shown on a review sheet leaves by his ruling there, not as an orphan
+    rc, out = run("--apply", str(files["onsheet"]))
+    check(rc != 0 and "SHEET" in out and files["onsheet"].is_file(),
+          "--apply: a picture on a review-sheet snapshot is refused and stays in the mod")
 
     # dry run touches nothing
     rc, out = run(str(files["dryrun"]))

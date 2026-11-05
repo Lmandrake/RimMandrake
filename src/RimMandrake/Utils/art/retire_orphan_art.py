@@ -9,6 +9,9 @@ string-literal prefix (`"Things/X/" + name` in C#). This script re-checks that b
 file that anything still names, so the reason it writes is a verifiable mechanical tag.
 
 Owner-KEPT pictures are refused (dry run and --apply alike) and reported, never forced: retiring one needs his words.
+A picture shown on a review sheet (its sha in any `infrastructure/state/art/sheets/*.snapshot.json`, env
+ART_SHEETS_DIR overrides) is refused as SHEET: it leaves by his ruling on that sheet (`art.py enact`), not as an orphan.
+This is THE route for leftover pictures: `leftovers.py` only pre-filters them and refuses to delete or retire one.
 --apply MOVES, never just deletes: a byte-identical copy goes to the retired-trees root
 (`D:\\ClaudeWork\\rimmandrake\\retired-trees\\<ITEM>_<YYYYMMDD>\\<mod>\\Textures\\<rel>`, env RETIRED_TREES_DIR
 overrides the root) and is verified first; then artledger.retire archives the bytes in the art store, deletes the
@@ -61,6 +64,23 @@ def readers(src: Path, needles: list[str], texts: list[tuple[str, str]] | None =
     return [rel for rel, text in (texts if texts is not None else corpus(src)) if any(p.search(text) for p in pats)]
 
 
+SHA = re.compile(r"\b[0-9a-f]{64}\b")
+
+
+def sheets_dir() -> Path:
+    return Path(os.environ["ART_SHEETS_DIR"]) if os.environ.get("ART_SHEETS_DIR") else \
+        A.REPO_ROOT / "infrastructure" / "state" / "art" / "sheets"
+
+
+def sheet_shas() -> dict[str, str]:
+    """sha -> the first review-sheet snapshot that shows it (every 64-hex string in every snapshot file)."""
+    out: dict[str, str] = {}
+    for f in sorted(sheets_dir().glob("*.snapshot.json")):
+        for s in SHA.findall(f.read_text(encoding="utf-8", errors="replace")):
+            out.setdefault(s, f.name)
+    return out
+
+
 def folder_of(rel: str) -> list[str]:
     return [rel.rsplit("/", 1)[0]] if "/" in rel else []
 
@@ -105,6 +125,10 @@ def main(argv: list[str]) -> int:
     reason = "script:src/RimMandrake/Utils/art/retire_orphan_art.py orphan " + a.item
     src = A.src_root()
     texts = corpus(src)
+    on_sheet = sheet_shas()
+    if not on_sheet:
+        print("UNMEASURED  no sha read from any review-sheet snapshot under %s: cannot clear a picture" % sheets_dir())
+        return 2
     bad = 0
     for p in a.paths:
         path = Path(p).resolve()
@@ -127,6 +151,11 @@ def main(argv: list[str]) -> int:
         if idx.protected(sha) and not A.held_elsewhere(idx, sha, (mod, rel)):
             bad += 1
             print("KEPT    %s  %s  owner-kept; retiring it needs his words or a Conductor instruction" % (sha[:12], p))
+            continue
+        if sha in on_sheet:
+            bad += 1
+            print("SHEET   %s  %s  shown on review sheet %s; it leaves by his ruling there (art.py enact)"
+                  % (sha[:12], p, on_sheet[sha]))
             continue
         if not a.apply:
             print("WOULD   %s  %s" % (sha[:12], p))

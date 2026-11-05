@@ -34,6 +34,8 @@ Kinds and what `check` must prove (every reason below is a NOT-SAFE reason; SAFE
            Read = its texture path (or a prefix ending at / _ - or a digit: Graphic_Multi/Random/mask
            variants) appears in any XML or C# of ours, any deployed mod XML, or the newest def dump; a UI/ path
            cannot be cleared (it may override a vanilla ContentFinder texture by path).
+           A picture check is only a PRE-FILTER: delete and retire refuse every picture; it leaves through the
+           art ledger (retire_orphan_art.py: art-store archive, owner keeps and review sheets honoured).
   patch    a Patches/*.xml of ours that names a retired mod. SAFE only if EVERY top-level Operation is a
            PatchOperationFindMod whose mods are ALL retired (retired_mods.json) and which has no <nomatch>.
 
@@ -66,6 +68,9 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
+# the one way a leftover picture leaves: archive in the art store + delete + `live` event, refusing owner keeps,
+# review-sheet pictures and anything still named (item LEFTOVER_PICTURES_RETIRE_VIA_ART_LEDGER)
+ART_ROUTE = "python3 src/RimMandrake/Utils/art/retire_orphan_art.py --item <ITEM> [--apply] <png>"
 KINDS = ("save", "clone", "modfolder", "setting", "picture", "patch")
 SAFE, NOT_SAFE, REFUSED, UNMEASURED = "SAFE", "NOT-SAFE", "REFUSED", "UNMEASURED"
 
@@ -1210,7 +1215,7 @@ def delete(ctx, path, item="LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE", ledger=True, k
         # ruling: a picture leaves only through the art ledger (art.py), never a raw file delete; the
         # leftovers check also does not consult art-ledger keeps or review-sheet decisions.
         raise SystemExit("REFUSED delete of %s: a picture leaves only through the art ledger (art.py), "
-                         "not leftovers.py" % path)
+                         "not leftovers.py: run %s" % (path, ART_ROUTE))
     if v.status != SAFE:
         raise SystemExit("REFUSED delete of %s: check is %s (%s)" % (path, v.status, "; ".join(v.reasons)))
     man = find_manifest(ctx, path)
@@ -1302,7 +1307,7 @@ def main(argv=None):
     if a.cmd == "retire":
         if (a.kind or kind_of(ctx, os.path.abspath(a.path))) == "picture":
             raise SystemExit("REFUSED retire of %s: a picture leaves only through the art ledger (art.py), "
-                             "not leftovers.py" % a.path)
+                             "not leftovers.py: run %s" % (a.path, ART_ROUTE))
         if not find_manifest(ctx, a.path) or not verify(ctx, a.path, find_manifest(ctx, a.path))[0]:
             v = check(ctx, a.path, a.kind)
             if v.status != SAFE:

@@ -367,7 +367,14 @@ def main():
             L.delete(ctx, orphan, ledger=False)
             ok(False, "delete: refuses a picture (art ledger only)")
         except SystemExit as e:
-            ok("art ledger" in str(e) and os.path.exists(orphan), "delete: refuses a picture (art ledger only)")
+            ok("art ledger" in str(e) and "retire_orphan_art.py" in str(e) and os.path.exists(orphan),
+               "delete: refuses a picture (art ledger only) and names the art-ledger route")
+        try:
+            L.main(["retire", orphan, "--kind", "picture", "--no-ledger"])
+            ok(False, "retire: refuses a picture (art ledger only)")
+        except SystemExit as e:
+            ok("art ledger" in str(e) and "retire_orphan_art.py" in str(e) and os.path.exists(orphan),
+               "retire: refuses a picture before any archive and names the art-ledger route")
         # a caller's --kind must agree with the path: '--kind save' on an RM_* repo file or a picture is REFUSED
         stray = os.path.join(repo, "src/RimMandrake/ModA/RM_stray.txt")
         w(stray, "not a save")
