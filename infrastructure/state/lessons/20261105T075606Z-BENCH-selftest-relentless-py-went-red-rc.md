@@ -1,0 +1,1 @@
+selftest_relentless.py went red (rc 1, 56 s) in a 30-test run_selftests --only batch at aad8c9bb66 and green alone and in a 4-test batch minutes later: treat a lone red of it in a big parallel batch as load-flaky until rerun; separately selftest_recovery_design_doc is red on origin/main (0CA2BE29 closed in the ledger, doc says open) - CHECKER_REACH_FIX_STORE_STILL_DARK gen 3
