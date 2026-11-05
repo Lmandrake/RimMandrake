@@ -1,0 +1,10 @@
+# Game: the owner's FULL mod list (the 120-140 ms GCs are a full-list measurement; all five DLC), a loaded colony map
+# with FlowWorks hoses on it (e.g. the BENCH_r17_midrain site: map1, the 100 hose rigs), companion profile = test.
+# The companion (RimWorld\BridgeTools\JawaBench) must be built from this item's sha with the game closed, THEN launch:
+#   python3 src/RimMandrake/bridgetools/build.py --apply   (jawa/alloc_probe must be in the live tool list)
+# Run in order: A2 writes the window A3 judges (A3 runs its own window if none is under 2 h old). A2 takes ~7 min and
+# leaves the game paused. Evidence: D:\ClaudeWork\rimmandrake\evidence\MONO_ALLOC_MEASURE_PER_TICK_ON_GAME\
+# (calibration.json, window.json, bytes_per_tick.md).
+live-proof A1: python3 src/RimMandrake/bridgetools/companion_identity.py "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll" --repo . --rev HEAD && python3 src/RimMandrake/bridgetools/prove_alloc_probe.py --clause A1 < /dev/null
+live-proof A2: python3 src/RimMandrake/bridgetools/prove_alloc_probe.py --clause A2 --minutes 7 < /dev/null
+live-proof A3: python3 src/RimMandrake/bridgetools/prove_alloc_probe.py --clause A3 < /dev/null
