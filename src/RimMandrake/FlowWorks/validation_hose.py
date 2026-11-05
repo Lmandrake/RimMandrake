@@ -98,12 +98,17 @@ class H(V.Bridge):
         finally:
             SHOT = keep
 
-    def hose(self, reel):
-        c = self.hp("census")
-        for h in c.get("hoses") or []:
-            if V.reel_at(h["reel"], reel):
-                return h, c
-        return {}, c
+    def hose(self, reel, settle=True):
+        """The census row of the reel at footprint corner `reel`, and the census. HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: the
+        census never lays, so by default it is re-read until the hose's lay is current (V.settle_hose: layKeyed true,
+        layRunning false); settle=False reads it as it stands."""
+        def read():
+            c = self.hp("census")
+            for h in c.get("hoses") or []:
+                if V.reel_at(h["reel"], reel):
+                    return h, c
+            return {}, c
+        return V.settle_hose(read) if settle else read()
 
     def shot(self, name):
         self.call("jawa/clear_ui", all=True)
@@ -454,7 +459,7 @@ def run_save_load(args):
     name = args.save_load
     B.call("rimworld/frame_cell_rect", x=SHOT[0], z=SHOT[1], width=SHOT[2], height=SHOT[3], paddingCells=1)
     B.ticks(2)
-    ca = B.hp("census")
+    ca = V.settle_census(lambda: B.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: geometryHash is the lay's
     if not any(h.get("laid") for h in ca.get("hoses") or []):
         V.row(rows, "H10_save_load_hose", "FAIL", "SITE", "no laid hose on the current map")
         return res
@@ -483,7 +488,7 @@ def run_save_load(args):
         return res
     B.call("rimworld/frame_cell_rect", x=SHOT[0], z=SHOT[1], width=SHOT[2], height=SHOT[3], paddingCells=1)
     time.sleep(1.0)
-    cb = B.hp("census")
+    cb = V.settle_census(lambda: B.hp("census"), lambda h: True)   # after a load every lay is re-made off the frame
     sa, sb = _hose_set(ca), _hose_set(cb)
     V.row(rows, "H10_save_load_hose", "PASS" if sa == sb and any(s[3] == "Plump" for s in sa) else "FAIL", "MOD",
           {"before": sa, "after": sb, "loadSeconds": waited})
@@ -834,8 +839,12 @@ def run_carry(args):
     b, _ = _walk_a_little(B, CREEL)
     ta, tb = (a.get("trail") or {}), (b.get("trail") or {})
     ppos = (b.get("carrier") or {}).get("pos")
+    # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: a CARRIED hose has no lay since fa833277f8 (PickUp nulls it, the census never lays,
+    # the tick re-lays laid reels only); it is drawn live along the trail (DrawCarrying, draw mode "carry"). layOk read false
+    # here by design, so the row asks for the carry draw instead.
+    carry_drawn = (b.get("draw") or {}).get("mode") == "carry"
     V.row(rows, "CR2_trail_follows_walk", "PASS" if (tb.get("count") or 0) > (ta.get("count") or 0) and _near(tb.get("last"), ppos)
-          and b.get("layOk") else "FAIL", "MOD", {"before": _carry_view(a), "after": _carry_view(b), "pawnPos": ppos})
+          and carry_drawn else "FAIL", "MOD", {"before": _carry_view(a), "after": _carry_view(b), "pawnPos": ppos, "drawMode": (b.get("draw") or {}).get("mode")})
 
     # ---------------------------------------------------------------- CR3: draft him mid-walk -> dropped at his cell, order kept
     dr = B.hp("pawn:%d=draft" % pid)

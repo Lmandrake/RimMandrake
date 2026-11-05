@@ -754,6 +754,8 @@ def _pond_rig(ctx, base_dz, fluid2, fill2):
     for r, e in zip((r1, r2), lay["ends"]):
         B.hp("lay:%d,%d,%d,%d" % (r + o(*e)), answer=True)
     for r, role in ((r1, "Intake"), (r2, "Outflow")):
+        # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: ProofHoseLine reads the cached lay; the re-lay lands off the frame
+        V.settle_census(lambda: B.hp("census", answer=True), lambda h, r=r: V.reel_at(h.get("reel"), r))
         kh, th = static(LPROOF, "ProofHoseLine", xz(r))
         V.require(kh.get("laid") == "True", "hose %s laid" % xz(r), th)
         static(LPROOF, "ProofHoseRole", "%s;%s" % (xz(r), role))

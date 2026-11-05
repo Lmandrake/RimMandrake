@@ -114,6 +114,10 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 for p in (HERE, MODDIR):
     if p not in sys.path:
         sys.path.insert(0, p)
+_UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+import validation_core as V  # noqa: E402  (settle_census: HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK)
 try:                                   # numpy-free: the scene -> bridge-call plans (python.exe can import it)
     import placer as PL  # noqa: E402
 except ImportError:
@@ -1013,7 +1017,8 @@ class Run(object):
                     if st["cmd"].startswith("check:") and r.get("reason") is not None:
                         rec["site_fail"].append("install check refused: %s" % r.get("reason"))
                 elif st["kind"] == "hose_census" and not self.sweep:
-                    c = B.hp("census")
+                    # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: the census never lays (fa833277f8); wait for this reel's lay to land
+                    c = V.settle_census(lambda: B.hp("census"), lambda h: tuple(h.get("reel") or ()) == reel)
                     census = c
             rec["probes"] = probes
             if self.sweep:                                  # sweep: built + flowed above, shot only, no verdict

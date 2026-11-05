@@ -780,7 +780,7 @@ class Proof(object):
 
     # ---------------------------------------------------------------- HW1: no laid hose crosses a wall
     def walls(self):
-        st, cls, detail = walls_verdict(self.B.hp("census"))
+        st, cls, detail = walls_verdict(V.settle_census(lambda: self.B.hp("census"), lambda h: True))   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: layOk/wallCross are the lay's
         self.row("walls", "HW1_no_laid_hose_crosses_a_wall", st, cls, detail)
 
     # ---------------------------------------------------------------- the one save (hose half of GSS's old SL1-SL4)

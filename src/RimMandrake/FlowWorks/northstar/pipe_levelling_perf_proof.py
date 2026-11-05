@@ -415,6 +415,8 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
                                     % (lo, hi, lay_fail), "stagedOk": staged_ok}, cls="HARNESS")
         return finish(2)
     B.ticks(260)
+    # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: the census never lays; the link read waits until every laid rig's lay is current
+    V.settle_census(lambda: B.hp("census", answer=True), lambda h: True)
     kl, tl = static("ProofLevelLink", "%d,%d" % spots[0]) if spots else ({}, "no rigs")
     links = int(kl["links"]) if kl.get("links", "").isdigit() else None
     want = len(spots)

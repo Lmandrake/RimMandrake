@@ -198,7 +198,7 @@ def run_live(args):
           {"bad": bad, "finishbuild": fb, "meaning": "PASS = each picked look is the designator's style and lands on the blueprint (build) or building (god)"})
 
     # ---------------------------------------------------------------- R2: built reels store + draw their look, reeled in
-    c = H.hp("census")
+    c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
     bad = []
     for l, cell in zip(LOOKS, REELS):
         h = _find(c, cell)
@@ -214,7 +214,7 @@ def run_live(args):
     for l, cell, to in zip(LOOKS, REELS, LAY_TO):
         lays.append((l, H.hp("lay:%d,%d,%d,%d" % (cell[0], cell[1], to[0], to[1]))))
     A.ticks(5)
-    c = H.hp("census")
+    c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
     bad = [(l, r.get("reason")) for l, r in lays if not r.get("success")]
     off_default = 0
     for l, cell in zip(LOOKS, REELS):
@@ -239,7 +239,7 @@ def run_live(args):
     for cell in REELS:
         H.hp("reelin:%d,%d" % cell)
     A.ticks(5)
-    c = H.hp("census")
+    c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
     bad = []
     for l, cell in zip(LOOKS, REELS):
         h = _find(c, cell)
@@ -254,11 +254,11 @@ def run_live(args):
     ri = A.ap("reinstall:%s:%d,%d" % (ind.get("id"), REINSTALL_AT[0], REINSTALL_AT[1])) if ind else {"success": False, "error": "no Industrial reel"}
     A.ap("finishbuild")
     A.ticks(3)
-    c = H.hp("census")
+    c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
     moved = _find(c, REINSTALL_AT)
     lay2 = H.hp("lay:%d,%d,%d,%d" % (REINSTALL_AT[0], REINSTALL_AT[1], RELAY_TO[0], RELAY_TO[1])) if moved else {}
     A.ticks(5)
-    c = H.hp("census")
+    c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
     moved = _find(c, REINSTALL_AT)
     e = _art_ok(moved, "Industrial", True) if moved.get("laid") else "not laid after reinstall: %s" % lay2.get("reason")
     ok = (ri.get("success") and ri.get("minifiedStyle") == "RM_HoseReel_Industrial" and moved.get("id") == ind.get("id")
@@ -271,7 +271,7 @@ def run_live(args):
     A.ticks(3)
     H.hp("lay:%d,%d,%d,%d" % (LEGACY_AT[0], LEGACY_AT[1], LEGACY_LAY[0], LEGACY_LAY[1]))
     A.ticks(5)
-    c = H.hp("census")
+    c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
     lg = _find(c, LEGACY_AT)
     dl = c.get("defaultLook")
     # the row claims the hose LAYS in the default look: a lay that failed must not pass on the stored art alone
@@ -314,7 +314,7 @@ def _save_load(A, H, rows, name, before_c):
     while time.time() - t0 < 12.0:          # comps register a little after load
         A.ticks(10)
         time.sleep(1.0)
-        c = H.hp("census")
+        c = V.settle_census(lambda: H.hp("census"), lambda h: True)   # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK
         if len(c.get("hoses") or []) >= len(before_c.get("hoses") or []):
             break
     a, b = _snapshot(before_c), _snapshot(c)

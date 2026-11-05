@@ -946,7 +946,9 @@ def scene_guardrail(ctx, mine):
 
 
 def _census_hose(B, corner):
-    for h in (B.hp("census", answer=True) or {}).get("hoses") or []:
+    # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: the census never lays; wait until this reel's lay is current (V.settle_census)
+    c = V.settle_census(lambda: B.hp("census", answer=True), lambda h: V.reel_at(h.get("reel"), corner))
+    for h in (c or {}).get("hoses") or []:
         if V.reel_at(h.get("reel"), corner):
             return h
     return None

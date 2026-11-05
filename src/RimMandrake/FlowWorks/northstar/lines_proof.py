@@ -272,6 +272,9 @@ def main(argv=None):
         return B.hp("lay:%d,%d,%d,%d" % (reel + to), answer=True)
 
     def hose(reel):
+        # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: ProofHoseLine reads the cached lay (r.lay) and nothing lays it on a read, so a
+        # row that dug, drained or built and reads at once wants the re-lay landed first (census layKeyed / layRunning)
+        V.settle_census(lambda: B.hp("census", answer=True), lambda h: V.reel_at(h.get("reel"), reel))
         kv, txt = lproof("ProofHoseLine", xz(reel))
         return kv, txt
 

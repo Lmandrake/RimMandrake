@@ -680,6 +680,59 @@ def reel_at(pos, c):
     return tuple(pos or ()) in tuple(reel_pos(c, r) for r in range(4))
 
 
+# HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: since fa833277f8 (HOSE_CENSUS_FIX_RELAYS_IN_PROBE) the hose census reads the cached
+# lay (r.lay) and never lays; a changed hose is re-laid off the frame (HoseLayQueue) by the draw and the 250-tick check. A row
+# that acts and then reads layOk / pathLen / bbox at once read a stale or null lay. It waits here until the hose shows
+# layKeyed true (re-laid under its current key) and layRunning false (no lay of it on the queue). Only a LAID hose is waited
+# on: an unlaid one (stored, carried, dropped) is never laid by the tick, so it is settled as it reads. A census without the
+# fields (a DLL before them, or an offline fake) is settled. The wait is wall-clock, never ticks: frames lay while paused,
+# and a stepped tick would move the very state a row measures. The `lay` verb still lays synchronously.
+LAY_SETTLE_S = 8.0
+
+
+def lay_settled(h):
+    """True when this census hose's lay is current: not laid, a census without layKeyed/layRunning, or keyed and not running."""
+    if not h or not h.get("laid") or "layKeyed" not in h or "layRunning" not in h:
+        return True
+    return h.get("layKeyed") is True and h.get("layRunning") is not True
+
+
+def settle_hose(read, wait_s=LAY_SETTLE_S, poll_s=0.25, sleep=None, clock=None):
+    """Re-read until lay_settled. `read()` returns (hose, census) or a bare hose dict; returns what the last read returned.
+    A hose still unsettled after `wait_s` comes back marked layUnsettled True (copied, so a row's detail shows why)."""
+    sleep = sleep or time.sleep
+    clock = clock or time.time
+    t0 = clock()
+    while True:
+        got = read()
+        h = got[0] if isinstance(got, tuple) else got
+        if lay_settled(h):
+            return got
+        if clock() - t0 >= wait_s:
+            h = dict(h, layUnsettled=True)
+            return (h,) + tuple(got[1:]) if isinstance(got, tuple) else h
+        sleep(poll_s)
+
+
+def settle_census(read, match, wait_s=LAY_SETTLE_S, poll_s=0.25, sleep=None, clock=None):
+    """settle_hose for a whole-census reader: `read()` returns the census, `match(h)` picks the hose(s) a row reads; it waits
+    until every matched hose is settled. Returns the last census (an unsettled matched hose marked layUnsettled)."""
+    sleep = sleep or time.sleep
+    clock = clock or time.time
+    t0 = clock()
+    while True:
+        c = read()
+        hs = [h for h in (c or {}).get("hoses") or [] if match(h)] if isinstance(c, dict) else []
+        if all(lay_settled(h) for h in hs):
+            return c
+        if clock() - t0 >= wait_s:
+            for h in hs:
+                if not lay_settled(h):
+                    h["layUnsettled"] = True
+            return c
+        sleep(poll_s)
+
+
 # Verse.Log stops ALL managed logging after 10,000 messages ("Reached max messages limit"; skills/rimbridge traps.md), and on
 # the owner's full list a chatty conversation mod reaches that inside one session: every later Log.Warning/Error is dropped,
 # so RimBridge's journal goes silent and a log-budget row reads "0 errors" while seeing nothing (2026-10-11: proof_hose Z
