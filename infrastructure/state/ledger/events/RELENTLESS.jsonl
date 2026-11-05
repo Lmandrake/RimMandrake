@@ -513,3 +513,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T00:07:34Z","tsn":1793837254686981011}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-05T01:08:37Z","tsn":1793840917819658544}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:28:01Z","tsn":1793842081830119189}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T01:29:40Z","tsn":1793842180777978231}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:29:49Z","tsn":1793842189502422808}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A1 (L2), read-only proof","ts":"2026-11-05T01:30:44Z","tsn":1793842244613328124}
